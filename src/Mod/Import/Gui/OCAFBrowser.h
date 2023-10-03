@@ -27,7 +27,9 @@
 #include <QIcon>
 #include <TCollection_ExtendedString.hxx>
 #include <TDF_IDList.hxx>
+#include <TDataStd_TreeNode.hxx>
 #include <TDocStd_Document.hxx>
+#include <TNaming_NamedShape.hxx>
 #include <string>
 
 class QString;
@@ -39,14 +41,16 @@ namespace ImportGui
 class OCAFBrowser
 {
 public:
-    explicit OCAFBrowser(Handle(TDocStd_Document) hDoc);
+    explicit OCAFBrowser(const Handle(TDocStd_Document) & hDoc);
     void load(QTreeWidget*);
 
-    static void showDialog(const QString& title, Handle(TDocStd_Document) hDoc);
+    static void showDialog(const QString& title, const Handle(TDocStd_Document) & hDoc);
 
 private:
     void load(const TDF_Label& label, QTreeWidgetItem* item, const QString&);
-    std::string toString(const TCollection_ExtendedString& extstr) const;
+    static std::string toString(const TCollection_ExtendedString& extstr);
+    static QString toText(const Handle(TDataStd_TreeNode) & treeNode);
+    static QString toText(const Handle(TNaming_NamedShape) & namedShape);
 
 private:
     QIcon myGroupIcon;
