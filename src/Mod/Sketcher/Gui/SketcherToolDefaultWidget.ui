@@ -19,7 +19,7 @@
      <item>
       <widget class="QLabel" name="comboLabel1">
        <property name="text">
-        <string>Mode</string>
+        <string>Mode (M)</string>
        </property>
       </widget>
      </item>
