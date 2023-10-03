@@ -407,7 +407,6 @@ protected:
      */
     void finish()
     {
-
         if (this->isState(SelectMode::End)) {
             unsetCursor();
             resetPositionText();
@@ -415,11 +414,13 @@ protected:
             try {
                 executeCommands();
 
-                generateAutoConstraints();
+                if (sugConstraints.size() > 0) {
+                    generateAutoConstraints();
 
-                beforeCreateAutoConstraints();
+                    beforeCreateAutoConstraints();
 
-                createAutoConstraints();
+                    createAutoConstraints();
+                }
 
                 tryAutoRecomputeIfNotSolve(
                     static_cast<Sketcher::SketchObject*>(sketchgui->getObject()));
@@ -471,7 +472,6 @@ protected:
      */
     void handleContinuousMode()
     {
-
         if (continuousMode) {
             // This code enables the continuous creation mode.
             reset();
@@ -479,8 +479,7 @@ protected:
             // handler is destroyed by the quit() method on pressing the right button of the mouse
         }
         else {
-            sketchgui
-                ->purgeHandler();  // no code after this line, Handler get deleted in ViewProvider
+            sketchgui->purgeHandler();  // no code after, Handler get deleted in ViewProvider
         }
     }
     //@}
