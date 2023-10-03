@@ -251,12 +251,12 @@ const std::string TaskFemConstraintPressure::getReferences() const
     return TaskFemConstraint::getReferences(items);
 }
 
-std::string TaskFemConstraintPressure::get_Pressure() const
+std::string TaskFemConstraintPressure::getPressure() const
 {
     return ui->if_pressure->value().getSafeUserString().toStdString();
 }
 
-bool TaskFemConstraintPressure::get_Reverse() const
+bool TaskFemConstraintPressure::getReverse() const
 {
     return ui->checkBoxReverse->isChecked();
 }
@@ -321,11 +321,11 @@ bool TaskDlgFemConstraintPressure::accept()
         Gui::Command::doCommand(Gui::Command::Doc,
                                 "App.ActiveDocument.%s.Pressure = \"%s\"",
                                 name.c_str(),
-                                parameterPressure->get_Pressure().c_str());
+                                parameterPressure->getPressure().c_str());
         Gui::Command::doCommand(Gui::Command::Doc,
                                 "App.ActiveDocument.%s.Reversed = %s",
                                 name.c_str(),
-                                parameterPressure->get_Reverse() ? "True" : "False");
+                                parameterPressure->getReverse() ? "True" : "False");
         std::string scale = parameterPressure->getScale();  // OvG: determine modified scale
         Gui::Command::doCommand(Gui::Command::Doc,
                                 "App.ActiveDocument.%s.Scale = %s",
