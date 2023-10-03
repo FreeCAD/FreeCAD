@@ -254,6 +254,9 @@
         <file>icons/tools/Sketcher_SelectRedundantConstraints.svg</file>
         <file>icons/tools/Sketcher_SelectVerticalAxis.svg</file>
         <file>icons/tools/Sketcher_Symmetry.svg</file>
+        <file>icons/tools/Sketcher_Offset.svg</file>
+        <file>icons/tools/Sketcher_OffsetArc.svg</file>
+        <file>icons/tools/Sketcher_OffsetIntersection.svg</file>
     </qresource>
     <qresource>
         <file>icons/dialogs/Sketcher_Settings.svg</file>

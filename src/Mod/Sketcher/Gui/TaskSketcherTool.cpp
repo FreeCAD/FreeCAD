@@ -75,6 +75,10 @@ void TaskSketcherTool::toolChanged(const std::string& toolname)
             setHeaderText(tr("Circle parameters"));
             setHeaderIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateCircle"));
         }
+        else if (toolname == "DSH_Offset") {
+            setHeaderText(tr("Offset parameters"));
+            setHeaderIcon(Gui::BitmapFactory().pixmap("Sketcher_Offset"));
+        }
 
         signalToolWidgetChanged(this->widget.get());
     }
