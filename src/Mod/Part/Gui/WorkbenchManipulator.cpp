@@ -36,10 +36,14 @@ void WorkbenchManipulator::modifyMenuBar([[maybe_unused]] Gui::MenuItem* menuBar
 
 void WorkbenchManipulator::modifyContextMenu(const char* recipient, Gui::MenuItem* menuBar)
 {
+    if (strcmp(recipient, "View") == 0) {
+        addSelectionFilter(menuBar);
+    }
 }
 
 void WorkbenchManipulator::modifyToolBars(Gui::ToolBarItem* toolBar)
 {
+    addSelectionFilter(toolBar);
 }
 
 void WorkbenchManipulator::modifyDockWindows([[maybe_unused]] Gui::DockWindowItems* dockWindow)
@@ -57,5 +61,29 @@ void WorkbenchManipulator::addSectionCut(Gui::MenuItem* menuBar)
         auto add = new Gui::MenuItem(); // NOLINT
         add->setCommand("Part_SectionCut");
         par->insertItem(item, add);
+    }
+}
+
+void WorkbenchManipulator::addSelectionFilter(Gui::ToolBarItem* toolBar)
+{
+    if (auto view = toolBar->findItem("View")) {
+        auto add = new Gui::ToolBarItem(); // NOLINT
+        add->setCommand("Part_SelectFilter");
+        auto item = view->findItem("Std_TreeViewActions");
+        if (item) {
+            view->insertItem(item, add);
+        }
+        else {
+            view->appendItem(add);
+        }
+    }
+}
+
+void WorkbenchManipulator::addSelectionFilter(Gui::MenuItem* menuBar)
+{
+    if (auto measure = menuBar->findItem("Measure")) {
+        auto add = new Gui::MenuItem(); // NOLINT
+        add->setCommand("Part_SelectFilter");
+        menuBar->insertItem(measure, add);
     }
 }
