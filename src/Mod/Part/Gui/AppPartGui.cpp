@@ -84,6 +84,7 @@
 void CreatePartCommands();
 void CreateSimplePartCommands();
 void CreateParamPartCommands();
+void CreatePartSelectCommands();
 
 void loadPartResource()
 {
@@ -222,6 +223,7 @@ PyMOD_INIT_FUNC(PartGui)
     CreatePartCommands();
     CreateSimplePartCommands();
     CreateParamPartCommands();
+    CreatePartSelectCommands();
     try{
         Py::Object ae = Base::Interpreter().runStringObject("__import__('AttachmentEditor.Commands').Commands");
         Py::Module(partGuiModule).setAttr(std::string("AttachmentEditor"),ae);
