@@ -37,7 +37,7 @@ class FemExport ConstraintPressure: public Fem::Constraint
 public:
     ConstraintPressure();
 
-    App::PropertyFloat Pressure;
+    App::PropertyPressure Pressure;
     App::PropertyBool Reversed;
     App::PropertyVectorList Points;
     App::PropertyVectorList Normals;
@@ -49,6 +49,8 @@ public:
     const char* getViewProviderName() const override;
 
 protected:
+    void
+    handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop);
     void onChanged(const App::Property* prop) override;
 };
 
