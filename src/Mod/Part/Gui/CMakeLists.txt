@@ -218,6 +218,8 @@ SET(PartGui_SRCS
     ViewProviderPrimitive.h
     Workbench.cpp
     Workbench.h
+    WorkbenchManipulator.cpp
+    WorkbenchManipulator.h
     ReferenceHighlighter.cpp
     ReferenceHighlighter.h
     SectionCutting.cpp

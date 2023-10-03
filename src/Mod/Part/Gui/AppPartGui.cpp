@@ -77,6 +77,7 @@
 #include "ViewProviderSpline.h"
 #include "ViewProviderTorusParametric.h"
 #include "Workbench.h"
+#include "WorkbenchManipulator.h"
 
 
 // use a different name to CreateCommand()
@@ -149,6 +150,7 @@ PyMOD_INIT_FUNC(PartGui)
     Py_INCREF(pAttachEngineTextsModule);
     PyModule_AddObject(partGuiModule, "AttachEngineResources", pAttachEngineTextsModule);
 
+    // clang-format off
     PartGui::PropertyEnumAttacherItem               ::init();
     PartGui::SoBrepFaceSet                          ::initClass();
     PartGui::SoBrepEdgeSet                          ::initClass();
@@ -212,6 +214,9 @@ PyMOD_INIT_FUNC(PartGui)
     PartGui::ArcEngine                              ::initClass();
 
     PartGui::Workbench                              ::init();
+    auto manip = std::make_shared<PartGui::WorkbenchManipulator>();
+    Gui::WorkbenchManipulator::installManipulator(manip);
+    // clang-format on
 
     // instantiating the commands
     CreatePartCommands();
