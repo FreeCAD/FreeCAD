@@ -56,6 +56,9 @@ protected:
      * The default implementation doesn't change anything.
      */
     void modifyDockWindows([[maybe_unused]] Gui::DockWindowItems* dockWindow) override;
+
+private:
+    static void addSectionCut(Gui::MenuItem* menuBar);
 };
 
 } // namespace PartGui
