@@ -192,8 +192,7 @@ void DrawSketchHandlerPointBase::ToolWidgetManager::doEnforceWidgetParameters(
 }
 
 template<>
-void DrawSketchHandlerPointBase::ToolWidgetManager::adaptWidgetParameters(
-    Base::Vector2d onSketchPos)
+void DrawSketchHandlerPointBase::ToolWidgetManager::adaptParameters(Base::Vector2d onSketchPos)
 {
     switch (handler->state()) {
         case SelectMode::SeekFirst: {
@@ -231,20 +230,8 @@ void DrawSketchHandlerPointBase::ToolWidgetManager::doChangeDrawSketchHandlerMod
                     prevCursorPosition);  // draw curve to cursor with suggested constraints
 
                 handler->setState(SelectMode::End);
-                handler->finish();
+                // handler->finish(); // Called by the change of mode
             }
-        } break;
-        default:
-            break;
-    }
-}
-
-template<>
-void DrawSketchHandlerPointBase::ToolWidgetManager::onHandlerModeChanged()
-{
-    switch (handler->state()) {
-        case SelectMode::SeekFirst: {
-            // Do nothing.
         } break;
         default:
             break;

@@ -73,7 +73,7 @@ namespace SketcherGui
  * Widget MAY need to specialise, if default behaviour is not appropriate:
  * - doChangeDrawSketchHandlerMode()
  * - onHandlerModeChanged()
- * - adaptWidgetParameters()
+ * - adaptParameters()
  * - doEnforceWidgetParameters()
  *
  * Handler provides:
@@ -376,9 +376,9 @@ private:
             finishWidgetChanged();
         }
 
-        void adaptWidgetParameters()
+        void adaptParameters()
         {
-            adaptWidgetParameters(lastWidgetEnforcedPosition);
+            adaptParameters(lastWidgetEnforcedPosition);
         }
 
         //@}
@@ -644,16 +644,7 @@ private:
          */
         void onHandlerModeChanged()
         {
-            if constexpr (std::is_same_v<StateMachines::OneSeekEnd, SelectMode>) {
-                switch (handler->state()) {
-                    case SelectMode::SeekFirst:
-                        toolWidget->setParameterFocus(WParameter::First);
-                        break;
-                    default:
-                        break;
-                }
-            }
-            else if constexpr (std::is_same_v<StateMachines::TwoSeekEnd, SelectMode>) {
+            if constexpr (std::is_same_v<StateMachines::TwoSeekEnd, SelectMode>) {
                 switch (handler->state()) {
                     case SelectMode::SeekFirst:
                         toolWidget->setParameterFocus(WParameter::First);
@@ -741,7 +732,7 @@ private:
          *
          * It MUST be specialised if the states correspond to different parameters
          */
-        void adaptWidgetParameters(Base::Vector2d onSketchPos)
+        void adaptParameters(Base::Vector2d onSketchPos)
         {
             if constexpr (std::is_same_v<StateMachines::OneSeekEnd, SelectMode>) {
                 switch (handler->state()) {
@@ -1084,7 +1075,7 @@ private:
                 enforceWidgetParametersOnPreviousCursorPosition();
 
                 // update the widget if state changed
-                adaptWidgetParameters(lastWidgetEnforcedPosition);
+                adaptParameters(lastWidgetEnforcedPosition);
 
                 // ensure drawing in the next mode
                 handler->updateDataAndDrawToPosition(lastWidgetEnforcedPosition);
@@ -1178,7 +1169,7 @@ public:
             toolWidgetManager.beforeFirstMouseMove(onSketchPos);
         }
         toolWidgetManager.enforceWidgetParameters(onSketchPos);
-        toolWidgetManager.adaptWidgetParameters(onSketchPos);
+        toolWidgetManager.adaptParameters(onSketchPos);
         updateDataAndDrawToPosition(onSketchPos);
     }
 
