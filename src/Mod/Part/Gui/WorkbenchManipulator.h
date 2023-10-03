@@ -59,6 +59,8 @@ protected:
 
 private:
     static void addSectionCut(Gui::MenuItem* menuBar);
+    static void addSelectionFilter(Gui::ToolBarItem* toolBar);
+    static void addSelectionFilter(Gui::MenuItem* menuBar);
 };
 
 } // namespace PartGui
