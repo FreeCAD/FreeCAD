@@ -1,0 +1,30 @@
+# File created by ConvertFCMat.py
+General:
+  UUID: "c424fe3d-5f49-4c39-9467-8a2a800076aa"
+  AuthorAndLicense: "(c) 2014 M. Münch - GNU Lesser General Public License (LGPL)"
+  Name: "1C22"
+  Description: "Case hardened alloy steel"
+Inherits:
+  Steel:
+    UUID: "4b849c55-6b3a-4f75-a055-40c0d0324596"
+Models:
+  Father:
+    UUID: '9cdda8b6-b606-4778-8f13-3934d8668e67'
+    Father: "Metal"
+  MaterialStandard:
+    UUID: '1e2c0088-904a-4537-925f-64064c07d700'
+    KindOfMaterial: "Heat-treatable steel"
+    MaterialNumber: "1.0402"
+    StandardCode: "EN 10083-1"
+  LinearElastic:
+    UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
+    Density: "7800 kg/m^3"
+    PoissonRatio: "0.3"
+    ShearModulus: "81000 MPa"
+    UltimateStrain: "27"
+    UltimateTensileStrength: "400 MPa"
+    YieldStrength: "230 MPa"
+    YoungsModulus: "210000 MPa"
+  Thermal:
+    UUID: '9959d007-a970-4ea7-bae4-3eb1b8b883c7'
+    ThermalExpansionCoefficient: "0.000011 m/m/K"

@@ -833,8 +833,6 @@ SET(View3D_CPP_SRCS
     View3DPy.cpp
     View3DViewerPy.cpp
     NaviCube.cpp
-    NavigationAnimator.cpp
-    NavigationAnimation.cpp
 )
 SET(View3D_SRCS
     ${View3D_CPP_SRCS}
@@ -857,8 +855,6 @@ SET(View3D_SRCS
     CoinRiftWidget.h
     View3DViewerPy.h
     NaviCube.h
-    NavigationAnimator.h
-    NavigationAnimation.h
 )
 SOURCE_GROUP("View3D" FILES ${View3D_SRCS})
 
@@ -1114,6 +1110,7 @@ SET(Workbench_CPP_SRCS
     Workbench.cpp
     WorkbenchFactory.cpp
     WorkbenchManager.cpp
+    WorkbenchManipulator.cpp
     WorkbenchPyImp.cpp
 )
 SET(Workbench_SRCS
@@ -1125,6 +1122,7 @@ SET(Workbench_SRCS
     Workbench.h
     WorkbenchFactory.h
     WorkbenchManager.h
+    WorkbenchManipulator.h
 )
 SOURCE_GROUP("Workbench" FILES ${Workbench_SRCS})
 

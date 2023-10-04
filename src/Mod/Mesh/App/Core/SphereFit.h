@@ -128,7 +128,7 @@ protected:
                           double vConvLimit,
                           bool& vConverged) const;
 
-protected:
+private:
     Base::Vector3d _vCenter;       /**< Center of sphere. */
     double _dRadius {0};           /**< Radius of the sphere. */
     int _numIter {0};              /**< Number of iterations for solution to converge. */

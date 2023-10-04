@@ -27,12 +27,6 @@
 #include <memory>
 #endif
 
-#include "Core/Approximation.h"
-#include "Core/Evaluation.h"
-#include "Core/Iterator.h"
-#include "Core/MeshIO.h"
-#include "Core/MeshKernel.h"
-#include "WildMagic4/Wm4ContBox3.h"
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
@@ -41,6 +35,12 @@
 #include <Base/PlacementPy.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>
 #include <Base/VectorPy.h>
+#include "Core/Approximation.h"
+#include "Core/Evaluation.h"
+#include "Core/Iterator.h"
+#include "Core/MeshIO.h"
+#include "Core/MeshKernel.h"
+#include "WildMagic4/Wm4ContBox3.h"
 
 #include "Exporter.h"
 #include "Importer.h"
@@ -139,7 +139,7 @@ private:
     }
     Py::Object read(const Py::Tuple& args)
     {
-        char* Name;
+        char* Name {};
         if (!PyArg_ParseTuple(args.ptr(), "et", "utf-8", &Name)) {
             throw Py::Exception();
         }
@@ -152,7 +152,7 @@ private:
     }
     Py::Object open(const Py::Tuple& args)
     {
-        char* Name;
+        char* Name {};
         if (!PyArg_ParseTuple(args.ptr(), "et", "utf-8", &Name)) {
             throw Py::Exception();
         }
@@ -170,7 +170,7 @@ private:
     }
     Py::Object importer(const Py::Tuple& args)
     {
-        char* Name;
+        char* Name {};
         char* DocName = nullptr;
         if (!PyArg_ParseTuple(args.ptr(), "et|s", "utf-8", &Name, &DocName)) {
             throw Py::Exception();
@@ -199,8 +199,8 @@ private:
 
     Py::Object exporter(const Py::Tuple& args, const Py::Dict& keywds)
     {
-        PyObject* objects;
-        char* fileNamePy;
+        PyObject* objects {};
+        char* fileNamePy {};
 
         // If tolerance is specified via python interface, use that.
         // If not, use the preference, if that exists, else default to 0.1mm.
@@ -292,7 +292,7 @@ private:
 
     Py::Object show(const Py::Tuple& args)
     {
-        PyObject* pcObj;
+        PyObject* pcObj {};
         char* name = "Mesh";
         if (!PyArg_ParseTuple(args.ptr(), "O!|s", &(MeshPy::Type), &pcObj, &name)) {
             throw Py::Exception();
@@ -334,7 +334,7 @@ private:
             }
 
             PyErr_Clear();
-            PyObject* box;
+            PyObject* box {};
             if (PyArg_ParseTuple(args.ptr(), "O!", &Base::BoundBoxPy::Type, &box)) {
                 Py::BoundingBox bbox(box, false);
                 mesh = MeshObject::createCube(bbox.getValue());
@@ -468,7 +468,7 @@ private:
     }
     Py::Object calculateEigenTransform(const Py::Tuple& args)
     {
-        PyObject* input;
+        PyObject* input {};
 
         if (!PyArg_ParseTuple(args.ptr(), "O", &input)) {
             throw Py::Exception();
@@ -513,7 +513,7 @@ private:
     }
     Py::Object polynomialFit(const Py::Tuple& args)
     {
-        PyObject* input;
+        PyObject* input {};
 
         if (!PyArg_ParseTuple(args.ptr(), "O", &input)) {
             throw Py::Exception();
@@ -543,7 +543,7 @@ private:
         dict.setItem(Py::String("Sigma"), Py::Float(fit));
 
         // coefficients
-        double a, b, c, d, e, f;
+        double a {}, b {}, c {}, d {}, e {}, f {};
         polyFit.GetCoefficients(a, b, c, d, e, f);
         Py::Tuple p(6);
         p.setItem(0, Py::Float(a));
@@ -564,11 +564,11 @@ private:
         }
         dict.setItem(Py::String("Residuals"), r);
 
-        return dict;
+        return dict;  // NOLINT
     }
     Py::Object minimumVolumeOrientedBox(const Py::Tuple& args)
     {
-        PyObject* input;
+        PyObject* input {};
 
         if (!PyArg_ParseTuple(args.ptr(), "O", &input)) {
             throw Py::Exception();
@@ -626,7 +626,7 @@ private:
         result.setItem(5, Py::Float(mobox.Extent[1]));
         result.setItem(6, Py::Float(mobox.Extent[2]));
 
-        return result;
+        return result;  // NOLINT
     }
 };
 

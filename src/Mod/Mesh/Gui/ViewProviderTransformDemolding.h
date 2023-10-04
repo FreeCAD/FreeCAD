@@ -82,6 +82,7 @@ protected:
     static void sDragEndCallback(void*, SoDragger*);
     void DragEndCallback();
 
+private:
     SoTrackballDragger* pcTrackballDragger;
     SoTransform* pcTransformDrag;
     SoMaterial* pcColorMat;

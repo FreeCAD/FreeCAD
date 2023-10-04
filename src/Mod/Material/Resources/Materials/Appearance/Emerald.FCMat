@@ -1,0 +1,15 @@
+# File created by ConvertFCMat.py
+General:
+  UUID: "54def35f-a6bf-472e-8410-dc9fb4b143cf"
+  AuthorAndLicense: "(c) 2023 David Carter"
+  Name: "Emerald"
+  Description: "Defines the Emerald appearance properties"
+AppearanceModels:
+  BasicRendering:
+    UUID: 'f006c7e4-35b7-43d5-bbf9-c5d572309e6e'
+    AmbientColor: "(0.0215, 0.1745, 0.0215, 1.0)"
+    DiffuseColor: "(0.0757, 0.6142, 0.0757, 1.0)"
+    EmissiveColor: "(0.0000, 0.0000, 0.0000, 1.0)"
+    Shininess: "0.6000"
+    SpecularColor: "(0.6330, 0.7278, 0.6330, 1.0)"
+    Transparency: "0.0"

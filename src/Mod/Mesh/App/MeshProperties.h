@@ -100,8 +100,10 @@ private:
 /** Curvature information. */
 struct MeshExport CurvatureInfo
 {
-    float fMaxCurvature, fMinCurvature;
-    Base::Vector3f cMaxCurvDir, cMinCurvDir;
+    float fMaxCurvature {0.0F};
+    float fMinCurvature {0.0F};
+    Base::Vector3f cMaxCurvDir;
+    Base::Vector3f cMinCurvDir;
 };
 
 /** The Curvature property class.
@@ -235,6 +237,11 @@ class MeshExport PropertyMeshKernel: public App::PropertyComplexGeoData
 public:
     PropertyMeshKernel();
     ~PropertyMeshKernel() override;
+
+    PropertyMeshKernel(const PropertyMeshKernel&) = delete;
+    PropertyMeshKernel(PropertyMeshKernel&&) = delete;
+    PropertyMeshKernel& operator=(const PropertyMeshKernel&) = delete;
+    PropertyMeshKernel& operator=(PropertyMeshKernel&&) = delete;
 
     /** @name Getter/setter */
     //@{

@@ -25,12 +25,10 @@
 #include <sstream>
 #endif
 
-// clang-format off
 #include "ViewProvider.h"
 // inclusion of the generated files (generated out of ViewProviderMeshPy.xml)
 #include "ViewProviderMeshPy.h"
 #include "ViewProviderMeshPy.cpp"
-// clang-format on
 
 
 using namespace MeshGui;
@@ -46,7 +44,7 @@ std::string ViewProviderMeshPy::representation() const
 
 PyObject* ViewProviderMeshPy::setSelection(PyObject* args)
 {
-    PyObject* obj;
+    PyObject* obj {};
     if (!PyArg_ParseTuple(args, "O", &obj)) {
         return nullptr;
     }
@@ -67,7 +65,7 @@ PyObject* ViewProviderMeshPy::setSelection(PyObject* args)
 
 PyObject* ViewProviderMeshPy::addSelection(PyObject* args)
 {
-    PyObject* obj;
+    PyObject* obj {};
     if (!PyArg_ParseTuple(args, "O", &obj)) {
         return nullptr;
     }
@@ -88,7 +86,7 @@ PyObject* ViewProviderMeshPy::addSelection(PyObject* args)
 
 PyObject* ViewProviderMeshPy::removeSelection(PyObject* args)
 {
-    PyObject* obj;
+    PyObject* obj {};
     if (!PyArg_ParseTuple(args, "O", &obj)) {
         return nullptr;
     }
@@ -131,7 +129,7 @@ PyObject* ViewProviderMeshPy::clearSelection(PyObject* args)
 
 PyObject* ViewProviderMeshPy::highlightSegments(PyObject* args)
 {
-    PyObject* list;
+    PyObject* list {};
     if (!PyArg_ParseTuple(args, "O", &list)) {
         return nullptr;
     }

@@ -2112,7 +2112,7 @@ void QGIViewDimension::drawDistance(TechDraw::DrawViewDimension* dimension,
                              dimension->ExtensionAngle.getValue() * M_PI / 180.0);
     }
     else {
-        drawDistanceExecutive(fromQtApp(linePoints.first()), fromQtApp(linePoints.second()),
+        drawDistanceExecutive(fromQtApp(linePoints.extensionLineFirst()), fromQtApp(linePoints.extensionLineSecond()),
                               lineAngle, labelRectangle, standardStyle, renderExtent, flipArrows);
     }
 }

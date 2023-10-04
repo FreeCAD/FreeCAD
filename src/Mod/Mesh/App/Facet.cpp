@@ -31,7 +31,9 @@
 
 using namespace Mesh;
 
-Facet::Facet(const MeshCore::MeshFacet& face, const MeshObject* obj, MeshCore::FacetIndex index)
+Facet::Facet(const MeshCore::MeshFacet& face,  // NOLINT
+             const MeshObject* obj,
+             MeshCore::FacetIndex index)
     : Index(index)
     , Mesh(obj)
 {
@@ -47,7 +49,18 @@ Facet::Facet(const MeshCore::MeshFacet& face, const MeshObject* obj, MeshCore::F
     }
 }
 
-Facet::Facet(const Facet& f)
+Facet::Facet(const Facet& f)  // NOLINT
+    : MeshCore::MeshGeomFacet(f)
+    , Index(f.Index)
+    , Mesh(f.Mesh)
+{
+    for (int i = 0; i < 3; i++) {
+        PIndex[i] = f.PIndex[i];
+        NIndex[i] = f.NIndex[i];
+    }
+}
+
+Facet::Facet(Facet&& f)  // NOLINT
     : MeshCore::MeshGeomFacet(f)
     , Index(f.Index)
     , Mesh(f.Mesh)
@@ -60,7 +73,7 @@ Facet::Facet(const Facet& f)
 
 Facet::~Facet() = default;
 
-void Facet::operator=(const Facet& f)
+Facet& Facet::operator=(const Facet& f)
 {
     MeshCore::MeshGeomFacet::operator=(f);
     Mesh = f.Mesh;
@@ -69,6 +82,21 @@ void Facet::operator=(const Facet& f)
         PIndex[i] = f.PIndex[i];
         NIndex[i] = f.NIndex[i];
     }
+
+    return *this;
+}
+
+Facet& Facet::operator=(Facet&& f)
+{
+    MeshCore::MeshGeomFacet::operator=(f);
+    Mesh = f.Mesh;
+    Index = f.Index;
+    for (int i = 0; i < 3; i++) {
+        PIndex[i] = f.PIndex[i];
+        NIndex[i] = f.NIndex[i];
+    }
+
+    return *this;
 }
 
 Edge Facet::getEdge(int index) const

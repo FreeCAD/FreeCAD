@@ -38,9 +38,9 @@
 #include <Inventor/SoPickedPoint.h>
 #include <Inventor/SoPrimitiveVertex.h>
 #include <Inventor/actions/SoCallbackAction.h>
-#include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoGetBoundingBoxAction.h>
 #include <Inventor/actions/SoGetPrimitiveCountAction.h>
+#include <Inventor/actions/SoGLRenderAction.h>
 #include <Inventor/actions/SoPickAction.h>
 #include <Inventor/actions/SoSearchAction.h>
 #include <Inventor/bundles/SoMaterialBundle.h>
@@ -120,7 +120,7 @@ protected:
             return *gptr();
         }
 
-        int numPutback;
+        int numPutback {};
         numPutback = gptr() - eback();
         if (numPutback > pbSize) {
             numPutback = pbSize;
@@ -130,7 +130,7 @@ protected:
 
         int num = 0;
         for (int i = 0; i < bufSize; i++) {
-            char c;
+            char c {};
             SbBool ok = inp->get(c);
             if (ok) {
                 num++;
@@ -152,7 +152,7 @@ protected:
 private:
     static const int pbSize = 4;
     static const int bufSize = 1024;
-    char buffer[bufSize + pbSize];
+    char buffer[bufSize + pbSize] {};
     SoInput* inp;
 };
 
@@ -166,6 +166,10 @@ public:
         this->rdbuf(&buf);
     }
     ~SoInputStream() override = default;
+    SoInputStream(const SoInputStream&) = delete;
+    SoInputStream(SoInputStream&&) = delete;
+    SoInputStream& operator=(const SoInputStream&) = delete;
+    SoInputStream& operator=(SoInputStream&&) = delete;
 
 private:
     SoInputStreambuf buf;
@@ -203,7 +207,7 @@ SbBool SoSFMeshObject::readValue(SoInput* in)
         return true;
     }
 
-    int32_t countPt;
+    int32_t countPt {};
     in->read(countPt);
     std::vector<float> verts(countPt);
     in->readBinaryArray(&(verts[0]), countPt);
@@ -221,7 +225,7 @@ SbBool SoSFMeshObject::readValue(SoInput* in)
         rPoints.push_back(p);
     }
 
-    int32_t countFt;
+    int32_t countFt {};
     in->read(countFt);
     std::vector<int32_t> faces(countFt);
     in->readBinaryArray(&(faces[0]), countFt);
@@ -396,7 +400,7 @@ void SoFCMeshPickNode::pick(SoPickAction* action)
     const SbVec3f& dir = line.getDirection();
     Base::Vector3f pt(pos[0], pos[1], pos[2]);
     Base::Vector3f dr(dir[0], dir[1], dir[2]);
-    Mesh::FacetIndex index;
+    Mesh::FacetIndex index {};
     if (alg.NearestFacetOnRay(pt, dr, *meshGrid, pt, index)) {
         SoPickedPoint* pp = raypick->addIntersection(SbVec3f(pt.x, pt.y, pt.z));
         if (pp) {
@@ -439,11 +443,11 @@ void SoFCMeshGridNode::GLRender(SoGLRenderAction* /*action*/)
     const SbVec3f& min = minGrid.getValue();
     const SbVec3f& max = maxGrid.getValue();
     const SbVec3s& len = lenGrid.getValue();
-    short u, v, w;
+    short u {}, v {}, w {};
     len.getValue(u, v, w);
-    float minX, minY, minZ;
+    float minX {}, minY {}, minZ {};
     min.getValue(minX, minY, minZ);
-    float maxX, maxY, maxZ;
+    float maxX {}, maxY {}, maxZ {};
     max.getValue(maxX, maxY, maxZ);
     float dx = (maxX - minX) / (float)u;
     float dy = (maxY - minY) / (float)v;
@@ -1688,7 +1692,7 @@ void SoFCMeshObjectBoundary::drawLines(const Mesh::MeshObject* mesh) const
     const MeshCore::MeshFacetArray& rFacets = mesh->getKernel().GetFacets();
 
     // When rendering open edges use the given line width * 3
-    GLfloat lineWidth;
+    GLfloat lineWidth {};
     glGetFloatv(GL_LINE_WIDTH, &lineWidth);
     glLineWidth(3.0f * lineWidth);
 

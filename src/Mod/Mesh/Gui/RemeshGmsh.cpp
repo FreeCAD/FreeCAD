@@ -65,7 +65,7 @@ public:
     }
 
 public:
-    Ui_RemeshGmsh ui;
+    Ui_RemeshGmsh ui {};
     QPointer<Gui::StatusWidget> label;
     QPointer<Gui::DockWnd::ReportHighlighter> syntax;
     QProcess gmsh;
@@ -176,19 +176,25 @@ void GmshWidget::accept()
         return;
     }
 
+    // clang-format off
     QString inpFile;
     QString outFile;
     if (writeProject(inpFile, outFile)) {
         // ./gmsh - -bin -2 /tmp/mesh.geo -o /tmp/best.stl
         QString proc = d->ui.fileChooser->fileName();
         QStringList args;
-        args << QLatin1String("-") << QLatin1String("-bin") << QLatin1String("-2") << inpFile
-             << QLatin1String("-o") << outFile;
+        args << QLatin1String("-")
+             << QLatin1String("-bin")
+             << QLatin1String("-2")
+             << inpFile
+             << QLatin1String("-o")
+             << outFile;
         d->gmsh.start(proc, args);
 
         d->time.start();
         d->ui.labelTime->setText(tr("Time:"));
     }
+    // clang-format on
 }
 
 void GmshWidget::readyReadStandardError()

@@ -43,6 +43,7 @@ class MeshExport Edge: public MeshCore::MeshGeomEdge
 public:
     Edge();
     Edge(const Edge& f);
+    Edge(Edge&& f);
     ~Edge();
 
     bool isBound() const
@@ -50,7 +51,8 @@ public:
         return Index != -1;
     }
     void unbound();
-    void operator=(const Edge& f);
+    Edge& operator=(const Edge& f);
+    Edge& operator=(Edge&& f);
 
     int Index {-1};
     MeshCore::PointIndex PIndex[2];

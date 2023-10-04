@@ -35,9 +35,9 @@
 #include <App/Application.h>
 #include <Base/Parameter.h>
 #include <Gui/Inventor/MarkerBitmaps.h>
+#include <Mod/Mesh/App/MeshFeature.h>
 #include <Mod/Mesh/App/Core/Degeneration.h>
 #include <Mod/Mesh/App/Core/Iterator.h>
-#include <Mod/Mesh/App/MeshFeature.h>
 
 #include "ViewProviderDefects.h"
 
@@ -95,8 +95,10 @@ void ViewProviderMeshDefects::onChanged(const App::Property* prop)
 
 ViewProviderMeshOrientation::ViewProviderMeshOrientation()
 {
+    // NOLINTBEGIN
     pcFaces = new SoFaceSet;
     pcFaces->ref();
+    // NOLINTEND
 }
 
 ViewProviderMeshOrientation::~ViewProviderMeshOrientation()
@@ -171,8 +173,10 @@ void ViewProviderMeshOrientation::showDefects(const std::vector<Mesh::ElementInd
 
 ViewProviderMeshNonManifolds::ViewProviderMeshNonManifolds()
 {
+    // NOLINTBEGIN
     pcLines = new SoLineSet;
     pcLines->ref();
+    // NOLINTEND
 }
 
 ViewProviderMeshNonManifolds::~ViewProviderMeshNonManifolds()
@@ -242,8 +246,10 @@ void ViewProviderMeshNonManifolds::showDefects(const std::vector<Mesh::ElementIn
 
 ViewProviderMeshNonManifoldPoints::ViewProviderMeshNonManifoldPoints()
 {
+    // NOLINTBEGIN
     pcPoints = new SoPointSet;
     pcPoints->ref();
+    // NOLINTEND
 }
 
 ViewProviderMeshNonManifoldPoints::~ViewProviderMeshNonManifoldPoints()
@@ -303,8 +309,10 @@ void ViewProviderMeshNonManifoldPoints::showDefects(const std::vector<Mesh::Elem
 
 ViewProviderMeshDuplicatedFaces::ViewProviderMeshDuplicatedFaces()
 {
+    // NOLINTBEGIN
     pcFaces = new SoFaceSet;
     pcFaces->ref();
+    // NOLINTEND
 }
 
 ViewProviderMeshDuplicatedFaces::~ViewProviderMeshDuplicatedFaces()
@@ -378,8 +386,10 @@ void ViewProviderMeshDuplicatedFaces::showDefects(const std::vector<Mesh::Elemen
 
 ViewProviderMeshDuplicatedPoints::ViewProviderMeshDuplicatedPoints()
 {
+    // NOLINTBEGIN
     pcPoints = new SoPointSet;
     pcPoints->ref();
+    // NOLINTEND
 }
 
 ViewProviderMeshDuplicatedPoints::~ViewProviderMeshDuplicatedPoints()
@@ -439,8 +449,10 @@ void ViewProviderMeshDuplicatedPoints::showDefects(const std::vector<Mesh::Eleme
 
 ViewProviderMeshDegenerations::ViewProviderMeshDegenerations()
 {
+    // NOLINTBEGIN
     pcLines = new SoLineSet;
     pcLines->ref();
+    // NOLINTEND
 }
 
 ViewProviderMeshDegenerations::~ViewProviderMeshDegenerations()
@@ -548,8 +560,10 @@ void ViewProviderMeshDegenerations::showDefects(const std::vector<Mesh::ElementI
 
 ViewProviderMeshIndices::ViewProviderMeshIndices()
 {
+    // NOLINTBEGIN
     pcFaces = new SoFaceSet;
     pcFaces->ref();
+    // NOLINTEND
 }
 
 ViewProviderMeshIndices::~ViewProviderMeshIndices()
@@ -625,8 +639,10 @@ void ViewProviderMeshIndices::showDefects(const std::vector<Mesh::ElementIndex>&
 
 ViewProviderMeshSelfIntersections::ViewProviderMeshSelfIntersections()
 {
+    // NOLINTBEGIN
     pcLines = new SoLineSet;
     pcLines->ref();
+    // NOLINTEND
 }
 
 ViewProviderMeshSelfIntersections::~ViewProviderMeshSelfIntersections()
@@ -705,8 +721,10 @@ void ViewProviderMeshSelfIntersections::showDefects(const std::vector<Mesh::Elem
 
 ViewProviderMeshFolds::ViewProviderMeshFolds()
 {
+    // NOLINTBEGIN
     pcFaces = new SoFaceSet;
     pcFaces->ref();
+    // NOLINTEND
 }
 
 ViewProviderMeshFolds::~ViewProviderMeshFolds()

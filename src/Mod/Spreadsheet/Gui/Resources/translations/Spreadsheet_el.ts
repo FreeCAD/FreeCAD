@@ -533,8 +533,7 @@ by that property.
       <location filename="../../DlgSheetConf.ui" line="64"/>
       <source>Type in an expression to specify the object and property name to dynamically
 switch the design configuration. The property will be created if not exist.</source>
-      <translation type="unfinished">Type in an expression to specify the object and property name to dynamically
-switch the design configuration. The property will be created if not exist.</translation>
+      <translation>Πληκτρολογήστε μια έκφραση για να καθορίσετε το όνομα του αντικειμένου και της ιδιότητας για να αλλάξετε δυναμικά τη διαμόρφωση σχεδιασμού. Η ιδιότητα θα δημιουργηθεί αν δεν υπάρχει.</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="72"/>
@@ -890,7 +889,7 @@ Do you want to continue?</source>
       <location filename="../../DlgBindSheet.cpp" line="276"/>
       <source>Error:
 </source>
-      <translation type="unfinished">Error:
+      <translation>Σφάλμα:
 </translation>
     </message>
     <message>

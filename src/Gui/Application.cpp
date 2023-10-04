@@ -1724,7 +1724,7 @@ void Application::setupContextMenu(const char* recipient, MenuItem* items) const
                 }
             }
         }
-        actWb->setupContextMenu(recipient, items);
+        actWb->createContextMenu(recipient, items);
     }
 }
 

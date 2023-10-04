@@ -30,20 +30,20 @@
 
 #include <Gui/Application.h>
 #include <Gui/Command.h>
-#include <Gui/DockWindowManager.h>
 #include <Gui/Document.h>
+#include <Gui/DockWindowManager.h>
 #include <Gui/MainWindow.h>
+#include <Gui/WaitCursor.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
-#include <Gui/WaitCursor.h>
-#include <Mod/Mesh/App/Core/Degeneration.h>
-#include <Mod/Mesh/App/Core/Evaluation.h>
 #include <Mod/Mesh/App/MeshFeature.h>
+#include <Mod/Mesh/App/Core/Evaluation.h>
+#include <Mod/Mesh/App/Core/Degeneration.h>
 
 #include "DlgEvaluateMeshImp.h"
+#include "ui_DlgEvaluateMesh.h"
 #include "DlgEvaluateSettings.h"
 #include "ViewProviderDefects.h"
-#include "ui_DlgEvaluateMesh.h"
 
 
 using namespace MeshCore;
@@ -551,7 +551,7 @@ void DlgEvaluateMeshImp::onRepairOrientationButtonClicked()
         doc->openCommand(QT_TRANSLATE_NOOP("Command", "Harmonize normals"));
         try {
             Gui::Command::doCommand(Gui::Command::App,
-                                    "App.getDocument(\"%s\").getObject(\"%s\").harmonizeNormals()",
+                                    R"(App.getDocument("%s").getObject("%s").harmonizeNormals())",
                                     docName,
                                     objName);
         }
@@ -661,16 +661,15 @@ void DlgEvaluateMeshImp::onRepairNonmanifoldsButtonClicked()
         Gui::Document* doc = Gui::Application::Instance->getDocument(docName);
         doc->openCommand(QT_TRANSLATE_NOOP("Command", "Remove non-manifolds"));
         try {
-            Gui::Command::doCommand(
-                Gui::Command::App,
-                "App.getDocument(\"%s\").getObject(\"%s\").removeNonManifolds()",
-                docName,
-                objName);
+            Gui::Command::doCommand(Gui::Command::App,
+                                    R"(App.getDocument("%s").getObject("%s").removeNonManifolds())",
+                                    docName,
+                                    objName);
 
             if (d->checkNonManfoldPoints) {
                 Gui::Command::doCommand(
                     Gui::Command::App,
-                    "App.getDocument(\"%s\").getObject(\"%s\").removeNonManifoldPoints()",
+                    R"(App.getDocument("%s").getObject("%s").removeNonManifoldPoints())",
                     docName,
                     objName);
             }
@@ -768,7 +767,7 @@ void DlgEvaluateMeshImp::onRepairIndicesButtonClicked()
         doc->openCommand(QT_TRANSLATE_NOOP("Command", "Fix indices"));
         try {
             Gui::Command::doCommand(Gui::Command::App,
-                                    "App.getDocument(\"%s\").getObject(\"%s\").fixIndices()",
+                                    R"(App.getDocument("%s").getObject("%s").fixIndices())",
                                     docName,
                                     objName);
         }
@@ -837,12 +836,11 @@ void DlgEvaluateMeshImp::onRepairDegeneratedButtonClicked()
         Gui::Document* doc = Gui::Application::Instance->getDocument(docName);
         doc->openCommand(QT_TRANSLATE_NOOP("Command", "Remove degenerated faces"));
         try {
-            Gui::Command::doCommand(
-                Gui::Command::App,
-                "App.getDocument(\"%s\").getObject(\"%s\").fixDegenerations(%f)",
-                docName,
-                objName,
-                d->epsilonDegenerated);
+            Gui::Command::doCommand(Gui::Command::App,
+                                    R"(App.getDocument("%s").getObject("%s").fixDegenerations(%f))",
+                                    docName,
+                                    objName,
+                                    d->epsilonDegenerated);
         }
         catch (const Base::Exception& e) {
             QMessageBox::warning(this, tr("Degenerations"), QString::fromLatin1(e.what()));
@@ -912,7 +910,7 @@ void DlgEvaluateMeshImp::onRepairDuplicatedFacesButtonClicked()
         try {
             Gui::Command::doCommand(
                 Gui::Command::App,
-                "App.getDocument(\"%s\").getObject(\"%s\").removeDuplicatedFacets()",
+                R"(App.getDocument("%s").getObject("%s").removeDuplicatedFacets())",
                 docName,
                 objName);
         }
@@ -982,7 +980,7 @@ void DlgEvaluateMeshImp::onRepairDuplicatedPointsButtonClicked()
         try {
             Gui::Command::doCommand(
                 Gui::Command::App,
-                "App.getDocument(\"%s\").getObject(\"%s\").removeDuplicatedPoints()",
+                R"(App.getDocument("%s").getObject("%s").removeDuplicatedPoints())",
                 docName,
                 objName);
         }
@@ -1147,7 +1145,7 @@ void DlgEvaluateMeshImp::onRepairFoldsButtonClicked()
         try {
             Gui::Command::doCommand(
                 Gui::Command::App,
-                "App.getDocument(\"%s\").getObject(\"%s\").removeFoldsOnSurface()",
+                R"(App.getDocument("%s").getObject("%s").removeFoldsOnSurface())",
                 docName,
                 objName);
         }
@@ -1191,7 +1189,7 @@ void DlgEvaluateMeshImp::onRepairAllTogetherClicked()
 
         bool run = false;
         bool self = true;
-        int max_iter=10;
+        int max_iter = 10;
         const MeshKernel& rMesh = d->meshFeature->Mesh.getValue().getKernel();
         try {
             do {
@@ -1373,7 +1371,7 @@ bool DockEvaluateMeshImp::hasInstance()
 DockEvaluateMeshImp::DockEvaluateMeshImp(QWidget* parent, Qt::WindowFlags fl)
     : DlgEvaluateMeshImp(parent, fl)
 {
-    scrollArea = new QScrollArea();
+    scrollArea = new QScrollArea();  // NOLINT
     scrollArea->setObjectName(QLatin1String("scrollArea"));
     scrollArea->setFrameShape(QFrame::NoFrame);
     scrollArea->setFrameShadow(QFrame::Plain);

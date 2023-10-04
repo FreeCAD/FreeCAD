@@ -50,7 +50,7 @@ struct MeshExport MeshHelpPoint
     }
 
     MeshPoint _clPt;
-    FacetIndex _ulInd;
+    FacetIndex _ulInd {FACET_INDEX_MAX};
 };
 
 /**
@@ -170,7 +170,7 @@ inline bool MeshHelpBuilderEdge::operator!=(const MeshHelpBuilderEdge& rclObj) c
 inline void
 MeshEdgeBuilder::Add(PointIndex ulInd1, PointIndex ulInd2, FacetIndex ulSide, FacetIndex ulFInd)
 {
-    MeshHelpBuilderEdge clObj;
+    MeshHelpBuilderEdge clObj {};
     clObj.Set(ulInd1, ulInd2, ulSide, ulFInd);
     push_back(clObj);
 }

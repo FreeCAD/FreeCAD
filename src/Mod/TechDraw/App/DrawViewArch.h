@@ -53,6 +53,8 @@ public:
     App::PropertyFloat        FontSize;
     App::PropertyFloat        CutLineWidth;
     App::PropertyBool         JoinArch;
+    App::PropertyFloat        LineSpacing;
+
 
     /** @name methods override Feature */
     //@{

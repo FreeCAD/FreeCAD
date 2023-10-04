@@ -465,7 +465,7 @@ CmdMeshFromGeometry::CmdMeshFromGeometry()
 
 void CmdMeshFromGeometry::activated(int)
 {
-    bool ok;
+    bool ok {};
     double tol = QInputDialog::getDouble(Gui::getMainWindow(),
                                          QObject::tr("Meshing Tolerance"),
                                          QObject::tr("Enter tolerance for meshing geometry:"),
@@ -1532,7 +1532,7 @@ void CmdMeshFillupHoles::activated(int)
 {
     std::vector<App::DocumentObject*> meshes =
         getSelection().getObjectsOfType(Mesh::Feature::getClassTypeId());
-    bool ok;
+    bool ok {};
     int FillupHolesOfLength =
         QInputDialog::getInt(Gui::getMainWindow(),
                              QObject::tr("Fill holes"),
@@ -1797,7 +1797,7 @@ void CmdMeshScale::activated(int)
         return;
     }
 
-    bool ok;
+    bool ok {};
     double factor = QInputDialog::getDouble(Gui::getMainWindow(),
                                             QObject::tr("Scaling"),
                                             QObject::tr("Enter scaling factor:"),

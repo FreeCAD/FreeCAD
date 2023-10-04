@@ -341,7 +341,7 @@ TechDraw::CosmeticEdge* CosmeticExtension::getCosmeticEdge(const std::string& ta
     }
 
     // None found
-    Base::Console().Message("CEx::getCosmeticEdge - CE for tag: %s not found.\n", tagString.c_str());
+//    Base::Console().Message("CEx::getCosmeticEdge - CE for tag: %s not found.\n", tagString.c_str());
     return nullptr;
 }
 
@@ -416,10 +416,11 @@ int CosmeticExtension::add1CLToGE(const std::string& tag)
     //    Base::Console().Message("CEx::add1CLToGE(%s) 2\n", tag.c_str());
     TechDraw::CenterLine* cl = getCenterLine(tag);
     if (!cl) {
-        Base::Console().Message("CEx::add1CLToGE 2 - cl %s not found\n", tag.c_str());
+//        Base::Console().Message("CEx::add1CLToGE 2 - cl %s not found\n", tag.c_str());
         return -1;
     }
-    TechDraw::BaseGeomPtr scaledGeom = cl->scaledGeometry(getOwner());
+    TechDraw::BaseGeomPtr scaledGeom = cl->scaledAndRotatedGeometry(getOwner());
+//    TechDraw::BaseGeomPtr scaledGeom = cl->scaledGeometry(getOwner());
     int iGE = getOwner()->getGeometryObject()->addCenterLine(scaledGeom, tag);
 
     return iGE;
@@ -446,7 +447,8 @@ void CosmeticExtension::addCenterLinesToGeom()
     //   Base::Console().Message("CE::addCenterLinesToGeom()\n");
     const std::vector<TechDraw::CenterLine*> lines = CenterLines.getValues();
     for (auto& cl : lines) {
-        TechDraw::BaseGeomPtr scaledGeom = cl->scaledGeometry(getOwner());
+//        TechDraw::BaseGeomPtr scaledGeom = cl->scaledGeometry(getOwner());
+        TechDraw::BaseGeomPtr scaledGeom = cl->scaledAndRotatedGeometry(getOwner());
         if (!scaledGeom) {
             Base::Console().Error("CE::addCenterLinesToGeom - scaledGeometry is null\n");
             continue;
@@ -490,7 +492,6 @@ std::string CosmeticExtension::addCenterLine(TechDraw::BaseGeomPtr bg)
     CenterLines.setValues(cLines);
     return cl->getTagAsString();
 }
-
 
 //get CL by unique id
 TechDraw::CenterLine* CosmeticExtension::getCenterLine(const std::string& tagString) const

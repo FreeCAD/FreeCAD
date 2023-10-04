@@ -504,10 +504,6 @@ def init_shared_values(values):
     #
     values["RAPID_MOVES"] = ["G0", "G00"]
     #
-    # If True suppress any messages.
-    #
-    values["REMOVE_MESSAGES"] = True
-    #
     # Any commands in this value are output after the operation(s)
     # and post_operation commands are output but before the
     # TOOLRETURN, SAFETYBLOCK, and POSTAMBLE.

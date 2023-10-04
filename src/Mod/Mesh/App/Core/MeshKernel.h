@@ -68,6 +68,7 @@ public:
     MeshKernel();
     /// Construction
     MeshKernel(const MeshKernel& rclMesh);
+    MeshKernel(MeshKernel&& rclMesh);
     /// Destruction
     ~MeshKernel()
     {
@@ -411,6 +412,7 @@ public:
     MeshKernel& operator=(const std::vector<MeshGeomFacet>& rclFAry);
     /** Assignment operator. */
     MeshKernel& operator=(const MeshKernel& rclMesh);
+    MeshKernel& operator=(MeshKernel&& rclMesh);
     /** This allows to assign the mesh structure directly. The caller must make sure that the point
      * indices are correctly set but the neighbourhood gets checked and corrected if \a
      * checkNeighbourHood is true.
@@ -479,6 +481,7 @@ protected:
     /** Calculates the gravity point to the given facet. */
     inline Base::Vector3f GetGravityPoint(const MeshFacet& rclFacet) const;
 
+private:
     MeshPointArray _aclPointArray;        /**< Holds the array of geometric points. */
     MeshFacetArray _aclFacetArray;        /**< Holds the array of facets. */
     mutable Base::BoundBox3f _clBoundBox; /**< The current calculated bounding box. */

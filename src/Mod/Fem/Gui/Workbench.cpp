@@ -324,7 +324,6 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     root->insertItem(item, solve);
     solve->setCommand("&Solve");
     *solve << "FEM_SolverCalculixCxxtools"
-           << "FEM_SolverCalculiX"
            << "FEM_SolverElmer"
            << "FEM_SolverMystran"
            << "FEM_SolverZ88"

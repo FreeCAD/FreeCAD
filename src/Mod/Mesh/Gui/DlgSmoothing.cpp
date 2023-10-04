@@ -29,12 +29,12 @@
 #include <Gui/Command.h>
 #include <Gui/Selection.h>
 #include <Gui/WaitCursor.h>
-#include <Mod/Mesh/App/Core/Smoothing.h>
 #include <Mod/Mesh/App/MeshFeature.h>
+#include <Mod/Mesh/App/Core/Smoothing.h>
 
 #include "DlgSmoothing.h"
-#include "Selection.h"
 #include "ui_DlgSmoothing.h"
+#include "Selection.h"
 
 
 using namespace MeshGui;
@@ -47,7 +47,7 @@ DlgSmoothing::DlgSmoothing(QWidget* parent)
 {
     // clang-format off
     ui->setupUi(this);
-    bg = new QButtonGroup(this);
+    bg = new QButtonGroup(this); //NOLINT
     bg->addButton(ui->radioButtonTaubin, 0);
     bg->addButton(ui->radioButtonLaplace, 1);
 
@@ -151,13 +151,13 @@ SmoothingDialog::~SmoothingDialog() = default;
 
 TaskSmoothing::TaskSmoothing()
 {
-    widget = new DlgSmoothing();
+    widget = new DlgSmoothing();  // NOLINT
     Gui::TaskView::TaskBox* taskbox =
         new Gui::TaskView::TaskBox(QPixmap(), widget->windowTitle(), false, nullptr);
     taskbox->groupLayout()->addWidget(widget);
     Content.push_back(taskbox);
 
-    selection = new Selection();
+    selection = new Selection();  // NOLINT
     selection->setObjects(
         Gui::Selection().getSelectionEx(nullptr, Mesh::Feature::getClassTypeId()));
     Gui::Selection().clearSelection();

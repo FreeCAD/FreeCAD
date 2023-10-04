@@ -74,9 +74,9 @@ public:
     SoPickedPoint* getPickedPoint(const SbVec2s& pos,
                                   const Gui::View3DInventorViewer* viewer) const;
 
-    ViewProviderMesh* mesh;
+    ViewProviderMesh* mesh {nullptr};
     std::vector<int> index;
-    int current_index;
+    int current_index {-1};
 
     SoCoordinate3* pcCoords;
     SoFaceSet* pcFaces;
@@ -172,10 +172,10 @@ private:
     SoSeparator* myBridgeRoot;
     SoCoordinate3* myVertex;
     std::map<SoNode*, TBoundary> myPolygons;
-    Mesh::Feature* myMesh;
-    int myNumPoints;
-    Mesh::PointIndex myVertex1;
-    Mesh::PointIndex myVertex2;
+    Mesh::Feature* myMesh {nullptr};
+    int myNumPoints {0};
+    Mesh::PointIndex myVertex1 {0};
+    Mesh::PointIndex myVertex2 {0};
     TBoundary myPolygon;
     MeshHoleFiller& myHoleFiller;
     Connection myConnection;

@@ -46,8 +46,8 @@ using namespace MeshGui;
 
 // clang-format off
 DlgRegularSolidImp::DlgRegularSolidImp(QWidget* parent, Qt::WindowFlags fl)
-  : QDialog( parent, fl )
-  , ui(new Ui_DlgRegularSolid)
+    : QDialog(parent, fl)
+    , ui(new Ui_DlgRegularSolid)
 {
     ui->setupUi(this);
     connect(ui->createSolidButton, &QPushButton::clicked,

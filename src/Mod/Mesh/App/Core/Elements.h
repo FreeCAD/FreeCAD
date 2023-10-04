@@ -665,14 +665,16 @@ public:
      */
     bool IsCoplanar(const MeshGeomFacet& facet) const;
 
-protected:
+private:
     mutable Base::Vector3f _clNormal; /**< Normal of the facet. */
     mutable bool _bNormalCalculated;  /**< True if the normal is already calculated. */
 
 public:
+    // NOLINTBEGIN
     Base::Vector3f _aclPoints[3]; /**< Geometric corner points. */
     unsigned char _ucFlag;        /**< Flag property */
     unsigned long _ulProp;        /**< Free usable property. */
+                                  // NOLINTEND
 };
 
 using TMeshPointArray = std::vector<MeshPoint>;
@@ -993,7 +995,7 @@ inline bool MeshGeomFacet::IntersectWithPlane(const Base::Vector3f& rclBase,
              && (bD0 == (_aclPoints[2].DistanceToPlane(rclBase, rclNormal) > 0.0f)));
 }
 
-inline MeshFacet::MeshFacet()
+inline MeshFacet::MeshFacet()  // NOLINT
     : _ucFlag(0)
     , _ulProp(0)
 {
@@ -1009,15 +1011,9 @@ inline MeshFacet::MeshFacet(PointIndex p1,
                             FacetIndex n3)
     : _ucFlag(0)
     , _ulProp(0)
-{
-    _aulPoints[0] = p1;
-    _aulPoints[1] = p2;
-    _aulPoints[2] = p3;
-
-    _aulNeighbours[0] = n1;
-    _aulNeighbours[1] = n2;
-    _aulNeighbours[2] = n3;
-}
+    , _aulPoints {p1, p2, p3}
+    , _aulNeighbours {n1, n2, n3}
+{}
 
 void MeshFacet::SetVertices(PointIndex p1, PointIndex p2, PointIndex p3)
 {
@@ -1191,7 +1187,7 @@ inline unsigned short MeshFacet::Side(PointIndex ulP0, PointIndex ulP1) const
 
 inline unsigned short MeshFacet::Side(const MeshFacet& rFace) const
 {
-    unsigned short side;
+    unsigned short side {};
     for (int i = 0; i < 3; i++) {
         side = Side(rFace._aulPoints[i], rFace._aulPoints[(i + 1) % 3]);
         if (side != USHRT_MAX) {

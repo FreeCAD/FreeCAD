@@ -1,0 +1,31 @@
+# File created by ConvertFCMat.py
+General:
+  UUID: "0051bddf-6f62-4406-b8c9-569322880564"
+  AuthorAndLicense: "(c) 2014 M. Münch - GNU Lesser General Public License (LGPL)"
+  Name: "AlMg3F24"
+Inherits:
+  Aluminum:
+    UUID: "d1f317f0-5ffa-4798-8ab3-af2ff0b5182c"
+Models:
+  Father:
+    UUID: '9cdda8b6-b606-4778-8f13-3934d8668e67'
+    Father: "Metal"
+  MaterialStandard:
+    UUID: '1e2c0088-904a-4537-925f-64064c07d700'
+    KindOfMaterial: "Aluminium"
+    MaterialNumber: "3.3535.26"
+    StandardCode: "DIN 1725"
+  LinearElastic:
+    UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
+    Density: "2700 kg/m^3"
+    PoissonRatio: "0.3"
+    ShearModulus: "27000 MPa"
+    UltimateStrain: "5"
+    UltimateTensileStrength: "250 MPa"
+    YieldStrength: "180 MPa"
+    YoungsModulus: "70000 MPa"
+  Thermal:
+    UUID: '9959d007-a970-4ea7-bae4-3eb1b8b883c7'
+    SpecificHeat: "900 J/kg/K"
+    ThermalConductivity: "150 W/m/K"
+    ThermalExpansionCoefficient: "23 µm/m/K"

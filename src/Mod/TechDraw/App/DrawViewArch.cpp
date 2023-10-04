@@ -63,6 +63,7 @@ DrawViewArch::DrawViewArch()
     ADD_PROPERTY_TYPE(FontSize, (12.0), group, App::Prop_None, "Text size for this view");
     ADD_PROPERTY_TYPE(CutLineWidth, (0.50), group, App::Prop_None, "Width of cut lines of this view");
     ADD_PROPERTY_TYPE(JoinArch ,(false), group, App::Prop_None, "If True, walls and structure will be fused by material");
+    ADD_PROPERTY_TYPE(LineSpacing, (1.0f), group, App::Prop_None, "The spacing between lines to use for multiline texts");
     ScaleType.setValue("Custom");
 }
 
@@ -79,6 +80,7 @@ short DrawViewArch::mustExecute() const
             LineWidth.isTouched() ||
             FontSize.isTouched() ||
             CutLineWidth.isTouched() ||
+            LineSpacing.isTouched() ||
             JoinArch.isTouched()
         ) {
             return 1;
@@ -123,6 +125,7 @@ App::DocumentObjectExecReturn *DrawViewArch::execute()
                  << ", rotation=" << Rotation.getValue()
                  << ", fillSpaces=" << (FillSpaces.getValue() ? "True" : "False")
                  << ", cutlinewidth=" << CutLineWidth.getValue()
+                 << ", linespacing=" << LineSpacing.getValue()
                  << ", joinArch=" << (JoinArch.getValue() ? "True" : "False");
 
         Base::Interpreter().runString("import ArchSectionPlane");

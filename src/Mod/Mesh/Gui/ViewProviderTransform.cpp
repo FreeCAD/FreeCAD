@@ -42,8 +42,10 @@ PROPERTY_SOURCE(MeshGui::ViewProviderMeshTransform, MeshGui::ViewProviderMesh)
 
 ViewProviderMeshTransform::ViewProviderMeshTransform()
 {
+    // NOLINTBEGIN
     pcTransformerDragger = new SoTransformerManip();
     pcTransformerDragger->ref();
+    // NOLINTEND
 }
 
 ViewProviderMeshTransform::~ViewProviderMeshTransform()

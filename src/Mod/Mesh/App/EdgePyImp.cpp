@@ -26,11 +26,9 @@
 #include <Base/GeometryPyCXX.h>
 #include <Base/VectorPy.h>
 
-// clang-format off
 #include "Edge.h"
 #include "EdgePy.h"
 #include "EdgePy.cpp"
-// clang-format on
 
 
 using namespace Mesh;
@@ -125,7 +123,7 @@ PyObject* EdgePy::intersectWithEdge(PyObject* args)
 
 PyObject* EdgePy::isParallel(PyObject* args)
 {
-    PyObject* object;
+    PyObject* object {};
     if (!PyArg_ParseTuple(args, "O!", &EdgePy::Type, &object)) {
         return nullptr;
     }
@@ -138,7 +136,7 @@ PyObject* EdgePy::isParallel(PyObject* args)
 
 PyObject* EdgePy::isCollinear(PyObject* args)
 {
-    PyObject* object;
+    PyObject* object {};
     if (!PyArg_ParseTuple(args, "O!", &EdgePy::Type, &object)) {
         return nullptr;
     }

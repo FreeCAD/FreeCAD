@@ -35,6 +35,7 @@
 namespace MeshGui
 {
 
+// NOLINTBEGIN
 class MeshGuiExport SoPolygon: public SoShape
 {
     using inherited = SoShape;
@@ -60,6 +61,7 @@ protected:
 private:
     void drawPolygon(const SbVec3f*, int32_t) const;
 };
+// NOLINTEND
 
 }  // namespace MeshGui
 

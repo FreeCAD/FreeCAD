@@ -76,7 +76,7 @@ public:
      */
     void Do();
 
-protected:
+private:
     const MeshKernel& _cutMesh0;  /** Mesh for set operations source 1 */
     const MeshKernel& _cutMesh1;  /** Mesh for set operations source 2 */
     MeshKernel& _resultMesh;      /** Result mesh */
@@ -118,17 +118,9 @@ private:
     class EdgeInfo
     {
     public:
-        int fcounter[2];             // counter of facets attacted to the edge
+        int fcounter[2] {};          // counter of facets attacted to the edge
         MeshGeomFacet facets[2][2];  // Geom-Facets attached to the edge
-        FacetIndex facet[2];         // underlying Facet-Index
-
-        EdgeInfo()
-        {
-            fcounter[0] = 0;
-            fcounter[1] = 0;
-            facet[0] = 0;
-            facet[1] = 0;
-        }
+        FacetIndex facet[2] {};      // underlying Facet-Index
     };
 
     // class CollectFacetVisitor : public MeshFacetVisitor

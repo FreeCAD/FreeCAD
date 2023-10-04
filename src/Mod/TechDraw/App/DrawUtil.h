@@ -257,6 +257,7 @@ public:
 
     static bool isCosmeticVertex(App::DocumentObject* owner, std::string element);
     static bool isCosmeticEdge(App::DocumentObject* owner, std::string element);
+    static bool isCenterLine(App::DocumentObject* owner, std::string element);
 
     //debugging routines
     static void dumpVertexes(const char* text, const TopoDS_Shape& s);

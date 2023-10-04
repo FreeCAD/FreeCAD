@@ -2994,7 +2994,7 @@ click again to end selection</source>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="24"/>
       <source>Select</source>
-      <translation>არჩევა</translation>
+      <translation>აირჩიეთ</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="34"/>

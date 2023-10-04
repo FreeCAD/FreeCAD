@@ -22,9 +22,9 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QBitmap>
 #include <algorithm>
 #include <climits>
+#include <QBitmap>
 
 #include <Inventor/SbBox2s.h>
 #include <Inventor/SoPickedPoint.h>
@@ -493,7 +493,7 @@ void MeshSelection::selectGLCallback(void* ud, SoEventCallback* n)
 
         if (self->onlyVisibleTriangles) {
             const SbVec2s& sz = view->getSoRenderManager()->getViewportRegion().getWindowSize();
-            short width, height;
+            short width {}, height {};
             sz.getValue(width, height);
             std::vector<SbVec2s> pixelPoly = view->getPolygon();
             SbBox2s rect;

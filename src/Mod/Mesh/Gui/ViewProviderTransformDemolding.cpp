@@ -54,10 +54,12 @@ PROPERTY_SOURCE(MeshGui::ViewProviderMeshTransformDemolding, MeshGui::ViewProvid
 
 ViewProviderMeshTransformDemolding::ViewProviderMeshTransformDemolding()
 {
+    // NOLINTBEGIN
     pcTrackballDragger = new SoTrackballDragger;
     pcTrackballDragger->ref();
     pcTransformDrag = nullptr;
     pcColorMat = nullptr;
+    // NOLINTEND
 }
 
 ViewProviderMeshTransformDemolding::~ViewProviderMeshTransformDemolding()

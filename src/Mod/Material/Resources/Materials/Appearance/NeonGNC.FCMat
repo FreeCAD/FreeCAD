@@ -1,0 +1,15 @@
+# File created by ConvertFCMat.py
+General:
+  UUID: "c0341eef-0897-4fcf-a7f7-eddf1a2600a5"
+  AuthorAndLicense: "(c) 2023 David Carter"
+  Name: "Neon GNC"
+  Description: "Defines the Neon GNC appearance properties"
+AppearanceModels:
+  BasicRendering:
+    UUID: 'f006c7e4-35b7-43d5-bbf9-c5d572309e6e'
+    AmbientColor: "(0.2000, 0.2000, 0.2000, 1.0)"
+    DiffuseColor: "(0.0000, 0.0000, 0.0000, 1.0)"
+    EmissiveColor: "(1.0000, 1.0000, 0.0000, 1.0)"
+    Shininess: "0.0500"
+    SpecularColor: "(0.6200, 0.6200, 0.6200, 1.0)"
+    Transparency: "0.0"

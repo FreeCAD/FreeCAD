@@ -820,18 +820,16 @@ class svgHandler(xml.sax.ContentHandler):
                 if 'width' in data \
                         and 'height' in data \
                         and 'viewBox' in data:
-                    vbw = float(data['viewBox'][2])
-                    vbh = float(data['viewBox'][3])
-                    w = attrs.getValue('width')
-                    h = attrs.getValue('height')
-                    self.viewbox = (vbw, vbh)
                     if len(self.grouptransform) == 0:
                         unitmode = 'mm' + str(self.svgdpi)
                     else:
                         # nested svg element
                         unitmode = 'css' + str(self.svgdpi)
-                    abw = getsize(w, unitmode)
-                    abh = getsize(h, unitmode)
+                    vbw = getsize(data['viewBox'][2], unitmode)
+                    vbh = getsize(data['viewBox'][3], unitmode)
+                    abw = getsize(attrs.getValue('width'), unitmode)
+                    abh = getsize(attrs.getValue('height'), unitmode)
+                    self.viewbox = (vbw, vbh)
                     sx = abw / vbw
                     sy = abh / vbh
                     _data = data.get('preserveAspectRatio', [])

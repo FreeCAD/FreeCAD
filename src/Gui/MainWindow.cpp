@@ -492,7 +492,7 @@ bool MainWindow::setupTreeView(const std::string& hiddenDockWindows)
         bool enabled = group->GetBool("Enabled", true);
         if (enabled != group->GetBool("Enabled", false)) {
             enabled = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
-                            ->GetGroup("MainWindow")->GetGroup("DockWindows")->GetBool("Std_TreeView", true);
+                            ->GetGroup("MainWindow")->GetGroup("DockWindows")->GetBool("Std_TreeView", false);
         }
         group->SetBool("Enabled", enabled); //ensure entry exists.
         if (enabled) {
@@ -537,7 +537,7 @@ bool MainWindow::setupPropertyView(const std::string& hiddenDockWindows)
         bool enabled = group->GetBool("Enabled", true);
         if (enabled != group->GetBool("Enabled", false)) {
             enabled = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
-                            ->GetGroup("MainWindow")->GetGroup("DockWindows")->GetBool("Std_PropertyView", true);
+                            ->GetGroup("MainWindow")->GetGroup("DockWindows")->GetBool("Std_PropertyView", false);
         }
         group->SetBool("Enabled", enabled); //ensure entry exists.
         if (enabled) {
@@ -578,7 +578,7 @@ bool MainWindow::setupComboView(const std::string& hiddenDockWindows)
     if (hiddenDockWindows.find("Std_ComboView") == std::string::npos) {
         ParameterGrp::handle group = App::GetApplication().GetUserParameter().
                 GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("DockWindows")->GetGroup("ComboView");
-        bool enable = group->GetBool("Enabled", false);
+        bool enable = group->GetBool("Enabled", true);
 
         if (enable) {
             auto pcComboView = new ComboView(nullptr, this);

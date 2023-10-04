@@ -24,9 +24,9 @@
 #ifndef MESHGUI_DLGDECIMATING_H
 #define MESHGUI_DLGDECIMATING_H
 
+#include <QDialog>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
-#include <QDialog>
 #include <memory>
 
 namespace MeshGui
@@ -49,7 +49,7 @@ private:
     void onCheckAbsoluteNumberToggled(bool);
 
 private:
-    int numberOfTriangles;
+    int numberOfTriangles {0};
     std::unique_ptr<Ui_DlgDecimating> ui;
 };
 

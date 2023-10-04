@@ -1,0 +1,18 @@
+# File created by ConvertFCMat.py
+General:
+  UUID: "0c4943e0-248b-4df9-88d9-3b4dd84dfc68"
+  AuthorAndLicense: "(c) 2015 DaviKaur (CC-BY 3.0)"
+  Name: "Glass-S2"
+  Description: "Glass Fibre"
+Models:
+  Father:
+    UUID: '9cdda8b6-b606-4778-8f13-3934d8668e67'
+    Father: "Glass"
+  LinearElastic:
+    UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
+    CompressiveStrength: "1600 MPa"
+    Density: "2460 kg/m^3"
+    UltimateTensileStrength: "4890 MPa"
+  Costs:
+    UUID: '881df808-8726-4c2e-be38-688bb6cce466'
+    ProductURL: "https://en.wikipedia.org/wiki/Glass_fiber"
