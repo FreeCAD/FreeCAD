@@ -42,6 +42,11 @@ void WorkbenchManipulator::removeManipulator(const WorkbenchManipulator::Ptr& pt
     }
 }
 
+std::set<WorkbenchManipulator::Ptr> WorkbenchManipulator::getManipulators()
+{
+    return manipulators;
+}
+
 void WorkbenchManipulator::changeMenuBar(MenuItem* menuBar)
 {
     for (auto& it : manipulators) {
