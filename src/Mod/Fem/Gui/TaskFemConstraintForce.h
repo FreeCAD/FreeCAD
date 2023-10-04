@@ -55,7 +55,7 @@ public:
     explicit TaskFemConstraintForce(ViewProviderFemConstraintForce* ConstraintView,
                                     QWidget* parent = nullptr);
     ~TaskFemConstraintForce() override;
-    double getForce() const;
+    const std::string getForce() const;
     const std::string getReferences() const override;
     const std::string getDirectionName() const;
     const std::string getDirectionObject() const;
@@ -63,7 +63,6 @@ public:
 
 private Q_SLOTS:
     void onReferenceDeleted();
-    void onForceChanged(double);
     void onButtonDirection(const bool pressed = false);
     void onCheckReverse(bool);
     void addToSelection() override;
