@@ -102,6 +102,7 @@ DlgMacroExecuteImp::DlgMacroExecuteImp( QWidget* parent, Qt::WindowFlags fl )
     ui->systemMacroListBox->setHeaderLabels(labels);
     ui->systemMacroListBox->header()->hide();
     fillUpList();
+    ui->LineEditFind->setFocus();
 }
 
 /**
