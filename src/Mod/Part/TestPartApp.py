@@ -888,3 +888,106 @@ class GeometryCurve(unittest.TestCase):
     def testProject(self):
         line = Part.Line()
         line.projectPoint(FreeCAD.Vector())
+
+class EmptyEdge(unittest.TestCase):
+    def testParameterByLength(self):
+        with self.assertRaises(ValueError):
+            edge = Part.Edge()
+            edge.getParameterByLength(0)
+
+    def testValueAt(self):
+        with self.assertRaises(ValueError):
+            edge = Part.Edge()
+            edge.valueAt(0)
+
+    def testParameters(self):
+        with self.assertRaises(ValueError):
+            edge = Part.Edge()
+            face = Part.Face()
+            edge.parameters(face)
+
+    def testParameterAt(self):
+        with self.assertRaises(ValueError):
+            edge = Part.Edge()
+            vertex = Part.Vertex(0, 0, 0)
+            edge.parameterAt(vertex)
+
+    def testTangentAt(self):
+        with self.assertRaises(ValueError):
+            edge = Part.Edge()
+            edge.tangentAt(0)
+
+    def testCurvatureAt(self):
+        with self.assertRaises(ValueError):
+            edge = Part.Edge()
+            edge.curvatureAt(0)
+
+    def testCenterOfCurvatureAt(self):
+        with self.assertRaises(ValueError):
+            edge = Part.Edge()
+            edge.centerOfCurvatureAt(0)
+
+    def testDerivative1At(self):
+        with self.assertRaises(ValueError):
+            edge = Part.Edge()
+            edge.derivative1At(0)
+
+    def testDerivative2At(self):
+        with self.assertRaises(ValueError):
+            edge = Part.Edge()
+            edge.derivative2At(0)
+
+    def testDerivative3At(self):
+        with self.assertRaises(ValueError):
+            edge = Part.Edge()
+            edge.derivative3At(0)
+
+    def testNormalAt(self):
+        with self.assertRaises(ValueError):
+            edge = Part.Edge()
+            edge.normalAt(0)
+
+    def testFirstVertex(self):
+        with self.assertRaises(ValueError):
+            edge = Part.Edge()
+            edge.firstVertex()
+
+    def testLastVertex(self):
+        with self.assertRaises(ValueError):
+            edge = Part.Edge()
+            edge.lastVertex()
+
+    def testGetTolerance(self):
+        with self.assertRaises(ValueError):
+            edge = Part.Edge()
+            edge.Tolerance
+
+    def testSetTolerance(self):
+        with self.assertRaises(ValueError):
+            edge = Part.Edge()
+            edge.Tolerance = 0.01
+
+    def testLength(self):
+        with self.assertRaises(ValueError):
+            edge = Part.Edge()
+            edge.Length
+
+    def testCurve(self):
+        with self.assertRaises(ValueError):
+            edge = Part.Edge()
+            edge.Curve
+
+    def testParameterRange(self):
+        with self.assertRaises(ValueError):
+            edge = Part.Edge()
+            edge.ParameterRange
+
+    def testFirstParameter(self):
+        with self.assertRaises(ValueError):
+            edge = Part.Edge()
+            edge.FirstParameter
+
+    def testLastParameter(self):
+        with self.assertRaises(ValueError):
+            edge = Part.Edge()
+            edge.LastParameter
