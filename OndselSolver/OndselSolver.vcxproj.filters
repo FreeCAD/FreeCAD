@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="MbDCode.cpp">
+    <ClCompile Include="OndselSolver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Array.cpp">
@@ -935,7 +935,7 @@
     <ClInclude Include="EndFrameqct.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MbDCode.h">
+    <ClInclude Include="OndselSolver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="FullVector.h">
@@ -1729,7 +1729,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="MbDCode.rc">
+    <ResourceCompile Include="OndselSolver.rc">
       <Filter>Resource Files</Filter>
     </ResourceCompile>
   </ItemGroup>

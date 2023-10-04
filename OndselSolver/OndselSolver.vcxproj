@@ -22,8 +22,9 @@
     <VCProjectVersion>16.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
     <ProjectGuid>{80f56cbc-b685-4c36-b834-a2dcdf0a98b7}</ProjectGuid>
-    <RootNamespace>MbDCode</RootNamespace>
+    <RootNamespace>OndselSolver</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>OndselSolver</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -337,12 +338,12 @@
     <ClCompile Include="MatrixLDU.cpp" />
     <ClCompile Include="MatrixSolver.cpp" />
     <ClCompile Include="MaximumIterationError.cpp" />
-    <ClCompile Include="MbDCode.cpp" />
     <ClCompile Include="NewtonRaphson.cpp" />
     <ClCompile Include="NewtonRaphsonError.cpp" />
     <ClCompile Include="NoRotationJoint.cpp" />
     <ClCompile Include="NotKinematicError.cpp" />
     <ClCompile Include="Numeric.cpp" />
+    <ClCompile Include="OndselSolver.cpp" />
     <ClCompile Include="OrbitAngleZIecJec.cpp" />
     <ClCompile Include="OrbitAngleZIeqcJec.cpp" />
     <ClCompile Include="OrbitAngleZIeqcJeqc.cpp" />
@@ -624,12 +625,12 @@
     <ClInclude Include="MatrixLDU.h" />
     <ClInclude Include="MatrixSolver.h" />
     <ClInclude Include="MaximumIterationError.h" />
-    <ClInclude Include="MbDCode.h" />
     <ClInclude Include="NewtonRaphson.h" />
     <ClInclude Include="NewtonRaphsonError.h" />
     <ClInclude Include="NoRotationJoint.h" />
     <ClInclude Include="NotKinematicError.h" />
     <ClInclude Include="Numeric.h" />
+    <ClInclude Include="OndselSolver.h" />
     <ClInclude Include="OrbitAngleZIecJec.h" />
     <ClInclude Include="OrbitAngleZIeqcJec.h" />
     <ClInclude Include="OrbitAngleZIeqcJeqc.h" />
@@ -707,7 +708,7 @@
     <ClInclude Include="ZTranslation.h" />
   </ItemGroup>
   <ItemGroup>
-    <ResourceCompile Include="MbDCode.rc" />
+    <ResourceCompile Include="OndselSolver.rc" />
   </ItemGroup>
   <ItemGroup>
     <None Include="00backhoe.asmt" />
