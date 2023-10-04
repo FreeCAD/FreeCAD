@@ -1119,6 +1119,7 @@ SET(Workbench_CPP_SRCS
     WorkbenchFactory.cpp
     WorkbenchManager.cpp
     WorkbenchManipulator.cpp
+    WorkbenchManipulatorPython.cpp
     WorkbenchPyImp.cpp
 )
 SET(Workbench_SRCS
@@ -1133,6 +1134,7 @@ SET(Workbench_SRCS
     WorkbenchFactory.h
     WorkbenchManager.h
     WorkbenchManipulator.h
+    WorkbenchManipulatorPython.h
 )
 SOURCE_GROUP("Workbench" FILES ${Workbench_SRCS})
 

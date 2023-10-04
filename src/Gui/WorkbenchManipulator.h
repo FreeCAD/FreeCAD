@@ -115,6 +115,9 @@ public:
     WorkbenchManipulator& operator = (const WorkbenchManipulator&) = delete;
     WorkbenchManipulator& operator = (WorkbenchManipulator&&) = delete;
 
+protected:
+    static std::set<WorkbenchManipulator::Ptr> getManipulators();
+
 private:
     static std::set<WorkbenchManipulator::Ptr> manipulators; // NOLINT
 };
