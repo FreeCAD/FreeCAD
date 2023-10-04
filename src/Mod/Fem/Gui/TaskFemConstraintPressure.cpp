@@ -52,6 +52,33 @@ TaskFemConstraintPressure::TaskFemConstraintPressure(
     ui->setupUi(proxy);
     QMetaObject::connectSlotsByName(this);
 
+    this->groupLayout()->addWidget(proxy);
+
+    // Get the feature data
+    Fem::ConstraintPressure* pcConstraint =
+        static_cast<Fem::ConstraintPressure*>(ConstraintView->getObject());
+
+    std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
+    std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
+
+    // Fill data into dialog elements
+    ui->if_pressure->setUnit(pcConstraint->Pressure.getUnit());
+    ui->if_pressure->setMinimum(0);
+    ui->if_pressure->setMaximum(FLOAT_MAX);
+    ui->if_pressure->setValue(pcConstraint->Pressure.getQuantityValue());
+    ui->if_pressure->bind(pcConstraint->Pressure);
+
+    bool reversed = pcConstraint->Reversed.getValue();
+    ui->checkBoxReverse->setChecked(reversed);
+
+    ui->lw_references->clear();
+    for (std::size_t i = 0; i < Objects.size(); i++) {
+        ui->lw_references->addItem(makeRefText(Objects[i], SubElements[i]));
+    }
+    if (!Objects.empty()) {
+        ui->lw_references->setCurrentRow(0, QItemSelectionModel::ClearAndSelect);
+    }
+
     // create a context menu for the listview of the references
     createDeleteAction(ui->lw_references);
     connect(deleteAction,
@@ -72,37 +99,9 @@ TaskFemConstraintPressure::TaskFemConstraintPressure(
             this,
             &TaskFemConstraintPressure::onCheckReverse);
 
-    this->groupLayout()->addWidget(proxy);
-
-    /* Note: */
-    // Get the feature data
-    Fem::ConstraintPressure* pcConstraint =
-        static_cast<Fem::ConstraintPressure*>(ConstraintView->getObject());
-
-    std::vector<App::DocumentObject*> Objects = pcConstraint->References.getValues();
-    std::vector<std::string> SubElements = pcConstraint->References.getSubValues();
-
-    // Fill data into dialog elements
-    ui->if_pressure->setMinimum(0);
-    ui->if_pressure->setMaximum(FLOAT_MAX);
-    Base::Quantity p =
-        Base::Quantity(1000 * (pcConstraint->Pressure.getValue()), Base::Unit::Stress);
-    ui->if_pressure->setValue(p);
-    bool reversed = pcConstraint->Reversed.getValue();
-    ui->checkBoxReverse->setChecked(reversed);
-    /* */
-
-    ui->lw_references->clear();
-    for (std::size_t i = 0; i < Objects.size(); i++) {
-        ui->lw_references->addItem(makeRefText(Objects[i], SubElements[i]));
-    }
-    if (!Objects.empty()) {
-        ui->lw_references->setCurrentRow(0, QItemSelectionModel::ClearAndSelect);
-    }
-
     // Selection buttons
-    buttonGroup->addButton(ui->btnAdd, (int)SelectionChangeModes::refAdd);
-    buttonGroup->addButton(ui->btnRemove, (int)SelectionChangeModes::refRemove);
+    buttonGroup->addButton(ui->btnAdd, static_cast<int>(SelectionChangeModes::refAdd));
+    buttonGroup->addButton(ui->btnRemove, static_cast<int>(SelectionChangeModes::refRemove));
 
     updateUI();
 }
@@ -252,15 +251,12 @@ const std::string TaskFemConstraintPressure::getReferences() const
     return TaskFemConstraint::getReferences(items);
 }
 
-/* Note: */
-double TaskFemConstraintPressure::get_Pressure() const
+std::string TaskFemConstraintPressure::getPressure() const
 {
-    Base::Quantity pressure = ui->if_pressure->getQuantity();
-    double pressure_in_MPa = pressure.getValueAs(Base::Quantity::MegaPascal);
-    return pressure_in_MPa;
+    return ui->if_pressure->value().getSafeUserString().toStdString();
 }
 
-bool TaskFemConstraintPressure::get_Reverse() const
+bool TaskFemConstraintPressure::getReverse() const
 {
     return ui->checkBoxReverse->isChecked();
 }
@@ -323,13 +319,13 @@ bool TaskDlgFemConstraintPressure::accept()
 
     try {
         Gui::Command::doCommand(Gui::Command::Doc,
-                                "App.ActiveDocument.%s.Pressure = %f",
+                                "App.ActiveDocument.%s.Pressure = \"%s\"",
                                 name.c_str(),
-                                parameterPressure->get_Pressure());
+                                parameterPressure->getPressure().c_str());
         Gui::Command::doCommand(Gui::Command::Doc,
                                 "App.ActiveDocument.%s.Reversed = %s",
                                 name.c_str(),
-                                parameterPressure->get_Reverse() ? "True" : "False");
+                                parameterPressure->getReverse() ? "True" : "False");
         std::string scale = parameterPressure->getScale();  // OvG: determine modified scale
         Gui::Command::doCommand(Gui::Command::Doc,
                                 "App.ActiveDocument.%s.Scale = %s",
