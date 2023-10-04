@@ -1,6 +1,6 @@
 ---
 Checks:          'clang-diagnostic-*,clang-analyzer-*,boost-*,bugprone-*,
-performance-*,readability-*,portability-*,modernize-*,cppcoreguidelines-*,
+performance-*,readability-*,portability-*,modernize-*,cppcoreguidelines-*,google-explicit-constructor,
 concurrency-*,-modernize-use-trailing-return-type, -modernize-use-nodiscard,
 -readability-redundant-access-specifiers,-readability-qualified-auto'
 WarningsAsErrors: ''
