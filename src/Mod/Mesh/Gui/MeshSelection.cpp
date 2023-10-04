@@ -46,10 +46,10 @@
 #include <Gui/NavigationStyle.h>
 #include <Gui/Utilities.h>
 
-#include <Mod/Mesh/App/Core/Iterator.h>
-#include <Mod/Mesh/App/Core/MeshKernel.h>
-#include <Mod/Mesh/App/Core/TopoAlgorithm.h>
 #include <Mod/Mesh/App/MeshFeature.h>
+#include <Mod/Mesh/App/Core/MeshKernel.h>
+#include <Mod/Mesh/App/Core/Iterator.h>
+#include <Mod/Mesh/App/Core/TopoAlgorithm.h>
 
 #include "MeshSelection.h"
 #include "ViewProvider.h"
