@@ -991,3 +991,66 @@ class EmptyEdge(unittest.TestCase):
         with self.assertRaises(ValueError):
             edge = Part.Edge()
             edge.LastParameter
+
+class EmptyFace(unittest.TestCase):
+    def testMakeOffset(self):
+        with self.assertRaises(ValueError):
+            face = Part.Face()
+            face.makeOffset(1)
+
+    def testValueAt(self):
+        with self.assertRaises(ValueError):
+            face = Part.Face()
+            face.valueAt(0, 0)
+
+    def testNormalAt(self):
+        with self.assertRaises(ValueError):
+            face = Part.Face()
+            face.normalAt(0, 0)
+
+    def testTangentAt(self):
+        with self.assertRaises(ValueError):
+            face = Part.Face()
+            face.tangentAt(0, 0)
+
+    def testCurvatureAt(self):
+        with self.assertRaises(ValueError):
+            face = Part.Face()
+            face.curvatureAt(0, 0)
+
+    def testDerivative1At(self):
+        with self.assertRaises(ValueError):
+            face = Part.Face()
+            face.derivative1At(0, 0)
+
+    def testDerivative2At(self):
+        with self.assertRaises(ValueError):
+            face = Part.Face()
+            face.derivative2At(0, 0)
+
+    def testCutHoles(self):
+        with self.assertRaises(ValueError):
+            face = Part.Face()
+            circle = Part.Circle()
+            wire = Part.Wire(Part.Edge(circle))
+            face.cutHoles([wire])
+
+    def testUVNodes(self):
+        with self.assertRaises(ValueError):
+            face = Part.Face()
+            face.getUVNodes()
+
+    def testGetTolerance(self):
+        with self.assertRaises(ValueError):
+            face = Part.Face()
+            face.Tolerance
+
+    def testSetTolerance(self):
+        with self.assertRaises(ValueError):
+            face = Part.Face()
+            face.Tolerance = 0.01
+
+    def testParameterRange(self):
+        with self.assertRaises(ValueError):
+            face = Part.Face()
+            face.ParameterRange
