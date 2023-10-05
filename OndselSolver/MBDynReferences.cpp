@@ -16,7 +16,7 @@ void MbD::MBDynReferences::parseMBDyn(std::vector<std::string>& lines)
 	while (true) {
 		auto it = findLineWith(lines, tokens);
 		if (it != lines.end()) {
-			auto reference = CREATE<MBDynReference>::With();
+			auto reference = std::make_shared<MBDynReference>();
 			reference->owner = this;
 			reference->parseMBDyn(*it);
 			references->insert(std::make_pair(reference->name, reference));
