@@ -24,6 +24,8 @@
 
 #include "PreCompiled.h"
 #include "WorkbenchManipulatorPython.h"
+#include "MenuManager.h"
+#include "ToolBarManager.h"
 #include <Base/Interpreter.h>
 
 using namespace Gui;
@@ -57,15 +59,30 @@ WorkbenchManipulatorPython::~WorkbenchManipulatorPython()
     object = Py::None();
 }
 
-void WorkbenchManipulatorPython::modifyMenuBar([[maybe_unused]] MenuItem* menuBar)
+/*!
+ * \brief WorkbenchManipulatorPython::modifyMenuBar
+ * \param menuBar
+ * The Python manipulator can be implemented as
+ * \code
+ * class Manipulator:
+ *   def modifyMenuBar(self):
+ *     return [{"remove" : "Std_Quit"},
+ *             {"append" : "Std_About", "menuItem" : "Std_DlgMacroRecord"},
+ *             {"insert" : "Std_About", "menuItem" : "Std_DlgParameter"}
+ *             {"insert" : "Std_Windows", "menuItem" : "Std_DlgParameter", "after" : ""}]
+ *
+ * manip = Manipulator()
+ * Gui.addWorkbenchManipulator(manip)
+ * \endcode
+ * This manipulator removes the Std_Quit command, appends the Std_About command
+ * to the Macro menu, inserts it to the Tools menu before the Std_DlgParameter
+ * and adds the Std_Windows after the Std_DlgParameter command.
+ */
+void WorkbenchManipulatorPython::modifyMenuBar(MenuItem* menuBar)
 {
     Base::PyGILStateLocker lock;
     try {
-        if (object.hasAttr(std::string("modifyMenuBar"))) {
-            Py::Callable method(object.getAttr(std::string("modifyMenuBar")));
-            Py::Tuple args(1);
-            method.apply(args);
-        }
+        tryModifyMenuBar(menuBar);
     }
     catch (Py::Exception&) {
         Base::PyException exc; // extract the Python error text
@@ -73,17 +90,99 @@ void WorkbenchManipulatorPython::modifyMenuBar([[maybe_unused]] MenuItem* menuBa
     }
 }
 
-void WorkbenchManipulatorPython::modifyContextMenu([[maybe_unused]] const char* recipient,
-                                                   [[maybe_unused]] MenuItem* menuBar)
+void WorkbenchManipulatorPython::tryModifyMenuBar(MenuItem* menuBar)
+{
+    if (object.hasAttr(std::string("modifyMenuBar"))) {
+        Py::Callable method(object.getAttr(std::string("modifyMenuBar")));
+        Py::Tuple args;
+        Py::Object result = method.apply(args);
+        if (result.isDict()) {
+            tryModifyMenuBar(Py::Dict(result), menuBar);
+        }
+        else if (result.isSequence()) {
+            Py::Sequence list(result);
+            for (const auto& it : list) {
+                if (it.isDict()) {
+                    tryModifyMenuBar(Py::Dict(it), menuBar);
+                }
+            }
+        }
+    }
+}
+
+// NOLINTNEXTLINE
+void WorkbenchManipulatorPython::tryModifyMenuBar(const Py::Dict& dict, MenuItem* menuBar)
+{
+    std::string insert("insert");
+    std::string append("append");
+    std::string remove("remove");
+
+    // insert a new command
+    if (dict.hasKey(insert)) {
+        std::string command = static_cast<std::string>(Py::String(dict.getItem(insert)));
+        std::string itemName = static_cast<std::string>(Py::String(dict.getItem("menuItem")));
+        bool after = dict.hasKey(std::string("after"));
+
+        if (auto par = menuBar->findParentOf(itemName)) {
+            if (MenuItem* item = par->findItem(itemName)) {
+                if (after) {
+                    item = par->afterItem(item);
+                }
+
+                if (item) {
+                    auto add = new MenuItem();  // NOLINT
+                    add->setCommand(command);
+                    par->insertItem(item, add);
+                }
+            }
+        }
+    }
+    // append a command
+    else if (dict.hasKey(append)) {
+        std::string command = static_cast<std::string>(Py::String(dict.getItem(append)));
+        std::string itemName = static_cast<std::string>(Py::String(dict.getItem("menuItem")));
+
+        if (auto par = menuBar->findParentOf(itemName)) {
+            auto add = new MenuItem();  // NOLINT
+            add->setCommand(command);
+            par->appendItem(add);
+        }
+    }
+    // remove a command
+    else if (dict.hasKey(remove)) {
+        std::string command = static_cast<std::string>(Py::String(dict.getItem(remove)));
+        if (auto par = menuBar->findParentOf(command)) {
+            if (MenuItem* item = par->findItem(command)) {
+                par->removeItem(item);
+                delete item;  // NOLINT
+            }
+        }
+
+    }
+}
+
+/*!
+ * \brief WorkbenchManipulatorPython::modifyContextMenu
+ * \param menuBar
+ * The Python manipulator can be implemented as
+ * \code
+ * class Manipulator:
+ *   def modifyContextMenu(self, recipient):
+ *     if recipient == "View":
+ *       return [{"remove" : "Standard views"},
+ *               {"insert" : "Std_Windows", "menuItem" : "View_Measure_Toggle_All"}]
+ *
+ * manip = Manipulator()
+ * Gui.addWorkbenchManipulator(manip)
+ * \endcode
+ * This manipulator removes the "Standard views sub-menu and
+ * adds the Std_Windows before the View_Measure_Toggle_All command.
+ */
+void WorkbenchManipulatorPython::modifyContextMenu(const char* recipient, MenuItem* menuBar)
 {
     Base::PyGILStateLocker lock;
     try {
-        if (object.hasAttr(std::string("modifyContextMenu"))) {
-            Py::Callable method(object.getAttr(std::string("modifyContextMenu")));
-            Py::Tuple args(2);
-            args.setItem(0, Py::String(recipient));
-            method.apply(args);
-        }
+        tryModifyContextMenu(recipient, menuBar);
     }
     catch (Py::Exception&) {
         Base::PyException exc; // extract the Python error text
@@ -91,15 +190,37 @@ void WorkbenchManipulatorPython::modifyContextMenu([[maybe_unused]] const char* 
     }
 }
 
-void WorkbenchManipulatorPython::modifyToolBars([[maybe_unused]] ToolBarItem* toolBar)
+void WorkbenchManipulatorPython::tryModifyContextMenu(const char* recipient, MenuItem* menuBar)
+{
+    if (object.hasAttr(std::string("modifyContextMenu"))) {
+        Py::Callable method(object.getAttr(std::string("modifyContextMenu")));
+        Py::Tuple args(1);
+        args.setItem(0, Py::String(recipient));
+        Py::Object result = method.apply(args);
+        if (result.isDict()) {
+            tryModifyContextMenu(Py::Dict(result), menuBar);
+        }
+        else if (result.isSequence()) {
+            Py::Sequence list(result);
+            for (const auto& it : list) {
+                if (it.isDict()) {
+                    tryModifyContextMenu(Py::Dict(it), menuBar);
+                }
+            }
+        }
+    }
+}
+
+void WorkbenchManipulatorPython::tryModifyContextMenu(const Py::Dict& dict, MenuItem* menuBar)
+{
+    tryModifyMenuBar(dict, menuBar);
+}
+
+void WorkbenchManipulatorPython::modifyToolBars(ToolBarItem* toolBar)
 {
     Base::PyGILStateLocker lock;
     try {
-        if (object.hasAttr(std::string("modifyToolBars"))) {
-            Py::Callable method(object.getAttr(std::string("modifyToolBars")));
-            Py::Tuple args(1);
-            method.apply(args);
-        }
+        tryModifyToolBar(toolBar);
     }
     catch (Py::Exception&) {
         Base::PyException exc; // extract the Python error text
@@ -107,18 +228,130 @@ void WorkbenchManipulatorPython::modifyToolBars([[maybe_unused]] ToolBarItem* to
     }
 }
 
-void WorkbenchManipulatorPython::modifyDockWindows([[maybe_unused]] DockWindowItems* dockWindow)
+/*!
+ * \brief WorkbenchManipulatorPython::tryModifyToolBar
+ * \param toolBar
+ * The Python manipulator can be implemented as
+ * \code
+ * class Manipulator:
+ *   def modifyToolBars(self):
+       return [{"remove" : "Macro"},
+               {"append" : "Std_Quit", "toolBar" : "File"},
+ *             {"insert" : "Std_Cut", "toolItem" : "Std_New"}]
+ *
+ * manip = Manipulator()
+ * Gui.addWorkbenchManipulator(manip)
+ * \endcode
+ * This manipulator removes the Macro toolbar, adds the
+ * Std_Quit to the File toolbar and adds Std_Cut the
+ * command to the toolbar where Std_New is part of.
+ */
+void WorkbenchManipulatorPython::tryModifyToolBar(ToolBarItem* toolBar)
+{
+    if (object.hasAttr(std::string("modifyToolBars"))) {
+        Py::Callable method(object.getAttr(std::string("modifyToolBars")));
+        Py::Tuple args;
+        Py::Object result = method.apply(args);
+        if (result.isDict()) {
+            tryModifyToolBar(Py::Dict(result), toolBar);
+        }
+        else if (result.isSequence()) {
+            Py::Sequence list(result);
+            for (const auto& it : list) {
+                if (it.isDict()) {
+                    tryModifyToolBar(Py::Dict(it), toolBar);
+                }
+            }
+        }
+    }
+}
+
+// NOLINTNEXTLINE
+void WorkbenchManipulatorPython::tryModifyToolBar(const Py::Dict& dict, ToolBarItem* toolBar)
+{
+    std::string insert("insert");
+    std::string append("append");
+    std::string remove("remove");
+
+    // insert a new command
+    if (dict.hasKey(insert)) {
+
+        std::string command = static_cast<std::string>(Py::String(dict.getItem(insert)));
+        std::string itemName = static_cast<std::string>(Py::String(dict.getItem("toolItem")));
+
+        for (auto it : toolBar->getItems()) {
+            if (ToolBarItem* item = it->findItem(itemName)) {
+                auto add = new ToolBarItem();  // NOLINT
+                add->setCommand(command);
+                it->insertItem(item, add);
+                break;
+            }
+        }
+    }
+    // append a command
+    else if (dict.hasKey(append)) {
+        std::string command = static_cast<std::string>(Py::String(dict.getItem(append)));
+        std::string itemName = static_cast<std::string>(Py::String(dict.getItem("toolBar")));
+
+        if (ToolBarItem* item = toolBar->findItem(itemName)) {
+            auto add = new ToolBarItem();  // NOLINT
+            add->setCommand(command);
+            item->appendItem(add);
+        }
+    }
+    // remove a command or toolbar
+    else if (dict.hasKey(remove)) {
+        std::string command = static_cast<std::string>(Py::String(dict.getItem(remove)));
+
+        if (ToolBarItem* item = toolBar->findItem(command)) {
+            toolBar->removeItem(item);
+            delete item;  // NOLINT
+        }
+        else {
+            for (auto it : toolBar->getItems()) {
+                if (ToolBarItem* item = it->findItem(command)) {
+                    it->removeItem(item);
+                    delete item;  // NOLINT
+                    break;
+                }
+            }
+        }
+    }
+}
+
+void WorkbenchManipulatorPython::modifyDockWindows(DockWindowItems* dockWindow)
 {
     Base::PyGILStateLocker lock;
     try {
-        if (object.hasAttr(std::string("modifyDockWindows"))) {
-            Py::Callable method(object.getAttr(std::string("modifyDockWindows")));
-            Py::Tuple args(1);
-            method.apply(args);
-        }
+        tryModifyDockWindows(dockWindow);
     }
     catch (Py::Exception&) {
         Base::PyException exc; // extract the Python error text
         exc.ReportException();
     }
+}
+
+void WorkbenchManipulatorPython::tryModifyDockWindows(DockWindowItems* dockWindow)
+{
+    if (object.hasAttr(std::string("modifyDockWindows"))) {
+        Py::Callable method(object.getAttr(std::string("modifyDockWindows")));
+        Py::Tuple args;
+        Py::Object result = method.apply(args);
+        if (result.isDict()) {
+            tryModifyDockWindows(Py::Dict(result), dockWindow);
+        }
+        else if (result.isSequence()) {
+            Py::Sequence list(result);
+            for (const auto& it : list) {
+                if (it.isDict()) {
+                    tryModifyDockWindows(Py::Dict(it), dockWindow);
+                }
+            }
+        }
+    }
+}
+
+void WorkbenchManipulatorPython::tryModifyDockWindows([[maybe_unused]]const Py::Dict& dict,
+                                                      [[maybe_unused]]DockWindowItems* dockWindow)
+{
 }
