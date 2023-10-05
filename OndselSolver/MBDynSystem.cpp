@@ -14,6 +14,7 @@
 #include "MBDynVariables.h"
 #include "MBDynReferences.h"
 #include "MBDynNodes.h"
+#include "MBDynElements.h"
 
 using namespace MbD;
 
@@ -28,7 +29,7 @@ void MbD::MBDynSystem::runFile(const char* filename)
 	eraseComments(lines);
 	auto statements = collectStatements(lines);
 
-	auto system = CREATE<MBDynSystem>::With();
+	auto system = std::make_shared<MBDynSystem>();
 	system->setFilename(filename);
 	system->parseMBDyn(statements);
 	system->runKINEMATIC();
@@ -52,6 +53,11 @@ std::shared_ptr<MBDynVariables> MbD::MBDynSystem::mbdynVariables()
 	return variables;
 }
 
+std::shared_ptr<MBDynReferences> MbD::MBDynSystem::mbdynReferences()
+{
+	return references;
+}
+
 void MbD::MBDynSystem::runKINEMATIC()
 {
 	assert(false);
@@ -69,7 +75,7 @@ void MbD::MBDynSystem::readDataBlock(std::vector<std::string>& lines)
 	std::vector<std::string> tokens1{"end:", "data;"};
 	auto endit = findLineWith(lines, tokens1);
 	std::vector<std::string> blocklines = { beginit, endit + 1 };
-	dataBlk = CREATE<MBDynData>::With();
+	dataBlk = std::make_shared<MBDynData>();
 	dataBlk->owner = this;
 	dataBlk->parseMBDyn(blocklines);
 	lines.erase(beginit, endit + 1);
@@ -82,7 +88,7 @@ void MbD::MBDynSystem::readInitialValueBlock(std::vector<std::string>& lines)
 	std::vector<std::string> tokens1{"end:", "initial", "value"};
 	auto endit = findLineWith(lines, tokens1);
 	std::vector<std::string> blocklines = { beginit, endit + 1 };
-	initialValueBlk = CREATE<MBDynInitialValue>::With();
+	initialValueBlk = std::make_shared<MBDynInitialValue>();
 	initialValueBlk->owner = this;
 	initialValueBlk->parseMBDyn(blocklines);
 	lines.erase(beginit, endit + 1);
@@ -95,7 +101,7 @@ void MbD::MBDynSystem::readControlDataBlock(std::vector<std::string>& lines)
 	std::vector<std::string> tokens1{"end:", "control", "data"};
 	auto endit = findLineWith(lines, tokens1);
 	std::vector<std::string> blocklines = { beginit, endit + 1 };
-	controlDataBlk = CREATE<MBDynControlData>::With();
+	controlDataBlk = std::make_shared<MBDynControlData>();
 	controlDataBlk->owner = this;
 	controlDataBlk->parseMBDyn(blocklines);
 	lines.erase(beginit, endit + 1);
@@ -103,21 +109,21 @@ void MbD::MBDynSystem::readControlDataBlock(std::vector<std::string>& lines)
 
 void MbD::MBDynSystem::readLabels(std::vector<std::string>& lines)
 {
-	labels = CREATE<MBDynLabels>::With();
+	labels = std::make_shared<MBDynLabels>();
 	labels->owner = this;
 	labels->parseMBDyn(lines);
 }
 
 void MbD::MBDynSystem::readVariables(std::vector<std::string>& lines)
 {
-	variables = CREATE<MBDynVariables>::With();
+	variables = std::make_shared<MBDynVariables>();
 	variables->owner = this;
 	variables->parseMBDyn(lines);
 }
 
 void MbD::MBDynSystem::readReferences(std::vector<std::string>& lines)
 {
-	references = CREATE<MBDynReferences>::With();
+	references = std::make_shared<MBDynReferences>();
 	references->owner = this;
 	references->parseMBDyn(lines);
 }
@@ -129,7 +135,7 @@ void MbD::MBDynSystem::readNodesBlock(std::vector<std::string>& lines)
 	std::vector<std::string> tokens1{ "end:", "nodes;" };
 	auto endit = findLineWith(lines, tokens1);
 	std::vector<std::string> blocklines = { beginit, endit + 1 };
-	nodesBlk = CREATE<MBDynNodes>::With();
+	nodesBlk = std::make_shared<MBDynNodes>();
 	nodesBlk->owner = this;
 	nodesBlk->parseMBDyn(blocklines);
 	lines.erase(beginit, endit + 1);
@@ -137,7 +143,15 @@ void MbD::MBDynSystem::readNodesBlock(std::vector<std::string>& lines)
 
 void MbD::MBDynSystem::readElementsBlock(std::vector<std::string>& lines)
 {
-	assert(false);
+	std::vector<std::string> tokens{ "begin:", "elements;" };
+	auto beginit = findLineWith(lines, tokens);
+	std::vector<std::string> tokens1{ "end:", "elements;" };
+	auto endit = findLineWith(lines, tokens1);
+	std::vector<std::string> blocklines = { beginit, endit + 1 };
+	elementsBlk = std::make_shared<MBDynElements>();
+	elementsBlk->owner = this;
+	elementsBlk->parseMBDyn(blocklines);
+	lines.erase(beginit, endit + 1);
 }
 
 void MbD::MBDynSystem::eraseComments(std::vector<std::string>& lines)

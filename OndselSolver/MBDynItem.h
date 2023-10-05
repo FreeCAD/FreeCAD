@@ -12,6 +12,7 @@
 namespace MbD {
 	class MBDynSystem;
 	class MBDynVariables;
+	class MBDynReferences;
 
 	class MBDynItem
 	{
@@ -25,22 +26,11 @@ namespace MbD {
 		std::vector<std::string>::iterator findLineWith(std::vector<std::string>& lines, std::vector<std::string>& tokens);
 		bool lineHasTokens(const std::string& line, std::vector<std::string>& tokens);
 		virtual std::shared_ptr<MBDynVariables> mbdynVariables();
-		//FRowDsptr readRowOfDoubles(std::string& line);
-		//FColDsptr readColumnOfDoubles(std::string& line);
-		//double readDouble(std::string& line);
-		//int readInt(std::string& line);
-		//bool readBool(std::string& line);
-		//std::string readString(std::string& line);
-		//void readName(std::vector<std::string>& lines);
-		//virtual std::string fullName(std::string partialName);
-		//void readDoublesInto(std::string& str, std::string label, FRowDsptr& row);
-		//virtual void deleteMbD();
-		//virtual void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits);
-		//virtual void updateFromMbD();
-		//virtual void compareResults(AnalysisType type);
-		//virtual void outputResults(AnalysisType type);
-		//std::shared_ptr<Units> mbdUnits();
-		//std::shared_ptr<Constant> sptrConstant(double value);
+		virtual std::shared_ptr<MBDynReferences> mbdynReferences();
+		FColDsptr readPosition(std::shared_ptr<std::vector<std::string>>& args);
+		FColDsptr readBasicPosition(std::shared_ptr<std::vector<std::string>>& args);
+		FMatDsptr readOrientation(std::shared_ptr<std::vector<std::string>>& args);
+		FMatDsptr readBasicOrientation(std::shared_ptr<std::vector<std::string>>& args);
 
 		std::string name;
 		MBDynItem* owner;
