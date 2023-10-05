@@ -23,8 +23,9 @@ namespace MbD {
         // Overloads to simplify syntax.
         void setMomentOfInertias(double a, double b, double c);
 
-		double mass, density;
-        DiagMatDsptr momentOfInertias;
+        double mass = 0.0;
+        double density = 0.0;
+        DiagMatDsptr momentOfInertias = std::make_shared<DiagonalMatrix<double>>(ListD{ 0.,0.,0. });
 
     };
 }
