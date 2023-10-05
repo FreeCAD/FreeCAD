@@ -25,7 +25,7 @@ namespace MbD {
 
         void setg(double a, double b, double c);
 
-        FColDsptr g;
+        FColDsptr g = std::make_shared<FullColumn<double>>(ListD{ 0.,0.,0. });
     };
 }
 

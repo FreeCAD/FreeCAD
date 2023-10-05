@@ -12,7 +12,7 @@
 //#include "ASMTRefPoint.h"
 //#include "ASMTRefCurve.h"
 //#include "ASMTRefSurface.h"
-//#include "ASMTPrincipalMassMarker.h"
+#include "ASMTPrincipalMassMarker.h"
 //#include "Units.h"
 //#include "ASMTPart.h"
 //#include "ASMTJoint.h"
@@ -80,7 +80,7 @@ namespace MbD {
         FRowDsptr inxs, inys, inzs, inbryxs, inbryys, inbryzs;
         FRowDsptr invxs, invys, invzs, inomexs, inomeys, inomezs;
         FRowDsptr inaxs, inays, inazs, inalpxs, inalpys, inalpzs;
-        std::shared_ptr<ASMTPrincipalMassMarker> principalMassMarker;
+        std::shared_ptr<ASMTPrincipalMassMarker> principalMassMarker = std::make_shared<ASMTPrincipalMassMarker>();
 
     };
 }

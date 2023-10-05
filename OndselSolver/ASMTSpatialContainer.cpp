@@ -13,7 +13,7 @@
 #include "ASMTRefPoint.h"
 #include "ASMTRefCurve.h"
 #include "ASMTRefSurface.h"
-#include "ASMTPrincipalMassMarker.h"
+//#include "ASMTPrincipalMassMarker.h"
 
 
 using namespace MbD;

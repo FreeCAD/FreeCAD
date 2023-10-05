@@ -105,7 +105,7 @@ namespace MbD {
 		std::shared_ptr<std::vector<std::shared_ptr<ASMTJoint>>> joints = std::make_shared<std::vector<std::shared_ptr<ASMTJoint>>>();
 		std::shared_ptr<std::vector<std::shared_ptr<ASMTMotion>>> motions = std::make_shared<std::vector<std::shared_ptr<ASMTMotion>>>();
 		std::shared_ptr<std::vector<std::shared_ptr<ASMTForceTorque>>> forcesTorques = std::make_shared<std::vector<std::shared_ptr<ASMTForceTorque>>>();
-		std::shared_ptr<ASMTConstantGravity> constantGravity;
+		std::shared_ptr<ASMTConstantGravity> constantGravity = std::make_shared<ASMTConstantGravity>();
 		std::shared_ptr<ASMTSimulationParameters> simulationParameters;
 		std::shared_ptr<ASMTAnimationParameters> animationParameters;
 		std::shared_ptr<std::vector<double>> times;
