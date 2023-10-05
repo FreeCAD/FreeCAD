@@ -212,7 +212,7 @@ def export(exportList,filename,colors=None):
                 else:
                     offsetv += len(vlist)
                     offsetvn += len(vnlist)
-                    outfile.write("o " + obj.Name + "\n")
+                    outfile.write("o " + obj.Label + "\n")
 
                     # write material
                     m = False
@@ -379,6 +379,7 @@ def makeMesh(doc,activeobject,verts,facets,material,colortable):
                 mfacets.append([verts[i-1] for i in facet])
     if mfacets:
         mobj = doc.addObject("Mesh::Feature",activeobject)
+        mobj.Label = activeobject
         mobj.Mesh = Mesh.Mesh(mfacets)
         if material and FreeCAD.GuiUp:
             if material in colortable:
