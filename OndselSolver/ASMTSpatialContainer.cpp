@@ -307,14 +307,18 @@ void MbD::ASMTSpatialContainer::updateFromMbD()
 	auto aAOp = mbdPart->aAOp();
 	auto vOcmO = mbdPart->qXdot()->times(mbdUnts->velocity);
 	auto omeOPO = mbdPart->omeOpO()->times(mbdUnts->omega);
+	omega3D = omeOPO;
 	auto aOcmO = mbdPart->qXddot()->times(mbdUnts->acceleration);
 	auto alpOPO = mbdPart->alpOpO()->times(mbdUnts->alpha);
 	auto& rPcmP = principalMassMarker->position3D;
 	auto& aAPp = principalMassMarker->rotationMatrix;
 	auto aAOP = aAOp->timesTransposeFullMatrix(aAPp);
+	rotationMatrix = aAOP;
 	auto rPcmO = aAOP->timesFullColumn(rPcmP);
 	auto rOPO = rOcmO->minusFullColumn(rPcmO);
+	position3D = rOPO;
 	auto vOPO = vOcmO->minusFullColumn(omeOPO->cross(rPcmO));
+	velocity3D = vOPO;
 	auto aOPO = aOcmO->minusFullColumn(alpOPO->cross(rPcmO))->minusFullColumn(omeOPO->cross(omeOPO->cross(rPcmO)));
 	xs->push_back(rOPO->at(0));
 	ys->push_back(rOPO->at(1));

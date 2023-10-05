@@ -7,6 +7,9 @@
  ***************************************************************************/
  
 #include "ASMTSpatialItem.h"
+#include "Units.h"
+#include "Part.h"
+#include "ASMTSpatialContainer.h"
 
 using namespace MbD;
 
@@ -93,6 +96,21 @@ void MbD::ASMTSpatialItem::readOmega3D(std::vector<std::string>& lines)
 	lines.erase(lines.begin());
 }
 
+void MbD::ASMTSpatialItem::getPosition3D(double& a, double& b, double& c)
+{
+	a = position3D->at(0);
+	b = position3D->at(1);
+	c = position3D->at(2);
+}
+
+void MbD::ASMTSpatialItem::getQuarternions(double& q0, double& q1, double& q2, double& q3)
+{
+	auto eulerParameters = rotationMatrix->asEulerParameters();
+	q0 = eulerParameters->at(3);
+	q1 = eulerParameters->at(0);
+	q2 = eulerParameters->at(1);
+	q3 = eulerParameters->at(2);
+}
 
 // Overloads to simplify syntax.
 void MbD::ASMTSpatialItem::setPosition3D(double a, double b, double c)
