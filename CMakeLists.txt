@@ -186,12 +186,12 @@ set(ONDSEL_EXPORT
         OndselSolver/LinearMultiStepMethod.cpp
         OndselSolver/LineInPlaneJoint.cpp
         OndselSolver/MarkerFrame.cpp
-        OndselSolver/Math.cpp
         OndselSolver/MatrixDecomposition.cpp
         OndselSolver/MatrixGaussElimination.cpp
         OndselSolver/MatrixLDU.cpp
         OndselSolver/MatrixSolver.cpp
         OndselSolver/MaximumIterationError.cpp
+        OndselSolver/MbdMath.cpp
         OndselSolver/NewtonRaphson.cpp
         OndselSolver/NewtonRaphsonError.cpp
         OndselSolver/NoRotationJoint.cpp
