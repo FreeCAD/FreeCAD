@@ -59,6 +59,11 @@ public:
      */
     static void removeManipulator(const WorkbenchManipulator::Ptr&);
     /*!
+     * \brief clear
+     * Removes all instances of WorkbenchManipulator
+     */
+    static void removeAll();
+    /*!
      * \brief changeMenuBar
      * Calls \ref modifyMenuBar for every installed WorkbenchManipulator
      */
