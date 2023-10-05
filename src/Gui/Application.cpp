@@ -124,6 +124,7 @@
 #include "WaitCursor.h"
 #include "Workbench.h"
 #include "WorkbenchManager.h"
+#include "WorkbenchManipulator.h"
 #include "WidgetFactory.h"
 
 
@@ -535,6 +536,7 @@ Application::~Application()
 {
     Base::Console().Log("Destruct Gui::Application\n");
     WorkbenchManager::destruct();
+    WorkbenchManipulator::removeAll();
     SelectionSingleton::destruct();
     Translator::destruct();
     WidgetFactorySupplier::destruct();

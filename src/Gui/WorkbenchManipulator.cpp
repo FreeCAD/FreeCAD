@@ -42,6 +42,11 @@ void WorkbenchManipulator::removeManipulator(const WorkbenchManipulator::Ptr& pt
     }
 }
 
+void WorkbenchManipulator::removeAll()
+{
+    manipulators.clear();
+}
+
 std::set<WorkbenchManipulator::Ptr> WorkbenchManipulator::getManipulators()
 {
     return manipulators;
