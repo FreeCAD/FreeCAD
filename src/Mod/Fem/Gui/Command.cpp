@@ -459,8 +459,8 @@ void CmdFemConstraintForce::activated(int)
               "App.activeDocument().addObject(\"Fem::ConstraintForce\",\"%s\")",
               FeatName.c_str());
     doCommand(Doc,
-              "App.activeDocument().%s.Force = 1.0",
-              FeatName.c_str());  // OvG: set default not equal to 0
+              "App.activeDocument().%s.Force = \"1 N\"",
+              FeatName.c_str());  // OvG: set default to 1 N
     doCommand(Doc,
               "App.activeDocument().%s.Reversed = False",
               FeatName.c_str());  // OvG: set default to False

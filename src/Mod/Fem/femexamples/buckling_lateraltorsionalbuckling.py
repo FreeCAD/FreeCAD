@@ -161,14 +161,14 @@ def setup(doc=None, solvertype="ccxtools"):
     # constraints force
     con_force_in_x = ObjectsFem.makeConstraintForce(doc, "Force_in_X")
     con_force_in_x.References = [(geom_obj, ("Edge3", "Edge7", "Edge8", "Edge12"))]
-    con_force_in_x.Force = 155350
+    con_force_in_x.Force = "155350 N"
     con_force_in_x.Reversed = False
     con_force_in_x.Direction = (geom_obj, ["Edge4"])
     analysis.addObject(con_force_in_x)
 
     con_force_rev_x = ObjectsFem.makeConstraintForce(doc, "Force_rev_X")
     con_force_rev_x.References = [(geom_obj, ("Edge1", "Edge5", "Edge10", "Edge14"))]
-    con_force_rev_x.Force = 155350
+    con_force_rev_x.Force = "155350 N"
     con_force_rev_x.Reversed = True
     con_force_rev_x.Direction = (geom_obj, ["Edge4"])
     analysis.addObject(con_force_rev_x)
