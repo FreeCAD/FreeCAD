@@ -9,10 +9,10 @@
 #pragma once
 #include <vector>
 
-#include "Math.h"
+#include "MbdMath.h"
 
 namespace MbD {
-    class Numeric : public Math
+    class Numeric : public MbdMath
     {
         //
     public:

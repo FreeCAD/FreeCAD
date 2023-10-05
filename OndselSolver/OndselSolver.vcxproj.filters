@@ -507,7 +507,7 @@
     <ClCompile Include="OrbitAngleZIeqcJeqc.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Math.cpp">
+    <ClCompile Include="MbdMath.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Numeric.cpp">
@@ -1367,7 +1367,7 @@
     <ClInclude Include="OrbitAngleZIeqcJeqc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Math.h">
+    <ClInclude Include="MbdMath.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Numeric.h">

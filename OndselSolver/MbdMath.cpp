@@ -6,11 +6,4 @@
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
  
-#pragma once
-
-namespace MbD {
-	class Math
-	{
-	};
-}
-
+#include "MbdMath.h"

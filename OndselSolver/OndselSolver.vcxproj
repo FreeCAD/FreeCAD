@@ -332,12 +332,12 @@
     <ClCompile Include="LinearMultiStepMethod.cpp" />
     <ClCompile Include="LineInPlaneJoint.cpp" />
     <ClCompile Include="MarkerFrame.cpp" />
-    <ClCompile Include="Math.cpp" />
     <ClCompile Include="MatrixDecomposition.cpp" />
     <ClCompile Include="MatrixGaussElimination.cpp" />
     <ClCompile Include="MatrixLDU.cpp" />
     <ClCompile Include="MatrixSolver.cpp" />
     <ClCompile Include="MaximumIterationError.cpp" />
+    <ClCompile Include="MbdMath.cpp" />
     <ClCompile Include="NewtonRaphson.cpp" />
     <ClCompile Include="NewtonRaphsonError.cpp" />
     <ClCompile Include="NoRotationJoint.cpp" />
@@ -619,12 +619,12 @@
     <ClInclude Include="LinearMultiStepMethod.h" />
     <ClInclude Include="LineInPlaneJoint.h" />
     <ClInclude Include="MarkerFrame.h" />
-    <ClInclude Include="Math.h" />
     <ClInclude Include="MatrixDecomposition.h" />
     <ClInclude Include="MatrixGaussElimination.h" />
     <ClInclude Include="MatrixLDU.h" />
     <ClInclude Include="MatrixSolver.h" />
     <ClInclude Include="MaximumIterationError.h" />
+    <ClInclude Include="MbdMath.h" />
     <ClInclude Include="NewtonRaphson.h" />
     <ClInclude Include="NewtonRaphsonError.h" />
     <ClInclude Include="NoRotationJoint.h" />

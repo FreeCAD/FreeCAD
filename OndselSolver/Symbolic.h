@@ -13,7 +13,7 @@
 #include <memory>
 #include <ostream>
 
-#include "Math.h"
+#include "MbdMath.h"
 #include "System.h"
 #include "Units.h"
 //#include "Constant.h"
@@ -23,7 +23,7 @@ namespace MbD {
 	class Symbolic;
 	using Symsptr = std::shared_ptr<Symbolic>;
 
-	class Symbolic : public Math
+	class Symbolic : public MbdMath
 	{
 	public:
 		Symbolic();
