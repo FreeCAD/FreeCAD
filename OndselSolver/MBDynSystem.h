@@ -31,6 +31,7 @@ namespace MbD {
         void initialize() override;
         void parseMBDyn(std::vector<std::string>& lines) override;
         std::shared_ptr<MBDynVariables> mbdynVariables() override;
+        std::shared_ptr<MBDynReferences> mbdynReferences() override;
 
         void runKINEMATIC();
         void setFilename(std::string filename);

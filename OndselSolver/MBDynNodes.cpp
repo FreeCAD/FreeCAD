@@ -15,7 +15,7 @@ void MbD::MBDynNodes::parseMBDyn(std::vector<std::string>& lines)
 	while (true) {
 		auto it = findLineWith(lines, tokens);
 		if (it != lines.end()) {
-			auto structural = CREATE<MBDynStructural>::With();
+			auto structural = std::make_shared<MBDynStructural>();
 			structural->owner = this;
 			structural->parseMBDyn(*it);
 			nodes->push_back(structural);
