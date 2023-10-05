@@ -118,7 +118,7 @@ TEST_F(WriterTest, charStream)
 TEST_F(WriterTest, charStreamBase64Encoded)
 {
     // Arrange
-    auto& stream {_writer.beginCharStream(Base::CharStreamFormat::Base64Encoded)};
+    _writer.beginCharStream(Base::CharStreamFormat::Base64Encoded);
     std::string data {"FreeCAD rocks! 🪨🪨🪨"};
 
     // Act

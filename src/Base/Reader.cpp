@@ -32,6 +32,7 @@
 
 #include "Reader.h"
 #include "Base64.h"
+#include "Base64Filter.h"
 #include "Console.h"
 #include "InputSource.h"
 #include "Persistence.h"

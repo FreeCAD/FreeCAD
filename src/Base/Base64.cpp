@@ -23,9 +23,9 @@ freely, subject to the following restrictions:
 
 René Nyffenegger rene.nyffenegger@adp-gmbh.ch
 
-
-Additional code Copyright (C) 2019 Zheng Lei (realthunder.dev@gmail.com)
-* Added support of in-line transformation using boost iostream for memory efficiency
+NOTICE: The source code here has been altered from the original to use a provided character buffer
+rather than returning a new string for each call.
+These modifications are Copyright (c) 2019 Zheng Lei (realthunder.dev@gmail.com)
 
 */
 #include "PreCompiled.h"
@@ -36,7 +36,9 @@ Additional code Copyright (C) 2019 Zheng Lei (realthunder.dev@gmail.com)
 
 #include "Base64.h"
 
-// NOLINTBEGIN(cppcoreguidelines-pro-bounds-pointer-arithmetic, cppcoreguidelines-pro-bounds-constant-array-index, cppcoreguidelines-avoid-magic-numbers, readability-magic-numbers)
+// NOLINTBEGIN(cppcoreguidelines-pro-bounds-pointer-arithmetic,
+// cppcoreguidelines-pro-bounds-constant-array-index, cppcoreguidelines-avoid-magic-numbers,
+// readability-magic-numbers)
 
 static const std::array<char, 65> base64_chars {"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
                                                 "abcdefghijklmnopqrstuvwxyz"
@@ -69,11 +71,11 @@ std::array<const signed char, Base::base64DecodeTableSize> Base::base64_decode_t
 std::size_t Base::base64_encode(char* out, void const* in, std::size_t in_len)
 {
     char* ret = out;
-    auto const* bytes_to_encode = reinterpret_cast<unsigned char const*>(in); // NOLINT
+    auto const* bytes_to_encode = reinterpret_cast<unsigned char const*>(in);  // NOLINT
     int char3 {0};
     int char4 {};
-    std::array<unsigned char,3> char_array_3{};
-    std::array<unsigned char,4> char_array_4{};
+    std::array<unsigned char, 3> char_array_3 {};
+    std::array<unsigned char, 4> char_array_4 {};
 
     while ((in_len--) != 0U) {
         char_array_3[char3++] = *(bytes_to_encode++);
@@ -115,13 +117,13 @@ std::size_t Base::base64_encode(char* out, void const* in, std::size_t in_len)
 std::pair<std::size_t, std::size_t>
 Base::base64_decode(void* _out, char const* in, std::size_t in_len)
 {
-    auto* out = reinterpret_cast<unsigned char*>(_out); // NOLINT
+    auto* out = reinterpret_cast<unsigned char*>(_out);  // NOLINT
     unsigned char* ret = out;
     char const* input = in;
     int byteCounter1 {0};
     int byteCounter2 {};
-    std::array<unsigned char, 4> char_array_4{};
-    std::array<unsigned char, 3> char_array_3{};
+    std::array<unsigned char, 4> char_array_4 {};
+    std::array<unsigned char, 3> char_array_3 {};
 
     static auto table = base64_decode_table();
 
@@ -161,4 +163,6 @@ Base::base64_decode(void* _out, char const* in, std::size_t in_len)
     return std::make_pair((std::size_t)(ret - out), (std::size_t)(in - input));
 }
 
-// NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic, cppcoreguidelines-pro-bounds-constant-array-index, cppcoreguidelines-avoid-magic-numbers, readability-magic-numbers)
+// NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic,
+// cppcoreguidelines-pro-bounds-constant-array-index, cppcoreguidelines-avoid-magic-numbers,
+// readability-magic-numbers)

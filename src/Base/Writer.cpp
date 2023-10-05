@@ -29,6 +29,7 @@
 
 #include "Writer.h"
 #include "Base64.h"
+#include "Base64Filter.h"
 #include "Exception.h"
 #include "FileInfo.h"
 #include "Persistence.h"
