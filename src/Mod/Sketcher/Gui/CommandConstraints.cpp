@@ -712,18 +712,18 @@ int SketchSelection::setUp()
 }// namespace SketcherGui
 
 namespace{
-enum CONSTRAINT_DISTANCE_QUALIFIER{
-    POINT_TO_POINT_DISTANCE,
-    POINT_TO_LINE_DISTANCE,
-    POINT_TO_CIRCLE_DISTANCE,
-    CIRCLE_TO_CIRCLE_DISTANCE,
-    CIRCLE_TO_LINE_DISTANCE,
-    LINE_LENGTH,
-    ARC_LENGTH,
-    INVALID
+enum class ConstraintDistanceQualifier{
+    PointToPoint,
+    PointToLine,
+    PointToCircle,
+    CircleToCircle,
+    CircleToLine,
+    LineLength,
+    ArcLength,
+    Invalid
 };
 
-CONSTRAINT_DISTANCE_QUALIFIER qualifyDistanceConstraint(Sketcher::SketchObject* Obj,
+ConstraintDistanceQualifier qualifyDistanceConstraint(Sketcher::SketchObject* Obj,
                                                         int GeoId1, Sketcher::PointPos PosId1,
                                                         int GeoId2, Sketcher::PointPos PosId2){
     const Part::Geometry* geom1 = Obj->getGeometry(GeoId1);
@@ -731,35 +731,35 @@ CONSTRAINT_DISTANCE_QUALIFIER qualifyDistanceConstraint(Sketcher::SketchObject* 
     if ((isVertex(GeoId1, PosId1) || GeoId1 == Sketcher::GeoEnum::VAxis
              || GeoId1 == Sketcher::GeoEnum::HAxis)
             && isVertex(GeoId2, PosId2)) {
-        return POINT_TO_POINT_DISTANCE;
+        return ConstraintDistanceQualifier::PointToPoint;
     }
     else if ((isVertex(GeoId1, PosId1) && isEdge(GeoId2, PosId2))
              || (isEdge(GeoId1, PosId1) && isVertex(GeoId2, PosId2))) {
         if (isLineSegment(*geom1) || isLineSegment(*geom2)) {
-            return POINT_TO_LINE_DISTANCE;
+            return ConstraintDistanceQualifier::PointToLine;
         }
         else if (isCircle(*geom1) || isCircle(*geom2)) {
-            return POINT_TO_CIRCLE_DISTANCE;
+            return ConstraintDistanceQualifier::PointToCircle;
         }
     }
     else if (isEdge(GeoId1, PosId1) && isEdge(GeoId2, PosId2)) {
         if (isCircle(*geom1) && isCircle(*geom2)) {
-            return CIRCLE_TO_CIRCLE_DISTANCE;
+            return ConstraintDistanceQualifier::CircleToCircle;
         }
         else if ((isCircle(*geom1) && isLineSegment(*geom2))
                 || (isLineSegment(*geom1) && isCircle(*geom2))) {
-            return CIRCLE_TO_LINE_DISTANCE;
+            return ConstraintDistanceQualifier::CircleToLine;
         }
     }
     else if (isEdge(GeoId1, PosId1)) {
         if (isLineSegment(*geom1)) {
-            return LINE_LENGTH;
+            return ConstraintDistanceQualifier::LineLength;
         }
         else if (isArcOfCircle(*geom1)) {
-            return ARC_LENGTH;
+            return ConstraintDistanceQualifier::ArcLength;
         }
     }
-    return INVALID;
+    return ConstraintDistanceQualifier::Invalid;
 }
 }
 
@@ -4148,7 +4148,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
     }
 
     switch (qualifyDistanceConstraint(Obj, GeoId1, PosId1, GeoId2, PosId2)) {
-    case POINT_TO_POINT_DISTANCE: {
+    case ConstraintDistanceQualifier::PointToPoint: {
         if (GeoId1 == Sketcher::GeoEnum::HAxis && PosId1 == Sketcher::PointPos::none) {
             PosId1 = Sketcher::PointPos::start;
 
@@ -4200,7 +4200,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
         }
         return;
     }
-    case POINT_TO_LINE_DISTANCE: {
+    case ConstraintDistanceQualifier::PointToLine: {
         auto lineSeg = static_cast<const Part::GeomLineSegment*>(geom2);
         Base::Vector3d lp1 = lineSeg->getStartPoint();
         Base::Vector3d lp2 = lineSeg->getEndPoint();
@@ -4232,7 +4232,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
         }
         return;
     }
-    case POINT_TO_CIRCLE_DISTANCE: {
+    case ConstraintDistanceQualifier::PointToCircle: {
         auto circleSeg = static_cast<const Part::GeomCircle*>(geom2);
         Base::Vector3d ct = circleSeg->getCenter();
         Base::Vector3d d = ct - pnt1;
@@ -4261,7 +4261,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
         }
         return;
     }
-    case CIRCLE_TO_CIRCLE_DISTANCE: {
+    case ConstraintDistanceQualifier::CircleToCircle: {
         auto circleSeg1 = static_cast<const Part::GeomCircle*>(geom1);
         double radius1 = circleSeg1->getRadius();
         Base::Vector3d center1 = circleSeg1->getCenter();
@@ -4308,7 +4308,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
 
         return;
     }
-    case CIRCLE_TO_LINE_DISTANCE: {
+    case ConstraintDistanceQualifier::CircleToLine: {
         if (isLineSegment(*geom1)) {
             std::swap(geom1, geom2);// Assume circle is first
             std::swap(GeoId1, GeoId2);
@@ -4350,7 +4350,7 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
 
         return;
     }
-    case LINE_LENGTH: {
+    case ConstraintDistanceQualifier::LineLength: {
         if (GeoId1 < 0 && GeoId1 >= Sketcher::GeoEnum::VAxis) {
             Gui::TranslatedUserWarning(Obj,
                                        QObject::tr("Wrong selection"),
@@ -4386,12 +4386,12 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
 
         return;
     }
-    case ARC_LENGTH:
+    case ConstraintDistanceQualifier::ArcLength:
         Gui::TranslatedUserWarning(Obj,
                                    QObject::tr("Not implemented"),
                                    QObject::tr("Arc length constraint is not here yet."));
         return;
-    case INVALID:
+    case ConstraintDistanceQualifier::Invalid:
     default: {
         Gui::TranslatedUserWarning(Obj,
                                    QObject::tr("Wrong selection"),
