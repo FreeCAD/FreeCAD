@@ -59,6 +59,7 @@
 #include <Mod/Sketcher/App/GeometryFacade.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/Sketcher/App/SolverGeometryExtension.h>
+#include <Mod/Sketcher/App/Utils.h>
 
 #include "DrawSketchHandler.h"
 #include "EditDatumDialog.h"
