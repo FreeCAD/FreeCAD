@@ -48,29 +48,38 @@ protected:
      * \brief modifyMenuBar
      * Method to manipulate the menu structure of a workbench.
      */
-    void modifyMenuBar([[maybe_unused]] MenuItem* menuBar) override;
+    void modifyMenuBar(MenuItem* menuBar) override;
     /*!
      * \brief modifyContextMenu
      * Method to manipulate the contextmenu structure of a workbench.
      */
-    void modifyContextMenu([[maybe_unused]] const char* recipient,
-                           [[maybe_unused]] MenuItem* menuBar) override;
+    void modifyContextMenu(const char* recipient, MenuItem* menuBar) override;
     /*!
      * \brief modifyToolBars
      * Method to manipulate the toolbar structure of a workbench
      */
-    void modifyToolBars([[maybe_unused]] ToolBarItem* toolBar) override;
+    void modifyToolBars(ToolBarItem* toolBar) override;
     /*!
      * \brief modifyDockWindows
      * Method to manipulate the dock window structure of a workbench
      */
-    void modifyDockWindows([[maybe_unused]] DockWindowItems* dockWindow) override;
+    void modifyDockWindows(DockWindowItems* dockWindow) override;
 
 public:
     WorkbenchManipulatorPython(const WorkbenchManipulatorPython&) = delete;
     WorkbenchManipulatorPython(WorkbenchManipulatorPython&&) = delete;
     WorkbenchManipulatorPython& operator = (const WorkbenchManipulatorPython&) = delete;
     WorkbenchManipulatorPython& operator = (WorkbenchManipulatorPython&&) = delete;
+
+private:
+    void tryModifyMenuBar(MenuItem* menuBar);
+    void tryModifyMenuBar(const Py::Dict& dict, MenuItem* menuBar);
+    void tryModifyContextMenu(const char* recipient, MenuItem* menuBar);
+    void tryModifyContextMenu(const Py::Dict& dict, MenuItem* menuBar);
+    void tryModifyToolBar(ToolBarItem* toolBar);
+    void tryModifyToolBar(const Py::Dict& dict, ToolBarItem* toolBar);
+    void tryModifyDockWindows(DockWindowItems* menuBar);
+    void tryModifyDockWindows(const Py::Dict& dict, DockWindowItems* dockWindow);
 
 private:
     Py::Object object;
