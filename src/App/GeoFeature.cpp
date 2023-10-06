@@ -29,6 +29,7 @@
 #include <App/Link.h>
 #include "ComplexGeoData.h"
 #include "Document.h"
+#include "ElementNamingUtils.h"
 #include "GeoFeature.h"
 #include "GeoFeatureGroupExtension.h"
 #include "MappedElement.h"
@@ -45,16 +46,12 @@ PROPERTY_SOURCE(App::GeoFeature, App::DocumentObject)
 // Feature
 //===========================================================================
 
-GeoFeature::GeoFeature(void)
+GeoFeature::GeoFeature()
 {
     ADD_PROPERTY_TYPE(Placement,(Base::Placement()),nullptr,Prop_NoRecompute,nullptr);
-    ADD_PROPERTY_TYPE(_ElementMapVersion,(""),"Base",
-            (App::PropertyType)(Prop_Output|Prop_Hidden|Prop_Transient),"");
 }
 
-GeoFeature::~GeoFeature(void)
-{
-}
+GeoFeature::~GeoFeature() = default;
 
 void GeoFeature::transformPlacement(const Base::Placement &transform)
 {
@@ -78,7 +75,7 @@ const PropertyComplexGeoData* GeoFeature::getPropertyOfGeometry() const
     return nullptr;
 }
 
-PyObject* GeoFeature::getPyObject(void)
+PyObject* GeoFeature::getPyObject()
 {
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
@@ -112,10 +109,10 @@ GeoFeature::_getElementName(const char *name, const Data::MappedElement &mapped)
     std::pair<std::string,std::string> ret;
     if (mapped.index && mapped.name) {
         std::ostringstream ss;
-        ss << Data::ComplexGeoData::elementMapPrefix()
+        ss << Data::ELEMENT_MAP_PREFIX
            << mapped.name << '.' << mapped.index;
         ret.first = ss.str();
-        mapped.index.toString(ret.second);
+        ret.second = mapped.index.toString();
     } else if (mapped.name) {
         FC_TRACE("element mapped name " << name << " not found in " << getFullName());
         ret.first = name;
@@ -123,11 +120,11 @@ GeoFeature::_getElementName(const char *name, const Data::MappedElement &mapped)
         if(dot) {
             // deliberately mangle the old style element name to signal a
             // missing reference
-            ret.second = Data::ComplexGeoData::missingPrefix();
+            ret.second = Data::MISSING_PREFIX;
             ret.second += dot+1;
         }
     } else {
-        mapped.index.toString(ret.second);
+        ret.second = mapped.index.toString();
     }
 
     return ret;
@@ -144,7 +141,7 @@ DocumentObject *GeoFeature::resolveElement(DocumentObject *obj, const char *subn
         return nullptr;
     if(!subname)
         subname = "";
-    const char *element = Data::ComplexGeoData::findElementName(subname);
+    const char *element = Data::findElementName(subname);
     if(_element) *_element = element;
     auto sobj = obj->getSubObject(subname);
     if(!sobj)
@@ -162,7 +159,7 @@ DocumentObject *GeoFeature::resolveElement(DocumentObject *obj, const char *subn
         return nullptr;
     if(!element || !element[0]) {
         if(append) 
-            elementName.second = Data::ComplexGeoData::oldElementName(subname);
+            elementName.second = Data::oldElementName(subname);
         return sobj;
     }
 
@@ -170,7 +167,7 @@ DocumentObject *GeoFeature::resolveElement(DocumentObject *obj, const char *subn
         if(!append) 
             elementName.second = element;
         else
-            elementName.second = Data::ComplexGeoData::oldElementName(subname);
+            elementName.second = Data::oldElementName(subname);
         return sobj;
     }
     if(!append) 
@@ -186,7 +183,7 @@ DocumentObject *GeoFeature::resolveElement(DocumentObject *obj, const char *subn
 }
 
 bool GeoFeature::hasMissingElement(const char *subname) {
-    return Data::ComplexGeoData::hasMissingElement(subname);
+    return Data::hasMissingElement(subname);
     if(!subname)
         return false;
     auto dot = strrchr(subname,'.');
@@ -200,15 +197,7 @@ void GeoFeature::updateElementReference() {
     if(!prop) return;
     auto geo = prop->getComplexData();
     if(!geo) return;
-    bool reset = false;
-    auto version = getElementMapVersion(prop);
-    if(_ElementMapVersion.getStrValue().empty()) 
-        _ElementMapVersion.setValue(version);
-    else if(_ElementMapVersion.getStrValue()!=version) {
-        reset = true;
-        _ElementMapVersion.setValue(version);
-    }
-    PropertyLinkBase::updateElementReferences(this,reset);
+    PropertyLinkBase::updateElementReferences(this,false);
 }
 
 void GeoFeature::onChanged(const Property *prop) {
@@ -223,8 +212,6 @@ void GeoFeature::onChanged(const Property *prop) {
 }
 
 void GeoFeature::onDocumentRestored() {
-    if(!getDocument()->testStatus(Document::Status::Importing))
-        _ElementMapVersion.setValue(getElementMapVersion(getPropertyOfGeometry(),true));
     DocumentObject::onDocumentRestored();
 }
 
@@ -242,7 +229,7 @@ GeoFeature::searchElementCache(const std::string &element,
     return none;
 }
 
-const std::vector<const char *>&
+const std::vector<const char *>
 GeoFeature::getElementTypes(bool /*all*/) const
 {
     static std::vector<const char *> nil;
@@ -250,13 +237,4 @@ GeoFeature::getElementTypes(bool /*all*/) const
     if (!prop)
         return nil;
     return prop->getComplexData()->getElementTypes();
-}
-
-std::vector<Data::IndexedName>
-GeoFeature::getHigherElements(const char *element, bool silent) const
-{
-    auto prop = getPropertyOfGeometry();
-    if (!prop)
-        return {};
-    return prop->getComplexData()->getHigherElements(element, silent);
 }

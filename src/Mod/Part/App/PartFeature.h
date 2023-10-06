@@ -59,7 +59,7 @@ class PartExport Feature : public App::GeoFeature
 
 public:
     /// Constructor
-    Feature(void);
+    Feature();
     virtual ~Feature();
 
     PropertyPartShape Shape;
@@ -74,7 +74,7 @@ public:
     virtual const char* getViewProviderName() const override;
     virtual const App::PropertyComplexGeoData* getPropertyOfGeometry() const override;
 
-    virtual PyObject* getPyObject(void) override;
+    virtual PyObject* getPyObject() override;
 
     virtual std::pair<std::string,std::string> getElementName(
             const char *name, ElementNameType type=Normal) const override;
@@ -153,7 +153,7 @@ public:
                                                                double tol = 1e-7,
                                                                double atol = 1e-10) const override;
 
-    virtual const std::vector<const char*>& getElementTypes(bool all=false) const override;
+    virtual const std::vector<const char*> getElementTypes(bool all=false) const override;
 
     boost::signals2::signal<void (App::Document *)> signalMapShapeColors;
 
@@ -210,7 +210,7 @@ class PartExport FeatureExt : public Feature
     PROPERTY_HEADER(Part::FeatureExt);
 
 public:
-    const char* getViewProviderName(void) const {
+    const char* getViewProviderName() const {
         return "PartGui::ViewProviderPartExt";
     }
 };

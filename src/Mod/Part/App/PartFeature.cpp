@@ -60,8 +60,9 @@
 typedef boost::iterator_range<const char*> CharRange;
 
 #include <App/Application.h>
-#include <App/FeaturePythonPyImp.h>
 #include <App/Document.h>
+#include <App/ElementNamingUtils.h>
+#include <App/FeaturePythonPyImp.h>
 #include <App/GeoFeatureGroupExtension.h>
 #include <App/Link.h>
 #include <App/MappedElement.h>
@@ -92,23 +93,21 @@ FC_LOG_LEVEL_INIT("Part",true,true)
 PROPERTY_SOURCE(Part::Feature, App::GeoFeature)
 
 
-Feature::Feature(void)
+Feature::Feature()
 {
     ADD_PROPERTY(Shape, (TopoDS_Shape()));
     ADD_PROPERTY_TYPE(ColoredElements, (0), "",
             (App::PropertyType)(App::Prop_Hidden|App::Prop_ReadOnly|App::Prop_Output),"");
 }
 
-Feature::~Feature()
-{
-}
+Feature::~Feature() = default;
 
-short Feature::mustExecute(void) const
+short Feature::mustExecute() const
 {
     return GeoFeature::mustExecute();
 }
 
-App::DocumentObjectExecReturn *Feature::recompute(void)
+App::DocumentObjectExecReturn *Feature::recompute()
 {
     try {
         return App::GeoFeature::recompute();
@@ -121,13 +120,13 @@ App::DocumentObjectExecReturn *Feature::recompute(void)
     }
 }
 
-App::DocumentObjectExecReturn *Feature::execute(void)
+App::DocumentObjectExecReturn *Feature::execute()
 {
     this->Shape.touch();
     return GeoFeature::execute();
 }
 
-PyObject *Feature::getPyObject(void)
+PyObject *Feature::getPyObject()
 {
     if (PythonObject.is(Py::_None())){
         // ref counter is set to 1
@@ -151,8 +150,8 @@ Feature::getElementName(const char *name, ElementNameType type) const
 
     TopoShape shape = prop->getShape();
     Data::MappedElement mapped = shape.getElementName(name);
-    auto res = shape.shapeTypeAndIndex(mapped.index);
-    static const int MinLowerTopoNames = 3;
+    auto res = shape.shapeTypeAndIndex(mapped.index.toString().c_str()); //FIXME use structured binding
+    static const int MinLowerTopoNames = 3; //FIXME magic
     static const int MaxLowerTopoNames = 10;
     if (res.second && !mapped.name) {
         // Here means valid index name, but no mapped name, check to see if
@@ -250,7 +249,7 @@ Feature::getElementName(const char *name, ElementNameType type) const
                         if (it == ancestors.end())
                             assert(0 && "ancestor not found"); // this shouldn't happened
                         else
-                            op = Data::ComplexGeoData::indexPostfix() + std::to_string(it - ancestors.begin());
+                            op = Data::POSTFIX_INDEX + std::to_string(it - ancestors.begin());
                     }
 
                     // Note: setting names to shape will change its underlying
@@ -284,8 +283,8 @@ Feature::getElementName(const char *name, ElementNameType type) const
             // lower elements encoded in the combo name. But since we don't
             // always use all the lower elements for encoding, this can only be
             // consider a heuristics.
-            if (Data::ComplexGeoData::hasMissingElement(dot))
-                dot += Data::ComplexGeoData::missingPrefix().size();
+            if (Data::hasMissingElement(dot))
+                dot += std::string(Data::MISSING_PREFIX).size();
             std::pair<TopAbs_ShapeEnum, int> occindex = shape.shapeTypeAndIndex(dot);
             if (occindex.second > 0) {
                 auto idxName = Data::IndexedName::fromConst(
@@ -320,8 +319,8 @@ Feature::getElementName(const char *name, ElementNameType type) const
                     }
                 }
                 if (ancestors.size() > 1
-                        && boost::starts_with(postfix, Data::ComplexGeoData::indexPostfix())) {
-                    std::istringstream iss(postfix.c_str() + Data::ComplexGeoData::indexPostfix().size());
+                        && boost::starts_with(postfix, Data::POSTFIX_INDEX)) {
+                    std::istringstream iss(postfix.c_str() + std::string(Data::POSTFIX_INDEX).size());
                     int idx;
                     if (iss >> idx && idx >= 0 && idx < (int)ancestors.size())
                         ancestors.resize(1, ancestors[idx]);
@@ -346,7 +345,7 @@ App::DocumentObject *Feature::getSubObject(const char *subname,
 
     // having '.' inside subname means it is referencing some children object,
     // instead of any sub-element from ourself
-    if(subname && !Data::ComplexGeoData::isMappedElement(subname) && strchr(subname,'.')) 
+    if(subname && !Data::isMappedElement(subname) && strchr(subname,'.')) 
         return App::DocumentObject::getSubObject(subname,pyObj,pmat,transform,depth);
 
     Base::Matrix4D _mat;
@@ -396,7 +395,7 @@ App::DocumentObject *Feature::getSubObject(const char *subname,
     catch(Standard_Failure &e) {
         // FIXME: Do not handle the exception here because it leads to a flood of irrelevant and
         // annoying error messages.
-        // For example: https://forum.freecadweb.org/viewtopic.php?f=19&t=42216
+        // For example: https://forum.freecad.org/viewtopic.php?f=19&t=42216
         // Instead either raise a sub-class of Base::Exception and let it handle by the calling
         // instance or do simply nothing. For now the error message is degraded to a log message.
         std::ostringstream str;
@@ -498,8 +497,8 @@ Feature::getElementHistory(App::DocumentObject *feature,
     Data::MappedName prevElement;
     if (idx)
         element = shape.getMappedName(idx, true);
-    else if (Data::ComplexGeoData::isMappedElement(name))
-        element = Data::MappedName(Data::ComplexGeoData::newElementName(name));
+    else if (Data::isMappedElement(name))
+        element = Data::MappedName(Data::newElementName(name));
     else
         element = Data::MappedName(name);
     char element_type=0;
@@ -584,7 +583,7 @@ Feature::getElementFromSource(App::DocumentObject *obj,
     int tagChanges;
     Data::MappedElement element;
     Data::IndexedName checkingSubname;
-    std::string sub = Data::ComplexGeoData::noElementName(subname);
+    std::string sub = Data::noElementName(subname);
     auto checkHistory = [&](const Data::MappedName &name, size_t, long, long tag) {
         if (std::abs(tag) == owner->getID()) {
             if (!tagChanges)
@@ -597,7 +596,7 @@ Feature::getElementFromSource(App::DocumentObject *obj,
         if (name == element.name) {
             std::pair<std::string, std::string> objElement;
             std::size_t len = sub.size();
-            checkingSubname.toString(sub);
+            sub = checkingSubname.toString();
             GeoFeature::resolveElement(obj, sub.c_str(), objElement);
             sub.resize(len);
             if (objElement.second.size()) {
@@ -616,8 +615,8 @@ Feature::getElementFromSource(App::DocumentObject *obj,
     element.index = Data::IndexedName(objElement.second.c_str());
     if (!objElement.first.empty()) {
         // Strip prefix and indexed based name at the tail of the new style element name
-        auto mappedName = Data::ComplexGeoData::newElementName(objElement.first.c_str());
-        auto mapped = Data::ComplexGeoData::isMappedElement(mappedName.c_str());
+        auto mappedName = Data::newElementName(objElement.first.c_str());
+        auto mapped = Data::isMappedElement(mappedName.c_str());
         if (mapped)
             element.name = Data::MappedName(mapped);
     }
@@ -632,7 +631,7 @@ Feature::getElementFromSource(App::DocumentObject *obj,
 
     // Use the old style name to obtain the shape type
     auto type = TopoShape::shapeType(
-            Data::ComplexGeoData::findElementName(objElement.second.c_str()));
+            Data::findElementName(objElement.second.c_str()));
     // If the given shape has the same number of sub shapes as the source (e.g.
     // a compound operation), then take a shortcut and assume the element index
     // remains the same. But we still need to trace the shape history to
@@ -691,13 +690,6 @@ Feature::getRelatedElements(App::DocumentObject *obj, const char *name, bool sam
         return ret;
     if(withCache && shape.getRelatedElementsCached(mapped.name,sameType,ret))
         return ret;
-#if 0
-    auto ret = shape.getRelatedElements(name,sameType); 
-    if(ret.size()) {
-        FC_LOG("topo shape returns " << ret.size() << " related elements");
-        return ret;
-    }
-#endif
 
     char element_type = shape.elementType(mapped.name);
     TopAbs_ShapeEnum type = TopoShape::shapeType(element_type,true);
@@ -777,7 +769,7 @@ static bool checkLinkVisibility(std::set<std::string> &hiddens,
     if(!subname || !subname[0])
         return true;
 
-    auto element = Data::ComplexGeoData::findElementName(subname);
+    auto element = Data::findElementName(subname);
     std::string sub(subname,element-subname);
 
     for(auto pos=sub.find('.');pos!=std::string::npos;pos=sub.find('.',pos+1)) {
@@ -829,7 +821,7 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
     if(powner) *powner = nullptr;
 
     std::string _subname;
-    auto subelement = Data::ComplexGeoData::findElementName(subname);
+    auto subelement = Data::findElementName(subname);
     if(!needSubElement && subname) {
         // strip out element name if not needed
         if(subelement && *subelement) {
@@ -913,7 +905,7 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
                 }
                 shape = TopoShape(tag, hasher, _shape);
             } else if (linked->isDerivedFrom(App::Placement::getClassTypeId())) {
-                auto element = Data::ComplexGeoData::findElementName(subname);
+                auto element = Data::findElementName(subname);
                 if (element) {
                     if (boost::iequals("x", element) || boost::iequals("x-axis", element)
                             || boost::iequals("y", element) || boost::iequals("y-axis", element)
@@ -1117,7 +1109,7 @@ TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subn
         // Some OCC shape making is very sensitive to shape transformation. So
         // check here if a direct sub shape is required, and bypass all extra
         // processing here.
-        if(subname && *subname && Data::ComplexGeoData::findElementName(subname) == subname) {
+        if(subname && *subname && Data::findElementName(subname) == subname) {
             TopoShape ts = static_cast<const Part::Feature*>(obj)->Shape.getShape();
             if (!transform)
                 ts.setShape(ts.getShape().Located(TopLoc_Location()),false);
@@ -1193,9 +1185,9 @@ void Feature::onBeforeChange(const App::Property *prop) {
                 subs.clear();
                 prop->getLinks(objs, true, &subs, false);
                 for(auto &sub : subs) {
-                    auto element = Data::ComplexGeoData::findElementName(sub.c_str());
+                    auto element = Data::findElementName(sub.c_str());
                     if(!element || !element[0]
-                                || Data::ComplexGeoData::hasMissingElement(element))
+                                || Data::hasMissingElement(element))
                         continue;
                     auto res = _elementCache.insert(
                             std::make_pair(std::string(element), ElementCache()));
@@ -1287,7 +1279,7 @@ const App::PropertyComplexGeoData* Feature::getPropertyOfGeometry() const
     return &Shape;
 }
 
-const std::vector<const char *>& Feature::getElementTypes(bool all) const
+const std::vector<const char *> Feature::getElementTypes(bool all) const
 {
     if (!all)
         return App::GeoFeature::getElementTypes();
