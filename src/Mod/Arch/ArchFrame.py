@@ -190,13 +190,13 @@ class _Frame(ArchComponent.Component):
                 elif obj.Edges == "Horizontal edges":
                     rv = obj.Base.Placement.Rotation.multVec(FreeCAD.Vector(1,0,0))
                     edges = [e for e in edges if round(rv.getAngle(e.tangentAt(e.FirstParameter)),4) in [0,3.1416]]
-                elif obj.Edges == "Top Horizontal edges":
+                elif obj.Edges == "Top horizontal edges":
                     rv = obj.Base.Placement.Rotation.multVec(FreeCAD.Vector(1,0,0))
                     edges = [e for e in edges if round(rv.getAngle(e.tangentAt(e.FirstParameter)),4) in [0,3.1416]]
                     edges = sorted(edges,key=lambda x: x.CenterOfMass.z,reverse=True)
                     z = edges[0].CenterOfMass.z
                     edges = [e for e in edges if abs(e.CenterOfMass.z-z) < 0.00001]
-                elif obj.Edges == "Bottom Horizontal edges":
+                elif obj.Edges == "Bottom horizontal edges":
                     rv = obj.Base.Placement.Rotation.multVec(FreeCAD.Vector(1,0,0))
                     edges = [e for e in edges if round(rv.getAngle(e.tangentAt(e.FirstParameter)),4) in [0,3.1416]]
                     edges = sorted(edges,key=lambda x: x.CenterOfMass.z)
