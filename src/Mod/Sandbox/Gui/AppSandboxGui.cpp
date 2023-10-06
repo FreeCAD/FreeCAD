@@ -30,7 +30,8 @@
 # include <Inventor/nodes/SoSeparator.h>
 # include <Inventor/nodes/SoCoordinate3.h>
 #endif
-
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Base/GeometryPyCXX.h>
@@ -42,8 +43,6 @@
 #include <App/Document.h>
 #include <App/DocumentObserver.h>
 #include <Gui/Document.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
 #include <Gui/Application.h>
 #ifdef HAVE_PART
 #include <Mod/Part/App/PropertyGeometryList.h>

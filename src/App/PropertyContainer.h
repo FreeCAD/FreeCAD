@@ -30,6 +30,16 @@
 
 #include "DynamicProperty.h"
 
+#include <xercesc/util/XercesDefs.hpp>
+
+XERCES_CPP_NAMESPACE_BEGIN
+	class DOMNode;
+	class DOMElement;
+//    class DefaultHandler;
+//    class SAX2XMLReader;
+XERCES_CPP_NAMESPACE_END
+
+
 namespace Base {
 class Writer;
 }
@@ -220,6 +230,7 @@ public:
 
   void Save (Base::Writer &writer) const override;
   void Restore(Base::XMLReader &reader) override;
+  void Restore(Base::DocumentReader &reader, XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *containerEl) override;
   virtual void beforeSave() const;
 
   virtual void editProperty(const char * /*propName*/) {}
@@ -248,11 +259,14 @@ protected:
 
   virtual void handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName);
   virtual void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, Property * prop);
+  virtual void handleChangedPropertyName(Base::DocumentReader &reader, const char * TypeName, const char *PropName);
+  virtual void handleChangedPropertyType(Base::DocumentReader &reader, const char * TypeName, Property * prop);
 
 public:
   // forbidden
   PropertyContainer(const PropertyContainer&) = delete;
   PropertyContainer& operator = (const PropertyContainer&) = delete;
+  void readProperty(Base::DocumentReader &reader,XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *PropertyDOM);
 
 protected:
   DynamicProperty dynamicProps;

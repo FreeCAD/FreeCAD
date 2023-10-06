@@ -35,6 +35,11 @@
 # include <Inventor/events/SoKeyboardEvent.h>
 #endif
 
+// clang-format off
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
+// clang-format on
+
 #include <Base/Console.h>
 #include <Base/Precision.h>
 #include <Base/Quantity.h>
@@ -44,9 +49,9 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/Camera.h>
 #include <Gui/Document.h>
+#include <Gui/SoDatumLabel.h>
 #include <Gui/EditableDatumLabel.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
+
 #include <Gui/ViewProviderDocumentObject.h>
 #include <Gui/TaskView/TaskView.h>
 

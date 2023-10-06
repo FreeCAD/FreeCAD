@@ -25,6 +25,8 @@
 #define WNT  // avoid conflict with GUID
 #endif
 #ifndef _PreComp_
+#include <boost/algorithm/string/predicate.hpp>
+#include <boost/range/adaptor/indexed.hpp>
 #include <climits>
 #if defined(__clang__)
 #pragma clang diagnostic push
@@ -74,22 +76,6 @@
 namespace Import
 {
 
-class ImportOCAFExt: public Import::ImportOCAF2
-{
-public:
-    ImportOCAFExt(Handle(TDocStd_Document) hStdDoc, App::Document* doc, const std::string& name)
-        : ImportOCAF2(hStdDoc, doc, name)
-    {}
-
-    std::map<Part::Feature*, std::vector<App::Color>> partColors;
-
-private:
-    void applyFaceColors(Part::Feature* part, const std::vector<App::Color>& colors) override
-    {
-        partColors[part] = colors;
-    }
-};
-
 class Module: public Py::ExtensionModule<Module>
 {
 public:
@@ -126,7 +112,7 @@ public:
 private:
     Py::Object importer(const Py::Tuple& args, const Py::Dict& kwds)
     {
-        char* Name;
+        char* Name = nullptr;
         char* DocName = nullptr;
         PyObject* importHidden = Py_None;
         PyObject* merge = Py_None;
@@ -153,7 +139,6 @@ private:
 
         std::string Utf8Name = std::string(Name);
         PyMem_Free(Name);
-        std::string name8bit = Part::encodeFilename(Utf8Name);
 
         try {
             Base::FileInfo file(Utf8Name.c_str());
@@ -235,7 +220,7 @@ private:
                     list.append(tuple);
                 }
 
-                return list;
+                return list;  // NOLINT
             }
         }
         catch (Standard_Failure& e) {
@@ -250,11 +235,11 @@ private:
     }
     Py::Object exporter(const Py::Tuple& args, const Py::Dict& kwds)
     {
-        PyObject* object;
-        char* Name;
-        PyObject* exportHidden = Py_None;
-        PyObject* legacy = Py_None;
-        PyObject* keepPlacement = Py_None;
+        PyObject* object = nullptr;
+        char* Name = nullptr;
+        PyObject* pyexportHidden = Py_None;
+        PyObject* pylegacy = Py_None;
+        PyObject* pykeepPlacement = Py_None;
         static const std::array<const char*, 6> kwd_list {"obj",
                                                           "name",
                                                           "exportHidden",
@@ -269,68 +254,86 @@ private:
                                                  "utf-8",
                                                  &Name,
                                                  &PyBool_Type,
-                                                 &exportHidden,
+                                                 &pyexportHidden,
                                                  &PyBool_Type,
-                                                 &legacy,
+                                                 &pylegacy,
                                                  &PyBool_Type,
-                                                 &keepPlacement)) {
+                                                 &pykeepPlacement)) {
             throw Py::Exception();
         }
 
         std::string Utf8Name = std::string(Name);
         PyMem_Free(Name);
 
+        // clang-format off
+        // determine export options
+        Part::OCAF::ImportExportSettings settings;
+
+        bool legacyExport = (pylegacy         == Py_None ? settings.getExportLegacy()
+                                                         : Base::asBoolean(pylegacy));
+        bool exportHidden = (pyexportHidden   == Py_None ? settings.getExportHiddenObject()
+                                                         : Base::asBoolean(pyexportHidden));
+        bool keepPlacement = (pykeepPlacement == Py_None ? settings.getExportKeepPlacement()
+                                                         : Base::asBoolean(pykeepPlacement));
+        // clang-format on
+
         try {
             Py::Sequence list(object);
+            std::vector<App::DocumentObject*> objs;
+            std::map<Part::Feature*, std::vector<App::Color>> partColor;
+            for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
+                PyObject* item = (*it).ptr();
+                if (PyObject_TypeCheck(item, &(App::DocumentObjectPy::Type))) {
+                    auto pydoc = static_cast<App::DocumentObjectPy*>(item);
+                    objs.push_back(pydoc->getDocumentObjectPtr());
+                }
+                else if (PyTuple_Check(item) && PyTuple_Size(item) == 2) {
+                    Py::Tuple tuple(*it);
+                    Py::Object item0 = tuple.getItem(0);
+                    Py::Object item1 = tuple.getItem(1);
+                    if (PyObject_TypeCheck(item0.ptr(), &(App::DocumentObjectPy::Type))) {
+                        auto pydoc = static_cast<App::DocumentObjectPy*>(item0.ptr());
+                        App::DocumentObject* obj = pydoc->getDocumentObjectPtr();
+                        objs.push_back(obj);
+                        if (Part::Feature* part = dynamic_cast<Part::Feature*>(obj)) {
+                            App::PropertyColorList colors;
+                            colors.setPyObject(item1.ptr());
+                            partColor[part] = colors.getValues();
+                        }
+                    }
+                }
+            }
+
             Handle(XCAFApp_Application) hApp = XCAFApp_Application::GetApplication();
             Handle(TDocStd_Document) hDoc;
             hApp->NewDocument(TCollection_ExtendedString("MDTV-CAF"), hDoc);
 
-            std::vector<App::DocumentObject*> objs;
-            for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
-                PyObject* item = (*it).ptr();
-                if (PyObject_TypeCheck(item, &(App::DocumentObjectPy::Type))) {
-                    objs.push_back(
-                        static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr());
+            auto getShapeColors = [partColor](App::DocumentObject* obj, const char* subname) {
+                std::map<std::string, App::Color> cols;
+                auto it = partColor.find(dynamic_cast<Part::Feature*>(obj));
+                if (it != partColor.end() && boost::starts_with(subname, "Face")) {
+                    const auto& colors = it->second;
+                    std::string face("Face");
+                    for (const auto& element : colors | boost::adaptors::indexed(1)) {
+                        cols[face + std::to_string(element.index())] = element.value();
+                    }
                 }
-            }
+                return cols;
+            };
 
-            if (legacy == Py_None) {
-                Part::OCAF::ImportExportSettings settings;
-                legacy = settings.getExportLegacy() ? Py_True : Py_False;
-            }
-
-            Import::ExportOCAF2 ocaf(hDoc);
-            if (!Base::asBoolean(legacy) || !ocaf.canFallback(objs)) {
+            Import::ExportOCAF2 ocaf(hDoc, getShapeColors);
+            if (!legacyExport || !ocaf.canFallback(objs)) {
                 ocaf.setExportOptions(ExportOCAF2::customExportOptions());
-
-                if (exportHidden != Py_None) {
-                    ocaf.setExportHiddenObject(Base::asBoolean(exportHidden));
-                }
-                if (keepPlacement != Py_None) {
-                    ocaf.setKeepPlacement(Base::asBoolean(keepPlacement));
-                }
+                ocaf.setExportHiddenObject(exportHidden);
+                ocaf.setKeepPlacement(keepPlacement);
 
                 ocaf.exportObjects(objs);
             }
             else {
-                bool keepExplicitPlacement = Standard_True;
-                ExportOCAF ocaf(hDoc, keepExplicitPlacement);
-                // That stuff is exporting a list of selected objects into FreeCAD Tree
-                std::vector<TDF_Label> hierarchical_label;
-                std::vector<TopLoc_Location> hierarchical_loc;
-                std::vector<App::DocumentObject*> hierarchical_part;
-                for (auto obj : objs) {
-                    ocaf.exportObject(obj, hierarchical_label, hierarchical_loc, hierarchical_part);
-                }
-
-                // Free Shapes must have absolute placement and not explicit
-                std::vector<TDF_Label> FreeLabels;
-                std::vector<int> part_id;
-                ocaf.getFreeLabels(hierarchical_label, FreeLabels, part_id);
-                // Update is not performed automatically anymore:
-                // https://tracker.dev.opencascade.org/view.php?id=28055
-                XCAFDoc_DocumentTool::ShapeTool(hDoc->Main())->UpdateAssemblies();
+                bool keepExplicitPlacement = true;
+                ExportOCAFCmd ocaf(hDoc, keepExplicitPlacement);
+                ocaf.setPartColorsMap(partColor);
+                ocaf.exportObjects(objs);
             }
 
             Base::FileInfo file(Utf8Name.c_str());
@@ -362,7 +365,7 @@ private:
 
     Py::Object readDXF(const Py::Tuple& args)
     {
-        char* Name;
+        char* Name = nullptr;
         const char* DocName = nullptr;
         const char* optionSource = nullptr;
         std::string defaultOptions = "User parameter:BaseApp/Preferences/Mod/Draft";
@@ -389,7 +392,7 @@ private:
             defaultOptions = optionSource;
         }
 
-        App::Document* pcDoc;
+        App::Document* pcDoc = nullptr;
         if (DocName) {
             pcDoc = App::GetApplication().getDocument(DocName);
         }
@@ -419,8 +422,8 @@ private:
 
     Py::Object writeDXFShape(const Py::Tuple& args)
     {
-        PyObject* shapeObj;
-        char* fname;
+        PyObject* shapeObj = nullptr;
+        char* fname = nullptr;
         std::string filePath;
         std::string layerName;
         const char* optionSource = nullptr;
@@ -531,8 +534,8 @@ private:
 
     Py::Object writeDXFObject(const Py::Tuple& args)
     {
-        PyObject* docObj;
-        char* fname;
+        PyObject* docObj = nullptr;
+        char* fname = nullptr;
         std::string filePath;
         std::string layerName;
         const char* optionSource = nullptr;

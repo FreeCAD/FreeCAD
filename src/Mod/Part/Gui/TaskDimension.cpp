@@ -62,7 +62,8 @@
 # include <Inventor/nodes/SoTransform.h>
 # include <Inventor/nodes/SoVertexProperty.h>
 #endif
-
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 #include <App/Document.h>
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
@@ -72,8 +73,6 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/Control.h>
 #include <Gui/Selection.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
 #include <Mod/Part/App/PartFeature.h>
 
 #include "TaskDimension.h"

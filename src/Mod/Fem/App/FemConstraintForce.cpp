@@ -42,6 +42,9 @@ ConstraintForce::ConstraintForce()
                       "ConstraintForce",
                       (App::PropertyType)(App::Prop_None),
                       "Element giving direction of constraint");
+    // RefDispl must get a global scope, see
+    Direction.setScope(App::LinkScope::Global);
+
     ADD_PROPERTY(Reversed, (0));
     ADD_PROPERTY_TYPE(Points,
                       (Base::Vector3d()),
@@ -53,14 +56,30 @@ ConstraintForce::ConstraintForce()
                       "ConstraintForce",
                       App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
                       "Direction of arrows");
-    naturalDirectionVector =
-        Base::Vector3d(0, 0, 0);  // by default use the null vector to indicate an invalid value
+
+    // by default use the null vector to indicate an invalid value
+    naturalDirectionVector = Base::Vector3d(0, 0, 0);
     Points.setValues(std::vector<Base::Vector3d>());
 }
 
 App::DocumentObjectExecReturn* ConstraintForce::execute()
 {
     return Constraint::execute();
+}
+
+void ConstraintForce::handleChangedPropertyType(Base::XMLReader& reader,
+                                                const char* TypeName,
+                                                App::Property* prop)
+{
+    // property Force had App::PropertyFloat, was changed to App::PropertyForce
+    if (prop == &Force && strcmp(TypeName, "App::PropertyFloat") == 0) {
+        App::PropertyFloat ForceProperty;
+        // restore the PropertyFloat to be able to set its value
+        ForceProperty.Restore(reader);
+        // force uses m while FreeCAD uses internally mm thus
+        // e.g. "2.5" must become 2500 to result in 2.5 N
+        Force.setValue(ForceProperty.getValue() * 1000);
+    }
 }
 
 void ConstraintForce::onChanged(const App::Property* prop)

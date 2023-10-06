@@ -1,9 +1,3 @@
-if(MSVC)
-    add_definitions(-DFCAppDrawing -DHAVE_ACOSH -DHAVE_ASINH -DHAVE_ATANH)
-else(MSVC)
-    add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H -DHAVE_ACOSH -DHAVE_ATANH -DHAVE_ASINH)
-endif(MSVC)
-
 include_directories(
     ${CMAKE_BINARY_DIR}
     ${Boost_INCLUDE_DIRS}

@@ -42,7 +42,8 @@
 # include <Inventor/nodes/SoCamera.h>
 # include <Inventor/nodes/SoSeparator.h>
 #endif
-
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 #include <App/Document.h>
 #include <Gui/Application.h>
 #include <Gui/Control.h>
@@ -51,8 +52,6 @@
 #include <Gui/Selection.h>
 #include <Gui/Tools.h>
 #include <Gui/Utilities.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
 
 #include "TaskFaceColors.h"
 #include "ui_TaskFaceColors.h"

@@ -108,6 +108,7 @@ public:
 
     static std::pair<Base::Vector3d, Base::Vector3d> getEdgeEnds(TopoDS_Edge edge);
 
+    static bool isShapeReallyNull(TopoDS_Shape shape);
 };
 
 }

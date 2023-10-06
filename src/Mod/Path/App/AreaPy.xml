@@ -62,17 +62,17 @@ same algorithm</UserDocu>
           <UserDocu></UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="getClearedArea" Keyword="true">
+    <Methode Name="getClearedArea">
       <Documentation>
           <UserDocu></UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="getRestArea" Keyword="true">
+    <Methode Name="getRestArea">
       <Documentation>
           <UserDocu></UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="toTopoShape" Keyword="true">
+    <Methode Name="toTopoShape">
       <Documentation>
           <UserDocu></UserDocu>
       </Documentation>

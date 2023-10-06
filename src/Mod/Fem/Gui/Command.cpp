@@ -31,6 +31,8 @@
 #include <SMESHDS_Mesh.hxx>
 #include <SMESH_Mesh.hxx>
 #endif
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 
 #include <App/Document.h>
 #include <App/DocumentObserver.h>
@@ -44,8 +46,7 @@
 #include <Gui/SelectionFilter.h>
 #include <Gui/SelectionObject.h>
 #include <Gui/Utilities.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
+
 #include <Gui/WaitCursor.h>
 
 #include <Mod/Fem/App/FemAnalysis.h>
@@ -459,8 +460,8 @@ void CmdFemConstraintForce::activated(int)
               "App.activeDocument().addObject(\"Fem::ConstraintForce\",\"%s\")",
               FeatName.c_str());
     doCommand(Doc,
-              "App.activeDocument().%s.Force = 1.0",
-              FeatName.c_str());  // OvG: set default not equal to 0
+              "App.activeDocument().%s.Force = \"1 N\"",
+              FeatName.c_str());  // OvG: set default to 1 N
     doCommand(Doc,
               "App.activeDocument().%s.Reversed = False",
               FeatName.c_str());  // OvG: set default to False

@@ -35,6 +35,10 @@
 #include <QMetaMethod>
 #include <QToolTip>
 #endif
+// clang-format off
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
+// clang-format on
 
 #include <App/Document.h>
 #include <Base/Console.h>
@@ -46,8 +50,6 @@
 #include <Gui/Document.h>
 #include <Gui/Inventor/MarkerBitmaps.h>
 #include <Gui/MainWindow.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
 #include <Mod/Fem/App/FemPostPipeline.h>
 
 #include "ui_TaskPostClip.h"

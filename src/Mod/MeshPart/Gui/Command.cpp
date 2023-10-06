@@ -26,7 +26,10 @@
 #include <QMessageBox>
 #include <QPushButton>
 #endif
-
+// clang-format off
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
+// clang-format on
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Base/Converter.h>
@@ -35,8 +38,6 @@
 #include <Gui/Control.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
 #include <Mod/Mesh/App/MeshFeature.h>
 
 #include "CrossSections.h"

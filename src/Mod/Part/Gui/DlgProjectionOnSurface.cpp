@@ -42,12 +42,11 @@
 # include <TopoDS_Edge.hxx>
 # include <TopoDS_Face.hxx>
 #endif
-
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 #include <App/Document.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/MainWindow.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
 #include <Gui/Application.h>
 #include <Gui/SelectionObject.h>
 #include <Inventor/SbVec3d.h>

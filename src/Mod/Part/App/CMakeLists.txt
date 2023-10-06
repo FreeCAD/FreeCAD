@@ -1,9 +1,3 @@
-if(MSVC)
-    add_definitions(-DFCAppPart -DHAVE_ACOSH -DHAVE_ASINH -DHAVE_ATANH)
-else(MSVC)
-    add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
-endif(MSVC)
-
 if(FREETYPE_FOUND)
     add_definitions(-DFCUseFreeType)
 endif(FREETYPE_FOUND)

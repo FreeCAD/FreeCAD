@@ -28,6 +28,7 @@
 #endif
 
 #include "Workbench.h"
+#include "WorkbenchManipulator.h"
 #include "WorkbenchPy.h"
 #include "Action.h"
 #include "Application.h"
@@ -313,6 +314,12 @@ void Workbench::setupCustomShortcuts() const
     // Now managed by ShortcutManager
 }
 
+void Workbench::createContextMenu(const char* recipient, MenuItem* item) const
+{
+    setupContextMenu(recipient, item);
+    WorkbenchManipulator::changeContextMenu(recipient, item);
+}
+
 void Workbench::setupContextMenu(const char* recipient,MenuItem* item) const
 {
     Q_UNUSED(recipient);
@@ -400,6 +407,7 @@ bool Workbench::activate()
 {
     ToolBarItem* tb = setupToolBars();
     setupCustomToolbars(tb, "Toolbar");
+    WorkbenchManipulator::changeToolBars(tb);
     ToolBarManager::getInstance()->setup( tb );
     delete tb;
 
@@ -409,11 +417,13 @@ bool Workbench::activate()
     //delete cb;
 
     DockWindowItems* dw = setupDockWindows();
+    WorkbenchManipulator::changeDockWindows(dw);
     DockWindowManager::instance()->setup( dw );
     delete dw;
 
     MenuItem* mb = setupMenuBar();
     addPermanentMenuItems(mb);
+    WorkbenchManipulator::changeMenuBar(mb);
     MenuManager::getInstance()->setup( mb );
     delete mb;
 
@@ -586,7 +596,7 @@ void StdWorkbench::setupContextMenu(const char* recipient, MenuItem* item) const
 
 
         *item << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_DrawStyle" 
-              << StdViews << measure << "Std_SelectFilter" << "Separator"
+              << StdViews << measure << "Separator"
               << "Std_ViewDockUndockFullscreen";
 
         if (Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId()) > 0) {
@@ -722,7 +732,6 @@ MenuItem* StdWorkbench::setupMenuBar() const
     auto macro = new MenuItem( menuBar );
     macro->setCommand("&Macro");
     *macro << "Std_DlgMacroRecord"
-           << "Std_MacroStopRecord"
            << "Std_DlgMacroExecute"
            << "Std_RecentMacros"
            << "Separator"
@@ -786,7 +795,7 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     // Macro
     auto macro = new ToolBarItem( root );
     macro->setCommand("Macro");
-    *macro << "Std_DlgMacroRecord" << "Std_MacroStopRecord" << "Std_DlgMacroExecute"
+    *macro << "Std_DlgMacroRecord" << "Std_DlgMacroExecute"
            << "Std_DlgMacroExecuteDirect";
 
     // View
@@ -795,7 +804,7 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     *view << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_ViewIsometric"
           << "Std_ViewFront"<< "Std_ViewTop" << "Std_ViewRight"
           << "Std_ViewRear" << "Std_ViewBottom"<< "Std_ViewLeft"
-          << "Separator" << "Std_DrawStyle" << "Std_SelectFilter" << "Std_TreeViewActions"
+          << "Separator" << "Std_DrawStyle" << "Std_TreeViewActions"
           << "Separator" << "Std_MeasureDistance";
 
     // Structure
@@ -820,12 +829,12 @@ ToolBarItem* StdWorkbench::setupCommandBars() const
     view->setCommand("Standard views");
     *view << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_ViewIsometric" << "Separator"
           << "Std_ViewFront" << "Std_ViewRight" << "Std_ViewTop" << "Separator"
-          << "Std_ViewRear" << "Std_ViewLeft" << "Std_ViewBottom" << "Std_SelectFilter";
+          << "Std_ViewRear" << "Std_ViewLeft" << "Std_ViewBottom";
 
     // Special Ops
     auto macro = new ToolBarItem( root );
     macro->setCommand("Special Ops");
-    *macro << "Std_DlgParameter" << "Std_DlgPreferences" << "Std_DlgMacroRecord" << "Std_MacroStopRecord"
+    *macro << "Std_DlgParameter" << "Std_DlgPreferences" << "Std_DlgMacroRecord"
            << "Std_DlgMacroExecute" << "Std_DlgCustomize";
 
     return root;

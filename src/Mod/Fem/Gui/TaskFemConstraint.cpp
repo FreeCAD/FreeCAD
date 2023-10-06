@@ -32,10 +32,12 @@
 #include <sstream>
 #endif
 
+#include <Gui/Command.h>
+
 #include <App/Document.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
-#include <Gui/Command.h>
+
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
 #include <Gui/ViewProvider.h>

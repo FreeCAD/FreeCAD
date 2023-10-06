@@ -67,8 +67,8 @@ static inline Quantity_ColorRGBA convertColor(const App::Color& c)
 using namespace Import;
 
 
-ExportOCAF::ExportOCAF(Handle(TDocStd_Document) h, bool explicitPlacement)
-    : pDoc(h)
+ExportOCAF::ExportOCAF(Handle(TDocStd_Document) hDoc, bool explicitPlacement)
+    : pDoc(hDoc)
     , keepExplicitPlacement(explicitPlacement)
 {
     aShapeTool = XCAFDoc_DocumentTool::ShapeTool(pDoc->Main());
@@ -127,6 +127,30 @@ std::vector<App::DocumentObject*> ExportOCAF::filterPart(App::Part* part) const
     }
 
     return entries;
+}
+
+void ExportOCAF::exportObjects(std::vector<App::DocumentObject*>& objs)
+{
+    // That stuff is exporting a list of selected objects into FreeCAD Tree
+    std::vector<TDF_Label> hierarchical_label;
+    std::vector<TopLoc_Location> hierarchical_loc;
+    std::vector<App::DocumentObject*> hierarchical_part;
+    for (auto obj : objs) {
+        exportObject(obj, hierarchical_label, hierarchical_loc, hierarchical_part);
+    }
+
+    // Free Shapes must have absolute placement and not explicit
+    std::vector<TDF_Label> FreeLabels;
+    std::vector<int> part_id;
+    getFreeLabels(hierarchical_label, FreeLabels, part_id);
+
+    std::vector<std::vector<App::Color>> Colors;
+    getPartColors(hierarchical_part, FreeLabels, part_id, Colors);
+    reallocateFreeShape(hierarchical_part, FreeLabels, part_id, Colors);
+
+    // Update is not performed automatically anymore:
+    // https://tracker.dev.opencascade.org/view.php?id=28055
+    XCAFDoc_DocumentTool::ShapeTool(pDoc->Main())->UpdateAssemblies();
 }
 
 int ExportOCAF::exportObject(App::DocumentObject* obj,
