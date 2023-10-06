@@ -98,6 +98,11 @@ int PointMarker::countPoints() const
     return vp->pCoords->point.getNum();
 }
 
+void PointMarker::clearPoints() const
+{
+    vp->pCoords->point.setNum(0);
+}
+
 void PointMarker::customEvent(QEvent*)
 {
     const SbVec3f& pt1 = vp->pCoords->point[0];
@@ -177,6 +182,11 @@ void DataMarker::addPoint(const SbVec3f& pt)
 int DataMarker::countPoints() const
 {
     return vp->pCoords->point.getNum();
+}
+
+void DataMarker::setPoint(int idx, const SbVec3f& pt) const
+{
+    vp->pCoords->point.set1Value(idx, pt);
 }
 
 void DataMarker::customEvent(QEvent*)
@@ -532,6 +542,7 @@ TaskPostDataAlongLine::TaskPostDataAlongLine(ViewProviderDocumentObject* view, Q
                   tr("Data along a line options"),
                   parent)
     , ui(new Ui_TaskPostDataAlongLine)
+    , marker(nullptr)
 {
     assert(view->isDerivedFrom(ViewProviderFemPostDataAlongLine::getClassTypeId()));
 
@@ -654,7 +665,7 @@ void TaskPostDataAlongLine::setupConnectionsStep2()
 void TaskPostDataAlongLine::applyPythonCode()
 {}
 
-static const char* cursor_triangle[] = {"32 32 3 1",
+static const char* cursor_triangle[] = {"32 17 3 1",
                                         "       c None",
                                         ".      c #FFFFFF",
                                         "+      c #FF0000",
@@ -689,8 +700,14 @@ void TaskPostDataAlongLine::onSelectPointsClicked()
         // Derives from QObject and we have a parent object, so we don't
         // require a delete.
         std::string ObjName = getObject()->getNameInDocument();
+        if (!marker) {
+            marker = new FemGui::PointMarker(viewer, ObjName);
+            marker->setParent(this);
+        }
+        else if (marker->countPoints() == 2) {
+            marker->clearPoints();
+        }
 
-        FemGui::PointMarker* marker = new FemGui::PointMarker(viewer, ObjName);
         viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(),
                                  FemGui::TaskPostDataAlongLine::pointCallback,
                                  marker);
@@ -828,7 +845,10 @@ void TaskPostDataAlongLine::pointCallback(void* ud, SoEventCallback* n)
         }
 
         n->setHandled();
-        pm->addPoint(point->getPoint());
+        if (pm->countPoints() < 2) {
+            pm->addPoint(point->getPoint());
+        }
+
         if (pm->countPoints() == 2) {
             QEvent* e = new QEvent(QEvent::User);
             QApplication::postEvent(pm, e);
@@ -842,7 +862,6 @@ void TaskPostDataAlongLine::pointCallback(void* ud, SoEventCallback* n)
         n->setHandled();
         view->setEditing(false);
         view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), pointCallback, ud);
-        pm->deleteLater();
     }
 }
 
@@ -898,6 +917,7 @@ TaskPostDataAtPoint::TaskPostDataAtPoint(ViewProviderDocumentObject* view, QWidg
                   tr("Data at point options"),
                   parent)
     , ui(new Ui_TaskPostDataAtPoint)
+    , marker(nullptr)
 {
     assert(view->isDerivedFrom(ViewProviderFemPostDataAtPoint::getClassTypeId()));
 
@@ -1016,7 +1036,11 @@ void TaskPostDataAtPoint::onSelectPointClicked()
         // require a delete.
         std::string ObjName = getObject()->getNameInDocument();
 
-        FemGui::DataMarker* marker = new FemGui::DataMarker(viewer, ObjName);
+        if (!marker) {
+            marker = new FemGui::DataMarker(viewer, ObjName);
+            marker->setParent(this);
+        }
+
         viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(),
                                  FemGui::TaskPostDataAtPoint::pointCallback,
                                  marker);
@@ -1092,8 +1116,13 @@ void TaskPostDataAtPoint::pointCallback(void* ud, SoEventCallback* n)
         }
 
         n->setHandled();
-        pm->addPoint(point->getPoint());
-        if (pm->countPoints() == 1) {
+        if (pm->countPoints() < 2) {
+            if (pm->countPoints() == 0) {
+                pm->addPoint(point->getPoint());
+            }
+            else {
+                pm->setPoint(0, point->getPoint());
+            }
             QEvent* e = new QEvent(QEvent::User);
             QApplication::postEvent(pm, e);
             // leave mode
@@ -1106,7 +1135,6 @@ void TaskPostDataAtPoint::pointCallback(void* ud, SoEventCallback* n)
         n->setHandled();
         view->setEditing(false);
         view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), pointCallback, ud);
-        pm->deleteLater();
     }
 }
 
