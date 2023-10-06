@@ -47,6 +47,8 @@ class MockTC(object):
 
 class MockOp(object):
     def __init__(self, path, dia=2):
+        self.Name = "OP"
+        self.Label = "OP"
         self.Path = Path.Path(path)
         self.ToolController = MockTC(dia)
 
@@ -85,7 +87,7 @@ class MockFeaturePython(object):
 
 def CreateDressup(path):
     op = MockOp(path)
-    obj = MockFeaturePython("DogboneII")
+    obj = MockFeaturePython("DressupDogbone")
     db = Path.Dressup.DogboneII.Proxy(obj, op)
     obj.Proxy = db
     return obj
@@ -626,7 +628,7 @@ class TestDressupDogboneII(PathTestUtils.PathTestBase):
 
         obj = self.test90()
 
-        obj2 = MockFeaturePython("DogboneII_")
+        obj2 = MockFeaturePython("DressupDogbone001")
         db2 = Path.Dressup.DogboneII.Proxy(obj2, obj)
         obj2.Proxy = db2
         obj2.Incision = Path.Dressup.DogboneII.Incision.Fixed

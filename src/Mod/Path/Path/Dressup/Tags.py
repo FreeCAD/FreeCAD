@@ -868,12 +868,9 @@ class PathData:
         return (currentLength, lastTagLength)
 
     def defaultTagHeight(self):
-        if (
-            hasattr(self.obj, "Base")
-            and hasattr(self.obj.Base, "StartDepth")
-            and hasattr(self.obj.Base, "FinalDepth")
-        ):
-            pathHeight = (self.obj.Base.StartDepth - self.obj.Base.FinalDepth).Value
+        op = PathDressup.baseOp(self.obj.Base)
+        if hasattr(op, "StartDepth") and hasattr(op, "FinalDepth"):
+            pathHeight = (op.StartDepth - op.FinalDepth).Value
         else:
             pathHeight = self.maxZ - self.minZ
         height = HoldingTagPreferences.defaultHeight(pathHeight / 2)
