@@ -26,6 +26,8 @@
 #include <QInputDialog>
 #include <algorithm>
 #endif
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 
 #include <App/Application.h>
 #include <App/Document.h>
@@ -39,8 +41,7 @@
 #include <Gui/FileDialog.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
+
 #include <Gui/ViewProviderDocumentObject.h>
 #include <Gui/WaitCursor.h>
 

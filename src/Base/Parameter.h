@@ -53,6 +53,7 @@ using PyObject = struct _object;
 #include <vector>
 #include <boost_signals2.hpp>
 #include <xercesc/util/XercesDefs.hpp>
+#include <xercesc/sax/ErrorHandler.hpp>
 
 #include "Handle.h"
 #include "Observer.h"
@@ -64,7 +65,6 @@ using PyObject = struct _object;
 #	pragma warning( disable : 4290 )  // not implemented throw specification
 #	pragma warning( disable : 4275 )
 #endif
-
 
 XERCES_CPP_NAMESPACE_BEGIN
 class DOMNode;
@@ -269,6 +269,7 @@ protected:
     ~ParameterGrp() override;
     /// helper function for GetGroup
     Base::Reference<ParameterGrp> _GetGroup(const char* Name);
+
     bool ShouldRemove() const;
 
     void _Reset();
@@ -421,10 +422,42 @@ private:
     bool          gUseFilter            ;
     bool          gFormatPrettyPrint    ;
 
-private:
     ParameterManager();
     ~ParameterManager() override;
 };
+
+XERCES_CPP_NAMESPACE_USE
+
+class DOMTreeErrorReporter : public ErrorHandler
+{
+public:
+    // -----------------------------------------------------------------------
+    //  Constructors and Destructor
+    // -----------------------------------------------------------------------
+	DOMTreeErrorReporter();
+    // -----------------------------------------------------------------------
+    //  Implementation of the error handler interface
+    // -----------------------------------------------------------------------
+    void warning(const SAXParseException& toCatch) override;
+    void error(const SAXParseException& toCatch) override;
+    void fatalError(const SAXParseException& toCatch) override;
+    void resetErrors() override;
+    // -----------------------------------------------------------------------
+    //  Getter methods
+    // -----------------------------------------------------------------------
+    bool getSawErrors() const;
+private:
+	// -----------------------------------------------------------------------
+    //  Private data members
+    //
+    //  fSawErrors
+    //      This is set if we get any errors, and is queryable via a getter
+    //      method. Its used by the main code to suppress output if there are
+    //      errors.
+    // -----------------------------------------------------------------------
+	bool fSawErrors;
+};
+
 
 /** python wrapper function
 */

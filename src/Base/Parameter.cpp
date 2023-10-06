@@ -33,7 +33,6 @@
 #   include <xercesc/framework/MemBufFormatTarget.hpp>
 #   include <xercesc/framework/MemBufInputSource.hpp>
 #   include <xercesc/parsers/XercesDOMParser.hpp>
-#   include <xercesc/sax/ErrorHandler.hpp>
 #   include <xercesc/sax/SAXParseException.hpp>
 #   include <sstream>
 #   include <string>
@@ -64,49 +63,49 @@ using namespace Base;
 //**************************************************************************
 //**************************************************************************
 // private classes declaration:
-// - DOMTreeErrorReporter
 // - StrX
 // - DOMPrintFilter
 // - DOMPrintErrorHandler
 // - XStr
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+DOMTreeErrorReporter::DOMTreeErrorReporter():
+	fSawErrors(false) {
+}
 
-
-class DOMTreeErrorReporter : public ErrorHandler
+void DOMTreeErrorReporter::warning(const SAXParseException&)
 {
-public:
-    // -----------------------------------------------------------------------
-    //  Constructors and Destructor
-    // -----------------------------------------------------------------------
-    DOMTreeErrorReporter() = default;
+	//
+	// Ignore all warnings.
+	//
+}
 
-    ~DOMTreeErrorReporter() override = default;
+void DOMTreeErrorReporter::error(const SAXParseException& toCatch)
+{
+	fSawErrors = true;
+	std::cerr << "Error at file \"" << StrX(toCatch.getSystemId())
+	<< "\", line " << toCatch.getLineNumber()
+	<< ", column " << toCatch.getColumnNumber()
+	<< "\n   Message: " << StrX(toCatch.getMessage()) << std::endl;
+}
 
+void DOMTreeErrorReporter::fatalError(const SAXParseException& toCatch)
+{
+	fSawErrors = true;
+	std::cerr << "Fatal Error at file \"" << StrX(toCatch.getSystemId())
+	<< "\", line " << toCatch.getLineNumber()
+	<< ", column " << toCatch.getColumnNumber()
+	<< "\n   Message: " << StrX(toCatch.getMessage()) << std::endl;
+}
 
-    // -----------------------------------------------------------------------
-    //  Implementation of the error handler interface
-    // -----------------------------------------------------------------------
-    void warning(const SAXParseException& toCatch) override;
-    void error(const SAXParseException& toCatch) override;
-    void fatalError(const SAXParseException& toCatch) override;
-    void resetErrors() override;
+void DOMTreeErrorReporter::resetErrors()
+{
+	// No-op in this case
+}
 
-    // -----------------------------------------------------------------------
-    //  Getter methods
-    // -----------------------------------------------------------------------
-    bool getSawErrors() const;
-
-    // -----------------------------------------------------------------------
-    //  Private data members
-    //
-    //  fSawErrors
-    //      This is set if we get any errors, and is queryable via a getter
-    //      method. Its used by the main code to suppress output if there are
-    //      errors.
-    // -----------------------------------------------------------------------
-    bool    fSawErrors{false};
-};
-
+inline bool DOMTreeErrorReporter::getSawErrors() const
+{
+    return fSawErrors;
+}
 
 class DOMPrintFilter : public DOMLSSerializerFilter
 {
@@ -150,14 +149,6 @@ public:
     void operator=(const DOMErrorHandler&) = delete;
 
 };
-
-
-inline bool DOMTreeErrorReporter::getSawErrors() const
-{
-    return fSawErrors;
-}
-
-
 //**************************************************************************
 //**************************************************************************
 // ParameterManager
@@ -1830,42 +1821,6 @@ void  ParameterManager::CheckDocument() const
         << std::endl
         << StrX(e.getMessage()) << std::endl;
     }
-}
-
-
-//**************************************************************************
-//**************************************************************************
-// DOMTreeErrorReporter
-//++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-void DOMTreeErrorReporter::warning(const SAXParseException&)
-{
-    //
-    // Ignore all warnings.
-    //
-}
-
-void DOMTreeErrorReporter::error(const SAXParseException& toCatch)
-{
-    fSawErrors = true;
-    std::cerr << "Error at file \"" << StrX(toCatch.getSystemId())
-    << "\", line " << toCatch.getLineNumber()
-    << ", column " << toCatch.getColumnNumber()
-    << "\n   Message: " << StrX(toCatch.getMessage()) << std::endl;
-}
-
-void DOMTreeErrorReporter::fatalError(const SAXParseException& toCatch)
-{
-    fSawErrors = true;
-    std::cerr << "Fatal Error at file \"" << StrX(toCatch.getSystemId())
-    << "\", line " << toCatch.getLineNumber()
-    << ", column " << toCatch.getColumnNumber()
-    << "\n   Message: " << StrX(toCatch.getMessage()) << std::endl;
-}
-
-void DOMTreeErrorReporter::resetErrors()
-{
-    // No-op in this case
 }
 
 

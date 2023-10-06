@@ -25,7 +25,7 @@
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Base/PyObjectBase.h>
-#include <Gui/Application.h>
+
 #include <Gui/WidgetFactory.h>
 #include <Gui/Language/Translator.h>
 
@@ -34,6 +34,7 @@
 #include "ViewProviderPath.h"
 #include "ViewProviderPathCompound.h"
 #include "ViewProviderPathShape.h"
+#include <Gui/Application.h>
 
 
 // use a different name to CreateCommand()

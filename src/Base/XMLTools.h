@@ -28,16 +28,10 @@
 #include <memory>
 #include <iostream>
 #include <xercesc/util/TransService.hpp>
+#include <xercesc/util/XercesDefs.hpp>
 
 #include <Base/Exception.h>
-
-
-XERCES_CPP_NAMESPACE_BEGIN
-    class DOMNode;
-    class DOMElement;
-    class DOMDocument;
-XERCES_CPP_NAMESPACE_END
-
+XERCES_CPP_NAMESPACE_USE
 // Helper class
 class BaseExport XMLTools
 {
@@ -48,7 +42,7 @@ public:
     static void terminate();
 
 private:
-    static std::unique_ptr<XERCES_CPP_NAMESPACE::XMLTranscoder> transcoder;
+    static std::unique_ptr<XMLTranscoder> transcoder;
 };
 
 //**************************************************************************
@@ -79,12 +73,12 @@ inline std::ostream& operator<<(std::ostream& target, const StrX& toDump)
 inline StrX::StrX(const XMLCh* const toTranscode)
 {
     // Call the private transcoding method
-    fLocalForm = XERCES_CPP_NAMESPACE_QUALIFIER XMLString::transcode(toTranscode);
+    fLocalForm = XMLString::transcode(toTranscode);
 }
 
 inline StrX::~StrX()
 {
-    XERCES_CPP_NAMESPACE_QUALIFIER XMLString::release(&fLocalForm);
+    XMLString::release(&fLocalForm);
 }
 
 
@@ -158,12 +152,12 @@ private :
 
 inline XStr::XStr(const char* const toTranscode)
 {
-    fUnicodeForm = XERCES_CPP_NAMESPACE_QUALIFIER XMLString::transcode(toTranscode);
+    fUnicodeForm = XMLString::transcode(toTranscode);
 }
 
 inline XStr::~XStr()
 {
-    XERCES_CPP_NAMESPACE_QUALIFIER XMLString::release(&fUnicodeForm);
+    XMLString::release(&fUnicodeForm);
 }
 
 

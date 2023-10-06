@@ -61,6 +61,8 @@ public:
 
     void Save(Base::Writer& writer) const override;
     void Restore(Base::XMLReader& reader) override;
+    void Restore(Base::DocumentReader& reader,
+                 XERCES_CPP_NAMESPACE_QUALIFIER DOMElement* containerEl) override;
 
     Property* Copy() const override;
     void Paste(const Property& from) override;

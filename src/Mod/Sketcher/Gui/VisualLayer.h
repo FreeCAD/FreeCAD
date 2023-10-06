@@ -52,6 +52,8 @@ public:
 
     void Save(Base::Writer& /*writer*/) const;
     void Restore(Base::XMLReader& /*reader*/);
+    void Restore(Base::DocumentReader& reader,
+                 XERCES_CPP_NAMESPACE_QUALIFIER DOMElement* containerEl);
 
 private:
     unsigned int linePattern;

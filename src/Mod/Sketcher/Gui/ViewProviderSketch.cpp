@@ -39,6 +39,11 @@
 #include <QTextStream>
 #endif
 
+// clang-format off
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
+// clang-format on
+
 #include <Base/Console.h>
 #include <Base/Vector3D.h>
 #include <Gui/Application.h>
@@ -52,8 +57,6 @@
 #include <Gui/SelectionObject.h>
 #include <Gui/SoFCUnifiedSelection.h>
 #include <Gui/Utilities.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
 #include <Mod/Part/App/Geometry.h>
 #include <Mod/Sketcher/App/GeoList.h>
 #include <Mod/Sketcher/App/GeometryFacade.h>

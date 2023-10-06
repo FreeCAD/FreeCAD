@@ -26,15 +26,15 @@
 #include "XMLTools.h"
 
 using namespace Base;
+XERCES_CPP_NAMESPACE_USE
 
-std::unique_ptr<XERCES_CPP_NAMESPACE::XMLTranscoder> XMLTools::transcoder;
+std::unique_ptr<XMLTranscoder> XMLTools::transcoder;
 
 void XMLTools::initialize()
 {
-    XERCES_CPP_NAMESPACE_USE;
     if (!transcoder.get()) {
         XMLTransService::Codes res{};
-        transcoder.reset(XERCES_CPP_NAMESPACE_QUALIFIER XMLPlatformUtils::fgTransService->makeNewTranscoderFor(XERCES_CPP_NAMESPACE_QUALIFIER XMLRecognizer::UTF_8, res, 4096, XERCES_CPP_NAMESPACE_QUALIFIER XMLPlatformUtils::fgMemoryManager));
+        transcoder.reset(XMLPlatformUtils::fgTransService->makeNewTranscoderFor(XMLRecognizer::UTF_8, res, 4096, XMLPlatformUtils::fgMemoryManager));
         if (res != XMLTransService::Ok)
             throw Base::UnicodeError("Can\'t create transcoder");
     }
@@ -44,7 +44,6 @@ std::string XMLTools::toStdString(const XMLCh* const toTranscode)
 {
     std::string str;
 
-    XERCES_CPP_NAMESPACE_USE;
     initialize();
 
     //char outBuff[128];
@@ -74,8 +73,7 @@ std::basic_string<XMLCh> XMLTools::toXMLString(const char* const fromTranscode)
     std::basic_string<XMLCh> str;
     if (!fromTranscode)
         return str;
-
-    XERCES_CPP_NAMESPACE_USE;
+	
     initialize();
 
     static XMLCh outBuff[128];

@@ -29,7 +29,8 @@
 # include <Precision.hxx>
 # include <QMenu>
 #endif
-
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 #include <App/Document.h>
 #include <App/Origin.h>
 #include <App/Part.h>
@@ -39,8 +40,6 @@
 #include <Gui/Command.h>
 #include <Gui/Document.h>
 #include <Gui/MDIView.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
 #include <Gui/ViewProviderOrigin.h>
 #include <Gui/ViewProviderOriginFeature.h>
 #include <Mod/PartDesign/App/Body.h>
