@@ -186,6 +186,132 @@ bool isGeoConcentricCompatible(const Part::Geometry* geo)
     return (isEllipse(*geo) || isArcOfEllipse(*geo) || isCircle(*geo) || isArcOfCircle(*geo));
 }
 
+/// Makes an angle constraint between 2 lines
+void SketcherGui::makeAngleBetweenTwoLines(Sketcher::SketchObject* Obj,
+    Gui::Command* cmd,
+    int geoId1,
+    int geoId2)
+{
+    Sketcher::PointPos posId1 = Sketcher::PointPos::none;
+    Sketcher::PointPos posId2 = Sketcher::PointPos::none;
+    double actAngle;
+
+    if (!calculateAngle(Obj, geoId1, geoId2, posId1, posId2, actAngle)) {
+        return;
+    }
+
+    if (actAngle == 0.0) {
+        Gui::TranslatedUserWarning(
+            Obj,
+            QObject::tr("Parallel lines"),
+            QObject::tr("An angle constraint cannot be set for two parallel lines."));
+
+        return;
+    }
+
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add angle constraint"));
+    Gui::cmdAppObjectArgs(Obj,
+        "addConstraint(Sketcher.Constraint('Angle',%d,%d,%d,%d,%f))",
+        geoId1,
+        static_cast<int>(posId1),
+        geoId2,
+        static_cast<int>(posId2),
+        actAngle);
+
+    if (areBothPointsOrSegmentsFixed(Obj, geoId1, geoId2)
+        || constraintCreationMode == Reference) {
+        // it is a constraint on a external line, make it non-driving
+        const std::vector<Sketcher::Constraint*>& ConStr = Obj->Constraints.getValues();
+
+        Gui::cmdAppObjectArgs(Obj, "setDriving(%d,%s)", ConStr.size() - 1, "False");
+        finishDatumConstraint(cmd, Obj, false);
+    }
+    else {
+        finishDatumConstraint(cmd, Obj, true);
+    }
+}
+
+
+
+bool SketcherGui::calculateAngle(Sketcher::SketchObject* Obj, int& GeoId1, int& GeoId2, Sketcher::PointPos& PosId1, Sketcher::PointPos& PosId2, double& ActAngle)
+{
+    const Part::Geometry* geom1 = Obj->getGeometry(GeoId1);
+    const Part::Geometry* geom2 = Obj->getGeometry(GeoId2);
+
+    if (!(geom1->getTypeId() == Part::GeomLineSegment::getClassTypeId()) ||
+        !(geom2->getTypeId() == Part::GeomLineSegment::getClassTypeId())) {
+        return false;
+    }
+
+    const Part::GeomLineSegment* lineSeg1 = static_cast<const Part::GeomLineSegment*>(geom1);
+    const Part::GeomLineSegment* lineSeg2 = static_cast<const Part::GeomLineSegment*>(geom2);
+
+    // find the two closest line ends
+    Base::Vector3d p1[2], p2[2];
+    p1[0] = lineSeg1->getStartPoint();
+    p1[1] = lineSeg1->getEndPoint();
+    p2[0] = lineSeg2->getStartPoint();
+    p2[1] = lineSeg2->getEndPoint();
+
+    // Get the intersection point in 2d of the two lines if possible
+    Base::Line2d line1(Base::Vector2d(p1[0].x, p1[0].y), Base::Vector2d(p1[1].x, p1[1].y));
+    Base::Line2d line2(Base::Vector2d(p2[0].x, p2[0].y), Base::Vector2d(p2[1].x, p2[1].y));
+    Base::Vector2d s;
+    if (line1.Intersect(line2, s)) {
+        // get the end points of the line segments that are closest to the intersection point
+        Base::Vector3d s3d(s.x, s.y, p1[0].z);
+        if (Base::DistanceP2(s3d, p1[0]) < Base::DistanceP2(s3d, p1[1]))
+            PosId1 = Sketcher::PointPos::start;
+        else
+            PosId1 = Sketcher::PointPos::end;
+        if (Base::DistanceP2(s3d, p2[0]) < Base::DistanceP2(s3d, p2[1]))
+            PosId2 = Sketcher::PointPos::start;
+        else
+            PosId2 = Sketcher::PointPos::end;
+    }
+    else {
+        // if all points are collinear
+        double length = DBL_MAX;
+        for (int i = 0; i <= 1; i++) {
+            for (int j = 0; j <= 1; j++) {
+                double tmp = Base::DistanceP2(p2[j], p1[i]);
+                if (tmp < length) {
+                    length = tmp;
+                    PosId1 = i ? Sketcher::PointPos::end : Sketcher::PointPos::start;
+                    PosId2 = j ? Sketcher::PointPos::end : Sketcher::PointPos::start;
+                }
+            }
+        }
+    }
+
+    Base::Vector3d dir1 = ((PosId1 == Sketcher::PointPos::start) ? 1. : -1.) *
+        (lineSeg1->getEndPoint() - lineSeg1->getStartPoint());
+    Base::Vector3d dir2 = ((PosId2 == Sketcher::PointPos::start) ? 1. : -1.) *
+        (lineSeg2->getEndPoint() - lineSeg2->getStartPoint());
+
+    // check if the two lines are parallel
+    Base::Vector3d dir3 = dir1 % dir2;
+    if (dir3.Length() < Precision::Intersection()) {
+        Base::Vector3d dist = (p1[0] - p2[0]) % dir1;
+        if (dist.Sqr() > Precision::Intersection()) {
+            ActAngle = 0.0;
+            return true;
+        }
+    }
+
+    ActAngle = atan2(dir1.x * dir2.y - dir1.y * dir2.x,
+        dir1.y * dir2.y + dir1.x * dir2.x);
+
+    if (ActAngle < 0) {
+        ActAngle *= -1;
+        std::swap(GeoId1, GeoId2);
+        std::swap(PosId1, PosId2);
+    }
+
+    return true;
+}
+
+
 /// Makes a simple tangency constraint using extra point + tangent via point
 /// ellipse => an ellipse
 /// geom2 => any of an ellipse, an arc of ellipse, a circle, or an arc (of circle)
@@ -2136,95 +2262,33 @@ protected:
     }
 
     void createAngleConstrain(int GeoId1, int GeoId2, Base::Vector2d onSketchPos) {
-        const Part::Geometry* geom1 = Obj->getGeometry(GeoId1);
-        const Part::Geometry* geom2 = Obj->getGeometry(GeoId2);
+        Sketcher::PointPos PosId1 = Sketcher::PointPos::none;
+        Sketcher::PointPos PosId2 = Sketcher::PointPos::none;
+        double ActAngle;
 
-        if (isLineSegment(*geom1) && isLineSegment(*geom2)) {
-            auto lineSeg1 = static_cast<const Part::GeomLineSegment*>(geom1);
-            auto lineSeg2 = static_cast<const Part::GeomLineSegment*>(geom2);
-
-            // find the two closest line ends
-            Sketcher::PointPos PosId1 = Sketcher::PointPos::none;
-            Sketcher::PointPos PosId2 = Sketcher::PointPos::none;
-            Base::Vector3d p1[2], p2[2];
-            p1[0] = lineSeg1->getStartPoint();
-            p1[1] = lineSeg1->getEndPoint();
-            p2[0] = lineSeg2->getStartPoint();
-            p2[1] = lineSeg2->getEndPoint();
-
-            // Get the intersection point in 2d of the two lines if possible
-            Base::Line2d line1(Base::Vector2d(p1[0].x, p1[0].y), Base::Vector2d(p1[1].x, p1[1].y));
-            Base::Line2d line2(Base::Vector2d(p2[0].x, p2[0].y), Base::Vector2d(p2[1].x, p2[1].y));
-            Base::Vector2d s;
-            if (line1.Intersect(line2, s)) {
-                // get the end points of the line segments that are closest to the intersection point
-                Base::Vector3d s3d(s.x, s.y, p1[0].z);
-                if (Base::DistanceP2(s3d, p1[0]) < Base::DistanceP2(s3d, p1[1]))
-                    PosId1 = Sketcher::PointPos::start;
-                else
-                    PosId1 = Sketcher::PointPos::end;
-                if (Base::DistanceP2(s3d, p2[0]) < Base::DistanceP2(s3d, p2[1]))
-                    PosId2 = Sketcher::PointPos::start;
-                else
-                    PosId2 = Sketcher::PointPos::end;
-            }
-            else {
-                // if all points are collinear
-                double length = DBL_MAX;
-                for (int i = 0; i <= 1; i++) {
-                    for (int j = 0; j <= 1; j++) {
-                        double tmp = Base::DistanceP2(p2[j], p1[i]);
-                        if (tmp < length) {
-                            length = tmp;
-                            PosId1 = i ? Sketcher::PointPos::end : Sketcher::PointPos::start;
-                            PosId2 = j ? Sketcher::PointPos::end : Sketcher::PointPos::start;
-                        }
-                    }
-                }
-            }
-
-            Base::Vector3d dir1 = ((PosId1 == Sketcher::PointPos::start) ? 1. : -1.) *
-                (lineSeg1->getEndPoint() - lineSeg1->getStartPoint());
-            Base::Vector3d dir2 = ((PosId2 == Sketcher::PointPos::start) ? 1. : -1.) *
-                (lineSeg2->getEndPoint() - lineSeg2->getStartPoint());
-
-            // check if the two lines are parallel, in this case an angle is not possible
-            Base::Vector3d dir3 = dir1 % dir2;
-            if (dir3.Length() < Precision::Intersection()) {
-                Base::Vector3d dist = (p1[0] - p2[0]) % dir1;
-                if (dist.Sqr() > Precision::Intersection()) {
-                    //distance between 2 points
-                    restartCommand(QT_TRANSLATE_NOOP("Command", "Add Distance constraint"));
-                    if ((selLine[0].GeoId == Sketcher::GeoEnum::VAxis || selLine[0].GeoId == Sketcher::GeoEnum::HAxis)) {
-                        createDistanceConstrain(selLine[1].GeoId, Sketcher::PointPos::start, selLine[0].GeoId, selLine[0].PosId, onSketchPos);
-                    }
-                    else {
-                        createDistanceConstrain(selLine[0].GeoId, Sketcher::PointPos::start, selLine[1].GeoId, selLine[1].PosId, onSketchPos);
-                    }
-                    return;
-                }
-            }
-
-            double ActAngle = atan2(dir1.x * dir2.y - dir1.y * dir2.x,
-                dir1.y * dir2.y + dir1.x * dir2.x);
-            if (ActAngle < 0) {
-                ActAngle *= -1;
-                std::swap(GeoId1, GeoId2);
-                std::swap(PosId1, PosId2);
-            }
-
-            Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Angle',%d,%d,%d,%d,%f)) ",
-                GeoId1, static_cast<int>(PosId1), GeoId2, static_cast<int>(PosId2), ActAngle);
-
-            const std::vector<Sketcher::Constraint*>& ConStr = Obj->Constraints.getValues();
-            if (areBothPointsOrSegmentsFixed(Obj, GeoId1, GeoId2) || constraintCreationMode == Reference) {
-                // it is a constraint on a external line, make it non-driving
-
-                Gui::cmdAppObjectArgs(Obj, "setDriving(%i,%s)", ConStr.size() - 1, "False");
-            }
-            numberOfConstraintsCreated++;
-            moveConstraint(ConStr.size() - 1, onSketchPos);
+        if (calculateAngle(Obj, GeoId1, GeoId2, PosId1, PosId2, ActAngle)) {
+            return;
         }
+
+
+        if (ActAngle == 0.0) {
+            //Here we are sure that GeoIds are lines. So false means that lines are parallel, we change to distance
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add Distance constraint"));
+            createDistanceConstrain(selLine[1].GeoId, Sketcher::PointPos::start, selLine[0].GeoId, selLine[0].PosId, onSketchPos);
+            return;
+        }
+
+        Gui::cmdAppObjectArgs(Obj, "addConstraint(Sketcher.Constraint('Angle',%d,%d,%d,%d,%f)) ",
+            GeoId1, static_cast<int>(PosId1), GeoId2, static_cast<int>(PosId2), ActAngle);
+
+        const std::vector<Sketcher::Constraint*>& ConStr = Obj->Constraints.getValues();
+        if (areBothPointsOrSegmentsFixed(Obj, GeoId1, GeoId2) || constraintCreationMode == Reference) {
+            // it is a constraint on a external line, make it non-driving
+
+            Gui::cmdAppObjectArgs(Obj, "setDriving(%i,%s)", ConStr.size() - 1, "False");
+        }
+        numberOfConstraintsCreated++;
+        moveConstraint(ConStr.size() - 1, onSketchPos);
     }
 
     void createArcAngleConstrain(int GeoId, Base::Vector2d onSketchPos) {
@@ -8697,114 +8761,8 @@ void CmdSketcherConstrainAngle::activated(int iMsg)
         }
 
         if (isEdge(GeoId2, PosId2)) {// line to line angle
-
-            const Part::Geometry* geom1 = Obj->getGeometry(GeoId1);
-            const Part::Geometry* geom2 = Obj->getGeometry(GeoId2);
-
-            if (isLineSegment(*geom1) && isLineSegment(*geom2)) {
-                auto lineSeg1 = static_cast<const Part::GeomLineSegment*>(geom1);
-                auto lineSeg2 = static_cast<const Part::GeomLineSegment*>(geom2);
-
-                // find the two closest line ends
-                Sketcher::PointPos PosId1 = Sketcher::PointPos::none;
-                Sketcher::PointPos PosId2 = Sketcher::PointPos::none;
-                Base::Vector3d p1[2], p2[2];
-                p1[0] = lineSeg1->getStartPoint();
-                p1[1] = lineSeg1->getEndPoint();
-                p2[0] = lineSeg2->getStartPoint();
-                p2[1] = lineSeg2->getEndPoint();
-
-                // Get the intersection point in 2d of the two lines if possible
-                Base::Line2d line1(Base::Vector2d(p1[0].x, p1[0].y),
-                                   Base::Vector2d(p1[1].x, p1[1].y));
-                Base::Line2d line2(Base::Vector2d(p2[0].x, p2[0].y),
-                                   Base::Vector2d(p2[1].x, p2[1].y));
-                Base::Vector2d s;
-                if (line1.Intersect(line2, s)) {
-                    // get the end points of the line segments that are closest to the intersection
-                    // point
-                    Base::Vector3d s3d(s.x, s.y, p1[0].z);
-                    if (Base::DistanceP2(s3d, p1[0]) < Base::DistanceP2(s3d, p1[1])) {
-                        PosId1 = Sketcher::PointPos::start;
-                    }
-                    else {
-                        PosId1 = Sketcher::PointPos::end;
-                    }
-                    if (Base::DistanceP2(s3d, p2[0]) < Base::DistanceP2(s3d, p2[1])) {
-                        PosId2 = Sketcher::PointPos::start;
-                    }
-                    else {
-                        PosId2 = Sketcher::PointPos::end;
-                    }
-                }
-                else {
-                    // if all points are collinear
-                    double length = DBL_MAX;
-                    for (int i = 0; i <= 1; i++) {
-                        for (int j = 0; j <= 1; j++) {
-                            double tmp = Base::DistanceP2(p2[j], p1[i]);
-                            if (tmp < length) {
-                                length = tmp;
-                                PosId1 = i ? Sketcher::PointPos::end : Sketcher::PointPos::start;
-                                PosId2 = j ? Sketcher::PointPos::end : Sketcher::PointPos::start;
-                            }
-                        }
-                    }
-                }
-
-                Base::Vector3d dir1 = ((PosId1 == Sketcher::PointPos::start) ? 1. : -1.)
-                    * (lineSeg1->getEndPoint() - lineSeg1->getStartPoint());
-                Base::Vector3d dir2 = ((PosId2 == Sketcher::PointPos::start) ? 1. : -1.)
-                    * (lineSeg2->getEndPoint() - lineSeg2->getStartPoint());
-
-                // check if the two lines are parallel, in this case an angle is not possible
-                Base::Vector3d dir3 = dir1 % dir2;
-                if (dir3.Length() < Precision::Intersection()) {
-                    Base::Vector3d dist = (p1[0] - p2[0]) % dir1;
-                    if (dist.Sqr() > Precision::Intersection()) {
-                        Gui::TranslatedUserWarning(
-                            Obj,
-                            QObject::tr("Parallel lines"),
-                            QObject::tr(
-                                "An angle constraint cannot be set for two parallel lines."));
-                        return;
-                    }
-                }
-
-                double ActAngle =
-                    atan2(dir1.x * dir2.y - dir1.y * dir2.x, dir1.y * dir2.y + dir1.x * dir2.x);
-                if (ActAngle < 0) {
-                    ActAngle *= -1;
-                    std::swap(GeoId1, GeoId2);
-                    std::swap(PosId1, PosId2);
-                }
-
-                openCommand(QT_TRANSLATE_NOOP("Command", "Add angle constraint"));
-                Gui::cmdAppObjectArgs(selection[0].getObject(),
-                                      "addConstraint(Sketcher.Constraint('Angle',%d,%d,%d,%d,%f))",
-                                      GeoId1,
-                                      static_cast<int>(PosId1),
-                                      GeoId2,
-                                      static_cast<int>(PosId2),
-                                      ActAngle);
-
-                if (bothexternal
-                    || constraintCreationMode
-                        == Reference) {// it is a constraint on a external line, make it non-driving
-                    const std::vector<Sketcher::Constraint*>& ConStr = Obj->Constraints.getValues();
-
-                    Gui::cmdAppObjectArgs(selection[0].getObject(),
-                                          "setDriving(%d,%s)",
-                                          ConStr.size() - 1,
-                                          "False");
-                    finishDatumConstraint(this, Obj, false);
-                }
-                else {
-                    finishDatumConstraint(this, Obj, true);
-                }
-
-                return;
-            }
+            makeAngleBetweenTwoLines(Obj, this, GeoId1, GeoId2);
+            return;
         }
         else if (isEdge(GeoId1, PosId1)) {// line angle or arc angle
             if (GeoId1 < 0 && GeoId1 >= Sketcher::GeoEnum::VAxis) {
@@ -8900,110 +8858,7 @@ void CmdSketcherConstrainAngle::applyConstraint(std::vector<SelIdPair>& selSeq, 
             GeoId1 = selSeq.at(0).GeoId;
             GeoId2 = selSeq.at(1).GeoId;
 
-            const Part::Geometry* geom1 = Obj->getGeometry(GeoId1);
-            const Part::Geometry* geom2 = Obj->getGeometry(GeoId2);
-
-            if (isLineSegment(*geom1) && isLineSegment(*geom2)) {
-                auto lineSeg1 = static_cast<const Part::GeomLineSegment*>(geom1);
-                auto lineSeg2 = static_cast<const Part::GeomLineSegment*>(geom2);
-
-                // find the two closest line ends
-                Sketcher::PointPos PosId1 = Sketcher::PointPos::none;
-                Sketcher::PointPos PosId2 = Sketcher::PointPos::none;
-                Base::Vector3d p1[2], p2[2];
-                p1[0] = lineSeg1->getStartPoint();
-                p1[1] = lineSeg1->getEndPoint();
-                p2[0] = lineSeg2->getStartPoint();
-                p2[1] = lineSeg2->getEndPoint();
-
-                // Get the intersection point in 2d of the two lines if possible
-                Base::Line2d line1(Base::Vector2d(p1[0].x, p1[0].y),
-                                   Base::Vector2d(p1[1].x, p1[1].y));
-                Base::Line2d line2(Base::Vector2d(p2[0].x, p2[0].y),
-                                   Base::Vector2d(p2[1].x, p2[1].y));
-                Base::Vector2d s;
-                if (line1.Intersect(line2, s)) {
-                    // get the end points of the line segments that are closest to the intersection
-                    // point
-                    Base::Vector3d s3d(s.x, s.y, p1[0].z);
-                    if (Base::DistanceP2(s3d, p1[0]) < Base::DistanceP2(s3d, p1[1])) {
-                        PosId1 = Sketcher::PointPos::start;
-                    }
-                    else {
-                        PosId1 = Sketcher::PointPos::end;
-                    }
-                    if (Base::DistanceP2(s3d, p2[0]) < Base::DistanceP2(s3d, p2[1])) {
-                        PosId2 = Sketcher::PointPos::start;
-                    }
-                    else {
-                        PosId2 = Sketcher::PointPos::end;
-                    }
-                }
-                else {
-                    // if all points are collinear
-                    double length = DBL_MAX;
-                    for (int i = 0; i <= 1; i++) {
-                        for (int j = 0; j <= 1; j++) {
-                            double tmp = Base::DistanceP2(p2[j], p1[i]);
-                            if (tmp < length) {
-                                length = tmp;
-                                PosId1 = i ? Sketcher::PointPos::end : Sketcher::PointPos::start;
-                                PosId2 = j ? Sketcher::PointPos::end : Sketcher::PointPos::start;
-                            }
-                        }
-                    }
-                }
-
-                Base::Vector3d dir1 = ((PosId1 == Sketcher::PointPos::start) ? 1. : -1.)
-                    * (lineSeg1->getEndPoint() - lineSeg1->getStartPoint());
-                Base::Vector3d dir2 = ((PosId2 == Sketcher::PointPos::start) ? 1. : -1.)
-                    * (lineSeg2->getEndPoint() - lineSeg2->getStartPoint());
-
-                // check if the two lines are parallel, in this case an angle is not possible
-                Base::Vector3d dir3 = dir1 % dir2;
-                if (dir3.Length() < Precision::Intersection()) {
-                    Base::Vector3d dist = (p1[0] - p2[0]) % dir1;
-                    if (dist.Sqr() > Precision::Intersection()) {
-                        Gui::TranslatedUserWarning(
-                            Obj,
-                            QObject::tr("Parallel lines"),
-                            QObject::tr(
-                                "An angle constraint cannot be set for two parallel lines."));
-                        return;
-                    }
-                }
-
-                double ActAngle =
-                    atan2(dir1.x * dir2.y - dir1.y * dir2.x, dir1.y * dir2.y + dir1.x * dir2.x);
-                if (ActAngle < 0) {
-                    ActAngle *= -1;
-                    std::swap(GeoId1, GeoId2);
-                    std::swap(PosId1, PosId2);
-                }
-
-                openCommand(QT_TRANSLATE_NOOP("Command", "Add angle constraint"));
-                Gui::cmdAppObjectArgs(Obj,
-                                      "addConstraint(Sketcher.Constraint('Angle',%d,%d,%d,%d,%f))",
-                                      GeoId1,
-                                      static_cast<int>(PosId1),
-                                      GeoId2,
-                                      static_cast<int>(PosId2),
-                                      ActAngle);
-
-                if (areBothPointsOrSegmentsFixed(Obj, GeoId1, GeoId2)
-                    || constraintCreationMode == Reference) {
-                    // it is a constraint on a external line, make it non-driving
-                    const std::vector<Sketcher::Constraint*>& ConStr = Obj->Constraints.getValues();
-
-                    Gui::cmdAppObjectArgs(Obj, "setDriving(%d,%s)", ConStr.size() - 1, "False");
-                    finishDatumConstraint(this, Obj, false);
-                }
-                else {
-                    finishDatumConstraint(this, Obj, true);
-                }
-
-                return;
-            }
+            makeAngleBetweenTwoLines(Obj, this, GeoId1, GeoId2);
             return;
         }
         case 5:// {SelEdge, SelVertexOrRoot, SelEdgeOrAxis}
