@@ -16,7 +16,6 @@ namespace MbD {
 		//
 	public:
 		void setPosition3D(FColDsptr position3D);
-		void setQuarternions(double q0, double q1, double q2, double q3);
 		void setRotationMatrix(FMatDsptr rotationMatrix);
 		void setVelocity3D(FColDsptr velocity3D);
 		void setOmega3D(FColDsptr omega3D);
@@ -35,7 +34,10 @@ namespace MbD {
 			});
 
 		// Overloads to simplify syntax.
+		void getPosition3D(double& a, double& b, double& c);
+		void getQuarternions(double& q0, double& q1, double& q2, double& q3);
 		void setPosition3D(double a, double b, double c);
+		void setQuarternions(double q0, double q1, double q2, double q3);
 		void setVelocity3D(double a, double b, double c);
 		void setOmega3D(double a, double b, double c);
 		void setRotationMatrix(double v11, double v12, double v13,

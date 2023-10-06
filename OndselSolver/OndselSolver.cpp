@@ -24,7 +24,7 @@ void runSpMat();
 
 int main()
 {
-	MBDynSystem::runFile("crank_slider.mbd");		//To be completed
+	//MBDynSystem::runFile("crank_slider.mbd");		//To be completed
 	//ASMTAssembly::runSinglePendulumSuperSimplified();	//Mass is missing
 	ASMTAssembly::runSinglePendulumSimplified();
 	ASMTAssembly::runSinglePendulum();	
