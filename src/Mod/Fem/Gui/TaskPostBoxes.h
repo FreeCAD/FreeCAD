@@ -67,6 +67,7 @@ public:
 
     void addPoint(const SbVec3f&);
     int countPoints() const;
+    void clearPoints() const;
 
 Q_SIGNALS:
     void PointsChanged(double x1, double y1, double z1, double x2, double y2, double z2);
@@ -108,6 +109,7 @@ public:
 
     void addPoint(const SbVec3f&);
     int countPoints() const;
+    void setPoint(int idx, const SbVec3f& pt) const;
 
 Q_SIGNALS:
     void PointsChanged(double x, double y, double z);
@@ -316,6 +318,7 @@ private:
     std::string ObjectVisible();
     QWidget* proxy;
     std::unique_ptr<Ui_TaskPostDataAlongLine> ui;
+    PointMarker* marker;
 };
 
 
@@ -345,6 +348,7 @@ private:
     std::string ObjectVisible();
     QWidget* proxy;
     std::unique_ptr<Ui_TaskPostDataAtPoint> ui;
+    DataMarker* marker;
 };
 
 
