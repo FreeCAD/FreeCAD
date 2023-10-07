@@ -124,6 +124,7 @@ wbListItem::wbListItem(const QString& wbName, bool enabled, bool startupWb, bool
     subLayout->setAlignment(Qt::AlignLeft);
     subLayout->setContentsMargins(5, 0, 0, 5);
     subWidget->setMinimumSize(250, 0);
+    subWidget->setAttribute(Qt::WA_TranslucentBackground);
 
     // 5: Autoloaded checkBox.
     autoloadCheckBox = new QCheckBox(this);
