@@ -81,6 +81,7 @@ dependencies:
 - pivy
 - pkg-config
 - ply
+- pre-commit
 - pybind11
 - pyside2
 - python
@@ -93,6 +94,7 @@ dependencies:
 - swig
 - vtk
 - xerces-c
+- yaml-cpp
 - zlib
 - pip:
   - ptvsd

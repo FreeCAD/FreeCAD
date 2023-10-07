@@ -313,11 +313,11 @@ ConstraintFixed,6
 *CLOAD
 ** ConstraintForce
 ** node loads on shape: CanileverPlate:Edge3
-3,3,-7.5000000000000E+05
-4,3,-7.5000000000000E+05
-39,3,-1.5000000000000E+06
-40,3,-3.0000000000000E+06
-41,3,-3.0000000000000E+06
+3,3,-750000.0
+4,3,-750000.0
+39,3,-1500000.0
+40,3,-3000000.0
+41,3,-3000000.0
 
 
 
@@ -338,8 +338,8 @@ RF
 
 ***********************************************************
 ** CalculiX Input file
-**   written by    --> FreeCAD 0.20.25335 (Git)
-**   written on    --> Wed Jul 28 17:09:34 2021
+**   written by    --> FreeCAD 0.21.0
+**   written on    --> Tue Mar 28 04:06:59 2023
 **   file name     --> test.FCStd
 **   analysis name --> Analysis
 **

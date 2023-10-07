@@ -27,6 +27,7 @@
 #include <Mod/Import/ImportGlobal.h>
 #include <Base/FileInfo.h>
 #include <TDocStd_Document.hxx>
+#include <TDF_LabelSequence.hxx>
 #include <TopoDS_Shape.hxx>
 
 namespace Import
@@ -43,6 +44,9 @@ public:
 
 private:
     TopoDS_Shape fixShape(TopoDS_Shape);
+    void processDocument(Handle(TDocStd_Document) hDoc);
+    TopoDS_Shape processSubShapes(Handle(TDocStd_Document) hDoc,
+                                  const TDF_LabelSequence& subShapeLabels);
 
 private:
     Base::FileInfo file;

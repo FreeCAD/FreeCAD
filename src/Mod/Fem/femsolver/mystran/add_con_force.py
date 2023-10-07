@@ -50,6 +50,7 @@ def add_con_force(f, model, mystran_writer):
         for ref_shape in femobj["NodeLoadTable"]:
             force_code += "# {}\n".format(ref_shape[0])
             for n in sorted(ref_shape[1]):
+                # the loads in ref_shape[1][n] are without unit
                 node_load = ref_shape[1][n]
                 force_code += (
                     "model.add_force(sid={}, node={}, mag={}, xyz=({}, {}, {}))\n"

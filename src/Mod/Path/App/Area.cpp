@@ -501,6 +501,8 @@ std::shared_ptr<Area> Area::getClearedArea(double tipDiameter, double diameter) 
 #define AREA_MY(_param) myParams.PARAM_FNAME(_param)
     PARAM_ENUM_CONVERT(AREA_MY, PARAM_FNAME, PARAM_ENUM_EXCEPT, AREA_PARAMS_OFFSET_CONF);
     PARAM_ENUM_CONVERT(AREA_MY, PARAM_FNAME, PARAM_ENUM_EXCEPT, AREA_PARAMS_CLIPPER_FILL);
+    (void)SubjectFill;
+    (void)ClipFill;
 
     // Do not fit arcs after these offsets; it introduces unnecessary approximation error, and all off
     // those arcs will be converted back to segments again for clipper differencing in getRestArea anyway

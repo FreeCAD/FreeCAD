@@ -34,12 +34,11 @@ namespace Import
 class ImportExport WriterIges
 {
 public:
-    WriterIges(const Base::FileInfo& file);
+    explicit WriterIges(const Base::FileInfo& file);
 
     void write(Handle(TDocStd_Document) hDoc) const;
 
 private:
-    std::string name8bit;
     Base::FileInfo file;
 };
 }  // namespace Import

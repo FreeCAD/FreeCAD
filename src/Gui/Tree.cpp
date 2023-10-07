@@ -66,6 +66,10 @@
 #include "Widgets.h"
 #include "Workbench.h"
 
+#include <Base/DocumentReader.h>
+#include <xercesc/util/XercesDefs.hpp>
+#include <xercesc/dom/DOM.hpp>
+
 
 FC_LOG_LEVEL_INIT("Tree", false, true, true)
 
@@ -350,6 +354,33 @@ public:
             entry->restore(reader);
         }
         reader.readEndElement("Expand", level - 1);
+    }
+    
+    void restore(Base::DocumentReader& reader, XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *expandEl) {
+    	const char* count_cstr = reader.GetAttribute(expandEl,"count");
+    	if(count_cstr){
+    		long count = reader.ContentToInt( count_cstr );
+    		auto prev_ExpandDOM = reader.FindElement(expandEl,"Expand");
+    		const char* name_cstr = reader.GetAttribute(prev_ExpandDOM,"name");
+    		const char* _count_cstr = reader.GetAttribute(prev_ExpandDOM,"count");
+    		auto& entry = (*this)[name_cstr];
+    		if(_count_cstr){
+				entry.reset(new ExpandInfo);
+		        entry->restore(reader,prev_ExpandDOM);
+            }
+            
+            for (int i = 1; i < count; ++i) {
+            	auto ExpandDOM_i = reader.FindNextElement(prev_ExpandDOM,"Expand");
+            	const char* name_cstr = reader.GetAttribute(ExpandDOM_i,"name");
+            	const char* _count_cstr = reader.GetAttribute(ExpandDOM_i,"count");
+		        auto& entry = (*this)[name_cstr];
+		        if(_count_cstr){
+				    entry.reset(new ExpandInfo);
+				    entry->restore(reader,ExpandDOM_i);
+		        }
+		        prev_ExpandDOM = ExpandDOM_i;
+        	}
+    	}
     }
 };
 
@@ -3942,6 +3973,21 @@ void DocumentItem::Restore(Base::XMLReader& reader) {
         return;
     _ExpandInfo.reset(new ExpandInfo);
     _ExpandInfo->restore(reader);
+    for (auto inst : TreeWidget::Instances) {
+        if (inst != getTree()) {
+            auto docItem = inst->getDocumentItem(document());
+            if (docItem)
+                docItem->_ExpandInfo = _ExpandInfo;
+        }
+    }
+}
+
+void DocumentItem::Restore(Base::DocumentReader& reader) {
+    auto expandEl = reader.FindElement("Expand");
+    if( !reader.GetAttribute(expandEl,"count") )
+    	return;
+    _ExpandInfo.reset(new ExpandInfo);
+    _ExpandInfo->restore(reader,expandEl);
     for (auto inst : TreeWidget::Instances) {
         if (inst != getTree()) {
             auto docItem = inst->getDocumentItem(document());

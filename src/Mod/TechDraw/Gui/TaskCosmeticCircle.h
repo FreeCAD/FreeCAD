@@ -82,7 +82,6 @@ private:
     TechDraw::CosmeticEdge* m_ce;
     TechDraw::CosmeticEdge* m_saveCE;
     Base::Vector3d m_center;
-    double m_radius;
     bool m_createMode;
     std::string m_tag;
     bool            m_is3d;

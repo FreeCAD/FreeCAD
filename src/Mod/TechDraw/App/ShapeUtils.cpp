@@ -367,3 +367,12 @@ std::pair<Base::Vector3d, Base::Vector3d> ShapeUtils::getEdgeEnds(TopoDS_Edge ed
     return result;
 }
 
+//! check for shape is null or shape has no subshapes(vertex/edge/face/etc)
+//! this handles the case of an empty compound which is not IsNull, but has no
+//! content.
+bool  ShapeUtils::isShapeReallyNull(TopoDS_Shape shape)
+{
+    // if the shape is null or it has no subshapes, then it is really null
+    return shape.IsNull() || !TopoDS_Iterator(shape).More();
+}
+

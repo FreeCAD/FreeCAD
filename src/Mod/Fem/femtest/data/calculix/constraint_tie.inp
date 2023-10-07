@@ -18630,9 +18630,9 @@ ConstraintFixed,3
 *CLOAD
 ** ConstraintForce
 ** node loads on shape: BooleanFragments:Edge2
-2,2,1.6666666666667E+03
-8,2,1.6666666666667E+03
-385,2,6.6666666666667E+03
+2,2,1666.6666666666667
+8,2,1666.6666666666667
+385,2,6666.666666666667
 
 
 
@@ -18653,8 +18653,8 @@ RF
 
 ***********************************************************
 ** CalculiX Input file
-**   written by    --> FreeCAD 0.19.19481 (Git)
-**   written on    --> Wed Feb  5 08:55:37 2020
+**   written by    --> FreeCAD 0.21.0
+**   written on    --> Tue Mar 28 04:35:16 2023
 **   file name     --> 
 **   analysis name --> Analysis
 **

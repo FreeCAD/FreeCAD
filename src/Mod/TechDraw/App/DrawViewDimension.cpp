@@ -42,6 +42,10 @@
 # include <gp_Circ.hxx>
 # include <gp_Elips.hxx>
 # include <gp_Pnt.hxx>
+# include <gp_Pnt2d.hxx>
+# include <Geom_Plane.hxx>
+# include <Geom2d_Curve.hxx>
+# include <Geom2dAPI_ProjectPointOnCurve.hxx>
 # include <TopExp.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopoDS_Edge.hxx>
@@ -474,12 +478,6 @@ bool DrawViewDimension::okToProceed()
         return false;
     }
 
-//    if (References3D.getValues().empty() && !checkReferences2D()) {
-//        Base::Console().Warning("DVD::okToProceed - %s has invalid 2D References\n",
-//                                getNameInDocument());
-//        return false;
-//    }
-
     return true;
 }
 
@@ -751,7 +749,31 @@ pointPair DrawViewDimension::getPointsEdgeVert(ReferenceVector references)
         if (!vertex || !edge) {
             throw Base::RuntimeError("Missing geometry for dimension (4)");
         }
-        return closestPoints(edge->getOCCEdge(), vertex->getOCCVertex());
+
+        //get curve from edge
+        double start, end; // curve parameters
+        const Handle(Geom_Surface) hplane = new Geom_Plane(gp_Ax3());
+        auto const occCurve = BRep_Tool::CurveOnPlane(edge->getOCCEdge()
+                                                      , hplane
+                                                      , TopLoc_Location()
+                                                      , start
+                                                      , end);
+        auto const occPoint = gp_Pnt2d(vertex->x(), vertex->y());
+        //project point on curve
+        auto projector = Geom2dAPI_ProjectPointOnCurve(occPoint, occCurve);
+        if (projector.NbPoints() > 0) {
+                auto p1 = Base::Vector3d(vertex->x(), vertex->y(), 0.0);
+                auto p2 = Base::Vector3d(projector.NearestPoint().X()
+                                         , projector.NearestPoint().Y()
+                                         , 0.0);
+                pointPair result = pointPair(p1, p2);
+                result.setExtensionLine(closestPoints(edge->getOCCEdge(), vertex->getOCCVertex()));
+                return result;
+        }
+        else {
+                // unable to project
+                return closestPoints(edge->getOCCEdge(), vertex->getOCCVertex());
+        }
     }
 
     //this is a 3d object
@@ -1451,11 +1473,16 @@ bool DrawViewDimension::fixExactMatch()
         // could not get refs, something is wrong!
         return false;
     }
+
+    if (SavedGeometry.getValues().empty()) {
+        // there is no saved geometry, so we can't repair anything.
+        return false;
+    }
     std::vector< std::pair<int, std::string> > refsToFix2d;
     std::vector< std::pair<int, std::string> > refsToFix3d;
     bool success(true);
-    int referenceCount = references.size();
-    int iRef = 0;
+    size_t referenceCount = references.size();
+    size_t iRef = 0;
     for ( ; iRef < referenceCount; iRef++)  {
         std::string newReference("");
         TopoDS_Shape geomShape = references.at(iRef).getGeometry();

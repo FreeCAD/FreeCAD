@@ -1,10 +1,3 @@
-if(MSVC)
-    add_definitions(-DFCAppImport -DHAVE_ACOSH -DHAVE_ASINH -DHAVE_ATANH)
-else(MSVC)
-    add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
-endif(MSVC)
-
-
 include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}
@@ -29,6 +22,8 @@ SET(Import_SRCS
     AppImportPy.cpp
     ExportOCAF.cpp
     ExportOCAF.h
+    ExportOCAF2.cpp
+    ExportOCAF2.h
     ImportOCAF.cpp
     ImportOCAF.h
     ImportOCAF2.cpp
@@ -47,6 +42,8 @@ SET(Import_SRCS
     StepShapePyImp.cpp
     PreCompiled.cpp
     PreCompiled.h
+    Tools.cpp
+    Tools.h
     WriterGltf.cpp
     WriterGltf.h
     WriterIges.cpp

@@ -1,9 +1,3 @@
-if(MSVC)
-    add_definitions(-DHAVE_ACOSH -DHAVE_ATANH -DHAVE_ASINH)
-else(MSVC)
-    add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
-endif(MSVC)
-
 include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
@@ -84,6 +78,7 @@ SET(PartGui_SRCS
     BoxSelection.cpp
     BoxSelection.h
     Command.cpp
+    CommandFilter.cpp
     CommandSimple.cpp
     CommandParametric.cpp
     CrossSections.cpp
@@ -224,6 +219,8 @@ SET(PartGui_SRCS
     ViewProviderPrimitive.h
     Workbench.cpp
     Workbench.h
+    WorkbenchManipulator.cpp
+    WorkbenchManipulator.h
     ReferenceHighlighter.cpp
     ReferenceHighlighter.h
     SectionCutting.cpp

@@ -403,7 +403,7 @@ PyObject* AreaPy::makeSections(PyObject *args, PyObject *keywds)
     } PY_CATCH_OCC
 }
 
-PyObject* AreaPy::getClearedArea(PyObject *args, PyObject *keywds)
+PyObject* AreaPy::getClearedArea(PyObject *args)
 {
     PY_TRY {
         double tipDiameter, diameter;
@@ -415,7 +415,7 @@ PyObject* AreaPy::getClearedArea(PyObject *args, PyObject *keywds)
     } PY_CATCH_OCC
 }
 
-PyObject* AreaPy::getRestArea(PyObject *args, PyObject *keywds)
+PyObject* AreaPy::getRestArea(PyObject *args)
 {
     PY_TRY {
         PyObject *pyClearedAreas;
@@ -445,9 +445,11 @@ PyObject* AreaPy::getRestArea(PyObject *args, PyObject *keywds)
     } PY_CATCH_OCC
 }
 
-PyObject* AreaPy::toTopoShape(PyObject *args, PyObject *keywds)
+PyObject* AreaPy::toTopoShape(PyObject *args)
 {
     PY_TRY {
+      if (!PyArg_ParseTuple(args, ""))
+          return nullptr;
       return Py::new_reference_to(Part::shape2pyshape(getAreaPtr()->toTopoShape()));
     } PY_CATCH_OCC
 }

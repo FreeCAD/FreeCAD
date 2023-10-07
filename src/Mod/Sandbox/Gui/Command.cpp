@@ -58,7 +58,9 @@
 # include <boost/bind/bind.hpp>
 # include <memory>
 #endif
-
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
+#include <Gui/Tools.h>
 #include <Base/Console.h>
 #include <Base/Sequencer.h>
 #include <App/Application.h>
@@ -68,9 +70,6 @@
 #include <Gui/Command.h>
 #include <Gui/MainWindow.h>
 #include <Gui/FileDialog.h>
-#include <Gui/Tools.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
 #include <Gui/WaitCursor.h>
 
 #include <Mod/Sandbox/App/DocumentThread.h>
