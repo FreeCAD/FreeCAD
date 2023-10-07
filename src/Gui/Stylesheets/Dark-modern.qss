@@ -16,11 +16,9 @@ INSTALLATION WHEN NECESSARY
     LINUX = /home/[YOUR_USER_NAME]/.FreeCAD/Gui/Stylesheets/
 
 ============================================================================================================
-TO MODIFY USE THESE COLORS:
- @ThemeAccentColor1
- @ThemeAccentColor2
-
-
+FOLLOWING CODES ARE CHANGED IN THE SETTINGS:
+  @ThemeAccentColor1
+  @ThemeAccentColor2
 See Qt documentation:
 
   - https://doc.qt.io/qt-5/stylesheet.html
@@ -1419,6 +1417,10 @@ QComboBox QAbstractItemView:alternate {
   background: #3c3c3c;
 }
 
+QComboBox:checked {
+  color: #ffffff;
+}
+
 QComboBox:disabled {
   background-color: #2b2b2b;
   color: #353535;
@@ -1438,17 +1440,14 @@ QComboBox:on {
 }
 
 QComboBox::indicator {
-  border: none;
-  border-radius: 0px;
+  padding-left: 8px;
   background-color: transparent;
-  selection-background-color: transparent;
-  color: transparent;
-  selection-color: @ThemeAccentColor1;
-  /* Needed to remove indicator - fix #132 */
 }
 
-QComboBox::indicator:alternate {
-  background: #696968;
+QComboBox::indicator:checked {
+  width: 12px;
+  height: 12px;
+  image: url(qss:images_dark-light/check_light.svg);
 }
 
 QComboBox::item {
@@ -1462,9 +1461,16 @@ QComboBox::item {
         }
         */
 }
+/* Background color of popup-list.*/
 
+/* Needed to complete the rule set. */
 QComboBox::item:alternate {
   background: #3c3c3c;
+}
+/* Color of the selected list item. */
+QComboBox::item:selected {
+  border: 1px solid @ThemeAccentColor2;
+  background: @ThemeAccentColor2;
 }
 
 QComboBox::drop-down {
