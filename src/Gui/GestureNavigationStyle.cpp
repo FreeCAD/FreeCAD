@@ -489,6 +489,7 @@ public:
     explicit RotateState(my_context ctx):my_base(ctx)
     {
         auto &ns = this->outermost_context().ns;
+        ns.setRotationCenter(ns.getFocalPoint());
         ns.setViewingMode(NavigationStyle::DRAGGING);
         this->base_pos = static_cast<const NS::Event*>(this->triggering_event())->inventor_event->getPosition();
         if (ns.logging)
@@ -625,6 +626,7 @@ public:
     explicit TiltState(my_context ctx):my_base(ctx)
     {
         auto &ns = this->outermost_context().ns;
+        ns.setRotationCenter(ns.getFocalPoint());
         ns.setViewingMode(NavigationStyle::DRAGGING);
         this->base_pos = static_cast<const NS::Event*>(this->triggering_event())->inventor_event->getPosition();
         if (ns.logging)
