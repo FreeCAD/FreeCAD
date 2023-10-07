@@ -914,7 +914,7 @@ int SketchObject::movePoint(int GeoId, PointPos PosId, const Base::Vector3d& toP
 
 Base::Vector3d SketchObject::getPoint(const Part::Geometry *geo, PointPos PosId)
 {
-    if (geo->getTypeId() == Part::GeomPoint::getClassTypeId()) {
+    if (geo->is<Part::GeomPoint>()) {
         const Part::GeomPoint *p = static_cast<const Part::GeomPoint*>(geo);
         if (PosId == PointPos::start || PosId == PointPos::mid || PosId == PointPos::end)
             return p->getPoint();
@@ -2108,8 +2108,8 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
 
         return 0;
     }
-    else if (geo1->isDerivedFrom(Part::GeomBoundedCurve::getClassTypeId())
-             && geo2->isDerivedFrom(Part::GeomBoundedCurve::getClassTypeId())) {
+    else if (geo1->isDerivedFrom<Part::GeomBoundedCurve>()
+             && geo2->isDerivedFrom<Part::GeomBoundedCurve>()) {
 
         auto distancetorefpoints =
             [](Base::Vector3d ip1, Base::Vector3d ip2, Base::Vector3d ref1, Base::Vector3d ref2) {
