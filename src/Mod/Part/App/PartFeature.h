@@ -166,6 +166,12 @@ protected:
     virtual App::DocumentObjectExecReturn *recompute() override;
     /// recalculate the feature
     virtual App::DocumentObjectExecReturn *execute() override;
+
+    //FIXME remove these
+    ShapeHistory buildHistory(BRepBuilderAPI_MakeShape&, TopAbs_ShapeEnum type,
+        const TopoDS_Shape& newS, const TopoDS_Shape& oldS) {}
+    ShapeHistory joinHistory(const ShapeHistory&, const ShapeHistory&) {}
+
     virtual void onBeforeChange(const App::Property* prop) override;
     virtual void onChanged(const App::Property* prop) override;
 
