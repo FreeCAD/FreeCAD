@@ -1145,6 +1145,27 @@ public:
 
     void setSyncSubObject(bool enable);
 
+    /// Defines the ways linked file path are resolves
+    enum class PathResolveMode {
+        Dynamic = 0,
+        Relative = 1,
+        RelativeCanonical = 2,
+        Absolute = 3,
+        Canonical = 4,
+    };
+    PathResolveMode getPathResolveMode() const;
+    const char *getPathResolveModeName() const;
+    void setPathResolveMode(PathResolveMode mode);
+    void setPathResolveMode(const char *mode);
+    std::string getFilePath(PathResolveMode mode) const;
+
+    struct PathResolveModeDoc {
+        const char *name = "";
+        const char *doc = "";
+    };
+    using PathResolveModeMap = std::map<PathResolveMode, PathResolveModeDoc>;
+    static const PathResolveModeMap &getPathResolveModeDocs();
+
 protected:
     void unlink();
     void detach();
@@ -1165,6 +1186,7 @@ protected:
     std::string docName;
     std::string objectName;
     std::string stamp;
+    PathResolveMode resolveMode = PathResolveMode::Dynamic;
     std::vector<std::string> _SubList;
     std::vector<ShadowSub> _ShadowSubList;
     std::vector<int> _mapped;

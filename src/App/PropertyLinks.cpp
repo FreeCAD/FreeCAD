@@ -31,6 +31,7 @@
 #include <Base/Exception.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
+#include <xercesc/dom/DOMNode.hpp>
 
 #include "PropertyLinks.h"
 #include "Application.h"
@@ -2519,8 +2520,78 @@ public:
     App::Document *pcDoc{nullptr};
     std::set<PropertyXLink*> links;
 
-    static std::string getDocPath(
-            const char *filename, App::Document *pDoc, bool relative, QString *fullPath = nullptr)
+    struct PathInfo {
+        QDir dir;
+        QString postfix;
+    };
+
+    static QString resolvePath(const QString &path, QFileInfo docPath)
+    {
+        std::set<QString> visited;
+        std::vector<PathInfo> pendings;
+        QDir docDir(docPath.dir());
+        pendings.push_back({docDir, QString()});
+        visited.insert(docPath.path());
+
+        // Handle the case where the owner document is a symlink
+        while (true) {
+            QString target = docPath.symLinkTarget();
+            if (target.isEmpty() || !visited.insert(target).second)
+                break;
+            docPath = QFileInfo(target);
+            docDir = docPath.dir();
+            pendings.push_back({docDir, QString()});
+        }
+
+        for (size_t i=0; i<pendings.size(); ) {
+            // Make copy instead of reference to the entry as we may push back
+            // new entries later which invalidates the reference.
+            PathInfo entry = pendings[i];
+            QDir dir(entry.dir.absoluteFilePath(entry.postfix));
+            QString testPath = QDir::cleanPath(dir.filePath(path));
+            if (QFileInfo(testPath).exists())
+                return testPath;
+            // Check symlink in upper directory
+            while (true) {
+                QFileInfo currentPath(QDir::cleanPath(entry.dir.path()));
+                if (testPath.startsWith(currentPath.filePath() + QStringLiteral("/"))) {
+                    // We are working from the bottom up. And here means the
+                    // link path does not refer to any upper directory. So
+                    // we're done with this path.
+                    ++i;
+                    break;
+                }
+                QString target = QDir::cleanPath(currentPath.symLinkTarget());
+                QString postfix = entry.postfix;
+                if (postfix.isEmpty())
+                    entry.postfix = entry.dir.dirName();
+                else
+                    entry.postfix = QDir(entry.dir.dirName()).filePath(postfix);
+                entry.dir.cdUp();
+                if (!target.isEmpty()) {
+                    if (!postfix.isEmpty()) {
+                        target = QDir(target).absoluteFilePath(postfix);
+                    }
+                    if (visited.insert(target).second) {
+                        // Symlink found. Push back for processing later. We'll
+                        // try to first finish searching through the current
+                        // hierarchy.
+                        pendings.push_back({QDir(target), QString()});
+                    }
+                }
+                if (entry.dir.isRoot()) {
+                    ++i;
+                    break;
+                }
+            }
+        }
+        return QString();
+    }
+
+    static std::string getDocPath(const char *filename,
+                                  App::Document *pDoc,
+                                  PropertyXLink::PathResolveMode mode,
+                                  QString *fullPath = nullptr)
     {
         bool absolute;
         // The path could be an URI, in that case
@@ -2530,65 +2601,112 @@ public:
             // We do have an URI
             if (fullPath)
                 *fullPath = path;
-               return std::string(filename);
+            return filename;
         }
 
-        // make sure the filename is absolute path
+        // Check if filename is absolute path
         path = QDir::cleanPath(path);
-        if((absolute = QFileInfo(path).isAbsolute())) {
+        QFileInfo fileInfo(path);
+        if((absolute = fileInfo.isAbsolute())) {
             if(fullPath)
                 *fullPath = path;
-            if(!relative)
-                return std::string(path.toUtf8().constData());
+            if(mode == PropertyXLink::PathResolveMode::Absolute)
+                return path.toUtf8().constData();
+            else if (mode == PropertyXLink::PathResolveMode::Canonical)
+                return QFileInfo(path).canonicalFilePath().toUtf8().constData();
         }
 
         const char *docPath = pDoc->getFileName();
         if(!docPath || *docPath==0)
             throw Base::RuntimeError("Owner document not saved");
 
-        QDir docDir(QFileInfo(QString::fromUtf8(docPath)).absoluteDir());
-        if(!absolute) {
-            path = QDir::cleanPath(docDir.absoluteFilePath(path));
-            if(fullPath)
-                *fullPath = path;
+        QFileInfo docInfo(QString::fromUtf8(docPath));
+        QDir docDir(docInfo.absoluteDir());
+
+        if (!absolute) {
+            if (mode == PropertyXLink::PathResolveMode::Relative) {
+                if (fullPath)
+                    *fullPath = docDir.absoluteFilePath(path);
+                return path.toUtf8().constData();
+            } else if (mode == PropertyXLink::PathResolveMode::RelativeCanonical) {
+                if (fullPath)
+                    *fullPath = QFileInfo(docDir.canonicalPath(), path).filePath();
+                return path.toUtf8().constData();
+            }
+            // Since the given pass is relative, we'll dynamically resolve to
+            // absolute path here, regardless if the mode is either Dynamic,
+            // Absolute, or Canonical
+            QString resolved = resolvePath(path, docInfo);
+            if (resolved.isEmpty()) {
+                // Cannot find the document, fallback to Absolute
+                resolved = docDir.absoluteFilePath(path);
+            }
+            if (fullPath)
+                *fullPath = resolved;
+            if (mode == PropertyXLink::PathResolveMode::Dynamic)
+                return path.toUtf8().constData();
+            path = resolved;
         }
 
-        if(relative)
-            return std::string(docDir.relativeFilePath(path).toUtf8().constData());
-        else
-            return std::string(path.toUtf8().constData());
+        if (mode == PropertyXLink::PathResolveMode::Absolute) {
+            return path.toUtf8().constData();
+        } else if (mode == PropertyXLink::PathResolveMode::Canonical) {
+            return QFileInfo(path).canonicalFilePath().toUtf8().constData();
+        } else if (mode == PropertyXLink::PathResolveMode::Relative) {
+            return QDir::cleanPath(docDir.relativeFilePath(path)).toUtf8().constData();
+        } else if (mode == PropertyXLink::PathResolveMode::RelativeCanonical) {
+            path = QDir::cleanPath(QDir(docDir.canonicalPath()).relativeFilePath(path));
+            return path.toUtf8().constData();
+        }
+
+        // Here we are converting absolute path to dynamic resolving relative
+        // path. It is possible to resolve to many different relative paths if
+        // there is any symlink in the path of the owner document. To simplify
+        // things a bit, we only consider two possible paths, the current and
+        // the cannoical path, with the following criteria,
+        //
+        // a) choose the path that can resolve to a relative path, if the other
+        //    cannot,
+        // b) If both can, then Prefer the current path, because otherwise,
+        //    loading the owner document from the same path may resolve to a
+        //    different path due to the search order in resolvePath().
+        path = QDir::cleanPath(docDir.relativeFilePath(path));
+        if (!QFileInfo(path).isRelative()) {
+            QString altPath = QDir::cleanPath(
+                    QDir(docDir.canonicalPath()).relativeFilePath(path));
+            if (QFileInfo(altPath).isRelative()) {
+                path = altPath;
+            }
+        }
+        return path.toUtf8().constData();
     }
 
     static DocInfoPtr get(const char *filename,
             App::Document *pDoc,PropertyXLink *l, const char *objName)
     {
-        QString path;
-        l->filePath = getDocPath(filename,pDoc,true,&path);
-
+        QString fullPath;
+        l->filePath = getDocPath(filename,pDoc,l->getPathResolveMode(),&fullPath);
+        
         FC_LOG("finding doc " << filename);
 
-        auto it = _DocInfoMap.find(path);
+        auto it = _DocInfoMap.find(fullPath);
         DocInfoPtr info;
         if(it != _DocInfoMap.end()) {
             info = it->second;
             if(!info->pcDoc) {
                 QString fullpath(info->getFullPath());
-                if(fullpath.size() &&
-                   App::GetApplication().addPendingDocument(
+                if(fullpath.size()) {
+                    if (auto doc = App::GetApplication().addPendingDocument(
                        fullpath.toUtf8().constData(),objName,
-                       l->testFlag(PropertyLinkBase::LinkAllowPartial))==0)
-                {
-                    for(App::Document *doc : App::GetApplication().getDocuments()) {
-                        if(getFullPath(doc->getFileName()) == fullpath) {
-                            info->attach(doc);
-                            break;
-                        }
+                       l->testFlag(PropertyLinkBase::LinkAllowPartial)))
+                    {
+                        info->attach(doc);
                     }
                 }
             }
         } else {
             info = std::make_shared<DocInfo>();
-            auto ret = _DocInfoMap.insert(std::make_pair(path,info));
+            auto ret = _DocInfoMap.insert(std::make_pair(fullPath,info));
             info->init(ret.first,objName,l);
         }
 
@@ -2672,8 +2790,10 @@ public:
                 }
             }
             FC_LOG("document pending " << filePath());
-            app.addPendingDocument(fullpath.toUtf8().constData(),objName,
-                    l->testFlag(PropertyLinkBase::LinkAllowPartial));
+            if (auto doc = app.addPendingDocument(fullpath.toUtf8().constData(),objName,
+                    l->testFlag(PropertyLinkBase::LinkAllowPartial))) {
+                attach(doc);
+            }
         }
     }
 
@@ -2782,6 +2902,7 @@ public:
             tmp.swap(links);
             for(auto link : tmp) {
                 auto owner = static_cast<DocumentObject*>(link->getContainer());
+                link->filePath.clear();
                 // adjust file path for each PropertyXLink
                 DocInfo::get(filename,owner->getDocument(),link,link->objectName.c_str());
             }
@@ -3039,14 +3160,17 @@ void PropertyXLink::setValue(App::DocumentObject *lValue,
     if(lValue) {
         name = lValue->getNameInDocument();
         if(lValue->getDocument() != owner->getDocument()) {
-            if(!docInfo || lValue->getDocument()!=docInfo->pcDoc)
-            {
+            if (!docInfo || lValue->getDocument()!=docInfo->pcDoc) {
+                this->filePath.clear();
                 const char *filename = lValue->getDocument()->getFileName();
-                if(!filename || *filename==0)
-                    throw Base::RuntimeError("Linked document not saved");
-                FC_LOG("xlink set to new document " << lValue->getDocument()->getName());
-                info = DocInfo::get(filename,owner->getDocument(),this,name);
-                assert(info && info->pcDoc == lValue->getDocument());
+                const char *ownerPath = owner->getDocument()->getFileName();
+                if(!filename || *filename==0 || !ownerPath || *ownerPath==0) {
+                    // linked or owner document not saved, delay getting file path till Save()
+                } else {
+                    FC_LOG("xlink set to new document " << lValue->getDocument()->getName());
+                    info = DocInfo::get(filename,owner->getDocument(),this,name);
+                    assert(info && info->pcDoc == lValue->getDocument());
+                }
             }else
                 info = docInfo;
         }
@@ -3224,6 +3348,116 @@ bool PropertyXLink::referenceChanged() const{
     return !_mapped.empty();
 }
 
+const PropertyXLink::PathResolveModeMap &PropertyXLink::getPathResolveModeDocs()
+{
+    static PathResolveModeMap docs = {
+        {PathResolveMode::Dynamic, {"Dynamic",
+            "Resolve the path realtive to the current file path of the owner\n"
+            "document. In case file not found, fallback by searching through any\n"
+            "symlinks inside owner document path."}
+        },
+        {PathResolveMode::Relative, {"Relative",
+            "Resolve the path relative to the file path of the owner documents"}
+        },
+        {PathResolveMode::RelativeCanonical, {"Relative Canonical",
+            "Resolve the path relative to the canonical (i.e. with all symlink\n"
+            "resolved) file path of the owner documents."}
+        },
+        {PathResolveMode::Absolute, {"Absolute",
+            "Save and load from the absoluate path of the linked file"}
+        },
+        {PathResolveMode::Canonical, {"Canonical",
+            "Save and load from the canonical path of the linked file"}
+        }
+    };
+    return docs;
+}
+
+void PropertyXLink::setPathResolveMode(const char *mode)
+{
+    if (mode) {
+        for (const auto &v : getPathResolveModeDocs()) {
+            if (boost::iequals(mode, v.second.name)) {
+                setPathResolveMode(v.first);
+                return;
+            }
+        }
+    }
+    throw Base::ValueError("Invalid mode");
+}
+
+void PropertyXLink::setPathResolveMode(PathResolveMode mode)
+{
+    if (mode == resolveMode)
+        return;
+    aboutToSetValue();
+    auto owner = Base::freecad_dynamic_cast<const DocumentObject>(getContainer());
+    if(owner && owner->getDocument()
+             && (!_pcLink
+                 || _pcLink->getDocument() != owner->getDocument())) {
+        filePath = getFilePath(mode);
+    }
+    resolveMode = mode;
+    hasSetValue();
+}
+
+std::string PropertyXLink::getFilePath(PathResolveMode mode) const
+{
+    // For various reason, this->filePath may not be in the same format as
+    // this->resolveMode. So we try to make sure to get the absolute path
+    // first.
+    std::string filename;
+    auto owner = Base::freecad_dynamic_cast<const DocumentObject>(getContainer());
+    if (_pcLink) {
+        filename = _pcLink->getDocument()->getFileName();
+    } else if (owner && owner->getDocument() && !filePath.empty()) {
+        QString fullPath;
+        DocInfo::getDocPath(filePath.c_str(),owner->getDocument(),resolveMode,&fullPath);
+        filename = fullPath.toUtf8().constData();
+    } else {
+        filename = filePath;
+    }
+
+    if (filename.empty())
+        return {};
+
+    QFileInfo fileInfo(QString::fromUtf8(filename.c_str()));
+    bool absolute = fileInfo.isAbsolute();
+    if (absolute) {
+        if (mode == PathResolveMode::Absolute)
+            return filename;
+        else if (mode == PathResolveMode::Canonical)
+            return fileInfo.canonicalFilePath().toUtf8().constData();
+    } else if (mode == PathResolveMode::Absolute
+            || mode == PathResolveMode::Canonical) {
+        throw Base::RuntimeError("Fail to resolve path");
+    } else
+        return filename;
+
+    if (!owner || !owner->getDocument())
+        throw Base::RuntimeError("No owner document");
+
+    return DocInfo::getDocPath(filename.c_str(),owner->getDocument(),mode);
+}
+
+PropertyXLink::PathResolveMode PropertyXLink::getPathResolveMode() const
+{
+    return resolveMode;
+}
+
+const char *PropertyXLink::getPathResolveModeName() const
+{
+    const auto &docs = getPathResolveModeDocs();
+    auto it = docs.find(resolveMode);
+    if (it == docs.end()) {
+#ifdef FC_DEBUG
+        assert("Unknown mode" && false);
+#endif
+        return "";
+    }
+    return it->second.name;
+}
+
 void PropertyXLink::Save (Base::Writer &writer) const {
     auto owner = dynamic_cast<const DocumentObject *>(getContainer());
     if(!owner || !owner->getDocument())
@@ -3237,10 +3471,22 @@ void PropertyXLink::Save (Base::Writer &writer) const {
         // Lets save the export name
         writer.Stream() << writer.ind() << "<XLink name=\"" << _pcLink->getExportName();
     }else {
+        if (filePath.empty() && _pcLink && _pcLink->getDocument() != owner->getDocument()) {
+            const char *filename = _pcLink->getDocument()->getFileName();
+            if(!filename || *filename == 0) {
+                FC_ERR("Linked document not saved for object " << _pcLink->getFullName());
+                throw Base::RuntimeError("Linked document not saved");
+            } else {
+                auto self = const_cast<PropertyXLink*>(this);
+                self->docInfo = DocInfo::get(filename,owner->getDocument(),self,_pcLink->getNameInDocument());
+                self->stamp = docInfo->pcDoc->LastModifiedDate.getValue();
+            }
+        }
+
         const char *path = filePath.c_str();
         std::string _path;
         if(exporting) {
-            // Here means we are exporting the owner but not exporting the
+            // docInfo!=nullptr means we are exporting the owner but not exporting the
             // linked object.  Try to use absolute file path for easy transition
             // into document at different directory
             if(docInfo)
@@ -3250,19 +3496,23 @@ void PropertyXLink::Save (Base::Writer &writer) const {
                 const char *docPath = pDoc->getFileName();
                 if(docPath && docPath[0]) {
                     if(!filePath.empty())
-                        _path = DocInfo::getDocPath(filePath.c_str(),pDoc,false);
+                        _path = DocInfo::getDocPath(filePath.c_str(),pDoc,PathResolveMode::Absolute);
                     else
                         _path = docPath;
                 }else
                     FC_WARN("PropertyXLink export without saving the document");
             }
-            if(!_path.empty())
-                path = _path.c_str();
         }
+        if(!_path.empty())
+            path = _path.c_str();
         writer.Stream() << writer.ind()
             << "<XLink file=\"" << encodeAttribute(path)
             << "\" stamp=\"" << (docInfo&&docInfo->pcDoc?docInfo->pcDoc->LastModifiedDate.getValue():"")
             << "\" name=\"" << objectName;
+
+        if (this->resolveMode != PathResolveMode::Dynamic) {
+            writer.Stream() << "\" resolve=\"" << getPathResolveModeName();
+        }
     }
 
     if(testFlag(LinkAllowPartial))
@@ -3330,6 +3580,18 @@ void PropertyXLink::Restore(Base::XMLReader &reader)
         stampAttr = reader.getAttribute("stamp");
     if(reader.hasAttribute("file"))
         file = reader.getAttribute("file");
+
+    this->resolveMode = PathResolveMode::Dynamic;
+    if(reader.hasAttribute("resolve")) {
+        std::string mode = reader.getAttribute("resolve");
+        for (const auto &v : getPathResolveModeDocs()) {
+            if (boost::iequals(mode, v.second.name)) {
+                this->resolveMode = v.first;
+                break;
+            }
+        }
+    }
+
     setFlag(LinkAllowPartial,
             reader.hasAttribute("partial") &&
             reader.getAttributeAsInteger("partial"));
@@ -3713,7 +3975,7 @@ void PropertyXLink::setAllowPartial(bool enable) {
        !_pcLink && docInfo && !filePath.empty() && !objectName.empty() &&
        (!docInfo->pcDoc || docInfo->pcDoc->testStatus(Document::PartialDoc)))
     {
-        auto path = docInfo->getDocPath(filePath.c_str(),owner->getDocument(),false);
+        auto path = docInfo->getDocPath(filePath.c_str(),owner->getDocument(),PathResolveMode::Absolute);
         if(!path.empty())
             App::GetApplication().openDocument(path.c_str());
     }

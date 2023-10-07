@@ -164,8 +164,15 @@ public:
     void setActiveDocument(const char *Name);
     /// close all documents (without saving)
     void closeAllDocuments();
-    /// Add pending document to open together with the current opening document
-    int addPendingDocument(const char *FileName, const char *objName, bool allowPartial);
+    /** Add pending document to open together with the current opening document
+     *
+     * @param FileName: file path to the document
+     * @param objName: linked object name in the document
+     * @param allowPartial: whether the link supports partial loading.
+     *
+     * @return Returns true if the document is already opened of can be opened right away, else return nullptr.
+     */
+    App::Document *addPendingDocument(const char *FileName, const char *objName, bool allowPartial);
     /// Indicate whether the application is opening (restoring) some document
     bool isRestoring() const;
     /// Indicate the application is closing all document

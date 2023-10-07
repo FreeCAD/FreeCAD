@@ -614,23 +614,30 @@ std::string Application::getUniqueDocumentName(const char *Name, bool tempDoc) c
     }
 }
 
-int Application::addPendingDocument(const char *FileName, const char *objName, bool allowPartial)
+App::Document *Application::addPendingDocument(const char *FileName, const char *objName, bool allowPartial)
 {
-    if(!_isRestoring)
-        return 0;
-    if(allowPartial && _allowPartial)
-        return -1;
     assert(FileName && FileName[0]);
     assert(objName && objName[0]);
+    if(allowPartial && _allowPartial)
+        return nullptr;
+    if(!_isRestoring) {
+        std::string currentDoc;
+        if (_pActiveDoc)
+            currentDoc = _pActiveDoc->getName();
+        auto doc = openDocumentPrivate(FileName, FileName, nullptr, false, false, {objName});
+        if (!currentDoc.empty()) {
+            if (auto restoreDocument = getDocument(currentDoc.c_str()))
+                setActiveDocument(restoreDocument);
+        }
+        return doc;
+    }
     if(!_docReloadAttempts[FileName].emplace(objName).second)
-        return -1;
+        return nullptr;
     auto ret =  _pendingDocMap.emplace(FileName,std::vector<std::string>());
     ret.first->second.emplace_back(objName);
-    if(ret.second) {
+    if(ret.second)
         _pendingDocs.emplace_back(ret.first->first.c_str());
-        return 1;
-    }
-    return -1;
+    return nullptr;
 }
 
 bool Application::isRestoring() const {
