@@ -426,28 +426,26 @@ private:
     ~ParameterManager() override;
 };
 
-XERCES_CPP_NAMESPACE_USE
-
-class DOMTreeErrorReporter : public ErrorHandler
+class DOMTreeErrorReporter : public XERCES_CPP_NAMESPACE_QUALIFIER ErrorHandler
 {
 public:
     // -----------------------------------------------------------------------
     //  Constructors and Destructor
     // -----------------------------------------------------------------------
-	DOMTreeErrorReporter();
+    DOMTreeErrorReporter();
     // -----------------------------------------------------------------------
     //  Implementation of the error handler interface
     // -----------------------------------------------------------------------
-    void warning(const SAXParseException& toCatch) override;
-    void error(const SAXParseException& toCatch) override;
-    void fatalError(const SAXParseException& toCatch) override;
+    void warning(const XERCES_CPP_NAMESPACE_QUALIFIER SAXParseException& toCatch) override;
+    void error(const XERCES_CPP_NAMESPACE_QUALIFIER SAXParseException& toCatch) override;
+    void fatalError(const XERCES_CPP_NAMESPACE_QUALIFIER SAXParseException& toCatch) override;
     void resetErrors() override;
     // -----------------------------------------------------------------------
     //  Getter methods
     // -----------------------------------------------------------------------
     bool getSawErrors() const;
 private:
-	// -----------------------------------------------------------------------
+    // -----------------------------------------------------------------------
     //  Private data members
     //
     //  fSawErrors

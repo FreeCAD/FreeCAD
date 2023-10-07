@@ -274,7 +274,7 @@ public:
     void setPyObject(PyObject *) override;
 
     void Save (Base::Writer &writer) const override;
-    void Restore(Base::XMLReader &reader) override;    
+    void Restore(Base::XMLReader &reader) override;
 
     Property *Copy() const override;
     void Paste(const Property &from) override;

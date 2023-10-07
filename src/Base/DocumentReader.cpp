@@ -19,7 +19,14 @@
  *   Suite 330, Boston, MA  02111-1307, USA                                *
  *                                                                         *
  ***************************************************************************/
+
 #include "PreCompiled.h"
+#ifndef _PreComp_
+#include <xercesc/parsers/XercesDOMParser.hpp>
+#include <xercesc/dom/DOMException.hpp>
+#include <xercesc/dom/DOMElement.hpp>
+#endif
+
 #include "DocumentReader.h"
 #include "InputSource.h"
 #include "XMLTools.h"
@@ -34,13 +41,6 @@
 #include <zipios++/zipios-config.h>
 #endif
 #include <zipios++/zipinputstream.h>
-
-#ifndef _PreComp_
-//#   include <xercesc/dom/DOM.hpp>
-#   include <xercesc/parsers/XercesDOMParser.hpp>
-#	include <xercesc/dom/DOMException.hpp>
-#	include <xercesc/dom/DOMElement.hpp>
-#endif
 
 #ifdef _MSC_VER
 # define strdup _strdup
@@ -133,9 +133,7 @@ int DocumentReader::LoadDocument(Base::Reader& reader)
 
 XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *DocumentReader::GetRootElement() const
 {
-	//if (!_pGroupNode)
-        //return nullptr;
-	return _pGroupNode;
+    return _pGroupNode;
 }
 
 XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *DocumentReader::FindElement(const char* Type) const

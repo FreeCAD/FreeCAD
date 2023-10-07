@@ -185,7 +185,7 @@ bool Extension::extensionHandleChangedPropertyName(Base::XMLReader &reader, cons
     (void) PropName;
 
     return false;
-};
+}
 
 bool Extension::extensionHandleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, Property * prop)
 {
@@ -194,7 +194,7 @@ bool Extension::extensionHandleChangedPropertyType(Base::XMLReader &reader, cons
     (void) prop;
 
     return false;
-};
+}
 
 bool Extension::extensionHandleChangedPropertyName(Base::DocumentReader &reader, const char * TypeName, const char *PropName)
 {
@@ -203,7 +203,7 @@ bool Extension::extensionHandleChangedPropertyName(Base::DocumentReader &reader,
     (void) PropName;
 
     return false;
-};
+}
 
 bool Extension::extensionHandleChangedPropertyType(Base::DocumentReader &reader, const char * TypeName, Property * prop)
 {
@@ -212,7 +212,7 @@ bool Extension::extensionHandleChangedPropertyType(Base::DocumentReader &reader,
     (void) prop;
 
     return false;
-};
+}
 
 namespace App {
 EXTENSION_PROPERTY_SOURCE_TEMPLATE(App::ExtensionPython, App::ExtensionPython::Inherited)

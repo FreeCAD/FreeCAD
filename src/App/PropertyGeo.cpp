@@ -41,8 +41,6 @@
 #include "Placement.h"
 #include "ObjectIdentifier.h"
 
-#include <Base/Console.h>
-
 using namespace App;
 using namespace Base;
 using namespace std;
@@ -154,25 +152,25 @@ void PropertyVector::Restore(Base::XMLReader &reader)
     hasSetValue();
 }
 
-void PropertyVector::Restore(Base::DocumentReader &reader,XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *ContainerDOM)
+void PropertyVector::Restore(Base::DocumentReader& reader,
+                             XERCES_CPP_NAMESPACE_QUALIFIER DOMElement* ContainerDOM)
 {
-	// read my Element
-	auto PropertyVectorDOM = reader.FindElement(ContainerDOM,"PropertyVector");
-	if(PropertyVectorDOM){
-		// get the value of my Attribute
-		const char* valueX_cstr = reader.GetAttribute(PropertyVectorDOM,"valueX");
-		const char* valueY_cstr = reader.GetAttribute(PropertyVectorDOM,"valueY");
-		const char* valueZ_cstr = reader.GetAttribute(PropertyVectorDOM,"valueZ");
-		if(valueX_cstr || valueY_cstr || valueZ_cstr){
-			aboutToSetValue();
-			_cVec.x = reader.ContentToFloat(valueX_cstr);
-			_cVec.y = reader.ContentToFloat(valueY_cstr);
-			_cVec.z = reader.ContentToFloat(valueZ_cstr);
-			hasSetValue();
-		}
-	}
+    // read my Element
+    auto PropertyVectorDOM = reader.FindElement(ContainerDOM, "PropertyVector");
+    if (PropertyVectorDOM) {
+        // get the value of my Attribute
+        const char* valueX_cstr = reader.GetAttribute(PropertyVectorDOM, "valueX");
+        const char* valueY_cstr = reader.GetAttribute(PropertyVectorDOM, "valueY");
+        const char* valueZ_cstr = reader.GetAttribute(PropertyVectorDOM, "valueZ");
+        if (valueX_cstr || valueY_cstr || valueZ_cstr) {
+            aboutToSetValue();
+            _cVec.x = reader.ContentToFloat(valueX_cstr);
+            _cVec.y = reader.ContentToFloat(valueY_cstr);
+            _cVec.z = reader.ContentToFloat(valueZ_cstr);
+            hasSetValue();
+        }
+    }
 }
-
 
 Property *PropertyVector::Copy() const
 {

@@ -29,10 +29,8 @@
 #include <xercesc/util/XercesDefs.hpp>
 
 XERCES_CPP_NAMESPACE_BEGIN
-	class DOMNode;
-	class DOMElement;
-//    class DefaultHandler;
-//    class SAX2XMLReader;
+class DOMNode;
+class DOMElement;
 XERCES_CPP_NAMESPACE_END
 
 namespace Base

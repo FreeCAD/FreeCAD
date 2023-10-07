@@ -34,17 +34,17 @@
 #include <boost/multi_index/member.hpp>
 #include <boost/multi_index/mem_fun.hpp>
 #include <xercesc/util/XercesDefs.hpp>
+#include <FCGlobal.h>
 
 
 XERCES_CPP_NAMESPACE_BEGIN
-	class DOMNode;
-	class DOMElement;
-//    class DefaultHandler;
-//    class SAX2XMLReader;
+class DOMNode;
+class DOMElement;
 XERCES_CPP_NAMESPACE_END
 
 
 namespace Base {
+class DocumentReader;
 class Writer;
 class XMLReader;
 class XMLWriter;
@@ -152,10 +152,15 @@ public:
 
     void save(const Property *prop, Base::Writer &writer) const;
 
-    Property *restore(PropertyContainer &pc, 
-        const char *PropName, const char *TypeName, Base::XMLReader &reader);
-    Property *restore(PropertyContainer &pc, 
-        const char *PropName, const char *TypeName, Base::DocumentReader &reader,XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *PropertyDOM);
+    Property* restore(PropertyContainer& pc,
+                      const char* PropName,
+                      const char* TypeName,
+                      Base::XMLReader& reader);
+    Property* restore(PropertyContainer& pc,
+                      const char* PropName,
+                      const char* TypeName,
+                      Base::DocumentReader& reader,
+                      XERCES_CPP_NAMESPACE_QUALIFIER DOMElement* PropertyDOM);
 
     struct PropData {
         Property* property;

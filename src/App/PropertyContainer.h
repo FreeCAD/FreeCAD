@@ -33,10 +33,8 @@
 #include <xercesc/util/XercesDefs.hpp>
 
 XERCES_CPP_NAMESPACE_BEGIN
-	class DOMNode;
-	class DOMElement;
-//    class DefaultHandler;
-//    class SAX2XMLReader;
+class DOMNode;
+class DOMElement;
 XERCES_CPP_NAMESPACE_END
 
 
@@ -230,7 +228,8 @@ public:
 
   void Save (Base::Writer &writer) const override;
   void Restore(Base::XMLReader &reader) override;
-  void Restore(Base::DocumentReader &reader, XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *containerEl) override;
+  void Restore(Base::DocumentReader &reader,
+               XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *containerEl) override;
   virtual void beforeSave() const;
 
   virtual void editProperty(const char * /*propName*/) {}

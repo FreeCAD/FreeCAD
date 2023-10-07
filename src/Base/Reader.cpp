@@ -383,14 +383,14 @@ void Base::XMLReader::readFiles(zipios::ZipInputStream &zipstream) const
         // no file name for the current entry in the zip was registered.
         if (jt != FileList.end()) {
             try {
-        		Base::Reader reader(zipstream, jt->FileName, FileVersion);
-	            jt->Object->RestoreDocFile(reader);
-	            if (reader.getLocalReader())
+                Base::Reader reader(zipstream, jt->FileName, FileVersion);
+                jt->Object->RestoreDocFile(reader);
+                if (reader.getLocalReader())
                     reader.getLocalReader()->readFiles(zipstream);
                 if (reader.getLocalDocReader())
-                	reader.getLocalDocReader()->readFiles(zipstream);
-                    
-            }catch(...) {
+                    reader.getLocalDocReader()->readFiles(zipstream);
+            }
+            catch(...) {
                 // For any exception we just continue with the next file.
                 // It doesn't matter if the last reader has read more or
                 // less data than the file size would allow.
