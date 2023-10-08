@@ -278,7 +278,6 @@ SET(FreeCADBase_CPP_SRCS
     Writer.cpp
     XMLTools.cpp
     ZipHeader.cpp
-    DocumentReader.cpp
 )
 
 SET(SWIG_HEADERS

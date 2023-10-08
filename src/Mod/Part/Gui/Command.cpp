@@ -31,8 +31,7 @@
 # include <TopExp_Explorer.hxx>
 # include <TopoDS_Shape.hxx>
 #endif
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
+
 #include <App/Document.h>
 #include <App/DocumentObjectGroup.h>
 #include <Base/Console.h>
@@ -49,6 +48,8 @@
 #include <Gui/MainWindow.h>
 #include <Gui/Selection.h>
 #include <Gui/SelectionObject.h>
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 #include <Gui/WaitCursor.h>
 
 #include "BoxSelection.h"

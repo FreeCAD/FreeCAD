@@ -38,8 +38,7 @@
 # include <Inventor/nodes/SoLineSet.h>
 # include <Inventor/nodes/SoSeparator.h>
 #endif
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
+
 #include <App/Document.h>
 #include <Base/Sequencer.h>
 #include <Base/UnitsApi.h>
@@ -47,6 +46,8 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/Command.h>
 #include <Gui/Document.h>
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 #include <Gui/ViewProvider.h>
 #include <Mod/Part/App/CrossSection.h>
 #include <Mod/Part/App/PartFeature.h>

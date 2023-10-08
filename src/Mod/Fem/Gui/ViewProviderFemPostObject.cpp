@@ -46,9 +46,6 @@
 #include <QTextStream>
 #endif
 
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
-
 #include <App/Document.h>
 #include <Base/Console.h>
 #include <Gui/Application.h>
@@ -59,7 +56,8 @@
 #include <Gui/SelectionObject.h>
 #include <Gui/SoFCColorBar.h>
 #include <Gui/TaskView/TaskDialog.h>
-
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 #include <Mod/Fem/App/FemPostFilter.h>
 
 #include "TaskPostBoxes.h"

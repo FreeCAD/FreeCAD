@@ -51,16 +51,13 @@
 #include <Inventor/nodes/SoSeparator.h>
 #endif
 
-// clang-format off
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
-// clang-format on
-
 #include <App/Document.h>
 #include <Base/Converter.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/Utilities.h>
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 #include <Mod/Mesh/App/Core/Algorithm.h>
 #include <Mod/Mesh/App/Core/Grid.h>
 #include <Mod/Mesh/App/Core/MeshKernel.h>

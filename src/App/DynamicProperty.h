@@ -33,15 +33,6 @@
 #include <boost/multi_index/sequenced_index.hpp>
 #include <boost/multi_index/member.hpp>
 #include <boost/multi_index/mem_fun.hpp>
-#include <xercesc/util/XercesDefs.hpp>
-
-
-XERCES_CPP_NAMESPACE_BEGIN
-	class DOMNode;
-	class DOMElement;
-//    class DefaultHandler;
-//    class SAX2XMLReader;
-XERCES_CPP_NAMESPACE_END
 
 
 namespace Base {
@@ -154,8 +145,6 @@ public:
 
     Property *restore(PropertyContainer &pc, 
         const char *PropName, const char *TypeName, Base::XMLReader &reader);
-    Property *restore(PropertyContainer &pc, 
-        const char *PropName, const char *TypeName, Base::DocumentReader &reader,XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *PropertyDOM);
 
     struct PropData {
         Property* property;

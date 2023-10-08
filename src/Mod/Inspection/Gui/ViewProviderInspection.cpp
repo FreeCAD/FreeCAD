@@ -46,15 +46,13 @@
 #include <Inventor/nodes/SoShapeHints.h>
 #endif
 
-#include <Gui/View3DInventorViewer.h>
-
 #include <App/GeoFeature.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/Flag.h>
 #include <Gui/MainWindow.h>
 #include <Gui/SoFCColorBar.h>
-
+#include <Gui/View3DInventorViewer.h>
 #include <Gui/Widgets.h>
 #include <Mod/Inspection/App/InspectionFeature.h>
 #include <Mod/Points/App/Properties.h>

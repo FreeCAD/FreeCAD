@@ -73,7 +73,7 @@ std::basic_string<XMLCh> XMLTools::toXMLString(const char* const fromTranscode)
     std::basic_string<XMLCh> str;
     if (!fromTranscode)
         return str;
-	
+
     initialize();
 
     static XMLCh outBuff[128];

@@ -26,13 +26,11 @@
 #ifndef _PreComp_
 #include <memory>
 # include <xercesc/sax2/XMLReaderFactory.hpp>
-# include <xercesc/dom/DOM.hpp>
 #endif
 
 #include <locale>
 
 #include "Reader.h"
-#include "DocumentReader.h"
 #include "Base64.h"
 #include "Console.h"
 #include "InputSource.h"
@@ -46,6 +44,7 @@
 #endif
 #include <zipios++/zipinputstream.h>
 #include <boost/iostreams/filtering_stream.hpp>
+
 
 XERCES_CPP_NAMESPACE_USE
 
@@ -383,14 +382,12 @@ void Base::XMLReader::readFiles(zipios::ZipInputStream &zipstream) const
         // no file name for the current entry in the zip was registered.
         if (jt != FileList.end()) {
             try {
-        		Base::Reader reader(zipstream, jt->FileName, FileVersion);
-	            jt->Object->RestoreDocFile(reader);
-	            if (reader.getLocalReader())
+                Base::Reader reader(zipstream, jt->FileName, FileVersion);
+                jt->Object->RestoreDocFile(reader);
+                if (reader.getLocalReader())
                     reader.getLocalReader()->readFiles(zipstream);
-                if (reader.getLocalDocReader())
-                	reader.getLocalDocReader()->readFiles(zipstream);
-                    
-            }catch(...) {
+            }
+            catch(...) {
                 // For any exception we just continue with the next file.
                 // It doesn't matter if the last reader has read more or
                 // less data than the file size would allow.
@@ -630,14 +627,4 @@ void Base::Reader::initLocalReader(std::shared_ptr<Base::XMLReader> reader)
 std::shared_ptr<Base::XMLReader> Base::Reader::getLocalReader() const
 {
     return(this->localreader);
-}
-
-void Base::Reader::initLocalDocReader(std::shared_ptr<Base::DocumentReader> reader)
-{
-    this->localdocreader = reader;
-}
-
-std::shared_ptr<Base::DocumentReader> Base::Reader::getLocalDocReader() const
-{
-    return(this->localdocreader);
 }

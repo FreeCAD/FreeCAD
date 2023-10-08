@@ -25,14 +25,6 @@
 #define APP_EXTENSIONCONTAINER_H
 
 #include "PropertyContainer.h"
-#include <xercesc/util/XercesDefs.hpp>
-
-XERCES_CPP_NAMESPACE_BEGIN
-	class DOMNode;
-	class DOMElement;
-//    class DefaultHandler;
-//    class SAX2XMLReader;
-XERCES_CPP_NAMESPACE_END
 
 
 namespace App {
@@ -185,13 +177,11 @@ public:
 
     void Save(Base::Writer& writer) const override;
     void Restore(Base::XMLReader& reader) override;
-    void Restore(Base::DocumentReader& reader,XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *containerEl);
 
     //those methods save/restore the dynamic extensions without handling properties, which is something
     //done by the default Save/Restore methods.
     void saveExtensions(Base::Writer& writer) const;
     void restoreExtensions(Base::XMLReader& reader);
-    void restoreExtensions(Base::DocumentReader& reader,XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *containerEl);
 
     /** Extends the rules for handling property name changed, so that extensions are given an opportunity to handle it.
      *  If an extension handles a change, neither the rest of the extensions, nor the container itself get to handle it.
@@ -201,7 +191,6 @@ public:
      *  If no extension handles the request, then the containers handleChangedPropertyName() is called.
      */
     void handleChangedPropertyName(Base::XMLReader &reader, const char * TypeName, const char *PropName) override;
-    virtual void handleChangedPropertyName(Base::DocumentReader &reader, const char * TypeName, const char *PropName) override;
     /** Extends the rules for handling property type changed, so that extensions are given an opportunity to handle it.
      *  If an extension handles a change, neither the rest of the extensions, nor the container itself get to handle it.
      *
@@ -210,9 +199,6 @@ public:
      *  If no extension handles the request, then the containers handleChangedPropertyType() is called.
      */
     void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, Property * prop) override;
-    virtual void handleChangedPropertyType(Base::DocumentReader &reader, const char * TypeName, Property * prop) override;
-    
-    void readExtension(Base::DocumentReader &reader,XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *ExtensionDOM);
 
 private:
     //stored extensions

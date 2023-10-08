@@ -21,11 +21,13 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-// clang-format off
-#include "ViewProviderSketch.h"
+
 #include <Gui/Command.h>
+
 #include "TaskDlgEditSketch.h"
-// clang-format on
+#include "ViewProviderSketch.h"
+
+
 using namespace SketcherGui;
 
 //**************************************************************************

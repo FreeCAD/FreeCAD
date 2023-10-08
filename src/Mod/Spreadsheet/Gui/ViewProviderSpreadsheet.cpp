@@ -29,12 +29,11 @@
 #include <sstream>
 #endif
 
-#include <Gui/View3DInventor.h>
-
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
+#include <Gui/View3DInventor.h>
 #include <Mod/Spreadsheet/App/Sheet.h>
 
 #include "SpreadsheetView.h"

@@ -28,8 +28,6 @@
 # include <QGridLayout>
 # include <memory>
 #endif
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
 
 #include <App/Application.h>
 #include <Base/Parameter.h>
@@ -37,7 +35,8 @@
 #include <Gui/MainWindow.h>
 #include <Gui/View3DSettings.h>
 #include <Gui/NavigationStyle.h>
-
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 
 #include "DlgSettingsNavigation.h"
 #include "ui_DlgSettingsNavigation.h"
