@@ -22,8 +22,6 @@
 
 #include "PreCompiled.h"
 
-#include <Base/Console.h>
-#include <Base/DocumentReader.h>
 #include <Base/Reader.h>
 #include <Base/Writer.h>
 
@@ -87,21 +85,4 @@ void VisualLayer::Restore(Base::XMLReader& reader)
 
     linePattern = reader.getAttributeAsUnsigned("linePattern");
     lineWidth = reader.getAttributeAsFloat("lineWidth");
-}
-
-void VisualLayer::Restore(Base::DocumentReader& reader,
-                          XERCES_CPP_NAMESPACE_QUALIFIER DOMElement* ContainerDOM)
-{
-    const char* visible_cstr = reader.GetAttribute(ContainerDOM, "visible");
-    if (visible_cstr) {
-        std::string str = visible_cstr;
-        visible = (str == "true");
-
-        const char* linePattern_cstr = reader.GetAttribute(ContainerDOM, "linePattern");
-        const char* lineWidth_cstr = reader.GetAttribute(ContainerDOM, "lineWidth");
-        if (linePattern_cstr && lineWidth_cstr) {
-            linePattern = reader.ContentToUnsigned(linePattern_cstr);
-            lineWidth = reader.ContentToUnsigned(lineWidth_cstr);
-        }
-    }
 }

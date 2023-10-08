@@ -31,8 +31,6 @@
 #include <SMESHDS_Mesh.hxx>
 #include <SMESH_Mesh.hxx>
 #endif
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
 
 #include <App/Document.h>
 #include <App/DocumentObserver.h>
@@ -46,7 +44,8 @@
 #include <Gui/SelectionFilter.h>
 #include <Gui/SelectionObject.h>
 #include <Gui/Utilities.h>
-
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 #include <Gui/WaitCursor.h>
 
 #include <Mod/Fem/App/FemAnalysis.h>

@@ -22,7 +22,6 @@
 
 #include "PreCompiled.h"
 
-#include "ViewProviderSketch.h"
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Base/PyObjectBase.h>
@@ -35,7 +34,7 @@
 #include "SketcherSettings.h"
 #include "SoZoomTranslation.h"
 #include "ViewProviderPython.h"
-
+#include "ViewProviderSketch.h"
 #include "ViewProviderSketchGeometryExtension.h"
 #include "ViewProviderSketchGeometryExtensionPy.h"
 #include "Workbench.h"

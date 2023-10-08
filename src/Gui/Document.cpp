@@ -33,7 +33,6 @@
 # include <QStatusBar>
 # include <Inventor/actions/SoSearchAction.h>
 # include <Inventor/nodes/SoSeparator.h>
-# include <xercesc/dom/DOM.hpp>
 #endif
 
 #include <App/AutoTransaction.h>
@@ -46,7 +45,6 @@
 #include <Base/Exception.h>
 #include <Base/Matrix.h>
 #include <Base/Reader.h>
-#include <Base/DocumentReader.h>
 #include <Base/Writer.h>
 #include <Base/Tools.h>
 
@@ -67,6 +65,7 @@
 #include "ViewProviderDocumentObject.h"
 #include "ViewProviderDocumentObjectGroup.h"
 #include "WaitCursor.h"
+
 
 FC_LOG_LEVEL_INIT("Gui", true, true)
 
@@ -107,8 +106,8 @@ struct DocumentP
     std::map<std::string,ViewProvider*> _ViewProviderMapAnnotation;
     std::list<ViewProviderDocumentObject*> _redoViewProviders;
     
-    int projectUnitSystem=-1;
-    bool projectUnitSystemIgnore;
+    int projectUnitSystem = -1;
+    bool projectUnitSystemIgnore = false;
 
     using Connection = boost::signals2::connection;
     Connection connectNewObject;
@@ -654,10 +653,10 @@ void Document::setPos(const char* name, const Base::Matrix4D& rclMtrx)
 
 void Document::setProjectUnitSystem(int pUS)
 {
-	if(pUS != d->projectUnitSystem && pUS >= 0){
-		d->projectUnitSystem = pUS;
+    if (pUS != d->projectUnitSystem && pUS >= 0) {
+        d->projectUnitSystem = pUS;
         setModified(true);
-	}
+    }
 }
 
 int Document::getProjectUnitSystem() const
@@ -667,8 +666,8 @@ int Document::getProjectUnitSystem() const
 
 void Document::setProjectUnitSystemIgnore(bool ignore)
 {
-	d->projectUnitSystemIgnore = ignore;
-	setModified(true);
+    d->projectUnitSystemIgnore = ignore;
+    setModified(true);
 }
 
 bool Document::getProjectUnitSystemIgnore() const
@@ -1403,7 +1402,7 @@ void Document::Save (Base::Writer &writer) const
 void Document::Restore(Base::XMLReader &reader)
 {
     reader.addFile("GuiDocument.xml",this);
-    
+
     // hide all elements to avoid to update the 3d view when loading data files
     // RestoreDocFile then restores the visibility status again
     std::map<const App::DocumentObject*,ViewProviderDocumentObject*>::iterator it;
@@ -1418,20 +1417,13 @@ void Document::Restore(Base::XMLReader &reader)
  */
 void Document::RestoreDocFile(Base::Reader &reader)
 {
-	
-	readUsing_DocumentReader(reader);
-	//readUsing_XMLReader(reader);
-    setModified(false);
-}
-
-void Document::readUsing_XMLReader(Base::Reader &reader){
     // We must create an XML parser to read from the input stream
     std::shared_ptr<Base::XMLReader> localreader = std::make_shared<Base::XMLReader>("GuiDocument.xml", reader);
-    //localreader->FileVersion = reader.getFileVersion();
+    localreader->FileVersion = reader.getFileVersion();
 
     localreader->readElement("Document");
     long scheme = localreader->getAttributeAsInteger("SchemaVersion");
-    //localreader->DocumentSchema = scheme;
+    localreader->DocumentSchema = scheme;
 
     bool hasExpansion = localreader->hasAttribute("HasExpansion");
     if(hasExpansion) {
@@ -1448,25 +1440,22 @@ void Document::readUsing_XMLReader(Base::Reader &reader){
     //
     // SchemeVersion "1"
     if (scheme == 1) {
-
         // read the viewproviders itself
-        
         localreader->readElement("ViewProviderData");
         int Cnt = localreader->getAttributeAsInteger("Count");
-        
         for (int i=0; i<Cnt; i++) {
             localreader->readElement("ViewProvider");
             std::string name = localreader->getAttribute("name");
             bool expanded = false;
             if (!hasExpansion && localreader->hasAttribute("expanded")) {
-
                 const char* attr = localreader->getAttribute("expanded");
                 if (strcmp(attr,"1") == 0) {
                     expanded = true;
                 }
             }
             ViewProvider* pObj = getViewProviderByName(name.c_str());
-            if (pObj){// check if this feature has been registered
+            // check if this feature has been registered
+            if (pObj){
                 pObj->Restore(*localreader);
             }
 
@@ -1476,9 +1465,7 @@ void Document::readUsing_XMLReader(Base::Reader &reader){
             }
             localreader->readEndElement("ViewProvider");
         }
-        
         localreader->readEndElement("ViewProviderData");
-        
 
         // read camera settings
         localreader->readElement("Camera");
@@ -1494,119 +1481,27 @@ void Document::readUsing_XMLReader(Base::Reader &reader){
                         it->onMsg(cameraSettings.c_str(), pReturnIgnore);
                 }
             }
-
             catch (const Base::Exception& e) {
                 Base::Console().Error("%s\n", e.what());
             }
         }
-    }
-    localreader->readEndElement("Document");
-    reader.initLocalReader(localreader);
-}
 
-void Document::readUsing_DocumentReader(Base::Reader &reader){
-    std::shared_ptr<Base::DocumentReader> docReader = std::make_shared<Base::DocumentReader>();
-	docReader->LoadDocument(reader);
-	//docReader->GetRootElement()//can be used to get Document XMLElement, but not needed.
-	const char* SchemaVersion_cstr = docReader->GetAttribute("SchemaVersion");
-	long SchemaVersion = docReader->ContentToInt( SchemaVersion_cstr );
-	const char* HasExpansion_cstr = docReader->GetAttribute("HasExpansion");
-	if(HasExpansion_cstr){
-		auto tree = TreeWidget::instance();
-	    if(tree) {
-	        auto docItem = tree->getDocumentItem(this);
-	        if(docItem)
-	            docItem->Restore(*docReader);
-	    }
-	}
-	
-	// At this stage all the document objects and their associated view providers exist.
-	// Now we must restore the properties of the view providers only.
-	if (SchemaVersion == 1) {
-		auto VProviderDataDOM = docReader->FindElement("ViewProviderData");
-		if(VProviderDataDOM){
-			const char* vpd_count_cstr = docReader->GetAttribute(VProviderDataDOM,"Count");
-			if(vpd_count_cstr){
-				long Cnt = docReader->ContentToInt( vpd_count_cstr );
-				auto prev_ViewProviderDOM = docReader->FindElement(VProviderDataDOM,"ViewProvider");
-				if(prev_ViewProviderDOM){
-					const char* name_cstr = docReader->GetAttribute(prev_ViewProviderDOM,"name");
-					const char* expanded_cstr = docReader->GetAttribute(prev_ViewProviderDOM,"expanded");
-					bool expanded = false;
-					if (!HasExpansion_cstr && expanded_cstr) {
-						if (strcmp(expanded_cstr,"1") == 0) {
-							expanded = true;
-						}
-					}
-					ViewProvider* pObj = getViewProviderByName(name_cstr);
-					if (pObj){
-						pObj->Restore(*docReader,prev_ViewProviderDOM);
-					}
-					if (pObj && expanded) {
-						auto vp = static_cast<Gui::ViewProviderDocumentObject*>(pObj);
-						this->signalExpandObject(*vp, TreeItemMode::ExpandItem,0,0);
-					}
-					for (int i=1; i<Cnt; i++) {
-						auto ViewProviderDOM_i = docReader->FindNextElement(prev_ViewProviderDOM,"ViewProvider");
-						if(ViewProviderDOM_i){
-							const char* name_cstr_i = docReader->GetAttribute(ViewProviderDOM_i,"name");
-							const char* expanded_cstr_i = docReader->GetAttribute(ViewProviderDOM_i,"expanded");
-							bool expanded = false;
-							if (!HasExpansion_cstr && expanded_cstr_i) {
-								if (strcmp(expanded_cstr_i,"1") == 0) {
-									expanded = true;
-								}
-							}
-							ViewProvider* pObj = getViewProviderByName(name_cstr_i);
-							if (pObj){
-								pObj->Restore(*docReader,ViewProviderDOM_i);
-							}
-							
-							if (pObj && expanded) {
-								auto vp = static_cast<Gui::ViewProviderDocumentObject*>(pObj);
-								this->signalExpandObject(*vp, TreeItemMode::ExpandItem,0,0);
-							}
-							prev_ViewProviderDOM = ViewProviderDOM_i;
-						}
-					}
-					
-				}
-				
-				
-			}
-		}
-		// read camera settings
-		auto CameraDOM = docReader->FindElement("Camera");
-		if(CameraDOM){
-			const char* ppReturn = docReader->GetAttribute(CameraDOM,"settings");
-			cameraSettings.clear();
-			if(ppReturn && ppReturn[0]) {
-			    saveCameraSettings(ppReturn);
-			    try {
-			        const char** pReturnIgnore=nullptr;
-			        std::list<MDIView*> mdi = getMDIViews();
-			        for (const auto & it : mdi) {
-			            if (it->onHasMsg("SetCamera"))
-			                it->onMsg(cameraSettings.c_str(), pReturnIgnore);
-			        }
-			    }
-			    catch (const Base::Exception& e) {
-			        Base::Console().Error("%s\n", e.what());
-			    }
-			}
-		}
-		
-		auto ProjectUnitSysDOM = docReader->FindElement("ProjectUnitSystem");
-		if(ProjectUnitSysDOM){
-			const char* US_cstr = docReader->GetAttribute(ProjectUnitSysDOM,"US");
-			const char* ignore_cstr = docReader->GetAttribute(ProjectUnitSysDOM,"ignore");
-			
-			d->projectUnitSystem = docReader->ContentToInt( US_cstr );
-			d->projectUnitSystemIgnore = docReader->ContentToInt( ignore_cstr );
-		}
-		
-	}
-	reader.initLocalDocReader(docReader);
+        //TODO: Implement a method to start the next element and returns its name
+        try {
+            localreader->readElement("ProjectUnitSystem");
+            d->projectUnitSystem = localreader->getAttributeAsInteger("US");
+            d->projectUnitSystemIgnore = localreader->getAttributeAsInteger("ignore");
+            localreader->readEndElement("Document");
+        }
+        catch (const Base::XMLParseException) {
+            // fails for older project files
+        }
+    }
+
+    reader.initLocalReader(localreader);
+
+    // reset modified flag
+    setModified(false);
 }
 
 void Document::slotStartRestoreDocument(const App::Document& doc)
@@ -1722,15 +1617,15 @@ void Document::SaveDocFile (Base::Writer &writer) const
     writer.Stream() << writer.ind() << "<Camera settings=\""
         << encodeAttribute(getCameraSettings()) << "\"/>\n";
     writer.decInd(); // indentation for camera settings
-    
-    if( d->projectUnitSystem >= 0 ){
-    	writer.incInd(); // indentation for ProjectUnitSystem
-    	writer.Stream() << writer.ind() << "<ProjectUnitSystem US=\""
-        << d->projectUnitSystem << "\" ignore=\""
-        << d->projectUnitSystemIgnore << "\"/>\n";
-    	writer.decInd(); // indentation for ProjectUnitSystem
+
+    if (d->projectUnitSystem >= 0) {
+        writer.incInd();
+        writer.Stream() << writer.ind() << "<ProjectUnitSystem US=\""
+                        << d->projectUnitSystem << "\" ignore=\""
+                        << d->projectUnitSystemIgnore << "\"/>\n";
+        writer.decInd();
     }
-    
+
     writer.Stream() << "</Document>" << std::endl;
 }
 

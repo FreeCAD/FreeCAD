@@ -29,12 +29,10 @@
 #include <boost_signals2.hpp>
 #include <memory>
 
-#include <Gui/GLPainter.h>
-
 #include <Base/Parameter.h>
 #include <Base/Placement.h>
 #include <Gui/Document.h>
-
+#include <Gui/GLPainter.h>
 #include <Gui/Selection.h>
 #include <Mod/Part/Gui/ViewProvider2DObject.h>
 #include <Mod/Part/Gui/ViewProviderAttachExtension.h>

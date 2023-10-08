@@ -29,11 +29,6 @@
 #include <QString>
 #endif
 
-// clang-format off
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
-// clang-format on
-
 #include <App/OriginFeature.h>
 #include <Gui/Action.h>
 #include <Gui/Application.h>
@@ -42,6 +37,8 @@
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
 #include <Gui/SelectionFilter.h>
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 #include <Mod/Part/App/DatumFeature.h>
 #include <Mod/Part/App/Geometry2d.h>
 #include <Mod/Sketcher/App/Constraint.h>
