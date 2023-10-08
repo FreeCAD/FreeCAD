@@ -23,7 +23,12 @@
 # import FreeCAD
 from os import walk
 import unittest
+import FreeCAD
 import Material
+
+parseQuantity = FreeCAD.Units.parseQuantity
+# import locale
+# locale.setpreferredencoding("UTF8")
 
 class MaterialTestCases(unittest.TestCase):
     def setUp(self):
@@ -133,6 +138,10 @@ class MaterialTestCases(unittest.TestCase):
         self.assertIn("SpecularColor", properties)
         self.assertIn("Transparency", properties)
 
+        #
+        # The test for ThermalExpansionCoefficient causes problems with some localizations
+        # due to the Unicode mu character in the units. I don't have a solution to this
+        # yet so it's commented out for now
         print("Density " + properties["Density"])
         # print("BulkModulus " + properties["BulkModulus"])
         print("PoissonRatio " + properties["PoissonRatio"])
@@ -140,7 +149,7 @@ class MaterialTestCases(unittest.TestCase):
         # print("ShearModulus " + properties["ShearModulus"])
         print("SpecificHeat " + properties["SpecificHeat"])
         print("ThermalConductivity " + properties["ThermalConductivity"])
-        print("ThermalExpansionCoefficient " + properties["ThermalExpansionCoefficient"])
+        # print("ThermalExpansionCoefficient " + properties["ThermalExpansionCoefficient"])
         print("AmbientColor " + properties["AmbientColor"])
         print("DiffuseColor " + properties["DiffuseColor"])
         print("EmissiveColor " + properties["EmissiveColor"])
@@ -163,20 +172,20 @@ class MaterialTestCases(unittest.TestCase):
         self.assertTrue(len(properties["SpecularColor"]) > 0)
         self.assertTrue(len(properties["Transparency"]) > 0)
 
-        self.assertEqual(properties["Density"], "7900.00 kg/m^3")
+        self.assertEqual(properties["Density"], parseQuantity("7900.00 kg/m^3").UserString)
         # self.assertEqual(properties["BulkModulus"], "")
-        self.assertEqual(properties["PoissonRatio"], "0.30000001192092896")
-        self.assertEqual(properties["YoungsModulus"], "210.00 GPa")
+        self.assertAlmostEqual(parseQuantity(properties["PoissonRatio"]).Value, parseQuantity("0.30000001192092896").Value)
+        self.assertEqual(properties["YoungsModulus"], parseQuantity("210.00 GPa").UserString)
         # self.assertEqual(properties["ShearModulus"], "")
-        self.assertEqual(properties["SpecificHeat"], "590.00 J/kg/K")
-        self.assertEqual(properties["ThermalConductivity"], "43.00 W/m/K")
-        self.assertEqual(properties["ThermalExpansionCoefficient"], "12.00 µm/m/K")
+        self.assertEqual(properties["SpecificHeat"], parseQuantity("590.00 J/kg/K").UserString)
+        self.assertEqual(properties["ThermalConductivity"], parseQuantity("43.00 W/m/K").UserString)
+        self.assertEqual(properties["ThermalExpansionCoefficient"], parseQuantity("12.00 µm/m/K").UserString)
         self.assertEqual(properties["AmbientColor"], "(0.0020, 0.0020, 0.0020, 1.0)")
         self.assertEqual(properties["DiffuseColor"], "(0.0000, 0.0000, 0.0000, 1.0)")
         self.assertEqual(properties["EmissiveColor"], "(0.0000, 0.0000, 0.0000, 1.0)")
-        self.assertEqual(properties["Shininess"], "0.05999999865889549")
+        self.assertAlmostEqual(parseQuantity(properties["Shininess"]).Value, parseQuantity("0.05999999865889549").Value)
         self.assertEqual(properties["SpecularColor"], "(0.9800, 0.9800, 0.9800, 1.0)")
-        self.assertEqual(properties["Transparency"], "0")
+        self.assertAlmostEqual(parseQuantity(properties["Transparency"]).Value, parseQuantity("0").Value)
 
         print("Density " + steel.getPhysicalValue("Density").UserString)
         # print("BulkModulus " + properties["BulkModulus"])
@@ -185,7 +194,7 @@ class MaterialTestCases(unittest.TestCase):
         # print("ShearModulus " + properties["ShearModulus"])
         print("SpecificHeat " + steel.getPhysicalValue("SpecificHeat").UserString)
         print("ThermalConductivity " + steel.getPhysicalValue("ThermalConductivity").UserString)
-        print("ThermalExpansionCoefficient " + steel.getPhysicalValue("ThermalExpansionCoefficient").UserString)
+        # print("ThermalExpansionCoefficient " + steel.getPhysicalValue("ThermalExpansionCoefficient").UserString)
         print("AmbientColor " + steel.getAppearanceValue("AmbientColor"))
         print("DiffuseColor " + steel.getAppearanceValue("DiffuseColor"))
         print("EmissiveColor " + steel.getAppearanceValue("EmissiveColor"))
