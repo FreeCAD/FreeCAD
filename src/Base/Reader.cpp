@@ -222,8 +222,36 @@ void Base::XMLReader::readElement(const char* ElementName)
              (ElementName && LocalName != ElementName));
 }
 
+bool Base::XMLReader::readNextElement()
+{
+    bool ok{};
+    while (true) {
+        ok = read();
+        if (!ok)
+            break;
+        if (ReadType == StartEndElement)
+            break;
+        if (ReadType == EndElement)
+            break;
+        if (ReadType == EndDocument)
+            break;
+    };
+
+    return (ReadType == StartEndElement);
+}
+
 int Base::XMLReader::level() const {
     return Level;
+}
+
+bool Base::XMLReader::isEndOfElement() const
+{
+    return (ReadType == EndElement);
+}
+
+bool Base::XMLReader::isEndOfDocument() const
+{
+    return (ReadType == EndDocument);
 }
 
 void Base::XMLReader::readEndElement(const char* ElementName, int level)
