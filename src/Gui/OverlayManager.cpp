@@ -93,127 +93,154 @@ public:
 
     OverlayStyleSheet() {
         handle = App::GetApplication().GetParameterGroupByPath(
-                "User parameter:BaseApp/Preferences/MainWindow");
+            "User parameter:BaseApp/Preferences/MainWindow");
+        
         update();
+
         handle->Attach(this);
     }
 
     static OverlayStyleSheet *instance() {
-        static OverlayStyleSheet *inst;
-        if(!inst)
-            inst = new OverlayStyleSheet;
-        return inst;
+        static OverlayStyleSheet* instance;
+
+        if (!instance) {
+            instance = new OverlayStyleSheet;
+        }
+
+        return instance;
     }
 
     void OnChange(Base::Subject<const char*> &, const char* sReason) {
-        if(!sReason)
+        if (!sReason) {
             return;
-        if(strcmp(sReason, "StyleSheet")==0
-                || strcmp(sReason, "OverlayActiveStyleSheet")==0)
-        {
+        }
+
+        if (strcmp(sReason, "StyleSheet") == 0 ||
+            strcmp(sReason, "OverlayActiveStyleSheet") == 0) {
             OverlayManager::instance()->refresh(nullptr, true);
         }
     }
 
     void update() {
-        QString mainstyle = QString::fromUtf8(handle->GetASCII("StyleSheet").c_str());
-
-        QString prefix;
-       
-        if(!mainstyle.isEmpty()) {
-            int dark = mainstyle.indexOf(QStringLiteral("dark"),0,Qt::CaseInsensitive);
-            prefix = QStringLiteral("overlay:%1").arg(
-                    dark<0 ? QStringLiteral("Light") : QStringLiteral("Dark"));
-        }
-
-        QString name;
-        name = QString::fromUtf8(handle->GetASCII("OverlayActiveStyleSheet").c_str());
-        if(name.isEmpty() && !prefix.isEmpty())
-            name = prefix + QStringLiteral(".qss");
-        else if (!QFile::exists(name))
-            name = QStringLiteral("overlay:%1").arg(name);
         activeStyleSheet.clear();
-        if(QFile::exists(name)) {
-            QFile f(name);
-            if(f.open(QFile::ReadOnly)) {
-                QTextStream str(&f);
-                activeStyleSheet = str.readAll();
-            }
-        }
-        if(activeStyleSheet.isEmpty()) {
-            static QString _default = QStringLiteral(
-                "* {alternate-background-color: rgba(250,250,250,120)}"
 
-                "QComboBox, QComboBox:editable, QComboBox:!editable, QLineEdit,"
-                "QTextEdit, QPlainTextEdit, QAbstractSpinBox, QDateEdit, QDateTimeEdit,"
-                "Gui--PropertyEditor--PropertyEditor QLabel "
-                    "{background : palette(base);}"
+        QString overlayStylesheetFileName = detectOverlayStyleSheetFileName();
+        loadFromFile(overlayStylesheetFileName);
 
-                "QScrollBar { background: rgba(0,0,0,10);}"
-                "QTabWidget::pane { background-color: transparent; border: transparent }"
-                "Gui--OverlayTabWidget { qproperty-effectColor: rgba(0,0,0,0) }"
-                "Gui--OverlayTabWidget::pane { background-color: rgba(250,250,250,80) }"
-
-                "QTabBar {border : none;}"
-                "QTabBar::tab {color: palette(text);"
-                              "background-color: rgba(100,100,100,50);"
-                              "padding: 5px}"
-                "QTabBar::tab:selected {background-color: rgba(250,250,250,80);}"
-                "QTabBar::tab:hover {background-color: rgba(250,250,250,200);}"
-
-                "QHeaderView { background:transparent }"
-                "QHeaderView::section {color: palette(text);"
-                                      "background-color: rgba(250,250,250,50);"
-                                      "border: 1px solid palette(dark);"
-                                      "padding: 2px}"
-
-                "QTreeView, QListView, QTableView {"
-                            "background: rgb(250,250,250);"
-                            "border: transparent;"
-                            "selection-background-color: rgba(94, 144, 250, 0.7);}"
-                "QListView::item:selected, QTreeView::item:selected {"
-                            "background-color: rgba(94, 144, 250, 0.7);}"
-
-                "Gui--PropertyEditor--PropertyEditor {"
-                            "border: 1px solid palette(dark);"
-                            "qproperty-groupTextColor: rgb(100, 100, 100);"
-                            "qproperty-groupBackground: rgba(180, 180, 180, 0.7);}"
-
-                "QToolTip {background-color: rgba(250,250,250,180);}"
-
-                "Gui--TreeWidget QHeaderView:section {"
-                            "height: 0px;"
-                            "background-color: transparent;"
-                            "padding: 0px;"
-                            "border: transparent;}"
-
-                "Gui--CallTipsList::item { background-color: rgba(200,200,200,200);}"
-                "Gui--CallTipsList::item::selected { background-color: palette(highlight);}"
-
-                "QPushButton { background: rgba(250,250,250,80);padding: 2px 4px;}"
-                "QPushButton::hover { background: rgba(250,250,250,200);}"
-                "QPushButton::focus { background: rgba(250,250,250,255);}"
-                "QPushButton::pressed { background-color: #5e90fa;"
-                                           "border: 1px inset palette(dark) }"
-                "QPushButton::checked { background: rgba(100,100,100,100);"
-                                           "border: 1px inset palette(dark) }"
-                "QPushButton::checked:hover { background: rgba(150,150,150,200);"
-                                                 "border: 1px inset palette(dark) }"
-                "Gui--OverlayToolButton { background: transparent; padding: 0px; border: none }"
-                "Gui--OverlayTitleBar,"
-                "Gui--OverlaySplitterHandle { background-color: rgba(200, 200, 200, 150); }"
-                "QWidget#ClippingScrollAreaContents, "
-                "QScrollArea#ClippingScrollArea { border: none; background-color: #a0e6e6e6; }"
-                "Gui--PropertyEditor--PropertyEditor > QWidget > QPushButton {text-align:left;padding-left:2px;}"
-            );
+        // If after loading the result is still empty we need to apply some defaults
+        if (activeStyleSheet.isEmpty()) {
             activeStyleSheet = _default;
         }
     }
 
     ParameterGrp::handle handle;
     QString activeStyleSheet;
-    bool hideTab = false;
+    bool hideTab;
+
+private:
+    QString detectOverlayStyleSheetFileName() const {
+        QString mainStyleSheet = QString::fromUtf8(handle->GetASCII("StyleSheet").c_str());
+        QString overlayStyleSheet = QString::fromUtf8(handle->GetASCII("OverlayActiveStyleSheet").c_str());
+
+        if (overlayStyleSheet.isEmpty()) {
+            // User did not choose any stylesheet, we need to choose one based on main stylesheet
+            if (mainStyleSheet.contains(QStringLiteral("light"), Qt::CaseInsensitive)) {
+                overlayStyleSheet = QStringLiteral("overlay:Light-Outline.qss");
+            }
+            else {
+                // by default FreeCAD uses somewhat dark background for 3D View.
+                // if user has not explicitly selected light theme, the "Dark Outline" looks best
+                overlayStyleSheet = QStringLiteral("overlay:Dark-Outline.qss");
+            }
+        }
+        else if (!overlayStyleSheet.isEmpty() && !QFile::exists(overlayStyleSheet)) {
+            // User did choose one of predefined stylesheets, we need to qualify it with namespace
+            overlayStyleSheet = QStringLiteral("overlay:%s").arg(overlayStyleSheet);
+        } 
+
+        return overlayStyleSheet;
+    }
+
+    void loadFromFile(const QString& name) {
+        if (!QFile::exists(name)) {
+            return;
+        }
+
+        QFile file(name);
+
+        if (file.open(QFile::ReadOnly)) {
+            activeStyleSheet = QTextStream(&file).readAll();
+        }
+    }
+
+    static const QString _default;
 };
+
+const QString OverlayStyleSheet::_default = QStringLiteral(
+        "* {alternate-background-color: rgba(250,250,250,120)}"
+
+        "QComboBox, QComboBox:editable, QComboBox:!editable, QLineEdit,"
+        "QTextEdit, QPlainTextEdit, QAbstractSpinBox, QDateEdit, QDateTimeEdit,"
+        "Gui--PropertyEditor--PropertyEditor QLabel "
+            "{background : palette(base);}"
+
+        "QScrollBar { background: rgba(0,0,0,10);}"
+        "QTabWidget::pane { background-color: transparent; border: transparent }"
+        "Gui--OverlayTabWidget { qproperty-effectColor: rgba(0,0,0,0) }"
+        "Gui--OverlayTabWidget::pane { background-color: rgba(250,250,250,80) }"
+
+        "QTabBar {border : none;}"
+        "QTabBar::tab {color: palette(text);"
+                        "background-color: rgba(100,100,100,50);"
+                        "padding: 5px}"
+        "QTabBar::tab:selected {background-color: rgba(250,250,250,80);}"
+        "QTabBar::tab:hover {background-color: rgba(250,250,250,200);}"
+
+        "QHeaderView { background:transparent }"
+        "QHeaderView::section {color: palette(text);"
+                                "background-color: rgba(250,250,250,50);"
+                                "border: 1px solid palette(dark);"
+                                "padding: 2px}"
+
+        "QTreeView, QListView, QTableView {"
+                    "background: rgb(250,250,250);"
+                    "border: transparent;"
+                    "selection-background-color: rgba(94, 144, 250, 0.7);}"
+        "QListView::item:selected, QTreeView::item:selected {"
+                    "background-color: rgba(94, 144, 250, 0.7);}"
+
+        "Gui--PropertyEditor--PropertyEditor {"
+                    "border: 1px solid palette(dark);"
+                    "qproperty-groupTextColor: rgb(100, 100, 100);"
+                    "qproperty-groupBackground: rgba(180, 180, 180, 0.7);}"
+
+        "QToolTip {background-color: rgba(250,250,250,180);}"
+
+        "Gui--TreeWidget QHeaderView:section {"
+                    "height: 0px;"
+                    "background-color: transparent;"
+                    "padding: 0px;"
+                    "border: transparent;}"
+
+        "Gui--CallTipsList::item { background-color: rgba(200,200,200,200);}"
+        "Gui--CallTipsList::item::selected { background-color: palette(highlight);}"
+
+        "QPushButton { background: rgba(250,250,250,80);padding: 2px 4px;}"
+        "QPushButton::hover { background: rgba(250,250,250,200);}"
+        "QPushButton::focus { background: rgba(250,250,250,255);}"
+        "QPushButton::pressed { background-color: #5e90fa;"
+                                    "border: 1px inset palette(dark) }"
+        "QPushButton::checked { background: rgba(100,100,100,100);"
+                                    "border: 1px inset palette(dark) }"
+        "QPushButton::checked:hover { background: rgba(150,150,150,200);"
+                                            "border: 1px inset palette(dark) }"
+        "Gui--OverlayToolButton { background: transparent; padding: 0px; border: none }"
+        "Gui--OverlayTitleBar,"
+        "Gui--OverlaySplitterHandle { background-color: rgba(200, 200, 200, 150); }"
+        "QWidget#ClippingScrollAreaContents, "
+        "QScrollArea#ClippingScrollArea { border: none; background-color: #a0e6e6e6; }"
+        "Gui--PropertyEditor--PropertyEditor > QWidget > QPushButton {text-align:left;padding-left:2px;}"
+    );
 
 // -----------------------------------------------------------
 
