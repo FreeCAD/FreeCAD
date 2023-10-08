@@ -21,7 +21,7 @@
  ****************************************************************************/
 
 #ifndef FC_OVERLAYMANAGER_H
-#define FC_OVERLAYMANAGER_H 
+#define FC_OVERLAYMANAGER_H
 
 #include <QObject>
 
@@ -61,7 +61,7 @@ public:
         ReloadResume = 2,
     };
     /** Set reload mode
-     * 
+     *
      * An internal timer is used to batch handle all relevant parameter
      * changes. The function is provided to let other code temporarily disable
      * the timer before changing the parameter, and then resume it after done.

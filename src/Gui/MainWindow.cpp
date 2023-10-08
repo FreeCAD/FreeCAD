@@ -1264,7 +1264,7 @@ void MainWindow::onWindowActivated(QMdiSubWindow* w)
         d->activeView = view;
         Application::Instance->viewActivated(view);
     }
-    
+
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     bool saveWB = hGrp->GetBool("SaveWBbyTab", false);
     if (saveWB) {
