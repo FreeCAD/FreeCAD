@@ -185,7 +185,7 @@ public:
 
     void Save(Base::Writer& writer) const override;
     void Restore(Base::XMLReader& reader) override;
-    void Restore(Base::DocumentReader& reader,XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *containerEl);
+    void Restore(Base::DocumentReader& reader,XERCES_CPP_NAMESPACE_QUALIFIER DOMElement *containerEl) override;
 
     //those methods save/restore the dynamic extensions without handling properties, which is something
     //done by the default Save/Restore methods.
