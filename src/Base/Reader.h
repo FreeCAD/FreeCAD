@@ -146,8 +146,18 @@ public:
     const char* localName() const;
     /// get the current element level
     int level() const;
+
+    /// return true if the end of an element is reached, false otherwise
+    bool isEndOfElement() const;
+
+    /// return true if the end of the document is reached, false otherwise
+    bool isEndOfDocument() const;
+
     /// read until a start element is found (\<name\>) or start-end element (\<name/\>) (with special name if given)
     void readElement   (const char* ElementName=nullptr);
+
+    /// Read in the next element. Return true if it succeeded and false otherwise
+    bool readNextElement();
 
     /** read until an end element is found
      *

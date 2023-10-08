@@ -1486,15 +1486,12 @@ void Document::RestoreDocFile(Base::Reader &reader)
             }
         }
 
-        //TODO: Implement a method to start the next element and returns its name
-        try {
-            localreader->readElement("ProjectUnitSystem");
-            d->projectUnitSystem = localreader->getAttributeAsInteger("US");
-            d->projectUnitSystemIgnore = localreader->getAttributeAsInteger("ignore");
-            localreader->readEndElement("Document");
-        }
-        catch (const Base::XMLParseException) {
-            // fails for older project files
+        if (localreader->readNextElement()) {
+            if (strcmp(localreader->localName(), "ProjectUnitSystem") == 0) {
+                d->projectUnitSystem = localreader->getAttributeAsInteger("US");
+                d->projectUnitSystemIgnore = localreader->getAttributeAsInteger("ignore");
+                localreader->readEndElement("Document");
+            }
         }
     }
 
