@@ -61,6 +61,7 @@ class Draft_Hyperlink:
     def Activated(self):
         self.find_hyperlinks()
 
+        ret = None
         if len(self.hyperlinks_list) > 1:
             m = QtWidgets.QMessageBox()
             m.setWindowTitle(translate("draft", "Opening multiple hyperlinks"))
@@ -90,7 +91,7 @@ class Draft_Hyperlink:
             if hasattr(o.Object, "Text"):
 
                 for text in o.Object.Text:
-                    hyperlinks = re.findall(r"((%\w+%|/\w+|\w:\\|\w{3,4}://)[\w\\/: ]+\.[\w?$#=\\\.]+)", text)
+                    hyperlinks = re.findall(r"((\w:[\\/]|%\w+%|\\\\\w+|/\w+|\w{3,5}://)[\w\\/: ]+\.[\S]+)", text)
 
                     for hyperlink in hyperlinks:
                         self.hyperlinks_list.append(hyperlink[0])
@@ -101,10 +102,16 @@ class Draft_Hyperlink:
         return len(self.hyperlinks_list) > 0
 
     def open_hyperlink(self, hyperlink):
+        file_hyperlink = len(re.findall(r"^(\w:[\\/]|%\w+%|\\\\\w+|/\w+)", hyperlink)) > 0
+
+        if file_hyperlink and not os.path.isfile(hyperlink):
+            _msg(translate("draft", "File not found:") + " " + hyperlink)
+            return
+
         _msg(translate("draft", "Opening hyperlink") + " " + hyperlink)
-        
+
         match sys.platform:
-            case ("win32", "cygwin"):
+            case ("win32" | "cygwin"):
                 os.startfile(hyperlink)
             case "darwin":
                 subprocess.call(["open", hyperlink])
