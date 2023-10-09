@@ -198,7 +198,6 @@ TEST_F(ReaderTest, readDataLargerThanBufferSecondRead)
     EXPECT_EQ(bufferSize, bytesRead);
 }
 
-
 TEST_F(ReaderTest, readDataNotStarted)
 {
     // Arrange
@@ -213,4 +212,56 @@ TEST_F(ReaderTest, readDataNotStarted)
 
     // Assert
     EXPECT_EQ(-1, bytesRead);  // Because we didn't call beginCharStream
+}
+
+TEST_F(ReaderTest, readNextStartElement)
+{
+    auto xmlBody = R"(
+<node1 attr='1'>Node1</node1>
+<node2 attr='2'>Node2</node2>
+)";
+
+    givenDataAsXMLStream(xmlBody);
+
+    // start of document
+    Reader()->readElement("document");
+    EXPECT_STREQ(Reader()->localName(), "document");
+
+    // next element
+    EXPECT_TRUE(Reader()->readNextElement());
+    EXPECT_STREQ(Reader()->localName(), "node1");
+    EXPECT_STREQ(Reader()->getAttribute("attr"), "1");
+    Reader()->readEndElement("node1");
+    EXPECT_TRUE(Reader()->isEndOfElement());
+
+    // next element
+    EXPECT_TRUE(Reader()->readNextElement());
+    EXPECT_STREQ(Reader()->localName(), "node2");
+    EXPECT_STREQ(Reader()->getAttribute("attr"), "2");
+    Reader()->readEndElement("node2");
+    EXPECT_TRUE(Reader()->isEndOfElement());
+}
+
+TEST_F(ReaderTest, readNextStartEndElement)
+{
+    auto xmlBody = R"(
+<node1 attr='1'/>
+<node2 attr='2'/>
+)";
+
+    givenDataAsXMLStream(xmlBody);
+
+    // start of document
+    Reader()->readElement("document");
+    EXPECT_STREQ(Reader()->localName(), "document");
+
+    // next element
+    EXPECT_TRUE(Reader()->readNextElement());
+    EXPECT_STREQ(Reader()->localName(), "node1");
+    EXPECT_STREQ(Reader()->getAttribute("attr"), "1");
+
+    // next element
+    EXPECT_TRUE(Reader()->readNextElement());
+    EXPECT_STREQ(Reader()->localName(), "node2");
+    EXPECT_STREQ(Reader()->getAttribute("attr"), "2");
 }
