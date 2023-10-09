@@ -229,6 +229,8 @@ bool Base::XMLReader::readNextElement()
         ok = read();
         if (!ok)
             break;
+        if (ReadType == StartElement)
+            break;
         if (ReadType == StartEndElement)
             break;
         if (ReadType == EndElement)
@@ -237,7 +239,8 @@ bool Base::XMLReader::readNextElement()
             break;
     };
 
-    return (ReadType == StartEndElement);
+    return (ReadType == StartElement ||
+            ReadType == StartEndElement);
 }
 
 int Base::XMLReader::level() const {
