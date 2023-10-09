@@ -79,6 +79,10 @@ namespace MbD {
 		std::shared_ptr<std::map<std::string, std::shared_ptr<ASMTMarker>>>markerMap();
 		void deleteMbD();
 		void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
+
+		/* This function performs a one shot solve of the assembly.*/
+		void solve();
+
 		void runKINEMATIC();
 		void initprincipalMassMarker();
 		std::shared_ptr<ASMTSpatialContainer> spatialContainerAt(std::shared_ptr<ASMTAssembly> self, std::string& longname);

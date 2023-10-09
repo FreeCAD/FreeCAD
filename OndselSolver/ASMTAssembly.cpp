@@ -64,17 +64,11 @@ void MbD::ASMTAssembly::runSinglePendulumSuperSimplified()
 	mkr->setPosition3D(0.1, 0.1, 0.1);
 	part->addMarker(mkr);
 
-	auto joint = CREATE<ASMTRevoluteJoint>::With();
+	auto joint = CREATE<ASMTFixedJoint>::With();
 	joint->setName("Joint1");
 	joint->setMarkerI("/Assembly1/Marker1");
 	joint->setMarkerJ("/Assembly1/Part1/Marker1");
 	assembly->addJoint(joint);
-
-	auto motion = CREATE<ASMTRotationalMotion>::With();
-	motion->setName("Motion1");
-	motion->setMotionJoint("/Assembly1/Joint1");
-	motion->setRotationZ("0.0");
-	assembly->addMotion(motion);
 
 	auto simulationParameters = CREATE<ASMTSimulationParameters>::With();
 	simulationParameters->settstart(0.0);
@@ -849,6 +843,20 @@ void MbD::ASMTAssembly::createMbD(std::shared_ptr<System> mbdSys, std::shared_pt
 	mbdSysSolver->translationLimit = simulationParameters->translationLimit / mbdUnits->length;
 	mbdSysSolver->rotationLimit = simulationParameters->rotationLimit;
 	animationParameters = nullptr;
+}
+
+void MbD::ASMTAssembly::solve()
+{
+	auto simulationParameters = CREATE<ASMTSimulationParameters>::With();
+	simulationParameters->settstart(0.0);
+	simulationParameters->settend(0.0);	//tstart == tend Initial Conditions only.
+	simulationParameters->sethmin(1.0e-9);
+	simulationParameters->sethmax(1.0);
+	simulationParameters->sethout(0.04);
+	simulationParameters->seterrorTol(1.0e-6);
+	setSimulationParameters(simulationParameters);
+
+	runKINEMATIC();
 }
 
 void MbD::ASMTAssembly::runKINEMATIC()
