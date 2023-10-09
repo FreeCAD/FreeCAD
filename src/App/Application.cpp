@@ -1215,7 +1215,7 @@ std::set<DocumentObject *> Application::getLinksTo(
     } else {
         std::set<Document*> docs;
         for(auto o : obj->getInList()) {
-            if(o && o->getNameInDocument() && docs.insert(o->getDocument()).second) {
+            if(o && o->isAttachedToDocument() && docs.insert(o->getDocument()).second) {
                 o->getDocument()->getLinksTo(links,obj,options,maxCount);
                 if(maxCount && (int)links.size()>=maxCount)
                     break;

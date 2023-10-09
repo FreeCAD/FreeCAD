@@ -132,7 +132,7 @@ void DlgScale::findShapes()
         if (canScale(shape)) {
             QTreeWidgetItem* item = new QTreeWidgetItem(ui->treeWidget);
             item->setText(0, QString::fromUtf8(obj->Label.getValue()));
-            item->setData(0, Qt::UserRole, QString::fromLatin1(obj->getNameInDocument()));
+            item->setData(0, Qt::UserRole, QString::fromLatin1(obj->getNameInDocument().c_str()));
             Gui::ViewProvider* vp = activeGui->getViewProvider(obj);
             if (vp)
                 item->setIcon(0, vp->getIcon());

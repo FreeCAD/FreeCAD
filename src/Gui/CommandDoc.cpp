@@ -1206,7 +1206,7 @@ void StdCmdDuplicateSelection::activated(int iMsg)
     std::vector<App::DocumentObject*> sel;
     std::set<App::DocumentObject*> objSet;
     for(auto &s : Selection().getCompleteSelection()) {
-        if(s.pObject && s.pObject->getNameInDocument() && objSet.insert(s.pObject).second)
+        if(s.pObject && s.pObject->isAttachedToDocument() && objSet.insert(s.pObject).second)
             sel.push_back(s.pObject);
     }
     if(sel.empty())
@@ -1366,7 +1366,7 @@ void StdCmdDelete::activated(int iMsg)
                             if(parent->getDocument() != obj->getDocument())
                                 label = QLatin1String(parent->getFullName().c_str());
                             else
-                                label = QLatin1String(parent->getNameInDocument());
+                                label = QLatin1String(parent->getNameInDocument().c_str());
                             if(parent->Label.getStrValue() != parent->getNameInDocument())
                                 label += QString::fromLatin1(" (%1)").arg(
                                         QString::fromUtf8(parent->Label.getValue()));

@@ -1369,7 +1369,7 @@ void TaskPostClip::collectImplicitFunctions()
                 static_cast<Fem::FemPostFunctionProvider*>(pipeline->Functions.getValue())
                     ->Functions.getValues();
             for (std::size_t i = 0; i < funcs.size(); ++i) {
-                items.push_back(QString::fromLatin1(funcs[i]->getNameInDocument()));
+                items.push_back(QString::fromLatin1(funcs[i]->getNameInDocument().c_str()));
                 if (currentFunction == funcs[i]) {
                     currentItem = i;
                 }
@@ -1659,7 +1659,7 @@ void TaskPostCut::collectImplicitFunctions()
                 static_cast<Fem::FemPostFunctionProvider*>(pipeline->Functions.getValue())
                     ->Functions.getValues();
             for (std::size_t i = 0; i < funcs.size(); ++i) {
-                items.push_back(QString::fromLatin1(funcs[i]->getNameInDocument()));
+                items.push_back(QString::fromLatin1(funcs[i]->getNameInDocument().c_str()));
                 if (currentFunction == funcs[i]) {
                     currentItem = i;
                 }

@@ -379,9 +379,9 @@ void CmdPartRefineShape::activated(int iMsg)
                               obj->getNameInDocument(),
                               obj->getNameInDocument());
 
-                copyVisual("ActiveObject", "ShapeColor", obj->getNameInDocument());
-                copyVisual("ActiveObject", "LineColor", obj->getNameInDocument());
-                copyVisual("ActiveObject", "PointColor", obj->getNameInDocument());
+                copyVisual("ActiveObject", "ShapeColor", obj->getNameInDocument().c_str());
+                copyVisual("ActiveObject", "LineColor", obj->getNameInDocument().c_str());
+                copyVisual("ActiveObject", "PointColor", obj->getNameInDocument().c_str());
             }
             catch (const Base::Exception& e) {
                 Base::Console().Warning("%s: %s\n", obj->Label.getValue(), e.what());

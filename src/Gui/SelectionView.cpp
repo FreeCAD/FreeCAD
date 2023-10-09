@@ -287,11 +287,11 @@ void SelectionView::search(const QString& text)
                     QTextStream str(&selObject);
                     QStringList list;
                     list << QString::fromLatin1(doc->getName());
-                    list << QString::fromLatin1(it->getNameInDocument());
+                    list << QString::fromLatin1(it->getNameInDocument().c_str());
                     // build name
                     str << QString::fromUtf8(doc->Label.getValue());
                     str << "#";
-                    str << it->getNameInDocument();
+                    str << it->getNameInDocument().c_str();
                     str << " (";
                     str << label;
                     str << ")";
@@ -311,7 +311,7 @@ void SelectionView::validateSearch()
         if (doc) {
             Gui::Selection().clearSelection();
             for (auto it : searchList) {
-                Gui::Selection().addSelection(doc->getName(),it->getNameInDocument(),nullptr);
+                Gui::Selection().addSelection(doc->getName(),it->getNameInDocument().c_str(),nullptr);
             }
         }
     }

@@ -74,7 +74,7 @@ bool ViewProviderDressUp::setEdit(int ModNum) {
             QMessageBox::warning ( nullptr, QObject::tr("Feature error"),
                     QObject::tr("%1 misses a base feature.\n"
                            "This feature is broken and can't be edited.")
-                        .arg( QString::fromLatin1(dressUp->getNameInDocument()) )
+                        .arg( QString::fromLatin1(dressUp->getNameInDocument().c_str()) )
                 );
             return false;
         }

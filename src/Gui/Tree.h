@@ -419,7 +419,7 @@ public:
 
     void setHighlight(bool set, HighlightMode mode = HighlightMode::LightBlue);
 
-    const char *getName() const;
+    std::string getName() const;
     const char *getTreeName() const;
 
     bool isLink() const;

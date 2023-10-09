@@ -455,7 +455,7 @@ QString Tessellation::getStandardParameters(App::DocumentObject* obj) const
         param +=
             QString::fromLatin1(",GroupColors=Gui.getDocument('%1').getObject('%2').DiffuseColor")
                 .arg(QString::fromLatin1(obj->getDocument()->getName()),
-                     QString::fromLatin1(obj->getNameInDocument()));
+                     QString::fromLatin1(obj->getNameInDocument().c_str()));
     }
 
     return param;

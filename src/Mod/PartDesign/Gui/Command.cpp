@@ -2264,7 +2264,7 @@ void CmdPartDesignMultiTransform::activated(int iMsg)
         }
         Gui::Selection().clearSelection();
         if (prevFeature)
-            Gui::Selection().addSelection(prevFeature->getDocument()->getName(), prevFeature->getNameInDocument());
+            Gui::Selection().addSelection(prevFeature->getDocument()->getName(), prevFeature->getNameInDocument().c_str());
 
         openCommand(QT_TRANSLATE_NOOP("Command", "Convert to MultiTransform feature"));
 
@@ -2299,7 +2299,7 @@ void CmdPartDesignMultiTransform::activated(int iMsg)
         // Restore the insert point
         if (pcActiveBody && oldTip != trFeat) {
             Gui::Selection().clearSelection();
-            Gui::Selection().addSelection(oldTip->getDocument()->getName(), oldTip->getNameInDocument());
+            Gui::Selection().addSelection(oldTip->getDocument()->getName(), oldTip->getNameInDocument().c_str());
             rcCmdMgr.runCommandByName("PartDesign_MoveTip");
             Gui::Selection().clearSelection();
         } // otherwise the insert point remains at the new MultiTransform, which is fine

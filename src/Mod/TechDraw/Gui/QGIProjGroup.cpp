@@ -181,7 +181,7 @@ QGIView * QGIProjGroup::getAnchorQItem() const
 
     for (QList<QGraphicsItem*>::iterator it = list.begin(); it != list.end(); ++it) {
         QGIView *view = dynamic_cast<QGIView *>(*it);
-        if(view && strcmp(view->getViewName(), anchorView->getNameInDocument()) == 0) {
+        if(view && anchorView->getNameInDocument() == view->getViewName()) {
               return view;
         }
     }

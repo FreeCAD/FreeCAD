@@ -115,7 +115,7 @@ void TaskScaledParameters::setupUI()
         if (obj) {
             QListWidgetItem* item = new QListWidgetItem();
             item->setText(QString::fromUtf8(obj->Label.getValue()));
-            item->setData(Qt::UserRole, QString::fromLatin1(obj->getNameInDocument()));
+            item->setData(Qt::UserRole, QString::fromLatin1(obj->getNameInDocument().c_str()));
             ui->listWidgetFeatures->addItem(item);
         }
     }

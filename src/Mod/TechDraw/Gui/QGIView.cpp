@@ -373,7 +373,7 @@ void QGIView::setViewFeature(TechDraw::DrawView *obj)
 
     //mark the actual QGraphicsItem so we can check what's in the scene later
     setData(0, QString::fromUtf8("QGIV"));
-    setData(1, QString::fromUtf8(obj->getNameInDocument()));
+    setData(1, QString::fromUtf8(obj->getNameInDocument().c_str()));
 }
 
 void QGIView::toggleCache(bool state)

@@ -185,7 +185,7 @@ public:
                     if (polygon.Contains(Base::Vector2d(pt2d.x, pt2d.y))) {
                         std::stringstream str;
                         str << "Face" << k;
-                        Gui::Selection().addSelection(appdoc->getName(), obj->getNameInDocument(), str.str().c_str());
+                        Gui::Selection().addSelection(appdoc->getName(), obj->getNameInDocument().c_str(), str.str().c_str());
                         break;
                     }
                     xp_vertex.Next();

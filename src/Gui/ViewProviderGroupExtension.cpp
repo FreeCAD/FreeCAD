@@ -100,8 +100,8 @@ void ViewProviderGroupExtension::extensionDropObject(App::DocumentObject* obj) {
     cmd = QString::fromLatin1("App.getDocument(\"%1\").getObject(\"%2\").addObject("
                         "App.getDocument(\"%1\").getObject(\"%3\"))")
                         .arg(QString::fromLatin1(doc->getName()),
-                             QString::fromLatin1(grp->getNameInDocument()),
-                             QString::fromLatin1(obj->getNameInDocument()));
+                             QString::fromLatin1(grp->getNameInDocument().c_str()),
+                             QString::fromLatin1(obj->getNameInDocument().c_str()));
 
     Gui::Command::doCommand(Gui::Command::App, cmd.toUtf8());
 }

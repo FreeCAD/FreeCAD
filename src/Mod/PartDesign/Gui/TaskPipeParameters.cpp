@@ -297,8 +297,7 @@ bool TaskPipeParameters::referenceSelected(const SelectionChanges& msg) const
             return false;
 
         // not allowed to reference ourself
-        const char* fname = vp->getObject()->getNameInDocument();
-        if (strcmp(msg.pObjectName, fname) == 0)
+        if (vp->getObject()->getNameInDocument() == msg.pObjectName)
             return false;
 
         switch (selectionMode) {
@@ -714,8 +713,7 @@ bool TaskPipeOrientation::referenceSelected(const SelectionChanges& msg) const
             return false;
 
         // not allowed to reference ourself
-        const char* fname = vp->getObject()->getNameInDocument();
-        if (strcmp(msg.pObjectName, fname) == 0)
+        if (vp->getObject()->getNameInDocument() == msg.pObjectName)
             return false;
 
         //change the references
@@ -941,8 +939,7 @@ bool TaskPipeScaling::referenceSelected(const SelectionChanges& msg) const
             return false;
 
         // not allowed to reference ourself
-        const char* fname = vp->getObject()->getNameInDocument();
-        if (strcmp(msg.pObjectName, fname) == 0)
+        if (vp->getObject()->getNameInDocument() == msg.pObjectName)
             return false;
 
         //every selection needs to be a profile in itself, hence currently only full objects are
@@ -993,7 +990,7 @@ void TaskPipeScaling::onDeleteSection()
     int row = ui->listWidgetReferences->currentRow();
     QListWidgetItem* item = ui->listWidgetReferences->takeItem(row);
     if (item) {
-        QByteArray data(item->data(Qt::UserRole).value<App::PropertyLinkSubList::SubSet>().first->getNameInDocument());
+        QByteArray data(item->data(Qt::UserRole).value<App::PropertyLinkSubList::SubSet>().first->getNameInDocument().c_str());
         delete item;
 
         // search inside the list of sections

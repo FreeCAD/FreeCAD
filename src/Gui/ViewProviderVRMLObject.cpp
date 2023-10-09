@@ -74,7 +74,7 @@ void ViewProviderVRMLObject::attach(App::DocumentObject *pcObj)
 {
     ViewProviderDocumentObject::attach(pcObj);
     addDisplayMaskMode(pcVRML, "VRML");
-    pcVRML->objectName = pcObj->getNameInDocument();
+    pcVRML->objectName = pcObj->getNameInDocument().c_str();
     pcVRML->documentName = pcObj->getDocument()->getName();
     pcVRML->subElementName = "Main";
 }
@@ -219,7 +219,7 @@ void ViewProviderVRMLObject::updateData(const App::Property* prop)
         if (!fn.isEmpty() && file.open(QFile::ReadOnly)) {
             QFileInfo fi(fn);
             QByteArray filepath = fi.absolutePath().toUtf8();
-            QByteArray subpath = filepath + "/" + ivObj->getNameInDocument();
+            QByteArray subpath = filepath + "/" + ivObj->getNameInDocument().c_str();
 
             // Add this to the search path in order to read inline files
             SoInput::addDirectoryFirst(filepath.constData());

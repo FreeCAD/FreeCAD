@@ -305,7 +305,7 @@ bool Document::setEdit(Gui::ViewProvider* p, int ModNum, const char *subname)
     }
 
     auto obj = vp->getObject();
-    if(!obj->getNameInDocument()) {
+    if(!obj->isAttachedToDocument()) {
         FC_ERR("cannot edit detached object");
         return false;
     }
@@ -317,7 +317,7 @@ bool Document::setEdit(Gui::ViewProvider* p, int ModNum, const char *subname)
         auto sels = Gui::Selection().getCompleteSelection(ResolveMode::NoResolve);
         App::DocumentObject *parentObj = nullptr;
         for(auto &sel : sels) {
-            if(!sel.pObject || !sel.pObject->getNameInDocument())
+            if(!sel.pObject || !sel.pObject->isAttachedToDocument())
                 continue;
             if(!parentObj)
                 parentObj = sel.pObject;
@@ -386,7 +386,7 @@ bool Document::setEdit(Gui::ViewProvider* p, int ModNum, const char *subname)
     //     }
     // }
     auto sobj = obj->getSubObject(subname,nullptr,&d->_editingTransform);
-    if(!sobj || !sobj->getNameInDocument()) {
+    if(!sobj || !sobj->isAttachedToDocument()) {
         FC_ERR("Invalid sub object '" << obj->getFullName()
                 << '.' << (subname?subname:"") << "'");
         return false;
@@ -958,7 +958,7 @@ void Document::slotSkipRecompute(const App::Document& doc, const std::vector<App
     }
     if(!obj)
         obj = doc.getActiveObject();
-    if(!obj || !obj->getNameInDocument() || (!objs.empty() && objs.front()!=obj))
+    if(!obj || !obj->isAttachedToDocument() || (!objs.empty() && objs.front()!=obj))
         return;
     obj->recomputeFeature(true);
 }
@@ -2609,7 +2609,7 @@ void Document::handleChildren3D(ViewProvider* viewProvider, bool deleting)
             // add the remaining old children back to toplevel invertor node
             for(auto vpd : oldChildren) {
                 auto obj = vpd->getObject();
-                if(!obj || !obj->getNameInDocument())
+                if(!obj || !obj->isAttachedToDocument())
                     continue;
 
                 for (BaseView* view : d->baseViews) {

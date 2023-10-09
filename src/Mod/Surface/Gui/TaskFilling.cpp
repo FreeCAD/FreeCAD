@@ -387,7 +387,7 @@ void FillingPanel::setEditedObject(Surface::Filling* fea)
         // 5. the continuity as int
         QList<QVariant> data;
         data << QByteArray(doc->getName());
-        data << QByteArray(obj->getNameInDocument());
+        data << QByteArray(obj->getNameInDocument().c_str());
         data << QByteArray(edge.c_str());
         data << QByteArray(face.c_str());
         data << static_cast<int>(conts[i]);

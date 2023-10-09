@@ -277,7 +277,7 @@ void PagePrinter::printBannerPage(QPrinter* printer, QPainter& painter, QPageLay
     verticalPos += 2 * verticalSpacing * fontSizePx;
     for (auto& obj : docObjs) {
         //print a line for each page
-        QString pageLine = QString::fromUtf8(obj->getNameInDocument()) + QString::fromUtf8(" / ")
+        QString pageLine = QString::fromUtf8(obj->getNameInDocument().c_str()) + QString::fromUtf8(" / ")
             + QString::fromUtf8(obj->Label.getValue());
         painter.drawText(leftMargin, verticalPos, pageLine);
         verticalPos += verticalSpacing * fontSizePx;

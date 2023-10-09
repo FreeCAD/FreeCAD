@@ -103,15 +103,15 @@ void ViewProviderOriginFeature::attach(App::DocumentObject* pcObject)
     if ( pcObject->getTypeId() == App::Line::getClassTypeId() ) {
         // keep font size on axes equal to font size on planes
         fontRatio *= ViewProviderOrigin::axesScaling;
-        const char* axisName = pcObject->getNameInDocument();
+        std::string axisName = pcObject->getNameInDocument();
         auto axisRoles = App::Origin::AxisRoles;
-        if ( strncmp(axisName, axisRoles[0], strlen(axisRoles[0]) ) == 0 ) {
+        if ( strncmp(axisName.c_str(), axisRoles[0], strlen(axisRoles[0]) ) == 0 ) {
             // X-axis: red
             ShapeColor.setValue ( 0xFF0000FF );
-        } else if ( strncmp(axisName, axisRoles[1], strlen(axisRoles[1]) ) == 0 ) {
+        } else if ( strncmp(axisName.c_str(), axisRoles[1], strlen(axisRoles[1]) ) == 0 ) {
             // Y-axis: green
             ShapeColor.setValue ( 0x00FF00FF );
-        } else if ( strncmp(axisName, axisRoles[2], strlen(axisRoles[2]) ) == 0 ) {
+        } else if ( strncmp(axisName.c_str(), axisRoles[2], strlen(axisRoles[2]) ) == 0 ) {
             // Z-axis: blue
             ShapeColor.setValue ( 0x0000FFFF );
         }
@@ -125,7 +125,7 @@ void ViewProviderOriginFeature::attach(App::DocumentObject* pcObject)
     if ( !Selectable.getValue() ) {
         highlight->selectionMode = Gui::SoFCSelection::SEL_OFF;
     }
-    highlight->objectName    = getObject()->getNameInDocument();
+    highlight->objectName    = getObject()->getNameInDocument().c_str();
     highlight->documentName  = getObject()->getDocument()->getName();
     highlight->style = SoFCSelection::EMISSIVE_DIFFUSE;
 

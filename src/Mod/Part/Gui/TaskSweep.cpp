@@ -202,7 +202,7 @@ void SweepWidget::findShapes()
             shape.ShapeType() == TopAbs_EDGE ||
             shape.ShapeType() == TopAbs_VERTEX) {
             QString label = QString::fromUtf8(obj->Label.getValue());
-            QString name = QString::fromLatin1(obj->getNameInDocument());
+            QString name = QString::fromLatin1(obj->getNameInDocument().c_str());
 
             QTreeWidgetItem* child = new QTreeWidgetItem();
             child->setText(0, label);

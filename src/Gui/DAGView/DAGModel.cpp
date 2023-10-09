@@ -939,16 +939,16 @@ void Model::mousePressEvent(QGraphicsSceneMouseEvent* event)
       if (!rect) continue;
       const GraphLinkRecord &selectionRecord = findRecord(rect, *graphLink);
       Gui::Selection().addSelection(selectionRecord.DObject->getDocument()->getName(),
-                                    selectionRecord.DObject->getNameInDocument());
+                                    selectionRecord.DObject->getNameInDocument().c_str());
     }
   };
 
   auto toggleSelect = [](const App::DocumentObject *dObjectIn, RectItem *rectIn)
   {
     if (rectIn->isSelected())
-      Gui::Selection().rmvSelection(dObjectIn->getDocument()->getName(), dObjectIn->getNameInDocument());
+      Gui::Selection().rmvSelection(dObjectIn->getDocument()->getName(), dObjectIn->getNameInDocument().c_str());
     else
-      Gui::Selection().addSelection(dObjectIn->getDocument()->getName(), dObjectIn->getNameInDocument());
+      Gui::Selection().addSelection(dObjectIn->getDocument()->getName(), dObjectIn->getNameInDocument().c_str());
   };
 
   if (proxy)
@@ -989,7 +989,7 @@ void Model::mousePressEvent(QGraphicsSceneMouseEvent* event)
           else
           {
             Gui::Selection().clearSelection(dObject->getDocument()->getName());
-            Gui::Selection().addSelection(dObject->getDocument()->getName(), dObject->getNameInDocument());
+            Gui::Selection().addSelection(dObject->getDocument()->getName(), dObject->getNameInDocument().c_str());
           }
         }
         if (selectionMode == SelectionMode::Multiple)
@@ -1067,7 +1067,7 @@ void Model::contextMenuEvent(QGraphicsSceneContextMenuEvent* event)
     if (!rect->isSelected())
     {
       Gui::Selection().clearSelection(record.DObject->getDocument()->getName());
-      Gui::Selection().addSelection(record.DObject->getDocument()->getName(), record.DObject->getNameInDocument());
+      Gui::Selection().addSelection(record.DObject->getDocument()->getName(), record.DObject->getNameInDocument().c_str());
       lastPickValid = true;
       lastPick = event->scenePos();
     }

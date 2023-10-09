@@ -471,7 +471,7 @@ void DlgFilletEdges::onSelectEdgesOfFace(const QString& subelement, int type)
                 Gui::SelectionChanges::MsgType msgType = Gui::SelectionChanges::MsgType(type);
                 if (msgType == Gui::SelectionChanges::AddSelection) {
                     Gui::Selection().addSelection(d->object->getDocument()->getName(),
-                        d->object->getNameInDocument(), (const char*)name.toLatin1());
+                        d->object->getNameInDocument().c_str(), (const char*)name.toLatin1());
                 }
             }
         }
@@ -498,7 +498,7 @@ void DlgFilletEdges::onDeleteObject(const App::DocumentObject& obj)
         onShapeObjectActivated(0);
     }
     else {
-        QString shape = QString::fromLatin1(obj.getNameInDocument());
+        QString shape = QString::fromLatin1(obj.getNameInDocument().c_str());
         // start from the second item
         for (int i=1; i<ui->shapeObject->count(); i++) {
             if (ui->shapeObject->itemData(i).toString() == shape) {
@@ -540,13 +540,13 @@ void DlgFilletEdges::toggleCheckState(const QModelIndex& index)
     if (checkState & Qt::Checked) {
         App::Document* doc = d->object->getDocument();
         Gui::Selection().addSelection(doc->getName(),
-            d->object->getNameInDocument(),
+            d->object->getNameInDocument().c_str(),
             (const char*)name.toLatin1());
     }
     else {
         App::Document* doc = d->object->getDocument();
         Gui::Selection().rmvSelection(doc->getName(),
-            d->object->getNameInDocument(),
+            d->object->getNameInDocument().c_str(),
             (const char*)name.toLatin1());
     }
 
@@ -565,7 +565,7 @@ void DlgFilletEdges::findShapes()
     int current_index = 0;
     for (std::vector<App::DocumentObject*>::iterator it = objs.begin(); it!=objs.end(); ++it, ++index) {
         ui->shapeObject->addItem(QString::fromUtf8((*it)->Label.getValue()));
-        ui->shapeObject->setItemData(index, QString::fromLatin1((*it)->getNameInDocument()));
+        ui->shapeObject->setItemData(index, QString::fromLatin1((*it)->getNameInDocument().c_str()));
         if (current_index == 0) {
             if (Gui::Selection().isSelected(*it)) {
                 current_index = index;
@@ -680,7 +680,7 @@ void DlgFilletEdges::setupFillet(const std::vector<App::DocumentObject*>& objs)
 
         if (!subElements.empty()) {
             Gui::Selection().addSelections(doc->getName(),
-                d->object->getNameInDocument(),
+                d->object->getNameInDocument().c_str(),
                 subElements);
         }
     }
@@ -828,7 +828,7 @@ void DlgFilletEdges::onSelectAllButtonClicked()
     if (d->object) {
         App::Document* doc = d->object->getDocument();
         Gui::Selection().addSelections(doc->getName(),
-            d->object->getNameInDocument(),
+            d->object->getNameInDocument().c_str(),
             subElements);
     }
 }
@@ -929,7 +929,7 @@ bool DlgFilletEdges::accept()
     type = QString::fromLatin1("Part::%1").arg(QString::fromLatin1(fillet.c_str()));
 
     if (d->fillet)
-        name = QString::fromLatin1(d->fillet->getNameInDocument());
+        name = QString::fromLatin1(d->fillet->getNameInDocument().c_str());
     else
         name = QString::fromLatin1(activeDoc->getUniqueObjectName(fillet.c_str()).c_str());
 

@@ -544,7 +544,7 @@ QTreeWidgetItem *DlgObjectSelection::createDepItem(QTreeWidget *parent, App::Doc
         item->setFont(0, font);
     }
     item->setText(1, QString::fromUtf8(obj->getDocument()->getName()));
-    item->setText(2, QString::fromUtf8(obj->getNameInDocument()));
+    item->setText(2, QString::fromUtf8(obj->getNameInDocument().c_str()));
     item->setFlags(Qt::ItemIsSelectable|Qt::ItemIsUserCheckable|Qt::ItemIsEnabled);
     auto it = itemMap.find(obj);
     if (it != itemMap.end())

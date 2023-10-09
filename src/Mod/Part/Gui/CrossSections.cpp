@@ -277,7 +277,7 @@ void CrossSections::apply()
             "wires=list()\n"
             "shape=FreeCAD.getDocument(\"%1\").%2.Shape\n")
             .arg(QLatin1String(doc->getName()),
-                 QLatin1String(it->getNameInDocument())).toLatin1());
+                 QLatin1String(it->getNameInDocument().c_str())).toLatin1());
 
         for (double jt : d) {
             Gui::Command::runCommand(Gui::Command::App, QString::fromLatin1(

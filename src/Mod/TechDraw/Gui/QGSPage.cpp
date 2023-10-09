@@ -745,7 +745,7 @@ QGIView* QGSPage::findQViewForDocObj(App::DocumentObject* obj) const
     if (obj) {
         const std::vector<QGIView*> qviews = getViews();
         for (std::vector<QGIView*>::const_iterator it = qviews.begin(); it != qviews.end(); ++it) {
-            if (strcmp(obj->getNameInDocument(), (*it)->getViewName()) == 0)
+            if (obj->getNameInDocument() == (*it)->getViewName())
                 return *it;
         }
     }
@@ -787,7 +787,7 @@ QGIView* QGSPage::findParent(QGIView* view) const
             // Attach the dimension to the first object's group
             for (std::vector<QGIView*>::const_iterator it = qviews.begin(); it != qviews.end();
                  ++it) {
-                if (strcmp((*it)->getViewName(), objs.at(0)->getNameInDocument()) == 0) {
+                if (objs.at(0)->getNameInDocument() == (*it)->getViewName()) {
                     return *it;
                 }
             }
@@ -805,7 +805,7 @@ QGIView* QGSPage::findParent(QGIView* view) const
             // Attach the Balloon to the first object's group
             for (std::vector<QGIView*>::const_iterator it = qviews.begin(); it != qviews.end();
                  ++it) {
-                if (strcmp((*it)->getViewName(), obj->getNameInDocument()) == 0) {
+                if (obj->getNameInDocument() == (*it)->getViewName()) {
                     return *it;
                 }
             }
@@ -855,7 +855,7 @@ QGIView* QGSPage::findParent(QGIView* view) const
                 std::vector<App::DocumentObject*> objs = collection->Views.getValues();
                 for (std::vector<App::DocumentObject*>::iterator it = objs.begin();
                      it != objs.end(); ++it) {
-                    if (strcmp(myFeat->getNameInDocument(), (*it)->getNameInDocument()) == 0)
+                    if (myFeat->getNameInDocument() == (*it)->getNameInDocument())
 
                         return grp;
                 }
@@ -873,7 +873,7 @@ bool QGSPage::hasQView(App::DocumentObject* obj)
 
     while (qview != views.end()) {
         // Unsure if we can compare pointers so rely on name
-        if (strcmp((*qview)->getViewName(), obj->getNameInDocument()) == 0) {
+        if (obj->getNameInDocument() == (*qview)->getViewName()) {
             return true;
         }
         qview++;
@@ -940,7 +940,7 @@ void QGSPage::fixOrphans(bool force)
     // if we ever have collections of collections, we'll need to revisit this
     TechDraw::DrawPage* thisPage = m_vpPage->getDrawPage();
 
-    if (!thisPage->getNameInDocument())
+    if (!thisPage->isAttachedToDocument())
         return;
 
     std::vector<App::DocumentObject*> pChildren = thisPage->getAllViews();
@@ -1023,7 +1023,7 @@ bool QGSPage::orphanExists(const char* viewName, const std::vector<App::Document
         }
 
         // Unsure if we can compare pointers so rely on name
-        if (strcmp(viewName, (*it)->getNameInDocument()) == 0) {
+        if ((*it)->getNameInDocument() == viewName) {
             return true;
         }
     }
@@ -1093,7 +1093,7 @@ void QGSPage::saveSvg(QString filename)
     TechDraw::DrawPage* page(m_vpPage->getDrawPage());
 
     const QString docName(QString::fromUtf8(page->getDocument()->getName()));
-    const QString pageName(QString::fromUtf8(page->getNameInDocument()));
+    const QString pageName(QString::fromUtf8(page->getNameInDocument().c_str()));
     QString svgDescription = QString::fromUtf8("Drawing page: ") + pageName
         + QString::fromUtf8(" exported from FreeCAD document: ") + docName;
 

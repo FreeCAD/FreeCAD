@@ -433,7 +433,7 @@ void ViewProviderMesh::attach(App::DocumentObject* pcFeat)
 {
     ViewProviderGeometryObject::attach(pcFeat);
 
-    pcHighlight->objectName = pcFeat->getNameInDocument();
+    pcHighlight->objectName = pcFeat->getNameInDocument().c_str();
     pcHighlight->documentName = pcFeat->getDocument()->getName();
     pcHighlight->subElementName = "Main";
 
@@ -1628,7 +1628,7 @@ void ViewProviderMesh::splitMesh(const MeshCore::MeshKernel& toolMesh,
     removeFacets(indices);
     Mesh::Feature* splitMesh = static_cast<Mesh::Feature*>(
         App::GetApplication().getActiveDocument()->addObject("Mesh::Feature",
-                                                             pcObject->getNameInDocument()));
+                                                             pcObject->getNameInDocument().c_str()));
     // Note: deletes also kernel
     splitMesh->Mesh.setValuePtr(kernel);
     static_cast<Mesh::Feature*>(pcObject)->purgeTouched();

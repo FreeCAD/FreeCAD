@@ -276,7 +276,7 @@ QString PlacementHandler::getIncrementalPlacement(App::DocumentObject* obj, cons
     return QString::fromLatin1(
         R"(App.getDocument("%1").%2.%3=%4.multiply(App.getDocument("%1").%2.%3))")
         .arg(QString::fromLatin1(obj->getDocument()->getName()),
-             QString::fromLatin1(obj->getNameInDocument()),
+             QString::fromLatin1(obj->getNameInDocument().c_str()),
              QString::fromLatin1(this->propertyName.c_str()),
              data);
 }
@@ -286,7 +286,7 @@ QString PlacementHandler::getSimplePlacement(App::DocumentObject* obj, const QSt
     return QString::fromLatin1(
         "App.getDocument(\"%1\").%2.%3=%4")
         .arg(QString::fromLatin1(obj->getDocument()->getName()),
-             QString::fromLatin1(obj->getNameInDocument()),
+             QString::fromLatin1(obj->getNameInDocument().c_str()),
              QString::fromLatin1(this->propertyName.c_str()),
              data);
 }

@@ -141,7 +141,7 @@ void DlgBooleanOperation::slotChangedObject(const App::DocumentObject& obj,
         if (!shape.IsNull()) {
             Gui::Document* activeGui = Gui::Application::Instance->getDocument(obj.getDocument());
             QString label = QString::fromUtf8(obj.Label.getValue());
-            QString name = QString::fromLatin1(obj.getNameInDocument());
+            QString name = QString::fromLatin1(obj.getNameInDocument().c_str());
 
             QTreeWidgetItem* child = new BooleanOperationItem();
             child->setCheckState(0, Qt::Unchecked);
@@ -226,7 +226,7 @@ void DlgBooleanOperation::findShapes()
         const TopoDS_Shape& shape = static_cast<Part::Feature*>(obj)->Shape.getValue();
         if (!shape.IsNull()) {
             QString label = QString::fromUtf8(obj->Label.getValue());
-            QString name = QString::fromLatin1(obj->getNameInDocument());
+            QString name = QString::fromLatin1(obj->getNameInDocument().c_str());
 
             QTreeWidgetItem* child = new BooleanOperationItem();
             child->setCheckState(0, Qt::Unchecked);

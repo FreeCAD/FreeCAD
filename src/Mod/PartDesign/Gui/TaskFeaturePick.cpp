@@ -116,7 +116,7 @@ TaskFeaturePick::TaskFeaturePick(std::vector<App::DocumentObject*>& objects,
                          getFeatureStatusString(*statusIt)
                 )
         );
-        item->setData(Qt::UserRole, QString::fromLatin1((*objIt)->getNameInDocument()));
+        item->setData(Qt::UserRole, QString::fromLatin1((*objIt)->getNameInDocument().c_str()));
         ui->listWidget->addItem(item);
 
         App::Document* pDoc = (*objIt)->getDocument();

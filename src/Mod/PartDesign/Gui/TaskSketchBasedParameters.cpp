@@ -71,10 +71,10 @@ const QString TaskSketchBasedParameters::onAddSelection(const Gui::SelectionChan
     // Remove subname for planes and datum features
     if (PartDesign::Feature::isDatum(selObj)) {
         subname = "";
-        refStr = QString::fromLatin1(selObj->getNameInDocument());
+        refStr = QString::fromLatin1(selObj->getNameInDocument().c_str());
     } else if (subname.size() > 4) {
         int faceId = std::atoi(&subname[4]);
-        refStr = QString::fromLatin1(selObj->getNameInDocument()) + QString::fromLatin1(":") + QObject::tr("Face") + QString::number(faceId);
+        refStr = QString::fromLatin1(selObj->getNameInDocument().c_str()) + QString::fromLatin1(":") + QObject::tr("Face") + QString::number(faceId);
     }
 
     std::vector<std::string> upToFaces(1,subname);
@@ -88,9 +88,9 @@ void TaskSketchBasedParameters::startReferenceSelection(App::DocumentObject* pro
 {
     Gui::Document* doc = vp->getDocument();
     if (doc) {
-        doc->setHide(profile->getNameInDocument());
+        doc->setHide(profile->getNameInDocument().c_str());
         if (base)
-            doc->setShow(base->getNameInDocument());
+            doc->setShow(base->getNameInDocument().c_str());
     }
 }
 
@@ -98,9 +98,9 @@ void TaskSketchBasedParameters::finishReferenceSelection(App::DocumentObject* pr
 {
     Gui::Document* doc = vp->getDocument();
     if (doc) {
-        doc->setShow(profile->getNameInDocument());
+        doc->setShow(profile->getNameInDocument().c_str());
         if (base)
-            doc->setHide(base->getNameInDocument());
+            doc->setHide(base->getNameInDocument().c_str());
     }
 }
 
@@ -187,7 +187,7 @@ QVariant TaskSketchBasedParameters::objectNameByLabel(const QString& label,
     if (suggest.isValid()) {
         App::DocumentObject* obj = doc->getObject(suggest.toByteArray());
         if (obj && QString::fromUtf8(obj->Label.getValue()) == label) {
-            return QVariant(QByteArray(obj->getNameInDocument()));
+            return QVariant(QByteArray(obj->getNameInDocument().c_str()));
         }
     }
 
@@ -196,7 +196,7 @@ QVariant TaskSketchBasedParameters::objectNameByLabel(const QString& label,
     std::vector<App::DocumentObject*> objs = doc->getObjects();
     for (auto obj : objs) {
         if (name == obj->Label.getValue()) {
-            return QVariant(QByteArray(obj->getNameInDocument()));
+            return QVariant(QByteArray(obj->getNameInDocument().c_str()));
         }
     }
 

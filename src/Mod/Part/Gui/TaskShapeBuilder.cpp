@@ -434,7 +434,7 @@ void ShapeBuilderWidget::createShellFromFace()
             obj.insert(it.getObject());
         str << "[]";
         for (auto it : obj) {
-            str << "+ App.ActiveDocument." << it->getNameInDocument() << ".Shape.Faces";
+            str << "+ App.ActiveDocument." << it->getNameInDocument().c_str() << ".Shape.Faces";
         }
     }
     else {

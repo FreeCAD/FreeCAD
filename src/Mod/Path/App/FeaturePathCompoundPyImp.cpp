@@ -43,7 +43,7 @@ PyObject*  FeaturePathCompoundPy::addObject(PyObject *args)
         return nullptr;
 
     DocumentObjectPy* docObj = static_cast<DocumentObjectPy*>(object);
-    if (!docObj->getDocumentObjectPtr() || !docObj->getDocumentObjectPtr()->getNameInDocument()) {
+    if (!docObj->getDocumentObjectPtr() || !docObj->getDocumentObjectPtr()->isAttachedToDocument()) {
         PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot add an invalid object");
         return nullptr;
     }
@@ -88,7 +88,7 @@ PyObject*  FeaturePathCompoundPy::removeObject(PyObject *args)
         return nullptr;
 
     DocumentObjectPy* docObj = static_cast<DocumentObjectPy*>(object);
-    if (!docObj->getDocumentObjectPtr() || !docObj->getDocumentObjectPtr()->getNameInDocument()) {
+    if (!docObj->getDocumentObjectPtr() || !docObj->getDocumentObjectPtr()->isAttachedToDocument()) {
         PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot remove an invalid object");
         return nullptr;
     }

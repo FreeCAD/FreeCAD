@@ -313,7 +313,7 @@ void GeomFillSurface::setEditedObject(Surface::GeomFillSurface* obj)
 
         QList<QVariant> data;
         data << QByteArray(doc->getName());
-        data << QByteArray((*it)->getNameInDocument());
+        data << QByteArray((*it)->getNameInDocument().c_str());
         data << QByteArray(jt->c_str());
         item->setData(Qt::UserRole, data);
     }

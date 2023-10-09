@@ -488,24 +488,24 @@ bool SoFCUnifiedSelection::setHighlight(SoFullPath *path, const SoDetail *det,
 
     bool highlighted = false;
     if(path && path->getLength() &&
-       vpd && vpd->getObject() && vpd->getObject()->getNameInDocument())
+       vpd && vpd->getObject() && vpd->getObject()->isAttachedToDocument())
     {
         const char *docname = vpd->getObject()->getDocument()->getName();
-        const char *objname = vpd->getObject()->getNameInDocument();
+        std::string objname = vpd->getObject()->getNameInDocument();
 
         this->preSelection = 1;
         static char buf[513];
 
         auto pts = schemaTranslatePoint(x, y, z, 1e-7);
         snprintf(buf,512,"Preselected: %s.%s.%s (%f %s, %f %s, %f %s)"
-                ,docname,objname,element
+                ,docname,objname.c_str(),element
                 ,pts[0].first,pts[0].second.c_str()
                 ,pts[1].first,pts[1].second.c_str()
                 ,pts[2].first,pts[2].second.c_str());
 
         getMainWindow()->showMessage(QString::fromUtf8(buf));
 
-        int ret = Gui::Selection().setPreselect(docname,objname,element,x,y,z);
+        int ret = Gui::Selection().setPreselect(docname,objname.c_str(),element,x,y,z);
         if(ret<0 && currenthighlight)
             return true;
 
@@ -553,7 +553,7 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos, bo
             sel.pObject = info.vpd->getObject();
             sel.pDoc = sel.pObject->getDocument();
             sel.DocName = sel.pDoc->getName();
-            sel.FeatName = sel.pObject->getNameInDocument();
+            sel.FeatName = sel.pObject->getNameInDocument().c_str();
             sel.TypeName = sel.pObject->getTypeId().getName();
             sel.SubName = info.element.c_str();
             const auto &pt = info.pp->getPoint();
@@ -568,9 +568,9 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos, bo
     auto vpd = info.vpd;
     if(!vpd)
         return false;
-    const char *objname = vpd->getObject()->getNameInDocument();
-    if(!objname)
+    if(!vpd->getObject()->isAttachedToDocument())
         return false;
+    std::string objectName = vpd->getObject()->getNameInDocument();
     const char *docname = vpd->getObject()->getDocument()->getName();
 
     bool hasNext = false;
@@ -584,14 +584,14 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos, bo
     static char buf[513];
 
     if (ctrlDown) {
-        if(Gui::Selection().isSelected(docname, objname, info.element.c_str(), ResolveMode::NoResolve))
-            Gui::Selection().rmvSelection(docname, objname,info.element.c_str(), &sels);
+        if(Gui::Selection().isSelected(docname, objectName.c_str(), info.element.c_str(), ResolveMode::NoResolve))
+            Gui::Selection().rmvSelection(docname, objectName.c_str(),info.element.c_str(), &sels);
         else {
-            bool ok = Gui::Selection().addSelection(docname,objname,
+            bool ok = Gui::Selection().addSelection(docname,objectName.c_str(),
                     info.element.c_str(), pt[0] ,pt[1] ,pt[2], &sels);
             if (ok && mymode == OFF) {
                 snprintf(buf,512,"Selected: %s.%s.%s (%g, %g, %g)",
-                        docname,objname,info.element.c_str()
+                        docname,objectName.c_str(),info.element.c_str()
                         ,fabs(pt[0])>1e-7?pt[0]:0.0
                         ,fabs(pt[1])>1e-7?pt[1]:0.0
                         ,fabs(pt[2])>1e-7?pt[2]:0.0);
@@ -615,7 +615,6 @@ bool SoFCUnifiedSelection::setSelection(const std::vector<PickedInfo> &infos, bo
     //
 
     std::string subName = info.element;
-    std::string objectName = objname;
 
     const char *subSelected = Gui::Selection().getSelectedElement(
                                 vpd->getObject(),subName.c_str());
