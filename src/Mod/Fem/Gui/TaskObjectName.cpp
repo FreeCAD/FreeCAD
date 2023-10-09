@@ -58,7 +58,8 @@ TaskObjectName::TaskObjectName(App::DocumentObject* pcObject, QWidget* parent)
         ui->lineEdit_ObjectName->setText(QString::fromUtf8(pcObject->Label.getValue()));
     }
     else {
-        ui->lineEdit_ObjectName->setText(QString::fromLatin1(pcObject->getNameInDocument().c_str()));
+        ui->lineEdit_ObjectName->setText(
+            QString::fromLatin1(pcObject->getNameInDocument().c_str()));
     }
 }
 

@@ -269,7 +269,8 @@ void DlgEvaluateMeshImp::slotDeletedObject(const App::DocumentObject& Obj)
 {
     // remove mesh objects from the list
     if (Obj.getTypeId().isDerivedFrom(Mesh::Feature::getClassTypeId())) {
-        int index = d->ui.meshNameButton->findData(QString::fromLatin1(Obj.getNameInDocument().c_str()));
+        int index =
+            d->ui.meshNameButton->findData(QString::fromLatin1(Obj.getNameInDocument().c_str()));
         if (index > 0) {
             d->ui.meshNameButton->removeItem(index);
             d->ui.meshNameButton->setDisabled(d->ui.meshNameButton->count() < 2);

@@ -1626,9 +1626,10 @@ void ViewProviderMesh::splitMesh(const MeshCore::MeshKernel& toolMesh,
     // Remove the facets from the mesh and create a new one
     Mesh::MeshObject* kernel = meshProp.getValue().meshFromSegment(indices);
     removeFacets(indices);
-    Mesh::Feature* splitMesh = static_cast<Mesh::Feature*>(
-        App::GetApplication().getActiveDocument()->addObject("Mesh::Feature",
-                                                             pcObject->getNameInDocument().c_str()));
+    Mesh::Feature* splitMesh =
+        static_cast<Mesh::Feature*>(App::GetApplication().getActiveDocument()->addObject(
+            "Mesh::Feature",
+            pcObject->getNameInDocument().c_str()));
     // Note: deletes also kernel
     splitMesh->Mesh.setValuePtr(kernel);
     static_cast<Mesh::Feature*>(pcObject)->purgeTouched();
