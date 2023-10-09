@@ -303,7 +303,7 @@ Gui.activateWorkbench("NoneWorkbench")
 # Register .py, .FCScript and .FCMacro
 FreeCAD.addImportType("Inventor V2.1 (*.iv *.IV)","FreeCADGui")
 FreeCAD.addImportType("VRML V2.0 (*.wrl *.WRL *.vrml *.VRML *.wrz *.WRZ *.wrl.gz *.WRL.GZ)","FreeCADGui")
-FreeCAD.addImportType("Python (*.py *.PY *.FCMacro *.FCScript)","FreeCADGui")
+FreeCAD.addImportType("Python (*.py *.FCMacro *.FCScript)","FreeCADGui")
 FreeCAD.addExportType("Inventor V2.1 (*.iv)","FreeCADGui")
 FreeCAD.addExportType("VRML V2.0 (*.wrl *.vrml *.wrz *.wrl.gz)","FreeCADGui")
 FreeCAD.addExportType("X3D Extensible 3D (*.x3d *.x3dz)","FreeCADGui")
