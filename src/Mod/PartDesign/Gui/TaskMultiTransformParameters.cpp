@@ -587,7 +587,7 @@ bool TaskDlgMultiTransformParameters::accept()
 //    {
 //        if ((*it) != NULL)
 //            Gui::Command::doCommand(
-//                Gui::Command::Doc,"App.ActiveDocument.removeObject(\"%s\")", (*it)->getNameInDocument());
+//                Gui::Command::Doc,"App.ActiveDocument.removeObject(\"%s\")", (*it)->getNameInDocument().c_str());
 //    }
 //
 //    return TaskDlgTransformedParameters::reject();

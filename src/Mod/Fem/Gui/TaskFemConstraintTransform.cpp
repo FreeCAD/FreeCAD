@@ -130,7 +130,7 @@ TaskFemConstraintTransform::TaskFemConstraintTransform(
     Gui::Command::doCommand(
         Gui::Command::Doc,
         TaskFemConstraintTransform::getSurfaceReferences(
-            (static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument())
+            (static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument().c_str())
             .c_str());
     std::vector<App::DocumentObject*> ObjDispl = pcConstraint->RefDispl.getValues();
     std::vector<std::string> SubElemDispl = pcConstraint->RefDispl.getSubValues();
@@ -594,7 +594,7 @@ void TaskDlgFemConstraintTransform::open()
         Gui::Command::doCommand(
             Gui::Command::Doc,
             ViewProviderFemConstraint::gethideMeshShowPartStr(
-                (static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument())
+                (static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument().c_str())
                 .c_str());  // OvG: Hide meshes and show parts
     }
 }

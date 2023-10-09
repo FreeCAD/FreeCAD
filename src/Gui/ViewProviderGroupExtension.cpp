@@ -64,8 +64,8 @@ void ViewProviderGroupExtension::extensionDragObject(App::DocumentObject* obj) {
 
     Gui::Command::doCommand(Gui::Command::Doc,"App.getDocument(\"%s\").getObject(\"%s\").removeObject("
             "App.getDocument(\"%s\").getObject(\"%s\"))",
-            getExtendedViewProvider()->getObject()->getDocument()->getName(), getExtendedViewProvider()->getObject()->getNameInDocument(),
-            obj->getDocument()->getName(), obj->getNameInDocument() );
+            getExtendedViewProvider()->getObject()->getDocument()->getName(), getExtendedViewProvider()->getObject()->getNameInDocument().c_str(),
+            obj->getDocument()->getName(), obj->getNameInDocument().c_str() );
 }
 
 bool ViewProviderGroupExtension::extensionCanDropObjects() const {
@@ -171,7 +171,7 @@ bool ViewProviderGroupExtension::extensionOnDelete(const std::vector< std::strin
             Gui::Command::doCommand(Gui::Command::Doc,
                     "App.getDocument(\"%s\").getObject(\"%s\").removeObjectsFromDocument()"
                     , getExtendedViewProvider()->getObject()->getDocument()->getName()
-                    , getExtendedViewProvider()->getObject()->getNameInDocument());
+                    , getExtendedViewProvider()->getObject()->getNameInDocument().c_str());
         }
     }
     return true;

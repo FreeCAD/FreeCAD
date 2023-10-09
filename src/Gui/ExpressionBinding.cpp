@@ -201,7 +201,7 @@ bool ExpressionBinding::apply(const std::string & propName)
         }
         Gui::Command::doCommand(Gui::Command::Doc,"App.getDocument('%s').%s.setExpression('%s', u'%s')",
                                 docObj->getDocument()->getName(),
-                                docObj->getNameInDocument(),
+                                docObj->getNameInDocument().c_str(),
                                 path.toEscapedString().c_str(),
                                 getEscapedExpressionString().c_str());
         if(transaction)
@@ -224,7 +224,7 @@ bool ExpressionBinding::apply(const std::string & propName)
                 }
                 Gui::Command::doCommand(Gui::Command::Doc,"App.getDocument('%s').%s.setExpression('%s', None)",
                                         docObj->getDocument()->getName(),
-                                        docObj->getNameInDocument(),
+                                        docObj->getNameInDocument().c_str(),
                                         path.toEscapedString().c_str());
                 if(transaction)
                     App::GetApplication().closeActiveTransaction();

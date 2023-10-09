@@ -84,7 +84,7 @@ void CmdSpreadsheetMergeCells::activated(int iMsg)
                     if (i->size() > 1) {
                         Gui::Command::doCommand(Gui::Command::Doc,
                                                 "App.ActiveDocument.%s.mergeCells('%s')",
-                                                sheet->getNameInDocument(),
+                                                sheet->getNameInDocument().c_str(),
                                                 i->rangeString().c_str());
                     }
                 }
@@ -142,7 +142,7 @@ void CmdSpreadsheetSplitCell::activated(int iMsg)
                 Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Split cell"));
                 Gui::Command::doCommand(Gui::Command::Doc,
                                         "App.ActiveDocument.%s.splitCell('%s')",
-                                        sheet->getNameInDocument(),
+                                        sheet->getNameInDocument().c_str(),
                                         address.c_str());
                 Gui::Command::commitCommand();
                 Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.recompute()");
@@ -323,7 +323,7 @@ void CmdSpreadsheetAlignLeft::activated(int iMsg)
                     Gui::Command::doCommand(
                         Gui::Command::Doc,
                         "App.ActiveDocument.%s.setAlignment('%s', 'left', 'keep')",
-                        sheet->getNameInDocument(),
+                        sheet->getNameInDocument().c_str(),
                         i->rangeString().c_str());
                 }
                 Gui::Command::commitCommand();
@@ -380,7 +380,7 @@ void CmdSpreadsheetAlignCenter::activated(int iMsg)
                     Gui::Command::doCommand(
                         Gui::Command::Doc,
                         "App.ActiveDocument.%s.setAlignment('%s', 'center', 'keep')",
-                        sheet->getNameInDocument(),
+                        sheet->getNameInDocument().c_str(),
                         i->rangeString().c_str());
                 }
                 Gui::Command::commitCommand();
@@ -437,7 +437,7 @@ void CmdSpreadsheetAlignRight::activated(int iMsg)
                     Gui::Command::doCommand(
                         Gui::Command::Doc,
                         "App.ActiveDocument.%s.setAlignment('%s', 'right', 'keep')",
-                        sheet->getNameInDocument(),
+                        sheet->getNameInDocument().c_str(),
                         i->rangeString().c_str());
                 }
                 Gui::Command::commitCommand();
@@ -494,7 +494,7 @@ void CmdSpreadsheetAlignTop::activated(int iMsg)
                     Gui::Command::doCommand(
                         Gui::Command::Doc,
                         "App.ActiveDocument.%s.setAlignment('%s', 'top', 'keep')",
-                        sheet->getNameInDocument(),
+                        sheet->getNameInDocument().c_str(),
                         i->rangeString().c_str());
                 }
                 Gui::Command::commitCommand();
@@ -551,7 +551,7 @@ void CmdSpreadsheetAlignBottom::activated(int iMsg)
                     Gui::Command::doCommand(
                         Gui::Command::Doc,
                         "App.ActiveDocument.%s.setAlignment('%s', 'bottom', 'keep')",
-                        sheet->getNameInDocument(),
+                        sheet->getNameInDocument().c_str(),
                         i->rangeString().c_str());
                 }
                 Gui::Command::commitCommand();
@@ -608,7 +608,7 @@ void CmdSpreadsheetAlignVCenter::activated(int iMsg)
                     Gui::Command::doCommand(
                         Gui::Command::Doc,
                         "App.ActiveDocument.%s.setAlignment('%s', 'vcenter', 'keep')",
-                        sheet->getNameInDocument(),
+                        sheet->getNameInDocument().c_str(),
                         i->rangeString().c_str());
                 }
                 Gui::Command::commitCommand();
@@ -683,14 +683,14 @@ void CmdSpreadsheetStyleBold::activated(int iMsg)
                         Gui::Command::doCommand(
                             Gui::Command::Doc,
                             "App.ActiveDocument.%s.setStyle('%s', 'bold', 'add')",
-                            sheet->getNameInDocument(),
+                            sheet->getNameInDocument().c_str(),
                             i->rangeString().c_str());
                     }
                     else {
                         Gui::Command::doCommand(
                             Gui::Command::Doc,
                             "App.ActiveDocument.%s.setStyle('%s', 'bold', 'remove')",
-                            sheet->getNameInDocument(),
+                            sheet->getNameInDocument().c_str(),
                             i->rangeString().c_str());
                     }
                 }
@@ -766,14 +766,14 @@ void CmdSpreadsheetStyleItalic::activated(int iMsg)
                         Gui::Command::doCommand(
                             Gui::Command::Doc,
                             "App.ActiveDocument.%s.setStyle('%s', 'italic', 'add')",
-                            sheet->getNameInDocument(),
+                            sheet->getNameInDocument().c_str(),
                             i->rangeString().c_str());
                     }
                     else {
                         Gui::Command::doCommand(
                             Gui::Command::Doc,
                             "App.ActiveDocument.%s.setStyle('%s', 'italic', 'remove')",
-                            sheet->getNameInDocument(),
+                            sheet->getNameInDocument().c_str(),
                             i->rangeString().c_str());
                     }
                 }
@@ -849,14 +849,14 @@ void CmdSpreadsheetStyleUnderline::activated(int iMsg)
                         Gui::Command::doCommand(
                             Gui::Command::Doc,
                             "App.ActiveDocument.%s.setStyle('%s', 'underline', 'add')",
-                            sheet->getNameInDocument(),
+                            sheet->getNameInDocument().c_str(),
                             i->rangeString().c_str());
                     }
                     else {
                         Gui::Command::doCommand(
                             Gui::Command::Doc,
                             "App.ActiveDocument.%s.setStyle('%s', 'underline', 'remove')",
-                            sheet->getNameInDocument(),
+                            sheet->getNameInDocument().c_str(),
                             i->rangeString().c_str());
                     }
                 }

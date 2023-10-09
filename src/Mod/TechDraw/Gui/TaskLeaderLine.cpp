@@ -435,9 +435,9 @@ void TaskLeaderLine::removeFeature()
         try {
             std::string PageName = m_basePage->getNameInDocument();
             Gui::Command::doCommand(Gui::Command::Gui, "App.activeDocument().%s.removeView(App.activeDocument().%s)",
-                                    PageName.c_str(), m_lineFeat->getNameInDocument());
+                                    PageName.c_str(), m_lineFeat->getNameInDocument().c_str());
             Gui::Command::doCommand(Gui::Command::Gui, "App.activeDocument().removeObject('%s')",
-                                        m_lineFeat->getNameInDocument());
+                                        m_lineFeat->getNameInDocument().c_str());
         }
         catch (...) {
             Base::Console().Message("TTL::removeFeature - failed to delete feature\n");

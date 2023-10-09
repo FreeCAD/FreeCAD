@@ -184,7 +184,7 @@ void TaskProjGroup::viewToggled(bool toggle)
     if ( toggle && !multiView->hasProjection( viewNameCStr ) ) {
         Gui::Command::doCommand(Gui::Command::Doc,
                                 "App.activeDocument().%s.addProjection('%s')",
-                                multiView->getNameInDocument(), viewNameCStr);
+                                multiView->getNameInDocument().c_str(), viewNameCStr);
         changed = true;
     } else if ( !toggle && multiView->hasProjection( viewNameCStr ) ) {
         if (multiView->canDelete(viewNameCStr)) {
@@ -404,7 +404,7 @@ void TaskProjGroup::scaleManuallyChanged(int unused)
 
     double scale = (double) a / (double) b;
 
-    Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.Scale = %f", multiView->getNameInDocument()
+    Gui::Command::doCommand(Gui::Command::Doc, "App.activeDocument().%s.Scale = %f", multiView->getNameInDocument().c_str()
                                                                                      , scale);
     multiView->recomputeFeature();
 }

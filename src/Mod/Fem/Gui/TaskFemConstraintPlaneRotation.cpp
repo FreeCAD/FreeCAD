@@ -315,7 +315,7 @@ void TaskDlgFemConstraintPlaneRotation::open()
         Gui::Command::doCommand(
             Gui::Command::Doc,
             ViewProviderFemConstraint::gethideMeshShowPartStr(
-                (static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument())
+                (static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument().c_str())
                 .c_str());  // OvG: Hide meshes and show parts
     }
 }
