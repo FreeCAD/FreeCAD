@@ -923,10 +923,10 @@ void StdCmdToggleSelectability::activated(int iMsg)
             if (pr && pr->isDerivedFrom(ViewProviderGeometryObject::getClassTypeId())){
                 if (static_cast<ViewProviderGeometryObject*>(pr)->Selectable.getValue())
                     doCommand(Gui,"Gui.getDocument(\"%s\").getObject(\"%s\").Selectable=False"
-                                 , doc->getName(), ft->getNameInDocument());
+                                 , doc->getName(), ft->getNameInDocument().c_str());
                 else
                     doCommand(Gui,"Gui.getDocument(\"%s\").getObject(\"%s\").Selectable=True"
-                                 , doc->getName(), ft->getNameInDocument());
+                                 , doc->getName(), ft->getNameInDocument().c_str());
             }
         }
     }
@@ -1064,10 +1064,10 @@ void StdCmdToggleObjects::activated(int iMsg)
     for (const auto & it : obj) {
         if (doc->isShow(it->getNameInDocument().c_str()))
             doCommand(Gui,"Gui.getDocument(\"%s\").getObject(\"%s\").Visibility=False"
-                         , app->getName(), it->getNameInDocument());
+                         , app->getName(), it->getNameInDocument().c_str());
         else
             doCommand(Gui,"Gui.getDocument(\"%s\").getObject(\"%s\").Visibility=True"
-                         , app->getName(), it->getNameInDocument());
+                         , app->getName(), it->getNameInDocument().c_str());
     }
 }
 
@@ -1104,7 +1104,7 @@ void StdCmdShowObjects::activated(int iMsg)
 
     for (const auto & it : obj) {
         doCommand(Gui,"Gui.getDocument(\"%s\").getObject(\"%s\").Visibility=True"
-                     , app->getName(), it->getNameInDocument());
+                     , app->getName(), it->getNameInDocument().c_str());
     }
 }
 
@@ -1141,7 +1141,7 @@ void StdCmdHideObjects::activated(int iMsg)
 
     for (const auto & it : obj) {
         doCommand(Gui,"Gui.getDocument(\"%s\").getObject(\"%s\").Visibility=False"
-                     , app->getName(), it->getNameInDocument());
+                     , app->getName(), it->getNameInDocument().c_str());
     }
 }
 

@@ -127,12 +127,11 @@ TaskFemConstraintTransform::TaskFemConstraintTransform(
     ui->lw_Rect->clear();
 
     // Transformable surfaces
-    Gui::Command::doCommand(Gui::Command::Doc,
-                            TaskFemConstraintTransform::getSurfaceReferences(
-                                (static_cast<Fem::Constraint*>(ConstraintView->getObject()))
-                                    ->getNameInDocument()
-                                    .c_str())
-                                .c_str());
+    Gui::Command::doCommand(
+        Gui::Command::Doc,
+        TaskFemConstraintTransform::getSurfaceReferences(
+            (static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument())
+            .c_str());
     std::vector<App::DocumentObject*> ObjDispl = pcConstraint->RefDispl.getValues();
     std::vector<std::string> SubElemDispl = pcConstraint->RefDispl.getSubValues();
 
@@ -592,12 +591,11 @@ void TaskDlgFemConstraintTransform::open()
         QString msg = QObject::tr("Local coordinate system");
         Gui::Command::openCommand((const char*)msg.toUtf8());
         ConstraintView->setVisible(true);
-        Gui::Command::doCommand(Gui::Command::Doc,
-                                ViewProviderFemConstraint::gethideMeshShowPartStr(
-                                    (static_cast<Fem::Constraint*>(ConstraintView->getObject()))
-                                        ->getNameInDocument()
-                                        .c_str())
-                                    .c_str());  // OvG: Hide meshes and show parts
+        Gui::Command::doCommand(
+            Gui::Command::Doc,
+            ViewProviderFemConstraint::gethideMeshShowPartStr(
+                (static_cast<Fem::Constraint*>(ConstraintView->getObject()))->getNameInDocument())
+                .c_str());  // OvG: Hide meshes and show parts
     }
 }
 
