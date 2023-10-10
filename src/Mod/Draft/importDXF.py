@@ -992,21 +992,22 @@ def drawArc(arc, forceShape=False):
     -----
     Use local variables, not global variables.
     """
-    v = vec(arc.loc)
+    pl = placementFromDXFOCS(arc)
+    rad = vec(arc.radius)
     firstangle = round(arc.start_angle, prec())
     lastangle = round(arc.end_angle, prec())
-    circle = Part.Circle()
-    circle.Center = v
-    circle.Radius = vec(arc.radius)
     try:
         if (dxfCreateDraft or dxfCreateSketch) and (not forceShape):
-            pl = placementFromDXFOCS(arc)
-            return Draft.make_circle(circle.Radius, pl, face=False,
+            return Draft.make_circle(rad, pl, face=False,
                                      startangle=firstangle,
                                      endangle=lastangle)
         else:
-            return circle.toShape(math.radians(firstangle),
-                                  math.radians(lastangle))
+            circle = Part.Circle()
+            circle.Radius = rad
+            shape = circle.toShape(math.radians(firstangle),
+                                   math.radians(lastangle))
+            shape.Placement = pl
+            return shape
     except Part.OCCError:
         warn(arc)
     return None
@@ -1043,16 +1044,17 @@ def drawCircle(circle, forceShape=False):
     -----
     Use local variables, not global variables.
     """
-    v = vec(circle.loc)
-    curve = Part.Circle()
-    curve.Radius = vec(circle.radius)
-    curve.Center = v
+    pl = placementFromDXFOCS(circle)
+    rad = vec(circle.radius)
     try:
         if (dxfCreateDraft or dxfCreateSketch) and (not forceShape):
-            pl = placementFromDXFOCS(circle)
-            return Draft.make_circle(circle.radius, pl)
+            return Draft.make_circle(rad, pl, face=False)
         else:
-            return curve.toShape()
+            curve = Part.Circle()
+            curve.Radius = rad
+            shape = curve.toShape()
+            shape.Placement = pl
+            return shape
     except Part.OCCError:
         warn(circle)
     return None
