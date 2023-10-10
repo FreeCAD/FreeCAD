@@ -175,7 +175,7 @@ public:
      */
     void readEndElement(const char* ElementName=nullptr, int level=-1);
     /// read until characters are found
-    void readCharacters();
+    void readCharacters(const char* filename, CharStreamFormat format = CharStreamFormat::Raw);
 
     /** Obtain an input stream for reading characters
      *
@@ -183,7 +183,7 @@ public:
      *  auto destroyed when you call with readElement() or readEndElement(), or
      *  you can end it explicitly with endCharStream().
      */
-    std::istream &beginCharStream();
+    std::istream &beginCharStream(CharStreamFormat format = CharStreamFormat::Raw);
     /// Manually end the current character stream
     void endCharStream();
     /// Obtain the current character stream
@@ -200,7 +200,7 @@ public:
     unsigned int getAttributeCount() const;
     /// check if the read element has a special attribute
     bool hasAttribute(const char* AttrName) const;
-    /// return the named attribute as an interer (does type checking)
+    /// return the named attribute as an integer (does type checking)
     long getAttributeAsInteger(const char* AttrName) const;
     unsigned long getAttributeAsUnsigned(const char* AttrName) const;
     /// return the named attribute as a double floating point (does type checking)
