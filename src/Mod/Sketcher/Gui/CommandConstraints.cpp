@@ -2266,13 +2266,13 @@ protected:
         Sketcher::PointPos PosId2 = Sketcher::PointPos::none;
         double ActAngle;
 
-        if (calculateAngle(Obj, GeoId1, GeoId2, PosId1, PosId2, ActAngle)) {
+        if (!calculateAngle(Obj, GeoId1, GeoId2, PosId1, PosId2, ActAngle)) {
             return;
         }
 
 
         if (ActAngle == 0.0) {
-            //Here we are sure that GeoIds are lines. So false means that lines are parallel, we change to distance
+            //Here we are sure that GeoIds are lines. So 0.0 means that lines are parallel, we change to distance
             restartCommand(QT_TRANSLATE_NOOP("Command", "Add Distance constraint"));
             createDistanceConstrain(selLine[1].GeoId, Sketcher::PointPos::start, selLine[0].GeoId, selLine[0].PosId, onSketchPos);
             return;
