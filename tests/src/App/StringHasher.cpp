@@ -747,6 +747,11 @@ TEST_F(StringIDRefTest, swap)  // NOLINT
     EXPECT_EQ(indexA, idRefB.getIndex());
 }
 
+#if defined(__clang__)
+#pragma clang diagnostic push
+#pragma clang diagnostic ignored "-Wself-assign-overloaded"
+#endif
+
 TEST_F(StringIDRefTest, assignmentFromSelf)  // NOLINT
 {
     // Arrange
@@ -758,6 +763,10 @@ TEST_F(StringIDRefTest, assignmentFromSelf)  // NOLINT
     // Assert
     EXPECT_EQ(1, idRef.getRefCount());
 }
+
+#if defined(__clang__)
+#pragma clang diagnostic pop
+#endif
 
 TEST_F(StringIDRefTest, assignmentToEmptyFromStringID)  // NOLINT
 {
