@@ -31,7 +31,6 @@
 # include <QCloseEvent>
 # include <QContextMenuEvent>
 # include <QDesktopServices>
-# include <QDesktopWidget>
 # include <QDockWidget>
 # include <QFontMetrics>
 # include <QKeySequence>
@@ -262,7 +261,7 @@ struct MainWindowP
     int actionUpdateDelay = 0;
     QMap<QString, QPointer<UrlHandler> > urlHandler;
     std::string hiddenDockWindows;
-    int screen = -1;
+    QPointer<QScreen> screen;
     boost::signals2::scoped_connection connParam;
     ParameterGrp::handle hGrp;
     bool _restoring = false;
@@ -1666,7 +1665,8 @@ void MainWindow::loadWindowSettings()
     QString qtver = QStringLiteral("Qt%1.%2").arg(major).arg(minor);
     QSettings config(vendor, application);
 
-    QRect rect = QApplication::desktop()->availableGeometry(d->screen);
+    QRect rect = d->screen ? d->screen->availableGeometry()
+                           : QApplication::primaryScreen()->availableGeometry();
 
     config.beginGroup(qtver);
     QPoint pos = config.value(QStringLiteral("Position"), this->pos()).toPoint();
@@ -1804,10 +1804,15 @@ void MainWindow::startSplasher()
         if (hGrp->GetBool("ShowSplasher", true)) {
             d->splashscreen = new SplashScreen(this->splashImage());
             d->splashscreen->show();
-            d->screen = QApplication::desktop()->screenNumber(d->splashscreen);
+#if QT_VERSION >= QT_VERSION_CHECK(5,14,0)
+            d->screen = d->splashscreen->screen();
+#else
+            d->screen = QApplication::primaryScreen();
+#endif
         }
-        else
+        else {
             d->splashscreen = nullptr;
+        }
     }
 }
 
