@@ -316,17 +316,24 @@ void ImpExpDxfRead::OnReadEllipse(const double* c,
 }
 
 
-void ImpExpDxfRead::OnReadText(const double* point, const double /*height*/, const char* text)
+void ImpExpDxfRead::OnReadText(const double* point,
+                               const double height,
+                               const char* text,
+                               const double rotation)
 {
     if (optionImportAnnotations) {
-        Base::Vector3d pt(point[0] * optionScaling,
-                          point[1] * optionScaling,
-                          point[2] * optionScaling);
         if (LayerName().substr(0, 6) != "BLOCKS") {
-            App::Annotation* pcFeature =
-                static_cast<App::Annotation*>(document->addObject("App::Annotation", "Text"));
-            pcFeature->LabelText.setValue(Deformat(text));
-            pcFeature->Position.setValue(pt);
+            Base::Interpreter().runString("import Draft");
+            Base::Interpreter().runStringArg("p=FreeCAD.Vector(%f,%f,%f)",
+                                             point[0] * optionScaling,
+                                             point[1] * optionScaling,
+                                             point[2] * optionScaling);
+            Base::Interpreter().runString("a=FreeCAD.Vector(0,0,1)");
+            Base::Interpreter().runStringArg("pl=FreeCAD.Placement(p,a,%f)",
+                                            rotation);
+            Base::Interpreter().runStringArg("Draft.make_text(\"%s\",pl, height=%f)",
+                                             text,
+                                             height);
         }
         // else std::cout << "skipped text in block: " << LayerName() << std::endl;
     }
