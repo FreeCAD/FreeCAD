@@ -213,7 +213,7 @@ private:
 
     public:
         bool firstMoveInit = false;
-        int labelIndexWithFocus = 0;
+        size_t labelIndexWithFocus = 0;
 
     public:
         ToolWidgetManager(DrawSketchDefaultWidgetHandler* dshandler)
@@ -989,7 +989,7 @@ private:
         }
 
         /* This function give the focus to a spinbox and register to which it gave it.*/
-        void setFocusToLabel(int labelindex)
+        void setFocusToLabel(size_t labelindex)
         {
             if (labelindex < onViewParameters.size()) {
                 onViewParameters[labelindex]->setFocusToSpinbox();
@@ -1000,7 +1000,7 @@ private:
 
         void passFocusToNextLabel()
         {
-            int index = labelIndexWithFocus + 1;
+            size_t index = labelIndexWithFocus + 1;
 
             if (index >= onViewParameters.size()) {
                 index = 0;
@@ -1140,12 +1140,12 @@ private:
             }
         }
 
-        bool isLabelOfCurrentMode(int labelindex) const
+        bool isLabelOfCurrentMode(size_t labelindex) const
         {
             return labelindex < onViewParameters.size() && getState(labelindex) == handler->state();
         }
 
-        bool isLabelOfPreviousMode(int labelindex) const
+        bool isLabelOfPreviousMode(size_t labelindex) const
         {
             return labelindex < onViewParameters.size() && getState(labelindex) < handler->state();
         }

@@ -113,15 +113,9 @@ private:
 
     virtual void executeCommands() override
     {
-
         if (fabs(offsetLength) > Precision::Confusion()) {
             createOffset();
         }
-
-        sketchgui->getSketchObject()->solve(true);
-        sketchgui->draw(false, false);  // Redraw
-
-        sketchgui->purgeHandler();
     }
 
     virtual std::string getToolName() const override
