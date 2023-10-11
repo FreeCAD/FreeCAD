@@ -23,6 +23,10 @@
 #ifndef APP_DOCUMENTP_H
 #define APP_DOCUMENTP_H
 
+#ifdef _MSC_VER
+#pragma warning( disable : 4834 )
+#endif
+
 #include <App/DocumentObject.h>
 #include <App/DocumentObserver.h>
 #include <App/StringHasher.h>
