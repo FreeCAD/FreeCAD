@@ -329,11 +329,8 @@ void ImpExpDxfRead::OnReadText(const double* point,
                                              point[1] * optionScaling,
                                              point[2] * optionScaling);
             Base::Interpreter().runString("a=FreeCAD.Vector(0,0,1)");
-            Base::Interpreter().runStringArg("pl=FreeCAD.Placement(p,a,%f)",
-                                            rotation);
-            Base::Interpreter().runStringArg("Draft.make_text(\"%s\",pl, height=%f)",
-                                             text,
-                                             height);
+            Base::Interpreter().runStringArg("pl=FreeCAD.Placement(p,a,%f)", rotation);
+            Base::Interpreter().runStringArg("Draft.make_text(\"%s\",pl, height=%f)", text, height);
         }
         // else std::cout << "skipped text in block: " << LayerName() << std::endl;
     }
