@@ -889,11 +889,9 @@ public:
         } else if (!checked) {
             if (sizes[index] > 0 && sizes.size() > 1) {
                 int newtotal = 0;
-                int total = 0;
                 auto newsizes = sizes;
                 newsizes[index] = 0;
                 for (int i=0; i<sizes.size(); ++i) {
-                    total += sizes[i];
                     if (i != index) {
                         auto d = tabWidget->dockWidget(i);
                         auto it = tabWidget->_sizemap.find(d);
@@ -1908,10 +1906,15 @@ void OverlayManager::Private::interceptEvent(QWidget *widget, QEvent *ev)
     }
     case QEvent::Wheel: {
         auto we = static_cast<QWheelEvent*>(ev);
-        lastIntercept = getChildAt(widget, we->globalPos());
+#if QT_VERSION < QT_VERSION_CHECK(5,15,0)
+        QPoint globalPos = we->globalPos();
+#else
+        QPoint globalPos = we->globalPosition().toPoint();
+#endif
+        lastIntercept = getChildAt(widget, globalPos);
 #if QT_VERSION >= QT_VERSION_CHECK(5,12,0)
-        QWheelEvent wheelEvent(lastIntercept->mapFromGlobal(we->globalPos()),
-                               we->globalPos(),
+        QWheelEvent wheelEvent(lastIntercept->mapFromGlobal(globalPos),
+                               globalPos,
                                we->pixelDelta(),
                                we->angleDelta(),
                                we->buttons(),
@@ -1920,8 +1923,8 @@ void OverlayManager::Private::interceptEvent(QWidget *widget, QEvent *ev)
                                we->inverted(),
                                we->source());
 #else
-        QWheelEvent wheelEvent(lastIntercept->mapFromGlobal(we->globalPos()),
-                               we->globalPos(),
+        QWheelEvent wheelEvent(lastIntercept->mapFromGlobal(globalPos),
+                               globalPos,
                                we->pixelDelta(),
                                we->angleDelta(),
                                0,

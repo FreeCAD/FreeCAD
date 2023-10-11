@@ -24,6 +24,7 @@
 #define FC_OVERLAYMANAGER_H 
 
 #include <QObject>
+#include <FCGlobal.h>
 
 class QAction;
 class QDockWidget;
@@ -177,6 +178,8 @@ private:
     void onTaskViewUpdate();
     void onFocusChanged(QWidget *, QWidget *);
     void onAction();
+
+private Q_SLOTS:
     void raiseAll();
 
 private:
