@@ -28,6 +28,9 @@ protected:
 
     void TearDown() override
     {
+        if (inputStream.is_open()) {
+            inputStream.close();
+        }
         if (fs::exists(_tempFile)) {
             fs::remove(_tempFile);
         }
@@ -41,7 +44,7 @@ protected:
         std::ofstream fileStream(_tempFile.string());
         fileStream.write(stringData.data(), static_cast<std::streamsize>(stringData.length()));
         fileStream.close();
-        std::ifstream inputStream(_tempFile.string());
+        inputStream.open(_tempFile.string());
         _reader = std::make_unique<Base::XMLReader>(_tempFile.string().c_str(), inputStream);
     }
 
@@ -54,6 +57,7 @@ private:
     std::unique_ptr<Base::XMLReader> _reader;
     fs::path _tempDir;
     fs::path _tempFile;
+    std::ifstream inputStream;
 };
 
 TEST_F(ReaderTest, beginCharStreamNormal)
