@@ -1771,10 +1771,7 @@ void MainWindow::saveWindowSettings(bool canDelay)
     config.endGroup();
 #else
     // We are migrating from saving qt main window layout state in QSettings to
-    // FreeCAD parameters, for more control. The old settings is explicitly
-    // remove from old QSettings conf to allow easier complete reset of
-    // application state by just removing FC user.cfg file.
-    config.remove(qtver);
+    // FreeCAD parameters, for more control.
 #endif
 
     Base::ConnectionBlocker block(d->connParam);
