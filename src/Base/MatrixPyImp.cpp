@@ -31,6 +31,7 @@
 #include "QuantityPy.h"
 #include "MatrixPy.h"
 #include "MatrixPy.cpp"
+#include <E57Format.h>
 
 
 using namespace Base;
@@ -932,30 +933,6 @@ Py::Float MatrixPy::getA44() const
 void  MatrixPy::setA44(Py::Float arg)
 {
     (*this->getMatrixPtr())[3][3] = static_cast<double>(arg);
-}
-
-Py::Sequence MatrixPy::getA() const
-{
-    double mat[16];
-    this->getMatrixPtr()->getMatrix(mat);
-    Py::Tuple tuple(16);
-    for (int i=0; i<16; i++) {
-        tuple[i] = Py::Float(mat[i]);
-    }
-    return std::move(tuple);
-}
-
-void MatrixPy::setA(Py::Sequence arg)
-{
-    double mat[16];
-    this->getMatrixPtr()->getMatrix(mat);
-
-    int index=0;
-    for (Py::Sequence::iterator it = arg.begin(); it != arg.end() && index < 16; ++it) {
-        mat[index++] = static_cast<double>(Py::Float(*it));
-    }
-
-    this->getMatrixPtr()->setMatrix(mat);
 }
 
 PyObject *MatrixPy::getCustomAttributes(const char* /*attr*/) const
