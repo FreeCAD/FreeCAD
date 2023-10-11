@@ -107,7 +107,7 @@ const Material& MaterialManager::getMaterial(const QString& uuid) const
     try {
         return *(_materialMap->at(uuid));
     }
-    catch (std::out_of_range& e) {
+    catch (std::out_of_range&) {
         throw MaterialNotFound();
     }
 }
