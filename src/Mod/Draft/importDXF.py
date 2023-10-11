@@ -995,8 +995,8 @@ def drawArc(arc, forceShape=False):
     """
     pl = placementFromDXFOCS(arc)
     rad = vec(arc.radius)
-    firstangle = round(arc.start_angle, prec())
-    lastangle = round(arc.end_angle, prec())
+    firstangle = round(arc.start_angle%360, prec())
+    lastangle = round(arc.end_angle%360, prec())
     try:
         if (dxfCreateDraft or dxfCreateSketch) and (not forceShape):
             return Draft.make_circle(rad, pl, face=False,
