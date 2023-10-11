@@ -41,7 +41,7 @@ if App.GuiUp:
     from draftviewproviders.view_text import ViewProviderText
 
 
-def make_text(string, placement=None, screen=False):
+def make_text(string, placement=None, screen=False, height=None):
     """Create a Text object containing the given list of strings.
 
     The current color and text height and font specified in preferences
@@ -65,6 +65,9 @@ def make_text(string, placement=None, screen=False):
         by the default the XY plane.
         If it is `True`, the text will always face perpendicularly
         to the camera direction, that is, it will be flat on the screen.
+
+    height: float, optional
+        A height value for the text, in mm
 
     Returns
     -------
@@ -122,15 +125,16 @@ def make_text(string, placement=None, screen=False):
     if App.GuiUp:
         ViewProviderText(new_obj.ViewObject)
 
-        h = utils.get_param("textheight", 2)
+        if not height:  # zero or None
+            height = utils.get_param("textheight", 2)
 
         new_obj.ViewObject.DisplayMode = "World"
         if screen:
             _msg("screen: {}".format(screen))
             new_obj.ViewObject.DisplayMode = "Screen"
-            h = h * 10
+            height *= 10
 
-        new_obj.ViewObject.FontSize = h
+        new_obj.ViewObject.FontSize = height
         new_obj.ViewObject.FontName = utils.get_param("textfont", "")
         new_obj.ViewObject.LineSpacing = 1
 

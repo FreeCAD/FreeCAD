@@ -392,8 +392,10 @@ public:
     {}
     ImportExport virtual void OnReadPoint(const double* /*s*/)
     {}
-    ImportExport virtual void
-    OnReadText(const double* /*point*/, const double /*height*/, const char* /*text*/)
+    ImportExport virtual void OnReadText(const double* /*point*/,
+                                         const double /*height*/,
+                                         const char* /*text*/,
+                                         const double /*rotation*/)
     {}
     ImportExport virtual void OnReadArc(const double* /*s*/,
                                         const double* /*e*/,
