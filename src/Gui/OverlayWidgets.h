@@ -21,7 +21,7 @@
  ****************************************************************************/
 
 #ifndef FC_OVERLAYWIDGETS_H
-#define FC_OVERLAYWIDGETS_H 
+#define FC_OVERLAYWIDGETS_H
 
 #include <QTabWidget>
 #include <QTimer>
@@ -149,7 +149,7 @@ public:
     /// Get the geometry of this tab widget
     const QRect &getRect();
 
-    /// Overlay query option 
+    /// Overlay query option
     enum class QueryOption {
         /// Report the current overlay status
         QueryOverlay,
@@ -170,7 +170,7 @@ public:
      * hide in non 3D view.
      */
     bool checkAutoHide() const;
-    /** Obtain geometry of auto hiding tab widget 
+    /** Obtain geometry of auto hiding tab widget
      * @param rect: output geometry of the tab widget
      * @return Return true if the tab widget should be auto hiding
      */
@@ -522,7 +522,7 @@ public:
 };
 
 /** Class for handling visual hint for bringing back hidden overlay dock widget
- * 
+ *
  * The proxy widget is transparent except a customizable rectangle area with a
  * selectable color shown as the visual hint. The hint is normally hidden, and
  * is shown only if the mouse hovers within the widget. When the hint area is
@@ -614,7 +614,7 @@ public:
     inline QColor color() const { return _color; }
 
     inline bool enabled() const {return _enabled;}
-    inline void setEnabled(bool enabled) 
+    inline void setEnabled(bool enabled)
         { if(_enabled!=enabled) {_enabled = enabled; updateBoundingRect();} }
 
 private:

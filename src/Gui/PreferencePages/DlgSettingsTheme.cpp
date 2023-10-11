@@ -166,7 +166,7 @@ void DlgSettingsTheme::attachObserver()
     auto handler = handlers.addDelayedHandler("BaseApp/Preferences/MainWindow",
                                {"StyleSheet", "TiledBackground"},
                                applyStyleSheet);
-    handlers.addHandler("BaseApp/Preferences/Themes", 
+    handlers.addHandler("BaseApp/Preferences/Themes",
                         {"ThemeAccentColor1", "ThemeAccentColor2", "ThemeAccentColor2"},
                         handler);
 }
