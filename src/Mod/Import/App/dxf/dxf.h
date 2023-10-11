@@ -321,7 +321,6 @@ private:
     std::map<std::string, ColorIndex_t>
         m_layer_ColorIndex_map;  // Mapping from layer name -> layer color index
     const ColorIndex_t ColorBylayer = 256;
-    const ColorIndex_t ColorByBlock = 0;
 
     bool ReadUnits();
     bool ReadLayer();
