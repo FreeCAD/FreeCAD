@@ -1574,7 +1574,7 @@ std::string DrawViewDimension::recoverChangedVertex2d(int iReference)
     double scale = getViewPart()->getScale();
     std::vector<Part::TopoShape> savedAll = SavedGeometry.getValues();
     if (savedAll.empty() ||
-        iReference >= savedAll.size()) {
+        iReference >= int(savedAll.size())) {
             return std::string();
         }
     Part::TopoShape savedGeometryItem = SavedGeometry.getValues().at(iReference);
