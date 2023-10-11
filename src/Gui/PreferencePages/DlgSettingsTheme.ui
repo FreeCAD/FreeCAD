@@ -28,38 +28,8 @@
     <layout class="QGridLayout">
      <item row="0" column="0">
       <layout class="QGridLayout">
-       <item row="3" column="1">
-        <widget class="Gui::PrefComboBox" name="StyleSheets">
-         <property name="toolTip">
-          <string>Style sheet how user interface will look like</string>
-         </property>
-         <property name="prefPath" stdset="0">
-          <cstring>MainWindow</cstring>
-         </property>
-         <property name="prefEntry" stdset="0">
-          <cstring>StyleSheet</cstring>
-         </property>
-         <property name="prefType" stdset="0">
-          <cstring></cstring>
-         </property>
-        </widget>
-       </item>
-       <item row="1" column="0">
-        <widget class="QLabel" name="label">
-         <property name="text">
-          <string>Accent color 2</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="label">
-         <property name="text">
-          <string>Accent color 3</string>
-         </property>
-        </widget>
-       </item>
        <item row="0" column="0">
-        <widget class="QLabel" name="label">
+        <widget class="QLabel" name="label1">
          <property name="text">
           <string>Accent color 1</string>
          </property>
@@ -91,10 +61,10 @@
          </property>
         </widget>
        </item>
-       <item row="3" column="0">
-        <widget class="QLabel" name="styleSheetLabel">
+       <item row="1" column="0">
+        <widget class="QLabel" name="label2">
          <property name="text">
-          <string>Style sheet (advanced):</string>
+          <string>Accent color 2</string>
          </property>
         </widget>
        </item>
@@ -124,6 +94,13 @@
          </property>
         </widget>
        </item>
+       <item row="2" column="0">
+        <widget class="QLabel" name="label3">
+         <property name="text">
+          <string>Accent color 3</string>
+         </property>
+        </widget>
+       </item>
        <item row="2" column="1">
         <widget class="Gui::PrefColorButton" name="ThemeAccentColor3">
          <property name="sizePolicy">
@@ -147,6 +124,29 @@
          </property>
          <property name="prefPath" stdset="0">
           <cstring>Themes</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
+        <widget class="QLabel" name="styleSheetLabel">
+         <property name="text">
+          <string>Style sheet (advanced):</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="1">
+        <widget class="Gui::PrefComboBox" name="StyleSheets">
+         <property name="toolTip">
+          <string>Style sheet how user interface will look like</string>
+         </property>
+         <property name="prefPath" stdset="0">
+          <cstring>MainWindow</cstring>
+         </property>
+         <property name="prefEntry" stdset="0">
+          <cstring>StyleSheet</cstring>
+         </property>
+         <property name="prefType" stdset="0">
+          <cstring></cstring>
          </property>
         </widget>
        </item>
