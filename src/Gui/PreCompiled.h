@@ -100,6 +100,7 @@
 // Keep this order to avoid compiler warnings
 #include "QtAll.h"
 #include "InventorAll.h"
+#include <QDesktopWidget>
 
 #elif defined(FC_OS_WIN32)
 #include <windows.h>
