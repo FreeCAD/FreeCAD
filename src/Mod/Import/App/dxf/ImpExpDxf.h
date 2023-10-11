@@ -43,7 +43,10 @@ public:
     // CDxfRead's virtual functions
     void OnReadLine(const double* s, const double* e, bool hidden) override;
     void OnReadPoint(const double* s) override;
-    void OnReadText(const double* point, const double height, const char* text) override;
+    void OnReadText(const double* point,
+                    const double height,
+                    const char* text,
+                    const double rotation) override;
     void
     OnReadArc(const double* s, const double* e, const double* c, bool dir, bool hidden) override;
     void OnReadCircle(const double* s, const double* c, bool dir, bool hidden) override;
