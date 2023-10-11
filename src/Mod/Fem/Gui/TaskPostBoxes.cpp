@@ -883,15 +883,30 @@ void TaskPostDataAlongLine::onFieldActivated(int i)
     std::string FieldName = ui->Field->currentText().toStdString();
     static_cast<Fem::FemPostDataAlongLineFilter*>(getObject())->PlotData.setValue(FieldName);
     updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->VectorMode, ui->VectorMode);
+
+    auto vecMode = static_cast<ViewProviderFemPostObject*>(getView())->VectorMode.getEnum();
+    static_cast<Fem::FemPostDataAlongLineFilter*>(getObject())->PlotDataComponent.setValue(vecMode);
 }
 
 void TaskPostDataAlongLine::onVectorModeActivated(int i)
 {
     getTypedView<ViewProviderFemPostObject>()->VectorMode.setValue(i);
+    int comp = ui->VectorMode->currentIndex();
+    static_cast<Fem::FemPostDataAlongLineFilter*>(getObject())->PlotDataComponent.setValue(comp);
 }
 
 std::string TaskPostDataAlongLine::Plot()
 {
+    auto obj = static_cast<Fem::FemPostDataAlongLineFilter*>(getObject());
+    std::string yLabel;
+    // if there is only one component, it is the magnitude
+    if (obj->PlotDataComponent.getEnum().maxValue() < 1) {
+        yLabel = "Magnitude";
+    }
+    else {
+        yLabel = obj->PlotDataComponent.getValueAsString();
+    }
+
     auto xlabel = tr("Length", "X-Axis plot label");
     std::ostringstream oss;
     oss << "import FreeCAD\n\
@@ -903,13 +918,15 @@ plt.figure(title)\n\
 plt.plot(x, y)\n\
 plt.xlabel(\""
         << xlabel.toStdString() << "\")\n\
-plt.ylabel(title)\n\
+plt.ylabel(\""
+        << yLabel << "\")\n\
 plt.title(title)\n\
 plt.grid()\n\
 fig_manager = plt.get_current_fig_manager()\n\
 fig_manager.window.setParent(FreeCADGui.getMainWindow())\n\
 fig_manager.window.setWindowFlag(QtCore.Qt.Tool)\n\
 plt.show()\n";
+
     return oss.str();
 }
 
