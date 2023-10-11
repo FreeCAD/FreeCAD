@@ -84,7 +84,7 @@ const QString ModelLoader::getUUIDFromPath(const QString& path)
         const QString uuid = QString::fromStdString(yamlroot[base]["UUID"].as<std::string>());
         return uuid;
     }
-    catch (YAML::Exception& ex) {
+    catch (YAML::Exception&) {
         throw ModelNotFound();
     }
 }
@@ -188,7 +188,7 @@ void ModelLoader::dereference(ModelEntry* model,
                 const ModelEntry* child = (*_modelEntryMap)[nodeName];
                 dereference(model->getUUID(), model, child, inheritances);
             }
-            catch (const std::out_of_range& oor) {
+            catch (const std::out_of_range&) {
                 Base::Console().Log("Unable to find '%s' in model map\n",
                                     nodeName.toStdString().c_str());
             }
