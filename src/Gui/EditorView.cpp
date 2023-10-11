@@ -650,15 +650,17 @@ void PythonEditorView::executeScript()
     if (EditorView::onHasMsg("Save"))
         EditorView::onMsg("Save", nullptr);
     try {
-        WaitCursor wc;
+        getMainWindow()->setCursor(Qt::WaitCursor);
         PythonTracingLocker tracelock(watcher->getTrace());
         Application::Instance->macroManager()->run(Gui::MacroManager::File,fileName().toUtf8());
+        getMainWindow()->unsetCursor();
     }
     catch (const Base::SystemExitException&) {
         // handle SystemExit exceptions
         Base::PyGILStateLocker locker;
         Base::PyException e;
         e.ReportException();
+        getMainWindow()->unsetCursor();
     }
 }
 
