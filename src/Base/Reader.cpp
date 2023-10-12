@@ -253,6 +253,11 @@ bool Base::XMLReader::isEndOfElement() const
     return (ReadType == EndElement);
 }
 
+bool Base::XMLReader::isStartOfDocument() const
+{
+    return (ReadType == StartDocument);
+}
+
 bool Base::XMLReader::isEndOfDocument() const
 {
     return (ReadType == EndDocument);
