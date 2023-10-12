@@ -1855,7 +1855,7 @@ bool OverlayManager::eventFilter(QObject *o, QEvent *ev)
 namespace {
 class  MouseGrabberGuard {
 public:
-    MouseGrabberGuard(QWidget *grabber)
+    explicit MouseGrabberGuard(QWidget *grabber)
     {
         if (grabber && grabber == QWidget::mouseGrabber()) {
             _grabber = grabber;

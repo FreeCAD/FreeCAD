@@ -23,7 +23,6 @@
 #ifndef GUI_DOCKWND_COMBOVIEW_H
 #define GUI_DOCKWND_COMBOVIEW_H
 
-#include <Base/Parameter.h>
 #include "DockWindow.h"
 
 
@@ -82,8 +81,8 @@ public:
     friend class Gui::ControlSingleton;
 
 private:
-    Gui::PropertyView                  * prop;
-    Gui::TreePanel                     * tree;
+    Gui::PropertyView * prop;
+    Gui::TreePanel    * tree;
 };
 
 } // namespace DockWnd

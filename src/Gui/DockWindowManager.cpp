@@ -36,7 +36,6 @@
 #include <boost/algorithm/string/predicate.hpp>
 
 #include <App/Application.h>
-#include <Base/Console.h>
 #include <Base/Tools.h>
 
 #include "DockWindowManager.h"

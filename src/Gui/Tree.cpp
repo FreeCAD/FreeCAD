@@ -364,7 +364,7 @@ namespace Gui {
 class TreeWidgetItemDelegate: public QStyledItemDelegate {
     typedef QStyledItemDelegate inherited;
 public:
-    TreeWidgetItemDelegate(QObject* parent=0);
+    explicit TreeWidgetItemDelegate(QObject* parent=nullptr);
 
     virtual QWidget* createEditor(QWidget *parent,
             const QStyleOptionViewItem &, const QModelIndex &index) const;

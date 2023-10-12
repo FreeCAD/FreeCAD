@@ -40,7 +40,6 @@
 # include <QToolTip>
 #endif
 
-#include <Base/Console.h>
 #include <Base/Tools.h>
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>

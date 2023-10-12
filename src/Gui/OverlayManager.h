@@ -41,7 +41,7 @@ class GuiExport OverlayManager : public QObject {
     Q_OBJECT
 public:
     OverlayManager();
-    virtual ~OverlayManager();
+    ~OverlayManager() override;
 
     /// restore states
     void restore();
@@ -164,7 +164,7 @@ public:
     class Private;
 
 protected:
-    bool eventFilter(QObject *, QEvent *ev);
+    bool eventFilter(QObject* obj, QEvent* ev) override;
 
     /// Register a named docked widget with an overlay tab widget
     void registerDockWidget(const QString &name, OverlayTabWidget *);
