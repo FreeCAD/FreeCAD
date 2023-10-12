@@ -172,6 +172,11 @@ directories = [
         "workingdir": "./src/Mod/Web/",
         "tsdir": "Gui/Resources/translations",
     },
+    {
+        "tsname": "Help",
+        "workingdir": "./src/Mod/Help/",
+        "tsdir": "Resources/translations",
+    },
 ]
 
 # Exclude these files from consideration
