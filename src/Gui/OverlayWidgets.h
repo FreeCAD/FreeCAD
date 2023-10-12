@@ -299,16 +299,16 @@ public:
 
 protected:
 #if QT_VERSION < QT_VERSION_CHECK(6,0,0)
-    void enterEvent(QEvent*);
+    void enterEvent(QEvent* ev) override;
 #else
-    void enterEvent(QEnterEvent*);
+    void enterEvent(QEnterEvent* ev) override;
 #endif
-    void leaveEvent(QEvent*);
-    void changeEvent(QEvent*);
-    void resizeEvent(QResizeEvent*);
-    void paintEvent(QPaintEvent *);
-    bool event(QEvent *ev);
-    bool eventFilter(QObject *, QEvent *ev);
+    void leaveEvent(QEvent* ev) override;
+    void changeEvent(QEvent* ev) override;
+    void resizeEvent(QResizeEvent* ev) override;
+    void paintEvent(QPaintEvent* ev) override;
+    bool event(QEvent* ev) override;
+    bool eventFilter(QObject* obj, QEvent* ev) override;
 
     void retranslate();
     void refreshIcons();
@@ -388,6 +388,7 @@ private:
     std::map<QDockWidget *, int> _sizemap;
     bool _saving = false;
 
+    // NOLINTBEGIN
     static OverlayDragFrame *_DragFrame;
     static QDockWidget *_DragFloating;
     static QWidget *_Dragging;
@@ -395,6 +396,7 @@ private:
     static OverlayTabWidget *_RightOverlay;
     static OverlayTabWidget *_TopOverlay;
     static OverlayTabWidget *_BottomOverlay;
+    // NOLINTEND
 };
 
 /// A translucent frame as a visual indicator when dragging a dock widget
@@ -402,12 +404,12 @@ class OverlayDragFrame: public QWidget
 {
     Q_OBJECT
 public:
-    OverlayDragFrame(QWidget * parent);
-    QSize sizeHint() const;
-    QSize minimumSizeHint() const;
+    explicit OverlayDragFrame(QWidget * parent);
+    QSize sizeHint() const override;
+    QSize minimumSizeHint() const override;
 
 protected:
-    void paintEvent(QPaintEvent*);
+    void paintEvent(QPaintEvent* ev) override;
 };
 
 /// Title bar for OverlayTabWidget
@@ -415,17 +417,17 @@ class OverlayTitleBar: public QWidget
 {
     Q_OBJECT
 public:
-    OverlayTitleBar(QWidget * parent);
+    explicit OverlayTitleBar(QWidget * parent);
     void setTitleItem(QLayoutItem *);
     void endDrag();
 
 protected:
-    void mouseMoveEvent(QMouseEvent *);
-    void mousePressEvent(QMouseEvent *);
-    void mouseReleaseEvent(QMouseEvent *);
-    void paintEvent(QPaintEvent*);
-    void keyPressEvent(QKeyEvent *ke);
-    void timerEvent(QTimerEvent *);
+    void mouseMoveEvent(QMouseEvent* ev) override;
+    void mousePressEvent(QMouseEvent* ev) override;
+    void mouseReleaseEvent(QMouseEvent* ev) override;
+    void paintEvent(QPaintEvent* ev) override;
+    void keyPressEvent(QKeyEvent* ke) override;
+    void timerEvent(QTimerEvent* te) override;
 
 private:
     QPoint dragOffset;
@@ -449,10 +451,10 @@ Q_SIGNALS:
     void dragMove(const QPoint &globalPos);
 
 protected:
-    void paintEvent(QPaintEvent*);
-    void mouseMoveEvent(QMouseEvent *);
-    void mousePressEvent(QMouseEvent *);
-    void mouseReleaseEvent(QMouseEvent *);
+    void paintEvent(QPaintEvent* ev) override;
+    void mouseMoveEvent(QMouseEvent* ev) override;
+    void mousePressEvent(QMouseEvent* ev) override;
+    void mouseReleaseEvent(QMouseEvent* ev) override;
     const QPixmap &pixmap() const;
 
 private:
@@ -464,11 +466,11 @@ class OverlaySplitter : public QSplitter
 {
     Q_OBJECT
 public:
-    OverlaySplitter(QWidget *parent);
+    explicit OverlaySplitter(QWidget *parent);
     void retranslate();
 
 protected:
-    virtual QSplitterHandle *createHandle();
+    QSplitterHandle *createHandle() override;
 };
 
 
@@ -491,19 +493,19 @@ public:
 
 protected:
 #if QT_VERSION < QT_VERSION_CHECK(6,0,0)
-    virtual void enterEvent(QEvent *);
+    void enterEvent(QEvent* ev) override;
 #else
-    virtual void enterEvent(QEnterEvent *);
+    void enterEvent(QEnterEvent* ev) override;
 #endif
-    virtual void showEvent(QShowEvent *);
-    virtual void leaveEvent(QEvent *);
-    virtual void paintEvent(QPaintEvent*);
-    virtual void changeEvent(QEvent*);
-    virtual void mouseMoveEvent(QMouseEvent *);
-    virtual void mousePressEvent(QMouseEvent *);
-    virtual void mouseReleaseEvent(QMouseEvent *);
-    virtual void keyPressEvent(QKeyEvent *);
-    virtual QSize sizeHint() const;
+    void showEvent(QShowEvent* ev) override;
+    void leaveEvent(QEvent* ev) override;
+    void paintEvent(QPaintEvent* ev) override;
+    void changeEvent(QEvent* ev) override;
+    void mouseMoveEvent(QMouseEvent* ev) override;
+    void mousePressEvent(QMouseEvent* ev) override;
+    void mouseReleaseEvent(QMouseEvent* ev) override;
+    void keyPressEvent(QKeyEvent* ev) override;
+    QSize sizeHint() const override;
 
 protected:
     void onAction();
@@ -526,7 +528,7 @@ class OverlayToolButton: public QToolButton
 {
     Q_OBJECT
 public:
-    OverlayToolButton(QWidget *parent);
+    explicit OverlayToolButton(QWidget *parent);
 };
 
 /** Class for handling visual hint for bringing back hidden overlay dock widget
@@ -545,7 +547,7 @@ class OverlayProxyWidget: public QWidget
     Q_PROPERTY(QBrush hintColor READ hintColor WRITE setHintColor) // clazy:exclude=qproperty-without-notify
 
 public:
-    OverlayProxyWidget(OverlayTabWidget *);
+    explicit OverlayProxyWidget(OverlayTabWidget *);
 
     OverlayTabWidget *getOwner() const {return owner;}
 
@@ -576,19 +578,19 @@ public:
 
 protected:
 #if QT_VERSION < QT_VERSION_CHECK(6,0,0)
-    void enterEvent(QEvent*);
+    void enterEvent(QEvent* ev) override;
 #else
-    void enterEvent(QEnterEvent*);
+    void enterEvent(QEnterEvent* ev) override;
 #endif
-    void hideEvent(QHideEvent*);
-    void paintEvent(QPaintEvent*);
+    void hideEvent(QHideEvent* ev) override;
+    void paintEvent(QPaintEvent* ev) override;
 
 protected:
     void onTimer();
 
 private:
     OverlayTabWidget* owner;
-    int drawLine = false;
+    bool drawLine = false;
     int dockArea;
     QTimer timer;
     QBrush _hintColor;
@@ -602,10 +604,10 @@ class OverlayGraphicsEffect: public QGraphicsEffect
 {
     Q_OBJECT
 public:
-    OverlayGraphicsEffect(QObject *parent);
+    explicit OverlayGraphicsEffect(QObject *parent);
 
-    virtual void draw(QPainter* painter);
-    virtual QRectF boundingRectFor(const QRectF& rect) const;
+    void draw(QPainter* painter) override;
+    QRectF boundingRectFor(const QRectF& rect) const override;
 
     inline void setSize(const QSize &size)
         { if(_size!=size){_size = size; updateBoundingRect(); } }
