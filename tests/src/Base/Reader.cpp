@@ -244,6 +244,8 @@ TEST_F(ReaderTest, readNextStartElement)
     EXPECT_STREQ(Reader()->getAttribute("attr"), "2");
     Reader()->readEndElement("node2");
     EXPECT_TRUE(Reader()->isEndOfElement());
+    Reader()->readEndElement("document");
+    EXPECT_TRUE(Reader()->isEndOfDocument());
 }
 
 TEST_F(ReaderTest, readNextStartEndElement)
@@ -268,6 +270,8 @@ TEST_F(ReaderTest, readNextStartEndElement)
     EXPECT_TRUE(Reader()->readNextElement());
     EXPECT_STREQ(Reader()->localName(), "node2");
     EXPECT_STREQ(Reader()->getAttribute("attr"), "2");
+    EXPECT_FALSE(Reader()->readNextElement());
+    EXPECT_TRUE(Reader()->isEndOfDocument());
 }
 
 TEST_F(ReaderTest, charStreamBase64Encoded)
