@@ -27,6 +27,7 @@
 # include <QApplication>
 # include <QComboBox>
 # include <QDockWidget>
+# include <QFile>
 # include <QGraphicsView>
 # include <QHeaderView>
 # include <QKeyEvent>
@@ -1894,10 +1895,17 @@ void OverlayManager::Private::interceptEvent(QWidget *widget, QEvent *ev)
     case QEvent::MouseMove:
     case QEvent::MouseButtonDblClick: {
         auto me = static_cast<QMouseEvent*>(ev);
-        lastIntercept = getChildAt(widget, me->globalPos());
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
+        QPointF screenPos = me->screenPos();
+        QPoint point = me->globalPos();
+#else
+        QPointF screenPos = me->globalPosition();
+        QPoint point = screenPos.toPoint();
+#endif
+        lastIntercept = getChildAt(widget, point);
         QMouseEvent mouseEvent(ev->type(),
-                            lastIntercept->mapFromGlobal(me->globalPos()),
-                            me->screenPos(),
+                            lastIntercept->mapFromGlobal(point),
+                            screenPos,
                             me->button(),
                             me->buttons(),
                             me->modifiers());

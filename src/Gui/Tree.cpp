@@ -1298,10 +1298,18 @@ int TreeWidget::iconSize() {
     static int defaultSize;
     if (defaultSize == 0) {
         auto tree = instance();
-        if(tree)
+        if(tree) {
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
             defaultSize = tree->viewOptions().decorationSize.width();
-        else
+#else
+            QStyleOptionViewItem opt;
+            tree->initViewItemOption(&opt);
+            defaultSize = opt.decorationSize.width();
+#endif
+        }
+        else {
             defaultSize = QApplication::style()->pixelMetric(QStyle::PM_SmallIconSize);
+        }
     }
     if (treeIconSize() > 0)
         return std::max(10, treeIconSize());
