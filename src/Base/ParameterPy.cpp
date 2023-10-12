@@ -531,7 +531,7 @@ Py::Object ParameterGrpPy::setString(const Py::Tuple& args)
 Py::Object ParameterGrpPy::getString(const Py::Tuple& args)
 {
     char *pstr = nullptr;
-    char *  str="";
+    const char *  str="";
     if (!PyArg_ParseTuple(args.ptr(), "s|s", &pstr,&str))
         throw Py::Exception();
 

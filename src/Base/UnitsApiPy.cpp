@@ -178,7 +178,7 @@ PyObject* UnitsApi::sSchemaTranslate(PyObject * /*self*/, PyObject *args)
 PyObject* UnitsApi::sToNumber(PyObject * /*self*/, PyObject *args)
 {
     double value{};
-    char* format = "g";
+    const char* format = "g";
     int decimals{};
 
     do {
