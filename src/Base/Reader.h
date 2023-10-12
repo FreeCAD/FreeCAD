@@ -150,6 +150,9 @@ public:
     /// return true if the end of an element is reached, false otherwise
     bool isEndOfElement() const;
 
+    /// return true if the on the start of the document, false otherwise
+    bool isStartOfDocument() const;
+
     /// return true if the end of the document is reached, false otherwise
     bool isEndOfDocument() const;
 
@@ -241,11 +244,6 @@ public:
     bool testStatus(ReaderStatus pos) const;
     /// set the status bits
     void setStatus(ReaderStatus pos, bool on);
-    struct FileEntry {
-        std::string FileName;
-        Base::Persistence *Object;
-    };
-    std::vector<FileEntry> FileList;
 
 protected:
     /// read the next element
@@ -287,7 +285,7 @@ protected:
     void resetErrors() override;
     //@}
 
-
+private:
     int Level{0};
     std::string LocalName;
     std::string Characters;
@@ -316,6 +314,11 @@ protected:
     bool _valid{false};
     bool _verbose{true};
 
+    struct FileEntry {
+        std::string FileName;
+        Base::Persistence *Object;
+    };
+    std::vector<FileEntry> FileList;
     std::vector<std::string> FileNames;
 
     std::bitset<32> StatusBits;

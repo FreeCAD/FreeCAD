@@ -228,6 +228,7 @@ TEST_F(ReaderTest, readNextStartElement)
     givenDataAsXMLStream(xmlBody);
 
     // start of document
+    EXPECT_TRUE(Reader()->isStartOfDocument());
     Reader()->readElement("document");
     EXPECT_STREQ(Reader()->localName(), "document");
 
@@ -258,6 +259,7 @@ TEST_F(ReaderTest, readNextStartEndElement)
     givenDataAsXMLStream(xmlBody);
 
     // start of document
+    EXPECT_TRUE(Reader()->isStartOfDocument());
     Reader()->readElement("document");
     EXPECT_STREQ(Reader()->localName(), "document");
 
