@@ -215,7 +215,11 @@ void OverlayProxyWidget::onTimer()
     hitTest(QCursor::pos(), false);
 }
 
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
 void OverlayProxyWidget::enterEvent(QEvent *)
+#else
+void OverlayProxyWidget::enterEvent(QEnterEvent *)
+#endif
 {
     if(!owner->count())
         return;
@@ -1017,7 +1021,11 @@ void OverlayTabWidget::leaveEvent(QEvent*)
     OverlayManager::instance()->refresh();
 }
 
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
 void OverlayTabWidget::enterEvent(QEvent*)
+#else
+void OverlayTabWidget::enterEvent(QEnterEvent*)
+#endif
 {
     revealTime = QTime();
     OverlayManager::instance()->refresh();
@@ -1890,7 +1898,14 @@ void OverlayTitleBar::mouseMoveEvent(QMouseEvent *me)
         endDrag();
         return;
     }
-    OverlayManager::instance()->dragDockWidget(me->globalPos(),
+
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
+    QPoint point = me->globalPos();
+#else
+    QPoint point = me->globalPosition().toPoint();
+#endif
+
+    OverlayManager::instance()->dragDockWidget(point,
                                                parentWidget(),
                                                dragOffset,
                                                dragSize);
@@ -1954,8 +1969,14 @@ void OverlayTitleBar::mouseReleaseEvent(QMouseEvent *me)
     if (me->button() != Qt::LeftButton)
         return;
 
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
+    QPoint point = me->globalPos();
+#else
+    QPoint point = me->globalPosition().toPoint();
+#endif
+
     OverlayTabWidget::_Dragging = nullptr;
-    OverlayManager::instance()->dragDockWidget(me->globalPos(), 
+    OverlayManager::instance()->dragDockWidget(point,
                                                parentWidget(),
                                                dragOffset,
                                                dragSize,
@@ -2029,8 +2050,15 @@ void OverlaySizeGrip::paintEvent(QPaintEvent*)
 
 void OverlaySizeGrip::mouseMoveEvent(QMouseEvent *me)
 {
-    if ((me->buttons() & Qt::LeftButton))
-        Q_EMIT dragMove(me->globalPos());
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
+    QPoint point = me->globalPos();
+#else
+    QPoint point = me->globalPosition().toPoint();
+#endif
+
+    if ((me->buttons() & Qt::LeftButton)) {
+        Q_EMIT dragMove(point);
+    }
 }
 
 void OverlaySizeGrip::mousePressEvent(QMouseEvent *)
@@ -2091,7 +2119,11 @@ void OverlaySplitterHandle::showEvent(QShowEvent *ev)
     QSplitterHandle::showEvent(ev);
 }
 
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
 void OverlaySplitterHandle::enterEvent(QEvent *ev)
+#else
+void OverlaySplitterHandle::enterEvent(QEnterEvent *ev)
+#endif
 {
     timer.stop();
     QSplitterHandle::enterEvent(ev);
@@ -2262,6 +2294,12 @@ void OverlaySplitterHandle::mouseMoveEvent(QMouseEvent *me)
         return;
     }
 
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
+    QPoint point = me->globalPos();
+#else
+    QPoint point = me->globalPosition().toPoint();
+#endif
+
     if (dragging == 1) {
         OverlayTabWidget *overlay = qobject_cast<OverlayTabWidget*>(
                 splitter()->parentWidget());
@@ -2283,14 +2321,14 @@ void OverlaySplitterHandle::mouseMoveEvent(QMouseEvent *me)
             }
         }
         if (dragging == 1) {
-            QPoint offset = parentWidget()->mapFromGlobal(me->globalPos()) - dragOffset;
+            QPoint offset = parentWidget()->mapFromGlobal(point) - dragOffset;
             moveSplitter(this->orientation() == Qt::Horizontal ? offset.x() : offset.y());
             return;
         }
         setCursor(Qt::ClosedHandCursor);
     }
 
-    OverlayManager::instance()->dragDockWidget(me->globalPos(),
+    OverlayManager::instance()->dragDockWidget(point,
                                                dockWidget(),
                                                dragOffset,
                                                dragSize);
@@ -2329,11 +2367,18 @@ void OverlaySplitterHandle::mouseReleaseEvent(QMouseEvent *me)
         return;
     }
     endDrag();
-    OverlayManager::instance()->dragDockWidget(me->globalPos(), 
-                                                dockWidget(),
-                                                dragOffset,
-                                                dragSize,
-                                                true);
+
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
+    QPoint point = me->globalPos();
+#else
+    QPoint point = me->globalPosition().toPoint();
+#endif
+
+    OverlayManager::instance()->dragDockWidget(point,
+                                               dockWidget(),
+                                               dragOffset,
+                                               dragSize,
+                                               true);
     // Warning! the handle itself maybe deleted after return from
     // dragDockWidget().
 }

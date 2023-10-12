@@ -86,7 +86,7 @@ DlgPreferencesImp::DlgPreferencesImp(QWidget* parent, Qt::WindowFlags fl)
     auto ResetGroup = new QLabel(ui->buttonResetGroup);
     ResetGroup->setAlignment(Qt::AlignCenter);
     ResetGroup->setWordWrap(true);
-    ui->buttonResetGroup->layout()->setMargin(0);
+    ui->buttonResetGroup->layout()->setContentsMargins(0, 0, 0, 0);
     ui->buttonResetGroup->layout()->addWidget(ResetGroup);
 
     ui->buttonResetAll->setFixedWidth(Base::clamp<int>(length + 20, 108, 120));

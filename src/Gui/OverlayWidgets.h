@@ -298,8 +298,12 @@ public:
     static QLayoutItem *prepareTitleWidget(QWidget *widget, const QList<QAction*> &actions);
 
 protected:
-    void leaveEvent(QEvent*);
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
     void enterEvent(QEvent*);
+#else
+    void enterEvent(QEnterEvent*);
+#endif
+    void leaveEvent(QEvent*);
     void changeEvent(QEvent*);
     void resizeEvent(QResizeEvent*);
     void paintEvent(QPaintEvent *);
@@ -486,8 +490,12 @@ public:
     void endDrag();
 
 protected:
-    virtual void showEvent(QShowEvent *);
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
     virtual void enterEvent(QEvent *);
+#else
+    virtual void enterEvent(QEnterEvent *);
+#endif
+    virtual void showEvent(QShowEvent *);
     virtual void leaveEvent(QEvent *);
     virtual void paintEvent(QPaintEvent*);
     virtual void changeEvent(QEvent*);
@@ -567,7 +575,11 @@ public:
     void onMousePress();
 
 protected:
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
     void enterEvent(QEvent*);
+#else
+    void enterEvent(QEnterEvent*);
+#endif
     void hideEvent(QHideEvent*);
     void paintEvent(QPaintEvent*);
 
