@@ -36,6 +36,7 @@ YZ, and XZ planes.
 
 import math
 import lazy_loader.lazy_loader as lz
+from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD
 import DraftVecUtils
@@ -550,21 +551,21 @@ class PlaneBase:
                                                      force_projection)
 
     def set_to_top(self, offset=0):
-        """Sets the WP to the top position with an optional offset."""
+        """Set the WP to the top position with an optional offset."""
         self.u = Vector(1, 0, 0)
         self.v = Vector(0, 1, 0)
         self.axis = Vector(0, 0, 1)
         self.position = self.axis * offset
 
     def set_to_front(self, offset=0):
-        """Sets the WP to the front position with an optional offset."""
+        """Set the WP to the front position with an optional offset."""
         self.u = Vector(1, 0, 0)
         self.v = Vector(0, 0, 1)
         self.axis = Vector(0, -1, 0)
         self.position = self.axis * offset
 
     def set_to_side(self, offset=0):
-        """Sets the WP to the right side position with an optional offset."""
+        """Set the WP to the right side position with an optional offset."""
         self.u = Vector(0, 1, 0)
         self.v = Vector(0, 0, 1)
         self.axis = Vector(1, 0, 0)
@@ -616,15 +617,16 @@ class Plane(PlaneBase):
         Defaults to Vector(0, 0, 0).
         Vector for the `position` attribute (origin).
 
+    weak: bool, optional
+        Defaults to `True`.
+        If `True` the WP is in "Auto" mode and will adapt to the current view.
+
     Note that the u, v and w vectors are not checked for validity.
 
     Other attributes
     ----------------
-    weak: bool
-        A weak WP is in "Auto" mode and will adapt to the current view.
-
     stored: None/list
-        A placeholder for a stored state.
+        Placeholder for a stored state.
     """
 
     def __init__(self,
@@ -932,7 +934,7 @@ class Plane(PlaneBase):
         self.weak = True
 
     def setTop(self):
-        """Sets the WP to the top position and updates the GUI."""
+        """Set the WP to the top position and updates the GUI."""
         super().set_to_top()
         self.weak = False
         if FreeCAD.GuiUp:
@@ -943,7 +945,7 @@ class Plane(PlaneBase):
                 FreeCADGui.draftToolBar.wplabel.setText(translate("draft", "Top"))
 
     def setFront(self):
-        """Sets the WP to the front position and updates the GUI."""
+        """Set the WP to the front position and updates the GUI."""
         super().set_to_front()
         self.weak = False
         if FreeCAD.GuiUp:
@@ -954,7 +956,7 @@ class Plane(PlaneBase):
                 FreeCADGui.draftToolBar.wplabel.setText(translate("draft", "Front"))
 
     def setSide(self):
-        """Sets the WP to the left side position and updates the GUI.
+        """Set the WP to the left side position and updates the GUI.
 
         Note that set_to_side from the parent class sets the WP to the right side position.
         Which matches the Side option from Draft_SelectPlane.
@@ -1130,6 +1132,623 @@ class Plane(PlaneBase):
                 "weak"]
 
 plane = Plane
+
+
+class PlaneGui(PlaneBase):
+    """The PlaneGui class.
+    The class handles several GUI related aspects of the WP including a history.
+
+    Parameters
+    ----------
+    u: Base.Vector or WorkingPlane.Plane, optional
+        Defaults to Vector(1, 0, 0).
+        If a WP is provided:
+            A copy of the WP is created, all other parameters are then ignored.
+        If a vector is provided:
+            Unit vector for the `u` attribute (+X axis).
+
+    v: Base.Vector, optional
+        Defaults to Vector(0, 1, 0).
+        Unit vector for the `v` attribute (+Y axis).
+
+    w: Base.Vector, optional
+        Defaults to Vector(0, 0, 1).
+        Unit vector for the `axis` attribute (+Z axis).
+
+    pos: Base.Vector, optional
+        Defaults to Vector(0, 0, 0).
+        Vector for the `position` attribute (origin).
+
+    auto: bool, optional
+        Defaults to `True`.
+        If `True` the WP is in "Auto" mode and will adapt to the current view.
+
+    icon: str, optional
+        Defaults to ":/icons/view-axonometric.svg".
+        Path to the icon for the draftToolBar.
+
+    label: str, optional
+        Defaults to "Auto".
+        Label for the draftToolBar.
+
+    tip: str, optional
+        Defaults to "Current working plane: Auto".
+        Tooltip for the draftToolBar.
+
+    Note that the u, v and w vectors are not checked for validity.
+
+    Other attributes
+    ----------------
+    _view: Gui::View3DInventor
+        Reference to a 3D view.
+
+    _stored: dict
+        Dictionary for a temporary stored state.
+
+    _history: dict
+        Dictionary that holds up to 10 stored states.
+    """
+
+    def __init__(self,
+                 u=Vector(1, 0, 0), v=Vector(0, 1, 0), w=Vector(0, 0, 1),
+                 pos=Vector(0, 0, 0),
+                 auto=True,
+                 icon=":/icons/view-axonometric.svg",
+                 label=QT_TRANSLATE_NOOP("draft", "Auto"),
+                 tip=QT_TRANSLATE_NOOP("draft", "Current working plane:") + " " + QT_TRANSLATE_NOOP("draft", "Auto")):
+
+        if isinstance(u, PlaneGui):
+            self.match(u)
+        else:
+            super().__init__(u, v, w, pos)
+            self.auto = auto
+            self.icon = icon
+            self.label = label
+            self.tip = tip
+        self._view = None
+        self._stored = {}
+        self._history = {}
+
+    def copy(self):
+        """Return a new plane that is a copy of the present object."""
+        wp = PlaneGui()
+        self.match(source=self, target=wp)
+        return wp
+
+    def _save(self):
+        """Store the WP attributes."""
+        self._stored = self.get_parameters()
+
+    def _restore(self):
+        """Restore the WP attributes that were saved."""
+        if self._stored:
+            self.set_parameters(self._stored)
+            self._stored = {}
+            self._update_all(hist_add=False)
+
+    def align_to_selection(self, offset=0, hist_add=True):
+        """Align the WP to a selection with an optional offset.
+
+        The selection must define a plane.
+
+        Parameter
+        ---------
+        offset: float, optional
+            Defaults to zero.
+            Offset along the WP `axis`
+
+        Returns
+        -------
+        `True`/`False`
+            `True` if successful.
+        """
+        if not FreeCAD.GuiUp:
+            return False
+
+        sels = FreeCADGui.Selection.getSelectionEx("", 0)
+        if not sels:
+            return False
+
+        objs = []
+        for sel in sels:
+            for sub in sel.SubElementNames if sel.SubElementNames else [""]:
+                objs.append(Part.getShape(sel.Object, sub, needSubElement=True, retType=1))
+
+        if len(objs) != 1:
+            if all([obj[0].isNull() is False and obj[0].ShapeType in ["Edge", "Vertex"] for obj in objs]):
+                ret = self.align_to_edges_vertexes([obj[0] for obj in objs], offset, hist_add)
+            else:
+                ret = False
+
+            if ret is False:
+                _wrn(translate("draft", "Selected shapes do not define a plane"))
+            return ret
+
+        shape, mtx, obj = objs[0]
+        place = FreeCAD.Placement(mtx)
+
+        if utils.get_type(obj) in ["App::Part",
+                                   "PartDesign::Plane",
+                                   "Axis",
+                                   "SectionPlane"]:
+            ret = self.align_to_obj_placement(obj, offset, place, hist_add)
+        elif utils.get_type(obj) in ["WorkingPlaneProxy", "BuildingPart"]:
+            ret = self.align_to_wp_proxy(obj, offset, place, hist_add)
+        elif shape.isNull():
+            ret = self.align_to_obj_placement(obj, offset, place, hist_add)
+        elif shape.ShapeType == "Face":
+            ret = self.align_to_face(shape, offset, hist_add)
+        elif shape.ShapeType == "Edge":
+            ret = self.align_to_edge_or_wire(shape, offset, hist_add)
+        elif shape.Solids:
+            ret = self.align_to_obj_placement(obj, offset, place, hist_add)
+        else:
+            ret = self.align_to_edges_vertexes(shape.Vertexes, offset, hist_add)
+
+        if ret is False:
+            _wrn(translate("draft", "Selected shapes do not define a plane"))
+        return ret
+
+    def _handle_custom(self, hist_add):
+        self.auto = False
+        self.icon = ":/icons/Draft_SelectPlane.svg"
+        self.label = self._get_label(translate("draft", "Custom"))
+        self.tip = self._get_tip(translate("draft", "Custom"))
+        self._update_all(hist_add)
+
+    def align_to_3_points(self, p1, p2, p3, offset=0, hist_add=True):
+        """See PlaneBase.align_to_3_points."""
+        if super().align_to_3_points(p1, p2, p3, offset) is False:
+            return False
+        self._handle_custom(hist_add)
+        return True
+
+    def align_to_edges_vertexes(self, shapes, offset=0, hist_add=True):
+        """See PlaneBase.align_to_edges_vertexes."""
+        if super().align_to_edges_vertexes(shapes, offset) is False:
+            return False
+        self._handle_custom(hist_add)
+        return True
+
+    def align_to_edge_or_wire(self, shape, offset=0, hist_add=True):
+        """See PlaneBase.align_to_edge_or_wire."""
+        if super().align_to_edge_or_wire(shape, offset) is False:
+            return False
+        self._handle_custom(hist_add)
+        return True
+
+    def align_to_face(self, shape, offset=0, hist_add=True):
+        """See PlaneBase.align_to_face."""
+        if super().align_to_face(shape, offset) is False:
+            return False
+        self._handle_custom(hist_add)
+        return True
+
+    def align_to_placement(self, place, offset=0, hist_add=True):
+        """See PlaneBase.align_to_placement."""
+        super().align_to_placement(place, offset)
+        self._handle_custom(hist_add)
+        return True
+
+    def align_to_point_and_axis(self, point, axis, offset=0, upvec=Vector(1, 0, 0), hist_add=True):
+        """See PlaneBase.align_to_point_and_axis."""
+        if super().align_to_point_and_axis(point, axis, offset, upvec) is False:
+            return False
+        self._handle_custom(hist_add)
+        return True
+
+    def align_to_obj_placement(self, obj, offset=0, place=None, hist_add=True):
+        """Align the WP to an object placement with an optional offset.
+
+        Parameters
+        ----------
+        obj: App::DocumentObject
+            Object to derive the Placement (if place is `None`), the icon and
+            the label from.
+        offset: float, optional
+            Defaults to zero.
+            Offset along the WP `axis`.
+        place: Base.Placement, optional
+            Defaults to `None`.
+            If `None` the Placement from obj is used.
+            Argument to be used if obj is inside a container.
+
+        Returns
+        -------
+        `True`/`False`
+            `True` if successful.
+        """
+        if hasattr(obj, "Placement") is False:
+            return False
+        if place is None:
+            place = obj.Placement
+        super().align_to_placement(place, offset)
+        self.auto = False
+        if utils.get_type(obj) == "WorkingPlaneProxy":
+            self.icon = ":/icons/Draft_PlaneProxy.svg"
+        elif FreeCAD.GuiUp \
+                and hasattr(obj, "ViewObject") \
+                and hasattr(obj.ViewObject, "Proxy") \
+                and hasattr(obj.ViewObject.Proxy, "getIcon"):
+            self.icon = obj.ViewObject.Proxy.getIcon()
+        else:
+            self.icon = ":/icons/Std_Placement.svg"
+        self.label = self._get_label(obj.Label)
+        self.tip = self._get_tip(obj.Label)
+        self._update_all(hist_add)
+        return True
+
+    def align_to_wp_proxy(self, obj, offset=0, place=None, hist_add=True):
+        """Align the WP to a WPProxy with an optional offset.
+
+        See align_to_obj_placement.
+
+        Also handles several WPProxy related features.
+        """
+        if self.align_to_obj_placement(obj, offset, place, hist_add) is False:
+            return False
+
+        if not FreeCAD.GuiUp:
+            return True
+
+        vobj = obj.ViewObject
+
+        if hasattr(vobj, "AutoWorkingPlane") \
+                and vobj.AutoWorkingPlane is True:
+            self.auto = True
+
+        if hasattr(vobj, "CutView") \
+                and hasattr(vobj, "AutoCutView") \
+                and vobj.AutoCutView is True:
+            vobj.CutView = True
+
+        if hasattr(vobj, "RestoreView") \
+                and vobj.RestoreView is True \
+                and hasattr(vobj, "ViewData") \
+                and len(vobj.ViewData) >= 12:
+            vdat = vobj.ViewData
+            if self._view is not None:
+                try:
+                    if len(vdat) == 13 and vdat[12] == 1:
+                        camtype = "Perspective"
+                    else:
+                        camtype = "Orthographic"
+                    if self._view.getCameraType() != camtype:
+                        self._view.setCameraType(camtype)
+
+                    cam = self._view.getCameraNode()
+                    cam.position.setValue([vdat[0], vdat[1], vdat[2]])
+                    cam.orientation.setValue([vdat[3], vdat[4], vdat[5], vdat[6]])
+                    cam.nearDistance.setValue(vdat[7])
+                    cam.farDistance.setValue(vdat[8])
+                    cam.aspectRatio.setValue(vdat[9])
+                    cam.focalDistance.setValue(vdat[10])
+                    if camtype == "Orthographic":
+                        cam.height.setValue(vdat[11])
+                    else:
+                        cam.heightAngle.setValue(vdat[11])
+                except Exception:
+                    pass
+
+        if hasattr(vobj, "RestoreState") \
+                and vobj.RestoreState is True \
+                and hasattr(vobj, "VisibilityMap") \
+                and vobj.VisibilityMap:
+            for name, vis in vobj.VisibilityMap.items():
+                obj = FreeCADGui.ActiveDocument.getObject(name)
+                if obj:
+                    obj.Visibility = (vis == "True")
+
+        return True
+
+    def auto_align(self):
+        """Align the WP to the current view if self.auto is True."""
+        if self.auto and self._view is not None:
+            try:
+                cam = self._view.getCameraNode()
+                rot = FreeCAD.Rotation(*cam.getField("orientation").getValue().getValue())
+                self.u, self.v, self.axis = self._axes_from_view_rotation(rot)
+                self.position = Vector()
+            except Exception:
+                pass
+
+    def set_to_default(self):
+        """Set the WP to the default from the preferences."""
+        default_wp = utils.get_param("defaultWP", 0)
+        if default_wp == 0:
+            self.set_to_auto()
+        elif default_wp == 1:
+            self.set_to_top()
+        elif default_wp == 2:
+            self.set_to_front()
+        elif default_wp == 3:
+            self.set_to_side()
+
+    def set_to_auto(self): # Similar to Plane.reset.
+        """Set the WP to auto."""
+        self.auto = True
+        self.icon = ":/icons/view-axonometric.svg"
+        self.label = self._get_label(translate("draft", "Auto"))
+        self.tip = self._get_tip(translate("draft", "Auto"))
+        self._update_all()
+
+    def set_to_top(self, offset=0, center_on_view=False):
+        """Set the WP to the top position with an optional offset.
+
+        Parameters
+        ----------
+        offset: float, optional
+            Defaults to zero.
+            Offset along the WP `axis`.
+        center_on_view: bool, optional
+            Defaults to `False`.
+            If `True` the WP `position` is moved along the (offset) WP to the
+            center of the view
+        """
+        super().set_to_top(offset)
+        if center_on_view:
+            self._center_on_view()
+        self.auto = False
+        self.icon = ":/icons/view-top.svg"
+        self.label = self._get_label(translate("draft", "Top"))
+        self.tip = self._get_tip(translate("draft", "Top"))
+        self._update_all()
+
+    def set_to_front(self, offset=0, center_on_view=False):
+        """Set the WP to the front position with an optional offset.
+
+        Parameters
+        ----------
+        offset: float, optional
+            Defaults to zero.
+            Offset along the WP `axis`.
+        center_on_view: bool, optional
+            Defaults to `False`.
+            If `True` the WP `position` is moved along the (offset) WP to the
+            center of the view
+        """
+        super().set_to_front(offset)
+        if center_on_view:
+            self._center_on_view()
+        self.auto = False
+        self.icon = ":/icons/view-front.svg"
+        self.label = self._get_label(translate("draft", "Front"))
+        self.tip = self._get_tip(translate("draft", "Front"))
+        self._update_all()
+
+    def set_to_side(self, offset=0, center_on_view=False):
+        """Set the WP to the right side position with an optional offset.
+
+        Parameters
+        ----------
+        offset: float, optional
+            Defaults to zero.
+            Offset along the WP `axis`.
+        center_on_view: bool, optional
+            Defaults to `False`.
+            If `True` the WP `position` is moved along the (offset) WP to the
+            center of the view
+        """
+        super().set_to_side(offset)
+        if center_on_view:
+            self._center_on_view()
+        self.auto = False
+        self.icon = ":/icons/view-right.svg"
+        self.label = self._get_label(translate("draft", "Side"))
+        self.tip = self._get_tip(translate("draft", "Side"))
+        self._update_all()
+
+    def set_to_view(self, offset=0, center_on_view=False):
+        """Align the WP to the view with an optional offset.
+
+        Parameters
+        ----------
+        offset: float, optional
+            Defaults to zero.
+            Offset along the WP `axis`.
+        center_on_view: bool, optional
+            Defaults to `False`.
+            If `True` the WP `position` is moved along the (offset) WP to the
+            center of the view
+        """
+        if self._view is not None:
+            try:
+                cam = self._view.getCameraNode()
+                rot = FreeCAD.Rotation(*cam.getField("orientation").getValue().getValue())
+                self.u, self.v, self.axis = self._axes_from_view_rotation(rot)
+                self.position = self.axis * offset
+                if center_on_view:
+                    self._center_on_view()
+                self.auto = False
+                self.icon = ":/icons/Draft_SelectPlane.svg"
+                self.label = self._get_label(translate("draft", "Custom"))
+                self.tip = self._get_tip(translate("draft", "Custom"))
+                self._update_all()
+            except Exception:
+                pass
+
+    def set_to_position(self, pos):
+        """Set the `position` of the WP."""
+        self.position = pos
+        label = self.label.rstrip("*")
+        self.label = self._get_label(label)
+        self.tip = self._get_tip(label)
+        self._update_all()
+
+    def center_on_view(self):
+        """Move the WP `position` along the WP to the center of the view."""
+        self._center_on_view()
+        label = self.label.rstrip("*")
+        self.label = self._get_label(label)
+        self.tip = self._get_tip(label)
+        self._update_all()
+
+    def _center_on_view(self):
+        if self._view is not None:
+            try:
+                cam = self._view.getCameraNode()
+                pos = self.project_point(Vector(cam.position.getValue().getValue()),
+                                         direction=self._view.getViewDirection(),
+                                         force_projection=False)
+                if pos is not None:
+                    self.position = pos
+            except Exception:
+                pass
+
+    def align_view(self):
+        """Align the view to the WP."""
+        if self._view is not None:
+            try:
+                param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View")
+                default_cam_dist = abs(param.GetFloat("NewDocumentCameraScale", 100.0))
+                cam = self._view.getCameraNode()
+                cur_cam_dist = abs(self.get_local_coords(Vector(cam.position.getValue().getValue())).z)
+                cam_dist = max(default_cam_dist, cur_cam_dist)
+                cam.position.setValue(self.position + DraftVecUtils.scaleTo(self.axis, cam_dist))
+                cam.orientation.setValue(self.get_placement().Rotation.Q)
+            except Exception:
+                pass
+
+    def _previous(self):
+        idx = self._history["idx"]
+        if idx == 0:
+            _wrn(translate("draft", "No previous working plane"))
+            return
+        idx -= 1
+        self.set_parameters(self._history["data"][idx])
+        self._history["idx"] = idx
+        self._update_all(hist_add=False)
+
+    def _next(self):
+        idx = self._history["idx"]
+        if idx == len(self._history["data"]) - 1:
+            _wrn(translate("draft", "No next working plane"))
+            return
+        idx += 1
+        self.set_parameters(self._history["data"][idx])
+        self._history["idx"] = idx
+        self._update_all(hist_add=False)
+
+    def _has_previous(self):
+        return bool(self._history) and self._history["idx"] != 0
+
+    def _has_next(self):
+        return bool(self._history) and self._history["idx"] != len(self._history["data"]) - 1
+
+    def _get_prop_list(self):
+        return ["u",
+                "v",
+                "axis",
+                "position",
+                "auto",
+                "icon",
+                "label",
+                "tip"]
+
+    def _get_label(self, label):
+        if self.auto or self.position.isEqual(Vector(), 0):
+            return label
+        else:
+            return label + "*"
+
+    def _get_tip(self, label):
+        tip = translate("draft", "Current working plane:")
+        tip += " " + label
+        if self.auto:
+            return tip
+        tip += "\n" + translate("draft", "Axes:")
+        tip += "\n    X = "
+        tip += self._format_vector(self.u)
+        tip += "\n    Y = "
+        tip += self._format_vector(self.v)
+        tip += "\n    Z = "
+        tip += self._format_vector(self.axis)
+        tip += "\n" + translate("draft", "Position:")
+        tip += "\n    X = "
+        tip += self._format_coord(self.position.x)
+        tip += "\n    Y = "
+        tip += self._format_coord(self.position.y)
+        tip += "\n    Z = "
+        tip += self._format_coord(self.position.z)
+        return tip
+
+    def _format_coord(self, coord):
+        return FreeCAD.Units.Quantity(coord, FreeCAD.Units.Length).UserString
+
+    def _format_vector(self, vec):
+        dec = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals", 2)
+        return f"({vec.x:.{dec}f}  {vec.y:.{dec}f}  {vec.z:.{dec}f})"
+
+    def _update_all(self, hist_add=True):
+        # Update the old DraftWorkingPlane for compatiblity:
+        if not hasattr(FreeCAD, "DraftWorkingPlane"):
+            FreeCAD.DraftWorkingPlane = Plane()
+        for prop in ["u", "v", "axis", "position"]:
+            setattr(FreeCAD.DraftWorkingPlane,
+                    prop,
+                    self._copy_value(getattr(self, prop)))
+        FreeCAD.DraftWorkingPlane.weak = self.auto
+
+        if hist_add is True and self.auto is False:
+            self._update_history()
+        self._update_grid()
+        self._update_gui()
+
+    def _update_history(self):
+        if not self._history:
+            self._history = {"idx": 0,
+                             "data": [self.get_parameters()]}
+            return
+
+        max_len = 10  # Max. length of data.
+        idx = self._history["idx"]
+        self._history["data"] = self._history["data"][(idx - (max_len - 2)):(idx + 1)]
+        self._history["data"].append(self.get_parameters())
+        self._history["idx"] = len(self._history["data"]) - 1
+
+    def _update_grid(self):
+        if FreeCAD.GuiUp:
+            if hasattr(FreeCADGui, "Snapper"):
+                FreeCADGui.Snapper.setGrid()
+                FreeCADGui.Snapper.restack() # Required??
+
+    def _update_gui(self):
+        if FreeCAD.GuiUp:
+            if hasattr(FreeCADGui, "draftToolBar"):
+                from PySide import QtGui
+                button = FreeCADGui.draftToolBar.wplabel
+                button.setIcon(QtGui.QIcon(self.icon))
+                button.setText(self.label)
+                button.setToolTip(self.tip)
+
+
+def get_working_plane(update=True):
+
+    if not hasattr(FreeCAD, "draft_working_planes"):
+        FreeCAD.draft_working_planes = [[], []]
+
+    view = gui_utils.get_3d_view()
+
+    if view is not None and view in FreeCAD.draft_working_planes[0]:
+        i = FreeCAD.draft_working_planes[0].index(view)
+        wp = FreeCAD.draft_working_planes[1][i]
+        if update is False:
+            return wp
+        wp.auto_align()
+        wp._update_all(hist_add=False)
+        return wp
+    elif update is False:
+        return None
+
+    wp = PlaneGui()
+    wp._view = view
+    wp.set_to_default()
+
+    if view is not None:
+        FreeCAD.draft_working_planes[0].append(view)
+        FreeCAD.draft_working_planes[1].append(wp)
+
+    return wp
 
 
 # Compatibility function (V0.22, 2023):
