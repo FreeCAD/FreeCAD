@@ -934,7 +934,7 @@ void QGIViewPart::dumpPath(const char* text, QPainterPath path)
 {
     QPainterPath::Element elem;
     Base::Console().Message(">>>%s has %d elements\n", text, path.elementCount());
-    char* typeName;
+    const char* typeName;
     for (int iElem = 0; iElem < path.elementCount(); iElem++) {
         elem = path.elementAt(iElem);
         if (elem.isMoveTo()) {
