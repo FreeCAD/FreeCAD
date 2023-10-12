@@ -103,6 +103,5 @@ QSint--ActionGroup QFrame[class="content"] {
 }
 
 QAbstractItemView {
-  background-color: rgb(108, 132, 2);
   alternate-background-color: #313131;
 }
