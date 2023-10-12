@@ -31,7 +31,6 @@
 #include "QuantityPy.h"
 #include "MatrixPy.h"
 #include "MatrixPy.cpp"
-#include <E57Format.h>
 
 
 using namespace Base;
