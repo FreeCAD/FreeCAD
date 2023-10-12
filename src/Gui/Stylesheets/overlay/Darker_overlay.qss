@@ -3,6 +3,12 @@ To customize for each overlay docking site, use the following selector
 
 Gui--OverlayTabWidget#OverlayLeft {}
 */
+/*
+* {
+  color: #f0f0f0;
+  alternate-background-color: rgba(255, 179, 0, 0.607);
+  background-color: rgba(0, 255, 132, 0.607);
+}*/
 
 Gui--OverlayTabWidget {
   qproperty-effectColor: rgba(42, 42, 42, 0.278);
@@ -91,4 +97,12 @@ Gui--OverlayTitleBar {
 QScrollArea#ClippingScrollArea,
 QWidget#ClippingScrollAreaContents {
   background-color: #750000;
+}
+QSint--ActionGroup QFrame[class="content"] {
+  background-color: #444444; /* Task Panel background color */
+}
+
+QAbstractItemView {
+  background-color: rgb(108, 132, 2);
+  alternate-background-color: #313131;
 }
