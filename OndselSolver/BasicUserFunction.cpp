@@ -14,6 +14,7 @@ using namespace MbD;
 
 MbD::BasicUserFunction::BasicUserFunction(const std::string& expression, double myUnt) : funcText(expression), myUnit(myUnt)
 {
+	units = std::make_shared<Units>();
 }
 
 void MbD::BasicUserFunction::initialize()

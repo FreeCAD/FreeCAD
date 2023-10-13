@@ -43,6 +43,11 @@
 
 using namespace MbD;
 
+MbD::ASMTAssembly::ASMTAssembly() : ASMTSpatialContainer()
+{
+	times = std::make_shared<FullRow<double>>();
+}
+
 void MbD::ASMTAssembly::runSinglePendulumSuperSimplified()
 {
 	//In this version we skip declaration of variables that don't need as they use default values.
@@ -82,6 +87,64 @@ void MbD::ASMTAssembly::runSinglePendulumSuperSimplified()
 	assembly->runKINEMATIC();
 }
 
+void MbD::ASMTAssembly::runSinglePendulumSuperSimplified2()
+{
+	//In this version we skip declaration of variables that don't need as they use default values.
+	auto assembly = CREATE<ASMTAssembly>::With();
+	assembly->setName("OndselAssembly");
+
+	auto mkr = CREATE<ASMTMarker>::With();
+	mkr->setName("marker1");
+	assembly->addMarker(mkr);
+
+	auto part = CREATE<ASMTPart>::With();
+	part->setName("part1");
+	assembly->addPart(part);
+
+	auto marker1 = CREATE<ASMTMarker>::With();
+	marker1->setName("FixingMarker");
+	part->addMarker(marker1);
+
+	auto marker2 = CREATE<ASMTMarker>::With();
+	marker2->setName("marker2");
+	marker2->setPosition3D(20.0, 10.0, 0.0);
+	part->addMarker(marker2);
+
+	auto part2 = CREATE<ASMTPart>::With();
+	part2->setName("part2");
+	part2->setPosition3D(20.0, 10.0, 0.0);
+	assembly->addPart(part2);
+
+	auto marker3 = CREATE<ASMTMarker>::With();
+	marker3->setName("marker2");
+	marker3->setPosition3D(50.0, 10.0, 0.0);
+	part2->addMarker(marker3);
+
+	/*Ground joint*/
+	auto joint = CREATE<ASMTFixedJoint>::With();
+	joint->setName("Joint1");
+	joint->setMarkerI("/OndselAssembly/marker1");
+	joint->setMarkerJ("/OndselAssembly/part1/FixingMarker");
+	assembly->addJoint(joint);
+
+	auto joint2 = CREATE<ASMTRevoluteJoint>::With();
+	joint2->setName("Joint2");
+	joint2->setMarkerI("/OndselAssembly/part1/marker2");
+	joint2->setMarkerJ("/OndselAssembly/part2/marker2");
+	assembly->addJoint(joint2);
+
+	auto simulationParameters = CREATE<ASMTSimulationParameters>::With();
+	simulationParameters->settstart(0.0);
+	simulationParameters->settend(0.0);	//tstart == tend Initial Conditions only.
+	simulationParameters->sethmin(1.0e-9);
+	simulationParameters->sethmax(1.0);
+	simulationParameters->sethout(0.04);
+	simulationParameters->seterrorTol(1.0e-6);
+	assembly->setSimulationParameters(simulationParameters);
+
+	assembly->runKINEMATIC();
+}
+
 void MbD::ASMTAssembly::runSinglePendulumSimplified()
 {
 	auto assembly = CREATE<ASMTAssembly>::With();
@@ -96,7 +159,7 @@ void MbD::ASMTAssembly::runSinglePendulumSimplified()
 	assembly->setVelocity3D(0, 0, 0);
 	assembly->setOmega3D(0, 0, 0);
 
-	auto massMarker = CREATE<ASMTPrincipalMassMarker>::With();
+	auto massMarker = std::make_shared<ASMTPrincipalMassMarker>();
 	massMarker->setMass(0.0);
 	massMarker->setDensity(0.0);
 	massMarker->setMomentOfInertias(0, 0, 0);
@@ -110,7 +173,7 @@ void MbD::ASMTAssembly::runSinglePendulumSimplified()
 	auto mkr = CREATE<ASMTMarker>::With();
 	mkr->setName("Marker1");
 	mkr->setPosition3D(0, 0, 0);
-	massMarker->setRotationMatrix(
+	mkr->setRotationMatrix(
 		1, 0, 0,
 		0, 1, 0,
 		0, 0, 1);
@@ -127,7 +190,7 @@ void MbD::ASMTAssembly::runSinglePendulumSimplified()
 	part->setOmega3D(0, 0, 0);
 	assembly->addPart(part);
 
-	massMarker = CREATE<ASMTPrincipalMassMarker>::With();
+	massMarker = std::make_shared<ASMTPrincipalMassMarker>();
 	massMarker->setMass(0.2);
 	massMarker->setDensity(10.0);
 	massMarker->setMomentOfInertias(8.3333333333333e-4, 0.016833333333333, 0.017333333333333);
@@ -195,7 +258,7 @@ void MbD::ASMTAssembly::runSinglePendulum()
 	auto ome3D = std::make_shared<FullColumn<double>>(ListD{ 0, 0, 0 });
 	assembly->setOmega3D(ome3D);
 	//
-	auto massMarker = CREATE<ASMTPrincipalMassMarker>::With();
+	auto massMarker = std::make_shared<ASMTPrincipalMassMarker>();
 	massMarker->setMass(0.0);
 	massMarker->setDensity(0.0);
 	auto aJ = std::make_shared<DiagonalMatrix<double>>(ListD{ 0, 0, 0 });
@@ -220,7 +283,7 @@ void MbD::ASMTAssembly::runSinglePendulum()
 		{ 0, 1, 0 },
 		{ 0, 0, 1 }
 		});
-	massMarker->setRotationMatrix(rotMat);
+	mkr->setRotationMatrix(rotMat);
 	assembly->addMarker(mkr);
 	//
 	auto part = CREATE<ASMTPart>::With();
@@ -240,7 +303,7 @@ void MbD::ASMTAssembly::runSinglePendulum()
 	part->setOmega3D(ome3D);
 	assembly->addPart(part);
 	//
-	massMarker = CREATE<ASMTPrincipalMassMarker>::With();
+	massMarker = std::make_shared<ASMTPrincipalMassMarker>();
 	massMarker->setMass(0.2);
 	massMarker->setDensity(10.0);
 	aJ = std::make_shared<DiagonalMatrix<double>>(ListD{ 8.3333333333333e-4, 0.016833333333333, 0.017333333333333 });
@@ -729,6 +792,7 @@ void MbD::ASMTAssembly::calcCharacteristicDimensions()
 	auto unitLength = this->calcCharacteristicLength();
 	auto unitAngle = 1.0;
 	this->mbdUnits = std::make_shared<Units>(unitTime, unitMass, unitLength, unitAngle);
+	this->mbdUnits = std::make_shared<Units>(1.0, 1.0, 1.0, 1.0);	//for debug
 }
 
 double MbD::ASMTAssembly::calcCharacteristicTime()
@@ -861,31 +925,20 @@ void MbD::ASMTAssembly::solve()
 
 void MbD::ASMTAssembly::runKINEMATIC()
 {
-	auto mbdSystem = CREATE<System>::With();
+	auto mbdSystem = std::make_shared<System>();
 	mbdObject = mbdSystem;
 	mbdSystem->externalSystem->asmtAssembly = this;
 	mbdSystem->runKINEMATIC(mbdSystem);
 }
-//
-//void MbD::ASMTAssembly::initprincipalMassMarker()
-//{
-//	//Choose first refPoint as center of mass
-//	assert(!refPoints->empty());
-//	auto refPoint = refPoints->at(0);
-//	principalMassMarker = CREATE<ASMTPrincipalMassMarker>::With();
-//	principalMassMarker->position3D = refPoint->position3D;
-//	principalMassMarker->rotationMatrix = refPoint->rotationMatrix;
-//}
 
 void MbD::ASMTAssembly::initprincipalMassMarker()
 {
-	principalMassMarker = CREATE<ASMTPrincipalMassMarker>::With();
+	principalMassMarker = std::make_shared<ASMTPrincipalMassMarker>();
 	principalMassMarker->mass = 0.0;
 	principalMassMarker->density = 0.0;
 	principalMassMarker->momentOfInertias = std::make_shared<DiagonalMatrix<double>>(3, 0);
 	//principalMassMarker->position3D = std::make_shared<FullColumn<double>>(3, 0);
-	//principalMassMarker->rotationMatrix = std::make_shared<FullMatrix<double>>(3, 3);
-	//principalMassMarker->rotationMatrix->identity();
+	//principalMassMarker->rotationMatrix = FullMatrix<double>>::identitysptr(3);
 }
 
 std::shared_ptr<ASMTSpatialContainer> MbD::ASMTAssembly::spatialContainerAt(std::shared_ptr<ASMTAssembly> self, std::string& longname)
@@ -961,6 +1014,7 @@ void MbD::ASMTAssembly::updateFromMbD()
 {
 	ASMTSpatialContainer::updateFromMbD();
 	times->push_back(asmtTime->getValue());
+	std::cout << "Time = " << asmtTime->getValue() << std::endl;
 	for (auto& part : *parts) part->updateFromMbD();
 	for (auto& joint : *joints) joint->updateFromMbD();
 	for (auto& motion : *motions) motion->updateFromMbD();
@@ -1014,6 +1068,25 @@ void MbD::ASMTAssembly::setSimulationParameters(std::shared_ptr<ASMTSimulationPa
 {
 	simulationParameters = parameters;
 	parameters->owner = this;
+}
+
+std::shared_ptr<ASMTPart> MbD::ASMTAssembly::partNamed(std::string partName)
+{
+	auto it = std::find_if(parts->begin(), parts->end(), [&](const std::shared_ptr<ASMTPart>& prt) {
+		return prt->fullName("") == partName;
+		});
+	auto& part = *it;
+	return part;
+}
+
+std::shared_ptr<ASMTPart> MbD::ASMTAssembly::partPartialNamed(std::string partialName)
+{
+	auto it = std::find_if(parts->begin(), parts->end(), [&](const std::shared_ptr<ASMTPart>& prt) {
+		auto fullName = prt->fullName("");
+		return fullName.find(partialName) != std::string::npos;
+		});
+	auto part = *it;
+	return part;
 }
 
 

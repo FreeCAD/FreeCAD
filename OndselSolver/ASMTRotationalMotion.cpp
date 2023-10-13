@@ -50,11 +50,11 @@ void MbD::ASMTRotationalMotion::initMarkers()
 void MbD::ASMTRotationalMotion::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits)
 {
 	ASMTMotion::createMbD(mbdSys, mbdUnits);
-	auto parser = CREATE<SymbolicParser>::With();
+	auto parser = std::make_shared<SymbolicParser>();
 	parser->owner = this;
 	auto geoTime = owner->root()->geoTime();
 	parser->variables->insert(std::make_pair("time", geoTime));
-	auto userFunc = CREATE<BasicUserFunction>::With(rotationZ, 1.0);
+	auto userFunc = std::make_shared<BasicUserFunction>(rotationZ, 1.0);
 	parser->parseUserFunction(userFunc);
 	auto geoPhi = parser->stack->top();
 	geoPhi = Symbolic::times(geoPhi, std::make_shared<Constant>(1.0 / mbdUnits->angle));

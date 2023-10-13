@@ -29,12 +29,9 @@ namespace MbD {
 	template<typename T>
 	inline void EulerAngleszxz<T>::initialize()
 	{
-		phiA = std::make_shared<FullMatrix<double>>(3, 3);
-		phiA->identity();
-		theA = std::make_shared<FullMatrix<double>>(3, 3);
-		theA->identity();
-		psiA = std::make_shared<FullMatrix<double>>(3, 3);
-		psiA->identity();
+		phiA = FullMatrix<T>::identitysptr(3);
+		theA = FullMatrix<T>::identitysptr(3);
+		psiA = FullMatrix<T>::identitysptr(3);
 	}
 	template<typename T>
 	inline void EulerAngleszxz<T>::calc()

@@ -12,6 +12,7 @@
 #include <memory>
 
 #include "RowTypeMatrix.h"
+#include "FullColumn.h"
 
 namespace MbD {
 	template<typename T>
@@ -26,6 +27,9 @@ namespace MbD {
 	class FullRow;
 	template<typename T>
 	class EulerParameters;
+	template<typename T>
+	class DiagonalMatrix;
+	
 	using FMatFColDsptr = std::shared_ptr<FullMatrix<FColDsptr>>;
 	using FMatFMatDsptr = std::shared_ptr<FullMatrix<FMatDsptr>>;
 	using FColFMatDsptr = std::shared_ptr<FullColumn<FMatDsptr>>;
@@ -66,6 +70,8 @@ namespace MbD {
 		static FMatsptr<T> rotatexrotDotrotDDot(T angle, T angleDot, T angleDDot);
 		static FMatsptr<T> rotateyrotDotrotDDot(T angle, T angleDot, T angleDDot);
 		static FMatsptr<T> rotatezrotDotrotDDot(T angle, T angleDot, T angleDDot);
+		static FMatsptr<T> identitysptr(int n);
+		static FMatsptr<T> tildeMatrix(FColDsptr col);
 		void identity();
 		FColsptr<T> column(int j);
 		FColsptr<T> timesFullColumn(FColsptr<T> fullCol);
@@ -95,6 +101,9 @@ namespace MbD {
 		T trace();
 		double maxMagnitude() override;
 		FColsptr<T> bryantAngles();
+		bool isDiagonal();
+		std::shared_ptr<DiagonalMatrix<T>> asDiagonalMatrix();
+		void conditionSelfWithTol(double tol);
 
 		std::ostream& printOn(std::ostream& s) const override;
 	};
@@ -295,6 +304,33 @@ namespace MbD {
 		row2->atiput(1, 0.0);
 		row2->atiput(2, 0.0);
 		return rotMat;
+	}
+	template<typename T>
+	inline FMatsptr<T> FullMatrix<T>::identitysptr(int n)
+	{
+		auto mat = std::make_shared<FullMatrix<T>>(n, n);
+		mat->identity();
+		return mat;
+	}
+	template<typename T>
+	inline FMatsptr<T> FullMatrix<T>::tildeMatrix(FColDsptr col)
+	{
+		//"tildeMatrix is skew symmetric matrix related to angular velocity and cross product."
+		if (col->size() != 3) throw std::runtime_error("Column is not of dimension 3");
+		auto tilde = std::make_shared<FullMatrix<double>>(3, 3);
+		auto c0 = col->at(0);
+		auto c1 = col->at(1);
+		auto c2 = col->at(2);
+		tilde->atijput(0, 0, 0.0);
+		tilde->atijput(1, 1, 0.0);
+		tilde->atijput(2, 2, 0.0);
+		tilde->atijput(1, 2, -c0);
+		tilde->atijput(0, 2, c1);
+		tilde->atijput(0, 1, -c2);
+		tilde->atijput(1, 0, c2);
+		tilde->atijput(2, 0, -c1);
+		tilde->atijput(2, 1, c0);
+		return tilde;
 	}
     template<>
     inline void FullMatrix<double>::zeroSelf()
@@ -626,6 +662,40 @@ namespace MbD {
 		answer->atiput(1, the1y);
 		answer->atiput(2, the2z);
 		return answer;
+	}
+	template<typename T>
+	inline bool FullMatrix<T>::isDiagonal()
+	{
+		auto m = this->nrow();
+		auto n = this->ncol();
+		if (m != n) return false;
+		for (int i = 0; i < m; i++)
+		{
+			auto rowi = this->at(i);
+			for (int j = 0; j < n; j++)
+			{
+				if (i != j && rowi->at(j) != 0) return false;
+			}
+		}
+		return true;
+	}
+	template<typename T>
+	inline std::shared_ptr<DiagonalMatrix<T>> FullMatrix<T>::asDiagonalMatrix()
+	{
+		int nrow = this->nrow();
+		auto diagMat = std::make_shared<DiagonalMatrix<T>>(nrow);
+		for (int i = 0; i < nrow; i++)
+		{
+			diagMat->atiput(i, this->at(i)->at(i));
+		}
+		return diagMat;
+	}
+	template<typename T>
+	inline void FullMatrix<T>::conditionSelfWithTol(double tol)
+	{
+		for (auto row : *this) {
+			row->conditionSelfWithTol(tol);
+		}
 	}
 	template<typename T>
 	inline FColsptr<T> FullMatrix<T>::timesFullColumn(FColsptr<T> fullCol)

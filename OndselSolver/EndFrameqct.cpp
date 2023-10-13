@@ -31,7 +31,7 @@ void EndFrameqct::initialize()
 	rmem = std::make_shared<FullColumn<double>>(3);
 	prmempt = std::make_shared<FullColumn<double>>(3);
 	pprmemptpt = std::make_shared<FullColumn<double>>(3);
-	aAme = std::make_shared<FullMatrix<double>>(3, 3);
+	aAme = FullMatrix<double>::identitysptr(3);
 	pAmept = std::make_shared<FullMatrix<double>>(3, 3);
 	ppAmeptpt = std::make_shared<FullMatrix<double>>(3, 3);
 	pprOeOpEpt = std::make_shared<FullMatrix<double>>(3, 4);

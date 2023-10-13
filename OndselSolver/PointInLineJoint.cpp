@@ -28,6 +28,6 @@ void MbD::PointInLineJoint::initializeGlobally()
 		this->root()->hasChanged = true;
 	}
 	else {
-		InLineJoint::initializeGlobally();
+		Joint::initializeGlobally();
 	}
 }

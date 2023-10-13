@@ -5,7 +5,7 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #pragma once
 
 #include <ostream>
@@ -37,7 +37,7 @@ namespace MbD {
 		void normalizeSelf();
 		double length();
 		virtual void conditionSelf();
-		virtual void conditionSelfWithTol(double tol);
+		void conditionSelfWithTol(double tol);
 
 		std::ostream& printOn(std::ostream& s) const override;
 

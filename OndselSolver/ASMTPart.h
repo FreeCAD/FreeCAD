@@ -23,9 +23,12 @@ namespace MbD {
         void readPartSeries(std::vector<std::string>& lines);
         FColDsptr vOcmO() override;
         FColDsptr omeOpO() override;
+        ASMTPart* part() override;
+        void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
 
         //std::shared_ptr<std::vector<std::shared_ptr<ASMTFeature>>> featureOrder;
         std::shared_ptr<std::vector<std::shared_ptr<PosVelAccData>>> partSeries;
+        bool isFixed = false;
 
     };
 }

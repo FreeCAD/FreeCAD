@@ -12,10 +12,10 @@ using namespace MbD;
 
 Time::Time()
 {
+	std::string str = "t";
+	this->setName(str);
 }
 
 void Time::initialize()
 {
-	std::string str = "t";
-	this->setName(str);
 }

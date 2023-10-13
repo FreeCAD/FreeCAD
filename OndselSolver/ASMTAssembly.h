@@ -12,6 +12,7 @@
 #include "ASMTSpatialContainer.h"
 #include "FullColumn.h"
 #include "FullMatrix.h"
+#include "MBDynSystem.h"
 
 namespace MbD {
 	class ASMTRefPoint;
@@ -35,7 +36,9 @@ namespace MbD {
 	{
 		//
 	public:
+		ASMTAssembly();
 		static void runSinglePendulumSuperSimplified();
+		static void runSinglePendulumSuperSimplified2();
 		static void runSinglePendulumSimplified();
 		static void runSinglePendulum();
 		static void runFile(const char* chars);
@@ -101,6 +104,8 @@ namespace MbD {
 		void addMotion(std::shared_ptr<ASMTMotion> motion);
 		void setConstantGravity(std::shared_ptr<ASMTConstantGravity> constantGravity);
 		void setSimulationParameters(std::shared_ptr<ASMTSimulationParameters> simulationParameters);
+		std::shared_ptr<ASMTPart> partNamed(std::string partName);
+		std::shared_ptr<ASMTPart> partPartialNamed(std::string partialName);
 
 		std::string notes;
 		std::shared_ptr<std::vector<std::shared_ptr<ASMTPart>>> parts = std::make_shared<std::vector<std::shared_ptr<ASMTPart>>>();
@@ -115,7 +120,7 @@ namespace MbD {
 		std::shared_ptr<std::vector<double>> times;
 		std::shared_ptr<ASMTTime> asmtTime = std::make_shared<ASMTTime>();
 		std::shared_ptr<Units> mbdUnits;
-
+		MBDynSystem* mbdynItem = nullptr;
 	};
 }
 

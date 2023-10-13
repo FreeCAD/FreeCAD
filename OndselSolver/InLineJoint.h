@@ -13,10 +13,11 @@
 namespace MbD {
 	class InLineJoint : public Joint
 	{
-		//
+		//Abstract class. Create subclasses only.
 	public:
 		InLineJoint();
 		InLineJoint(const char* str);
+		virtual void initializeGlobally() = 0;	//To prevent instantiation of this class
 
 		void createInLineConstraints();
 

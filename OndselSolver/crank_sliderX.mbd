@@ -12,7 +12,7 @@ end: data;
 
 begin: initial value;
    initial time:   0.;
-   final time:     5.;
+   final time:     1.;
    time step:      1.e-1;
    max iterations: 10;
    tolerance:      1.e-6;

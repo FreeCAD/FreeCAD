@@ -41,11 +41,7 @@ namespace MbD {
 		virtual double maxMagnitude() = 0;
 		double maxMagnitudeOfVector();
 		void equalArrayAt(std::shared_ptr<Array<T>> array, int i);
-		//virtual void normalizeSelf();
-		//virtual void conditionSelf();
-		//virtual void conditionSelfWithTol(double tol);
 		virtual void atiput(int i, T value);
-		//double length();
 		void magnifySelf(T factor);
 		void atitimes(int i, double factor);
 

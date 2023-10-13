@@ -14,15 +14,18 @@ namespace MbD {
 	class ASMTAssembly;
 	class Units;
 	class ASMTSpatialContainer;
+	class ASMTPart;
 
 	class EXPORT ASMTItem
 	{
 		//
 	public:
 		virtual ASMTAssembly* root();
-		virtual std::shared_ptr<ASMTSpatialContainer> part();
+		virtual ASMTSpatialContainer* partOrAssembly();
+		virtual ASMTPart* part();
 
 		virtual void initialize();
+		void noop();
 		void setName(std::string str);
 		virtual void parseASMT(std::vector<std::string>& lines);
 		FRowDsptr readRowOfDoubles(std::string& line);
@@ -43,7 +46,7 @@ namespace MbD {
 		std::shared_ptr<Constant> sptrConstant(double value);
 
 		std::string name;
-		ASMTItem* owner;
+		ASMTItem* owner = nullptr;
 		std::shared_ptr<Item> mbdObject;
 	};
 }

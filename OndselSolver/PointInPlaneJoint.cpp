@@ -27,6 +27,6 @@ void MbD::PointInPlaneJoint::initializeGlobally()
 		this->root()->hasChanged = true;
 	}
 	else {
-		InPlaneJoint::initializeGlobally();
+		Joint::initializeGlobally();
 	}
 }

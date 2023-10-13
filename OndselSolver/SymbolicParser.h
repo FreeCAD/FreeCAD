@@ -21,6 +21,7 @@ namespace MbD {
 	{
 		//
 	public:
+		SymbolicParser();
 		void initialize();
 		void parseUserFunction(Symsptr userFunc);
 		void parseString(std::string expr);

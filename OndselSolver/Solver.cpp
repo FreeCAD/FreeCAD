@@ -13,6 +13,11 @@
 
 using namespace MbD;
 
+void MbD::Solver::noop()
+{
+	//No Operations
+}
+
 void Solver::initialize()
 {
 }

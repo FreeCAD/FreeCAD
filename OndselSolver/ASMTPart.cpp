@@ -9,6 +9,7 @@
 #include "ASMTPart.h"
 #include "CREATE.h"
 #include "ASMTPrincipalMassMarker.h"
+#include "Part.h"
 
 
 using namespace MbD;
@@ -55,7 +56,7 @@ void MbD::ASMTPart::readPrincipalMassMarker(std::vector<std::string>& lines)
 {
 	assert(lines[0].find("PrincipalMassMarker") != std::string::npos);
 	lines.erase(lines.begin());
-	principalMassMarker = CREATE<ASMTPrincipalMassMarker>::With();
+	principalMassMarker = std::make_shared<ASMTPrincipalMassMarker>();
 	principalMassMarker->parseASMT(lines);
 	principalMassMarker->owner = this;
 }
@@ -103,4 +104,15 @@ FColDsptr MbD::ASMTPart::vOcmO()
 FColDsptr MbD::ASMTPart::omeOpO()
 {
 	return omega3D;
+}
+
+ASMTPart* MbD::ASMTPart::part()
+{
+	return this;
+}
+
+void MbD::ASMTPart::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits)
+{
+	ASMTSpatialContainer::createMbD(mbdSys, mbdUnits);
+	if (isFixed) std::static_pointer_cast<Part>(mbdObject)->asFixed();
 }

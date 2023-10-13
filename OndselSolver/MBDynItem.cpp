@@ -1,12 +1,13 @@
 #include "MBDynItem.h"
 #include "MBDynSystem.h"
-#include "MBDynVariables.h"
 #include "SymbolicParser.h"
 #include "BasicUserFunction.h"
 #include "EulerAngles.h"
 #include "Constant.h"
-#include "MBDynReferences.h"
 #include "MBDynReference.h"
+#include "FullMatrix.h"
+#include "ASMTItem.h"
+#include "MBDynBody.h"
 
 
 using namespace MbD;
@@ -19,6 +20,11 @@ MBDynSystem* MbD::MBDynItem::root()
 void MbD::MBDynItem::initialize()
 {
 	assert(false);
+}
+
+void MbD::MBDynItem::noop()
+{
+	//No Operations
 }
 
 void MbD::MBDynItem::parseMBDyn(std::vector<std::string>& lines)
@@ -45,31 +51,96 @@ bool MbD::MBDynItem::lineHasTokens(const std::string& line, std::vector<std::str
 	return true;
 }
 
-std::shared_ptr<MBDynVariables> MbD::MBDynItem::mbdynVariables()
+std::shared_ptr<std::vector<std::shared_ptr<MBDynNode>>> MbD::MBDynItem::mbdynNodes()
+{
+	return owner->mbdynNodes();
+}
+
+std::vector<std::string> MbD::MBDynItem::nodeNames()
+{
+	return owner->nodeNames();
+}
+
+std::shared_ptr<std::map<std::string, Symsptr>> MbD::MBDynItem::mbdynVariables()
 {
 	return owner->mbdynVariables();
 }
 
-std::shared_ptr<MBDynReferences> MbD::MBDynItem::mbdynReferences()
+std::shared_ptr<std::map<std::string, std::shared_ptr<MBDynReference>>> MbD::MBDynItem::mbdynReferences()
 {
 	return owner->mbdynReferences();
 }
 
-FColDsptr MbD::MBDynItem::readPosition(std::shared_ptr<std::vector<std::string>>& args)
+void MbD::MBDynItem::createASMT()
+{
+	assert(false);
+}
+
+std::shared_ptr<MBDynNode> MbD::MBDynItem::nodeAt(std::string nodeName)
+{
+	return owner->nodeAt(nodeName);
+}
+
+int MbD::MBDynItem::nodeidAt(std::string nodeName)
+{
+	return owner->nodeidAt(nodeName);
+}
+
+std::shared_ptr<MBDynBody> MbD::MBDynItem::bodyWithNode(std::string nodeName)
+{
+	return owner->bodyWithNode(nodeName);
+}
+
+std::shared_ptr<ASMTAssembly> MbD::MBDynItem::asmtAssembly()
+{
+	return owner->asmtAssembly();
+}
+
+FColDsptr MbD::MBDynItem::readVector3(std::vector<std::string>& args)
+{
+	auto parser = std::make_shared<SymbolicParser>();
+	parser->variables = mbdynVariables();
+	auto rFfF = std::make_shared<FullColumn<double>>(3);
+	auto& str = args.at(0);
+	if (str.find("null") != std::string::npos) {
+		args.erase(args.begin());
+	}
+	else {
+		for (int i = 0; i < 3; i++)
+		{
+			auto userFunc = std::make_shared<BasicUserFunction>(popOffTop(args), 1.0);
+			parser->parseUserFunction(userFunc);
+			auto sym = parser->stack->top();
+			rFfF->at(i) = sym->getValue();
+		}
+
+	}
+	return rFfF;
+}
+
+FColDsptr MbD::MBDynItem::readPosition(std::vector<std::string>& args)
 {
 	auto rOfO = std::make_shared<FullColumn<double>>(3);
-	auto str = args->at(0);
-	if (str.find("reference") != std::string::npos) {
-		args->erase(args->begin());
-		std::string refName;
-		std::istringstream iss(args->at(0));
-		iss >> refName;
-		auto ref = mbdynReferences()->references->at(refName);
-		args->erase(args->begin());
+	if (args.empty()) return rOfO;
+	auto& str = args.at(0);
+	if (str.find("orientation") != std::string::npos) {
+		//Do nothing
+	}
+	else if (str.find("reference") != std::string::npos) {
+		args.erase(args.begin());
+		auto refName = readStringOffTop(args);
+		auto ref = mbdynReferences()->at(refName);
 		auto rFfF = readBasicPosition(args);
 		auto rOFO = ref->rOfO;
 		auto aAOF = ref->aAOf;
 		rOfO = rOFO->plusFullColumn(aAOF->timesFullColumn(rFfF));
+	}
+	else if (str.find("offset") != std::string::npos) {
+		args.erase(args.begin());
+		rOfO = readBasicPosition(args);
+	}
+	else if (str.find("null") != std::string::npos) {
+		args.erase(args.begin());
 	}
 	else {
 		rOfO = readBasicPosition(args);
@@ -77,38 +148,31 @@ FColDsptr MbD::MBDynItem::readPosition(std::shared_ptr<std::vector<std::string>>
 	return rOfO;
 }
 
-FColDsptr MbD::MBDynItem::readBasicPosition(std::shared_ptr<std::vector<std::string>>& args)
+FColDsptr MbD::MBDynItem::readBasicPosition(std::vector<std::string>& args)
 {
-	auto parser = CREATE<SymbolicParser>::With();
-	parser->variables = mbdynVariables()->variables;
-	auto rFfF = std::make_shared<FullColumn<double>>(3);
-	std::string str;
-	for (int i = 0; i < 3; i++)
-	{
-		str = args->at(0);
-		args->erase(args->begin());
-		auto userFunc = CREATE<BasicUserFunction>::With(str, 1.0);
-		parser->parseUserFunction(userFunc);
-		auto sym = parser->stack->top();
-		rFfF->at(i) = sym->getValue();
-	}
-	return rFfF;
+	return readVector3(args);
 }
 
-FMatDsptr MbD::MBDynItem::readOrientation(std::shared_ptr<std::vector<std::string>>& args)
+FMatDsptr MbD::MBDynItem::readOrientation(std::vector<std::string>& args)
 {
-	auto aAOf = std::make_shared<FullMatrix<double>>(3, 3);
-	auto str = args->at(0);
+	auto aAOf = FullMatrix<double>::identitysptr(3);
+	if (args.empty()) return aAOf;
+	auto& str = args.at(0);
 	if (str.find("reference") != std::string::npos) {
-		args->erase(args->begin());
-		std::string refName;
-		std::istringstream iss(args->at(0));
-		iss >> refName;
-		auto ref = mbdynReferences()->references->at(refName);
-		args->erase(args->begin());
+		args.erase(args.begin());
+		auto refName = readStringOffTop(args);
+		auto ref = mbdynReferences()->at(refName);
 		auto aAFf = readBasicOrientation(args);
 		auto aAOF = ref->aAOf;
 		aAOf = aAOF->timesFullMatrix(aAFf);
+	}
+	else if (str.find("hinge") != std::string::npos) {
+		args.erase(args.begin());
+		aAOf = readOrientation(args);
+	}
+	else if (str.find("orientation") != std::string::npos) {
+		args.erase(args.begin());
+		aAOf = readOrientation(args);
 	}
 	else {
 		aAOf = readBasicOrientation(args);
@@ -116,37 +180,159 @@ FMatDsptr MbD::MBDynItem::readOrientation(std::shared_ptr<std::vector<std::strin
 	return aAOf;
 }
 
-FMatDsptr MbD::MBDynItem::readBasicOrientation(std::shared_ptr<std::vector<std::string>>& args)
+FMatDsptr MbD::MBDynItem::readBasicOrientation(std::vector<std::string>& args)
 {
-	auto parser = CREATE<SymbolicParser>::With();
-	parser->variables = mbdynVariables()->variables;
-	auto euler = std::make_shared<EulerAngles<Symsptr>>();
-	auto str = args->at(0);
+	auto parser = std::make_shared<SymbolicParser>();
+	parser->variables = mbdynVariables();
+	auto& str = args.at(0);
 	if (str.find("euler") != std::string::npos) {
-		args->erase(args->begin());
+		args.erase(args.begin());
+		auto euler = std::make_shared<EulerAngles<Symsptr>>();
 		euler->rotOrder = std::make_shared<FullColumn<int>>(std::initializer_list<int>{ 1, 2, 3 });
 		for (int i = 0; i < 3; i++)
 		{
-			str = args->at(0);
-			args->erase(args->begin());
-			auto userFunc = CREATE<BasicUserFunction>::With(str, 1.0);
+			auto userFunc = std::make_shared<BasicUserFunction>(popOffTop(args), 1.0);
 			parser->parseUserFunction(userFunc);
 			auto sym = parser->stack->top();
 			euler->at(i) = sym;
 		}
+		euler->calc();
+		auto aAFf = euler->aA;
+		return aAFf;
 	}
-	else if (str.find("eye") != std::string::npos) {
-		args->erase(args->begin());
-		euler->rotOrder = std::make_shared<FullColumn<int>>(std::initializer_list<int>{ 1, 2, 3 });
-		for (int i = 0; i < 3; i++)
+	if (str.find("eye") != std::string::npos) {
+		args.erase(args.begin());
+		auto aAFf = FullMatrix<double>::identitysptr(3);
+		return aAFf;
+	}
+	auto iss = std::istringstream(str);
+	int integer;
+	iss >> integer;
+	if (integer == 1) {
+		args.erase(args.begin());
+		FColDsptr vecX, vecY, vecZ, vec;
+		vecX = readPosition(args);
+		vecX->normalizeSelf();
+		auto axis = stoi(popOffTop(args));
+		str = args.at(0);
+		if (str.find("guess") != std::string::npos) {
+			args.erase(args.begin());
+			double min = std::numeric_limits<double>::max();
+			double max = -1.0;
+			int imin, imax;
+			for (int i = 0; i < 3; i++)
+			{
+				auto mag = std::abs(vecX->at(i));
+				if (mag > max) {
+					imax = i;
+					max = mag;
+				}
+				if (mag < min) {
+					imin = i;
+					min = mag;
+				}
+			}
+			vec = std::make_shared<FullColumn<double>>(3);
+			vec->at(imin) = 1.0;
+			vec->at(imax) = -vecX->at(imin) / vecX->at(imax);
+		}
+		else {
+			vec = readPosition(args);
+		}
+		vec->normalizeSelf();
+		if (axis == 2) {
+			vecZ = vecX->cross(vec);
+			vecY = vecZ->cross(vecX);
+		}
+		else if (axis == 3) {
+			vecY = vec->cross(vecX);
+			vecZ = vecX->cross(vecY);
+		}
+		else {
+			assert(false);
+		}
+		auto aAFf = FullMatrix<double>::identitysptr(3);
+		aAFf->atijputFullColumn(0, 0, vecX);
+		aAFf->atijputFullColumn(0, 1, vecY);
+		aAFf->atijputFullColumn(0, 2, vecZ);
+		return aAFf;
+	}
+	if (integer == 3) {
+		args.erase(args.begin());
+		FColDsptr vecX, vecY, vecZ, vec;
+		vecZ = readPosition(args);
+		vecZ->normalizeSelf();
+		auto axis = stoi(popOffTop(args));
+		str = args.at(0);
+		if (str.find("guess") != std::string::npos) {
+			args.erase(args.begin());
+			double min = std::numeric_limits<double>::max();
+			double max = -1.0;
+			int imin, imax;
+			for (int i = 0; i < 3; i++)
+			{
+				auto mag = std::abs(vecZ->at(i));
+				if (mag > max) {
+					imax = i;
+					max = mag;
+				}
+				if (mag < min) {
+					imin = i;
+					min = mag;
+				}
+			}
+			vec = std::make_shared<FullColumn<double>>(3);
+			vec->at(imin) = 1.0;
+			vec->at(imax) = -vecZ->at(imin) / vecZ->at(imax);
+		}
+		else {
+			vec = readPosition(args);
+		}
+		vec->normalizeSelf();
+		if (axis == 2) {
+			vecX = vec->cross(vecZ);
+			vecY = vecZ->cross(vecX);
+		}
+		else if (axis == 1) {
+			vecY = vecZ->cross(vec);
+			vecX = vecY->cross(vecZ);
+		}
+		else {
+			assert(false);
+		}
+		auto aAFf = FullMatrix<double>::identitysptr(3);
+		aAFf->atijputFullColumn(0, 0, vecX);
+		aAFf->atijputFullColumn(0, 1, vecY);
+		aAFf->atijputFullColumn(0, 2, vecZ);
+		return aAFf;
+	}
+	auto aAFf = FullMatrix<double>::identitysptr(3);
+	for (int i = 0; i < 3; i++)
+	{
+		auto rowi = aAFf->at(i);
+		for (int j = 0; j < 3; j++)
 		{
-			euler->at(i) = std::make_shared<Constant>(0.0);
+			auto userFunc = std::make_shared<BasicUserFunction>(popOffTop(args), 1.0);
+			parser->parseUserFunction(userFunc);
+			auto sym = parser->stack->top();
+			rowi->at(j) = sym->getValue();
 		}
 	}
-	else {
-		assert(false);
-	}
-	euler->calc();
-	auto aAFf = euler->aA;
 	return aAFf;
+}
+
+std::string MbD::MBDynItem::popOffTop(std::vector<std::string>& args)
+{
+	auto str = args.at(0);
+	args.erase(args.begin());
+	return str;
+}
+
+std::string MbD::MBDynItem::readStringOffTop(std::vector<std::string>& args)
+{
+	auto iss = std::istringstream(args.at(0));
+	args.erase(args.begin());
+	std::string str;
+	iss >> str;
+	return str;
 }

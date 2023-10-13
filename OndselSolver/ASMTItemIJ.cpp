@@ -8,6 +8,16 @@
  
 #include "ASMTItemIJ.h"
 
+MbD::ASMTItemIJ::ASMTItemIJ()
+{
+	fxs = std::make_shared<FullRow<double>>();
+	fys = std::make_shared<FullRow<double>>();
+	fzs = std::make_shared<FullRow<double>>();
+	txs = std::make_shared<FullRow<double>>();
+	tys = std::make_shared<FullRow<double>>();
+	tzs = std::make_shared<FullRow<double>>();
+}
+
 void MbD::ASMTItemIJ::initialize()
 {
 	fxs = std::make_shared<FullRow<double>>();

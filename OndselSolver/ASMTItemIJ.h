@@ -15,6 +15,7 @@ namespace MbD {
     {
         //
     public:
+        ASMTItemIJ();
         void initialize() override;
         void setMarkerI(std::string mkrI);
         void setMarkerJ(std::string mkrJ);

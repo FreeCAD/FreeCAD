@@ -15,6 +15,7 @@ namespace MbD {
 	{
 		//statistics
 	public:
+		void noop();
 		virtual void initialize();
 		virtual void initializeLocally();
 		virtual void initializeGlobally();

@@ -5,12 +5,12 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
-/*********************************************************************
- * @file  MbDCode.cpp
- *
- * @brief Program to assemble a piston crank system.
- *********************************************************************/
+
+ /*********************************************************************
+  * @file  MbDCode.cpp
+  *
+  * @brief Program to assemble a piston crank system.
+  *********************************************************************/
 
 #include <filesystem>
 #include "CADSystem.h"
@@ -24,10 +24,13 @@ void runSpMat();
 
 int main()
 {
-	//MBDynSystem::runFile("crank_slider.mbd");		//To be completed
+
+	//MBDynSystem::runFile("MBDynCase.mbd");		//To be completed
+	MBDynSystem::runFile("crank_slider.mbd");		//To be completed
 	//ASMTAssembly::runSinglePendulumSuperSimplified();	//Mass is missing
-	ASMTAssembly::runSinglePendulumSimplified();
-	ASMTAssembly::runSinglePendulum();	
+	//ASMTAssembly::runSinglePendulumSuperSimplified2();	//DOF has infinite acceleration due to zero mass and inertias
+	//ASMTAssembly::runSinglePendulumSimplified();
+	ASMTAssembly::runSinglePendulum();
 	ASMTAssembly::runFile("piston.asmt");
 	ASMTAssembly::runFile("00backhoe.asmt");
 	//ASMTAssembly::runFile("circular.asmt");	//Needs checking

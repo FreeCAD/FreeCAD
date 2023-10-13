@@ -33,6 +33,6 @@ void MbD::TranslationalJoint::initializeGlobally()
 		this->root()->hasChanged = true;
 	}
 	else {
-		InLineJoint::initializeGlobally();
+		Joint::initializeGlobally();
 	}
 }

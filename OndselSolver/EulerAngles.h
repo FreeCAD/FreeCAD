@@ -30,6 +30,7 @@ namespace MbD {
 		void initialize() override;
 		void calc() override;
 		std::shared_ptr<EulerAnglesDot<T>> differentiateWRT(T var);
+		void setRotOrder(int i, int j, int k);
 
 		std::shared_ptr<FullColumn<int>> rotOrder;
 		FColFMatDsptr cA;
@@ -64,6 +65,29 @@ namespace MbD {
 		}
 		aA = cA->at(0)->timesFullMatrix(cA->at(1)->timesFullMatrix(cA->at(2)));
 	}
+	template<>
+	inline void EulerAngles<double>::calc()
+	{
+		cA = std::make_shared<FullColumn<FMatDsptr>>(3);
+		for (int i = 0; i < 3; i++)
+		{
+			auto axis = rotOrder->at(i);
+			auto angle = this->at(i);
+			if (axis == 1) {
+				cA->atiput(i, FullMatrix<double>::rotatex(angle));
+			}
+			else if (axis == 2) {
+				cA->atiput(i, FullMatrix<double>::rotatey(angle));
+			}
+			else if (axis == 3) {
+				cA->atiput(i, FullMatrix<double>::rotatez(angle));
+			}
+			else {
+				throw std::runtime_error("Euler angle rotation order must be any permutation of 1,2,3 without consecutive repeats.");
+			}
+		}
+		aA = cA->at(0)->timesFullMatrix(cA->at(1)->timesFullMatrix(cA->at(2)));
+	}
 	template<typename T>
 	inline void EulerAngles<T>::calc()
 	{
@@ -78,6 +102,14 @@ namespace MbD {
 		);
 		derivatives->aEulerAngles = this;
 		return derivatives;
+	}
+	template<typename T>
+	inline void EulerAngles<T>::setRotOrder(int i, int j, int k)
+	{
+		rotOrder = std::make_shared<FullColumn<int>>(3);
+		rotOrder->at(0) = i;
+		rotOrder->at(1) = j;
+		rotOrder->at(2) = k;
 	}
 }
 

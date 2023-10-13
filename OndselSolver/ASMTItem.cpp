@@ -19,13 +19,23 @@ ASMTAssembly* MbD::ASMTItem::root()
 	return owner->root();
 }
 
-std::shared_ptr<ASMTSpatialContainer> MbD::ASMTItem::part()
+ASMTSpatialContainer* MbD::ASMTItem::partOrAssembly()
+{
+	return owner->partOrAssembly();
+}
+
+ASMTPart* MbD::ASMTItem::part()
 {
 	return owner->part();
 }
 
 void MbD::ASMTItem::initialize()
 {
+}
+
+void MbD::ASMTItem::noop()
+{
+	//No Operations
 }
 
 void MbD::ASMTItem::setName(std::string str)

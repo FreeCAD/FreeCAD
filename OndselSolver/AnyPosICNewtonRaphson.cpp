@@ -44,9 +44,10 @@ void AnyPosICNewtonRaphson::fillY()
 	y->atiminusFullColumn(0, (qsuWeights->timesFullColumn(newMinusOld)));
 	system->partsJointsMotionsDo([&](std::shared_ptr<Item> item) {
 		item->fillPosICError(y);
-		//std::cout << *y << std::endl;
+		//std::cout << item->name << *y << std::endl;
+		//noop();
 		});
-	//std::cout << *y << std::endl;
+	//std::cout << "Final" << *y << std::endl;
 }
 
 void AnyPosICNewtonRaphson::fillPyPx()
