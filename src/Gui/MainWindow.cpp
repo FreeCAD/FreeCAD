@@ -553,6 +553,15 @@ void MainWindow::setupDockWindows()
     setupTaskView();
 
     initDockWindows(false);
+
+    std::vector<QTabWidget::TabPosition> tabPos = {QTabWidget::North,
+                                                   QTabWidget::South,
+                                                   QTabWidget::West,
+                                                   QTabWidget::East};
+    long value = d->hGrp->GetInt("LeftDockWidgetAreaTabPos", long(tabPos.front()));
+    if (value >= 0 && value < long(tabPos.size())) {
+        setTabPosition(Qt::LeftDockWidgetArea, tabPos[value]);
+    }
 }
 
 bool MainWindow::setupTaskView()
