@@ -568,7 +568,12 @@ bool MainWindow::setupTaskView()
 {
     // Task view
     if (d->hiddenDockWindows.find("Std_TaskView") == std::string::npos) {
+        ParameterGrp::handle group = App::GetApplication().GetUserParameter().
+                GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("DockWindows")->GetGroup("TaskView");
+        bool shrink = group->GetBool("ShrinkTofit", false);
+
         auto taskView = new Gui::TaskView::TaskView(this);
+        taskView->setShrinkToFit(shrink);
         taskView->setObjectName
             (QString::fromLatin1(QT_TRANSLATE_NOOP("QDockWidget","Tasks")));
         taskView->setMinimumWidth(210);

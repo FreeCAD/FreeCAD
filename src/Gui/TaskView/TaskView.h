@@ -161,6 +161,10 @@ public:
     void clearActionStyle();
     void restoreActionStyle();
 
+    // Shrinks the Task view to its minimum width when opening a dialog
+    void setShrinkToFit(bool on);
+    bool isShrinkToFit() const;
+
     QSize minimumSizeHint() const override;
 
 Q_SIGNALS:
@@ -176,6 +180,7 @@ protected Q_SLOTS:
 private:
     void triggerMinimumSizeHint();
     void adjustMinimumSizeHint();
+    void tryShrinkToFit();
 
 protected:
     void keyPressEvent(QKeyEvent* event) override;
@@ -201,6 +206,7 @@ protected:
     TaskDialog *ActiveDialog;
     TaskEditControl *ActiveCtrl;
     QTimer *timer;
+    bool shrinkToFit = false;
 
     Connection connectApplicationActiveDocument;
     Connection connectApplicationDeleteDocument;
