@@ -295,6 +295,11 @@ private:
     bool setupSelectionView();
     bool setupReportView();
     bool setupPythonConsole();
+    bool updateTreeView(bool show);
+    bool updatePropertyView(bool show);
+    bool updateTaskView(bool show);
+    bool updateComboView(bool show);
+    bool updateDAGView(bool show);
 
     static void renderDevBuildWarning(QPainter &painter, const QPoint startPosition, const QSize maxSize);
 

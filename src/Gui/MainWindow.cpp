@@ -537,119 +537,11 @@ static inline void _updateDockWidget(const char *name,
 
 void MainWindow::initDockWindows(bool show)
 {
-    bool treeView = false;
-
-    if (d->hiddenDockWindows.find("Std_TreeView") == std::string::npos) {
-        //work through parameter.
-        ParameterGrp::handle group = App::GetApplication().GetUserParameter().
-                GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("DockWindows")->GetGroup("TreeView");
-        bool enabled = group->GetBool("Enabled", true);
-        if (enabled != group->GetBool("Enabled", false)) {
-            enabled = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
-                            ->GetGroup("MainWindow")->GetGroup("DockWindows")->GetBool("Std_TreeView", false);
-        }
-        group->SetBool("Enabled", enabled); //ensure entry exists.
-        treeView = enabled;
-        _updateDockWidget("Std_TreeView", enabled, show, Qt::RightDockWidgetArea,
-            [](QWidget *widget) {
-                if(widget)
-                    return widget;
-                TreeDockWidget* tree = new TreeDockWidget(0,getMainWindow());
-                tree->setObjectName(QStringLiteral(QT_TRANSLATE_NOOP("QDockWidget","Tree view")));
-                tree->setMinimumWidth(210);
-                widget = tree;
-                return widget;
-            });
-    }
-
-    // Property view
-    if (d->hiddenDockWindows.find("Std_PropertyView") == std::string::npos) {
-        //work through parameter.
-        ParameterGrp::handle group = App::GetApplication().GetUserParameter().
-                GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("DockWindows")->GetGroup("PropertyView");
-        bool enabled = treeView || group->GetBool("Enabled", false);
-        if (!treeView && enabled != group->GetBool("Enabled", true)) {
-            enabled = App::GetApplication().GetUserParameter().GetGroup("BaseApp")
-                            ->GetGroup("MainWindow")->GetGroup("DockWindows")->GetBool("Std_PropertyView", false);
-        }
-        group->SetBool("Enabled", enabled); //ensure entry exists.
-        _updateDockWidget("Std_PropertyView", enabled, show, Qt::RightDockWidgetArea,
-            [](QWidget *widget) {
-                if(widget)
-                    return widget;
-                PropertyDockView* pcPropView = new PropertyDockView(0, getMainWindow());
-                pcPropView->setObjectName(QStringLiteral(QT_TRANSLATE_NOOP("QDockWidget","Property view")));
-                pcPropView->setMinimumWidth(210);
-                widget = pcPropView;
-                return widget;
-            });
-    }
-
-    // Combo view
-    if (d->hiddenDockWindows.find("Std_ComboView") == std::string::npos) {
-        bool enable = !treeView;
-        if (!enable) {
-            ParameterGrp::handle group = App::GetApplication().GetUserParameter().
-                    GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("DockWindows")->GetGroup("ComboView");
-            enable = group->GetBool("Enabled", true);
-        }
-        _updateDockWidget("Std_ComboView", enable, show, Qt::LeftDockWidgetArea,
-            [](QWidget *widget) {
-                auto pcComboView = qobject_cast<ComboView*>(widget);
-                if(widget)
-                    return widget;
-                pcComboView = new ComboView(nullptr, getMainWindow());
-                pcComboView->setObjectName(QStringLiteral(QT_TRANSLATE_NOOP("QDockWidget", "Model")));
-                pcComboView->setMinimumWidth(150);
-                widget = pcComboView;
-                return widget;
-            });
-    }
-
-    //Task List (task watcher).
-    if (d->hiddenDockWindows.find("Std_TaskWatcher") == std::string::npos) {
-        //work through parameter.
-        ParameterGrp::handle group = App::GetApplication().GetUserParameter().
-              GetGroup("BaseApp/Preferences/DockWindows/TaskWatcher");
-        bool enabled = group->GetBool("Enabled", false);
-        group->SetBool("Enabled", enabled); //ensure entry exists.
-        _updateDockWidget("Std_TaskWatcher", enabled, show, Qt::RightDockWidgetArea,
-            [](QWidget *widget) {
-                if(widget)
-                    return widget;
-                widget = new TaskView::TaskView(getMainWindow());
-                widget->setObjectName(QStringLiteral(QT_TRANSLATE_NOOP("QDockWidget","Task List")));
-                return widget;
-            });
-    }
-
-    //Dag View.
-    if (d->hiddenDockWindows.find("Std_DAGView") == std::string::npos) {
-        //work through parameter.
-        // old group name
-        ParameterGrp::handle deprecateGroup = App::GetApplication().GetUserParameter().
-              GetGroup("BaseApp")->GetGroup("Preferences");
-        bool enabled = false;
-        if (deprecateGroup->HasGroup("DAGView")) {
-            deprecateGroup = deprecateGroup->GetGroup("DAGView");
-            enabled = deprecateGroup->GetBool("Enabled", enabled);
-        }
-        // new group name
-        ParameterGrp::handle group = App::GetApplication().GetUserParameter().
-              GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("DockWindows")->GetGroup("DAGView");
-        enabled = group->GetBool("Enabled", enabled);
-        group->SetBool("Enabled", enabled); //ensure entry exists.
-
-        _updateDockWidget("Std_DAGView", enabled, show, Qt::RightDockWidgetArea,
-            [](QWidget *widget) {
-                if(widget)
-                    return widget;
-                DAG::DockWindow *dagDockWindow = new DAG::DockWindow(nullptr, getMainWindow());
-                dagDockWindow->setObjectName(QStringLiteral(QT_TRANSLATE_NOOP("QDockWidget","DAG View")));
-                widget = dagDockWindow;
-                return widget;
-            });
-    }
+    updateTreeView(show);
+    updatePropertyView(show);
+    updateComboView(show);
+    updateTaskView(show);
+    updateDAGView(show);
 }
 
 void MainWindow::setupDockWindows()
@@ -729,6 +621,135 @@ bool MainWindow::setupPythonConsole()
         DockWindowManager* pDockMgr = DockWindowManager::instance();
         pDockMgr->registerDockWindow("Std_PythonView", pcPython);
         return true;
+    }
+
+    return false;
+}
+
+bool MainWindow::updateTreeView(bool show)
+{
+    if (d->hiddenDockWindows.find("Std_TreeView") == std::string::npos) {
+        ParameterGrp::handle group = App::GetApplication().GetUserParameter().
+                GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("DockWindows")->GetGroup("TreeView");
+        bool enabled = group->GetBool("Enabled", false);
+        _updateDockWidget("Std_TreeView", enabled, show, Qt::RightDockWidgetArea,
+            [](QWidget *widget) {
+                if (widget) {
+                    return widget;
+                }
+
+                auto tree = new TreeDockWidget(0,getMainWindow());
+                tree->setObjectName(QStringLiteral(QT_TRANSLATE_NOOP("QDockWidget","Tree view")));
+                tree->setMinimumWidth(210);
+                widget = tree;
+                return widget;
+            });
+
+        return enabled;
+    }
+
+    return false;
+}
+
+bool MainWindow::updatePropertyView(bool show)
+{
+    // Property view
+    if (d->hiddenDockWindows.find("Std_PropertyView") == std::string::npos) {
+        ParameterGrp::handle group = App::GetApplication().GetUserParameter().
+                GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("DockWindows")->GetGroup("PropertyView");
+        bool enabled = group->GetBool("Enabled", false);
+        _updateDockWidget("Std_PropertyView", enabled, show, Qt::RightDockWidgetArea,
+            [](QWidget *widget) {
+                if (widget) {
+                    return widget;
+                }
+
+                auto pcPropView = new PropertyDockView(0, getMainWindow());
+                pcPropView->setObjectName(QStringLiteral(QT_TRANSLATE_NOOP("QDockWidget","Property view")));
+                pcPropView->setMinimumWidth(210);
+                widget = pcPropView;
+                return widget;
+            });
+
+        return enabled;
+    }
+
+    return false;
+}
+
+bool MainWindow::updateTaskView(bool show)
+{
+    //Task List (task watcher).
+    if (d->hiddenDockWindows.find("Std_TaskWatcher") == std::string::npos) {
+        //work through parameter.
+        ParameterGrp::handle group = App::GetApplication().GetUserParameter().
+              GetGroup("BaseApp/Preferences/DockWindows/TaskWatcher");
+        bool enabled = group->GetBool("Enabled", false);
+        group->SetBool("Enabled", enabled); //ensure entry exists.
+        _updateDockWidget("Std_TaskWatcher", enabled, show, Qt::RightDockWidgetArea,
+            [](QWidget *widget) {
+                if (widget) {
+                    return widget;
+                }
+
+                widget = new TaskView::TaskView(getMainWindow());
+                widget->setObjectName(QStringLiteral(QT_TRANSLATE_NOOP("QDockWidget","Task List")));
+                return widget;
+            });
+
+        return enabled;
+    }
+
+    return false;
+}
+
+bool MainWindow::updateComboView(bool show)
+{
+    // Combo view
+    if (d->hiddenDockWindows.find("Std_ComboView") == std::string::npos) {
+        ParameterGrp::handle group = App::GetApplication().GetUserParameter().
+                GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("DockWindows")->GetGroup("ComboView");
+        bool enable = group->GetBool("Enabled", true);
+        _updateDockWidget("Std_ComboView", enable, show, Qt::LeftDockWidgetArea,
+            [](QWidget *widget) {
+                auto pcComboView = qobject_cast<ComboView*>(widget);
+                if (widget) {
+                    return widget;
+                }
+
+                pcComboView = new ComboView(nullptr, getMainWindow());
+                pcComboView->setObjectName(QStringLiteral(QT_TRANSLATE_NOOP("QDockWidget", "Model")));
+                pcComboView->setMinimumWidth(150);
+                widget = pcComboView;
+                return widget;
+            });
+
+        return enable;
+    }
+
+    return false;
+}
+
+bool MainWindow::updateDAGView(bool show)
+{
+    //Dag View.
+    if (d->hiddenDockWindows.find("Std_DAGView") == std::string::npos) {
+        ParameterGrp::handle group = App::GetApplication().GetUserParameter().
+              GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("DockWindows")->GetGroup("DAGView");
+        bool enabled = group->GetBool("Enabled", false);
+        _updateDockWidget("Std_DAGView", enabled, show, Qt::RightDockWidgetArea,
+            [](QWidget *widget) {
+                if (widget) {
+                    return widget;
+                }
+
+                auto dagDockWindow = new DAG::DockWindow(nullptr, getMainWindow());
+                dagDockWindow->setObjectName(QStringLiteral(QT_TRANSLATE_NOOP("QDockWidget","DAG View")));
+                widget = dagDockWindow;
+                return widget;
+            });
+
+        return enabled;
     }
 
     return false;
