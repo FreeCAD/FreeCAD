@@ -62,6 +62,7 @@ namespace FemGui
 // ***************************************************************************
 // point marker
 class ViewProviderPointMarker;
+
 class PointMarker: public QObject
 {
     Q_OBJECT
@@ -89,7 +90,7 @@ private:
 };
 
 
-class FemGuiExport ViewProviderPointMarker: public Gui::ViewProviderDocumentObject
+class FemGuiExport ViewProviderPointMarker: public Gui::ViewProvider
 {
     PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderPointMarker);
 
@@ -237,12 +238,14 @@ protected:
 
 // ***************************************************************************
 // box to set the coloring
+class ViewProviderFemPostObject;
+
 class TaskPostDisplay: public TaskPostBox
 {
     Q_OBJECT
 
 public:
-    explicit TaskPostDisplay(Gui::ViewProviderDocumentObject* view, QWidget* parent = nullptr);
+    explicit TaskPostDisplay(ViewProviderFemPostObject* view, QWidget* parent = nullptr);
     ~TaskPostDisplay() override;
 
     void applyPythonCode() override;
@@ -267,12 +270,14 @@ private:
 
 // ***************************************************************************
 // functions
+class ViewProviderFemPostFunction;
+
 class TaskPostFunction: public TaskPostBox
 {
     Q_OBJECT
 
 public:
-    explicit TaskPostFunction(Gui::ViewProviderDocumentObject* view, QWidget* parent = nullptr);
+    explicit TaskPostFunction(ViewProviderFemPostFunction* view, QWidget* parent = nullptr);
     ~TaskPostFunction() override;
 
     void applyPythonCode() override;
@@ -286,12 +291,14 @@ public:
 
 // ***************************************************************************
 // data along line filter
+class ViewProviderFemPostDataAlongLine;
+
 class TaskPostDataAlongLine: public TaskPostBox
 {
     Q_OBJECT
 
 public:
-    explicit TaskPostDataAlongLine(Gui::ViewProviderDocumentObject* view,
+    explicit TaskPostDataAlongLine(ViewProviderFemPostDataAlongLine* view,
                                    QWidget* parent = nullptr);
     ~TaskPostDataAlongLine() override;
 
@@ -322,12 +329,14 @@ private:
 
 // ***************************************************************************
 // data at point filter
+class ViewProviderFemPostDataAtPoint;
+
 class TaskPostDataAtPoint: public TaskPostBox
 {
     Q_OBJECT
 
 public:
-    explicit TaskPostDataAtPoint(Gui::ViewProviderDocumentObject* view, QWidget* parent = nullptr);
+    explicit TaskPostDataAtPoint(ViewProviderFemPostDataAtPoint* view, QWidget* parent = nullptr);
     ~TaskPostDataAtPoint() override;
 
     void applyPythonCode() override;
@@ -352,12 +361,14 @@ private:
 
 // ***************************************************************************
 // clip filter
+class ViewProviderFemPostClip;
+
 class TaskPostClip: public TaskPostBox
 {
     Q_OBJECT
 
 public:
-    TaskPostClip(Gui::ViewProviderDocumentObject* view,
+    TaskPostClip(ViewProviderFemPostClip* view,
                  App::PropertyLink* function,
                  QWidget* parent = nullptr);
     ~TaskPostClip() override;
@@ -386,12 +397,14 @@ private:
 
 // ***************************************************************************
 // contours filter
+class ViewProviderFemPostContours;
+
 class TaskPostContours: public TaskPostBox
 {
     Q_OBJECT
 
 public:
-    explicit TaskPostContours(Gui::ViewProviderDocumentObject* view, QWidget* parent = nullptr);
+    explicit TaskPostContours(ViewProviderFemPostContours* view, QWidget* parent = nullptr);
     ~TaskPostContours() override;
 
     void applyPythonCode() override;
@@ -412,12 +425,14 @@ private:
 
 // ***************************************************************************
 // cut filter
+class ViewProviderFemPostCut;
+
 class TaskPostCut: public TaskPostBox
 {
     Q_OBJECT
 
 public:
-    TaskPostCut(Gui::ViewProviderDocumentObject* view,
+    TaskPostCut(ViewProviderFemPostCut* view,
                 App::PropertyLink* function,
                 QWidget* parent = nullptr);
     ~TaskPostCut() override;
@@ -444,12 +459,14 @@ private:
 
 // ***************************************************************************
 // scalar clip filter
+class ViewProviderFemPostScalarClip;
+
 class TaskPostScalarClip: public TaskPostBox
 {
     Q_OBJECT
 
 public:
-    explicit TaskPostScalarClip(Gui::ViewProviderDocumentObject* view, QWidget* parent = nullptr);
+    explicit TaskPostScalarClip(ViewProviderFemPostScalarClip* view, QWidget* parent = nullptr);
     ~TaskPostScalarClip() override;
 
     void applyPythonCode() override;
@@ -469,12 +486,14 @@ private:
 
 // ***************************************************************************
 // warp vector filter
+class ViewProviderFemPostWarpVector;
+
 class TaskPostWarpVector: public TaskPostBox
 {
     Q_OBJECT
 
 public:
-    explicit TaskPostWarpVector(Gui::ViewProviderDocumentObject* view, QWidget* parent = nullptr);
+    explicit TaskPostWarpVector(ViewProviderFemPostWarpVector* view, QWidget* parent = nullptr);
     ~TaskPostWarpVector() override;
 
     void applyPythonCode() override;
