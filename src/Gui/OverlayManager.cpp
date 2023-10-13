@@ -156,7 +156,7 @@ private:
         }
         else if (!overlayStyleSheet.isEmpty() && !QFile::exists(overlayStyleSheet)) {
             // User did choose one of predefined stylesheets, we need to qualify it with namespace
-            overlayStyleSheet = QStringLiteral("overlay:%s").arg(overlayStyleSheet);
+            overlayStyleSheet = QStringLiteral("overlay:%1").arg(overlayStyleSheet);
         } 
 
         return overlayStyleSheet;
