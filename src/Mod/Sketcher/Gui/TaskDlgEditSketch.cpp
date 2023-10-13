@@ -30,6 +30,8 @@
 
 using namespace SketcherGui;
 
+namespace sp = std::placeholders;
+
 //**************************************************************************
 //**************************************************************************
 // TaskDialog
@@ -40,6 +42,7 @@ TaskDlgEditSketch::TaskDlgEditSketch(ViewProviderSketch* sketchView)
     , sketchView(sketchView)
 {
     assert(sketchView);
+    ToolSettings = new TaskSketcherTool(sketchView);
     Constraints = new TaskSketcherConstraints(sketchView);
     Elements = new TaskSketcherElements(sketchView);
     Messages = new TaskSketcherMessages(sketchView);
@@ -49,6 +52,7 @@ TaskDlgEditSketch::TaskDlgEditSketch(ViewProviderSketch* sketchView)
         "User parameter:BaseApp/Preferences/Mod/Sketcher");
     setEscapeButtonEnabled(hGrp->GetBool("LeaveSketchWithEscape", true));
 
+    Content.push_back(ToolSettings);
     Content.push_back(Messages);
 
     if (hGrp->GetBool("ShowSolverAdvancedWidget", false)) {
@@ -70,6 +74,11 @@ TaskDlgEditSketch::TaskDlgEditSketch(ViewProviderSketch* sketchView)
     if (!hGrp->GetBool("ExpandedElementsWidget", true)) {
         Elements->hideGroupBox();
     }
+
+    connectionToolSettings = sketchView->registerToolChanged(
+        std::bind(&SketcherGui::TaskDlgEditSketch::slotToolChanged, this, sp::_1));
+
+    ToolSettings->setHidden(true);
 }
 
 TaskDlgEditSketch::~TaskDlgEditSketch()
@@ -79,6 +88,18 @@ TaskDlgEditSketch::~TaskDlgEditSketch()
     std::vector<QWidget*>::iterator it = std::find(Content.begin(), Content.end(), SolverAdvanced);
     if (it == Content.end()) {
         Content.push_back(SolverAdvanced);
+    }
+
+    connectionToolSettings.disconnect();
+}
+
+void TaskDlgEditSketch::slotToolChanged(const std::string& toolname)
+{
+    bool hidden = toolname == "DSH_None" || toolname == "DSH_Point";
+    ToolSettings->setHidden(hidden);
+
+    if (toolname != "DSH_None") {
+        ToolSettings->toolChanged(toolname);
     }
 }
 

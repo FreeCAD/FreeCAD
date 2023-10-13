@@ -148,6 +148,12 @@ inline void ViewProviderSketchDrawSketchHandlerAttorney::moveConstraint(ViewProv
     vp.moveConstraint(constNum, toPos);
 }
 
+inline void
+ViewProviderSketchDrawSketchHandlerAttorney::signalToolChanged(const ViewProviderSketch& vp,
+                                                               const std::string& toolname)
+{
+    vp.signalToolChanged(toolname);
+}
 
 /**************************** CurveConverter **********************************************/
 
@@ -270,6 +276,11 @@ DrawSketchHandler::DrawSketchHandler()
 DrawSketchHandler::~DrawSketchHandler()
 {}
 
+std::string DrawSketchHandler::getToolName() const
+{
+    return "DSH_None";
+}
+
 QString DrawSketchHandler::getCrosshairCursorSVGName() const
 {
     return QString::fromLatin1("None");
@@ -287,6 +298,8 @@ void DrawSketchHandler::activate(ViewProviderSketch* vp)
         oldCursor = viewer->getWidget()->cursor();
 
         updateCursor();
+
+        this->signalToolChanged();
 
         this->preActivated();
         this->activated();
@@ -308,6 +321,8 @@ void DrawSketchHandler::deactivate()
     resetPositionText();
     unsetCursor();
     setAngleSnapping(false);
+
+    ViewProviderSketchDrawSketchHandlerAttorney::signalToolChanged(*sketchgui, "DSH_None");
 }
 
 void DrawSketchHandler::preActivated()
@@ -323,6 +338,12 @@ void DrawSketchHandler::quit()
     Gui::Selection().rmvPreselect();
 
     sketchgui->purgeHandler();
+}
+
+void DrawSketchHandler::toolWidgetChanged(QWidget* newwidget)
+{
+    toolwidget = newwidget;
+    onWidgetChanged();
 }
 
 //**************************************************************************
@@ -1144,4 +1165,9 @@ void DrawSketchHandler::setAngleSnapping(bool enable, Base::Vector2d referencePo
 void DrawSketchHandler::moveConstraint(int constNum, const Base::Vector2d& toPos)
 {
     ViewProviderSketchDrawSketchHandlerAttorney::moveConstraint(*sketchgui, constNum, toPos);
+}
+
+void DrawSketchHandler::signalToolChanged() const
+{
+    ViewProviderSketchDrawSketchHandlerAttorney::signalToolChanged(*sketchgui, this->getToolName());
 }
