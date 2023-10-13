@@ -2150,7 +2150,7 @@ PyObject* TopoShapePy::makeWires(PyObject *args) {
         return nullptr;
 
     PY_TRY {
-        return Py::new_reference_to(shape2pyshape(getTopoShapePtr()->makeWires(op)));
+        return Py::new_reference_to(shape2pyshape(getTopoShapePtr()->makEWires(op)));
     }
     PY_CATCH_OCC
 }

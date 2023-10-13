@@ -415,9 +415,9 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
                     continue;
             }else{
                 if(link && !link->getShowElementValue())
-                    shape = baseShape.makeTransform(mat,(Data::POSTFIX_INDEX + childName).c_str());
+                    shape = baseShape.makETransform(mat,(Data::POSTFIX_INDEX + childName).c_str());
                 else {
-                    shape = baseShape.makeTransform(mat);
+                    shape = baseShape.makETransform(mat);
                 }
             }
             shapes.push_back(shape);
@@ -429,7 +429,7 @@ static TopoShape _getTopoShape(const App::DocumentObject *obj, const char *subna
         if(shapes.empty())
             return shape;
 
-        shape.makeCompound(shapes);
+        shape.makECompound(shapes);
     }
 
     _ShapeCache.setShape(owner,shape);
@@ -449,7 +449,7 @@ TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subn
         bool resolveLink, bool transform, bool noElementMap)
 {
     if(!obj || !obj->getNameInDocument())
-        return {};
+        return TopoShape();
 
     std::vector<App::DocumentObject*> linkStack;
 
