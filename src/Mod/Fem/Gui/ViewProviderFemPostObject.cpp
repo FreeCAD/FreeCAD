@@ -892,6 +892,7 @@ bool ViewProviderFemPostObject::setEdit(int ModNum)
 
 void ViewProviderFemPostObject::setupTaskDialog(TaskDlgPost* dlg)
 {
+    assert(dlg->getView() == this);
     dlg->appendBox(new TaskPostDisplay(this));
 }
 
