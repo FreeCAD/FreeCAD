@@ -41,8 +41,6 @@ using namespace Gui::DockWnd;
 ComboView::ComboView(Gui::Document* pcDocument, QWidget *parent)
   : DockWindow(pcDocument, parent)
 {
-    setWindowTitle(tr("Combo View"));
-
     auto pLayout = new QGridLayout(this);
     pLayout->setSpacing( 0 );
     pLayout->setContentsMargins ( 0, 0, 0, 0 );
