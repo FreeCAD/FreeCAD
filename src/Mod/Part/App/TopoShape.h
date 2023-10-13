@@ -116,7 +116,7 @@ public:
               App::StringHasherRef hasher=App::StringHasherRef());
 
     TopoShape(const TopoShape&);
-    ~TopoShape();
+    virtual ~TopoShape();
 
     void setShape(const TopoDS_Shape& shape, bool resetElementMap=true);
 
@@ -143,11 +143,11 @@ public:
     /// set the transformation of the CasCade Shape
     void setShapePlacement(const Base::Placement& rclTrf);
     /// get the transformation of the CasCade Shape
-    Base::Placement getShapePlacement(void) const;
+    Base::Placement getShapePlacement() const;
     /// get the transformation of the CasCade Shape
-    Base::Matrix4D getTransform(void) const;
+    Base::Matrix4D getTransform() const;
     /// Bound box from the CasCade shape
-    Base::BoundBox3d getBoundBox(void)const;
+    Base::BoundBox3d getBoundBox()const;
     virtual bool getCenterOfGravity(Base::Vector3d& center) const;
     virtual bool getRotation(Base::Rotation& rot) const;
     static void convertTogpTrsf(const Base::Matrix4D& mtrx, gp_Trsf& trsf);
@@ -162,7 +162,7 @@ public:
      *  List of different subelement types
      *  it is NOT a list of the subelements itself
      */
-    virtual const std::vector<const char*>& getElementTypes(void) const;
+    virtual std::vector<const char*> getElementTypes() const;
     virtual unsigned long countSubElements(const char* Type) const;
     /// get the subelement by type and number
     virtual Data::Segment* getSubElement(const char* Type, unsigned long) const;
@@ -205,7 +205,7 @@ public:
 
     void SaveDocFile (Base::Writer &writer) const;
     void RestoreDocFile(Base::Reader &reader);
-    unsigned int getMemSize (void) const;
+    unsigned int getMemSize () const;
     //@}
 
     /** @name Input/Output */
@@ -222,7 +222,7 @@ public:
     void exportStep(const char *FileName) const;
     void exportBrep(const char *FileName) const;
     void exportBrep(std::ostream&) const;
-    void exportBinary(std::ostream&);
+    void exportBinary(std::ostream&) const;
     void exportStl (const char *FileName, double deflection) const;
     void exportFaceSet(double, double, const std::vector<App::Color>&, std::ostream&) const;
     void exportLineSet(std::ostream&) const;
@@ -390,9 +390,9 @@ public:
     /** Get points from object with given accuracy */
     virtual void getPoints(std::vector<Base::Vector3d> &Points,
         std::vector<Base::Vector3d> &Normals,
-        float Accuracy, uint16_t flags=0) const;
+        double Accuracy, uint16_t flags=0) const;
     virtual void getFaces(std::vector<Base::Vector3d> &Points,std::vector<Facet> &faces,
-        float Accuracy, uint16_t flags=0) const;
+        double Accuracy, uint16_t flags=0) const;
     void setFaces(const std::vector<Base::Vector3d> &Points,
                   const std::vector<Facet> &faces, double tolerance=1.0e-06);
     void getDomains(std::vector<Domain>&) const;
