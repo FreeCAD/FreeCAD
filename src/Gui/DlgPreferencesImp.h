@@ -136,11 +136,9 @@ protected:
     void resizeEvent(QResizeEvent*) override;
     void onButtonResetTabClicked();
     void onButtonResetGroupClicked();
-    void relabelResetButtons();
 
 
 protected Q_SLOTS:
-    void changeTab(int current);
     void changeGroup(QListWidgetItem *current, QListWidgetItem *previous);
     void onButtonBoxClicked(QAbstractButton*);
     void resizeWindow(int w, int h);
@@ -153,6 +151,7 @@ private:
     QTabWidget* createTabForGroup(const std::string& groupName);
     void createPageInGroup(QTabWidget* tabWidget, const std::string& pageName);
     void applyChanges();
+    void showResetOptions();
     void restoreDefaults();
     void restorePageDefaults(PreferencePage**);
     QString longestGroupName() const;
