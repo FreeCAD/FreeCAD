@@ -150,6 +150,9 @@ public:
     /// return true if the end of an element is reached, false otherwise
     bool isEndOfElement() const;
 
+    /// return true if the on the start of the document, false otherwise
+    bool isStartOfDocument() const;
+
     /// return true if the end of the document is reached, false otherwise
     bool isEndOfDocument() const;
 
@@ -175,7 +178,7 @@ public:
      */
     void readEndElement(const char* ElementName=nullptr, int level=-1);
     /// read until characters are found
-    void readCharacters();
+    void readCharacters(const char* filename, CharStreamFormat format = CharStreamFormat::Raw);
 
     /** Obtain an input stream for reading characters
      *
@@ -183,7 +186,7 @@ public:
      *  auto destroyed when you call with readElement() or readEndElement(), or
      *  you can end it explicitly with endCharStream().
      */
-    std::istream &beginCharStream();
+    std::istream &beginCharStream(CharStreamFormat format = CharStreamFormat::Raw);
     /// Manually end the current character stream
     void endCharStream();
     /// Obtain the current character stream
@@ -200,7 +203,7 @@ public:
     unsigned int getAttributeCount() const;
     /// check if the read element has a special attribute
     bool hasAttribute(const char* AttrName) const;
-    /// return the named attribute as an interer (does type checking)
+    /// return the named attribute as an integer (does type checking)
     long getAttributeAsInteger(const char* AttrName) const;
     unsigned long getAttributeAsUnsigned(const char* AttrName) const;
     /// return the named attribute as a double floating point (does type checking)
@@ -241,11 +244,6 @@ public:
     bool testStatus(ReaderStatus pos) const;
     /// set the status bits
     void setStatus(ReaderStatus pos, bool on);
-    struct FileEntry {
-        std::string FileName;
-        Base::Persistence *Object;
-    };
-    std::vector<FileEntry> FileList;
 
 protected:
     /// read the next element
@@ -287,7 +285,7 @@ protected:
     void resetErrors() override;
     //@}
 
-
+private:
     int Level{0};
     std::string LocalName;
     std::string Characters;
@@ -316,6 +314,11 @@ protected:
     bool _valid{false};
     bool _verbose{true};
 
+    struct FileEntry {
+        std::string FileName;
+        Base::Persistence *Object;
+    };
+    std::vector<FileEntry> FileList;
     std::vector<std::string> FileNames;
 
     std::bitset<32> StatusBits;

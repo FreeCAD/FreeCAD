@@ -2,6 +2,16 @@
 
 #include "App/License.h"
 
+TEST(License, isLicenseEmpty)
+{
+    EXPECT_EQ(App::findLicense(""), -1);
+}
+
+TEST(License, isLicenseNull)
+{
+    EXPECT_EQ(App::findLicense(nullptr), -1);
+}
+
 TEST(License, isLicenseYesStr)
 {
     EXPECT_EQ(App::findLicense("CC_BY_40"), 1);
@@ -19,7 +29,9 @@ TEST(License, direct)
     App::TLicenseArr tt {"CC_BY_40",
                          "Creative Commons Attribution 4.0",
                          "https://creativecommons.org/licenses/by/4.0/"};
-    EXPECT_EQ(App::licenseItems.at(posn), tt);
+    EXPECT_STREQ(App::licenseItems.at(posn).at(0), tt.at(0));
+    EXPECT_STREQ(App::licenseItems.at(posn).at(1), tt.at(1));
+    EXPECT_STREQ(App::licenseItems.at(posn).at(2), tt.at(2));
 }
 
 TEST(License, findLicenseByIdent)

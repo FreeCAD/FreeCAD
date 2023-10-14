@@ -32,6 +32,7 @@
 
 #include "Reader.h"
 #include "Base64.h"
+#include "Base64Filter.h"
 #include "Console.h"
 #include "InputSource.h"
 #include "Persistence.h"
@@ -252,6 +253,11 @@ bool Base::XMLReader::isEndOfElement() const
     return (ReadType == EndElement);
 }
 
+bool Base::XMLReader::isStartOfDocument() const
+{
+    return (ReadType == StartDocument);
+}
+
 bool Base::XMLReader::isEndOfDocument() const
 {
     return (ReadType == EndDocument);
@@ -283,8 +289,17 @@ void Base::XMLReader::readEndElement(const char* ElementName, int level)
                         || (level>=0 && level!=Level))));
 }
 
-void Base::XMLReader::readCharacters()
+void Base::XMLReader::readCharacters(const char* filename, CharStreamFormat format)
 {
+    Base::FileInfo fi(filename);
+    Base::ofstream to(fi, std::ios::out | std::ios::binary | std::ios::trunc);
+    if (!to) {
+        throw Base::FileException("XMLReader::readCharacters() Could not open file!");
+    }
+
+    beginCharStream(format) >> to.rdbuf();
+    to.close();
+    endCharStream();
 }
 
 std::streamsize Base::XMLReader::read(char_type* s, std::streamsize n)
@@ -336,7 +351,7 @@ std::istream& Base::XMLReader::charStream()
     return *CharStream;
 }
 
-std::istream& Base::XMLReader::beginCharStream()
+std::istream& Base::XMLReader::beginCharStream(CharStreamFormat format)
 {
     if (CharStream) {
         throw Base::XMLParseException("recursive character stream");
@@ -362,6 +377,9 @@ std::istream& Base::XMLReader::beginCharStream()
 
     CharStream = std::make_unique<boost::iostreams::filtering_istream>();
     auto* filteringStream = dynamic_cast<boost::iostreams::filtering_istream*>(CharStream.get());
+    if(format == CharStreamFormat::Base64Encoded) {
+        filteringStream->push(base64_decoder(Base::base64DefaultBufferSize, Base64ErrorHandling::silent));
+    }
     filteringStream->push(boost::ref(*this));
     return *CharStream;
 }

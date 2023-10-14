@@ -67,7 +67,8 @@ namespace {
     // calculate the orthogonal projection of p onto s
     // ((p dot s) / (s dot s)) * s (https://en.wikibooks.org/wiki/Linear_Algebra/Orthogonal_Projection_Onto_a_Line)
     // and it back by original offset to get the projected point
-    double proj = (p.x() * s.x() + p.y() * s.y()) / (s.x() * s.x() + s.y() * s.y());
+    const double proj = (p.x() * s.x() + p.y() * s.y())
+        / (s.x() * s.x() + s.y() * s.y() + std::numeric_limits<double>::epsilon());
     Voronoi::point_type pt;
     {
       pt.x(offset.x() + proj * s.x());

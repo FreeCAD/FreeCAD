@@ -49,7 +49,8 @@ ViewProviderFemPostDataAlongLine::~ViewProviderFemPostDataAlongLine() = default;
 void ViewProviderFemPostDataAlongLine::setupTaskDialog(TaskDlgPost* dlg)
 {
     // add the function box
-    dlg->appendBox(new TaskPostDataAlongLine(dlg->getView()));
+    assert(dlg->getView() == this);
+    dlg->appendBox(new TaskPostDataAlongLine(this));
 }
 
 
@@ -79,7 +80,8 @@ ViewProviderFemPostDataAtPoint::~ViewProviderFemPostDataAtPoint() = default;
 void ViewProviderFemPostDataAtPoint::setupTaskDialog(TaskDlgPost* dlg)
 {
     // add the function box
-    dlg->appendBox(new TaskPostDataAtPoint(dlg->getView()));
+    assert(dlg->getView() == this);
+    dlg->appendBox(new TaskPostDataAtPoint(this));
 }
 
 
@@ -99,8 +101,9 @@ void ViewProviderFemPostClip::setupTaskDialog(TaskDlgPost* dlg)
 {
 
     // add the function box
+    assert(dlg->getView() == this);
     dlg->appendBox(new TaskPostClip(
-        dlg->getView(),
+        this,
         &static_cast<Fem::FemPostClipFilter*>(dlg->getView()->getObject())->Function));
 
     // add the display options
@@ -122,7 +125,8 @@ ViewProviderFemPostContours::~ViewProviderFemPostContours() = default;
 void ViewProviderFemPostContours::setupTaskDialog(TaskDlgPost* dlg)
 {
     // the filter-specific task panel
-    dlg->appendBox(new TaskPostContours(dlg->getView()));
+    assert(dlg->getView() == this);
+    dlg->appendBox(new TaskPostContours(this));
 }
 
 
@@ -140,8 +144,9 @@ ViewProviderFemPostCut::~ViewProviderFemPostCut() = default;
 void ViewProviderFemPostCut::setupTaskDialog(TaskDlgPost* dlg)
 {
     // add the function box
+    assert(dlg->getView() == this);
     dlg->appendBox(new TaskPostCut(
-        dlg->getView(),
+        this,
         &static_cast<Fem::FemPostCutFilter*>(dlg->getView()->getObject())->Function));
 
     // add the display options
@@ -163,7 +168,8 @@ ViewProviderFemPostScalarClip::~ViewProviderFemPostScalarClip() = default;
 void ViewProviderFemPostScalarClip::setupTaskDialog(TaskDlgPost* dlg)
 {
     // add the function box
-    dlg->appendBox(new TaskPostScalarClip(dlg->getView()));
+    assert(dlg->getView() == this);
+    dlg->appendBox(new TaskPostScalarClip(this));
 
     // add the display options
     FemGui::ViewProviderFemPostObject::setupTaskDialog(dlg);
@@ -184,7 +190,8 @@ ViewProviderFemPostWarpVector::~ViewProviderFemPostWarpVector() = default;
 void ViewProviderFemPostWarpVector::setupTaskDialog(TaskDlgPost* dlg)
 {
     // add the function box
-    dlg->appendBox(new TaskPostWarpVector(dlg->getView()));
+    assert(dlg->getView() == this);
+    dlg->appendBox(new TaskPostWarpVector(this));
 
     // add the display options
     FemGui::ViewProviderFemPostObject::setupTaskDialog(dlg);

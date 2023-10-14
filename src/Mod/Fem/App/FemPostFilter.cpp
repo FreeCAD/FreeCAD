@@ -152,8 +152,14 @@ FemPostDataAlongLineFilter::FemPostDataAlongLineFilter()
                       App::Prop_None,
                       "Y axis data values used for plotting");
     ADD_PROPERTY_TYPE(PlotData, (""), "DataAlongLine", App::Prop_None, "Field used for plotting");
+    ADD_PROPERTY_TYPE(PlotDataComponent,
+                      ((long)0),
+                      "DataAlongLine",
+                      App::Prop_None,
+                      "Field component used for plotting");
 
     PlotData.setStatus(App::Property::ReadOnly, true);
+    PlotDataComponent.setStatus(App::Property::ReadOnly, true);
     XAxisData.setStatus(App::Property::Output, true);
     YAxisData.setStatus(App::Property::Output, true);
 
@@ -229,6 +235,10 @@ void FemPostDataAlongLineFilter::onChanged(const Property* prop)
     else if (prop == &PlotData) {
         GetAxisData();
     }
+    else if (prop == &PlotDataComponent) {
+        GetAxisData();
+    }
+
     Fem::FemPostFilter::onChanged(prop);
 }
 
@@ -258,9 +268,15 @@ void FemPostDataAlongLineFilter::GetAxisData()
     if (!pdata) {
         return;
     }
-    vtkDataArray* tcoords = dset->GetPointData()->GetTCoords("Texture Coordinates");
 
-    vtkIdType component = 0;
+    // expected "Magnitude" -> 0; "X" -> 1; "Y" -> 2, "Z" -> 3
+    vtkIdType component = PlotDataComponent.getValue();
+    // prevent selecting a component out of range
+    if (!PlotDataComponent.isValid() || component > pdata->GetNumberOfComponents()) {
+        return;
+    }
+
+    vtkDataArray* tcoords = dset->GetPointData()->GetTCoords("Texture Coordinates");
 
     const Base::Vector3d& vec1 = Point1.getValue();
     const Base::Vector3d& vec2 = Point2.getValue();
@@ -268,25 +284,31 @@ void FemPostDataAlongLineFilter::GetAxisData()
     double Len = diff.Length();
 
     for (vtkIdType i = 0; i < dset->GetNumberOfPoints(); ++i) {
-
         double value = 0;
         if (pdata) {
             if (pdata->GetNumberOfComponents() == 1) {
-                value = pdata->GetComponent(i, component);
+                value = pdata->GetComponent(i, 0);
             }
-            else {
-                for (vtkIdType j = 0; j < pdata->GetNumberOfComponents(); ++j) {
-                    value += std::pow(pdata->GetComponent(i, j), 2);
+            else if (pdata->GetNumberOfComponents() > 1) {
+                if (component) {
+                    value = pdata->GetComponent(i, component - 1);
                 }
+                else {
+                    // compute magnitude
+                    for (vtkIdType j = 0; j < pdata->GetNumberOfComponents(); ++j) {
+                        value += std::pow(pdata->GetComponent(i, j), 2);
+                    }
 
-                value = std::sqrt(value);
+                    value = std::sqrt(value);
+                }
             }
         }
 
         values.push_back(value);
-        double tcoord = tcoords->GetComponent(i, component);
+        double tcoord = tcoords->GetComponent(i, 0);
         coords.push_back(tcoord * Len);
     }
+
     YAxisData.setValues(values);
     XAxisData.setValues(coords);
 }

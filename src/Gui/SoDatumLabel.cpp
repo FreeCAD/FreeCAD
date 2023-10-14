@@ -97,7 +97,6 @@ SoDatumLabel::SoDatumLabel()
     this->imgWidth = 0;
     this->imgHeight = 0;
     this->glimagevalid = false;
-    this->textOffset = SbVec3f(0.f, 0.f, 0.f);
 }
 
 void SoDatumLabel::drawImage()
@@ -441,11 +440,89 @@ void SoDatumLabel::computeBBox(SoAction * action, SbBox3f &box, SbVec3f &center)
     datumBox.computeBBox(box, center);
 }
 
+SbVec3f SoDatumLabel::getLabelTextCenter()
+{
+    // Get the points stored
+    const SbVec3f* points = this->pnts.getValues(0);
+    SbVec3f p1 = points[0];
+    SbVec3f p2 = points[1];
+
+    if (datumtype.getValue() == SoDatumLabel::DISTANCE ||
+        datumtype.getValue() == SoDatumLabel::DISTANCEX ||
+        datumtype.getValue() == SoDatumLabel::DISTANCEY) {
+        return getLabelTextCenterDistance(p1, p2);
+    }
+    else if (datumtype.getValue() == SoDatumLabel::RADIUS ||
+        datumtype.getValue() == SoDatumLabel::DIAMETER) {
+        return getLabelTextCenterDiameter(p1, p2);
+
+    }
+    else if (datumtype.getValue() == SoDatumLabel::ANGLE) {
+        return getLabelTextCenterAngle(p1);
+    }
+}
+
+SbVec3f SoDatumLabel::getLabelTextCenterDistance(const SbVec3f& p1, const SbVec3f& p2)
+{
+    float length = param1.getValue();
+    float length2 = param2.getValue();
+
+    SbVec3f dir;
+    SbVec3f normal;
+    if (datumtype.getValue() == SoDatumLabel::DISTANCE) {
+        dir = (p2 - p1);
+    }
+    else if (datumtype.getValue() == SoDatumLabel::DISTANCEX) {
+        dir = SbVec3f((p2[0] - p1[0] >= FLT_EPSILON) ? 1 : -1, 0, 0);
+    }
+    else if (datumtype.getValue() == SoDatumLabel::DISTANCEY) {
+        dir = SbVec3f(0, (p2[1] - p1[1] >= FLT_EPSILON) ? 1 : -1, 0);
+    }
+
+    dir.normalize();
+    normal = SbVec3f(-dir[1], dir[0], 0);
+
+    float normproj12 = (p2 - p1).dot(normal);
+    SbVec3f p1_ = p1 + normproj12 * normal;
+
+    SbVec3f midpos = (p1_ + p2) / 2;
+
+    SbVec3f textCenter = midpos + normal * length + dir * length2;
+    return textCenter;
+}
+
+SbVec3f SoDatumLabel::getLabelTextCenterDiameter(const SbVec3f& p1, const SbVec3f& p2)
+{
+    SbVec3f dir = (p2 - p1);
+    dir.normalize();
+
+    float length = this->param1.getValue();
+    SbVec3f textCenter = p2 + length * dir;
+    return textCenter;
+}
+
+SbVec3f SoDatumLabel::getLabelTextCenterAngle(const SbVec3f& p0)
+{
+    // Load the Parameters
+    float length = param1.getValue();
+    float startangle = param2.getValue();
+    float range = param3.getValue();
+    float endangle = startangle + range;
+
+    float len2 = 2.0F * length;
+
+    // Useful Information
+    // v0 - vector for text position
+    // p0 - vector for angle intersect
+    SbVec3f v0(cos(startangle + range / 2), sin(startangle + range / 2), 0);
+
+    SbVec3f textCenter = p0 + v0 * len2;
+    return textCenter;
+}
+
 void SoDatumLabel::generateDistancePrimitives(SoAction * action, const SbVec3f& p1, const SbVec3f& p2)
 {
-    float length = this->param1.getValue();
-    float length2 = this->param2.getValue();
-    SbVec3f dir, normal;
+    SbVec3f dir;
     if (this->datumtype.getValue() == DISTANCE) {
         dir = (p2-p1);
     } else if (this->datumtype.getValue() == DISTANCEX) {
@@ -455,12 +532,7 @@ void SoDatumLabel::generateDistancePrimitives(SoAction * action, const SbVec3f& 
     }
 
     dir.normalize();
-    normal = SbVec3f (-dir[1],dir[0],0);
 
-    float normproj12 = (p2-p1).dot(normal);
-    SbVec3f p1_ = p1 + normproj12 * normal;
-
-    SbVec3f midpos = (p1_ + p2)/2;
     // Get magnitude of angle between horizontal
     float angle = atan2f(dir[1],dir[0]);
 
@@ -478,7 +550,7 @@ void SoDatumLabel::generateDistancePrimitives(SoAction * action, const SbVec3f& 
     img3 = SbVec3f((img3[0] * c) - (img3[1] * s), (img3[0] * s) + (img3[1] * c), 0.f);
     img4 = SbVec3f((img4[0] * c) - (img4[1] * s), (img4[0] * s) + (img4[1] * c), 0.f);
 
-    textOffset = midpos + normal * length + dir * length2;
+    SbVec3f textOffset = getLabelTextCenterDistance(p1, p2);
 
     img1 += textOffset;
     img2 += textOffset;
@@ -513,9 +585,6 @@ void SoDatumLabel::generateDiameterPrimitives(SoAction * action, const SbVec3f& 
     SbVec3f dir = (p2-p1);
     dir.normalize();
 
-    float length = this->param1.getValue();
-    SbVec3f pos = p2 + length*dir;
-
     float angle = atan2f(dir[1],dir[0]);
 
     SbVec3f img1 = SbVec3f(-this->imgWidth / 2, -this->imgHeight / 2, 0.f);
@@ -532,7 +601,7 @@ void SoDatumLabel::generateDiameterPrimitives(SoAction * action, const SbVec3f& 
     img3 = SbVec3f((img3[0] * c) - (img3[1] * s), (img3[0] * s) + (img3[1] * c), 0.f);
     img4 = SbVec3f((img4[0] * c) - (img4[1] * s), (img4[0] * s) + (img4[1] * c), 0.f);
 
-    textOffset = pos;
+    SbVec3f textOffset = getLabelTextCenterDiameter(p1, p2);
 
     img1 += textOffset;
     img2 += textOffset;
@@ -564,21 +633,7 @@ void SoDatumLabel::generateDiameterPrimitives(SoAction * action, const SbVec3f& 
 
 void SoDatumLabel::generateAnglePrimitives(SoAction * action, const SbVec3f& p0)
 {
-    // Only the angle intersection point is needed
-
-    // Load the Parameters
-    float length     = this->param1.getValue();
-    float startangle = this->param2.getValue();
-    float range      = this->param3.getValue();
-
-    float r = 2*length;
-
-    // Useful Information
-    // v0 - vector for text position
-    // p0 - vector for angle intersect
-    SbVec3f v0(cos(startangle+range/2),sin(startangle+range/2),0);
-
-    textOffset = p0 + v0 * r;
+    SbVec3f textOffset = getLabelTextCenterAngle(p0);
 
     SbVec3f img1 = SbVec3f(-this->imgWidth / 2, -this->imgHeight / 2, 0.f);
     SbVec3f img2 = SbVec3f(-this->imgWidth / 2,  this->imgHeight / 2, 0.f);
@@ -821,6 +876,8 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
     glLineWidth(this->lineWidth.getValue());
     glColor3f(t[0], t[1], t[2]);
 
+    SbVec3f textOffset;
+
     if (this->datumtype.getValue() == DISTANCE ||
         this->datumtype.getValue() == DISTANCEX ||
         this->datumtype.getValue() == DISTANCEY ) {
@@ -1006,7 +1063,8 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
 
         }
 
-    } else if (this->datumtype.getValue() == ANGLE) {
+    }
+    else if (this->datumtype.getValue() == ANGLE) {
         // Only the angle intersection point is needed
         SbVec3f p0 = points[0];
 
@@ -1075,7 +1133,8 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
             glVertex2f(pnt4[0],pnt4[1]);
         glEnd();
 
-    } else if (this->datumtype.getValue() == SYMMETRIC) {
+    }
+    else if (this->datumtype.getValue() == SYMMETRIC) {
 
         SbVec3f p1 = points[0];
         SbVec3f p2 = points[1];

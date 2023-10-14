@@ -162,7 +162,7 @@ private:
 
 public:
 
-    int m_CubeWidgetSize = 132;
+    static int m_CubeWidgetSize;
     QColor m_BaseColor;
     QColor m_EmphaseColor;
     QColor m_HiliteColor;
@@ -200,6 +200,13 @@ private:
 
     QMenu* m_Menu;
 };
+
+int NaviCubeImplementation::m_CubeWidgetSize = 132;
+
+int NaviCube::getNaviCubeSize()
+{
+    return NaviCubeImplementation::m_CubeWidgetSize;
+}
 
 NaviCube::NaviCube(Gui::View3DInventorViewer* viewer) {
     m_NaviCubeImplementation = new NaviCubeImplementation(viewer);

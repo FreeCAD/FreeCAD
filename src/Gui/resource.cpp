@@ -44,7 +44,7 @@
 #include "PreferencePages/DlgSettingsTheme.h"
 #include "PreferencePages/DlgSettingsViewColor.h"
 #include "PreferencePages/DlgSettingsWorkbenchesImp.h"
-
+#include "PreferencePages/DlgSettingsUI.h"
 
 #include "DlgToolbarsImp.h"
 #include "DlgActionsImp.h"
@@ -67,15 +67,18 @@ WidgetFactorySupplier::WidgetFactorySupplier()
     //
     //
     new PrefPageProducer<DlgSettingsGeneral>          ( QT_TRANSLATE_NOOP("QObject","General") );
+    DlgSettingsGeneral::attachObserver();
     new PrefPageProducer<DlgSettingsDocumentImp>      ( QT_TRANSLATE_NOOP("QObject","General") );
     new PrefPageProducer<DlgSettingsSelection>        ( QT_TRANSLATE_NOOP("QObject","General") );
     new PrefPageProducer<DlgSettingsCacheDirectory>   ( QT_TRANSLATE_NOOP("QObject","General") );
     new PrefPageProducer<DlgSettingsNotificationArea> ( QT_TRANSLATE_NOOP("QObject","General") );
     new PrefPageProducer<DlgSettingsReportView>       ( QT_TRANSLATE_NOOP("QObject","General") );
     new PrefPageProducer<DlgSettings3DViewImp>        ( QT_TRANSLATE_NOOP("QObject","Display") );
+    new PrefPageProducer<DlgSettingsUI>               ( QT_TRANSLATE_NOOP("QObject","Display") );
     new PrefPageProducer<DlgSettingsNavigation>       ( QT_TRANSLATE_NOOP("QObject","Display") );
     new PrefPageProducer<DlgSettingsViewColor>        ( QT_TRANSLATE_NOOP("QObject","Display") );
     new PrefPageProducer<DlgSettingsTheme>            ( QT_TRANSLATE_NOOP("QObject","Display") );
+    DlgSettingsTheme::attachObserver();
     new PrefPageProducer<DlgSettingsWorkbenchesImp>   ( QT_TRANSLATE_NOOP("QObject","Workbenches") );
     new PrefPageProducer<DlgSettingsMacroImp>         ( QT_TRANSLATE_NOOP("QObject", "Python"));
     new PrefPageProducer<DlgSettingsPythonConsole>    ( QT_TRANSLATE_NOOP("QObject", "Python"));
