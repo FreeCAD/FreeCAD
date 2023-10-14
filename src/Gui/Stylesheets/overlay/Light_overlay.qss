@@ -11,7 +11,7 @@ Gui--OverlayTabWidget#OverlayLeft {}
 }*/
 
 Gui--OverlayTabWidget {
-  qproperty-effectColor: rgba(42, 42, 42, 0.278);
+  qproperty-effectColor: rgba(255, 255, 255, 0.394);
   qproperty-effectBlurRadius: 1.0;
   qproperty-effectOffsetX: 0.0;
   qproperty-effectOffsetY: 0.0;
@@ -37,11 +37,11 @@ Gui--OverlayTabWidget::pane {
 }
 
 Gui--OverlayProxyWidget {
-  qproperty-hintColor: rgba(100, 100, 100, 0.6);
+  qproperty-hintColor: rgba(255, 255, 255, 0.6);
 }
 
 Gui--OverlayToolButton {
-  background-color: qlineargradient(x1:0, y1:0.3, x2:0, y2:1, stop:0 #333333, stop:1 #2a2a2a);
+  background: #f6f6f6;
   padding: -2px;
   border: 0px outset rgb(255, 255, 255);
   border-radius: 0px;
@@ -59,7 +59,7 @@ Gui--OverlayToolButton:focus {
 
 Gui--OverlayToolButton::pressed {
   background: rgb(159, 159, 159);
-  border: 2px inset rgb(84, 84, 84);
+  border: 2px inset rgb(196, 196, 196);
   padding: 0px;
 }
 
@@ -87,23 +87,21 @@ Gui--OverlayTabWidget#OverlayBottom QSplitter Gui--OverlaySplitterHandle {
 */
 
 Gui--OverlaySplitterHandle {
-  background-color: qlineargradient(x1:0, y1:0.3, x2:0, y2:1, stop:0 #333333, stop:1 #2a2a2a);
+  background-color: qlineargradient(x1:0, y1:0.3, x2:0, y2:1, stop:0 #E2E2E2, stop:1 #EDEDED);
 }
-Gui--OverlayTitle {
-  background-color: #1cb00b;
-}
+
 Gui--OverlayTitleBar {
-  background-color: qlineargradient(x1:0, y1:0.3, x2:0, y2:1, stop:0 #333333, stop:1 #2a2a2a);
+  background-color: qlineargradient(x1:0, y1:0.3, x2:0, y2:1, stop:0 #E2E2E2, stop:1 #EDEDED);
 }
 
 QScrollArea#ClippingScrollArea,
 QWidget#ClippingScrollAreaContents {
-  background-color: #750000;
+  background-color: #ffdede;
 }
 QSint--ActionGroup QFrame[class="content"] {
-  background-color: #444444; /* Task Panel background color */
+  background-color: #f6f6f6; /* Task Panel background color */
 }
 
 QAbstractItemView {
-  alternate-background-color: #313131;
+  alternate-background-color: #ffffff;
 }

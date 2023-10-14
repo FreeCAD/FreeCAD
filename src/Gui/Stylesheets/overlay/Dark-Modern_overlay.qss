@@ -41,7 +41,7 @@ Gui--OverlayProxyWidget {
 }
 
 Gui--OverlayToolButton {
-  background-color: qlineargradient(x1:0, y1:0.3, x2:0, y2:1, stop:0 #333333, stop:1 #2a2a2a);
+  background: #444444;
   padding: -2px;
   border: 0px outset rgb(255, 255, 255);
   border-radius: 0px;
@@ -87,13 +87,11 @@ Gui--OverlayTabWidget#OverlayBottom QSplitter Gui--OverlaySplitterHandle {
 */
 
 Gui--OverlaySplitterHandle {
-  background-color: qlineargradient(x1:0, y1:0.3, x2:0, y2:1, stop:0 #333333, stop:1 #2a2a2a);
+  background-color: #444444;
 }
-Gui--OverlayTitle {
-  background-color: #1cb00b;
-}
+
 Gui--OverlayTitleBar {
-  background-color: qlineargradient(x1:0, y1:0.3, x2:0, y2:1, stop:0 #333333, stop:1 #2a2a2a);
+  background-color: #444444;
 }
 
 QScrollArea#ClippingScrollArea,
