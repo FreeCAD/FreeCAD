@@ -1164,9 +1164,15 @@ void ToolTip::showText(const QPoint & pos, const QString & text, QWidget * w)
         tip->displayTime.start();
     }
     else {
-        // do immediately
-        QToolTip::showText(pos, text, w);
+        hideText();
     }
+}
+
+void ToolTip::hideText()
+{
+    instance()->tooltipTimer.stop();
+    instance()->hidden = true;
+    QToolTip::hideText();
 }
 
 void ToolTip::timerEvent(QTimerEvent *e)
@@ -1180,25 +1186,45 @@ void ToolTip::timerEvent(QTimerEvent *e)
 
 bool ToolTip::eventFilter(QObject* o, QEvent*e)
 {
-    // This is a trick to circumvent that the tooltip gets hidden immediately
-    // after it gets visible. We just filter out all timer events to keep the
-    // label visible.
-    if (o->inherits("QLabel")) {
-        auto label = qobject_cast<QLabel*>(o);
-        // Ignore the timer events to prevent from being closed
-        if (label->windowFlags() & Qt::ToolTip) {
-            if (e->type() == QEvent::Show) {
-                this->hidden = false;
-            }
-            else if (e->type() == QEvent::Hide) {
-                removeEventFilter();
-                this->hidden = true;
-            }
-            else if (e->type() == QEvent::Timer &&
-                !this->hidden && displayTime.elapsed() < 5000) {
-                return true;
+    if (!o->isWidgetType())
+        return false;
+    switch(e->type()) {
+    case QEvent::MouseButtonPress:
+        hideText();
+        break;
+    case QEvent::KeyPress:
+        if (static_cast<QKeyEvent*>(e)->key() == Qt::Key_Escape)
+            hideText();
+        break;
+    case QEvent::Leave:
+        hideText();
+        break;
+    case QEvent::Timer:
+    case QEvent::Show:
+    case QEvent::Hide:
+        if (auto label = qobject_cast<QLabel*>(o)) {
+            if (label->objectName() == QStringLiteral("qtooltip_label")) {
+                // This is a trick to circumvent that the tooltip gets hidden immediately
+                // after it gets visible. We just filter out all timer events to keep the
+                // label visible.
+
+                // Ignore the timer events to prevent from being closed
+                if (e->type() == QEvent::Show) {
+                    this->hidden = false;
+                }
+                else if (e->type() == QEvent::Hide) {
+                    // removeEventFilter();
+                    this->hidden = true;
+                }
+                else if (e->type() == QEvent::Timer &&
+                    !this->hidden && displayTime.elapsed() < 5000) {
+                    return true;
+                }
             }
         }
+        break;
+    default:
+        break;
     }
     return false;
 }

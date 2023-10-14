@@ -379,9 +379,6 @@ automatically run a file recovery when it is started.</string>
         </item>
         <item>
          <widget class="Gui::PrefSpinBox" name="prefThumbnailSize">
-          <property name="enabled">
-           <bool>false</bool>
-          </property>
           <property name="toolTip">
            <string>Sets the size of the thumbnail that is stored in the document.
 Common sizes are 128, 256 and 512</string>

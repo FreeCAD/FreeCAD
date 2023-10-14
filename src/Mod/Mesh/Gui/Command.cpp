@@ -38,8 +38,6 @@
 #ifndef __InventorAll__
 #include <Gui/InventorAll.h>
 #endif
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
 
 #include <App/DocumentObject.h>
 #include <App/DocumentObjectGroup.h>
@@ -55,6 +53,8 @@
 #include <Gui/MouseSelection.h>
 #include <Gui/NavigationStyle.h>
 #include <Gui/Selection.h>
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 #include <Gui/WaitCursor.h>
 
 #include <Mod/Mesh/App/Core/Smoothing.h>

@@ -29,8 +29,6 @@
 # include <Inventor/nodes/SoOrthographicCamera.h>
 # include <Inventor/nodes/SoImage.h>
 #endif
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
 
 #include <QtOpenGL.h>
 
@@ -38,7 +36,9 @@
 #include <Gui/Document.h>
 #include <Gui/Selection.h>
 #include <Gui/GLPainter.h>
-#include <Gui/NavigationStyle.h>
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
+
 
 #include "Overlay.h"
 
@@ -435,6 +435,9 @@ void paintSelection()
 }
 
 // ---------------------------------------
+#include <Gui/NavigationStyle.h>
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 #if 0
 void MeshSelection::prepareFreehandSelection(bool add)
 {

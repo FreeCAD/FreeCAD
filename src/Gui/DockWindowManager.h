@@ -26,7 +26,6 @@
 #include <QObject>
 #include <FCGlobal.h>
 
-
 class QDockWidget;
 class QWidget;
 
@@ -70,6 +69,7 @@ public:
 
     bool registerDockWindow(const char* name, QWidget* widget);
     QWidget* unregisterDockWindow(const char* name);
+    QWidget* findRegisteredDockWindow(const char* name);
     void setup(DockWindowItems*);
 
     /// Adds a QDockWidget to the main window and sets \a widget as its widget

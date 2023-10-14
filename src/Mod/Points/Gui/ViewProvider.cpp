@@ -36,14 +36,13 @@
 #include <Inventor/nodes/SoNormal.h>
 #include <Inventor/nodes/SoPointSet.h>
 #endif
-#include <Gui/View3DInventorViewer.h>
 
 #include <App/Document.h>
 #include <Base/Vector3D.h>
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/SoFCSelection.h>
-
+#include <Gui/View3DInventorViewer.h>
 #include <Mod/Points/App/PointsFeature.h>
 #include <Mod/Points/App/Properties.h>
 

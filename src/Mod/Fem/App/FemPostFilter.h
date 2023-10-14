@@ -99,6 +99,7 @@ public:
     App::PropertyFloatList XAxisData;
     App::PropertyFloatList YAxisData;
     App::PropertyString PlotData;
+    App::PropertyEnumeration PlotDataComponent;
 
     const char* getViewProviderName() const override
     {

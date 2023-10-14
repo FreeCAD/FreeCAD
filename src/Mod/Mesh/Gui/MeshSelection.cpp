@@ -32,10 +32,7 @@
 #include <Inventor/events/SoMouseButtonEvent.h>
 #include <Inventor/nodes/SoCamera.h>
 #endif
-// clang-format off
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
-// clang-format on
+
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Base/Console.h>
@@ -45,7 +42,8 @@
 #include <Gui/MouseSelection.h>
 #include <Gui/NavigationStyle.h>
 #include <Gui/Utilities.h>
-
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 #include <Mod/Mesh/App/MeshFeature.h>
 #include <Mod/Mesh/App/Core/MeshKernel.h>
 #include <Mod/Mesh/App/Core/Iterator.h>

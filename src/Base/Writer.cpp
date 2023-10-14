@@ -29,6 +29,7 @@
 
 #include "Writer.h"
 #include "Base64.h"
+#include "Base64Filter.h"
 #include "Exception.h"
 #include "FileInfo.h"
 #include "Persistence.h"
@@ -83,18 +84,22 @@ Writer::Writer()
 
 Writer::~Writer() = default;
 
-std::ostream& Writer::beginCharStream()
+std::ostream& Writer::beginCharStream(CharStreamFormat format)
 {
     if (CharStream) {
         throw Base::RuntimeError("Writer::beginCharStream(): invalid state");
     }
-
-    Stream() << "<![CDATA[";
-    CharStream = std::make_unique<boost::iostreams::filtering_ostream>();
-    auto* filteredStream = dynamic_cast<boost::iostreams::filtering_ostream*>(CharStream.get());
-    filteredStream->push(cdata_filter());
-    filteredStream->push(Stream());
-    *filteredStream << std::setprecision(std::numeric_limits<double>::digits10 + 1);
+    charStreamFormat = format;
+    if(format == CharStreamFormat::Base64Encoded) {
+        CharStream = create_base64_encoder(Stream(), Base::base64DefaultBufferSize);
+    } else {
+        Stream() << "<![CDATA[";
+        CharStream = std::make_unique<boost::iostreams::filtering_ostream>();
+        auto* filteredStream = dynamic_cast<boost::iostreams::filtering_ostream*>(CharStream.get());
+        filteredStream->push(cdata_filter());
+        filteredStream->push(Stream());
+        *filteredStream << std::setprecision(std::numeric_limits<double>::digits10 + 1);
+    }
     return *CharStream;
 }
 
@@ -102,7 +107,9 @@ std::ostream& Writer::endCharStream()
 {
     if (CharStream) {
         CharStream.reset();
-        Stream() << "]]>";
+        if (charStreamFormat == CharStreamFormat::Raw) {
+            Stream() << "]]>";
+        }
     }
     return Stream();
 }

@@ -88,7 +88,6 @@ recompute path. Also, it enables more complicated dependencies beyond trees.
 #include <Base/FileInfo.h>
 #include <Base/TimeInfo.h>
 #include <Base/Reader.h>
-#include <Base/DocumentReader.h>
 #include <Base/Writer.h>
 #include <Base/Tools.h>
 #include <Base/Uuid.h>
@@ -834,10 +833,14 @@ Document::Document(const char* documentName)
     auto paramGrp {App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Document")};
     auto index = static_cast<int>(paramGrp->GetInt("prefLicenseType", 0));
-    const char* name = App::licenseItems.at(index).at(App::posnOfFullName);
-    const char* url = App::licenseItems.at(index).at(App::posnOfUrl);
-    std::string licenseUrl = (paramGrp->GetASCII("prefLicenseUrl", url));
-
+    const char* name = "";
+    const char* url = "";
+    std::string licenseUrl = "";
+    if (index >= 0 && index < App::countOfLicenses) {
+        name = App::licenseItems.at(index).at(App::posnOfFullName);
+        url = App::licenseItems.at(index).at(App::posnOfUrl);
+        licenseUrl = (paramGrp->GetASCII("prefLicenseUrl", url));
+    }
     ADD_PROPERTY_TYPE(License, (name), 0, Prop_None, "License string of the Item");
     ADD_PROPERTY_TYPE(
         LicenseURL, (licenseUrl.c_str()), 0, Prop_None, "URL to the license text/contract");
@@ -1285,6 +1288,7 @@ Document::readObjects(Base::XMLReader& reader)
     // read the object types
     reader.readElement("Objects");
     int Cnt = reader.getAttributeAsInteger("Count");
+
     if(!reader.hasAttribute(FC_ATTR_DEPENDENCIES))
         d->partialLoadObjects.clear();
     else if(!d->partialLoadObjects.empty()) {
@@ -2084,12 +2088,12 @@ void Document::restore (const char *filename,
     // without GUI. But if available then follow after all data files of the App document.
     signalRestoreDocument(reader);
     reader.readFiles(zipstream);
-	
+
     if (reader.testStatus(Base::XMLReader::ReaderStatus::PartialRestore)) {
         setStatus(Document::PartialRestore, true);
         Base::Console().Error("There were errors while loading the file. Some data might have been modified or not recovered at all. Look above for more specific information about the objects involved.\n");
     }
-	
+
     if(!delaySignal)
         afterRestore(true);
 }

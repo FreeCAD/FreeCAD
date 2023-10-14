@@ -42,10 +42,6 @@
 #include <QMessageBox>
 #include <QTextStream>
 #endif
-// clang-format off
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
-// clang-format on
 
 #include <App/Document.h>
 #include <Base/UnitsApi.h>
@@ -53,8 +49,9 @@
 #include <Gui/Control.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
-
 #include <Gui/TaskView/TaskDialog.h>
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 
 #include "FemSettings.h"
 #include "TaskPostBoxes.h"

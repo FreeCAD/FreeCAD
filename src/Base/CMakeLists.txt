@@ -278,7 +278,6 @@ SET(FreeCADBase_CPP_SRCS
     Writer.cpp
     XMLTools.cpp
     ZipHeader.cpp
-    DocumentReader.cpp
 )
 
 SET(SWIG_HEADERS
@@ -288,6 +287,7 @@ SET(SWIG_HEADERS
 SET(FreeCADBase_HPP_SRCS
     Axis.h
     Base64.h
+    Base64Filter.h
     BaseClass.h
     BindingManager.h
     Bitmask.h

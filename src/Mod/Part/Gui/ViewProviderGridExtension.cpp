@@ -38,9 +38,6 @@
 # include <QApplication>
 #endif
 
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
-
 #include <Base/Parameter.h>
 #include <App/Application.h>
 #include <Mod/Part/App/PropertyTopoShape.h>
@@ -48,7 +45,8 @@
 #include <Gui/Application.h>
 #include <Gui/Document.h>
 #include <Gui/MDIView.h>
-
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/ViewProviderDocumentObject.h>
 

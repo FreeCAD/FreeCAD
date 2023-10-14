@@ -141,6 +141,7 @@ void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj)
     spinBox->setMaximum(INT_MAX);
     spinBox->setButtonSymbols(QAbstractSpinBox::NoButtons);
     spinBox->setKeyboardTracking(false);
+    spinBox->setFocusPolicy(Qt::ClickFocus); // prevent passing focus with tab.
     if (eventFilteringObj) {
         spinBox->installEventFilter(eventFilteringObj);
     }
@@ -193,9 +194,10 @@ void EditableDatumLabel::setFocusToSpinbox()
         Base::Console().Warning("Spinbox doesn't exist in EditableDatumLabel::setFocusToSpinbox.");
         return;
     }
-
-    spinBox->setFocus();
-    spinBox->selectNumber();
+    if (!spinBox->hasFocus()) {
+        spinBox->setFocus();
+        spinBox->selectNumber();
+    }
 }
 
 void EditableDatumLabel::positionSpinbox()
@@ -215,7 +217,7 @@ SbVec3f EditableDatumLabel::getTextCenterPoint() const
 {
     //Here we need the 3d point and not the 2d point as are the SoLabel points.
     // First we get the 2D point (on the sketch/image plane) of the middle of the text label.
-    SbVec3f point2D = label->textOffset;
+    SbVec3f point2D = label->getLabelTextCenter();
     // Get the translation and rotation values from the transform
     SbVec3f translation = transform->translation.getValue();
     SbRotation rotation = transform->rotation.getValue();
@@ -319,6 +321,11 @@ void EditableDatumLabel::setLabelRecommendedDistance()
 void EditableDatumLabel::setLabelAutoDistanceReverse(bool val)
 {
     autoDistanceReverse = val;
+}
+
+void EditableDatumLabel::setSpinboxInvisibleToMouse(bool val)
+{
+    spinBox->setAttribute(Qt::WA_TransparentForMouseEvents, val);
 }
 
 #include "moc_EditableDatumLabel.cpp"

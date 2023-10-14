@@ -21,11 +21,12 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
+
 #include <Base/Console.h>
 #include <Gui/MainWindow.h>
 #include <Gui/MDIView.h>
+#include <Gui/View3DInventor.h>
+#include <Gui/View3DInventorViewer.h>
 
 #include "Grabber3d.h"
 

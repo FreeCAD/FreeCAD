@@ -34,6 +34,14 @@
 namespace Base
 {
 
+/// When reading and writing a character stream, the incoming data can be dumped into the stream
+/// unaltered (if it contains only data that is valid in the current XML character set), or it can
+/// be Base64-encoded. This enum is used by Reader and Writer to distinguish the two cases.
+enum class CharStreamFormat {
+    Raw,
+    Base64Encoded
+};
+
 /** File name unification
   * This class handles everything related to file names
   * the file names are internal generally UTF-8 encoded on
