@@ -50,3 +50,5 @@ fc_target_copy_resource(AssemblyGui
 
 INSTALL(TARGETS AssemblyGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
 INSTALL(FILES ${AssemblyGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Assembly/Resources/icons")
+INSTALL(FILES ${Assembly_QRC_SRCS} DESTINATION Mod/Assembly
+)
