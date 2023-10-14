@@ -438,19 +438,45 @@ void PropertyItem::setValue(const QVariant& /*value*/)
 {
 }
 
-QWidget* PropertyItem::createEditor(QWidget* /*parent*/, const QObject* /*receiver*/, const char* /*method*/) const
+QWidget* PropertyItem::createEditor(QWidget* parent, const QObject* receiver, const char* method) const
+{
+    if (parentItem)
+        return parentItem->createChildEditor(this, parent, receiver, method);
+    return nullptr;
+}
+
+QWidget* PropertyItem::createChildEditor(const PropertyItem * /*child*/,
+                                         QWidget*  /*parent*/,
+                                         const QObject* /*receiver*/,
+                                         const char* /*method*/) const
 {
     return nullptr;
 }
 
-void PropertyItem::setEditorData(QWidget * /*editor*/, const QVariant& /*data*/) const
+void PropertyItem::setEditorData(QWidget * editor, const QVariant& data) const
+{
+    if (parentItem)
+        parentItem->setChildEditorData(this, editor, data);
+}
+
+void PropertyItem::setChildEditorData(const PropertyItem * /*child*/,
+                                      QWidget * /*editor*/,
+                                      const QVariant& /*data*/) const
 {
 }
 
-QVariant PropertyItem::editorData(QWidget * /*editor*/) const
+QVariant PropertyItem::editorData(QWidget * editor) const
+{
+    if (parentItem)
+        return parentItem->childEditorData(this, editor);
+    return {};
+}
+
+QVariant PropertyItem::childEditorData(const PropertyItem * /*child*/, QWidget * /*editor*/) const
 {
     return {};
 }
+
 
 QWidget* PropertyItem::createExpressionEditor(QWidget* parent, const QObject* receiver, const char* method) const
 {
@@ -587,8 +613,19 @@ void PropertyItem::setPropertyValue(const QString& value)
     }
 }
 
+QVariant PropertyItem::childData(const PropertyItem * /*child*/, int /*column*/, int /*role*/) const
+{
+    return {};
+}
+
 QVariant PropertyItem::data(int column, int role) const
 {
+    if (parentItem) {
+        QVariant result = parentItem->childData(this, column, role);
+        if (result.isValid())
+            return result;
+    }
+
     // property name
     if (column == 0) {
         if (role == Qt::ForegroundRole && linked)
@@ -4354,6 +4391,71 @@ PROPERTYITEM_SOURCE(Gui::PropertyEditor::PropertyLinkItem)
 
 PropertyLinkItem::PropertyLinkItem() = default;
 
+App::PropertyXLink *PropertyLinkItem::getXLink() const
+{
+    if(propertyItems.size() == 1)
+        return Base::freecad_dynamic_cast<App::PropertyXLink>(propertyItems[0]);
+    return nullptr;
+}
+
+void PropertyLinkItem::initialize()
+{
+    if (getXLink()) {
+        m_file = static_cast<PropertyItem*>(PropertyItem::create());
+        m_file->setParent(this);
+        m_file->setPropertyName(QStringLiteral(QT_TRANSLATE_NOOP("App::Property", "File")));
+        appendChild(m_file);
+        m_resolveMode = static_cast<PropertyItem*>(PropertyItem::create());
+        m_resolveMode->setParent(this);
+        m_resolveMode->setPropertyName(QStringLiteral(QT_TRANSLATE_NOOP("App::Property", "PathResolveMode")));
+        appendChild(m_resolveMode);
+    }
+}
+
+void PropertyLinkItem::setFile(const QString &file)
+{
+    auto xlink = getXLink();
+    if (!xlink)
+        return;
+    const char *obj = xlink->getObjectName();
+    if (!obj || !*obj || file.isEmpty())
+        return;
+    try {
+        auto subs = xlink->getSubValues();
+        xlink->setValue(std::string(file.toUtf8().constData()),
+                        std::string(obj), std::move(subs));
+    } catch (Base::Exception &e) {
+        e.ReportException();
+    }
+}
+
+QString PropertyLinkItem::getFile() const
+{
+    if (auto xlink = getXLink()) {
+        const char *filename = xlink->getFilePath();
+        return QString::fromUtf8(filename);
+    }
+    return QString();
+}
+
+void PropertyLinkItem::setPathResolveMode(const QByteArray &mode)
+{
+    if (auto xlink = getXLink()) {
+        try {
+            xlink->setPathResolveMode(mode.constData());
+        } catch (Base::Exception &e) {
+            e.ReportException();
+        }
+    }
+}
+
+QByteArray PropertyLinkItem::getPathResolveMode() const
+{
+    if (auto xlink = getXLink())
+        return xlink->getPathResolveModeName();
+    return {};
+}
+
 QVariant PropertyLinkItem::toString(const QVariant& prop) const
 {
     QString res;
@@ -4363,6 +4465,25 @@ QVariant PropertyLinkItem::toString(const QVariant& prop) const
                                            qvariant_cast<QList<App::SubObjectT> >(prop));
     }
     return res;
+}
+
+QVariant PropertyLinkItem::childData(const PropertyItem *child, int column, int role) const
+{
+    if(column != 1 || (role != Qt::ForegroundRole && role != Qt::ToolTipRole))
+        return {};
+
+    auto xlink = getXLink();
+    if (!xlink)
+        return {};
+    if (child == m_file) {
+        const char *filePath = xlink->getFilePath();
+        if(filePath && filePath[0])
+            return QVariant::fromValue(QString::fromUtf8(filePath));
+    } else if (child == m_resolveMode) {
+        auto mode = xlink->getPathResolveModeName();
+        return QApplication::translate("App::Property", mode);
+    }
+    return {};
 }
 
 QVariant PropertyLinkItem::data(int column, int role) const {
@@ -4427,6 +4548,74 @@ QVariant PropertyLinkItem::editorData(QWidget *editor) const
 {
     auto ll = static_cast<LinkLabel*>(editor);
     return ll->propertyLink();
+}
+
+QWidget* PropertyLinkItem::createChildEditor(const PropertyItem *child,
+                                             QWidget* parent,
+                                             const QObject* receiver,
+                                             const char* method) const
+{
+    if (auto xlink = getXLink()) {
+        if (child == m_file) {
+            const char *objectName = xlink->getObjectName();
+            if (objectName && *objectName) {
+                auto fc = new Gui::FileChooser(parent);
+                fc->setAutoFillBackground(true);
+                fc->setDisabled(isReadOnly());
+                QObject::connect(fc, SIGNAL(fileNameSelected(const QString&)), receiver, method);
+                return fc;
+            }
+        } else if (child == m_resolveMode) {
+            auto cb = new QComboBox(parent);
+            cb->setFrame(false);
+            cb->setDisabled(isReadOnly());
+            for (const auto &v : App::PropertyXLink::getPathResolveModeDocs()) {
+                cb->addItem(QApplication::translate("App::Property", v.second.name),
+                            QByteArray(v.second.name));
+                cb->setItemData(cb->count()-1,
+                        QApplication::translate("App::Property", v.second.doc), Qt::ToolTipRole);
+            }
+            QObject::connect(cb, SIGNAL(activated(int)), receiver, method);
+            return cb;
+        }
+    }
+    return nullptr;
+}
+
+void PropertyLinkItem::setChildEditorData(const PropertyItem * /*child*/, QWidget *editor, const QVariant& data) const
+{
+    if (auto fc = qobject_cast<Gui::FileChooser*>(editor)) {
+        fc->setFilter(QStringLiteral("%1 (*.FCStd)").arg(tr("Project file")));
+        QFileInfo fileInfo(data.toString());
+        if (fileInfo.isRelative()) {
+            if (auto xlink = getXLink()) {
+                if (auto obj = Base::freecad_dynamic_cast<App::DocumentObject>(xlink->getContainer())) {
+                    if (obj->getDocument())
+                        FileDialog::setWorkingDirectory(
+                                QString::fromUtf8(obj->getDocument()->FileName.getValue()));
+                }
+            }
+        }
+        fc->setFileName(fileInfo.filePath());
+    } else if (auto cb = qobject_cast<QComboBox*>(editor)) {
+        auto mode = data.toByteArray();
+        for (int i=0; i<cb->count(); ++i) {
+            if (cb->itemData(i).toByteArray() == mode) {
+                cb->setCurrentIndex(i);
+                break;
+            }
+        }
+    }
+}
+
+QVariant PropertyLinkItem::childEditorData(const PropertyItem * /*child*/, QWidget *editor) const
+{
+    if (auto fc = qobject_cast<Gui::FileChooser*>(editor)) {
+        return {fc->fileName()};
+    } else if (auto cb = qobject_cast<QComboBox*>(editor)) {
+        return cb->itemData(cb->currentIndex());
+    }
+    return {};
 }
 
 // --------------------------------------------------------------------

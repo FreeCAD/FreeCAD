@@ -29,6 +29,7 @@
 # include <QInputDialog>
 # include <QMenu>
 # include <QPainter>
+# include <QTimer>
 #endif
 
 #include <App/Application.h>
@@ -589,6 +590,18 @@ void PropertyEditor::updateProperty(const App::Property& prop)
     // forward this to the model if the property is changed from outside
     if (!committing)
         propertyModel->updateProperty(prop);
+    else {
+        // Changing of a property may have unpredicatable impact on existing
+        // properties (e.g. add, remove other property), or update child
+        // property items. Use a timer here to avoid potentially invalidating
+        // the current editing property item.
+        App::DocumentObjectT objT(&prop);
+        QTimer::singleShot(0, this, [this, objT] {
+            if (auto pProp = objT.getProperty()) {
+                updateProperty(*pProp);
+            }
+        });
+    }
 }
 
 void PropertyEditor::setEditorMode(const QModelIndex & parent, int start, int end)
