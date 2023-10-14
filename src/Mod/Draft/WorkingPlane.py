@@ -1224,9 +1224,9 @@ class PlaneGui(PlaneBase):
         if self._stored:
             self.set_parameters(self._stored)
             self._stored = {}
-            self._update_all(hist_add=False)
+            self._update_all(_hist_add=False)
 
-    def align_to_selection(self, offset=0, hist_add=True):
+    def align_to_selection(self, offset=0, _hist_add=True):
         """Align the WP to a selection with an optional offset.
 
         The selection must define a plane.
@@ -1256,7 +1256,7 @@ class PlaneGui(PlaneBase):
 
         if len(objs) != 1:
             if all([obj[0].isNull() is False and obj[0].ShapeType in ["Edge", "Vertex"] for obj in objs]):
-                ret = self.align_to_edges_vertexes([obj[0] for obj in objs], offset, hist_add)
+                ret = self.align_to_edges_vertexes([obj[0] for obj in objs], offset, _hist_add)
             else:
                 ret = False
 
@@ -1271,73 +1271,73 @@ class PlaneGui(PlaneBase):
                                    "PartDesign::Plane",
                                    "Axis",
                                    "SectionPlane"]:
-            ret = self.align_to_obj_placement(obj, offset, place, hist_add)
+            ret = self.align_to_obj_placement(obj, offset, place, _hist_add)
         elif utils.get_type(obj) in ["WorkingPlaneProxy", "BuildingPart"]:
-            ret = self.align_to_wp_proxy(obj, offset, place, hist_add)
+            ret = self.align_to_wp_proxy(obj, offset, place, _hist_add)
         elif shape.isNull():
-            ret = self.align_to_obj_placement(obj, offset, place, hist_add)
+            ret = self.align_to_obj_placement(obj, offset, place, _hist_add)
         elif shape.ShapeType == "Face":
-            ret = self.align_to_face(shape, offset, hist_add)
+            ret = self.align_to_face(shape, offset, _hist_add)
         elif shape.ShapeType == "Edge":
-            ret = self.align_to_edge_or_wire(shape, offset, hist_add)
+            ret = self.align_to_edge_or_wire(shape, offset, _hist_add)
         elif shape.Solids:
-            ret = self.align_to_obj_placement(obj, offset, place, hist_add)
+            ret = self.align_to_obj_placement(obj, offset, place, _hist_add)
         else:
-            ret = self.align_to_edges_vertexes(shape.Vertexes, offset, hist_add)
+            ret = self.align_to_edges_vertexes(shape.Vertexes, offset, _hist_add)
 
         if ret is False:
             _wrn(translate("draft", "Selected shapes do not define a plane"))
         return ret
 
-    def _handle_custom(self, hist_add):
+    def _handle_custom(self, _hist_add):
         self.auto = False
         self.icon = ":/icons/Draft_SelectPlane.svg"
         self.label = self._get_label(translate("draft", "Custom"))
         self.tip = self._get_tip(translate("draft", "Custom"))
-        self._update_all(hist_add)
+        self._update_all(_hist_add)
 
-    def align_to_3_points(self, p1, p2, p3, offset=0, hist_add=True):
+    def align_to_3_points(self, p1, p2, p3, offset=0, _hist_add=True):
         """See PlaneBase.align_to_3_points."""
         if super().align_to_3_points(p1, p2, p3, offset) is False:
             return False
-        self._handle_custom(hist_add)
+        self._handle_custom(_hist_add)
         return True
 
-    def align_to_edges_vertexes(self, shapes, offset=0, hist_add=True):
+    def align_to_edges_vertexes(self, shapes, offset=0, _hist_add=True):
         """See PlaneBase.align_to_edges_vertexes."""
         if super().align_to_edges_vertexes(shapes, offset) is False:
             return False
-        self._handle_custom(hist_add)
+        self._handle_custom(_hist_add)
         return True
 
-    def align_to_edge_or_wire(self, shape, offset=0, hist_add=True):
+    def align_to_edge_or_wire(self, shape, offset=0, _hist_add=True):
         """See PlaneBase.align_to_edge_or_wire."""
         if super().align_to_edge_or_wire(shape, offset) is False:
             return False
-        self._handle_custom(hist_add)
+        self._handle_custom(_hist_add)
         return True
 
-    def align_to_face(self, shape, offset=0, hist_add=True):
+    def align_to_face(self, shape, offset=0, _hist_add=True):
         """See PlaneBase.align_to_face."""
         if super().align_to_face(shape, offset) is False:
             return False
-        self._handle_custom(hist_add)
+        self._handle_custom(_hist_add)
         return True
 
-    def align_to_placement(self, place, offset=0, hist_add=True):
+    def align_to_placement(self, place, offset=0, _hist_add=True):
         """See PlaneBase.align_to_placement."""
         super().align_to_placement(place, offset)
-        self._handle_custom(hist_add)
+        self._handle_custom(_hist_add)
         return True
 
-    def align_to_point_and_axis(self, point, axis, offset=0, upvec=Vector(1, 0, 0), hist_add=True):
+    def align_to_point_and_axis(self, point, axis, offset=0, upvec=Vector(1, 0, 0), _hist_add=True):
         """See PlaneBase.align_to_point_and_axis."""
         if super().align_to_point_and_axis(point, axis, offset, upvec) is False:
             return False
-        self._handle_custom(hist_add)
+        self._handle_custom(_hist_add)
         return True
 
-    def align_to_obj_placement(self, obj, offset=0, place=None, hist_add=True):
+    def align_to_obj_placement(self, obj, offset=0, place=None, _hist_add=True):
         """Align the WP to an object placement with an optional offset.
 
         Parameters
@@ -1375,17 +1375,17 @@ class PlaneGui(PlaneBase):
             self.icon = ":/icons/Std_Placement.svg"
         self.label = self._get_label(obj.Label)
         self.tip = self._get_tip(obj.Label)
-        self._update_all(hist_add)
+        self._update_all(_hist_add)
         return True
 
-    def align_to_wp_proxy(self, obj, offset=0, place=None, hist_add=True):
+    def align_to_wp_proxy(self, obj, offset=0, place=None, _hist_add=True):
         """Align the WP to a WPProxy with an optional offset.
 
         See align_to_obj_placement.
 
         Also handles several WPProxy related features.
         """
-        if self.align_to_obj_placement(obj, offset, place, hist_add) is False:
+        if self.align_to_obj_placement(obj, offset, place, _hist_add) is False:
             return False
 
         if not FreeCAD.GuiUp:
@@ -1467,6 +1467,7 @@ class PlaneGui(PlaneBase):
     def set_to_auto(self): # Similar to Plane.reset.
         """Set the WP to auto."""
         self.auto = True
+        self.auto_align()
         self.icon = ":/icons/view-axonometric.svg"
         self.label = self._get_label(translate("draft", "Auto"))
         self.tip = self._get_tip(translate("draft", "Auto"))
@@ -1615,25 +1616,25 @@ class PlaneGui(PlaneBase):
             _wrn(translate("draft", "No previous working plane"))
             return
         idx -= 1
-        self.set_parameters(self._history["data"][idx])
+        self.set_parameters(self._history["data_list"][idx])
         self._history["idx"] = idx
-        self._update_all(hist_add=False)
+        self._update_all(_hist_add=False)
 
     def _next(self):
         idx = self._history["idx"]
-        if idx == len(self._history["data"]) - 1:
+        if idx == len(self._history["data_list"]) - 1:
             _wrn(translate("draft", "No next working plane"))
             return
         idx += 1
-        self.set_parameters(self._history["data"][idx])
+        self.set_parameters(self._history["data_list"][idx])
         self._history["idx"] = idx
-        self._update_all(hist_add=False)
+        self._update_all(_hist_add=False)
 
     def _has_previous(self):
         return bool(self._history) and self._history["idx"] != 0
 
     def _has_next(self):
-        return bool(self._history) and self._history["idx"] != len(self._history["data"]) - 1
+        return bool(self._history) and self._history["idx"] != len(self._history["data_list"]) - 1
 
     def _get_prop_list(self):
         return ["u",
@@ -1679,8 +1680,31 @@ class PlaneGui(PlaneBase):
         dec = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals", 2)
         return f"({vec.x:.{dec}f}  {vec.y:.{dec}f}  {vec.z:.{dec}f})"
 
-    def _update_all(self, hist_add=True):
-        # Update the old DraftWorkingPlane for compatiblity:
+    def _update_all(self, _hist_add=True):
+        if _hist_add is True:
+            self._update_history()
+        self._update_old_plane()  # Must happen before _update_grid.
+        self._update_grid()
+        self._update_gui()
+
+    def _update_history(self):
+        data = self.get_parameters()
+        if not self._history:
+            self._history = {"idx": 0, "data_list": [data]}
+            return
+        if data == self._history["data_list"][-1]:
+            return
+
+        max_len = 10  # Max. length of data_list.
+        idx = self._history["idx"]
+        self._history["data_list"] = self._history["data_list"][(idx - (max_len - 2)):(idx + 1)]
+        self._history["data_list"].append(data)
+        self._history["idx"] = len(self._history["data_list"]) - 1
+
+    def _update_old_plane(self):
+        """ Update the old DraftWorkingPlane for compatiblity.
+        The tracker and snapper code currently still depend on it.
+        """
         if not hasattr(FreeCAD, "DraftWorkingPlane"):
             FreeCAD.DraftWorkingPlane = Plane()
         for prop in ["u", "v", "axis", "position"]:
@@ -1689,28 +1713,11 @@ class PlaneGui(PlaneBase):
                     self._copy_value(getattr(self, prop)))
         FreeCAD.DraftWorkingPlane.weak = self.auto
 
-        if hist_add is True and self.auto is False:
-            self._update_history()
-        self._update_grid()
-        self._update_gui()
-
-    def _update_history(self):
-        if not self._history:
-            self._history = {"idx": 0,
-                             "data": [self.get_parameters()]}
-            return
-
-        max_len = 10  # Max. length of data.
-        idx = self._history["idx"]
-        self._history["data"] = self._history["data"][(idx - (max_len - 2)):(idx + 1)]
-        self._history["data"].append(self.get_parameters())
-        self._history["idx"] = len(self._history["data"]) - 1
-
     def _update_grid(self):
         if FreeCAD.GuiUp:
             if hasattr(FreeCADGui, "Snapper"):
                 FreeCADGui.Snapper.setGrid()
-                FreeCADGui.Snapper.restack() # Required??
+                FreeCADGui.Snapper.restack()  # Required??
 
     def _update_gui(self):
         if FreeCAD.GuiUp:
@@ -1733,12 +1740,11 @@ def get_working_plane(update=True):
         i = FreeCAD.draft_working_planes[0].index(view)
         wp = FreeCAD.draft_working_planes[1][i]
         if update is False:
+            wp._update_old_plane()  # Currently required for tracker and snapper code.
             return wp
         wp.auto_align()
-        wp._update_all(hist_add=False)
+        wp._update_all(_hist_add=False)
         return wp
-    elif update is False:
-        return None
 
     wp = PlaneGui()
     wp._view = view
