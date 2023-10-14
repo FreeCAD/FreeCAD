@@ -1947,6 +1947,13 @@ void OverlayManager::Private::interceptEvent(QWidget *widget, QEvent *ev)
         QPoint globalPos = we->globalPosition().toPoint();
 #endif
         lastIntercept = getChildAt(widget, globalPos);
+
+        for (auto parent = lastIntercept->parentWidget(); parent; parent = parent->parentWidget()) {
+            if (qobject_cast<QGraphicsView*>(parent)) {
+                lastIntercept = parent;
+            }
+        }
+
 #if QT_VERSION >= QT_VERSION_CHECK(5,12,0)
         QWheelEvent wheelEvent(lastIntercept->mapFromGlobal(globalPos),
                                globalPos,
