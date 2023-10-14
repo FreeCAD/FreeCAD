@@ -58,12 +58,15 @@ PreferencePack::PreferencePack(const fs::path& path, const App::Metadata& metada
 
     auto qssPaths = QDir::searchPaths(QString::fromUtf8("qss"));
     auto cssPaths = QDir::searchPaths(QString::fromUtf8("css"));
+    auto overlayPaths = QDir::searchPaths(QString::fromUtf8("overlay"));
 
     qssPaths.append(QString::fromStdString(_path.string()));
     cssPaths.append(QString::fromStdString(_path.string()));
+    overlayPaths.append(QString::fromStdString(_path.string() + "/overlay"));
 
     QDir::setSearchPaths(QString::fromUtf8("qss"), qssPaths);
     QDir::setSearchPaths(QString::fromUtf8("css"), cssPaths);
+    QDir::setSearchPaths(QString::fromUtf8("overlay"), overlayPaths);
 }
 
 std::string PreferencePack::name() const
