@@ -698,8 +698,16 @@ MenuItem* StdWorkbench::setupMenuBar() const
 #endif
           << "Separator" << visu
           << "Std_ToggleNavigation"
-          << "Std_SetAppearance" << "Std_RandomColor" << "Separator"
-          << "Std_Workbench" << "Std_ToolBarMenu" << "Std_DockViewMenu" << "Std_DockOverlay" << "Separator"
+          << "Std_SetAppearance"
+          << "Std_RandomColor"
+          << "Separator"
+          << "Std_Workbench"
+          << "Std_ToolBarMenu"
+          << "Std_DockViewMenu";
+    if (DockWindowManager::instance()->isOverlayActivated()) {
+        *view << "Std_DockOverlay";
+    }
+    *view << "Separator"
           << "Std_LinkSelectActions"
           << "Std_TreeViewActions"
           << "Std_ViewStatusBar";
