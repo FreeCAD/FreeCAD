@@ -709,7 +709,8 @@ void FileChooser::editingFinished()
 {
     QString le_converted = QDir::fromNativeSeparators(lineEdit->text());
     lineEdit->setText(le_converted);
-    FileDialog::setWorkingDirectory(le_converted);
+    if (QFileInfo(le_converted).isAbsolute())
+        FileDialog::setWorkingDirectory(le_converted);
     Q_EMIT fileNameSelected(le_converted);
 }
 
@@ -727,14 +728,17 @@ void FileChooser::setFileName( const QString& fn )
  */
 void FileChooser::chooseFile()
 {
-    QString prechosenDirectory = lineEdit->text();
+    QFileInfo fileInfo(lineEdit->text());
+    if (fileInfo.isRelative())
+        fileInfo = QFileInfo(FileDialog::getWorkingDirectory(), fileInfo.filePath());
+    QString prechosenDirectory = fileInfo.absoluteFilePath();
     if (prechosenDirectory.isEmpty()) {
         prechosenDirectory = FileDialog::getWorkingDirectory();
     }
 
-    QFileDialog::Options dlgOpt;
+    QFileDialog::Options dlgOpt = QFileDialog::DontResolveSymlinks;
     if (DialogOptions::dontUseNativeFileDialog()) {
-        dlgOpt = QFileDialog::DontUseNativeDialog;
+        dlgOpt |= QFileDialog::DontUseNativeDialog;
     }
 
     QString fn;
@@ -750,8 +754,11 @@ void FileChooser::chooseFile()
 
     if (!fn.isEmpty()) {
         fn = QDir::fromNativeSeparators(fn);
+        if (fileInfo.isRelative())
+            fn = QDir(FileDialog::getWorkingDirectory()).relativeFilePath(fn);
+        else
+            FileDialog::setWorkingDirectory(fn);
         lineEdit->setText(fn);
-        FileDialog::setWorkingDirectory(fn);
         Q_EMIT fileNameSelected(fn);
     }
 }
