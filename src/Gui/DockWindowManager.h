@@ -97,6 +97,8 @@ public:
     void loadState();
     void retranslate();
 
+    bool isOverlayActivated() const;
+
 private Q_SLOTS:
    /**
     * \internal
@@ -110,6 +112,7 @@ private Q_SLOTS:
 private:
     QDockWidget* findDockWidget(const QList<QDockWidget*>&, const QString&) const;
     void tabifyDockWidgets(DockWindowItems*);
+    void setupOverlayManagement();
 
     DockWindowManager();
     ~DockWindowManager() override;

@@ -360,6 +360,25 @@ display the splash screen</string>
          </property>
         </widget>
        </item>
+       <item row="5" column="1">
+        <widget class="Gui::PrefCheckBox" name="ActivateOverlay">
+         <property name="toolTip">
+          <string>Activate overlay handling of dock windows</string>
+         </property>
+         <property name="text">
+          <string>Activate overlay handling</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+         <property name="prefEntry" stdset="0">
+          <cstring>ActivateOverlay</cstring>
+         </property>
+         <property name="prefPath" stdset="0">
+          <cstring>DockWindows</cstring>
+         </property>
+        </widget>
+       </item>
       </layout>
      </widget>
     </item>

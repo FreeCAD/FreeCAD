@@ -154,6 +154,7 @@ struct DockWindowManagerP
     boost::signals2::scoped_connection _connParam;
     QTimer _timer;
     DockWidgetEventFilter _dockWidgetEventFilter;
+    QPointer<OverlayManager> overlayManager;
 };
 } // namespace Gui
 
@@ -175,9 +176,31 @@ void DockWindowManager::destruct()
 DockWindowManager::DockWindowManager()
 {
     d = new DockWindowManagerP;
+    d->_hPref = App::GetApplication().GetUserParameter().GetGroup("BaseApp/MainWindow/DockWindows");
+
+    auto grp = App::GetApplication().GetUserParameter().GetGroup("BaseApp/Preferences/DockWindows");
+    if (grp->GetBool("ActivateOverlay", true)) {
+        setupOverlayManagement();
+    }
+}
+
+DockWindowManager::~DockWindowManager()
+{
+    d->_dockedWindows.clear();
+    delete d;
+}
+
+bool DockWindowManager::isOverlayActivated() const
+{
+    return (d->overlayManager != nullptr);
+}
+
+void DockWindowManager::setupOverlayManagement()
+{
+    d->overlayManager = OverlayManager::instance();
+
     qApp->installEventFilter(&d->_dockWidgetEventFilter);
-    d->_hPref = App::GetApplication().GetUserParameter().GetGroup(
-            "BaseApp/MainWindow/DockWindows");
+
     d->_dockWidgetEventFilter.cursorMargin = d->_hPref->GetInt("CursorMargin", 5);
     d->_connParam = d->_hPref->Manager()->signalParamChanged.connect(
         [this](ParameterGrp *Param, ParameterGrp::ParamType Type, const char *name, const char *) {
@@ -210,12 +233,6 @@ DockWindowManager::DockWindowManager()
     });
 }
 
-DockWindowManager::~DockWindowManager()
-{
-    d->_dockedWindows.clear();
-    delete d;
-}
-
 /**
  * Adds a new dock window to the main window and embeds the given \a widget.
  */
@@ -230,7 +247,10 @@ QDockWidget* DockWindowManager::addDockWindow(const char* name, QWidget* widget,
     // creates the dock widget as container to embed this widget
     MainWindow* mw = getMainWindow();
     dw = new QDockWidget(mw);
-    OverlayManager::instance()->setupTitleBar(dw);
+
+    if (d->overlayManager) {
+        d->overlayManager->setupTitleBar(dw);
+    }
 
     // Note: By default all dock widgets are hidden but the user can show them manually in the view menu.
     // First, hide immediately the dock widget to avoid flickering, after setting up the dock widgets
@@ -266,7 +286,9 @@ QDockWidget* DockWindowManager::addDockWindow(const char* name, QWidget* widget,
 
     d->_dockedWindows.push_back(dw);
 
-    OverlayManager::instance()->initDockWidget(dw);
+    if (d->overlayManager) {
+        d->overlayManager->initDockWidget(dw);
+    }
 
     connect(dw->toggleViewAction(), &QAction::triggered, [this, dw](){
         Base::ConnectionBlocker block(d->_connParam);
@@ -329,7 +351,11 @@ QWidget* DockWindowManager::removeDockWindow(const char* name)
         if ((*it)->objectName() == QString::fromUtf8(name)) {
             QDockWidget* dw = *it;
             d->_dockedWindows.erase(it);
-            OverlayManager::instance()->unsetupDockWidget(dw);
+
+            if (d->overlayManager) {
+                d->overlayManager->unsetupDockWidget(dw);
+            }
+
             getMainWindow()->removeDockWidget(dw);
             // avoid to destruct the embedded widget
             widget = dw->widget();
@@ -359,7 +385,9 @@ void DockWindowManager::removeDockWindow(QWidget* widget)
         if ((*it)->widget() == widget) {
             QDockWidget* dw = *it;
             d->_dockedWindows.erase(it);
-            OverlayManager::instance()->unsetupDockWidget(dw);
+            if (d->overlayManager) {
+                d->overlayManager->unsetupDockWidget(dw);
+            }
             getMainWindow()->removeDockWidget(dw);
             // avoid to destruct the embedded widget
             widget->setParent(nullptr);
@@ -491,8 +519,9 @@ void DockWindowManager::setup(DockWindowItems* items)
             docked.removeAt(index);
         }
 
-        if(dw && visible)
-            OverlayManager::instance()->setupDockWidget(dw);
+        if (d->overlayManager && dw && visible) {
+            d->overlayManager->setupDockWidget(dw);
+        }
     }
 
     tabifyDockWidgets(items);
