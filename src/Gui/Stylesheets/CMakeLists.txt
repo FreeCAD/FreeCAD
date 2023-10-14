@@ -25,6 +25,11 @@ SET(Overlay_Stylesheets_Files
     "overlay/mode.svg"
     "overlay/transparent.svg"
     "overlay/Darker_overlay.qss"
+    "overlay/Dark_overlay.qss"
+    "overlay/Dark_overlay.qss"
+    "overlay/Dark-Modern_overlay.qss"
+    "overlay/Light-Modern_overlay.qss"
+    "overlay/Light_overlay.qss"
 )
 
 # Find all the image files
