@@ -162,7 +162,7 @@ int ExportOCAF::exportObject(App::DocumentObject* obj,
     int root_id;
     int return_label = -1;
 
-    if (obj->getTypeId().isDerivedFrom(App::Part::getClassTypeId())) {
+    if (obj->isDerivedFrom<App::Part>()) {
         App::Part* part = static_cast<App::Part*>(obj);
         // I shall recursively select the elements and call back
         std::vector<App::DocumentObject*> entries = part->Group.getValues();
@@ -188,7 +188,7 @@ int ExportOCAF::exportObject(App::DocumentObject* obj,
         return_label = root_id;
     }
 
-    if (obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+    if (obj->isDerivedFrom<Part::Feature>()) {
         Part::Feature* part = static_cast<Part::Feature*>(obj);
         std::vector<App::Color> colors;
         findColors(part, colors);
