@@ -65,7 +65,7 @@ bool ViewProviderCompound::onDelete(const std::vector<std::string> &)
 void ViewProviderCompound::updateData(const App::Property* prop)
 {
     PartGui::ViewProviderPart::updateData(prop);
-    if (prop->getTypeId() == Part::PropertyShapeHistory::getClassTypeId()) {
+    if (prop->is<Part::PropertyShapeHistory>()) {
         const std::vector<Part::ShapeHistory>& hist = static_cast<const Part::PropertyShapeHistory*>
             (prop)->getValues();
         Part::Compound* objComp = static_cast<Part::Compound*>(getObject());
@@ -131,7 +131,7 @@ void ViewProviderCompound::updateData(const App::Property* prop)
 
         this->DiffuseColor.setValues(compCol);
     }
-    else if (prop->getTypeId().isDerivedFrom(App::PropertyLinkList::getClassTypeId())) {
+    else if (prop->isDerivedFrom<App::PropertyLinkList>()) {
         const std::vector<App::DocumentObject *>& pBases = static_cast<const App::PropertyLinkList*>(prop)->getValues();
         for (auto pBase : pBases) {
             if (pBase) Gui::Application::Instance->hideViewProvider(pBase);
@@ -146,7 +146,7 @@ bool ViewProviderCompound::canDragObjects() const
 
 bool ViewProviderCompound::canDragObject(App::DocumentObject* obj) const
 {
-    return obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId());
+    return obj->isDerivedFrom<Part::Feature>();
 }
 
 void ViewProviderCompound::dragObject(App::DocumentObject* obj)
@@ -169,7 +169,7 @@ bool ViewProviderCompound::canDropObjects() const
 
 bool ViewProviderCompound::canDropObject(App::DocumentObject* obj) const
 {
-    return obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId());
+    return obj->isDerivedFrom<Part::Feature>();
 }
 
 void ViewProviderCompound::dropObject(App::DocumentObject* obj)

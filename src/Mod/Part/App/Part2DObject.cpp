@@ -157,7 +157,7 @@ bool Part2DObject::seekTrimPoints(const std::vector<Geometry *> &geomlist,
                 // this is just a work-around until that bug is fixed.
                 // https://www.freecad.org/tracker/view.php?id=2463
                 // https://tracker.dev.opencascade.org/view.php?id=30217
-                if (geomlist[id]->getTypeId().isDerivedFrom(Part::GeomBoundedCurve::getClassTypeId())) {
+                if (geomlist[id]->isDerivedFrom<Part::GeomBoundedCurve>()) {
 
                     Part::GeomBoundedCurve * bcurve = static_cast<Part::GeomBoundedCurve *>(geomlist[id]);
 

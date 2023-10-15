@@ -128,7 +128,7 @@ void Primitive::handleChangedPropertyType(Base::XMLReader &reader, const char * 
     // types don't match if both inherit from PropertyFloat because all derived
     // classes do not re-implement the Save/Restore methods.
     Base::Type inputType = Base::Type::fromName(TypeName);
-    if (prop->getTypeId().isDerivedFrom(App::PropertyFloat::getClassTypeId()) &&
+    if (prop->isDerivedFrom<App::PropertyFloat>() &&
         inputType.isDerivedFrom(App::PropertyFloat::getClassTypeId())) {
         // Do not directly call the property's Restore method in case the implementation
         // has changed. So, create a temporary PropertyFloat object and assign the value.
