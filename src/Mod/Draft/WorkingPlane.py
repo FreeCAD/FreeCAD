@@ -1702,7 +1702,7 @@ class PlaneGui(PlaneBase):
         self._history["idx"] = len(self._history["data_list"]) - 1
 
     def _update_old_plane(self):
-        """ Update the old DraftWorkingPlane for compatiblity.
+        """ Update the old DraftWorkingPlane for compatibility.
         The tracker and snapper code currently still depend on it.
         """
         if not hasattr(FreeCAD, "DraftWorkingPlane"):
@@ -1714,7 +1714,7 @@ class PlaneGui(PlaneBase):
         FreeCAD.DraftWorkingPlane.weak = self.auto
 
     def _update_grid(self):
-        if FreeCAD.GuiUp:
+        if FreeCAD.GuiUp and self._view is not None:
             if hasattr(FreeCADGui, "Snapper"):
                 FreeCADGui.Snapper.setGrid()
                 FreeCADGui.Snapper.restack()  # Required??
