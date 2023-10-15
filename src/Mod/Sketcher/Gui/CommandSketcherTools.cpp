@@ -50,6 +50,8 @@
 #include "Utils.h"
 #include "ViewProviderSketch.h"
 
+#include "DrawSketchHandlerOffset.h"
+
 // Hint: this is to prevent to re-format big parts of the file. Remove it later again.
 // clang-format off
 using namespace std;
@@ -2253,6 +2255,66 @@ bool CmdSketcherRemoveAxesAlignment::isActive()
     return isCommandActive(getActiveGuiDocument(), true);
 }
 
+
+// Offset tool =====================================================================
+DEF_STD_CMD_A(CmdSketcherOffset)
+
+CmdSketcherOffset::CmdSketcherOffset()
+    : Command("Sketcher_Offset")
+{
+    sAppModule = "Sketcher";
+    sGroup = "Sketcher";
+    sMenuText = QT_TR_NOOP("Offset geometries");
+    sToolTipText = QT_TR_NOOP("Offset selected geometries. A positive offset length makes the offset go outward, a negative length inward.");
+    sWhatsThis = "Sketcher_Offset";
+    sStatusTip = sToolTipText;
+    sPixmap = "Sketcher_Offset";
+    sAccel = "Z, O";
+    eType = ForEdit;
+}
+
+void CmdSketcherOffset::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    std::vector<int> listOfGeoIds = {};
+
+    // get the selection
+    std::vector<Gui::SelectionObject> selection;
+    selection = getSelection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
+
+    // only one sketch with its subelements are allowed to be selected
+    if (selection.size() != 1) {
+        Gui::TranslatedUserWarning(
+            getActiveGuiDocument(),
+            QObject::tr("Wrong selection"),
+            QObject::tr("Select elements from a single sketch."));
+        return;
+    }
+
+    // get the needed lists and objects
+    const std::vector<std::string>& SubNames = selection[0].getSubNames();
+    if (!SubNames.empty()) {
+        for (std::vector<std::string>::const_iterator it = SubNames.begin(); it != SubNames.end(); ++it) {
+            // only handle non-external edges
+            if (it->size() > 4 && it->substr(0, 4) == "Edge") {
+                int geoId = std::atoi(it->substr(4, 4000).c_str()) - 1;
+                if (geoId >= 0) {
+                    listOfGeoIds.push_back(geoId);
+                }
+            }
+        }
+    }
+
+    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerOffset(listOfGeoIds));
+}
+
+bool CmdSketcherOffset::isActive(void)
+{
+    return isCommandActive(getActiveGuiDocument(), true);
+}
+
+
+
 void CreateSketcherCommandsConstraintAccel()
 {
     Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
@@ -2268,6 +2330,7 @@ void CreateSketcherCommandsConstraintAccel()
     rcCmdMgr.addCommand(new CmdSketcherSelectElementsAssociatedWithConstraints());
     rcCmdMgr.addCommand(new CmdSketcherSelectElementsWithDoFs());
     rcCmdMgr.addCommand(new CmdSketcherRestoreInternalAlignmentGeometry());
+    rcCmdMgr.addCommand(new CmdSketcherOffset());
     rcCmdMgr.addCommand(new CmdSketcherSymmetry());
     rcCmdMgr.addCommand(new CmdSketcherCopy());
     rcCmdMgr.addCommand(new CmdSketcherClone());
