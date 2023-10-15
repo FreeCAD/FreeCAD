@@ -286,6 +286,27 @@ QString DrawSketchHandler::getCrosshairCursorSVGName() const
     return QString::fromLatin1("None");
 }
 
+std::unique_ptr<QWidget> DrawSketchHandler::createWidget() const
+{
+    return nullptr;
+}
+
+bool DrawSketchHandler::isWidgetVisible() const
+{
+    return false;
+};
+
+QPixmap DrawSketchHandler::getToolIcon() const
+{
+    return QPixmap();
+}
+
+QString DrawSketchHandler::getToolWidgetText() const
+{
+    return QString();
+}
+
+
 void DrawSketchHandler::activate(ViewProviderSketch* vp)
 {
     sketchgui = vp;
@@ -1103,6 +1124,26 @@ void DrawSketchHandler::drawDirectionAtCursor(const Base::Vector2d& position,
         text.sprintf(" (%s, %s)", lengthString.c_str(), angleString.c_str());
         setPositionText(position, text);
     }
+}
+
+std::unique_ptr<QWidget> DrawSketchHandler::createToolWidget() const
+{
+    return createWidget();  // NVI
+}
+
+bool DrawSketchHandler::isToolWidgetVisible() const
+{
+    return isWidgetVisible();  // NVI
+}
+
+QPixmap DrawSketchHandler::getToolWidgetHeaderIcon() const
+{
+    return getToolIcon();
+}
+
+QString DrawSketchHandler::getToolWidgetHeaderText() const
+{
+    return getToolWidgetText();
 }
 
 void DrawSketchHandler::drawEditMarkers(const std::vector<Base::Vector2d>& EditMarkers,

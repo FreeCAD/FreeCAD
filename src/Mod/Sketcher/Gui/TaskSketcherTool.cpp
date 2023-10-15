@@ -47,34 +47,22 @@ using namespace Gui::TaskView;
 TaskSketcherTool::TaskSketcherTool(ViewProviderSketch* sketchView)
     : TaskBox(Gui::BitmapFactory().pixmap("document-new"), tr("Tool parameters"), true, nullptr)
     , sketchView(sketchView)
-{
-    widget = std::make_unique<SketcherToolDefaultWidget>(this, sketchView);
-
-    this->groupLayout()->addWidget(widget.get());
-}
+{}
 
 TaskSketcherTool::~TaskSketcherTool()
 {}
 
 void TaskSketcherTool::toolChanged(const std::string& toolname)
 {
-    // TODO: Implement a factory here to get an appropriate widget from the toolname
+    Q_UNUSED(toolname)
 
-    // At this stage, we add a Default tool widget for all tools with a defined name, but this needs
-    // to change
-    if (toolname != "DSH_None") {
-        widget = std::make_unique<SketcherToolDefaultWidget>(this, sketchView);
+    widget = sketchView->toolManager.createToolWidget();
 
+    if (widget) {
         this->groupLayout()->addWidget(widget.get());
 
-        if (toolname == "DSH_Line") {
-            setHeaderText(tr("Line parameters"));
-            setHeaderIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateLine"));
-        }
-        else if (toolname == "DSH_Circle") {
-            setHeaderText(tr("Circle parameters"));
-            setHeaderIcon(Gui::BitmapFactory().pixmap("Sketcher_CreateCircle"));
-        }
+        setHeaderText(sketchView->toolManager.getToolWidgetText());
+        setHeaderIcon(sketchView->toolManager.getToolIcon());
 
         signalToolWidgetChanged(this->widget.get());
     }
