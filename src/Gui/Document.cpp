@@ -627,7 +627,7 @@ void Document::setShow(const char* name)
 {
     ViewProvider* pcProv = getViewProviderByName(name);
 
-    if (pcProv && pcProv->getTypeId().isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
+    if (pcProv && pcProv->isDerivedFrom<ViewProviderDocumentObject>()) {
         static_cast<ViewProviderDocumentObject*>(pcProv)->Visibility.setValue(true);
     }
 }
@@ -637,7 +637,7 @@ void Document::setHide(const char* name)
 {
     ViewProvider* pcProv = getViewProviderByName(name);
 
-    if (pcProv && pcProv->getTypeId().isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
+    if (pcProv && pcProv->isDerivedFrom<ViewProviderDocumentObject>()) {
         static_cast<ViewProviderDocumentObject*>(pcProv)->Visibility.setValue(false);
     }
 }
@@ -1383,7 +1383,7 @@ void Document::Save (Base::Writer &writer) const
             size = Base::clamp<int>(size, 64, 512);
             std::list<MDIView*> mdi = getMDIViews();
             for (const auto & it : mdi) {
-                if (it->getTypeId().isDerivedFrom(View3DInventor::getClassTypeId())) {
+                if (it->isDerivedFrom<View3DInventor>()) {
                     View3DInventorViewer* view = static_cast<View3DInventor*>(it)->getViewer();
                     d->thumb.setFileName(d->_pcDocument->FileName.getValue());
                     d->thumb.setSize(size);
@@ -1841,7 +1841,7 @@ Gui::MDIView* Document::cloneView(Gui::MDIView* oldview)
     if (!oldview)
         return nullptr;
 
-    if (oldview->getTypeId() == View3DInventor::getClassTypeId()) {
+    if (oldview->is<View3DInventor>()) {
         auto view3D = new View3DInventor(this, getMainWindow());
 
         auto firstView = static_cast<View3DInventor*>(oldview);

@@ -1549,7 +1549,7 @@ void StdCmdPlacement::activated(int iMsg)
     auto plm = new Gui::Dialog::TaskPlacement();
     if (!sel.empty()) {
         App::Property* prop = sel.front()->getPropertyByName("Placement");
-        if (prop && prop->getTypeId() == App::PropertyPlacement::getClassTypeId()) {
+        if (prop && prop->is<App::PropertyPlacement>()) {
             plm->setPlacement(static_cast<App::PropertyPlacement*>(prop)->getValue());
 
             std::vector<Gui::SelectionObject> selection;

@@ -565,7 +565,7 @@ const Document* DocumentModel::getDocument(const QModelIndex& index) const
         return nullptr;
     Base::BaseClass* item = nullptr;
     item = static_cast<Base::BaseClass*>(index.internalPointer());
-    if (item->getTypeId() == DocumentIndex::getClassTypeId()) {
+    if (item->is<DocumentIndex>()) {
         const Gui::Document& d = static_cast<DocumentIndex*>(item)->d;
         return (&d);
     }
@@ -593,7 +593,7 @@ DocumentModel::claimChildren(const Gui::Document& doc, const ViewProviderDocumen
     std::vector<App::DocumentObject*> childs = obj.claimChildren();
     for (const auto & child : childs) {
         ViewProvider* view = doc.getViewProvider(child);
-        if (view && view->getTypeId().isDerivedFrom(ViewProviderDocumentObject::getClassTypeId()))
+        if (view && view->isDerivedFrom<ViewProviderDocumentObject>())
             views.push_back(static_cast<ViewProviderDocumentObject*>(view));
     }
 

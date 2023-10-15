@@ -127,7 +127,7 @@ void TaskAppearance::slotChangedObject(const Gui::ViewProvider& obj,
 
     if (vp != Provider.end()) {
         std::string prop_name = obj.getPropertyName(&prop);
-        if (prop.getTypeId().isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
+        if (prop.isDerivedFrom<App::PropertyInteger>()) {
             long value = static_cast<const App::PropertyInteger&>(prop).getValue();
             if (prop_name == "Transparency") {
                 bool blocked = ui->spinTransparency->blockSignals(true);
@@ -138,7 +138,7 @@ void TaskAppearance::slotChangedObject(const Gui::ViewProvider& obj,
                 ui->horizontalSlider->blockSignals(blocked);
             }
         }
-        else if (prop.getTypeId().isDerivedFrom(App::PropertyFloat::getClassTypeId())) {
+        else if (prop.isDerivedFrom<App::PropertyFloat>()) {
             float value = static_cast<const App::PropertyFloat&>(prop).getValue();
             if (prop_name == "PointSize") {
                 bool blocked = ui->spinPointSize->blockSignals(true);
@@ -163,7 +163,7 @@ void TaskAppearance::onChangeModeActivated(const QString& s)
     std::vector<Gui::ViewProvider*> Provider = getSelection();
     for (const auto & It : Provider) {
         App::Property* prop = It->getPropertyByName("DisplayMode");
-        if (prop && prop->getTypeId() == App::PropertyEnumeration::getClassTypeId()) {
+        if (prop && prop->is<App::PropertyEnumeration>()) {
             auto Display = static_cast<App::PropertyEnumeration*>(prop);
             Display->setValue((const char*)s.toLatin1());
         }
@@ -183,7 +183,7 @@ void TaskAppearance::onTransparencyValueChanged(int transparency)
     std::vector<Gui::ViewProvider*> Provider = getSelection();
     for (const auto & It : Provider) {
         App::Property* prop = It->getPropertyByName("Transparency");
-        if (prop && prop->getTypeId().isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
+        if (prop && prop->isDerivedFrom<App::PropertyInteger>()) {
             auto Transparency = static_cast<App::PropertyInteger*>(prop);
             Transparency->setValue(transparency);
         }
@@ -198,7 +198,7 @@ void TaskAppearance::onPointSizeValueChanged(int pointsize)
     std::vector<Gui::ViewProvider*> Provider = getSelection();
     for (const auto & It : Provider) {
         App::Property* prop = It->getPropertyByName("PointSize");
-        if (prop && prop->getTypeId().isDerivedFrom(App::PropertyFloat::getClassTypeId())) {
+        if (prop && prop->isDerivedFrom<App::PropertyFloat>()) {
             auto PointSize = static_cast<App::PropertyFloat*>(prop);
             PointSize->setValue(static_cast<float>(pointsize));
         }
@@ -213,7 +213,7 @@ void TaskAppearance::onLineWidthValueChanged(int linewidth)
     std::vector<Gui::ViewProvider*> Provider = getSelection();
     for (const auto & It : Provider) {
         App::Property* prop = It->getPropertyByName("LineWidth");
-        if (prop && prop->getTypeId().isDerivedFrom(App::PropertyFloat::getClassTypeId())) {
+        if (prop && prop->isDerivedFrom<App::PropertyFloat>()) {
             auto LineWidth = static_cast<App::PropertyFloat*>(prop);
             LineWidth->setValue(static_cast<float>(linewidth));
         }
@@ -225,7 +225,7 @@ void TaskAppearance::setDisplayModes(const std::vector<Gui::ViewProvider*>& view
     QStringList commonModes, modes;
     for (auto it = views.begin(); it != views.end(); ++it) {
         App::Property* prop = (*it)->getPropertyByName("DisplayMode");
-        if (prop && prop->getTypeId() == App::PropertyEnumeration::getClassTypeId()) {
+        if (prop && prop->is<App::PropertyEnumeration>()) {
             auto display = static_cast<App::PropertyEnumeration*>(prop);
             if (!display->hasEnums())
                 return;
@@ -253,7 +253,7 @@ void TaskAppearance::setDisplayModes(const std::vector<Gui::ViewProvider*>& view
     // find the display mode to activate
     for (const auto view : views) {
         App::Property* prop = view->getPropertyByName("DisplayMode");
-        if (prop && prop->getTypeId() == App::PropertyEnumeration::getClassTypeId()) {
+        if (prop && prop->is<App::PropertyEnumeration>()) {
             auto display = static_cast<App::PropertyEnumeration*>(prop);
             QString activeMode = QString::fromLatin1(display->getValueAsString());
             int index = ui->changeMode->findText(activeMode);
@@ -270,7 +270,7 @@ void TaskAppearance::setPointSize(const std::vector<Gui::ViewProvider*>& views)
     bool pointSize = false;
     for (const auto & view : views) {
         App::Property* prop = view->getPropertyByName("PointSize");
-        if (prop && prop->getTypeId().isDerivedFrom(App::PropertyFloat::getClassTypeId())) {
+        if (prop && prop->isDerivedFrom<App::PropertyFloat>()) {
             bool blocked = ui->spinPointSize->blockSignals(true);
             ui->spinPointSize->setValue((int)static_cast<App::PropertyFloat*>(prop)->getValue());
             ui->spinPointSize->blockSignals(blocked);
@@ -287,7 +287,7 @@ void TaskAppearance::setLineWidth(const std::vector<Gui::ViewProvider*>& views)
     bool lineWidth = false;
     for (const auto & view : views) {
         App::Property* prop = view->getPropertyByName("LineWidth");
-        if (prop && prop->getTypeId().isDerivedFrom(App::PropertyFloat::getClassTypeId())) {
+        if (prop && prop->isDerivedFrom<App::PropertyFloat>()) {
             bool blocked = ui->spinLineWidth->blockSignals(true);
             ui->spinLineWidth->setValue((int)static_cast<App::PropertyFloat*>(prop)->getValue());
             ui->spinLineWidth->blockSignals(blocked);
@@ -304,7 +304,7 @@ void TaskAppearance::setTransparency(const std::vector<Gui::ViewProvider*>& view
     bool transparency = false;
     for (const auto & view : views) {
         App::Property* prop = view->getPropertyByName("Transparency");
-        if (prop && prop->getTypeId().isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
+        if (prop && prop->isDerivedFrom<App::PropertyInteger>()) {
             bool blocked = ui->spinTransparency->blockSignals(true);
             ui->spinTransparency->setValue(static_cast<App::PropertyInteger*>(prop)->getValue());
             ui->spinTransparency->blockSignals(blocked);

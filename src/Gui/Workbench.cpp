@@ -236,7 +236,7 @@ void Workbench::setupCustomToolbars(ToolBarItem* root, const char* toolbar) cons
     }
 
     // for this workbench global toolbars are not allowed
-    if (getTypeId() == NoneWorkbench::getClassTypeId()) {
+    if (is<NoneWorkbench>()) {
         return;
     }
 

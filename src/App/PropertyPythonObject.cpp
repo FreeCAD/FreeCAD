@@ -432,7 +432,7 @@ Property *PropertyPythonObject::Copy() const
 
 void PropertyPythonObject::Paste(const Property &from)
 {
-    if (from.getTypeId() == PropertyPythonObject::getClassTypeId()) {
+    if (from.is<PropertyPythonObject>()) {
         Base::PyGILStateLocker lock;
         aboutToSetValue();
         this->object = static_cast<const PropertyPythonObject&>(from).object;
