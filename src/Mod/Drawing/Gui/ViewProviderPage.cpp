@@ -104,7 +104,7 @@ void ViewProviderDrawingPage::hide(void)
 void ViewProviderDrawingPage::updateData(const App::Property* prop)
 {
     Gui::ViewProviderDocumentObjectGroup::updateData(prop);
-    if (prop->getTypeId() == App::PropertyFileIncluded::getClassTypeId()) {
+    if (prop->is<App::PropertyFileIncluded>()) {
         if (std::string(getPageObject()->PageResult.getValue()) != "") {
             if (view) {
                 view->load(QString::fromUtf8(getPageObject()->PageResult.getValue()));

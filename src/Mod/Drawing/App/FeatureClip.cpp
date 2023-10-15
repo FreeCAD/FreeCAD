@@ -117,7 +117,7 @@ App::DocumentObjectExecReturn* FeatureClip::execute(void)
     // get through the children and collect all the views
     const vector<App::DocumentObject*>& Grp = Group.getValues();
     for (vector<App::DocumentObject*>::const_iterator It = Grp.begin(); It != Grp.end(); ++It) {
-        if ((*It)->getTypeId().isDerivedFrom(Drawing::FeatureView::getClassTypeId())) {
+        if ((*It)->isDerivedFrom<Drawing::FeatureView>()) {
             Drawing::FeatureView* View = static_cast<Drawing::FeatureView*>(*It);
             svg << View->ViewResult.getValue() << endl;
         }
