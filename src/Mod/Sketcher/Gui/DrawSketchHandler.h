@@ -178,7 +178,37 @@ public:
     void resetPositionText();
     void renderSuggestConstraintsCursor(std::vector<AutoConstraint>& suggestedConstraints);
 
+    /** @name Interfacing with tool dialogs */
+    //@{
+
+    /** @brief Slot to receive signaling that a widget intended for the tool has changed and is
+     *  available ant the provided pointer.
+     */
     void toolWidgetChanged(QWidget* newwidget);
+
+    /** @brief Factory function returning a tool widget of the type necessary for the specific tool.
+     * This is a NVI interface and specific handlers must overload the corresponding virtual
+     * function.
+     */
+    std::unique_ptr<QWidget> createToolWidget() const;
+
+    /** @brief Returns whether this tool expects/supports a visible tool widget. Emphasis is in
+     * visibility, so to allow to adapt the interface accordingly.
+     * This is an NVI interface and specific handlers must overload the corresponding virtual
+     * function.
+     */
+    bool isToolWidgetVisible() const;
+    /** @brief Returns a pixmap icon intended for a visible tool widget.
+     * This is an NVI interface and specific handlers must overload the corresponding virtual
+     * function.
+     */
+    QPixmap getToolWidgetHeaderIcon() const;
+    /** @brief Returns a header text intended for a visible tool widget.
+     * This is an NVI interface and specific handlers must overload the corresponding virtual
+     * function.
+     */
+    QString getToolWidgetHeaderText() const;
+    //@}
 
 private:  // NVI
     virtual void preActivated();
@@ -194,6 +224,11 @@ private:  // NVI
 protected:  // NVI requiring base implementation
     virtual std::string getToolName() const;
     virtual QString getCrosshairCursorSVGName() const;
+
+    virtual std::unique_ptr<QWidget> createWidget() const;
+    virtual bool isWidgetVisible() const;
+    virtual QPixmap getToolIcon() const;
+    virtual QString getToolWidgetText() const;
 
 protected:
     // helpers

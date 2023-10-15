@@ -74,6 +74,7 @@ public:
         return QDialogButtonBox::Close;
     }
 
+    /** @brief Function used to register a slot to be triggered when the tool widget is changed. */
     template<typename F>
     boost::signals2::connection registerToolWidgetChanged(F&& f)
     {

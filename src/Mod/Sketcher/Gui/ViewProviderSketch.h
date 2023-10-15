@@ -473,6 +473,31 @@ private:
     };
 
 public:
+    /* API to retrieve information about the active DrawSketchHandler. In particular related to how
+     * tool widgets should be handled.
+     */
+    class ToolManager
+    {
+    public:
+        ToolManager(ViewProviderSketch* vp);
+
+        /** @brief Factory function returning a tool widget of the type appropriate for the current
+         * active tool. If no tool is active, expect a nullptr.
+         */
+        std::unique_ptr<QWidget> createToolWidget() const;
+        /** @brief Returns whether the current tool's widget is intended to be visible for the user
+         */
+        bool isWidgetVisible() const;
+        /** @brief Returns the intended icon for a visible tool widget (e.g. for header/title).*/
+        QPixmap getToolIcon() const;
+        /** @brief Returns the intended text for a visible tool widget (e.g. for header/title).*/
+        QString getToolWidgetText() const;
+
+    private:
+        ViewProviderSketch* vp;
+    };
+
+public:
     /// constructor
     ViewProviderSketch();
     /// destructor
@@ -492,6 +517,8 @@ public:
     App::PropertyString EditingWorkbench;
     SketcherGui::PropertyVisualLayerList VisualLayerList;
     //@}
+
+    const ToolManager toolManager;
 
     // TODO: It is difficult to imagine that these functions are necessary in the public interface.
     // This requires review at a second stage and possibly refactor it.
