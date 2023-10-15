@@ -71,7 +71,7 @@ PyObject* FemPostPipelinePy::load(PyObject* args)
     }
 
     App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(py)->getDocumentObjectPtr();
-    if (!obj->getTypeId().isDerivedFrom(FemResultObject::getClassTypeId())) {
+    if (!obj->isDerivedFrom<FemResultObject>()) {
         PyErr_SetString(PyExc_TypeError, "object is not a result object");
         return nullptr;
     }
@@ -111,7 +111,7 @@ PyObject* FemPostPipelinePy::holdsPostObject(PyObject* args)
     }
 
     App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(py)->getDocumentObjectPtr();
-    if (!obj->getTypeId().isDerivedFrom(FemPostObject::getClassTypeId())) {
+    if (!obj->isDerivedFrom<FemPostObject>()) {
         PyErr_SetString(PyExc_TypeError, "object is not a post-processing object");
         return nullptr;
     }
