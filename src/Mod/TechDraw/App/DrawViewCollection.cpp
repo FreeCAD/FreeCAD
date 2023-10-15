@@ -114,7 +114,7 @@ void DrawViewCollection::rebuildViewList()
     std::vector<App::DocumentObject*> newViews;
     std::vector<App::DocumentObject*> children = getOutList();
     for (std::vector<App::DocumentObject*>::iterator it = children.begin(); it != children.end(); ++it) {
-        if ((*it)->getTypeId().isDerivedFrom(DrawView::getClassTypeId())) {
+        if ((*it)->isDerivedFrom<DrawView>()) {
             bool found = false;
             for (auto& v:currViews) {
                 if (v == (*it)) {
@@ -140,7 +140,7 @@ int DrawViewCollection::countChildren()
     const std::vector<App::DocumentObject *> &views = Views.getValues();
     for(std::vector<App::DocumentObject *>::const_iterator it = views.begin(); it != views.end(); ++it) {
 
-        if((*it)->getTypeId().isDerivedFrom(TechDraw::DrawViewCollection::getClassTypeId())) {
+        if((*it)->isDerivedFrom<TechDraw::DrawViewCollection>()) {
             TechDraw::DrawViewCollection *viewCollection = static_cast<TechDraw::DrawViewCollection *>(*it);
             numChildren += viewCollection->countChildren() + 1;
         } else {
