@@ -377,6 +377,53 @@ void ViewProviderSketch::ParameterObserver::OnChange(Base::Subject<const char*>&
     }
 }
 
+
+/************** ViewProviderSketch::ToolManager *********************/
+ViewProviderSketch::ToolManager::ToolManager(ViewProviderSketch * vp): vp(vp)
+{}
+
+std::unique_ptr<QWidget> ViewProviderSketch::ToolManager::createToolWidget() const
+{
+    if(vp && vp->sketchHandler) {
+        return vp->sketchHandler->createToolWidget();
+    }
+    else {
+        return nullptr;
+    }
+}
+
+bool ViewProviderSketch::ToolManager::isWidgetVisible() const
+{
+    if(vp && vp->sketchHandler) {
+        return vp->sketchHandler->isWidgetVisible();
+    }
+    else {
+        return false;
+    }
+}
+
+QPixmap ViewProviderSketch::ToolManager::getToolIcon() const
+{
+    if(vp && vp->sketchHandler) {
+        return vp->sketchHandler->getToolIcon();
+    }
+    else {
+        return QPixmap();
+    }
+}
+
+QString ViewProviderSketch::ToolManager::getToolWidgetText() const
+{
+    if(vp && vp->sketchHandler) {
+        return vp->sketchHandler->getToolWidgetText();
+    }
+    else {
+        return QString();
+    }
+}
+
+
+
 /*************************** ViewProviderSketch **************************/
 
 // Struct for holding previous click information
@@ -395,6 +442,7 @@ PROPERTY_SOURCE_WITH_EXTENSIONS(SketcherGui::ViewProviderSketch, PartGui::ViewPr
 
 ViewProviderSketch::ViewProviderSketch()
     : SelectionObserver(false)
+    , toolManager(this)
     , Mode(STATUS_NONE)
     , listener(nullptr)
     , editCoinManager(nullptr)

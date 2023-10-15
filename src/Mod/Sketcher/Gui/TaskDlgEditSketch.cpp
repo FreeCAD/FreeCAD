@@ -95,12 +95,15 @@ TaskDlgEditSketch::~TaskDlgEditSketch()
 
 void TaskDlgEditSketch::slotToolChanged(const std::string& toolname)
 {
-    bool hidden = toolname == "DSH_None" || toolname == "DSH_Point";
-    ToolSettings->setHidden(hidden);
+    bool widgetvisible = false;
 
     if (toolname != "DSH_None") {
+        widgetvisible = sketchView->toolManager.isWidgetVisible();
+
         ToolSettings->toolChanged(toolname);
     }
+
+    ToolSettings->setHidden(!widgetvisible);
 }
 
 //==== calls from the TaskView ===============================================================
