@@ -152,7 +152,7 @@ void StdCmdSendToPythonConsole::activated(int iMsg)
     if (!obj)
         return;
     QString docname = QString::fromLatin1(obj->getDocument()->getName());
-    QString objname = QString::fromLatin1(obj->getNameInDocument());
+    QString objname = QString::fromLatin1(obj->getNameInDocument().c_str());
     try {
         // clear variables from previous run, if any
         QString cmd = QLatin1String("try:\n    del(doc,lnk,obj,shp,sub,subs)\nexcept Exception:\n    pass\n");

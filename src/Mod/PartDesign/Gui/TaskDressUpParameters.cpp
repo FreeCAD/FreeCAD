@@ -117,9 +117,7 @@ void TaskDressUpParameters::referenceSelected(const Gui::SelectionChanges& msg, 
     PartDesign::DressUp* pcDressUp = static_cast<PartDesign::DressUp*>(DressUpView->getObject());
     App::DocumentObject* base = this->getBase();
 
-    // TODO: Must we make a copy here instead of assigning to const char* ?
-    const char* fname = base->getNameInDocument();
-    if (strcmp(msg.pObjectName, fname) != 0)
+    if (base->getNameInDocument() != msg.pObjectName)
         return;
 
     std::string subName(msg.pSubName);

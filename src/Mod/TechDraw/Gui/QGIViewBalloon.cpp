@@ -477,18 +477,18 @@ void QGIViewBalloon::balloonLabelDragFinished()
     double x = Rez::appX(balloonLabel->X() / scale), y = Rez::appX(balloonLabel->Y() / scale);
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Drag Balloon"));
     Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.X = %f",
-                            dvb->getNameInDocument(), x);
+                            dvb->getNameInDocument().c_str(), x);
     Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.Y = %f",
-                            dvb->getNameInDocument(), -y);
+                            dvb->getNameInDocument().c_str(), -y);
 
     // for the case that origin was also dragged, calc new origin and update feature
     if (m_originDragged) {
         Base::Vector3d pos(x, -y, 0.0);
         Base::Vector3d newOrg = pos - m_saveOffset;
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.OriginX = %f",
-                                dvb->getNameInDocument(), newOrg.x);
+                                dvb->getNameInDocument().c_str(), newOrg.x);
         Gui::Command::doCommand(Gui::Command::Doc, "App.ActiveDocument.%s.OriginY = %f",
-                                dvb->getNameInDocument(), newOrg.y);
+                                dvb->getNameInDocument().c_str(), newOrg.y);
     }
 
     Gui::Command::commitCommand();

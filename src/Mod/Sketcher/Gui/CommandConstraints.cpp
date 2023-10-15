@@ -1033,7 +1033,7 @@ public:
             // If mouse is released on something allowed, select it and move forward
             selSeq.push_back(selIdPair);
             Gui::Selection().addSelection(sketchgui->getSketchObject()->getDocument()->getName(),
-                                          sketchgui->getSketchObject()->getNameInDocument(),
+                                          sketchgui->getSketchObject()->getNameInDocument().c_str(),
                                           ss.str().c_str(),
                                           onSketchPos.x,
                                           onSketchPos.y,
@@ -1466,7 +1466,7 @@ public:
             if (selAllowed) {
                 // If mouse is released on something allowed, select it
                 Gui::Selection().addSelection(Obj->getDocument()->getName(),
-                    Obj->getNameInDocument(),
+                    Obj->getNameInDocument().c_str(),
                     ss.str().c_str(), onSketchPos.x, onSketchPos.y, 0.f);
                 sketchgui->draw(false, false); // Redraw
             }
@@ -1485,7 +1485,7 @@ public:
             }
 
             Gui::Selection().rmvSelection(Obj->getDocument()->getName(),
-                Obj->getNameInDocument(),
+                Obj->getNameInDocument().c_str(),
                 ss.str().c_str());
             sketchgui->draw(false, false); // Redraw
         }
@@ -3685,7 +3685,7 @@ public:
             GeoId1 = GeoId_temp;
             PosId1 = PosId_temp;
             Gui::Selection().addSelection(sketchgui->getSketchObject()->getDocument()->getName(),
-                                          sketchgui->getSketchObject()->getNameInDocument(),
+                                          sketchgui->getSketchObject()->getNameInDocument().c_str(),
                                           ss.str().c_str(),
                                           onSketchPos.x,
                                           onSketchPos.y,

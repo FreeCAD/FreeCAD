@@ -144,7 +144,7 @@ void WorkbenchHelper::setForegroundColor(const QColor& color)
                 for (; i != ranges.end(); ++i) {
                     Gui::Command::doCommand(Gui::Command::Doc,
                                             "App.ActiveDocument.%s.setForeground('%s', (%f,%f,%f))",
-                                            sheet->getNameInDocument(),
+                                            sheet->getNameInDocument().c_str(),
                                             i->rangeString().c_str(),
                                             color.redF(),
                                             color.greenF(),
@@ -178,7 +178,7 @@ void WorkbenchHelper::setBackgroundColor(const QColor& color)
                 for (; i != ranges.end(); ++i) {
                     Gui::Command::doCommand(Gui::Command::Doc,
                                             "App.ActiveDocument.%s.setBackground('%s', (%f,%f,%f))",
-                                            sheet->getNameInDocument(),
+                                            sheet->getNameInDocument().c_str(),
                                             i->rangeString().c_str(),
                                             color.redF(),
                                             color.greenF(),

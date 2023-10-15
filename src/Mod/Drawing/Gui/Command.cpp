@@ -381,7 +381,7 @@ void CmdDrawingNewView::activated(int iMsg)
         doCommand(Doc,
                   "App.activeDocument().%s.Source = App.activeDocument().%s",
                   FeatName.c_str(),
-                  (*it)->getNameInDocument());
+                  (*it)->getNameInDocument().c_str());
         doCommand(Doc,
                   "App.activeDocument().%s.Direction = (%e,%e,%e)",
                   FeatName.c_str(),

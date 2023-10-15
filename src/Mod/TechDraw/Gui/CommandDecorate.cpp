@@ -133,7 +133,7 @@ void CmdTechDrawHatch::activated(int iMsg)
         for (auto& r: toRemove) {
             r.second->removeSub(r.first);
             if (r.second->empty()) {
-                doCommand(Doc, "App.activeDocument().removeObject('%s')", r.second->getNameInDocument());
+                doCommand(Doc, "App.activeDocument().removeObject('%s')", r.second->getNameInDocument().c_str());
             }
         }
         commitCommand();

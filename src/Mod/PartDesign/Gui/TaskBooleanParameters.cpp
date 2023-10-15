@@ -74,7 +74,7 @@ TaskBooleanParameters::TaskBooleanParameters(ViewProviderBoolean *BooleanView,QW
     for (auto body : bodies) {
         QListWidgetItem* item = new QListWidgetItem(ui->listWidgetBodies);
         item->setText(QString::fromUtf8(body->Label.getValue()));
-        item->setData(Qt::UserRole, QString::fromLatin1(body->getNameInDocument()));
+        item->setData(Qt::UserRole, QString::fromLatin1(body->getNameInDocument().c_str()));
     }
 
     // Create context menu
@@ -128,7 +128,7 @@ void TaskBooleanParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 
                 QListWidgetItem* item = new QListWidgetItem(ui->listWidgetBodies);
                 item->setText(QString::fromUtf8(pcBody->Label.getValue()));
-                item->setData(Qt::UserRole, QString::fromLatin1(pcBody->getNameInDocument()));
+                item->setData(Qt::UserRole, QString::fromLatin1(pcBody->getNameInDocument().c_str()));
 
                 pcBoolean->getDocument()->recomputeFeature(pcBoolean);
                 ui->buttonBodyAdd->setChecked(false);
@@ -200,7 +200,7 @@ void TaskBooleanParameters::onButtonBodyAdd(bool checked)
         Gui::Document* doc = BooleanView->getDocument();
         BooleanView->hide();
         if (pcBoolean->Group.getValues().empty() && pcBoolean->BaseFeature.getValue())
-            doc->setHide(pcBoolean->BaseFeature.getValue()->getNameInDocument());
+            doc->setHide(pcBoolean->BaseFeature.getValue()->getNameInDocument().c_str());
         selectionMode = bodyAdd;
         Gui::Selection().clearSelection();
     } else {
@@ -259,7 +259,7 @@ void TaskBooleanParameters::onBodyDeleted()
     App::DocumentObject* body = bodies[index];
     QString internalName = ui->listWidgetBodies->item(index)->data(Qt::UserRole).toString();
     for (auto it = bodies.begin(); it != bodies.end(); ++it) {
-        if (internalName == QLatin1String((*it)->getNameInDocument())) {
+        if (internalName == QLatin1String((*it)->getNameInDocument().c_str())) {
             body = *it;
             bodies.erase(it);
             break;
@@ -302,7 +302,7 @@ void TaskBooleanParameters::exitSelectionMode()
     selectionMode = none;
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
     if (doc)
-        doc->setShow(BooleanView->getObject()->getNameInDocument());
+        doc->setShow(BooleanView->getObject()->getNameInDocument().c_str());
 }
 
 //**************************************************************************
@@ -337,7 +337,7 @@ void TaskDlgBooleanParameters::clicked(int)
 bool TaskDlgBooleanParameters::accept()
 {
     auto obj = BooleanView->getObject();
-    if(!obj || !obj->getNameInDocument())
+    if(!obj || !obj->isAttachedToDocument())
         return false;
     BooleanView->Visibility.setValue(true);
 
@@ -376,10 +376,10 @@ bool TaskDlgBooleanParameters::reject()
     Gui::Document* doc = Gui::Application::Instance->activeDocument();
     if (doc) {
         if (obj->BaseFeature.getValue()) {
-            doc->setShow(obj->BaseFeature.getValue()->getNameInDocument());
+            doc->setShow(obj->BaseFeature.getValue()->getNameInDocument().c_str());
             std::vector<App::DocumentObject*> bodies = obj->Group.getValues();
             for (auto body : bodies) {
-                doc->setShow(body->getNameInDocument());
+                doc->setShow(body->getNameInDocument().c_str());
             }
         }
     }

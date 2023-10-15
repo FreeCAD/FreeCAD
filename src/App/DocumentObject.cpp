@@ -274,11 +274,11 @@ const char* DocumentObject::getStatusString() const
 }
 
 std::string DocumentObject::getFullName() const {
-    if(!getDocument() || !pcNameInDocument)
+    if(!getDocument() || !isAttachedToDocument())
         return "?";
     std::string name(getDocument()->getName());
     name += '#';
-    name += *pcNameInDocument;
+    name += getNameInDocument();
     return name;
 }
 
@@ -292,36 +292,48 @@ std::string DocumentObject::getFullLabel() const {
     return name;
 }
 
-const char *DocumentObject::getNameInDocument() const
+const char* DocumentObject::getDagKey() const
+{
+    if(!pcNameInDocument)
+    {
+        return nullptr;
+    }
+    return pcNameInDocument->c_str();
+}
+
+const std::string& DocumentObject::getNameInDocument() const
 {
     // Note: It can happen that we query the internal name of an object even if it is not
     // part of a document (anymore). This is the case e.g. if we have a reference in Python
     // to an object that has been removed from the document. In this case we should rather
     // return 0.
     //assert(pcNameInDocument);
-    if (!pcNameInDocument)
-        return nullptr;
-    return pcNameInDocument->c_str();
+    if(pcNameInDocument == nullptr)
+    {
+        static std::string empty;
+        return empty;
+    }
+    return *pcNameInDocument;
 }
 
 int DocumentObject::isExporting() const {
-    if(!getDocument() || !getNameInDocument())
+    if(!getDocument() || !isAttachedToDocument())
         return 0;
     return getDocument()->isExporting(this);
 }
 
 std::string DocumentObject::getExportName(bool forced) const {
-    if(!pcNameInDocument)
+    if(!isAttachedToDocument())
         return {};
 
     if(!forced && !isExporting())
-        return *pcNameInDocument;
+        return getNameInDocument();
 
     // '@' is an invalid character for an internal name, which ensures the
     // following returned name will be unique in any document. Saving external
     // object like that shall only happens in Document::exportObjects(). We
     // shall strip out this '@' and the following document name during restoring.
-    return *pcNameInDocument + '@' + getDocument()->getName();
+    return getNameInDocument() + '@' + getDocument()->getName();
 }
 
 bool DocumentObject::isAttachedToDocument() const
@@ -441,7 +453,7 @@ void DocumentObject::getInListEx(std::set<App::DocumentObject*> &inSet,
     // outLists first here.
     for(auto doc : GetApplication().getDocuments()) {
         for(auto obj : doc->getObjects()) {
-            if(!obj || !obj->getNameInDocument() || obj==this)
+            if(!obj || !obj->isAttachedToDocument() || obj==this)
                 continue;
             const auto &outList = obj->getOutList();
             outLists[obj].insert(outList.begin(),outList.end());
@@ -481,7 +493,7 @@ void DocumentObject::getInListEx(std::set<App::DocumentObject*> &inSet,
         auto obj = pendings.top();
         pendings.pop();
         for(auto o : obj->getInList()) {
-            if(o && o->getNameInDocument() && inSet.insert(o).second) {
+            if(o && o->isAttachedToDocument() && inSet.insert(o).second) {
                 pendings.push(o);
                 if(inList)
                     inList->push_back(o);
@@ -808,7 +820,7 @@ DocumentObject *DocumentObject::getSubObject(const char *subname,
         if(outList.size()!=_outListMap.size()) {
             _outListMap.clear();
             for(auto obj : outList)
-                _outListMap[obj->getNameInDocument()] = obj;
+                _outListMap[obj->getDagKey()] = obj;
         }
         auto it = _outListMap.find(name.c_str());
         if(it != _outListMap.end())
@@ -839,7 +851,7 @@ std::vector<DocumentObject*> DocumentObject::getSubObjectList(const char *subnam
         char c = sub[pos+1];
         sub[pos+1] = 0;
         auto sobj = getSubObject(sub.c_str());
-        if(!sobj || !sobj->getNameInDocument())
+        if(!sobj || !sobj->isAttachedToDocument())
             break;
         res.push_back(sobj);
         sub[pos+1] = c;
@@ -859,14 +871,14 @@ std::vector<std::string> DocumentObject::getSubObjects(int reason) const {
 
 std::vector<std::pair<App::DocumentObject *,std::string>> DocumentObject::getParents(int depth) const {
     std::vector<std::pair<App::DocumentObject *, std::string>> ret;
-    if (!getNameInDocument() || !GetApplication().checkLinkDepth(depth, MessageOption::Throw)) {
+    if (!isAttachedToDocument() || !GetApplication().checkLinkDepth(depth, MessageOption::Throw)) {
         return ret;
     }
 
     std::string name(getNameInDocument());
     name += ".";
     for (auto parent : getInList()) {
-        if (!parent || !parent->getNameInDocument()) {
+        if (!parent || !parent->isAttachedToDocument()) {
             continue;
         }
 
@@ -927,7 +939,7 @@ DocumentObject *DocumentObject::getLinkedObject(
 
 void DocumentObject::Save (Base::Writer &writer) const
 {
-    if (this->getNameInDocument())
+    if (this->isAttachedToDocument())
         writer.ObjectName = this->getNameInDocument();
     App::ExtensionContainer::Save(writer);
 }
@@ -1164,7 +1176,7 @@ DocumentObject *DocumentObject::resolve(const char *subname,
 DocumentObject *DocumentObject::resolveRelativeLink(std::string &subname,
         DocumentObject *&link, std::string &linkSub) const
 {
-    if(!link || !link->getNameInDocument() || !getNameInDocument())
+    if(!link || !link->isAttachedToDocument() || !isAttachedToDocument())
         return nullptr;
     auto ret = const_cast<DocumentObject*>(this);
     if(link != ret) {
@@ -1268,6 +1280,6 @@ bool DocumentObject::redirectSubName(std::ostringstream &, DocumentObject *, Doc
 
 void DocumentObject::onPropertyStatusChanged(const Property &prop, unsigned long oldStatus) {
     (void)oldStatus;
-    if(!Document::isAnyRestoring() && getNameInDocument() && getDocument())
+    if(!Document::isAnyRestoring() && isAttachedToDocument() && getDocument())
         getDocument()->signalChangePropertyEditor(*getDocument(),prop);
 }

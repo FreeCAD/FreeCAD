@@ -106,7 +106,7 @@ void Mirroring::findShapes()
         Part::TopoShape shape = Part::Feature::getTopoShape(obj);
         if (!shape.isNull()) {
             QString label = QString::fromUtf8(obj->Label.getValue());
-            QString name = QString::fromLatin1(obj->getNameInDocument());
+            QString name = QString::fromLatin1(obj->getNameInDocument().c_str());
 
             QTreeWidgetItem* child = new QTreeWidgetItem();
             child->setText(0, label);

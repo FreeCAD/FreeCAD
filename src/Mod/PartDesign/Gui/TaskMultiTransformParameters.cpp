@@ -153,7 +153,7 @@ TaskMultiTransformParameters::TaskMultiTransformParameters(ViewProviderTransform
         if (obj) {
             QListWidgetItem* item = new QListWidgetItem();
             item->setText(QString::fromUtf8(obj->Label.getValue()));
-            item->setData(Qt::UserRole, QString::fromLatin1(obj->getNameInDocument()));
+            item->setData(Qt::UserRole, QString::fromLatin1(obj->getNameInDocument().c_str()));
             ui->listWidgetFeatures->addItem(item);
         }
     }
@@ -163,7 +163,7 @@ TaskMultiTransformParameters::TaskMultiTransformParameters(ViewProviderTransform
 void TaskMultiTransformParameters::addObject(App::DocumentObject* obj)
 {
     QString label = QString::fromUtf8(obj->Label.getValue());
-    QString objectName = QString::fromLatin1(obj->getNameInDocument());
+    QString objectName = QString::fromLatin1(obj->getNameInDocument().c_str());
 
     QListWidgetItem* item = new QListWidgetItem();
     item->setText(label);
@@ -587,7 +587,7 @@ bool TaskDlgMultiTransformParameters::accept()
 //    {
 //        if ((*it) != NULL)
 //            Gui::Command::doCommand(
-//                Gui::Command::Doc,"App.ActiveDocument.removeObject(\"%s\")", (*it)->getNameInDocument());
+//                Gui::Command::Doc,"App.ActiveDocument.removeObject(\"%s\")", (*it)->getNameInDocument().c_str());
 //    }
 //
 //    return TaskDlgTransformedParameters::reject();

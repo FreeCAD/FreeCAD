@@ -252,7 +252,7 @@ void CmdSketcherNewSketch::activated(int iMsg)
             if (grp) {
                 doCommand(Doc,
                           "App.activeDocument().%s.addObject(App.activeDocument().%s)",
-                          grp->getNameInDocument(),
+                          grp->getNameInDocument().c_str(),
                           FeatName.c_str());
             }
         }
@@ -322,7 +322,7 @@ void CmdSketcherEditSketch::activated(int iMsg)
     if (SketchFilter.match()) {
         Sketcher::SketchObject* Sketch =
             static_cast<Sketcher::SketchObject*>(SketchFilter.Result[0][0].getObject());
-        doCommand(Gui, "Gui.activeDocument().setEdit('%s')", Sketch->getNameInDocument());
+        doCommand(Gui, "Gui.activeDocument().setEdit('%s')", Sketch->getNameInDocument().c_str());
     }
 }
 
@@ -534,7 +534,7 @@ void CmdSketcherReorientSketch::activated(int iMsg)
         r[1],
         r[2],
         r[3]);
-    doCommand(Gui, "Gui.ActiveDocument.setEdit('%s')", sketch->getNameInDocument());
+    doCommand(Gui, "Gui.ActiveDocument.setEdit('%s')", sketch->getNameInDocument().c_str());
 }
 
 bool CmdSketcherReorientSketch::isActive()

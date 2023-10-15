@@ -68,20 +68,20 @@ const QString makeRefString(const App::DocumentObject* obj, const std::string& s
     if (obj->getTypeId().isDerivedFrom(App::OriginFeature::getClassTypeId()) ||
         obj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId()))
         // App::Plane, Line or Datum feature
-        return QString::fromLatin1(obj->getNameInDocument());
+        return QString::fromLatin1(obj->getNameInDocument().c_str());
 
     if ((sub.size() > 4) && (sub.substr(0,4) == "Face")) {
         int subId = std::atoi(&sub[4]);
-        return QString::fromLatin1(obj->getNameInDocument()) + QString::fromLatin1(":") + QObject::tr("Face") + QString::number(subId);
+        return QString::fromLatin1(obj->getNameInDocument().c_str()) + QString::fromLatin1(":") + QObject::tr("Face") + QString::number(subId);
     } else if ((sub.size() > 4) && (sub.substr(0,4) == "Edge")) {
         int subId = std::atoi(&sub[4]);
-        return QString::fromLatin1(obj->getNameInDocument()) + QString::fromLatin1(":") + QObject::tr("Edge") + QString::number(subId);
+        return QString::fromLatin1(obj->getNameInDocument().c_str()) + QString::fromLatin1(":") + QObject::tr("Edge") + QString::number(subId);
     } else if ((sub.size() > 6) && (sub.substr(0,6) == "Vertex")) {
         int subId = std::atoi(&sub[6]);
-        return QString::fromLatin1(obj->getNameInDocument()) + QString::fromLatin1(":") + QObject::tr("Vertex") + QString::number(subId);
+        return QString::fromLatin1(obj->getNameInDocument().c_str()) + QString::fromLatin1(":") + QObject::tr("Vertex") + QString::number(subId);
     } else {
         //something else that face/edge/vertex. Can be empty string.
-        return QString::fromLatin1(obj->getNameInDocument())
+        return QString::fromLatin1(obj->getNameInDocument().c_str())
                 + (sub.length()>0 ? QString::fromLatin1(":") : QString())
                 + QString::fromLatin1(sub.c_str());
     }
@@ -1003,7 +1003,7 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
             return;
         if (!ViewProvider->getObject())
             return;
-        if (!ViewProvider->getObject()->getNameInDocument())
+        if (!ViewProvider->getObject()->isAttachedToDocument())
             return;
 
         auto editDoc = Gui::Application::Instance->editDocument();

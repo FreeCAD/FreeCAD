@@ -295,7 +295,7 @@ void TaskRichAnno::createAnnoFeature()
 
     if (m_baseFeat) {
         Command::doCommand(Command::Doc, "App.activeDocument().%s.AnnoParent = App.activeDocument().%s",
-                               annoName.c_str(), m_baseFeat->getNameInDocument());
+                               annoName.c_str(), m_baseFeat->getNameInDocument().c_str());
     }
     App::DocumentObject* obj = m_basePage->getDocument()->getObject(annoName.c_str());
     if (!obj) {
@@ -381,9 +381,9 @@ void TaskRichAnno::removeFeature()
             // this doesn't remove the QGMText item??
             std::string PageName = m_basePage->getNameInDocument();
             Gui::Command::doCommand(Gui::Command::Gui, "App.activeDocument().%s.removeView(App.activeDocument().%s)",
-                                    PageName.c_str(), m_annoFeat->getNameInDocument());
+                                    PageName.c_str(), m_annoFeat->getNameInDocument().c_str());
             Gui::Command::doCommand(Gui::Command::Gui, "App.activeDocument().removeObject('%s')",
-                                        m_annoFeat->getNameInDocument());
+                                        m_annoFeat->getNameInDocument().c_str());
         }
         catch (...) {
             Base::Console().Warning("TRA::removeFeature - failed to delete feature\n");

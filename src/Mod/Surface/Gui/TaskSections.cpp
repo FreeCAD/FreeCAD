@@ -332,7 +332,7 @@ void SectionsPanel::setEditedObject(Surface::Sections* fea)
         // 3. sub-element name of the edge
         QList<QVariant> data;
         data << QByteArray(doc->getName());
-        data << QByteArray(obj->getNameInDocument());
+        data << QByteArray(obj->getNameInDocument().c_str());
         data << QByteArray(edge.c_str());
         item->setData(Qt::UserRole, data);
     }

@@ -66,7 +66,7 @@ namespace PartGui {
     {
         App::Part* activePart = Gui::Application::Instance->activeView()->getActiveObject<App::Part*>("part");
         if (activePart) {
-            QString activeObjectName = QString::fromLatin1(activePart->getNameInDocument());
+            QString activeObjectName = QString::fromLatin1(activePart->getNameInDocument().c_str());
             return QString::fromLatin1("App.ActiveDocument.getObject('%1\')."
                 "addObject(App.ActiveDocument.getObject('%2\'))\n")
                 .arg(activeObjectName, objectName);
@@ -1946,7 +1946,7 @@ void DlgPrimitives::acceptChanges(const QString& placement)
     App::Document* doc = featurePtr->getDocument();
     QString objectName = QString::fromLatin1("App.getDocument(\"%1\").%2")
                          .arg(QString::fromLatin1(doc->getName()),
-                              QString::fromLatin1(featurePtr->getNameInDocument()));
+                              QString::fromLatin1(featurePtr->getNameInDocument().c_str()));
 
     // read values from the properties
     std::shared_ptr<AbstractPrimitive> primitive = getPrimitive(ui->PrimitiveTypeCB->currentIndex());

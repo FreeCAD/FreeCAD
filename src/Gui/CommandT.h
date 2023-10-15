@@ -301,7 +301,7 @@ inline void cmdGuiDocument(const App::DocumentObject* obj, T&& cmd) {
  */
 template<typename T>
 void _cmdObject(Gui::Command::DoCmd_Type cmdType, const App::DocumentObject* obj, const std::string& mod, T&& cmd) {
-    if (obj && obj->getNameInDocument()) {
+    if (obj && obj->isAttachedToDocument()) {
         std::ostringstream str;
         str << mod << ".getDocument('" << obj->getDocument()->getName() << "')"
                       ".getObject('" << obj->getNameInDocument() << "')."
@@ -352,10 +352,10 @@ inline void cmdAppObjectShow(const App::DocumentObject* obj) {
  * external group.
  */
 inline void cmdSetEdit(const App::DocumentObject* obj, int mod = 0) {
-    if (obj && obj->getNameInDocument()) {
+    if (obj && obj->isAttachedToDocument()) {
         Gui::Command::doCommand(Gui::Command::Gui,
             "Gui.ActiveDocument.setEdit(App.getDocument('%s').getObject('%s'), %d)",
-            obj->getDocument()->getName(), obj->getNameInDocument(), mod);
+            obj->getDocument()->getName(), obj->getNameInDocument().c_str(), mod);
     }
 }
 
@@ -382,7 +382,7 @@ void cmdAppObjectArgs(const App::DocumentObject* obj, const std::string& cmd, Ar
         boost::format fmt(cmd);
         _cmd = FormatString::toStr(fmt, std::forward<Args>(args)...);
         Gui::Command::doCommand(Gui::Command::Doc,"App.getDocument('%s').getObject('%s').%s",
-            obj->getDocument()->getName(), obj->getNameInDocument(), _cmd.c_str());
+            obj->getDocument()->getName(), obj->getNameInDocument().c_str(), _cmd.c_str());
     }
     catch (const std::exception& e) {
         Base::Console().DeveloperError(obj->getFullLabel(),"%s: %s\n", e.what(), cmd.c_str());
@@ -407,7 +407,7 @@ void cmdGuiObjectArgs(const App::DocumentObject* obj, const std::string& cmd, Ar
         boost::format fmt(cmd);
         _cmd = FormatString::toStr(fmt, std::forward<Args>(args)...);
         Gui::Command::doCommand(Gui::Command::Gui,"Gui.getDocument('%s').getObject('%s').%s",
-            obj->getDocument()->getName(), obj->getNameInDocument(), _cmd.c_str());
+            obj->getDocument()->getName(), obj->getNameInDocument().c_str(), _cmd.c_str());
     }
     catch (const std::exception& e) {
         Base::Console().DeveloperError(obj->getFullLabel(),"%s: %s\n", e.what(), cmd.c_str());

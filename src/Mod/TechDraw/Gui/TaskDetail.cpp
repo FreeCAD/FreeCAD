@@ -248,7 +248,7 @@ void TaskDetail::setUiFromFeat()
     Base::Vector3d anchor;
 
     TechDraw::DrawViewDetail* detailFeat = getDetailFeat();
-    QString detailDisplay = QString::fromUtf8(detailFeat->getNameInDocument()) +
+    QString detailDisplay = QString::fromUtf8(detailFeat->getNameInDocument().c_str()) +
                             QString::fromUtf8(" / ") +
                             QString::fromUtf8(detailFeat->Label.getValue());
     ui->leDetailView->setText(detailDisplay);

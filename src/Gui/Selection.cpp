@@ -219,7 +219,7 @@ std::vector<SelectionSingleton::SelObj> SelectionSingleton::getSelection(const c
         }
 
         tempSelObj.DocName  = obj->getDocument()->getName();
-        tempSelObj.FeatName = obj->getNameInDocument();
+        tempSelObj.FeatName = obj->getNameInDocument().c_str();
         tempSelObj.SubName = subelement;
         tempSelObj.TypeName = obj->getTypeId().getName();
         tempSelObj.pObject  = obj;
@@ -467,7 +467,7 @@ App::DocumentObject *SelectionSingleton::getObjectOfType(_SelObj &sel, Base::Typ
                                                          ResolveMode resolve, const char **subelement)
 {
     auto obj = sel.pObject;
-    if(!obj || !obj->getNameInDocument())
+    if(!obj || !obj->isAttachedToDocument())
         return nullptr;
     const char *subname = sel.SubName.c_str();
     if (resolve != ResolveMode::NoResolve) {
@@ -1274,7 +1274,7 @@ void SelectionSingleton::setVisible(VisibleState vis) {
         App::DocumentObject *parent = nullptr;
         std::string elementName;
         obj = obj->resolve(sel.SubName.c_str(),&parent,&elementName);
-        if (!obj || !obj->getNameInDocument() || (parent && !parent->getNameInDocument()))
+        if (!obj || !obj->isAttachedToDocument() || (parent && !parent->isAttachedToDocument()))
             continue;
         // try call parent object's setElementVisible
         if (parent) {
@@ -1342,10 +1342,10 @@ void SelectionSingleton::setSelection(const char* pDocName, const std::vector<Ap
 
     bool touched = false;
     for(auto obj : sel) {
-        if(!obj || !obj->getNameInDocument())
+        if(!obj || !obj->isAttachedToDocument())
             continue;
         _SelObj temp;
-        int ret = checkSelection(pDocName,obj->getNameInDocument(), nullptr, ResolveMode::NoResolve, temp);
+        int ret = checkSelection(pDocName,obj->getNameInDocument().c_str(), nullptr, ResolveMode::NoResolve, temp);
         if (ret!=0)
             continue;
         touched = true;
@@ -1447,11 +1447,11 @@ bool SelectionSingleton::isSelected(const char* pDocName, const char* pObjectNam
 
 bool SelectionSingleton::isSelected(App::DocumentObject* pObject, const char* pSubName, ResolveMode resolve) const
 {
-    if (!pObject || !pObject->getNameInDocument() || !pObject->getDocument())
+    if (!pObject || !pObject->isAttachedToDocument() || !pObject->getDocument())
         return false;
     _SelObj sel;
     return checkSelection(pObject->getDocument()->getName(),
-            pObject->getNameInDocument(), pSubName, resolve, sel, &_SelList) > 0;
+            pObject->getNameInDocument().c_str(), pSubName, resolve, sel, &_SelList) > 0;
 }
 
 int SelectionSingleton::checkSelection(const char *pDocName, const char *pObjectName, const char *pSubName,
@@ -1557,7 +1557,7 @@ const char *SelectionSingleton::getSelectedElement(App::DocumentObject *obj, con
 
 void SelectionSingleton::slotDeletedObject(const App::DocumentObject& Obj)
 {
-    if(!Obj.getNameInDocument())
+    if(!Obj.isAttachedToDocument())
         return;
 
     // For safety reason, don't bother checking
@@ -1900,13 +1900,13 @@ PyObject *SelectionSingleton::sAddSelection(PyObject * /*self*/, PyObject *args)
                 &subname,&x,&y,&z,&PyBool_Type,&clearPreselect)) {
         auto docObjPy = static_cast<App::DocumentObjectPy*>(object);
         App::DocumentObject* docObj = docObjPy->getDocumentObjectPtr();
-        if (!docObj || !docObj->getNameInDocument()) {
+        if (!docObj || !docObj->isAttachedToDocument()) {
             PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot check invalid object");
             return nullptr;
         }
 
         Selection().addSelection(docObj->getDocument()->getName(),
-                                 docObj->getNameInDocument(),
+                                 docObj->getNameInDocument().c_str(),
                                  subname, x, y, z, nullptr, Base::asBoolean(clearPreselect));
         Py_Return;
     }
@@ -1918,7 +1918,7 @@ PyObject *SelectionSingleton::sAddSelection(PyObject * /*self*/, PyObject *args)
     {
         auto docObjPy = static_cast<App::DocumentObjectPy*>(object);
         App::DocumentObject* docObj = docObjPy->getDocumentObjectPtr();
-        if (!docObj || !docObj->getNameInDocument()) {
+        if (!docObj || !docObj->isAttachedToDocument()) {
             PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot check invalid object");
             return nullptr;
         }
@@ -1929,7 +1929,7 @@ PyObject *SelectionSingleton::sAddSelection(PyObject * /*self*/, PyObject *args)
                 for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
                     std::string subname = static_cast<std::string>(Py::String(*it));
                     Selection().addSelection(docObj->getDocument()->getName(),
-                                             docObj->getNameInDocument(),
+                                             docObj->getNameInDocument().c_str(),
                                              subname.c_str(), 0, 0, 0, nullptr, Base::asBoolean(clearPreselect));
                 }
                 Py_Return;
@@ -1956,13 +1956,13 @@ PyObject *SelectionSingleton::sUpdateSelection(PyObject * /*self*/, PyObject *ar
 
     auto docObjPy = static_cast<App::DocumentObjectPy*>(object);
     App::DocumentObject* docObj = docObjPy->getDocumentObjectPtr();
-    if (!docObj || !docObj->getNameInDocument()) {
+    if (!docObj || !docObj->isAttachedToDocument()) {
         PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot check invalid object");
         return nullptr;
     }
 
     Selection().updateSelection(Base::asBoolean(show),
-            docObj->getDocument()->getName(), docObj->getNameInDocument(), subname);
+            docObj->getDocument()->getName(), docObj->getNameInDocument().c_str(), subname);
 
     Py_Return;
 }
@@ -1986,13 +1986,13 @@ PyObject *SelectionSingleton::sRemoveSelection(PyObject * /*self*/, PyObject *ar
 
     auto docObjPy = static_cast<App::DocumentObjectPy*>(object);
     App::DocumentObject* docObj = docObjPy->getDocumentObjectPtr();
-    if (!docObj || !docObj->getNameInDocument()) {
+    if (!docObj || !docObj->isAttachedToDocument()) {
         PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot check invalid object");
         return nullptr;
     }
 
     Selection().rmvSelection(docObj->getDocument()->getName(),
-                             docObj->getNameInDocument(),
+                             docObj->getNameInDocument().c_str(),
                              subname);
 
     Py_Return;
@@ -2124,13 +2124,13 @@ PyObject *SelectionSingleton::sSetPreselection(PyObject * /*self*/, PyObject *ar
                                             &subname, &x, &y, &z, &type)) {
         auto docObjPy = static_cast<App::DocumentObjectPy*>(object);
         App::DocumentObject* docObj = docObjPy->getDocumentObjectPtr();
-        if (!docObj || !docObj->getNameInDocument()) {
+        if (!docObj || !docObj->isAttachedToDocument()) {
             PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot check invalid object");
             return nullptr;
         }
 
         Selection().setPreselect(docObj->getDocument()->getName(),
-                                 docObj->getNameInDocument(),
+                                 docObj->getNameInDocument().c_str(),
                                  subname,x,y,z, static_cast<SelectionChanges::MsgSource>(type));
         Py_Return;
     }

@@ -180,13 +180,13 @@ void DataAlongLineMarker::customEvent(QEvent*)
     Q_EMIT PointsChanged(pt1[0], pt1[1], pt1[2], pt2[0], pt2[1], pt2[2]);
     Gui::Command::doCommand(Gui::Command::Doc,
                             "App.ActiveDocument.%s.Point1 = App.Vector(%f, %f, %f)",
-                            getObject()->getNameInDocument(),
+                            getObject()->getNameInDocument().c_str(),
                             pt1[0],
                             pt1[1],
                             pt1[2]);
     Gui::Command::doCommand(Gui::Command::Doc,
                             "App.ActiveDocument.%s.Point2 = App.Vector(%f, %f, %f)",
-                            getObject()->getNameInDocument(),
+                            getObject()->getNameInDocument().c_str(),
                             pt2[0],
                             pt2[1],
                             pt2[2]);
@@ -207,7 +207,7 @@ void DataAtPointMarker::customEvent(QEvent*)
     Q_EMIT PointsChanged(pt1[0], pt1[1], pt1[2]);
     Gui::Command::doCommand(Gui::Command::Doc,
                             "App.ActiveDocument.%s.Center = App.Vector(%f, %f, %f)",
-                            getObject()->getNameInDocument(),
+                            getObject()->getNameInDocument().c_str(),
                             pt1[0],
                             pt1[1],
                             pt1[2]);
@@ -1382,7 +1382,7 @@ void TaskPostClip::collectImplicitFunctions()
                 static_cast<Fem::FemPostFunctionProvider*>(pipeline->Functions.getValue())
                     ->Functions.getValues();
             for (std::size_t i = 0; i < funcs.size(); ++i) {
-                items.push_back(QString::fromLatin1(funcs[i]->getNameInDocument()));
+                items.push_back(QString::fromLatin1(funcs[i]->getNameInDocument().c_str()));
                 if (currentFunction == funcs[i]) {
                     currentItem = i;
                 }
@@ -1667,7 +1667,7 @@ void TaskPostCut::collectImplicitFunctions()
                 static_cast<Fem::FemPostFunctionProvider*>(pipeline->Functions.getValue())
                     ->Functions.getValues();
             for (std::size_t i = 0; i < funcs.size(); ++i) {
-                items.push_back(QString::fromLatin1(funcs[i]->getNameInDocument()));
+                items.push_back(QString::fromLatin1(funcs[i]->getNameInDocument().c_str()));
                 if (currentFunction == funcs[i]) {
                     currentItem = i;
                 }

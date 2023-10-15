@@ -1218,7 +1218,7 @@ void TaskSketcherElements::onSelectionChanged(const Gui::SelectionChanges& msg)
         bool select = (msg.Type == Gui::SelectionChanges::AddSelection);
         // is it this object??
         if (strcmp(msg.pDocName, sketchView->getSketchObject()->getDocument()->getName()) == 0
-            && strcmp(msg.pObjectName, sketchView->getSketchObject()->getNameInDocument()) == 0) {
+            && sketchView->getSketchObject()->getNameInDocument() == msg.pObjectName) {
             if (msg.pSubName) {
                 QString expr = QString::fromLatin1(msg.pSubName);
                 std::string shapetype(msg.pSubName);
@@ -1707,7 +1707,7 @@ void TaskSketcherElements::slotElementsChanged()
             if (isNamingBoxChecked) {
                 if (size_t(j - 3) < linkobjs.size() && size_t(j - 3) < linksubs.size()) {
                     linkname = IdInformation(true)
-                        + QString::fromUtf8(linkobjs[j - 3]->getNameInDocument())
+                        + QString::fromUtf8(linkobjs[j - 3]->getNameInDocument().c_str())
                         + QString::fromLatin1(".") + QString::fromUtf8(linksubs[j - 3].c_str())
                         + QString::fromLatin1(")");
                 }

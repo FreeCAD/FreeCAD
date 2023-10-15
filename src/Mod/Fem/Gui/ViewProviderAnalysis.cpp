@@ -121,7 +121,7 @@ bool ViewProviderFemAnalysis::doubleClicked()
     Gui::Command::addModule(Gui::Command::Gui, "FemGui");
     Gui::Command::doCommand(Gui::Command::Gui,
                             "FemGui.setActiveAnalysis(App.activeDocument().%s)",
-                            this->getObject()->getNameInDocument());
+                            this->getObject()->getNameInDocument().c_str());
     // After activation of the analysis the allowed FEM toolbar buttons should become active.
     // To achieve this we must clear the object selection to trigger the selection observer.
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.Selection.clearSelection()");

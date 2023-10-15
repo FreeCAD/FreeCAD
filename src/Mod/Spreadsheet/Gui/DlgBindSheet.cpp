@@ -110,14 +110,14 @@ DlgBindSheet::DlgBindSheet(Sheet* sheet, const std::vector<Range>& ranges, QWidg
         }
         QString label;
         if (obj->Label.getStrValue() != obj->getNameInDocument()) {
-            label =
-                QString::fromLatin1("%1 (%2)").arg(QString::fromLatin1(obj->getNameInDocument()),
-                                                   QString::fromUtf8(obj->Label.getValue()));
+            label = QString::fromLatin1("%1 (%2)").arg(
+                QString::fromLatin1(obj->getNameInDocument().c_str()),
+                QString::fromUtf8(obj->Label.getValue()));
         }
         else {
-            label = QLatin1String(obj->getNameInDocument());
+            label = QLatin1String(obj->getNameInDocument().c_str());
         }
-        ui->comboBox->addItem(label, QByteArray(obj->getNameInDocument()));
+        ui->comboBox->addItem(label, QByteArray(obj->getNameInDocument().c_str()));
         if (obj == target) {
             ui->comboBox->setCurrentIndex(ui->comboBox->count() - 1);
         }

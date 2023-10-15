@@ -261,7 +261,7 @@ static void _copyShape(const char *cmdName, bool resolve,bool needElement=false,
                         needElement ? "True" : "False",
                         refine ? "True" : "False",
                         needElement ? ".copy()" : "",
-                        v.second->getNameInDocument(),
+                        v.second->getNameInDocument().c_str(),
                         Gui::Command::getObjectCmd(v.second).c_str());
             auto newObj = App::GetApplication().getActiveDocument()->getActiveObject();
             Gui::Command::copyVisual(newObj, "ShapeColor", v.second);
@@ -374,14 +374,14 @@ void CmdPartRefineShape::activated(int iMsg)
                               "App.ActiveDocument.ActiveObject.Label="
                               "App.ActiveDocument.%s.Label\n"
                               "Gui.ActiveDocument.%s.hide()\n",
-                              obj->getNameInDocument(),
-                              obj->getNameInDocument(),
-                              obj->getNameInDocument(),
-                              obj->getNameInDocument());
+                              obj->getNameInDocument().c_str(),
+                              obj->getNameInDocument().c_str(),
+                              obj->getNameInDocument().c_str(),
+                              obj->getNameInDocument().c_str());
 
-                copyVisual("ActiveObject", "ShapeColor", obj->getNameInDocument());
-                copyVisual("ActiveObject", "LineColor", obj->getNameInDocument());
-                copyVisual("ActiveObject", "PointColor", obj->getNameInDocument());
+                copyVisual("ActiveObject", "ShapeColor", obj->getNameInDocument().c_str());
+                copyVisual("ActiveObject", "LineColor", obj->getNameInDocument().c_str());
+                copyVisual("ActiveObject", "PointColor", obj->getNameInDocument().c_str());
             }
             catch (const Base::Exception& e) {
                 Base::Console().Warning("%s: %s\n", obj->Label.getValue(), e.what());

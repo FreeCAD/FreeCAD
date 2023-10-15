@@ -252,7 +252,7 @@ bool ViewProviderViewPart::setEdit(int ModNum)
         Gui::Control().showDialog(new TaskDlgDetail(dvd));
         Gui::Selection().clearSelection();
         Gui::Selection().addSelection(dvd->getDocument()->getName(),
-                                        dvd->getNameInDocument());
+                                        dvd->getNameInDocument().c_str());
     }
 
     return true;

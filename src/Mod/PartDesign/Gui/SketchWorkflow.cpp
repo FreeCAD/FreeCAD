@@ -106,7 +106,7 @@ public:
             if (tip && tip->isDerivedFrom(Part::Feature::getClassTypeId()) && elements.size() == 1) {
                 Gui::SelectionChanges msg;
                 msg.pDocName = faceSelection.getDocName();
-                msg.pObjectName = tip->getNameInDocument();
+                msg.pObjectName = tip->getNameInDocument().c_str();
                 msg.pSubName = elements[0].c_str();
                 msg.pTypeName = tip->getTypeId().getName();
 

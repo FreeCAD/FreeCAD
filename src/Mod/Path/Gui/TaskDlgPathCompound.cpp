@@ -59,7 +59,7 @@ TaskWidgetPathCompound::TaskWidgetPathCompound(ViewProviderPathCompound *Compoun
     Path::FeatureCompound* pcCompound = static_cast<Path::FeatureCompound*>(CompoundView->getObject());
     const std::vector<App::DocumentObject*> &Paths = pcCompound->Group.getValues();
     for (std::vector<App::DocumentObject*>::const_iterator it= Paths.begin();it!=Paths.end();++it) {
-        QString name = QString::fromLatin1((*it)->getNameInDocument());
+        QString name = QString::fromLatin1((*it)->getNameInDocument().c_str());
         name += QString::fromLatin1(" (");
         name += QString::fromUtf8((*it)->Label.getValue());
         name += QString::fromLatin1(")");

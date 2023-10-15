@@ -69,7 +69,7 @@ bool ViewProviderMultiTransform::onDelete(const std::vector<std::string> &svec) 
         if (it) {
             Gui::Command::doCommand(
                 Gui::Command::Doc,"App.getDocument('%s').removeObject(\"%s\")", \
-                    it->getDocument()->getName(), it->getNameInDocument());
+                    it->getDocument()->getName(), it->getNameInDocument().c_str());
         }
     }
 

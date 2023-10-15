@@ -100,8 +100,8 @@ void ViewProviderInventorObject::updateData(const App::Property* prop)
         SoSeparator * node = SoDB::readAll(&in);
         if (node) {
             const char* doc = this->pcObject->getDocument()->getName();
-            const char* obj = this->pcObject->getNameInDocument();
-            adjustSelectionNodes(node, doc, obj);
+            std::string obj = this->pcObject->getNameInDocument();
+            adjustSelectionNodes(node, doc, obj.c_str());
             pcBuffer->addChild(node);
         }
     }
@@ -118,8 +118,8 @@ void ViewProviderInventorObject::updateData(const App::Property* prop)
             SoSeparator * node = SoDB::readAll(&in);
             if (node) {
                 const char* doc = this->pcObject->getDocument()->getName();
-                const char* obj = this->pcObject->getNameInDocument();
-                adjustSelectionNodes(node, doc, obj);
+                std::string obj = this->pcObject->getNameInDocument();
+                adjustSelectionNodes(node, doc, obj.c_str());
                 pcFile->addChild(node);
             }
         }

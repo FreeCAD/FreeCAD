@@ -132,7 +132,7 @@ void DlgScale::findShapes()
         if (canScale(shape)) {
             QTreeWidgetItem* item = new QTreeWidgetItem(ui->treeWidget);
             item->setText(0, QString::fromUtf8(obj->Label.getValue()));
-            item->setData(0, Qt::UserRole, QString::fromLatin1(obj->getNameInDocument()));
+            item->setData(0, Qt::UserRole, QString::fromLatin1(obj->getNameInDocument().c_str()));
             Gui::ViewProvider* vp = activeGui->getViewProvider(obj);
             if (vp)
                 item->setIcon(0, vp->getIcon());
@@ -310,13 +310,13 @@ bool DlgScale::validate()
 void DlgScale::writeParametersToFeature(App::DocumentObject &feature, App::DocumentObject* base) const
 {
 //    Base::Console().Message("DS::writeParametersToFeature()\n");
-    Gui::Command::doCommand(Gui::Command::Doc,"f = App.getDocument('%s').getObject('%s')", feature.getDocument()->getName(), feature.getNameInDocument());
+    Gui::Command::doCommand(Gui::Command::Doc,"f = App.getDocument('%s').getObject('%s')", feature.getDocument()->getName(), feature.getNameInDocument().c_str());
 
     if (!base) {
         return;
     }
 
-    Gui::Command::doCommand(Gui::Command::Doc,"f.Base = App.getDocument('%s').getObject('%s')", base->getDocument()->getName(), base->getNameInDocument());
+    Gui::Command::doCommand(Gui::Command::Doc,"f.Base = App.getDocument('%s').getObject('%s')", base->getDocument()->getName(), base->getNameInDocument().c_str());
 
     Gui::Command::doCommand(Gui::Command::Doc,"f.Uniform = %s", ui->rbUniform->isChecked() ? "True" : "False");
     Gui::Command::doCommand(Gui::Command::Doc,"f.UniformScale = %.7f", ui->dsbUniformScale->value());

@@ -64,8 +64,8 @@ void ViewProviderGroupExtension::extensionDragObject(App::DocumentObject* obj) {
 
     Gui::Command::doCommand(Gui::Command::Doc,"App.getDocument(\"%s\").getObject(\"%s\").removeObject("
             "App.getDocument(\"%s\").getObject(\"%s\"))",
-            getExtendedViewProvider()->getObject()->getDocument()->getName(), getExtendedViewProvider()->getObject()->getNameInDocument(),
-            obj->getDocument()->getName(), obj->getNameInDocument() );
+            getExtendedViewProvider()->getObject()->getDocument()->getName(), getExtendedViewProvider()->getObject()->getNameInDocument().c_str(),
+            obj->getDocument()->getName(), obj->getNameInDocument().c_str() );
 }
 
 bool ViewProviderGroupExtension::extensionCanDropObjects() const {
@@ -100,8 +100,8 @@ void ViewProviderGroupExtension::extensionDropObject(App::DocumentObject* obj) {
     cmd = QString::fromLatin1("App.getDocument(\"%1\").getObject(\"%2\").addObject("
                         "App.getDocument(\"%1\").getObject(\"%3\"))")
                         .arg(QString::fromLatin1(doc->getName()),
-                             QString::fromLatin1(grp->getNameInDocument()),
-                             QString::fromLatin1(obj->getNameInDocument()));
+                             QString::fromLatin1(grp->getNameInDocument().c_str()),
+                             QString::fromLatin1(obj->getNameInDocument().c_str()));
 
     Gui::Command::doCommand(Gui::Command::App, cmd.toUtf8());
 }
@@ -171,7 +171,7 @@ bool ViewProviderGroupExtension::extensionOnDelete(const std::vector< std::strin
             Gui::Command::doCommand(Gui::Command::Doc,
                     "App.getDocument(\"%s\").getObject(\"%s\").removeObjectsFromDocument()"
                     , getExtendedViewProvider()->getObject()->getDocument()->getName()
-                    , getExtendedViewProvider()->getObject()->getNameInDocument());
+                    , getExtendedViewProvider()->getObject()->getNameInDocument().c_str());
         }
     }
     return true;

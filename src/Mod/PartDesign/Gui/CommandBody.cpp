@@ -200,15 +200,15 @@ void CmdPartDesignBody::activated(int iMsg)
         if (partOfBaseFeature){
             //withdraw base feature from Part, otherwise visibility madness results
             doCommand(Doc,"App.activeDocument().%s.removeObject(App.activeDocument().%s)",
-                    partOfBaseFeature->getNameInDocument(), baseFeature->getNameInDocument());
+                    partOfBaseFeature->getNameInDocument().c_str(), baseFeature->getNameInDocument().c_str());
         }
         if (addtogroup) {
             doCommand(Doc,"App.activeDocument().%s.Group = [App.activeDocument().%s]",
-                    bodyString, baseFeature->getNameInDocument());
+                    bodyString, baseFeature->getNameInDocument().c_str());
         }
         else {
             doCommand(Doc,"App.activeDocument().%s.BaseFeature = App.activeDocument().%s",
-                    bodyString, baseFeature->getNameInDocument());
+                    bodyString, baseFeature->getNameInDocument().c_str());
         }
     }
     addModule(Gui,"PartDesignGui"); // import the Gui module only once a session
@@ -221,7 +221,7 @@ void CmdPartDesignBody::activated(int iMsg)
     doCommand(Gui,"Gui.Selection.addSelection(App.ActiveDocument.%s)", bodyString);
     if (actPart) {
         doCommand(Doc,"App.activeDocument().%s.addObject(App.ActiveDocument.%s)",
-                 actPart->getNameInDocument(), bodyString);
+                 actPart->getNameInDocument().c_str(), bodyString);
     }
 
     // check if a proxy object has been created for the base feature inside the body
@@ -466,12 +466,12 @@ void CmdPartDesignMigrate::activated(int iMsg)
                 std::string ( chainIt->back()->getNameInDocument() ).append ( "Body" ).c_str () ) ;
 
         // Create a body for the chain
-        doCommand ( Doc,"App.activeDocument().addObject('PartDesign::Body','%s')", bodyName.c_str () );
+        doCommand ( Doc,"App.activeDocument().addObject('PartDesign::Body','%s')", bodyName.c_str() );
         doCommand ( Doc,"App.activeDocument().%s.addObject(App.ActiveDocument.%s)",
-                actPart->getNameInDocument (), bodyName.c_str () );
+                actPart->getNameInDocument().c_str(), bodyName.c_str() );
         if (base) {
             doCommand ( Doc,"App.activeDocument().%s.BaseFeature = App.activeDocument().%s",
-                bodyName.c_str (), base->getNameInDocument () );
+                bodyName.c_str(), base->getNameInDocument().c_str() );
         }
 
         // Fill the body with features
@@ -482,7 +482,7 @@ void CmdPartDesignMigrate::activated(int iMsg)
                 Part::Part2DObject *sketch = sketchBased->getVerifiedSketch( /*silent =*/ true);
                 if ( sketch ) {
                     doCommand ( Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",
-                            bodyName.c_str (), sketch->getNameInDocument() );
+                            bodyName.c_str(), sketch->getNameInDocument().c_str() );
 
                     if ( sketch->isDerivedFrom ( Sketcher::SketchObject::getClassTypeId() ) ) {
                         try {
@@ -500,7 +500,7 @@ void CmdPartDesignMigrate::activated(int iMsg)
                 }
             }
             doCommand ( Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",
-                    bodyName.c_str (), feature->getNameInDocument() );
+                    bodyName.c_str(), feature->getNameInDocument().c_str() );
 
             PartDesignGui::relinkToBody ( feature );
         }
@@ -765,14 +765,14 @@ void CmdPartDesignMoveFeature::activated(int iMsg)
         if (source) {
             featureWasTip = (source->Tip.getValue() == feat);
             doCommand(Doc,"App.activeDocument().%s.removeObject(App.activeDocument().%s)",
-                      source->getNameInDocument(), (feat)->getNameInDocument());
+                      source->getNameInDocument().c_str(), (feat)->getNameInDocument().c_str());
         }
 
         App::DocumentObject* targetOldTip = target->Tip.getValue();
 
         // Add to target body (always at the Tip)
         doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",
-                      target->getNameInDocument(), (feat)->getNameInDocument());
+                      target->getNameInDocument().c_str(), (feat)->getNameInDocument().c_str());
         // Recompute to update the shape
         doCommand(Gui,"App.activeDocument().recompute()");
 
@@ -782,17 +782,17 @@ void CmdPartDesignMoveFeature::activated(int iMsg)
         if ( featureWasTip ) {
             App::DocumentObject * sourceNewTip = source->Tip.getValue();
             if (sourceNewTip)
-                doCommand(Gui,"Gui.activeDocument().show(\"%s\")", sourceNewTip->getNameInDocument());
+                doCommand(Gui,"Gui.activeDocument().show(\"%s\")", sourceNewTip->getNameInDocument().c_str());
         }
 
         // Hide old tip and show new tip (the moved feature) of the target body
         App::DocumentObject* targetNewTip = target->Tip.getValue();
         if ( targetOldTip != targetNewTip ) {
             if ( targetOldTip ) {
-                doCommand(Gui,"Gui.activeDocument().hide(\"%s\")", targetOldTip->getNameInDocument());
+                doCommand(Gui,"Gui.activeDocument().hide(\"%s\")", targetOldTip->getNameInDocument().c_str());
             }
             if (targetNewTip) {
-                doCommand(Gui,"Gui.activeDocument().show(\"%s\")", targetNewTip->getNameInDocument());
+                doCommand(Gui,"Gui.activeDocument().show(\"%s\")", targetNewTip->getNameInDocument().c_str());
             }
         }
 

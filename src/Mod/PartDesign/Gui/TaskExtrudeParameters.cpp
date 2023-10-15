@@ -145,14 +145,14 @@ void TaskExtrudeParameters::setupDialog()
     // Set object labels
     if (obj && PartDesign::Feature::isDatum(obj)) {
         ui->lineFaceName->setText(QString::fromUtf8(obj->Label.getValue()));
-        ui->lineFaceName->setProperty("FeatureName", QByteArray(obj->getNameInDocument()));
+        ui->lineFaceName->setProperty("FeatureName", QByteArray(obj->getNameInDocument().c_str()));
     }
     else if (obj && faceId >= 0) {
         ui->lineFaceName->setText(QString::fromLatin1("%1:%2%3")
                                   .arg(QString::fromUtf8(obj->Label.getValue()),
                                        tr("Face"),
                                        QString::number(faceId)));
-        ui->lineFaceName->setProperty("FeatureName", QByteArray(obj->getNameInDocument()));
+        ui->lineFaceName->setProperty("FeatureName", QByteArray(obj->getNameInDocument().c_str()));
     }
     else {
         ui->lineFaceName->clear();

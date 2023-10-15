@@ -215,7 +215,7 @@ bool ViewProviderOrigin::onDelete(const std::vector<std::string> &) {
 
     for (auto obj: objs ) {
         Gui::Command::doCommand( Gui::Command::Doc, "App.getDocument(\"%s\").removeObject(\"%s\")",
-                obj->getDocument()->getName(), obj->getNameInDocument() );
+                obj->getDocument()->getName(), obj->getNameInDocument().c_str() );
     }
 
     return true;

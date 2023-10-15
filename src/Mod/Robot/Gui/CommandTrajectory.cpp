@@ -383,7 +383,7 @@ void CmdRobotEdge2Trac::activated(int)
         Robot::Edge2TracObject* EdgeObj =
             static_cast<Robot::Edge2TracObject*>(ObjectFilter.Result[0][0].getObject());
         openCommand("Edit Edge2TracObject");
-        doCommand(Gui, "Gui.activeDocument().setEdit('%s')", EdgeObj->getNameInDocument());
+        doCommand(Gui, "Gui.activeDocument().setEdit('%s')", EdgeObj->getNameInDocument().c_str());
     }
     else if (EdgeFilter.match()) {
         // get the selected object
@@ -442,7 +442,7 @@ void CmdRobotTrajectoryDressUp::activated(int)
         Robot::TrajectoryDressUpObject* Object = static_cast<Robot::TrajectoryDressUpObject*>(
             ObjectFilterDressUp.Result[0][0].getObject());
         openCommand("Edit Sketch");
-        doCommand(Gui, "Gui.activeDocument().setEdit('%s')", Object->getNameInDocument());
+        doCommand(Gui, "Gui.activeDocument().setEdit('%s')", Object->getNameInDocument().c_str());
     }
     else if (ObjectFilter.match()) {
         std::string FeatName = getUniqueObjectName("DressUpObject");
@@ -455,8 +455,8 @@ void CmdRobotTrajectoryDressUp::activated(int)
         doCommand(Gui,
                   "App.activeDocument().%s.Source = App.activeDocument().%s",
                   FeatName.c_str(),
-                  Object->getNameInDocument());
-        doCommand(Gui, "Gui.activeDocument().hide(\"%s\")", Object->getNameInDocument());
+                  Object->getNameInDocument().c_str());
+        doCommand(Gui, "Gui.activeDocument().hide(\"%s\")", Object->getNameInDocument().c_str());
         doCommand(Gui, "Gui.activeDocument().setEdit('%s')", FeatName.c_str());
     }
     else {
@@ -497,7 +497,7 @@ void CmdRobotTrajectoryCompound::activated(int)
         Robot::TrajectoryCompound* Object =
             static_cast<Robot::TrajectoryCompound*>(ObjectFilter.Result[0][0].getObject());
         openCommand("Edit TrajectoryCompound");
-        doCommand(Gui, "Gui.activeDocument().setEdit('%s')", Object->getNameInDocument());
+        doCommand(Gui, "Gui.activeDocument().setEdit('%s')", Object->getNameInDocument().c_str());
     }
     else {
         std::string FeatName = getUniqueObjectName("TrajectoryCompound");

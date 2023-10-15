@@ -283,8 +283,7 @@ bool TaskShapeBinder::referenceSelected(const SelectionChanges& msg) const
             return false;
 
         // not allowed to reference ourself
-        const char* fname = vp->getObject()->getNameInDocument();
-        if (strcmp(msg.pObjectName, fname) == 0)
+        if (vp->getObject()->getNameInDocument() == msg.pObjectName)
             return false;
 
         //change the references
@@ -313,7 +312,7 @@ bool TaskShapeBinder::referenceSelected(const SelectionChanges& msg) const
 
         if (selectionMode != refObjAdd) {
             // ensure the new selected subref belongs to the same object
-            if (strcmp(msg.pObjectName, obj->getNameInDocument()) != 0)
+            if (obj->getNameInDocument() != msg.pObjectName)
                 return false;
 
             std::vector<std::string>::iterator f = std::find(refs.begin(), refs.end(), subName);

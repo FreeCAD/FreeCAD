@@ -216,7 +216,7 @@ void DlgExtrusion::onSelectEdgeClicked()
                 if (!obj)
                     continue;
                 features_to_hide.append(QString::fromLatin1("App.ActiveDocument."));
-                features_to_hide.append(QString::fromLatin1(obj->getNameInDocument()));
+                features_to_hide.append(QString::fromLatin1(obj->getNameInDocument().c_str()));
                 features_to_hide.append(QString::fromLatin1(", \n"));
             }
             QByteArray code_2 = code.arg(features_to_hide).toLatin1();
@@ -392,7 +392,7 @@ void DlgExtrusion::findShapes()
         if (canExtrude(shape)) {
             QTreeWidgetItem* item = new QTreeWidgetItem(ui->treeWidget);
             item->setText(0, QString::fromUtf8(obj->Label.getValue()));
-            item->setData(0, Qt::UserRole, QString::fromLatin1(obj->getNameInDocument()));
+            item->setData(0, Qt::UserRole, QString::fromLatin1(obj->getNameInDocument().c_str()));
             Gui::ViewProvider* vp = activeGui->getViewProvider(obj);
             if (vp)
                 item->setIcon(0, vp->getIcon());
@@ -591,9 +591,9 @@ void DlgExtrusion::setAxisLink(const App::PropertyLinkSub& lnk)
         return;
     }
     if (lnk.getSubValues().size() == 1){
-        this->setAxisLink(lnk.getValue()->getNameInDocument(), lnk.getSubValues()[0].c_str());
+        this->setAxisLink(lnk.getValue()->getNameInDocument().c_str(), lnk.getSubValues()[0].c_str());
     } else {
-        this->setAxisLink(lnk.getValue()->getNameInDocument(), "");
+        this->setAxisLink(lnk.getValue()->getNameInDocument().c_str(), "");
     }
 }
 
@@ -709,10 +709,10 @@ bool DlgExtrusion::validate()
 
 void DlgExtrusion::writeParametersToFeature(App::DocumentObject &feature, App::DocumentObject* base) const
 {
-    Gui::Command::doCommand(Gui::Command::Doc,"f = App.getDocument('%s').getObject('%s')", feature.getDocument()->getName(), feature.getNameInDocument());
+    Gui::Command::doCommand(Gui::Command::Doc,"f = App.getDocument('%s').getObject('%s')", feature.getDocument()->getName(), feature.getNameInDocument().c_str());
 
     if (base)
-        Gui::Command::doCommand(Gui::Command::Doc,"f.Base = App.getDocument('%s').getObject('%s')", base->getDocument()->getName(), base->getNameInDocument());
+        Gui::Command::doCommand(Gui::Command::Doc,"f.Base = App.getDocument('%s').getObject('%s')", base->getDocument()->getName(), base->getNameInDocument().c_str());
 
     Part::Extrusion::eDirMode dirMode = this->getDirMode();
     const char* modestr = Part::Extrusion::eDirModeStrings[dirMode];

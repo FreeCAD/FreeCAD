@@ -52,11 +52,11 @@ std::string DocumentObjectPy::representation() const
 Py::String DocumentObjectPy::getName() const
 {
     DocumentObject* object = this->getDocumentObjectPtr();
-    const char* internal = object->getNameInDocument();
-    if (!internal) {
+    std::string internal = object->getNameInDocument();
+    if (internal.empty()) {
         throw Py::RuntimeError(std::string("This object is currently not part of a document"));
     }
-    return {std::string(internal)};
+    return {internal};
 }
 
 Py::String DocumentObjectPy::getFullName() const
@@ -224,8 +224,8 @@ Py::Object DocumentObjectPy::getViewObject() const
         if(!getDocumentObjectPtr()->getDocument()) {
             throw Py::RuntimeError("Object has no document");
         }
-        const char* internalName = getDocumentObjectPtr()->getNameInDocument();
-        if (!internalName) {
+        std::string internalName = getDocumentObjectPtr()->getNameInDocument();
+        if (internalName.empty()) {
             throw Py::RuntimeError("Object has been removed from document");
         }
 

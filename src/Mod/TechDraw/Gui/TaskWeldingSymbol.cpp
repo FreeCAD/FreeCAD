@@ -471,7 +471,7 @@ TechDraw::DrawWeldSymbol* TaskWeldingSymbol::createWeldingSymbol()
     Command::doCommand(Command::Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)",
                        pageName.c_str(), symbolName.c_str());
     Command::doCommand(Command::Doc, "App.activeDocument().%s.Leader = App.activeDocument().%s",
-                           symbolName.c_str(), m_leadFeat->getNameInDocument());
+                           symbolName.c_str(), m_leadFeat->getNameInDocument().c_str());
 
     bool allAround = ui->cbAllAround->isChecked();
     std::string allAroundText = allAround ? "True" : "False";

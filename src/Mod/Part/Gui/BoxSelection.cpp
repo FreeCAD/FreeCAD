@@ -116,7 +116,7 @@ void BoxSelection::selectionCallback(void * ud, SoEventCallback * cb)
             if (!vp->isVisible())
                 continue;
             const TopoDS_Shape& shape = it->Shape.getValue();
-            self->addShapeToSelection(doc->getName(), it->getNameInDocument(), proj, polygon, shape, self->shapeEnum);
+            self->addShapeToSelection(doc->getName(), it->getNameInDocument().c_str(), proj, polygon, shape, self->shapeEnum);
         }
         view->redraw();
     }

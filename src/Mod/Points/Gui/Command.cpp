@@ -147,7 +147,7 @@ void CmdPointsExport::activated(int iMsg)
             fn = Base::Tools::escapeEncodeFilename(fn);
             doCommand(Command::Doc,
                       "Points.export([App.ActiveDocument.%s], \"%s\")",
-                      point->getNameInDocument(),
+                      point->getNameInDocument().c_str(),
                       fn.toUtf8().data());
         }
     }

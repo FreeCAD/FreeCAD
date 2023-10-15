@@ -578,7 +578,7 @@ void CmdMeshVertexCurvature::activated(int)
             doCommand(
                 Doc,
                 "App.activeDocument().getObject(\"%s\").newObject(\"Mesh::Curvature\",\"%s\")",
-                grp->getNameInDocument(),
+                grp->getNameInDocument().c_str(),
                 fName.c_str());
         }
         else {
@@ -589,7 +589,7 @@ void CmdMeshVertexCurvature::activated(int)
         doCommand(Doc,
                   "App.activeDocument().%s.Source = App.activeDocument().%s",
                   fName.c_str(),
-                  it->getNameInDocument());
+                  it->getNameInDocument().c_str());
     }
 
     commitCommand();
@@ -1380,7 +1380,7 @@ void CmdMeshHarmonizeNormals::activated(int)
     for (auto it : meshes) {
         doCommand(Doc,
                   "App.activeDocument().getObject(\"%s\").Mesh.harmonizeNormals()",
-                  it->getNameInDocument());
+                  it->getNameInDocument().c_str());
     }
     commitCommand();
     updateActive();
@@ -1416,7 +1416,7 @@ void CmdMeshFlipNormals::activated(int)
     for (auto it : meshes) {
         doCommand(Doc,
                   "App.activeDocument().getObject(\"%s\").Mesh.flipNormals()",
-                  it->getNameInDocument());
+                  it->getNameInDocument().c_str());
     }
     commitCommand();
     updateActive();
@@ -1550,7 +1550,7 @@ void CmdMeshFillupHoles::activated(int)
     for (auto mesh : meshes) {
         doCommand(Doc,
                   "App.activeDocument().getObject(\"%s\").Mesh.fillupHoles(%d)",
-                  mesh->getNameInDocument(),
+                  mesh->getNameInDocument().c_str(),
                   FillupHolesOfLength);
     }
     commitCommand();

@@ -573,7 +573,7 @@ void TaskComplexSection::createComplexSection()
                            m_sectionName.c_str(),
                            makeSectionLabel(qTemp).c_str());
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.addView(App.ActiveDocument.%s)",
-                           m_page->getNameInDocument(), m_sectionName.c_str());
+                           m_page->getNameInDocument().c_str(), m_sectionName.c_str());
 
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Scale = %0.6f",
                            m_sectionName.c_str(), ui->sbScale->value());
@@ -599,7 +599,7 @@ void TaskComplexSection::createComplexSection()
         if (m_baseView) {
             Command::doCommand(Command::Doc,
                                "App.ActiveDocument.%s.BaseView = App.ActiveDocument.%s",
-                               m_sectionName.c_str(), m_baseView->getNameInDocument());
+                               m_sectionName.c_str(), m_baseView->getNameInDocument().c_str());
             m_section->setCSFromBase(localUnit * -1.0);
             m_section->Source.setValues(m_baseView->Source.getValues());
             m_section->XSource.setValues(m_baseView->XSource.getValues());

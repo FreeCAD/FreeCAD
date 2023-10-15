@@ -171,8 +171,8 @@ QGVPage::QGVPage(ViewProviderPage* vpPage, QGSPage* scenePage, QWidget* parent)
 {
     assert(vpPage);
     m_vpPage = vpPage;
-    const char* name = vpPage->getDrawPage()->getNameInDocument();
-    setObjectName(QString::fromLocal8Bit(name));
+    std::string name = vpPage->getDrawPage()->getNameInDocument();
+    setObjectName(QString::fromLocal8Bit(name.c_str()));
 
     setScene(scenePage);
     setMouseTracking(true);

@@ -149,7 +149,7 @@ void CmdFemAddPart::activated(int)
     doCommand(Doc,"App.activeDocument().addObject('Fem::FemAnalysis','%s')",AnalysisName.c_str());
     doCommand(Doc,"App.activeDocument().addObject('Fem::FemMeshShapeNetgenObject','%s')",MeshName.c_str());
     doCommand(Doc,"App.activeDocument().ActiveObject.Shape =
-App.activeDocument().%s",base->getNameInDocument());
+App.activeDocument().%s",base->getNameInDocument().c_str());
     doCommand(Doc,"App.activeDocument().%s.addObject(App.activeDocument().%s)",AnalysisName.c_str(),MeshName.c_str());
     addModule(Gui,"FemGui");
     doCommand(Gui,"FemGui.setActiveAnalysis(App.activeDocument().%s)",AnalysisName.c_str());
@@ -203,7 +203,7 @@ void CmdFemConstraintBearing::activated(int)
               FeatName.c_str());
     doCommand(Doc,
               "App.activeDocument().%s.addObject(App.activeDocument().%s)",
-              Analysis->getNameInDocument(),
+              Analysis->getNameInDocument().c_str(),
               FeatName.c_str());
 
     // OvG: Hide meshes and show parts
@@ -260,7 +260,7 @@ void CmdFemConstraintContact::activated(int)
               FeatName.c_str());  // OvG: set initial scale to 1
     doCommand(Doc,
               "App.activeDocument().%s.addObject(App.activeDocument().%s)",
-              Analysis->getNameInDocument(),
+              Analysis->getNameInDocument().c_str(),
               FeatName.c_str());
 
     // OvG: Hide meshes and show parts
@@ -310,7 +310,7 @@ void CmdFemConstraintDisplacement::activated(int)
     doCommand(Doc, "App.activeDocument().%s.Scale = 1", FeatName.c_str());
     doCommand(Doc,
               "App.activeDocument().%s.addObject(App.activeDocument().%s)",
-              Analysis->getNameInDocument(),
+              Analysis->getNameInDocument().c_str(),
               FeatName.c_str());
 
     // OvG: Hide meshes and show parts
@@ -360,7 +360,7 @@ void CmdFemConstraintFixed::activated(int)
     doCommand(Doc, "App.activeDocument().%s.Scale = 1", FeatName.c_str());
     doCommand(Doc,
               "App.activeDocument().%s.addObject(App.activeDocument().%s)",
-              Analysis->getNameInDocument(),
+              Analysis->getNameInDocument().c_str(),
               FeatName.c_str());
 
     // OvG: Hide meshes and show parts
@@ -413,7 +413,7 @@ void CmdFemConstraintFluidBoundary::activated(int)
     // BoundaryValue is already the default value, zero is acceptable
     doCommand(Doc,
               "App.activeDocument().%s.addObject(App.activeDocument().%s)",
-              Analysis->getNameInDocument(),
+              Analysis->getNameInDocument().c_str(),
               FeatName.c_str());
 
     // OvG: Hide meshes and show parts
@@ -469,7 +469,7 @@ void CmdFemConstraintForce::activated(int)
               FeatName.c_str());  // OvG: set initial scale to 1
     doCommand(Doc,
               "App.activeDocument().%s.addObject(App.activeDocument().%s)",
-              Analysis->getNameInDocument(),
+              Analysis->getNameInDocument().c_str(),
               FeatName.c_str());
 
     // OvG: Hide meshes and show parts
@@ -517,7 +517,7 @@ void CmdFemConstraintGear::activated(int)
     doCommand(Doc, "App.activeDocument().%s.Diameter = 100.0", FeatName.c_str());
     doCommand(Doc,
               "App.activeDocument().%s.addObject(App.activeDocument().%s)",
-              Analysis->getNameInDocument(),
+              Analysis->getNameInDocument().c_str(),
               FeatName.c_str());
 
     // OvG: Hide meshes and show parts
@@ -574,7 +574,7 @@ void CmdFemConstraintHeatflux::activated(int)
               FeatName.c_str());  // OvG: set initial scale to 1
     doCommand(Doc,
               "App.activeDocument().%s.addObject(App.activeDocument().%s)",
-              Analysis->getNameInDocument(),
+              Analysis->getNameInDocument().c_str(),
               FeatName.c_str());
 
     // OvG: Hide meshes and show parts
@@ -625,7 +625,7 @@ void CmdFemConstraintInitialTemperature::activated(int)
               FeatName.c_str());  // OvG: set initial scale to 1
     doCommand(Doc,
               "App.activeDocument().%s.addObject(App.activeDocument().%s)",
-              Analysis->getNameInDocument(),
+              Analysis->getNameInDocument().c_str(),
               FeatName.c_str());
 
     // OvG: Hide meshes and show parts
@@ -676,7 +676,7 @@ void CmdFemConstraintPlaneRotation::activated(int)
               FeatName.c_str());  // OvG: set initial scale to 1
     doCommand(Doc,
               "App.activeDocument().%s.addObject(App.activeDocument().%s)",
-              Analysis->getNameInDocument(),
+              Analysis->getNameInDocument().c_str(),
               FeatName.c_str());
 
     // OvG: Hide meshes and show parts
@@ -732,7 +732,7 @@ void CmdFemConstraintPressure::activated(int)
     doCommand(Doc, "App.activeDocument().%s.Scale = 1", FeatName.c_str());
     doCommand(Doc,
               "App.activeDocument().%s.addObject(App.activeDocument().%s)",
-              Analysis->getNameInDocument(),
+              Analysis->getNameInDocument().c_str(),
               FeatName.c_str());
 
     // OvG: Hide meshes and show parts
@@ -788,7 +788,7 @@ void CmdFemConstraintSpring::activated(int)
     doCommand(Doc, "App.activeDocument().%s.Scale = 1", FeatName.c_str());
     doCommand(Doc,
               "App.activeDocument().%s.addObject(App.activeDocument().%s)",
-              Analysis->getNameInDocument(),
+              Analysis->getNameInDocument().c_str(),
               FeatName.c_str());
     // OvG: Hide meshes and show parts
     doCommand(Doc, "%s", gethideMeshShowPartStr(FeatName).c_str());
@@ -840,7 +840,7 @@ void CmdFemConstraintPulley::activated(int)
     doCommand(Doc, "App.activeDocument().%s.TensionForce = 100.0", FeatName.c_str());
     doCommand(Doc,
               "App.activeDocument().%s.addObject(App.activeDocument().%s)",
-              Analysis->getNameInDocument(),
+              Analysis->getNameInDocument().c_str(),
               FeatName.c_str());
 
     // OvG: Hide meshes and show parts
@@ -891,7 +891,7 @@ void CmdFemConstraintTemperature::activated(int)
               FeatName.c_str());  // OvG: set initial scale to 1
     doCommand(Doc,
               "App.activeDocument().%s.addObject(App.activeDocument().%s)",
-              Analysis->getNameInDocument(),
+              Analysis->getNameInDocument().c_str(),
               FeatName.c_str());
 
     // OvG: Hide meshes and show parts
@@ -943,7 +943,7 @@ void CmdFemConstraintTransform::activated(int)
     doCommand(Doc, "App.activeDocument().%s.Scale = 1", FeatName.c_str());
     doCommand(Doc,
               "App.activeDocument().%s.addObject(App.activeDocument().%s)",
-              Analysis->getNameInDocument(),
+              Analysis->getNameInDocument().c_str(),
               FeatName.c_str());
 
     // OvG: Hide meshes and show parts
@@ -1046,7 +1046,7 @@ void DefineNodesCallback(void* ud, SoEventCallback* n)
                             set.str().c_str());
     Gui::Command::doCommand(Gui::Command::Doc,
                             "App.activeDocument().%s.addObject(App.activeDocument().NodeSet)",
-                            Analysis->getNameInDocument());
+                            Analysis->getNameInDocument().c_str());
     // Gui::Command::updateActive();
     Gui::Command::commitCommand();
 
@@ -1149,7 +1149,7 @@ void CmdFemCreateNodesSet::activated(int)
         Fem::FemSetNodesObject* NodesObj =
             static_cast<Fem::FemSetNodesObject*>(ObjectFilter.Result[0][0].getObject());
         openCommand(QT_TRANSLATE_NOOP("Command", "Edit nodes set"));
-        doCommand(Gui, "Gui.activeDocument().setEdit('%s')", NodesObj->getNameInDocument());
+        doCommand(Gui, "Gui.activeDocument().setEdit('%s')", NodesObj->getNameInDocument().c_str());
     }
     else if (FemMeshFilter.match()) {
         Fem::FemMeshObject* MeshObj =
@@ -1164,7 +1164,7 @@ void CmdFemCreateNodesSet::activated(int)
         doCommand(Gui,
                   "App.activeDocument().%s.FemMesh = App.activeDocument().%s",
                   FeatName.c_str(),
-                  MeshObj->getNameInDocument());
+                  MeshObj->getNameInDocument().c_str());
         doCommand(Gui, "Gui.activeDocument().setEdit('%s')", FeatName.c_str());
     }
     else {
@@ -1656,11 +1656,11 @@ void setupFilter(Gui::Command* cmd, std::string Name)
     // add it as subobject to the pipeline
     cmd->doCommand(Gui::Command::Doc,
                    "__list__ = App.ActiveDocument.%s.Filter",
-                   pipeline->getNameInDocument());
+                   pipeline->getNameInDocument().c_str());
     cmd->doCommand(Gui::Command::Doc, "__list__.append(App.ActiveDocument.%s)", FeatName.c_str());
     cmd->doCommand(Gui::Command::Doc,
                    "App.ActiveDocument.%s.Filter = __list__",
-                   pipeline->getNameInDocument());
+                   pipeline->getNameInDocument().c_str());
     cmd->doCommand(Gui::Command::Doc, "del __list__");
 
     // set display to assure the user sees the new object
@@ -2259,7 +2259,7 @@ void CmdFemPostFunctions::activated(int iMsg)
                       FuncName.c_str());
             doCommand(Doc,
                       "App.ActiveDocument.%s.Functions = App.ActiveDocument.%s",
-                      pipeline->getNameInDocument(),
+                      pipeline->getNameInDocument().c_str(),
                       FuncName.c_str());
             provider = static_cast<Fem::FemPostFunctionProvider*>(
                 getDocument()->getObject(FuncName.c_str()));
@@ -2274,9 +2274,13 @@ void CmdFemPostFunctions::activated(int iMsg)
                   "App.activeDocument().addObject('Fem::FemPost%sFunction','%s')",
                   name.c_str(),
                   FeatName.c_str());
-        doCommand(Doc, "__list__ = App.ActiveDocument.%s.Functions", provider->getNameInDocument());
+        doCommand(Doc,
+                  "__list__ = App.ActiveDocument.%s.Functions",
+                  provider->getNameInDocument().c_str());
         doCommand(Doc, "__list__.append(App.ActiveDocument.%s)", FeatName.c_str());
-        doCommand(Doc, "App.ActiveDocument.%s.Functions = __list__", provider->getNameInDocument());
+        doCommand(Doc,
+                  "App.ActiveDocument.%s.Functions = __list__",
+                  provider->getNameInDocument().c_str());
         doCommand(Doc, "del __list__");
 
         // set the default values, for this get the bounding box
@@ -2511,7 +2515,7 @@ void CmdFemPostPipelineFromResult::activated(int)
         doCommand(Gui,
                   "Gui.getDocument(\"%s\").getObject(\"%s\").Visibility=False",
                   app->getName(),
-                  it->getNameInDocument());
+                  it->getNameInDocument().c_str());
     }
 
     // we need single result object to attach the pipeline to
@@ -2545,7 +2549,7 @@ void CmdFemPostPipelineFromResult::activated(int)
         doCommand(Doc,
                   "App.activeDocument().ActiveObject.load("
                   "App.activeDocument().getObject(\"%s\"))",
-                  results[0]->getNameInDocument());
+                  results[0]->getNameInDocument().c_str());
         // set display to assure the user sees the new object
         doCommand(Doc, "App.activeDocument().ActiveObject.ViewObject.DisplayMode = \"Surface\"");
         // Set SelectionStyle to BoundBox because the idea is that the user gets the useful result

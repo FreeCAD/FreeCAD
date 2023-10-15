@@ -921,14 +921,14 @@ void StdCmdToggleSelectability::activated(int iMsg)
         TransactionView transaction(pcDoc, QT_TRANSLATE_NOOP("Command", "Toggle selectability"));
 
         for (const auto & ft : sel) {
-            ViewProvider *pr = pcDoc->getViewProviderByName(ft->getNameInDocument());
+            ViewProvider *pr = pcDoc->getViewProviderByName(ft->getNameInDocument().c_str());
             if (pr && pr->isDerivedFrom(ViewProviderGeometryObject::getClassTypeId())){
                 if (static_cast<ViewProviderGeometryObject*>(pr)->Selectable.getValue())
                     doCommand(Gui,"Gui.getDocument(\"%s\").getObject(\"%s\").Selectable=False"
-                                 , doc->getName(), ft->getNameInDocument());
+                                 , doc->getName(), ft->getNameInDocument().c_str());
                 else
                     doCommand(Gui,"Gui.getDocument(\"%s\").getObject(\"%s\").Selectable=True"
-                                 , doc->getName(), ft->getNameInDocument());
+                                 , doc->getName(), ft->getNameInDocument().c_str());
             }
         }
     }
@@ -1024,7 +1024,7 @@ void StdCmdSelectVisibleObjects::activated(int iMsg)
     std::vector<App::DocumentObject*> visible;
     visible.reserve(obj.size());
     for (const auto & it : obj) {
-        if (doc->isShow(it->getNameInDocument()))
+        if (doc->isShow(it->getNameInDocument().c_str()))
             visible.push_back(it);
     }
 
@@ -1064,12 +1064,12 @@ void StdCmdToggleObjects::activated(int iMsg)
         (App::DocumentObject::getClassTypeId());
 
     for (const auto & it : obj) {
-        if (doc->isShow(it->getNameInDocument()))
+        if (doc->isShow(it->getNameInDocument().c_str()))
             doCommand(Gui,"Gui.getDocument(\"%s\").getObject(\"%s\").Visibility=False"
-                         , app->getName(), it->getNameInDocument());
+                         , app->getName(), it->getNameInDocument().c_str());
         else
             doCommand(Gui,"Gui.getDocument(\"%s\").getObject(\"%s\").Visibility=True"
-                         , app->getName(), it->getNameInDocument());
+                         , app->getName(), it->getNameInDocument().c_str());
     }
 }
 
@@ -1106,7 +1106,7 @@ void StdCmdShowObjects::activated(int iMsg)
 
     for (const auto & it : obj) {
         doCommand(Gui,"Gui.getDocument(\"%s\").getObject(\"%s\").Visibility=True"
-                     , app->getName(), it->getNameInDocument());
+                     , app->getName(), it->getNameInDocument().c_str());
     }
 }
 
@@ -1143,7 +1143,7 @@ void StdCmdHideObjects::activated(int iMsg)
 
     for (const auto & it : obj) {
         doCommand(Gui,"Gui.getDocument(\"%s\").getObject(\"%s\").Visibility=False"
-                     , app->getName(), it->getNameInDocument());
+                     , app->getName(), it->getNameInDocument().c_str());
     }
 }
 
@@ -2707,7 +2707,7 @@ static std::vector<std::string> getBoxSelection(
 {
     std::vector<std::string> ret;
     auto obj = vp->getObject();
-    if(!obj || !obj->getNameInDocument())
+    if(!obj || !obj->isAttachedToDocument())
         return ret;
 
     // DO NOT check this view object Visibility, let the caller do this. Because
@@ -2874,7 +2874,7 @@ static void doSelect(void* ud, SoEventCallback * cb)
 
             Base::Matrix4D mat;
             for(auto &sub : getBoxSelection(vp,selectionMode,selectElement,proj,polygon,mat))
-                Gui::Selection().addSelection(doc->getName(), obj->getNameInDocument(), sub.c_str());
+                Gui::Selection().addSelection(doc->getName(), obj->getNameInDocument().c_str(), sub.c_str());
         }
     }
 }
@@ -3081,7 +3081,7 @@ bool StdCmdTreeSelectAllInstances::isActive()
     if(sels.empty())
         return false;
     auto obj = sels[0].getObject();
-    if(!obj || !obj->getNameInDocument())
+    if(!obj || !obj->isAttachedToDocument())
         return false;
     return dynamic_cast<ViewProviderDocumentObject*>(
             Application::Instance->getViewProvider(obj)) != nullptr;
@@ -3094,7 +3094,7 @@ void StdCmdTreeSelectAllInstances::activated(int iMsg)
     if(sels.empty())
         return;
     auto obj = sels[0].getObject();
-    if(!obj || !obj->getNameInDocument())
+    if(!obj || !obj->isAttachedToDocument())
         return;
     auto vpd = dynamic_cast<ViewProviderDocumentObject*>(
             Application::Instance->getViewProvider(obj));

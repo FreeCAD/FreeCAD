@@ -136,7 +136,7 @@ public:
     explicit MatchName(const QString& n) : name(n)
     {}
     bool operator() (const App::DocumentObject* obj) {
-        return name == QLatin1String(obj->getNameInDocument());
+        return name == QLatin1String(obj->getNameInDocument().c_str());
     }
 private:
     QString name;

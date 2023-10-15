@@ -110,7 +110,7 @@
  */
 #define _FCMD_OBJ_CMD(_type,_cmd_type,_obj,_cmd) do{\
     auto __obj = _obj;\
-    if(__obj && __obj->getNameInDocument()) {\
+    if(__obj && __obj->isAttachedToDocument()) {\
         std::ostringstream _str;\
         _str << #_type ".getDocument('" << __obj->getDocument()->getName() \
              << "').getObject('" <<  __obj->getNameInDocument() << "')." << _cmd;\
@@ -149,9 +149,9 @@
  */
 #define FCMD_OBJ_CMD2(_cmd,_obj,...) do{\
     auto __obj = _obj;\
-    if(__obj && __obj->getNameInDocument()) {\
+    if(__obj && __obj->isAttachedToDocument()) {\
         Gui::Command::doCommand(Gui::Command::Doc,"App.getDocument('%s').getObject('%s')." _cmd,\
-                __obj->getDocument()->getName(),__obj->getNameInDocument(),## __VA_ARGS__);\
+                __obj->getDocument()->getName(),__obj->getNameInDocument().c_str(),## __VA_ARGS__);\
     }\
 }while(0)
 
@@ -162,9 +162,9 @@
  */
 #define FCMD_VOBJ_CMD2(_cmd,_obj,...) do{\
     auto __obj = _obj;\
-    if(__obj && __obj->getNameInDocument()) {\
+    if(__obj && __obj->isAttachedToDocument()) {\
         Gui::Command::doCommand(Gui::Command::Gui,"Gui.getDocument('%s').getObject('%s')." _cmd,\
-                __obj->getDocument()->getName(),__obj->getNameInDocument(),## __VA_ARGS__);\
+                __obj->getDocument()->getName(),__obj->getNameInDocument().c_str(),## __VA_ARGS__);\
     }\
 }while(0)
 
@@ -178,10 +178,10 @@
  */
 #define FCMD_SET_EDIT(_obj) do{\
     auto __obj = _obj;\
-    if(__obj && __obj->getNameInDocument()) {\
+    if(__obj && __obj->isAttachedToDocument()) {\
         Gui::Command::doCommand(Gui::Command::Gui,\
             "Gui.ActiveDocument.setEdit(App.getDocument('%s').getObject('%s'), %i)",\
-            __obj->getDocument()->getName(), __obj->getNameInDocument(), Gui::Application::Instance->getUserEditMode());\
+            __obj->getDocument()->getName(), __obj->getNameInDocument().c_str(), Gui::Application::Instance->getUserEditMode());\
     }\
 }while(0)
 
