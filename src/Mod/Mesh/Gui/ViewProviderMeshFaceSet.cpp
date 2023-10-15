@@ -100,7 +100,7 @@ void ViewProviderMeshFaceSet::attach(App::DocumentObject* pcFeat)
 void ViewProviderMeshFaceSet::updateData(const App::Property* prop)
 {
     ViewProviderMesh::updateData(prop);
-    if (prop->getTypeId() == Mesh::PropertyMeshKernel::getClassTypeId()) {
+    if (prop->is<Mesh::PropertyMeshKernel>()) {
         const Mesh::MeshObject* mesh =
             static_cast<const Mesh::PropertyMeshKernel*>(prop)->getValuePtr();
 
