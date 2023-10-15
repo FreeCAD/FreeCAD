@@ -15,6 +15,11 @@ SET(Overlay_Stylesheets_Files
     "overlay/Light.qss"
     "overlay/Dark-Outline.qss"
     "overlay/Light-Outline.qss"
+    "overlay/Darker_overlay.qss"
+    "overlay/Dark_overlay.qss"
+    "overlay/Dark-Modern_overlay.qss"
+    "overlay/Light-Modern_overlay.qss"
+    "overlay/Light_overlay.qss"
     "overlay/close.svg"
     "overlay/overlay.svg"
     "overlay/float.svg"
@@ -24,12 +29,6 @@ SET(Overlay_Stylesheets_Files
     "overlay/edithide.svg"
     "overlay/mode.svg"
     "overlay/transparent.svg"
-    "overlay/Darker_overlay.qss"
-    "overlay/Dark_overlay.qss"
-    "overlay/Dark_overlay.qss"
-    "overlay/Dark-Modern_overlay.qss"
-    "overlay/Light-Modern_overlay.qss"
-    "overlay/Light_overlay.qss"
 )
 
 # Find all the image files
