@@ -28,14 +28,14 @@ import OverlayParams
 OverlayParams.declare()
 ]]]*/
 
-// Auto generated code (Gui/OverlayParams.py:158)
+// Auto generated code (Gui/OverlayParams.py:157)
 #include <QString>
 
-// Auto generated code (Tools/params_utils.py:72)
+// Auto generated code (Tools/params_utils.py:82)
 #include <Base/Parameter.h>
 
 
-// Auto generated code (Tools/params_utils.py:78)
+// Auto generated code (Tools/params_utils.py:90)
 namespace Gui {
 /** Convenient class to obtain overlay widgets related parameters
 
@@ -71,18 +71,7 @@ class GuiExport OverlayParams {
 public:
     static ParameterGrp::handle getHandle();
 
-    // Auto generated code (Tools/params_utils.py:122)
-    //@{
-    /// Accessor for parameter CornerNaviCube
-    static const long & getCornerNaviCube();
-    static const long & defaultCornerNaviCube();
-    static void removeCornerNaviCube();
-    static void setCornerNaviCube(const long &v);
-    static const char *docCornerNaviCube();
-    static void onCornerNaviCubeChanged();
-    //@}
-
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter DockOverlayAutoView
     static const bool & getDockOverlayAutoView();
@@ -93,7 +82,7 @@ public:
     static void onDockOverlayAutoViewChanged();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter DockOverlayDelay
     ///
@@ -105,7 +94,7 @@ public:
     static const char *docDockOverlayDelay();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter DockOverlayRevealDelay
     static const long & getDockOverlayRevealDelay();
@@ -115,7 +104,7 @@ public:
     static const char *docDockOverlayRevealDelay();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter DockOverlaySplitterHandleTimeout
     ///
@@ -127,7 +116,7 @@ public:
     static const char *docDockOverlaySplitterHandleTimeout();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter DockOverlayActivateOnHover
     ///
@@ -140,7 +129,7 @@ public:
     static const char *docDockOverlayActivateOnHover();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter DockOverlayAutoMouseThrough
     ///
@@ -152,7 +141,7 @@ public:
     static const char *docDockOverlayAutoMouseThrough();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter DockOverlayWheelPassThrough
     ///
@@ -164,7 +153,7 @@ public:
     static const char *docDockOverlayWheelPassThrough();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter DockOverlayWheelDelay
     ///
@@ -177,7 +166,7 @@ public:
     static const char *docDockOverlayWheelDelay();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter DockOverlayAlphaRadius
     ///
@@ -192,7 +181,7 @@ public:
     static const char *docDockOverlayAlphaRadius();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter DockOverlayCheckNaviCube
     ///
@@ -205,7 +194,7 @@ public:
     static void onDockOverlayCheckNaviCubeChanged();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter DockOverlayHintTriggerSize
     ///
@@ -217,7 +206,7 @@ public:
     static const char *docDockOverlayHintTriggerSize();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter DockOverlayHintSize
     ///
@@ -229,7 +218,7 @@ public:
     static const char *docDockOverlayHintSize();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter DockOverlayHintLeftLength
     ///
@@ -241,7 +230,7 @@ public:
     static const char *docDockOverlayHintLeftLength();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter DockOverlayHintRightLength
     ///
@@ -253,7 +242,7 @@ public:
     static const char *docDockOverlayHintRightLength();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter DockOverlayHintTopLength
     ///
@@ -265,7 +254,7 @@ public:
     static const char *docDockOverlayHintTopLength();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter DockOverlayHintBottomLength
     ///
@@ -277,7 +266,7 @@ public:
     static const char *docDockOverlayHintBottomLength();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter DockOverlayHintLeftOffset
     ///
@@ -289,7 +278,7 @@ public:
     static const char *docDockOverlayHintLeftOffset();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter DockOverlayHintRightOffset
     ///
@@ -301,7 +290,7 @@ public:
     static const char *docDockOverlayHintRightOffset();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter DockOverlayHintTopOffset
     ///
@@ -313,7 +302,7 @@ public:
     static const char *docDockOverlayHintTopOffset();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter DockOverlayHintBottomOffset
     ///
@@ -325,7 +314,7 @@ public:
     static const char *docDockOverlayHintBottomOffset();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter DockOverlayHintTabBar
     ///
@@ -337,7 +326,7 @@ public:
     static const char *docDockOverlayHintTabBar();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter DockOverlayHideTabBar
     ///
@@ -350,7 +339,7 @@ public:
     static void onDockOverlayHideTabBarChanged();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter DockOverlayHintDelay
     ///
@@ -362,7 +351,7 @@ public:
     static const char *docDockOverlayHintDelay();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter DockOverlayAnimationDuration
     ///
@@ -374,7 +363,7 @@ public:
     static const char *docDockOverlayAnimationDuration();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter DockOverlayAnimationCurve
     ///
@@ -386,7 +375,7 @@ public:
     static const char *docDockOverlayAnimationCurve();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter DockOverlayHidePropertyViewScrollBar
     ///
@@ -398,7 +387,7 @@ public:
     static const char *docDockOverlayHidePropertyViewScrollBar();
     //@}
 
-    // Auto generated code (Tools/params_utils.py:122)
+    // Auto generated code (Tools/params_utils.py:138)
     //@{
     /// Accessor for parameter DockOverlayMinimumSize
     ///
@@ -411,10 +400,10 @@ public:
     static void onDockOverlayMinimumSizeChanged();
     //@}
 
-    // Auto generated code (Gui/OverlayParams.py:164)
+    // Auto generated code (Gui/OverlayParams.py:163)
     static const std::vector<QString> AnimationCurveTypes;
 
-// Auto generated code (Tools/params_utils.py:150)
+// Auto generated code (Tools/params_utils.py:178)
 }; // class OverlayParams
 } // namespace Gui
 //[[[end]]]
