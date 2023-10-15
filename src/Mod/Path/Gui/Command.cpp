@@ -66,7 +66,7 @@ void CmdPathArea::activated(int iMsg)
         if(addView && !areaName.empty()) addView = false;
 
         if(subnames.empty()) {
-            if(addView && pcObj->getTypeId().isDerivedFrom(Path::FeatureArea::getClassTypeId()))
+            if(addView && pcObj->isDerivedFrom<Path::FeatureArea>())
                 areaName = pcObj->getNameInDocument();
             sources << "FreeCAD.activeDocument()." << pcObj->getNameInDocument() << ",";
             continue;
@@ -151,7 +151,7 @@ void CmdPathAreaWorkplane::activated(int iMsg)
         }
         const Part::Feature *pcObj = static_cast<Part::Feature*>(selObj.getObject());
         if(subnames.empty()) {
-            if(pcObj->getTypeId().isDerivedFrom(Path::FeatureArea::getClassTypeId()))  {
+            if(pcObj->isDerivedFrom<Path::FeatureArea>())  {
                 if(!areaName.empty()){
                     Base::Console().Error("Please select one FeatureArea only\n");
                     return;
@@ -232,7 +232,7 @@ void CmdPathCompound::activated(int iMsg)
         cmd << "[";
         Path::Feature *pcPathObject;
         for (std::vector<Gui::SelectionSingleton::SelObj>::const_iterator it=Sel.begin();it!=Sel.end();++it) {
-            if ((*it).pObject->getTypeId().isDerivedFrom(Path::Feature::getClassTypeId())) {
+            if ((*it).pObject->isDerivedFrom<Path::Feature>()) {
                 pcPathObject = static_cast<Path::Feature*>((*it).pObject);
                 cmd << "FreeCAD.activeDocument()." << pcPathObject->getNameInDocument() << ",";
             } else {
