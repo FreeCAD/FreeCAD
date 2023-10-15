@@ -1714,7 +1714,7 @@ class PlaneGui(PlaneBase):
         FreeCAD.DraftWorkingPlane.weak = self.auto
 
     def _update_grid(self):
-        if FreeCAD.GuiUp:
+        if FreeCAD.GuiUp and self._view is not None:
             if hasattr(FreeCADGui, "Snapper"):
                 FreeCADGui.Snapper.setGrid()
                 FreeCADGui.Snapper.restack()  # Required??
