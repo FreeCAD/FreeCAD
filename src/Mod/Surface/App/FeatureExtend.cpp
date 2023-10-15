@@ -95,7 +95,7 @@ short Extend::mustExecute() const
 App::DocumentObjectExecReturn* Extend::execute()
 {
     App::DocumentObject* part = Face.getValue();
-    if (!part || !part->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+    if (!part || !part->isDerivedFrom<Part::Feature>()) {
         return new App::DocumentObjectExecReturn("No shape linked.");
     }
     const auto& faces = Face.getSubValues();
