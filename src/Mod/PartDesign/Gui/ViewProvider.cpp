@@ -161,7 +161,7 @@ void ViewProvider::unsetEdit(int ModNum)
 void ViewProvider::updateData(const App::Property* prop)
 {
     // TODO What's that? (2015-07-24, Fat-Zer)
-    if (prop->getTypeId() == Part::PropertyPartShape::getClassTypeId() &&
+    if (prop->is<Part::PropertyPartShape>() &&
         strcmp(prop->getName(),"AddSubShape") == 0) {
         return;
     }

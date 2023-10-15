@@ -260,13 +260,13 @@ void TaskMultiTransformParameters::onTransformEdit()
     std::vector<App::DocumentObject*> transformFeatures = pcMultiTransform->Transformations.getValues();
 
     subFeature = static_cast<PartDesign::Transformed*>(transformFeatures[row]);
-    if (transformFeatures[row]->getTypeId() == PartDesign::Mirrored::getClassTypeId())
+    if (transformFeatures[row]->is<PartDesign::Mirrored>())
         subTask = new TaskMirroredParameters(this, ui->verticalLayout);
-    else if (transformFeatures[row]->getTypeId() == PartDesign::LinearPattern::getClassTypeId())
+    else if (transformFeatures[row]->is<PartDesign::LinearPattern>())
         subTask = new TaskLinearPatternParameters(this, ui->verticalLayout);
-    else if (transformFeatures[row]->getTypeId() == PartDesign::PolarPattern::getClassTypeId())
+    else if (transformFeatures[row]->is<PartDesign::PolarPattern>())
         subTask = new TaskPolarPatternParameters(this, ui->verticalLayout);
-    else if (transformFeatures[row]->getTypeId() == PartDesign::Scaled::getClassTypeId())
+    else if (transformFeatures[row]->is<PartDesign::Scaled>())
         subTask = new TaskScaledParameters(this, ui->verticalLayout);
     else
         return; // TODO: Show an error?

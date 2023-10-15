@@ -457,14 +457,14 @@ bool isFeatureMovable(App::DocumentObject* const feat)
     if (!feat)
         return false;
 
-    if (feat->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId())) {
+    if (feat->isDerivedFrom<PartDesign::Feature>()) {
         auto prim = static_cast<PartDesign::Feature*>(feat);
         App::DocumentObject* bf = prim->BaseFeature.getValue();
         if (bf)
             return false;
     }
 
-    if (feat->getTypeId().isDerivedFrom(PartDesign::ProfileBased::getClassTypeId())) {
+    if (feat->isDerivedFrom<PartDesign::ProfileBased>()) {
         auto prim = static_cast<PartDesign::ProfileBased*>(feat);
         auto sk = prim->getVerifiedSketch(true);
 
@@ -501,7 +501,7 @@ bool isFeatureMovable(App::DocumentObject* const feat)
     if (feat->hasExtension(Part::AttachExtension::getExtensionClassTypeId())) {
         auto attachable = feat->getExtensionByType<Part::AttachExtension>();
         App::DocumentObject* support = attachable->Support.getValue();
-        if (support && !support->getTypeId().isDerivedFrom(App::OriginFeature::getClassTypeId()))
+        if (support && !support->isDerivedFrom<App::OriginFeature>())
             return false;
     }
 
@@ -516,7 +516,7 @@ std::vector<App::DocumentObject*> collectMovableDependencies(std::vector<App::Do
     {
 
         // Get sketches and datums from profile based features
-        if (feat->getTypeId().isDerivedFrom(PartDesign::ProfileBased::getClassTypeId())) {
+        if (feat->isDerivedFrom<PartDesign::ProfileBased>()) {
             auto prim = static_cast<PartDesign::ProfileBased*>(feat);
             Part::Part2DObject* sk = prim->getVerifiedSketch(true);
             if (sk) {
@@ -529,19 +529,19 @@ std::vector<App::DocumentObject*> collectMovableDependencies(std::vector<App::Do
             }
             if (auto prop = static_cast<App::PropertyLinkSub*>(prim->getPropertyByName("ReferenceAxis"))) {
                 App::DocumentObject* axis = prop->getValue();
-                if (axis && !axis->getTypeId().isDerivedFrom(App::OriginFeature::getClassTypeId())){
+                if (axis && !axis->isDerivedFrom<App::OriginFeature>()){
                     unique_objs.insert(axis);
                 }
             }
             if (auto prop = static_cast<App::PropertyLinkSub*>(prim->getPropertyByName("Spine"))) {
                 App::DocumentObject* axis = prop->getValue();
-                if (axis && !axis->getTypeId().isDerivedFrom(App::OriginFeature::getClassTypeId())){
+                if (axis && !axis->isDerivedFrom<App::OriginFeature>()){
                     unique_objs.insert(axis);
                 }
             }
             if (auto prop = static_cast<App::PropertyLinkSub*>(prim->getPropertyByName("AuxillerySpine"))) {
                 App::DocumentObject* axis = prop->getValue();
-                if (axis && !axis->getTypeId().isDerivedFrom(App::OriginFeature::getClassTypeId())){
+                if (axis && !axis->isDerivedFrom<App::OriginFeature>()){
                     unique_objs.insert(axis);
                 }
             }
@@ -560,7 +560,7 @@ void relinkToOrigin(App::DocumentObject* feat, PartDesign::Body* targetbody)
     if (feat->hasExtension(Part::AttachExtension::getExtensionClassTypeId())) {
         auto attachable = feat->getExtensionByType<Part::AttachExtension>();
         App::DocumentObject* support = attachable->Support.getValue();
-        if (support && support->getTypeId().isDerivedFrom(App::OriginFeature::getClassTypeId())) {
+        if (support && support->isDerivedFrom<App::OriginFeature>()) {
             auto originfeat = static_cast<App::OriginFeature*>(support);
             App::OriginFeature* targetOriginFeature = targetbody->getOrigin()->getOriginFeature(originfeat->Role.getValue());
             if (targetOriginFeature) {
@@ -568,11 +568,11 @@ void relinkToOrigin(App::DocumentObject* feat, PartDesign::Body* targetbody)
             }
         }
     }
-    else if (feat->getTypeId().isDerivedFrom(PartDesign::ProfileBased::getClassTypeId())) {
+    else if (feat->isDerivedFrom<PartDesign::ProfileBased>()) {
         auto prim = static_cast<PartDesign::ProfileBased*>(feat);
         if (auto prop = static_cast<App::PropertyLinkSub*>(prim->getPropertyByName("ReferenceAxis"))) {
             App::DocumentObject* axis = prop->getValue();
-            if (axis && axis->getTypeId().isDerivedFrom(App::OriginFeature::getClassTypeId())){
+            if (axis && axis->isDerivedFrom<App::OriginFeature>()){
                 auto originfeat = static_cast<App::OriginFeature*>(axis);
                 App::OriginFeature* targetOriginFeature = targetbody->getOrigin()->getOriginFeature(originfeat->Role.getValue());
                 if (targetOriginFeature) {
