@@ -92,8 +92,7 @@ public:
             || (element.size() > 4 && element.substr(0, 4) == "Face")) {
             return true;
         }
-        if (pObj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())
-            || pObj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId())) {
+        if (pObj->isDerivedFrom<App::Plane>() || pObj->isDerivedFrom<Part::Datum>()) {
             return true;
         }
         return false;
@@ -142,8 +141,7 @@ public:
                 throw Base::ValueError("Sketcher: External geometry: Invalid object in selection");
             }
             std::string subName(msg.pSubName);
-            if (obj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())
-                || obj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId())
+            if (obj->isDerivedFrom<App::Plane>() || obj->isDerivedFrom<Part::Datum>()
                 || (subName.size() > 4 && subName.substr(0, 4) == "Edge")
                 || (subName.size() > 6 && subName.substr(0, 6) == "Vertex")
                 || (subName.size() > 4 && subName.substr(0, 4) == "Face")) {

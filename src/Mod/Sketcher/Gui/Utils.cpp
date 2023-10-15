@@ -50,47 +50,47 @@ using namespace Sketcher;
 
 bool Sketcher::isCircle(const Part::Geometry& geom)
 {
-    return geom.getTypeId() == Part::GeomCircle::getClassTypeId();
+    return geom.is<Part::GeomCircle>();
 }
 
 bool Sketcher::isArcOfCircle(const Part::Geometry& geom)
 {
-    return geom.getTypeId() == Part::GeomArcOfCircle::getClassTypeId();
+    return geom.is<Part::GeomArcOfCircle>();
 }
 
 bool Sketcher::isEllipse(const Part::Geometry& geom)
 {
-    return geom.getTypeId() == Part::GeomEllipse::getClassTypeId();
+    return geom.is<Part::GeomEllipse>();
 }
 
 bool Sketcher::isArcOfEllipse(const Part::Geometry& geom)
 {
-    return geom.getTypeId() == Part::GeomArcOfEllipse::getClassTypeId();
+    return geom.is<Part::GeomArcOfEllipse>();
 }
 
 bool Sketcher::isLineSegment(const Part::Geometry& geom)
 {
-    return geom.getTypeId() == Part::GeomLineSegment::getClassTypeId();
+    return geom.is<Part::GeomLineSegment>();
 }
 
 bool Sketcher::isArcOfHyperbola(const Part::Geometry& geom)
 {
-    return geom.getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId();
+    return geom.is<Part::GeomArcOfHyperbola>();
 }
 
 bool Sketcher::isArcOfParabola(const Part::Geometry& geom)
 {
-    return geom.getTypeId() == Part::GeomArcOfParabola::getClassTypeId();
+    return geom.is<Part::GeomArcOfParabola>();
 }
 
 bool Sketcher::isBSplineCurve(const Part::Geometry& geom)
 {
-    return geom.getTypeId() == Part::GeomBSplineCurve::getClassTypeId();
+    return geom.is<Part::GeomBSplineCurve>();
 }
 
 bool Sketcher::isPoint(const Part::Geometry& geom)
 {
-    return geom.getTypeId() == Part::GeomPoint::getClassTypeId();
+    return geom.is<Part::GeomPoint>();
 }
 
 bool SketcherGui::tryAutoRecompute(Sketcher::SketchObject* obj, bool& autoremoveredundants)
@@ -219,7 +219,7 @@ std::vector<int> SketcherGui::getGeoIdsOfEdgesFromNames(const Sketcher::SketchOb
             Sketcher::PointPos PosId;
             Obj->getGeoVertexIndex(VtId, GeoId, PosId);
             const Part::Geometry* geo = Obj->getGeometry(GeoId);
-            if (geo->getTypeId() == Part::GeomPoint::getClassTypeId()) {
+            if (geo->is<Part::GeomPoint>()) {
                 geoids.push_back(GeoId);
             }
         }
@@ -295,7 +295,7 @@ bool SketcherGui::isSimpleVertex(const Sketcher::SketchObject* Obj, int GeoId, P
         return true;
     }
     const Part::Geometry* geo = Obj->getGeometry(GeoId);
-    if (geo->getTypeId() == Part::GeomPoint::getClassTypeId()) {
+    if (geo->is<Part::GeomPoint>()) {
         return true;
     }
     else if (PosId == Sketcher::PointPos::mid) {
@@ -323,7 +323,7 @@ bool SketcherGui::isBsplineKnotOrEndPoint(const Sketcher::SketchObject* Obj,
 
     const Part::Geometry* geo = Obj->getGeometry(GeoId);
     // end points of B-Splines are also knots
-    if (geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()
+    if (geo->is<Part::GeomBSplineCurve>()
         && (PosId == Sketcher::PointPos::start || PosId == Sketcher::PointPos::end)) {
         return true;
     }
@@ -349,7 +349,7 @@ bool SketcherGui::IsPointAlreadyOnCurve(int GeoIdCurve,
     //  implemented. (Ajinkya)
     if (isBsplineKnot(Obj, GeoIdPoint)) {
         const Part::Geometry* geoCurve = Obj->getGeometry(GeoIdCurve);
-        if (geoCurve->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
+        if (geoCurve->is<Part::GeomBSplineCurve>()) {
             const std::vector<Constraint*>& constraints = Obj->Constraints.getValues();
             for (const auto& constraint : constraints) {
                 if (constraint->Type == Sketcher::ConstraintType::InternalAlignment

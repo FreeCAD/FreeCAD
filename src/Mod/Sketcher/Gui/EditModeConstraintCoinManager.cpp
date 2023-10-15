@@ -217,7 +217,7 @@ Restart:
                         Base::Vector3d dir;
                         Base::Vector3d norm;
 
-                        if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+                        if (geo->is<Part::GeomLineSegment>()) {
                             const Part::GeomLineSegment* lineSeg =
                                 static_cast<const Part::GeomLineSegment*>(geo);
 
@@ -229,7 +229,7 @@ Restart:
 
                             norm = Base::Vector3d(-dir.y, dir.x, 0);
                         }
-                        else if (geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
+                        else if (geo->is<Part::GeomBSplineCurve>()) {
                             const Part::GeomBSplineCurve* bsp =
                                 static_cast<const Part::GeomBSplineCurve*>(geo);
                             midpos = Base::Vector3d(0, 0, 0);
@@ -258,14 +258,14 @@ Restart:
                             double angle,
                                 angleplus = 0.;  // angle = rotation of object as a whole; angleplus
                                                  // = arc angle (t parameter for ellipses).
-                            if (geo->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+                            if (geo->is<Part::GeomCircle>()) {
                                 const Part::GeomCircle* circle =
                                     static_cast<const Part::GeomCircle*>(geo);
                                 ra = circle->getRadius();
                                 angle = M_PI / 4;
                                 midpos = circle->getCenter();
                             }
-                            else if (geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+                            else if (geo->is<Part::GeomArcOfCircle>()) {
                                 const Part::GeomArcOfCircle* arc =
                                     static_cast<const Part::GeomArcOfCircle*>(geo);
                                 ra = arc->getRadius();
@@ -274,7 +274,7 @@ Restart:
                                 angle = (startangle + endangle) / 2;
                                 midpos = arc->getCenter();
                             }
-                            else if (geo->getTypeId() == Part::GeomEllipse::getClassTypeId()) {
+                            else if (geo->is<Part::GeomEllipse>()) {
                                 const Part::GeomEllipse* ellipse =
                                     static_cast<const Part::GeomEllipse*>(geo);
                                 ra = ellipse->getMajorRadius();
@@ -284,7 +284,7 @@ Restart:
                                 angleplus = M_PI / 4;
                                 midpos = ellipse->getCenter();
                             }
-                            else if (geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) {
+                            else if (geo->is<Part::GeomArcOfEllipse>()) {
                                 const Part::GeomArcOfEllipse* aoe =
                                     static_cast<const Part::GeomArcOfEllipse*>(geo);
                                 ra = aoe->getMajorRadius();
@@ -296,8 +296,7 @@ Restart:
                                 angleplus = (startangle + endangle) / 2;
                                 midpos = aoe->getCenter();
                             }
-                            else if (geo->getTypeId()
-                                     == Part::GeomArcOfHyperbola::getClassTypeId()) {
+                            else if (geo->is<Part::GeomArcOfHyperbola>()) {
                                 const Part::GeomArcOfHyperbola* aoh =
                                     static_cast<const Part::GeomArcOfHyperbola*>(geo);
                                 ra = aoh->getMajorRadius();
@@ -309,8 +308,7 @@ Restart:
                                 angleplus = (startangle + endangle) / 2;
                                 midpos = aoh->getCenter();
                             }
-                            else if (geo->getTypeId()
-                                     == Part::GeomArcOfParabola::getClassTypeId()) {
+                            else if (geo->is<Part::GeomArcOfParabola>()) {
                                 const Part::GeomArcOfParabola* aop =
                                     static_cast<const Part::GeomArcOfParabola*>(geo);
                                 ra = aop->getFocal();
@@ -325,9 +323,8 @@ Restart:
                                 break;
                             }
 
-                            if (geo->getTypeId() == Part::GeomEllipse::getClassTypeId()
-                                || geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()
-                                || geo->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()) {
+                            if (geo->is<Part::GeomEllipse>() || geo->is<Part::GeomArcOfEllipse>()
+                                || geo->is<Part::GeomArcOfHyperbola>()) {
 
                                 Base::Vector3d majDir, minDir, rvec;
                                 majDir = Base::Vector3d(cos(angle),
@@ -467,7 +464,7 @@ Restart:
                     }
                     else if (Constr->FirstPos == Sketcher::PointPos::none) {
 
-                        if (geo1->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+                        if (geo1->is<Part::GeomLineSegment>()) {
                             const Part::GeomLineSegment* lineSeg1 =
                                 static_cast<const Part::GeomLineSegment*>(geo1);
                             midpos1 = ((lineSeg1->getEndPoint() + lineSeg1->getStartPoint()) / 2);
@@ -475,7 +472,7 @@ Restart:
                                 (lineSeg1->getEndPoint() - lineSeg1->getStartPoint()).Normalize();
                             norm1 = Base::Vector3d(-dir1.y, dir1.x, 0.);
                         }
-                        else if (geo1->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+                        else if (geo1->is<Part::GeomArcOfCircle>()) {
                             const Part::GeomArcOfCircle* arc =
                                 static_cast<const Part::GeomArcOfCircle*>(geo1);
                             double startangle, endangle, midangle;
@@ -485,7 +482,7 @@ Restart:
                             dir1 = Base::Vector3d(-norm1.y, norm1.x, 0);
                             midpos1 = arc->getCenter() + arc->getRadius() * norm1;
                         }
-                        else if (geo1->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+                        else if (geo1->is<Part::GeomCircle>()) {
                             const Part::GeomCircle* circle =
                                 static_cast<const Part::GeomCircle*>(geo1);
                             norm1 = Base::Vector3d(cos(M_PI / 4), sin(M_PI / 4), 0);
@@ -496,7 +493,7 @@ Restart:
                             break;
                         }
 
-                        if (geo2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+                        if (geo2->is<Part::GeomLineSegment>()) {
                             const Part::GeomLineSegment* lineSeg2 =
                                 static_cast<const Part::GeomLineSegment*>(geo2);
                             midpos2 = ((lineSeg2->getEndPoint() + lineSeg2->getStartPoint()) / 2);
@@ -504,7 +501,7 @@ Restart:
                                 (lineSeg2->getEndPoint() - lineSeg2->getStartPoint()).Normalize();
                             norm2 = Base::Vector3d(-dir2.y, dir2.x, 0.);
                         }
-                        else if (geo2->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+                        else if (geo2->is<Part::GeomArcOfCircle>()) {
                             const Part::GeomArcOfCircle* arc =
                                 static_cast<const Part::GeomArcOfCircle*>(geo2);
                             double startangle, endangle, midangle;
@@ -514,7 +511,7 @@ Restart:
                             dir2 = Base::Vector3d(-norm2.y, norm2.x, 0);
                             midpos2 = arc->getCenter() + arc->getRadius() * norm2;
                         }
-                        else if (geo2->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+                        else if (geo2->is<Part::GeomCircle>()) {
                             const Part::GeomCircle* circle =
                                 static_cast<const Part::GeomCircle*>(geo2);
                             norm2 = Base::Vector3d(cos(M_PI / 4), sin(M_PI / 4), 0);
@@ -576,14 +573,14 @@ Restart:
                                 angle2plus =
                                     0.;  // angle1 = rotation of object as a whole; angle1plus = arc
                                          // angle (t parameter for ellipses).
-                            if (geo1->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+                            if (geo1->is<Part::GeomCircle>()) {
                                 const Part::GeomCircle* circle =
                                     static_cast<const Part::GeomCircle*>(geo1);
                                 r1a = circle->getRadius();
                                 angle1 = M_PI / 4;
                                 midpos1 = circle->getCenter();
                             }
-                            else if (geo1->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+                            else if (geo1->is<Part::GeomArcOfCircle>()) {
                                 const Part::GeomArcOfCircle* arc =
                                     static_cast<const Part::GeomArcOfCircle*>(geo1);
                                 r1a = arc->getRadius();
@@ -592,7 +589,7 @@ Restart:
                                 angle1 = (startangle + endangle) / 2;
                                 midpos1 = arc->getCenter();
                             }
-                            else if (geo1->getTypeId() == Part::GeomEllipse::getClassTypeId()) {
+                            else if (geo1->is<Part::GeomEllipse>()) {
                                 const Part::GeomEllipse* ellipse =
                                     static_cast<const Part::GeomEllipse*>(geo1);
                                 r1a = ellipse->getMajorRadius();
@@ -602,8 +599,7 @@ Restart:
                                 angle1plus = M_PI / 4;
                                 midpos1 = ellipse->getCenter();
                             }
-                            else if (geo1->getTypeId()
-                                     == Part::GeomArcOfEllipse::getClassTypeId()) {
+                            else if (geo1->is<Part::GeomArcOfEllipse>()) {
                                 const Part::GeomArcOfEllipse* aoe =
                                     static_cast<const Part::GeomArcOfEllipse*>(geo1);
                                 r1a = aoe->getMajorRadius();
@@ -615,8 +611,7 @@ Restart:
                                 angle1plus = (startangle + endangle) / 2;
                                 midpos1 = aoe->getCenter();
                             }
-                            else if (geo1->getTypeId()
-                                     == Part::GeomArcOfHyperbola::getClassTypeId()) {
+                            else if (geo1->is<Part::GeomArcOfHyperbola>()) {
                                 const Part::GeomArcOfHyperbola* aoh =
                                     static_cast<const Part::GeomArcOfHyperbola*>(geo1);
                                 r1a = aoh->getMajorRadius();
@@ -628,8 +623,7 @@ Restart:
                                 angle1plus = (startangle + endangle) / 2;
                                 midpos1 = aoh->getCenter();
                             }
-                            else if (geo1->getTypeId()
-                                     == Part::GeomArcOfParabola::getClassTypeId()) {
+                            else if (geo1->is<Part::GeomArcOfParabola>()) {
                                 const Part::GeomArcOfParabola* aop =
                                     static_cast<const Part::GeomArcOfParabola*>(geo1);
                                 r1a = aop->getFocal();
@@ -644,14 +638,14 @@ Restart:
                                 break;
                             }
 
-                            if (geo2->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+                            if (geo2->is<Part::GeomCircle>()) {
                                 const Part::GeomCircle* circle =
                                     static_cast<const Part::GeomCircle*>(geo2);
                                 r2a = circle->getRadius();
                                 angle2 = M_PI / 4;
                                 midpos2 = circle->getCenter();
                             }
-                            else if (geo2->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+                            else if (geo2->is<Part::GeomArcOfCircle>()) {
                                 const Part::GeomArcOfCircle* arc =
                                     static_cast<const Part::GeomArcOfCircle*>(geo2);
                                 r2a = arc->getRadius();
@@ -660,7 +654,7 @@ Restart:
                                 angle2 = (startangle + endangle) / 2;
                                 midpos2 = arc->getCenter();
                             }
-                            else if (geo2->getTypeId() == Part::GeomEllipse::getClassTypeId()) {
+                            else if (geo2->is<Part::GeomEllipse>()) {
                                 const Part::GeomEllipse* ellipse =
                                     static_cast<const Part::GeomEllipse*>(geo2);
                                 r2a = ellipse->getMajorRadius();
@@ -670,8 +664,7 @@ Restart:
                                 angle2plus = M_PI / 4;
                                 midpos2 = ellipse->getCenter();
                             }
-                            else if (geo2->getTypeId()
-                                     == Part::GeomArcOfEllipse::getClassTypeId()) {
+                            else if (geo2->is<Part::GeomArcOfEllipse>()) {
                                 const Part::GeomArcOfEllipse* aoe =
                                     static_cast<const Part::GeomArcOfEllipse*>(geo2);
                                 r2a = aoe->getMajorRadius();
@@ -683,8 +676,7 @@ Restart:
                                 angle2plus = (startangle + endangle) / 2;
                                 midpos2 = aoe->getCenter();
                             }
-                            else if (geo2->getTypeId()
-                                     == Part::GeomArcOfHyperbola::getClassTypeId()) {
+                            else if (geo2->is<Part::GeomArcOfHyperbola>()) {
                                 const Part::GeomArcOfHyperbola* aoh =
                                     static_cast<const Part::GeomArcOfHyperbola*>(geo2);
                                 r2a = aoh->getMajorRadius();
@@ -696,8 +688,7 @@ Restart:
                                 angle2plus = (startangle + endangle) / 2;
                                 midpos2 = aoh->getCenter();
                             }
-                            else if (geo2->getTypeId()
-                                     == Part::GeomArcOfParabola::getClassTypeId()) {
+                            else if (geo2->is<Part::GeomArcOfParabola>()) {
                                 const Part::GeomArcOfParabola* aop =
                                     static_cast<const Part::GeomArcOfParabola*>(geo2);
                                 r2a = aop->getFocal();
@@ -712,8 +703,7 @@ Restart:
                                 break;
                             }
 
-                            if (geo1->getTypeId() == Part::GeomEllipse::getClassTypeId()
-                                || geo1->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()
+                            if (geo1->is<Part::GeomEllipse>() || geo1->is<Part::GeomArcOfEllipse>()
                                 || geo1->getTypeId()
                                     == Part::GeomArcOfHyperbola::getClassTypeId()) {
 
@@ -741,8 +731,7 @@ Restart:
                             }
 
 
-                            if (geo2->getTypeId() == Part::GeomEllipse::getClassTypeId()
-                                || geo2->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()
+                            if (geo2->is<Part::GeomEllipse>() || geo2->is<Part::GeomArcOfEllipse>()
                                 || geo2->getTypeId()
                                     == Part::GeomArcOfHyperbola::getClassTypeId()) {
 
@@ -833,7 +822,7 @@ Restart:
                     else if (Constr->Second != GeoEnum::GeoUndef) {
                         const Part::Geometry* geo =
                             geolistfacade.getGeometryFromGeoId(Constr->Second);
-                        if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+                        if (geo->is<Part::GeomLineSegment>()) {
                             const Part::GeomLineSegment* lineSeg =
                                 static_cast<const Part::GeomLineSegment*>(geo);
                             Base::Vector3d l2p1 = lineSeg->getStartPoint();
@@ -848,9 +837,8 @@ Restart:
                             else {
                                 const Part::Geometry* geo1 =
                                     geolistfacade.getGeometryFromGeoId(Constr->First);
-                                if (geo1->getTypeId()
-                                    == Part::GeomCircle::getClassTypeId()) {  // circle to line
-                                                                              // distance
+                                if (geo1->is<Part::GeomCircle>()) {  // circle to line
+                                                                     // distance
                                     const Part::GeomCircle* circleSeg =
                                         static_cast<const Part::GeomCircle*>(geo1);
                                     Base::Vector3d ct = circleSeg->getCenter();
@@ -865,12 +853,11 @@ Restart:
                                 }
                             }
                         }
-                        else if (geo->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+                        else if (geo->is<Part::GeomCircle>()) {
                             const Part::Geometry* geo1 =
                                 geolistfacade.getGeometryFromGeoId(Constr->First);
-                            if (geo1->getTypeId()
-                                == Part::GeomCircle::getClassTypeId()) {  // circle to circle
-                                                                          // distance
+                            if (geo1->is<Part::GeomCircle>()) {  // circle to circle
+                                                                 // distance
                                 const Part::GeomCircle* circleSeg1 =
                                     static_cast<const Part::GeomCircle*>(geo1);
                                 auto circleSeg2 = static_cast<const Part::GeomCircle*>(geo);
@@ -895,8 +882,7 @@ Restart:
                     else if (Constr->First != GeoEnum::GeoUndef) {
                         const Part::Geometry* geo =
                             geolistfacade.getGeometryFromGeoId(Constr->First);
-                        if (geo->getTypeId()
-                            == Part::GeomLineSegment::getClassTypeId()) {  // segment distance
+                        if (geo->is<Part::GeomLineSegment>()) {  // segment distance
                             const Part::GeomLineSegment* lineSeg =
                                 static_cast<const Part::GeomLineSegment*>(geo);
                             pnt1 = lineSeg->getStartPoint();
@@ -1009,8 +995,8 @@ Restart:
                         const Part::Geometry* geo2 =
                             geolistfacade.getGeometryFromGeoId(Constr->Second);
 
-                        if (geo1->getTypeId() == Part::GeomLineSegment::getClassTypeId()
-                            && geo2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+                        if (geo1->is<Part::GeomLineSegment>()
+                            && geo2->is<Part::GeomLineSegment>()) {
                             const Part::GeomLineSegment* lineSeg1 =
                                 static_cast<const Part::GeomLineSegment*>(geo1);
                             const Part::GeomLineSegment* lineSeg2 =
@@ -1059,17 +1045,17 @@ Restart:
 
                             break;
                         }
-                        else if (geo2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+                        else if (geo2->is<Part::GeomLineSegment>()) {
                             std::swap(geo1, geo2);
                         }
 
-                        if (geo1->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+                        if (geo1->is<Part::GeomLineSegment>()) {
                             const Part::GeomLineSegment* lineSeg =
                                 static_cast<const Part::GeomLineSegment*>(geo1);
                             Base::Vector3d dir =
                                 (lineSeg->getEndPoint() - lineSeg->getStartPoint()).Normalize();
                             Base::Vector3d norm(-dir.y, dir.x, 0);
-                            if (geo2->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+                            if (geo2->is<Part::GeomCircle>()) {
                                 const Part::GeomCircle* circle =
                                     static_cast<const Part::GeomCircle*>(geo2);
                                 // tangency between a line and a circle
@@ -1079,12 +1065,11 @@ Restart:
                                 pos = lineSeg->getStartPoint() + dir * length;
                                 relPos = norm * 1;  // TODO Huh?
                             }
-                            else if (geo2->getTypeId() == Part::GeomEllipse::getClassTypeId()
-                                     || geo2->getTypeId()
-                                         == Part::GeomArcOfEllipse::getClassTypeId()) {
+                            else if (geo2->is<Part::GeomEllipse>()
+                                     || geo2->is<Part::GeomArcOfEllipse>()) {
 
                                 Base::Vector3d center;
-                                if (geo2->getTypeId() == Part::GeomEllipse::getClassTypeId()) {
+                                if (geo2->is<Part::GeomEllipse>()) {
                                     const Part::GeomEllipse* ellipse =
                                         static_cast<const Part::GeomEllipse*>(geo2);
                                     center = ellipse->getCenter();
@@ -1101,7 +1086,7 @@ Restart:
                                 pos = lineSeg->getStartPoint() + dir * length;
                                 relPos = norm * 1;
                             }
-                            else if (geo2->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+                            else if (geo2->is<Part::GeomArcOfCircle>()) {
                                 const Part::GeomArcOfCircle* arc =
                                     static_cast<const Part::GeomArcOfCircle*>(geo2);
                                 // tangency between a line and an arc
@@ -1112,8 +1097,7 @@ Restart:
                             }
                         }
 
-                        if (geo1->getTypeId() == Part::GeomCircle::getClassTypeId()
-                            && geo2->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+                        if (geo1->is<Part::GeomCircle>() && geo2->is<Part::GeomCircle>()) {
                             const Part::GeomCircle* circle1 =
                                 static_cast<const Part::GeomCircle*>(geo1);
                             const Part::GeomCircle* circle2 =
@@ -1124,12 +1108,11 @@ Restart:
                             pos = circle1->getCenter() + dir * circle1->getRadius();
                             relPos = dir * 1;
                         }
-                        else if (geo2->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+                        else if (geo2->is<Part::GeomCircle>()) {
                             std::swap(geo1, geo2);
                         }
 
-                        if (geo1->getTypeId() == Part::GeomCircle::getClassTypeId()
-                            && geo2->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+                        if (geo1->is<Part::GeomCircle>() && geo2->is<Part::GeomArcOfCircle>()) {
                             const Part::GeomCircle* circle =
                                 static_cast<const Part::GeomCircle*>(geo1);
                             const Part::GeomArcOfCircle* arc =
@@ -1140,8 +1123,8 @@ Restart:
                             pos = circle->getCenter() + dir * circle->getRadius();
                             relPos = dir * 1;
                         }
-                        else if (geo1->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()
-                                 && geo2->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+                        else if (geo1->is<Part::GeomArcOfCircle>()
+                                 && geo2->is<Part::GeomArcOfCircle>()) {
                             const Part::GeomArcOfCircle* arc1 =
                                 static_cast<const Part::GeomArcOfCircle*>(geo1);
                             const Part::GeomArcOfCircle* arc2 =
@@ -1284,7 +1267,7 @@ Restart:
                     else if (Constr->First != GeoEnum::GeoUndef) {
                         const Part::Geometry* geo =
                             geolistfacade.getGeometryFromGeoId(Constr->First);
-                        if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+                        if (geo->is<Part::GeomLineSegment>()) {
                             const Part::GeomLineSegment* lineSeg =
                                 static_cast<const Part::GeomLineSegment*>(geo);
                             p0 = Base::convertTo<SbVec3f>(
@@ -1295,7 +1278,7 @@ Restart:
                             range = atan2(dir.y, dir.x);
                             endangle = startangle + range;
                         }
-                        else if (geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+                        else if (geo->is<Part::GeomArcOfCircle>()) {
                             const Part::GeomArcOfCircle* arc =
                                 static_cast<const Part::GeomArcOfCircle*>(geo);
                             p0 = Base::convertTo<SbVec3f>(arc->getCenter());
@@ -1336,7 +1319,7 @@ Restart:
                         const Part::Geometry* geo =
                             geolistfacade.getGeometryFromGeoId(Constr->First);
 
-                        if (geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+                        if (geo->is<Part::GeomArcOfCircle>()) {
                             const Part::GeomArcOfCircle* arc =
                                 static_cast<const Part::GeomArcOfCircle*>(geo);
                             double radius = arc->getRadius();
@@ -1350,7 +1333,7 @@ Restart:
                             pnt1 = center - radius * Base::Vector3d(cos(angle), sin(angle), 0.);
                             pnt2 = center + radius * Base::Vector3d(cos(angle), sin(angle), 0.);
                         }
-                        else if (geo->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+                        else if (geo->is<Part::GeomCircle>()) {
                             const Part::GeomCircle* circle =
                                 static_cast<const Part::GeomCircle*>(geo);
                             double radius = circle->getRadius();
@@ -1402,7 +1385,7 @@ Restart:
                         const Part::Geometry* geo =
                             geolistfacade.getGeometryFromGeoId(Constr->First);
 
-                        if (geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+                        if (geo->is<Part::GeomArcOfCircle>()) {
                             const Part::GeomArcOfCircle* arc =
                                 static_cast<const Part::GeomArcOfCircle*>(geo);
                             double radius = arc->getRadius();
@@ -1415,7 +1398,7 @@ Restart:
                             pnt1 = arc->getCenter();
                             pnt2 = pnt1 + radius * Base::Vector3d(cos(angle), sin(angle), 0.);
                         }
-                        else if (geo->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+                        else if (geo->is<Part::GeomCircle>()) {
                             const Part::GeomCircle* circle =
                                 static_cast<const Part::GeomCircle*>(geo);
                             auto gf = GeometryFacade::getFacade(geo);
@@ -1864,8 +1847,8 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(
                             "EditModeConstraintCoinManager",
                             "Tangent constraint references non-existing geometry\n");
                     }
-                    else if (geo1->getTypeId() == Part::GeomLineSegment::getClassTypeId()
-                             && geo2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+                    else if (geo1->is<Part::GeomLineSegment>()
+                             && geo2->is<Part::GeomLineSegment>()) {
                         // #define CONSTRAINT_SEPARATOR_INDEX_SECOND_TRANSLATION 4
                         sep->addChild(new SoZoomTranslation());
                         // #define CONSTRAINT_SEPARATOR_INDEX_SECOND_ICON 5
@@ -2217,8 +2200,8 @@ void EditModeConstraintCoinManager::drawConstraintIcons(const GeoListFacade& geo
             case Tangent: {  // second icon is available only for colinear line segments
                 const Part::Geometry* geo1 = geolistfacade.getGeometryFromGeoId(constraint->First);
                 const Part::Geometry* geo2 = geolistfacade.getGeometryFromGeoId(constraint->Second);
-                if (geo1 && geo1->getTypeId() == Part::GeomLineSegment::getClassTypeId() && geo2
-                    && geo2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+                if (geo1 && geo1->is<Part::GeomLineSegment>() && geo2
+                    && geo2->is<Part::GeomLineSegment>()) {
                     multipleIcons = true;
                 }
             } break;

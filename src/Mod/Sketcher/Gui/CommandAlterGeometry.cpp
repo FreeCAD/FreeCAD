@@ -197,7 +197,7 @@ void CmdSketcherToggleConstruction::activated(int iMsg)
 
                 auto geo = Obj->getGeometry(geoId);
 
-                if (geo && geo->getTypeId() == Part::GeomPoint::getClassTypeId()) {
+                if (geo && geo->is<Part::GeomPoint>()) {
                     // issue the actual commands to toggle
                     Gui::cmdAppObjectArgs(selection[0].getObject(),
                                           "toggleConstruction(%d) ",

@@ -147,7 +147,7 @@ void PropertyConstraintListItem::assignProperty(const App::Property* prop)
     // Hint: When renaming a constraint that was unnamed before then it can happen that
     // a constraint appears twice in the property editor, one time in this group and a
     // second time inside the Unnamed group
-    if (!prop->getTypeId().isDerivedFrom(Sketcher::PropertyConstraintList::getClassTypeId())) {
+    if (!prop->isDerivedFrom<Sketcher::PropertyConstraintList>()) {
         return;
     }
 
@@ -240,8 +240,7 @@ void PropertyConstraintListItem::assignProperty(const App::Property* prop)
 
 QVariant PropertyConstraintListItem::value(const App::Property* prop) const
 {
-    assert(prop
-           && prop->getTypeId().isDerivedFrom(Sketcher::PropertyConstraintList::getClassTypeId()));
+    assert(prop && prop->isDerivedFrom<Sketcher::PropertyConstraintList>());
 
     PropertyConstraintListItem* self = const_cast<PropertyConstraintListItem*>(this);
 
