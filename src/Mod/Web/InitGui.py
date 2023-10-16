@@ -46,6 +46,6 @@ class WebWorkbench(Workbench):
 Gui.addWorkbench(WebWorkbench())
 
 # Append the open handler
-FreeCAD.addImportType("Web Page (*.html *.xhtml)", "WebGui")
+FreeCAD.addImportType("Web Page (*.html *.HTML *.xhtml *.XHTML)", "WebGui")
 
 FreeCAD.__unit_test__ += ["TestWebGui"]
