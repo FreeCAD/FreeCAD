@@ -22,6 +22,10 @@
 
 #include "PreCompiled.h"
 
+#ifndef _PreComp_
+#include <Inventor/nodes/SoDrawStyle.h>
+#endif
+
 #include <Mod/Fem/App/FemPostFilter.h>
 
 #include "TaskPostBoxes.h"
@@ -58,8 +62,16 @@ void ViewProviderFemPostDataAlongLine::setupTaskDialog(TaskDlgPost* dlg)
 // data at point filter
 PROPERTY_SOURCE(FemGui::ViewProviderFemPostDataAtPoint, FemGui::ViewProviderFemPostObject)
 
+App::PropertyFloatConstraint::Constraints ViewProviderFemPostDataAtPoint::sizeRange = {1.0,
+                                                                                       64.0,
+                                                                                       1.0};
+
 ViewProviderFemPostDataAtPoint::ViewProviderFemPostDataAtPoint()
 {
+    float pSize = m_drawStyle->pointSize.getValue();
+    ADD_PROPERTY_TYPE(PointSize, (pSize), "Object Style", App::Prop_None, "Set point size");
+    PointSize.setConstraints(&sizeRange);
+
     sPixmap = "FEM_PostFilterDataAtPoint";
 }
 
@@ -73,6 +85,15 @@ void ViewProviderFemPostDataAtPoint::onSelectionChanged(const Gui::SelectionChan
     // do not do anything here
     // For DataAtPoint the color bar must not be refreshed when it is selected
     // because a single point does not make sense with a color range.
+}
+
+void ViewProviderFemPostDataAtPoint::onChanged(const App::Property* prop)
+{
+    if (prop == &PointSize) {
+        m_drawStyle->pointSize.setValue(PointSize.getValue());
+    }
+
+    ViewProviderFemPostObject::onChanged(prop);
 }
 
 ViewProviderFemPostDataAtPoint::~ViewProviderFemPostDataAtPoint() = default;

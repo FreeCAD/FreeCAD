@@ -133,7 +133,6 @@ public:
     ~FemPostDataAtPointFilter() override;
 
     App::PropertyVectorDistance Center;
-    App::PropertyDistance Radius;
     App::PropertyString FieldName;
     App::PropertyFloatList PointData;
     App::PropertyString Unit;
