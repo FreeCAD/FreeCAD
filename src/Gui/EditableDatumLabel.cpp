@@ -74,6 +74,7 @@ EditableDatumLabel::EditableDatumLabel(View3DInventorViewer* view,
     label->datumtype = SoDatumLabel::DISTANCE;
     label->param1 = 0.;
     label->param2 = 0.;
+    label->param3 = 0.;
     if (autoDistance) {
         setLabelRecommendedDistance();
     }
@@ -172,15 +173,15 @@ double EditableDatumLabel::getValue()
     return spinBox->rawValue();
 }
 
-void EditableDatumLabel::setSpinboxValue(double val)
+void EditableDatumLabel::setSpinboxValue(double val, const Base::Unit& unit)
 {
     if (!spinBox) {
-        Base::Console().Warning("Spinbox doesn't exist in EditableDatumLabel::setSpinboxValue.");
+        Base::Console().DeveloperWarning("EditableDatumLabel::setSpinboxValue", "Spinbox doesn't exist in");
         return;
     }
 
     QSignalBlocker block(spinBox);
-    spinBox->setValue(val);
+    spinBox->setValue(Base::Quantity(val, unit));
     positionSpinbox();
 
     if (spinBox->hasFocus()) {
@@ -191,7 +192,7 @@ void EditableDatumLabel::setSpinboxValue(double val)
 void EditableDatumLabel::setFocusToSpinbox()
 {
     if (!spinBox) {
-        Base::Console().Warning("Spinbox doesn't exist in EditableDatumLabel::setFocusToSpinbox.");
+        Base::Console().DeveloperWarning("EditableDatumLabel::setFocusToSpinbox", "Spinbox doesn't exist in");
         return;
     }
     if (!spinBox->hasFocus()) {
@@ -299,9 +300,19 @@ void EditableDatumLabel::setLabelType(SoDatumLabel::Type type)
 }
 
 // NOLINTNEXTLINE
-void EditableDatumLabel::setLabelDistance(double distance)
+void EditableDatumLabel::setLabelDistance(double val)
 {
-    label->param1 = float(distance);
+    label->param1 = float(val);
+}
+
+void EditableDatumLabel::setLabelStartAngle(double val)
+{
+    label->param2 = float(val);
+}
+
+void EditableDatumLabel::setLabelRange(double val)
+{
+    label->param3 = float(val);
 }
 
 void EditableDatumLabel::setLabelRecommendedDistance()
