@@ -33,21 +33,30 @@ These are functions related to arguments and values for creating custom post pro
 import argparse
 import os
 import shlex
+from typing import Any, Callable, Dict
 
 from FreeCAD import Units
 
 import Path.Post.UtilsParse as PostUtilsParse
 
+# Define some types that are used throughout this file
+PathParameter = float
+PathParameters = Dict[str, PathParameter]
+Parser = argparse.ArgumentParser
+Values = Dict[str, Any]
+
+ParameterFunction = Callable[[Values, str, str, PathParameter, PathParameters], str]
+
 
 def add_flag_type_arguments(
     argument_group,
-    default_flag,
-    true_argument,
-    false_argument,
-    true_help,
-    false_help,
-    visible=True,
-):
+    default_flag: bool,
+    true_argument: str,
+    false_argument: str,
+    true_help: str,
+    false_help: str,
+    visible: bool = True,
+) -> None:
     """Create an argument specification for an argument that is a flag."""
     if visible:
         if default_flag:
@@ -60,7 +69,7 @@ def add_flag_type_arguments(
     argument_group.add_argument(false_argument, action="store_true", help=false_help)
 
 
-def init_argument_defaults(argument_defaults):
+def init_argument_defaults(argument_defaults: Dict[str, bool]) -> None:
     """Initialize which argument to show as the default in flag-type arguments."""
     argument_defaults["axis-modal"] = False
     argument_defaults["bcnc"] = False
@@ -77,7 +86,7 @@ def init_argument_defaults(argument_defaults):
     argument_defaults["translate_drill"] = False
 
 
-def init_arguments_visible(arguments_visible):
+def init_arguments_visible(arguments_visible: Dict[str, bool]) -> None:
     """Initialize the flags for which arguments are visible in the arguments tooltip."""
     arguments_visible["bcnc"] = False
     arguments_visible["axis-modal"] = True
@@ -101,12 +110,19 @@ def init_arguments_visible(arguments_visible):
     arguments_visible["wait-for-spindle"] = False
 
 
-def init_shared_arguments(values, argument_defaults, arguments_visible):
+def init_shared_arguments(
+    values: Values,
+    argument_defaults: Dict[str, bool],
+    arguments_visible: Dict[str, bool],
+) -> Parser:
     """Initialize the arguments for postprocessors."""
+    help_message: str
+    parser: Parser
+
     parser = argparse.ArgumentParser(
         prog=values["MACHINE_NAME"], usage=argparse.SUPPRESS, add_help=False
     )
-    shared = parser.add_argument_group("Arguments that are commonly used")
+    shared = parser.add_argument_group("Arguments that are commonly used")  # type: ignore
     add_flag_type_arguments(
         shared,
         argument_defaults["metric_inches"],
@@ -283,7 +299,7 @@ def init_shared_arguments(values, argument_defaults, arguments_visible):
     return parser
 
 
-def init_shared_values(values):
+def init_shared_values(values: Values):
     """Initialize the default values in postprocessors."""
     #
     # The starting axis precision is 3 digits after the decimal point.
@@ -294,6 +310,7 @@ def init_shared_values(values):
     # with a G73 command.
     #
     values["CHIPBREAKING_AMOUNT"] = Units.Quantity(0.25, Units.Length)
+
     #
     # If this is set to "", all spaces are removed from between commands and parameters.
     #
@@ -306,9 +323,9 @@ def init_shared_values(values):
     #
     # Variables storing the current position for the drill_translate routine.
     #
-    values["CURRENT_X"] = 0
-    values["CURRENT_Y"] = 0
-    values["CURRENT_Z"] = 0
+    values["CURRENT_X"] = 0.0
+    values["CURRENT_Y"] = 0.0
+    values["CURRENT_Z"] = 0.0
     #
     # Default axis precision for metric is 3 digits after the decimal point.
     # (see http://linuxcnc.org/docs/2.7/html/gcode/overview.html#_g_code_best_practices)
@@ -573,20 +590,39 @@ def init_shared_values(values):
     values["USE_TLO"] = True
 
 
-def process_shared_arguments(values, parser, argstring, all_visible, filename):
+def process_shared_arguments(
+    values: Values,
+    parser: Parser,
+    argstring: str,
+    all_visible: Parser,
+    filename: str,
+):
     """Process the arguments to the postprocessor."""
+    argument_text: str
+    v: str
+
     try:
         args = parser.parse_args(shlex.split(argstring))
         if args.output_all_arguments:
             argument_text = all_visible.format_help()
             if not filename == "-":
-                with open(filename, "w", newline=values["END_OF_LINE_CHARACTERS"]) as f:
+                with open(
+                    filename,
+                    "w",
+                    encoding="utf-8",
+                    newline=values["END_OF_LINE_CHARACTERS"],
+                ) as f:
                     f.write(argument_text)
             return (False, argument_text)
         if args.output_visible_arguments:
             argument_text = parser.format_help()
             if not filename == "-":
-                with open(filename, "w", newline=values["END_OF_LINE_CHARACTERS"]) as f:
+                with open(
+                    filename,
+                    "w",
+                    encoding="utf-8",
+                    newline=values["END_OF_LINE_CHARACTERS"],
+                ) as f:
                     f.write(argument_text)
             return (False, argument_text)
         # Default to metric unless an argument overrides it
