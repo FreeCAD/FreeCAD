@@ -63,10 +63,22 @@ WIKI_URL = "https://wiki.freecad.org"
 MD_RAW_URL = "https://raw.githubusercontent.com/FreeCAD/FreeCAD-documentation/main/wiki"
 MD_RENDERED_URL = "https://github.com/FreeCAD/FreeCAD-documentation/blob/main/wiki"
 MD_TRANSLATIONS_FOLDER = "translations"
-ERRORTXT = translate("Help", "Contents for this page could not be retrieved. Please check settings under menu Edit -> Preferences -> General -> Help")
-LOCTXT = translate("Help", "Help files location could not be determined. Please check settings under menu Edit -> Preferences -> General -> Help")
-LOGTXT = translate("Help", "PySide QtWebEngineWidgets module is not available. Help rendering is done with the Web module")
-CONVERTTXT = translate("Help", "There is no markdown renderer installed on your system, so this help page is rendered as is. Please install the markdown or pandoc python modules to improve the rendering of this page.")
+ERRORTXT = translate(
+    "Help",
+    "Contents for this page could not be retrieved. Please check settings under menu Edit -> Preferences -> General -> Help",
+)
+LOCTXT = translate(
+    "Help",
+    "Help files location could not be determined. Please check settings under menu Edit -> Preferences -> General -> Help",
+)
+LOGTXT = translate(
+    "Help",
+    "PySide QtWebEngineWidgets module is not available. Help rendering is done with the Web module",
+)
+CONVERTTXT = translate(
+    "Help",
+    "There is no markdown renderer installed on your system, so this help page is rendered as is. Please install the markdown or pandoc python modules to improve the rendering of this page.",
+)
 PREFS = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Help")
 ICON = ":/icons/help-browser.svg"
 
@@ -170,9 +182,7 @@ def get_location(page):
     elif PREFS.GetBool("optionCustom", False):
         location = PREFS.GetString("Location", "")
         if not location:
-            location = os.path.join(
-                FreeCAD.getUserAppDataDir(), "Mod", "Documentation", "wiki"
-            )
+            location = os.path.join(FreeCAD.getUserAppDataDir(), "Mod", "Documentation", "wiki")
         location += page + "md"
     return location
 
@@ -312,9 +322,7 @@ def convert(content, force=None):
         m = re.sub(r"^### (.*?)\n", r"<h3>\1</h3>\n", m, flags=f)  # ### titles
         m = re.sub(r"^## (.*?)\n", r"<h2>\1</h2>\n", m, flags=f)  # ## titles
         m = re.sub(r"^# (.*?)\n", r"<h1>\1</h1>\n", m, flags=f)  # # titles
-        m = re.sub(
-            r"!\[(.*?)\]\((.*?)\)", r'<img alt="\1" src="\2">', m, flags=f
-        )  # images
+        m = re.sub(r"!\[(.*?)\]\((.*?)\)", r'<img alt="\1" src="\2">', m, flags=f)  # images
         m = re.sub(r"\[(.*?)\]\((.*?)\)", r'<a href="\2">\1</a>', m, flags=f)  # links
         m = re.sub(r"\*\*(.*?)\*\*", r"<b>\1</b>", m)  # bold
         m = re.sub(r"\*(.*?)\*", r"<i>\1</i>", m)  # italic
