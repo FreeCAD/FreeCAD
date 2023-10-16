@@ -12,6 +12,7 @@ files: |
         src/Mod/Drawing|
         src/Mod/Fem/App|
         src/Mod/Fem/Gui|
+        src/Mod/Help|
         src/Mod/Import|
         src/Mod/Inspection|
         src/Mod/JtReader|
