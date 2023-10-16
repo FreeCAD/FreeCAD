@@ -102,7 +102,6 @@ class ObjectDressup:
             self._loadFile(fp, fp.probefile)
 
     def _bilinearInterpolate(self, surface, x, y):
-
         p1 = FreeCAD.Vector(x, y, 100.0)
         p2 = FreeCAD.Vector(x, y, -100.0)
 
@@ -150,7 +149,6 @@ class ObjectDressup:
             raise ValueError("File does not contain appropriate point data")
 
     def execute(self, obj):
-
         sampleD = obj.SegInterpolate.Value
         curveD = obj.ArcInterpolate.Value
 
@@ -201,14 +199,16 @@ class ObjectDressup:
                                     offset = self._bilinearInterpolate(
                                         surface, point.x, point.y
                                     )
-                                    newcommand = Path.Command(
-                                        "G1",
-                                        {
-                                            "X": point.x,
-                                            "Y": point.y,
-                                            "Z": point.z + offset,
-                                        },
-                                    )
+
+                                    commandparams = {
+                                        "X": point.x,
+                                        "Y": point.y,
+                                        "Z": point.z + offset,
+                                    }
+                                    if "F" in newparams.keys():
+                                        commandparams["F"] = newparams["F"]
+                                    newcommand = Path.Command("G1", commandparams)
+
                                     newcommandlist.append(newcommand)
                                     currLocation.update(newcommand.Parameters)
                                     currLocation["Z"] = zval
@@ -254,7 +254,6 @@ class TaskPanel:
         self.obj.Proxy.execute(self.obj)
 
     def updateUI(self):
-
         if Path.Log.getLevel(LOG_MODULE) == Path.Log.Level.DEBUG:
             for obj in FreeCAD.ActiveDocument.Objects:
                 if obj.Name.startswith("Shape"):
@@ -359,7 +358,6 @@ class CommandPathDressup:
         return False
 
     def Activated(self):
-
         # check that the selection contains exactly what we want
         selection = FreeCADGui.Selection.getSelection()
         if len(selection) != 1:
