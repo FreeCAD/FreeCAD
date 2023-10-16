@@ -97,7 +97,10 @@ def symlink(source, link_name):
 
 def rmdir(path: os.PathLike) -> bool:
     try:
-        shutil.rmtree(path, onerror=remove_readonly)
+        if os.path.islink(path):
+            os.unlink(path)  # Remove symlink
+        else:
+            shutil.rmtree(path, onerror=remove_readonly)
     except (WindowsError, PermissionError, OSError):
         return False
     return True
