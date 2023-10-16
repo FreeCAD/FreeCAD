@@ -59,12 +59,19 @@ class FemGuiExport ViewProviderFemPostDataAtPoint: public ViewProviderFemPostObj
 public:
     /// constructor.
     ViewProviderFemPostDataAtPoint();
+
+    App::PropertyFloatConstraint PointSize;
+
     void show() override;
+    void onChanged(const App::Property* prop) override;
     void onSelectionChanged(const Gui::SelectionChanges&) override;
     ~ViewProviderFemPostDataAtPoint() override;
 
 protected:
     void setupTaskDialog(TaskDlgPost* dlg) override;
+
+private:
+    static App::PropertyFloatConstraint::Constraints sizeRange;
 };
 
 
