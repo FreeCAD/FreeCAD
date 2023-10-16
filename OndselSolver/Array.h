@@ -43,6 +43,7 @@ namespace MbD {
 		void equalArrayAt(std::shared_ptr<Array<T>> array, int i);
 		virtual void atiput(int i, T value);
 		void magnifySelf(T factor);
+		void negateSelf();
 		void atitimes(int i, double factor);
 
 		virtual std::ostream& printOn(std::ostream& s) const {
@@ -170,6 +171,11 @@ namespace MbD {
 		{
 			this->atitimes(i, factor);
 		}
+	}
+	template<typename T>
+	inline void Array<T>::negateSelf()
+	{
+		magnifySelf(-1);
 	}
 	template<typename T>
 	inline void Array<T>::atitimes(int i, double factor)

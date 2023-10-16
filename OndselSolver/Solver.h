@@ -28,6 +28,7 @@ namespace MbD {
 		virtual void logString(std::string& str);
 		void logString(const char* chars);
 		virtual void setSystem(Solver* sys) = 0;
+		virtual void handleSingularMatrix();
 
 	};
 }

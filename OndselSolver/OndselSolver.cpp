@@ -18,18 +18,18 @@
 #include "GESpMatParPvPrecise.h"
 #include "ASMTAssembly.h"
 #include "MBDynSystem.h"
+#include "MomentOfInertiaSolver.h"
 
 using namespace MbD;
 void runSpMat();
 
 int main()
 {
-
-	//MBDynSystem::runFile("MBDynCase.mbd");		//To be completed
+	MBDynSystem::runFile("MBDynCase.mbd");		//To be completed
 	MBDynSystem::runFile("crank_slider.mbd");		//To be completed
 	//ASMTAssembly::runSinglePendulumSuperSimplified();	//Mass is missing
 	//ASMTAssembly::runSinglePendulumSuperSimplified2();	//DOF has infinite acceleration due to zero mass and inertias
-	//ASMTAssembly::runSinglePendulumSimplified();
+	ASMTAssembly::runSinglePendulumSimplified();
 	ASMTAssembly::runSinglePendulum();
 	ASMTAssembly::runFile("piston.asmt");
 	ASMTAssembly::runFile("00backhoe.asmt");
@@ -46,6 +46,7 @@ int main()
 	//cadSystem->runOndselPiston();		//For debugging
 	cadSystem->runPiston();
 	runSpMat();
+	MomentOfInertiaSolver::example1();
 }
 
 void runSpMat() {

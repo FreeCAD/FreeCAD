@@ -6,12 +6,15 @@
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
  
+#include <iostream>
+
 #include "AccNewtonRaphson.h"
 #include "SystemSolver.h"
 #include "Part.h"
 #include "Constraint.h"
 #include "SimulationStoppingError.h"
-#include <iostream>
+#include "GESpMatParPvPrecise.h"
+#include "CREATE.h"
 
 using namespace MbD;
 
@@ -119,4 +122,23 @@ void AccNewtonRaphson::postRun()
 void AccNewtonRaphson::preRun()
 {
 	system->partsJointsMotionsForcesTorquesDo([&](std::shared_ptr<Item> item) { item->preAccIC(); });
+}
+
+void MbD::AccNewtonRaphson::handleSingularMatrix()
+{
+	std::string str = typeid(*matrixSolver).name();
+	if (str.find("GESpMatParPvMarkoFast") != std::string::npos) {
+		matrixSolver = CREATE<GESpMatParPvPrecise>::With();
+		this->solveEquations();
+	}
+	else {
+		str = typeid(*matrixSolver).name();
+		if (str.find("GESpMatParPvPrecise") != std::string::npos) {
+			this->logSingularMatrixMessage();
+			matrixSolver->throwSingularMatrixError("AccAccNewtonRaphson");
+		}
+		else {
+			assert(false);
+		}
+	}
 }

@@ -69,3 +69,8 @@ void Solver::logString(const char* chars)
 	std::string str = chars;
 	this->logString(str);
 }
+
+void MbD::Solver::handleSingularMatrix()
+{
+	assert(false);
+}

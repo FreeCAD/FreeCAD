@@ -36,6 +36,7 @@ namespace MbD {
 			this->atiputFullColumn(0, axis->times(sinHalfTheta));
 			this->atiput(3, cosHalfTheta);
 			this->conditionSelf();
+			this->initialize();
 			this->calc();
 		}
 

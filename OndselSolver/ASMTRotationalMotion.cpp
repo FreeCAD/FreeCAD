@@ -5,7 +5,7 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include "ASMTRotationalMotion.h"
 #include "ASMTAssembly.h"
 #include "SymbolicParser.h"
@@ -42,9 +42,15 @@ void MbD::ASMTRotationalMotion::readRotationZ(std::vector<std::string>& lines)
 
 void MbD::ASMTRotationalMotion::initMarkers()
 {
-	auto jt = root()->jointAt(motionJoint);
-	markerI = jt->markerI;
-	markerJ = jt->markerJ;
+	if (motionJoint == "") {
+		assert(markerI != "");
+		assert(markerJ != "");
+	}
+	else {
+		auto jt = root()->jointAt(motionJoint);
+		markerI = jt->markerI;
+		markerJ = jt->markerJ;
+	}
 }
 
 void MbD::ASMTRotationalMotion::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits)

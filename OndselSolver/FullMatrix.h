@@ -5,7 +5,7 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #pragma once
 
 #include "corecrt_math_defines.h"
@@ -29,7 +29,7 @@ namespace MbD {
 	class EulerParameters;
 	template<typename T>
 	class DiagonalMatrix;
-	
+
 	using FMatFColDsptr = std::shared_ptr<FullMatrix<FColDsptr>>;
 	using FMatFMatDsptr = std::shared_ptr<FullMatrix<FMatDsptr>>;
 	using FColFMatDsptr = std::shared_ptr<FullColumn<FMatDsptr>>;
@@ -102,6 +102,7 @@ namespace MbD {
 		double maxMagnitude() override;
 		FColsptr<T> bryantAngles();
 		bool isDiagonal();
+		bool isDiagonalToWithin(double ratio);
 		std::shared_ptr<DiagonalMatrix<T>> asDiagonalMatrix();
 		void conditionSelfWithTol(double tol);
 
@@ -332,13 +333,13 @@ namespace MbD {
 		tilde->atijput(2, 1, c0);
 		return tilde;
 	}
-    template<>
-    inline void FullMatrix<double>::zeroSelf()
-    {
-        for (int i = 0; i < this->size(); i++) {
-            this->at(i)->zeroSelf();
-        }
-    }
+	template<>
+	inline void FullMatrix<double>::zeroSelf()
+	{
+		for (int i = 0; i < this->size(); i++) {
+			this->at(i)->zeroSelf();
+		}
+	}
 	template<>
 	inline void FullMatrix<double>::identity() {
 		this->zeroSelf();
@@ -678,6 +679,27 @@ namespace MbD {
 			}
 		}
 		return true;
+	}
+	template<typename T>
+	inline bool FullMatrix<T>::isDiagonalToWithin(double ratio)
+	{
+		auto maxMag = this->maxMagnitude();
+		auto tol = ratio * maxMag;
+		auto nrow = this->nrow();
+		if (nrow == this->ncol()) {
+			for (int i = 0; i < 3; i++)
+			{
+				for (int j = i + 1; j < 3; j++)
+				{
+					if (std::abs(this->at(i)->at(j)) > tol) return false;
+					if (std::abs(this->at(j)->at(i)) > tol) return false;
+				}
+			}
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 	template<typename T>
 	inline std::shared_ptr<DiagonalMatrix<T>> FullMatrix<T>::asDiagonalMatrix()

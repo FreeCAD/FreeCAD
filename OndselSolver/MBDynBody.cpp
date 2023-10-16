@@ -5,6 +5,7 @@
 #include "BasicUserFunction.h"
 #include "ASMTPart.h"
 #include "ASMTAssembly.h"
+#include "MomentOfInertiaSolver.h"
 
 using namespace MbD;
 
@@ -85,10 +86,25 @@ void MbD::MBDynBody::createASMT()
 	auto asmtMassMarker = std::make_shared<ASMTPrincipalMassMarker>();
 	asmtItem = asmtMassMarker;
 	asmtMassMarker->setMass(mass);
-	assert(aJmat->isDiagonal());
-	asmtMassMarker->setMomentOfInertias(aJmat->asDiagonalMatrix());
-	asmtMassMarker->setPosition3D(rPcmP);
-	asmtMassMarker->setRotationMatrix(FullMatrix<double>::identitysptr(3));
-	auto asmtPart = asmtAssembly()->partPartialNamed(nodeName);
-	asmtPart->setPrincipalMassMarker(asmtMassMarker);
+	if (aJmat->isDiagonalToWithin(1.0e-6)) {
+		asmtMassMarker->setMomentOfInertias(aJmat->asDiagonalMatrix());
+		asmtMassMarker->setPosition3D(rPcmP);
+		asmtMassMarker->setRotationMatrix(FullMatrix<double>::identitysptr(3));
+		auto asmtPart = asmtAssembly()->partPartialNamed(nodeName);
+		asmtPart->setPrincipalMassMarker(asmtMassMarker);
+	}
+	else {
+		auto solver = std::make_shared<MomentOfInertiaSolver>();
+		solver->setm(mass);
+		solver->setJPP(aJmat);
+		solver->setrPoP(rPcmP);
+		solver->setAPo(FullMatrix<double>::identitysptr(3));
+		solver->setrPcmP(rPcmP);
+		solver->calc();
+		asmtMassMarker->setMomentOfInertias(solver->aJpp);
+		asmtMassMarker->setPosition3D(rPcmP);
+		asmtMassMarker->setRotationMatrix(solver->aAPp);
+		auto asmtPart = asmtAssembly()->partPartialNamed(nodeName);
+		asmtPart->setPrincipalMassMarker(asmtMassMarker);
+	}
 }

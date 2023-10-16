@@ -9,6 +9,7 @@
 #include "ASMTPointInLineJoint.h"
 #include "ASMTNoRotationJoint.h"
 #include "ASMTFixedJoint.h"
+#include "ASMTSphericalJoint.h"
 
 using namespace MbD;
 
@@ -219,8 +220,22 @@ void MbD::MBDynJoint::createASMT()
 		asmtAsm->addMotion(asmtMotion);
 		return;
 	}
+	if (joint_type == "drive hinge") {
+		auto asmtAsm = asmtAssembly();
+		auto asmtMotion = std::make_shared<ASMTRotationalMotion>();
+		asmtItem = asmtMotion;
+		asmtMotion->setName(name);
+		asmtMotion->setMarkerI(mkr1->asmtItem->fullName(""));
+		asmtMotion->setMarkerJ(mkr2->asmtItem->fullName(""));
+		asmtMotion->setRotationZ(formula);
+		asmtAsm->addMotion(asmtMotion);
+		return;
+	}
 	if (joint_type == "revolute hinge") {
 		asmtJoint = std::make_shared<ASMTRevoluteJoint>();
+	}
+	else if (joint_type == "spherical hinge") {
+		asmtJoint = std::make_shared<ASMTSphericalJoint>();
 	}
 	else if (joint_type == "in line") {
 		asmtJoint = std::make_shared<ASMTPointInLineJoint>();

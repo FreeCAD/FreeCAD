@@ -25,6 +25,7 @@ namespace MbD {
         void passRootToSystem();
         void postRun() override;
         void preRun() override;
+        void handleSingularMatrix() override;
 
 
     };

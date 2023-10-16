@@ -18,6 +18,7 @@ namespace MbD {
         //aJoo == aJpp when rPoP == rPcmP and aAPo == aAPp
     public:
         static void example1();
+        void doFullPivoting(int p);
         void forwardEliminateWithPivot(int p) override;
         void backSubstituteIntoDU() override;
         void postSolve() override;
@@ -34,16 +35,22 @@ namespace MbD {
         void setAPo(FMatDsptr mat);
         void setrPcmP(FColDsptr col);
         FMatDsptr getJoo();
-        FMatDsptr getJpp();
+        DiagMatDsptr getJpp();
         FMatDsptr getAPp();
         void calc();
         void calcJoo();
         void calcJpp();
         void calcAPp();
+        FColDsptr eigenvectorFor(double lam);
+        void calcJppFromDiagJcmP();
+        void calcJppFromFullJcmP();
+        double modifiedArcCos(double val);
+
 
         double m;
-        FMatDsptr aJPP, aJoo, aAPo, aJcmP, aJcmPcopy, aJpp, aAPp;
+        FMatDsptr aJPP, aJoo, aAPo, aJcmP, aJcmPcopy, aAPp;
         FColDsptr rPoP, rPcmP;
+        DiagMatDsptr aJpp;
         std::shared_ptr<FullRow<int>> colOrder;
 
     };
