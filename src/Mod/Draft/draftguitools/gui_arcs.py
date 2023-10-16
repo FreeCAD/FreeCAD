@@ -284,10 +284,11 @@ class Arc(gui_base_original.Creator):
                     elif self.step == 2:  # choose first angle
                         self.ui.labelRadius.setText(translate("draft", "Aperture angle"))
                         self.ui.radiusValue.setToolTip(translate("draft", "Aperture angle"))
+                        ang_offset = DraftVecUtils.angle(self.wp.u,
+                                                         self.arctrack.getDeviation(),
+                                                         self.wp.axis)
+                        self.arctrack.setStartAngle(self.firstangle - ang_offset)
                         self.step = 3
-                        # scale center->point vector for proper display
-                        # u = DraftVecUtils.scaleTo(self.point.sub(self.center), self.rad) obsolete?
-                        self.arctrack.setStartAngle(self.firstangle)
                         _msg(translate("draft", "Pick aperture"))
                     else:  # choose second angle
                         self.step = 4
@@ -449,12 +450,10 @@ class Arc(gui_base_original.Creator):
             self.ui.labelRadius.setText(translate("draft", "Aperture angle"))
             self.ui.radiusValue.setToolTip(translate("draft", "Aperture angle"))
             self.firstangle = math.radians(rad)
-            if DraftVecUtils.equals(self.wp.axis, App.Vector(1, 0, 0)):
-                u = App.Vector(0, self.rad, 0)
-            else:
-                u = DraftVecUtils.scaleTo(App.Vector(1, 0, 0).cross(self.wp.axis), self.rad)
-            urotated = DraftVecUtils.rotate(u, math.radians(rad), self.wp.axis)
-            self.arctrack.setStartAngle(self.firstangle)
+            ang_offset = DraftVecUtils.angle(self.wp.u,
+                                             self.arctrack.getDeviation(),
+                                             self.wp.axis)
+            self.arctrack.setStartAngle(self.firstangle - ang_offset)
             self.step = 3
             self.ui.radiusValue.setText("")
             self.ui.radiusValue.setFocus()
