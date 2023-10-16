@@ -17,8 +17,8 @@
    <item>
     <widget class="QLabel" name="label">
      <property name="text">
-      <string>Select a face or working plane proxy or 3 vertices.
-Or choose one of the options below</string>
+      <string>Select 3 vertices, one or more shapes or a WP Proxy. Then confirm by clicking in the 3D view.
+Or choose one of the options below.</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -132,9 +132,7 @@ of the buttons above</string>
    <item>
     <widget class="QLabel" name="label_7">
      <property name="text">
-      <string>Or select a single vertex to move the current
-working plane without changing its orientation.
-Then, press the button below</string>
+      <string>Or select a single vertex to move the current working plane without changing its orientation. Then press the button below.</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
@@ -246,14 +244,31 @@ value by using the [ and ] keys while drawing</string>
     </widget>
    </item>
    <item>
-    <widget class="QPushButton" name="buttonPrevious">
-     <property name="toolTip">
-      <string>Resets the working plane to its previous position</string>
-     </property>
-     <property name="text">
-      <string>Previous</string>
-     </property>
-    </widget>
+    <layout class="QGridLayout" name="gridLayout_3">
+     <item row="0" column="0">
+      <widget class="QPushButton" name="buttonPrevious">
+       <property name="toolTip">
+        <string>Resets the working plane to its previous position</string>
+       </property>
+       <property name="text">
+        <string>Previous</string>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="1">
+      <widget class="QPushButton" name="buttonNext">
+       <property name="layoutDirection">
+        <enum>Qt::RightToLeft</enum>
+       </property>
+       <property name="toolTip">
+        <string>Resets the working plane to its next position</string>
+       </property>
+       <property name="text">
+        <string>Next</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </item>
    <item>
     <spacer name="verticalSpacer">
