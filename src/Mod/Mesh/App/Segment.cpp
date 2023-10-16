@@ -22,32 +22,32 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <algorithm>
-# include <sstream>
+#include <algorithm>
+#include <sstream>
 #endif
 
-#include "Segment.h"
 #include "Mesh.h"
 #include "MeshPy.h"
+#include "Segment.h"
 
 
 using namespace Mesh;
 
 Segment::Segment(const MeshObject* mesh, bool mod)
-  : _mesh(mesh)
-  , _save(false)
-  , _modifykernel(mod)
-{
-}
+    : _mesh(mesh)
+    , _save(false)
+    , _modifykernel(mod)
+{}
 
 Segment::Segment(const MeshObject* mesh, const std::vector<FacetIndex>& inds, bool mod)
-  : _mesh(mesh)
-  , _indices(inds)
-  , _save(false)
-  , _modifykernel(mod)
+    : _mesh(mesh)
+    , _indices(inds)
+    , _save(false)
+    , _modifykernel(mod)
 {
-    if (_modifykernel)
+    if (_modifykernel) {
         _mesh->updateMesh(inds);
+    }
 }
 
 void Segment::addIndices(const std::vector<FacetIndex>& inds)
@@ -55,8 +55,9 @@ void Segment::addIndices(const std::vector<FacetIndex>& inds)
     _indices.insert(_indices.end(), inds.begin(), inds.end());
     std::sort(_indices.begin(), _indices.end());
     _indices.erase(std::unique(_indices.begin(), _indices.end()), _indices.end());
-    if (_modifykernel)
+    if (_modifykernel) {
         _mesh->updateMesh(inds);
+    }
 }
 
 void Segment::removeIndices(const std::vector<FacetIndex>& inds)
@@ -65,12 +66,16 @@ void Segment::removeIndices(const std::vector<FacetIndex>& inds)
     std::vector<FacetIndex> result;
     std::set<FacetIndex> s1(_indices.begin(), _indices.end());
     std::set<FacetIndex> s2(inds.begin(), inds.end());
-    std::set_difference(s1.begin(), s1.end(), s2.begin(), s2.end(),
-        std::back_insert_iterator<std::vector<FacetIndex> >(result));
+    std::set_difference(s1.begin(),
+                        s1.end(),
+                        s2.begin(),
+                        s2.end(),
+                        std::back_insert_iterator<std::vector<FacetIndex>>(result));
 
     _indices = result;
-    if (_modifykernel)
+    if (_modifykernel) {
         _mesh->updateMesh();
+    }
 }
 
 const std::vector<FacetIndex>& Segment::getIndices() const
@@ -82,33 +87,38 @@ Segment::Segment(const Segment& s) = default;
 
 Segment::Segment(Segment&& s) = default;
 
-Segment& Segment::operator = (const Segment& s)
+Segment& Segment::operator=(const Segment& s)
 {
     // Do not copy the MeshObject pointer
-    if (this != &s)
+    if (this != &s) {
         this->_indices = s._indices;
-    if (_modifykernel)
+    }
+    if (_modifykernel) {
         _mesh->updateMesh();
+    }
     return *this;
 }
 
-Segment& Segment::operator = (Segment&& s)
+Segment& Segment::operator=(Segment&& s)
 {
     // Do not copy the MeshObject pointer
-    if (this != &s)
+    if (this != &s) {
         this->_indices = s._indices;
-    if (_modifykernel)
+    }
+    if (_modifykernel) {
         _mesh->updateMesh();
+    }
     return *this;
 }
 
-bool Segment::operator == (const Segment& s) const
+bool Segment::operator==(const Segment& s) const
 {
     return this->_indices == s._indices;
 }
 
 // ----------------------------------------------------------------------------
 
+// clang-format off
 Segment::const_facet_iterator::const_facet_iterator
 (const Segment* segm, std::vector<FacetIndex>::const_iterator it)
   : _segment(segm), _f_it(segm->_mesh->getKernel()), _it(it)
@@ -177,3 +187,4 @@ Segment::const_facet_iterator& Segment::const_facet_iterator::operator--()
     --(this->_it);
     return *this;
 }
+// clang-format on

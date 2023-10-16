@@ -70,10 +70,10 @@ class ViewProvider(object):
             return QtGui.QIcon(pixmap)
         return ":/icons/Path_ToolBit.svg"
 
-    def __getstate__(self):
+    def dumps(self):
         return None
 
-    def __setstate__(self, state):
+    def loads(self, state):
         return None
 
     def onDelete(self, vobj, arg2=None):

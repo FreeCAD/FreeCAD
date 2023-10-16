@@ -69,6 +69,7 @@
 #include "GeometryObject.h"
 #include "LineGroup.h"
 #include "Preferences.h"
+#include "DrawViewPart.h"
 
 
 using namespace TechDraw;
@@ -1625,6 +1626,38 @@ std::string DrawUtil::translateArbitrary(std::string context, std::string baseNa
     return ssTranslated + suffix;
 }
 
+// true if owner->element is a cosmetic vertex
+bool DrawUtil::isCosmeticVertex(App::DocumentObject* owner, std::string element)
+{
+    auto ownerView = static_cast<TechDraw::DrawViewPart*>(owner);
+    auto vertex = ownerView->getVertex(element);
+    if (vertex) {
+        return vertex->getCosmetic();
+    }
+    return false;
+}
+
+// true if owner->element is a cosmetic edge
+bool DrawUtil::isCosmeticEdge(App::DocumentObject* owner, std::string element)
+{
+    auto ownerView = static_cast<TechDraw::DrawViewPart*>(owner);
+    auto edge = ownerView->getEdge(element);
+    if (edge && edge->source() == 1 && edge->getCosmetic()) {
+        return true;
+    }
+    return false;
+}
+
+// true if owner->element is a center line
+bool DrawUtil::isCenterLine(App::DocumentObject* owner, std::string element)
+{
+    auto ownerView = static_cast<TechDraw::DrawViewPart*>(owner);
+    auto edge = ownerView->getEdge(element);
+    if (edge && edge->source() == 2 && edge->getCosmetic()) {
+        return true;
+    }
+    return false;
+}
 
 //============================
 // various debugging routines.

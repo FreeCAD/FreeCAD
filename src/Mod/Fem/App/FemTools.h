@@ -25,8 +25,8 @@
 #define FEM_TOOLS_H
 
 #include <Base/Vector3D.h>
-#include <gp_XYZ.hxx>
 #include <Mod/Fem/FemGlobal.h>
+#include <gp_XYZ.hxx>
 
 class TopoDS_Shape;
 class TopoDS_Edge;
@@ -72,11 +72,12 @@ public:
      The result is either the full path if available or just the binary
      name if it was found in a system path
      */
-    static std::string checkIfBinaryExists(std::string prefSection, std::string prefBinaryPath,
+    static std::string checkIfBinaryExists(std::string prefSection,
+                                           std::string prefBinaryPath,
                                            std::string prefBinaryName);
 };
 
-} //namespace Fem
+}  // namespace Fem
 
 
-#endif // FEM_TOOLS_H
+#endif  // FEM_TOOLS_H

@@ -16,11 +16,11 @@ if(NOT DEFINED APPDATA_RELEASE_DATE)
 endif()
 
 configure_file(
-    org.freecad.FreeCAD.appdata.xml.in
-    ${CMAKE_BINARY_DIR}/org.freecad.FreeCAD.appdata.xml
+    org.freecad.FreeCAD.metainfo.xml.in
+    ${CMAKE_BINARY_DIR}/org.freecad.FreeCAD.metainfo.xml
 )
 install(
-    FILES ${CMAKE_BINARY_DIR}/org.freecad.FreeCAD.appdata.xml
+    FILES ${CMAKE_BINARY_DIR}/org.freecad.FreeCAD.metainfo.xml
     DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/metainfo
 )
 

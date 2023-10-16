@@ -35,4 +35,4 @@ QIcon ViewProviderBlendCurve::getIcon() const
     return Gui::BitmapFactory().pixmap("Surface_BlendCurve");
 }
 
-}// namespace SurfaceGui
+}  // namespace SurfaceGui

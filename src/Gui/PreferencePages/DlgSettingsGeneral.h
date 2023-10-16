@@ -57,6 +57,8 @@ public:
     void saveThemes();
     void loadThemes();
 
+    static void attachObserver();
+
 protected:
     void changeEvent(QEvent *event) override;
 
@@ -70,8 +72,11 @@ protected Q_SLOTS:
 
 public Q_SLOTS:
     void onUnitSystemIndexChanged(int index);
+    void on_checkBox_projectUnitSystemIgnore_stateChanged(int state);
 
 private:
+    void saveDockWindowVisibility();
+    void loadDockWindowVisibility();
     void setRecentFileSize();
     void saveAsNewPreferencePack();
     void revertToSavedConfig();

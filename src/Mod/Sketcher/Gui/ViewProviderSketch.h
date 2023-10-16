@@ -83,7 +83,7 @@ namespace Sketcher
 class Constraint;
 class Sketch;
 class SketchObject;
-}// namespace Sketcher
+}  // namespace Sketcher
 
 namespace SketcherGui
 {
@@ -294,14 +294,14 @@ private:
             return DragCurve > InvalidCurve;
         }
 
-        double xInit, yInit;// starting point of the dragging operation
-        bool relative;      // whether the dragging move vector is relative or absolute
+        double xInit, yInit;  // starting point of the dragging operation
+        bool relative;        // whether the dragging move vector is relative or absolute
 
 
-        int DragPoint;// dragged point id (only positive integers)
-        int DragCurve;// dragged curve id (only positive integers), negative external curves cannot
-                      // be dragged.
-        std::set<int> DragConstraintSet;// dragged constraints ids
+        int DragPoint;  // dragged point id (only positive integers)
+        int DragCurve;  // dragged curve id (only positive integers), negative external curves
+                        // cannot be dragged.
+        std::set<int> DragConstraintSet;  // dragged constraints ids
     };
 
     // TODO: Selection and Preselection should use a same structure. Probably Drag should use the
@@ -391,12 +391,12 @@ private:
             return -PreselectCurve - 2;
         }
 
-        int PreselectPoint;// VertexN, with N = PreselectPoint + 1, same as DragPoint indexing (NOTE
-                           // -1 is NOT the root point)
-        int PreselectCurve;// EdgeN, with N = PreselectCurve + 1 for positive values ;
-                           // ExternalEdgeN, with N = -PreselectCurve - 2
-        Axes PreselectCross;                 // 0 => rootPoint, 1 => HAxis, 2 => VAxis
-        std::set<int> PreselectConstraintSet;// ConstraintN, N = index + 1
+        int PreselectPoint;   // VertexN, with N = PreselectPoint + 1, same as DragPoint indexing
+                              // (NOTE -1 is NOT the root point)
+        int PreselectCurve;   // EdgeN, with N = PreselectCurve + 1 for positive values ;
+                              // ExternalEdgeN, with N = -PreselectCurve - 2
+        Axes PreselectCross;  // 0 => rootPoint, 1 => HAxis, 2 => VAxis
+        std::set<int> PreselectConstraintSet;  // ConstraintN, N = index + 1
         bool blockedPreselection;
     };
 
@@ -433,9 +433,9 @@ private:
             SelConstraintSet.clear();
         }
 
-        std::set<int> SelPointSet;     // Indices as PreselectPoint (and -1 for rootpoint)
-        std::set<int> SelCurvSet;      // also holds cross axes at -1 and -2
-        std::set<int> SelConstraintSet;// ConstraintN, N = index + 1.
+        std::set<int> SelPointSet;       // Indices as PreselectPoint (and -1 for rootpoint)
+        std::set<int> SelCurvSet;        // also holds cross axes at -1 and -2
+        std::set<int> SelConstraintSet;  // ConstraintN, N = index + 1.
     };
     //@}
 
@@ -444,7 +444,7 @@ private:
     struct DoubleClick
     {
         static SbTime prvClickTime;
-        static SbVec2s prvClickPos;// used by double-click-detector
+        static SbVec2s prvClickPos;  // used by double-click-detector
         static SbVec2s prvCursorPos;
         static SbVec2s newCursorPos;
     };
@@ -457,8 +457,9 @@ private:
         bool autoRecompute = false;
         bool recalculateInitialSolutionWhileDragging = false;
 
-        bool isShownVirtualSpace = false;// indicates whether the present virtual space view is the
-                                         // Real Space or the Virtual Space (virtual space 1 or 2)
+        bool isShownVirtualSpace =
+            false;  // indicates whether the present virtual space view is the
+                    // Real Space or the Virtual Space (virtual space 1 or 2)
         bool buttonPress = false;
     };
 
@@ -469,6 +470,31 @@ private:
     {
         ViewProviderSketch* vp;
         SoRenderManager* renderMgr;
+    };
+
+public:
+    /* API to retrieve information about the active DrawSketchHandler. In particular related to how
+     * tool widgets should be handled.
+     */
+    class ToolManager
+    {
+    public:
+        ToolManager(ViewProviderSketch* vp);
+
+        /** @brief Factory function returning a tool widget of the type appropriate for the current
+         * active tool. If no tool is active, expect a nullptr.
+         */
+        std::unique_ptr<QWidget> createToolWidget() const;
+        /** @brief Returns whether the current tool's widget is intended to be visible for the user
+         */
+        bool isWidgetVisible() const;
+        /** @brief Returns the intended icon for a visible tool widget (e.g. for header/title).*/
+        QPixmap getToolIcon() const;
+        /** @brief Returns the intended text for a visible tool widget (e.g. for header/title).*/
+        QString getToolWidgetText() const;
+
+    private:
+        ViewProviderSketch* vp;
     };
 
 public:
@@ -491,6 +517,8 @@ public:
     App::PropertyString EditingWorkbench;
     SketcherGui::PropertyVisualLayerList VisualLayerList;
     //@}
+
+    const ToolManager toolManager;
 
     // TODO: It is difficult to imagine that these functions are necessary in the public interface.
     // This requires review at a second stage and possibly refactor it.
@@ -652,6 +680,15 @@ public:
     boost::signals2::signal<void()> signalElementsChanged;
     //@}
 
+    /** @name Register slot for signal */
+    //@{
+    template<typename F>
+    boost::signals2::connection registerToolChanged(F&& f)
+    {
+        return signalToolChanged.connect(std::forward<F>(f));
+    }
+    //@}
+
     /** @name Attorneys for collaboration with helper classes */
     //@{
     friend class ViewProviderSketchDrawSketchHandlerAttorney;
@@ -666,7 +703,7 @@ protected:
     void unsetEdit(int ModNum) override;
     void setEditViewer(Gui::View3DInventorViewer*, int ModNum) override;
     void unsetEditViewer(Gui::View3DInventorViewer*) override;
-    static void camSensCB(void* data, SoSensor*);// camera sensor callback
+    static void camSensCB(void* data, SoSensor*);  // camera sensor callback
     void onCameraChanged(SoCamera* cam);
     //@}
 
@@ -754,10 +791,19 @@ private:
     //@{
     /// moves a selected constraint
     void moveConstraint(int constNum, const Base::Vector2d& toPos);
+    void moveAngleConstraint(int constNum, const Base::Vector2d& toPos);
 
     /// returns whether the sketch is in edit mode.
     bool isInEditMode() const;
     //@}
+
+    /** @name signals*/
+    //@{
+    /// signals a tool change
+    boost::signals2::signal<void(const std::string& toolname)> signalToolChanged;
+    //@}
+
+    void slotToolWidgetChanged(QWidget* newwidget);
 
     /** @name Attorney functions*/
     //@{
@@ -883,11 +929,14 @@ private:
 
     ViewProviderParameters viewProviderParameters;
 
+    using Connection = boost::signals2::connection;
+    Connection connectionToolWidget;
+
     SoNodeSensor cameraSensor;
-    int viewOrientationFactor;// stores if sketch viewed from front or back
+    int viewOrientationFactor;  // stores if sketch viewed from front or back
 };
 
-}// namespace SketcherGui
+}  // namespace SketcherGui
 
 
-#endif// SKETCHERGUI_VIEWPROVIDERSKETCH_H
+#endif  // SKETCHERGUI_VIEWPROVIDERSKETCH_H

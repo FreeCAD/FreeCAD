@@ -49,7 +49,7 @@ protected:
 using ViewProviderPython = Gui::ViewProviderPythonFeatureT<ViewProviderSketch>;
 using ViewProviderCustomPython = Gui::ViewProviderPythonFeatureT<ViewProviderCustom>;
 
-}// namespace SketcherGui
+}  // namespace SketcherGui
 
 
-#endif// SketcherGui_VIEWPROVIDERPYTHON_H
+#endif  // SketcherGui_VIEWPROVIDERPYTHON_H

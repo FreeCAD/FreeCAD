@@ -51,7 +51,7 @@ public:
     Module()
         : Py::ExtensionModule<Module>("MeshPartGui")
     {
-        initialize("This module is the MeshPartGui module.");// register with Python
+        initialize("This module is the MeshPartGui module.");  // register with Python
     }
 
 private:
@@ -62,7 +62,7 @@ PyObject* initModule()
     return Base::Interpreter().addModule(new Module);
 }
 
-}// namespace MeshPartGui
+}  // namespace MeshPartGui
 
 
 /* Python entry */

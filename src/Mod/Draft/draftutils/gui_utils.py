@@ -58,10 +58,7 @@ def get_3d_view():
     Returns
     -------
     Gui::View3DInventor
-        Return the current `ActiveView` in the active document,
-        or the first `Gui::View3DInventor` view found.
-
-        Return `None` if the graphical interface is not available.
+        Return the current `ActiveView` in the active document or `None`.
     """
     if App.GuiUp:
         # FIXME The following two imports were added as part of PR4926
@@ -73,12 +70,6 @@ def get_3d_view():
             if "View3DInventor" in str(type(v)):
                 return v
 
-            # print("Debug: Draft: Warning, not working in active view")
-            v = Gui.ActiveDocument.mdiViewsOfType("Gui::View3DInventor")
-            if v:
-                return v[0]
-
-    _wrn(translate("draft", "No graphical interface"))
     return None
 
 

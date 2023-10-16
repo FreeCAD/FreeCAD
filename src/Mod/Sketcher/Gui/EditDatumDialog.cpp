@@ -163,7 +163,7 @@ int EditDatumDialog::exec(bool atCursor)
         connect(&dlg, &QDialog::rejected, this, &EditDatumDialog::rejected);
 
         if (atCursor) {
-            dlg.show();// Need to show the dialog so geometry is computed
+            dlg.show();  // Need to show the dialog so geometry is computed
             QRect pg = dlg.parentWidget()->geometry();
             int Xmin = pg.x() + 10;
             int Ymin = pg.y() + 10;
@@ -251,8 +251,8 @@ void EditDatumDialog::accepted()
 
             Gui::Command::abortCommand();
 
-            if (sketch->noRecomputes) {// if setdatum failed, it is highly likely that solver
-                                       // information is invalid.
+            if (sketch->noRecomputes) {  // if setdatum failed, it is highly likely that solver
+                                         // information is invalid.
                 sketch->solve();
             }
         }
@@ -276,7 +276,7 @@ void EditDatumDialog::drivingToggled(bool state)
         ui_ins_datum->labelEdit->setToLastUsedValue();
     }
     sketch->setDriving(ConstrNbr, !state);
-    if (!sketch->noRecomputes) {// if noRecomputes, solve() is already done by setDriving()
+    if (!sketch->noRecomputes) {  // if noRecomputes, solve() is already done by setDriving()
         sketch->solve();
     }
 }

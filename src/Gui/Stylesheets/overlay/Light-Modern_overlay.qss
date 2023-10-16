@@ -1,0 +1,107 @@
+/* The OverlayTabWidget is named as OverlayLeft, OverlayRight, OverlayTop, OverlayBottom.
+To customize for each overlay docking site, use the following selector
+
+Gui--OverlayTabWidget#OverlayLeft {}
+*/
+/*
+* {
+  color: #f0f0f0;
+  alternate-background-color: rgba(255, 179, 0, 0.607);
+  background-color: rgba(0, 255, 132, 0.607);
+}*/
+
+Gui--OverlayTabWidget {
+  qproperty-effectColor: rgba(255, 255, 255, 0.394);
+  qproperty-effectBlurRadius: 1.0;
+  qproperty-effectOffsetX: 0.0;
+  qproperty-effectOffsetY: 0.0;
+  qproperty-effectWidth: 2;
+  qproperty-effectHeight: 2;
+  qproperty-enableEffect: 1;
+}
+
+Gui--OverlayTabWidget::tab-bar:top,
+Gui--OverlayTabWidget::tab-bar:bottom {
+    left: 10px;
+    alignment: left;
+}
+
+Gui--OverlayTabWidget::tab-bar:left,
+Gui--OverlayTabWidget::tab-bar:right {
+    top: 10px;
+    alignment: top;
+}
+
+Gui--OverlayTabWidget::pane {
+  background-color: transparent;
+}
+
+Gui--OverlayProxyWidget {
+  qproperty-hintColor: rgba(255, 255, 255, 0.6);
+}
+
+Gui--OverlayToolButton {
+  background: #d4d4d4;
+  padding: -2px;
+  border: 0px outset rgb(255, 255, 255);
+  border-radius: 0px;
+}
+
+Gui--OverlayToolButton:hover {
+  background: #ffffff;
+  padding: 0px;
+}
+
+Gui--OverlayToolButton:focus {
+  background: #cfcfcf;
+  padding: 0px;
+}
+
+Gui--OverlayToolButton::pressed {
+  background: rgb(159, 159, 159);
+  border: 2px inset rgb(196, 196, 196);
+  padding: 0px;
+}
+
+Gui--OverlayToolButton:checked {
+  background: #bebebe;
+  border: 2px inset #bebebe;
+  padding: 0px;
+  border-radius: 2px;
+}
+
+Gui--OverlayToolButton:checked:hover {
+  background: rgba(255, 255, 255, 0.8);
+  border: 2px inset rgb(255, 255, 255);
+
+}
+
+/* Use the following selector to customize title bar for each side */
+/*
+Gui--OverlayTabWidget#OverlayBottom Gui--OverlayTitleBar,
+Gui--OverlayTabWidget#OverlayBottom QSplitter Gui--OverlaySplitterHandle {
+  background-color: qlineargradient(
+    spread:pad, x1:0, y1:1, x2:0, y2:0,
+    stop:0 #80202020, stop:1 #00202020);
+}
+*/
+
+Gui--OverlaySplitterHandle {
+  background-color: #d4d4d4;
+}
+
+Gui--OverlayTitleBar {
+  background-color: #d4d4d4;
+}
+
+QScrollArea#ClippingScrollArea,
+QWidget#ClippingScrollAreaContents {
+  background-color: #ffdede;
+}
+QSint--ActionGroup QFrame[class="content"] {
+  background-color: #f6f6f6; /* Task Panel background color */
+}
+
+QAbstractItemView {
+  alternate-background-color: #ffffff;
+}

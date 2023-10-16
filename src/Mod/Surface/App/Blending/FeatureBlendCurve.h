@@ -69,6 +69,6 @@ protected:
     void onChanged(const App::Property* prop) override;
 };
 
-}// Namespace Surface
+}  // Namespace Surface
 
 #endif

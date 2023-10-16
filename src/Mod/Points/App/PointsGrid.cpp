@@ -105,7 +105,7 @@ PointsGrid::PointsGrid(const PointKernel& rclM, double fGridLen)
     , _fMinY(0.0f)
     , _fMinZ(0.0f)
 {
-    Base::BoundBox3d clBBPts;// = _pclPoints->GetBoundBox();
+    Base::BoundBox3d clBBPts;  // = _pclPoints->GetBoundBox();
     for (const auto& pnt : *_pclPoints) {
         clBBPts.Add(pnt);
     }
@@ -164,7 +164,7 @@ void PointsGrid::InitGrid()
     // Determine the grid length and offset
     //
     {
-        Base::BoundBox3d clBBPts;// = _pclPoints->GetBoundBox();
+        Base::BoundBox3d clBBPts;  // = _pclPoints->GetBoundBox();
         for (const auto& pnt : *_pclPoints) {
             clBBPts.Add(pnt);
         }
@@ -341,7 +341,7 @@ void PointsGrid::CalculateGridLength(unsigned long ulCtGrid, unsigned long ulMax
     // Calculate grid lengths or number of grids per dimension
     // There should be about 10 (?!?!) facets per grid
     // or max grids should not exceed 10000
-    Base::BoundBox3d clBBPtsEnlarged;// = _pclPoints->GetBoundBox();
+    Base::BoundBox3d clBBPtsEnlarged;  // = _pclPoints->GetBoundBox();
     for (const auto& pnt : *_pclPoints) {
         clBBPtsEnlarged.Add(pnt);
     }
@@ -387,7 +387,7 @@ void PointsGrid::CalculateGridLength(int iCtGridPerAxis)
     // Calculate grid lengths or number of grids per dimension
     // There should be about 10 (?!?!) facets per grid
     // or max grids should not exceed 10000
-    Base::BoundBox3d clBBPts;// = _pclPoints->GetBoundBox();
+    Base::BoundBox3d clBBPts;  // = _pclPoints->GetBoundBox();
     for (const auto& pnt : *_pclPoints) {
         clBBPts.Add(pnt);
     }
@@ -452,7 +452,7 @@ void PointsGrid::CalculateGridLength(int iCtGridPerAxis)
 
         } break;
         case 1: {
-            _ulCtGridsX = 1;// bLenghtXisZero
+            _ulCtGridsX = 1;  // bLenghtXisZero
 
             double fArea = fLenghtY * fLenghtZ;
 
@@ -468,7 +468,7 @@ void PointsGrid::CalculateGridLength(int iCtGridPerAxis)
             _ulCtGridsZ = std::max<unsigned long>((unsigned long)(fLenghtZ / fLengthGrid), 1);
         } break;
         case 2: {
-            _ulCtGridsY = 1;// bLenghtYisZero
+            _ulCtGridsY = 1;  // bLenghtYisZero
 
             double fArea = fLenghtX * fLenghtZ;
 
@@ -484,12 +484,12 @@ void PointsGrid::CalculateGridLength(int iCtGridPerAxis)
             _ulCtGridsZ = std::max<unsigned long>((unsigned long)(fLenghtZ / fLengthGrid), 1);
         } break;
         case 3: {
-            _ulCtGridsX = 1;        // bLenghtXisZero
-            _ulCtGridsY = 1;        // bLenghtYisZero
-            _ulCtGridsZ = iMaxGrids;// bLenghtYisZero
+            _ulCtGridsX = 1;          // bLenghtXisZero
+            _ulCtGridsY = 1;          // bLenghtYisZero
+            _ulCtGridsZ = iMaxGrids;  // bLenghtYisZero
         } break;
         case 4: {
-            _ulCtGridsZ = 1;// bLenghtZisZero
+            _ulCtGridsZ = 1;  // bLenghtZisZero
 
             double fArea = fLenghtX * fLenghtY;
 
@@ -505,19 +505,19 @@ void PointsGrid::CalculateGridLength(int iCtGridPerAxis)
             _ulCtGridsY = std::max<unsigned long>((unsigned long)(fLenghtY / fLengthGrid), 1);
         } break;
         case 5: {
-            _ulCtGridsX = 1;        // bLenghtXisZero
-            _ulCtGridsZ = 1;        // bLenghtZisZero
-            _ulCtGridsY = iMaxGrids;// bLenghtYisZero
+            _ulCtGridsX = 1;          // bLenghtXisZero
+            _ulCtGridsZ = 1;          // bLenghtZisZero
+            _ulCtGridsY = iMaxGrids;  // bLenghtYisZero
         } break;
         case 6: {
-            _ulCtGridsY = 1;        // bLenghtYisZero
-            _ulCtGridsZ = 1;        // bLenghtZisZero
-            _ulCtGridsX = iMaxGrids;// bLenghtYisZero
+            _ulCtGridsY = 1;          // bLenghtYisZero
+            _ulCtGridsZ = 1;          // bLenghtZisZero
+            _ulCtGridsX = iMaxGrids;  // bLenghtYisZero
         } break;
         case 7: {
-            _ulCtGridsX = iMaxGrids;// bLenghtXisZero
-            _ulCtGridsY = iMaxGrids;// bLenghtYisZero
-            _ulCtGridsZ = iMaxGrids;// bLenghtZisZero
+            _ulCtGridsX = iMaxGrids;  // bLenghtXisZero
+            _ulCtGridsY = iMaxGrids;  // bLenghtYisZero
+            _ulCtGridsZ = iMaxGrids;  // bLenghtZisZero
         } break;
     }
 }
@@ -528,7 +528,7 @@ void PointsGrid::SearchNearestFromPoint(const Base::Vector3d& rclPt,
     raclInd.clear();
     Base::BoundBox3d clBB = GetBoundBox();
 
-    if (clBB.IsInBox(rclPt)) {// Point lies within
+    if (clBB.IsInBox(rclPt)) {  // Point lies within
         unsigned long ulX, ulY, ulZ;
         Position(rclPt, ulX, ulY, ulZ);
         // int nX = ulX, nY = ulY, nZ = ulZ;
@@ -538,7 +538,7 @@ void PointsGrid::SearchNearestFromPoint(const Base::Vector3d& rclPt,
         }
         GetHull(ulX, ulY, ulZ, ulLevel, raclInd);
     }
-    else {// Point outside
+    else {  // Point outside
         Base::BoundBox3d::SIDE tSide = clBB.GetSideFromRay(rclPt, clBB.GetCenter() - rclPt);
         switch (tSide) {
             case Base::BoundBox3d::RIGHT: {
@@ -720,10 +720,10 @@ void PointsGrid::Validate()
 bool PointsGrid::Verify() const
 {
     if (!_pclPoints) {
-        return false;// no point cloud attached
+        return false;  // no point cloud attached
     }
     if (_pclPoints->size() != _ulCtElements) {
-        return false;// not up-to-date
+        return false;  // not up-to-date
     }
 
     PointsGridIterator it(*this);
@@ -733,7 +733,7 @@ bool PointsGrid::Verify() const
         for (unsigned long element : aulElements) {
             const Base::Vector3d& cP = _pclPoints->getPoint(element);
             if (!it.GetBoundBox().IsInBox(cP)) {
-                return false;// point doesn't lie inside the grid element
+                return false;  // point doesn't lie inside the grid element
             }
         }
     }
@@ -813,19 +813,19 @@ bool PointsGridIterator::InitOnRay(const Base::Vector3d& rclPt,
     _bValidRay = false;
 
     // point lies within global BB
-    if (_rclGrid.GetBoundBox().IsInBox(rclPt)) {// determine the voxel by the starting point
+    if (_rclGrid.GetBoundBox().IsInBox(rclPt)) {  // determine the voxel by the starting point
         _rclGrid.Position(rclPt, _ulX, _ulY, _ulZ);
         raulElements.insert(raulElements.end(),
                             _rclGrid._aulGrid[_ulX][_ulY][_ulZ].begin(),
                             _rclGrid._aulGrid[_ulX][_ulY][_ulZ].end());
         _bValidRay = true;
     }
-    else {// StartPoint outside
+    else {  // StartPoint outside
         Base::Vector3d cP0, cP1;
         if (_rclGrid.GetBoundBox().IntersectWithLine(rclPt,
                                                      rclDir,
                                                      cP0,
-                                                     cP1)) {// determine the next point
+                                                     cP1)) {  // determine the next point
             if ((cP0 - rclPt).Length() < (cP1 - rclPt).Length()) {
                 _rclGrid.Position(cP0, _ulX, _ulY, _ulZ);
             }
@@ -846,7 +846,7 @@ bool PointsGridIterator::InitOnRay(const Base::Vector3d& rclPt,
 bool PointsGridIterator::NextOnRay(std::vector<unsigned long>& raulElements)
 {
     if (!_bValidRay) {
-        return false;// not initialized or beam exited
+        return false;  // not initialized or beam exited
     }
 
     raulElements.clear();
@@ -891,7 +891,8 @@ bool PointsGridIterator::NextOnRay(std::vector<unsigned long>& raulElements)
 
         GridElement pos(_ulX, _ulY, _ulZ);
         if (_cSearchPositions.find(pos) != _cSearchPositions.end()) {
-            _bValidRay = false;// grid element already visited => result from GetSideFromRay invalid
+            _bValidRay =
+                false;  // grid element already visited => result from GetSideFromRay invalid
         }
     }
 
@@ -903,7 +904,7 @@ bool PointsGridIterator::NextOnRay(std::vector<unsigned long>& raulElements)
                             _rclGrid._aulGrid[_ulX][_ulY][_ulZ].end());
     }
     else {
-        _bValidRay = false;// ray exited
+        _bValidRay = false;  // ray exited
     }
 
     return _bValidRay;

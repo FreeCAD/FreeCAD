@@ -32,6 +32,8 @@ import zipfile
 import re
 import FreeCAD
 import FreeCADGui
+import codecs
+import hashlib
 import urllib.parse
 from . import TranslationTexts
 from PySide import QtCore, QtGui
@@ -51,6 +53,42 @@ iconprovider = QtGui.QFileIconProvider()
 iconbank = {}  # store pre-existing icons so we don't overpollute temp dir
 tempfolder = None  # store icons inside a subfolder in temp dir
 defaulticon = None  # store a default icon for problematic file types
+
+
+def getThumbnailDir():
+    parent_dir = FreeCAD.getUserCachePath()
+    return os.path.join(parent_dir, "FreeCADStartThumbnails")
+
+
+def createThumbnailDir():
+    path = getThumbnailDir()
+    if not os.path.exists(path):
+        os.mkdir(path)
+    return path
+
+
+def getSha1Hash(path, encode="utf-8"):
+    sha_hash = hashlib.sha1()
+    hashed = hashlib.sha1(path.encode(encode))
+    hex_digest = hashed.hexdigest().encode(encode)
+    sha_hash.update(hex_digest)
+    return sha_hash.hexdigest()
+
+
+def getUniquePNG(filename):
+    parent_dir = getThumbnailDir()
+    sha1 = getSha1Hash(filename) + ".png"
+    return os.path.join(parent_dir, sha1)
+
+
+def useCachedPNG(image, project):
+    if not os.path.exists(image):
+        return False
+    if not os.path.exists(project):
+        return False
+
+    stamp = os.path.getmtime
+    return stamp(image) > stamp(project)
 
 
 def gethexcolor(color):
@@ -179,11 +217,15 @@ def getInfo(filename):
                 if r:
                     descr = r[0]
                 if "thumbnails/Thumbnail.png" in files:
+                    image_png = getUniquePNG(filename)
                     if filename in iconbank:
                         image = iconbank[filename]
+                    elif useCachedPNG(image_png, filename):
+                        image = image_png
+                        iconbank[filename] = image
                     else:
                         imagedata = zfile.read("thumbnails/Thumbnail.png")
-                        image = tempfile.mkstemp(dir=tempfolder, suffix=".png")[1]
+                        image = image_png
                         thumb = open(image, "wb")
                         thumb.write(imagedata)
                         thumb.close()
@@ -219,16 +261,20 @@ def getInfo(filename):
         if not image:
             i = QtCore.QFileInfo(filename)
             t = iconprovider.type(i)
+            filename_png = getUniquePNG(filename)
             if not t:
                 t = "Unknown"
             if t in iconbank:
                 image = iconbank[t]
+            elif os.path.exists(filename_png):
+                image = filename_png
+                iconbank[t] = image
             else:
                 icon = iconprovider.icon(i)
                 if icon.availableSizes():
                     preferred = icon.actualSize(QtCore.QSize(128, 128))
                     px = icon.pixmap(preferred)
-                    image = tempfile.mkstemp(dir=tempfolder, suffix=".png")[1]
+                    image = filename_png
                     px.save(image)
                 else:
                     image = getDefaultIcon()
@@ -249,7 +295,7 @@ def getDefaultIcon():
         icon = iconprovider.icon(i)
         preferred = icon.actualSize(QtCore.QSize(128, 128))
         px = icon.pixmap(preferred)
-        image = tempfile.mkstemp(dir=tempfolder, suffix=".png")[1]
+        image = getUniquePNG("default_icon")
         px.save(image)
         defaulticon = image
 
@@ -358,7 +404,7 @@ def handle():
     if hasattr(Start, "tempfolder"):
         tempfolder = Start.tempfolder
     else:
-        tempfolder = tempfile.mkdtemp(prefix="FreeCADStartThumbnails")
+        tempfolder = createThumbnailDir()
 
     # build the html page skeleton
 
@@ -424,7 +470,7 @@ def handle():
                             "<!--QSS-->", '<style type="text/css">' + ALTCSS + "</style>"
                         )
                 else:
-                    with open(path, "r") as f:
+                    with codecs.open(path, encoding="utf-8") as f:
                         ALTCSS = f.read()
                         HTML = HTML.replace(
                             "<!--QSS-->", '<style type="text/css">' + ALTCSS + "</style>"
@@ -493,7 +539,7 @@ def handle():
         pa = QtGui.QPainter(i)
         pa.fillRect(i.rect(), gradient)
         pa.end()
-        createimg = tempfile.mkstemp(dir=tempfolder, suffix=".png")[1]
+        createimg = getUniquePNG("createimg")
         i.save(createimg)
         iconbank["createimg"] = createimg
 
@@ -675,7 +721,7 @@ def handle():
                         ]
                         p = QtGui.QPixmap(r)
                         p = p.scaled(24, 24)
-                        img = tempfile.mkstemp(dir=tempfolder, suffix=".png")[1]
+                        img = getUniquePNG(wb)
                         p.save(img)
                     else:
                         img = xpm
@@ -789,9 +835,13 @@ def exportTestFile():
 
     "Allow to check if everything is Ok"
 
-    f = open(os.path.expanduser("~") + os.sep + "freecad-startpage.html", "w")
-    f.write(handle())
-    f.close()
+    with codecs.open(
+        os.path.expanduser("~") + os.sep + "freecad-startpage.html",
+        encoding="utf-8",
+        mode="w",
+    ) as f:
+        f.write(handle())
+        f.close()
 
 
 def postStart(switch_wb=True):

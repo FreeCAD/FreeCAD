@@ -32,7 +32,8 @@
 namespace FemGui
 {
 
-class FemGuiExport ViewProviderFemPostPipeline : public ViewProviderFemPostObject {
+class FemGuiExport ViewProviderFemPostPipeline: public ViewProviderFemPostObject
+{
 
     PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemPostPipeline);
 
@@ -41,24 +42,23 @@ public:
     ViewProviderFemPostPipeline();
     ~ViewProviderFemPostPipeline() override;
 
-    std::vector< App::DocumentObject* > claimChildren() const override;
-    std::vector< App::DocumentObject* > claimChildren3D() const override;
+    std::vector<App::DocumentObject*> claimChildren() const override;
+    std::vector<App::DocumentObject*> claimChildren3D() const override;
     void updateData(const App::Property* prop) override;
-    void onSelectionChanged(const Gui::SelectionChanges &sel) override;
+    void onSelectionChanged(const Gui::SelectionChanges& sel) override;
     void updateColorBars();
-    void transformField(char *FieldName, double FieldFactor);
-    void scaleField(vtkDataSet *dset, vtkDataArray *pdata, double FieldFactor);
-    PyObject *getPyObject() override;
+    void transformField(char* FieldName, double FieldFactor);
+    void scaleField(vtkDataSet* dset, vtkDataArray* pdata, double FieldFactor);
+    PyObject* getPyObject() override;
 
 private:
     Py::Object PythonObject;
 
 protected:
     void updateFunctionSize();
-
 };
 
-} //namespace FemGui
+}  // namespace FemGui
 
 
-#endif // FEM_VIEWPROVIDERFEMPOSTPIPELINE_H
+#endif  // FEM_VIEWPROVIDERFEMPOSTPIPELINE_H

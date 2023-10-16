@@ -68,6 +68,6 @@ private:
     bool lockOnChangeMutex {false};
 };
 
-}// Namespace Surface
+}  // Namespace Surface
 
 #endif

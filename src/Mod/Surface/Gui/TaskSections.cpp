@@ -126,7 +126,7 @@ void ViewProviderSections::highlightReferences(ShapeType type, const References&
                                 std::size_t idx =
                                     static_cast<std::size_t>(std::stoi(jt.substr(6)) - 1);
                                 if (idx < colors.size()) {
-                                    colors[idx] = App::Color(1.0, 0.0, 1.0);// magenta
+                                    colors[idx] = App::Color(1.0, 0.0, 1.0);  // magenta
                                 }
                             }
 
@@ -149,7 +149,7 @@ void ViewProviderSections::highlightReferences(ShapeType type, const References&
                                 // check again that the index is in range because it's possible that
                                 // the sub-names are invalid
                                 if (idx < colors.size()) {
-                                    colors[idx] = App::Color(1.0, 0.0, 1.0);// magenta
+                                    colors[idx] = App::Color(1.0, 0.0, 1.0);  // magenta
                                 }
                             }
 
@@ -172,7 +172,7 @@ void ViewProviderSections::highlightReferences(ShapeType type, const References&
                                 // check again that the index is in range because it's possible that
                                 // the sub-names are invalid
                                 if (idx < colors.size()) {
-                                    colors[idx] = App::Color(1.0, 0.0, 1.0);// magenta
+                                    colors[idx] = App::Color(1.0, 0.0, 1.0);  // magenta
                                 }
                             }
 
@@ -649,6 +649,6 @@ bool TaskSections::reject()
     return ok;
 }
 
-}// namespace SurfaceGui
+}  // namespace SurfaceGui
 
 #include "moc_TaskSections.cpp"

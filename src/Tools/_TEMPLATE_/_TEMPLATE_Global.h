@@ -44,4 +44,4 @@
 #endif
 #endif
 
-#endif//_TEMPLATE__GLOBAL_H
+#endif  //_TEMPLATE__GLOBAL_H

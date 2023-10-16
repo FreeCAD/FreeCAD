@@ -74,6 +74,6 @@ private:
     Gui::TaskView::TaskBox* taskbox;
 };
 
-}// namespace ReenGui
+}  // namespace ReenGui
 
-#endif// REENGUI_FITBSPLINESURFACE_H
+#endif  // REENGUI_FITBSPLINESURFACE_H

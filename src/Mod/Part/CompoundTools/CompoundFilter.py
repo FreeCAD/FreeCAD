@@ -224,10 +224,10 @@ class _ViewProviderCompoundFilter:
         self.ViewObject = vobj
         self.Object = vobj.Object
 
-    def __getstate__(self):
+    def dumps(self):
         return None
 
-    def __setstate__(self, state):
+    def loads(self, state):
         return None
 
     def claimChildren(self):

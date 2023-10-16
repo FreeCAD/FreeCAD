@@ -177,7 +177,7 @@ public:
     void write(const std::string& filename) override;
 };
 
-}// namespace Points
+}  // namespace Points
 
 
 #endif

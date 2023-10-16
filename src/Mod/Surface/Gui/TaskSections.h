@@ -140,6 +140,6 @@ private:
     SectionsPanel* widget1;
 };
 
-}// namespace SurfaceGui
+}  // namespace SurfaceGui
 
-#endif// SURFACEGUI_TASKSECTIONS_H
+#endif  // SURFACEGUI_TASKSECTIONS_H

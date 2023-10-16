@@ -76,10 +76,10 @@ class PropertyBag(object):
         )
         self.onDocumentRestored(obj)
 
-    def __getstate__(self):
+    def dumps(self):
         return None
 
-    def __setstate__(self, state):
+    def loads(self, state):
         return None
 
     def __sanitizePropertyName(self, name):

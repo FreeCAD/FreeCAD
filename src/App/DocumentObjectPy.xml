@@ -13,12 +13,10 @@
             <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />
             <UserDocu>This is the father of all classes handled by the document</UserDocu>
         </Documentation>
-        <Methode Name="addProperty">
+        <Methode Name="addProperty" Keyword="true">
             <Documentation>
                 <UserDocu>
-                    addProperty(string, string) -- Add a generic property.
-                    The first argument specifies the type, the second the
-                    name of the property.
+                    addProperty(type: string, name: string, group="", doc="", attr=0, read_only=False, hidden=False, enum_vals=[]) -- Add a generic property.
                 </UserDocu>
             </Documentation>
         </Methode>

@@ -47,6 +47,8 @@
 #include <Mod/TechDraw/App/DrawViewDimension.h>
 #include <Mod/TechDraw/App/DrawViewMulti.h>
 #include <Mod/TechDraw/App/LineGroup.h>
+#include <Mod/TechDraw/App/Cosmetic.h>
+#include <Mod/TechDraw/App/CenterLine.h>
 
 #include "PreferencesGui.h"
 #include "QGIView.h"
@@ -59,6 +61,7 @@
 
 using namespace TechDrawGui;
 using namespace TechDraw;
+using DU = DrawUtil;
 
 PROPERTY_SOURCE(TechDrawGui::ViewProviderViewPart, TechDrawGui::ViewProviderDrawingView)
 
@@ -304,10 +307,20 @@ void ViewProviderViewPart::handleChangedPropertyType(Base::XMLReader &reader, co
     }
 }
 
-bool ViewProviderViewPart::onDelete(const std::vector<std::string> &)
+bool ViewProviderViewPart::onDelete(const std::vector<std::string> & subNames)
 {
-    // we cannot delete if the view has a section or detail view
+//    Base::Console().Message("VPVP::onDelete() - subs: %d\n", subNames.size());
+    // if a cosmetic subelement is in the list of selected subNames then we treat this
+    // as a delete of the subelement and not a delete of the DVP
+    std::vector<std::string> removables = getSelectedCosmetics(subNames);
+    if (!removables.empty()) {
+        // we have cosmetics, so remove them and tell Std_Delete not to remove the DVP
+        deleteCosmeticElements(removables);
+        getViewObject()->recomputeFeature();
+        return false;
+    }
 
+    // we cannot delete if the view has a section or detail view
     QString bodyMessage;
     QTextStream bodyMessageStream(&bodyMessage);
 
@@ -323,17 +336,64 @@ bool ViewProviderViewPart::onDelete(const std::vector<std::string> &)
             QMessageBox::Ok);
         return false;
     }
-    else {
-        return true;
-    }
+    return true;
 }
 
 bool ViewProviderViewPart::canDelete(App::DocumentObject *obj) const
 {
+//    Base::Console().Message("VPVP::canDelete()\n");
     // deletions of part objects (detail view, View etc.) are valid
     // that it cannot be deleted if it has a child view is handled in the onDelete() function
     Q_UNUSED(obj)
     return true;
+}
+
+//! extract the names of cosmetic subelements from the list of all selected elements
+std::vector<std::string> ViewProviderViewPart::getSelectedCosmetics(std::vector<std::string> subNames)
+{
+//    Base::Console().Message("VPVP::getSelectedCosmetics(%d removables)\n", subNames.size());
+
+    std::vector<std::string> result;
+    // pick out any cosmetic vertices or edges in the selection
+    for (auto& sub : subNames) {
+        if (DU::getGeomTypeFromName(sub) == "Vertex") {
+            if (DU::isCosmeticVertex(getViewObject(), sub)) {
+                result.emplace_back(sub);
+            }
+        } else if (DU::getGeomTypeFromName(sub) == "Edge") {
+            if (DU::isCosmeticEdge(getViewObject(), sub)  ||
+                DU::isCenterLine(getViewObject(), sub)) {
+                result.emplace_back(sub);
+            }
+        }
+    }
+    return result;
+}
+
+//! delete cosmetic elements for a list of subelement names
+void ViewProviderViewPart::deleteCosmeticElements(std::vector<std::string> removables)
+{
+//    Base::Console().Message("VPVP::deleteCosmeticElements(%d removables)\n", removables.size());
+    for (auto& name : removables) {
+        if (DU::getGeomTypeFromName(name) == "Vertex") {
+            CosmeticVertex* vert = getViewObject()->getCosmeticVertexBySelection(name);
+            getViewObject()->removeCosmeticVertex(vert->getTagAsString());
+            continue;
+        }
+        if (DU::getGeomTypeFromName(name) == "Edge") {
+            CosmeticEdge* edge = getViewObject()->getCosmeticEdgeBySelection(name);
+            if (edge) {
+                // if not edge, something has gone very wrong!
+                getViewObject()->removeCosmeticEdge(edge->getTagAsString());
+                continue;
+            }
+            CenterLine* line = getViewObject()->getCenterLineBySelection(name);
+            if (line) {
+                getViewObject()->removeCenterLine(line->getTagAsString());
+                continue;
+            }
+        }
+    }
 }
 
 App::Color ViewProviderViewPart::prefSectionColor()

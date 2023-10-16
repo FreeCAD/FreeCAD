@@ -74,6 +74,7 @@ public:
     Part::TopoShape asTopoShapeEdge(TopoDS_Edge& edge) const;
 
     bool is3d() const;
+    bool isValid() const;
 
 private:
     App::DocumentObject* m_object;

@@ -24,19 +24,19 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QMessageBox>
-# include <Precision.hxx>
-# include <Inventor/SbRotation.h>
-# include <Inventor/SbVec3f.h>
-# include <Inventor/nodes/SoMultipleCopy.h>
-# include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/SbRotation.h>
+#include <Inventor/SbVec3f.h>
+#include <Inventor/nodes/SoMultipleCopy.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Precision.hxx>
+#include <QMessageBox>
 #endif
 
-#include <Mod/Fem/App/FemConstraintForce.h>
 #include "Gui/Control.h"
+#include <Mod/Fem/App/FemConstraintForce.h>
 
-#include "ViewProviderFemConstraintForce.h"
 #include "TaskFemConstraintForce.h"
+#include "ViewProviderFemConstraintForce.h"
 
 
 using namespace FemGui;
@@ -53,14 +53,15 @@ ViewProviderFemConstraintForce::~ViewProviderFemConstraintForce() = default;
 
 bool ViewProviderFemConstraintForce::setEdit(int ModNum)
 {
-    if (ModNum == ViewProvider::Default ) {
+    if (ModNum == ViewProvider::Default) {
         // When double-clicking on the item for this constraint the
         // object unsets and sets its edit mode without closing
         // the task panel
-        Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-        TaskDlgFemConstraintForce *constrDlg = qobject_cast<TaskDlgFemConstraintForce *>(dlg);
-        if (constrDlg && constrDlg->getConstraintView() != this)
-            constrDlg = nullptr; // another constraint left open its task panel
+        Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
+        TaskDlgFemConstraintForce* constrDlg = qobject_cast<TaskDlgFemConstraintForce*>(dlg);
+        if (constrDlg && constrDlg->getConstraintView() != this) {
+            constrDlg = nullptr;  // another constraint left open its task panel
+        }
         if (dlg && !constrDlg) {
             // This case will occur in the ShaftWizard application
             checkForWizard();
@@ -72,15 +73,19 @@ bool ViewProviderFemConstraintForce::setEdit(int ModNum)
                 msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
                 msgBox.setDefaultButton(QMessageBox::Yes);
                 int ret = msgBox.exec();
-                if (ret == QMessageBox::Yes)
+                if (ret == QMessageBox::Yes) {
                     Gui::Control().reject();
-                else
+                }
+                else {
                     return false;
-            } else if (constraintDialog) {
+                }
+            }
+            else if (constraintDialog) {
                 // Another FemConstraint* dialog is already open inside the Shaft Wizard
                 // Ignore the request to open another dialog
                 return false;
-            } else {
+            }
+            else {
                 constraintDialog = new TaskFemConstraintForce(this);
                 return true;
             }
@@ -90,36 +95,40 @@ bool ViewProviderFemConstraintForce::setEdit(int ModNum)
         Gui::Selection().clearSelection();
 
         // start the edit dialog
-        if (constrDlg)
+        if (constrDlg) {
             Gui::Control().showDialog(constrDlg);
-        else
+        }
+        else {
             Gui::Control().showDialog(new TaskDlgFemConstraintForce(this));
+        }
 
         return true;
     }
     else {
-        return ViewProviderDocumentObject::setEdit(ModNum); // clazy:exclude=skipped-base-method
+        return ViewProviderDocumentObject::setEdit(ModNum);  // clazy:exclude=skipped-base-method
     }
 }
 
 #define ARROWLENGTH (4)
 #define ARROWHEADRADIUS (ARROWLENGTH / 3.0f)
-//#define USE_MULTIPLE_COPY  //OvG: MULTICOPY fails to update scaled arrows on initial drawing - so disable
+// #define USE_MULTIPLE_COPY  //OvG: MULTICOPY fails to update scaled arrows on initial drawing - so
+// disable
 
 void ViewProviderFemConstraintForce::updateData(const App::Property* prop)
 {
     // Gets called whenever a property of the attached object changes
     Fem::ConstraintForce* pcConstraint = static_cast<Fem::ConstraintForce*>(this->getObject());
-    float scaledheadradius = ARROWHEADRADIUS * pcConstraint->Scale.getValue(); //OvG: Calculate scaled values once only
+    float scaledheadradius =
+        ARROWHEADRADIUS * pcConstraint->Scale.getValue();  // OvG: Calculate scaled values once only
     float scaledlength = ARROWLENGTH * pcConstraint->Scale.getValue();
 
 #ifdef USE_MULTIPLE_COPY
-    //OvG: need access to cp for scaling
+    // OvG: need access to cp for scaling
     SoMultipleCopy* cp = new SoMultipleCopy();
     if (pShapeSep->getNumChildren() == 0) {
         // Set up the nodes
         cp->matrix.setNum(0);
-        cp->addChild((SoNode*)createArrow(scaledlength , scaledheadradius)); //OvG: Scaling
+        cp->addChild((SoNode*)createArrow(scaledlength, scaledheadradius));  // OvG: Scaling
         pShapeSep->addChild(cp);
     }
 #endif
@@ -141,17 +150,19 @@ void ViewProviderFemConstraintForce::updateData(const App::Property* prop)
 
         // Get default direction (on first call to method)
         Base::Vector3d forceDirection = pcConstraint->DirectionVector.getValue();
-        if (forceDirection.Length() < Precision::Confusion())
+        if (forceDirection.Length() < Precision::Confusion()) {
             forceDirection = normal;
+        }
 
         SbVec3f dir(forceDirection.x, forceDirection.y, forceDirection.z);
-        SbRotation rot(SbVec3f(0,1,0), dir);
+        SbRotation rot(SbVec3f(0, 1, 0), dir);
 
-        for (const auto & point : points) {
+        for (const auto& point : points) {
             SbVec3f base(point.x, point.y, point.z);
             if (forceDirection.GetAngle(normal)
-                < M_PI_2)// Move arrow so it doesn't disappear inside the solid
-                base = base + dir * scaledlength; //OvG: Scaling
+                < M_PI_2) {  // Move arrow so it doesn't disappear inside the solid
+                base = base + dir * scaledlength;  // OvG: Scaling
+            }
 #ifdef USE_MULTIPLE_COPY
             SbMatrix m;
             m.setTransform(base, rot, SbVec3f(1, 1, 1));
@@ -160,7 +171,7 @@ void ViewProviderFemConstraintForce::updateData(const App::Property* prop)
 #else
             SoSeparator* sep = new SoSeparator();
             createPlacement(sep, base, rot);
-            createArrow(sep, scaledlength, scaledheadradius); //OvG: Scaling
+            createArrow(sep, scaledlength, scaledheadradius);  // OvG: Scaling
             pShapeSep->addChild(sep);
 #endif
         }
@@ -173,8 +184,9 @@ void ViewProviderFemConstraintForce::updateData(const App::Property* prop)
         // Re-orient all arrows
         Base::Vector3d normal = pcConstraint->NormalDirection.getValue();
         Base::Vector3d forceDirection = pcConstraint->DirectionVector.getValue();
-        if (forceDirection.Length() < Precision::Confusion())
+        if (forceDirection.Length() < Precision::Confusion()) {
             forceDirection = normal;
+        }
 
         SbVec3f dir(forceDirection.x, forceDirection.y, forceDirection.z);
         SbRotation rot(SbVec3f(0, 1, 0), dir);
@@ -188,10 +200,11 @@ void ViewProviderFemConstraintForce::updateData(const App::Property* prop)
 #endif
         int idx = 0;
 
-        for (const auto & point : points) {
+        for (const auto& point : points) {
             SbVec3f base(point.x, point.y, point.z);
-            if (forceDirection.GetAngle(normal) < M_PI_2)
-                base = base + dir * scaledlength; //OvG: Scaling
+            if (forceDirection.GetAngle(normal) < M_PI_2) {
+                base = base + dir * scaledlength;  // OvG: Scaling
+            }
 #ifdef USE_MULTIPLE_COPY
             SbMatrix m;
             m.setTransform(base, rot, SbVec3f(1, 1, 1));
@@ -199,7 +212,7 @@ void ViewProviderFemConstraintForce::updateData(const App::Property* prop)
 #else
             SoSeparator* sep = static_cast<SoSeparator*>(pShapeSep->getChild(idx));
             updatePlacement(sep, 0, base, rot);
-            updateArrow(sep, 2, scaledlength, scaledheadradius); //OvG: Scaling
+            updateArrow(sep, 2, scaledlength, scaledheadradius);  // OvG: Scaling
 #endif
             idx++;
         }

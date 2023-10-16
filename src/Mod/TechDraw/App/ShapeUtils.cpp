@@ -353,3 +353,26 @@ TopoDS_Shape ShapeUtils::centerShapeXY(const TopoDS_Shape& inShape, const gp_Ax2
     Base::Vector3d centroid = DrawUtil::toVector3d(inputCenter);
     return ShapeUtils::moveShape(inShape, centroid * -1.0);
 }
+
+std::pair<Base::Vector3d, Base::Vector3d> ShapeUtils::getEdgeEnds(TopoDS_Edge edge)
+{
+    std::pair<Base::Vector3d, Base::Vector3d> result;
+    TopoDS_Vertex tvFirst, tvLast;
+    TopExp::Vertices(edge, tvFirst, tvLast);
+    gp_Pnt gpFirst = BRep_Tool::Pnt(tvFirst);
+    gp_Pnt gpLast = BRep_Tool::Pnt(tvLast);
+
+    result.first = DU::toVector3d(gpFirst);
+    result.second = DU::toVector3d(gpLast);
+    return result;
+}
+
+//! check for shape is null or shape has no subshapes(vertex/edge/face/etc)
+//! this handles the case of an empty compound which is not IsNull, but has no
+//! content.
+bool  ShapeUtils::isShapeReallyNull(TopoDS_Shape shape)
+{
+    // if the shape is null or it has no subshapes, then it is really null
+    return shape.IsNull() || !TopoDS_Iterator(shape).More();
+}
+

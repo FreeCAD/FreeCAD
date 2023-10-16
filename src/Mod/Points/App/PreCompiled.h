@@ -55,6 +55,6 @@
 // Qt
 #include <QtConcurrentMap>
 
-#endif//_PreComp_
+#endif  //_PreComp_
 
 #endif

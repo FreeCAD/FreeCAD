@@ -65,7 +65,7 @@ class AssemblyWorkbench(Workbench):
         # load the builtin modules
         from PySide import QtCore, QtGui
         from PySide.QtCore import QT_TRANSLATE_NOOP
-        import Commands
+        import CommandCreateAssembly, CommandInsertLink, CommandCreateJoint
         from Preferences import PreferencesPage
 
         # from Preferences import preferences
@@ -77,12 +77,23 @@ class AssemblyWorkbench(Workbench):
 
         # build commands list
         cmdlist = ["Assembly_CreateAssembly", "Assembly_InsertLink"]
+        cmdListJoints = [
+            "Assembly_CreateJointFixed",
+            "Assembly_CreateJointRevolute",
+            "Assembly_CreateJointCylindrical",
+            "Assembly_CreateJointSlider",
+            "Assembly_CreateJointBall",
+            "Assembly_CreateJointPlanar",
+            "Assembly_CreateJointParallel",
+            "Assembly_CreateJointTangent",
+        ]
 
         self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Assembly"), cmdlist)
+        self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Assembly Joints"), cmdListJoints)
 
         self.appendMenu(
             [QT_TRANSLATE_NOOP("Workbench", "&Assembly")],
-            cmdlist + ["Separator"],
+            cmdlist + ["Separator"] + cmdListJoints,
         )
 
         print("Assembly workbench loaded")

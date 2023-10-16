@@ -70,6 +70,6 @@ private:
     Gui::TaskView::TaskBox* taskbox;
 };
 
-}// namespace ReenGui
+}  // namespace ReenGui
 
-#endif// REENGUI_POISSON_H
+#endif  // REENGUI_POISSON_H

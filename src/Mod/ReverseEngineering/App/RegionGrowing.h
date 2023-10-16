@@ -55,6 +55,6 @@ private:
     std::list<std::vector<int>>& myClusters;
 };
 
-}// namespace Reen
+}  // namespace Reen
 
-#endif// REEN_REGIONGROWING_H
+#endif  // REEN_REGIONGROWING_H

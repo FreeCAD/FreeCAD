@@ -31,7 +31,7 @@
 namespace SketcherGui
 {
 
-extern GeometryCreationMode geometryCreationMode;// defined in CommandCreateGeo.cpp
+extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGeo.cpp
 
 class ExternalSelection: public Gui::SelectionFilterGate
 {
@@ -211,7 +211,7 @@ private:
 };
 
 
-}// namespace SketcherGui
+}  // namespace SketcherGui
 
 
-#endif// SKETCHERGUI_DrawSketchHandlerExternal_H
+#endif  // SKETCHERGUI_DrawSketchHandlerExternal_H

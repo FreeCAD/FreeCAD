@@ -63,7 +63,7 @@ enum ConstraintType : int
     Block = 17,
     Diameter = 18,
     Weight = 19,
-    NumConstraintTypes// must be the last item!
+    NumConstraintTypes  // must be the last item!
 };
 
 enum InternalAlignmentType
@@ -80,7 +80,7 @@ enum InternalAlignmentType
     BSplineControlPoint = 9,
     BSplineKnotPoint = 10,
     ParabolaFocalAxis = 11,
-    NumInternalAlignmentType// must be the last item!
+    NumInternalAlignmentType  // must be the last item!
 };
 
 class SketcherExport Constraint: public Base::Persistence
@@ -148,7 +148,7 @@ public:
     friend class PropertyConstraintList;
 
 private:
-    Constraint(const Constraint&) = default;// only for internal use
+    Constraint(const Constraint&) = default;  // only for internal use
 
 private:
     double Value;
@@ -212,7 +212,7 @@ protected:
     boost::uuids::uuid tag;
 };
 
-}// namespace Sketcher
+}  // namespace Sketcher
 
 
-#endif// SKETCHER_CONSTRAINT_H
+#endif  // SKETCHER_CONSTRAINT_H

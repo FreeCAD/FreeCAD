@@ -24,6 +24,7 @@
 #ifndef GUI_PYTHONTRACING_H
 #define GUI_PYTHONTRACING_H
 
+#include <QObject>
 #include <Python.h>
 #include <frameobject.h>
 #include <memory>
@@ -111,6 +112,39 @@ public:
 
 private:
     PythonTracing& trace;
+};
+
+class GuiExport PythonTracingWatcher : public QObject
+{
+    // NOLINTNEXTLINE
+    Q_OBJECT
+
+public:
+    PythonTracingWatcher(QObject* parent = nullptr);
+    ~PythonTracingWatcher() override;
+    /*!
+     * \brief eventFilter
+     * Checks for Ctrl+C keyboard events and if pressed interrupts the Python interpreter.
+     * \param object
+     * \param event
+     * \return
+     */
+    bool eventFilter(QObject* object, QEvent* event) override;
+
+    /*!
+     * \brief getTrace
+     * Returns the Python tracing object. It's up to the calling instance to activate and decativate it.
+     * \return PythonTracing
+     */
+    PythonTracing& getTrace();
+
+    PythonTracingWatcher(const PythonTracingWatcher&) = delete;
+    PythonTracingWatcher(PythonTracingWatcher&&) = delete;
+    PythonTracingWatcher& operator = (const PythonTracingWatcher&) = delete;
+    PythonTracingWatcher& operator = (PythonTracingWatcher&&) = delete;
+
+private:
+    PythonTracing trace;
 };
 
 } // namespace Gui

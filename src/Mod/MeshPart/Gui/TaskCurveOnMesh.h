@@ -83,6 +83,6 @@ private:
     Gui::TaskView::TaskBox* taskbox;
 };
 
-}// namespace MeshPartGui
+}  // namespace MeshPartGui
 
-#endif// MESHPART_GUI_TASKCURVEONMESH_H
+#endif  // MESHPART_GUI_TASKCURVEONMESH_H

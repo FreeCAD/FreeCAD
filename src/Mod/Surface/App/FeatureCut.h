@@ -38,7 +38,7 @@ class SurfaceExport Cut: public Part::Feature
 public:
     Cut();
 
-    App::PropertyLinkSubList ShapeList;// Shapes to be cut.
+    App::PropertyLinkSubList ShapeList;  // Shapes to be cut.
 
     // recalculate the feature
     App::DocumentObjectExecReturn* execute() override;
@@ -49,6 +49,6 @@ public:
     //    }
 };
 
-}// Namespace Surface
+}  // Namespace Surface
 
 #endif

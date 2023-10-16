@@ -440,7 +440,10 @@ bool View3DInventor::onMsg(const char* pMsg, const char** ppReturn)
 
 bool View3DInventor::onHasMsg(const char* pMsg) const
 {
-    if  (strcmp("Save",pMsg) == 0) {
+    if (strcmp("CanPan", pMsg) == 0) {
+        return true;
+    }
+    else if (strcmp("Save",pMsg) == 0) {
         return true;
     }
     else if (strcmp("SaveAs",pMsg) == 0) {

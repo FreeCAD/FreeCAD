@@ -36,6 +36,6 @@ fc_copy_sources(CloudGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Cloud
 
 SET_BIN_DIR(CloudGui CloudGui /Mod/Cloud)
 SET_PYTHON_PREFIX_SUFFIX(CloudGui)
-    
+
 install(TARGETS CloudGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
 INSTALL(FILES ${Cloud_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Cloud/Resources/icons")

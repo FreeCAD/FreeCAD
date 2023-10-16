@@ -80,6 +80,6 @@
 #include <Gui/InventorAll.h>
 #endif
 
-#endif//_PreComp_
+#endif  //_PreComp_
 
-#endif// __PRECOMPILED_GUI__
+#endif  // __PRECOMPILED_GUI__

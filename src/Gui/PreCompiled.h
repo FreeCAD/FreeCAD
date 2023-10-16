@@ -89,6 +89,7 @@
 #include <boost/filesystem/path.hpp>
 #include <boost/filesystem/operations.hpp>
 #include <boost/interprocess/sync/file_lock.hpp>
+#include <boost/math/constants/constants.hpp>
 #include <boost/program_options.hpp>
 #include <boost/utility.hpp>
 

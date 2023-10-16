@@ -88,13 +88,37 @@
         </layout>
        </item>
        <item row="2" column="0">
+        <widget class="QLabel" name="label">
+         <property name="text">
+          <string>Project Unit system:</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="1">
+        <widget class="QComboBox" name="comboBox_projectUnitSystem">
+         <property name="toolTip">
+          <string>Unit system used for display metrics stored in project</string>
+         </property>
+        </widget>
+       </item>
+       <item row="2" column="2">
+        <widget class="QCheckBox" name="checkBox_projectUnitSystemIgnore">
+          <property name="toolTip">
+           <string>If enabled, Unit System stored in project will be ignored.</string>
+          </property>
+          <property name="text">
+           <string>Ignore</string>
+          </property>
+        </widget>
+       </item>
+       <item row="3" column="0">
         <widget class="QLabel" name="fractionalInchLabel">
          <property name="text">
           <string>Minimum fractional inch:</string>
          </property>
         </widget>
        </item>
-       <item row="2" column="1">
+       <item row="3" column="1">
         <widget class="QComboBox" name="comboBox_FracInch">
          <property name="toolTip">
           <string>Minimum fractional inch to be displayed</string>
@@ -136,14 +160,14 @@
          </item>
         </widget>
        </item>
-       <item row="3" column="0">
+       <item row="4" column="0">
         <widget class="QLabel" name="TextLabel1_5">
          <property name="text">
           <string>Number format:</string>
          </property>
         </widget>
        </item>
-       <item row="3" column="1">
+       <item row="4" column="1">
         <widget class="Gui::PrefComboBox" name="UseLocaleFormatting">
          <property name="prefEntry" stdset="0">
           <cstring>UseLocaleFormatting</cstring>
@@ -168,7 +192,7 @@
          </item>
         </widget>
        </item>
-       <item row="3" column="2">
+       <item row="4" column="2">
         <widget class="Gui::PrefCheckBox" name="SubstituteDecimal">
          <property name="toolTip">
           <string>If enabled, numerical keypad decimal separator
@@ -329,6 +353,25 @@ display the splash screen</string>
          </property>
          <property name="prefPath" stdset="0">
           <cstring>General</cstring>
+         </property>
+        </widget>
+       </item>
+       <item row="5" column="1">
+        <widget class="Gui::PrefCheckBox" name="ActivateOverlay">
+         <property name="toolTip">
+          <string>Activate overlay handling of dock windows</string>
+         </property>
+         <property name="text">
+          <string>Activate overlay handling</string>
+         </property>
+         <property name="checked">
+          <bool>true</bool>
+         </property>
+         <property name="prefEntry" stdset="0">
+          <cstring>ActivateOverlay</cstring>
+         </property>
+         <property name="prefPath" stdset="0">
+          <cstring>DockWindows</cstring>
          </property>
         </widget>
        </item>

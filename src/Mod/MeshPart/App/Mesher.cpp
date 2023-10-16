@@ -74,13 +74,13 @@
 #include <NETGENPlugin_Hypothesis_2D.hxx>
 #include <NETGENPlugin_NETGEN_2D.hxx>
 #include <NETGENPlugin_SimpleHypothesis_2D.hxx>
-#endif// HAVE_NETGEN
+#endif  // HAVE_NETGEN
 #if defined(__clang__)
 #pragma clang diagnostic pop
 #elif defined(__GNUC__)
 #pragma GCC diagnostic pop
 #endif
-#endif// HAVE_SMESH
+#endif  // HAVE_SMESH
 
 using namespace MeshPart;
 
@@ -159,7 +159,7 @@ struct Vertex
         if (fabs(this->z - v.z) >= deflection) {
             return this->z < v.z;
         }
-        return false;// points are considered to be equal
+        return false;  // points are considered to be equal
     }
 };
 
@@ -313,7 +313,7 @@ public:
         return meshdata;
     }
 };
-}// namespace MeshPart
+}  // namespace MeshPart
 
 // ----------------------------------------------------------------------------
 
@@ -398,7 +398,7 @@ Mesh::MeshObject* Mesher::createMesh() const
             hyp2d->SetQuadAllowed(allowquad);
             hyp2d->SetOptimize(optimize);
             hyp2d->SetSecondOrder(
-                secondOrder);// apply bisecting to create four triangles out of one
+                secondOrder);  // apply bisecting to create four triangles out of one
             hypoth.push_back(hyp2d);
 
 #if SMESH_VERSION_MAJOR >= 9
@@ -531,7 +531,7 @@ Mesh::MeshObject* Mesher::createMesh() const
     }
 
     return meshdata;
-#endif// HAVE_SMESH
+#endif  // HAVE_SMESH
 }
 
 Mesh::MeshObject* Mesher::createFrom(SMESH_Mesh* mesh) const

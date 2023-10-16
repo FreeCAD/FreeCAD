@@ -46,8 +46,8 @@ lines, polylines, lwpolylines, circles, arcs,
 texts, colors,layers (from groups)
 """
 # scaling factor between autocad font sizes and coin font sizes
-# the minimum version of the dxfLibrary needed to run
 TEXTSCALING = 1.35
+# the minimum version of the dxfLibrary needed to run
 CURRENTDXFLIB = 1.41
 
 import sys
@@ -116,9 +116,8 @@ def errorDXFLib(gui):
         files = ['dxfColorMap.py', 'dxfImportObjects.py',
                  'dxfLibrary.py', 'dxfReader.py']
 
-        _weburl = 'https://raw.githubusercontent.com/yorikvanhavre/'
-        _weburl += 'Draft-dxf-importer/'
-        baseurl = _weburl + '{0:.2f}'.format(CURRENTDXFLIB) + "/"
+        baseurl = 'https://raw.githubusercontent.com/yorikvanhavre/'
+        baseurl += 'Draft-dxf-importer/master/'
         import ArchCommands
         from FreeCAD import Base
         progressbar = Base.ProgressIndicator()
@@ -193,7 +192,7 @@ def getDXFlibs():
         libsok = False
         FCC.PrintWarning("DXF libraries not found. Trying to download...\n")
     else:
-        if "v"+str(CURRENTDXFLIB) in dxfLibrary.__version__:
+        if float(dxfLibrary.__version__[1:5]) >= CURRENTDXFLIB:
             libsok = True
         else:
             FCC.PrintWarning("DXF libraries need to be updated. "
@@ -993,21 +992,22 @@ def drawArc(arc, forceShape=False):
     -----
     Use local variables, not global variables.
     """
-    v = vec(arc.loc)
-    firstangle = round(arc.start_angle, prec())
-    lastangle = round(arc.end_angle, prec())
-    circle = Part.Circle()
-    circle.Center = v
-    circle.Radius = vec(arc.radius)
+    pl = placementFromDXFOCS(arc)
+    rad = vec(arc.radius)
+    firstangle = round(arc.start_angle%360, prec())
+    lastangle = round(arc.end_angle%360, prec())
     try:
         if (dxfCreateDraft or dxfCreateSketch) and (not forceShape):
-            pl = placementFromDXFOCS(arc)
-            return Draft.make_circle(circle.Radius, pl, face=False,
+            return Draft.make_circle(rad, pl, face=False,
                                      startangle=firstangle,
                                      endangle=lastangle)
         else:
-            return circle.toShape(math.radians(firstangle),
-                                  math.radians(lastangle))
+            circle = Part.Circle()
+            circle.Radius = rad
+            shape = circle.toShape(math.radians(firstangle),
+                                   math.radians(lastangle))
+            shape.Placement = pl
+            return shape
     except Part.OCCError:
         warn(arc)
     return None
@@ -1044,16 +1044,17 @@ def drawCircle(circle, forceShape=False):
     -----
     Use local variables, not global variables.
     """
-    v = vec(circle.loc)
-    curve = Part.Circle()
-    curve.Radius = vec(circle.radius)
-    curve.Center = v
+    pl = placementFromDXFOCS(circle)
+    rad = vec(circle.radius)
     try:
         if (dxfCreateDraft or dxfCreateSketch) and (not forceShape):
-            pl = placementFromDXFOCS(circle)
-            return Draft.make_circle(circle.radius, pl)
+            return Draft.make_circle(rad, pl, face=False)
         else:
-            return curve.toShape()
+            curve = Part.Circle()
+            curve.Radius = rad
+            shape = curve.toShape()
+            shape.Placement = pl
+            return shape
     except Part.OCCError:
         warn(circle)
     return None

@@ -7,14 +7,14 @@
       <location filename="../../Link.cpp" line="118"/>
       <source>Stores the last user choice of whether to apply CopyOnChange setup to all links
 that reference the same configurable object</source>
-      <translation>Stochează ultima alegere a utilizatorului de a aplica CopyOnChange setup la toate link-urile
+      <translation>Stochează ultima alegere a utilizatorului de a aplica' copierea la modificare înființat la toate link-urile
 care fac referire la același obiect configurabil</translation>
     </message>
   </context>
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Application.cpp" line="444"/>
+      <location filename="../../Application.cpp" line="445"/>
       <source>Unnamed</source>
       <translation>Nedenumit</translation>
     </message>

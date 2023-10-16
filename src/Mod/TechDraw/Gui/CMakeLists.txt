@@ -1,8 +1,5 @@
 if(MSVC)
-    add_definitions(-DHAVE_ATANH -DHAVE_ASINH -DHAVE_ACOSH)
     add_compile_options(/utf-8)
-else(MSVC)
-    add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
 endif(MSVC)
 
 # In previous versions this target copied mtextedit.h to the binary directory that causes
@@ -87,6 +84,7 @@ set(TechDrawGui_UIC_SRCS
     TaskProjection.ui
     TaskComplexSection.ui
     TaskDimRepair.ui
+    TaskCosmeticCircle.ui
 
 )
 
@@ -228,6 +226,9 @@ SET(TechDrawGui_SRCS
     TaskDimRepair.cpp
     TaskDimRepair.h
     TaskDimRepair.ui
+    TaskCosmeticCircle.cpp
+    TaskCosmeticCircle.h
+    TaskCosmeticCircle.ui
     Widgets/CompassDialWidget.cpp
     Widgets/CompassDialWidget.h
     Widgets/CompassWidget.cpp

@@ -104,7 +104,7 @@ ViewProviderInspection::ViewProviderInspection()
     pcPointStyle->ref();
     pcPointStyle->style = SoDrawStyle::POINTS;
     pcPointStyle->pointSize = PointSize.getValue();
-    SelectionStyle.setValue(1);// BBOX
+    SelectionStyle.setValue(1);  // BBOX
 }
 
 ViewProviderInspection::~ViewProviderInspection()
@@ -521,7 +521,7 @@ public:
 private:
     QPointer<QWidget> widget;
 };
-}// namespace InspectionGui
+}  // namespace InspectionGui
 
 void ViewProviderInspection::inspectCallback(void* ud, SoEventCallback* n)
 {
@@ -651,7 +651,7 @@ bool calcWeights(const SbVec3f& v1,
 
     return fabs(w0 + w1 + w2 - 1.0f) < 0.001f;
 }
-}// namespace InspectionGui
+}  // namespace InspectionGui
 
 QString ViewProviderInspection::inspectDistance(const SoPickedPoint* pp) const
 {

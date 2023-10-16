@@ -76,7 +76,7 @@ class TestRefactoredTestPost(PathTestUtils.PathTestBase):
         # Re-initialize all of the values before doing a test.
         #
         postprocessor.UNITS = "G21"
-        postprocessor.init_values(postprocessor.values)
+        postprocessor.init_values(postprocessor.global_values)
 
     def tearDown(self):
         """tearDown()...
@@ -1029,7 +1029,7 @@ G90
         #
         # Re-initialize all of the values before doing more tests.
         #
-        postprocessor.init_values(postprocessor.values)
+        postprocessor.init_values(postprocessor.global_values)
         #
         # Test translate_drill with G83 and G91.
         path = [
@@ -1180,7 +1180,7 @@ G90
         #
         # Re-initialize all of the values before doing more tests.
         #
-        postprocessor.init_values(postprocessor.values)
+        postprocessor.init_values(postprocessor.global_values)
         #
         # Test translate_drill with G81 and G91.
         path = [
@@ -1315,7 +1315,7 @@ G90
         #
         # Re-initialize all of the values before doing more tests.
         #
-        postprocessor.init_values(postprocessor.values)
+        postprocessor.init_values(postprocessor.global_values)
         #
         # Test translate_drill with G82 and G91.
         path = [
@@ -1468,7 +1468,7 @@ G90
         #
         # Re-initialize all of the values before doing more tests.
         #
-        postprocessor.init_values(postprocessor.values)
+        postprocessor.init_values(postprocessor.global_values)
         #
         # Test translate_drill with G83 and G91.
         path = [

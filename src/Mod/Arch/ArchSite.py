@@ -818,11 +818,11 @@ class _Site(ArchIFC.IfcProduct):
             g.append(child)
             obj.Group = g
 
-    def __getstate__(self):
+    def dumps(self):
 
         return None
 
-    def __setstate__(self,state):
+    def loads(self,state):
 
         return None
 
@@ -1223,11 +1223,11 @@ class _ViewProviderSite:
             return
         self.compass.scale(vobj.Object.ProjectedArea)
 
-    def __getstate__(self):
+    def dumps(self):
 
         return None
 
-    def __setstate__(self,state):
+    def loads(self,state):
 
         return None
 

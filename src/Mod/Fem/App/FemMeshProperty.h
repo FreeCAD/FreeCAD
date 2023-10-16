@@ -35,7 +35,7 @@ namespace Fem
 /** The part shape property class.
  * @author Werner Mayer
  */
-class FemExport PropertyFemMesh : public App::PropertyComplexGeoData
+class FemExport PropertyFemMesh: public App::PropertyComplexGeoData
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
@@ -49,9 +49,10 @@ public:
     /// set the FemMesh shape
     void setValue(const FemMesh&);
     /// does nothing, for add property macro
-    void setValue(){}
+    void setValue()
+    {}
     /// get the FemMesh shape
-    const FemMesh &getValue() const;
+    const FemMesh& getValue() const;
     const Data::ComplexGeoData* getComplexData() const override;
     //@}
 
@@ -64,26 +65,29 @@ public:
     void setTransform(const Base::Matrix4D& rclTrf) override;
     /// Get the placement of the geometry
     Base::Matrix4D getTransform() const override;
-    void transformGeometry(const Base::Matrix4D &rclMat) override;
+    void transformGeometry(const Base::Matrix4D& rclMat) override;
     //@}
 
     /** @name Python interface */
     //@{
     PyObject* getPyObject() override;
-    void setPyObject(PyObject *value) override;
+    void setPyObject(PyObject* value) override;
     //@}
 
     /** @name Save/restore */
     //@{
-    void Save (Base::Writer &writer) const override;
-    void Restore(Base::XMLReader &reader) override;
-    void SaveDocFile (Base::Writer &writer) const override;
-    void RestoreDocFile(Base::Reader &reader) override;
+    void Save(Base::Writer& writer) const override;
+    void Restore(Base::XMLReader& reader) override;
+    void SaveDocFile(Base::Writer& writer) const override;
+    void RestoreDocFile(Base::Reader& reader) override;
 
-    App::Property *Copy() const override;
-    void Paste(const App::Property &from) override;
-    unsigned int getMemSize () const override;
-    const char* getEditorName() const override { return "FemGui::PropertyFemMeshItem"; }
+    App::Property* Copy() const override;
+    void Paste(const App::Property& from) override;
+    unsigned int getMemSize() const override;
+    const char* getEditorName() const override
+    {
+        return "FemGui::PropertyFemMeshItem";
+    }
     //@}
 
 private:
@@ -91,7 +95,7 @@ private:
 };
 
 
-} //namespace Fem
+}  // namespace Fem
 
 
-#endif // PROPERTYTOPOSHAPE_H
+#endif  // PROPERTYTOPOSHAPE_H

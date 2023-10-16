@@ -23,6 +23,12 @@
 
 #include <FCConfig.h>
 
+#if defined(_MSC_VER)
+#include <windows.h>
+#include <dbghelp.h>
+#endif
+
+
 #ifdef _PreComp_
 #   undef _PreComp_
 #endif
@@ -305,8 +311,6 @@ int main( int argc, char ** argv )
 }
 
 #if defined(_MSC_VER)
-#include <windows.h>
-#include <dbghelp.h>
 
 typedef BOOL (__stdcall *tMDWD)(
   IN HANDLE hProcess,

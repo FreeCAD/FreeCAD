@@ -21,6 +21,7 @@
  ***************************************************************************/
 
 #ifdef _MSC_VER
+#pragma warning(disable : 4251)
 #pragma warning(disable : 4244)
 #pragma warning(disable : 4996)
 #endif
@@ -72,11 +73,11 @@
 #endif
 #endif
 
-#if EIGEN_VERSION > 30290// This regulates that only starting in Eigen 3.3, the problem with
-                         // http://forum.freecad.org/viewtopic.php?f=3&t=4651&start=40
-                         // was solved in Eigen:
-                         // http://forum.freecad.org/viewtopic.php?f=10&t=12769&start=60#p106492
-                         // https://forum.kde.org/viewtopic.php?f=74&t=129439
+#if EIGEN_VERSION > 30290  // This regulates that only starting in Eigen 3.3, the problem with
+                           // http://forum.freecad.org/viewtopic.php?f=3&t=4651&start=40
+                           // was solved in Eigen:
+                           // http://forum.freecad.org/viewtopic.php?f=10&t=12769&start=60#p106492
+                           // https://forum.kde.org/viewtopic.php?f=74&t=129439
 #define EIGEN_STOCK_FULLPIVLU_COMPUTE
 #endif
 
@@ -146,7 +147,7 @@ FullPivLU<MatrixdType>& FullPivLU<MatrixdType>::compute(const MatrixdType& matri
 
         // correct the values! since they were computed in the corner,
         row_of_biggest_in_corner += k;
-        col_of_biggest_in_corner += k;// need to add k to them.
+        col_of_biggest_in_corner += k;  // need to add k to them.
 
         // when k==0, biggest_in_corner is the biggest coeff absolute value in the original
         // matrix
@@ -216,7 +217,7 @@ FullPivLU<MatrixdType>& FullPivLU<MatrixdType>::compute(const MatrixdType& matri
     return *this;
 }
 
-}// namespace Eigen
+}  // namespace Eigen
 #endif
 
 namespace GCS
@@ -317,7 +318,7 @@ void SolverReportingManager::LogToFile(const std::string& str)
 
     flushStream();
 #else
-    (void)(str);// silence unused parameter
+    (void)(str);  // silence unused parameter
     LogToConsole("Debugging to file not enabled!");
 #endif
 }
@@ -629,8 +630,8 @@ void System::clearByTag(int tagId)
 int System::addConstraint(Constraint* constr)
 {
     isInit = false;
-    if (constr->getTag() >= 0) {// negatively tagged constraints have no impact
-        hasDiagnosis = false;   // on the diagnosis
+    if (constr->getTag() >= 0) {  // negatively tagged constraints have no impact
+        hasDiagnosis = false;     // on the diagnosis
     }
 
     clist.push_back(constr);
@@ -1784,9 +1785,9 @@ void System::calculateNormalAtPoint(const Curve& crv,
 
 double System::calculateConstraintErrorByTag(int tagId)
 {
-    int cnt = 0;       // how many constraints have been accumulated
-    double sqErr = 0.0;// accumulator of squared errors
-    double err = 0.0;  // last computed signed error value
+    int cnt = 0;         // how many constraints have been accumulated
+    double sqErr = 0.0;  // accumulator of squared errors
+    double err = 0.0;    // last computed signed error value
 
     for (std::vector<Constraint*>::const_iterator constr = clist.begin(); constr != clist.end();
          ++constr) {
@@ -1797,7 +1798,7 @@ double System::calculateConstraintErrorByTag(int tagId)
         };
     }
     switch (cnt) {
-        case 0:// constraint not found!
+        case 0:  // constraint not found!
             return std::numeric_limits<double>::quiet_NaN();
             break;
         case 1:
@@ -1899,9 +1900,9 @@ void System::initSolution(Algorithm alg)
     }
 
     // identification of equality constraints and parameter reduction
-    std::set<Constraint*> reducedConstrs;// constraints that will be eliminated through reduction
-    reductionmaps.clear();               // destroy any maps
-    reductionmaps.resize(componentsSize);// create empty maps to be filled in
+    std::set<Constraint*> reducedConstrs;  // constraints that will be eliminated through reduction
+    reductionmaps.clear();                 // destroy any maps
+    reductionmaps.resize(componentsSize);  // create empty maps to be filled in
     {
         VEC_pD reducedParams = plist;
 
@@ -1932,8 +1933,8 @@ void System::initSolution(Algorithm alg)
         }
     }
 
-    clists.clear();               // destroy any lists
-    clists.resize(componentsSize);// create empty lists to be filled in
+    clists.clear();                 // destroy any lists
+    clists.resize(componentsSize);  // create empty lists to be filled in
     int i = int(plist.size());
     for (std::vector<Constraint*>::const_iterator constr = clistR.begin(); constr != clistR.end();
          ++constr, i++) {
@@ -1943,8 +1944,8 @@ void System::initSolution(Algorithm alg)
         }
     }
 
-    plists.clear();               // destroy any lists
-    plists.resize(componentsSize);// create empty lists to be filled in
+    plists.clear();                 // destroy any lists
+    plists.resize(componentsSize);  // create empty lists to be filled in
     for (int i = 0; i < int(plist.size()); ++i) {
         int cid = components[i];
         plists[cid].push_back(plist[i]);
@@ -1960,7 +1961,7 @@ void System::initSolution(Algorithm alg)
             if ((*constr)->getTag() >= 0) {
                 clist0.push_back(*constr);
             }
-            else {// move or distance from reference constraints
+            else {  // move or distance from reference constraints
                 clist1.push_back(*constr);
             }
         }
@@ -2096,7 +2097,7 @@ int System::solve_BFGS(SubSystem* subsys, bool /*isFine*/, bool isRedundantsolvi
 
     h = x;
     subsys->getParams(x);
-    h = x - h;// = x - xold
+    h = x - h;  // = x - xold
 
     // double convergence = isFine ? convergence : XconvergenceRough;
     int maxIterNumber =
@@ -2129,7 +2130,7 @@ int System::solve_BFGS(SubSystem* subsys, bool /*isFine*/, bool isRedundantsolvi
             }
             break;
         }
-        if (err > divergingLim || err != err) {// check for diverging and NaN
+        if (err > divergingLim || err != err) {  // check for diverging and NaN
             if (debugMode == IterationLevel) {
                 std::stringstream stream;
                 stream << "BFGS Failed: Diverging!!: "
@@ -2143,7 +2144,7 @@ int System::solve_BFGS(SubSystem* subsys, bool /*isFine*/, bool isRedundantsolvi
 
         y = grad;
         subsys->calcGrad(grad);
-        y = grad - y;// = grad - gradold
+        y = grad - y;  // = grad - gradold
 
         double hty = h.dot(y);
         // make sure that hty is never 0
@@ -2165,7 +2166,7 @@ int System::solve_BFGS(SubSystem* subsys, bool /*isFine*/, bool isRedundantsolvi
 
         h = x;
         subsys->getParams(x);
-        h = x - h;// = x - xold
+        h = x - h;  // = x - xold
 
         if (debugMode == IterationLevel) {
             std::stringstream stream;
@@ -2202,8 +2203,8 @@ int System::solve_LM(SubSystem* subsys, bool isRedundantsolving)
     }
 
     Eigen::VectorXd e(csize),
-        e_new(csize);// vector of all function errors (every constraint is one function)
-    Eigen::MatrixXd J(csize, xsize);// Jacobi of the subsystem
+        e_new(csize);  // vector of all function errors (every constraint is one function)
+    Eigen::MatrixXd J(csize, xsize);  // Jacobi of the subsystem
     Eigen::MatrixXd A(xsize, xsize);
     Eigen::VectorXd x(xsize), h(xsize), x_new(xsize), g(xsize), diag_A(xsize);
 
@@ -2240,11 +2241,11 @@ int System::solve_LM(SubSystem* subsys, bool isRedundantsolving)
 
         // check error
         double err = e.squaredNorm();
-        if (err <= eps * eps) {// error is small, Success
+        if (err <= eps * eps) {  // error is small, Success
             stop = 1;
             break;
         }
-        else if (err > divergingLim || err != err) {// check for diverging and NaN
+        else if (err > divergingLim || err != err) {  // check for diverging and NaN
             stop = 6;
             break;
         }
@@ -2258,7 +2259,7 @@ int System::solve_LM(SubSystem* subsys, bool isRedundantsolving)
 
         // Compute ||J^T e||_inf
         double g_inf = g.lpNorm<Eigen::Infinity>();
-        diag_A = A.diagonal();// save diagonal entries so that augmentation can be later canceled
+        diag_A = A.diagonal();  // save diagonal entries so that augmentation can be later canceled
 
         // check for convergence
         if (g_inf <= eps1) {
@@ -2297,12 +2298,12 @@ int System::solve_LM(SubSystem* subsys, bool isRedundantsolving)
                 x_new = x + h;
                 h_norm = h.squaredNorm();
 
-                if (h_norm <= eps1 * eps1 * x.norm()) {// relative change in p is small, stop
+                if (h_norm <= eps1 * eps1 * x.norm()) {  // relative change in p is small, stop
                     stop = 3;
                     break;
                 }
                 else if (h_norm
-                         >= (x.norm() + eps1) / (DBL_EPSILON * DBL_EPSILON)) {// almost singular
+                         >= (x.norm() + eps1) / (DBL_EPSILON * DBL_EPSILON)) {  // almost singular
                     stop = 4;
                     break;
                 }
@@ -2314,7 +2315,7 @@ int System::solve_LM(SubSystem* subsys, bool isRedundantsolving)
                 double dF = e.squaredNorm() - e_new.squaredNorm();
                 double dL = h.dot(mu * h + g);
 
-                if (dF > 0. && dL > 0.) {// reduction in error, increment is accepted
+                if (dF > 0. && dL > 0.) {  // reduction in error, increment is accepted
                     double tmp = 2 * dF / dL - 1.;
                     mu *= std::max(1. / 3., 1. - tmp * tmp * tmp);
                     nu = 2;
@@ -2331,7 +2332,7 @@ int System::solve_LM(SubSystem* subsys, bool isRedundantsolving)
 
             mu *= nu;
             nu *= 2.0;
-            for (int i = 0; i < xsize; ++i) {// restore diagonal J^T J entries
+            for (int i = 0; i < xsize; ++i) {  // restore diagonal J^T J entries
                 A(i, i) = diag_A(i);
             }
 
@@ -2428,7 +2429,7 @@ int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
     while (!stop) {
 
         // check if finished
-        if (fx_inf <= tolf) {// Success
+        if (fx_inf <= tolf) {  // Success
             stop = 1;
         }
         else if (g_inf <= tolg) {
@@ -2440,7 +2441,7 @@ int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
         else if (iter >= maxIterNumber) {
             stop = 4;
         }
-        else if (err > divergingLim || err != err) {// check for diverging and NaN
+        else if (err > divergingLim || err != err) {  // check for diverging and NaN
             stop = 6;
         }
         else {
@@ -2584,7 +2585,7 @@ int System::solve_DL(SubSystem* subsys, bool isRedundantsolving)
 #ifdef _GCS_EXTRACT_SOLVER_SUBSYSTEM_
 void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 {
-    VEC_pD plistout;// std::vector<double *>
+    VEC_pD plistout;  // std::vector<double *>
     std::vector<Constraint*> clist_;
     VEC_pD clist_params_;
 
@@ -2600,9 +2601,10 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
 
     int ip = 0;
 
-    subsystemfile << "GCS::VEC_pD plist_;" << std::endl;                   // all SYSTEM params
-    subsystemfile << "std::vector<GCS::Constraint *> clist_;" << std::endl;// SUBSYSTEM constraints
-    subsystemfile << "GCS::VEC_pD plistsub_;" << std::endl;                // all SUBSYSTEM params
+    subsystemfile << "GCS::VEC_pD plist_;" << std::endl;  // all SYSTEM params
+    subsystemfile << "std::vector<GCS::Constraint *> clist_;"
+                  << std::endl;                              // SUBSYSTEM constraints
+    subsystemfile << "GCS::VEC_pD plistsub_;" << std::endl;  // all SUBSYSTEM params
     // constraint params not within SYSTEM params
     subsystemfile << "GCS::VEC_pD clist_params_;" << std::endl;
 
@@ -2626,12 +2628,12 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
         subsystemfile << "plistsub_.push_back(plist_[" << p_index << "]); // " << ips << std::endl;
     }
 
-    int ic = 0; // constraint index
-    int icp = 0;// index of constraint params not within SYSTEM params
+    int ic = 0;   // constraint index
+    int icp = 0;  // index of constraint params not within SYSTEM params
     for (std::vector<Constraint*>::iterator it = clist_.begin(); it != clist_.end(); ++it, ++ic) {
 
         switch ((*it)->getTypeId()) {
-            case Equal: {// 2
+            case Equal: {  // 2
                 VEC_pD::iterator p1 = std::find(plist.begin(), plist.end(), (*it)->pvec[0]);
                 VEC_pD::iterator p2 = std::find(plist.begin(), plist.end(), (*it)->pvec[1]);
                 size_t i1 = std::distance(plist.begin(), p1);
@@ -2682,7 +2684,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                               << "," << (*it)->pvec[1] << std::endl;
                 break;
             }
-            case Difference: {// 3
+            case Difference: {  // 3
                 VEC_pD::iterator p1 = std::find(plist.begin(), plist.end(), (*it)->pvec[0]);
                 VEC_pD::iterator p2 = std::find(plist.begin(), plist.end(), (*it)->pvec[1]);
                 VEC_pD::iterator p3 = std::find(plist.begin(), plist.end(), (*it)->pvec[2]);
@@ -2756,7 +2758,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                               << "," << (*it)->pvec[2] << std::endl;
                 break;
             }
-            case P2PDistance: {// 5
+            case P2PDistance: {  // 5
                 VEC_pD::iterator p1 = std::find(plist.begin(), plist.end(), (*it)->pvec[0]);
                 VEC_pD::iterator p2 = std::find(plist.begin(), plist.end(), (*it)->pvec[1]);
                 VEC_pD::iterator p3 = std::find(plist.begin(), plist.end(), (*it)->pvec[2]);
@@ -2888,7 +2890,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                               << (*it)->pvec[4] << std::endl;
                 break;
             }
-            case P2PAngle: {// 5
+            case P2PAngle: {  // 5
                 VEC_pD::iterator p1 = std::find(plist.begin(), plist.end(), (*it)->pvec[0]);
                 VEC_pD::iterator p2 = std::find(plist.begin(), plist.end(), (*it)->pvec[1]);
                 VEC_pD::iterator p3 = std::find(plist.begin(), plist.end(), (*it)->pvec[2]);
@@ -3020,7 +3022,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                               << (*it)->pvec[4] << std::endl;
                 break;
             }
-            case P2LDistance: {// 7
+            case P2LDistance: {  // 7
                 VEC_pD::iterator p1 = std::find(plist.begin(), plist.end(), (*it)->pvec[0]);
                 VEC_pD::iterator p2 = std::find(plist.begin(), plist.end(), (*it)->pvec[1]);
                 VEC_pD::iterator p3 = std::find(plist.begin(), plist.end(), (*it)->pvec[2]);
@@ -3201,7 +3203,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                               << std::endl;
                 break;
             }
-            case PointOnLine: {// 6
+            case PointOnLine: {  // 6
                 VEC_pD::iterator p1 = std::find(plist.begin(), plist.end(), (*it)->pvec[0]);
                 VEC_pD::iterator p2 = std::find(plist.begin(), plist.end(), (*it)->pvec[1]);
                 VEC_pD::iterator p3 = std::find(plist.begin(), plist.end(), (*it)->pvec[2]);
@@ -3357,7 +3359,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                               << (*it)->pvec[4] << "," << (*it)->pvec[5] << std::endl;
                 break;
             }
-            case PointOnPerpBisector: {// 6
+            case PointOnPerpBisector: {  // 6
                 VEC_pD::iterator p1 = std::find(plist.begin(), plist.end(), (*it)->pvec[0]);
                 VEC_pD::iterator p2 = std::find(plist.begin(), plist.end(), (*it)->pvec[1]);
                 VEC_pD::iterator p3 = std::find(plist.begin(), plist.end(), (*it)->pvec[2]);
@@ -3513,7 +3515,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                               << (*it)->pvec[4] << "," << (*it)->pvec[5] << std::endl;
                 break;
             }
-            case Parallel: {// 8
+            case Parallel: {  // 8
                 VEC_pD::iterator p1 = std::find(plist.begin(), plist.end(), (*it)->pvec[0]);
                 VEC_pD::iterator p2 = std::find(plist.begin(), plist.end(), (*it)->pvec[1]);
                 VEC_pD::iterator p3 = std::find(plist.begin(), plist.end(), (*it)->pvec[2]);
@@ -3718,7 +3720,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                               << "," << (*it)->pvec[7] << std::endl;
                 break;
             }
-            case Perpendicular: {// 8
+            case Perpendicular: {  // 8
                 VEC_pD::iterator p1 = std::find(plist.begin(), plist.end(), (*it)->pvec[0]);
                 VEC_pD::iterator p2 = std::find(plist.begin(), plist.end(), (*it)->pvec[1]);
                 VEC_pD::iterator p3 = std::find(plist.begin(), plist.end(), (*it)->pvec[2]);
@@ -3923,7 +3925,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                               << "," << (*it)->pvec[7] << std::endl;
                 break;
             }
-            case L2LAngle: {// 9
+            case L2LAngle: {  // 9
                 VEC_pD::iterator p1 = std::find(plist.begin(), plist.end(), (*it)->pvec[0]);
                 VEC_pD::iterator p2 = std::find(plist.begin(), plist.end(), (*it)->pvec[1]);
                 VEC_pD::iterator p3 = std::find(plist.begin(), plist.end(), (*it)->pvec[2]);
@@ -4152,7 +4154,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                               << "," << (*it)->pvec[7] << "," << (*it)->pvec[8] << std::endl;
                 break;
             }
-            case MidpointOnLine: {// 8
+            case MidpointOnLine: {  // 8
                 VEC_pD::iterator p1 = std::find(plist.begin(), plist.end(), (*it)->pvec[0]);
                 VEC_pD::iterator p2 = std::find(plist.begin(), plist.end(), (*it)->pvec[1]);
                 VEC_pD::iterator p3 = std::find(plist.begin(), plist.end(), (*it)->pvec[2]);
@@ -4357,7 +4359,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                               << "," << (*it)->pvec[7] << std::endl;
                 break;
             }
-            case TangentCircumf: {// 6
+            case TangentCircumf: {  // 6
                 VEC_pD::iterator p1 = std::find(plist.begin(), plist.end(), (*it)->pvec[0]);
                 VEC_pD::iterator p2 = std::find(plist.begin(), plist.end(), (*it)->pvec[1]);
                 VEC_pD::iterator p3 = std::find(plist.begin(), plist.end(), (*it)->pvec[2]);
@@ -4517,7 +4519,7 @@ void System::extractSubsystem(SubSystem* subsys, bool isRedundantsolving)
                               << (*it)->pvec[4] << "," << (*it)->pvec[5] << std::endl;
                 break;
             }
-            case PointOnEllipse: {// 7
+            case PointOnEllipse: {  // 7
                 VEC_pD::iterator p1 = std::find(plist.begin(), plist.end(), (*it)->pvec[0]);
                 VEC_pD::iterator p2 = std::find(plist.begin(), plist.end(), (*it)->pvec[1]);
                 VEC_pD::iterator p3 = std::find(plist.begin(), plist.end(), (*it)->pvec[2]);
@@ -4757,7 +4759,7 @@ int System::solve(SubSystem* subsysA, SubSystem* subsysB, bool /*isFine*/, bool 
 
     subsysB->getParams(plistAB, x);
     subsysA->getParams(plistAB, x);
-    subsysB->setParams(plistAB, x);// just to ensure that A and B are synchronized
+    subsysB->setParams(plistAB, x);  // just to ensure that A and B are synchronized
 
     subsysB->calcGrad(plistAB, grad);
     subsysA->calcJacobi(plistAB, JA);
@@ -4823,7 +4825,7 @@ int System::solve(SubSystem* subsysA, SubSystem* subsysB, bool /*isFine*/, bool 
                     // xdir1 = JA.jacobiSvd(Eigen::ComputeThinU |
                     // Eigen::ComputeThinV).solve(-resA);
                     xdir1 = -Y * resA;
-                    x += xdir1;// = x0 + alpha * xdir + xdir1
+                    x += xdir1;  // = x0 + alpha * xdir + xdir1
                     subsysA->setParams(plistAB, x);
                     subsysB->setParams(plistAB, x);
                     subsysA->calcResidual(resA);
@@ -4833,7 +4835,7 @@ int System::solve(SubSystem* subsysA, SubSystem* subsysB, bool /*isFine*/, bool 
                     }
                 }
                 alpha = tau * alpha;
-                if (alpha < 1e-8) {// let the linesearch fail
+                if (alpha < 1e-8) {  // let the linesearch fail
                     alpha = 0.;
                 }
                 x = x0 + alpha * xdir;
@@ -4841,7 +4843,7 @@ int System::solve(SubSystem* subsysA, SubSystem* subsysB, bool /*isFine*/, bool 
                 subsysB->setParams(plistAB, x);
                 subsysA->calcResidual(resA);
                 f = subsysB->error() + mu * resA.lpNorm<1>();
-                if (alpha < 1e-8) {// let the linesearch fail
+                if (alpha < 1e-8) {  // let the linesearch fail
                     break;
                 }
             }
@@ -4855,7 +4857,7 @@ int System::solve(SubSystem* subsysA, SubSystem* subsysB, bool /*isFine*/, bool 
             subsysA->calcJacobi(plistAB, JA);
             subsysA->calcResidual(resA);
         }
-        y = grad - JA.transpose() * lambda - y;// Eq. 18.13
+        y = grad - JA.transpose() * lambda - y;  // Eq. 18.13
 
         if (iter > 1) {
             double yTh = y.dot(h);
@@ -4872,7 +4874,7 @@ int System::solve(SubSystem* subsysA, SubSystem* subsysB, bool /*isFine*/, bool 
             && err <= smallF) {
             break;
         }
-        if (err > divergingLim || err != err) {// check for diverging and NaN
+        if (err > divergingLim || err != err) {  // check for diverging and NaN
             break;
         }
     }
@@ -4956,7 +4958,7 @@ void System::makeReducedJacobian(Eigen::MatrixXd& J,
         }
     }
 
-    if (jacobianconstraintcount == 0) {// only driven constraints
+    if (jacobianconstraintcount == 0) {  // only driven constraints
         J.resize(0, 0);
     }
 }
@@ -5098,7 +5100,7 @@ int System::diagnose(Algorithm alg)
         Base::TimeInfo DenseQR_start_time;
 #endif
         if (J.rows() > 0) {
-            int rank = 0;// rank is not cheap to retrieve from qrJT in DenseQR
+            int rank = 0;  // rank is not cheap to retrieve from qrJT in DenseQR
             Eigen::MatrixXd R;
             Eigen::FullPivHouseholderQR<Eigen::MatrixXd> qrJT;
             // Here we give the system the possibility to run the two QR decompositions in parallel,
@@ -5131,12 +5133,12 @@ int System::diagnose(Algorithm alg)
             // identifyDependentGeometryParametersInTransposedJacobianDenseQRDecomposition( qrJT,
             // pdiagnoselist, paramsNum, rank);
 
-            fut.wait();// wait for the execution of identifyDependentParametersSparseQR to finish
+            fut.wait();  // wait for the execution of identifyDependentParametersSparseQR to finish
 
-            dofs = paramsNum - rank;// unless overconstraint, which will be overridden below
+            dofs = paramsNum - rank;  // unless overconstraint, which will be overridden below
 
             // Detecting conflicting or redundant constraints
-            if (constrNum > rank) {// conflicting or redundant constraints
+            if (constrNum > rank) {  // conflicting or redundant constraints
                 int nonredundantconstrNum;
                 identifyConflictingRedundantConstraints(alg,
                                                         qrJT,
@@ -5147,7 +5149,7 @@ int System::diagnose(Algorithm alg)
                                                         constrNum,
                                                         rank,
                                                         nonredundantconstrNum);
-                if (paramsNum == rank && nonredundantconstrNum > rank) {// over-constrained
+                if (paramsNum == rank && nonredundantconstrNum > rank) {  // over-constrained
                     dofs = paramsNum - nonredundantconstrNum;
                 }
             }
@@ -5204,9 +5206,9 @@ int System::diagnose(Algorithm alg)
             int paramsNum = SqrJT.rows();
             int constrNum = SqrJT.cols();
 
-            fut.wait();// wait for the execution of identifyDependentParametersSparseQR to finish
+            fut.wait();  // wait for the execution of identifyDependentParametersSparseQR to finish
 
-            dofs = paramsNum - rank;// unless overconstraint, which will be overridden below
+            dofs = paramsNum - rank;  // unless overconstraint, which will be overridden below
 
             // Detecting conflicting or redundant constraints
             if (constrNum > rank) {
@@ -5223,7 +5225,7 @@ int System::diagnose(Algorithm alg)
                                                         rank,
                                                         nonredundantconstrNum);
 
-                if (paramsNum == rank && nonredundantconstrNum > rank) {// over-constrained
+                if (paramsNum == rank && nonredundantconstrNum > rank) {  // over-constrained
                     dofs = paramsNum - nonredundantconstrNum;
                 }
             }
@@ -5258,9 +5260,9 @@ void System::makeDenseQRDecomposition(const Eigen::MatrixXd& J,
 #endif
 
 #ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
-    Eigen::MatrixXd Q; // Obtaining the Q matrix with Sparse QR is buggy, see comments below
-    Eigen::MatrixXd R2;// Intended for a trapezoidal matrix, where R is the top triangular matrix of
-                       // the R2 trapezoidal matrix
+    Eigen::MatrixXd Q;   // Obtaining the Q matrix with Sparse QR is buggy, see comments below
+    Eigen::MatrixXd R2;  // Intended for a trapezoidal matrix, where R is the top triangular matrix
+                         // of the R2 trapezoidal matrix
 #endif
 
     // For a transposed J SJG rows are paramsNum and cols are constrNum
@@ -5346,9 +5348,9 @@ void System::makeSparseQRDecomposition(
 #endif
 
 #ifdef _GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
-    Eigen::MatrixXd Q; // Obtaining the Q matrix with Sparse QR is buggy, see comments below
-    Eigen::MatrixXd R2;// Intended for a trapezoidal matrix, where R is the top triangular matrix of
-                       // the R2 trapezoidal matrix
+    Eigen::MatrixXd Q;   // Obtaining the Q matrix with Sparse QR is buggy, see comments below
+    Eigen::MatrixXd R2;  // Intended for a trapezoidal matrix, where R is the top triangular matrix
+                         // of the R2 trapezoidal matrix
 #endif
 
     // For a transposed J SJG rows are paramsNum and cols are constrNum
@@ -5412,9 +5414,9 @@ void System::makeSparseQRDecomposition(
         SolverReportingManager::Manager().LogMatrix("Q", Q);
 #endif
     }
-#endif//_GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
+#endif  //_GCS_DEBUG_SOLVER_JACOBIAN_QR_DECOMPOSITION_TRIANGULAR_MATRIX
 }
-#endif// EIGEN_SPARSEQR_COMPATIBLE
+#endif  // EIGEN_SPARSEQR_COMPATIBLE
 
 void System::identifyDependentParametersDenseQR(const Eigen::MatrixXd& J,
                                                 const std::map<int, int>& jacobianconstraintmap,
@@ -5448,7 +5450,7 @@ void System::identifyDependentParametersSparseQR(const Eigen::MatrixXd& J,
                               nontransprank,
                               Rparams,
                               false,
-                              true);// do not transpose allow to diagnose parameters
+                              true);  // do not transpose allow to diagnose parameters
 
     identifyDependentParameters(SqrJ, Rparams, nontransprank, pdiagnoselist, silent);
 }
@@ -5461,8 +5463,8 @@ void System::identifyDependentParameters(T& qrJ,
                                          const GCS::VEC_pD& pdiagnoselist,
                                          bool silent)
 {
-    (void)silent;// silent is only used in debug code, but it is important as Base::Console is not
-                 // thread-safe. Removes warning in non Debug mode.
+    (void)silent;  // silent is only used in debug code, but it is important as Base::Console is not
+                   // thread-safe. Removes warning in non Debug mode.
 
     // int constrNum = SqrJ.rows(); // this is the other way around than for the transposed J
     // int paramsNum = SqrJ.cols();
@@ -5662,9 +5664,9 @@ void System::identifyConflictingRedundantConstraints(
                     bool isinternalalignment =
                         (constr->isInternalAlignment() == Constraint::Alignment::InternalAlignment);
                     bool priorityconstraint = (constr->getTag() == 0);
-                    if (!priorityconstraint && !isinternalalignment) {// exclude constraints tagged
-                                                                      // with zero and internal
-                                                                      // alignment
+                    if (!priorityconstraint && !isinternalalignment) {  // exclude constraints
+                                                                        // tagged with zero and
+                                                                        // internal alignment
                         conflictingMap[constr].insert(i);
                     }
                 }
@@ -5682,7 +5684,7 @@ void System::identifyConflictingRedundantConstraints(
              ++it) {
 
             int numberofsets = static_cast<int>(
-                it->second.size());// number of sets in which the constraint appears
+                it->second.size());  // number of sets in which the constraint appears
 
             /* This is a heuristic algorithm to propose the user which constraints from a
              * redundant/conflicting set should be removed. It is based on the following principles:
@@ -5702,16 +5704,16 @@ void System::identifyConflictingRedundantConstraints(
              * introduced.
              */
 
-            if ((numberofsets > maxPopularity ||// (1)
+            if ((numberofsets > maxPopularity ||  // (1)
                  (numberofsets == maxPopularity && mostPopular
                   && tagmultiplicity.at(it->first->getTag())
                       < tagmultiplicity.at(mostPopular->getTag()))
-                 ||// (2)
+                 ||  // (2)
 
                  (numberofsets == maxPopularity && mostPopular
                   && tagmultiplicity.at(it->first->getTag())
                       == tagmultiplicity.at(mostPopular->getTag())
-                  && it->first->getTag() > mostPopular->getTag()))// (3)
+                  && it->first->getTag() > mostPopular->getTag()))  // (3)
 
             ) {
                 mostPopular = it->first;
@@ -5760,10 +5762,10 @@ void System::identifyConflictingRedundantConstraints(
             case 0:
                 solvername = "BFGS";
                 break;
-            case 1:// solving with the LevenbergMarquardt solver
+            case 1:  // solving with the LevenbergMarquardt solver
                 solvername = "LevenbergMarquardt";
                 break;
-            case 2:// solving with the BFGS solver
+            case 2:  // solving with the BFGS solver
                 solvername = "DogLeg";
                 break;
         }
@@ -5822,8 +5824,8 @@ void System::identifyConflictingRedundantConstraints(
             bool isinternalalignment = (conflictGroups[i][j]->isInternalAlignment()
                                         == Constraint::Alignment::InternalAlignment);
             if (conflictGroups[i][j]->getTag() != 0
-                && !isinternalalignment) {// exclude constraints tagged with zero and internal
-                                          // alignment
+                && !isinternalalignment) {  // exclude constraints tagged with zero and internal
+                                            // alignment
                 conflictingTagsSet.insert(conflictGroups[i][j]->getTag());
             }
         }
@@ -6016,4 +6018,4 @@ void free(std::vector<SubSystem*>& subsysvec)
 }
 
 
-}// namespace GCS
+}  // namespace GCS

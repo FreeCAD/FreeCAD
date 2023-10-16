@@ -6,7 +6,7 @@
     <message>
       <location filename="../../UnitsApi.cpp" line="68"/>
       <source>Standard (mm, kg, s, degree)</source>
-      <translation>Standardowe (mm, kg, s, °)</translation>
+      <translation>Standardowy (mm, kg, s, °)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="70"/>
@@ -36,12 +36,12 @@
     <message>
       <location filename="../../UnitsApi.cpp" line="80"/>
       <source>Metric small parts &amp; CNC(mm, mm/min)</source>
-      <translation>Mniejsze części i CNC, metryczny (mm, mm/min)</translation>
+      <translation>Metryczny dla mniejszych części i CNC (mm, mm/min)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="82"/>
       <source>Imperial for Civil Eng (ft, ft/sec)</source>
-      <translation>Inżynieria lądowa brytyjskie (ft, ft/s)</translation>
+      <translation>Inżynieria lądowa brytyjski (ft, ft/s)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="84"/>

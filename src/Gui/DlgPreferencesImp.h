@@ -130,9 +130,12 @@ public:
     void activeGroupPage(QString& group, int& index) const;
 
 protected:
+    void setupConnections();   
     void changeEvent(QEvent *e) override;
     void showEvent(QShowEvent*) override;
     void resizeEvent(QResizeEvent*) override;
+    void onButtonResetTabClicked();
+    void onButtonResetGroupClicked();
 
 
 protected Q_SLOTS:
@@ -148,7 +151,9 @@ private:
     QTabWidget* createTabForGroup(const std::string& groupName);
     void createPageInGroup(QTabWidget* tabWidget, const std::string& pageName);
     void applyChanges();
+    void showResetOptions();
     void restoreDefaults();
+    void restorePageDefaults(PreferencePage**);
     QString longestGroupName() const;
     void restartIfRequired();
     //@}

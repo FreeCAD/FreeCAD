@@ -74,7 +74,7 @@ public:
                            &Module::openBrowser,
                            "insert(string)\n"
                            "Load a local (X)HTML file.");
-        initialize("This module is the WebGui module.");// register with Python
+        initialize("This module is the WebGui module.");  // register with Python
     }
 
 private:
@@ -194,7 +194,7 @@ public:
     }
 };
 
-}// namespace WebGui
+}  // namespace WebGui
 
 
 /* Python entry */

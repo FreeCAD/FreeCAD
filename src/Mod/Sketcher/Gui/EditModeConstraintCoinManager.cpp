@@ -39,7 +39,7 @@
 #include <Inventor/nodes/SoPickStyle.h>
 #include <Inventor/nodes/SoSeparator.h>
 #include <Inventor/nodes/SoTranslation.h>
-#endif// #ifndef _PreComp_
+#endif  // #ifndef _PreComp_
 
 #include <Base/Converter.h>
 #include <Base/Exception.h>
@@ -104,7 +104,7 @@ void EditModeConstraintCoinManager::updateVirtualSpace()
 
         for (size_t i = 0; i < constrlist.size(); i++) {
             sws[i] = !(constrlist[i]->isInVirtualSpace
-                       != isshownvirtualspace);// XOR of constraint mode and VP mode
+                       != isshownvirtualspace);  // XOR of constraint mode and VP mode
         }
 
 
@@ -182,7 +182,7 @@ Restart:
             // bug #0001956).
             goto Restart;
         }
-        try {// because calculateNormalAtPoint, used in there, can throw
+        try {  // because calculateNormalAtPoint, used in there, can throw
             // root separator for this constraint
             SoSeparator* sep =
                 static_cast<SoSeparator*>(editModeScenegraphNodes.constrGroup->getChild(i));
@@ -200,9 +200,9 @@ Restart:
             // distinguish different constraint types to build up
             switch (Constr->Type) {
                 case Block:
-                case Horizontal:// write the new position of the Horizontal constraint Same as
-                                // vertical position.
-                case Vertical:  // write the new position of the Vertical constraint
+                case Horizontal:  // write the new position of the Horizontal constraint Same as
+                                  // vertical position.
+                case Vertical:    // write the new position of the Vertical constraint
                 {
                     assert(Constr->First >= -extGeoCount && Constr->First < intGeoCount);
                     bool alignment = Constr->Type != Block && Constr->Second != GeoEnum::GeoUndef;
@@ -256,8 +256,8 @@ Restart:
                         else {
                             double ra = 0, rb = 0;
                             double angle,
-                                angleplus = 0.;// angle = rotation of object as a whole; angleplus =
-                                               // arc angle (t parameter for ellipses).
+                                angleplus = 0.;  // angle = rotation of object as a whole; angleplus
+                                                 // = arc angle (t parameter for ellipses).
                             if (geo->getTypeId() == Part::GeomCircle::getClassTypeId()) {
                                 const Part::GeomCircle* circle =
                                     static_cast<const Part::GeomCircle*>(geo);
@@ -332,10 +332,10 @@ Restart:
                                 Base::Vector3d majDir, minDir, rvec;
                                 majDir = Base::Vector3d(cos(angle),
                                                         sin(angle),
-                                                        0);// direction of major axis of ellipse
+                                                        0);  // direction of major axis of ellipse
                                 minDir = Base::Vector3d(-majDir.y,
                                                         majDir.x,
-                                                        0);// direction of minor axis of ellipse
+                                                        0);  // direction of minor axis of ellipse
                                 rvec =
                                     (ra * cos(angleplus)) * majDir + (rb * sin(angleplus)) * minDir;
                                 midpos += rvec;
@@ -344,7 +344,7 @@ Restart:
                                 dir = Base::Vector3d(
                                     -rvec.y,
                                     rvec.x,
-                                    0);// DeepSOIC: I'm not sure what dir is supposed to mean.
+                                    0);  // DeepSOIC: I'm not sure what dir is supposed to mean.
                             }
                             else {
                                 norm = Base::Vector3d(cos(angle), sin(angle), 0);
@@ -364,7 +364,7 @@ Restart:
                             static_cast<int>(ConstraintNodePosition::FirstTranslationIndex)));
 
                         translation->abPos =
-                            SbVec3f(midpos.x, midpos.y, zConstrH);// Absolute Reference
+                            SbVec3f(midpos.x, midpos.y, zConstrH);  // Absolute Reference
 
                         // Reference Position that is scaled according to zoom
                         translation->translation = SbVec3f(relpos.x, relpos.y, 0);
@@ -423,17 +423,17 @@ Restart:
                     const Part::Geometry* geo2 = geolistfacade.getGeometryFromGeoId(Constr->Second);
                     Base::Vector3d midpos1, dir1, norm1;
                     Base::Vector3d midpos2, dir2, norm2;
-                    bool twoIcons = false;// a very local flag. It's set to true to indicate that
-                                          // the second dir+norm are valid and should be used
+                    bool twoIcons = false;  // a very local flag. It's set to true to indicate that
+                                            // the second dir+norm are valid and should be used
 
-                    if (Constr->Third != GeoEnum::GeoUndef ||// perpty via point
+                    if (Constr->Third != GeoEnum::GeoUndef ||  // perpty via point
                         Constr->FirstPos
-                            != Sketcher::PointPos::none) {// endpoint-to-curve or
-                                                          // endpoint-to-endpoint perpty
+                            != Sketcher::PointPos::none) {  // endpoint-to-curve or
+                                                            // endpoint-to-endpoint perpty
 
                         int ptGeoId;
                         Sketcher::PointPos ptPosId;
-                        do {// dummy loop to use break =) Maybe goto?
+                        do {  // dummy loop to use break =) Maybe goto?
                             ptGeoId = Constr->First;
                             ptPosId = Constr->FirstPos;
                             if (ptPosId != Sketcher::PointPos::none) {
@@ -449,7 +449,7 @@ Restart:
                             if (ptPosId != Sketcher::PointPos::none) {
                                 break;
                             }
-                            assert(0);// no point found!
+                            assert(0);  // no point found!
                         } while (false);
 
                         midpos1 = geolistfacade.getPoint(ptGeoId, ptPosId);
@@ -574,8 +574,8 @@ Restart:
                             double angle1,
                                 angle1plus = 0., angle2,
                                 angle2plus =
-                                    0.;// angle1 = rotation of object as a whole; angle1plus = arc
-                                       // angle (t parameter for ellipses).
+                                    0.;  // angle1 = rotation of object as a whole; angle1plus = arc
+                                         // angle (t parameter for ellipses).
                             if (geo1->getTypeId() == Part::GeomCircle::getClassTypeId()) {
                                 const Part::GeomCircle* circle =
                                     static_cast<const Part::GeomCircle*>(geo1);
@@ -720,10 +720,10 @@ Restart:
                                 Base::Vector3d majDir, minDir, rvec;
                                 majDir = Base::Vector3d(cos(angle1),
                                                         sin(angle1),
-                                                        0);// direction of major axis of ellipse
+                                                        0);  // direction of major axis of ellipse
                                 minDir = Base::Vector3d(-majDir.y,
                                                         majDir.x,
-                                                        0);// direction of minor axis of ellipse
+                                                        0);  // direction of minor axis of ellipse
                                 rvec = (r1a * cos(angle1plus)) * majDir
                                     + (r1b * sin(angle1plus)) * minDir;
                                 midpos1 += rvec;
@@ -732,7 +732,7 @@ Restart:
                                 dir1 = Base::Vector3d(
                                     -rvec.y,
                                     rvec.x,
-                                    0);// DeepSOIC: I'm not sure what dir is supposed to mean.
+                                    0);  // DeepSOIC: I'm not sure what dir is supposed to mean.
                             }
                             else {
                                 norm1 = Base::Vector3d(cos(angle1), sin(angle1), 0);
@@ -749,10 +749,10 @@ Restart:
                                 Base::Vector3d majDir, minDir, rvec;
                                 majDir = Base::Vector3d(cos(angle2),
                                                         sin(angle2),
-                                                        0);// direction of major axis of ellipse
+                                                        0);  // direction of major axis of ellipse
                                 minDir = Base::Vector3d(-majDir.y,
                                                         majDir.x,
-                                                        0);// direction of minor axis of ellipse
+                                                        0);  // direction of minor axis of ellipse
                                 rvec = (r2a * cos(angle2plus)) * majDir
                                     + (r2b * sin(angle2plus)) * minDir;
                                 midpos2 += rvec;
@@ -766,7 +766,7 @@ Restart:
                                 midpos2 += r2a * norm2;
                             }
                         }
-                        else {// Parallel can only apply to a GeomLineSegment
+                        else {  // Parallel can only apply to a GeomLineSegment
                             break;
                         }
                     }
@@ -803,7 +803,7 @@ Restart:
                         static_cast<int>(ConstraintNodePosition::FirstTranslationIndex)));
 
                     translation->abPos =
-                        SbVec3f(midpos1.x, midpos1.y, zConstrH);// Absolute Reference
+                        SbVec3f(midpos1.x, midpos1.y, zConstrH);  // Absolute Reference
 
                     // Reference Position that is scaled according to zoom
                     translation->translation = SbVec3f(relpos1.x, relpos1.y, 0);
@@ -814,7 +814,7 @@ Restart:
                         static_cast<int>(ConstraintNodePosition::SecondTranslationIndex)));
 
                     translation->abPos =
-                        SbVec3f(secondPos.x, secondPos.y, zConstrH);// Absolute Reference
+                        SbVec3f(secondPos.x, secondPos.y, zConstrH);  // Absolute Reference
 
                     // Reference Position that is scaled according to zoom
                     translation->translation =
@@ -826,7 +826,7 @@ Restart:
                 case DistanceY: {
                     assert(Constr->First >= -extGeoCount && Constr->First < intGeoCount);
                     Base::Vector3d pnt1(0., 0., 0.), pnt2(0., 0., 0.);
-                    if (Constr->SecondPos != Sketcher::PointPos::none) {// point to point distance
+                    if (Constr->SecondPos != Sketcher::PointPos::none) {  // point to point distance
                         pnt1 = geolistfacade.getPoint(Constr->First, Constr->FirstPos);
                         pnt2 = geolistfacade.getPoint(Constr->Second, Constr->SecondPos);
                     }
@@ -839,7 +839,7 @@ Restart:
                             Base::Vector3d l2p1 = lineSeg->getStartPoint();
                             Base::Vector3d l2p2 = lineSeg->getEndPoint();
                             if (Constr->FirstPos
-                                != Sketcher::PointPos::none) {// point to line distance
+                                != Sketcher::PointPos::none) {  // point to line distance
                                 pnt1 = geolistfacade.getPoint(Constr->First, Constr->FirstPos);
                                 // calculate the projection of p1 onto line2
                                 pnt2.ProjectToLine(pnt1 - l2p1, l2p2 - l2p1);
@@ -849,15 +849,15 @@ Restart:
                                 const Part::Geometry* geo1 =
                                     geolistfacade.getGeometryFromGeoId(Constr->First);
                                 if (geo1->getTypeId()
-                                    == Part::GeomCircle::getClassTypeId()) {// circle to line
-                                                                            // distance
+                                    == Part::GeomCircle::getClassTypeId()) {  // circle to line
+                                                                              // distance
                                     const Part::GeomCircle* circleSeg =
                                         static_cast<const Part::GeomCircle*>(geo1);
                                     Base::Vector3d ct = circleSeg->getCenter();
                                     double radius = circleSeg->getRadius();
                                     pnt1.ProjectToLine(
                                         ct - l2p1,
-                                        l2p2 - l2p1);// project on the line translated to origin
+                                        l2p2 - l2p1);  // project on the line translated to origin
                                     Base::Vector3d dir = pnt1;
                                     dir.Normalize();
                                     pnt1 += ct;
@@ -869,14 +869,15 @@ Restart:
                             const Part::Geometry* geo1 =
                                 geolistfacade.getGeometryFromGeoId(Constr->First);
                             if (geo1->getTypeId()
-                                == Part::GeomCircle::getClassTypeId()) {// circle to circle distance
+                                == Part::GeomCircle::getClassTypeId()) {  // circle to circle
+                                                                          // distance
                                 const Part::GeomCircle* circleSeg1 =
                                     static_cast<const Part::GeomCircle*>(geo1);
                                 auto circleSeg2 = static_cast<const Part::GeomCircle*>(geo);
                                 GetCirclesMinimalDistance(circleSeg1, circleSeg2, pnt1, pnt2);
                             }
                             else if (Constr->FirstPos
-                                     != Sketcher::PointPos::none) {// point to circle distance
+                                     != Sketcher::PointPos::none) {  // point to circle distance
                                 auto circleSeg2 = static_cast<const Part::GeomCircle*>(geo);
                                 pnt1 = geolistfacade.getPoint(Constr->First, Constr->FirstPos);
                                 Base::Vector3d v = pnt1 - circleSeg2->getCenter();
@@ -895,7 +896,7 @@ Restart:
                         const Part::Geometry* geo =
                             geolistfacade.getGeometryFromGeoId(Constr->First);
                         if (geo->getTypeId()
-                            == Part::GeomLineSegment::getClassTypeId()) {// segment distance
+                            == Part::GeomLineSegment::getClassTypeId()) {  // segment distance
                             const Part::GeomLineSegment* lineSeg =
                                 static_cast<const Part::GeomLineSegment*>(geo);
                             pnt1 = lineSeg->getStartPoint();
@@ -948,18 +949,18 @@ Restart:
                     Base::Vector3d pos, relPos;
                     if (Constr->Type == PointOnObject || Constr->Type == SnellsLaw
                         || (Constr->Type == Tangent && Constr->Third != GeoEnum::GeoUndef)
-                        ||// Tangency via point
+                        ||  // Tangency via point
                         (Constr->Type == Tangent
                          && Constr->FirstPos
-                             != Sketcher::PointPos::none)// endpoint-to-curve or
-                                                         // endpoint-to-endpoint tangency
+                             != Sketcher::PointPos::none)  // endpoint-to-curve or
+                                                           // endpoint-to-endpoint tangency
                     ) {
 
                         // find the point of tangency/point that is on object
                         // just any point among first/second/third should be OK
                         int ptGeoId;
                         Sketcher::PointPos ptPosId;
-                        do {// dummy loop to use break =) Maybe goto?
+                        do {  // dummy loop to use break =) Maybe goto?
                             ptGeoId = Constr->First;
                             ptPosId = Constr->FirstPos;
                             if (ptPosId != Sketcher::PointPos::none) {
@@ -975,7 +976,7 @@ Restart:
                             if (ptPosId != Sketcher::PointPos::none) {
                                 break;
                             }
-                            assert(0);// no point found!
+                            assert(0);  // no point found!
                         } while (false);
 
                         pos = geolistfacade.getPoint(ptGeoId, ptPosId);
@@ -998,7 +999,7 @@ Restart:
                         auto translation = static_cast<SoZoomTranslation*>(sep->getChild(
                             static_cast<int>(ConstraintNodePosition::FirstTranslationIndex)));
 
-                        translation->abPos = SbVec3f(pos.x, pos.y, zConstrH);// Absolute Reference
+                        translation->abPos = SbVec3f(pos.x, pos.y, zConstrH);  // Absolute Reference
                         translation->translation = SbVec3f(relPos.x, relPos.y, 0);
                     }
                     else if (Constr->Type == Tangent) {
@@ -1043,7 +1044,7 @@ Restart:
                                 static_cast<int>(ConstraintNodePosition::FirstTranslationIndex)));
 
                             translation->abPos =
-                                SbVec3f(midpos1.x, midpos1.y, zConstrH);// Absolute Reference
+                                SbVec3f(midpos1.x, midpos1.y, zConstrH);  // Absolute Reference
                             translation->translation = SbVec3f(relpos1.x, relpos1.y, 0);
 
                             Base::Vector3d secondPos = midpos2 - midpos1;
@@ -1052,7 +1053,7 @@ Restart:
                                 static_cast<int>(ConstraintNodePosition::SecondTranslationIndex)));
 
                             translation->abPos =
-                                SbVec3f(secondPos.x, secondPos.y, zConstrH);// Absolute Reference
+                                SbVec3f(secondPos.x, secondPos.y, zConstrH);  // Absolute Reference
                             translation->translation =
                                 SbVec3f(relpos2.x - relpos1.x, relpos2.y - relpos1.y, 0);
 
@@ -1076,7 +1077,7 @@ Restart:
                                     (circle->getCenter() - lineSeg->getStartPoint()) * dir;
 
                                 pos = lineSeg->getStartPoint() + dir * length;
-                                relPos = norm * 1;// TODO Huh?
+                                relPos = norm * 1;  // TODO Huh?
                             }
                             else if (geo2->getTypeId() == Part::GeomEllipse::getClassTypeId()
                                      || geo2->getTypeId()
@@ -1107,7 +1108,7 @@ Restart:
                                 float length = (arc->getCenter() - lineSeg->getStartPoint()) * dir;
 
                                 pos = lineSeg->getStartPoint() + dir * length;
-                                relPos = norm * 1;// TODO Huh?
+                                relPos = norm * 1;  // TODO Huh?
                             }
                         }
 
@@ -1154,7 +1155,7 @@ Restart:
                         auto translation = static_cast<SoZoomTranslation*>(sep->getChild(
                             static_cast<int>(ConstraintNodePosition::FirstTranslationIndex)));
 
-                        translation->abPos = SbVec3f(pos.x, pos.y, zConstrH);// Absolute Reference
+                        translation->abPos = SbVec3f(pos.x, pos.y, zConstrH);  // Absolute Reference
                         translation->translation = SbVec3f(relPos.x, relPos.y, 0);
                     }
                 } break;
@@ -1197,7 +1198,7 @@ Restart:
                     double startangle, range, endangle;
                     if (Constr->Second != GeoEnum::GeoUndef) {
                         Base::Vector3d dir1, dir2;
-                        if (Constr->Third == GeoEnum::GeoUndef) {// angle between two lines
+                        if (Constr->Third == GeoEnum::GeoUndef) {  // angle between two lines
                             const Part::Geometry* geo1 =
                                 geolistfacade.getGeometryFromGeoId(Constr->First);
                             const Part::Geometry* geo2 =
@@ -1255,10 +1256,10 @@ Restart:
                                 }
                             }
 
-                            range = Constr->getValue();// WYSIWYG
+                            range = Constr->getValue();  // WYSIWYG
                             startangle = atan2(dir1.y, dir1.x);
                         }
-                        else {// angle-via-point
+                        else {  // angle-via-point
                             Base::Vector3d p =
                                 geolistfacade.getPoint(Constr->Third, Constr->ThirdPos);
                             p0 = SbVec3f(p.x, p.y, 0);
@@ -1266,7 +1267,7 @@ Restart:
                             // TODO: Check
                             // dir1 = getSolvedSketch().calculateNormalAtPoint(Constr->First, p.x,
                             // p.y);
-                            dir1.RotateZ(-M_PI / 2);// convert to vector of tangency by rotating
+                            dir1.RotateZ(-M_PI / 2);  // convert to vector of tangency by rotating
                             dir2 = getNormal(geolistfacade, Constr->Second, p);
                             // TODO: Check
                             // dir2 = getSolvedSketch().calculateNormalAtPoint(Constr->Second, p.x,
@@ -1466,7 +1467,7 @@ Restart:
 
                     asciiText->pnts.finishEditing();
                 } break;
-                case Coincident:// nothing to do for coincident
+                case Coincident:  // nothing to do for coincident
                 case None:
                 case InternalAlignment:
                 case NumConstraintTypes:
@@ -1514,8 +1515,8 @@ Base::Vector3d EditModeConstraintCoinManager::seekConstraintPosition(const Base:
         rp->setPickAll(true);
         rp->setRay(SbVec3f(freePos.x, freePos.y, -1.f), SbVec3f(0, 0, 1));
         // problem
-        rp->apply(editModeScenegraphNodes.constrGroup);// We could narrow it down to just the
-                                                       // SoGroup containing the constraints
+        rp->apply(editModeScenegraphNodes.constrGroup);  // We could narrow it down to just the
+                                                         // SoGroup containing the constraints
 
         // returns a copy of the point
         SoPickedPoint* pp = rp->getPickedPoint();
@@ -1536,13 +1537,13 @@ Base::Vector3d EditModeConstraintCoinManager::seekConstraintPosition(const Base:
             isConstraintAtPosition = false;
         }
 
-        multiplier *= -1;// search in both sides
+        multiplier *= -1;  // search in both sides
         if (multiplier >= 0) {
-            multiplier++;// Increment the multiplier
+            multiplier++;  // Increment the multiplier
         }
     }
     if (multiplier == 10) {
-        relPos = norm * 0.5f;// no free position found
+        relPos = norm * 0.5f;  // no free position found
     }
     return relPos * step;
 }
@@ -1554,9 +1555,9 @@ void EditModeConstraintCoinManager::updateConstraintColor(
     // materials.
 
     std::vector<int> PtNum;
-    std::vector<SbColor*> pcolor;// point color
+    std::vector<SbColor*> pcolor;  // point color
     std::vector<int> CurvNum;
-    std::vector<SbColor*> color;// curve color
+    std::vector<SbColor*> color;  // curve color
 
     for (int l = 0; l < geometryLayerParameters.getCoinLayerCount(); l++) {
         PtNum.push_back(editModeScenegraphNodes.PointsMaterials[l]->diffuseColor.getNum());
@@ -1796,7 +1797,7 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(
                 // nodes not needed
                 sep->unref();
                 mat->unref();
-                continue;// jump to next constraint
+                continue;  // jump to next constraint
             } break;
             case Horizontal:
             case Vertical:
@@ -1819,7 +1820,7 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(
                 // remember the type of this constraint node
                 vConstrType.push_back((*it)->Type);
             } break;
-            case Coincident:// no visual for coincident so far
+            case Coincident:  // no visual for coincident so far
                 vConstrType.push_back(Coincident);
                 break;
             case Parallel:
@@ -1910,13 +1911,13 @@ void EditModeConstraintCoinManager::rebuildConstraintNodes(
 
 QString EditModeConstraintCoinManager::getPresentationString(const Constraint* constraint)
 {
-    QString nameStr;         // name parameter string
-    QString valueStr;        // dimensional value string
-    QString presentationStr; // final return string
-    QString unitStr;         // the actual unit string
-    QString baseUnitStr;     // the expected base unit string
-    double factor;           // unit scaling factor, currently not used
-    Base::UnitSystem unitSys;// current unit system
+    QString nameStr;           // name parameter string
+    QString valueStr;          // dimensional value string
+    QString presentationStr;   // final return string
+    QString unitStr;           // the actual unit string
+    QString baseUnitStr;       // the expected base unit string
+    double factor;             // unit scaling factor, currently not used
+    Base::UnitSystem unitSys;  // current unit system
 
     if (!constraint->isActive) {
         return QString::fromLatin1(" ");
@@ -1967,17 +1968,17 @@ QString EditModeConstraintCoinManager::getPresentationString(const Constraint* c
             if (QString::compare(baseUnitStr, unitStr) == 0) {
                 // Example code from: Mod/TechDraw/App/DrawViewDimension.cpp:372
                 QRegularExpression rxUnits(
-                    QString::fromUtf8(" \\D*$"));// space + any non digits at end of string
-                valueStr.remove(rxUnits);        // getUserString(defaultDecimals) without units
+                    QString::fromUtf8(" \\D*$"));  // space + any non digits at end of string
+                valueStr.remove(rxUnits);          // getUserString(defaultDecimals) without units
             }
         }
     }
 
     if (constraint->Type == Sketcher::Diameter) {
-        valueStr.prepend(QChar(216));// Diameter sign
+        valueStr.prepend(QChar(216));  // Diameter sign
     }
     else if (constraint->Type == Sketcher::Radius) {
-        valueStr.prepend(QChar(82));// Capital letter R
+        valueStr.prepend(QChar(82));  // Capital letter R
     }
 
     /**
@@ -2213,7 +2214,7 @@ void EditModeConstraintCoinManager::drawConstraintIcons(const GeoListFacade& geo
 
         switch (constraint->Type) {
 
-            case Tangent: {// second icon is available only for colinear line segments
+            case Tangent: {  // second icon is available only for colinear line segments
                 const Part::Geometry* geo1 = geolistfacade.getGeometryFromGeoId(constraint->First);
                 const Part::Geometry* geo2 = geolistfacade.getGeometryFromGeoId(constraint->Second);
                 if (geo1 && geo1->getTypeId() == Part::GeomLineSegment::getClassTypeId() && geo2
@@ -2222,7 +2223,7 @@ void EditModeConstraintCoinManager::drawConstraintIcons(const GeoListFacade& geo
                 }
             } break;
             case Horizontal:
-            case Vertical: {// second icon is available only for point alignment
+            case Vertical: {  // second icon is available only for point alignment
                 if (constraint->Second != GeoEnum::GeoUndef
                     && constraint->FirstPos != Sketcher::PointPos::none
                     && constraint->SecondPos != Sketcher::PointPos::none) {
@@ -2402,7 +2403,7 @@ void EditModeConstraintCoinManager::combineConstraintIcons(IconQueue iconQueue)
                         ++i;
                     }
                 }
-                else {// if !visible we skip it
+                else {  // if !visible we skip it
                     i++;
                 }
             }
@@ -2575,13 +2576,13 @@ QImage EditModeConstraintCoinManager::renderConstrIcon(const QString& type,
     QPixmap pxMap;
     std::stringstream constraintName;
     constraintName << type.toLatin1().data()
-                   << drawingParameters.constraintIconSize;// allow resizing by embedding size
+                   << drawingParameters.constraintIconSize;  // allow resizing by embedding size
     if (!Gui::BitmapFactory().findPixmapInCache(constraintName.str().c_str(), pxMap)) {
         pxMap = Gui::BitmapFactory().pixmapFromSvg(
             type.toLatin1().data(),
             QSizeF(drawingParameters.constraintIconSize, drawingParameters.constraintIconSize));
         Gui::BitmapFactory().addPixmapToCache(constraintName.str().c_str(),
-                                              pxMap);// Cache for speed, avoiding pixmapFromSvg
+                                              pxMap);  // Cache for speed, avoiding pixmapFromSvg
     }
     QImage icon = pxMap.toImage();
 
@@ -2632,7 +2633,7 @@ QImage EditModeConstraintCoinManager::renderConstrIcon(const QString& type,
 
             qp.setPen(*colorItr);
 
-            if (labelItr + 1 == labels.end()) {// if this is the last label
+            if (labelItr + 1 == labels.end()) {  // if this is the last label
                 labelStr = *labelItr;
             }
             else {
@@ -2791,16 +2792,16 @@ void EditModeConstraintCoinManager::createEditModeInventorNodes()
 
     // add the group where all the constraints has its SoSeparator
     editModeScenegraphNodes.constrGrpSelect =
-        new SoPickStyle();// used to toggle constraints selectability
+        new SoPickStyle();  // used to toggle constraints selectability
     editModeScenegraphNodes.constrGrpSelect->style.setValue(SoPickStyle::SHAPE);
     editModeScenegraphNodes.EditRoot->addChild(editModeScenegraphNodes.constrGrpSelect);
-    setConstraintSelectability();// Ensure default value;
+    setConstraintSelectability();  // Ensure default value;
 
     editModeScenegraphNodes.constrGroup = new SmSwitchboard();
     editModeScenegraphNodes.constrGroup->setName("ConstraintGroup");
     editModeScenegraphNodes.EditRoot->addChild(editModeScenegraphNodes.constrGroup);
 
-    SoPickStyle* ps = new SoPickStyle();// used to following nodes aren't impacted
+    SoPickStyle* ps = new SoPickStyle();  // used to following nodes aren't impacted
     ps->style.setValue(SoPickStyle::SHAPE);
     editModeScenegraphNodes.EditRoot->addChild(ps);
 }

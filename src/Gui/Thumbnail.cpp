@@ -86,15 +86,13 @@ void Thumbnail::SaveDocFile (Base::Writer &writer) const
     if (!this->viewer)
         return;
     QImage img;
-    if (this->viewer->isActiveWindow()) {
-        if (this->viewer->thread() != QThread::currentThread()) {
-            qWarning("Cannot create a thumbnail from non-GUI thread");
-            return;
-        }
-
-        QColor invalid;
-        this->viewer->imageFromFramebuffer(this->size, this->size, 4, invalid, img);
+    if (this->viewer->thread() != QThread::currentThread()) {
+        qWarning("Cannot create a thumbnail from non-GUI thread");
+        return;
     }
+
+    QColor invalid;
+    this->viewer->imageFromFramebuffer(this->size, this->size, 4, invalid, img);
 
     // Get app icon and resize to half size to insert in topbottom position over the current view snapshot
     QPixmap appIcon = Gui::BitmapFactory().pixmap(App::Application::Config()["AppIcon"].c_str());

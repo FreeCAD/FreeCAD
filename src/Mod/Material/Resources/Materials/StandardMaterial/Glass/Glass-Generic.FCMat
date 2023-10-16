@@ -1,0 +1,23 @@
+# File created by ConvertFCMat.py
+General:
+  UUID: "3e3a3e13-04a4-410e-8e36-bbd83ca66847"
+  AuthorAndLicense: "(c) 2015 Przemo Firszt (CC-BY 3.0)"
+  Name: "Glass"
+  Description: "Generic soda-lime glass"
+Models:
+  Father:
+    UUID: '9cdda8b6-b606-4778-8f13-3934d8668e67'
+    Father: "Glass"
+  Density:
+    UUID: '454661e5-265b-4320-8e6f-fcf6223ac3af'
+    Density: "2520 kg/m^3"
+  IsotropicLinearElastic:
+    UUID: 'f6f9e48c-b116-4e82-ad7f-3659a9219c50'
+    PoissonRatio: "0.22"
+    YoungsModulus: "72000 MPa"
+  Thermal:
+    UUID: '9959d007-a970-4ea7-bae4-3eb1b8b883c7'
+    ThermalExpansionCoefficient: "0.000009 m/m/K"
+  Costs:
+    UUID: '881df808-8726-4c2e-be38-688bb6cce466'
+    ProductURL: "https://en.wikipedia.org/wiki/Soda-lime_glass"

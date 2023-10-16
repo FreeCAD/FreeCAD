@@ -155,4 +155,4 @@ void RegionGrowing::perform(const std::vector<Base::Vector3f>& myNormals)
     }
 }
 
-#endif// HAVE_PCL_SEGMENTATION
+#endif  // HAVE_PCL_SEGMENTATION

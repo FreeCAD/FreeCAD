@@ -39,4 +39,4 @@ QIcon ViewProviderExtend::getIcon() const
     return Gui::BitmapFactory().pixmap("Surface_ExtendFace");
 }
 
-}// namespace SurfaceGui
+}  // namespace SurfaceGui

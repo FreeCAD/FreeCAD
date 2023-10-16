@@ -267,13 +267,13 @@ class Component(ArchIFC.IfcProduct):
                 shape = self.processSubShapes(obj,shape)
             obj.Shape = shape
 
-    def __getstate__(self):
+    def dumps(self):
         # for compatibility with 0.17
         if hasattr(self,"Type"):
             return self.Type
         return "Component"
 
-    def __setstate__(self,state):
+    def loads(self,state):
         return None
 
     def onBeforeChange(self,obj,prop):
@@ -1408,11 +1408,11 @@ class ViewProviderComponent:
                 return "Flat Lines"
         return mode
 
-    def __getstate__(self):
+    def dumps(self):
 
         return None
 
-    def __setstate__(self,state):
+    def loads(self,state):
 
         return None
 

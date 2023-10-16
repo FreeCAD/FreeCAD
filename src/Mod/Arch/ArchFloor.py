@@ -218,11 +218,11 @@ class _Floor(ArchIFC.IfcProduct):
 
         _Floor.setProperties(self,obj)
 
-    def __getstate__(self):
+    def dumps(self):
 
         return None
 
-    def __setstate__(self,state):
+    def loads(self,state):
 
         return None
 
@@ -372,11 +372,11 @@ class _ViewProviderFloor:
                 return self.Object.Group
         return []
 
-    def __getstate__(self):
+    def dumps(self):
 
         return None
 
-    def __setstate__(self,state):
+    def loads(self,state):
 
         return None
 

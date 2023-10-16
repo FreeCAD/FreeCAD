@@ -96,7 +96,7 @@ PROPERTY_SOURCE_TEMPLATE(Points::FeatureCustom, Points::Feature)
 
 // explicit template instantiation
 template class PointsExport FeatureCustomT<Points::Feature>;
-}// namespace App
+}  // namespace App
 
 // ---------------------------------------------------------
 
@@ -113,4 +113,4 @@ const char* Points::FeaturePython::getViewProviderName() const
 
 // explicit template instantiation
 template class PointsExport FeaturePythonT<Points::Feature>;
-}// namespace App
+}  // namespace App

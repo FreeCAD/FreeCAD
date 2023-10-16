@@ -31,7 +31,7 @@
 namespace SketcherGui
 {
 
-extern GeometryCreationMode geometryCreationMode;// defined in CommandCreateGeo.cpp
+extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGeo.cpp
 
 class CarbonCopySelection: public Gui::SelectionFilterGate
 {
@@ -206,7 +206,7 @@ private:
     }
 };
 
-}// namespace SketcherGui
+}  // namespace SketcherGui
 
 
-#endif// SKETCHERGUI_DrawSketchHandlerCarbonCopy_H
+#endif  // SKETCHERGUI_DrawSketchHandlerCarbonCopy_H

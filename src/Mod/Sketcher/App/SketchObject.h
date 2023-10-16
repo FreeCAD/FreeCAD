@@ -269,6 +269,20 @@ public:
     /// Move Dimensional constraints at the end of the properties array
     int moveDatumsToEnd();
 
+    /// Change an angle constraint to its supplementary angle.
+    void reverseAngleConstraintToSupplementary(Constraint* constr, int constNum);
+    /// Modify an angle constraint expression string to its supplementary angle
+    static std::string reverseAngleConstraintExpression(std::string expression);
+
+    // Check if a constraint has an expression associated.
+    bool constraintHasExpression(int constNum) const;
+    // Get a constraint associated expression
+    std::string getConstraintExpression(int constNum) const;
+    // Set a constraint associated expression
+    void setConstraintExpression(int constNum, const std::string& newExpression);
+    void setExpression(const App::ObjectIdentifier& path,
+                       std::shared_ptr<App::Expression> expr) override;
+
     /// set the driving status of this constraint and solve
     int setVirtualSpace(int ConstrId, bool isinvirtualspace);
     /// set the driving status of a group of constraints at once
@@ -413,7 +427,7 @@ public:
     int getHighestVertexIndex() const
     {
         return VertexId2GeoId.size() - 1;
-    }// Most recently created
+    }  // Most recently created
     int getHighestCurveIndex() const
     {
         return Geometry.getSize() - 1;
@@ -461,8 +475,6 @@ public:
     bool isPointOnCurve(int geoIdCurve, double px, double py);
     double calculateConstraintError(int ConstrId);
     int changeConstraintsLocking(bool bLock);
-    /// returns whether a given constraint has an associated expression or not
-    bool constraintHasExpression(int constrid) const;
 
     /// porting functions
     int port_reversedExternalArcs(bool justAnalyze);
@@ -614,11 +626,11 @@ public:
         rlCircularReference,
         rlOtherPart,
         rlOtherBody,
-        rlOtherBodyWithLinks,// for carbon copy
-        rlNotASketch,        // for carbon copy
-        rlNonParallel,       // for carbon copy
-        rlAxesMisaligned,    // for carbon copy
-        rlOriginsMisaligned  // for carbon copy
+        rlOtherBodyWithLinks,  // for carbon copy
+        rlNotASketch,          // for carbon copy
+        rlNonParallel,         // for carbon copy
+        rlAxesMisaligned,      // for carbon copy
+        rlOriginsMisaligned    // for carbon copy
     };
     /// Return true if this object is allowed as external geometry for the
     /// sketch. rsn argument receives the reason for disallowing.
@@ -713,7 +725,7 @@ public:
     // Validation routines
     std::vector<Base::Vector3d> getOpenVertices() const;
 
-public:// geometry extension functionalities for single element sketch object user convenience
+public:  // geometry extension functionalities for single element sketch object user convenience
     int setGeometryId(int GeoId, long id);
     int getGeometryId(int GeoId, long& id) const;
 
@@ -724,9 +736,6 @@ protected:
     void restoreFinished() override;
 
     void buildShape();
-
-    void setExpression(const App::ObjectIdentifier& path,
-                       std::shared_ptr<App::Expression> expr) override;
 
     std::string validateExpression(const App::ObjectIdentifier& path,
                                    std::shared_ptr<const App::Expression> expr);
@@ -922,7 +931,7 @@ const GeometryT* SketchObject::getGeometry(int GeoId) const
 
 using SketchObjectPython = App::FeaturePythonT<SketchObject>;
 
-}// namespace Sketcher
+}  // namespace Sketcher
 
 
-#endif// SKETCHER_SKETCHOBJECT_H
+#endif  // SKETCHER_SKETCHOBJECT_H

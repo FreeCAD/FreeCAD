@@ -182,6 +182,9 @@
             <height>0</height>
            </size>
           </property>
+          <property name="mode">
+           <enum>Gui::FileChooser::Directory</enum>
+          </property>
           <property name="toolTip">
            <string>Here you can specify a directory with custom SVG files containing &lt;pattern&gt; definitions to be added to the standard patterns</string>
           </property>

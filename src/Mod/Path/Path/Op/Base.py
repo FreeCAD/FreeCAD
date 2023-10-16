@@ -466,12 +466,12 @@ class ObjectOp(object):
         self.setEditorModes(obj, features)
         self.opOnDocumentRestored(obj)
 
-    def __getstate__(self):
+    def dumps(self):
         """__getstat__(self) ... called when receiver is saved.
         Can safely be overwritten by subclasses."""
         return None
 
-    def __setstate__(self, state):
+    def loads(self, state):
         """__getstat__(self) ... called when receiver is restored.
         Can safely be overwritten by subclasses."""
         return None

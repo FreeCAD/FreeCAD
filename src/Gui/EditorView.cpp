@@ -50,6 +50,8 @@
 #include "Macro.h"
 #include "MainWindow.h"
 #include "PythonEditor.h"
+#include "PythonTracing.h"
+#include "WaitCursor.h"
 
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
@@ -596,9 +598,13 @@ PythonEditorView::PythonEditorView(PythonEditor* editor, QWidget* parent)
 {
     connect(this, &PythonEditorView::changeFileName,
             editor, &PythonEditor::setFileName);
+    watcher = new PythonTracingWatcher(this);
 }
 
-PythonEditorView::~PythonEditorView() = default;
+PythonEditorView::~PythonEditorView()
+{
+    delete watcher;
+}
 
 /**
  * Runs the action specified by \a pMsg.
@@ -644,13 +650,17 @@ void PythonEditorView::executeScript()
     if (EditorView::onHasMsg("Save"))
         EditorView::onMsg("Save", nullptr);
     try {
+        getMainWindow()->setCursor(Qt::WaitCursor);
+        PythonTracingLocker tracelock(watcher->getTrace());
         Application::Instance->macroManager()->run(Gui::MacroManager::File,fileName().toUtf8());
+        getMainWindow()->unsetCursor();
     }
     catch (const Base::SystemExitException&) {
         // handle SystemExit exceptions
         Base::PyGILStateLocker locker;
         Base::PyException e;
         e.ReportException();
+        getMainWindow()->unsetCursor();
     }
 }
 

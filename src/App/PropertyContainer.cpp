@@ -74,8 +74,9 @@ App::Property* PropertyContainer::addDynamicProperty(
 Property *PropertyContainer::getPropertyByName(const char* name) const
 {
     auto prop = dynamicProps.getDynamicPropertyByName(name);
-    if(prop)
+    if (prop) {
         return prop;
+    }
     return getPropertyData().getPropertyByName(this,name);
 }
 
@@ -219,6 +220,23 @@ void PropertyContainer::handleChangedPropertyType(XMLReader &reader, const char 
 
 PropertyData PropertyContainer::propertyData;
 
+void PropertyContainer::beforeSave() const
+{
+    std::map<std::string, Property*> Map;
+    getPropertyMap(Map);
+    for (auto& entry : Map) {
+        auto prop = entry.second;
+        if (!prop->testStatus(Property::PropDynamic)
+            && (prop->testStatus(Property::Transient)
+                || ((getPropertyType(prop) & Prop_Transient) != 0))) {
+            // Nothing
+        }
+        else {
+            prop->beforeSave();
+        }
+    }
+}
+
 void PropertyContainer::Save (Base::Writer &writer) const
 {
     std::map<std::string,Property*> Map;
@@ -237,8 +255,9 @@ void PropertyContainer::Save (Base::Writer &writer) const
         {
             transients.push_back(prop);
             it = Map.erase(it);
-        }else
+        } else {
             ++it;
+        }
     }
 
     writer.incInd(); // indentation for 'Properties Count'
@@ -339,8 +358,9 @@ void PropertyContainer::Restore(Base::XMLReader &reader)
         // type and the behaviour would be undefined.
         try {
             auto prop = getPropertyByName(PropName.c_str());
-            if(!prop || prop->getContainer() != this)
+            if (!prop || prop->getContainer() != this) {
                 prop = dynamicProps.restore(*this,PropName.c_str(),TypeName.c_str(),reader);
+            }
 
             decltype(Property::StatusBits) status;
             if(reader.hasAttribute("status")) {

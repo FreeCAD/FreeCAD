@@ -23,12 +23,15 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <QApplication>
+#include <QKeyEvent>
 #include <QTime>
 #include <QGuiApplication>
 #endif
 
 #include "PythonTracing.h"
 #include <App/Application.h>
+#include <Base/Interpreter.h>
 
 using namespace Gui;
 
@@ -113,6 +116,7 @@ void PythonTracing::setPythonTraceEnabled(bool enabled) const
         Private::profilerDisabled = true;
     }
 
+    Base::PyGILStateLocker lock;
     PyEval_SetTrace(trace, nullptr);
 }
 
@@ -158,4 +162,37 @@ PythonTracingLocker::PythonTracingLocker(PythonTracing& trace)
 PythonTracingLocker::~PythonTracingLocker()
 {
     trace.deactivate();
+}
+
+// ------------------------------------------------------------------------------------------------
+
+PythonTracingWatcher::PythonTracingWatcher(QObject* parent)
+    : QObject(parent)
+{
+    qApp->installEventFilter(this);
+}
+
+PythonTracingWatcher::~PythonTracingWatcher()
+{
+    qApp->removeEventFilter(this);
+}
+
+bool PythonTracingWatcher::eventFilter(QObject* object, QEvent* event)
+{
+    if (event && event->type() == QEvent::ShortcutOverride) {
+        auto kevent = static_cast<QKeyEvent*>(event);
+        if (kevent->key() == Qt::Key_C && kevent->modifiers() == Qt::ControlModifier) {
+            if (trace.interrupt()) {
+                return true;
+            }
+        }
+    }
+
+    return QObject::eventFilter(object, event);
+}
+
+PythonTracing& PythonTracingWatcher::getTrace()
+{
+    trace.fetchFromSettings();
+    return trace;
 }

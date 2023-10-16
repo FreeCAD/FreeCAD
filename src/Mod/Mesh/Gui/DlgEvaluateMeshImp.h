@@ -36,14 +36,17 @@
 class QAbstractButton;
 class QScrollArea;
 
-namespace Gui {
+namespace Gui
+{
 class View3DInventor;
 }
-namespace Mesh {
-  class Feature;
+namespace Mesh
+{
+class Feature;
 }
 
-namespace MeshGui {
+namespace MeshGui
+{
 class ViewProviderMeshDefects;
 
 /**
@@ -51,7 +54,7 @@ class ViewProviderMeshDefects;
  * module when the application is about to be closed.
  * @author Werner Mayer
  */
-class CleanupHandler : public QObject
+class CleanupHandler: public QObject
 {
     Q_OBJECT
 
@@ -65,7 +68,7 @@ private:
 /**
  * \author Werner Mayer
  */
-class DlgEvaluateMeshImp : public QDialog, public App::DocumentObserver
+class DlgEvaluateMeshImp: public QDialog, public App::DocumentObserver
 {
     Q_OBJECT
 
@@ -123,7 +126,7 @@ private:
 
     void onRefreshButtonClicked();
     void onMeshNameButtonActivated(int);
-    void onButtonBoxClicked(QAbstractButton *);
+    void onButtonBoxClicked(QAbstractButton*);
 
 protected:
     void refreshList();
@@ -132,7 +135,7 @@ protected:
     void addViewProvider(const char* vp, const std::vector<Mesh::ElementIndex>& indices);
     void removeViewProvider(const char* vp);
     void removeViewProviders();
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
 
 private:
     class Private;
@@ -143,12 +146,12 @@ private:
  * The DockEvaluateMeshImp class creates a single instance and embeds it into a dock window.
  * \author Werner Mayer
  */
-class DockEvaluateMeshImp : public DlgEvaluateMeshImp
+class DockEvaluateMeshImp: public DlgEvaluateMeshImp  // NOLINT
 {
     Q_OBJECT
 
 protected:
-    explicit DockEvaluateMeshImp( QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags() );
+    explicit DockEvaluateMeshImp(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~DockEvaluateMeshImp() override;
     void closeEvent(QCloseEvent* e) override;
 
@@ -157,13 +160,13 @@ public:
     static void destruct();
     static bool hasInstance();
 
-    QSize sizeHint () const override;
+    QSize sizeHint() const override;
 
 private:
     QScrollArea* scrollArea;
     static DockEvaluateMeshImp* _instance;
 };
 
-} // namespace MeshGui
+}  // namespace MeshGui
 
-#endif // MESHGUI_DLG_EVALUATE_MESH_IMP_H
+#endif  // MESHGUI_DLG_EVALUATE_MESH_IMP_H

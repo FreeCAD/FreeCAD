@@ -25,13 +25,14 @@
 
 #include <Gui/propertyeditor/PropertyItem.h>
 
-namespace FemGui {
+namespace FemGui
+{
 
 /**
  * Display data of an FEM mesh.
  * \author Werner Mayer
  */
-class PropertyFemMeshItem : public Gui::PropertyEditor::PropertyItem
+class PropertyFemMeshItem: public Gui::PropertyEditor::PropertyItem
 {
     Q_OBJECT
     Q_PROPERTY(int Nodes READ countNodes CONSTANT)
@@ -43,9 +44,10 @@ class PropertyFemMeshItem : public Gui::PropertyEditor::PropertyItem
     Q_PROPERTY(int Groups READ countGroups CONSTANT)
     PROPERTYITEM_HEADER
 
-    QWidget* createEditor(QWidget* parent, const QObject* receiver, const char* method) const override;
-    void setEditorData(QWidget *editor, const QVariant& data) const override;
-    QVariant editorData(QWidget *editor) const override;
+    QWidget*
+    createEditor(QWidget* parent, const QObject* receiver, const char* method) const override;
+    void setEditorData(QWidget* editor, const QVariant& data) const override;
+    QVariant editorData(QWidget* editor) const override;
 
     int countNodes() const;
     int countEdges() const;
@@ -74,8 +76,7 @@ private:
     Gui::PropertyEditor::PropertyIntegerItem* m_g;
 };
 
-} // namespace FemGui
+}  // namespace FemGui
 
 
-#endif // FEMGUI_PROPERTY_FEMMESH_ITEM_H
-
+#endif  // FEMGUI_PROPERTY_FEMMESH_ITEM_H

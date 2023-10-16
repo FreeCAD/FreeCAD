@@ -96,6 +96,6 @@ private:
     void exitSelectionMode();
 };
 
-}// namespace SurfaceGui
+}  // namespace SurfaceGui
 
-#endif// SURFACEGUI_TASKFILLINGVERTEX_H
+#endif  // SURFACEGUI_TASKFILLINGVERTEX_H

@@ -39,7 +39,12 @@ namespace Sketcher
 {
 class Sketch;
 class SketchObject;
-}// namespace Sketcher
+}  // namespace Sketcher
+
+namespace Gui
+{
+class View3DInventorViewer;
+}
 
 namespace SketcherGui
 {
@@ -108,6 +113,8 @@ private:
     static inline void
     moveConstraint(ViewProviderSketch& vp, int constNum, const Base::Vector2d& toPos);
 
+    static inline void signalToolChanged(const ViewProviderSketch& vp, const std::string& toolname);
+
     friend class DrawSketchHandler;
 };
 
@@ -171,7 +178,39 @@ public:
     void resetPositionText();
     void renderSuggestConstraintsCursor(std::vector<AutoConstraint>& suggestedConstraints);
 
-private:// NVI
+    /** @name Interfacing with tool dialogs */
+    //@{
+
+    /** @brief Slot to receive signaling that a widget intended for the tool has changed and is
+     *  available ant the provided pointer.
+     */
+    void toolWidgetChanged(QWidget* newwidget);
+
+    /** @brief Factory function returning a tool widget of the type necessary for the specific tool.
+     * This is a NVI interface and specific handlers must overload the corresponding virtual
+     * function.
+     */
+    std::unique_ptr<QWidget> createToolWidget() const;
+
+    /** @brief Returns whether this tool expects/supports a visible tool widget. Emphasis is in
+     * visibility, so to allow to adapt the interface accordingly.
+     * This is an NVI interface and specific handlers must overload the corresponding virtual
+     * function.
+     */
+    bool isToolWidgetVisible() const;
+    /** @brief Returns a pixmap icon intended for a visible tool widget.
+     * This is an NVI interface and specific handlers must overload the corresponding virtual
+     * function.
+     */
+    QPixmap getToolWidgetHeaderIcon() const;
+    /** @brief Returns a header text intended for a visible tool widget.
+     * This is an NVI interface and specific handlers must overload the corresponding virtual
+     * function.
+     */
+    QString getToolWidgetHeaderText() const;
+    //@}
+
+private:  // NVI
     virtual void preActivated();
     virtual void activated()
     {}
@@ -179,9 +218,17 @@ private:// NVI
     {}
     virtual void postDeactivated()
     {}
+    virtual void onWidgetChanged()
+    {}
 
-protected:// NVI requiring base implementation
+protected:  // NVI requiring base implementation
+    virtual std::string getToolName() const;
     virtual QString getCrosshairCursorSVGName() const;
+
+    virtual std::unique_ptr<QWidget> createWidget() const;
+    virtual bool isWidgetVisible() const;
+    virtual QPixmap getToolIcon() const;
+    virtual QString getToolWidgetText() const;
 
 protected:
     // helpers
@@ -237,6 +284,10 @@ protected:
 
     void moveConstraint(int constNum, const Base::Vector2d& toPos);
 
+    void signalToolChanged() const;
+
+    Gui::View3DInventorViewer* getViewer();
+
 private:
     void setSvgCursor(const QString& svgName,
                       int x,
@@ -251,6 +302,7 @@ private:
     void setCrosshairCursor(const QString& svgName);
     void setCrosshairCursor(const char* svgName);
 
+
 protected:
     /**
      * Returns constraints icons scaled to width.
@@ -262,10 +314,12 @@ protected:
     QCursor oldCursor;
     QCursor actCursor;
     QPixmap actCursorPixmap;
+
+    QWidget* toolwidget;
 };
 
 
-}// namespace SketcherGui
+}  // namespace SketcherGui
 
 
-#endif// SKETCHERGUI_DrawSketchHandler_H
+#endif  // SKETCHERGUI_DrawSketchHandler_H

@@ -46,8 +46,11 @@ class ViewProviderDocumentObject;
 class DocumentObjectItem;
 class DocumentObjectData;
 using DocumentObjectDataPtr = std::shared_ptr<DocumentObjectData>;
+class TreeWidgetItemDelegate;
 
 class DocumentItem;
+
+GuiExport bool isTreeViewDragging();
 
 /** Tree view that allows drag & drop of document objects.
  * @author Werner Mayer
@@ -66,6 +69,13 @@ public:
     void selectLinkedObject(App::DocumentObject *linked);
     void selectAllLinks(App::DocumentObject *obj);
     void expandSelectedItems(TreeItemMode mode);
+    static int iconSize();
+
+    int iconHeight() const;
+    void setIconHeight(int height);
+
+    int itemSpacing() const;
+    void setItemSpacing(int);
 
     bool eventFilter(QObject *, QEvent *ev) override;
 
@@ -241,6 +251,7 @@ private:
     friend class DocumentItem;
     friend class DocumentObjectItem;
     friend class TreeParams;
+    friend class TreeWidgetItemDelegate;
 
     using Connection = boost::signals2::connection;
     Connection connectNewDocument;
@@ -479,19 +490,6 @@ public:
     explicit TreeDockWidget(Gui::Document*  pcDocument,QWidget *parent=nullptr);
     ~TreeDockWidget() override;
 };
-
-
-/**
- * TreeWidget item delegate for editing
- */
-class TreeWidgetEditDelegate: public QStyledItemDelegate {
-    Q_OBJECT
-public:
-    explicit TreeWidgetEditDelegate(QObject* parent=nullptr);
-    QWidget* createEditor(QWidget *parent,
-            const QStyleOptionViewItem &, const QModelIndex &index) const override;
-};
-
 
 }
 

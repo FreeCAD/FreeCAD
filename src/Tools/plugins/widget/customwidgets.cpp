@@ -290,7 +290,7 @@ void AccelLineEdit::keyPressEvent(QKeyEvent* e)
         return;
     }
     else if (state == Qt::NoModifier && key == Qt::Key_Backspace) {
-        return;// clears the edit field
+        return;  // clears the edit field
     }
 
     switch (state) {
@@ -554,7 +554,7 @@ const QString& Unit::getString() const
     return unit;
 }
 
-int QuantityFormat::defaultDenominator = 8;// for 1/8"
+int QuantityFormat::defaultDenominator = 8;  // for 1/8"
 
 
 QuantityFormat::QuantityFormat()
@@ -639,7 +639,7 @@ QString Quantity::getUserString(double& factor, QString& unitString) const
     return QString::fromUtf8("%1 %2").arg(Ln, unit.getString());
 }
 
-}// namespace Base
+}  // namespace Base
 
 namespace Gui
 {
@@ -820,8 +820,8 @@ public:
                     state = QValidator::Acceptable;
                 }
             }
-            else if (max == min) {// when max and min is the same the only non-Invalid input is max
-                                  // (or min)
+            else if (max == min) {  // when max and min is the same the only non-Invalid input is
+                                    // max (or min)
                 state = QValidator::Invalid;
             }
             else {
@@ -855,7 +855,7 @@ public:
     double minimum;
     double singleStep;
 };
-}// namespace Gui
+}  // namespace Gui
 
 QuantitySpinBox::QuantitySpinBox(QWidget* parent)
     : QAbstractSpinBox(parent)
@@ -1153,7 +1153,7 @@ QSize QuantitySpinBox::sizeHint() const
     w = fm.width(s);
 #endif
 
-    w += 2;// cursor blinking space
+    w += 2;  // cursor blinking space
     w += iconHeight;
 
     QStyleOptionSpinBox opt;
@@ -1183,7 +1183,7 @@ QSize QuantitySpinBox::minimumSizeHint() const
     w = fm.width(s);
 #endif
 
-    w += 2;// cursor blinking space
+    w += 2;  // cursor blinking space
     w += iconHeight;
 
     QStyleOptionSpinBox opt;
@@ -1487,7 +1487,7 @@ UnsignedValidator::~UnsignedValidator()
 
 QValidator::State UnsignedValidator::validate(QString& input, int&) const
 {
-    QString stripped;// = input.stripWhiteSpace();
+    QString stripped;  // = input.stripWhiteSpace();
     if (stripped.isEmpty()) {
         return Intermediate;
     }
@@ -1573,7 +1573,7 @@ public:
     }
 };
 
-}// namespace Gui
+}  // namespace Gui
 
 // -------------------------------------------------------------
 

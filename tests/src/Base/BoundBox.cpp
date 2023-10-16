@@ -1,4 +1,11 @@
 #include "gtest/gtest.h"
+#ifdef WIN32
+#define WIN32_LEAN_AND_MEAN
+#ifndef NOMINMAX
+#define NOMINMAX
+#endif
+#include <Windows.h>
+#endif
 #include <Base/BoundBox.h>
 #include <boost/beast/core/span.hpp>
 

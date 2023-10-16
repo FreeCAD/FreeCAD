@@ -168,7 +168,7 @@ DrawViewPart::~DrawViewPart()
 //!  XSource property lists
 TopoDS_Shape DrawViewPart::getSourceShape(bool fuse) const
 {
-    //    Base::Console().Message("DVP::getSourceShape()\n");
+//    Base::Console().Message("DVP::getSourceShape()\n");
     const std::vector<App::DocumentObject*>& links = getAllSources();
     if (links.empty()) {
         return TopoDS_Shape();
@@ -203,11 +203,15 @@ std::vector<App::DocumentObject*> DrawViewPart::getAllSources() const
 
 //! pick supported 2d shapes out of the Source properties and
 //! add them directly to the geometry without going through HLR
+//! NOTE: this is for loose 2d shapes such as Part line or circle and is
+//! not meant to include complex 2d shapes such as Sketches.
 void DrawViewPart::addShapes2d(void)
 {
+//    Base::Console().Message("DVP::addShapes2d()\n");
+    // get all the 2d shapes in the sources, then pick through them for loose edges
+    // or vertices.
     std::vector<TopoDS_Shape> shapes = ShapeExtractor::getShapes2d(getAllSources());
     for (auto& s : shapes) {
-        //just vertices for now
         if (s.ShapeType() == TopAbs_VERTEX) {
             gp_Pnt gp = BRep_Tool::Pnt(TopoDS::Vertex(s));
             Base::Vector3d vp(gp.X(), gp.Y(), gp.Z());
@@ -218,8 +222,7 @@ void DrawViewPart::addShapes2d(void)
             geometryObject->addVertex(v1);
         }
         else if (s.ShapeType() == TopAbs_EDGE) {
-            //not supporting edges yet.  Why?
-            //Base::Console().Message("DVP::add2dShapes - found loose edge - isNull: %d\n", s.IsNull());
+            Base::Console().Message("DVP::add2dShapes - found loose edge - isNull: %d\n", s.IsNull());
             TopoDS_Shape sTrans = ShapeUtils::moveShape(s,
                                                       m_saveCentroid * -1.0);
             TopoDS_Shape sScale = ShapeUtils::scaleShape(sTrans,
@@ -229,7 +232,10 @@ void DrawViewPart::addShapes2d(void)
             BaseGeomPtr bg = projectEdge(edge);
 
             geometryObject->addEdge(bg);
-            //save connection between source feat and this edge
+
+        } else {
+            // message for developers.
+            //Base::Console().Message("DEVEL: DVP::addShapes2d - shape is not a vertex or edge\n");
         }
     }
 }
@@ -369,26 +375,18 @@ TechDraw::GeometryObjectPtr DrawViewPart::buildGeometryObject(TopoDS_Shape& shap
         go->projectShapeWithPolygonAlgo(shape, viewAxis);
     }
     else {
-        // TODO: we should give the thread its own copy of the shape because the passed one will be
-        // destroyed when the call stack we followed to get here unwinds and the thread could still be
-        // running.
-        // Should we pass a smart pointer instead of const& ??
-    //    bool copyGeometry = true;
-    //    bool copyMesh = false;
-    //    BRepBuilderAPI_Copy copier(shape, copyGeometry, copyMesh);
-    //    copier.Shape();
-
         //projectShape (the HLR process) runs in a separate thread since it can take a long time
         //note that &m_hlrWatcher in the third parameter is not strictly required, but using the
         //4 parameter signature instead of the 3 parameter signature prevents clazy warning:
         //https://github.com/KDE/clazy/blob/1.11/docs/checks/README-connect-3arg-lambda.md
         connectHlrWatcher = QObject::connect(&m_hlrWatcher, &QFutureWatcherBase::finished,
                                              &m_hlrWatcher, [this] { this->onHlrFinished(); });
-#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
-        m_hlrFuture = QtConcurrent::run(go.get(), &GeometryObject::projectShape, shape, viewAxis);
-#else
-        m_hlrFuture = QtConcurrent::run(&GeometryObject::projectShape, go.get(), shape, viewAxis);
-#endif
+
+        // We create a lambda closure to hold a copy of go, shape and viewAxis.
+        // This is important because those variables might be local to the calling
+        // function and might get destructed before the parallel processing finishes.
+        auto lambda = [go, shape, viewAxis]{go->projectShape(shape, viewAxis);};
+        m_hlrFuture = QtConcurrent::run(std::move(lambda));
         m_hlrWatcher.setFuture(m_hlrFuture);
         waitingForHlr(true);
     }
@@ -428,11 +426,9 @@ void DrawViewPart::onHlrFinished(void)
             connectFaceWatcher =
                 QObject::connect(&m_faceWatcher, &QFutureWatcherBase::finished, &m_faceWatcher,
                                  [this] { this->onFacesFinished(); });
-#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
-            m_faceFuture = QtConcurrent::run(this, &DrawViewPart::extractFaces);
-#else
-            m_faceFuture = QtConcurrent::run(&DrawViewPart::extractFaces, this);
-#endif
+
+            auto lambda = [this]{this->extractFaces();};
+            m_faceFuture = QtConcurrent::run(std::move(lambda));
             m_faceWatcher.setFuture(m_faceFuture);
             waitingForFaces(true);
         }

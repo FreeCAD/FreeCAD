@@ -32,19 +32,23 @@ PROPERTY_SOURCE(Fem::ConstraintPressure, Fem::Constraint)
 
 ConstraintPressure::ConstraintPressure()
 {
-    ADD_PROPERTY(Pressure,(0.0));
-    ADD_PROPERTY(Reversed,(0));
-    ADD_PROPERTY_TYPE(Points,(Base::Vector3d()),"ConstraintPressure",
-        App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
-        "Points where arrows are drawn");
-    ADD_PROPERTY_TYPE(Normals,(Base::Vector3d()),"ConstraintPressure",
-        App::PropertyType(App::Prop_ReadOnly|App::Prop_Output),
-        "Normals where symbols are drawn");
+    ADD_PROPERTY(Pressure, (0.0));
+    ADD_PROPERTY(Reversed, (0));
+    ADD_PROPERTY_TYPE(Points,
+                      (Base::Vector3d()),
+                      "ConstraintPressure",
+                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
+                      "Points where arrows are drawn");
+    ADD_PROPERTY_TYPE(Normals,
+                      (Base::Vector3d()),
+                      "ConstraintPressure",
+                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
+                      "Normals where symbols are drawn");
     Points.setValues(std::vector<Base::Vector3d>());
     Normals.setValues(std::vector<Base::Vector3d>());
 }
 
-App::DocumentObjectExecReturn *ConstraintPressure::execute()
+App::DocumentObjectExecReturn* ConstraintPressure::execute()
 {
     return Constraint::execute();
 }
@@ -52,6 +56,21 @@ App::DocumentObjectExecReturn *ConstraintPressure::execute()
 const char* ConstraintPressure::getViewProviderName() const
 {
     return "FemGui::ViewProviderFemConstraintPressure";
+}
+
+void ConstraintPressure::handleChangedPropertyType(Base::XMLReader& reader,
+                                                   const char* TypeName,
+                                                   App::Property* prop)
+{
+    // property Pressure had App::PropertyFloat and was changed to App::PropertyPressure
+    if (prop == &Pressure && strcmp(TypeName, "App::PropertyFloat") == 0) {
+        App::PropertyFloat PressureProperty;
+        // restore the PropertyFloat to be able to set its value
+        PressureProperty.Restore(reader);
+        // the old implementation or pressure stored the value as MPa
+        // therefore we must convert the value with a factor 1000
+        Pressure.setValue(PressureProperty.getValue() * 1000.0);
+    }
 }
 
 void ConstraintPressure::onChanged(const App::Property* prop)
@@ -68,7 +87,8 @@ void ConstraintPressure::onChanged(const App::Property* prop)
             Scale.setValue(scale);
             Points.touch();
         }
-    } else if (prop == &Reversed) {
+    }
+    else if (prop == &Reversed) {
         Points.touch();
     }
 }

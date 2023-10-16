@@ -97,28 +97,35 @@ if it's not a scale matrix.
 tol : float</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="nullify">
+    <Methode Name="decompose" Const="true">
+      <Documentation>
+        <UserDocu>decompose() -> Base.Matrix, Base.Matrix, Base.Matrix, Base.Matrix\n
+Return a tuple of matrices representing shear, scale, rotation and move.
+So that matrix = move * rotation * scale * shear.</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="nullify" NoArgs="true">
       <Documentation>
         <UserDocu>nullify() -> None
 
 Make this the null matrix.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="isNull" Const="true">
+    <Methode Name="isNull" Const="true" NoArgs="true">
       <Documentation>
         <UserDocu>isNull() -> bool
 
 Check if this is the null matrix.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="unity">
+    <Methode Name="unity" NoArgs="true">
       <Documentation>
         <UserDocu>unity() -> None
 
 Make this matrix to unity (4D identity matrix).</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="isUnity" Const="true">
+    <Methode Name="isUnity" Const="true" NoArgs="true">
       <Documentation>
         <UserDocu>isUnity() -> bool
 
@@ -185,16 +192,16 @@ index : int
 vector : Base.Vector</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="trace" Const="true">
+    <Methode Name="diagonal" Const="true" NoArgs="true">
       <Documentation>
-        <UserDocu>trace() -> Base.Vector
+        <UserDocu>diagonal() -> Base.Vector
 
 Return the diagonal of the 3x3 leading principal submatrix as vector.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="setTrace">
+    <Methode Name="setDiagonal">
       <Documentation>
-        <UserDocu>setTrace(vector) -> None
+        <UserDocu>setDiagonal(vector) -> None
 
 Set the diagonal of the 3x3 leading principal submatrix.
 
@@ -252,34 +259,34 @@ Compute the transformed vector using the matrix.
 vector : Base.Vector</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="invert">
+    <Methode Name="invert" NoArgs="true">
       <Documentation>
         <UserDocu>invert() -> None
 
 Compute the inverse matrix in-place, if possible.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="inverse" Const="true">
+    <Methode Name="inverse" Const="true" NoArgs="true">
       <Documentation><UserDocu>inverse() -> Base.Matrix
 
 Compute the inverse matrix, if possible.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="transpose">
+    <Methode Name="transpose" NoArgs="true">
       <Documentation>
         <UserDocu>transpose() -> None
 
 Transpose the matrix in-place.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="transposed" Const="true">
+    <Methode Name="transposed" Const="true" NoArgs="true">
       <Documentation>
         <UserDocu>transposed() -> Base.Matrix
 
 Returns a transposed copy of this matrix.</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="determinant" Const="true">
+    <Methode Name="determinant" Const="true" NoArgs="true">
       <Documentation>
         <UserDocu>determinant() -> float
 
@@ -309,7 +316,7 @@ dim : int
     Dimension parameter must be in the range [1,4].</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="analyze" Const="true">
+    <Methode Name="analyze" Const="true" NoArgs="true">
       <Documentation>
         <UserDocu>analyze() -> str
 

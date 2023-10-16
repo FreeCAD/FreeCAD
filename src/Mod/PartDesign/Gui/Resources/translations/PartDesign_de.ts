@@ -1235,12 +1235,12 @@ Wenn Null, ist er gleich Radius2</translation>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1023"/>
       <source>Radius in local xy-plane</source>
-      <translation>Radius in lokaler XY-Ebene</translation>
+      <translation>Radius auf lokaler XY-Ebene</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1046"/>
       <source>Radius in local xz-plane</source>
-      <translation>Radius in lokaler XZ-Ebene</translation>
+      <translation>Radius auf lokaler XZ-Ebene</translation>
     </message>
     <message>
       <location filename="../../TaskPrimitiveParameters.ui" line="1091"/>
@@ -1412,11 +1412,6 @@ Wenn Null, ist er gleich Radius2</translation>
   <context>
     <name>PartDesignGui::TaskBooleanParameters</name>
     <message>
-      <location filename="../../TaskBooleanParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Form</translation>
-    </message>
-    <message>
       <location filename="../../TaskBooleanParameters.ui" line="22"/>
       <source>Add body</source>
       <translation>Körper hinzufügen</translation>
@@ -1499,11 +1494,6 @@ Wenn Null, ist er gleich Radius2</translation>
   </context>
   <context>
     <name>PartDesignGui::TaskChamferParameters</name>
-    <message>
-      <location filename="../../TaskChamferParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Form</translation>
-    </message>
     <message>
       <location filename="../../TaskChamferParameters.ui" line="20"/>
       <source>Click button to enter selection mode,
@@ -1626,16 +1616,11 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
   <context>
     <name>PartDesignGui::TaskDraftParameters</name>
     <message>
-      <location filename="../../TaskDraftParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Form</translation>
-    </message>
-    <message>
       <location filename="../../TaskDraftParameters.ui" line="20"/>
       <source>Click button to enter selection mode,
 click again to end selection</source>
-      <translation>Klicken Sie auf den Button um in den Auswahl-Modus zu gelangen.
-Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
+      <translation>Klicken Sie auf die Schaltfläche, um den Auswahlmodus zu betreten,
+erneut klicken um die Auswahl zu beenden</translation>
     </message>
     <message>
       <location filename="../../TaskDraftParameters.ui" line="24"/>
@@ -1702,7 +1687,7 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
     <message>
       <location filename="../../TaskDressUpParameters.cpp" line="277"/>
       <source>Remove</source>
-      <translation>Löschen</translation>
+      <translation>Entfernen</translation>
     </message>
   </context>
   <context>
@@ -1747,11 +1732,6 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
   </context>
   <context>
     <name>PartDesignGui::TaskFeaturePick</name>
-    <message>
-      <location filename="../../TaskFeaturePick.ui" line="14"/>
-      <source>Form</source>
-      <translation>Form</translation>
-    </message>
     <message>
       <location filename="../../TaskFeaturePick.ui" line="23"/>
       <source>Allow used features</source>
@@ -1841,11 +1821,6 @@ Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
   <context>
     <name>PartDesignGui::TaskFilletParameters</name>
     <message>
-      <location filename="../../TaskFilletParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Form</translation>
-    </message>
-    <message>
       <location filename="../../TaskFilletParameters.ui" line="20"/>
       <source>Click button to enter selection mode,
 click again to end selection</source>
@@ -1884,11 +1859,6 @@ erneut klicken um die Auswahl zu beenden</translation>
   </context>
   <context>
     <name>PartDesignGui::TaskHelixParameters</name>
-    <message>
-      <location filename="../../TaskHelixParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Form</translation>
-    </message>
     <message>
       <location filename="../../TaskHelixParameters.ui" line="22"/>
       <source>Status:</source>
@@ -2098,11 +2068,6 @@ erneut klicken um die Auswahl zu beenden</translation>
   <context>
     <name>PartDesignGui::TaskLinearPatternParameters</name>
     <message>
-      <location filename="../../TaskLinearPatternParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Form</translation>
-    </message>
-    <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="22"/>
       <source>Add feature</source>
       <translation>Element hinzufügen</translation>
@@ -2135,7 +2100,7 @@ erneut klicken um die Auswahl zu beenden</translation>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="85"/>
       <source>Overall Length</source>
-      <translation type="unfinished">Overall Length</translation>
+      <translation>Gesamtlänge</translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="90"/>
@@ -2161,7 +2126,7 @@ erneut klicken um die Auswahl zu beenden</translation>
     <message>
       <location filename="../../TaskLinearPatternParameters.ui" line="201"/>
       <source>Update view</source>
-      <translation>Ansicht aktualisieren</translation>
+      <translation>Ansicht aktualisieren </translation>
     </message>
     <message>
       <location filename="../../TaskLinearPatternParameters.cpp" line="108"/>
@@ -2176,11 +2141,6 @@ erneut klicken um die Auswahl zu beenden</translation>
   </context>
   <context>
     <name>PartDesignGui::TaskLoftParameters</name>
-    <message>
-      <location filename="../../TaskLoftParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Form</translation>
-    </message>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="20"/>
       <source>Ruled surface</source>
@@ -2219,7 +2179,7 @@ erneut klicken um die Auswahl zu beenden</translation>
     <message>
       <location filename="../../TaskLoftParameters.ui" line="120"/>
       <source>Update view</source>
-      <translation>Ansicht aktualisieren </translation>
+      <translation>Ansicht aktualisieren</translation>
     </message>
     <message>
       <location filename="../../TaskLoftParameters.cpp" line="50"/>
@@ -2234,11 +2194,6 @@ erneut klicken um die Auswahl zu beenden</translation>
   </context>
   <context>
     <name>PartDesignGui::TaskMirroredParameters</name>
-    <message>
-      <location filename="../../TaskMirroredParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Form</translation>
-    </message>
     <message>
       <location filename="../../TaskMirroredParameters.ui" line="22"/>
       <source>Add feature</source>
@@ -2282,11 +2237,6 @@ erneut klicken um die Auswahl zu beenden</translation>
   </context>
   <context>
     <name>PartDesignGui::TaskMultiTransformParameters</name>
-    <message>
-      <location filename="../../TaskMultiTransformParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Form</translation>
-    </message>
     <message>
       <location filename="../../TaskMultiTransformParameters.ui" line="22"/>
       <source>Add feature</source>
@@ -2383,7 +2333,7 @@ erneut klicken um die Auswahl zu beenden</translation>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="70"/>
       <source>Dimension</source>
-      <translation>Abmessung</translation>
+      <translation>Höhe (Länge)</translation>
     </message>
     <message>
       <location filename="../../TaskPadParameters.cpp" line="71"/>
@@ -2409,11 +2359,6 @@ erneut klicken um die Auswahl zu beenden</translation>
   <context>
     <name>PartDesignGui::TaskPadPocketParameters</name>
     <message>
-      <location filename="../../TaskPadPocketParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Form</translation>
-    </message>
-    <message>
       <location filename="../../TaskPadPocketParameters.ui" line="22"/>
       <source>Type</source>
       <translation>Typ</translation>
@@ -2421,7 +2366,7 @@ erneut klicken um die Auswahl zu beenden</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="30"/>
       <source>Dimension</source>
-      <translation>Abmessung</translation>
+      <translation>Tiefe (Länge)</translation>
     </message>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="38"/>
@@ -2563,16 +2508,11 @@ entlang der angegebenen Richtung gemessen</translation>
     <message>
       <location filename="../../TaskPadPocketParameters.ui" line="369"/>
       <source>Update view</source>
-      <translation>Ansicht aktualisieren</translation>
+      <translation>Ansicht aktualisieren </translation>
     </message>
   </context>
   <context>
     <name>PartDesignGui::TaskPipeOrientation</name>
-    <message>
-      <location filename="../../TaskPipeOrientation.ui" line="14"/>
-      <source>Form</source>
-      <translation>Form</translation>
-    </message>
     <message>
       <location filename="../../TaskPipeOrientation.ui" line="22"/>
       <source>Orientation mode</source>
@@ -2662,11 +2602,6 @@ entlang der angegebenen Richtung gemessen</translation>
   <context>
     <name>PartDesignGui::TaskPipeParameters</name>
     <message>
-      <location filename="../../TaskPipeParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Form</translation>
-    </message>
-    <message>
       <location filename="../../TaskPipeParameters.ui" line="20"/>
       <source>Profile</source>
       <translation>Profil</translation>
@@ -2737,11 +2672,6 @@ entlang der angegebenen Richtung gemessen</translation>
   <context>
     <name>PartDesignGui::TaskPipeScaling</name>
     <message>
-      <location filename="../../TaskPipeScaling.ui" line="14"/>
-      <source>Form</source>
-      <translation>Form</translation>
-    </message>
-    <message>
       <location filename="../../TaskPipeScaling.ui" line="22"/>
       <source>Transform mode</source>
       <translation>Transformationsmodus</translation>
@@ -2802,7 +2732,7 @@ entlang der angegebenen Richtung gemessen</translation>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="71"/>
       <source>Dimension</source>
-      <translation>Abmessung</translation>
+      <translation>Tiefenmaß</translation>
     </message>
     <message>
       <location filename="../../TaskPocketParameters.cpp" line="72"/>
@@ -2827,11 +2757,6 @@ entlang der angegebenen Richtung gemessen</translation>
   </context>
   <context>
     <name>PartDesignGui::TaskPolarPatternParameters</name>
-    <message>
-      <location filename="../../TaskPolarPatternParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Form</translation>
-    </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="22"/>
       <source>Add feature</source>
@@ -2865,12 +2790,12 @@ entlang der angegebenen Richtung gemessen</translation>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="85"/>
       <source>Overall Angle</source>
-      <translation type="unfinished">Overall Angle</translation>
+      <translation>Gesamtwinkel</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="90"/>
       <source>Offset Angle</source>
-      <translation type="unfinished">Offset Angle</translation>
+      <translation>Versatzwinkel</translation>
     </message>
     <message>
       <location filename="../../TaskPolarPatternParameters.ui" line="115"/>
@@ -2919,11 +2844,6 @@ entlang der angegebenen Richtung gemessen</translation>
   <context>
     <name>PartDesignGui::TaskRevolutionParameters</name>
     <message>
-      <location filename="../../TaskRevolutionParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Form</translation>
-    </message>
-    <message>
       <location filename="../../TaskRevolutionParameters.ui" line="22"/>
       <source>Axis:</source>
       <translation>Achse:</translation>
@@ -2932,7 +2852,7 @@ entlang der angegebenen Richtung gemessen</translation>
       <location filename="../../TaskRevolutionParameters.ui" line="30"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="137"/>
       <source>Base X axis</source>
-      <translation>Basis X-Achse</translation>
+      <translation>Basis-X-Achse</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="35"/>
@@ -2944,7 +2864,7 @@ entlang der angegebenen Richtung gemessen</translation>
       <location filename="../../TaskRevolutionParameters.ui" line="40"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="139"/>
       <source>Base Z axis</source>
-      <translation>Basis Z-Achse</translation>
+      <translation>Basis-Z-Achse</translation>
     </message>
     <message>
       <location filename="../../TaskRevolutionParameters.ui" line="45"/>
@@ -2991,11 +2911,6 @@ entlang der angegebenen Richtung gemessen</translation>
   <context>
     <name>PartDesignGui::TaskScaledParameters</name>
     <message>
-      <location filename="../../TaskScaledParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Form</translation>
-    </message>
-    <message>
       <location filename="../../TaskScaledParameters.ui" line="22"/>
       <source>Add feature</source>
       <translation>Element hinzufügen</translation>
@@ -3023,7 +2938,7 @@ entlang der angegebenen Richtung gemessen</translation>
     <message>
       <location filename="../../TaskScaledParameters.ui" line="90"/>
       <source>Update view</source>
-      <translation>Ansicht aktualisieren </translation>
+      <translation>Ansicht aktualisieren</translation>
     </message>
     <message>
       <location filename="../../TaskScaledParameters.cpp" line="92"/>
@@ -3033,11 +2948,6 @@ entlang der angegebenen Richtung gemessen</translation>
   </context>
   <context>
     <name>PartDesignGui::TaskShapeBinder</name>
-    <message>
-      <location filename="../../TaskShapeBinder.ui" line="14"/>
-      <source>Form</source>
-      <translation>Form</translation>
-    </message>
     <message>
       <location filename="../../TaskShapeBinder.ui" line="22"/>
       <source>Object</source>
@@ -3075,16 +2985,11 @@ entlang der angegebenen Richtung gemessen</translation>
   <context>
     <name>PartDesignGui::TaskThicknessParameters</name>
     <message>
-      <location filename="../../TaskThicknessParameters.ui" line="14"/>
-      <source>Form</source>
-      <translation>Form</translation>
-    </message>
-    <message>
       <location filename="../../TaskThicknessParameters.ui" line="20"/>
       <source>Click button to enter selection mode,
 click again to end selection</source>
-      <translation>Klicken Sie auf die Schaltfläche, um den Auswahlmodus zu betreten,
-erneut klicken um die Auswahl zu beenden</translation>
+      <translation>Klicken Sie auf den Button um in den Auswahl-Modus zu gelangen.
+Nochmaliges Klicken beendet den Auswahl-Modus.</translation>
     </message>
     <message>
       <location filename="../../TaskThicknessParameters.ui" line="24"/>
@@ -3186,7 +3091,7 @@ erneut klicken um die Auswahl zu beenden</translation>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="268"/>
       <source>Base X axis</source>
-      <translation>Basis-X-Achse</translation>
+      <translation>Basis X-Achse</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="269"/>
@@ -3196,7 +3101,7 @@ erneut klicken um die Auswahl zu beenden</translation>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="270"/>
       <source>Base Z axis</source>
-      <translation>Basis-Z-Achse</translation>
+      <translation>Basis Z-Achse</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="277"/>
@@ -3207,17 +3112,17 @@ erneut klicken um die Auswahl zu beenden</translation>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="304"/>
       <source>Base XY plane</source>
-      <translation>Basis XY-Ebene</translation>
+      <translation>XY-Basis-Ebene</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="305"/>
       <source>Base YZ plane</source>
-      <translation>Basis YZ-Ebene</translation>
+      <translation>YZ-Basis-Ebene</translation>
     </message>
     <message>
       <location filename="../../TaskTransformedParameters.cpp" line="306"/>
       <source>Base XZ plane</source>
-      <translation>Basis XZ-Ebene</translation>
+      <translation>XZ-Basis-Ebene</translation>
     </message>
   </context>
   <context>
@@ -4272,11 +4177,6 @@ Du kannst die Teile später jederzeit mit 'Part Design -&gt; Migrieren...' migri
   <context>
     <name>TaskHole</name>
     <message>
-      <location filename="../../../FeatureHole/TaskHole.ui" line="14"/>
-      <source>Form</source>
-      <translation>Form</translation>
-    </message>
-    <message>
       <location filename="../../../FeatureHole/TaskHole.ui" line="24"/>
       <source>Position</source>
       <translation>Position</translation>
@@ -4545,7 +4445,7 @@ Nur für Bohrungen ohne Gewinde verfügbar</translation>
       <location filename="../../TaskHoleParameters.ui" line="350"/>
       <location filename="../../TaskHoleParameters.ui" line="404"/>
       <source>Dimension</source>
-      <translation>Abmessung</translation>
+      <translation>Tiefenmaß</translation>
     </message>
     <message>
       <location filename="../../TaskHoleParameters.ui" line="355"/>

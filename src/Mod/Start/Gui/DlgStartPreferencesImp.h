@@ -65,6 +65,6 @@ private:
     std::unique_ptr<Ui_DlgStartPreferencesAdvanced> ui;
 };
 
-}// namespace StartGui
+}  // namespace StartGui
 
-#endif// STARTGUI_DLGSTARTPREFERENCESIMP_H
+#endif  // STARTGUI_DLGSTARTPREFERENCESIMP_H

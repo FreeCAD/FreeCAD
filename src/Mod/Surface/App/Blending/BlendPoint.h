@@ -70,6 +70,6 @@ public:
 
 private:
 };
-}// namespace Surface
+}  // namespace Surface
 
 #endif

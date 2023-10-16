@@ -78,4 +78,4 @@ public:
 };
 // clang-format on
 
-#endif// MESHFLATTENING
+#endif  // MESHFLATTENING

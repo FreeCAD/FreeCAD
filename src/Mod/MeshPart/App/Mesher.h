@@ -256,6 +256,6 @@ private:
     std::string buffer;
 };
 
-}// namespace MeshPart
+}  // namespace MeshPart
 
-#endif// MESHPART_MESHER_H
+#endif  // MESHPART_MESHER_H

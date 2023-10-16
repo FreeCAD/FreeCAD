@@ -26,24 +26,25 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <Inventor/nodes/SoCylinder.h>
-# include <Inventor/nodes/SoMaterial.h>
-# include <Inventor/nodes/SoRotation.h>
-# include <Inventor/nodes/SoSeparator.h>
-# include <Inventor/nodes/SoSphere.h>
-# include <Inventor/nodes/SoTranslation.h>
+#include <Inventor/nodes/SoCylinder.h>
+#include <Inventor/nodes/SoMaterial.h>
+#include <Inventor/nodes/SoRotation.h>
+#include <Inventor/nodes/SoSeparator.h>
+#include <Inventor/nodes/SoSphere.h>
+#include <Inventor/nodes/SoTranslation.h>
 #endif
 
-#include <Gui/Control.h>
 #include "Mod/Fem/App/FemConstraintHeatflux.h"
+#include <Gui/Control.h>
 
-#include "ViewProviderFemConstraintHeatflux.h"
 #include "TaskFemConstraintHeatflux.h"
+#include "ViewProviderFemConstraintHeatflux.h"
 
 
 using namespace FemGui;
 
-PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintHeatflux, FemGui::ViewProviderFemConstraintOnBoundary)
+PROPERTY_SOURCE(FemGui::ViewProviderFemConstraintHeatflux,
+                FemGui::ViewProviderFemConstraintOnBoundary)
 
 ViewProviderFemConstraintHeatflux::ViewProviderFemConstraintHeatflux()
 {
@@ -53,22 +54,24 @@ ViewProviderFemConstraintHeatflux::ViewProviderFemConstraintHeatflux()
 
 ViewProviderFemConstraintHeatflux::~ViewProviderFemConstraintHeatflux() = default;
 
-//FIXME setEdit needs a careful review
+// FIXME setEdit needs a careful review
 bool ViewProviderFemConstraintHeatflux::setEdit(int ModNum)
 {
     if (ModNum == ViewProvider::Default) {
         // When double-clicking on the item for this constraint the
         // object unsets and sets its edit mode without closing
         // the task panel
-        Gui::TaskView::TaskDialog *dlg = Gui::Control().activeDialog();
-        TaskDlgFemConstraintHeatflux *constrDlg = qobject_cast<TaskDlgFemConstraintHeatflux *>(dlg);
-        if (constrDlg && constrDlg->getConstraintView() != this)
-            constrDlg = nullptr; // another constraint left open its task panel
+        Gui::TaskView::TaskDialog* dlg = Gui::Control().activeDialog();
+        TaskDlgFemConstraintHeatflux* constrDlg = qobject_cast<TaskDlgFemConstraintHeatflux*>(dlg);
+        if (constrDlg && constrDlg->getConstraintView() != this) {
+            constrDlg = nullptr;  // another constraint left open its task panel
+        }
         if (dlg && !constrDlg) {
             if (constraintDialog) {
                 // Ignore the request to open another dialog
                 return false;
-            } else {
+            }
+            else {
                 constraintDialog = new TaskFemConstraintHeatflux(this);
                 return true;
             }
@@ -78,100 +81,107 @@ bool ViewProviderFemConstraintHeatflux::setEdit(int ModNum)
         Gui::Selection().clearSelection();
 
         // start the edit dialog
-        if (constrDlg)
+        if (constrDlg) {
             Gui::Control().showDialog(constrDlg);
-        else
+        }
+        else {
             Gui::Control().showDialog(new TaskDlgFemConstraintHeatflux(this));
+        }
         return true;
     }
     else {
-        return ViewProviderDocumentObject::setEdit(ModNum); // clazy:exclude=skipped-base-method
+        return ViewProviderDocumentObject::setEdit(ModNum);  // clazy:exclude=skipped-base-method
     }
 }
 
 #define HEIGHT (1.5)
 #define RADIUS (0.3)
-//#define USE_MULTIPLE_COPY  //OvG: MULTICOPY fails to update scaled display on initial drawing - so disable
+// #define USE_MULTIPLE_COPY  //OvG: MULTICOPY fails to update scaled display on initial drawing -
+// so disable
 
 void ViewProviderFemConstraintHeatflux::updateData(const App::Property* prop)
 {
     // Gets called whenever a property of the attached object changes
-    Fem::ConstraintHeatflux* pcConstraint = static_cast<Fem::ConstraintHeatflux*>(this->getObject());
-    float scaledradius = RADIUS * pcConstraint->Scale.getValue(); //OvG: Calculate scaled values once only
+    Fem::ConstraintHeatflux* pcConstraint =
+        static_cast<Fem::ConstraintHeatflux*>(this->getObject());
+    float scaledradius =
+        RADIUS * pcConstraint->Scale.getValue();  // OvG: Calculate scaled values once only
     float scaledheight = HEIGHT * pcConstraint->Scale.getValue();
-    //float ambienttemp = pcConstraint->AmbientTemp.getValue();
-    // //float facetemp = pcConstraint->FaceTemp.getValue();
-    //float filmcoef = pcConstraint->FilmCoef.getValue();
+    // float ambienttemp = pcConstraint->AmbientTemp.getValue();
+    //  //float facetemp = pcConstraint->FaceTemp.getValue();
+    // float filmcoef = pcConstraint->FilmCoef.getValue();
 
     if (prop == &pcConstraint->Points) {
         const std::vector<Base::Vector3d>& points = pcConstraint->Points.getValues();
         const std::vector<Base::Vector3d>& normals = pcConstraint->Normals.getValues();
-        if (points.size() != normals.size())
+        if (points.size() != normals.size()) {
             return;
+        }
         std::vector<Base::Vector3d>::const_iterator n = normals.begin();
 
         // Note: Points and Normals are always updated together
         Gui::coinRemoveAllChildren(pShapeSep);
 
-        for (const auto & point : points) {
-            //Define base and normal directions
+        for (const auto& point : points) {
+            // Define base and normal directions
             SbVec3f base(point.x, point.y, point.z);
-            SbVec3f dir(n->x, n->y, n->z);//normal
+            SbVec3f dir(n->x, n->y, n->z);  // normal
 
-            ///Temperature indication
-            //define separator
+            /// Temperature indication
+            // define separator
             SoSeparator* sep = new SoSeparator();
 
-            ///draw a temp gauge,with sphere and a cylinder
-            //first move to correct position
-            SoTranslation *trans = new SoTranslation();
+            /// draw a temp gauge,with sphere and a cylinder
+            // first move to correct position
+            SoTranslation* trans = new SoTranslation();
             SbVec3f newPos = base + scaledradius * dir * 0.7f;
             trans->translation.setValue(newPos);
             sep->addChild(trans);
 
-            //adjust orientation
-            SoRotation *rot = new SoRotation();
+            // adjust orientation
+            SoRotation* rot = new SoRotation();
             rot->rotation.setValue(SbRotation(SbVec3f(0, 1, 0), dir));
             sep->addChild(rot);
 
-            //define color of shape
-            SoMaterial *myMaterial = new SoMaterial;
-            myMaterial->diffuseColor.set1Value(0, SbColor(0.65f, 0.1f, 0.25f));//RGB
-            //myMaterial->diffuseColor.set1Value(1,SbColor(.1,.1,.1));//possible to adjust sides separately
+            // define color of shape
+            SoMaterial* myMaterial = new SoMaterial;
+            myMaterial->diffuseColor.set1Value(0, SbColor(0.65f, 0.1f, 0.25f));  // RGB
+            // myMaterial->diffuseColor.set1Value(1,SbColor(.1,.1,.1));//possible to adjust sides
+            // separately
             sep->addChild(myMaterial);
 
-            //draw a sphere
-            SoSphere *sph = new SoSphere();
+            // draw a sphere
+            SoSphere* sph = new SoSphere();
             sph->radius.setValue(scaledradius * 0.75);
             sep->addChild(sph);
-            //translate position
-            SoTranslation *trans2 = new SoTranslation();
+            // translate position
+            SoTranslation* trans2 = new SoTranslation();
             trans2->translation.setValue(SbVec3f(0, scaledheight * 0.375, 0));
             sep->addChild(trans2);
-            //draw a cylinder
-            SoCylinder *cyl = new SoCylinder();
+            // draw a cylinder
+            SoCylinder* cyl = new SoCylinder();
             cyl->height.setValue(scaledheight * 0.5);
             cyl->radius.setValue(scaledradius * 0.375);
             sep->addChild(cyl);
-            //translate position
-            SoTranslation *trans3 = new SoTranslation();
+            // translate position
+            SoTranslation* trans3 = new SoTranslation();
             trans3->translation.setValue(SbVec3f(0, scaledheight * 0.375, 0));
             sep->addChild(trans3);
-            //define color of shape
-            SoMaterial *myMaterial2 = new SoMaterial;
-            myMaterial2->diffuseColor.set1Value(0, SbColor(1, 1, 1));//RGB
+            // define color of shape
+            SoMaterial* myMaterial2 = new SoMaterial;
+            myMaterial2->diffuseColor.set1Value(0, SbColor(1, 1, 1));  // RGB
             sep->addChild(myMaterial2);
-            //draw a cylinder
-            SoCylinder *cyl2 = new SoCylinder();
+            // draw a cylinder
+            SoCylinder* cyl2 = new SoCylinder();
             cyl2->height.setValue(scaledheight * 0.25);
             cyl2->radius.setValue(scaledradius * 0.375);
             sep->addChild(cyl2);
-            //translate position
-            SoTranslation *trans4 = new SoTranslation();
+            // translate position
+            SoTranslation* trans4 = new SoTranslation();
             trans4->translation.setValue(SbVec3f(0, -scaledheight * 0.375, 0));
             sep->addChild(trans4);
-            //draw a cylinder
-            SoCylinder *cyl3 = new SoCylinder();
+            // draw a cylinder
+            SoCylinder* cyl3 = new SoCylinder();
             cyl3->height.setValue(scaledheight * 0.05);
             cyl3->radius.setValue(scaledradius * 1);
             sep->addChild(cyl3);

@@ -27,11 +27,29 @@
 #include <Mod/Sketcher/App/Constraint.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 
+namespace Gui
+{
+class Command;
+}
+
 namespace SketcherGui
 {
 
-
 // These functions are declared here to promote code reuse from other modules
+
+/// Makes an angle constraint between 2 lines
+void makeAngleBetweenTwoLines(Sketcher::SketchObject* Obj,
+                              Gui::Command* cmd,
+                              int geoId1,
+                              int geoId2);
+
+// Find the angle between two lines. Return false if geoIds are not lines.
+bool calculateAngle(Sketcher::SketchObject* Obj,
+                    int& geoId1,
+                    int& geoId2,
+                    Sketcher::PointPos& PosId1,
+                    Sketcher::PointPos& PosId2,
+                    double& ActAngle);
 
 /// Makes a tangency constraint using external construction line between
 /// ellipse => an ellipse
@@ -107,5 +125,5 @@ void doEndpointToEdgeTangency(Sketcher::SketchObject* Obj,
 /// notifications
 void notifyConstraintSubstitutions(const QString& message);
 
-}// namespace SketcherGui
-#endif// SKETCHERGUI_CommandConstraints_H
+}  // namespace SketcherGui
+#endif  // SKETCHERGUI_CommandConstraints_H

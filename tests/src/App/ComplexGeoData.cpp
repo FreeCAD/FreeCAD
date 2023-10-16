@@ -113,7 +113,7 @@ private:
 
 // NOLINTBEGIN(readability-magic-numbers)
 
-TEST_F(ComplexGeoDataTest, getIndexedNameNoName)// NOLINT
+TEST_F(ComplexGeoDataTest, getIndexedNameNoName)  // NOLINT
 {
     // Arrange & Act
     auto result = cgd().getIndexedName(Data::MappedName());
@@ -122,7 +122,7 @@ TEST_F(ComplexGeoDataTest, getIndexedNameNoName)// NOLINT
     EXPECT_FALSE(result);
 }
 
-TEST_F(ComplexGeoDataTest, getIndexedNameNoElementMap)// NOLINT
+TEST_F(ComplexGeoDataTest, getIndexedNameNoElementMap)  // NOLINT
 {
     // Arrange & Act
     auto result = cgd().getIndexedName(Data::MappedName("TestName"));
@@ -131,7 +131,7 @@ TEST_F(ComplexGeoDataTest, getIndexedNameNoElementMap)// NOLINT
     EXPECT_TRUE(result);
 }
 
-TEST_F(ComplexGeoDataTest, getMappedNameNoElement)// NOLINT
+TEST_F(ComplexGeoDataTest, getMappedNameNoElement)  // NOLINT
 {
     // Arrange & Act
     auto result = cgd().getMappedName(Data::IndexedName {});
@@ -140,7 +140,7 @@ TEST_F(ComplexGeoDataTest, getMappedNameNoElement)// NOLINT
     EXPECT_FALSE(result);
 }
 
-TEST_F(ComplexGeoDataTest, getMappedNameDisallowUnmappedNoMap)// NOLINT
+TEST_F(ComplexGeoDataTest, getMappedNameDisallowUnmappedNoMap)  // NOLINT
 {
     // Arrange & Act
     auto result = cgd().getMappedName(Data::IndexedName {"TestName"}, false);
@@ -149,7 +149,7 @@ TEST_F(ComplexGeoDataTest, getMappedNameDisallowUnmappedNoMap)// NOLINT
     EXPECT_FALSE(result);
 }
 
-TEST_F(ComplexGeoDataTest, getMappedNameDisallowUnmappedWithMap)// NOLINT
+TEST_F(ComplexGeoDataTest, getMappedNameDisallowUnmappedWithMap)  // NOLINT
 {
     // Arrange
     auto elementMap = std::make_shared<Data::ElementMap>();
@@ -166,11 +166,11 @@ TEST_F(ComplexGeoDataTest, getMappedNameDisallowUnmappedWithMap)// NOLINT
     EXPECT_EQ(mappedName, result);
 }
 
-TEST_F(ComplexGeoDataTest, getMappedNameDisallowUnmappedMissingFromMap)// NOLINT
+TEST_F(ComplexGeoDataTest, getMappedNameDisallowUnmappedMissingFromMap)  // NOLINT
 {
     // Arrange
     auto mappedName = Data::MappedName("NotTheTestName");
-    cgd().getIndexedName(mappedName);// Put it in the map
+    cgd().getIndexedName(mappedName);  // Put it in the map
 
     // Act
     auto result = cgd().getMappedName(Data::IndexedName {"TestName"}, false);
@@ -179,7 +179,7 @@ TEST_F(ComplexGeoDataTest, getMappedNameDisallowUnmappedMissingFromMap)// NOLINT
     EXPECT_FALSE(result);
 }
 
-TEST_F(ComplexGeoDataTest, getMappedNameAllowUnmapped)// NOLINT
+TEST_F(ComplexGeoDataTest, getMappedNameAllowUnmapped)  // NOLINT
 {
     // Arrange & Act
     auto result = cgd().getMappedName(Data::IndexedName {"TestName"}, true);
@@ -188,7 +188,7 @@ TEST_F(ComplexGeoDataTest, getMappedNameAllowUnmapped)// NOLINT
     EXPECT_TRUE(result);
 }
 
-TEST_F(ComplexGeoDataTest, getElementNameGivenIndexedName)// NOLINT
+TEST_F(ComplexGeoDataTest, getElementNameGivenIndexedName)  // NOLINT
 {
     // Arrange
     const char* name {"EDGE123"};
@@ -201,7 +201,7 @@ TEST_F(ComplexGeoDataTest, getElementNameGivenIndexedName)// NOLINT
     EXPECT_EQ(result.index, indexedName);
 }
 
-TEST_F(ComplexGeoDataTest, getElementNameGivenMappedName)// NOLINT
+TEST_F(ComplexGeoDataTest, getElementNameGivenMappedName)  // NOLINT
 {
     // Arrange
     const char* name {"EDGE123"};
@@ -214,7 +214,7 @@ TEST_F(ComplexGeoDataTest, getElementNameGivenMappedName)// NOLINT
     EXPECT_EQ(result.name, mappedName);
 }
 
-TEST_F(ComplexGeoDataTest, getElementMappedNamesNoMapNoUnmapped)// NOLINT
+TEST_F(ComplexGeoDataTest, getElementMappedNamesNoMapNoUnmapped)  // NOLINT
 {
     // Arrange
     // Do not create an element map
@@ -227,7 +227,7 @@ TEST_F(ComplexGeoDataTest, getElementMappedNamesNoMapNoUnmapped)// NOLINT
     EXPECT_TRUE(result.empty());
 }
 
-TEST_F(ComplexGeoDataTest, getElementMappedNamesWithMapNoUnmapped)// NOLINT
+TEST_F(ComplexGeoDataTest, getElementMappedNamesWithMapNoUnmapped)  // NOLINT
 {
     // Arrange
     auto elementMap = std::make_shared<Data::ElementMap>();
@@ -244,7 +244,7 @@ TEST_F(ComplexGeoDataTest, getElementMappedNamesWithMapNoUnmapped)// NOLINT
     EXPECT_EQ(result[0].first, mappedName);
 }
 
-TEST_F(ComplexGeoDataTest, getElementMappedNamesNoMapWithUnmapped)// NOLINT
+TEST_F(ComplexGeoDataTest, getElementMappedNamesNoMapWithUnmapped)  // NOLINT
 {
     // Do not create an element map
     auto indexedName = Data::IndexedName("EDGE1");
@@ -257,7 +257,7 @@ TEST_F(ComplexGeoDataTest, getElementMappedNamesNoMapWithUnmapped)// NOLINT
 }
 
 
-TEST_F(ComplexGeoDataTest, getElementMappedNamesWithMapWithUnmapped)// NOLINT
+TEST_F(ComplexGeoDataTest, getElementMappedNamesWithMapWithUnmapped)  // NOLINT
 {
     // Arrange
     Data::MappedName mappedName;
@@ -273,7 +273,7 @@ TEST_F(ComplexGeoDataTest, getElementMappedNamesWithMapWithUnmapped)// NOLINT
     EXPECT_NE(result[0].first, mappedName);
 }
 
-TEST_F(ComplexGeoDataTest, elementTypeValidIndexName)// NOLINT
+TEST_F(ComplexGeoDataTest, elementTypeValidIndexName)  // NOLINT
 {
     // Arrange
     auto indexedName = Data::IndexedName("EDGE", 1);
@@ -285,10 +285,10 @@ TEST_F(ComplexGeoDataTest, elementTypeValidIndexName)// NOLINT
     EXPECT_EQ(elementType, 'E');
 }
 
-TEST_F(ComplexGeoDataTest, elementTypeInvalidIndexedName)// NOLINT
+TEST_F(ComplexGeoDataTest, elementTypeInvalidIndexedName)  // NOLINT
 {
     // Arrange
-    auto indexedName = Data::IndexedName("INVALID", 1);// Not in the element type list
+    auto indexedName = Data::IndexedName("INVALID", 1);  // Not in the element type list
 
     // Act
     char elementType = cgd().elementType(indexedName);
@@ -297,7 +297,7 @@ TEST_F(ComplexGeoDataTest, elementTypeInvalidIndexedName)// NOLINT
     EXPECT_EQ(elementType, 0);
 }
 
-TEST_F(ComplexGeoDataTest, elementTypeCharEmptyName)// NOLINT
+TEST_F(ComplexGeoDataTest, elementTypeCharEmptyName)  // NOLINT
 {
     // Arrange & Act
     char elementType = cgd().elementType(nullptr);
@@ -306,7 +306,7 @@ TEST_F(ComplexGeoDataTest, elementTypeCharEmptyName)// NOLINT
     EXPECT_EQ(elementType, 0);
 }
 
-TEST_F(ComplexGeoDataTest, elementTypeCharIndexedName)// NOLINT
+TEST_F(ComplexGeoDataTest, elementTypeCharIndexedName)  // NOLINT
 {
     // Arrange & Act
     char elementType = cgd().elementType("EDGE1");
@@ -315,7 +315,7 @@ TEST_F(ComplexGeoDataTest, elementTypeCharIndexedName)// NOLINT
     EXPECT_EQ(elementType, 'E');
 }
 
-TEST_F(ComplexGeoDataTest, elementTypeCharMappedNameNoPrefix)// NOLINT
+TEST_F(ComplexGeoDataTest, elementTypeCharMappedNameNoPrefix)  // NOLINT
 {
     // Arrange
     int size {0};
@@ -330,7 +330,7 @@ TEST_F(ComplexGeoDataTest, elementTypeCharMappedNameNoPrefix)// NOLINT
     EXPECT_EQ(elementType, 'E');
 }
 
-TEST_F(ComplexGeoDataTest, elementTypeCharMappedNameWithPrefix)// NOLINT
+TEST_F(ComplexGeoDataTest, elementTypeCharMappedNameWithPrefix)  // NOLINT
 {
     // Arrange
     int size {0};
@@ -346,7 +346,7 @@ TEST_F(ComplexGeoDataTest, elementTypeCharMappedNameWithPrefix)// NOLINT
     EXPECT_EQ(elementType, 'E');
 }
 
-TEST_F(ComplexGeoDataTest, resetElementMapNoArgument)// NOLINT
+TEST_F(ComplexGeoDataTest, resetElementMapNoArgument)  // NOLINT
 {
     // Arrange & Act
     cgd().resetElementMap();
@@ -355,7 +355,7 @@ TEST_F(ComplexGeoDataTest, resetElementMapNoArgument)// NOLINT
     EXPECT_EQ(cgd().getElementMapSize(), 0);
 }
 
-TEST_F(ComplexGeoDataTest, resetElementMapWithArgument)// NOLINT
+TEST_F(ComplexGeoDataTest, resetElementMapWithArgument)  // NOLINT
 {
     // Arrange
     auto elementMap = std::make_shared<Data::ElementMap>();
@@ -370,7 +370,7 @@ TEST_F(ComplexGeoDataTest, resetElementMapWithArgument)// NOLINT
     EXPECT_EQ(cgd().getElementMapSize(), 1);
 }
 
-TEST_F(ComplexGeoDataTest, setAndGetElementMap)// NOLINT
+TEST_F(ComplexGeoDataTest, setAndGetElementMap)  // NOLINT
 {
     // Arrange
     auto elementMap = std::make_shared<Data::ElementMap>();
@@ -393,7 +393,7 @@ TEST_F(ComplexGeoDataTest, setAndGetElementMap)// NOLINT
     EXPECT_EQ(resultingElementMap.size(), vecMappedElements.size());
 }
 
-TEST_F(ComplexGeoDataTest, getElementMapSize)// NOLINT
+TEST_F(ComplexGeoDataTest, getElementMapSize)  // NOLINT
 {
     // Arrange
     auto elementMap = std::make_shared<Data::ElementMap>();
@@ -409,7 +409,7 @@ TEST_F(ComplexGeoDataTest, getElementMapSize)// NOLINT
     EXPECT_EQ(result, 1);
 }
 
-TEST_F(ComplexGeoDataTest, flushElementMap)// NOLINT
+TEST_F(ComplexGeoDataTest, flushElementMap)  // NOLINT
 {
     // Does nothing in the base class
 }

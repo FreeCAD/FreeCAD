@@ -44,4 +44,4 @@
 #endif
 #endif
 
-#endif// INSPECTION_GLOBAL_H
+#endif  // INSPECTION_GLOBAL_H

@@ -1,9 +1,3 @@
-if(MSVC)
-    add_definitions(-DHAVE_ACOSH -DHAVE_ATANH -DHAVE_ASINH)
-else(MSVC)
-    add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
-endif(MSVC)
-
 include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
@@ -36,6 +30,7 @@ generate_from_xml(ViewProviderSketchGeometryExtensionPy)
 set(SketcherGui_UIC_SRCS
     TaskSketcherConstraints.ui
     TaskSketcherElements.ui
+    SketcherToolDefaultWidget.ui
     TaskSketcherMessages.ui
     TaskSketcherSolverAdvanced.ui
     TaskSketcherValidation.ui
@@ -103,6 +98,11 @@ SET(SketcherGui_SRCS
     TaskSketcherElements.h
     TaskSketcherCreateCommands.cpp
     TaskSketcherCreateCommands.h
+    SketcherToolDefaultWidget.ui
+    SketcherToolDefaultWidget.cpp
+    SketcherToolDefaultWidget.h
+    TaskSketcherTool.cpp
+    TaskSketcherTool.h
     TaskSketcherMessages.ui
     TaskSketcherMessages.cpp
     TaskSketcherMessages.h

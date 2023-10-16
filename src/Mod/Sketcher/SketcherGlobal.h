@@ -44,4 +44,4 @@
 #endif
 #endif
 
-#endif// SKETCHER_GLOBAL_H
+#endif  // SKETCHER_GLOBAL_H

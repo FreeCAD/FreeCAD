@@ -32,7 +32,7 @@
 
 using namespace WebGui;
 
-#if 0// needed for Qt's lupdate utility
+#if 0  // needed for Qt's lupdate utility
     qApp->translate("Workbench", "Navigation");
 #endif
 
@@ -138,7 +138,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     //    Gui::MenuItem* tool = new Gui::MenuItem( menuBar );
     //    tool->setCommand("&Tools");
     //    *tool << "Std_CommandLine" << "Std_DlgParameter" << "Separator" << "Std_DlgMacroRecord"
-    //          << "Std_MacroStopRecord" << "Std_DlgMacroExecute" << "Std_DlgMacroExecuteDirect"
+    //          << "Std_DlgMacroExecute" << "Std_DlgMacroExecuteDirect"
     //          << "Separator" << "Std_ViewScreenShot" << "Separator" << "Std_DlgCustomize";
     //
     //    // Mesh

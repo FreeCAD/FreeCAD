@@ -33,7 +33,7 @@
 namespace SketcherGui
 {
 
-extern GeometryCreationMode geometryCreationMode;// defined in CommandCreateGeo.cpp
+extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGeo.cpp
 
 class DrawSketchHandlerArcOfHyperbola: public DrawSketchHandler
 {
@@ -210,7 +210,7 @@ public:
             arcAngle_t = 0.;
             Mode = STATUS_SEEK_Fourth;
         }
-        else {// Fourth
+        else {  // Fourth
             endPoint = onSketchPos;
 
             Mode = STATUS_Close;
@@ -392,8 +392,8 @@ public:
                  * right button of the mouse */
             }
             else {
-                sketchgui
-                    ->purgeHandler();// no code after this line, Handler get deleted in ViewProvider
+                sketchgui->purgeHandler();  // no code after this line, Handler get deleted in
+                                            // ViewProvider
             }
         }
         return true;
@@ -415,7 +415,7 @@ protected:
 };
 
 
-}// namespace SketcherGui
+}  // namespace SketcherGui
 
 
-#endif// SKETCHERGUI_DrawSketchHandlerArcOfHyperbola_H
+#endif  // SKETCHERGUI_DrawSketchHandlerArcOfHyperbola_H

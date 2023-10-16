@@ -29,7 +29,7 @@
 namespace FemGui
 {
 
-class FemGuiExport ViewProviderFemMeshShape : public ViewProviderFemMesh
+class FemGuiExport ViewProviderFemMeshShape: public ViewProviderFemMesh
 {
     PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemMeshShape);
 
@@ -41,7 +41,7 @@ public:
     ~ViewProviderFemMeshShape() override;
 };
 
-} //namespace FemGui
+}  // namespace FemGui
 
 
-#endif // FEM_ViewProviderFemMeshShape_H
+#endif  // FEM_ViewProviderFemMeshShape_H

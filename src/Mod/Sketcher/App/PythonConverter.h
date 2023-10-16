@@ -74,7 +74,7 @@ private:
     static std::string process(const Sketcher::Constraint* constraint);
 };
 
-}// namespace Sketcher
+}  // namespace Sketcher
 
 
-#endif// SKETCHER_PythonConverter_H
+#endif  // SKETCHER_PythonConverter_H

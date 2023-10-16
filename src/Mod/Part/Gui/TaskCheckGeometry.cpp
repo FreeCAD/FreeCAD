@@ -1363,7 +1363,7 @@ Standard_Boolean BOPProgressIndicator::Show (const Standard_Boolean theForce)
     else {
         Handle(TCollection_HAsciiString) aName = GetScope(1).GetName(); //current step
         if (!aName.IsNull())
-            myProgress->setLabelText (QString::fromLatin1(aName->ToCString()));
+            myProgress->setLabelText (QString::fromUtf8(aName->ToCString()));
     }
 
     return Standard_True;
@@ -1373,7 +1373,7 @@ void BOPProgressIndicator::Show (const Message_ProgressScope& theScope,
                                  const Standard_Boolean isForce)
 {
     Standard_CString aName = theScope.Name(); //current step
-    myProgress->setLabelText (QString::fromLatin1(aName));
+    myProgress->setLabelText (QString::fromUtf8(aName));
 
     if (isForce) {
         myProgress->show();

@@ -32,21 +32,24 @@
 #include <Mod/Mesh/App/Core/MeshKernel.h>
 
 
-namespace Mesh {
+namespace Mesh
+{
 class Feature;
 }
 
-namespace Gui {
+namespace Gui
+{
 class StatusWidget;
 }
 
-namespace MeshGui {
+namespace MeshGui
+{
 
 /**
  * Non-modal dialog to remesh an existing mesh.
  * @author Werner Mayer
  */
-class MeshGuiExport GmshWidget : public QWidget
+class MeshGuiExport GmshWidget: public QWidget
 {
     Q_OBJECT
 
@@ -57,7 +60,7 @@ public:
     void reject();
 
 protected:
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
     int meshingAlgorithm() const;
     double getAngle() const;
     double getMaxSize() const;
@@ -85,12 +88,14 @@ private:
  * Non-modal dialog to remesh an existing mesh.
  * @author Werner Mayer
  */
-class MeshGuiExport RemeshGmsh : public GmshWidget
+class MeshGuiExport RemeshGmsh: public GmshWidget
 {
     Q_OBJECT
 
 public:
-    explicit RemeshGmsh(Mesh::Feature* mesh, QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
+    explicit RemeshGmsh(Mesh::Feature* mesh,
+                        QWidget* parent = nullptr,
+                        Qt::WindowFlags fl = Qt::WindowFlags());
     ~RemeshGmsh() override;
 
 protected:
@@ -105,7 +110,7 @@ private:
 /**
  * Embed the panel into a task dialog.
  */
-class TaskRemeshGmsh : public Gui::TaskView::TaskDialog
+class TaskRemeshGmsh: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
@@ -116,15 +121,19 @@ public:
     void clicked(int) override;
 
     QDialogButtonBox::StandardButtons getStandardButtons() const override
-    { return QDialogButtonBox::Apply | QDialogButtonBox::Close; }
+    {
+        return QDialogButtonBox::Apply | QDialogButtonBox::Close;
+    }
     bool isAllowedAlterDocument() const override
-    { return true; }
+    {
+        return true;
+    }
 
 private:
     RemeshGmsh* widget;
     Gui::TaskView::TaskBox* taskbox;
 };
 
-}
+}  // namespace MeshGui
 
-#endif // MESHGUI_REMESHGMSH_H
+#endif  // MESHGUI_REMESHGMSH_H

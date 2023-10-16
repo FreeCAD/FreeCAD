@@ -69,14 +69,14 @@ public:
    * @param rcReason
    * \todo undocumented parameter 2
    */
-  virtual void OnChange(Subject<_MessageType>& rCaller,_MessageType rcReason)=0;
+  virtual void OnChange(Subject<_MessageType>& rCaller, _MessageType rcReason) = 0;
 
   /**
    * This method need to be reimplemented from the concrete Observer
    * and get called by the observed class
    * @param rCaller a reference to the calling object
    */
-  virtual void OnDestroy(Subject<_MessageType> & rCaller) {
+  virtual void OnDestroy(Subject<_MessageType>& rCaller) {
     (void)rCaller;
   }
 
@@ -85,7 +85,9 @@ public:
    * and returns the name of the observer. Needed to use the Get
    * Method of the Subject.
    */
-  virtual const char *Name(){return nullptr;}
+  virtual const char *Name() {
+      return nullptr;
+  }
 };
 
 /** Subject class
@@ -118,8 +120,8 @@ public:
   {
     if (_ObserverSet.size() > 0)
     {
-      printf("Not detached all observers yet\n");
-      assert(0);
+      Base::Console().DeveloperWarning(std::string("~Subject()"),
+                                       "Not detached all observers yet\n");
     }
   }
 
@@ -133,10 +135,12 @@ public:
   {
 #ifdef FC_DEBUG
     size_t count = _ObserverSet.size();
-    //printf("Attach observer %p\n", ToObserv);
     _ObserverSet.insert(ToObserv);
-    if ( _ObserverSet.size() == count )
-      printf("Observer %p already attached\n", static_cast<void*>(ToObserv));
+    if ( _ObserverSet.size() == count ) {
+        Base::Console().DeveloperWarning(std::string("Subject::Attach"),
+                                         "Observer %p already attached\n",
+                                         static_cast<void*>(ToObserv));
+    }
 #else
     _ObserverSet.insert(ToObserv);
 #endif
@@ -152,10 +156,12 @@ public:
   {
 #ifdef FC_DEBUG
     size_t count = _ObserverSet.size();
-    //printf("Detach observer %p\n", ToObserv);
     _ObserverSet.erase(ToObserv);
-    if ( _ObserverSet.size() == count )
-      printf("Observer %p already detached\n", static_cast<void*>(ToObserv));
+    if (_ObserverSet.size() == count) {
+        Base::Console().DeveloperWarning(std::string("Subject::Detach"),
+                                         "Observer %p already detached\n",
+                                         static_cast<void*>(ToObserv));
+    }
 #else
     _ObserverSet.erase(ToObserv);
 #endif

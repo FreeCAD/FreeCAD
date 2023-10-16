@@ -25,33 +25,34 @@
 
 #include <Gui/Workbench.h>
 #ifndef MESH_GLOBAL_H
-# include <Mod/Mesh/MeshGlobal.h>
+#include <Mod/Mesh/MeshGlobal.h>
 #endif
 
 
-namespace MeshGui {
+namespace MeshGui
+{
 
 /**
  * @author Werner Mayer
  */
-class MeshGuiExport Workbench : public Gui::StdWorkbench
+class MeshGuiExport Workbench: public Gui::StdWorkbench
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-  Workbench();
+    Workbench();
 
-  void activated() override;
-  void deactivated() override;
-  void setupContextMenu(const char* recipient, Gui::MenuItem*) const override;
+    void activated() override;
+    void deactivated() override;
+    void setupContextMenu(const char* recipient, Gui::MenuItem*) const override;
 
 protected:
-  Gui::MenuItem* setupMenuBar() const override;
-  Gui::ToolBarItem* setupToolBars() const override;
-  Gui::ToolBarItem* setupCommandBars() const override;
+    Gui::MenuItem* setupMenuBar() const override;
+    Gui::ToolBarItem* setupToolBars() const override;
+    Gui::ToolBarItem* setupCommandBars() const override;
 };
 
-} // namespace MeshGui
+}  // namespace MeshGui
 
 
-#endif // MESH_WORKBENCH_H
+#endif  // MESH_WORKBENCH_H

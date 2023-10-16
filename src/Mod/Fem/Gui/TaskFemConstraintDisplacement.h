@@ -26,8 +26,8 @@
 #ifndef GUI_TASKVIEW_TaskFemConstraintDisplacement_H
 #define GUI_TASKVIEW_TaskFemConstraintDisplacement_H
 
-#include <memory>
 #include <QObject>
+#include <memory>
 
 #include <Gui/Selection.h>
 #include <Gui/TaskView/TaskView.h>
@@ -39,8 +39,9 @@
 
 class Ui_TaskFemConstraintDisplacement;
 
-namespace FemGui {
-class TaskFemConstraintDisplacement : public TaskFemConstraintOnBoundary
+namespace FemGui
+{
+class TaskFemConstraintDisplacement: public TaskFemConstraintOnBoundary
 {
     Q_OBJECT
 
@@ -96,8 +97,8 @@ private Q_SLOTS:
     void removeFromSelection() override;
 
 protected:
-    bool event(QEvent *e) override;
-    void changeEvent(QEvent *e) override;
+    bool event(QEvent* e) override;
+    void changeEvent(QEvent* e) override;
     void clearButtons(const SelectionChangeModes notThis) override;
 
 private:
@@ -105,7 +106,7 @@ private:
     std::unique_ptr<Ui_TaskFemConstraintDisplacement> ui;
 };
 
-class TaskDlgFemConstraintDisplacement : public TaskDlgFemConstraint
+class TaskDlgFemConstraintDisplacement: public TaskDlgFemConstraint
 {
     Q_OBJECT
 
@@ -117,6 +118,6 @@ public:
     bool reject() override;
 };
 
-} //namespace FemGui
+}  // namespace FemGui
 
-#endif // GUI_TASKVIEW_TaskFemConstraintDisplacement_H
+#endif  // GUI_TASKVIEW_TaskFemConstraintDisplacement_H

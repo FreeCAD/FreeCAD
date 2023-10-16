@@ -34,7 +34,7 @@
 namespace SketcherGui
 {
 
-extern GeometryCreationMode geometryCreationMode;// defined in CommandCreateGeo.cpp
+extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGeo.cpp
 
 class DrawSketchHandlerLineSet: public DrawSketchHandler
 {
@@ -90,7 +90,7 @@ public:
     void registerPressedKey(bool pressed, int key) override
     {
         if (Mode != STATUS_SEEK_Second) {
-            return;// SegmentMode can be changed only in STATUS_SEEK_Second mode
+            return;  // SegmentMode can be changed only in STATUS_SEEK_Second mode
         }
 
         if (key == SoKeyboardEvent::M && pressed && previousCurve != -1) {
@@ -118,15 +118,15 @@ public:
                 switch (TransitionMode) {
                     case TRANSITION_MODE_Free:
                         if (geom->getTypeId()
-                            == Part::GeomArcOfCircle::getClassTypeId()) {// 3rd mode
+                            == Part::GeomArcOfCircle::getClassTypeId()) {  // 3rd mode
                             SegmentMode = SEGMENT_MODE_Arc;
                             TransitionMode = TRANSITION_MODE_Tangent;
                         }
-                        else {// 1st mode
+                        else {  // 1st mode
                             TransitionMode = TRANSITION_MODE_Perpendicular_L;
                         }
                         break;
-                    case TRANSITION_MODE_Perpendicular_L:// 2nd mode
+                    case TRANSITION_MODE_Perpendicular_L:  // 2nd mode
                         if (geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
                             TransitionMode = TRANSITION_MODE_Free;
                         }
@@ -136,28 +136,28 @@ public:
                         break;
                     case TRANSITION_MODE_Tangent:
                         if (geom->getTypeId()
-                            == Part::GeomArcOfCircle::getClassTypeId()) {// 1st mode
+                            == Part::GeomArcOfCircle::getClassTypeId()) {  // 1st mode
                             TransitionMode = TRANSITION_MODE_Perpendicular_L;
                         }
-                        else {// 3rd mode
+                        else {  // 3rd mode
                             SegmentMode = SEGMENT_MODE_Arc;
                             TransitionMode = TRANSITION_MODE_Tangent;
                         }
                         break;
-                    default:// unexpected mode
+                    default:  // unexpected mode
                         TransitionMode = TRANSITION_MODE_Free;
                         break;
                 }
             }
             else {
                 switch (TransitionMode) {
-                    case TRANSITION_MODE_Tangent:// 4th mode
+                    case TRANSITION_MODE_Tangent:  // 4th mode
                         TransitionMode = TRANSITION_MODE_Perpendicular_L;
                         break;
-                    case TRANSITION_MODE_Perpendicular_L:// 5th mode
+                    case TRANSITION_MODE_Perpendicular_L:  // 5th mode
                         TransitionMode = TRANSITION_MODE_Perpendicular_R;
                         break;
-                    default:// 6th mode (Perpendicular_R) + unexpected mode
+                    default:  // 6th mode (Perpendicular_R) + unexpected mode
                         SegmentMode = SEGMENT_MODE_Line;
                         if (geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
                             TransitionMode = TRANSITION_MODE_Tangent;
@@ -175,7 +175,7 @@ public:
             else {
                 EditCurve.resize(32);
             }
-            mouseMove(onSketchPos);// trigger an update of EditCurve
+            mouseMove(onSketchPos);  // trigger an update of EditCurve
         }
     }
 
@@ -331,9 +331,9 @@ public:
     {
         if (Mode == STATUS_SEEK_First) {
 
-            EditCurve[0] = onSketchPos;// this may be overwritten if previousCurve is found
+            EditCurve[0] = onSketchPos;  // this may be overwritten if previousCurve is found
 
-            virtualsugConstr1 = sugConstr1;// store original autoconstraints.
+            virtualsugConstr1 = sugConstr1;  // store original autoconstraints.
 
             // here we check if there is a preselected point and
             // we set up a transition from the neighbouring segment.
@@ -349,13 +349,13 @@ public:
                         previousCurve = sugConstr1[i].GeoId;
                         previousPosId = sugConstr1[i].PosId;
                         updateTransitionData(previousCurve,
-                                             previousPosId);// -> dirVec, EditCurve[0]
+                                             previousPosId);  // -> dirVec, EditCurve[0]
                         if (geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
                             TransitionMode = TRANSITION_MODE_Tangent;
                             SnapMode = SNAP_MODE_Free;
                         }
                         sugConstr1.erase(sugConstr1.begin()
-                                         + i);// actually we should clear the vector completely
+                                         + i);  // actually we should clear the vector completely
                         break;
                     }
                 }
@@ -407,8 +407,8 @@ public:
                     return true;
                 }
                 else {
-                    sketchgui->purgeHandler();// no code after this line, Handler get deleted in
-                                              // ViewProvider
+                    sketchgui->purgeHandler();  // no code after this line, Handler get deleted in
+                                                // ViewProvider
                     return true;
                 }
             }
@@ -468,7 +468,7 @@ public:
 
                 firstsegment = false;
             }
-            else if (SegmentMode == SEGMENT_MODE_Arc) {// We're dealing with an Arc
+            else if (SegmentMode == SEGMENT_MODE_Arc) {  // We're dealing with an Arc
                 if (!boost::math::isnormal(arcRadius)) {
                     Mode = STATUS_SEEK_Second;
                     return true;
@@ -539,7 +539,7 @@ public:
                     // #3974: if in radians, the printf %f defaults to six decimals, which leads to
                     // loss of precision
                     double arcAngle =
-                        abs(round((endAngle - startAngle) / (M_PI / 4)) * 45);// in degrees
+                        abs(round((endAngle - startAngle) / (M_PI / 4)) * 45);  // in degrees
 
                     Gui::cmdAppObjectArgs(sketchgui->getObject(),
                                           "addConstraint(Sketcher.Constraint('Angle',%i,App.Units."
@@ -571,7 +571,7 @@ public:
             if (Mode == STATUS_Close) {
 
                 if (avoidredundant) {
-                    if (SegmentMode == SEGMENT_MODE_Line) {// avoid redundant constraints.
+                    if (SegmentMode == SEGMENT_MODE_Line) {  // avoid redundant constraints.
                         if (sugConstr1.size() > 0) {
                             removeRedundantHorizontalVertical(
                                 static_cast<Sketcher::SketchObject*>(sketchgui->getObject()),
@@ -635,15 +635,15 @@ public:
                      * right button of the mouse */
                 }
                 else {
-                    sketchgui->purgeHandler();// no code after this line, Handler get deleted in
-                                              // ViewProvider
+                    sketchgui->purgeHandler();  // no code after this line, Handler get deleted in
+                                                // ViewProvider
                 }
             }
             else {
                 Gui::Command::commitCommand();
 
                 // Add auto constraints
-                if (!sugConstr1.empty()) {// this is relevant only to the very first point
+                if (!sugConstr1.empty()) {  // this is relevant only to the very first point
                     createAutoConstraints(sugConstr1,
                                           getHighestCurveIndex(),
                                           Sketcher::PointPos::start);
@@ -652,7 +652,7 @@ public:
 
 
                 if (avoidredundant) {
-                    if (SegmentMode == SEGMENT_MODE_Line) {// avoid redundant constraints.
+                    if (SegmentMode == SEGMENT_MODE_Line) {  // avoid redundant constraints.
                         if (sugConstr1.size() > 0) {
                             removeRedundantHorizontalVertical(
                                 static_cast<Sketcher::SketchObject*>(sketchgui->getObject()),
@@ -669,7 +669,7 @@ public:
                 }
 
                 virtualsugConstr1 =
-                    sugConstr2;// these are the initial constraints for the next iteration.
+                    sugConstr2;  // these are the initial constraints for the next iteration.
 
                 if (!sugConstr2.empty()) {
                     createAutoConstraints(sugConstr2,
@@ -687,7 +687,7 @@ public:
                 previousCurve = getHighestCurveIndex();
                 previousPosId = (SegmentMode == SEGMENT_MODE_Arc && startAngle > endAngle)
                     ? Sketcher::PointPos::start
-                    : Sketcher::PointPos::end;// cw arcs are rendered in reverse
+                    : Sketcher::PointPos::end;  // cw arcs are rendered in reverse
 
                 // setup for the next line segment
                 // calculate dirVec and EditCurve[0]
@@ -707,7 +707,7 @@ public:
                 SegmentMode = SEGMENT_MODE_Line;
                 SnapMode = SNAP_MODE_Free;
                 EditCurve[1] = EditCurve[0];
-                mouseMove(onSketchPos);// trigger an update of EditCurve
+                mouseMove(onSketchPos);  // trigger an update of EditCurve
             }
         }
         return true;
@@ -819,7 +819,7 @@ protected:
 };
 
 
-}// namespace SketcherGui
+}  // namespace SketcherGui
 
 
-#endif// SKETCHERGUI_DrawSketchHandlerLineSet_H
+#endif  // SKETCHERGUI_DrawSketchHandlerLineSet_H

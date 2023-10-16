@@ -26,8 +26,7 @@
 #include "FemConstraintSpring.h"
 
 
-static const char* Stiffnesses[] = {"Normal Stiffness",
-                                    "Tangential Stiffness", nullptr};
+static const char* Stiffnesses[] = {"Normal Stiffness", "Tangential Stiffness", nullptr};
 
 using namespace Fem;
 
@@ -38,12 +37,16 @@ ConstraintSpring::ConstraintSpring()
     ADD_PROPERTY(NormalStiffness, (0.0));
     ADD_PROPERTY(TangentialStiffness, (0.0));
     ADD_PROPERTY(ElmerStiffness, (1));
-    ADD_PROPERTY_TYPE(Points, (Base::Vector3d()), "ConstraintSpring",
-        App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
-        "Points where arrows are drawn");
-    ADD_PROPERTY_TYPE(Normals, (Base::Vector3d()), "ConstraintSpring",
-        App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
-        "Normals where symbols are drawn");
+    ADD_PROPERTY_TYPE(Points,
+                      (Base::Vector3d()),
+                      "ConstraintSpring",
+                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
+                      "Points where arrows are drawn");
+    ADD_PROPERTY_TYPE(Normals,
+                      (Base::Vector3d()),
+                      "ConstraintSpring",
+                      App::PropertyType(App::Prop_ReadOnly | App::Prop_Output),
+                      "Normals where symbols are drawn");
 
     ElmerStiffness.setEnums(Stiffnesses);
     Points.setValues(std::vector<Base::Vector3d>());

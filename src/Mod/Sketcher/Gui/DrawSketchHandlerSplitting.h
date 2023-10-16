@@ -31,7 +31,7 @@
 namespace SketcherGui
 {
 
-extern GeometryCreationMode geometryCreationMode;// defined in CommandCreateGeo.cpp
+extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGeo.cpp
 
 
 class SplittingSelection: public Gui::SelectionFilterGate
@@ -176,7 +176,7 @@ private:
     }
 };
 
-}// namespace SketcherGui
+}  // namespace SketcherGui
 
 
-#endif// SKETCHERGUI_DrawSketchHandlerSplitting_H
+#endif  // SKETCHERGUI_DrawSketchHandlerSplitting_H

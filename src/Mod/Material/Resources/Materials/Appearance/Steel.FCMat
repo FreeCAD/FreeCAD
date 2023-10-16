@@ -1,0 +1,15 @@
+# File created by ConvertFCMat.py
+General:
+  UUID: "4b849c55-6b3a-4f75-a055-40c0d0324596"
+  AuthorAndLicense: "(c) 2023 David Carter"
+  Name: "Steel"
+  Description: "Defines the Steel appearance properties"
+AppearanceModels:
+  BasicRendering:
+    UUID: 'f006c7e4-35b7-43d5-bbf9-c5d572309e6e'
+    AmbientColor: "(0.0020, 0.0020, 0.0020, 1.0)"
+    DiffuseColor: "(0.0000, 0.0000, 0.0000, 1.0)"
+    EmissiveColor: "(0.0000, 0.0000, 0.0000, 1.0)"
+    Shininess: "0.0600"
+    SpecularColor: "(0.9800, 0.9800, 0.9800, 1.0)"
+    Transparency: "0.0"

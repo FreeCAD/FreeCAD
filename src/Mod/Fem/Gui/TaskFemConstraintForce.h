@@ -24,8 +24,8 @@
 #ifndef GUI_TASKVIEW_TaskFemConstraintForce_H
 #define GUI_TASKVIEW_TaskFemConstraintForce_H
 
-#include <memory>
 #include <QObject>
+#include <memory>
 
 #include "TaskFemConstraintOnBoundary.h"
 #include "ViewProviderFemConstraintForce.h"
@@ -33,18 +33,21 @@
 
 class Ui_TaskFemConstraintForce;
 
-namespace App {
+namespace App
+{
 class Property;
 }
 
-namespace Gui {
+namespace Gui
+{
 class SelectionObject;
 class ViewProvider;
-}
+}  // namespace Gui
 
-namespace FemGui {
+namespace FemGui
+{
 
-class TaskFemConstraintForce : public TaskFemConstraintOnBoundary
+class TaskFemConstraintForce: public TaskFemConstraintOnBoundary
 {
     Q_OBJECT
 
@@ -52,7 +55,7 @@ public:
     explicit TaskFemConstraintForce(ViewProviderFemConstraintForce* ConstraintView,
                                     QWidget* parent = nullptr);
     ~TaskFemConstraintForce() override;
-    double getForce() const;
+    const std::string getForce() const;
     const std::string getReferences() const override;
     const std::string getDirectionName() const;
     const std::string getDirectionObject() const;
@@ -60,15 +63,14 @@ public:
 
 private Q_SLOTS:
     void onReferenceDeleted();
-    void onForceChanged(double);
     void onButtonDirection(const bool pressed = false);
     void onCheckReverse(bool);
     void addToSelection() override;
     void removeFromSelection() override;
 
 protected:
-    bool event(QEvent *e) override;
-    void changeEvent(QEvent *e) override;
+    bool event(QEvent* e) override;
+    void changeEvent(QEvent* e) override;
     void clearButtons(const SelectionChangeModes notThis) override;
 
 private:
@@ -81,12 +83,12 @@ private:
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgFemConstraintForce : public TaskDlgFemConstraint
+class TaskDlgFemConstraintForce: public TaskDlgFemConstraint
 {
     Q_OBJECT
 
 public:
-    explicit TaskDlgFemConstraintForce(ViewProviderFemConstraintForce *ConstraintView);
+    explicit TaskDlgFemConstraintForce(ViewProviderFemConstraintForce* ConstraintView);
 
     /// is called by the framework if the dialog is accepted (Ok)
     void open() override;
@@ -94,6 +96,6 @@ public:
     bool reject() override;
 };
 
-} //namespace FemGui
+}  // namespace FemGui
 
-#endif // GUI_TASKVIEW_TaskFemConstraintForce_H
+#endif  // GUI_TASKVIEW_TaskFemConstraintForce_H

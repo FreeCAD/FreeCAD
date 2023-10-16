@@ -24,8 +24,8 @@
 #ifndef MESH_IO_WRITER_OBJ_H
 #define MESH_IO_WRITER_OBJ_H
 
-#include <Mod/Mesh/MeshGlobal.h>
 #include <Mod/Mesh/App/Core/MeshIO.h>
+#include <Mod/Mesh/MeshGlobal.h>
 
 namespace MeshCore
 {
@@ -66,11 +66,11 @@ private:
     const MeshKernel& _kernel;
     const Material* _material;
     Base::Matrix4D _transform;
-    bool apply_transform{false};
+    bool apply_transform {false};
     std::vector<Group> _groups;
 };
 
-} // namespace MeshCore
+}  // namespace MeshCore
 
 
 #endif  // MESH_IO_WRITER_OBJ_H

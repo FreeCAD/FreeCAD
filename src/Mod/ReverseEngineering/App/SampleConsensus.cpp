@@ -140,4 +140,4 @@ double SampleConsensus::perform(std::vector<float>& parameters, std::vector<int>
     return ransac.getProbability();
 }
 
-#endif// HAVE_PCL_SAMPLE_CONSENSUS
+#endif  // HAVE_PCL_SAMPLE_CONSENSUS

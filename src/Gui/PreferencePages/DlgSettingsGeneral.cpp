@@ -38,6 +38,8 @@
 #include <Base/Parameter.h>
 #include <Base/UnitsApi.h>
 
+#include <Gui/Document.h>
+
 #include <Gui/Action.h>
 #include <Gui/Application.h>
 #include <Gui/DlgCreateNewPreferencePackImp.h>
@@ -45,12 +47,15 @@
 #include <Gui/DlgPreferencePackManagementImp.h>
 #include <Gui/DlgRevertToBackupConfigImp.h>
 #include <Gui/MainWindow.h>
+#include <Gui/OverlayManager.h>
+#include <Gui/ParamHandler.h>
 #include <Gui/PreferencePackManager.h>
 #include <Gui/Language/Translator.h>
 
 #include "DlgSettingsGeneral.h"
 #include "ui_DlgSettingsGeneral.h"
 
+using namespace Gui;
 using namespace Gui::Dialog;
 namespace fs = boost::filesystem;
 using namespace Base;
@@ -93,6 +98,7 @@ DlgSettingsGeneral::DlgSettingsGeneral( QWidget* parent )
     for (int i = 0; i < num; i++) {
         QString item = Base::UnitsApi::getDescription(static_cast<Base::UnitSystem>(i));
         ui->comboBox_UnitSystem->addItem(item, i);
+        ui->comboBox_projectUnitSystem->addItem(item, i);
     }
 
     // Enable/disable the fractional inch option depending on system
@@ -203,13 +209,31 @@ void DlgSettingsGeneral::saveSettings()
 
     // Set and save the Unit System
     viewSystemIndex = ui->comboBox_UnitSystem->currentIndex();
-    UnitsApi::setSchema(static_cast<UnitSystem>(viewSystemIndex));
+    auto activeDoc = Gui::Application::Instance->activeDocument();
+    bool projectUnitSystemIgnore = ui->checkBox_projectUnitSystemIgnore->isChecked();
+    if(activeDoc){
+    	activeDoc->setProjectUnitSystemIgnore( projectUnitSystemIgnore );
+    	if(!projectUnitSystemIgnore){
+			int projectUnitSystemIndex = ui->comboBox_projectUnitSystem->currentIndex();
+			activeDoc->setProjectUnitSystem( projectUnitSystemIndex );
+			UnitsApi::setSchema(static_cast<UnitSystem>(projectUnitSystemIndex));
+    	}else{
+    		UnitsApi::setSchema(static_cast<UnitSystem>(viewSystemIndex));
+    	}
+    }else{
+    	UnitsApi::setSchema(static_cast<UnitSystem>(viewSystemIndex));
+    }
+    //
 
     ui->SubstituteDecimal->onSave();
     ui->UseLocaleFormatting->onSave();
     ui->RecentFiles->onSave();
     ui->EnableCursorBlinking->onSave();
     ui->SplashScreen->onSave();
+    ui->ActivateOverlay->onSave();
+    if (property("ActivateOverlay").toBool() != ui->ActivateOverlay->isChecked()) {
+        requireRestart();
+    }
 
     setRecentFileSize();
     bool force = setLanguage();
@@ -226,23 +250,7 @@ void DlgSettingsGeneral::saveSettings()
     int blinkTime{hGrp->GetBool("EnableCursorBlinking", true) ? -1 : 0};
     qApp->setCursorFlashTime(blinkTime);
 
-    hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/DockWindows");
-    bool treeView=false;
-    bool propertyView=false;
-    bool comboView=true;
-    switch(ui->treeMode->currentIndex()) {
-    case 1:
-        treeView = propertyView = true;
-        comboView = false;
-        break;
-    case 2:
-        comboView = true;
-        treeView = propertyView = true;
-        break;
-    }
-    hGrp->GetGroup("ComboView")->SetBool("Enabled",comboView);
-    hGrp->GetGroup("TreeView")->SetBool("Enabled",treeView);
-    hGrp->GetGroup("PropertyView")->SetBool("Enabled",propertyView);
+    saveDockWindowVisibility();
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
     hGrp->SetBool("TiledBackground", ui->tiledBackground->isChecked());
@@ -268,6 +276,24 @@ void DlgSettingsGeneral::loadSettings()
     // handy little equation.
     cbIndex = std::log2(FracInch) - 1;
     ui->comboBox_FracInch->setCurrentIndex(cbIndex);
+    
+    
+    auto activeDoc = Gui::Application::Instance->activeDocument();
+    if(activeDoc){
+		int us = activeDoc->getProjectUnitSystem();
+		if(us >= 0){//Valid unit system:
+			ui->comboBox_projectUnitSystem->setCurrentIndex( us );
+			int pusIgnore = activeDoc->getProjectUnitSystemIgnore();
+			ui->checkBox_projectUnitSystemIgnore->setChecked( pusIgnore );
+		}else{
+			ui->comboBox_projectUnitSystem->setCurrentIndex( 0 );
+			ui->checkBox_projectUnitSystemIgnore->setChecked( false );
+		}
+    }else{
+    	ui->checkBox_projectUnitSystemIgnore->setEnabled(false);
+		ui->comboBox_projectUnitSystem->setEnabled(false);
+    }
+
 
 
     ui->SubstituteDecimal->onRestore();
@@ -275,6 +301,8 @@ void DlgSettingsGeneral::loadSettings()
     ui->RecentFiles->onRestore();
     ui->EnableCursorBlinking->onRestore();
     ui->SplashScreen->onRestore();
+    ui->ActivateOverlay->onRestore();
+    setProperty("ActivateOverlay", ui->ActivateOverlay->isChecked());
 
     // search for the language files
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
@@ -330,20 +358,7 @@ void DlgSettingsGeneral::loadSettings()
     ui->toolbarIconSize->setCurrentIndex(index);
 
     //TreeMode combobox setup.
-    ui->treeMode->clear();
-    ui->treeMode->addItem(tr("Combo View"));
-    ui->treeMode->addItem(tr("TreeView and PropertyView"));
-    ui->treeMode->addItem(tr("Both"));
-
-    hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/DockWindows");
-    bool propertyView = hGrp->GetGroup("PropertyView")->GetBool("Enabled",false);
-    bool treeView = hGrp->GetGroup("TreeView")->GetBool("Enabled",false);
-    bool comboView = hGrp->GetGroup("ComboView")->GetBool("Enabled",true);
-    index = 0;
-    if(propertyView || treeView) {
-        index = comboView?2:1;
-    }
-    ui->treeMode->setCurrentIndex(index);
+    loadDockWindowVisibility();
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
     ui->tiledBackground->setChecked(hGrp->GetBool("TiledBackground", false));
@@ -418,13 +433,57 @@ void DlgSettingsGeneral::changeEvent(QEvent *event)
     if (event->type() == QEvent::LanguageChange) {
         int index = ui->UseLocaleFormatting->currentIndex();
         int index2 = ui->comboBox_UnitSystem->currentIndex();
+        int pusIndex = ui->comboBox_projectUnitSystem->currentIndex();
         ui->retranslateUi(this);
         ui->UseLocaleFormatting->setCurrentIndex(index);
         ui->comboBox_UnitSystem->setCurrentIndex(index2);
+        ui->comboBox_projectUnitSystem->setCurrentIndex(pusIndex);
     }
     else {
         QWidget::changeEvent(event);
     }
+}
+
+void DlgSettingsGeneral::saveDockWindowVisibility()
+{
+    auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/DockWindows");
+    bool treeView = hGrp->GetGroup("TreeView")->GetBool("Enabled", false);
+    bool propertyView = hGrp->GetGroup("PropertyView")->GetBool("Enabled", false);
+    bool comboView = hGrp->GetGroup("ComboView")->GetBool("Enabled", true);
+    switch (ui->treeMode->currentIndex()) {
+    case 0:
+        comboView = true;
+        treeView = propertyView = false;
+        break;
+    case 1:
+        treeView = propertyView = true;
+        comboView = false;
+        break;
+    }
+
+    hGrp->GetGroup("ComboView")->SetBool("Enabled", comboView);
+    hGrp->GetGroup("TreeView")->SetBool("Enabled", treeView);
+    hGrp->GetGroup("PropertyView")->SetBool("Enabled", propertyView);
+}
+
+void DlgSettingsGeneral::loadDockWindowVisibility()
+{
+    ui->treeMode->clear();
+    ui->treeMode->addItem(tr("Combo View"));
+    ui->treeMode->addItem(tr("TreeView and PropertyView"));
+
+    auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/DockWindows");
+    bool propertyView = hGrp->GetGroup("PropertyView")->GetBool("Enabled", false);
+    bool treeView = hGrp->GetGroup("TreeView")->GetBool("Enabled", false);
+    bool comboView = hGrp->GetGroup("ComboView")->GetBool("Enabled", true);
+    int index = -1;
+    if (propertyView || treeView) {
+        index = 1;
+    }
+    else if (comboView) {
+        index = 0;
+    }
+    ui->treeMode->setCurrentIndex(index);
 }
 
 void DlgSettingsGeneral::recreatePreferencePackMenu()
@@ -587,9 +646,52 @@ void DlgSettingsGeneral::onUnitSystemIndexChanged(int index)
     }
 }
 
+void DlgSettingsGeneral::on_checkBox_projectUnitSystemIgnore_stateChanged(int state)
+{
+    if (state < 0)
+        return; // happens when clearing the combo box in retranslateUi()
+
+    // Enable/disable the projectUnitSystem if being ignored:
+    if(state == 2){//ignore
+    	ui->comboBox_projectUnitSystem->setEnabled(false);
+    }else if(state == 0){
+    	ui->comboBox_projectUnitSystem->setEnabled(true);
+    }
+}
+
 void DlgSettingsGeneral::onThemeChanged(int index) {
     Q_UNUSED(index);
     themeChanged = true;
+}
+
+///////////////////////////////////////////////////////////
+namespace {
+
+class ApplyDockWidget: public ParamHandler {
+public:
+    bool onChange(const ParamKey *) override {
+        OverlayManager::instance()->reload(OverlayManager::ReloadMode::ReloadPause);
+        return true;
+    }
+
+    void onTimer() override {
+        getMainWindow()->initDockWindows(true);
+        OverlayManager::instance()->reload(OverlayManager::ReloadMode::ReloadResume);
+    }
+};
+
+} // anonymous namespace
+
+void DlgSettingsGeneral::attachObserver()
+{
+    static ParamHandlers handlers;
+
+    auto hDockWindows = App::GetApplication().GetUserParameter().GetGroup("BaseApp/Preferences/DockWindows");
+    auto applyDockWidget = std::shared_ptr<ParamHandler>(new ApplyDockWidget);
+    handlers.addHandler(ParamKey(hDockWindows->GetGroup("ComboView"), "Enabled"), applyDockWidget);
+    handlers.addHandler(ParamKey(hDockWindows->GetGroup("TreeView"), "Enabled"), applyDockWidget);
+    handlers.addHandler(ParamKey(hDockWindows->GetGroup("PropertyView"), "Enabled"), applyDockWidget);
+    handlers.addHandler(ParamKey(hDockWindows->GetGroup("DAGView"), "Enabled"), applyDockWidget);
 }
 
 #include "moc_DlgSettingsGeneral.cpp"

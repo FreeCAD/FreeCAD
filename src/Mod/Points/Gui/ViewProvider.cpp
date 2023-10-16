@@ -477,7 +477,7 @@ void ViewProviderScattered::cut(const std::vector<SbVec2f>& picked,
     }
 
     if (removeIndices.empty()) {
-        return;// nothing needs to be done
+        return;  // nothing needs to be done
     }
 
     // Remove the points from the cloud and open a transaction object for the undo/redo stuff
@@ -671,7 +671,7 @@ PROPERTY_SOURCE_TEMPLATE(PointsGui::ViewProviderPython, PointsGui::ViewProviderS
 
 // explicit template instantiation
 template class PointsGuiExport ViewProviderPythonFeatureT<PointsGui::ViewProviderScattered>;
-}// namespace Gui
+}  // namespace Gui
 
 // -------------------------------------------------
 

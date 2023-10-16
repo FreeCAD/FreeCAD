@@ -278,7 +278,7 @@ class GitControl(VersionControl):
                         url == "git://github.com/FreeCAD/FreeCAD.git",
                         "github.com" in url,
                         branch == self.branch,
-                        branch == "master",
+                        branch == "main",
                         "@" not in url,
                     )
                     # used for sorting the list
@@ -292,11 +292,11 @@ class GitControl(VersionControl):
 
     def revisionNumber(self, srcdir, origin=None):
         """sets the revision number
-        for master and release branches all commits are counted
+        for main and release branches all commits are counted
         for other branches. The version number is split in to two parts:
         The first number reflects the number of commits in common with the
-        blessed master repository. The second part (separated by " +") reflects
-        the number of commits that are different from the master repository"""
+        blessed main repository. The second part (separated by " +") reflects
+        the number of commits that are different from the main repository"""
         referencecommit = "7d8e53aaab17961d85c5009de34f69f2af084e8b"
         referencerevision = 14555
 
@@ -311,10 +311,10 @@ class GitControl(VersionControl):
 
         if (
             origin is not None
-            and self.branch.lower() != "master"
+            and self.branch.lower() != "main"
             and "release" not in self.branch.lower()
         ):
-            mbfh = os.popen("git merge-base %s/master HEAD" % origin)
+            mbfh = os.popen("git merge-base %s/main HEAD" % origin)
             mergebase = mbfh.read().strip()
             if mbfh.close() is None:  # exit code == 0
                 try:
@@ -336,7 +336,7 @@ class GitControl(VersionControl):
         """name multiple branches in case that the last commit was a merge
         a merge is identified by having two or more parents
         if the describe does not return a ref name (the hash is added)
-        if one parent is the master and the second one has no ref name, one branch was
+        if one parent is the main and the second one has no ref name, one branch was
         merged."""
         parents = os.popen("git log -n1 --pretty=%P").read().strip().split(" ")
         if len(parents) >= 2:  # merge commit
@@ -352,7 +352,7 @@ class GitControl(VersionControl):
                 else:
                     parentrefs.append(p)
                     names.append(p[:7])
-            if hasnames >= 2:  # merging master into dev is not enough
+            if hasnames >= 2:  # merging main into dev is not enough
                 self.branch = ",".join(names)
 
     def extractInfo(self, srcdir, bindir):
@@ -375,7 +375,7 @@ class GitControl(VersionControl):
         self.getremotes()  # setup self.remotes and branchlst
 
         self.geturl()
-        origin = None  # remote for the blessed master
+        origin = None  # remote for the blessed main
         for fetchurl in (
             "git@github.com:FreeCAD/FreeCAD.git",
             "https://github.com/FreeCAD/FreeCAD.git",
@@ -388,7 +388,7 @@ class GitControl(VersionControl):
                 break
 
         self.revisionNumber(srcdir, origin)
-        if self.branch.lower() != "master" and "release" not in self.branch.lower():
+        if self.branch.lower() != "main" and "release" not in self.branch.lower():
             self.namebranchbyparents()
         if self.branch == "(no branch)":  # check for remote branches
             if len(self.branchlst) >= 2:

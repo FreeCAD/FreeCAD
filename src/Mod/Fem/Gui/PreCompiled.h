@@ -26,8 +26,8 @@
 #include <FCConfig.h>
 
 #ifdef _MSC_VER
-# pragma warning(disable : 4005)
-# pragma warning(disable : 4290)
+#pragma warning(disable : 4005)
+#pragma warning(disable : 4290)
 #endif
 
 #ifdef _PreComp_
@@ -54,9 +54,9 @@
 #include <boost/lexical_cast.hpp>
 
 #ifdef FC_OS_WIN32
-# define WIN32_LEAN_AND_MEAN
-# define NOMINMAX
-# include <windows.h>
+#define WIN32_LEAN_AND_MEAN
+#define NOMINMAX
+#include <windows.h>
 #endif
 
 // OCC
@@ -66,7 +66,6 @@
 #include <TopoDS.hxx>
 #include <TopoDS_Shape.hxx>
 
-#include <qobject.h>
 #include <QAction>
 #include <QApplication>
 #include <QDockWidget>
@@ -78,12 +77,13 @@
 #include <QMetaMethod>
 #include <QPushButton>
 #include <QSlider>
-#include <QString>
 #include <QStackedWidget>
+#include <QString>
 #include <QTextCharFormat>
 #include <QTextStream>
 #include <QThread>
 #include <QToolTip>
+#include <qobject.h>
 
 // inventor
 #include <Inventor/SbVec3f.h>
@@ -95,10 +95,10 @@
 #include <Inventor/details/SoLineDetail.h>
 #include <Inventor/details/SoPointDetail.h>
 #include <Inventor/draggers/SoCenterballDragger.h>
-#include <Inventor/draggers/SoTransformerDragger.h>
-#include <Inventor/draggers/SoTransformBoxDragger.h>
 #include <Inventor/draggers/SoHandleBoxDragger.h>
 #include <Inventor/draggers/SoJackDragger.h>
+#include <Inventor/draggers/SoTransformBoxDragger.h>
+#include <Inventor/draggers/SoTransformerDragger.h>
 #include <Inventor/engines/SoDecomposeMatrix.h>
 #include <Inventor/events/SoMouseButtonEvent.h>
 #include <Inventor/manips/SoCenterballManip.h>
@@ -106,8 +106,8 @@
 #include <Inventor/manips/SoJackManip.h>
 #include <Inventor/manips/SoTabBoxManip.h>
 #include <Inventor/manips/SoTransformBoxManip.h>
-#include <Inventor/manips/SoTransformerManip.h>
 #include <Inventor/manips/SoTransformManip.h>
+#include <Inventor/manips/SoTransformerManip.h>
 #include <Inventor/nodes/SoAnnotation.h>
 #include <Inventor/nodes/SoBaseColor.h>
 #include <Inventor/nodes/SoCamera.h>
@@ -148,8 +148,8 @@
 
 // Salomesh
 #include <SMDSAbs_ElementType.hxx>
-#include <SMESH_Mesh.hxx>
 #include <SMESHDS_Mesh.hxx>
+#include <SMESH_Mesh.hxx>
 
 // VTK
 #include <vtkCellArray.h>
@@ -158,6 +158,6 @@
 #include <vtkLookupTable.h>
 #include <vtkPointData.h>
 
-#endif //_PreComp_
+#endif  //_PreComp_
 
-#endif // FEMGUI_PRECOMPILED_H
+#endif  // FEMGUI_PRECOMPILED_H

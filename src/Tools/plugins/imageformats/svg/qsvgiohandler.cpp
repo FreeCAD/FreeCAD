@@ -153,7 +153,7 @@ bool QSvgIOHandler::canRead() const
         return false;
     }
     if (d->loaded && !d->readDone) {
-        return true;// Will happen if we have been asked for the size
+        return true;  // Will happen if we have been asked for the size
     }
 
     QByteArray buf = device()->peek(8);
@@ -220,7 +220,7 @@ bool QSvgIOHandler::read(QImage* image)
             p.setRenderHint(QPainter::Antialiasing);
             p.setRenderHint(QPainter::TextAntialiasing);
             p.setRenderHint(QPainter::SmoothPixmapTransform);
-            p.setOpacity(0);// important to keep transparent background
+            p.setOpacity(0);  // important to keep transparent background
             d->webView.page()->mainFrame()->render(&p);
 #endif
             p.end();
@@ -308,4 +308,4 @@ bool QSvgIOHandler::canRead(QIODevice* device)
 
 QT_END_NAMESPACE
 
-#endif// QT_NO_SVGRENDERER
+#endif  // QT_NO_SVGRENDERER

@@ -1,9 +1,3 @@
-if(MSVC)
-    add_definitions(-DFCAppSketcher -DHAVE_ACOSH -DHAVE_ASINH -DHAVE_ATANH)
-else(MSVC)
-    add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
-endif(MSVC)
-
 # Uncomment this code if you want to try Eigen's multithread
 #find_package(OpenMP)
 #if (OPENMP_FOUND)

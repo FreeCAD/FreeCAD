@@ -170,7 +170,7 @@ def setup(doc=None, solvertype="ccxtools"):
         (geom_obj, "Vertex4"),
         (geom_obj, "Vertex8"),
     ]
-    con_force.Force = 600  # 600 N on six nodes == 100 N/Node
+    con_force.Force = "600 N"  # 600 N on six nodes == 100 N/Node
     con_force.Reversed = False
     con_force.Direction = (geom_obj, ["Edge2"])
     analysis.addObject(con_force)

@@ -551,12 +551,6 @@ Dla nadmiaru materiału podstawowego z ramki otaczającej oznacza to naddatek ma
   <context>
     <name>Form</name>
     <message>
-      <location filename="../panels/PageDepthsEdit.ui" line="17"/>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="14"/>
-      <source>Form</source>
-      <translation>Formularz</translation>
-    </message>
-    <message>
       <location filename="../panels/DressupPathBoundary.ui" line="20"/>
       <source>Boundary Body</source>
       <translation>Zawartość graniczna</translation>
@@ -569,7 +563,7 @@ Dla nadmiaru materiału podstawowego z ramki otaczającej oznacza to naddatek ma
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="45"/>
       <source>Create Box</source>
-      <translation>Utwórz pole</translation>
+      <translation>Utwórz prostopadłościan</translation>
     </message>
     <message>
       <location filename="../panels/DressupPathBoundary.ui" line="50"/>
@@ -877,7 +871,7 @@ Zresetuje wszystkie bieżące elementy z listy i wypełnia listę wszystkimi okr
       <location filename="../panels/PageDepthsEdit.ui" line="85"/>
       <location filename="../panels/SetupGlobal.ui" line="52"/>
       <source>Final Depth</source>
-      <translation>Ostateczna głębokość</translation>
+      <translation>Głębokość końcowa</translation>
     </message>
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="131"/>
@@ -888,7 +882,7 @@ Zresetuje wszystkie bieżące elementy z listy i wypełnia listę wszystkimi okr
     <message>
       <location filename="../panels/PageDepthsEdit.ui" line="163"/>
       <source>Finish Step Down</source>
-      <translation>Zakończ krokiem w dół</translation>
+      <translation>Przejście wykończeniowe</translation>
     </message>
     <message>
       <location filename="../panels/PageDiametersEdit.ui" line="20"/>
@@ -918,7 +912,7 @@ Zresetuje wszystkie bieżące elementy z listy i wypełnia listę wszystkimi okr
     <message>
       <location filename="../panels/PageHeightsEdit.ui" line="47"/>
       <source>Clearance Height</source>
-      <translation>Wysokość prześwitu</translation>
+      <translation>Wysokość wycofania</translation>
     </message>
     <message>
       <location filename="../panels/PageOpCustomEdit.ui" line="42"/>
@@ -1002,7 +996,7 @@ Zresetuje wszystkie bieżące elementy z listy i wypełnia listę wszystkimi okr
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="90"/>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="178"/>
       <source>Step Over Percent</source>
-      <translation>Krok dalej procentowo</translation>
+      <translation>Zachodzenie przejść</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="148"/>
@@ -1279,13 +1273,13 @@ Zresetuje wszystkie bieżące elementy z listy i wypełnia listę wszystkimi okr
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="111"/>
       <source>Step over percent</source>
-      <translation>Krok dalej procentowo</translation>
+      <translation>Zachodzenie przejść</translation>
     </message>
     <message>
       <location filename="../panels/PageOpHelixEdit.ui" line="137"/>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="101"/>
       <source>Extra Offset</source>
-      <translation>Przesunięcie dodatkowe</translation>
+      <translation>Naddatek</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketExtEdit.ui" line="22"/>
@@ -1360,17 +1354,17 @@ Zresetuje wszystkie bieżące elementy z listy i wypełnia listę wszystkimi okr
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="88"/>
       <source>Cut Mode</source>
-      <translation>Tryb skrawania</translation>
+      <translation>Sposób obróbki</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="99"/>
       <source>Climb</source>
-      <translation>Podejście</translation>
+      <translation>Współbieżnie</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="104"/>
       <source>Conventional</source>
-      <translation>Konwencjonalne</translation>
+      <translation>Przeciwbieżnie</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="112"/>
@@ -1470,12 +1464,12 @@ Ta druga opcja może być użyta do ściany całego obszaru naddatku, aby zapewn
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="258"/>
       <source>Check to skip machining regions that have already been cleared by previous operations</source>
-      <translation type="unfinished">Check to skip machining regions that have already been cleared by previous operations</translation>
+      <translation>Sprawdź, czy pominąć obszary obróbki, które zostały już oczyszczone przez poprzednie operacje</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="261"/>
       <source>Use Rest Machining</source>
-      <translation type="unfinished">Use Rest Machining</translation>
+      <translation>Użyj obróbki spoczynkowej</translation>
     </message>
     <message>
       <location filename="../panels/PageOpPocketFullEdit.ui" line="204"/>
@@ -1552,7 +1546,7 @@ Ta druga opcja może być użyta do ściany całego obszaru naddatku, aby zapewn
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="63"/>
       <source>Cut Side</source>
-      <translation>Wytnij stronę</translation>
+      <translation>Strona obróbki</translation>
     </message>
     <message>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="70"/>
@@ -1889,12 +1883,12 @@ Obrotowy: Skanowanie obrotowe w 4 osiach.</translation>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="162"/>
       <source>Additional offset to the selected bounding box along the X axis.</source>
-      <translation>Dodatkowe przesunięcie względem wybranej ramki otaczającej wzdłuż osi X.</translation>
+      <translation>Naddatek względem wybranej ramki otaczającej wzdłuż osi X.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="172"/>
       <source>Additional offset to the selected bounding box along the Y axis.</source>
-      <translation>Dodatkowe przesunięcie względem wybranej ramki otaczającej wzdłuż osi Y.</translation>
+      <translation>Naddatek względem wybranej ramki otaczającej wzdłuż osi Y.</translation>
     </message>
     <message>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="198"/>
@@ -2001,7 +1995,7 @@ Domyślnie: OpToolDiameter</translation>
       <source>Expression set as ClearanceHeight for new operations.
 
 Default: "OpStockZMax+SetupSheet.ClearanceHeightOffset"</source>
-      <translation>Wyrażenie ustawione jako Wysokość prześwitu dla nowych operacji.
+      <translation>Wyrażenie ustawione jako Wysokość wycofania dla nowych operacji.
 
 Domyślnie: "OpStockZMax+SetupSheet.ClearanceHeightOffset"</translation>
     </message>
@@ -2559,12 +2553,12 @@ Jeśli pole pozostanie puste, żaden szablon nie zostanie wstępnie wybrany.</tr
     <message>
       <location filename="../preferences/PathJob.ui" line="376"/>
       <source>Stock</source>
-      <translation>Półwyrób</translation>
+      <translation>Przygotówka</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="395"/>
       <source>Create Box</source>
-      <translation>Utwórz sześcian</translation>
+      <translation>Utwórz prostopadłościan</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="400"/>
@@ -3369,7 +3363,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="178"/>
       <source>Finish Step Down</source>
-      <translation>Zakończ krok w dół</translation>
+      <translation>Przejście wykończeniowe</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="198"/>
@@ -3384,7 +3378,7 @@ Should multiple tools or tool shapes with the same name exist in different direc
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="228"/>
       <source>Clearance Height</source>
-      <translation>Wysokość prześwitu</translation>
+      <translation>Wysokość wycofania</translation>
     </message>
     <message>
       <location filename="../panels/SurfaceEdit.ui" line="248"/>
@@ -3782,12 +3776,12 @@ FreeCAD has no knowledge of where a particular coordinate system exists within t
     <message>
       <location filename="../panels/PathEdit.ui" line="457"/>
       <source>Stock</source>
-      <translation>Półwyrób</translation>
+      <translation>Przygotówka</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="478"/>
       <source>Create Box</source>
-      <translation>Utwórz sześcian</translation>
+      <translation>Utwórz prostopadłościan</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="483"/>
@@ -3946,7 +3940,7 @@ FreeCAD has no knowledge of where a particular coordinate system exists within t
       <source>Expression set as ClearanceHeight for new operations.
 
 Default: "OpStockZMax+SetupSheet.ClearanceHeightOffset"</source>
-      <translation>Wyrażenie ustawione jako Wysokość prześwitu dla nowych operacji.
+      <translation>Wyrażenie ustawione jako Wysokość wycofania dla nowych operacji.
 
 Domyślnie: "OpStockZMax+SetupSheet.ClearanceHeightOffset"</translation>
     </message>
@@ -5215,7 +5209,7 @@ Na przykład:
     <message>
       <location filename="../../../Path/Op/Base.py" line="244"/>
       <source>Final Depth of Tool- lowest value in Z</source>
-      <translation>Ostateczna głębokość narzędzia - najniższa wartość w Z</translation>
+      <translation>Głębokość końcowa narzędzia - najniższa wartość w Z</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="258"/>
@@ -5498,18 +5492,18 @@ Na przykład:
       <location filename="../../../Path/Op/PocketBase.py" line="195"/>
       <location filename="../../../Path/Op/PocketBase.py" line="277"/>
       <source>Skips machining regions that have already been cleared by previous operations.</source>
-      <translation type="unfinished">Skips machining regions that have already been cleared by previous operations.</translation>
+      <translation>Pomija obszary obróbki, które zostały już oczyszczone przez poprzednie operacje.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="204"/>
       <location filename="../../../Path/Op/PocketBase.py" line="288"/>
       <source>The areas cleared by this operation, one area per height, stored as a compound part. Used internally for rest machining.</source>
-      <translation type="unfinished">The areas cleared by this operation, one area per height, stored as a compound part. Used internally for rest machining.</translation>
+      <translation>Obszary oczyszczone w wyniku tej operacji, po jednym obszarze na wysokość, przechowywane jako część złożona. Używany wewnętrznie do obróbki spoczynkowej.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="299"/>
       <source>Flag to indicate that the rest machining regions have never been computed, and must be recomputed before being used.</source>
-      <translation type="unfinished">Flag to indicate that the rest machining regions have never been computed, and must be recomputed before being used.</translation>
+      <translation>Flaga wskazująca, że regiony obróbki spoczynkowej nigdy nie zostały obliczone i muszą zostać ponownie obliczone przed użyciem.</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Probe.py" line="55"/>
@@ -6560,7 +6554,7 @@ OL Dropcutter* lub Eksperymentalny (nieoparty na OCL).</translation>
     <message>
       <location filename="../../../Path/Main/Gui/Inspect.py" line="268"/>
       <source>Inspect Path Commands</source>
-      <translation>Przeglądaj polecenia ścieżki</translation>
+      <translation>Sprawdź ścieżkę narzędzia</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Inspect.py" line="272"/>
@@ -6598,231 +6592,308 @@ OL Dropcutter* lub Eksperymentalny (nieoparty na OCL).</translation>
   <context>
     <name>Path_Sanity</name>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="120"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="124"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="126"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="130"/>
       <source>Check the path job for common errors</source>
       <translation>Sprawdź zadanie ścieżki pod kątem typowych błędów</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="245"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="215"/>
+      <source>Setup Report for FreeCAD Job</source>
+      <translation>Raport konfiguracji dla zadania FreeCAD</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="216"/>
+      <source>Table of Contents</source>
+      <translation>Spis treści</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="217"/>
+      <source>Part Information</source>
+      <translation>Informacja o Części</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="218"/>
+      <source>Run Summary</source>
+      <translation>Podsumowanie przebiegu</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="219"/>
+      <source>Rough Stock</source>
+      <translation>Surowa przygotówka</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="220"/>
+      <source>Tool Data</source>
+      <translation>Dane narzędzia</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="221"/>
+      <source>Output</source>
+      <translation>Wyjście</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="222"/>
+      <source>Fixtures</source>
+      <translation>Uchwyty</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="224"/>
+      <source>Squawks</source>
+      <translation>Kawałki</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="225"/>
       <source>Base Object(s)</source>
       <translation>Obiekty bazowe</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="246"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="226"/>
       <source>Job Sequence</source>
       <translation>Sekwencja zadania</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="247"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="227"/>
       <source>Job Description</source>
       <translation>Opis zadania</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="248"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="228"/>
       <source>Job Type</source>
       <translation>Typ zadania</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="249"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="229"/>
       <source>CAD File Name</source>
       <translation>Nazwa pliku CAD</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="250"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="230"/>
       <source>Last Save Date</source>
       <translation>Data ostatniego zapisu</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="251"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="231"/>
       <source>Customer</source>
       <translation>Klient</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="253"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="233"/>
       <source>Designer</source>
       <translation>Projektant</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="288"/>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="333"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="238"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="514"/>
       <source>Operation</source>
       <translation>Operacja</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="289"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="239"/>
       <source>Minimum Z Height</source>
       <translation>Minimalna wysokość Z</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="290"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="240"/>
       <source>Maximum Z Height</source>
       <translation>Maksymalna wysokość Z</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="291"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="242"/>
       <source>Cycle Time</source>
       <translation>Czas cyklu</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="292"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="243"/>
       <source>Coolant</source>
       <translation>Chłodziwo</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="294"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="244"/>
       <source>TOTAL JOB</source>
       <translation>Zadanie ogółem</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="327"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="246"/>
       <source>Tool Number</source>
       <translation>Numer narzędzia</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="328"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="509"/>
       <source>Description</source>
       <translation>Opis</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="329"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="510"/>
       <source>Manufacturer</source>
       <translation>Producent</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="330"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="511"/>
       <source>Part Number</source>
       <translation>Numer części</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="331"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="512"/>
       <source>URL</source>
       <translation>Adres URL</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="332"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="513"/>
       <source>Inspection Notes</source>
       <translation>Uwagi do kontroli</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="334"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="515"/>
       <source>Tool Controller</source>
       <translation>Kontroler narzędzi</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="335"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="516"/>
       <source>Feed Rate</source>
       <translation>Posuw</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="336"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="517"/>
       <source>Spindle Speed</source>
       <translation>Prędkość wrzeciona</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="337"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="518"/>
       <source>Tool Shape</source>
       <translation>Kształt narzędzia</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="339"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="520"/>
       <source>Tool Diameter</source>
       <translation>Średnica narzędzia</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="390"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="521"/>
       <source>X Size</source>
       <translation>Rozmiar X</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="391"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="522"/>
       <source>Y Size</source>
       <translation>Rozmiar Y</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="392"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="523"/>
       <source>Z Size</source>
       <translation>Rozmiar Z</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="394"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="525"/>
       <source>Material</source>
       <translation>Materiał</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="407"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="526"/>
       <source>Work Offsets</source>
       <translation>Przesunięcia punktu zerowego</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="408"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="527"/>
       <source>Order By</source>
       <translation>Sortuj według</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="410"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="529"/>
       <source>Part Datum</source>
       <translation>Układ odniesienia detalu</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="422"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="530"/>
       <source>G-code File</source>
       <translation>Plik G-code</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="423"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="531"/>
       <source>Last Post Process Date</source>
       <translation>Data ostatniego przetwarzania</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="424"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="532"/>
       <source>Stops</source>
       <translation>Zatrzymaj</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="425"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="533"/>
       <source>Programmer</source>
       <translation>Programista</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="426"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="534"/>
       <source>Machine</source>
       <translation>Maszyna</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="427"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="535"/>
       <source>Postprocessor</source>
       <translation>Postprocesor</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="428"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="536"/>
       <source>Post Processor Flags</source>
       <translation>Flagi postprocesora</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="429"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="537"/>
       <source>File Size (kB)</source>
       <translation>Rozmiar pliku (kB)</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="431"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="539"/>
       <source>Line Count</source>
       <translation>Liczba linii</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="444"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="540"/>
       <source>Note</source>
       <translation>Uwaga</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="445"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="541"/>
       <source>Operator</source>
       <translation>Operator</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/Sanity.py" line="447"/>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="543"/>
       <source>Date</source>
       <translation>Data</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="1332"/>
+      <source>Tool number {} is a legacy tool. Legacy tools not 
+                        supported by Path-Sanity</source>
+      <translation>Narzędzie numer {} jest narzędziem starszego typu.
+Starsze narzędzia nie są obsługiwane przez funkcję Bezpieczeństwo CAM</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="1343"/>
+      <source>Tool number {} used by multiple tools</source>
+      <translation>Przypisany numer narzędzia {} jest wykorzystany wielokrotnie</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="1371"/>
+      <source>Tool Controller '{}' has no spindlespeed</source>
+      <translation>Kontroler narzędzi '{}' nie ma prędkości wrzeciona</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="1399"/>
+      <source>Tool Controller '{}' is not used</source>
+      <translation>Kontroler narzędzi '{}' nie jest używany</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="1494"/>
+      <source>Consider Specifying the Stock Material</source>
+      <translation>Rozważ określenie materiału przygotówki</translation>
+    </message>
+    <message>
+      <location filename="../../../Path/Main/Gui/Sanity.py" line="1585"/>
+      <source>The Job has not been post-processed</source>
+      <translation>Zadanie nie zostało poddane obróbce końcowej</translation>
     </message>
   </context>
   <context>
@@ -6886,7 +6957,7 @@ OL Dropcutter* lub Eksperymentalny (nieoparty na OCL).</translation>
     <message>
       <location filename="../../../Path/Op/Area.py" line="259"/>
       <source>Previous operation %s is required for rest machining, but it has no stored rest machining metadata. Recomputing to generate this metadata...</source>
-      <translation type="unfinished">Previous operation %s is required for rest machining, but it has no stored rest machining metadata. Recomputing to generate this metadata...</translation>
+      <translation>Poprzednia operacja %s jest wymagana do obróbki spoczynkowej, ale nie ma zapisanych metadanych obróbki spoczynkowej. Należy ponownie wykonać obliczenia, aby wygenerować te metadane ...</translation>
     </message>
   </context>
   <context>
@@ -6899,7 +6970,7 @@ OL Dropcutter* lub Eksperymentalny (nieoparty na OCL).</translation>
     <message>
       <location filename="../../../Path/Op/Base.py" line="379"/>
       <source>Flood</source>
-      <translation>Strumień</translation>
+      <translation>Zalewowe</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Base.py" line="380"/>
@@ -7088,12 +7159,12 @@ OL Dropcutter* lub Eksperymentalny (nieoparty na OCL).</translation>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="61"/>
       <source>Climb</source>
-      <translation>Podejście</translation>
+      <translation>Współbieżnie</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="62"/>
       <source>Conventional</source>
-      <translation>Konwencjonalne</translation>
+      <translation>Przeciwbieżnie</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="65"/>
@@ -7448,7 +7519,7 @@ OL Dropcutter* lub Eksperymentalny (nieoparty na OCL).</translation>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="450"/>
       <source>Stock</source>
-      <translation>Półwyrób</translation>
+      <translation>Przygotówka</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="453"/>
@@ -7473,12 +7544,12 @@ OL Dropcutter* lub Eksperymentalny (nieoparty na OCL).</translation>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="459"/>
       <source>Conventional</source>
-      <translation>Konwencjonalne</translation>
+      <translation>Przeciwbieżnie</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="460"/>
       <source>Climb</source>
-      <translation>Podejście</translation>
+      <translation>Współbieżnie</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="463"/>
@@ -7686,12 +7757,12 @@ OL Dropcutter* lub Eksperymentalny (nieoparty na OCL).</translation>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="293"/>
       <source>Climb</source>
-      <translation>Podejście</translation>
+      <translation>Współbieżnie</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/ThreadMilling.py" line="297"/>
       <source>Conventional</source>
-      <translation>Konwencjonalne</translation>
+      <translation>Przeciwbieżnie</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/ThreadMilling.py" line="253"/>
@@ -7826,12 +7897,12 @@ OL Dropcutter* lub Eksperymentalny (nieoparty na OCL).</translation>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="121"/>
       <source>Conventional</source>
-      <translation>Konwencjonalne</translation>
+      <translation>Przeciwbieżnie</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="122"/>
       <source>Climb</source>
-      <translation>Podejście</translation>
+      <translation>Współbieżnie</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="125"/>
@@ -8146,7 +8217,7 @@ Przerwanie procesu tworzenia</translation>
     <message>
       <location filename="../../../Path/Op/Gui/MillFace.py" line="76"/>
       <source>Face</source>
-      <translation>Powierzchnia</translation>
+      <translation>Planowanie</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/MillFace.py" line="79"/>
@@ -8172,7 +8243,7 @@ Przerwanie procesu tworzenia</translation>
     <message>
       <location filename="../../../Path/Op/Gui/PocketShape.py" line="70"/>
       <source>Pocket Shape</source>
-      <translation>Kształt kieszeni</translation>
+      <translation>Obróbka kieszeni</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/PocketShape.py" line="73"/>
@@ -8230,7 +8301,7 @@ Przerwanie procesu tworzenia</translation>
     <message>
       <location filename="../../../Path/Post/Command.py" line="472"/>
       <source>Post Process</source>
-      <translation>Przetwarzanie końcowe</translation>
+      <translation>Generuj program</translation>
     </message>
     <message>
       <location filename="../../../Path/Post/Command.py" line="474"/>
@@ -8388,12 +8459,12 @@ Przerwanie procesu tworzenia</translation>
     <message>
       <location filename="../../../Path/Tool/Gui/BitLibraryCmd.py" line="48"/>
       <source>ToolBit Dock</source>
-      <translation>Magazynek narzędzi</translation>
+      <translation>Tabela narzędzi</translation>
     </message>
     <message>
       <location filename="../../../Path/Tool/Gui/BitLibraryCmd.py" line="49"/>
       <source>Toggle the Toolbit Dock</source>
-      <translation>Przełącz magazynek narzędzi</translation>
+      <translation>Przełącza tabelę narzędzi</translation>
     </message>
   </context>
   <context>

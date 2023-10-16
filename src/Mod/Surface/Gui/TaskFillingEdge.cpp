@@ -653,7 +653,7 @@ void FillingEdgePanel::modifyBoundary(bool on)
     ui->buttonUnboundAccept->setEnabled(on);
     ui->buttonUnboundIgnore->setEnabled(on);
 }
-}// namespace SurfaceGui
+}  // namespace SurfaceGui
 
 void FillingEdgePanel::exitSelectionMode()
 {

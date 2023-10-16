@@ -82,11 +82,11 @@ void ViewProviderPlane::attach ( App::DocumentObject *obj ) {
 
     auto material = new SoMaterial();
     material->transparency.setValue(0.95f);
-    auto color = new SbColor();
+    SbColor color;
     float alpha = 0.0f;
-    color->setPackedValue(ViewProviderOrigin::defaultColor, alpha);
-    material->ambientColor.setValue(*color);
-    material->diffuseColor.setValue(*color);
+    color.setPackedValue(ViewProviderOrigin::defaultColor, alpha);
+    material->ambientColor.setValue(color);
+    material->diffuseColor.setValue(color);
     faceSeparator->addChild(material);
 
     // disable backface culling and render with two-sided lighting

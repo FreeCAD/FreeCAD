@@ -24,19 +24,20 @@
 #define MESHGUI_DLGSETTINGSIMPORTEXPORTIMP_H
 
 #ifndef MESH_GLOBAL_H
-# include <Mod/Mesh/MeshGlobal.h>
+#include <Mod/Mesh/MeshGlobal.h>
 #endif
 #include <Gui/PropertyPage.h>
 
 
-namespace MeshGui {
+namespace MeshGui
+{
 
 class Ui_DlgSettingsImportExport;
 /**
  * The DlgSettingsImportExportImp class implements a preference page to change settings
  * for Importing and Exporting mesh objects.
  */
-class DlgSettingsImportExport : public Gui::Dialog::PreferencePage
+class DlgSettingsImportExport: public Gui::Dialog::PreferencePage
 {
     Q_OBJECT
 
@@ -47,13 +48,12 @@ public:
 protected:
     void saveSettings() override;
     void loadSettings() override;
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
 
 private:
     Ui_DlgSettingsImportExport* ui;
 };  // end class DlgSettingsImportExport
 
-} // namespace MeshGui
+}  // namespace MeshGui
 
-#endif // MESHGUI_DLGSETTINGSIMPORTEXPORTIMP_H
-
+#endif  // MESHGUI_DLGSETTINGSIMPORTEXPORTIMP_H

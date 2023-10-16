@@ -1,3 +1,4 @@
+// clang-format off
 /* XPM */
 static const char *mesh_fillhole[]={
 "32 32 3 1",
@@ -36,4 +37,4 @@ static const char *mesh_fillhole[]={
 "................................",
 "................................",
 "................................"};
-
+// clang-format on

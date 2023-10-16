@@ -1,4 +1,4 @@
-#/***************************************************************************
+# /***************************************************************************
 # *   Copyright (c) 2019 Victor Titov (DeepSOIC) <vv.titov@gmail.com>       *
 # *                                                                         *
 # *   This file is part of the FreeCAD CAx development system.              *
@@ -20,6 +20,7 @@
 # *                                                                         *
 # ***************************************************************************/
 
+
 class SceneDetail(object):
     """SceneDetail class: abstract class for tempovis scene save/restore plug-in. An implementation must provide:
     * data storage (as "data" attribute of the object)
@@ -32,7 +33,8 @@ class SceneDetail(object):
     * test for equality, that checks if .data attributes of two SceneDetail instances are equal
     * info on if the modification affects what is saved to disk, and thus should be undone temporarily for file writing.
     """
-    class_id = ''
+
+    class_id = ""
 
     data = None
     doc = None
@@ -45,9 +47,9 @@ class SceneDetail(object):
     def set_doc(self, doc):
         self.doc = doc
 
- # <interface>
-    key = None #a string or something alike to use to store/find the entry in TempoVis. For example, a string "{object_name}.{property_name}".
-    affects_persistence = False #True indicate that the changes will be recorded if the doc is saved, and that this detail should be restored for saving
+    # <interface>
+    key = None  # a string or something alike to use to store/find the entry in TempoVis. For example, a string "{object_name}.{property_name}".
+    affects_persistence = False  # True indicate that the changes will be recorded if the doc is saved, and that this detail should be restored for saving
 
     def scene_value(self):
         """scene_value(): returns the value from the scene"""
@@ -62,15 +64,16 @@ class SceneDetail(object):
         if isinstance(other, self.__class__):
             return self.data == other.data and self.data is not None
         else:
-            raise TypeError('{self} can\'t be compared with {other}'
-                             .format(self= repr(self), other= repr(other)))
-  # </interface>
+            raise TypeError(
+                "{self} can't be compared with {other}".format(self=repr(self), other=repr(other))
+            )
 
-  # <utility>
+    # </interface>
+
+    # <utility>
     @property
     def full_key(self):
         return (self.class_id, self.doc.Name if self.doc else None, self.key)
-
 
     def __ne__(self, other):
         return not self.__eq__(other)

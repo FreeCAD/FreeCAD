@@ -23,7 +23,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <cassert>
-#endif// #ifndef _PreComp_
+#endif  // #ifndef _PreComp_
 
 #include <boost/core/ignore_unused.hpp>
 
@@ -50,7 +50,7 @@ template<typename T>
 GeoListModel<T>::GeoListModel(const std::vector<T>& geometrylist,
                               int intgeocount)
     : geomlist(geometrylist)
-    ,// copy constructed here
+    ,  // copy constructed here
     intGeoCount(intgeocount)
     , OwnerT(false)
     , indexInit(false)
@@ -322,7 +322,7 @@ void GeoListModel<T>::rebuildVertexIndex() const
 template<typename T>
 Sketcher::GeoElementId GeoListModel<T>::getGeoElementIdFromVertexId(int vertexId)
 {
-    if (!indexInit) {// lazy initialised
+    if (!indexInit) {  // lazy initialised
         rebuildVertexIndex();
     }
 
@@ -332,7 +332,7 @@ Sketcher::GeoElementId GeoListModel<T>::getGeoElementIdFromVertexId(int vertexId
 template<typename T>
 int GeoListModel<T>::getVertexIdFromGeoElementId(const Sketcher::GeoElementId& geoelementId) const
 {
-    if (!indexInit) {// lazy initialised
+    if (!indexInit) {  // lazy initialised
         rebuildVertexIndex();
     }
 
@@ -431,7 +431,7 @@ GeoListModel<GeometryFacadeUniquePtr>::getGeoListModel(
 #endif
 
 
-}// namespace Sketcher
+}  // namespace Sketcher
 
 GeoListFacade Sketcher::getGeoListFacade(const GeoList& geolist)
 {

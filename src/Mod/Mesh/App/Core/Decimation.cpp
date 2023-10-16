@@ -30,9 +30,8 @@
 using namespace MeshCore;
 
 MeshSimplify::MeshSimplify(MeshKernel& mesh)
-  : myKernel(mesh)
-{
-}
+    : myKernel(mesh)
+{}
 
 void MeshSimplify::simplify(float tolerance, float reduction)
 {
@@ -53,14 +52,16 @@ void MeshSimplify::simplify(float tolerance, float reduction)
         Simplify::Triangle t;
         t.deleted = 0;
         t.dirty = 0;
-        for (double & j : t.err)
+        for (double& j : t.err) {
             j = 0.0;
-        for (int j = 0; j < 3; j++)
+        }
+        for (int j = 0; j < 3; j++) {
             t.v[j] = facets[i]._aulPoints[j];
+        }
         alg.triangles.push_back(t);
     }
 
-    int target_count = static_cast<int>(static_cast<float>(facets.size()) * (1.0f-reduction));
+    int target_count = static_cast<int>(static_cast<float>(facets.size()) * (1.0f - reduction));
 
     // Simplification starts
     alg.simplify_mesh(target_count, tolerance);
@@ -68,18 +69,19 @@ void MeshSimplify::simplify(float tolerance, float reduction)
     // Simplification done
     MeshPointArray new_points;
     new_points.reserve(alg.vertices.size());
-    for (const auto & vertex : alg.vertices) {
+    for (const auto& vertex : alg.vertices) {
         new_points.push_back(vertex.p);
     }
 
     std::size_t numFacets = 0;
-    for (const auto & triangle : alg.triangles) {
-        if (!triangle.deleted)
+    for (const auto& triangle : alg.triangles) {
+        if (!triangle.deleted) {
             numFacets++;
+        }
     }
     MeshFacetArray new_facets;
     new_facets.reserve(numFacets);
-    for (const auto & triangle : alg.triangles) {
+    for (const auto& triangle : alg.triangles) {
         if (!triangle.deleted) {
             MeshFacet face;
             face._aulPoints[0] = triangle.v[0];
@@ -111,10 +113,12 @@ void MeshSimplify::simplify(int targetSize)
         Simplify::Triangle t;
         t.deleted = 0;
         t.dirty = 0;
-        for (double & j : t.err)
+        for (double& j : t.err) {
             j = 0.0;
-        for (int j = 0; j < 3; j++)
+        }
+        for (int j = 0; j < 3; j++) {
             t.v[j] = facets[i]._aulPoints[j];
+        }
         alg.triangles.push_back(t);
     }
 
@@ -124,18 +128,19 @@ void MeshSimplify::simplify(int targetSize)
     // Simplification done
     MeshPointArray new_points;
     new_points.reserve(alg.vertices.size());
-    for (const auto & vertex : alg.vertices) {
+    for (const auto& vertex : alg.vertices) {
         new_points.push_back(vertex.p);
     }
 
     std::size_t numFacets = 0;
-    for (const auto & triangle : alg.triangles) {
-        if (!triangle.deleted)
+    for (const auto& triangle : alg.triangles) {
+        if (!triangle.deleted) {
             numFacets++;
+        }
     }
     MeshFacetArray new_facets;
     new_facets.reserve(numFacets);
-    for (const auto & triangle : alg.triangles) {
+    for (const auto& triangle : alg.triangles) {
         if (!triangle.deleted) {
             MeshFacet face;
             face._aulPoints[0] = triangle.v[0];

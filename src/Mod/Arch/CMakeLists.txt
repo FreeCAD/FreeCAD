@@ -61,6 +61,7 @@ SET(Arch_SRCS
     exportIFCStructuralTools.py
     ifc_objects.py
     ifc_viewproviders.py
+    ArchSketchObject.py
 )
 
 SET(Dice3DS_SRCS

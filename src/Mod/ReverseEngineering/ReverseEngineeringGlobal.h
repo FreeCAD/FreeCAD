@@ -44,4 +44,4 @@
 #endif
 #endif
 
-#endif// REEN_GLOBAL_H
+#endif  // REEN_GLOBAL_H

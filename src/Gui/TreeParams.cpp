@@ -140,7 +140,7 @@ public:
         funcs["ItemSpacing"] = &TreeParamsP::updateItemSpacing;
         ItemBackground = handle->GetUnsigned("ItemBackground", 0x00000000);
         funcs["ItemBackground"] = &TreeParamsP::updateItemBackground;
-        ItemBackgroundPadding = handle->GetInt("ItemBackgroundPadding", 10);
+        ItemBackgroundPadding = handle->GetInt("ItemBackgroundPadding", 0);
         funcs["ItemBackgroundPadding"] = &TreeParamsP::updateItemBackgroundPadding;
         HideColumn = handle->GetBool("HideColumn", true);
         funcs["HideColumn"] = &TreeParamsP::updateHideColumn;
@@ -347,7 +347,7 @@ public:
     }
     // Auto generated code (Tools/params_utils.py:244)
     static void updateItemBackgroundPadding(TreeParamsP *self) {
-        auto v = self->handle->GetInt("ItemBackgroundPadding", 10);
+        auto v = self->handle->GetInt("ItemBackgroundPadding", 0);
         if (self->ItemBackgroundPadding != v) {
             self->ItemBackgroundPadding = v;
             TreeParams::onItemBackgroundPaddingChanged();
@@ -1174,7 +1174,7 @@ const long & TreeParams::getItemBackgroundPadding() {
 
 // Auto generated code (Tools/params_utils.py:300)
 const long & TreeParams::defaultItemBackgroundPadding() {
-    const static long def = 10;
+    const static long def = 0;
     return def;
 }
 
@@ -1403,10 +1403,9 @@ void TreeParams::onResizableColumnChanged() {
 }
 
 void TreeParams::onIconSizeChanged() {
-    // auto tree = TreeWidget::instance();
-    // Commented out temporarily while merging PR #7888
-    //if (tree)
-        //tree->setIconHeight(TreeParams::getIconSize());
+    auto tree = TreeWidget::instance();
+    if (tree)
+        tree->setIconHeight(TreeParams::getIconSize());
 }
 
 void TreeParams::onFontSizeChanged() {

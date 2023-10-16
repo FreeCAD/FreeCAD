@@ -183,7 +183,7 @@ def setup(doc=None, solvertype="ccxtools"):
         (doc.Box4, "Face6"),
         (doc.Box5, "Face6")
     ]
-    con_force.Force = 10000.00
+    con_force.Force = "10000.00 N"
     con_force.Direction = (doc.Box1, ["Edge1"])
     con_force.Reversed = True
     analysis.addObject(con_force)

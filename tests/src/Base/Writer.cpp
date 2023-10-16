@@ -97,7 +97,7 @@ TEST_F(WriterTest, endCharStreamTwice)
     _writer.endCharStream();
 
     // Act
-    _writer.endCharStream();// Doesn't throw, or do anything at all
+    _writer.endCharStream();  // Doesn't throw, or do anything at all
 
     // Assert
     EXPECT_EQ("<![CDATA[]]>", _writer.getString());
@@ -113,4 +113,19 @@ TEST_F(WriterTest, charStream)
 
     // Assert
     EXPECT_EQ(&streamA, &streamB);
+}
+
+TEST_F(WriterTest, charStreamBase64Encoded)
+{
+    // Arrange
+    _writer.beginCharStream(Base::CharStreamFormat::Base64Encoded);
+    std::string data {"FreeCAD rocks! 🪨🪨🪨"};
+
+    // Act
+    _writer.charStream() << data;
+    _writer.endCharStream();
+
+    // Assert
+    // Conversion done using https://www.base64encode.org for testing purposes
+    EXPECT_EQ(std::string("RnJlZUNBRCByb2NrcyEg8J+qqPCfqqjwn6qo\n"), _writer.getString());
 }

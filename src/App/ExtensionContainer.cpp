@@ -48,7 +48,6 @@ ExtensionContainer::~ExtensionContainer() {
 }
 
 void ExtensionContainer::registerExtension(Base::Type extension, Extension* ext) {
-
     if(ext->getExtendedContainer() != this)
         throw Base::ValueError("ExtensionContainer::registerExtension: Extension has not this as base object");
 

@@ -2,4 +2,4 @@
 # (c) 2007 Juergen Riegel LGPL
 
 # Append the open handler
-FreeCAD.addImportType("JtOpen (*.jt)","JtReader")
+FreeCAD.addImportType("JtOpen (*.jt)", "JtReader")

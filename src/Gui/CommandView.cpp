@@ -67,6 +67,8 @@
 #include "Macro.h"
 #include "MainWindow.h"
 #include "NavigationStyle.h"
+#include "OverlayParams.h"
+#include "OverlayManager.h"
 #include "SceneInspector.h"
 #include "Selection.h"
 #include "SelectionObject.h"
@@ -1350,229 +1352,6 @@ void StdCmdViewTop::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     doCommand(Command::Gui,"Gui.activeDocument().activeView().viewTop()");
-}
-
-
-//===============================================================================
-// StdCmdSelectFilter (dropdown toolbar button for Vertex, Edge & Face Selection)
-//===============================================================================
-
-DEF_STD_CMD_ACL(StdCmdSelectFilter)
-
-StdCmdSelectFilter::StdCmdSelectFilter()
-  : Command("Std_SelectFilter")
-{
-    sGroup        = "Standard-View";
-    sMenuText     = QT_TR_NOOP("Selection filter");
-    sToolTipText  = QT_TR_NOOP("Change the Selection filter");
-    sStatusTip    = QT_TR_NOOP("Change the Selection filter");
-    sWhatsThis    = "Std_SelectFilter";
-    sPixmap       = "selection-filter";
-    eType         = Alter3DView;
-}
-
-void StdCmdSelectFilter::activated(int iMsg)
-{
-    Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
-    if (iMsg==0)
-        rcCmdMgr.runCommandByName("Std_VertexSelection");
-    else if (iMsg==1)
-        rcCmdMgr.runCommandByName("Std_EdgeSelection");
-    else if (iMsg==2)
-        rcCmdMgr.runCommandByName("Std_FaceSelection");
-    else if (iMsg==3)
-        rcCmdMgr.runCommandByName("Std_RemoveSelectionGate");
-    else
-        return;
-
-    // Since the default icon is reset when enabling/disabling the command we have
-    // to explicitly set the icon of the used command.
-    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
-    QList<QAction*> a = pcAction->actions();
-
-    assert(iMsg < a.size());
-    pcAction->setIcon(a[iMsg]->icon());
-}
-
-Gui::Action * StdCmdSelectFilter::createAction()
-{
-    Gui::ActionGroup* pcAction = new Gui::ActionGroup(this, Gui::getMainWindow());
-    pcAction->setDropDownMenu(true);
-    applyCommandData(this->className(), pcAction);
-
-    QAction* cmd0 = pcAction->addAction(QString());
-    cmd0->setIcon(Gui::BitmapFactory().iconFromTheme("vertex-selection"));
-    cmd0->setShortcut(QKeySequence(QString::fromUtf8("X,S")));
-    QAction* cmd1 = pcAction->addAction(QString());
-    cmd1->setIcon(Gui::BitmapFactory().iconFromTheme("edge-selection"));
-    cmd1->setShortcut(QKeySequence(QString::fromUtf8("E,S")));
-    QAction* cmd2 = pcAction->addAction(QString());
-    cmd2->setIcon(Gui::BitmapFactory().iconFromTheme("face-selection"));
-    cmd2->setShortcut(QKeySequence(QString::fromUtf8("F,S")));
-    QAction* cmd3 = pcAction->addAction(QString());
-    cmd3->setIcon(Gui::BitmapFactory().iconFromTheme("clear-selection"));
-    cmd3->setShortcut(QKeySequence(QString::fromUtf8("C,S")));
-
-    _pcAction = pcAction;
-    languageChange();
-
-    pcAction->setIcon(Gui::BitmapFactory().iconFromTheme("selection-filter"));
-    int defaultId = 3;
-    pcAction->setProperty("defaultAction", QVariant(defaultId));
-
-    return pcAction;
-}
-
-void StdCmdSelectFilter::languageChange()
-{
-    Command::languageChange();
-
-    if (!_pcAction)
-        return;
-
-    Gui::CommandManager &rcCmdMgr = Gui::Application::Instance->commandManager();
-
-    Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(_pcAction);
-    QList<QAction*> a = pcAction->actions();
-
-    Gui::Command* vertexSelection = rcCmdMgr.getCommandByName("Std_VertexSelection");
-    if (vertexSelection) {
-        QAction* cmd0 = a[0];
-        cmd0->setText(QApplication::translate("View_SelectionFilter", vertexSelection->getMenuText()));
-        cmd0->setToolTip(QApplication::translate("View_SelectionFilter", vertexSelection->getToolTipText()));
-        cmd0->setStatusTip(QApplication::translate("View_SelectionFilter", vertexSelection->getStatusTip()));
-    }
-
-    Gui::Command* edgeSelection = rcCmdMgr.getCommandByName("Std_EdgeSelection");
-    if (edgeSelection) {
-        QAction* cmd1 = a[1];
-        cmd1->setText(QApplication::translate("View_SelectionFilter", edgeSelection->getMenuText()));
-        cmd1->setToolTip(QApplication::translate("View_SelectionFilter", edgeSelection->getToolTipText()));
-        cmd1->setStatusTip(QApplication::translate("View_SelectionFilter", edgeSelection->getStatusTip()));
-    }
-
-    Gui::Command* faceSelection = rcCmdMgr.getCommandByName("Std_FaceSelection");
-    if (faceSelection) {
-        QAction* cmd1 = a[2];
-        cmd1->setText(QApplication::translate("View_SelectionFilter", faceSelection->getMenuText()));
-        cmd1->setToolTip(QApplication::translate("View_SelectionFilter", faceSelection->getToolTipText()));
-        cmd1->setStatusTip(QApplication::translate("View_SelectionFilter", faceSelection->getStatusTip()));
-    }
-
-    Gui::Command* removeSelection = rcCmdMgr.getCommandByName("Std_RemoveSelectionGate");
-    if (removeSelection) {
-        QAction* cmd2 = a[3];
-        cmd2->setText(QApplication::translate("View_SelectionFilter", removeSelection->getMenuText()));
-        cmd2->setToolTip(QApplication::translate("View_SelectionFilter", removeSelection->getToolTipText()));
-        cmd2->setStatusTip(QApplication::translate("View_SelectionFilter", removeSelection->getStatusTip()));
-    }
-}
-
-bool StdCmdSelectFilter::isActive()
-{
-    Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
-    return view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId());
-}
-
-
-//===========================================================================
-// Std_VertexSelection
-//===========================================================================
-DEF_3DV_CMD(StdCmdVertexSelection)
-
-StdCmdVertexSelection::StdCmdVertexSelection()
-  : Command("Std_VertexSelection")
-{
-    sGroup        = "Standard-View";
-    sMenuText     = QT_TR_NOOP("Vertex Selection");
-    sToolTipText  = QT_TR_NOOP("Select a Vertex/Vertices");
-    sWhatsThis    = "Std_VertexSelection";
-    sStatusTip    = QT_TR_NOOP("Select a Vertex/Vertices");
-    sPixmap       = "vertex-selection";
-    sAccel        = "X, S";
-    eType         = Alter3DView;
-}
-
-void StdCmdVertexSelection::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    doCommand(Command::Gui,"Gui.Selection.addSelectionGate('SELECT Part::Feature SUBELEMENT Vertex')");
-}
-
-
-//===========================================================================
-// Std_EdgeSelection
-//===========================================================================
-DEF_3DV_CMD(StdCmdEdgeSelection)
-
-StdCmdEdgeSelection::StdCmdEdgeSelection()
-  : Command("Std_EdgeSelection")
-{
-    sGroup        = "Standard-View";
-    sMenuText     = QT_TR_NOOP("Edge Selection");
-    sToolTipText  = QT_TR_NOOP("Select Edge(s)");
-    sWhatsThis    = "Std_EdgeSelection";
-    sStatusTip    = QT_TR_NOOP("Select Edge(s)");
-    sPixmap       = "edge-selection";
-    sAccel        = "E, S";
-    eType         = Alter3DView;
-}
-
-void StdCmdEdgeSelection::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    doCommand(Command::Gui,"Gui.Selection.addSelectionGate('SELECT Part::Feature SUBELEMENT Edge')");
-}
-
-
-//===========================================================================
-// Std_FaceSelection
-//===========================================================================
-DEF_3DV_CMD(StdCmdFaceSelection)
-
-StdCmdFaceSelection::StdCmdFaceSelection()
-  : Command("Std_FaceSelection")
-{
-    sGroup        = "Standard-View";
-    sMenuText     = QT_TR_NOOP("Face Selection");
-    sToolTipText  = QT_TR_NOOP("Select Face(s)");
-    sWhatsThis    = "Std_FaceSelection";
-    sStatusTip    = QT_TR_NOOP("Select Face(s)");
-    sPixmap       = "face-selection";
-    sAccel        = "F, S";
-    eType         = Alter3DView;
-}
-
-void StdCmdFaceSelection::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    doCommand(Command::Gui,"Gui.Selection.addSelectionGate('SELECT Part::Feature SUBELEMENT Face')");
-}
-
-
-
-//===========================================================================
-// Std_RemoveSelectionGate
-//===========================================================================
-DEF_3DV_CMD(StdCmdRemoveSelectionGate)
-
-StdCmdRemoveSelectionGate::StdCmdRemoveSelectionGate()
-  : Command("Std_RemoveSelectionGate")
-{
-    sGroup        = "Standard-View";
-    sMenuText     = QT_TR_NOOP("All selection filters cleared");
-    sToolTipText  = QT_TR_NOOP("All selection filters cleared");
-    sWhatsThis    = "Std_RemoveSelectionGate";
-    sStatusTip    = QT_TR_NOOP("All selection filters cleared");
-    sPixmap       = "clear-selection";
-    sAccel        = "C, S";
-    eType         = Alter3DView;
-}
-
-void StdCmdRemoveSelectionGate::activated(int iMsg)
-{
-    Q_UNUSED(iMsg);
-    doCommand(Command::Gui,"Gui.Selection.removeSelectionGate()");
 }
 
 
@@ -3577,10 +3356,14 @@ StdCmdSelBack::StdCmdSelBack()
   :Command("Std_SelBack")
 {
   sGroup        = "View";
-  sMenuText     = QT_TR_NOOP("&Back");
-  sToolTipText  = QT_TR_NOOP("Go back to previous selection");
+  sMenuText     = QT_TR_NOOP("Selection Back");
+  static std::string toolTip = std::string("<p>")
+      + QT_TR_NOOP("Restore the previous Tree view selection. "
+      "Only works if Tree RecordSelection mode is switched on.")
+      + "</p>";
+  sToolTipText = toolTip.c_str();
   sWhatsThis    = "Std_SelBack";
-  sStatusTip    = QT_TR_NOOP("Go back to previous selection");
+  sStatusTip    = sToolTipText;
   sPixmap       = "sel-back";
   sAccel        = "S, B";
   eType         = AlterSelection;
@@ -3607,10 +3390,14 @@ StdCmdSelForward::StdCmdSelForward()
   :Command("Std_SelForward")
 {
   sGroup        = "View";
-  sMenuText     = QT_TR_NOOP("&Forward");
-  sToolTipText  = QT_TR_NOOP("Repeat the backed selection");
+  sMenuText     = QT_TR_NOOP("Selection Forward");
+  static std::string toolTip = std::string("<p>")
+      + QT_TR_NOOP("Restore the next Tree view selection. "
+      "Only works if Tree RecordSelection mode is switched on.")
+      + "</p>";
+  sToolTipText = toolTip.c_str();
   sWhatsThis    = "Std_SelForward";
-  sStatusTip    = QT_TR_NOOP("Repeat the backed selection");
+  sStatusTip    = sToolTipText;
   sPixmap       = "sel-forward";
   sAccel        = "S, F";
   eType         = AlterSelection;
@@ -3876,6 +3663,11 @@ public:
 
         addCommand(new StdTreeDrag(),!cmds.empty());
         addCommand(new StdTreeSelection(),!cmds.empty());
+
+        addCommand();
+
+        addCommand(new StdCmdSelBack());
+        addCommand(new StdCmdSelForward());
     }
     const char* className() const override {return "StdCmdTreeViewActions";}
 };
@@ -3924,6 +3716,279 @@ Action * StdCmdSelBoundingBox::createAction()
     pcAction->setCheckable(true);
     return pcAction;
 }
+
+//===========================================================================
+// Std_DockOverlayAll
+//===========================================================================
+
+DEF_STD_CMD(StdCmdDockOverlayAll)
+
+StdCmdDockOverlayAll::StdCmdDockOverlayAll()
+  :Command("Std_DockOverlayAll")
+{
+  sGroup        = "View";
+  sMenuText     = QT_TR_NOOP("Toggle overlay for all");
+  sToolTipText  = QT_TR_NOOP("Toggle overlay mode for all docked windows");
+  sWhatsThis    = "Std_DockOverlayAll";
+  sStatusTip    = sToolTipText;
+  sAccel        = "F4";
+  eType         = 0;
+}
+
+void StdCmdDockOverlayAll::activated(int iMsg)
+{
+    Q_UNUSED(iMsg); 
+    OverlayManager::instance()->setOverlayMode(OverlayManager::OverlayMode::ToggleAll);
+}
+
+//===========================================================================
+// Std_DockOverlayTransparentAll
+//===========================================================================
+
+DEF_STD_CMD(StdCmdDockOverlayTransparentAll)
+
+StdCmdDockOverlayTransparentAll::StdCmdDockOverlayTransparentAll()
+  :Command("Std_DockOverlayTransparentAll")
+{
+  sGroup        = "View";
+  sMenuText     = QT_TR_NOOP("Toggle transparent for all");
+  sToolTipText  = QT_TR_NOOP("Toggle transparent for all overlay docked window.\n"
+                             "This makes the docked widget stay transparent at all times.");
+  sWhatsThis    = "Std_DockOverlayTransparentAll";
+  sStatusTip    = sToolTipText;
+  sAccel        = "SHIFT+F4";
+  eType         = 0;
+}
+
+void StdCmdDockOverlayTransparentAll::activated(int iMsg)
+{
+    Q_UNUSED(iMsg); 
+    OverlayManager::instance()->setOverlayMode(OverlayManager::OverlayMode::ToggleTransparentAll);
+}
+
+//===========================================================================
+// Std_DockOverlayToggle
+//===========================================================================
+
+DEF_STD_CMD(StdCmdDockOverlayToggle)
+
+StdCmdDockOverlayToggle::StdCmdDockOverlayToggle()
+  :Command("Std_DockOverlayToggle")
+{
+  sGroup        = "View";
+  sMenuText     = QT_TR_NOOP("Toggle overlay");
+  sToolTipText  = QT_TR_NOOP("Toggle overlay mode of the docked window under cursor");
+  sWhatsThis    = "Std_DockOverlayToggle";
+  sStatusTip    = sToolTipText;
+  sAccel        = "F3";
+  eType         = 0;
+}
+
+void StdCmdDockOverlayToggle::activated(int iMsg)
+{
+    Q_UNUSED(iMsg); 
+    OverlayManager::instance()->setOverlayMode(OverlayManager::OverlayMode::ToggleActive);
+}
+
+//===========================================================================
+// Std_DockOverlayToggleTransparent
+//===========================================================================
+
+DEF_STD_CMD(StdCmdDockOverlayToggleTransparent)
+
+StdCmdDockOverlayToggleTransparent::StdCmdDockOverlayToggleTransparent()
+  :Command("Std_DockOverlayToggleTransparent")
+{
+    sGroup        = "Standard-View";
+    sMenuText     = QT_TR_NOOP("Toggle transparent");
+    sToolTipText  = QT_TR_NOOP("Toggle transparent mode for the docked widget under cursor.\n"
+                               "This makes the docked widget stay transparent at all times.");
+    sWhatsThis    = "Std_DockOverlayToggleTransparent";
+    sStatusTip    = sToolTipText;
+    sAccel        = "SHIFT+F3";
+    eType         = 0;
+}
+
+void StdCmdDockOverlayToggleTransparent::activated(int iMsg)
+{
+    Q_UNUSED(iMsg); 
+    OverlayManager::instance()->setOverlayMode(OverlayManager::OverlayMode::ToggleTransparent);
+}
+
+//===========================================================================
+// Std_DockOverlayToggleLeft
+//===========================================================================
+
+DEF_STD_CMD(StdCmdDockOverlayToggleLeft)
+
+StdCmdDockOverlayToggleLeft::StdCmdDockOverlayToggleLeft()
+  :Command("Std_DockOverlayToggleLeft")
+{
+    sGroup        = "Standard-View";
+    sMenuText     = QT_TR_NOOP("Toggle left");
+    sToolTipText  = QT_TR_NOOP("Show/hide left overlay panel");
+    sWhatsThis    = "Std_DockOverlayToggleLeft";
+    sStatusTip    = sToolTipText;
+    sAccel        = "SHIFT+Left";
+    sPixmap       = "qss:overlay/close.svg";
+    eType         = 0;
+}
+
+void StdCmdDockOverlayToggleLeft::activated(int iMsg)
+{
+    Q_UNUSED(iMsg); 
+    OverlayManager::instance()->setOverlayMode(OverlayManager::OverlayMode::ToggleLeft);
+}
+
+//===========================================================================
+// Std_DockOverlayToggleRight
+//===========================================================================
+
+DEF_STD_CMD(StdCmdDockOverlayToggleRight)
+
+StdCmdDockOverlayToggleRight::StdCmdDockOverlayToggleRight()
+  :Command("Std_DockOverlayToggleRight")
+{
+    sGroup        = "Standard-View";
+    sMenuText     = QT_TR_NOOP("Toggle right");
+    sToolTipText  = QT_TR_NOOP("Show/hide right overlay panel");
+    sWhatsThis    = "Std_DockOverlayToggleRight";
+    sStatusTip    = sToolTipText;
+    sAccel        = "SHIFT+Right";
+    sPixmap       = "qss:overlay/close.svg";
+    eType         = 0;
+}
+
+void StdCmdDockOverlayToggleRight::activated(int iMsg)
+{
+    Q_UNUSED(iMsg); 
+    OverlayManager::instance()->setOverlayMode(OverlayManager::OverlayMode::ToggleRight);
+}
+
+//===========================================================================
+// Std_DockOverlayToggleTop
+//===========================================================================
+
+DEF_STD_CMD(StdCmdDockOverlayToggleTop)
+
+StdCmdDockOverlayToggleTop::StdCmdDockOverlayToggleTop()
+  :Command("Std_DockOverlayToggleTop")
+{
+    sGroup        = "Standard-View";
+    sMenuText     = QT_TR_NOOP("Toggle top");
+    sToolTipText  = QT_TR_NOOP("Show/hide top overlay panel");
+    sWhatsThis    = "Std_DockOverlayToggleTop";
+    sStatusTip    = sToolTipText;
+    sAccel        = "SHIFT+Up";
+    sPixmap       = "qss:overlay/close.svg";
+    eType         = 0;
+}
+
+void StdCmdDockOverlayToggleTop::activated(int iMsg)
+{
+    Q_UNUSED(iMsg); 
+    OverlayManager::instance()->setOverlayMode(OverlayManager::OverlayMode::ToggleTop);
+}
+
+//===========================================================================
+// Std_DockOverlayToggleBottom
+//===========================================================================
+
+DEF_STD_CMD(StdCmdDockOverlayToggleBottom)
+
+StdCmdDockOverlayToggleBottom::StdCmdDockOverlayToggleBottom()
+  :Command("Std_DockOverlayToggleBottom")
+{
+    sGroup        = "Standard-View";
+    sMenuText     = QT_TR_NOOP("Toggle bottom");
+    sToolTipText  = QT_TR_NOOP("Show/hide bottom overlay panel");
+    sWhatsThis    = "Std_DockOverlayToggleBottom";
+    sStatusTip    = sToolTipText;
+    sAccel        = "SHIFT+Down";
+    sPixmap       = "qss:overlay/close.svg";
+    eType         = 0;
+}
+
+void StdCmdDockOverlayToggleBottom::activated(int iMsg)
+{
+    Q_UNUSED(iMsg); 
+    OverlayManager::instance()->setOverlayMode(OverlayManager::OverlayMode::ToggleBottom);
+}
+
+//===========================================================================
+// Std_DockOverlayMouseTransparent
+//===========================================================================
+
+DEF_STD_CMD_AC(StdCmdDockOverlayMouseTransparent)
+
+StdCmdDockOverlayMouseTransparent::StdCmdDockOverlayMouseTransparent()
+  :Command("Std_DockOverlayMouseTransparent")
+{
+  sGroup        = "View";
+  sMenuText     = QT_TR_NOOP("Bypass mouse events in dock overlay");
+  sToolTipText  = QT_TR_NOOP("Bypass all mouse events in dock overlay");
+  sWhatsThis    = "Std_DockOverlayMouseTransparent";
+  sStatusTip    = sToolTipText;
+  sAccel        = "T, T";
+  eType         = NoTransaction;
+}
+
+void StdCmdDockOverlayMouseTransparent::activated(int iMsg)
+{
+    (void)iMsg;
+    bool checked = !OverlayManager::instance()->isMouseTransparent();
+    OverlayManager::instance()->setMouseTransparent(checked);
+    if(_pcAction)
+        _pcAction->setChecked(checked,true);
+}
+
+Action * StdCmdDockOverlayMouseTransparent::createAction(void) {
+    Action *pcAction = Command::createAction();
+    pcAction->setCheckable(true);
+    pcAction->setIcon(QIcon());
+    _pcAction = pcAction;
+    isActive();
+    return pcAction;
+}
+
+bool StdCmdDockOverlayMouseTransparent::isActive() {
+    bool checked = OverlayManager::instance()->isMouseTransparent();
+    if(_pcAction && _pcAction->isChecked()!=checked)
+        _pcAction->setChecked(checked,true);
+    return true;
+}
+
+// ============================================================================
+
+class StdCmdDockOverlay : public GroupCommand
+{
+public:
+    StdCmdDockOverlay()
+        :GroupCommand("Std_DockOverlay")
+    {
+        sGroup        = "View";
+        sMenuText     = QT_TR_NOOP("Dock window overlay");
+        sToolTipText  = QT_TR_NOOP("Setting docked window overlay mode");
+        sWhatsThis    = "Std_DockOverlay";
+        sStatusTip    = sToolTipText;
+        eType         = 0;
+        bCanLog       = false;
+
+        addCommand(new StdCmdDockOverlayAll());
+        addCommand(new StdCmdDockOverlayTransparentAll());
+        addCommand();
+        addCommand(new StdCmdDockOverlayToggle());
+        addCommand(new StdCmdDockOverlayToggleTransparent());
+        addCommand();
+        addCommand(new StdCmdDockOverlayMouseTransparent());
+        addCommand();
+        addCommand(new StdCmdDockOverlayToggleLeft());
+        addCommand(new StdCmdDockOverlayToggleRight());
+        addCommand(new StdCmdDockOverlayToggleTop());
+        addCommand(new StdCmdDockOverlayToggleBottom());
+    };
+    virtual const char* className() const {return "StdCmdDockOverlay";}
+};
 
 //===========================================================================
 // Std_StoreWorkingView
@@ -3996,6 +4061,7 @@ namespace Gui {
 
 void CreateViewStdCommands()
 {
+    // NOLINTBEGIN
     CommandManager &rcCmdMgr = Application::Instance->commandManager();
 
     // views
@@ -4006,11 +4072,6 @@ void CreateViewStdCommands()
     rcCmdMgr.addCommand(new StdCmdViewRear());
     rcCmdMgr.addCommand(new StdCmdViewRight());
     rcCmdMgr.addCommand(new StdCmdViewTop());
-    rcCmdMgr.addCommand(new StdCmdSelectFilter());
-    rcCmdMgr.addCommand(new StdCmdVertexSelection());
-    rcCmdMgr.addCommand(new StdCmdEdgeSelection());
-    rcCmdMgr.addCommand(new StdCmdFaceSelection());
-    rcCmdMgr.addCommand(new StdCmdRemoveSelectionGate());
     rcCmdMgr.addCommand(new StdCmdViewIsometric());
     rcCmdMgr.addCommand(new StdCmdViewDimetric());
     rcCmdMgr.addCommand(new StdCmdViewTrimetric());
@@ -4072,15 +4133,15 @@ void CreateViewStdCommands()
     rcCmdMgr.addCommand(new CmdViewMeasureClearAll());
     rcCmdMgr.addCommand(new CmdViewMeasureToggleAll());
     rcCmdMgr.addCommand(new StdCmdSelBoundingBox());
-    rcCmdMgr.addCommand(new StdCmdSelBack());
-    rcCmdMgr.addCommand(new StdCmdSelForward());
     rcCmdMgr.addCommand(new StdCmdTreeViewActions());
+    rcCmdMgr.addCommand(new StdCmdDockOverlay());
 
     auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
     if(hGrp->GetASCII("GestureRollFwdCommand").empty())
         hGrp->SetASCII("GestureRollFwdCommand","Std_SelForward");
     if(hGrp->GetASCII("GestureRollBackCommand").empty())
         hGrp->SetASCII("GestureRollBackCommand","Std_SelBack");
+    // NOLINTEND
 }
 
 } // namespace Gui

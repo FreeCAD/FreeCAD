@@ -52,6 +52,6 @@
 #include <Inventor/nodes/SoNormal.h>
 #include <Inventor/nodes/SoPointSet.h>
 
-#endif//_PreComp_
+#endif  //_PreComp_
 
-#endif// POINTSGUI_PRECOMPILED_H
+#endif  // POINTSGUI_PRECOMPILED_H
