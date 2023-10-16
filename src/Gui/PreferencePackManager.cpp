@@ -227,31 +227,40 @@ void Gui::PreferencePackManager::importConfig(const std::string& packName,
 
 void Gui::PreferencePackManager::FindPreferencePacksInPackage(const fs::path &mod)
 {
+    try {
+        TryFindPreferencePacksInPackage(mod);
+    }
+    catch (const std::exception& e) {
+        Base::Console().Error("%s\n", e.what());
+    }
+    catch (...) {
+        // Failed to read the metadata, or to create the preferencePack based on it...
+        auto packageMetadataFile = mod / "package.xml";
+        Base::Console().Error("Failed to read %s\n", packageMetadataFile.string().c_str());
+    }
+}
+
+void PreferencePackManager::TryFindPreferencePacksInPackage(const boost::filesystem::path& mod)
+{
     auto packageMetadataFile = mod / "package.xml";
     static const auto modDirectory = fs::path(App::Application::getUserAppDataDir()) / "Mod" / "SavedPreferencePacks";
     static const auto resourcePath = fs::path(App::Application::getResourceDir()) / "Gui" / "PreferencePacks";
 
     if (fs::exists(packageMetadataFile) && fs::is_regular_file(packageMetadataFile)) {
-        try {
-            App::Metadata metadata(packageMetadataFile);
-            auto content = metadata.content();
-            auto basename = mod.filename().string();
-            if (mod == modDirectory)
-                basename = "##USER_SAVED##";
-            else if (mod == resourcePath)
-                basename = "##BUILT_IN##";
-            for (const auto& item : content) {
-                if (item.first == "preferencepack") {
-                    if (isVisible(basename, item.second.name())) {
-                        PreferencePack newPreferencePack(mod / item.second.name(), item.second);
-                        _preferencePacks.insert(std::make_pair(newPreferencePack.name(), newPreferencePack));
-                    }
+        App::Metadata metadata(packageMetadataFile);
+        auto content = metadata.content();
+        auto basename = mod.filename().string();
+        if (mod == modDirectory)
+            basename = "##USER_SAVED##";
+        else if (mod == resourcePath)
+            basename = "##BUILT_IN##";
+        for (const auto& item : content) {
+            if (item.first == "preferencepack") {
+                if (isVisible(basename, item.second.name())) {
+                    PreferencePack newPreferencePack(mod / item.second.name(), item.second);
+                    _preferencePacks.insert(std::make_pair(newPreferencePack.name(), newPreferencePack));
                 }
             }
-        }
-        catch (...) {
-            // Failed to read the metadata, or to create the preferencePack based on it...
-            Base::Console().Error(("Failed to read " + packageMetadataFile.string()).c_str());
         }
     }
 }

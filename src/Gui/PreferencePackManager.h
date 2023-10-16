@@ -194,6 +194,7 @@ namespace Gui {
     private:
 
         void FindPreferencePacksInPackage(const boost::filesystem::path& mod);
+        void TryFindPreferencePacksInPackage(const boost::filesystem::path& mod);
 
         void BackupCurrentConfig() const;
 
