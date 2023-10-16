@@ -123,23 +123,6 @@ protected:
 
 
 // ***************************************************************************
-// DataAtPoint markers
-class DataAtPointMarker: public PointMarker
-{
-    Q_OBJECT
-
-public:
-    DataAtPointMarker(Gui::View3DInventorViewer* view, Fem::FemPostDataAtPointFilter* obj);
-
-Q_SIGNALS:
-    void PointsChanged(double x, double y, double z);
-
-protected:
-    void customEvent(QEvent* e) override;
-};
-
-
-// ***************************************************************************
 // main task dialog
 class TaskPostBox: public Gui::TaskView::TaskBox
 {
@@ -342,6 +325,13 @@ public:
     void applyPythonCode() override;
     static void pointCallback(void* ud, SoEventCallback* n);
 
+Q_SIGNALS:
+    void PointsChanged(double x, double y, double z);
+
+protected:
+    Gui::View3DInventorViewer* viewer;
+    QMetaObject::Connection connSelectPoint;
+
 private:
     void setupConnections();
     void onSelectPointClicked();
@@ -349,13 +339,11 @@ private:
     void centerChanged(double);
     void onChange(double x, double y, double z);
 
-private:
     std::string toString(double val) const;
     void showValue(double value, const char* unit);
-    std::string ObjectVisible();
+    std::string objectVisible(bool visible) const;
     QWidget* proxy;
     std::unique_ptr<Ui_TaskPostDataAtPoint> ui;
-    DataAtPointMarker* marker;
 };
 
 
