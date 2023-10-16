@@ -2226,7 +2226,7 @@ CmdMeasureClearAll::CmdMeasureClearAll()
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Clear All");
-    sToolTipText  = QT_TR_NOOP("Clear all dimensions from the screen.");
+    sToolTipText  = QT_TR_NOOP("Clear all dimensions from the active 3D view.");
     sWhatsThis    = "Part_Measure_Clear_All";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Measure_Clear_All";
