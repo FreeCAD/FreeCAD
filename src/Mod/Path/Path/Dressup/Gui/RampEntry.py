@@ -192,8 +192,8 @@ class ObjectDressup:
     def setup(self, obj):
         obj.Angle = 60
         obj.Method = 2
-        if PathDressup.baseOp(obj).StartDepth is not None:
-            obj.DressupStartDepth = PathDressup.baseOp(obj).StartDepth
+        if PathDressup.baseOp(obj.Base).StartDepth is not None:
+            obj.DressupStartDepth = PathDressup.baseOp(obj.Base).StartDepth
 
     def execute(self, obj):
         if not obj.Base:
@@ -203,7 +203,7 @@ class ObjectDressup:
         if not obj.Base.Path:
             return
 
-        if hasattr(obj.Base, 'Active') and not obj.Base.Active:
+        if not PathDressup.baseOp(obj.Base).Active:
             path = Path.Path("(inactive operation)")
             obj.Path = path
             return
