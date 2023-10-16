@@ -195,27 +195,6 @@ void DataAlongLineMarker::customEvent(QEvent*)
 
 
 // ***************************************************************************
-// DataAtPoint marker
-DataAtPointMarker::DataAtPointMarker(Gui::View3DInventorViewer* iv,
-                                     Fem::FemPostDataAtPointFilter* obj)
-    : PointMarker(iv, obj)
-{}
-
-void DataAtPointMarker::customEvent(QEvent*)
-{
-    const SbVec3f& pt1 = getPoint(0);
-    Q_EMIT PointsChanged(pt1[0], pt1[1], pt1[2]);
-    Gui::Command::doCommand(Gui::Command::Doc,
-                            "App.ActiveDocument.%s.Center = App.Vector(%f, %f, %f)",
-                            getObject()->getNameInDocument(),
-                            pt1[0],
-                            pt1[1],
-                            pt1[2]);
-    Gui::Command::doCommand(Gui::Command::Doc, ObjectInvisible().c_str());
-}
-
-
-// ***************************************************************************
 // main task dialog
 TaskPostBox::TaskPostBox(Gui::ViewProviderDocumentObject* view,
                          const QPixmap& icon,
@@ -931,8 +910,9 @@ TaskPostDataAtPoint::TaskPostDataAtPoint(ViewProviderFemPostDataAtPoint* view, Q
                   Gui::BitmapFactory().pixmap("FEM_PostFilterDataAtPoint"),
                   tr("Data at point options"),
                   parent)
+    , viewer(nullptr)
+    , connSelectPoint(QMetaObject::Connection())
     , ui(new Ui_TaskPostDataAtPoint)
-    , marker(nullptr)
 {
     // we load the views widget
     proxy = new QWidget(this);
@@ -996,11 +976,9 @@ TaskPostDataAtPoint::~TaskPostDataAtPoint()
     if (doc) {
         doc->recompute();
     }
-    if (marker && marker->getView()) {
-        marker->getView()->setEditing(false);
-        marker->getView()->removeEventCallback(SoMouseButtonEvent::getClassTypeId(),
-                                               pointCallback,
-                                               marker);
+    if (viewer) {
+        viewer->setEditing(false);
+        viewer->removeEventCallback(SoMouseButtonEvent::getClassTypeId(), pointCallback, this);
     }
 }
 
@@ -1021,43 +999,40 @@ void TaskPostDataAtPoint::applyPythonCode()
 
 void TaskPostDataAtPoint::onSelectPointClicked()
 {
-    Gui::Command::doCommand(Gui::Command::Doc, ObjectVisible().c_str());
+    Gui::Command::doCommand(Gui::Command::Doc, objectVisible(true).c_str());
     auto view = static_cast<Gui::View3DInventor*>(getView()->getDocument()->getActiveView());
     if (view) {
-        Gui::View3DInventorViewer* viewer = view->getViewer();
+        viewer = view->getViewer();
         viewer->setEditing(true);
         viewer->setEditingCursor(QCursor(QPixmap(cursor_triangle), 7, 7));
 
-        if (!marker) {
-            // Derives from QObject and we have a parent object, so we don't
-            // require a delete.
-            auto obj = static_cast<Fem::FemPostDataAtPointFilter*>(getObject());
-            marker = new DataAtPointMarker(viewer, obj);
-            marker->setParent(this);
-        }
-
-        if (!marker->connSelectPoint) {
+        if (!connSelectPoint) {
             viewer->addEventCallback(SoMouseButtonEvent::getClassTypeId(),
                                      TaskPostDataAtPoint::pointCallback,
-                                     marker);
-            marker->connSelectPoint = connect(marker,
-                                              &DataAtPointMarker::PointsChanged,
-                                              this,
-                                              &TaskPostDataAtPoint::onChange);
+                                     this);
+            connSelectPoint = connect(this,
+                                      &TaskPostDataAtPoint::PointsChanged,
+                                      this,
+                                      &TaskPostDataAtPoint::onChange);
         }
     }
     getTypedView<ViewProviderFemPostObject>()->DisplayMode.setValue(1);
     updateEnumerationList(getTypedView<ViewProviderFemPostObject>()->Field, ui->Field);
 }
 
-std::string TaskPostDataAtPoint::ObjectVisible()
+std::string TaskPostDataAtPoint::objectVisible(bool visible) const
 {
-    return "for amesh in App.activeDocument().Objects:\n\
+    std::ostringstream oss;
+    std::string v = visible ? "True" : "False";
+    oss << "for amesh in App.activeDocument().Objects:\n\
     if \"Mesh\" in amesh.TypeId:\n\
          aparttoshow = amesh.Name.replace(\"_Mesh\",\"\")\n\
          for apart in App.activeDocument().Objects:\n\
              if aparttoshow == apart.Name:\n\
-                 apart.ViewObject.Visibility = True\n";
+                 apart.ViewObject.Visibility ="
+        << v << "\n";
+
+    return oss.str();
 }
 
 void TaskPostDataAtPoint::onChange(double x, double y, double z)
@@ -1073,13 +1048,15 @@ void TaskPostDataAtPoint::onChange(double x, double y, double z)
     ui->centerY->blockSignals(false);
     ui->centerZ->blockSignals(false);
     centerChanged(0.0);
-    if (marker && marker->getView()) {
+    Gui::Command::doCommand(Gui::Command::Doc, objectVisible(false).c_str());
+
+    if (viewer) {
         // leave mode
-        marker->getView()->setEditing(false);
-        marker->getView()->removeEventCallback(SoMouseButtonEvent::getClassTypeId(),
-                                               TaskPostDataAtPoint::pointCallback,
-                                               marker);
-        disconnect(marker->connSelectPoint);
+        viewer->setEditing(false);
+        viewer->removeEventCallback(SoMouseButtonEvent::getClassTypeId(),
+                                    TaskPostDataAtPoint::pointCallback,
+                                    this);
+        disconnect(connSelectPoint);
     }
 }
 
@@ -1094,12 +1071,6 @@ void TaskPostDataAtPoint::centerChanged(double)
                                 ui->centerY->value().getValue(),
                                 ui->centerZ->value().getValue());
 
-        if (marker && marker->countPoints() == 1) {
-            SbVec3f vec(ui->centerX->value().getValue(),
-                        ui->centerY->value().getValue(),
-                        ui->centerZ->value().getValue());
-            marker->setPoint(0, vec);
-        }
         // recompute the feature to fill all fields with data at this point
         getObject()->recomputeFeature();
         // show the data dialog by calling on_Field_activated with the field that is currently set
@@ -1115,7 +1086,7 @@ void TaskPostDataAtPoint::pointCallback(void* ud, SoEventCallback* n)
 {
     const SoMouseButtonEvent* mbe = static_cast<const SoMouseButtonEvent*>(n->getEvent());
     Gui::View3DInventorViewer* view = static_cast<Gui::View3DInventorViewer*>(n->getUserData());
-    PointMarker* pm = static_cast<PointMarker*>(ud);
+    auto taskPost = static_cast<TaskPostDataAtPoint*>(ud);
 
     // Mark all incoming mouse button events as handled, especially,
     // to deactivate the selection node
@@ -1129,17 +1100,8 @@ void TaskPostDataAtPoint::pointCallback(void* ud, SoEventCallback* n)
         }
 
         n->setHandled();
-        if (pm->countPoints() < 2) {
-            if (pm->countPoints() == 0) {
-                pm->addPoint(point->getPoint());
-            }
-            else {
-                pm->setPoint(0, point->getPoint());
-            }
-
-            QEvent* e = new QEvent(QEvent::User);
-            QApplication::postEvent(pm, e);
-        }
+        const SbVec3f& pt = point->getPoint();
+        Q_EMIT taskPost->PointsChanged(pt[0], pt[1], pt[2]);
     }
     else if (mbe->getButton() != SoMouseButtonEvent::BUTTON1
              && mbe->getState() == SoButtonEvent::UP) {
@@ -1148,7 +1110,7 @@ void TaskPostDataAtPoint::pointCallback(void* ud, SoEventCallback* n)
         view->removeEventCallback(SoMouseButtonEvent::getClassTypeId(),
                                   TaskPostDataAtPoint::pointCallback,
                                   ud);
-        disconnect(pm->connSelectPoint);
+        disconnect(taskPost->connSelectPoint);
     }
 }
 
