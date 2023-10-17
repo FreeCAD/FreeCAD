@@ -36,6 +36,7 @@ of the DraftToolBar, the Snapper, and the working plane.
 import FreeCAD as App
 import FreeCADGui as Gui
 import DraftVecUtils
+import WorkingPlane
 import draftutils.utils as utils
 import draftutils.gui_utils as gui_utils
 import draftutils.todo as todo
@@ -59,9 +60,7 @@ class DraftTool:
     properties of the running tools such as the task panel, the snapping
     functions, and the grid trackers.
 
-    It also connects with the `DraftWorkingPlane` class
-    that is installed in the `FreeCAD` namespace in order to set up
-    the working plane if it doesn't exist.
+    It also connects with the `WorkingPlane` class.
 
     This class is intended to be replaced by newer classes inside the
     `gui_base` module, in particular, `GuiCommandBase`.
@@ -128,8 +127,7 @@ class DraftTool:
         self.ui = Gui.draftToolBar
         self.ui.sourceCmd = self
         self.view = gui_utils.get_3d_view()
-        self.wp = App.DraftWorkingPlane
-        self.wp.setup()
+        self.wp = WorkingPlane.get_working_plane()
 
         self.planetrack = None
         if utils.get_param("showPlaneTracker", False):
@@ -166,7 +164,7 @@ class DraftTool:
             self.ui.sourceCmd = None
         if self.planetrack:
             self.planetrack.finalize()
-        self.wp.restore()
+        self.wp._restore()
         if hasattr(Gui, "Snapper"):
             Gui.Snapper.off()
         if self.call:
@@ -218,8 +216,7 @@ class DraftTool:
               of the current tool
         """
         # Current plane rotation as a string
-        p = self.wp.getRotation()
-        qr = p.Rotation.Q
+        qr = self.wp.get_placement().Rotation.Q
         qr = "({0}, {1}, {2}, {3})".format(qr[0], qr[1], qr[2], qr[3])
 
         # Support object
@@ -265,8 +262,8 @@ class Creator(DraftTool):
             It is the `featureName` of the object, to know what is being run.
         """
         super().Activated(name)
-        # call self.wp.save to sync with self.wp.restore called in finish method
-        self.wp.save()
+        # call _save to sync with _restore called in finish method
+        self.wp._save()
         self.support = gui_tool_utils.get_support()
 
 
@@ -286,6 +283,6 @@ class Modifier(DraftTool):
 
     def Activated(self, name="None", is_subtool=False):
         super().Activated(name, is_subtool)
-        # call self.wp.save to sync with self.wp.restore called in finish method
-        self.wp.save()
+        # call _save to sync with _restore called in finish method
+        self.wp._save()
 ## @}

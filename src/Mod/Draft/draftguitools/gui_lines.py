@@ -182,9 +182,6 @@ class Line(gui_base_original.Creator):
                 self.commit(translate("draft", "Create Wire"),
                             _cmd_list)
         super().finish()
-        if hasattr(Gui, "Snapper"):
-            Gui.Snapper.setGrid(tool=True)
-            Gui.Snapper.restack()
         if cont or (cont is None and self.ui and self.ui.continueMode):
             self.Activated()
 
@@ -259,10 +256,7 @@ class Line(gui_base_original.Creator):
                 n = self.wp.axis
             p = self.node[-1]
             v = self.node[-1].sub(self.node[-2])
-            self.wp.alignToPointAndAxis(p, n, upvec=v)
-            if hasattr(Gui, "Snapper"):
-                Gui.Snapper.setGrid()
-                Gui.Snapper.restack()
+            self.wp.align_to_point_and_axis(p, n, upvec=v, _hist_add=False)
             if self.planetrack:
                 self.planetrack.set(self.node[-1])
 

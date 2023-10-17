@@ -46,6 +46,7 @@ import FreeCAD
 import FreeCADGui
 import Draft
 import DraftVecUtils
+import WorkingPlane
 
 from draftutils.translate import translate
 
@@ -552,17 +553,6 @@ class DraftToolBar:
         self.wplabel = self._pushbutton(
             "wplabel", self.toptray, icon='Draft_SelectPlane',
             hide=False,width=120)
-        defaultWP = Draft.getParam("defaultWP",0)
-        if defaultWP == 1:
-            self.wplabel.setText(translate("draft","Top"))
-        elif defaultWP == 2:
-            self.wplabel.setText(translate("draft","Front"))
-        elif defaultWP == 3:
-            self.wplabel.setText(translate("draft","Side"))
-        else:
-            self.wplabel.setText(translate("draft","Auto"))
-        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/General")
-        bsize = p.GetInt("ToolbarIconSize",24)+2
 
         self.styleButton = self._pushbutton(
             "stylebutton", self.toptray, icon='Draft_Apply', hide=False,
@@ -694,7 +684,6 @@ class DraftToolBar:
 
     def retranslateTray(self,widget=None):
 
-        self.wplabel.setToolTip(translate("draft", "Current working plane")+":"+self.wplabel.text())
         self.styleButton.setToolTip(translate("draft", "Change default style for new objects"))
         self.constrButton.setToolTip(translate("draft", "Toggle construction mode"))
         self.autoGroupButton.setToolTip(translate("draft", "Autogroup off"))
@@ -1103,10 +1092,11 @@ class DraftToolBar:
                     if self.pointcallback:
                         self.pointcallback(num_vec, self.globalMode, self.relativeMode)
                     else:
+                        plane = WorkingPlane.get_working_plane(update=False)
                         ref_vec = FreeCAD.Vector(0, 0, 0)
-                        if FreeCAD.DraftWorkingPlane and not self.globalMode:
-                            num_vec = FreeCAD.DraftWorkingPlane.getGlobalRot(num_vec)
-                            ref_vec = FreeCAD.DraftWorkingPlane.getGlobalCoords(ref_vec)
+                        if plane and not self.globalMode:
+                            num_vec = plane.get_global_coords(num_vec, as_vector=True)
+                            ref_vec = plane.get_global_coords(ref_vec)
                         if self.relativeMode and self.sourceCmd.node:
                             ref_vec = self.sourceCmd.node[-1]
 
@@ -1283,7 +1273,8 @@ class DraftToolBar:
                             if hasattr(self.sourceCmd,"node"):
                                 if self.sourceCmd.node:
                                     last = self.sourceCmd.node[-1]
-                    delta = FreeCAD.DraftWorkingPlane.getGlobalCoords(
+                    plane = WorkingPlane.get_working_plane(update=False)
+                    delta = plane.get_global_coords(
                         FreeCAD.Vector(self.x,self.y,self.z))
                     FreeCADGui.Snapper.trackLine.p2(last.add(delta))
 
@@ -1310,13 +1301,13 @@ class DraftToolBar:
             return
 
         if not plane:
-            plane = FreeCAD.DraftWorkingPlane
+            plane = WorkingPlane.get_working_plane(update=False)
         # get coords to display
         if not last:
             if self.globalMode:
                 last = FreeCAD.Vector(0,0,0)
             else:
-                last = plane.getPlacement().Base
+                last = plane.position
         dp = None
         if point:
             dp = point
@@ -1324,12 +1315,12 @@ class DraftToolBar:
                 if self.globalMode:
                     dp = point - last
                 else:
-                    dp = plane.getLocalRot(point - last)
+                    dp = plane.get_local_coords(point - last, as_vector=True)
             else:
                 if self.globalMode:
                     dp = point
                 else:
-                    dp = plane.getLocalCoords(point)
+                    dp = plane.get_local_coords(point)
         # set widgets
         if dp:
             if self.mask in ['y','z']:
@@ -1628,7 +1619,8 @@ class DraftToolBar:
         self.update_cartesian_coords()
         if self.angleLock.isChecked():
             if not self.globalMode:
-                angle_vec = FreeCAD.DraftWorkingPlane.getGlobalRot(self.angle)
+                plane = WorkingPlane.get_working_plane(update=False)
+                angle_vec = plane.get_global_coords(self.angle, as_vector=True)
             else:
                 angle_vec = self.angle
             FreeCADGui.Snapper.setAngle(angle_vec)
@@ -1638,7 +1630,8 @@ class DraftToolBar:
         self.update_cartesian_coords()
         if self.alock:
             if not self.globalMode:
-                angle_vec = FreeCAD.DraftWorkingPlane.getGlobalRot(self.angle)
+                plane = WorkingPlane.get_working_plane(update=False)
+                angle_vec = plane.get_global_coords(self.angle, as_vector=True)
             else:
                 angle_vec = self.angle
             FreeCADGui.Snapper.setAngle(angle_vec)
