@@ -13,6 +13,8 @@
 #include "FullColumn.h"
 #include "FullMatrix.h"
 #include "MBDynSystem.h"
+#include "ASMTTime.h"
+#include "ASMTConstantGravity.h"
 
 namespace MbD {
 	class ASMTRefPoint;

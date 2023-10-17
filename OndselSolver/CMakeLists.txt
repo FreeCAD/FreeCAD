@@ -11,6 +11,7 @@ target_sources(ondsel-solver PUBLIC
         AngleZIeqcJeqc.cpp
         AnyGeneralSpline.cpp
         AnyPosICNewtonRaphson.cpp
+        ArcSine.cpp
         ArcTan.cpp
         ArcTan2.cpp
         Array.cpp
@@ -29,7 +30,9 @@ target_sources(ondsel-solver PUBLIC
         ASMTKinematicIJ.cpp
         ASMTMarker.cpp
         ASMTMotion.cpp
+        ASMTNoRotationJoint.cpp
         ASMTPart.cpp
+        ASMTPointInLineJoint.cpp
         ASMTPointInPlaneJoint.cpp
         ASMTPrincipalMassMarker.cpp
         ASMTRefCurve.cpp
@@ -179,12 +182,25 @@ target_sources(ondsel-solver PUBLIC
         LinearMultiStepMethod.cpp
         LineInPlaneJoint.cpp
         MarkerFrame.cpp
-        Math.cpp
         MatrixDecomposition.cpp
         MatrixGaussElimination.cpp
         MatrixLDU.cpp
         MatrixSolver.cpp
         MaximumIterationError.cpp
+        MBDynBlock.cpp
+        MBDynBody.cpp
+        MBDynControlData.cpp
+        MBDynData.cpp
+        MBDynElement.cpp
+        MBDynInitialValue.cpp
+        MBDynItem.cpp
+        MBDynJoint.cpp
+        MBDynMarker.cpp
+        MBDynNode.cpp
+        MBDynReference.cpp
+        MBDynStructural.cpp
+        MBDynSystem.cpp
+        MomentOfInertiaSolver.cpp
         NewtonRaphson.cpp
         NewtonRaphsonError.cpp
         NoRotationJoint.cpp
@@ -280,6 +296,7 @@ target_sources(OndselSolver PUBLIC
         AngleZIeqcJeqc.h
         AnyGeneralSpline.h
         AnyPosICNewtonRaphson.h
+        ArcSine.h
         ArcTan.h
         ArcTan2.h
         Array.h
@@ -298,7 +315,9 @@ target_sources(OndselSolver PUBLIC
         ASMTKinematicIJ.h
         ASMTMarker.h
         ASMTMotion.h
+        ASMTNoRotationJoint.h
         ASMTPart.h
+        ASMTPointInLineJoint.h
         ASMTPointInPlaneJoint.h
         ASMTPrincipalMassMarker.h
         ASMTRefCurve.h
@@ -449,13 +468,25 @@ target_sources(OndselSolver PUBLIC
         LinearMultiStepMethod.h
         LineInPlaneJoint.h
         MarkerFrame.h
-        Math.h
         MatrixDecomposition.h
         MatrixGaussElimination.h
         MatrixLDU.h
         MatrixSolver.h
         MaximumIterationError.h
-        MbDCode.h
+        MBDynBlock.h
+        MBDynBody.h
+        MBDynControlData.h
+        MBDynData.h
+        MBDynElement.h
+        MBDynInitialValue.h
+        MBDynItem.h
+        MBDynJoint.h
+        MBDynMarker.h
+        MBDynNode.h
+        MBDynReference.h
+        MBDynStructural.h
+        MBDynSystem.h
+        MomentOfInertiaSolver.h
         NewtonRaphson.h
         NewtonRaphsonError.h
         NoRotationJoint.h
