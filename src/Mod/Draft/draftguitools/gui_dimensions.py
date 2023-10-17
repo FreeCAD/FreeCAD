@@ -580,14 +580,14 @@ class Dimension(gui_base_original.Creator):
         by projecting on the working plane.
         """
         if not self.proj_point1 or not self.proj_point2:
-            self.proj_point1 = self.wp.projectPoint(self.node[0])
-            self.proj_point2 = self.wp.projectPoint(self.node[1])
+            self.proj_point1 = self.wp.project_point(self.node[0])
+            self.proj_point2 = self.wp.project_point(self.node[1])
             proj_u= self.wp.u.dot(self.proj_point2 - self.proj_point1)
             proj_v= self.wp.v.dot(self.proj_point2 - self.proj_point1)
             active_view = Gui.ActiveDocument.ActiveView
             cursor = active_view.getCursorPos()
             cursor_point = active_view.getPoint(cursor)
-            self.point = self.wp.projectPoint(cursor_point)
+            self.point = self.wp.project_point(cursor_point)
             if not self.force:
                 ref_point = self.point - (self.proj_point2 + self.proj_point1)*1/2
                 ref_angle = abs(ref_point.getAngle(self.wp.u))

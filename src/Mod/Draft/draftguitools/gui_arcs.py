@@ -494,8 +494,8 @@ class Arc_3Points(gui_base.GuiCommandSimplest):
         # Set up the working plane and launch the Snapper
         # with the indicated callbacks: one for when the user clicks
         # on the 3D view, and another for when the user moves the pointer.
-        if hasattr(App, "DraftWorkingPlane"):
-            App.DraftWorkingPlane.setup()
+        import WorkingPlane
+        WorkingPlane.get_working_plane()
 
         Gui.Snapper.getPoint(callback=self.getPoint,
                              movecallback=self.drawArc)
