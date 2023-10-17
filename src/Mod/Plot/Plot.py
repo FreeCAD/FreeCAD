@@ -23,7 +23,6 @@ import FreeCAD
 
 import PySide
 from PySide import QtCore, QtGui
-from distutils.version import LooseVersion as V
 import sys
 
 try:
