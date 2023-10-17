@@ -55,15 +55,14 @@ class Facebinder(gui_base_original.Creator):
     def GetResources(self):
         """Set icon, menu and tooltip."""
 
-        d = {'Pixmap': 'Draft_Facebinder',
-             'Accel': "F,F",
-             'MenuText': QT_TRANSLATE_NOOP("Draft_Facebinder", "Facebinder"),
-             'ToolTip': QT_TRANSLATE_NOOP("Draft_Facebinder", "Creates a facebinder object from selected faces.")}
-        return d
+        return {"Pixmap": "Draft_Facebinder",
+                "Accel": "F,F",
+                "MenuText": QT_TRANSLATE_NOOP("Draft_Facebinder", "Facebinder"),
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_Facebinder", "Creates a facebinder object from selected faces.")}
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Facebinder, self).Activated(name="Facebinder")
+        super().Activated(name="Facebinder")
 
         if not Gui.Selection.getSelection():
             if self.ui:
@@ -80,16 +79,16 @@ class Facebinder(gui_base_original.Creator):
         if Gui.Selection.getSelection():
             App.ActiveDocument.openTransaction("Create Facebinder")
             Gui.addModule("Draft")
-            Gui.doCommand("s = FreeCADGui.Selection.getSelectionEx()")
-            Gui.doCommand("facebinder = Draft.make_facebinder(s)")
-            Gui.doCommand('Draft.autogroup(facebinder)')
-            Gui.doCommand('FreeCAD.ActiveDocument.recompute()')
+            Gui.doCommand("sels = FreeCADGui.Selection.getSelectionEx('', 0)")
+            Gui.doCommand("facebinder = Draft.make_facebinder(sels)")
+            Gui.doCommand("Draft.autogroup(facebinder)")
+            Gui.doCommand("FreeCAD.ActiveDocument.recompute()")
             App.ActiveDocument.commitTransaction()
             App.ActiveDocument.recompute()
         self.finish()
 
 
 Draft_Facebinder = Facebinder
-Gui.addCommand('Draft_Facebinder', Facebinder())
+Gui.addCommand("Draft_Facebinder", Facebinder())
 
 ## @}
