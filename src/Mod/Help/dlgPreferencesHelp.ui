@@ -26,10 +26,11 @@
          <bool>false</bool>
         </property>
         <property name="toolTip">
-         <string>This will fetch the documentation from pages rendered on github. This is currently not available...</string>
+         <string>This will fetch the documentation from pages rendered on GitHub.
+This is currently not available...</string>
         </property>
         <property name="text">
-         <string>Github (online)</string>
+         <string>GitHub (online)</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>optionGithub</cstring>
@@ -42,7 +43,11 @@
       <item row="6" column="0">
        <widget class="Gui::PrefRadioButton" name="radioOffline">
         <property name="toolTip">
-         <string>Set this to a custom URL or the folder where the help files are located. You can easily download the documentation for offline use by using the Addon Manager and installing the &quot;offline documentation&quot; addon. If this field is left blank, FreeCAD will automatically search for the help files at the default location ($USERAPPDATADIR/Mod/Documentation).</string>
+         <string>Set this to a custom URL or the folder where the help files are located.
+You can easily download the documentation for offline use by using the Addon
+Manager and installing the &quot;offline documentation&quot; addon. If this
+field is left blank, FreeCAD will automatically search for the help files at
+the default location ($USERAPPDATADIR/Mod/Documentation).</string>
         </property>
         <property name="text">
          <string>Custom location</string>
@@ -64,7 +69,8 @@
          </size>
         </property>
         <property name="toolTip">
-         <string>A translation suffix to use, for example &quot;fr&quot; to get French translation of the documentation.</string>
+         <string>A translation suffix to use, for example &quot;fr&quot;
+to get French translation of the documentation.</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>Suffix</cstring>
@@ -77,7 +83,11 @@
       <item row="6" column="1">
        <widget class="Gui::PrefFileChooser" name="fileChooser">
         <property name="toolTip">
-         <string>Set this to a custom URL or the folder where the help files are located. You can easily download the documentation for offline use by using the Addon Manager and installing the &quot;offline documentation&quot; addon. If this field is left blank, FreeCAD will automatically search for the help files at the default location ($USERAPPDATADIR/Mod/Documentation).</string>
+         <string>Set this to a custom URL or the folder where the help files are located.
+You can easily download the documentation for offline use by using the Addon
+Manager and installing the &quot;offline documentation&quot; addon. If this
+field is left blank, FreeCAD will automatically search for the help files at
+the default location ($USERAPPDATADIR/Mod/Documentation).</string>
         </property>
         <property name="fileName">
          <string/>
@@ -103,7 +113,8 @@
       <item row="0" column="0">
        <widget class="Gui::PrefRadioButton" name="radioButton">
         <property name="toolTip">
-         <string>The documentation pages will be fetched from the official FreeCADwiki at https://wiki.freecad.org</string>
+         <string>The documentation pages will be fetched from the official
+FreeCADwiki at https://wiki.freecad.org</string>
         </property>
         <property name="text">
          <string>FreeCAD Wiki (online)</string>
@@ -122,7 +133,10 @@
       <item row="1" column="0">
        <widget class="Gui::PrefRadioButton" name="radioOnline">
         <property name="toolTip">
-         <string>The documentation pages will be fetched from an automatic markdown conversion of the FreeCAD wiki, hosted on FreeCAD's github account. This can be styled with a custom stylesheet below and can look nicer than the wiki option. The 'markdown' or 'pandoc' python module should be installed for optimal results.</string>
+         <string>The documentation pages will be fetched from an automatic Markdown conversion
+of the FreeCAD wiki,hosted on FreeCAD's GitHub account. This can be styled with a
+custom stylesheet below and can look nicer than the wiki option. The 'Markdown' or
+'Pandoc' Python module should be installed for optimal results.</string>
         </property>
         <property name="text">
          <string>Markdown version (online)</string>
@@ -169,7 +183,7 @@
       <item>
        <widget class="Gui::PrefRadioButton" name="radioBrowser">
         <property name="toolTip">
-         <string>The documentation will open in your default desktop browser.</string>
+         <string>The documentation will open in your default web browser.</string>
         </property>
         <property name="text">
          <string>In your default web browser</string>
@@ -188,7 +202,8 @@
          <bool>true</bool>
         </property>
         <property name="toolTip">
-         <string>The documentation will open in a dockable dialog inside the FreeCAD window, which allows you to keep it open whlle working in the 3D view.</string>
+         <string>The documentation will open in a dockable dialog inside the FreeCAD window,
+which allows you to keep it open whlle working in the 3D view.</string>
         </property>
         <property name="text">
          <string>In a separate, embeddable dialog</string>
@@ -222,7 +237,9 @@
         <item>
          <widget class="Gui::PrefFileChooser" name="styleSheet">
           <property name="toolTip">
-           <string>You can here indicate the path to an alternative CSS file to be used to style the markdown pages. This will only work if you have selected the Markdown version above.</string>
+           <string>You can here indicate the path to an alternative CSS file to be used
+to style the Markdown pages. This will only work if you have selected the
+Markdown version above.</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>StyleSheet</cstring>
