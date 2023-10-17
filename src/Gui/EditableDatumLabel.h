@@ -53,6 +53,7 @@ public:
 
     void startEdit(double val, QObject* eventFilteringObj = nullptr);
     void stopEdit();
+    bool isInEdit();
     double getValue();
     void setSpinboxValue(double val, const Base::Unit& unit = Base::Unit::Length);
     void setPlacement(const Base::Placement& plc);
