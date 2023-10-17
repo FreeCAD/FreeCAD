@@ -168,6 +168,12 @@ void EditableDatumLabel::stopEdit()
     }
 }
 
+bool EditableDatumLabel::isInEdit()
+{
+    return spinBox;
+}
+
+
 double EditableDatumLabel::getValue()
 {
     return spinBox->rawValue();
