@@ -1948,9 +1948,14 @@ void OverlayManager::Private::interceptEvent(QWidget *widget, QEvent *ev)
 #endif
         lastIntercept = getChildAt(widget, globalPos);
 
-        for (auto parent = lastIntercept->parentWidget(); parent; parent = parent->parentWidget()) {
-            if (qobject_cast<QGraphicsView*>(parent)) {
+        // For some reason in case of 3D View we have to target it directly instead of targeting
+        // the viewport of QAbstractScrollArea like it works for all other widgets of that kind.
+        // That's why for this event we have to traverse up the widget tree to find if it is part
+        // of the 3D view.
+        for (auto parent = lastIntercept; parent; parent = parent->parentWidget()) {
+            if (qobject_cast<View3DInventorViewer*>(parent)) {
                 lastIntercept = parent;
+                break;
             }
         }
 
