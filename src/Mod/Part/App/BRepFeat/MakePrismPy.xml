@@ -44,7 +44,12 @@ basis shape, or the edge to the prismed shape.
     </Methode>
     <Methode Name="perform" Keyword="true">
         <Documentation>
-            <UserDocu></UserDocu>
+            <UserDocu>
+                Assigns one of the following semantics.
+                1. to a height Length
+                2. to a face Until
+                3. from a face From to a height Until. Reconstructs the feature topologically according to the semantic option chosen.
+            </UserDocu>
         </Documentation>
     </Methode>
     <Methode Name="performUntilEnd">
