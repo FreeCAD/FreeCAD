@@ -94,7 +94,7 @@ void GESpMatParPvMarko::preSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr ful
 	for (int i = 0; i < m; i++)
 	{
 		auto& spRowi = spMat->at(i);
-		auto maxRowMagnitude = spRowi->maxMagnitude();
+		double maxRowMagnitude = spRowi->maxMagnitude();
 		if (maxRowMagnitude == 0) {
 			throwSingularMatrixError("");
 		}

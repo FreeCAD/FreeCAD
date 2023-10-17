@@ -32,6 +32,6 @@ void CylindricalJoint::initializeGlobally()
 		this->root()->hasChanged = true;
 	}
 	else {
-		InLineJoint::initializeGlobally();
+		Joint::initializeGlobally();
 	}
 }

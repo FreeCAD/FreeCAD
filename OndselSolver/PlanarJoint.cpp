@@ -30,6 +30,6 @@ void MbD::PlanarJoint::initializeGlobally()
 		this->root()->hasChanged = true;
 	}
 	else {
-		InPlaneJoint::initializeGlobally();
+		Joint::initializeGlobally();
 	}
 }

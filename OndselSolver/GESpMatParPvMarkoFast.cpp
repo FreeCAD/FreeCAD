@@ -33,7 +33,7 @@ void GESpMatParPvMarkoFast::preSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr
 	for (int i = 0; i < m; i++)
 	{
 		auto& spRowi = spMat->at(i);
-		auto maxRowMagnitude = spRowi->maxMagnitude();
+		double maxRowMagnitude = spRowi->maxMagnitude();
 		if (maxRowMagnitude == 0) throwSingularMatrixError("");
 		auto scaling = 1.0 / maxRowMagnitude;
 		matrixA->at(i) = spRowi->timesconditionedWithTol(scaling, singularPivotTolerance);

@@ -33,6 +33,7 @@ namespace MbD {
     {
         //
     public:
+        ASMTSpatialContainer();
         void initialize() override;
         void setPrincipalMassMarker(std::shared_ptr<ASMTPrincipalMassMarker> aJ);
         void readRefPoints(std::vector<std::string>& lines);
@@ -64,12 +65,14 @@ namespace MbD {
         std::shared_ptr<EulerParameters<double>> qEp();
         virtual FColDsptr vOcmO();
         virtual FColDsptr omeOpO();
-        std::shared_ptr<ASMTSpatialContainer> part() override;
+        ASMTSpatialContainer* partOrAssembly() override;
         void updateFromMbD() override;
         void compareResults(AnalysisType type) override;
         void outputResults(AnalysisType type) override;
         void addRefPoint(std::shared_ptr<ASMTRefPoint> refPoint);
         void addMarker(std::shared_ptr<ASMTMarker> marker);
+        std::string generateUniqueMarkerName();
+        std::shared_ptr<std::vector<std::shared_ptr<ASMTMarker>>> markerList();
 
         std::shared_ptr<std::vector<std::shared_ptr<ASMTRefPoint>>> refPoints;
         std::shared_ptr<std::vector<std::shared_ptr<ASMTRefCurve>>> refCurves;

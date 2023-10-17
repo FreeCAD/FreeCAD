@@ -819,9 +819,6 @@
     <ClCompile Include="MBDynData.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MBDynNodes.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="MBDynSystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -831,16 +828,7 @@
     <ClCompile Include="MBDynInitialValue.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MBDynElements.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="MBDynControlData.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MBDynVariables.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="MBDynLabels.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MBDynNode.cpp">
@@ -858,13 +846,25 @@
     <ClCompile Include="MBDynJoint.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="MBDynReferences.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="MBDynReference.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ArcSine.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MBDynMarker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ASMTPointInLineJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ASMTNoRotationJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="EigenDecomposition.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MomentOfInertiaSolver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -1679,9 +1679,6 @@
     <ClInclude Include="MBDynData.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MBDynNodes.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="MBDynSystem.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -1691,16 +1688,7 @@
     <ClInclude Include="MBDynInitialValue.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MBDynElements.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="MBDynControlData.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MBDynVariables.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MBDynLabels.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MBDynNode.h">
@@ -1718,13 +1706,25 @@
     <ClInclude Include="MBDynJoint.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="MBDynReferences.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="MBDynReference.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ArcSine.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MBDynMarker.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ASMTPointInLineJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ASMTNoRotationJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EigenDecomposition.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MomentOfInertiaSolver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1746,5 +1746,6 @@
     <None Include="robot.asmt" />
     <None Include="wobpump.asmt" />
     <None Include="crank_slider.mbd" />
+    <None Include="ClassDiagram1.cd" />
   </ItemGroup>
 </Project>

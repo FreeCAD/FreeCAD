@@ -6,18 +6,12 @@
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
 
-#pragma once
-#include "MBDynBlock.h"
+#include "ASMTNoRotationJoint.h"
+#include "NoRotationJoint.h"
 
-namespace MbD {
-	class MBDynElement;
+using namespace MbD;
 
-	class MBDynElements : public MBDynBlock
-	{
-	public:
-		void initialize() override;
-		void parseMBDyn(std::vector<std::string>& lines) override;
-
-		std::shared_ptr<std::vector<std::shared_ptr<MBDynElement>>> elements;
-	};
+std::shared_ptr<Joint> MbD::ASMTNoRotationJoint::mbdClassNew()
+{
+    return CREATE<NoRotationJoint>::With();
 }

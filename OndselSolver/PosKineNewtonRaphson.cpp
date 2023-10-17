@@ -5,12 +5,13 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include "PosKineNewtonRaphson.h"
 #include "SystemSolver.h"
 #include "Part.h"
 #include "NotKinematicError.h"
 #include "Constraint.h"
+#include <iostream>
 
 using namespace MbD;
 
@@ -80,5 +81,10 @@ void PosKineNewtonRaphson::preRun()
 void PosKineNewtonRaphson::fillY()
 {
 	y->zeroSelf();
-	system->partsJointsMotionsDo([&](std::shared_ptr<Item> item) { item->fillPosKineError(y); });
+	system->partsJointsMotionsDo([&](std::shared_ptr<Item> item) {
+		item->fillPosKineError(y);
+		//std::cout << item->name << *y << std::endl;
+		//noop();
+		});
+	//std::cout << "Final" << *y << std::endl;
 }

@@ -11,6 +11,7 @@
 #include "ASMTSpatialItem.h"
 #include "FullColumn.h"
 #include "FullMatrix.h"
+#include "ASMTPart.h"
 
 namespace MbD {
     class EXPORT ASMTMarker : public ASMTSpatialItem

@@ -20,8 +20,15 @@ namespace MbD {
 		void readTimeStep(std::vector<std::string>& lines);
 		void readMaxIterations(std::vector<std::string>& lines);
 		void readTolerance(std::vector<std::string>& lines);
+		void readDerivativesTolerance(std::vector<std::string>& lines);
+		void readDerivativesMaxIterations(std::vector<std::string>& lines);
+		void readDerivativesCoefficient(std::vector<std::string>& lines);
+		void createASMT() override;
 
-		double initialTime, finalTime, timeStep, tolerance;
-		int maxIterations;
+		double initialTime = 0.0, finalTime = 5.0, timeStep = 1.0e-2, tolerance = 1.0e-6;
+		int maxIterations = 10;
+		double derivativesTolerance = 1.0e-4;
+		int derivativesMaxIterations = 100;
+		std::string derivativesCoefficient = "auto";
 	};
 }

@@ -72,3 +72,9 @@ void MbD::ASMTSimulationParameters::seterrorTol(double tol)
 {
 	errorTol = tol;
 }
+
+void MbD::ASMTSimulationParameters::setmaxIter(int maxIter)
+{
+	iterMaxPosKine = maxIter;
+	iterMaxAccKine = maxIter;
+}

@@ -69,23 +69,23 @@ void MbD::GeneralSpline::computeDerivatives()
 	auto matrix = std::make_shared<SparseMatrix<double>>(np, np);
 	auto bvector = std::make_shared<FullColumn<double>>(np, 0.0);
 	auto hs = std::make_shared<FullColumn<double>>(n - 1);
-	auto hmax = 0.0;
+	double hmax = 0.0;
 	for (int i = 0; i < n - 1; i++)
 	{
-		auto h = xs->at((size_t)i + 1) - xs->at(i);
+		double h = xs->at((size_t)i + 1) - xs->at(i);
 		hmax = std::max(hmax, std::abs(h));
 		hs->atiput(i, h);
 	}
 	for (int i = 0; i < n - 1; i++)
 	{
-		auto offset = i * p;
-		auto hbar = hs->at(i) / hmax;
+		double offset = i * p;
+		double hbar = hs->at(i) / hmax;
 		for (int j = 1; j < p; j++)
 		{
 			matrix->atijput(offset + j, offset + j - 1, 1.0);
 			matrix->atijput(offset + j, offset + j - 1 + p, -1.0);
 		}
-		auto dum = 1.0;
+		double dum = 1.0;
 		for (int j = 0; j < p; j++)
 		{
 			dum = dum * hbar / (j + 1);
@@ -148,7 +148,7 @@ double MbD::GeneralSpline::derivativeAt(int n, double xxx)
 	if (n > degree) return 0.0;
 	calcIndexAndDeltaFor(xxx);
 	auto& derivsi = derivs->at(index);
-	auto sum = 0.0;
+	double sum = 0.0;
 	for (int j = degree; j >= n + 1; j--)
 	{
 		sum = (sum + derivsi->at((size_t)j - 1)) * delta / (j - n);
@@ -169,16 +169,16 @@ void MbD::GeneralSpline::calcIndexAndDeltaFor(double xxx)
 
 void MbD::GeneralSpline::calcCyclicIndexAndDelta()
 {
-	auto xFirst = xs->front();
-	auto xLast = xs->back();
+	double xFirst = xs->front();
+	double xLast = xs->back();
 	xvalue = std::fmod(xvalue - xFirst, xLast - xFirst) + xFirst;
 	calcIndexAndDelta();
 }
 
 void MbD::GeneralSpline::calcNonCyclicIndexAndDelta()
 {
-	auto xFirst = xs->front();
-	auto xLast = xs->back();
+	double xFirst = xs->front();
+	double xLast = xs->back();
 	if (xvalue <= xFirst) {
 		index = 0;
 		delta = xvalue - xFirst;
@@ -230,7 +230,7 @@ double MbD::GeneralSpline::y(double xxx)
 
 	calcIndexAndDeltaFor(xxx);
 	auto& derivsi = derivs->at(index);
-	auto sum = 0.0;
+	double sum = 0.0;
 	for (int j = degree; j >= 1; j--)
 	{
 		sum = (sum + derivsi->at((size_t)j - 1)) * delta / j;

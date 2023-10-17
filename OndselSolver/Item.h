@@ -29,6 +29,7 @@ namespace MbD {
 		Item();
 		Item(const char* str);
 		virtual System* root();
+		void noop();
 
 		virtual void calcPostDynCorrectorIteration();
 		virtual void checkForCollisionDiscontinuityBetweenand(double impulsePrevious, double impulse);

@@ -16,8 +16,8 @@ namespace MbD {
 	public:
 		void initialize() override;
 		void parseMBDyn(std::string line);
-		void readVelocity(std::shared_ptr<std::vector<std::string>>& args);
-		void readOmega(std::shared_ptr<std::vector<std::string>>& args);
+		void readVelocity(std::vector<std::string>& args);
+		void readOmega(std::vector<std::string>& args);
 
 		std::string refString, name;
 		FColDsptr rOfO, vOfO, omeOfO;

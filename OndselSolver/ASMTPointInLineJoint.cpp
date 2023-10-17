@@ -6,16 +6,12 @@
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
 
-#pragma once
-#include "MBDynItem.h"
+#include "ASMTPointInLineJoint.h"
+#include "PointInLineJoint.h"
 
-namespace MbD {
-	class MBDynLabels : public MBDynItem
-	{
-	public:
-		void initialize() override;
-		void parseMBDyn(std::vector<std::string>& lines) override;
+using namespace MbD;
 
-		std::shared_ptr<std::map<std::string, int>> labels;
-	};
+std::shared_ptr<Joint> MbD::ASMTPointInLineJoint::mbdClassNew()
+{
+    return CREATE<PointInLineJoint>::With();
 }

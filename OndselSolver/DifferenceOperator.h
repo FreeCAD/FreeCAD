@@ -28,7 +28,7 @@ namespace MbD {
 
 		int iStep = 0, order = 0;
 		FMatDsptr taylorMatrix, operatorMatrix;
-		double time = 0;
+		double time = 0.0;
 		std::shared_ptr<std::vector<double>> timeNodes;
 		static FRowDsptr OneOverFactorials;
 	};

@@ -7,17 +7,15 @@
  ***************************************************************************/
 
 #pragma once
-#include "MBDynItem.h"
+
+#include "ASMTJoint.h"
 
 namespace MbD {
-    class MBDynNode;
-
-    class MBDynNodes : public MBDynItem
+    class EXPORT ASMTPointInLineJoint : public ASMTJoint
     {
+        //
     public:
-        void initialize() override;
-        void parseMBDyn(std::vector<std::string>& lines) override;
+        std::shared_ptr<Joint> mbdClassNew() override;
 
-        std::shared_ptr<std::vector<std::shared_ptr<MBDynNode>>> nodes;
     };
 }

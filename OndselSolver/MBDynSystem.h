@@ -16,11 +16,11 @@ namespace MbD {
     class MBDynData;
     class MBDynInitialValue;
     class MBDynControlData;
-    class MBDynNodes;
-    class MBDynElements;
-    class MBDynVariables;
-    class MBDynLabels;
-    class MBDynReferences;
+    class MBDynNode;
+    class MBDynElement;
+    class MBDynVariable;
+    class MBDynLabel;
+    class MBDynReference;
 
     class MBDynSystem : public MBDynItem
     {
@@ -30,10 +30,24 @@ namespace MbD {
         static std::vector<std::string> collectStatements(std::vector<std::string>& lines);
         void initialize() override;
         void parseMBDyn(std::vector<std::string>& lines) override;
-        std::shared_ptr<MBDynVariables> mbdynVariables() override;
-        std::shared_ptr<MBDynReferences> mbdynReferences() override;
+        void parseMBDynData(std::vector<std::string>& lines);
+        void parseMBDynNodes(std::vector<std::string>& lines);
+        void parseMBDynElements(std::vector<std::string>& lines);
+        void parseMBDynVariables(std::vector<std::string>& lines);
+        void parseMBDynLabels(std::vector<std::string>& lines);
+        void parseMBDynReferences(std::vector<std::string>& lines);
+        std::shared_ptr<std::vector<std::shared_ptr<MBDynNode>>> mbdynNodes() override;
+        std::shared_ptr<std::map<std::string, Symsptr>> mbdynVariables() override;
+        std::shared_ptr<std::map<std::string, std::shared_ptr<MBDynReference>>> mbdynReferences() override;
+        void createASMT() override;
+        std::shared_ptr<MBDynNode> nodeAt(std::string nodeName) override;
+        int nodeidAt(std::string nodeName) override;
+        std::shared_ptr<MBDynBody> bodyWithNode(std::string nodeName) override;
+        std::shared_ptr<ASMTAssembly> asmtAssembly() override;
+        std::vector<std::string> nodeNames() override;
 
         void runKINEMATIC();
+        void outputFiles();
         void setFilename(std::string filename);
         void readDataBlock(std::vector<std::string>& lines);
         void readInitialValueBlock(std::vector<std::string>& lines);
@@ -45,14 +59,14 @@ namespace MbD {
         void readElementsBlock(std::vector<std::string>& lines);
 
         std::string filename = "";
-        std::shared_ptr<MBDynData> dataBlk;
-        std::shared_ptr<MBDynInitialValue> initialValueBlk;
-        std::shared_ptr<MBDynControlData> controlDataBlk;
-        std::shared_ptr<MBDynNodes> nodesBlk;
-        std::shared_ptr<MBDynElements> elementsBlk;
-        std::shared_ptr<MBDynVariables> variables;
-        std::shared_ptr<MBDynLabels> labels;
-        std::shared_ptr<MBDynReferences> references;
+        std::string data;
+        std::shared_ptr<MBDynInitialValue> initialValue;
+        std::shared_ptr<MBDynControlData> controlData;
+        std::shared_ptr<std::vector<std::shared_ptr<MBDynNode>>> nodes;
+        std::shared_ptr<std::vector<std::shared_ptr<MBDynElement>>> elements;
+        std::shared_ptr<std::map<std::string, Symsptr>> variables;
+        std::shared_ptr<std::map<std::string, int>> labels;
+        std::shared_ptr<std::map<std::string, std::shared_ptr<MBDynReference>>> references;
 
     };
 }

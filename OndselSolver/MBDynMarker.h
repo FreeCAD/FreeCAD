@@ -10,15 +10,15 @@
 #include "MBDynItem.h"
 
 namespace MbD {
-    class MBDynReference;
 
-    class MBDynReferences : public MBDynItem
-    {
-    public:
-        void initialize() override;
-        void parseMBDyn(std::vector<std::string>& lines) override;
+	class MBDynMarker : public MBDynItem
+	{
+	public:
+		void parseMBDyn(std::vector<std::string>& args);
+		void createASMT() override;
 
-        std::shared_ptr<std::map<std::string, std::shared_ptr<MBDynReference>>> references;
-
-    };
+		std::string nodeStr;
+		FColDsptr rPmP; //part to marker
+		FMatDsptr aAPm;
+	};
 }

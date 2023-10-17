@@ -26,6 +26,13 @@
 #include "GeneralSpline.h"
 #include "ArcSine.h"
 
+MbD::SymbolicParser::SymbolicParser()
+{
+	variables = std::make_shared<std::map<std::string, Symsptr>>();
+	stack = std::make_shared<std::stack<Symsptr>>();
+	buffer = std::make_shared<std::stringstream>();
+}
+
 void MbD::SymbolicParser::initialize()
 {
 	variables = std::make_shared<std::map<std::string, Symsptr>>();

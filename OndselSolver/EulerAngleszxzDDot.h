@@ -40,7 +40,7 @@ namespace MbD {
     {
 		//| zero phiThePsi phi sphi cphi phidot phiddot cphiddot sphiddot the sthe cthe thedot theddot ctheddot stheddot 
 		// psi spsi cpsi psidot psiddot cpsiddot spsiddot phiA theA psiA phiAdot theAdot psiAdot |
-		auto zero = 0.0;
+		double zero = 0.0;
 		auto& phiThePsi = phiThePsiDot->phiThePsi;
 		auto& phi = phiThePsi->at(0);
 		auto sphi = std::sin(phi);

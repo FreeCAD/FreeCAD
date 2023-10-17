@@ -13,12 +13,13 @@ namespace MbD {
     class MBDynStructural : public MBDynNode
     {
     public:
-        void initialize() override;
+        MBDynStructural();
         void parseMBDyn(std::string line);
-        void readVelocity(std::shared_ptr<std::vector<std::string>>& args);
-        void readOmega(std::shared_ptr<std::vector<std::string>>& args);
+        void readVelocity(std::vector<std::string>& args);
+        void readOmega(std::vector<std::string>& args);
+        void createASMT() override;
 
-        std::string strucString, name, type;
+        std::string strucString, type;
         FColDsptr rOfO, vOfO, omeOfO;
         FMatDsptr aAOf;
     };

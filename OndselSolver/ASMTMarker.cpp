@@ -53,7 +53,7 @@ FMatDsptr MbD::ASMTMarker::aApm()
 void MbD::ASMTMarker::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits)
 {
 	auto mkr = CREATE<MarkerFrame>::With(name.c_str());
-	auto prt = std::static_pointer_cast<Part>(part()->mbdObject);
+	auto prt = std::static_pointer_cast<Part>(partOrAssembly()->mbdObject);
 	prt->partFrame->addMarkerFrame(mkr);
 
 	mkr->rpmp = rpmp()->times(1.0 / mbdUnits->length);

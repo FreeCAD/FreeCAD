@@ -49,7 +49,7 @@ namespace MbD {
         IntegratorInterface* system;
         int istep = 0, iTry = 0, maxTry = 0;
         std::shared_ptr<std::vector<double>> tpast;
-        double t = 0, tnew = 0, h = 0, hnew = 0;
+        double t = 0.0, tnew = 0.0, h = 0, hnew = 0.0;
         int order = 0, orderNew = 0, orderMax = 0;
         std::shared_ptr<DifferenceOperator> opBDF;
         bool _continue = false;

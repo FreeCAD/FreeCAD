@@ -15,12 +15,14 @@ namespace MbD {
     public:
         void initialize() override;
         void parseMBDyn(std::string line);
-        void readInertiaMatrix(std::shared_ptr<std::vector<std::string>>& args);
+        void readMass(std::vector<std::string>& args);
+        void readInertiaMatrix(std::vector<std::string>& args);
+        void createASMT() override;
 
-        std::string bodyString, name, node;
+        std::string bodyString, name, nodeName;
         double mass;
-        FColDsptr rOfO;
-        FMatDsptr aAOf;
+        FColDsptr rPcmP;
+        FMatDsptr aJmat;
 
     };
 }

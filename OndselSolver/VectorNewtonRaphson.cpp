@@ -77,8 +77,3 @@ void VectorNewtonRaphson::xEqualxoldPlusdx()
 {
 	x = xold->plusFullColumn(dx);
 }
-
-void VectorNewtonRaphson::handleSingularMatrix()
-{
-	assert(false);
-}

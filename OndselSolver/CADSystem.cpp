@@ -610,7 +610,7 @@ void CADSystem::runPiston()
 	systemSolver->errorTolAccKine = 1.0e-6;
 	systemSolver->iterMaxPosKine = 25;
 	systemSolver->iterMaxAccKine = 25;
-	systemSolver->tstart = 0;
+	systemSolver->tstart = 0.0;
 	systemSolver->tend = 25.0;
 	systemSolver->hmin = 2.5e-8;
 	systemSolver->hmax = 25.0;

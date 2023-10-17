@@ -22,7 +22,7 @@ namespace MbD {
         std::shared_ptr<Joint> mbdClassNew() override;
         void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
 
-        std::shared_ptr<std::vector<std::string>> rIJI, angIJJ;
+        std::shared_ptr<FullColumn<std::string>> rIJI, angIJJ;
         std::string rotationOrder;
 
     };

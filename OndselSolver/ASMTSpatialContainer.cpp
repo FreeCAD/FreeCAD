@@ -13,10 +13,37 @@
 #include "ASMTRefPoint.h"
 #include "ASMTRefCurve.h"
 #include "ASMTRefSurface.h"
+#include <algorithm>
 //#include "ASMTPrincipalMassMarker.h"
 
 
 using namespace MbD;
+
+MbD::ASMTSpatialContainer::ASMTSpatialContainer()
+{
+	refPoints = std::make_shared<std::vector<std::shared_ptr<ASMTRefPoint>>>();
+	refCurves = std::make_shared<std::vector<std::shared_ptr<ASMTRefCurve>>>();
+	refSurfaces = std::make_shared<std::vector<std::shared_ptr<ASMTRefSurface>>>();
+
+	xs = std::make_shared<FullRow<double>>();
+	ys = std::make_shared<FullRow<double>>();
+	zs = std::make_shared<FullRow<double>>();
+	bryxs = std::make_shared<FullRow<double>>();
+	bryys = std::make_shared<FullRow<double>>();
+	bryzs = std::make_shared<FullRow<double>>();
+	vxs = std::make_shared<FullRow<double>>();
+	vys = std::make_shared<FullRow<double>>();
+	vzs = std::make_shared<FullRow<double>>();
+	omexs = std::make_shared<FullRow<double>>();
+	omeys = std::make_shared<FullRow<double>>();
+	omezs = std::make_shared<FullRow<double>>();
+	axs = std::make_shared<FullRow<double>>();
+	ays = std::make_shared<FullRow<double>>();
+	azs = std::make_shared<FullRow<double>>();
+	alpxs = std::make_shared<FullRow<double>>();
+	alpys = std::make_shared<FullRow<double>>();
+	alpzs = std::make_shared<FullRow<double>>();
+}
 
 void MbD::ASMTSpatialContainer::initialize()
 {
@@ -294,9 +321,9 @@ FColDsptr MbD::ASMTSpatialContainer::omeOpO()
 	return FColDsptr();
 }
 
-std::shared_ptr<ASMTSpatialContainer> MbD::ASMTSpatialContainer::part()
+ASMTSpatialContainer* MbD::ASMTSpatialContainer::partOrAssembly()
 {
-	return std::make_shared<ASMTSpatialContainer>(*this);
+	return this;
 }
 
 void MbD::ASMTSpatialContainer::updateFromMbD()
@@ -432,4 +459,33 @@ void MbD::ASMTSpatialContainer::addMarker(std::shared_ptr<ASMTMarker> marker)
 	auto refPoint = CREATE<ASMTRefPoint>::With();
 	addRefPoint(refPoint);
 	refPoint->addMarker(marker);
+}
+
+std::string MbD::ASMTSpatialContainer::generateUniqueMarkerName()
+{
+	auto aItemList = markerList();
+	auto markerNames = std::vector<std::string>();
+	for (auto& mkr : *aItemList) {
+		markerNames.push_back(mkr->name);
+	}
+	std::stringstream ss;
+	auto count = 0;
+	while (true) {
+		ss.str("");
+		ss << "Marker";
+		ss << count;
+		if (std::find(markerNames.begin(), markerNames.end(), ss.str()) == markerNames.end()) break;
+		count++;
+	}
+	return ss.str();
+}
+
+std::shared_ptr<std::vector<std::shared_ptr<ASMTMarker>>> MbD::ASMTSpatialContainer::markerList()
+{
+	auto markers = std::make_shared<std::vector<std::shared_ptr<ASMTMarker>>>();
+	for (auto& refPoint : *refPoints) {
+		auto refmarkers = refPoint->markers;
+		markers->insert(markers->end(), refmarkers->begin(), refmarkers->end());
+	}
+	return markers;
 }

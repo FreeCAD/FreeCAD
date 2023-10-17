@@ -7,15 +7,16 @@
  ***************************************************************************/
 
 #pragma once
-#include "MBDynItem.h"
+
+#include "MatrixSolver.h"
 
 namespace MbD {
-	class MBDynVariables : public MBDynItem
+	class EigenDecomposition : public MatrixSolver
 	{
-	public:
-		void initialize() override;
-		void parseMBDyn(std::vector<std::string>& lines) override;
 
-		std::shared_ptr<std::map<std::string, Symsptr>> variables;
+		//
+	public:
+
 	};
 }
+

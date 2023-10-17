@@ -21,6 +21,12 @@
 using namespace MbD;
 
 System::System() {
+	externalSystem = std::make_shared<ExternalSystem>();
+	time = std::make_shared<Time>();
+	parts = std::make_shared<std::vector<std::shared_ptr<Part>>>();
+	jointsMotions = std::make_shared<std::vector<std::shared_ptr<Joint>>>();
+	forcesTorques = std::make_shared<std::vector<std::shared_ptr<ForceTorqueItem>>>();
+	systemSolver = std::make_shared<SystemSolver>(this);
 }
 
 System::System(const char* str) : Item(str) {
@@ -33,12 +39,6 @@ System* MbD::System::root()
 
 void System::initialize()
 {
-	externalSystem = std::make_shared<ExternalSystem>();
-	time = CREATE<Time>::With();
-	parts = std::make_shared<std::vector<std::shared_ptr<Part>>>();
-	jointsMotions = std::make_shared<std::vector<std::shared_ptr<Joint>>>();
-	forcesTorques = std::make_shared<std::vector<std::shared_ptr<ForceTorqueItem>>>();
-	systemSolver = std::make_shared<SystemSolver>(this);
 }
 
 void System::addPart(std::shared_ptr<Part> part)

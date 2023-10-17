@@ -33,7 +33,7 @@ void GESpMatFullPvPosIC::doPivoting(int p)
 	//"Swap rows but keep columns in place."
 	//"The elements below the diagonal are removed column by column."
 
-	auto max = 0.0;
+	double max = 0.0;
 	auto pivotRow = p;
 	auto pivotCol = p;
 	for (int j = p; j < n; j++)

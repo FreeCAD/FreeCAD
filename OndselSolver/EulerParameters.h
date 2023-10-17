@@ -28,6 +28,17 @@ namespace MbD {
 		EulerParameters(int count) : EulerArray<T>(count) {}
 		EulerParameters(int count, const T& value) : EulerArray<T>(count, value) {}
 		EulerParameters(std::initializer_list<T> list) : EulerArray<T>{ list } {}
+		EulerParameters(FColDsptr axis, double theta) : EulerArray<T>(4) {
+			auto halfTheta = theta / 2.0;
+			auto sinHalfTheta = std::sin(halfTheta);
+			auto cosHalfTheta = std::cos(halfTheta);
+			axis->normalizeSelf();
+			this->atiputFullColumn(0, axis->times(sinHalfTheta));
+			this->atiput(3, cosHalfTheta);
+			this->conditionSelf();
+			this->initialize();
+			this->calc();
+		}
 
 		static std::shared_ptr<FullMatrix<FColsptr<T>>> ppApEpEtimesColumn(FColDsptr col);
 		static FMatDsptr pCpEtimesColumn(FColDsptr col);
@@ -201,7 +212,7 @@ namespace MbD {
 	template<>
 	inline void EulerParameters<double>::initialize()
 	{
-		aA = std::make_shared<FullMatrix<double>>(3, 3);
+		aA = FullMatrix<double>::identitysptr(3);
 		aB = std::make_shared<FullMatrix<double>>(3, 4);
 		aC = std::make_shared<FullMatrix<double>>(3, 4);
 		pApE = std::make_shared<FullColumn<FMatDsptr>>(4);

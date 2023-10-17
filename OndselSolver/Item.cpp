@@ -28,6 +28,11 @@ System* Item::root()
 	return owner->root();
 }
 
+void MbD::Item::noop()
+{
+	//No Operations
+}
+
 void Item::initialize()
 {
 }

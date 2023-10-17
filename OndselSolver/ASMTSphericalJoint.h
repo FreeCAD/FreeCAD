@@ -16,7 +16,7 @@ namespace MbD {
     {
         //
     public:
-        virtual std::shared_ptr<Joint> mbdClassNew() override;
+        std::shared_ptr<Joint> mbdClassNew() override;
 
     };
 }
