@@ -267,8 +267,8 @@ void Part::fillqsuWeights(DiagMatDsptr diagMat)
 
 	auto mMax = this->root()->maximumMass();
 	auto aJiMax = this->root()->maximumMomentOfInertia();
-	auto minw = 1.0e3;
-	auto maxw = 1.0e6;
+	double minw = 1.0e3;
+	double maxw = 1.0e6;
 	auto wqX = std::make_shared<DiagonalMatrix<double>>(3);
 	auto wqE = std::make_shared<DiagonalMatrix<double>>(4);
 	if (mMax == 0) { mMax = 1.0; }
@@ -313,10 +313,10 @@ void Part::fillqsudotWeights(DiagMatDsptr diagMat)
 		//| mMax aJiMax maxInertia minw maxw aJi wqXdot wqEdot |
 	auto mMax = this->root()->maximumMass();
 	auto aJiMax = this->root()->maximumMomentOfInertia();
-	auto maxInertia = std::max(mMax, aJiMax);
+	double maxInertia = std::max(mMax, aJiMax);
 	if (maxInertia == 0) maxInertia = 1.0;
-	auto minw = 1.0e-12 * maxInertia;
-	auto maxw = maxInertia;
+	double minw = 1.0e-12 * maxInertia;
+	double maxw = maxInertia;
 	auto wqXdot = std::make_shared<DiagonalMatrix<double>>(3);
 	auto wqEdot = std::make_shared<DiagonalMatrix<double>>(4);
 	for (int i = 0; i < 3; i++)

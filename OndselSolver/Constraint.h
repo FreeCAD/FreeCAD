@@ -51,7 +51,7 @@ namespace MbD {
 		int iG = -1;
 		double aG = 0.0;		//Constraint function
 		double lam = 0.0;		//Lambda is Lagrange Multiplier
-		double mu = 0, lamDeriv = 0;
+		double mu = 0.0, lamDeriv = 0.0;
 	};
 }
 

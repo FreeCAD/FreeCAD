@@ -18,7 +18,7 @@ void LDUFullMatParPv::doPivoting(int p)
 
 	//| app max rowPivot aip mag |
 	auto app = matrixA->at(p)->at(p);
-	auto max = app * rowScalings->at(p);
+	double max = app * rowScalings->at(p);
 	if (max < 0.0) max = -max;
 	auto rowPivot = p;
 	for (int i = p + 1; i < m; i++)

@@ -53,7 +53,7 @@ void MbD::ConstVelConstraintIqcJc::fillAccICIterError(FColDsptr col)
 	col->atiplusFullVectortimes(iqEI, pGpEI, lam);
 	auto efrmIqc = std::static_pointer_cast<EndFrameqc>(frmI);
 	auto qEdotI = efrmIqc->qEdot();
-	auto sum = 0.0;
+	double sum = 0.0;
 	sum += pGpEI->timesFullColumn(efrmIqc->qEddot());
 	sum += qEdotI->transposeTimesFullColumn(ppGpEIpEI->timesFullColumn(qEdotI));
 	col->atiplusNumber(iG, sum);

@@ -89,21 +89,21 @@ namespace MbD {
 		int iterMaxAccKine = 25;
 		std::shared_ptr <QuasiIntegrator> basicIntegrator;
 		std::shared_ptr<std::vector<double>> tstartPasts;
-		double tstart = 0;
+		double tstart = 0.0;
 		double tend = 25;
 		double toutFirst = 0.0;
 		double hmin = 1.0e-9;
 		double hmax = 1.0;
 		double hout = 1.0e-1;
 		double direction = 1;
-		double corAbsTol = 0;
-		double corRelTol = 0;
-		double intAbsTol = 0;
-		double intRelTol = 0;
+		double corAbsTol = 0.0;
+		double corRelTol = 0.0;
+		double intAbsTol = 0.0;
+		double intRelTol = 0.0;
 		int iterMaxDyn = 0;
 		int orderMax = 0;
-		double translationLimit = 0;
-		double rotationLimit = 0;
+		double translationLimit = 0.0;
+		double rotationLimit = 0.0;
 	};
 }
 

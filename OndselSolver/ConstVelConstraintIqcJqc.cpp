@@ -67,7 +67,7 @@ void MbD::ConstVelConstraintIqcJqc::fillAccICIterError(FColDsptr col)
 	auto qEdotI = efrmIqc->qEdot();
 	auto efrmJqc = std::static_pointer_cast<EndFrameqc>(frmJ);
 	auto qEdotJ = efrmJqc->qEdot();
-	auto sum = 0.0;
+	double sum = 0.0;
 	sum += pGpEJ->timesFullColumn(efrmJqc->qEddot());
 	sum += 2.0 * qEdotI->transposeTimesFullColumn(ppGpEIpEJ->timesFullColumn(qEdotJ));
 	sum += qEdotJ->transposeTimesFullColumn(ppGpEJpEJ->timesFullColumn(qEdotJ));

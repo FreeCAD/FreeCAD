@@ -121,10 +121,10 @@ namespace MbD {
 	template<>
 	inline double DiagonalMatrix<double>::maxMagnitude()
 	{
-		auto max = 0.0;
+		double max = 0.0;
 		for (int i = 0; i < this->size(); i++)
 		{
-			auto element = this->at(i);
+			double element = this->at(i);
 			if (element < 0.0) element = -element;
 			if (max < element) max = element;
 		}

@@ -619,10 +619,10 @@ namespace MbD {
 	template<typename T>
 	inline double FullMatrix<T>::maxMagnitude()
 	{
-		auto max = 0.0;
+		double max = 0.0;
 		for (int i = 0; i < this->size(); i++)
 		{
-			auto element = this->at(i)->maxMagnitude();
+			double element = this->at(i)->maxMagnitude();
 			if (max < element) max = element;
 		}
 		return max;
@@ -683,7 +683,7 @@ namespace MbD {
 	template<typename T>
 	inline bool FullMatrix<T>::isDiagonalToWithin(double ratio)
 	{
-		auto maxMag = this->maxMagnitude();
+		double maxMag = this->maxMagnitude();
 		auto tol = ratio * maxMag;
 		auto nrow = this->nrow();
 		if (nrow == this->ncol()) {

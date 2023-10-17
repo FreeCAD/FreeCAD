@@ -96,7 +96,7 @@ void GESpMatParPvPrecise::preSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr f
 	for (int i = 0; i < m; i++)
 	{
 		auto& spRowi = spMat->at(i);
-		auto maxRowMagnitude = spRowi->maxMagnitude();
+		double maxRowMagnitude = spRowi->maxMagnitude();
 		if (maxRowMagnitude == 0) throwSingularMatrixError("preSolvewithsaveOriginal");
 		rowScalings->at(i) = 1.0 / maxRowMagnitude;
 		matrixA->at(i) = spRowi->conditionedWithTol(singularPivotTolerance * maxRowMagnitude);

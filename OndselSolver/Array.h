@@ -96,7 +96,7 @@ namespace MbD {
 	//template<>
 	//inline double Array<double>::maxMagnitude()
 	//{
-	//	auto max = 0.0;
+	//	double max = 0.0;
 	//	for (int i = 0; i < this->size(); i++)
 	//	{
 	//		auto element = this->at(i);
@@ -108,10 +108,10 @@ namespace MbD {
 	template<typename T>
 	inline double Array<T>::maxMagnitudeOfVector()
 	{
-		auto answer = 0.0;
+		double answer = 0.0;
 		for (int i = 0; i < this->size(); i++)
 		{
-			auto mag = std::abs(this->at(i));
+			double mag = std::abs(this->at(i));
 			if (answer < mag) answer = mag;
 		}
 		return answer;
@@ -127,15 +127,15 @@ namespace MbD {
 	//template<>
 	//inline void Array<double>::normalizeSelf()
 	//{
-	//	auto length = this->length();
+	//	double length = this->length();
 	//	if (length == 0.0) throw std::runtime_error("Cannot normalize a null vector.");
 	//	this->magnifySelf(1.0 / length);
 	//}
 	//template<>
 	//inline void Array<double>::conditionSelf()
 	//{
-	//	constexpr auto epsilon = std::numeric_limits<double>::epsilon();
-	//	auto tol = maxMagnitude() * epsilon;
+	//	constexpr double epsilon = std::numeric_limits<double>::epsilon();
+	//	double tol = maxMagnitude() * epsilon;
 	//	conditionSelfWithTol(tol);
 	//}
 	//template<>
@@ -143,7 +143,7 @@ namespace MbD {
 	//{
 	//	for (int i = 0; i < this->size(); i++)
 	//	{
-	//		auto element = this->at(i);
+	//		double element = this->at(i);
 	//		if (element < 0.0) element = -element;
 	//		if (element < tol) this->atiput(i, 0.0);
 	//	}
@@ -156,10 +156,10 @@ namespace MbD {
 	//template<>
 	//inline double Array<double>::length()
 	//{
-	//	auto ssq = 0.0;
+	//	double ssq = 0.0;
 	//	for (int i = 0; i < this->size(); i++)
 	//	{
-	//		auto elem = this->at(i);
+	//		double elem = this->at(i);
 	//		ssq += elem * elem;
 	//	}
 	//	return std::sqrt(ssq);

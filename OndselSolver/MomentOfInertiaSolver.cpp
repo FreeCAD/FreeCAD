@@ -43,7 +43,7 @@ void MbD::MomentOfInertiaSolver::example1()
 
 void MbD::MomentOfInertiaSolver::doFullPivoting(int p)
 {
-	auto max = 0.0;
+	double max = 0.0;
 	auto pivotRow = p;
 	auto pivotCol = p;
 	for (int i = p; i < 3; i++)

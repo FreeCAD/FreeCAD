@@ -64,7 +64,7 @@ void MatrixSolver::findScalingsForRowRange(int begin, int end)
 	rowScalings = std::make_shared<FullColumn<double>>(m);
 	for (int i = begin; i < end; i++)
 	{
-		auto maxRowMagnitude = this->getmatrixArowimaxMagnitude(i);
+		double maxRowMagnitude = this->getmatrixArowimaxMagnitude(i);
 		if (maxRowMagnitude == 0.0) throwSingularMatrixError("");
 		rowScalings->at(i) = 1.0 / maxRowMagnitude;
 	}
