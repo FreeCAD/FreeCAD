@@ -244,7 +244,7 @@ class _SolverDlg(object):
         # get the whole binary path name for the given command or binary path and return it
         # None is returned if the binary has not been found
         # The user does not know what exactly has going wrong.
-        from distutils.spawn import find_executable as find_bin
+        from shutil import which as find_bin
         the_found_binary = find_bin(binary)
         if (the_found_binary is None) and (not silent):
             FreeCAD.Console.PrintError(
