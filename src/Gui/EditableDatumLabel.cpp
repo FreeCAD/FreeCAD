@@ -95,7 +95,7 @@ EditableDatumLabel::~EditableDatumLabel()
 
 void EditableDatumLabel::activate()
 {
-    if (!viewer) {
+    if (!viewer || isActive()) {
         return;
     }
 
@@ -133,6 +133,10 @@ void EditableDatumLabel::deactivate()
 
 void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj, bool visibleToMouse)
 {
+    if (isInEdit()) {
+        return;
+    }
+
     QWidget* mdi = viewer->parentWidget();
 
     label->string = " ";
@@ -183,13 +187,18 @@ void EditableDatumLabel::stopEdit()
     }
 }
 
-bool EditableDatumLabel::isInEdit()
+bool EditableDatumLabel::isActive() const
 {
-    return spinBox;
+    return cameraSensor != nullptr;
+}
+
+bool EditableDatumLabel::isInEdit() const
+{
+    return spinBox != nullptr;
 }
 
 
-double EditableDatumLabel::getValue()
+double EditableDatumLabel::getValue() const
 {
     // We use value rather than spinBox->rawValue() in case edit stopped.
     return value;
@@ -328,11 +337,13 @@ void EditableDatumLabel::setLabelDistance(double val)
     label->param1 = float(val);
 }
 
+// NOLINTNEXTLINE
 void EditableDatumLabel::setLabelStartAngle(double val)
 {
     label->param2 = float(val);
 }
 
+// NOLINTNEXTLINE
 void EditableDatumLabel::setLabelRange(double val)
 {
     label->param3 = float(val);
