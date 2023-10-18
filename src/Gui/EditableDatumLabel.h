@@ -53,8 +53,9 @@ public:
 
     void startEdit(double val, QObject* eventFilteringObj = nullptr, bool visibleToMouse = false);
     void stopEdit();
-    bool isInEdit();
-    double getValue();
+    bool isActive() const;
+    bool isInEdit() const;
+    double getValue() const;
     void setSpinboxValue(double val, const Base::Unit& unit = Base::Unit::Length);
     void setPlacement(const Base::Placement& plc);
     void setColor(SbColor color);
