@@ -714,6 +714,20 @@ void SketcherToolDefaultWidget::restoreCheckBoxPref(int checkboxindex)
     }
 }
 
+void SketcherToolDefaultWidget::setCheckboxIcon(int checkboxindex, QIcon icon)
+{
+    if (checkboxindex < nCheckbox) {
+        getCheckBox(checkboxindex)->setIcon(icon);
+    }
+}
+
+void SketcherToolDefaultWidget::setComboboxItemIcon(int comboboxindex, int index, QIcon icon)
+{
+    if (comboboxindex < nCombobox) {
+        getComboBox(comboboxindex)->setItemIcon(index, icon);
+    }
+}
+
 void SketcherToolDefaultWidget::setComboboxPrefEntry(int comboboxindex,
                                                      const std::string& prefEntry)
 {
