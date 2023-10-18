@@ -141,8 +141,7 @@ public:
 
     static Gui::ViewProvider* getViewProvider(App::DocumentObject* obj);
     static ViewProviderPage* getViewProviderPage(TechDraw::DrawView* dView);
-    static QGVPage* getQGVPage(TechDraw::DrawView* dView);
-    static QGSPage* getQGSPage(TechDraw::DrawView* dView);
+
     static int calculateFontPixelSize(double sizeInMillimetres);
     static int calculateFontPixelWidth(const QFont &font);
     static const double DefaultFontSizeInMM;
