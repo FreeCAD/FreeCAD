@@ -130,7 +130,7 @@ void EditableDatumLabel::deactivate()
     }
 }
 
-void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj)
+void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj, bool visibleToMouse)
 {
     QWidget* mdi = viewer->parentWidget();
 
@@ -145,6 +145,10 @@ void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj)
     spinBox->setFocusPolicy(Qt::ClickFocus); // prevent passing focus with tab.
     if (eventFilteringObj) {
         spinBox->installEventFilter(eventFilteringObj);
+    }
+
+    if (!visibleToMouse) {
+        setSpinboxVisibleToMouse(visibleToMouse);
     }
 
     spinBox->show();
@@ -340,9 +344,9 @@ void EditableDatumLabel::setLabelAutoDistanceReverse(bool val)
     autoDistanceReverse = val;
 }
 
-void EditableDatumLabel::setSpinboxInvisibleToMouse(bool val)
+void EditableDatumLabel::setSpinboxVisibleToMouse(bool val)
 {
-    spinBox->setAttribute(Qt::WA_TransparentForMouseEvents, val);
+    spinBox->setAttribute(Qt::WA_TransparentForMouseEvents, !val);
 }
 
 #include "moc_EditableDatumLabel.cpp"
