@@ -51,6 +51,7 @@ EditableDatumLabel::EditableDatumLabel(View3DInventorViewer* view,
     : isSet(false)
     , autoDistance(autoDistance)
     , autoDistanceReverse(false)
+    , value(0.0)
     , viewer(view)
     , spinBox(nullptr)
     , cameraSensor(nullptr)
@@ -160,6 +161,7 @@ void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj, bool 
     connect(spinBox, qOverload<double>(&QuantitySpinBox::valueChanged),
         this, [this](double value) {
         this->isSet = true;
+        this->value = value;
         Q_EMIT this->valueChanged(value);
     });
 }
@@ -167,6 +169,15 @@ void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj, bool 
 void EditableDatumLabel::stopEdit()
 {
     if (spinBox) {
+        // write the spinbox value in the label.
+        Base::Quantity quantity = spinBox->value();
+
+        double factor{};
+        QString unitStr;
+        QString valueStr;
+        valueStr = quantity.getUserString(factor, unitStr);
+        label->string = SbString(valueStr.toUtf8().constData());
+
         spinBox->deleteLater();
         spinBox = nullptr;
     }
@@ -180,7 +191,8 @@ bool EditableDatumLabel::isInEdit()
 
 double EditableDatumLabel::getValue()
 {
-    return spinBox->rawValue();
+    // We use value rather than spinBox->rawValue() in case edit stopped.
+    return value;
 }
 
 void EditableDatumLabel::setSpinboxValue(double val, const Base::Unit& unit)
@@ -192,6 +204,7 @@ void EditableDatumLabel::setSpinboxValue(double val, const Base::Unit& unit)
 
     QSignalBlocker block(spinBox);
     spinBox->setValue(Base::Quantity(val, unit));
+    value = val;
     positionSpinbox();
 
     if (spinBox->hasFocus()) {
