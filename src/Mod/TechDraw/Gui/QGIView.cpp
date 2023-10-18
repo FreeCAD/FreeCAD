@@ -588,7 +588,7 @@ Gui::ViewProvider* QGIView::getViewProvider(App::DocumentObject* obj)
 QGVPage* QGIView::getQGVPage(TechDraw::DrawView* dView)
 {
     ViewProviderPage* vpp = getViewProviderPage(dView);
-    if (!vpp) {
+    if (vpp) {
         return vpp->getQGVPage();
     }
     return nullptr;
