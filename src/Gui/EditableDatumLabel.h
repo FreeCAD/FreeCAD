@@ -75,6 +75,7 @@ public:
     bool isSet;
     bool autoDistance;
     bool autoDistanceReverse;
+    double value;
     // NOLINTEND
 
 Q_SIGNALS:
