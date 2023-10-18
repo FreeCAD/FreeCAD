@@ -789,6 +789,8 @@ const std::vector<TechDraw::VertexPtr> DrawViewPart::getVertexGeometry() const
     return std::vector<TechDraw::VertexPtr>();
 }
 
+
+//! TechDraw vertex names run from 0 to n-1
 TechDraw::VertexPtr DrawViewPart::getVertex(std::string vertexName) const
 {
     const std::vector<TechDraw::VertexPtr> allVertex(DrawViewPart::getVertexGeometry());
@@ -797,7 +799,7 @@ TechDraw::VertexPtr DrawViewPart::getVertex(std::string vertexName) const
         //should not happen
         throw Base::IndexError("DVP::getVertex - No vertices found.");
     }
-    if (iTarget > allVertex.size()) {
+    if (iTarget >= allVertex.size()) {
         //should not happen
         throw Base::IndexError("DVP::getVertex - Vertex not found.");
     }
@@ -806,6 +808,7 @@ TechDraw::VertexPtr DrawViewPart::getVertex(std::string vertexName) const
 }
 
 //! returns existing BaseGeom of 2D Edge
+//! TechDraw edge names run from 0 to n-1
 TechDraw::BaseGeomPtr DrawViewPart::getEdge(std::string edgeName) const
 {
     const std::vector<TechDraw::BaseGeomPtr>& geoms = getEdgeGeometry();
@@ -820,7 +823,9 @@ TechDraw::BaseGeomPtr DrawViewPart::getEdge(std::string edgeName) const
     return geoms.at(iEdge);
 }
 
+
 //! returns existing 2d Face
+//! TechDraw face names run from 0 to n-1
 TechDraw::FacePtr DrawViewPart::getFace(std::string faceName) const
 {
     const std::vector<TechDraw::FacePtr>& faces = getFaceGeometry();
