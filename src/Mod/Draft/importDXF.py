@@ -272,7 +272,7 @@ def locateLayer(wantedLayer, color=None, drawstyle=None, visibility=True):
         It defaults to `None`. In which case "Solid" is used.
         "Solid", "Dashed", "Dotted" or "Dashdot".
 
-    visibility : bool, optional
+    Visibility : bool, optional
         It defaults to `True`.
         Visibilty of the new layer.
 
