@@ -1112,7 +1112,7 @@ void SheetTableView::contextMenuEvent(QContextMenuEvent*)
         actionMerge->setEnabled(false);
     }
     else {
-        actionPaste->setEnabled(mimeData && (mimeData->hasText() || mimeData->hasText()));
+        actionPaste->setEnabled(mimeData && mimeData->hasText());
         actionCut->setEnabled(true);
         actionCopy->setEnabled(true);
         actionDel->setEnabled(true);
