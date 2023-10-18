@@ -287,7 +287,7 @@ set_target_properties(OndselSolver
         SOVERSION 1
 )
 
-configure_file(OndselSolver.pc.in OndselSolver.pc @ONLY)
+configure_file(OndselSolver.pc.in ${CMAKE_BINARY_DIR}/OndselSolver.pc @ONLY)
 install(TARGETS OndselSolver
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
         PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
