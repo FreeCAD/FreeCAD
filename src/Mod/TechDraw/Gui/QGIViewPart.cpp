@@ -839,8 +839,8 @@ void QGIViewPart::highlightMoved(QGIHighlight* highlight, QPointF newPos)
     App::Document* doc = getViewObject()->getDocument();
     App::DocumentObject* docObj = doc->getObject(highlightName.c_str());
     auto detail = dynamic_cast<DrawViewDetail*>(docObj);
-    auto oldAnchor = detail->AnchorPoint.getValue();
     if (detail) {
+        auto oldAnchor = detail->AnchorPoint.getValue();
         Base::Vector3d delta = Rez::appX(DrawUtil::toVector3d(newPos)) / getViewObject()->getScale();
         delta = DrawUtil::invertY(delta);
         detail->AnchorPoint.setValue(oldAnchor + delta);
