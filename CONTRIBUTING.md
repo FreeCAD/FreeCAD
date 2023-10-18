@@ -41,7 +41,7 @@ The FreeCAD Contribution Process is expressed here with the following specific g
 2. All contributions to FreeCAD MUST use a compatible license.
 3. All contributions are owned by their authors unless assigned to another.
 4. FreeCAD does not have a mandatory copyright assignment policy.
-5. A Contributor who wishes to be identified in the Credits section of the application "About" dialog is responsible for identifying themselves. They should modify the Contributors file and submit a PR with a single commit for this modification only. The contributors file is found at https://github.com/FreeCAD/FreeCAD/blob/master/src/Doc/CONTRIBUTORS
+5. A Contributor who wishes to be identified in the Credits section of the application "About" dialog is responsible for identifying themselves. They should modify the Contributors file and submit a PR with a single commit for this modification only. The contributors file is found at https://github.com/FreeCAD/FreeCAD/blob/main/src/Doc/CONTRIBUTORS
 6. A contributor who does not wish to assume the copyright of their contribution MAY choose to assign it to the [FreeCAD project association](https://fpa.freecad.org) by mentioning **Copyright (c) 2022 The FreeCAD project association <fpa@freecad.org>** in the file's license code block.
 
 ## 5. Contribution Requirements
@@ -87,9 +87,9 @@ The FreeCAD Contribution Process is expressed here with the following specific g
 
 ## 7. Branches and Releases
 
-1. The project SHALL have one branch (“master”) that always holds the latest in-progress version and SHOULD always build.
+1. The project SHALL have one branch (“main”) that always holds the latest in-progress version and SHOULD always build.
 2. The project SHALL NOT use topic branches for any reason. Personal forks MAY use topic branches.
-3. To make a stable release a Maintainer SHALL tag the repository. Stable releases SHALL always be released from the repository master.
+3. To make a stable release a Maintainer SHALL tag the repository. Stable releases SHALL always be released from the repository main branch.
 
 ## 8. Project Administration
 
