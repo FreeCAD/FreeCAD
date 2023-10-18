@@ -404,7 +404,7 @@ private:
     Py::Object show(const Py::Tuple& args)
     {
         PyObject* pcObj;
-        char* name = "Points";
+        const char* name = "Points";
         if (!PyArg_ParseTuple(args.ptr(), "O!|s", &(PointsPy::Type), &pcObj, &name)) {
             throw Py::Exception();
         }

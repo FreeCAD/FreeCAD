@@ -93,7 +93,7 @@ protected:
     static QPointF normalizeQPointF(QPointF inPoint);
 
 private:
-    char* m_symbol;
+    const char*        m_symbol;
     QGraphicsPathItem* m_line;
     QGraphicsPathItem* m_extend;
     QGIArrow*          m_arrow1;

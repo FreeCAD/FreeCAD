@@ -290,7 +290,7 @@ private:
     Py::Object show(const Py::Tuple& args)
     {
         PyObject* pcObj;
-        char* name = "Mesh";
+        const char* name = "Mesh";
         if (!PyArg_ParseTuple(args.ptr(), "O!|s", &(FemMeshPy::Type), &pcObj, &name)) {
             throw Py::Exception();
         }

@@ -69,7 +69,7 @@ PyObject *CommandPy::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Py
 int CommandPy::PyInit(PyObject* args, PyObject* kwd)
 {
     PyObject *parameters = nullptr;
-    char *name = "";
+    const char *name = "";
     static const std::array<const char *, 3> kwlist {"name", "parameters", nullptr};
     if (Base::Wrapped_ParseTupleAndKeywords(args, kwd, "|sO!", kwlist, &name, &PyDict_Type, &parameters)) {
         std::string sname(name);

@@ -186,9 +186,9 @@ PyMethodDef Application::Methods[] = {
 
 PyObject* Application::sLoadFile(PyObject * /*self*/, PyObject *args)
 {
-    char *path;
-    char *doc="";
-    char *mod="";
+    const char *path;
+    const char *doc="";
+    const char *mod="";
     if (!PyArg_ParseTuple(args, "s|ss", &path, &doc, &mod))
         return nullptr;
     try {
@@ -398,7 +398,7 @@ PyObject* Application::sGetParam(PyObject * /*self*/, PyObject *args)
 
 PyObject* Application::sSaveParameter(PyObject * /*self*/, PyObject *args)
 {
-    char *pstr = "User parameter";
+    const char *pstr = "User parameter";
     if (!PyArg_ParseTuple(args, "|s", &pstr))
         return nullptr;
 

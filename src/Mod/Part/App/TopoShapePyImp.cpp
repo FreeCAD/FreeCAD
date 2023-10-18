@@ -2059,7 +2059,7 @@ PyObject* TopoShapePy::reflectLines(PyObject *args, PyObject *kwds)
     static const std::array<const char *, 7> kwlist{"ViewDir", "ViewPos", "UpDir", "EdgeType", "Visible", "OnShape",
                                                     nullptr};
 
-    char* type="OutLine";
+    const char* type="OutLine";
     PyObject* vis = Py_True;
     PyObject* in3d = Py_False;
     PyObject* pPos = nullptr;

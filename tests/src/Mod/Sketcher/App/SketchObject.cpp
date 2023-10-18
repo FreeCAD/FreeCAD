@@ -18,9 +18,9 @@ protected:
     {
         if (App::Application::GetARGC() == 0) {
             int argc = 1;
-            char* argv[] = {"FreeCAD"};
+            const char* argv[] = {"FreeCAD"};
             App::Application::Config()["ExeName"] = "FreeCAD";
-            App::Application::init(argc, argv);
+            App::Application::init(argc, const_cast<char**>(argv));  // NOLINT
         }
     }
 

@@ -30,7 +30,7 @@ protected:
     {
         if (App::Application::GetARGC() == 0) {
             constexpr int argc = 1;
-            std::array<char*, argc> argv {"FreeCAD"};
+            std::array<const char*, argc> argv {"FreeCAD"};
             App::Application::Config()["ExeName"] = "FreeCAD";
             App::Application::init(argc, const_cast<char**>(argv.data()));  // NOLINT
         }

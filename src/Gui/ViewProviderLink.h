@@ -40,6 +40,12 @@ namespace Gui {
 class LinkInfo;
 using LinkInfoPtr = boost::intrusive_ptr<LinkInfo>;
 
+#if defined(_MSC_VER)
+// forward declaration to please VC 2013
+void intrusive_ptr_add_ref(Gui::LinkInfo *px);
+void intrusive_ptr_release(Gui::LinkInfo *px);
+#endif
+
 class GuiExport ViewProviderLinkObserver: public ViewProviderExtension {
     EXTENSION_TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
@@ -337,10 +343,5 @@ using ViewProviderLinkPython = ViewProviderPythonFeatureT<ViewProviderLink>;
 
 } //namespace Gui
 
-#ifdef _MSC_VER
-// forward declaration to please VC 2013
-void intrusive_ptr_add_ref(Gui::LinkInfo *px);
-void intrusive_ptr_release(Gui::LinkInfo *px);
-#endif
 
 #endif // GUI_VIEWPROVIDER_LINK_H
