@@ -51,7 +51,7 @@ public:
     void activate();
     void deactivate();
 
-    void startEdit(double val, QObject* eventFilteringObj = nullptr);
+    void startEdit(double val, QObject* eventFilteringObj = nullptr, bool visibleToMouse = false);
     void stopEdit();
     bool isInEdit();
     double getValue();
@@ -68,7 +68,7 @@ public:
     void setLabelRange(double val);
     void setLabelRecommendedDistance();
     void setLabelAutoDistanceReverse(bool val);
-    void setSpinboxInvisibleToMouse(bool val);
+    void setSpinboxVisibleToMouse(bool val);
 
     // NOLINTBEGIN
     SoDatumLabel* label;
