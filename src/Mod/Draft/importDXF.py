@@ -274,7 +274,7 @@ def locateLayer(wantedLayer, color=None, drawstyle=None, visibility=True):
 
     Visibility : bool, optional
         It defaults to `True`.
-        Visibilty of the new layer.
+        Visibility of the new layer.
 
     Returns
     -------
