@@ -5,7 +5,8 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+#include <fstream>	
+
 #include "ASMTGeneralMotion.h"
 #include "ASMTAssembly.h"
 #include "SymbolicParser.h"
@@ -146,4 +147,18 @@ void MbD::ASMTGeneralMotion::createMbD(std::shared_ptr<System> mbdSys, std::shar
 	}
 	fangIJJ->rotOrder = rotOrder;
 	fullMotion->fangIJJ = fangIJJ;
+}
+
+void MbD::ASMTGeneralMotion::storeOnLevel(std::ofstream& os, int level)
+{
+	storeOnLevelString(os, level, "GeneralMotion");
+	storeOnLevelString(os, level + 1, "Name");
+	storeOnLevelString(os, level + 2, name);
+	ASMTItemIJ::storeOnLevel(os, level);
+}
+
+void MbD::ASMTGeneralMotion::storeOnTimeSeries(std::ofstream& os)
+{
+	os << "GeneralMotionSeries\t" << fullName("") << std::endl;
+	ASMTItemIJ::storeOnTimeSeries(os);
 }

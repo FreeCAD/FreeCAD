@@ -5,7 +5,8 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+#include <fstream>	
+
 #include "ASMTPart.h"
 #include "CREATE.h"
 #include "ASMTPrincipalMassMarker.h"
@@ -115,4 +116,30 @@ void MbD::ASMTPart::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Un
 {
 	ASMTSpatialContainer::createMbD(mbdSys, mbdUnits);
 	if (isFixed) std::static_pointer_cast<Part>(mbdObject)->asFixed();
+}
+
+void MbD::ASMTPart::storeOnLevel(std::ofstream& os, int level)
+{
+	storeOnLevelString(os, level, "Part");
+	storeOnLevelName(os, level + 1);
+	storeOnLevelPosition(os, level + 1);
+	storeOnLevelRotationMatrix(os, level + 1);
+	storeOnLevelVelocity(os, level + 1);
+	storeOnLevelOmega(os, level + 1);
+	storeOnLevelString(os, level + 1, "FeatureOrder");
+	storeOnLevelMassMarker(os, level + 1);
+	storeOnLevelRefPoints(os, level + 1);
+	storeOnLevelRefCurves(os, level + 1);
+	storeOnLevelRefSurfaces(os, level + 1);
+}
+
+void MbD::ASMTPart::storeOnLevelMassMarker(std::ofstream& os, int level)
+{
+	principalMassMarker->storeOnLevel(os, level);
+}
+
+void MbD::ASMTPart::storeOnTimeSeries(std::ofstream& os)
+{
+	os << "PartSeries\t" << fullName("") << std::endl;
+	ASMTSpatialContainer::storeOnTimeSeries(os);
 }

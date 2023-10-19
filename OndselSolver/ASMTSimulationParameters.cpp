@@ -78,3 +78,20 @@ void MbD::ASMTSimulationParameters::setmaxIter(int maxIter)
 	iterMaxPosKine = maxIter;
 	iterMaxAccKine = maxIter;
 }
+
+void MbD::ASMTSimulationParameters::storeOnLevel(std::ofstream& os, int level)
+{
+	storeOnLevelString(os, level, "SimulationParameters");
+	storeOnLevelString(os, level + 1, "tstart");
+	storeOnLevelDouble(os, level + 2, tstart);
+	storeOnLevelString(os, level + 1, "tend");
+	storeOnLevelDouble(os, level + 2, tend);
+	storeOnLevelString(os, level + 1, "hmin");
+	storeOnLevelDouble(os, level + 2, hmin);
+	storeOnLevelString(os, level + 1, "hmax");
+	storeOnLevelDouble(os, level + 2, hmax);
+	storeOnLevelString(os, level + 1, "hout");
+	storeOnLevelDouble(os, level + 2, hout);
+	storeOnLevelString(os, level + 1, "errorTol");
+	storeOnLevelDouble(os, level + 2, errorTol);
+}

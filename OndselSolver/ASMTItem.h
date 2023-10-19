@@ -44,10 +44,31 @@ namespace MbD {
 		virtual void outputResults(AnalysisType type);
 		std::shared_ptr<Units> mbdUnits();
 		std::shared_ptr<Constant> sptrConstant(double value);
+		virtual void storeOnLevel(std::ofstream& os, int level);
+		virtual void storeOnLevelTabs(std::ofstream& os, int level);
+		virtual void storeOnLevelString(std::ofstream& os, int level, std::string str);
+		virtual void storeOnLevelDouble(std::ofstream& os, int level, double value);
+		virtual void storeOnLevelInt(std::ofstream& os, int level, int i);
+		virtual void storeOnLevelBool(std::ofstream& os, int level, bool value);
+		//template<typename T>
+		//void storeOnLevelArray(std::ofstream& os, int level, std::vector<T> array);
+		void storeOnLevelArray(std::ofstream& os, int level, std::vector<double> array);
+		void storeOnLevelName(std::ofstream& os, int level);
+		virtual void storeOnTimeSeries(std::ofstream& os);
 
 		std::string name;
 		ASMTItem* owner = nullptr;
 		std::shared_ptr<Item> mbdObject;
 	};
+	//template<typename T>
+	//inline void ASMTItem::storeOnLevelArray(std::ofstream& os, int level, std::vector<T> array)
+	//{
+	//	storeOnLevelTabs(os, level);
+	//	for (int i = 0; i < array.size(); i++)
+	//	{
+	//		os << array[i] << '\t';
+	//	}
+	//	//os << std::endl;
+	//}
 }
 

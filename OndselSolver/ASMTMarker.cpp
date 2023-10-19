@@ -5,7 +5,7 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include "ASMTMarker.h"
 #include "ASMTRefItem.h"
 #include "ASMTPart.h"
@@ -59,4 +59,12 @@ void MbD::ASMTMarker::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<
 	mkr->rpmp = rpmp()->times(1.0 / mbdUnits->length);
 	mkr->aApm = aApm();
 	mbdObject = mkr->endFrames->at(0);
+}
+
+void MbD::ASMTMarker::storeOnLevel(std::ofstream& os, int level)
+{
+	storeOnLevelString(os, level, "Marker");
+	storeOnLevelString(os, level + 1, "Name");
+	storeOnLevelString(os, level + 2, name);
+	ASMTSpatialItem::storeOnLevel(os, level);
 }

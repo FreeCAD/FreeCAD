@@ -15,3 +15,8 @@ void MbD::ASMTRefSurface::parseASMT(std::vector<std::string>& lines)
 {
 	assert(false);
 }
+
+void MbD::ASMTRefSurface::storeOnLevel(std::ofstream& os, int level)
+{
+	assert(false);
+}

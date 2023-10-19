@@ -5,7 +5,7 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include <string>
 #include <cassert>
 #include <fstream>	
@@ -40,6 +40,7 @@
 #include "SystemSolver.h"
 #include "ASMTItemIJ.h"
 #include "ASMTKinematicIJ.h"
+#include <iomanip>
 
 using namespace MbD;
 
@@ -369,15 +370,17 @@ void MbD::ASMTAssembly::runSinglePendulum()
 void MbD::ASMTAssembly::runFile(const char* fileName)
 {
 	std::ifstream stream(fileName);
-    if(stream.fail()) {
-        throw std::invalid_argument("File not found.");
-    }
+	if (stream.fail()) {
+		throw std::invalid_argument("File not found.");
+	}
 	std::string line;
 	std::vector<std::string> lines;
 	while (std::getline(stream, line)) {
 		lines.push_back(line);
 	}
-	assert(lines[0] == "freeCAD: 3D CAD with Motion Simulation  by  askoh.com");
+	bool bool1 = lines[0] == "freeCAD: 3D CAD with Motion Simulation  by  askoh.com";
+	bool bool2 = lines[0] == "OndselSolver";
+	assert(bool1 || bool2);
 	lines.erase(lines.begin());
 
 	if (lines[0] == "Assembly") {
@@ -386,7 +389,32 @@ void MbD::ASMTAssembly::runFile(const char* fileName)
 		assembly->parseASMT(lines);
 		assembly->runKINEMATIC();
 	}
+}
 
+void MbD::ASMTAssembly::readWriteFile(const char* fileName)
+{
+	std::ifstream stream(fileName);
+	if (stream.fail()) {
+		throw std::invalid_argument("File not found.");
+	}
+	std::string line;
+	std::vector<std::string> lines;
+	while (std::getline(stream, line)) {
+		lines.push_back(line);
+	}
+	bool bool1 = lines[0] == "freeCAD: 3D CAD with Motion Simulation  by  askoh.com";
+	bool bool2 = lines[0] == "OndselSolver";
+	assert(bool1 || bool2);
+	lines.erase(lines.begin());
+
+	if (lines[0] == "Assembly") {
+		lines.erase(lines.begin());
+		auto assembly = CREATE<ASMTAssembly>::With();
+		assembly->parseASMT(lines);
+		assembly->runKINEMATIC();
+		assembly->outputFile("assembly.asmt");
+		ASMTAssembly::runFile("assembly.asmt");
+	}
 }
 
 void MbD::ASMTAssembly::initialize()
@@ -906,7 +934,38 @@ void MbD::ASMTAssembly::createMbD(std::shared_ptr<System> mbdSys, std::shared_pt
 	mbdSysSolver->orderMax = simulationParameters->orderMax;
 	mbdSysSolver->translationLimit = simulationParameters->translationLimit / mbdUnits->length;
 	mbdSysSolver->rotationLimit = simulationParameters->rotationLimit;
-	animationParameters = nullptr;
+	//animationParameters = nullptr;
+}
+
+void MbD::ASMTAssembly::outputFile(std::string filename)
+{
+	std::ofstream os(filename);
+	os << std::setprecision(std::numeric_limits<double>::digits10 + 1);
+	//	try {
+	os << "OndselSolver" << std::endl;
+	storeOnLevel(os, 0);
+	os.close();
+	//	}
+	//	catch (...) {
+	//		os.close();
+	//	}
+}
+
+void MbD::ASMTAssembly::storeOnLevel(std::ofstream& os, int level)
+{
+	storeOnLevelString(os, level, "Assembly");
+	storeOnLevelNotes(os, level + 1);
+	storeOnLevelName(os, level + 1);
+	ASMTSpatialContainer::storeOnLevel(os, level);
+
+	storeOnLevelParts(os, level + 1);
+	storeOnLevelKinematicIJs(os, level + 1);
+	storeOnLevelConstraintSets(os, level + 1);
+	storeOnLevelForceTorques(os, level + 1);
+	constantGravity->storeOnLevel(os, level + 1);
+	simulationParameters->storeOnLevel(os, level + 1);
+	animationParameters->storeOnLevel(os, level + 1);
+	storeOnTimeSeries(os);
 }
 
 void MbD::ASMTAssembly::solve()
@@ -1087,6 +1146,90 @@ std::shared_ptr<ASMTPart> MbD::ASMTAssembly::partPartialNamed(std::string partia
 		});
 	auto part = *it;
 	return part;
+}
+
+void MbD::ASMTAssembly::storeOnLevelNotes(std::ofstream& os, int level)
+{
+	storeOnLevelString(os, level, "Notes");
+	storeOnLevelString(os, level + 1, notes);
+}
+
+void MbD::ASMTAssembly::storeOnLevelParts(std::ofstream& os, int level)
+{
+	storeOnLevelString(os, level, "Parts");
+	for (auto& part : *parts) {
+		part->storeOnLevel(os, level + 1);
+	}
+}
+
+void MbD::ASMTAssembly::storeOnLevelKinematicIJs(std::ofstream& os, int level)
+{
+	storeOnLevelString(os, level, "KinematicIJs");
+	for (auto& kinematicIJ : *kinematicIJs) {
+		kinematicIJ->storeOnLevel(os, level);
+	}
+}
+
+void MbD::ASMTAssembly::storeOnLevelConstraintSets(std::ofstream& os, int level)
+{
+	storeOnLevelString(os, level, "ConstraintSets");
+	storeOnLevelJoints(os, level + 1);
+	storeOnLevelMotions(os, level + 1);
+	storeOnLevelGeneralConstraintSets(os, level + 1);
+}
+
+void MbD::ASMTAssembly::storeOnLevelForceTorques(std::ofstream& os, int level)
+{
+	storeOnLevelString(os, level, "ForceTorques");
+	for (auto& forceTorque : *forcesTorques) {
+		forceTorque->storeOnLevel(os, level + 1);
+	}
+}
+
+void MbD::ASMTAssembly::storeOnLevelJoints(std::ofstream& os, int level)
+{
+	storeOnLevelString(os, level, "Joints");
+	for (auto& joint : *joints) {
+		joint->storeOnLevel(os, level + 1);
+	}
+}
+
+void MbD::ASMTAssembly::storeOnLevelMotions(std::ofstream& os, int level)
+{
+	storeOnLevelString(os, level, "Motions");
+	for (auto& motion : *motions) {
+		motion->storeOnLevel(os, level + 1);
+	}
+}
+
+void MbD::ASMTAssembly::storeOnLevelGeneralConstraintSets(std::ofstream& os, int level)
+{
+	storeOnLevelString(os, level, "GeneralConstraintSets");
+	//for (auto& generalConstraintSet : *generalConstraintSets) {
+	//	generalConstraintSet->storeOnLevel(os, level);
+	//}
+}
+
+void MbD::ASMTAssembly::storeOnTimeSeries(std::ofstream& os)
+{
+	os << "TimeSeries" << std::endl;
+	os << "Number\tInput\t";
+	for (int i = 1; i < times->size(); i++)
+	{
+		os << i << '\t';
+	}
+	os << std::endl;
+	os << "Time\tInput\t";
+	for (int i = 1; i < times->size(); i++)
+	{
+		os << times->at(i) << '\t';
+	}
+	os << std::endl;
+	os << "AssemblySeries\t" << fullName("") << std::endl;
+	ASMTSpatialContainer::storeOnTimeSeries(os);
+	for (auto& part : *parts) part->storeOnTimeSeries(os);
+	for (auto& joint : *joints) joint->storeOnTimeSeries(os);
+	for (auto& motion : *motions) motion->storeOnTimeSeries(os);
 }
 
 

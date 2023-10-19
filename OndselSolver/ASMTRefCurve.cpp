@@ -15,3 +15,8 @@ void MbD::ASMTRefCurve::parseASMT(std::vector<std::string>& lines)
 {
 	assert(false);
 }
+
+void MbD::ASMTRefCurve::storeOnLevel(std::ofstream& os, int level)
+{
+	assert(false);
+}
