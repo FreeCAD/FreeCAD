@@ -363,6 +363,61 @@ class AlgebraTestCase(unittest.TestCase):
         p.Rotation.Angle = math.pi / 2
         self.assertEqual(abs(p.inverse().Rotation.Angle), p.Rotation.Angle)
 
+    def testDecomposeScale(self):
+        mat = FreeCAD.Matrix()
+        mat.scale(FreeCAD.Vector(2, 3, 4))
+        res = mat.decompose()
+        self.assertTrue(res[0].isUnity())
+        self.assertEqual(res[1], mat)
+        self.assertTrue(res[2].isUnity())
+        self.assertTrue(res[3].isUnity())
+
+    def testDecomposeRotation(self):
+        mat = FreeCAD.Matrix()
+        mat.rotateX(1)
+        mat.rotateY(1)
+        mat.rotateZ(1)
+        res = mat.decompose()
+        self.assertTrue(res[0].isUnity())
+        self.assertTrue(res[1].isUnity(1e-12))
+        self.assertEqual(res[2], mat)
+        self.assertTrue(res[3].isUnity())
+
+    def testDecomposeMove(self):
+        mat = FreeCAD.Matrix()
+        mat.move(FreeCAD.Vector(1, 2, 3))
+        res = mat.decompose()
+        self.assertTrue(res[0].isUnity())
+        self.assertTrue(res[1].isUnity())
+        self.assertTrue(res[2].isUnity())
+        self.assertEqual(res[3], mat)
+
+    def testMatrixDecompose(self):
+        mat = FreeCAD.Matrix()
+        mat.A21 = 1.0
+        mat.A14 = 1.0
+        mat.A24 = 2.0
+        mat.A34 = 3.0
+        res = mat.decompose()
+
+        mul = res[3] * res[2] * res[1] * res[0]
+        self.assertEqual(mul, mat)
+
+        # shearing
+        self.assertAlmostEqual(res[0].determinant(), 1.0)
+
+        # scaling
+        self.assertEqual(res[1].hasScale(), FreeCAD.ScaleType.NonUniformLeft)
+
+        # rotation
+        rot1 = FreeCAD.Rotation(res[2])
+        rot2 = FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), 45)
+        self.assertTrue(rot1.isSame(rot2, 1e-12))
+
+        # translation
+        plm = FreeCAD.Placement(res[3])
+        self.assertEqual(plm.Base, FreeCAD.Vector(1, 2, 3))
+
     def testYawPitchRoll(self):
         def getYPR1(yaw, pitch, roll):
             r = FreeCAD.Rotation()

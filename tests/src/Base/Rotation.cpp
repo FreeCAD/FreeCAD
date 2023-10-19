@@ -67,4 +67,14 @@ TEST(Rotation, TestUniformScaleLT1)
     EXPECT_EQ(scaled_rot.isSame(scaled_rot, 1.0e-7), true);
 }
 
+TEST(Rotation, TestRotationDecompose)
+{
+    Base::Matrix4D mat;
+    mat.setCol(0, Base::Vector3d {1, 0, 0});
+    mat.setCol(1, Base::Vector3d {1, 1, 0});
+    mat.setCol(2, Base::Vector3d {0, 0, 1});
+
+    // decompose rotation part
+    EXPECT_TRUE(Base::Rotation {mat}.isIdentity());
+}
 // NOLINTEND(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
