@@ -125,9 +125,9 @@ Check if this is the null matrix.</UserDocu>
 Make this matrix to unity (4D identity matrix).</UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="isUnity" Const="true" NoArgs="true">
+    <Methode Name="isUnity" Const="true">
       <Documentation>
-        <UserDocu>isUnity() -> bool
+        <UserDocu>isUnity([tol=0.0]) -> bool
 
 Check if this is the unit matrix (4D identity matrix).</UserDocu>
       </Documentation>

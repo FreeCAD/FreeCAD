@@ -149,6 +149,8 @@ public:
     void setToUnity();
     /// Checks if this is the unit matrix
     bool isUnity() const;
+    /// Checks if this is the unit matrix
+    bool isUnity(double tol) const;
     /// Makes a null matrix
     void nullify();
     /// Checks if this is the null matrix
