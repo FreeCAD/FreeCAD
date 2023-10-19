@@ -411,6 +411,7 @@ TRational<N>::TRational (float fValue)
     }
 }
 //----------------------------------------------------------------------------
+#if 0
 template <int N>
 void TRational<N>::ConvertTo (float& rfValue) const
 {
@@ -541,6 +542,7 @@ void TRational<N>::ConvertTo (float& rfValue) const
 
     rfValue = *(float*)&uiResult;
 }
+#endif
 //----------------------------------------------------------------------------
 template <int N>
 void TRational<N>::GetPositiveFloat (const TInteger<N>& rkDenom,
@@ -696,6 +698,8 @@ TRational<N>::TRational (double dValue)
     }
 }
 //----------------------------------------------------------------------------
+// Potentially unsafe code: https://pvs-studio.com/en/blog/posts/cpp/1072/
+#if 0
 template <int N>
 void TRational<N>::ConvertTo (double& rdValue) const
 {
@@ -877,6 +881,7 @@ void TRational<N>::ConvertTo (double& rdValue) const
 #endif
     rdValue = *(double*)auiResult;
 }
+#endif
 //----------------------------------------------------------------------------
 template <int N>
 void TRational<N>::GetPositiveDouble (const TInteger<N>& rkDenom,
