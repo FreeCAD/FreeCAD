@@ -295,6 +295,64 @@ TEST(Matrix, TestDyadic)
     EXPECT_EQ(mat1, mat2);
 }
 
+TEST(Matrix, TestDecomposeScale)
+{
+    Base::Matrix4D mat;
+    mat.scale(1.0, 2.0, 3.0);
+    auto res = mat.decompose();
+
+    EXPECT_TRUE(res[0].isUnity());
+    EXPECT_EQ(res[1], mat);
+    EXPECT_TRUE(res[2].isUnity());
+    EXPECT_TRUE(res[3].isUnity());
+}
+
+TEST(Matrix, TestDecomposeRotation)
+{
+    Base::Matrix4D mat;
+    mat.rotX(1.0);
+    mat.rotY(1.0);
+    mat.rotZ(1.0);
+    auto res = mat.decompose();
+
+    EXPECT_TRUE(res[0].isUnity(1e-12));
+    EXPECT_TRUE(res[1].isUnity(1e-12));
+    EXPECT_EQ(res[2], mat);
+    EXPECT_TRUE(res[3].isUnity(1e-12));
+}
+
+TEST(Matrix, TestDecomposeMove)
+{
+    Base::Matrix4D mat;
+    mat.move(1.0, 2.0, 3.0);
+    auto res = mat.decompose();
+
+    EXPECT_TRUE(res[0].isUnity());
+    EXPECT_TRUE(res[1].isUnity());
+    EXPECT_TRUE(res[2].isUnity());
+    EXPECT_EQ(res[3], mat);
+}
+
+TEST(Matrix, TestDecompose)
+{
+    Base::Matrix4D mat;
+    mat[0][0] = 1.0;
+    mat[0][3] = 1.0;
+    mat[1][3] = 2.0;
+    mat[2][3] = 3.0;
+    auto res = mat.decompose();
+
+    Base::Matrix4D mul = res[3] * res[2] * res[1] * res[0];
+    EXPECT_EQ(mul, mat);
+
+    // shearing
+    EXPECT_DOUBLE_EQ(res[0].determinant3(), 1.0);
+    // rotation
+    EXPECT_DOUBLE_EQ(res[2].determinant3(), 1.0);
+    // translation
+    EXPECT_DOUBLE_EQ(res[2].determinant3(), 1.0);
+}
+
 TEST(Matrix, TestRotLine)
 {
     Base::Vector3d axis{1.0, 2.0, 3.0};
