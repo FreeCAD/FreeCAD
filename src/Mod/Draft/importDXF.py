@@ -245,7 +245,7 @@ def deformat(text):
     return t
 
 
-def locateLayer(wantedLayer, color=None, drawstyle=None):
+def locateLayer(wantedLayer, color=None, drawstyle=None, visibility=True):
     """Return layer group and create it if needed.
 
     This function iterates over a global list named `layers`, which is
@@ -267,6 +267,14 @@ def locateLayer(wantedLayer, color=None, drawstyle=None):
         It defaults to `None`.
         A tuple with color information `(r,g,b,a)`, where each value
         is a float between 0 and 1.
+
+    drawstyle : str, optional
+        It defaults to `None`. In which case "Solid" is used.
+        "Solid", "Dashed", "Dotted" or "Dashdot".
+
+    Visibility : bool, optional
+        It defaults to `True`.
+        Visibility of the new layer.
 
     Returns
     -------
@@ -298,6 +306,7 @@ def locateLayer(wantedLayer, color=None, drawstyle=None):
         newLayer = Draft.make_layer(name=wantedLayer,
                                     line_color=(0.0,0.0,0.0) if not color else color,
                                     draw_style="Solid" if not drawstyle else drawstyle)
+        newLayer.Visibility = visibility
     else:
         newLayer = doc.addObject("App::DocumentObjectGroup", wantedLayer)
     newLayer.Label = wantedLayer
@@ -2155,7 +2164,7 @@ def processdxf(document, filename, getShapes=False, reComputeFlag=True):
         for table in drawing.tables.get_type("table"):
             for layer in table.get_type("layer"):
                 name = layer.name
-                color = tuple(dxfColorMap.color_map[layer.color])
+                color = tuple(dxfColorMap.color_map[abs(layer.color)])
                 drawstyle = "Solid"
                 lt = rawValue(layer, 6)
                 if "DASHED" in lt.upper():
@@ -2164,7 +2173,7 @@ def processdxf(document, filename, getShapes=False, reComputeFlag=True):
                     drawstyle = "Dotted"
                 if ("DASHDOT" in lt.upper()) or ("CENTER" in lt.upper()):
                     drawstyle = "Dashdot"
-                locateLayer(name, color, drawstyle)
+                locateLayer(name, color, drawstyle, layer.color>0)
     else:
         locateLayer("0", (0.0, 0.0, 0.0), "Solid")
 
