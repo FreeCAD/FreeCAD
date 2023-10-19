@@ -797,7 +797,7 @@ TechDraw::VertexPtr DrawViewPart::getVertex(std::string vertexName) const
         //should not happen
         throw Base::IndexError("DVP::getVertex - No vertices found.");
     }
-    if (iTarget > allVertex.size()) {
+    if (iTarget >= allVertex.size()) {
         //should not happen
         throw Base::IndexError("DVP::getVertex - Vertex not found.");
     }
