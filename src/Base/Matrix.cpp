@@ -26,7 +26,6 @@
 # include <cstring>
 # include <sstream>
 #endif
-# include <array>
 
 #include "Matrix.h"
 #include "Converter.h"
@@ -91,15 +90,22 @@ void Matrix4D::setToUnity ()
 
 bool Matrix4D::isUnity() const
 {
+    return isUnity(0.0);
+}
+
+bool Matrix4D::isUnity(double tol) const
+{
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 4; j++) {
             if (i == j) {
-                if (dMtrx4D[i][j] != 1.0)
+                if (fabs(dMtrx4D[i][j] - 1.0) > tol) {
                     return false;
+                }
             }
             else {
-                if (dMtrx4D[i][j] != 0.0)
+                if (fabs(dMtrx4D[i][j]) > tol) {
                     return false;
+                }
             }
         }
     }
@@ -899,7 +905,8 @@ ScaleType Matrix4D::hasScale(double tol) const
     return ScaleType::NoScaling;
 }
 
-std::array<Matrix4D, 4> Matrix4D::decompose() const {
+std::array<Matrix4D, 4> Matrix4D::decompose() const
+{
     // decompose the matrix to shear, scale, rotation and move
     // so that matrix = move * rotation * scale * shear
     // return an array of matrices

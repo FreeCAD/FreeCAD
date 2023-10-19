@@ -22,7 +22,6 @@
 
 
 #include "PreCompiled.h"
-//#include <array>
 
 // inclusion of the generated files (generated out of MatrixPy.xml)
 #include "RotationPy.h"
@@ -352,6 +351,7 @@ PyObject* MatrixPy::hasScale(PyObject * args)
     Py::Module mod("FreeCAD");
     return Py::new_reference_to(mod.callMemberFunction("ScaleType", Py::TupleN(Py::Int(static_cast<int>(type)))));
 }
+
 PyObject* MatrixPy::decompose(PyObject * args)
 {
     if (!PyArg_ParseTuple(args, ""))
@@ -392,10 +392,13 @@ PyObject* MatrixPy::unity()
     PY_CATCH;
 }
 
-PyObject* MatrixPy::isUnity()
+PyObject* MatrixPy::isUnity(PyObject * args)
 {
+    double tol = 0.0;
+    if (!PyArg_ParseTuple(args, "|d", &tol))
+        return nullptr;
     PY_TRY {
-        bool ok = getMatrixPtr()->isUnity();
+        bool ok = getMatrixPtr()->isUnity(tol);
         return Py::new_reference_to(Py::Boolean(ok));
     }
     PY_CATCH;
