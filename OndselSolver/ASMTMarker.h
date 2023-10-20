@@ -22,6 +22,7 @@ namespace MbD {
         FColDsptr rpmp();
         FMatDsptr aApm();
         void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
+        void storeOnLevel(std::ofstream& os, int level) override;
 
     };
 }

@@ -21,6 +21,8 @@ namespace MbD {
         void readRotationOrder(std::vector<std::string>& lines);
         std::shared_ptr<Joint> mbdClassNew() override;
         void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
+        void storeOnLevel(std::ofstream& os, int level) override;
+        void storeOnTimeSeries(std::ofstream& os) override;
 
         std::shared_ptr<FullColumn<std::string>> rIJI, angIJJ;
         std::string rotationOrder;

@@ -24,6 +24,8 @@ namespace MbD {
         std::shared_ptr<Joint> mbdClassNew() override;
         void setMotionJoint(std::string motionJoint);
         void setRotationZ(std::string rotZ);
+        void storeOnLevel(std::ofstream& os, int level) override;
+        void storeOnTimeSeries(std::ofstream& os) override;
 
         std::string motionJoint, rotationZ;
     };

@@ -38,6 +38,7 @@ void MbD::MBDynSystem::runFile(const char* filename)
 	system->setFilename(filename);
 	system->parseMBDyn(statements);
 	system->runKINEMATIC();
+	system->outputFiles();
 }
 
 void MbD::MBDynSystem::parseMBDyn(std::vector<std::string>& lines)

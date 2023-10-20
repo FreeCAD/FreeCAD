@@ -38,3 +38,9 @@ void MbD::ASMTConstantGravity::setg(double a, double b, double c)
 {
 	g = std::make_shared<FullColumn<double>>(ListD{ a, b, c });
 }
+
+void MbD::ASMTConstantGravity::storeOnLevel(std::ofstream& os, int level)
+{
+	storeOnLevelString(os, level, "ConstantGravity");
+	storeOnLevelArray(os, level + 1, *g);
+}

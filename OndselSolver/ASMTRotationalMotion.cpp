@@ -5,6 +5,7 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
+#include <fstream>	
 
 #include "ASMTRotationalMotion.h"
 #include "ASMTAssembly.h"
@@ -20,6 +21,10 @@ using namespace MbD;
 void MbD::ASMTRotationalMotion::parseASMT(std::vector<std::string>& lines)
 {
 	readName(lines);
+	if (lines[0].find("MarkerI") != std::string::npos) {
+		readMarkerI(lines);
+		readMarkerJ(lines);
+	}
 	readMotionJoint(lines);
 	readRotationZ(lines);
 }
@@ -81,4 +86,22 @@ void MbD::ASMTRotationalMotion::setMotionJoint(std::string str)
 void MbD::ASMTRotationalMotion::setRotationZ(std::string rotZ)
 {
 	rotationZ = rotZ;
+}
+
+void MbD::ASMTRotationalMotion::storeOnLevel(std::ofstream& os, int level)
+{
+	storeOnLevelString(os, level, "RotationalMotion");
+	storeOnLevelString(os, level + 1, "Name");
+	storeOnLevelString(os, level + 2, name);
+	ASMTItemIJ::storeOnLevel(os, level);
+	storeOnLevelString(os, level + 1, "MotionJoint");
+	storeOnLevelString(os, level + 2, motionJoint);
+	storeOnLevelString(os, level + 1, "RotationZ");
+	storeOnLevelString(os, level + 2, rotationZ);
+}
+
+void MbD::ASMTRotationalMotion::storeOnTimeSeries(std::ofstream& os)
+{
+	os << "RotationalMotionSeries\t" << fullName("") << std::endl;
+	ASMTItemIJ::storeOnTimeSeries(os);
 }

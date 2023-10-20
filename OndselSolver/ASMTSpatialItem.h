@@ -17,32 +17,27 @@ namespace MbD {
 	public:
 		void setPosition3D(FColDsptr position3D);
 		void setRotationMatrix(FMatDsptr rotationMatrix);
-		void setVelocity3D(FColDsptr velocity3D);
-		void setOmega3D(FColDsptr omega3D);
 		void readPosition3D(std::vector<std::string>& lines);
 		void readRotationMatrix(std::vector<std::string>& lines);
-		void readVelocity3D(std::vector<std::string>& lines);
-		void readOmega3D(std::vector<std::string>& lines);
-
-		FColDsptr position3D = std::make_shared<FullColumn<double>>(3);
-		FColDsptr velocity3D = std::make_shared<FullColumn<double>>(3);
-		FColDsptr omega3D = std::make_shared<FullColumn<double>>(3);
-		FMatDsptr rotationMatrix = std::make_shared<FullMatrix<double>>(ListListD{
-				{ 1, 0, 0 },
-				{ 0, 1, 0 },
-				{ 0, 0, 1 }
-			});
 
 		// Overloads to simplify syntax.
 		void getPosition3D(double& a, double& b, double& c);
 		void getQuarternions(double& q0, double& q1, double& q2, double& q3);
 		void setPosition3D(double a, double b, double c);
 		void setQuarternions(double q0, double q1, double q2, double q3);
-		void setVelocity3D(double a, double b, double c);
-		void setOmega3D(double a, double b, double c);
 		void setRotationMatrix(double v11, double v12, double v13,
 			double v21, double v22, double v23,
 			double v31, double v32, double v33);
+		void storeOnLevel(std::ofstream& os, int level) override;
+		void storeOnLevelPosition(std::ofstream& os, int level);
+		void storeOnLevelRotationMatrix(std::ofstream& os, int level);
+
+		FColDsptr position3D = std::make_shared<FullColumn<double>>(3);
+		FMatDsptr rotationMatrix = std::make_shared<FullMatrix<double>>(ListListD{
+				{ 1, 0, 0 },
+				{ 0, 1, 0 },
+				{ 0, 0, 1 }
+			});
 	};
 }
 

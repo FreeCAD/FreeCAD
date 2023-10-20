@@ -44,6 +44,7 @@ namespace MbD {
 		static void runSinglePendulumSimplified();
 		static void runSinglePendulum();
 		static void runFile(const char* chars);
+		static void readWriteFile(const char* chars);
 		void initialize() override;
 		ASMTAssembly* root() override;
 		void setNotes(std::string str);
@@ -84,6 +85,8 @@ namespace MbD {
 		std::shared_ptr<std::map<std::string, std::shared_ptr<ASMTMarker>>>markerMap();
 		void deleteMbD();
 		void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
+		void outputFile(std::string filename);
+		void storeOnLevel(std::ofstream& os, int level) override;
 
 		/* This function performs a one shot solve of the assembly.*/
 		void solve();
@@ -108,6 +111,15 @@ namespace MbD {
 		void setSimulationParameters(std::shared_ptr<ASMTSimulationParameters> simulationParameters);
 		std::shared_ptr<ASMTPart> partNamed(std::string partName);
 		std::shared_ptr<ASMTPart> partPartialNamed(std::string partialName);
+		void storeOnLevelNotes(std::ofstream& os, int level);
+		void storeOnLevelParts(std::ofstream& os, int level);
+		void storeOnLevelKinematicIJs(std::ofstream& os, int level);
+		void storeOnLevelConstraintSets(std::ofstream& os, int level);
+		void storeOnLevelForceTorques(std::ofstream& os, int level);
+		void storeOnLevelJoints(std::ofstream& os, int level);
+		void storeOnLevelMotions(std::ofstream& os, int level);
+		void storeOnLevelGeneralConstraintSets(std::ofstream& os, int level);
+		void storeOnTimeSeries(std::ofstream& os) override;
 
 		std::string notes;
 		std::shared_ptr<std::vector<std::shared_ptr<ASMTPart>>> parts = std::make_shared<std::vector<std::shared_ptr<ASMTPart>>>();

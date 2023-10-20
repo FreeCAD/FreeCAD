@@ -5,7 +5,7 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include "ASMTRefPoint.h"
 #include "ASMTMarker.h"
 #include "CREATE.h"
@@ -28,5 +28,15 @@ void MbD::ASMTRefPoint::createMbD(std::shared_ptr<System> mbdSys, std::shared_pt
 {
 	for (auto& marker : *markers) {
 		marker->createMbD(mbdSys, mbdUnits);
+	}
+}
+
+void MbD::ASMTRefPoint::storeOnLevel(std::ofstream& os, int level)
+{
+	storeOnLevelString(os, level, "RefPoint");
+	ASMTSpatialItem::storeOnLevel(os, level);
+	storeOnLevelString(os, level + 1, "Markers");
+	for (auto& marker : *markers) {
+		marker->storeOnLevel(os, level + 2);
 	}
 }

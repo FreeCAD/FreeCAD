@@ -25,6 +25,7 @@ void runSpMat();
 
 int main()
 {
+	ASMTAssembly::readWriteFile("piston.asmt");
 	MBDynSystem::runFile("MBDynCase.mbd");		//To be completed
 	MBDynSystem::runFile("crank_slider.mbd");		//To be completed
 	//ASMTAssembly::runSinglePendulumSuperSimplified();	//Mass is missing

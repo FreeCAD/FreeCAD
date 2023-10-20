@@ -18,6 +18,8 @@ namespace MbD {
     public:
         void readMotionSeries(std::vector<std::string>& lines);
         virtual void initMarkers();
+        void storeOnLevel(std::ofstream& os, int level) override;
+        void storeOnTimeSeries(std::ofstream& os) override;
 
         std::shared_ptr<std::vector<std::shared_ptr<ForceTorqueData>>> motionSeries;
 

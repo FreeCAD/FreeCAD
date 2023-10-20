@@ -24,6 +24,7 @@ namespace MbD {
         void setg(FColDsptr g);
 
         void setg(double a, double b, double c);
+        void storeOnLevel(std::ofstream& os, int level) override;
 
         FColDsptr g = std::make_shared<FullColumn<double>>(ListD{ 0.,0.,0. });
     };
