@@ -47,6 +47,18 @@ class QGVPage;
 class QGSPage;
 class QGIView;
 
+class TechDrawGuiExport PaperAttributes
+{
+public:
+    PaperAttributes();
+    ~PaperAttributes() = default;
+
+    QPageLayout::Orientation orientation;
+    QPageSize::PageSizeId paperSize;
+    double pagewidth;
+    double pageheight;
+};
+
 class TechDrawGuiExport PagePrinter
 {
 public:
@@ -88,6 +100,7 @@ public:
 
     ViewProviderPage* getViewProviderPage() {return m_vpPage;}
 
+    static PaperAttributes getPaperAttributes(TechDraw::DrawPage* pageObject);
     void getPaperAttributes();
     QPageLayout::Orientation getOrientation() const { return m_orientation; }
     QPageSize::PageSizeId getPaperSize() const { return m_paperSize; }
