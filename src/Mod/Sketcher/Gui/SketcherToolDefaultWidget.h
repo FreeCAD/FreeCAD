@@ -226,6 +226,7 @@ protected:
     void changeEvent(QEvent* ev) override;
 
 private:
+    void setupConnections();
     QLabel* getParameterLabel(int parameterindex);
     Gui::PrefQuantitySpinBox* getParameterSpinBox(int parameterindex);
     Gui::PrefCheckBox* getCheckBox(int checkboxindex);
