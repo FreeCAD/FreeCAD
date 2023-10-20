@@ -77,24 +77,40 @@ void PagePrinter::setScene(QGSPage* scene)
 
 void PagePrinter::setDocumentName(const std::string& name) { m_documentName = name; }
 
-//**** printing routines
+
+PaperAttributes PagePrinter::getPaperAttributes(TechDraw::DrawPage* pageObject)
+{
+    PaperAttributes result;
+    if (!pageObject) {
+        return result;
+    }
+    auto pageTemplate(dynamic_cast<TechDraw::DrawTemplate*>(pageObject->Template.getValue()));
+    if (pageTemplate) {
+        result.pagewidth = pageTemplate->Width.getValue();
+        result.pageheight = pageTemplate->Height.getValue();
+    }
+    result.paperSize = QPageSize::id(QSizeF(result.pagewidth, result.pageheight), QPageSize::Millimeter,
+                                QPageSize::FuzzyOrientationMatch);
+    if (result.pagewidth > result.pageheight) {
+        result.orientation = QPageLayout::Landscape;
+    } else {
+        result.orientation = QPageLayout::Portrait;
+    }
+    if (result.paperSize == QPageSize::Ledger) {
+        // Ledger size paper orientation is reversed inside Qt
+        result.orientation =(QPageLayout::Orientation)(1 - result.orientation);
+    }
+
+    return result;
+}
 
 void PagePrinter::getPaperAttributes()
 {
-    App::DocumentObject* obj = m_vpPage->getDrawPage()->Template.getValue();
-    auto pageTemplate(dynamic_cast<TechDraw::DrawTemplate*>(obj));
-    if (pageTemplate) {
-        m_pagewidth = pageTemplate->Width.getValue();
-        m_pageheight = pageTemplate->Height.getValue();
-    }
-    m_paperSize = QPageSize::id(QSizeF(m_pagewidth, m_pageheight), QPageSize::Millimeter,
-                                QPageSize::FuzzyOrientationMatch);
-    if (m_pagewidth > m_pageheight) {
-        m_orientation = QPageLayout::Landscape;
-    }
-    else {
-        m_orientation = QPageLayout::Portrait;
-    }
+    PaperAttributes attr = getPaperAttributes(m_vpPage->getDrawPage());
+    m_pagewidth = attr.pagewidth;
+    m_pageheight = attr.pageheight;
+    m_paperSize = attr.paperSize;
+    m_orientation = attr.orientation;
 }
 
 void PagePrinter::printPdf(std::string file)
@@ -104,27 +120,18 @@ void PagePrinter::printPdf(std::string file)
         Base::Console().Warning("PagePrinter - no file specified\n");
         return;
     }
-    getPaperAttributes();
-
     QString filename = QString::fromUtf8(file.data(), file.size());
     QPrinter printer(QPrinter::HighResolution);
+
+    getPaperAttributes();
+
     // setPdfVersion sets the printied PDF Version to comply with PDF/A-1b, more details under: https://www.kdab.com/creating-pdfa-documents-qt/
 //    printer.setPdfVersion(QPagedPaintDevice::PdfVersion_A1b);
     printer.setFullPage(true);
     printer.setOutputFileName(filename);
+    printer.setPageOrientation(m_orientation);
+    printer.setPageSize(QPageSize(m_paperSize));
 
-    if (m_paperSize == QPageSize::Ledger) {
-        printer.setPageOrientation((QPageLayout::Orientation)(1 - m_orientation));//reverse 0/1
-    }
-    else {
-        printer.setPageOrientation(m_orientation);
-    }
-    if (m_paperSize == QPageSize::Custom) {
-        printer.setPageSize(QPageSize(QSizeF(m_pagewidth, m_pageheight), QPageSize::Millimeter));
-    }
-    else {
-        printer.setPageSize(QPageSize(m_paperSize));
-    }
     m_scene->setExportingPdf(true);
     print(&printer);
     m_scene->setExportingPdf(false);
@@ -203,20 +210,20 @@ void PagePrinter::printAll(QPrinter* printer, App::Document* doc)
 void PagePrinter::printAllPdf(QPrinter* printer, App::Document* doc)
 {
 //    Base::Console().Message("PP::printAllPdf()\n");
-    // setPdfVersion sets the printied PDF Version to comply with PDF/A-1b, more details under: https://www.kdab.com/creating-pdfa-documents-qt/
-    printer->setPdfVersion(QPagedPaintDevice::PdfVersion_A1b);
-    //    Base::Console().Message("PP::printAllPdf()\n");
+    double dpmm = printer->resolution() / 25.4;
+
     QString outputFile = printer->outputFileName();
     QString documentName = QString::fromUtf8(doc->getName());
     QPdfWriter pdfWriter(outputFile);
-    // setPdfVersion sets the printied PDF Version to comply with PDF/A-1b, more details under: https://www.kdab.com/creating-pdfa-documents-qt/
-    pdfWriter.setPdfVersion(QPagedPaintDevice::PdfVersion_A1b);
+    // setPdfVersion sets the printed PDF Version to comply with PDF/A-1b, more details under: https://www.kdab.com/creating-pdfa-documents-qt/
+    // but this is not working as of Qt 5.12
+    //printer->setPdfVersion(QPagedPaintDevice::PdfVersion_A1b);
+    //pdfWriter.setPdfVersion(QPagedPaintDevice::PdfVersion_A1b);
     pdfWriter.setTitle(documentName);
     pdfWriter.setResolution(printer->resolution());
     QPainter painter(&pdfWriter);
     QPageLayout pageLayout = printer->pageLayout();
 
-    double dpmm = printer->resolution() / 25.4;
     bool firstTime = true;
     std::vector<App::DocumentObject*> docObjs =
         doc->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
@@ -231,8 +238,9 @@ void PagePrinter::printAllPdf(QPrinter* printer, App::Document* doc)
         }
 
         TechDraw::DrawPage* dp = static_cast<TechDraw::DrawPage*>(obj);
-        double width = 297.0;//default to A4 Landscape 297 x 210
-        double height = 210.0;
+        PaperAttributes attr = getPaperAttributes(dp);
+        double width = attr.pagewidth;
+        double height = attr.pageheight;
         setPageLayout(pageLayout, dp, width, height);
         pdfWriter.setPageLayout(pageLayout);
 
@@ -247,8 +255,9 @@ void PagePrinter::printAllPdf(QPrinter* printer, App::Document* doc)
 
         QRectF sourceRect(0.0, Rez::guiX(-height), Rez::guiX(width), Rez::guiX(height));
         QRect targetRect(0, 0, width * dpmm, height * dpmm);
-
+        vpp->getQGSPage()->setExportingPdf(true);
         renderPage(vpp, painter, sourceRect, targetRect);
+        vpp->getQGSPage()->setExportingPdf(false);
     }
     painter.end();
 }
@@ -368,3 +377,11 @@ void PagePrinter::savePDF(std::string file)
     printPdf(file);
 }
 
+PaperAttributes::PaperAttributes()
+{
+    // set default values to A4 Landscape
+    orientation = QPageLayout::Orientation::Landscape;
+    paperSize = QPageSize::A4;
+    pagewidth = 297.0;
+    pageheight = 210.0;
+}
