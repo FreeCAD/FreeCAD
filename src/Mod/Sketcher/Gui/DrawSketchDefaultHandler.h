@@ -28,8 +28,10 @@
 
 #include <Base/Exception.h>
 #include <Base/Console.h>
+#include <Gui/Command.h>
 
 #include <Mod/Sketcher/App/GeoEnum.h>
+#include <Mod/Sketcher/App/GeometryFacade.h>
 #include <Mod/Sketcher/App/PythonConverter.h>
 #include <Mod/Sketcher/App/SolverGeometryExtension.h>
 
@@ -389,7 +391,7 @@ public:
         applyCursor();
     }
 
-    virtual ~DrawSketchDefaultHandler()
+    ~DrawSketchDefaultHandler() override
     {}
 
     /** @name public DrawSketchHandler interface
@@ -397,26 +399,26 @@ public:
      * overridden/specialised instead.
      */
     //@{
-    virtual void mouseMove(Base::Vector2d onSketchPos) override
+    void mouseMove(Base::Vector2d onSketchPos) override
     {
         updateDataAndDrawToPosition(onSketchPos);
     }
 
-    virtual bool pressButton(Base::Vector2d onSketchPos) override
+    bool pressButton(Base::Vector2d onSketchPos) override
     {
 
         onButtonPressed(onSketchPos);
         return true;
     }
 
-    virtual bool releaseButton(Base::Vector2d onSketchPos) override
+    bool releaseButton(Base::Vector2d onSketchPos) override
     {
         Q_UNUSED(onSketchPos);
         finish();
         return true;
     }
 
-    virtual void registerPressedKey(bool pressed, int key) override
+    void registerPressedKey(bool pressed, int key) override
     {
         if (key == SoKeyboardEvent::M && pressed && !this->isLastState()) {
             this->iterateToNextConstructionMethod();
@@ -548,7 +550,7 @@ private:
     virtual void createAutoConstraints()
     {}
 
-    virtual void onConstructionMethodChanged() override {};
+    void onConstructionMethodChanged() override {};
 
     virtual void updateDataAndDrawToPosition(Base::Vector2d onSketchPos)
     {
@@ -569,7 +571,7 @@ protected:
         See documentation of the functions above*/
     //@{
     /** @brief Minimal handle activation respecting avoid redundants and continuous mode.*/
-    virtual void activated() override
+    void activated() override
     {
         avoidRedundants =
             sketchgui->AvoidRedundant.getValue() && sketchgui->Autoconstraints.getValue();
@@ -592,10 +594,10 @@ protected:
 
     /** @brief Default behaviour that upon arriving to the End state of the state machine, the
      * command is finished. */
-    virtual void onModeChanged() override
+    void onModeChanged() override
     {
-        finish();  // internally checks that state is SelectMode::End, and only finishes then.
         angleSnappingControl();
+        finish();  // internally checks that state is SelectMode::End, and only finishes then.
     };
     //@}
 
@@ -885,7 +887,7 @@ protected:
         }
 
         // This is an awful situation. It should not be possible if the DSH works properly. It is
-        // just a saveguard.
+        // just a safeguard.
         if (sketchobject->getLastHasConflicts()) {
             THROWM(Base::RuntimeError,
                    QT_TRANSLATE_NOOP(
