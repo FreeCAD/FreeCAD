@@ -55,8 +55,9 @@ public:
 
 private Q_SLOTS:
     void onReferenceDeleted();
-    void Temp();
-    void Flux();
+    void onConstrTypeChanged(int item);
+    void onCFluxChanged(double);
+    void onTempChanged(double);
     void addToSelection() override;
     void removeFromSelection() override;
 
