@@ -3925,7 +3925,7 @@ StdCmdDockOverlayMouseTransparent::StdCmdDockOverlayMouseTransparent()
   :Command("Std_DockOverlayMouseTransparent")
 {
   sGroup        = "View";
-  sMenuText     = QT_TR_NOOP("Bypass mouse events in docked overlays");
+  sMenuText     = QT_TR_NOOP("Bypass mouse events in docked overlay windows");
   sToolTipText  = QT_TR_NOOP("Bypass all mouse events in docked overlay windows");
   sWhatsThis    = "Std_DockOverlayMouseTransparent";
   sStatusTip    = sToolTipText;
