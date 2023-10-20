@@ -3356,7 +3356,7 @@ StdCmdSelBack::StdCmdSelBack()
   :Command("Std_SelBack")
 {
   sGroup        = "View";
-  sMenuText     = QT_TR_NOOP("Selection Back");
+  sMenuText     = QT_TR_NOOP("Selection back");
   static std::string toolTip = std::string("<p>")
       + QT_TR_NOOP("Restore the previous Tree view selection. "
       "Only works if Tree RecordSelection mode is switched on.")
@@ -3390,7 +3390,7 @@ StdCmdSelForward::StdCmdSelForward()
   :Command("Std_SelForward")
 {
   sGroup        = "View";
-  sMenuText     = QT_TR_NOOP("Selection Forward");
+  sMenuText     = QT_TR_NOOP("Selection forward");
   static std::string toolTip = std::string("<p>")
       + QT_TR_NOOP("Restore the next Tree view selection. "
       "Only works if Tree RecordSelection mode is switched on.")
