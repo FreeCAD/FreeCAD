@@ -35,6 +35,7 @@ import WorkingPlane
 
 from draftgeoutils.general import geomType, vec, precision
 from draftgeoutils.geometry import get_normal
+from draftgeoutils.geometry import project_point_on_plane
 from draftgeoutils.edges import findMidpoint, isLine
 
 # Delay import of module until first use because it is heavy
@@ -169,9 +170,7 @@ def flattenWire(wire, origin=None, normal=None):
     if origin is None:
         origin = wire.Vertexes[0].Point
 
-    plane = WorkingPlane.plane()
-    plane.alignToPointAndAxis(origin, normal, 0)
-    points = [plane.projectPoint(vert.Point) for vert in wire.Vertexes]
+    points = [project_point_on_plane(vert.Point, origin, normal) vert in wire.Vertexes]
     if wire.isClosed():
         points.append(points[0])
     new_wire = Part.makePolygon(points)

@@ -36,13 +36,14 @@ This includes linear dimensions, radial dimensions, and angular dimensions.
 import math
 
 import FreeCAD as App
-import draftutils.utils as utils
-import draftutils.gui_utils as gui_utils
+import WorkingPlane
 
+from draftutils import gui_utils
+from draftutils import utils
 from draftutils.messages import _msg, _wrn, _err
 from draftutils.translate import translate
-from draftobjects.dimension import (LinearDimension,
-                                    AngularDimension)
+
+from draftobjects.dimension import LinearDimension, AngularDimension
 
 if App.GuiUp:
     from draftviewproviders.view_dimension \
@@ -147,10 +148,7 @@ def make_dimension(p1, p2, p3=None, p4=None):
     # depending on the first three parameter values
     new_obj.Dimline = p3
 
-    if hasattr(App, "DraftWorkingPlane"):
-        normal = App.DraftWorkingPlane.axis
-    else:
-        normal = App.Vector(0, 0, 1)
+    normal = WorkingPlane.get_working_plane(update=False).axis
 
     if App.GuiUp:
         # invert the normal if we are viewing it from the back
@@ -536,11 +534,8 @@ def make_angular_dimension(center=App.Vector(0, 0, 0),
         the circular arc.
 
     normal: Base::Vector3, optional
-        It defaults to `None`, in which case the `normal` is taken
-        from the currently active `App.DraftWorkingPlane.axis`.
-
-        If the working plane is not available, then the `normal`
-        defaults to +Z or `Vector(0, 0, 1)`.
+        It defaults to `None`, in which case the axis of the current working
+        plane is used.
 
     Returns
     -------
@@ -607,11 +602,8 @@ def make_angular_dimension(center=App.Vector(0, 0, 0),
             _err(translate("draft","Wrong input: must be a vector."))
             return None
 
-    if not normal:
-        if hasattr(App, "DraftWorkingPlane"):
-            normal = App.DraftWorkingPlane.axis
-        else:
-            normal = App.Vector(0, 0, 1)
+    if normal is not None:
+        normal = WorkingPlane.get_working_plane(update=False).axis
 
     new_obj = App.ActiveDocument.addObject("App::FeaturePython",
                                            "Dimension")
