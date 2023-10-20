@@ -760,17 +760,17 @@ static const App::PropertyFloatConstraint::Constraints scaleConstraint = {
     1.0};
 
 ViewProviderFemPostPlaneFunction::ViewProviderFemPostPlaneFunction()
-    : m_detectscale(false)
+    : m_detectscale {true}
 {
     ADD_PROPERTY_TYPE(Scale,
-                      (1000.0),
+                      (10),
                       "Manipulator",
                       App::Prop_None,
                       "Scaling factor for the manipulator");
     Scale.setConstraints(&scaleConstraint);
     sPixmap = "fem-post-geo-plane";
 
-    setAutoScale(true);
+    setAutoScale(false);
 
     // setup the visualisation geometry
     getGeometryNode()->addChild(ShapeNodes::postPlane());
@@ -796,27 +796,25 @@ void ViewProviderFemPostPlaneFunction::draggerUpdate(SoDragger* m)
 
 void ViewProviderFemPostPlaneFunction::onChanged(const App::Property* prop)
 {
-    if (prop == &Scale) {
-        // When loading the Scale property from a project then keep that
-        if (Scale.getConstraints()) {
-            m_detectscale = true;
-        }
-        if (!isDragging()) {
-            // get current matrix
-            SbVec3f t, s;
-            SbRotation r, so;
-            SbMatrix matrix = getManipulator()
-                                  ->getDragger()
-                                  ->getMotionMatrix();  // clazy:exclude=rule-of-two-soft
-            matrix.getTransform(t, r, s, so);
-
-            float scale = static_cast<float>(Scale.getValue());
-            s.setValue(scale, scale, scale);
-
-            matrix.setTransform(t, r, s, so);
-            getManipulator()->setMatrix(matrix);
-        }
+    if (prop == &Scale && m_detectscale) {
+        // Scale property detected at restore
+        m_detectscale = false;
     }
+
+    if (prop == &Scale && !isDragging()) {
+        // get current matrix
+        SbVec3f t, s;
+        SbRotation r, so;
+        SbMatrix matrix = getManipulator()->getDragger()->getMotionMatrix();
+        matrix.getTransform(t, r, s, so);
+
+        float scale = static_cast<float>(Scale.getValue());
+        s.setValue(scale, scale, scale);
+
+        matrix.setTransform(t, r, s, so);
+        getManipulator()->setMatrix(matrix);
+    }
+
     ViewProviderFemPostFunction::onChanged(prop);
 }
 
@@ -825,14 +823,15 @@ void ViewProviderFemPostPlaneFunction::updateData(const App::Property* p)
     Fem::FemPostPlaneFunction* func = getObject<Fem::FemPostPlaneFunction>();
 
     if (!isDragging() && (p == &func->Origin || p == &func->Normal)) {
-        if (!m_detectscale) {
+        // Auto-scale from geometry size at restore
+        if (m_detectscale) {
             double s;
-            if (findScaleFactor(s)) {
-                m_detectscale = true;
-                this->Scale.setValue(s);
+            bool find = findScaleFactor(s);
+            if (find) {
+                Scale.setValue(s);
+                m_detectscale = false;
             }
         }
-
         Base::Vector3d trans = func->Origin.getValue();
         Base::Vector3d norm = func->Normal.getValue();
 
@@ -844,9 +843,9 @@ void ViewProviderFemPostPlaneFunction::updateData(const App::Property* p)
         mat.setTransform(SbVec3f(trans.x, trans.y, trans.z), rot, SbVec3f(scale, scale, scale));
         getManipulator()->setMatrix(mat);
     }
+
     Gui::ViewProviderDocumentObject::updateData(p);
 }
-
 
 SoTransformManip* ViewProviderFemPostPlaneFunction::setupManipulator()
 {
