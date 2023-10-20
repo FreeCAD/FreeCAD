@@ -26,6 +26,7 @@
 #include <cmath>
 
 #include <Inventor/actions/SoSearchAction.h>
+#include <Inventor/draggers/SoDragPointDragger.h>
 #include <Inventor/draggers/SoHandleBoxDragger.h>
 #include <Inventor/draggers/SoJackDragger.h>
 #include <Inventor/manips/SoCenterballManip.h>
@@ -797,7 +798,7 @@ void ViewProviderFemPostPlaneFunction::draggerUpdate(SoDragger* m)
     const SbVec3f& base = dragger->translation.getValue();
     const SbVec3f& scale = dragger->scaleFactor.getValue();
 
-    SbVec3f norm(0.0, 1.0, 0.0);
+    SbVec3f norm(0.0, 0.0, 1.0);
     dragger->rotation.getValue().multVec(norm, norm);
     func->Origin.setValue(base[0], base[1], base[2]);
     func->Normal.setValue(norm[0], norm[1], norm[2]);
@@ -847,7 +848,7 @@ void ViewProviderFemPostPlaneFunction::updateData(const App::Property* p)
         Base::Vector3d norm = func->Normal.getValue();
 
         norm.Normalize();
-        SbRotation rot(SbVec3f(0.0, 1.0, 0.0), SbVec3f(norm.x, norm.y, norm.z));
+        SbRotation rot(SbVec3f(0.0, 0.0, 1.0), SbVec3f(norm.x, norm.y, norm.z));
         float scale = static_cast<float>(Scale.getValue());
 
         SbMatrix mat;
@@ -860,7 +861,13 @@ void ViewProviderFemPostPlaneFunction::updateData(const App::Property* p)
 
 SoTransformManip* ViewProviderFemPostPlaneFunction::setupManipulator()
 {
-    return new SoJackManip;
+    auto manip = new SoJackManip;
+
+    // Set axis translator to Z-axis
+    SoNode* trans = manip->getDragger()->getPart("translator", false);
+    static_cast<SoDragPointDragger*>(trans)->showNextDraggerSet();
+
+    return manip;
 }
 
 
