@@ -1694,6 +1694,8 @@ class PlaneGui(PlaneBase):
             return
         if data == self._history["data_list"][-1]:
             return
+        if self.auto is True and self._history["data_list"][-1]["auto"] is True:
+            return
 
         max_len = 10  # Max. length of data_list.
         idx = self._history["idx"]
@@ -1747,12 +1749,12 @@ def get_working_plane(update=True):
         return wp
 
     wp = PlaneGui()
-    wp._view = view
-    wp.set_to_default()
-
-    if view is not None:
-        FreeCAD.draft_working_planes[0].append(view)
-        FreeCAD.draft_working_planes[1].append(wp)
+    if FreeCAD.GuiUp:
+        wp.set_to_default()
+        wp._view = view
+        if view is not None:
+            FreeCAD.draft_working_planes[0].append(view)
+            FreeCAD.draft_working_planes[1].append(wp)
 
     return wp
 
