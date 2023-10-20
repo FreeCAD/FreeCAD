@@ -125,62 +125,7 @@ SketcherToolDefaultWidget::SketcherToolDefaultWidget(QWidget* parent)
     ui->setupUi(this);
 
     // connecting the needed signals
-    connect(ui->parameterOne,
-            SIGNAL(valueChanged(double)),
-            this,
-            SLOT(parameterOne_valueChanged(double)));
-    connect(ui->parameterTwo,
-            SIGNAL(valueChanged(double)),
-            this,
-            SLOT(parameterTwo_valueChanged(double)));
-    connect(ui->parameterThree,
-            SIGNAL(valueChanged(double)),
-            this,
-            SLOT(parameterThree_valueChanged(double)));
-    connect(ui->parameterFour,
-            SIGNAL(valueChanged(double)),
-            this,
-            SLOT(parameterFour_valueChanged(double)));
-    connect(ui->parameterFive,
-            SIGNAL(valueChanged(double)),
-            this,
-            SLOT(parameterFive_valueChanged(double)));
-    connect(ui->parameterSix,
-            SIGNAL(valueChanged(double)),
-            this,
-            SLOT(parameterSix_valueChanged(double)));
-    connect(ui->parameterSeven,
-            SIGNAL(valueChanged(double)),
-            this,
-            SLOT(parameterSeven_valueChanged(double)));
-    connect(ui->parameterEight,
-            SIGNAL(valueChanged(double)),
-            this,
-            SLOT(parameterEight_valueChanged(double)));
-    connect(ui->parameterNine,
-            SIGNAL(valueChanged(double)),
-            this,
-            SLOT(parameterNine_valueChanged(double)));
-    connect(ui->parameterTen,
-            SIGNAL(valueChanged(double)),
-            this,
-            SLOT(parameterTen_valueChanged(double)));
-    connect(ui->checkBoxTS1, SIGNAL(toggled(bool)), this, SLOT(checkBoxTS1_toggled(bool)));
-    connect(ui->checkBoxTS2, SIGNAL(toggled(bool)), this, SLOT(checkBoxTS2_toggled(bool)));
-    connect(ui->checkBoxTS3, SIGNAL(toggled(bool)), this, SLOT(checkBoxTS3_toggled(bool)));
-    connect(ui->checkBoxTS4, SIGNAL(toggled(bool)), this, SLOT(checkBoxTS4_toggled(bool)));
-    connect(ui->comboBox1,
-            SIGNAL(currentIndexChanged(int)),
-            this,
-            SLOT(comboBox1_currentIndexChanged(int)));
-    connect(ui->comboBox2,
-            SIGNAL(currentIndexChanged(int)),
-            this,
-            SLOT(comboBox2_currentIndexChanged(int)));
-    connect(ui->comboBox3,
-            SIGNAL(currentIndexChanged(int)),
-            this,
-            SLOT(comboBox3_currentIndexChanged(int)));
+    setupConnections();
 
     ui->parameterOne->installEventFilter(this);
     ui->parameterTwo->installEventFilter(this);
@@ -193,6 +138,78 @@ SketcherToolDefaultWidget::SketcherToolDefaultWidget(QWidget* parent)
 }
 
 SketcherToolDefaultWidget::~SketcherToolDefaultWidget() = default;
+
+void SketcherToolDefaultWidget::setupConnections()
+{
+    connect(ui->parameterOne,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &SketcherToolDefaultWidget::parameterOne_valueChanged);
+    connect(ui->parameterTwo,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &SketcherToolDefaultWidget::parameterTwo_valueChanged);
+    connect(ui->parameterThree,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &SketcherToolDefaultWidget::parameterThree_valueChanged);
+    connect(ui->parameterFour,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &SketcherToolDefaultWidget::parameterFour_valueChanged);
+    connect(ui->parameterFive,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &SketcherToolDefaultWidget::parameterFive_valueChanged);
+    connect(ui->parameterSix,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &SketcherToolDefaultWidget::parameterSix_valueChanged);
+    connect(ui->parameterSeven,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &SketcherToolDefaultWidget::parameterSeven_valueChanged);
+    connect(ui->parameterEight,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &SketcherToolDefaultWidget::parameterEight_valueChanged);
+    connect(ui->parameterNine,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &SketcherToolDefaultWidget::parameterNine_valueChanged);
+    connect(ui->parameterTen,
+            qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
+            this,
+            &SketcherToolDefaultWidget::parameterTen_valueChanged);
+    connect(ui->checkBoxTS1,
+            &QCheckBox::toggled,
+            this,
+            &SketcherToolDefaultWidget::checkBoxTS1_toggled);
+    connect(ui->checkBoxTS2,
+            &QCheckBox::toggled,
+            this,
+            &SketcherToolDefaultWidget::checkBoxTS2_toggled);
+    connect(ui->checkBoxTS3,
+            &QCheckBox::toggled,
+            this,
+            &SketcherToolDefaultWidget::checkBoxTS3_toggled);
+    connect(ui->checkBoxTS4,
+            &QCheckBox::toggled,
+            this,
+            &SketcherToolDefaultWidget::checkBoxTS4_toggled);
+    connect(ui->comboBox1,
+            qOverload<int>(&QComboBox::currentIndexChanged),
+            this,
+            &SketcherToolDefaultWidget::comboBox1_currentIndexChanged);
+    connect(ui->comboBox2,
+            qOverload<int>(&QComboBox::currentIndexChanged),
+            this,
+            &SketcherToolDefaultWidget::comboBox2_currentIndexChanged);
+    connect(ui->comboBox3,
+            qOverload<int>(&QComboBox::currentIndexChanged),
+            this,
+            &SketcherToolDefaultWidget::comboBox3_currentIndexChanged);
+}
 
 // pre-select the number of the spinbox when it gets the focus.
 bool SketcherToolDefaultWidget::eventFilter(QObject* object, QEvent* event)
