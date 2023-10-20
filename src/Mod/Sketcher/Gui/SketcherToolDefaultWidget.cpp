@@ -25,6 +25,8 @@
 
 #ifndef _PreComp_
 #include <Inventor/events/SoKeyboardEvent.h>
+#include <QRegularExpression>
+#include <QRegularExpressionMatch>
 #endif
 
 #include "ui_SketcherToolDefaultWidget.h"
@@ -98,14 +100,13 @@ bool SketcherToolDefaultWidget::KeyboardManager::handleKeyEvent(QKeyEvent* keyEv
 void SketcherToolDefaultWidget::KeyboardManager::detectKeyboardEventHandlingMode(
     QKeyEvent* keyEvent)
 {
-    Q_UNUSED(keyEvent);
-
+    QRegularExpression rx(QStringLiteral("^[0-9]$"));
+    auto match = rx.match(keyEvent->text());
     if (keyEvent->key() == Qt::Key_Enter || keyEvent->key() == Qt::Key_Return
         || keyEvent->key() == Qt::Key_Tab || keyEvent->key() == Qt::Key_Backtab
         || keyEvent->key() == Qt::Key_Backspace || keyEvent->key() == Qt::Key_Delete
         || keyEvent->key() == Qt::Key_Minus || keyEvent->key() == Qt::Key_Period
-        || keyEvent->key() == Qt::Key_Comma
-        || QRegExp(QStringLiteral("[0-9]")).exactMatch(keyEvent->text())) {
+        || keyEvent->key() == Qt::Key_Comma || match.hasMatch()) {
         keyMode = KeyboardEventHandlingMode::Widget;
         timer.start(timeOut);
     }
