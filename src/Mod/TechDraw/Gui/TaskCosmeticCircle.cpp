@@ -109,7 +109,7 @@ void TaskCosmeticCircle::changeEvent(QEvent *e)
 
 void TaskCosmeticCircle::setUiPrimary()
 {
-    setWindowTitle(QObject::tr("Create Cosmetic Line"));
+    setWindowTitle(QObject::tr("Create Cosmetic Circle"));
 //    Base::Console().Message("TCC::setUiPrimary() - m_center: %s is3d: %d\n",
 //        DU::formatVector(m_center).c_str(), m_is3d);
     double rotDeg = m_partFeat->Rotation.getValue();
@@ -143,7 +143,7 @@ void TaskCosmeticCircle::setUiPrimary()
 
 void TaskCosmeticCircle::setUiEdit()
 {
-    setWindowTitle(QObject::tr("Edit Cosmetic Line"));
+    setWindowTitle(QObject::tr("Edit Cosmetic Circle"));
 
     ui->rb2d1->setChecked(true);
     ui->rb3d1->setChecked(false);
