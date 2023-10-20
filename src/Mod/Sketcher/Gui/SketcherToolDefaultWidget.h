@@ -24,6 +24,7 @@
 #ifndef SketcherGui_SketcherToolDefaultWidget_H
 #define SketcherGui_SketcherToolDefaultWidget_H
 
+#include <Base/Unit.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/Selection.h>
@@ -136,18 +137,19 @@ public:
         nCombobox  // Must Always be the last one
     };
 
-    SketcherToolDefaultWidget(QWidget* parent = nullptr, ViewProviderSketch* sketchView = nullptr);
-    ~SketcherToolDefaultWidget();
+    explicit SketcherToolDefaultWidget(QWidget* parent = nullptr);
+    ~SketcherToolDefaultWidget() override;
 
-    bool eventFilter(QObject* object, QEvent* event);
+    bool eventFilter(QObject* object, QEvent* event) override;
     // void keyPressEvent(QKeyEvent* event);
 
     void setParameter(int parameterindex, double val);
     void configureParameterInitialValue(int parameterindex, double value);
-    void configureParameterUnit(int parameterindex, Base::Unit unit);
+    void configureParameterUnit(int parameterindex, const Base::Unit& unit);
     double getParameter(int parameterindex);
     bool isParameterSet(int parameterindex);
-    void updateVisualValue(int parameterindex, double val, Base::Unit unit = Base::Unit::Length);
+    void
+    updateVisualValue(int parameterindex, double val, const Base::Unit& unit = Base::Unit::Length);
 
     void setParameterEnabled(int parameterindex, bool active = true);
     void setParameterFocus(int parameterindex);
@@ -182,21 +184,21 @@ public:
     void restoreComboboxPref(int comboboxindex);
 
     template<typename F>
-    boost::signals2::connection registerParameterValueChanged(F&& f)
+    boost::signals2::connection registerParameterValueChanged(F&& fn)
     {
-        return signalParameterValueChanged.connect(std::forward<F>(f));
+        return signalParameterValueChanged.connect(std::forward<F>(fn));
     }
 
     template<typename F>
-    boost::signals2::connection registerCheckboxCheckedChanged(F&& f)
+    boost::signals2::connection registerCheckboxCheckedChanged(F&& fn)
     {
-        return signalCheckboxCheckedChanged.connect(std::forward<F>(f));
+        return signalCheckboxCheckedChanged.connect(std::forward<F>(fn));
     }
 
     template<typename F>
-    boost::signals2::connection registerComboboxSelectionChanged(F&& f)
+    boost::signals2::connection registerComboboxSelectionChanged(F&& fn)
     {
-        return signalComboboxSelectionChanged.connect(std::forward<F>(f));
+        return signalComboboxSelectionChanged.connect(std::forward<F>(fn));
     }
 
 
@@ -221,7 +223,7 @@ protected Q_SLOTS:
     void comboBox3_currentIndexChanged(int val);
 
 protected:
-    void changeEvent(QEvent* e);
+    void changeEvent(QEvent* ev) override;
 
 private:
     QLabel* getParameterLabel(int parameterindex);
@@ -236,7 +238,6 @@ private:
 
 private:
     std::unique_ptr<Ui_SketcherToolDefaultWidget> ui;
-    ViewProviderSketch* sketchView;
 
     boost::signals2::signal<void(int parameterindex, double value)> signalParameterValueChanged;
     boost::signals2::signal<void(int checkboxindex, bool value)> signalCheckboxCheckedChanged;
