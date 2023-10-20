@@ -59,7 +59,7 @@
        <item row="1" column="1">
         <widget class="QComboBox" name="comboBox_UnitSystem">
          <property name="toolTip">
-          <string>Unit system that should be used for all parts of the application</string>
+          <string>Unit system for all parts of the application. Can be overridden by specifying a project unit system.</string>
          </property>
         </widget>
        </item>
@@ -90,21 +90,21 @@
        <item row="2" column="0">
         <widget class="QLabel" name="label">
          <property name="text">
-          <string>Project Unit system:</string>
+          <string>Project unit system:</string>
          </property>
         </widget>
        </item>
        <item row="2" column="1">
         <widget class="QComboBox" name="comboBox_projectUnitSystem">
          <property name="toolTip">
-          <string>Unit system used for display metrics stored in project</string>
+          <string>Unit system stored in the current project</string>
          </property>
         </widget>
        </item>
        <item row="2" column="2">
         <widget class="QCheckBox" name="checkBox_projectUnitSystemIgnore">
           <property name="toolTip">
-           <string>If enabled, Unit System stored in project will be ignored.</string>
+           <string>If enabled, project unit systems are ignored</string>
           </property>
           <property name="text">
            <string>Ignore</string>
