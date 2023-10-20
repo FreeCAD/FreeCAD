@@ -235,6 +235,8 @@ SET(TechDrawGui_SRCS
     Widgets/CompassWidget.h
     Widgets/VectorEditWidget.cpp
     Widgets/VectorEditWidget.h
+    PATPathMaker.cpp
+    PATPathMaker.h
 )
 
 SET(TechDrawGuiView_SRCS
