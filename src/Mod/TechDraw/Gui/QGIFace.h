@@ -33,6 +33,7 @@
 
 #include <Mod/TechDraw/App/HatchLine.h>
 
+#include "PATPathMaker.h"
 #include "QGIPrimPath.h"
 
 
@@ -93,9 +94,6 @@ public:
     void hideSvg(bool b);
     void clearSvg();
 
-    //tiled pixmap fill from svg
-    void buildPixHatch();
-
     //PAT fill parms & methods
     void setGeomHatchWeight(double w) { m_geomWeight = w; }
     void setLineWeight(double w);
@@ -137,8 +135,6 @@ protected:
     std::string m_svgCol;
     std::string m_fileSpec;   //for svg & bitmaps
 
-    QGCustomImage* m_imageHatchArea;
-
     double m_fillScale;
     bool m_isHatched;
     QGIFace::fillMode m_mode;
@@ -170,6 +166,8 @@ private:
     Base::Vector3d m_hatchOffset;
 
     QSvgRenderer *m_sharedRender;
+
+    PATPathMaker* m_patMaker;
 
 };
 
