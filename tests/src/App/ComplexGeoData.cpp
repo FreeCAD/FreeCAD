@@ -8,6 +8,7 @@
 #include <App/Application.h>
 #include <App/ComplexGeoData.h>
 #include <Base/BoundBox.h>
+#include <src/App/InitApplication.h>
 
 
 class ConcreteComplexGeoDataForTesting: public Data::ComplexGeoData
@@ -72,12 +73,7 @@ class ComplexGeoDataTest: public ::testing::Test
 protected:
     static void SetUpTestSuite()
     {
-        if (App::Application::GetARGC() == 0) {
-            constexpr int argc = 1;
-            std::array<char*, argc> argv {"FreeCAD"};
-            App::Application::Config()["ExeName"] = "FreeCAD";
-            App::Application::init(argc, argv.data());
-        }
+        tests::initApplication();
     }
 
     void SetUp() override

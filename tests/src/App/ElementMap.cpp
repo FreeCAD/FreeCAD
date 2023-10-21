@@ -4,6 +4,7 @@
 
 #include <App/Application.h>
 #include <App/ElementMap.h>
+#include <src/App/InitApplication.h>
 
 // NOLINTBEGIN(readability-magic-numbers)
 
@@ -45,12 +46,7 @@ class ElementMapTest: public ::testing::Test
 protected:
     static void SetUpTestSuite()
     {
-        if (App::Application::GetARGC() == 0) {
-            int argc = 1;
-            char* argv[] = {"FreeCAD"};
-            App::Application::Config()["ExeName"] = "FreeCAD";
-            App::Application::init(argc, argv);
-        }
+        tests::initApplication();
     }
 
     void SetUp() override

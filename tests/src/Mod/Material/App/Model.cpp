@@ -33,18 +33,14 @@
 #include <Mod/Material/App/MaterialManager.h>
 #include <Mod/Material/App/Model.h>
 #include <Mod/Material/App/ModelManager.h>
+#include <src/App/InitApplication.h>
 
 // clang-format off
 
 class MaterialTest : public ::testing::Test {
  protected:
   static void SetUpTestSuite() {
-    if (App::Application::GetARGC() == 0) {
-        constexpr int argc = 1;
-        std::array<char*, argc> argv {"FreeCAD"};
-        App::Application::Config()["ExeName"] = "FreeCAD";
-        App::Application::init(argc, argv.data());
-    }
+    tests::initApplication();
   }
 
   void SetUp() override {

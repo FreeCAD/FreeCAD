@@ -6,6 +6,7 @@
 #include <App/Application.h>
 
 #include "Gui/QuantitySpinBox.h"
+#include <src/App/InitApplication.h>
 
 // NOLINTBEGIN(readability-magic-numbers)
 
@@ -16,12 +17,7 @@ class testQuantitySpinBox: public QObject
 public:
     testQuantitySpinBox()
     {
-        if (App::Application::GetARGC() == 0) {
-            constexpr int argc = 1;
-            std::array<char*, argc> argv {"FreeCAD"};
-            App::Application::Config()["ExeName"] = "FreeCAD";
-            App::Application::init(argc, argv.data());
-        }
+        tests::initApplication();
         qsb = std::make_unique<Gui::QuantitySpinBox>();
     }
 
