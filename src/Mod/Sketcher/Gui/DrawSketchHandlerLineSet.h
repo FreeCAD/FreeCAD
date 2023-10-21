@@ -456,7 +456,7 @@ public:
                         EditCurve[0].y,
                         EditCurve[1].x,
                         EditCurve[1].y,
-                        geometryCreationMode == Construction ? "True" : "False");
+                        constructionModeAsBooleanText());
                 }
                 catch (const Base::Exception&) {
                     addedGeometry = false;
@@ -486,7 +486,7 @@ public:
                         std::abs(arcRadius),
                         std::min(startAngle, endAngle),
                         std::max(startAngle, endAngle),
-                        geometryCreationMode == Construction ? "True" : "False");
+                        constructionModeAsBooleanText());
                 }
                 catch (const Base::Exception&) {
                     addedGeometry = false;

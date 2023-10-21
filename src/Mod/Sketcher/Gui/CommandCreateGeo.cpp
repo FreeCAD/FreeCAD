@@ -82,11 +82,11 @@ using namespace SketcherGui;
     {                                                                                              \
         auto act = getAction();                                                                    \
         if (act) {                                                                                 \
-            switch (mode) {                                                                        \
-                case Normal:                                                                       \
+            switch (static_cast<GeometryCreationMode>(mode)) {                                     \
+                case GeometryCreationMode::Normal:                                                 \
                     act->setIcon(Gui::BitmapFactory().iconFromTheme(ICON));                        \
                     break;                                                                         \
-                case Construction:                                                                 \
+                case GeometryCreationMode::Construction:                                           \
                     act->setIcon(Gui::BitmapFactory().iconFromTheme(ICON "_Constr"));              \
                     break;                                                                         \
             }                                                                                      \
@@ -95,7 +95,7 @@ using namespace SketcherGui;
 
 namespace SketcherGui
 {
-GeometryCreationMode geometryCreationMode = Normal;
+GeometryCreationMode geometryCreationMode = GeometryCreationMode::Normal;
 }
 
 /* Sketch commands =======================================================*/
@@ -298,14 +298,14 @@ void CmdSketcherCompCreateRectangles::updateAction(int mode)
 
     QList<QAction*> a = pcAction->actions();
     int index = pcAction->property("defaultAction").toInt();
-    switch (mode) {
-        case Normal:
+    switch (static_cast<GeometryCreationMode>(mode)) {
+        case GeometryCreationMode::Normal:
             a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateRectangle"));
             a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateRectangle_Center"));
             a[2]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateOblong"));
             getAction()->setIcon(a[index]->icon());
             break;
-        case Construction:
+        case GeometryCreationMode::Construction:
             a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateRectangle_Constr"));
             a[1]->setIcon(
                 Gui::BitmapFactory().iconFromTheme("Sketcher_CreateRectangle_Center_Constr"));
@@ -510,13 +510,13 @@ void CmdSketcherCompCreateArc::updateAction(int mode)
 
     QList<QAction*> a = pcAction->actions();
     int index = pcAction->property("defaultAction").toInt();
-    switch (mode) {
-        case Normal:
+    switch (static_cast<GeometryCreationMode>(mode)) {
+        case GeometryCreationMode::Normal:
             a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateArc"));
             a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Create3PointArc"));
             getAction()->setIcon(a[index]->icon());
             break;
-        case Construction:
+        case GeometryCreationMode::Construction:
             a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateArc_Constr"));
             a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Create3PointArc_Constr"));
             getAction()->setIcon(a[index]->icon());
@@ -834,8 +834,8 @@ void CmdSketcherCompCreateConic::updateAction(int mode)
 
     QList<QAction*> a = pcAction->actions();
     int index = pcAction->property("defaultAction").toInt();
-    switch (mode) {
-        case Normal:
+    switch (static_cast<GeometryCreationMode>(mode)) {
+        case GeometryCreationMode::Normal:
             a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateEllipseByCenter"));
             a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateEllipse_3points"));
             a[2]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateElliptical_Arc"));
@@ -843,7 +843,7 @@ void CmdSketcherCompCreateConic::updateAction(int mode)
             a[4]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateParabolic_Arc"));
             getAction()->setIcon(a[index]->icon());
             break;
-        case Construction:
+        case GeometryCreationMode::Construction:
             a[0]->setIcon(
                 Gui::BitmapFactory().iconFromTheme("Sketcher_CreateEllipseByCenter_Constr"));
             a[1]->setIcon(
@@ -1144,8 +1144,8 @@ void CmdSketcherCompCreateBSpline::updateAction(int mode)
 
     QList<QAction*> a = pcAction->actions();
     int index = pcAction->property("defaultAction").toInt();
-    switch (mode) {
-        case Normal:
+    switch (static_cast<GeometryCreationMode>(mode)) {
+        case GeometryCreationMode::Normal:
             a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateBSpline"));
             a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Create_Periodic_BSpline"));
             a[2]->setIcon(
@@ -1154,7 +1154,7 @@ void CmdSketcherCompCreateBSpline::updateAction(int mode)
                 "Sketcher_Create_Periodic_BSplineByInterpolation"));
             getAction()->setIcon(a[index]->icon());
             break;
-        case Construction:
+        case GeometryCreationMode::Construction:
             a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateBSpline_Constr"));
             a[1]->setIcon(
                 Gui::BitmapFactory().iconFromTheme("Sketcher_Create_Periodic_BSpline_Constr"));
@@ -1315,13 +1315,13 @@ void CmdSketcherCompCreateCircle::updateAction(int mode)
 
     QList<QAction*> a = pcAction->actions();
     int index = pcAction->property("defaultAction").toInt();
-    switch (mode) {
-        case Normal:
+    switch (static_cast<GeometryCreationMode>(mode)) {
+        case GeometryCreationMode::Normal:
             a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateCircle"));
             a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Create3PointCircle"));
             getAction()->setIcon(a[index]->icon());
             break;
-        case Construction:
+        case GeometryCreationMode::Construction:
             a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateCircle_Constr"));
             a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_Create3PointCircle_Constr"));
             getAction()->setIcon(a[index]->icon());
@@ -2056,8 +2056,8 @@ void CmdSketcherCompCreateRegularPolygon::updateAction(int mode)
 
     QList<QAction*> a = pcAction->actions();
     int index = pcAction->property("defaultAction").toInt();
-    switch (mode) {
-        case Normal:
+    switch (static_cast<GeometryCreationMode>(mode)) {
+        case GeometryCreationMode::Normal:
             a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateTriangle"));
             a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateSquare"));
             a[2]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreatePentagon"));
@@ -2067,7 +2067,7 @@ void CmdSketcherCompCreateRegularPolygon::updateAction(int mode)
             a[6]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateRegularPolygon"));
             getAction()->setIcon(a[index]->icon());
             break;
-        case Construction:
+        case GeometryCreationMode::Construction:
             a[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateTriangle_Constr"));
             a[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateSquare_Constr"));
             a[2]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreatePentagon_Constr"));

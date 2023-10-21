@@ -120,7 +120,7 @@ public:
                                       EditCurve[0].x,
                                       EditCurve[0].y,
                                       sqrt(rx * rx + ry * ry),
-                                      geometryCreationMode == Construction ? "True" : "False");
+                                      constructionModeAsBooleanText());
 
                 Gui::Command::commitCommand();
             }
@@ -314,7 +314,7 @@ public:
                                       CenterPoint.x,
                                       CenterPoint.y,
                                       radius,
-                                      geometryCreationMode == Construction ? "True" : "False");
+                                      constructionModeAsBooleanText());
 
                 Gui::Command::commitCommand();
             }

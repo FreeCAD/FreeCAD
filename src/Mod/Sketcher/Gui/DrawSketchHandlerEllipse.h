@@ -799,7 +799,7 @@ private:
                 positiveB.y,
                 centroid.x,
                 centroid.y,
-                geometryCreationMode == Construction ? "True" : "False");
+                constructionModeAsBooleanText());
 
             currentgeoid++;
 
