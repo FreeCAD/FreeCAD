@@ -154,7 +154,7 @@ public:
                     Gui::cmdAppObjectArgs(sketchgui->getObject(),
                                           "carbonCopy(\"%s\",%s)",
                                           msg.pObjectName,
-                                          geometryCreationMode == Construction ? "True" : "False");
+                                          constructionModeAsBooleanText());
 
                     Gui::Command::commitCommand();
 

@@ -131,7 +131,7 @@ public:
                                         StartPos.y,
                                         EditCurve[0].x,
                                         EditCurve[0].y,
-                                        geometryCreationMode == Construction ? "True" : "False");
+                                        constructionModeAsBooleanText());
 
                 Gui::Command::commitCommand();
 

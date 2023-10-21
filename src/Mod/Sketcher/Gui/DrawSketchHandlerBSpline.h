@@ -472,7 +472,7 @@ private:
                                       controlpoints.c_str(),
                                       ConstrMethod == 0 ? "False" : "True",
                                       std::min(maxDegree, SplineDegree),
-                                      geometryCreationMode == Construction ? "True" : "False");
+                                      constructionModeAsBooleanText());
 
                 currentgeoid++;
 
