@@ -57,10 +57,6 @@
 #ifndef _QtAll__
 # include <Gui/QtAll.h>
 #endif
-#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
-# include <QXmlQuery>
-# include <QXmlResultItems>
-#endif
 
 // OpenCasCade
 #include <BRep_Tool.hxx>

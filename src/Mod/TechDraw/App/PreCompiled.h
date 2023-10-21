@@ -54,11 +54,6 @@
 
 // Qt
 #include <QDomDocument>
-#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
-    #include "QDomNodeModel.h"
-    #include <QXmlQuery>
-    #include <QXmlResultItems>
-#endif
 #include <QFile>
 #include <QLocale>
 #include <QRegularExpression>

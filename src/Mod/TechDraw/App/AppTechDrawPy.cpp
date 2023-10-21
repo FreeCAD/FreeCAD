@@ -961,8 +961,8 @@ private:
     {
         PyObject* pFace(nullptr);
         double scale = 1.0;
-        char* pPatName = nullptr;
-        char* pPatFile = nullptr;
+        const char* pPatName = "";
+        const char* pPatFile = "";
         TechDraw::DrawViewPart* source = nullptr;
         TopoDS_Face face;
 
@@ -970,10 +970,8 @@ private:
             throw Py::TypeError("expected (face, [scale], [patName], [patFile])");
         }
 
-        std::string patName = pPatName ? std::string(pPatName) : "";
-        PyMem_Free(pPatName);
-        std::string patFile = pPatFile ? std::string(pPatFile) : "";
-        PyMem_Free(pPatFile);
+        std::string patName = std::string(pPatName);
+        std::string patFile = std::string(pPatFile);
 
         if (PyObject_TypeCheck(pFace, &(TopoShapeFacePy::Type))) {
             const TopoDS_Shape& shape = static_cast<TopoShapePy*>(pFace)->getTopoShapePtr()->getShape();
