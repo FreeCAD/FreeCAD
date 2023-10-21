@@ -52,7 +52,6 @@
 #include <Mod/TechDraw/App/Preferences.h>
 
 #include "PagePrinter.h"
-#include "QGITemplate.h"
 #include "QGSPage.h"
 #include "Rez.h"
 #include "ViewProviderPage.h"
@@ -113,6 +112,7 @@ void PagePrinter::getPaperAttributes()
     m_orientation = attr.orientation;
 }
 
+/// print the Page associated with the parent MDIViewPage as a Pdf file
 void PagePrinter::printPdf(std::string file)
 {
 //    Base::Console().Message("PP::printPdf(%s)\n", file.c_str());
@@ -122,26 +122,34 @@ void PagePrinter::printPdf(std::string file)
     }
     QString filename = QString::fromUtf8(file.data(), file.size());
     QPrinter printer(QPrinter::HighResolution);
+    QPdfWriter pdfWriter(filename);
+    QString documentName = QString::fromUtf8(m_vpPage->getDrawPage()->getNameInDocument());
+    pdfWriter.setTitle(documentName);
+    pdfWriter.setResolution(printer.resolution());
 
-    getPaperAttributes();
+    PaperAttributes attr = getPaperAttributes(m_vpPage->getDrawPage());
+    double width = attr.pagewidth;
+    double height = attr.pageheight;
+    QPageLayout pageLayout = printer.pageLayout();
+    setPageLayout(pageLayout, m_vpPage->getDrawPage(), width, height);
+    pdfWriter.setPageLayout(pageLayout);
 
-    // setPdfVersion sets the printied PDF Version to comply with PDF/A-1b, more details under: https://www.kdab.com/creating-pdfa-documents-qt/
-//    printer.setPdfVersion(QPagedPaintDevice::PdfVersion_A1b);
-    printer.setFullPage(true);
-    printer.setOutputFileName(filename);
-    printer.setPageOrientation(m_orientation);
-    printer.setPageSize(QPageSize(m_paperSize));
+    // first page does not respect page layout unless painter is created after
+    // pdfWriter layout is established.
+    QPainter painter(&pdfWriter);
 
-    m_scene->setExportingPdf(true);
-    print(&printer);
-    m_scene->setExportingPdf(false);
+    QRectF sourceRect(0.0, Rez::guiX(-height), Rez::guiX(width), Rez::guiX(height));
+    double dpmm = printer.resolution() / 25.4;
+    QRect targetRect(0, 0, width * dpmm, height * dpmm);
+    renderPage(m_vpPage, painter, sourceRect, targetRect);
+    painter.end();
 }
+
 
 /// print the Page associated with the parent MDIViewPage
 void PagePrinter::print(QPrinter* printer)
 {
 //    Base::Console().Message("PP::print(printer)\n");
-    QPainter painter(printer);
     QPageLayout pageLayout = printer->pageLayout();
 
     TechDraw::DrawPage* dp = m_vpPage->getDrawPage();
@@ -150,18 +158,12 @@ void PagePrinter::print(QPrinter* printer)
     setPageLayout(pageLayout, dp, width, height);
     printer->setPageLayout(pageLayout);
 
+    QPainter painter(printer);
+
     QRect targetRect = printer->pageLayout().fullRectPixels(printer->resolution());
     QRectF sourceRect(0.0, Rez::guiX(-height), Rez::guiX(width), Rez::guiX(height));
-    if (!printer->outputFileName().isEmpty()) {
-        // file name is not empty so we must be printing to pdf?
-        m_scene->setExportingPdf(true);
-    }
     renderPage(m_vpPage, painter, sourceRect, targetRect);
     painter.end();
-    if (!printer->outputFileName().isEmpty()) {
-        // file name is not empty so we must be printing to pdf?
-        m_scene->setExportingPdf(false);
-    }
 }
 
 //static routine to print all pages in a document
@@ -192,6 +194,9 @@ void PagePrinter::printAll(QPrinter* printer, App::Document* doc)
         //for some reason the first page doesn't obey the pageLayout, so we have to print
         //a sacrificial blank page, but we make it a feature instead of a bug by printing a
         //table of contents on the sacrificial page.
+        // Note: if the painter(printer) occurs after the printer->setPageLayout, then the
+        // first page will obey the layout.  This would mean creating the painter inside the
+        // loop.
         if (firstTime) {
             firstTime = false;
             printBannerPage(printer, painter, pageLayout, doc, docObjs);
@@ -247,6 +252,7 @@ void PagePrinter::printAllPdf(QPrinter* printer, App::Document* doc)
         //for some reason the first page doesn't obey the pageLayout, so we have to print
         //a sacrificial blank page, but we make it a feature instead of a bug by printing a
         //table of contents on the sacrificial page.
+        // see the note about this in printAll()
         if (firstTime) {
             firstTime = false;
             printBannerPage(printer, painter, pageLayout, doc, docObjs);
@@ -255,9 +261,7 @@ void PagePrinter::printAllPdf(QPrinter* printer, App::Document* doc)
 
         QRectF sourceRect(0.0, Rez::guiX(-height), Rez::guiX(width), Rez::guiX(height));
         QRect targetRect(0, 0, width * dpmm, height * dpmm);
-        vpp->getQGSPage()->setExportingPdf(true);
         renderPage(vpp, painter, sourceRect, targetRect);
-        vpp->getQGSPage()->setExportingPdf(false);
     }
     painter.end();
 }
