@@ -63,9 +63,8 @@ class Draft_WorkingPlaneProxy:
         App.ActiveDocument.openTransaction("Create WP proxy")
         Gui.addModule("Draft")
         Gui.addModule("WorkingPlane")
-        _cmd = "pl = WorkingPlane.get_working_plane().get_placement()"
-        _cmd += "Draft.make_workingplaneproxy(pl)"
-        Gui.doCommand(_cmd)
+        Gui.doCommand("pl = WorkingPlane.get_working_plane().get_placement()")
+        Gui.doCommand("Draft.make_workingplaneproxy(pl)")
         App.ActiveDocument.commitTransaction()
         App.ActiveDocument.recompute()
 
