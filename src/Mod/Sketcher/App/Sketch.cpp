@@ -3148,19 +3148,32 @@ int Sketch::addAngleAtPointConstraint(int geoId1,
     // FIXME: Perform construction of any parameters where this method is called instead of here
     if (e2c) {
         if (Geoms[geoId2].type == BSpline) {
-            GCS::Point &p1 = Points[getPointId(geoId1, pos1)];
+            GCS::Point& p1 = Points[getPointId(geoId1, pos1)];
             auto* partBsp = static_cast<GeomBSplineCurve*>(Geoms[geoId2].geo);
             double uNear;
             partBsp->closestParameter(Base::Vector3d(*p1.x, *p1.y, 0.0), uNear);
             double* pointparam = new double(uNear);
             Parameters.push_back(pointparam);
-            tag = addPointOnObjectConstraint(geoId1, pos1, geoId2, pointparam, driving); //increases ConstraintsCounter
+            tag = addPointOnObjectConstraint(geoId1,
+                                             pos1,
+                                             geoId2,
+                                             pointparam,
+                                             driving);  // increases ConstraintsCounter
             --ConstraintsCounter;
-            GCSsys.addConstraintAngleViaPointAndParam(*crv2, *crv1, p, pointparam, angle, tag, driving);
+            GCSsys.addConstraintAngleViaPointAndParam(*crv2,
+                                                      *crv1,
+                                                      p,
+                                                      pointparam,
+                                                      angle,
+                                                      tag,
+                                                      driving);
         }
         else {
             // increases ConstraintsCounter
-            tag = Sketch::addPointOnObjectConstraint(geoId1, pos1, geoId2, driving);//increases ConstraintsCounter
+            tag = Sketch::addPointOnObjectConstraint(geoId1,
+                                                     pos1,
+                                                     geoId2,
+                                                     driving);  // increases ConstraintsCounter
             GCSsys.addConstraintAngleViaPoint(*crv1, *crv2, p, angle, tag, driving);
         }
     }
@@ -3173,40 +3186,66 @@ int Sketch::addAngleAtPointConstraint(int geoId1,
         tag = ++ConstraintsCounter;
         if (Geoms[geoId1].type == BSpline || Geoms[geoId2].type == BSpline) {
             if (Geoms[geoId1].type == BSpline && Geoms[geoId2].type == BSpline) {
-                GCS::Point &p3 = Points[getPointId(geoId3, pos3)];
+                GCS::Point& p3 = Points[getPointId(geoId3, pos3)];
                 auto* partBsp = static_cast<GeomBSplineCurve*>(Geoms[geoId1].geo);
                 double uNear;
                 partBsp->closestParameter(Base::Vector3d(*p3.x, *p3.y, 0.0), uNear);
                 double* pointparam1 = new double(uNear);
                 Parameters.push_back(pointparam1);
-                addPointOnObjectConstraint(geoId3, pos3, geoId1, pointparam1, driving); //increases ConstraintsCounter
+                addPointOnObjectConstraint(geoId3,
+                                           pos3,
+                                           geoId1,
+                                           pointparam1,
+                                           driving);  // increases ConstraintsCounter
                 --ConstraintsCounter;
                 partBsp = static_cast<GeomBSplineCurve*>(Geoms[geoId2].geo);
                 partBsp->closestParameter(Base::Vector3d(*p3.x, *p3.y, 0.0), uNear);
                 double* pointparam2 = new double(uNear);
-                addPointOnObjectConstraint(geoId3, pos3, geoId2, pointparam2, driving); //increases ConstraintsCounter
+                addPointOnObjectConstraint(geoId3,
+                                           pos3,
+                                           geoId2,
+                                           pointparam2,
+                                           driving);  // increases ConstraintsCounter
                 Parameters.push_back(pointparam2);
                 --ConstraintsCounter;
-                GCSsys.addConstraintAngleViaPointAndTwoParams(*crv1, *crv2, p, pointparam1, pointparam2, angle, tag, driving);
+                GCSsys.addConstraintAngleViaPointAndTwoParams(*crv1,
+                                                              *crv2,
+                                                              p,
+                                                              pointparam1,
+                                                              pointparam2,
+                                                              angle,
+                                                              tag,
+                                                              driving);
             }
             else {
                 if (Geoms[geoId1].type != BSpline) {
                     std::swap(geoId1, geoId2);
                     std::swap(pos1, pos2);
                 }
-                GCS::Point &p3 = Points[getPointId(geoId3, pos3)];
+                GCS::Point& p3 = Points[getPointId(geoId3, pos3)];
                 auto* partBsp = static_cast<GeomBSplineCurve*>(Geoms[geoId1].geo);
                 double uNear;
                 partBsp->closestParameter(Base::Vector3d(*p3.x, *p3.y, 0.0), uNear);
                 double* pointparam = new double(uNear);
                 Parameters.push_back(pointparam);
-                addPointOnObjectConstraint(geoId3, pos3, geoId1, pointparam, driving); //increases ConstraintsCounter
+                addPointOnObjectConstraint(geoId3,
+                                           pos3,
+                                           geoId1,
+                                           pointparam,
+                                           driving);  // increases ConstraintsCounter
                 --ConstraintsCounter;
-                GCSsys.addConstraintAngleViaPointAndParam(*crv1, *crv2, p, pointparam, angle, tag, driving);
+                GCSsys.addConstraintAngleViaPointAndParam(*crv1,
+                                                          *crv2,
+                                                          p,
+                                                          pointparam,
+                                                          angle,
+                                                          tag,
+                                                          driving);
             }
         }
-        else
+        else {
             GCSsys.addConstraintAngleViaPoint(*crv1, *crv2, p, angle, tag, driving);
+        }
     }
 
     return ConstraintsCounter;
