@@ -1003,7 +1003,7 @@ void TaskAttacher::visibilityAutomation(bool opening_not_closing)
             return;
         if (!ViewProvider->getObject())
             return;
-        if (!ViewProvider->getObject()->getNameInDocument())
+        if (!ViewProvider->getObject()->isAttachedToDocument())
             return;
 
         auto editDoc = Gui::Application::Instance->editDocument();

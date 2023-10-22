@@ -1113,7 +1113,7 @@ void Document::exportObjects(const std::vector<App::DocumentObject*>& obj, std::
 
     if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
         for(auto o : obj) {
-            if(o && o->getNameInDocument()) {
+            if(o && o->isAttachedToDocument()) {
                 FC_LOG("exporting " << o->getFullName());
                 if (!o->getPropertyByName("_ObjectUUID")) {
                     auto prop = static_cast<PropertyUUID*>(o->addDynamicProperty(
@@ -1479,7 +1479,7 @@ Document::importObjects(Base::XMLReader& reader)
 
     std::vector<App::DocumentObject*> objs = readObjects(reader);
     for(auto o : objs) {
-        if(o && o->getNameInDocument()) {
+        if(o && o->isAttachedToDocument()) {
             o->setStatus(App::ObjImporting,true);
             FC_LOG("importing " << o->getFullName());
             if (auto propUUID = Base::freecad_dynamic_cast<PropertyUUID>(
@@ -1506,7 +1506,7 @@ Document::importObjects(Base::XMLReader& reader)
     signalFinishImportObjects(objs);
 
     for(auto o : objs) {
-        if(o && o->getNameInDocument())
+        if(o && o->isAttachedToDocument())
             o->setStatus(App::ObjImporting,false);
     }
 
@@ -2411,7 +2411,7 @@ static void _buildDependencyList(const std::vector<App::DocumentObject*> &object
         while(!objs.empty()) {
             auto obj = objs.front();
             objs.pop_front();
-            if(!obj || !obj->getNameInDocument())
+            if(!obj || !obj->isAttachedToDocument())
                 continue;
 
             auto it = outLists.find(obj);
@@ -2438,7 +2438,7 @@ static void _buildDependencyList(const std::vector<App::DocumentObject*> &object
     if(objectMap && depList) {
         for (const auto &v : outLists) {
             for(auto obj : v.second) {
-                if(obj && obj->getNameInDocument())
+                if(obj && obj->isAttachedToDocument())
                     add_edge((*objectMap)[v.first],(*objectMap)[obj],*depList);
             }
         }
@@ -2833,7 +2833,7 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
             FC_LOG("Recompute pass " << passes);
             for (; idx < topoSortedObjects.size(); ++idx) {
                 auto obj = topoSortedObjects[idx];
-                if(!obj->getNameInDocument() || filter.find(obj)!=filter.end())
+                if(!obj->isAttachedToDocument() || filter.find(obj)!=filter.end())
                     continue;
                 // ask the object if it should be recomputed
                 bool doRecompute = false;
@@ -2890,7 +2890,7 @@ int Document::recompute(const std::vector<App::DocumentObject*> &objs, bool forc
     FC_TIME_LOG(t2, "Recompute");
 
     for(auto obj : topoSortedObjects) {
-        if(!obj->getNameInDocument())
+        if(!obj->isAttachedToDocument())
             continue;
         obj->setStatus(ObjectStatus::PendingRecompute,false);
         obj->setStatus(ObjectStatus::Recompute2,false);
@@ -3051,8 +3051,8 @@ std::vector<App::DocumentObject*> DocumentP::topologicalSort(const std::vector<A
 
     for (auto objectIt : objects) {
         // We now support externally linked objects
-        // if(!obj->getNameInDocument() || obj->getDocument()!=this)
-        if(!objectIt->getNameInDocument())
+        // if(!obj->isAttachedToDocument() || obj->getDocument()!=this)
+        if(!objectIt->isAttachedToDocument())
             continue;
         //we need inlist with unique entries
         auto in = objectIt->getInList();
@@ -3166,7 +3166,7 @@ bool Document::recomputeFeature(DocumentObject* Feat, bool recursive)
     d->clearRecomputeLog(Feat);
 
     // verify that the feature is (active) part of the document
-    if (Feat->getNameInDocument()) {
+    if (Feat->isAttachedToDocument()) {
         if(recursive) {
             bool hasError = false;
             recompute({Feat},true,&hasError);

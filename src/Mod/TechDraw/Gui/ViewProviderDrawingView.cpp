@@ -85,11 +85,10 @@ void ViewProviderDrawingView::attach(App::DocumentObject *pcFeat)
     //NOLINTEND
     auto feature = getViewObject();
     if (feature) {
-        const char* temp = feature->getNameInDocument();
-        if (temp) {
+        if (feature->isAttachedToDocument()) {
             // it could happen that feature is not completely in the document yet and getNameInDocument returns
             // nullptr, so we only update m_myName if we got a valid string.
-            m_myName = temp;
+            m_myName = feature->getNameInDocument();
         }
         connectGuiRepaint = feature->signalGuiPaint.connect(bnd);
         connectProgressMessage = feature->signalProgressMessage.connect(bndProgressMessage);

@@ -673,7 +673,7 @@ void ExpressionCompleter::init() {
 
 void ExpressionCompleter::setDocumentObject(const App::DocumentObject* obj, bool _checkInList)
 {
-    if (!obj || !obj->getNameInDocument())
+    if (!obj || !obj->isAttachedToDocument())
         currentObj = App::DocumentObjectT();
     else
         currentObj = obj;

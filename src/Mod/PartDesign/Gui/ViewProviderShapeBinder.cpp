@@ -324,7 +324,7 @@ bool ViewProviderSubShapeBinder::setEdit(int ModNum) {
         Gui::Selection().clearSelection();
         for (auto& link : self->Support.getSubListValues()) {
             auto obj = link.getValue();
-            if (!obj || !obj->getNameInDocument())
+            if (!obj || !obj->isAttachedToDocument())
                 continue;
             const auto& subs = link.getSubValues();
             if (!subs.empty())

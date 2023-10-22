@@ -2707,7 +2707,7 @@ static std::vector<std::string> getBoxSelection(
 {
     std::vector<std::string> ret;
     auto obj = vp->getObject();
-    if(!obj || !obj->getNameInDocument())
+    if(!obj || !obj->isAttachedToDocument())
         return ret;
 
     // DO NOT check this view object Visibility, let the caller do this. Because
@@ -3081,7 +3081,7 @@ bool StdCmdTreeSelectAllInstances::isActive()
     if(sels.empty())
         return false;
     auto obj = sels[0].getObject();
-    if(!obj || !obj->getNameInDocument())
+    if(!obj || !obj->isAttachedToDocument())
         return false;
     return dynamic_cast<ViewProviderDocumentObject*>(
             Application::Instance->getViewProvider(obj)) != nullptr;
@@ -3094,7 +3094,7 @@ void StdCmdTreeSelectAllInstances::activated(int iMsg)
     if(sels.empty())
         return;
     auto obj = sels[0].getObject();
-    if(!obj || !obj->getNameInDocument())
+    if(!obj || !obj->isAttachedToDocument())
         return;
     auto vpd = dynamic_cast<ViewProviderDocumentObject*>(
             Application::Instance->getViewProvider(obj));

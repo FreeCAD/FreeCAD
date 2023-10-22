@@ -135,7 +135,7 @@ public:
     std::map<qint64, QIcon> iconMap;
 
     static ViewProviderDocumentObject *getView(App::DocumentObject *obj) {
-        if(obj && obj->getNameInDocument()) {
+        if(obj && obj->isAttachedToDocument()) {
             Document *pDoc = Application::Instance->getDocument(obj->getDocument());
             if(pDoc) {
                 ViewProvider *vp = pDoc->getViewProvider(obj);
@@ -221,7 +221,7 @@ public:
 
     bool isLinked() const {
         return pcLinked && pcLinked->getObject() &&
-           pcLinked->getObject()->getNameInDocument();
+           pcLinked->getObject()->isAttachedToDocument();
     }
 
     const char *getLinkedName() const {
@@ -1777,13 +1777,13 @@ bool ViewProviderLink::setLinkType(App::LinkBaseExtension *ext) {
 }
 
 App::LinkBaseExtension *ViewProviderLink::getLinkExtension() {
-    if(!pcObject || !pcObject->getNameInDocument())
+    if(!pcObject || !pcObject->isAttachedToDocument())
         return nullptr;
     return pcObject->getExtensionByType<App::LinkBaseExtension>(true);
 }
 
 const App::LinkBaseExtension *ViewProviderLink::getLinkExtension() const{
-    if(!pcObject || !pcObject->getNameInDocument())
+    if(!pcObject || !pcObject->isAttachedToDocument())
         return nullptr;
     return const_cast<App::DocumentObject*>(pcObject)->getExtensionByType<App::LinkBaseExtension>(true);
 }

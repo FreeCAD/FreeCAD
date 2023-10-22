@@ -940,7 +940,7 @@ void QGSPage::fixOrphans(bool force)
     // if we ever have collections of collections, we'll need to revisit this
     TechDraw::DrawPage* thisPage = m_vpPage->getDrawPage();
 
-    if (!thisPage->getNameInDocument())
+    if (!thisPage->isAttachedToDocument())
         return;
 
     std::vector<App::DocumentObject*> pChildren = thisPage->getAllViews();

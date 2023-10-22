@@ -448,7 +448,7 @@ TopoShape Feature::getTopoShape(const App::DocumentObject *obj, const char *subn
         bool needSubElement, Base::Matrix4D *pmat, App::DocumentObject **powner,
         bool resolveLink, bool transform, bool noElementMap)
 {
-    if(!obj || !obj->getNameInDocument())
+    if(!obj || !obj->isAttachedToDocument())
         return {};
 
     std::vector<App::DocumentObject*> linkStack;
