@@ -77,6 +77,7 @@ private:
 
     void initialize() override;
     void update(const QVariant& value) override;
+    void onStop(bool finished) override;
 };
 
 class GuiExport SpinningAnimation : public NavigationAnimation
