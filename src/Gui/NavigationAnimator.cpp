@@ -48,7 +48,11 @@ void NavigationAnimator::start(const std::shared_ptr<NavigationAnimation>& anima
     activeAnimation = animation;
     activeAnimation->initialize();
 
-    connect(activeAnimation.get(), &NavigationAnimation::finished, this, &NavigationAnimator::reset);
+    connect(activeAnimation.get(), &NavigationAnimation::finished, this, [this]() {
+        activeAnimation->onStop(true);
+        activeAnimation.reset();
+    });
+
     activeAnimation->start();
 }
 
@@ -63,37 +67,21 @@ bool NavigationAnimator::startAndWait(const std::shared_ptr<NavigationAnimation>
     stop();
     bool finished = true;
     QEventLoop loop;
-    loop.connect(animation.get(), &NavigationAnimation::finished,
-                 [&loop, &finished, &animation]() { // clazy:exclude=lambda-in-connect
-                     if (animation->state() == QAbstractAnimation::State::Running) {
-                         finished = false;
-                     }
-
-                     loop.quit();
-                 });
+    connect(animation.get(), &NavigationAnimation::finished, &loop, &QEventLoop::quit);
     start(animation);
     loop.exec();
     return finished;
 }
 
 /**
- * @brief Stops an active animation
+ * @brief Stops an active animation and releases shared ownership of the animation
  */
 void NavigationAnimator::stop()
 {
-    if (activeAnimation != nullptr && activeAnimation->state() != QAbstractAnimation::State::Stopped) {
-        Q_EMIT activeAnimation->finished();
+    if (activeAnimation && activeAnimation->state() != QAbstractAnimation::State::Stopped) {
+        disconnect(activeAnimation.get(), &NavigationAnimation::finished, 0, 0);
+        activeAnimation->stop();
+        activeAnimation->onStop(false);
+        activeAnimation.reset();
     }
-}
-
-/**
- * @brief Stops the animation and releases ownership of the animation
- *
- * Is called when the animation finished() signal is received which is triggered when the animation
- * is finished or when the animation is interrupted by NavigationAnimator::stop()
- */
-void NavigationAnimator::reset() {
-    disconnect(activeAnimation.get(), &NavigationAnimation::finished, 0, 0);
-    activeAnimation->stopAnimation();
-    activeAnimation.reset();
 }

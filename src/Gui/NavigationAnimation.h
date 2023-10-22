@@ -42,7 +42,7 @@ protected:
 
     virtual void initialize() = 0;
     virtual void update(const QVariant& value) = 0;
-    virtual void stopAnimation();
+    virtual void onStop(bool finished);
 
 private:
     void updateCurrentValue(const QVariant& value) override;
@@ -85,7 +85,7 @@ private:
 
     void initialize() override;
     void update(const QVariant& value) override;
-    void stopAnimation() override;
+    void onStop(bool finished) override;
 };
 
 } // namespace Gui

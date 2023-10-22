@@ -43,9 +43,6 @@ public:
     bool startAndWait(const std::shared_ptr<NavigationAnimation>& animation);
     void stop();
 
-private Q_SLOTS:
-    void reset();
-
 private:
     std::shared_ptr<NavigationAnimation> activeAnimation;
 };
