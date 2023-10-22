@@ -90,8 +90,9 @@ void FixedTimeAnimation::update(const QVariant& value)
 
     SbRotation rotation(rotationAxis, angle - prevAngle);
 
+    camera->position = camera->position.getValue() - prevTranslation;
     navigation->reorientCamera(camera, rotation, rotationCenter);
-    camera->position = camera->position.getValue() + translation - prevTranslation;
+    camera->position = camera->position.getValue() + translation;
 
     prevAngle = angle;
     prevTranslation = translation;
