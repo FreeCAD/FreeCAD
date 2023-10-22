@@ -468,7 +468,7 @@ void LinkBaseExtension::setOnChangeCopyObject(
         }
     }
 
-    const char *key = flags.testFlag(OnChangeCopyOptions::ApplyAll) ? "*" : parent->getNameInDocument();
+    const char *key = flags.testFlag(OnChangeCopyOptions::ApplyAll) ? "*" : parent->getDagKey();
     if (external)
         prop->setValue(key, exclude ? "" : "+");
     else

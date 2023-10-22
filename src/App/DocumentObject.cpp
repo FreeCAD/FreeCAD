@@ -292,6 +292,15 @@ std::string DocumentObject::getFullLabel() const {
     return name;
 }
 
+const char* DocumentObject::getDagKey() const
+{
+    if(!pcNameInDocument)
+    {
+        return nullptr;
+    }
+    return pcNameInDocument->c_str();
+}
+
 const char *DocumentObject::getNameInDocument() const
 {
     // Note: It can happen that we query the internal name of an object even if it is not
@@ -808,7 +817,7 @@ DocumentObject *DocumentObject::getSubObject(const char *subname,
         if(outList.size()!=_outListMap.size()) {
             _outListMap.clear();
             for(auto obj : outList)
-                _outListMap[obj->getNameInDocument()] = obj;
+                _outListMap[obj->getDagKey()] = obj;
         }
         auto it = _outListMap.find(name.c_str());
         if(it != _outListMap.end())
