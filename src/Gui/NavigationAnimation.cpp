@@ -39,10 +39,8 @@ void NavigationAnimation::updateCurrentValue(const QVariant& value)
     update(value);
 }
 
-void NavigationAnimation::stopAnimation()
-{
-    QAbstractAnimation::stop();
-}
+void NavigationAnimation::onStop(bool finished)
+{}
 
 FixedTimeAnimation::FixedTimeAnimation(NavigationStyle* navigation, const SbRotation& orientation,
                                        const SbVec3f& rotationCenter, const SbVec3f& translation,
@@ -139,9 +137,8 @@ void SpinningAnimation::update(const QVariant& value)
     prevAngle = value.toFloat();
 }
 
-void SpinningAnimation::stopAnimation()
+void SpinningAnimation::onStop(bool finished)
 {
-    NavigationAnimation::stopAnimation();
     if (navigation->getViewingMode() != NavigationStyle::SPINNING) {
         return;
     }
