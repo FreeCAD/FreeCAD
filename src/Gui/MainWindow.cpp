@@ -2120,7 +2120,7 @@ QMimeData * MainWindow::createMimeDataFromSelection () const
     std::vector<App::DocumentObject*> sel;
     std::set<App::DocumentObject*> objSet;
     for(auto &s : Selection().getCompleteSelection()) {
-        if(s.pObject && s.pObject->getNameInDocument() && objSet.insert(s.pObject).second)
+        if(s.pObject && s.pObject->isAttachedToDocument() && objSet.insert(s.pObject).second)
             sel.push_back(s.pObject);
     }
     if(sel.empty())
