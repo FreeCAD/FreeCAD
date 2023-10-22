@@ -29,14 +29,15 @@
 # @{
 
 import FreeCAD
-import os, sys, subprocess
+import os
 import re
-import draftutils.utils as utils
 from draftutils.messages import _msg
 
 if FreeCAD.GuiUp:
     import FreeCADGui
     import Draft_rc
+    from PySide.QtCore import QUrl
+    from PySide.QtGui import QDesktopServices
 def QT_TRANSLATE_NOOP(ctx,txt):
     return txt
 translate = FreeCAD.Qt.translate
@@ -95,28 +96,27 @@ class Draft_Hyperlink:
 
                     for hyperlink in hyperlinks:
                         self.hyperlinks_list.append(hyperlink[0])
-            
+
     def has_hyperlinks(self):
         self.find_hyperlinks()
-        
+
         return len(self.hyperlinks_list) > 0
 
     def open_hyperlink(self, hyperlink):
         file_hyperlink = len(re.findall(r"^(\w:[\\/]|%\w+%|\\\\\w+|/\w+)", hyperlink)) > 0
 
-        if file_hyperlink and not os.path.isfile(hyperlink):
-            _msg(translate("draft", "File not found:") + " " + hyperlink)
-            return
+        url = None
+        if file_hyperlink:
+            if not os.path.isfile(hyperlink):
+                _msg(translate("draft", "File not found:") + " " + hyperlink)
+                return
+            url = QUrl.fromLocalFile(hyperlink)
+        else:
+            url = QUrl(hyperlink)
 
         _msg(translate("draft", "Opening hyperlink") + " " + hyperlink)
 
-        match sys.platform:
-            case ("win32" | "cygwin"):
-                os.startfile(hyperlink)
-            case "darwin":
-                subprocess.call(["open", hyperlink])
-            case "linux":
-                subprocess.call(["xdg-open", hyperlink])
+        QDesktopServices.openUrl(url) #ToDo: add management to open FCStd files in the current instance and to open web pages with the Web Workbench
 
 FreeCADGui.addCommand('Draft_Hyperlink', Draft_Hyperlink())
 
