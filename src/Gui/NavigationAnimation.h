@@ -45,8 +45,6 @@ protected:
     virtual void stopAnimation();
 
 private:
-    bool started;
-
     void startAnimation(QAbstractAnimation::DeletionPolicy policy = KeepWhenStopped);
     void updateCurrentValue(const QVariant& value) override;
 
