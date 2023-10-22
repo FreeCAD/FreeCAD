@@ -825,8 +825,8 @@ class svgHandler(xml.sax.ContentHandler):
                     else:
                         # nested svg element
                         unitmode = 'css' + str(self.svgdpi)
-                    vbw = getsize(data['viewBox'][2], unitmode)
-                    vbh = getsize(data['viewBox'][3], unitmode)
+                    vbw = getsize(data['viewBox'][2], 'discard')
+                    vbh = getsize(data['viewBox'][3], 'discard')
                     abw = getsize(attrs.getValue('width'), unitmode)
                     abh = getsize(attrs.getValue('height'), unitmode)
                     self.viewbox = (vbw, vbh)
