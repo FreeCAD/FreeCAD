@@ -98,6 +98,23 @@ void FixedTimeAnimation::update(const QVariant& value)
 }
 
 /**
+ * @param finished True when the animation is finished, false when interrupted
+ */
+void FixedTimeAnimation::onStop(bool finished)
+{
+    if (finished) {
+        SoCamera* camera = navigation->getCamera();
+        if (!camera) {
+            return;
+        }
+
+        // Set exact target orientation
+        camera->orientation = targetOrientation;
+        camera->position = camera->position.getValue() + targetTranslation - prevTranslation;
+    }
+}
+
+/**
  * @param navigation The navigation style
  * @param axis The rotation axis in screen coordinates
  * @param velocity The angular velocity in radians per second
@@ -137,6 +154,9 @@ void SpinningAnimation::update(const QVariant& value)
     prevAngle = value.toFloat();
 }
 
+/**
+ * @param finished True when the animation is finished, false when interrupted
+ */
 void SpinningAnimation::onStop(bool finished)
 {
     if (navigation->getViewingMode() != NavigationStyle::SPINNING) {
