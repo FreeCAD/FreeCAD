@@ -1267,13 +1267,13 @@ class PlaneGui(PlaneBase):
         shape, mtx, obj = objs[0]
         place = FreeCAD.Placement(mtx)
 
-        if utils.get_type(obj) in ["App::Part",
-                                   "PartDesign::Plane",
-                                   "Axis",
-                                   "SectionPlane"]:
+        typ = utils.get_type(obj)
+        if typ in ["App::Part", "PartDesign::Plane", "Axis", "SectionPlane"]:
             ret = self.align_to_obj_placement(obj, offset, place, _hist_add)
-        elif utils.get_type(obj) in ["WorkingPlaneProxy", "BuildingPart"]:
+        elif typ == "WorkingPlaneProxy":
             ret = self.align_to_wp_proxy(obj, offset, place, _hist_add)
+        elif typ == "BuildingPart":
+            ret = self.align_to_wp_proxy(obj, offset, place * obj.Placement, _hist_add)
         elif shape.isNull():
             ret = self.align_to_obj_placement(obj, offset, place, _hist_add)
         elif shape.ShapeType == "Face":
@@ -1692,13 +1692,13 @@ class PlaneGui(PlaneBase):
         if not self._history:
             self._history = {"idx": 0, "data_list": [data]}
             return
-        if data == self._history["data_list"][-1]:
+        idx = self._history["idx"]
+        if data == self._history["data_list"][idx]:
             return
-        if self.auto is True and self._history["data_list"][-1]["auto"] is True:
+        if self.auto is True and self._history["data_list"][idx]["auto"] is True:
             return
 
         max_len = 10  # Max. length of data_list.
-        idx = self._history["idx"]
         self._history["data_list"] = self._history["data_list"][(idx - (max_len - 2)):(idx + 1)]
         self._history["data_list"].append(data)
         self._history["idx"] = len(self._history["data_list"]) - 1
