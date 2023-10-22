@@ -171,9 +171,9 @@ PartCmdVertexSelection::PartCmdVertexSelection()
 {
     sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Vertex selection");
-    sToolTipText  = QT_TR_NOOP("Select a vertex/vertices");
+    sToolTipText  = QT_TR_NOOP("Only allow the selection of vertices");
     sWhatsThis    = "Part_VertexSelection";
-    sStatusTip    = QT_TR_NOOP("Select a vertex/vertices");
+    sStatusTip    = QT_TR_NOOP("Only allow the selection of vertices");
     sPixmap       = "vertex-selection";
     sAccel        = "X, S";
     eType         = Alter3DView;
@@ -196,9 +196,9 @@ PartCmdEdgeSelection::PartCmdEdgeSelection()
 {
     sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Edge selection");
-    sToolTipText  = QT_TR_NOOP("Select edge(s)");
+    sToolTipText  = QT_TR_NOOP("Only allow the selection of edges");
     sWhatsThis    = "Part_EdgeSelection";
-    sStatusTip    = QT_TR_NOOP("Select edge(s)");
+    sStatusTip    = QT_TR_NOOP("Only allow the selection of edges");
     sPixmap       = "edge-selection";
     sAccel        = "E, S";
     eType         = Alter3DView;
@@ -221,9 +221,9 @@ PartCmdFaceSelection::PartCmdFaceSelection()
 {
     sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Face selection");
-    sToolTipText  = QT_TR_NOOP("Select face(s)");
+    sToolTipText  = QT_TR_NOOP("Only allow the selection of faces");
     sWhatsThis    = "Part_FaceSelection";
-    sStatusTip    = QT_TR_NOOP("Select face(s)");
+    sStatusTip    = QT_TR_NOOP("Only allow the selection of faces");
     sPixmap       = "face-selection";
     sAccel        = "F, S";
     eType         = Alter3DView;
