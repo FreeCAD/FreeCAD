@@ -34,8 +34,13 @@ namespace Gui
 
 class GuiExport NavigationAnimation : protected QVariantAnimation
 {
+    Q_OBJECT
 public:
+    using QVariantAnimation::QObject;
     explicit NavigationAnimation(NavigationStyle* navigation);
+
+Q_SIGNALS:
+    void interrupted();
 
 protected:
     NavigationStyle* navigation;

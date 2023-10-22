@@ -68,6 +68,10 @@ bool NavigationAnimator::startAndWait(const std::shared_ptr<NavigationAnimation>
     bool finished = true;
     QEventLoop loop;
     connect(animation.get(), &NavigationAnimation::finished, &loop, &QEventLoop::quit);
+    connect(animation.get(), &NavigationAnimation::interrupted, &loop, [&finished, &loop]() {
+        finished = false;
+        loop.quit();
+    });
     start(animation);
     loop.exec();
     return finished;
@@ -80,6 +84,7 @@ void NavigationAnimator::stop()
 {
     if (activeAnimation && activeAnimation->state() != QAbstractAnimation::State::Stopped) {
         disconnect(activeAnimation.get(), &NavigationAnimation::finished, 0, 0);
+        Q_EMIT activeAnimation->interrupted();
         activeAnimation->stop();
         activeAnimation->onStop(false);
         activeAnimation.reset();
