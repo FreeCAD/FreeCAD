@@ -36,7 +36,6 @@ class GuiExport NavigationAnimation : protected QVariantAnimation
 {
     Q_OBJECT
 public:
-    using QVariantAnimation::QObject;
     explicit NavigationAnimation(NavigationStyle* navigation);
 
 Q_SIGNALS:
@@ -53,6 +52,7 @@ private:
     void updateCurrentValue(const QVariant& value) override;
 
     friend class NavigationAnimator;
+    friend class QObject;
 };
 
 class GuiExport FixedTimeAnimation : public NavigationAnimation
