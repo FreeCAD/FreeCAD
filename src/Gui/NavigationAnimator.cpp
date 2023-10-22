@@ -94,7 +94,6 @@ void NavigationAnimator::stop()
  */
 void NavigationAnimator::reset() {
     disconnect(activeAnimation.get(), &NavigationAnimation::finished, 0, 0);
-    activeAnimation->started = false;
     activeAnimation->stopAnimation();
     activeAnimation.reset();
 }

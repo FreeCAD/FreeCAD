@@ -28,18 +28,17 @@
 using namespace Gui;
 
 NavigationAnimation::NavigationAnimation(NavigationStyle* navigation)
-    : navigation(navigation), started(false)
+    : navigation(navigation)
 {}
 
 void NavigationAnimation::startAnimation(QAbstractAnimation::DeletionPolicy policy)
 {
-    started = true;
     QAbstractAnimation::start(policy);
 }
 
 void NavigationAnimation::updateCurrentValue(const QVariant& value)
 {
-    if (!started) {
+    if (state() == QAbstractAnimation::State::Stopped) {
         return;
     }
     update(value);
