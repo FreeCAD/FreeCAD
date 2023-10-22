@@ -49,7 +49,7 @@ void NavigationAnimator::start(const std::shared_ptr<NavigationAnimation>& anima
     activeAnimation->initialize();
 
     connect(activeAnimation.get(), &NavigationAnimation::finished, this, &NavigationAnimator::reset);
-    activeAnimation->startAnimation();
+    activeAnimation->start();
 }
 
 /**

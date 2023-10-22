@@ -31,11 +31,6 @@ NavigationAnimation::NavigationAnimation(NavigationStyle* navigation)
     : navigation(navigation)
 {}
 
-void NavigationAnimation::startAnimation(QAbstractAnimation::DeletionPolicy policy)
-{
-    QAbstractAnimation::start(policy);
-}
-
 void NavigationAnimation::updateCurrentValue(const QVariant& value)
 {
     if (state() == QAbstractAnimation::State::Stopped) {
