@@ -45,7 +45,6 @@ protected:
     virtual void stopAnimation();
 
 private:
-    void startAnimation(QAbstractAnimation::DeletionPolicy policy = KeepWhenStopped);
     void updateCurrentValue(const QVariant& value) override;
 
     friend class NavigationAnimator;
