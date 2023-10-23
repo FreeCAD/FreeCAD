@@ -328,6 +328,8 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         self.form.jointType.addItems(JointObject.JointTypes)
         self.form.jointType.setCurrentIndex(jointTypeIndex)
 
+        self.setJointsPickableState(False)
+
         Gui.Selection.clearSelection()
         Gui.Selection.addSelectionGate(
             MakeJointSelGate(self, self.assembly), Gui.Selection.ResolveMode.NoResolve
@@ -363,6 +365,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         Gui.Selection.clearSelection()
         self.view.removeEventCallback("SoLocation2Event", self.callbackMove)
         self.view.removeEventCallback("SoKeyboardEvent", self.callbackKey)
+        self.setJointsPickableState(True)
         if Gui.Control.activeDialog():
             Gui.Control.closeDialog()
 
@@ -492,6 +495,17 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
     def clearSelection(self, doc_name):
         self.current_selection.clear()
         self.updateJoint()
+
+    def setJointsPickableState(self, state: bool):
+        """Make all joints in assembly selectable (True) or unselectable (False) in 3D view"""
+        try:
+            joints = self.assembly.getObject("Joints").getSubObjects()
+            for joint_str in joints:
+                joint = self.assembly.getObject(joint_str[0:-1]) # remove '.' ('Joint001.' -> 'Joint001')
+                joint.ViewObject.Proxy.setPickableState(state)
+        except Exception as e:
+            s = '' if state else 'un'
+            App.Console.PrintWarning(f'Failed to set joints {s}pickable: {e}')
 
 
 if App.GuiUp:

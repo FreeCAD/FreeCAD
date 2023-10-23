@@ -279,7 +279,11 @@ class ViewProviderJoint:
         self.switch_JCS2 = self.JCS_sep(obj, self.transform2)
         self.switch_JCS_preview = self.JCS_sep(obj, self.transform3)
 
-        self.display_mode = coin.SoGroup()
+        self.pick = coin.SoPickStyle()
+        self.pick.style.setValue(coin.SoPickStyle.UNPICKABLE)
+
+        self.display_mode = coin.SoType.fromName('SoFCSelection').createInstance()
+        self.display_mode.addChild(self.pick)
         self.display_mode.addChild(self.switch_JCS1)
         self.display_mode.addChild(self.switch_JCS2)
         self.display_mode.addChild(self.switch_JCS_preview)
@@ -290,12 +294,8 @@ class ViewProviderJoint:
         self.axisScale.scaleFactor.setValue(scaleF, scaleF, scaleF)
 
     def JCS_sep(self, obj, soTransform):
-        pick = coin.SoPickStyle()
-        pick.style.setValue(coin.SoPickStyle.UNPICKABLE)
-
         JCS = coin.SoAnnotation()
         JCS.addChild(soTransform)
-        JCS.addChild(pick)
 
         base_plane_sep = self.plane_sep(0.4, 15)
         X_axis_sep = self.line_sep([0.5, 0, 0], [1, 0, 0], self.x_axis_so_color)
@@ -349,7 +349,7 @@ class ViewProviderJoint:
         material.ambientColor.setValue([1, 1, 1])
         material.specularColor.setValue([1, 1, 1])
         material.emissiveColor.setValue([1, 1, 1])
-        material.transparency.setValue(0.7)
+        material.transparency.setValue(0.3)
 
         face_sep = coin.SoAnnotation()
         face_sep.addChild(self.axisScale)
@@ -409,6 +409,13 @@ class ViewProviderJoint:
     def getDefaultDisplayMode(self):
         """Return the name of the default display mode. It must be defined in getDisplayModes."""
         return "Wireframe"
+
+    def setPickableState(self, state: bool):
+        """Set JCS selectable or unselectable in 3D view"""
+        if not state:
+            self.pick.style.setValue(coin.SoPickStyle.UNPICKABLE)
+        else:
+            self.pick.style.setValue(coin.SoPickStyle.SHAPE_ON_TOP)
 
     def onChanged(self, vp, prop):
         """Here we can do something when a single property got changed"""
