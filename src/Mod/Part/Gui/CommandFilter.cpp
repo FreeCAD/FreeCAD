@@ -44,8 +44,8 @@ PartCmdSelectFilter::PartCmdSelectFilter()
 {
     sGroup        = "Standard-View";
     sMenuText     = QT_TR_NOOP("Selection filter");
-    sToolTipText  = QT_TR_NOOP("Change the Selection filter");
-    sStatusTip    = QT_TR_NOOP("Change the Selection filter");
+    sToolTipText  = QT_TR_NOOP("Change the selection filter");
+    sStatusTip    = QT_TR_NOOP("Change the selection filter");
     sWhatsThis    = "Part_SelectFilter";
     sPixmap       = "selection-filter";
     eType         = Alter3DView;
@@ -170,10 +170,10 @@ PartCmdVertexSelection::PartCmdVertexSelection()
   : Command("Part_VertexSelection")
 {
     sGroup        = "Standard-View";
-    sMenuText     = QT_TR_NOOP("Vertex Selection");
-    sToolTipText  = QT_TR_NOOP("Select a Vertex/Vertices");
+    sMenuText     = QT_TR_NOOP("Vertex selection");
+    sToolTipText  = QT_TR_NOOP("Only allow the selection of vertices");
     sWhatsThis    = "Part_VertexSelection";
-    sStatusTip    = QT_TR_NOOP("Select a Vertex/Vertices");
+    sStatusTip    = QT_TR_NOOP("Only allow the selection of vertices");
     sPixmap       = "vertex-selection";
     sAccel        = "X, S";
     eType         = Alter3DView;
@@ -195,10 +195,10 @@ PartCmdEdgeSelection::PartCmdEdgeSelection()
   : Command("Part_EdgeSelection")
 {
     sGroup        = "Standard-View";
-    sMenuText     = QT_TR_NOOP("Edge Selection");
-    sToolTipText  = QT_TR_NOOP("Select Edge(s)");
+    sMenuText     = QT_TR_NOOP("Edge selection");
+    sToolTipText  = QT_TR_NOOP("Only allow the selection of edges");
     sWhatsThis    = "Part_EdgeSelection";
-    sStatusTip    = QT_TR_NOOP("Select Edge(s)");
+    sStatusTip    = QT_TR_NOOP("Only allow the selection of edges");
     sPixmap       = "edge-selection";
     sAccel        = "E, S";
     eType         = Alter3DView;
@@ -220,10 +220,10 @@ PartCmdFaceSelection::PartCmdFaceSelection()
   : Command("Part_FaceSelection")
 {
     sGroup        = "Standard-View";
-    sMenuText     = QT_TR_NOOP("Face Selection");
-    sToolTipText  = QT_TR_NOOP("Select Face(s)");
+    sMenuText     = QT_TR_NOOP("Face selection");
+    sToolTipText  = QT_TR_NOOP("Only allow the selection of faces");
     sWhatsThis    = "Part_FaceSelection";
-    sStatusTip    = QT_TR_NOOP("Select Face(s)");
+    sStatusTip    = QT_TR_NOOP("Only allow the selection of faces");
     sPixmap       = "face-selection";
     sAccel        = "F, S";
     eType         = Alter3DView;
