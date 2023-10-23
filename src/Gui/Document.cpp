@@ -1821,7 +1821,6 @@ MDIView *Document::createView(const Base::Type& typeId)
 
         view3D->setWindowTitle(title);
         view3D->setWindowModified(this->isModified());
-        view3D->setWindowIcon(QApplication::windowIcon());
         view3D->resize(400, 300);
 
         if (!cameraSettings.empty()) {
