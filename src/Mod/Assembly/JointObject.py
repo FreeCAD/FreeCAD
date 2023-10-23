@@ -282,7 +282,7 @@ class ViewProviderJoint:
         self.pick = coin.SoPickStyle()
         self.pick.style.setValue(coin.SoPickStyle.UNPICKABLE)
 
-        self.display_mode = coin.SoType.fromName('SoFCSelection').createInstance()
+        self.display_mode = coin.SoType.fromName("SoFCSelection").createInstance()
         self.display_mode.addChild(self.pick)
         self.display_mode.addChild(self.switch_JCS1)
         self.display_mode.addChild(self.switch_JCS2)

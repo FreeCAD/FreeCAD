@@ -501,11 +501,13 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         try:
             joints = self.assembly.getObject("Joints").getSubObjects()
             for joint_str in joints:
-                joint = self.assembly.getObject(joint_str[0:-1]) # remove '.' ('Joint001.' -> 'Joint001')
+                joint = self.assembly.getObject(
+                    joint_str[0:-1]
+                )  # remove '.' ('Joint001.' -> 'Joint001')
                 joint.ViewObject.Proxy.setPickableState(state)
         except Exception as e:
-            s = '' if state else 'un'
-            App.Console.PrintWarning(f'Failed to set joints {s}pickable: {e}')
+            s = "" if state else "un"
+            App.Console.PrintWarning(f"Failed to set joints {s}pickable: {e}")
 
 
 if App.GuiUp:
