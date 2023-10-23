@@ -190,22 +190,28 @@ void DlgSettingsLightSources::loadDirection()
 
 void DlgSettingsLightSources::toggleLight(bool on)
 {
-    view->getHeadlight()->on = on;
+    if (view) {
+        view->getHeadlight()->on = on;
+    }
 }
 
 void DlgSettingsLightSources::lightIntensity(int value)
 {
-    float intensity = float(value) / 100.0F;
-    view->getHeadlight()->intensity = intensity;
+    if (view) {
+        float intensity = float(value) / 100.0F;
+        view->getHeadlight()->intensity = intensity;
+    }
 }
 
 void DlgSettingsLightSources::lightColor()
 {
-    QColor color = ui->light1Color->color();
-    double red = color.redF();
-    double green = color.greenF();
-    double blue = color.blueF();
-    view->getHeadlight()->color = SbColor(float(red), float(green), float(blue));
+    if (view) {
+        QColor color = ui->light1Color->color();
+        double red = color.redF();
+        double green = color.greenF();
+        double blue = color.blueF();
+        view->getHeadlight()->color = SbColor(float(red), float(green), float(blue));
+    }
 }
 
 void DlgSettingsLightSources::changeEvent(QEvent* event)
