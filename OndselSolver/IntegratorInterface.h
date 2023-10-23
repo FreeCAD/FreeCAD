@@ -20,7 +20,7 @@ namespace MbD {
     public:
 
         void initializeGlobally() override;
-        virtual void preRun() = 0;
+        virtual void preRun() override = 0;
         virtual void checkForDiscontinuity() = 0;
         
         void setSystem(Solver* sys) override;
