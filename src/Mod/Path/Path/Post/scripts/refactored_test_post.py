@@ -182,7 +182,7 @@ global_parser: Parser = init_arguments(
 #
 # The TOOLTIP_ARGS value is created from the help information about the arguments.
 #
-TOOLTIP_ARGS = global_parser.format_help()
+TOOLTIP_ARGS: str = global_parser.format_help()
 #
 # Create another parser just to get a list of all possible arguments
 # that may be output using --output_all_arguments.

@@ -142,7 +142,10 @@ def init_shared_arguments(
         arguments_visible["axis-modal"],
     )
     if arguments_visible["axis-precision"]:
-        help_message = f'Number of digits of precision for axis moves, default is {str(values["DEFAULT_AXIS_PRECISION"])}'
+        help_message = (
+            f"Number of digits of precision for axis moves, "
+            f'default is {str(values["DEFAULT_AXIS_PRECISION"])}'
+        )
     else:
         help_message = argparse.SUPPRESS
     shared.add_argument(
@@ -156,7 +159,10 @@ def init_shared_arguments(
         argument_defaults["bcnc"],
         "--bcnc",
         "--no-bcnc",
-        "Add Job operations as bCNC block headers. Consider suppressing comments by adding --no-comments",
+        (
+            "Add Job operations as bCNC block headers. "
+            "Consider suppressing comments by adding --no-comments"
+        ),
         "Suppress bCNC block header output",
         arguments_visible["bcnc"],
     )
@@ -170,7 +176,10 @@ def init_shared_arguments(
         arguments_visible["comments"],
     )
     if arguments_visible["feed-precision"]:
-        help_message = f'Number of digits of precision for feed rate, default is {str(values["DEFAULT_FEED_PRECISION"])}'
+        help_message = (
+            f"Number of digits of precision for feed rate, "
+            f'default is {str(values["DEFAULT_FEED_PRECISION"])}'
+        )
     else:
         help_message = argparse.SUPPRESS
     shared.add_argument(
@@ -225,12 +234,18 @@ def init_shared_arguments(
         arguments_visible["output_visible_arguments"],
     )
     if arguments_visible["postamble"]:
-        help_message = f'Set commands to be issued after the last command, default is "{values["POSTAMBLE"]}"'
+        help_message = (
+            f"Set commands to be issued after the last command, "
+            f'default is "{values["POSTAMBLE"]}"'
+        )
     else:
         help_message = argparse.SUPPRESS
     shared.add_argument("--postamble", help=help_message)
     if arguments_visible["preamble"]:
-        help_message = f'Set commands to be issued before the first command, default is "{values["PREAMBLE"]}"'
+        help_message = (
+            f"Set commands to be issued before the first command, "
+            f'default is "{values["PREAMBLE"]}"'
+        )
     else:
         help_message = argparse.SUPPRESS
     shared.add_argument("--preamble", help=help_message)
@@ -239,7 +254,11 @@ def init_shared_arguments(
     # --axis-precision value "wins".  If both --feed-precision and --precision are
     # provided, the --feed-precision value "wins".
     if arguments_visible["precision"]:
-        help_message = f'Number of digits of precision for both feed rate and axis moves, default is {str(values["DEFAULT_AXIS_PRECISION"])} for metric or {str(values["DEFAULT_INCH_AXIS_PRECISION"])} for inches'
+        help_message = (
+            f"Number of digits of precision for both feed rate and axis "
+            f'moves, default is {str(values["DEFAULT_AXIS_PRECISION"])} for metric or '
+            f'{str(values["DEFAULT_INCH_AXIS_PRECISION"])} for inches'
+        )
     else:
         help_message = argparse.SUPPRESS
     shared.add_argument(
@@ -249,7 +268,10 @@ def init_shared_arguments(
         help=help_message,
     )
     if arguments_visible["return-to"]:
-        help_message = "Move to the specified x,y,z coordinates at the end, e.g. --return-to=0,0,0 (default is do not move)"
+        help_message = (
+            "Move to the specified x,y,z coordinates at the end, e.g. "
+            "--return-to=0,0,0 (default is do not move)"
+        )
     else:
         help_message = argparse.SUPPRESS
     shared.add_argument("--return-to", default="", help=help_message)
@@ -715,7 +737,7 @@ def process_shared_arguments(
         if args.wait_for_spindle > 0.0:
             values["SPINDLE_WAIT"] = args.wait_for_spindle
 
-    except Exception:
+    except (ArithmeticError, LookupError):
         return (False, "")
 
     return (True, args)
