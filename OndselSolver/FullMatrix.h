@@ -85,7 +85,7 @@ namespace MbD {
 		FMatsptr<T> transpose();
 		FMatsptr<T> negated();
 		void symLowerWithUpper();
-		void atiput(int i, FRowsptr<T> fullRow);
+		void atiput(int i, FRowsptr<T> fullRow) override;
 		void atijput(int i, int j, T value);
 		void atijputFullColumn(int i, int j, FColsptr<T> fullCol);
 		void atijplusFullRow(int i, int j, FRowsptr<T> fullRow);

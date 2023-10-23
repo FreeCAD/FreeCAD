@@ -19,7 +19,7 @@ namespace MbD {
         //
     public:
         void initializeGlobally() override;
-        virtual void assignEquationNumbers() = 0;
+        virtual void assignEquationNumbers() override = 0;
         virtual void createVectorsAndMatrices();
         std::shared_ptr<MatrixSolver> matrixSolverClassNew() override;
         void calcdxNorm() override;
