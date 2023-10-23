@@ -165,6 +165,20 @@ class DraftWorkbench(FreeCADGui.Workbench):
 
     def ContextMenu(self, recipient):
         """Define an optional custom context menu."""
+        has_text = False
+        for o in FreeCADGui.Selection.getCompleteSelection():
+            if hasattr(o.Object, "Text"):
+                has_text = True
+                break
+
+        if has_text:
+            import sys
+            from draftguitools import gui_hyperlink
+
+            hyperlinks_search = gui_hyperlink.Draft_Hyperlink()
+            if hyperlinks_search.has_hyperlinks() and sys.platform in ["win32", "cygwin", "darwin", "linux"]:
+                self.appendContextMenu("", ["Draft_Hyperlink"])
+
         self.appendContextMenu("Utilities", self.context_commands)
 
     def GetClassName(self):
