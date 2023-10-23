@@ -602,7 +602,7 @@ def make_angular_dimension(center=App.Vector(0, 0, 0),
             _err(translate("draft","Wrong input: must be a vector."))
             return None
 
-    if normal is not None:
+    if not normal:
         normal = WorkingPlane.get_working_plane(update=False).axis
 
     new_obj = App.ActiveDocument.addObject("App::FeaturePython",
