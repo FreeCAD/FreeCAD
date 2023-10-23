@@ -5,6 +5,8 @@ project(OndselSolver VERSION 1.0.1 DESCRIPTION "Assembly Constraints and Multibo
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+include(GNUInstallDirs)
+
 set(ONDSEL_EXPORT
         OndselSolver/Abs.cpp
         OndselSolver/AbsConstraint.cpp
