@@ -82,7 +82,7 @@ void DlgSettingsLightSources::showEvent(QShowEvent* event)
 
 void DlgSettingsLightSources::dragMotionCallback(void *data, SoDragger *drag)
 {
-    auto lightdrag = static_cast<SoDirectionalLightDragger*>(drag);
+    auto lightdrag = static_cast<SoDirectionalLightDragger*>(drag);  // NOLINT
     auto self = static_cast<DlgSettingsLightSources*>(data);
     SbRotation rotation = lightdrag->rotation.getValue();
     SbVec3f dir(0, 0, -1);
@@ -118,23 +118,26 @@ QWidget* DlgSettingsLightSources::createViewer(QWidget* parent)
 
 SoDirectionalLightDragger* DlgSettingsLightSources::createDragger()
 {
+    // NOLINTBEGIN
     lightDragger = new SoDirectionalLightDragger();
-    SoDragger * therotator = static_cast<SoDragger *>(lightDragger->getPart("translator", false));
-    therotator->setPartAsDefault("xTranslator.translatorActive", nullptr);
-    therotator->setPartAsDefault("yTranslator.translatorActive", nullptr);
-    therotator->setPartAsDefault("zTranslator.translatorActive", nullptr);
-    therotator->setPartAsDefault("xTranslator.translator", nullptr);
-    therotator->setPartAsDefault("yTranslator.translator", nullptr);
-    therotator->setPartAsDefault("zTranslator.translator", nullptr);
-    SoNode* node = therotator->getPart("yzTranslator.translator", false);
-    if (node && node->isOfType(SoGroup::getClassTypeId())) {
-        auto ps = new SoPickStyle();
-        ps->style = SoPickStyle::UNPICKABLE;
-        static_cast<SoGroup*>(node)->insertChild(ps, 0);
+    if (SoDragger* translator = dynamic_cast<SoDragger *>(lightDragger->getPart("translator", false))) {
+        translator->setPartAsDefault("xTranslator.translatorActive", nullptr);
+        translator->setPartAsDefault("yTranslator.translatorActive", nullptr);
+        translator->setPartAsDefault("zTranslator.translatorActive", nullptr);
+        translator->setPartAsDefault("xTranslator.translator", nullptr);
+        translator->setPartAsDefault("yTranslator.translator", nullptr);
+        translator->setPartAsDefault("zTranslator.translator", nullptr);
+        SoNode* node = translator->getPart("yzTranslator.translator", false);
+        if (node && node->isOfType(SoGroup::getClassTypeId())) {
+            auto ps = new SoPickStyle();
+            ps->style = SoPickStyle::UNPICKABLE;
+            static_cast<SoGroup*>(node)->insertChild(ps, 0);
+        }
     }
 
     lightDragger->addMotionCallback(dragMotionCallback, this);
     return lightDragger;
+    // NOLINTEND
 }
 
 void DlgSettingsLightSources::saveSettings()
