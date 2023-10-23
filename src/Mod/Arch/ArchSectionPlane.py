@@ -74,7 +74,8 @@ def makeSectionPlane(objectslist=None,name=None):
         for o in Draft.get_group_contents(objectslist):
             if hasattr(o,"Shape") and hasattr(o.Shape,"BoundBox"):
                 bb.add(o.Shape.BoundBox)
-        obj.Placement = FreeCAD.DraftWorkingPlane.getPlacement()
+        import WorkingPlane
+        obj.Placement = WorkingPlane.get_working_plane().get_placement()
         obj.Placement.Base = bb.Center
         if FreeCAD.GuiUp:
             margin = bb.XLength*0.1
@@ -391,13 +392,13 @@ def getSVG(source,
             svgcache = ''
             # render using the Arch Vector Renderer
             import ArchVRM, WorkingPlane
-            wp = WorkingPlane.plane()
+            wp = WorkingPlane.PlaneBase()
             pl = FreeCAD.Placement(source.Placement)
             if source.ViewObject and hasattr(source.ViewObject,"CutMargin"):
                 mv = pl.multVec(FreeCAD.Vector(0,0,1))
                 mv.multiply(source.ViewObject.CutMargin)
                 pl.move(mv)
-            wp.setFromPlacement(pl)
+            wp.align_to_placement(pl)
             #wp.inverse()
             render = ArchVRM.Renderer()
             render.setWorkingPlane(wp)
@@ -748,9 +749,9 @@ def getCoinSVG(cutplane,objs,cameradata=None,linewidth=0.2,singleface=False,face
     factor = None
     trans = None
     import WorkingPlane
-    wp = WorkingPlane.plane()
-    wp.alignToPointAndAxis_SVG(Vector(0,0,0),cutplane.normalAt(0,0),0)
-    p = wp.getLocalCoords(markervec)
+    wp = WorkingPlane.PlaneBase()
+    wp.align_to_point_and_axis_svg(Vector(0,0,0),cutplane.normalAt(0,0),0)
+    p = wp.get_local_coords(markervec)
     orlength = FreeCAD.Vector(p.x,p.y,0).Length
     marker = re.findall("<line x1=.*?stroke=\"\#ffffff\".*?\/>",svg)
     if marker:
@@ -763,7 +764,7 @@ def getCoinSVG(cutplane,objs,cameradata=None,linewidth=0.2,singleface=False,face
         p2 = FreeCAD.Vector(x2,y2,0)
         factor = orlength/p2.sub(p1).Length
         if factor:
-            orig = wp.getLocalCoords(FreeCAD.Vector(boundbox.XMin,boundbox.YMin,boundbox.ZMin))
+            orig = wp.get_local_coords(FreeCAD.Vector(boundbox.XMin,boundbox.YMin,boundbox.ZMin))
             orig = FreeCAD.Vector(orig.x,-orig.y,0)
             scaledp1 = FreeCAD.Vector(p1.x*factor,p1.y*factor,0)
             trans = orig.sub(scaledp1)
