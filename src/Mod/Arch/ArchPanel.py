@@ -165,9 +165,9 @@ class CommandPanel:
             return
 
         # interactive mode
-        if hasattr(FreeCAD,"DraftWorkingPlane"):
-            FreeCAD.DraftWorkingPlane.setup()
-
+        import WorkingPlane
+        WorkingPlane.get_working_plane()
+            
         self.points = []
         self.tracker = DraftTrackers.boxTracker()
         self.tracker.width(self.Width)
@@ -433,8 +433,6 @@ class _Panel(ArchComponent.Component):
 
         if self.clone(obj):
             return
-
-        import Part #, DraftGeomUtils
 
         layers = []
         length = 0

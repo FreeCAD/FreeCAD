@@ -583,8 +583,8 @@ class Nester:
 
         # flatten the polygon on the XY plane
 
-        wp = WorkingPlane.plane()
-        wp.alignToPointAndAxis(face.CenterOfMass,face.normalAt(0,0))
+        wp = WorkingPlane.PlaneBase()
+        wp.align_to_point_and_axis(face.CenterOfMass,face.normalAt(0,0))
         pverts = []
         for v in verts:
             vx = DraftVecUtils.project(v,wp.u)
