@@ -170,7 +170,7 @@ def flattenWire(wire, origin=None, normal=None):
     if origin is None:
         origin = wire.Vertexes[0].Point
 
-    points = [project_point_on_plane(vert.Point, origin, normal) vert in wire.Vertexes]
+    points = [project_point_on_plane(vert.Point, origin, normal) for vert in wire.Vertexes]
     if wire.isClosed():
         points.append(points[0])
     new_wire = Part.makePolygon(points)
