@@ -77,6 +77,7 @@ class Facebinder(DraftObject):
                 if "Face" in sub:
                     try:
                         face = Part.getShape(sel[0], sub, needSubElement=True, retType=0)
+                        area += face.Area
                         if offs_val:
                             if face.Surface.isPlanar():
                                 norm = face.normalAt(0, 0)
@@ -86,14 +87,14 @@ class Facebinder(DraftObject):
                             else:
                                 offs = face.makeOffsetShape(offs_val, 1e-7)
                                 faces.extend(offs.Faces)
-                        area += face.Area
+                        else:
+                            faces.append(face)
                     except Part.OCCError:
                         print("Draft: error building facebinder")
                         return
         if not faces:
             return
         try:
-            sh = None
             if extr_val:
                 extrs = []
                 for face in faces:
@@ -104,11 +105,13 @@ class Facebinder(DraftObject):
                         extr = face.makeOffsetShape(extr_val, 1e-7, fill=True)
                         extrs.extend(extr.Solids)
                 sh = extrs.pop()
-                sh = sh.multiFuse(extrs)
-            if len(faces) > 1:
-                if not sh:
-                    sh = faces.pop()
+                if extrs:
+                    sh = sh.multiFuse(extrs)
+            else:
+                sh = faces.pop()
+                if faces:
                     sh = sh.multiFuse(faces)
+            if len(faces) > 1:
                 if hasattr(obj, "Sew") and obj.Sew:
                     sh.sewShape()
                 if not hasattr(obj, "RemoveSplitter"):
