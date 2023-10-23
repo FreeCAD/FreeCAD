@@ -19,7 +19,7 @@ namespace MbD {
         FColDsptr basicSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal) override;
         void decomposesaveOriginal(FMatDsptr fullMat, bool saveOriginal);
         void decomposesaveOriginal(SpMatDsptr spMat, bool saveOriginal);
-        FColDsptr forAndBackSubsaveOriginal(FColDsptr fullCol, bool saveOriginal);
+        FColDsptr forAndBackSubsaveOriginal(FColDsptr fullCol, bool saveOriginal) override;
         double getmatrixArowimaxMagnitude(int i) override;
         void forwardSubstituteIntoL() override;
         void backSubstituteIntoDU() override;
