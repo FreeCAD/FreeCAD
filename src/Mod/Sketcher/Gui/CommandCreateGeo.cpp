@@ -1781,7 +1781,7 @@ CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreateTriangle, "Sketcher_CreateTriangle")
 void CmdSketcherCreateTriangle::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerRegularPolygon(3));
+    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerPolygon(3));
 }
 
 bool CmdSketcherCreateTriangle::isActive()
@@ -1810,7 +1810,7 @@ CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreateSquare, "Sketcher_CreateSquare")
 void CmdSketcherCreateSquare::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerRegularPolygon(4));
+    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerPolygon(4));
 }
 
 bool CmdSketcherCreateSquare::isActive()
@@ -1839,7 +1839,7 @@ CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreatePentagon, "Sketcher_CreatePentagon")
 void CmdSketcherCreatePentagon::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerRegularPolygon(5));
+    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerPolygon(5));
 }
 
 bool CmdSketcherCreatePentagon::isActive()
@@ -1869,7 +1869,7 @@ CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreateHexagon, "Sketcher_CreateHexagon")
 void CmdSketcherCreateHexagon::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerRegularPolygon(6));
+    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerPolygon(6));
 }
 
 bool CmdSketcherCreateHexagon::isActive()
@@ -1898,7 +1898,7 @@ CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreateHeptagon, "Sketcher_CreateHeptagon")
 void CmdSketcherCreateHeptagon::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerRegularPolygon(7));
+    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerPolygon(7));
 }
 
 bool CmdSketcherCreateHeptagon::isActive()
@@ -1927,7 +1927,7 @@ CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreateOctagon, "Sketcher_CreateOctagon")
 void CmdSketcherCreateOctagon::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerRegularPolygon(8));
+    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerPolygon(8));
 }
 
 bool CmdSketcherCreateOctagon::isActive()
@@ -1960,7 +1960,7 @@ void CmdSketcherCreateRegularPolygon::activated(int iMsg)
     // Pop-up asking for values
     SketcherRegularPolygonDialog srpd;
     if (srpd.exec() == QDialog::Accepted) {
-        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerRegularPolygon(srpd.sides));
+        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerPolygon(srpd.sides));
     }
 }
 
@@ -1988,29 +1988,28 @@ void CmdSketcherCompCreateRegularPolygon::activated(int iMsg)
 {
     switch (iMsg) {
         case 0:
-            ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerRegularPolygon(3));
+            ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerPolygon(3));
             break;
         case 1:
-            ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerRegularPolygon(4));
+            ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerPolygon(4));
             break;
         case 2:
-            ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerRegularPolygon(5));
+            ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerPolygon(5));
             break;
         case 3:
-            ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerRegularPolygon(6));
+            ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerPolygon(6));
             break;
         case 4:
-            ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerRegularPolygon(7));
+            ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerPolygon(7));
             break;
         case 5:
-            ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerRegularPolygon(8));
+            ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerPolygon(8));
             break;
         case 6: {
             // Pop-up asking for values
             SketcherRegularPolygonDialog srpd;
             if (srpd.exec() == QDialog::Accepted) {
-                ActivateHandler(getActiveGuiDocument(),
-                                new DrawSketchHandlerRegularPolygon(srpd.sides));
+                ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerPolygon(srpd.sides));
             }
         } break;
         default:
