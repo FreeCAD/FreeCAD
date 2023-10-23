@@ -49,42 +49,45 @@
     <widget class="QListWidget" name="lw_references"/>
    </item>
    <item>
-    <layout class="QHBoxLayout" name="horizontalLayout">
-     <item>
-      <widget class="QRadioButton" name="rb_temperature">
+    <layout class="QGridLayout" name="gridLayout">
+     <item row="0" column="0">
+      <widget class="QLabel" name="lbl_constr_type">
        <property name="text">
-        <string>Temperature</string>
-       </property>
-       <property name="checkable">
-        <bool>true</bool>
-       </property>
-       <property name="checked">
-        <bool>false</bool>
+        <string>Constraint type</string>
        </property>
       </widget>
      </item>
-     <item>
-      <widget class="QRadioButton" name="rb_cflux">
+     <item row="0" column="1">
+      <widget class="QComboBox" name="cb_constr_type"/>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLabel" name="lbl_temperature">
+       <property name="text">
+        <string>Temperature</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="1">
+      <widget class="Gui::QuantitySpinBox" name="qsb_temperature">
+       <property name="unit" stdset="0">
+        <string notr="true">K</string>
+       </property>
+       <property name="minimum">
+        <double>0.000000000000000</double>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="QLabel" name="lbl_cflux">
        <property name="text">
         <string>Concentrated heat flux</string>
        </property>
       </widget>
      </item>
-    </layout>
-   </item>
-   <item>
-    <layout class="QHBoxLayout" name="layoutTemperature">
-     <item>
-      <widget class="QLabel" name="lbl_type">
-       <property name="text">
-        <string>Temperature</string>
-       </property>
-      </widget>
-     </item>
-     <item>
-      <widget class="Gui::QuantitySpinBox" name="if_temperature">
+     <item row="2" column="1">
+      <widget class="Gui::QuantitySpinBox" name="qsb_cflux">
        <property name="unit" stdset="0">
-        <string notr="true">K</string>
+        <string notr="true">mW</string>
        </property>
        <property name="minimum">
         <double>0.000000000000000</double>
