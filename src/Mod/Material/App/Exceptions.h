@@ -22,6 +22,8 @@
 #ifndef MATERIAL_EXCEPTIONS_H
 #define MATERIAL_EXCEPTIONS_H
 
+#include <QString>
+
 #include <Base/BaseClass.h>
 #include <Base/Exception.h>
 
@@ -37,6 +39,10 @@ public:
     {
         this->setMessage(msg);
     }
+    explicit Uninitialized(const QString& msg)
+    {
+        this->setMessage(msg.toStdString().c_str());
+    }
     ~Uninitialized() noexcept override = default;
 };
 
@@ -49,7 +55,27 @@ public:
     {
         this->setMessage(msg);
     }
+    explicit ModelNotFound(const QString& msg)
+    {
+        this->setMessage(msg.toStdString().c_str());
+    }
     ~ModelNotFound() noexcept override = default;
+};
+
+class InvalidMaterialType: public Base::Exception
+{
+public:
+    InvalidMaterialType()
+    {}
+    explicit InvalidMaterialType(const char* msg)
+    {
+        this->setMessage(msg);
+    }
+    explicit InvalidMaterialType(const QString& msg)
+    {
+        this->setMessage(msg.toStdString().c_str());
+    }
+    ~InvalidMaterialType() noexcept override = default;
 };
 
 class MaterialNotFound: public Base::Exception
@@ -61,7 +87,27 @@ public:
     {
         this->setMessage(msg);
     }
+    explicit MaterialNotFound(const QString& msg)
+    {
+        this->setMessage(msg.toStdString().c_str());
+    }
     ~MaterialNotFound() noexcept override = default;
+};
+
+class MaterialExists: public Base::Exception
+{
+public:
+    MaterialExists()
+    {}
+    explicit MaterialExists(const char* msg)
+    {
+        this->setMessage(msg);
+    }
+    explicit MaterialExists(const QString& msg)
+    {
+        this->setMessage(msg.toStdString().c_str());
+    }
+    ~MaterialExists() noexcept override = default;
 };
 
 class PropertyNotFound: public Base::Exception
@@ -72,6 +118,10 @@ public:
     explicit PropertyNotFound(const char* msg)
     {
         this->setMessage(msg);
+    }
+    explicit PropertyNotFound(const QString& msg)
+    {
+        this->setMessage(msg.toStdString().c_str());
     }
     ~PropertyNotFound() noexcept override = default;
 };
@@ -85,6 +135,10 @@ public:
     {
         this->setMessage(msg);
     }
+    explicit LibraryNotFound(const QString& msg)
+    {
+        this->setMessage(msg.toStdString().c_str());
+    }
     ~LibraryNotFound() noexcept override = default;
 };
 
@@ -96,6 +150,10 @@ public:
     explicit InvalidModel(const char* msg)
     {
         this->setMessage(msg);
+    }
+    explicit InvalidModel(const QString& msg)
+    {
+        this->setMessage(msg.toStdString().c_str());
     }
     ~InvalidModel() noexcept override = default;
 };
@@ -109,6 +167,10 @@ public:
     {
         this->setMessage(msg);
     }
+    explicit InvalidRow(const QString& msg)
+    {
+        this->setMessage(msg.toStdString().c_str());
+    }
     ~InvalidRow() noexcept override = default;
 };
 
@@ -121,7 +183,27 @@ public:
     {
         this->setMessage(msg);
     }
+    explicit InvalidColumn(const QString& msg)
+    {
+        this->setMessage(msg.toStdString().c_str());
+    }
     ~InvalidColumn() noexcept override = default;
+};
+
+class InvalidDepth: public Base::Exception
+{
+public:
+    InvalidDepth()
+    {}
+    explicit InvalidDepth(char* msg)
+    {
+        this->setMessage(msg);
+    }
+    explicit InvalidDepth(const QString& msg)
+    {
+        this->setMessage(msg.toStdString().c_str());
+    }
+    ~InvalidDepth() noexcept override = default;
 };
 
 class InvalidIndex: public Base::Exception
@@ -132,6 +214,10 @@ public:
     explicit InvalidIndex(char* msg)
     {
         this->setMessage(msg);
+    }
+    explicit InvalidIndex(const QString& msg)
+    {
+        this->setMessage(msg.toStdString().c_str());
     }
     ~InvalidIndex() noexcept override = default;
 };
@@ -145,7 +231,27 @@ public:
     {
         this->setMessage(msg);
     }
+    explicit UnknownValueType(const QString& msg)
+    {
+        this->setMessage(msg.toStdString().c_str());
+    }
     ~UnknownValueType() noexcept override = default;
+};
+
+class DeleteError: public Base::Exception
+{
+public:
+    DeleteError()
+    {}
+    explicit DeleteError(char* msg)
+    {
+        this->setMessage(msg);
+    }
+    explicit DeleteError(const QString& msg)
+    {
+        this->setMessage(msg.toStdString().c_str());
+    }
+    ~DeleteError() noexcept override = default;
 };
 
 }  // namespace Materials

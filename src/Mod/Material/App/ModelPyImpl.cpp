@@ -21,13 +21,11 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#include <boost/uuid/uuid_io.hpp>
-#endif
-
 #include "Model.h"
+#include "ModelLibrary.h"
 #include "ModelPropertyPy.h"
 #include "ModelPy.h"
+#include "ModelUuids.h"
 
 #include "ModelPy.cpp"
 
@@ -43,11 +41,11 @@ std::string ModelPy::representation() const
     str << "), UUID=(";
     str << ptr->getUUID().toStdString();
     str << "), Library Name=(";
-    str << ptr->getLibrary().getName().toStdString();
+    str << ptr->getLibrary()->getName().toStdString();
     str << "), Library Root=(";
-    str << ptr->getLibrary().getDirectoryPath().toStdString();
+    str << ptr->getLibrary()->getDirectoryPath().toStdString();
     str << "), Library Icon=(";
-    str << ptr->getLibrary().getIconPath().toStdString();
+    str << ptr->getLibrary()->getIconPath().toStdString();
     str << "), Directory=(";
     str << ptr->getDirectory().toStdString();
     str << "), URL=(";
@@ -57,7 +55,7 @@ std::string ModelPy::representation() const
     str << "), Description=(";
     str << ptr->getDescription().toStdString();
     str << "), Inherits=[";
-    const std::vector<QString>& inherited = getModelPtr()->getInheritance();
+    auto& inherited = getModelPtr()->getInheritance();
     for (auto it = inherited.begin(); it != inherited.end(); it++) {
         QString uuid = *it;
         if (it != inherited.begin()) {
@@ -87,17 +85,17 @@ int ModelPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 
 Py::String ModelPy::getLibraryName() const
 {
-    return Py::String(getModelPtr()->getLibrary().getName().toStdString());
+    return Py::String(getModelPtr()->getLibrary()->getName().toStdString());
 }
 
 Py::String ModelPy::getLibraryRoot() const
 {
-    return Py::String(getModelPtr()->getLibrary().getDirectoryPath().toStdString());
+    return Py::String(getModelPtr()->getLibrary()->getDirectoryPath().toStdString());
 }
 
 Py::String ModelPy::getLibraryIcon() const
 {
-    return Py::String(getModelPtr()->getLibrary().getIconPath().toStdString());
+    return Py::String(getModelPtr()->getLibrary()->getIconPath().toStdString());
 }
 
 Py::String ModelPy::getName() const
@@ -132,13 +130,11 @@ Py::String ModelPy::getDOI() const
 
 Py::List ModelPy::getInherited() const
 {
-    const std::vector<QString>& inherited = getModelPtr()->getInheritance();
+    auto& inherited = getModelPtr()->getInheritance();
     Py::List list;
 
     for (auto it = inherited.begin(); it != inherited.end(); it++) {
-        QString uuid = *it;
-
-        list.append(Py::String(uuid.toStdString()));
+        list.append(Py::String(it->toStdString()));
     }
 
     return list;

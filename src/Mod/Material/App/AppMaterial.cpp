@@ -33,6 +33,7 @@
 #include "ModelManagerPy.h"
 #include "ModelPropertyPy.h"
 #include "ModelPy.h"
+#include "UUIDsPy.h"
 
 namespace Materials
 {
@@ -68,6 +69,7 @@ PyMOD_INIT_FUNC(Material)
     Base::Interpreter().addType(&Materials::ModelManagerPy ::Type, module, "ModelManager");
     Base::Interpreter().addType(&Materials::ModelPropertyPy ::Type, module, "ModelProperty");
     Base::Interpreter().addType(&Materials::ModelPy ::Type, module, "Model");
+    Base::Interpreter().addType(&Materials::UUIDsPy ::Type, module, "UUIDs");
 
     PyMOD_Return(module);
 }

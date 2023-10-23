@@ -10,18 +10,14 @@
 #include <App/ObjectIdentifier.h>
 #include <Mod/Sketcher/App/GeoEnum.h>
 #include <Mod/Sketcher/App/SketchObject.h>
+#include <src/App/InitApplication.h>
 
 class SketchObjectTest: public ::testing::Test
 {
 protected:
     static void SetUpTestSuite()
     {
-        if (App::Application::GetARGC() == 0) {
-            int argc = 1;
-            char* argv[] = {"FreeCAD"};
-            App::Application::Config()["ExeName"] = "FreeCAD";
-            App::Application::init(argc, argv);
-        }
+        tests::initApplication();
     }
 
     void SetUp() override

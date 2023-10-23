@@ -37,6 +37,10 @@ if(NOT BUILD_DYNAMIC_LINK_PYTHON)
     )
 endif()
 
+include_directories(
+    ${CMAKE_CURRENT_SOURCE_DIR}
+)
+
 set(CMAKE_AUTOMOC ON)
 
 function(setup_qt_test)

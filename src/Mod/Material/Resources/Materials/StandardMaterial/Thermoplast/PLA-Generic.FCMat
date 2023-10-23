@@ -1,7 +1,8 @@
 # File created by ConvertFCMat.py
 General:
   UUID: "93861244-fbbe-41a9-a7e0-aeed53abd782"
-  AuthorAndLicense: "(c) 2019 Uwe Stöhr (CC-BY 3.0)"
+  Author: "Uwe Stöhr"
+  License: "CC-BY-3.0"
   Name: "PLA"
   Description: "Polylactic acid or polylactide (PLA, Poly) is a biodegradable thermoplastic aliphatic polyester derived from renewable resources, such as corn starch, tapioca roots, chips, starch or sugarcane."
   SourceURL: "https://www.sd3d.com/wp-content/uploads/2017/06/MaterialTDS-PLA_01.pdf"

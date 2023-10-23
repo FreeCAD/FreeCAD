@@ -22,14 +22,17 @@
 #ifndef MATERIAL_MATERIALLIBRARY_H
 #define MATERIAL_MATERIALLIBRARY_H
 
-#include <Mod/Material/MaterialGlobal.h>
-
-#include <Base/BaseClass.h>
 #include <memory>
+
 #include <QDir>
 #include <QString>
 #include <QVariant>
 
+#include <Base/BaseClass.h>
+
+#include <Mod/Material/MaterialGlobal.h>
+
+#include "Materials.h"
 #include "Model.h"
 #include "ModelLibrary.h"
 
@@ -37,17 +40,19 @@ namespace Materials
 {
 
 class Material;
+class MaterialManager;
 
-class MaterialsExport MaterialLibrary: public LibraryBase
+class MaterialsExport MaterialLibrary: public LibraryBase,
+                                       public std::enable_shared_from_this<MaterialLibrary>
 {
-    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+    TYPESYSTEM_HEADER();
 
 public:
     MaterialLibrary();
-    explicit MaterialLibrary(const QString& libraryName,
-                             const QString& dir,
-                             const QString& icon,
-                             bool readOnly = true);
+    MaterialLibrary(const QString& libraryName,
+                    const QString& dir,
+                    const QString& icon,
+                    bool readOnly = true);
     ~MaterialLibrary() override = default;
 
     bool operator==(const MaterialLibrary& library) const
@@ -58,40 +63,60 @@ public:
     {
         return !operator==(library);
     }
-    const Material& getMaterialByPath(const QString& path) const;
+    std::shared_ptr<Material> getMaterialByPath(const QString& path) const;
 
-    void createPath(const QString& path);
-    Material* saveMaterial(Material& material, const QString& path, bool saveAsCopy);
-    Material* addMaterial(const Material& material, const QString& path);
+    void createFolder(const QString& path);
+    void renameFolder(const QString& oldPath, const QString& newPath);
+    void deleteRecursive(const QString& path);
+
+    std::shared_ptr<Material> saveMaterial(std::shared_ptr<Material> material,
+                                           const QString& path,
+                                           bool overwrite,
+                                           bool saveAsCopy,
+                                           bool saveInherited);
+    bool fileExists(const QString& path) const;
+    std::shared_ptr<Material> addMaterial(std::shared_ptr<Material> material, const QString& path);
+    std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>> getMaterialTree() const;
 
     bool isReadOnly() const
     {
         return _readOnly;
     }
 
+    // Use this to get a shared_ptr for *this
+    std::shared_ptr<MaterialLibrary> getptr()
+    {
+        return shared_from_this();
+    }
+
 protected:
+    MaterialLibrary(const MaterialLibrary&) = default;
+
+    void deleteDir(MaterialManager& manager, const QString& path);
+    void deleteFile(MaterialManager& manager, const QString& path);
+
+    void updatePaths(const QString& oldPath, const QString& newPath);
     const QString getUUIDFromPath(const QString& path) const;
 
     bool _readOnly;
-    static std::unique_ptr<std::map<QString, Material*>> _materialPathMap;
+    std::unique_ptr<std::map<QString, std::shared_ptr<Material>>> _materialPathMap;
 };
 
 class MaterialsExport MaterialExternalLibrary: public MaterialLibrary
 {
-    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+    TYPESYSTEM_HEADER();
 
 public:
     MaterialExternalLibrary();
-    explicit MaterialExternalLibrary(const QString& libraryName,
-                                     const QString& dir,
-                                     const QString& icon,
-                                     bool readOnly = true);
+    MaterialExternalLibrary(const QString& libraryName,
+                            const QString& dir,
+                            const QString& icon,
+                            bool readOnly = true);
     ~MaterialExternalLibrary() override;
 };
 
 }  // namespace Materials
 
-Q_DECLARE_METATYPE(Materials::MaterialLibrary)
-Q_DECLARE_METATYPE(Materials::MaterialExternalLibrary)
+Q_DECLARE_METATYPE(std::shared_ptr<Materials::MaterialLibrary>)
 
 #endif  // MATERIAL_MATERIALLIBRARY_H

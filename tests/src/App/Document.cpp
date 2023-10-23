@@ -7,6 +7,7 @@
 #include "App/Document.h"
 #include "App/StringHasher.h"
 #include "Base/Writer.h"
+#include <src/App/InitApplication.h>
 
 using ::testing::Eq;
 using ::testing::Ne;
@@ -28,12 +29,7 @@ class DocumentTest: public ::testing::Test
 protected:
     static void SetUpTestSuite()
     {
-        if (App::Application::GetARGC() == 0) {
-            constexpr int argc = 1;
-            std::array<char*, argc> argv {"FreeCAD"};
-            App::Application::Config()["ExeName"] = "FreeCAD";
-            App::Application::init(argc, const_cast<char**>(argv.data()));  // NOLINT
-        }
+        tests::initApplication();
     }
 
     void SetUp() override

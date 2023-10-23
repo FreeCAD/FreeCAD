@@ -22,6 +22,8 @@
 #ifndef MATGUI_ARRAYMODEL_H
 #define MATGUI_ARRAYMODEL_H
 
+#include <memory>
+
 #include <QAbstractTableModel>
 #include <QDialog>
 #include <QStandardItem>
@@ -36,7 +38,7 @@ namespace MatGui
 class AbstractArrayModel: public QAbstractTableModel
 {
 public:
-    explicit AbstractArrayModel(QObject* parent = nullptr);
+    AbstractArrayModel(QObject* parent = nullptr);
     ~AbstractArrayModel() override = default;
 
     virtual bool newRow(const QModelIndex& index) const = 0;
@@ -45,14 +47,15 @@ public:
 class Array2DModel: public AbstractArrayModel
 {
 public:
-    explicit Array2DModel(const Materials::MaterialProperty* property = nullptr,
-                          std::shared_ptr<Materials::Material2DArray> value = nullptr,
-                          QObject* parent = nullptr);
+    Array2DModel(std::shared_ptr<Materials::MaterialProperty> property = nullptr,
+                 std::shared_ptr<Materials::Material2DArray> value = nullptr,
+                 QObject* parent = nullptr);
     ~Array2DModel() override = default;
 
     // Overridden virtual functions
     int rowCount(const QModelIndex& parent = QModelIndex()) const override;
     bool newRow(const QModelIndex& index) const override;
+    void deleteRow(const QModelIndex& index);
     int columnCount(const QModelIndex& parent = QModelIndex()) const override;
     QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
     QVariant
@@ -67,21 +70,22 @@ public:
     bool removeColumns(int column, int count, const QModelIndex& parent = QModelIndex()) override;
 
 private:
-    const Materials::MaterialProperty* _property;
+    std::shared_ptr<Materials::MaterialProperty> _property;
     std::shared_ptr<Materials::Material2DArray> _value;
 };
 
 class Array3DDepthModel: public AbstractArrayModel
 {
 public:
-    explicit Array3DDepthModel(const Materials::MaterialProperty* property = nullptr,
-                               std::shared_ptr<Materials::Material3DArray> value = nullptr,
-                               QObject* parent = nullptr);
+    Array3DDepthModel(std::shared_ptr<Materials::MaterialProperty> property = nullptr,
+                      std::shared_ptr<Materials::Material3DArray> value = nullptr,
+                      QObject* parent = nullptr);
     ~Array3DDepthModel() override = default;
 
     // Overridden virtual functions
     int rowCount(const QModelIndex& parent = QModelIndex()) const override;
     bool newRow(const QModelIndex& index) const override;
+    void deleteRow(const QModelIndex& index);
     int columnCount(const QModelIndex& parent = QModelIndex()) const override
     {
         Q_UNUSED(parent)
@@ -100,21 +104,22 @@ public:
     bool removeColumns(int column, int count, const QModelIndex& parent = QModelIndex()) override;
 
 private:
-    const Materials::MaterialProperty* _property;
+    std::shared_ptr<Materials::MaterialProperty> _property;
     std::shared_ptr<Materials::Material3DArray> _value;
 };
 
 class Array3DModel: public AbstractArrayModel
 {
 public:
-    explicit Array3DModel(const Materials::MaterialProperty* property = nullptr,
-                          std::shared_ptr<Materials::Material3DArray> value = nullptr,
-                          QObject* parent = nullptr);
+    Array3DModel(std::shared_ptr<Materials::MaterialProperty> property = nullptr,
+                 std::shared_ptr<Materials::Material3DArray> value = nullptr,
+                 QObject* parent = nullptr);
     ~Array3DModel() override = default;
 
     // Overridden virtual functions
     int rowCount(const QModelIndex& parent = QModelIndex()) const override;
     bool newRow(const QModelIndex& index) const override;
+    void deleteRow(const QModelIndex& index);
     int columnCount(const QModelIndex& parent = QModelIndex()) const override;
     QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
     QVariant
@@ -128,8 +133,10 @@ public:
     bool insertColumns(int column, int count, const QModelIndex& parent = QModelIndex()) override;
     bool removeColumns(int column, int count, const QModelIndex& parent = QModelIndex()) override;
 
+    void updateData();
+
 private:
-    const Materials::MaterialProperty* _property;
+    std::shared_ptr<Materials::MaterialProperty> _property;
     std::shared_ptr<Materials::Material3DArray> _value;
 };
 
