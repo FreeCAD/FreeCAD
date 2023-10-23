@@ -87,6 +87,7 @@ void View3DSettings::applySettings()
     OnChange(*hGrp,"UseVBO");
     OnChange(*hGrp,"RenderCache");
     OnChange(*hGrp,"Orthographic");
+    OnChange(*hGrp,"EnableHeadlight");
     OnChange(*hGrp,"HeadlightColor");
     OnChange(*hGrp,"HeadlightDirection");
     OnChange(*hGrp,"HeadlightIntensity");
@@ -108,7 +109,13 @@ void View3DSettings::applySettings()
 void View3DSettings::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::MessageType Reason)
 {
     const ParameterGrp& rGrp = static_cast<ParameterGrp&>(rCaller);
-    if (strcmp(Reason,"HeadlightColor") == 0) {
+    if (strcmp(Reason,"EnableHeadlight") == 0) {
+        bool enable = rGrp.GetBool("EnableHeadlight", true);
+        for (auto _viewer : _viewers) {
+            _viewer->getHeadlight()->on.setValue(enable);
+        }
+    }
+    else if (strcmp(Reason,"HeadlightColor") == 0) {
         unsigned long headlight = rGrp.GetUnsigned("HeadlightColor",ULONG_MAX); // default color (white)
         float transparency;
         SbColor headlightColor;
