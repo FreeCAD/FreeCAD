@@ -146,6 +146,9 @@ public:
     void setParameter(int parameterindex, double val);
     void configureParameterInitialValue(int parameterindex, double value);
     void configureParameterUnit(int parameterindex, const Base::Unit& unit);
+    void configureParameterDecimals(int parameterindex, int val);
+    void configureParameterMax(int parameterindex, double val);
+    void configureParameterMin(int parameterindex, double val);
     double getParameter(int parameterindex);
     bool isParameterSet(int parameterindex);
     void
