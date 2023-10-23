@@ -1,7 +1,8 @@
 # File created by ConvertFCMat.py
 General:
   UUID: "5dbb7be6-8b63-479b-ab4c-87be02ead973"
-  AuthorAndLicense: "(c) 2023 David Carter"
+  Author: "David Carter"
+  License: "GPL-2.0-or-later"
   Name: "Default Appearance"
   Description: "Defines the default appearance properties"
 AppearanceModels:

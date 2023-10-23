@@ -22,62 +22,57 @@
 #ifndef MATERIAL_MODELMANAGER_H
 #define MATERIAL_MODELMANAGER_H
 
+#include <memory>
+
 #include <Mod/Material/MaterialGlobal.h>
 
 #include <QMutex>
 
-#include <boost/filesystem.hpp>
-
 #include "Exceptions.h"
 #include "FolderTree.h"
 #include "Model.h"
+#include "ModelLibrary.h"
 
-namespace fs = boost::filesystem;
 
 namespace Materials
 {
 
-typedef FolderTreeNode<Model> ModelTreeNode;
-
 class MaterialsExport ModelManager: public Base::BaseClass
 {
-    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+    TYPESYSTEM_HEADER();
 
 public:
-    enum ModelFilter
-    {
-        ModelFilter_None,
-        ModelFilter_Physical,
-        ModelFilter_Appearance
-    };
-
     ModelManager();
     ~ModelManager() override = default;
 
     void refresh();
 
-    std::shared_ptr<std::list<ModelLibrary*>> getModelLibraries()
+    std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> getModelLibraries()
     {
         return _libraryList;
     }
-    std::shared_ptr<std::map<QString, Model*>> getModels()
+    std::shared_ptr<std::map<QString, std::shared_ptr<Model>>> getModels()
     {
         return _modelMap;
     }
-    std::shared_ptr<std::map<QString, ModelTreeNode*>>
-    getModelTree(const ModelLibrary& library, ModelFilter filter = ModelFilter_None) const;
-    const Model& getModel(const QString& uuid) const;
-    const Model& getModelByPath(const QString& path) const;
-    const Model& getModelByPath(const QString& path, const QString& libraryPath) const;
+    std::shared_ptr<std::map<QString, std::shared_ptr<ModelTreeNode>>>
+    getModelTree(std::shared_ptr<ModelLibrary> library, ModelFilter filter = ModelFilter_None) const
+    {
+        return library->getModelTree(filter);
+    }
+    std::shared_ptr<Model> getModel(const QString& uuid) const;
+    std::shared_ptr<Model> getModelByPath(const QString& path) const;
+    std::shared_ptr<Model> getModelByPath(const QString& path, const QString& lib) const;
+    std::shared_ptr<ModelLibrary> getLibrary(const QString& name) const;
 
-    static bool isModel(const fs::path& p);
-    bool passFilter(ModelFilter filter, Model::ModelType modelType) const;
+    static bool isModel(const QString& file);
+    static bool passFilter(ModelFilter filter, Model::ModelType modelType);
 
 private:
     static void initLibraries();
 
-    static std::shared_ptr<std::list<ModelLibrary*>> _libraryList;
-    static std::shared_ptr<std::map<QString, Model*>> _modelMap;
+    static std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> _libraryList;
+    static std::shared_ptr<std::map<QString, std::shared_ptr<Model>>> _modelMap;
     static QMutex _mutex;
 };
 

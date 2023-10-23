@@ -22,8 +22,6 @@
 #ifndef MATGUI_MATERIALDELEGATE_H
 #define MATGUI_MATERIALDELEGATE_H
 
-#include <boost/filesystem.hpp>
-
 #include <QDialog>
 #include <QDir>
 #include <QStandardItem>
@@ -35,8 +33,6 @@
 #include <Mod/Material/App/Materials.h>
 #include <Mod/Material/App/ModelManager.h>
 
-namespace fs = boost::filesystem;
-
 namespace MatGui
 {
 
@@ -44,7 +40,7 @@ class MaterialDelegate: public QStyledItemDelegate
 {
     Q_OBJECT
 public:
-    explicit MaterialDelegate(QObject* parent = nullptr);
+    MaterialDelegate(QObject* parent = nullptr);
     ~MaterialDelegate() override = default;
 
     QWidget* createEditor(QWidget* parent,
@@ -76,7 +72,7 @@ private:
                           const QString& propertyValue,
                           const QString& propertyUnits) const;
     QRgb parseColor(const QString& color) const;
-    void showColorModal(QStandardItem* item);
+    void showColorModal(QStandardItem* item, QString propertyName);
     void showArray2DModal(const QString& propertyName, QStandardItem* item);
     void showArray3DModal(const QString& propertyName, QStandardItem* item);
 };

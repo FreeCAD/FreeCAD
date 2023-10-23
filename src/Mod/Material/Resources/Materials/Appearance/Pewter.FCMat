@@ -1,7 +1,8 @@
 # File created by ConvertFCMat.py
 General:
   UUID: "a61853b9-ec9f-403e-9726-0a938731aecd"
-  AuthorAndLicense: "(c) 2023 David Carter"
+  Author: "David Carter"
+  License: "GPL-2.0-or-later"
   Name: "Pewter"
   Description: "Defines the Pewter appearance properties"
 AppearanceModels:

@@ -1,7 +1,8 @@
 # File created by ConvertFCMat.py
 General:
   UUID: "b312ad7b-95d4-4ca5-9736-360dbed918ee"
-  AuthorAndLicense: "(c) 2014 M. Münch - GNU Lesser General Public License (LGPL)"
+  Author: "M. Münch"
+  License: "LGPL-2.0-or-later"
   Name: "St E 460"
 Inherits:
   Steel:

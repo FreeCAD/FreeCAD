@@ -1,7 +1,8 @@
 # File created by ConvertFCMat.py
 General:
   UUID: "524cad9b-b841-4037-9851-badeca7dcee2"
-  AuthorAndLicense: "(c) 2023 David Carter"
+  Author: "David Carter"
+  License: "GPL-2.0-or-later"
   Name: "Copper"
   Description: "Defines the Copper appearance properties"
 AppearanceModels:
