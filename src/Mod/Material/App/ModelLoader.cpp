@@ -37,7 +37,7 @@
 
 using namespace Materials;
 
-ModelEntry::ModelEntry(const ModelLibrary& library,
+ModelEntry::ModelEntry(std::shared_ptr<ModelLibrary> library,
                        const QString& baseName,
                        const QString& modelName,
                        const QString& dir,
@@ -52,17 +52,18 @@ ModelEntry::ModelEntry(const ModelLibrary& library,
     , _dereferenced(false)
 {}
 
-std::unique_ptr<std::map<QString, ModelEntry*>> ModelLoader::_modelEntryMap = nullptr;
+std::unique_ptr<std::map<QString, std::shared_ptr<ModelEntry>>> ModelLoader::_modelEntryMap =
+    nullptr;
 
-ModelLoader::ModelLoader(std::shared_ptr<std::map<QString, Model*>> modelMap,
-                         std::shared_ptr<std::list<ModelLibrary*>> libraryList)
+ModelLoader::ModelLoader(std::shared_ptr<std::map<QString, std::shared_ptr<Model>>> modelMap,
+                         std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> libraryList)
     : _modelMap(modelMap)
     , _libraryList(libraryList)
 {
     loadLibraries();
 }
 
-void ModelLoader::addLibrary(ModelLibrary* model)
+void ModelLoader::addLibrary(std::shared_ptr<ModelLibrary> model)
 {
     _libraryList->push_back(model);
 }
@@ -84,12 +85,13 @@ const QString ModelLoader::getUUIDFromPath(const QString& path)
         const QString uuid = QString::fromStdString(yamlroot[base]["UUID"].as<std::string>());
         return uuid;
     }
-    catch (YAML::Exception&) {
+    catch (YAML::Exception& ex) {
         throw ModelNotFound();
     }
 }
 
-ModelEntry* ModelLoader::getModelFromPath(const ModelLibrary& library, const QString& path) const
+std::shared_ptr<ModelEntry> ModelLoader::getModelFromPath(std::shared_ptr<ModelLibrary> library,
+                                                          const QString& path) const
 {
     QFile file(path);
     if (!file.exists()) {
@@ -113,12 +115,12 @@ ModelEntry* ModelLoader::getModelFromPath(const ModelLibrary& library, const QSt
         throw InvalidModel();
     }
 
-    ModelEntry* model = new ModelEntry(library,
-                                       QString::fromStdString(base),
-                                       QString::fromStdString(name),
-                                       path,
-                                       QString::fromStdString(uuid),
-                                       yamlroot);
+    std::shared_ptr<ModelEntry> model = std::make_shared<ModelEntry>(library,
+                                                                     QString::fromStdString(base),
+                                                                     QString::fromStdString(name),
+                                                                     path,
+                                                                     QString::fromStdString(uuid),
+                                                                     yamlroot);
 
     return model;
 }
@@ -133,8 +135,8 @@ void ModelLoader::showYaml(const YAML::Node& yaml) const
 }
 
 void ModelLoader::dereference(const QString& uuid,
-                              ModelEntry* parent,
-                              const ModelEntry* child,
+                              std::shared_ptr<ModelEntry> parent,
+                              std::shared_ptr<ModelEntry> child,
                               std::map<std::pair<QString, QString>, QString>* inheritances)
 {
     auto parentPtr = parent->getModelPtr();
@@ -168,7 +170,7 @@ void ModelLoader::dereference(const QString& uuid,
 }
 
 
-void ModelLoader::dereference(ModelEntry* model,
+void ModelLoader::dereference(std::shared_ptr<ModelEntry> model,
                               std::map<std::pair<QString, QString>, QString>* inheritances)
 {
     // Avoid recursion
@@ -185,10 +187,10 @@ void ModelLoader::dereference(ModelEntry* model,
 
             // This requires that all models have already been loaded undereferenced
             try {
-                const ModelEntry* child = (*_modelEntryMap)[nodeName];
+                std::shared_ptr<ModelEntry> child = (*_modelEntryMap)[nodeName];
                 dereference(model->getUUID(), model, child, inheritances);
             }
-            catch (const std::out_of_range&) {
+            catch (const std::out_of_range& oor) {
                 Base::Console().Log("Unable to find '%s' in model map\n",
                                     nodeName.toStdString().c_str());
             }
@@ -208,7 +210,7 @@ QString ModelLoader::yamlValue(const YAML::Node& node,
     return QString::fromStdString(defaultValue);
 }
 
-void ModelLoader::addToTree(ModelEntry* model,
+void ModelLoader::addToTree(std::shared_ptr<ModelEntry> model,
                             std::map<std::pair<QString, QString>, QString>* inheritances)
 {
     std::set<QString> exclude;
@@ -268,12 +270,12 @@ void ModelLoader::addToTree(ModelEntry* model,
 
             if (propType == QString::fromStdString("2DArray")
                 || propType == QString::fromStdString("3DArray")) {
-                Base::Console().Log("Reading columns\n");
+                // Base::Console().Log("Reading columns\n");
                 // Read the columns
                 auto cols = yamlProp["Columns"];
                 for (auto col : cols) {
                     std::string colName = col.first.as<std::string>();
-                    Base::Console().Log("\tColumns '%s'\n", colName.c_str());
+                    // Base::Console().Log("\tColumns '%s'\n", colName.c_str());
 
                     auto colProp = cols[colName];
                     auto colPropType = yamlValue(colProp, "Type", "");
@@ -299,16 +301,16 @@ void ModelLoader::addToTree(ModelEntry* model,
         }
     }
 
-    (*_modelMap)[uuid] = library.addModel(*finalModel, directory);
+    (*_modelMap)[uuid] = library->addModel(*finalModel, directory);
 }
 
-void ModelLoader::loadLibrary(const ModelLibrary& library)
+void ModelLoader::loadLibrary(std::shared_ptr<ModelLibrary> library)
 {
     if (_modelEntryMap == nullptr) {
-        _modelEntryMap = std::make_unique<std::map<QString, ModelEntry*>>();
+        _modelEntryMap = std::make_unique<std::map<QString, std::shared_ptr<ModelEntry>>>();
     }
 
-    QDirIterator it(library.getDirectory(), QDirIterator::Subdirectories);
+    QDirIterator it(library->getDirectory(), QDirIterator::Subdirectories);
     while (it.hasNext()) {
         auto pathname = it.next();
         QFileInfo file(pathname);
@@ -345,7 +347,7 @@ void ModelLoader::loadLibraries()
     getModelLibraries();
     if (_libraryList) {
         for (auto it = _libraryList->begin(); it != _libraryList->end(); it++) {
-            loadLibrary(**it);
+            loadLibrary(*it);
         }
     }
 }
@@ -362,9 +364,10 @@ void ModelLoader::getModelLibraries()
     if (useBuiltInMaterials) {
         QString resourceDir = QString::fromStdString(App::Application::getResourceDir()
                                                      + "/Mod/Material/Resources/Models");
-        auto libData = new ModelLibrary(QString::fromStdString("System"),
-                                        resourceDir,
-                                        QString::fromStdString(":/icons/freecad.svg"));
+        auto libData =
+            std::make_shared<ModelLibrary>(QString::fromStdString("System"),
+                                           resourceDir,
+                                           QString::fromStdString(":/icons/freecad.svg"));
         _libraryList->push_back(libData);
     }
 
@@ -380,7 +383,7 @@ void ModelLoader::getModelLibraries()
             if (modelDir.length() > 0) {
                 QDir dir(modelDir);
                 if (dir.exists()) {
-                    auto libData = new ModelLibrary(moduleName, modelDir, modelIcon);
+                    auto libData = std::make_shared<ModelLibrary>(moduleName, modelDir, modelIcon);
                     _libraryList->push_back(libData);
                 }
             }
@@ -393,10 +396,10 @@ void ModelLoader::getModelLibraries()
         if (!resourceDir.isEmpty()) {
             QDir materialDir(resourceDir);
             if (materialDir.exists()) {
-                auto libData =
-                    new ModelLibrary(QString::fromStdString("User"),
-                                     resourceDir,
-                                     QString::fromStdString(":/icons/preferences-general.svg"));
+                auto libData = std::make_shared<ModelLibrary>(
+                    QString::fromStdString("User"),
+                    resourceDir,
+                    QString::fromStdString(":/icons/preferences-general.svg"));
                 _libraryList->push_back(libData);
             }
         }
@@ -407,9 +410,10 @@ void ModelLoader::getModelLibraries()
         if (!resourceDir.isEmpty()) {
             QDir materialDir(resourceDir);
             if (materialDir.exists()) {
-                auto libData = new ModelLibrary(QString::fromStdString("Custom"),
-                                                resourceDir,
-                                                QString::fromStdString(":/icons/user.svg"));
+                auto libData =
+                    std::make_shared<ModelLibrary>(QString::fromStdString("Custom"),
+                                                   resourceDir,
+                                                   QString::fromStdString(":/icons/user.svg"));
                 _libraryList->push_back(libData);
             }
         }

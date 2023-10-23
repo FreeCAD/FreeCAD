@@ -23,6 +23,7 @@
 #ifndef _PreComp_
 #endif
 
+#include <QDirIterator>
 #include <QMutexLocker>
 
 #include <Base/Console.h>
@@ -34,8 +35,8 @@
 
 using namespace Materials;
 
-std::shared_ptr<std::list<ModelLibrary*>> ModelManager::_libraryList = nullptr;
-std::shared_ptr<std::map<QString, Model*>> ModelManager::_modelMap = nullptr;
+std::shared_ptr<std::list<std::shared_ptr<ModelLibrary>>> ModelManager::_libraryList = nullptr;
+std::shared_ptr<std::map<QString, std::shared_ptr<Model>>> ModelManager::_modelMap = nullptr;
 QMutex ModelManager::_mutex;
 
 TYPESYSTEM_SOURCE(Materials::ModelManager, Base::BaseClass)
@@ -50,9 +51,9 @@ void ModelManager::initLibraries()
     QMutexLocker locker(&_mutex);
 
     if (_modelMap == nullptr) {
-        _modelMap = std::make_shared<std::map<QString, Model*>>();
+        _modelMap = std::make_shared<std::map<QString, std::shared_ptr<Model>>>();
         if (_libraryList == nullptr) {
-            _libraryList = std::make_shared<std::list<ModelLibrary*>>();
+            _libraryList = std::make_shared<std::list<std::shared_ptr<ModelLibrary>>>();
         }
 
         // Load the libraries
@@ -60,12 +61,12 @@ void ModelManager::initLibraries()
     }
 }
 
-bool ModelManager::isModel(const fs::path& p)
+bool ModelManager::isModel(const QString& file)
 {
     // if (!fs::is_regular_file(p))
     //     return false;
     // check file extension
-    if (p.extension() == ".yml") {
+    if (file.endsWith(QString::fromStdString(".yml"))) {
         return true;
     }
     return false;
@@ -80,36 +81,62 @@ void ModelManager::refresh()
     ModelLoader loader(_modelMap, _libraryList);
 }
 
-const Model& ModelManager::getModel(const QString& uuid) const
+std::shared_ptr<Model> ModelManager::getModel(const QString& uuid) const
 {
     try {
         if (_modelMap == nullptr) {
             throw Uninitialized();
         }
 
-        return *(_modelMap->at(uuid));
+        return _modelMap->at(uuid);
     }
     catch (std::out_of_range const&) {
         throw ModelNotFound();
     }
 }
 
-const Model& ModelManager::getModelByPath(const QString& path) const
+std::shared_ptr<Model> ModelManager::getModelByPath(const QString& path) const
 {
-    const QString& uuid = ModelLoader::getUUIDFromPath(path);
-    const Model& model = getModel(uuid);
+    QString cleanPath = QDir::cleanPath(path);
 
-    return model;
+    for (auto library : *_libraryList) {
+        // Base::Console().Log("ModelManager::getModelByPath() Checking library '%s'->'%s'\n",
+        //                     library->getName().toStdString().c_str(),
+        //                     library->getDirectory().toStdString().c_str());
+
+
+        if (cleanPath.startsWith(library->getDirectory())) {
+            // Base::Console().Log("ModelManager::getModelByPath() Library '%s'\n",
+            //                     library->getDirectory().toStdString().c_str());
+            // Base::Console().Log("ModelManager::getModelByPath() Path '%s'\n",
+            //                     cleanPath.toStdString().c_str());
+            return library->getModelByPath(cleanPath);
+        }
+    }
+    Base::Console().Log("ModelManager::getModelByPath() Library not found for path '%s'\n",
+                        cleanPath.toStdString().c_str());
+
+    throw MaterialNotFound();
 }
 
-const Model& ModelManager::getModelByPath(const QString& path, const QString& libraryPath) const
+std::shared_ptr<Model> ModelManager::getModelByPath(const QString& path, const QString& lib) const
 {
-    QDir modelDir(QDir::cleanPath(libraryPath + QString::fromStdString("/") + path));
-    QString absPath = modelDir.absolutePath();
-    return getModelByPath(absPath);
+    auto library = getLibrary(lib);        // May throw LibraryNotFound
+    return library->getModelByPath(path);  // May throw ModelNotFound
 }
 
-bool ModelManager::passFilter(ModelFilter filter, Model::ModelType modelType) const
+std::shared_ptr<ModelLibrary> ModelManager::getLibrary(const QString& name) const
+{
+    for (auto library : *_libraryList) {
+        if (library->getName() == name) {
+            return library;
+        }
+    }
+
+    throw LibraryNotFound();
+}
+
+bool ModelManager::passFilter(ModelFilter filter, Model::ModelType modelType)
 {
     switch (filter) {
         case ModelFilter_None:
@@ -123,50 +150,4 @@ bool ModelManager::passFilter(ModelFilter filter, Model::ModelType modelType) co
     }
 
     return false;
-}
-
-std::shared_ptr<std::map<QString, ModelTreeNode*>>
-ModelManager::getModelTree(const ModelLibrary& library, ModelFilter filter) const
-{
-    std::shared_ptr<std::map<QString, ModelTreeNode*>> modelTree =
-        std::make_shared<std::map<QString, ModelTreeNode*>>();
-
-    for (auto it = _modelMap->begin(); it != _modelMap->end(); it++) {
-        auto filename = it->first;
-        auto model = it->second;
-
-        if (model->getLibrary() == library && passFilter(filter, model->getType())) {
-            fs::path path = model->getDirectory().toStdString();
-            Base::Console().Log("Relative path '%s'\n\t", path.string().c_str());
-
-            // Start at the root
-            std::shared_ptr<std::map<QString, ModelTreeNode*>> node = modelTree;
-            for (auto itp = path.begin(); itp != path.end(); itp++) {
-                if (isModel(itp->string())) {
-                    ModelTreeNode* child = new ModelTreeNode();
-                    child->setData(model);
-                    (*node)[QString::fromStdString(itp->string())] = child;
-                }
-                else {
-                    // Add the folder only if it's not already there
-                    QString folderName = QString::fromStdString(itp->string());
-                    std::shared_ptr<std::map<QString, ModelTreeNode*>> mapPtr;
-                    if (node->count(QString::fromStdString(itp->string())) == 0) {
-                        mapPtr = std::make_shared<std::map<QString, ModelTreeNode*>>();
-                        ModelTreeNode* child = new ModelTreeNode();
-                        child->setFolder(mapPtr);
-                        (*node)[QString::fromStdString(itp->string())] = child;
-                        node = mapPtr;
-                    }
-                    else {
-                        node = (*node)[QString::fromStdString(itp->string())]->getFolder();
-                    }
-                }
-                Base::Console().Log("'%s' ", itp->string().c_str());
-            }
-            Base::Console().Log("\n");
-        }
-    }
-
-    return modelTree;
 }

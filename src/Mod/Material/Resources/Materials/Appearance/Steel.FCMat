@@ -1,7 +1,8 @@
 # File created by ConvertFCMat.py
 General:
   UUID: "4b849c55-6b3a-4f75-a055-40c0d0324596"
-  AuthorAndLicense: "(c) 2023 David Carter"
+  Author: "David Carter"
+  License: "GPL-2.0-or-later"
   Name: "Steel"
   Description: "Defines the Steel appearance properties"
 AppearanceModels:
