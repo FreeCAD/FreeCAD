@@ -813,7 +813,7 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     *view << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_ViewIsometric"
           << "Std_ViewFront"<< "Std_ViewTop" << "Std_ViewRight"
           << "Std_ViewRear" << "Std_ViewBottom"<< "Std_ViewLeft"
-          << "Separator" << "Std_ToggleTransparency" << "Std_DrawStyle" << "Std_TreeViewActions"
+          << "Separator" << "Std_DrawStyle" << "Std_TreeViewActions"
           << "Separator" << "Std_MeasureDistance";
 
     // Structure
