@@ -3110,12 +3110,7 @@ void View3DInventorViewer::startAnimation(const SbRotation& orientation,
     auto animation = std::make_shared<FixedTimeAnimation>(
         navigation, orientation, rotationCenter, translation, duration);
 
-    if (wait) {
-        navigation->getAnimator()->startAndWait(animation);
-    }
-    else {
-        navigation->getAnimator()->start(animation);
-    }
+    navigation->startAnimating(animation, wait);
 }
 
 /**
@@ -3127,12 +3122,12 @@ void View3DInventorViewer::startAnimation(const SbRotation& orientation,
 void View3DInventorViewer::startSpinningAnimation(const SbVec3f& axis, float velocity)
 {
     auto animation = std::make_shared<SpinningAnimation>(navigation, axis, velocity);
-    navigation->getAnimator()->start(animation);
+    navigation->startAnimating(animation);
 }
 
 void View3DInventorViewer::stopAnimating()
 {
-    navigation->getAnimator()->stop();
+    navigation->stopAnimating();
 }
 
 void View3DInventorViewer::setPopupMenuEnabled(const SbBool on)
