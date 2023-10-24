@@ -289,6 +289,8 @@ void QGIViewPart::drawAllEdges()
         item->setNormalColor(PreferencesGui::getAccessibleQColor(PreferencesGui::normalQColor()));
         item->setStyle(Qt::SolidLine);
         if ((*itGeom)->getCosmetic()) {
+            item->setCosmetic(true);
+
             // cosmetic edge - format appropriately
             int source = (*itGeom)->source();
             if (source == COSMETICEDGE) {
