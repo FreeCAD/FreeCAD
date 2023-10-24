@@ -2,35 +2,40 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "C/C++: Linux: build and debug FreeCAD",
+      "name": "C/C++: build and debug FreeCAD",
       "type": "cppdbg",
       "request": "launch",
-      "program": "${workspaceFolder}/build/bin/FreeCAD",
+      "program": "${command:cmake.getLaunchTargetPath}",
       "args": [],
-      "stopAtEntry": false,
+      "stopAtEntry": true,
       "cwd": "${workspaceFolder}",
-      "environment": [],
+      "environment": [
+        {
+          "name": "PATH",
+          "value": "${command:cmake.getLaunchTargetDirectory}:${env:PATH}"
+        },
+        {
+          "name": "PYDEVD_DISABLE_FILE_VALIDATION",
+          "value": "1"
+        }
+      ],
+      "linux": {
+        "MIMode": "gdb",
+      },
+      "osx": {
+        "MIMode": "lldb"
+      },
+      "windows": {
+        "MIMode": "gdb",
+        "miDebuggerPath": "C:\\msys64\\ucrt64\\bin\\gdb.exe"
+      },
       "externalConsole": false,
-      "preLaunchTask": "CMake: build"
-    },
-    {
-      "name": "C/C++: macOS: build and debug FreeCAD",
-      "type": "cppdbg",
-      "request": "launch",
-      "program": "${workspaceFolder}/build/bin/FreeCAD",
-      "args": [],
-      "stopAtEntry": false,
-      "cwd": "${workspaceFolder}",
-      "environment": [],
-      "externalConsole": false,
-      "MIMode": "lldb",
       "preLaunchTask": "CMake: build"
     },
     {
       "name": "Python: Remote Attach",
       "type": "python",
       "request": "attach",
-      "preLaunchTask": "conda: activate environment",
       "redirectOutput": true,
       "connect": {
         "host": "localhost",
