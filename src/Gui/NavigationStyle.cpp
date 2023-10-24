@@ -323,9 +323,14 @@ SbBool NavigationStyle::lookAtPoint(const SbVec2s screenpos)
 
     SbVec3f hitpoint;
     hitpoint = picked->getPoint();
-    this->rotationCenterFound = false;
-    translateCamera(hitpoint - getFocalPoint());
+    lookAtPoint(hitpoint);
     return true;
+}
+
+void NavigationStyle::lookAtPoint(const SbVec3f& position)
+{
+    this->rotationCenterFound = false;
+    translateCamera(position - getFocalPoint());
 }
 
 SoCamera* NavigationStyle::getCamera() const
