@@ -70,12 +70,12 @@ dependencies:
 - gmsh
 - graphviz
 - hdf5
-- libcxx<16
+- libcxx
 - matplotlib
 - ninja
 - numpy
 - occt==7.6.3
-- openssl==3.0.*
+- openssl
 - pcl
 - pip
 - pivy
@@ -90,7 +90,7 @@ dependencies:
 - qt-main
 - qt-webengine
 - six
-- smesh==9.9
+- smesh
 - swig
 - vtk
 - xerces-c
