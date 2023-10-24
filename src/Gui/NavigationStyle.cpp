@@ -1067,9 +1067,19 @@ SbBool NavigationStyle::isAnimating() const
     return this->currentmode == NavigationStyle::SPINNING;
 }
 
-NavigationAnimator* NavigationStyle::getAnimator() const
+void NavigationStyle::startAnimating(const std::shared_ptr<NavigationAnimation>& animation, bool wait) const
 {
-    return this->animator;
+    if (wait) {
+        animator->startAndWait(animation);
+    }
+    else {
+        animator->start(animation);
+    }
+}
+
+void NavigationStyle::stopAnimating() const
+{
+    animator->stop();
 }
 
 void NavigationStyle::setSensitivity(float val)

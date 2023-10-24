@@ -38,7 +38,7 @@
 #include <Base/BaseClass.h>
 #include <Gui/Namespace.h>
 #include <FCGlobal.h>
-
+#include <memory>
 
 // forward declarations
 class SoEvent;
@@ -54,6 +54,7 @@ namespace Gui {
 class View3DInventorViewer;
 class NavigationAnimator;
 class AbstractMouseSelection;
+class NavigationAnimation;
 
 /**
  * @author Werner Mayer
@@ -124,7 +125,8 @@ public:
     SbBool isAnimationEnabled() const;
 
     SbBool isAnimating() const;
-    NavigationAnimator* getAnimator() const;
+    void startAnimating(const std::shared_ptr<NavigationAnimation>& animation, bool wait = false) const;
+    void stopAnimating() const;
 
     void setSensitivity(float);
     float getSensitivity() const;
