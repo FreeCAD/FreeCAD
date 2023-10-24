@@ -2788,7 +2788,7 @@ void View3DInventorViewer::setCameraType(SoType t)
     }
 }
 
-void View3DInventorViewer::moveCameraTo(const SbRotation& orientation, const SbVec3f& position)
+void View3DInventorViewer::moveCameraTo(const SbRotation& orientation, const SbVec3f& position, int duration)
 {
     SoCamera* camera = getCamera();
     if (!camera)
@@ -2796,7 +2796,7 @@ void View3DInventorViewer::moveCameraTo(const SbRotation& orientation, const SbV
 
     if (isAnimationEnabled()) {
         startAnimation(
-            orientation, camera->position.getValue(), position - camera->position.getValue(), true);
+            orientation, camera->position.getValue(), position - camera->position.getValue(), duration, true);
     }
 
     camera->orientation.setValue(orientation);
@@ -3088,16 +3088,24 @@ SbBool View3DInventorViewer::isAnimating() const
  * @param orientation The new orientation
  * @param rotationCenter The rotation center
  * @param translation An additional translation on top of the translation caused by the rotation around the rotation center
+ * @param duration The duration in milliseconds
+ * @param wait When false, start the animation and continue (asynchronous). When true, start the animation and wait for the animation to finish (synchronous)
  */
 void View3DInventorViewer::startAnimation(const SbRotation& orientation,
-                                          const SbVec3f& rotationCenter, const SbVec3f& translation, bool wait)
+                                          const SbVec3f& rotationCenter,
+                                          const SbVec3f& translation,
+                                          int duration,
+                                          bool wait)
 {
     // Currently starts a FixedTimeAnimation. If there is going to be an additional animation like
     // FixedVelocityAnimation, check the animation type from a parameter and start the right animation
 
-    int duration = App::GetApplication()
+    // Duration was not set or is invalid so use the AnimationDuration parameter as default
+    if (duration < 0) {
+        duration = App::GetApplication()
                        .GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")
                        ->GetInt("AnimationDuration", 250);
+    }
 
     auto animation = std::make_shared<FixedTimeAnimation>(
         navigation, orientation, rotationCenter, translation, duration);
