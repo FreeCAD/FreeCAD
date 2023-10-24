@@ -151,13 +151,14 @@ namespace MbD {
 		virtual std::ostream& printOn(std::ostream& s) const;
 		friend std::ostream& operator<<(std::ostream& s, const Item& item)
 		{
-			if (&item) {
+            // the following if cannot be false
+//			if (&item) {
 				return item.printOn(s);
-			}
-			else {
-				s << "NULL";
-			}
-			return s;
+//			}
+//			else {
+//				s << "NULL";
+//			}
+			//return s;
 		}
 
 		std::string name;

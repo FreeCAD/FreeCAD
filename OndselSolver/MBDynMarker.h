@@ -14,7 +14,7 @@ namespace MbD {
 	class MBDynMarker : public MBDynItem
 	{
 	public:
-		void parseMBDyn(std::vector<std::string>& args);
+		void parseMBDyn(std::vector<std::string>& args) override;
 		void createASMT() override;
 
 		std::string nodeStr;

@@ -40,7 +40,7 @@ namespace MbD {
 				this->push_back(row);
 			}
 		}
-		void atiput(int i, SpRowsptr<T> spRow);
+		void atiput(int i, SpRowsptr<T> spRow) override;
 		void atijplusDiagonalMatrix(int i, int j, DiagMatDsptr diagMat);
 		void atijminusDiagonalMatrix(int i, int j, DiagMatDsptr diagMat);
 		double sumOfSquares() override;

@@ -20,15 +20,15 @@ namespace MbD {
         
         void calcPrivate() override;
         void initialize() override;
-        FMatDsptr ppvaluepEIpEJ();
-        FMatDsptr ppvaluepEIpXJ();
-        FMatDsptr ppvaluepEJpEJ();
-        FMatDsptr ppvaluepXIpEJ();
-        FMatDsptr ppvaluepXIpXJ();
-        FMatDsptr ppvaluepXJpEJ();
-        FMatDsptr ppvaluepXJpXJ();
-        FRowDsptr pvaluepEJ();
-        FRowDsptr pvaluepXJ();
+        FMatDsptr ppvaluepEIpEJ() override;
+        FMatDsptr ppvaluepEIpXJ() override;
+        FMatDsptr ppvaluepEJpEJ() override;
+        FMatDsptr ppvaluepXIpEJ() override;
+        FMatDsptr ppvaluepXIpXJ() override;
+        FMatDsptr ppvaluepXJpEJ() override;
+        FMatDsptr ppvaluepXJpXJ() override;
+        FRowDsptr pvaluepEJ() override;
+        FRowDsptr pvaluepXJ() override;
 
         FRowDsptr prIeJepXJ, prIeJepEJ;
         FMatDsptr pprIeJepXIpXJ, pprIeJepEIpXJ, pprIeJepXJpXJ, pprIeJepXIpEJ, pprIeJepEIpEJ, pprIeJepXJpEJ, pprIeJepEJpEJ, prIeJeOpEJT;

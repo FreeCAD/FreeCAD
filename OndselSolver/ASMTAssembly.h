@@ -83,7 +83,7 @@ namespace MbD {
 		double calcCharacteristicLength();
 		std::shared_ptr<std::vector<std::shared_ptr<ASMTItemIJ>>> connectorList();
 		std::shared_ptr<std::map<std::string, std::shared_ptr<ASMTMarker>>>markerMap();
-		void deleteMbD();
+		void deleteMbD() override;
 		void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
 		void outputFile(std::string filename);
 		void storeOnLevel(std::ofstream& os, int level) override;

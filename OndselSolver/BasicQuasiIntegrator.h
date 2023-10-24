@@ -15,9 +15,9 @@ namespace MbD {
 	{
 		//
 	public:
-        void firstStep();
+        void firstStep() override;
         bool isRedoingFirstStep();
-        void nextStep();
+        void nextStep() override;
         //void reportStepStats();
         //void reportTrialStepStats();
         void runInitialConditionTypeSolution() override;

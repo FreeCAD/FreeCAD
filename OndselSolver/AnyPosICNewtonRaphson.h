@@ -24,7 +24,7 @@ namespace MbD {
         void fillY() override;
         void fillPyPx() override;
         void passRootToSystem() override;
-        void assignEquationNumbers() = 0;
+        void assignEquationNumbers() override = 0;
 
         int nqsu = -1;
         FColDsptr qsuOld;

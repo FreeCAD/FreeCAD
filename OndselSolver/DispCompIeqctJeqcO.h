@@ -24,7 +24,7 @@ namespace MbD {
         double ppvalueptpt() override;
         void preAccIC() override;
         void preVelIC() override;
-        double pvaluept();
+        double pvaluept() override;
 
         double priIeJeOpt;
         FRowDsptr ppriIeJeOpEIpt;

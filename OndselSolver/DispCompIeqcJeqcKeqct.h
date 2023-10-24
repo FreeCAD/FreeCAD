@@ -21,13 +21,13 @@ namespace MbD {
         void calcPostDynCorrectorIteration() override;
         void initialize() override;
         void initializeGlobally() override;
-        FRowDsptr ppvaluepXIpt();
-        FRowDsptr ppvaluepEIpt();
-        FRowDsptr ppvaluepEKpt();
-        FRowDsptr ppvaluepXJpt();
-        FRowDsptr ppvaluepEJpt();
-        double ppvalueptpt();
-        double pvaluept();
+        FRowDsptr ppvaluepXIpt() override;
+        FRowDsptr ppvaluepEIpt() override;
+        FRowDsptr ppvaluepEKpt() override;
+        FRowDsptr ppvaluepXJpt() override;
+        FRowDsptr ppvaluepEJpt() override;
+        double ppvalueptpt() override;
+        double pvaluept() override;
         void preAccIC() override;
         void preVelIC() override;
 

@@ -97,7 +97,7 @@ bool PosICNewtonRaphson::isConverged()
 void PosICNewtonRaphson::handleSingularMatrix()
 {
 	nSingularMatrixError++;
-	if (nSingularMatrixError = 1){
+	if (nSingularMatrixError == 1){
 		this->lookForRedundantConstraints();
 		matrixSolver = this->matrixSolverClassNew();
 	}

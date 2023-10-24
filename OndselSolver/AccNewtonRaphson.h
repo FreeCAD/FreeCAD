@@ -22,7 +22,7 @@ namespace MbD {
         void incrementIterNo() override;
         void initializeGlobally() override;
         void logSingularMatrixMessage();
-        void passRootToSystem();
+        void passRootToSystem() override;
         void postRun() override;
         void preRun() override;
         void handleSingularMatrix() override;
