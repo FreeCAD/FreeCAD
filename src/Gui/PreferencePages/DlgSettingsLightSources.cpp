@@ -194,7 +194,7 @@ void DlgSettingsLightSources::loadDirection()
 void DlgSettingsLightSources::toggleLight(bool on)
 {
     if (view) {
-        view->getHeadlight()->on = on;
+        view->setHeadlightEnabled(on);
     }
 }
 
