@@ -1066,11 +1066,12 @@ void execLine2Points(Gui::Command* cmd)
     //check if editing existing edge
     if (!edgeNames.empty() && (edgeNames.size() == 1)) {
         TechDraw::CosmeticEdge* ce = baseFeat->getCosmeticEdgeBySelection(edgeNames.front());
-        if (!ce) {
+        if (!ce || ce->m_geometry->getGeomType() != TechDraw::GeomType::GENERIC) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
                              QObject::tr("Selection is not a Cosmetic Line."));
             return;
         }
+
         Gui::Control().showDialog(new TaskDlgCosmeticLine(baseFeat,
                                                           edgeNames.front()));
         return;
@@ -1208,11 +1209,14 @@ void execCosmeticCircle(Gui::Command* cmd)
     //check if editing existing edge
     if (!edgeNames.empty() && (edgeNames.size() == 1)) {
         TechDraw::CosmeticEdge* ce = baseFeat->getCosmeticEdgeBySelection(edgeNames.front());
-        if (!ce) {
+        if (!ce
+            || !(ce->m_geometry->getGeomType() == TechDraw::GeomType::CIRCLE
+                || ce->m_geometry->getGeomType() == TechDraw::GeomType::ARCOFCIRCLE)) {
             QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Wrong Selection"),
-                             QObject::tr("Selection is not a Cosmetic edge."));
+                             QObject::tr("Selection is not a Cosmetic Circle or a Cosmetic Arc of Circle."));
             return;
         }
+
         Gui::Control().showDialog(new TaskDlgCosmeticCircle(baseFeat,
                                                           edgeNames.front()));
         return;
