@@ -86,6 +86,7 @@
 #include <Inventor/details/SoPointDetail.h>
 
 #include <Inventor/draggers/SoCenterballDragger.h>
+#include <Inventor/draggers/SoDirectionalLightDragger.h>
 #include <Inventor/draggers/SoDragger.h>
 #include <Inventor/draggers/SoTrackballDragger.h>
 #include <Inventor/draggers/SoTransformerDragger.h>
