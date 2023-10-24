@@ -39,7 +39,7 @@ void NavigationAnimation::updateCurrentValue(const QVariant& value)
     update(value);
 }
 
-void NavigationAnimation::onStop(bool finished)
+void NavigationAnimation::onStop([[maybe_unused]] bool finished)
 {}
 
 FixedTimeAnimation::FixedTimeAnimation(NavigationStyle* navigation, const SbRotation& orientation,
@@ -158,7 +158,7 @@ void SpinningAnimation::update(const QVariant& value)
 /**
  * @param finished True when the animation is finished, false when interrupted
  */
-void SpinningAnimation::onStop(bool finished)
+void SpinningAnimation::onStop([[maybe_unused]] bool finished)
 {
     if (navigation->getViewingMode() != NavigationStyle::SPINNING) {
         return;
