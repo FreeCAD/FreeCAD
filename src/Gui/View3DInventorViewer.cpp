@@ -1407,12 +1407,12 @@ SoDirectionalLight* View3DInventorViewer::getBacklight() const
     return this->backlight;
 }
 
-void View3DInventorViewer::setBacklight(SbBool on)
+void View3DInventorViewer::setBacklightEnabled(bool on)
 {
     this->backlight->on = on;
 }
 
-SbBool View3DInventorViewer::isBacklight() const
+bool View3DInventorViewer::isBacklightEnabled() const
 {
     return this->backlight->on.getValue();
 }

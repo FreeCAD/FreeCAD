@@ -153,8 +153,8 @@ public:
     void onSelectionChanged(const SelectionChanges &Reason) override;
 
     SoDirectionalLight* getBacklight() const;
-    void setBacklight(SbBool on);
-    SbBool isBacklight() const;
+    void setBacklightEnabled(bool on);
+    bool isBacklightEnabled() const;
     void setSceneGraph (SoNode *root) override;
     SbBool searchNode(SoNode*) const;
 

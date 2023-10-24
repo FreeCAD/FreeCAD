@@ -112,7 +112,7 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
     if (strcmp(Reason,"EnableHeadlight") == 0) {
         bool enable = rGrp.GetBool("EnableHeadlight", true);
         for (auto _viewer : _viewers) {
-            _viewer->getHeadlight()->on.setValue(enable);
+            _viewer->setHeadlightEnabled(enable);
         }
     }
     else if (strcmp(Reason,"HeadlightColor") == 0) {
@@ -144,7 +144,7 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
     }
     else if (strcmp(Reason,"EnableBacklight") == 0) {
         for (auto _viewer : _viewers) {
-            _viewer->setBacklight(rGrp.GetBool("EnableBacklight", false));
+            _viewer->setBacklightEnabled(rGrp.GetBool("EnableBacklight", false));
         }
     }
     else if (strcmp(Reason,"BacklightColor") == 0) {
