@@ -73,6 +73,7 @@ class Draft_SelectPlane:
             App.activeDraftCommand.finish()
 
         App.activeDraftCommand = self
+        self.call = None
 
         # Set variables
         self.wp = WorkingPlane.get_working_plane()
@@ -134,6 +135,7 @@ class Draft_SelectPlane:
         if Gui.Selection.hasSelection():
             if self.wp.align_to_selection(self.offset):
                 Gui.Selection.clearSelection()
+            self.finish()
             return
 
         # Execute the actual task panel delayed to catch possible active Draft command
