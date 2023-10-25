@@ -331,7 +331,7 @@ const SbViewportRegion & SIM::Coin3D::Quarter::SoQTQuarterAdaptor::getViewportRe
     return getSoRenderManager()->getViewportRegion();
 }
 
-void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::setViewing(SbBool enable)
+void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::setViewing(bool enable)
 {
     m_viewingflag = enable;
 
@@ -346,7 +346,7 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::setViewing(SbBool enable)
     }
 }
 
-SbBool SIM::Coin3D::Quarter::SoQTQuarterAdaptor::isViewing() const
+bool SIM::Coin3D::Quarter::SoQTQuarterAdaptor::isViewing() const
 {
     return m_viewingflag;
 }
@@ -406,12 +406,12 @@ float SIM::Coin3D::Quarter::SoQTQuarterAdaptor::getSeekTime() const
     return m_seekperiod;
 }
 
-SbBool SIM::Coin3D::Quarter::SoQTQuarterAdaptor::isSeekMode() const
+bool SIM::Coin3D::Quarter::SoQTQuarterAdaptor::isSeekMode() const
 {
     return m_inseekmode;
 }
 
-SbBool SIM::Coin3D::Quarter::SoQTQuarterAdaptor::isSeekValuePercentage() const
+bool SIM::Coin3D::Quarter::SoQTQuarterAdaptor::isSeekValuePercentage() const
 {
     return !m_seekdistanceabs;
 }
@@ -428,7 +428,7 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::setPickRadius(float pickRadius)
     }
 }
 
-SbBool SIM::Coin3D::Quarter::SoQTQuarterAdaptor::seekToPoint(const SbVec2s& screenpos)
+bool SIM::Coin3D::Quarter::SoQTQuarterAdaptor::seekToPoint(const SbVec2s& screenpos)
 {
 
     SoRayPickAction rpaction(getSoRenderManager()->getViewportRegion());
@@ -502,7 +502,7 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::setSeekDistance(const float dista
     m_seekdistance = distance;
 }
 
-void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::setSeekMode(SbBool enable)
+void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::setSeekMode(bool enable)
 {
     if(!enable && m_seeksensor->isScheduled()) {
         m_seeksensor->unschedule();
@@ -517,7 +517,7 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::setSeekTime(const float seconds)
     m_seekperiod = seconds;
 }
 
-void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::setSeekValueAsPercentage(SbBool on)
+void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::setSeekValueAsPercentage(bool on)
 {
     m_seekdistanceabs = !on;
 }
@@ -557,7 +557,7 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::seeksensorCB(void* data, SoSensor
         par = 1.0F;
     }
 
-    SbBool end = (par == 1.0F);
+    bool end = (par == 1.0F);
 
     par = (float)((1.0 - cos(M_PI * par)) * 0.5);  // NOLINT
 
