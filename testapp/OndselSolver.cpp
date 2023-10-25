@@ -25,11 +25,12 @@ void runSpMat();
 
 int main()
 {
-	// ASMTAssembly::readWriteFile("piston.asmt");
-	// MBDynSystem::runFile("MBDynCase.mbd");		//To be completed
-	// MBDynSystem::runFile("crank_slider.mbd");		//To be completed
-	//ASMTAssembly::runSinglePendulumSuperSimplified();	//Mass is missing
-	//ASMTAssembly::runSinglePendulumSuperSimplified2();	//DOF has infinite acceleration due to zero mass and inertias
+	////ASMTAssembly::readWriteFile("piston.asmt");
+	//MBDynSystem::runFile("MBDynCaseJose.mbd");
+	//MBDynSystem::runFile("MBDynCase.mbd");
+	//MBDynSystem::runFile("crank_slider.mbd");
+	////ASMTAssembly::runSinglePendulumSuperSimplified();	//Mass is missing
+	////ASMTAssembly::runSinglePendulumSuperSimplified2();	//DOF has infinite acceleration due to zero mass and inertias
 	ASMTAssembly::runSinglePendulumSimplified();
 	ASMTAssembly::runSinglePendulum();
 	ASMTAssembly::runFile("../testapp/piston.asmt");
