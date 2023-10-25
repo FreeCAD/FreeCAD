@@ -47,9 +47,17 @@ class QUARTER_DLL_API SoQTQuarterAdaptor :  public QuarterWidget {
     Q_OBJECT
 
 public:
-    explicit SoQTQuarterAdaptor(QWidget* parent = nullptr, const QtGLWidget* sharewidget = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
-    explicit SoQTQuarterAdaptor(const QtGLFormat& format, QWidget* parent = nullptr, const QtGLWidget* shareWidget = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
-    explicit SoQTQuarterAdaptor(QtGLContext* context, QWidget* parent = nullptr, const QtGLWidget* sharewidget = nullptr, Qt::WindowFlags f = Qt::WindowFlags());
+    explicit SoQTQuarterAdaptor(QWidget* parent = nullptr,
+                                const QtGLWidget* sharewidget = nullptr,
+                                Qt::WindowFlags flags = Qt::WindowFlags());
+    explicit SoQTQuarterAdaptor(const QtGLFormat& format,
+                                QWidget* parent = nullptr,
+                                const QtGLWidget* shareWidget = nullptr,
+                                Qt::WindowFlags flags = Qt::WindowFlags());
+    explicit SoQTQuarterAdaptor(QtGLContext* context,
+                                QWidget* parent = nullptr,
+                                const QtGLWidget* sharewidget = nullptr,
+                                Qt::WindowFlags flags = Qt::WindowFlags());
     ~SoQTQuarterAdaptor() override;
 
     //the functions available in soqtviewer but missing in quarter
@@ -77,13 +85,13 @@ public:
 
     virtual void setSeekMode(SbBool enable);
     SbBool isSeekMode() const;
-    SbBool seekToPoint(const SbVec2s screenpos);
+    SbBool seekToPoint(const SbVec2s& screenpos);
     void seekToPoint(const SbVec3f& scenepos);
-    void setSeekTime(const float seconds);
+    void setSeekTime(float seconds);
     float getSeekTime() const;
-    void setSeekDistance(const float distance);
+    void setSeekDistance(float distance);
     float getSeekDistance() const;
-    void setSeekValueAsPercentage(const SbBool on);
+    void setSeekValueAsPercentage(SbBool on);
     SbBool isSeekValuePercentage() const;
 
     virtual float getPickRadius() const {return this->pickRadius;}
@@ -91,56 +99,60 @@ public:
 
     virtual void saveHomePosition();
     virtual void resetToHomePosition();
-    virtual bool hasHomePosition() const {return m_storedcamera;}
+    virtual bool hasHomePosition() const
+    {
+        return m_storedcamera != nullptr;
+    }
 
-    void setSceneGraph(SoNode* root) override {
+    void setSceneGraph(SoNode* root) override
+    {
         QuarterWidget::setSceneGraph(root);
     }
     
     bool processSoEvent(const SoEvent* event) override;
-    void paintEvent(QPaintEvent*) override;
+    void paintEvent(QPaintEvent* event) override;
 
     //this functions still need to be ported
     virtual void afterRealizeHook() {} //enables spacenav and joystick in soqt, dunno if this is needed
 
 private:
     void init();
-    void convertPerspective2Ortho(const SoPerspectiveCamera* in,  SoOrthographicCamera* out);
-    void convertOrtho2Perspective(const SoOrthographicCamera* in, SoPerspectiveCamera* out);
+    static void convertPerspective2Ortho(const SoPerspectiveCamera* in,  SoOrthographicCamera* out);
+    static void convertOrtho2Perspective(const SoOrthographicCamera* in, SoPerspectiveCamera* out);
     void getCameraCoordinateSystem(SoCamera * camera, SoNode * root, SbMatrix & matrix, SbMatrix & inverse);
-    static void seeksensorCB(void * data, SoSensor * s);
+    static void seeksensorCB(void * data, SoSensor * sensor);
     void moveCameraScreen(const SbVec2f & screenpos);
     void resetFrameCounter();
     SbVec2f addFrametime(double ft);
 
-    bool m_viewingflag;
-    int  m_interactionnesting;
+    bool m_viewingflag = false;
+    int  m_interactionnesting = 0;
     SoCallbackList m_interactionStartCallback;
     SoCallbackList m_interactionEndCallback;
 
-    double frametime;
-    double drawtime;
-    double starttime;
-    int framecount;
+    double frametime = 0.0;
+    double drawtime = 0.0;
+    double starttime = 0.0;
+    int framecount = 0.0;
 
     // Seek functionality
-    SoTimerSensor* m_seeksensor;
-    float m_seekperiod;
-    SbBool m_inseekmode;
+    SoTimerSensor* m_seeksensor = nullptr;
+    float m_seekperiod = 0.0F;
+    SbBool m_inseekmode = false;
     SbVec3f m_camerastartposition, m_cameraendposition;
     SbRotation m_camerastartorient, m_cameraendorient;
-    float m_seekdistance;
-    SbBool m_seekdistanceabs;
+    float m_seekdistance = 0.0F;
+    SbBool m_seekdistanceabs = false;
     SoSearchAction searchaction;
     SoGetMatrixAction matrixaction;
-    float pickRadius;
+    float pickRadius = 0.0F;
     // Home position storage.
-    SoNode * m_storedcamera;
-    
+    SoNode * m_storedcamera = nullptr;
+
 protected:
-    void draw2DString(const char * str, SbVec2s glsize, SbVec2f position);
-    void printString(const char * s);
-    SbVec2f framesPerSecond;
+    static void draw2DString(const char * str, SbVec2s glsize, SbVec2f position);
+    static void printString(const char * str);
+    SbVec2f framesPerSecond;  // NOLINT
 };
 
 } //Quarter
