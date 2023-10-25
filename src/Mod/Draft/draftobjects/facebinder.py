@@ -77,6 +77,7 @@ class Facebinder(DraftObject):
                 if "Face" in sub:
                     try:
                         face = Part.getShape(sel[0], sub, needSubElement=True, retType=0)
+                        area += face.Area
                         if offs_val:
                             if face.Surface.isPlanar():
                                 norm = face.normalAt(0, 0)
@@ -86,14 +87,14 @@ class Facebinder(DraftObject):
                             else:
                                 offs = face.makeOffsetShape(offs_val, 1e-7)
                                 faces.extend(offs.Faces)
-                        area += face.Area
+                        else:
+                            faces.append(face)
                     except Part.OCCError:
                         print("Draft: error building facebinder")
                         return
         if not faces:
             return
         try:
-            sh = None
             if extr_val:
                 extrs = []
                 for face in faces:
@@ -103,23 +104,26 @@ class Facebinder(DraftObject):
                     else:
                         extr = face.makeOffsetShape(extr_val, 1e-7, fill=True)
                         extrs.extend(extr.Solids)
-                sh = extrs.pop()
-                sh = sh.multiFuse(extrs)
+                shp = Part.Shape()           # create empty shape to ensure default Placement
+                shp = shp.fuse(extrs.pop())  # add 1st shape, multiFuse does not work otherwise
+                if extrs:
+                    shp = shp.multiFuse(extrs)  # multiFuse is more reliable than serial fuse
+            else:
+                shp = Part.Shape()
+                shp = shp.fuse(faces.pop())
+                if faces:
+                    shp = shp.multiFuse(faces)
             if len(faces) > 1:
-                if not sh:
-                    sh = faces.pop()
-                    sh = sh.multiFuse(faces)
                 if hasattr(obj, "Sew") and obj.Sew:
-                    sh.sewShape()
+                    shp.sewShape()
                 if not hasattr(obj, "RemoveSplitter"):
-                    sh = sh.removeSplitter()
+                    shp = shp.removeSplitter()
                 elif obj.RemoveSplitter:
-                    sh = sh.removeSplitter()
+                    shp = shp.removeSplitter()
         except Part.OCCError:
             print("Draft: error building facebinder")
             return
-        obj.Shape = sh
-        obj.Placement = pl
+        obj.Shape = shp
         obj.Area = area
         self.props_changed_clear()
 

@@ -51,6 +51,7 @@ EditableDatumLabel::EditableDatumLabel(View3DInventorViewer* view,
     : isSet(false)
     , autoDistance(autoDistance)
     , autoDistanceReverse(false)
+    , value(0.0)
     , viewer(view)
     , spinBox(nullptr)
     , cameraSensor(nullptr)
@@ -94,7 +95,7 @@ EditableDatumLabel::~EditableDatumLabel()
 
 void EditableDatumLabel::activate()
 {
-    if (!viewer) {
+    if (!viewer || isActive()) {
         return;
     }
 
@@ -130,8 +131,12 @@ void EditableDatumLabel::deactivate()
     }
 }
 
-void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj)
+void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj, bool visibleToMouse)
 {
+    if (isInEdit()) {
+        return;
+    }
+
     QWidget* mdi = viewer->parentWidget();
 
     label->string = " ";
@@ -147,6 +152,10 @@ void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj)
         spinBox->installEventFilter(eventFilteringObj);
     }
 
+    if (!visibleToMouse) {
+        setSpinboxVisibleToMouse(visibleToMouse);
+    }
+
     spinBox->show();
     setSpinboxValue(val);
     //Note: adjustSize apparently uses the Min/Max values to set the size. So if we don't set them to INT_MAX, the spinbox are much too big.
@@ -156,6 +165,7 @@ void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj)
     connect(spinBox, qOverload<double>(&QuantitySpinBox::valueChanged),
         this, [this](double value) {
         this->isSet = true;
+        this->value = value;
         Q_EMIT this->valueChanged(value);
     });
 }
@@ -163,20 +173,35 @@ void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj)
 void EditableDatumLabel::stopEdit()
 {
     if (spinBox) {
+        // write the spinbox value in the label.
+        Base::Quantity quantity = spinBox->value();
+
+        double factor{};
+        QString unitStr;
+        QString valueStr;
+        valueStr = quantity.getUserString(factor, unitStr);
+        label->string = SbString(valueStr.toUtf8().constData());
+
         spinBox->deleteLater();
         spinBox = nullptr;
     }
 }
 
-bool EditableDatumLabel::isInEdit()
+bool EditableDatumLabel::isActive() const
 {
-    return spinBox;
+    return cameraSensor != nullptr;
+}
+
+bool EditableDatumLabel::isInEdit() const
+{
+    return spinBox != nullptr;
 }
 
 
-double EditableDatumLabel::getValue()
+double EditableDatumLabel::getValue() const
 {
-    return spinBox->rawValue();
+    // We use value rather than spinBox->rawValue() in case edit stopped.
+    return value;
 }
 
 void EditableDatumLabel::setSpinboxValue(double val, const Base::Unit& unit)
@@ -188,6 +213,7 @@ void EditableDatumLabel::setSpinboxValue(double val, const Base::Unit& unit)
 
     QSignalBlocker block(spinBox);
     spinBox->setValue(Base::Quantity(val, unit));
+    value = val;
     positionSpinbox();
 
     if (spinBox->hasFocus()) {
@@ -311,11 +337,13 @@ void EditableDatumLabel::setLabelDistance(double val)
     label->param1 = float(val);
 }
 
+// NOLINTNEXTLINE
 void EditableDatumLabel::setLabelStartAngle(double val)
 {
     label->param2 = float(val);
 }
 
+// NOLINTNEXTLINE
 void EditableDatumLabel::setLabelRange(double val)
 {
     label->param3 = float(val);
@@ -340,9 +368,9 @@ void EditableDatumLabel::setLabelAutoDistanceReverse(bool val)
     autoDistanceReverse = val;
 }
 
-void EditableDatumLabel::setSpinboxInvisibleToMouse(bool val)
+void EditableDatumLabel::setSpinboxVisibleToMouse(bool val)
 {
-    spinBox->setAttribute(Qt::WA_TransparentForMouseEvents, val);
+    spinBox->setAttribute(Qt::WA_TransparentForMouseEvents, !val);
 }
 
 #include "moc_EditableDatumLabel.cpp"

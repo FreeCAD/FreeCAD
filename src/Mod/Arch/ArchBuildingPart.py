@@ -301,9 +301,10 @@ class CommandBuildingPart:
         ss += "]"
         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create BuildingPart"))
         FreeCADGui.addModule("Arch")
-        FreeCADGui.doCommand("obj = Arch.makeBuildingPart("+ss+")")
         FreeCADGui.addModule("Draft")
-        FreeCADGui.doCommand("obj.Placement = FreeCAD.DraftWorkingPlane.getPlacement()")
+        FreeCADGui.addModule("WorkingPlane")
+        FreeCADGui.doCommand("obj = Arch.makeBuildingPart("+ss+")")
+        FreeCADGui.doCommand("obj.Placement = WorkingPlane.get_working_plane().get_placement()")
         FreeCADGui.doCommand("Draft.autogroup(obj)")
         FreeCAD.ActiveDocument.commitTransaction()
         FreeCAD.ActiveDocument.recompute()
@@ -963,30 +964,22 @@ class ViewProviderBuildingPart:
         FreeCADGui.Selection.clearSelection()
 
     def setWorkingPlane(self,restore=False):
+        vobj = self.Object.ViewObject
 
-        if hasattr(self,"Object") and hasattr(FreeCAD,"DraftWorkingPlane"):
-            import FreeCADGui
-            autoclip = False
-            if hasattr(self.Object.ViewObject,"AutoCutView"):
-                autoclip = self.Object.ViewObject.AutoCutView
-            if restore:
-                FreeCAD.DraftWorkingPlane.restore()
-                if autoclip:
-                    self.Object.ViewObject.CutView = False
-            else:
-                FreeCAD.DraftWorkingPlane.save()
-                FreeCADGui.runCommand("Draft_SelectPlane")
-                if autoclip:
-                    self.Object.ViewObject.CutView = True
-            if hasattr(FreeCADGui,"Snapper"):
-                FreeCADGui.Snapper.setGrid()
-            if hasattr(FreeCADGui,"draftToolBar"):
-                if restore and hasattr(self,"wptext"):
-                    FreeCADGui.draftToolBar.wplabel.setText(self.wptext)
-                else:
-                    self.wptext = FreeCADGui.draftToolBar.wplabel.text()
-                    FreeCADGui.draftToolBar.wplabel.setText(self.Object.Label)
-            FreeCAD.DraftWorkingPlane.lastBuildingPart = self.Object.Name
+        import WorkingPlane
+        wp = WorkingPlane.get_working_plane(update=False)
+        autoclip = False
+        if hasattr(vobj,"AutoCutView"):
+            autoclip = vobj.AutoCutView
+        if restore:
+            if wp.label.rstrip("*") == self.Object.Label:
+                wp._previous()
+            if autoclip:
+                vobj.CutView = False
+        else:
+            wp.align_to_selection()
+            if autoclip:
+                vobj.CutView = True
 
     def writeCamera(self):
 

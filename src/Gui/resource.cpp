@@ -36,6 +36,7 @@
 #include "PreferencePages/DlgSettingsEditor.h"
 #include "PreferencePages/DlgSettingsGeneral.h"
 #include "PreferencePages/DlgSettingsMacroImp.h"
+#include "PreferencePages/DlgSettingsLightSources.h"
 #include "PreferencePages/DlgSettingsNavigation.h"
 #include "PreferencePages/DlgSettingsNotificationArea.h"
 #include "PreferencePages/DlgSettingsPythonConsole.h"
@@ -58,6 +59,7 @@
 using namespace Gui;
 using namespace Gui::Dialog;
 
+// clang-format off
 /**
  * Registers all preference pages or widgets to create them dynamically at any later time.
  */
@@ -74,6 +76,7 @@ WidgetFactorySupplier::WidgetFactorySupplier()
     new PrefPageProducer<DlgSettingsNotificationArea> ( QT_TRANSLATE_NOOP("QObject","General") );
     new PrefPageProducer<DlgSettingsReportView>       ( QT_TRANSLATE_NOOP("QObject","General") );
     new PrefPageProducer<DlgSettings3DViewImp>        ( QT_TRANSLATE_NOOP("QObject","Display") );
+    new PrefPageProducer<DlgSettingsLightSources>     ( QT_TRANSLATE_NOOP("QObject","Display") );
     new PrefPageProducer<DlgSettingsUI>               ( QT_TRANSLATE_NOOP("QObject","Display") );
     new PrefPageProducer<DlgSettingsNavigation>       ( QT_TRANSLATE_NOOP("QObject","Display") );
     new PrefPageProducer<DlgSettingsViewColor>        ( QT_TRANSLATE_NOOP("QObject","Display") );
@@ -122,3 +125,4 @@ WidgetFactorySupplier::WidgetFactorySupplier()
     new WidgetProducer<Gui::DoubleSpinBox>;
     new WidgetProducer<Gui::QuantitySpinBox>;
 }
+// clang-format on

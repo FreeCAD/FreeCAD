@@ -394,7 +394,7 @@ void SketcherToolDefaultWidget::setParameterLabel(int parameterindex, const QStr
 void SketcherToolDefaultWidget::setParameter(int parameterindex, double val)
 {
     if (parameterindex < nParameters) {
-        getParameterSpinBox(parameterindex)->setValue(Base::Quantity(val, Base::Unit::Length));
+        getParameterSpinBox(parameterindex)->setValue(val);
 
         return;
     }
@@ -416,6 +416,45 @@ void SketcherToolDefaultWidget::configureParameterUnit(int parameterindex, const
     Base::StateLocker lock(blockParameterSlots, true);
     if (parameterindex < nParameters) {
         getParameterSpinBox(parameterindex)->setUnit(unit);
+
+        return;
+    }
+
+    THROWM(Base::IndexError,
+           QT_TRANSLATE_NOOP("Exceptions", "ToolWidget parameter index out of range"));
+}
+
+void SketcherToolDefaultWidget::configureParameterDecimals(int parameterindex, int val)
+{
+    Base::StateLocker lock(blockParameterSlots, true);
+    if (parameterindex < nParameters) {
+        getParameterSpinBox(parameterindex)->setDecimals(val);
+
+        return;
+    }
+
+    THROWM(Base::IndexError,
+           QT_TRANSLATE_NOOP("Exceptions", "ToolWidget parameter index out of range"));
+}
+
+void SketcherToolDefaultWidget::configureParameterMin(int parameterindex, double val)
+{
+    Base::StateLocker lock(blockParameterSlots, true);
+    if (parameterindex < nParameters) {
+        getParameterSpinBox(parameterindex)->setMinimum(val);
+
+        return;
+    }
+
+    THROWM(Base::IndexError,
+           QT_TRANSLATE_NOOP("Exceptions", "ToolWidget parameter index out of range"));
+}
+
+void SketcherToolDefaultWidget::configureParameterMax(int parameterindex, double val)
+{
+    Base::StateLocker lock(blockParameterSlots, true);
+    if (parameterindex < nParameters) {
+        getParameterSpinBox(parameterindex)->setMaximum(val);
 
         return;
     }
@@ -711,6 +750,20 @@ void SketcherToolDefaultWidget::restoreCheckBoxPref(int checkboxindex)
 {
     if (checkboxindex < nCheckbox) {
         getCheckBox(checkboxindex)->onRestore();
+    }
+}
+
+void SketcherToolDefaultWidget::setCheckboxIcon(int checkboxindex, QIcon icon)
+{
+    if (checkboxindex < nCheckbox) {
+        getCheckBox(checkboxindex)->setIcon(icon);
+    }
+}
+
+void SketcherToolDefaultWidget::setComboboxItemIcon(int comboboxindex, int index, QIcon icon)
+{
+    if (comboboxindex < nCombobox) {
+        getComboBox(comboboxindex)->setItemIcon(index, icon);
     }
 }
 

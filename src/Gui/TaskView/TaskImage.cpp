@@ -529,7 +529,7 @@ void InteractiveScale::collectPoint(const SbVec3f& pos3d)
 
             midPoint = (points[0] + points[1]) / 2;
 
-            measureLabel->startEdit(getDistance(points[1]), this);
+            measureLabel->startEdit(getDistance(points[1]), this, true);
 
             Q_EMIT enableApplyBtn();
         }

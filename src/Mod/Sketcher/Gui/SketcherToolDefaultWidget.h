@@ -146,6 +146,9 @@ public:
     void setParameter(int parameterindex, double val);
     void configureParameterInitialValue(int parameterindex, double value);
     void configureParameterUnit(int parameterindex, const Base::Unit& unit);
+    void configureParameterDecimals(int parameterindex, int val);
+    void configureParameterMax(int parameterindex, double val);
+    void configureParameterMin(int parameterindex, double val);
     double getParameter(int parameterindex);
     bool isParameterSet(int parameterindex);
     void
@@ -172,6 +175,7 @@ public:
     void setCheckboxToolTip(int checkboxindex, const QString& string);
     bool getCheckboxChecked(int checkboxindex);
     void setCheckboxPrefEntry(int checkboxindex, const std::string& prefEntry);
+    void setCheckboxIcon(int checkboxindex, QIcon icon);
     void restoreCheckBoxPref(int checkboxindex);
 
     void initNComboboxes(int ncombobox);
@@ -180,6 +184,7 @@ public:
     void setComboboxLabel(int comboboxindex, const QString& string);
     int getComboboxIndex(int comboboxindex);
     void setComboboxElements(int comboboxindex, const QStringList& names);
+    void setComboboxItemIcon(int comboboxindex, int index, QIcon icon);
     void setComboboxPrefEntry(int comboboxindex, const std::string& prefEntry);
     void restoreComboboxPref(int comboboxindex);
 

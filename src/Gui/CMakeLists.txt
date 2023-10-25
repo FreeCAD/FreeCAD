@@ -319,6 +319,7 @@ SET(Gui_UIC_SRCS
     PreferencePages/DlgSettingsEditor.ui
     PreferencePages/DlgSettingsGeneral.ui
     DlgSettingsImage.ui
+    PreferencePages/DlgSettingsLightSources.ui
     PreferencePages/DlgSettingsMacro.ui
     PreferencePages/DlgSettingsNavigation.ui
     PreferencePages/DlgSettingsNotificationArea.ui
@@ -565,6 +566,7 @@ SET(Dialog_Settings_CPP_SRCS
     PreferencePages/DlgSettingsEditor.cpp
     PreferencePages/DlgSettingsGeneral.cpp
     DlgSettingsImageImp.cpp
+    PreferencePages/DlgSettingsLightSources.cpp
     PreferencePages/DlgSettingsMacroImp.cpp
     PreferencePages/DlgSettingsNavigation.cpp
     PreferencePages/DlgSettingsNotificationArea.cpp
@@ -586,6 +588,7 @@ SET(Dialog_Settings_HPP_SRCS
     PreferencePages/DlgSettingsEditor.h
     PreferencePages/DlgSettingsGeneral.h
     DlgSettingsImageImp.h
+    PreferencePages/DlgSettingsLightSources.h
     PreferencePages/DlgSettingsMacroImp.h
     PreferencePages/DlgSettingsNavigation.h
     PreferencePages/DlgSettingsNotificationArea.h
@@ -609,6 +612,7 @@ SET(Dialog_Settings_SRCS
     PreferencePages/DlgSettingsEditor.ui
     PreferencePages/DlgSettingsGeneral.ui
     DlgSettingsImage.ui
+    PreferencePages/DlgSettingsLightSources.ui
     PreferencePages/DlgSettingsMacro.ui
     PreferencePages/DlgSettingsNavigation.ui
     PreferencePages/DlgSettingsNotificationArea.ui
@@ -835,6 +839,8 @@ SET(View3D_CPP_SRCS
     View3DPy.cpp
     View3DViewerPy.cpp
     NaviCube.cpp
+    NavigationAnimator.cpp
+    NavigationAnimation.cpp
 )
 SET(View3D_SRCS
     ${View3D_CPP_SRCS}
@@ -857,6 +863,8 @@ SET(View3D_SRCS
     CoinRiftWidget.h
     View3DViewerPy.h
     NaviCube.h
+    NavigationAnimator.h
+    NavigationAnimation.h
 )
 SOURCE_GROUP("View3D" FILES ${View3D_SRCS})
 
