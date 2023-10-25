@@ -47,7 +47,6 @@
 
 #include "ShapeExtractor.h"
 #include "DrawUtil.h"
-#include "Preferences.h"
 #include "ShapeUtils.h"
 
 
@@ -55,14 +54,15 @@ using namespace TechDraw;
 using DU = DrawUtil;
 using SU = ShapeUtils;
 
-std::vector<TopoDS_Shape> ShapeExtractor::getShapes2d(const std::vector<App::DocumentObject*> links, bool overridePref)
+
+//! pick out the 2d document objects objects in the list of links and return a vector of their shapes
+//! Note that point objects will not make it through the hlr/projection process.
+std::vector<TopoDS_Shape> ShapeExtractor::getShapes2d(const std::vector<App::DocumentObject*> links)
 {
 //    Base::Console().Message("SE::getShapes2d() - links: %d\n", links.size());
 
     std::vector<TopoDS_Shape> shapes2d;
-    if (!prefAdd2d() && !overridePref) {
-        return shapes2d;
-    }
+
     for (auto& l:links) {
         const App::GroupExtension* gex = dynamic_cast<const App::GroupExtension*>(l);
         if (gex) {
@@ -333,7 +333,7 @@ TopoDS_Shape ShapeExtractor::getShapesFused(const std::vector<App::DocumentObjec
 
     // if there are 2d shapes in the links they will not fuse with the 3d shapes,
     // so instead we return a compound of the fused 3d shapes and the 2d shapes
-    std::vector<TopoDS_Shape> shapes2d = getShapes2d(links, true);
+    std::vector<TopoDS_Shape> shapes2d = getShapes2d(links);
     if (!shapes2d.empty()) {
         shapes2d.push_back(baseShape);
         return DrawUtil::shapeVectorToCompound(shapes2d, false);
@@ -470,11 +470,5 @@ TopoDS_Shape ShapeExtractor::getLocatedShape(const App::DocumentObject* docObj)
             shape.setPlacement(pf->globalPlacement());
         }
         return shape.getShape();
-}
-
-//! true if we should include loose 2d geometry
-bool ShapeExtractor::prefAdd2d()
-{
-    return Preferences::getPreferenceGroup("General")->GetBool("ShowLoose2d", false);
 }
 
