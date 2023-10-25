@@ -24,6 +24,7 @@
 
 #ifndef _PreComp_
 #include <array>
+#include <boost/math/constants/constants.hpp>
 #ifdef FC_OS_WIN32
  #define _USE_MATH_DEFINES
 #endif
@@ -38,14 +39,18 @@
 #include "SoFCBackgroundGradient.h"
 
 static const std::array <GLfloat[2], 32> big_circle = []{
+    static const float pi2 = boost::math::constants::two_pi<float>();
     std::array <GLfloat[2], 32> result; int c = 0;
-    for (GLfloat i = 0; i < 2*M_PI; i += 2*M_PI / 32, c++){
-        result[c][0] = M_SQRT2*cosf(i); result[c][1] = M_SQRT2*sinf(i); }
+    for (GLfloat i = 0; i < pi2; i += pi2 / 32, c++) {
+        result[c][0] = M_SQRT2*cosf(i); result[c][1] = M_SQRT2*sinf(i);
+    }
     return result; }();
 static const std::array <GLfloat[2], 32> small_oval = []{
+    static const float pi2 = boost::math::constants::two_pi<float>();
     std::array <GLfloat[2], 32> result; int c = 0;
-    for (GLfloat i = 0; i < 2*M_PI; i += 2*M_PI / 32, c++){
-        result[c][0] = 0.3*M_SQRT2*cosf(i); result[c][1] = M_SQRT1_2*sinf(i); }
+    for (GLfloat i = 0; i < pi2; i += pi2 / 32, c++) {
+        result[c][0] = 0.3*M_SQRT2*cosf(i); result[c][1] = M_SQRT1_2*sinf(i);
+    }
     return result; }();
 
 using namespace Gui;

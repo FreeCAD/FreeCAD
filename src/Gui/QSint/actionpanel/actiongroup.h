@@ -147,6 +147,7 @@ public Q_SLOTS:
       \sa headerText().
       */
     void setHeaderText(const QString & title);
+    void setHeaderIcon(const QPixmap& icon);
 
 protected Q_SLOTS:
     void processHide();

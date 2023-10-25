@@ -309,10 +309,6 @@ class Edit(gui_base_original.Modifier):
 
         self.register_editing_callbacks()
 
-        # TODO: align working plane when editing starts
-        # App.DraftWorkingPlane.save()
-        # self.alignWorkingPlane()
-
 
     def numericInput(self, numx, numy, numz):
         """Execute callback by the toolbar to activate the update function.
@@ -498,7 +494,7 @@ class Edit(gui_base_original.Modifier):
             orthoConstrain = True
         snappedPos = Gui.Snapper.snap((pos[0],pos[1]),self.node[-1], constrain=orthoConstrain)
         self.trackers[self.obj.Name][self.editing].set(snappedPos)
-        self.ui.displayPoint(snappedPos, self.node[-1])
+        self.ui.displayPoint(snappedPos, self.node[-1], mask=Gui.Snapper.affinity)
         if self.ghost:
             self.updateGhost(obj=self.obj, node_idx=self.editing, v=snappedPos)
 
@@ -750,7 +746,7 @@ class Edit(gui_base_original.Modifier):
         """
         if (hasattr(obj, 'obj_gui_tools') or
             (hasattr(obj, 'Proxy') and hasattr(obj.Proxy, 'obj_gui_tools')) or
-            (utils.get_type(obj) in self.gui_tools_repository) ):
+            (utils.get_type(obj) in self.gui_tools_repository.keys()) ):
             return True
         else:
             return False

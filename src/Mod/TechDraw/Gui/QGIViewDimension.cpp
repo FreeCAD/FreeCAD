@@ -507,7 +507,6 @@ QVariant QGIViewDimension::itemChange(GraphicsItemChange change, const QVariant&
 {
     if (change == ItemSelectedHasChanged && scene()) {
         if (isSelected()) {
-            setSelected(false);
             datumLabel->setSelected(true);
         }
         else {
@@ -531,9 +530,8 @@ void QGIViewDimension::setGroupSelection(bool isSelected)
 
 void QGIViewDimension::select(bool state)
 {
-    Q_UNUSED(state)
-    //    setSelected(state);
-    //    draw();
+    setSelected(state);
+    draw();
 }
 
 //surrogate for hover enter (true), hover leave (false) events
@@ -774,8 +772,14 @@ void QGIViewDimension::draw()
         drawArrows(0, nullptr, nullptr, false);
     }
 
-    if (!isSelected() && !hasHover) {
-        setNormalColorAll();
+    // reset the colors
+    if (hasHover && !datumLabel->isSelected()) {
+        setPrettyPre();
+    }
+    else if (datumLabel->isSelected()) {
+        setPrettySel();
+    }
+    else {
         setPrettyNormal();
     }
 
@@ -2108,7 +2112,7 @@ void QGIViewDimension::drawDistance(TechDraw::DrawViewDimension* dimension,
                              dimension->ExtensionAngle.getValue() * M_PI / 180.0);
     }
     else {
-        drawDistanceExecutive(fromQtApp(linePoints.first()), fromQtApp(linePoints.second()),
+        drawDistanceExecutive(fromQtApp(linePoints.extensionLineFirst()), fromQtApp(linePoints.extensionLineSecond()),
                               lineAngle, labelRectangle, standardStyle, renderExtent, flipArrows);
     }
 }

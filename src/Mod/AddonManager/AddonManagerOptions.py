@@ -63,9 +63,7 @@ class AddonManagerOptions:
             QIcon.fromTheme("remove", QIcon(":/icons/list-remove.svg"))
         )
 
-        self.form.customRepositoriesTableView.horizontalHeader().setStretchLastSection(
-            False
-        )
+        self.form.customRepositoriesTableView.horizontalHeader().setStretchLastSection(False)
         self.form.customRepositoriesTableView.horizontalHeader().setSectionResizeMode(
             0, QHeaderView.Stretch
         )
@@ -73,15 +71,9 @@ class AddonManagerOptions:
             1, QHeaderView.ResizeToContents
         )
 
-        self.form.addCustomRepositoryButton.clicked.connect(
-            self._add_custom_repo_clicked
-        )
-        self.form.removeCustomRepositoryButton.clicked.connect(
-            self._remove_custom_repo_clicked
-        )
-        self.form.customRepositoriesTableView.doubleClicked.connect(
-            self._row_double_clicked
-        )
+        self.form.addCustomRepositoryButton.clicked.connect(self._add_custom_repo_clicked)
+        self.form.removeCustomRepositoryButton.clicked.connect(self._remove_custom_repo_clicked)
+        self.form.customRepositoriesTableView.doubleClicked.connect(self._row_double_clicked)
 
     def saveSettings(self):
         """Required function: called by the preferences dialog when Apply or Save is clicked,
@@ -99,9 +91,7 @@ class AddonManagerOptions:
             if pref_path and pref_entry:
                 pref_path = pref_path.data()
                 pref_entry = pref_entry.data()
-                pref_access_string = (
-                    f"User parameter:BaseApp/Preferences/{str(pref_path,'utf-8')}"
-                )
+                pref_access_string = f"User parameter:BaseApp/Preferences/{str(pref_path,'utf-8')}"
                 pref = FreeCAD.ParamGet(pref_access_string)
                 if isinstance(widget, QCheckBox):
                     checked = widget.isChecked()
@@ -143,9 +133,7 @@ class AddonManagerOptions:
             if pref_path and pref_entry:
                 pref_path = pref_path.data()
                 pref_entry = pref_entry.data()
-                pref_access_string = (
-                    f"User parameter:BaseApp/Preferences/{str(pref_path,'utf-8')}"
-                )
+                pref_access_string = f"User parameter:BaseApp/Preferences/{str(pref_path,'utf-8')}"
                 pref = FreeCAD.ParamGet(pref_access_string)
                 if isinstance(widget, QCheckBox):
                     widget.setChecked(pref.GetBool(str(pref_entry, "utf-8")))
@@ -313,9 +301,7 @@ class CustomRepositoryDialog:
 
     def __init__(self):
         self.dialog = FreeCADGui.PySideUic.loadUi(
-            os.path.join(
-                os.path.dirname(__file__), "AddonManagerOptions_AddCustomRepository.ui"
-            )
+            os.path.join(os.path.dirname(__file__), "AddonManagerOptions_AddCustomRepository.ui")
         )
 
     def exec(self):

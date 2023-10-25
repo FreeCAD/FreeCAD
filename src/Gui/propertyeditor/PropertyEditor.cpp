@@ -83,6 +83,8 @@ PropertyEditor::PropertyEditor(QWidget *parent)
     this->background = opt.palette.dark();
     this->groupColor = opt.palette.color(QPalette::BrightText);
 
+    this->_itemBackground.setColor(QColor(0,0,0,0));
+
     this->setSelectionMode(QAbstractItemView::ExtendedSelection);
 
     connect(this, &QTreeView::activated, this, &PropertyEditor::onItemActivated);
@@ -152,6 +154,16 @@ QColor PropertyEditor::groupTextColor() const
 void PropertyEditor::setGroupTextColor(const QColor& c)
 {
     this->groupColor = c;
+}
+
+QBrush PropertyEditor::itemBackground() const
+{
+    return this->_itemBackground;
+}
+
+void PropertyEditor::setItemBackground(const QBrush& c)
+{
+    this->_itemBackground = c;
 }
 
 #if QT_VERSION < QT_VERSION_CHECK(6,0,0)

@@ -34,7 +34,7 @@
 
 using namespace Sketcher;
 
-PyObject* ConstraintPy::PyMake(struct _typeobject*, PyObject*, PyObject*)// Python wrapper
+PyObject* ConstraintPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
     // create a new instance of ConstraintPy and the Twin object
     return new ConstraintPy(new Constraint);
@@ -110,10 +110,12 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 this->getConstraintPtr()->Type = InternalAlignment;
 
                 valid = true;
-                if (strstr(ConstraintType, "EllipseMajorDiameter"))
+                if (strstr(ConstraintType, "EllipseMajorDiameter")) {
                     this->getConstraintPtr()->AlignmentType = EllipseMajorDiameter;
-                else if (strstr(ConstraintType, "EllipseMinorDiameter"))
+                }
+                else if (strstr(ConstraintType, "EllipseMinorDiameter")) {
                     this->getConstraintPtr()->AlignmentType = EllipseMinorDiameter;
+                }
                 else {
                     this->getConstraintPtr()->AlignmentType = Undef;
                     valid = false;
@@ -127,7 +129,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             }
         }
         // ConstraintType, GeoIndex, Value
-        if (PyNumber_Check(index_or_value)) {// can be float or int
+        if (PyNumber_Check(index_or_value)) {  // can be float or int
             Value = PyFloat_AsDouble(index_or_value);
             bool valid = false;
             if (strcmp("Distance", ConstraintType) == 0) {
@@ -138,8 +140,9 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 if (PyObject_TypeCheck(index_or_value, &(Base::QuantityPy::Type))) {
                     Base::Quantity q =
                         *(static_cast<Base::QuantityPy*>(index_or_value)->getQuantityPtr());
-                    if (q.getUnit() == Base::Unit::Angle)
+                    if (q.getUnit() == Base::Unit::Angle) {
                         Value = q.getValueAs(Base::Quantity::Radian);
+                    }
                 }
                 this->getConstraintPtr()->Type = Angle;
                 valid = true;
@@ -205,10 +208,12 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 
                 valid = true;
 
-                if (strstr(ConstraintType, "EllipseFocus1"))
+                if (strstr(ConstraintType, "EllipseFocus1")) {
                     this->getConstraintPtr()->AlignmentType = EllipseFocus1;
-                else if (strstr(ConstraintType, "EllipseFocus2"))
+                }
+                else if (strstr(ConstraintType, "EllipseFocus2")) {
                     this->getConstraintPtr()->AlignmentType = EllipseFocus2;
+                }
                 else {
                     this->getConstraintPtr()->AlignmentType = Undef;
                     valid = false;
@@ -223,15 +228,16 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
         }
         // ConstraintType, GeoIndex1, GeoIndex2, Value
         // ConstraintType, GeoIndex, PosIndex, Value
-        if (PyNumber_Check(index_or_value)) {// can be float or int
+        if (PyNumber_Check(index_or_value)) {  // can be float or int
             SecondIndex = any_index;
             Value = PyFloat_AsDouble(index_or_value);
             if (strcmp("Angle", ConstraintType) == 0) {
                 if (PyObject_TypeCheck(index_or_value, &(Base::QuantityPy::Type))) {
                     Base::Quantity q =
                         *(static_cast<Base::QuantityPy*>(index_or_value)->getQuantityPtr());
-                    if (q.getUnit() == Base::Unit::Angle)
+                    if (q.getUnit() == Base::Unit::Angle) {
                         Value = q.getValueAs(Base::Quantity::Radian);
+                    }
                 }
                 this->getConstraintPtr()->Type = Angle;
                 this->getConstraintPtr()->First = FirstIndex;
@@ -315,8 +321,9 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 this->getConstraintPtr()->ThirdPos = static_cast<Sketcher::PointPos>(intArg4);
                 return 0;
             }
-            else if (strstr(ConstraintType, "InternalAlignment")) {// InteralAlignment with
-                                                                   // InternalElementIndex argument
+            else if (strstr(ConstraintType,
+                            "InternalAlignment")) {  // InteralAlignment with
+                                                     // InternalElementIndex argument
                 this->getConstraintPtr()->Type = InternalAlignment;
 
                 valid = true;
@@ -349,7 +356,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             }
         }
         // ConstraintType, GeoIndex1, PosIndex1, GeoIndex2, Value
-        if (PyNumber_Check(oNumArg4)) {// can be float or int
+        if (PyNumber_Check(oNumArg4)) {  // can be float or int
             Value = PyFloat_AsDouble(oNumArg4);
             if (strcmp("Distance", ConstraintType) == 0) {
                 this->getConstraintPtr()->Type = Distance;
@@ -363,8 +370,14 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
     PyErr_Clear();
 
-    if (PyArg_ParseTuple(
-            args, "siiiiO", &ConstraintType, &intArg1, &intArg2, &intArg3, &intArg4, &oNumArg5)) {
+    if (PyArg_ParseTuple(args,
+                         "siiiiO",
+                         &ConstraintType,
+                         &intArg1,
+                         &intArg2,
+                         &intArg3,
+                         &intArg4,
+                         &oNumArg5)) {
         // ConstraintType, GeoIndex1, PosIndex1, GeoIndex2, PosIndex2, GeoIndex3
         if (PyLong_Check(oNumArg5)) {
             intArg5 = PyLong_AsLong(oNumArg5);
@@ -379,7 +392,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
             }
         }
         // ConstraintType, GeoIndex1, PosIndex1, GeoIndex2, PosIndex2, Value
-        if (PyNumber_Check(oNumArg5)) {// can be float or int
+        if (PyNumber_Check(oNumArg5)) {  // can be float or int
             Value = PyFloat_AsDouble(oNumArg5);
             bool valid = false;
             if (strcmp("Distance", ConstraintType) == 0) {
@@ -398,8 +411,9 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 if (PyObject_TypeCheck(oNumArg5, &(Base::QuantityPy::Type))) {
                     Base::Quantity q =
                         *(static_cast<Base::QuantityPy*>(oNumArg5)->getQuantityPtr());
-                    if (q.getUnit() == Base::Unit::Angle)
+                    if (q.getUnit() == Base::Unit::Angle) {
                         Value = q.getValueAs(Base::Quantity::Radian);
+                    }
                 }
                 this->getConstraintPtr()->Type = Angle;
                 valid = true;
@@ -408,14 +422,15 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 if (PyObject_TypeCheck(oNumArg5, &(Base::QuantityPy::Type))) {
                     Base::Quantity q =
                         *(static_cast<Base::QuantityPy*>(oNumArg5)->getQuantityPtr());
-                    if (q.getUnit() == Base::Unit::Angle)
+                    if (q.getUnit() == Base::Unit::Angle) {
                         Value = q.getValueAs(Base::Quantity::Radian);
+                    }
                 }
                 this->getConstraintPtr()->Type = Angle;
                 // valid = true;//non-standard assignment
                 this->getConstraintPtr()->First = intArg1;
                 this->getConstraintPtr()->FirstPos = Sketcher::PointPos::none;
-                this->getConstraintPtr()->Second = intArg2;// let's goof up all the terminology =)
+                this->getConstraintPtr()->Second = intArg2;  // let's goof up all the terminology =)
                 this->getConstraintPtr()->SecondPos = Sketcher::PointPos::none;
                 this->getConstraintPtr()->Third = intArg3;
                 this->getConstraintPtr()->ThirdPos = static_cast<Sketcher::PointPos>(intArg4);
@@ -457,7 +472,7 @@ int ConstraintPy::PyInit(PyObject* args, PyObject* /*kwd*/)
                 return 0;
             }
         }
-        if (PyNumber_Check(index_or_value)) {// can be float or int
+        if (PyNumber_Check(index_or_value)) {  // can be float or int
             Value = PyFloat_AsDouble(index_or_value);
             if (strcmp("SnellsLaw", ConstraintType) == 0) {
                 this->getConstraintPtr()->Type = SnellsLaw;
@@ -525,25 +540,31 @@ std::string ConstraintPy::representation() const
             result << "'Parallel'>";
             break;
         case Tangent:
-            if (this->getConstraintPtr()->Third == GeoEnum::GeoUndef)
+            if (this->getConstraintPtr()->Third == GeoEnum::GeoUndef) {
                 result << "'Tangent'>";
-            else
+            }
+            else {
                 result << "'TangentViaPoint'>";
+            }
             break;
         case Perpendicular:
-            if (this->getConstraintPtr()->Third == GeoEnum::GeoUndef)
+            if (this->getConstraintPtr()->Third == GeoEnum::GeoUndef) {
                 result << "'Perpendicular'>";
-            else
+            }
+            else {
                 result << "'PerpendicularViaPoint'>";
+            }
             break;
         case Distance:
             result << "'Distance'>";
             break;
         case Angle:
-            if (this->getConstraintPtr()->Third == GeoEnum::GeoUndef)
+            if (this->getConstraintPtr()->Third == GeoEnum::GeoUndef) {
                 result << "'Angle'>";
-            else
+            }
+            else {
                 result << "'AngleViaPoint'>";
+            }
             break;
         case Symmetric:
             result << "'Symmetric'>";

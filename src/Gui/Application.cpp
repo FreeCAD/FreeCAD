@@ -54,6 +54,8 @@
 #include <Base/Stream.h>
 #include <Base/Tools.h>
 
+#include <Base/UnitsApi.h>
+
 #include <Language/Translator.h>
 #include <Quarter/Quarter.h>
 
@@ -124,6 +126,7 @@
 #include "WaitCursor.h"
 #include "Workbench.h"
 #include "WorkbenchManager.h"
+#include "WorkbenchManipulator.h"
 #include "WidgetFactory.h"
 
 
@@ -342,7 +345,7 @@ namespace {
         std::stringstream str;
         str << "Image formats (";
         for (const auto& ext : supportedFormats) {
-            str << "*." << ext.constData() << " ";
+            str << "*." << ext.constData() << " *." << ext.toUpper().constData() << " ";
         }
         str << ")";
 
@@ -535,6 +538,7 @@ Application::~Application()
 {
     Base::Console().Log("Destruct Gui::Application\n");
     WorkbenchManager::destruct();
+    WorkbenchManipulator::removeAll();
     SelectionSingleton::destruct();
     Translator::destruct();
     WidgetFactorySupplier::destruct();
@@ -929,6 +933,19 @@ void Application::slotActiveDocument(const App::Document& Doc)
                 Py::Module("FreeCADGui").setAttr(std::string("ActiveDocument"),Py::None());
             }
         }
+        
+        //Set Unit System.
+        int projectUnitSystemIndex = doc->second->getProjectUnitSystem();
+        int ignore = doc->second->getProjectUnitSystemIgnore();
+        if( projectUnitSystemIndex >= 0 && !ignore ){//is valid
+        	Base::UnitsApi::setSchema(static_cast<Base::UnitSystem>(projectUnitSystemIndex));
+        }else{// set up Unit system default
+			ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
+			   ("User parameter:BaseApp/Preferences/Units");
+			Base::UnitsApi::setSchema((Base::UnitSystem)hGrp->GetInt("UserSchema",0));
+			Base::UnitsApi::setDecimals(hGrp->GetInt("Decimals", Base::UnitsApi::getDecimals()));
+        }
+        
         signalActiveDocument(*doc->second);
         updateActions();
     }
@@ -1709,7 +1726,7 @@ void Application::setupContextMenu(const char* recipient, MenuItem* items) const
                 }
             }
         }
-        actWb->setupContextMenu(recipient, items);
+        actWb->createContextMenu(recipient, items);
     }
 }
 
@@ -1745,6 +1762,7 @@ void setCategoryFilterRules()
     stream << "qt.qpa.xcb.warning=false\n";
     stream << "qt.qpa.mime.warning=false\n";
     stream << "qt.svg.warning=false\n";
+    stream << "qt.xkb.compose.warning=false\n";
     stream.flush();
     QLoggingCategory::setFilterRules(filter);
 }
@@ -2066,6 +2084,13 @@ void Application::runApplication()
              << QString::fromUtf8((App::Application::getResourceDir() + "Gui/Stylesheets/").c_str())
              << QLatin1String(":/stylesheets");
     QDir::setSearchPaths(QString::fromLatin1("qss"), qssPaths);
+    // setup the search paths for Qt overlay style sheets
+    QStringList qssOverlayPaths;
+    qssOverlayPaths << QString::fromUtf8((App::Application::getUserAppDataDir()
+                        + "Gui/Stylesheets/overlay").c_str())
+                    << QString::fromUtf8((App::Application::getResourceDir()
+                        + "Gui/Stylesheets/overlay").c_str());
+    QDir::setSearchPaths(QStringLiteral("overlay"), qssOverlayPaths);
 
     // set search paths for images
     QStringList imagePaths;

@@ -31,7 +31,7 @@ namespace Sketcher
 {
 class Constraint;
 class SketchObject;
-}// namespace Sketcher
+}  // namespace Sketcher
 
 namespace SketcherGui
 {
@@ -65,5 +65,5 @@ private Q_SLOTS:
     void formEditorOpened(bool);
 };
 
-}// namespace SketcherGui
-#endif// SKETCHERGUI_DrawSketchHandler_H
+}  // namespace SketcherGui
+#endif  // SKETCHERGUI_DrawSketchHandler_H

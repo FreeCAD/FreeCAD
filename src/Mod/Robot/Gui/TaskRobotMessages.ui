@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>TaskRobotMessages</class>
+ <class>RobotGui::TaskRobotMessages</class>
  <widget class="QWidget" name="TaskRobotMessages">
   <property name="geometry">
    <rect>

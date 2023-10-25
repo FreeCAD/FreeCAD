@@ -28,6 +28,9 @@
 #include <memory>
 
 namespace Gui {
+
+class PrefComboBox;
+
 namespace Dialog {
 class Ui_DlgSettingsTheme;
 
@@ -46,19 +49,21 @@ public:
   void saveSettings() override;
   void loadSettings() override;
 
-  void saveStyleSheet();
   void loadStyleSheet();
+
+  static void attachObserver();
 
 protected:
   void changeEvent(QEvent *e) override;
 
-protected Q_SLOTS:
-    void onStyleSheetChanged(int index);
-    void onColorChanged();
+  void populateStylesheets(const char *key,
+                           const char *path,
+                           PrefComboBox *combo,
+                           const char *def,
+                           QStringList filter = QStringList());
 
 private:
   std::unique_ptr<Ui_DlgSettingsTheme> ui;
-  bool styleSheetChanged;
 };
 
 } // namespace Dialog

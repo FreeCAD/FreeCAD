@@ -27,30 +27,33 @@
 
 #include "FemConstraint.h"
 
-namespace Fem {
+namespace Fem
+{
 
-class FemExport ConstraintPressure : public Fem::Constraint
+class FemExport ConstraintPressure: public Fem::Constraint
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Fem::ConstraintPressure);
 
 public:
     ConstraintPressure();
 
-    App::PropertyFloat Pressure;
+    App::PropertyPressure Pressure;
     App::PropertyBool Reversed;
     App::PropertyVectorList Points;
     App::PropertyVectorList Normals;
 
     /// recalculate the object
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn* execute() override;
 
     /// returns the type name of the ViewProvider
     const char* getViewProviderName() const override;
 
 protected:
+    void
+    handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property* prop);
     void onChanged(const App::Property* prop) override;
 };
 
-}
+}  // namespace Fem
 
-#endif // FEM_CONSTRAINTPRESSURE_H
+#endif  // FEM_CONSTRAINTPRESSURE_H

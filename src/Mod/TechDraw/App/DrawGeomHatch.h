@@ -103,6 +103,8 @@ public:
     static App::Color prefGeomHatchColor();
     static std::vector<LineSet> makeLineSets(std::string fileSpec, std::string myPattern);
 
+    void translateLabel(std::string context, std::string baseName, std::string uniqueName);
+
 protected:
     void replacePatIncluded(std::string newHatchFileName);
 

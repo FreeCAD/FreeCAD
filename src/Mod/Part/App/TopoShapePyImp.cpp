@@ -559,12 +559,12 @@ PyObject*  TopoShapePy::importBrepFromString(PyObject *args)
     Py_Return;
 }
 
-PyObject*  TopoShapePy::__getstate__(PyObject *args) {
+PyObject*  TopoShapePy::dumps(PyObject *args) {
     return exportBrepToString(args);
 }
 
 
-PyObject*  TopoShapePy::__setstate__(PyObject *args) {
+PyObject*  TopoShapePy::loads(PyObject *args) {
     if (! getTopoShapePtr()) {
         PyErr_SetString(Base::PyExc_FC_GeneralError,"no c++ object");
         return nullptr;

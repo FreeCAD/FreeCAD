@@ -41,7 +41,7 @@
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../VisualInspection.cpp" line="230"/>
+      <location filename="../../VisualInspection.cpp" line="237"/>
       <source>Visual Inspection</source>
       <translation>Görsel inceleme</translation>
     </message>
@@ -94,38 +94,38 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="455"/>
+      <location filename="../../ViewProviderInspection.cpp" line="483"/>
       <source>Remove annotations</source>
       <translation>Açıklamaları kaldır</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="456"/>
+      <location filename="../../ViewProviderInspection.cpp" line="484"/>
       <source>Do you want to remove all annotations?</source>
       <translation>Tüm açıklamaları kaldırmak istiyor musunuz?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="508"/>
+      <location filename="../../ViewProviderInspection.cpp" line="542"/>
       <source>Annotation</source>
       <translation>Not</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="511"/>
+      <location filename="../../ViewProviderInspection.cpp" line="545"/>
       <source>Leave info mode</source>
       <translation>Bilgi modundan çık</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="632"/>
+      <location filename="../../ViewProviderInspection.cpp" line="680"/>
       <source>Distance: &gt; %1</source>
       <translation>Mesafe: &gt; %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="635"/>
+      <location filename="../../ViewProviderInspection.cpp" line="684"/>
       <source>Distance: &lt; %1</source>
       <translation>Mesafe: &lt; %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="654"/>
-      <location filename="../../ViewProviderInspection.cpp" line="670"/>
+      <location filename="../../ViewProviderInspection.cpp" line="704"/>
+      <location filename="../../ViewProviderInspection.cpp" line="721"/>
       <source>Distance: %1</source>
       <translation>Mesafe: %1</translation>
     </message>

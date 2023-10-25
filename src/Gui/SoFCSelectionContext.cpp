@@ -181,12 +181,7 @@ int SoFCSelectionContextEx::merge(int status, SoFCSelectionContextBasePtr &outpu
         SoFCSelectionContextBasePtr input, SoNode *node)
 {
     auto ctx = std::dynamic_pointer_cast<SoFCSelectionContextEx>(input);
-    SoFCSelectionRoot* selectionNode;
-    if (node == nullptr) {
-        selectionNode = nullptr;
-    } else {
-        selectionNode = dynamic_cast<SoFCSelectionRoot*>(node);
-    }
+    SoFCSelectionRoot* selectionNode = dynamic_cast<SoFCSelectionRoot*>(node);
 
     if(!ctx) {
         if(selectionNode && selectionNode->hasColorOverride()) {

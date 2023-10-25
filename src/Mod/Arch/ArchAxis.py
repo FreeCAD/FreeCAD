@@ -180,11 +180,11 @@ class _Axis:
         if prop in ["Angles","Distances","Placement"]:
             obj.touch()
 
-    def __getstate__(self):
+    def dumps(self):
 
         return None
 
-    def __setstate__(self,state):
+    def loads(self,state):
 
         return None
 
@@ -658,11 +658,11 @@ class _ViewProviderAxis:
     def transform(self):
         FreeCADGui.ActiveDocument.setEdit(self.Object, 1)
 
-    def __getstate__(self):
+    def dumps(self):
 
         return None
 
-    def __setstate__(self,state):
+    def loads(self,state):
 
         return None
 

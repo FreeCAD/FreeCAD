@@ -1841,7 +1841,7 @@ jedinice s kojom treba raditi prilikom otvaranja datoteke.
       <location filename="../../ArchPanel.py" line="213"/>
       <location filename="../../ArchProfile.py" line="159"/>
       <location filename="../../ArchStructure.py" line="451"/>
-      <location filename="../../ArchWindow.py" line="408"/>
+      <location filename="../../ArchWindow.py" line="411"/>
       <source>Preset</source>
       <translation>Unaprijed postavljene postavke</translation>
     </message>
@@ -2408,73 +2408,73 @@ Ako je Run = 0, tada se proračun izračunava tako da je visina jednaka relativn
       <translation>Odaberite lice na postojećem objektu ili odaberite predložak</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="298"/>
+      <location filename="../../ArchWindow.py" line="299"/>
       <source>Window not based on sketch. Window not aligned or resized.</source>
       <translation>Prozor nije na temelju skice. Prozor nije poravnat ili veličina prozora nije promijenjena.</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="308"/>
+      <location filename="../../ArchWindow.py" line="309"/>
       <source>No Width and/or Height constraint in window sketch. Window not resized.</source>
       <translation>Nema ograničenja širine i/ili visine u skici prozora. Veličina prozora nije promijenjena.</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="311"/>
+      <location filename="../../ArchWindow.py" line="312"/>
       <source>No window found. Cannot continue.</source>
       <translation>Prozor nije pronađen. Ne može se nastaviti.
 
 </translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="367"/>
+      <location filename="../../ArchWindow.py" line="370"/>
       <source>Window options</source>
       <translation>Opcije prozora</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="371"/>
+      <location filename="../../ArchWindow.py" line="374"/>
       <source>Auto include in host object</source>
       <translation>Automatski dodano u host (glavno računalo) objekt</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="377"/>
+      <location filename="../../ArchWindow.py" line="380"/>
       <source>Sill height</source>
       <translation>Visina prozorske klupčice</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1321"/>
+      <location filename="../../ArchWindow.py" line="1333"/>
       <source>This window has no defined opening</source>
       <translation>Ovaj prozor nema definiran otvor
 
 </translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1598"/>
-      <location filename="../../ArchWindow.py" line="1647"/>
-      <location filename="../../ArchWindow.py" line="1808"/>
+      <location filename="../../ArchWindow.py" line="1610"/>
+      <location filename="../../ArchWindow.py" line="1659"/>
+      <location filename="../../ArchWindow.py" line="1820"/>
       <source>Get selected edge</source>
       <translation>Zadrži odabrani rub</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1747"/>
+      <location filename="../../ArchWindow.py" line="1759"/>
       <source>Unable to create component</source>
       <translation>Nije moguće stvoriti komponentu</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1785"/>
+      <location filename="../../ArchWindow.py" line="1797"/>
       <source>Window elements</source>
       <translation>Elementi prozora</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1786"/>
+      <location filename="../../ArchWindow.py" line="1798"/>
       <source>Hole wire</source>
       <translation>Šuplja žica</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1787"/>
+      <location filename="../../ArchWindow.py" line="1799"/>
       <source>The number of the wire that defines a hole in the host object. A value of zero will automatically adopt the largest wire</source>
       <translation>Broj žice ruba koji definira rupu u glavnom objektu. Vrijednost nula će automatski prihvatiti najdužu žicu ruba</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1788"/>
+      <location filename="../../ArchWindow.py" line="1800"/>
       <source>Pick selected</source>
       <translation>Pokupi odabrano</translation>
     </message>
@@ -2482,9 +2482,9 @@ Ako je Run = 0, tada se proračun izračunava tako da je visina jednaka relativn
       <location filename="../../ArchAxis.py" line="805"/>
       <location filename="../../ArchAxisSystem.py" line="372"/>
       <location filename="../../ArchComponent.py" line="1945"/>
-      <location filename="../../ArchSectionPlane.py" line="1370"/>
+      <location filename="../../ArchSectionPlane.py" line="1374"/>
       <location filename="../../ArchSpace.py" line="799"/>
-      <location filename="../../ArchWindow.py" line="1789"/>
+      <location filename="../../ArchWindow.py" line="1801"/>
       <source>Remove</source>
       <translation>Ukloni</translation>
     </message>
@@ -2493,7 +2493,7 @@ Ako je Run = 0, tada se proračun izračunava tako da je visina jednaka relativn
       <location filename="../../ArchAxisSystem.py" line="373"/>
       <location filename="../../ArchComponent.py" line="1946"/>
       <location filename="../../ArchSpace.py" line="793"/>
-      <location filename="../../ArchWindow.py" line="1790"/>
+      <location filename="../../ArchWindow.py" line="1802"/>
       <source>Add</source>
       <translation>Dodaj</translation>
     </message>
@@ -2507,50 +2507,50 @@ Ako je Run = 0, tada se proračun izračunava tako da je visina jednaka relativn
       <location filename="../../ArchMaterial.py" line="787"/>
       <location filename="../../ArchReference.py" line="490"/>
       <location filename="../../ArchSchedule.py" line="451"/>
-      <location filename="../../ArchSectionPlane.py" line="1184"/>
+      <location filename="../../ArchSectionPlane.py" line="1188"/>
       <location filename="../../ArchSite.py" line="935"/>
-      <location filename="../../ArchWindow.py" line="1791"/>
+      <location filename="../../ArchWindow.py" line="1803"/>
       <source>Edit</source>
       <translation>Uredi</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1792"/>
+      <location filename="../../ArchWindow.py" line="1804"/>
       <source>Create/update component</source>
       <translation>Napravi/osvježi komponentu</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1793"/>
+      <location filename="../../ArchWindow.py" line="1805"/>
       <source>Base 2D object</source>
       <translation>Osnovni 2D objekt</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1794"/>
-      <location filename="../../ArchWindow.py" line="1799"/>
+      <location filename="../../ArchWindow.py" line="1806"/>
+      <location filename="../../ArchWindow.py" line="1811"/>
       <source>Wires</source>
       <translation>Žice</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1953"/>
-      <location filename="../../ArchWindow.py" line="1795"/>
+      <location filename="../../ArchWindow.py" line="1807"/>
       <source>Components</source>
       <translation>Komponente</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1796"/>
+      <location filename="../../ArchWindow.py" line="1808"/>
       <source>Create new component</source>
       <translation>Izradi novu komponentu</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="869"/>
       <location filename="../../ArchMaterial.py" line="888"/>
-      <location filename="../../ArchWindow.py" line="1797"/>
+      <location filename="../../ArchWindow.py" line="1809"/>
       <source>Name</source>
       <translation>Ime</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1636"/>
       <location filename="../../ArchComponent.py" line="2008"/>
-      <location filename="../../ArchWindow.py" line="1798"/>
+      <location filename="../../ArchWindow.py" line="1810"/>
       <source>Type</source>
       <translation>Tip</translation>
     </message>
@@ -2558,58 +2558,58 @@ Ako je Run = 0, tada se proračun izračunava tako da je visina jednaka relativn
       <location filename="../../ArchMaterial.py" line="869"/>
       <location filename="../../ArchMaterial.py" line="888"/>
       <location filename="../../ArchPanel.py" line="237"/>
-      <location filename="../../ArchWindow.py" line="1800"/>
+      <location filename="../../ArchWindow.py" line="1812"/>
       <source>Thickness</source>
       <translation>Debljina</translation>
     </message>
     <message>
       <location filename="../../ArchPrecast.py" line="1417"/>
-      <location filename="../../ArchWindow.py" line="1801"/>
+      <location filename="../../ArchWindow.py" line="1813"/>
       <source>Offset</source>
       <translation>Pomak</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1802"/>
+      <location filename="../../ArchWindow.py" line="1814"/>
       <source>Hinge</source>
       <translation>Šarka</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1803"/>
+      <location filename="../../ArchWindow.py" line="1815"/>
       <source>Opening mode</source>
       <translation>Način otvaranja</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1804"/>
-      <location filename="../../ArchWindow.py" line="1806"/>
+      <location filename="../../ArchWindow.py" line="1816"/>
+      <location filename="../../ArchWindow.py" line="1818"/>
       <source>+ default</source>
       <translation>+ zadano</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1805"/>
+      <location filename="../../ArchWindow.py" line="1817"/>
       <source>If this is checked, the default Frame value of this window will be added to the value entered here</source>
       <translation>Ako je to označeno, zadana vrijednost nosača prozora će biti dodana vrijednosti upisanoj ovdje</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1807"/>
+      <location filename="../../ArchWindow.py" line="1819"/>
       <source>If this is checked, the default Offset value of this window will be added to the value entered here</source>
       <translation>Ako je to označeno, zadana vrijednost pomaka prozora će biti dodana vrijednosti upisanoj ovdje</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1809"/>
+      <location filename="../../ArchWindow.py" line="1821"/>
       <source>Press to retrieve the selected edge</source>
       <translation>Kliknite da biste dohvatili odabrani rub</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1251"/>
-      <location filename="../../ArchWindow.py" line="1810"/>
+      <location filename="../../ArchWindow.py" line="1263"/>
+      <location filename="../../ArchWindow.py" line="1822"/>
       <source>Invert opening direction</source>
       <translation>Obrnuti smjer otvaranja
 
 </translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1260"/>
-      <location filename="../../ArchWindow.py" line="1811"/>
+      <location filename="../../ArchWindow.py" line="1272"/>
+      <location filename="../../ArchWindow.py" line="1823"/>
       <source>Invert hinge position</source>
       <translation>Preokrenite položaj šarke</translation>
     </message>
@@ -3458,93 +3458,93 @@ Stvaranje etaže prekinuto.</translation>
       <translation>Odjeljak</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="839"/>
+      <location filename="../../ArchSectionPlane.py" line="843"/>
       <source>Create Section Plane</source>
       <translation>Napravi ravninu presjeka</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1192"/>
+      <location filename="../../ArchSectionPlane.py" line="1196"/>
       <source>Toggle Cutview</source>
       <translation>Uključi/isključi pogled prereza</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1369"/>
+      <location filename="../../ArchSectionPlane.py" line="1373"/>
       <source>Section plane settings</source>
       <translation>Postavke presjeka ravni</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1371"/>
+      <location filename="../../ArchSectionPlane.py" line="1375"/>
       <source>Remove highlighted objects from the list above</source>
       <translation>Ukloni istaknute objekte sa liste iznad</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1372"/>
+      <location filename="../../ArchSectionPlane.py" line="1376"/>
       <source>Add selected</source>
       <translation>Dodaj odabrano</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1373"/>
+      <location filename="../../ArchSectionPlane.py" line="1377"/>
       <source>Add selected object(s) to the scope of this section plane</source>
       <translation>Dodajte odabrane objekte u područje ovog presjeka ravni</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1374"/>
+      <location filename="../../ArchSectionPlane.py" line="1378"/>
       <source>Objects seen by this section plane:</source>
       <translation>Objekti viđeni sa ovog presjeka ravni:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1375"/>
+      <location filename="../../ArchSectionPlane.py" line="1379"/>
       <source>Section plane placement:</source>
       <translation>Položaj presjeka ravni:</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1376"/>
+      <location filename="../../ArchSectionPlane.py" line="1380"/>
       <source>Rotate X</source>
       <translation>Rotiraj X</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1377"/>
+      <location filename="../../ArchSectionPlane.py" line="1381"/>
       <source>Rotates the plane along the X axis</source>
       <translation>Rotiraj ravninu uzduž X osi</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1378"/>
+      <location filename="../../ArchSectionPlane.py" line="1382"/>
       <source>Rotate Y</source>
       <translation>Rotiraj Y</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1379"/>
+      <location filename="../../ArchSectionPlane.py" line="1383"/>
       <source>Rotates the plane along the Y axis</source>
       <translation>Rotiraj ravninu uzduž Y osi</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1380"/>
+      <location filename="../../ArchSectionPlane.py" line="1384"/>
       <source>Rotate Z</source>
       <translation>Rotiraj Z</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1381"/>
+      <location filename="../../ArchSectionPlane.py" line="1385"/>
       <source>Rotates the plane along the Z axis</source>
       <translation>Rotiraj ravninu uzduž Z osi</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1382"/>
+      <location filename="../../ArchSectionPlane.py" line="1386"/>
       <source>Resize</source>
       <translation>Promjena veličine</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1383"/>
+      <location filename="../../ArchSectionPlane.py" line="1387"/>
       <source>Resizes the plane to fit the objects in the list above</source>
       <translation>Promijeni veličinu ravnine radi postavljanja objekata na gornji popis</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1384"/>
+      <location filename="../../ArchSectionPlane.py" line="1388"/>
       <location filename="../../ArchWall.py" line="528"/>
       <source>Center</source>
       <translation>Središte</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="1385"/>
+      <location filename="../../ArchSectionPlane.py" line="1389"/>
       <source>Centers the plane on the objects in the list above</source>
       <translation>Centrira ravninu na objekte na gornjem popisu</translation>
     </message>
@@ -4093,7 +4093,7 @@ Stvaranje zgrade prekinuto.</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="343"/>
-      <location filename="../../ArchSectionPlane.py" line="860"/>
+      <location filename="../../ArchSectionPlane.py" line="864"/>
       <source>The shape of this object</source>
       <translation>Oblik ovog objekta</translation>
     </message>
@@ -4115,7 +4115,7 @@ Stvaranje zgrade prekinuto.</translation>
     </message>
     <message>
       <location filename="../../ArchBuildingPart.py" line="550"/>
-      <location filename="../../ArchSectionPlane.py" line="949"/>
+      <location filename="../../ArchSectionPlane.py" line="953"/>
       <source>The line width of this object</source>
       <translation>Širina linije ovog objekta</translation>
     </message>
@@ -4623,94 +4623,94 @@ Stvaranje zgrade prekinuto.</translation>
       <translation>Ako je istina, geometrija je stopljena, inače je spoj</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="596"/>
+      <location filename="../../ArchWindow.py" line="599"/>
       <source>The objects that host this window</source>
       <translation>Objekti koji ugošćuju ovaj prozor
 
 </translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="598"/>
+      <location filename="../../ArchWindow.py" line="601"/>
       <source>The components of this window</source>
       <translation>Sastavni dijelovi ovog prozora</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="601"/>
+      <location filename="../../ArchWindow.py" line="604"/>
       <source>The depth of the hole that this window makes in its host object. If 0, the value will be calculated automatically.</source>
       <translation>Dubina rupe koju čini ovaj prozor u domaćin-objektu. Ako je 0, vrijednost će se automatski izračunati.</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="603"/>
+      <location filename="../../ArchWindow.py" line="606"/>
       <source>An optional object that defines a volume to be subtracted from hosts of this window</source>
       <translation>Opcionalni objekt koji definira volumen koji če biti oduzet od domaćina ovog prozora</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="605"/>
+      <location filename="../../ArchWindow.py" line="608"/>
       <source>The width of this window</source>
       <translation>Širina prozora</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="607"/>
+      <location filename="../../ArchWindow.py" line="610"/>
       <source>The height of this window</source>
       <translation>Visina prozora</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="609"/>
+      <location filename="../../ArchWindow.py" line="612"/>
       <source>The normal direction of this window</source>
       <translation>Normalan smjer ovog prozora</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="611"/>
+      <location filename="../../ArchWindow.py" line="614"/>
       <source>The preset number this window is based on</source>
       <translation>Unaprijed postavljeni broj za ovaj prozor je na temelju</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="614"/>
+      <location filename="../../ArchWindow.py" line="617"/>
       <source>The frame size of this window</source>
       <translation>Veličinu okvira prozora</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="616"/>
+      <location filename="../../ArchWindow.py" line="619"/>
       <source>The offset size of this window</source>
       <translation>Veličina pomaka ovog prozora</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="618"/>
+      <location filename="../../ArchWindow.py" line="621"/>
       <source>The area of this window</source>
       <translation>Područje ovog prozora</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="620"/>
+      <location filename="../../ArchWindow.py" line="623"/>
       <source>The width of louvre elements</source>
       <translation>Širina elemenata louvre</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="622"/>
+      <location filename="../../ArchWindow.py" line="625"/>
       <source>The space between louvre elements</source>
       <translation>Razmak među louvre elemenatima</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="624"/>
+      <location filename="../../ArchWindow.py" line="627"/>
       <source>Opens the subcomponents that have a hinge defined</source>
       <translation>Otvara podkomponente koje imaju definiranu šarku</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="626"/>
+      <location filename="../../ArchWindow.py" line="629"/>
       <source>The number of the wire that defines the hole. If 0, the value will be calculated automatically</source>
       <translation>Broj žice koja definira rupu. Ako je vrijednost 0 izračunat će se automatski</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="628"/>
+      <location filename="../../ArchWindow.py" line="631"/>
       <source>Shows plan opening symbols if available</source>
       <translation>Pokazuje otvorene simbole plana ako su dostupni</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="630"/>
+      <location filename="../../ArchWindow.py" line="633"/>
       <source>Show elevation opening symbols if available</source>
       <translation>Pokažite simbole visine otvaranja ako su dostupni</translation>
     </message>
     <message>
-      <location filename="../../ArchWindow.py" line="1537"/>
+      <location filename="../../ArchWindow.py" line="1549"/>
       <source>The number of the wire that defines the hole. A value of 0 means automatic</source>
       <translation>Broj profila koji definiraju otvore. Vrijednost 0 je podrazumijevana</translation>
     </message>
@@ -4982,7 +4982,7 @@ Stvaranje zgrade prekinuto.</translation>
       <translation>Broj stupova korištenih u gradnji ograde</translation>
     </message>
     <message>
-      <location filename="../../ArchFence.py" line="269"/>
+      <location filename="../../ArchFence.py" line="263"/>
       <source>When true, the fence will be colored like the original post and section.</source>
       <translation>Kad je istina, ograda će biti obojena poput originalnog stupa i odjeljka.</translation>
     </message>
@@ -5542,7 +5542,7 @@ Stvaranje zgrade prekinuto.</translation>
     </message>
     <message>
       <location filename="../../ArchFloor.py" line="213"/>
-      <location filename="../../ArchSectionPlane.py" line="858"/>
+      <location filename="../../ArchSectionPlane.py" line="862"/>
       <source>The placement of this object</source>
       <translation>polozaj ovih objekta</translation>
     </message>
@@ -5762,81 +5762,81 @@ Stvaranje zgrade prekinuto.</translation>
       <translation>Oblik čelične armature</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="862"/>
+      <location filename="../../ArchSectionPlane.py" line="866"/>
       <source>The objects that must be considered by this section plane. Empty means the whole document.</source>
       <translation>Objekti koji se razmatraju po ravnini rezanja. Prazno znači čitav dokument. </translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="864"/>
+      <location filename="../../ArchSectionPlane.py" line="868"/>
       <source>If false, non-solids will be cut too, with possible wrong results.</source>
       <translation>Ako je netočno, ne krute tvari će se rezati također, s moguće lošim rezultatom.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="867"/>
+      <location filename="../../ArchSectionPlane.py" line="871"/>
       <source>If True, resulting views will be clipped to the section plane area.</source>
       <translation>Ako je istinito, rezultirajući pogledi bit će izrezani na područje ravnine presjeka.
 
 </translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="869"/>
+      <location filename="../../ArchSectionPlane.py" line="873"/>
       <source>If true, the color of the objects material will be used to fill cut areas.</source>
       <translation>Ako je istinito, boja predmeta materijala upotrijebit će se za popunjavanje izreznih područja.</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="872"/>
+      <location filename="../../ArchSectionPlane.py" line="876"/>
       <source>Geometry further than this value will be cut off. Keep zero for unlimited.</source>
       <translation>Geometrija koja je veća od ove vrijednosti bit će odrezana. Zadržite nulu za neograničeno. </translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="931"/>
+      <location filename="../../ArchSectionPlane.py" line="935"/>
       <source>The display length of this section plane</source>
       <translation>Dužina prikaza ove presječne ravnine</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="937"/>
+      <location filename="../../ArchSectionPlane.py" line="941"/>
       <source>The display height of this section plane</source>
       <translation>Visina prikaza ove presječne ravnine</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="943"/>
+      <location filename="../../ArchSectionPlane.py" line="947"/>
       <source>The size of the arrows of this section plane</source>
       <translation>Veličina strelica  ove presječne ravnine</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="946"/>
+      <location filename="../../ArchSectionPlane.py" line="950"/>
       <source>The transparency of this object</source>
       <translation>Prozirnost ovog objekta</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="952"/>
-      <location filename="../../ArchSectionPlane.py" line="957"/>
+      <location filename="../../ArchSectionPlane.py" line="956"/>
+      <location filename="../../ArchSectionPlane.py" line="961"/>
       <source>Show the cut in the 3D view</source>
       <translation>Prikaži rez u 3D pogledu</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="954"/>
+      <location filename="../../ArchSectionPlane.py" line="958"/>
       <source>The color of this object</source>
       <translation>Boja ovog objekta</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="959"/>
+      <location filename="../../ArchSectionPlane.py" line="963"/>
       <source>The distance between the cut plane and the actual view cut (keep this a very small value but not zero)</source>
       <translation>Udaljenost između ravnine rezanja i aktualnog pogleda rezanja (mala vrijednost ali ne nula)</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="962"/>
+      <location filename="../../ArchSectionPlane.py" line="966"/>
       <source>Show the label in the 3D view</source>
       <translation>Prikaži oznaku u 3D pogledu</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="964"/>
+      <location filename="../../ArchSectionPlane.py" line="968"/>
       <location filename="../../ArchSpace.py" line="515"/>
       <source>The name of the font</source>
       <translation>Ime pisma</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="967"/>
+      <location filename="../../ArchSectionPlane.py" line="971"/>
       <location filename="../../ArchSpace.py" line="521"/>
       <source>The size of the text font</source>
       <translation>Veličina pisma teksta</translation>
@@ -6373,12 +6373,12 @@ Stvaranje zgrade prekinuto.</translation>
   <context>
     <name>Arch_Fence</name>
     <message>
-      <location filename="../../ArchFence.py" line="388"/>
+      <location filename="../../ArchFence.py" line="382"/>
       <source>Fence</source>
       <translation>Ograda</translation>
     </message>
     <message>
-      <location filename="../../ArchFence.py" line="391"/>
+      <location filename="../../ArchFence.py" line="385"/>
       <source>Creates a fence object from a selected section, post and path</source>
       <translation>Stvara objekt ograde iz odabranog odjeljka, stupa i putanje</translation>
     </message>
@@ -6666,12 +6666,12 @@ Stvaranje zgrade prekinuto.</translation>
   <context>
     <name>Arch_SectionPlane</name>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="823"/>
+      <location filename="../../ArchSectionPlane.py" line="827"/>
       <source>Section Plane</source>
       <translation>Ravnina presjeka</translation>
     </message>
     <message>
-      <location filename="../../ArchSectionPlane.py" line="826"/>
+      <location filename="../../ArchSectionPlane.py" line="830"/>
       <source>Creates a section plane object, including the selected objects</source>
       <translation>Stvori objekt ravnina presjeka sa odabranim objektima</translation>
     </message>

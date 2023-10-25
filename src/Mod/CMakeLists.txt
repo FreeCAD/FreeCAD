@@ -6,6 +6,10 @@ if(BUILD_ARCH)
   add_subdirectory(Arch)
 endif(BUILD_ARCH)
 
+if(BUILD_ASSEMBLY)
+  add_subdirectory(Assembly)
+endif(BUILD_ASSEMBLY)
+
 if(BUILD_CLOUD)
     add_subdirectory(Cloud)
 endif(BUILD_CLOUD)
@@ -21,6 +25,10 @@ endif(BUILD_DRAWING)
 if(BUILD_FEM)
     add_subdirectory(Fem)
 endif(BUILD_FEM)
+
+if(BUILD_HELP)
+  add_subdirectory(Help)
+endif(BUILD_HELP)
 
 if(BUILD_IDF)
   add_subdirectory(Idf)

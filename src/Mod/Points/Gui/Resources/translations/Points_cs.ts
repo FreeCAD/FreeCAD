@@ -4,18 +4,18 @@
   <context>
     <name>CmdPointsConvert</name>
     <message>
-      <location filename="../../Command.cpp" line="189"/>
+      <location filename="../../Command.cpp" line="206"/>
       <source>Points</source>
       <translation>Body</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="190"/>
+      <location filename="../../Command.cpp" line="207"/>
       <source>Convert to points...</source>
       <translation>Převést na body...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="191"/>
-      <location filename="../../Command.cpp" line="193"/>
+      <location filename="../../Command.cpp" line="208"/>
+      <location filename="../../Command.cpp" line="210"/>
       <source>Convert to points</source>
       <translation>Převést na body</translation>
     </message>
@@ -23,18 +23,18 @@
   <context>
     <name>CmdPointsExport</name>
     <message>
-      <location filename="../../Command.cpp" line="112"/>
+      <location filename="../../Command.cpp" line="120"/>
       <source>Points</source>
       <translation>Body</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="113"/>
+      <location filename="../../Command.cpp" line="121"/>
       <source>Export points...</source>
       <translation>Export bodů...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="114"/>
-      <location filename="../../Command.cpp" line="116"/>
+      <location filename="../../Command.cpp" line="122"/>
+      <location filename="../../Command.cpp" line="124"/>
       <source>Exports a point cloud</source>
       <translation>Export množiny bodů</translation>
     </message>
@@ -61,18 +61,18 @@
   <context>
     <name>CmdPointsMerge</name>
     <message>
-      <location filename="../../Command.cpp" line="310"/>
+      <location filename="../../Command.cpp" line="342"/>
       <source>Points</source>
       <translation>Body</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="311"/>
+      <location filename="../../Command.cpp" line="343"/>
       <source>Merge point clouds</source>
       <translation>Sloučit mračna bodů</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="312"/>
-      <location filename="../../Command.cpp" line="314"/>
+      <location filename="../../Command.cpp" line="344"/>
+      <location filename="../../Command.cpp" line="346"/>
       <source>Merge several point clouds into one</source>
       <translation>Sloučet několik mračen bodů do jednoho</translation>
     </message>
@@ -80,18 +80,18 @@
   <context>
     <name>CmdPointsPolyCut</name>
     <message>
-      <location filename="../../Command.cpp" line="265"/>
+      <location filename="../../Command.cpp" line="294"/>
       <source>Points</source>
       <translation>Body</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="266"/>
+      <location filename="../../Command.cpp" line="295"/>
       <source>Cut point cloud</source>
       <translation>Ořezat množinu bodů</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="267"/>
-      <location filename="../../Command.cpp" line="269"/>
+      <location filename="../../Command.cpp" line="296"/>
+      <location filename="../../Command.cpp" line="298"/>
       <source>Cuts a point cloud with a picked polygon</source>
       <translation>Ořezat množinu bodů výběrovým polygonem</translation>
     </message>
@@ -99,18 +99,18 @@
   <context>
     <name>CmdPointsStructure</name>
     <message>
-      <location filename="../../Command.cpp" line="371"/>
+      <location filename="../../Command.cpp" line="405"/>
       <source>Points</source>
       <translation>Body</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="372"/>
+      <location filename="../../Command.cpp" line="406"/>
       <source>Structured point cloud</source>
       <translation>Strukturované mračno bodů</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="373"/>
-      <location filename="../../Command.cpp" line="375"/>
+      <location filename="../../Command.cpp" line="407"/>
+      <location filename="../../Command.cpp" line="409"/>
       <source>Convert points to structured point cloud</source>
       <translation>Převést body na strukturované mračno bodů</translation>
     </message>
@@ -118,18 +118,18 @@
   <context>
     <name>CmdPointsTransform</name>
     <message>
-      <location filename="../../Command.cpp" line="152"/>
+      <location filename="../../Command.cpp" line="167"/>
       <source>Points</source>
       <translation>Body</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="153"/>
+      <location filename="../../Command.cpp" line="168"/>
       <source>Transform Points</source>
       <translation>Transfomovat body</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="154"/>
-      <location filename="../../Command.cpp" line="156"/>
+      <location filename="../../Command.cpp" line="169"/>
+      <location filename="../../Command.cpp" line="171"/>
       <source>Test to transform a point cloud</source>
       <translation>Zkusit transformovat množinu bodů</translation>
     </message>
@@ -137,23 +137,23 @@
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="88"/>
+      <location filename="../../Command.cpp" line="92"/>
       <source>Import points</source>
       <translation>Importovat body</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="168"/>
+      <location filename="../../Command.cpp" line="183"/>
       <source>Transform points</source>
       <translation>Transformovat body</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="214"/>
+      <location filename="../../Command.cpp" line="240"/>
       <source>Convert to points</source>
       <translation>Převést na body</translation>
     </message>
     <message>
-      <location filename="../../ViewProvider.cpp" line="456"/>
-      <location filename="../../ViewProvider.cpp" line="615"/>
+      <location filename="../../ViewProvider.cpp" line="485"/>
+      <location filename="../../ViewProvider.cpp" line="653"/>
       <source>Cut points</source>
       <translation>Body řezu</translation>
     </message>
@@ -291,24 +291,24 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../Command.cpp" line="81"/>
-      <location filename="../../Command.cpp" line="129"/>
+      <location filename="../../Command.cpp" line="84"/>
+      <location filename="../../Command.cpp" line="141"/>
       <source>Point formats</source>
       <translation>Formáty bodů</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="81"/>
-      <location filename="../../Command.cpp" line="129"/>
+      <location filename="../../Command.cpp" line="84"/>
+      <location filename="../../Command.cpp" line="141"/>
       <source>All Files</source>
       <translation>Všechny soubory</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="208"/>
+      <location filename="../../Command.cpp" line="227"/>
       <source>Distance</source>
-      <translation type="unfinished">Distance</translation>
+      <translation>Vzdálenost</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="209"/>
+      <location filename="../../Command.cpp" line="228"/>
       <source>Enter maximum distance:</source>
       <translation>Zadejte maximální vzdálenost:</translation>
     </message>

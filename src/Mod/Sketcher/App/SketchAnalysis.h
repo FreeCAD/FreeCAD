@@ -153,7 +153,8 @@ public:
     ///
     /// It applies coincidents - vertical/horizontal constraints and equality constraints.
     int autoconstraint(double precision = Precision::Confusion() * 1000,
-                       double angleprecision = M_PI / 8, bool includeconstruction = true);
+                       double angleprecision = M_PI / 8,
+                       bool includeconstruction = true);
 
     // helper functions, which may be used by more complex methods, and/or called directly by user
     // space (python) methods
@@ -186,6 +187,6 @@ protected:
     bool checkVertical(Base::Vector3d dir, double angleprecision);
 };
 
-}// namespace Sketcher
+}  // namespace Sketcher
 
-#endif// SKETCHER_SKETCHANALYSIS_H
+#endif  // SKETCHER_SKETCHANALYSIS_H

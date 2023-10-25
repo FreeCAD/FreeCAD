@@ -22,14 +22,14 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <string>
+#include <string>
 
-# include <BRepBuilderAPI_MakeWire.hxx>
-# include <BRepFill_Filling.hxx>
-# include <BRep_Tool.hxx>
-# include <gp_Pnt.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Face.hxx>
+#include <BRepBuilderAPI_MakeWire.hxx>
+#include <BRepFill_Filling.hxx>
+#include <BRep_Tool.hxx>
+#include <TopoDS.hxx>
+#include <TopoDS_Face.hxx>
+#include <gp_Pnt.hxx>
 #endif
 
 #include "FeatureFilling.h"
@@ -39,17 +39,23 @@ using namespace Surface;
 
 PROPERTY_SOURCE(Surface::Filling, Part::Spline)
 
-//Initial values
+// Initial values
 
 Filling::Filling()
 {
-    ADD_PROPERTY_TYPE(BoundaryEdges,(nullptr,""), "Filling", App::Prop_None, "Boundary Edges (C0 is required for edges without a corresponding face)");
+    // clang-format off
+    ADD_PROPERTY_TYPE(BoundaryEdges,(nullptr,""), "Filling", App::Prop_None,
+                      "Boundary Edges (C0 is required for edges without a corresponding face)");
     ADD_PROPERTY_TYPE(BoundaryFaces,(""), "Filling", App::Prop_None, "Boundary Faces");
-    ADD_PROPERTY_TYPE(BoundaryOrder,(-1), "Filling", App::Prop_None, "Order of constraint on boundary faces (C0, G1 and G2 are possible)");
+    ADD_PROPERTY_TYPE(BoundaryOrder,(-1), "Filling", App::Prop_None,
+                      "Order of constraint on boundary faces (C0, G1 and G2 are possible)");
 
-    ADD_PROPERTY_TYPE(UnboundEdges,(nullptr,""), "Filling", App::Prop_None, "Unbound constraint edges (C0 is required for edges without a corresponding face)");
-    ADD_PROPERTY_TYPE(UnboundFaces,(""), "Filling", App::Prop_None, "Unbound constraint faces");
-    ADD_PROPERTY_TYPE(UnboundOrder,(-1), "Filling", App::Prop_None, "Order of constraint on curve faces (C0, G1 and G2 are possible)");
+    ADD_PROPERTY_TYPE(UnboundEdges,(nullptr,""), "Filling", App::Prop_None,
+                      "Unbound constraint edges (C0 is required for edges without a corresponding face)");
+    ADD_PROPERTY_TYPE(UnboundFaces,(""), "Filling", App::Prop_None,
+                      "Unbound constraint faces");
+    ADD_PROPERTY_TYPE(UnboundOrder,(-1), "Filling", App::Prop_None,
+                      "Order of constraint on curve faces (C0, G1 and G2 are possible)");
 
     ADD_PROPERTY_TYPE(FreeFaces,(nullptr,""), "Filling", App::Prop_None, "Free constraint on a face");
     ADD_PROPERTY_TYPE(FreeOrder,(0), "Filling", App::Prop_None, "Order of constraint on free faces");
@@ -58,7 +64,8 @@ Filling::Filling()
     ADD_PROPERTY_TYPE(InitialFace,(nullptr), "Filling", App::Prop_None, "Initial surface to use");
 
     ADD_PROPERTY_TYPE(Degree,(3), "Filling", App::Prop_None, "Starting degree");
-    ADD_PROPERTY_TYPE(PointsOnCurve,(15), "Filling", App::Prop_None, "Number of points on an edge for constraint");
+    ADD_PROPERTY_TYPE(PointsOnCurve,(15), "Filling", App::Prop_None,
+                      "Number of points on an edge for constraint");
     ADD_PROPERTY_TYPE(Iterations,(2), "Filling", App::Prop_None, "Number of iterations");
     ADD_PROPERTY_TYPE(Anisotropy,(false), "Filling", App::Prop_None, "Anisotropy");
     ADD_PROPERTY_TYPE(Tolerance2d,(0.00001), "Filling", App::Prop_None, "2D Tolerance");
@@ -67,6 +74,7 @@ Filling::Filling()
     ADD_PROPERTY_TYPE(TolCurvature,(0.1), "Filling", App::Prop_None, "G2 tolerance");
     ADD_PROPERTY_TYPE(MaximumDegree,(8), "Filling", App::Prop_None, "Maximum curve degree");
     ADD_PROPERTY_TYPE(MaximumSegments,(9), "Filling", App::Prop_None, "Maximum number of segments");
+    // clang-format on
 
     BoundaryEdges.setScope(App::LinkScope::Global);
     UnboundEdges.setScope(App::LinkScope::Global);
@@ -87,27 +95,15 @@ Filling::Filling()
 
 short Filling::mustExecute() const
 {
-    if (BoundaryEdges.isTouched() ||
-        BoundaryFaces.isTouched() ||
-        BoundaryOrder.isTouched() ||
-        UnboundEdges.isTouched() ||
-        UnboundFaces.isTouched() ||
-        UnboundOrder.isTouched() ||
-        FreeFaces.isTouched() ||
-        FreeOrder.isTouched() ||
-        Points.isTouched() ||
-        InitialFace.isTouched() ||
-        Degree.isTouched() ||
-        PointsOnCurve.isTouched() ||
-        Iterations.isTouched() ||
-        Anisotropy.isTouched() ||
-        Tolerance2d.isTouched() ||
-        Tolerance3d.isTouched() ||
-        TolAngular.isTouched() ||
-        TolCurvature.isTouched() ||
-        MaximumDegree.isTouched() ||
-        MaximumSegments.isTouched())
+    if (BoundaryEdges.isTouched() || BoundaryFaces.isTouched() || BoundaryOrder.isTouched()
+        || UnboundEdges.isTouched() || UnboundFaces.isTouched() || UnboundOrder.isTouched()
+        || FreeFaces.isTouched() || FreeOrder.isTouched() || Points.isTouched()
+        || InitialFace.isTouched() || Degree.isTouched() || PointsOnCurve.isTouched()
+        || Iterations.isTouched() || Anisotropy.isTouched() || Tolerance2d.isTouched()
+        || Tolerance3d.isTouched() || TolAngular.isTouched() || TolCurvature.isTouched()
+        || MaximumDegree.isTouched() || MaximumSegments.isTouched()) {
         return 1;
+    }
     return 0;
 }
 
@@ -137,7 +133,8 @@ void Filling::addConstraints(BRepFill_Filling& builder,
 
     if (edge_obj.size() == edge_sub.size()) {
         // BRepFill_Filling crashes if the boundary edges are not added in a consecutive order.
-        // these edges are first added to a test wire to check that they can be securely added to the Filling algo
+        // these edges are first added to a test wire to check that they can be securely added to
+        // the Filling algo
         BRepBuilderAPI_MakeWire testWire;
         for (std::size_t index = 0; index < edge_obj.size(); index++) {
             // get the part object
@@ -167,7 +164,8 @@ void Filling::addConstraints(BRepFill_Filling& builder,
                                 builder.Add(TopoDS::Edge(edge), cont, bnd);
                             }
                             else {
-                                Standard_Failure::Raise("Boundary edges must be added in a consecutive order");
+                                Standard_Failure::Raise(
+                                    "Boundary edges must be added in a consecutive order");
                             }
                         }
                     }
@@ -185,7 +183,8 @@ void Filling::addConstraints(BRepFill_Filling& builder,
                                     builder.Add(TopoDS::Edge(edge), TopoDS::Face(face), cont, bnd);
                                 }
                                 else {
-                                    Standard_Failure::Raise("Boundary edges must be added in a consecutive order");
+                                    Standard_Failure::Raise(
+                                        "Boundary edges must be added in a consecutive order");
                                 }
                             }
                         }
@@ -214,8 +213,7 @@ void Filling::addConstraints(BRepFill_Filling& builder,
     auto face_sub = faces.getSubValues();
     auto contvals = orders.getValues();
 
-    if (face_obj.size() == face_sub.size() &&
-        face_obj.size() == contvals.size()) {
+    if (face_obj.size() == face_sub.size() && face_obj.size() == contvals.size()) {
         for (std::size_t index = 0; index < face_obj.size(); index++) {
             App::DocumentObject* obj = face_obj[index];
             const std::string& sub = face_sub[index];
@@ -237,8 +235,7 @@ void Filling::addConstraints(BRepFill_Filling& builder,
     }
 }
 
-void Filling::addConstraints(BRepFill_Filling& builder,
-                             const App::PropertyLinkSubList& pointsList)
+void Filling::addConstraints(BRepFill_Filling& builder, const App::PropertyLinkSubList& pointsList)
 {
     auto points = pointsList.getSubListValues();
     for (const auto& it : points) {
@@ -257,12 +254,12 @@ void Filling::addConstraints(BRepFill_Filling& builder,
     }
 }
 
-App::DocumentObjectExecReturn *Filling::execute()
+App::DocumentObjectExecReturn* Filling::execute()
 {
-    //Assign Variables
-    unsigned int degree  = Degree.getValue();
+    // Assign Variables
+    unsigned int degree = Degree.getValue();
     unsigned int ptsoncurve = PointsOnCurve.getValue();
-    unsigned int numIter   = Iterations.getValue();
+    unsigned int numIter = Iterations.getValue();
     bool anisotropy = Anisotropy.getValue();
     double tol2d = Tolerance2d.getValue();
     double tol3d = Tolerance3d.getValue();
@@ -272,11 +269,20 @@ App::DocumentObjectExecReturn *Filling::execute()
     unsigned int maxseg = MaximumSegments.getValue();
 
     try {
-        BRepFill_Filling builder(degree, ptsoncurve, numIter, anisotropy, tol2d,
-                                 tol3d, tolG1, tolG2, maxdeg, maxseg);
+        BRepFill_Filling builder(degree,
+                                 ptsoncurve,
+                                 numIter,
+                                 anisotropy,
+                                 tol2d,
+                                 tol3d,
+                                 tolG1,
+                                 tolG2,
+                                 maxdeg,
+                                 maxseg);
 
         if ((BoundaryEdges.getSize()) < 1) {
-            return new App::DocumentObjectExecReturn("Border must have at least one curve defined.");
+            return new App::DocumentObjectExecReturn(
+                "Border must have at least one curve defined.");
         }
 
         // Load the initial surface if set
@@ -312,14 +318,15 @@ App::DocumentObjectExecReturn *Filling::execute()
             addConstraints(builder, Points);
         }
 
-        //Build the face
-        if (numBoundaries > 1)
+        // Build the face
+        if (numBoundaries > 1) {
             builder.Build();
+        }
         if (!builder.IsDone()) {
             Standard_Failure::Raise("Failed to create a face from constraints");
         }
 
-        //Return the face
+        // Return the face
         TopoDS_Face aFace = builder.Face();
         this->Shape.setValue(aFace);
         return App::DocumentObject::StdReturn;

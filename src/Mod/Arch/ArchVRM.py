@@ -65,7 +65,7 @@ class Renderer:
             self.wp = wp
         else:
             import WorkingPlane
-            self.wp = WorkingPlane.plane()
+            self.wp = WorkingPlane.PlaneBase()
 
         if DEBUG: print("Renderer initialized on " + str(self.wp))
 
@@ -92,7 +92,7 @@ class Renderer:
     def setWorkingPlane(self,wp):
         "sets a Draft WorkingPlane or Placement for this renderer"
         if isinstance(wp,FreeCAD.Placement):
-            self.wp.setFromPlacement(wp)
+            self.wp.align_to_placement(wp)
         else:
             self.wp = wp
         if DEBUG: print("Renderer set on " + str(self.wp))
@@ -198,7 +198,7 @@ class Renderer:
             for e in edges:
                 v = e.Vertexes[0].Point
                 #print(v)
-                v = self.wp.getLocalCoords(v)
+                v = self.wp.get_local_coords(v)
                 verts.append(v)
             verts.append(verts[0])
             if len(verts) > 2:
@@ -211,7 +211,7 @@ class Renderer:
             return None
         else:
             # restoring flipped normals
-            vnorm = self.wp.getLocalCoords(norm)
+            vnorm = self.wp.get_local_coords(norm)
             if vnorm.getAngle(sh.normalAt(0,0)) > 1:
                 sh.reverse()
             #print("VRM: projectFace end: ",len(sh.Vertexes)," verts")
@@ -220,8 +220,8 @@ class Renderer:
     def projectEdge(self,edge):
         "projects a single edge on the WP"
         if len(edge.Vertexes) > 1:
-            v1 = self.wp.getLocalCoords(edge.Vertexes[0].Point)
-            v2 = self.wp.getLocalCoords(edge.Vertexes[-1].Point)
+            v1 = self.wp.get_local_coords(edge.Vertexes[0].Point)
+            v2 = self.wp.get_local_coords(edge.Vertexes[-1].Point)
             return Part.LineSegment(v1,v2).toShape()
         return edge
 
@@ -293,7 +293,7 @@ class Renderer:
 
         # http://paulbourke.net/geometry/insidepoly/
         count = 0
-        p = self.wp.getLocalCoords(vert.Point)
+        p = self.wp.get_local_coords(vert.Point)
         for e in face[0].Edges:
             p1 = e.Vertexes[0].Point
             p2 = e.Vertexes[-1].Point

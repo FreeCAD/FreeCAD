@@ -56,6 +56,7 @@
 #include "CrossSections.h"
 #include "DlgBooleanOperation.h"
 #include "DlgExtrusion.h"
+#include "DlgScale.h"
 #include "DlgFilletEdges.h"
 #include "DlgPrimitives.h"
 #include "DlgProjectionOnSurface.h"
@@ -1295,6 +1296,35 @@ bool CmdPartExtrude::isActive()
 }
 
 //===========================================================================
+// Part_Scale
+//===========================================================================
+DEF_STD_CMD_A(CmdPartScale)
+
+CmdPartScale::CmdPartScale()
+  :Command("Part_Scale")
+{
+    sAppModule    = "Part";
+    sGroup        = QT_TR_NOOP("Part");
+    sMenuText     = QT_TR_NOOP("Scale...");
+    sToolTipText  = QT_TR_NOOP("Scale a selected shape");
+    sWhatsThis    = "Part_Scale";
+    sStatusTip    = sToolTipText;
+    sPixmap       = "Part_Scale";
+}
+
+void CmdPartScale::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    Gui::Control().showDialog(new PartGui::TaskScale());
+}
+
+bool CmdPartScale::isActive()
+{
+    return (hasActiveDocument() && !Gui::Control().activeDialog());
+}
+
+//===========================================================================
 // Part_MakeFace
 //===========================================================================
 DEF_STD_CMD_A(CmdPartMakeFace)
@@ -2196,7 +2226,7 @@ CmdMeasureClearAll::CmdMeasureClearAll()
     sAppModule    = "Part";
     sGroup        = QT_TR_NOOP("Part");
     sMenuText     = QT_TR_NOOP("Clear All");
-    sToolTipText  = QT_TR_NOOP("Clear all dimensions from the screen.");
+    sToolTipText  = QT_TR_NOOP("Clear all dimensions from the active 3D view.");
     sWhatsThis    = "Part_Measure_Clear_All";
     sStatusTip    = sToolTipText;
     sPixmap       = "Part_Measure_Clear_All";
@@ -2425,6 +2455,7 @@ void CreatePartCommands()
     rcCmdMgr.addCommand(new CmdPartReverseShape());
     rcCmdMgr.addCommand(new CmdPartBoolean());
     rcCmdMgr.addCommand(new CmdPartExtrude());
+    rcCmdMgr.addCommand(new CmdPartScale());
     rcCmdMgr.addCommand(new CmdPartMakeFace());
     rcCmdMgr.addCommand(new CmdPartMirror());
     rcCmdMgr.addCommand(new CmdPartRevolve());

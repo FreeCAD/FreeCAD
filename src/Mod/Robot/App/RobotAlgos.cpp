@@ -22,10 +22,10 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include "kdl_cp/chainiksolverpos_nr.hpp"
-# include "kdl_cp/chainiksolvervel_pinv.hpp"
-# include "kdl_cp/chainfksolverpos_recursive.hpp"
-# include "kdl_cp/frames_io.hpp"
+#include "kdl_cp/chainfksolverpos_recursive.hpp"
+#include "kdl_cp/chainiksolverpos_nr.hpp"
+#include "kdl_cp/chainiksolvervel_pinv.hpp"
+#include "kdl_cp/frames_io.hpp"
 #endif
 
 #include "RobotAlgos.h"
@@ -36,12 +36,12 @@ using namespace std;
 using namespace KDL;
 
 #ifndef M_PI
-    #define M_PI 3.14159265358979323846
-    #define M_PI    3.14159265358979323846 /* pi */
+#define M_PI 3.14159265358979323846
+#define M_PI 3.14159265358979323846 /* pi */
 #endif
 
 #ifndef M_PI_2
-    #define M_PI_2  1.57079632679489661923 /* pi/2 */
+#define M_PI_2 1.57079632679489661923 /* pi/2 */
 #endif
 
 //===========================================================================
@@ -62,14 +62,14 @@ void RobotAlgos::Test()
     chain.addSegment(Segment(Joint(Joint::RotZ)));
     chain.addSegment(Segment(Joint(Joint::RotX), Frame(Vector(0.0, 0.0, 0.120))));
     chain.addSegment(Segment(Joint(Joint::RotZ)));
- 
+
     // Create solver based on kinematic chain
     ChainFkSolverPos_recursive fksolver = ChainFkSolverPos_recursive(chain);
- 
+
     // Create joint array
     unsigned int nj = chain.getNrOfJoints();
     KDL::JntArray jointpositions = JntArray(nj);
- 
+
     // Assign some values to the joint positions
     for (unsigned int i = 0; i < nj; i++) {
         float myinput;
@@ -78,13 +78,13 @@ void RobotAlgos::Test()
         (void)result;
         jointpositions(i) = (double)myinput;
     }
- 
+
     // Create the frame that will contain the results
-    KDL::Frame cartpos;    
- 
+    KDL::Frame cartpos;
+
     // Calculate forward position kinematics
     int kinematics_status;
-    kinematics_status = fksolver.JntToCart(jointpositions,cartpos);
+    kinematics_status = fksolver.JntToCart(jointpositions, cartpos);
     if (kinematics_status >= 0) {
         std::cout << cartpos << std::endl;
         printf("%s \n", "Success, thanks KDL!");
@@ -93,22 +93,25 @@ void RobotAlgos::Test()
         printf("%s \n", "Error: could not calculate forward kinematics :(");
     }
 
-	// Creation of the solvers:
-    ChainFkSolverPos_recursive fksolver1(chain);// Forward position solver
-    ChainIkSolverVel_pinv iksolver1v(chain);    // Inverse velocity solver
-    ChainIkSolverPos_NR iksolver1(chain, fksolver1, iksolver1v,
-        100, 1e-6);// Maximum 100 iterations, stop at accuracy 1e-6
-	 
-	// Creation of jntarrays:
-	JntArray result(chain.getNrOfJoints());
-	JntArray q_init(chain.getNrOfJoints());
-	 
-	// Set destination frame
-	Frame F_dest=cartpos;
-	 
-	iksolver1.CartToJnt(q_init,F_dest,result);
+    // Creation of the solvers:
+    ChainFkSolverPos_recursive fksolver1(chain);  // Forward position solver
+    ChainIkSolverVel_pinv iksolver1v(chain);      // Inverse velocity solver
+    ChainIkSolverPos_NR iksolver1(chain,
+                                  fksolver1,
+                                  iksolver1v,
+                                  100,
+                                  1e-6);  // Maximum 100 iterations, stop at accuracy 1e-6
 
-	for (unsigned int i = 0; i < nj; i++)
+    // Creation of jntarrays:
+    JntArray result(chain.getNrOfJoints());
+    JntArray q_init(chain.getNrOfJoints());
+
+    // Set destination frame
+    Frame F_dest = cartpos;
+
+    iksolver1.CartToJnt(q_init, F_dest, result);
+
+    for (unsigned int i = 0; i < nj; i++) {
         printf("Axle %i: %f \n", i, result(i));
-
+    }
 }

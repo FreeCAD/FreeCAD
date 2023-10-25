@@ -46,8 +46,8 @@ lines, polylines, lwpolylines, circles, arcs,
 texts, colors,layers (from groups)
 """
 # scaling factor between autocad font sizes and coin font sizes
-# the minimum version of the dxfLibrary needed to run
 TEXTSCALING = 1.35
+# the minimum version of the dxfLibrary needed to run
 CURRENTDXFLIB = 1.41
 
 import sys
@@ -116,9 +116,8 @@ def errorDXFLib(gui):
         files = ['dxfColorMap.py', 'dxfImportObjects.py',
                  'dxfLibrary.py', 'dxfReader.py']
 
-        _weburl = 'https://raw.githubusercontent.com/yorikvanhavre/'
-        _weburl += 'Draft-dxf-importer/'
-        baseurl = _weburl + '{0:.2f}'.format(CURRENTDXFLIB) + "/"
+        baseurl = 'https://raw.githubusercontent.com/yorikvanhavre/'
+        baseurl += 'Draft-dxf-importer/master/'
         import ArchCommands
         from FreeCAD import Base
         progressbar = Base.ProgressIndicator()
@@ -193,7 +192,7 @@ def getDXFlibs():
         libsok = False
         FCC.PrintWarning("DXF libraries not found. Trying to download...\n")
     else:
-        if "v"+str(CURRENTDXFLIB) in dxfLibrary.__version__:
+        if float(dxfLibrary.__version__[1:5]) >= CURRENTDXFLIB:
             libsok = True
         else:
             FCC.PrintWarning("DXF libraries need to be updated. "
@@ -246,7 +245,7 @@ def deformat(text):
     return t
 
 
-def locateLayer(wantedLayer, color=None, drawstyle=None):
+def locateLayer(wantedLayer, color=None, drawstyle=None, visibility=True):
     """Return layer group and create it if needed.
 
     This function iterates over a global list named `layers`, which is
@@ -268,6 +267,14 @@ def locateLayer(wantedLayer, color=None, drawstyle=None):
         It defaults to `None`.
         A tuple with color information `(r,g,b,a)`, where each value
         is a float between 0 and 1.
+
+    drawstyle : str, optional
+        It defaults to `None`. In which case "Solid" is used.
+        "Solid", "Dashed", "Dotted" or "Dashdot".
+
+    Visibility : bool, optional
+        It defaults to `True`.
+        Visibility of the new layer.
 
     Returns
     -------
@@ -299,6 +306,7 @@ def locateLayer(wantedLayer, color=None, drawstyle=None):
         newLayer = Draft.make_layer(name=wantedLayer,
                                     line_color=(0.0,0.0,0.0) if not color else color,
                                     draw_style="Solid" if not drawstyle else drawstyle)
+        newLayer.Visibility = visibility
     else:
         newLayer = doc.addObject("App::DocumentObjectGroup", wantedLayer)
     newLayer.Label = wantedLayer
@@ -993,21 +1001,22 @@ def drawArc(arc, forceShape=False):
     -----
     Use local variables, not global variables.
     """
-    v = vec(arc.loc)
-    firstangle = round(arc.start_angle, prec())
-    lastangle = round(arc.end_angle, prec())
-    circle = Part.Circle()
-    circle.Center = v
-    circle.Radius = vec(arc.radius)
+    pl = placementFromDXFOCS(arc)
+    rad = vec(arc.radius)
+    firstangle = round(arc.start_angle%360, prec())
+    lastangle = round(arc.end_angle%360, prec())
     try:
         if (dxfCreateDraft or dxfCreateSketch) and (not forceShape):
-            pl = placementFromDXFOCS(arc)
-            return Draft.make_circle(circle.Radius, pl, face=False,
+            return Draft.make_circle(rad, pl, face=False,
                                      startangle=firstangle,
                                      endangle=lastangle)
         else:
-            return circle.toShape(math.radians(firstangle),
-                                  math.radians(lastangle))
+            circle = Part.Circle()
+            circle.Radius = rad
+            shape = circle.toShape(math.radians(firstangle),
+                                   math.radians(lastangle))
+            shape.Placement = pl
+            return shape
     except Part.OCCError:
         warn(arc)
     return None
@@ -1044,16 +1053,17 @@ def drawCircle(circle, forceShape=False):
     -----
     Use local variables, not global variables.
     """
-    v = vec(circle.loc)
-    curve = Part.Circle()
-    curve.Radius = vec(circle.radius)
-    curve.Center = v
+    pl = placementFromDXFOCS(circle)
+    rad = vec(circle.radius)
     try:
         if (dxfCreateDraft or dxfCreateSketch) and (not forceShape):
-            pl = placementFromDXFOCS(circle)
-            return Draft.make_circle(circle.radius, pl)
+            return Draft.make_circle(rad, pl, face=False)
         else:
-            return curve.toShape()
+            curve = Part.Circle()
+            curve.Radius = rad
+            shape = curve.toShape()
+            shape.Placement = pl
+            return shape
     except Part.OCCError:
         warn(circle)
     return None
@@ -2154,7 +2164,7 @@ def processdxf(document, filename, getShapes=False, reComputeFlag=True):
         for table in drawing.tables.get_type("table"):
             for layer in table.get_type("layer"):
                 name = layer.name
-                color = tuple(dxfColorMap.color_map[layer.color])
+                color = tuple(dxfColorMap.color_map[abs(layer.color)])
                 drawstyle = "Solid"
                 lt = rawValue(layer, 6)
                 if "DASHED" in lt.upper():
@@ -2163,7 +2173,7 @@ def processdxf(document, filename, getShapes=False, reComputeFlag=True):
                     drawstyle = "Dotted"
                 if ("DASHDOT" in lt.upper()) or ("CENTER" in lt.upper()):
                     drawstyle = "Dashdot"
-                locateLayer(name, color, drawstyle)
+                locateLayer(name, color, drawstyle, layer.color>0)
     else:
         locateLayer("0", (0.0, 0.0, 0.0), "Solid")
 

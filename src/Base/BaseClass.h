@@ -114,6 +114,18 @@ public:
   virtual void setPyObject(PyObject *);
 
   static void *create(){return nullptr;}
+
+  template <typename T>
+  bool is() const
+  {
+    return getTypeId() == T::getClassTypeId();
+  }
+
+  template <typename T>
+  bool isDerivedFrom() const
+  {
+    return getTypeId().isDerivedFrom(T::getClassTypeId());
+  }
 private:
   static Type classTypeId;
 protected:

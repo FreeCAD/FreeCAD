@@ -82,7 +82,7 @@ struct QuantityFormat
 
     // Default denominator of minimum fractional inch. Only used in certain
     // schemas.
-    static int defaultDenominator;// i.e 8 for 1/8"
+    static int defaultDenominator;  // i.e 8 for 1/8"
 
     static inline int getDefaultDenominator()
     {
@@ -117,8 +117,9 @@ struct QuantityFormat
     }
     static inline NumberFormat toFormat(char c, bool* ok = 0)
     {
-        if (ok)
+        if (ok) {
             *ok = true;
+        }
         switch (c) {
             case 'f':
                 return Fixed;
@@ -127,8 +128,9 @@ struct QuantityFormat
             case 'g':
                 return Default;
             default:
-                if (ok)
+                if (ok) {
                     *ok = false;
+                }
                 return Default;
         }
     }
@@ -160,7 +162,7 @@ private:
     Unit unit;
     QuantityFormat format;
 };
-}// namespace Base
+}  // namespace Base
 
 Q_DECLARE_METATYPE(Base::Quantity)
 
@@ -886,6 +888,6 @@ private:
     QByteArray m_sPrefName;
     QByteArray m_sPrefGrp;
 };
-}// namespace Gui
+}  // namespace Gui
 
-#endif// GUI_CUSTOMWIDGETS_H
+#endif  // GUI_CUSTOMWIDGETS_H

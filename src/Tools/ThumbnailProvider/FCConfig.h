@@ -49,7 +49,7 @@
 #if defined(__MINGW32__)
 #if HAVE_CONFIG_H
 #include <config.h>
-#endif// HAVE_CONFIG_H
+#endif  // HAVE_CONFIG_H
 #endif
 #elif defined(__MWERKS__) && defined(__INTEL__)
 #ifndef FC_OS_WIN32
@@ -162,7 +162,7 @@ typedef unsigned __int64 uint64_t;
 // point at which warnings of overly long specifiers disabled (needed for VC6)
 #ifdef _MSC_VER
 #pragma warning(disable : 4251)
-#pragma warning(disable : 4996)// suppress deprecated warning for e.g. open()
+#pragma warning(disable : 4996)  // suppress deprecated warning for e.g. open()
 #if defined(WIN64) || defined(_WIN64) || defined(__WIN64__)
 #pragma warning(disable : 4244)
 #pragma warning(disable : 4267)
@@ -170,4 +170,4 @@ typedef unsigned __int64 uint64_t;
 #endif
 
 
-#endif// FC_CONFIG_H
+#endif  // FC_CONFIG_H

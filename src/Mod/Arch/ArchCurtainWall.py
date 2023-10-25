@@ -124,8 +124,8 @@ class CommandArchCurtainWall:
         else:
             # interactive line drawing
             self.points = []
-            if hasattr(FreeCAD,"DraftWorkingPlane"):
-                FreeCAD.DraftWorkingPlane.setup()
+            import WorkingPlane
+            WorkingPlane.get_working_plane()
             if hasattr(FreeCADGui,"Snapper"):
                 FreeCADGui.Snapper.getPoint(callback=self.getPoint)
 

@@ -39,7 +39,12 @@ namespace Sketcher
 {
 class Sketch;
 class SketchObject;
-}// namespace Sketcher
+}  // namespace Sketcher
+
+namespace Gui
+{
+class View3DInventorViewer;
+}
 
 namespace SketcherGui
 {
@@ -83,8 +88,8 @@ class ViewProviderSketchDrawSketchHandlerAttorney
 {
 private:
     static inline void setConstraintSelectability(ViewProviderSketch& vp, bool enabled = true);
-    static inline void setPositionText(ViewProviderSketch& vp, const Base::Vector2d& Pos,
-                                       const SbString& txt);
+    static inline void
+    setPositionText(ViewProviderSketch& vp, const Base::Vector2d& Pos, const SbString& txt);
     static inline void setPositionText(ViewProviderSketch& vp, const Base::Vector2d& Pos);
     static inline void resetPositionText(ViewProviderSketch& vp);
     static inline void drawEdit(ViewProviderSketch& vp,
@@ -97,14 +102,18 @@ private:
     static inline void setAxisPickStyle(ViewProviderSketch& vp, bool on);
     static inline void moveCursorToSketchPoint(ViewProviderSketch& vp, Base::Vector2d point);
     static inline void preselectAtPoint(ViewProviderSketch& vp, Base::Vector2d point);
-    static inline void setAngleSnapping(ViewProviderSketch& vp, bool enable,
+    static inline void setAngleSnapping(ViewProviderSketch& vp,
+                                        bool enable,
                                         Base::Vector2d referencePoint = Base::Vector2d(0., 0.));
 
     static inline int getPreselectPoint(const ViewProviderSketch& vp);
     static inline int getPreselectCurve(const ViewProviderSketch& vp);
     static inline int getPreselectCross(const ViewProviderSketch& vp);
 
-    static inline void moveConstraint(ViewProviderSketch& vp, int constNum, const Base::Vector2d& toPos);
+    static inline void
+    moveConstraint(ViewProviderSketch& vp, int constNum, const Base::Vector2d& toPos);
+
+    static inline void signalToolChanged(const ViewProviderSketch& vp, const std::string& toolname);
 
     friend class DrawSketchHandler;
 };
@@ -153,12 +162,14 @@ public:
     int getHighestCurveIndex();
 
     int seekAutoConstraint(std::vector<AutoConstraint>& suggestedConstraints,
-                           const Base::Vector2d& Pos, const Base::Vector2d& Dir,
+                           const Base::Vector2d& Pos,
+                           const Base::Vector2d& Dir,
                            AutoConstraint::TargetType type = AutoConstraint::VERTEX);
     // createowncommand indicates whether a separate command shall be create and committed (for
     // example for undo purposes) or not is not it is the responsibility of the developer to create
     // and commit the command appropriately.
-    void createAutoConstraints(const std::vector<AutoConstraint>& autoConstrs, int geoId,
+    void createAutoConstraints(const std::vector<AutoConstraint>& autoConstrs,
+                               int geoId,
                                Sketcher::PointPos pointPos = Sketcher::PointPos::none,
                                bool createowncommand = true);
 
@@ -167,7 +178,39 @@ public:
     void resetPositionText();
     void renderSuggestConstraintsCursor(std::vector<AutoConstraint>& suggestedConstraints);
 
-private:// NVI
+    /** @name Interfacing with tool dialogs */
+    //@{
+
+    /** @brief Slot to receive signaling that a widget intended for the tool has changed and is
+     *  available ant the provided pointer.
+     */
+    void toolWidgetChanged(QWidget* newwidget);
+
+    /** @brief Factory function returning a tool widget of the type necessary for the specific tool.
+     * This is a NVI interface and specific handlers must overload the corresponding virtual
+     * function.
+     */
+    std::unique_ptr<QWidget> createToolWidget() const;
+
+    /** @brief Returns whether this tool expects/supports a visible tool widget. Emphasis is in
+     * visibility, so to allow to adapt the interface accordingly.
+     * This is an NVI interface and specific handlers must overload the corresponding virtual
+     * function.
+     */
+    bool isToolWidgetVisible() const;
+    /** @brief Returns a pixmap icon intended for a visible tool widget.
+     * This is an NVI interface and specific handlers must overload the corresponding virtual
+     * function.
+     */
+    QPixmap getToolWidgetHeaderIcon() const;
+    /** @brief Returns a header text intended for a visible tool widget.
+     * This is an NVI interface and specific handlers must overload the corresponding virtual
+     * function.
+     */
+    QString getToolWidgetHeaderText() const;
+    //@}
+
+private:  // NVI
     virtual void preActivated();
     virtual void activated()
     {}
@@ -175,9 +218,17 @@ private:// NVI
     {}
     virtual void postDeactivated()
     {}
+    virtual void onWidgetChanged()
+    {}
 
-protected:// NVI requiring base implementation
+protected:  // NVI requiring base implementation
+    virtual std::string getToolName() const;
     virtual QString getCrosshairCursorSVGName() const;
+
+    virtual std::unique_ptr<QWidget> createWidget() const;
+    virtual bool isWidgetVisible() const;
+    virtual QPixmap getToolIcon() const;
+    virtual QString getToolWidgetText() const;
 
 protected:
     // helpers
@@ -233,8 +284,14 @@ protected:
 
     void moveConstraint(int constNum, const Base::Vector2d& toPos);
 
+    void signalToolChanged() const;
+
+    Gui::View3DInventorViewer* getViewer();
+
 private:
-    void setSvgCursor(const QString& svgName, int x, int y,
+    void setSvgCursor(const QString& svgName,
+                      int x,
+                      int y,
                       const std::map<unsigned long, unsigned long>& colorMapping =
                           std::map<unsigned long, unsigned long>());
 
@@ -244,6 +301,7 @@ private:
 
     void setCrosshairCursor(const QString& svgName);
     void setCrosshairCursor(const char* svgName);
+
 
 protected:
     /**
@@ -256,10 +314,12 @@ protected:
     QCursor oldCursor;
     QCursor actCursor;
     QPixmap actCursorPixmap;
+
+    QWidget* toolwidget;
 };
 
 
-}// namespace SketcherGui
+}  // namespace SketcherGui
 
 
-#endif// SKETCHERGUI_DrawSketchHandler_H
+#endif  // SKETCHERGUI_DrawSketchHandler_H

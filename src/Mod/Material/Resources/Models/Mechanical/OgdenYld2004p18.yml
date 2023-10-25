@@ -1,0 +1,65 @@
+---
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2023 David Carter <dcarter@davidcarter.ca>              *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
+
+Model:
+  Name: 'OgdenYld2004p18'
+  UUID: '3ef9e427-cc25-43f7-817f-79ff0d49625f'
+  URL: 'https://en.wikipedia.org/wiki/Linear_elasticity'
+  Description: >
+    Materials that are linearly elastic obey Hooke's law i.e. the stress and
+    strain relationship is linear
+  DOI: "10.1016/j.ijplas.2004.06.004"
+  OgdenModuli:
+    Type: 'List'
+    Units: 'kPa'
+    URL: 'https://en.wikipedia.org/wiki/Ogden_hyperelastic_model'
+    Description: "Elastic moduli μ for Ogden [FreeCAD Pressure unit]"
+  OgdenExponent:
+    Type: 'Integer'
+    Units: ''
+    URL: 'https://en.wikipedia.org/wiki/Ogden_hyperelastic_model'
+    Description: "Exponent ɑ for Ogden [unitless]"
+  InitialYieldStress:
+    Type: 'Quantity'
+    Units: 'kPa'
+    URL: ''
+    Description: >
+      Saturation stress for Voce isotropic hardening [FreeCAD Pressure unit]
+  VoceSaturationStress:
+    Type: 'Quantity'
+    Units: 'kPa'
+    URL: ''
+    Description: >
+      Saturation stress for Voce isotropic hardening [FreeCAD Pressure unit]
+  VoceStrainScale:
+    Type: 'Float'
+    Units: ''
+    URL: ''
+    Description: "Strain scale in Voce isotropic hardening [unitless]"
+  Yld2004p18Coefficients:
+    Type: 'List'
+    Units: ''
+    URL: ''
+    Description: >
+      Coefficients (c_12, c_13, c_21, c_23, c_31, c_32, c_44, c_55, c_66)
+      in Yld2004-18p yield surface [unitless]

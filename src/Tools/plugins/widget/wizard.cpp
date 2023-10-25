@@ -110,8 +110,9 @@ void Wizard::insertPage(int index, QWidget* page)
         page->setWindowTitle(title);
     }
 
-    if (currentIndex() == index)
+    if (currentIndex() == index) {
         textLabel->setText(title);
+    }
 
     int current = currentIndex();
     _backButton->setEnabled(current > 0);
@@ -121,15 +122,17 @@ void Wizard::insertPage(int index, QWidget* page)
 void Wizard::backButtonClicked()
 {
     int index = currentIndex();
-    if (index > 0)
+    if (index > 0) {
         setCurrentIndex(index - 1);
+    }
 }
 
 void Wizard::nextButtonClicked()
 {
     int index = currentIndex();
-    if (index < count() - 1)
+    if (index < count() - 1) {
         setCurrentIndex(index + 1);
+    }
 }
 
 QPushButton* Wizard::backButton() const
@@ -215,8 +218,8 @@ WizardExtensionFactory::WizardExtensionFactory(QExtensionManager* parent)
     : QExtensionFactory(parent)
 {}
 
-QObject* WizardExtensionFactory::createExtension(QObject* object, const QString& iid,
-                                                 QObject* parent) const
+QObject*
+WizardExtensionFactory::createExtension(QObject* object, const QString& iid, QObject* parent) const
 {
     Wizard* widget = qobject_cast<Wizard*>(object);
 

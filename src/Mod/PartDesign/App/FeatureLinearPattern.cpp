@@ -113,16 +113,24 @@ const std::list<gp_Trsf> LinearPattern::getTransformations(const std::vector<App
     if (refObject->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
         Part::Part2DObject* refSketch = static_cast<Part::Part2DObject*>(refObject);
         Base::Axis axis;
-        if (subStrings[0] == "H_Axis")
+        if (subStrings[0] == "H_Axis") {
             axis = refSketch->getAxis(Part::Part2DObject::H_Axis);
-        else if (subStrings[0] == "V_Axis")
+            axis *= refSketch->Placement.getValue();
+        }
+        else if (subStrings[0] == "V_Axis") {
             axis = refSketch->getAxis(Part::Part2DObject::V_Axis);
-        else if (subStrings[0] == "N_Axis")
+            axis *= refSketch->Placement.getValue();
+        }
+        else if (subStrings[0] == "N_Axis") {
             axis = refSketch->getAxis(Part::Part2DObject::N_Axis);
+            axis *= refSketch->Placement.getValue();
+        }
         else if (subStrings[0].compare(0, 4, "Axis") == 0) {
             int AxId = std::atoi(subStrings[0].substr(4,4000).c_str());
-            if (AxId >= 0 && AxId < refSketch->getAxisCount())
+            if (AxId >= 0 && AxId < refSketch->getAxisCount()) {
                 axis = refSketch->getAxis(AxId);
+                axis *= refSketch->Placement.getValue();
+            }
         }
         else if (subStrings[0].compare(0, 4, "Edge") == 0) {
             Part::TopoShape refShape = refSketch->Shape.getShape();
@@ -136,10 +144,12 @@ const std::list<gp_Trsf> LinearPattern::getTransformations(const std::vector<App
 
             gp_Pnt p = adapt.Line().Location();
             gp_Dir d = adapt.Line().Direction();
+
+            // the axis is not given in local coordinates and mustn't be multiplied with the
+            // placement
             axis.setBase(Base::Vector3d(p.X(), p.Y(), p.Z()));
             axis.setDirection(Base::Vector3d(d.X(), d.Y(), d.Z()));
         }
-        axis *= refSketch->Placement.getValue();
         dir = gp_Dir(axis.getDirection().x, axis.getDirection().y, axis.getDirection().z);
     } else if (refObject->getTypeId().isDerivedFrom(PartDesign::Plane::getClassTypeId())) {
         PartDesign::Plane* plane = static_cast<PartDesign::Plane*>(refObject);

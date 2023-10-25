@@ -35,7 +35,7 @@ namespace Robot
 /** The part shape property class.
  * @author Werner Mayer
  */
-class RobotExport PropertyTrajectory : public App::Property
+class RobotExport PropertyTrajectory: public App::Property
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
@@ -48,10 +48,10 @@ public:
     /// set the part shape
     void setValue(const Trajectory&);
     /// get the part shape
-    const Trajectory &getValue() const;
+    const Trajectory& getValue() const;
     //@}
 
- 
+
     /** @name Getting basic geometric entities */
     //@{
     /** Returns the bounding box around the underlying mesh kernel */
@@ -61,17 +61,17 @@ public:
     /** @name Python interface */
     //@{
     PyObject* getPyObject() override;
-    void setPyObject(PyObject *value) override;
+    void setPyObject(PyObject* value) override;
     //@}
 
     /** @name Save/restore */
     //@{
-    void Save (Base::Writer &writer) const override;
-    void Restore(Base::XMLReader &reader) override;
+    void Save(Base::Writer& writer) const override;
+    void Restore(Base::XMLReader& reader) override;
 
-    App::Property *Copy() const override;
-    void Paste(const App::Property &from) override;
-    unsigned int getMemSize () const override;
+    App::Property* Copy() const override;
+    void Paste(const App::Property& from) override;
+    unsigned int getMemSize() const override;
     //@}
 
 private:
@@ -79,7 +79,7 @@ private:
 };
 
 
-} //namespace Robot
+}  // namespace Robot
 
 
-#endif // PROPERTYTOPOSHAPE_H
+#endif  // PROPERTYTOPOSHAPE_H

@@ -22,8 +22,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <QMenu>
-# include <QTimer>
+#include <QMenu>
+#include <QTimer>
 #endif
 
 #include <App/DocumentObject.h>
@@ -45,12 +45,12 @@ PROPERTY_SOURCE(DrawingGui::ViewProviderDrawingPage, Gui::ViewProviderDocumentOb
 // Construction/Destruction
 
 ViewProviderDrawingPage::ViewProviderDrawingPage()
-  : view(nullptr)
+    : view(nullptr)
 {
     sPixmap = "Page";
-    ADD_PROPERTY(HintScale,(10.0));
-    ADD_PROPERTY(HintOffsetX,(10.0));
-    ADD_PROPERTY(HintOffsetY,(10.0));
+    ADD_PROPERTY(HintScale, (10.0));
+    ADD_PROPERTY(HintOffsetX, (10.0));
+    ADD_PROPERTY(HintOffsetY, (10.0));
 
     // do not show this in the property editor
     Visibility.setStatus(App::Property::Hidden, true);
@@ -58,10 +58,9 @@ ViewProviderDrawingPage::ViewProviderDrawingPage()
 }
 
 ViewProviderDrawingPage::~ViewProviderDrawingPage()
-{
-}
+{}
 
-void ViewProviderDrawingPage::attach(App::DocumentObject *pcFeat)
+void ViewProviderDrawingPage::attach(App::DocumentObject* pcFeat)
 {
     // call parent attach method
     ViewProviderDocumentObject::attach(pcFeat);
@@ -109,25 +108,26 @@ void ViewProviderDrawingPage::updateData(const App::Property* prop)
         if (std::string(getPageObject()->PageResult.getValue()) != "") {
             if (view) {
                 view->load(QString::fromUtf8(getPageObject()->PageResult.getValue()));
-                if (view->isHidden())
+                if (view->isHidden()) {
                     QTimer::singleShot(300, view, SLOT(viewAll()));
-                else
+                }
+                else {
                     view->viewAll();
+                }
             }
         }
     }
     else if (pcObject && prop == &pcObject->Label) {
-        if (view){
+        if (view) {
             const char* objname = pcObject->Label.getValue();
             view->setObjectName(QString::fromUtf8(objname));
-            Gui::Document* doc = Gui::Application::Instance->getDocument
-                (pcObject->getDocument());
+            Gui::Document* doc = Gui::Application::Instance->getDocument(pcObject->getDocument());
             view->onRelabel(doc);
         }
     }
 }
 
-bool ViewProviderDrawingPage::onDelete(const std::vector<std::string> & items)
+bool ViewProviderDrawingPage::onDelete(const std::vector<std::string>& items)
 {
     if (view) {
         view->parentWidget()->deleteLater();
@@ -157,9 +157,8 @@ bool ViewProviderDrawingPage::doubleClicked(void)
 
 DrawingView* ViewProviderDrawingPage::showDrawingView()
 {
-    if (!view){
-        Gui::Document* doc = Gui::Application::Instance->getDocument
-            (this->pcObject->getDocument());
+    if (!view) {
+        Gui::Document* doc = Gui::Application::Instance->getDocument(this->pcObject->getDocument());
         view = new DrawingView(doc, Gui::getMainWindow());
         view->setWindowIcon(Gui::BitmapFactory().pixmap("actions/drawing-landscape"));
 

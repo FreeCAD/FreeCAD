@@ -142,11 +142,11 @@ class QuantitySpinBox(QtCore.QObject):
     def onWidgetValueChanged(self):
         """onWidgetValueChanged()... Slot method for determining if a change
         in widget value is a result of an expression edit, or a simple spinbox change.
-        If the former, emit a manual `editingFinished` signal because the Formula Editor
+        If the former, emit a manual `editingFinished` signal because the Expression editor
         window returned a value to the base widget, leaving it in read-only mode,
         and finishing the editing of the value. Otherwise, due nothing if the value
         has not changed, or there is no active expression for the property.
-        If the user closes the Formula Editor to cancel the edit, the value will not
+        If the user closes the Expression editor to cancel the edit, the value will not
         be changed, and this manual signal will not be emitted."""
         if self._hasExpression() and self.widget.text() != self.lastWidgetText:
             self.widget.editingFinished.emit()

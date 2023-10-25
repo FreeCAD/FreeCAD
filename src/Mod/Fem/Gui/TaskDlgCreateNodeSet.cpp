@@ -41,10 +41,11 @@ using namespace FemGui;
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TaskDlgCreateNodeSet::TaskDlgCreateNodeSet(Fem::FemSetNodesObject* obj)
-    : TaskDialog(), FemSetNodesObject(obj)
+    : TaskDialog()
+    , FemSetNodesObject(obj)
 {
-    name    = new TaskObjectName(obj);
-    param   = new TaskCreateNodeSet(obj);
+    name = new TaskObjectName(obj);
+    param = new TaskCreateNodeSet(obj);
 
     Content.push_back(name);
     Content.push_back(param);
@@ -57,10 +58,9 @@ TaskDlgCreateNodeSet::~TaskDlgCreateNodeSet() = default;
 
 void TaskDlgCreateNodeSet::open()
 {
-    //select->activate();
-    //Edge2TaskObject->execute();
-    //param->setEdgeAndClusterNbr(Edge2TaskObject->NbrOfEdges,Edge2TaskObject->NbrOfCluster);
-
+    // select->activate();
+    // Edge2TaskObject->execute();
+    // param->setEdgeAndClusterNbr(Edge2TaskObject->NbrOfEdges,Edge2TaskObject->NbrOfCluster);
 }
 
 bool TaskDlgCreateNodeSet::accept()
@@ -68,9 +68,9 @@ bool TaskDlgCreateNodeSet::accept()
     try {
         FemSetNodesObject->Nodes.setValues(param->tempSet);
         FemSetNodesObject->recomputeFeature();
-        //Gui::Document* doc = Gui::Application::Instance->activeDocument();
-        //if(doc)
-        //    doc->resetEdit();
+        // Gui::Document* doc = Gui::Application::Instance->activeDocument();
+        // if(doc)
+        //     doc->resetEdit();
         param->MeshViewProvider->resetHighlightNodes();
         FemSetNodesObject->Label.setValue(name->name);
         Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
@@ -87,9 +87,9 @@ bool TaskDlgCreateNodeSet::accept()
 bool TaskDlgCreateNodeSet::reject()
 {
     FemSetNodesObject->execute();
-    //Gui::Document* doc = Gui::Application::Instance->activeDocument();
-    //if(doc)
-    //    doc->resetEdit();
+    // Gui::Document* doc = Gui::Application::Instance->activeDocument();
+    // if(doc)
+    //     doc->resetEdit();
     param->MeshViewProvider->resetHighlightNodes();
     Gui::Command::abortCommand();
     Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
@@ -98,8 +98,6 @@ bool TaskDlgCreateNodeSet::reject()
 }
 
 void TaskDlgCreateNodeSet::helpRequested()
-{
-
-}
+{}
 
 #include "moc_TaskDlgCreateNodeSet.cpp"

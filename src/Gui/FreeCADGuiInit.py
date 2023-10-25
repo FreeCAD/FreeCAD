@@ -38,8 +38,7 @@ Gui = FreeCADGui
 Gui.listCommands = Gui.Command.listAll
 Gui.isCommandActive = lambda cmd: Gui.Command.get(cmd).isActive()
 
-# The values must match with that of the
-# C++ enum class ResolveMode
+# The values must match with that of the C++ enum class ResolveMode
 class ResolveMode(IntEnum):
     NoResolve = 0
     OldStyleElement = 1
@@ -47,6 +46,13 @@ class ResolveMode(IntEnum):
     FollowLink = 3
 
 Gui.Selection.ResolveMode = ResolveMode
+
+# The values must match with that of the C++ enum class SelectionStyle
+class SelectionStyle(IntEnum):
+    NormalSelection = 0
+    GreedySelection = 1
+
+Gui.Selection.SelectionStyle = SelectionStyle
 
 # Important definitions
 class Workbench:
@@ -132,8 +138,8 @@ def InitApplications():
         InstallFile = os.path.join(Dir,"InitGui.py")
         if os.path.exists(InstallFile):
             try:
-                with open(file=InstallFile, encoding="utf-8") as f:
-                    exec(f.read())
+                with open(InstallFile, 'rt', encoding='utf-8') as f:
+                    exec(compile(f.read(), InstallFile, 'exec'))
             except Exception as inst:
                 Log('Init:      Initializing ' + Dir + '... failed\n')
                 Log('-'*100+'\n')
@@ -295,9 +301,9 @@ InitApplications()
 Gui.activateWorkbench("NoneWorkbench")
 
 # Register .py, .FCScript and .FCMacro
-FreeCAD.addImportType("Inventor V2.1 (*.iv)","FreeCADGui")
-FreeCAD.addImportType("VRML V2.0 (*.wrl *.vrml *.wrz *.wrl.gz)","FreeCADGui")
-FreeCAD.addImportType("Python (*.py *.FCMacro *.FCScript)","FreeCADGui")
+FreeCAD.addImportType("Inventor V2.1 (*.iv *.IV)","FreeCADGui")
+FreeCAD.addImportType("VRML V2.0 (*.wrl *.WRL *.vrml *.VRML *.wrz *.WRZ *.wrl.gz *.WRL.GZ)","FreeCADGui")
+FreeCAD.addImportType("Python (*.py *.FCMacro *.FCScript *.fcmacro *.fcscript)","FreeCADGui")
 FreeCAD.addExportType("Inventor V2.1 (*.iv)","FreeCADGui")
 FreeCAD.addExportType("VRML V2.0 (*.wrl *.vrml *.wrz *.wrl.gz)","FreeCADGui")
 FreeCAD.addExportType("X3D Extensible 3D (*.x3d *.x3dz)","FreeCADGui")

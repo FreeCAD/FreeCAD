@@ -53,15 +53,17 @@ struct Constraint_Equal
     bool operator()(const ConstraintIds& x) const
     {
         if (c.First == x.First && c.FirstPos == x.FirstPos && c.Second == x.Second
-            && c.SecondPos == x.SecondPos)
+            && c.SecondPos == x.SecondPos) {
             return true;
+        }
         if (c.Second == x.First && c.SecondPos == x.FirstPos && c.First == x.Second
-            && c.FirstPos == x.SecondPos)
+            && c.FirstPos == x.SecondPos) {
             return true;
+        }
         return false;
     }
 };
 
-}// namespace Sketcher
+}  // namespace Sketcher
 
-#endif// SKETCHER_ANALYSE_H
+#endif  // SKETCHER_ANALYSE_H

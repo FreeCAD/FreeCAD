@@ -98,7 +98,7 @@ public:
 
     // unlike other vectors in FreeCAD, this normalization creates a new vector instead of
     // modifying existing one.
-    DeriVector2 getNormalized() const;// returns zero vector if the original is zero.
+    DeriVector2 getNormalized() const;  // returns zero vector if the original is zero.
     // calculates scalar product of two vectors and returns the result. The derivative
     // of the result is written into argument dprd.
     double scalarProd(const DeriVector2& v2, double* dprd = nullptr) const;
@@ -107,19 +107,19 @@ public:
     // of the result is written into argument dprd.
     double crossProdNorm(const DeriVector2& v2, double& dprd) const;
     DeriVector2 sum(const DeriVector2& v2) const
-    {// adds two vectors and returns result
+    {  // adds two vectors and returns result
         return DeriVector2(x + v2.x, y + v2.y, dx + v2.dx, dy + v2.dy);
     }
     DeriVector2 subtr(const DeriVector2& v2) const
-    {// subtracts two vectors and returns result
+    {  // subtracts two vectors and returns result
         return DeriVector2(x - v2.x, y - v2.y, dx - v2.dx, dy - v2.dy);
     }
     DeriVector2 mult(double val) const
     {
         return DeriVector2(x * val, y * val, dx * val, dy * val);
-    }// multiplies the vector by a number. Derivatives are scaled.
+    }  // multiplies the vector by a number. Derivatives are scaled.
     DeriVector2 multD(double val, double dval) const
-    {// multiply vector by a variable with a derivative.
+    {  // multiply vector by a variable with a derivative.
         return DeriVector2(x * val, y * val, dx * val + x * dval, dy * val + y * dval);
     }
     // divide vector by a variable with a derivative
@@ -133,7 +133,7 @@ public:
         return DeriVector2(y, -x, dy, -dx);
     }
     DeriVector2 linCombi(double m1, const DeriVector2& v2, double m2) const
-    {// linear combination of two vectors
+    {  // linear combination of two vectors
         return DeriVector2(x * m1 + v2.x * m2,
                            y * m1 + v2.y * m2,
                            dx * m1 + v2.dx * m2,
@@ -145,7 +145,7 @@ public:
 // Geometries
 ///////////////////////////////////////
 
-class Curve// a base class for all curve-based objects (line, circle/arc, ellipse/arc)
+class Curve  // a base class for all curve-based objects (line, circle/arc, ellipse/arc)
 {
 public:
     virtual ~Curve()
@@ -396,7 +396,7 @@ public:
     ~BSpline() override
     {}
     // parameters
-    VEC_P poles;// TODO: use better data structures so poles.x and poles.y
+    VEC_P poles;  // TODO: use better data structures so poles.x and poles.y
     VEC_pD weights;
     VEC_pD knots;
     // dependent parameters (depends on previous parameters,
@@ -408,7 +408,7 @@ public:
     VEC_I mult;
     int degree;
     bool periodic;
-    VEC_I knotpointGeoids;// geoids of knotpoints as to index Geom array
+    VEC_I knotpointGeoids;  // geoids of knotpoints as to index Geom array
     // knot vector with repetitions for multiplicity and "padding" for periodic spline
     // interface helpers
     VEC_D flattenedknots;
@@ -437,6 +437,6 @@ public:
     static double splineValue(double x, size_t k, unsigned int p, VEC_D& d, const VEC_D& flatknots);
 };
 
-}// namespace GCS
+}  // namespace GCS
 
-#endif// PLANEGCS_GEO_H
+#endif  // PLANEGCS_GEO_H

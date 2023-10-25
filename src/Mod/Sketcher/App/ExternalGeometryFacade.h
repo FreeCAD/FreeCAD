@@ -57,15 +57,15 @@ class SketcherExport ExternalGeometryFacade: public Base::BaseClass,
 
 private:
     explicit ExternalGeometryFacade(const Part::Geometry* geometry);
-    ExternalGeometryFacade();// As TYPESYSTEM requirement
+    ExternalGeometryFacade();  // As TYPESYSTEM requirement
 
     friend class ExternalGeometryFacadePy;
 
-public:// Factory methods
+public:  // Factory methods
     static std::unique_ptr<ExternalGeometryFacade> getFacade(Part::Geometry* geometry);
     static std::unique_ptr<const ExternalGeometryFacade> getFacade(const Part::Geometry* geometry);
 
-public:// Utility methods
+public:  // Utility methods
     static void ensureSketchGeometryExtensions(Part::Geometry* geometry);
     static void copyId(const Part::Geometry* src, Part::Geometry* dst);
 
@@ -167,18 +167,20 @@ public:
     }
 
     // Geometry Element
-    template<typename GeometryT = Part::Geometry,
-             typename = typename std::enable_if<std::is_base_of<
-                 Part::Geometry, typename std::decay<GeometryT>::type>::value>::type>
+    template<
+        typename GeometryT = Part::Geometry,
+        typename = typename std::enable_if<
+            std::is_base_of<Part::Geometry, typename std::decay<GeometryT>::type>::value>::type>
     GeometryT* getGeometry()
     {
         return dynamic_cast<GeometryT*>(const_cast<GeometryT*>(Geo));
     }
 
     // Geometry Element
-    template<typename GeometryT = Part::Geometry,
-             typename = typename std::enable_if<std::is_base_of<
-                 Part::Geometry, typename std::decay<GeometryT>::type>::value>::type>
+    template<
+        typename GeometryT = Part::Geometry,
+        typename = typename std::enable_if<
+            std::is_base_of<Part::Geometry, typename std::decay<GeometryT>::type>::value>::type>
     GeometryT* getGeometry() const
     {
         return dynamic_cast<GeometryT*>(Geo);
@@ -304,7 +306,7 @@ private:
 };
 
 
-}// namespace Sketcher
+}  // namespace Sketcher
 
 
-#endif// SKETCHER_GEOMETRYEXTERNALFACADE_H
+#endif  // SKETCHER_GEOMETRYEXTERNALFACADE_H

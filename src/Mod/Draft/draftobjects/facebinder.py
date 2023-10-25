@@ -2,6 +2,7 @@
 # *   Copyright (c) 2009, 2010 Yorik van Havre <yorik@uncreated.net>        *
 # *   Copyright (c) 2009, 2010 Ken Cline <cline@frii.com>                   *
 # *   Copyright (c) 2020 FreeCAD Developers                                 *
+# *   Copyright (c) 2023 FreeCAD Project Association                        *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -40,10 +41,10 @@ class Facebinder(DraftObject):
         super(Facebinder, self).__init__(obj, "Facebinder")
 
         _tip = QT_TRANSLATE_NOOP("App::Property","Linked faces")
-        obj.addProperty("App::PropertyLinkSubList", "Faces", "Draft",  _tip)
+        obj.addProperty("App::PropertyLinkSubList", "Faces", "Draft", _tip)
 
         _tip = QT_TRANSLATE_NOOP("App::Property","Specifies if splitter lines must be removed")
-        obj.addProperty("App::PropertyBool","RemoveSplitter", "Draft",  _tip)
+        obj.addProperty("App::PropertyBool","RemoveSplitter", "Draft", _tip)
 
         _tip = QT_TRANSLATE_NOOP("App::Property","An optional extrusion value to be applied to all faces")
         obj.addProperty("App::PropertyDistance","Extrusion", "Draft" , _tip)
@@ -58,7 +59,7 @@ class Facebinder(DraftObject):
         obj.addProperty("App::PropertyArea","Area", "Draft", _tip)
         obj.setEditorMode("Area",1)
 
-    def execute(self,obj):
+    def execute(self, obj):
         if self.props_changed_placement_only(obj):
             self.props_changed_clear()
             return
@@ -69,52 +70,54 @@ class Facebinder(DraftObject):
             return
         faces = []
         area = 0
+        offs_val = obj.Offset.Value if hasattr(obj, "Offset") else 0
+        extr_val = obj.Extrusion.Value if hasattr(obj, "Extrusion") else 0
         for sel in obj.Faces:
-            for f in sel[1]:
-                if "Face" in f:
+            for sub in sel[1]:
+                if "Face" in sub:
                     try:
-                        fnum = int(f[4:])-1
-                        face = sel[0].Shape.Faces[fnum]
-                        if hasattr(obj,"Offset") and obj.Offset.Value:
-                            norm = face.normalAt(0,0)
-                            dist = norm.multiply(obj.Offset.Value)
-                            face.translate(dist)
-                        faces.append(face)
+                        face = Part.getShape(sel[0], sub, needSubElement=True, retType=0)
                         area += face.Area
-                    except(IndexError, Part.OCCError):
-                        print("Draft: wrong face index")
+                        if offs_val:
+                            if face.Surface.isPlanar():
+                                norm = face.normalAt(0, 0)
+                                dist = norm.multiply(offs_val)
+                                face.translate(dist)
+                                faces.append(face)
+                            else:
+                                offs = face.makeOffsetShape(offs_val, 1e-7)
+                                faces.extend(offs.Faces)
+                        else:
+                            faces.append(face)
+                    except Part.OCCError:
+                        print("Draft: error building facebinder")
                         return
         if not faces:
             return
         try:
-            if len(faces) > 1:
-                sh = None
-                if hasattr(obj, "Extrusion"):
-                    if obj.Extrusion.Value:
-                        for f in faces:
-                            f = f.extrude(f.normalAt(0,0).multiply(obj.Extrusion.Value))
-                            if sh:
-                                sh = sh.fuse(f)
-                            else:
-                                sh = f
-                if not sh:
-                    sh = faces.pop()
-                    sh = sh.multiFuse(faces)
-                if hasattr(obj, "Sew"):
-                    if obj.Sew:
-                        sh = sh.copy()
-                        sh.sewShape()
-                if hasattr(obj, "RemoveSplitter"):
-                    if obj.RemoveSplitter:
-                        sh = sh.removeSplitter()
-                else:
-                    sh = sh.removeSplitter()
+            if extr_val:
+                extrs = []
+                for face in faces:
+                    if face.Surface.isPlanar():
+                        extr = face.extrude(face.normalAt(0, 0).multiply(extr_val))
+                        extrs.append(extr)
+                    else:
+                        extr = face.makeOffsetShape(extr_val, 1e-7, fill=True)
+                        extrs.extend(extr.Solids)
+                sh = extrs.pop()
+                if extrs:
+                    sh = sh.multiFuse(extrs)
             else:
-                sh = faces[0]
-                if hasattr(obj, "Extrusion"):
-                    if obj.Extrusion.Value:
-                        sh = sh.extrude(sh.normalAt(0,0).multiply(obj.Extrusion.Value))
-                sh.transformShape(sh.Matrix, True)
+                sh = faces.pop()
+                if faces:
+                    sh = sh.multiFuse(faces)
+            if len(faces) > 1:
+                if hasattr(obj, "Sew") and obj.Sew:
+                    sh.sewShape()
+                if not hasattr(obj, "RemoveSplitter"):
+                    sh = sh.removeSplitter()
+                elif obj.RemoveSplitter:
+                    sh = sh.removeSplitter()
         except Part.OCCError:
             print("Draft: error building facebinder")
             return
@@ -126,19 +129,24 @@ class Facebinder(DraftObject):
     def onChanged(self, obj, prop):
         self.props_changed_store(prop)
 
-    def addSubobjects(self,obj,facelinks):
+    def addSubobjects(self, obj, facelinks):
         """adds facelinks to this facebinder"""
-        objs = obj.Faces
-        for o in facelinks:
-            if isinstance(o, tuple) or isinstance(o, list):
-                if o[0].Name != obj.Name:
-                    objs.append(tuple(o))
+        # facelinks is an iterable or a selection set:
+        # [(<Part::PartFeature>, ("3.Face3", "3.Face6"))]
+        # or:
+        # Gui.Selection.getSelectionEx("", 0)
+        sels = obj.Faces
+        for sel in facelinks:
+            if isinstance(sel, list) or isinstance(sel, tuple):
+                sel_obj, sel_subs = sel
             else:
-                for el in o.SubElementNames:
-                    if "Face" in el:
-                        if o.Object.Name != obj.Name:
-                            objs.append((o.Object, el))
-        obj.Faces = objs
+                sel_obj = sel.Object
+                sel_subs = sel.SubElementNames
+            if sel_obj.Name != obj.Name:
+                for sub in sel_subs:
+                    if "Face" in sub:
+                        sels.append((sel_obj, sub))
+        obj.Faces = sels
         self.execute(obj)
 
 

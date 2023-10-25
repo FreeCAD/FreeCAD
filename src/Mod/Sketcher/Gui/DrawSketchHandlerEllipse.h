@@ -35,7 +35,7 @@
 namespace SketcherGui
 {
 
-extern GeometryCreationMode geometryCreationMode;// defined in CommandCreateGeo.cpp
+extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGeo.cpp
 
 /* Ellipse ==============================================================================*/
 /**
@@ -125,8 +125,10 @@ public:
         if (method == PERIAPSIS_APOAPSIS_B) {
             if (mode == STATUS_SEEK_PERIAPSIS) {
                 setPositionText(onSketchPos);
-                if (seekAutoConstraint(
-                        sugConstr1, onSketchPos, Base::Vector2d(0.f, 0.f), AutoConstraint::CURVE)) {
+                if (seekAutoConstraint(sugConstr1,
+                                       onSketchPos,
+                                       Base::Vector2d(0.f, 0.f),
+                                       AutoConstraint::CURVE)) {
                     renderSuggestConstraintsCursor(sugConstr1);
                     return;
                 }
@@ -147,8 +149,10 @@ public:
                 drawEdit(editCurve);
                 // Suggestions for ellipse and curves are disabled because many tangent constraints
                 // need an intermediate point or line.
-                if (seekAutoConstraint(
-                        sugConstr2, onSketchPos, Base::Vector2d(0.f, 0.f), AutoConstraint::CURVE)) {
+                if (seekAutoConstraint(sugConstr2,
+                                       onSketchPos,
+                                       Base::Vector2d(0.f, 0.f),
+                                       AutoConstraint::CURVE)) {
                     renderSuggestConstraintsCursor(sugConstr2);
                     return;
                 }
@@ -167,18 +171,21 @@ public:
                 }
 
                 drawEdit(editCurve);
-                if (seekAutoConstraint(
-                        sugConstr3, onSketchPos, Base::Vector2d(0.f, 0.f), AutoConstraint::CURVE)) {
+                if (seekAutoConstraint(sugConstr3,
+                                       onSketchPos,
+                                       Base::Vector2d(0.f, 0.f),
+                                       AutoConstraint::CURVE)) {
                     renderSuggestConstraintsCursor(sugConstr3);
                     return;
                 }
             }
         }
-        else {// method is CENTER_PERIAPSIS_B
+        else {  // method is CENTER_PERIAPSIS_B
             if (mode == STATUS_SEEK_CENTROID) {
                 setPositionText(onSketchPos);
-                if (seekAutoConstraint(
-                        sugConstr1, onSketchPos, Base::Vector2d(0.f, 0.f))) {// TODO: ellipse prio 1
+                if (seekAutoConstraint(sugConstr1,
+                                       onSketchPos,
+                                       Base::Vector2d(0.f, 0.f))) {  // TODO: ellipse prio 1
                     renderSuggestConstraintsCursor(sugConstr1);
                     return;
                 }
@@ -197,8 +204,10 @@ public:
                 }
 
                 drawEdit(editCurve);
-                if (seekAutoConstraint(
-                        sugConstr2, onSketchPos, onSketchPos - centroid, AutoConstraint::CURVE)) {
+                if (seekAutoConstraint(sugConstr2,
+                                       onSketchPos,
+                                       onSketchPos - centroid,
+                                       AutoConstraint::CURVE)) {
                     renderSuggestConstraintsCursor(sugConstr2);
                     return;
                 }
@@ -217,8 +226,10 @@ public:
                 }
 
                 drawEdit(editCurve);
-                if (seekAutoConstraint(
-                        sugConstr3, onSketchPos, onSketchPos - centroid, AutoConstraint::CURVE)) {
+                if (seekAutoConstraint(sugConstr3,
+                                       onSketchPos,
+                                       onSketchPos - centroid,
+                                       AutoConstraint::CURVE)) {
                     renderSuggestConstraintsCursor(sugConstr3);
                     return;
                 }
@@ -249,7 +260,7 @@ public:
                 mode = STATUS_Close;
             }
         }
-        else {// method is CENTER_PERIAPSIS_B
+        else {  // method is CENTER_PERIAPSIS_B
             if (mode == STATUS_SEEK_CENTROID) {
                 centroid = onSketchPos;
                 setAngleSnapping(true, centroid);
@@ -404,19 +415,20 @@ private:
             centroid = periapsis + centroid;
             if (mode == STATUS_SEEK_APOAPSIS) {
                 // for first step, we draw an ellipse inscribed in a golden rectangle
-                ratio = 1 / GOLDEN_RATIO;// ~= 0.6180339887
-                e = sqrt(ratio);         // ~= 0.7861513777
+                ratio = 1 / GOLDEN_RATIO;  // ~= 0.6180339887
+                e = sqrt(ratio);           // ~= 0.7861513777
                 b = a * ratio;
             }
             else if (mode == STATUS_SEEK_B) {
                 // Get the closest distance from onSketchPos to apse line, as a 'requested' value
                 // for b
                 Base::Vector2d cursor =
-                    Base::Vector2d(onSketchPos - f);// vector from f to cursor pos
+                    Base::Vector2d(onSketchPos - f);  // vector from f to cursor pos
                 // decompose cursor with a projection, then length of w_2 will give us b
                 Base::Vector2d w_1 = cursor;
                 w_1.ProjectToLine(
-                    cursor, (periapsis - apoapsis));// projection of cursor line onto apse line
+                    cursor,
+                    (periapsis - apoapsis));  // projection of cursor line onto apse line
                 Base::Vector2d w_2 = (cursor - w_1);
                 b = w_2.Length();
 
@@ -439,7 +451,7 @@ private:
             num = a * (1 - (e * e));
             // The ellipse is now solved
         }
-        else {// method == CENTER_PERIAPSIS_B
+        else {  // method == CENTER_PERIAPSIS_B
             if (mode == STATUS_SEEK_PERIAPSIS) {
                 // solve the ellipse inscribed in a golden rectangle
                 periapsis = onSketchPos;
@@ -447,11 +459,11 @@ private:
                 iPrime.x = periapsis.x - centroid.x;
                 iPrime.y = periapsis.y - centroid.y;
                 iPrime.z = 0;
-                jPrime = k % iPrime;// j = k cross i
+                jPrime = k % iPrime;  // j = k cross i
 
                 // these are constant for any ellipse inscribed in a golden rectangle
-                ratio = 1 / GOLDEN_RATIO;// ~= 0.6180339887
-                e = sqrt(ratio);         // ~= 0.7861513777
+                ratio = 1 / GOLDEN_RATIO;  // ~= 0.6180339887
+                e = sqrt(ratio);           // ~= 0.7861513777
 
                 b = a * ratio;
                 ae = a * e;
@@ -476,12 +488,12 @@ private:
                 // between looking for a b point and looking for periapsis, so ensure
                 // we are in the right mode
                 Base::Vector2d cursor =
-                    Base::Vector2d(onSketchPos - centroid);// vector from centroid to cursor pos
+                    Base::Vector2d(onSketchPos - centroid);  // vector from centroid to cursor pos
                 // decompose cursor with a projection, then length of w_2 will give us b
                 Base::Vector2d w_1 = cursor;
                 w_1.ProjectToLine(
                     cursor,
-                    (fixedAxis - centroid));// projection of cursor line onto fixed axis line
+                    (fixedAxis - centroid));  // projection of cursor line onto fixed axis line
                 Base::Vector2d w_2 = (cursor - w_1);
                 if (w_2.Length() > fixedAxisLength) {
                     // b is fixed, we are seeking a
@@ -489,7 +501,7 @@ private:
                     jPrime.x = (fixedAxis - centroid).x;
                     jPrime.y = (fixedAxis - centroid).y;
                     jPrime.Normalize();
-                    iPrime = jPrime % k;// cross
+                    iPrime = jPrime % k;  // cross
                     b = fixedAxisLength;
                     a = w_2.Length();
                 }
@@ -499,7 +511,7 @@ private:
                     iPrime.x = (fixedAxis - centroid).x;
                     iPrime.y = (fixedAxis - centroid).y;
                     iPrime.Normalize();
-                    jPrime = k % iPrime;// cross
+                    jPrime = k % iPrime;  // cross
                     a = fixedAxisLength;
                     b = w_2.Length();
                 }
@@ -552,7 +564,7 @@ private:
             }
             r = num / (1 + (e * cos(theta)));
             // r(pi/2) is semi-latus rectum, if we need it
-            pos.x = r * cos(theta + phi);// phi rotates, sin/cos translate
+            pos.x = r * cos(theta + phi);  // phi rotates, sin/cos translate
             pos.y = r * sin(theta + phi);
             pos = pos + f;
             posPrime.x = r * cos(theta + phi + M_PI);
@@ -577,16 +589,16 @@ private:
             }
         }
         // load pos & neg b points
-        theta = M_PI - atan2(b, ae);// the angle from f to the positive b point
+        theta = M_PI - atan2(b, ae);  // the angle from f to the positive b point
         r = num / (1 + (e * cos(theta)));
         pos.x = r * cos(theta + phi);
         pos.y = r * sin(theta + phi);
         pos = pos + f;
-        editCurve[n] = pos;// positive
+        editCurve[n] = pos;  // positive
         pos.x = r * cos(-1 * theta + phi);
         pos.y = r * sin(-1 * theta + phi);
         pos = pos + f;
-        editCurve[(3 * n)] = pos;// negative
+        editCurve[(3 * n)] = pos;  // negative
         // force the curve to be a closed shape
         editCurve[(4 * n)] = editCurve[0];
     }
@@ -722,10 +734,10 @@ private:
          */
         Base::Vector3d k(0, 0, 1);
         Base::Vector3d i(periapsis.x - centroid.x, periapsis.y - centroid.y, 0);
-        Base::Vector3d j = k % i;// j = k cross i
+        Base::Vector3d j = k % i;  // j = k cross i
         double beta = 1e-7;
         int count = 0;
-        int limit = 25;// no infinite loops!
+        int limit = 25;  // no infinite loops!
         bool success = false;
         double tempB = b;
 
@@ -773,7 +785,7 @@ private:
         fPrime.Scale(-1 * ae);
         fPrime = centroid + fPrime;
 
-        int currentgeoid = getHighestCurveIndex();// index of the ellipse we just created
+        int currentgeoid = getHighestCurveIndex();  // index of the ellipse we just created
 
         try {
             Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch ellipse"));
@@ -791,8 +803,9 @@ private:
 
             currentgeoid++;
 
-            Gui::cmdAppObjectArgs(
-                sketchgui->getObject(), "exposeInternalGeometry(%d)", currentgeoid);
+            Gui::cmdAppObjectArgs(sketchgui->getObject(),
+                                  "exposeInternalGeometry(%d)",
+                                  currentgeoid);
         }
         catch (const Base::Exception&) {
             Gui::NotifyError(sketchgui,
@@ -869,12 +882,12 @@ private:
         }
         else {
             sketchgui
-                ->purgeHandler();// no code after this line, Handler get deleted in ViewProvider
+                ->purgeHandler();  // no code after this line, Handler get deleted in ViewProvider
         }
     }
 };
 
-}// namespace SketcherGui
+}  // namespace SketcherGui
 
 
-#endif// SKETCHERGUI_DrawSketchHandlerEllipse_H
+#endif  // SKETCHERGUI_DrawSketchHandlerEllipse_H

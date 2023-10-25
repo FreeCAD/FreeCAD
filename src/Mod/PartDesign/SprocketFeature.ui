@@ -6,16 +6,22 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>264</width>
-    <height>142</height>
+    <width>344</width>
+    <height>160</height>
    </rect>
   </property>
   <property name="windowTitle">
    <string>Sprocket parameter</string>
   </property>
-  <layout class="QFormLayout" name="formLayout">
+  <layout class="QGridLayout" name="gridLayout">
    <item row="0" column="0">
     <widget class="QLabel" name="label_9">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="text">
       <string>Number of teeth:</string>
      </property>
@@ -23,6 +29,12 @@
    </item>
    <item row="0" column="1">
     <widget class="QSpinBox" name="spinBox_NumberOfTeeth">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <property name="minimum">
       <number>3</number>
      </property>
@@ -43,6 +55,12 @@
    </item>
    <item row="1" column="1">
     <widget class="QComboBox" name="comboBox_SprocketReference">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
      <item>
       <property name="text">
        <string>ANSI 25</string>
@@ -205,7 +223,7 @@
    <item row="2" column="1">
     <widget class="Gui::InputField" name="Quantity_Pitch">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -245,14 +263,14 @@
    <item row="3" column="0">
     <widget class="QLabel" name="label_6">
      <property name="text">
-      <string>Roller Diameter:</string>
+      <string>Chain Roller Diameter:</string>
      </property>
     </widget>
    </item>
    <item row="3" column="1">
     <widget class="Gui::InputField" name="Quantity_RollerDiameter">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>
@@ -289,14 +307,14 @@
    <item row="4" column="0">
     <widget class="QLabel" name="label_7">
      <property name="text">
-      <string>Thickness:</string>
+      <string>Tooth Width</string>
      </property>
     </widget>
    </item>
    <item row="4" column="1">
     <widget class="Gui::InputField" name="Quantity_Thickness">
      <property name="sizePolicy">
-      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+      <sizepolicy hsizetype="Expanding" vsizetype="Fixed">
        <horstretch>0</horstretch>
        <verstretch>0</verstretch>
       </sizepolicy>

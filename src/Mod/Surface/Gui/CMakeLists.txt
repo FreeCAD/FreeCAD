@@ -1,9 +1,3 @@
-if(MSVC)
-    add_definitions(-DHAVE_ACOSH -DHAVE_ATANH -DHAVE_ASINH)
-else(MSVC)
-    add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
-endif(MSVC)
-
 include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_SOURCE_DIR}/src
@@ -86,4 +80,3 @@ fc_copy_sources(SurfaceGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Sur
 
 install(TARGETS SurfaceGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
 INSTALL(FILES ${SurfaceGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Surface/Resources/icons")
-

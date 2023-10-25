@@ -95,70 +95,70 @@
       <translation>Katalog transferu</translation>
     </message>
     <message>
-      <location filename="../ui/openscadprefs-base.ui" line="240"/>
+      <location filename="../ui/openscadprefs-base.ui" line="243"/>
       <source>The path to the directory for transferring files to and from OpenSCAD</source>
       <translation>Ścieżka do katalogu do przesyłania plików do i z OpenSCAD</translation>
     </message>
     <message>
-      <location filename="../ui/openscadprefs-base.ui" line="258"/>
+      <location filename="../ui/openscadprefs-base.ui" line="261"/>
       <source>OpenSCAD export</source>
       <translation>Eksport do OpenSCAD</translation>
     </message>
     <message>
-      <location filename="../ui/openscadprefs-base.ui" line="266"/>
+      <location filename="../ui/openscadprefs-base.ui" line="269"/>
       <source>Maximum fragment size</source>
       <translation>Maksymalny rozmiar fragmentu</translation>
     </message>
     <message>
-      <location filename="../ui/openscadprefs-base.ui" line="289"/>
+      <location filename="../ui/openscadprefs-base.ui" line="292"/>
       <source>angle (fa)</source>
       <translation>kąt (fa)</translation>
     </message>
     <message>
-      <location filename="../ui/openscadprefs-base.ui" line="385"/>
+      <location filename="../ui/openscadprefs-base.ui" line="388"/>
       <source>Convexity</source>
       <translation>Wypukłość</translation>
     </message>
     <message>
-      <location filename="../ui/openscadprefs-base.ui" line="286"/>
-      <location filename="../ui/openscadprefs-base.ui" line="296"/>
+      <location filename="../ui/openscadprefs-base.ui" line="289"/>
+      <location filename="../ui/openscadprefs-base.ui" line="299"/>
       <source>Minimum angle for a fragment</source>
       <translation>Wartość minimalna kąta dla fragmentu</translation>
     </message>
     <message>
-      <location filename="../ui/openscadprefs-base.ui" line="328"/>
-      <location filename="../ui/openscadprefs-base.ui" line="353"/>
+      <location filename="../ui/openscadprefs-base.ui" line="331"/>
+      <location filename="../ui/openscadprefs-base.ui" line="356"/>
       <source>Minimum size of a fragment</source>
       <translation>Wartość minimalna rozmiaru fragmentu</translation>
     </message>
     <message>
-      <location filename="../ui/openscadprefs-base.ui" line="331"/>
+      <location filename="../ui/openscadprefs-base.ui" line="334"/>
       <source>size (fs)</source>
       <translation>rozmiar (fs)</translation>
     </message>
     <message>
-      <location filename="../ui/openscadprefs-base.ui" line="359"/>
+      <location filename="../ui/openscadprefs-base.ui" line="362"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
     <message>
-      <location filename="../ui/openscadprefs-base.ui" line="422"/>
+      <location filename="../ui/openscadprefs-base.ui" line="425"/>
       <source>Mesh fallback</source>
       <translation>Zastępowanie siatką</translation>
     </message>
     <message>
-      <location filename="../ui/openscadprefs-base.ui" line="442"/>
-      <location filename="../ui/openscadprefs-base.ui" line="459"/>
+      <location filename="../ui/openscadprefs-base.ui" line="445"/>
+      <location filename="../ui/openscadprefs-base.ui" line="462"/>
       <source>Deflection</source>
       <translation>Odkształcenie</translation>
     </message>
     <message>
-      <location filename="../ui/openscadprefs-base.ui" line="445"/>
+      <location filename="../ui/openscadprefs-base.ui" line="448"/>
       <source>deflection</source>
       <translation>odkształcenie</translation>
     </message>
     <message>
-      <location filename="../ui/openscadprefs-base.ui" line="452"/>
+      <location filename="../ui/openscadprefs-base.ui" line="455"/>
       <source>Triangulation settings</source>
       <translation>Ustawienia triangulacji</translation>
     </message>

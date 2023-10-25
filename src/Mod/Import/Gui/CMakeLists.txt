@@ -1,10 +1,3 @@
-if(MSVC)
-    add_definitions(-DFCAppPart -DHAVE_ACOSH -DHAVE_ASINH -DHAVE_ATANH)
-else(MSVC)
-    add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
-endif(MSVC)
-
-
 include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}
@@ -30,6 +23,12 @@ SET(ImportGui_SRCS
     AppImportGui.cpp
     AppImportGuiPy.cpp
     Command.cpp
+    ExportOCAFGui.cpp
+    ExportOCAFGui.h
+    ImportOCAFGui.cpp
+    ImportOCAFGui.h
+    OCAFBrowser.cpp
+    OCAFBrowser.h
     PreCompiled.cpp
     PreCompiled.h
     Workbench.cpp

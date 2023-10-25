@@ -1,0 +1,15 @@
+# File created by ConvertFCMat.py
+General:
+  UUID: "d149a177-07f1-4e53-9bad-0b5bf0663600"
+  AuthorAndLicense: "(c) 2023 David Carter"
+  Name: "Metalized"
+  Description: "Defines the Metalized appearance properties"
+AppearanceModels:
+  BasicRendering:
+    UUID: 'f006c7e4-35b7-43d5-bbf9-c5d572309e6e'
+    AmbientColor: "(0.1800, 0.1800, 0.1800, 1.0)"
+    DiffuseColor: "(0.0000, 0.0000, 0.0000, 1.0)"
+    EmissiveColor: "(0.0000, 0.0000, 0.0000, 1.0)"
+    Shininess: "0.1300"
+    SpecularColor: "(0.4500, 0.4500, 0.4500, 1.0)"
+    Transparency: "0.0"

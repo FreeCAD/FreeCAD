@@ -86,6 +86,56 @@ private:
     using inherited = SoDragger;
 };
 
+/*! @brief Planar Translation Dragger.
+ *
+ * used for translating on a plane. Set the
+ * translationIncrement to desired step. Use
+ * 'translationIncrementXCount' or
+ * 'translationIncrementYCount' multiplied with
+ * 'translationIncrement' for a full double
+ * precision vector scalar.
+ *
+ * @author qewer33
+ */
+class TPlanarDragger : public SoDragger
+{
+    SO_KIT_HEADER(TDragger);
+    SO_KIT_CATALOG_ENTRY_HEADER(planarTranslatorSwitch);
+    SO_KIT_CATALOG_ENTRY_HEADER(planarTranslator);
+    SO_KIT_CATALOG_ENTRY_HEADER(planarTranslatorActive);
+public:
+    static void initClass();
+    TPlanarDragger();
+    SoSFVec3f translation; //!< set from outside and used from outside for single precision.
+    SoSFDouble translationIncrement; //!< set from outside and used for rounding.
+    SoSFInt32 translationIncrementXCount; //!< number of steps. used from outside.
+    SoSFInt32 translationIncrementYCount; //!< number of steps. used from outside.
+    SoSFFloat autoScaleResult; //!< set from parent dragger.
+
+protected:
+    ~TPlanarDragger() override;
+    SbBool setUpConnections(SbBool onoff, SbBool doitalways = FALSE) override;
+
+    static void startCB(void *, SoDragger * d);
+    static void motionCB(void *, SoDragger * d);
+    static void finishCB(void *, SoDragger * d);
+    static void fieldSensorCB(void *f, SoSensor *);
+    static void valueChangedCB(void *, SoDragger *d);
+
+    void dragStart();
+    void drag();
+    void dragFinish();
+
+    SoFieldSensor fieldSensor;
+    SbPlaneProjector projector;
+
+private:
+    void buildFirstInstance();
+    SbVec3f roundTranslation(const SbVec3f &vecIn, float incrementIn);
+    SoGroup* buildGeometry();
+    using inherited = SoDragger;
+};
+
 /*! @brief Rotation Dragger.
  *
  * used for rotating around an axis. Set the rotation
@@ -149,6 +199,7 @@ class GuiExport SoFCCSysDragger : public SoDragger
     SO_KIT_HEADER(SoFCCSysDragger);
     SO_KIT_CATALOG_ENTRY_HEADER(annotation);
     SO_KIT_CATALOG_ENTRY_HEADER(scaleNode);
+    // Translator
     SO_KIT_CATALOG_ENTRY_HEADER(xTranslatorSwitch);
     SO_KIT_CATALOG_ENTRY_HEADER(yTranslatorSwitch);
     SO_KIT_CATALOG_ENTRY_HEADER(zTranslatorSwitch);
@@ -164,6 +215,23 @@ class GuiExport SoFCCSysDragger : public SoDragger
     SO_KIT_CATALOG_ENTRY_HEADER(xTranslatorDragger);
     SO_KIT_CATALOG_ENTRY_HEADER(yTranslatorDragger);
     SO_KIT_CATALOG_ENTRY_HEADER(zTranslatorDragger);
+    // Planar Translator
+    SO_KIT_CATALOG_ENTRY_HEADER(xyPlanarTranslatorSwitch);
+    SO_KIT_CATALOG_ENTRY_HEADER(yzPlanarTranslatorSwitch);
+    SO_KIT_CATALOG_ENTRY_HEADER(zxPlanarTranslatorSwitch);
+    SO_KIT_CATALOG_ENTRY_HEADER(xyPlanarTranslatorSeparator);
+    SO_KIT_CATALOG_ENTRY_HEADER(yzPlanarTranslatorSeparator);
+    SO_KIT_CATALOG_ENTRY_HEADER(zxPlanarTranslatorSeparator);
+    SO_KIT_CATALOG_ENTRY_HEADER(xyPlanarTranslatorColor);
+    SO_KIT_CATALOG_ENTRY_HEADER(yzPlanarTranslatorColor);
+    SO_KIT_CATALOG_ENTRY_HEADER(zxPlanarTranslatorColor);
+    SO_KIT_CATALOG_ENTRY_HEADER(xyPlanarTranslatorRotation);
+    SO_KIT_CATALOG_ENTRY_HEADER(yzPlanarTranslatorRotation);
+    SO_KIT_CATALOG_ENTRY_HEADER(zxPlanarTranslatorRotation);
+    SO_KIT_CATALOG_ENTRY_HEADER(xyPlanarTranslatorDragger);
+    SO_KIT_CATALOG_ENTRY_HEADER(yzPlanarTranslatorDragger);
+    SO_KIT_CATALOG_ENTRY_HEADER(zxPlanarTranslatorDragger);
+    // Rotator
     SO_KIT_CATALOG_ENTRY_HEADER(xRotatorSwitch);
     SO_KIT_CATALOG_ENTRY_HEADER(yRotatorSwitch);
     SO_KIT_CATALOG_ENTRY_HEADER(zRotatorSwitch);
@@ -210,6 +278,8 @@ public:
     SoIdleSensor idleSensor; //!< might be overkill, but want to make sure of performance.
     void setUpAutoScale(SoCamera *cameraIn); //!< used to setup the auto scaling of dragger.
 
+    void setAxisColors(unsigned long x, unsigned long y, unsigned long z); //!< set the axis colors.
+
     //! @name Visibility Functions
     //@{
     void showTranslationX(); //!< show the x translation dragger.
@@ -218,6 +288,25 @@ public:
     void hideTranslationX(); //!< hide the x translation dragger.
     void hideTranslationY(); //!< hide the y translation dragger.
     void hideTranslationZ(); //!< hide the z translation dragger.
+    bool isShownTranslationX(); //!< is x translation dragger shown.
+    bool isShownTranslationY(); //!< is y translation dragger shown.
+    bool isShownTranslationZ(); //!< is z translation dragger shown.
+    bool isHiddenTranslationX(); //!< is x translation dragger hidden.
+    bool isHiddenTranslationY(); //!< is y translation dragger hidden.
+    bool isHiddenTranslationZ(); //!< is z translation dragger hidden.
+
+    void showPlanarTranslationXY(); //!< show the xy planar translation dragger.
+    void showPlanarTranslationYZ(); //!< show the yz planar translation dragger.
+    void showPlanarTranslationZX(); //!< show the zx planar translation dragger.
+    void hidePlanarTranslationXY(); //!< hide the xy planar translation dragger.
+    void hidePlanarTranslationYZ(); //!< hide the yz planar translation dragger.
+    void hidePlanarTranslationZX(); //!< hide the zx planar translation dragger.
+    bool isShownPlanarTranslationXY(); //!< is xy planar translation dragger shown.
+    bool isShownPlanarTranslationYZ(); //!< is yz planar translation dragger shown.
+    bool isShownPlanarTranslationZX(); //!< is zx planar translation dragger shown.
+    bool isHiddenPlanarTranslationXY(); //!< is xy planar translation dragger hidden.
+    bool isHiddenPlanarTranslationYZ(); //!< is yz planar translation dragger hidden.
+    bool isHiddenPlanarTranslationZX(); //!< is zx planar translation dragger hidden.
 
     void showRotationX(); //!< show the x rotation dragger.
     void showRotationY(); //!< show the y rotation dragger.
@@ -225,17 +314,9 @@ public:
     void hideRotationX(); //!< hide the x rotation dragger.
     void hideRotationY(); //!< hide the y rotation dragger.
     void hideRotationZ(); //!< hide the z rotation dragger.
-
-    bool isShownTranslationX(); //!< is x translation dragger shown.
-    bool isShownTranslationY(); //!< is y translation dragger shown.
-    bool isShownTranslationZ(); //!< is z translation dragger shown.
     bool isShownRotationX(); //!< is x rotation dragger shown.
     bool isShownRotationY(); //!< is x rotation dragger shown.
     bool isShownRotationZ(); //!< is x rotation dragger shown.
-
-    bool isHiddenTranslationX(); //!< is x translation dragger hidden.
-    bool isHiddenTranslationY(); //!< is y translation dragger hidden.
-    bool isHiddenTranslationZ(); //!< is z translation dragger hidden.
     bool isHiddenRotationX(); //!< is x rotation dragger hidden.
     bool isHiddenRotationY(); //!< is x rotation dragger hidden.
     bool isHiddenRotationZ(); //!< is x rotation dragger hidden.

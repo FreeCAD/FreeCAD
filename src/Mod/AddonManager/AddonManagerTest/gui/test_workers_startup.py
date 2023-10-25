@@ -45,9 +45,7 @@ class TestWorkersStartup(unittest.TestCase):
 
     MODULE = "test_workers_startup"  # file name without extension
 
-    @unittest.skipUnless(
-        run_slow_tests, "This integration test is slow and uses the network"
-    )
+    @unittest.skipUnless(run_slow_tests, "This integration test is slow and uses the network")
     def setUp(self):
         """Set up the test"""
         self.test_dir = os.path.join(
@@ -56,12 +54,8 @@ class TestWorkersStartup(unittest.TestCase):
 
         self.saved_mod_directory = Addon.mod_directory
         self.saved_cache_directory = Addon.cache_directory
-        Addon.mod_directory = os.path.join(
-            tempfile.gettempdir(), "FreeCADTesting", "Mod"
-        )
-        Addon.cache_directory = os.path.join(
-            tempfile.gettempdir(), "FreeCADTesting", "Cache"
-        )
+        Addon.mod_directory = os.path.join(tempfile.gettempdir(), "FreeCADTesting", "Mod")
+        Addon.cache_directory = os.path.join(tempfile.gettempdir(), "FreeCADTesting", "Cache")
 
         os.makedirs(Addon.mod_directory, mode=0o777, exist_ok=True)
         os.makedirs(Addon.cache_directory, mode=0o777, exist_ok=True)
@@ -82,9 +76,7 @@ class TestWorkersStartup(unittest.TestCase):
         self.package_cache = {}
         self.macro_cache = []
 
-        self.package_cache_filename = os.path.join(
-            Addon.cache_directory, "packages.json"
-        )
+        self.package_cache_filename = os.path.join(Addon.cache_directory, "packages.json")
         self.macro_cache_filename = os.path.join(Addon.cache_directory, "macros.json")
 
         # Store the user's preference for whether git is enabled or disabled
@@ -135,9 +127,7 @@ class TestWorkersStartup(unittest.TestCase):
 
         # Now try loading the same data from the cache we just created
         worker = LoadPackagesFromCacheWorker(self.package_cache_filename)
-        worker.override_metadata_cache_path(
-            os.path.join(Addon.cache_directory, "PackageMetadata")
-        )
+        worker.override_metadata_cache_path(os.path.join(Addon.cache_directory, "PackageMetadata"))
         worker.addon_repo.connect(self._addon_added)
 
         worker.start()

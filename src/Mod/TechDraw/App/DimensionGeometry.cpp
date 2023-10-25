@@ -41,6 +41,14 @@ pointPair::pointPair(const pointPair& pp)
 {
     first(pp.first());
     second(pp.second());
+    overrideFirst(pp.extensionLineFirst());
+    overrideSecond(pp.extensionLineSecond());
+}
+
+// set extension line points from argument base points
+void pointPair::setExtensionLine(const pointPair& pp){
+    overrideFirst(pp.first());
+    overrideSecond(pp.second());
 }
 
 //move the points by offset
@@ -48,6 +56,8 @@ void pointPair::move(const Base::Vector3d& offset)
 {
     m_first = m_first - offset;
     m_second = m_second - offset;
+    m_overrideFirst = m_overrideFirst - offset;
+    m_overrideSecond = m_overrideSecond - offset;
 }
 
 // project the points onto the dvp's paper plane.
@@ -55,6 +65,8 @@ void pointPair::project(const DrawViewPart* dvp)
 {
     m_first = dvp->projectPoint(m_first) * dvp->getScale();
     m_second = dvp->projectPoint(m_second) * dvp->getScale();
+    m_overrideFirst = dvp->projectPoint(m_overrideFirst) * dvp->getScale();
+    m_overrideSecond = dvp->projectPoint(m_overrideSecond) * dvp->getScale();
 }
 
 // map the points onto the dvp's XY coordinate system

@@ -290,10 +290,10 @@ class ViewProviderDressup(object):
         panel.setupUi()
         return True
 
-    def __getstate__(self):
+    def dumps(self):
         return None
 
-    def __setstate__(self, state):
+    def loads(self, state):
         return None
 
     def onDelete(self, arg1=None, arg2=None):

@@ -27,6 +27,10 @@
 # undef _PreComp_
 #endif
 
+#if defined(FC_OS_WIN32)
+# include <windows.h>
+#endif
+
 #if defined(FC_OS_LINUX) || defined(FC_OS_BSD)
 # include <unistd.h>
 #endif
@@ -52,9 +56,7 @@
 #include <Base/Sequencer.h>
 #include <App/Application.h>
 
-
 #if defined(FC_OS_WIN32)
-# include <windows.h>
 
 /** DllMain is called when DLL is loaded
  */

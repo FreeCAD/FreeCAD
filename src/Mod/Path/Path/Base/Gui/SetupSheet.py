@@ -67,10 +67,10 @@ class ViewProvider:
     def getIcon(self):
         return ":/icons/Path_SetupSheet.svg"
 
-    def __getstate__(self):
+    def dumps(self):
         return None
 
-    def __setstate__(self, state):
+    def loads(self, state):
         return None
 
     def getDisplayMode(self, mode):

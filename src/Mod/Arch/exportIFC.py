@@ -2344,7 +2344,10 @@ def getRepresentation(
                 i = 0
                 rgbt = []
                 for sol in obj.Shape.Solids:
-                    rgbt.append(diffusecolor[i])
+                    if i < len(diffusecolor):
+                        rgbt.append(diffusecolor[i])
+                    else:
+                        rgbt.append(diffusecolor[0])
                     i += len(sol.Faces)
             for i,shape in enumerate(colorshapes):
                 if i < len(rgbt):

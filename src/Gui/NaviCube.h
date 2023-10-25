@@ -68,6 +68,7 @@ public:
     // Label order: front, top, right, rear, bottom, left
     void setNaviCubeLabels(const std::vector<std::string>& labels);
     static void setNaviCubeCommands(const std::vector<std::string>& cmd);
+    static int getNaviCubeSize();
 
 private:
     NaviCubeImplementation* m_NaviCubeImplementation;

@@ -29,7 +29,7 @@
 namespace SketcherGui
 {
 
-extern GeometryCreationMode geometryCreationMode;// defined in CommandCreateGeo.cpp
+extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGeo.cpp
 
 class DrawSketchHandlerCircle: public DrawSketchHandler
 {
@@ -79,8 +79,10 @@ public:
             }
 
             drawEdit(EditCurve);
-            if (seekAutoConstraint(
-                    sugConstr2, onSketchPos, onSketchPos - EditCurve[0], AutoConstraint::CURVE)) {
+            if (seekAutoConstraint(sugConstr2,
+                                   onSketchPos,
+                                   onSketchPos - EditCurve[0],
+                                   AutoConstraint::CURVE)) {
                 renderSuggestConstraintsCursor(sugConstr2);
                 return;
             }
@@ -160,8 +162,8 @@ public:
                  * right button of the mouse */
             }
             else {
-                sketchgui
-                    ->purgeHandler();// no code after this line, Handler get deleted in ViewProvider
+                sketchgui->purgeHandler();  // no code after this line, Handler get deleted in
+                                            // ViewProvider
             }
         }
         return true;
@@ -203,19 +205,23 @@ public:
     {
         if (Mode == STATUS_SEEK_First) {
             setPositionText(onSketchPos);
-            if (seekAutoConstraint(
-                    sugConstr1, onSketchPos, Base::Vector2d(0.f, 0.f), AutoConstraint::CURVE)) {
+            if (seekAutoConstraint(sugConstr1,
+                                   onSketchPos,
+                                   Base::Vector2d(0.f, 0.f),
+                                   AutoConstraint::CURVE)) {
                 renderSuggestConstraintsCursor(sugConstr1);
                 return;
             }
         }
         else if (Mode == STATUS_SEEK_Second || Mode == STATUS_SEEK_Third) {
             try {
-                if (Mode == STATUS_SEEK_Second)
+                if (Mode == STATUS_SEEK_Second) {
                     CenterPoint = EditCurve[N + 1] = (onSketchPos - FirstPoint) / 2 + FirstPoint;
-                else
+                }
+                else {
                     CenterPoint = EditCurve[N + 1] =
                         Part::Geom2dCircle::getCircleCenter(FirstPoint, SecondPoint, onSketchPos);
+                }
                 radius = (onSketchPos - CenterPoint).Length();
                 double lineAngle = GetPointAngle(CenterPoint, onSketchPos);
 
@@ -223,7 +229,7 @@ public:
                 for (int i = 1; i < N; i++) {
                     // Start at current angle
                     double angle =
-                        i * 2 * M_PI / N + lineAngle;// N point closed circle has N segments
+                        i * 2 * M_PI / N + lineAngle;  // N point closed circle has N segments
                     EditCurve[i] = Base::Vector2d(CenterPoint.x + radius * cos(angle),
                                                   CenterPoint.y + radius * sin(angle));
                 }
@@ -356,8 +362,8 @@ public:
                  * right button of the mouse */
             }
             else {
-                sketchgui
-                    ->purgeHandler();// no code after this line, Handler get deleted in ViewProvider
+                sketchgui->purgeHandler();  // no code after this line, Handler get deleted in
+                                            // ViewProvider
             }
         }
         return true;
@@ -373,12 +379,12 @@ protected:
     SelectMode Mode;
     std::vector<Base::Vector2d> EditCurve;
     Base::Vector2d CenterPoint, FirstPoint, SecondPoint;
-    double radius, N;// N should be even
+    double radius, N;  // N should be even
     std::vector<AutoConstraint> sugConstr1, sugConstr2, sugConstr3;
 };
 
 
-}// namespace SketcherGui
+}  // namespace SketcherGui
 
 
-#endif// SKETCHERGUI_DrawSketchHandlerCircle_H
+#endif  // SKETCHERGUI_DrawSketchHandlerCircle_H

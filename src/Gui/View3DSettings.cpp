@@ -74,7 +74,7 @@ void View3DSettings::applySettings()
     OnChange(*hGrp,"CornerCoordSystem");
     OnChange(*hGrp,"CornerCoordSystemSize");
     OnChange(*hGrp,"ShowAxisCross");
-    OnChange(*hGrp,"UseAutoRotation");
+    OnChange(*hGrp,"UseNavigationAnimations");
     OnChange(*hGrp,"Gradient");
     OnChange(*hGrp,"RadialGradient");
     OnChange(*hGrp,"BackgroundColor");
@@ -87,6 +87,7 @@ void View3DSettings::applySettings()
     OnChange(*hGrp,"UseVBO");
     OnChange(*hGrp,"RenderCache");
     OnChange(*hGrp,"Orthographic");
+    OnChange(*hGrp,"EnableHeadlight");
     OnChange(*hGrp,"HeadlightColor");
     OnChange(*hGrp,"HeadlightDirection");
     OnChange(*hGrp,"HeadlightIntensity");
@@ -108,7 +109,13 @@ void View3DSettings::applySettings()
 void View3DSettings::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::MessageType Reason)
 {
     const ParameterGrp& rGrp = static_cast<ParameterGrp&>(rCaller);
-    if (strcmp(Reason,"HeadlightColor") == 0) {
+    if (strcmp(Reason,"EnableHeadlight") == 0) {
+        bool enable = rGrp.GetBool("EnableHeadlight", true);
+        for (auto _viewer : _viewers) {
+            _viewer->setHeadlightEnabled(enable);
+        }
+    }
+    else if (strcmp(Reason,"HeadlightColor") == 0) {
         unsigned long headlight = rGrp.GetUnsigned("HeadlightColor",ULONG_MAX); // default color (white)
         float transparency;
         SbColor headlightColor;
@@ -137,7 +144,7 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
     }
     else if (strcmp(Reason,"EnableBacklight") == 0) {
         for (auto _viewer : _viewers) {
-            _viewer->setBacklight(rGrp.GetBool("EnableBacklight", false));
+            _viewer->setBacklightEnabled(rGrp.GetBool("EnableBacklight", false));
         }
     }
     else if (strcmp(Reason,"BacklightColor") == 0) {
@@ -287,9 +294,9 @@ void View3DSettings::OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::M
             _viewer->setAxisCross(rGrp.GetBool("ShowAxisCross", false));
         }
     }
-    else if (strcmp(Reason,"UseAutoRotation") == 0) {
+    else if (strcmp(Reason,"UseNavigationAnimations") == 0) {
         for (auto _viewer : _viewers) {
-            _viewer->setAnimationEnabled(rGrp.GetBool("UseAutoRotation", false));
+            _viewer->setAnimationEnabled(rGrp.GetBool("UseNavigationAnimations", true));
         }
     }
     else if (strcmp(Reason,"Gradient") == 0 || strcmp(Reason,"RadialGradient") == 0) {

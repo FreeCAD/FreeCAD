@@ -4,91 +4,89 @@
   <context>
     <name>CmdFemConstraintBearing</name>
     <message>
-      <location filename="../../Command.cpp" line="179"/>
+      <location filename="../../Command.cpp" line="182"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="180"/>
-      <source>Constraint bearing</source>
-      <translation>Ograničenje ležaja</translation>
+      <location filename="../../Command.cpp" line="183"/>
+      <source>Bearing constraint</source>
+      <translation type="unfinished">Bearing constraint</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="181"/>
-      <source>Creates a FEM constraint for a bearing</source>
-      <translation>Stvori FEM ograničenje za ležaj</translation>
+      <location filename="../../Command.cpp" line="184"/>
+      <source>Creates a bearing constraint</source>
+      <translation type="unfinished">Creates a bearing constraint</translation>
     </message>
   </context>
   <context>
     <name>CmdFemConstraintContact</name>
     <message>
-      <location filename="../../Command.cpp" line="224"/>
+      <location filename="../../Command.cpp" line="230"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="225"/>
-      <source>Constraint contact</source>
-      <translation>
-
-Ograničenje kontakta</translation>
+      <location filename="../../Command.cpp" line="231"/>
+      <source>Contact constraint</source>
+      <translation type="unfinished">Contact constraint</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="226"/>
-      <source>Creates a FEM constraint for contact between faces</source>
-      <translation>Stvara FEM ograničenje za kontakt između lica</translation>
+      <location filename="../../Command.cpp" line="232"/>
+      <source>Creates a contact constraint between faces</source>
+      <translation type="unfinished">Creates a contact constraint between faces</translation>
     </message>
   </context>
   <context>
     <name>CmdFemConstraintDisplacement</name>
     <message>
-      <location filename="../../Command.cpp" line="277"/>
+      <location filename="../../Command.cpp" line="287"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="278"/>
-      <source>Constraint displacement</source>
-      <translation>Ograničenje premještanja</translation>
+      <location filename="../../Command.cpp" line="288"/>
+      <source>Displacement boundary condition</source>
+      <translation type="unfinished">Displacement boundary condition</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="280"/>
-      <source>Creates a FEM constraint for a displacement acting on a geometric entity</source>
-      <translation>Stvara FEM ograničenje za djelovanje premještanja na geometrijsku cjelinu</translation>
+      <location filename="../../Command.cpp" line="289"/>
+      <source>Creates a displacement boundary condition for a geometric entity</source>
+      <translation type="unfinished">Creates a displacement boundary condition for a geometric entity</translation>
     </message>
   </context>
   <context>
     <name>CmdFemConstraintFixed</name>
     <message>
-      <location filename="../../Command.cpp" line="326"/>
+      <location filename="../../Command.cpp" line="337"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="327"/>
-      <source>Constraint fixed</source>
-      <translation>Ograničenje učvršćeno </translation>
+      <location filename="../../Command.cpp" line="338"/>
+      <source>Fixed boundary condition</source>
+      <translation type="unfinished">Fixed boundary condition</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="328"/>
-      <source>Creates a FEM constraint for a fixed geometric entity</source>
-      <translation>Stvori FEM ograničenje za fiksnu geometrijsku cjelinu</translation>
+      <location filename="../../Command.cpp" line="339"/>
+      <source>Creates a fixed boundary condition for a geometric entity</source>
+      <translation type="unfinished">Creates a fixed boundary condition for a geometric entity</translation>
     </message>
   </context>
   <context>
     <name>CmdFemConstraintFluidBoundary</name>
     <message>
-      <location filename="../../Command.cpp" line="373"/>
+      <location filename="../../Command.cpp" line="387"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="374"/>
+      <location filename="../../Command.cpp" line="388"/>
       <source>Fluid boundary condition</source>
       <translation>Granično stanje tekučine</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="376"/>
+      <location filename="../../Command.cpp" line="390"/>
       <source>Create fluid boundary condition on face entity for Computional Fluid Dynamics</source>
       <translation>Stvorite granični uvjet fluida na entitetu lica za Computional Fluid Dynamics</translation>
     </message>
@@ -96,209 +94,207 @@ Ograničenje kontakta</translation>
   <context>
     <name>CmdFemConstraintForce</name>
     <message>
-      <location filename="../../Command.cpp" line="422"/>
+      <location filename="../../Command.cpp" line="439"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="423"/>
-      <source>Constraint force</source>
-      <translation>Sila ograničenja</translation>
+      <location filename="../../Command.cpp" line="440"/>
+      <source>Force load</source>
+      <translation type="unfinished">Force load</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="424"/>
-      <source>Creates a FEM constraint for a force acting on a geometric entity</source>
-      <translation>Stvori FEM ograničenje za djelovanje sile na geometrijsku cjelinu</translation>
+      <location filename="../../Command.cpp" line="441"/>
+      <source>Creates a force load applied to a geometric entity</source>
+      <translation type="unfinished">Creates a force load applied to a geometric entity</translation>
     </message>
   </context>
   <context>
     <name>CmdFemConstraintGear</name>
     <message>
-      <location filename="../../Command.cpp" line="475"/>
+      <location filename="../../Command.cpp" line="496"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="476"/>
-      <source>Constraint gear</source>
-      <translation>Ograničenje zupčanika</translation>
+      <location filename="../../Command.cpp" line="497"/>
+      <source>Gear constraint</source>
+      <translation type="unfinished">Gear constraint</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="477"/>
-      <source>Creates a FEM constraint for a gear</source>
-      <translation>Stvori FEM ograničenje za zupčanik</translation>
+      <location filename="../../Command.cpp" line="498"/>
+      <source>Creates a gear constraint</source>
+      <translation type="unfinished">Creates a gear constraint</translation>
     </message>
   </context>
   <context>
     <name>CmdFemConstraintHeatflux</name>
     <message>
-      <location filename="../../Command.cpp" line="520"/>
+      <location filename="../../Command.cpp" line="544"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="521"/>
-      <source>Constraint heatflux</source>
-      <translation>Ograničenje toplinskog toka</translation>
+      <location filename="../../Command.cpp" line="545"/>
+      <source>Heat flux load</source>
+      <translation type="unfinished">Heat flux load</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="522"/>
-      <source>Creates a FEM constraint for a heatflux acting on a face</source>
-      <translation>Stvori FEM ograničenje za toplotni tok koji djeluje na lice</translation>
+      <location filename="../../Command.cpp" line="546"/>
+      <source>Creates a heat flux load acting on a face</source>
+      <translation type="unfinished">Creates a heat flux load acting on a face</translation>
     </message>
   </context>
   <context>
     <name>CmdFemConstraintInitialTemperature</name>
     <message>
-      <location filename="../../Command.cpp" line="574"/>
+      <location filename="../../Command.cpp" line="601"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="575"/>
-      <source>Constraint initial temperature</source>
-      <translation>Ograničenje početne temperature</translation>
+      <location filename="../../Command.cpp" line="602"/>
+      <source>Initial temperature</source>
+      <translation type="unfinished">Initial temperature</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="576"/>
-      <source>Creates a FEM constraint for initial temperature acting on a body</source>
-      <translation>Stvara FEM ograničenje za početnu temperaturu koja djeluje na tijelo</translation>
+      <location filename="../../Command.cpp" line="603"/>
+      <source>Creates an initial temperature acting on a body</source>
+      <translation type="unfinished">Creates an initial temperature acting on a body</translation>
     </message>
   </context>
   <context>
     <name>CmdFemConstraintPlaneRotation</name>
     <message>
-      <location filename="../../Command.cpp" line="622"/>
+      <location filename="../../Command.cpp" line="652"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="623"/>
-      <source>Constraint plane rotation</source>
-      <translation>Ograničenje rotacije ravnine
-
-</translation>
+      <location filename="../../Command.cpp" line="653"/>
+      <source>Plane multi-point constraint</source>
+      <translation type="unfinished">Plane multi-point constraint</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="624"/>
-      <source>Creates a FEM constraint for plane rotation face</source>
-      <translation>Stvara FEM ograničenje za lice rotacijske ravnine</translation>
+      <location filename="../../Command.cpp" line="654"/>
+      <source>Creates a plane multi-point constraint for a face</source>
+      <translation type="unfinished">Creates a plane multi-point constraint for a face</translation>
     </message>
   </context>
   <context>
     <name>CmdFemConstraintPressure</name>
     <message>
-      <location filename="../../Command.cpp" line="670"/>
+      <location filename="../../Command.cpp" line="703"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="671"/>
-      <source>Constraint pressure</source>
-      <translation>Ograničenje tlaka</translation>
+      <location filename="../../Command.cpp" line="704"/>
+      <source>Pressure load</source>
+      <translation type="unfinished">Pressure load</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="672"/>
-      <source>Creates a FEM constraint for a pressure acting on a face</source>
-      <translation>Stvori FEM ograničenje za pritisak koji djeluje na lice</translation>
+      <location filename="../../Command.cpp" line="705"/>
+      <source>Creates a pressure load acting on a face</source>
+      <translation type="unfinished">Creates a pressure load acting on a face</translation>
     </message>
   </context>
   <context>
     <name>CmdFemConstraintPulley</name>
     <message>
-      <location filename="../../Command.cpp" line="777"/>
+      <location filename="../../Command.cpp" line="814"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="778"/>
-      <source>Constraint pulley</source>
-      <translation>Ograničenje kolotura</translation>
+      <location filename="../../Command.cpp" line="815"/>
+      <source>Pulley constraint</source>
+      <translation type="unfinished">Pulley constraint</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="779"/>
-      <source>Creates a FEM constraint for a pulley</source>
-      <translation>Stvara FEM ograničenje za kolotur</translation>
+      <location filename="../../Command.cpp" line="816"/>
+      <source>Creates a pulley constraint</source>
+      <translation type="unfinished">Creates a pulley constraint</translation>
     </message>
   </context>
   <context>
     <name>CmdFemConstraintSpring</name>
     <message>
-      <location filename="../../Command.cpp" line="724"/>
+      <location filename="../../Command.cpp" line="759"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="725"/>
-      <source>Constraint spring</source>
-      <translation>Ograničenje opruge</translation>
+      <location filename="../../Command.cpp" line="760"/>
+      <source>Spring</source>
+      <translation type="unfinished">Spring</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="726"/>
-      <source>Creates a FEM constraint for a spring acting on a face</source>
-      <translation>Stvori FEM ograničenje za oprugu koja djeluje na lice</translation>
+      <location filename="../../Command.cpp" line="761"/>
+      <source>Creates a spring acting on a face</source>
+      <translation type="unfinished">Creates a spring acting on a face</translation>
     </message>
   </context>
   <context>
     <name>CmdFemConstraintTemperature</name>
     <message>
-      <location filename="../../Command.cpp" line="827"/>
+      <location filename="../../Command.cpp" line="867"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="828"/>
-      <source>Constraint temperature</source>
-      <translation>Ograničenje temperature</translation>
+      <location filename="../../Command.cpp" line="868"/>
+      <source>Temperature boundary condition</source>
+      <translation type="unfinished">Temperature boundary condition</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="829"/>
-      <source>Creates a FEM constraint for a temperature/concentrated heat flux acting on a face</source>
-      <translation>Stvara FEM ograničenje  za temperaturu/koncentrirani toplinski tok koji djeluje na površinu </translation>
+      <location filename="../../Command.cpp" line="869"/>
+      <source>Creates a temperature/concentrated heat flux load acting on a face</source>
+      <translation type="unfinished">Creates a temperature/concentrated heat flux load acting on a face</translation>
     </message>
   </context>
   <context>
     <name>CmdFemConstraintTransform</name>
     <message>
-      <location filename="../../Command.cpp" line="876"/>
+      <location filename="../../Command.cpp" line="918"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="877"/>
-      <source>Constraint transform</source>
-      <translation>Ograničenje deformacije</translation>
+      <location filename="../../Command.cpp" line="919"/>
+      <source>Local coordinate system</source>
+      <translation type="unfinished">Local coordinate system</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="878"/>
-      <source>Create FEM constraint for transforming a face</source>
-      <translation>Stvara FEM ograničenje deformacije na površinu</translation>
+      <location filename="../../Command.cpp" line="920"/>
+      <source>Create a local coordinate system on a face</source>
+      <translation type="unfinished">Create a local coordinate system on a face</translation>
     </message>
   </context>
   <context>
     <name>CmdFemCreateNodesSet</name>
     <message>
-      <location filename="../../Command.cpp" line="1080"/>
+      <location filename="../../Command.cpp" line="1135"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1081"/>
+      <location filename="../../Command.cpp" line="1136"/>
       <source>Nodes set</source>
       <translation>Set čvorova</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1082"/>
+      <location filename="../../Command.cpp" line="1137"/>
       <source>Creates a FEM mesh nodes set</source>
       <translation>Stvara skup čvorova FEM mreže</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1116"/>
+      <location filename="../../Command.cpp" line="1172"/>
       <source>Wrong selection</source>
       <translation>Pogrešan odabir</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1117"/>
+      <location filename="../../Command.cpp" line="1173"/>
       <source>Select a single FEM mesh or nodes set, please.</source>
       <translation>Odaberi jednu FEM mrežu ili set čvorova.</translation>
     </message>
@@ -306,18 +302,18 @@ Ograničenje kontakta</translation>
   <context>
     <name>CmdFemDefineNodesSet</name>
     <message>
-      <location filename="../../Command.cpp" line="1022"/>
+      <location filename="../../Command.cpp" line="1076"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1023"/>
+      <location filename="../../Command.cpp" line="1077"/>
       <source>Node set by poly</source>
       <translation>Stvara skup čvorova od polygona</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1024"/>
-      <location filename="../../Command.cpp" line="1026"/>
+      <location filename="../../Command.cpp" line="1078"/>
+      <location filename="../../Command.cpp" line="1080"/>
       <source>Create node set by Poly</source>
       <translation>Stvori set čvorova sa Poly</translation>
     </message>
@@ -325,17 +321,17 @@ Ograničenje kontakta</translation>
   <context>
     <name>CmdFemPostApllyChanges</name>
     <message>
-      <location filename="../../Command.cpp" line="2301"/>
+      <location filename="../../Command.cpp" line="2442"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2302"/>
+      <location filename="../../Command.cpp" line="2443"/>
       <source>Apply changes to pipeline</source>
       <translation>Primijeni promjene na cjevovodu</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2303"/>
+      <location filename="../../Command.cpp" line="2444"/>
       <source>Apply changes to parameters directly and not on recompute only...</source>
       <translation>Primijeni promjene na parametre izravno, a ne samo na ponovno izračunavanje...</translation>
     </message>
@@ -343,27 +339,27 @@ Ograničenje kontakta</translation>
   <context>
     <name>CmdFemPostClipFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="1699"/>
+      <location filename="../../Command.cpp" line="1791"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1700"/>
+      <location filename="../../Command.cpp" line="1792"/>
       <source>Region clip filter</source>
       <translation>Filtar odječka regije</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1702"/>
+      <location filename="../../Command.cpp" line="1794"/>
       <source>Define/create a clip filter which uses functions to define the clipped region</source>
-      <translation type="unfinished">Define/create a clip filter which uses functions to define the clipped region</translation>
+      <translation>Definiraj/kreiraj filtar isječka koji koristi funkciju kako bi definirao isječenu regiju</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2210"/>
+      <location filename="../../Command.cpp" line="2344"/>
       <source>Wrong selection</source>
       <translation>Pogrešan odabir</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2211"/>
+      <location filename="../../Command.cpp" line="2345"/>
       <source>Select a pipeline, please.</source>
       <translation>Molimo odaberite sekvencijski cjevovod</translation>
     </message>
@@ -371,17 +367,17 @@ Ograničenje kontakta</translation>
   <context>
     <name>CmdFemPostCutFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="1745"/>
+      <location filename="../../Command.cpp" line="1844"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1746"/>
+      <location filename="../../Command.cpp" line="1845"/>
       <source>Function cut filter</source>
       <translation>Filtar funkcijskog odreza</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1747"/>
+      <location filename="../../Command.cpp" line="1846"/>
       <source>Cut the data along an implicit function</source>
       <translation>Odreži podatke uzduž implicitne funkcije</translation>
     </message>
@@ -389,17 +385,17 @@ Ograničenje kontakta</translation>
   <context>
     <name>CmdFemPostDataAlongLineFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="1790"/>
+      <location filename="../../Command.cpp" line="1896"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1791"/>
+      <location filename="../../Command.cpp" line="1897"/>
       <source>Line clip filter</source>
       <translation>Filtar linijskog odsječka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1792"/>
+      <location filename="../../Command.cpp" line="1898"/>
       <source>Define/create a clip filter which clips a field along a line</source>
       <translation>Definiraj/izradi filtar odsječka koji odsjeca polje uzduž linije</translation>
     </message>
@@ -407,17 +403,17 @@ Ograničenje kontakta</translation>
   <context>
     <name>CmdFemPostDataAtPointFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="1833"/>
+      <location filename="../../Command.cpp" line="1945"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1834"/>
+      <location filename="../../Command.cpp" line="1946"/>
       <source>Data at point clip filter</source>
       <translation>Podaci na točki filtra odsječka</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1835"/>
+      <location filename="../../Command.cpp" line="1947"/>
       <source>Define/create a clip filter which clips a field data at point</source>
       <translation>Definiraj/izradi filtar odsječka koji odsjeca polje podataka na točki</translation>
     </message>
@@ -425,37 +421,37 @@ Ograničenje kontakta</translation>
   <context>
     <name>CmdFemPostFunctions</name>
     <message>
-      <location filename="../../Command.cpp" line="2082"/>
+      <location filename="../../Command.cpp" line="2215"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2083"/>
+      <location filename="../../Command.cpp" line="2216"/>
       <source>Filter functions</source>
       <translation>Funkcije filtra</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2084"/>
+      <location filename="../../Command.cpp" line="2217"/>
       <source>Functions for use in postprocessing filter...</source>
       <translation>Fukcije za upotrebu kod filtara postprocesiranja...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2261"/>
+      <location filename="../../Command.cpp" line="2396"/>
       <source>Plane</source>
       <translation>Površina</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2267"/>
+      <location filename="../../Command.cpp" line="2403"/>
       <source>Sphere</source>
       <translation>Kugla</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2273"/>
+      <location filename="../../Command.cpp" line="2410"/>
       <source>Cylinder</source>
       <translation>Valjak</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2279"/>
+      <location filename="../../Command.cpp" line="2417"/>
       <source>Box</source>
       <translation>Kutija</translation>
     </message>
@@ -463,117 +459,41 @@ Ograničenje kontakta</translation>
   <context>
     <name>CmdFemPostLinearizedStressesFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="1601"/>
+      <location filename="../../Command.cpp" line="1690"/>
       <source>Thickness [mm]</source>
       <comment>Plot X-Axis Label</comment>
       <translation>Debljina [mm]</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1605"/>
+      <location filename="../../Command.cpp" line="1694"/>
       <source>Stress [MPa]</source>
       <comment>Plot Y-Axis Label</comment>
       <translation>Naprezanje [MPa]</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1608"/>
+      <location filename="../../Command.cpp" line="1698"/>
       <source>Linearized Stresses</source>
       <comment>Plot title</comment>
       <translation>Linearizirana naprezanja</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1611"/>
+      <location filename="../../Command.cpp" line="1702"/>
       <source>Membrane</source>
       <comment>Plot legend item label</comment>
       <translation>Membrana</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1615"/>
+      <location filename="../../Command.cpp" line="1706"/>
       <source>Membrane and Bending</source>
       <comment>Plot legend item label</comment>
       <translation>Membrana i savijanje</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1619"/>
+      <location filename="../../Command.cpp" line="1710"/>
       <source>Total</source>
       <comment>Plot legend item label</comment>
       <translation>Ukupno</translation>
     </message>
-    <message>
-      <location filename="../../Command.cpp" line="1878"/>
-      <source>Fem</source>
-      <translation>Fem</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1879"/>
-      <source>Stress linearization plot</source>
-      <translation>Lineariziran prikaz naprezanja</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1880"/>
-      <source>Define/create stress linearization plots</source>
-      <translation>Definiraj/izradi linearizirani prikaz naprezanja</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1916"/>
-      <location filename="../../Command.cpp" line="1925"/>
-      <source>Wrong selection</source>
-      <translation>Pogrešan odabir</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1917"/>
-      <location filename="../../Command.cpp" line="1926"/>
-      <source>Select a Clip filter which clips a STRESS field along a line, please.</source>
-      <translation>Molimo odaberte odsječak koji odsjeca područje NAPREZANJA uzduž linije</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdFemPostPipelineFromResult</name>
-    <message>
-      <location filename="../../Command.cpp" line="2340"/>
-      <source>Fem</source>
-      <translation>Fem</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2341"/>
-      <source>Post pipeline from result</source>
-      <translation>Objavi sekvencijski cijevovod iz rezultata</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2342"/>
-      <source>Creates a post processing pipeline from a result object</source>
-      <translation>Kreira post-procesnu pipeline iz objekta rezultata.</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2416"/>
-      <source>Wrong selection type</source>
-      <translation>Pogrešan tip odabira</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="2417"/>
-      <source>Select a result object, please.</source>
-      <translation>Molim odaberite rezultatni objekt</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdFemPostScalarClipFilter</name>
-    <message>
-      <location filename="../../Command.cpp" line="1951"/>
-      <source>Fem</source>
-      <translation>Fem</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1952"/>
-      <source>Scalar clip filter</source>
-      <translation>Skalarni isječak filter</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="1954"/>
-      <source>Define/create a clip filter which clips a field with a scalar value</source>
-      <translation>Definiraj/izradi filtar isječka koji odsjeca polje sa skalarnom vrijednosti</translation>
-    </message>
-  </context>
-  <context>
-    <name>CmdFemPostWarpVectorFilter</name>
     <message>
       <location filename="../../Command.cpp" line="1995"/>
       <source>Fem</source>
@@ -581,11 +501,87 @@ Ograničenje kontakta</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1996"/>
+      <source>Stress linearization plot</source>
+      <translation>Lineariziran prikaz naprezanja</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1997"/>
+      <source>Define/create stress linearization plots</source>
+      <translation>Definiraj/izradi linearizirani prikaz naprezanja</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2031"/>
+      <location filename="../../Command.cpp" line="2040"/>
+      <source>Wrong selection</source>
+      <translation>Pogrešan odabir</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2032"/>
+      <location filename="../../Command.cpp" line="2041"/>
+      <source>Select a Clip filter which clips a STRESS field along a line, please.</source>
+      <translation>Molimo odaberte odsječak koji odsjeca područje NAPREZANJA uzduž linije</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdFemPostPipelineFromResult</name>
+    <message>
+      <location filename="../../Command.cpp" line="2483"/>
+      <source>Fem</source>
+      <translation>Fem</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2484"/>
+      <source>Post pipeline from result</source>
+      <translation>Objavi sekvencijski cijevovod iz rezultata</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2485"/>
+      <source>Creates a post processing pipeline from a result object</source>
+      <translation>Kreira post-procesnu pipeline iz objekta rezultata.</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2563"/>
+      <source>Wrong selection type</source>
+      <translation>Pogrešan tip odabira</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2564"/>
+      <source>Select a result object, please.</source>
+      <translation>Molim odaberite rezultatni objekt</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdFemPostScalarClipFilter</name>
+    <message>
+      <location filename="../../Command.cpp" line="2067"/>
+      <source>Fem</source>
+      <translation>Fem</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2068"/>
+      <source>Scalar clip filter</source>
+      <translation>Skalarni isječak filter</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2070"/>
+      <source>Define/create a clip filter which clips a field with a scalar value</source>
+      <translation>Definiraj/izradi filtar isječka koji odsjeca polje sa skalarnom vrijednosti</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdFemPostWarpVectorFilter</name>
+    <message>
+      <location filename="../../Command.cpp" line="2117"/>
+      <source>Fem</source>
+      <translation>Fem</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="2118"/>
       <source>Warp filter</source>
       <translation>Filtar umotavanja</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1997"/>
+      <location filename="../../Command.cpp" line="2119"/>
       <source>Warp the geometry along a vector field by a certain factor</source>
       <translation>Izobličite geometriju duž vektorskog polja određenim faktorom</translation>
     </message>
@@ -593,112 +589,112 @@ Ograničenje kontakta</translation>
   <context>
     <name>Command</name>
     <message>
-      <location filename="../../Command.cpp" line="196"/>
-      <source>Make FEM constraint for bearing</source>
-      <translation>Stvori FEM ograničenje za ležaj</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="241"/>
-      <source>Make FEM constraint contact on face</source>
-      <translation>Napravite FEM ograničenja kontakta na licu</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="295"/>
-      <source>Make FEM constraint displacement on face</source>
-      <translation>Napravite premještanje FEM ograničenja na licu</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="343"/>
-      <source>Make FEM constraint fixed geometry</source>
-      <translation>Napravite FEM ograničenja Fiksnom geometrijom</translation>
-    </message>
-    <message>
-      <location filename="../../Command.cpp" line="391"/>
+      <location filename="../../Command.cpp" line="406"/>
       <source>Create fluid boundary condition</source>
       <translation>Napravite granični uvjet tekućine</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="439"/>
-      <source>Make FEM constraint force on geometry</source>
-      <translation>Napravite FEM ograničenja sile na geometriji</translation>
+      <location filename="../../Command.cpp" line="200"/>
+      <source>Make bearing constraint</source>
+      <translation type="unfinished">Make bearing constraint</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="491"/>
-      <source>Make FEM constraint for gear</source>
-      <translation>Stvori FEM ograničenje za zupčanik</translation>
+      <location filename="../../Command.cpp" line="248"/>
+      <source>Make contact constraint on a face</source>
+      <translation type="unfinished">Make contact constraint on a face</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="537"/>
-      <source>Make FEM constraint heatflux on face</source>
-      <translation>Napravite FEM ograničenja heatflux na licu</translation>
+      <location filename="../../Command.cpp" line="305"/>
+      <source>Make displacement boundary condition on face</source>
+      <translation type="unfinished">Make displacement boundary condition on face</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="591"/>
-      <source>Make FEM constraint initial temperature on body</source>
-      <translation>Napravite FEM ograničenja početne temperature na tijelu</translation>
+      <location filename="../../Command.cpp" line="355"/>
+      <source>Make fixed boundary condition for geometry</source>
+      <translation type="unfinished">Make fixed boundary condition for geometry</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="639"/>
-      <source>Make FEM constraint Plane Rotation face</source>
-      <translation>Napravite FEM ograničenja rotacije ravnine lica</translation>
+      <location filename="../../Command.cpp" line="457"/>
+      <source>Make force load on geometry</source>
+      <translation type="unfinished">Make force load on geometry</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="687"/>
-      <source>Make FEM constraint pressure on face</source>
-      <translation>Napravite  FEM ograničenja pritiska na licu</translation>
+      <location filename="../../Command.cpp" line="513"/>
+      <source>Make gear constraint</source>
+      <translation type="unfinished">Make gear constraint</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="741"/>
-      <source>Make FEM constraint spring on face</source>
-      <translation>Napravite  FEM ograničenja opruge na licu</translation>
+      <location filename="../../Command.cpp" line="562"/>
+      <source>Make heat flux load on face</source>
+      <translation type="unfinished">Make heat flux load on face</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="794"/>
-      <source>Make FEM constraint for pulley</source>
-      <translation>Stvori FEM ograničenje za kolotur</translation>
+      <location filename="../../Command.cpp" line="619"/>
+      <source>Make initial temperature condition on body</source>
+      <translation type="unfinished">Make initial temperature condition on body</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="845"/>
-      <source>Make FEM constraint temperature on face</source>
-      <translation>Napravite  FEM ograničenja temperature na licu</translation>
+      <location filename="../../Command.cpp" line="670"/>
+      <source>Make plane multi-point constraint on face</source>
+      <translation type="unfinished">Make plane multi-point constraint on face</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="893"/>
-      <source>Make FEM constraint transform on face</source>
-      <translation>Napravite  FEM ograničenja deformiranja na licu</translation>
+      <location filename="../../Command.cpp" line="721"/>
+      <source>Make pressure load on face</source>
+      <translation type="unfinished">Make pressure load on face</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="988"/>
+      <location filename="../../Command.cpp" line="777"/>
+      <source>Make spring on face</source>
+      <translation type="unfinished">Make spring on face</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="832"/>
+      <source>Make pulley constraint</source>
+      <translation type="unfinished">Make pulley constraint</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="885"/>
+      <source>Make temperature boundary condition on face</source>
+      <translation type="unfinished">Make temperature boundary condition on face</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="936"/>
+      <source>Make local coordinate system on face</source>
+      <translation type="unfinished">Make local coordinate system on face</translation>
+    </message>
+    <message>
+      <location filename="../../Command.cpp" line="1041"/>
       <source>Place robot</source>
       <translation>Postavi robota</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1096"/>
+      <location filename="../../Command.cpp" line="1151"/>
       <source>Edit nodes set</source>
       <translation>Uredi set čvorova</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1105"/>
+      <location filename="../../Command.cpp" line="1160"/>
       <source>Create nodes set</source>
       <translation>Stvori set čvorova</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1572"/>
+      <location filename="../../Command.cpp" line="1651"/>
       <source>Create filter</source>
       <translation>Izradi Filtar</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2111"/>
+      <location filename="../../Command.cpp" line="2249"/>
       <source>Create function</source>
       <translation>Stvori funkciju</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2392"/>
+      <location filename="../../Command.cpp" line="2535"/>
       <source>Create pipeline from result</source>
       <translation>Stvori proces od rezultata</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFemPostFunction.cpp" line="281"/>
+      <location filename="../../ViewProviderFemPostFunction.cpp" line="295"/>
       <source>Edit Mirror</source>
       <translation>Uredi zrcaljenje</translation>
     </message>
@@ -780,22 +776,22 @@ Ograničenje kontakta</translation>
   <context>
     <name>FEM_PostCreateFunctions</name>
     <message>
-      <location filename="../../Command.cpp" line="2262"/>
+      <location filename="../../Command.cpp" line="2398"/>
       <source>Create a plane function, defined by its origin and normal</source>
       <translation>Izradi funkciju ravnine, definiranu ishodištem i normalom</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2268"/>
+      <location filename="../../Command.cpp" line="2405"/>
       <source>Create a sphere function, defined by its center and radius</source>
       <translation>Izradi fukciju sfere, definiranu središtem i polumjerom</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2274"/>
+      <location filename="../../Command.cpp" line="2411"/>
       <source>Create a cylinder function, defined by its center, axis and radius</source>
       <translation>Izradi fukciju cilindra, definiranu središtem, osi i polumjerom</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2280"/>
+      <location filename="../../Command.cpp" line="2418"/>
       <source>Create a box function, defined by its center, length, width and height</source>
       <translation>Izradi fukciju kocke definiranu središtem, dužinom, širinom i visinom</translation>
     </message>
@@ -1021,20 +1017,20 @@ Ograničenje kontakta</translation>
       <translation>Ograničenje donje frekvencije</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcxImp.cpp" line="143"/>
+      <location filename="../../DlgSettingsFemCcxImp.cpp" line="145"/>
       <source>File does not exist</source>
       <translation>Datoteka ne postoji</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemCcxImp.cpp" line="144"/>
-      <source>The specified executable 
+      <location filename="../../DlgSettingsFemCcxImp.cpp" line="146"/>
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Navedena izvršna datoteka
+      <translation type="unfinished">The specified executable
 '%1'
- ne postoji!
-Navedi drugu datoteku.</translation>
+ does not exist!
+Specify another file please.</translation>
     </message>
   </context>
   <context>
@@ -1125,36 +1121,36 @@ will be merged to make the volume boundaries invisible.</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Napomena:&lt;/span&gt; Preporuča se koristiti paran broj jezgri kako bi se iskoristile simetrije mreže. (Korištenje 8 jezgri može biti brže od korištenja 9 jezgri.)&lt;br/&gt;&lt;span style=" font-weight:600;"&gt;Napomena:&lt;/span&gt; U ekstremnim slučajevima, ElmerSolver se možda neće konvergirati ako je broj jezgri previsok.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmerImp.cpp" line="102"/>
+      <location filename="../../DlgSettingsFemElmerImp.cpp" line="108"/>
       <source>File does not exist</source>
       <translation>Datoteka ne postoji</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmerImp.cpp" line="103"/>
-      <source>The specified executable 
+      <location filename="../../DlgSettingsFemElmerImp.cpp" line="109"/>
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Navedena izvršna datoteka
+      <translation type="unfinished">The specified executable
 '%1'
- ne postoji!
-Navedi drugu datoteku.</translation>
+ does not exist!
+Specify another file please.</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmerImp.cpp" line="118"/>
-      <location filename="../../DlgSettingsFemElmerImp.cpp" line="128"/>
+      <location filename="../../DlgSettingsFemElmerImp.cpp" line="127"/>
+      <location filename="../../DlgSettingsFemElmerImp.cpp" line="138"/>
       <source>FEM Elmer: Not suitable for multithreading</source>
       <translation>FEM Elmer: Nije prikladno za multithreading</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmerImp.cpp" line="119"/>
+      <location filename="../../DlgSettingsFemElmerImp.cpp" line="128"/>
       <source>Wrong Elmer setting: You use more than one CPU core.
 Therefore an executable with the suffix '_mpi.exe' is required.</source>
       <translation>Netočna Elmer postavka: Koristite više od jednog CPU jezgra.
 Stoga je potreban izvršni program s nastavkom '_mpi.exe'.</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemElmerImp.cpp" line="129"/>
+      <location filename="../../DlgSettingsFemElmerImp.cpp" line="139"/>
       <source>Wrong Elmer setting: You use more than one CPU core.
 Therefore an executable with the suffix '_mpi' is required.</source>
       <translation>Netočna Elmer postavka: Koristite više od jednog CPU jezgra.
@@ -1226,13 +1222,13 @@ koji ne pripadaju plohama i plohe koje ne pripadaju volumenima.
     <message>
       <location filename="../../DlgSettingsFemExportAbaqus.ui" line="82"/>
       <source>Mesh groups are exported too.
-Every constraint and, if there are different materials, material
-consists of two mesh groups, faces and nodes where the
-constraint or material is applied.</source>
-      <translation>Mrežne grupe se također eksportiraju.
-Svako ograničenje i, ako postoje različiti materijali, materijal
-se sastoji od dvije mrežne grupe, površina i čvorova gdje je
-ograničenje ili materijal primijenjeno.</translation>
+Every analysis feature and, if there are different materials,
+material consists of two mesh groups, faces and nodes where
+the constraint or material is applied.</source>
+      <translation type="unfinished">Mesh groups are exported too.
+Every analysis feature and, if there are different materials,
+material consists of two mesh groups, faces and nodes where
+the constraint or material is applied.</translation>
     </message>
   </context>
   <context>
@@ -1259,8 +1255,8 @@ ograničenje ili materijal primijenjeno.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="72"/>
-      <source>Let the application manage (create, delete) the working directories for all solver. Use temporary directories.</source>
-      <translation>Neka aplikacija upravlja (stvara, briše) radne direktorije za sve rješavače. Koristit će se privremeni direktoriji.</translation>
+      <source>Let the application manage (create, delete) the working directories for all solvers. Use temporary directories.</source>
+      <translation type="unfinished">Let the application manage (create, delete) the working directories for all solvers. Use temporary directories.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="98"/>
@@ -1325,7 +1321,7 @@ dok ne budu prepisani novim pokretanjem rješavača</translation>
       <location filename="../../DlgSettingsFemGeneral.ui" line="331"/>
       <source>The results dialog will be opened
 with the last used dialog settings</source>
-      <translation>Rezultati će se otvoriti u dijalogu 
+      <translation>Rezultati će se otvoriti u dijalogu
 sa posljednjim korištenim postavkama dijaloga</translation>
     </message>
     <message>
@@ -1335,14 +1331,15 @@ sa posljednjim korištenim postavkama dijaloga</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="354"/>
-      <source>All constraints are hidden in the model view
+      <source>All analysis features are hidden in the model view
 when the results dialog is opened</source>
-      <translation>Sva su ograničenja skrivena u prikazu modela kada se otvori dijalog rezultata</translation>
+      <translation type="unfinished">All analysis features are hidden in the model view
+when the results dialog is opened</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="358"/>
-      <source>Hide constraints when open result dialog</source>
-      <translation>Sakrij ograničenja kada se otvori dijalog rezultata</translation>
+      <source>Hide analysis features when open result dialog</source>
+      <translation type="unfinished">Hide analysis features when open result dialog</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="382"/>
@@ -1358,7 +1355,7 @@ when the results dialog is opened</source>
       <location filename="../../DlgSettingsFemGeneral.ui" line="403"/>
       <source>Default solver to be added when
 adding an analysis container</source>
-      <translation>Zadani alat za rješavanje koji će biti dodan kada 
+      <translation>Zadani alat za rješavanje koji će biti dodan kada
 se dodaje kontejner za analizu</translation>
     </message>
     <message>
@@ -1401,14 +1398,14 @@ se dodaje kontejner za analizu</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="80"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Navedena izvršna datoteka
+      <translation type="unfinished">The specified executable
 '%1'
- ne postoji!
-Navedi drugu datoteku.</translation>
+ does not exist!
+Specify another file please.</translation>
     </message>
   </context>
   <context>
@@ -1464,84 +1461,8 @@ Objekt FreeCAD rezultata: Uvezeni podaci bit će pretvoreni u FreeCAD FEM objekt
     <message>
       <location filename="../../DlgSettingsFemInOutVtk.ui" line="76"/>
       <source>FreeCAD result object</source>
-      <translation>FreeCAD Objekt rezultata 
+      <translation>FreeCAD Objekt rezultata
 </translation>
-    </message>
-  </context>
-  <context>
-    <name>FemGui::DlgSettingsFemMaterialImp</name>
-    <message>
-      <location filename="../../DlgSettingsFemMaterial.ui" line="14"/>
-      <source>Material</source>
-      <translation>Materijal</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemMaterial.ui" line="23"/>
-      <source>Card resources</source>
-      <translation>Biblioteka kartica</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemMaterial.ui" line="31"/>
-      <source>The cards built-in to FreeCAD will be listed as available.</source>
-      <translation>Ugrađene kartice u FreeCAD bit će navedene kao dostupne.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemMaterial.ui" line="34"/>
-      <source>Use built-in materials</source>
-      <translation>Koristite ugrađene materijale</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemMaterial.ui" line="50"/>
-      <source>Also cards from FreeCAD's preferences directory will be listed as available.</source>
-      <translation>Takođe kartice iz FreeCAD direktorija postavki bit će navedene kao dostupne.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemMaterial.ui" line="53"/>
-      <source>Use materials from Materials directory in user's FreeCAD preference directory</source>
-      <translation>Koristi materijale iz direktorija Materijali u korisničkom direktoriju postavke FreeCAD-a.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemMaterial.ui" line="69"/>
-      <source>Also material cards also from the specified directory
-will be listed as available.</source>
-      <translation>Takođe kartice materijala iz navedenog direktorija bit će navedene kao dostupne.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemMaterial.ui" line="73"/>
-      <source>Use materials from user defined directory</source>
-      <translation>Koristite materijale iz korisnički definiranog direktorija</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemMaterial.ui" line="100"/>
-      <source>User directory</source>
-      <translation>Korisnički direktorij</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemMaterial.ui" line="148"/>
-      <source>Card sorting and duplicates</source>
-      <translation>Sortiranje kartica i duplikati</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemMaterial.ui" line="154"/>
-      <source>Duplicate cards will be deleted from the displayed material card list.</source>
-      <translation>Duplikati kartica će biti obrisani sa prikazane liste kartica materijala.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemMaterial.ui" line="157"/>
-      <source>Delete card duplicates</source>
-      <translation>Izbriši duplikate kartice</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemMaterial.ui" line="173"/>
-      <source>Material cards appear sorted by their resources (locations).
-If unchecked, they will be sorted by their name.</source>
-      <translation>Kartice materijala će se pojavljivati sortirane prema bibliotekama kojima pripadaju (lokacijama).
-Ako nije označeno, one će biti sortirane po imenima.</translation>
-    </message>
-    <message>
-      <location filename="../../DlgSettingsFemMaterial.ui" line="177"/>
-      <source>Sort by resources</source>
-      <translation>Sortiraj po bibliotekama</translation>
     </message>
   </context>
   <context>
@@ -1588,14 +1509,14 @@ Ako nije označeno, one će biti sortirane po imenima.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystranImp.cpp" line="82"/>
-      <source>The specified executable 
+      <source>The specified executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Navedena izvršna datoteka
+      <translation type="unfinished">The specified executable
 '%1'
- ne postoji!
-Navedi drugu datoteku.</translation>
+ does not exist!
+Specify another file please.</translation>
     </message>
   </context>
   <context>
@@ -1667,8 +1588,8 @@ You might need to increase this when using the
 Cholesky solver and you get the error message
 that "MAXGS" needs to be increased.</source>
       <translation>Maksimalan broj mjesta u matrici krutosti.
-Možda ćete to morati povećati kada koristite 
-Choleskyov rješavač i dobijete poruku o pogrešci 
+Možda ćete to morati povećati kada koristite
+Choleskyov rješavač i dobijete poruku o pogrešci
 da se "MAXGS" mora povećati."</translation>
     </message>
     <message>
@@ -1685,43 +1606,43 @@ da se "MAXGS" mora povećati."</translation>
 You might need to increase this when using an
 iterative solver and you get the error message
 that "MAXKOI" needs to be increased.</source>
-      <translation>Maksimalan broj mjesta u vektoru koincidencije. 
+      <translation>Maksimalan broj mjesta u vektoru koincidencije.
 (broj čvorova po elementu množeno sa
  broj konačnih elementa)
 
-Možda ćete to morati povećati kada koristite 
-iterativni rješavač i dobijete poruku o pogrešci 
+Možda ćete to morati povećati kada koristite
+iterativni rješavač i dobijete poruku o pogrešci
 da se "MAXKOI" mora povećati</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemZ88Imp.cpp" line="104"/>
+      <location filename="../../DlgSettingsFemZ88Imp.cpp" line="107"/>
       <source>File does not exist</source>
       <translation>Datoteka ne postoji</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemZ88Imp.cpp" line="105"/>
-      <source>The specified z88r executable 
+      <location filename="../../DlgSettingsFemZ88Imp.cpp" line="108"/>
+      <source>The specified z88r executable
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Navedena z88r izvršna datoteka
+      <translation type="unfinished">The specified z88r executable
 '%1'
- ne postoji!
-Navedi drugu datoteku.</translation>
+ does not exist!
+Specify another file please.</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemZ88Imp.cpp" line="116"/>
-      <location filename="../../DlgSettingsFemZ88Imp.cpp" line="122"/>
+      <location filename="../../DlgSettingsFemZ88Imp.cpp" line="120"/>
+      <location filename="../../DlgSettingsFemZ88Imp.cpp" line="126"/>
       <source>Wrong file</source>
       <translation>Pogrešna datoteka</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemZ88Imp.cpp" line="117"/>
+      <location filename="../../DlgSettingsFemZ88Imp.cpp" line="121"/>
       <source>You must specify the path to the z88r.exe!</source>
       <translation>Moraš odrediti stazu  za ovu z88r.exe!</translation>
     </message>
     <message>
-      <location filename="../../DlgSettingsFemZ88Imp.cpp" line="123"/>
+      <location filename="../../DlgSettingsFemZ88Imp.cpp" line="126"/>
       <source>You must specify the path to the z88r!</source>
       <translation>Moraš odrediti stazu  za ovu z88r!</translation>
     </message>
@@ -1745,13 +1666,13 @@ Navedi drugu datoteku.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraint</name>
     <message>
-      <location filename="../../TaskFemConstraint.cpp" line="257"/>
-      <location filename="../../TaskFemConstraint.cpp" line="268"/>
+      <location filename="../../TaskFemConstraint.cpp" line="290"/>
+      <location filename="../../TaskFemConstraint.cpp" line="303"/>
       <source>Input error</source>
       <translation>Pogreška na ulazu</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraint.cpp" line="257"/>
+      <location filename="../../TaskFemConstraint.cpp" line="291"/>
       <source>You must specify at least one reference</source>
       <translation>Morate odabrati najmanje jednu referencu</translation>
     </message>
@@ -1759,7 +1680,7 @@ Navedi drugu datoteku.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintBearing</name>
     <message>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="361"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="381"/>
       <source>Input error</source>
       <translation>Pogreška na ulazu</translation>
     </message>
@@ -1767,7 +1688,7 @@ Navedi drugu datoteku.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintContact</name>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="492"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="514"/>
       <source>Input error</source>
       <translation>Pogreška na ulazu</translation>
     </message>
@@ -1775,7 +1696,7 @@ Navedi drugu datoteku.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintDisplacement</name>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="714"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="759"/>
       <source>Input error</source>
       <translation>Pogreška na ulazu</translation>
     </message>
@@ -1783,7 +1704,7 @@ Navedi drugu datoteku.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintFluidBoundary</name>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="1070"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="1111"/>
       <source>Input error</source>
       <translation>Pogreška na ulazu</translation>
     </message>
@@ -1791,13 +1712,13 @@ Navedi drugu datoteku.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintForce</name>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="460"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="499"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="474"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="517"/>
       <source>Input error</source>
       <translation>Pogreška na ulazu</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="460"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="475"/>
       <source>Please specify a force greater than 0</source>
       <translation>Molimo odredite silu koja je veća od 0</translation>
     </message>
@@ -1805,7 +1726,7 @@ Navedi drugu datoteku.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintGear</name>
     <message>
-      <location filename="../../TaskFemConstraintGear.cpp" line="291"/>
+      <location filename="../../TaskFemConstraintGear.cpp" line="339"/>
       <source>Input error</source>
       <translation>Pogreška na ulazu</translation>
     </message>
@@ -1813,7 +1734,7 @@ Navedi drugu datoteku.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintHeatflux</name>
     <message>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="462"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="475"/>
       <source>Input error</source>
       <translation>Pogreška na ulazu</translation>
     </message>
@@ -1822,7 +1743,7 @@ Navedi drugu datoteku.</translation>
     <name>FemGui::TaskDlgFemConstraintInitialTemperature</name>
     <message>
       <location filename="../../TaskFemConstraintInitialTemperature.cpp" line="129"/>
-      <location filename="../../TaskFemConstraintInitialTemperature.cpp" line="141"/>
+      <location filename="../../TaskFemConstraintInitialTemperature.cpp" line="142"/>
       <source>Input error</source>
       <translation>Pogreška na ulazu</translation>
     </message>
@@ -1830,7 +1751,7 @@ Navedi drugu datoteku.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintPressure</name>
     <message>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="330"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="340"/>
       <source>Input error</source>
       <translation>Pogreška na ulazu</translation>
     </message>
@@ -1838,7 +1759,7 @@ Navedi drugu datoteku.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintPulley</name>
     <message>
-      <location filename="../../TaskFemConstraintPulley.cpp" line="206"/>
+      <location filename="../../TaskFemConstraintPulley.cpp" line="238"/>
       <source>Input error</source>
       <translation>Pogreška na ulazu</translation>
     </message>
@@ -1846,7 +1767,7 @@ Navedi drugu datoteku.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintSpring</name>
     <message>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="345"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="350"/>
       <source>Input error</source>
       <translation>Pogreška na ulazu</translation>
     </message>
@@ -1854,7 +1775,7 @@ Navedi drugu datoteku.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintTemperature</name>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="375"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="382"/>
       <source>Input error</source>
       <translation>Pogreška na ulazu</translation>
     </message>
@@ -1862,7 +1783,7 @@ Navedi drugu datoteku.</translation>
   <context>
     <name>FemGui::TaskDlgFemConstraintTransform</name>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="596"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="633"/>
       <source>Input error</source>
       <translation>Pogreška na ulazu</translation>
     </message>
@@ -1870,12 +1791,12 @@ Navedi drugu datoteku.</translation>
   <context>
     <name>FemGui::TaskDlgMeshShapeNetgen</name>
     <message>
-      <location filename="../../TaskDlgMeshShapeNetgen.cpp" line="72"/>
+      <location filename="../../TaskDlgMeshShapeNetgen.cpp" line="71"/>
       <source>Edit FEM mesh</source>
       <translation>Uredi FEM mrežu</translation>
     </message>
     <message>
-      <location filename="../../TaskDlgMeshShapeNetgen.cpp" line="103"/>
+      <location filename="../../TaskDlgMeshShapeNetgen.cpp" line="102"/>
       <source>Meshing failure</source>
       <translation>Greška umrežavanja</translation>
     </message>
@@ -1883,7 +1804,7 @@ Navedi drugu datoteku.</translation>
   <context>
     <name>FemGui::TaskDlgPost</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="364"/>
+      <location filename="../../TaskPostBoxes.cpp" line="373"/>
       <source>Input error</source>
       <translation>Pogreška na ulazu</translation>
     </message>
@@ -1899,12 +1820,12 @@ Navedi drugu datoteku.</translation>
   <context>
     <name>FemGui::TaskFemConstraint</name>
     <message>
-      <location filename="../../TaskFemConstraint.cpp" line="54"/>
-      <source>FEM constraint parameters</source>
-      <translation>FEM parametri ograničenja</translation>
+      <location filename="../../TaskFemConstraint.cpp" line="57"/>
+      <source>Analysis feature parameters</source>
+      <translation type="unfinished">Analysis feature parameters</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraint.cpp" line="199"/>
+      <location filename="../../TaskFemConstraint.cpp" line="222"/>
       <source>Delete</source>
       <translation>Izbriši</translation>
     </message>
@@ -1912,42 +1833,42 @@ Navedi drugu datoteku.</translation>
   <context>
     <name>FemGui::TaskFemConstraintBearing</name>
     <message>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="161"/>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="166"/>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="174"/>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="191"/>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="198"/>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="204"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="171"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="176"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="184"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="202"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="210"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="217"/>
       <source>Selection error</source>
       <translation>Greška odabira</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="162"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="172"/>
       <source>Please use only a single reference for bearing constraint</source>
       <translation>Molimo koristite samo jednu referencu za ograničenje ležaja</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="166"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="176"/>
       <source>Only faces can be picked</source>
       <translation>Samo naličja se mogu odabrati</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="174"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="185"/>
       <source>Only cylindrical faces can be picked</source>
       <translation>Samo cilindrična naličja se mogu odabrati</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="191"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="203"/>
       <source>Only planar faces can be picked</source>
       <translation>Samo ravna naličja se mogu odabrati</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="198"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="211"/>
       <source>Only linear edges can be picked</source>
       <translation>Samo pravocrtni rubovi se mogu odabrati</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintBearing.cpp" line="204"/>
+      <location filename="../../TaskFemConstraintBearing.cpp" line="218"/>
       <source>Only faces and edges can be picked</source>
       <translation>Samo naličja i rubovi se mogu odabrati</translation>
     </message>
@@ -1956,77 +1877,77 @@ Navedi drugu datoteku.</translation>
     <name>FemGui::TaskFemConstraintContact</name>
     <message>
       <location filename="../../TaskFemConstraintContact.cpp" line="57"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="61"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="63"/>
       <source>Delete</source>
       <translation>Izbriši</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="102"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="149"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="155"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="160"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="171"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="179"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="186"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="222"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="232"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="279"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="285"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="290"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="301"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="308"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="315"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="351"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="361"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="110"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="166"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="172"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="177"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="189"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="197"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="205"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="241"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="251"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="298"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="304"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="309"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="321"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="328"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="336"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="372"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="382"/>
       <source>Selection error</source>
       <translation>Greška odabira</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="102"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="111"/>
       <source>Only one face in object! - moved to master face</source>
       <translation>Samo jedna površina u objektu! - premještena u glavnu površinu</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="150"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="280"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="167"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="299"/>
       <source>Only one master face and one slave face for a contact constraint!</source>
       <translation>Samo jedna glavna površina i jedna podređena površina za ograničenje kontakta!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="155"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="222"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="285"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="351"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="172"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="241"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="304"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="372"/>
       <source>Nothing selected!</source>
       <translation>Ništa nije odabrano!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="160"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="179"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="178"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="198"/>
       <source>Only one slave face for a contact constraint!</source>
       <translation>Samo jedna podređena površina za ograničenje kontakta!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="171"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="232"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="301"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="361"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="189"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="251"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="321"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="382"/>
       <source>Selected object is not a part!</source>
       <translation>Odabrani objekt nije jedan dio!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="186"/>
-      <location filename="../../TaskFemConstraintContact.cpp" line="315"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="205"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="336"/>
       <source>Only faces can be picked</source>
       <translation>Samo naličja se mogu odabrati</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="290"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="310"/>
       <source>Only one master for a contact constraint!</source>
       <translation>Samo jedan glavni za ograničenje kontakta!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="308"/>
+      <location filename="../../TaskFemConstraintContact.cpp" line="329"/>
       <source>Only one master face for a contact constraint!</source>
       <translation>Samo jedna glavna površina za ograničenje kontakta!</translation>
     </message>
@@ -2034,226 +1955,226 @@ Navedi drugu datoteku.</translation>
   <context>
     <name>FemGui::TaskFemConstraintDisplacement</name>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="303"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="313"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="348"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="371"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="381"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="317"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="327"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="365"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="388"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="398"/>
       <source>Selection error</source>
       <translation>Greška odabira</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="303"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="371"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="317"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="388"/>
       <source>Nothing selected!</source>
       <translation>Ništa nije odabrano!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="313"/>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="381"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="327"/>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="398"/>
       <source>Selected object is not a part!</source>
       <translation>Odabrani objekt nije jedan dio!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="346"/>
-      <source>Only one type of selection (vertex,face or edge) per constraint allowed!</source>
-      <translation>Samo je jedna vrsta selekcije (vrh, ploha ili rub) po ograničenju dopuštena!</translation>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="363"/>
+      <source>Only one type of selection (vertex,face or edge) per analysis feature allowed!</source>
+      <translation type="unfinished">Only one type of selection (vertex,face or edge) per analysis feature allowed!</translation>
     </message>
   </context>
   <context>
     <name>FemGui::TaskFemConstraintFixed</name>
     <message>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="108"/>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="118"/>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="154"/>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="177"/>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="187"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="110"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="120"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="159"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="182"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="192"/>
       <source>Selection error</source>
       <translation>Greška odabira</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="108"/>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="177"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="110"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="182"/>
       <source>Nothing selected!</source>
       <translation>Ništa nije odabrano!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="118"/>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="187"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="120"/>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="192"/>
       <source>Selected object is not a part!</source>
       <translation>Odabrani objekt nije jedan dio!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="152"/>
-      <source>Only one type of selection (vertex,face or edge) per constraint allowed!</source>
-      <translation>Samo je jedna vrsta selekcije (vrh, ploha ili rub) po ograničenju dopuštena!</translation>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="157"/>
+      <source>Only one type of selection (vertex, face or edge) per analysis feature allowed!</source>
+      <translation type="unfinished">Only one type of selection (vertex, face or edge) per analysis feature allowed!</translation>
     </message>
   </context>
   <context>
     <name>FemGui::TaskFemConstraintFluidBoundary</name>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="304"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="330"/>
       <source>Basic</source>
       <translation>Osnove</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="305"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="331"/>
       <source>Turbulence</source>
       <translation>Turbulencija</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="306"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="332"/>
       <source>Thermal</source>
       <translation>Termalno</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="308"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="334"/>
       <source>select boundary type, faces and set value</source>
       <translation>odaberite vrstu granice, površine i postavite vrijednost</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="477"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="506"/>
       <source>Intensity [0~1]</source>
       <translation>Intenzitet [0~1]</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="479"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="508"/>
       <source>Dissipation Rate [m2/s3]</source>
       <translation>Stopa disipacije  [m2/s3]</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="482"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="511"/>
       <source>Length Scale[m]</source>
       <translation>Skala dužine [m]</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="485"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="514"/>
       <source>Viscosity Ratio [1]</source>
       <translation>Omjer viskoznosti [1]</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="488"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="517"/>
       <source>Hydraulic Diameter [m]</source>
       <translation>Hidraulički Promjer [m]</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="517"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="522"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="546"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="551"/>
       <source>Gradient [K/m]</source>
       <translation>Gradient [K/m]</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="526"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="555"/>
       <source>Flux [W/m2]</source>
       <translation>Protok [W/m2]</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="603"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="632"/>
       <source>Empty selection</source>
       <translation>Prazan odabir</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="603"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="632"/>
       <source>Select an edge or a face, please.</source>
       <translation>Molim odaberi rub ili plohu.</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="615"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="623"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="638"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="645"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="651"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="644"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="653"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="669"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="677"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="684"/>
       <source>Wrong selection</source>
       <translation>Pogrešan odabir</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="615"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="645"/>
       <source>Selected object is not a part object!</source>
       <translation>Odabrani objekt nije jedan dio!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="623"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="654"/>
       <source>Only one planar face or edge can be selected!</source>
       <translation>Samo jedna ravan ili rub mogu biti odabrani</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="638"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="670"/>
       <source>Only planar faces can be picked for 3D</source>
       <translation>Samo ravna naličja se mogu odabrati za 3D</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="645"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="678"/>
       <source>Only planar edges can be picked for 2D</source>
       <translation>Samo ravna naličja se mogu odabrati za 2D</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="652"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="685"/>
       <source>Only faces for 3D part or edges for 2D can be picked</source>
       <translation>Samo plohe za 3D dio ili rubovi za 2D mogu se pokupiti</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="785"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="795"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="831"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="854"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="864"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="820"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="830"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="869"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="892"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="902"/>
       <source>Selection error</source>
       <translation>Greška odabira</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="785"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="854"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="820"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="892"/>
       <source>Nothing selected!</source>
       <translation>Ništa nije odabrano!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="795"/>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="864"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="830"/>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="902"/>
       <source>Selected object is not a part!</source>
       <translation>Odabrani objekt nije jedan dio!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="829"/>
-      <source>Only one type of selection (vertex,face or edge) per constraint allowed!</source>
-      <translation>Samo je jedna vrsta selekcije (vrh, ploha ili rub) po ograničenju dopuštena!</translation>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="867"/>
+      <source>Only one type of selection (vertex, face or edge) per analysis feature allowed!</source>
+      <translation type="unfinished">Only one type of selection (vertex, face or edge) per analysis feature allowed!</translation>
     </message>
   </context>
   <context>
     <name>FemGui::TaskFemConstraintForce</name>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="131"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="141"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="177"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="200"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="138"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="148"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="187"/>
       <location filename="../../TaskFemConstraintForce.cpp" line="210"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="220"/>
       <source>Selection error</source>
       <translation>Greška odabira</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="131"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="200"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="138"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="210"/>
       <source>Nothing selected!</source>
       <translation>Ništa nije odabrano!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="141"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="210"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="148"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="220"/>
       <source>Selected object is not a part!</source>
       <translation>Odabrani objekt nije jedan dio!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="175"/>
-      <source>Only one type of selection (vertex,face or edge) per constraint allowed!</source>
-      <translation>Samo je jedna vrsta selekcije (vrh, ploha ili rub) po ograničenju dopuštena!</translation>
+      <location filename="../../TaskFemConstraintForce.cpp" line="185"/>
+      <source>Only one type of selection (vertex, face or edge) per analysis feature allowed!</source>
+      <translation type="unfinished">Only one type of selection (vertex, face or edge) per analysis feature allowed!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="325"/>
-      <location filename="../../TaskFemConstraintForce.cpp" line="341"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="335"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="351"/>
       <source>Wrong selection</source>
       <translation>Pogrešan odabir</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="325"/>
+      <location filename="../../TaskFemConstraintForce.cpp" line="335"/>
       <source>Select an edge or a face, please.</source>
       <translation>Molim odaberi rub ili plohu.</translation>
     </message>
@@ -2261,24 +2182,24 @@ Navedi drugu datoteku.</translation>
   <context>
     <name>FemGui::TaskFemConstraintGear</name>
     <message>
-      <location filename="../../TaskFemConstraintGear.cpp" line="135"/>
-      <location filename="../../TaskFemConstraintGear.cpp" line="141"/>
-      <location filename="../../TaskFemConstraintGear.cpp" line="146"/>
+      <location filename="../../TaskFemConstraintGear.cpp" line="151"/>
+      <location filename="../../TaskFemConstraintGear.cpp" line="159"/>
+      <location filename="../../TaskFemConstraintGear.cpp" line="166"/>
       <source>Selection error</source>
       <translation>Greška odabira</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintGear.cpp" line="135"/>
+      <location filename="../../TaskFemConstraintGear.cpp" line="152"/>
       <source>Only planar faces can be picked</source>
       <translation>Samo ravna naličja se mogu odabrati</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintGear.cpp" line="141"/>
+      <location filename="../../TaskFemConstraintGear.cpp" line="160"/>
       <source>Only linear edges can be picked</source>
       <translation>Samo pravocrtni rubovi se mogu odabrati</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintGear.cpp" line="146"/>
+      <location filename="../../TaskFemConstraintGear.cpp" line="167"/>
       <source>Only faces and edges can be picked</source>
       <translation>Samo naličja i rubovi se mogu odabrati</translation>
     </message>
@@ -2286,30 +2207,30 @@ Navedi drugu datoteku.</translation>
   <context>
     <name>FemGui::TaskFemConstraintHeatflux</name>
     <message>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="209"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="219"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="229"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="273"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="284"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="294"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="217"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="227"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="237"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="282"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="293"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="303"/>
       <source>Selection error</source>
       <translation>Greška odabira</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="209"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="273"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="217"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="282"/>
       <source>Nothing selected!</source>
       <translation>Ništa nije odabrano!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="219"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="284"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="227"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="293"/>
       <source>Selected object is not a part!</source>
       <translation>Odabrani objekt nije jedan dio!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="229"/>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="294"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="238"/>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="304"/>
       <source>Selection must only consist of faces!</source>
       <translation>Odabrati možete samo plohe!</translation>
     </message>
@@ -2317,42 +2238,42 @@ Navedi drugu datoteku.</translation>
   <context>
     <name>FemGui::TaskFemConstraintPlaneRotation</name>
     <message>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="116"/>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="125"/>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="136"/>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="147"/>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="155"/>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="185"/>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="202"/>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="212"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="127"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="137"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="148"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="160"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="169"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="200"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="217"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="227"/>
       <source>Selection error</source>
       <translation>Greška odabira</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="117"/>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="186"/>
-      <source>Only one face can be selected for a plane rotation constraint!</source>
-      <translation>Samo jedna ploha se može odabrati za ograničenje rotacije ravnine!</translation>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="128"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="201"/>
+      <source>Only one face can be selected for a plane multi-point constraint!</source>
+      <translation type="unfinished">Only one face can be selected for a plane multi-point constraint!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="125"/>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="202"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="137"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="217"/>
       <source>Nothing selected!</source>
       <translation>Ništa nije odabrano!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="136"/>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="212"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="149"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="227"/>
       <source>Selected object is not a part!</source>
       <translation>Odabrani objekt nije jedan dio!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="147"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="161"/>
       <source>Only faces can be picked</source>
       <translation>Samo naličja se mogu odabrati</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="155"/>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="170"/>
       <source>Only planar faces can be picked</source>
       <translation>Samo ravna naličja se mogu odabrati</translation>
     </message>
@@ -2360,28 +2281,28 @@ Navedi drugu datoteku.</translation>
   <context>
     <name>FemGui::TaskFemConstraintPressure</name>
     <message>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="125"/>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="135"/>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="144"/>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="180"/>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="190"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="133"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="143"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="152"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="188"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="198"/>
       <source>Selection error</source>
       <translation>Greška odabira</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="125"/>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="180"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="133"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="188"/>
       <source>Nothing selected!</source>
       <translation>Ništa nije odabrano!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="135"/>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="190"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="143"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="198"/>
       <source>Selected object is not a part!</source>
       <translation>Odabrani objekt nije jedan dio!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="144"/>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="152"/>
       <source>Only faces can be picked</source>
       <translation>Samo naličja se mogu odabrati</translation>
     </message>
@@ -2389,12 +2310,12 @@ Navedi drugu datoteku.</translation>
   <context>
     <name>FemGui::TaskFemConstraintPulley</name>
     <message>
-      <location filename="../../TaskFemConstraintPulley.cpp" line="85"/>
+      <location filename="../../TaskFemConstraintPulley.cpp" line="95"/>
       <source>Pulley diameter</source>
       <translation>Promjer valjka</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintPulley.cpp" line="86"/>
+      <location filename="../../TaskFemConstraintPulley.cpp" line="96"/>
       <source>Torque [Nm]</source>
       <translation>Obrtna sila [Nm]</translation>
     </message>
@@ -2402,28 +2323,28 @@ Navedi drugu datoteku.</translation>
   <context>
     <name>FemGui::TaskFemConstraintSpring</name>
     <message>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="132"/>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="142"/>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="151"/>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="187"/>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="197"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="135"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="145"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="154"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="190"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="200"/>
       <source>Selection error</source>
       <translation>Greška odabira</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="132"/>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="187"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="135"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="190"/>
       <source>Nothing selected!</source>
       <translation>Ništa nije odabrano!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="142"/>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="197"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="145"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="200"/>
       <source>Selected object is not a part!</source>
       <translation>Odabrani objekt nije jedan dio!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="151"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="154"/>
       <source>Only faces can be picked</source>
       <translation>Samo naličja se mogu odabrati</translation>
     </message>
@@ -2431,22 +2352,22 @@ Navedi drugu datoteku.</translation>
   <context>
     <name>FemGui::TaskFemConstraintTemperature</name>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="151"/>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="161"/>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="202"/>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="212"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="153"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="163"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="204"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="214"/>
       <source>Selection error</source>
       <translation>Greška odabira</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="151"/>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="202"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="153"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="204"/>
       <source>Nothing selected!</source>
       <translation>Ništa nije odabrano!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="161"/>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="212"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="163"/>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="214"/>
       <source>Selected object is not a part!</source>
       <translation>Odabrani objekt nije jedan dio!</translation>
     </message>
@@ -2454,72 +2375,72 @@ Navedi drugu datoteku.</translation>
   <context>
     <name>FemGui::TaskFemConstraintTransform</name>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="162"/>
-      <source>Constraint update error</source>
-      <translation>Ograničenje greška ažuriranja</translation>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="179"/>
+      <source>Analysis feature update error</source>
+      <translation type="unfinished">Analysis feature update error</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="163"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="180"/>
       <source>The transformable faces have changed. Please add only the transformable faces and remove non-transformable faces!</source>
       <translation>Transformabilna lica su se promijenila. Molimo dodajte samo transformabilna lica i uklonite netransformabilna lica!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="268"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="274"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="281"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="295"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="302"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="309"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="319"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="360"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="411"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="421"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="284"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="290"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="298"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="313"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="320"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="328"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="338"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="379"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="431"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="441"/>
       <source>Selection error</source>
       <translation>Greška odabira</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="268"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="411"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="284"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="431"/>
       <source>Nothing selected!</source>
       <translation>Ništa nije odabrano!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="274"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="281"/>
-      <source>Only one face for rectangular transform constraint!</source>
-      <translation>Samo jedno lice za pravokutno ograničenje transformacije!</translation>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="291"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="299"/>
+      <source>Only one face for rectangular local coordinate system!</source>
+      <translation type="unfinished">Only one face for rectangular local coordinate system!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="295"/>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="421"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="321"/>
+      <source>Only one face for local coordinate system!</source>
+      <translation type="unfinished">Only one face for local coordinate system!</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="380"/>
+      <source>Only transformable faces can be selected! Apply displacement boundary condition to surface first then apply local coordinate system to surface</source>
+      <translation type="unfinished">Only transformable faces can be selected! Apply displacement boundary condition to surface first then apply local coordinate system to surface</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="313"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="441"/>
       <source>Selected object is not a part!</source>
       <translation>Odabrani objekt nije jedan dio!</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="302"/>
-      <source>Only one face for transform constraint!</source>
-      <translation>Samo jedno lice za ograničenje transformacije!</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="309"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="328"/>
       <source>Only faces can be picked</source>
       <translation>Samo naličja se mogu odabrati</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="320"/>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="339"/>
       <source>Only cylindrical faces can be picked</source>
       <translation>Samo cilindrična naličja se mogu odabrati</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="361"/>
-      <source>Only transformable faces can be selected! Apply displacement constraint to surface first then apply constraint to surface</source>
-      <translation>Samo transformabilna lica se mogu odabrati! Prvo primjeni premještanje na površinu prije nego primjeniš ograničenje na površinu</translation>
     </message>
   </context>
   <context>
     <name>FemGui::TaskObjectName</name>
     <message>
-      <location filename="../../TaskObjectName.cpp" line="42"/>
+      <location filename="../../TaskObjectName.cpp" line="41"/>
       <source>TaskObjectName</source>
       <translation>TaskObjectName</translation>
     </message>
@@ -2527,7 +2448,7 @@ Navedi drugu datoteku.</translation>
   <context>
     <name>FemGui::TaskPostClip</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1236"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1266"/>
       <source>Clip region, choose implicit function</source>
       <translation>Područje isječka, odaberi implicitnu funkciju</translation>
     </message>
@@ -2535,7 +2456,7 @@ Navedi drugu datoteku.</translation>
   <context>
     <name>FemGui::TaskPostCut</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1531"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1567"/>
       <source>Function cut, choose implicit function</source>
       <translation>Funkcijski rez, odaberi implicitnu funkciju</translation>
     </message>
@@ -2543,12 +2464,12 @@ Navedi drugu datoteku.</translation>
   <context>
     <name>FemGui::TaskPostDataAlongLine</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="509"/>
+      <location filename="../../TaskPostBoxes.cpp" line="530"/>
       <source>Data along a line options</source>
       <translation>Opcije za podatke uzduž linije</translation>
     </message>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="844"/>
+      <location filename="../../TaskPostBoxes.cpp" line="869"/>
       <source>Length</source>
       <comment>X-Axis plot label</comment>
       <translation>Dužina</translation>
@@ -2557,12 +2478,12 @@ Navedi drugu datoteku.</translation>
   <context>
     <name>FemGui::TaskPostDataAtPoint</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="870"/>
+      <location filename="../../TaskPostBoxes.cpp" line="896"/>
       <source>Data at point options</source>
       <translation>Opcije za podatke kod točke</translation>
     </message>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1210"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1238"/>
       <source>%1 at (%2; %3; %4) is: %5 %6</source>
       <translation>%1 kod (%2; %3; %4) je: %5 %6</translation>
     </message>
@@ -2570,7 +2491,7 @@ Navedi drugu datoteku.</translation>
   <context>
     <name>FemGui::TaskPostDisplay</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="399"/>
+      <location filename="../../TaskPostBoxes.cpp" line="412"/>
       <source>Result display options</source>
       <translation>Opcije prikaza rezultata</translation>
     </message>
@@ -2578,7 +2499,7 @@ Navedi drugu datoteku.</translation>
   <context>
     <name>FemGui::TaskPostFunction</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="479"/>
+      <location filename="../../TaskPostBoxes.cpp" line="500"/>
       <source>Implicit function</source>
       <translation>Implicitna funkcija</translation>
     </message>
@@ -2586,7 +2507,7 @@ Navedi drugu datoteku.</translation>
   <context>
     <name>FemGui::TaskPostScalarClip</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1672"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1713"/>
       <source>Scalar clip options</source>
       <translation>Opcije skalarnog rezanja</translation>
     </message>
@@ -2594,7 +2515,7 @@ Navedi drugu datoteku.</translation>
   <context>
     <name>FemGui::TaskPostWarpVector</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1807"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1845"/>
       <source>Warp options</source>
       <translation>Opcije izobličenja</translation>
     </message>
@@ -2610,7 +2531,7 @@ Navedi drugu datoteku.</translation>
   <context>
     <name>FemGui::ViewProviderFemAnalysis</name>
     <message>
-      <location filename="../../ViewProviderAnalysis.cpp" line="163"/>
+      <location filename="../../ViewProviderAnalysis.cpp" line="161"/>
       <source>Activate analysis</source>
       <translation>Aktiviraj analizu</translation>
     </message>
@@ -2623,7 +2544,7 @@ Navedi drugu datoteku.</translation>
       <translation>Greška umrežavanja</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="74"/>
+      <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="75"/>
       <source>The FEM module is built without NETGEN support. Meshing will not work!!!</source>
       <translation>FEM modul je izgrađen bez NETGEN podrške.Putanje mreže (Meshing) neće raditi!!!</translation>
     </message>
@@ -2824,11 +2745,6 @@ Navedi drugu datoteku.</translation>
   </context>
   <context>
     <name>Form</name>
-    <message>
-      <location filename="../ui/ElementFluid1D.ui" line="14"/>
-      <source>Form</source>
-      <translation>Obrazac</translation>
-    </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="26"/>
       <source>Fluid Section Parameter</source>
@@ -3079,8 +2995,8 @@ Navedi drugu datoteku.</translation>
       <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
       <location filename="../ui/InitialPressure.ui" line="14"/>
       <location filename="../ui/Magnetization.ui" line="14"/>
-      <source>Constraint Properties</source>
-      <translation>Svojstva Ograničenja</translation>
+      <source>Analysis feature properties</source>
+      <translation type="unfinished">Analysis feature properties</translation>
     </message>
     <message>
       <location filename="../ui/BodyHeatSource.ui" line="20"/>
@@ -3142,8 +3058,23 @@ Navedi drugu datoteku.</translation>
       <location filename="../ui/ElectrostaticPotential.ui" line="104"/>
       <source>Imaginary part is only used for equations
 with a harmonic/oscillating driving force</source>
-      <translation>Imaginarni dio se koristi samo za jednadžbe 
+      <translation>Imaginarni dio se koristi samo za jednadžbe
 s harmoničnim/oscilirajućim pogonskim silom.</translation>
+    </message>
+    <message>
+      <location filename="../ui/ElectrostaticPotential.ui" line="531"/>
+      <source>Whether the boundary condition defines a constant potential</source>
+      <translation type="unfinished">Whether the boundary condition defines a constant potential</translation>
+    </message>
+    <message>
+      <location filename="../ui/ElectrostaticPotential.ui" line="544"/>
+      <source>Whether the boundary condition defines a farfield potential</source>
+      <translation type="unfinished">Whether the boundary condition defines a farfield potential</translation>
+    </message>
+    <message>
+      <location filename="../ui/ElectrostaticPotential.ui" line="554"/>
+      <source>Whether the boundary condition is for the electric force</source>
+      <translation type="unfinished">Whether the boundary condition is for the electric force</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="30"/>
@@ -3185,14 +3116,14 @@ s harmoničnim/oscilirajućim pogonskim silom.</translation>
       <location filename="../ui/ElectrostaticPotential.ui" line="247"/>
       <source>Real part of potential x-component
 Note: has no effect if a solid was selected</source>
-      <translation>Realni dio potencijalne x-komponente 
+      <translation>Realni dio potencijalne x-komponente
 Napomena: nema utjecaja ako je odabrano volumensko tijelo</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="292"/>
       <source>Imaginary part of potential x-component
 Note: has no effect if a solid was selected</source>
-      <translation>Imaginarni dio potencijalne x-komponente 
+      <translation>Imaginarni dio potencijalne x-komponente
 Napomena: nema utjecaja ako je odabrano volumensko tijelo</translation>
     </message>
     <message>
@@ -3206,14 +3137,14 @@ Napomena: nema utjecaja ako je odabrano volumensko tijelo</translation>
       <location filename="../ui/ElectrostaticPotential.ui" line="347"/>
       <source>Real part of potential y-component
 Note: has no effect if a solid was selected</source>
-      <translation>Realni dio potencijalne -komponente 
+      <translation>Realni dio potencijalne -komponente
 Napomena: nema utjecaja ako je odabrano volumensko tijelo</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="392"/>
       <source>Imaginary part of potential y-component
 Note: has no effect if a solid was selected</source>
-      <translation>Imaginarni dio potencijalne y-komponente 
+      <translation>Imaginarni dio potencijalne y-komponente
 Napomena: nema utjecaja ako je odabrano volumensko tijelo</translation>
     </message>
     <message>
@@ -3227,20 +3158,15 @@ Napomena: nema utjecaja ako je odabrano volumensko tijelo</translation>
       <location filename="../ui/ElectrostaticPotential.ui" line="447"/>
       <source>Real part of potential z-component
 Note: has no effect if a solid was selected</source>
-      <translation>Realni dio potencijalne z-komponente 
+      <translation>Realni dio potencijalne z-komponente
 Napomena: nema utjecaja ako je odabrano volumensko tijelo</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="492"/>
       <source>Imaginary part of potential z-component
 Note: has no effect if a solid was selected</source>
-      <translation>Imaginarni dio potencijalne z-komponente 
+      <translation>Imaginarni dio potencijalne z-komponente
 Napomena: nema utjecaja ako je odabrano volumensko tijelo</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="531"/>
-      <source>Whether the constraint defines a constant potential</source>
-      <translation>Da li je ograničenje definirano konstantnim potencijalom</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="534"/>
@@ -3248,19 +3174,9 @@ Napomena: nema utjecaja ako je odabrano volumensko tijelo</translation>
       <translation>Konstantni potencijal</translation>
     </message>
     <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="544"/>
-      <source>Whether the constraint defines a farfield potential</source>
-      <translation>Da li je ograničenje definirano Fairfeld potencijalom</translation>
-    </message>
-    <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="547"/>
       <source>Farfield / Electric infinity</source>
       <translation>Farfield / Electric infinity (beskonačno)</translation>
-    </message>
-    <message>
-      <location filename="../ui/ElectrostaticPotential.ui" line="554"/>
-      <source>Whether the constraint is for the electric force</source>
-      <translation>Je li ograničenje za električnu silu</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="557"/>
@@ -3565,11 +3481,6 @@ Napomena: u 2D je moguće samo podešavanje za x
   <context>
     <name>PlaneWidget</name>
     <message>
-      <location filename="../../PlaneWidget.ui" line="14"/>
-      <source>Form</source>
-      <translation>Obrazac</translation>
-    </message>
-    <message>
       <location filename="../../PlaneWidget.ui" line="22"/>
       <source>x</source>
       <translation>x</translation>
@@ -3608,56 +3519,45 @@ Napomena: u 2D je moguće samo podešavanje za x
       <translation>Trebate stvoriti ili aktivirati analizu</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraint.cpp" line="76"/>
+      <location filename="../../TaskFemConstraint.cpp" line="82"/>
       <source>Ok</source>
       <translation>"Ok"</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraint.cpp" line="77"/>
+      <location filename="../../TaskFemConstraint.cpp" line="83"/>
       <source>Cancel</source>
       <translation>Otkazati</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFemConstraint.cpp" line="139"/>
-      <source>Edit constraint</source>
-      <translation>Uredi ograničenje</translation>
-    </message>
-    <message>
-      <location filename="../../ViewProviderFemConstraintBearing.cpp" line="71"/>
-      <location filename="../../ViewProviderFemConstraintFixed.cpp" line="71"/>
+      <location filename="../../ViewProviderFemConstraintBearing.cpp" line="70"/>
+      <location filename="../../ViewProviderFemConstraintFixed.cpp" line="70"/>
       <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="72"/>
-      <location filename="../../ViewProviderFemConstraintForce.cpp" line="72"/>
-      <location filename="../../ViewProviderFemConstraintGear.cpp" line="73"/>
-      <location filename="../../ViewProviderFemConstraintPulley.cpp" line="70"/>
-      <location filename="../../ViewProviderFemPostFunction.cpp" line="320"/>
-      <location filename="../../ViewProviderFemPostObject.cpp" line="811"/>
+      <location filename="../../ViewProviderFemConstraintForce.cpp" line="71"/>
+      <location filename="../../ViewProviderFemConstraintGear.cpp" line="72"/>
+      <location filename="../../ViewProviderFemConstraintPulley.cpp" line="69"/>
+      <location filename="../../ViewProviderFemPostFunction.cpp" line="337"/>
+      <location filename="../../ViewProviderFemPostObject.cpp" line="862"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Dijalog je već otvoren u ploči zadataka</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFemConstraintBearing.cpp" line="72"/>
-      <location filename="../../ViewProviderFemConstraintFixed.cpp" line="72"/>
+      <location filename="../../ViewProviderFemConstraintBearing.cpp" line="71"/>
+      <location filename="../../ViewProviderFemConstraintFixed.cpp" line="71"/>
       <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="73"/>
-      <location filename="../../ViewProviderFemConstraintForce.cpp" line="73"/>
-      <location filename="../../ViewProviderFemConstraintGear.cpp" line="74"/>
-      <location filename="../../ViewProviderFemConstraintPulley.cpp" line="71"/>
-      <location filename="../../ViewProviderFemPostFunction.cpp" line="321"/>
-      <location filename="../../ViewProviderFemPostObject.cpp" line="812"/>
+      <location filename="../../ViewProviderFemConstraintForce.cpp" line="72"/>
+      <location filename="../../ViewProviderFemConstraintGear.cpp" line="73"/>
+      <location filename="../../ViewProviderFemConstraintPulley.cpp" line="70"/>
+      <location filename="../../ViewProviderFemPostFunction.cpp" line="338"/>
+      <location filename="../../ViewProviderFemPostObject.cpp" line="863"/>
       <source>Do you want to close this dialog?</source>
       <translation>Želite li zatvoriti ovaj dijalog?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="59"/>
+      <location filename="../../ViewProviderFemMeshShapeNetgen.cpp" line="58"/>
       <source>Meshing</source>
       <translation>Meshing (Putanje mreže)</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintForce.cpp" line="438"/>
-      <source>Constraint force</source>
-      <translation>Sila ograničenja</translation>
-    </message>
-    <message>
-      <location filename="../../AppFemGui.cpp" line="173"/>
       <location filename="../../AppFemGui.cpp" line="174"/>
       <location filename="../../AppFemGui.cpp" line="175"/>
       <location filename="../../AppFemGui.cpp" line="176"/>
@@ -3674,67 +3574,22 @@ Napomena: u 2D je moguće samo podešavanje za x
       <translation>Uvoz / izvoz</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintContact.cpp" line="458"/>
-      <source>Constraint Contact</source>
-      <translation>Kontaktno Ograničenje</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintDisplacement.cpp" line="613"/>
-      <source>Constraint displacement</source>
-      <translation>Ograničenje premještanja</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintFixed.cpp" line="279"/>
-      <source>Constraint fixed</source>
-      <translation>Ograničenje učvršćeno </translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="961"/>
-      <source>Constraint fluid boundary</source>
-      <translation>Granica fluida s ograničenjem</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintHeatflux.cpp" line="425"/>
-      <source>Constraint heat flux</source>
-      <translation>Ograničenje toplinskog toka</translation>
-    </message>
-    <message>
       <location filename="../../TaskFemConstraintInitialTemperature.cpp" line="99"/>
       <source>Constraint initial temperature</source>
       <translation>Ograničenje početne temperature</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="297"/>
-      <source>Constraint planerotation</source>
-      <translation>Ograničenja rotacija ravnine</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintPressure.cpp" line="296"/>
-      <source>Constraint pressure</source>
-      <translation>Ograničenje tlaka</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintPulley.cpp" line="186"/>
+      <location filename="../../TaskFemConstraintPulley.cpp" line="201"/>
       <source>Constraint pulley</source>
       <translation>Ograničenje kolotura</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintSpring.cpp" line="305"/>
+      <location filename="../../TaskFemConstraintSpring.cpp" line="310"/>
       <source>Constraint spring</source>
       <translation>Ograničenje opruge</translation>
     </message>
     <message>
-      <location filename="../../TaskFemConstraintTemperature.cpp" line="334"/>
-      <source>Constraint temperature</source>
-      <translation>Ograničenje temperature</translation>
-    </message>
-    <message>
-      <location filename="../../TaskFemConstraintTransform.cpp" line="564"/>
-      <source>Constraint transform</source>
-      <translation>Ograničenje deformacije</translation>
-    </message>
-    <message>
-      <location filename="../../TaskPostBoxes.cpp" line="346"/>
+      <location filename="../../TaskPostBoxes.cpp" line="353"/>
       <source>Edit post processing object</source>
       <translation>Uredi postprocesiranje objekta</translation>
     </message>
@@ -3774,9 +3629,64 @@ Napomena: u 2D je moguće samo podešavanje za x
       <translation>Grupe</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderAnalysis.cpp" line="310"/>
+      <location filename="../../ViewProviderAnalysis.cpp" line="325"/>
       <source>Are you sure you want to continue?</source>
       <translation>Jeste li sigurni da želite nastaviti?</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintContact.cpp" line="480"/>
+      <source>Contact constraint</source>
+      <translation type="unfinished">Contact constraint</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintDisplacement.cpp" line="632"/>
+      <source>Displacement boundary condition</source>
+      <translation type="unfinished">Displacement boundary condition</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintFixed.cpp" line="286"/>
+      <source>Fixed boundary condition</source>
+      <translation type="unfinished">Fixed boundary condition</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="1001"/>
+      <source>Fluid boundary condition</source>
+      <translation>Granično stanje tekučine</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintForce.cpp" line="452"/>
+      <source>Force load</source>
+      <translation type="unfinished">Force load</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintHeatflux.cpp" line="438"/>
+      <source>Heat flux load</source>
+      <translation type="unfinished">Heat flux load</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="312"/>
+      <source>Plane multi-point constraint</source>
+      <translation type="unfinished">Plane multi-point constraint</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintPressure.cpp" line="306"/>
+      <source>Pressure load</source>
+      <translation type="unfinished">Pressure load</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintTemperature.cpp" line="339"/>
+      <source>Temperature boundary condition</source>
+      <translation type="unfinished">Temperature boundary condition</translation>
+    </message>
+    <message>
+      <location filename="../../TaskFemConstraintTransform.cpp" line="591"/>
+      <source>Local coordinate system</source>
+      <translation type="unfinished">Local coordinate system</translation>
+    </message>
+    <message>
+      <location filename="../../ViewProviderFemConstraint.cpp" line="140"/>
+      <source>Edit analysis feature</source>
+      <translation type="unfinished">Edit analysis feature</translation>
     </message>
   </context>
   <context>
@@ -4084,11 +3994,6 @@ Za moguće varijable, pogledaj okvir za opis ispod.</translation>
   <context>
     <name>SphereWidget</name>
     <message>
-      <location filename="../../SphereWidget.ui" line="14"/>
-      <source>Form</source>
-      <translation>Obrazac</translation>
-    </message>
-    <message>
       <location filename="../../SphereWidget.ui" line="22"/>
       <source>x</source>
       <translation>x</translation>
@@ -4117,7 +4022,7 @@ Za moguće varijable, pogledaj okvir za opis ispod.</translation>
   <context>
     <name>Std_Delete</name>
     <message>
-      <location filename="../../ViewProviderAnalysis.cpp" line="313"/>
+      <location filename="../../ViewProviderAnalysis.cpp" line="329"/>
       <source>Object dependencies</source>
       <translation>Zavisnosti objekta</translation>
     </message>
@@ -4125,28 +4030,18 @@ Za moguće varijable, pogledaj okvir za opis ispod.</translation>
   <context>
     <name>TaskAnalysisInfo</name>
     <message>
-      <location filename="../../TaskAnalysisInfo.ui" line="20"/>
-      <source>Form</source>
-      <translation>Obrazac</translation>
-    </message>
-    <message>
       <location filename="../../TaskAnalysisInfo.ui" line="32"/>
       <source>Meshes:</source>
       <translation>Mreže:</translation>
     </message>
     <message>
       <location filename="../../TaskAnalysisInfo.ui" line="48"/>
-      <source>Constraints</source>
-      <translation>Ograničenja</translation>
+      <source>Analysis features</source>
+      <translation type="unfinished">Analysis features</translation>
     </message>
   </context>
   <context>
     <name>TaskCreateNodeSet</name>
-    <message>
-      <location filename="../../TaskCreateNodeSet.ui" line="20"/>
-      <source>Form</source>
-      <translation>Obrazac</translation>
-    </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="27"/>
       <source>Volume</source>
@@ -4199,20 +4094,7 @@ Za moguće varijable, pogledaj okvir za opis ispod.</translation>
     </message>
   </context>
   <context>
-    <name>TaskDriver</name>
-    <message>
-      <location filename="../../TaskDriver.ui" line="20"/>
-      <source>Form</source>
-      <translation>Obrazac</translation>
-    </message>
-  </context>
-  <context>
     <name>TaskFemConstraint</name>
-    <message>
-      <location filename="../../TaskFemConstraint.ui" line="14"/>
-      <source>Form</source>
-      <translation>Obrazac</translation>
-    </message>
     <message>
       <location filename="../../TaskFemConstraint.ui" line="23"/>
       <source>Add reference</source>
@@ -4261,11 +4143,6 @@ Za moguće varijable, pogledaj okvir za opis ispod.</translation>
   </context>
   <context>
     <name>TaskFemConstraintBearing</name>
-    <message>
-      <location filename="../../TaskFemConstraintBearing.ui" line="14"/>
-      <source>Form</source>
-      <translation>Obrazac</translation>
-    </message>
     <message>
       <location filename="../../TaskFemConstraintBearing.ui" line="20"/>
       <source>Add reference</source>
@@ -4334,11 +4211,6 @@ Za moguće varijable, pogledaj okvir za opis ispod.</translation>
   </context>
   <context>
     <name>TaskFemConstraintContact</name>
-    <message>
-      <location filename="../../TaskFemConstraintContact.ui" line="14"/>
-      <source>Form</source>
-      <translation>Obrazac</translation>
-    </message>
     <message>
       <location filename="../../TaskFemConstraintContact.ui" line="20"/>
       <source>Select master face, click Add or Remove</source>
@@ -4445,9 +4317,9 @@ for the Elmer solver</source>
 surface force (and thus displacement)
 generated by the flow
 (Option only applies for Elmer solver)</source>
-      <translation>Rješavanje protoka se koristi 
+      <translation>Rješavanje protoka se koristi
 za određivanje površinske sile
- (i time pomaka) generirane strujom 
+ (i time pomaka) generirane strujom
 (Opcija vrijedi samo za Elmerov rješavač)</translation>
     </message>
     <message>
@@ -4479,11 +4351,6 @@ za određivanje površinske sile
   <context>
     <name>TaskFemConstraintFixed</name>
     <message>
-      <location filename="../../TaskFemConstraintFixed.ui" line="14"/>
-      <source>Form</source>
-      <translation>Obrazac</translation>
-    </message>
-    <message>
       <location filename="../../TaskFemConstraintFixed.ui" line="20"/>
       <source>Select multiple face(s), click Add or Remove</source>
       <translation>Odaberi višestruko naličje(a), klikni na Dodaj ili Ukloni</translation>
@@ -4501,11 +4368,6 @@ za određivanje površinske sile
   </context>
   <context>
     <name>TaskFemConstraintFluidBoundary</name>
-    <message>
-      <location filename="../../TaskFemConstraintFluidBoundary.ui" line="14"/>
-      <source>Form</source>
-      <translation>Obrazac</translation>
-    </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="28"/>
       <source>Boundary </source>
@@ -4560,7 +4422,7 @@ za određivanje površinske sile
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="273"/>
       <source>The direction of the edge or the direction of the
 normal vector of the face is used as direction</source>
-      <translation>Smjer ruba ili smjer normalnog 
+      <translation>Smjer ruba ili smjer normalnog
 vektora površine koristi se kao smjer</translation>
     </message>
     <message>
@@ -4655,7 +4517,7 @@ vektora površine koristi se kao smjer</translation>
       <location filename="../../TaskFemConstraintForce.ui" line="121"/>
       <source>The direction of the edge or the direction of the
 normal vector of the face is used as direction</source>
-      <translation>Smjer ruba ili smjer normalnog 
+      <translation>Smjer ruba ili smjer normalnog
 vektora površine koristi se kao smjer</translation>
     </message>
     <message>
@@ -4668,8 +4530,8 @@ vektora površine koristi se kao smjer</translation>
     <name>TaskFemConstraintHeatflux</name>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="14"/>
-      <source>TaskFemConstraintHeatflux</source>
-      <translation>TaskFemConstraintHeatflux</translation>
+      <source>Task Fem Heat flux Load</source>
+      <translation type="unfinished">Task Fem Heat flux Load</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="20"/>
@@ -4739,11 +4601,6 @@ vektora površine koristi se kao smjer</translation>
   <context>
     <name>TaskFemConstraintPlaneRotation</name>
     <message>
-      <location filename="../../TaskFemConstraintPlaneRotation.ui" line="14"/>
-      <source>Form</source>
-      <translation>Obrazac</translation>
-    </message>
-    <message>
       <location filename="../../TaskFemConstraintPlaneRotation.ui" line="20"/>
       <source>Select a single face, click Add or Remove</source>
       <translation>Odaberi jedno naličje, klikni na Dodaj ili Ukloni</translation>
@@ -4761,11 +4618,6 @@ vektora površine koristi se kao smjer</translation>
   </context>
   <context>
     <name>TaskFemConstraintPressure</name>
-    <message>
-      <location filename="../../TaskFemConstraintPressure.ui" line="14"/>
-      <source>Form</source>
-      <translation>Obrazac</translation>
-    </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.ui" line="20"/>
       <source>Select multiple face(s), click Add or Remove</source>
@@ -4800,11 +4652,6 @@ vektora površine koristi se kao smjer</translation>
   <context>
     <name>TaskFemConstraintSpring</name>
     <message>
-      <location filename="../../TaskFemConstraintSpring.ui" line="14"/>
-      <source>Form</source>
-      <translation>Obrazac</translation>
-    </message>
-    <message>
       <location filename="../../TaskFemConstraintSpring.ui" line="20"/>
       <source>Select multiple face(s), click Add or Remove</source>
       <translation>Odaberi višestruko naličje(a), klikni na Dodaj ili Ukloni</translation>
@@ -4833,7 +4680,7 @@ vektora površine koristi se kao smjer</translation>
       <location filename="../../TaskFemConstraintSpring.ui" line="116"/>
       <source>What stiffness should be
 used for the Elmer solver</source>
-      <translation>Koja krutost bi se trebala 
+      <translation>Koja krutost bi se trebala
 koristiti za Elmerov rješavač</translation>
     </message>
     <message>
@@ -4844,11 +4691,6 @@ koristiti za Elmerov rješavač</translation>
   </context>
   <context>
     <name>TaskFemConstraintTemperature</name>
-    <message>
-      <location filename="../../TaskFemConstraintTemperature.ui" line="14"/>
-      <source>Form</source>
-      <translation>Obrazac</translation>
-    </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.ui" line="20"/>
       <source>Select multiple face(s), click Add or Remove</source>
@@ -4878,11 +4720,6 @@ koristiti za Elmerov rješavač</translation>
   </context>
   <context>
     <name>TaskFemConstraintTransform</name>
-    <message>
-      <location filename="../../TaskFemConstraintTransform.ui" line="14"/>
-      <source>Form</source>
-      <translation>Obrazac</translation>
-    </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.ui" line="22"/>
       <source>Rectangular transform</source>
@@ -4931,20 +4768,7 @@ koristiti za Elmerov rješavač</translation>
     </message>
   </context>
   <context>
-    <name>TaskObjectName</name>
-    <message>
-      <location filename="../../TaskObjectName.ui" line="14"/>
-      <source>Form</source>
-      <translation>Obrazac</translation>
-    </message>
-  </context>
-  <context>
     <name>TaskPostClip</name>
-    <message>
-      <location filename="../../TaskPostClip.ui" line="20"/>
-      <source>Form</source>
-      <translation>Obrazac</translation>
-    </message>
     <message>
       <location filename="../../TaskPostClip.ui" line="31"/>
       <source>Create</source>
@@ -4964,11 +4788,6 @@ koristiti za Elmerov rješavač</translation>
   <context>
     <name>TaskPostCut</name>
     <message>
-      <location filename="../../TaskPostCut.ui" line="20"/>
-      <source>Form</source>
-      <translation>Obrazac</translation>
-    </message>
-    <message>
       <location filename="../../TaskPostCut.ui" line="31"/>
       <source>Create</source>
       <translation>Stvoriti</translation>
@@ -4976,11 +4795,6 @@ koristiti za Elmerov rješavač</translation>
   </context>
   <context>
     <name>TaskPostDataAlongLine</name>
-    <message>
-      <location filename="../../TaskPostDataAlongLine.ui" line="14"/>
-      <source>Form</source>
-      <translation>Obrazac</translation>
-    </message>
     <message>
       <location filename="../../TaskPostDataAlongLine.ui" line="20"/>
       <source>Coordinates</source>
@@ -5083,11 +4897,6 @@ koristiti za Elmerov rješavač</translation>
   <context>
     <name>TaskPostDisplay</name>
     <message>
-      <location filename="../../TaskPostDisplay.ui" line="14"/>
-      <source>Form</source>
-      <translation>Obrazac</translation>
-    </message>
-    <message>
       <location filename="../../TaskPostDisplay.ui" line="28"/>
       <source>Mode</source>
       <translation>Način</translation>
@@ -5165,11 +4974,6 @@ koristiti za Elmerov rješavač</translation>
   <context>
     <name>TaskPostScalarClip</name>
     <message>
-      <location filename="../../TaskPostScalarClip.ui" line="14"/>
-      <source>Form</source>
-      <translation>Obrazac</translation>
-    </message>
-    <message>
       <location filename="../../TaskPostScalarClip.ui" line="28"/>
       <source>Scalar</source>
       <translation>Skalar</translation>
@@ -5218,11 +5022,6 @@ koristiti za Elmerov rješavač</translation>
   <context>
     <name>TaskPostWarpVector</name>
     <message>
-      <location filename="../../TaskPostWarpVector.ui" line="14"/>
-      <source>Form</source>
-      <translation>Obrazac</translation>
-    </message>
-    <message>
       <location filename="../../TaskPostWarpVector.ui" line="28"/>
       <source>Vector</source>
       <translation>Vektor</translation>
@@ -5250,11 +5049,6 @@ koristiti za Elmerov rješavač</translation>
   </context>
   <context>
     <name>TaskTetParameter</name>
-    <message>
-      <location filename="../../TaskTetParameter.ui" line="20"/>
-      <source>Form</source>
-      <translation>Obrazac</translation>
-    </message>
     <message>
       <location filename="../../TaskTetParameter.ui" line="28"/>
       <source>Max. Size:</source>
@@ -5380,128 +5174,126 @@ koristiti za Elmerov rješavač</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
-      <source>Electrostatic Constraints</source>
-      <translation>Elektrostatička ograničenja</translation>
+      <source>Electrostatic boundary conditions</source>
+      <translation type="unfinished">Electrostatic boundary conditions</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
-      <source>&amp;Electrostatic Constraints</source>
-      <translation>&amp;Elektrostatička ograničenja</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="53"/>
-      <source>Fluid Constraints</source>
-      <translation>Ograničenja tekućine</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="54"/>
-      <source>&amp;Fluid Constraints</source>
-      <translation>&amp;Ograničenja tekućine</translation>
+      <source>&amp;Electrostatic boundary conditions</source>
+      <translation type="unfinished">&amp;Electrostatic boundary conditions</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
-      <location filename="../../Workbench.cpp" line="55"/>
-      <source>Electromagnetic Constraints</source>
-      <translation>Elektromagnetna ograničenja</translation>
+      <source>Fluid boundary conditions</source>
+      <translation type="unfinished">Fluid boundary conditions</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="52"/>
+      <source>&amp;Fluid boundary conditions</source>
+      <translation type="unfinished">&amp;Fluid boundary conditions</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="53"/>
+      <source>Electromagnetic boundary conditions</source>
+      <translation type="unfinished">Electromagnetic boundary conditions</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="54"/>
+      <source>&amp;Electromagnetic boundary conditions</source>
+      <translation type="unfinished">&amp;Electromagnetic boundary conditions</translation>
+    </message>
+    <message>
+      <location filename="../../Workbench.cpp" line="55"/>
+      <source>Geometrical analysis features</source>
+      <translation type="unfinished">Geometrical analysis features</translation>
+    </message>
+    <message>
       <location filename="../../Workbench.cpp" line="56"/>
-      <source>&amp;Electromagnetic Constraints</source>
-      <translation>&amp;Elektromagnetna ograničenja</translation>
+      <source>&amp;Geometrical analysis features</source>
+      <translation type="unfinished">&amp;Geometrical analysis features</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="57"/>
-      <source>Geometrical Constraints</source>
-      <translation>Geometrijska ograničenja</translation>
+      <source>Mechanical boundary conditions and loads</source>
+      <translation type="unfinished">Mechanical boundary conditions and loads</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="58"/>
-      <source>&amp;Geometrical Constraints</source>
-      <translation>&amp;Geometrijska ograničenja</translation>
+      <source>&amp;Mechanical boundary conditions and loads</source>
+      <translation type="unfinished">&amp;Mechanical boundary conditions and loads</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="59"/>
-      <source>Mechanical Constraints</source>
-      <translation>Mehanička ograničenja</translation>
+      <source>Thermal boundary conditions and loads</source>
+      <translation type="unfinished">Thermal boundary conditions and loads</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="60"/>
-      <source>&amp;Mechanical Constraints</source>
-      <translation>&amp;Mehanička ograničenja</translation>
+      <source>&amp;Thermal boundary conditions and loads</source>
+      <translation type="unfinished">&amp;Thermal boundary conditions and loads</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="61"/>
-      <source>Thermal Constraints</source>
-      <translation>Toplinska ograničenja</translation>
+      <source>Analysis features without solver</source>
+      <translation type="unfinished">Analysis features without solver</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="62"/>
-      <source>&amp;Thermal Constraints</source>
-      <translation>&amp;Toplinska ograničenja</translation>
+      <source>&amp;Analysis features without solver</source>
+      <translation type="unfinished">&amp;Analysis features without solver</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="63"/>
-      <source>Constraints without solver</source>
-      <translation>Ograničenja bez alata za rješavanje</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="64"/>
-      <source>&amp;Constraints without solver</source>
-      <translation>&amp;Ograničenja bez alata za rješavanje</translation>
-    </message>
-    <message>
-      <location filename="../../Workbench.cpp" line="65"/>
       <source>Overwrite Constants</source>
       <translation>Prepiši konstante</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="66"/>
+      <location filename="../../Workbench.cpp" line="64"/>
       <source>&amp;Overwrite Constants</source>
       <translation>&amp;Prepiši konstante</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="68"/>
+      <location filename="../../Workbench.cpp" line="66"/>
       <source>Mesh</source>
       <translation>Mreža</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="69"/>
+      <location filename="../../Workbench.cpp" line="67"/>
       <source>M&amp;esh</source>
       <translation>Mr&amp;eža</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="71"/>
+      <location filename="../../Workbench.cpp" line="69"/>
       <source>Solve</source>
       <translation>Riješi</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="72"/>
+      <location filename="../../Workbench.cpp" line="70"/>
       <source>&amp;Solve</source>
       <translation>&amp;Riješi</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="74"/>
+      <location filename="../../Workbench.cpp" line="72"/>
       <source>Results</source>
       <translation>Rezultati</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="75"/>
+      <location filename="../../Workbench.cpp" line="73"/>
       <source>&amp;Results</source>
       <translation>&amp;Rezultati</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="76"/>
+      <location filename="../../Workbench.cpp" line="74"/>
       <source>Filter functions</source>
       <translation>Funkcije filtra</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="77"/>
+      <location filename="../../Workbench.cpp" line="75"/>
       <source>&amp;Filter functions</source>
       <translation>&amp;Funkcije filtra</translation>
     </message>
     <message>
-      <location filename="../../Workbench.cpp" line="79"/>
+      <location filename="../../Workbench.cpp" line="77"/>
       <source>Utilities</source>
       <translation>Uslužni programi</translation>
     </message>
@@ -5509,20 +5301,20 @@ koristiti za Elmerov rješavač</translation>
   <context>
     <name>setupFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="1520"/>
+      <location filename="../../Command.cpp" line="1598"/>
       <source>Error: A filter can only be applied to a single object.</source>
       <translation>Greška: Filter se može primijeniti samo na jedan objekt.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1522"/>
-      <location filename="../../Command.cpp" line="1539"/>
-      <location filename="../../Command.cpp" line="1567"/>
+      <location filename="../../Command.cpp" line="1600"/>
+      <location filename="../../Command.cpp" line="1617"/>
+      <location filename="../../Command.cpp" line="1646"/>
       <source>The filter could not be set up.</source>
       <translation>Nije moguće postaviti filter.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1538"/>
-      <location filename="../../Command.cpp" line="1566"/>
+      <location filename="../../Command.cpp" line="1616"/>
+      <location filename="../../Command.cpp" line="1645"/>
       <source>Error: no post processing object selected.</source>
       <translation>Greška: Nije odabran nijedan objekt za naknadnu obradu</translation>
     </message>
@@ -5557,9 +5349,13 @@ koristiti za Elmerov rješavač</translation>
     <name>FEM_ClippingPlaneRemoveAll</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="153"/>
-      <location filename="../../../femcommands/commands.py" line="157"/>
       <source>Remove all clipping planes</source>
       <translation>Uklonite sve isječke ravnine</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="157"/>
+      <source>Removes all clipping planes</source>
+      <translation type="unfinished">Removes all clipping planes</translation>
     </message>
   </context>
   <context>
@@ -5573,125 +5369,6 @@ koristiti za Elmerov rješavač</translation>
       <location filename="../../../femcommands/commands.py" line="183"/>
       <source>Creates a FEM constant vacuum permittivity to overwrite standard value</source>
       <translation>Stvara FEM konstantu permitivnost vakuuma kojom se prepisuje standardna vrijednost</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_ConstraintBodyHeatSource</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="198"/>
-      <source>Constraint body heat source</source>
-      <translation>Ograničenje izvora tjelesne topline</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="202"/>
-      <source>Creates a FEM constraint body heat source</source>
-      <translation>Stvara FEM ograničenja izvora tjelesne topline</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_ConstraintCentrif</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="215"/>
-      <source>Constraint centrif</source>
-      <translation>
-
-Ograničenje centrifugalnog naprezanja</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="219"/>
-      <source>Creates a FEM constraint centrif</source>
-      <translation>Stvara FEM ograničenje centrifugalnog naprezanja</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_ConstraintElectrostaticPotential</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="250"/>
-      <source>Constraint electrostatic potential</source>
-      <translation>Ograničenja elektrostatskog potencijala</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="254"/>
-      <source>Creates a FEM constraint electrostatic potential</source>
-      <translation>Stvara FEM ograničenje elektrostatskog potencijala</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_ConstraintFlowVelocity</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="267"/>
-      <source>Constraint flow velocity</source>
-      <translation>Ograničenja brzine protoka</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="271"/>
-      <source>Creates a FEM constraint flow velocity</source>
-      <translation>Stvara FEM ograničenje brzine protoka</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_ConstraintInitialFlowVelocity</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="284"/>
-      <source>Constraint initial flow velocity</source>
-      <translation>Ograničenja brzine početnog protoka</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="288"/>
-      <source>Creates a FEM constraint initial flow velocity</source>
-      <translation>Stvara FEM ograničenje početne brzine protoka</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_ConstraintInitialPressure</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="301"/>
-      <source>Constraint initial pressure</source>
-      <translation>Ograničenje početnog tlaka</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="305"/>
-      <source>Creates a FEM constraint initial pressure</source>
-      <translation>Stvara FEM ograničenje početnog tlaka</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_ConstraintSectionPrint</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="335"/>
-      <source>Constraint sectionprint</source>
-      <translation>Ograničenje presjeka ispisa</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="339"/>
-      <source>Creates a FEM constraint sectionprint</source>
-      <translation>Stvara FEM ograničenje presjeka ispisa</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_ConstraintSelfWeight</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="352"/>
-      <source>Constraint self weight</source>
-      <translation>Ograničenje vlastite težine</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="356"/>
-      <source>Creates a FEM constraint self weight</source>
-      <translation>Stvara FEM ograničenje vlastite težine</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_ConstraintTie</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="369"/>
-      <source>Constraint tie</source>
-      <translation>Ograničenje poveza</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="373"/>
-      <source>Creates a FEM constraint tie</source>
-      <translation>Stvara FEM ograničenje poveza</translation>
     </message>
   </context>
   <context>
@@ -5770,7 +5447,7 @@ Ograničenje centrifugalnog naprezanja</translation>
       <location filename="../../../femcommands/commands.py" line="475"/>
       <source>Creates a FEM equation for
  elasticity (stress)</source>
-      <translation>Stvara FEM jednadžbe za 
+      <translation>Stvara FEM jednadžbe za
  elastičnost (naprezanje)</translation>
     </message>
   </context>
@@ -5830,9 +5507,13 @@ Ograničenje centrifugalnog naprezanja</translation>
     <name>FEM_Examples</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="608"/>
-      <location filename="../../../femcommands/commands.py" line="612"/>
       <source>Open FEM examples</source>
       <translation>Otvori FEM primjere</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="612"/>
+      <source>Opens the FEM examples</source>
+      <translation type="unfinished">Opens the FEM examples</translation>
     </message>
   </context>
   <context>
@@ -5909,8 +5590,8 @@ Ograničenje centrifugalnog naprezanja</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="776"/>
-      <source>Convert the surface of a FEM mesh to a mesh</source>
-      <translation>Pretvoriti površinu FEM mreže u mrežu</translation>
+      <source>Converts the surface of a FEM mesh to a mesh</source>
+      <translation type="unfinished">Converts the surface of a FEM mesh to a mesh</translation>
     </message>
   </context>
   <context>
@@ -5935,17 +5616,21 @@ Ograničenje centrifugalnog naprezanja</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="841"/>
-      <source>Clear the Mesh of a FEM mesh object</source>
-      <translation>Brisanje mreže FEM mrežnog objekta</translation>
+      <source>Clears the Mesh of a FEM mesh object</source>
+      <translation type="unfinished">Clears the Mesh of a FEM mesh object</translation>
     </message>
   </context>
   <context>
     <name>FEM_MeshDisplayInfo</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="863"/>
-      <location filename="../../../femcommands/commands.py" line="867"/>
       <source>Display FEM mesh info</source>
       <translation>Prikaz informacija o FEM mreži</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="867"/>
+      <source>Displays FEM mesh information</source>
+      <translation type="unfinished">Displays FEM mesh information</translation>
     </message>
   </context>
   <context>
@@ -5957,8 +5642,8 @@ Ograničenje centrifugalnog naprezanja</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="897"/>
-      <source>Create a FEM mesh from a shape by Gmsh mesher</source>
-      <translation>Napravite FEM mrežu iz oblika pomoću Gmsh mreženja</translation>
+      <source>Creates a FEM mesh from a shape by Gmsh mesher</source>
+      <translation type="unfinished">Creates a FEM mesh from a shape by Gmsh mesher</translation>
     </message>
   </context>
   <context>
@@ -5983,8 +5668,8 @@ Ograničenje centrifugalnog naprezanja</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="960"/>
-      <source>Create a FEM mesh from a solid or face shape by Netgen internal mesher</source>
-      <translation>Kreiranje FEM mreže iz krutog tijela ili oblika lica uz pomoć Netgenovog internog kreatora mreža</translation>
+      <source>Creates a FEM mesh from a solid or face shape by Netgen internal mesher</source>
+      <translation type="unfinished">Creates a FEM mesh from a solid or face shape by Netgen internal mesher</translation>
     </message>
   </context>
   <context>
@@ -6328,19 +6013,6 @@ Molimo odaberite vrstu rezultata prvo.
     </message>
   </context>
   <context>
-    <name>FEM_ConstraintCurrentDensity</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="233"/>
-      <source>Constraint current density</source>
-      <translation>Ograničenje gustoće struje</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="237"/>
-      <source>Creates a FEM constraint current density</source>
-      <translation>Stvara FEM ograničenje gustoće struje</translation>
-    </message>
-  </context>
-  <context>
     <name>FEM_EquationMagnetodynamic2D</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="590"/>
@@ -6358,28 +6030,15 @@ Molimo odaberite vrstu rezultata prvo.
   <context>
     <name>CmdFemCompEmConstraints</name>
     <message>
-      <location filename="../../Command.cpp" line="1138"/>
+      <location filename="../../Command.cpp" line="1194"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1139"/>
-      <location filename="../../Command.cpp" line="1140"/>
-      <source>Electromagnetic constraints</source>
-      <translation>Elektromagnetna ograničenja</translation>
-    </message>
-  </context>
-  <context>
-    <name>FEM_ConstraintMagnetization</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="318"/>
-      <source>Constraint magnetization</source>
-      <translation>Ograničenje magnetizacije</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="322"/>
-      <source>Creates a FEM constraint magnetization</source>
-      <translation>Stvara FEM ograničenje magnetizacije</translation>
+      <location filename="../../Command.cpp" line="1195"/>
+      <location filename="../../Command.cpp" line="1196"/>
+      <source>Electromagnetic boundary conditions</source>
+      <translation type="unfinished">Electromagnetic boundary conditions</translation>
     </message>
   </context>
   <context>
@@ -6399,11 +6058,6 @@ magnetodinamičke sile</translation>
   </context>
   <context>
     <name>TaskPostContours</name>
-    <message>
-      <location filename="../../TaskPostContours.ui" line="14"/>
-      <source>Form</source>
-      <translation>Obrazac</translation>
-    </message>
     <message>
       <location filename="../../TaskPostContours.ui" line="25"/>
       <source>Vector:</source>
@@ -6428,17 +6082,17 @@ magnetodinamičke sile</translation>
   <context>
     <name>CmdFemCompEmEquations</name>
     <message>
-      <location filename="../../Command.cpp" line="1255"/>
+      <location filename="../../Command.cpp" line="1318"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1256"/>
+      <location filename="../../Command.cpp" line="1319"/>
       <source>Electromagnetic equations</source>
       <translation>Elektromagnetne jednadžbe</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1257"/>
+      <location filename="../../Command.cpp" line="1320"/>
       <source>Electromagnetic equations for the Elmer solver</source>
       <translation>Elektromagnetne jednadžbe za Elmer alat za rješavanje</translation>
     </message>
@@ -6446,17 +6100,17 @@ magnetodinamičke sile</translation>
   <context>
     <name>CmdFemPostContoursFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2038"/>
+      <location filename="../../Command.cpp" line="2166"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2039"/>
+      <location filename="../../Command.cpp" line="2167"/>
       <source>Contours filter</source>
       <translation>Filter konture</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2041"/>
+      <location filename="../../Command.cpp" line="2168"/>
       <source>Define/create a contours filter which displays iso contours</source>
       <translation>Definiraj/stvori filter kontura koji prikazuje ISO konture</translation>
     </message>
@@ -6464,7 +6118,7 @@ magnetodinamičke sile</translation>
   <context>
     <name>FemGui::TaskPostContours</name>
     <message>
-      <location filename="../../TaskPostBoxes.cpp" line="1401"/>
+      <location filename="../../TaskPostBoxes.cpp" line="1435"/>
       <source>Contours filter options</source>
       <translation>Opcije filtera kontura</translation>
     </message>
@@ -6486,11 +6140,6 @@ magnetodinamičke sile</translation>
   </context>
   <context>
     <name>BoxWidget</name>
-    <message>
-      <location filename="../../BoxWidget.ui" line="14"/>
-      <source>Form</source>
-      <translation>Obrazac</translation>
-    </message>
     <message>
       <location filename="../../BoxWidget.ui" line="22"/>
       <source>x</source>
@@ -6530,11 +6179,6 @@ magnetodinamičke sile</translation>
   <context>
     <name>CylinderWidget</name>
     <message>
-      <location filename="../../CylinderWidget.ui" line="14"/>
-      <source>Form</source>
-      <translation>Obrazac</translation>
-    </message>
-    <message>
       <location filename="../../CylinderWidget.ui" line="22"/>
       <source>x</source>
       <translation>x</translation>
@@ -6568,17 +6212,17 @@ magnetodinamičke sile</translation>
   <context>
     <name>CmdFemCompMechEquations</name>
     <message>
-      <location filename="../../Command.cpp" line="1400"/>
+      <location filename="../../Command.cpp" line="1470"/>
       <source>Fem</source>
       <translation>Fem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1401"/>
+      <location filename="../../Command.cpp" line="1471"/>
       <source>Mechanical equations</source>
       <translation>Mehaničke jednadžbe</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="1402"/>
+      <location filename="../../Command.cpp" line="1472"/>
       <source>Mechanical equations for the Elmer solver</source>
       <translation>Mehaničke jednadžbe za Elmer alat za rješavanje</translation>
     </message>
@@ -6594,6 +6238,149 @@ magnetodinamičke sile</translation>
       <location filename="../../../femcommands/commands.py" line="1109"/>
       <source>Creates a FEM solver CalculiX new framework (less result error handling)</source>
       <translation>Stvori FEM alat za rješavanje CalculiX new framework (manje rukovanje pogreškama rezultata)</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ConstraintBodyHeatSource</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="198"/>
+      <source>Body heat source</source>
+      <translation type="unfinished">Body heat source</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="202"/>
+      <source>Creates a body heat source</source>
+      <translation type="unfinished">Creates a body heat source</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ConstraintCentrif</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="215"/>
+      <source>Centrifugal load</source>
+      <translation type="unfinished">Centrifugal load</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="219"/>
+      <source>Creates a centrifugal load</source>
+      <translation type="unfinished">Creates a centrifugal load</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ConstraintCurrentDensity</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="233"/>
+      <source>Current density boundary condition</source>
+      <translation type="unfinished">Current density boundary condition</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="237"/>
+      <source>Creates a current density boundary condition</source>
+      <translation type="unfinished">Creates a current density boundary condition</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ConstraintElectrostaticPotential</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="250"/>
+      <source>Electrostatic potential boundary condition</source>
+      <translation type="unfinished">Electrostatic potential boundary condition</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="254"/>
+      <source>Creates an electrostatic potential boundary condition</source>
+      <translation type="unfinished">Creates an electrostatic potential boundary condition</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ConstraintFlowVelocity</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="267"/>
+      <source>Flow velocity boundary condition</source>
+      <translation type="unfinished">Flow velocity boundary condition</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="271"/>
+      <source>Creates a flow velocity boundary condition</source>
+      <translation type="unfinished">Creates a flow velocity boundary condition</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ConstraintInitialFlowVelocity</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="284"/>
+      <source>Initial flow velocity condition</source>
+      <translation type="unfinished">Initial flow velocity condition</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="288"/>
+      <source>Creates initial flow velocity condition</source>
+      <translation type="unfinished">Creates initial flow velocity condition</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ConstraintInitialPressure</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="301"/>
+      <source>Initial pressure condition</source>
+      <translation type="unfinished">Initial pressure condition</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="305"/>
+      <source>Creates an initial pressure condition</source>
+      <translation type="unfinished">Creates an initial pressure condition</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ConstraintMagnetization</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="318"/>
+      <source>Magnetization boundary condition</source>
+      <translation type="unfinished">Magnetization boundary condition</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="322"/>
+      <source>Creates a magnetization boundary condition</source>
+      <translation type="unfinished">Creates a magnetization boundary condition</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ConstraintSectionPrint</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="335"/>
+      <source>Section print feature</source>
+      <translation type="unfinished">Section print feature</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="339"/>
+      <source>Creates a section print feature</source>
+      <translation type="unfinished">Creates a section print feature</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ConstraintSelfWeight</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="352"/>
+      <source>Gravity load</source>
+      <translation type="unfinished">Gravity load</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="356"/>
+      <source>Creates a gravity load</source>
+      <translation type="unfinished">Creates a gravity load</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_ConstraintTie</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="369"/>
+      <source>Tie constraint</source>
+      <translation type="unfinished">Tie constraint</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="373"/>
+      <source>Creates a tie constraint</source>
+      <translation type="unfinished">Creates a tie constraint</translation>
     </message>
   </context>
 </TS>

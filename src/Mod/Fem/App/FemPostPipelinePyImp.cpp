@@ -22,14 +22,16 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Python.h>
+#include <Python.h>
 #endif
 
 #include <Base/FileInfo.h>
 
+// clang-format off
 #include "FemPostPipeline.h"
 #include "FemPostPipelinePy.h"
 #include "FemPostPipelinePy.cpp"
+// clang-format on
 
 
 using namespace Fem;
@@ -40,7 +42,7 @@ std::string FemPostPipelinePy::representation() const
     return {"<FemPostPipeline object>"};
 }
 
-PyObject* FemPostPipelinePy::read(PyObject *args)
+PyObject* FemPostPipelinePy::read(PyObject* args)
 {
     char* Name;
     if (PyArg_ParseTuple(args, "et", "utf-8", &Name)) {
@@ -51,7 +53,7 @@ PyObject* FemPostPipelinePy::read(PyObject *args)
     return nullptr;
 }
 
-PyObject* FemPostPipelinePy::scale(PyObject *args)
+PyObject* FemPostPipelinePy::scale(PyObject* args)
 {
     double scale;
     if (PyArg_ParseTuple(args, "d", &scale)) {
@@ -61,11 +63,12 @@ PyObject* FemPostPipelinePy::scale(PyObject *args)
     return nullptr;
 }
 
-PyObject* FemPostPipelinePy::load(PyObject *args)
+PyObject* FemPostPipelinePy::load(PyObject* args)
 {
     PyObject* py;
-    if (!PyArg_ParseTuple(args, "O!", &(App::DocumentObjectPy::Type), &py))
+    if (!PyArg_ParseTuple(args, "O!", &(App::DocumentObjectPy::Type), &py)) {
         return nullptr;
+    }
 
     App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(py)->getDocumentObjectPtr();
     if (!obj->getTypeId().isDerivedFrom(FemResultObject::getClassTypeId())) {
@@ -77,31 +80,35 @@ PyObject* FemPostPipelinePy::load(PyObject *args)
     Py_Return;
 }
 
-PyObject *FemPostPipelinePy::recomputeChildren(PyObject *args)
+PyObject* FemPostPipelinePy::recomputeChildren(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     getFemPostPipelinePtr()->recomputeChildren();
     Py_Return;
 }
 
-PyObject* FemPostPipelinePy::getLastPostObject(PyObject *args)
+PyObject* FemPostPipelinePy::getLastPostObject(PyObject* args)
 {
-    if (!PyArg_ParseTuple(args, ""))
+    if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
+    }
 
     App::DocumentObject* obj = getFemPostPipelinePtr()->getLastPostObject();
-    if (obj)
+    if (obj) {
         return obj->getPyObject();
+    }
     Py_Return;
 }
 
-PyObject* FemPostPipelinePy::holdsPostObject(PyObject *args)
+PyObject* FemPostPipelinePy::holdsPostObject(PyObject* args)
 {
     PyObject* py;
-    if (!PyArg_ParseTuple(args, "O!", &(App::DocumentObjectPy::Type), &py))
+    if (!PyArg_ParseTuple(args, "O!", &(App::DocumentObjectPy::Type), &py)) {
         return nullptr;
+    }
 
     App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(py)->getDocumentObjectPtr();
     if (!obj->getTypeId().isDerivedFrom(FemPostObject::getClassTypeId())) {
@@ -113,7 +120,7 @@ PyObject* FemPostPipelinePy::holdsPostObject(PyObject *args)
     return Py_BuildValue("O", (ok ? Py_True : Py_False));
 }
 
-PyObject *FemPostPipelinePy::getCustomAttributes(const char* /*attr*/) const
+PyObject* FemPostPipelinePy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }

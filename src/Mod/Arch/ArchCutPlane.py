@@ -46,8 +46,9 @@ __url__ = "http://www.freecad.org"
 def getPlanWithLine(line):
     """Function to make a plane along Normal plan"""
     import Part
-    plan = FreeCAD.DraftWorkingPlane
-    w = plan.getNormal()
+    import WorkingPlane
+    plan = WorkingPlane.get_working_plane()
+    w = plan.axis
     part = Part.Shape(line)
     out = part.extrude(w)
     return out

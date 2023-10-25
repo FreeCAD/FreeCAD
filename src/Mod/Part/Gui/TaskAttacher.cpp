@@ -616,12 +616,12 @@ void TaskAttacher::onRefName(const QString& text, unsigned idx)
 
     if (obj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
         // everything is OK (we assume a Part can only have exactly 3 App::Plane objects located at the base of the feature tree)
-        subElement = "";
+        subElement.clear();
     } else if (obj->getTypeId().isDerivedFrom(App::Line::getClassTypeId())) {
         // everything is OK (we assume a Part can only have exactly 3 App::Line objects located at the base of the feature tree)
-        subElement = "";
+        subElement.clear();
     } else if (obj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId())) {
-        subElement = "";
+        subElement.clear();
     } else {
         // TODO: check validity of the text that was entered: Does subElement actually reference to an element on the obj?
 
@@ -669,10 +669,10 @@ void TaskAttacher::onRefName(const QString& text, unsigned idx)
     std::vector<std::string> refnames = pcAttach->Support.getSubValues();
     if (idx < refs.size()) {
         refs[idx] = obj;
-        refnames[idx] = subElement.c_str();
+        refnames[idx] = subElement;
     } else {
         refs.push_back(obj);
-        refnames.emplace_back(subElement.c_str());
+        refnames.emplace_back(subElement);
     }
     pcAttach->Support.setValues(refs, refnames);
     updateListOfModes();

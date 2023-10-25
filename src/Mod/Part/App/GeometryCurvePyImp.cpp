@@ -562,8 +562,8 @@ PyObject* GeometryCurvePy::projectPoint(PyObject *args, PyObject* kwds)
     PyObject *v;
     const char *meth = "NearestPoint";
     static const std::array<const char *, 3> kwlist{"Point", "Method", nullptr};
-    if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!|s", kwlist,
-                                            &Base::VectorPy::Type, &v, &meth)) {
+    if (!Base::Wrapped_ParseTupleAndKeywords(args, kwds, "O!|s", kwlist,
+                                             &Base::VectorPy::Type, &v, &meth)) {
         return nullptr;
     }
 

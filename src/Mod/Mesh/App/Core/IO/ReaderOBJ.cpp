@@ -22,15 +22,15 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <istream>
-# include <boost/lexical_cast.hpp>
-# include <boost/regex.hpp>
-# include <boost/tokenizer.hpp>
+#include <boost/lexical_cast.hpp>
+#include <boost/regex.hpp>
+#include <boost/tokenizer.hpp>
+#include <istream>
 #endif
 
-#include <Base/Tools.h>
 #include "Core/MeshIO.h"
 #include "Core/MeshKernel.h"
+#include <Base/Tools.h>
 
 #include "ReaderOBJ.h"
 
@@ -38,53 +38,54 @@
 using namespace MeshCore;
 
 ReaderOBJ::ReaderOBJ(MeshKernel& kernel, Material* material)
-  : _kernel(kernel)
-  , _material(material)
-{
-}
+    : _kernel(kernel)
+    , _material(material)
+{}
 
-bool ReaderOBJ::Load(std::istream &str)
+bool ReaderOBJ::Load(std::istream& str)
 {
     boost::regex rx_m("^mtllib\\s+(.+)\\s*$");
     boost::regex rx_u(R"(^usemtl\s+([\x21-\x7E]+)\s*$)");
     boost::regex rx_g(R"(^g\s+([\x21-\x7E]+)\s*$)");
     boost::regex rx_p("^v\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
-                        "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
-                        "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)\\s*$");
+                      "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
+                      "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)\\s*$");
     boost::regex rx_c("^v\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
-                        "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
-                        "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
-                        "\\s+(\\d{1,3})\\s+(\\d{1,3})\\s+(\\d{1,3})\\s*$");
+                      "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
+                      "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
+                      "\\s+(\\d{1,3})\\s+(\\d{1,3})\\s+(\\d{1,3})\\s*$");
     boost::regex rx_t("^v\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
-                        "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
-                        "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
-                        "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
-                        "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
-                        "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)\\s*$");
+                      "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
+                      "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
+                      "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
+                      "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)"
+                      "\\s+([-+]?[0-9]*)\\.?([0-9]+([eE][-+]?[0-9]+)?)\\s*$");
     boost::regex rx_f3("^f\\s+([-+]?[0-9]+)/?[-+]?[0-9]*/?[-+]?[0-9]*"
-                         "\\s+([-+]?[0-9]+)/?[-+]?[0-9]*/?[-+]?[0-9]*"
-                         "\\s+([-+]?[0-9]+)/?[-+]?[0-9]*/?[-+]?[0-9]*\\s*$");
+                       "\\s+([-+]?[0-9]+)/?[-+]?[0-9]*/?[-+]?[0-9]*"
+                       "\\s+([-+]?[0-9]+)/?[-+]?[0-9]*/?[-+]?[0-9]*\\s*$");
     boost::regex rx_f4("^f\\s+([-+]?[0-9]+)/?[-+]?[0-9]*/?[-+]?[0-9]*"
-                         "\\s+([-+]?[0-9]+)/?[-+]?[0-9]*/?[-+]?[0-9]*"
-                         "\\s+([-+]?[0-9]+)/?[-+]?[0-9]*/?[-+]?[0-9]*"
-                         "\\s+([-+]?[0-9]+)/?[-+]?[0-9]*/?[-+]?[0-9]*\\s*$");
+                       "\\s+([-+]?[0-9]+)/?[-+]?[0-9]*/?[-+]?[0-9]*"
+                       "\\s+([-+]?[0-9]+)/?[-+]?[0-9]*/?[-+]?[0-9]*"
+                       "\\s+([-+]?[0-9]+)/?[-+]?[0-9]*/?[-+]?[0-9]*\\s*$");
     boost::cmatch what;
 
-    unsigned long segment=0;
+    unsigned long segment = 0;
     MeshPointArray meshPoints;
     MeshFacetArray meshFacets;
 
     std::string line;
-    float fX, fY, fZ;
-    int  i1=1, i2=1, i3=1, i4=1;
+    float fX {}, fY {}, fZ {};
+    int i1 = 1, i2 = 1, i3 = 1, i4 = 1;
     MeshFacet item;
 
-    if (!str || str.bad())
+    if (!str || str.bad()) {
         return false;
+    }
 
     std::streambuf* buf = str.rdbuf();
-    if (!buf)
+    if (!buf) {
         return false;
+    }
 
     MeshIO::Binding rgb_value = MeshIO::OVERALL;
     bool new_segment = true;
@@ -108,7 +109,7 @@ bool ReaderOBJ::Load(std::istream &str)
             float b = std::min<int>(std::atof(what[12].first), 255) / 255.0f;
             meshPoints.push_back(MeshPoint(Base::Vector3f(fX, fY, fZ)));
 
-            App::Color c(r,g,b);
+            App::Color c(r, g, b);
             unsigned long prop = static_cast<uint32_t>(c.getPackedValue());
             meshPoints.back().SetProperty(prop);
             rgb_value = MeshIO::PER_VERTEX;
@@ -122,7 +123,7 @@ bool ReaderOBJ::Load(std::istream &str)
             float b = static_cast<float>(std::atof(what[16].first));
             meshPoints.push_back(MeshPoint(Base::Vector3f(fX, fY, fZ)));
 
-            App::Color c(r,g,b);
+            App::Color c(r, g, b);
             unsigned long prop = static_cast<uint32_t>(c.getPackedValue());
             meshPoints.back().SetProperty(prop);
             rgb_value = MeshIO::PER_VERTEX;
@@ -132,8 +133,9 @@ bool ReaderOBJ::Load(std::istream &str)
             groupName = Base::Tools::escapedUnicodeToUtf8(what[1].first);
         }
         else if (boost::regex_match(line.c_str(), what, rx_m)) {
-            if (_material)
+            if (_material) {
                 _material->library = Base::Tools::escapedUnicodeToUtf8(what[1].first);
+            }
         }
         else if (boost::regex_match(line.c_str(), what, rx_u)) {
             if (!materialName.empty()) {
@@ -155,12 +157,12 @@ bool ReaderOBJ::Load(std::istream &str)
 
             // 3-vertex face
             i1 = std::atoi(what[1].first);
-            i1 = i1 > 0 ? i1-1 : i1+static_cast<int>(meshPoints.size());
+            i1 = i1 > 0 ? i1 - 1 : i1 + static_cast<int>(meshPoints.size());
             i2 = std::atoi(what[2].first);
-            i2 = i2 > 0 ? i2-1 : i2+static_cast<int>(meshPoints.size());
+            i2 = i2 > 0 ? i2 - 1 : i2 + static_cast<int>(meshPoints.size());
             i3 = std::atoi(what[3].first);
-            i3 = i3 > 0 ? i3-1 : i3+static_cast<int>(meshPoints.size());
-            item.SetVertices(i1,i2,i3);
+            i3 = i3 > 0 ? i3 - 1 : i3 + static_cast<int>(meshPoints.size());
+            item.SetVertices(i1, i2, i3);
             item.SetProperty(segment);
             meshFacets.push_back(item);
             countMaterialFacets++;
@@ -178,20 +180,20 @@ bool ReaderOBJ::Load(std::istream &str)
 
             // 4-vertex face
             i1 = std::atoi(what[1].first);
-            i1 = i1 > 0 ? i1-1 : i1+static_cast<int>(meshPoints.size());
+            i1 = i1 > 0 ? i1 - 1 : i1 + static_cast<int>(meshPoints.size());
             i2 = std::atoi(what[2].first);
-            i2 = i2 > 0 ? i2-1 : i2+static_cast<int>(meshPoints.size());
+            i2 = i2 > 0 ? i2 - 1 : i2 + static_cast<int>(meshPoints.size());
             i3 = std::atoi(what[3].first);
-            i3 = i3 > 0 ? i3-1 : i3+static_cast<int>(meshPoints.size());
+            i3 = i3 > 0 ? i3 - 1 : i3 + static_cast<int>(meshPoints.size());
             i4 = std::atoi(what[4].first);
-            i4 = i4 > 0 ? i4-1 : i4+static_cast<int>(meshPoints.size());
+            i4 = i4 > 0 ? i4 - 1 : i4 + static_cast<int>(meshPoints.size());
 
-            item.SetVertices(i1,i2,i3);
+            item.SetVertices(i1, i2, i3);
             item.SetProperty(segment);
             meshFacets.push_back(item);
             countMaterialFacets++;
 
-            item.SetVertices(i3,i4,i1);
+            item.SetVertices(i3, i4, i1);
             item.SetProperty(segment);
             meshFacets.push_back(item);
             countMaterialFacets++;
@@ -209,7 +211,7 @@ bool ReaderOBJ::Load(std::istream &str)
             _material->binding = MeshIO::PER_VERTEX;
             _material->diffuseColor.reserve(meshPoints.size());
 
-            for (const auto & it : meshPoints) {
+            for (const auto& it : meshPoints) {
                 unsigned long prop = it._ulProp;
                 App::Color c;
                 c.setPackedValue(static_cast<uint32_t>(prop));
@@ -218,40 +220,44 @@ bool ReaderOBJ::Load(std::istream &str)
         }
     }
     else if (!materialName.empty()) {
-        // At this point the materials from the .mtl file are not known and will be read-in by the calling instance
-        // but the color list is pre-filled with a default value
+        // At this point the materials from the .mtl file are not known and will be read-in by the
+        // calling instance but the color list is pre-filled with a default value
         if (_material) {
             _material->binding = MeshIO::PER_FACE;
             _material->diffuseColor.resize(meshFacets.size(), App::Color(0.8f, 0.8f, 0.8f));
         }
     }
 
-    _kernel.Clear(); // remove all data before
+    _kernel.Clear();  // remove all data before
 
     MeshCleanup meshCleanup(meshPoints, meshFacets);
-    if (_material)
+    if (_material) {
         meshCleanup.SetMaterial(_material);
+    }
     meshCleanup.RemoveInvalids();
-    MeshPointFacetAdjacency meshAdj(meshPoints.size(),meshFacets);
+    MeshPointFacetAdjacency meshAdj(meshPoints.size(), meshFacets);
     meshAdj.SetFacetNeighbourhood();
-    _kernel.Adopt(meshPoints,meshFacets);
+    _kernel.Adopt(meshPoints, meshFacets);
 
     return true;
 }
 
-bool ReaderOBJ::LoadMaterial(std::istream &str)
+bool ReaderOBJ::LoadMaterial(std::istream& str)
 {
     std::string line;
 
-    if (!_material)
+    if (!_material) {
         return false;
+    }
 
-    if (!str || str.bad())
+    if (!str || str.bad()) {
         return false;
+    }
 
     std::streambuf* buf = str.rdbuf();
-    if (!buf)
+    if (!buf) {
         return false;
+    }
 
     std::map<std::string, App::Color> materialAmbientColor;
     std::map<std::string, App::Color> materialDiffuseColor;
@@ -281,9 +287,9 @@ bool ReaderOBJ::LoadMaterial(std::istream &str)
 
     while (std::getline(str, line)) {
         boost::char_separator<char> sep(" ");
-        boost::tokenizer<boost::char_separator<char> > tokens(line, sep);
+        boost::tokenizer<boost::char_separator<char>> tokens(line, sep);
         std::vector<std::string> token_results;
-        token_results.assign(tokens.begin(),tokens.end());
+        token_results.assign(tokens.begin(), tokens.end());
 
         try {
             if (token_results.size() >= 2) {
@@ -312,7 +318,7 @@ bool ReaderOBJ::LoadMaterial(std::istream &str)
         }
     }
 
-    for (const auto & it : _materialNames) {
+    for (const auto& it : _materialNames) {
         {
             auto jt = materialAmbientColor.find(it.first);
             if (jt != materialAmbientColor.end()) {

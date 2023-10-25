@@ -78,9 +78,6 @@ void PropertyCenterLineList::setValue(CenterLine* lValue)
 void PropertyCenterLineList::setValues(const std::vector<CenterLine*>& lValue)
 {
     aboutToSetValue();
-    for (auto& value : _lValueList) {
-        delete value;
-    }
     _lValueList.resize(lValue.size());
     for (unsigned int i = 0; i < lValue.size(); i++)
         _lValueList[i] = lValue[i];

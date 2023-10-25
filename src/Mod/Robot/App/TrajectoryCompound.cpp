@@ -35,38 +35,41 @@ PROPERTY_SOURCE(Robot::TrajectoryCompound, Robot::TrajectoryObject)
 TrajectoryCompound::TrajectoryCompound()
 {
 
-    ADD_PROPERTY_TYPE( Source,      (nullptr)   , "Compound",Prop_None,"list of trajectories to combine");
-
+    ADD_PROPERTY_TYPE(Source, (nullptr), "Compound", Prop_None, "list of trajectories to combine");
 }
 
-App::DocumentObjectExecReturn *TrajectoryCompound::execute()
+App::DocumentObjectExecReturn* TrajectoryCompound::execute()
 {
-    const std::vector<DocumentObject*> &Tracs = Source.getValues();
+    const std::vector<DocumentObject*>& Tracs = Source.getValues();
     Robot::Trajectory result;
 
     for (auto it : Tracs) {
-        if (it->getTypeId().isDerivedFrom(Robot::TrajectoryObject::getClassTypeId())){
-            const std::vector<Waypoint*> &wps = static_cast<Robot::TrajectoryObject*>(it)->Trajectory.getValue().getWaypoints();
+        if (it->getTypeId().isDerivedFrom(Robot::TrajectoryObject::getClassTypeId())) {
+            const std::vector<Waypoint*>& wps =
+                static_cast<Robot::TrajectoryObject*>(it)->Trajectory.getValue().getWaypoints();
             for (auto wp : wps) {
                 result.addWaypoint(*wp);
             }
-        }else
-            return new App::DocumentObjectExecReturn("Not all objects in compound are trajectories!");
+        }
+        else {
+            return new App::DocumentObjectExecReturn(
+                "Not all objects in compound are trajectories!");
+        }
     }
 
     Trajectory.setValue(result);
-    
+
     return App::DocumentObject::StdReturn;
 }
 
 
-//short TrajectoryCompound::mustExecute(void) const
+// short TrajectoryCompound::mustExecute(void) const
 //{
-//    return 0;
-//}
+//     return 0;
+// }
 
-//void TrajectoryCompound::onChanged(const Property* prop)
+// void TrajectoryCompound::onChanged(const Property* prop)
 //{
-// 
-//    App::GeoFeature::onChanged(prop);
-//}
+//
+//     App::GeoFeature::onChanged(prop);
+// }

@@ -101,7 +101,7 @@ class Label(gui_base_original.Creator):
             dist = v.Length
             h = self.wp.u
             n = self.wp.axis
-            r = self.wp.getRotation().Rotation
+            r = self.wp.get_placement().Rotation
 
             if abs(DraftVecUtils.angle(v, h, n)) <= math.pi/4:
                 direction = "Horizontal"

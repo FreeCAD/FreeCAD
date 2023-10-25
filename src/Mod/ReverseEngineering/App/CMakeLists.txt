@@ -1,9 +1,3 @@
-if(MSVC)
-    add_definitions(-DHAVE_ACOSH -DHAVE_ATANH -DHAVE_ASINH)
-else(MSVC)
-    add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
-endif(MSVC)
-
 if (PCL_SURFACE_FOUND AND PCL_FEATURES_FOUND)
     add_definitions(-DHAVE_PCL_SURFACE)
 

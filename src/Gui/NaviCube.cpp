@@ -32,6 +32,7 @@
 # else
 #  include <GL/gl.h>
 # endif
+# include <boost/math/constants/constants.hpp>
 # include <Inventor/nodes/SoOrthographicCamera.h>
 # include <Inventor/events/SoEvent.h>
 # include <Inventor/events/SoLocation2Event.h>
@@ -161,7 +162,7 @@ private:
 
 public:
 
-    int m_CubeWidgetSize = 132;
+    static int m_CubeWidgetSize;
     QColor m_BaseColor;
     QColor m_EmphaseColor;
     QColor m_HiliteColor;
@@ -170,8 +171,8 @@ public:
     double m_BorderWidth = 1.1;
     bool m_RotateToNearest = true;
     int m_NaviStepByTurn = 8;
-    float m_FontZoom = 0.3;
-    float m_Chamfer = 0.12;
+    float m_FontZoom = 0.3F;
+    float m_Chamfer = 0.12F;
     std::string m_TextFont;
     int m_FontWeight = 0;
     int m_FontStretch = 0;
@@ -199,6 +200,13 @@ private:
 
     QMenu* m_Menu;
 };
+
+int NaviCubeImplementation::m_CubeWidgetSize = 132;
+
+int NaviCube::getNaviCubeSize()
+{
+    return NaviCubeImplementation::m_CubeWidgetSize;
+}
 
 NaviCube::NaviCube(Gui::View3DInventorViewer* viewer) {
     m_NaviCubeImplementation = new NaviCubeImplementation(viewer);
@@ -463,9 +471,9 @@ void NaviCubeImplementation::addButtonFace(PickId pickId, const SbVec3f& directi
 {
     if (m_Faces[pickId].vertexArray.size())
         m_Faces[pickId].vertexArray.clear();
-    float scale = 0.005;
-    float offx = 0.5;
-    float offy = 0.5;
+    float scale = 0.005F;
+    float offx = 0.5F;
+    float offy = 0.5F;
     vector<float> pointData;
 
     switch (pickId) {
@@ -474,19 +482,19 @@ void NaviCubeImplementation::addButtonFace(PickId pickId, const SbVec3f& directi
         case PickId::ArrowRight:
         case PickId::ArrowLeft: {
             pointData = {
-                66.6, -66.6,//outer curve
-                58.3, -74.0,
-                49.2 ,-80.3,
-                39.4 ,-85.5,
-                29. , -89.5,
-                25.3, -78.1,//inner curve
-                34.3, -74.3,
-                42.8, -69.9,
-                50.8, -64.4,
-                58.1, -58.1,
-                53.8, -53.8,//arrowhead
-                74.7, -46.8,
-                70.7, -70.4
+                66.6F, -66.6F,//outer curve
+                58.3F, -74.0F,
+                49.2F ,-80.3F,
+                39.4F ,-85.5F,
+                29.0F, -89.5F,
+                25.3F, -78.1F,//inner curve
+                34.3F, -74.3F,
+                42.8F, -69.9F,
+                50.8F, -64.4F,
+                58.1F, -58.1F,
+                53.8F, -53.8F,//arrowhead
+                74.7F, -46.8F,
+                70.7F, -70.4F
             };
             break;
         }
@@ -502,8 +510,8 @@ void NaviCubeImplementation::addButtonFace(PickId pickId, const SbVec3f& directi
             break;
         }
         case PickId::ViewMenu: {
-            offx = 0.84;
-            offy = 0.84;
+            offx = 0.84F;
+            offy = 0.84F;
             pointData = {
                   0.,   0.,//top rhombus
                  15.,  -6.,
@@ -627,7 +635,11 @@ void NaviCubeImplementation::setSize(int size)
     m_Prepared = false;
 }
 
-void NaviCubeImplementation::prepare() {
+void NaviCubeImplementation::prepare()
+{
+    static const float pi = boost::math::constants::pi<float>();
+    static const float pi1_2 = boost::math::constants::half_pi<float>();
+
     createCubeFaceTextures();
 
     Vector3f x(1, 0, 0);
@@ -643,28 +655,28 @@ void NaviCubeImplementation::prepare() {
     addCubeFace( x,-z, ShapeId::Main, PickId::Bottom);
 
     // create corner faces
-    addCubeFace(-x-y, x-y+z, ShapeId::Corner, PickId::FrontTopRight, M_PI);
-    addCubeFace(-x+y,-x-y+z, ShapeId::Corner, PickId::FrontTopLeft, M_PI);
+    addCubeFace(-x-y, x-y+z, ShapeId::Corner, PickId::FrontTopRight, pi);
+    addCubeFace(-x+y,-x-y+z, ShapeId::Corner, PickId::FrontTopLeft, pi);
     addCubeFace(x+y, x-y-z, ShapeId::Corner, PickId::FrontBottomRight);
     addCubeFace(x-y,-x-y-z, ShapeId::Corner, PickId::FrontBottomLeft);
-    addCubeFace(x-y, x+y+z, ShapeId::Corner, PickId::RearTopRight, M_PI);
-    addCubeFace(x+y,-x+y+z, ShapeId::Corner, PickId::RearTopLeft, M_PI);
+    addCubeFace(x-y, x+y+z, ShapeId::Corner, PickId::RearTopRight, pi);
+    addCubeFace(x+y,-x+y+z, ShapeId::Corner, PickId::RearTopLeft, pi);
     addCubeFace(-x+y, x+y-z, ShapeId::Corner, PickId::RearBottomRight);
     addCubeFace(-x-y,-x+y-z, ShapeId::Corner, PickId::RearBottomLeft);
 
     // create edge faces
     addCubeFace(x, z-y, ShapeId::Edge, PickId::FrontTop);
     addCubeFace(x,-z-y, ShapeId::Edge, PickId::FrontBottom);
-    addCubeFace(x, y-z, ShapeId::Edge, PickId::RearBottom, M_PI);
-    addCubeFace(x, y+z, ShapeId::Edge, PickId::RearTop, M_PI);
-    addCubeFace(z, x+y, ShapeId::Edge, PickId::RearRight, M_PI_2);
-    addCubeFace(z, x-y, ShapeId::Edge, PickId::FrontRight, M_PI_2);
-    addCubeFace(z,-x-y, ShapeId::Edge, PickId::FrontLeft, M_PI_2);
-    addCubeFace(z, y-x, ShapeId::Edge, PickId::RearLeft, M_PI_2);
-    addCubeFace(y, z-x, ShapeId::Edge, PickId::TopLeft, M_PI);
+    addCubeFace(x, y-z, ShapeId::Edge, PickId::RearBottom, pi);
+    addCubeFace(x, y+z, ShapeId::Edge, PickId::RearTop, pi);
+    addCubeFace(z, x+y, ShapeId::Edge, PickId::RearRight, pi1_2);
+    addCubeFace(z, x-y, ShapeId::Edge, PickId::FrontRight, pi1_2);
+    addCubeFace(z,-x-y, ShapeId::Edge, PickId::FrontLeft, pi1_2);
+    addCubeFace(z, y-x, ShapeId::Edge, PickId::RearLeft, pi1_2);
+    addCubeFace(y, z-x, ShapeId::Edge, PickId::TopLeft, pi);
     addCubeFace(y, x+z, ShapeId::Edge, PickId::TopRight);
     addCubeFace(y, x-z, ShapeId::Edge, PickId::BottomRight);
-    addCubeFace(y,-z-x, ShapeId::Edge, PickId::BottomLeft, M_PI);
+    addCubeFace(y,-z-x, ShapeId::Edge, PickId::BottomLeft, pi);
 
     // create the flat buttons
     addButtonFace(PickId::ArrowNorth, SbVec3f(-1, 0, 0));
@@ -785,7 +797,7 @@ void NaviCubeImplementation::drawNaviCube(bool pickMode)
     SbMatrix mx;
     mx = cam->orientation.getValue();
     mx = mx.inverse();
-    mx[3][2] = -5.1;
+    mx[3][2] = -5.1F;
     glLoadMatrixf((float*)mx);
 
     glEnableClientState(GL_VERTEX_ARRAY);
@@ -943,6 +955,12 @@ SbRotation NaviCubeImplementation::getNearestOrientation(PickId pickId) {
     SbVec3f standardZ;
     standardOrientation.multVec(SbVec3f(0, 0, 1), standardZ);
 
+    // Cleanup near zero values
+    for (int i = 0; i < 3; i++) {
+        if (abs(standardZ[i]) < 1e-6) standardZ[i] = 0.0F;
+    }
+    standardZ.normalize();
+
     // Rotate the camera to the selected face by the smallest angle to align the z-axis
     SbRotation intermediateOrientation = cameraOrientation * SbRotation(cameraZ, standardZ);
 
@@ -952,29 +970,83 @@ SbRotation NaviCubeImplementation::getNearestOrientation(PickId pickId) {
     SbRotation rotation = intermediateOrientation.inverse() * standardOrientation;
     rotation.getValue(axis, angle);
 
+    // Make sure the found axis aligns with the standardZ axis
+    if (standardZ.dot(axis) < 0) {
+        axis.negate();
+        angle *= -1;
+    }
+
+    static const float pi = boost::math::constants::pi<float>();
+    static const float pi2 = boost::math::constants::two_pi<float>();
+    static const float pi1_2 = boost::math::constants::half_pi<float>();
+    static const float pi1_3 = boost::math::constants::third_pi<float>();
+    static const float pi2_3 = boost::math::constants::two_thirds_pi<float>();
+
+    // Make angle positive
+    if (angle < 0) {
+        angle += pi2;
+    }
+
     // f is a small value used to control orientation priority when the camera is almost exactly between two
     // orientations (e.g. +45 and -45 degrees). The standard orientation is preferred compared to
     // +90 and -90 degree orientations and the +90 and -90 degree orientations are preferred compared to an
     // upside down standard orientation
-    float f = angle > M_PI ? 0.00001 : -0.00001;
+    float f = 0.00001F;
 
     // Find the angle to rotate to the nearest orientation
     if (m_Faces[pickId].type == ShapeId::Corner) {
         // 6 possible orientations for the corners
-        angle = angle - floor((angle + f + M_PI / 6.0) / (M_PI / 3.0)) * (M_PI / 3.0);
+        if (angle <= (M_PI / 6 + f)) {
+            angle = 0;
+        }
+        else if (angle <= (M_PI_2 + f)) {
+            angle = pi1_3;
+        }
+        else if (angle < (5 * M_PI / 6 - f)) {
+            angle = pi2_3;
+        }
+        else if (angle <= (M_PI + M_PI / 6 + f)) {
+            angle = pi;
+        }
+        else if (angle < (M_PI + M_PI_2 - f)) {
+            angle = pi + pi1_3;
+        }
+        else if (angle < (M_PI + 5 * M_PI / 6 - f)) {
+            angle = pi + pi2_3;
+        }
+        else {
+            angle = 0;
+        }
     }
     else {
         // 4 possible orientations for the main and edge faces
-        angle = angle - floor((angle + f + M_PI_4) / M_PI_2) * M_PI_2;
+        if (angle <= (M_PI_4 + f)) {
+            angle = 0;
+        }
+        else if (angle <= (3 * M_PI_4 + f)) {
+            angle = pi1_2;
+        }
+        else if (angle < (M_PI + M_PI_4 - f)) {
+            angle = pi;
+        }
+        else if (angle < (M_PI + 3 * M_PI_4 - f)) {
+            angle = pi + pi1_2;
+        }
+        else {
+            angle = 0;
+        }
     }
 
-    // Set the rotation to go from the intermediateOrientation to the nearest orientation
-    rotation.setValue(axis, angle);
+    // Set the rotation to go from the standard orientation to the nearest orientation
+    rotation.setValue(standardZ, angle);
 
-    return intermediateOrientation * rotation;
+    return standardOrientation * rotation.inverse();
 }
 
-bool NaviCubeImplementation::mouseReleased(short x, short y) {
+bool NaviCubeImplementation::mouseReleased(short x, short y)
+{
+    static const float pi = boost::math::constants::pi<float>();
+
     setHilite(PickId::None);
     m_MouseDown = false;
 
@@ -1007,7 +1079,7 @@ bool NaviCubeImplementation::mouseReleased(short x, short y) {
             // Handle the flat buttons
             SbRotation rotation = m_Faces[pickId].rotation;
             if (pickId == PickId::DotBackside) {
-                rotation.scaleAngle(M_PI);
+                rotation.scaleAngle(pi);
             }
             else {
                 rotation.scaleAngle(rotStepAngle);

@@ -23,24 +23,24 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <QFileInfo>
+#include <QFileInfo>
 
-# include <BRepAdaptor_Curve.hxx>
-# include <BRepAdaptor_Surface.hxx>
-# include <Geom_BezierCurve.hxx>
-# include <Geom_BezierSurface.hxx>
-# include <Geom_BSplineCurve.hxx>
-# include <Geom_BSplineSurface.hxx>
-# include <gp_Dir.hxx>
-# include <gp_Lin.hxx>
-# include <gp_Pln.hxx>
-# include <gp_Vec.hxx>
-# include <Precision.hxx>
-# include <TColgp_Array2OfPnt.hxx>
-# include <TopoDS.hxx>
-# include <TopoDS_Shape.hxx>
-# include <TopoDS_Edge.hxx>
-# include <TopoDS_Face.hxx>
+#include <BRepAdaptor_Curve.hxx>
+#include <BRepAdaptor_Surface.hxx>
+#include <Geom_BSplineCurve.hxx>
+#include <Geom_BSplineSurface.hxx>
+#include <Geom_BezierCurve.hxx>
+#include <Geom_BezierSurface.hxx>
+#include <Precision.hxx>
+#include <TColgp_Array2OfPnt.hxx>
+#include <TopoDS.hxx>
+#include <TopoDS_Edge.hxx>
+#include <TopoDS_Face.hxx>
+#include <TopoDS_Shape.hxx>
+#include <gp_Dir.hxx>
+#include <gp_Lin.hxx>
+#include <gp_Pln.hxx>
+#include <gp_Vec.hxx>
 #endif
 
 #include <App/Application.h>
@@ -78,22 +78,22 @@ bool Fem::Tools::isPlanar(const TopoDS_Face& face)
     else if (surface.GetType() == GeomAbs_BSplineSurface) {
         Handle(Geom_BSplineSurface) spline = surface.BSpline();
         try {
-            TColgp_Array2OfPnt poles(1,spline->NbUPoles(),1,spline->NbVPoles());
+            TColgp_Array2OfPnt poles(1, spline->NbUPoles(), 1, spline->NbVPoles());
             spline->Poles(poles);
 
             // get the plane from three control points
-            gp_Pnt p1 = poles(poles.LowerRow(),poles.LowerCol());
-            gp_Pnt p2 = poles(poles.UpperRow(),poles.LowerCol());
-            gp_Pnt p3 = poles(poles.LowerRow(),poles.UpperCol());
+            gp_Pnt p1 = poles(poles.LowerRow(), poles.LowerCol());
+            gp_Pnt p2 = poles(poles.UpperRow(), poles.LowerCol());
+            gp_Pnt p3 = poles(poles.LowerRow(), poles.UpperCol());
             gp_Vec vec1(p1, p2);
             gp_Vec vec2(p1, p3);
             gp_Vec vec3 = vec1.Crossed(vec2);
             gp_Pln plane(p1, gp_Dir(vec3));
 
-            for (int i=poles.LowerRow(); i<=poles.UpperRow(); i++) {
-                for (int j=poles.LowerCol(); j<poles.UpperCol(); j++) {
+            for (int i = poles.LowerRow(); i <= poles.UpperRow(); i++) {
+                for (int j = poles.LowerCol(); j < poles.UpperCol(); j++) {
                     // are control points coplanar?
-                    const gp_Pnt& pole = poles(i,j);
+                    const gp_Pnt& pole = poles(i, j);
                     Standard_Real dist = plane.Distance(pole);
                     if (dist > Precision::Confusion()) {
                         return false;
@@ -110,22 +110,22 @@ bool Fem::Tools::isPlanar(const TopoDS_Face& face)
     else if (surface.GetType() == GeomAbs_BezierSurface) {
         Handle(Geom_BezierSurface) bezier = surface.Bezier();
         try {
-            TColgp_Array2OfPnt poles(1,bezier->NbUPoles(),1,bezier->NbVPoles());
+            TColgp_Array2OfPnt poles(1, bezier->NbUPoles(), 1, bezier->NbVPoles());
             bezier->Poles(poles);
 
             // get the plane from three control points
-            gp_Pnt p1 = poles(poles.LowerRow(),poles.LowerCol());
-            gp_Pnt p2 = poles(poles.UpperRow(),poles.LowerCol());
-            gp_Pnt p3 = poles(poles.LowerRow(),poles.UpperCol());
+            gp_Pnt p1 = poles(poles.LowerRow(), poles.LowerCol());
+            gp_Pnt p2 = poles(poles.UpperRow(), poles.LowerCol());
+            gp_Pnt p3 = poles(poles.LowerRow(), poles.UpperCol());
             gp_Vec vec1(p1, p2);
             gp_Vec vec2(p1, p3);
             gp_Vec vec3 = vec1.Crossed(vec2);
             gp_Pln plane(p1, gp_Dir(vec3));
 
-            for (int i=poles.LowerRow(); i<=poles.UpperRow(); i++) {
-                for (int j=poles.LowerCol(); j<poles.UpperCol(); j++) {
+            for (int i = poles.LowerRow(); i <= poles.UpperRow(); i++) {
+                for (int j = poles.LowerCol(); j < poles.UpperCol(); j++) {
                     // are control points coplanar?
-                    const gp_Pnt& pole = poles(i,j);
+                    const gp_Pnt& pole = poles(i, j);
                     Standard_Real dist = plane.Distance(pole);
                     if (dist > Precision::Confusion()) {
                         return false;
@@ -154,13 +154,13 @@ gp_XYZ Fem::Tools::getDirection(const TopoDS_Face& face)
     else if (surface.GetType() == GeomAbs_BSplineSurface) {
         Handle(Geom_BSplineSurface) spline = surface.BSpline();
         try {
-            TColgp_Array2OfPnt poles(1,spline->NbUPoles(),1,spline->NbVPoles());
+            TColgp_Array2OfPnt poles(1, spline->NbUPoles(), 1, spline->NbVPoles());
             spline->Poles(poles);
 
             // get the plane from three control points
-            gp_Pnt p1 = poles(poles.LowerRow(),poles.LowerCol());
-            gp_Pnt p2 = poles(poles.UpperRow(),poles.LowerCol());
-            gp_Pnt p3 = poles(poles.LowerRow(),poles.UpperCol());
+            gp_Pnt p1 = poles(poles.LowerRow(), poles.LowerCol());
+            gp_Pnt p2 = poles(poles.UpperRow(), poles.LowerCol());
+            gp_Pnt p3 = poles(poles.LowerRow(), poles.UpperCol());
             gp_Vec vec1(p1, p2);
             gp_Vec vec2(p1, p3);
             gp_Vec vec3 = vec1.Crossed(vec2);
@@ -173,13 +173,13 @@ gp_XYZ Fem::Tools::getDirection(const TopoDS_Face& face)
     else if (surface.GetType() == GeomAbs_BezierSurface) {
         Handle(Geom_BezierSurface) bezier = surface.Bezier();
         try {
-            TColgp_Array2OfPnt poles(1,bezier->NbUPoles(),1,bezier->NbVPoles());
+            TColgp_Array2OfPnt poles(1, bezier->NbUPoles(), 1, bezier->NbVPoles());
             bezier->Poles(poles);
 
             // get the plane from three control points
-            gp_Pnt p1 = poles(poles.LowerRow(),poles.LowerCol());
-            gp_Pnt p2 = poles(poles.UpperRow(),poles.LowerCol());
-            gp_Pnt p3 = poles(poles.LowerRow(),poles.UpperCol());
+            gp_Pnt p1 = poles(poles.LowerRow(), poles.LowerCol());
+            gp_Pnt p2 = poles(poles.UpperRow(), poles.LowerCol());
+            gp_Pnt p3 = poles(poles.LowerRow(), poles.UpperCol());
             gp_Vec vec1(p1, p2);
             gp_Vec vec2(p1, p3);
             gp_Vec vec3 = vec1.Crossed(vec2);
@@ -207,7 +207,7 @@ bool Fem::Tools::isLinear(const TopoDS_Edge& edge)
             gp_Vec vec(s1, sn);
             gp_Lin line(s1, gp_Dir(vec));
 
-            for (int i=2; i<spline->NbPoles(); i++) {
+            for (int i = 2; i < spline->NbPoles(); i++) {
                 // are control points collinear?
                 Standard_Real dist = line.Distance(spline->Pole(i));
                 if (dist > Precision::Confusion()) {
@@ -229,7 +229,7 @@ bool Fem::Tools::isLinear(const TopoDS_Edge& edge)
             gp_Vec vec(s1, sn);
             gp_Lin line(s1, gp_Dir(vec));
 
-            for (int i=2; i<bezier->NbPoles(); i++) {
+            for (int i = 2; i < bezier->NbPoles(); i++) {
                 // are control points collinear?
                 Standard_Real dist = line.Distance(bezier->Pole(i));
                 if (dist > Precision::Confusion()) {
@@ -285,8 +285,8 @@ gp_XYZ Fem::Tools::getDirection(const TopoDS_Edge& edge)
 
 // function to determine 3rd-party binaries used by the FEM WB
 std::string Fem::Tools::checkIfBinaryExists(std::string prefSection,
-                                                   std::string prefBinaryName,
-                                                   std::string binaryName)
+                                            std::string prefBinaryName,
+                                            std::string binaryName)
 {
     // if "Search in known binary directories" is set in the preferences, we ignore custom path
     auto paramPath = "User parameter:BaseApp/Preferences/Mod/Fem/" + prefSection;
@@ -305,8 +305,9 @@ std::string Fem::Tools::checkIfBinaryExists(std::string prefSection,
         // check the folder of the FreeCAD binary
         else {
             auto homePathBinary = App::Application::getHomePath() + "bin/" + binaryName;
-            if (QFileInfo::exists(QString::fromLatin1(homePathBinary.c_str())))
+            if (QFileInfo::exists(QString::fromLatin1(homePathBinary.c_str()))) {
                 return binaryName;
+            }
         }
     }
     else {
@@ -315,8 +316,9 @@ std::string Fem::Tools::checkIfBinaryExists(std::string prefSection,
             App::GetApplication().GetParameterGroupByPath(paramPath.c_str());
         auto binaryPath = hGrp->GetASCII(binaryPathString.c_str(), "");
         QFileInfo::exists(QString::fromLatin1(binaryPath.c_str()));
-        if (QFileInfo::exists(QString::fromLatin1(binaryPath.c_str())))
+        if (QFileInfo::exists(QString::fromLatin1(binaryPath.c_str()))) {
             return binaryPath;
+        }
     }
     return "";
 }

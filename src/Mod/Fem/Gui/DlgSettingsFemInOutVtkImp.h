@@ -30,26 +30,27 @@
 #include <Gui/PropertyPage.h>
 
 
-namespace FemGui {
+namespace FemGui
+{
 
 class Ui_DlgSettingsFemInOutVtk;
-class DlgSettingsFemInOutVtkImp : public Gui::Dialog::PreferencePage
+class DlgSettingsFemInOutVtkImp: public Gui::Dialog::PreferencePage
 {
     Q_OBJECT
 
 public:
-    explicit DlgSettingsFemInOutVtkImp( QWidget* parent = nullptr );
+    explicit DlgSettingsFemInOutVtkImp(QWidget* parent = nullptr);
     ~DlgSettingsFemInOutVtkImp() override;
 
 protected:
     void saveSettings() override;
     void loadSettings() override;
-    void changeEvent(QEvent *e) override;
+    void changeEvent(QEvent* e) override;
 
 private:
     std::unique_ptr<Ui_DlgSettingsFemInOutVtk> ui;
 };
 
-} // namespace FemGui
+}  // namespace FemGui
 
-#endif // FEMGUI_DLGSETTINGSFEMINOUTVTKIMP_H
+#endif  // FEMGUI_DLGSETTINGSFEMINOUTVTKIMP_H

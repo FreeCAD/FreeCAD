@@ -255,7 +255,7 @@ void CosmeticEdge::Save(Base::Writer &writer) const
         circ->Save(writer);
     } else if (m_geometry->getGeomType() == TechDraw::GeomType::ARCOFCIRCLE) {
         TechDraw::AOCPtr aoc = std::static_pointer_cast<TechDraw::AOC>(m_geometry);
-        aoc->Save(writer);
+        aoc->inverted()->Save(writer);
     } else {
         Base::Console().Warning("CE::Save - unimplemented geomType: %d\n", static_cast<int>(m_geometry->getGeomType()));
     }
@@ -298,9 +298,9 @@ void CosmeticEdge::Restore(Base::XMLReader &reader)
         TechDraw::AOCPtr aoc = std::make_shared<TechDraw::AOC> ();
         aoc->Restore(reader);
         aoc->setOCCEdge(GeometryUtils::edgeFromCircleArc(aoc));
-        m_geometry = aoc;
-        permaStart = aoc->startPnt;
-        permaEnd   = aoc->endPnt;
+        m_geometry = aoc->inverted();
+        permaStart = aoc->center;
+        permaEnd   = aoc->center;
         permaRadius = aoc->radius;
     } else {
         Base::Console().Warning("CE::Restore - unimplemented geomType: %d\n", static_cast<int>(gType));

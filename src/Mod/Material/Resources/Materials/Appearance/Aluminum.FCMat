@@ -1,0 +1,15 @@
+# File created by ConvertFCMat.py
+General:
+  UUID: "d1f317f0-5ffa-4798-8ab3-af2ff0b5182c"
+  AuthorAndLicense: "(c) 2023 David Carter"
+  Name: "Aluminum"
+  Description: "Defines the Aluminum appearance properties"
+AppearanceModels:
+  BasicRendering:
+    UUID: 'f006c7e4-35b7-43d5-bbf9-c5d572309e6e'
+    AmbientColor: "(0.3000, 0.3000, 0.3000, 1.0)"
+    DiffuseColor: "(0.3000, 0.3000, 0.3000, 1.0)"
+    EmissiveColor: "(0.0000, 0.0000, 0.0000, 1.0)"
+    Shininess: "0.0900"
+    SpecularColor: "(0.3000, 0.3000, 0.3000, 1.0)"
+    Transparency: "0.0"

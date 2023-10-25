@@ -305,6 +305,7 @@ TopoDS_Shape ShapeUtils::invertGeometry(const TopoDS_Shape s)
 //!set up a hidden line remover and project a shape with it
 void GeometryObject::projectShapeWithPolygonAlgo(const TopoDS_Shape& input, const gp_Ax2& viewAxis)
 {
+//    Base::Console().Message("GO::projectShapeWithPolygonAlgo()\n");
     // Clear previous Geometry
     clear();
 
@@ -325,13 +326,10 @@ void GeometryObject::projectShapeWithPolygonAlgo(const TopoDS_Shape& input, cons
     Handle(HLRBRep_PolyAlgo) brep_hlrPoly;
 
     try {
-        TopExp_Explorer faces(inCopy, TopAbs_FACE);
-        for (int i = 1; faces.More(); faces.Next(), i++) {
-            const TopoDS_Face& f = TopoDS::Face(faces.Current());
-            if (!f.IsNull()) {
-                BRepMesh_IncrementalMesh(f, 0.10);//Poly Algo requires a mesh!
-            }
-        }
+        // HLRBRep_PolyAlgo will fail if the whole input shape has not been meshed.
+        // meshing the faces is not sufficient.
+        BRepMesh_IncrementalMesh(inCopy, 0.10);
+
         brep_hlrPoly = new HLRBRep_PolyAlgo();
         brep_hlrPoly->Load(inCopy);
 

@@ -1164,8 +1164,7 @@ class Snapper:
     def device_pixel_ratio(self):
         device_pixel_ratio = 1
         for w in self.get_quarter_widget(Gui.getMainWindow()):
-            if int(QtCore.qVersion().split('.')[0]) > 4:
-                device_pixel_ratio = w.devicePixelRatio()
+            device_pixel_ratio = w.devicePixelRatio()
         return device_pixel_ratio
 
     def get_cursor_with_tail(self, base_icon_name, tail_icon_name=None):
@@ -1189,8 +1188,6 @@ class Snapper:
         qp.end()
         cur_hot_x = 0.25 * full_icon_size * device_pixel_ratio
         cur_hot_y = 0.25 * full_icon_size * device_pixel_ratio
-        if int(QtCore.qVersion().split('.')[0]) > 4:
-            new_icon.setDevicePixelRatio(device_pixel_ratio)
         cur = QtGui.QCursor(new_icon, cur_hot_x, cur_hot_y)
         return cur
 

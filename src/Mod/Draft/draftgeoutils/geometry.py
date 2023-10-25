@@ -517,6 +517,32 @@ def mirror(point, edge):
         return None
 
 
+def mirror_matrix(mtx, pos, nor):
+    """Return a mirrored copy of a matrix.
+
+    Parameters
+    ----------
+    mtx: Base::Matrix
+        Matrix.
+    pos: Base::Vector3
+        Point on mirror plane.
+    nor: Base::Vector3
+        Normal of mirror plane.
+
+    Returns
+    -------
+    Base::Matrix
+    """
+    # Code by Jolbas:
+    # https://forum.freecad.org/viewtopic.php?p=702793#p702793
+    mtx_copy = App.Matrix(mtx)
+    mtx_copy.move(-pos)
+    mtx_copy.scale(-1)
+    mtx_copy = App.Rotation(nor, 180) * mtx_copy
+    mtx_copy.move(pos)
+    return mtx_copy
+
+
 def uv_vectors_from_face(face, vec_z=App.Vector(0, 0, 1), tol=-1):
     """Return the u and v vectors of a planar face.
 
@@ -525,6 +551,8 @@ def uv_vectors_from_face(face, vec_z=App.Vector(0, 0, 1), tol=-1):
     If the u vector matches +/-vec_z, or the v vector matches -vec_z, the
     vectors are rotated to ensure the v vector matches +vec_z.
 
+    Parameters
+    ----------
     face: Part.Face
         Face.
     vec_z: Base::Vector3, optional
@@ -535,8 +563,8 @@ def uv_vectors_from_face(face, vec_z=App.Vector(0, 0, 1), tol=-1):
         Defaults to -1.
         Internal tolerance. 1e-7 is used if tol <=0.
 
-    Return
-    ------
+    Returns
+    -------
     tuple
         U and v vector (Base::Vector3).
     """
@@ -580,8 +608,8 @@ def placement_from_face(face, vec_z=App.Vector(0, 0, 1), rotated=False, tol=-1):
         Defaults to -1.
         Internal tolerance. 1e-7 is used if tol <=0.
 
-    Return
-    ------
+    Returns
+    -------
     Base::Placement
 
     See also
@@ -617,8 +645,8 @@ def placement_from_points(pt_pos, pt_x, pt_y, as_vectors=False, tol=-1):
         Defaults to -1.
         Internal tolerance. 1e-7 is used if tol <=0.
 
-    Return
-    ------
+    Returns
+    -------
     Base::Placement
 
     See also
@@ -645,6 +673,79 @@ def placement_from_points(pt_pos, pt_x, pt_y, as_vectors=False, tol=-1):
             rot = App.Rotation(vec_u, vec_v, App.Vector(), "XYZ")
 
     return App.Placement(pt_pos, rot)
+
+
+# Code separated from WorkingPlane.py (offsetToPoint function).
+# Note that the return value of this function has the opposite sign.
+def distance_to_plane(point, base, normal):
+    """Return the signed distance from a plane to a point.
+
+    The distance is positive if the point lies on the +normal side of the plane.
+
+    Parameters
+    ----------
+    point: Base::Vector3
+        Point to project.
+    base: Base::Vector3
+        Point on plane.
+    normal: Base::Vector3
+        Normal of plane.
+
+    Returns
+    -------
+    float
+    """
+    return (point - base).dot(normal)
+
+
+# Code separated from WorkingPlane.py (projectPoint function).
+# See: https://github.com/FreeCAD/FreeCAD/pull/5307
+def project_point_on_plane(point, base, normal, direction=None, force_projection=False, tol=-1):
+    """Project a point onto a plane.
+
+    Parameters
+    ----------
+    point: Base::Vector3
+        Point to project.
+    base: Base::Vector3
+        Point on plane.
+    normal: Base::Vector3
+        Normal of plane.
+    direction: Base::Vector3, optional
+        Defaults to `None` in which case the normal is used.
+        Direction of projection.
+    force_projection: Bool, optional
+        Defaults to `False`.
+        If `True` forces the projection if the deviation between the direction
+        and the normal is less than tol from the orthogonality. The direction
+        of projection is then modified to a tol deviation between the direction
+        and the orthogonal.
+    tol: float, optional
+        Defaults to -1.
+        Internal tolerance. 1e-7 is used if tol <=0.
+
+    Returns
+    -------
+    Base::Vector3 or `None`
+    """
+    err = 1e-7 if tol <= 0 else tol
+    normal = App.Vector(normal).normalize()
+    if direction is None:
+        direction = normal
+    else:
+        direction = App.Vector(direction).normalize()
+
+    cos = direction.dot(normal)
+    delta_ax_proj = (point - base).dot(normal)
+    # check the only conflicting case: direction orthogonal to normal
+    if abs(cos) < err:
+        if force_projection:
+            cos = math.copysign(err, delta_ax_proj)
+            direction = normal.cross(direction).cross(normal) - cos * normal
+        else:
+            return None
+
+    return point - delta_ax_proj / cos * direction
 
 
 #compatibility layer

@@ -80,32 +80,22 @@ class AddContent:
         small_size_policy.setHorizontalStretch(1)
         self.people_table.widget.setSizePolicy(large_size_policy)
         self.licenses_table.widget.setSizePolicy(small_size_policy)
-        self.dialog.peopleAndLicenseshorizontalLayout.addWidget(
-            self.people_table.widget
-        )
-        self.dialog.peopleAndLicenseshorizontalLayout.addWidget(
-            self.licenses_table.widget
-        )
+        self.dialog.peopleAndLicenseshorizontalLayout.addWidget(self.people_table.widget)
+        self.dialog.peopleAndLicenseshorizontalLayout.addWidget(self.licenses_table.widget)
 
         self.toplevel_metadata = toplevel_metadata
         self.metadata = None
         self.path_to_addon = path_to_addon.replace("/", os.path.sep)
         if self.path_to_addon[-1] != os.path.sep:
-            self.path_to_addon += (
-                os.path.sep
-            )  # Make sure the path ends with a separator
+            self.path_to_addon += os.path.sep  # Make sure the path ends with a separator
 
         self.dialog.iconLabel.hide()  # Until we have an icon to display
 
         self.dialog.iconBrowseButton.clicked.connect(self._browse_for_icon_clicked)
-        self.dialog.subdirectoryBrowseButton.clicked.connect(
-            self._browse_for_subdirectory_clicked
-        )
+        self.dialog.subdirectoryBrowseButton.clicked.connect(self._browse_for_subdirectory_clicked)
         self.dialog.tagsButton.clicked.connect(self._tags_clicked)
         self.dialog.dependenciesButton.clicked.connect(self._dependencies_clicked)
-        self.dialog.freecadVersionsButton.clicked.connect(
-            self._freecad_versions_clicked
-        )
+        self.dialog.freecadVersionsButton.clicked.connect(self._freecad_versions_clicked)
 
         self.dialog.versionLineEdit.setValidator(VersionValidator())
         self.dialog.prefPackNameLineEdit.setValidator(NameValidator())
@@ -134,9 +124,7 @@ class AddContent:
         if index == -1:
             index = 2  # Workbench
             FreeCAD.Console.PrintWarning(
-                translate("AddonsInstaller", "Unrecognized content kind '{}'").format(
-                    content_kind
-                )
+                translate("AddonsInstaller", "Unrecognized content kind '{}'").format(content_kind)
                 + "\n"
             )
         self.dialog.addonKindComboBox.setCurrentIndex(index)
@@ -189,9 +177,7 @@ class AddContent:
 
     def _set_icon(self, icon_relative_path):
         """Load the icon and display it, and its path, in the dialog."""
-        icon_path = os.path.join(
-            self.path_to_addon, icon_relative_path.replace("/", os.path.sep)
-        )
+        icon_path = os.path.join(self.path_to_addon, icon_relative_path.replace("/", os.path.sep))
         if os.path.isfile(icon_path):
             icon_data = QIcon(icon_path)
             if not icon_data.isNull():
@@ -199,10 +185,7 @@ class AddContent:
                 self.dialog.iconLabel.show()
         else:
             FreeCAD.Console.PrintError(
-                translate("AddonsInstaller", "Unable to locate icon at {}").format(
-                    icon_path
-                )
-                + "\n"
+                translate("AddonsInstaller", "Unable to locate icon at {}").format(icon_path) + "\n"
             )
         self.dialog.iconLineEdit.setText(icon_relative_path)
 
@@ -234,9 +217,7 @@ class AddContent:
             return current_data, self.metadata
 
         # Otherwise, process the rest of the metadata (display name is already done)
-        self.metadata.Description = (
-            self.dialog.descriptionTextEdit.document().toPlainText()
-        )
+        self.metadata.Description = self.dialog.descriptionTextEdit.document().toPlainText()
         self.metadata.Version = self.dialog.versionLineEdit.text()
 
         maintainers = []
@@ -407,16 +388,10 @@ class EditDependencies:
         self.dialog.removeDependencyToolButton.setIcon(
             QIcon.fromTheme("remove", QIcon(":/icons/list-remove.svg"))
         )
-        self.dialog.addDependencyToolButton.clicked.connect(
-            self._add_dependency_clicked
-        )
-        self.dialog.removeDependencyToolButton.clicked.connect(
-            self._remove_dependency_clicked
-        )
+        self.dialog.addDependencyToolButton.clicked.connect(self._add_dependency_clicked)
+        self.dialog.removeDependencyToolButton.clicked.connect(self._remove_dependency_clicked)
         self.dialog.tableWidget.itemDoubleClicked.connect(self._edit_dependency)
-        self.dialog.tableWidget.itemSelectionChanged.connect(
-            self._current_index_changed
-        )
+        self.dialog.tableWidget.itemSelectionChanged.connect(self._current_index_changed)
 
         self.dialog.removeDependencyToolButton.setDisabled(True)
         self.metadata = None
@@ -485,9 +460,7 @@ class EditDependencies:
         dep_type = self.dialog.tableWidget.item(row, 0).data(Qt.UserRole)
         dep_name = self.dialog.tableWidget.item(row, 1).text()
         dep_optional = bool(self.dialog.tableWidget.item(row, 2))
-        new_dep_type, new_dep_name, new_dep_optional = dlg.exec(
-            dep_type, dep_name, dep_optional
-        )
+        new_dep_type, new_dep_name, new_dep_optional = dlg.exec(dep_type, dep_name, dep_optional)
         if dep_type and dep_name:
             self.metadata.removeDepend(
                 {"package": dep_name, "type": dep_type, "optional": dep_optional}
@@ -520,16 +493,10 @@ class EditDependency:
         self.dialog.typeComboBox.addItem(
             translate("AddonsInstaller", "Internal Workbench"), "workbench"
         )
-        self.dialog.typeComboBox.addItem(
-            translate("AddonsInstaller", "External Addon"), "addon"
-        )
-        self.dialog.typeComboBox.addItem(
-            translate("AddonsInstaller", "Python Package"), "python"
-        )
+        self.dialog.typeComboBox.addItem(translate("AddonsInstaller", "External Addon"), "addon")
+        self.dialog.typeComboBox.addItem(translate("AddonsInstaller", "Python Package"), "python")
 
-        self.dialog.typeComboBox.currentIndexChanged.connect(
-            self._type_selection_changed
-        )
+        self.dialog.typeComboBox.currentIndexChanged.connect(self._type_selection_changed)
         self.dialog.dependencyComboBox.currentIndexChanged.connect(
             self._dependency_selection_changed
         )
@@ -539,9 +506,7 @@ class EditDependency:
 
         self.dialog.layout().setSizeConstraint(QLayout.SetFixedSize)
 
-    def exec(
-        self, dep_type="", dep_name="", dep_optional=False
-    ) -> Tuple[str, str, bool]:
+    def exec(self, dep_type="", dep_name="", dep_optional=False) -> Tuple[str, str, bool]:
         """Execute the dialog, returning a tuple of the type of dependency (workbench, addon, or
         python), the name of the dependency, and a boolean indicating whether this is optional.
         """
@@ -590,12 +555,8 @@ class EditDependency:
             repo_dict[repo.display_name.lower()] = (repo.display_name, repo.name)
         sorted_keys = sorted(repo_dict)
         for item in sorted_keys:
-            self.dialog.dependencyComboBox.addItem(
-                repo_dict[item][0], repo_dict[item][1]
-            )
-        self.dialog.dependencyComboBox.addItem(
-            translate("AddonsInstaller", "Other..."), "other"
-        )
+            self.dialog.dependencyComboBox.addItem(repo_dict[item][0], repo_dict[item][1])
+        self.dialog.dependencyComboBox.addItem(translate("AddonsInstaller", "Other..."), "other")
 
     def _populate_allowed_python_packages(self):
         """Add all allowed python packages to the list"""
@@ -606,9 +567,7 @@ class EditDependency:
         packages = sorted(AM_INSTANCE.allowed_packages)
         for package in packages:
             self.dialog.dependencyComboBox.addItem(package, package)
-        self.dialog.dependencyComboBox.addItem(
-            translate("AddonsInstaller", "Other..."), "other"
-        )
+        self.dialog.dependencyComboBox.addItem(translate("AddonsInstaller", "Other..."), "other")
 
     def _type_selection_changed(self, _):
         """Callback: The type of dependency has been changed"""
@@ -637,9 +596,7 @@ class EditFreeCADVersions:
 
     def __init__(self):
         self.dialog = FreeCADGui.PySideUic.loadUi(
-            os.path.join(
-                os.path.dirname(__file__), "developer_mode_freecad_versions.ui"
-            )
+            os.path.join(os.path.dirname(__file__), "developer_mode_freecad_versions.ui")
         )
 
     def exec(self, metadata: FreeCAD.Metadata):
@@ -666,9 +623,7 @@ class EditAdvancedVersions:
 
     def __init__(self):
         self.dialog = FreeCADGui.PySideUic.loadUi(
-            os.path.join(
-                os.path.dirname(__file__), "developer_mode_advanced_freecad_versions.ui"
-            )
+            os.path.join(os.path.dirname(__file__), "developer_mode_advanced_freecad_versions.ui")
         )
 
     def exec(self):

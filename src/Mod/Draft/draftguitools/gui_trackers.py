@@ -528,9 +528,9 @@ class bezcurveTracker(Tracker):
 
 class arcTracker(Tracker):
     """An arc tracker."""
-
+    # Note: used by the Arc command but also for angular dimensions.
     def __init__(self, dotted=False, scolor=None, swidth=None,
-                 start=0, end=math.pi*2, normal=None):
+                 start=0, end=math.pi*2):
         self.circle = None
         self.startangle = math.degrees(start)
         self.endangle = math.degrees(end)
@@ -538,10 +538,7 @@ class arcTracker(Tracker):
         self.trans.translation.setValue([0, 0, 0])
         self.sep = coin.SoSeparator()
         self.autoinvert = True
-        if normal:
-            self.normal = normal
-        else:
-            self.normal = FreeCAD.DraftWorkingPlane.axis
+        self.normal = FreeCAD.DraftWorkingPlane.axis
         self.recompute()
         super().__init__(dotted, scolor, swidth,
                          [self.trans, self.sep], name="arcTracker")
@@ -578,10 +575,7 @@ class arcTracker(Tracker):
         """Return the angle of a given vector in radians."""
         c = self.trans.translation.getValue()
         center = Vector(c[0], c[1], c[2])
-        rad = pt.sub(center)
-        a = DraftVecUtils.angle(rad, self.getDeviation(), self.normal)
-        # print(a)
-        return a
+        return DraftVecUtils.angle(pt.sub(center), self.getDeviation(), self.normal)
 
     def getAngles(self):
         """Return the start and end angles in degrees."""
@@ -666,7 +660,7 @@ class ghostTracker(Tracker):
     You can pass it an object or a list of objects, or a shape.
     """
 
-    def __init__(self, sel, dotted=False, scolor=None, swidth=None):
+    def __init__(self, sel, dotted=False, scolor=None, swidth=None, mirror=False):
         self.trans = coin.SoTransform()
         self.trans.translation.setValue([0, 0, 0])
         self.children = [self.trans]
@@ -691,6 +685,8 @@ class ghostTracker(Tracker):
                 selnode.addChild(self.marker)
                 node.addChild(selnode)
                 rootsep.addChild(node)
+        if mirror is True:
+            self._flip(rootsep)
         self.children.append(rootsep)
         super().__init__(dotted, scolor, swidth,
                          children=self.children, name="ghostTracker")
@@ -776,12 +772,34 @@ class ghostTracker(Tracker):
             return FreeCAD.Matrix()
 
     def setMatrix(self, matrix):
-        """Set the transformation matrix."""
+        """Set the transformation matrix.
+
+        The 4th column of the matrix (the position) is ignored.
+        """
         m = coin.SbMatrix(matrix.A11, matrix.A12, matrix.A13, matrix.A14,
                           matrix.A21, matrix.A22, matrix.A23, matrix.A24,
                           matrix.A31, matrix.A32, matrix.A33, matrix.A34,
                           matrix.A41, matrix.A42, matrix.A43, matrix.A44)
         self.trans.setMatrix(m)
+
+    def _flip(self, root):
+        """Flip the normals of the coin faces."""
+        # Code by wmayer:
+        # https://forum.freecad.org/viewtopic.php?p=702640#p702640
+        search = coin.SoSearchAction()
+        search.setType(coin.SoIndexedFaceSet.getClassTypeId())
+        search.apply(root)
+        path = search.getPath()
+        if path:
+            node = path.getTail()
+            index = node.coordIndex.getValues()
+            if len(index) % 4 == 0:
+                for i in range(0, len(index), 4):
+                    tmp = index[i]
+                    index[i] = index[i+1]
+                    index[i+1] = tmp
+
+                node.coordIndex.setValues(index)
 
 
 class editTracker(Tracker):

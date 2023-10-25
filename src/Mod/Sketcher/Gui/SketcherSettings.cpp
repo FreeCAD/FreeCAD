@@ -67,33 +67,36 @@ void SketcherSettings::saveSettings()
     ui->checkBoxNotifyConstraintSubstitutions->onSave();
     ui->checkBoxAutoRemoveRedundants->onSave();
 
-    enum {
+    enum
+    {
         DimensionSingleTool,
         DimensionSeparateTools,
         DimensionBoth
     };
 
     // Dimensioning constraints mode
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/dimensioning");
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/dimensioning");
     bool singleTool = true;
     bool SeparatedTools = false;
     int index = ui->dimensioningMode->currentIndex();
     switch (index) {
-    case DimensionSeparateTools:
-        singleTool = false;
-        SeparatedTools = true;
-        break;
-    case DimensionBoth:
-        singleTool = true;
-        SeparatedTools = true;
-        break;
+        case DimensionSeparateTools:
+            singleTool = false;
+            SeparatedTools = true;
+            break;
+        case DimensionBoth:
+            singleTool = true;
+            SeparatedTools = true;
+            break;
     }
     hGrp->SetBool("SingleDimensioningTool", singleTool);
     hGrp->SetBool("SeparatedDimensioningTools", SeparatedTools);
 
     ui->radiusDiameterMode->setEnabled(index != 1);
 
-    enum {
+    enum
+    {
         DimensionAutoRadiusDiam,
         DimensionDiameter,
         DimensionRadius
@@ -103,14 +106,14 @@ void SketcherSettings::saveSettings()
     bool Radius = true;
     index = ui->radiusDiameterMode->currentIndex();
     switch (index) {
-    case DimensionDiameter:
-        Diameter = true;
-        Radius = false;
-        break;
-    case DimensionRadius:
-        Diameter = false;
-        Radius = true;
-        break;
+        case DimensionDiameter:
+            Diameter = true;
+            Radius = false;
+            break;
+        case DimensionRadius:
+            Diameter = false;
+            Radius = true;
+            break;
     }
     hGrp->SetBool("DimensioningDiameter", Diameter);
     hGrp->SetBool("DimensioningRadius", Radius);
@@ -131,12 +134,16 @@ void SketcherSettings::loadSettings()
     ui->dimensioningMode->addItem(tr("Separated tools"));
     ui->dimensioningMode->addItem(tr("Both"));
 
-    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/dimensioning");
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/dimensioning");
     bool singleTool = hGrp->GetBool("SingleDimensioningTool", true);
     bool SeparatedTools = hGrp->GetBool("SeparatedDimensioningTools", false);
     int index = SeparatedTools ? (singleTool ? 2 : 1) : 0;
     ui->dimensioningMode->setCurrentIndex(index);
-    connect(ui->dimensioningMode, QOverload<int>::of(&QComboBox::currentIndexChanged), this, &SketcherSettings::dimensioningModeChanged);
+    connect(ui->dimensioningMode,
+            QOverload<int>::of(&QComboBox::currentIndexChanged),
+            this,
+            &SketcherSettings::dimensioningModeChanged);
 
     ui->radiusDiameterMode->setEnabled(index != 1);
 
@@ -248,13 +255,15 @@ void SketcherSettingsGrid::loadSettings()
         "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
     int pattern = hGrp->GetInt("GridLinePattern", 0x0f0f);
     int index = ui->gridLinePattern->findData(QVariant(pattern));
-    if (index < 0)
+    if (index < 0) {
         index = 1;
+    }
     ui->gridLinePattern->setCurrentIndex(index);
     pattern = hGrp->GetInt("GridDivLinePattern", 0xffff);
     index = ui->gridDivLinePattern->findData(QVariant(pattern));
-    if (index < 0)
+    if (index < 0) {
         index = 0;
+    }
     ui->gridDivLinePattern->setCurrentIndex(index);
 }
 
@@ -279,8 +288,10 @@ SketcherSettingsDisplay::SketcherSettingsDisplay(QWidget* parent)
 {
     ui->setupUi(this);
 
-    connect(
-        ui->btnTVApply, &QPushButton::clicked, this, &SketcherSettingsDisplay::onBtnTVApplyClicked);
+    connect(ui->btnTVApply,
+            &QPushButton::clicked,
+            this,
+            &SketcherSettingsDisplay::onBtnTVApplyClicked);
 }
 
 /**

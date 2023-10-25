@@ -36,7 +36,7 @@ namespace FemGui
 
 // ***************************************************************************
 // data along line filter
-class FemGuiExport ViewProviderFemPostDataAlongLine : public ViewProviderFemPostObject
+class FemGuiExport ViewProviderFemPostDataAlongLine: public ViewProviderFemPostObject
 {
     PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemPostDataAlongLine);
 
@@ -59,12 +59,19 @@ class FemGuiExport ViewProviderFemPostDataAtPoint: public ViewProviderFemPostObj
 public:
     /// constructor.
     ViewProviderFemPostDataAtPoint();
+
+    App::PropertyFloatConstraint PointSize;
+
     void show() override;
-    void onSelectionChanged(const Gui::SelectionChanges &) override;
+    void onChanged(const App::Property* prop) override;
+    void onSelectionChanged(const Gui::SelectionChanges&) override;
     ~ViewProviderFemPostDataAtPoint() override;
 
 protected:
     void setupTaskDialog(TaskDlgPost* dlg) override;
+
+private:
+    static App::PropertyFloatConstraint::Constraints sizeRange;
 };
 
 
@@ -134,7 +141,7 @@ protected:
 
 // ***************************************************************************
 // warp vector filter
-class FemGuiExport ViewProviderFemPostWarpVector : public ViewProviderFemPostObject
+class FemGuiExport ViewProviderFemPostWarpVector: public ViewProviderFemPostObject
 {
     PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderFemPostWarpVector);
 
@@ -147,7 +154,7 @@ protected:
     void setupTaskDialog(TaskDlgPost* dlg) override;
 };
 
-} //namespace FemGui
+}  // namespace FemGui
 
 
-#endif // FEM_VIEWPROVIDERFEMPOSTFILTER_H
+#endif  // FEM_VIEWPROVIDERFEMPOSTFILTER_H

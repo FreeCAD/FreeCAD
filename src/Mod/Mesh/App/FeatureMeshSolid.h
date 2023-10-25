@@ -34,140 +34,152 @@ namespace Mesh
 /**
  * @author Werner Mayer
  */
-class Sphere : public Mesh::Feature
+class Sphere: public Mesh::Feature
 {
-  PROPERTY_HEADER_WITH_OVERRIDE(Mesh::Sphere);
+    PROPERTY_HEADER_WITH_OVERRIDE(Mesh::Sphere);
 
 public:
-  Sphere();
+    Sphere();
 
-  App::PropertyLength Radius;
-  App::PropertyIntegerConstraint Sampling;
+    App::PropertyLength Radius;
+    App::PropertyIntegerConstraint Sampling;
 
-  /** @name methods override Feature */
-  //@{
-  /// recalculate the Feature
-  App::DocumentObjectExecReturn *execute() override;
-  short mustExecute() const override;
-  void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
-  //@}
+    /** @name methods override Feature */
+    //@{
+    /// recalculate the Feature
+    App::DocumentObjectExecReturn* execute() override;
+    short mustExecute() const override;
+    void handleChangedPropertyType(Base::XMLReader& reader,
+                                   const char* TypeName,
+                                   App::Property* prop) override;
+    //@}
 };
 
 // -------------------------------------------------------------
 
-class Ellipsoid : public Mesh::Feature
+class Ellipsoid: public Mesh::Feature
 {
-  PROPERTY_HEADER_WITH_OVERRIDE(Mesh::Ellipsoid);
+    PROPERTY_HEADER_WITH_OVERRIDE(Mesh::Ellipsoid);
 
 public:
-  Ellipsoid();
+    Ellipsoid();
 
-  App::PropertyLength Radius1;
-  App::PropertyLength Radius2;
-  App::PropertyIntegerConstraint Sampling;
+    App::PropertyLength Radius1;
+    App::PropertyLength Radius2;
+    App::PropertyIntegerConstraint Sampling;
 
-  /** @name methods override Feature */
-  //@{
-  /// recalculate the Feature
-  App::DocumentObjectExecReturn *execute() override;
-  short mustExecute() const override;
-  void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
-  //@}
+    /** @name methods override Feature */
+    //@{
+    /// recalculate the Feature
+    App::DocumentObjectExecReturn* execute() override;
+    short mustExecute() const override;
+    void handleChangedPropertyType(Base::XMLReader& reader,
+                                   const char* TypeName,
+                                   App::Property* prop) override;
+    //@}
 };
 
 // -------------------------------------------------------------
 
-class Cylinder : public Mesh::Feature
+class Cylinder: public Mesh::Feature
 {
-  PROPERTY_HEADER_WITH_OVERRIDE(Mesh::Cylinder);
+    PROPERTY_HEADER_WITH_OVERRIDE(Mesh::Cylinder);
 
 public:
-  Cylinder();
+    Cylinder();
 
-  App::PropertyLength Radius;
-  App::PropertyLength Length;
-  App::PropertyLength EdgeLength;
-  App::PropertyBool Closed;
-  App::PropertyIntegerConstraint Sampling;
+    App::PropertyLength Radius;
+    App::PropertyLength Length;
+    App::PropertyLength EdgeLength;
+    App::PropertyBool Closed;
+    App::PropertyIntegerConstraint Sampling;
 
-  /** @name methods override Feature */
-  //@{
-  /// recalculate the Feature
-  App::DocumentObjectExecReturn *execute() override;
-  short mustExecute() const override;
-  void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
-  //@}
+    /** @name methods override Feature */
+    //@{
+    /// recalculate the Feature
+    App::DocumentObjectExecReturn* execute() override;
+    short mustExecute() const override;
+    void handleChangedPropertyType(Base::XMLReader& reader,
+                                   const char* TypeName,
+                                   App::Property* prop) override;
+    //@}
 };
 
 // -------------------------------------------------------------
 
-class Cone : public Mesh::Feature
+class Cone: public Mesh::Feature
 {
-  PROPERTY_HEADER_WITH_OVERRIDE(Mesh::Cone);
+    PROPERTY_HEADER_WITH_OVERRIDE(Mesh::Cone);
 
 public:
-  Cone();
+    Cone();
 
-  App::PropertyLength Radius1;
-  App::PropertyLength Radius2;
-  App::PropertyLength Length;
-  App::PropertyLength EdgeLength;
-  App::PropertyBool Closed;
-  App::PropertyIntegerConstraint Sampling;
+    App::PropertyLength Radius1;
+    App::PropertyLength Radius2;
+    App::PropertyLength Length;
+    App::PropertyLength EdgeLength;
+    App::PropertyBool Closed;
+    App::PropertyIntegerConstraint Sampling;
 
-  /** @name methods override Feature */
-  //@{
-  /// recalculate the Feature
-  App::DocumentObjectExecReturn *execute() override;
-  short mustExecute() const override;
-  void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
-  //@}
+    /** @name methods override Feature */
+    //@{
+    /// recalculate the Feature
+    App::DocumentObjectExecReturn* execute() override;
+    short mustExecute() const override;
+    void handleChangedPropertyType(Base::XMLReader& reader,
+                                   const char* TypeName,
+                                   App::Property* prop) override;
+    //@}
 };
 
 // -------------------------------------------------------------
 
-class Torus : public Mesh::Feature
+class Torus: public Mesh::Feature
 {
-  PROPERTY_HEADER_WITH_OVERRIDE(Mesh::Torus);
+    PROPERTY_HEADER_WITH_OVERRIDE(Mesh::Torus);
 
 public:
-  Torus();
+    Torus();
 
-  App::PropertyLength Radius1;
-  App::PropertyLength Radius2;
-  App::PropertyIntegerConstraint Sampling;
+    App::PropertyLength Radius1;
+    App::PropertyLength Radius2;
+    App::PropertyIntegerConstraint Sampling;
 
-  /** @name methods override Feature */
-  //@{
-  /// recalculate the Feature
-  App::DocumentObjectExecReturn *execute() override;
-  short mustExecute() const override;
-  void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
-  //@}
+    /** @name methods override Feature */
+    //@{
+    /// recalculate the Feature
+    App::DocumentObjectExecReturn* execute() override;
+    short mustExecute() const override;
+    void handleChangedPropertyType(Base::XMLReader& reader,
+                                   const char* TypeName,
+                                   App::Property* prop) override;
+    //@}
 };
 
 // -------------------------------------------------------------
 
-class Cube : public Mesh::Feature
+class Cube: public Mesh::Feature
 {
-  PROPERTY_HEADER_WITH_OVERRIDE(Mesh::Cube);
+    PROPERTY_HEADER_WITH_OVERRIDE(Mesh::Cube);
 
 public:
-  Cube();
+    Cube();
 
-  App::PropertyLength Length;
-  App::PropertyLength Width;
-  App::PropertyLength Height;
+    App::PropertyLength Length;
+    App::PropertyLength Width;
+    App::PropertyLength Height;
 
-  /** @name methods override Feature */
-  //@{
-  /// recalculate the Feature
-  App::DocumentObjectExecReturn *execute() override;
-  short mustExecute() const override;
-  void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
-  //@}
+    /** @name methods override Feature */
+    //@{
+    /// recalculate the Feature
+    App::DocumentObjectExecReturn* execute() override;
+    short mustExecute() const override;
+    void handleChangedPropertyType(Base::XMLReader& reader,
+                                   const char* TypeName,
+                                   App::Property* prop) override;
+    //@}
 };
 
-}
+}  // namespace Mesh
 
-#endif // FEATURE_MESH_SOLID_H
+#endif  // FEATURE_MESH_SOLID_H

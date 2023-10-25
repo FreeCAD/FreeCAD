@@ -743,7 +743,8 @@ SoFCUnifiedSelection::handleEvent(SoHandleEventAction * action)
         if (SoMouseButtonEvent::isButtonReleaseEvent(e,SoMouseButtonEvent::BUTTON1)) {
             // check to see if the mouse is over a geometry...
             auto infos = this->getPickedList(action,!Selection().needPickedList());
-            if(setSelection(infos,event->wasCtrlDown()))
+            bool greedySel = Gui::Selection().getSelectionStyle() == Gui::SelectionSingleton::SelectionStyle::GreedySelection;
+            if(setSelection(infos, event->wasCtrlDown() || greedySel))
                 action->setHandled();
         } // mouse release
     }
@@ -1124,9 +1125,14 @@ SoFCSelectionContextBasePtr
 SoFCSelectionRoot::getNodeContext2(Stack &stack, SoNode *node, SoFCSelectionContextBase::MergeFunc *merge)
 {
     SoFCSelectionContextBasePtr ret;
-    auto *back = dynamic_cast<SoFCSelectionRoot*>(stack.back());
-    if(stack.empty() || back == nullptr || back->contextMap2.empty())
+    if (stack.empty()) {
         return ret;
+    }
+
+    auto *back = dynamic_cast<SoFCSelectionRoot*>(stack.back());
+    if (back == nullptr || back->contextMap2.empty()) {
+        return ret;
+    }
 
     int status = 0;
     auto &map = back->contextMap2;

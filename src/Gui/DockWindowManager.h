@@ -26,7 +26,6 @@
 #include <QObject>
 #include <FCGlobal.h>
 
-
 class QDockWidget;
 class QWidget;
 
@@ -70,6 +69,7 @@ public:
 
     bool registerDockWindow(const char* name, QWidget* widget);
     QWidget* unregisterDockWindow(const char* name);
+    QWidget* findRegisteredDockWindow(const char* name);
     void setup(DockWindowItems*);
 
     /// Adds a QDockWidget to the main window and sets \a widget as its widget
@@ -86,6 +86,8 @@ public:
     /// returned from @ref addDockWindow. If you want to access the QDockWidget
     /// you get it with parentWidget() of the returned widget.
     QWidget* getDockWindow(const char* name) const;
+    /// Returns the QDockWidget container
+    QDockWidget* getDockContainer(const char* name) const;
     /// Returns a list of all widgets which set to a QDockWidget.
     QList<QWidget*> getDockWindows() const;
     /// If the corresponding dock widget isn't visible then activate it
@@ -94,6 +96,8 @@ public:
     void saveState();
     void loadState();
     void retranslate();
+
+    bool isOverlayActivated() const;
 
 private Q_SLOTS:
    /**
@@ -107,6 +111,8 @@ private Q_SLOTS:
 
 private:
     QDockWidget* findDockWidget(const QList<QDockWidget*>&, const QString&) const;
+    void tabifyDockWidgets(DockWindowItems*);
+    void setupOverlayManagement();
 
     DockWindowManager();
     ~DockWindowManager() override;

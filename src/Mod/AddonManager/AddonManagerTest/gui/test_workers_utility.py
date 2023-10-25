@@ -69,9 +69,7 @@ class TestWorkersUtility(unittest.TestCase):
         while worker.isRunning():
             QtCore.QCoreApplication.processEvents(QtCore.QEventLoop.AllEvents, 50)
         QtCore.QCoreApplication.processEvents(QtCore.QEventLoop.AllEvents)
-        self.assertIsNone(
-            self.last_result, "Requesting interruption of thread failed to interrupt"
-        )
+        self.assertIsNone(self.last_result, "Requesting interruption of thread failed to interrupt")
 
     def connection_succeeded(self):
         self.last_result = "SUCCESS"

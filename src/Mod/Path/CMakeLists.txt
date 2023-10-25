@@ -95,6 +95,10 @@ SET(PathPythonMainGui_SRCS
     Path/Main/Gui/JobDlg.py
     Path/Main/Gui/PreferencesJob.py
     Path/Main/Gui/Sanity.py
+    Path/Main/Gui/Sanity_Bulb.svg
+    Path/Main/Gui/Sanity_Caution.svg
+    Path/Main/Gui/Sanity_Note.svg
+    Path/Main/Gui/Sanity_Warning.svg
     Path/Main/Gui/Simulator.py
 )
 
@@ -326,6 +330,8 @@ SET(PathTests_SRCS
     PathTests/TestRefactoredLinuxCNCPost.py
     PathTests/TestRefactoredMach3Mach4Post.py
     PathTests/TestRefactoredTestPost.py
+    PathTests/TestRefactoredTestPostGCodes.py
+    PathTests/TestRefactoredTestPostMCodes.py
     PathTests/Tools/Bit/test-path-tool-bit-bit-00.fctb
     PathTests/Tools/Library/test-path-tool-bit-library-00.fctl
     PathTests/Tools/Shape/test-path-tool-bit-shape-00.fcstd

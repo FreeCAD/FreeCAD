@@ -206,7 +206,12 @@ StdCmdLinkMake::StdCmdLinkMake()
 {
     sGroup        = "Link";
     sMenuText     = QT_TR_NOOP("Make link");
-    sToolTipText  = QT_TR_NOOP("Create a link to the selected object(s)");
+    static std::string toolTip = std::string("<p>")
+        + QT_TR_NOOP("A Link is an object that references or links to another object in the same "
+        "document, or in another document.Unlike Clones, Links reference the original Shape directly, "
+        " making them more memory efficient which helps with the creation of complex assemblies.")
+        + "</p>";
+    sToolTipText = toolTip.c_str();
     sWhatsThis    = "Std_LinkMake";
     sStatusTip    = sToolTipText;
     eType         = AlterDoc;
@@ -214,7 +219,7 @@ StdCmdLinkMake::StdCmdLinkMake()
 }
 
 bool StdCmdLinkMake::isActive() {
-    return !!App::GetApplication().getActiveDocument();
+    return App::GetApplication().getActiveDocument();
 }
 
 void StdCmdLinkMake::activated(int) {
@@ -878,6 +883,7 @@ public:
         eType         = AlterDoc;
         bCanLog       = false;
 
+        addCommand(new StdCmdLinkMake());
         addCommand(new StdCmdLinkMakeRelative());
         addCommand(new StdCmdLinkReplace());
         addCommand(new StdCmdLinkUnlink());
@@ -898,7 +904,6 @@ namespace Gui {
 void CreateLinkCommands()
 {
     CommandManager &rcCmdMgr = Application::Instance->commandManager();
-    rcCmdMgr.addCommand(new StdCmdLinkMake());
     rcCmdMgr.addCommand(new StdCmdLinkActions());
     rcCmdMgr.addCommand(new StdCmdLinkMakeGroup());
     rcCmdMgr.addCommand(new StdCmdLinkSelectActions());

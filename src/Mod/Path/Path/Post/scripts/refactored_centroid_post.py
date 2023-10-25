@@ -131,10 +131,6 @@ def init_values(values):
     #
     values["PREAMBLE"] = """G53 G00 G17"""
     #
-    # Output any messages.
-    #
-    values["REMOVE_MESSAGES"] = False
-    #
     # Any commands in this value are output after the header but before the preamble,
     # then again after the TOOLRETURN but before the POSTAMBLE.
     #

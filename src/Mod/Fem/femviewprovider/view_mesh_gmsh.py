@@ -189,10 +189,10 @@ class VPMeshGmsh:
             FreeCAD.Console.PrintError(message + "\n")
         return True
 
-    def __getstate__(self):
+    def dumps(self):
         return None
 
-    def __setstate__(self, state):
+    def loads(self, state):
         return None
 
     def claimChildren(self):

@@ -123,11 +123,17 @@ public:
      * the current XML encoding, and will be enclosed inside
      * CDATA section.  The stream will scan the input and
      * properly escape any CDATA ending inside.
+     *
+     * @param format: If Base64Encoded, the input will be base64 encoded before storing.
+     *                If Raw, the input is assumed to be valid character with
+     *                the current XML encoding, and will be enclosed inside
+     *                CDATA section.  The stream will scan the input and
+     *                properly escape any CDATA ending inside.
      * @return Returns an output stream.
      *
      * You must call endCharStream() to end the current character stream.
      */
-    std::ostream &beginCharStream();
+    std::ostream& beginCharStream(CharStreamFormat format = CharStreamFormat::Raw);
     /** End the current character output stream
      * @return Returns the normal writer stream for convenience
      */
@@ -161,6 +167,7 @@ public:
 
 private:
     std::unique_ptr<std::ostream> CharStream;
+    CharStreamFormat charStreamFormat;
 };
 
 

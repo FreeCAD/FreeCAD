@@ -73,5 +73,5 @@ private:
 
 QT_END_NAMESPACE
 
-#endif// QT_NO_SVGRENDERER
-#endif// QSVGIOHANDLER_H
+#endif  // QT_NO_SVGRENDERER
+#endif  // QSVGIOHANDLER_H

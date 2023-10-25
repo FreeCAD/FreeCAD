@@ -1,3 +1,4 @@
+// clang-format off
 // http://voxels.blogspot.de/2014/05/quadric-mesh-simplification-with-source.html
 // https://github.com/sp4cerat/Fast-Quadric-Mesh-Simplification
 //
@@ -538,3 +539,4 @@ double Simplify::calculate_error(int id_v1, int id_v2, vec3f &p_result)
 }
 
 ///////////////////////////////////////////
+// clang-format on

@@ -33,15 +33,16 @@
 #include "TaskTrajectory.h"
 
 
-namespace RobotGui {
+namespace RobotGui
+{
 
 /// simulation dialog for the TaskView
-class RobotGuiExport TaskDlgSimulate : public Gui::TaskView::TaskDialog
+class RobotGuiExport TaskDlgSimulate: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
 public:
-    TaskDlgSimulate(Robot::RobotObject *pcRobotObject,Robot::TrajectoryObject *pcTrajectoryObject);
+    TaskDlgSimulate(Robot::RobotObject* pcRobotObject, Robot::TrajectoryObject* pcTrajectoryObject);
 
 public:
     /// is called the TaskView when the dialog is opened
@@ -52,23 +53,23 @@ public:
     bool accept() override;
     /// is called by the framework if the dialog is rejected (Cancel)
     bool reject() override;
-    /// is called by the framework if the user press the help button 
+    /// is called by the framework if the user press the help button
     void helpRequested() override;
 
-    /// returns for Close and Help button 
+    /// returns for Close and Help button
     QDialogButtonBox::StandardButtons getStandardButtons() const override
-    { return QDialogButtonBox::Close|QDialogButtonBox::Help; }
+    {
+        return QDialogButtonBox::Close | QDialogButtonBox::Help;
+    }
 
 protected:
-    TaskRobot6Axis    *rob; 
-    TaskRobotControl  *ctr ;
-    TaskTrajectory    *trac;
-    TaskRobotMessages *msg ;
-
+    TaskRobot6Axis* rob;
+    TaskRobotControl* ctr;
+    TaskTrajectory* trac;
+    TaskRobotMessages* msg;
 };
 
 
+}  // namespace RobotGui
 
-} //namespace RobotGui
-
-#endif // ROBOTGUI_TASKDLGSIMULATE_H
+#endif  // ROBOTGUI_TASKDLGSIMULATE_H

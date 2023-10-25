@@ -118,6 +118,8 @@
 #include "ViewProvider.h"
 #include "ViewProviderDocumentObject.h"
 #include "ViewProviderLink.h"
+#include "NavigationAnimator.h"
+#include "NavigationAnimation.h"
 
 
 FC_LOG_LEVEL_INIT("3DViewer",true,true)
@@ -1298,6 +1300,10 @@ bool View3DInventorViewer::hasAxisCross()
 void View3DInventorViewer::showRotationCenter(bool show)
 {
     SoNode* scene = getSceneGraph();
+    if (!scene) {
+        return;
+    }
+
     auto sep = static_cast<SoSeparator*>(scene);
 
     bool showEnabled = App::GetApplication()
@@ -1313,6 +1319,17 @@ void View3DInventorViewer::showRotationCenter(bool show)
         }
 
         if (!rotationCenterGroup) {
+            float size = App::GetApplication()
+                             .GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")
+                             ->GetFloat("RotationCenterSize", 5.0);
+
+            unsigned long rotationCenterColor =
+                App::GetApplication()
+                    .GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")
+                    ->GetUnsigned("RotationCenterColor", 4278190131);
+
+            QColor color = App::Color::fromPackedRGBA<QColor>(rotationCenterColor);
+
             rotationCenterGroup = new SoSkipBoundingGroup();
 
             auto sphere = new SoSphere();
@@ -1328,8 +1345,8 @@ void View3DInventorViewer::showRotationCenter(bool show)
             complexity->value = 1;
 
             auto material = new SoMaterial();
-            material->emissiveColor = SbColor(1, 0, 0);
-            material->transparency = 0.8;
+            material->emissiveColor = SbColor(color.redF(), color.greenF(), color.blueF());
+            material->transparency = 1.0F - color.alphaF();
 
             auto translation = new SoTranslation();
             translation->translation.setValue(center);
@@ -1341,7 +1358,7 @@ void View3DInventorViewer::showRotationCenter(bool show)
 
             auto scaledSphere = new SoShapeScale();
             scaledSphere->setPart("shape", annotation);
-            scaledSphere->scaleFactor = 4.0;
+            scaledSphere->scaleFactor = size;
 
             rotationCenterGroup->addChild(translation);
             rotationCenterGroup->addChild(hidden);
@@ -1392,12 +1409,12 @@ SoDirectionalLight* View3DInventorViewer::getBacklight() const
     return this->backlight;
 }
 
-void View3DInventorViewer::setBacklight(SbBool on)
+void View3DInventorViewer::setBacklightEnabled(bool on)
 {
     this->backlight->on = on;
 }
 
-SbBool View3DInventorViewer::isBacklight() const
+bool View3DInventorViewer::isBacklightEnabled() const
 {
     return this->backlight->on.getValue();
 }
@@ -2231,8 +2248,6 @@ void View3DInventorViewer::renderScene()
     drawSingleBackground(col);
     glra->apply(this->backgroundroot);
 
-    navigation->updateAnimation();
-
     if (!this->shading) {
         state->push();
         SoLightModelElement::set(state, selectionRoot, SoLightModelElement::BASE_COLOR);
@@ -2750,9 +2765,9 @@ void View3DInventorViewer::pubSeekToPoint(const SbVec3f& pos)
     this->seekToPoint(pos);
 }
 
-void View3DInventorViewer::setCameraOrientation(const SbRotation& rot, SbBool moveTocenter)
+void View3DInventorViewer::setCameraOrientation(const SbRotation& orientation, SbBool moveToCenter)
 {
-    navigation->setCameraOrientation(rot, moveTocenter);
+    navigation->setCameraOrientation(orientation, moveToCenter);
 }
 
 void View3DInventorViewer::setCameraType(SoType t)
@@ -2773,54 +2788,19 @@ void View3DInventorViewer::setCameraType(SoType t)
     }
 }
 
-namespace Gui {
-    class CameraAnimation : public QVariantAnimation
-    {
-        SoCamera* camera;
-        SbRotation startRot, endRot;
-        SbVec3f startPos, endPos;
-
-    public:
-        CameraAnimation(SoCamera* camera, const SbRotation& rot, const SbVec3f& pos)
-            : camera(camera), endRot(rot), endPos(pos)
-        {
-            startPos = camera->position.getValue();
-            startRot = camera->orientation.getValue();
-        }
-        ~CameraAnimation() override = default;
-    protected:
-        void updateCurrentValue(const QVariant & value) override
-        {
-            int steps = endValue().toInt();
-            int curr = value.toInt();
-
-            float s = static_cast<float>(curr)/static_cast<float>(steps);
-            SbVec3f curpos = startPos * (1.0f-s) + endPos * s;
-            SbRotation currot = SbRotation::slerp(startRot, endRot, s);
-            camera->orientation.setValue(currot);
-            camera->position.setValue(curpos);
-        }
-    };
-}
-
-void View3DInventorViewer::moveCameraTo(const SbRotation& rot, const SbVec3f& pos, int steps, int ms)
+void View3DInventorViewer::moveCameraTo(const SbRotation& orientation, const SbVec3f& position, int duration)
 {
-    SoCamera* cam = this->getSoRenderManager()->getCamera();
-    if (!cam)
+    SoCamera* camera = getCamera();
+    if (!camera)
         return;
 
-    CameraAnimation anim(cam, rot, pos);
-    anim.setDuration(Base::clamp<int>(ms,0,5000));
-    anim.setStartValue(static_cast<int>(0));
-    anim.setEndValue(steps);
+    if (isAnimationEnabled()) {
+        startAnimation(
+            orientation, camera->position.getValue(), position - camera->position.getValue(), duration, true);
+    }
 
-    QEventLoop loop;
-    QObject::connect(&anim, &CameraAnimation::finished, &loop, &QEventLoop::quit);
-    anim.start();
-    loop.exec(QEventLoop::ExcludeUserInputEvents);
-
-    cam->orientation.setValue(rot);
-    cam->position.setValue(pos);
+    camera->orientation.setValue(orientation);
+    camera->position.setValue(position);
 }
 
 void View3DInventorViewer::animatedViewAll(int steps, int ms)
@@ -3102,13 +3082,47 @@ SbBool View3DInventorViewer::isAnimating() const
     return navigation->isAnimating();
 }
 
-/*!
- * Starts programmatically the viewer in animation mode. The given axis direction
- * is always in screen coordinates, not in world coordinates.
+/**
+ * @brief Change the camera pose with an animation
+ *
+ * @param orientation The new orientation
+ * @param rotationCenter The rotation center
+ * @param translation An additional translation on top of the translation caused by the rotation around the rotation center
+ * @param duration The duration in milliseconds
+ * @param wait When false, start the animation and continue (asynchronous). When true, start the animation and wait for the animation to finish (synchronous)
  */
-void View3DInventorViewer::startAnimating(const SbVec3f& axis, float velocity)
+void View3DInventorViewer::startAnimation(const SbRotation& orientation,
+                                          const SbVec3f& rotationCenter,
+                                          const SbVec3f& translation,
+                                          int duration,
+                                          bool wait)
 {
-    navigation->startAnimating(axis, velocity);
+    // Currently starts a FixedTimeAnimation. If there is going to be an additional animation like
+    // FixedVelocityAnimation, check the animation type from a parameter and start the right animation
+
+    // Duration was not set or is invalid so use the AnimationDuration parameter as default
+    if (duration < 0) {
+        duration = App::GetApplication()
+                       .GetParameterGroupByPath("User parameter:BaseApp/Preferences/View")
+                       ->GetInt("AnimationDuration", 250);
+    }
+
+    auto animation = std::make_shared<FixedTimeAnimation>(
+        navigation, orientation, rotationCenter, translation, duration);
+
+    navigation->startAnimating(animation, wait);
+}
+
+/**
+ * @brief Start an infinite spin animation
+ *
+ * @param axis The rotation axis in screen coordinates
+ * @param velocity The angular velocity in radians per second
+ */
+void View3DInventorViewer::startSpinningAnimation(const SbVec3f& axis, float velocity)
+{
+    auto animation = std::make_shared<SpinningAnimation>(navigation, axis, velocity);
+    navigation->startAnimating(animation);
 }
 
 void View3DInventorViewer::stopAnimating()

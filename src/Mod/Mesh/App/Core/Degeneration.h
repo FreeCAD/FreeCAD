@@ -30,7 +30,8 @@
 #include "Evaluation.h"
 
 
-namespace MeshCore {
+namespace MeshCore
+{
 
 class MeshKernel;
 class MeshGeomFacet;
@@ -43,21 +44,23 @@ class MeshFacetIterator;
  * @see MeshFixInvalids
  * @author Werner Mayer
  */
-class MeshExport MeshEvalInvalids : public MeshEvaluation
+class MeshExport MeshEvalInvalids: public MeshEvaluation
 {
 public:
-  /**
-   * Construction.
-   */
-  explicit MeshEvalInvalids (const MeshKernel &rclM) : MeshEvaluation( rclM ) { }
-  /**
-   * Searches for as 'Invalid' marked points or facets.
-   */
-  bool Evaluate () override;
-  /**
-   * Returns the indices of all invalid facets or facets whose points are invalid.
-   */
-  std::vector<FacetIndex> GetIndices() const;
+    /**
+     * Construction.
+     */
+    explicit MeshEvalInvalids(const MeshKernel& rclM)
+        : MeshEvaluation(rclM)
+    {}
+    /**
+     * Searches for as 'Invalid' marked points or facets.
+     */
+    bool Evaluate() override;
+    /**
+     * Returns the indices of all invalid facets or facets whose points are invalid.
+     */
+    std::vector<FacetIndex> GetIndices() const;
 };
 
 /**
@@ -65,42 +68,48 @@ public:
  * @see MeshEvalInvalids
  * @author Werner Mayer
  */
-class MeshExport MeshFixInvalids : public MeshValidation
+class MeshExport MeshFixInvalids: public MeshValidation
 {
 public:
-  /**
-   * Construction.
-   */
-  explicit MeshFixInvalids (MeshKernel &rclM) : MeshValidation( rclM ) { }
-  /**
-   * Remove invalid elements.
-   */
-  bool Fixup () override;
+    /**
+     * Construction.
+     */
+    explicit MeshFixInvalids(MeshKernel& rclM)
+        : MeshValidation(rclM)
+    {}
+    /**
+     * Remove invalid elements.
+     */
+    bool Fixup() override;
 };
 
 /**
  * The MeshEvalDuplicatePoints class searches for duplicated points.
- * A point is regarded as duplicated if the distances between x, y and z coordinates of two points is
- * less than an epsilon (defined by MeshDefinitions::_fMinPointDistanceD1, default value=1.0e-5f).
+ * A point is regarded as duplicated if the distances between x, y and z coordinates of two points
+ * is less than an epsilon (defined by MeshDefinitions::_fMinPointDistanceD1, default
+ * value=1.0e-5f).
  * @see MeshFixDuplicatePoints
  * @see MeshEvalDegeneratedFacets
  * @author Werner Mayer
  */
-class MeshExport MeshEvalDuplicatePoints : public MeshEvaluation
+class MeshExport MeshEvalDuplicatePoints: public MeshEvaluation
 {
 public:
-  /**
-   * Construction.
-   */
-  explicit MeshEvalDuplicatePoints (const MeshKernel &rclM) : MeshEvaluation( rclM ) { }
-  /**
-   * Merges points to one if the distance between them is less than the global \a MeshDefinitions::_fMinPointDistanceD1.
-   */
-  bool Evaluate () override;
-  /**
-   * Returns the indices of all duplicated points.
-   */
-  std::vector<PointIndex> GetIndices() const;
+    /**
+     * Construction.
+     */
+    explicit MeshEvalDuplicatePoints(const MeshKernel& rclM)
+        : MeshEvaluation(rclM)
+    {}
+    /**
+     * Merges points to one if the distance between them is less than the global \a
+     * MeshDefinitions::_fMinPointDistanceD1.
+     */
+    bool Evaluate() override;
+    /**
+     * Returns the indices of all duplicated points.
+     */
+    std::vector<PointIndex> GetIndices() const;
 };
 
 /**
@@ -108,17 +117,19 @@ public:
  * @see MeshEvalDuplicatePoints
  * @author Werner Mayer
  */
-class MeshExport MeshFixDuplicatePoints : public MeshValidation
+class MeshExport MeshFixDuplicatePoints: public MeshValidation
 {
 public:
-  /**
-   * Construction.
-   */
-  explicit MeshFixDuplicatePoints (MeshKernel &rclM) : MeshValidation( rclM ) { }
-  /**
-   * Merges duplicated points.
-   */
-  bool Fixup () override;
+    /**
+     * Construction.
+     */
+    explicit MeshFixDuplicatePoints(MeshKernel& rclM)
+        : MeshValidation(rclM)
+    {}
+    /**
+     * Merges duplicated points.
+     */
+    bool Fixup() override;
 };
 
 /**
@@ -126,21 +137,23 @@ public:
  * @see MeshFixNaNPoints
  * @author Werner Mayer
  */
-class MeshExport MeshEvalNaNPoints : public MeshEvaluation
+class MeshExport MeshEvalNaNPoints: public MeshEvaluation
 {
 public:
-  /**
-   * Construction.
-   */
-  explicit MeshEvalNaNPoints (const MeshKernel &rclM) : MeshEvaluation( rclM ) { }
-  /**
-   * Returns false if a point with NaN coordinate is found.
-   */
-  bool Evaluate () override;
-  /**
-   * Returns the indices of all NaN points.
-   */
-  std::vector<PointIndex> GetIndices() const;
+    /**
+     * Construction.
+     */
+    explicit MeshEvalNaNPoints(const MeshKernel& rclM)
+        : MeshEvaluation(rclM)
+    {}
+    /**
+     * Returns false if a point with NaN coordinate is found.
+     */
+    bool Evaluate() override;
+    /**
+     * Returns the indices of all NaN points.
+     */
+    std::vector<PointIndex> GetIndices() const;
 };
 
 /**
@@ -148,41 +161,45 @@ public:
  * @see MeshEvalNaNPoints
  * @author Werner Mayer
  */
-class MeshExport MeshFixNaNPoints : public MeshValidation
+class MeshExport MeshFixNaNPoints: public MeshValidation
 {
 public:
-  /**
-   * Construction.
-   */
-  explicit MeshFixNaNPoints (MeshKernel &rclM) : MeshValidation( rclM ) { }
-  /**
-   * Merges duplicated points.
-   */
-  bool Fixup () override;
+    /**
+     * Construction.
+     */
+    explicit MeshFixNaNPoints(MeshKernel& rclM)
+        : MeshValidation(rclM)
+    {}
+    /**
+     * Merges duplicated points.
+     */
+    bool Fixup() override;
 };
 
 /**
  * The MeshEvalDuplicateFacets class searches for duplicated facets.
- * A facet is regarded as duplicated if all its point indices refer to the same location in the point array of the mesh kernel.
- * The actual geometric points are not taken into consideration.
+ * A facet is regarded as duplicated if all its point indices refer to the same location in the
+ * point array of the mesh kernel. The actual geometric points are not taken into consideration.
  * @see MeshFixDuplicateFacets
  * @author Werner Mayer
  */
-class MeshExport MeshEvalDuplicateFacets : public MeshEvaluation
+class MeshExport MeshEvalDuplicateFacets: public MeshEvaluation
 {
 public:
-  /**
-   * Construction.
-   */
-  explicit MeshEvalDuplicateFacets (const MeshKernel &rclM) : MeshEvaluation( rclM ) { }
-  /**
-   * Searches for duplicated facets.
-   */
-  bool Evaluate () override;
-  /**
-   * Returns the indices of all duplicated facets.
-   */
-  std::vector<FacetIndex> GetIndices() const;
+    /**
+     * Construction.
+     */
+    explicit MeshEvalDuplicateFacets(const MeshKernel& rclM)
+        : MeshEvaluation(rclM)
+    {}
+    /**
+     * Searches for duplicated facets.
+     */
+    bool Evaluate() override;
+    /**
+     * Returns the indices of all duplicated facets.
+     */
+    std::vector<FacetIndex> GetIndices() const;
 };
 
 /**
@@ -190,76 +207,85 @@ public:
  * @see MeshEvalDuplicateFacets
  * @author Werner Mayer
  */
-class MeshExport MeshFixDuplicateFacets : public MeshValidation
+class MeshExport MeshFixDuplicateFacets: public MeshValidation
 {
 public:
-  /**
-   * Construction.
-   */
-  explicit MeshFixDuplicateFacets (MeshKernel &rclM) : MeshValidation( rclM ) { }
-  /**
-   * Removes duplicated facets.
-   */
-  bool Fixup () override;
+    /**
+     * Construction.
+     */
+    explicit MeshFixDuplicateFacets(MeshKernel& rclM)
+        : MeshValidation(rclM)
+    {}
+    /**
+     * Removes duplicated facets.
+     */
+    bool Fixup() override;
 };
 
 /**
  * The MeshEvalInternalFacets class identifies internal facets of a volume mesh.
  * @author Werner Mayer
  */
-class MeshExport MeshEvalInternalFacets : public MeshEvaluation
+class MeshExport MeshEvalInternalFacets: public MeshEvaluation
 {
 public:
-  /**
-   * Construction.
-   */
-  explicit MeshEvalInternalFacets (const MeshKernel &rclM) : MeshEvaluation( rclM ) { }
-  /**
-   * Identify internal facets.
-   */
-  bool Evaluate () override;
-  /**
-   * Return the indices.
-   */
-  const std::vector<FacetIndex>& GetIndices() const
-  { return _indices; }
+    /**
+     * Construction.
+     */
+    explicit MeshEvalInternalFacets(const MeshKernel& rclM)
+        : MeshEvaluation(rclM)
+    {}
+    /**
+     * Identify internal facets.
+     */
+    bool Evaluate() override;
+    /**
+     * Return the indices.
+     */
+    const std::vector<FacetIndex>& GetIndices() const
+    {
+        return _indices;
+    }
 
 private:
     std::vector<FacetIndex> _indices;
 };
 
 /**
- * The MeshEvalDegeneratedFacets class searches for degenerated facets. A facet is degenerated either if its points
- * are collinear, i.e. they lie on a line or two points are coincident. In the latter case these points are duplicated.
- * If a facet refers to at least two equal point indices then the facet is also regarded is 'corrupt'.
+ * The MeshEvalDegeneratedFacets class searches for degenerated facets. A facet is degenerated
+ * either if its points are collinear, i.e. they lie on a line or two points are coincident. In the
+ * latter case these points are duplicated. If a facet refers to at least two equal point indices
+ * then the facet is also regarded is 'corrupt'.
  * @see MeshEvalCorruptedFacets
  * @see MeshEvalDuplicatePoints
  * @see MeshFixDegeneratedFacets
  * @author Werner Mayer
  */
-class MeshExport MeshEvalDegeneratedFacets : public MeshEvaluation
+class MeshExport MeshEvalDegeneratedFacets: public MeshEvaluation
 {
 public:
-  /**
-   * Construction.
-   */
-  MeshEvalDegeneratedFacets (const MeshKernel &rclM, float fEps)
-      : MeshEvaluation(rclM), fEpsilon(fEps) {}
-  /**
-   * Searches degenerated facets.
-   */
-  bool Evaluate () override;
-  /**
-   * Returns the number of facets with an edge smaller than \a fMinEdgeLength.
-   */
-  unsigned long CountEdgeTooSmall (float fMinEdgeLength) const;
-  /**
-   * Returns the indices of all corrupt facets.
-   */
-  std::vector<FacetIndex> GetIndices() const;
+    /**
+     * Construction.
+     */
+    MeshEvalDegeneratedFacets(const MeshKernel& rclM, float fEps)
+        : MeshEvaluation(rclM)
+        , fEpsilon(fEps)
+    {}
+    /**
+     * Searches degenerated facets.
+     */
+    bool Evaluate() override;
+    /**
+     * Returns the number of facets with an edge smaller than \a fMinEdgeLength.
+     */
+    unsigned long CountEdgeTooSmall(float fMinEdgeLength) const;
+    /**
+     * Returns the indices of all corrupt facets.
+     */
+    std::vector<FacetIndex> GetIndices() const;
 
 private:
-  float fEpsilon;
+    float fEpsilon;
 };
 
 /**
@@ -267,21 +293,23 @@ private:
  * @see MeshEvalDegeneratedFacets
  * @author Werner Mayer
  */
-class MeshExport MeshFixDegeneratedFacets : public MeshValidation
+class MeshExport MeshFixDegeneratedFacets: public MeshValidation
 {
 public:
-  /**
-   * Construction.
-   */
-  MeshFixDegeneratedFacets (MeshKernel &rclM, float fEps)
-      : MeshValidation(rclM), fEpsilon(fEps) { }
-  /**
-   * Removes degenerated facets.
-   */
-  bool Fixup () override;
+    /**
+     * Construction.
+     */
+    MeshFixDegeneratedFacets(MeshKernel& rclM, float fEps)
+        : MeshValidation(rclM)
+        , fEpsilon(fEps)
+    {}
+    /**
+     * Removes degenerated facets.
+     */
+    bool Fixup() override;
 
 private:
-  float fEpsilon;
+    float fEpsilon;
 };
 
 /**
@@ -292,7 +320,7 @@ private:
  * @see MeshFixCaps
  * @author Werner Mayer
  */
-class MeshExport MeshRemoveNeedles : public MeshValidation
+class MeshExport MeshRemoveNeedles: public MeshValidation
 {
 public:
     /**
@@ -300,16 +328,18 @@ public:
      * It defines the amount of perimeter of a triangle for which the shortest
      * edge is considered for removal.
      */
-  explicit MeshRemoveNeedles (MeshKernel &rclM, float fMinEdgeLen = 0.05f)
-      : MeshValidation(rclM), fMinEdgeLength(std::min(fMinEdgeLen, 0.25f)) {}
-  /**
-   * Removes all facets with an edge smaller than \a fMinEdgeLength without leaving holes or gaps
-   * in the mesh.
-   */
-  bool Fixup () override;
+    explicit MeshRemoveNeedles(MeshKernel& rclM, float fMinEdgeLen = 0.05f)
+        : MeshValidation(rclM)
+        , fMinEdgeLength(std::min(fMinEdgeLen, 0.25f))
+    {}
+    /**
+     * Removes all facets with an edge smaller than \a fMinEdgeLength without leaving holes or gaps
+     * in the mesh.
+     */
+    bool Fixup() override;
 
 private:
-  float fMinEdgeLength;
+    float fMinEdgeLength;
 };
 
 /**
@@ -322,21 +352,26 @@ private:
  * @see MeshRemoveNeedles
  * @author Werner Mayer
  */
-class MeshExport MeshFixCaps : public MeshValidation
+class MeshExport MeshFixCaps: public MeshValidation
 {
 public:
-  /**
-   * Construction. The \arg fFactor must be in the range of 0.0 and 0.5.
-   */
-  explicit MeshFixCaps (MeshKernel &rclM, float fMaxAng = 2.61f, float fFactor = 0.25f) // ~150 degree
-      : MeshValidation(rclM), fMaxAngle(fMaxAng), fSplitFactor(fFactor) { }
-  /**
-   */
-  bool Fixup () override;
+    /**
+     * Construction. The \arg fFactor must be in the range of 0.0 and 0.5.
+     */
+    explicit MeshFixCaps(MeshKernel& rclM,
+                         float fMaxAng = 2.61f,
+                         float fFactor = 0.25f)  // ~150 degree
+        : MeshValidation(rclM)
+        , fMaxAngle(fMaxAng)
+        , fSplitFactor(fFactor)
+    {}
+    /**
+     */
+    bool Fixup() override;
 
 private:
-  float fMaxAngle;
-  float fSplitFactor;
+    float fMaxAngle;
+    float fSplitFactor;
 };
 
 /**
@@ -345,86 +380,108 @@ private:
  * @see MeshFixDegeneratedFacets
  * @author Werner Mayer
  */
-class MeshExport MeshEvalDeformedFacets : public MeshEvaluation
+class MeshExport MeshEvalDeformedFacets: public MeshEvaluation
 {
 public:
-  /**
-   * Construction.
-   */
-  MeshEvalDeformedFacets (const MeshKernel &rclM, float fMinAngle, float fMaxAngle)
-      : MeshEvaluation(rclM), fMinAngle(fMinAngle), fMaxAngle(fMaxAngle) { }
-  /**
-   * Searches deformed facets.
-   */
-  bool Evaluate () override;
-  /**
-   * Returns the indices of deformed facets.
-   */
-  std::vector<FacetIndex> GetIndices() const;
+    /**
+     * Construction.
+     */
+    MeshEvalDeformedFacets(const MeshKernel& rclM, float fMinAngle, float fMaxAngle)
+        : MeshEvaluation(rclM)
+        , fMinAngle(fMinAngle)
+        , fMaxAngle(fMaxAngle)
+    {}
+    /**
+     * Searches deformed facets.
+     */
+    bool Evaluate() override;
+    /**
+     * Returns the indices of deformed facets.
+     */
+    std::vector<FacetIndex> GetIndices() const;
 
 private:
-  float fMinAngle; /**< If an angle of a facet is lower than fMinAngle it's considered as deformed. */
-  float fMaxAngle; /**< If an angle of a facet is higher than fMaxAngle it's considered as deformed. */
+    float fMinAngle; /**< If an angle of a facet is lower than fMinAngle it's considered as
+                        deformed. */
+    float fMaxAngle; /**< If an angle of a facet is higher than fMaxAngle it's considered as
+                        deformed. */
 };
 
 /**
- * The MeshFixDeformedFacets class tries to fix deformed facets by swapping the common edge with one of their neighbours.
- * @note Degenerated facets are also deformed facet but this algorithm tries to fix deformed facets that or not degenerated.
- * The removal of degenerated facets is done by @ref MeshFixDegeneratedFacets.
+ * The MeshFixDeformedFacets class tries to fix deformed facets by swapping the common edge with one
+ * of their neighbours.
+ * @note Degenerated facets are also deformed facet but this algorithm tries to fix deformed facets
+ * that or not degenerated. The removal of degenerated facets is done by @ref
+ * MeshFixDegeneratedFacets.
  * @see MeshEvalDeformedFacets
  * @author Werner Mayer
  */
-class MeshExport MeshFixDeformedFacets : public MeshValidation
+class MeshExport MeshFixDeformedFacets: public MeshValidation
 {
 public:
-  /**
-   * Construction.
-   */
-  MeshFixDeformedFacets (MeshKernel &rclM, float fMinAngle, float fMaxAngle, float fSwapAngle, float fEps)
-      : MeshValidation(rclM), fMinAngle(fMinAngle), fMaxAngle(fMaxAngle),
-        fMaxSwapAngle(fSwapAngle), fEpsilon(fEps) { }
-  /**
-   * Removes deformed facets.
-   */
-  bool Fixup () override;
+    /**
+     * Construction.
+     */
+    MeshFixDeformedFacets(MeshKernel& rclM,
+                          float fMinAngle,
+                          float fMaxAngle,
+                          float fSwapAngle,
+                          float fEps)
+        : MeshValidation(rclM)
+        , fMinAngle(fMinAngle)
+        , fMaxAngle(fMaxAngle)
+        , fMaxSwapAngle(fSwapAngle)
+        , fEpsilon(fEps)
+    {}
+    /**
+     * Removes deformed facets.
+     */
+    bool Fixup() override;
 
 private:
-  float fMinAngle; /**< If an angle of a facet is lower than fMinAngle it's considered as deformed. */
-  float fMaxAngle; /**< If an angle of a facet is higher than fMaxAngle it's considered as deformed. */
-  float fMaxSwapAngle; /**< A swap edge is only allowed if the angle of both normals doesn't exceed fMaxSwapAngle */
-  float fEpsilon;
+    float fMinAngle;     /**< If an angle of a facet is lower than fMinAngle it's considered as
+                            deformed. */
+    float fMaxAngle;     /**< If an angle of a facet is higher than fMaxAngle it's considered as
+                            deformed. */
+    float fMaxSwapAngle; /**< A swap edge is only allowed if the angle of both normals doesn't
+                            exceed fMaxSwapAngle */
+    float fEpsilon;
 };
 
 /**
- * The MeshFixMergeFacets class removes vertexes which have three adjacent vertexes and is referenced by three facets.
- * Usually all the three facets that reference this vertex are not well-formed. If the number of adjacent vertexes
- * is equal to the number of adjacent facets the affected vertex never lies on the boundary and thus it's safe to delete
- * and replace the three facets with a single facet.
- * Effectively this algorithm does the opposite of \ref MeshTopoAlgorithm::InsertVertex
+ * The MeshFixMergeFacets class removes vertexes which have three adjacent vertexes and is
+ * referenced by three facets. Usually all the three facets that reference this vertex are not
+ * well-formed. If the number of adjacent vertexes is equal to the number of adjacent facets the
+ * affected vertex never lies on the boundary and thus it's safe to delete and replace the three
+ * facets with a single facet. Effectively this algorithm does the opposite of \ref
+ * MeshTopoAlgorithm::InsertVertex
  * @author Werner Mayer
  */
-class MeshExport MeshFixMergeFacets : public MeshValidation
+class MeshExport MeshFixMergeFacets: public MeshValidation
 {
 public:
-  /**
-   * Construction.
-   */
-  explicit MeshFixMergeFacets (MeshKernel &rclM)
-      : MeshValidation(rclM) { }
-  /**
-   * Removes deformed facets.
-   */
-  bool Fixup () override;
+    /**
+     * Construction.
+     */
+    explicit MeshFixMergeFacets(MeshKernel& rclM)
+        : MeshValidation(rclM)
+    {}
+    /**
+     * Removes deformed facets.
+     */
+    bool Fixup() override;
 };
 
 /**
  * If an adjacent point (A) of a point (P) can be projected onto a triangle shared
  * by (P) but not by (A) then we have a local dent. The topology is not affected.
  */
-class MeshExport MeshEvalDentsOnSurface : public MeshEvaluation
+class MeshExport MeshEvalDentsOnSurface: public MeshEvaluation
 {
 public:
-    explicit MeshEvalDentsOnSurface (const MeshKernel &rclM) : MeshEvaluation( rclM ) { }
+    explicit MeshEvalDentsOnSurface(const MeshKernel& rclM)
+        : MeshEvaluation(rclM)
+    {}
 
     bool Evaluate() override;
     std::vector<FacetIndex> GetIndices() const;
@@ -433,10 +490,12 @@ private:
     std::vector<FacetIndex> indices;
 };
 
-class MeshExport MeshFixDentsOnSurface : public MeshValidation
+class MeshExport MeshFixDentsOnSurface: public MeshValidation
 {
 public:
-    explicit MeshFixDentsOnSurface (MeshKernel &rclM) : MeshValidation( rclM ) { }
+    explicit MeshFixDentsOnSurface(MeshKernel& rclM)
+        : MeshValidation(rclM)
+    {}
 
     bool Fixup() override;
 };
@@ -446,10 +505,12 @@ public:
  * but the angles between both of these adjacent triangles is higher than 90 deg
  * we have a fold. The topology is not affected but the geometry is broken.
  */
-class MeshExport MeshEvalFoldsOnSurface : public MeshEvaluation
+class MeshExport MeshEvalFoldsOnSurface: public MeshEvaluation
 {
 public:
-    explicit MeshEvalFoldsOnSurface (const MeshKernel &rclM) : MeshEvaluation( rclM ) { }
+    explicit MeshEvalFoldsOnSurface(const MeshKernel& rclM)
+        : MeshEvaluation(rclM)
+    {}
 
     bool Evaluate() override;
     std::vector<FacetIndex> GetIndices() const;
@@ -464,10 +525,12 @@ private:
  * The topology is not affected there but such triangles can lead to problems
  * on some hole-filling algorithms.
  */
-class MeshExport MeshEvalFoldsOnBoundary : public MeshEvaluation
+class MeshExport MeshEvalFoldsOnBoundary: public MeshEvaluation
 {
 public:
-    explicit MeshEvalFoldsOnBoundary (const MeshKernel &rclM) : MeshEvaluation( rclM ) { }
+    explicit MeshEvalFoldsOnBoundary(const MeshKernel& rclM)
+        : MeshEvaluation(rclM)
+    {}
 
     bool Evaluate() override;
     std::vector<FacetIndex> GetIndices() const;
@@ -476,10 +539,12 @@ private:
     std::vector<FacetIndex> indices;
 };
 
-class MeshExport MeshFixFoldsOnBoundary : public MeshValidation
+class MeshExport MeshFixFoldsOnBoundary: public MeshValidation
 {
 public:
-    explicit MeshFixFoldsOnBoundary (MeshKernel &rclM) : MeshValidation( rclM ) { }
+    explicit MeshFixFoldsOnBoundary(MeshKernel& rclM)
+        : MeshValidation(rclM)
+    {}
 
     bool Fixup() override;
 };
@@ -488,14 +553,18 @@ public:
  * Considers two adjacent triangles with an angle higher than 120 deg of their
  * normals as a fold-over. The topology is not affected there.
  */
-class MeshExport MeshEvalFoldOversOnSurface : public MeshEvaluation
+class MeshExport MeshEvalFoldOversOnSurface: public MeshEvaluation
 {
 public:
-    explicit MeshEvalFoldOversOnSurface (const MeshKernel &rclM) : MeshEvaluation( rclM ) { }
+    explicit MeshEvalFoldOversOnSurface(const MeshKernel& rclM)
+        : MeshEvaluation(rclM)
+    {}
 
     bool Evaluate() override;
     std::vector<FacetIndex> GetIndices() const
-    { return this->indices; }
+    {
+        return this->indices;
+    }
 
 private:
     std::vector<FacetIndex> indices;
@@ -506,14 +575,16 @@ private:
  * part of a boundary.
  * @see MeshEvalSingleFacet
  */
-class MeshExport MeshEvalBorderFacet : public MeshEvaluation
+class MeshExport MeshEvalBorderFacet: public MeshEvaluation
 {
 public:
-  MeshEvalBorderFacet (const MeshKernel &rclB, std::vector<FacetIndex>& f)
-    : MeshEvaluation(rclB), _facets(f) {}
-  bool Evaluate() override;
+    MeshEvalBorderFacet(const MeshKernel& rclB, std::vector<FacetIndex>& f)
+        : MeshEvaluation(rclB)
+        , _facets(f)
+    {}
+    bool Evaluate() override;
 
-protected:
+private:
     std::vector<FacetIndex>& _facets;
 };
 
@@ -528,21 +599,23 @@ protected:
  * @see MeshFixRangeFacet
  * @author Werner Mayer
  */
-class MeshExport MeshEvalRangeFacet : public MeshEvaluation
+class MeshExport MeshEvalRangeFacet: public MeshEvaluation
 {
 public:
-  /**
-   * Construction.
-   */
-  explicit MeshEvalRangeFacet (const MeshKernel &rclM) : MeshEvaluation( rclM ) { }
-  /**
-   * Searches for facets that has neighbour facet indices out of range.
-   */
-  bool Evaluate () override;
-  /**
-   * Returns the indices of all facets with invalid neighbour indices.
-   */
-  std::vector<FacetIndex> GetIndices() const;
+    /**
+     * Construction.
+     */
+    explicit MeshEvalRangeFacet(const MeshKernel& rclM)
+        : MeshEvaluation(rclM)
+    {}
+    /**
+     * Searches for facets that has neighbour facet indices out of range.
+     */
+    bool Evaluate() override;
+    /**
+     * Returns the indices of all facets with invalid neighbour indices.
+     */
+    std::vector<FacetIndex> GetIndices() const;
 };
 
 /**
@@ -550,17 +623,19 @@ public:
  * @see MeshEvalRangeFacet
  * @author Werner Mayer
  */
-class MeshExport MeshFixRangeFacet : public MeshValidation
+class MeshExport MeshFixRangeFacet: public MeshValidation
 {
 public:
-  /**
-   * Construction.
-   */
-  explicit MeshFixRangeFacet (MeshKernel &rclM) : MeshValidation( rclM ) { }
-  /**
-   * Fixes facets with neighbour indices out of range.
-   */
-  bool Fixup () override;
+    /**
+     * Construction.
+     */
+    explicit MeshFixRangeFacet(MeshKernel& rclM)
+        : MeshValidation(rclM)
+    {}
+    /**
+     * Fixes facets with neighbour indices out of range.
+     */
+    bool Fixup() override;
 };
 
 /**
@@ -568,21 +643,23 @@ public:
  * @see MeshFixRangePoint
  * @author Werner Mayer
  */
-class MeshExport MeshEvalRangePoint : public MeshEvaluation
+class MeshExport MeshEvalRangePoint: public MeshEvaluation
 {
 public:
-  /**
-   * Construction.
-   */
-  explicit MeshEvalRangePoint (const MeshKernel &rclM) : MeshEvaluation( rclM ) { }
-  /**
-   * Searches for facets that has point indices out of range.
-   */
-  bool Evaluate () override;
-  /**
-   * Returns the indices of all facets with invalid point indices.
-   */
-  std::vector<PointIndex> GetIndices() const;
+    /**
+     * Construction.
+     */
+    explicit MeshEvalRangePoint(const MeshKernel& rclM)
+        : MeshEvaluation(rclM)
+    {}
+    /**
+     * Searches for facets that has point indices out of range.
+     */
+    bool Evaluate() override;
+    /**
+     * Returns the indices of all facets with invalid point indices.
+     */
+    std::vector<PointIndex> GetIndices() const;
 };
 
 /**
@@ -590,17 +667,19 @@ public:
  * @see MeshFixRangePoint
  * @author Werner Mayer
  */
-class MeshExport MeshFixRangePoint : public MeshValidation
+class MeshExport MeshFixRangePoint: public MeshValidation
 {
 public:
-  /**
-   * Construction.
-   */
-  explicit MeshFixRangePoint (MeshKernel &rclM) : MeshValidation( rclM ) { }
-  /**
-   * Fixes facets with point indices out of range.
-   */
-  bool Fixup () override;
+    /**
+     * Construction.
+     */
+    explicit MeshFixRangePoint(MeshKernel& rclM)
+        : MeshValidation(rclM)
+    {}
+    /**
+     * Fixes facets with point indices out of range.
+     */
+    bool Fixup() override;
 };
 
 /**
@@ -609,21 +688,23 @@ public:
  * @see MeshFixCorruptedFacets
  * @author Werner Mayer
  */
-class MeshExport MeshEvalCorruptedFacets : public MeshEvaluation
+class MeshExport MeshEvalCorruptedFacets: public MeshEvaluation
 {
 public:
-  /**
-   * Construction.
-   */
-  explicit MeshEvalCorruptedFacets (const MeshKernel &rclM) : MeshEvaluation( rclM ) { }
-  /**
-   * Searches for corrupted facets.
-   */
-  bool Evaluate () override;
-  /**
-   * Returns the indices of all corrupt facets.
-   */
-  std::vector<FacetIndex> GetIndices() const;
+    /**
+     * Construction.
+     */
+    explicit MeshEvalCorruptedFacets(const MeshKernel& rclM)
+        : MeshEvaluation(rclM)
+    {}
+    /**
+     * Searches for corrupted facets.
+     */
+    bool Evaluate() override;
+    /**
+     * Returns the indices of all corrupt facets.
+     */
+    std::vector<FacetIndex> GetIndices() const;
 };
 
 /**
@@ -632,17 +713,19 @@ public:
  * @see MeshEvalCorruptedFacets
  * @author Werner Mayer
  */
-class MeshExport MeshFixCorruptedFacets : public MeshValidation
+class MeshExport MeshFixCorruptedFacets: public MeshValidation
 {
 public:
-  /**
-   * Construction.
-   */
-  explicit MeshFixCorruptedFacets (MeshKernel &rclM) : MeshValidation( rclM ) { }
-  /**
-   * Removes corrupted facets.
-   */
-  bool Fixup () override;
+    /**
+     * Construction.
+     */
+    explicit MeshFixCorruptedFacets(MeshKernel& rclM)
+        : MeshValidation(rclM)
+    {}
+    /**
+     * Removes corrupted facets.
+     */
+    bool Fixup() override;
 };
 
 /**
@@ -650,29 +733,31 @@ public:
  * @see MeshFixPointOnEdge
  * @author Werner Mayer
  */
-class MeshExport MeshEvalPointOnEdge : public MeshEvaluation
+class MeshExport MeshEvalPointOnEdge: public MeshEvaluation
 {
 public:
-  /**
-   * Construction.
-   */
-  explicit MeshEvalPointOnEdge (const MeshKernel &rclM) : MeshEvaluation( rclM ) { }
-  /**
-   * Searches for points that lie on edge of triangle.
-   */
-  bool Evaluate () override;
-  /**
-   * Returns the indices of all points on edge.
-   */
-  std::vector<PointIndex> GetPointIndices() const;
-  /**
-   * Returns the indices of all facets with an open edge on that a point lies.
-   */
-  std::vector<FacetIndex> GetFacetIndices() const;
+    /**
+     * Construction.
+     */
+    explicit MeshEvalPointOnEdge(const MeshKernel& rclM)
+        : MeshEvaluation(rclM)
+    {}
+    /**
+     * Searches for points that lie on edge of triangle.
+     */
+    bool Evaluate() override;
+    /**
+     * Returns the indices of all points on edge.
+     */
+    std::vector<PointIndex> GetPointIndices() const;
+    /**
+     * Returns the indices of all facets with an open edge on that a point lies.
+     */
+    std::vector<FacetIndex> GetFacetIndices() const;
 
 private:
-  std::vector<PointIndex> pointsIndices;
-  std::vector<FacetIndex> facetsIndices;
+    std::vector<PointIndex> pointsIndices;
+    std::vector<FacetIndex> facetsIndices;
 };
 
 /**
@@ -680,27 +765,30 @@ private:
  * @see MeshEvalPointOnEdge
  * @author Werner Mayer
  */
-class MeshExport MeshFixPointOnEdge : public MeshValidation
+class MeshExport MeshFixPointOnEdge: public MeshValidation
 {
 public:
-  /**
-   * Construction.
-   */
-  explicit MeshFixPointOnEdge (MeshKernel &rclM, bool fill = false) : MeshValidation( rclM ), fillBoundary(fill) { }
-  /**
-   * Removes points that lie on edges of triangles.
-   */
-  bool Fixup () override;
+    /**
+     * Construction.
+     */
+    explicit MeshFixPointOnEdge(MeshKernel& rclM, bool fill = false)
+        : MeshValidation(rclM)
+        , fillBoundary(fill)
+    {}
+    /**
+     * Removes points that lie on edges of triangles.
+     */
+    bool Fixup() override;
 
 private:
-  void MarkBoundaries(const std::vector<FacetIndex>& facetsIndices);
-  void FindBoundaries(std::list<std::vector<PointIndex> >& borderList);
-  void FillBoundaries(const std::list<std::vector<PointIndex> >& borderList);
+    void MarkBoundaries(const std::vector<FacetIndex>& facetsIndices);
+    void FindBoundaries(std::list<std::vector<PointIndex>>& borderList);
+    void FillBoundaries(const std::list<std::vector<PointIndex>>& borderList);
 
 private:
-  bool fillBoundary;
+    bool fillBoundary;
 };
 
-} // namespace MeshCore
+}  // namespace MeshCore
 
-#endif // MESH_DEGENERATION_H
+#endif  // MESH_DEGENERATION_H

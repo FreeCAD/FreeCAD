@@ -75,7 +75,7 @@ using DU = DrawUtil;
 
 const float lineScaleFactor = Rez::guiX(1.);// temp fiddle for devel
 
-QGIViewPart::QGIViewPart() : m_isExporting(false)
+QGIViewPart::QGIViewPart()
 {
     setCacheMode(QGraphicsItem::NoCache);
     setHandlesChildEvents(false);
@@ -237,13 +237,7 @@ void QGIViewPart::drawAllFaces(void)
             if (fHatch->isSvgHatch()) {
                 // svg tile hatch
                 newFace->setFillMode(QGIFace::SvgFill);
-                if (getExporting()) {
-                    // SVG hatches don't work correctly when exported to PDF, so we need
-                    // to tell the face to use a bitmap substitution for the SVG
-                    newFace->hideSvg(true);
-                } else {
-                    newFace->hideSvg(false);
-                }
+                newFace->hideSvg(false);
             } else {
                 //bitmap hatch
                 newFace->setFillMode(QGIFace::BitmapFill);
@@ -295,6 +289,8 @@ void QGIViewPart::drawAllEdges()
         item->setNormalColor(PreferencesGui::getAccessibleQColor(PreferencesGui::normalQColor()));
         item->setStyle(Qt::SolidLine);
         if ((*itGeom)->getCosmetic()) {
+            item->setCosmetic(true);
+
             // cosmetic edge - format appropriately
             int source = (*itGeom)->source();
             if (source == COSMETICEDGE) {
@@ -839,8 +835,8 @@ void QGIViewPart::highlightMoved(QGIHighlight* highlight, QPointF newPos)
     App::Document* doc = getViewObject()->getDocument();
     App::DocumentObject* docObj = doc->getObject(highlightName.c_str());
     auto detail = dynamic_cast<DrawViewDetail*>(docObj);
-    auto oldAnchor = detail->AnchorPoint.getValue();
     if (detail) {
+        auto oldAnchor = detail->AnchorPoint.getValue();
         Base::Vector3d delta = Rez::appX(DrawUtil::toVector3d(newPos)) / getViewObject()->getScale();
         delta = DrawUtil::invertY(delta);
         detail->AnchorPoint.setValue(oldAnchor + delta);

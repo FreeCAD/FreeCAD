@@ -94,7 +94,7 @@ after FreeCAD launches</string>
      <item>
       <widget class="QLabel" name="WorkbenchSelectorPositionLabel">
        <property name="text">
-        <string>Workbench selector position :</string>
+        <string>Workbench selector position:</string>
        </property>
       </widget>
      </item>

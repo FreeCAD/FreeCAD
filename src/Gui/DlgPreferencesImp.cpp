@@ -28,13 +28,17 @@
 # include <cstring>
 # include <QAbstractButton>
 # include <QApplication>
+# include <QCursor>
 # include <QDebug>
+# include <QMenu>
 # include <QMessageBox>
 # include <QScreen>
 # include <QScrollArea>
 # include <QScrollBar>
 # include <QTimer>
+# include <QToolTip>
 # include <QProcess>
+# include <QPushButton>
 #endif
 
 #include <App/Application.h>
@@ -73,19 +77,16 @@ DlgPreferencesImp::DlgPreferencesImp(QWidget* parent, Qt::WindowFlags fl)
       invalidParameter(false), canEmbedScrollArea(true), restartRequired(false)
 {
     ui->setupUi(this);
+
     QFontMetrics fm(font());
     int length = QtTools::horizontalAdvance(fm, longestGroupName());
     ui->listBox->setFixedWidth(Base::clamp<int>(length + 20, 108, 120));
-    ui->listBox->setGridSize(QSize(108, 75));
+    ui->listBox->setGridSize(QSize(Base::clamp<int>(length + 20, 108, 120), 75));
+
     // remove unused help button
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
-    connect(ui->buttonBox, &QDialogButtonBox::clicked,
-            this, &DlgPreferencesImp::onButtonBoxClicked);
-    connect(ui->buttonBox,  &QDialogButtonBox::helpRequested,
-            getMainWindow(), &MainWindow::whatsThis);
-    connect(ui->listBox, &QListWidget::currentItemChanged,
-            this, &DlgPreferencesImp::changeGroup);
+    setupConnections();
 
     setupPages();
 
@@ -102,6 +103,21 @@ DlgPreferencesImp::~DlgPreferencesImp()
 {
     if (DlgPreferencesImp::_activeDialog == this) {
         DlgPreferencesImp::_activeDialog = nullptr;
+    }
+}
+
+void DlgPreferencesImp::setupConnections()
+{
+    connect(ui->buttonBox, &QDialogButtonBox::clicked,
+            this, &DlgPreferencesImp::onButtonBoxClicked);
+    connect(ui->buttonBox,  &QDialogButtonBox::helpRequested,
+            getMainWindow(), &MainWindow::whatsThis);
+    connect(ui->listBox, &QListWidget::currentItemChanged,
+            this, &DlgPreferencesImp::changeGroup);
+    if (auto reset = ui->buttonBox->button(QDialogButtonBox::Reset)) {
+        QString text = reset->text();
+        text.append(QLatin1String("..."));
+        reset->setText(text);
     }
 }
 
@@ -350,10 +366,46 @@ void DlgPreferencesImp::reject()
 
 void DlgPreferencesImp::onButtonBoxClicked(QAbstractButton* btn)
 {
-    if (ui->buttonBox->standardButton(btn) == QDialogButtonBox::Apply)
+    if (ui->buttonBox->standardButton(btn) == QDialogButtonBox::Apply) {
         applyChanges();
-    else if (ui->buttonBox->standardButton(btn) == QDialogButtonBox::Reset)
-        restoreDefaults();
+    }
+    else if (ui->buttonBox->standardButton(btn) == QDialogButtonBox::Reset) {
+        showResetOptions();
+    }
+}
+
+void DlgPreferencesImp::showResetOptions()
+{
+    // clang-format off
+    QMenu menu(this);
+
+    // Reset per tab
+    auto tabWidget = static_cast<QTabWidget*>(ui->tabWidgetStack->currentWidget());
+    int tabIndex = tabWidget->currentIndex();
+    QString tabText = tabWidget->tabText(tabIndex);
+    QAction* tabAction = menu.addAction(tr("Reset tab '%1'...").arg(tabText), this,
+                                        &DlgPreferencesImp::onButtonResetTabClicked);
+    tabAction->setToolTip(tr("Resets the user settings for the tab '%1'").arg(tabText));
+
+    // Reset per group
+    int groupIndex = ui->listBox->currentRow();
+    QString group = ui->listBox->item(groupIndex)->text();
+    QAction* grpAction = menu.addAction(tr("Reset group '%1'...").arg(group), this,
+                                        &DlgPreferencesImp::onButtonResetGroupClicked);
+    grpAction->setToolTip(tr("Resets the user settings for the group '%1'").arg(group));
+
+    // Reset all
+    QAction* allAction = menu.addAction(tr("Reset all..."), this,
+                                        &DlgPreferencesImp::restoreDefaults);
+    allAction->setToolTip(tr("Resets the user settings entirely"));
+
+    connect(&menu, &QMenu::hovered, [&menu](QAction* hover){
+        QPoint pos = menu.pos();
+        pos.rx() += menu.width() + 10;
+        QToolTip::showText(pos, hover->toolTip());
+    });
+    menu.exec(QCursor::pos());
+    // clang-format on
 }
 
 void DlgPreferencesImp::restoreDefaults()
@@ -379,6 +431,88 @@ void DlgPreferencesImp::restoreDefaults()
 
         reject();
     }
+}
+
+void DlgPreferencesImp::onButtonResetTabClicked()
+{
+    auto tabWidget = static_cast<QTabWidget*>(ui->tabWidgetStack->widget(ui->listBox->currentRow()));
+
+    QMessageBox box(this);
+    box.setIcon(QMessageBox::Question);
+    box.setWindowTitle(tr("Reset Tab Settings"));
+    box.setText(tr("All the settings for the tab '%1' will be deleted.").arg(tabWidget->tabText(tabWidget->currentIndex())));
+    box.setInformativeText(tr("Do you want to continue?"));
+    box.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    box.setDefaultButton(QMessageBox::No);
+
+    if (box.exec() == QMessageBox::Yes) {
+        int pageIndex = tabWidget->currentIndex();
+        QString pageText = tabWidget->tabText(pageIndex);
+        PreferencePage* page = qobject_cast<PreferencePage*>(tabWidget->widget(pageIndex));
+
+        restorePageDefaults(&page);
+        page->setProperty("GroupName", tabWidget->property("GroupName"));
+
+        tabWidget->removeTab(pageIndex);
+        tabWidget->insertTab(pageIndex, page, pageText);
+        tabWidget->setCurrentIndex(pageIndex);
+
+        applyChanges();
+    }
+}
+
+void DlgPreferencesImp::onButtonResetGroupClicked()
+{
+    QMessageBox box(this);
+    box.setIcon(QMessageBox::Question);
+    box.setWindowTitle(tr("Reset Group Settings"));
+    box.setText(tr("All the settings for the group '%1' will be deleted.").arg(ui->listBox->currentItem()->text()));
+    box.setInformativeText(tr("Do you want to continue?"));
+    box.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+    box.setDefaultButton(QMessageBox::No);
+
+    if (box.exec() == QMessageBox::Yes) {
+        auto tabWidget = static_cast<QTabWidget*>(ui->tabWidgetStack->widget(ui->listBox->currentRow()));
+        int pageIndex = tabWidget->currentIndex();
+
+        for (int i = 0; i < tabWidget->count(); i++) {
+            QString pageText = tabWidget->tabText(i);
+            PreferencePage* page = qobject_cast<PreferencePage*>(tabWidget->widget(i));
+
+            restorePageDefaults(&page);
+            page->setProperty("GroupName", tabWidget->property("GroupName"));
+
+            tabWidget->removeTab(i);
+            tabWidget->insertTab(i, page, pageText);
+        }
+
+        tabWidget->setCurrentIndex(pageIndex);
+
+        applyChanges();
+    }
+}
+
+void DlgPreferencesImp::restorePageDefaults(PreferencePage** page)
+{
+    QList<QObject*> prefs = (*page)->findChildren<QObject*>();
+
+    for (const auto & pref : prefs) {
+        if (!pref->property("prefPath").isNull() && !pref->property("prefEntry").isNull()) {
+            std::string path = pref->property("prefPath").toString().toStdString();
+            std::string entry = pref->property("prefEntry").toString().toStdString();
+
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(std::string("User parameter:BaseApp/Preferences/" + path).c_str());
+
+            for (const auto & pn : hGrp->GetParameterNames(entry.c_str())){
+                hGrp->RemoveAttribute(pn.first, pn.second.c_str());
+            }
+        }
+    }
+
+    std::string pageName = (*page)->property("PageName").toString().toStdString();
+    (*page) = WidgetFactory().createPreferencePage(pageName.c_str());
+    (*page)->loadSettings();
+    (*page)->setProperty("PageName", QVariant(QString::fromStdString(pageName)));
 }
 
 /**
@@ -578,6 +712,12 @@ void DlgPreferencesImp::changeEvent(QEvent *e)
             QByteArray group = item->data(GroupNameRole).toByteArray();
             item->setText(QObject::tr(group.constData()));
         }
+
+        //resizes items list and buttons        
+        QFontMetrics fm(font());
+        int length = QtTools::horizontalAdvance(fm, longestGroupName());
+        ui->listBox->setFixedWidth(Base::clamp<int>(length + 20, 108, 120));
+        ui->listBox->setGridSize(QSize(Base::clamp<int>(length + 20, 108, 120), 75));
     } else {
         QWidget::changeEvent(e);
     }

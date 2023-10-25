@@ -1,0 +1,32 @@
+# File created by ConvertFCMat.py
+General:
+  UUID: "5c67b675-69a2-4782-902a-bb90c3952f07"
+  AuthorAndLicense: "Uwe Stöhr, LGPL"
+  Name: "Graphite"
+  Description: "Typical material properties for pure graphite"
+  ReferenceSource: "Properties and characteristics of graphite"
+  SourceURL: "https://www.entegris.com/content/dam/web/resources/manuals-and-guides/manual-properties-and-characteristics-of-graphite-109441.pdf"
+Models:
+  Father:
+    UUID: '9cdda8b6-b606-4778-8f13-3934d8668e67'
+    Father: "Carbon"
+  MaterialStandard:
+    UUID: '1e2c0088-904a-4537-925f-64064c07d700'
+    KindOfMaterial: "Solid"
+  LinearElastic:
+    UUID: '7b561d1d-fb9b-44f6-9da9-56a4f74d7536'
+    CompressiveStrength: "120.000 MPa"
+    Density: "1750.000 kg/m^3"
+    PoissonRatio: "0.20"
+    UltimateTensileStrength: "34 MPa"
+    YoungsModulus: "11.7 MPa"
+  Thermal:
+    UUID: '9959d007-a970-4ea7-bae4-3eb1b8b883c7'
+    SpecificHeat: "0.72 kJ/kg/K"
+    ThermalConductivity: "96.000 W/m/K"
+    ThermalExpansionCoefficient: "8e-6 1/K"
+  Electromagnetic:
+    UUID: 'b2eb5f48-74b3-4193-9fbb-948674f427f3'
+    RelativePermittivity: "0.7"
+    ElectricalConductivity: "2e4 S/m"
+    RelativePermeability: "1.0"

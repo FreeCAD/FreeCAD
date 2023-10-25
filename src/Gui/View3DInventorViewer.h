@@ -153,8 +153,8 @@ public:
     void onSelectionChanged(const SelectionChanges &Reason) override;
 
     SoDirectionalLight* getBacklight() const;
-    void setBacklight(SbBool on);
-    SbBool isBacklight() const;
+    void setBacklightEnabled(bool on);
+    bool isBacklightEnabled() const;
     void setSceneGraph (SoNode *root) override;
     SbBool searchNode(SoNode*) const;
 
@@ -164,7 +164,9 @@ public:
     void setPopupMenuEnabled(const SbBool on);
     SbBool isPopupMenuEnabled() const;
 
-    void startAnimating(const SbVec3f& axis, float velocity);
+    void startAnimation(const SbRotation& orientation, const SbVec3f& rotationCenter,
+                        const SbVec3f& translation, int duration = -1, bool wait = false);
+    void startSpinningAnimation(const SbVec3f& axis, float velocity);
     void stopAnimating();
     SbBool isAnimating() const;
 
@@ -373,9 +375,9 @@ public:
      * \a true the reorientation is animated, otherwise its directly
      * set.
      */
-    void setCameraOrientation(const SbRotation& rot, SbBool moveTocenter=false);
+    void setCameraOrientation(const SbRotation& orientation, SbBool moveToCenter = false);
     void setCameraType(SoType t) override;
-    void moveCameraTo(const SbRotation& rot, const SbVec3f& pos, int steps, int ms);
+    void moveCameraTo(const SbRotation& orientation, const SbVec3f& position, int duration = -1);
     /**
      * Zooms the viewport to the size of the bounding box.
      */

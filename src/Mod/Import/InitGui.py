@@ -6,34 +6,34 @@
 # This is the second one of three init scripts, the third one
 # runs when the gui is up
 
-#***************************************************************************
-#*   Copyright (c) 2002 Juergen Riegel <juergen.riegel@web.de>             *
-#*                                                                         *
-#*   This file is part of the FreeCAD CAx development system.              *
-#*                                                                         *
-#*   This program is free software; you can redistribute it and/or modify  *
-#*   it under the terms of the GNU Lesser General Public License (LGPL)    *
-#*   as published by the Free Software Foundation; either version 2 of     *
-#*   the License, or (at your option) any later version.                   *
-#*   for detail see the LICENCE text file.                                 *
-#*                                                                         *
-#*   FreeCAD is distributed in the hope that it will be useful,            *
-#*   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-#*   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-#*   GNU Lesser General Public License for more details.                   *
-#*                                                                         *
-#*   You should have received a copy of the GNU Library General Public     *
-#*   License along with FreeCAD; if not, write to the Free Software        *
-#*   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-#*   USA                                                                   *
-#*                                                                         *
-#***************************************************************************/
+# ***************************************************************************
+# *   Copyright (c) 2002 Juergen Riegel <juergen.riegel@web.de>             *
+# *                                                                         *
+# *   This file is part of the FreeCAD CAx development system.              *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   FreeCAD is distributed in the hope that it will be useful,            *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Lesser General Public License for more details.                   *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with FreeCAD; if not, write to the Free Software        *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************/
 
 
 # Registered in Part's Init.py file
-FreeCAD.changeImportModule("STEP with colors (*.step *.stp)","Import","ImportGui")
-FreeCAD.changeExportModule("STEP with colors (*.step *.stp)","Import","ImportGui")
-FreeCAD.changeExportModule("glTF (*.gltf *.glb)","Import","ImportGui")
+FreeCAD.changeImportModule("STEP with colors (*.step *.STEP *.stp *.STP)", "Import", "ImportGui")
+FreeCAD.changeExportModule("STEP with colors (*.step *.stp)", "Import", "ImportGui")
+FreeCAD.changeExportModule("glTF (*.gltf *.glb)", "Import", "ImportGui")
 
 """
 class ImportWorkbench ( Workbench ):
@@ -74,5 +74,5 @@ class ImportWorkbench ( Workbench ):
 Gui.addWorkbench("Import",ImportWorkbench())
 """
 # See https://forum.freecad.org/viewtopic.php?f=3&t=26782
-#import Import_rc
-#FreeCADGui.addPreferencePage(":/ui/preferences-import.ui","Import-Export")
+# import Import_rc
+# FreeCADGui.addPreferencePage(":/ui/preferences-import.ui","Import-Export")

@@ -201,20 +201,3 @@ if(BUILD_FEM)
             Mod/PartDesign/WizardShaft
     )
 endif(BUILD_FEM)
-
-SET(FeatureHole_SRCS
-    FeatureHole/__init__.py
-    FeatureHole/HoleGui.py
-    FeatureHole/FeatureHole.py
-    FeatureHole/TaskHole.py
-    FeatureHole/ViewProviderHole.py
-    FeatureHole/Standards.py
-    FeatureHole/PartDesign_Hole.svg
-)
-SOURCE_GROUP("featurehole" FILES ${FeatureHole_SRCS})
-
-SET(FeatureHole_UI
-    FeatureHole/TaskHole.ui
-)
-
-SET(all_featurehole_files ${FeatureHole_SRCS} ${FeatureHole_UI})

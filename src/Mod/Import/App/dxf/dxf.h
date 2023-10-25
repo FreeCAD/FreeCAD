@@ -21,12 +21,11 @@
 #include <Mod/Import/ImportGlobal.h>
 
 
-
-typedef int ColorIndex_t; // DXF color index
+typedef int ColorIndex_t;  // DXF color index
 
 typedef enum
 {
-    eUnspecified = 0,   // Unspecified (No units)
+    eUnspecified = 0,  // Unspecified (No units)
     eInches,
     eFeet,
     eMiles,
@@ -50,7 +49,7 @@ typedef enum
 } eDxfUnits_t;
 
 
-//spline data for reading
+// spline data for reading
 struct SplineData
 {
     double norm[3];
@@ -76,8 +75,8 @@ struct SplineData
 };
 
 //***************************
-//data structures for writing
-//added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
+// data structures for writing
+// added by Wandererfan 2018 (wandererfan@gmail.com) for FreeCAD project
 struct point3D
 {
     double x;
@@ -104,7 +103,7 @@ struct SplineDataOut
 struct LWPolyDataOut
 {
     double nVert;
-    int    Flag;
+    int Flag;
     double Width;
     double Elev;
     double Thick;
@@ -132,7 +131,8 @@ typedef enum
 } eDXFVersion_t;
 //********************
 
-class CDxfWrite{
+class CDxfWrite
+{
 private:
     std::ofstream* m_ofs;
     bool m_fail;
@@ -142,20 +142,32 @@ private:
     std::ostringstream* m_ssLayer;
 
 protected:
-    void putLine(const Base::Vector3d s, const Base::Vector3d e,
-                 std::ostringstream* outStream, const std::string handle,
+    void putLine(const Base::Vector3d s,
+                 const Base::Vector3d e,
+                 std::ostringstream* outStream,
+                 const std::string handle,
                  const std::string ownerHandle);
-    void putText(const char* text, const Base::Vector3d location1, const Base::Vector3d location2,
-                 const double height, const int horizJust,
-                 std::ostringstream* outStream, const std::string handle,
+    void putText(const char* text,
+                 const Base::Vector3d location1,
+                 const Base::Vector3d location2,
+                 const double height,
+                 const int horizJust,
+                 std::ostringstream* outStream,
+                 const std::string handle,
                  const std::string ownerHandle);
-    void putArrow(Base::Vector3d arrowPos, Base::Vector3d barb1Pos, Base::Vector3d barb2Pos,
-                  std::ostringstream* outStream, const std::string handle,
+    void putArrow(Base::Vector3d arrowPos,
+                  Base::Vector3d barb1Pos,
+                  Base::Vector3d barb2Pos,
+                  std::ostringstream* outStream,
+                  const std::string handle,
                   const std::string ownerHandle);
 
     //! copy boiler plate file
     std::string getPlateFile(std::string fileSpec);
-    void setDataDir(std::string s) { m_dataDir = s; }
+    void setDataDir(std::string s)
+    {
+        m_dataDir = s;
+    }
     std::string getHandle();
     std::string getEntityHandle();
     std::string getLayerHandle();
@@ -170,7 +182,7 @@ protected:
     int m_blockHandle;
     int m_blkRecordHandle;
     bool m_polyOverride;
-    
+
     std::string m_saveModelSpaceHandle;
     std::string m_savePaperSpaceHandle;
     std::string m_saveBlockRecordTableHandle;
@@ -185,56 +197,93 @@ protected:
 public:
     ImportExport CDxfWrite(const char* filepath);
     ImportExport ~CDxfWrite();
-    
+
     ImportExport void init();
     ImportExport void endRun();
 
-    ImportExport bool Failed(){return m_fail;}
-//    void setOptions(void);
-//    bool isVersionValid(int vers);
-    ImportExport std::string getLayerName() { return m_layerName; }
+    ImportExport bool Failed()
+    {
+        return m_fail;
+    }
+    //    void setOptions(void);
+    //    bool isVersionValid(int vers);
+    ImportExport std::string getLayerName()
+    {
+        return m_layerName;
+    }
     ImportExport void setLayerName(std::string s);
-    ImportExport void setVersion(int v) { m_version = v;}
-    ImportExport void setPolyOverride(bool b) { m_polyOverride = b; }
+    ImportExport void setVersion(int v)
+    {
+        m_version = v;
+    }
+    ImportExport void setPolyOverride(bool b)
+    {
+        m_polyOverride = b;
+    }
     ImportExport void addBlockName(std::string s, std::string blkRecordHandle);
 
     ImportExport void writeLine(const double* s, const double* e);
     ImportExport void writePoint(const double*);
     ImportExport void writeArc(const double* s, const double* e, const double* c, bool dir);
-    ImportExport void writeEllipse(const double* c, double major_radius, double minor_radius,
-                      double rotation, double start_angle, double end_angle, bool endIsCW);
-    ImportExport void writeCircle(const double* c, double radius );
-    ImportExport void writeSpline(const SplineDataOut &sd);
-    ImportExport void writeLWPolyLine(const LWPolyDataOut &pd);
-    ImportExport void writePolyline(const LWPolyDataOut &pd);
+    ImportExport void writeEllipse(const double* c,
+                                   double major_radius,
+                                   double minor_radius,
+                                   double rotation,
+                                   double start_angle,
+                                   double end_angle,
+                                   bool endIsCW);
+    ImportExport void writeCircle(const double* c, double radius);
+    ImportExport void writeSpline(const SplineDataOut& sd);
+    ImportExport void writeLWPolyLine(const LWPolyDataOut& pd);
+    ImportExport void writePolyline(const LWPolyDataOut& pd);
     ImportExport void writeVertex(double x, double y, double z);
-    ImportExport void writeText(const char* text, const double* location1, const double* location2,
-                   const double height, const int horizJust);
-    ImportExport void writeLinearDim(const double* textMidPoint, const double* lineDefPoint,
-                  const double* extLine1, const double* extLine2,
-                  const char* dimText, int type);
-    ImportExport void writeLinearDimBlock(const double* textMidPoint, const double* lineDefPoint,
-                  const double* extLine1, const double* extLine2,
-                  const char* dimText, int type);
-    ImportExport void writeAngularDim(const double* textMidPoint, const double* lineDefPoint,
-                  const double* startExt1, const double* endExt1,
-                  const double* startExt2, const double* endExt2,
-                  const char* dimText);
-    ImportExport void writeAngularDimBlock(const double* textMidPoint, const double* lineDefPoint,
-                         const double* startExt1, const double* endExt1,
-                         const double* startExt2, const double* endExt2,
-                         const char* dimText);
-    ImportExport void writeRadialDim(const double* centerPoint, const double* textMidPoint,
-                         const double* arcPoint,
-                         const char* dimText);
-    ImportExport void writeRadialDimBlock(const double* centerPoint, const double* textMidPoint,
-                         const double* arcPoint, const char* dimText);
+    ImportExport void writeText(const char* text,
+                                const double* location1,
+                                const double* location2,
+                                const double height,
+                                const int horizJust);
+    ImportExport void writeLinearDim(const double* textMidPoint,
+                                     const double* lineDefPoint,
+                                     const double* extLine1,
+                                     const double* extLine2,
+                                     const char* dimText,
+                                     int type);
+    ImportExport void writeLinearDimBlock(const double* textMidPoint,
+                                          const double* lineDefPoint,
+                                          const double* extLine1,
+                                          const double* extLine2,
+                                          const char* dimText,
+                                          int type);
+    ImportExport void writeAngularDim(const double* textMidPoint,
+                                      const double* lineDefPoint,
+                                      const double* startExt1,
+                                      const double* endExt1,
+                                      const double* startExt2,
+                                      const double* endExt2,
+                                      const char* dimText);
+    ImportExport void writeAngularDimBlock(const double* textMidPoint,
+                                           const double* lineDefPoint,
+                                           const double* startExt1,
+                                           const double* endExt1,
+                                           const double* startExt2,
+                                           const double* endExt2,
+                                           const char* dimText);
+    ImportExport void writeRadialDim(const double* centerPoint,
+                                     const double* textMidPoint,
+                                     const double* arcPoint,
+                                     const char* dimText);
+    ImportExport void writeRadialDimBlock(const double* centerPoint,
+                                          const double* textMidPoint,
+                                          const double* arcPoint,
+                                          const char* dimText);
     ImportExport void writeDiametricDim(const double* textMidPoint,
-                         const double* arcPoint1, const double* arcPoint2,
-                         const char* dimText);
+                                        const double* arcPoint1,
+                                        const double* arcPoint2,
+                                        const char* dimText);
     ImportExport void writeDiametricDimBlock(const double* textMidPoint,
-                         const double* arcPoint1, const double* arcPoint2,
-                         const char* dimText);
+                                             const double* arcPoint1,
+                                             const double* arcPoint2,
+                                             const char* dimText);
 
     ImportExport void writeDimBlockPreamble();
     ImportExport void writeBlockTrailer();
@@ -253,7 +302,8 @@ public:
 };
 
 // derive a class from this and implement it's virtual functions
-class CDxfRead{
+class CDxfRead
+{
 private:
     std::ifstream* m_ifs;
 
@@ -268,9 +318,9 @@ private:
     bool m_ignore_errors;
 
 
-    std::map<std::string,ColorIndex_t> m_layer_ColorIndex_map;  // Mapping from layer name -> layer color index
+    std::map<std::string, ColorIndex_t>
+        m_layer_ColorIndex_map;  // Mapping from layer name -> layer color index
     const ColorIndex_t ColorBylayer = 256;
-    const ColorIndex_t ColorByBlock = 0;
 
     bool ReadUnits();
     bool ReadLayer();
@@ -283,10 +333,19 @@ private:
     bool ReadSpline();
     bool ReadLwPolyLine();
     bool ReadPolyLine();
-    bool ReadVertex(double *pVertex, bool *bulge_found, double *bulge);
-    void OnReadArc(double start_angle, double end_angle, double radius, const double* c, double z_extrusion_dir, bool hidden);
+    bool ReadVertex(double* pVertex, bool* bulge_found, double* bulge);
+    void OnReadArc(double start_angle,
+                   double end_angle,
+                   double radius,
+                   const double* c,
+                   double z_extrusion_dir,
+                   bool hidden);
     void OnReadCircle(const double* c, double radius, bool hidden);
-    void OnReadEllipse(const double* c, const double* m, double ratio, double start_angle, double end_angle);
+    void OnReadEllipse(const double* c,
+                       const double* m,
+                       double ratio,
+                       double start_angle,
+                       double end_angle);
     bool ReadInsert();
     bool ReadDimension();
     bool ReadBlockInfo();
@@ -295,44 +354,81 @@ private:
     bool ResolveEncoding();
 
     void get_line();
-    void put_line(const char *value);
+    void put_line(const char* value);
     void ResolveColorIndex();
 
 protected:
     ColorIndex_t m_ColorIndex;
-    eDXFVersion_t m_version;// Version from $ACADVER variable in DXF
+    eDXFVersion_t m_version;  // Version from $ACADVER variable in DXF
     const char* (CDxfRead::*stringToUTF8)(const char*) const;
 
 private:
-    const std::string* m_CodePage;     // Code Page name from $DWGCODEPAGE or null if none/not read yet
-    // The following was going to be python's canonical name for the encoding, but this is (a) not easily found and (b) does not speed up finding the encoding object.
-    const std::string* m_encoding;// A name for the encoding implied by m_version and m_CodePage
+    const std::string* m_CodePage;  // Code Page name from $DWGCODEPAGE or null if none/not read yet
+    // The following was going to be python's canonical name for the encoding, but this is (a) not
+    // easily found and (b) does not speed up finding the encoding object.
+    const std::string* m_encoding;  // A name for the encoding implied by m_version and m_CodePage
     const char* UTF8ToUTF8(const char* encoded) const;
     const char* GeneralToUTF8(const char* encoded) const;
 
 public:
-    ImportExport CDxfRead(const char* filepath); // this opens the file
-    ImportExport virtual ~CDxfRead(); // this closes the file
+    ImportExport CDxfRead(const char* filepath);  // this opens the file
+    ImportExport virtual ~CDxfRead();             // this closes the file
 
-    ImportExport bool Failed(){return m_fail;}
-    ImportExport void DoRead(const bool ignore_errors = false); // this reads the file and calls the following functions
+    ImportExport bool Failed()
+    {
+        return m_fail;
+    }
+    ImportExport void DoRead(
+        const bool ignore_errors = false);  // this reads the file and calls the following functions
 
-    ImportExport double mm( double value ) const;
+    ImportExport double mm(double value) const;
 
-    ImportExport bool IgnoreErrors() const { return(m_ignore_errors); }
+    ImportExport bool IgnoreErrors() const
+    {
+        return (m_ignore_errors);
+    }
 
-    ImportExport virtual void OnReadLine(const double* /*s*/, const double* /*e*/, bool /*hidden*/){}
-    ImportExport virtual void OnReadPoint(const double* /*s*/){}
-    ImportExport virtual void OnReadText(const double* /*point*/, const double /*height*/, const char* /*text*/){}
-    ImportExport virtual void OnReadArc(const double* /*s*/, const double* /*e*/, const double* /*c*/, bool /*dir*/, bool /*hidden*/){}
-    ImportExport virtual void OnReadCircle(const double* /*s*/, const double* /*c*/, bool /*dir*/, bool /*hidden*/){}
-    ImportExport virtual void OnReadEllipse(const double* /*c*/, double /*major_radius*/, double /*minor_radius*/, double /*rotation*/, double /*start_angle*/, double /*end_angle*/, bool /*dir*/){}
-    ImportExport virtual void OnReadSpline(struct SplineData& /*sd*/){}
-    ImportExport virtual void OnReadInsert(const double* /*point*/, const double* /*scale*/, const char* /*name*/, double /*rotation*/){}
-    ImportExport virtual void OnReadDimension(const double* /*s*/, const double* /*e*/, const double* /*point*/, double /*rotation*/){}
-    ImportExport virtual void AddGraphics() const { }
+    ImportExport virtual void OnReadLine(const double* /*s*/, const double* /*e*/, bool /*hidden*/)
+    {}
+    ImportExport virtual void OnReadPoint(const double* /*s*/)
+    {}
+    ImportExport virtual void OnReadText(const double* /*point*/,
+                                         const double /*height*/,
+                                         const char* /*text*/,
+                                         const double /*rotation*/)
+    {}
+    ImportExport virtual void OnReadArc(const double* /*s*/,
+                                        const double* /*e*/,
+                                        const double* /*c*/,
+                                        bool /*dir*/,
+                                        bool /*hidden*/)
+    {}
+    ImportExport virtual void
+    OnReadCircle(const double* /*s*/, const double* /*c*/, bool /*dir*/, bool /*hidden*/)
+    {}
+    ImportExport virtual void OnReadEllipse(const double* /*c*/,
+                                            double /*major_radius*/,
+                                            double /*minor_radius*/,
+                                            double /*rotation*/,
+                                            double /*start_angle*/,
+                                            double /*end_angle*/,
+                                            bool /*dir*/)
+    {}
+    ImportExport virtual void OnReadSpline(struct SplineData& /*sd*/)
+    {}
+    ImportExport virtual void OnReadInsert(const double* /*point*/,
+                                           const double* /*scale*/,
+                                           const char* /*name*/,
+                                           double /*rotation*/)
+    {}
+    ImportExport virtual void OnReadDimension(const double* /*s*/,
+                                              const double* /*e*/,
+                                              const double* /*point*/,
+                                              double /*rotation*/)
+    {}
+    ImportExport virtual void AddGraphics() const
+    {}
 
     ImportExport std::string LayerName() const;
-
 };
 #endif

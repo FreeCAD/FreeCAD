@@ -41,15 +41,18 @@
 #include <Base/Placement.h>
 #include <Mod/Part/App/PartFeature.h>
 #include <Mod/Part/App/PrimitiveFeature.h>
+#include <Mod/Part/App/FeaturePartCircle.h>
 //#include <Mod/Sketcher/App/SketchObject.h>
 
 #include "ShapeExtractor.h"
 #include "DrawUtil.h"
 #include "Preferences.h"
+#include "ShapeUtils.h"
 
 
 using namespace TechDraw;
 using DU = DrawUtil;
+using SU = ShapeUtils;
 
 std::vector<TopoDS_Shape> ShapeExtractor::getShapes2d(const std::vector<App::DocumentObject*> links, bool overridePref)
 {
@@ -66,30 +69,23 @@ std::vector<TopoDS_Shape> ShapeExtractor::getShapes2d(const std::vector<App::Doc
             for (auto& d: objs) {
                 if (is2dObject(d)) {
                     if (d->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-                        //need to apply global placement here.  ??? because 2d shapes (Points so far)
-                        //don't get gp from Part::feature::getShape() ????
-                        const Part::Feature* pf = static_cast<const Part::Feature*>(d);
-                        Part::TopoShape ts = pf->Shape.getShape();
-                        ts.setPlacement(pf->globalPlacement());
-                        shapes2d.push_back(ts.getShape());
+                        shapes2d.push_back(getLocatedShape(d));
                     }
                 }
             }
         } else {
             if (is2dObject(l)) {
                 if (l->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-                    //need to apply placement here
-                    const Part::Feature* pf = static_cast<const Part::Feature*>(l);
-                    Part::TopoShape ts = pf->Shape.getShape();
-                    ts.setPlacement(pf->globalPlacement());
-                    shapes2d.push_back(ts.getShape());
-                }
+                    shapes2d.push_back(getLocatedShape(l));
+                }  // other 2d objects would go here - Draft objects?
             }
         }
     }
     return shapes2d;
 }
 
+//! get the located and oriented shapes corresponding to the the links. If the shapes are to be
+//! fused, include2d should be false as 2d & 3d shapes may not fuse.
 TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> links, bool include2d)
 {
 //    Base::Console().Message("SE::getShapes() - links in: %d\n", links.size());
@@ -108,8 +104,8 @@ TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> l
             }
         } else {
             auto shape = Part::Feature::getShape(l);
-            if(!shape.IsNull()) {
-                sourceShapes.push_back(shape);
+            if(!SU::isShapeReallyNull((shape))) {
+                sourceShapes.push_back(getLocatedShape(l));
             } else {
                 std::vector<TopoDS_Shape> shapeList = getShapesFromObject(l);
                 sourceShapes.insert(sourceShapes.end(), shapeList.begin(), shapeList.end());
@@ -120,33 +116,29 @@ TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> l
     BRep_Builder builder;
     TopoDS_Compound comp;
     builder.MakeCompound(comp);
-    bool found = false;
     for (auto& s:sourceShapes) {
-        if (s.IsNull()) {
+        if (SU::isShapeReallyNull(s)) {
             continue;
         } else if (s.ShapeType() < TopAbs_SOLID) {
             //clean up composite shapes
             TopoDS_Shape cleanShape = stripInfiniteShapes(s);
             if (!cleanShape.IsNull()) {
                 builder.Add(comp, cleanShape);
-                found = true;
             }
         } else if (Part::TopoShape(s).isInfinite()) {
             continue;    //simple shape is infinite
         } else {
             //a simple shape - add to compound
             builder.Add(comp, s);
-            found = true;
         }
     }
     //it appears that an empty compound is !IsNull(), so we need to check a different way
-    //if we added anything to the compound.
-    if (found) {
+    if (!SU::isShapeReallyNull(comp)) {
 //    BRepTools::Write(comp, "SEResult.brep");            //debug
         return comp;
     }
 
-    Base::Console().Error("ShapeExtractor failed to get shape.\n");
+//    Base::Console().Error("DEVEL: ShapeExtractor failed to get any shape.\n");
     return TopoDS_Shape();
 }
 
@@ -263,25 +255,7 @@ std::vector<TopoDS_Shape> ShapeExtractor::getShapesFromObject(const App::Documen
     App::Property* gProp = docObj->getPropertyByName("Group");
     App::Property* sProp = docObj->getPropertyByName("Shape");
     if (docObj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-        const Part::Feature* pf = static_cast<const Part::Feature*>(docObj);
-        Part::TopoShape ts(pf->Shape.getShape());
-
-        //ts might be garbage, better check
-        try {
-            if (!ts.isNull()) {
-                ts.setPlacement(pf->globalPlacement());
-                result.push_back(ts.getShape());
-            }
-        }
-        catch (Standard_Failure& e) {
-            Base::Console().Error("ShapeExtractor - %s encountered OCC error: %s \n", docObj->getNameInDocument(), e.GetMessageString());
-            return result;
-        }
-        catch (...) {
-            Base::Console().Error("ShapeExtractor failed to retrieve shape from %s\n", docObj->getNameInDocument());
-            return result;
-        }
-
+        result.push_back(getLocatedShape(docObj));
     } else if (gex) {           //is a group extension
         std::vector<App::DocumentObject*> objs = gex->Group.getValues();
         std::vector<TopoDS_Shape> shapes;
@@ -307,8 +281,7 @@ std::vector<TopoDS_Shape> ShapeExtractor::getShapesFromObject(const App::Documen
     } else if (sProp) {       //has a Shape property
         Part::PropertyPartShape* shape = dynamic_cast<Part::PropertyPartShape*>(sProp);
         if (shape) {
-            TopoDS_Shape occShape = shape->getValue();
-            result.push_back(occShape);
+            result.push_back(getLocatedShape(docObj));
         }
     }
     return result;
@@ -341,7 +314,7 @@ TopoDS_Shape ShapeExtractor::getShapesFused(const std::vector<App::DocumentObjec
     std::vector<TopoDS_Shape> shapes2d = getShapes2d(links, true);
     if (!shapes2d.empty()) {
         shapes2d.push_back(baseShape);
-        return DrawUtil::shapeVectorToCompound(shapes2d);
+        return DrawUtil::shapeVectorToCompound(shapes2d, false);
     }
 
     return baseShape;
@@ -392,21 +365,20 @@ bool ShapeExtractor::is2dObject(App::DocumentObject* obj)
     return false;
 }
 
-//skip edges for now.
+// just these for now
 bool ShapeExtractor::isEdgeType(App::DocumentObject* obj)
 {
-    (void) obj;
     bool result = false;
-//    Base::Type t = obj->getTypeId();
-//    if (t.isDerivedFrom(Part::Line::getClassTypeId()) ) {
-//        result = true;
-//    } else if (t.isDerivedFrom(Part::Circle::getClassTypeId())) {
-//        result = true;
-//    } else if (t.isDerivedFrom(Part::Ellipse::getClassTypeId())) {
-//        result = true;
-//    } else if (t.isDerivedFrom(Part::RegularPolygon::getClassTypeId())) {
-//        result = true;
-//    }
+    Base::Type t = obj->getTypeId();
+    if (t.isDerivedFrom(Part::Line::getClassTypeId()) ) {
+        result = true;
+    } else if (t.isDerivedFrom(Part::Circle::getClassTypeId())) {
+        result = true;
+    } else if (t.isDerivedFrom(Part::Ellipse::getClassTypeId())) {
+        result = true;
+    } else if (t.isDerivedFrom(Part::RegularPolygon::getClassTypeId())) {
+        result = true;
+    }
     return result;
 }
 
@@ -439,9 +411,11 @@ bool ShapeExtractor::isDraftPoint(App::DocumentObject* obj)
     return false;
 }
 
+
+//! get the location of a point object
 Base::Vector3d ShapeExtractor::getLocation3dFromFeat(App::DocumentObject* obj)
 {
-//    Base::Console().Message("SE::getLocation3dFromFeat()\n");
+    Base::Console().Message("SE::getLocation3dFromFeat()\n");
     if (!isPointType(obj)) {
         return Base::Vector3d(0.0, 0.0, 0.0);
     }
@@ -465,6 +439,18 @@ Base::Vector3d ShapeExtractor::getLocation3dFromFeat(App::DocumentObject* obj)
     return Base::Vector3d(0.0, 0.0, 0.0);
 }
 
+//! get the located and oriented version of docObj shape
+TopoDS_Shape ShapeExtractor::getLocatedShape(const App::DocumentObject* docObj)
+{
+        Part::TopoShape shape = Part::Feature::getShape(docObj);
+        const Part::Feature* pf = dynamic_cast<const Part::Feature*>(docObj);
+        if (pf) {
+            shape.setPlacement(pf->globalPlacement());
+        }
+        return shape.getShape();
+}
+
+//! true if we should include loose 2d geometry
 bool ShapeExtractor::prefAdd2d()
 {
     return Preferences::getPreferenceGroup("General")->GetBool("ShowLoose2d", false);

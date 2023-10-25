@@ -32,7 +32,7 @@
 namespace Fem
 {
 
-class FemExport ConstraintDisplacement : public Fem::Constraint
+class FemExport ConstraintDisplacement: public Fem::Constraint
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Fem::ConstraintDisplacement);
 
@@ -44,7 +44,7 @@ public:
     App::PropertyVectorList Points;
     App::PropertyVectorList Normals;
 
-    //Displacement parameters
+    // Displacement parameters
     App::PropertyDistance xDisplacement;
     App::PropertyDistance yDisplacement;
     App::PropertyDistance zDisplacement;
@@ -72,19 +72,19 @@ public:
     App::PropertyBool useFlowSurfaceForce;
 
     /// recalculate the object
-    App::DocumentObjectExecReturn *execute() override;
+    App::DocumentObjectExecReturn* execute() override;
 
     /// returns the type name of the ViewProvider
     const char* getViewProviderName() const override;
 
 protected:
-    void handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName,
+    void handleChangedPropertyType(Base::XMLReader& reader,
+                                   const char* TypeName,
                                    App::Property* prop) override;
     void onChanged(const App::Property* prop) override;
-
 };
 
-} //namespace Fem
+}  // namespace Fem
 
 
-#endif // FEM_CONSTRAINTDISPLACEMENT_H
+#endif  // FEM_CONSTRAINTDISPLACEMENT_H

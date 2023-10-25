@@ -95,70 +95,70 @@
       <translation>Átviteli könyvtár</translation>
     </message>
     <message>
-      <location filename="../ui/openscadprefs-base.ui" line="240"/>
+      <location filename="../ui/openscadprefs-base.ui" line="243"/>
       <source>The path to the directory for transferring files to and from OpenSCAD</source>
       <translation>Fájlok OpenSCAD-be és onnan történő feltöltésének könyvtári elérési útja</translation>
     </message>
     <message>
-      <location filename="../ui/openscadprefs-base.ui" line="258"/>
+      <location filename="../ui/openscadprefs-base.ui" line="261"/>
       <source>OpenSCAD export</source>
       <translation>OpenSCAD export</translation>
     </message>
     <message>
-      <location filename="../ui/openscadprefs-base.ui" line="266"/>
+      <location filename="../ui/openscadprefs-base.ui" line="269"/>
       <source>Maximum fragment size</source>
       <translation>A töredék maximum mérete</translation>
     </message>
     <message>
-      <location filename="../ui/openscadprefs-base.ui" line="289"/>
+      <location filename="../ui/openscadprefs-base.ui" line="292"/>
       <source>angle (fa)</source>
       <translation>szög (fok)</translation>
     </message>
     <message>
-      <location filename="../ui/openscadprefs-base.ui" line="385"/>
+      <location filename="../ui/openscadprefs-base.ui" line="388"/>
       <source>Convexity</source>
       <translation>Domborúság</translation>
     </message>
     <message>
-      <location filename="../ui/openscadprefs-base.ui" line="286"/>
-      <location filename="../ui/openscadprefs-base.ui" line="296"/>
+      <location filename="../ui/openscadprefs-base.ui" line="289"/>
+      <location filename="../ui/openscadprefs-base.ui" line="299"/>
       <source>Minimum angle for a fragment</source>
       <translation>Minimális szög egy részlethez</translation>
     </message>
     <message>
-      <location filename="../ui/openscadprefs-base.ui" line="328"/>
-      <location filename="../ui/openscadprefs-base.ui" line="353"/>
+      <location filename="../ui/openscadprefs-base.ui" line="331"/>
+      <location filename="../ui/openscadprefs-base.ui" line="356"/>
       <source>Minimum size of a fragment</source>
       <translation>Minimális méret egy részlethez</translation>
     </message>
     <message>
-      <location filename="../ui/openscadprefs-base.ui" line="331"/>
+      <location filename="../ui/openscadprefs-base.ui" line="334"/>
       <source>size (fs)</source>
       <translation>méret (fs)</translation>
     </message>
     <message>
-      <location filename="../ui/openscadprefs-base.ui" line="359"/>
+      <location filename="../ui/openscadprefs-base.ui" line="362"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
     <message>
-      <location filename="../ui/openscadprefs-base.ui" line="422"/>
+      <location filename="../ui/openscadprefs-base.ui" line="425"/>
       <source>Mesh fallback</source>
       <translation>Háló visszamaradás</translation>
     </message>
     <message>
-      <location filename="../ui/openscadprefs-base.ui" line="442"/>
-      <location filename="../ui/openscadprefs-base.ui" line="459"/>
+      <location filename="../ui/openscadprefs-base.ui" line="445"/>
+      <location filename="../ui/openscadprefs-base.ui" line="462"/>
       <source>Deflection</source>
       <translation>Kiöblösödés</translation>
     </message>
     <message>
-      <location filename="../ui/openscadprefs-base.ui" line="445"/>
+      <location filename="../ui/openscadprefs-base.ui" line="448"/>
       <source>deflection</source>
       <translation>kiöblösödés</translation>
     </message>
     <message>
-      <location filename="../ui/openscadprefs-base.ui" line="452"/>
+      <location filename="../ui/openscadprefs-base.ui" line="455"/>
       <source>Triangulation settings</source>
       <translation>Háromszögelési beállítások</translation>
     </message>

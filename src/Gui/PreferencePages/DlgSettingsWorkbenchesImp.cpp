@@ -124,7 +124,8 @@ wbListItem::wbListItem(const QString& wbName, bool enabled, bool startupWb, bool
     subLayout->setAlignment(Qt::AlignLeft);
     subLayout->setContentsMargins(5, 0, 0, 5);
     subWidget->setMinimumSize(250, 0);
-
+    subWidget->setAttribute(Qt::WA_TranslucentBackground);
+   
     // 5: Autoloaded checkBox.
     autoloadCheckBox = new QCheckBox(this);
     autoloadCheckBox->setText(tr("Auto-load"));
@@ -433,7 +434,7 @@ QStringList DlgSettingsWorkbenchesImp::getDisabledWorkbenches()
     ParameterGrp::handle hGrp;
 
     hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Workbenches");
-    disabled_wbs = QString::fromStdString(hGrp->GetASCII("Disabled", "NoneWorkbench,TestWorkbench"));
+    disabled_wbs = QString::fromStdString(hGrp->GetASCII("Disabled", "NoneWorkbench,TestWorkbench,AssemblyWorkbench"));
 #if QT_VERSION >= QT_VERSION_CHECK(5,15,0)
     unfiltered_disabled_wbs_list = disabled_wbs.split(QLatin1String(","), Qt::SkipEmptyParts);
 #else

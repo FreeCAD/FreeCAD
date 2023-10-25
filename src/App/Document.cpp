@@ -64,6 +64,7 @@ recompute path. Also, it enables more complicated dependencies beyond trees.
 #endif
 
 #include <boost/algorithm/string.hpp>
+#include <boost/bimap.hpp>
 #include <boost/graph/strong_components.hpp>
 
 #ifdef USE_OLD_DAG
@@ -102,6 +103,7 @@ recompute path. Also, it enables more complicated dependencies beyond trees.
 #include "License.h"
 #include "Link.h"
 #include "MergeDocuments.h"
+#include "StringHasher.h"
 #include "Transactions.h"
 
 #ifdef _MSC_VER
@@ -136,6 +138,7 @@ static bool globalIsRelabeling;
 
 DocumentP::DocumentP()
 {
+    Hasher = new StringHasher;
     static std::random_device _RD;
     static std::mt19937 _RGEN(_RD());
     static std::uniform_int_distribution<> _RDIST(0, 5000);
@@ -830,10 +833,14 @@ Document::Document(const char* documentName)
     auto paramGrp {App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Document")};
     auto index = static_cast<int>(paramGrp->GetInt("prefLicenseType", 0));
-    const char* name = App::licenseItems.at(index).at(App::posnOfFullName);
-    const char* url = App::licenseItems.at(index).at(App::posnOfUrl);
-    std::string licenseUrl = (paramGrp->GetASCII("prefLicenseUrl", url));
-
+    const char* name = "";
+    const char* url = "";
+    std::string licenseUrl = "";
+    if (index >= 0 && index < App::countOfLicenses) {
+        name = App::licenseItems.at(index).at(App::posnOfFullName);
+        url = App::licenseItems.at(index).at(App::posnOfUrl);
+        licenseUrl = (paramGrp->GetASCII("prefLicenseUrl", url));
+    }
     ADD_PROPERTY_TYPE(License, (name), 0, Prop_None, "License string of the Item");
     ADD_PROPERTY_TYPE(
         LicenseURL, (licenseUrl.c_str()), 0, Prop_None, "URL to the license text/contract");
@@ -921,11 +928,27 @@ std::string Document::getTransientDirectoryName(const std::string& uuid, const s
 
 void Document::Save (Base::Writer &writer) const
 {
+    d->hashers.clear();
+    addStringHasher(d->Hasher);
+
     writer.Stream() << R"(<Document SchemaVersion="4" ProgramVersion=")"
                     << App::Application::Config()["BuildVersionMajor"] << "."
                     << App::Application::Config()["BuildVersionMinor"] << "R"
                     << App::Application::Config()["BuildRevision"]
-                    << "\" FileVersion=\"" << writer.getFileVersion() << "\">" << endl;
+                    << "\" FileVersion=\"" << writer.getFileVersion()
+                    << "\" StringHasher=\"1\">\n";
+
+    writer.incInd();
+
+    d->Hasher->setPersistenceFileName("StringHasher.Table");
+    for (auto o : d->objectArray) {
+        o->beforeSave();
+    }
+    beforeSave();
+
+    d->Hasher->Save(writer);
+
+    writer.decInd();
 
     PropertyContainer::Save(writer);
 
@@ -937,7 +960,9 @@ void Document::Save (Base::Writer &writer) const
 void Document::Restore(Base::XMLReader &reader)
 {
     int i,Cnt;
+    d->hashers.clear();
     d->touchedObjs.clear();
+    addStringHasher(d->Hasher);
     setStatus(Document::PartialDoc,false);
 
     reader.readElement("Document");
@@ -952,6 +977,12 @@ void Document::Restore(Base::XMLReader &reader)
         reader.FileVersion = reader.getAttributeAsUnsigned("FileVersion");
     } else {
         reader.FileVersion = 0;
+    }
+
+    if (reader.hasAttribute("StringHasher")) {
+        d->Hasher->Restore(reader);
+    } else {
+        d->Hasher->clear();
     }
 
     // When this document was created the FileName and Label properties
@@ -1018,6 +1049,30 @@ void Document::Restore(Base::XMLReader &reader)
     reader.readEndElement("Document");
 }
 
+std::pair<bool,int> Document::addStringHasher(const StringHasherRef & hasher) const {
+    if (!hasher)
+        return std::make_pair(false, 0);
+    auto ret = d->hashers.left.insert(HasherMap::left_map::value_type(hasher,(int)d->hashers.size()));
+    if (ret.second)
+        hasher->clearMarks();
+    return std::make_pair(ret.second,ret.first->second);
+}
+
+StringHasherRef Document::getStringHasher(int idx) const {
+    if(idx<0) {
+            return d->Hasher;
+        return d->Hasher;
+    }
+    StringHasherRef hasher;
+    auto it = d->hashers.right.find(idx);
+    if(it == d->hashers.right.end()) {
+        hasher = new StringHasher;
+        d->hashers.right.insert(HasherMap::right_map::value_type(idx,hasher));
+    }else
+        hasher = it->second;
+    return hasher;
+}
+
 struct DocExportStatus {
     Document::ExportStatus status;
     std::set<const App::DocumentObject*> objs;
@@ -1054,6 +1109,7 @@ Document::ExportStatus Document::isExporting(const App::DocumentObject *obj) con
 void Document::exportObjects(const std::vector<App::DocumentObject*>& obj, std::ostream& out) {
 
     DocumentExporting exporting(obj);
+    d->hashers.clear();
 
     if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
         for(auto o : obj) {
@@ -1090,6 +1146,7 @@ void Document::exportObjects(const std::vector<App::DocumentObject*>& obj, std::
 
     // write additional files
     writer.writeFiles();
+    d->hashers.clear();
 }
 
 #define FC_ATTR_DEPENDENCIES "Dependencies"
@@ -1401,6 +1458,7 @@ void Document::addRecomputeObject(DocumentObject *obj) {
 std::vector<App::DocumentObject*>
 Document::importObjects(Base::XMLReader& reader)
 {
+    d->hashers.clear();
     Base::FlagToggler<> flag(globalIsRestoring, false);
     Base::ObjectStatusLocker<Status, Document> restoreBit(Status::Restoring, this);
     Base::ObjectStatusLocker<Status, Document> restoreBit2(Status::Importing, this);
@@ -1452,6 +1510,7 @@ Document::importObjects(Base::XMLReader& reader)
             o->setStatus(App::ObjImporting,false);
     }
 
+    d->hashers.clear();
     return objs;
 }
 
@@ -1463,6 +1522,8 @@ unsigned int Document::getMemSize () const
     std::vector<DocumentObject*>::const_iterator it;
     for (it = d->objectArray.begin(); it != d->objectArray.end(); ++it)
         size += (*it)->getMemSize();
+
+    size += d->Hasher->getMemSize();
 
     // size of the document properties...
     size += PropertyContainer::getMemSize();
@@ -1838,7 +1899,7 @@ bool Document::saveToFile(const char* filename) const
     signalStartSave(*this, filename);
 
     auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Document");
-    int compression = hGrp->GetInt("CompressionLevel",3);
+    int compression = hGrp->GetInt("CompressionLevel",7);
     compression = Base::clamp<int>(compression, Z_NO_COMPRESSION, Z_BEST_COMPRESSION);
 
     bool policy = App::GetApplication().GetParameterGroupByPath
