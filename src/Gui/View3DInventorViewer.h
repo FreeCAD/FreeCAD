@@ -54,11 +54,11 @@ class SoShapeHints;
 class SoMaterial;
 class SoRotationXYZ;
 class SbSphereSheetProjector;
-class SoEventCallback;
+class SoEventCallback;  // NOLINT
 class SbBox2s;
 class SoVectorizeAction;
 class QImage;
-class SoGroup;
+class SoGroup;  // NOLINT
 class SoPickStyle;
 class NaviCube;
 class SoClipPlane;
@@ -158,10 +158,10 @@ public:
     void setSceneGraph (SoNode *root) override;
     SbBool searchNode(SoNode*) const;
 
-    void setAnimationEnabled(const SbBool enable);
+    void setAnimationEnabled(SbBool enable);
     SbBool isAnimationEnabled() const;
 
-    void setPopupMenuEnabled(const SbBool on);
+    void setPopupMenuEnabled(SbBool on);
     SbBool isPopupMenuEnabled() const;
 
     void startAnimation(const SbRotation& orientation, const SbVec3f& rotationCenter,
@@ -170,15 +170,15 @@ public:
     void stopAnimating();
     SbBool isAnimating() const;
 
-    void setFeedbackVisibility(const SbBool enable);
+    void setFeedbackVisibility(SbBool enable);
     SbBool isFeedbackVisible() const;
 
-    void setFeedbackSize(const int size);
+    void setFeedbackSize(int size);
     int getFeedbackSize() const;
 
     /// Get the preferred samples from the user settings
     static int getNumSamples();
-    void setRenderType(const RenderType type);
+    void setRenderType(RenderType type);
     RenderType getRenderType() const;
     void renderToFramebuffer(QtGLFramebufferObject*);
     QImage grabFramebuffer();
@@ -212,7 +212,7 @@ public:
     /// get all view providers of given type
     std::vector<ViewProvider*> getViewProvidersOfType(const Base::Type& typeId) const;
     /// set the ViewProvider in special edit mode
-    void setEditingViewProvider(Gui::ViewProvider* p, int ModNum);
+    void setEditingViewProvider(Gui::ViewProvider* vp, int ModNum);
     /// return whether a view provider is edited
     SbBool isEditingViewProvider() const;
     /// reset from edit mode
@@ -237,10 +237,10 @@ public:
     /** @name Making pictures */
     //@{
     /**
-     * Creates an image with width \a w and height \a h of the current scene graph
-     * using a multi-sampling of \a s and exports the rendered scenegraph to an image.
+     * Creates an image with width \a width and height \a height of the current scene graph
+     * using a multi-sampling of \a sample and exports the rendered scenegraph to an image.
      */
-    void savePicture(int w, int h, int s, const QColor&, QImage&) const;
+    void savePicture(int width, int height, int sample, const QColor& bg, QImage& img) const;
     void saveGraphic(int pagesize, const QColor&, SoVectorizeAction* va) const;
     //@}
     /**
@@ -257,7 +257,7 @@ public:
     std::vector<SbVec2f> getGLPolygon(SelectionRole* role=nullptr) const;
     std::vector<SbVec2f> getGLPolygon(const std::vector<SbVec2s>&) const;
     const std::vector<SbVec2s>& getPolygon(SelectionRole* role=nullptr) const;
-    void setSelectionEnabled(const SbBool enable);
+    void setSelectionEnabled(SbBool enable);
     SbBool isSelectionEnabled() const;
     //@}
 
@@ -376,7 +376,7 @@ public:
      * set.
      */
     void setCameraOrientation(const SbRotation& orientation, SbBool moveToCenter = false);
-    void setCameraType(SoType t) override;
+    void setCameraType(SoType type) override;
     void moveCameraTo(const SbRotation& orientation, const SbVec3f& position, int duration = -1);
     /**
      * Zooms the viewport to the size of the bounding box.
@@ -412,17 +412,17 @@ public:
                                     const SbColor& midColor);
     void setNavigationType(Base::Type);
 
-    void setAxisCross(bool b);
+    void setAxisCross(bool on);
     bool hasAxisCross();
 
     void showRotationCenter(bool show);
 
-    void setEnabledFPSCounter(bool b);
-    void setEnabledNaviCube(bool b);
+    void setEnabledFPSCounter(bool on);
+    void setEnabledNaviCube(bool on);
     bool isEnabledNaviCube() const;
     void setNaviCubeCorner(int);
     NaviCube* getNaviCube() const;
-    void setEnabledVBO(bool b);
+    void setEnabledVBO(bool on);
     bool isEnabledVBO() const;
     void setRenderCache(int);
 
@@ -438,21 +438,21 @@ public:
     virtual PyObject *getPyObject();
 
 protected:
-    GLenum getInternalTextureFormat() const;
+    static GLenum getInternalTextureFormat();
     void renderScene();
     void renderFramebuffer();
     void renderGLImage();
     void animatedViewAll(int steps, int ms);
     void actualRedraw() override;
-    void setSeekMode(SbBool enable) override;
+    void setSeekMode(SbBool on) override;
     void afterRealizeHook() override;
     bool processSoEvent(const SoEvent * ev) override;
-    void dropEvent (QDropEvent * e) override;
-    void dragEnterEvent (QDragEnterEvent * e) override;
-    void dragMoveEvent(QDragMoveEvent *e) override;
-    void dragLeaveEvent(QDragLeaveEvent *e) override;
+    void dropEvent (QDropEvent * ev) override;
+    void dragEnterEvent (QDragEnterEvent * ev) override;
+    void dragMoveEvent(QDragMoveEvent* ev) override;
+    void dragLeaveEvent(QDragLeaveEvent* ev) override;
     SbBool processSoEventBase(const SoEvent * const ev);
-    void printDimension();
+    void printDimension() const;
     void selectAll();
 
 private:
@@ -465,13 +465,13 @@ private:
     static void interactionLoggerCB(void * ud, SoAction* action);
 
 private:
-    static void selectCB(void * closure, SoPath * p);
-    static void deselectCB(void * closure, SoPath * p);
-    static SoPath * pickFilterCB(void * data, const SoPickedPoint * pick);
+    static void selectCB(void * viewer, SoPath * path);
+    static void deselectCB(void * viewer, SoPath * path);
+    static SoPath * pickFilterCB(void * viewer, const SoPickedPoint * pp);
     void initialize();
     void drawAxisCross();
     static void drawArrow();
-    void drawSingleBackground(const QColor&);
+    static void drawSingleBackground(const QColor&);
     void setCursorRepresentation(int mode);
     void aboutToDestroyGLContext() override;
     void createStandardCursors(double);
