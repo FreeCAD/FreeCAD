@@ -769,7 +769,7 @@ void View3DInventorViewer::onSelectionChanged(const SelectionChanges & reason)
 }
 /// @endcond
 
-SbBool View3DInventorViewer::searchNode(SoNode* node) const
+bool View3DInventorViewer::searchNode(SoNode* node) const
 {
     SoSearchAction searchAction;
     searchAction.setNode(node);
@@ -779,12 +779,12 @@ SbBool View3DInventorViewer::searchNode(SoNode* node) const
     return selectionPath ? true : false;
 }
 
-SbBool View3DInventorViewer::hasViewProvider(ViewProvider* pcProvider) const
+bool View3DInventorViewer::hasViewProvider(ViewProvider* pcProvider) const
 {
     return _ViewProviderSet.find(pcProvider) != _ViewProviderSet.end();
 }
 
-SbBool View3DInventorViewer::containsViewProvider(const ViewProvider* vp) const
+bool View3DInventorViewer::containsViewProvider(const ViewProvider* vp) const
 {
     SoSearchAction sa;
     sa.setNode(vp->getRoot());
@@ -1083,7 +1083,7 @@ void View3DInventorViewer::resetEditingViewProvider()
 }
 
 /// reset from edit mode
-SbBool View3DInventorViewer::isEditingViewProvider() const
+bool View3DInventorViewer::isEditingViewProvider() const
 {
     return this->editViewProvider != nullptr;
 }
@@ -1732,13 +1732,13 @@ const std::vector<SbVec2s>& View3DInventorViewer::getPolygon(SelectionRole* role
     return navigation->getPolygon(role);
 }
 
-void View3DInventorViewer::setSelectionEnabled(SbBool enable)
+void View3DInventorViewer::setSelectionEnabled(bool enable)
 {
     SoNode* root = getSceneGraph();
     static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.setValue(enable);  // NOLINT
 }
 
-SbBool View3DInventorViewer::isSelectionEnabled() const
+bool View3DInventorViewer::isSelectionEnabled() const
 {
     SoNode* root = getSceneGraph();
     return static_cast<Gui::SoFCUnifiedSelection*>(root)->selectionRole.getValue();  // NOLINT
@@ -2406,7 +2406,7 @@ void View3DInventorViewer::renderScene()
     }
 }
 
-void View3DInventorViewer::setSeekMode(SbBool on)
+void View3DInventorViewer::setSeekMode(bool on)
 {
     // Overrides this method to make sure any animations are stopped
     // before we go into seek mode.
@@ -2550,7 +2550,7 @@ bool View3DInventorViewer::processSoEvent(const SoEvent* ev)
     return navigation->processEvent(ev);
 }
 
-SbBool View3DInventorViewer::processSoEventBase(const SoEvent* const ev)
+bool View3DInventorViewer::processSoEventBase(const SoEvent* const ev)
 {
     return inherited::processSoEvent(ev);
 }
@@ -2896,7 +2896,7 @@ const SoPickedPoint* View3DInventorViewer::getPickedPoint(SoEventCallback* n) co
     return n->getPickedPoint();
 }
 
-SbBool View3DInventorViewer::pubSeekToPoint(const SbVec2s& pos)
+bool View3DInventorViewer::pubSeekToPoint(const SbVec2s& pos)
 {
     return this->seekToPoint(pos);
 }
@@ -2906,7 +2906,7 @@ void View3DInventorViewer::pubSeekToPoint(const SbVec3f& pos)
     this->seekToPoint(pos);
 }
 
-void View3DInventorViewer::setCameraOrientation(const SbRotation& orientation, SbBool moveToCenter)
+void View3DInventorViewer::setCameraOrientation(const SbRotation& orientation, bool moveToCenter)
 {
     navigation->setCameraOrientation(orientation, moveToCenter);
 }
@@ -3224,7 +3224,7 @@ void View3DInventorViewer::viewSelection()
   spin will be stopped.
 */
 void
-View3DInventorViewer::setAnimationEnabled(SbBool enable)
+View3DInventorViewer::setAnimationEnabled(bool enable)
 {
     navigation->setAnimationEnabled(enable);
 }
@@ -3234,7 +3234,7 @@ View3DInventorViewer::setAnimationEnabled(SbBool enable)
   releasing the left mouse button while dragging the mouse.
 */
 
-SbBool
+bool
 View3DInventorViewer::isAnimationEnabled() const
 {
     return navigation->isAnimationEnabled();
@@ -3244,7 +3244,7 @@ View3DInventorViewer::isAnimationEnabled() const
   Query if the model in the viewer is currently in spinning mode after
   a user drag.
 */
-SbBool View3DInventorViewer::isAnimating() const
+bool View3DInventorViewer::isAnimating() const
 {
     return navigation->isAnimating();
 }
@@ -3297,12 +3297,12 @@ void View3DInventorViewer::stopAnimating()
     navigation->stopAnimating();
 }
 
-void View3DInventorViewer::setPopupMenuEnabled(SbBool on)
+void View3DInventorViewer::setPopupMenuEnabled(bool on)
 {
     navigation->setPopupMenuEnabled(on);
 }
 
-SbBool View3DInventorViewer::isPopupMenuEnabled() const
+bool View3DInventorViewer::isPopupMenuEnabled() const
 {
     return navigation->isPopupMenuEnabled();
 }
@@ -3312,7 +3312,7 @@ SbBool View3DInventorViewer::isPopupMenuEnabled() const
 */
 
 void
-View3DInventorViewer::setFeedbackVisibility(SbBool enable)
+View3DInventorViewer::setFeedbackVisibility(bool enable)
 {
     if (enable == this->axiscrossEnabled) {
         return;
@@ -3329,7 +3329,7 @@ View3DInventorViewer::setFeedbackVisibility(SbBool enable)
   Check if the feedback axis cross is visible.
 */
 
-SbBool
+bool
 View3DInventorViewer::isFeedbackVisible() const
 {
     return this->axiscrossEnabled;
@@ -3368,7 +3368,7 @@ View3DInventorViewer::getFeedbackSize() const
   Decide whether or not the mouse pointer cursor should be visible in
   the rendering canvas.
 */
-void View3DInventorViewer::setCursorEnabled(SbBool /*enable*/)
+void View3DInventorViewer::setCursorEnabled(bool /*enable*/)
 {
     this->setCursorRepresentation(navigation->getViewingMode());
 }
@@ -3381,7 +3381,7 @@ void View3DInventorViewer::afterRealizeHook()
 
 // Documented in superclass. This method overridden from parent class
 // to make sure the mouse pointer cursor is updated.
-void View3DInventorViewer::setViewing(SbBool enable)
+void View3DInventorViewer::setViewing(bool enable)
 {
     if (this->isViewing() == enable) {
         return;
@@ -3716,7 +3716,7 @@ void View3DInventorViewer::setCursorRepresentation(int modearg)
     }
 }
 
-void View3DInventorViewer::setEditing(SbBool edit)
+void View3DInventorViewer::setEditing(bool edit)
 {
     this->editing = edit;
     this->getWidget()->setCursor(QCursor(Qt::ArrowCursor));

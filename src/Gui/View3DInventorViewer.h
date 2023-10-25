@@ -156,22 +156,22 @@ public:
     void setBacklightEnabled(bool on);
     bool isBacklightEnabled() const;
     void setSceneGraph (SoNode *root) override;
-    SbBool searchNode(SoNode*) const;
+    bool searchNode(SoNode*) const;
 
-    void setAnimationEnabled(SbBool enable);
-    SbBool isAnimationEnabled() const;
+    void setAnimationEnabled(bool enable);
+    bool isAnimationEnabled() const;
 
-    void setPopupMenuEnabled(SbBool on);
-    SbBool isPopupMenuEnabled() const;
+    void setPopupMenuEnabled(bool on);
+    bool isPopupMenuEnabled() const;
 
     void startAnimation(const SbRotation& orientation, const SbVec3f& rotationCenter,
                         const SbVec3f& translation, int duration = -1, bool wait = false);
     void startSpinningAnimation(const SbVec3f& axis, float velocity);
     void stopAnimating();
-    SbBool isAnimating() const;
+    bool isAnimating() const;
 
-    void setFeedbackVisibility(SbBool enable);
-    SbBool isFeedbackVisible() const;
+    void setFeedbackVisibility(bool enable);
+    bool isFeedbackVisible() const;
 
     void setFeedbackSize(int size);
     int getFeedbackSize() const;
@@ -185,8 +185,8 @@ public:
     void imageFromFramebuffer(int width, int height, int samples,
                               const QColor& bgcolor, QImage& img);
 
-    void setViewing(SbBool enable) override;
-    virtual void setCursorEnabled(SbBool enable);
+    void setViewing(bool enable) override;
+    virtual void setCursorEnabled(bool enable);
 
     void addGraphicsItem(GLGraphicsItem*);
     void removeGraphicsItem(GLGraphicsItem*);
@@ -197,11 +197,11 @@ public:
     /** @name Handling of view providers */
     //@{
     /// Checks if the view provider is a top-level object of the scene
-    SbBool hasViewProvider(ViewProvider*) const;
+    bool hasViewProvider(ViewProvider*) const;
     /// Checks if the view provider is part of the scene.
     /// In contrast to hasViewProvider() this method also checks if the view
     /// provider is a child of another view provider
-    SbBool containsViewProvider(const ViewProvider*) const;
+    bool containsViewProvider(const ViewProvider*) const;
     /// adds an ViewProvider to the view, e.g. from a feature
     void addViewProvider(ViewProvider*);
     /// remove a ViewProvider
@@ -214,7 +214,7 @@ public:
     /// set the ViewProvider in special edit mode
     void setEditingViewProvider(Gui::ViewProvider* vp, int ModNum);
     /// return whether a view provider is edited
-    SbBool isEditingViewProvider() const;
+    bool isEditingViewProvider() const;
     /// reset from edit mode
     void resetEditingViewProvider();
     void setupEditingRoot(SoNode *node=nullptr, const Base::Matrix4D *mat=nullptr);
@@ -257,8 +257,8 @@ public:
     std::vector<SbVec2f> getGLPolygon(SelectionRole* role=nullptr) const;
     std::vector<SbVec2f> getGLPolygon(const std::vector<SbVec2s>&) const;
     const std::vector<SbVec2s>& getPolygon(SelectionRole* role=nullptr) const;
-    void setSelectionEnabled(SbBool enable);
-    SbBool isSelectionEnabled() const;
+    void setSelectionEnabled(bool enable);
+    bool isSelectionEnabled() const;
     //@}
 
     /// Returns the screen coordinates of the origin of the path's tail object
@@ -267,14 +267,14 @@ public:
 
     /** @name Edit methods */
     //@{
-    void setEditing(SbBool edit);
-    SbBool isEditing() const { return this->editing; }
+    void setEditing(bool edit);
+    bool isEditing() const { return this->editing; }
     void setEditingCursor (const QCursor& cursor);
     void setComponentCursor(const QCursor& cursor);
-    void setRedirectToSceneGraph(SbBool redirect) { this->redirected = redirect; }
-    SbBool isRedirectedToSceneGraph() const { return this->redirected; }
-    void setRedirectToSceneGraphEnabled(SbBool enable) { this->allowredir = enable; }
-    SbBool isRedirectToSceneGraphEnabled() const { return this->allowredir; }
+    void setRedirectToSceneGraph(bool redirect) { this->redirected = redirect; }
+    bool isRedirectedToSceneGraph() const { return this->redirected; }
+    void setRedirectToSceneGraphEnabled(bool enable) { this->allowredir = enable; }
+    bool isRedirectToSceneGraphEnabled() const { return this->allowredir; }
     //@}
 
     /** @name Pick actions */
@@ -283,7 +283,7 @@ public:
     bool pickPoint(const SbVec2s& pos,SbVec3f &point,SbVec3f &norm) const;
     SoPickedPoint* pickPoint(const SbVec2s& pos) const;
     const SoPickedPoint* getPickedPoint(SoEventCallback * n) const;
-    SbBool pubSeekToPoint(const SbVec2s& pos);
+    bool pubSeekToPoint(const SbVec2s& pos);
     void pubSeekToPoint(const SbVec3f& pos);
     //@}
 
@@ -375,7 +375,7 @@ public:
      * \a true the reorientation is animated, otherwise its directly
      * set.
      */
-    void setCameraOrientation(const SbRotation& orientation, SbBool moveToCenter = false);
+    void setCameraOrientation(const SbRotation& orientation, bool moveToCenter = false);
     void setCameraType(SoType type) override;
     void moveCameraTo(const SbRotation& orientation, const SbVec3f& position, int duration = -1);
     /**
@@ -444,14 +444,14 @@ protected:
     void renderGLImage();
     void animatedViewAll(int steps, int ms);
     void actualRedraw() override;
-    void setSeekMode(SbBool on) override;
+    void setSeekMode(bool on) override;
     void afterRealizeHook() override;
     bool processSoEvent(const SoEvent * ev) override;
     void dropEvent (QDropEvent * ev) override;
     void dragEnterEvent (QDragEnterEvent * ev) override;
     void dragMoveEvent(QDragMoveEvent* ev) override;
     void dragLeaveEvent(QDragLeaveEvent* ev) override;
-    SbBool processSoEventBase(const SoEvent * const ev);
+    bool processSoEventBase(const SoEvent * const ev);
     void printDimension() const;
     void selectAll();
 
@@ -506,11 +506,11 @@ private:
     RenderType renderType;
     QtGLFramebufferObject* framebuffer;
     QImage glImage;
-    SbBool shading;
+    bool shading;
     SoSwitch *dimensionRoot;
 
     // small axis cross in the corner
-    SbBool axiscrossEnabled;
+    bool axiscrossEnabled;
     int axiscrossSize;
     // big one in the middle
     SoShapeScale* axisCross;
@@ -521,12 +521,12 @@ private:
     //stuff needed to draw the fps counter
     bool fpsEnabled;
     bool vboEnabled;
-    SbBool naviCubeEnabled;
+    bool naviCubeEnabled;
 
-    SbBool editing;
+    bool editing;
     QCursor editCursor, zoomCursor, panCursor, spinCursor;
-    SbBool redirected;
-    SbBool allowredir;
+    bool redirected;
+    bool allowredir;
 
     std::string overrideMode;
     Gui::Document* guiDocument = nullptr;

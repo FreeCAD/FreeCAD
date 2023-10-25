@@ -71,8 +71,8 @@ public:
 
     const SbViewportRegion & getViewportRegion() const;
 
-    virtual void setViewing(SbBool enable);
-    SbBool isViewing() const;
+    virtual void setViewing(bool enable);
+    bool isViewing() const;
 
     void interactiveCountInc();
     void interactiveCountDec();
@@ -83,16 +83,16 @@ public:
     void removeStartCallback(SoQTQuarterAdaptorCB* func, void* data = nullptr);
     void removeFinishCallback(SoQTQuarterAdaptorCB* func, void* data = nullptr);
 
-    virtual void setSeekMode(SbBool enable);
-    SbBool isSeekMode() const;
-    SbBool seekToPoint(const SbVec2s& screenpos);
+    virtual void setSeekMode(bool enable);
+    bool isSeekMode() const;
+    bool seekToPoint(const SbVec2s& screenpos);
     void seekToPoint(const SbVec3f& scenepos);
     void setSeekTime(float seconds);
     float getSeekTime() const;
     void setSeekDistance(float distance);
     float getSeekDistance() const;
-    void setSeekValueAsPercentage(SbBool on);
-    SbBool isSeekValuePercentage() const;
+    void setSeekValueAsPercentage(bool on);
+    bool isSeekValuePercentage() const;
 
     virtual float getPickRadius() const {return this->pickRadius;}
     virtual void setPickRadius(float pickRadius);
@@ -138,11 +138,11 @@ private:
     // Seek functionality
     SoTimerSensor* m_seeksensor = nullptr;
     float m_seekperiod = 0.0F;
-    SbBool m_inseekmode = false;
+    bool m_inseekmode = false;
     SbVec3f m_camerastartposition, m_cameraendposition;
     SbRotation m_camerastartorient, m_cameraendorient;
     float m_seekdistance = 0.0F;
-    SbBool m_seekdistanceabs = false;
+    bool m_seekdistanceabs = false;
     SoSearchAction searchaction;
     SoGetMatrixAction matrixaction;
     float pickRadius = 0.0F;
