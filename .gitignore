@@ -35,5 +35,6 @@
 x64/
 *.bak
 
+build
 cmake-build-debug
 .idea
