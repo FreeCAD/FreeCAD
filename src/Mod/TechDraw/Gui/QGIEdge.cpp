@@ -51,7 +51,8 @@ QGIEdge::QGIEdge(int index) :
     setFill(Qt::NoBrush);
 }
 
-//NOTE this refers to Qt cosmetic lines
+// NOTE this refers to Qt cosmetic lines (a line with minimum width),
+// not FreeCAD cosmetic lines
 void QGIEdge::setCosmetic(bool state)
 {
 //    Base::Console().Message("QGIE::setCosmetic(%d)\n", state);

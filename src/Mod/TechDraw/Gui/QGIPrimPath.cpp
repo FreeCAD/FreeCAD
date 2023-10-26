@@ -59,7 +59,8 @@ QGIPrimPath::QGIPrimPath():
     m_colOverride = false;
     m_colNormal = getNormalColor();
     m_colCurrent = m_colNormal;
-    m_styleCurrent = Qt::SolidLine;
+    m_styleNormal = Qt::SolidLine;
+    m_styleCurrent = m_styleNormal;
     m_pen.setStyle(m_styleCurrent);
     m_capStyle = prefCapStyle();
     m_pen.setCapStyle(m_capStyle);
@@ -207,6 +208,7 @@ void QGIPrimPath::setWidth(double w)
 void QGIPrimPath::setStyle(Qt::PenStyle s)
 {
 //    Base::Console().Message("QGIPP::setStyle(QTPS: %d)\n", s);
+    m_styleNormal = s;
     m_styleCurrent = s;
 }
 
@@ -214,6 +216,7 @@ void QGIPrimPath::setStyle(int s)
 {
 //    Base::Console().Message("QGIPP::setStyle(int: %d)\n", s);
     m_styleCurrent = static_cast<Qt::PenStyle>(s);
+    m_styleNormal = static_cast<Qt::PenStyle>(s);
 }
 
 void QGIPrimPath::setNormalColor(QColor c)
@@ -308,6 +311,7 @@ void QGIPrimPath::paint ( QPainter * painter, const QStyleOptionGraphicsItem * o
 
     m_pen.setWidthF(m_width);
     m_pen.setColor(m_colCurrent);
+    m_pen.setStyle(m_styleCurrent);
     setPen(m_pen);
 
     m_brush.setColor(m_fillColorCurrent);
