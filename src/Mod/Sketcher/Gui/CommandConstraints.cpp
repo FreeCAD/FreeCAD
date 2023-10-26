@@ -43,6 +43,7 @@
 #include <Gui/SelectionObject.h>
 #include <Mod/Sketcher/App/GeometryFacade.h>
 #include <Mod/Sketcher/App/SketchObject.h>
+#include <Mod/Sketcher/App/SolverGeometryExtension.h>
 
 #include "CommandConstraints.h"
 #include "DrawSketchHandler.h"
@@ -1914,21 +1915,48 @@ protected:
 
     void makeCts_1Circle(bool& selAllowed, Base::Vector2d onSketchPos)
     {
-        const Part::Geometry* geom = Obj->getGeometry(selCircleArc[0].GeoId);
-        Q_UNUSED(geom)
+        int geoId = selCircleArc[0].GeoId;
+        bool reverseOrder = isRadiusDoF(geoId);
 
-        if (availableConstraint == AvailableConstraint::FIRST
-            || availableConstraint == AvailableConstraint::SECOND) {
-            //Radius/diameter. Mode changes in createRadiusDiameterConstrain.
-            restartCommand(QT_TRANSLATE_NOOP("Command", "Add Radius constraint"));
-            createRadiusDiameterConstrain(selCircleArc[0].GeoId, onSketchPos);
+        if (availableConstraint == AvailableConstraint::FIRST) {
+            if (!reverseOrder) {
+                restartCommand(QT_TRANSLATE_NOOP("Command", "Add Radius constraint"));
+                createRadiusDiameterConstrain(geoId, onSketchPos, true);
+            }
+            else {
+                restartCommand(QT_TRANSLATE_NOOP("Command", "Add arc angle constraint"));
+                createArcAngleConstrain(geoId, onSketchPos);
+            }
             selAllowed = true;
         }
+        if (availableConstraint == AvailableConstraint::SECOND) {
+            restartCommand(QT_TRANSLATE_NOOP("Command", "Add Radius constraint"));
+            createRadiusDiameterConstrain(geoId, onSketchPos, reverseOrder);
+            if (!isArcOfCircle(*Obj->getGeometry(geoId))) {
+                //This way if key is pressed again it goes back to FIRST
+                availableConstraint = AvailableConstraint::RESET;
+            }
+        }
         if (availableConstraint == AvailableConstraint::THIRD) {
-            restartCommand(QT_TRANSLATE_NOOP("Command", "Add arc angle constraint"));
-            createArcAngleConstrain(selCircleArc[0].GeoId, onSketchPos);
+            if (!reverseOrder) {
+                restartCommand(QT_TRANSLATE_NOOP("Command", "Add arc angle constraint"));
+                createArcAngleConstrain(geoId, onSketchPos);
+            }
+            else {
+                restartCommand(QT_TRANSLATE_NOOP("Command", "Add Radius constraint"));
+                createRadiusDiameterConstrain(geoId, onSketchPos, false);
+            }
             availableConstraint = AvailableConstraint::RESET;
         }
+        /*
+            bool firstCstr = true;
+            if (availableConstraint != AvailableConstraint::FIRST) {
+                firstCstr = false;
+                if (!isArcOfCircle(*geom)) {
+                    //This way if key is pressed again it goes back to FIRST
+                    availableConstraint = AvailableConstraint::RESET;
+                }
+            }*/
     }
 
     void makeCts_2Circle(bool& selAllowed, Base::Vector2d onSketchPos)
@@ -2152,7 +2180,7 @@ protected:
         moveConstraint(ConStr.size() - 1, onSketchPos);
     }
 
-    void createRadiusDiameterConstrain(int GeoId, Base::Vector2d onSketchPos) {
+    void createRadiusDiameterConstrain(int GeoId, Base::Vector2d onSketchPos, bool firstCstr) {
         double radius = 0.0;
         bool isCircleGeom = true;
 
@@ -2179,15 +2207,6 @@ protected:
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Mod/Sketcher/dimensioning");
             bool dimensioningDiameter = hGrp->GetBool("DimensioningDiameter", true);
             bool dimensioningRadius = hGrp->GetBool("DimensioningRadius", true);
-
-            bool firstCstr = true;
-            if (availableConstraint != AvailableConstraint::FIRST) {
-                firstCstr = false;
-                if (!isArcOfCircle(*geom)) {
-                    //This way if key is pressed again it goes back to FIRST
-                    availableConstraint = AvailableConstraint::RESET;
-                }
-            }
 
             if ((firstCstr && dimensioningRadius && !dimensioningDiameter) ||
                 (!firstCstr && !dimensioningRadius && dimensioningDiameter) ||
@@ -2480,6 +2499,26 @@ protected:
         if (addedOrigin) {
             //remove origin
             selPoints.pop_back();
+        }
+    }
+
+    bool isRadiusDoF(int geoId)
+    {
+        const Part::Geometry* geo = Obj->getGeometry(geoId);
+        if (!isArcOfCircle(*geo)) {
+            return false;
+        }
+
+        //make sure we are not taking into account the constraint created in previous mode.
+        Gui::Command::abortCommand();
+        Obj->solve();
+
+        auto solvext = Obj->getSolvedSketch().getSolverExtension(geoId);
+
+        if (solvext) {
+            auto arcInfo = solvext->getArc();
+
+            return !arcInfo.isRadiusDoF();
         }
     }
 
