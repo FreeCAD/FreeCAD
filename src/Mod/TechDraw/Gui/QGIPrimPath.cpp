@@ -308,6 +308,7 @@ void QGIPrimPath::paint ( QPainter * painter, const QStyleOptionGraphicsItem * o
 
     m_pen.setWidthF(m_width);
     m_pen.setColor(m_colCurrent);
+    m_pen.setStyle(m_styleCurrent);
     setPen(m_pen);
 
     m_brush.setColor(m_fillColorCurrent);
