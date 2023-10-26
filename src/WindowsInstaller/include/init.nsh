@@ -158,6 +158,9 @@ FunctionEnd
 # this function is called at first after starting the uninstaller
 Function un.onInit
 
+  # Macro to investigate name of FreeCAD's preferences folders to be able remove them
+  !insertmacro UnAppPreSuff $AppPre $AppSuff # macro from Utils.nsh
+
   !insertmacro MULTIUSER_UNINIT
 
   # Check that FreeCAD is not currently running
@@ -173,14 +176,6 @@ Function un.onInit
   # check if it is a 64bit system
   ${if} ${RunningX64}
    SetRegView 64
-  ${endif}
-
-  # set registry root key
-  ${if} $MultiUser.Privileges == "Admin"
-  ${orif} $MultiUser.Privileges == "Power"
-    SetShellVarContext all
-  ${else}
-   SetShellVarContext current
   ${endif}
 
   # Ascertain whether the user has sufficient privileges to uninstall.
@@ -199,9 +194,6 @@ Function un.onInit
      MessageBox MB_OK|MB_ICONEXCLAMATION "$(UnNotInRegistryLabel)" /SD IDOK
    ${endif}
   ${endif}
-  
-  # Macro to investigate name of FreeCAD's preferences folders to be able remove them
-  !insertmacro UnAppPreSuff $AppPre $AppSuff # macro from Utils.nsh
 
   # question message if the user really wants to uninstall FreeCAD
   MessageBox MB_ICONQUESTION|MB_YESNO|MB_DEFBUTTON2 "$(UnReallyRemoveLabel)" /SD IDYES IDYES +2 # continue if yes
