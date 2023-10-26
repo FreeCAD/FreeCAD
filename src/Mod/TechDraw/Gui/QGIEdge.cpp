@@ -32,9 +32,14 @@
 #include <App/Material.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
+#include <Gui/Control.h>
+#include <Mod/TechDraw/App/DrawUtil.h>
+#include <Mod/TechDraw/App/DrawViewPart.h>
 
 #include "QGIEdge.h"
+#include "QGIViewPart.h"
 #include "PreferencesGui.h"
+#include "TaskLineDecor.h"
 
 
 using namespace TechDrawGui;
@@ -113,4 +118,15 @@ QPainterPath QGIEdge::shape() const
     stroker.setWidth(getEdgeFuzz());
     outline = stroker.createStroke(path());
     return outline;
+}
+
+void QGIEdge::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
+{
+    QGIView *parent = dynamic_cast<QGIView *>(parentItem());
+    if (parent && parent->getViewObject() && parent->getViewObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+        TechDraw::DrawViewPart *baseFeat = static_cast<TechDraw::DrawViewPart *>(parent->getViewObject());
+        std::vector<std::string> edgeName(1, DrawUtil::makeGeomName("Edge", getProjIndex()));
+
+        Gui::Control().showDialog(new TaskDlgLineDecor(baseFeat, edgeName));
+    }
 }
