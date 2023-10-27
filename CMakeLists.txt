@@ -585,8 +585,9 @@ set(ONDSELSOLVER_HEADERS
         OndselSolver/ZTranslation.h
 )
 
-target_sources(OndselSolver PUBLIC "${ONDSELSOLVER_SRC}")
-target_sources(OndselSolver PUBLIC "${ONDSELSOLVER_HEADERS}")
+target_sources(OndselSolver PRIVATE
+        "${ONDSELSOLVER_SRC}"
+        "${ONDSELSOLVER_HEADERS}")
 
 set_target_properties(OndselSolver
         PROPERTIES VERSION ${PROJECT_VERSION}
