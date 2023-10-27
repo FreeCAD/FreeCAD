@@ -1750,8 +1750,8 @@ def get_working_plane(update=True):
 
     wp = PlaneGui()
     if FreeCAD.GuiUp:
+        wp._view = view  # Update _view before call to set_to_default, set_to_auto requires a 3D view.
         wp.set_to_default()
-        wp._view = view
         if view is not None:
             FreeCAD.draft_working_planes[0].append(view)
             FreeCAD.draft_working_planes[1].append(wp)
