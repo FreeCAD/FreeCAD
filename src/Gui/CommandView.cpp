@@ -3829,7 +3829,7 @@ StdCmdDockOverlayToggleLeft::StdCmdDockOverlayToggleLeft()
     sToolTipText  = QT_TR_NOOP("Show/hide left overlay panel");
     sWhatsThis    = "Std_DockOverlayToggleLeft";
     sStatusTip    = sToolTipText;
-    sAccel        = "SHIFT+Left";
+    sAccel        = "Ctrl+Left";
     sPixmap       = "qss:overlay/close.svg";
     eType         = 0;
 }
@@ -3854,7 +3854,7 @@ StdCmdDockOverlayToggleRight::StdCmdDockOverlayToggleRight()
     sToolTipText  = QT_TR_NOOP("Show/hide right overlay panel");
     sWhatsThis    = "Std_DockOverlayToggleRight";
     sStatusTip    = sToolTipText;
-    sAccel        = "SHIFT+Right";
+    sAccel        = "Ctrl+Right";
     sPixmap       = "qss:overlay/close.svg";
     eType         = 0;
 }
@@ -3879,7 +3879,7 @@ StdCmdDockOverlayToggleTop::StdCmdDockOverlayToggleTop()
     sToolTipText  = QT_TR_NOOP("Show/hide top overlay panel");
     sWhatsThis    = "Std_DockOverlayToggleTop";
     sStatusTip    = sToolTipText;
-    sAccel        = "SHIFT+Up";
+    sAccel        = "Ctrl+Up";
     sPixmap       = "qss:overlay/close.svg";
     eType         = 0;
 }
@@ -3904,7 +3904,7 @@ StdCmdDockOverlayToggleBottom::StdCmdDockOverlayToggleBottom()
     sToolTipText  = QT_TR_NOOP("Show/hide bottom overlay panel");
     sWhatsThis    = "Std_DockOverlayToggleBottom";
     sStatusTip    = sToolTipText;
-    sAccel        = "SHIFT+Down";
+    sAccel        = "Ctrl+Down";
     sPixmap       = "qss:overlay/close.svg";
     eType         = 0;
 }
