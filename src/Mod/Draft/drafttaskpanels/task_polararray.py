@@ -346,9 +346,7 @@ class TaskPanelPolarArray:
         point :
             is a vector that arrives by the callback.
         plane :
-            is a `WorkingPlane` instance, for example,
-            `App.DraftWorkingPlane`. It is not used at the moment,
-            but could be used to set up the grid.
+            is a `WorkingPlane.PlaneGui` instance. Not used at the moment.
         mask :
             is a string that specifies which coordinate is being
             edited. It is used to restrict edition of a single coordinate.

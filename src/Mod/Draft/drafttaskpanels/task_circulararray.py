@@ -392,10 +392,8 @@ class TaskPanelCircularArray:
 
         point: Base::Vector3
             is a vector that arrives by the callback.
-        plane: WorkingPlane
-            is a `WorkingPlane` instance, for example,
-            `App.DraftWorkingPlane`. It is not used at the moment,
-            but could be used to set up the grid.
+        plane: WorkingPlane.PlaneGui
+            is a working plane instance. Not used at the moment.
         mask: str
             is a string that specifies which coordinate is being
             edited. It is used to restrict edition of a single coordinate.
