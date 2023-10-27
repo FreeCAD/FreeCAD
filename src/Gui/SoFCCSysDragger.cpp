@@ -93,6 +93,7 @@ void TDragger::initClass()
 TDragger::TDragger()
 {
     SO_KIT_CONSTRUCTOR(TDragger);
+    this->ref();
 
     SO_KIT_ADD_CATALOG_ENTRY(translatorSwitch, SoSwitch, TRUE, geomSeparator, "", TRUE);
     SO_KIT_ADD_CATALOG_ENTRY(translator, SoSeparator, TRUE, translatorSwitch, "", TRUE);
@@ -139,6 +140,7 @@ TDragger::~TDragger()
     this->removeMotionCallback(&TDragger::motionCB);
     this->removeFinishCallback(&TDragger::finishCB);
     removeValueChangedCallback(&TDragger::valueChangedCB);
+    this->unref();
 }
 
 void TDragger::buildFirstInstance()
@@ -388,6 +390,7 @@ void TPlanarDragger::initClass()
 TPlanarDragger::TPlanarDragger()
 {
     SO_KIT_CONSTRUCTOR(TPlanarDragger);
+    this->ref();
 
     SO_KIT_ADD_CATALOG_ENTRY(planarTranslatorSwitch, SoSwitch, TRUE, geomSeparator, "", TRUE);
     SO_KIT_ADD_CATALOG_ENTRY(planarTranslator, SoSeparator, TRUE, planarTranslatorSwitch, "", TRUE);
@@ -435,6 +438,7 @@ TPlanarDragger::~TPlanarDragger()
     this->removeMotionCallback(&TPlanarDragger::motionCB);
     this->removeFinishCallback(&TPlanarDragger::finishCB);
     removeValueChangedCallback(&TPlanarDragger::valueChangedCB);
+    this->unref();
 }
 
 void TPlanarDragger::buildFirstInstance()
@@ -667,6 +671,7 @@ void RDragger::initClass()
 RDragger::RDragger()
 {
     SO_KIT_CONSTRUCTOR(RDragger);
+    this->ref();
 
     SO_KIT_ADD_CATALOG_ENTRY(rotatorSwitch, SoSwitch, TRUE, geomSeparator, "", TRUE);
     SO_KIT_ADD_CATALOG_ENTRY(rotator, SoSeparator, TRUE, rotatorSwitch, "", TRUE);
@@ -714,6 +719,7 @@ RDragger::~RDragger()
     this->removeMotionCallback(&RDragger::motionCB);
     this->removeFinishCallback(&RDragger::finishCB);
     removeValueChangedCallback(&RDragger::valueChangedCB);
+    this->unref();
 }
 
 void RDragger::buildFirstInstance()
