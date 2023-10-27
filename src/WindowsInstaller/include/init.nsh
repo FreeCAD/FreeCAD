@@ -77,26 +77,17 @@ Function .onInit
   !insertmacro MULTIUSER_INIT
   
   # check if this FreeCAD version is already installed
-  ${if} $MultiUser.Privileges == "Admin"
-  ${orif} $MultiUser.Privileges == "Power"
-   ReadRegStr $0 HKLM "${APP_UNINST_KEY}" "DisplayIcon"
-  ${else}
-   ReadRegStr $0 HKCU "${APP_UNINST_KEY}" "DisplayIcon"
-   # handle also the case that FreeCAD is already installed in HKLM
-   ${if} $0 == ""
-    ReadRegStr $0 HKLM "${APP_UNINST_KEY}" "DisplayIcon"
-   ${endif}
-  ${endif}
+  ReadRegStr $0 SHCTX "${APP_UNINST_KEY}" "UninstallString"
   ${if} $0 != ""
    # check if the uninstaller was acidentally deleted
    # if so, don't bother the user if they really want to install a new FreeCAD over an existing one
    # because they won't have a chance to deny this
-   StrCpy $4 $0 -16 # remove '\bin\FreeCAD.exe'
-   # (for FileCheck the variables $0 and $1 cannot be used)
-   !insertmacro FileCheck $5 "Uninstall-${APP_NAME}.exe" "$4" # macro from Utils.nsh
-   ${if} $5 == "False"
-    Goto ForceInstallation
-   ${endif}
+   
+   # remove quotes from uninstaller filename
+   StrCpy $0 $0 -1 1
+   # skip message box if uninstaller file is missing
+   IfFileExists $0 0 ForceInstallation
+   
    # installing over an existing installation of the same FreeCAD release is not necessary
    # if the users does this, they most probably have a problem with FreeCAD that can better be solved
    # by reinstalling FreeCAD
@@ -110,19 +101,10 @@ Function .onInit
   # we usually don't release more than 10 versions so with 20 we are safe to check if a newer version is installed
   IntOp $4 ${APP_VERSION_REVISION} + 20
   ${for} $5 0 $4
-   ${if} $MultiUser.Privileges == "Admin"
-   ${orif} $MultiUser.Privileges == "Power"
-    ReadRegStr $0 HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APP_NAME}${APP_VERSION_MAJOR}${APP_VERSION_MINOR}$5" "DisplayVersion"
-    # also check for an emergency release
-    ${if} $0 == ""
-     ReadRegStr $0 HKLM "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APP_NAME}${APP_VERSION_MAJOR}${APP_VERSION_MINOR}$51" "DisplayVersion"
-    ${endif}
-   ${else}
-    ReadRegStr $0 HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APP_NAME}${APP_VERSION_MAJOR}${APP_VERSION_MINOR}$5" "DisplayVersion"
-    # also check for an emergency release
-    ${if} $0 == ""
-     ReadRegStr $0 HKCU "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APP_NAME}${APP_VERSION_MAJOR}${APP_VERSION_MINOR}$51" "DisplayVersion"
-    ${endif}
+   ReadRegStr $0 SHCTX "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APP_NAME}${APP_VERSION_MAJOR}${APP_VERSION_MINOR}$5" "DisplayVersion"
+   # also check for an emergency release
+   ${if} $0 == ""
+    ReadRegStr $0 SHCTX "Software\Microsoft\Windows\CurrentVersion\Uninstall\${APP_NAME}${APP_VERSION_MAJOR}${APP_VERSION_MINOR}$51" "DisplayVersion"
    ${endif}
    ${if} $0 != ""
     StrCpy $R5 $0 # store the read version number
