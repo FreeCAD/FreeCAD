@@ -27,6 +27,7 @@
 # include <QActionEvent>
 # include <QApplication>
 # include <QCursor>
+# include <QDockWidget>
 # include <QLineEdit>
 # include <QPointer>
 # include <QPushButton>
@@ -563,6 +564,7 @@ void TaskView::showDialog(TaskDialog *dlg)
 
     getMainWindow()->updateActions();
 
+    tryShrinkToFit();
     triggerMinimumSizeHint();
 
     Q_EMIT taskUpdate();
@@ -805,6 +807,26 @@ void TaskView::restoreActionStyle()
 {
     static_cast<QSint::FreeCADPanelScheme*>(QSint::FreeCADPanelScheme::defaultScheme())->restoreActionStyle();
     taskPanel->setScheme(QSint::FreeCADPanelScheme::defaultScheme());
+}
+
+void TaskView::tryShrinkToFit()
+{
+    if (isShrinkToFit()) {
+        if (auto parent = qobject_cast<QDockWidget*>(parentWidget())) {
+            const int width = 50;
+            Gui::getMainWindow()->resizeDocks({parent}, {width}, Qt::Horizontal);
+        }
+    }
+}
+
+void TaskView::setShrinkToFit(bool on)
+{
+    shrinkToFit = on;
+}
+
+bool TaskView::isShrinkToFit() const
+{
+    return shrinkToFit;
 }
 
 
