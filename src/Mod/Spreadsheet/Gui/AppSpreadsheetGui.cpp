@@ -111,7 +111,9 @@ PyMOD_INIT_FUNC(SpreadsheetGui)
     // instantiating the commands
     CreateSpreadsheetCommands();
 
-    //QAccessible::installFactory(SpreadsheetGui::SheetTableViewAccessibleInterface::ifactory);
+    #if defined(Q_OS_WIN32)
+        QAccessible::installFactory(SpreadsheetGui::SheetTableViewAccessibleInterface::ifactory);
+    #endif
 
     SpreadsheetGui::ViewProviderSheet::init();
     SpreadsheetGui::ViewProviderSheetPython::init();
