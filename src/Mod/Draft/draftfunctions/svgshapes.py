@@ -32,6 +32,7 @@ import lazy_loader.lazy_loader as lz
 
 import FreeCAD as App
 import DraftVecUtils
+import WorkingPlane
 import draftutils.utils as utils
 
 from draftutils.messages import _msg, _wrn
@@ -58,8 +59,8 @@ def get_proj(vec, plane=None):
     vec: Base::Vector3
         An arbitrary vector that will be projected on the U and V directions.
 
-    plane: WorkingPlane.Plane
-        An object of type `WorkingPlane`.
+    plane: WorkingPlane.PlaneBase
+        Working plane.
     """
     if not plane:
         return vec
@@ -124,13 +125,10 @@ def _get_path_circ_ellipse(plane, edge, verts, edata,
                            iscircle, isellipse,
                            fill, stroke, linewidth, lstyle):
     """Get the edge data from a path that is a circle or ellipse."""
-    if hasattr(App, "DraftWorkingPlane"):
-        drawing_plane_normal = App.DraftWorkingPlane.axis
-    else:
-        drawing_plane_normal = App.Vector(0, 0, 1)
-
     if plane:
         drawing_plane_normal = plane.axis
+    else:
+        drawing_plane_normal = WorkingPlane.get_working_plane(update=False).axis
 
     center = edge.Curve
     ax = center.Axis
@@ -272,13 +270,10 @@ def get_circle(plane,
     cen = get_proj(edge.Curve.Center, plane)
     rad = edge.Curve.Radius
 
-    if hasattr(App, "DraftWorkingPlane"):
-        drawing_plane_normal = App.DraftWorkingPlane.axis
-    else:
-        drawing_plane_normal = App.Vector(0, 0, 1)
-
     if plane:
         drawing_plane_normal = plane.axis
+    else:
+        drawing_plane_normal = WorkingPlane.get_working_plane(update=False).axis
 
     if round(edge.Curve.Axis.getAngle(drawing_plane_normal), 2) in [0, 3.14]:
         # Perpendicular projection: circle
