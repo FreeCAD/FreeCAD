@@ -435,7 +435,7 @@ void TaskDetail::createDetail()
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create Detail View"));
 
     const std::string objectName{"Detail"};
-    std::string m_detailName = m_doc->getUniqueObjectName(objectName.c_str());
+    m_detailName = m_doc->getUniqueObjectName(objectName.c_str());
     std::string generatedSuffix {m_detailName.substr(objectName.length())};
 
     Gui::Command::doCommand(Command::Doc, "App.activeDocument().addObject('TechDraw::DrawViewDetail', '%s')",
@@ -444,13 +444,12 @@ void TaskDetail::createDetail()
     Gui::Command::doCommand(Command::Doc, "App.activeDocument().%s.translateLabel('DrawViewDetail', 'Detail', '%s')",
               m_detailName.c_str(), m_detailName.c_str());
 
-    App::DocumentObject *docObj = m_doc->getObject(m_detailName.c_str());
+    App::DocumentObject *docObj = m_baseFeat->getDocument()->getObject(m_detailName.c_str());
     TechDraw::DrawViewDetail* dvd = dynamic_cast<TechDraw::DrawViewDetail *>(docObj);
     if (!dvd) {
         throw Base::TypeError("TaskDetail - new detail view not found\n");
     }
     m_detailFeat = dvd;
-
     dvd->Source.setValues(getBaseFeat()->Source.getValues());
 
     Gui::Command::doCommand(Command::Doc, "App.activeDocument().%s.BaseView = App.activeDocument().%s",
@@ -564,8 +563,8 @@ DrawViewDetail* TaskDetail::getDetailFeat()
 {
 //    Base::Console().Message("TD::getDetailFeat()\n");
 
-    if (m_doc) {
-        App::DocumentObject* detailObj = m_doc->getObject(m_detailName.c_str());
+    if (m_baseFeat) {
+        App::DocumentObject* detailObj = m_baseFeat->getDocument()->getObject(m_detailName.c_str());
         if (detailObj) {
             return static_cast<DrawViewDetail*>(detailObj);
         }
