@@ -56,10 +56,15 @@ PyException::PyException(const Py::Object &obj) {
 
 PyException::PyException()
 {
-    PyErr_PrintEx(1);
-        // indirectly assign the proper value to sys.last_traceback
-        // to enable python stack tracing after exception
     PP_Fetch_Error_Text();    /* fetch (and clear) exception */
+
+    // restore and print the exception with set_sys_last_vars to make post-mortem debugging work
+    // PyErr_Restore will take ownership of the three passed objects
+    PyErr_Restore(PP_last_exception_type, PP_PyDict_Object, PP_last_traceback);
+    PP_last_exception_type = nullptr;
+    PP_PyDict_Object = nullptr;
+    PP_last_traceback = nullptr;
+    PyErr_PrintEx(1);
 
     setPyObject(PP_PyDict_Object);
 
