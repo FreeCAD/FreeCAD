@@ -24,6 +24,8 @@
 #include <QCoreApplication>
 #include <QFile>
 #include <QDomDocument>
+#include <QXmlStreamReader>
+#include <QXmlStreamWriter>
 #include <iostream>
 
 int main(int argc, char* argv[])
@@ -41,11 +43,7 @@ int main(int argc, char* argv[])
         return -1;
     }
 
-    QDomDocument xml;
-    if (!xml.setContent(&file)) {
-        std::cerr << "Invalid XML content\n";
-        return -1;
-    }
+    QXmlStreamReader reader(file.readAll());
     file.close();
 
     if (!file.open(QFile::WriteOnly)) {
@@ -53,7 +51,73 @@ int main(int argc, char* argv[])
         return -1;
     }
 
-    file.write(xml.toByteArray(4));
+    QXmlStreamWriter writer(&file);
+    writer.setAutoFormatting(true);
+    writer.setAutoFormattingIndent(4);
+
+    auto findAttr = [](const QXmlStreamAttributes& attr, const QString& name) {
+        for (int i = 0; i < attr.size(); ++i) {
+            if (attr.at(i).name() == name) {
+                return i;
+            }
+        }
+
+        return -1;
+    };
+
+    // ----------------------
+
+    auto sortAttr = [&findAttr](QXmlStreamAttributes& attr) {
+        QStringList list = {"Name",
+                            "Namespace",
+                            "Twin",
+                            "TwinPointer",
+                            "PythonName",
+                            "FatherInclude",
+                            "Include",
+                            "Father",
+                            "FatherNamespace"};
+        QXmlStreamAttributes sorted;
+        for (const auto& it : list) {
+            int index = findAttr(attr, it);
+            if (index > -1) {
+                sorted.append(attr.at(index));
+                attr.remove(index);
+            }
+        }
+
+        // add the rest
+        for (const auto& it : qAsConst(attr)) {
+            sorted.append(it);
+        }
+
+        return sorted;
+    };
+
+    // ----------------------
+
+    while (!reader.atEnd()) {
+        reader.readNext();
+        if (reader.isStartElement() && reader.name() == QLatin1String("PythonExport")) {
+            QXmlStreamAttributes attr = reader.attributes();
+            attr = sortAttr(attr);
+
+            writer.writeStartElement(QString("PythonExport"));
+            for (int i = 0; i < attr.size(); ++i) {
+                file.write("\n       ");
+                writer.writeAttribute(attr.at(i));
+            }
+        }
+        else if (reader.isStartElement() && reader.name() == QLatin1String("UserDocu")) {
+            QString text = reader.readElementText().trimmed();
+            text.replace("\t", "    ");
+            writer.writeTextElement(QString("UserDocu"), text);
+        }
+        else if (!reader.isWhitespace()) {
+            writer.writeCurrentToken(reader);
+        }
+    }
+
     file.close();
 
     return 0;
