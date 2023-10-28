@@ -189,6 +189,10 @@ class Snapper:
                               ('special',       ':/icons/Draft_Snap_Special.svg')])
 
 
+    def _get_wp(self):
+        return App.DraftWorkingPlane
+
+
     def init_active_snaps(self):
         """
         set self.active_snaps according to user prefs
@@ -512,8 +516,7 @@ class Snapper:
     def toWP(self, point):
         """Project the given point on the working plane, if needed."""
         if self.isEnabled("WorkingPlane"):
-            if hasattr(App, "DraftWorkingPlane"):
-                return App.DraftWorkingPlane.projectPoint(point)
+            return self._get_wp().project_point(point)
         return point
 
 
@@ -522,14 +525,13 @@ class Snapper:
         view = Draft.get3DView()
         pt = view.getPoint(x, y)
         if self.mask != "z":
-            if hasattr(App,"DraftWorkingPlane"):
-                if view.getCameraType() == "Perspective":
-                    camera = view.getCameraNode()
-                    p = camera.getField("position").getValue()
-                    dv = pt.sub(App.Vector(p[0], p[1], p[2]))
-                else:
-                    dv = view.getViewDirection()
-                return App.DraftWorkingPlane.projectPoint(pt, dv)
+            if view.getCameraType() == "Perspective":
+                camera = view.getCameraNode()
+                p = camera.getField("position").getValue()
+                dv = pt.sub(App.Vector(p[0], p[1], p[2]))
+            else:
+                dv = view.getViewDirection()
+            return self._get_wp().project_point(pt, dv)
         return pt
 
 
@@ -696,14 +698,8 @@ class Snapper:
         if self.isEnabled('Ortho') and (not self.mask):
             if last:
                 vecs = []
-                if hasattr(App,"DraftWorkingPlane"):
-                    ax = [App.DraftWorkingPlane.u,
-                          App.DraftWorkingPlane.v,
-                          App.DraftWorkingPlane.axis]
-                else:
-                    ax = [App.Vector(1, 0, 0),
-                          App.Vector(0, 1, 0),
-                          App.Vector(0, 0, 1)]
+                wp = self._get_wp()
+                ax = [wp.u, wp.v, wp.axis]
                 for a in self.polarAngles:
                     if a == 90:
                         vecs.extend([ax[0], ax[0].negative()])
@@ -892,12 +888,9 @@ class Snapper:
         """
         if not self.holdPoints:
             return None
-        if hasattr(App, "DraftWorkingPlane"):
-            u = App.DraftWorkingPlane.u
-            v = App.DraftWorkingPlane.v
-        else:
-            u = App.Vector(1, 0, 0)
-            v = App.Vector(0, 1, 0)
+        wp = self._get_wp()
+        u = wp.u
+        v = wp.v
         if len(self.holdPoints) > 1:
             # first try mid points
             if self.isEnabled("Midpoint"):
@@ -1285,10 +1278,6 @@ class Snapper:
         must be constrained. If no basepoint is given, the current point is
         used as basepoint.
         """
-        # without the Draft module fully loaded, no axes system!"
-        if not hasattr(App, "DraftWorkingPlane"):
-            return point
-
         point = App.Vector(point)
 
         # setup trackers if needed
@@ -1307,25 +1296,26 @@ class Snapper:
         delta = point.sub(self.basepoint)
 
         # setting constraint axis
+        wp = self._get_wp()
         if self.mask:
             self.affinity = self.mask
         if not self.affinity:
-            self.affinity = App.DraftWorkingPlane.getClosestAxis(delta)
+            self.affinity = wp.get_closest_axis(delta)
         if isinstance(axis, App.Vector):
             self.constraintAxis = axis
         elif axis == "x":
-            self.constraintAxis = App.DraftWorkingPlane.u
+            self.constraintAxis = wp.u
         elif axis == "y":
-            self.constraintAxis = App.DraftWorkingPlane.v
+            self.constraintAxis = wp.v
         elif axis == "z":
-            self.constraintAxis = App.DraftWorkingPlane.axis
+            self.constraintAxis = wp.axis
         else:
             if self.affinity == "x":
-                self.constraintAxis = App.DraftWorkingPlane.u
+                self.constraintAxis = wp.u
             elif self.affinity == "y":
-                self.constraintAxis = App.DraftWorkingPlane.v
+                self.constraintAxis = wp.v
             elif self.affinity == "z":
-                self.constraintAxis = App.DraftWorkingPlane.axis
+                self.constraintAxis = wp.axis
             elif isinstance(self.affinity, App.Vector):
                 self.constraintAxis = self.affinity
             else:
@@ -1411,10 +1401,9 @@ class Snapper:
             shift = event.wasShiftDown()
             self.pt = Gui.Snapper.snap(mousepos, lastpoint=last,
                                        active=ctrl, constrain=shift)
-            if hasattr(App, "DraftWorkingPlane"):
-                self.ui.displayPoint(self.pt, last,
-                                     plane=App.DraftWorkingPlane,
-                                     mask=Gui.Snapper.affinity)
+            self.ui.displayPoint(self.pt, last,
+                                 plane=self._get_wp(),
+                                 mask=Gui.Snapper.affinity)
             if movecallback:
                 movecallback(self.pt, self.snapInfo)
 
@@ -1422,9 +1411,10 @@ class Snapper:
             """Get the global coordinates from a point."""
             # Same algorithm as in validatePoint in DraftGui.py.
             ref = App.Vector(0, 0, 0)
-            if global_mode is False and hasattr(App, "DraftWorkingPlane"):
-                point = App.DraftWorkingPlane.getGlobalRot(point)
-                ref = App.DraftWorkingPlane.getGlobalCoords(ref)
+            if global_mode is False:
+                wp = self._get_wp()
+                point = wp.get_global_coords(point, as_vector=True)
+                ref = wp.get_global_coords(ref)
             if relative_mode is True and last is not None:
                 ref = last
             self.pt = point + ref
