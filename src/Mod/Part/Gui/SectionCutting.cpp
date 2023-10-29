@@ -1663,49 +1663,21 @@ void SectionCut::onFlipXclicked()
 {
     FlipClickedHelper(BoxXName);
 
-    auto CutObject = doc->getObject(CutXName);
-    // there should be a cut, but maybe the user deleted it meanwhile
-    if (!CutObject) {
-        Base::Console().Warning((std::string("SectionCut warning: there is no ")
-            + std::string(CutXName) + std::string(", trying to recreate it\n")).c_str());
-        // recreate the box
-        startCutting();
-        return;
-    }
-
-    // if there is another cut, we must recalculate it too
-    // the hierarchy is always Z->Y->X
-    if (hasBoxY && !hasBoxZ) { // only Y
-        auto CutFeatureY = doc->getObject(CutYName);
-        if (!CutFeatureY) {
-            Base::Console().Warning((std::string("SectionCut warning: the expected ")
-                                     + std::string(CutYName)
-                                     + std::string(" is missing, trying to recreate it\n"))
-                                        .c_str());
-            // recreate the box
-            startCutting();
-            return;
+    if (auto CutObject = flipCutObject(CutXName)) {
+        // if there is another cut, we must recalculate it too
+        // the hierarchy is always Z->Y->X
+        if (hasBoxY && !hasBoxZ) {
+            // only Y
+            CutObject = flipCutObject(CutYName);
         }
-
-        CutFeatureY->recomputeFeature(true);
-    }
-    else if ((!hasBoxY && hasBoxZ) || (hasBoxY && hasBoxZ)) { // at least Z
-        // the main cut is Z, no matter if there is a cut in Y
-        auto CutFeatureZ = doc->getObject(CutZName);
-        if (!CutFeatureZ) {
-            Base::Console().Warning((std::string("SectionCut warning: the expected ")
-                                     + std::string(CutZName)
-                                     + std::string(" is missing, trying to recreate it\n"))
-                                        .c_str());
-            // recreate the box
-            startCutting();
-            return;
+        else if ((!hasBoxY && hasBoxZ) || (hasBoxY && hasBoxZ)) {
+            // at least Z
+            CutObject = flipCutObject(CutZName);
         }
-
-        CutFeatureZ->recomputeFeature(true);
-    }
-    else { // only do this when there is no other box to save recomputes
-        CutObject->recomputeFeature(true);
+        if (auto cut = dynamic_cast<Part::Cut*>(CutObject)) {
+            // only do this when there is no other box to save recomputes
+            cut->recomputeFeature(true);
+        }
     }
 }
 
@@ -1713,24 +1685,15 @@ void SectionCut::onFlipYclicked()
 {
     FlipClickedHelper(BoxYName);
 
-    auto CutObject = doc->getObject(CutYName);
-    // there should be a cut, but maybe the user deleted it meanwhile
-    if (!CutObject) {
-        Base::Console().Warning((std::string("SectionCut warning: there is no ")
-            + std::string(CutYName) + std::string(", trying to recreate it\n")).c_str());
-        // recreate the box
-        startCutting();
-        return;
-    }
-
-    // if there is another cut, we must recalculate it too
-    // we only need to check for Z since the hierarchy is always Z->Y->X
-    if (hasBoxZ) {
-        auto CutFeatureZ = doc->getObject(CutZName);
-        CutFeatureZ->recomputeFeature(true);
-    }
-    else {
-        CutObject->recomputeFeature(true);
+    if (auto CutObject = flipCutObject(CutYName)) {
+        // if there is another cut, we must recalculate it too
+        // we only need to check for Z since the hierarchy is always Z->Y->X
+        if (hasBoxZ) {
+            CutObject = findObject(CutZName);
+        }
+        if (auto cut = dynamic_cast<Part::Cut*>(CutObject)) {
+            cut->recomputeFeature(true);
+        }
     }
 }
 
@@ -1738,17 +1701,28 @@ void SectionCut::onFlipZclicked()
 {
     FlipClickedHelper(BoxZName);
 
-    auto CutObject = doc->getObject(CutZName);
+    if (auto CutObject = flipCutObject(CutZName)) {
+        CutObject->recomputeFeature(true);
+    }
+}
+
+App::DocumentObject* SectionCut::findObject(const char* objName) const
+{
+    return doc ? doc->getObject(objName) : nullptr;
+}
+
+App::DocumentObject* SectionCut::flipCutObject(const char* cutName)
+{
+    auto CutObject = findObject(cutName);
     // there should be a cut, but maybe the user deleted it meanwhile
     if (!CutObject) {
         Base::Console().Warning((std::string("SectionCut warning: there is no ")
-            + std::string(CutZName) + std::string(", trying to recreate it\n")).c_str());
+            + std::string(cutName) + std::string(", trying to recreate it\n")).c_str());
         // recreate the box
         startCutting();
-        return;
     }
 
-    CutObject->recomputeFeature(true);
+    return CutObject;
 }
 
 // changes the cutface color
