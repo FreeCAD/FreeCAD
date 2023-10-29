@@ -81,7 +81,7 @@ private:
     bool hasBoxCustom = false;
     void noDocumentActions();
     void startCutting(bool isInitial = false);
-    SbBox3f getViewBoundingBox();
+    static SbBox3f getViewBoundingBox();
     void refreshCutRanges(SbBox3f, bool forXValue = true, bool forYValue = true, bool forZValue = true,
         bool forXRange = true, bool forYRange = true, bool forZRange = true);
     void CutValueHelper(double val, QDoubleSpinBox* SpinBox, QSlider* Slider);

@@ -26,7 +26,7 @@
 
 // to avoid compiler warnings of redefining contents of basic.h
 // later by #include <Gui/ViewProviderGeometryObject.h>
-# define _USE_MATH_DEFINES
+# define _USE_MATH_DEFINES  // NOLINT
 # include <cmath>
 
 # include <Inventor/actions/SoGetBoundingBoxAction.h>
@@ -111,21 +111,22 @@ SectionCut::SectionCut(QWidget* parent)
     }
     // now store those that are currently visible
     for (auto anObject : ObjectsList) {
-        if (anObject->Visibility.getValue())
+        if (anObject->Visibility.getValue()) {
             ObjectsListVisible.emplace_back(anObject);
+        }
     }
 
     // lambda function to set color and transparency
     auto setColorTransparency = [&](Part::Box* pcBox) {
         App::Color cutColor;
-        long cutTransparency;
+        long cutTransparency{};
         auto vpBox = dynamic_cast<Gui::ViewProviderGeometryObject*>(
             Gui::Application::Instance->getViewProvider(pcBox));
         if (vpBox) {
             cutColor = vpBox->ShapeColor.getValue();
             cutTransparency = vpBox->Transparency.getValue();
             ui->CutColor->setColor(cutColor.asValue<QColor>());
-            ui->CutTransparencyHS->setValue(cutTransparency);
+            ui->CutTransparencyHS->setValue(int(cutTransparency));
             ui->CutTransparencyHS->setToolTip(QString::number(cutTransparency)
                                             + QString::fromLatin1(" %"));
         }
@@ -147,47 +148,43 @@ SectionCut::SectionCut(QWidget* parent)
 
             // check if this is a BooleanFragments or a Part::Compound
             // Part::Compound is the case when there was only one object
-            Part::Compound* pcCompoundPart = dynamic_cast<Part::Compound*>(compoundObject);
-            if (!pcCompoundPart) {
+            auto pcCompoundPart = dynamic_cast<Part::Compound*>(compoundObject);
+            auto pcPartFeature = dynamic_cast<Part::Feature*>(compoundObject);
+            if (!pcCompoundPart && pcPartFeature) {
                 // for more security check for validity accessing its ViewProvider
-                auto pcCompoundBF = Gui::Application::Instance->getViewProvider(compoundObject);
+                auto pcCompoundBF = Gui::Application::Instance->getViewProvider(pcPartFeature);
                 if (!pcCompoundBF) {
                     Base::Console().Error(
                         "SectionCut error: compound is incorrectly named, cannot proceed\n");
                     return;
                 }
-                auto property = compoundObject->getPropertyByName("Shape");
-                Part::PropertyPartShape* objectShape =
-                    static_cast<Part::PropertyPartShape*>(property);
-                BoundCompound = objectShape->getBoundingBox();
+
+                BoundCompound = pcPartFeature->Shape.getBoundingBox();
                 // for BooleanFragments we also need to set the checkbox, transparency and color
                 ui->groupBoxIntersecting->setChecked(true);
                 auto pcCompoundBFGO = dynamic_cast<Gui::ViewProviderGeometryObject*>(pcCompoundBF);
                 if (pcCompoundBFGO) {
                     App::Color compoundColor = pcCompoundBFGO->ShapeColor.getValue();
                     ui->BFragColor->setColor(compoundColor.asValue<QColor>());
-                    int compoundTransparency = pcCompoundBFGO->Transparency.getValue();
-                    ui->BFragTransparencyHS->setValue(compoundTransparency);
+                    long compoundTransparency = pcCompoundBFGO->Transparency.getValue();
+                    ui->BFragTransparencyHS->setValue(int(compoundTransparency));
                     ui->BFragTransparencyHS->setToolTip(QString::number(compoundTransparency)
                                                         + QString::fromLatin1(" %"));
                     // Part::Cut ignores the cutbox transparency when it is set
                     // to zero and the BooleanFragments transparency is not zero
                     // therefore limit the cutbox transparency to 1 in this case
-                    if (compoundTransparency > 0)
-                        ui->CutTransparencyHS->setMinimum(1);
-                    else
-                        ui->CutTransparencyHS->setMinimum(0);
+                    ui->CutTransparencyHS->setMinimum(compoundTransparency > 0 ? 1 : 0);
                 }
                 compoundChilds = pcCompoundBF->claimChildren();
             }
-            else {
+            else if (pcCompoundPart) {
                 BoundCompound = pcCompoundPart->Shape.getBoundingBox();
-                pcCompoundPart->Links.getLinks(compoundChilds);                
+                pcCompoundPart->Links.getLinks(compoundChilds);
             }
             // make parent objects of links visible to handle the case that
             // the cutting is started when only an existing cut was visible
             for (auto aCompoundObj : compoundChilds) {
-                App::Link* pcLink = dynamic_cast<App::Link*>(aCompoundObj);
+                auto pcLink = dynamic_cast<App::Link*>(aCompoundObj);
                 auto LinkedObject = pcLink ? pcLink->getLink() : nullptr;
                 if (LinkedObject) {
                     // only if not already visible
@@ -200,7 +197,7 @@ SectionCut::SectionCut(QWidget* parent)
         }
     }
     if (doc->getObject(BoxZName)) {
-        Part::Box* pcBox = dynamic_cast<Part::Box*>(doc->getObject(BoxZName));
+        auto pcBox = dynamic_cast<Part::Box*>(doc->getObject(BoxZName));
         if (!pcBox) {
             Base::Console().Error(
                 "SectionCut error: cut box is incorrectly named, cannot proceed\n");
@@ -224,7 +221,7 @@ SectionCut::SectionCut(QWidget* parent)
         setColorTransparency(pcBox);
     }
     if (doc->getObject(BoxYName)) {
-        Part::Box* pcBox = dynamic_cast<Part::Box*>(doc->getObject(BoxYName));
+        auto pcBox = dynamic_cast<Part::Box*>(doc->getObject(BoxYName));
         if (!pcBox) {
             Base::Console().Error(
                 "SectionCut error: cut box is incorrectly named, cannot proceed\n");
@@ -245,7 +242,7 @@ SectionCut::SectionCut(QWidget* parent)
         setColorTransparency(pcBox);
     }
     if (doc->getObject(BoxXName)) {
-        Part::Box* pcBox = dynamic_cast<Part::Box*>(doc->getObject(BoxXName));
+        auto pcBox = dynamic_cast<Part::Box*>(doc->getObject(BoxXName));
         if (!pcBox) {
             Base::Console().Error(
                 "SectionCut error: cut box is incorrectly named, cannot proceed\n");
@@ -267,12 +264,15 @@ SectionCut::SectionCut(QWidget* parent)
     }
 
     // hide existing cuts to check if there are objects to be cut visible
-    if (doc->getObject(CutXName))
+    if (doc->getObject(CutXName)) {
         doc->getObject(CutXName)->Visibility.setValue(false);
-    if (doc->getObject(CutYName))
+    }
+    if (doc->getObject(CutYName)) {
         doc->getObject(CutYName)->Visibility.setValue(false);
-    if (doc->getObject(CutZName))
+    }
+    if (doc->getObject(CutZName)) {
         doc->getObject(CutZName)->Visibility.setValue(false);
+    }
 
     // get bounding box
     SbBox3f box = getViewBoundingBox();
@@ -283,8 +283,9 @@ SectionCut::SectionCut(QWidget* parent)
             refreshCutRanges(box, Refresh::notXValue, Refresh::notYValue, Refresh::notZValue,
                 Refresh::XRange, Refresh::YRange, Refresh::ZRange);
         }
-        else
+        else {
             refreshCutRanges(box);
+        }
     }
     // the case of an empty box and having cuts will be handles later by startCutting(true)
 
@@ -352,9 +353,10 @@ void SectionCut::startCutting(bool isInitial)
         return;
     }
     // the document might have been changed
-    if (doc != Gui::Application::Instance->activeDocument()->getDocument())
+    if (doc != Gui::Application::Instance->activeDocument()->getDocument()) {
         // refresh documents list
         onRefreshCutPBclicked();
+    }
 
     App::DocumentObject* anObject = nullptr;
 
@@ -366,8 +368,9 @@ void SectionCut::startCutting(bool isInitial)
             ObjectsListVisible.begin(), ObjectsListVisible.end(),
             [anObject](const App::DocumentObjectT &obj) { return (obj.getObject() == anObject);
         });
-        if (found != ObjectsListVisible.end())
+        if (found != ObjectsListVisible.end()) {
             ObjectsListVisible.erase(found);
+        }
         doc->removeObject(objectName);
     };
 
@@ -377,7 +380,7 @@ void SectionCut::startCutting(bool isInitial)
         auto CompoundVP = dynamic_cast<Gui::ViewProviderGeometryObject*>(
             Gui::Application::Instance->getViewProvider(cutObject));
         if (CompoundVP && compoundTransparency == -1) {
-            compoundTransparency = CompoundVP->Transparency.getValue();
+            compoundTransparency = int(CompoundVP->Transparency.getValue());
         }
     };
     
@@ -391,20 +394,23 @@ void SectionCut::startCutting(bool isInitial)
         storeTransparency(doc->getObject(CutZName));
         deleteObject(CutZName);
     }
-    if (doc->getObject(BoxZName))
+    if (doc->getObject(BoxZName)) {
         deleteObject(BoxZName);
+    }
     if (doc->getObject(CutYName)) {
         storeTransparency(doc->getObject(CutYName));
         deleteObject(CutYName);
     }
-    if (doc->getObject(BoxYName))
+    if (doc->getObject(BoxYName)) {
         deleteObject(BoxYName);
+    }
     if (doc->getObject(CutXName)) {
         storeTransparency(doc->getObject(CutXName));
         deleteObject(CutXName);
     }
-    if (doc->getObject(BoxXName))
+    if (doc->getObject(BoxXName)) {
         deleteObject(BoxXName);
+    }
     if (doc->getObject(CompoundName)) {
         // get the object with the right name
         auto compoundObject = doc->getObject(CompoundName);
@@ -412,8 +418,8 @@ void SectionCut::startCutting(bool isInitial)
         std::vector<App::DocumentObject*> compoundChilds;
 
         // check if this is a BooleanFragments or a Part::Compound
-        Part::Compound* pcCompoundDelPart = dynamic_cast<Part::Compound*>(compoundObject);
-        Gui::ViewProvider* pcCompoundDelBF;
+        auto pcCompoundDelPart = dynamic_cast<Part::Compound*>(compoundObject);
+        Gui::ViewProvider* pcCompoundDelBF{};
         if (!pcCompoundDelPart) {
             // check for BooleanFragments
             pcCompoundDelBF = Gui::Application::Instance->getViewProvider(compoundObject);
@@ -433,8 +439,9 @@ void SectionCut::startCutting(bool isInitial)
             ObjectsListVisible.begin(), ObjectsListVisible.end(),
             [anObject](const App::DocumentObjectT &obj) { return (obj.getObject() == anObject);
         });
-        if (foundObj != ObjectsListVisible.end())
+        if (foundObj != ObjectsListVisible.end()) {
             ObjectsListVisible.erase(foundObj);
+        }
         doc->removeObject(CompoundName);
         // now delete the objects that have been part of the compound
         for (auto aChild : compoundChilds) {
@@ -443,8 +450,9 @@ void SectionCut::startCutting(bool isInitial)
                                               [anObject](const App::DocumentObjectT &objInner) {
                                                   return (objInner.getObject() == anObject);
                                               });
-            if (foundObjInner != ObjectsListVisible.end())
+            if (foundObjInner != ObjectsListVisible.end()) {
                 ObjectsListVisible.erase((foundObjInner));
+            }
             doc->removeObject(aChild->getNameInDocument());
         }
     }
@@ -452,8 +460,10 @@ void SectionCut::startCutting(bool isInitial)
     // make all objects visible that have been visible when the dialog was called
     // because we made them invisible when we created cuts
     for (auto& aVisObject : ObjectsListVisible) {
-        if (aVisObject.getObject()) // a formerly visible object might have been deleted
+        if (aVisObject.getObject()) {
+            // a formerly visible object might have been deleted
             aVisObject.getObject()->Visibility.setValue(true);
+        }
         else {
             // we must refresh the ObjectsListVisible list
             onRefreshCutPBclicked();
@@ -475,9 +485,7 @@ void SectionCut::startCutting(bool isInitial)
             continue;
         }
         // we need all Link objects in App::Part for example for Assembly 4
-        if (object->getTypeId() == Base::Type::fromName("App::Part")) {
-            App::Part* pcPart = static_cast<App::Part*>(object);
-
+        if (auto pcPart = dynamic_cast<App::Part*>(object)) {
             // collect all its link objects
             auto groupObjects = pcPart->Group.getValue();
             for (auto aGroupObject : groupObjects) {
@@ -489,7 +497,7 @@ void SectionCut::startCutting(bool isInitial)
             }
         }
         // get all shapes that are also Part::Features
-        if (object->getPropertyByName("Shape")
+        if (object->getPropertyByName("Shape") != nullptr
             && object->getTypeId().isDerivedFrom(
                 Base::Type::fromName("Part::Feature"))) {
             // sort out 2D objects, datums, App:Parts, compounds and objects that are
@@ -502,16 +510,17 @@ void SectionCut::startCutting(bool isInitial)
                     Base::Type::fromName("PartDesign::Feature"))
                 && !object->getTypeId().isDerivedFrom(
                     Base::Type::fromName("Part::Compound"))
-                && object->getTypeId() != Base::Type::fromName("App::Part"))
+                && object->getTypeId() != Base::Type::fromName("App::Part")) {
                 ObjectsListCut.push_back(object);
+            }
         }
         // get Links that are derived from Part objects
-        if (object->getTypeId() == Base::Type::fromName("App::Link")) {
-            App::Link* pcLink = static_cast<App::Link*>(object);
+        if (App::Link* pcLink = dynamic_cast<App::Link*>(object)) {
             auto linkedObject = doc->getObject(pcLink->LinkedObject.getObjectName());
             if (linkedObject
-                && linkedObject->getTypeId().isDerivedFrom(Base::Type::fromName("Part::Feature")))
+                && linkedObject->getTypeId().isDerivedFrom(Base::Type::fromName("Part::Feature"))) {
                 ObjectsListCut.push_back(object);
+            }
         }
     }
 
@@ -562,11 +571,13 @@ void SectionCut::startCutting(bool isInitial)
 
     // we might have no objects that can be cut
     if (ObjectsListCut.empty()) {
-        if (isInitial)
+        if (isInitial) {
             Base::Console().Error("SectionCut error: there are no visible objects to be cut\n");
-        else
+        }
+        else {
             Base::Console().Error(
                 "SectionCut error: there are no objects in the document that can be cut\n");
+        }
         // block signals to be able to reset the cut group boxes without calling startCutting again
         ui->groupBoxX->blockSignals(true);
         ui->groupBoxY->blockSignals(true);
@@ -610,7 +621,7 @@ void SectionCut::startCutting(bool isInitial)
         Gui::Application::Instance->getViewProvider(*ObjectsListCut.begin()));
     if (vpFirstObject) {
         cutColor = vpFirstObject->ShapeColor.getValue();
-        cutTransparency = vpFirstObject->Transparency.getValue();
+        cutTransparency = int(vpFirstObject->Transparency.getValue());
     }
     // create link objects for all found elements
     std::vector<App::DocumentObject*> ObjectsListLinks;
@@ -619,37 +630,39 @@ void SectionCut::startCutting(bool isInitial)
         std::string newName;
         // since links to normal Part objects all have the document name "Link",
         // use their label text instead
-        if (itCuts->getTypeId() == Base::Type::fromName("App::Link"))
+        if (itCuts->getTypeId() == Base::Type::fromName("App::Link")) {
             newName = itCuts->Label.getValue();
-        else
+        }
+        else {
             newName = itCuts->getNameInDocument();
-        newName = newName + "_CutLink";
+        }
+        newName += "_CutLink";
 
-        auto newObject = doc->addObject("App::Link", newName.c_str());
-        if (!newObject) {
+        auto pcLink = dynamic_cast<App::Link*>(doc->addObject("App::Link", newName.c_str()));
+        if (!pcLink) {
             Base::Console().Error("SectionCut error: 'App::Link' could not be added\n");
             return;
         }
-        App::Link* pcLink = static_cast<App::Link*>(newObject);
+
         // set the object to the created empty link object
         pcLink->LinkedObject.setValue(itCuts);
         // we want to get the link at the same position as the original
         pcLink->LinkTransform.setValue(true);
 
         // add link to list to later add this to the compound object
-        ObjectsListLinks.push_back(newObject);
+        ObjectsListLinks.push_back(pcLink);
 
         // if the object is part of an App::Part container,
         // the link needs to get the container placement
         auto parents = itCuts->getInList();
         if (!parents.empty()) {
             for (auto parent : parents) {
-                if (parent->getTypeId() == Base::Type::fromName("App::Part")) {
-                    App::Part* pcPartParent = static_cast<App::Part*>(parent);
+                if (App::Part* pcPartParent = dynamic_cast<App::Part*>(parent)) {
                     auto placement = Base::freecad_dynamic_cast<App::PropertyPlacement>(
                                       pcPartParent->getPropertyByName("Placement"));
-                    if (placement)
+                    if (placement) {
                         pcLink->Placement.setValue(placement->getValue());
+                    }
                 }
             }
         }
@@ -662,24 +675,27 @@ void SectionCut::startCutting(bool isInitial)
             auto vpObject = dynamic_cast<Gui::ViewProviderGeometryObject*>(
                 Gui::Application::Instance->getViewProvider(itCuts));
             if (vpObject) {
-                if (cutColor != vpObject->ShapeColor.getValue())
+                if (cutColor != vpObject->ShapeColor.getValue()) {
                     autoColor = false;
-                if (cutTransparency != vpObject->Transparency.getValue())
+                }
+                if (cutTransparency != vpObject->Transparency.getValue()) {
                     autoTransparency = false;
+                }
             }
         }
     }
 
     App::DocumentObject* CutCompoundBF = nullptr;
     Part::Compound* CutCompoundPart = nullptr;
-    App::DocumentObject* CutCompoundPartObj = nullptr;
 
     // specify transparency for the compound
     // if there was no compound, take the setting for the cut face
-    if (ui->groupBoxIntersecting->isChecked())
+    if (ui->groupBoxIntersecting->isChecked()) {
         compoundTransparency = ui->BFragTransparencyHS->value();
-    if (compoundTransparency == -1)
+    }
+    if (compoundTransparency == -1) {
         compoundTransparency = ui->CutTransparencyHS->value();
+    }
 
     // create BooleanFragments and fill it
     if (ui->groupBoxIntersecting->isChecked() && ObjectsListCut.size() > 1) {
@@ -708,18 +724,18 @@ void SectionCut::startCutting(bool isInitial)
     }
     else { // create Part::Compound and fill it
         // if there is only one object to be cut, we cannot create a BooleanFragments object
-        CutCompoundPartObj = doc->addObject("Part::Compound", CompoundName);
-        if (!CutCompoundPartObj) {
+        CutCompoundPart = dynamic_cast<Part::Compound*>(doc->addObject("Part::Compound", CompoundName));
+        if (!CutCompoundPart) {
             Base::Console().Error((std::string("SectionCut error: ") + std::string(CompoundName)
                 + std::string(" could not be added\n")).c_str());
             return;
         }
-        CutCompoundPart = static_cast<Part::Compound*>(CutCompoundPartObj);
+
         // add the link to the compound
         CutCompoundPart->Links.setValue(ObjectsListLinks);
         // set the transparency
         auto vpCompound = dynamic_cast<Gui::ViewProviderGeometryObject*>(
-            Gui::Application::Instance->getViewProvider(CutCompoundPartObj));
+            Gui::Application::Instance->getViewProvider(CutCompoundPart));
         vpCompound->Transparency.setValue(compoundTransparency);
         CutCompoundPart->recomputeFeature();
     }
@@ -730,7 +746,6 @@ void SectionCut::startCutting(bool isInitial)
         if (object) {
             object->Visibility.setValue(false);
         }
-        object->Visibility.setValue(false);
     }
 
     // the area in which we can cut is the size of the compound
@@ -815,19 +830,20 @@ void SectionCut::startCutting(bool isInitial)
     auto setTransparency = [&](Part::Cut* pcCut) {
         auto vpCut = dynamic_cast<Gui::ViewProviderGeometryObject*>(
             Gui::Application::Instance->getViewProvider(pcCut));
-        if (vpCut)
+        if (vpCut) {
             vpCut->Transparency.setValue(compoundTransparency);
+        }
     };
 
     if (ui->groupBoxX->isChecked()) {
         // create a box
-        auto CutBox = doc->addObject("Part::Box", BoxXName);
-        if (!CutBox) {
+        auto pcBox = dynamic_cast<Part::Box*>(doc->addObject("Part::Box", BoxXName));
+        if (!pcBox) {
             Base::Console().Error( (std::string("SectionCut error: ")
                 + std::string(BoxXName) + std::string(" could not be added\n")).c_str() );
             return;
         }
-        Part::Box* pcBox = static_cast<Part::Box*>(CutBox);
+
         // it appears that because of internal rounding errors, the bounding box is sometimes
         // a bit too small, for example for epplipsoides, thus make the box a bit larger
         pcBox->Length.setValue(BoundingBoxSize[0] + 1.0);
@@ -845,10 +861,13 @@ void SectionCut::startCutting(bool isInitial)
         // we don't set the value to ui->cutX because this would refresh the cut
         // which we don't have yet, thus do this later
         // set the box position
-        if (!ui->flipX->isChecked())
+        if (!ui->flipX->isChecked()) {
             BoxOriginSet.x = CutPosX - (BoundingBoxSize[0] + 1.0);
-        else // flipped
+        }
+        else {
+            // flipped
             BoxOriginSet.x = CutPosX;
+        }
         // we made the box 1.0 larger that we can place it 0.5 below the bounding box
         BoxOriginSet.y = BoundingBoxOrigin[1] - 0.5;
         BoxOriginSet.z = BoundingBoxOrigin[2] - 0.5;
@@ -857,18 +876,20 @@ void SectionCut::startCutting(bool isInitial)
         setPlaceColorTransparency(pcBox);
 
         // create a cut feature
-        auto CutFeature = doc->addObject("Part::Cut", CutXName);
-        if (!CutFeature) {
+        auto pcCut = dynamic_cast<Part::Cut*>(doc->addObject("Part::Cut", CutXName));
+        if (!pcCut) {
             Base::Console().Error( (std::string("SectionCut error: ")
                 + std::string(CutXName) + std::string(" could not be added\n")).c_str() );
             return;
         }
-        Part::Cut* pcCut = static_cast<Part::Cut*>(CutFeature);
-        if (ObjectsListCut.size() == 1 || !(ui->groupBoxIntersecting->isChecked()))
+
+        if (ObjectsListCut.size() == 1 || !(ui->groupBoxIntersecting->isChecked())) {
             pcCut->Base.setValue(CutCompoundPart);
-        else
+        }
+        else {
             pcCut->Base.setValue(CutCompoundBF);
-        pcCut->Tool.setValue(CutBox);
+        }
+        pcCut->Tool.setValue(pcBox);
         // we must set the compoundTransparency also for the cut
         setTransparency(pcCut);
 
@@ -877,10 +898,12 @@ void SectionCut::startCutting(bool isInitial)
         // recomputing recursively is especially for assemblies very time-consuming
         // however there must be a final recursicve recompute and we do this at the end
         // so only recomute recursively if there are no other cuts
-        if (!ui->groupBoxY->isChecked() && !ui->groupBoxZ->isChecked())
+        if (!ui->groupBoxY->isChecked() && !ui->groupBoxZ->isChecked()) {
             pcCut->recomputeFeature(true);
-        else
+        }
+        else {
             pcCut->recomputeFeature(false);
+        }
         hasBoxX = true;
     }
     if (ui->groupBoxY->isChecked()) {
@@ -893,13 +916,13 @@ void SectionCut::startCutting(bool isInitial)
                              Refresh::notZValue, Refresh::notXRange, Refresh::YRange,
                              Refresh::notZRange);
         }
-        auto CutBox = doc->addObject("Part::Box", BoxYName);
-        if (!CutBox) {
+        auto pcBox = dynamic_cast<Part::Box*>(doc->addObject("Part::Box", BoxYName));
+        if (!pcBox) {
             Base::Console().Error((std::string("SectionCut error: ")
                 + std::string(BoxYName) + std::string(" could not be added\n")).c_str() );
             return;
         }
-        Part::Box* pcBox = static_cast<Part::Box*>(CutBox);
+
         pcBox->Length.setValue(BoundingBoxSize[0] + 1.0);
         pcBox->Width.setValue(BoundingBoxSize[1] + 1.0);
         pcBox->Height.setValue(BoundingBoxSize[2] + 1.0);
@@ -912,40 +935,47 @@ void SectionCut::startCutting(bool isInitial)
         }
         // set the box position
         BoxOriginSet.x = BoundingBoxOrigin[0] - 0.5;
-        if (!ui->flipY->isChecked())
+        if (!ui->flipY->isChecked()) {
             BoxOriginSet.y = CutPosY - (BoundingBoxSize[1] + 1.0);
-        else // flipped
+        }
+        else {
+            // flipped
             BoxOriginSet.y = CutPosY;
+        }
         BoxOriginSet.z = BoundingBoxOrigin[2] - 0.5;
         placement.setPosition(BoxOriginSet);
         setPlaceColorTransparency(pcBox);
 
-        auto CutFeature = doc->addObject("Part::Cut", CutYName);
-        if (!CutFeature) {
+        auto pcCut = dynamic_cast<Part::Cut*>(doc->addObject("Part::Cut", CutYName));
+        if (!pcCut) {
             Base::Console().Error((std::string("SectionCut error: ")
                 + std::string(CutYName) + std::string(" could not be added\n")).c_str() );
             return;
         }
-        Part::Cut* pcCut = static_cast<Part::Cut*>(CutFeature);
+
         // if there is already a cut, we must take it as feature to be cut
         if (hasBoxX) {
             pcCut->Base.setValue(doc->getObject(CutXName));
         }
         else {
-            if (ObjectsListCut.size() == 1 || !(ui->groupBoxIntersecting->isChecked()))
+            if (ObjectsListCut.size() == 1 || !(ui->groupBoxIntersecting->isChecked())) {
                 pcCut->Base.setValue(CutCompoundPart);
-            else
+            }
+            else {
                 pcCut->Base.setValue(CutCompoundBF);
+            }
         }
-        pcCut->Tool.setValue(CutBox);
+        pcCut->Tool.setValue(pcBox);
         setTransparency(pcCut);
 
         // set the cut value
         ui->cutY->setValue(CutPosY);
-        if (!ui->groupBoxZ->isChecked())
+        if (!ui->groupBoxZ->isChecked()) {
             pcCut->recomputeFeature(true);
-        else
+        }
+        else {
             pcCut->recomputeFeature(false);
+        }
         hasBoxY = true;
     }
     if (ui->groupBoxZ->isChecked()) {
@@ -955,13 +985,13 @@ void SectionCut::startCutting(bool isInitial)
                              Refresh::notZValue, Refresh::notXRange, Refresh::notYRange,
                              Refresh::ZRange);
         }
-        auto CutBox = doc->addObject("Part::Box", BoxZName);
-        if (!CutBox) {
+        auto pcBox = dynamic_cast<Part::Box*>(doc->addObject("Part::Box", BoxZName));
+        if (!pcBox) {
             Base::Console().Error((std::string("SectionCut error: ")
                 + std::string(BoxZName) + std::string(" could not be added\n")).c_str() );
             return;
         }
-        Part::Box* pcBox = static_cast<Part::Box*>(CutBox);
+
         pcBox->Length.setValue(BoundingBoxSize[0] + 1.0);
         pcBox->Width.setValue(BoundingBoxSize[1] + 1.0);
         pcBox->Height.setValue(BoundingBoxSize[2] + 1.0);
@@ -975,20 +1005,23 @@ void SectionCut::startCutting(bool isInitial)
         // set the box position
         BoxOriginSet.x = BoundingBoxOrigin[0] - 0.5;
         BoxOriginSet.y = BoundingBoxOrigin[1] - 0.5;
-        if (!ui->flipY->isChecked())
+        if (!ui->flipY->isChecked()) {
             BoxOriginSet.z = CutPosZ - (BoundingBoxSize[2] + 1.0);
-        else // flipped
+        }
+        else {
+            // flipped
             BoxOriginSet.z = CutPosZ;
+        }
         placement.setPosition(BoxOriginSet);
         setPlaceColorTransparency(pcBox);
 
-        auto CutFeature = doc->addObject("Part::Cut", CutZName);
-        if (!CutFeature) {
+        auto pcCut = dynamic_cast<Part::Cut*>(doc->addObject("Part::Cut", CutZName));
+        if (!pcCut) {
             Base::Console().Error( (std::string("SectionCut error: ")
                 + std::string(CutZName) + std::string(" could not be added\n")).c_str() );
             return;
         }
-        Part::Cut* pcCut = static_cast<Part::Cut*>(CutFeature);
+
         // if there is already a cut, we must take it as feature to be cut
         if (hasBoxY) {
             pcCut->Base.setValue(doc->getObject(CutYName));
@@ -997,12 +1030,14 @@ void SectionCut::startCutting(bool isInitial)
             pcCut->Base.setValue(doc->getObject(CutXName));
         }
         else {
-            if (ObjectsListCut.size() == 1 || !(ui->groupBoxIntersecting->isChecked()))
+            if (ObjectsListCut.size() == 1 || !(ui->groupBoxIntersecting->isChecked())) {
                 pcCut->Base.setValue(CutCompoundPart);
-            else
+            }
+            else {
                 pcCut->Base.setValue(CutCompoundBF);
+            }
         }
-        pcCut->Tool.setValue(CutBox);
+        pcCut->Tool.setValue(pcBox);
         setTransparency(pcCut);
 
         // set the cut value
@@ -1039,8 +1074,10 @@ SectionCut::~SectionCut()
         // make all objects visible that have been visible when the dialog was called
         // because we made them invisible when we created cuts
         for (auto& aVisObj : ObjectsListVisible) {
-            if (aVisObj.getObject())// a formerly visible object might have been deleted
+            if (aVisObj.getObject()) {
+                // a formerly visible object might have been deleted
                 aVisObj.getObject()->Visibility.setValue(true);
+            }
         }
     }
 }
@@ -1048,7 +1085,7 @@ SectionCut::~SectionCut()
 void SectionCut::reject()
 {
     QDialog::reject();
-    QDockWidget* dw = qobject_cast<QDockWidget*>(parent());
+    auto dw = qobject_cast<QDockWidget*>(parent());
     if (dw) {
         dw->deleteLater();
     }
@@ -1115,9 +1152,10 @@ void SectionCut::onCutXvalueChanged(double val)
     auto CutBox = doc->getObject(BoxXName);
     // when the value has been set after resetting the compound bounding box
     // there is not yet a cut and we do nothing
-    if (!CutBox)
+    if (!CutBox) {
         return;
-    Part::Box* pcBox = dynamic_cast<Part::Box*>(CutBox);
+    }
+    auto pcBox = dynamic_cast<Part::Box*>(CutBox);
     if (!pcBox) {
         Base::Console().Error((std::string("SectionCut error: ") + std::string(BoxXName)
             + std::string(" is no Part::Box object. Cannot proceed.\n")).c_str());
@@ -1127,10 +1165,14 @@ void SectionCut::onCutXvalueChanged(double val)
     Base::Placement placement = pcBox->Placement.getValue();
     Base::Vector3d BoxPosition = placement.getPosition();
     // change the placement
-    if (!ui->flipX->isChecked())
+    if (!ui->flipX->isChecked()) {
         BoxPosition.x = ui->cutX->value() - pcBox->Length.getValue();
-    else //flipped
+    }
+    else {
+        //flipped
         BoxPosition.x = ui->cutX->value();
+    }
+
     placement.setPosition(BoxPosition);
     pcBox->Placement.setValue(placement);
 
@@ -1167,16 +1209,16 @@ void SectionCut::onCutXvalueChanged(double val)
             Refresh::notXRange, Refresh::YRange, Refresh::ZRange);
         // the value of Y can now be outside or at the limit, in this case reset the value too
         if ((ui->cutY->value() >= ui->cutY->maximum())
-            || (ui->cutY->value() <= ui->cutY->minimum()))
+            || (ui->cutY->value() <= ui->cutY->minimum())) {
             refreshCutRanges(CutBoundingBox, Refresh::notXValue, Refresh::YValue, Refresh::ZValue,
                 Refresh::notXRange, Refresh::YRange, Refresh::ZRange);
+        }
         // make the SectionCutY visible again
         CutFeatureY->Visibility.setValue(true);
         // make SectionCutX invisible again
         CutObject->Visibility.setValue(false);
         // recompute the cut
-        Part::Cut* pcCutY = static_cast<Part::Cut*>(CutFeatureY);
-        pcCutY->recomputeFeature(true);
+        CutFeatureY->recomputeFeature(true);
     }
     else if (hasBoxZ) { // at least Z
         // the main cut is Z, no matter if there is a cut in Y
@@ -1200,34 +1242,37 @@ void SectionCut::onCutXvalueChanged(double val)
                              Refresh::ZRange);
             // the value of Y or Z can now be outside or at the limit, in this case reset the value too
             if ((ui->cutY->value() >= ui->cutY->maximum())
-                || (ui->cutY->value() <= ui->cutY->minimum()))
+                || (ui->cutY->value() <= ui->cutY->minimum())) {
                 refreshCutRanges(CutBoundingBox, Refresh::notXValue, Refresh::YValue,
                                  Refresh::notZValue, Refresh::notXRange, Refresh::YRange,
                                  Refresh::ZRange);
+            }
             if ((ui->cutZ->value() >= ui->cutZ->maximum())
-                || (ui->cutZ->value() <= ui->cutZ->minimum()))
+                || (ui->cutZ->value() <= ui->cutZ->minimum())) {
                 refreshCutRanges(CutBoundingBox, Refresh::notXValue, Refresh::notYValue,
                                  Refresh::ZValue, Refresh::notXRange, Refresh::YRange,
                                  Refresh::ZRange);
+            }
         }
-        else {// there is no Y cut yet so we can set the Y value too
+        else {
+            // there is no Y cut yet so we can set the Y value too
             refreshCutRanges(CutBoundingBox, Refresh::notXValue, Refresh::YValue,
                              Refresh::notZValue, Refresh::notXRange, Refresh::YRange,
                              Refresh::ZRange);
             // the value of Z can now be outside or at the limit, in this case reset the value too
             if ((ui->cutZ->value() >= ui->cutZ->maximum())
-                || (ui->cutZ->value() <= ui->cutZ->minimum()))
+                || (ui->cutZ->value() <= ui->cutZ->minimum())) {
                 refreshCutRanges(CutBoundingBox, Refresh::notXValue, Refresh::YValue,
                                  Refresh::ZValue, Refresh::notXRange, Refresh::YRange,
                                  Refresh::ZRange);
+            }
         }
         // make the SectionCutZ visible again
         CutFeatureZ->Visibility.setValue(true);
         // make SectionCutX invisible again
         CutObject->Visibility.setValue(false);
         // recompute the cut
-        Part::Cut* pcCutZ = static_cast<Part::Cut*>(CutFeatureZ);
-        pcCutZ->recomputeFeature(true);
+        CutFeatureZ->recomputeFeature(true);
     }
     else { // just X
         // refresh Y and Z limits + values
@@ -1235,7 +1280,7 @@ void SectionCut::onCutXvalueChanged(double val)
         refreshCutRanges(CutBoundingBox, Refresh::notXValue, Refresh::YValue, Refresh::ZValue,
             Refresh::notXRange, Refresh::YRange, Refresh::ZRange);
         // recompute the cut
-        Part::Cut* pcCut = dynamic_cast<Part::Cut*>(CutObject);
+        auto pcCut = dynamic_cast<Part::Cut*>(CutObject);
         if (!pcCut) {
             Base::Console().Error((std::string("SectionCut error: ") + std::string(CutZName)
                 + std::string(" is no Part::Cut object. Cannot proceed.\n")).c_str());
@@ -1276,9 +1321,10 @@ void SectionCut::onCutYvalueChanged(double val)
     CutValueHelper(val, ui->cutY, ui->cutYHS);
 
     auto CutBox = doc->getObject(BoxYName);
-    if (!CutBox)
+    if (!CutBox) {
         return;
-    Part::Box* pcBox = dynamic_cast<Part::Box*>(CutBox);
+    }
+    auto pcBox = dynamic_cast<Part::Box*>(CutBox);
     if (!pcBox) {
         Base::Console().Error((std::string("SectionCut error: ") + std::string(BoxYName)
             + std::string(" is no Part::Box object. Cannot proceed.\n")).c_str());
@@ -1286,10 +1332,14 @@ void SectionCut::onCutYvalueChanged(double val)
     }
     Base::Placement placement = pcBox->Placement.getValue();
     Base::Vector3d BoxPosition = placement.getPosition();
-    if (!ui->flipY->isChecked())
+    if (!ui->flipY->isChecked()) {
         BoxPosition.y = ui->cutY->value() - pcBox->Width.getValue();
-    else //flipped
+    }
+    else {
+        //flipped
         BoxPosition.y = ui->cutY->value();
+    }
+
     placement.setPosition(BoxPosition);
     pcBox->Placement.setValue(placement);
 
@@ -1323,17 +1373,17 @@ void SectionCut::onCutYvalueChanged(double val)
                          Refresh::notXRange, Refresh::notYRange, Refresh::ZRange);
         // the value of Z can now be outside or at the limit, in this case reset the value too
         if ((ui->cutZ->value() >= ui->cutZ->maximum())
-            || (ui->cutZ->value() <= ui->cutZ->minimum()))
+            || (ui->cutZ->value() <= ui->cutZ->minimum())) {
             refreshCutRanges(CutBoundingBox, Refresh::notXValue, Refresh::notYValue,
                              Refresh::ZValue, Refresh::notXRange, Refresh::notYRange,
                              Refresh::ZRange);
+        }
         // make the SectionCutZ visible again
         CutFeatureZ->Visibility.setValue(true);
         // make SectionCutX invisible again
         CutObject->Visibility.setValue(false);
         // recompute the cut
-        Part::Cut* pcCutZ = static_cast<Part::Cut*>(CutFeatureZ);
-        pcCutZ->recomputeFeature(true);
+        CutFeatureZ->recomputeFeature(true);
     }
     else { // just Y
         // refresh Z limits + values
@@ -1341,7 +1391,7 @@ void SectionCut::onCutYvalueChanged(double val)
         refreshCutRanges(CutBoundingBox, Refresh::notXValue, Refresh::notYValue, Refresh::ZValue,
             Refresh::notXRange, Refresh::notYRange, Refresh::ZRange);
         // recompute the cut
-        Part::Cut* pcCut = dynamic_cast<Part::Cut*>(CutObject);
+        auto pcCut = dynamic_cast<Part::Cut*>(CutObject);
         if (!pcCut) {
             Base::Console().Error((std::string("SectionCut error: ") + std::string(CutZName)
                 + std::string(" is no Part::Cut object. Cannot proceed.\n")).c_str());
@@ -1354,14 +1404,17 @@ void SectionCut::onCutYvalueChanged(double val)
         // if x-limit in box direction is larger than object, reset value to saved limit
         if (hasBoxX) {
             auto CutBoxX = doc->getObject(BoxXName);
-            if (!CutBoxX)
+            if (!CutBoxX) {
                 return;
+            }
             // first store the values
-            double storedX;
-            if (!ui->flipX->isChecked())
+            double storedX{};
+            if (!ui->flipX->isChecked()) {
                 storedX = ui->cutX->minimum();
-            else
+            }
+            else {
                 storedX = ui->cutX->maximum();
+            }
             // show the cutting box
             CutBoxX->Visibility.setValue(true);
             // set new XRange
@@ -1372,12 +1425,14 @@ void SectionCut::onCutYvalueChanged(double val)
             // hide cutting box and compare resultwith stored value
             CutBoxX->Visibility.setValue(false);
             if (!ui->flipX->isChecked()) {
-                if (storedX > ui->cutX->minimum())
+                if (storedX > ui->cutX->minimum()) {
                     ui->cutX->setMinimum(storedX);
+                }
             }
             else {
-                if (storedX < ui->cutX->maximum())
+                if (storedX < ui->cutX->maximum()) {
                     ui->cutX->setMaximum(storedX);
+                }
             }
         }
     }
@@ -1411,9 +1466,10 @@ void SectionCut::onCutZvalueChanged(double val)
     CutValueHelper(val, ui->cutZ, ui->cutZHS);
 
     auto CutBox = doc->getObject(BoxZName);
-    if (!CutBox)
+    if (!CutBox) {
         return;
-    Part::Box* pcBox = dynamic_cast<Part::Box*>(CutBox);
+    }
+    auto pcBox = dynamic_cast<Part::Box*>(CutBox);
     if (!pcBox) {
         Base::Console().Error((std::string("SectionCut error: ") + std::string(BoxZName)
             + std::string(" is no Part::Box object. Cannot proceed.\n")).c_str());
@@ -1421,10 +1477,13 @@ void SectionCut::onCutZvalueChanged(double val)
     }
     Base::Placement placement = pcBox->Placement.getValue();
     Base::Vector3d BoxPosition = placement.getPosition();
-    if (!ui->flipZ->isChecked())
+    if (!ui->flipZ->isChecked()) {
         BoxPosition.z = ui->cutZ->value() - pcBox->Height.getValue();
-    else //flipped
+    }
+    else {
+        //flipped
         BoxPosition.z = ui->cutZ->value();
+    }
     placement.setPosition(BoxPosition);
     pcBox->Placement.setValue(placement);
 
@@ -1435,7 +1494,7 @@ void SectionCut::onCutZvalueChanged(double val)
         startCutting();
         return;
     }
-    Part::Cut* pcCut = dynamic_cast<Part::Cut*>(CutObject);
+    auto pcCut = dynamic_cast<Part::Cut*>(CutObject);
     if (!pcCut) {
         Base::Console().Error((std::string("SectionCut error: ") + std::string(CutZName)
             + std::string(" is no Part::Cut object. Cannot proceed.\n")).c_str());
@@ -1449,14 +1508,17 @@ void SectionCut::onCutZvalueChanged(double val)
     SbBox3f CutBoundingBox;
     if (hasBoxX) {
         auto CutBoxX = doc->getObject(BoxXName);
-        if (!CutBoxX)
+        if (!CutBoxX) {
             return;
+        }
         // first store the values
-        double storedX;
-        if (!ui->flipX->isChecked())
+        double storedX{};
+        if (!ui->flipX->isChecked()) {
             storedX = ui->cutX->minimum();
-        else
+        }
+        else {
             storedX = ui->cutX->maximum();
+        }
         // show the cutting box
         CutBoxX->Visibility.setValue(true);
         // set new XRange
@@ -1466,35 +1528,42 @@ void SectionCut::onCutZvalueChanged(double val)
         // hide cutting box and compare resultwith stored value
         CutBoxX->Visibility.setValue(false);
         if (!ui->flipX->isChecked()) {
-            if (storedX > ui->cutX->minimum())
+            if (storedX > ui->cutX->minimum()) {
                 ui->cutX->setMinimum(storedX);
+            }
         }
         else {
-            if (storedX < ui->cutX->maximum())
+            if (storedX < ui->cutX->maximum()) {
                 ui->cutX->setMaximum(storedX);
+            }
         }
     }
     if (hasBoxY) {
         auto CutBoxY = doc->getObject(BoxYName);
-        if (!CutBoxY)
+        if (!CutBoxY) {
             return;
-        double storedY;
-        if (!ui->flipY->isChecked())
+        }
+        double storedY{};
+        if (!ui->flipY->isChecked()) {
             storedY = ui->cutY->minimum();
-        else
+        }
+        else {
             storedY = ui->cutY->maximum();
+        }
         CutBoxY->Visibility.setValue(true);
         CutBoundingBox = getViewBoundingBox();
         refreshCutRanges(CutBoundingBox, Refresh::notXValue, Refresh::notYValue, Refresh::notZValue,
             Refresh::notXRange, Refresh::YRange, Refresh::notZRange);
         CutBoxY->Visibility.setValue(false);
         if (!ui->flipY->isChecked()) {
-            if (storedY > ui->cutY->minimum())
+            if (storedY > ui->cutY->minimum()) {
                 ui->cutY->setMinimum(storedY);
+            }
         }
         else {
-            if (storedY < ui->cutY->maximum())
+            if (storedY < ui->cutY->maximum()) {
                 ui->cutY->setMaximum(storedY);
+            }
         }
     }
 }
@@ -1545,7 +1614,7 @@ void SectionCut::FlipClickedHelper(const char* BoxName)
         startCutting();
         return;
     }
-    Part::Box* pcBox = dynamic_cast<Part::Box*>(CutBox);
+    auto pcBox = dynamic_cast<Part::Box*>(CutBox);
     if (!pcBox) {
         Base::Console().Error((std::string("SectionCut error: ") + std::string(BoxName)
             + std::string(" is no Part::Box object. Cannot proceed.\n")).c_str());
@@ -1558,22 +1627,28 @@ void SectionCut::FlipClickedHelper(const char* BoxName)
     switch (std::string(BoxName).back())
     {
     case 'X':
-        if (ui->flipX->isChecked())
+        if (ui->flipX->isChecked()) {
             BoxPosition.x = BoxPosition.x + pcBox->Length.getValue();
-        else
+        }
+        else {
             BoxPosition.x = BoxPosition.x - pcBox->Length.getValue();
+        }
         break;
     case 'Y':
-        if (ui->flipY->isChecked())
+        if (ui->flipY->isChecked()) {
             BoxPosition.y = BoxPosition.y + pcBox->Width.getValue();
-        else
+        }
+        else {
             BoxPosition.y = BoxPosition.y - pcBox->Width.getValue();
+        }
         break;
     case 'Z':
-        if (ui->flipZ->isChecked())
+        if (ui->flipZ->isChecked()) {
             BoxPosition.z = BoxPosition.z + pcBox->Height.getValue();
-        else
+        }
+        else {
             BoxPosition.z = BoxPosition.z - pcBox->Height.getValue();
+        }
         break;
     }
     placement.setPosition(BoxPosition);
@@ -1607,13 +1682,8 @@ void SectionCut::onFlipXclicked()
             startCutting();
             return;
         }
-        Part::Cut* pcCutY = dynamic_cast<Part::Cut*>(CutFeatureY);
-        if (!pcCutY) {
-            Base::Console().Error((std::string("SectionCut error: ") + std::string(CutYName)
-                + std::string(" is no Part::Cut object. Cannot proceed.\n")).c_str());
-            return;
-        }
-        pcCutY->recomputeFeature(true);
+
+        CutFeatureY->recomputeFeature(true);
     }
     else if ((!hasBoxY && hasBoxZ) || (hasBoxY && hasBoxZ)) { // at least Z
         // the main cut is Z, no matter if there is a cut in Y
@@ -1627,22 +1697,11 @@ void SectionCut::onFlipXclicked()
             startCutting();
             return;
         }
-        Part::Cut* pcCutZ = dynamic_cast<Part::Cut*>(CutFeatureZ);
-        if (!pcCutZ) {
-            Base::Console().Error((std::string("SectionCut error: ") + std::string(CutZName)
-                + std::string(" is no Part::Cut object. Cannot proceed.\n")).c_str());
-            return;
-        }
-        pcCutZ->recomputeFeature(true);
+
+        CutFeatureZ->recomputeFeature(true);
     }
     else { // only do this when there is no other box to save recomputes
-        Part::Cut* pcCut = dynamic_cast<Part::Cut*>(CutObject);
-        if (!pcCut) {
-            Base::Console().Error((std::string("SectionCut error: ") + std::string(CutXName)
-                + std::string(" is no Part::Cut object. Cannot proceed.\n")).c_str());
-            return;
-        }
-        pcCut->recomputeFeature(true);
+        CutObject->recomputeFeature(true);
     }
 }
 
@@ -1664,22 +1723,10 @@ void SectionCut::onFlipYclicked()
     // we only need to check for Z since the hierarchy is always Z->Y->X
     if (hasBoxZ) {
         auto CutFeatureZ = doc->getObject(CutZName);
-        Part::Cut* pcCutZ = dynamic_cast<Part::Cut*>(CutFeatureZ);
-        if (!pcCutZ) {
-            Base::Console().Error((std::string("SectionCut error: ") + std::string(CutZName)
-                + std::string(" is no Part::Cut object. Cannot proceed.\n")).c_str());
-            return;
-        }
-        pcCutZ->recomputeFeature(true);
+        CutFeatureZ->recomputeFeature(true);
     }
     else {
-        Part::Cut* pcCut = dynamic_cast<Part::Cut*>(CutObject);
-        if (!pcCut) {
-            Base::Console().Error((std::string("SectionCut error: ") + std::string(CutYName)
-                + std::string(" is no Part::Cut object. Cannot proceed.\n")).c_str());
-            return;
-        }
-        pcCut->recomputeFeature(true);
+        CutObject->recomputeFeature(true);
     }
 }
 
@@ -1696,13 +1743,8 @@ void SectionCut::onFlipZclicked()
         startCutting();
         return;
     }
-    Part::Cut* pcCut = dynamic_cast<Part::Cut*>(CutObject);
-    if (!pcCut) {
-        Base::Console().Error((std::string("SectionCut error: ") + std::string(CutZName)
-            + std::string(" is no Part::Cut object. Cannot proceed.\n")).c_str());
-        return;
-    }
-    pcCut->recomputeFeature(true);
+
+    CutObject->recomputeFeature(true);
 }
 
 // changes the cutface color
@@ -1809,7 +1851,7 @@ void SectionCut::onBFragColorclicked()
 // sets BooleanFragments color
 void SectionCut::setBooleanFragmentsColor()
 {
-    App::DocumentObject* compoundObject;
+    App::DocumentObject* compoundObject{};
     if (doc->getObject(CompoundName)) {
         // get the object with the right name
         compoundObject = doc->getObject(CompoundName);
@@ -1819,11 +1861,10 @@ void SectionCut::setBooleanFragmentsColor()
         return;
     }
     // assure it is not a Part::Compound
-    Part::Compound* pcCompound = dynamic_cast<Part::Compound*>(compoundObject);
-    Gui::ViewProvider* CompoundBFVP;
-    if (!pcCompound) {
+    auto pcCompound = dynamic_cast<Part::Compound*>(compoundObject);
+    if (!pcCompound && compoundObject) {
         // check for valid BooleanFragments by accessing its ViewProvider
-        CompoundBFVP = Gui::Application::Instance->getViewProvider(compoundObject);
+        auto CompoundBFVP = Gui::Application::Instance->getViewProvider(compoundObject);
         if (!CompoundBFVP) {
             Base::Console().Error("SectionCut error: cannot access ViewProvider of cut compound\n");
             return;
@@ -1943,8 +1984,9 @@ void SectionCut::onRefreshCutPBclicked()
         ui->groupBoxX->blockSignals(false);
     }
     // if there is a cut, disable the button
-    if (hasBoxX || hasBoxY || hasBoxZ)
+    if (hasBoxX || hasBoxY || hasBoxZ) {
         ui->RefreshCutPB->setEnabled(false);
+    }
 }
 
 SbBox3f SectionCut::getViewBoundingBox()
@@ -1978,19 +2020,21 @@ void SectionCut::refreshCutRanges(SbBox3f BoundingBox,
     if (!BoundingBox.isEmpty()) {
         SbVec3f center = BoundingBox.getCenter();
         int minDecimals = Base::UnitsApi::getDecimals();
-        float lenx, leny, lenz;
+        float lenx{};
+        float leny{};
+        float lenz{};
         BoundingBox.getSize(lenx, leny, lenz);
-        int steps = 100;
+        const int steps = 100;
 
         // set the ranges
-        float rangeMin; // to silence a compiler warning we use a float
-        float rangeMax;
+        float rangeMin{};
+        float rangeMax{};
         if (forXRange) {
             rangeMin = center[0] - (lenx / 2);
             rangeMax = center[0] + (lenx / 2);
             ui->cutX->setRange(rangeMin, rangeMax);
             // determine the single step values
-            lenx = lenx / steps;
+            lenx = lenx / float(steps);
             int dim = static_cast<int>(log10(lenx));
             double singleStep = pow(10.0, dim);
             ui->cutX->setSingleStep(singleStep);
@@ -1999,7 +2043,7 @@ void SectionCut::refreshCutRanges(SbBox3f BoundingBox,
             rangeMin = center[1] - (leny / 2);
             rangeMax = center[1] + (leny / 2);
             ui->cutY->setRange(rangeMin, rangeMax);
-            leny = leny / steps;
+            leny = leny / float(steps);
             int dim = static_cast<int>(log10(leny));
             double singleStep = pow(10.0, dim);
             ui->cutY->setSingleStep(singleStep);
@@ -2008,7 +2052,7 @@ void SectionCut::refreshCutRanges(SbBox3f BoundingBox,
             rangeMin = center[2] - (lenz / 2);
             rangeMax = center[2] + (lenz / 2);
             ui->cutZ->setRange(rangeMin, rangeMax);
-            lenz = lenz / steps;
+            lenz = lenz / float(steps);
             int dim = static_cast<int>(log10(lenz));
             double singleStep = pow(10.0, dim);
             ui->cutZ->setSingleStep(singleStep);
@@ -2035,6 +2079,7 @@ void SectionCut::refreshCutRanges(SbBox3f BoundingBox,
 
 App::DocumentObject* SectionCut::CreateBooleanFragments(App::Document* doc)
 {
+    // NOLINTBEGIN
     // create the object
     Gui::Command::doCommand(Gui::Command::Doc, "import FreeCAD");
     Gui::Command::doCommand(Gui::Command::Doc, "from BOPTools import SplitFeatures");
@@ -2049,6 +2094,7 @@ App::DocumentObject* SectionCut::CreateBooleanFragments(App::Document* doc)
         return nullptr;
     }
     return object;
+    // NOLINTEND
 }
 
 #include "moc_SectionCutting.cpp"
