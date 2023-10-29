@@ -686,9 +686,9 @@ void SectionCut::startCutting(bool isInitial)
         CutCompoundBF = CreateBooleanFragments(doc);
         // the BooleanFragment implementation requires to first add at least 2 objects
         // before any other setting to the BooleanFragment object can be made
-        App::PropertyLinkList* CutLinkList =
-            dynamic_cast<App::PropertyLinkList*>(CutCompoundBF->getPropertyByName("Objects"));
-        if (!CutCompoundBF) {
+        auto CutLinkList = dynamic_cast<App::PropertyLinkList*>(
+            CutCompoundBF ? CutCompoundBF->getPropertyByName("Objects") : nullptr);
+        if (!CutLinkList) {
             Base::Console().Error((std::string("SectionCut error: ") + std::string(CompoundName)
                                    + std::string(" could not be added\n")).c_str());
             return;
