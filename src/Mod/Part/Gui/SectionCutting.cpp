@@ -66,22 +66,26 @@
 
 using namespace PartGui;
 
-enum Refresh : bool
+namespace
 {
-    notXValue = false,
-    notYValue = false,
-    notZValue = false,
-    notXRange = false,
-    notYRange = false,
-    notZRange = false,
-    XValue = true,
-    YValue = true,
-    ZValue = true,
-    XRange = true,
-    YRange = true,
-    ZRange = true
+struct Refresh
+{
+    static const bool notXValue = false;
+    static const bool notYValue = false;
+    static const bool notZValue = false;
+    static const bool notXRange = false;
+    static const bool notYRange = false;
+    static const bool notZRange = false;
+  //static const bool XValue = true;
+    static const bool YValue = true;
+    static const bool ZValue = true;
+    static const bool XRange = true;
+    static const bool YRange = true;
+    static const bool ZRange = true;
 };
+}
 
+// NOLINTBEGIN(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
 SectionCut::SectionCut(QWidget* parent)
     : QDialog(parent)
     , ui(new Ui_SectionCut)
@@ -276,7 +280,7 @@ SectionCut::SectionCut(QWidget* parent)
 
     // get bounding box
     SbBox3f box = getViewBoundingBox();
-    if (!box.isEmpty()) {
+    if (!box.isEmpty()) {  // NOLINT
         // if there is a cut box, perform the cut
         if (hasBoxX || hasBoxY || hasBoxZ) {
             // refresh only the range since we set the values above already
@@ -515,9 +519,9 @@ void SectionCut::startCutting(bool isInitial)
             }
         }
         // get Links that are derived from Part objects
-        if (App::Link* pcLink = dynamic_cast<App::Link*>(object)) {
+        if (auto pcLink = dynamic_cast<App::Link*>(object)) {
             auto linkedObject = doc->getObject(pcLink->LinkedObject.getObjectName());
-            if (linkedObject
+            if (linkedObject != nullptr
                 && linkedObject->getTypeId().isDerivedFrom(Base::Type::fromName("Part::Feature"))) {
                 ObjectsListCut.push_back(object);
             }
@@ -657,7 +661,7 @@ void SectionCut::startCutting(bool isInitial)
         auto parents = itCuts->getInList();
         if (!parents.empty()) {
             for (auto parent : parents) {
-                if (App::Part* pcPartParent = dynamic_cast<App::Part*>(parent)) {
+                if (auto pcPartParent = dynamic_cast<App::Part*>(parent)) {
                     auto placement = Base::freecad_dynamic_cast<App::PropertyPlacement>(
                                       pcPartParent->getPropertyByName("Placement"));
                     if (placement) {
@@ -751,7 +755,7 @@ void SectionCut::startCutting(bool isInitial)
     // the area in which we can cut is the size of the compound
     // we get its size by its bounding box
     SbBox3f CompoundBoundingBox = getViewBoundingBox();
-    if (CompoundBoundingBox.isEmpty()) {
+    if (CompoundBoundingBox.isEmpty()) {  // NOLINT
         Base::Console().Error("SectionCut error: the CompoundBoundingBox is empty\n");
         return;
     }
@@ -1050,7 +1054,7 @@ void SectionCut::startCutting(bool isInitial)
 SectionCut* SectionCut::makeDockWidget(QWidget* parent)
 {
     // embed this dialog into a QDockWidget
-    SectionCut* sectionCut = new SectionCut(parent);
+    auto sectionCut = new SectionCut(parent);
     Gui::DockWindowManager* pDockMgr = Gui::DockWindowManager::instance();
     // the dialog is designed that you can see the tree, thus put it to the right side
     QDockWidget *dw =
@@ -1997,7 +2001,7 @@ SbBox3f SectionCut::getViewBoundingBox()
         Base::Console().Error("SectionCut error: there is no active document\n");
         return Box; // return an empty box
     }
-    Gui::View3DInventor* view = dynamic_cast<Gui::View3DInventor*>(docGui->getActiveView());
+    auto view = dynamic_cast<Gui::View3DInventor*>(docGui->getActiveView());
     if (!view) {
         Base::Console().Error("SectionCut error: could not get the active view\n");
         return Box; // return an empty box
@@ -2017,7 +2021,7 @@ void SectionCut::refreshCutRanges(SbBox3f BoundingBox,
     bool forXValue, bool forYValue, bool forZValue,
     bool forXRange, bool forYRange, bool forZRange)
 {
-    if (!BoundingBox.isEmpty()) {
+    if (!BoundingBox.isEmpty()) {  // NOLINT
         SbVec3f center = BoundingBox.getCenter();
         int minDecimals = Base::UnitsApi::getDecimals();
         float lenx{};
@@ -2096,5 +2100,6 @@ App::DocumentObject* SectionCut::CreateBooleanFragments(App::Document* doc)
     return object;
     // NOLINTEND
 }
+// NOLINTEND(cppcoreguidelines-avoid-magic-numbers,readability-magic-numbers)
 
 #include "moc_SectionCutting.cpp"
