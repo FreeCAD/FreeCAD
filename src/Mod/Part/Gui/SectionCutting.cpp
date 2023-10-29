@@ -43,6 +43,7 @@
 #include <App/Link.h>
 #include <App/Part.h>
 #include <Base/Console.h>
+#include <Base/Exception.h>
 #include <Base/UnitsApi.h>
 #include <Gui/Application.h>
 #include <Gui/Command.h>
@@ -92,27 +93,23 @@ SectionCut::SectionCut(QWidget* parent)
 {
     // create widgets
     ui->setupUi(this);
-    ui->cutX->setRange(-INT_MAX, INT_MAX);
-    ui->cutY->setRange(-INT_MAX, INT_MAX);
-    ui->cutZ->setRange(-INT_MAX, INT_MAX);
+    initSpinBoxes();
 
     // get all objects in the document
     auto docGui = Gui::Application::Instance->activeDocument();
     if (!docGui) {
-        Base::Console().Error("SectionCut error: there is no document\n");
-        return;
+        throw Base::RuntimeError("SectionCut error: there is no document");
     }
     doc = docGui->getDocument();
     if (!doc) {
-        Base::Console().Error("SectionCut error: there is no document\n");
-        return;
+        throw Base::RuntimeError("SectionCut error: there is no document");
     }
 
     std::vector<App::DocumentObject*> ObjectsList = doc->getObjects();
     if (ObjectsList.empty()) {
-        Base::Console().Error("SectionCut error: there are no objects in the document\n");
-        return;
+        throw Base::RuntimeError("SectionCut error: there are no objects in the document");
     }
+
     // now store those that are currently visible
     for (auto anObject : ObjectsList) {
         if (anObject->Visibility.getValue()) {
@@ -120,6 +117,30 @@ SectionCut::SectionCut(QWidget* parent)
         }
     }
 
+    // if we can have existing cut boxes, take their values
+    // to access the flip state we must compare the bounding boxes of the cutbox and the compound
+    Base::BoundBox3d BoundCompound = collectObjects();
+    initControls(BoundCompound);
+
+    // hide existing cuts to check if there are objects to be cut visible
+    hideCutObjects();
+
+    initCutRanges();
+
+    setupConnections();
+
+    tryStartCutting();
+}
+
+void SectionCut::initSpinBoxes()
+{
+    ui->cutX->setRange(-INT_MAX, INT_MAX);
+    ui->cutY->setRange(-INT_MAX, INT_MAX);
+    ui->cutZ->setRange(-INT_MAX, INT_MAX);
+}
+
+void SectionCut::initControls(const Base::BoundBox3d& BoundCompound)
+{
     // lambda function to set color and transparency
     auto setColorTransparency = [&](Part::Box* pcBox) {
         App::Color cutColor;
@@ -136,10 +157,106 @@ SectionCut::SectionCut(QWidget* parent)
         }
     };
 
-    // if we can have existing cut boxes, take their values
-    // to access the flip state we must compare the bounding boxes of the cutbox and the compound
-    Base::BoundBox3d BoundCompound;
+    initZControls(BoundCompound, setColorTransparency);
+    initYControls(BoundCompound, setColorTransparency);
+    initXControls(BoundCompound, setColorTransparency);
+}
+
+void SectionCut::initXControls(const Base::BoundBox3d& BoundCompound,
+                               const std::function<void(Part::Box*)>& setTransparency)
+{
     Base::BoundBox3d BoundCutBox;
+    if (auto pcBox = findCutBox(BoxXName)) {
+        hasBoxX = true;
+        ui->groupBoxX->setChecked(true);
+        BoundCutBox = pcBox->Shape.getBoundingBox();
+        if (BoundCutBox.MinX > BoundCompound.MinX) {
+            ui->cutX->setValue(pcBox->Placement.getValue().getPosition().x);
+            ui->flipX->setChecked(true);
+        }
+        else {
+            ui->cutX->setValue(pcBox->Length.getValue()
+                               + pcBox->Placement.getValue().getPosition().x);
+            ui->flipX->setChecked(false);
+        }
+        setTransparency(pcBox);
+    }
+}
+
+void SectionCut::initYControls(const Base::BoundBox3d& BoundCompound,
+                               const std::function<void(Part::Box*)>& setTransparency)
+{
+    Base::BoundBox3d BoundCutBox;
+    if (auto pcBox = findCutBox(BoxYName)) {
+        hasBoxY = true;
+        ui->groupBoxY->setChecked(true);
+        BoundCutBox = pcBox->Shape.getBoundingBox();
+        if (BoundCutBox.MinY > BoundCompound.MinY) {
+            ui->cutY->setValue(pcBox->Placement.getValue().getPosition().y);
+            ui->flipY->setChecked(true);
+        }
+        else {
+            ui->cutY->setValue(pcBox->Width.getValue()
+                               + pcBox->Placement.getValue().getPosition().y);
+            ui->flipY->setChecked(false);
+        }
+        setTransparency(pcBox);
+    }
+}
+
+void SectionCut::initZControls(const Base::BoundBox3d& BoundCompound,
+                               const std::function<void(Part::Box*)>& setTransparency)
+{
+    Base::BoundBox3d BoundCutBox;
+    if (auto pcBox = findCutBox(BoxZName)) {
+        hasBoxZ = true;
+        ui->groupBoxZ->setChecked(true);
+        // if z of cutbox bounding is greater than z of compound bounding
+        // we know that the cutbox is in flipped state
+        BoundCutBox = pcBox->Shape.getBoundingBox();
+        if (BoundCutBox.MinZ > BoundCompound.MinZ) {
+            ui->cutZ->setValue(pcBox->Placement.getValue().getPosition().z);
+            ui->flipZ->setChecked(true);
+        }
+        else {
+            ui->cutZ->setValue(pcBox->Height.getValue()
+                               + pcBox->Placement.getValue().getPosition().z);
+            ui->flipZ->setChecked(false);
+        }
+        // set color and transparency
+        setTransparency(pcBox);
+    }
+}
+
+void SectionCut::initCutRanges()
+{
+    // get bounding box
+    SbBox3f box = getViewBoundingBox();
+    if (!box.isEmpty()) {  // NOLINT
+        // if there is a cut box, perform the cut
+        if (hasBoxX || hasBoxY || hasBoxZ) {
+            // refresh only the range since we set the values above already
+            refreshCutRanges(box, Refresh::notXValue, Refresh::notYValue, Refresh::notZValue,
+                Refresh::XRange, Refresh::YRange, Refresh::ZRange);
+        }
+        else {
+            refreshCutRanges(box);
+        }
+    }
+}
+
+void SectionCut::tryStartCutting()
+{
+    // if there is a cut, perform it
+    if (hasBoxX || hasBoxY || hasBoxZ) {
+        ui->RefreshCutPB->setEnabled(false);
+        startCutting(true);
+    }
+}
+
+Base::BoundBox3d SectionCut::collectObjects()
+{
+    Base::BoundBox3d BoundCompound;
     if (doc->getObject(BoxXName) || doc->getObject(BoxYName) || doc->getObject(BoxZName)) {
         // automatic coloring must be disabled
         ui->autoCutfaceColorCB->setChecked(false);
@@ -158,9 +275,7 @@ SectionCut::SectionCut(QWidget* parent)
                 // for more security check for validity accessing its ViewProvider
                 auto pcCompoundBF = Gui::Application::Instance->getViewProvider(pcPartFeature);
                 if (!pcCompoundBF) {
-                    Base::Console().Error(
-                        "SectionCut error: compound is incorrectly named, cannot proceed\n");
-                    return;
+                    throw Base::RuntimeError("SectionCut error: compound is incorrectly named, cannot proceed");
                 }
 
                 BoundCompound = pcPartFeature->Shape.getBoundingBox();
@@ -200,99 +315,12 @@ SectionCut::SectionCut(QWidget* parent)
             }
         }
     }
-    if (doc->getObject(BoxZName)) {
-        auto pcBox = dynamic_cast<Part::Box*>(doc->getObject(BoxZName));
-        if (!pcBox) {
-            Base::Console().Error(
-                "SectionCut error: cut box is incorrectly named, cannot proceed\n");
-            return;
-        }
-        hasBoxZ = true;
-        ui->groupBoxZ->setChecked(true);
-        // if z of cutbox bounding is greater than z of compound bounding
-        // we know that the cutbox is in flipped state
-        BoundCutBox = pcBox->Shape.getBoundingBox();
-        if (BoundCutBox.MinZ > BoundCompound.MinZ) {
-            ui->cutZ->setValue(pcBox->Placement.getValue().getPosition().z);
-            ui->flipZ->setChecked(true);
-        }
-        else {
-            ui->cutZ->setValue(pcBox->Height.getValue()
-                               + pcBox->Placement.getValue().getPosition().z);
-            ui->flipZ->setChecked(false);
-        }
-        // set color and transparency
-        setColorTransparency(pcBox);
-    }
-    if (doc->getObject(BoxYName)) {
-        auto pcBox = dynamic_cast<Part::Box*>(doc->getObject(BoxYName));
-        if (!pcBox) {
-            Base::Console().Error(
-                "SectionCut error: cut box is incorrectly named, cannot proceed\n");
-            return;
-        }
-        hasBoxY = true;
-        ui->groupBoxY->setChecked(true);
-        BoundCutBox = pcBox->Shape.getBoundingBox();
-        if (BoundCutBox.MinY > BoundCompound.MinY) {
-            ui->cutY->setValue(pcBox->Placement.getValue().getPosition().y);
-            ui->flipY->setChecked(true);
-        }
-        else {
-            ui->cutY->setValue(pcBox->Width.getValue()
-                               + pcBox->Placement.getValue().getPosition().y);
-            ui->flipY->setChecked(false);
-        }
-        setColorTransparency(pcBox);
-    }
-    if (doc->getObject(BoxXName)) {
-        auto pcBox = dynamic_cast<Part::Box*>(doc->getObject(BoxXName));
-        if (!pcBox) {
-            Base::Console().Error(
-                "SectionCut error: cut box is incorrectly named, cannot proceed\n");
-            return;
-        }
-        hasBoxX = true;
-        ui->groupBoxX->setChecked(true);
-        BoundCutBox = pcBox->Shape.getBoundingBox();
-        if (BoundCutBox.MinX > BoundCompound.MinX) {
-            ui->cutX->setValue(pcBox->Placement.getValue().getPosition().x);
-            ui->flipX->setChecked(true);
-        }
-        else {
-            ui->cutX->setValue(pcBox->Length.getValue()
-                               + pcBox->Placement.getValue().getPosition().x);
-            ui->flipX->setChecked(false);
-        }
-        setColorTransparency(pcBox);
-    }
 
-    // hide existing cuts to check if there are objects to be cut visible
-    if (doc->getObject(CutXName)) {
-        doc->getObject(CutXName)->Visibility.setValue(false);
-    }
-    if (doc->getObject(CutYName)) {
-        doc->getObject(CutYName)->Visibility.setValue(false);
-    }
-    if (doc->getObject(CutZName)) {
-        doc->getObject(CutZName)->Visibility.setValue(false);
-    }
+    return BoundCompound;
+}
 
-    // get bounding box
-    SbBox3f box = getViewBoundingBox();
-    if (!box.isEmpty()) {  // NOLINT
-        // if there is a cut box, perform the cut
-        if (hasBoxX || hasBoxY || hasBoxZ) {
-            // refresh only the range since we set the values above already
-            refreshCutRanges(box, Refresh::notXValue, Refresh::notYValue, Refresh::notZValue,
-                Refresh::XRange, Refresh::YRange, Refresh::ZRange);
-        }
-        else {
-            refreshCutRanges(box);
-        }
-    }
-    // the case of an empty box and having cuts will be handles later by startCutting(true)
-
+void SectionCut::setupConnections()
+{
     connect(ui->groupBoxX, &QGroupBox::toggled, this, &SectionCut::onGroupBoxXtoggled);
     connect(ui->groupBoxY, &QGroupBox::toggled, this, &SectionCut::onGroupBoxYtoggled);
     connect(ui->groupBoxZ, &QGroupBox::toggled, this, &SectionCut::onGroupBoxZtoggled);
@@ -324,11 +352,18 @@ SectionCut::SectionCut(QWidget* parent)
             this, &SectionCut::onBFragTransparencyHSMoved);
     connect(ui->BFragTransparencyHS,&QSlider::valueChanged,
             this, &SectionCut::onBFragTransparencyHSChanged);
+}
 
-    // if there is a cut, perform it
-    if (hasBoxX || hasBoxY || hasBoxZ) {
-        ui->RefreshCutPB->setEnabled(false);
-        startCutting(true);
+void SectionCut::hideCutObjects()
+{
+    if (auto obj = doc->getObject(CutXName)) {
+        obj->Visibility.setValue(false);
+    }
+    if (auto obj = doc->getObject(CutYName)) {
+        obj->Visibility.setValue(false);
+    }
+    if (auto obj = doc->getObject(CutZName)) {
+        obj->Visibility.setValue(false);
     }
 }
 
@@ -1704,6 +1739,20 @@ void SectionCut::onFlipZclicked()
     if (auto CutObject = flipCutObject(CutZName)) {
         CutObject->recomputeFeature(true);
     }
+}
+
+Part::Box* SectionCut::findCutBox(const char* name) const
+{
+    if (auto obj = doc->getObject(name)) {
+        auto pcBox = dynamic_cast<Part::Box*>(obj);
+        if (!pcBox) {
+            throw Base::RuntimeError("SectionCut error: cut box is incorrectly named, cannot proceed");
+        }
+
+        return pcBox;
+    }
+
+    return nullptr;
 }
 
 App::DocumentObject* SectionCut::findObject(const char* objName) const

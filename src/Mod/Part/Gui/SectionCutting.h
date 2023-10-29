@@ -23,12 +23,18 @@
 #ifndef PARTGUI_SECTIONCUTTING_H
 #define PARTGUI_SECTIONCUTTING_H
 
+#include <functional>
 #include <Inventor/SbBox3f.h>
 #include <QDialog>
+#include <Base/BoundBox.h>
 #include <App/DocumentObserver.h>
 
 class QDoubleSpinBox;
 class QSlider;
+
+namespace Part {
+class Box;
+}
 
 namespace PartGui {
 
@@ -72,6 +78,15 @@ public:
     void reject() override;
 
 private:
+    void initSpinBoxes();
+    void initControls(const Base::BoundBox3d&);
+    void initXControls(const Base::BoundBox3d&, const std::function<void(Part::Box*)>&);
+    void initYControls(const Base::BoundBox3d&, const std::function<void(Part::Box*)>&);
+    void initZControls(const Base::BoundBox3d&, const std::function<void(Part::Box*)>&);
+    void initCutRanges();
+    void setupConnections();
+    void tryStartCutting();
+    Base::BoundBox3d collectObjects();
     void noDocumentActions();
     void startCutting(bool isInitial = false);
     static SbBox3f getViewBoundingBox();
@@ -82,7 +97,9 @@ private:
     void changeCutBoxColors();
     App::DocumentObject* CreateBooleanFragments(App::Document* doc);
     void setBooleanFragmentsColor();
+    Part::Box* findCutBox(const char* name) const;
     App::DocumentObject* findObject(const char* objName) const;
+    void hideCutObjects();
     App::DocumentObject* flipCutObject(const char* cutName);
 
 private:
