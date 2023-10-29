@@ -72,13 +72,6 @@ public:
     void reject() override;
 
 private:
-    std::unique_ptr<Ui_SectionCut> ui;
-    std::vector<App::DocumentObjectT> ObjectsListVisible;
-    App::Document* doc = nullptr; // pointer to active document
-    bool hasBoxX = false;
-    bool hasBoxY = false;
-    bool hasBoxZ = false;
-    bool hasBoxCustom = false;
     void noDocumentActions();
     void startCutting(bool isInitial = false);
     static SbBox3f getViewBoundingBox();
@@ -86,6 +79,20 @@ private:
         bool forXRange = true, bool forYRange = true, bool forZRange = true);
     void CutValueHelper(double val, QDoubleSpinBox* SpinBox, QSlider* Slider);
     void FlipClickedHelper(const char* BoxName);
+    void changeCutBoxColors();
+    App::DocumentObject* CreateBooleanFragments(App::Document* doc);
+    void setBooleanFragmentsColor();
+    App::DocumentObject* findObject(const char* objName) const;
+    App::DocumentObject* flipCutObject(const char* cutName);
+
+private:
+    std::unique_ptr<Ui_SectionCut> ui;
+    std::vector<App::DocumentObjectT> ObjectsListVisible;
+    App::Document* doc = nullptr; // pointer to active document
+    bool hasBoxX = false;
+    bool hasBoxY = false;
+    bool hasBoxZ = false;
+    bool hasBoxCustom = false;
     const char* CompoundName = "SectionCutCompound";
     const char* BoxXName = "SectionCutBoxX";
     const char* BoxYName = "SectionCutBoxY";
@@ -93,9 +100,6 @@ private:
     const char* CutXName = "SectionCutX";
     const char* CutYName = "SectionCutY";
     const char* CutZName = "SectionCutZ";
-    void changeCutBoxColors();
-    App::DocumentObject* CreateBooleanFragments(App::Document* doc);
-    void setBooleanFragmentsColor();
 };
 
 } // namespace PartGui
