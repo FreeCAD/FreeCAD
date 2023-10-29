@@ -400,29 +400,40 @@ void ViewProviderBody::onChanged(const App::Property* prop) {
 
 void ViewProviderBody::unifyVisualProperty(const App::Property* prop) {
 
-    if(!pcObject || isRestoring())
+    if (!pcObject || isRestoring()) {
         return;
+    }
 
-    if(prop == &Visibility ||
-       prop == &Selectable ||
-       prop == &DisplayModeBody ||
-       prop == &DiffuseColor ||
-       prop == &PointColorArray ||
-       prop == &LineColorArray)
+    if (prop == &Visibility ||
+        prop == &Selectable ||
+        prop == &DisplayModeBody ||
+        prop == &DiffuseColor ||
+        prop == &PointColorArray ||
+        prop == &LineColorArray) {
         return;
+    }
+
+    // Fixes issue 11197. In case of affected projects where the bounding box of a sub-feature
+    // is shown allow it to hide it
+    if (prop == &BoundingBox) {
+        if (BoundingBox.getValue()) {
+            return;
+        }
+    }
 
     Gui::Document *gdoc = Gui::Application::Instance->getDocument ( pcObject->getDocument() ) ;
 
     PartDesign::Body *body = static_cast<PartDesign::Body *> ( getObject() );
     auto features = body->Group.getValues();
-    for(auto feature : features) {
+    for (auto feature : features) {
 
-        if(!feature->isDerivedFrom(PartDesign::Feature::getClassTypeId()))
+        if (!feature->isDerivedFrom(PartDesign::Feature::getClassTypeId())) {
             continue;
+        }
 
         //copy over the properties data
-        auto p = gdoc->getViewProvider(feature)->getPropertyByName(prop->getName());
-        p->Paste(*prop);
+        auto fprop = gdoc->getViewProvider(feature)->getPropertyByName(prop->getName());
+        fprop->Paste(*prop);
     }
 }
 
