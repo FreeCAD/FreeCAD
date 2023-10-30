@@ -1780,7 +1780,7 @@ void ConstraintEllipseTangentLine::rescale(double coef)
 void ConstraintEllipseTangentLine::errorgrad(double* err, double* grad, double* param)
 {
     // DeepSOIC equation
-    // http://forum.freecad.org/viewtopic.php?f=10&t=7520&start=140
+    // https://forum.freecad.org/viewtopic.php?f=10&t=7520&start=140
 
     if (pvecChangedFlag) {
         ReconstructGeomPointers();
@@ -2436,7 +2436,7 @@ double ConstraintPointOnHyperbola::error()
     double b = *rmin();
 
     // Full sage worksheet at:
-    // http://forum.freecad.org/viewtopic.php?f=10&t=8038&p=110447#p110447
+    // https://forum.freecad.org/viewtopic.php?f=10&t=8038&p=110447#p110447
     //
     // Err = |PF2| - |PF1| - 2*a
     // sage code:

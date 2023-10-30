@@ -1551,7 +1551,7 @@ void Document::SaveDocFile (Base::Writer &writer) const
 {
     writer.Stream() << "<?xml version='1.0' encoding='utf-8'?>" << std::endl
                     << "<!--" << std::endl
-                    << " FreeCAD Document, see http://www.freecad.org for more information..."
+                    << " FreeCAD Document, see https://www.freecad.org for more information..."
                     << std::endl << "-->" << std::endl;
 
     writer.Stream() << "<Document SchemaVersion=\"1\"";

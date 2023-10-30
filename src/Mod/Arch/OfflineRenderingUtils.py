@@ -633,7 +633,7 @@ def buildGuiDocumentFromColors(document,colors,camera=None):
 
     guidoc =  "<?xml version='1.0' encoding='utf-8'?>\n"
     guidoc += "<!--\n"
-    guidoc += " FreeCAD Document, see http://www.freecad.org for more information...\n"
+    guidoc += " FreeCAD Document, see https://www.freecad.org for more information...\n"
     guidoc += "-->\n"
     guidoc += "<Document SchemaVersion=\"1\">\n"
 
@@ -712,7 +712,7 @@ def buildGuiDocumentFromGuiData(document,guidata):
 
     guidoc =  "<?xml version='1.0' encoding='utf-8'?>\n"
     guidoc += "<!--\n"
-    guidoc += " FreeCAD Document, see http://www.freecad.org for more information...\n"
+    guidoc += " FreeCAD Document, see https://www.freecad.org for more information...\n"
     guidoc += "-->\n"
     guidoc += "<Document SchemaVersion=\"1\">\n"
 

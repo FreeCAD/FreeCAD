@@ -450,8 +450,8 @@ class GmshTools():
             # Console.PrintMessage("  Mesh regions, we need to get the elements.\n")
             # by the use of MeshRegion object and a BooleanSplitCompound
             # there could be problems with node numbers see
-            # http://forum.freecad.org/viewtopic.php?f=18&t=18780&start=40#p149467
-            # http://forum.freecad.org/viewtopic.php?f=18&t=18780&p=149520#p149520
+            # https://forum.freecad.org/viewtopic.php?f=18&t=18780&start=40#p149467
+            # https://forum.freecad.org/viewtopic.php?f=18&t=18780&p=149520#p149520
             part = self.part_obj
             if (
                 self.mesh_obj.MeshRegionList and part.Shape.ShapeType == "Compound"
@@ -545,8 +545,8 @@ class GmshTools():
         else:
             # Console.PrintMessage("  Mesh boundary layers, we need to get the elements.\n")
             if self.part_obj.Shape.ShapeType == "Compound":
-                # see http://forum.freecad.org/viewtopic.php?f=18&t=18780&start=40#p149467 and
-                # http://forum.freecad.org/viewtopic.php?f=18&t=18780&p=149520#p149520
+                # see https://forum.freecad.org/viewtopic.php?f=18&t=18780&start=40#p149467 and
+                # https://forum.freecad.org/viewtopic.php?f=18&t=18780&p=149520#p149520
                 self.outputCompoundWarning
             for mr_obj in self.mesh_obj.MeshBoundaryLayerList:
                 if mr_obj.MinimumThickness and Units.Quantity(mr_obj.MinimumThickness).Value > 0:

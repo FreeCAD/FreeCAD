@@ -1297,7 +1297,7 @@ def get_ref_facenodes_areas(
     # G. Lakshmi Narasaiah, Finite Element Analysis, p206ff
     # FIXME: only gives exact results in case of a real triangle. If for S6 or C3D10 elements
     # the midnodes are not on the line between the end nodes the area will not be a triangle
-    # see http://forum.freecad.org/viewtopic.php?f=18&t=10939&start=40#p91355  and ff
+    # see https://forum.freecad.org/viewtopic.php?f=18&t=10939&start=40#p91355  and ff
     # same applies for the quads
     # results are exact only if mid nodes are on the line between corner nodes
 

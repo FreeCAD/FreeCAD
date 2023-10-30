@@ -36,7 +36,7 @@ else:
 
 __title__ = "Arch Material Management"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecad.org"
+__url__ = "https://www.freecad.org"
 
 ## @package ArchMaterial
 #  \ingroup ARCH

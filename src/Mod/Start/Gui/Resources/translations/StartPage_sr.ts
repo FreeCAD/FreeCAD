@@ -175,8 +175,8 @@
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="98"/>
-      <source>The &lt;a href="http://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
-      <translation>&lt;a href="http://forum.freecad.org"&gt;Форум FreeCAD-а&lt;/a&gt; је сјајно место за добијање помоћи од других корисника и програмера FreeCAD-а. Форум има много одељака за различите врсте проблема и теме дискусије. Ако имаш недоумице, објави у општем одељку &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Помоћ при коришћењу FreeCAD-а&lt;/a&gt;.</translation>
+      <source>The &lt;a href="https://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
+      <translation>&lt;a href="https://forum.freecad.org"&gt;Форум FreeCAD-а&lt;/a&gt; је сјајно место за добијање помоћи од других корисника и програмера FreeCAD-а. Форум има много одељака за различите врсте проблема и теме дискусије. Ако имаш недоумице, објави у општем одељку &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Помоћ при коришћењу FreeCAD-а&lt;/a&gt;.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="102"/>

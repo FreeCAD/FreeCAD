@@ -146,7 +146,7 @@ def export(exportList,filename,colors=None):
     outfile = codecs.open(filename,"wb",encoding="utf8")
     ver = FreeCAD.Version()
     outfile.write("# FreeCAD v" + ver[0] + "." + ver[1] + " build" + ver[2] + " Arch module\n")
-    outfile.write("# http://www.freecad.org\n")
+    outfile.write("# https://www.freecad.org\n")
     offsetv = 1
     offsetvn = 1
     objectslist = Draft.get_group_contents(exportList, walls=True,

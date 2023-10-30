@@ -175,8 +175,8 @@
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="98"/>
-      <source>The &lt;a href="http://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
-      <translation>&lt;a href="http://forum.freecad.org"&gt; FreeCAD 포럼 &lt;/a&gt;은 다른 FreeCAD 사용자 및 개발자의 도움을 받을 수 있는 좋은 곳입니다. 이 포럼에는 다양한 유형의 쟁점과 토론 주제에 대한 섹션이 많이 있습니다. 질문이 있는 경우 &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt; FreeCAD 사용에 대한 도움말 &lt;/a&gt; 섹션에 게시하십시오.</translation>
+      <source>The &lt;a href="https://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
+      <translation>&lt;a href="https://forum.freecad.org"&gt; FreeCAD 포럼 &lt;/a&gt;은 다른 FreeCAD 사용자 및 개발자의 도움을 받을 수 있는 좋은 곳입니다. 이 포럼에는 다양한 유형의 쟁점과 토론 주제에 대한 섹션이 많이 있습니다. 질문이 있는 경우 &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt; FreeCAD 사용에 대한 도움말 &lt;/a&gt; 섹션에 게시하십시오.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="102"/>

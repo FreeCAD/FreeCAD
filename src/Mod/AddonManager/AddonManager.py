@@ -76,7 +76,7 @@ def QT_TRANSLATE_NOOP(_, txt):
 
 __title__ = "FreeCAD Addon Manager Module"
 __author__ = "Yorik van Havre", "Jonathan Wiedemann", "Kurt Kremitzki", "Chris Hennes"
-__url__ = "http://www.freecad.org"
+__url__ = "https://www.freecad.org"
 
 """
 FreeCAD Addon Manager Module

@@ -175,8 +175,8 @@
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="98"/>
-      <source>The &lt;a href="http://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
-      <translation>&lt;a href="http://forum.freecad.org"&gt;FreeCAD フォーラム&lt;/a&gt; は他の FreeCAD ユーザーや開発者から手助けを得られるすばらしい場所です。フォーラムはさまざまな種類の問題や議題を扱うたくさんのセクションがあります。もしどこに投稿すればいいかわからなければ一般的な話題を扱う &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;FreeCAD 使用時のヘルプ&lt;/a&gt; に投稿してください。</translation>
+      <source>The &lt;a href="https://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
+      <translation>&lt;a href="https://forum.freecad.org"&gt;FreeCAD フォーラム&lt;/a&gt; は他の FreeCAD ユーザーや開発者から手助けを得られるすばらしい場所です。フォーラムはさまざまな種類の問題や議題を扱うたくさんのセクションがあります。もしどこに投稿すればいいかわからなければ一般的な話題を扱う &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;FreeCAD 使用時のヘルプ&lt;/a&gt; に投稿してください。</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="102"/>
