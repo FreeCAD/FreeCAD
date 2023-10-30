@@ -18,89 +18,95 @@
     </Documentation>
     <Methode Name="add">
         <Documentation>
-            <UserDocu>
+            <UserDocu>Adds the shape S to this framework, and
+  specifies the number of isoparameters nbiso desired in visualizing S.
+  You may add as many shapes as you wish. Use the function Add once for each shape.
             </UserDocu>
         </Documentation>
     </Methode>
     <Methode Name="remove">
         <Documentation>
-            <UserDocu></UserDocu>
+            <UserDocu>Remove the shape S from this framework.</UserDocu>
         </Documentation>
     </Methode>
     <Methode Name="index">
         <Documentation>
-            <UserDocu></UserDocu>
+            <UserDocu>return  the index  of  the  Shape <S>  and
+  return 0 if the Shape <S> is not found.</UserDocu>
         </Documentation>
     </Methode>
     <Methode Name="outLinedShapeNullify">
         <Documentation>
-            <UserDocu>
+            <UserDocu> Nullify all the results of OutLiner from HLRTopoBRep.
             </UserDocu>
         </Documentation>
     </Methode>
     <Methode Name="setProjector" Keyword="true">
         <Documentation>
-            <UserDocu>
+            <UserDocu>set the projector.
             </UserDocu>
         </Documentation>
     </Methode>
     <Methode Name="nbShapes">
         <Documentation>
-            <UserDocu>
+            <UserDocu>This function is a const member function that returns the number of shapes in the collection.
+                It does not modify the object's state and is used to retrieve the count of shapes.
             </UserDocu>
         </Documentation>
     </Methode>
     <Methode Name="showAll">
         <Documentation>
-            <UserDocu>
+            <UserDocu> set to visible all the edges.
             </UserDocu>
         </Documentation>
     </Methode>
     <Methode Name="hide">
         <Documentation>
-            <UserDocu>
+            <UserDocu>hide the Shape <S> by itself.
             </UserDocu>
         </Documentation>
     </Methode>
     <Methode Name="hideAll">
         <Documentation>
-            <UserDocu>
+            <UserDocu>set to  hide all the  edges of the  Shape <S>.
             </UserDocu>
         </Documentation>
     </Methode>
     <Methode Name="partialHide">
         <Documentation>
-            <UserDocu>
+            <UserDocu>own hiding  of all the shapes of the DataStructure
+  without hiding by each other.
             </UserDocu>
         </Documentation>
     </Methode>
     <Methode Name="select">
         <Documentation>
-            <UserDocu>
+            <UserDocu>select all the DataStructure.
             </UserDocu>
         </Documentation>
     </Methode>
     <Methode Name="selectEdge">
         <Documentation>
-            <UserDocu>
+            <UserDocu>select only the edges of the Shape <S>
             </UserDocu>
         </Documentation>
     </Methode>
     <Methode Name="selectFace">
         <Documentation>
-            <UserDocu>
+            <UserDocu>select only the faces of the Shape <S>.
             </UserDocu>
         </Documentation>
     </Methode>
     <Methode Name="initEdgeStatus">
         <Documentation>
-            <UserDocu>
+            <UserDocu>init the status of the selected edges depending of
+  the back faces of a closed shell.
             </UserDocu>
         </Documentation>
     </Methode>
     <Methode Name="update">
         <Documentation>
-            <UserDocu>
+            <UserDocu>update the DataStructure.
             </UserDocu>
         </Documentation>
     </Methode>
