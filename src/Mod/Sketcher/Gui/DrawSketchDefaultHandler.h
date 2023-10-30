@@ -589,7 +589,14 @@ protected:
     virtual void onButtonPressed(Base::Vector2d onSketchPos)
     {
         this->updateDataAndDrawToPosition(onSketchPos);
-        this->moveToNextMode();
+        if (canGoToNextMode()) {
+            this->moveToNextMode();
+        }
+    }
+
+    virtual bool canGoToNextMode()
+    {
+        return true;
     }
 
     /** @brief Default behaviour that upon arriving to the End state of the state machine, the
