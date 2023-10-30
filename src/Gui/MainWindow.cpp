@@ -252,7 +252,7 @@ struct MainWindowP
     QMdiArea* mdiArea;
     QPointer<MDIView> activeView;
     QSignalMapper* windowMapper;
-    QSplashScreen* splashscreen;
+    SplashScreen* splashscreen;
     StatusBarObserver* status;
     bool whatsthis;
     QString whatstext;
@@ -1830,6 +1830,11 @@ void MainWindow::startSplasher()
         // first search for an external image file
         if (hGrp->GetBool("ShowSplasher", true)) {
             d->splashscreen = new SplashScreen(this->splashImage());
+
+            if (!hGrp->GetBool("ShowSplasherMessages", true)) {
+                d->splashscreen->setShowMessages(false);
+            }
+
             d->splashscreen->show();
 #if QT_VERSION >= QT_VERSION_CHECK(5,14,0)
             d->screen = d->splashscreen->screen();
