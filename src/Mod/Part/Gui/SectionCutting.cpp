@@ -254,16 +254,58 @@ void SectionCut::tryStartCutting()
     }
 }
 
+void SectionCut::setAutoColoringChecked(bool on)
+{
+    ui->autoCutfaceColorCB->setChecked(on);
+    ui->autoBFColorCB->setChecked(on);
+}
+
+void SectionCut::initBooleanFragmentControls(Gui::ViewProviderGeometryObject* compoundBF)
+{
+    // for BooleanFragments we also need to set the checkbox, transparency and color
+    ui->groupBoxIntersecting->setChecked(true);
+
+    if (compoundBF) {
+        App::Color compoundColor = compoundBF->ShapeColor.getValue();
+        ui->BFragColor->setColor(compoundColor.asValue<QColor>());
+        long compoundTransparency = compoundBF->Transparency.getValue();
+        ui->BFragTransparencyHS->setValue(int(compoundTransparency));
+        ui->BFragTransparencyHS->setToolTip(QString::number(compoundTransparency)
+                                            + QString::fromLatin1(" %"));
+        // Part::Cut ignores the cutbox transparency when it is set
+        // to zero and the BooleanFragments transparency is not zero
+        // therefore limit the cutbox transparency to 1 in this case
+        ui->CutTransparencyHS->setMinimum(compoundTransparency > 0 ? 1 : 0);
+    }
+}
+
+void SectionCut::collectAndShowLinks(const std::vector<App::DocumentObject*>& objects)
+{
+    // make parent objects of links visible to handle the case that
+    // the cutting is started when only an existing cut was visible
+    for (auto aCompoundObj : objects) {
+        auto pcLink = dynamic_cast<App::Link*>(aCompoundObj);
+        auto LinkedObject = pcLink ? pcLink->getLink() : nullptr;
+        if (LinkedObject) {
+            // only if not already visible
+            if (!(LinkedObject->Visibility.getValue())) {
+                LinkedObject->Visibility.setValue(true);
+                ObjectsListVisible.emplace_back(LinkedObject);
+            }
+        }
+    }
+}
+
 Base::BoundBox3d SectionCut::collectObjects()
 {
     Base::BoundBox3d BoundCompound;
     if (doc->getObject(BoxXName) || doc->getObject(BoxYName) || doc->getObject(BoxZName)) {
+
         // automatic coloring must be disabled
-        ui->autoCutfaceColorCB->setChecked(false);
-        ui->autoBFColorCB->setChecked(false);
-        if (doc->getObject(CompoundName)) {
-            // get the object with the right name
-            auto compoundObject = doc->getObject(CompoundName);
+        setAutoColoringChecked(false);
+
+        // get the object with the right name
+        if (auto compoundObject = doc->getObject(CompoundName)) {
             // to later store the childs
             std::vector<App::DocumentObject*> compoundChilds;
 
@@ -274,45 +316,18 @@ Base::BoundBox3d SectionCut::collectObjects()
             if (!pcCompoundPart && pcPartFeature) {
                 // for more security check for validity accessing its ViewProvider
                 auto pcCompoundBF = Gui::Application::Instance->getViewProvider(pcPartFeature);
-                if (!pcCompoundBF) {
-                    throw Base::RuntimeError("SectionCut error: compound is incorrectly named, cannot proceed");
-                }
-
-                BoundCompound = pcPartFeature->Shape.getBoundingBox();
-                // for BooleanFragments we also need to set the checkbox, transparency and color
-                ui->groupBoxIntersecting->setChecked(true);
-                auto pcCompoundBFGO = dynamic_cast<Gui::ViewProviderGeometryObject*>(pcCompoundBF);
-                if (pcCompoundBFGO) {
-                    App::Color compoundColor = pcCompoundBFGO->ShapeColor.getValue();
-                    ui->BFragColor->setColor(compoundColor.asValue<QColor>());
-                    long compoundTransparency = pcCompoundBFGO->Transparency.getValue();
-                    ui->BFragTransparencyHS->setValue(int(compoundTransparency));
-                    ui->BFragTransparencyHS->setToolTip(QString::number(compoundTransparency)
-                                                        + QString::fromLatin1(" %"));
-                    // Part::Cut ignores the cutbox transparency when it is set
-                    // to zero and the BooleanFragments transparency is not zero
-                    // therefore limit the cutbox transparency to 1 in this case
-                    ui->CutTransparencyHS->setMinimum(compoundTransparency > 0 ? 1 : 0);
-                }
                 compoundChilds = pcCompoundBF->claimChildren();
+                BoundCompound = pcPartFeature->Shape.getBoundingBox();
+
+                auto pcCompoundBFGO = dynamic_cast<Gui::ViewProviderGeometryObject*>(pcCompoundBF);
+                initBooleanFragmentControls(pcCompoundBFGO);
             }
             else if (pcCompoundPart) {
                 BoundCompound = pcCompoundPart->Shape.getBoundingBox();
                 pcCompoundPart->Links.getLinks(compoundChilds);
             }
-            // make parent objects of links visible to handle the case that
-            // the cutting is started when only an existing cut was visible
-            for (auto aCompoundObj : compoundChilds) {
-                auto pcLink = dynamic_cast<App::Link*>(aCompoundObj);
-                auto LinkedObject = pcLink ? pcLink->getLink() : nullptr;
-                if (LinkedObject) {
-                    // only if not already visible
-                    if (!(LinkedObject->Visibility.getValue())) {
-                        LinkedObject->Visibility.setValue(true);
-                        ObjectsListVisible.emplace_back(LinkedObject);
-                    }
-                }
-            }
+
+            collectAndShowLinks(compoundChilds);
         }
     }
 

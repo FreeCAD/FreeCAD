@@ -32,6 +32,11 @@
 class QDoubleSpinBox;
 class QSlider;
 
+namespace Gui
+{
+class ViewProviderGeometryObject;
+}
+
 namespace Part {
 class Box;
 }
@@ -86,7 +91,10 @@ private:
     void initCutRanges();
     void setupConnections();
     void tryStartCutting();
+    void setAutoColoringChecked(bool on);
+    void initBooleanFragmentControls(Gui::ViewProviderGeometryObject* compoundBF);
     Base::BoundBox3d collectObjects();
+    void collectAndShowLinks(const std::vector<App::DocumentObject*>& objects);
     void noDocumentActions();
     void startCutting(bool isInitial = false);
     static SbBox3f getViewBoundingBox();
