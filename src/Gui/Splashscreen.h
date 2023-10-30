@@ -44,6 +44,8 @@ public:
     explicit SplashScreen(  const QPixmap & pixmap = QPixmap ( ), Qt::WindowFlags f = Qt::WindowFlags() );
     ~SplashScreen() override;
 
+    void setShowMessages(bool on);
+
 protected:
     void drawContents ( QPainter * painter ) override;
 

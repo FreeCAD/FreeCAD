@@ -250,6 +250,14 @@ void SplashScreen::drawContents ( QPainter * painter )
     QSplashScreen::drawContents(painter);
 }
 
+void SplashScreen::setShowMessages(bool on)
+{
+    messages->bErr = on;
+    messages->bMsg = on;
+    messages->bLog = on;
+    messages->bWrn = on;
+}
+
 // ------------------------------------------------------------------------------
 
 AboutDialogFactory* AboutDialogFactory::factory = nullptr;
