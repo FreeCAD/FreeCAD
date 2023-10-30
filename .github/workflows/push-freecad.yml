@@ -1,0 +1,25 @@
+name: push-freecad-submodule
+on:
+  push:
+
+jobs:
+  push-submodule:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        repository: Ondsel-Development/FreeCAD
+        ref: OndselSolver-testing
+        submodules: true
+        token: ${{ secrets.TOKEN }}
+
+    - run: |
+        cd src/3rdParty/OndselSolver
+        git fetch origin $GITHUB_REF
+        git checkout $GITHUB_SHA
+    
+    - run: |
+        git config --global user.name 'github-actions[bot]'
+        git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
+        git commit -am "Update OndselSolver submodule to $GITHUB_SHA"
+        git push
