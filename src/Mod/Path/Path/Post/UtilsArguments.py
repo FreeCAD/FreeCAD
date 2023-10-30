@@ -343,12 +343,6 @@ def init_shared_values(values: Values):
     #
     values["COMMENT_SYMBOL"] = "("
     #
-    # Variables storing the current position for the drill_translate routine.
-    #
-    values["CURRENT_X"] = 0.0
-    values["CURRENT_Y"] = 0.0
-    values["CURRENT_Z"] = 0.0
-    #
     # Default axis precision for metric is 3 digits after the decimal point.
     # (see http://linuxcnc.org/docs/2.7/html/gcode/overview.html#_g_code_best_practices)
     #
@@ -370,11 +364,6 @@ def init_shared_values(values: Values):
     # that get translated to G0 and G1 commands.
     #
     values["DRILL_CYCLES_TO_TRANSLATE"] = ["G73", "G81", "G82", "G83"]
-    #
-    # The default value of drill retractations (CURRENT_Z).
-    # The other possible value is G99.
-    #
-    values["DRILL_RETRACT_MODE"] = "G98"
     #
     # If this is set to True, then M7, M8, and M9 commands
     # to enable/disable coolant will be output.

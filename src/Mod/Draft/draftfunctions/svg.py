@@ -396,7 +396,7 @@ def get_svg(obj,
 
     direction: Base::Vector3, optional
         It defaults to `None`.
-        It is an arbitrary projection vector or a `WorkingPlane.Plane`
+        It is an arbitrary projection vector or a `WorkingPlane.PlaneBase`
         instance.
 
     linestyle: optional
@@ -462,13 +462,13 @@ def get_svg(obj,
     if direction:
         if isinstance(direction, App.Vector):
             if direction != App.Vector(0, 0, 0):
-                plane = WorkingPlane.plane()
-                plane.alignToPointAndAxis_SVG(App.Vector(0, 0, 0),
-                                              direction.negative().negative(),
-                                              0)
+                plane = WorkingPlane.PlaneBase()
+                plane.align_to_point_and_axis_svg(App.Vector(0, 0, 0),
+                                                  direction.negative().negative(),
+                                                  0)
             else:
                 raise ValueError("'direction' cannot be: Vector(0, 0, 0)")
-        elif isinstance(direction, WorkingPlane.plane):
+        elif isinstance(direction, WorkingPlane.PlaneBase):
             plane = direction
 
     stroke = "#000000"

@@ -23,12 +23,18 @@
 #ifndef PARTGUI_SECTIONCUTTING_H
 #define PARTGUI_SECTIONCUTTING_H
 
+#include <functional>
 #include <Inventor/SbBox3f.h>
 #include <QDialog>
+#include <Base/BoundBox.h>
 #include <App/DocumentObserver.h>
 
 class QDoubleSpinBox;
 class QSlider;
+
+namespace Part {
+class Box;
+}
 
 namespace PartGui {
 
@@ -72,6 +78,31 @@ public:
     void reject() override;
 
 private:
+    void initSpinBoxes();
+    void initControls(const Base::BoundBox3d&);
+    void initXControls(const Base::BoundBox3d&, const std::function<void(Part::Box*)>&);
+    void initYControls(const Base::BoundBox3d&, const std::function<void(Part::Box*)>&);
+    void initZControls(const Base::BoundBox3d&, const std::function<void(Part::Box*)>&);
+    void initCutRanges();
+    void setupConnections();
+    void tryStartCutting();
+    Base::BoundBox3d collectObjects();
+    void noDocumentActions();
+    void startCutting(bool isInitial = false);
+    static SbBox3f getViewBoundingBox();
+    void refreshCutRanges(SbBox3f, bool forXValue = true, bool forYValue = true, bool forZValue = true,
+        bool forXRange = true, bool forYRange = true, bool forZRange = true);
+    void CutValueHelper(double val, QDoubleSpinBox* SpinBox, QSlider* Slider);
+    void FlipClickedHelper(const char* BoxName);
+    void changeCutBoxColors();
+    App::DocumentObject* CreateBooleanFragments(App::Document* doc);
+    void setBooleanFragmentsColor();
+    Part::Box* findCutBox(const char* name) const;
+    App::DocumentObject* findObject(const char* objName) const;
+    void hideCutObjects();
+    App::DocumentObject* flipCutObject(const char* cutName);
+
+private:
     std::unique_ptr<Ui_SectionCut> ui;
     std::vector<App::DocumentObjectT> ObjectsListVisible;
     App::Document* doc = nullptr; // pointer to active document
@@ -79,13 +110,6 @@ private:
     bool hasBoxY = false;
     bool hasBoxZ = false;
     bool hasBoxCustom = false;
-    void noDocumentActions();
-    void startCutting(bool isInitial = false);
-    SbBox3f getViewBoundingBox();
-    void refreshCutRanges(SbBox3f, bool forXValue = true, bool forYValue = true, bool forZValue = true,
-        bool forXRange = true, bool forYRange = true, bool forZRange = true);
-    void CutValueHelper(double val, QDoubleSpinBox* SpinBox, QSlider* Slider);
-    void FlipClickedHelper(const char* BoxName);
     const char* CompoundName = "SectionCutCompound";
     const char* BoxXName = "SectionCutBoxX";
     const char* BoxYName = "SectionCutBoxY";
@@ -93,9 +117,6 @@ private:
     const char* CutXName = "SectionCutX";
     const char* CutYName = "SectionCutY";
     const char* CutZName = "SectionCutZ";
-    void changeCutBoxColors();
-    App::DocumentObject* CreateBooleanFragments(App::Document* doc);
-    void setBooleanFragmentsColor();
 };
 
 } // namespace PartGui
