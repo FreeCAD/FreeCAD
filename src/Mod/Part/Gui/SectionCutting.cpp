@@ -321,37 +321,54 @@ Base::BoundBox3d SectionCut::collectObjects()
 
 void SectionCut::setupConnections()
 {
-    connect(ui->groupBoxX, &QGroupBox::toggled, this, &SectionCut::onGroupBoxXtoggled);
-    connect(ui->groupBoxY, &QGroupBox::toggled, this, &SectionCut::onGroupBoxYtoggled);
-    connect(ui->groupBoxZ, &QGroupBox::toggled, this, &SectionCut::onGroupBoxZtoggled);
-    connect(ui->cutX, qOverload<double>(&QDoubleSpinBox::valueChanged), this,
-            &SectionCut::onCutXvalueChanged);
-    connect(ui->cutY, qOverload<double>(&QDoubleSpinBox::valueChanged), this,
-            &SectionCut::onCutYvalueChanged);
-    connect(ui->cutZ, qOverload<double>(&QDoubleSpinBox::valueChanged), this,
-            &SectionCut::onCutZvalueChanged);
-    connect(ui->cutXHS, &QSlider::sliderMoved, this, &SectionCut::onCutXHSsliderMoved);
-    connect(ui->cutYHS, &QSlider::sliderMoved, this, &SectionCut::onCutYHSsliderMoved);
-    connect(ui->cutZHS, &QSlider::sliderMoved, this, &SectionCut::onCutZHSsliderMoved);
-    connect(ui->cutXHS, &QSlider::valueChanged, this, &SectionCut::onCutXHSChanged);
-    connect(ui->cutYHS, &QSlider::valueChanged, this, &SectionCut::onCutYHSChanged);
-    connect(ui->cutZHS, &QSlider::valueChanged, this, &SectionCut::onCutZHSChanged);
-    connect(ui->flipX, &QPushButton::clicked, this, &SectionCut::onFlipXclicked);
-    connect(ui->flipY, &QPushButton::clicked, this, &SectionCut::onFlipYclicked);
-    connect(ui->flipZ, &QPushButton::clicked, this, &SectionCut::onFlipZclicked);
-    connect(ui->RefreshCutPB, &QPushButton::clicked, this, &SectionCut::onRefreshCutPBclicked);
-    connect(ui->CutColor, &QPushButton::clicked, this, &SectionCut::onCutColorclicked);
+    // clang-format off
+    connect(ui->groupBoxX, &QGroupBox::toggled,
+            this, &SectionCut::onGroupBoxXtoggled);
+    connect(ui->groupBoxY, &QGroupBox::toggled,
+            this, &SectionCut::onGroupBoxYtoggled);
+    connect(ui->groupBoxZ, &QGroupBox::toggled,
+            this, &SectionCut::onGroupBoxZtoggled);
+    connect(ui->cutX, qOverload<double>(&QDoubleSpinBox::valueChanged),
+            this, &SectionCut::onCutXvalueChanged);
+    connect(ui->cutY, qOverload<double>(&QDoubleSpinBox::valueChanged),
+            this, &SectionCut::onCutYvalueChanged);
+    connect(ui->cutZ, qOverload<double>(&QDoubleSpinBox::valueChanged),
+            this, &SectionCut::onCutZvalueChanged);
+    connect(ui->cutXHS, &QSlider::sliderMoved,
+            this, &SectionCut::onCutXHSsliderMoved);
+    connect(ui->cutYHS, &QSlider::sliderMoved,
+            this, &SectionCut::onCutYHSsliderMoved);
+    connect(ui->cutZHS, &QSlider::sliderMoved,
+            this, &SectionCut::onCutZHSsliderMoved);
+    connect(ui->cutXHS, &QSlider::valueChanged,
+            this, &SectionCut::onCutXHSChanged);
+    connect(ui->cutYHS, &QSlider::valueChanged,
+            this, &SectionCut::onCutYHSChanged);
+    connect(ui->cutZHS, &QSlider::valueChanged,
+            this, &SectionCut::onCutZHSChanged);
+    connect(ui->flipX, &QPushButton::clicked,
+            this, &SectionCut::onFlipXclicked);
+    connect(ui->flipY, &QPushButton::clicked,
+            this, &SectionCut::onFlipYclicked);
+    connect(ui->flipZ, &QPushButton::clicked,
+            this, &SectionCut::onFlipZclicked);
+    connect(ui->RefreshCutPB, &QPushButton::clicked,
+            this, &SectionCut::onRefreshCutPBclicked);
+    connect(ui->CutColor, &QPushButton::clicked,
+            this, &SectionCut::onCutColorclicked);
     connect(ui->CutTransparencyHS, &QSlider::sliderMoved,
             this, &SectionCut::onTransparencyHSMoved);
     connect(ui->CutTransparencyHS, &QSlider::valueChanged,
             this, &SectionCut::onTransparencyHSChanged);
     connect(ui->groupBoxIntersecting, &QGroupBox::toggled,
             this, &SectionCut::onGroupBoxIntersectingToggled);
-    connect(ui->BFragColor, &QPushButton::clicked, this, &SectionCut::onBFragColorclicked);
+    connect(ui->BFragColor, &QPushButton::clicked,
+            this, &SectionCut::onBFragColorclicked);
     connect(ui->BFragTransparencyHS, &QSlider::sliderMoved,
             this, &SectionCut::onBFragTransparencyHSMoved);
     connect(ui->BFragTransparencyHS,&QSlider::valueChanged,
             this, &SectionCut::onBFragTransparencyHSChanged);
+    // clang-format on
 }
 
 void SectionCut::hideCutObjects()
