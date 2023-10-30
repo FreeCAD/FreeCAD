@@ -77,8 +77,8 @@ def get_dxf(obj, direction=None):
 
     if direction and isinstance(direction, App.Vector):
         if direction != App.Vector(0, 0, 0):
-            plane = WorkingPlane.Plane()
-            plane.alignToPointAndAxis(App.Vector(0, 0, 0), direction)
+            plane = WorkingPlane.PlaneBase()
+            plane.align_to_point_and_axis(App.Vector(0, 0, 0), direction)
 
     if utils.get_type(obj) in ("Dimension", "LinearDimension"):
         p1 = _get_proj(obj.Start, plane=plane)

@@ -106,8 +106,9 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD as App
 import DraftVecUtils
 import DraftGeomUtils
-import draftutils.utils as utils
+import WorkingPlane
 
+from draftutils import utils
 from draftutils.messages import _wrn
 from draftutils.translate import translate
 
@@ -648,10 +649,10 @@ def measure_two_obj_angles(link_sub_1, link_sub_2):
             start = obj1.Shape.Edges[n1].Curve.Direction
             end = obj2.Shape.Edges[n2].Curve.Direction
 
-            # We get the angle from the direction of the line to the U axis
-            # of the working plane; we should be able to also use the V axis
-            start_r = DraftVecUtils.angle(start, App.DraftWorkingPlane.u)
-            end_r = DraftVecUtils.angle(end, App.DraftWorkingPlane.u)
+            # We get the angle from the U axis of the working plane
+            wp = WorkingPlane.get_working_plane(update=False)
+            start_r = DraftVecUtils.angle(start, wp.u)
+            end_r = DraftVecUtils.angle(end, wp.u)
             start = math.degrees(start_r)
             end = math.degrees(end_r)
 

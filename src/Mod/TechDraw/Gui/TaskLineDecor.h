@@ -26,7 +26,7 @@
 #include <Gui/TaskView/TaskDialog.h>
 #include <Gui/TaskView/TaskView.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
-
+#include <Mod/TechDraw/App/Cosmetic.h>
 
 namespace App
 {
@@ -62,6 +62,10 @@ protected Q_SLOTS:
 protected:
     void changeEvent(QEvent *e) override;
     void initUi();
+
+    TechDraw::LineFormat *getFormatAccessPtr(const std::string &edgeName, std::string *newFormatTag = nullptr);
+    void initializeRejectArrays();
+
     void applyDecorations();
     void getDefaults();
 
@@ -69,6 +73,10 @@ private:
     std::unique_ptr<Ui_TaskLineDecor> ui;
     TechDraw::DrawViewPart* m_partFeat;
     std::vector<std::string> m_edges;
+
+    std::vector<TechDraw::LineFormat> m_originalFormats;
+    std::vector<std::string> m_createdFormatTags;
+
     int m_style;
     App::Color m_color;
     double m_weight;

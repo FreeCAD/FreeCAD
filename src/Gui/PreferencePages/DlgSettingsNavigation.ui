@@ -267,16 +267,16 @@
          <number>1</number>
         </property>
         <property name="minimum">
-         <float>1.0</float>
+         <double>1.0</double>
         </property>
         <property name="maximum">
-         <float>100.0</float>
+         <double>100.0</double>
         </property>
         <property name="singleStep">
-         <float>0.5</float>
+         <double>0.5</double>
         </property>
         <property name="value">
-         <float>5.0</float>
+         <double>5.0</double>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>RotationCenterSize</cstring>
@@ -634,7 +634,7 @@ The value is the diameter of the sphere to fit on the screen.</string>
          </widget>
         </item>
         <item>
-         <spacer name="horizontalSpacer_4">
+         <spacer name="horizontalSpacer_5">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
