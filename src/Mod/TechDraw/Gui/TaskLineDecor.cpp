@@ -133,6 +133,7 @@ TechDraw::LineFormat *TaskLineDecor::getFormatAccessPtr(const std::string &edgeN
             }
         }
     }
+    return nullptr;
 }
 
 void TaskLineDecor::initializeRejectArrays()
