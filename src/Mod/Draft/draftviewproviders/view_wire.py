@@ -39,6 +39,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 import FreeCAD as App
 import FreeCADGui as Gui
 import DraftVecUtils
+import WorkingPlane
 import draftgeoutils.wires as wires
 import draftutils.utils as utils
 import draftutils.gui_utils as gui_utils
@@ -152,20 +153,10 @@ class ViewProviderWire(ViewProviderDraft):
         if not hasattr(self, "Object"):
             return
 
-        if hasattr(App, "DraftWorkingPlane"):
-            App.DraftWorkingPlane.setup()
-            origin = App.DraftWorkingPlane.position
-            normal = App.DraftWorkingPlane.axis
-            # Align the grid for visual feedback:
-            if hasattr(Gui, "Snapper"):
-                Gui.Snapper.setTrackers()
-        else:
-            origin = App.Vector(0, 0, 0)
-            normal = App.Vector(0, 0, 1)
-
+        wp = WorkingPlane.get_working_plane()
         flat_wire = wires.flattenWire(self.Object.Shape.Wires[0],
-                                      origin=origin,
-                                      normal=normal)
+                                      origin=wp.position,
+                                      normal=wp.axis)
 
         doc = App.ActiveDocument
         doc.openTransaction(translate("draft", "Flatten"))

@@ -161,5 +161,6 @@ Gui::DockWindowItems* StartGui::Workbench::setupDockWindows() const
     Gui::DockWindowItems* root = Gui::StdWorkbench::setupDockWindows();
     root->setVisibility(false);                  // hide all dock windows by default
     root->setVisibility("Std_ComboView", true);  // except of the combo view
+    root->setVisibility("Std_TaskView", true);   // and the task view
     return root;
 }

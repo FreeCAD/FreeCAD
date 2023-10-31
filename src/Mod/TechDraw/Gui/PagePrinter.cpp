@@ -52,7 +52,6 @@
 #include <Mod/TechDraw/App/Preferences.h>
 
 #include "PagePrinter.h"
-#include "QGITemplate.h"
 #include "QGSPage.h"
 #include "Rez.h"
 #include "ViewProviderPage.h"
@@ -77,26 +76,43 @@ void PagePrinter::setScene(QGSPage* scene)
 
 void PagePrinter::setDocumentName(const std::string& name) { m_documentName = name; }
 
-//**** printing routines
+
+PaperAttributes PagePrinter::getPaperAttributes(TechDraw::DrawPage* pageObject)
+{
+    PaperAttributes result;
+    if (!pageObject) {
+        return result;
+    }
+    auto pageTemplate(dynamic_cast<TechDraw::DrawTemplate*>(pageObject->Template.getValue()));
+    if (pageTemplate) {
+        result.pagewidth = pageTemplate->Width.getValue();
+        result.pageheight = pageTemplate->Height.getValue();
+    }
+    result.paperSize = QPageSize::id(QSizeF(result.pagewidth, result.pageheight), QPageSize::Millimeter,
+                                QPageSize::FuzzyOrientationMatch);
+    if (result.pagewidth > result.pageheight) {
+        result.orientation = QPageLayout::Landscape;
+    } else {
+        result.orientation = QPageLayout::Portrait;
+    }
+    if (result.paperSize == QPageSize::Ledger) {
+        // Ledger size paper orientation is reversed inside Qt
+        result.orientation =(QPageLayout::Orientation)(1 - result.orientation);
+    }
+
+    return result;
+}
 
 void PagePrinter::getPaperAttributes()
 {
-    App::DocumentObject* obj = m_vpPage->getDrawPage()->Template.getValue();
-    auto pageTemplate(dynamic_cast<TechDraw::DrawTemplate*>(obj));
-    if (pageTemplate) {
-        m_pagewidth = pageTemplate->Width.getValue();
-        m_pageheight = pageTemplate->Height.getValue();
-    }
-    m_paperSize = QPageSize::id(QSizeF(m_pagewidth, m_pageheight), QPageSize::Millimeter,
-                                QPageSize::FuzzyOrientationMatch);
-    if (m_pagewidth > m_pageheight) {
-        m_orientation = QPageLayout::Landscape;
-    }
-    else {
-        m_orientation = QPageLayout::Portrait;
-    }
+    PaperAttributes attr = getPaperAttributes(m_vpPage->getDrawPage());
+    m_pagewidth = attr.pagewidth;
+    m_pageheight = attr.pageheight;
+    m_paperSize = attr.paperSize;
+    m_orientation = attr.orientation;
 }
 
+/// print the Page associated with the parent MDIViewPage as a Pdf file
 void PagePrinter::printPdf(std::string file)
 {
 //    Base::Console().Message("PP::printPdf(%s)\n", file.c_str());
@@ -104,37 +120,36 @@ void PagePrinter::printPdf(std::string file)
         Base::Console().Warning("PagePrinter - no file specified\n");
         return;
     }
-    getPaperAttributes();
-
     QString filename = QString::fromUtf8(file.data(), file.size());
     QPrinter printer(QPrinter::HighResolution);
-    // setPdfVersion sets the printied PDF Version to comply with PDF/A-1b, more details under: https://www.kdab.com/creating-pdfa-documents-qt/
-//    printer.setPdfVersion(QPagedPaintDevice::PdfVersion_A1b);
-    printer.setFullPage(true);
-    printer.setOutputFileName(filename);
+    QPdfWriter pdfWriter(filename);
+    QString documentName = QString::fromUtf8(m_vpPage->getDrawPage()->getNameInDocument());
+    pdfWriter.setTitle(documentName);
+    pdfWriter.setResolution(printer.resolution());
 
-    if (m_paperSize == QPageSize::Ledger) {
-        printer.setPageOrientation((QPageLayout::Orientation)(1 - m_orientation));//reverse 0/1
-    }
-    else {
-        printer.setPageOrientation(m_orientation);
-    }
-    if (m_paperSize == QPageSize::Custom) {
-        printer.setPageSize(QPageSize(QSizeF(m_pagewidth, m_pageheight), QPageSize::Millimeter));
-    }
-    else {
-        printer.setPageSize(QPageSize(m_paperSize));
-    }
-    m_scene->setExportingPdf(true);
-    print(&printer);
-    m_scene->setExportingPdf(false);
+    PaperAttributes attr = getPaperAttributes(m_vpPage->getDrawPage());
+    double width = attr.pagewidth;
+    double height = attr.pageheight;
+    QPageLayout pageLayout = printer.pageLayout();
+    setPageLayout(pageLayout, m_vpPage->getDrawPage(), width, height);
+    pdfWriter.setPageLayout(pageLayout);
+
+    // first page does not respect page layout unless painter is created after
+    // pdfWriter layout is established.
+    QPainter painter(&pdfWriter);
+
+    QRectF sourceRect(0.0, Rez::guiX(-height), Rez::guiX(width), Rez::guiX(height));
+    double dpmm = printer.resolution() / 25.4;
+    QRect targetRect(0, 0, width * dpmm, height * dpmm);
+    renderPage(m_vpPage, painter, sourceRect, targetRect);
+    painter.end();
 }
+
 
 /// print the Page associated with the parent MDIViewPage
 void PagePrinter::print(QPrinter* printer)
 {
 //    Base::Console().Message("PP::print(printer)\n");
-    QPainter painter(printer);
     QPageLayout pageLayout = printer->pageLayout();
 
     TechDraw::DrawPage* dp = m_vpPage->getDrawPage();
@@ -143,18 +158,12 @@ void PagePrinter::print(QPrinter* printer)
     setPageLayout(pageLayout, dp, width, height);
     printer->setPageLayout(pageLayout);
 
+    QPainter painter(printer);
+
     QRect targetRect = printer->pageLayout().fullRectPixels(printer->resolution());
     QRectF sourceRect(0.0, Rez::guiX(-height), Rez::guiX(width), Rez::guiX(height));
-    if (!printer->outputFileName().isEmpty()) {
-        // file name is not empty so we must be printing to pdf?
-        m_scene->setExportingPdf(true);
-    }
     renderPage(m_vpPage, painter, sourceRect, targetRect);
     painter.end();
-    if (!printer->outputFileName().isEmpty()) {
-        // file name is not empty so we must be printing to pdf?
-        m_scene->setExportingPdf(false);
-    }
 }
 
 //static routine to print all pages in a document
@@ -185,6 +194,9 @@ void PagePrinter::printAll(QPrinter* printer, App::Document* doc)
         //for some reason the first page doesn't obey the pageLayout, so we have to print
         //a sacrificial blank page, but we make it a feature instead of a bug by printing a
         //table of contents on the sacrificial page.
+        // Note: if the painter(printer) occurs after the printer->setPageLayout, then the
+        // first page will obey the layout.  This would mean creating the painter inside the
+        // loop.
         if (firstTime) {
             firstTime = false;
             printBannerPage(printer, painter, pageLayout, doc, docObjs);
@@ -203,20 +215,20 @@ void PagePrinter::printAll(QPrinter* printer, App::Document* doc)
 void PagePrinter::printAllPdf(QPrinter* printer, App::Document* doc)
 {
 //    Base::Console().Message("PP::printAllPdf()\n");
-    // setPdfVersion sets the printied PDF Version to comply with PDF/A-1b, more details under: https://www.kdab.com/creating-pdfa-documents-qt/
-    printer->setPdfVersion(QPagedPaintDevice::PdfVersion_A1b);
-    //    Base::Console().Message("PP::printAllPdf()\n");
+    double dpmm = printer->resolution() / 25.4;
+
     QString outputFile = printer->outputFileName();
     QString documentName = QString::fromUtf8(doc->getName());
     QPdfWriter pdfWriter(outputFile);
-    // setPdfVersion sets the printied PDF Version to comply with PDF/A-1b, more details under: https://www.kdab.com/creating-pdfa-documents-qt/
-    pdfWriter.setPdfVersion(QPagedPaintDevice::PdfVersion_A1b);
+    // setPdfVersion sets the printed PDF Version to comply with PDF/A-1b, more details under: https://www.kdab.com/creating-pdfa-documents-qt/
+    // but this is not working as of Qt 5.12
+    //printer->setPdfVersion(QPagedPaintDevice::PdfVersion_A1b);
+    //pdfWriter.setPdfVersion(QPagedPaintDevice::PdfVersion_A1b);
     pdfWriter.setTitle(documentName);
     pdfWriter.setResolution(printer->resolution());
     QPainter painter(&pdfWriter);
     QPageLayout pageLayout = printer->pageLayout();
 
-    double dpmm = printer->resolution() / 25.4;
     bool firstTime = true;
     std::vector<App::DocumentObject*> docObjs =
         doc->getObjectsOfType(TechDraw::DrawPage::getClassTypeId());
@@ -231,14 +243,16 @@ void PagePrinter::printAllPdf(QPrinter* printer, App::Document* doc)
         }
 
         TechDraw::DrawPage* dp = static_cast<TechDraw::DrawPage*>(obj);
-        double width = 297.0;//default to A4 Landscape 297 x 210
-        double height = 210.0;
+        PaperAttributes attr = getPaperAttributes(dp);
+        double width = attr.pagewidth;
+        double height = attr.pageheight;
         setPageLayout(pageLayout, dp, width, height);
         pdfWriter.setPageLayout(pageLayout);
 
         //for some reason the first page doesn't obey the pageLayout, so we have to print
         //a sacrificial blank page, but we make it a feature instead of a bug by printing a
         //table of contents on the sacrificial page.
+        // see the note about this in printAll()
         if (firstTime) {
             firstTime = false;
             printBannerPage(printer, painter, pageLayout, doc, docObjs);
@@ -247,7 +261,6 @@ void PagePrinter::printAllPdf(QPrinter* printer, App::Document* doc)
 
         QRectF sourceRect(0.0, Rez::guiX(-height), Rez::guiX(width), Rez::guiX(height));
         QRect targetRect(0, 0, width * dpmm, height * dpmm);
-
         renderPage(vpp, painter, sourceRect, targetRect);
     }
     painter.end();
@@ -368,3 +381,11 @@ void PagePrinter::savePDF(std::string file)
     printPdf(file);
 }
 
+PaperAttributes::PaperAttributes()
+{
+    // set default values to A4 Landscape
+    orientation = QPageLayout::Orientation::Landscape;
+    paperSize = QPageSize::A4;
+    pagewidth = 297.0;
+    pageheight = 210.0;
+}

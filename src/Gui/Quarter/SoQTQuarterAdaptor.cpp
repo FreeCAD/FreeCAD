@@ -42,7 +42,8 @@
 
 #include "SoQTQuarterAdaptor.h"
 
-
+// NOLINTBEGIN
+// clang-format off
 static unsigned char fps2dfont[][12] = {
     {  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0,  0 }, //
     {  0,  0, 12, 12,  0,  8, 12, 12, 12, 12, 12,  0 }, // !
@@ -140,21 +141,37 @@ static unsigned char fps2dfont[][12] = {
     {  0, 48,  8,  8,  8, 16, 12, 16,  8,  8,  8, 48 }, // }
     {  0,  0,  0,  0,  0,  0, 78, 57,  0,  0,  0,  0 }  // ~
 };
+// clang-format on
+// NOLINTEND
 
-SIM::Coin3D::Quarter::SoQTQuarterAdaptor::SoQTQuarterAdaptor(QWidget* parent, const QtGLWidget* sharewidget, Qt::WindowFlags f)
-    : QuarterWidget(parent, sharewidget, f), matrixaction(SbViewportRegion(100,100))
+constexpr const int defaultSize = 100;
+
+// NOLINTBEGIN(readability-implicit-bool-conversion)
+SIM::Coin3D::Quarter::SoQTQuarterAdaptor::SoQTQuarterAdaptor(QWidget* parent,
+                                                             const QtGLWidget* sharewidget,
+                                                             Qt::WindowFlags flags)
+    : QuarterWidget(parent, sharewidget, flags)
+    , matrixaction(SbViewportRegion(defaultSize, defaultSize))
 {
     init();
 }
 
-SIM::Coin3D::Quarter::SoQTQuarterAdaptor::SoQTQuarterAdaptor(const QtGLFormat& format, QWidget* parent, const QtGLWidget* shareWidget, Qt::WindowFlags f)
-    : QuarterWidget(format, parent, shareWidget, f), matrixaction(SbViewportRegion(100,100))
+SIM::Coin3D::Quarter::SoQTQuarterAdaptor::SoQTQuarterAdaptor(const QtGLFormat& format,
+                                                             QWidget* parent,
+                                                             const QtGLWidget* shareWidget,
+                                                             Qt::WindowFlags flags)
+    : QuarterWidget(format, parent, shareWidget, flags)
+    , matrixaction(SbViewportRegion(defaultSize, defaultSize))
 {
     init();
 }
 
-SIM::Coin3D::Quarter::SoQTQuarterAdaptor::SoQTQuarterAdaptor(QtGLContext* context, QWidget* parent, const QtGLWidget* sharewidget, Qt::WindowFlags f)
-    : QuarterWidget(context, parent, sharewidget, f), matrixaction(SbViewportRegion(100,100))
+SIM::Coin3D::Quarter::SoQTQuarterAdaptor::SoQTQuarterAdaptor(QtGLContext* context,
+                                                             QWidget* parent,
+                                                             const QtGLWidget* sharewidget,
+                                                             Qt::WindowFlags flags)
+    : QuarterWidget(context, parent, sharewidget, flags)
+    , matrixaction(SbViewportRegion(defaultSize, defaultSize))
 {
     init();
 }
@@ -166,10 +183,11 @@ SIM::Coin3D::Quarter::SoQTQuarterAdaptor::~SoQTQuarterAdaptor()
 
 void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::init()
 {
+    // NOLINTBEGIN
     m_interactionnesting = 0;
-    m_seekdistance = 50.0f;
+    m_seekdistance = 50.0F;
     m_seekdistanceabs = false;
-    m_seekperiod = 2.0f;
+    m_seekperiod = 2.0F;
     m_inseekmode = false;
     m_storedcamera = nullptr;
     m_viewingflag = false;
@@ -179,6 +197,7 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::init()
     getSoEventManager()->setNavigationState(SoEventManager::NO_NAVIGATION);
 
     resetFrameCounter();
+    // NOLINTEND
 }
 
 
@@ -198,7 +217,7 @@ QWidget* SIM::Coin3D::Quarter::SoQTQuarterAdaptor::getWidget() const
 {
     //we keep the function from SoQt as we want to introduce the QGraphicsView and then the GLWidget
     //is separated from the Widget used in layouts again
-    return const_cast<SoQTQuarterAdaptor*>(this);
+    return const_cast<SoQTQuarterAdaptor*>(this);  // NOLINT
 }
 
 QWidget* SIM::Coin3D::Quarter::SoQTQuarterAdaptor::getGLWidget() const
@@ -221,38 +240,39 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::setCameraType(SoType type)
     SbBool oldisperspective = cam ? cam->getTypeId().isDerivedFrom(perspectivetype) : false;
     SbBool newisperspective = type.isDerivedFrom(perspectivetype);
 
-    if (oldisperspective == newisperspective) // Same old, same old..
+    // Same old, same old..
+    if (oldisperspective == newisperspective) {
         return;
-
+    }
 
     SoCamera* currentcam = getSoRenderManager()->getCamera();
-    SoCamera* newcamera = (SoCamera*)type.createInstance();
+    SoCamera* newcamera = static_cast<SoCamera*>(type.createInstance());  // NOLINT
 
     // Transfer and convert values from one camera type to the other.
     if(newisperspective) {
-        convertOrtho2Perspective((SoOrthographicCamera*)currentcam,
-                                 (SoPerspectiveCamera*)newcamera);
+        convertOrtho2Perspective(dynamic_cast<SoOrthographicCamera*>(currentcam),
+                                 dynamic_cast<SoPerspectiveCamera*>(newcamera));
     }
     else {
-        convertPerspective2Ortho((SoPerspectiveCamera*)currentcam,
-                                 (SoOrthographicCamera*)newcamera);
+        convertPerspective2Ortho(dynamic_cast<SoPerspectiveCamera*>(currentcam),
+                                 dynamic_cast<SoOrthographicCamera*>(newcamera));
     }
 
     getSoRenderManager()->setCamera(newcamera);
     getSoEventManager()->setCamera(newcamera);
 
     //if the superscene has a camera we need to replace it too
-    SoSeparator* superscene = (SoSeparator*) getSoRenderManager()->getSceneGraph();
+    auto superscene = dynamic_cast<SoSeparator*>(getSoRenderManager()->getSceneGraph());
     SoSearchAction sa;
     sa.setInterest(SoSearchAction::FIRST);
     sa.setType(SoCamera::getClassTypeId());
     sa.apply(superscene);
 
-    if(sa.getPath()) {
+    if (sa.getPath()) {
         SoNode* node = sa.getPath()->getTail();
-        SoGroup* parent = (SoGroup*) sa.getPath()->getNodeFromTail(1);
+        SoGroup* parent = static_cast<SoGroup*>(sa.getPath()->getNodeFromTail(1)); //  NOLINT
 
-        if(node && node->isOfType(SoCamera::getClassTypeId())) {
+        if (node && node->isOfType(SoCamera::getClassTypeId())) {
             parent->replaceChild(node, newcamera);
         }
     }
@@ -274,7 +294,7 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::convertOrtho2Perspective(const So
 
     SbRotation camrot = in->orientation.getValue();
 
-    float focaldist = in->height.getValue() / (2.0*tan(M_PI / 8.0));
+    float focaldist = float(in->height.getValue() / (2.0*tan(M_PI / 8.0)));  // NOLINT
 
     SbVec3f offset(0,0,focaldist-in->focalDistance.getValue());
 
@@ -284,7 +304,7 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::convertOrtho2Perspective(const So
     out->focalDistance.setValue(focaldist);
 
     // 45° is the default value of this field in SoPerspectiveCamera.
-    out->heightAngle = (float)(M_PI / 4.0);
+    out->heightAngle = (float)(M_PI / 4.0);  // NOLINT
 }
 
 void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::convertPerspective2Ortho(const SoPerspectiveCamera* in,
@@ -298,7 +318,7 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::convertPerspective2Ortho(const So
 
     float focaldist = in->focalDistance.getValue();
 
-    out->height = 2.0f * focaldist * (float)tan(in->heightAngle.getValue() / 2.0);
+    out->height = 2.0F * focaldist * (float)tan(in->heightAngle.getValue() / 2.0);  // NOLINT
 }
 
 SoCamera* SIM::Coin3D::Quarter::SoQTQuarterAdaptor::getCamera() const
@@ -311,9 +331,8 @@ const SbViewportRegion & SIM::Coin3D::Quarter::SoQTQuarterAdaptor::getViewportRe
     return getSoRenderManager()->getViewportRegion();
 }
 
-void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::setViewing(SbBool enable)
+void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::setViewing(bool enable)
 {
-
     m_viewingflag = enable;
 
     // Turn off the selection indicators when we go back from picking
@@ -321,12 +340,13 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::setViewing(SbBool enable)
     if (m_viewingflag) {
         SoGLRenderAction* action = getSoRenderManager()->getGLRenderAction();
 
-        if (action)
+        if (action) {
             SoLocateHighlight::turnOffCurrentHighlight(action);
+        }
     }
 }
 
-SbBool SIM::Coin3D::Quarter::SoQTQuarterAdaptor::isViewing() const
+bool SIM::Coin3D::Quarter::SoQTQuarterAdaptor::isViewing() const
 {
     return m_viewingflag;
 }
@@ -336,14 +356,14 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::interactiveCountInc()
     // Catch problems with missing interactiveCountDec() calls.
     assert(m_interactionnesting < 100);
 
-    if(++m_interactionnesting == 1) {
+    if (++m_interactionnesting == 1) {
         m_interactionStartCallback.invokeCallbacks(this);
     }
 }
 
 void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::interactiveCountDec()
 {
-    if(--m_interactionnesting <= 0) {
+    if (--m_interactionnesting <= 0) {
         m_interactionEndCallback.invokeCallbacks(this);
         m_interactionnesting = 0;
     }
@@ -354,26 +374,27 @@ int SIM::Coin3D::Quarter::SoQTQuarterAdaptor::getInteractiveCount() const
     return m_interactionnesting;
 }
 
+// clang-format off
 void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::addStartCallback(SIM::Coin3D::Quarter::SoQTQuarterAdaptorCB* func, void* data)
 {
-    m_interactionStartCallback.addCallback((SoCallbackListCB*)func, data);
+    m_interactionStartCallback.addCallback((SoCallbackListCB*)func, data);  // NOLINT
 }
 
 void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::removeStartCallback(SIM::Coin3D::Quarter::SoQTQuarterAdaptorCB* func, void* data)
 {
-    m_interactionStartCallback.removeCallback((SoCallbackListCB*)func, data);
+    m_interactionStartCallback.removeCallback((SoCallbackListCB*)func, data);  // NOLINT
 }
 
 void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::addFinishCallback(SIM::Coin3D::Quarter::SoQTQuarterAdaptorCB* func, void* data)
 {
-    m_interactionEndCallback.addCallback((SoCallbackListCB*)func, data);
+    m_interactionEndCallback.addCallback((SoCallbackListCB*)func, data);  // NOLINT
 }
 
 void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::removeFinishCallback(SIM::Coin3D::Quarter::SoQTQuarterAdaptorCB* func, void* data)
 {
-    m_interactionEndCallback.removeCallback((SoCallbackListCB*)func, data);
+    m_interactionEndCallback.removeCallback((SoCallbackListCB*)func, data);  // NOLINT
 }
-
+// clang-format on
 
 float SIM::Coin3D::Quarter::SoQTQuarterAdaptor::getSeekDistance() const
 {
@@ -385,14 +406,14 @@ float SIM::Coin3D::Quarter::SoQTQuarterAdaptor::getSeekTime() const
     return m_seekperiod;
 }
 
-SbBool SIM::Coin3D::Quarter::SoQTQuarterAdaptor::isSeekMode() const
+bool SIM::Coin3D::Quarter::SoQTQuarterAdaptor::isSeekMode() const
 {
     return m_inseekmode;
 }
 
-SbBool SIM::Coin3D::Quarter::SoQTQuarterAdaptor::isSeekValuePercentage() const
+bool SIM::Coin3D::Quarter::SoQTQuarterAdaptor::isSeekValuePercentage() const
 {
-    return m_seekdistanceabs ? false : true;
+    return !m_seekdistanceabs;
 }
 
 void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::setPickRadius(float pickRadius)
@@ -400,14 +421,14 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::setPickRadius(float pickRadius)
     this->pickRadius = pickRadius;
     SoEventManager* evm = this->getSoEventManager();
     if (evm){
-        SoHandleEventAction* a = evm->getHandleEventAction();
-        if (a){
-            a->setPickRadius(pickRadius);
+        SoHandleEventAction* hea = evm->getHandleEventAction();
+        if (hea){
+            hea->setPickRadius(pickRadius);
         }
     }
 }
 
-SbBool SIM::Coin3D::Quarter::SoQTQuarterAdaptor::seekToPoint(const SbVec2s screenpos)
+bool SIM::Coin3D::Quarter::SoQTQuarterAdaptor::seekToPoint(const SbVec2s& screenpos)
 {
 
     SoRayPickAction rpaction(getSoRenderManager()->getViewportRegion());
@@ -417,7 +438,7 @@ SbBool SIM::Coin3D::Quarter::SoQTQuarterAdaptor::seekToPoint(const SbVec2s scree
 
     SoPickedPoint* picked = rpaction.getPickedPoint();
 
-    if(!picked) {
+    if (!picked) {
         this->interactiveCountInc(); // decremented in setSeekMode(false)
         this->setSeekMode(false);
         return false;
@@ -439,7 +460,8 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::seekToPoint(const SbVec3f& scenep
 
     // move point to the camera coordinate system, consider
     // transformations before camera in the scene graph
-    SbMatrix cameramatrix, camerainverse;
+    SbMatrix cameramatrix;
+    SbMatrix camerainverse;
     getCameraCoordinateSystem(getSoRenderManager()->getCamera(),
                               getSceneGraph(),
                               cameramatrix,
@@ -448,8 +470,9 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::seekToPoint(const SbVec3f& scenep
 
     float fd = m_seekdistance;
 
-    if(!m_seekdistanceabs)
-        fd *= (hitpoint - getSoRenderManager()->getCamera()->position.getValue()).length()/100.0f;
+    if(!m_seekdistanceabs) {
+        fd *= (hitpoint - getSoRenderManager()->getCamera()->position.getValue()).length()/100.0F;
+    }
 
     getSoRenderManager()->getCamera()->focalDistance = fd;
 
@@ -479,7 +502,7 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::setSeekDistance(const float dista
     m_seekdistance = distance;
 }
 
-void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::setSeekMode(SbBool enable)
+void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::setSeekMode(bool enable)
 {
     if(!enable && m_seeksensor->isScheduled()) {
         m_seeksensor->unschedule();
@@ -494,12 +517,15 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::setSeekTime(const float seconds)
     m_seekperiod = seconds;
 }
 
-void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::setSeekValueAsPercentage(const SbBool on)
+void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::setSeekValueAsPercentage(bool on)
 {
-    m_seekdistanceabs = on ? false : true;
+    m_seekdistanceabs = !on;
 }
 
-void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::getCameraCoordinateSystem(SoCamera* camera, SoNode* root, SbMatrix& matrix, SbMatrix& inverse)
+void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::getCameraCoordinateSystem(SoCamera* camera,
+                                                                         SoNode* root,
+                                                                         SbMatrix& matrix,
+                                                                         SbMatrix& inverse)
 {
     searchaction.reset();
     searchaction.setSearchingAll(true);
@@ -518,30 +544,33 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::getCameraCoordinateSystem(SoCamer
     searchaction.reset();
 }
 
-void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::seeksensorCB(void* data, SoSensor* s)
+void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::seeksensorCB(void* data, SoSensor* sensor)
 {
-    SoQTQuarterAdaptor* thisp = (SoQTQuarterAdaptor*) data;
+    SoQTQuarterAdaptor* thisp = static_cast<SoQTQuarterAdaptor*>(data);  // NOLINT
     SbTime currenttime = SbTime::getTimeOfDay();
 
-    SoTimerSensor* sensor = (SoTimerSensor*)s;
+    SoTimerSensor* timer = static_cast<SoTimerSensor*>(sensor);  // NOLINT
 
-    float t =
-        float((currenttime - sensor->getBaseTime()).getValue()) / thisp->m_seekperiod;
+    float par = float((currenttime - timer->getBaseTime()).getValue()) / thisp->m_seekperiod;
 
-    if((t > 1.0f) || (t + sensor->getInterval().getValue() > 1.0f)) t = 1.0f;
+    if ((par > 1.0F) || (par + timer->getInterval().getValue() > 1.0F)) {
+        par = 1.0F;
+    }
 
-    SbBool end = (t == 1.0f);
+    bool end = (par == 1.0F);
 
-    t = (float)((1.0 - cos(M_PI*t)) * 0.5);
+    par = (float)((1.0 - cos(M_PI * par)) * 0.5);  // NOLINT
 
     thisp->getSoRenderManager()->getCamera()->position = thisp->m_camerastartposition +
-            (thisp->m_cameraendposition - thisp->m_camerastartposition) * t;
+            (thisp->m_cameraendposition - thisp->m_camerastartposition) * par;
     thisp->getSoRenderManager()->getCamera()->orientation =
         SbRotation::slerp(thisp->m_camerastartorient,
                           thisp->m_cameraendorient,
-                          t);
+                          par);
 
-    if(end) thisp->setSeekMode(false);
+    if (end) {
+        thisp->setSeekMode(false);
+    }
 }
 
 void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::saveHomePosition()
@@ -551,15 +580,15 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::saveHomePosition()
         return;
     }
 
-    SoType t = cam->getTypeId();
-    assert(t.isDerivedFrom(SoNode::getClassTypeId()));
-    assert(t.canCreateInstance());
+    SoType type = cam->getTypeId();
+    assert(type.isDerivedFrom(SoNode::getClassTypeId()));
+    assert(type.canCreateInstance());
 
     if(m_storedcamera) {
         m_storedcamera->unref();
     }
 
-    m_storedcamera = (SoNode*)t.createInstance();
+    m_storedcamera = static_cast<SoNode*>(type.createInstance());  // NOLINT
     m_storedcamera->ref();
 
     m_storedcamera->copyFieldValues(getSoRenderManager()->getCamera());
@@ -576,27 +605,27 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::resetToHomePosition()
         return;
     }
 
-    SoType t = getSoRenderManager()->getCamera()->getTypeId();
-    SoType s = m_storedcamera->getTypeId();
+    SoType ttype = getSoRenderManager()->getCamera()->getTypeId();
+    SoType stype = m_storedcamera->getTypeId();
 
     // most common case
-    if(t == s) {
+    if (ttype == stype) {
         // We copy the field data directly, instead of using
         // SoFieldContainer::copyContents(), for the reason described in
         // detail in So@Gui@Viewer::saveHomePosition().
         getSoRenderManager()->getCamera()->copyFieldValues(m_storedcamera);
     }
     // handle common case #1
-    else if(t == SoOrthographicCamera::getClassTypeId() &&
-            s == SoPerspectiveCamera::getClassTypeId()) {
-        convertPerspective2Ortho((SoPerspectiveCamera*)m_storedcamera,
-                                 (SoOrthographicCamera*)getSoRenderManager()->getCamera());
+    else if(ttype == SoOrthographicCamera::getClassTypeId() &&
+            stype == SoPerspectiveCamera::getClassTypeId()) {
+        convertPerspective2Ortho(dynamic_cast<SoPerspectiveCamera*>(m_storedcamera),
+                                 dynamic_cast<SoOrthographicCamera*>(getSoRenderManager()->getCamera()));
     }
     // handle common case #2
-    else if(t == SoPerspectiveCamera::getClassTypeId() &&
-            s == SoOrthographicCamera::getClassTypeId()) {
-        convertOrtho2Perspective((SoOrthographicCamera*)m_storedcamera,
-                                 (SoPerspectiveCamera*)getSoRenderManager()->getCamera());
+    else if(ttype == SoPerspectiveCamera::getClassTypeId() &&
+            stype == SoOrthographicCamera::getClassTypeId()) {
+        convertOrtho2Perspective(dynamic_cast<SoOrthographicCamera*>(m_storedcamera),
+                                 dynamic_cast<SoPerspectiveCamera*>(getSoRenderManager()->getCamera()));
     }
 
     // otherwise, cameras have changed in ways we don't understand since
@@ -606,7 +635,9 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::resetToHomePosition()
 
 
 void
-SIM::Coin3D::Quarter::SoQTQuarterAdaptor::draw2DString(const char* str, SbVec2s glsize, SbVec2f position)
+SIM::Coin3D::Quarter::SoQTQuarterAdaptor::draw2DString(const char* str,
+                                                       SbVec2s glsize,
+                                                       SbVec2f position)
 {
     // Store GL state.
     glPushAttrib(GL_ENABLE_BIT|GL_CURRENT_BIT);
@@ -651,17 +682,19 @@ SIM::Coin3D::Quarter::SoQTQuarterAdaptor::draw2DString(const char* str, SbVec2s 
     glPopAttrib();
 }
 
-void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::printString(const char* s)
+void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::printString(const char* str)
 {
-    int i,n;
-    n = strlen(s);
+    // NOLINTBEGIN
+    std::size_t len = strlen(str);
 
-    for(i = 0; i < n; i++)
-        glBitmap(8, 12, 0.0, 2.0, 10.0, 0.0, fps2dfont[s[i] - 32]);
+    for(std::size_t i = 0; i < len; i++) {
+        glBitmap(8, 12, 0.0, 2.0, 10.0, 0.0, fps2dfont[str[i] - 32]);
+    }
+    // NOLINTEND
 }
 
-void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::moveCameraScreen(const SbVec2f& screenpos) {
-
+void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::moveCameraScreen(const SbVec2f& screenpos)
+{
     SoCamera* cam = getSoRenderManager()->getCamera();
     assert(cam);
 
@@ -669,11 +702,12 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::moveCameraScreen(const SbVec2f& s
     SbViewVolume vv = cam->getViewVolume(getGLWidget()->width() / getGLWidget()->height());
     SbPlane panplane = vv.getPlane(cam->focalDistance.getValue());
 
+    constexpr const float mid = 0.5F;
     SbLine line;
-    vv.projectPointToLine(screenpos + SbVec2f(0.5, 0.5f), line);
+    vv.projectPointToLine(screenpos + SbVec2f(mid, mid), line);
     SbVec3f current_planept;
     panplane.intersect(line, current_planept);
-    vv.projectPointToLine(SbVec2f(0.5f, 0.5f), line);
+    vv.projectPointToLine(SbVec2f(mid, mid), line);
     SbVec3f old_planept;
     panplane.intersect(line, old_planept);
 
@@ -682,30 +716,31 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::moveCameraScreen(const SbVec2f& s
     cam->position = cam->position.getValue() - (current_planept - old_planept);
 }
 
-bool SIM::Coin3D::Quarter::SoQTQuarterAdaptor::processSoEvent(const SoEvent* event) {
-
+bool SIM::Coin3D::Quarter::SoQTQuarterAdaptor::processSoEvent(const SoEvent* event)
+{
     const SoType type(event->getTypeId());
 
+    constexpr const float delta = 0.1F;
     if(type.isDerivedFrom(SoKeyboardEvent::getClassTypeId())) {
-        const SoKeyboardEvent* keyevent = static_cast<const SoKeyboardEvent*>(event);
+        const SoKeyboardEvent* keyevent = static_cast<const SoKeyboardEvent*>(event);  // NOLINT
 
         if(keyevent->getState() == SoButtonEvent::DOWN) {
             switch(keyevent->getKey()) {
 
             case SoKeyboardEvent::LEFT_ARROW:
-                moveCameraScreen(SbVec2f(-0.1f, 0.0f));
+                moveCameraScreen(SbVec2f(-delta, 0.0F));
                 return true;
 
             case SoKeyboardEvent::UP_ARROW:
-                moveCameraScreen(SbVec2f(0.0f, 0.1f));
+                moveCameraScreen(SbVec2f(0.0F, delta));
                 return true;
 
             case SoKeyboardEvent::RIGHT_ARROW:
-                moveCameraScreen(SbVec2f(0.1f, 0.0f));
+                moveCameraScreen(SbVec2f(delta, 0.0F));
                 return true;
 
             case SoKeyboardEvent::DOWN_ARROW:
-                moveCameraScreen(SbVec2f(0.0f, -0.1f));
+                moveCameraScreen(SbVec2f(0.0F, -delta));
                 return true;
 
             default:
@@ -730,31 +765,35 @@ void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::paintEvent(QPaintEvent* event)
 void SIM::Coin3D::Quarter::SoQTQuarterAdaptor::resetFrameCounter()
 {
     this->framecount = 0;
-    this->frametime = 0.0f;
-    this->drawtime = 0.0f;
+    this->frametime = 0.0F;
+    this->drawtime = 0.0F;
     this->starttime = SbTime::getTimeOfDay().getValue();
     this->framesPerSecond = SbVec2f(0, 0);
 }
 
 SbVec2f SIM::Coin3D::Quarter::SoQTQuarterAdaptor::addFrametime(double starttime)
 {
+    constexpr const double FPS_FACTOR = 0.7;
+    constexpr const double FIVE_SECS = 5000.0;
+    constexpr const float ONE_SEC = 1000.0F;
+
     this->framecount++;
 
     double timeofday = SbTime::getTimeOfDay().getValue();
 
     // draw time is the actual time spent on rendering
     double drawtime = timeofday - starttime;
-#define FPS_FACTOR 0.7
-    this->drawtime = (drawtime*FPS_FACTOR) + this->drawtime*(1.0-FPS_FACTOR);
+    this->drawtime = (drawtime*FPS_FACTOR) + this->drawtime*(1.0 - FPS_FACTOR);
 
     // frame time is the time spent since the last frame. There could an
     // indefinite pause between the last frame because the scene is not
     // changing. So we limit the skew to 5 second.
-    double frametime = std::min(timeofday-this->starttime, std::max(drawtime,5000.0));
-    this->frametime = (frametime*FPS_FACTOR) + this->frametime*(1.0-FPS_FACTOR);
+    double frametime = std::min(timeofday-this->starttime, std::max(drawtime, FIVE_SECS));
+    this->frametime = (frametime*FPS_FACTOR) + this->frametime*(1.0 - FPS_FACTOR);
 
     this->starttime = timeofday;
-    return {1000 * float(this->drawtime), 1.0F / float(this->frametime)};
+    return {ONE_SEC * float(this->drawtime), 1.0F / float(this->frametime)};
 }
+// NOLINTEND(readability-implicit-bool-conversion)
 
 #include "moc_SoQTQuarterAdaptor.cpp"

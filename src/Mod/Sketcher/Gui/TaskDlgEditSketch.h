@@ -31,6 +31,7 @@
 #include "TaskSketcherElements.h"
 #include "TaskSketcherMessages.h"
 #include "TaskSketcherSolverAdvanced.h"
+#include "TaskSketcherTool.h"
 #include "ViewProviderSketch.h"
 
 
@@ -73,9 +74,19 @@ public:
         return QDialogButtonBox::Close;
     }
 
+    /** @brief Function used to register a slot to be triggered when the tool widget is changed. */
+    template<typename F>
+    boost::signals2::connection registerToolWidgetChanged(F&& f)
+    {
+        return ToolSettings->registerToolWidgetChanged(std::forward<F>(f));
+    }
+
 protected:
     void slotUndoDocument(const App::Document&);
     void slotRedoDocument(const App::Document&);
+
+private:
+    void slotToolChanged(const std::string& toolname);
 
 protected:
     ViewProviderSketch* sketchView;
@@ -83,6 +94,10 @@ protected:
     TaskSketcherElements* Elements;
     TaskSketcherMessages* Messages;
     TaskSketcherSolverAdvanced* SolverAdvanced;
+    TaskSketcherTool* ToolSettings;
+
+private:
+    Connection connectionToolSettings;
 };
 
 

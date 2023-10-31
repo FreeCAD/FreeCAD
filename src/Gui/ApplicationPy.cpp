@@ -66,6 +66,7 @@
 #include "WidgetFactory.h"
 #include "Workbench.h"
 #include "WorkbenchManager.h"
+#include "WorkbenchManipulatorPython.h"
 #include "Inventor/MarkerBitmaps.h"
 #include "Language/Translator.h"
 
@@ -355,6 +356,18 @@ PyMethodDef Application::Methods[] = {
    "removeDocumentObserver(obj) -> None\n"
    "\n"
    "Remove an added document observer.\n"
+   "\n"
+   "obj : object"},
+  {"addWorkbenchManipulator",  (PyCFunction) Application::sAddWbManipulator, METH_VARARGS,
+   "addWorkbenchManipulator(obj) -> None\n"
+   "\n"
+   "Add a workbench manipulator to modify a workbench when it is activated.\n"
+   "\n"
+   "obj : object"},
+  {"removeWorkbenchManipulator",  (PyCFunction) Application::sRemoveWbManipulator, METH_VARARGS,
+   "removeWorkbenchManipulator(obj) -> None\n"
+   "\n"
+   "Remove an added workbench manipulator.\n"
    "\n"
    "obj : object"},
   {"listUserEditModes", (PyCFunction) Application::sListUserEditModes, METH_VARARGS,
@@ -1528,6 +1541,32 @@ PyObject* Application::sRemoveDocObserver(PyObject * /*self*/, PyObject *args)
 
     PY_TRY {
         DocumentObserverPython::removeObserver(Py::Object(o));
+        Py_Return;
+    }
+    PY_CATCH;
+}
+
+PyObject* Application::sAddWbManipulator(PyObject * /*self*/, PyObject *args)
+{
+    PyObject* o;
+    if (!PyArg_ParseTuple(args, "O",&o))
+        return nullptr;
+
+    PY_TRY {
+        WorkbenchManipulatorPython::installManipulator(Py::Object(o));
+        Py_Return;
+    }
+    PY_CATCH;
+}
+
+PyObject* Application::sRemoveWbManipulator(PyObject * /*self*/, PyObject *args)
+{
+    PyObject* o;
+    if (!PyArg_ParseTuple(args, "O",&o))
+        return nullptr;
+
+    PY_TRY {
+        WorkbenchManipulatorPython::removeManipulator(Py::Object(o));
         Py_Return;
     }
     PY_CATCH;

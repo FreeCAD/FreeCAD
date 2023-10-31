@@ -51,6 +51,7 @@ EditableDatumLabel::EditableDatumLabel(View3DInventorViewer* view,
     : isSet(false)
     , autoDistance(autoDistance)
     , autoDistanceReverse(false)
+    , value(0.0)
     , viewer(view)
     , spinBox(nullptr)
     , cameraSensor(nullptr)
@@ -74,6 +75,7 @@ EditableDatumLabel::EditableDatumLabel(View3DInventorViewer* view,
     label->datumtype = SoDatumLabel::DISTANCE;
     label->param1 = 0.;
     label->param2 = 0.;
+    label->param3 = 0.;
     if (autoDistance) {
         setLabelRecommendedDistance();
     }
@@ -93,7 +95,7 @@ EditableDatumLabel::~EditableDatumLabel()
 
 void EditableDatumLabel::activate()
 {
-    if (!viewer) {
+    if (!viewer || isActive()) {
         return;
     }
 
@@ -129,8 +131,12 @@ void EditableDatumLabel::deactivate()
     }
 }
 
-void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj)
+void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj, bool visibleToMouse)
 {
+    if (isInEdit()) {
+        return;
+    }
+
     QWidget* mdi = viewer->parentWidget();
 
     label->string = " ";
@@ -141,8 +147,13 @@ void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj)
     spinBox->setMaximum(INT_MAX);
     spinBox->setButtonSymbols(QAbstractSpinBox::NoButtons);
     spinBox->setKeyboardTracking(false);
+    spinBox->setFocusPolicy(Qt::ClickFocus); // prevent passing focus with tab.
     if (eventFilteringObj) {
         spinBox->installEventFilter(eventFilteringObj);
+    }
+
+    if (!visibleToMouse) {
+        setSpinboxVisibleToMouse(visibleToMouse);
     }
 
     spinBox->show();
@@ -154,6 +165,7 @@ void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj)
     connect(spinBox, qOverload<double>(&QuantitySpinBox::valueChanged),
         this, [this](double value) {
         this->isSet = true;
+        this->value = value;
         Q_EMIT this->valueChanged(value);
     });
 }
@@ -161,25 +173,47 @@ void EditableDatumLabel::startEdit(double val, QObject* eventFilteringObj)
 void EditableDatumLabel::stopEdit()
 {
     if (spinBox) {
+        // write the spinbox value in the label.
+        Base::Quantity quantity = spinBox->value();
+
+        double factor{};
+        QString unitStr;
+        QString valueStr;
+        valueStr = quantity.getUserString(factor, unitStr);
+        label->string = SbString(valueStr.toUtf8().constData());
+
         spinBox->deleteLater();
         spinBox = nullptr;
     }
 }
 
-double EditableDatumLabel::getValue()
+bool EditableDatumLabel::isActive() const
 {
-    return spinBox->rawValue();
+    return cameraSensor != nullptr;
 }
 
-void EditableDatumLabel::setSpinboxValue(double val)
+bool EditableDatumLabel::isInEdit() const
+{
+    return spinBox != nullptr;
+}
+
+
+double EditableDatumLabel::getValue() const
+{
+    // We use value rather than spinBox->rawValue() in case edit stopped.
+    return value;
+}
+
+void EditableDatumLabel::setSpinboxValue(double val, const Base::Unit& unit)
 {
     if (!spinBox) {
-        Base::Console().Warning("Spinbox doesn't exist in EditableDatumLabel::setSpinboxValue.");
+        Base::Console().DeveloperWarning("EditableDatumLabel::setSpinboxValue", "Spinbox doesn't exist in");
         return;
     }
 
     QSignalBlocker block(spinBox);
-    spinBox->setValue(val);
+    spinBox->setValue(Base::Quantity(val, unit));
+    value = val;
     positionSpinbox();
 
     if (spinBox->hasFocus()) {
@@ -190,12 +224,13 @@ void EditableDatumLabel::setSpinboxValue(double val)
 void EditableDatumLabel::setFocusToSpinbox()
 {
     if (!spinBox) {
-        Base::Console().Warning("Spinbox doesn't exist in EditableDatumLabel::setFocusToSpinbox.");
+        Base::Console().DeveloperWarning("EditableDatumLabel::setFocusToSpinbox", "Spinbox doesn't exist in");
         return;
     }
-
-    spinBox->setFocus();
-    spinBox->selectNumber();
+    if (!spinBox->hasFocus()) {
+        spinBox->setFocus();
+        spinBox->selectNumber();
+    }
 }
 
 void EditableDatumLabel::positionSpinbox()
@@ -215,7 +250,7 @@ SbVec3f EditableDatumLabel::getTextCenterPoint() const
 {
     //Here we need the 3d point and not the 2d point as are the SoLabel points.
     // First we get the 2D point (on the sketch/image plane) of the middle of the text label.
-    SbVec3f point2D = label->textOffset;
+    SbVec3f point2D = label->getLabelTextCenter();
     // Get the translation and rotation values from the transform
     SbVec3f translation = transform->translation.getValue();
     SbRotation rotation = transform->rotation.getValue();
@@ -297,9 +332,21 @@ void EditableDatumLabel::setLabelType(SoDatumLabel::Type type)
 }
 
 // NOLINTNEXTLINE
-void EditableDatumLabel::setLabelDistance(double distance)
+void EditableDatumLabel::setLabelDistance(double val)
 {
-    label->param1 = float(distance);
+    label->param1 = float(val);
+}
+
+// NOLINTNEXTLINE
+void EditableDatumLabel::setLabelStartAngle(double val)
+{
+    label->param2 = float(val);
+}
+
+// NOLINTNEXTLINE
+void EditableDatumLabel::setLabelRange(double val)
+{
+    label->param3 = float(val);
 }
 
 void EditableDatumLabel::setLabelRecommendedDistance()
@@ -319,6 +366,11 @@ void EditableDatumLabel::setLabelRecommendedDistance()
 void EditableDatumLabel::setLabelAutoDistanceReverse(bool val)
 {
     autoDistanceReverse = val;
+}
+
+void EditableDatumLabel::setSpinboxVisibleToMouse(bool val)
+{
+    spinBox->setAttribute(Qt::WA_TransparentForMouseEvents, !val);
 }
 
 #include "moc_EditableDatumLabel.cpp"

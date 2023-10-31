@@ -55,14 +55,14 @@ class ViewProvider(object):
         self.vobj = vobj
         self.obj = vobj.Object
 
-    def __getstate__(self):
+    def dumps(self):
         attrs = {"icon": self.icon}
         if hasattr(self, "editModule"):
             attrs["editModule"] = self.editModule
             attrs["editCallback"] = self.editCallback
         return attrs
 
-    def __setstate__(self, state):
+    def loads(self, state):
         self.icon = state["icon"]
         if state.get("editModule", None):
             self.editModule = state["editModule"]

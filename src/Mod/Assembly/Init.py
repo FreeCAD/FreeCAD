@@ -33,5 +33,5 @@ FreeCAD.__unit_test__ += ["TestAssemblyWorkbench"]
 
 # This adds a custom import type to the FreeCAD import dialog.
 # The correct format for assembly interoperability is a research topic. ASMT is a placeholder.
-FreeCAD.addImportType("Assembly Format (*.asmt)", "AssemblyImport")
+FreeCAD.addImportType("Assembly Format (*.asmt *.ASMT)", "AssemblyImport")
 # FreeCAD.addExportType()

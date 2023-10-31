@@ -38,12 +38,26 @@ class TechDrawExport pointPair
 {
 public:
     pointPair() = default;
-    pointPair(const Base::Vector3d& point0, const Base::Vector3d& point1) { m_first = point0; m_second = point1; }
+    pointPair(const Base::Vector3d& point0, const Base::Vector3d& point1)
+        : m_first(point0)
+        , m_second(point1){};
+
+    pointPair(const Base::Vector3d& point0, const Base::Vector3d& point1,
+              const Base::Vector3d& extensionPoint0, const Base::Vector3d& extensionPoint1)
+        : m_first(point0)
+        , m_second(point1)
+        , m_useOverrideFirst(true)
+        , m_overrideFirst(extensionPoint0)
+        , m_useOverrideSecond(true)
+        , m_overrideSecond(extensionPoint1){};
+
     pointPair(const pointPair& pp);
 
     pointPair& operator=(const pointPair& pp) {
         m_first = pp.first();
         m_second = pp.second();
+        overrideFirst(pp.extensionLineFirst());
+        overrideSecond(pp.extensionLineSecond());
         return *this;
     }
 
@@ -51,6 +65,12 @@ public:
     void first(Base::Vector3d newFirst) { m_first = newFirst; }
     Base::Vector3d second() const { return m_second; }
     void second(Base::Vector3d newSecond) { m_second = newSecond; }
+    // extension line specific points
+    Base::Vector3d extensionLineFirst() const { return m_useOverrideFirst ? m_overrideFirst : m_first; }
+    void overrideFirst(Base::Vector3d newFirst) { m_useOverrideFirst = true;  m_overrideFirst = newFirst; }
+    Base::Vector3d extensionLineSecond() const { return m_useOverrideSecond ? m_overrideSecond : m_second; }
+    void overrideSecond(Base::Vector3d newSecond) { m_useOverrideSecond = true;  m_overrideSecond = newSecond; }
+    void setExtensionLine(const pointPair& pp);
 
     void move(const Base::Vector3d& offset);
     void project(const DrawViewPart* dvp);
@@ -61,6 +81,11 @@ public:
 private:
     Base::Vector3d m_first;
     Base::Vector3d m_second;
+    // extension line specific points
+    bool m_useOverrideFirst = false;
+    Base::Vector3d m_overrideFirst;
+    bool m_useOverrideSecond = false;
+    Base::Vector3d m_overrideSecond;
 };
 
 //a convenient container for angular dimension points

@@ -266,31 +266,20 @@ class AlgebraTestCase(unittest.TestCase):
         self.assertNotEqual(m2, m4 * m3, "Wrong multiplication order")
 
     def testRotationFromMatrix(self):
-        m1 = FreeCAD.Matrix()
-        m1.rotateZ(0.2)
-        m1.scale(0.5)
-        m1.rotateY(0.2)
-        m1.scale(3)
-        m1.move(10, 5, -3)
-        r1 = FreeCAD.Rotation(m1)
-        m2 = FreeCAD.Matrix()
-        m2.rotateZ(0.2)
-        m2.rotateY(0.2)
-        m2.move(10, 5, -3)
-        r2 = FreeCAD.Rotation(m2)
-        self.assertTrue(r1.isSame(r2, 1e-7), "Scale on matrix influenced rotation")
-        m3 = FreeCAD.Matrix()
-        m3.scale(-1)
-        r3 = FreeCAD.Rotation(m3)
-        r0 = FreeCAD.Rotation()
-        self.assertTrue(r3.isSame(r0, 1e-7), "Scale on matrix influenced rotation")
-        m4 = FreeCAD.Matrix()
-        m4.scale(1.25, 1.0, 0.25)
-        m4.move(4, 5, 6)
-        r24 = FreeCAD.Rotation(m2 * m4)
-        r42 = FreeCAD.Rotation(m4 * m2)
-        self.assertTrue(r2.isSame(r24, 1e-7), "Scale on matrix influenced rotation")
-        self.assertTrue(r2.isSame(r42, 1e-7), "Scale on matrix influenced rotation")
+        rot = FreeCAD.Rotation(45, 30, 0)
+        m_r = rot.toMatrix()
+        m_r.move(5, 6, 7)
+        m_s = FreeCAD.Matrix()
+        m_s.scale(1, 1, 3)
+        m_s.move(7, 3, 2)
+        target_rot = FreeCAD.Rotation(45, 60, 0)
+        err = "Non uniform scale has wrong affect non orthogonal rotation"
+        self.assertTrue(FreeCAD.Rotation(m_s * m_r).isSame(target_rot, 1e-12), err)
+        err = "Right multiplication with non uniform scale must not affect rotation"
+        self.assertTrue(FreeCAD.Rotation(m_r * m_s).isSame(rot, 1e-12), err)
+        m_r.scale(-2)
+        err = "Uniform scale must not affect rotation"
+        self.assertTrue(FreeCAD.Rotation(m_r).isSame(rot, 1e-12), err)
 
     def testRotation(self):
         r = FreeCAD.Rotation(1, 0, 0, 0)  # 180 deg around (1,0,0)
@@ -374,23 +363,60 @@ class AlgebraTestCase(unittest.TestCase):
         p.Rotation.Angle = math.pi / 2
         self.assertEqual(abs(p.inverse().Rotation.Angle), p.Rotation.Angle)
 
-    def testMatrixToRotationFailure(self):
+    def testDecomposeScale(self):
+        mat = FreeCAD.Matrix()
+        mat.scale(FreeCAD.Vector(2, 3, 4))
+        res = mat.decompose()
+        self.assertTrue(res[0].isUnity())
+        self.assertEqual(res[1], mat)
+        self.assertTrue(res[2].isUnity())
+        self.assertTrue(res[3].isUnity())
+
+    def testDecomposeRotation(self):
+        mat = FreeCAD.Matrix()
+        mat.rotateX(1)
+        mat.rotateY(1)
+        mat.rotateZ(1)
+        res = mat.decompose()
+        self.assertTrue(res[0].isUnity())
+        self.assertTrue(res[1].isUnity(1e-12))
+        self.assertEqual(res[2], mat)
+        self.assertTrue(res[3].isUnity())
+
+    def testDecomposeMove(self):
+        mat = FreeCAD.Matrix()
+        mat.move(FreeCAD.Vector(1, 2, 3))
+        res = mat.decompose()
+        self.assertTrue(res[0].isUnity())
+        self.assertTrue(res[1].isUnity())
+        self.assertTrue(res[2].isUnity())
+        self.assertEqual(res[3], mat)
+
+    def testMatrixDecompose(self):
         mat = FreeCAD.Matrix()
         mat.A21 = 1.0
-        with self.assertRaises(ValueError):
-            FreeCAD.Placement(mat)
-        with self.assertRaises(ValueError):
-            FreeCAD.Rotation(mat)
-        with self.assertRaises(ValueError):
-            FreeCAD.Rotation(*mat.A)
-        with self.assertRaises(ValueError):
-            FreeCAD.Rotation(1, 1, 0, 0, 1, 0, 0, 0, 1)
-        with self.assertRaises(ValueError):
-            rot = FreeCAD.Rotation()
-            rot.Matrix = FreeCAD.Matrix(1, 1, 0, 0, 1, 0, 0, 0, 1)
-        with self.assertRaises(ValueError):
-            plm = FreeCAD.Placement()
-            rot.Matrix = FreeCAD.Matrix(1, 1, 0, 0, 1, 0, 0, 0, 1)
+        mat.A14 = 1.0
+        mat.A24 = 2.0
+        mat.A34 = 3.0
+        res = mat.decompose()
+
+        mul = res[3] * res[2] * res[1] * res[0]
+        self.assertEqual(mul, mat)
+
+        # shearing
+        self.assertAlmostEqual(res[0].determinant(), 1.0)
+
+        # scaling
+        self.assertEqual(res[1].hasScale(), FreeCAD.ScaleType.NonUniformLeft)
+
+        # rotation
+        rot1 = FreeCAD.Rotation(res[2])
+        rot2 = FreeCAD.Rotation(FreeCAD.Vector(0, 0, 1), 45)
+        self.assertTrue(rot1.isSame(rot2, 1e-12))
+
+        # translation
+        plm = FreeCAD.Placement(res[3])
+        self.assertEqual(plm.Base, FreeCAD.Vector(1, 2, 3))
 
     def testYawPitchRoll(self):
         def getYPR1(yaw, pitch, roll):

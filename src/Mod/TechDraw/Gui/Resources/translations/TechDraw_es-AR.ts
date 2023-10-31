@@ -4,7 +4,7 @@
   <context>
     <name>Cmd2LineCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="649"/>
+      <location filename="../../CommandAnnotate.cpp" line="651"/>
       <source>Add Centerline between 2 Lines</source>
       <translation>Agregar línea de centro entre 2 líneas</translation>
     </message>
@@ -12,7 +12,7 @@
   <context>
     <name>Cmd2PointCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="653"/>
+      <location filename="../../CommandAnnotate.cpp" line="655"/>
       <source>Add Centerline between 2 Points</source>
       <translation>Agregar línea de centro entre 2 puntos</translation>
     </message>
@@ -20,7 +20,7 @@
   <context>
     <name>CmdMidpoints</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="284"/>
+      <location filename="../../CommandAnnotate.cpp" line="286"/>
       <source>Add Midpoint Vertices</source>
       <translation>Agregar punto medio</translation>
     </message>
@@ -28,7 +28,7 @@
   <context>
     <name>CmdQuadrants</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="288"/>
+      <location filename="../../CommandAnnotate.cpp" line="290"/>
       <source>Add Quadrant Vertices</source>
       <translation>Agregar vértices de cuadrantes</translation>
     </message>
@@ -36,12 +36,12 @@
   <context>
     <name>CmdTechDraw2LineCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="785"/>
+      <location filename="../../CommandAnnotate.cpp" line="787"/>
       <source>TechDraw</source>
       <translation>DibujoTécnico</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="786"/>
+      <location filename="../../CommandAnnotate.cpp" line="788"/>
       <source>Add Centerline between 2 Lines</source>
       <translation>Agregar línea de centro entre 2 líneas</translation>
     </message>
@@ -49,12 +49,12 @@
   <context>
     <name>CmdTechDraw2PointCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="860"/>
+      <location filename="../../CommandAnnotate.cpp" line="862"/>
       <source>TechDraw</source>
       <translation>DibujoTécnico</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="861"/>
+      <location filename="../../CommandAnnotate.cpp" line="863"/>
       <source>Add Centerline between 2 Points</source>
       <translation>Agregar línea de centro entre 2 puntos</translation>
     </message>
@@ -62,12 +62,12 @@
   <context>
     <name>CmdTechDraw2PointCosmeticLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="973"/>
+      <location filename="../../CommandAnnotate.cpp" line="975"/>
       <source>TechDraw</source>
       <translation>DibujoTécnico</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="974"/>
+      <location filename="../../CommandAnnotate.cpp" line="976"/>
       <source>Add Cosmetic Line Through 2 Points</source>
       <translation>Agregar línea adicional a través de 2 puntos</translation>
     </message>
@@ -114,12 +114,12 @@
   <context>
     <name>CmdTechDrawAnnotation</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="528"/>
+      <location filename="../../CommandAnnotate.cpp" line="530"/>
       <source>TechDraw</source>
       <translation>DibujoTécnico</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="529"/>
+      <location filename="../../CommandAnnotate.cpp" line="531"/>
       <source>Insert Annotation</source>
       <translation>Insertar anotación</translation>
     </message>
@@ -158,17 +158,17 @@
   <context>
     <name>CmdTechDrawCenterLineGroup</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="571"/>
+      <location filename="../../CommandAnnotate.cpp" line="573"/>
       <source>TechDraw</source>
       <translation>DibujoTécnico</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="572"/>
+      <location filename="../../CommandAnnotate.cpp" line="574"/>
       <source>Insert Center Line</source>
       <translation>Insertar línea de centro</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="645"/>
+      <location filename="../../CommandAnnotate.cpp" line="647"/>
       <source>Add Centerline to Faces</source>
       <translation>Agregar línea de centro a caras</translation>
     </message>
@@ -233,12 +233,12 @@
   <context>
     <name>CmdTechDrawCosmeticEraser</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1127"/>
+      <location filename="../../CommandAnnotate.cpp" line="1276"/>
       <source>TechDraw</source>
       <translation>DibujoTécnico</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1128"/>
+      <location filename="../../CommandAnnotate.cpp" line="1277"/>
       <source>Remove Cosmetic Object</source>
       <translation>Eliminar objeto adicional</translation>
     </message>
@@ -246,12 +246,12 @@
   <context>
     <name>CmdTechDrawCosmeticVertex</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="389"/>
+      <location filename="../../CommandAnnotate.cpp" line="391"/>
       <source>TechDraw</source>
       <translation>DibujoTécnico</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="390"/>
+      <location filename="../../CommandAnnotate.cpp" line="392"/>
       <source>Add Cosmetic Vertex</source>
       <translation>Agregar vértice adicional</translation>
     </message>
@@ -259,17 +259,17 @@
   <context>
     <name>CmdTechDrawCosmeticVertexGroup</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="204"/>
+      <location filename="../../CommandAnnotate.cpp" line="206"/>
       <source>TechDraw</source>
       <translation>DibujoTécnico</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="205"/>
+      <location filename="../../CommandAnnotate.cpp" line="207"/>
       <source>Insert Cosmetic Vertex</source>
       <translation>Insertar vértice adicional</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="280"/>
+      <location filename="../../CommandAnnotate.cpp" line="282"/>
       <source>Add Cosmetic Vertex</source>
       <translation>Agregar vértice adicional</translation>
     </message>
@@ -277,17 +277,17 @@
   <context>
     <name>CmdTechDrawDecorateLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1245"/>
+      <location filename="../../CommandAnnotate.cpp" line="1394"/>
       <source>TechDraw</source>
       <translation>DibujoTécnico</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1246"/>
+      <location filename="../../CommandAnnotate.cpp" line="1395"/>
       <source>Change Appearance of Lines</source>
       <translation>Cambiar apariencia de líneas</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1247"/>
+      <location filename="../../CommandAnnotate.cpp" line="1396"/>
       <source>Change Appearance of selected Lines</source>
       <translation>Cambia la apariencia de las líneas seleccionadas</translation>
     </message>
@@ -1413,12 +1413,12 @@
   <context>
     <name>CmdTechDrawFaceCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="674"/>
+      <location filename="../../CommandAnnotate.cpp" line="676"/>
       <source>TechDraw</source>
       <translation>DibujoTécnico</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="675"/>
+      <location filename="../../CommandAnnotate.cpp" line="677"/>
       <source>Add Centerline to Faces</source>
       <translation>Agregar línea de centro a caras</translation>
     </message>
@@ -1520,12 +1520,12 @@
   <context>
     <name>CmdTechDrawLeaderLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="90"/>
+      <location filename="../../CommandAnnotate.cpp" line="92"/>
       <source>TechDraw</source>
       <translation>DibujoTécnico</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="91"/>
+      <location filename="../../CommandAnnotate.cpp" line="93"/>
       <source>Add Leaderline to View</source>
       <translation>Agregar línea de referencia a la Vista</translation>
     </message>
@@ -1559,12 +1559,12 @@
   <context>
     <name>CmdTechDrawMidpoints</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="450"/>
+      <location filename="../../CommandAnnotate.cpp" line="452"/>
       <source>TechDraw</source>
       <translation>DibujoTécnico</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="451"/>
+      <location filename="../../CommandAnnotate.cpp" line="453"/>
       <source>Add Midpoint Vertices</source>
       <translation>Agregar punto medio</translation>
     </message>
@@ -1652,12 +1652,12 @@
   <context>
     <name>CmdTechDrawQuadrants</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="489"/>
+      <location filename="../../CommandAnnotate.cpp" line="491"/>
       <source>TechDraw</source>
       <translation>DibujoTécnico</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="490"/>
+      <location filename="../../CommandAnnotate.cpp" line="492"/>
       <source>Add Quadrant Vertices</source>
       <translation>Agregar vértices de cuadrantes</translation>
     </message>
@@ -1691,12 +1691,12 @@
   <context>
     <name>CmdTechDrawRichTextAnnotation</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="152"/>
+      <location filename="../../CommandAnnotate.cpp" line="154"/>
       <source>TechDraw</source>
       <translation>DibujoTécnico</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="153"/>
+      <location filename="../../CommandAnnotate.cpp" line="155"/>
       <source>Insert Rich Text Annotation</source>
       <translation>Insertar anotación de texto enriquecido</translation>
     </message>
@@ -1740,12 +1740,12 @@
   <context>
     <name>CmdTechDrawShowAll</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1324"/>
+      <location filename="../../CommandAnnotate.cpp" line="1473"/>
       <source>TechDraw</source>
       <translation>DibujoTécnico</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1325"/>
+      <location filename="../../CommandAnnotate.cpp" line="1474"/>
       <source>Show/Hide Invisible Edges</source>
       <translation>Mostrar/ocultar aristas invisibles</translation>
     </message>
@@ -1856,17 +1856,17 @@
   <context>
     <name>CmdTechDrawSurfaceFinishSymbols</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1453"/>
+      <location filename="../../CommandAnnotate.cpp" line="1602"/>
       <source>TechDraw</source>
       <translation>DibujoTécnico</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1454"/>
+      <location filename="../../CommandAnnotate.cpp" line="1603"/>
       <source>Create a Surface Finish Symbol</source>
       <translation>Crear un símbolo de acabado superficial</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1455"/>
+      <location filename="../../CommandAnnotate.cpp" line="1604"/>
       <source>Select a view&lt;br&gt;    - click this button&lt;br&gt;    - select surface finish symbol attributes in opened panel</source>
       <translation>Seleccione una vista&lt;br&gt;    - haga clic en este botón&lt;br&gt;    - seleccione los atributos del símbolo de acabado de superficie en el panel abierto</translation>
     </message>
@@ -1950,12 +1950,12 @@
   <context>
     <name>CmdTechDrawWeldSymbol</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1389"/>
+      <location filename="../../CommandAnnotate.cpp" line="1538"/>
       <source>TechDraw</source>
       <translation>DibujoTécnico</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1390"/>
+      <location filename="../../CommandAnnotate.cpp" line="1539"/>
       <source>Add Welding Information to Leaderline</source>
       <translation>Agregar información de soldadura a la Línea de referencia</translation>
     </message>
@@ -2020,17 +2020,17 @@
       <translation>Guardar página como dxf</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="338"/>
+      <location filename="../../CommandAnnotate.cpp" line="340"/>
       <source>Add Midpoint Vertices</source>
       <translation>Agregar punto medio</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="364"/>
+      <location filename="../../CommandAnnotate.cpp" line="366"/>
       <source>Add Quadrant Vertices</source>
       <translation>Agregar vértices de cuadrantes</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="546"/>
+      <location filename="../../CommandAnnotate.cpp" line="548"/>
       <source>Create Annotation</source>
       <translation>Crear anotación</translation>
     </message>
@@ -2091,9 +2091,15 @@
       <translation>Crear línea central</translation>
     </message>
     <message>
+      <location filename="../../TaskCosmeticCircle.cpp" line="168"/>
       <location filename="../../TaskCosmeticLine.cpp" line="187"/>
       <source>Create Cosmetic Line</source>
       <translation>Crear Línea Adicional</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCosmeticCircle.cpp" line="230"/>
+      <source>Update CosmeticCircle</source>
+      <translation type="unfinished">Update CosmeticCircle</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticLine.cpp" line="241"/>
@@ -2141,8 +2147,8 @@
       <translation>Crear sección compleja</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="643"/>
-      <location filename="../../TaskSectionView.cpp" line="569"/>
+      <location filename="../../TaskComplexSection.cpp" line="644"/>
+      <location filename="../../TaskSectionView.cpp" line="577"/>
       <source>Edit SectionView</source>
       <translation>Editar vista de corte</translation>
     </message>
@@ -2294,7 +2300,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="415"/>
       <source>TechDraw Thread Bolt Side</source>
-      <translation type="unfinished">TechDraw Thread Bolt Side</translation>
+      <translation>Rosca de perno lateral de TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="417"/>
@@ -2304,7 +2310,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="467"/>
       <source>TechDraw Thread Hole Bottom</source>
-      <translation type="unfinished">TechDraw Thread Hole Bottom</translation>
+      <translation>Agujero de rosca inferior de TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="469"/>
@@ -2314,7 +2320,7 @@
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="519"/>
       <source>TechDraw Thread Bolt Bottom</source>
-      <translation type="unfinished">TechDraw Thread Bolt Bottom</translation>
+      <translation>Rosca de perno lateral de TechDraw</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionPack.cpp" line="521"/>
@@ -2705,14 +2711,14 @@
       <location filename="../../Command.cpp" line="1445"/>
       <location filename="../../Command.cpp" line="1451"/>
       <location filename="../../Command.cpp" line="1502"/>
-      <location filename="../../CommandAnnotate.cpp" line="316"/>
-      <location filename="../../CommandAnnotate.cpp" line="415"/>
-      <location filename="../../CommandAnnotate.cpp" line="1153"/>
-      <location filename="../../CommandAnnotate.cpp" line="1161"/>
-      <location filename="../../CommandAnnotate.cpp" line="1208"/>
-      <location filename="../../CommandAnnotate.cpp" line="1350"/>
+      <location filename="../../CommandAnnotate.cpp" line="318"/>
+      <location filename="../../CommandAnnotate.cpp" line="417"/>
+      <location filename="../../CommandAnnotate.cpp" line="1302"/>
+      <location filename="../../CommandAnnotate.cpp" line="1310"/>
       <location filename="../../CommandAnnotate.cpp" line="1357"/>
-      <location filename="../../CommandAnnotate.cpp" line="1421"/>
+      <location filename="../../CommandAnnotate.cpp" line="1499"/>
+      <location filename="../../CommandAnnotate.cpp" line="1506"/>
+      <location filename="../../CommandAnnotate.cpp" line="1570"/>
       <location filename="../../CommandCreateDims.cpp" line="1277"/>
       <location filename="../../CommandCreateDims.cpp" line="1286"/>
       <source>Wrong selection</source>
@@ -3062,21 +3068,22 @@
       <location filename="../../Command.cpp" line="491"/>
       <location filename="../../Command.cpp" line="584"/>
       <location filename="../../Command.cpp" line="647"/>
-      <location filename="../../CommandAnnotate.cpp" line="104"/>
-      <location filename="../../CommandAnnotate.cpp" line="165"/>
-      <location filename="../../CommandAnnotate.cpp" line="217"/>
-      <location filename="../../CommandAnnotate.cpp" line="402"/>
-      <location filename="../../CommandAnnotate.cpp" line="463"/>
-      <location filename="../../CommandAnnotate.cpp" line="502"/>
-      <location filename="../../CommandAnnotate.cpp" line="584"/>
-      <location filename="../../CommandAnnotate.cpp" line="688"/>
-      <location filename="../../CommandAnnotate.cpp" line="799"/>
-      <location filename="../../CommandAnnotate.cpp" line="874"/>
-      <location filename="../../CommandAnnotate.cpp" line="987"/>
-      <location filename="../../CommandAnnotate.cpp" line="1140"/>
-      <location filename="../../CommandAnnotate.cpp" line="1259"/>
-      <location filename="../../CommandAnnotate.cpp" line="1337"/>
-      <location filename="../../CommandAnnotate.cpp" line="1403"/>
+      <location filename="../../CommandAnnotate.cpp" line="106"/>
+      <location filename="../../CommandAnnotate.cpp" line="167"/>
+      <location filename="../../CommandAnnotate.cpp" line="219"/>
+      <location filename="../../CommandAnnotate.cpp" line="404"/>
+      <location filename="../../CommandAnnotate.cpp" line="465"/>
+      <location filename="../../CommandAnnotate.cpp" line="504"/>
+      <location filename="../../CommandAnnotate.cpp" line="586"/>
+      <location filename="../../CommandAnnotate.cpp" line="690"/>
+      <location filename="../../CommandAnnotate.cpp" line="801"/>
+      <location filename="../../CommandAnnotate.cpp" line="876"/>
+      <location filename="../../CommandAnnotate.cpp" line="989"/>
+      <location filename="../../CommandAnnotate.cpp" line="1139"/>
+      <location filename="../../CommandAnnotate.cpp" line="1289"/>
+      <location filename="../../CommandAnnotate.cpp" line="1408"/>
+      <location filename="../../CommandAnnotate.cpp" line="1486"/>
+      <location filename="../../CommandAnnotate.cpp" line="1552"/>
       <location filename="../../CommandCreateDims.cpp" line="146"/>
       <location filename="../../CommandCreateDims.cpp" line="272"/>
       <location filename="../../CommandCreateDims.cpp" line="398"/>
@@ -3111,21 +3118,22 @@
       <location filename="../../Command.cpp" line="492"/>
       <location filename="../../Command.cpp" line="585"/>
       <location filename="../../Command.cpp" line="648"/>
-      <location filename="../../CommandAnnotate.cpp" line="105"/>
-      <location filename="../../CommandAnnotate.cpp" line="166"/>
-      <location filename="../../CommandAnnotate.cpp" line="218"/>
-      <location filename="../../CommandAnnotate.cpp" line="403"/>
-      <location filename="../../CommandAnnotate.cpp" line="464"/>
-      <location filename="../../CommandAnnotate.cpp" line="503"/>
-      <location filename="../../CommandAnnotate.cpp" line="585"/>
-      <location filename="../../CommandAnnotate.cpp" line="689"/>
-      <location filename="../../CommandAnnotate.cpp" line="800"/>
-      <location filename="../../CommandAnnotate.cpp" line="875"/>
-      <location filename="../../CommandAnnotate.cpp" line="988"/>
-      <location filename="../../CommandAnnotate.cpp" line="1141"/>
-      <location filename="../../CommandAnnotate.cpp" line="1260"/>
-      <location filename="../../CommandAnnotate.cpp" line="1338"/>
-      <location filename="../../CommandAnnotate.cpp" line="1404"/>
+      <location filename="../../CommandAnnotate.cpp" line="107"/>
+      <location filename="../../CommandAnnotate.cpp" line="168"/>
+      <location filename="../../CommandAnnotate.cpp" line="220"/>
+      <location filename="../../CommandAnnotate.cpp" line="405"/>
+      <location filename="../../CommandAnnotate.cpp" line="466"/>
+      <location filename="../../CommandAnnotate.cpp" line="505"/>
+      <location filename="../../CommandAnnotate.cpp" line="587"/>
+      <location filename="../../CommandAnnotate.cpp" line="691"/>
+      <location filename="../../CommandAnnotate.cpp" line="802"/>
+      <location filename="../../CommandAnnotate.cpp" line="877"/>
+      <location filename="../../CommandAnnotate.cpp" line="990"/>
+      <location filename="../../CommandAnnotate.cpp" line="1140"/>
+      <location filename="../../CommandAnnotate.cpp" line="1290"/>
+      <location filename="../../CommandAnnotate.cpp" line="1409"/>
+      <location filename="../../CommandAnnotate.cpp" line="1487"/>
+      <location filename="../../CommandAnnotate.cpp" line="1553"/>
       <location filename="../../CommandCreateDims.cpp" line="147"/>
       <location filename="../../CommandCreateDims.cpp" line="273"/>
       <location filename="../../CommandCreateDims.cpp" line="399"/>
@@ -3157,158 +3165,178 @@
       <translation>Cerrar diálogo de tareas activo e inténtelo de nuevo.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="119"/>
-      <location filename="../../CommandAnnotate.cpp" line="124"/>
-      <location filename="../../CommandAnnotate.cpp" line="715"/>
-      <location filename="../../CommandAnnotate.cpp" line="721"/>
-      <location filename="../../CommandAnnotate.cpp" line="748"/>
-      <location filename="../../CommandAnnotate.cpp" line="758"/>
-      <location filename="../../CommandAnnotate.cpp" line="764"/>
-      <location filename="../../CommandAnnotate.cpp" line="835"/>
-      <location filename="../../CommandAnnotate.cpp" line="844"/>
-      <location filename="../../CommandAnnotate.cpp" line="901"/>
-      <location filename="../../CommandAnnotate.cpp" line="908"/>
-      <location filename="../../CommandAnnotate.cpp" line="935"/>
-      <location filename="../../CommandAnnotate.cpp" line="947"/>
-      <location filename="../../CommandAnnotate.cpp" line="957"/>
-      <location filename="../../CommandAnnotate.cpp" line="1017"/>
-      <location filename="../../CommandAnnotate.cpp" line="1040"/>
-      <location filename="../../CommandAnnotate.cpp" line="1048"/>
-      <location filename="../../CommandAnnotate.cpp" line="1068"/>
-      <location filename="../../CommandAnnotate.cpp" line="1103"/>
-      <location filename="../../CommandAnnotate.cpp" line="1272"/>
-      <location filename="../../CommandAnnotate.cpp" line="1279"/>
-      <location filename="../../CommandAnnotate.cpp" line="1533"/>
-      <location filename="../../CommandAnnotate.cpp" line="1546"/>
+      <location filename="../../CommandAnnotate.cpp" line="121"/>
+      <location filename="../../CommandAnnotate.cpp" line="126"/>
+      <location filename="../../CommandAnnotate.cpp" line="717"/>
+      <location filename="../../CommandAnnotate.cpp" line="723"/>
+      <location filename="../../CommandAnnotate.cpp" line="750"/>
+      <location filename="../../CommandAnnotate.cpp" line="760"/>
+      <location filename="../../CommandAnnotate.cpp" line="766"/>
+      <location filename="../../CommandAnnotate.cpp" line="837"/>
+      <location filename="../../CommandAnnotate.cpp" line="846"/>
+      <location filename="../../CommandAnnotate.cpp" line="903"/>
+      <location filename="../../CommandAnnotate.cpp" line="910"/>
+      <location filename="../../CommandAnnotate.cpp" line="937"/>
+      <location filename="../../CommandAnnotate.cpp" line="949"/>
+      <location filename="../../CommandAnnotate.cpp" line="959"/>
+      <location filename="../../CommandAnnotate.cpp" line="1019"/>
+      <location filename="../../CommandAnnotate.cpp" line="1042"/>
+      <location filename="../../CommandAnnotate.cpp" line="1050"/>
+      <location filename="../../CommandAnnotate.cpp" line="1070"/>
+      <location filename="../../CommandAnnotate.cpp" line="1105"/>
+      <location filename="../../CommandAnnotate.cpp" line="1169"/>
+      <location filename="../../CommandAnnotate.cpp" line="1192"/>
+      <location filename="../../CommandAnnotate.cpp" line="1212"/>
+      <location filename="../../CommandAnnotate.cpp" line="1247"/>
+      <location filename="../../CommandAnnotate.cpp" line="1421"/>
+      <location filename="../../CommandAnnotate.cpp" line="1428"/>
+      <location filename="../../CommandAnnotate.cpp" line="1683"/>
+      <location filename="../../CommandAnnotate.cpp" line="1696"/>
       <source>Wrong Selection</source>
       <translation>Selección Incorrecta</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="120"/>
+      <location filename="../../CommandAnnotate.cpp" line="122"/>
       <source>Can not attach leader.  No base View selected.</source>
       <translation>No se puede adjuntar directriz. No se ha seleccionado la Vista base.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="125"/>
-      <location filename="../../CommandAnnotate.cpp" line="722"/>
-      <location filename="../../CommandAnnotate.cpp" line="902"/>
-      <location filename="../../CommandAnnotate.cpp" line="1041"/>
+      <location filename="../../CommandAnnotate.cpp" line="127"/>
+      <location filename="../../CommandAnnotate.cpp" line="724"/>
+      <location filename="../../CommandAnnotate.cpp" line="904"/>
+      <location filename="../../CommandAnnotate.cpp" line="1043"/>
       <source>You must select a base View for the line.</source>
       <translation>Debe seleccionar una Vista base para la línea.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="317"/>
-      <location filename="../../CommandAnnotate.cpp" line="416"/>
+      <location filename="../../CommandAnnotate.cpp" line="319"/>
+      <location filename="../../CommandAnnotate.cpp" line="418"/>
       <source>No DrawViewPart objects in this selection</source>
       <translation>No hay objetos DibujoVistaPieza en esta selección</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="716"/>
-      <location filename="../../CommandAnnotate.cpp" line="909"/>
+      <location filename="../../CommandAnnotate.cpp" line="718"/>
+      <location filename="../../CommandAnnotate.cpp" line="911"/>
       <source>No base View in Selection.</source>
       <translation>No hay Vista base en la Selección.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="749"/>
+      <location filename="../../CommandAnnotate.cpp" line="751"/>
       <source>You must select Faces or an existing CenterLine.</source>
       <translation>Debe seleccionar Caras o una Línea de Centro existente.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="759"/>
+      <location filename="../../CommandAnnotate.cpp" line="761"/>
       <source>No CenterLine in selection.</source>
       <translation>No hay Línea de Centro en la selección.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="765"/>
-      <location filename="../../CommandAnnotate.cpp" line="836"/>
-      <location filename="../../CommandAnnotate.cpp" line="948"/>
+      <location filename="../../CommandAnnotate.cpp" line="767"/>
+      <location filename="../../CommandAnnotate.cpp" line="838"/>
+      <location filename="../../CommandAnnotate.cpp" line="950"/>
       <source>Selection is not a CenterLine.</source>
       <translation>La selección no es una Línea de Centro.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="845"/>
+      <location filename="../../CommandAnnotate.cpp" line="847"/>
       <source>Selection not understood.</source>
       <translation>Selección no entendida.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="936"/>
+      <location filename="../../CommandAnnotate.cpp" line="938"/>
       <source>You must select 2 Vertexes or an existing CenterLine.</source>
       <translation>Debe seleccionar 2 Vértices o una Línea de Centro existente.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="958"/>
+      <location filename="../../CommandAnnotate.cpp" line="960"/>
       <source>Need 2 Vertices or 1 CenterLine.</source>
       <translation>Necesita 2 vértices o una Línea de Centro.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1018"/>
+      <location filename="../../CommandAnnotate.cpp" line="1020"/>
+      <location filename="../../CommandAnnotate.cpp" line="1170"/>
       <source>Selection is empty.</source>
       <translation>La selección está vacía.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1049"/>
+      <location filename="../../CommandAnnotate.cpp" line="1051"/>
       <source>Not enough points in selection.</source>
       <translation>No hay suficientes puntos en la selección.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1069"/>
+      <location filename="../../CommandAnnotate.cpp" line="1071"/>
       <source>Selection is not a Cosmetic Line.</source>
       <translation>La selección no es una Línea Adicional.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1104"/>
+      <location filename="../../CommandAnnotate.cpp" line="1106"/>
       <source>You must select 2 Vertexes.</source>
       <translation>Debe seleccionar 2 Vértices.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1154"/>
-      <location filename="../../CommandAnnotate.cpp" line="1351"/>
+      <location filename="../../CommandAnnotate.cpp" line="1193"/>
+      <source>You must select a base View for the circle.</source>
+      <translation type="unfinished">You must select a base View for the circle.</translation>
+    </message>
+    <message>
+      <location filename="../../CommandAnnotate.cpp" line="1213"/>
+      <source>Selection is not a Cosmetic edge.</source>
+      <translation type="unfinished">Selection is not a Cosmetic edge.</translation>
+    </message>
+    <message>
+      <location filename="../../CommandAnnotate.cpp" line="1248"/>
+      <source>Please select a center for the circle.</source>
+      <translation type="unfinished">Please select a center for the circle.</translation>
+    </message>
+    <message>
+      <location filename="../../CommandAnnotate.cpp" line="1303"/>
+      <location filename="../../CommandAnnotate.cpp" line="1500"/>
       <source>Nothing selected</source>
       <translation>Nada seleccionado</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1162"/>
+      <location filename="../../CommandAnnotate.cpp" line="1311"/>
       <source>At least 1 object in selection is not a part view</source>
       <translation>Al menos 1 objeto en la selección no es una vista de pieza</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1209"/>
+      <location filename="../../CommandAnnotate.cpp" line="1358"/>
       <source>Unknown object type in selection</source>
       <translation>Tipo de objeto desconocido en la selección</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1280"/>
+      <location filename="../../CommandAnnotate.cpp" line="1429"/>
       <source>No View in Selection.</source>
       <translation>No hay Vista en la Selección.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1273"/>
+      <location filename="../../CommandAnnotate.cpp" line="1422"/>
       <source>You must select a View and/or lines.</source>
       <translation>Debe seleccionar una Vista y/o líneas.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1358"/>
+      <location filename="../../CommandAnnotate.cpp" line="1507"/>
       <source>No Part Views in this selection</source>
       <translation>No hay Vistas de Piezas en esta selección</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1422"/>
+      <location filename="../../CommandAnnotate.cpp" line="1571"/>
       <source>Select exactly one Leader line or one Weld symbol.</source>
       <translation>Seleccione exactamente una línea de referencia o un símbolo de Soldadura.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1469"/>
-      <location filename="../../CommandAnnotate.cpp" line="1475"/>
+      <location filename="../../CommandAnnotate.cpp" line="1618"/>
+      <location filename="../../CommandAnnotate.cpp" line="1624"/>
       <source>SurfaceFinishSymbols</source>
       <translation>SímbolosdeAcabadoSuperficial</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1534"/>
+      <location filename="../../CommandAnnotate.cpp" line="1684"/>
       <source>No Part View in Selection</source>
       <translation>Ninguna vista de partes en la selección</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1547"/>
+      <location filename="../../CommandAnnotate.cpp" line="1697"/>
       <source>No %1 in Selection</source>
       <translation>No hay %1 en la selección</translation>
     </message>
@@ -3522,8 +3550,8 @@
       <translation>La dirección de la vista en coordenadas BaseView</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="692"/>
-      <location filename="../../TaskSectionView.cpp" line="618"/>
+      <location filename="../../TaskComplexSection.cpp" line="704"/>
+      <location filename="../../TaskSectionView.cpp" line="638"/>
       <source>Operation Failed</source>
       <translation>Operación Fallida</translation>
     </message>
@@ -3538,11 +3566,13 @@
       <translation>Editar Símbolo de Soldadura</translation>
     </message>
     <message>
+      <location filename="../../TaskCosmeticCircle.cpp" line="112"/>
       <location filename="../../TaskCosmeticLine.cpp" line="113"/>
       <source>Create Cosmetic Line</source>
       <translation>Crear Línea Adicional</translation>
     </message>
     <message>
+      <location filename="../../TaskCosmeticCircle.cpp" line="146"/>
       <location filename="../../TaskCosmeticLine.cpp" line="165"/>
       <source>Edit Cosmetic Line</source>
       <translation>Editar Línea Adicional</translation>
@@ -3678,7 +3708,7 @@
       <translation>No hay sub-elementos seleccionados</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1469"/>
+      <location filename="../../CommandAnnotate.cpp" line="1618"/>
       <location filename="../../CommandExtensionDims.cpp" line="2268"/>
       <location filename="../../CommandExtensionPack.cpp" line="1469"/>
       <location filename="../../CommandExtensionPack.cpp" line="1958"/>
@@ -3686,7 +3716,7 @@
       <translation>La selección está vacía</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1475"/>
+      <location filename="../../CommandAnnotate.cpp" line="1624"/>
       <location filename="../../CommandExtensionDims.cpp" line="2284"/>
       <location filename="../../CommandExtensionPack.cpp" line="1965"/>
       <source>No object selected</source>
@@ -3830,7 +3860,7 @@ it has a weld symbol that would become broken.</source>
 tiene un símbolo de soldadura que se rompería.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="319"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="332"/>
       <source>You cannot delete this view because it has one or more dependent views that would become broken.</source>
       <translation>No puede eliminar esta vista porque tiene una o más vistas dependientes que se romperían.</translation>
     </message>
@@ -3844,7 +3874,7 @@ tiene un símbolo de soldadura que se rompería.</translation>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="165"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="173"/>
       <location filename="../../ViewProviderTemplate.cpp" line="205"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="322"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="335"/>
       <location filename="../../ViewProviderWeld.cpp" line="145"/>
       <source>Object dependencies</source>
       <translation>Dependencias del objeto</translation>
@@ -5603,7 +5633,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../MDIViewPage.cpp" line="537"/>
       <source>Save PDF file</source>
-      <translation type="unfinished">Save PDF file</translation>
+      <translation>Guardar archivo PDF</translation>
     </message>
     <message>
       <location filename="../../MDIViewPage.cpp" line="538"/>
@@ -6097,11 +6127,12 @@ Do you want to continue?</source>
     </message>
     <message>
       <location filename="../../TaskComplexSection.cpp" line="559"/>
+      <location filename="../../TaskComplexSection.cpp" line="692"/>
       <source>ComplexSection</source>
-      <translation>Sección Compleja</translation>
+      <translation>Sección compleja</translation>
     </message>
     <message>
-      <location filename="../../TaskComplexSection.cpp" line="691"/>
+      <location filename="../../TaskComplexSection.cpp" line="703"/>
       <source>Can not continue. Object * %1 or %2 not found.</source>
       <translation>No se puede continuar. Objeto * %1 o %2 no encontrado.</translation>
     </message>
@@ -7873,7 +7904,7 @@ usando el espacio X/Y dado</translation>
       <translation>Nada que aplicar. Aún no se seleccionó la dirección del corte</translation>
     </message>
     <message>
-      <location filename="../../TaskSectionView.cpp" line="617"/>
+      <location filename="../../TaskSectionView.cpp" line="637"/>
       <source>Can not continue. Object * %1 or %2 not found.</source>
       <translation>No se puede continuar. Objeto * %1 o %2 no encontrado.</translation>
     </message>
@@ -8194,7 +8225,7 @@ usando el espacio X/Y dado</translation>
   <context>
     <name>TechDraw_2LineCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="650"/>
+      <location filename="../../CommandAnnotate.cpp" line="652"/>
       <source>Adds a Centerline between 2 Lines</source>
       <translation>Agrega una línea de centro entre 2 líneas</translation>
     </message>
@@ -8202,7 +8233,7 @@ usando el espacio X/Y dado</translation>
   <context>
     <name>TechDraw_2PointCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="654"/>
+      <location filename="../../CommandAnnotate.cpp" line="656"/>
       <source>Adds a Centerline between 2 Points</source>
       <translation>Agrega una línea de centro entre 2 puntos</translation>
     </message>
@@ -8218,7 +8249,7 @@ usando el espacio X/Y dado</translation>
   <context>
     <name>TechDraw_CosmeticVertex</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="281"/>
+      <location filename="../../CommandAnnotate.cpp" line="283"/>
       <source>Inserts a Cosmetic Vertex into a View</source>
       <translation>Inserta un vértice adicional en una Vista</translation>
     </message>
@@ -8239,7 +8270,7 @@ usando el espacio X/Y dado</translation>
   <context>
     <name>TechDraw_FaceCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="646"/>
+      <location filename="../../CommandAnnotate.cpp" line="648"/>
       <source>Adds a Centerline to Faces</source>
       <translation>Agrega una línea de centro a las caras</translation>
     </message>
@@ -8255,7 +8286,7 @@ usando el espacio X/Y dado</translation>
   <context>
     <name>TechDraw_Midpoints</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="285"/>
+      <location filename="../../CommandAnnotate.cpp" line="287"/>
       <source>Inserts Cosmetic Vertices at Midpoint of selected Edges</source>
       <translation>Inserta vértices adicionales en el punto medio de las aristas seleccionadas</translation>
     </message>
@@ -8263,7 +8294,7 @@ usando el espacio X/Y dado</translation>
   <context>
     <name>TechDraw_Quadrants</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="289"/>
+      <location filename="../../CommandAnnotate.cpp" line="291"/>
       <source>Inserts Cosmetic Vertices at Quadrant Points of selected Circles</source>
       <translation>Inserta vértices adicionales en los cuadrantes de los círculos seleccionados</translation>
     </message>
@@ -8907,7 +8938,7 @@ hay un diálogo de tareas abiertas.</translation>
     <message>
       <location filename="../../../App/DrawView.cpp" line="68"/>
       <source>LeaderLine</source>
-      <translation>Línea de Referencia</translation>
+      <translation>Línea de referencia</translation>
     </message>
   </context>
   <context>
@@ -8947,7 +8978,103 @@ hay un diálogo de tareas abiertas.</translation>
     <message>
       <location filename="../../../App/DrawView.cpp" line="73"/>
       <source>GeomHatch</source>
-      <translation>GeomHatch</translation>
+      <translation>RayadoGeométrico</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDrawGui::TaskCosmeticCircle</name>
+    <message>
+      <location filename="../../TaskCosmeticCircle.ui" line="26"/>
+      <source>Cosmetic Circle</source>
+      <translation>Círculo cosmético</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCosmeticCircle.ui" line="34"/>
+      <source>View</source>
+      <translation>Ver</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCosmeticCircle.ui" line="61"/>
+      <source>Treat the center point as a 2d point within the parent View.  Z coordinate is ignored.</source>
+      <translation type="unfinished">Treat the center point as a 2d point within the parent View.  Z coordinate is ignored.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCosmeticCircle.ui" line="64"/>
+      <source>2d Point</source>
+      <translation>Punto 2d</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCosmeticCircle.ui" line="77"/>
+      <source>Treat the center point as a 3d point and project it onto the parent View.</source>
+      <translation type="unfinished">Treat the center point as a 3d point and project it onto the parent View.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCosmeticCircle.ui" line="80"/>
+      <source>3d Point</source>
+      <translation>Punto 3d</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCosmeticCircle.ui" line="90"/>
+      <source>Circle Center</source>
+      <translation type="unfinished">Circle Center</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCosmeticCircle.ui" line="101"/>
+      <source>X:</source>
+      <translation>X:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCosmeticCircle.ui" line="118"/>
+      <source>Y:</source>
+      <translation>Y:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCosmeticCircle.ui" line="135"/>
+      <source>Z:</source>
+      <translation>Z:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCosmeticCircle.ui" line="156"/>
+      <source>Radius:</source>
+      <translation>Radio:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCosmeticCircle.ui" line="180"/>
+      <source>Start Angle:</source>
+      <translation type="unfinished">Start Angle:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCosmeticCircle.ui" line="187"/>
+      <source>End angle (conventional) of arc in degrees.</source>
+      <translation type="unfinished">End angle (conventional) of arc in degrees.</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCosmeticCircle.ui" line="200"/>
+      <source>End Angle:</source>
+      <translation type="unfinished">End Angle:</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCosmeticCircle.ui" line="207"/>
+      <source>Start angle (conventional) of arc in degrees. </source>
+      <translation type="unfinished">Start angle (conventional) of arc in degrees. </translation>
+    </message>
+    <message>
+      <location filename="../../TaskCosmeticCircle.ui" line="220"/>
+      <source>Arc of Circle</source>
+      <translation type="unfinished">Arc of Circle</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawCosmeticCircle</name>
+    <message>
+      <location filename="../../CommandAnnotate.cpp" line="1125"/>
+      <source>TechDraw</source>
+      <translation>DibujoTécnico</translation>
+    </message>
+    <message>
+      <location filename="../../CommandAnnotate.cpp" line="1126"/>
+      <source>Add Cosmetic Circle</source>
+      <translation>Agregar círculo adicional</translation>
     </message>
   </context>
 </TS>

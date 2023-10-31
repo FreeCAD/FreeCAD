@@ -36,28 +36,29 @@ namespace Mesh
  * into the FreeCAD workspace.
  * @author Werner Mayer
  */
-class Transform : public Mesh::Feature
+class Transform: public Mesh::Feature
 {
-  PROPERTY_HEADER_WITH_OVERRIDE(Mesh::Transform);
+    PROPERTY_HEADER_WITH_OVERRIDE(Mesh::Transform);
 
 public:
-  Transform();
+    Transform();
 
-  App::PropertyLink   Source;
-  App::PropertyMatrix Position;
+    App::PropertyLink Source;
+    App::PropertyMatrix Position;
 
 
-  /** @name methods override Feature */
-  //@{
-  /// recalculate the Feature
-  App::DocumentObjectExecReturn *execute() override;
-  /// returns the type name of the ViewProvider
-  const char* getViewProviderName() const override {
-    return "MeshGui::ViewProviderMeshTransform";
-  }
-  //@}
+    /** @name methods override Feature */
+    //@{
+    /// recalculate the Feature
+    App::DocumentObjectExecReturn* execute() override;
+    /// returns the type name of the ViewProvider
+    const char* getViewProviderName() const override
+    {
+        return "MeshGui::ViewProviderMeshTransform";
+    }
+    //@}
 };
 
-}
+}  // namespace Mesh
 
-#endif // FEATURE_MESH_TRANSFORM_H
+#endif  // FEATURE_MESH_TRANSFORM_H

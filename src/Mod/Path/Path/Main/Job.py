@@ -655,10 +655,10 @@ class ObjectJob:
             attrs[JobTemplate.Description] = obj.Description
         return attrs
 
-    def __getstate__(self):
+    def dumps(self):
         return None
 
-    def __setstate__(self, state):
+    def loads(self, state):
         for obj in FreeCAD.ActiveDocument.Objects:
             if hasattr(obj, "Proxy") and obj.Proxy == self:
                 self.obj = obj

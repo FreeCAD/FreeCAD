@@ -170,9 +170,8 @@ def placeAlongEdge(p1,p2,horizontal=False):
 
     pl = FreeCAD.Placement()
     pl.Base = p1
-    up = FreeCAD.Vector(0,0,1)
-    if hasattr(FreeCAD,"DraftWorkingPlane"):
-        up = FreeCAD.DraftWorkingPlane.axis
+    import WorkingPlane
+    up = WorkingPlane.get_working_plane(update=False).axis
     zaxis = p2.sub(p1)
     yaxis = up.cross(zaxis)
     if yaxis.Length > 0:
@@ -290,6 +289,7 @@ class _CommandStructure:
         self.bpoint = None
         self.bmode = False
         self.precastvalues = None
+        self.wp = None
         sel = FreeCADGui.Selection.getSelection()
         if sel:
             st = Draft.getObjectsOfType(sel,"Structure")
@@ -309,15 +309,15 @@ class _CommandStructure:
                 return
 
         # interactive mode
-        if hasattr(FreeCAD,"DraftWorkingPlane"):
-            FreeCAD.DraftWorkingPlane.setup()
+        import WorkingPlane
+        self.wp = WorkingPlane.get_working_plane()
 
         self.points = []
         self.tracker = DraftTrackers.boxTracker()
         self.tracker.width(self.Width)
         self.tracker.height(self.Height)
         self.tracker.length(self.Length)
-        self.tracker.setRotation(FreeCAD.DraftWorkingPlane.getRotation().Rotation)
+        self.tracker.setRotation(self.wp.get_placement().Rotation)
         self.tracker.on()
         self.precast = ArchPrecast._PrecastTaskPanel()
         self.dents = ArchPrecast._DentsTaskPanel()
@@ -344,6 +344,7 @@ class _CommandStructure:
         horiz = True # determines the type of rotation to apply to the final object
         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Structure"))
         FreeCADGui.addModule("Arch")
+        FreeCADGui.addModule("WorkingPlane")
         if self.Profile is not None:
             try: # try to update latest precast values - fails if dialog has been destroyed already
                 self.precastvalues = self.precast.getValues()
@@ -361,8 +362,7 @@ class _CommandStructure:
                     delta = FreeCAD.Vector(0,0-self.Width/2,0)
                 else:
                     delta = FreeCAD.Vector(-self.Length/2,-self.Width/2,0)
-                if hasattr(FreeCAD,"DraftWorkingPlane"):
-                    delta = FreeCAD.DraftWorkingPlane.getRotation().multVec(delta)
+                delta = self.wp.get_global_coords(delta,as_vector=True)
                 point = point.add(delta)
                 if self.bpoint:
                     self.bpoint = self.bpoint.add(delta)
@@ -396,7 +396,8 @@ class _CommandStructure:
             FreeCADGui.doCommand('s.Placement = Arch.placeAlongEdge('+DraftVecUtils.toString(self.bpoint)+","+DraftVecUtils.toString(point)+","+str(horiz)+")")
         else:
             FreeCADGui.doCommand('s.Placement.Base = '+DraftVecUtils.toString(point))
-            FreeCADGui.doCommand('s.Placement.Rotation = s.Placement.Rotation.multiply(FreeCAD.DraftWorkingPlane.getRotation().Rotation)')
+            FreeCADGui.doCommand('wp = WorkingPlane.get_working_plane()')
+            FreeCADGui.doCommand('s.Placement.Rotation = s.Placement.Rotation.multiply(wp.get_placement().Rotation)')
 
         FreeCADGui.addModule("Draft")
         FreeCADGui.doCommand("Draft.autogroup(s)")
@@ -543,16 +544,14 @@ class _CommandStructure:
                 delta = Vector(0,0,self.Height/2)
             else:
                 delta = Vector(self.Length/2,0,0)
-            if hasattr(FreeCAD,"DraftWorkingPlane"):
-                delta = FreeCAD.DraftWorkingPlane.getRotation().multVec(delta)
+            delta = self.wp.get_global_coords(delta,as_vector=True)
             if self.modec.isChecked():
                 self.tracker.pos(point.add(delta))
                 self.tracker.on()
             else:
                 if self.bpoint:
                     delta = Vector(0,0,-self.Height/2)
-                    if hasattr(FreeCAD,"DraftWorkingPlane"):
-                        delta = FreeCAD.DraftWorkingPlane.getRotation().multVec(delta)
+                    delta = self.wp.get_global_coords(delta,as_vector=True)
                     self.tracker.update([self.bpoint.add(delta),point.add(delta)])
                     self.tracker.on()
                     l = (point.sub(self.bpoint)).Length

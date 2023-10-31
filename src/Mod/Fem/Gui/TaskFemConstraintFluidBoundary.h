@@ -23,8 +23,8 @@
 #ifndef GUI_TASKVIEW_TaskFemConstraintFluidBoundary_H
 #define GUI_TASKVIEW_TaskFemConstraintFluidBoundary_H
 
-#include <memory>
 #include <QObject>
+#include <memory>
 
 #include <Mod/Fem/App/FemSolverObject.h>
 
@@ -34,17 +34,20 @@
 
 class Ui_TaskFemConstraintFluidBoundary;
 
-namespace App {
+namespace App
+{
 class Property;
 }
 
-namespace Gui {
+namespace Gui
+{
 class ViewProvider;
 }
 
-namespace FemGui {
+namespace FemGui
+{
 
-class TaskFemConstraintFluidBoundary : public TaskFemConstraintOnBoundary
+class TaskFemConstraintFluidBoundary: public TaskFemConstraintOnBoundary
 {
     Q_OBJECT
 
@@ -83,13 +86,13 @@ private Q_SLOTS:
     void onThermalBoundaryTypeChanged();
     void onReferenceDeleted();
     void onButtonDirection(const bool pressed = true);
-    void onCheckReverse(bool); // consider removing this slot as the UI is hidden
+    void onCheckReverse(bool);  // consider removing this slot as the UI is hidden
     void addToSelection() override;
     void removeFromSelection() override;
 
 protected:
-    bool event(QEvent *e) override;
-    void changeEvent(QEvent *e) override;
+    bool event(QEvent* e) override;
+    void changeEvent(QEvent* e) override;
     void clearButtons(const SelectionChangeModes notThis) override;
 
 private:
@@ -108,7 +111,7 @@ private:
 };
 
 /// simulation dialog for the TaskView
-class TaskDlgFemConstraintFluidBoundary : public TaskDlgFemConstraint
+class TaskDlgFemConstraintFluidBoundary: public TaskDlgFemConstraint
 {
     Q_OBJECT
 
@@ -122,6 +125,6 @@ public:
     bool reject() override;
 };
 
-} //namespace FemGui
+}  // namespace FemGui
 
-#endif // GUI_TASKVIEW_TaskFemConstraintFluidBoundary_H
+#endif  // GUI_TASKVIEW_TaskFemConstraintFluidBoundary_H

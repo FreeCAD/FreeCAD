@@ -90,11 +90,6 @@ void QGIViewSection::drawSectionFace()
             newFace->setFillColor(faceColor);
             newFace->setFillStyle(Qt::SolidPattern);
         } else if (section->CutSurfaceDisplay.isValue("SvgHatch")) {
-            if (getExporting()) {
-                newFace->hideSvg(true);
-            } else {
-                newFace->hideSvg(false);
-            }
             newFace->setFillMode(QGIFace::SvgFill);
             newFace->setHatchColor(sectionVp->HatchColor.getValue());
             newFace->setHatchScale(section->HatchScale.getValue());

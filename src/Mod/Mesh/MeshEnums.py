@@ -27,8 +27,8 @@ __doc__ = "Enum types"
 
 from enum import IntEnum
 
+
 class Binding(IntEnum):
     OVERALL = 0
     PER_VERTEX = 1
     PER_FACE = 2
-

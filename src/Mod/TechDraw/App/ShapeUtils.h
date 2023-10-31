@@ -30,6 +30,7 @@
 #include <vector>
 
 #include <TopoDS_Shape.hxx>
+#include <TopoDS_Edge.hxx>
 #include <gp_Ax2.hxx>
 #include <gp_Pnt.hxx>
 
@@ -104,6 +105,10 @@ public:
     static TopoDS_Shape projectSimpleShape(const TopoDS_Shape& shape, const gp_Ax2& CS);
     static TopoDS_Shape simpleProjection(const TopoDS_Shape& shape, const gp_Ax2& projCS);
     static TopoDS_Shape projectFace(const TopoDS_Shape& face, const gp_Ax2& CS);
+
+    static std::pair<Base::Vector3d, Base::Vector3d> getEdgeEnds(TopoDS_Edge edge);
+
+    static bool isShapeReallyNull(TopoDS_Shape shape);
 };
 
 }

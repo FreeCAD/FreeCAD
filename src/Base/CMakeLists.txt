@@ -287,6 +287,7 @@ SET(SWIG_HEADERS
 SET(FreeCADBase_HPP_SRCS
     Axis.h
     Base64.h
+    Base64Filter.h
     BaseClass.h
     BindingManager.h
     Bitmask.h

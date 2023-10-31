@@ -16,11 +16,9 @@ INSTALLATION WHEN NECESSARY
     LINUX = /home/[YOUR_USER_NAME]/.FreeCAD/Gui/Stylesheets/
 
 ============================================================================================================
-TO MODIFY USE THESE COLORS:
- @ThemeAccentColor1
- @ThemeAccentColor2
-
-
+FOLLOWING CODES ARE CHANGED IN THE SETTINGS:
+  @ThemeAccentColor1
+  @ThemeAccentColor2
 See Qt documentation:
 
   - https://doc.qt.io/qt-5/stylesheet.html
@@ -51,6 +49,7 @@ QToolBar * {
 }
 
 /*hacks */
+
 Gui--PropertyEditor--PropertyEditor QLineEdit:read-only,
 Gui--PropertyEditor--PropertyEditor QLineEdit:disabled,
 Gui--PropertyEditor--PropertyEditor QAbstractSpinBox:read-only,
@@ -1395,6 +1394,7 @@ QComboBox {
   /* changed to 4px to fix #239 */
   /* Fixes #103, #111 */
   min-height: 1.5em;
+  margin: 0px -1px 0px 0px; /* hack for Mac... try it on Windows and Linux */
   /* padding-top: 2px;     removed to fix #132 */
   /* padding-bottom: 2px;  removed to fix #132 */
   /* min-width: 75px;      removed to fix #109 */
@@ -1424,6 +1424,10 @@ QComboBox QAbstractItemView:alternate {
   background: #f5f5f5;
 }
 
+QComboBox:checked {
+  color: black;
+}
+
 QComboBox:disabled {
   background-color: #cccccc;
   color: #515151;
@@ -1443,17 +1447,14 @@ QComboBox:on {
 }
 
 QComboBox::indicator {
-  border: none;
-  border-radius: 0px;
+  padding-left: 8px;
   background-color: transparent;
-  selection-background-color: transparent;
-  color: transparent;
-  selection-color: @ThemeAccentColor1;
-  /* Needed to remove indicator - fix #132 */
 }
 
-QComboBox::indicator:alternate {
-  background: #cccccc;
+QComboBox::indicator:checked {
+  width: 12px;
+  height: 12px;
+  image:url(qss:images_dark-light/check_dark.svg);
 }
 
 QComboBox::item {
@@ -1467,9 +1468,17 @@ QComboBox::item {
         }
         */
 }
+/* Background color of popup-list.*/
 
+/* Needed to complete the rule set. */
 QComboBox::item:alternate {
   background: #f5f5f5;
+}
+
+/* Color of the selected list item. */
+QComboBox::item:selected {
+  border: 1px solid @ThemeAccentColor2;
+  background: @ThemeAccentColor2;
 }
 
 QComboBox::drop-down {
@@ -1809,6 +1818,7 @@ QTabWidget::pane {
   margin: 0px;
   /* Fixes double border inside pane with pyqt5 */
   padding: 0px;
+  background-color: #f6f6f6;
 }
 
 QTabWidget::pane:selected {

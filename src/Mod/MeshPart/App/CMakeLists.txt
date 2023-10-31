@@ -1,9 +1,3 @@
-if(MSVC)
-    add_definitions(-DFCAppMeshPart -DHAVE_ACOSH -DHAVE_ASINH -DHAVE_ATANH)
-else(MSVC)
-    add_definitions(-DHAVE_LIMITS_H -DHAVE_CONFIG_H)
-endif(MSVC)
-
 if (BUILD_SMESH)
     add_definitions(-DHAVE_SMESH -DHAVE_MEFISTO)
 endif(BUILD_SMESH)

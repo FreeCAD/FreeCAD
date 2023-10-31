@@ -38394,7 +38394,7 @@ ConstraintFixed,6
 *CLOAD
 ** ConstraintForce
 ** node load on shape: Load_place_point:Vertex1
-5,2,-5.0000000000000E+03
+5,2,-5000.0
 
 
 
@@ -38415,8 +38415,8 @@ RF
 
 ***********************************************************
 ** CalculiX Input file
-**   written by    --> FreeCAD 0.19.19278 (Git)
-**   written on    --> Tue Jan 14 20:17:09 2020
+**   written by    --> FreeCAD 0.21.0
+**   written on    --> Tue Mar 28 05:18:47 2023
 **   file name     --> Contact_Shell_Shell.FCStd
 **   analysis name --> Analysis
 **

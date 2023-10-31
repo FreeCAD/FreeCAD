@@ -73,10 +73,10 @@ TEST(CoordinateSystem, TestTransformPlacement)
     csT.transform(plm);
 
     Base::Placement dis = cs.displacement(csT);
-    EXPECT_EQ(plm, dis);
+    EXPECT_EQ(plm.isSame(dis, 1e-15), true);
 
     Base::Placement disT = csT.displacement(cs);
-    EXPECT_EQ(plm.inverse(), disT);
+    EXPECT_EQ(plm.inverse().isSame(disT, 1e-15), true);
 }
 
 TEST(CoordinateSystem, TestMultTransformPlacement)
@@ -106,10 +106,10 @@ TEST(CoordinateSystem, TestTransformRotation)
     csT.transform(rot);
 
     Base::Placement dis = cs.displacement(csT);
-    EXPECT_EQ(rot, dis.getRotation());
+    EXPECT_EQ(rot.isSame(dis.getRotation(), 1e-15), true);
 
     Base::Placement disT = csT.displacement(cs);
-    EXPECT_EQ(rot.inverse(), disT.getRotation());
+    EXPECT_EQ(rot.inverse().isSame(disT.getRotation(), 1e-15), true);
 }
 
 TEST(CoordinateSystem, TestTransformPoint)
@@ -141,10 +141,10 @@ TEST(CoordinateSystem, TestSetPlacement)
     csT.setPlacement(plm);
 
     Base::Placement dis = cs.displacement(csT);
-    EXPECT_EQ(plm, dis);
+    EXPECT_EQ(plm.isSame(dis, 1e-15), true);
 
     Base::Placement disT = csT.displacement(cs);
-    EXPECT_EQ(plm.inverse(), disT);
+    EXPECT_EQ(plm.inverse().isSame(disT, 1e-15), true);
 }
 
 // NOLINTEND

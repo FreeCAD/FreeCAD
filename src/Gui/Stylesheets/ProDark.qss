@@ -1544,7 +1544,7 @@ QPushButton:disabled:checked {
 
 QPushButton:pressed {
     color: #ffffff;
-    background-color: #@ThemeAccentColor2;
+    background-color: @ThemeAccentColor2;
     border: 1px solid #3c3c3c;
 }
 
@@ -1635,7 +1635,7 @@ QDialog#Dialog QPushButton {
 QDialog#Dialog QPushButton:hover {
     color: #ffffff;
     border: 1px solid #3c3c3c;
-    background-color: #@ThemeAccentColor2;
+    background-color: @ThemeAccentColor2;
 }
 
 QPushButton#buttonUninstall {
@@ -1762,7 +1762,7 @@ QDialog QToolButton:disabled:checked {
 
 QDialog QToolButton:pressed {
     color: #ffffff;
-    background-color: #@ThemeAccentColor2;
+    background-color: @ThemeAccentColor2;
     border: 1px solid #3c3c3c;
 }
 

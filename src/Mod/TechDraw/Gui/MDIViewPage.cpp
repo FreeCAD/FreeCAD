@@ -230,6 +230,9 @@ bool MDIViewPage::onHasMsg(const char* pMsg) const
     if (strcmp("ViewFit", pMsg) == 0) {
         return true;
     }
+    else if (strcmp("CanPan",pMsg) == 0) {
+        return true;
+    }
     else if (strcmp("Redo", pMsg) == 0 && getAppDocument()->getAvailableRedos() > 0) {
         return true;
     }

@@ -238,11 +238,11 @@ class _Profile(Draft._DraftObject):
         self.Profile = profile
         Draft._DraftObject.__init__(self,obj,"Profile")
 
-    def __getstate__(self):
+    def dumps(self):
         if hasattr(self,"Profile"):
             return self.Profile
 
-    def __setstate__(self,state):
+    def loads(self,state):
         if isinstance(state,list):
             self.Profile = state
         self.Type = "Profile"

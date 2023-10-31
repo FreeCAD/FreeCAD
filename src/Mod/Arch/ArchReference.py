@@ -113,11 +113,11 @@ class ArchReference:
             if obj.ViewObject and obj.ViewObject.Proxy:
                 obj.ViewObject.Proxy.loadInventor(obj)
 
-    def __getstate__(self):
+    def dumps(self):
 
         return None
 
-    def __setstate__(self,state):
+    def loads(self,state):
 
         return None
 
@@ -213,6 +213,18 @@ class ArchReference:
                 print(obj.Label,": error removing splitter")
         return shape
 
+    def exists(self,filepath):
+
+        "case-insensitive version of os.path.exists. Returns the actual file path or None"
+
+        if os.path.exists(filepath):
+            return filepath
+        base, ext = os.path.splitext(filepath)
+        for e in [".fcstd",".FCStd",".FCSTD"]:
+            if os.path.exists(base + e):
+                return base + e
+        return None
+
     def getFile(self,obj,filename=None):
 
         "gets a valid file, if possible"
@@ -223,15 +235,15 @@ class ArchReference:
             return None
         if not filename.lower().endswith(".fcstd"):
             return None
-        if not os.path.exists(filename):
+        if not self.exists(filename):
             # search for the file in the current directory if not found
             basename = os.path.basename(filename)
             currentdir = os.path.dirname(obj.Document.FileName)
             altfile = os.path.join(currentdir,basename)
             if altfile == obj.Document.FileName:
                 return None
-            elif os.path.exists(altfile):
-                return altfile
+            elif self.exists(altfile):
+                return self.exists(altfile)
             else:
                 # search for subpaths in current folder
                 altfile = None
@@ -239,10 +251,10 @@ class ArchReference:
                 for i in range(len(subdirs)):
                     subpath = [currentdir]+subdirs[-i:]+[basename]
                     altfile = os.path.join(*subpath)
-                    if os.path.exists(altfile):
-                        return altfile
+                    if self.exists(altfile):
+                        return self.exists(altfile)
                 return None
-        return filename
+        return self.exists(filename)
 
     def getPartsList(self,obj,filename=None):
 
@@ -395,11 +407,11 @@ class ViewProviderArchReference:
         s = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetInt("ReferenceCheckInterval",60)
         self.timer.start(1000*s)
 
-    def __getstate__(self):
+    def dumps(self):
 
         return None
 
-    def __setstate__(self,state):
+    def loads(self,state):
 
         return None
 

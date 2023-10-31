@@ -309,10 +309,6 @@ class Edit(gui_base_original.Modifier):
 
         self.register_editing_callbacks()
 
-        # TODO: align working plane when editing starts
-        # App.DraftWorkingPlane.save()
-        # self.alignWorkingPlane()
-
 
     def numericInput(self, numx, numy, numz):
         """Execute callback by the toolbar to activate the update function.

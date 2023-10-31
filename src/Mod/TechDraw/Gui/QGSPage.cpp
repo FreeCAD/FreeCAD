@@ -61,7 +61,6 @@
 #include <Mod/TechDraw/App/DrawWeldSymbol.h>
 #include <Mod/TechDraw/App/Preferences.h>
 
-#include "MDIViewPage.h"
 #include "QGIDrawingTemplate.h"
 #include "QGILeaderLine.h"
 #include "QGIProjGroup.h"
@@ -1050,26 +1049,6 @@ void QGSPage::redraw1View(TechDraw::DrawView* dView)
         if (dvName == qgivName) {
             (*it)->updateView(true);
         }
-    }
-}
-
-void QGSPage::setExportingPdf(bool enable)
-{
-    QList<QGraphicsItem*> sceneItems = items();
-    std::vector<QGIViewPart*> dvps;
-    for (auto& qgi : sceneItems) {
-        QGIViewPart* qgiPart = dynamic_cast<QGIViewPart*>(qgi);
-        QGIRichAnno* qgiRTA = dynamic_cast<QGIRichAnno*>(qgi);
-        if (qgiPart) {
-            qgiPart->setExporting(enable);
-            dvps.push_back(qgiPart);
-        }
-        if (qgiRTA) {
-            qgiRTA->setExportingPdf(enable);
-        }
-    }
-    for (auto& v : dvps) {
-        v->draw();
     }
 }
 

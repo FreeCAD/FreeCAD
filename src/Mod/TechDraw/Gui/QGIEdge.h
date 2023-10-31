@@ -54,6 +54,9 @@ public:
     double getEdgeFuzz(void) const;
 
 protected:
+
+    void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
+
     int projIndex;                                                     //index of edge in Projection. must exist.
 
     bool isCosmetic;

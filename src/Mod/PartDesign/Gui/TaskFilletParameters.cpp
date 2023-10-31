@@ -183,14 +183,13 @@ void TaskFilletParameters::changeEvent(QEvent *e)
 
 void TaskFilletParameters::apply()
 {
-    std::string name = getDressUpView()->getObject()->getNameInDocument();
-
-    //Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Fillet changed"));
     ui->filletRadius->apply();
 
-    //Alert user if he created an empty feature
-    if(ui->listWidgetReferences->count() == 0)
-        Base::Console().Warning(tr("Empty fillet created !\n").toStdString().c_str());
+    // Alert user if he created an empty feature
+    if (ui->listWidgetReferences->count() == 0) {
+        std::string text = tr("Empty fillet created!").toStdString();
+        Base::Console().Warning("%s\n", text.c_str());
+    }
 }
 
 //**************************************************************************

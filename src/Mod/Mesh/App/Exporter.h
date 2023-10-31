@@ -57,35 +57,47 @@ public:
      * @return The number of objects/subobjects that was exported from the document.
                See the parameter `accuracy` of ComplexGeoData::getFaces
      */
-    int addObject(App::DocumentObject *obj, float tol);
+    int addObject(App::DocumentObject* obj, float tol);
 
-    virtual bool addMesh(const char *name, const MeshObject & mesh) = 0;
+    virtual bool addMesh(const char* name, const MeshObject& mesh) = 0;
+
+    Exporter(const Exporter&) = delete;
+    Exporter(Exporter&&) = delete;
+    Exporter& operator=(const Exporter&) = delete;
+    Exporter& operator=(Exporter&&) = delete;
 
 protected:
     /// Does some simple escaping of characters for XML-type exports
-    static std::string xmlEscape(const std::string &input);
+    static std::string xmlEscape(const std::string& input);
     void throwIfNoPermission(const std::string&);
 
-    std::map<const App::DocumentObject *, std::vector<std::string> > subObjectNameCache;
-    std::map<const App::DocumentObject *, MeshObject> meshCache;
+    std::map<const App::DocumentObject*, std::vector<std::string>> subObjectNameCache;
+    std::map<const App::DocumentObject*, MeshObject> meshCache;
 };
 
 /// Creates a single mesh, in a file, from one or more objects
-class MergeExporter : public Exporter
+class MergeExporter: public Exporter
 {
 public:
     MergeExporter(std::string fileName, MeshCore::MeshIO::Format fmt);
     ~MergeExporter() override;
 
-    bool addMesh(const char *name, const MeshObject & mesh) override;
+    MergeExporter(const MergeExporter&) = delete;
+    MergeExporter(MergeExporter&&) = delete;
+    MergeExporter& operator=(const MergeExporter&) = delete;
+    MergeExporter& operator=(MergeExporter&&) = delete;
+
+    bool addMesh(const char* name, const MeshObject& mesh) override;
 
 private:
     /// Write the meshes of the added objects to the output file
     void write();
 
 protected:
+    // NOLINTBEGIN
     MeshObject mergingMesh;
     std::string fName;
+    // NOLINTEND
 };
 
 // ------------------------------------------------------------------------------------------------
@@ -101,6 +113,11 @@ protected:
 
 public:
     virtual ~AbstractFormatExtension() = default;
+
+    AbstractFormatExtension(const AbstractFormatExtension&) = delete;
+    AbstractFormatExtension(AbstractFormatExtension&&) = delete;
+    AbstractFormatExtension& operator=(const AbstractFormatExtension&) = delete;
+    AbstractFormatExtension& operator=(AbstractFormatExtension&&) = delete;
 };
 
 using AbstractFormatExtensionPtr = std::shared_ptr<AbstractFormatExtension>;
@@ -109,12 +126,12 @@ using AbstractFormatExtensionPtr = std::shared_ptr<AbstractFormatExtension>;
  * \brief The Extension3MF class
  * Abstract base class for 3MF extensions
  */
-class MeshExport Extension3MF : public AbstractFormatExtension
+class MeshExport Extension3MF: public AbstractFormatExtension
 {
 public:
     using Resource = MeshCore::Resource3MF;
     Extension3MF() = default;
-    virtual Resource addMesh(const MeshObject & mesh) = 0;
+    virtual Resource addMesh(const MeshObject& mesh) = 0;
 };
 
 using Extension3MFPtr = std::shared_ptr<Extension3MF>;
@@ -129,6 +146,11 @@ public:
     AbstractExtensionProducer() = default;
     virtual ~AbstractExtensionProducer() = default;
     virtual AbstractFormatExtensionPtr create() const = 0;
+
+    AbstractExtensionProducer(const AbstractExtensionProducer&) = delete;
+    AbstractExtensionProducer(AbstractExtensionProducer&&) = delete;
+    AbstractExtensionProducer& operator=(const AbstractExtensionProducer&) = delete;
+    AbstractExtensionProducer& operator=(AbstractExtensionProducer&&) = delete;
 };
 
 using AbstractExtensionProducerPtr = std::shared_ptr<AbstractExtensionProducer>;
@@ -137,7 +159,7 @@ using AbstractExtensionProducerPtr = std::shared_ptr<AbstractExtensionProducer>;
  * \brief The Extension3MFProducer class
  * Abstract base class to create an instance of an Extension3MF.
  */
-class MeshExport Extension3MFProducer : public AbstractExtensionProducer
+class MeshExport Extension3MFProducer: public AbstractExtensionProducer
 {
 public:
     Extension3MFProducer() = default;
@@ -150,7 +172,7 @@ using Extension3MFProducerPtr = std::shared_ptr<Extension3MFProducer>;
  * \brief The GuiExtension3MFProducer class
  * This class tries to load the MeshGui module to register further 3MF extensions.
  */
-class MeshExport GuiExtension3MFProducer : public Extension3MFProducer
+class MeshExport GuiExtension3MFProducer: public Extension3MFProducer
 {
 public:
     GuiExtension3MFProducer() = default;
@@ -180,13 +202,18 @@ private:
  * The constructor and destructor write the beginning and end of the 3MF,
  * addObject() is used to add geometry
  */
-class Exporter3MF : public Exporter
+class Exporter3MF: public Exporter
 {
 public:
     Exporter3MF(std::string fileName, const std::vector<Extension3MFPtr>& = {});
     ~Exporter3MF() override;
 
-    bool addMesh(const char *name, const MeshObject & mesh) override;
+    Exporter3MF(const Exporter3MF&) = delete;
+    Exporter3MF(Exporter3MF&&) = delete;
+    Exporter3MF& operator=(const Exporter3MF&) = delete;
+    Exporter3MF& operator=(Exporter3MF&&) = delete;
+
+    bool addMesh(const char* name, const MeshObject& mesh) override;
     /*!
      * \brief SetForceModel
      * Forcces to write the mesh as model even if itsn't a solid.
@@ -208,7 +235,7 @@ private:
  * The constructor and destructor write the beginning and end of the AMF,
  * addObject() is used to add geometry
  */
-class ExporterAMF : public Exporter
+class ExporterAMF: public Exporter
 {
 public:
     /// Writes AMF header
@@ -216,26 +243,31 @@ public:
      * meta information passed in is applied at the <amf> tag level
      */
     ExporterAMF(std::string fileName,
-                const std::map<std::string, std::string> &meta,
+                const std::map<std::string, std::string>& meta,
                 bool compress = true);
 
     /// Writes AMF footer
     ~ExporterAMF() override;
 
-    bool addMesh(const char *name, const MeshObject & mesh) override;
+    ExporterAMF(const ExporterAMF&) = delete;
+    ExporterAMF(ExporterAMF&&) = delete;
+    ExporterAMF& operator=(const ExporterAMF&) = delete;
+    ExporterAMF& operator=(ExporterAMF&&) = delete;
+
+    bool addMesh(const char* name, const MeshObject& mesh) override;
 
 private:
     /// Write the meshes of the added objects to the output file
     void write();
 
 private:
-    std::ostream *outputStreamPtr{nullptr};
-    int nextObjectIndex{0};
+    std::ostream* outputStreamPtr {nullptr};
+    int nextObjectIndex {0};
 
     /// Helper for putting Base::Vector3f objects into a std::map in addMesh()
     class VertLess;
 };  // class ExporterAMF
 
-} // namespace Mesh
+}  // namespace Mesh
 
-#endif // MESH_EXPORTER_H
+#endif  // MESH_EXPORTER_H

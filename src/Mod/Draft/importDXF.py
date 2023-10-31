@@ -47,8 +47,8 @@ texts, colors,layers (from groups)
 """
 # scaling factor between autocad font sizes and coin font sizes
 TEXTSCALING = 1.35
-# the minimum version of the dxfLibrary needed to run - OBSOLETE - not used anymore
-# CURRENTDXFLIB = 1.41
+# the minimum version of the dxfLibrary needed to run
+CURRENTDXFLIB = 1.41
 
 import sys
 import os
@@ -64,11 +64,6 @@ import WorkingPlane
 from Draft import _Dimension
 from FreeCAD import Vector
 from FreeCAD import Console as FCC
-
-# sets the default working plane if Draft hasn't been started yet
-if not hasattr(FreeCAD, "DraftWorkingPlane"):
-    plane = WorkingPlane.plane()
-    FreeCAD.DraftWorkingPlane = plane
 
 gui = FreeCAD.GuiUp
 draftui = None
@@ -116,10 +111,8 @@ def errorDXFLib(gui):
         files = ['dxfColorMap.py', 'dxfImportObjects.py',
                  'dxfLibrary.py', 'dxfReader.py']
 
-        _weburl = 'https://raw.githubusercontent.com/yorikvanhavre/'
-        _weburl += 'Draft-dxf-importer/'
-        # baseurl = _weburl + '{0:.2f}'.format(CURRENTDXFLIB) + "/"
-        baseurl = _weburl + "master/"
+        baseurl = 'https://raw.githubusercontent.com/yorikvanhavre/'
+        baseurl += 'Draft-dxf-importer/master/'
         import ArchCommands
         from FreeCAD import Base
         progressbar = Base.ProgressIndicator()
@@ -194,7 +187,7 @@ def getDXFlibs():
         libsok = False
         FCC.PrintWarning("DXF libraries not found. Trying to download...\n")
     else:
-        if "v"+str(CURRENTDXFLIB) in dxfLibrary.__version__:
+        if float(dxfLibrary.__version__[1:5]) >= CURRENTDXFLIB:
             libsok = True
         else:
             FCC.PrintWarning("DXF libraries need to be updated. "
@@ -247,7 +240,7 @@ def deformat(text):
     return t
 
 
-def locateLayer(wantedLayer, color=None, drawstyle=None):
+def locateLayer(wantedLayer, color=None, drawstyle=None, visibility=True):
     """Return layer group and create it if needed.
 
     This function iterates over a global list named `layers`, which is
@@ -269,6 +262,14 @@ def locateLayer(wantedLayer, color=None, drawstyle=None):
         It defaults to `None`.
         A tuple with color information `(r,g,b,a)`, where each value
         is a float between 0 and 1.
+
+    drawstyle : str, optional
+        It defaults to `None`. In which case "Solid" is used.
+        "Solid", "Dashed", "Dotted" or "Dashdot".
+
+    Visibility : bool, optional
+        It defaults to `True`.
+        Visibility of the new layer.
 
     Returns
     -------
@@ -300,6 +301,7 @@ def locateLayer(wantedLayer, color=None, drawstyle=None):
         newLayer = Draft.make_layer(name=wantedLayer,
                                     line_color=(0.0,0.0,0.0) if not color else color,
                                     draw_style="Solid" if not drawstyle else drawstyle)
+        newLayer.Visibility = visibility
     else:
         newLayer = doc.addObject("App::DocumentObjectGroup", wantedLayer)
     newLayer.Label = wantedLayer
@@ -732,10 +734,10 @@ def placementFromDXFOCS(ent):
     what is needed is a 3D vector defining the Z axis of the OCS,
     and the elevation value over it.
 
-    It uses `WorkingPlane.alignToPointAndAxis()` to align the working plane
+    It uses `WorkingPlane.align_to_point_and_axis()` to align the working plane
     to the origin and to `ent.extrusion` (the plane's `axis`).
     Then it gets the global coordinates of the entity
-    by using `WorkingPlane.getGlobalCoords()`
+    by using `WorkingPlane.get_global_coords()`
     and either `ent.elevation` (Z coordinate) or `ent.loc` a `(x,y,z)` tuple.
 
     Parameters
@@ -753,11 +755,11 @@ def placementFromDXFOCS(ent):
 
     See also
     --------
-    WorkingPlane.alignToPointAndAxis, WorkingPlane.getGlobalCoords
+    WorkingPlane.align_to_point_and_axis, WorkingPlane.get_global_coords
     """
-    draftWPlane = FreeCAD.DraftWorkingPlane
-    draftWPlane.alignToPointAndAxis(Vector(0.0, 0.0, 0.0),
-                                    vec(ent.extrusion), 0.0)
+    draftWPlane = WorkingPlane.PlaneBase()
+    draftWPlane.align_to_point_and_axis(Vector(0.0, 0.0, 0.0),
+                                        vec(ent.extrusion), 0.0)
     # Object Coordinate Systems (OCS)
     # http://docs.autodesk.com/ACD/2011/ENU/filesDXF/WS1a9193826455f5ff18cb41610ec0a2e719-7941.htm
     # Arbitrary Axis Algorithm
@@ -780,14 +782,12 @@ def placementFromDXFOCS(ent):
         draftWPlane.v = draftWPlane.axis.cross(draftWPlane.u)
         draftWPlane.v.normalize()
         draftWPlane.position = Vector(0.0, 0.0, 0.0)
-        draftWPlane.weak = False
 
-    pl = FreeCAD.Placement()
-    pl = draftWPlane.getPlacement()
+    pl = draftWPlane.get_placement()
     if ((ent.type == "lwpolyline") or (ent.type == "polyline")):
-        pl.Base = draftWPlane.getGlobalCoords(vec([0.0, 0.0, ent.elevation]))
+        pl.Base = draftWPlane.get_global_coords(vec([0.0, 0.0, ent.elevation]))
     else:
-        pl.Base = draftWPlane.getGlobalCoords(vec(ent.loc))
+        pl.Base = draftWPlane.get_global_coords(vec(ent.loc))
     return pl
 
 
@@ -994,21 +994,22 @@ def drawArc(arc, forceShape=False):
     -----
     Use local variables, not global variables.
     """
-    v = vec(arc.loc)
-    firstangle = round(arc.start_angle, prec())
-    lastangle = round(arc.end_angle, prec())
-    circle = Part.Circle()
-    circle.Center = v
-    circle.Radius = vec(arc.radius)
+    pl = placementFromDXFOCS(arc)
+    rad = vec(arc.radius)
+    firstangle = round(arc.start_angle%360, prec())
+    lastangle = round(arc.end_angle%360, prec())
     try:
         if (dxfCreateDraft or dxfCreateSketch) and (not forceShape):
-            pl = placementFromDXFOCS(arc)
-            return Draft.make_circle(circle.Radius, pl, face=False,
+            return Draft.make_circle(rad, pl, face=False,
                                      startangle=firstangle,
                                      endangle=lastangle)
         else:
-            return circle.toShape(math.radians(firstangle),
-                                  math.radians(lastangle))
+            circle = Part.Circle()
+            circle.Radius = rad
+            shape = circle.toShape(math.radians(firstangle),
+                                   math.radians(lastangle))
+            shape.Placement = pl
+            return shape
     except Part.OCCError:
         warn(arc)
     return None
@@ -1045,16 +1046,17 @@ def drawCircle(circle, forceShape=False):
     -----
     Use local variables, not global variables.
     """
-    v = vec(circle.loc)
-    curve = Part.Circle()
-    curve.Radius = vec(circle.radius)
-    curve.Center = v
+    pl = placementFromDXFOCS(circle)
+    rad = vec(circle.radius)
     try:
         if (dxfCreateDraft or dxfCreateSketch) and (not forceShape):
-            pl = placementFromDXFOCS(circle)
-            return Draft.make_circle(circle.radius, pl)
+            return Draft.make_circle(rad, pl, face=False)
         else:
-            return curve.toShape()
+            curve = Part.Circle()
+            curve.Radius = rad
+            shape = curve.toShape()
+            shape.Placement = pl
+            return shape
     except Part.OCCError:
         warn(circle)
     return None
@@ -2155,7 +2157,7 @@ def processdxf(document, filename, getShapes=False, reComputeFlag=True):
         for table in drawing.tables.get_type("table"):
             for layer in table.get_type("layer"):
                 name = layer.name
-                color = tuple(dxfColorMap.color_map[layer.color])
+                color = tuple(dxfColorMap.color_map[abs(layer.color)])
                 drawstyle = "Solid"
                 lt = rawValue(layer, 6)
                 if "DASHED" in lt.upper():
@@ -2164,7 +2166,7 @@ def processdxf(document, filename, getShapes=False, reComputeFlag=True):
                     drawstyle = "Dotted"
                 if ("DASHDOT" in lt.upper()) or ("CENTER" in lt.upper()):
                     drawstyle = "Dashdot"
-                locateLayer(name, color, drawstyle)
+                locateLayer(name, color, drawstyle, layer.color>0)
     else:
         locateLayer("0", (0.0, 0.0, 0.0), "Solid")
 
@@ -2296,7 +2298,7 @@ def processdxf(document, filename, getShapes=False, reComputeFlag=True):
             edges.extend(s.Edges)
         if len(edges) > (100):
             FCC.PrintMessage(str(len(edges)) + " edges to join\n")
-            if FreeCAD.GuiUp:
+            if gui:
                 d = QtGui.QMessageBox()
                 d.setText("Warning: High number of entities to join (>100)")
                 d.setInformativeText("This might take a long time "
@@ -2519,7 +2521,7 @@ def processdxf(document, filename, getShapes=False, reComputeFlag=True):
                     newob = doc.addObject("App::FeaturePython", "Dimension")
                     lay.addObject(newob)
                     _Dimension(newob)
-                    if FreeCAD.GuiUp:
+                    if gui:
                         from Draft import _ViewProviderDimension
                         _ViewProviderDimension(newob.ViewObject)
                     newob.Start = p1
@@ -3517,8 +3519,7 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
     getDXFlibs()
     if dxfLibrary:
         global exportList
-        exportList = objectslist
-        exportList = Draft.get_group_contents(exportList)
+        exportList = Draft.get_group_contents(objectslist, spaces=True)
 
         nlist = []
         exportLayers = []
@@ -3600,36 +3601,30 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
                 elif obtype == "PanelCut":
                     writePanelCut(ob, dxf, nospline, lwPoly)
 
-                elif obtype == "Space":
+                elif obtype == "Space" and gui:
                     vobj = ob.ViewObject
-                    c = utils.get_rgb(vobj.TextColor)
-                    n = vobj.FontName
-                    a = 0
-                    if rotation != 0:
-                        a = math.radians(rotation)
+                    rotation = math.degrees(ob.Placement.Rotation.Angle)
                     t1 = "".join(vobj.Proxy.text1.string.getValues())
                     t2 = "".join(vobj.Proxy.text2.string.getValues())
-                    scale = vobj.FirstLine.Value/vobj.FontSize.Value
-                    f1 = fontsize * scale
-                    if round(FreeCAD.DraftWorkingPlane.axis.getAngle(App.Vector(0,0,1)),2) not in [0,3.14]:
-                        # if not in XY view, place the label at center
-                        p2 = obj.Shape.CenterOfMass
-                    else:
-                        _v = vobj.Proxy.coords.translation.getValue().getValue()
-                        p2 = obj.Placement.multVec(App.Vector(_v))
+                    h1 = vobj.FirstLine.Value
+                    h2 = vobj.FontSize.Value
+                    _v = vobj.Proxy.coords.translation.getValue().getValue()
                     _h = vobj.Proxy.header.translation.getValue().getValue()
+                    p2 = FreeCAD.Vector(_v)
                     lspc = FreeCAD.Vector(_h)
-                    p1 = p2 + lspc
-                    dxf.append(dxfLibrary.Text(t1, p1, height=f1,
+                    p1 = ob.Placement.multVec(p2 + lspc)
+                    dxf.append(dxfLibrary.Text(t1, p1, height=h1 * 0.8,
+                                               rotation=rotation,
                                                color=getACI(ob, text=True),
                                                style='STANDARD',
                                                layer=getStrGroup(ob)))
                     if t2:
                         ofs = FreeCAD.Vector(0, -lspc.Length, 0)
-                        if a:
+                        if rotation:
                             Z = FreeCAD.Vector(0, 0, 1)
-                            ofs = FreeCAD.Rotation(Z, -rotation).multVec(ofs)
-                        dxf.append(dxfLibrary.Text(t2, p1.add(ofs), height=f1,
+                            ofs = FreeCAD.Rotation(Z, rotation).multVec(ofs)
+                        dxf.append(dxfLibrary.Text(t2, p1.add(ofs), height=h2 * 0.8,
+                                                   rotation=rotation,
                                                    color=getACI(ob, text=True),
                                                    style='STANDARD',
                                                    layer=getStrGroup(ob)))
@@ -3644,7 +3639,7 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
                                                     color=getACI(ob),
                                                     layer=getStrGroup(ob)))
                     h = 1
-                    if FreeCAD.GuiUp:
+                    if gui:
                         vobj = ob.ViewObject
                         h = float(ob.ViewObject.FontSize)
                         for text in vobj.Proxy.getTextData():
@@ -4050,7 +4045,7 @@ def readPreferences():
     """
     # reading parameters
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-    if FreeCAD.GuiUp and p.GetBool("dxfShowDialog", False):
+    if gui and p.GetBool("dxfShowDialog", False):
         FreeCADGui.showPreferences("Import-Export", 3)
     global dxfCreatePart, dxfCreateDraft, dxfCreateSketch
     global dxfDiscretizeCurves, dxfStarBlocks

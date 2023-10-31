@@ -213,20 +213,20 @@ TEST(MappedName, moveConstructor)
 TEST(MappedName, fromRawData)
 {
     // Act
-    Data::MappedName mappedName = Data::MappedName::fromRawData("TESTTEST", 10);
+    Data::MappedName mappedName = Data::MappedName::fromRawData("TESTTEST", 8);
 
     // Assert
     EXPECT_EQ(mappedName.isRaw(), true);
     EXPECT_EQ(mappedName.empty(), false);
-    EXPECT_EQ(mappedName.size(), 10);
-    EXPECT_EQ(mappedName.dataBytes(), QByteArray("TESTTEST", 10));
+    EXPECT_EQ(mappedName.size(), 8);
+    EXPECT_EQ(mappedName.dataBytes(), QByteArray("TESTTEST", 8));
     EXPECT_EQ(mappedName.postfixBytes(), QByteArray());
 }
 
 TEST(MappedName, fromRawDataQByteArray)
 {
     // Arrange
-    QByteArray testByteArray("TESTTEST", 10);
+    QByteArray testByteArray("TESTTEST", 8);
 
     // Act
     Data::MappedName mappedName = Data::MappedName::fromRawData(testByteArray);
@@ -234,15 +234,15 @@ TEST(MappedName, fromRawDataQByteArray)
     // Assert
     EXPECT_EQ(mappedName.isRaw(), true);
     EXPECT_EQ(mappedName.empty(), false);
-    EXPECT_EQ(mappedName.size(), 10);
-    EXPECT_EQ(mappedName.dataBytes(), QByteArray("TESTTEST", 10));
+    EXPECT_EQ(mappedName.size(), 8);
+    EXPECT_EQ(mappedName.dataBytes(), QByteArray("TESTTEST", 8));
     EXPECT_EQ(mappedName.postfixBytes(), QByteArray());
 }
 
 TEST(MappedName, fromRawDataCopy)
 {
     // Arrange
-    QByteArray testByteArray("TESTTEST", 10);
+    QByteArray testByteArray("TESTTEST", 8);
     Data::MappedName temp = Data::MappedName::fromRawData(testByteArray);
     temp.append("TESTPOSTFIX");
     temp.compact();  // Always call compact before accessing data!
@@ -253,8 +253,8 @@ TEST(MappedName, fromRawDataCopy)
     // Assert
     EXPECT_EQ(mappedName.isRaw(), true);
     EXPECT_EQ(mappedName.empty(), false);
-    EXPECT_EQ(mappedName.size(), 21);
-    EXPECT_EQ(mappedName.dataBytes(), QByteArray("TESTTEST", 10));
+    EXPECT_EQ(mappedName.size(), 19);
+    EXPECT_EQ(mappedName.dataBytes(), QByteArray("TESTTEST", 8));
     EXPECT_EQ(mappedName.postfixBytes(), QByteArray("TESTPOSTFIX"));
 }
 
@@ -682,7 +682,7 @@ TEST(MappedName, copy)
 TEST(MappedName, compact)
 {
     // Arrange
-    Data::MappedName mappedName = Data::MappedName::fromRawData("TESTTEST", 10);
+    Data::MappedName mappedName = Data::MappedName::fromRawData("TESTTEST", 8);
 
     // Act
     mappedName.compact();
@@ -690,8 +690,8 @@ TEST(MappedName, compact)
     // Assert
     EXPECT_EQ(mappedName.isRaw(), false);
     EXPECT_EQ(mappedName.empty(), false);
-    EXPECT_EQ(mappedName.size(), 10);
-    EXPECT_EQ(mappedName.dataBytes(), QByteArray("TESTTEST", 10));
+    EXPECT_EQ(mappedName.size(), 8);
+    EXPECT_EQ(mappedName.dataBytes(), QByteArray("TESTTEST", 8));
     EXPECT_EQ(mappedName.postfixBytes(), QByteArray());
 }
 

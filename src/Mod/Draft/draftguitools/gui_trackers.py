@@ -528,7 +528,7 @@ class bezcurveTracker(Tracker):
 
 class arcTracker(Tracker):
     """An arc tracker."""
-
+    # Note: used by the Arc command but also for angular dimensions.
     def __init__(self, dotted=False, scolor=None, swidth=None,
                  start=0, end=math.pi*2):
         self.circle = None
@@ -539,10 +539,6 @@ class arcTracker(Tracker):
         self.sep = coin.SoSeparator()
         self.autoinvert = True
         self.normal = FreeCAD.DraftWorkingPlane.axis
-        ang = DraftVecUtils.angle(self.getDeviation(),
-                                  FreeCAD.DraftWorkingPlane.u,
-                                  self.normal)
-        self.ang_offset = math.degrees(ang)
         self.recompute()
         super().__init__(dotted, scolor, swidth,
                          [self.trans, self.sep], name="arcTracker")
@@ -579,7 +575,7 @@ class arcTracker(Tracker):
         """Return the angle of a given vector in radians."""
         c = self.trans.translation.getValue()
         center = Vector(c[0], c[1], c[2])
-        return DraftVecUtils.angle(self.getDeviation(), pt.sub(center), self.normal)
+        return DraftVecUtils.angle(pt.sub(center), self.getDeviation(), self.normal)
 
     def getAngles(self):
         """Return the start and end angles in degrees."""
@@ -587,11 +583,11 @@ class arcTracker(Tracker):
 
     def setStartPoint(self, pt):
         """Set the start angle from a point."""
-        self.setStartAngle(self.getAngle(pt))
+        self.setStartAngle(-self.getAngle(pt))
 
     def setEndPoint(self, pt):
         """Set the end angle from a point."""
-        self.setEndAngle(self.getAngle(pt))
+        self.setEndAngle(-self.getAngle(pt))
 
     def setApertureAngle(self, ang):
         """Set the end angle by giving the aperture angle."""
@@ -620,16 +616,12 @@ class arcTracker(Tracker):
         if self.circle:
             self.sep.removeChild(self.circle)
         self.circle = None
-        if self.autoinvert is False:
-            ang_sta = self.endangle
-            ang_end = self.startangle
-        elif self.endangle < self.startangle:
-            ang_sta = self.endangle + self.ang_offset
-            ang_end = self.startangle + self.ang_offset
+        if (self.endangle < self.startangle) or not self.autoinvert:
+            c = Part.makeCircle(1, Vector(0, 0, 0),
+                                self.normal, self.endangle, self.startangle)
         else:
-            ang_sta = self.startangle + self.ang_offset
-            ang_end = self.endangle + self.ang_offset
-        c = Part.makeCircle(1, Vector(0, 0, 0), self.normal, ang_sta, ang_end)
+            c = Part.makeCircle(1, Vector(0, 0, 0),
+                                self.normal, self.startangle, self.endangle)
         buf = c.writeInventor(2, 0.01)
         try:
             ivin = coin.SoInput()

@@ -132,7 +132,6 @@ public:
 
     TechDraw::DrawPage* getDrawPage();
 
-    void setExportingPdf(bool enable);
     void setExportingSvg(bool enable);
     virtual void refreshViews();
 

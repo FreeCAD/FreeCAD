@@ -298,6 +298,12 @@ public:
     const char *getCameraSettings() const;
     bool saveCameraSettings(const char *) const;
 
+    void setProjectUnitSystem(int);
+    int getProjectUnitSystem() const;
+
+    void setProjectUnitSystemIgnore(bool);
+    bool getProjectUnitSystemIgnore() const;
+
 protected:
     // pointer to the python class
     Gui::DocumentPy *_pcDocPy;

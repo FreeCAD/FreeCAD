@@ -176,6 +176,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *lines << "TechDraw_2LineCenterLine";
     *lines << "TechDraw_2PointCenterLine";
     *lines << "TechDraw_2PointCosmeticLine";
+    *lines << "TechDraw_CosmeticCircle";
     *lines << "Separator";
     *lines << "TechDraw_DecorateLine";
     *lines << "TechDraw_ShowAll";
@@ -376,6 +377,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     *anno << "TechDraw_CosmeticVertexGroup";
     *anno << "TechDraw_CenterLineGroup";
     *anno << "TechDraw_2PointCosmeticLine";
+    *anno << "TechDraw_CosmeticCircle";
     *anno << "TechDraw_CosmeticEraser";
     *anno << "TechDraw_DecorateLine";
     *anno << "TechDraw_ShowAll";
@@ -485,6 +487,7 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     *anno << "TechDraw_CosmeticVertexGroup";
     *anno << "TechDraw_CenterLineGroup";
     *anno << "TechDraw_2PointCosmeticLine";
+    *anno << "TechDraw_CosmeticCircle";
     *anno << "TechDraw_CosmeticEraser";
     *anno << "TechDraw_DecorateLine";
     *anno << "TechDraw_ShowAll";

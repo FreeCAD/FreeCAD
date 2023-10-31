@@ -163,10 +163,10 @@ class _ViewProviderInvoluteGear:
         FreeCADGui.Control.closeDialog()
         return
 
-    def __getstate__(self):
+    def dumps(self):
         return None
 
-    def __setstate__(self,state):
+    def loads(self,state):
         return None
 
 

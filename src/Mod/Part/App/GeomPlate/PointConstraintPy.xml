@@ -77,22 +77,26 @@ Raises an exception if  the  curve  is  not  on  a  surface
     </Methode>
     <Methode Name="setG2Criterion">
       <Documentation>
-        <UserDocu></UserDocu>
+        <UserDocu>Allows you to set the G2 criterion. This is the law
+ defining the greatest difference in curvature  allowed between the
+ constraint and the target surface. If this criterion is not
+ set, TolCurv, the curvature tolerance from the constructor, is used.
+ Raises  ConstructionError if  the  curve  is  not  on  a  surface</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="hasPnt2dOnSurf">
       <Documentation>
-        <UserDocu></UserDocu>
+        <UserDocu>Checks if there is a 2D point associated with the surface. It returns a boolean indicating whether such a point exists.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="setPnt2dOnSurf">
       <Documentation>
-        <UserDocu></UserDocu>
+        <UserDocu>Allows you to set a 2D point on the surface. It takes a gp_Pnt2d as an argument, representing the 2D point to be associated with the surface.</UserDocu>
       </Documentation>
     </Methode>
     <Methode Name="pnt2dOnSurf">
       <Documentation>
-        <UserDocu></UserDocu>
+        <UserDocu>Returns the 2D point on the surface. It returns a gp_Pnt2d representing the associated 2D point.</UserDocu>
       </Documentation>
     </Methode>
   </PythonExport>

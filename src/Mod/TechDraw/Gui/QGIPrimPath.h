@@ -93,6 +93,7 @@ protected:
     QColor m_colNormal;
     bool   m_colOverride;
     Qt::PenStyle m_styleCurrent;
+    Qt::PenStyle m_styleNormal;
     double m_width;
     Qt::PenCapStyle m_capStyle;
 
@@ -102,9 +103,9 @@ protected:
 
     QColor m_colDefFill;                        //"no color" default normal fill color
     QColor m_colNormalFill;                     //current Normal fill color def or plain fill
-    Qt::BrushStyle m_styleDef;                  //default Normal fill style
-    Qt::BrushStyle m_styleNormal;               //current Normal fill style
-    Qt::BrushStyle m_styleSelect;               //Select/preSelect fill style
+    Qt::BrushStyle m_fillDef;                  //default Normal fill style
+    Qt::BrushStyle m_fillNormal;               //current Normal fill style
+    Qt::BrushStyle m_fillSelect;               //Select/preSelect fill style
 
     bool m_fillOverride;
 

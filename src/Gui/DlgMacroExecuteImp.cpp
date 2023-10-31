@@ -45,7 +45,6 @@
 #include "Macro.h"
 #include "MainWindow.h"
 #include "PythonEditor.h"
-#include "WaitCursor.h"
 
 
 using namespace Gui;
@@ -102,6 +101,7 @@ DlgMacroExecuteImp::DlgMacroExecuteImp( QWidget* parent, Qt::WindowFlags fl )
     ui->systemMacroListBox->setHeaderLabels(labels);
     ui->systemMacroListBox->header()->hide();
     fillUpList();
+    ui->LineEditFind->setFocus();
 }
 
 /**
@@ -386,7 +386,7 @@ void DlgMacroExecuteImp::accept()
 
     QFileInfo fi(dir, item->text(0));
     try {
-        WaitCursor wc;
+        getMainWindow()->setCursor(Qt::WaitCursor);
         PythonTracingLocker tracelock(watcher->getTrace());
 
         getMainWindow()->appendRecentMacro(fi.filePath());
@@ -394,12 +394,14 @@ void DlgMacroExecuteImp::accept()
         // after macro run recalculate the document
         if (Application::Instance->activeDocument())
             Application::Instance->activeDocument()->getDocument()->recompute();
+        getMainWindow()->unsetCursor();
     }
     catch (const Base::SystemExitException&) {
         // handle SystemExit exceptions
         Base::PyGILStateLocker locker;
         Base::PyException e;
         e.ReportException();
+        getMainWindow()->unsetCursor();
     }
 }
 

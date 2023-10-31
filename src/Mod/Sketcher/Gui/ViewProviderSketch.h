@@ -473,6 +473,31 @@ private:
     };
 
 public:
+    /* API to retrieve information about the active DrawSketchHandler. In particular related to how
+     * tool widgets should be handled.
+     */
+    class ToolManager
+    {
+    public:
+        ToolManager(ViewProviderSketch* vp);
+
+        /** @brief Factory function returning a tool widget of the type appropriate for the current
+         * active tool. If no tool is active, expect a nullptr.
+         */
+        std::unique_ptr<QWidget> createToolWidget() const;
+        /** @brief Returns whether the current tool's widget is intended to be visible for the user
+         */
+        bool isWidgetVisible() const;
+        /** @brief Returns the intended icon for a visible tool widget (e.g. for header/title).*/
+        QPixmap getToolIcon() const;
+        /** @brief Returns the intended text for a visible tool widget (e.g. for header/title).*/
+        QString getToolWidgetText() const;
+
+    private:
+        ViewProviderSketch* vp;
+    };
+
+public:
     /// constructor
     ViewProviderSketch();
     /// destructor
@@ -492,6 +517,8 @@ public:
     App::PropertyString EditingWorkbench;
     SketcherGui::PropertyVisualLayerList VisualLayerList;
     //@}
+
+    const ToolManager toolManager;
 
     // TODO: It is difficult to imagine that these functions are necessary in the public interface.
     // This requires review at a second stage and possibly refactor it.
@@ -653,6 +680,15 @@ public:
     boost::signals2::signal<void()> signalElementsChanged;
     //@}
 
+    /** @name Register slot for signal */
+    //@{
+    template<typename F>
+    boost::signals2::connection registerToolChanged(F&& f)
+    {
+        return signalToolChanged.connect(std::forward<F>(f));
+    }
+    //@}
+
     /** @name Attorneys for collaboration with helper classes */
     //@{
     friend class ViewProviderSketchDrawSketchHandlerAttorney;
@@ -755,10 +791,19 @@ private:
     //@{
     /// moves a selected constraint
     void moveConstraint(int constNum, const Base::Vector2d& toPos);
+    void moveAngleConstraint(int constNum, const Base::Vector2d& toPos);
 
     /// returns whether the sketch is in edit mode.
     bool isInEditMode() const;
     //@}
+
+    /** @name signals*/
+    //@{
+    /// signals a tool change
+    boost::signals2::signal<void(const std::string& toolname)> signalToolChanged;
+    //@}
+
+    void slotToolWidgetChanged(QWidget* newwidget);
 
     /** @name Attorney functions*/
     //@{
@@ -883,6 +928,9 @@ private:
     std::unique_ptr<DrawSketchHandler> sketchHandler;
 
     ViewProviderParameters viewProviderParameters;
+
+    using Connection = boost::signals2::connection;
+    Connection connectionToolWidget;
 
     SoNodeSensor cameraSensor;
     int viewOrientationFactor;  // stores if sketch viewed from front or back

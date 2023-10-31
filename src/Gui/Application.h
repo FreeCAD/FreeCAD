@@ -348,6 +348,9 @@ public:
     static PyObject* sAddDocObserver           (PyObject *self,PyObject *args);
     static PyObject* sRemoveDocObserver        (PyObject *self,PyObject *args);
 
+    static PyObject* sAddWbManipulator         (PyObject *self,PyObject *args);
+    static PyObject* sRemoveWbManipulator      (PyObject *self,PyObject *args);
+
     static PyObject* sListUserEditModes        (PyObject *self,PyObject *args);
     static PyObject* sGetUserEditMode          (PyObject *self,PyObject *args);
     static PyObject* sSetUserEditMode          (PyObject *self,PyObject *args);

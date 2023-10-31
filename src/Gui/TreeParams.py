@@ -67,7 +67,7 @@ Params = [
     ParamInt('ItemSpacing', 0, on_change=True),
     ParamHex('ItemBackground', 0, on_change=True, title='Item background color', proxy=ParamColor(),
         doc = "Tree view item background. Only effective in overlay."),
-    ParamInt('ItemBackgroundPadding', 10, on_change=True, title="Item background padding", proxy=ParamSpinBox(0, 100, 1),
+    ParamInt('ItemBackgroundPadding', 0, on_change=True, title="Item background padding", proxy=ParamSpinBox(0, 100, 1),
         doc = "Tree view item background padding."),
     ParamBool('HideColumn', True, on_change=True, title="Hide extra column",
         doc = "Hide extra tree view column for item description."),

@@ -377,6 +377,53 @@ void ViewProviderSketch::ParameterObserver::OnChange(Base::Subject<const char*>&
     }
 }
 
+
+/************** ViewProviderSketch::ToolManager *********************/
+ViewProviderSketch::ToolManager::ToolManager(ViewProviderSketch * vp): vp(vp)
+{}
+
+std::unique_ptr<QWidget> ViewProviderSketch::ToolManager::createToolWidget() const
+{
+    if(vp && vp->sketchHandler) {
+        return vp->sketchHandler->createToolWidget();
+    }
+    else {
+        return nullptr;
+    }
+}
+
+bool ViewProviderSketch::ToolManager::isWidgetVisible() const
+{
+    if(vp && vp->sketchHandler) {
+        return vp->sketchHandler->isWidgetVisible();
+    }
+    else {
+        return false;
+    }
+}
+
+QPixmap ViewProviderSketch::ToolManager::getToolIcon() const
+{
+    if(vp && vp->sketchHandler) {
+        return vp->sketchHandler->getToolIcon();
+    }
+    else {
+        return QPixmap();
+    }
+}
+
+QString ViewProviderSketch::ToolManager::getToolWidgetText() const
+{
+    if(vp && vp->sketchHandler) {
+        return vp->sketchHandler->getToolWidgetText();
+    }
+    else {
+        return QString();
+    }
+}
+
+
+
 /*************************** ViewProviderSketch **************************/
 
 // Struct for holding previous click information
@@ -395,6 +442,7 @@ PROPERTY_SOURCE_WITH_EXTENSIONS(SketcherGui::ViewProviderSketch, PartGui::ViewPr
 
 ViewProviderSketch::ViewProviderSketch()
     : SelectionObserver(false)
+    , toolManager(this)
     , Mode(STATUS_NONE)
     , listener(nullptr)
     , editCoinManager(nullptr)
@@ -495,7 +543,9 @@ ViewProviderSketch::ViewProviderSketch()
 }
 
 ViewProviderSketch::~ViewProviderSketch()
-{}
+{
+    connectionToolWidget.disconnect();
+}
 
 void ViewProviderSketch::slotUndoDocument(const Gui::Document& /*doc*/)
 {
@@ -562,10 +612,13 @@ void ViewProviderSketch::purgeHandler()
     Gui::Selection().clearSelection();
 
     // ensure that we are in sketch only selection mode
-    Gui::MDIView* mdi = Gui::Application::Instance->editDocument()->getActiveView();
-    Gui::View3DInventorViewer* viewer;
-    viewer = static_cast<Gui::View3DInventor*>(mdi)->getViewer();
-    viewer->setSelectionEnabled(false);
+    auto* view = dynamic_cast<Gui::View3DInventor*>(Gui::Application::Instance->editDocument()->getActiveView());
+
+    if(view) {
+        Gui::View3DInventorViewer* viewer;
+        viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
+        viewer->setSelectionEnabled(false);
+    }
 }
 
 void ViewProviderSketch::setAxisPickStyle(bool on)
@@ -1580,13 +1633,13 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2d& toPo
     if (!isInEditMode())
         return;
 
-    const std::vector<Sketcher::Constraint*>& constrlist =
-        getSketchObject()->Constraints.getValues();
+    Sketcher::SketchObject* obj = getSketchObject();
+    const std::vector<Sketcher::Constraint*>& constrlist = obj->Constraints.getValues();
     Constraint* Constr = constrlist[constNum];
 
 #ifdef FC_DEBUG
-    int intGeoCount = getSketchObject()->getHighestCurveIndex() + 1;
-    int extGeoCount = getSketchObject()->getExternalGeometryCount();
+    int intGeoCount = obj->getHighestCurveIndex() + 1;
+    int extGeoCount = obj->getExternalGeometryCount();
 #endif
 
     // with memory allocation
@@ -1750,91 +1803,121 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2d& toPo
         }
     }
     else if (Constr->Type == Angle) {
-
-        Base::Vector3d p0(0., 0., 0.);
-        double factor = 0.5;
-        if (Constr->Second != GeoEnum::GeoUndef) {// line to line angle
-            Base::Vector3d dir1, dir2;
-
-            if (Constr->Third == GeoEnum::GeoUndef) {// angle between two lines
-                const Part::Geometry* geo1 = GeoList::getGeometryFromGeoId(geomlist, Constr->First);
-                const Part::Geometry* geo2 =
-                    GeoList::getGeometryFromGeoId(geomlist, Constr->Second);
-
-                if (geo1->getTypeId() != Part::GeomLineSegment::getClassTypeId()
-                    || geo2->getTypeId() != Part::GeomLineSegment::getClassTypeId())
-                    return;
-                const Part::GeomLineSegment* lineSeg1 =
-                    static_cast<const Part::GeomLineSegment*>(geo1);
-                const Part::GeomLineSegment* lineSeg2 =
-                    static_cast<const Part::GeomLineSegment*>(geo2);
-
-                bool flip1 = (Constr->FirstPos == Sketcher::PointPos::end);
-                bool flip2 = (Constr->SecondPos == Sketcher::PointPos::end);
-
-                dir1 = (flip1 ? -1. : 1.) * (lineSeg1->getEndPoint() - lineSeg1->getStartPoint());
-                dir2 = (flip2 ? -1. : 1.) * (lineSeg2->getEndPoint() - lineSeg2->getStartPoint());
-                Base::Vector3d pnt1 = flip1 ? lineSeg1->getEndPoint() : lineSeg1->getStartPoint();
-                Base::Vector3d pnt2 = flip2 ? lineSeg2->getEndPoint() : lineSeg2->getStartPoint();
-
-                // line-line intersection
-                {
-                    double det = dir1.x * dir2.y - dir1.y * dir2.x;
-                    if ((det > 0 ? det : -det) < 1e-10)
-                        return;// lines are parallel - constraint unmoveable (DeepSOIC: why?..)
-                    double c1 = dir1.y * pnt1.x - dir1.x * pnt1.y;
-                    double c2 = dir2.y * pnt2.x - dir2.x * pnt2.y;
-                    double x = (dir1.x * c2 - dir2.x * c1) / det;
-                    double y = (dir1.y * c2 - dir2.y * c1) / det;
-                    // intersection point
-                    p0 = Base::Vector3d(x, y, 0);
-
-                    Base::Vector3d vec = Base::Vector3d(toPos.x, toPos.y, 0) - p0;
-                    factor = factor * Base::sgn<double>((dir1 + dir2) * vec);
-                }
-            }
-            else {// angle-via-point
-                Base::Vector3d p = getSolvedSketch().getPoint(Constr->Third, Constr->ThirdPos);
-                p0 = Base::Vector3d(p.x, p.y, 0);
-                dir1 = getSolvedSketch().calculateNormalAtPoint(Constr->First, p.x, p.y);
-                dir1.RotateZ(-M_PI / 2);// convert to vector of tangency by rotating
-                dir2 = getSolvedSketch().calculateNormalAtPoint(Constr->Second, p.x, p.y);
-                dir2.RotateZ(-M_PI / 2);
-
-                Base::Vector3d vec = Base::Vector3d(toPos.x, toPos.y, 0) - p0;
-                factor = factor * Base::sgn<double>((dir1 + dir2) * vec);
-            }
-        }
-        else if (Constr->First != GeoEnum::GeoUndef) {// line/arc angle
-            const Part::Geometry* geo = GeoList::getGeometryFromGeoId(geomlist, Constr->First);
-
-            if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
-                const Part::GeomLineSegment* lineSeg =
-                    static_cast<const Part::GeomLineSegment*>(geo);
-                p0 = (lineSeg->getEndPoint() + lineSeg->getStartPoint()) / 2;
-            }
-            else if (geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
-                const Part::GeomArcOfCircle* arc = static_cast<const Part::GeomArcOfCircle*>(geo);
-                p0 = arc->getCenter();
-            }
-            else {
-                return;
-            }
-        }
-        else
-            return;
-
-        Base::Vector3d vec = Base::Vector3d(toPos.x, toPos.y, 0) - p0;
-        Constr->LabelDistance = factor * vec.Length();
+        moveAngleConstraint(constNum, toPos);
     }
 
     // delete the cloned objects
-    for (std::vector<Part::Geometry*>::const_iterator it = geomlist.begin(); it != geomlist.end();
-         ++it)
-        if (*it)
-            delete *it;
+    for (Part::Geometry* geomPtr : geomlist) {
+        if (geomPtr) {
+            delete geomPtr;
+        }
+    }
 
     draw(true, false);
+}
+
+void ViewProviderSketch::moveAngleConstraint(int constNum, const Base::Vector2d& toPos)
+{
+    Sketcher::SketchObject* obj = getSketchObject();
+    const std::vector<Sketcher::Constraint*>& constrlist = obj->Constraints.getValues();
+    Constraint* constr = constrlist[constNum];
+
+    Base::Vector3d p0(0., 0., 0.);
+    double factor = 0.5;
+    if (constr->Second != GeoEnum::GeoUndef) {// line to line angle
+        if (constr->Third == GeoEnum::GeoUndef) {// angle between two lines
+            const Part::Geometry* geo1 = obj->getGeometry(constr->First);
+            const Part::Geometry* geo2 = obj->getGeometry(constr->Second);
+
+            if (!isLineSegment(*geo1) || !isLineSegment(*geo2)) {
+                return;
+            }
+            const auto* lineSeg1 = static_cast<const Part::GeomLineSegment*>(geo1);
+            const auto* lineSeg2 = static_cast<const Part::GeomLineSegment*>(geo2);
+
+            Base::Vector2d l1[2], l2[2];
+            l1[0] = Base::Vector2d(lineSeg1->getStartPoint().x, lineSeg1->getStartPoint().y);
+            l1[1] = Base::Vector2d(lineSeg1->getEndPoint().x, lineSeg1->getEndPoint().y);
+            l2[0] = Base::Vector2d(lineSeg2->getStartPoint().x, lineSeg2->getStartPoint().y);
+            l2[1] = Base::Vector2d(lineSeg2->getEndPoint().x, lineSeg2->getEndPoint().y);
+
+            // First we will check if the angle needs to be reversed to its supplementary
+            bool flip1 = (constr->FirstPos == Sketcher::PointPos::end);
+            bool flip2 = (constr->SecondPos == Sketcher::PointPos::end);
+            Base::Vector2d p11 = flip1 ? l1[1] : l1[0];
+            Base::Vector2d p12 = flip1 ? l1[0] : l1[1];
+            Base::Vector2d p21 = flip2 ? l2[1] : l2[0];
+            Base::Vector2d p22 = flip2 ? l2[0] : l2[1];
+
+            // Get the intersection point in 2d of the two lines if possible
+            Base::Line2d line1(p11, p12);
+            Base::Line2d line2(p21, p22);
+            Base::Vector2d intersection = Base::Vector2d(0., 0.);
+            if (!line1.Intersect(line2, intersection)) {
+                return;
+            }
+
+            Base::Vector2d dir1 = p12 - p11;
+            Base::Vector2d dir2 = p22 - p21;
+
+            Base::Vector2d ap3 = intersection + dir1 + dir2;
+
+            auto isLeftOfLine = [](Base::Vector2d a, Base::Vector2d b, Base::Vector2d c) {
+                return (b.x - a.x) * (c.y - a.y) - (b.y - a.y) * (c.x - a.x) > 0;
+            };
+
+            bool sign1 = isLeftOfLine(p11, p12, ap3);
+            bool sign2 = isLeftOfLine(p21, p22, ap3);
+
+            bool sign3 = isLeftOfLine(p11, p12, toPos);
+            bool sign4 = isLeftOfLine(p21, p22, toPos);
+
+            bool reverse = !(sign1 == sign3 && sign2 == sign4) && !(sign1 != sign3 && sign2 != sign4);
+
+            if (reverse) {
+                obj->reverseAngleConstraintToSupplementary(constr, constNum);
+
+                ap3 = intersection + dir1 - dir2; //- dir2 instead fo std::swap(dir1, dir2) and dir1 = -dir1
+                sign1 = isLeftOfLine(p11, p12, ap3);
+                sign2 = isLeftOfLine(p21, p22, ap3);
+            }
+
+            p0 = Base::Vector3d(intersection.x, intersection.y, 0.);
+            factor *= (sign1 == sign3 && sign2 == sign4) ? 1. : -1.;
+        }
+        else {// angle-via-point
+            Base::Vector3d p = getSolvedSketch().getPoint(constr->Third, constr->ThirdPos);
+            p0 = Base::Vector3d(p.x, p.y, 0);
+            Base::Vector3d dir1 = getSolvedSketch().calculateNormalAtPoint(constr->First, p.x, p.y);
+            dir1.RotateZ(-M_PI / 2);// convert to vector of tangency by rotating
+            Base::Vector3d dir2 = getSolvedSketch().calculateNormalAtPoint(constr->Second, p.x, p.y);
+            dir2.RotateZ(-M_PI / 2);
+
+            Base::Vector3d vec = Base::Vector3d(toPos.x, toPos.y, 0) - p0;
+            factor = factor * Base::sgn<double>((dir1 + dir2) * vec);
+        }
+    }
+    else if (constr->First != GeoEnum::GeoUndef) {// line/arc angle
+        const Part::Geometry* geo = obj->getGeometry(constr->First);
+
+        if (isLineSegment(*geo)) {
+            const auto* lineSeg = static_cast<const Part::GeomLineSegment*>(geo);
+            p0 = (lineSeg->getEndPoint() + lineSeg->getStartPoint()) / 2;
+        }
+        else if (isArcOfCircle(*geo)) {
+            const auto* arc = static_cast<const Part::GeomArcOfCircle*>(geo);
+            p0 = arc->getCenter();
+        }
+        else {
+            return;
+        }
+    }
+    else {
+        return;
+    }
+
+    Base::Vector3d vec = Base::Vector3d(toPos.x, toPos.y, 0) - p0;
+    constr->LabelDistance = factor * vec.Length();
 }
 
 bool ViewProviderSketch::isSelectable() const
@@ -3209,10 +3292,12 @@ bool ViewProviderSketch::setEdit(int ModNum)
     }
 
     // start the edit dialog
-    if (sketchDlg)
-        Gui::Control().showDialog(sketchDlg);
-    else
-        Gui::Control().showDialog(new TaskDlgEditSketch(this));
+    if (!sketchDlg)
+        sketchDlg = new TaskDlgEditSketch(this);
+
+    connectionToolWidget = sketchDlg->registerToolWidgetChanged(std::bind(&SketcherGui::ViewProviderSketch::slotToolWidgetChanged, this, sp::_1));
+
+    Gui::Control().showDialog(sketchDlg);
 
     // This call to the solver is needed to initialize the DoF and solve time controls
     // The false parameter indicates that the geometry of the SketchObject shall not be updateData
@@ -3844,6 +3929,12 @@ QIcon ViewProviderSketch::mergeColorfulOverlayIcons(const QIcon& orig) const
     }
 
     return Gui::ViewProvider::mergeColorfulOverlayIcons(mergedicon);
+}
+
+void ViewProviderSketch::slotToolWidgetChanged(QWidget* newwidget)
+{
+    if (sketchHandler)
+        sketchHandler->toolWidgetChanged(newwidget);
 }
 
 /*************************** functions ViewProviderSketch offers to friends such as

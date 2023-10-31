@@ -4976,7 +4976,7 @@ del objeto que se adjunta.</translation>
     <message>
       <location filename="../../TaskAttacher.ui" line="211"/>
       <source>In z-direction:</source>
-      <translation>En la dirección z:</translation>
+      <translation>En dirección z:</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="247"/>
@@ -6327,7 +6327,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../../BOPTools/JoinFeatures.py" line="381"/>
       <source>Makes a cutout in one object to fit another object.</source>
-      <translation>Realizar un recorte en un objeto para encajar otro objeto.</translation>
+      <translation>Hace un recorte en un objeto para encajar con otro objeto.</translation>
     </message>
   </context>
   <context>
@@ -6391,10 +6391,10 @@ Do you want to continue?</source>
 area, or length, or by choosing specific items.
 If a second object is selected, it will be used as reference, for example,
 for collision or distance filtering.</source>
-      <translation>Filtrar objetos de un compuesto seleccionado por características como volumen,
+      <translation>Filtra objetos de un compuesto seleccionado por características como volumen,
 área o longitud, o eligiendo elementos específicos.
 Si se selecciona un segundo objeto, se utilizará como referencia, por ejemplo,
-para el filtrado de colisión o distancia.</translation>
+para filtrado de colisión o distancia.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="70"/>
@@ -6429,8 +6429,8 @@ para el filtrado de colisión o distancia.</translation>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="56"/>
       <source>Split up a compound of shapes into separate objects.
 It will create a 'Compound Filter' for each shape.</source>
-      <translation>Divida un compuesto de formas en objetos separados.
-Se creará un 'Filtro Compuesto' para cada forma.</translation>
+      <translation>Divide un compuesto de formas en objetos separados.
+Creará un 'Filtro Compuesto' para cada forma.</translation>
     </message>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="62"/>
@@ -6705,14 +6705,14 @@ Un 'Filtro Compuesto' se puede utilizar para extraer los cortes individuales.</t
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="337"/>
       <source>Slice to compound</source>
-      <translation>Recortar en compuesto</translation>
+      <translation>Seccionar a compuesto</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="344"/>
       <source>Slice a selected object by using other objects as cutting tools.
 The resulting pieces will be stored in a compound.
 A 'Compound Filter' can be used to extract the individual slices.</source>
-      <translation>Corte un objeto seleccionado usando otros objetos como herramientas de corte.
+      <translation>Corta un objeto seleccionado usando otros objetos como herramientas de corte.
 Las piezas resultantes se almacenarán en un compuesto.
 Un 'Filtro Compuesto' se puede utilizar para extraer los cortes individuales.</translation>
     </message>
@@ -6722,13 +6722,13 @@ Un 'Filtro Compuesto' se puede utilizar para extraer los cortes individuales.</t
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="369"/>
       <source>Slice apart</source>
-      <translation>Cortar aparte</translation>
+      <translation>Cortes separados</translation>
     </message>
     <message>
       <location filename="../../../BOPTools/SplitFeatures.py" line="375"/>
       <source>Slice a selected object by other objects, and split it apart.
 It will create a 'Compound Filter' for each slice.</source>
-      <translation>Cortar un objeto seleccionado por otros objetos, y dividirlo por separado.
+      <translation>Corta un objeto seleccionado por otros objetos, y lo divide aparte.
 Se creará un 'Filtro Compuesto' para cada corte.</translation>
     </message>
   </context>
@@ -6761,7 +6761,7 @@ Un 'Filtro Compuesto' se puede utilizar para extraer las piezas restantes.</tran
     <message>
       <location filename="../../DlgScale.ui" line="22"/>
       <source>X Factor</source>
-      <translation type="unfinished">X Factor</translation>
+      <translation>Factor X</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="29"/>
@@ -6771,37 +6771,37 @@ Un 'Filtro Compuesto' se puede utilizar para extraer las piezas restantes.</tran
     <message>
       <location filename="../../DlgScale.ui" line="64"/>
       <source>Z Factor</source>
-      <translation type="unfinished">Z Factor</translation>
+      <translation>Factor Z</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="71"/>
       <source>Scale the object by a single factor in all directions.</source>
-      <translation type="unfinished">Scale the object by a single factor in all directions.</translation>
+      <translation>Escala el objeto por un solo factor en todas las direcciones.</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="74"/>
       <source>Uniform Scaling</source>
-      <translation type="unfinished">Uniform Scaling</translation>
+      <translation>Escalado uniforme</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="112"/>
       <source>Y Factor</source>
-      <translation type="unfinished">Y Factor</translation>
+      <translation>Factor Y</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="119"/>
       <source>Specify a different scale factor for each cardinal direction.</source>
-      <translation type="unfinished">Specify a different scale factor for each cardinal direction.</translation>
+      <translation>Especifique un factor de escala diferente para cada dirección cardinal.</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="122"/>
       <source>Non-Uniform Scaling</source>
-      <translation type="unfinished">Non-Uniform Scaling</translation>
+      <translation>Escalado no uniforme</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="195"/>
       <source>Select shape(s) that should be scaled</source>
-      <translation type="unfinished">Select shape(s) that should be scaled</translation>
+      <translation>Selecciona la(s) forma(s) que deben ser escaladas</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="199"/>
@@ -6809,21 +6809,21 @@ Un 'Filtro Compuesto' se puede utilizar para extraer las piezas restantes.</tran
       <translation>Forma</translation>
     </message>
     <message>
-      <location filename="../../DlgScale.cpp" line="195"/>
+      <location filename="../../DlgScale.cpp" line="198"/>
       <source>No scalable shapes selected</source>
-      <translation type="unfinished">No scalable shapes selected</translation>
+      <translation>No hay formas escalables seleccionadas</translation>
     </message>
     <message>
-      <location filename="../../DlgScale.cpp" line="203"/>
+      <location filename="../../DlgScale.cpp" line="206"/>
       <source>The document '%1' doesn't exist.</source>
-      <translation type="unfinished">The document '%1' doesn't exist.</translation>
+      <translation>El documento '%1' es inexistente.</translation>
     </message>
     <message>
-      <location filename="../../DlgScale.cpp" line="251"/>
-      <location filename="../../DlgScale.cpp" line="257"/>
+      <location filename="../../DlgScale.cpp" line="254"/>
+      <location filename="../../DlgScale.cpp" line="260"/>
       <source>Creating Scale failed.
 %1</source>
-      <translation type="unfinished">Creating Scale failed.
+      <translation>Creación de escala fallida. 
 %1</translation>
     </message>
   </context>
@@ -6842,7 +6842,7 @@ Un 'Filtro Compuesto' se puede utilizar para extraer las piezas restantes.</tran
     <message>
       <location filename="../../Command.cpp" line="1309"/>
       <source>Scale a selected shape</source>
-      <translation type="unfinished">Scale a selected shape</translation>
+      <translation>Escala una forma seleccionada</translation>
     </message>
   </context>
 </TS>

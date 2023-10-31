@@ -1,0 +1,20 @@
+# File created by ConvertFCMat.py
+General:
+  UUID: "b588224e-e8d6-47ad-ba1f-a058333fd1c6"
+  AuthorAndLicense: "(c) 2015 Bernd Hahnebach (CC-BY 3.0)"
+  Name: "Wood"
+  Description: "A standard construction wood"
+Models:
+  Father:
+    UUID: '9cdda8b6-b606-4778-8f13-3934d8668e67'
+    Father: "Aggregate"
+  Density:
+    UUID: '454661e5-265b-4320-8e6f-fcf6223ac3af'
+    Density: "700 kg/m^3"
+  IsotropicLinearElastic:
+    UUID: 'f6f9e48c-b116-4e82-ad7f-3659a9219c50'
+    PoissonRatio: "0.05"
+    YoungsModulus: "12000 MPa"
+  Costs:
+    UUID: '881df808-8726-4c2e-be38-688bb6cce466'
+    ProductURL: "https://en.wikipedia.org/wiki/Wood"

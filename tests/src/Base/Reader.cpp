@@ -28,6 +28,9 @@ protected:
 
     void TearDown() override
     {
+        if (inputStream.is_open()) {
+            inputStream.close();
+        }
         if (fs::exists(_tempFile)) {
             fs::remove(_tempFile);
         }
@@ -41,7 +44,7 @@ protected:
         std::ofstream fileStream(_tempFile.string());
         fileStream.write(stringData.data(), static_cast<std::streamsize>(stringData.length()));
         fileStream.close();
-        std::ifstream inputStream(_tempFile.string());
+        inputStream.open(_tempFile.string());
         _reader = std::make_unique<Base::XMLReader>(_tempFile.string().c_str(), inputStream);
     }
 
@@ -54,6 +57,7 @@ private:
     std::unique_ptr<Base::XMLReader> _reader;
     fs::path _tempDir;
     fs::path _tempFile;
+    std::ifstream inputStream;
 };
 
 TEST_F(ReaderTest, beginCharStreamNormal)
@@ -198,7 +202,6 @@ TEST_F(ReaderTest, readDataLargerThanBufferSecondRead)
     EXPECT_EQ(bufferSize, bytesRead);
 }
 
-
 TEST_F(ReaderTest, readDataNotStarted)
 {
     // Arrange
@@ -213,4 +216,80 @@ TEST_F(ReaderTest, readDataNotStarted)
 
     // Assert
     EXPECT_EQ(-1, bytesRead);  // Because we didn't call beginCharStream
+}
+
+TEST_F(ReaderTest, readNextStartElement)
+{
+    auto xmlBody = R"(
+<node1 attr='1'>Node1</node1>
+<node2 attr='2'>Node2</node2>
+)";
+
+    givenDataAsXMLStream(xmlBody);
+
+    // start of document
+    EXPECT_TRUE(Reader()->isStartOfDocument());
+    Reader()->readElement("document");
+    EXPECT_STREQ(Reader()->localName(), "document");
+
+    // next element
+    EXPECT_TRUE(Reader()->readNextElement());
+    EXPECT_STREQ(Reader()->localName(), "node1");
+    EXPECT_STREQ(Reader()->getAttribute("attr"), "1");
+    Reader()->readEndElement("node1");
+    EXPECT_TRUE(Reader()->isEndOfElement());
+
+    // next element
+    EXPECT_TRUE(Reader()->readNextElement());
+    EXPECT_STREQ(Reader()->localName(), "node2");
+    EXPECT_STREQ(Reader()->getAttribute("attr"), "2");
+    Reader()->readEndElement("node2");
+    EXPECT_TRUE(Reader()->isEndOfElement());
+    Reader()->readEndElement("document");
+    EXPECT_TRUE(Reader()->isEndOfDocument());
+}
+
+TEST_F(ReaderTest, readNextStartEndElement)
+{
+    auto xmlBody = R"(
+<node1 attr='1'/>
+<node2 attr='2'/>
+)";
+
+    givenDataAsXMLStream(xmlBody);
+
+    // start of document
+    EXPECT_TRUE(Reader()->isStartOfDocument());
+    Reader()->readElement("document");
+    EXPECT_STREQ(Reader()->localName(), "document");
+
+    // next element
+    EXPECT_TRUE(Reader()->readNextElement());
+    EXPECT_STREQ(Reader()->localName(), "node1");
+    EXPECT_STREQ(Reader()->getAttribute("attr"), "1");
+
+    // next element
+    EXPECT_TRUE(Reader()->readNextElement());
+    EXPECT_STREQ(Reader()->localName(), "node2");
+    EXPECT_STREQ(Reader()->getAttribute("attr"), "2");
+    EXPECT_FALSE(Reader()->readNextElement());
+    EXPECT_TRUE(Reader()->isEndOfDocument());
+}
+
+TEST_F(ReaderTest, charStreamBase64Encoded)
+{
+    // Arrange
+    static constexpr size_t bufferSize {100};
+    std::array<char, bufferSize> buffer {};
+    givenDataAsXMLStream("<data>RnJlZUNBRCByb2NrcyEg8J+qqPCfqqjwn6qo\n</data>");
+    Reader()->readElement("data");
+    Reader()->beginCharStream(Base::CharStreamFormat::Base64Encoded);
+
+    // Act
+    Reader()->charStream().getline(buffer.data(), bufferSize);
+    Reader()->endCharStream();
+
+    // Assert
+    // Conversion done using https://www.base64encode.org for testing purposes
+    EXPECT_EQ(std::string("FreeCAD rocks! 🪨🪨🪨"), std::string(buffer.data()));
 }

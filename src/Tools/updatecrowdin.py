@@ -99,6 +99,7 @@ GENERATE_QM = {
     "Material",
     "OpenSCAD",
     "Tux",
+    "Help",
 }
 
 # locations list contains Module name, relative path to translation folder and relative path to qrc file
@@ -128,6 +129,7 @@ locations = [
         "../Mod/Fem/Gui/Resources/Fem.qrc",
     ],
     ["FreeCAD", "../Gui/Language", "../Gui/Language/translation.qrc"],
+    ["Help", "../Mod/Help/Resources/translations", "../Mod/Help/Resources/Help.qrc"],
     [
         "Inspection",
         "../Mod/Inspection/Gui/Resources/translations",

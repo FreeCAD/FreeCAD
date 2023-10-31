@@ -669,7 +669,7 @@ QScrollBar:horizontal {
   height: 16px;
   margin: 2px 8px 2px 8px;
   border: 0px solid #696968;
-  border-radius: 1.9px;
+  border-radius: 4px;
   background-color: #7F7F7F;
 }
 
@@ -678,7 +678,7 @@ QScrollBar:vertical {
   width: 16px;
   margin: 8px 2px 8px 2px;
   border: 0px solid #696968;
-  border-radius: 1.9px;
+  border-radius: 4px;
 }
 
 QScrollBar::handle:horizontal {
@@ -1380,6 +1380,7 @@ QComboBox {
   /* changed to 4px to fix #239 */
   /* Fixes #103, #111 */
   min-height: 1.5em;
+  margin: 0px -1px 0px 0px; /* hack for Mac... try it on Windows and Linux */
   /* padding-top: 2px;     removed to fix #132 */
   /* padding-bottom: 2px;  removed to fix #132 */
   /* min-width: 75px;      removed to fix #109 */
@@ -1409,6 +1410,10 @@ QComboBox QAbstractItemView:alternate {
   background: #3c3c3c;
 }
 
+QComboBox:checked {
+  color: #ffffff;
+}
+
 QComboBox:disabled {
   background-color: #7F7F7F;
   color: #353535;
@@ -1428,17 +1433,14 @@ QComboBox:on {
 }
 
 QComboBox::indicator {
-  border: none;
-  border-radius: 0px;
+  padding-left: 8px;
   background-color: transparent;
-  selection-background-color: transparent;
-  color: transparent;
-  selection-color: @ThemeAccentColor1;
-  /* Needed to remove indicator - fix #132 */
 }
 
-QComboBox::indicator:alternate {
-  background: #696968;
+QComboBox::indicator:checked {
+  width: 12px;
+  height: 12px;
+  image: url(qss:images_dark-light/check_light.svg);
 }
 
 QComboBox::item {
@@ -1452,9 +1454,16 @@ QComboBox::item {
         }
         */
 }
+/* Background color of popup-list.*/
 
+/* Needed to complete the rule set. */
 QComboBox::item:alternate {
   background: #3c3c3c;
+}
+/* Color of the selected list item. */
+QComboBox::item:selected {
+  border: 1px solid @ThemeAccentColor2;
+  background: @ThemeAccentColor2;
 }
 
 QComboBox::drop-down {
@@ -1792,6 +1801,7 @@ QTabWidget::pane {
   margin: 0px;
   /* Fixes double border inside pane with pyqt5 */
   padding: 0px;
+  background-color: #7f7f7f;
 }
 
 QTabWidget::pane:selected {

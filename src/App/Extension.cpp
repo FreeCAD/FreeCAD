@@ -75,7 +75,6 @@ void Extension::initExtensionType(Base::Type type) {
 }
 
 void Extension::initExtension(ExtensionContainer* obj) {
-
     if (m_extensionType.isBad())
         throw Base::RuntimeError("Extension: Extension type not set");
 

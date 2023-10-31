@@ -162,7 +162,7 @@ private:
 
 public:
 
-    int m_CubeWidgetSize = 132;
+    static int m_CubeWidgetSize;
     QColor m_BaseColor;
     QColor m_EmphaseColor;
     QColor m_HiliteColor;
@@ -200,6 +200,13 @@ private:
 
     QMenu* m_Menu;
 };
+
+int NaviCubeImplementation::m_CubeWidgetSize = 132;
+
+int NaviCube::getNaviCubeSize()
+{
+    return NaviCubeImplementation::m_CubeWidgetSize;
+}
 
 NaviCube::NaviCube(Gui::View3DInventorViewer* viewer) {
     m_NaviCubeImplementation = new NaviCubeImplementation(viewer);
@@ -948,6 +955,12 @@ SbRotation NaviCubeImplementation::getNearestOrientation(PickId pickId) {
     SbVec3f standardZ;
     standardOrientation.multVec(SbVec3f(0, 0, 1), standardZ);
 
+    // Cleanup near zero values
+    for (int i = 0; i < 3; i++) {
+        if (abs(standardZ[i]) < 1e-6) standardZ[i] = 0.0F;
+    }
+    standardZ.normalize();
+
     // Rotate the camera to the selected face by the smallest angle to align the z-axis
     SbRotation intermediateOrientation = cameraOrientation * SbRotation(cameraZ, standardZ);
 
@@ -957,26 +970,77 @@ SbRotation NaviCubeImplementation::getNearestOrientation(PickId pickId) {
     SbRotation rotation = intermediateOrientation.inverse() * standardOrientation;
     rotation.getValue(axis, angle);
 
+    // Make sure the found axis aligns with the standardZ axis
+    if (standardZ.dot(axis) < 0) {
+        axis.negate();
+        angle *= -1;
+    }
+
+    static const float pi = boost::math::constants::pi<float>();
+    static const float pi2 = boost::math::constants::two_pi<float>();
+    static const float pi1_2 = boost::math::constants::half_pi<float>();
+    static const float pi1_3 = boost::math::constants::third_pi<float>();
+    static const float pi2_3 = boost::math::constants::two_thirds_pi<float>();
+
+    // Make angle positive
+    if (angle < 0) {
+        angle += pi2;
+    }
+
     // f is a small value used to control orientation priority when the camera is almost exactly between two
     // orientations (e.g. +45 and -45 degrees). The standard orientation is preferred compared to
     // +90 and -90 degree orientations and the +90 and -90 degree orientations are preferred compared to an
     // upside down standard orientation
-    float f = angle > M_PI ? 0.00001 : -0.00001;
+    float f = 0.00001F;
 
     // Find the angle to rotate to the nearest orientation
     if (m_Faces[pickId].type == ShapeId::Corner) {
         // 6 possible orientations for the corners
-        angle = angle - floor((angle + f + M_PI / 6.0) / (M_PI / 3.0)) * (M_PI / 3.0);
+        if (angle <= (M_PI / 6 + f)) {
+            angle = 0;
+        }
+        else if (angle <= (M_PI_2 + f)) {
+            angle = pi1_3;
+        }
+        else if (angle < (5 * M_PI / 6 - f)) {
+            angle = pi2_3;
+        }
+        else if (angle <= (M_PI + M_PI / 6 + f)) {
+            angle = pi;
+        }
+        else if (angle < (M_PI + M_PI_2 - f)) {
+            angle = pi + pi1_3;
+        }
+        else if (angle < (M_PI + 5 * M_PI / 6 - f)) {
+            angle = pi + pi2_3;
+        }
+        else {
+            angle = 0;
+        }
     }
     else {
         // 4 possible orientations for the main and edge faces
-        angle = angle - floor((angle + f + M_PI_4) / M_PI_2) * M_PI_2;
+        if (angle <= (M_PI_4 + f)) {
+            angle = 0;
+        }
+        else if (angle <= (3 * M_PI_4 + f)) {
+            angle = pi1_2;
+        }
+        else if (angle < (M_PI + M_PI_4 - f)) {
+            angle = pi;
+        }
+        else if (angle < (M_PI + 3 * M_PI_4 - f)) {
+            angle = pi + pi1_2;
+        }
+        else {
+            angle = 0;
+        }
     }
 
-    // Set the rotation to go from the intermediateOrientation to the nearest orientation
-    rotation.setValue(axis, angle);
+    // Set the rotation to go from the standard orientation to the nearest orientation
+    rotation.setValue(standardZ, angle);
 
-    return intermediateOrientation * rotation;
+    return standardOrientation * rotation.inverse();
 }
 
 bool NaviCubeImplementation::mouseReleased(short x, short y)

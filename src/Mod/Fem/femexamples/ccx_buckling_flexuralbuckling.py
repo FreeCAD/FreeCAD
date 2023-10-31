@@ -122,7 +122,7 @@ def setup(doc=None, solvertype="ccxtools"):
     # constraint force
     con_force = ObjectsFem.makeConstraintForce(doc, "ConstraintForce")
     con_force.References = [(geom_obj, "Face6")]
-    con_force.Force = 21
+    con_force.Force = "21 N"
     con_force.Reversed = True
     analysis.addObject(con_force)
 

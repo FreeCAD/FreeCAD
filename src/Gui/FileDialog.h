@@ -32,6 +32,7 @@
 #include <FCGlobal.h>
 
 class QButtonGroup;
+class QDialogButtonBox;
 class QGridLayout;
 class QGroupBox;
 class QHBoxLayout;
@@ -269,7 +270,7 @@ private Q_SLOTS:
     void onButtonClicked();
 
 private:
-    QPushButton *okButton;
+    QDialogButtonBox *buttonBox;
     QButtonGroup* group;
     QGridLayout *gridLayout;
     QHBoxLayout *hboxLayout;

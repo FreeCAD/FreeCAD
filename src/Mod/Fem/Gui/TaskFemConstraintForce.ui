@@ -90,12 +90,18 @@
      <item>
       <widget class="QLabel" name="labelForce">
        <property name="text">
-        <string>Load [N]</string>
+        <string>Force</string>
        </property>
       </widget>
      </item>
      <item>
       <widget class="Gui::QuantitySpinBox" name="spinForce">
+       <property name="unit" stdset="0">
+        <string>N</string>
+       </property>
+       <property name="minimum">
+        <double>0.000000000000000</double>
+       </property>
        <property name="value">
         <double>500.000000000000000</double>
        </property>

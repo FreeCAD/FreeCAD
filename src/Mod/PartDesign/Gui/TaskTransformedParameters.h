@@ -225,7 +225,7 @@ protected:
     bool enableTransaction = true;
 
     enum selectionModes { none, addFeature, removeFeature, reference };
-    selectionModes selectionMode;
+    selectionModes selectionMode = none;
 
     /// The MultiTransform parent task of this task
     TaskMultiTransformParameters* parentTask;

@@ -148,6 +148,12 @@ inline void ViewProviderSketchDrawSketchHandlerAttorney::moveConstraint(ViewProv
     vp.moveConstraint(constNum, toPos);
 }
 
+inline void
+ViewProviderSketchDrawSketchHandlerAttorney::signalToolChanged(const ViewProviderSketch& vp,
+                                                               const std::string& toolname)
+{
+    vp.signalToolChanged(toolname);
+}
 
 /**************************** CurveConverter **********************************************/
 
@@ -270,24 +276,58 @@ DrawSketchHandler::DrawSketchHandler()
 DrawSketchHandler::~DrawSketchHandler()
 {}
 
+std::string DrawSketchHandler::getToolName() const
+{
+    return "DSH_None";
+}
+
 QString DrawSketchHandler::getCrosshairCursorSVGName() const
 {
     return QString::fromLatin1("None");
 }
+
+std::unique_ptr<QWidget> DrawSketchHandler::createWidget() const
+{
+    return nullptr;
+}
+
+bool DrawSketchHandler::isWidgetVisible() const
+{
+    return false;
+};
+
+QPixmap DrawSketchHandler::getToolIcon() const
+{
+    return QPixmap();
+}
+
+QString DrawSketchHandler::getToolWidgetText() const
+{
+    return QString();
+}
+
 
 void DrawSketchHandler::activate(ViewProviderSketch* vp)
 {
     sketchgui = vp;
 
     // save the cursor at the time the DSH is activated
-    Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
-    Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
-    oldCursor = viewer->getWidget()->cursor();
+    auto* view = dynamic_cast<Gui::View3DInventor*>(Gui::getMainWindow()->activeWindow());
 
-    updateCursor();
+    if (view) {
+        Gui::View3DInventorViewer* viewer = dynamic_cast<Gui::View3DInventor*>(view)->getViewer();
+        oldCursor = viewer->getWidget()->cursor();
 
-    this->preActivated();
-    this->activated();
+        updateCursor();
+
+        this->signalToolChanged();
+
+        this->preActivated();
+        this->activated();
+    }
+    else {
+        sketchgui->purgeHandler();
+    }
 }
 
 void DrawSketchHandler::deactivate()
@@ -302,6 +342,8 @@ void DrawSketchHandler::deactivate()
     resetPositionText();
     unsetCursor();
     setAngleSnapping(false);
+
+    ViewProviderSketchDrawSketchHandlerAttorney::signalToolChanged(*sketchgui, "DSH_None");
 }
 
 void DrawSketchHandler::preActivated()
@@ -317,6 +359,12 @@ void DrawSketchHandler::quit()
     Gui::Selection().rmvPreselect();
 
     sketchgui->purgeHandler();
+}
+
+void DrawSketchHandler::toolWidgetChanged(QWidget* newwidget)
+{
+    toolwidget = newwidget;
+    onWidgetChanged();
 }
 
 //**************************************************************************
@@ -396,10 +444,8 @@ void DrawSketchHandler::setSvgCursor(const QString& cursorName,
 
 void DrawSketchHandler::setCursor(const QPixmap& p, int x, int y, bool autoScale)
 {
-    Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
-    if (view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
-        Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
-
+    Gui::View3DInventorViewer* viewer = getViewer();
+    if (viewer) {
         QCursor cursor;
         QPixmap p1(p);
         // TODO remove autoScale after all cursors are SVG-based
@@ -502,18 +548,16 @@ void DrawSketchHandler::applyCursor()
 
 void DrawSketchHandler::applyCursor(QCursor& newCursor)
 {
-    Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
-    if (view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
-        Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
+    Gui::View3DInventorViewer* viewer = getViewer();
+    if (viewer) {
         viewer->getWidget()->setCursor(newCursor);
     }
 }
 
 void DrawSketchHandler::unsetCursor()
 {
-    Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
-    if (view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
-        Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
+    Gui::View3DInventorViewer* viewer = getViewer();
+    if (viewer) {
         viewer->getWidget()->setCursor(oldCursor);
     }
 }
@@ -521,9 +565,8 @@ void DrawSketchHandler::unsetCursor()
 qreal DrawSketchHandler::devicePixelRatio()
 {
     qreal pixelRatio = 1;
-    Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
-    if (view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
-        Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
+    Gui::View3DInventorViewer* viewer = getViewer();
+    if (viewer) {
         pixelRatio = viewer->devicePixelRatio();
     }
     return pixelRatio;
@@ -559,10 +602,8 @@ DrawSketchHandler::suggestedConstraintsPixmaps(std::vector<AutoConstraint>& sugg
         }
         if (!iconType.isEmpty()) {
             qreal pixelRatio = 1;
-            Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
-            if (view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
-                Gui::View3DInventorViewer* viewer =
-                    static_cast<Gui::View3DInventor*>(view)->getViewer();
+            Gui::View3DInventorViewer* viewer = getViewer();
+            if (viewer) {
                 pixelRatio = viewer->devicePixelRatio();
             }
             int iconWidth = 16 * pixelRatio;
@@ -1085,6 +1126,26 @@ void DrawSketchHandler::drawDirectionAtCursor(const Base::Vector2d& position,
     }
 }
 
+std::unique_ptr<QWidget> DrawSketchHandler::createToolWidget() const
+{
+    return createWidget();  // NVI
+}
+
+bool DrawSketchHandler::isToolWidgetVisible() const
+{
+    return isWidgetVisible();  // NVI
+}
+
+QPixmap DrawSketchHandler::getToolWidgetHeaderIcon() const
+{
+    return getToolIcon();
+}
+
+QString DrawSketchHandler::getToolWidgetHeaderText() const
+{
+    return getToolWidgetText();
+}
+
 void DrawSketchHandler::drawEditMarkers(const std::vector<Base::Vector2d>& EditMarkers,
                                         unsigned int augmentationlevel)
 {
@@ -1138,4 +1199,18 @@ void DrawSketchHandler::setAngleSnapping(bool enable, Base::Vector2d referencePo
 void DrawSketchHandler::moveConstraint(int constNum, const Base::Vector2d& toPos)
 {
     ViewProviderSketchDrawSketchHandlerAttorney::moveConstraint(*sketchgui, constNum, toPos);
+}
+
+void DrawSketchHandler::signalToolChanged() const
+{
+    ViewProviderSketchDrawSketchHandlerAttorney::signalToolChanged(*sketchgui, this->getToolName());
+}
+
+Gui::View3DInventorViewer* DrawSketchHandler::getViewer()
+{
+    Gui::MDIView* view = Gui::getMainWindow()->activeWindow();
+    if (view && view->isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+        return static_cast<Gui::View3DInventor*>(view)->getViewer();
+    }
+    return nullptr;
 }

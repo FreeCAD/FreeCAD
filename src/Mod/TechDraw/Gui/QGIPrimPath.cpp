@@ -59,16 +59,17 @@ QGIPrimPath::QGIPrimPath():
     m_colOverride = false;
     m_colNormal = getNormalColor();
     m_colCurrent = m_colNormal;
-    m_styleCurrent = Qt::SolidLine;
+    m_styleNormal = Qt::SolidLine;
+    m_styleCurrent = m_styleNormal;
     m_pen.setStyle(m_styleCurrent);
     m_capStyle = prefCapStyle();
     m_pen.setCapStyle(m_capStyle);
     m_pen.setWidthF(m_width);
 
-    m_styleDef = Qt::NoBrush;
-    m_styleSelect = Qt::SolidPattern;
-    m_styleNormal = m_styleDef;
-    m_fillStyleCurrent = m_styleNormal;
+    m_fillDef = Qt::NoBrush;
+    m_fillSelect = Qt::SolidPattern;
+    m_fillNormal = m_fillDef;
+    m_fillStyleCurrent = m_fillNormal;
 
     m_colDefFill = Qt::white;
 //    m_colDefFill = Qt::transparent;
@@ -207,6 +208,7 @@ void QGIPrimPath::setWidth(double w)
 void QGIPrimPath::setStyle(Qt::PenStyle s)
 {
 //    Base::Console().Message("QGIPP::setStyle(QTPS: %d)\n", s);
+    m_styleNormal = s;
     m_styleCurrent = s;
 }
 
@@ -214,8 +216,8 @@ void QGIPrimPath::setStyle(int s)
 {
 //    Base::Console().Message("QGIPP::setStyle(int: %d)\n", s);
     m_styleCurrent = static_cast<Qt::PenStyle>(s);
+    m_styleNormal = static_cast<Qt::PenStyle>(s);
 }
-
 
 void QGIPrimPath::setNormalColor(QColor c)
 {
@@ -279,20 +281,20 @@ void QGIPrimPath::mousePressEvent(QGraphicsSceneMouseEvent * event)
 
 void QGIPrimPath::setFill(QColor c, Qt::BrushStyle s) {
     setFillColor(c);
-    m_styleNormal = s;
+    m_fillNormal = s;
     m_fillStyleCurrent = s;
 }
 
 void QGIPrimPath::setFill(QBrush b) {
     setFillColor(b.color());
-    m_styleNormal = b.style();
+    m_fillNormal = b.style();
     m_fillStyleCurrent = b.style();
 }
 
 void QGIPrimPath::resetFill() {
     m_colNormalFill = m_colDefFill;
-    m_styleNormal = m_styleDef;
-    m_fillStyleCurrent = m_styleDef;
+    m_fillNormal = m_fillDef;
+    m_fillStyleCurrent = m_fillDef;
 }
 
 //set PlainFill
@@ -302,7 +304,6 @@ void QGIPrimPath::setFillColor(QColor c)
     m_fillColorCurrent = m_colNormalFill;
 //    m_colDefFill = c;
 }
-
 
 void QGIPrimPath::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
     QStyleOptionGraphicsItem myOption(*option);

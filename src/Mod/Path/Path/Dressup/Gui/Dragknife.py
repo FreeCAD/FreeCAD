@@ -83,10 +83,10 @@ class ObjectDressup:
 
         obj.Proxy = self
 
-    def __getstate__(self):
+    def dumps(self):
         return None
 
-    def __setstate__(self, state):
+    def loads(self, state):
         return None
 
     def shortcut(self, queue):
@@ -578,10 +578,10 @@ class ViewProviderDressup:
     def claimChildren(self):
         return [self.Object.Base]
 
-    def __getstate__(self):
+    def dumps(self):
         return None
 
-    def __setstate__(self, state):
+    def loads(self, state):
         return None
 
     def onDelete(self, arg1=None, arg2=None):

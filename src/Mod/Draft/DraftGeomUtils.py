@@ -81,7 +81,9 @@ from draftgeoutils.geometry import (findPerpendicular,
                                     mirror_matrix,
                                     uv_vectors_from_face,
                                     placement_from_face,
-                                    placement_from_points)
+                                    placement_from_points,
+                                    distance_to_plane,
+                                    project_point_on_plane)
 
 from draftgeoutils.edges import (findEdge,
                                  orientEdge,

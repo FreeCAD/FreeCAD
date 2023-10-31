@@ -91,6 +91,15 @@
 
 using namespace Part;
 
+namespace {
+const TopoDS_Edge& getTopoDSEdge(const TopoShapeEdgePy* theEdge){
+    const TopoDS_Edge& e = TopoDS::Edge(theEdge->getTopoShapePtr()->getShape());
+    if (e.IsNull())
+        throw Py::ValueError("Edge is null");
+    return e;
+}
+}
+
 // returns a string which represents the object e.g. when printed in python
 std::string TopoShapeEdgePy::representation() const
 {
@@ -189,7 +198,7 @@ PyObject* TopoShapeEdgePy::getParameterByLength(PyObject *args)
     if (!PyArg_ParseTuple(args, "d|d",&u,&t))
         return nullptr;
 
-    const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->getShape());
+    auto e = getTopoDSEdge(this);
     BRepAdaptor_Curve adapt(e);
 
     // transform value of [0,Length] to [First,Last]
@@ -218,7 +227,7 @@ PyObject* TopoShapeEdgePy::valueAt(PyObject *args)
     if (!PyArg_ParseTuple(args, "d",&u))
         return nullptr;
 
-    const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->getShape());
+    auto e = getTopoDSEdge(this);
     BRepAdaptor_Curve adapt(e);
 
     // Check now the orientation of the edge to make
@@ -234,7 +243,7 @@ PyObject* TopoShapeEdgePy::parameters(PyObject *args)
     if (!PyArg_ParseTuple(args, "|O!", &(TopoShapeFacePy::Type), &pyface))
         return nullptr;
 
-    const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->getShape());
+    auto e = getTopoDSEdge(this);
     TopLoc_Location aLoc;
     Handle(Poly_Polygon3D) aPoly = BRep_Tool::Polygon3D(e, aLoc);
     if (!aPoly.IsNull()) {
@@ -297,7 +306,7 @@ PyObject* TopoShapeEdgePy::parameterAt(PyObject *args)
 
     try {
         const TopoDS_Shape& v = static_cast<TopoShapePy*>(pnt)->getTopoShapePtr()->getShape();
-        const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->getShape());
+        auto e = getTopoDSEdge(this);
 
         if (face) {
             const TopoDS_Shape& f = static_cast<TopoShapeFacePy*>(face)->getTopoShapePtr()->getShape();
@@ -322,7 +331,7 @@ PyObject* TopoShapeEdgePy::tangentAt(PyObject *args)
     if (!PyArg_ParseTuple(args, "d",&u))
         return nullptr;
 
-    const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->getShape());
+    auto e = getTopoDSEdge(this);
     BRepAdaptor_Curve adapt(e);
 
     BRepLProp_CLProps prop(adapt,u,2,Precision::Confusion());
@@ -343,7 +352,7 @@ PyObject* TopoShapeEdgePy::normalAt(PyObject *args)
     if (!PyArg_ParseTuple(args, "d",&u))
         return nullptr;
 
-    const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->getShape());
+    auto e = getTopoDSEdge(this);
     BRepAdaptor_Curve adapt(e);
 
     try {
@@ -365,7 +374,7 @@ PyObject* TopoShapeEdgePy::curvatureAt(PyObject *args)
     if (!PyArg_ParseTuple(args, "d",&u))
         return nullptr;
 
-    const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->getShape());
+    auto e = getTopoDSEdge(this);
     BRepAdaptor_Curve adapt(e);
 
     try {
@@ -386,7 +395,7 @@ PyObject* TopoShapeEdgePy::centerOfCurvatureAt(PyObject *args)
     if (!PyArg_ParseTuple(args, "d",&u))
         return nullptr;
 
-    const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->getShape());
+    auto e = getTopoDSEdge(this);
     BRepAdaptor_Curve adapt(e);
 
     try {
@@ -408,7 +417,7 @@ PyObject* TopoShapeEdgePy::derivative1At(PyObject *args)
     if (!PyArg_ParseTuple(args, "d",&u))
         return nullptr;
 
-    const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->getShape());
+    auto e = getTopoDSEdge(this);
     BRepAdaptor_Curve adapt(e);
 
     try {
@@ -429,7 +438,7 @@ PyObject* TopoShapeEdgePy::derivative2At(PyObject *args)
     if (!PyArg_ParseTuple(args, "d",&u))
         return nullptr;
 
-    const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->getShape());
+    auto e = getTopoDSEdge(this);
     BRepAdaptor_Curve adapt(e);
 
     try {
@@ -450,7 +459,7 @@ PyObject* TopoShapeEdgePy::derivative3At(PyObject *args)
     if (!PyArg_ParseTuple(args, "d",&u))
         return nullptr;
 
-    const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->getShape());
+    auto e = getTopoDSEdge(this);
     BRepAdaptor_Curve adapt(e);
 
     try {
@@ -743,7 +752,7 @@ PyObject* TopoShapeEdgePy::firstVertex(PyObject *args)
     PyObject* orient = Py_False;
     if (!PyArg_ParseTuple(args, "|O!", &PyBool_Type, &orient))
         return nullptr;
-    const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->getShape());
+    auto e = getTopoDSEdge(this);
     TopoDS_Vertex v = TopExp::FirstVertex(e, Base::asBoolean(orient));
     return new TopoShapeVertexPy(new TopoShape(v));
 }
@@ -753,7 +762,7 @@ PyObject* TopoShapeEdgePy::lastVertex(PyObject *args)
     PyObject* orient = Py_False;
     if (!PyArg_ParseTuple(args, "|O!", &PyBool_Type, &orient))
         return nullptr;
-    const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->getShape());
+    auto e = getTopoDSEdge(this);
     TopoDS_Vertex v = TopExp::LastVertex(e, Base::asBoolean(orient));
     return new TopoShapeVertexPy(new TopoShape(v));
 }
@@ -793,20 +802,20 @@ Py::String TopoShapeEdgePy::getContinuity() const
 
 Py::Float TopoShapeEdgePy::getTolerance() const
 {
-    const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->getShape());
+    auto e = getTopoDSEdge(this);
     return Py::Float(BRep_Tool::Tolerance(e));
 }
 
 void TopoShapeEdgePy::setTolerance(Py::Float tol)
 {
     BRep_Builder aBuilder;
-    const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->getShape());
+    auto e = getTopoDSEdge(this);
     aBuilder.UpdateEdge(e, (double)tol);
 }
 
 Py::Float TopoShapeEdgePy::getLength() const
 {
-    const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->getShape());
+    auto e = getTopoDSEdge(this);
     BRepAdaptor_Curve adapt(e);
     return Py::Float(GCPnts_AbscissaPoint::Length(adapt, Precision::Confusion()));
 }
@@ -816,7 +825,7 @@ Py::Float TopoShapeEdgePy::getLength() const
 
 Py::Object TopoShapeEdgePy::getCurve() const
 {
-    const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->getShape());
+    auto e = getTopoDSEdge(this);
     BRepAdaptor_Curve adapt(e);
     Base::PyObjectBase* curve = nullptr;
     switch(adapt.GetType())
@@ -908,7 +917,7 @@ Py::Object TopoShapeEdgePy::getCurve() const
 
 Py::Tuple TopoShapeEdgePy::getParameterRange() const
 {
-    const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->getShape());
+    auto e = getTopoDSEdge(this);
     BRepAdaptor_Curve adapt(e);
     double u = adapt.FirstParameter();
     double v = adapt.LastParameter();
@@ -921,7 +930,7 @@ Py::Tuple TopoShapeEdgePy::getParameterRange() const
 
 Py::Float TopoShapeEdgePy::getFirstParameter() const
 {
-    const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->getShape());
+    auto e = getTopoDSEdge(this);
     BRepAdaptor_Curve adapt(e);
     double t = adapt.FirstParameter();
     return Py::Float(t);
@@ -929,7 +938,7 @@ Py::Float TopoShapeEdgePy::getFirstParameter() const
 
 Py::Float TopoShapeEdgePy::getLastParameter() const
 {
-    const TopoDS_Edge& e = TopoDS::Edge(getTopoShapePtr()->getShape());
+    auto e = getTopoDSEdge(this);
     BRepAdaptor_Curve adapt(e);
     double t = adapt.LastParameter();
     return Py::Float(t);

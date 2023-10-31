@@ -269,6 +269,7 @@ SET(Draft_GUI_tools
     draftguitools/gui_lineslope.py
     draftguitools/gui_layers.py
     draftguitools/gui_setstyle.py
+    draftguitools/gui_hyperlink.py
     ${Creator_tools}
     ${Modifier_tools}
     draftguitools/README.md

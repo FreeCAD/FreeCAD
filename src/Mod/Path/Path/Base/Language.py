@@ -70,6 +70,9 @@ class Instruction(object):
     def isMove(self):
         return False
 
+    def isRapid(self):
+        return False
+
     def isPlunge(self):
         """isPlunge() ... return true if this moves up or down"""
         return self.isMove() and not Path.Geom.isRoughly(
@@ -130,6 +133,9 @@ class MoveStraight(Instruction):
 
     def isMove(self):
         return True
+
+    def isRapid(self):
+        return self.cmd in Path.Geom.CmdMoveRapid
 
     def pathLength(self):
         return (self.positionEnd() - self.positionBegin()).Length

@@ -57,6 +57,7 @@
 #include "View3DInventor.h"
 #include "View3DSettings.h"
 #include "Application.h"
+#include "BitmapFactory.h"
 #include "Camera.h"
 #include "Document.h"
 #include "FileDialog.h"
@@ -134,6 +135,8 @@ View3DInventor::View3DInventor(Gui::Document* pcDocument, QWidget* parent,
 
     stopSpinTimer = new QTimer(this);
     connect(stopSpinTimer, &QTimer::timeout, this, &View3DInventor::stopAnimating);
+
+    setWindowIcon(Gui::BitmapFactory().pixmap("Document"));
 }
 
 View3DInventor::~View3DInventor()
@@ -440,7 +443,10 @@ bool View3DInventor::onMsg(const char* pMsg, const char** ppReturn)
 
 bool View3DInventor::onHasMsg(const char* pMsg) const
 {
-    if  (strcmp("Save",pMsg) == 0) {
+    if (strcmp("CanPan", pMsg) == 0) {
+        return true;
+    }
+    else if (strcmp("Save",pMsg) == 0) {
         return true;
     }
     else if (strcmp("SaveAs",pMsg) == 0) {

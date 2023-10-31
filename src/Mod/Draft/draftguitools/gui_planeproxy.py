@@ -60,16 +60,13 @@ class Draft_WorkingPlaneProxy:
 
     def Activated(self):
         """Execute when the command is called."""
-        if hasattr(App, "DraftWorkingPlane"):
-            App.DraftWorkingPlane.setup()
-            App.ActiveDocument.openTransaction("Create WP proxy")
-            Gui.addModule("Draft")
-            _cmd = "Draft.make_workingplaneproxy("
-            _cmd += "FreeCAD.DraftWorkingPlane.getPlacement()"
-            _cmd += ")"
-            Gui.doCommand(_cmd)
-            App.ActiveDocument.commitTransaction()
-            App.ActiveDocument.recompute()
+        App.ActiveDocument.openTransaction("Create WP proxy")
+        Gui.addModule("Draft")
+        Gui.addModule("WorkingPlane")
+        Gui.doCommand("pl = WorkingPlane.get_working_plane().get_placement()")
+        Gui.doCommand("Draft.make_workingplaneproxy(pl)")
+        App.ActiveDocument.commitTransaction()
+        App.ActiveDocument.recompute()
 
 
 Gui.addCommand('Draft_WorkingPlaneProxy', Draft_WorkingPlaneProxy())

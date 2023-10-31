@@ -346,21 +346,25 @@ class ObjectOp(PathOp.ObjectOp):
                 # Note that emitting preambles between moves breaks some dressups and prevents path optimization on some controllers
                 pathParams["preamble"] = False
 
-                if self.endVector is None:
-                    verts = hWire.Wires[0].Vertexes
-                    idx = 0
-                    if obj.Direction == "CCW":
-                        idx = len(verts) - 1
-                    x = verts[idx].X
-                    y = verts[idx].Y
-                    # Zero start value adjustments for Path.fromShapes() bug
-                    if Path.Geom.isRoughly(x, 0.0):
-                        x = 0.00001
-                    if Path.Geom.isRoughly(y, 0.0):
-                        y = 0.00001
-                    pathParams["start"] = FreeCAD.Vector(x, y, verts[0].Z)
-                else:
-                    pathParams["start"] = self.endVector
+                # Always manually setting pathParams["start"] to the first or
+                # last vertex of the wire (depending on obj.Direction) ensures
+                # the edge is always milled in the correct direction. Using
+                # self.endVector would allow Path.fromShapes to reverse the
+                # direction if that would shorten the travel move and thus cause
+                # the edges being milled in seemingly random directions.
+
+                verts = hWire.Wires[0].Vertexes
+                idx = 0
+                if obj.Direction == "CCW":
+                    idx = len(verts) - 1
+                x = verts[idx].X
+                y = verts[idx].Y
+                # Zero start value adjustments for Path.fromShapes() bug
+                if Path.Geom.isRoughly(x, 0.0):
+                    x = 0.00001
+                if Path.Geom.isRoughly(y, 0.0):
+                    y = 0.00001
+                pathParams["start"] = FreeCAD.Vector(x, y, verts[0].Z)
 
                 obj.PathParams = str(
                     {key: value for key, value in pathParams.items() if key != "shapes"}

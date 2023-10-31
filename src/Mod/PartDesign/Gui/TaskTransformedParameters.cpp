@@ -61,12 +61,8 @@ TaskTransformedParameters::TaskTransformedParameters(ViewProviderTransformed *Tr
     , insideMultiTransform(false)
     , blockUpdate(false)
 {
-    selectionMode = none;
-
-    if (TransformedView) {
-        Gui::Document* doc = TransformedView->getDocument();
-        this->attachDocument(doc);
-    }
+    Gui::Document* doc = TransformedView->getDocument();
+    this->attachDocument(doc);
 
     // remember initial transaction ID
     App::GetApplication().getActiveTransaction(&transactionID);
@@ -80,8 +76,6 @@ TaskTransformedParameters::TaskTransformedParameters(TaskMultiTransformParameter
       insideMultiTransform(true),
       blockUpdate(false)
 {
-    // Original feature selection makes no sense inside a MultiTransform
-    selectionMode = none;
 }
 
 TaskTransformedParameters::~TaskTransformedParameters()

@@ -70,6 +70,8 @@ public:
      */
     ComboView(Gui::Document*  pcDocument, QWidget *parent=nullptr);
 
+    void setShowModel(bool);
+
     /**
      * A destructor.
      * A more elaborate description of the destructor.
@@ -79,8 +81,8 @@ public:
     friend class Gui::ControlSingleton;
 
 private:
-    Gui::PropertyView                  * prop;
-    Gui::TreePanel                     * tree;
+    Gui::PropertyView * prop;
+    Gui::TreePanel    * tree;
 };
 
 } // namespace DockWnd

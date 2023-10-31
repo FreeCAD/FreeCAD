@@ -39,20 +39,20 @@ PROPERTY_SOURCE(Mesh::Feature, App::GeoFeature)
 
 Feature::Feature()
 {
-    ADD_PROPERTY_TYPE(Mesh,(MeshObject()),0,App::Prop_Output,"The mesh kernel");
+    ADD_PROPERTY_TYPE(Mesh, (MeshObject()), 0, App::Prop_Output, "The mesh kernel");
 }
 
-App::DocumentObjectExecReturn *Feature::execute()
+App::DocumentObjectExecReturn* Feature::execute()
 {
     this->Mesh.touch();
     return App::DocumentObject::StdReturn;
 }
 
-PyObject *Feature::getPyObject()
+PyObject* Feature::getPyObject()
 {
-    if(PythonObject.is(Py::_None())){
+    if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
-        PythonObject = Py::Object(new MeshFeaturePy(this),true);
+        PythonObject = Py::Object(new MeshFeaturePy(this), true);
     }
     return Py::new_reference_to(PythonObject);
 }
@@ -68,8 +68,9 @@ void Feature::onChanged(const App::Property* prop)
         try {
             Base::Placement p;
             p.fromMatrix(this->Mesh.getTransform());
-            if (p != this->Placement.getValue())
+            if (p != this->Placement.getValue()) {
                 this->Placement.setValue(p);
+            }
         }
         catch (const Base::ValueError&) {
         }
@@ -86,27 +87,33 @@ void Feature::onChanged(const App::Property* prop)
 
 // ---------------------------------------------------------
 
-namespace App {
+namespace App
+{
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(Mesh::FeatureCustom, Mesh::Feature)
 /// @endcond
 
 // explicit template instantiation
 template class MeshExport FeatureCustomT<Mesh::Feature>;
-}
+}  // namespace App
 
 // ---------------------------------------------------------
 
-namespace App {
+namespace App
+{
 /// @cond DOXERR
 PROPERTY_SOURCE_TEMPLATE(Mesh::FeaturePython, Mesh::Feature)
-template<> const char* Mesh::FeaturePython::getViewProviderName() const {
+template<>
+const char* Mesh::FeaturePython::getViewProviderName() const
+{
     return "MeshGui::ViewProviderPython";
 }
-template<> PyObject* Mesh::FeaturePython::getPyObject() {
+template<>
+PyObject* Mesh::FeaturePython::getPyObject()
+{
     if (PythonObject.is(Py::_None())) {
         // ref counter is set to 1
-        PythonObject = Py::Object(new FeaturePythonPyT<Mesh::MeshFeaturePy>(this),true);
+        PythonObject = Py::Object(new FeaturePythonPyT<Mesh::MeshFeaturePy>(this), true);
     }
     return Py::new_reference_to(PythonObject);
 }
@@ -114,5 +121,4 @@ template<> PyObject* Mesh::FeaturePython::getPyObject() {
 
 // explicit template instantiation
 template class MeshExport FeaturePythonT<Mesh::Feature>;
-}
-
+}  // namespace App

@@ -94,7 +94,7 @@ ConstraintDisplacement::ConstraintDisplacement()
     Normals.setValues(std::vector<Base::Vector3d>());
 }
 
-App::DocumentObjectExecReturn *ConstraintDisplacement::execute()
+App::DocumentObjectExecReturn* ConstraintDisplacement::execute()
 {
     return Constraint::execute();
 }
@@ -105,8 +105,8 @@ const char* ConstraintDisplacement::getViewProviderName() const
 }
 
 void ConstraintDisplacement::handleChangedPropertyType(Base::XMLReader& reader,
-                                                           const char* TypeName,
-                                                           App::Property* prop)
+                                                       const char* TypeName,
+                                                       App::Property* prop)
 {
     // properties _Displacement had App::PropertyFloat and were changed to App::PropertyDistance
     if (prop == &xDisplacement && strcmp(TypeName, "App::PropertyFloat") == 0) {
@@ -152,12 +152,12 @@ void ConstraintDisplacement::onChanged(const App::Property* prop)
     if (prop == &References) {
         std::vector<Base::Vector3d> points;
         std::vector<Base::Vector3d> normals;
-        int scale = 1; // OvG: Enforce use of scale
+        int scale = 1;  // OvG: Enforce use of scale
         if (getPoints(points, normals, &scale)) {
             Points.setValues(points);
             Normals.setValues(normals);
-            Scale.setValue(scale); // OvG: Scale
-            Points.touch(); // This triggers ViewProvider::updateData()
+            Scale.setValue(scale);  // OvG: Scale
+            Points.touch();         // This triggers ViewProvider::updateData()
         }
     }
 }

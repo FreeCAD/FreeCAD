@@ -41,7 +41,6 @@
 #include "PreferencesGui.h"
 #include "QGIFace.h"
 #include <QByteArrayMatcher>
-#include "QGCustomImage.h"
 #include "QGCustomRect.h"
 #include "QGCustomSvg.h"
 #include "QGICMark.h"
@@ -62,16 +61,15 @@ QGIFace::QGIFace(int index) :
     isHatched(false);
     setFlag(QGraphicsItem::ItemClipsChildrenToShape, true);
 
-    //setStyle(Qt::NoPen);    //don't draw face lines, just fill for debugging
-    setStyle(Qt::DashLine);
+    setStyle(Qt::NoPen);    //don't draw face lines, just fill for debugging
+    //setStyle(Qt::DashLine);
     m_geomColor = PreferencesGui::getAccessibleQColor(QColor(Qt::black));
-    setLineWeight(0.5);                   //0 = cosmetic
+    m_styleCurrent = Qt::NoPen;
+    m_pen.setStyle(m_styleCurrent);
+    setLineWeight(0.0);                   //0 = cosmetic
 
     setPrettyNormal();
     m_texture = QPixmap();                      //empty texture
-
-    m_imageHatchArea = new QGCustomImage();
-    m_imageHatchArea->setParentItem(this);
 
     m_svgHatchArea = new QGCustomRect();
     m_svgHatchArea->setParentItem(this);
@@ -82,32 +80,36 @@ QGIFace::QGIFace(int index) :
     getParameters();
 
     // set up style & colour defaults
-    m_styleDef = Qt::SolidPattern;
-    m_styleSelect = Qt::SolidPattern;
     App::Color temp {static_cast<uint32_t>(Preferences::getPreferenceGroup("Colors")->GetUnsigned("FaceColor",0xffffffff))};
     setFillColor(temp.asValue<QColor>());
     m_colDefFill = temp.asValue<QColor>();
+    m_fillDef = Qt::SolidPattern;
+    m_fillSelect = Qt::SolidPattern;
 
     if (m_defClearFace) {
         setFillMode(NoFill);
         m_colDefFill = Qt::transparent;
-        setFill(Qt::transparent, m_styleDef);
+        setFill(Qt::transparent, m_fillDef);
     } else {
         setFillMode(PlainFill);
-        setFill(m_colDefFill, m_styleDef);
+        m_colDefFill = Qt::white;
+        setFill(m_colDefFill, m_fillDef);
     }
 
     m_sharedRender = new QSvgRenderer();
+    m_patMaker = new PATPathMaker(this, 1.0, 1.0);
 }
 
 QGIFace::~QGIFace()
 {
     delete m_sharedRender;
+    delete m_patMaker;
 }
 
 /// redraw this face
 void QGIFace::draw()
 {
+//    Base::Console().Message("QGIF::draw - pen style: %d\n", m_pen.style());
     setPath(m_outline);                         //Face boundary
 
     if (isHatched()) {
@@ -116,43 +118,33 @@ void QGIFace::draw()
             setFlag(QGraphicsItem::ItemClipsChildrenToShape, false);
             if (!m_lineSets.empty()) {
                 m_brush.setTexture(QPixmap());
-                m_fillStyleCurrent = m_styleDef;
-                m_styleNormal = m_fillStyleCurrent;
+                m_fillStyleCurrent = m_fillDef;
+                m_fillNormal = m_fillStyleCurrent;
                 for (auto& ls: m_lineSets) {
                     lineSetToFillItems(ls);
                 }
             }
-            m_imageHatchArea->hide();
             m_svgHatchArea->hide();
         } else if (m_mode == SvgFill) {
             m_brush.setTexture(QPixmap());
-            m_styleNormal = m_styleDef;
-            m_fillStyleCurrent = m_styleNormal;
+            m_fillNormal = m_fillDef;
+            m_fillStyleCurrent = m_fillNormal;
             loadSvgHatch(m_fileSpec);
-            if (m_hideSvgTiles) {
-                //bitmap hatch doesn't need clipping
-                setFlag(QGraphicsItem::ItemClipsChildrenToShape, false);
-                buildPixHatch();
-                m_svgHatchArea->hide();
-                m_imageHatchArea->show();
-            } else {
-                //SVG tiles need to be clipped
-                setFlag(QGraphicsItem::ItemClipsChildrenToShape, true);
-                buildSvgHatch();
-                m_imageHatchArea->hide();
-                m_svgHatchArea->show();
-            }
+            //SVG tiles need to be clipped
+            setFlag(QGraphicsItem::ItemClipsChildrenToShape, true);
+            buildSvgHatch();
+            m_svgHatchArea->show();
         } else if (m_mode == BitmapFill) {
             m_fillStyleCurrent = Qt::TexturePattern;
             m_texture = textureFromBitmap(m_fileSpec);
             m_brush.setTexture(m_texture);
+            m_svgHatchArea->hide();
         } else if (m_mode == PlainFill) {
-            setFill(m_colNormalFill, m_styleNormal);
-            m_imageHatchArea->hide();
+            setFill(m_colNormalFill, m_fillNormal);
             m_svgHatchArea->hide();
         }
     } else {
-        m_imageHatchArea->hide();
+        // face is not hatched
         m_svgHatchArea->hide();
     }
     show();
@@ -189,6 +181,7 @@ void QGIFace::setPrettySel() {
 
 /// show or hide the edges of this face.  Usually just for debugging
 void QGIFace::setDrawEdges(bool b) {
+//    Base::Console().Message("QGIF::setDrawEdges(%d)\n", b);
     if (b) {
         setStyle(Qt::DashLine);
     } else {
@@ -257,103 +250,10 @@ void QGIFace::addLineSet(LineSet& ls)
 /// convert the PAT line set to QGraphicsPathItems
 void QGIFace::lineSetToFillItems(LineSet& ls)
 {
-    m_segCount = 0;
-    QPen pen = setGeomPen();
-    for (auto& geom : ls.getGeoms()) {
-        //geom is a tdGeometry representation of 1 line in the pattern
-        if (ls.isDashed()) {
-            double offset = 0.0;
-            Base::Vector3d pStart = ls.getPatternStartPoint(geom, offset, m_fillScale);
-            offset = Rez::guiX(offset);
-            Base::Vector3d gStart(geom->getStartPoint().x,
-                                  geom->getStartPoint().y,
-                                  0.0);
-            Base::Vector3d gEnd(geom->getEndPoint().x,
-                                geom->getEndPoint().y,
-                                0.0);
-            if (DrawUtil::fpCompare(offset, 0.0, 0.00001)) {                              //no offset
-                QGraphicsPathItem* item1 = lineFromPoints(pStart, gEnd, ls.getDashSpec());
-                item1->setPen(pen);
-                m_fillItems.push_back(item1);
-                if (!pStart.IsEqual(gStart, 0.00001)) {
-                    QGraphicsPathItem* item2 = lineFromPoints(pStart, gStart, ls.getDashSpec().reversed());
-                    item2->setPen(pen);
-                    m_fillItems.push_back(item2);
-                }
-            } else {                                                                  //offset - pattern start not in g
-                double remain = dashRemain(decodeDashSpec(ls.getDashSpec()), offset);
-                QGraphicsPathItem* shortItem = geomToStubbyLine(geom, remain, ls);
-                shortItem->setPen(pen);
-                m_fillItems.push_back(shortItem);
-            }
-        } else {                                                //not dashed
-            QGraphicsPathItem* fillItem = geomToLine(geom, ls);
-            fillItem->setPen(pen);
-            m_fillItems.push_back(fillItem);
-        }
-
-        if (m_segCount > m_maxSeg) {
-            Base::Console().Warning("PAT segment count exceeded: %ld\n", m_segCount);
-            break;
-        }
-    }
-}
-
-/// create a PAT fill line from 2 points and a dash configuration
-QGraphicsPathItem*  QGIFace::lineFromPoints(Base::Vector3d start, Base::Vector3d end, DashSpec ds)
-{
-    QGraphicsPathItem* fillItem = new QGraphicsPathItem(this);
-    fillItem->setPath(dashedPPath(decodeDashSpec(ds),
-                                  Rez::guiX(start),
-                                  Rez::guiX(end)));
-    return fillItem;
-}
-
-/// create a PAT fill line from geometry
-QGraphicsPathItem*  QGIFace::geomToLine(TechDraw::BaseGeomPtr base, LineSet& ls)
-{
-    QGraphicsPathItem* fillItem = new QGraphicsPathItem(this);
-    Base::Vector3d start(base->getStartPoint().x,
-                            base->getStartPoint().y,
-                            0.0);
-    Base::Vector3d end(base->getEndPoint().x,
-                            base->getEndPoint().y,
-                            0.0);
-    fillItem->setPath(dashedPPath(decodeDashSpec(ls.getDashSpec()),
-                                  Rez::guiX(start),
-                                  Rez::guiX(end)));
-    return fillItem;
-}
-
-
-//! make a fragment (length = remain) of a dashed line, with pattern starting at +offset
-QGraphicsPathItem*  QGIFace::geomToStubbyLine(TechDraw::BaseGeomPtr base, double remain, LineSet& ls)
-{
-    QGraphicsPathItem* fillItem = new QGraphicsPathItem(this);
-    Base::Vector3d start(base->getStartPoint().x,
-                         base->getStartPoint().y,
-                         0.0);
-    Base::Vector3d end(base->getEndPoint().x,
-                       base->getEndPoint().y,
-                       0.0);
-    double origLen = (end - start).Length();
-
-    double appRemain = Rez::appX(remain);
-    Base::Vector3d newEnd = start + (ls.getUnitDir() * appRemain);
-
-    double newLen = (newEnd - start).Length();
-
-    if (newLen > origLen) {
-        newEnd = end;
-    }
-
-    double offset = Rez::guiX(m_fillScale * ls.getDashSpec().length()) - remain;
-
-    fillItem->setPath(dashedPPath(offsetDash(decodeDashSpec(ls.getDashSpec()), offset),
-                                  Rez::guiX(start),
-                                  Rez::guiX(newEnd)));
-    m_fillItems.push_back(fillItem);
-    return fillItem;
+    m_patMaker->setLineWidth(Rez::guiX(m_geomWeight));
+    m_patMaker->setScale(m_fillScale);
+    m_patMaker->setPen(setGeomPen());
+    m_patMaker->lineSetToFillItems(ls);
 }
 
 QPen QGIFace::setGeomPen()
@@ -365,123 +265,6 @@ QPen QGIFace::setGeomPen()
     return result;
 }
 
-//! convert from mm to scene units
-std::vector<double> QGIFace::decodeDashSpec(DashSpec patDash)
-{
-    double penWidth = Rez::guiX(m_geomWeight);
-    double scale = m_fillScale;
-    double minPen = 0.01;                         //avoid trouble with cosmetic pen (zero width)?
-    if (penWidth <= minPen) {
-        penWidth = minPen;
-    }
-    std::vector<double> result;
-    for (auto& d: patDash.get()) {
-        double strokeLength;
-        if (DrawUtil::fpCompare(d, 0.0)) {                       //pat dot
-             strokeLength = penWidth;
-        } else {                                                //pat mark/space
-             strokeLength = Rez::guiX(d);
-        }
-        result.push_back(scale * strokeLength);
-    }
-    return result;
-}
-
-//! make a dashed QPainterPath from start to end in scene coords
-QPainterPath QGIFace::dashedPPath(const std::vector<double> dv, const Base::Vector3d start, const Base::Vector3d end)
-{
-      QPainterPath result;
-      Base::Vector3d dir = (end - start);
-      dir.Normalize();
-      result.moveTo(start.x, -start.y);
-      Base::Vector3d currentPos = start;
-      if (dv.empty()) {
-          result.lineTo(end.x, -end.y);
-          m_segCount++;
-      } else {
-         double lineLength = (end - start).Length();
-         double travel = 0.0;
-         Base::Vector3d lineProgress;
-         while (travel < lineLength) {
-             bool stop = false;
-            if (m_segCount > 10000) {
-                Base::Console().Warning("PAT segment count exceeded: %ld\n", m_segCount);
-                break;
-            }
-
-             for (auto& d: dv) {
-                  travel += fabs(d);
-                  Base::Vector3d segmentEnd = (currentPos + dir * fabs(d));
-                  if ((start - segmentEnd).Length() > lineLength)  {            //don't draw past end of line
-                      segmentEnd = end;
-                      stop = true;
-                  }
-                  if (d < 0.0) {
-                      result.moveTo(segmentEnd.x, -segmentEnd.y);                //space
-                  } else {
-                      result.lineTo(segmentEnd.x, -segmentEnd.y);                //mark
-                  }
-                  if (stop) {
-                      break;
-                  }
-                  m_segCount++;
-                  currentPos = segmentEnd;
-              }
-          }
-      }
-      return result;
-}
-
-//! convert a dash pattern to an offset dash pattern  (ie offset -> end)
-// dv & offset are already scaled.
-std::vector<double> QGIFace::offsetDash(const std::vector<double> dv, const double offset)
-{
-    std::vector<double> result;
-    double length = 0.0;
-    for (auto& d: dv) {
-        length += fabs(d);
-    }
-    if (offset > length) {
-        result = dv;
-        return result;
-    }
-    //find the dash cell that includes offset
-    double accum = 0;
-    int i = 0;
-    for (auto& d:dv) {
-        accum += fabs(d);
-        if (accum > offset) {
-           break;
-        }
-        i++;
-    }
-
-    double firstCell = accum - offset;
-    if (dv.at(i) < 0.0) {                    //offset found in a space cell
-        result.push_back(-1.0* firstCell);
-    } else {
-        result.push_back(firstCell);
-    }
-    unsigned int iCell = i + 1;
-    for ( ; iCell < dv.size() ; iCell++) {
-        result.push_back(dv.at(iCell));
-    }
-
-    return result;
-}
-
-//! find remaining length of a dash pattern after offset
-double QGIFace::dashRemain(const std::vector<double> dv, const double offset)
-{
-    double length = 0.0;
-    for (auto& d: dv) {
-        length += fabs(d);
-    }
-    if (offset > length) {
-        return 0.0;
-    }
-    return length - offset;
-}
 
 //! get zoom level (scale) from QGraphicsView
 // not used currently
@@ -575,94 +358,6 @@ void QGIFace::clearSvg()
     hideSvg(true);
 }
 
-/// make an array of bitmap tiles to cover this face
-void QGIFace::buildPixHatch()
-{
-//    Base::Console().Message("QGIF::buildPixHatch() - offset: %s\n", DrawUtil::formatVector(getHatchOffset()).c_str());
-    double wTile = SVGSIZEW * m_fillScale;
-    double hTile = SVGSIZEH * m_fillScale;
-    double faceWidth = m_outline.boundingRect().width();
-    double faceHeight = m_outline.boundingRect().height();
-    QRectF faceRect = m_outline.boundingRect();
-    QPointF faceCenter = faceRect.center();
-    double hatchOverlaySize = Preferences::svgHatchFactor() * std::max(faceWidth, faceHeight);
-    double numberWide = ceil(hatchOverlaySize / wTile);
-    double numberHigh = ceil(hatchOverlaySize / hTile);
-    double overlayWidth = numberWide * wTile;
-    double overlayHeight= numberHigh * hTile;
-
-    m_svgHatchArea->setRect(0., 0., overlayWidth, -overlayHeight);
-    m_svgHatchArea->centerAt(faceCenter);
-
-    QByteArray before, after;
-    before = QString::fromStdString(SVGCOLPREFIX + SVGCOLDEFAULT).toUtf8();
-    after = QString::fromStdString(SVGCOLPREFIX + m_svgCol).toUtf8();
-    QByteArray colorXML = m_svgXML.replace(before, after);
-    QSvgRenderer renderer;
-    bool success = renderer.load(colorXML);
-    if (!success) {
-        Base::Console().Error("QGIF::buildPixHatch - renderer failed to load\n");
-    }
-
-    //get the svg tile graphics as a QImage
-    QImage imageIn(64, 64, QImage::Format_ARGB32);
-    imageIn.fill(Qt::transparent);
-    QPainter painter(&imageIn);
-    renderer.render(&painter);
-    if (imageIn.isNull()) {
-        Base::Console().Error("QGIF::buildPixHatch - imageIn is null\n");
-        return;
-    }
-    //make a QPixmap tile of the QImage
-    QPixmap pm(64, 64);
-    pm  = QPixmap::fromImage(imageIn);
-    pm = pm.scaled(wTile, hTile);
-    if (pm.isNull()) {
-        Base::Console().Error("QGIF::buildPixHatch - pixmap is null\n");
-        return;
-    }
-
-    //layout a field of QPixmap tiles as a QImage
-    QImage tileField(overlayWidth, overlayHeight, QImage::Format_ARGB32);
-    QPointF fieldCenter(overlayWidth / 2.0, overlayHeight / 2.0);
-
-    tileField.fill(Qt::transparent);
-    QPainter painter2(&tileField);
-    QPainter::RenderHints hints = painter2.renderHints();
-    hints = hints & QPainter::Antialiasing;
-    painter2.setRenderHints(hints);
-    QPainterPath clipper = path();
-    QPointF offset = (fieldCenter - faceCenter);
-    clipper.translate(offset);
-    painter2.setClipPath(clipper);
-
-    long int tileCount = 0;
-    for (int iw = 0; iw < int(numberWide); iw++) {
-        for (int ih = 0; ih < int(numberHigh); ih++) {
-            painter2.drawPixmap(QRectF(iw*wTile + getHatchOffset().x, ih*hTile + getHatchOffset().y,
-                                       wTile, hTile),   //target rect
-                               pm,                                           //map
-                               QRectF(0, 0, wTile, hTile));  //source rect
-            tileCount++;
-            if (tileCount > m_maxTile) {
-                Base::Console().Warning("Pixmap tile count exceeded: %ld. Change hatch scale or raise limit.\n", tileCount);
-                break;
-            }
-        }
-        if (tileCount > m_maxTile) {
-            break;
-        }
-    }
-
-    QPixmap bigMap(fabs(faceRect.width()), fabs(faceRect.height()));
-    bigMap = QPixmap::fromImage(tileField);
-
-    QPixmap nothing;
-    m_imageHatchArea->setPixmap(nothing);
-    m_imageHatchArea->load(bigMap);
-    m_imageHatchArea->centerAt(faceCenter);
-}
-
 //this isn't used currently
 QPixmap QGIFace::textureFromSvg(std::string fileSpec)
 {
@@ -693,6 +388,7 @@ void QGIFace::setHatchScale(double s)
 /// turn svg tiles on or off. QtSvg does not handle clipping,
 /// so we must be able to turn the hatching on/off when exporting a face with an
 /// svg hatch.  Otherwise the full tile pattern is shown in the export.
+/// NOTE: there appears to have been a change in Qt that it now clips svg items
 void QGIFace::hideSvg(bool b)
 {
     m_hideSvgTiles = b;

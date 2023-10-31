@@ -585,24 +585,6 @@ Gui::ViewProvider* QGIView::getViewProvider(App::DocumentObject* obj)
     return nullptr;
 }
 
-QGVPage* QGIView::getQGVPage(TechDraw::DrawView* dView)
-{
-    ViewProviderPage* vpp = getViewProviderPage(dView);
-    if (!vpp) {
-        return vpp->getQGVPage();
-    }
-    return nullptr;
-}
-
-QGSPage* QGIView::getQGSPage(TechDraw::DrawView* dView)
-{
-    ViewProviderPage* vpp = getViewProviderPage(dView);
-    if (vpp) {
-        return vpp->getQGSPage();
-    }
-    return nullptr;
-}
-
 MDIViewPage* QGIView::getMDIViewPage() const
 {
     if (!getViewObject()) {
