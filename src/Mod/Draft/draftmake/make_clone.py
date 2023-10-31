@@ -88,16 +88,13 @@ def make_clone(obj, delta=None, forcedraft=False):
             base = utils.get_clone_base(obj[0])
             cl.Label = prefix + base.Label
             cl.CloneOf = base
-            if hasattr(cl,"Material") and hasattr(obj[0],"Material"):
-                cl.Material = obj[0].Material
             if utils.get_type(obj[0]) != "BuildingPart":
                 cl.Placement = obj[0].Placement
-            try:
-                cl.Role = base.Role
-                cl.Description = base.Description
-                cl.Tag = base.Tag
-            except Exception:
-                pass
+            for prop in ("Description", "IfcType", "Material", "Subvolume", "Tag"):
+                try:
+                    setattr(cl, prop, getattr(base, prop))
+                except Exception:
+                    pass
             if App.GuiUp:
                 gui_utils.format_object(cl, base)
                 # Workaround to trigger update of DiffuseColor:
