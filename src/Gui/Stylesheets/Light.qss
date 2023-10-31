@@ -2623,3 +2623,9 @@ Gui--UrlLabel {
   color : rgba(0,91,255,255); /* Deep sky blue */
   text-decoration : underline;
 }
+
+Gui--NotificationLabel {
+  background-color: #f6f6f6;
+  border: 1px solid #cccccc;
+  border-radius: 2px;
+}
