@@ -58,14 +58,6 @@ PyException::PyException()
 {
     PP_Fetch_Error_Text();    /* fetch (and clear) exception */
 
-    // restore and print the exception with set_sys_last_vars to make post-mortem debugging work
-    // PyErr_Restore will take ownership of the three passed objects
-    PyErr_Restore(PP_last_exception_type, PP_PyDict_Object, PP_last_traceback);
-    PP_last_exception_type = nullptr;
-    PP_PyDict_Object = nullptr;
-    PP_last_traceback = nullptr;
-    PyErr_PrintEx(1);
-
     setPyObject(PP_PyDict_Object);
 
     std::string prefix = PP_last_error_type; /* exception name text */
@@ -133,6 +125,8 @@ void PyException::ReportException () const
 {
     if (!_isReported) {
         _isReported = true;
+        // set sys.last_vars to make post-mortem debugging work
+        PySys_SetObject("last_traceback", PP_last_traceback);
         Base::Console().DeveloperError("pyException","%s%s: %s\n",
             _stackTrace.c_str(), _errorType.c_str(), what());
     }
