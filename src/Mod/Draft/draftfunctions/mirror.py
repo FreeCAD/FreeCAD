@@ -33,9 +33,10 @@ It just creates a `Part::Mirroring` object, and sets the appropriate
 ## \addtogroup draftfunctions
 # @{
 import FreeCAD as App
-import draftutils.utils as utils
-import draftutils.gui_utils as gui_utils
+import WorkingPlane
 
+from draftutils import gui_utils
+from draftutils import utils
 from draftutils.messages import _err
 from draftutils.translate import translate
 
@@ -48,14 +49,7 @@ def mirror(objlist, p1, p2):
 
     It creates a `Part::Mirroring` object from the given `objlist` using
     a plane that is defined by the two given points `p1` and `p2`,
-    and either
-
-    - the Draft working plane normal, or
-    - the negative normal provided by the camera direction
-      if the working plane normal does not exist and the graphical interface
-      is available.
-
-    If neither of these two is available, it uses as normal the +Z vector.
+    and the Draft working plane normal.
 
     Parameters
     ----------
@@ -67,7 +61,7 @@ def mirror(objlist, p1, p2):
         of the resulting object.
 
     p2: Base::Vector3
-        Point 1 of the mirror plane.
+        Point 2 of the mirror plane.
 
     Returns
     -------
@@ -97,13 +91,7 @@ def mirror(objlist, p1, p2):
     if not isinstance(objlist, list):
         objlist = [objlist]
 
-    if hasattr(App, "DraftWorkingPlane"):
-        norm = App.DraftWorkingPlane.getNormal()
-    elif App.GuiUp:
-        norm = Gui.ActiveDocument.ActiveView.getViewDirection().negative()
-    else:
-        norm = App.Vector(0, 0, 1)
-
+    norm = WorkingPlane.get_working_plane(update=False).axis
     pnorm = p2.sub(p1).cross(norm).normalize()
 
     result = []

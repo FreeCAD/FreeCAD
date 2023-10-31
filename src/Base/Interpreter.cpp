@@ -125,6 +125,8 @@ void PyException::ReportException () const
 {
     if (!_isReported) {
         _isReported = true;
+        // set sys.last_vars to make post-mortem debugging work
+        PySys_SetObject("last_traceback", PP_last_traceback);
         Base::Console().DeveloperError("pyException","%s%s: %s\n",
             _stackTrace.c_str(), _errorType.c_str(), what());
     }
