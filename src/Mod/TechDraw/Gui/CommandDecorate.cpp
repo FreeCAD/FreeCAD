@@ -285,7 +285,7 @@ bool CmdTechDrawImage::isActive()
 // TechDraw_ToggleFrame
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawToggleFrame)
+DEF_STD_CMD_AC(CmdTechDrawToggleFrame)
 
 CmdTechDrawToggleFrame::CmdTechDrawToggleFrame()
   : Command("TechDraw_ToggleFrame")
@@ -297,6 +297,14 @@ CmdTechDrawToggleFrame::CmdTechDrawToggleFrame()
     sWhatsThis      = "TechDraw_Toggle";
     sStatusTip      = sToolTipText;
     sPixmap         = "actions/TechDraw_ToggleFrame";
+}
+
+Gui::Action *CmdTechDrawToggleFrame::createAction()
+{
+    Gui::Action *action = Gui::Command::createAction();
+    action->setCheckable(true);
+
+    return action;
 }
 
 void CmdTechDrawToggleFrame::activated(int iMsg)
@@ -318,15 +326,35 @@ void CmdTechDrawToggleFrame::activated(int iMsg)
         return;
     }
     vpp->toggleFrameState();
+
+    Gui::Action *action = this->getAction();
+    if (action) {
+        action->setChecked(!vpp->getFrameState(), true);
+    }
 }
 
 bool CmdTechDrawToggleFrame::isActive()
 {
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this, false);
-    return (havePage && haveView);
-}
+    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
+    if (!page) {
+        return false;
+    }
 
+    if (!DrawGuiUtil::needView(this, false)) {
+        return false;
+    }
+
+    Gui::Document *activeGui = Gui::Application::Instance->getDocument(page->getDocument());
+    ViewProviderPage *vpp = dynamic_cast<ViewProviderPage *>(activeGui->getViewProvider(page));
+    if (vpp) {
+        Gui::Action *action = this->getAction();
+        if (action) {
+            action->setChecked(!vpp->getFrameState(), true);
+        }
+    }
+
+    return true;
+}
 
 void CreateTechDrawCommandsDecorate()
 {
