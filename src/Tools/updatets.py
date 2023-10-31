@@ -244,10 +244,6 @@ def find_tools(noobsolete=True):
             PYLUPDATE = "pylupdate5"
             if noobsolete:
                 PYLUPDATE += " -noobsolete"
-        elif os.system("pylupdate4 -version") == 0:
-            PYLUPDATE = "pylupdate4"
-            if noobsolete:
-                PYLUPDATE += " -noobsolete"
         elif os.system("pyside2-lupdate -version") == 0:
             PYLUPDATE = "pyside2-lupdate"
             raise Exception(
