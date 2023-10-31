@@ -507,8 +507,6 @@ SbVec3f SoDatumLabel::getLabelTextCenterAngle(const SbVec3f& p0)
     float length = param1.getValue();
     float startangle = param2.getValue();
     float range = param3.getValue();
-    float endangle = startangle + range;
-
     float len2 = 2.0F * length;
 
     // Useful Information
@@ -670,13 +668,6 @@ void SoDatumLabel::generateAnglePrimitives(SoAction * action, const SbVec3f& p0)
 
 void SoDatumLabel::generateSymmetricPrimitives(SoAction * action, const SbVec3f& p1, const SbVec3f& p2)
 {
-    // Get the Scale. See GLRender function for details on the viewport width calculation
-    //SoState *state = action->getState();
-    //const SbViewVolume & vv = SoViewVolumeElement::get(state);
-    //float scale = vv.getWorldToScreenScale(SbVec3f(0.f,0.f,0.f), 1.0f);
-    //SbVec2s vp_size = SoViewportRegionElement::get(state).getViewportSizePixels();
-    //scale /= float(vp_size[0]);
-
     SbVec3f dir = (p2-p1);
     dir.normalize();
     SbVec3f normal (-dir[1],dir[0],0);
