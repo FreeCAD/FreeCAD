@@ -199,7 +199,6 @@ protected:
     QSint::ActionPanel* taskPanel;
     TaskDialog *ActiveDialog;
     TaskEditControl *ActiveCtrl;
-    QTimer *timer;
 
     Connection connectApplicationActiveDocument;
     Connection connectApplicationDeleteDocument;
