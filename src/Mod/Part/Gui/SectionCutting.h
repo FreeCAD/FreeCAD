@@ -85,6 +85,21 @@ public:
     void reject() override;
 
 private:
+    struct Args
+    {
+        Base::Vector3f origin;
+        Base::Vector3f size;
+        std::size_t numObjects;
+        App::DocumentObject* partCompound;
+        App::DocumentObject* boolFragment;
+        std::function<void(Part::Box*)> boxFunc;
+        std::function<void(Part::Cut*)> cutFunc;
+    };
+
+    void processXBoxAndCut(const Args& args);
+    void processYBoxAndCut(const Args& args);
+    void processZBoxAndCut(const Args& args);
+
     void initSpinBoxes();
     void initControls(const Base::BoundBox3d&);
     void initXControls(const Base::BoundBox3d&, const std::function<void(Part::Box*)>&);
@@ -112,8 +127,9 @@ private:
     void setObjectsVisible(bool value);
     int getCompoundTransparency() const;
     static SbBox3f getViewBoundingBox();
-    void refreshCutRanges(SbBox3f, bool forXValue = true, bool forYValue = true, bool forZValue = true,
-        bool forXRange = true, bool forYRange = true, bool forZRange = true);
+    void refreshCutRanges(SbBox3f, bool forXValue, bool forYValue, bool forZValue,
+                          bool forXRange, bool forYRange, bool forZRange);
+    void adjustYZRanges(SbBox3f);
     void CutValueHelper(double val, QDoubleSpinBox* SpinBox, QSlider* Slider);
     void FlipClickedHelper(const char* BoxName);
     void changeCutBoxColors();
@@ -124,8 +140,8 @@ private:
     void setBooleanFragmentsColor();
     Part::Box* findCutBox(const char* name) const;
     App::DocumentObject* findObject(const char* objName) const;
+    App::DocumentObject* findOrCreateObject(const char* objName);
     void hideCutObjects();
-    App::DocumentObject* flipCutObject(const char* cutName);
     void deleteObejcts();
     void deleteCompound();
     void restoreVisibility();
@@ -151,6 +167,10 @@ private:
                                                            const Base::Vector3f& size);
     Part::Box* tryCreateZBox(const Base::Vector3f& pos, const Base::Vector3f& size);
     Part::Box* createZBox(const Base::Vector3f& pos, const Base::Vector3f& size);
+
+    double getPosX(Part::Box* box) const;
+    double getPosY(Part::Box* box) const;
+    double getPosZ(Part::Box* box) const;
 
 private:
     std::unique_ptr<Ui_SectionCut> ui;
