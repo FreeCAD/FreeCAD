@@ -39,6 +39,8 @@ class ViewProviderGeometryObject;
 
 namespace Part {
 class Box;
+class Cut;
+class Compound;
 }
 
 namespace PartGui {
@@ -92,23 +94,63 @@ private:
     void setupConnections();
     void tryStartCutting();
     void setAutoColoringChecked(bool on);
+    void setSlidersEnabled(bool on);
+    void setSlidersToolTip(const QString& text);
+    void setGroupsDisabled();
+    void setAutoColor(const QColor& color);
+    void setAutoTransparency(int value);
     void initBooleanFragmentControls(Gui::ViewProviderGeometryObject* compoundBF);
     Base::BoundBox3d collectObjects();
     void collectAndShowLinks(const std::vector<App::DocumentObject*>& objects);
     void noDocumentActions();
     void startCutting(bool isInitial = false);
+    void startObjectCutting(bool isInitial);
+    bool findObjects(std::vector<App::DocumentObject*>& objects);
+    void filterObjects(std::vector<App::DocumentObject*>& objects);
+    void throwMissingObjectsError(bool isInitial);
+    bool isCuttingEnabled() const;
+    void setObjectsVisible(bool value);
+    int getCompoundTransparency() const;
     static SbBox3f getViewBoundingBox();
     void refreshCutRanges(SbBox3f, bool forXValue = true, bool forYValue = true, bool forZValue = true,
         bool forXRange = true, bool forYRange = true, bool forZRange = true);
     void CutValueHelper(double val, QDoubleSpinBox* SpinBox, QSlider* Slider);
     void FlipClickedHelper(const char* BoxName);
     void changeCutBoxColors();
+    void createAllObjects(const std::vector<App::DocumentObject*>& ObjectsListCut);
     App::DocumentObject* CreateBooleanFragments(App::Document* doc);
+    App::DocumentObject* createBooleanFragments(const std::vector<App::DocumentObject*>& links, int transparency);
+    Part::Compound* createCompound(const std::vector<App::DocumentObject*>& links, int transparency);
     void setBooleanFragmentsColor();
     Part::Box* findCutBox(const char* name) const;
     App::DocumentObject* findObject(const char* objName) const;
     void hideCutObjects();
     App::DocumentObject* flipCutObject(const char* cutName);
+    void deleteObejcts();
+    void deleteCompound();
+    void restoreVisibility();
+    std::tuple<Base::Vector3f, Base::Vector3f> adjustRanges();
+    void adjustYRange();
+    void adjustZRange();
+    void resetHasBoxes();
+    App::DocumentObject* getCutXBase(size_t num, App::DocumentObject* comp, App::DocumentObject* frag) const;
+    App::DocumentObject* getCutYBase(size_t num, App::DocumentObject* comp, App::DocumentObject* frag) const;
+    App::DocumentObject* getCutZBase(size_t num, App::DocumentObject* comp, App::DocumentObject* frag) const;
+    Part::Cut* createCut(const char* name);
+    Part::Cut* tryCreateCut(const char* name);
+    Part::Box* createBox(const char* name, const Base::Vector3f& size);
+    std::tuple<Part::Box*, Part::Cut*> tryCreateXBoxAndCut(const Base::Vector3f& pos,
+                                                           const Base::Vector3f& size);
+    Part::Box* tryCreateXBox(const Base::Vector3f& pos, const Base::Vector3f& size);
+    Part::Box* createXBox(const Base::Vector3f& pos, const Base::Vector3f& size);
+    std::tuple<Part::Box*, Part::Cut*> tryCreateYBoxAndCut(const Base::Vector3f& pos,
+                                                           const Base::Vector3f& size);
+    Part::Box* tryCreateYBox(const Base::Vector3f& pos, const Base::Vector3f& size);
+    Part::Box* createYBox(const Base::Vector3f& pos, const Base::Vector3f& size);
+    std::tuple<Part::Box*, Part::Cut*> tryCreateZBoxAndCut(const Base::Vector3f& pos,
+                                                           const Base::Vector3f& size);
+    Part::Box* tryCreateZBox(const Base::Vector3f& pos, const Base::Vector3f& size);
+    Part::Box* createZBox(const Base::Vector3f& pos, const Base::Vector3f& size);
 
 private:
     std::unique_ptr<Ui_SectionCut> ui;
