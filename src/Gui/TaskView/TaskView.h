@@ -171,7 +171,6 @@ protected Q_SLOTS:
     void reject();
     void helpRequested();
     void clicked (QAbstractButton * button);
-    void onUpdateWatcher();
 
 private:
     void triggerMinimumSizeHint();
