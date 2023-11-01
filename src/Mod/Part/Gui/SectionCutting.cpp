@@ -1451,7 +1451,7 @@ void SectionCut::onCutXvalueChanged(double val)
     CutValueHelper(val, ui->cutX, ui->cutXHS);
 
     // get the cut box
-    auto CutBox = doc->getObject(BoxXName);
+    auto CutBox = findObject(BoxXName);
     // when the value has been set after resetting the compound bounding box
     // there is not yet a cut and we do nothing
     if (!CutBox) {
@@ -1478,7 +1478,7 @@ void SectionCut::onCutXvalueChanged(double val)
     placement.setPosition(BoxPosition);
     pcBox->Placement.setValue(placement);
 
-    auto CutObject = doc->getObject(CutXName);
+    auto CutObject = findObject(CutXName);
     // there should be a box, but maybe the user deleted it meanwhile
     if (!CutObject) {
         Base::Console().Warning((std::string("SectionCut warning: there is no ")
@@ -1492,7 +1492,7 @@ void SectionCut::onCutXvalueChanged(double val)
     // we might have cut so that the range for Y and Z is now smaller
     // the hierarchy is always Z->Y->X
     if (hasBoxY && !hasBoxZ) { // only Y
-        auto CutFeatureY = doc->getObject(CutYName);
+        auto CutFeatureY = findObject(CutYName);
         if (!CutFeatureY) {
             Base::Console().Warning((std::string("SectionCut warning: there is no ")
                 + std::string(CutYName) + std::string(", trying to recreate it\n")).c_str());
@@ -1524,7 +1524,7 @@ void SectionCut::onCutXvalueChanged(double val)
     }
     else if (hasBoxZ) { // at least Z
         // the main cut is Z, no matter if there is a cut in Y
-        auto CutFeatureZ = doc->getObject(CutZName);
+        auto CutFeatureZ = findObject(CutZName);
         if (!CutFeatureZ) {
             Base::Console().Error((std::string("SectionCut error: there is no ")
                 + std::string(CutZName) + std::string("\n")).c_str());
@@ -1622,7 +1622,7 @@ void SectionCut::onCutYvalueChanged(double val)
 {
     CutValueHelper(val, ui->cutY, ui->cutYHS);
 
-    auto CutBox = doc->getObject(BoxYName);
+    auto CutBox = findObject(BoxYName);
     if (!CutBox) {
         return;
     }
@@ -1645,7 +1645,7 @@ void SectionCut::onCutYvalueChanged(double val)
     placement.setPosition(BoxPosition);
     pcBox->Placement.setValue(placement);
 
-    auto CutObject = doc->getObject(CutYName);
+    auto CutObject = findObject(CutYName);
     if (!CutObject) {
         Base::Console().Warning((std::string("SectionCut warning: there is no ")
             + std::string(CutYName) + std::string(", trying to recreate it\n")).c_str());
@@ -1657,7 +1657,7 @@ void SectionCut::onCutYvalueChanged(double val)
     // we might have cut so that the range for Z is now smaller
     // we only need to check for Z since the hierarchy is always Z->Y->X
     if (hasBoxZ) {
-        auto CutFeatureZ = doc->getObject(CutZName);
+        auto CutFeatureZ = findObject(CutZName);
         if (!CutFeatureZ) {
             Base::Console().Error((std::string("SectionCut error: there is no ")
                 + std::string(CutZName) + std::string("\n")).c_str());
@@ -1705,7 +1705,7 @@ void SectionCut::onCutYvalueChanged(double val)
         // first making the cut X box visible, then setting the limits only for X
         // if x-limit in box direction is larger than object, reset value to saved limit
         if (hasBoxX) {
-            auto CutBoxX = doc->getObject(BoxXName);
+            auto CutBoxX = findObject(BoxXName);
             if (!CutBoxX) {
                 return;
             }
@@ -1767,7 +1767,7 @@ void SectionCut::onCutZvalueChanged(double val)
 {
     CutValueHelper(val, ui->cutZ, ui->cutZHS);
 
-    auto CutBox = doc->getObject(BoxZName);
+    auto CutBox = findObject(BoxZName);
     if (!CutBox) {
         return;
     }
@@ -1789,7 +1789,7 @@ void SectionCut::onCutZvalueChanged(double val)
     placement.setPosition(BoxPosition);
     pcBox->Placement.setValue(placement);
 
-    auto CutObject = doc->getObject(CutZName);
+    auto CutObject = findObject(CutZName);
     if (!CutObject) {
         Base::Console().Warning((std::string("SectionCut warning: there is no ")
             + std::string(CutZName) + std::string(", trying to recreate it\n")).c_str());
@@ -1809,7 +1809,7 @@ void SectionCut::onCutZvalueChanged(double val)
     // if x-limit in box direction is larger than object, reset value to saved limit
     SbBox3f CutBoundingBox;
     if (hasBoxX) {
-        auto CutBoxX = doc->getObject(BoxXName);
+        auto CutBoxX = findObject(BoxXName);
         if (!CutBoxX) {
             return;
         }
@@ -1841,7 +1841,7 @@ void SectionCut::onCutZvalueChanged(double val)
         }
     }
     if (hasBoxY) {
-        auto CutBoxY = doc->getObject(BoxYName);
+        auto CutBoxY = findObject(BoxYName);
         if (!CutBoxY) {
             return;
         }
@@ -1907,7 +1907,7 @@ void SectionCut::FlipClickedHelper(const char* BoxName)
         return;
     }
     // we must move the box e.g. in y-direction by its Width
-    auto CutBox = doc->getObject(BoxName);
+    auto CutBox = findObject(BoxName);
     // there should be a box, but maybe the user deleted it meanwhile
     if (!CutBox) {
         Base::Console().Warning((std::string("SectionCut warning: there is no ")
