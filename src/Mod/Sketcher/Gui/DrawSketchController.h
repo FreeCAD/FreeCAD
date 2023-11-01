@@ -184,7 +184,7 @@ public:
     /** Creates the controller.
      *  @param dshandler a controllable DSH handler
      */
-    DrawSketchController(HandlerT* dshandler)
+    explicit DrawSketchController(HandlerT* dshandler)
         : handler(dshandler)
         , keymanager(std::make_unique<DrawSketchKeyboardManager>())
     {}
@@ -299,7 +299,7 @@ public:
     /** @name Specialisation Interface */
     /** These functions offer a specialisation interface. Non-virtual functions are specific to
      * this controller. Virtual functions may depend on input from a derived controller, and thus
-     * the specialisation needs to be of an overriden version (so as to be able to access members
+     * the specialisation needs to be of an overridden version (so as to be able to access members
      * of the derived controller).
      */
     //@{
