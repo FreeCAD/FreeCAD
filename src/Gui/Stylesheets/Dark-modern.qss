@@ -2655,7 +2655,7 @@ Gui--OverlayToolButton[objectName="OBTN Transparent"]:!checked  {
 }
 
 Gui--OverlayToolButton[objectName="OBTN Transparent"]:hover {
-  image: url(qss:overlay/transparenthover_light.svg);
+  image: url(qss:overlay/transparent_lighter.svg);
 }
 
 Gui--OverlayToolButton[objectName="OBTN Transparent"]:checked {
@@ -2695,5 +2695,5 @@ Gui--OverlayToolButton[objectName="OBTN Float"]:hover {
 }
 
 Gui--OverlayToolButton[objectName="OBTN Float"]:checked {
-  image: url(qss:overlay/floathover_light.svg);
+  image: url(qss:overlay/float_lighter.svg);
 }
