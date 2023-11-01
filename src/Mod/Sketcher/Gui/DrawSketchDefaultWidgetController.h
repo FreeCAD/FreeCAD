@@ -113,7 +113,7 @@ protected:
     using ControllerBase::handler;
 
 public:
-    DrawSketchDefaultWidgetController(HandlerT* dshandler)
+    explicit DrawSketchDefaultWidgetController(HandlerT* dshandler)
         : ControllerBase(dshandler)
     {}
 
@@ -164,7 +164,7 @@ public:
     /** @name Specialisation Interface */
     /** These functions offer a specialisation interface. Non-virtual functions are specific to
      * this controller. Virtual functions may depend on input from a derived controller, and thus
-     * the specialisation needs to be of an overriden version (so as to be able to access members
+     * the specialisation needs to be of an overridden version (so as to be able to access members
      * of the derived controller).
      */
     /// Change DSH to reflect a value entered in the widget
