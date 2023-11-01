@@ -22,18 +22,32 @@
 #ifndef MATERIAL_MODEL_H
 #define MATERIAL_MODEL_H
 
-#include <Mod/Material/MaterialGlobal.h>
+#include <memory>
+
+#include <QDir>
+#include <QString>
+#include <QStringList>
 
 #include <Base/BaseClass.h>
 #include <Base/Quantity.h>
-#include <QDir>
-#include <QString>
 
+#include <Mod/Material/MaterialGlobal.h>
+
+#include "FolderTree.h"
 #include "MaterialValue.h"
-#include "ModelLibrary.h"
+// #include "ModelLibrary.h"
 
 namespace Materials
 {
+
+class ModelLibrary;
+
+enum ModelFilter
+{
+    ModelFilter_None,
+    ModelFilter_Physical,
+    ModelFilter_Appearance
+};
 
 class MaterialsExport ModelProperty: public Base::BaseClass
 {
@@ -41,12 +55,12 @@ class MaterialsExport ModelProperty: public Base::BaseClass
 
 public:
     ModelProperty();
-    explicit ModelProperty(const QString& name,
-                           const QString& type,
-                           const QString& units,
-                           const QString& url,
-                           const QString& description);
-    explicit ModelProperty(const ModelProperty& other);
+    ModelProperty(const QString& name,
+                  const QString& type,
+                  const QString& units,
+                  const QString& url,
+                  const QString& description);
+    ModelProperty(const ModelProperty& other);
     ~ModelProperty() override = default;
 
     const QString getName() const
@@ -117,6 +131,11 @@ public:
     }
 
     ModelProperty& operator=(const ModelProperty& other);
+    bool operator==(const ModelProperty& other) const;
+    bool operator!=(const ModelProperty& other) const
+    {
+        return !operator==(other);
+    }
 
 private:
     QString _name;
@@ -140,17 +159,17 @@ public:
     };
 
     Model();
-    explicit Model(const ModelLibrary& library,
-                   ModelType type,
-                   const QString& name,
-                   const QString& directory,
-                   const QString& uuid,
-                   const QString& description,
-                   const QString& url,
-                   const QString& doi);
+    Model(std::shared_ptr<ModelLibrary> library,
+          ModelType type,
+          const QString& name,
+          const QString& directory,
+          const QString& uuid,
+          const QString& description,
+          const QString& url,
+          const QString& doi);
     ~Model() override = default;
 
-    const ModelLibrary& getLibrary() const
+    std::shared_ptr<ModelLibrary> getLibrary() const
     {
         return _library;
     }
@@ -175,10 +194,10 @@ public:
     {
         return QDir(_directory).absolutePath();
     }
-    const QString getRelativePath() const
-    {
-        return QDir(_directory).relativeFilePath(QDir(_directory).absolutePath());
-    }
+    // const QString getRelativePath() const
+    // {
+    //     return QDir(_directory).relativeFilePath(QDir(_directory).absolutePath());
+    // }
     const QString getUUID() const
     {
         return _uuid;
@@ -196,7 +215,7 @@ public:
         return _doi;
     }
 
-    void setLibrary(const ModelLibrary& library)
+    void setLibrary(std::shared_ptr<ModelLibrary> library)
     {
         _library = library;
     }
@@ -231,11 +250,15 @@ public:
 
     void addInheritance(const QString& uuid)
     {
-        _inheritedUuids.push_back(uuid);
+        _inheritedUuids << uuid;
     }
-    const std::vector<QString>& getInheritance() const
+    const QStringList& getInheritance() const
     {
         return _inheritedUuids;
+    }
+    bool inherits(const QString& uuid) const
+    {
+        return _inheritedUuids.contains(uuid);
     }
 
     bool operator==(const Model& m) const
@@ -281,7 +304,7 @@ public:
     }
 
 private:
-    ModelLibrary _library;
+    std::shared_ptr<ModelLibrary> _library;
     ModelType _type;
     QString _name;
     QString _directory;
@@ -289,9 +312,11 @@ private:
     QString _description;
     QString _url;
     QString _doi;
-    std::vector<QString> _inheritedUuids;
+    QStringList _inheritedUuids;
     std::map<QString, ModelProperty> _properties;
 };
+
+typedef FolderTreeNode<Model> ModelTreeNode;
 
 }  // namespace Materials
 

@@ -156,8 +156,8 @@ QWidget* ArrayDelegate::createWidget(QWidget* parent, const QVariant& item) cons
     else if (_type == Materials::MaterialValue::Boolean) {
         Gui::PrefComboBox* combo = new Gui::PrefComboBox(parent);
         combo->insertItem(0, QString::fromStdString(""));
-        combo->insertItem(1, QString::fromStdString("False"));
-        combo->insertItem(2, QString::fromStdString("True"));
+        combo->insertItem(1, tr("False"));
+        combo->insertItem(2, tr("True"));
         combo->setCurrentText(item.toString());
         widget = combo;
     }

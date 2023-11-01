@@ -1,7 +1,8 @@
 # File created by ConvertFCMat.py
 General:
   UUID: "a02bf9d7-6e3e-4e36-881b-10779ee9f706"
-  AuthorAndLicense: "(c) 2015 DaviKaur (CC-BY 3.0)"
+  Author: "DaviKaur"
+  License: "CC-BY-3.0"
   Name: "Glass-E"
   Description: "Glass Fibre"
 Models:

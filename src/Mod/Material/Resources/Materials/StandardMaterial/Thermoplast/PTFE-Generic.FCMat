@@ -1,7 +1,8 @@
 # File created by ConvertFCMat.py
 General:
   UUID: "8ce226db-43ef-4471-93f1-07e7276aa276"
-  AuthorAndLicense: "(c) 2019 Uwe Stöhr (CC-BY 3.0)"
+  Author: "Uwe Stöhr"
+  License: "CC-BY-3.0"
   Name: "PTFE"
   SourceURL: "http://www.matweb.com/search/datasheet.aspx?MatGUID=4d14eac958e5401a8fd152e1261b6843"
 Models:

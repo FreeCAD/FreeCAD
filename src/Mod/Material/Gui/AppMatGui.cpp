@@ -96,6 +96,9 @@ PyMOD_INIT_FUNC(MatGui)
 
     // register preferences pages on Material, the order here will be the order of the tabs in pref
     // widget
+    Gui::Dialog::DlgPreferencesImp::setGroupData("Material",
+                                                 "Material",
+                                                 QObject::tr("Material workbench"));
     new Gui::PrefPageProducer<MatGui::DlgSettingsMaterial>(
         QT_TRANSLATE_NOOP("QObject", "Material"));
 

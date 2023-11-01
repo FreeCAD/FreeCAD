@@ -21,10 +21,6 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#include <boost/uuid/uuid_io.hpp>
-#endif
-
 #include "Exceptions.h"
 #include "MaterialManager.h"
 #include "MaterialManagerPy.h"
@@ -64,9 +60,8 @@ PyObject* MaterialManagerPy::getMaterial(PyObject* args)
     }
 
     try {
-        const Material& material =
-            getMaterialManagerPtr()->getMaterial(QString::fromStdString(uuid));
-        return new MaterialPy(new Material(material));
+        auto material = getMaterialManagerPtr()->getMaterial(QString::fromStdString(uuid));
+        return new MaterialPy(new Material(*material));
     }
     catch (const MaterialNotFound&) {
         PyErr_SetString(PyExc_LookupError, "Material not found");
@@ -85,9 +80,9 @@ PyObject* MaterialManagerPy::getMaterialByPath(PyObject* args)
     QString libPath(QString::fromStdString(lib));
     if (!libPath.isEmpty()) {
         try {
-            const Material& material =
+            auto material =
                 getMaterialManagerPtr()->getMaterialByPath(QString::fromStdString(path), libPath);
-            return new MaterialPy(new Material(material));
+            return new MaterialPy(new Material(*material));
         }
         catch (const MaterialNotFound&) {
             PyErr_SetString(PyExc_LookupError, "Material not found");
@@ -100,9 +95,8 @@ PyObject* MaterialManagerPy::getMaterialByPath(PyObject* args)
     }
 
     try {
-        const Material& material =
-            getMaterialManagerPtr()->getMaterialByPath(QString::fromStdString(path));
-        return new MaterialPy(new Material(material));
+        auto material = getMaterialManagerPtr()->getMaterialByPath(QString::fromStdString(path));
+        return new MaterialPy(new Material(*material));
     }
     catch (const MaterialNotFound&) {
         PyErr_SetString(PyExc_LookupError, "Material not found");
@@ -116,7 +110,7 @@ Py::List MaterialManagerPy::getMaterialLibraries() const
     Py::List list;
 
     for (auto it = libraries->begin(); it != libraries->end(); it++) {
-        MaterialLibrary* lib = *it;
+        auto lib = *it;
         Py::Tuple libTuple(3);
         libTuple.setItem(0, Py::String(lib->getName().toStdString()));
         libTuple.setItem(1, Py::String(lib->getDirectoryPath().toStdString()));
@@ -136,7 +130,7 @@ Py::Dict MaterialManagerPy::getMaterials() const
 
     for (auto it = materials->begin(); it != materials->end(); it++) {
         QString key = it->first;
-        Material* material = it->second;
+        auto material = it->second;
 
         PyObject* materialPy = new MaterialPy(new Material(*material));
         dict.setItem(Py::String(key.toStdString()), Py::Object(materialPy, true));
@@ -168,7 +162,7 @@ PyObject* MaterialManagerPy::materialsWithModel(PyObject* args)
 
     for (auto it = materials->begin(); it != materials->end(); it++) {
         QString key = it->first;
-        Material* material = it->second;
+        auto material = it->second;
 
         PyObject* materialPy = new MaterialPy(new Material(*material));
         PyDict_SetItem(dict, PyUnicode_FromString(key.toStdString().c_str()), materialPy);
@@ -190,7 +184,7 @@ PyObject* MaterialManagerPy::materialsWithModelComplete(PyObject* args)
 
     for (auto it = materials->begin(); it != materials->end(); it++) {
         QString key = it->first;
-        Material* material = it->second;
+        auto material = it->second;
 
         PyObject* materialPy = new MaterialPy(new Material(*material));
         PyDict_SetItem(dict, PyUnicode_FromString(key.toStdString().c_str()), materialPy);

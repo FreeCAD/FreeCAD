@@ -35,7 +35,7 @@ class DlgSettingsMaterial: public Gui::Dialog::PreferencePage
     Q_OBJECT
 
 public:
-    explicit DlgSettingsMaterial(QWidget* parent = nullptr);
+    DlgSettingsMaterial(QWidget* parent = nullptr);
     ~DlgSettingsMaterial() override = default;
 
 protected:

@@ -1,7 +1,8 @@
 # File created by ConvertFCMat.py
 General:
   UUID: "9d59dc3b-ce66-4bec-82c9-b962082e7c9e"
-  AuthorAndLicense: "(c) 2019 Uwe Stöhr (CC-BY 3.0)"
+  Author: "Uwe Stöhr"
+  License: "CC-BY-3.0"
   Name: "Polyamide 6"
   SourceURL: "http://www.matweb.com/search/datasheet.aspx?MatGUID=8d78f3cfcb6f49d595896ce6ce6a2ef1"
 Models:
