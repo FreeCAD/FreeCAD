@@ -41,7 +41,7 @@ namespace Materials
 
 class MaterialsExport LibraryBase: public Base::BaseClass
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     LibraryBase();
@@ -84,7 +84,7 @@ private:
 class MaterialsExport ModelLibrary: public LibraryBase,
                                     public std::enable_shared_from_this<ModelLibrary>
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     ModelLibrary();
