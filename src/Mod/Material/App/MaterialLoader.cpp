@@ -414,7 +414,7 @@ void MaterialLoader::dereference(
         try {
             parent = materialMap->at(parentUUID);
         }
-        catch (std::out_of_range& e) {
+        catch (std::out_of_range&) {
             Base::Console().Log(
                 "Unable to apply inheritance for material '%s', parent '%s' not found.\n",
                 material->getName().toStdString().c_str(),
