@@ -32,6 +32,7 @@
 
 #include <Mod/Material/App/Materials.h>
 #include <Mod/Material/App/Model.h>
+#include <Mod/Material/App/ModelManager.h>
 
 namespace MatGui
 {
