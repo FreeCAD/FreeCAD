@@ -232,7 +232,9 @@ std::shared_ptr<Material> MaterialLibrary::saveMaterial(std::shared_ptr<Material
 
     if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
         QTextStream stream(&file);
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
         stream.setCodec("UTF-8");
+#endif
         stream.setGenerateByteOrderMark(true);
 
         // Write the contents
