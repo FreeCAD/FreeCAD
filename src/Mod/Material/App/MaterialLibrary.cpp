@@ -279,7 +279,7 @@ std::shared_ptr<Material> MaterialLibrary::getMaterialByPath(const QString& path
         auto material = _materialPathMap->at(filePath);
         return material;
     }
-    catch (std::out_of_range& e) {
+    catch (std::out_of_range&) {
         throw MaterialNotFound();
     }
 }
@@ -291,7 +291,7 @@ const QString MaterialLibrary::getUUIDFromPath(const QString& path) const
         auto material = _materialPathMap->at(filePath);
         return material->getUUID();
     }
-    catch (std::out_of_range& e) {
+    catch (std::out_of_range&) {
         throw MaterialNotFound();
     }
 }

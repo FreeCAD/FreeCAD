@@ -114,7 +114,7 @@ std::shared_ptr<Material> MaterialManager::getMaterial(const QString& uuid) cons
     try {
         return _materialMap->at(uuid);
     }
-    catch (std::out_of_range& e) {
+    catch (std::out_of_range&) {
         throw MaterialNotFound();
     }
 }
