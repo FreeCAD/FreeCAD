@@ -1377,7 +1377,7 @@ QStringList Material::normalizeModels(const QStringList& models)
  * Set or change the base material for the current material, updating the properties as
  * required.
  */
-void Material::updateInheritance(const QString& parent)
+void Material::updateInheritance([[maybe_unused]]const QString& parent)
 {}
 
 /*
@@ -1413,5 +1413,5 @@ QStringList Material::inheritedAddedModels(const Material& parent)
 /*
  * Return a list of properties that have different values from the parent material
  */
-void Material::inheritedPropertyDiff(const QString& parent)
+void Material::inheritedPropertyDiff([[maybe_unused]]const QString& parent)
 {}
