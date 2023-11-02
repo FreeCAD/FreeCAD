@@ -129,7 +129,7 @@ private:
 
 class MaterialsExport Material: public Base::BaseClass
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     enum ModelEdit

@@ -45,7 +45,7 @@ class MaterialManager;
 class MaterialsExport MaterialLibrary: public LibraryBase,
                                        public std::enable_shared_from_this<MaterialLibrary>
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     MaterialLibrary();
@@ -104,7 +104,7 @@ protected:
 
 class MaterialsExport MaterialExternalLibrary: public MaterialLibrary
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     MaterialExternalLibrary();

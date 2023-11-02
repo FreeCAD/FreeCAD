@@ -42,7 +42,7 @@ namespace Materials
 
 class MaterialsExport MaterialManager: public Base::BaseClass
 {
-    TYPESYSTEM_HEADER();
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     MaterialManager();
