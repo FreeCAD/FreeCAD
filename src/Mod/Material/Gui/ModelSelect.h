@@ -44,8 +44,8 @@ class ModelSelect: public QDialog
     Q_OBJECT
 
 public:
-    ModelSelect(QWidget* parent = nullptr,
-                Materials::ModelFilter filter = Materials::ModelFilter_None);
+    explicit ModelSelect(QWidget* parent = nullptr,
+                         Materials::ModelFilter filter = Materials::ModelFilter_None);
     ~ModelSelect() override;
 
     void onURL(bool checked);

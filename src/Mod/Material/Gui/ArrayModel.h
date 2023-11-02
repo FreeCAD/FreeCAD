@@ -38,7 +38,7 @@ namespace MatGui
 class AbstractArrayModel: public QAbstractTableModel
 {
 public:
-    AbstractArrayModel(QObject* parent = nullptr);
+    explicit AbstractArrayModel(QObject* parent = nullptr);
     ~AbstractArrayModel() override = default;
 
     virtual bool newRow(const QModelIndex& index) const = 0;
@@ -47,9 +47,9 @@ public:
 class Array2DModel: public AbstractArrayModel
 {
 public:
-    Array2DModel(std::shared_ptr<Materials::MaterialProperty> property = nullptr,
-                 std::shared_ptr<Materials::Material2DArray> value = nullptr,
-                 QObject* parent = nullptr);
+    explicit Array2DModel(std::shared_ptr<Materials::MaterialProperty> property = nullptr,
+                          std::shared_ptr<Materials::Material2DArray> value = nullptr,
+                          QObject* parent = nullptr);
     ~Array2DModel() override = default;
 
     // Overridden virtual functions
@@ -77,9 +77,9 @@ private:
 class Array3DDepthModel: public AbstractArrayModel
 {
 public:
-    Array3DDepthModel(std::shared_ptr<Materials::MaterialProperty> property = nullptr,
-                      std::shared_ptr<Materials::Material3DArray> value = nullptr,
-                      QObject* parent = nullptr);
+    explicit Array3DDepthModel(std::shared_ptr<Materials::MaterialProperty> property = nullptr,
+                               std::shared_ptr<Materials::Material3DArray> value = nullptr,
+                               QObject* parent = nullptr);
     ~Array3DDepthModel() override = default;
 
     // Overridden virtual functions
@@ -111,9 +111,9 @@ private:
 class Array3DModel: public AbstractArrayModel
 {
 public:
-    Array3DModel(std::shared_ptr<Materials::MaterialProperty> property = nullptr,
-                 std::shared_ptr<Materials::Material3DArray> value = nullptr,
-                 QObject* parent = nullptr);
+    explicit Array3DModel(std::shared_ptr<Materials::MaterialProperty> property = nullptr,
+                          std::shared_ptr<Materials::Material3DArray> value = nullptr,
+                          QObject* parent = nullptr);
     ~Array3DModel() override = default;
 
     // Overridden virtual functions
