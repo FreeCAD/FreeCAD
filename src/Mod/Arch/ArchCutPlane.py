@@ -1,6 +1,7 @@
 #*****************************************************************************
 #*   Copyright (c) 2014 Jonathan Wiedemann <wood.galaxy@gmail.com> (cutplan) *
 #*   Copyright (c) 2019 Jerome Laverroux <jerome.laverroux@free.fr> (cutline)*
+#*   Copyright (c) 2023 FreeCAD Project Association                          *
 #*                                                                           *
 #*   This program is free software; you can redistribute it and/or modify    *
 #*   it under the terms of the GNU Lesser General Public License (LGPL)      *
@@ -21,6 +22,7 @@
 #*****************************************************************************
 
 import FreeCAD
+import Part
 import Draft
 import ArchCommands
 if FreeCAD.GuiUp:
@@ -45,35 +47,67 @@ __url__ = "http://www.freecad.org"
 
 def getPlanWithLine(line):
     """Function to make a plane along Normal plan"""
-    import Part
     import WorkingPlane
-    plan = WorkingPlane.get_working_plane()
-    w = plan.axis
-    part = Part.Shape(line)
-    out = part.extrude(w)
-    return out
+    w = WorkingPlane.get_working_plane().axis
+    return line.extrude(w)
 
+def cutComponentwithPlane(baseObj, cutterShp=None, side=0):
+    """cut an object with a plane defined by a face.
 
-def cutComponentwithPlane(archObject, cutPlane, sideFace):
-    """cut object from a plan define by a face, Behind = 0 , front = 1"""
-    cutVolume = ArchCommands.getCutVolume(cutPlane, archObject.Object.Shape)
-    if sideFace == 0:
-        cutVolume = cutVolume[2]
+    Parameters
+    ----------
+    baseObj: Part::FeaturePython object or selection set (a list of Gui::SelectionObject objects)
+        Object to be cut or a selection set: `FreeCADGui.Selection.getSelectionEx("", 0)`.
+        If a selection set is provided it should contain baseObj and cutterShp, in that order.
+
+    cutterShp: Part.Shape, optional
+        Defaults to `None` in which case cutterShp should be in the baseObj selection set.
+        Either a face or an edge. An edge is extruded along the Draft working plane normal.
+        The shape should be in the global coordinate system.
+
+    side: 0 or 1, optional
+        Defaults to 0.
+        Behind = 0, front = 1.
+    """
+    if isinstance(baseObj, list) \
+            and len(baseObj) >= 1 \
+            and baseObj[0].isDerivedFrom("Gui::SelectionObject"):
+        objs = []
+        needSubEle = False
+        for sel in baseObj:
+            for sub in sel.SubElementNames if sel.SubElementNames else [""]:
+                objs.append(Part.getShape(sel.Object, sub, needSubElement=needSubEle, retType=1))
+                needSubEle = True
+        baseShp, _, baseObj = objs[0]
+        cutterShp, _, _ = objs[1]
+        baseParent = baseObj.getParentGeoFeatureGroup()
     else:
-        cutVolume = cutVolume[1]
+        baseShp = baseObj.Shape
+        baseParent = baseObj.getParentGeoFeatureGroup()
+        if baseParent is not None:
+            baseShp = baseShp.transformGeometry(baseParent.getGlobalPlacement().toMatrix())
+
+    if cutterShp.ShapeType != "Face":
+        cutterShp = getPlanWithLine(cutterShp)
+
+    cutVolume = ArchCommands.getCutVolume(cutterShp, baseShp)
+    cutVolume = cutVolume[2] if side == 0 else cutVolume[1]
     if cutVolume:
         obj = FreeCAD.ActiveDocument.addObject("Part::Feature","CutVolume")
-        obj.Shape = cutVolume
-        if "Additions" in archObject.Object.PropertiesList:
-            ArchCommands.removeComponents(obj, archObject.Object) # Also changes the obj colors.
-            return None
+        if baseParent is not None:
+            cutVolume.Placement = baseParent.getGlobalPlacement().inverse()
+        obj.Shape = Part.Compound([cutVolume])
+        if baseParent is not None:
+            baseParent.addObject(obj)
+        if "Additions" in baseObj.PropertiesList:
+            ArchCommands.removeComponents(obj, baseObj) # Also changes the obj colors.
         else:
-            Draft.format_object(obj, archObject.Object)
+            Draft.format_object(obj, baseObj)
             cutObj = FreeCAD.ActiveDocument.addObject("Part::Cut","CutPlane")
-            cutObj.Base = archObject.Object
+            if baseParent is not None:
+                baseParent.addObject(cutObj)
+            cutObj.Base = baseObj
             cutObj.Tool = obj
-            return cutObj
-
 
 class _CommandCutLine:
     "the Arch CutPlane command definition"
@@ -86,11 +120,11 @@ class _CommandCutLine:
         return len(FreeCADGui.Selection.getSelection()) > 1
 
     def Activated(self):
-        sel = FreeCADGui.Selection.getSelectionEx()
-        if len(sel) != 2:
+        sels = FreeCADGui.Selection.getSelectionEx()
+        if len(sels) != 2:
             FreeCAD.Console.PrintError("You must select exactly two objects, the shape to be cut and a line\n")
             return
-        if not sel[1].SubObjects:
+        if not sels[1].SubObjects:
             FreeCAD.Console.PrintError("You must select a line from the second object (cut line), not the whole object\n")
             return
         panel=_CutPlaneTaskPanel(linecut=True)
@@ -99,19 +133,19 @@ class _CommandCutLine:
 class _CommandCutPlane:
     "the Arch CutPlane command definition"
     def GetResources(self):
-       return {'Pixmap'  : 'Arch_CutPlane',
-                'MenuText': QtCore.QT_TRANSLATE_NOOP("Arch_CutPlane","Cut with plane"),
-                'ToolTip': QtCore.QT_TRANSLATE_NOOP("Arch_CutPlane","Cut an object with a plane")}
+       return {"Pixmap": "Arch_CutPlane",
+               "MenuText": QtCore.QT_TRANSLATE_NOOP("Arch_CutPlane","Cut with plane"),
+               "ToolTip": QtCore.QT_TRANSLATE_NOOP("Arch_CutPlane","Cut an object with a plane")}
 
     def IsActive(self):
         return len(FreeCADGui.Selection.getSelection()) > 1
 
     def Activated(self):
-        sel = FreeCADGui.Selection.getSelectionEx()
-        if len(sel) != 2:
+        sels = FreeCADGui.Selection.getSelectionEx()
+        if len(sels) != 2:
             FreeCAD.Console.PrintError("You must select exactly two objects, the shape to be cut and the cut plane\n")
             return
-        if not sel[1].SubObjects:
+        if not sels[1].SubObjects:
             FreeCAD.Console.PrintError("You must select a face from the second object (cut plane), not the whole object\n")
             return
         panel=_CutPlaneTaskPanel()
@@ -119,12 +153,21 @@ class _CommandCutPlane:
 
 class _CutPlaneTaskPanel:
     def __init__(self,linecut=False):
-        self.linecut=linecut
-        self.plan=None
+        sels = FreeCADGui.Selection.getSelectionEx("", 0)
+        shapes = []
+        needSubEle = False
+        for sel in sels:
+            for sub in sel.SubElementNames if sel.SubElementNames else [""]:
+                shapes.append(Part.getShape(sel.Object, sub, needSubElement=needSubEle, retType=0))
+                needSubEle = True
+        self.base = shapes[0]
+        self.plan = shapes[1]
         if linecut:
-            self.plan = getPlanWithLine(FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0])
-        else :
-            self.plan = FreeCADGui.Selection.getSelectionEx()[1].SubObjects[0]
+            self.plan = getPlanWithLine(self.plan)
+
+        self.previewObj = FreeCAD.ActiveDocument.addObject("Part::Feature", "PreviewCutVolume")
+        self.previewObj.ViewObject.ShapeColor = (1.00, 0.00, 0.00)
+        self.previewObj.ViewObject.Transparency = 75
 
         self.form = QtGui.QWidget()
         self.form.setObjectName("TaskPanel")
@@ -138,7 +181,6 @@ class _CutPlaneTaskPanel:
         self.combobox.setCurrentIndex(0)
         self.grid.addWidget(self.combobox, 2, 1)
         QtCore.QObject.connect(self.combobox,QtCore.SIGNAL("currentIndexChanged(int)"),self.previewCutVolume)
-        self.previewObj = FreeCAD.ActiveDocument.addObject("Part::Feature","PreviewCutVolume")
         self.retranslateUi(self.form)
         self.previewCutVolume(self.combobox.currentIndex())
 
@@ -147,19 +189,16 @@ class _CutPlaneTaskPanel:
 
     def accept(self):
         FreeCAD.ActiveDocument.removeObject(self.previewObj.Name)
-        val = self.combobox.currentIndex()
-        s = FreeCADGui.Selection.getSelectionEx()
-        if len(s) > 1:
-            if s[1].SubObjects:
-                FreeCAD.ActiveDocument.openTransaction(translate("Arch","Cutting"))
-                FreeCADGui.addModule("Arch")
-                ###TODO redo FreeCADGui.doCommand by using self.plan:
-                #FreeCADGui.doCommand("Arch.cutComponentwithPlane(FreeCADGui.Selection.getSelectionEx()[0],self.plan,"+ str(val) +")")
-                cutComponentwithPlane(FreeCADGui.Selection.getSelectionEx()[0],self.plan,val)
-
-                FreeCAD.ActiveDocument.commitTransaction()
-                FreeCAD.ActiveDocument.recompute()
-                return True
+        side = self.combobox.currentIndex()
+        sels = FreeCADGui.Selection.getSelectionEx()
+        if len(sels) > 1 and sels[1].SubObjects:
+            FreeCAD.ActiveDocument.openTransaction(translate("Arch","Cutting"))
+            FreeCADGui.addModule("Arch")
+            FreeCADGui.doCommand("sels = FreeCADGui.Selection.getSelectionEx('', 0)")
+            FreeCADGui.doCommand("Arch.cutComponentwithPlane(sels, side=" + str(side) + ")")
+            FreeCAD.ActiveDocument.commitTransaction()
+            FreeCAD.ActiveDocument.recompute()
+            return True
         FreeCAD.Console.PrintError("Wrong selection\n")
         return True
 
@@ -172,11 +211,7 @@ class _CutPlaneTaskPanel:
         return int(QtGui.QDialogButtonBox.Ok|QtGui.QDialogButtonBox.Cancel)
 
     def previewCutVolume(self, i):
-        cutVolume = ArchCommands.getCutVolume(self.plan,FreeCADGui.Selection.getSelectionEx()[0].Object.Shape)
-        FreeCAD.ActiveDocument.removeObject(self.previewObj.Name)
-        self.previewObj = FreeCAD.ActiveDocument.addObject("Part::Feature", "PreviewCutVolume")
-        self.previewObj.ViewObject.ShapeColor = (1.00,0.00,0.00)
-        self.previewObj.ViewObject.Transparency = 75
+        cutVolume = ArchCommands.getCutVolume(self.plan,self.base)
         if i == 1:
             cutVolume = cutVolume[1]
         else:
