@@ -46,7 +46,7 @@ class MaterialsEditor: public QDialog
     Q_OBJECT
 
 public:
-    MaterialsEditor(QWidget* parent = nullptr);
+    explicit MaterialsEditor(QWidget* parent = nullptr);
     ~MaterialsEditor() override = default;
 
     void onName(const QString& text);

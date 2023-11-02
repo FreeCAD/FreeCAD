@@ -47,9 +47,9 @@ class MaterialsExport MaterialProperty: public ModelProperty
 
 public:
     MaterialProperty();
-    MaterialProperty(const ModelProperty& property);
     MaterialProperty(const MaterialProperty& property);
-    MaterialProperty(std::shared_ptr<MaterialProperty> property);
+    explicit MaterialProperty(const ModelProperty& property);
+    explicit MaterialProperty(std::shared_ptr<MaterialProperty> property);
     ~MaterialProperty() override = default;
 
     MaterialValue::ValueType getType() const

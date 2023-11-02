@@ -457,11 +457,11 @@ Material::Material(const Material& other)
         _allUuids.push_back(*it);
     }
     for (auto it = other._physical.begin(); it != other._physical.end(); it++) {
-        MaterialProperty prop = it->second;
+        MaterialProperty prop(it->second);
         _physical[it->first] = std::make_shared<MaterialProperty>(prop);
     }
     for (auto it = other._appearance.begin(); it != other._appearance.end(); it++) {
-        MaterialProperty prop = it->second;
+        MaterialProperty prop(it->second);
         _appearance[it->first] = std::make_shared<MaterialProperty>(prop);
     }
 }
@@ -1330,12 +1330,12 @@ Material& Material::operator=(const Material& other)
     // Create copies of the properties rather than modify the originals
     _physical.clear();
     for (auto it = other._physical.begin(); it != other._physical.end(); it++) {
-        MaterialProperty prop = it->second;
+        MaterialProperty prop(it->second);
         _physical[it->first] = std::make_shared<MaterialProperty>(prop);
     }
     _appearance.clear();
     for (auto it = other._appearance.begin(); it != other._appearance.end(); it++) {
-        MaterialProperty prop = it->second;
+        MaterialProperty prop(it->second);
         _appearance[it->first] = std::make_shared<MaterialProperty>(prop);
     }
 

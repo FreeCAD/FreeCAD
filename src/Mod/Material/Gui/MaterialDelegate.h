@@ -40,7 +40,7 @@ class MaterialDelegate: public QStyledItemDelegate
 {
     Q_OBJECT
 public:
-    MaterialDelegate(QObject* parent = nullptr);
+    explicit MaterialDelegate(QObject* parent = nullptr);
     ~MaterialDelegate() override = default;
 
     QWidget* createEditor(QWidget* parent,

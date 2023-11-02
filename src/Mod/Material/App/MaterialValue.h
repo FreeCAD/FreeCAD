@@ -58,7 +58,7 @@ public:
     };
     MaterialValue();
     MaterialValue(const MaterialValue& other);
-    MaterialValue(ValueType type);
+    explicit MaterialValue(ValueType type);
     virtual ~MaterialValue() = default;
 
     MaterialValue& operator=(const MaterialValue& other);
