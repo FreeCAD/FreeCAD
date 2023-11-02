@@ -49,6 +49,7 @@ class MaterialsExport MaterialLibrary: public LibraryBase,
 
 public:
     MaterialLibrary();
+    MaterialLibrary(const MaterialLibrary&) = delete;
     MaterialLibrary(const QString& libraryName,
                     const QString& dir,
                     const QString& icon,
@@ -90,8 +91,6 @@ public:
     }
 
 protected:
-    MaterialLibrary(const MaterialLibrary&) = default;
-
     void deleteDir(MaterialManager& manager, const QString& path);
     void deleteFile(MaterialManager& manager, const QString& path);
 
