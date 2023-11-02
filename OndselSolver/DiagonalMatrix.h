@@ -8,17 +8,12 @@
 
 #pragma once
 
+#include "DiagonalMatrix.ref.h"
 #include "Array.h"
 #include "FullColumn.h"
 #include "FullMatrix.h"
 
 namespace MbD {
-	template<typename T>
-	class DiagonalMatrix;
-	template<typename T>
-	using DiagMatsptr = std::shared_ptr<DiagonalMatrix<T>>;
-	using DiagMatDsptr = std::shared_ptr<DiagonalMatrix<double>>;
-
 	template<typename T>
 	class DiagonalMatrix : public Array<T>
 	{
