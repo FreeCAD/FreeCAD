@@ -85,6 +85,7 @@ bool MaterialValue::operator==(const MaterialValue& other) const
 
 void MaterialValue::setInitialValue(ValueType inherited)
 {
+#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
     if (_valueType == String) {
         _value = QVariant(static_cast<QVariant::Type>(QMetaType::QString));
     }
@@ -100,11 +101,6 @@ void MaterialValue::setInitialValue(ValueType inherited)
     else if (_valueType == URL) {
         _value = QVariant(static_cast<QVariant::Type>(QMetaType::QString));
     }
-    else if (_valueType == Quantity) {
-        Base::Quantity q;
-        q.setInvalid();
-        _value = QVariant::fromValue(q);
-    }
     else if (_valueType == Color) {
         _value = QVariant(static_cast<QVariant::Type>(QMetaType::QString));
     }
@@ -116,6 +112,40 @@ void MaterialValue::setInitialValue(ValueType inherited)
     }
     else if (_valueType == List) {
         _value = QVariant(static_cast<QVariant::Type>(QMetaType::QString));
+    }
+#else
+    if (_valueType == String) {
+        _value = QVariant(QMetaType(QMetaType::QString));
+    }
+    else if (_valueType == Boolean) {
+        _value = QVariant(QMetaType(QMetaType::Bool));
+    }
+    else if (_valueType == Integer) {
+        _value = QVariant(QMetaType(QMetaType::Int));
+    }
+    else if (_valueType == Float) {
+        _value = QVariant(QMetaType(QMetaType::Float));
+    }
+    else if (_valueType == URL) {
+        _value = QVariant(QMetaType(QMetaType::QString));
+    }
+    else if (_valueType == Color) {
+        _value = QVariant(QMetaType(QMetaType::QString));
+    }
+    else if (_valueType == File) {
+        _value = QVariant(QMetaType(QMetaType::QString));
+    }
+    else if (_valueType == Image) {
+        _value = QVariant(QMetaType(QMetaType::QString));
+    }
+    else if (_valueType == List) {
+        _value = QVariant(QMetaType(QMetaType::QString));
+    }
+#endif
+    else if (_valueType == Quantity) {
+        Base::Quantity qu;
+        qu.setInvalid();
+        _value = QVariant::fromValue(qu);
     }
     else if (_valueType == Array2D) {
         if (_valueType != inherited) {
