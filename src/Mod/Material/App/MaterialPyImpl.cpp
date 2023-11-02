@@ -23,6 +23,7 @@
 
 #include <QMetaType>
 
+#include <CXX/Objects.hxx>
 #include <Base/Quantity.h>
 #include <Base/QuantityPy.h>
 #include <Gui/MetaTypes.h>
@@ -46,12 +47,15 @@ std::string MaterialPy::representation() const
     str << ptr->getName().toStdString();
     str << "), UUID=(";
     str << ptr->getUUID().toStdString();
-    str << "), Library Name=(";
-    str << ptr->getLibrary()->getName().toStdString();
-    str << "), Library Root=(";
-    str << ptr->getLibrary()->getDirectoryPath().toStdString();
-    str << "), Library Icon=(";
-    str << ptr->getLibrary()->getIconPath().toStdString();
+    auto library = ptr->getLibrary();
+    if (library) {
+        str << "), Library Name=(";
+        str << ptr->getLibrary()->getName().toStdString();
+        str << "), Library Root=(";
+        str << ptr->getLibrary()->getDirectoryPath().toStdString();
+        str << "), Library Icon=(";
+        str << ptr->getLibrary()->getIconPath().toStdString();
+    }
     str << "), Directory=(";
     str << ptr->getDirectory().toStdString();
     // str << "), URL=(";
@@ -91,17 +95,20 @@ int MaterialPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 
 Py::String MaterialPy::getLibraryName() const
 {
-    return Py::String(getMaterialPtr()->getLibrary()->getName().toStdString());
+    auto library = getMaterialPtr()->getLibrary();
+    return Py::String(library ? library->getName().toStdString() : "");
 }
 
 Py::String MaterialPy::getLibraryRoot() const
 {
-    return Py::String(getMaterialPtr()->getLibrary()->getDirectoryPath().toStdString());
+    auto library = getMaterialPtr()->getLibrary();
+    return Py::String(library ? library->getDirectoryPath().toStdString() : "");
 }
 
 Py::String MaterialPy::getLibraryIcon() const
 {
-    return Py::String(getMaterialPtr()->getLibrary()->getIconPath().toStdString());
+    auto library = getMaterialPtr()->getLibrary();
+    return Py::String(library ? library->getIconPath().toStdString() : "");
 }
 
 Py::String MaterialPy::getName() const
@@ -347,7 +354,7 @@ Py::Dict MaterialPy::getAppearanceProperties() const
 static PyObject* _pyObjectFromVariant(const QVariant& value)
 {
     if (value.isNull()) {
-        return new PyObject();
+        Py_RETURN_NONE;
     }
 
     if (value.userType() == qMetaTypeId<Base::Quantity>()) {
@@ -366,7 +373,7 @@ static PyObject* _pyObjectFromVariant(const QVariant& value)
         return PyLong_FromLong(value.toInt());
     }
     else if (value.userType() == QMetaType::Bool) {
-        return value.toBool() ? Py_True : Py_False;
+        return Py::new_reference_to(Py::Boolean(value.toBool()));
     }
     else if (value.userType() == QMetaType::QString) {
         return PyUnicode_FromString(value.toString().toStdString().c_str());

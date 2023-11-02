@@ -40,12 +40,15 @@ std::string ModelPy::representation() const
     str << ptr->getName().toStdString();
     str << "), UUID=(";
     str << ptr->getUUID().toStdString();
-    str << "), Library Name=(";
-    str << ptr->getLibrary()->getName().toStdString();
-    str << "), Library Root=(";
-    str << ptr->getLibrary()->getDirectoryPath().toStdString();
-    str << "), Library Icon=(";
-    str << ptr->getLibrary()->getIconPath().toStdString();
+    auto library = ptr->getLibrary();
+    if (library) {
+        str << "), Library Name=(";
+        str << ptr->getLibrary()->getName().toStdString();
+        str << "), Library Root=(";
+        str << ptr->getLibrary()->getDirectoryPath().toStdString();
+        str << "), Library Icon=(";
+        str << ptr->getLibrary()->getIconPath().toStdString();
+    }
     str << "), Directory=(";
     str << ptr->getDirectory().toStdString();
     str << "), URL=(";
@@ -85,17 +88,20 @@ int ModelPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 
 Py::String ModelPy::getLibraryName() const
 {
-    return Py::String(getModelPtr()->getLibrary()->getName().toStdString());
+    auto library = getModelPtr()->getLibrary();
+    return Py::String(library ? library->getName().toStdString() : "");
 }
 
 Py::String ModelPy::getLibraryRoot() const
 {
-    return Py::String(getModelPtr()->getLibrary()->getDirectoryPath().toStdString());
+    auto library = getModelPtr()->getLibrary();
+    return Py::String(library ? library->getDirectoryPath().toStdString() : "");
 }
 
 Py::String ModelPy::getLibraryIcon() const
 {
-    return Py::String(getModelPtr()->getLibrary()->getIconPath().toStdString());
+    auto library = getModelPtr()->getLibrary();
+    return Py::String(library ? library->getIconPath().toStdString() : "");
 }
 
 Py::String ModelPy::getName() const
