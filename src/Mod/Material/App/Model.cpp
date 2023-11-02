@@ -90,10 +90,6 @@ bool ModelProperty::operator==(const ModelProperty& other) const
         return true;
     }
 
-    if (&other == nullptr) {
-        return false;
-    }
-
     return (_name == other._name) && (_propertyType == other._propertyType)
         && (_units == other._units) && (_url == other._url) && (_description == other._description)
         && (_inheritance == other._inheritance);
