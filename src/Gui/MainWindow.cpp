@@ -181,11 +181,8 @@ public:
         }
         QObject::connect(actionGrp, &QActionGroup::triggered, this, [this](QAction* action) {
             int userSchema = action->data().toInt();
+            setUserSchema(userSchema);
             // Set and save the Unit System
-            Base::UnitsApi::setSchema(static_cast<Base::UnitSystem>(userSchema));
-            getWindowParameter()->SetInt("UserSchema", userSchema);
-            // Update the application to show the unit change
-            Gui::Application::Instance->onUpdate();
         } );
         setMenu(menu);
         retranslateUi();
@@ -216,6 +213,18 @@ public:
         }
     }
 
+    void setUserSchema(int userSchema)
+    {
+        Base::UnitsApi::setSchema(static_cast<Base::UnitSystem>(userSchema));
+        App::Document* doc = App::GetApplication().getActiveDocument();
+        if ( doc != nullptr && doc->UnitSystem.getValue() != userSchema ) {
+                doc->UnitSystem.setValue(userSchema);
+        }
+        unitChanged();
+        // Update the application to show the unit change
+        Gui::Application::Instance->onUpdate();
+    }
+
 private:
     void unitChanged()
     {
@@ -242,7 +251,7 @@ private:
 // Pimpl class
 struct MainWindowP
 {
-    QPushButton* sizeLabel;
+    DimensionWidget* sizeLabel;
     QLabel* actionLabel;
     QTimer* actionTimer;
     QTimer* statusTimer;
@@ -2420,6 +2429,13 @@ void MainWindow::setPaneText(int i, QString text)
         d->sizeLabel->setText(text);
     }
 }
+
+
+void MainWindow::setUserSchema(int userSchema)
+{
+    d->sizeLabel->setUserSchema(userSchema);
+}
+
 
 void MainWindow::customEvent(QEvent* e)
 {

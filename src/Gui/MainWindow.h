@@ -219,6 +219,10 @@ public Q_SLOTS:
      */
     void setPaneText(int i, QString text);
     /**
+     * Sets the userschema in the status bar
+    */
+    void setUserSchema(int userSchema);
+    /**
      * Arranges all child windows in a tile pattern.
      */
     void tile();

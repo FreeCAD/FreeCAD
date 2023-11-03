@@ -945,9 +945,13 @@ void Application::slotActiveDocument(const App::Document& Doc)
 			Base::UnitsApi::setSchema((Base::UnitSystem)hGrp->GetInt("UserSchema",0));
 			Base::UnitsApi::setDecimals(hGrp->GetInt("Decimals", Base::UnitsApi::getDecimals()));
         }
-        
-        signalActiveDocument(*doc->second);
-        updateActions();
+        // Update the application to show the unit change
+        if( Doc.FileName.getValue()[0] != '\0' ) {
+            getMainWindow()->setUserSchema(Doc.UnitSystem.getValue());
+            Application::Instance->onUpdate();
+            signalActiveDocument(*doc->second);
+            updateActions();
+        }
     }
 }
 
