@@ -25,12 +25,13 @@
       "osx": {
         "MIMode": "lldb"
       },
-      "windows": {
-        "MIMode": "gdb",
-        "miDebuggerPath": "C:\\msys64\\ucrt64\\bin\\gdb.exe"
-      },
       "externalConsole": false,
       "preLaunchTask": "CMake: build"
+    },
+    {
+      "name": "C/C++: Attach to running FreeCAD (Windows)",
+      "type": "cppvsdbg",
+      "request": "attach",
     },
     {
       "name": "Python: Remote Attach",
