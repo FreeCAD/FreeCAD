@@ -234,10 +234,6 @@ private:
                     else {
                         radius = 0.;
                     }
-
-                    SbString text;
-                    text.sprintf(" (%.1f Angle)", angle123 / M_PI * 180);
-                    setPositionText(onSketchPos, text);
                 }
                 else {
                     corner2 = onSketchPos;
@@ -1450,7 +1446,15 @@ private:
         Base::Vector2d e = onSketchPos - corner1;
         double du = (v.y * e.x - v.x * e.y) / (u.x * v.y - u.y * v.x);
         double dv = (-u.y * e.x + u.x * e.y) / (u.x * v.y - u.y * v.x);
-        if (du < 0 || du > length || dv < 0 || dv > width) {
+
+        if (-Precision::Confusion() < du && du < 0) {
+            du = 0.0;
+        }
+        if (-Precision::Confusion() < dv && dv < 0) {
+            dv = 0.0;
+        }
+
+        if (du < 0.0 || du > length || dv < 0.0 || dv > width) {
             radius = 0.;
         }
         else {
@@ -1488,10 +1492,6 @@ private:
                     / (cos(angle412 / 2) / sqrt(1 - cos(angle412 / 2) * cos(angle412 / 2))
                        + cos(angle123 / 2) / sqrt(1 - cos(angle123 / 2) * cos(angle123 / 2))));
         }
-
-        SbString text;
-        text.sprintf(" (%.1f radius)", radius);
-        setPositionText(onSketchPos, text);
     }
 
     void calculateThickness(Base::Vector2d onSketchPos)
@@ -1525,10 +1525,6 @@ private:
         frameCorner4 = corner4 - u * obliqueThickness + v * obliqueThickness;
 
         thickness = obliqueThickness * sin(angle412);
-
-        SbString text;
-        text.sprintf(" (%.1fT)", thickness);
-        setPositionText(onSketchPos, text);
     }
 };
 
@@ -1732,49 +1728,48 @@ void DSHRectangleControllerBase::doEnforceControlParameters(Base::Vector2d& onSk
                     double length = onViewParameters[OnViewParameter::Third]->getValue();
                     if (fabs(length) < Precision::Confusion()) {
                         unsetOnViewParameter(onViewParameters[OnViewParameter::Third].get());
+                        return;
+                    }
+
+                    if (handler->constructionMethod() == ConstructionMethod::Diagonal) {
+                        int sign = (onSketchPos.x - handler->corner1.x) >= 0 ? 1 : -1;
+                        onSketchPos.x = handler->corner1.x + sign * length;
                     }
                     else {
-                        if (handler->constructionMethod() == ConstructionMethod::Diagonal) {
-                            int sign = (onSketchPos.x - handler->corner1.x) >= 0 ? 1 : -1;
-                            onSketchPos.x = handler->corner1.x + sign * length;
-                        }
-                        else {
-                            onSketchPos.x = handler->center.x + length / 2;
-                        }
+                        onSketchPos.x = handler->center.x + length / 2;
                     }
                 }
                 if (onViewParameters[OnViewParameter::Fourth]->isSet) {
                     double width = onViewParameters[OnViewParameter::Fourth]->getValue();
                     if (fabs(width) < Precision::Confusion()) {
                         unsetOnViewParameter(onViewParameters[OnViewParameter::Fourth].get());
+                        return;
+                    }
+
+                    if (handler->constructionMethod() == ConstructionMethod::Diagonal) {
+                        int sign = (onSketchPos.y - handler->corner1.y) >= 0 ? 1 : -1;
+                        onSketchPos.y = handler->corner1.y + sign * width;
                     }
                     else {
-                        if (handler->constructionMethod() == ConstructionMethod::Diagonal) {
-                            int sign = (onSketchPos.y - handler->corner1.y) >= 0 ? 1 : -1;
-                            onSketchPos.y = handler->corner1.y + sign * width;
-                        }
-                        else {
-                            onSketchPos.y = handler->center.y + width / 2;
-                        }
+                        onSketchPos.y = handler->center.y + width / 2;
                     }
                 }
             }
             else if (handler->constructionMethod() == ConstructionMethod::ThreePoints) {
                 Base::Vector2d dir = onSketchPos - handler->corner1;
+                if (dir.Length() < Precision::Confusion()) {
+                    dir.x = 1.0;  // if direction null, default to (1,0)
+                }
                 double length = dir.Length();
 
                 if (onViewParameters[OnViewParameter::Third]->isSet) {
                     length = onViewParameters[OnViewParameter::Third]->getValue();
                     if (length < Precision::Confusion()) {
                         unsetOnViewParameter(onViewParameters[OnViewParameter::Third].get());
+                        return;
                     }
-                    else {
-                        if (dir.Length() < Precision::Confusion()) {
-                            dir.x = 1;  // if direction cannot be determined, default to (1,0)
-                        }
 
-                        onSketchPos = handler->corner1 + length * dir.Normalize();
-                    }
+                    onSketchPos = handler->corner1 + length * dir.Normalize();
                 }
 
                 if (onViewParameters[OnViewParameter::Fourth]->isSet) {
@@ -1791,6 +1786,12 @@ void DSHRectangleControllerBase::doEnforceControlParameters(Base::Vector2d& onSk
 
                 if (onViewParameters[OnViewParameter::Fourth]->isSet) {
                     onSketchPos.y = onViewParameters[OnViewParameter::Fourth]->getValue();
+                }
+                if (onViewParameters[OnViewParameter::Third]->isSet
+                    && onViewParameters[OnViewParameter::Fourth]->isSet
+                    && (onSketchPos - handler->center).Length() < Precision::Confusion()) {
+                    unsetOnViewParameter(onViewParameters[OnViewParameter::Third].get());
+                    unsetOnViewParameter(onViewParameters[OnViewParameter::Fourth].get());
                 }
             }
         } break;
@@ -1809,92 +1810,88 @@ void DSHRectangleControllerBase::doEnforceControlParameters(Base::Vector2d& onSk
                         double thickness = onViewParameters[OnViewParameter::Sixth]->getValue();
                         if (thickness < Precision::Confusion()) {
                             unsetOnViewParameter(onViewParameters[OnViewParameter::Sixth].get());
+                            return;
                         }
-                        else {
-                            Base::Vector2d u = (handler->corner2 - handler->corner1).Normalize();
-                            Base::Vector2d v = (handler->corner4 - handler->corner1).Normalize();
-                            onSketchPos = handler->corner1 - u * thickness - v * thickness;
-                        }
+
+                        Base::Vector2d u = (handler->corner2 - handler->corner1).Normalize();
+                        Base::Vector2d v = (handler->corner4 - handler->corner1).Normalize();
+                        onSketchPos = handler->corner1 - u * thickness - v * thickness;
                     }
                 }
             }
             else if (handler->constructionMethod() == ConstructionMethod::ThreePoints) {
                 Base::Vector2d dir = onSketchPos - handler->corner2Initial;
+                if (dir.Length() < Precision::Confusion()) {
+                    dir.x = 1.0;  // if direction null, default to (1,0)
+                }
                 double width = dir.Length();
 
                 if (onViewParameters[OnViewParameter::Fifth]->isSet) {
                     width = onViewParameters[OnViewParameter::Fifth]->getValue();
                     if (width < Precision::Confusion()) {
                         unsetOnViewParameter(onViewParameters[OnViewParameter::Fifth].get());
+                        return;
                     }
-                    else {
-                        if (dir.Length() < Precision::Confusion()) {
-                            dir.x = 1;  // if direction cannot be determined, default to (1,0)
-                        }
 
-                        onSketchPos = handler->corner2Initial + width * dir.Normalize();
-                    }
+                    onSketchPos = handler->corner2Initial + width * dir.Normalize();
                 }
                 if (onViewParameters[OnViewParameter::Sixth]->isSet) {
                     double angle =
                         onViewParameters[OnViewParameter::Sixth]->getValue() * M_PI / 180;
                     if (fmod(angle, M_PI) < Precision::Confusion()) {
                         unsetOnViewParameter(onViewParameters[OnViewParameter::Sixth].get());
+                        return;
                     }
-                    else {
-                        int sign1 = handler->getPointSideOfVector(onSketchPos,
-                                                                  handler->corner2Initial
-                                                                      - handler->corner1,
-                                                                  handler->corner1);
 
-                        int sign = handler->side != sign1 ? 1 : -1;
+                    int sign1 =
+                        handler->getPointSideOfVector(onSketchPos,
+                                                      handler->corner2Initial - handler->corner1,
+                                                      handler->corner1);
 
-                        double angle123 = (handler->corner2Initial - handler->corner1).Angle()
-                            + M_PI + sign * angle;
+                    int sign = handler->side != sign1 ? 1 : -1;
 
-                        onSketchPos.x = handler->corner2Initial.x + cos(angle123) * width;
-                        onSketchPos.y = handler->corner2Initial.y + sin(angle123) * width;
-                    }
+                    double angle123 =
+                        (handler->corner2Initial - handler->corner1).Angle() + M_PI + sign * angle;
+
+                    onSketchPos.x = handler->corner2Initial.x + cos(angle123) * width;
+                    onSketchPos.y = handler->corner2Initial.y + sin(angle123) * width;
                 }
             }
             else {
                 Base::Vector2d dir = onSketchPos - handler->corner1;
+                if (dir.Length() < Precision::Confusion()) {
+                    dir.x = 1.0;  // if direction null, default to (1,0)
+                }
                 double width = dir.Length();
                 if (onViewParameters[OnViewParameter::Fifth]->isSet) {
                     width = onViewParameters[OnViewParameter::Fifth]->getValue();
                     if (width < Precision::Confusion()) {
                         unsetOnViewParameter(onViewParameters[OnViewParameter::Fifth].get());
+                        return;
                     }
-                    else {
-                        if (dir.Length() < Precision::Confusion()) {
-                            dir.x = 1;  // if direction cannot be determined, default to (1,0)
-                        }
 
-                        onSketchPos = handler->corner1 + width * dir.Normalize();
-                    }
+                    onSketchPos = handler->corner1 + width * dir.Normalize();
                 }
                 if (onViewParameters[OnViewParameter::Sixth]->isSet) {
                     double c = onViewParameters[OnViewParameter::Sixth]->getValue() * M_PI / 180;
                     if (fmod(c, M_PI) < Precision::Confusion()) {
                         unsetOnViewParameter(onViewParameters[OnViewParameter::Sixth].get());
+                        return;
                     }
-                    else {
-                        double a = asin(width * sin(M_PI - c)
-                                        / (handler->corner3 - handler->corner1).Length());
 
-                        int sign1 =
-                            handler->getPointSideOfVector(onSketchPos,
-                                                          handler->corner3 - handler->corner1,
-                                                          handler->corner1);
+                    double a = asin(width * sin(M_PI - c)
+                                    / (handler->corner3 - handler->corner1).Length());
 
-                        int sign = handler->side != sign1 ? 1 : -1;
+                    int sign1 = handler->getPointSideOfVector(onSketchPos,
+                                                              handler->corner3 - handler->corner1,
+                                                              handler->corner1);
 
-                        double angle =
-                            (handler->center - handler->corner1).Angle() + sign * (c - a);
+                    int sign = handler->side != sign1 ? 1 : -1;
 
-                        onSketchPos.x = handler->corner1.x + cos(angle) * width;
-                        onSketchPos.y = handler->corner1.y + sin(angle) * width;
-                    }
+                    double angle = (handler->center - handler->corner1).Angle() + sign * (c - a);
+
+                    onSketchPos.x = handler->corner1.x + cos(angle) * width;
+                    onSketchPos.y = handler->corner1.y + sin(angle) * width;
                 }
             }
         } break;
@@ -1906,12 +1903,12 @@ void DSHRectangleControllerBase::doEnforceControlParameters(Base::Vector2d& onSk
                     double thickness = onViewParameters[OnViewParameter::Sixth]->getValue();
                     if (thickness < Precision::Confusion()) {
                         unsetOnViewParameter(onViewParameters[OnViewParameter::Sixth].get());
+                        return;
                     }
-                    else {
-                        Base::Vector2d u = (handler->corner2 - handler->corner1).Normalize();
-                        Base::Vector2d v = (handler->corner4 - handler->corner1).Normalize();
-                        onSketchPos = handler->corner1 - u * thickness - v * thickness;
-                    }
+
+                    Base::Vector2d u = (handler->corner2 - handler->corner1).Normalize();
+                    Base::Vector2d v = (handler->corner4 - handler->corner1).Normalize();
+                    onSketchPos = handler->corner1 - u * thickness - v * thickness;
                 }
             }
             else {
@@ -1933,12 +1930,12 @@ void DSHRectangleControllerBase::doEnforceControlParameters(Base::Vector2d& onSk
                         double thickness = onViewParameters[OnViewParameter::Eighth]->getValue();
                         if (thickness < Precision::Confusion()) {
                             unsetOnViewParameter(onViewParameters[OnViewParameter::Eighth].get());
+                            return;
                         }
-                        else {
-                            Base::Vector2d u = (handler->corner2 - handler->corner1).Normalize();
-                            Base::Vector2d v = (handler->corner4 - handler->corner1).Normalize();
-                            onSketchPos = handler->corner1 - u * thickness - v * thickness;
-                        }
+
+                        Base::Vector2d u = (handler->corner2 - handler->corner1).Normalize();
+                        Base::Vector2d v = (handler->corner4 - handler->corner1).Normalize();
+                        onSketchPos = handler->corner1 - u * thickness - v * thickness;
                     }
                 }
             }
@@ -1948,12 +1945,12 @@ void DSHRectangleControllerBase::doEnforceControlParameters(Base::Vector2d& onSk
                 double thickness = onViewParameters[OnViewParameter::Eighth]->getValue();
                 if (thickness < Precision::Confusion()) {
                     unsetOnViewParameter(onViewParameters[OnViewParameter::Eighth].get());
+                    return;
                 }
-                else {
-                    Base::Vector2d u = (handler->corner2 - handler->corner1).Normalize();
-                    Base::Vector2d v = (handler->corner4 - handler->corner1).Normalize();
-                    onSketchPos = handler->corner1 - u * thickness - v * thickness;
-                }
+
+                Base::Vector2d u = (handler->corner2 - handler->corner1).Normalize();
+                Base::Vector2d v = (handler->corner4 - handler->corner1).Normalize();
+                onSketchPos = handler->corner1 - u * thickness - v * thickness;
             }
         } break;
         default:
