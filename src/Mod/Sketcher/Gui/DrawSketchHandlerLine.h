@@ -336,20 +336,19 @@ void DSHLineControllerBase::doEnforceControlParameters(Base::Vector2d& onSketchP
             else if (handler->constructionMethod() == ConstructionMethod::OnePointLengthAngle) {
 
                 Base::Vector2d dir = onSketchPos - handler->startPoint;
+                if (dir.Length() < Precision::Confusion()) {
+                    dir.x = 1.0;  // if direction null, default to (1,0)
+                }
                 double length = dir.Length();
 
                 if (onViewParameters[OnViewParameter::Third]->isSet) {
                     length = onViewParameters[OnViewParameter::Third]->getValue();
                     if (length < Precision::Confusion()) {
                         unsetOnViewParameter(onViewParameters[OnViewParameter::Third].get());
+                        return;
                     }
-                    else {
-                        if (dir.Length() < Precision::Confusion()) {
-                            dir.x = 1;  // if direction cannot be determined, default to (1,0)
-                        }
 
-                        onSketchPos = handler->startPoint + length * dir.Normalize();
-                    }
+                    onSketchPos = handler->startPoint + length * dir.Normalize();
                 }
 
                 if (onViewParameters[OnViewParameter::Fourth]->isSet) {
@@ -366,6 +365,13 @@ void DSHLineControllerBase::doEnforceControlParameters(Base::Vector2d& onSketchP
                 if (onViewParameters[OnViewParameter::Fourth]->isSet) {
                     onSketchPos.y = onViewParameters[OnViewParameter::Fourth]->getValue();
                 }
+            }
+
+            if (onViewParameters[OnViewParameter::Third]->isSet
+                && onViewParameters[OnViewParameter::Fourth]->isSet
+                && (onSketchPos - handler->startPoint).Length() < Precision::Confusion()) {
+                unsetOnViewParameter(onViewParameters[OnViewParameter::Third].get());
+                unsetOnViewParameter(onViewParameters[OnViewParameter::Fourth].get());
             }
         } break;
         default:
