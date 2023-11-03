@@ -406,7 +406,9 @@ protected:
     virtual void afterEnforceControlParameters()
     {
         // Give focus to current on-view parameter. In case user interacted outside of 3dview.
-        setFocusToOnViewParameter(onViewIndexWithFocus);
+        if (onViewIndexWithFocus >= 0) {
+            setFocusToOnViewParameter(onViewIndexWithFocus);
+        }
     }
 
     virtual void doConstructionMethodChanged()
@@ -489,6 +491,8 @@ protected:
     void setModeOnViewParameters()
     {
         bool firstOfMode = true;
+        onViewIndexWithFocus = -1;
+
         for (size_t i = 0; i < onViewParameters.size(); i++) {
             if (!isOnViewParameterOfCurrentMode(i)) {
                 onViewParameters[i]->stopEdit();
