@@ -2308,7 +2308,7 @@ void CmdSketcherOffset::activated(int iMsg)
     ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerOffset(listOfGeoIds));
 }
 
-bool CmdSketcherOffset::isActive(void)
+bool CmdSketcherOffset::isActive()
 {
     return isCommandActive(getActiveGuiDocument(), true);
 }
