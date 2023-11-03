@@ -630,7 +630,7 @@ CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreateEllipseByCenter, "Sketcher_CreateEll
 void CmdSketcherCreateEllipseByCenter::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerEllipse(0));
+    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerEllipse());
 }
 
 bool CmdSketcherCreateEllipseByCenter::isActive()
@@ -663,7 +663,9 @@ CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreateEllipseBy3Points, "Sketcher_CreateEl
 void CmdSketcherCreateEllipseBy3Points::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerEllipse(1));
+    ActivateHandler(getActiveGuiDocument(),
+                    new DrawSketchHandlerEllipse(
+                        ConstructionMethods::CircleEllipseConstructionMethod::ThreeRim));
 }
 
 bool CmdSketcherCreateEllipseBy3Points::isActive()
@@ -782,10 +784,12 @@ CmdSketcherCompCreateConic::CmdSketcherCompCreateConic()
 void CmdSketcherCompCreateConic::activated(int iMsg)
 {
     if (iMsg == 0) {
-        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerEllipse(iMsg));
+        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerEllipse());
     }
     else if (iMsg == 1) {
-        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerEllipse(iMsg));
+        ActivateHandler(getActiveGuiDocument(),
+                        new DrawSketchHandlerEllipse(
+                            ConstructionMethods::CircleEllipseConstructionMethod::ThreeRim));
     }
     else if (iMsg == 2) {
         ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerArcOfEllipse());
