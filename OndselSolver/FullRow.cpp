@@ -7,6 +7,7 @@
  ***************************************************************************/
  
 #include "FullRow.h"
+#include "FullMatrix.h"
 
 using namespace MbD;
 
@@ -15,7 +16,7 @@ FMatsptr<T> FullRow<T>::transposeTimesFullRow(FRowsptr<T> fullRow)
 {
     //"a*b = a(i)b(j)"
     auto nrow = (int)this->size();
-    auto answer = std::make_shared<MbD::FullMatrix<double>>(nrow);
+    auto answer = std::make_shared<FullMatrix<double>>(nrow);
     for (int i = 0; i < nrow; i++)
     {
         answer->atiput(i, fullRow->times(this->at(i)));

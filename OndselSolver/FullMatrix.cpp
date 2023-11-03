@@ -7,9 +7,218 @@
  ***************************************************************************/
  
 #include "FullMatrix.h"
+#include "FullColumn.h"
+#include "FullRow.h"
+#include "DiagonalMatrix.h"
+#include "EulerParameters.h"
 
 using namespace MbD;
 
+template<typename T>
+inline FMatsptr<T> FullMatrix<T>::rotatex(T the)
+{
+    auto sthe = std::sin(the);
+    auto cthe = std::cos(the);
+    auto rotMat = std::make_shared<FullMatrix<T>>(3, 3);
+    auto row0 = rotMat->at(0);
+    row0->atiput(0, 1.0);
+    row0->atiput(1, 0.0);
+    row0->atiput(2, 0.0);
+    auto row1 = rotMat->at(1);
+    row1->atiput(0, 0.0);
+    row1->atiput(1, cthe);
+    row1->atiput(2, -sthe);
+    auto row2 = rotMat->at(2);
+    row2->atiput(0, 0.0);
+    row2->atiput(1, sthe);
+    row2->atiput(2, cthe);
+    return rotMat;
+}
+template<typename T>
+inline FMatsptr<T> FullMatrix<T>::rotatey(T the)
+{
+    auto sthe = std::sin(the);
+    auto cthe = std::cos(the);
+    auto rotMat = std::make_shared<FullMatrix<T>>(3, 3);
+    auto row0 = rotMat->at(0);
+    row0->atiput(0, cthe);
+    row0->atiput(1, 0.0);
+    row0->atiput(2, sthe);
+    auto row1 = rotMat->at(1);
+    row1->atiput(0, 0.0);
+    row1->atiput(1, 1.0);
+    row1->atiput(2, 0.0);
+    auto row2 = rotMat->at(2);
+    row2->atiput(0, -sthe);
+    row2->atiput(1, 0.0);
+    row2->atiput(2, cthe);
+    return rotMat;
+}
+template<typename T>
+inline FMatsptr<T> FullMatrix<T>::rotatez(T the)
+{
+    auto sthe = std::sin(the);
+    auto cthe = std::cos(the);
+    auto rotMat = std::make_shared<FullMatrix<T>>(3, 3);
+    auto row0 = rotMat->at(0);
+    row0->atiput(0, cthe);
+    row0->atiput(1, -sthe);
+    row0->atiput(2, 0.0);
+    auto row1 = rotMat->at(1);
+    row1->atiput(0, sthe);
+    row1->atiput(1, cthe);
+    row1->atiput(2, 0.0);
+    auto row2 = rotMat->at(2);
+    row2->atiput(0, 0.0);
+    row2->atiput(1, 0.0);
+    row2->atiput(2, 1.0);
+    return rotMat;
+}
+template<typename T>
+inline FMatsptr<T> FullMatrix<T>::rotatexrotDot(T the, T thedot)
+{
+    auto sthe = std::sin(the);
+    auto cthe = std::cos(the);
+    auto sthedot = cthe * thedot;
+    auto cthedot = -sthe * thedot;
+    auto rotMat = std::make_shared<FullMatrix<T>>(3, 3);
+    auto row0 = rotMat->at(0);
+    row0->atiput(0, 0.0);
+    row0->atiput(1, 0.0);
+    row0->atiput(2, 0.0);
+    auto row1 = rotMat->at(1);
+    row1->atiput(0, 0.0);
+    row1->atiput(1, cthedot);
+    row1->atiput(2, -sthedot);
+    auto row2 = rotMat->at(2);
+    row2->atiput(0, 0.0);
+    row2->atiput(1, sthedot);
+    row2->atiput(2, cthedot);
+    return rotMat;
+}
+template<typename T>
+inline FMatsptr<T> FullMatrix<T>::rotateyrotDot(T the, T thedot)
+{
+    auto sthe = std::sin(the);
+    auto cthe = std::cos(the);
+    auto sthedot = cthe * thedot;
+    auto cthedot = -sthe * thedot;
+    auto rotMat = std::make_shared<FullMatrix<T>>(3, 3);
+    auto row0 = rotMat->at(0);
+    row0->atiput(0, cthedot);
+    row0->atiput(1, 0.0);
+    row0->atiput(2, sthedot);
+    auto row1 = rotMat->at(1);
+    row1->atiput(0, 0.0);
+    row1->atiput(1, 0.0);
+    row1->atiput(2, 0.0);
+    auto row2 = rotMat->at(2);
+    row2->atiput(0, -sthedot);
+    row2->atiput(1, 0.0);
+    row2->atiput(2, cthedot);
+    return rotMat;
+}
+template<typename T>
+inline FMatsptr<T> FullMatrix<T>::rotatezrotDot(T the, T thedot)
+{
+    auto sthe = std::sin(the);
+    auto cthe = std::cos(the);
+    auto sthedot = cthe * thedot;
+    auto cthedot = -sthe * thedot;
+    auto rotMat = std::make_shared<FullMatrix<T>>(3, 3);
+    auto row0 = rotMat->at(0);
+    row0->atiput(0, cthedot);
+    row0->atiput(1, -sthedot);
+    row0->atiput(2, 0.0);
+    auto row1 = rotMat->at(1);
+    row1->atiput(0, sthedot);
+    row1->atiput(1, cthedot);
+    row1->atiput(2, 0.0);
+    auto row2 = rotMat->at(2);
+    row2->atiput(0, 0.0);
+    row2->atiput(1, 0.0);
+    row2->atiput(2, 0.0);
+    return rotMat;
+}
+template<typename T>
+inline FMatsptr<T> FullMatrix<T>::rotatexrotDotrotDDot(T the, T thedot, T theddot)
+{
+    auto sthe = std::sin(the);
+    auto cthe = std::cos(the);
+    auto sthedot = cthe * thedot;
+    auto cthedot = -sthe * thedot;
+    auto stheddot = cthedot * thedot + (cthe * theddot);
+    auto ctheddot = -(sthedot * thedot) - (sthe * theddot);
+    auto rotMat = std::make_shared<FullMatrix<T>>(3, 3);
+    auto row0 = rotMat->at(0);
+    row0->atiput(0, 0.0);
+    row0->atiput(1, 0.0);
+    row0->atiput(2, 0.0);
+    auto row1 = rotMat->at(1);
+    row1->atiput(0, 0.0);
+    row1->atiput(1, ctheddot);
+    row1->atiput(2, -stheddot);
+    auto row2 = rotMat->at(2);
+    row2->atiput(0, 0.0);
+    row2->atiput(1, stheddot);
+    row2->atiput(2, ctheddot);
+    return rotMat;
+}
+template<typename T>
+inline FMatsptr<T> FullMatrix<T>::rotateyrotDotrotDDot(T the, T thedot, T theddot)
+{
+    auto sthe = std::sin(the);
+    auto cthe = std::cos(the);
+    auto sthedot = cthe * thedot;
+    auto cthedot = -sthe * thedot;
+    auto stheddot = cthedot * thedot + (cthe * theddot);
+    auto ctheddot = -(sthedot * thedot) - (sthe * theddot);
+    auto rotMat = std::make_shared<FullMatrix<T>>(3, 3);
+    auto row0 = rotMat->at(0);
+    row0->atiput(0, ctheddot);
+    row0->atiput(1, 0.0);
+    row0->atiput(2, stheddot);
+    auto row1 = rotMat->at(1);
+    row1->atiput(0, 0.0);
+    row1->atiput(1, 0.0);
+    row1->atiput(2, 0.0);
+    auto row2 = rotMat->at(2);
+    row2->atiput(0, -stheddot);
+    row2->atiput(1, 0.0);
+    row2->atiput(2, ctheddot);
+    return rotMat;
+}
+template<typename T>
+inline FMatsptr<T> FullMatrix<T>::rotatezrotDotrotDDot(T the, T thedot, T theddot)
+{
+    auto sthe = std::sin(the);
+    auto cthe = std::cos(the);
+    auto sthedot = cthe * thedot;
+    auto cthedot = -sthe * thedot;
+    auto stheddot = cthedot * thedot + (cthe * theddot);
+    auto ctheddot = -(sthedot * thedot) - (sthe * theddot);
+    auto rotMat = std::make_shared<FullMatrix<T>>(3, 3);
+    auto row0 = rotMat->at(0);
+    row0->atiput(0, ctheddot);
+    row0->atiput(1, -stheddot);
+    row0->atiput(2, 0.0);
+    auto row1 = rotMat->at(1);
+    row1->atiput(0, stheddot);
+    row1->atiput(1, ctheddot);
+    row1->atiput(2, 0.0);
+    auto row2 = rotMat->at(2);
+    row2->atiput(0, 0.0);
+    row2->atiput(1, 0.0);
+    row2->atiput(2, 0.0);
+    return rotMat;
+}
+template<typename T>
+inline FMatsptr<T> FullMatrix<T>::identitysptr(int n)
+{
+    auto mat = std::make_shared<FullMatrix<T>>(n, n);
+    mat->identity();
+    return mat;
+}
 template<typename T>
 inline FMatsptr<T> FullMatrix<T>::tildeMatrix(FColDsptr col)
 {

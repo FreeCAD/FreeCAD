@@ -9,21 +9,10 @@
 #pragma once
 
 #include "FullVector.h"
-#include "FullMatrix.h"
+#include "FullMatrix.ref.h"
+#include "FullRow.ref.h"
 
 namespace MbD {
-	template<typename T>
-	class FullRow;
-	template<typename T>
-	using FRowsptr = std::shared_ptr<FullRow<T>>;
-	using FRowDsptr = std::shared_ptr<FullRow<double>>;
-	template<typename T>
-	class FullColumn;
-	template<typename T>
-	using FColsptr = std::shared_ptr<FullColumn<T>>;
-	using ListFRD = std::initializer_list<FRowDsptr>;
-    template<typename T>
-    class FullMatrix;
 
 	template<typename T>
 	class FullRow : public FullVector<T>

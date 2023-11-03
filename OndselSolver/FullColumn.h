@@ -12,17 +12,21 @@
 #include <sstream> 
 
 #include "FullVector.h"
+#include "FullColumn.ref.h"
+#include "FullRow.ref.h"
+#include "FullColumn.h"
+#include "FullRow.h"
 
 namespace MbD {
-	template<typename T>
-	class FullColumn;
-	using FColDsptr = std::shared_ptr<FullColumn<double>>;
-	template<typename T>
-	using FColsptr = std::shared_ptr<FullColumn<T>>;
-	template<typename T>
-	class FullRow;
-	template<typename T>
-	using FRowsptr = std::shared_ptr<FullRow<T>>;
+//	template<typename T>
+//	class FullColumn;
+//	using FColDsptr = std::shared_ptr<FullColumn<double>>;
+//	template<typename T>
+//	using FColsptr = std::shared_ptr<FullColumn<T>>;
+//	template<typename T>
+//	class FullRow;
+//	template<typename T>
+//	using FRowsptr = std::shared_ptr<FullRow<T>>;
 	class Symbolic;
 
 	template<typename T>

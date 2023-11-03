@@ -9,3 +9,13 @@
 #include "RowTypeMatrix.h"
 
 using namespace MbD;
+
+template<typename T>
+int RowTypeMatrix<T>::nrow() {
+    return (int) this->size();
+}
+
+template<typename T>
+int RowTypeMatrix<T>::ncol() {
+    return this->at(0)->numberOfElements();
+}

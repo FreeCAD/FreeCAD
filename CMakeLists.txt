@@ -10,6 +10,12 @@ include(GNUInstallDirs)
 add_library(OndselSolver STATIC)
 
 set(ONDSELSOLVER_SRC
+        OndselSolver/Array.cpp
+        OndselSolver/FullVector.cpp
+        OndselSolver/RowTypeMatrix.cpp
+        OndselSolver/FullColumn.cpp
+        OndselSolver/FullMatrix.cpp
+        OndselSolver/FullRow.cpp
         OndselSolver/Abs.cpp
         OndselSolver/AbsConstraint.cpp
         OndselSolver/AccICKineNewtonRaphson.cpp
@@ -25,7 +31,6 @@ set(ONDSELSOLVER_SRC
         OndselSolver/ArcSine.cpp
         OndselSolver/ArcTan.cpp
         OndselSolver/ArcTan2.cpp
-        OndselSolver/Array.cpp
         OndselSolver/ASMTAnimationParameters.cpp
         OndselSolver/ASMTAssembly.cpp
         OndselSolver/ASMTConstantGravity.cpp
@@ -146,11 +151,7 @@ set(ONDSELSOLVER_SRC
         OndselSolver/FixedJoint.cpp
         OndselSolver/ForceTorqueData.cpp
         OndselSolver/ForceTorqueItem.cpp
-        OndselSolver/FullColumn.cpp
-        OndselSolver/FullMatrix.cpp
         OndselSolver/FullMotion.cpp
-        OndselSolver/FullRow.cpp
-        OndselSolver/FullVector.cpp
         OndselSolver/Function.cpp
         OndselSolver/FunctionFromData.cpp
         OndselSolver/FunctionWithManyArgs.cpp
@@ -248,7 +249,6 @@ set(ONDSELSOLVER_SRC
         OndselSolver/RedundantConstraint.cpp
         OndselSolver/RevCylJoint.cpp
         OndselSolver/RevoluteJoint.cpp
-        OndselSolver/RowTypeMatrix.cpp
         OndselSolver/ScalarNewtonRaphson.cpp
         OndselSolver/ScrewConstraintIJ.cpp
         OndselSolver/ScrewConstraintIqcJc.cpp
@@ -296,6 +296,12 @@ set(ONDSELSOLVER_SRC
 )
 
 set(ONDSELSOLVER_HEADERS
+        OndselSolver/Array.h
+        OndselSolver/FullVector.h
+        OndselSolver/RowTypeMatrix.h
+        OndselSolver/FullRow.h
+        OndselSolver/FullColumn.h
+        OndselSolver/FullMatrix.h
         OndselSolver/Abs.h
         OndselSolver/AbsConstraint.h
         OndselSolver/AccICKineNewtonRaphson.h
@@ -312,7 +318,6 @@ set(ONDSELSOLVER_HEADERS
         OndselSolver/ArcSine.h
         OndselSolver/ArcTan.h
         OndselSolver/ArcTan2.h
-        OndselSolver/Array.h
         OndselSolver/ASMTAnimationParameters.h
         OndselSolver/ASMTAssembly.h
         OndselSolver/ASMTConstantGravity.h
@@ -435,11 +440,8 @@ set(ONDSELSOLVER_HEADERS
         OndselSolver/FixedJoint.h
         OndselSolver/ForceTorqueData.h
         OndselSolver/ForceTorqueItem.h
-        OndselSolver/FullColumn.h
-        OndselSolver/FullMatrix.h
         OndselSolver/FullMotion.h
         OndselSolver/FullRow.h
-        OndselSolver/FullVector.h
         OndselSolver/Function.h
         OndselSolver/FunctionFromData.h
         OndselSolver/FunctionWithManyArgs.h
@@ -538,7 +540,6 @@ set(ONDSELSOLVER_HEADERS
         OndselSolver/resource.h
         OndselSolver/RevCylJoint.h
         OndselSolver/RevoluteJoint.h
-        OndselSolver/RowTypeMatrix.h
         OndselSolver/ScalarNewtonRaphson.h
         OndselSolver/ScrewConstraintIJ.h
         OndselSolver/ScrewConstraintIqcJc.h

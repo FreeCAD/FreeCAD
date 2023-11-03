@@ -8,6 +8,7 @@
  
 #pragma once
 
+#include "FullRow.h"
 #include "LinearMultiStepMethod.h"
 
 namespace MbD {
