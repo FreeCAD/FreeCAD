@@ -8,6 +8,7 @@
  
 #include "ASMTRefItem.h"
 #include "CREATE.h"
+#include <algorithm>
 
 using namespace MbD;
 

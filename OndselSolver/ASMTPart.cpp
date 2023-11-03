@@ -11,7 +11,7 @@
 #include "CREATE.h"
 #include "ASMTPrincipalMassMarker.h"
 #include "Part.h"
-
+#include <algorithm>
 
 using namespace MbD;
 
