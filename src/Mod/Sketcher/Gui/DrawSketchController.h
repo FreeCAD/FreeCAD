@@ -248,6 +248,8 @@ public:
         handler->updateCursor();
 
         handler->reset();  // reset of handler to restart.
+
+        handler->mouseMove(prevCursorPosition);
     }
     //@}
 
