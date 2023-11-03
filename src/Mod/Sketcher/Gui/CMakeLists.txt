@@ -77,6 +77,7 @@ SET(SketcherGui_SRCS
     DrawSketchHandlerCarbonCopy.h
     DrawSketchHandlerSlot.h
     DrawSketchHandlerOffset.h
+    DrawSketchHandlerRotate.h
     CommandCreateGeo.cpp
     CommandConstraints.h
     CommandConstraints.cpp
