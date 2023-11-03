@@ -108,6 +108,7 @@ public:
     // void keyPressEvent(QKeyEvent* event);
 
     void setParameter(int parameterindex, double val);
+    void setParameterWithoutPassingFocus(int parameterindex, double val);
     void configureParameterInitialValue(int parameterindex, double value);
     void configureParameterUnit(int parameterindex, const Base::Unit& unit);
     void configureParameterDecimals(int parameterindex, int val);
@@ -215,6 +216,7 @@ private:
 
     /// lock to block QT slots
     bool blockParameterSlots;
+    bool blockParameterFocusPassing;
 
     /// vector using parameter as index indicating whether the value of a parameter was set by the
     /// widget
