@@ -70,6 +70,7 @@ SET(SketcherGui_SRCS
     DrawSketchHandlerBSplineByInterpolation.h
     DrawSketchHandlerPoint.h
     DrawSketchHandlerFillet.h
+    DrawSketchHandlerTranslate.h
     DrawSketchHandlerTrimming.h
     DrawSketchHandlerExtend.h
     DrawSketchHandlerSplitting.h
