@@ -801,3 +801,38 @@ std::string SketcherGui::angleToDisplayFormat(double value, int digits)
     QString numericPart = matched.left(requiredLength);
     return Base::Tools::toStdString(numericPart + qUnitString);
 }
+
+
+bool SketcherGui::areColinear(const Base::Vector2d& p1,
+                              const Base::Vector2d& p2,
+                              const Base::Vector2d& p3)
+{
+    Base::Vector2d u = p2 - p1;
+    Base::Vector2d v = p3 - p2;
+    Base::Vector2d w = p1 - p3;
+
+    double uu = u * u;
+    double vv = v * v;
+    double ww = w * w;
+
+    double eps2 = Precision::SquareConfusion();
+    if (uu < eps2 || vv < eps2 || ww < eps2) {
+        return true;
+    }
+
+    double uv = -(u * v);
+    double vw = -(v * w);
+    double uw = -(u * w);
+
+    double w0 = (2 * sqrt(abs(uu * ww - uw * uw)) * uw / (uu * ww));
+    double w1 = (2 * sqrt(abs(uu * vv - uv * uv)) * uv / (uu * vv));
+    double w2 = (2 * sqrt(abs(vv * ww - vw * vw)) * vw / (vv * ww));
+
+    double wx = w0 + w1 + w2;
+
+    if (abs(wx) < Precision::Confusion()) {
+        return true;
+    }
+
+    return false;
+}
