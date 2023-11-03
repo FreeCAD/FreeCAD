@@ -934,23 +934,17 @@ void Application::slotActiveDocument(const App::Document& Doc)
             }
         }
         
-        //Set Unit System.
-        int projectUnitSystemIndex = doc->second->getProjectUnitSystem();
-        int ignore = doc->second->getProjectUnitSystemIgnore();
-        if( projectUnitSystemIndex >= 0 && !ignore ){//is valid
-        	Base::UnitsApi::setSchema(static_cast<Base::UnitSystem>(projectUnitSystemIndex));
-        }else{// set up Unit system default
-			ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
-			   ("User parameter:BaseApp/Preferences/Units");
-			Base::UnitsApi::setSchema((Base::UnitSystem)hGrp->GetInt("UserSchema",0));
-			Base::UnitsApi::setDecimals(hGrp->GetInt("Decimals", Base::UnitsApi::getDecimals()));
-        }
         // Update the application to show the unit change
         if( Doc.FileName.getValue()[0] != '\0' ) {
             getMainWindow()->setUserSchema(Doc.UnitSystem.getValue());
             Application::Instance->onUpdate();
             signalActiveDocument(*doc->second);
             updateActions();
+        }else{// set up Unit system default
+			ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
+			   ("User parameter:BaseApp/Preferences/Units");
+			Base::UnitsApi::setSchema((Base::UnitSystem)hGrp->GetInt("UserSchema",0));
+			Base::UnitsApi::setDecimals(hGrp->GetInt("Decimals", Base::UnitsApi::getDecimals()));
         }
     }
 }

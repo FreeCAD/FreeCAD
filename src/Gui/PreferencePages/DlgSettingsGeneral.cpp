@@ -98,7 +98,6 @@ DlgSettingsGeneral::DlgSettingsGeneral( QWidget* parent )
     for (int i = 0; i < num; i++) {
         QString item = Base::UnitsApi::getDescription(static_cast<Base::UnitSystem>(i));
         ui->comboBox_UnitSystem->addItem(item, i);
-        ui->comboBox_projectUnitSystem->addItem(item, i);
     }
 
     // Enable/disable the fractional inch option depending on system
@@ -209,21 +208,7 @@ void DlgSettingsGeneral::saveSettings()
 
     // Set and save the Unit System
     viewSystemIndex = ui->comboBox_UnitSystem->currentIndex();
-    auto activeDoc = Gui::Application::Instance->activeDocument();
-    bool projectUnitSystemIgnore = ui->checkBox_projectUnitSystemIgnore->isChecked();
-    if(activeDoc){
-    	activeDoc->setProjectUnitSystemIgnore( projectUnitSystemIgnore );
-    	if(!projectUnitSystemIgnore){
-			int projectUnitSystemIndex = ui->comboBox_projectUnitSystem->currentIndex();
-			activeDoc->setProjectUnitSystem( projectUnitSystemIndex );
-			UnitsApi::setSchema(static_cast<UnitSystem>(projectUnitSystemIndex));
-    	}else{
-    		UnitsApi::setSchema(static_cast<UnitSystem>(viewSystemIndex));
-    	}
-    }else{
-    	UnitsApi::setSchema(static_cast<UnitSystem>(viewSystemIndex));
-    }
-    //
+    UnitsApi::setSchema(static_cast<UnitSystem>(viewSystemIndex));
 
     ui->SubstituteDecimal->onSave();
     ui->UseLocaleFormatting->onSave();
@@ -276,26 +261,6 @@ void DlgSettingsGeneral::loadSettings()
     // handy little equation.
     cbIndex = std::log2(FracInch) - 1;
     ui->comboBox_FracInch->setCurrentIndex(cbIndex);
-    
-    
-    auto activeDoc = Gui::Application::Instance->activeDocument();
-    if(activeDoc){
-		int us = activeDoc->getProjectUnitSystem();
-		if(us >= 0){//Valid unit system:
-			ui->comboBox_projectUnitSystem->setCurrentIndex( us );
-			int pusIgnore = activeDoc->getProjectUnitSystemIgnore();
-			ui->checkBox_projectUnitSystemIgnore->setChecked( pusIgnore );
-		}else{
-			ui->comboBox_projectUnitSystem->setCurrentIndex( 0 );
-			ui->checkBox_projectUnitSystemIgnore->setChecked( false );
-		}
-    }else{
-    	ui->checkBox_projectUnitSystemIgnore->setEnabled(false);
-		ui->comboBox_projectUnitSystem->setEnabled(false);
-    }
-
-
-
     ui->SubstituteDecimal->onRestore();
     ui->UseLocaleFormatting->onRestore();
     ui->RecentFiles->onRestore();
@@ -433,11 +398,9 @@ void DlgSettingsGeneral::changeEvent(QEvent *event)
     if (event->type() == QEvent::LanguageChange) {
         int index = ui->UseLocaleFormatting->currentIndex();
         int index2 = ui->comboBox_UnitSystem->currentIndex();
-        int pusIndex = ui->comboBox_projectUnitSystem->currentIndex();
         ui->retranslateUi(this);
         ui->UseLocaleFormatting->setCurrentIndex(index);
         ui->comboBox_UnitSystem->setCurrentIndex(index2);
-        ui->comboBox_projectUnitSystem->setCurrentIndex(pusIndex);
     }
     else {
         QWidget::changeEvent(event);
@@ -643,19 +606,6 @@ void DlgSettingsGeneral::onUnitSystemIndexChanged(int index)
     {
         ui->comboBox_FracInch->setVisible(false);
         ui->fractionalInchLabel->setVisible(false);
-    }
-}
-
-void DlgSettingsGeneral::on_checkBox_projectUnitSystemIgnore_stateChanged(int state)
-{
-    if (state < 0)
-        return; // happens when clearing the combo box in retranslateUi()
-
-    // Enable/disable the projectUnitSystem if being ignored:
-    if(state == 2){//ignore
-    	ui->comboBox_projectUnitSystem->setEnabled(false);
-    }else if(state == 0){
-    	ui->comboBox_projectUnitSystem->setEnabled(true);
     }
 }
 
