@@ -103,8 +103,6 @@ public:
                             ConstructionMethod constrMethod = ConstructionMethod::Arc)
         : DrawSketchHandlerOffsetBase(constrMethod)
         , listOfGeoIds(listOfGeoIds)
-        , endpoint(Base::Vector2d(0., 0.))
-        , pointOnSourceWire(Base::Vector2d(0., 0.))
         , deleteOriginal(false)
         , offsetLengthSet(false)
         , offsetConstraint(false)
@@ -144,12 +142,7 @@ private:
 
     QString getCrosshairCursorSVGName() const override
     {
-        if (constructionMethod() == DrawSketchHandlerOffset::ConstructionMethod::Arc) {
-            return QString::fromLatin1("Sketcher_OffsetArc");
-        }
-        else {  // constructionMethod == DrawSketchHandlerOffset::ConstructionMethod::Intersection
-            return QString::fromLatin1("Sketcher_OffsetIntersection");
-        }
+        return QString::fromLatin1("Sketcher_Pointer_Create_Offset");
     }
 
     std::unique_ptr<QWidget> createWidget() const override
