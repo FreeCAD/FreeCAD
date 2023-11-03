@@ -1260,7 +1260,9 @@ CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreate3PointCircle, "Sketcher_Create3Point
 void CmdSketcherCreate3PointCircle::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandler3PointCircle());
+    ActivateHandler(getActiveGuiDocument(),
+                    new DrawSketchHandlerCircle(
+                        ConstructionMethods::CircleEllipseConstructionMethod::ThreeRim));
 }
 
 bool CmdSketcherCreate3PointCircle::isActive()
@@ -1289,7 +1291,9 @@ void CmdSketcherCompCreateCircle::activated(int iMsg)
         ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerCircle());
     }
     else if (iMsg == 1) {
-        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandler3PointCircle());
+        ActivateHandler(getActiveGuiDocument(),
+                        new DrawSketchHandlerCircle(
+                            ConstructionMethods::CircleEllipseConstructionMethod::ThreeRim));
     }
     else {
         return;
