@@ -222,7 +222,7 @@ public:
         }
     }
 
-    /** on second shortcut, it toggles the first checkbox if there is go. Must be specialised if
+    /** on second shortcut, it toggles the second checkbox if there is go. Must be specialised if
      * this is not intended */
     void secondKeyShortcut() override
     {
