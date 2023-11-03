@@ -12,7 +12,7 @@ using namespace MbD;
 MbD::MBDynStructural::MBDynStructural()
 {
 	rOfO = std::make_shared<FullColumn<double>>(3);
-	aAOf = FullMatrix<double>::identitysptr(3);
+	aAOf = FullMatrixDouble::identitysptr(3);
 	vOfO = std::make_shared<FullColumn<double>>(3);
 	omeOfO = std::make_shared<FullColumn<double>>(3);
 }

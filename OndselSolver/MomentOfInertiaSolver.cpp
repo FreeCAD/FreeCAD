@@ -7,7 +7,7 @@ using namespace MbD;
 
 void MbD::MomentOfInertiaSolver::example1()
 {
-	auto aJpp = std::make_shared<FullMatrix<double>>(ListListD{
+	auto aJpp = std::make_shared<FullMatrixDouble>(ListListD{
 		{ 1, 0, 0 },
 		{ 0, 2, 0 },
 		{ 0, 0, 3 }
@@ -179,10 +179,10 @@ void MbD::MomentOfInertiaSolver::calcJoo()
 
 	if (!rPoP) {
 		rPoP = rPcmP;
-		aAPo = FullMatrix<double>::identitysptr(3);
+		aAPo = FullMatrixDouble::identitysptr(3);
 	}
-	auto rocmPtilde = FullMatrix<double>::tildeMatrix(rPcmP->minusFullColumn(rPoP));
-	auto rPoPtilde = FullMatrix<double>::tildeMatrix(rPoP);
+	auto rocmPtilde = FullMatrixDouble::tildeMatrix(rPcmP->minusFullColumn(rPoP));
+	auto rPoPtilde = FullMatrixDouble::tildeMatrix(rPoP);
 	auto term1 = aJPP;
 	auto term21 = rPoPtilde->timesFullMatrix(rPoPtilde);
 	auto term22 = rPoPtilde->timesFullMatrix(rocmPtilde);

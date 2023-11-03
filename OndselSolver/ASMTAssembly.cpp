@@ -248,7 +248,7 @@ void MbD::ASMTAssembly::runSinglePendulum()
 	assembly->setName(str);
 	auto pos3D = std::make_shared<FullColumn<double>>(ListD{ 0, 0, 0 });
 	assembly->setPosition3D(pos3D);
-	auto rotMat = std::make_shared<FullMatrix<double>>(ListListD{
+	auto rotMat = std::make_shared<FullMatrixDouble>(ListListD{
 		{ 1, 0, 0 },
 		{ 0, 1, 0 },
 		{ 0, 0, 1 }
@@ -266,7 +266,7 @@ void MbD::ASMTAssembly::runSinglePendulum()
 	massMarker->setMomentOfInertias(aJ);
 	pos3D = std::make_shared<FullColumn<double>>(ListD{ 0, 0, 0 });
 	massMarker->setPosition3D(pos3D);
-	rotMat = std::make_shared<FullMatrix<double>>(ListListD{
+	rotMat = std::make_shared<FullMatrixDouble>(ListListD{
 		{ 1, 0, 0 },
 		{ 0, 1, 0 },
 		{ 0, 0, 1 }
@@ -279,7 +279,7 @@ void MbD::ASMTAssembly::runSinglePendulum()
 	mkr->setName(str);
 	pos3D = std::make_shared<FullColumn<double>>(ListD{ 0, 0, 0 });
 	mkr->setPosition3D(pos3D);
-	rotMat = std::make_shared<FullMatrix<double>>(ListListD{
+	rotMat = std::make_shared<FullMatrixDouble>(ListListD{
 		{ 1, 0, 0 },
 		{ 0, 1, 0 },
 		{ 0, 0, 1 }
@@ -292,7 +292,7 @@ void MbD::ASMTAssembly::runSinglePendulum()
 	part->setName(str);
 	pos3D = std::make_shared<FullColumn<double>>(ListD{ -0.1, -0.1, -0.1 });
 	part->setPosition3D(pos3D);
-	rotMat = std::make_shared<FullMatrix<double>>(ListListD{
+	rotMat = std::make_shared<FullMatrixDouble>(ListListD{
 		{ 1, 0, 0 },
 		{ 0, 1, 0 },
 		{ 0, 0, 1 }
@@ -311,7 +311,7 @@ void MbD::ASMTAssembly::runSinglePendulum()
 	massMarker->setMomentOfInertias(aJ);
 	pos3D = std::make_shared<FullColumn<double>>(ListD{ 0.5, 0.1, 0.05 });
 	massMarker->setPosition3D(pos3D);
-	rotMat = std::make_shared<FullMatrix<double>>(ListListD{
+	rotMat = std::make_shared<FullMatrixDouble>(ListListD{
 		{ 1, 0, 0 },
 		{ 0, 1, 0 },
 		{ 0, 0, 1 }
@@ -324,7 +324,7 @@ void MbD::ASMTAssembly::runSinglePendulum()
 	mkr->setName(str);
 	pos3D = std::make_shared<FullColumn<double>>(ListD{ 0.1, 0.1, 0.1 });
 	mkr->setPosition3D(pos3D);
-	rotMat = std::make_shared<FullMatrix<double>>(ListListD{
+	rotMat = std::make_shared<FullMatrixDouble>(ListListD{
 		{ 1, 0, 0 },
 		{ 0, 1, 0 },
 		{ 0, 0, 1 }

@@ -65,7 +65,7 @@ void MbD::AngleZIeqcJec::initialize()
 {
 	AngleZIecJec::initialize();
 	pthezpEI = std::make_shared<FullRow<double>>(4);
-	ppthezpEIpEI = std::make_shared<FullMatrix<double>>(4, 4);
+	ppthezpEIpEI = std::make_shared<FullMatrixDouble>(4, 4);
 }
 
 FMatDsptr MbD::AngleZIeqcJec::ppvaluepEIpEI()

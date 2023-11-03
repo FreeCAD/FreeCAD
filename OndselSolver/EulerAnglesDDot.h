@@ -47,13 +47,13 @@ namespace MbD {
 			auto angleDot = aEulerAnglesDot->at(i)->getValue();
 			auto angleDDot = this->at(i)->getValue();
 			if (axis == 1) {
-				cAddot->atiput(i, FullMatrix<double>::rotatexrotDotrotDDot(angle, angleDot, angleDDot));
+				cAddot->atiput(i, FullMatrixDouble::rotatexrotDotrotDDot(angle, angleDot, angleDDot));
 			}
 			else if (axis == 2) {
-				cAddot->atiput(i, FullMatrix<double>::rotateyrotDotrotDDot(angle, angleDot, angleDDot));
+				cAddot->atiput(i, FullMatrixDouble::rotateyrotDotrotDDot(angle, angleDot, angleDDot));
 			}
 			else if (axis == 3) {
-				cAddot->atiput(i, FullMatrix<double>::rotatezrotDotrotDDot(angle, angleDot, angleDDot));
+				cAddot->atiput(i, FullMatrixDouble::rotatezrotDotrotDDot(angle, angleDot, angleDDot));
 			}
 			else {
 				throw std::runtime_error("Euler angle rotation order must be any permutation of 1,2,3 without consecutive repeats.");

@@ -28,7 +28,7 @@ void StableBackwardDifference::formTaylorMatrix()
 void StableBackwardDifference::instantiateTaylorMatrix()
 {
 	if (taylorMatrix == nullptr || (taylorMatrix->nrow() != (order))) {
-		taylorMatrix = std::make_shared<FullMatrix<double>>(order, order);
+		taylorMatrix = std::make_shared<FullMatrixDouble>(order, order);
 	}
 }
 

@@ -87,8 +87,8 @@ void MbD::DispCompIeqcJecIe::initialize()
 	DispCompIecJecIe::initialize();
 	priIeJeIepXI = std::make_shared<FullRow<double>>(3);
 	priIeJeIepEI = std::make_shared<FullRow<double>>(4);
-	ppriIeJeIepXIpEI = std::make_shared<FullMatrix<double>>(3, 4);
-	ppriIeJeIepEIpEI = std::make_shared<FullMatrix<double>>(4, 4);
+	ppriIeJeIepXIpEI = std::make_shared<FullMatrixDouble>(3, 4);
+	ppriIeJeIepEIpEI = std::make_shared<FullMatrixDouble>(4, 4);
 }
 
 void MbD::DispCompIeqcJecIe::initializeGlobally()

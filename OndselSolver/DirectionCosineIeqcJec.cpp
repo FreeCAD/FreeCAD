@@ -24,7 +24,7 @@ void DirectionCosineIeqcJec::initialize()
 {
 	DirectionCosineIecJec::initialize();
 	pAijIeJepEI = std::make_shared<FullRow<double>>(4);
-	ppAijIeJepEIpEI = std::make_shared<FullMatrix<double>>(4, 4);
+	ppAijIeJepEIpEI = std::make_shared<FullMatrixDouble>(4, 4);
 }
 
 void DirectionCosineIeqcJec::initializeGlobally()

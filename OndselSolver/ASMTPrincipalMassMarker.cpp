@@ -26,7 +26,7 @@ void MbD::ASMTPrincipalMassMarker::parseASMT(std::vector<std::string>& lines)
 	lines.erase(lines.begin());
 	assert(lines[0] == (leadingTabs + "RotationMatrix"));
 	lines.erase(lines.begin());
-	rotationMatrix = std::make_shared<FullMatrix<double>>(3);
+	rotationMatrix = std::make_shared<FullMatrixDouble>(3);
 	for (int i = 0; i < 3; i++)
 	{
 		auto row = readRowOfDoubles(lines[0]);

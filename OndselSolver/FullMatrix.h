@@ -19,8 +19,13 @@
 #include "RowTypeMatrix.h"
 
 namespace MbD {
+    template<typename T>
+    class FullMatrix;
 
-	template<typename T>
+    template<typename T>
+    using FMatsptr = std::shared_ptr<FullMatrix<T>>;
+
+    template<typename T>
 	class FullMatrix : public RowTypeMatrix<FRowsptr<T>>
 	{
 	public:
@@ -94,5 +99,13 @@ namespace MbD {
 
 		std::ostream& printOn(std::ostream& s) const override;
 	};
+
+    class FullMatrixDouble : public FullMatrix<double> {};
+    using FMatDsptr = std::shared_ptr<MbD::FullMatrixDouble>;
+
+    using FMatFColDsptr = std::shared_ptr<FullMatrix<FColDsptr>>;
+    using FMatFMatDsptr = std::shared_ptr<FullMatrix<FMatDsptr>>;
+
+    using FColFMatDsptr = std::shared_ptr<FullColumn<FMatDsptr>>;
 }
 

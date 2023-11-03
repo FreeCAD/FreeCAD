@@ -116,7 +116,7 @@ FMatDsptr LDUFullMat::inversesaveOriginal(FMatDsptr fullMat, bool saveOriginal)
 
 	this->decomposesaveOriginal(fullMat, saveOriginal);
 	rightHandSideB = std::make_shared<FullColumn<double>>(m);
-	auto matrixAinverse = std::make_shared <FullMatrix<double>>(m, n);
+	auto matrixAinverse = std::make_shared <FullMatrixDouble>(m, n);
 	for (int j = 0; j < n; j++)
 	{
 		rightHandSideB->zeroSelf();

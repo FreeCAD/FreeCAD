@@ -138,9 +138,9 @@ void MbD::OrbitAngleZIeqcJec::initialize()
 	OrbitAngleZIecJec::initialize();
 	pthezpXI = std::make_shared<FullRow<double>>(3);
 	pthezpEI = std::make_shared<FullRow<double>>(4);
-	ppthezpXIpXI = std::make_shared<FullMatrix<double>>(3, 3);
-	ppthezpXIpEI = std::make_shared<FullMatrix<double>>(3, 4);
-	ppthezpEIpEI = std::make_shared<FullMatrix<double>>(4, 4);
+	ppthezpXIpXI = std::make_shared<FullMatrixDouble>(3, 3);
+	ppthezpXIpEI = std::make_shared<FullMatrixDouble>(3, 4);
+	ppthezpEIpEI = std::make_shared<FullMatrixDouble>(4, 4);
 }
 
 FMatDsptr MbD::OrbitAngleZIeqcJec::ppvaluepEIpEI()

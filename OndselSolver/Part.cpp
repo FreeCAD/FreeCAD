@@ -33,8 +33,8 @@ void Part::initialize()
 	partFrame = CREATE<PartFrame>::With();
 	partFrame->setPart(this);
 	pTpE = std::make_shared<FullColumn<double>>(4);
-	ppTpEpE = std::make_shared<FullMatrix<double>>(4, 4);
-	ppTpEpEdot = std::make_shared<FullMatrix<double>>(4, 4);
+	ppTpEpE = std::make_shared<FullMatrixDouble>(4, 4);
+	ppTpEpEdot = std::make_shared<FullMatrixDouble>(4, 4);
 }
 
 void Part::initializeLocally()

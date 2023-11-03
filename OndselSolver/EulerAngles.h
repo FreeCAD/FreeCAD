@@ -51,13 +51,13 @@ namespace MbD {
 			auto axis = rotOrder->at(i);
 			auto angle = this->at(i)->getValue();
 			if (axis == 1) {
-				cA->atiput(i, FullMatrix<double>::rotatex(angle));
+				cA->atiput(i, FullMatrixDouble::rotatex(angle));
 			}
 			else if (axis == 2) {
-				cA->atiput(i, FullMatrix<double>::rotatey(angle));
+				cA->atiput(i, FullMatrixDouble::rotatey(angle));
 			}
 			else if (axis == 3) {
-				cA->atiput(i, FullMatrix<double>::rotatez(angle));
+				cA->atiput(i, FullMatrixDouble::rotatez(angle));
 			}
 			else {
 				throw std::runtime_error("Euler angle rotation order must be any permutation of 1,2,3 without consecutive repeats.");
@@ -74,10 +74,10 @@ namespace MbD {
 			auto axis = rotOrder->at(i);
 			auto angle = this->at(i);
 			if (axis == 1) {
-				cA->atiput(i, FullMatrix<double>::rotatex(angle));
+				cA->atiput(i, FullMatrixDouble::rotatex(angle));
 			}
 			else if (axis == 2) {
-				cA->atiput(i, FullMatrix<double>::rotatey(angle));
+				cA->atiput(i, FullMatrixDouble::rotatey(angle));
 			}
 			else if (axis == 3) {
 				cA->atiput(i, FullMatrix<double>::rotatez(angle));

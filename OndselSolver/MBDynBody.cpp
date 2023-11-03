@@ -60,7 +60,7 @@ void MbD::MBDynBody::readInertiaMatrix(std::vector<std::string>& args)
 {
 	auto parser = std::make_shared<SymbolicParser>();
 	parser->variables = mbdynVariables();
-	aJmat = std::make_shared<FullMatrix<double>>(3, 3);
+	aJmat = std::make_shared<FullMatrixDouble>(3, 3);
 	auto& str = args.at(0);
 	if (str.find("diag") != std::string::npos) {
 		args.erase(args.begin());
@@ -89,7 +89,7 @@ void MbD::MBDynBody::createASMT()
 	if (aJmat->isDiagonalToWithin(1.0e-6)) {
 		asmtMassMarker->setMomentOfInertias(aJmat->asDiagonalMatrix());
 		asmtMassMarker->setPosition3D(rPcmP);
-		asmtMassMarker->setRotationMatrix(FullMatrix<double>::identitysptr(3));
+		asmtMassMarker->setRotationMatrix(FullMatrixDouble::identitysptr(3));
 		auto asmtPart = asmtAssembly()->partPartialNamed(nodeName);
 		asmtPart->setPrincipalMassMarker(asmtMassMarker);
 	}
@@ -98,7 +98,7 @@ void MbD::MBDynBody::createASMT()
 		solver->setm(mass);
 		solver->setJPP(aJmat);
 		solver->setrPoP(rPcmP);
-		solver->setAPo(FullMatrix<double>::identitysptr(3));
+		solver->setAPo(FullMatrixDouble::identitysptr(3));
 		solver->setrPcmP(rPcmP);
 		solver->calc();
 		asmtMassMarker->setMomentOfInertias(solver->aJpp);

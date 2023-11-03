@@ -11,7 +11,7 @@ using namespace MbD;
 void MbD::MBDynMarker::parseMBDyn(std::vector<std::string>& args)
 {
 	rPmP = std::make_shared<FullColumn<double>>(3);
-	aAPm = FullMatrix<double>::identitysptr(3);
+	aAPm = FullMatrixDouble::identitysptr(3);
 	if (args.empty()) return;
 	auto& str = args.at(0);
 	if (str.find("reference") != std::string::npos) {
