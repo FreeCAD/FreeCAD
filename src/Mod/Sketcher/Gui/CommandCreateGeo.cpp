@@ -447,7 +447,9 @@ CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreate3PointArc, "Sketcher_Create3PointArc
 void CmdSketcherCreate3PointArc::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandler3PointArc());
+    ActivateHandler(
+        getActiveGuiDocument(),
+        new DrawSketchHandlerArc(ConstructionMethods::CircleEllipseConstructionMethod::ThreeRim));
 }
 
 bool CmdSketcherCreate3PointArc::isActive()
@@ -476,7 +478,9 @@ void CmdSketcherCompCreateArc::activated(int iMsg)
         ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerArc());
     }
     else if (iMsg == 1) {
-        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandler3PointArc());
+        ActivateHandler(getActiveGuiDocument(),
+                        new DrawSketchHandlerArc(
+                            ConstructionMethods::CircleEllipseConstructionMethod::ThreeRim));
     }
     else {
         return;

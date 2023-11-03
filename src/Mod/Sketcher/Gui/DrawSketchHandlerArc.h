@@ -20,9 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
+
 #ifndef SKETCHERGUI_DrawSketchHandlerArc_H
 #define SKETCHERGUI_DrawSketchHandlerArc_H
 
+#include <Gui/BitmapFactory.h>
 #include <Gui/Notifications.h>
 #include <Gui/CommandT.h>
 
@@ -30,11 +32,13 @@
 
 #include <Mod/Sketcher/App/SketchObject.h>
 
-#include "DrawSketchHandler.h"
+#include "DrawSketchDefaultWidgetController.h"
+#include "DrawSketchControllableHandler.h"
 #include "GeometryCreationMode.h"
 #include "Utils.h"
 #include "ViewProviderSketch.h"
 
+#include "CircleEllipseConstructionMethod.h"
 
 using namespace std;
 
@@ -43,125 +47,180 @@ namespace SketcherGui
 
 extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGeo.cpp
 
-class DrawSketchHandlerArc: public DrawSketchHandler
+class DrawSketchHandlerArc;
+
+using DSHArcController =
+    DrawSketchDefaultWidgetController<DrawSketchHandlerArc,
+                                      StateMachines::ThreeSeekEnd,
+                                      /*PAutoConstraintSize =*/3,
+                                      /*OnViewParametersT =*/OnViewParameters<5, 6>,
+                                      /*WidgetParametersT =*/WidgetParameters<0, 0>,
+                                      /*WidgetCheckboxesT =*/WidgetCheckboxes<0, 0>,
+                                      /*WidgetComboboxesT =*/WidgetComboboxes<1, 1>,
+                                      ConstructionMethods::CircleEllipseConstructionMethod,
+                                      /*bool PFirstComboboxIsConstructionMethod =*/true>;
+
+using DSHArcControllerBase = DSHArcController::ControllerBase;
+
+using DrawSketchHandlerArcBase = DrawSketchControllableHandler<DSHArcController>;
+
+class DrawSketchHandlerArc: public DrawSketchHandlerArcBase
 {
+    friend DSHArcController;
+    friend DSHArcControllerBase;
+
 public:
-    DrawSketchHandlerArc()
-        : Mode(STATUS_SEEK_First)
-        , EditCurve(2)
-        , rx(0)
-        , ry(0)
-        , startAngle(0)
-        , endAngle(0)
-        , arcAngle(0)
+    explicit DrawSketchHandlerArc(ConstructionMethod constrMethod = ConstructionMethod::Center)
+        : DrawSketchHandlerArcBase(constrMethod)
+        , startAngle(0.0)
+        , endAngle(0.0)
+        , arcAngle(0.0)
     {}
-    ~DrawSketchHandlerArc() override
-    {}
-    /// mode table
-    enum SelectMode
+
+    ~DrawSketchHandlerArc() = default;
+
+private:
+    void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) override
     {
-        STATUS_SEEK_First,  /**< enum value ----. */
-        STATUS_SEEK_Second, /**< enum value ----. */
-        STATUS_SEEK_Third,  /**< enum value ----. */
-        STATUS_End
-    };
+        switch (state()) {
+            case SelectMode::SeekFirst: {
+                toolWidgetManager.drawPositionAtCursor(onSketchPos);
 
-    void mouseMove(Base::Vector2d onSketchPos) override
-    {
-        if (Mode == STATUS_SEEK_First) {
-            setPositionText(onSketchPos);
-            if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2d(0.f, 0.f))) {
-                renderSuggestConstraintsCursor(sugConstr1);
-                return;
-            }
+                if (constructionMethod() == ConstructionMethod::Center) {
+                    centerPoint = onSketchPos;
+                }
+                else {
+                    firstPoint = onSketchPos;
+                }
+
+                if (seekAutoConstraint(sugConstraints[0], onSketchPos, Base::Vector2d(0.f, 0.f))) {
+                    renderSuggestConstraintsCursor(sugConstraints[0]);
+                    return;
+                }
+            } break;
+            case SelectMode::SeekSecond: {
+                if (constructionMethod() == ConstructionMethod::Center) {
+                    firstPoint = onSketchPos;
+                    startAngle = (firstPoint - centerPoint).Angle();
+                }
+                else {
+                    centerPoint = (onSketchPos - firstPoint) / 2 + firstPoint;
+                    secondPoint = onSketchPos;
+                }
+
+                radius = (onSketchPos - centerPoint).Length();
+
+                CreateAndDrawShapeGeometry();
+
+                if (constructionMethod() == ConstructionMethod::Center) {
+                    toolWidgetManager.drawDirectionAtCursor(onSketchPos, centerPoint);
+                }
+                else {
+                    toolWidgetManager.drawPositionAtCursor(onSketchPos);
+                }
+
+                if (seekAutoConstraint(sugConstraints[1], onSketchPos, Base::Vector2d(0.f, 0.f))) {
+                    renderSuggestConstraintsCursor(sugConstraints[1]);
+                    return;
+                }
+            } break;
+            case SelectMode::SeekThird: {
+                double startAngleBackup = startAngle;
+
+                if (constructionMethod() == ConstructionMethod::Center) {
+                    secondPoint = onSketchPos;
+                    double angle1 = (onSketchPos - centerPoint).Angle() - startAngle;
+                    double angle2 = angle1 + (angle1 < 0. ? 2 : -2) * M_PI;
+                    arcAngle = abs(angle1 - arcAngle) < abs(angle2 - arcAngle) ? angle1 : angle2;
+
+                    if (arcAngle > 0) {
+                        endAngle = startAngle + arcAngle;
+                    }
+                    else {
+                        endAngle = startAngle;
+                        startAngle = startAngle + arcAngle;
+                    }
+                }
+                else {
+                    if (areColinear(firstPoint, secondPoint, onSketchPos)) {
+                        // If points are colinear then we can't calculate the center.
+                        return;
+                    }
+                    centerPoint =
+                        Part::Geom2dCircle::getCircleCenter(firstPoint, secondPoint, onSketchPos);
+                    radius = (onSketchPos - centerPoint).Length();
+
+                    double angle1 = (firstPoint - centerPoint).Angle();
+                    double angle2 = (secondPoint - centerPoint).Angle();
+                    double angle3 = (onSketchPos - centerPoint).Angle();
+
+                    // Always build arc counter-clockwise
+                    // Point 3 is between Point 1 and 2
+                    if (angle3 > std::min(angle1, angle2) && angle3 < std::max(angle1, angle2)) {
+                        if (angle2 > angle1) {
+                            arcPos1 = Sketcher::PointPos::start;
+                            arcPos2 = Sketcher::PointPos::end;
+                        }
+                        else {
+                            arcPos1 = Sketcher::PointPos::end;
+                            arcPos2 = Sketcher::PointPos::start;
+                        }
+                        startAngle = std::min(angle1, angle2);
+                        endAngle = std::max(angle1, angle2);
+                        arcAngle = endAngle - startAngle;
+                    }
+                    // Point 3 is not between Point 1 and 2
+                    else {
+                        if (angle2 > angle1) {
+                            arcPos1 = Sketcher::PointPos::end;
+                            arcPos2 = Sketcher::PointPos::start;
+                        }
+                        else {
+                            arcPos1 = Sketcher::PointPos::start;
+                            arcPos2 = Sketcher::PointPos::end;
+                        }
+                        startAngle = std::max(angle1, angle2);
+                        endAngle = std::min(angle1, angle2);
+                        arcAngle = 2 * M_PI - (startAngle - endAngle);
+                    }
+                }
+
+                CreateAndDrawShapeGeometry();
+
+                if (constructionMethod() == ConstructionMethod::Center) {
+                    startAngle = startAngleBackup;
+                }
+
+                if (constructionMethod() == ConstructionMethod::Center) {
+                    toolWidgetManager.drawDoubleAtCursor(onSketchPos, arcAngle, Base::Unit::Angle);
+                    if (seekAutoConstraint(sugConstraints[2],
+                                           onSketchPos,
+                                           Base::Vector2d(0.0, 0.0))) {
+                        renderSuggestConstraintsCursor(sugConstraints[2]);
+                        return;
+                    }
+                }
+                else {
+                    toolWidgetManager.drawPositionAtCursor(onSketchPos);
+                    if (seekAutoConstraint(sugConstraints[2],
+                                           onSketchPos,
+                                           Base::Vector2d(0.f, 0.f),
+                                           AutoConstraint::CURVE)) {
+                        renderSuggestConstraintsCursor(sugConstraints[2]);
+                        return;
+                    }
+                }
+
+            } break;
+            default:
+                break;
         }
-        else if (Mode == STATUS_SEEK_Second) {
-            double dx_ = onSketchPos.x - EditCurve[0].x;
-            double dy_ = onSketchPos.y - EditCurve[0].y;
-            for (int i = 0; i < 16; i++) {
-                double angle = i * M_PI / 16.0;
-                double dx = dx_ * cos(angle) + dy_ * sin(angle);
-                double dy = -dx_ * sin(angle) + dy_ * cos(angle);
-                EditCurve[1 + i] = Base::Vector2d(EditCurve[0].x + dx, EditCurve[0].y + dy);
-                EditCurve[17 + i] = Base::Vector2d(EditCurve[0].x - dx, EditCurve[0].y - dy);
-            }
-            EditCurve[33] = EditCurve[1];
-
-            // Display radius and start angle
-            float radius = (onSketchPos - EditCurve[0]).Length();
-            float angle = atan2f(dy_, dx_);
-
-            if (showCursorCoords()) {
-                SbString text;
-                std::string radiusString = lengthToDisplayFormat(radius, 1);
-                std::string angleString = angleToDisplayFormat(angle * 180.0 / M_PI, 1);
-                text.sprintf(" (R%s, %s)", radiusString.c_str(), angleString.c_str());
-                setPositionText(onSketchPos, text);
-            }
-
-            drawEdit(EditCurve);
-            if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2d(0.f, 0.f))) {
-                renderSuggestConstraintsCursor(sugConstr2);
-                return;
-            }
-        }
-        else if (Mode == STATUS_SEEK_Third) {
-            double angle1 =
-                atan2(onSketchPos.y - CenterPoint.y, onSketchPos.x - CenterPoint.x) - startAngle;
-            double angle2 = angle1 + (angle1 < 0. ? 2 : -2) * M_PI;
-            arcAngle = abs(angle1 - arcAngle) < abs(angle2 - arcAngle) ? angle1 : angle2;
-            for (int i = 1; i <= 29; i++) {
-                double angle = i * arcAngle / 29.0;
-                double dx = rx * cos(angle) - ry * sin(angle);
-                double dy = rx * sin(angle) + ry * cos(angle);
-                EditCurve[i] = Base::Vector2d(CenterPoint.x + dx, CenterPoint.y + dy);
-            }
-
-            // Display radius and arc angle
-            float radius = (onSketchPos - EditCurve[0]).Length();
-
-            if (showCursorCoords()) {
-                SbString text;
-                std::string radiusString = lengthToDisplayFormat(radius, 1);
-                std::string angleString = angleToDisplayFormat(arcAngle * 180.0 / M_PI, 1);
-                text.sprintf(" (R%s, %s)", radiusString.c_str(), angleString.c_str());
-                setPositionText(onSketchPos, text);
-            }
-
-            drawEdit(EditCurve);
-            if (seekAutoConstraint(sugConstr3, onSketchPos, Base::Vector2d(0.0, 0.0))) {
-                renderSuggestConstraintsCursor(sugConstr3);
-                return;
-            }
-        }
-        applyCursor();
     }
 
-    bool pressButton(Base::Vector2d onSketchPos) override
+    void executeCommands() override
     {
-        if (Mode == STATUS_SEEK_First) {
-            CenterPoint = onSketchPos;
-            EditCurve.resize(34);
-            EditCurve[0] = onSketchPos;
-            setAngleSnapping(true, EditCurve[0]);
-            Mode = STATUS_SEEK_Second;
-        }
-        else if (Mode == STATUS_SEEK_Second) {
-            EditCurve.resize(31);
-            EditCurve[0] = onSketchPos;
-            EditCurve[30] = CenterPoint;
-            rx = EditCurve[0].x - CenterPoint.x;
-            ry = EditCurve[0].y - CenterPoint.y;
-            startAngle = atan2(ry, rx);
-            arcAngle = 0.;
-            Mode = STATUS_SEEK_Third;
-        }
-        else {
-            EditCurve.resize(30);
-            double angle1 =
-                atan2(onSketchPos.y - CenterPoint.y, onSketchPos.x - CenterPoint.x) - startAngle;
-            double angle2 = angle1 + (angle1 < 0. ? 2 : -2) * M_PI;
-            arcAngle = abs(angle1 - arcAngle) < abs(angle2 - arcAngle) ? angle1 : angle2;
+
+        if (constructionMethod() == ConstructionMethod::Center) {
             if (arcAngle > 0) {
                 endAngle = startAngle + arcAngle;
             }
@@ -169,378 +228,662 @@ public:
                 endAngle = startAngle;
                 startAngle += arcAngle;
             }
-
-            drawEdit(EditCurve);
-            applyCursor();
-            setAngleSnapping(false);
-            Mode = STATUS_End;
         }
 
-        return true;
+        try {
+            createShape(false);
+
+            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch arc"));
+
+            commandAddShapeGeometryAndConstraints();
+
+            Gui::Command::commitCommand();
+        }
+        catch (const Base::Exception& e) {
+            /*Gui::NotifyError(sketchgui,
+                QT_TRANSLATE_NOOP("Notifications", "Error"),
+                QT_TRANSLATE_NOOP("Notifications", "Failed to add arc"));*/
+
+            Gui::Command::abortCommand();
+            THROWM(Base::RuntimeError,
+                   QT_TRANSLATE_NOOP(
+                       "Notifications",
+                       "Tool execution aborted") "\n")  // This prevents constraints from being
+                                                        // applied on non existing geometry
+        }
     }
 
-    bool releaseButton(Base::Vector2d onSketchPos) override
+    void generateAutoConstraints() override
     {
-        Q_UNUSED(onSketchPos);
-        if (Mode == STATUS_End) {
-            unsetCursor();
-            resetPositionText();
+        int ArcGeoId = getHighestCurveIndex();
 
-            try {
-                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch arc"));
-                Gui::cmdAppObjectArgs(
-                    sketchgui->getObject(),
-                    "addGeometry(Part.ArcOfCircle"
-                    "(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),%f),%f,%f),%s)",
-                    CenterPoint.x,
-                    CenterPoint.y,
-                    sqrt(rx * rx + ry * ry),
-                    startAngle,
-                    endAngle,
-                    constructionModeAsBooleanText());  // arcAngle > 0 ? 0 : 1);
+        auto& ac1 = sugConstraints[0];
+        auto& ac2 = sugConstraints[1];
+        auto& ac3 = sugConstraints[2];
 
-                Gui::Command::commitCommand();
-            }
-            catch (const Base::Exception&) {
-                Gui::NotifyError(sketchgui,
-                                 QT_TRANSLATE_NOOP("Notifications", "Error"),
-                                 QT_TRANSLATE_NOOP("Notifications", "Failed to add arc"));
-                Gui::Command::abortCommand();
-            }
-
-            // Auto Constraint center point
-            if (!sugConstr1.empty()) {
-                createAutoConstraints(sugConstr1, getHighestCurveIndex(), Sketcher::PointPos::mid);
-                sugConstr1.clear();
-            }
-
-            // Auto Constraint first picked point
-            if (!sugConstr2.empty()) {
-                createAutoConstraints(sugConstr2,
-                                      getHighestCurveIndex(),
-                                      (arcAngle > 0) ? Sketcher::PointPos::start
-                                                     : Sketcher::PointPos::end);
-                sugConstr2.clear();
-            }
-
-            // Auto Constraint second picked point
-            if (!sugConstr3.empty()) {
-                createAutoConstraints(sugConstr3,
-                                      getHighestCurveIndex(),
-                                      (arcAngle > 0) ? Sketcher::PointPos::end
-                                                     : Sketcher::PointPos::start);
-                sugConstr3.clear();
-            }
-
-
-            tryAutoRecomputeIfNotSolve(
-                static_cast<Sketcher::SketchObject*>(sketchgui->getObject()));
-
-            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-                "User parameter:BaseApp/Preferences/Mod/Sketcher");
-            bool continuousMode = hGrp->GetBool("ContinuousCreationMode", true);
-            if (continuousMode) {
-                // This code enables the continuous creation mode.
-                Mode = STATUS_SEEK_First;
-                EditCurve.clear();
-                drawEdit(EditCurve);
-                EditCurve.resize(2);
-                applyCursor();
-                /* this is ok not to call to purgeHandler
-                 * in continuous creation mode because the
-                 * handler is destroyed by the quit() method on pressing the
-                 * right button of the mouse */
-            }
-            else {
-                sketchgui->purgeHandler();  // no code after this line, Handler get deleted in
-                                            // ViewProvider
-            }
-        }
-        return true;
-    }
-
-private:
-    QString getCrosshairCursorSVGName() const override
-    {
-        return QString::fromLatin1("Sketcher_Pointer_Create_Arc");
-    }
-
-protected:
-    SelectMode Mode;
-    std::vector<Base::Vector2d> EditCurve;
-    Base::Vector2d CenterPoint;
-    double rx, ry, startAngle, endAngle, arcAngle;
-    std::vector<AutoConstraint> sugConstr1, sugConstr2, sugConstr3;
-};
-
-class DrawSketchHandler3PointArc: public DrawSketchHandler
-{
-public:
-    DrawSketchHandler3PointArc()
-        : Mode(STATUS_SEEK_First)
-        , EditCurve(2)
-        , radius(0)
-        , startAngle(0)
-        , endAngle(0)
-        , arcAngle(0)
-        , arcPos1(Sketcher::PointPos::none)
-        , arcPos2(Sketcher::PointPos::none)
-    {}
-    ~DrawSketchHandler3PointArc() override
-    {}
-    /// mode table
-    enum SelectMode
-    {
-        STATUS_SEEK_First,  /**< enum value ----. */
-        STATUS_SEEK_Second, /**< enum value ----. */
-        STATUS_SEEK_Third,  /**< enum value ----. */
-        STATUS_End
-    };
-
-    void mouseMove(Base::Vector2d onSketchPos) override
-    {
-        if (Mode == STATUS_SEEK_First) {
-            setPositionText(onSketchPos);
-            if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2d(0.f, 0.f))) {
-                renderSuggestConstraintsCursor(sugConstr1);
-                return;
-            }
-        }
-        else if (Mode == STATUS_SEEK_Second) {
-            CenterPoint = EditCurve[0] = (onSketchPos - FirstPoint) / 2 + FirstPoint;
-            EditCurve[1] = EditCurve[33] = onSketchPos;
-            radius = (onSketchPos - CenterPoint).Length();
-            double lineAngle = GetPointAngle(CenterPoint, onSketchPos);
-
-            // Build a 32 point circle ignoring already constructed points
-            for (int i = 1; i <= 32; i++) {
-                // Start at current angle
-                double angle =
-                    (i - 1) * 2 * M_PI / 32.0 + lineAngle;  // N point closed circle has N segments
-                if (i != 1 && i != 17) {
-                    EditCurve[i] = Base::Vector2d(CenterPoint.x + radius * cos(angle),
-                                                  CenterPoint.y + radius * sin(angle));
-                }
-            }
-
-            // Display radius and start angle
-            // This lineAngle will report counter-clockwise from +X, not relatively
-            if (showCursorCoords()) {
-                SbString text;
-                std::string radiusString = lengthToDisplayFormat(radius, 1);
-                std::string angleString = angleToDisplayFormat(lineAngle * 180.0 / M_PI, 1);
-                text.sprintf(" (R%s, %s)", radiusString.c_str(), angleString.c_str());
-                setPositionText(onSketchPos, text);
-            }
-
-            drawEdit(EditCurve);
-            if (seekAutoConstraint(sugConstr2, onSketchPos, Base::Vector2d(0.f, 0.f))) {
-                renderSuggestConstraintsCursor(sugConstr2);
-                return;
-            }
-        }
-        else if (Mode == STATUS_SEEK_Third) {
-            /*
-            Centerline inverts when the arc flips sides.  Easily taken care of by replacing
-            centerline with a point.  It happens because the direction the curve is being drawn
-            reverses.
-            */
-            try {
-                CenterPoint = EditCurve[30] =
-                    Part::Geom2dCircle::getCircleCenter(FirstPoint, SecondPoint, onSketchPos);
-
-                radius = (SecondPoint - CenterPoint).Length();
-
-                double angle1 = GetPointAngle(CenterPoint, FirstPoint);
-                double angle2 = GetPointAngle(CenterPoint, SecondPoint);
-                double angle3 = GetPointAngle(CenterPoint, onSketchPos);
-
-                // Always build arc counter-clockwise
-                // Point 3 is between Point 1 and 2
-                if (angle3 > min(angle1, angle2) && angle3 < max(angle1, angle2)) {
-                    if (angle2 > angle1) {
-                        EditCurve[0] = FirstPoint;
-                        EditCurve[29] = SecondPoint;
-                        arcPos1 = Sketcher::PointPos::start;
-                        arcPos2 = Sketcher::PointPos::end;
-                    }
-                    else {
-                        EditCurve[0] = SecondPoint;
-                        EditCurve[29] = FirstPoint;
-                        arcPos1 = Sketcher::PointPos::end;
-                        arcPos2 = Sketcher::PointPos::start;
-                    }
-                    startAngle = min(angle1, angle2);
-                    endAngle = max(angle1, angle2);
-                    arcAngle = endAngle - startAngle;
-                }
-                // Point 3 is not between Point 1 and 2
-                else {
-                    if (angle2 > angle1) {
-                        EditCurve[0] = SecondPoint;
-                        EditCurve[29] = FirstPoint;
-                        arcPos1 = Sketcher::PointPos::end;
-                        arcPos2 = Sketcher::PointPos::start;
-                    }
-                    else {
-                        EditCurve[0] = FirstPoint;
-                        EditCurve[29] = SecondPoint;
-                        arcPos1 = Sketcher::PointPos::start;
-                        arcPos2 = Sketcher::PointPos::end;
-                    }
-                    startAngle = max(angle1, angle2);
-                    endAngle = min(angle1, angle2);
-                    arcAngle = 2 * M_PI - (startAngle - endAngle);
-                }
-
-                // Build a 30 point circle ignoring already constructed points
-                for (int i = 1; i <= 28; i++) {
-                    double angle =
-                        startAngle + i * arcAngle / 29.0;  // N point arc has N-1 segments
-                    EditCurve[i] = Base::Vector2d(CenterPoint.x + radius * cos(angle),
-                                                  CenterPoint.y + radius * sin(angle));
-                }
-
-                if (showCursorCoords()) {
-                    SbString text;
-                    std::string radiusString = lengthToDisplayFormat(radius, 1);
-                    std::string angleString = angleToDisplayFormat(arcAngle * 180.0 / M_PI, 1);
-                    text.sprintf(" (R%s, %s)", radiusString.c_str(), angleString.c_str());
-                    setPositionText(onSketchPos, text);
-                }
-
-                drawEdit(EditCurve);
-                if (seekAutoConstraint(sugConstr3,
-                                       onSketchPos,
-                                       Base::Vector2d(0.0, 0.0),
-                                       AutoConstraint::CURVE)) {
-                    renderSuggestConstraintsCursor(sugConstr3);
-                    return;
-                }
-            }
-            catch (Base::ValueError& e) {
-                e.ReportException();
-            }
-        }
-        applyCursor();
-    }
-
-    bool pressButton(Base::Vector2d onSketchPos) override
-    {
-        if (Mode == STATUS_SEEK_First) {
-            // 32 point curve + center + endpoint
-            EditCurve.resize(34);
-            // 17 is circle halfway point (1+32/2)
-            FirstPoint = EditCurve[17] = onSketchPos;
-
-            Mode = STATUS_SEEK_Second;
-        }
-        else if (Mode == STATUS_SEEK_Second) {
-            // 30 point arc and center point
-            EditCurve.resize(31);
-            SecondPoint = onSketchPos;
-
-            Mode = STATUS_SEEK_Third;
+        if (constructionMethod() == ConstructionMethod::Center) {
+            generateAutoConstraintsOnElement(
+                ac1,
+                ArcGeoId,
+                Sketcher::PointPos::mid);  // add auto constraints for the center point
+            generateAutoConstraintsOnElement(ac2,
+                                             ArcGeoId,
+                                             (arcAngle > 0) ? Sketcher::PointPos::start
+                                                            : Sketcher::PointPos::end);
+            generateAutoConstraintsOnElement(ac3,
+                                             ArcGeoId,
+                                             (arcAngle > 0) ? Sketcher::PointPos::end
+                                                            : Sketcher::PointPos::start);
         }
         else {
-            EditCurve.resize(30);
-
-            drawEdit(EditCurve);
-            applyCursor();
-            Mode = STATUS_End;
+            generateAutoConstraintsOnElement(
+                ac1,
+                ArcGeoId,
+                arcPos1);  // add auto constraints for the second picked point
+            generateAutoConstraintsOnElement(
+                ac2,
+                ArcGeoId,
+                arcPos2);  // add auto constraints for thesecond picked point
+            generateAutoConstraintsOnElement(
+                ac3,
+                ArcGeoId,
+                Sketcher::PointPos::none);  // add auto constraints for the third picked point
         }
 
+        // Ensure temporary autoconstraints do not generate a redundancy and that the geometry
+        // parameters are accurate This is particularly important for adding widget mandated
+        // constraints.
+        removeRedundantAutoConstraints();
+    }
+
+    void createAutoConstraints() override
+    {
+        // execute python command to create autoconstraints
+        createGeneratedAutoConstraints(true);
+
+        sugConstraints[0].clear();
+        sugConstraints[1].clear();
+        sugConstraints[2].clear();
+    }
+
+    std::string getToolName() const override
+    {
+        return "DSH_Arc";
+    }
+
+    QString getCrosshairCursorSVGName() const override
+    {
+        if (constructionMethod() == DrawSketchHandlerArc::ConstructionMethod::Center) {
+            return QString::fromLatin1("Sketcher_Pointer_Create_Arc");
+        }
+        else {  // constructionMethod == DrawSketchHandlerArc::ConstructionMethod::ThreeRim
+            return QString::fromLatin1("Sketcher_Pointer_Create_3PointArc");
+        }
+
+        return QStringLiteral("None");
+    }
+
+    std::unique_ptr<QWidget> createWidget() const override
+    {
+        return std::make_unique<SketcherToolDefaultWidget>();
+    }
+
+    bool isWidgetVisible() const override
+    {
+        return true;
+    };
+
+    QPixmap getToolIcon() const override
+    {
+        return Gui::BitmapFactory().pixmap("Sketcher_CreateArc");
+    }
+
+    QString getToolWidgetText() const override
+    {
+        return QString(QObject::tr("Arc parameters"));
+    }
+
+    bool canGoToNextMode() override
+    {
+        if (state() == SelectMode::SeekSecond && radius < Precision::Confusion()) {
+            // Prevent validation of null arc.
+            return false;
+        }
         return true;
     }
 
-    bool releaseButton(Base::Vector2d onSketchPos) override
+    void angleSnappingControl() override
     {
-        Q_UNUSED(onSketchPos);
-        // Need to look at.  rx might need fixing.
-        if (Mode == STATUS_End) {
-            unsetCursor();
-            resetPositionText();
+        if (constructionMethod() == ConstructionMethod::Center
+            && (state() == SelectMode::SeekSecond || state() == SelectMode::SeekThird)) {
+            setAngleSnapping(true, centerPoint);
+        }
+        else {
+            setAngleSnapping(false);
+        }
+    }
 
-            try {
-                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch arc"));
-                Gui::cmdAppObjectArgs(
-                    sketchgui->getObject(),
-                    "addGeometry(Part.ArcOfCircle"
-                    "(Part.Circle(App.Vector(%f,%f,0),App.Vector(0,0,1),%f),%f,%f),%s)",
-                    CenterPoint.x,
-                    CenterPoint.y,
-                    radius,
-                    startAngle,
-                    endAngle,
-                    constructionModeAsBooleanText());
+    void createShape(bool onlyeditoutline) override
+    {
 
-                Gui::Command::commitCommand();
-            }
-            catch (const Base::Exception&) {
-                Gui::NotifyError(sketchgui,
-                                 QT_TRANSLATE_NOOP("Notifications", "Error"),
-                                 QT_TRANSLATE_NOOP("Notifications", "Failed to add arc"));
-                Gui::Command::abortCommand();
+        ShapeGeometry.clear();
+
+        if (radius < Precision::Confusion()) {
+            return;
+        }
+
+        if (state() == SelectMode::SeekSecond) {
+            addCircleToShapeGeometry(toVector3d(centerPoint), radius, isConstructionMode());
+        }
+        else {
+            if (fabs(arcAngle) < Precision::Confusion()) {
+                return;
             }
 
-            // Auto Constraint first picked point
-            if (!sugConstr1.empty()) {
-                createAutoConstraints(sugConstr1, getHighestCurveIndex(), arcPos1);
-                sugConstr1.clear();
-            }
+            addArcToShapeGeometry(toVector3d(centerPoint),
+                                  startAngle,
+                                  endAngle,
+                                  radius,
+                                  isConstructionMode());
+        }
 
-            // Auto Constraint second picked point
-            if (!sugConstr2.empty()) {
-                createAutoConstraints(sugConstr2, getHighestCurveIndex(), arcPos2);
-                sugConstr2.clear();
-            }
+        if (onlyeditoutline) {
+            if (constructionMethod() == ConstructionMethod::Center) {
+                if (state() == SelectMode::SeekThird) {
+                    addLineToShapeGeometry(
+                        toVector3d(centerPoint),
+                        Base::Vector3d(centerPoint.x + cos(startAngle) * 0.8 * radius,
+                                       centerPoint.y + sin(startAngle) * 0.8 * radius,
+                                       0.),
+                        isConstructionMode());
 
-            // Auto Constraint third picked point
-            if (!sugConstr3.empty()) {
-                createAutoConstraints(sugConstr3, getHighestCurveIndex(), Sketcher::PointPos::none);
-                sugConstr3.clear();
-            }
-
-            tryAutoRecomputeIfNotSolve(
-                static_cast<Sketcher::SketchObject*>(sketchgui->getObject()));
-
-            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-                "User parameter:BaseApp/Preferences/Mod/Sketcher");
-            bool continuousMode = hGrp->GetBool("ContinuousCreationMode", true);
-            if (continuousMode) {
-                // This code enables the continuous creation mode.
-                Mode = STATUS_SEEK_First;
-                EditCurve.clear();
-                drawEdit(EditCurve);
-                EditCurve.resize(2);
-                applyCursor();
-                /* this is ok not to call to purgeHandler
-                 * in continuous creation mode because the
-                 * handler is destroyed by the quit() method on pressing the
-                 * right button of the mouse */
+                    addLineToShapeGeometry(
+                        toVector3d(centerPoint),
+                        Base::Vector3d(centerPoint.x + cos(endAngle) * 0.8 * radius,
+                                       centerPoint.y + sin(endAngle) * 0.8 * radius,
+                                       0.),
+                        isConstructionMode());
+                }
             }
             else {
-                sketchgui->purgeHandler();  // no code after this line, Handler get deleted in
-                                            // ViewProvider
+                if (state() == SelectMode::SeekSecond) {
+                    addLineToShapeGeometry(toVector3d(firstPoint),
+                                           toVector3d(secondPoint),
+                                           isConstructionMode());
+                }
+                else if (state() == SelectMode::SeekThird) {
+                    addLineToShapeGeometry(toVector3d(centerPoint),
+                                           toVector3d(centerPoint)
+                                               + (toVector3d(secondPoint) - toVector3d(centerPoint))
+                                                   * 0.8,
+                                           isConstructionMode());
+
+                    addLineToShapeGeometry(toVector3d(centerPoint),
+                                           toVector3d(centerPoint)
+                                               + (toVector3d(firstPoint) - toVector3d(centerPoint))
+                                                   * 0.8,
+                                           isConstructionMode());
+                }
             }
         }
-        return true;
     }
 
 private:
-    QString getCrosshairCursorSVGName() const override
-    {
-        return QString::fromLatin1("Sketcher_Pointer_Create_3PointArc");
-    }
-
-protected:
-    SelectMode Mode;
-    std::vector<Base::Vector2d> EditCurve;
-    Base::Vector2d CenterPoint, FirstPoint, SecondPoint;
+    Base::Vector2d centerPoint, firstPoint, secondPoint;
     double radius, startAngle, endAngle, arcAngle;
-    std::vector<AutoConstraint> sugConstr1, sugConstr2, sugConstr3;
     Sketcher::PointPos arcPos1, arcPos2;
 };
+
+template<>
+auto DSHArcControllerBase::getState(int labelindex) const
+{
+    switch (labelindex) {
+        case OnViewParameter::First:
+        case OnViewParameter::Second:
+            return SelectMode::SeekFirst;
+            break;
+        case OnViewParameter::Third:
+        case OnViewParameter::Fourth:
+            return SelectMode::SeekSecond;
+            break;
+        case OnViewParameter::Fifth:
+        case OnViewParameter::Sixth:
+            return SelectMode::SeekThird;
+            break;
+        default:
+            THROWM(Base::ValueError, "OnViewParameter index without an associated machine state")
+    }
+}
+
+template<>
+void DSHArcController::configureToolWidget()
+{
+    if (!init) {  // Code to be executed only upon initialisation
+        QStringList names = {QStringLiteral("Center"), QStringLiteral("3 rim points")};
+        toolWidget->setComboboxElements(WCombobox::FirstCombo, names);
+
+        if (isConstructionMode()) {
+            toolWidget->setComboboxItemIcon(
+                WCombobox::FirstCombo,
+                0,
+                Gui::BitmapFactory().iconFromTheme("Sketcher_CreateArc_Constr"));
+            toolWidget->setComboboxItemIcon(
+                WCombobox::FirstCombo,
+                1,
+                Gui::BitmapFactory().iconFromTheme("Sketcher_Create3PointArc_Constr"));
+        }
+        else {
+            toolWidget->setComboboxItemIcon(
+                WCombobox::FirstCombo,
+                0,
+                Gui::BitmapFactory().iconFromTheme("Sketcher_CreateArc"));
+            toolWidget->setComboboxItemIcon(
+                WCombobox::FirstCombo,
+                1,
+                Gui::BitmapFactory().iconFromTheme("Sketcher_Create3PointArc"));
+        }
+    }
+
+    onViewParameters[OnViewParameter::First]->setLabelType(Gui::SoDatumLabel::DISTANCEX);
+    onViewParameters[OnViewParameter::Second]->setLabelType(Gui::SoDatumLabel::DISTANCEY);
+
+    if (handler->constructionMethod() == DrawSketchHandlerArc::ConstructionMethod::ThreeRim) {
+        onViewParameters[OnViewParameter::Third]->setLabelType(Gui::SoDatumLabel::DISTANCEX);
+        onViewParameters[OnViewParameter::Fourth]->setLabelType(Gui::SoDatumLabel::DISTANCEY);
+
+        onViewParameters[OnViewParameter::Fifth]->setLabelType(Gui::SoDatumLabel::DISTANCEX);
+        onViewParameters[OnViewParameter::Sixth]->setLabelType(Gui::SoDatumLabel::DISTANCEY);
+    }
+    else {
+        onViewParameters[OnViewParameter::Third]->setLabelType(
+            Gui::SoDatumLabel::RADIUS,
+            Gui::EditableDatumLabel::Function::Dimensioning);
+        onViewParameters[OnViewParameter::Fourth]->setLabelType(
+            Gui::SoDatumLabel::ANGLE,
+            Gui::EditableDatumLabel::Function::Dimensioning);
+        onViewParameters[OnViewParameter::Fifth]->setLabelType(
+            Gui::SoDatumLabel::ANGLE,
+            Gui::EditableDatumLabel::Function::Dimensioning);
+    }
+}
+
+template<>
+void DSHArcControllerBase::doEnforceControlParameters(Base::Vector2d& onSketchPos)
+{
+    switch (handler->state()) {
+        case SelectMode::SeekFirst: {
+            if (onViewParameters[OnViewParameter::First]->isSet) {
+                onSketchPos.x = onViewParameters[OnViewParameter::First]->getValue();
+            }
+
+            if (onViewParameters[OnViewParameter::Second]->isSet) {
+                onSketchPos.y = onViewParameters[OnViewParameter::Second]->getValue();
+            }
+        } break;
+        case SelectMode::SeekSecond: {
+            if (handler->constructionMethod() == DrawSketchHandlerArc::ConstructionMethod::Center) {
+                Base::Vector2d dir = onSketchPos - handler->centerPoint;
+                if (dir.Length() < Precision::Confusion()) {
+                    dir.x = 1.0;  // if direction null, default to (1,0)
+                }
+                double radius = dir.Length();
+
+                if (onViewParameters[OnViewParameter::Third]->isSet) {
+                    radius = onViewParameters[OnViewParameter::Third]->getValue();
+                    if (radius < Precision::Confusion()) {
+                        unsetOnViewParameter(onViewParameters[OnViewParameter::Third].get());
+                        return;
+                    }
+
+                    onSketchPos = handler->centerPoint + radius * dir.Normalize();
+                }
+
+                if (onViewParameters[OnViewParameter::Fourth]->isSet) {
+                    double angle =
+                        onViewParameters[OnViewParameter::Fourth]->getValue() * M_PI / 180;
+                    onSketchPos.x = handler->centerPoint.x + cos(angle) * radius;
+                    onSketchPos.y = handler->centerPoint.y + sin(angle) * radius;
+                }
+            }
+            else {
+                if (onViewParameters[OnViewParameter::Third]->isSet) {
+                    onSketchPos.x = onViewParameters[OnViewParameter::Third]->getValue();
+                }
+
+                if (onViewParameters[OnViewParameter::Fourth]->isSet) {
+                    onSketchPos.y = onViewParameters[OnViewParameter::Fourth]->getValue();
+                }
+                if (onViewParameters[OnViewParameter::Third]->isSet
+                    && onViewParameters[OnViewParameter::Fourth]->isSet
+                    && (onSketchPos - handler->firstPoint).Length() < Precision::Confusion()) {
+                    unsetOnViewParameter(onViewParameters[OnViewParameter::Third].get());
+                    unsetOnViewParameter(onViewParameters[OnViewParameter::Fourth].get());
+                }
+            }
+        } break;
+        case SelectMode::SeekThird: {
+            if (handler->constructionMethod() == DrawSketchHandlerArc::ConstructionMethod::Center) {
+                if (onViewParameters[OnViewParameter::Fifth]->isSet) {
+                    double arcAngle =
+                        onViewParameters[OnViewParameter::Fifth]->getValue() * M_PI / 180;
+                    if (fmod(fabs(arcAngle), 2 * M_PI) < Precision::Confusion()) {
+                        unsetOnViewParameter(onViewParameters[OnViewParameter::Fifth].get());
+                        return;
+                    }
+                    double angle = handler->startAngle + arcAngle;
+                    onSketchPos.x = handler->centerPoint.x + cos(angle) * handler->radius;
+                    onSketchPos.y = handler->centerPoint.y + sin(angle) * handler->radius;
+                }
+            }
+            else {
+                if (onViewParameters[OnViewParameter::Fifth]->isSet) {
+                    onSketchPos.x = onViewParameters[OnViewParameter::Fifth]->getValue();
+                }
+
+                if (onViewParameters[OnViewParameter::Sixth]->isSet) {
+                    onSketchPos.y = onViewParameters[OnViewParameter::Sixth]->getValue();
+                }
+            }
+        } break;
+        default:
+            break;
+    }
+}
+
+template<>
+void DSHArcController::adaptParameters(Base::Vector2d onSketchPos)
+{
+    switch (handler->state()) {
+        case SelectMode::SeekFirst: {
+            if (!onViewParameters[OnViewParameter::First]->isSet) {
+                setOnViewParameterValue(OnViewParameter::First, onSketchPos.x);
+            }
+
+            if (!onViewParameters[OnViewParameter::Second]->isSet) {
+                setOnViewParameterValue(OnViewParameter::Second, onSketchPos.y);
+            }
+
+            bool sameSign = onSketchPos.x * onSketchPos.y > 0.;
+            onViewParameters[OnViewParameter::First]->setLabelAutoDistanceReverse(!sameSign);
+            onViewParameters[OnViewParameter::Second]->setLabelAutoDistanceReverse(sameSign);
+            onViewParameters[OnViewParameter::First]->setPoints(Base::Vector3d(),
+                                                                toVector3d(onSketchPos));
+            onViewParameters[OnViewParameter::Second]->setPoints(Base::Vector3d(),
+                                                                 toVector3d(onSketchPos));
+        } break;
+        case SelectMode::SeekSecond: {
+            if (handler->constructionMethod() == DrawSketchHandlerArc::ConstructionMethod::Center) {
+
+                if (!onViewParameters[OnViewParameter::Third]->isSet) {
+                    setOnViewParameterValue(OnViewParameter::Third, handler->radius);
+                }
+                double range = handler->startAngle * 180 / M_PI;
+                if (!onViewParameters[OnViewParameter::Fourth]->isSet) {
+                    setOnViewParameterValue(OnViewParameter::Fourth, range, Base::Unit::Angle);
+                }
+
+                Base::Vector3d start = toVector3d(handler->centerPoint);
+                Base::Vector3d end = toVector3d(onSketchPos);
+
+                onViewParameters[OnViewParameter::Third]->setPoints(start, end);
+                onViewParameters[OnViewParameter::Fourth]->setPoints(start, Base::Vector3d());
+                onViewParameters[OnViewParameter::Fourth]->setLabelRange(handler->startAngle);
+            }
+            else {
+                if (!onViewParameters[OnViewParameter::Third]->isSet) {
+                    setOnViewParameterValue(OnViewParameter::Third, onSketchPos.x);
+                }
+
+                if (!onViewParameters[OnViewParameter::Fourth]->isSet) {
+                    setOnViewParameterValue(OnViewParameter::Fourth, onSketchPos.y);
+                }
+
+                bool sameSign = onSketchPos.x * onSketchPos.y > 0.;
+                onViewParameters[OnViewParameter::Third]->setLabelAutoDistanceReverse(!sameSign);
+                onViewParameters[OnViewParameter::Fourth]->setLabelAutoDistanceReverse(sameSign);
+                onViewParameters[OnViewParameter::Third]->setPoints(Base::Vector3d(),
+                                                                    toVector3d(onSketchPos));
+                onViewParameters[OnViewParameter::Fourth]->setPoints(Base::Vector3d(),
+                                                                     toVector3d(onSketchPos));
+            }
+        } break;
+        case SelectMode::SeekThird: {
+            if (handler->constructionMethod() == DrawSketchHandlerArc::ConstructionMethod::Center) {
+                double range = handler->arcAngle * 180 / M_PI;
+
+                if (!onViewParameters[OnViewParameter::Fifth]->isSet) {
+                    setOnViewParameterValue(OnViewParameter::Fifth, range, Base::Unit::Angle);
+                }
+
+                Base::Vector3d start = toVector3d(handler->centerPoint);
+                onViewParameters[OnViewParameter::Fifth]->setPoints(start, Base::Vector3d());
+
+                onViewParameters[OnViewParameter::Fifth]->setLabelStartAngle(handler->startAngle);
+                onViewParameters[OnViewParameter::Fifth]->setLabelRange(handler->arcAngle);
+            }
+            else {
+                if (!onViewParameters[OnViewParameter::Fifth]->isSet) {
+                    setOnViewParameterValue(OnViewParameter::Fifth, onSketchPos.x);
+                }
+
+                if (!onViewParameters[OnViewParameter::Sixth]->isSet) {
+                    setOnViewParameterValue(OnViewParameter::Sixth, onSketchPos.y);
+                }
+
+                bool sameSign = onSketchPos.x * onSketchPos.y > 0.;
+                onViewParameters[OnViewParameter::Fifth]->setLabelAutoDistanceReverse(!sameSign);
+                onViewParameters[OnViewParameter::Sixth]->setLabelAutoDistanceReverse(sameSign);
+                onViewParameters[OnViewParameter::Fifth]->setPoints(Base::Vector3d(),
+                                                                    toVector3d(onSketchPos));
+                onViewParameters[OnViewParameter::Sixth]->setPoints(Base::Vector3d(),
+                                                                    toVector3d(onSketchPos));
+            }
+        } break;
+        default:
+            break;
+    }
+}
+
+template<>
+void DSHArcController::doChangeDrawSketchHandlerMode()
+{
+    switch (handler->state()) {
+        case SelectMode::SeekFirst: {
+            if (onViewParameters[OnViewParameter::First]->isSet
+                && onViewParameters[OnViewParameter::Second]->isSet) {
+
+                handler->setState(SelectMode::SeekSecond);
+            }
+        } break;
+        case SelectMode::SeekSecond: {
+            if (onViewParameters[OnViewParameter::Third]->isSet
+                && onViewParameters[OnViewParameter::Fourth]->isSet) {
+
+                handler->setState(SelectMode::SeekThird);
+            }
+        } break;
+        case SelectMode::SeekThird: {
+            if (handler->constructionMethod() == DrawSketchHandlerArc::ConstructionMethod::Center) {
+                if (onViewParameters[OnViewParameter::Fifth]->isSet) {
+
+                    handler->setState(SelectMode::End);
+                }
+            }
+            else {
+                if (onViewParameters[OnViewParameter::Fifth]->isSet
+                    && onViewParameters[OnViewParameter::Sixth]->isSet) {
+
+                    handler->setState(SelectMode::End);
+                }
+            }
+        } break;
+        default:
+            break;
+    }
+}
+
+template<>
+void DSHArcController::addConstraints()
+{
+    App::DocumentObject* obj = handler->sketchgui->getObject();
+
+    int firstCurve = handler->getHighestCurveIndex();
+    using namespace Sketcher;
+
+    auto x0 = onViewParameters[OnViewParameter::First]->getValue();
+    auto y0 = onViewParameters[OnViewParameter::Second]->getValue();
+    auto p3 = onViewParameters[OnViewParameter::Third]->getValue();
+    auto p4 = onViewParameters[OnViewParameter::Fourth]->getValue();
+
+    auto x0set = onViewParameters[OnViewParameter::First]->isSet;
+    auto y0set = onViewParameters[OnViewParameter::Second]->isSet;
+    auto p3set = onViewParameters[OnViewParameter::Third]->isSet;
+    auto p4set = onViewParameters[OnViewParameter::Fourth]->isSet;
+    auto p5set = onViewParameters[OnViewParameter::Fifth]->isSet;
+
+
+    PointPos pos1 =
+        handler->constructionMethod() == DrawSketchHandlerArc::ConstructionMethod::Center
+        ? PointPos::mid
+        : handler->arcPos1;
+
+    auto constraintx0 = [&]() {
+        ConstraintToAttachment(GeoElementId(firstCurve, pos1), GeoElementId::VAxis, x0, obj);
+    };
+
+    auto constrainty0 = [&]() {
+        ConstraintToAttachment(GeoElementId(firstCurve, pos1), GeoElementId::HAxis, y0, obj);
+    };
+
+    auto constraintp3radius = [&]() {
+        Gui::cmdAppObjectArgs(obj,
+                              "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
+                              firstCurve,
+                              fabs(p3));
+    };
+
+    auto constraintp5angle = [&]() {
+        Gui::cmdAppObjectArgs(obj,
+                              "addConstraint(Sketcher.Constraint('Angle',%d,%f)) ",
+                              firstCurve,
+                              fabs(handler->arcAngle));
+    };
+
+    auto constraintp3x = [&]() {
+        ConstraintToAttachment(GeoElementId(firstCurve, handler->arcPos2),
+                               GeoElementId::VAxis,
+                               p3,
+                               obj);
+    };
+
+    auto constraintp4y = [&]() {
+        ConstraintToAttachment(GeoElementId(firstCurve, handler->arcPos2),
+                               GeoElementId::HAxis,
+                               p4,
+                               obj);
+    };
+
+
+    if (handler->AutoConstraints.empty()) {  // No valid diagnosis. Every constraint can be added.
+        if (x0set && y0set && x0 == 0. && y0 == 0.) {
+            ConstraintToAttachment(GeoElementId(firstCurve, pos1), GeoElementId::RtPnt, 0., obj);
+        }
+        else {
+            if (x0set) {
+                constraintx0();
+            }
+
+            if (y0set) {
+                constrainty0();
+            }
+        }
+
+        if (handler->constructionMethod() == DrawSketchHandlerArc::ConstructionMethod::Center) {
+            if (p3set) {
+                constraintp3radius();
+            }
+
+            if (p5set) {
+                constraintp5angle();
+            }
+        }
+        else {
+            if (p3set && p4set && p3 == 0. && p4 == 0.) {
+                ConstraintToAttachment(GeoElementId(firstCurve, handler->arcPos2),
+                                       GeoElementId::RtPnt,
+                                       0.,
+                                       obj);
+            }
+            else {
+                if (p3set) {
+                    constraintp3x();
+                }
+
+                if (p4set) {
+                    constraintp4y();
+                }
+            }
+        }
+    }
+    else {  // Valid diagnosis. Must check which constraints may be added.
+        auto startpointinfo = handler->getPointInfo(GeoElementId(firstCurve, pos1));
+
+        if (x0set && startpointinfo.isXDoF()) {
+            constraintx0();
+
+            handler->diagnoseWithAutoConstraints();  // ensure we have recalculated parameters after
+                                                     // each constraint addition
+            // get updated point position
+            startpointinfo = handler->getPointInfo(GeoElementId(firstCurve, pos1));
+        }
+
+        if (y0set && startpointinfo.isYDoF()) {
+            constrainty0();
+
+            handler->diagnoseWithAutoConstraints();  // ensure we have recalculated parameters after
+                                                     // each constraint addition
+            // get updated point position
+            startpointinfo = handler->getPointInfo(GeoElementId(firstCurve, pos1));
+        }
+
+
+        if (handler->constructionMethod() == DrawSketchHandlerArc::ConstructionMethod::Center) {
+            startpointinfo = handler->getPointInfo(GeoElementId(firstCurve, PointPos::start));
+            auto endpointinfo = handler->getPointInfo(GeoElementId(firstCurve, PointPos::end));
+            auto midpointinfo = handler->getPointInfo(GeoElementId(firstCurve, PointPos::mid));
+
+            int DoFs = startpointinfo.getDoFs();
+            DoFs += endpointinfo.getDoFs();
+            DoFs += midpointinfo.getDoFs();
+
+            if (p3set && DoFs > 0) {
+                constraintp3radius();
+                DoFs--;
+            }
+
+            if (p5set && DoFs > 0) {
+                constraintp5angle();
+            }
+        }
+        else {
+            auto endpointinfo = handler->getPointInfo(GeoElementId(firstCurve, handler->arcPos2));
+
+            if (p3set && endpointinfo.isXDoF()) {
+                constraintp3x();
+
+                handler->diagnoseWithAutoConstraints();  // ensure we have recalculated parameters
+                                                         // after each constraint addition
+                                                         // get updated point position
+                startpointinfo = handler->getPointInfo(GeoElementId(firstCurve, handler->arcPos1));
+                endpointinfo = handler->getPointInfo(GeoElementId(firstCurve, handler->arcPos2));
+            }
+
+            if (p4set && endpointinfo.isYDoF()) {
+                constraintp4y();
+            }
+        }
+    }
+}
 
 }  // namespace SketcherGui
 
