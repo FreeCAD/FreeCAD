@@ -1458,14 +1458,6 @@ void Document::RestoreDocFile(Base::Reader &reader)
                 Base::Console().Error("%s\n", e.what());
             }
         }
-
-        // if (localreader->readNextElement()) {
-        //     if (strcmp(localreader->localName(), "ProjectUnitSystem") == 0) {
-        //         d->projectUnitSystem = localreader->getAttributeAsInteger("US");
-        //         d->projectUnitSystemIgnore = localreader->getAttributeAsInteger("ignore");
-        //         localreader->readEndElement("Document");
-        //     }
-        // }
     }
 
     reader.initLocalReader(localreader);
@@ -1587,14 +1579,6 @@ void Document::SaveDocFile (Base::Writer &writer) const
     writer.Stream() << writer.ind() << "<Camera settings=\""
         << encodeAttribute(getCameraSettings()) << "\"/>\n";
     writer.decInd(); // indentation for camera settings
-
-    // if (d->projectUnitSystem >= 0) {
-    //     writer.incInd();
-    //     writer.Stream() << writer.ind() << "<ProjectUnitSystem US=\""
-    //                     << d->projectUnitSystem << "\" ignore=\""
-    //                     << d->projectUnitSystemIgnore << "\"/>\n";
-    //     writer.decInd();
-    // }
 
     writer.Stream() << "</Document>" << std::endl;
 }
