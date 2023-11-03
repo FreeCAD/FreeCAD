@@ -938,14 +938,14 @@ void Application::slotActiveDocument(const App::Document& Doc)
         if( Doc.FileName.getValue()[0] != '\0' ) {
             getMainWindow()->setUserSchema(Doc.UnitSystem.getValue());
             Application::Instance->onUpdate();
-            signalActiveDocument(*doc->second);
-            updateActions();
         }else{// set up Unit system default
 			ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
 			   ("User parameter:BaseApp/Preferences/Units");
 			Base::UnitsApi::setSchema((Base::UnitSystem)hGrp->GetInt("UserSchema",0));
 			Base::UnitsApi::setDecimals(hGrp->GetInt("Decimals", Base::UnitsApi::getDecimals()));
         }
+        signalActiveDocument(*doc->second);
+        updateActions();
     }
 }
 
