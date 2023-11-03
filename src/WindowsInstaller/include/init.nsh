@@ -143,6 +143,11 @@ Function .onInit
     Banner::destroy
   ${EndIf}
 
+  # if installer runs silent the post install mode page routine has to be called here
+  ${If} ${Silent}
+    Call PostMultiUserPageInit
+  ${endif}
+
 FunctionEnd
 
 # this function is called at first after starting the uninstaller
