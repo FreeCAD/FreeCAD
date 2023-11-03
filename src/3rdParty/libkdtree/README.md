@@ -115,7 +115,7 @@ folks from the #c++ channel on Freenode, specifically (in no particular order)
 orbitz, quix, Erwin, pwned, wcstok, dasOp, Chaku, Adrinael, The_Vulture, and
 LIM2 (if I left anyone out, let me know). Finally, I thank the Artificial
 Intelligence Laboratory of the University of Zurich, Dr. Peter Eggenberger, and
-Gabriel Gomez for giving me the opportunity to write this stuff.
+Gabriel Gómez for giving me the opportunity to write this stuff.
 
 Since libkdtree++ makes an effort to stay as close as possible to the feel of
 a STL container, concepts and inspiration was gained from the SGI C++
