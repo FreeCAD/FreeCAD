@@ -20,9 +20,11 @@
  *                                                                         *
  ***************************************************************************/
 
+
 #ifndef SKETCHERGUI_DrawSketchHandlerCircle_H
 #define SKETCHERGUI_DrawSketchHandlerCircle_H
 
+#include <Gui/BitmapFactory.h>
 #include <Gui/Notifications.h>
 #include <Gui/Command.h>
 #include <Gui/CommandT.h>
@@ -31,369 +33,644 @@
 
 #include <Mod/Sketcher/App/SketchObject.h>
 
-#include "DrawSketchHandler.h"
+#include "DrawSketchDefaultWidgetController.h"
+#include "DrawSketchControllableHandler.h"
 #include "GeometryCreationMode.h"
 #include "Utils.h"
 #include "ViewProviderSketch.h"
 
+#include "GeometryCreationMode.h"
+#include "Utils.h"
+
+#include "CircleEllipseConstructionMethod.h"
 
 namespace SketcherGui
 {
 
 extern GeometryCreationMode geometryCreationMode;  // defined in CommandCreateGeo.cpp
 
-class DrawSketchHandlerCircle: public DrawSketchHandler
+class DrawSketchHandlerCircle;
+
+using DSHCircleController =
+    DrawSketchDefaultWidgetController<DrawSketchHandlerCircle,
+                                      /*SelectModeT*/ StateMachines::ThreeSeekEnd,
+                                      /*PAutoConstraintSize =*/3,
+                                      /*OnViewParametersT =*/OnViewParameters<3, 6>,
+                                      /*WidgetParametersT =*/WidgetParameters<0, 0>,
+                                      /*WidgetCheckboxesT =*/WidgetCheckboxes<0, 0>,
+                                      /*WidgetComboboxesT =*/WidgetComboboxes<1, 1>,
+                                      ConstructionMethods::CircleEllipseConstructionMethod,
+                                      /*bool PFirstComboboxIsConstructionMethod =*/true>;
+
+using DSHCircleControllerBase = DSHCircleController::ControllerBase;
+
+using DrawSketchHandlerCircleBase = DrawSketchControllableHandler<DSHCircleController>;
+
+
+class DrawSketchHandlerCircle: public DrawSketchHandlerCircleBase
 {
+    friend DSHCircleController;
+    friend DSHCircleControllerBase;
+
 public:
-    DrawSketchHandlerCircle()
-        : Mode(STATUS_SEEK_First)
-        , EditCurve(34)
+    explicit DrawSketchHandlerCircle(ConstructionMethod constrMethod = ConstructionMethod::Center)
+        : DrawSketchHandlerCircleBase(constrMethod)
     {}
-    ~DrawSketchHandlerCircle() override
-    {}
-    /// mode table
-    enum SelectMode
-    {
-        STATUS_SEEK_First,  /**< enum value ----. */
-        STATUS_SEEK_Second, /**< enum value ----. */
-        STATUS_Close
-    };
-
-    void mouseMove(Base::Vector2d onSketchPos) override
-    {
-        if (Mode == STATUS_SEEK_First) {
-            setPositionText(onSketchPos);
-            if (seekAutoConstraint(sugConstr1, onSketchPos, Base::Vector2d(0.f, 0.f))) {
-                renderSuggestConstraintsCursor(sugConstr1);
-                return;
-            }
-        }
-        else if (Mode == STATUS_SEEK_Second) {
-            double rx0 = onSketchPos.x - EditCurve[0].x;
-            double ry0 = onSketchPos.y - EditCurve[0].y;
-            for (int i = 0; i < 16; i++) {
-                double angle = i * M_PI / 16.0;
-                double rx = rx0 * cos(angle) + ry0 * sin(angle);
-                double ry = -rx0 * sin(angle) + ry0 * cos(angle);
-                EditCurve[1 + i] = Base::Vector2d(EditCurve[0].x + rx, EditCurve[0].y + ry);
-                EditCurve[17 + i] = Base::Vector2d(EditCurve[0].x - rx, EditCurve[0].y - ry);
-            }
-            EditCurve[33] = EditCurve[1];
-
-            // Display radius for user
-            float radius = (onSketchPos - EditCurve[0]).Length();
-            if (showCursorCoords()) {
-                SbString text;
-                std::string radiusString = lengthToDisplayFormat(radius, 1);
-                text.sprintf(" (R%s)", radiusString.c_str());
-                setPositionText(onSketchPos, text);
-            }
-
-            drawEdit(EditCurve);
-            if (seekAutoConstraint(sugConstr2,
-                                   onSketchPos,
-                                   onSketchPos - EditCurve[0],
-                                   AutoConstraint::CURVE)) {
-                renderSuggestConstraintsCursor(sugConstr2);
-                return;
-            }
-        }
-        applyCursor();
-    }
-
-    bool pressButton(Base::Vector2d onSketchPos) override
-    {
-        if (Mode == STATUS_SEEK_First) {
-            EditCurve[0] = onSketchPos;
-            Mode = STATUS_SEEK_Second;
-        }
-        else {
-            EditCurve[1] = onSketchPos;
-            Mode = STATUS_Close;
-        }
-        return true;
-    }
-
-    bool releaseButton(Base::Vector2d onSketchPos) override
-    {
-        Q_UNUSED(onSketchPos);
-        if (Mode == STATUS_Close) {
-            double rx = EditCurve[1].x - EditCurve[0].x;
-            double ry = EditCurve[1].y - EditCurve[0].y;
-            unsetCursor();
-            resetPositionText();
-
-            try {
-                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch circle"));
-                Gui::cmdAppObjectArgs(sketchgui->getObject(),
-                                      "addGeometry(Part.Circle"
-                                      "(App.Vector(%f,%f,0),App.Vector(0,0,1),%f),%s)",
-                                      EditCurve[0].x,
-                                      EditCurve[0].y,
-                                      sqrt(rx * rx + ry * ry),
-                                      constructionModeAsBooleanText());
-
-                Gui::Command::commitCommand();
-            }
-            catch (const Base::Exception&) {
-                Gui::NotifyError(sketchgui,
-                                 QT_TRANSLATE_NOOP("Notifications", "Error"),
-                                 QT_TRANSLATE_NOOP("Notifications", "Failed to add circle"));
-                Gui::Command::abortCommand();
-            }
-
-            // add auto constraints for the center point
-            if (!sugConstr1.empty()) {
-                createAutoConstraints(sugConstr1, getHighestCurveIndex(), Sketcher::PointPos::mid);
-                sugConstr1.clear();
-            }
-
-            // add suggested constraints for circumference
-            if (!sugConstr2.empty()) {
-                createAutoConstraints(sugConstr2, getHighestCurveIndex(), Sketcher::PointPos::none);
-                sugConstr2.clear();
-            }
-
-            tryAutoRecomputeIfNotSolve(
-                static_cast<Sketcher::SketchObject*>(sketchgui->getObject()));
-
-            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-                "User parameter:BaseApp/Preferences/Mod/Sketcher");
-            bool continuousMode = hGrp->GetBool("ContinuousCreationMode", true);
-            if (continuousMode) {
-                // This code enables the continuous creation mode.
-                Mode = STATUS_SEEK_First;
-                EditCurve.clear();
-                drawEdit(EditCurve);
-                EditCurve.resize(34);
-                applyCursor();
-                /* this is ok not to call to purgeHandler
-                 * in continuous creation mode because the
-                 * handler is destroyed by the quit() method on pressing the
-                 * right button of the mouse */
-            }
-            else {
-                sketchgui->purgeHandler();  // no code after this line, Handler get deleted in
-                                            // ViewProvider
-            }
-        }
-        return true;
-    }
+    ~DrawSketchHandlerCircle() override = default;
 
 private:
-    QString getCrosshairCursorSVGName() const override
+    void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) override
     {
-        return QString::fromLatin1("Sketcher_Pointer_Create_Circle");
-    }
+        switch (state()) {
+            case SelectMode::SeekFirst: {
+                toolWidgetManager.drawPositionAtCursor(onSketchPos);
+                if (constructionMethod() == ConstructionMethod::Center) {
+                    centerPoint = onSketchPos;
 
-protected:
-    SelectMode Mode;
-    std::vector<Base::Vector2d> EditCurve;
-    std::vector<AutoConstraint> sugConstr1, sugConstr2;
-};
-
-class DrawSketchHandler3PointCircle: public DrawSketchHandler
-{
-public:
-    DrawSketchHandler3PointCircle()
-        : Mode(STATUS_SEEK_First)
-        , EditCurve(2)
-        , radius(1)
-        , N(32.0)
-    {}
-    ~DrawSketchHandler3PointCircle() override
-    {}
-    /// mode table
-    enum SelectMode
-    {
-        STATUS_SEEK_First,  /**< enum value ----. */
-        STATUS_SEEK_Second, /**< enum value ----. */
-        STATUS_SEEK_Third,  /**< enum value ----. */
-        STATUS_End
-    };
-
-    void mouseMove(Base::Vector2d onSketchPos) override
-    {
-        if (Mode == STATUS_SEEK_First) {
-            setPositionText(onSketchPos);
-            if (seekAutoConstraint(sugConstr1,
-                                   onSketchPos,
-                                   Base::Vector2d(0.f, 0.f),
-                                   AutoConstraint::CURVE)) {
-                renderSuggestConstraintsCursor(sugConstr1);
-                return;
-            }
-        }
-        else if (Mode == STATUS_SEEK_Second || Mode == STATUS_SEEK_Third) {
-            try {
-                if (Mode == STATUS_SEEK_Second) {
-                    CenterPoint = EditCurve[N + 1] = (onSketchPos - FirstPoint) / 2 + FirstPoint;
-                }
-                else {
-                    CenterPoint = EditCurve[N + 1] =
-                        Part::Geom2dCircle::getCircleCenter(FirstPoint, SecondPoint, onSketchPos);
-                }
-                radius = (onSketchPos - CenterPoint).Length();
-                double lineAngle = GetPointAngle(CenterPoint, onSketchPos);
-
-                // Build a N point circle
-                for (int i = 1; i < N; i++) {
-                    // Start at current angle
-                    double angle =
-                        i * 2 * M_PI / N + lineAngle;  // N point closed circle has N segments
-                    EditCurve[i] = Base::Vector2d(CenterPoint.x + radius * cos(angle),
-                                                  CenterPoint.y + radius * sin(angle));
-                }
-                // Beginning and end of curve should be exact
-                EditCurve[0] = EditCurve[N] = onSketchPos;
-
-                // Display radius and start angle
-                // This lineAngle will report counter-clockwise from +X, not relatively
-                if (showCursorCoords()) {
-                    SbString text;
-                    std::string radiusString = lengthToDisplayFormat(radius, 1);
-                    std::string angleString = angleToDisplayFormat(lineAngle * 180.0 / M_PI, 1);
-                    text.sprintf(" (R%s, %s)", radiusString.c_str(), angleString.c_str());
-                    setPositionText(onSketchPos, text);
-                }
-
-                drawEdit(EditCurve);
-                if (Mode == STATUS_SEEK_Second) {
-                    if (seekAutoConstraint(sugConstr2,
-                                           onSketchPos,
-                                           Base::Vector2d(0.f, 0.f),
-                                           AutoConstraint::CURVE)) {
-                        renderSuggestConstraintsCursor(sugConstr2);
+                    if (seekAutoConstraint(sugConstraints[0], onSketchPos, Base::Vector2d())) {
+                        renderSuggestConstraintsCursor(sugConstraints[0]);
                         return;
                     }
                 }
                 else {
-                    if (seekAutoConstraint(sugConstr3,
+                    firstPoint = onSketchPos;
+
+                    if (seekAutoConstraint(sugConstraints[0],
                                            onSketchPos,
-                                           Base::Vector2d(0.f, 0.f),
+                                           Base::Vector2d(),
                                            AutoConstraint::CURVE)) {
-                        renderSuggestConstraintsCursor(sugConstr3);
+                        renderSuggestConstraintsCursor(sugConstraints[0]);
                         return;
                     }
                 }
-            }
-            catch (Base::ValueError& e) {
-                e.ReportException();
-            }
+            } break;
+            case SelectMode::SeekSecond: {
+                if (constructionMethod() == ConstructionMethod::ThreeRim) {
+                    centerPoint = (onSketchPos - firstPoint) / 2 + firstPoint;
+                    secondPoint = onSketchPos;
+                }
+
+                radius = (onSketchPos - centerPoint).Length();
+
+                CreateAndDrawShapeGeometry();
+
+                if (constructionMethod() == ConstructionMethod::Center) {
+                    toolWidgetManager.drawDoubleAtCursor(onSketchPos, radius);
+                }
+                else {
+                    toolWidgetManager.drawPositionAtCursor(onSketchPos);
+                }
+
+                if (seekAutoConstraint(sugConstraints[1],
+                                       onSketchPos,
+                                       constructionMethod() == ConstructionMethod::Center
+                                           ? onSketchPos - centerPoint
+                                           : Base::Vector2d(),
+                                       AutoConstraint::CURVE)) {
+                    renderSuggestConstraintsCursor(sugConstraints[1]);
+                    return;
+                }
+            } break;
+            case SelectMode::SeekThird: {
+                try {
+                    if (areColinear(firstPoint, secondPoint, onSketchPos)) {
+                        // If points are colinear then we can't calculate the center.
+                        return;
+                    }
+
+                    centerPoint =
+                        Part::Geom2dCircle::getCircleCenter(firstPoint, secondPoint, onSketchPos);
+
+                    radius = (onSketchPos - centerPoint).Length();
+
+                    toolWidgetManager.drawPositionAtCursor(onSketchPos);
+
+                    CreateAndDrawShapeGeometry();
+
+                    if (seekAutoConstraint(sugConstraints[2],
+                                           onSketchPos,
+                                           Base::Vector2d(0.f, 0.f),
+                                           AutoConstraint::CURVE)) {
+                        renderSuggestConstraintsCursor(sugConstraints[2]);
+                        return;
+                    }
+                }
+                catch (Base::ValueError& e) {
+                    e.ReportException();
+                }
+            } break;
+            default:
+                break;
         }
-        applyCursor();
     }
 
-    bool pressButton(Base::Vector2d onSketchPos) override
+    void executeCommands() override
     {
-        if (Mode == STATUS_SEEK_First) {
-            // N point curve + center + endpoint
-            EditCurve.resize(N + 2);
-            FirstPoint = onSketchPos;
+        try {
+            createShape(false);
 
-            Mode = STATUS_SEEK_Second;
+            Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch circle"));
+
+            commandAddShapeGeometryAndConstraints();
+
+            Gui::Command::commitCommand();
         }
-        else if (Mode == STATUS_SEEK_Second) {
-            SecondPoint = onSketchPos;
+        catch (const Base::Exception& e) {
+            Gui::NotifyError(sketchgui,
+                             QT_TRANSLATE_NOOP("Notifications", "Error"),
+                             QT_TRANSLATE_NOOP("Notifications", "Failed to add circle"));
 
-            Mode = STATUS_SEEK_Third;
+            Gui::Command::abortCommand();
+            THROWM(Base::RuntimeError,
+                   QT_TRANSLATE_NOOP(
+                       "Notifications",
+                       "Tool execution aborted") "\n")  // This prevents constraints from being
+                                                        // applied on non existing geometry
+        }
+    }
+
+    void generateAutoConstraints() override
+    {
+        int CircleGeoId = getHighestCurveIndex();
+
+        if (constructionMethod() == ConstructionMethod::Center) {
+            auto& ac1 = sugConstraints[0];
+            auto& ac2 = sugConstraints[1];
+
+            generateAutoConstraintsOnElement(
+                ac1,
+                CircleGeoId,
+                Sketcher::PointPos::mid);  // add auto constraints for the center point
+            generateAutoConstraintsOnElement(
+                ac2,
+                CircleGeoId,
+                Sketcher::PointPos::none);  // add auto constraints for the edge
         }
         else {
-            EditCurve.resize(N);
 
-            drawEdit(EditCurve);
-            applyCursor();
-            Mode = STATUS_End;
+            auto& ac1 = sugConstraints[0];
+            auto& ac2 = sugConstraints[1];
+            auto& ac3 = sugConstraints[2];
+
+            generateAutoConstraintsOnElement(
+                ac1,
+                CircleGeoId,
+                Sketcher::PointPos::none);  // add auto constraints for the first point
+            generateAutoConstraintsOnElement(
+                ac2,
+                CircleGeoId,
+                Sketcher::PointPos::none);  // add auto constraints for the second point
+            generateAutoConstraintsOnElement(
+                ac3,
+                CircleGeoId,
+                Sketcher::PointPos::none);  // add auto constraints for the second point
+        }
+
+        // Ensure temporary autoconstraints do not generate a redundancy and that the geometry
+        // parameters are accurate This is particularly important for adding widget mandated
+        // constraints.
+        removeRedundantAutoConstraints();
+    }
+
+    void createAutoConstraints() override
+    {
+        // execute python command to create autoconstraints
+        createGeneratedAutoConstraints(true);
+
+        sugConstraints[0].clear();
+        sugConstraints[1].clear();
+        sugConstraints[2].clear();
+    }
+
+    std::string getToolName() const override
+    {
+        return "DSH_Circle";
+    }
+
+    QString getCrosshairCursorSVGName() const override
+    {
+        if (constructionMethod() == DrawSketchHandlerCircle::ConstructionMethod::Center) {
+            return QString::fromLatin1("Sketcher_Pointer_Create_Circle");
+        }
+        else {
+            return QString::fromLatin1("Sketcher_Pointer_Create_3PointCircle");
+        }
+    }
+
+    std::unique_ptr<QWidget> createWidget() const override
+    {
+        return std::make_unique<SketcherToolDefaultWidget>();
+    }
+
+    bool isWidgetVisible() const override
+    {
+        return true;
+    };
+
+    QPixmap getToolIcon() const override
+    {
+        return Gui::BitmapFactory().pixmap("Sketcher_CreateCircle");
+    }
+
+    QString getToolWidgetText() const override
+    {
+        return QString(QObject::tr("Circle parameters"));
+    }
+
+    bool canGoToNextMode() override
+    {
+        if (state() == SelectMode::SeekSecond && radius < Precision::Confusion()) {
+            // Prevent validation of null circle.
+            return false;
         }
 
         return true;
     }
 
-    bool releaseButton(Base::Vector2d onSketchPos) override
+    // reimplement because circle is 2 steps while 3rims is 3 steps
+    virtual void onButtonPressed(Base::Vector2d onSketchPos) override
     {
-        Q_UNUSED(onSketchPos);
-        // Need to look at.  rx might need fixing.
-        if (Mode == STATUS_End) {
-            unsetCursor();
-            resetPositionText();
-
-            try {
-                Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add sketch circle"));
-                Gui::cmdAppObjectArgs(sketchgui->getObject(),
-                                      "addGeometry(Part.Circle"
-                                      "(App.Vector(%f,%f,0),App.Vector(0,0,1),%f),%s)",
-                                      CenterPoint.x,
-                                      CenterPoint.y,
-                                      radius,
-                                      constructionModeAsBooleanText());
-
-                Gui::Command::commitCommand();
-            }
-            catch (const Base::Exception&) {
-                Gui::NotifyError(sketchgui,
-                                 QT_TRANSLATE_NOOP("Notifications", "Error"),
-                                 QT_TRANSLATE_NOOP("Notifications", "Failed to add circle"));
-                Gui::Command::abortCommand();
-            }
-
-            // Auto Constraint first picked point
-            if (!sugConstr1.empty()) {
-                createAutoConstraints(sugConstr1, getHighestCurveIndex(), Sketcher::PointPos::none);
-                sugConstr1.clear();
-            }
-
-            // Auto Constraint second picked point
-            if (!sugConstr2.empty()) {
-                createAutoConstraints(sugConstr2, getHighestCurveIndex(), Sketcher::PointPos::none);
-                sugConstr2.clear();
-            }
-
-            // Auto Constraint third picked point
-            if (!sugConstr3.empty()) {
-                createAutoConstraints(sugConstr3, getHighestCurveIndex(), Sketcher::PointPos::none);
-                sugConstr3.clear();
-            }
-
-            tryAutoRecomputeIfNotSolve(
-                static_cast<Sketcher::SketchObject*>(sketchgui->getObject()));
-
-            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-                "User parameter:BaseApp/Preferences/Mod/Sketcher");
-            bool continuousMode = hGrp->GetBool("ContinuousCreationMode", true);
-            if (continuousMode) {
-                // This code enables the continuous creation mode.
-                Mode = STATUS_SEEK_First;
-                EditCurve.clear();
-                drawEdit(EditCurve);
-                EditCurve.resize(2);
-                applyCursor();
-                /* this is ok not to call to purgeHandler
-                 * in continuous creation mode because the
-                 * handler is destroyed by the quit() method on pressing the
-                 * right button of the mouse */
+        this->updateDataAndDrawToPosition(onSketchPos);
+        if (canGoToNextMode()) {
+            if (state() == SelectMode::SeekSecond
+                && constructionMethod() == ConstructionMethod::Center) {
+                setState(SelectMode::End);
             }
             else {
-                sketchgui->purgeHandler();  // no code after this line, Handler get deleted in
-                                            // ViewProvider
+                moveToNextMode();
             }
         }
-        return true;
+    }
+
+    virtual void createShape(bool onlyeditoutline) override
+    {
+        Q_UNUSED(onlyeditoutline);
+
+        ShapeGeometry.clear();
+
+        if (radius < Precision::Confusion()) {
+            return;
+        }
+
+        addCircleToShapeGeometry(toVector3d(centerPoint), radius, isConstructionMode());
     }
 
 private:
-    QString getCrosshairCursorSVGName() const override
-    {
-        return QString::fromLatin1("Sketcher_Pointer_Create_3PointCircle");
-    }
-
-protected:
-    SelectMode Mode;
-    std::vector<Base::Vector2d> EditCurve;
-    Base::Vector2d CenterPoint, FirstPoint, SecondPoint;
-    double radius, N;  // N should be even
-    std::vector<AutoConstraint> sugConstr1, sugConstr2, sugConstr3;
+    Base::Vector2d centerPoint, firstPoint, secondPoint;
+    double radius;
 };
 
+template<>
+auto DSHCircleControllerBase::getState(int labelindex) const
+{
+
+    if (handler->constructionMethod() == DrawSketchHandlerCircle::ConstructionMethod::Center) {
+        switch (labelindex) {
+            case OnViewParameter::First:
+            case OnViewParameter::Second:
+                return SelectMode::SeekFirst;
+                break;
+            case OnViewParameter::Third:
+                return SelectMode::SeekSecond;
+                break;
+            default:
+                THROWM(Base::ValueError,
+                       "OnViewParameter index without an associated machine state")
+        }
+    }
+    else {  // ConstructionMethod::ThreeRim
+        switch (labelindex) {
+            case OnViewParameter::First:
+            case OnViewParameter::Second:
+                return SelectMode::SeekFirst;
+                break;
+            case OnViewParameter::Third:
+            case OnViewParameter::Fourth:
+                return SelectMode::SeekSecond;
+                break;
+            case OnViewParameter::Fifth:
+            case OnViewParameter::Sixth:
+                return SelectMode::SeekThird;
+                break;
+            default:
+                THROWM(Base::ValueError, "Label index without an associated machine state")
+        }
+    }
+}
+
+template<>
+void DSHCircleController::configureToolWidget()
+{
+    if (!init) {  // Code to be executed only upon initialisation
+        QStringList names = {QStringLiteral("Center"), QStringLiteral("3 rim points")};
+        toolWidget->setComboboxElements(WCombobox::FirstCombo, names);
+
+        if (isConstructionMode()) {
+            toolWidget->setComboboxItemIcon(
+                WCombobox::FirstCombo,
+                0,
+                Gui::BitmapFactory().iconFromTheme("Sketcher_CreateCircle_Constr"));
+            toolWidget->setComboboxItemIcon(
+                WCombobox::FirstCombo,
+                1,
+                Gui::BitmapFactory().iconFromTheme("Sketcher_Create3PointCircle_Constr"));
+        }
+        else {
+            toolWidget->setComboboxItemIcon(
+                WCombobox::FirstCombo,
+                0,
+                Gui::BitmapFactory().iconFromTheme("Sketcher_CreateCircle"));
+            toolWidget->setComboboxItemIcon(
+                WCombobox::FirstCombo,
+                1,
+                Gui::BitmapFactory().iconFromTheme("Sketcher_Create3PointCircle"));
+        }
+    }
+
+    onViewParameters[OnViewParameter::First]->setLabelType(Gui::SoDatumLabel::DISTANCEX);
+    onViewParameters[OnViewParameter::Second]->setLabelType(Gui::SoDatumLabel::DISTANCEY);
+
+    if (handler->constructionMethod() == DrawSketchHandlerCircle::ConstructionMethod::ThreeRim) {
+        onViewParameters[OnViewParameter::Third]->setLabelType(Gui::SoDatumLabel::DISTANCEX);
+        onViewParameters[OnViewParameter::Fourth]->setLabelType(Gui::SoDatumLabel::DISTANCEY);
+
+        onViewParameters[OnViewParameter::Fifth]->setLabelType(Gui::SoDatumLabel::DISTANCEX);
+        onViewParameters[OnViewParameter::Sixth]->setLabelType(Gui::SoDatumLabel::DISTANCEY);
+    }
+    else {
+        onViewParameters[OnViewParameter::Third]->setLabelType(
+            Gui::SoDatumLabel::RADIUS,
+            Gui::EditableDatumLabel::Function::Dimensioning);
+    }
+}
+
+template<>
+void DSHCircleControllerBase::doEnforceControlParameters(Base::Vector2d& onSketchPos)
+{
+    switch (handler->state()) {
+        case SelectMode::SeekFirst: {
+            if (onViewParameters[OnViewParameter::First]->isSet) {
+                onSketchPos.x = onViewParameters[OnViewParameter::First]->getValue();
+            }
+
+            if (onViewParameters[OnViewParameter::Second]->isSet) {
+                onSketchPos.y = onViewParameters[OnViewParameter::Second]->getValue();
+            }
+        } break;
+        case SelectMode::SeekSecond: {
+            if (handler->constructionMethod()
+                == DrawSketchHandlerCircle::ConstructionMethod::Center) {
+                if (onViewParameters[OnViewParameter::Third]->isSet) {
+                    double radius = onViewParameters[OnViewParameter::Third]->getValue();
+                    if (radius < Precision::Confusion()) {
+                        unsetOnViewParameter(onViewParameters[OnViewParameter::Third].get());
+                        return;
+                    }
+
+                    auto dir = (onSketchPos - handler->centerPoint);
+
+                    if (dir.Length() < Precision::Confusion()) {
+                        dir.x = 1.0;  // if direction null, default to (1,0)
+                    }
+
+                    onSketchPos = handler->centerPoint + radius * dir.Normalize();
+                }
+            }
+            else {
+                if (onViewParameters[OnViewParameter::Third]->isSet) {
+                    onSketchPos.x = onViewParameters[OnViewParameter::Third]->getValue();
+                }
+
+                if (onViewParameters[OnViewParameter::Fourth]->isSet) {
+                    onSketchPos.y = onViewParameters[OnViewParameter::Fourth]->getValue();
+                }
+
+                if (onViewParameters[OnViewParameter::Third]->isSet
+                    && onViewParameters[OnViewParameter::Fourth]->isSet
+                    && (onSketchPos - handler->firstPoint).Length() < Precision::Confusion()) {
+                    unsetOnViewParameter(onViewParameters[OnViewParameter::Third].get());
+                    unsetOnViewParameter(onViewParameters[OnViewParameter::Fourth].get());
+                }
+            }
+        } break;
+        case SelectMode::SeekThird: {  // 3 rims only
+            if (onViewParameters[OnViewParameter::Fifth]->isSet) {
+                onSketchPos.x = onViewParameters[OnViewParameter::Fifth]->getValue();
+            }
+
+            if (onViewParameters[OnViewParameter::Sixth]->isSet) {
+                onSketchPos.y = onViewParameters[OnViewParameter::Sixth]->getValue();
+            }
+            if (onViewParameters[OnViewParameter::Fifth]->isSet
+                && onViewParameters[OnViewParameter::Sixth]->isSet
+                && areColinear(handler->firstPoint, handler->secondPoint, onSketchPos)) {
+                unsetOnViewParameter(onViewParameters[OnViewParameter::Fifth].get());
+                unsetOnViewParameter(onViewParameters[OnViewParameter::Sixth].get());
+            }
+        } break;
+        default:
+            break;
+    }
+}
+
+template<>
+void DSHCircleController::adaptParameters(Base::Vector2d onSketchPos)
+{
+    switch (handler->state()) {
+        case SelectMode::SeekFirst: {
+            if (!onViewParameters[OnViewParameter::First]->isSet) {
+                setOnViewParameterValue(OnViewParameter::First, onSketchPos.x);
+            }
+
+            if (!onViewParameters[OnViewParameter::Second]->isSet) {
+                setOnViewParameterValue(OnViewParameter::Second, onSketchPos.y);
+            }
+
+            bool sameSign = onSketchPos.x * onSketchPos.y > 0.;
+            onViewParameters[OnViewParameter::First]->setLabelAutoDistanceReverse(!sameSign);
+            onViewParameters[OnViewParameter::Second]->setLabelAutoDistanceReverse(sameSign);
+            onViewParameters[OnViewParameter::First]->setPoints(Base::Vector3d(),
+                                                                toVector3d(onSketchPos));
+            onViewParameters[OnViewParameter::Second]->setPoints(Base::Vector3d(),
+                                                                 toVector3d(onSketchPos));
+        } break;
+        case SelectMode::SeekSecond: {
+            if (handler->constructionMethod()
+                == DrawSketchHandlerCircle::ConstructionMethod::Center) {
+                if (!onViewParameters[OnViewParameter::Third]->isSet) {
+                    setOnViewParameterValue(OnViewParameter::Third, handler->radius);
+                }
+
+                Base::Vector3d start = toVector3d(handler->centerPoint);
+                Base::Vector3d end = toVector3d(onSketchPos);
+
+                onViewParameters[OnViewParameter::Third]->setPoints(start, end);
+            }
+            else {
+                if (!onViewParameters[OnViewParameter::Third]->isSet) {
+                    setOnViewParameterValue(OnViewParameter::Third, onSketchPos.x);
+                }
+
+                if (!onViewParameters[OnViewParameter::Fourth]->isSet) {
+                    setOnViewParameterValue(OnViewParameter::Fourth, onSketchPos.y);
+                }
+
+                bool sameSign = onSketchPos.x * onSketchPos.y > 0.;
+                onViewParameters[OnViewParameter::Third]->setLabelAutoDistanceReverse(!sameSign);
+                onViewParameters[OnViewParameter::Fourth]->setLabelAutoDistanceReverse(sameSign);
+                onViewParameters[OnViewParameter::Third]->setPoints(Base::Vector3d(),
+                                                                    toVector3d(onSketchPos));
+                onViewParameters[OnViewParameter::Fourth]->setPoints(Base::Vector3d(),
+                                                                     toVector3d(onSketchPos));
+            }
+        } break;
+        case SelectMode::SeekThird: {  // 3 rims only
+            if (!onViewParameters[OnViewParameter::Fifth]->isSet) {
+                setOnViewParameterValue(OnViewParameter::Fifth, onSketchPos.x);
+            }
+
+            if (!onViewParameters[OnViewParameter::Sixth]->isSet) {
+                setOnViewParameterValue(OnViewParameter::Sixth, onSketchPos.y);
+            }
+
+            bool sameSign = onSketchPos.x * onSketchPos.y > 0.;
+            onViewParameters[OnViewParameter::Fifth]->setLabelAutoDistanceReverse(!sameSign);
+            onViewParameters[OnViewParameter::Sixth]->setLabelAutoDistanceReverse(sameSign);
+            onViewParameters[OnViewParameter::Fifth]->setPoints(Base::Vector3d(),
+                                                                toVector3d(onSketchPos));
+            onViewParameters[OnViewParameter::Sixth]->setPoints(Base::Vector3d(),
+                                                                toVector3d(onSketchPos));
+        } break;
+        default:
+            break;
+    }
+}
+
+template<>
+void DSHCircleController::doChangeDrawSketchHandlerMode()
+{
+    switch (handler->state()) {
+        case SelectMode::SeekFirst: {
+            if (onViewParameters[OnViewParameter::First]->isSet
+                && onViewParameters[OnViewParameter::Second]->isSet) {
+
+                handler->setState(SelectMode::SeekSecond);
+            }
+        } break;
+        case SelectMode::SeekSecond: {
+            if (onViewParameters[OnViewParameter::Third]->isSet
+                && handler->constructionMethod()
+                    == DrawSketchHandlerCircle::ConstructionMethod::Center) {
+
+                handler->setState(SelectMode::End);
+            }
+            else if (onViewParameters[OnViewParameter::Third]->isSet
+                     && onViewParameters[OnViewParameter::Fourth]->isSet
+                     && handler->constructionMethod()
+                         == DrawSketchHandlerCircle::ConstructionMethod::ThreeRim) {
+
+                handler->setState(SelectMode::SeekThird);
+            }
+        } break;
+        case SelectMode::SeekThird: {
+            if (onViewParameters[OnViewParameter::Fifth]->isSet
+                && onViewParameters[OnViewParameter::Sixth]->isSet) {
+
+                handler->setState(SelectMode::End);
+            }
+        } break;
+        default:
+            break;
+    }
+}
+
+template<>
+void DSHCircleController::addConstraints()
+{
+    if (handler->constructionMethod() == DrawSketchHandlerCircle::ConstructionMethod::Center) {
+        int firstCurve = handler->getHighestCurveIndex();
+
+        auto x0 = onViewParameters[OnViewParameter::First]->getValue();
+        auto y0 = onViewParameters[OnViewParameter::Second]->getValue();
+
+        auto x0set = onViewParameters[OnViewParameter::First]->isSet;
+        auto y0set = onViewParameters[OnViewParameter::Second]->isSet;
+        auto radiusSet = onViewParameters[OnViewParameter::Third]->isSet;
+
+        using namespace Sketcher;
+
+        auto constraintx0 = [&]() {
+            ConstraintToAttachment(GeoElementId(firstCurve, PointPos::mid),
+                                   GeoElementId::VAxis,
+                                   x0,
+                                   handler->sketchgui->getObject());
+        };
+
+        auto constrainty0 = [&]() {
+            ConstraintToAttachment(GeoElementId(firstCurve, PointPos::mid),
+                                   GeoElementId::HAxis,
+                                   y0,
+                                   handler->sketchgui->getObject());
+        };
+
+        auto constraintradius = [&]() {
+            Gui::cmdAppObjectArgs(handler->sketchgui->getObject(),
+                                  "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
+                                  firstCurve,
+                                  handler->radius);
+        };
+
+        // NOTE: if AutoConstraints is empty, we can add constraints directly without any diagnose.
+        // No diagnose was run.
+        if (handler->AutoConstraints.empty()) {
+            if (x0set) {
+                constraintx0();
+            }
+
+            if (y0set) {
+                constrainty0();
+            }
+
+            if (radiusSet) {
+                constraintradius();
+            }
+        }
+        else {  // There is a valid diagnose.
+            auto startpointinfo = handler->getPointInfo(GeoElementId(firstCurve, PointPos::mid));
+
+            // if Autoconstraints is empty we do not have a diagnosed system and the parameter will
+            // always be set
+            if (x0set && startpointinfo.isXDoF()) {
+                constraintx0();
+
+                handler->diagnoseWithAutoConstraints();  // ensure we have recalculated parameters
+                                                         // after each constraint addition
+
+                startpointinfo = handler->getPointInfo(
+                    GeoElementId(firstCurve, PointPos::mid));  // get updated point position
+            }
+
+            // if Autoconstraints is empty we do not have a diagnosed system and the parameter will
+            // always be set
+            if (y0set && startpointinfo.isYDoF()) {
+                constrainty0();
+
+                handler->diagnoseWithAutoConstraints();  // ensure we have recalculated parameters
+                                                         // after each constraint addition
+            }
+
+            auto edgeinfo = handler->getEdgeInfo(firstCurve);
+            auto circle = static_cast<SolverGeometryExtension::Circle&>(edgeinfo);
+
+            // if Autoconstraints is empty we do not have a diagnosed system and the parameter will
+            // always be set
+            if (radiusSet && circle.isRadiusDoF()) {
+                constraintradius();
+            }
+        }
+    }
+    // No constraint possible for 3 rim circle.
+}
 
 }  // namespace SketcherGui
 
