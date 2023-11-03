@@ -69,7 +69,6 @@ private:
     {
         switch (state()) {
             case SelectMode::SeekFirst: {
-                drawPositionAtCursor(onSketchPos);
                 centerPoint = onSketchPos;
 
                 if (seekAutoConstraint(sugConstraints[0], onSketchPos, Base::Vector2d(0.f, 0.f))) {
@@ -80,12 +79,7 @@ private:
             case SelectMode::SeekSecond: {
                 firstCorner = onSketchPos;
 
-                try {
-                    CreateAndDrawShapeGeometry();
-                }
-                catch (const Base::ValueError&) {
-                    // equal points while hovering raise an objection that can be safely ignored
-                }
+                CreateAndDrawShapeGeometry();
 
                 if (seekAutoConstraint(sugConstraints[1], onSketchPos, Base::Vector2d(0.f, 0.f))) {
                     renderSuggestConstraintsCursor(sugConstraints[1]);
@@ -230,9 +224,9 @@ private:
         ShapeGeometry.clear();
 
         Base::Vector2d prevCorner = firstCorner;
-
         Base::Vector2d dV = firstCorner - centerPoint;
         radius = dV.Length();
+
         if (radius < Precision::Confusion()) {
             return;
         }
@@ -270,7 +264,7 @@ auto DSHPolygonControllerBase::getState(int labelindex) const
             return SelectMode::SeekSecond;
             break;
         default:
-            THROWM(Base::ValueError, "Label index without an associated machine state")
+            THROWM(Base::ValueError, "OnViewParameter index without an associated machine state")
     }
 }
 
@@ -278,7 +272,7 @@ template<>
 void DSHPolygonController::firstKeyShortcut()
 {
     auto value = toolWidget->getParameter(WParameter::First);
-    toolWidget->setParameter(OnViewParameter::First, value + 1);
+    toolWidget->setParameterWithoutPassingFocus(OnViewParameter::First, value + 1);
 }
 
 template<>
@@ -286,7 +280,7 @@ void DSHPolygonController::secondKeyShortcut()
 {
     auto value = toolWidget->getParameter(WParameter::First);
     if (value > 3.0) {
-        toolWidget->setParameter(OnViewParameter::First, value - 1);
+        toolWidget->setParameterWithoutPassingFocus(OnViewParameter::First, value - 1);
     }
 }
 
@@ -300,6 +294,8 @@ void DSHPolygonController::configureToolWidget()
                              handler->numberOfCorners);  // unconditionally set
     toolWidget->configureParameterUnit(OnViewParameter::First, Base::Unit());
     toolWidget->configureParameterMin(OnViewParameter::First, 3.0);
+    // We set a reasonable max to avoid the spinbox from being very large
+    toolWidget->configureParameterMax(OnViewParameter::First, 9999.0);
     toolWidget->configureParameterDecimals(OnViewParameter::First, 0);
 
     onViewParameters[OnViewParameter::First]->setLabelType(Gui::SoDatumLabel::DISTANCEX);
@@ -320,7 +316,6 @@ void DSHPolygonController::adaptDrawingToParameterChange(int parameterindex, dou
 template<>
 void DSHPolygonControllerBase::doEnforceControlParameters(Base::Vector2d& onSketchPos)
 {
-
     switch (handler->state()) {
         case SelectMode::SeekFirst: {
             if (onViewParameters[OnViewParameter::First]->isSet) {
@@ -333,20 +328,19 @@ void DSHPolygonControllerBase::doEnforceControlParameters(Base::Vector2d& onSket
         } break;
         case SelectMode::SeekSecond: {
             Base::Vector2d dir = onSketchPos - handler->centerPoint;
+            if (dir.Length() < Precision::Confusion()) {
+                dir.x = 1.0;  // if direction null, default to (1,0)
+            }
             double length = dir.Length();
 
             if (onViewParameters[OnViewParameter::Third]->isSet) {
                 length = onViewParameters[OnViewParameter::Third]->getValue();
                 if (length < Precision::Confusion()) {
                     unsetOnViewParameter(onViewParameters[OnViewParameter::Third].get());
+                    return;
                 }
-                else {
-                    if (dir.Length() < Precision::Confusion()) {
-                        dir.x = 1;  // if direction cannot be determined, default to (1,0)
-                    }
 
-                    onSketchPos = handler->centerPoint + length * dir.Normalize();
-                }
+                onSketchPos = handler->centerPoint + length * dir.Normalize();
             }
 
             if (onViewParameters[OnViewParameter::Fourth]->isSet) {
