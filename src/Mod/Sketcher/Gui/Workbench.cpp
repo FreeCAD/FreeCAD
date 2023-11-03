@@ -479,6 +479,7 @@ inline void SketcherAddWorkbenchTools<Gui::MenuItem>(Gui::MenuItem& consaccel)
               << "Sketcher_SelectHorizontalAxis"
               << "Sketcher_SelectVerticalAxis"
               << "Separator"
+              << "Sketcher_Offset"
               << "Sketcher_Symmetry"
               << "Sketcher_Clone"
               << "Sketcher_Copy"
@@ -502,6 +503,7 @@ inline void SketcherAddWorkbenchTools<Gui::ToolBarItem>(Gui::ToolBarItem& consac
         // message.
         //<< "Sketcher_SelectConflictingConstraints"
         << "Sketcher_RestoreInternalAlignmentGeometry"
+        << "Sketcher_Offset"
         << "Sketcher_Symmetry"
         << "Sketcher_CompCopy"
         << "Sketcher_RectangularArray"

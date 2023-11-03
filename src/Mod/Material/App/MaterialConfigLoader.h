@@ -22,6 +22,8 @@
 #ifndef MATERIAL_MATERIALCONFIGLOADER_H
 #define MATERIAL_MATERIALCONFIGLOADER_H
 
+#include <memory>
+
 #include <QDir>
 #include <QSettings>
 #include <QString>
@@ -39,7 +41,8 @@ public:
 
 
     static bool isConfigStyle(const QString& path);
-    static Material* getMaterialFromPath(const MaterialLibrary& library, const QString& path);
+    static std::shared_ptr<Material> getMaterialFromPath(std::shared_ptr<MaterialLibrary> library,
+                                                         const QString& path);
 
 private:
     static QString
@@ -49,15 +52,17 @@ private:
             .toString();
     }
 
-    static void
-    setPhysicalValue(Material* finalModel, const std::string& name, const QString& value)
+    static void setPhysicalValue(std::shared_ptr<Material> finalModel,
+                                 const std::string& name,
+                                 const QString& value)
     {
         if (value.length() > 0) {
             finalModel->setPhysicalValue(QString::fromStdString(name), value);
         }
     }
-    static void
-    setAppearanceValue(Material* finalModel, const std::string& name, const QString& value)
+    static void setAppearanceValue(std::shared_ptr<Material> finalModel,
+                                   const std::string& name,
+                                   const QString& value)
     {
         if (value.length() > 0) {
             finalModel->setAppearanceValue(QString::fromStdString(name), value);
@@ -65,14 +70,14 @@ private:
     }
 
     static QString getAuthorAndLicense(const QString& path);
-    static void addMechanical(const QSettings& fcmat, Material* finalModel);
-    static void addFluid(const QSettings& fcmat, Material* finalModel);
-    static void addThermal(const QSettings& fcmat, Material* finalModel);
-    static void addElectromagnetic(const QSettings& fcmat, Material* finalModel);
-    static void addArchitectural(const QSettings& fcmat, Material* finalModel);
-    static void addCosts(const QSettings& fcmat, Material* finalModel);
-    static void addRendering(const QSettings& fcmat, Material* finalModel);
-    static void addVectorRendering(const QSettings& fcmat, Material* finalModel);
+    static void addMechanical(const QSettings& fcmat, std::shared_ptr<Material> finalModel);
+    static void addFluid(const QSettings& fcmat, std::shared_ptr<Material> finalModel);
+    static void addThermal(const QSettings& fcmat, std::shared_ptr<Material> finalModel);
+    static void addElectromagnetic(const QSettings& fcmat, std::shared_ptr<Material> finalModel);
+    static void addArchitectural(const QSettings& fcmat, std::shared_ptr<Material> finalModel);
+    static void addCosts(const QSettings& fcmat, std::shared_ptr<Material> finalModel);
+    static void addRendering(const QSettings& fcmat, std::shared_ptr<Material> finalModel);
+    static void addVectorRendering(const QSettings& fcmat, std::shared_ptr<Material> finalModel);
 };
 
 }  // namespace Materials

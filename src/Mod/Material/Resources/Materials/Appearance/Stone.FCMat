@@ -1,7 +1,8 @@
 # File created by ConvertFCMat.py
 General:
   UUID: "a9f54d61-cc98-46df-8734-b0543ceb4e45"
-  AuthorAndLicense: "(c) 2023 David Carter"
+  Author: "David Carter"
+  License: "GPL-2.0-or-later"
   Name: "Stone"
   Description: "Defines the Stone appearance properties"
 AppearanceModels:

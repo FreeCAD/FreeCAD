@@ -1,7 +1,8 @@
 # File created by ConvertFCMat.py
 General:
   UUID: "5c67b675-69a2-4782-902a-bb90c3952f07"
-  AuthorAndLicense: "Uwe Stöhr, LGPL"
+  Author: "Uwe Stöhr"
+  License: "LGPL-2.0-or-later"
   Name: "Graphite"
   Description: "Typical material properties for pure graphite"
   ReferenceSource: "Properties and characteristics of graphite"

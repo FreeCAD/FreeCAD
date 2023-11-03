@@ -1,7 +1,8 @@
 # File created by ConvertFCMat.py
 General:
   UUID: "da2a429b-8763-4586-be3d-620e7dd30271"
-  AuthorAndLicense: "(c) 2014 M. Münch - GNU Lesser General Public License (LGPL)"
+  Author: "M. Münch"
+  License: "LGPL-2.0-or-later"
   Name: "S380MC"
 Inherits:
   Steel:

@@ -88,7 +88,7 @@ bool MaterialDelegate::editorEvent(QEvent* event,
             std::string type = propertyType.toStdString();
             if (type == "Color") {
                 Base::Console().Log("Edit color\n");
-                showColorModal(item);
+                showColorModal(item, propertyName);
                 // Mark as handled
                 return true;
             }
@@ -109,7 +109,7 @@ bool MaterialDelegate::editorEvent(QEvent* event,
     return QStyledItemDelegate::editorEvent(event, model, option, index);
 }
 
-void MaterialDelegate::showColorModal(QStandardItem* item)
+void MaterialDelegate::showColorModal(QStandardItem* item, QString propertyName)
 {
     QColor currentColor;  // = d->col;
     currentColor.setRgba(parseColor(item->text()));
@@ -126,14 +126,18 @@ void MaterialDelegate::showColorModal(QStandardItem* item)
 
     connect(dlg, &QColorDialog::finished, this, [&](int result) {
         if (result == QDialog::Accepted) {
+            Base::Console().Log("Accepted\n");
             QColor color = dlg->selectedColor();
             if (color.isValid()) {
+                Base::Console().Log("isValid\n");
                 QString colorText = QString(QString::fromStdString("(%1,%2,%3,%4)"))
                                         .arg(color.red() / 255.0)
                                         .arg(color.green() / 255.0)
                                         .arg(color.blue() / 255.0)
                                         .arg(color.alpha() / 255.0);
                 item->setText(colorText);
+                Q_EMIT const_cast<MaterialDelegate*>(this)->propertyChange(propertyName,
+                                                                           item->text());
             }
         }
     });
@@ -143,7 +147,7 @@ void MaterialDelegate::showColorModal(QStandardItem* item)
 
 void MaterialDelegate::showArray2DModal(const QString& propertyName, QStandardItem* item)
 {
-    Materials::Material* material = item->data().value<Materials::Material*>();
+    auto material = item->data().value<std::shared_ptr<Materials::Material>>();
     Array2D* dlg = new Array2D(propertyName, material);
 
     dlg->setAttribute(Qt::WA_DeleteOnClose);
@@ -161,7 +165,7 @@ void MaterialDelegate::showArray2DModal(const QString& propertyName, QStandardIt
 
 void MaterialDelegate::showArray3DModal(const QString& propertyName, QStandardItem* item)
 {
-    Materials::Material* material = item->data().value<Materials::Material*>();
+    auto material = item->data().value<std::shared_ptr<Materials::Material>>();
     Array3D* dlg = new Array3D(propertyName, material);
 
     dlg->setAttribute(Qt::WA_DeleteOnClose);
@@ -411,8 +415,8 @@ QWidget* MaterialDelegate::createWidget(QWidget* parent,
     else if (type == "Boolean") {
         Gui::PrefComboBox* combo = new Gui::PrefComboBox(parent);
         combo->insertItem(0, QString::fromStdString(""));
-        combo->insertItem(1, QString::fromStdString("False"));
-        combo->insertItem(2, QString::fromStdString("True"));
+        combo->insertItem(1, tr("False"));
+        combo->insertItem(2, tr("True"));
         combo->setCurrentText(propertyValue);
         widget = combo;
     }

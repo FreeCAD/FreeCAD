@@ -74,6 +74,7 @@ SET(SketcherGui_SRCS
     DrawSketchHandlerExternal.h
     DrawSketchHandlerCarbonCopy.h
     DrawSketchHandlerSlot.h
+    DrawSketchHandlerOffset.h
     CommandCreateGeo.cpp
     CommandConstraints.h
     CommandConstraints.cpp
@@ -132,6 +133,12 @@ SET(SketcherGui_SRCS
     ViewProviderSketch.h
     DrawSketchHandler.cpp
     DrawSketchHandler.h
+    DrawSketchDefaultHandler.h
+    DrawSketchController.h
+    DrawSketchDefaultWidgetController.h
+    DrawSketchControllableHandler.h
+    DrawSketchKeyboardManager.h
+    DrawSketchKeyboardManager.cpp
     Workbench.cpp
     Workbench.h
     EditDatumDialog.cpp

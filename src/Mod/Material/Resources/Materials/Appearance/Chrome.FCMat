@@ -1,7 +1,8 @@
 # File created by ConvertFCMat.py
 General:
   UUID: "a9544b88-dde7-4d05-9bdb-c008a4e88dc1"
-  AuthorAndLicense: "(c) 2023 David Carter"
+  Author: "David Carter"
+  License: "GPL-2.0-or-later"
   Name: "Chrome"
   Description: "Defines the Chrome appearance properties"
 AppearanceModels:

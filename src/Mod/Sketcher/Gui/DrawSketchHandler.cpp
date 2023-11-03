@@ -337,8 +337,8 @@ void DrawSketchHandler::deactivate()
     ViewProviderSketchDrawSketchHandlerAttorney::setConstraintSelectability(*sketchgui, true);
 
     // clear temporary Curve and Markers from the scenograph
-    drawEdit(std::vector<Base::Vector2d>());
-    drawEditMarkers(std::vector<Base::Vector2d>());
+    clearEdit();
+    clearEditMarkers();
     resetPositionText();
     unsetCursor();
     setAngleSnapping(false);
@@ -1087,23 +1087,33 @@ void DrawSketchHandler::resetPositionText()
     ViewProviderSketchDrawSketchHandlerAttorney::resetPositionText(*sketchgui);
 }
 
-void DrawSketchHandler::drawEdit(const std::vector<Base::Vector2d>& EditCurve)
+void DrawSketchHandler::drawEdit(const std::vector<Base::Vector2d>& EditCurve) const
 {
     ViewProviderSketchDrawSketchHandlerAttorney::drawEdit(*sketchgui, EditCurve);
 }
 
-void DrawSketchHandler::drawEdit(const std::list<std::vector<Base::Vector2d>>& list)
+void DrawSketchHandler::drawEdit(const std::list<std::vector<Base::Vector2d>>& list) const
 {
     ViewProviderSketchDrawSketchHandlerAttorney::drawEdit(*sketchgui, list);
 }
 
-void DrawSketchHandler::drawEdit(const std::vector<Part::Geometry*>& geometries)
+void DrawSketchHandler::drawEdit(const std::vector<Part::Geometry*>& geometries) const
 {
     static CurveConverter c;
 
     auto list = c.toVector2DList(geometries);
 
     drawEdit(list);
+}
+
+void DrawSketchHandler::clearEdit() const
+{
+    drawEdit(std::vector<Base::Vector2d>());
+}
+
+void DrawSketchHandler::clearEditMarkers() const
+{
+    drawEditMarkers(std::vector<Base::Vector2d>());
 }
 
 void DrawSketchHandler::drawPositionAtCursor(const Base::Vector2d& position)
@@ -1147,7 +1157,7 @@ QString DrawSketchHandler::getToolWidgetHeaderText() const
 }
 
 void DrawSketchHandler::drawEditMarkers(const std::vector<Base::Vector2d>& EditMarkers,
-                                        unsigned int augmentationlevel)
+                                        unsigned int augmentationlevel) const
 {
     ViewProviderSketchDrawSketchHandlerAttorney::drawEditMarkers(*sketchgui,
                                                                  EditMarkers,

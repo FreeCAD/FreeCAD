@@ -22,15 +22,22 @@
 #ifndef MATERIAL_MATERIALVALUE_H
 #define MATERIAL_MATERIALVALUE_H
 
-#include <Mod/Material/MaterialGlobal.h>
+#include <memory>
 
+#include <QMetaType>
 #include <QVariant>
+
+#include <Gui/MetaTypes.h>
+
+#include <Mod/Material/MaterialGlobal.h>
 
 namespace Materials
 {
 
-class MaterialsExport MaterialValue
+class MaterialsExport MaterialValue: public Base::BaseClass
 {
+    TYPESYSTEM_HEADER();
+
 public:
     enum ValueType
     {
@@ -50,8 +57,16 @@ public:
         URL = 13
     };
     MaterialValue();
+    MaterialValue(const MaterialValue& other);
     explicit MaterialValue(ValueType type);
     virtual ~MaterialValue() = default;
+
+    MaterialValue& operator=(const MaterialValue& other);
+    virtual bool operator==(const MaterialValue& other) const;
+    bool operator!=(const MaterialValue& other) const
+    {
+        return !operator==(other);
+    }
 
     ValueType getType() const
     {
@@ -62,10 +77,8 @@ public:
     {
         return _value;
     }
-    bool isNull() const
-    {
-        return _value.isNull();
-    }
+    virtual bool isNull() const;
+
     virtual const QVariant getValueAt(const QVariant& value) const
     {
         Q_UNUSED(value);
@@ -76,126 +89,182 @@ public:
         _value = value;
     }
 
+    virtual const QString getYAMLString() const;
+
 protected:
-    ValueType _valueType;
-    QVariant _value;
+    MaterialValue(ValueType type, ValueType inherited);
 
     void setType(ValueType type)
     {
         _valueType = type;
     }
+    void setInitialValue(ValueType inherited);
+
+    ValueType _valueType;
+    QVariant _value;
 };
 
 class MaterialsExport Material2DArray: public MaterialValue
 {
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
 public:
     Material2DArray();
+    Material2DArray(const Material2DArray& other);
     ~Material2DArray() override = default;
 
-    void setDefault(MaterialValue value)
+    Material2DArray& operator=(const Material2DArray& other);
+
+    bool isNull() const override;
+
+    void setDefault(MaterialValue value, bool markSet = true)
     {
         _value = value.getValue();
-        _defaultSet = true;
+        _defaultSet = markSet;
     }
-    void setDefault(const QVariant& value)
+    void setDefault(const QVariant& value, bool markSet = true)
     {
         _value = value;
-        _defaultSet = true;
+        _defaultSet = markSet;
     }
-    MaterialValue getDefault() const;
+    void setDefault(const Base::Quantity& value, bool markSet = true)
+    {
+        _value = QVariant::fromValue(value);
+        _defaultSet = markSet;
+    }
+    const QVariant getDefault() const;
     bool defaultSet() const
     {
         return _defaultSet;
     }
 
-    const std::vector<QVariant>* getRow(int row) const;
-    std::vector<QVariant>* getRow(int row);
+    std::shared_ptr<std::vector<QVariant>> getRow(int row) const;
+    std::shared_ptr<std::vector<QVariant>> getRow(int row);
     int rows() const
     {
         return _rows.size();
     }
-    void addRow(std::vector<QVariant>* row);
-    void insertRow(int index, std::vector<QVariant>* row);
+    int columns() const
+    {
+        if (rows() == 0) {
+            return 0;
+        }
+
+        return _rows.at(0)->size();
+    }
+    void addRow(std::shared_ptr<std::vector<QVariant>> row);
+    void insertRow(int index, std::shared_ptr<std::vector<QVariant>> row);
     void deleteRow(int row);
 
     void setValue(int row, int column, const QVariant& value);
     const QVariant getValue(int row, int column) const;
 
+    const QString getYAMLString() const override;
+
 protected:
-    std::vector<std::vector<QVariant>*> _rows;
+    void deepCopy(const Material2DArray& other);
+
+    std::vector<std::shared_ptr<std::vector<QVariant>>> _rows;
     bool _defaultSet;
 
 private:
-    void dumpRow(const std::vector<QVariant>& row) const;
+    void dumpRow(std::shared_ptr<std::vector<QVariant>> row) const;
     void dump() const;
 };
 
 class MaterialsExport Material3DArray: public MaterialValue
 {
+    TYPESYSTEM_HEADER_WITH_OVERRIDE();
+
 public:
     Material3DArray();
     ~Material3DArray() override = default;
 
-    void setDefault(MaterialValue value)
+    bool isNull() const override;
+
+    void setDefault(MaterialValue value, bool markSet = true)
     {
         _value = value.getValue();
-        _defaultSet = true;
+        _defaultSet = markSet;
     }
-    void setDefault(const QVariant& value)
+    void setDefault(const QVariant& value, bool markSet = true)
     {
         _value = value;
-        _defaultSet = true;
+        _defaultSet = markSet;
     }
-    MaterialValue getDefault() const;
+    void setDefault(const Base::Quantity& value, bool markSet = true)
+    {
+        _value = QVariant::fromValue(value);
+        _defaultSet = markSet;
+    }
+    const QVariant getDefault() const;
     bool defaultSet() const
     {
         return _defaultSet;
     }
 
-    const std::vector<std::vector<QVariant>*>& getTable(const QVariant& depth) const;
-    const std::vector<QVariant>& getRow(const QVariant& depth, int row) const;
-    const std::vector<QVariant>& getRow(int row) const;
-    std::vector<QVariant>& getRow(const QVariant& depth, int row);
-    std::vector<QVariant>& getRow(int row);
-    void addRow(const QVariant& depth, std::vector<QVariant>* row);
-    void deleteRow(const QVariant& depth, int row);
+    const std::shared_ptr<std::vector<std::shared_ptr<std::vector<Base::Quantity>>>>&
+    getTable(const Base::Quantity& depth) const;
+    const std::shared_ptr<std::vector<std::shared_ptr<std::vector<Base::Quantity>>>>&
+    getTable(int depthIndex) const;
+    const std::shared_ptr<std::vector<Base::Quantity>> getRow(int depth, int row) const;
+    std::shared_ptr<std::vector<Base::Quantity>> getRow(int row) const;
+    std::shared_ptr<std::vector<Base::Quantity>> getRow(int depth, int row);
+    std::shared_ptr<std::vector<Base::Quantity>> getRow(int row);
+    void addRow(int depth, std::shared_ptr<std::vector<Base::Quantity>> row);
+    void addRow(std::shared_ptr<std::vector<Base::Quantity>> row);
+    int addDepth(int depth, Base::Quantity value);
+    int addDepth(Base::Quantity value);
+    void deleteDepth(int depth);
+    void insertRow(int depth, int row, std::shared_ptr<std::vector<Base::Quantity>> rowData);
+    void insertRow(int row, std::shared_ptr<std::vector<Base::Quantity>> rowData);
+    void deleteRow(int depth, int row);
+    void deleteRow(int row);
     void deleteRows(int depth);
+    void deleteRows();
     int depth() const
     {
         return _rowMap.size();
     }
-    int rows(const QVariant& depth) const
+    int rows(int depth) const;
+    int rows() const
     {
-        return getTable(depth).size();
+        return rows(_currentDepth);
+    }
+    int columns(int depth) const;
+    int columns() const
+    {
+        return columns(_currentDepth);
     }
 
-    void setValue(const QVariant& depth, int row, int column, const QVariant& value);
-    void setValue(int row, int column, const QVariant& value);
-    const QVariant getValue(const QVariant& depth, int row, int column);
-    const QVariant getValue(int row, int column);
+    void setValue(int depth, int row, int column, const Base::Quantity& value);
+    void setValue(int row, int column, const Base::Quantity& value);
+    void setDepthValue(int depth, const Base::Quantity& value);
+    void setDepthValue(const Base::Quantity& value);
+    const Base::Quantity getValue(int depth, int row, int column) const;
+    const Base::Quantity getValue(int row, int column) const;
+    const Base::Quantity getDepthValue(int depth) const;
+
+    int currentDepth() const;
+    void setCurrentDepth(int depth);
+
+    const QString getYAMLString() const override;
 
 protected:
-#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
-    std::map<QVariant, std::vector<std::vector<QVariant>*>> _rowMap;
-#else
-    struct variant_comp
-    {
-        bool operator()(const QVariant& var1,
-                        const QVariant& var2) const
-        {
-            return QVariant::compare(var1, var2) == QPartialOrdering::Less;
-        }
-    };
-    std::map<QVariant, std::vector<std::vector<QVariant>*>, variant_comp> _rowMap;
-#endif
-
+    std::vector<
+        std::pair<Base::Quantity,
+                  std::shared_ptr<std::vector<std::shared_ptr<std::vector<Base::Quantity>>>>>>
+        _rowMap;
     bool _defaultSet;
+    int _currentDepth;
 };
 
 }  // namespace Materials
 
 Q_DECLARE_METATYPE(Materials::MaterialValue)
-Q_DECLARE_METATYPE(Materials::Material2DArray)
-Q_DECLARE_METATYPE(Materials::Material3DArray)
+// Q_DECLARE_METATYPE(Materials::Material2DArray)
+Q_DECLARE_METATYPE(std::shared_ptr<Materials::Material2DArray>)
+// Q_DECLARE_METATYPE(Materials::Material3DArray)
+Q_DECLARE_METATYPE(std::shared_ptr<Materials::Material3DArray>)
 
 #endif  // MATERIAL_MATERIALVALUE_H

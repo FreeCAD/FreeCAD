@@ -314,7 +314,7 @@ public:
                                       centerPoint.y,
                                       startAngle,
                                       endAngle,
-                                      geometryCreationMode == Construction ? "True" : "False");
+                                      constructionModeAsBooleanText());
 
                 currentgeoid++;
 

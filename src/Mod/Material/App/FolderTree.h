@@ -22,10 +22,10 @@
 #ifndef MATERIAL_FOLDERTREE_H
 #define MATERIAL_FOLDERTREE_H
 
-#include <QString>
 #include <map>
 #include <memory>
 
+#include <QString>
 
 namespace Materials
 {
@@ -53,25 +53,25 @@ public:
         _type = type;
     }
 
-    const std::shared_ptr<std::map<QString, FolderTreeNode<T>*>> getFolder() const
+    const std::shared_ptr<std::map<QString, std::shared_ptr<FolderTreeNode<T>>>> getFolder() const
     {
         return _folder;
     }
-    std::shared_ptr<std::map<QString, FolderTreeNode<T>*>> getFolder()
+    std::shared_ptr<std::map<QString, std::shared_ptr<FolderTreeNode<T>>>> getFolder()
     {
         return _folder;
     }
-    const T* getData() const
+    std::shared_ptr<T> getData() const
     {
         return _data;
     }
 
-    void setFolder(std::shared_ptr<std::map<QString, FolderTreeNode<T>*>> folder)
+    void setFolder(std::shared_ptr<std::map<QString, std::shared_ptr<FolderTreeNode<T>>>> folder)
     {
         setType(FolderNode);
         _folder = folder;
     }
-    void setData(const T* data)
+    void setData(std::shared_ptr<T> data)
     {
         setType(DataNode);
         _data = data;
@@ -79,8 +79,8 @@ public:
 
 private:
     NodeType _type;
-    std::shared_ptr<std::map<QString, FolderTreeNode<T>*>> _folder;
-    const T* _data;
+    std::shared_ptr<std::map<QString, std::shared_ptr<FolderTreeNode<T>>>> _folder;
+    std::shared_ptr<T> _data;
 };
 
 }  // namespace Materials

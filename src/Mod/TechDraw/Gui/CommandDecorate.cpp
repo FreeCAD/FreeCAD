@@ -47,6 +47,7 @@
 #include <Mod/TechDraw/App/DrawViewPart.h>
 
 #include "DrawGuiUtil.h"
+#include "MDIViewPage.h"
 #include "TaskGeomHatch.h"
 #include "TaskHatch.h"
 #include "ViewProviderGeomHatch.h"
@@ -285,7 +286,7 @@ bool CmdTechDrawImage::isActive()
 // TechDraw_ToggleFrame
 //===========================================================================
 
-DEF_STD_CMD_A(CmdTechDrawToggleFrame)
+DEF_STD_CMD_AC(CmdTechDrawToggleFrame)
 
 CmdTechDrawToggleFrame::CmdTechDrawToggleFrame()
   : Command("TechDraw_ToggleFrame")
@@ -299,34 +300,52 @@ CmdTechDrawToggleFrame::CmdTechDrawToggleFrame()
     sPixmap         = "actions/TechDraw_ToggleFrame";
 }
 
+Gui::Action *CmdTechDrawToggleFrame::createAction()
+{
+    Gui::Action *action = Gui::Command::createAction();
+    action->setCheckable(true);
+
+    return action;
+}
+
 void CmdTechDrawToggleFrame::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    TechDraw::DrawPage* page = DrawGuiUtil::findPage(this);
-    if (!page) {
-        return;
-    }
-    std::string PageName = page->getNameInDocument();
 
-    Gui::Document* activeGui = Gui::Application::Instance->getDocument(page->getDocument());
-    Gui::ViewProvider* vp = activeGui->getViewProvider(page);
-    ViewProviderPage* vpp = dynamic_cast<ViewProviderPage*>(vp);
-
-    if (!vpp) {
+    auto mvp = dynamic_cast<MDIViewPage *>(Gui::getMainWindow()->activeWindow());
+    if (!mvp) {
         QMessageBox::warning(Gui::getMainWindow(), QObject::tr("No TechDraw Page"),
             QObject::tr("Need a TechDraw Page for this command"));
         return;
     }
+
+    ViewProviderPage* vpp = mvp->getViewProviderPage();
+    if (!vpp) {
+        return;
+    }
     vpp->toggleFrameState();
+
+    Gui::Action *action = this->getAction();
+    if (action) {
+        action->setChecked(!vpp->getFrameState(), true);
+    }
 }
 
 bool CmdTechDrawToggleFrame::isActive()
 {
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this, false);
-    return (havePage && haveView);
-}
+    auto mvp = dynamic_cast<MDIViewPage *>(Gui::getMainWindow()->activeWindow());
+    if (!mvp) {
+        return false;
+    }
 
+    ViewProviderPage* vpp = mvp->getViewProviderPage();
+    Gui::Action *action = this->getAction();
+    if (action) {
+        action->setChecked(vpp && !vpp->getFrameState(), true);
+    }
+
+    return true;
+}
 
 void CreateTechDrawCommandsDecorate()
 {

@@ -68,18 +68,39 @@
           <property name="bottomMargin">
            <number>7</number>
           </property>
+          <item row="3" column="0">
+           <widget class="QLabel" name="labelParent">
+            <property name="text">
+             <string>Parent</string>
+            </property>
+           </widget>
+          </item>
+          <item row="8" column="2">
+           <widget class="QTextEdit" name="editDescription"/>
+          </item>
+          <item row="6" column="0">
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>Tags</string>
+            </property>
+           </widget>
+          </item>
+          <item row="4" column="0">
+           <widget class="QLabel" name="labelSourceURL">
+            <property name="text">
+             <string>Source URL</string>
+            </property>
+           </widget>
+          </item>
           <item row="0" column="2">
            <widget class="QLineEdit" name="editName"/>
           </item>
-          <item row="7" column="0">
+          <item row="8" column="0">
            <widget class="QLabel" name="labelDescription">
             <property name="text">
              <string>Description</string>
             </property>
            </widget>
-          </item>
-          <item row="1" column="2">
-           <widget class="QLineEdit" name="editAuthorLicense"/>
           </item>
           <item row="0" column="0">
            <widget class="QLabel" name="labelName">
@@ -88,54 +109,10 @@
             </property>
            </widget>
           </item>
-          <item row="4" column="0">
-           <widget class="QLabel" name="labelSourceReference">
-            <property name="text">
-             <string>Source Reference</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="0">
-           <widget class="QLabel" name="labelParent">
-            <property name="text">
-             <string>Parent</string>
-            </property>
-           </widget>
-          </item>
-          <item row="7" column="2">
-           <widget class="QTextEdit" name="editDescription"/>
-          </item>
-          <item row="1" column="0">
-           <widget class="QLabel" name="labelAuthorLicense">
-            <property name="text">
-             <string>Author and License</string>
-            </property>
-           </widget>
-          </item>
-          <item row="2" column="2">
-           <widget class="QLineEdit" name="editParent"/>
-          </item>
-          <item row="5" column="0">
-           <widget class="QLabel" name="label">
-            <property name="text">
-             <string>Tags</string>
-            </property>
-           </widget>
-          </item>
-          <item row="3" column="0">
-           <widget class="QLabel" name="labelSourceURL">
-            <property name="text">
-             <string>Source URL</string>
-            </property>
-           </widget>
-          </item>
-          <item row="5" column="2">
+          <item row="6" column="2">
            <widget class="QLineEdit" name="editTags"/>
           </item>
           <item row="4" column="2">
-           <widget class="QLineEdit" name="editSourceReference"/>
-          </item>
-          <item row="3" column="2">
            <layout class="QHBoxLayout" name="horizontalLayout_2">
             <item>
              <widget class="QLineEdit" name="editSourceURL"/>
@@ -155,6 +132,39 @@
             </item>
            </layout>
           </item>
+          <item row="1" column="2">
+           <widget class="QLineEdit" name="editAuthor"/>
+          </item>
+          <item row="1" column="0">
+           <widget class="QLabel" name="labelAuthor">
+            <property name="text">
+             <string>Author</string>
+            </property>
+           </widget>
+          </item>
+          <item row="3" column="2">
+           <widget class="QLineEdit" name="editParent"/>
+          </item>
+          <item row="5" column="0">
+           <widget class="QLabel" name="labelSourceReference">
+            <property name="text">
+             <string>Source Reference</string>
+            </property>
+           </widget>
+          </item>
+          <item row="5" column="2">
+           <widget class="QLineEdit" name="editSourceReference"/>
+          </item>
+          <item row="2" column="2">
+           <widget class="QLineEdit" name="editLicense"/>
+          </item>
+          <item row="2" column="0">
+           <widget class="QLabel" name="labelLicense">
+            <property name="text">
+             <string>License</string>
+            </property>
+           </widget>
+          </item>
          </layout>
         </item>
         <item>
@@ -171,6 +181,20 @@
              </size>
             </property>
            </spacer>
+          </item>
+          <item>
+           <widget class="QPushButton" name="buttonNew">
+            <property name="text">
+             <string>&amp;New</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="buttonInheritNew">
+            <property name="text">
+             <string>Inherit New</string>
+            </property>
+           </widget>
           </item>
           <item>
            <widget class="QPushButton" name="buttonFavorite">

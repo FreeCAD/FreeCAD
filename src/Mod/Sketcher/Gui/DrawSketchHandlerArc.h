@@ -189,8 +189,7 @@ public:
                     sqrt(rx * rx + ry * ry),
                     startAngle,
                     endAngle,
-                    geometryCreationMode == Construction ? "True"
-                                                         : "False");  // arcAngle > 0 ? 0 : 1);
+                    constructionModeAsBooleanText());  // arcAngle > 0 ? 0 : 1);
 
                 Gui::Command::commitCommand();
             }
@@ -465,7 +464,7 @@ public:
                     radius,
                     startAngle,
                     endAngle,
-                    geometryCreationMode == Construction ? "True" : "False");
+                    constructionModeAsBooleanText());
 
                 Gui::Command::commitCommand();
             }

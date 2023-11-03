@@ -275,9 +275,7 @@ public:
                     EditCurve[34].x,
                     EditCurve[34].y,                                             // line2
                     Gui::Command::getObjectCmd(sketchgui->getObject()).c_str(),  // the sketch
-                    geometryCreationMode == Construction
-                        ? "True"
-                        : "False",  // geometry as construction or not
+                    constructionModeAsBooleanText(),  // geometry as construction or not
                     firstCurve,
                     firstCurve + 2,  // tangent1
                     firstCurve + 2,

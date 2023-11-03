@@ -301,9 +301,6 @@ TaskView::TaskView(QWidget *parent)
         (std::bind(&Gui::TaskView::TaskView::slotRedoDocument, this, sp::_1));
     //NOLINTEND
 
-    this->timer = new QTimer(this);
-    this->timer->setSingleShot(true);
-    QObject::connect(this->timer, &QTimer::timeout, [this](){onUpdateWatcher();});
     updateWatcher();
 }
 
@@ -610,11 +607,6 @@ void TaskView::removeDialog()
 
 void TaskView::updateWatcher(void)
 {
-    this->timer->start(200);
-}
-
-void TaskView::onUpdateWatcher(void)
-{
     if (ActiveCtrl || ActiveDialog)
         return;
 
@@ -623,7 +615,6 @@ void TaskView::onUpdateWatcher(void)
         if (panel && panel->ActiveWatcher.size())
             takeTaskWatcher(panel);
     }
-    this->timer->stop();
 
     // In case a child of the TaskView has the focus and get hidden we have
     // to make sure to set the focus on a widget that won't be hidden or

@@ -96,7 +96,6 @@ GENERATE_QM = {
     "Cloud",
     "Draft",
     "Inspection",
-    "Material",
     "OpenSCAD",
     "Tux",
     "Help",
@@ -134,6 +133,11 @@ locations = [
         "Inspection",
         "../Mod/Inspection/Gui/Resources/translations",
         "../Mod/Inspection/Gui/Resources/Inspection.qrc",
+    ],
+    [
+        "Material",
+        "../Mod/Material/Gui/Resources/translations",
+        "../Mod/Material/Gui/Resources/Material.qrc",
     ],
     [
         "Mesh",

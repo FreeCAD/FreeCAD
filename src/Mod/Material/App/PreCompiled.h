@@ -55,10 +55,6 @@
 // Qt
 #include <QtGlobal>
 
-// Boost
-#include <boost/algorithm/string/predicate.hpp>
-#include <boost/regex.hpp>
-
 #endif  //_PreComp_
 
 #endif  // MATERIAL_PRECOMPILED_H

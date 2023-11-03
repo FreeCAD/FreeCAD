@@ -65,42 +65,6 @@ class SketcherToolDefaultWidget: public QWidget
         Italic,
     };
 
-    /** Class to decide which control is responsible of handling an key event
-     *using timers, type of entered event, ...
-     */
-    class KeyboardManager
-    {
-    public:
-        KeyboardManager();
-        /// Indicates whether the widget should handle keyboard input or should signal it via boost
-        enum class KeyboardEventHandlingMode
-        {
-            Widget,
-            ViewProvider
-        };
-
-        bool isMode(KeyboardEventHandlingMode mode);
-        KeyboardEventHandlingMode getMode();
-
-        bool handleKeyEvent(QKeyEvent* keyEvent);
-
-    private:
-        /// This function decides whether events should be send to the ViewProvider
-        /// or to the UI control of the Default widget.
-        void detectKeyboardEventHandlingMode(QKeyEvent* keyEvent);
-
-        void onTimeOut();
-
-    private:
-        /// Viewer responsible for the active document
-        Gui::View3DInventorViewer* vpViewer = nullptr;
-        KeyboardEventHandlingMode keyMode;
-
-        QTimer timer;
-
-        const int timeOut = 1000;
-    };
-
 public:
     /// Parameter spinbox number/label
     enum Parameter
@@ -255,8 +219,6 @@ private:
     /// vector using parameter as index indicating whether the value of a parameter was set by the
     /// widget
     std::vector<bool> isSet;
-
-    KeyboardManager keymanager;
 };
 
 
