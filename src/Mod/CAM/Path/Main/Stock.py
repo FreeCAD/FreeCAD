@@ -97,6 +97,15 @@ class Stock(object):
         if hasattr(obj, "StockType"):
             obj.setEditorMode("StockType", 2)  # hide
 
+        if hasattr(obj, "Material"):
+            obj.removeProperty("Material")
+            FreeCAD.Console.PrintWarning(
+                translate(
+                    "PathStock",
+                    "Stock Material property is deprecated. Removing the Material property. Please use native material system to assign a ShapeMaterial",
+                )
+            )
+
 
 class StockFromBase(Stock):
     def __init__(self, obj, base):
@@ -430,7 +439,7 @@ def CreateCylinder(job, radius=None, height=None, placement=None):
         obj.Height = height
     elif base:
         bb = shapeBoundBox(base.Group)
-        obj.Radius = math.sqrt(bb.XLength**2 + bb.YLength**2) / 2.0
+        obj.Radius = math.sqrt(bb.XLength ** 2 + bb.YLength ** 2) / 2.0
         obj.Height = max(bb.ZLength, 1)
 
     if placement:

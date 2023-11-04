@@ -176,6 +176,7 @@ html_template = Template(
 </table>
 
 <h2 class="western"><a name="_rough_stock"></a>${roughStockLabel}</h2>
+
 <table cellpadding="2" cellspacing="2" bgcolor="#ffffff" style="background: #ffffff;">
     <colgroup>
         <col width="350"/>
@@ -183,39 +184,31 @@ html_template = Template(
         <col width="350"/>
     </colgroup>
     <tr>
-        <td style="border: 1px solid #dedede; padding: 0.05cm">
-            <strong>${materialLabel}</strong>
-        </td>
-        <td style="border: 1px solid #dedede; padding: 0.05cm">
-            ${material}
-        </td>
-        <td rowspan="4" style="border: 1px solid #dedede; padding: 0.05cm">
+        <td style="border: 1px solid #dedede; padding: 0.05cm"><strong>${materialLabel}</strong></td>
+        <td style="border: 1px solid #dedede; padding: 0.05cm">${material}</td>
+        <td rowspan="7" style="border: 1px solid #dedede; padding: 0.05cm">
             ${stockImage}
         </td>
     </tr>
     <tr>
-        <td style="border: 1px solid #dedede; padding: 0.05cm">
-            <strong>${xDimLabel}</strong>
-        </td>
-        <td style="border: 1px solid #dedede; padding: 0.05cm">
-            ${xLen}
-        </td>
+        <td style="border: 1px solid #dedede; padding: 0.05cm"><strong>${sSpeedHSSLabel}</strong></td>
+        <td style="border: 1px solid #dedede; padding: 0.05cm">${surfaceSpeedHSS}</td>
     </tr>
     <tr>
-        <td style="border: 1px solid #dedede; padding: 0.05cm">
-            <strong>${yDimLabel}</strong>
-        </td>
-        <td style="border: 1px solid #dedede; padding: 0.05cm">
-            ${yLen}
-        </td>
+        <td style="border: 1px solid #dedede; padding: 0.05cm"><strong>${sSpeedCarbideLabel}</strong></td>
+        <td style="border: 1px solid #dedede; padding: 0.05cm">${surfaceSpeedCarbide}</td>
     </tr>
     <tr>
-        <td style="border: 1px solid #dedede; padding: 0.05cm">
-            <strong>${zDimLabel}</strong>
-        </td>
-        <td style="border: 1px solid #dedede; padding: 0.05cm">
-            ${zLen}
-        </td>
+        <td style="border: 1px solid #dedede; padding: 0.05cm"><strong>${xDimLabel}</strong></td>
+        <td style="border: 1px solid #dedede; padding: 0.05cm">${xLen}</td>
+    </tr>
+    <tr>
+        <td style="border: 1px solid #dedede; padding: 0.05cm"><strong>${yDimLabel}</strong></td>
+        <td style="border: 1px solid #dedede; padding: 0.05cm">${yLen}</td>
+    </tr>
+    <tr>
+        <td style="border: 1px solid #dedede; padding: 0.05cm"><strong>${zDimLabel}</strong></td>
+        <td style="border: 1px solid #dedede; padding: 0.05cm">${zLen}</td>
     </tr>
 </table>
 

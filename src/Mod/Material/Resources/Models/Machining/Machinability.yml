@@ -1,0 +1,50 @@
+---
+# ***************************************************************************
+# *                                                                         *
+# *   Copyright (c) 2023 sliptonic <shopinthewoods@gmail.com                *
+# *                                                                         *
+# *   This program is free software; you can redistribute it and/or modify  *
+# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
+# *   as published by the Free Software Foundation; either version 2 of     *
+# *   the License, or (at your option) any later version.                   *
+# *   for detail see the LICENCE text file.                                 *
+# *                                                                         *
+# *   This program is distributed in the hope that it will be useful,       *
+# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
+# *   GNU Library General Public License for more details.                  *
+# *                                                                         *
+# *   You should have received a copy of the GNU Library General Public     *
+# *   License along with this program; if not, write to the Free Software   *
+# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
+# *   USA                                                                   *
+# *                                                                         *
+# ***************************************************************************
+
+Model:
+  Name: 'Machinability'
+  UUID: '9d81fcb2-bf81-48e3-bb57-d45ecf380096'
+  URL: 'https://en.wikipedia.org/wiki/Speeds_and_feeds'
+  Description: >
+    Model for calculating feeds and speeds on a milling machine or lathe
+  DOI: ""
+  SurfaceSpeedHSS:
+    Type: 'Quantity'
+    Units: 'm/min'
+    URL: 'https://en.wikipedia.org/wiki/Speeds_and_feeds#Cutting_speed'
+    Description: "Cutting speed (Surface Speed) for High Speed Steel"
+  SurfaceSpeedCarbide:
+    Type: 'Quantity'
+    Units: 'm/min'
+    URL: 'https://en.wikipedia.org/wiki/Speeds_and_feeds#Cutting_speed'
+    Description: "Cutting speed (Surface Speed) for Carbide"
+  Kp:
+    Type: 'Float'
+    Units: 'cm^3/s'
+    URL: ''
+    Description: "Specific Cutting Force. Constant to calculate spindle power"
+  Kd:
+    Type: 'Float'
+    Units: 'cm^3/s'
+    URL: ''
+    Description: "Material Constant. Used to calculate spindle power "
