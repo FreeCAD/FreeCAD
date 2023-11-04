@@ -746,7 +746,7 @@ private:
         int count = 0;
         int limit = 25;  // no infinite loops!
         bool success = false;
-        double tempB = b;
+        double tempB;
 
         // adjust b until our mangled vectors produce a good ellipse in GC_MakeEllipse
         // and the mangled major and minor lines in LinePy::PyInit(...) are such that
