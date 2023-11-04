@@ -33,7 +33,7 @@ Function PostMultiUserPageInit
    # because they won't have a chance to deny this
 
    # remove quotes from uninstaller filename
-   StrCpy $0 $0 -1 1
+   ${TrimQuotes} $0 $0
    # skip message box if uninstaller file is missing
    IfFileExists $0 0 ContinueInstall
 
