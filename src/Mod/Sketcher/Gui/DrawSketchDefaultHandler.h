@@ -33,9 +33,11 @@
 #include <Mod/Sketcher/App/GeoEnum.h>
 #include <Mod/Sketcher/App/GeometryFacade.h>
 #include <Mod/Sketcher/App/PythonConverter.h>
+#include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/Sketcher/App/SolverGeometryExtension.h>
 
 #include "DrawSketchHandler.h"
+#include "ViewProviderSketch.h"
 
 #include "Utils.h"
 
@@ -387,6 +389,8 @@ public:
         ConstructionMethodT constructionmethod = static_cast<ConstructionMethodT>(0))
         : ConstructionMethodMachine<ConstructionMethodT>(constructionmethod)
         , sugConstraints(PInitAutoConstraintSize)
+        , avoidRedundants(true)
+        , continuousMode(true)
     {
         applyCursor();
     }

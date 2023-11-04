@@ -1195,7 +1195,7 @@ Restart:
                            || Constr->Second == GeoEnum::GeoUndef);
 
                     SbVec3f p0;
-                    double startangle, range, endangle;
+                    double startangle, range;
                     if (Constr->Second != GeoEnum::GeoUndef) {
                         Base::Vector3d dir1, dir2;
                         if (Constr->Third == GeoEnum::GeoUndef) {  // angle between two lines
@@ -1278,8 +1278,6 @@ Restart:
                             range = atan2(dir1.x * dir2.y - dir1.y * dir2.x,
                                           dir1.x * dir2.x + dir1.y * dir2.y);
                         }
-
-                        endangle = startangle + range;
                     }
                     else if (Constr->First != GeoEnum::GeoUndef) {
                         const Part::Geometry* geo =
@@ -1293,13 +1291,13 @@ Restart:
                             Base::Vector3d dir = lineSeg->getEndPoint() - lineSeg->getStartPoint();
                             startangle = 0.;
                             range = atan2(dir.y, dir.x);
-                            endangle = startangle + range;
                         }
                         else if (geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
                             const Part::GeomArcOfCircle* arc =
                                 static_cast<const Part::GeomArcOfCircle*>(geo);
                             p0 = Base::convertTo<SbVec3f>(arc->getCenter());
 
+                            double endangle;
                             arc->getRange(startangle, endangle, /*emulateCCWXY=*/true);
                             range = endangle - startangle;
                         }

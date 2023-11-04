@@ -26,6 +26,12 @@
 #include <map>
 #include <memory>
 
+namespace Base
+{
+class Writer;
+class XMLReader;
+}  // namespace Base
+
 namespace SketcherGui
 {
 

@@ -23,9 +23,20 @@
 #ifndef SKETCHERGUI_DrawSketchHandlerTrimming_H
 #define SKETCHERGUI_DrawSketchHandlerTrimming_H
 
-#include <Gui/Notifications.h>
+#include <QApplication>
+#include <Base/Tools.h>
 
+#include <Gui/Notifications.h>
+#include <Gui/SelectionFilter.h>
+#include <Gui/Command.h>
+#include <Gui/CommandT.h>
+
+#include <Mod/Sketcher/App/SketchObject.h>
+
+#include "DrawSketchHandler.h"
 #include "GeometryCreationMode.h"
+#include "Utils.h"
+#include "ViewProviderSketch.h"
 
 
 namespace SketcherGui

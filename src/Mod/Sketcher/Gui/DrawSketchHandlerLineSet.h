@@ -23,12 +23,21 @@
 #ifndef SKETCHERGUI_DrawSketchHandlerLineSet_H
 #define SKETCHERGUI_DrawSketchHandlerLineSet_H
 
+#include <QApplication>
+
 #include <Inventor/events/SoKeyboardEvent.h>
 #include <boost/math/special_functions/fpclassify.hpp>
 
 #include <Gui/Notifications.h>
+#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 
+#include <Mod/Sketcher/App/SketchObject.h>
+
+#include "DrawSketchHandler.h"
 #include "GeometryCreationMode.h"
+#include "Utils.h"
+#include "ViewProviderSketch.h"
 
 
 namespace SketcherGui

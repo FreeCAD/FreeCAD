@@ -23,7 +23,18 @@
 #ifndef SKETCHERGUI_DrawSketchHandlerCircle_H
 #define SKETCHERGUI_DrawSketchHandlerCircle_H
 
+#include <Gui/Notifications.h>
+#include <Gui/Command.h>
+#include <Gui/CommandT.h>
+
+#include <Mod/Part/App/Geometry2d.h>
+
+#include <Mod/Sketcher/App/SketchObject.h>
+
+#include "DrawSketchHandler.h"
 #include "GeometryCreationMode.h"
+#include "Utils.h"
+#include "ViewProviderSketch.h"
 
 
 namespace SketcherGui
