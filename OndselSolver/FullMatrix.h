@@ -21,64 +21,58 @@
 
 namespace MbD {
     template<typename T>
-    class FullMatrix;
-
-    template<typename T>
-    using FMatsptr = std::shared_ptr<FullMatrix<T>>;
-
-    template<typename T>
-	class FullMatrix : public RowTypeMatrix<FRowsptr<T>>
+	class FullMatrixTemplate : public RowTypeMatrix<FRowsptr<T>>
 	{
 	public:
-		FullMatrix() {};
-		explicit FullMatrix(int m) : RowTypeMatrix<FRowsptr<T>>(m)
+		FullMatrixTemplate() = default;
+		explicit FullMatrixTemplate(int m) : RowTypeMatrix<FRowsptr<T>>(m)
 		{
 		}
-		FullMatrix(int m, int n) {
+		FullMatrixTemplate(int m, int n) {
 			for (int i = 0; i < m; i++) {
 				auto row = std::make_shared<FullRow<T>>(n);
 				this->push_back(row);
 			}
 		}
-		FullMatrix(std::initializer_list<FRowsptr<T>> listOfRows) {
+		FullMatrixTemplate(std::initializer_list<FRowsptr<T>> listOfRows) {
 			for (auto& row : listOfRows)
 			{
 				this->push_back(row);
 			}
 		}
-		FullMatrix(std::initializer_list<std::initializer_list<T>> list2D) {
+		FullMatrixTemplate(std::initializer_list<std::initializer_list<T>> list2D) {
 			for (auto& rowList : list2D)
 			{
 				auto row = std::make_shared<FullRow<T>>(rowList);
 				this->push_back(row);
 			}
 		}
-		static FMatsptr<T> rotatex(T angle);
-		static FMatsptr<T> rotatey(T angle);
-		static FMatsptr<T> rotatez(T angle);
-		static FMatsptr<T> rotatexrotDot(T angle, T angledot);
-		static FMatsptr<T> rotateyrotDot(T angle, T angledot);
-		static FMatsptr<T> rotatezrotDot(T angle, T angledot);
-		static FMatsptr<T> rotatexrotDotrotDDot(T angle, T angleDot, T angleDDot);
-		static FMatsptr<T> rotateyrotDotrotDDot(T angle, T angleDot, T angleDDot);
-		static FMatsptr<T> rotatezrotDotrotDDot(T angle, T angleDot, T angleDDot);
-		static FMatsptr<T> identitysptr(int n);
-		static FMatsptr<T> tildeMatrix(FColDsptr col);
+//		static std::shared_ptr<FullMatrixTemplate<T>> rotatex(T angle);
+//		static std::shared_ptr<FullMatrixTemplate<T>> rotatey(T angle);
+//		static std::shared_ptr<FullMatrixTemplate<T>> rotatez(T angle);
+//		static std::shared_ptr<FullMatrixTemplate<T>> rotatexrotDot(T angle, T angledot);
+//		static std::shared_ptr<FullMatrixTemplate<T>> rotateyrotDot(T angle, T angledot);
+//		static std::shared_ptr<FullMatrixTemplate<T>> rotatezrotDot(T angle, T angledot);
+		static std::shared_ptr<FullMatrixTemplate<T>> rotatexrotDotrotDDot(T angle, T angleDot, T angleDDot);
+		static std::shared_ptr<FullMatrixTemplate<T>> rotateyrotDotrotDDot(T angle, T angleDot, T angleDDot);
+		static std::shared_ptr<FullMatrixTemplate<T>> rotatezrotDotrotDDot(T angle, T angleDot, T angleDDot);
+		static std::shared_ptr<FullMatrixTemplate<T>> identitysptr(int n);
+		static std::shared_ptr<FullMatrixTemplate<T>> tildeMatrix(FColDsptr col);
 
         virtual void identity();
 		FColsptr<T> column(int j);
 		FColsptr<T> timesFullColumn(FColsptr<T> fullCol);
 		FColsptr<T> timesFullColumn(FullColumn<T>* fullCol);
-		FMatsptr<T> timesFullMatrix(FMatsptr<T> fullMat);
+		// std::shared_ptr<FullMatrixTemplate<T>> timesFullMatrix(std::shared_ptr<FullMatrixTemplate<T>> fullMat);
 
-        virtual FMatsptr<T> timesTransposeFullMatrix(FMatsptr<T> fullMat);
+        virtual std::shared_ptr<FullMatrixTemplate<T>> timesTransposeFullMatrix(std::shared_ptr<FullMatrixTemplate<T>> fullMat);
 
-        FMatsptr<T> times(T a);
-		FMatsptr<T> transposeTimesFullMatrix(FMatsptr<T> fullMat);
-		FMatsptr<T> plusFullMatrix(FMatsptr<T> fullMat);
-		FMatsptr<T> minusFullMatrix(FMatsptr<T> fullMat);
-		FMatsptr<T> transpose();
-		FMatsptr<T> negated();
+        std::shared_ptr<FullMatrixTemplate<T>> times(T a);
+		// std::shared_ptr<FullMatrixTemplate<T>> transposeTimesFullMatrix(std::shared_ptr<FullMatrixTemplate<T>> fullMat);
+		// std::shared_ptr<FullMatrixTemplate<T>> plusFullMatrix(std::shared_ptr<FullMatrixTemplate<T>> fullMat);
+		std::shared_ptr<FullMatrixTemplate<T>> minusFullMatrix(std::shared_ptr<FullMatrixTemplate<T>> fullMat);
+		// std::shared_ptr<FullMatrixTemplate<T>> transpose();
+//		std::shared_ptr<FullMatrixTemplate<T>> negated();
 		void symLowerWithUpper();
 		void atiput(int i, FRowsptr<T> fullRow) override;
 		void atijput(int i, int j, T value);
@@ -88,8 +82,8 @@ namespace MbD {
 		void atijminusNumber(int i, int j, T value);
 		double sumOfSquares() override;
 		void zeroSelf() override;
-		FMatsptr<T> copy();
-		FullMatrix<T> operator+(const FullMatrix<T> fullMat);
+//		std::shared_ptr<FullMatrixTemplate<T>> copy();
+		FullMatrixTemplate<T> operator+(const FullMatrixTemplate<T> fullMat);
 		FColsptr<T> transposeTimesFullColumn(const FColsptr<T> fullCol);
 		void magnifySelf(T factor);
 		std::shared_ptr<EulerParameters<T>> asEulerParameters();
@@ -107,51 +101,61 @@ namespace MbD {
     //
     // FULL MATRIX DOUBLE instantiation
     //
-    class FullMatrixDouble : public FullMatrix<double> {
+    class FullMatrixDouble : public FullMatrixTemplate<double> {
     public:
-        FullMatrixDouble() : FullMatrix<double>() {};
-        explicit FullMatrixDouble(int m) : FullMatrix<double>(m) {};
-        FullMatrixDouble(int m, int n) : FullMatrix<double>(m, n) {};
-        FullMatrixDouble(std::initializer_list<std::initializer_list<double>> list2D) : FullMatrix<double>(list2D) {}
-        FullMatrixDouble(std::initializer_list<FRowsptr<double>> listOfRows) : FullMatrix<double>(listOfRows) {};
+        FullMatrixDouble() : FullMatrixTemplate<double>() {};
+        explicit FullMatrixDouble(int m) : FullMatrixTemplate<double>(m) {};
+        FullMatrixDouble(int m, int n) : FullMatrixTemplate<double>(m, n) {};
+        FullMatrixDouble(std::initializer_list<std::initializer_list<double>> list2D) : FullMatrixTemplate<double>(list2D) {}
+        FullMatrixDouble(std::initializer_list<FRowsptr<double>> listOfRows) : FullMatrixTemplate<double>(listOfRows) {};
 
         std::shared_ptr<FullMatrixDouble> times(double a);
         std::shared_ptr<FullMatrixDouble> timesTransposeFullMatrix(std::shared_ptr<FullMatrixDouble> fullMat);
-        double sumOfSquares() override;
         void identity() override;
         static std::shared_ptr<MbD::FullMatrixDouble> identitysptr(int n);
+        double sumOfSquares();
+        std::shared_ptr<FullMatrixDouble> transposeTimesFullMatrix(std::shared_ptr<FullMatrixDouble> fullMat);
+        std::shared_ptr<FullMatrixDouble> timesFullMatrix(std::shared_ptr<FullMatrixDouble> fullMat);
+        std::shared_ptr<FullMatrixDouble> transpose();
+		std::shared_ptr<FullMatrixDouble> negated();
+        std::shared_ptr<FullMatrixDouble> plusFullMatrix(std::shared_ptr<FullMatrixDouble> fullMat);
+		static std::shared_ptr<FullMatrixDouble> rotatex(double angle);
+		static std::shared_ptr<FullMatrixDouble> rotatey(double angle);
+		static std::shared_ptr<FullMatrixDouble> rotatez(double angle);
+		static std::shared_ptr<FullMatrixDouble> rotatexrotDot(double angle, double angledot);
+		static std::shared_ptr<FullMatrixDouble> rotateyrotDot(double angle, double angledot);
+		static std::shared_ptr<FullMatrixDouble> rotatezrotDot(double angle, double angledot);
+		std::shared_ptr<FullMatrixDouble> copy();
     };
-    using FMatDsptr = std::shared_ptr<MbD::FullMatrixDouble>;
-    std::shared_ptr<FullMatrixDouble> toFMDsptr(FMatsptr<double> s) {
-        return std::static_pointer_cast<FullMatrixDouble>(s);
-    }
 
     //
     // FULL MATRIX FULL MATRIX DOUBLE instantiation
     //
-    class FullMatrixFullMatrixDouble : public FullMatrix<FMatDsptr> {
+    class FullMatrixFullMatrixDouble : public FullMatrixTemplate<FMatDsptr> {
     public:
-        FullMatrixFullMatrixDouble() : FullMatrix<FMatDsptr>() {};
-        explicit FullMatrixFullMatrixDouble(int m) : FullMatrix<FMatDsptr>(m) {};
-        FullMatrixFullMatrixDouble(int m, int n) : FullMatrix<FMatDsptr>(m, n) {};
+        FullMatrixFullMatrixDouble() : FullMatrixTemplate<FMatDsptr>() {};
+        explicit FullMatrixFullMatrixDouble(int m) : FullMatrixTemplate<FMatDsptr>(m) {};
+        FullMatrixFullMatrixDouble(int m, int n) : FullMatrixTemplate<FMatDsptr>(m, n) {};
 
         std::shared_ptr<FullMatrixFullMatrixDouble> times(double a);
         std::shared_ptr<FullMatrixFullMatrixDouble> timesTransposeFullMatrix(std::shared_ptr<FullMatrixFullMatrixDouble> fullMat);
         double sumOfSquares() override;
         void identity() override;
         static std::shared_ptr<MbD::FullMatrixFullMatrixDouble> identitysptr(int n);
-
-
-
     };
-    using FMatFMatDsptr = std::shared_ptr<FullMatrixFullMatrixDouble>;
-    std::shared_ptr<FullMatrixFullMatrixDouble> toFMFMDsptr(std::shared_ptr<FullMatrix<FMatDsptr>> s) {
-        return std::static_pointer_cast<FullMatrixFullMatrixDouble>(s);
-    }
+    //
+    // FULL MATRIX FULL COLUMN DOUBLE instantiation
+    //
+    class FullMatrixFullColumnDouble : public FullMatrixTemplate<FColDsptr> {
+    public:
+        FullMatrixFullColumnDouble() : FullMatrixTemplate<FColDsptr>() {};
+        explicit FullMatrixFullColumnDouble(int m) : FullMatrixTemplate<FColDsptr>(m) {};
+        FullMatrixFullColumnDouble(int m, int n) : FullMatrixTemplate<FColDsptr>(m, n) {};
 
-    using FColFMatDsptr = std::shared_ptr<FullColumn<FMatDsptr>>;
-    using FMatFColDsptr = std::shared_ptr<FullMatrix<FColDsptr>>;
-
-
+        std::shared_ptr<FullMatrixFullColumnDouble> times(double a);
+        std::shared_ptr<FullMatrixFullColumnDouble> timesTransposeFullMatrix(std::shared_ptr<FullMatrixFullColumnDouble> fullMat);
+        double sumOfSquares() override;
+        void identity() override;
+        static std::shared_ptr<MbD::FullMatrixFullColumnDouble> identitysptr(int n);
+    };
 }
-

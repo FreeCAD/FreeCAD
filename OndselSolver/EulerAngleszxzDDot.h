@@ -25,7 +25,7 @@ namespace MbD {
 
         std::shared_ptr<EulerAngleszxzDot<double>> phiThePsiDot;
         FMatDsptr phiAddot, theAddot, psiAddot;
-        std::shared_ptr<FullMatrix<double>> aAddot;
+        std::shared_ptr<FullMatrixDouble> aAddot;
     };
     template<typename T>
     inline void EulerAngleszxzDDot<T>::initialize()
@@ -92,7 +92,7 @@ namespace MbD {
 			+ *(phiAdot->timesFullMatrix(theA->timesFullMatrix(psiAdot)))
 			+ *(phiA->timesFullMatrix(theAdot->timesFullMatrix(psiAdot)))
 			+ *(phiA->timesFullMatrix(theA->timesFullMatrix(psiAddot)));
-		aAddot = std::make_shared<FullMatrix<double>>(mat);
+		aAddot = std::make_shared<FullMatrixDouble>(mat);
 	}
 }
 

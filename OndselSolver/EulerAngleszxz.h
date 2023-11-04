@@ -67,7 +67,7 @@ namespace MbD {
 		psiAi = psiA->at(1);
 		psiAi->at(0) = spsi;
 		psiAi->at(1) = cpsi;
-		aA = toFMDsptr(phiA->timesFullMatrix(theA->timesFullMatrix(psiA)));
+		aA = phiA->timesFullMatrix(theA->timesFullMatrix(psiA));
 	}
 }
 

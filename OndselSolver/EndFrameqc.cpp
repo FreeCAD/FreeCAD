@@ -26,7 +26,7 @@ EndFrameqc::EndFrameqc(const char* str) : EndFramec(str) {
 void EndFrameqc::initialize()
 {
 	prOeOpE = std::make_shared<FullMatrixDouble>(3, 4);
-	pprOeOpEpE = std::make_shared<FullMatrix<FColDsptr>>(4, 4);
+	pprOeOpEpE = std::make_shared<FullMatrixFullColumnDouble>(4, 4);
 	pAOepE = std::make_shared<FullColumn<FMatDsptr>>(4);
 	ppAOepEpE = std::make_shared<FullMatrixFullMatrixDouble>(4, 4);
 }
@@ -59,7 +59,7 @@ void MbD::EndFrameqc::initEndFrameqct2()
 
 FMatFColDsptr EndFrameqc::ppAjOepEpE(int jj)
 {
-	auto answer = std::make_shared<FullMatrix<FColDsptr>>(4, 4);
+	auto answer = std::make_shared<FullMatrixFullColumnDouble>(4, 4);
 	for (int i = 0; i < 4; i++) {
 		auto& answeri = answer->at(i);
 		auto& ppAOepEipE = ppAOepEpE->at(i);

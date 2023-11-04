@@ -28,7 +28,7 @@ inline FMatFColDsptr EulerParameters<double>::ppApEpEtimesColumn(FColDsptr col)
     auto col22 = std::make_shared<FullColumn<double>>(ListD{ m2c0, m2c1, a2c2 });
     auto col23 = std::make_shared<FullColumn<double>>(ListD{ m2c1, a2c0, 0 });
     auto col33 = std::make_shared<FullColumn<double>>(ListD{ a2c0, a2c1, a2c2 });
-    auto answer = std::make_shared<FullMatrix<FColDsptr>>(4, 4);
+    auto answer = std::make_shared<FullMatrixFullColumnDouble>(4, 4);
     auto& row0 = answer->at(0);
     row0->at(0) = col00;
     row0->at(1) = col01;
@@ -136,7 +136,7 @@ inline FMatFMatDsptr EulerParameters<double>::ppApEpEtimesMatrix(FMatDsptr mat)
     auto mat22 = std::make_shared<FullMatrixDouble>(ListFRD{ m2m0, m2m1, a2m2 });
     auto mat23 = std::make_shared<FullMatrixDouble>(ListFRD{ m2m1, a2m0, zero });
     auto mat33 = std::make_shared<FullMatrixDouble>(ListFRD{ a2m0, a2m1, a2m2 });
-    auto answer = std::make_shared<FullMatrix<FMatDsptr>>(4, 4);
+    auto answer = std::make_shared<FullMatrixFullMatrixDouble>(4, 4);
     auto& row0 = answer->at(0);
     row0->at(0) = mat00;
     row0->at(1) = mat01;
@@ -157,7 +157,7 @@ inline FMatFMatDsptr EulerParameters<double>::ppApEpEtimesMatrix(FMatDsptr mat)
     row3->at(1) = mat13;
     row3->at(2) = mat23;
     row3->at(3) = mat33;
-    return toFMFMDsptr(answer);
+    return answer;
 }
 
 template<>

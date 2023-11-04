@@ -74,7 +74,7 @@ namespace MbD {
 		auto term1 = phiAdot->timesFullMatrix(theA->timesFullMatrix(psiA));
 		auto term2 = phiA->timesFullMatrix(theAdot->timesFullMatrix(psiA));
 		auto term3 = phiA->timesFullMatrix(theA->timesFullMatrix(psiAdot));
-		aAdot = toFMDsptr((term1->plusFullMatrix(term2))->plusFullMatrix(term3));
+		aAdot = (term1->plusFullMatrix(term2))->plusFullMatrix(term3);
 	}
 }
 

@@ -32,7 +32,7 @@ void MbD::MomentOfInertiaSolver::example1()
 	solver->setJPP(aJPP);
 	auto rPoP = aApP->transposeTimesFullColumn(rpPp->negated());
 	solver->setrPoP(rPoP);
-	auto aAPo = toFMDsptr(aApP->transpose());
+	auto aAPo = aApP->transpose();
 	solver->setAPo(aAPo);
 	solver->setrPcmP(rPoP);
 	solver->calc();

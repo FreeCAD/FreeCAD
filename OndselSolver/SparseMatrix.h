@@ -47,10 +47,10 @@ namespace MbD {
 		void zeroSelf() override;
 		void atijplusFullRow(int i, int j, FRowsptr<T> fullRow);
 		void atijplusFullColumn(int i, int j, FColsptr<T> fullCol);
-		void atijplusFullMatrix(int i, int j, FMatsptr<T> fullMat);
-		void atijminusFullMatrix(int i, int j, FMatsptr<T> fullMat);
-		void atijplusTransposeFullMatrix(int i, int j, FMatsptr<T> fullMat);
-		void atijplusFullMatrixtimes(int i, int j, FMatsptr<T> fullMat, T factor);
+		void atijplusFullMatrix(int i, int j, FMatDsptr fullMat);
+		void atijminusFullMatrix(int i, int j, FMatDsptr fullMat);
+		void atijplusTransposeFullMatrix(int i, int j, FMatDsptr fullMat);
+		void atijplusFullMatrixtimes(int i, int j, FMatDsptr fullMat, T factor);
 		void atijplusNumber(int i, int j, double value);
 		void atijminusNumber(int i, int j, double value);
 		void atijput(int i, int j, T value);
@@ -117,7 +117,7 @@ namespace MbD {
 		}
 	}
 	template<typename T>
-	inline void SparseMatrix<T>::atijplusFullMatrix(int i, int j, FMatsptr<T> fullMat)
+	inline void SparseMatrix<T>::atijplusFullMatrix(int i, int j, FMatDsptr fullMat)
 	{
 		for (int ii = 0; ii < fullMat->nrow(); ii++)
 		{
@@ -125,7 +125,7 @@ namespace MbD {
 		}
 	}
 	template<typename T>
-	inline void SparseMatrix<T>::atijminusFullMatrix(int i, int j, FMatsptr<T> fullMat)
+	inline void SparseMatrix<T>::atijminusFullMatrix(int i, int j, FMatDsptr fullMat)
 	{
 		for (int ii = 0; ii < fullMat->nrow(); ii++)
 		{
@@ -133,7 +133,7 @@ namespace MbD {
 		}
 	}
 	template<typename T>
-	inline void SparseMatrix<T>::atijplusTransposeFullMatrix(int i, int j, FMatsptr<T> fullMat)
+	inline void SparseMatrix<T>::atijplusTransposeFullMatrix(int i, int j, FMatDsptr fullMat)
 	{
 		for (int ii = 0; ii < fullMat->nrow(); ii++)
 		{
@@ -141,7 +141,7 @@ namespace MbD {
 		}
 	}
 	template<typename T>
-	inline void SparseMatrix<T>::atijplusFullMatrixtimes(int i, int j, FMatsptr<T> fullMat, T factor)
+	inline void SparseMatrix<T>::atijplusFullMatrixtimes(int i, int j, FMatDsptr fullMat, T factor)
 	{
 		for (int ii = 0; ii < fullMat->nrow(); ii++)
 		{

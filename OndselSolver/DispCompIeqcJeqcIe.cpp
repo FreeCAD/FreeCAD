@@ -23,7 +23,7 @@ void MbD::DispCompIeqcJeqcIe::calc_ppvaluepEIpEJ()
 {
 	auto frmJeqc = std::static_pointer_cast<EndFrameqc>(frmJ);
 	auto& prIeJeOpEJ = frmJeqc->prOeOpE;
-	ppriIeJeIepEIpEJ = toFMDsptr(pAjOIepEIT->timesFullMatrix(prIeJeOpEJ));
+	ppriIeJeIepEIpEJ = pAjOIepEIT->timesFullMatrix(prIeJeOpEJ);
 }
 
 void MbD::DispCompIeqcJeqcIe::calc_ppvaluepEIpXJ()

@@ -26,7 +26,7 @@ namespace MbD {
 		void atiputDiagonalMatrix(int i, std::shared_ptr<DiagonalMatrix<T>> diagMat);
 		DiagMatsptr<T> times(T factor);
 		FColsptr<T> timesFullColumn(FColsptr<T> fullCol);
-		FMatsptr<T> timesFullMatrix(FMatsptr<T> fullMat);
+		FMatDsptr timesFullMatrix(FMatDsptr fullMat);
 		int nrow() {
 			return (int)this->size();
 		}
@@ -79,10 +79,10 @@ namespace MbD {
 		return answer;
 	}
 	template<typename T>
-	inline FMatsptr<T> DiagonalMatrix<T>::timesFullMatrix(FMatsptr<T> fullMat)
+	inline FMatDsptr DiagonalMatrix<T>::timesFullMatrix(FMatDsptr fullMat)
 	{
 		auto nrow = (int)this->size();
-		auto answer = std::make_shared<FullMatrix<T>>(nrow);
+		auto answer = std::make_shared<FullMatrixDouble>(nrow);
 		for (int i = 0; i < nrow; i++)
 		{
 			answer->at(i) = fullMat->at(i)->times(this->at(i));

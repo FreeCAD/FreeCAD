@@ -63,7 +63,7 @@ void LDUFullMat::postSolve()
 void LDUFullMat::preSolvesaveOriginal(FMatDsptr fullMat, bool saveOriginal)
 {
 	if (saveOriginal) {
-		matrixA = toFMDsptr(fullMat->copy());
+		matrixA = fullMat->copy();
 	}
 	else {
 		matrixA = fullMat;

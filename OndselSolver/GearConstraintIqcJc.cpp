@@ -52,18 +52,18 @@ void MbD::GearConstraintIqcJc::calc_pGpXI()
 
 void MbD::GearConstraintIqcJc::calc_ppGpEIpEI()
 {
-	ppGpEIpEI = toFMDsptr(orbitJeIe->ppvaluepEJpEJ()->plusFullMatrix(orbitIeJe->ppvaluepEIpEI()->times(this->ratio())));
+	ppGpEIpEI = orbitJeIe->ppvaluepEJpEJ()->plusFullMatrix(orbitIeJe->ppvaluepEIpEI()->times(this->ratio()));
 }
 
 void MbD::GearConstraintIqcJc::calc_ppGpXIpEI()
 {
-	ppGpXIpEI = toFMDsptr(orbitJeIe->ppvaluepXJpEJ()->plusFullMatrix(orbitIeJe->ppvaluepXIpEI()->times(this->ratio())));
+	ppGpXIpEI = orbitJeIe->ppvaluepXJpEJ()->plusFullMatrix(orbitIeJe->ppvaluepXIpEI()->times(this->ratio()));
 }
 
 void MbD::GearConstraintIqcJc::calc_ppGpXIpXI()
 {
-	ppGpXIpXI = toFMDsptr(orbitJeIe->ppvaluepXJpXJ()
-            ->plusFullMatrix(orbitIeJe->ppvaluepXIpXI()->times(this->ratio())));
+	ppGpXIpXI = orbitJeIe->ppvaluepXJpXJ()
+            ->plusFullMatrix(orbitIeJe->ppvaluepXIpXI()->times(this->ratio()));
 }
 
 void MbD::GearConstraintIqcJc::calcPostDynCorrectorIteration()

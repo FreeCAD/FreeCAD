@@ -142,12 +142,12 @@ void EndFrameqct::calcPostDynCorrectorIteration()
 	}
 	auto rpep = markerFrame->rpmp->plusFullColumn(markerFrame->aApm->timesFullColumn(rmem));
 	pprOeOpEpE = EulerParameters<double>::ppApEpEtimesColumn(rpep);
-	aAOe = toFMDsptr(aAOm->timesFullMatrix(aAme));
+	aAOe = aAOm->timesFullMatrix(aAme);
 	for (int i = 0; i < 4; i++)
 	{
-		pAOepE->at(i) = toFMDsptr(pAOmpE->at(i)->timesFullMatrix(aAme));
+		pAOepE->at(i) = pAOmpE->at(i)->timesFullMatrix(aAme);
 	}
-	auto aApe = toFMDsptr(markerFrame->aApm->timesFullMatrix(aAme));
+	auto aApe = markerFrame->aApm->timesFullMatrix(aAme);
 	ppAOepEpE = EulerParameters<double>::ppApEpEtimesMatrix(aApe);
 }
 
@@ -196,7 +196,7 @@ void EndFrameqct::preVelIC()
 	this->evalpAmept();
 	auto& aAOm = markerFrame->aAOm;
 	prOeOpt = aAOm->timesFullColumn(prmempt);
-	pAOept = toFMDsptr(aAOm->timesFullMatrix(pAmept));
+	pAOept = aAOm->timesFullMatrix(pAmept);
 }
 
 void EndFrameqct::postVelIC()
@@ -213,7 +213,7 @@ void EndFrameqct::postVelIC()
 	}
 	for (int i = 0; i < 4; i++)
 	{
-		ppAOepEpt->atiput(i, toFMDsptr(pAOmpE->at(i)->timesFullMatrix(pAmept)));
+		ppAOepEpt->atiput(i, pAOmpE->at(i)->timesFullMatrix(pAmept));
 	}
 }
 
@@ -326,7 +326,7 @@ void EndFrameqct::evalppAmeptpt()
 		phiThePsi->calc();
 		phiThePsiDot->calc();
 		phiThePsiDDot->calc();
-		ppAmeptpt = toFMDsptr(phiThePsiDDot->aAddot);
+		ppAmeptpt = phiThePsiDDot->aAddot;
 	}
 }
 
@@ -353,11 +353,11 @@ void EndFrameqct::preAccIC()
 	this->evalpAmept();
 	auto& aAOm = markerFrame->aAOm;
 	prOeOpt = aAOm->timesFullColumn(prmempt);
-	pAOept = toFMDsptr(aAOm->timesFullMatrix(pAmept));
+	pAOept = aAOm->timesFullMatrix(pAmept);
 	Item::preAccIC();
 	this->evalpprmemptpt();
 	this->evalppAmeptpt();
 	aAOm = markerFrame->aAOm;
 	pprOeOptpt = aAOm->timesFullColumn(pprmemptpt);
-	ppAOeptpt = toFMDsptr(aAOm->timesFullMatrix(ppAmeptpt));
+	ppAOeptpt = aAOm->timesFullMatrix(ppAmeptpt);
 }

@@ -5,16 +5,14 @@
 namespace MbD {
     class FullMatrixDouble;
     class FullMatrixFullMatrixDouble;
+    class FullMatrixFullColumnDouble;
 
-//    using FMatDsptr = std::shared_ptr<MbD::FullMatrixDouble>;
+    using FMatDsptr = std::shared_ptr<FullMatrixDouble>;
 
-//    template<typename T>
-//    using FMatsptr = std::shared_ptr<FullMatrix<T>>;
+    using FMatFMatDsptr = std::shared_ptr<FullMatrixFullMatrixDouble>;
 
-//    using FMatFColDsptr = std::shared_ptr<FullMatrix<FColDsptr>>;
-//    using FMatFMatDsptr = std::shared_ptr<FullMatrix<FMatDsptr>>;
-//
-//    using FColFMatDsptr = std::shared_ptr<FullColumn<FMatDsptr>>;
+    using FColFMatDsptr = std::shared_ptr<FullColumn<FMatDsptr>>;
+    using FMatFColDsptr = std::shared_ptr<FullMatrixFullColumnDouble>;
 }
 
 

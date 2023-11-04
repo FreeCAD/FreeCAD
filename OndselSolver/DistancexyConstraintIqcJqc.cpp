@@ -30,16 +30,16 @@ void MbD::DistancexyConstraintIqcJqc::calc_ppGpXIpXJ()
 	//xIeJeIe ppvaluepXIpXJ = 0
 	//yIeJeIe ppvaluepXIpXJ = 0
 	ppGpXIpXJ = (xIeJeIe->pvaluepXI()->transposeTimesFullRow(xIeJeIe->pvaluepXJ()));
-	ppGpXIpXJ = toFMDsptr(ppGpXIpXJ->plusFullMatrix(yIeJeIe->pvaluepXI()->transposeTimesFullRow(yIeJeIe->pvaluepXJ())));
+	ppGpXIpXJ = ppGpXIpXJ->plusFullMatrix(yIeJeIe->pvaluepXI()->transposeTimesFullRow(yIeJeIe->pvaluepXJ()));
 	ppGpXIpXJ->magnifySelf(2.0);
 }
 
 void MbD::DistancexyConstraintIqcJqc::calc_ppGpEIpXJ()
 {
 	ppGpEIpXJ = (xIeJeIe->pvaluepEI()->transposeTimesFullRow(xIeJeIe->pvaluepXJ()));
-	ppGpEIpXJ = toFMDsptr(ppGpEIpXJ->plusFullMatrix(xIeJeIe->ppvaluepEIpXJ()->times(xIeJeIe->value())));
-	ppGpEIpXJ = toFMDsptr(ppGpEIpXJ->plusFullMatrix(yIeJeIe->pvaluepEI()->transposeTimesFullRow(yIeJeIe->pvaluepXJ())));
-	ppGpEIpXJ = toFMDsptr(ppGpEIpXJ->plusFullMatrix(yIeJeIe->ppvaluepEIpXJ()->times(yIeJeIe->value())));
+	ppGpEIpXJ = ppGpEIpXJ->plusFullMatrix(xIeJeIe->ppvaluepEIpXJ()->times(xIeJeIe->value()));
+	ppGpEIpXJ = ppGpEIpXJ->plusFullMatrix(yIeJeIe->pvaluepEI()->transposeTimesFullRow(yIeJeIe->pvaluepXJ()));
+	ppGpEIpXJ = ppGpEIpXJ->plusFullMatrix(yIeJeIe->ppvaluepEIpXJ()->times(yIeJeIe->value()));
 	ppGpEIpXJ->magnifySelf(2.0);
 }
 
@@ -48,7 +48,7 @@ void MbD::DistancexyConstraintIqcJqc::calc_ppGpXJpXJ()
 	//xIeJeIe ppvaluepXJpXJ = 0
 	//yIeJeIe ppvaluepXJpXJ = 0
 	ppGpXJpXJ = (xIeJeIe->pvaluepXJ()->transposeTimesFullRow(xIeJeIe->pvaluepXJ()));
-	ppGpXJpXJ = toFMDsptr(ppGpXJpXJ->plusFullMatrix(yIeJeIe->pvaluepXJ()->transposeTimesFullRow(yIeJeIe->pvaluepXJ())));
+	ppGpXJpXJ = ppGpXJpXJ->plusFullMatrix(yIeJeIe->pvaluepXJ()->transposeTimesFullRow(yIeJeIe->pvaluepXJ()));
 	ppGpXJpXJ->magnifySelf(2.0);
 }
 
@@ -57,16 +57,16 @@ void MbD::DistancexyConstraintIqcJqc::calc_ppGpXIpEJ()
 	//xIeJeIe ppvaluepXIpEJ = 0
 	//yIeJeIe ppvaluepXIpEJ = 0
 	ppGpXIpEJ = (xIeJeIe->pvaluepXI()->transposeTimesFullRow(xIeJeIe->pvaluepEJ()));
-	ppGpXIpEJ = toFMDsptr(ppGpXIpEJ->plusFullMatrix(yIeJeIe->pvaluepXI()->transposeTimesFullRow(yIeJeIe->pvaluepEJ())));
+	ppGpXIpEJ = ppGpXIpEJ->plusFullMatrix(yIeJeIe->pvaluepXI()->transposeTimesFullRow(yIeJeIe->pvaluepEJ()));
 	ppGpXIpEJ->magnifySelf(2.0);
 }
 
 void MbD::DistancexyConstraintIqcJqc::calc_ppGpEIpEJ()
 {
 	ppGpEIpEJ = (xIeJeIe->pvaluepEI()->transposeTimesFullRow(xIeJeIe->pvaluepEJ()));
-	ppGpEIpEJ = toFMDsptr(ppGpEIpEJ->plusFullMatrix(xIeJeIe->ppvaluepEIpEJ()->times(xIeJeIe->value())));
-	ppGpEIpEJ = toFMDsptr(ppGpEIpEJ->plusFullMatrix(yIeJeIe->pvaluepEI()->transposeTimesFullRow(yIeJeIe->pvaluepEJ())));
-	ppGpEIpEJ = toFMDsptr(ppGpEIpEJ->plusFullMatrix(yIeJeIe->ppvaluepEIpEJ()->times(yIeJeIe->value())));
+	ppGpEIpEJ = ppGpEIpEJ->plusFullMatrix(xIeJeIe->ppvaluepEIpEJ()->times(xIeJeIe->value()));
+	ppGpEIpEJ = ppGpEIpEJ->plusFullMatrix(yIeJeIe->pvaluepEI()->transposeTimesFullRow(yIeJeIe->pvaluepEJ()));
+	ppGpEIpEJ = ppGpEIpEJ->plusFullMatrix(yIeJeIe->ppvaluepEIpEJ()->times(yIeJeIe->value()));
 	ppGpEIpEJ->magnifySelf(2.0);
 }
 
@@ -75,16 +75,16 @@ void MbD::DistancexyConstraintIqcJqc::calc_ppGpXJpEJ()
 	//xIeJeIe ppvaluepXJpEJ = 0
 	//yIeJeIe ppvaluepXJpEJ = 0
 	ppGpXJpEJ = (xIeJeIe->pvaluepXJ()->transposeTimesFullRow(xIeJeIe->pvaluepEJ()));
-	ppGpXJpEJ = toFMDsptr(ppGpXJpEJ->plusFullMatrix(yIeJeIe->pvaluepXJ()->transposeTimesFullRow(yIeJeIe->pvaluepEJ())));
+	ppGpXJpEJ = ppGpXJpEJ->plusFullMatrix(yIeJeIe->pvaluepXJ()->transposeTimesFullRow(yIeJeIe->pvaluepEJ()));
 	ppGpXJpEJ->magnifySelf(2.0);
 }
 
 void MbD::DistancexyConstraintIqcJqc::calc_ppGpEJpEJ()
 {
 	ppGpEJpEJ = (xIeJeIe->pvaluepEJ()->transposeTimesFullRow(xIeJeIe->pvaluepEJ()));
-	ppGpEJpEJ = toFMDsptr(ppGpEJpEJ->plusFullMatrix(xIeJeIe->ppvaluepEJpEJ()->times(xIeJeIe->value())));
-	ppGpEJpEJ = toFMDsptr(ppGpEJpEJ->plusFullMatrix(yIeJeIe->pvaluepEJ()->transposeTimesFullRow(yIeJeIe->pvaluepEJ())));
-	ppGpEJpEJ = toFMDsptr(ppGpEJpEJ->plusFullMatrix(yIeJeIe->ppvaluepEJpEJ()->times(yIeJeIe->value())));
+	ppGpEJpEJ = ppGpEJpEJ->plusFullMatrix(xIeJeIe->ppvaluepEJpEJ()->times(xIeJeIe->value()));
+	ppGpEJpEJ = ppGpEJpEJ->plusFullMatrix(yIeJeIe->pvaluepEJ()->transposeTimesFullRow(yIeJeIe->pvaluepEJ()));
+	ppGpEJpEJ = ppGpEJpEJ->plusFullMatrix(yIeJeIe->ppvaluepEJpEJ()->times(yIeJeIe->value()));
 	ppGpEJpEJ->magnifySelf(2.0);
 }
 
