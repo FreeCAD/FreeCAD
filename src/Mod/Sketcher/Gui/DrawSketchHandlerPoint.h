@@ -23,7 +23,12 @@
 #ifndef SKETCHERGUI_DrawSketchHandlerPoint_H
 #define SKETCHERGUI_DrawSketchHandlerPoint_H
 
+#include <Gui/BitmapFactory.h>
 #include <Gui/Notifications.h>
+#include <Gui/Command.h>
+#include <Gui/CommandT.h>
+
+#include <Mod/Sketcher/App/SketchObject.h>
 
 #include "GeometryCreationMode.h"
 

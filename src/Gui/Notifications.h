@@ -33,6 +33,8 @@
 
 namespace Gui {
 
+    class ViewProviderDocumentObject;
+
 /** Methods to seamlessly provide intrusive or non-intrusive notifications of error, warning,
  * messages, translated notifications, or untranslated notifications originating in a given
  * document object.

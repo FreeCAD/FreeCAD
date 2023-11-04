@@ -23,9 +23,20 @@
 #ifndef SKETCHERGUI_DrawSketchHandlerSlot_H
 #define SKETCHERGUI_DrawSketchHandlerSlot_H
 
-#include <Gui/Notifications.h>
+#include <sstream>
 
+#include <QApplication>
+
+#include <Gui/Notifications.h>
+#include <Gui/Command.h>
+#include <Gui/CommandT.h>
+
+#include <Mod/Sketcher/App/SketchObject.h>
+
+#include "DrawSketchHandler.h"
 #include "GeometryCreationMode.h"
+#include "Utils.h"
+#include "ViewProviderSketch.h"
 
 
 namespace SketcherGui
@@ -208,7 +219,7 @@ public:
                     lastCons = sugConstr2.back();
                 }
 
-                ostringstream snapCon = ostringstream("");
+                std::ostringstream snapCon = std::ostringstream("");
                 if (SnapMode == SNAP_MODE_Straight) {
                     snapCon << "conList.append(Sketcher.Constraint('";
                     if (SnapDir == SNAP_DIR_Horz) {

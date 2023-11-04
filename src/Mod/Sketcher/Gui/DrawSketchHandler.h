@@ -23,8 +23,12 @@
 #ifndef SKETCHERGUI_DrawSketchHandler_H
 #define SKETCHERGUI_DrawSketchHandler_H
 
+#include <QCursor>
+#include <QPixmap>
+
 #include <Inventor/SbString.h>
 
+#include <Base/Parameter.h>
 #include <Base/Tools2D.h>
 #include <Gui/Selection.h>
 #include <Mod/Part/App/Geometry.h>
@@ -32,8 +36,7 @@
 
 #include "AutoConstraint.h"
 
-
-class QPixmap;
+class QWidget;
 
 namespace Sketcher
 {

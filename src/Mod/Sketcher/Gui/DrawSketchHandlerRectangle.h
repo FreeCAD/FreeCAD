@@ -24,6 +24,14 @@
 #ifndef SKETCHERGUI_DrawSketchHandlerRectangle_H
 #define SKETCHERGUI_DrawSketchHandlerRectangle_H
 
+#include <QApplication>
+
+#include <Gui/BitmapFactory.h>
+#include <Gui/Notifications.h>
+#include <Gui/Command.h>
+#include <Gui/CommandT.h>
+
+#include <Mod/Sketcher/App/SketchObject.h>
 
 #include "DrawSketchDefaultWidgetController.h"
 #include "DrawSketchControllableHandler.h"

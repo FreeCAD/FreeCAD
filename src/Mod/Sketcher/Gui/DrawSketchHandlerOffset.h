@@ -24,6 +24,8 @@
 #ifndef SKETCHERGUI_DrawSketchHandlerOffset_H
 #define SKETCHERGUI_DrawSketchHandlerOffset_H
 
+#include <QApplication>
+
 #include <BRep_Tool.hxx>
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepClass_FaceClassifier.hxx>
@@ -36,13 +38,23 @@
 #include <BRepExtrema_DistShapeShape.hxx>
 #include <TopoDS.hxx>
 
+#include <Base/Exception.h>
+
+#include <Gui/BitmapFactory.h>
+#include <Gui/Notifications.h>
+#include <Gui/Command.h>
+#include <Gui/CommandT.h>
+
+#include <Mod/Sketcher/App/SketchObject.h>
+
+#include <Mod/Sketcher/App/GeometryFacade.h>
+
 #include "DrawSketchDefaultWidgetController.h"
 #include "DrawSketchControllableHandler.h"
 
 #include "GeometryCreationMode.h"
 #include "Utils.h"
 
-#include <Mod/Sketcher/App/GeometryFacade.h>
 
 using namespace Sketcher;
 

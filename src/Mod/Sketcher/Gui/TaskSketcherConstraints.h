@@ -100,7 +100,7 @@ public:
 
 protected:
     void changeEvent(QEvent* e) override;
-    virtual void languageChange();
+    void languageChange();
 
 private:
     using filterItemRepr =

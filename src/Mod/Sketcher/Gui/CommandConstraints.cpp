@@ -793,7 +793,6 @@ int SketchSelection::setUp()
             return -1;
         }
 
-        SketchObj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
         SketchSubNames = selection[0].getSubNames();
     }
     else if (selection.size() == 2) {
@@ -2163,6 +2162,9 @@ protected:
         bool isCircleGeom = true;
 
         const Part::Geometry* geom = Obj->getGeometry(GeoId);
+
+        if(!geom)
+            return;
 
         if (geom && isArcOfCircle(*geom)) {
             auto arc = static_cast<const Part::GeomArcOfCircle*>(geom);
@@ -5407,8 +5409,6 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
 
         Base::Vector3d pnt = Obj->getPoint(GeoId1, PosId1);
         double ActY = pnt.y;
-
-        arebothpointsorsegmentsfixed = isPointOrSegmentFixed(Obj, GeoId1);
 
         openCommand(QT_TRANSLATE_NOOP("Command", "Add fixed y-coordinate constraint"));
         Gui::cmdAppObjectArgs(selection[0].getObject(),
