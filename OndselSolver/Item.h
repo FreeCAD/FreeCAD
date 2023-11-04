@@ -12,7 +12,7 @@
 #include <vector>
 
 #include "FullColumn.h"
-#include "FullMatrix.h"
+// #include "FullMatrix.h"
 #include "DiagonalMatrix.h"
 #include "SparseMatrix.h"
 #include "enum.h"

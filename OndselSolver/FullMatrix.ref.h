@@ -4,6 +4,7 @@
 
 namespace MbD {
     class FullMatrixDouble;
+    class FullMatrixFullMatrixDouble;
 
 //    using FMatDsptr = std::shared_ptr<MbD::FullMatrixDouble>;
 

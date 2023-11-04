@@ -39,7 +39,7 @@ void DispCompIeqctJeqcO::calcPostDynCorrectorIteration()
 {
 	//"ppriIeJeOpEIpEI is not a constant now."
 	DispCompIeqcJeqcO::calcPostDynCorrectorIteration();
-	ppriIeJeOpEIpEI = std::static_pointer_cast<EndFrameqct>(frmI)->ppriOeOpEpE(axis)->negated();
+	ppriIeJeOpEIpEI = toFMDsptr(std::static_pointer_cast<EndFrameqct>(frmI)->ppriOeOpEpE(axis)->negated());
 }
 
 void DispCompIeqctJeqcO::preVelIC()

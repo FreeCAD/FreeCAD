@@ -22,7 +22,7 @@ DispCompIecJecKeqc::DispCompIecJecKeqc(EndFrmsptr frmi, EndFrmsptr frmj, EndFrms
 void DispCompIecJecKeqc::initialize()
 {
     priIeJeKepEK = std::make_shared<FullRow<double>>(4);
-    ppriIeJeKepEKpEK = std::make_shared<FullMatrix<double>>(4, 4);
+    ppriIeJeKepEKpEK = std::make_shared<FullMatrixDouble>(4, 4);
 }
 
 void DispCompIecJecKeqc::initializeGlobally()

@@ -997,7 +997,7 @@ void MbD::ASMTAssembly::initprincipalMassMarker()
 	principalMassMarker->density = 0.0;
 	principalMassMarker->momentOfInertias = std::make_shared<DiagonalMatrix<double>>(3, 0);
 	//principalMassMarker->position3D = std::make_shared<FullColumn<double>>(3, 0);
-	//principalMassMarker->rotationMatrix = FullMatrix<double>>::identitysptr(3);
+	//principalMassMarker->rotationMatrix = FullMatrixDouble>::identitysptr(3);
 }
 
 std::shared_ptr<ASMTSpatialContainer> MbD::ASMTAssembly::spatialContainerAt(std::shared_ptr<ASMTAssembly> self, std::string& longname)

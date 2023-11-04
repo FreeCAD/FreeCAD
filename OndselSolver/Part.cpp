@@ -462,7 +462,7 @@ void Part::calcmEdot()
 	auto a4J = aJ->times(4.0);
 	auto term1 = aC->transposeTimesFullMatrix(a4J->timesFullMatrix(aCdot));
 	auto term2 = term1->transpose();
-	mEdot = term1->plusFullMatrix(term2);
+	mEdot = toFMDsptr(term1->plusFullMatrix(term2));
 }
 
 void Part::calcpTpE()
@@ -479,7 +479,7 @@ void Part::calcppTpEpE()
 	auto& qEdot = partFrame->qEdot;
 	auto pCpEtimesqEdot = EulerParameters<double>::pCpEtimesColumn(qEdot);
 	auto a4J = aJ->times(4.0);
-	ppTpEpE = pCpEtimesqEdot->transposeTimesFullMatrix(a4J->timesFullMatrix(pCpEtimesqEdot));
+	ppTpEpE = toFMDsptr(pCpEtimesqEdot->transposeTimesFullMatrix(a4J->timesFullMatrix(pCpEtimesqEdot)));
 }
 
 void Part::calcppTpEpEdot()
@@ -491,13 +491,13 @@ void Part::calcppTpEpEdot()
 	auto term1 = EulerParameters<double>::pCTpEtimesColumn(a4J->timesFullColumn(aC->timesFullColumn(qEdot)));
 	auto pCpEtimesqEdot = EulerParameters<double>::pCpEtimesColumn(qEdot);
 	auto term2 = aC->transposeTimesFullMatrix(a4J->timesFullMatrix(pCpEtimesqEdot));
-	ppTpEpEdot = term1->plusFullMatrix(term2)->transpose();
+	ppTpEpEdot = toFMDsptr(term1->plusFullMatrix(term2)->transpose());
 }
 
 void Part::calcmE()
 {
 	auto aC = partFrame->aC();
-	mE = aC->transposeTimesFullMatrix(aJ->timesFullMatrix(aC))->times(4.0);
+	mE = toFMDsptr(aC->transposeTimesFullMatrix(aJ->timesFullMatrix(aC))->times(4.0));
 }
 
 void Part::fillAccICIterError(FColDsptr col)

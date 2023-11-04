@@ -243,7 +243,7 @@ void MbD::OrbitAngleZIeqcJeqc::initialize()
 	pthezpXJ = std::make_shared<FullRow<double>>(3);
 	pthezpEJ = std::make_shared<FullRow<double>>(4);
 	ppthezpXIpXJ = std::make_shared<FullMatrixDouble>(3, 3);
-	ppthezpXIpEJ = std::make_shared<FullMatrixDouble>>(3, 4);
+	ppthezpXIpEJ = std::make_shared<FullMatrixDouble>(3, 4);
 	ppthezpEIpXJ = std::make_shared<FullMatrixDouble>(4, 3);
 	ppthezpEIpEJ = std::make_shared<FullMatrixDouble>(4, 4);
 	ppthezpXJpXJ = std::make_shared<FullMatrixDouble>(3, 3);

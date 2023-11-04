@@ -47,7 +47,7 @@ FMatDsptr MbD::ASMTMarker::aApm()
 	auto& principalMassMarker = static_cast<ASMTPart*>(refItem->owner)->principalMassMarker;
 	auto& aAPcm = principalMassMarker->rotationMatrix;
 	auto aApm = aAPcm->transposeTimesFullMatrix(aAPref->timesFullMatrix(aArefm));
-	return aApm;
+	return toFMDsptr(aApm);
 }
 
 void MbD::ASMTMarker::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits)

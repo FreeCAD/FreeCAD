@@ -32,7 +32,7 @@ void MbD::MomentOfInertiaSolver::example1()
 	solver->setJPP(aJPP);
 	auto rPoP = aApP->transposeTimesFullColumn(rpPp->negated());
 	solver->setrPoP(rPoP);
-	auto aAPo = aApP->transpose();
+	auto aAPo = toFMDsptr(aApP->transpose());
 	solver->setAPo(aAPo);
 	solver->setrPcmP(rPoP);
 	solver->calc();
@@ -188,7 +188,7 @@ void MbD::MomentOfInertiaSolver::calcJoo()
 	auto term22 = rPoPtilde->timesFullMatrix(rocmPtilde);
 	auto term23 = term22->transpose();
 	auto term2 = term21->plusFullMatrix(term22)->plusFullMatrix(term23)->times(m);
-	aJoo = aAPo->transposeTimesFullMatrix(term1->plusFullMatrix(term2))->timesFullMatrix(aAPo);
+	aJoo = toFMDsptr(aAPo->transposeTimesFullMatrix(term1->plusFullMatrix(term2))->timesFullMatrix(aAPo));
 	aJoo->symLowerWithUpper();
 	aJoo->conditionSelfWithTol(aJoo->maxMagnitude() * 1.0e-6);
 }
@@ -197,8 +197,8 @@ void MbD::MomentOfInertiaSolver::calcJpp()
 {
 	//"aJcmP = aJPP + mass*(rPcmPTilde*rPcmPTilde)"
 
-	auto rPcmPtilde = FullMatrix<double>::tildeMatrix(rPcmP);
-	aJcmP = aJPP->plusFullMatrix(rPcmPtilde->timesFullMatrix(rPcmPtilde)->times(m));
+	auto rPcmPtilde = FullMatrixDouble::tildeMatrix(rPcmP);
+	aJcmP = toFMDsptr(aJPP->plusFullMatrix(rPcmPtilde->timesFullMatrix(rPcmPtilde)->times(m)));
 	aJcmP->symLowerWithUpper();
 	aJcmP->conditionSelfWithTol(aJcmP->maxMagnitude() * 1.0e-6);
 	if (aJcmP->isDiagonal()) {
@@ -217,7 +217,7 @@ void MbD::MomentOfInertiaSolver::calcAPp()
 	auto lam2 = aJpp->at(2);
 	if (lam0 == lam1) {
 		if (lam1 == lam2) {
-			aAPp = FullMatrix<double>::identitysptr(3);
+			aAPp = FullMatrixDouble::identitysptr(3);
 		}
 		else {
 			eigenvector1 = eigenvectorFor(lam1);
@@ -238,7 +238,7 @@ void MbD::MomentOfInertiaSolver::calcAPp()
 		if (eigenvector1->at(1) < 0.0) eigenvector1->negateSelf();
 		eigenvector2 = eigenvector0->cross(eigenvector1);
 	}
-	aAPp = std::make_shared<FullMatrix<double>>(3, 3);
+	aAPp = std::make_shared<FullMatrixDouble>(3, 3);
 	aAPp->atijputFullColumn(0, 0, eigenvector0);
 	aAPp->atijputFullColumn(0, 1, eigenvector1);
 	aAPp->atijputFullColumn(0, 2, eigenvector2);
@@ -249,7 +249,7 @@ FColDsptr MbD::MomentOfInertiaSolver::eigenvectorFor(double lam)
 	//"[aJcmP] - lam[I]."
 
 	double e0, e1, e2;
-	aJcmPcopy = aJcmP->copy();
+	aJcmPcopy = toFMDsptr(aJcmP->copy());
 	colOrder = std::make_shared<FullRow<int>>(3);
 	auto eigenvector = std::make_shared<FullColumn<double>>(3);
 	for (int i = 0; i < 3; i++)

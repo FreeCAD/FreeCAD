@@ -44,7 +44,7 @@ namespace MbD {
 		static std::shared_ptr<FullMatrix<FColsptr<T>>> ppApEpEtimesColumn(FColDsptr col);
 		static FMatDsptr pCpEtimesColumn(FColDsptr col);
 		static FMatDsptr pCTpEtimesColumn(FColDsptr col);
-		static std::shared_ptr<FullMatrix<FMatsptr<T>>> ppApEpEtimesMatrix(FMatDsptr mat);
+		static std::shared_ptr<FullMatrixFullMatrixDouble> ppApEpEtimesMatrix(FMatDsptr mat);
 
 
 		void initialize() override;

@@ -53,12 +53,14 @@ void MbD::RackPinConstraintIqcJc::calc_pGpXI()
 
 void MbD::RackPinConstraintIqcJc::calc_ppGpEIpEI()
 {
-	ppGpEIpEI = xIeJeIe->ppvaluepEIpEI()->plusFullMatrix(thezIeJe->ppvaluepEIpEI()->times(pitchRadius));
+	ppGpEIpEI = toFMDsptr(xIeJeIe->ppvaluepEIpEI()
+            ->plusFullMatrix(thezIeJe->ppvaluepEIpEI()->times(pitchRadius)));
 }
 
 void MbD::RackPinConstraintIqcJc::calc_ppGpXIpEI()
 {
-	ppGpXIpEI = xIeJeIe->ppvaluepXIpEI()->plusFullMatrix(thezIeJe->ppvaluepXIpEI()->times(pitchRadius));
+	ppGpXIpEI = toFMDsptr(xIeJeIe->ppvaluepXIpEI()
+            ->plusFullMatrix(thezIeJe->ppvaluepXIpEI()->times(pitchRadius)));
 }
 
 void MbD::RackPinConstraintIqcJc::calcPostDynCorrectorIteration()

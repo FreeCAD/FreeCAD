@@ -30,17 +30,20 @@ void MbD::RackPinConstraintIqcJqc::calc_pGpXJ()
 
 void MbD::RackPinConstraintIqcJqc::calc_ppGpEIpEJ()
 {
-	ppGpEIpEJ = xIeJeIe->ppvaluepEIpEJ()->plusFullMatrix(thezIeJe->ppvaluepEIpEJ()->times(pitchRadius));
+	ppGpEIpEJ = toFMDsptr(xIeJeIe->ppvaluepEIpEJ()
+            ->plusFullMatrix(thezIeJe->ppvaluepEIpEJ()->times(pitchRadius)));
 }
 
 void MbD::RackPinConstraintIqcJqc::calc_ppGpEIpXJ()
 {
-	ppGpEIpXJ = xIeJeIe->ppvaluepEIpXJ()->plusFullMatrix(thezIeJe->ppvaluepEIpXJ()->times(pitchRadius));
+	ppGpEIpXJ = toFMDsptr(xIeJeIe->ppvaluepEIpXJ()
+            ->plusFullMatrix(thezIeJe->ppvaluepEIpXJ()->times(pitchRadius)));
 }
 
 void MbD::RackPinConstraintIqcJqc::calc_ppGpEJpEJ()
 {
-	ppGpEJpEJ = xIeJeIe->ppvaluepEJpEJ()->plusFullMatrix(thezIeJe->ppvaluepEJpEJ()->times(pitchRadius));
+	ppGpEJpEJ = toFMDsptr(xIeJeIe->ppvaluepEJpEJ()
+            ->plusFullMatrix(thezIeJe->ppvaluepEJpEJ()->times(pitchRadius)));
 }
 
 void MbD::RackPinConstraintIqcJqc::calcPostDynCorrectorIteration()

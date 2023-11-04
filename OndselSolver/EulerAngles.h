@@ -51,19 +51,19 @@ namespace MbD {
 			auto axis = rotOrder->at(i);
 			auto angle = this->at(i)->getValue();
 			if (axis == 1) {
-				cA->atiput(i, FullMatrixDouble::rotatex(angle));
+				cA->atiput(i, toFMDsptr(FullMatrixDouble::rotatex(angle)));
 			}
 			else if (axis == 2) {
-				cA->atiput(i, FullMatrixDouble::rotatey(angle));
+				cA->atiput(i, toFMDsptr(FullMatrixDouble::rotatey(angle)));
 			}
 			else if (axis == 3) {
-				cA->atiput(i, FullMatrixDouble::rotatez(angle));
+				cA->atiput(i, toFMDsptr(FullMatrixDouble::rotatez(angle)));
 			}
 			else {
 				throw std::runtime_error("Euler angle rotation order must be any permutation of 1,2,3 without consecutive repeats.");
 			}
 		}
-		aA = cA->at(0)->timesFullMatrix(cA->at(1)->timesFullMatrix(cA->at(2)));
+		aA = toFMDsptr(cA->at(0)->timesFullMatrix(cA->at(1)->timesFullMatrix(cA->at(2))));
 	}
 	template<>
 	inline void EulerAngles<double>::calc()
@@ -74,19 +74,19 @@ namespace MbD {
 			auto axis = rotOrder->at(i);
 			auto angle = this->at(i);
 			if (axis == 1) {
-				cA->atiput(i, FullMatrixDouble::rotatex(angle));
+				cA->atiput(i, toFMDsptr(FullMatrixDouble::rotatex(angle)));
 			}
 			else if (axis == 2) {
-				cA->atiput(i, FullMatrixDouble::rotatey(angle));
+				cA->atiput(i, toFMDsptr(FullMatrixDouble::rotatey(angle)));
 			}
 			else if (axis == 3) {
-				cA->atiput(i, FullMatrix<double>::rotatez(angle));
+				cA->atiput(i, toFMDsptr(FullMatrixDouble::rotatez(angle)));
 			}
 			else {
 				throw std::runtime_error("Euler angle rotation order must be any permutation of 1,2,3 without consecutive repeats.");
 			}
 		}
-		aA = cA->at(0)->timesFullMatrix(cA->at(1)->timesFullMatrix(cA->at(2)));
+		aA = toFMDsptr(cA->at(0)->timesFullMatrix(cA->at(1)->timesFullMatrix(cA->at(2))));
 	}
 	template<typename T>
 	inline void EulerAngles<T>::calc()

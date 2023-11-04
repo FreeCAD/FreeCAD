@@ -8,6 +8,7 @@
  
 #pragma once
 
+#include "FullMatrix.h"
 #include "EulerArray.h"
 #include "EulerAngleszxzDot.h"
 
@@ -23,16 +24,17 @@ namespace MbD {
         void calc() override;
 
         std::shared_ptr<EulerAngleszxzDot<double>> phiThePsiDot;
-        FMatDsptr phiAddot, theAddot, psiAddot, aAddot;
+        FMatDsptr phiAddot, theAddot, psiAddot;
+        std::shared_ptr<FullMatrix<double>> aAddot;
     };
     template<typename T>
     inline void EulerAngleszxzDDot<T>::initialize()
     {
-        phiAddot = std::make_shared<FullMatrix<double>>(3, 3);
+        phiAddot = std::make_shared<FullMatrixDouble>(3, 3);
         phiAddot->zeroSelf();
-        theAddot = std::make_shared<FullMatrix<double>>(3, 3);
+        theAddot = std::make_shared<FullMatrixDouble>(3, 3);
         theAddot->zeroSelf();
-        psiAddot = std::make_shared<FullMatrix<double>>(3, 3);
+        psiAddot = std::make_shared<FullMatrixDouble>(3, 3);
         psiAddot->zeroSelf();
     }
     template<typename T>

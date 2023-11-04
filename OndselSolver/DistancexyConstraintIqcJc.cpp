@@ -65,18 +65,18 @@ void MbD::DistancexyConstraintIqcJc::calc_pGpXI()
 void MbD::DistancexyConstraintIqcJc::calc_ppGpEIpEI()
 {
 	ppGpEIpEI = (xIeJeIe->pvaluepEI()->transposeTimesFullRow(xIeJeIe->pvaluepEI()));
-	ppGpEIpEI = ppGpEIpEI->plusFullMatrix(xIeJeIe->ppvaluepEIpEI()->times(xIeJeIe->value()));
-	ppGpEIpEI = ppGpEIpEI->plusFullMatrix(yIeJeIe->pvaluepEI()->transposeTimesFullRow(yIeJeIe->pvaluepEI()));
-	ppGpEIpEI = ppGpEIpEI->plusFullMatrix(yIeJeIe->ppvaluepEIpEI()->times(yIeJeIe->value()));
+	ppGpEIpEI = toFMDsptr(ppGpEIpEI->plusFullMatrix(xIeJeIe->ppvaluepEIpEI()->times(xIeJeIe->value())));
+	ppGpEIpEI = toFMDsptr(ppGpEIpEI->plusFullMatrix(yIeJeIe->pvaluepEI()->transposeTimesFullRow(yIeJeIe->pvaluepEI())));
+	ppGpEIpEI = toFMDsptr(ppGpEIpEI->plusFullMatrix(yIeJeIe->ppvaluepEIpEI()->times(yIeJeIe->value())));
 	ppGpEIpEI->magnifySelf(2.0);
 }
 
 void MbD::DistancexyConstraintIqcJc::calc_ppGpXIpEI()
 {
 	ppGpXIpEI = (xIeJeIe->pvaluepXI()->transposeTimesFullRow(xIeJeIe->pvaluepEI()));
-	ppGpXIpEI = ppGpXIpEI->plusFullMatrix(xIeJeIe->ppvaluepXIpEI()->times(xIeJeIe->value()));
-	ppGpXIpEI = ppGpXIpEI->plusFullMatrix(yIeJeIe->pvaluepXI()->transposeTimesFullRow(yIeJeIe->pvaluepEI()));
-	ppGpXIpEI = ppGpXIpEI->plusFullMatrix(yIeJeIe->ppvaluepXIpEI()->times(yIeJeIe->value()));
+	ppGpXIpEI = toFMDsptr(ppGpXIpEI->plusFullMatrix(xIeJeIe->ppvaluepXIpEI()->times(xIeJeIe->value())));
+	ppGpXIpEI = toFMDsptr(ppGpXIpEI->plusFullMatrix(yIeJeIe->pvaluepXI()->transposeTimesFullRow(yIeJeIe->pvaluepEI())));
+	ppGpXIpEI = toFMDsptr(ppGpXIpEI->plusFullMatrix(yIeJeIe->ppvaluepXIpEI()->times(yIeJeIe->value())));
 	ppGpXIpEI->magnifySelf(2.0);
 }
 
@@ -85,7 +85,7 @@ void MbD::DistancexyConstraintIqcJc::calc_ppGpXIpXI()
 	//xIeJeIe ppvaluepXIpXI = 0
 	//yIeJeIe ppvaluepXIpXI = 0
 	ppGpXIpXI = (xIeJeIe->pvaluepXI()->transposeTimesFullRow(xIeJeIe->pvaluepXI()));
-	ppGpXIpXI = ppGpXIpXI->plusFullMatrix(yIeJeIe->pvaluepXI()->transposeTimesFullRow(yIeJeIe->pvaluepXI()));
+	ppGpXIpXI = toFMDsptr(ppGpXIpXI->plusFullMatrix(yIeJeIe->pvaluepXI()->transposeTimesFullRow(yIeJeIe->pvaluepXI())));
 	ppGpXIpXI->magnifySelf(2.0);
 }
 

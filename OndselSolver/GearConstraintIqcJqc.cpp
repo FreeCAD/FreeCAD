@@ -29,37 +29,37 @@ void MbD::GearConstraintIqcJqc::calc_pGpXJ()
 
 void MbD::GearConstraintIqcJqc::calc_ppGpEIpEJ()
 {
-	ppGpEIpEJ = orbitJeIe->ppvaluepEIpEJ()->transpose()->plusFullMatrix(orbitIeJe->ppvaluepEIpEJ()->times(this->ratio()));
+	ppGpEIpEJ = toFMDsptr(orbitJeIe->ppvaluepEIpEJ()->transpose()->plusFullMatrix(orbitIeJe->ppvaluepEIpEJ()->times(this->ratio())));
 }
 
 void MbD::GearConstraintIqcJqc::calc_ppGpEIpXJ()
 {
-	ppGpEIpXJ = orbitJeIe->ppvaluepXIpEJ()->transpose()->plusFullMatrix(orbitIeJe->ppvaluepEIpXJ()->times(this->ratio()));
+	ppGpEIpXJ = toFMDsptr(orbitJeIe->ppvaluepXIpEJ()->transpose()->plusFullMatrix(orbitIeJe->ppvaluepEIpXJ()->times(this->ratio())));
 }
 
 void MbD::GearConstraintIqcJqc::calc_ppGpEJpEJ()
 {
-	ppGpEJpEJ = orbitJeIe->ppvaluepEIpEI()->plusFullMatrix(orbitIeJe->ppvaluepEJpEJ()->times(this->ratio()));
+	ppGpEJpEJ = toFMDsptr(orbitJeIe->ppvaluepEIpEI()->plusFullMatrix(orbitIeJe->ppvaluepEJpEJ()->times(this->ratio())));
 }
 
 void MbD::GearConstraintIqcJqc::calc_ppGpXIpEJ()
 {
-	ppGpXIpEJ = orbitJeIe->ppvaluepEIpXJ()->transpose()->plusFullMatrix(orbitIeJe->ppvaluepXIpEJ()->times(this->ratio()));
+	ppGpXIpEJ = toFMDsptr(orbitJeIe->ppvaluepEIpXJ()->transpose()->plusFullMatrix(orbitIeJe->ppvaluepXIpEJ()->times(this->ratio())));
 }
 
 void MbD::GearConstraintIqcJqc::calc_ppGpXIpXJ()
 {
-	ppGpXIpXJ = orbitJeIe->ppvaluepXIpXJ()->transpose()->plusFullMatrix(orbitIeJe->ppvaluepXIpXJ()->times(this->ratio()));
+	ppGpXIpXJ = toFMDsptr(orbitJeIe->ppvaluepXIpXJ()->transpose()->plusFullMatrix(orbitIeJe->ppvaluepXIpXJ()->times(this->ratio())));
 }
 
 void MbD::GearConstraintIqcJqc::calc_ppGpXJpEJ()
 {
-	ppGpXJpEJ = orbitJeIe->ppvaluepXIpEI()->plusFullMatrix(orbitIeJe->ppvaluepXJpEJ()->times(this->ratio()));
+	ppGpXJpEJ = toFMDsptr(orbitJeIe->ppvaluepXIpEI()->plusFullMatrix(orbitIeJe->ppvaluepXJpEJ()->times(this->ratio())));
 }
 
 void MbD::GearConstraintIqcJqc::calc_ppGpXJpXJ()
 {
-	ppGpXJpXJ = orbitJeIe->ppvaluepXIpXI()->plusFullMatrix(orbitIeJe->ppvaluepXJpXJ()->times(this->ratio()));
+	ppGpXJpXJ = toFMDsptr(orbitJeIe->ppvaluepXIpXI()->plusFullMatrix(orbitIeJe->ppvaluepXJpXJ()->times(this->ratio())));
 }
 
 void MbD::GearConstraintIqcJqc::calcPostDynCorrectorIteration()

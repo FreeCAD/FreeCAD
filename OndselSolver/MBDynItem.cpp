@@ -164,7 +164,7 @@ FMatDsptr MbD::MBDynItem::readOrientation(std::vector<std::string>& args)
 		auto ref = mbdynReferences()->at(refName);
 		auto aAFf = readBasicOrientation(args);
 		auto aAOF = ref->aAOf;
-		aAOf = aAOF->timesFullMatrix(aAFf);
+		aAOf = toFMDsptr(aAOF->timesFullMatrix(aAFf));
 	}
 	else if (str.find("hinge") != std::string::npos) {
 		args.erase(args.begin());
@@ -300,13 +300,13 @@ FMatDsptr MbD::MBDynItem::readBasicOrientation(std::vector<std::string>& args)
 		else {
 			assert(false);
 		}
-		auto aAFf = FullMatrix<double>::identitysptr(3);
+		auto aAFf = FullMatrixDouble::identitysptr(3);
 		aAFf->atijputFullColumn(0, 0, vecX);
 		aAFf->atijputFullColumn(0, 1, vecY);
 		aAFf->atijputFullColumn(0, 2, vecZ);
 		return aAFf;
 	}
-	auto aAFf = FullMatrix<double>::identitysptr(3);
+	auto aAFf = FullMatrixDouble::identitysptr(3);
 	for (int i = 0; i < 3; i++)
 	{
 		auto rowi = aAFf->at(i);

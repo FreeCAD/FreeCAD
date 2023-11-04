@@ -295,7 +295,7 @@ void CADSystem::runOndselDoublePendulum()
 		auto marker2 = CREATE<MarkerFrame>::With("/Assembly1/Part1/Marker2");
 		rpmp = std::make_shared<FullColumn<double>>(ListD{ 0.4, 0.0, 0.05 });
 		marker2->setrpmp(rpmp);
-		aApm = std::make_shared<FullMatrix<double>>(ListListD{
+		aApm = std::make_shared<FullMatrixDouble>(ListListD{
 			{ 1, 0, 0 },
 			{ 0, 1, 0 },
 			{ 0, 0, 1 }
@@ -325,7 +325,7 @@ void CADSystem::runOndselDoublePendulum()
 		auto marker1 = CREATE<MarkerFrame>::With("/Assembly1/Part2/Marker1");
 		rpmp = std::make_shared<FullColumn<double>>(ListD{ -0.65, 0.0, -0.05 });
 		marker1->setrpmp(rpmp);
-		aApm = std::make_shared<FullMatrix<double>>(ListListD{
+		aApm = std::make_shared<FullMatrixDouble>(ListListD{
 			{1.0, 0.0, 0.0},
 			{0.0, 1.0, 0.0},
 			{0.0, 0.0, 1.0}
@@ -336,7 +336,7 @@ void CADSystem::runOndselDoublePendulum()
 		auto marker2 = CREATE<MarkerFrame>::With("/Assembly1/Part2/Marker2");
 		rpmp = std::make_shared<FullColumn<double>>(ListD{ 0.65, 0.0, -0.05 });
 		marker2->setrpmp(rpmp);
-		aApm = std::make_shared<FullMatrix<double>>(ListListD{
+		aApm = std::make_shared<FullMatrixDouble>(ListListD{
 			{1.0, 0.0, 0.0},
 			{0.0, 1.0, 0.0},
 			{0.0, 0.0, 1.0}
@@ -417,7 +417,7 @@ void CADSystem::runOndselPiston()
 		auto marker2 = CREATE<MarkerFrame>::With("/Assembly1/Marker2");
 		rpmp = std::make_shared<FullColumn<double>>(ListD{ 0.0, 0.0, 0.0 });
 		marker2->setrpmp(rpmp);
-		aApm = std::make_shared<FullMatrix<double>>(ListListD{
+		aApm = std::make_shared<FullMatrixDouble>(ListListD{
 			{ 1, 0, 0 },
 			{ 0, 1, 0 },
 			{ 0, 0, 1 }
@@ -428,7 +428,7 @@ void CADSystem::runOndselPiston()
 		auto marker1 = CREATE<MarkerFrame>::With("/Assembly1/Marker1");
 		rpmp = std::make_shared<FullColumn<double>>(ListD{ 0.0, 3.0, 0.0 });
 		marker1->setrpmp(rpmp);
-		aApm = std::make_shared<FullMatrix<double>>(ListListD{
+		aApm = std::make_shared<FullMatrixDouble>(ListListD{
 			{ 1, 0, 0 },
 			{ 0, 0, 1 },
 			{ 0, -1, 0 }
@@ -460,7 +460,7 @@ void CADSystem::runOndselPiston()
 		auto marker1 = CREATE<MarkerFrame>::With("/Assembly1/Part1/Marker1");
 		rpmp = std::make_shared<FullColumn<double>>(ListD{ -0.4, 0.0, 0.05 });
 		marker1->setrpmp(rpmp);
-		aApm = std::make_shared<FullMatrix<double>>(ListListD{
+		aApm = std::make_shared<FullMatrixDouble>(ListListD{
 			{ 1, 0, 0 },
 			{ 0, 1, 0 },
 			{ 0, 0, 1 }
@@ -471,7 +471,7 @@ void CADSystem::runOndselPiston()
 		auto marker2 = CREATE<MarkerFrame>::With("/Assembly1/Part1/Marker2");
 		rpmp = std::make_shared<FullColumn<double>>(ListD{ 0.4, 0.0, 0.05 });
 		marker2->setrpmp(rpmp);
-		aApm = std::make_shared<FullMatrix<double>>(ListListD{
+		aApm = std::make_shared<FullMatrixDouble>(ListListD{
 			{ 1, 0, 0 },
 			{ 0, 1, 0 },
 			{ 0, 0, 1 }
@@ -502,7 +502,7 @@ void CADSystem::runOndselPiston()
 		auto marker1 = CREATE<MarkerFrame>::With("/Assembly1/Part2/Marker1");
 		rpmp = std::make_shared<FullColumn<double>>(ListD{ -0.65, 0.0, -0.05 });
 		marker1->setrpmp(rpmp);
-		aApm = std::make_shared<FullMatrix<double>>(ListListD{
+		aApm = std::make_shared<FullMatrixDouble>(ListListD{
 			{1.0, 0.0, 0.0},
 			{0.0, 1.0, 0.0},
 			{0.0, 0.0, 1.0}
@@ -513,7 +513,7 @@ void CADSystem::runOndselPiston()
 		auto marker2 = CREATE<MarkerFrame>::With("/Assembly1/Part2/Marker2");
 		rpmp = std::make_shared<FullColumn<double>>(ListD{ 0.65, 0.0, -0.05 });
 		marker2->setrpmp(rpmp);
-		aApm = std::make_shared<FullMatrix<double>>(ListListD{
+		aApm = std::make_shared<FullMatrixDouble>(ListListD{
 			{1.0, 0.0, 0.0},
 			{0.0, 1.0, 0.0},
 			{0.0, 0.0, 1.0}
@@ -544,7 +544,7 @@ void CADSystem::runOndselPiston()
 		auto marker1 = CREATE<MarkerFrame>::With("/Assembly1/Part3/Marker1");
 		rpmp = std::make_shared<FullColumn<double>>(ListD{ -0.5, 0.0, 0.0 });
 		marker1->setrpmp(rpmp);
-		aApm = std::make_shared<FullMatrix<double>>(ListListD{
+		aApm = std::make_shared<FullMatrixDouble>(ListListD{
 			{0.0, 1.0, 0.0},
 			{1.0, 0.0, 0.0},
 			{0.0, 0.0, -1.0}
@@ -555,7 +555,7 @@ void CADSystem::runOndselPiston()
 		auto marker2 = CREATE<MarkerFrame>::With("/Assembly1/Part3/Marker2");
 		rpmp = std::make_shared<FullColumn<double>>(ListD{ 0.5, 0.0, 0.0 });
 		marker2->setrpmp(rpmp);
-		aApm = std::make_shared<FullMatrix<double>>(ListListD{
+		aApm = std::make_shared<FullMatrixDouble>(ListListD{
 			{0.0, 0.0, 1.0},
 			{1.0, 0.0, 0.0},
 			{0.0, 1.0, 0.0}
@@ -654,7 +654,7 @@ void CADSystem::runPiston()
 		auto marker2 = CREATE<MarkerFrame>::With("/Assembly1/Marker2");
 		rpmp = std::make_shared<FullColumn<double>>(ListD{ 0.0, 0.0, 0.0 });
 		marker2->setrpmp(rpmp);
-		aApm = std::make_shared<FullMatrix<double>>(ListListD{
+		aApm = std::make_shared<FullMatrixDouble>(ListListD{
 			{ 1, 0, 0 },
 			{ 0, 1, 0 },
 			{ 0, 0, 1 }
@@ -665,7 +665,7 @@ void CADSystem::runPiston()
 		auto marker1 = CREATE<MarkerFrame>::With("/Assembly1/Marker1");
 		rpmp = std::make_shared<FullColumn<double>>(ListD{ 0.0, 2.8817526385684, 0.0 });
 		marker1->setrpmp(rpmp);
-		aApm = std::make_shared<FullMatrix<double>>(ListListD{
+		aApm = std::make_shared<FullMatrixDouble>(ListListD{
 			{ 1, 0, 0 },
 			{ 0, 0, 1 },
 			{ 0, -1, 0 }
@@ -697,7 +697,7 @@ void CADSystem::runPiston()
 		auto marker1 = CREATE<MarkerFrame>::With("/Assembly1/Part1/Marker1");
 		rpmp = std::make_shared<FullColumn<double>>(ListD{ -0.38423368514246, -2.6661567755108e-17, 0.048029210642807 });
 		marker1->setrpmp(rpmp);
-		aApm = std::make_shared<FullMatrix<double>>(ListListD{
+		aApm = std::make_shared<FullMatrixDouble>(ListListD{
 			{ 1, 0, 0 },
 			{ 0, 1, 0 },
 			{ 0, 0, 1 }
@@ -708,7 +708,7 @@ void CADSystem::runPiston()
 		auto marker2 = CREATE<MarkerFrame>::With("/Assembly1/Part1/Marker2");
 		rpmp = std::make_shared<FullColumn<double>>(ListD{ 0.38423368514246, -2.6661567755108e-17, 0.048029210642807 });
 		marker2->setrpmp(rpmp);
-		aApm = std::make_shared<FullMatrix<double>>(ListListD{
+		aApm = std::make_shared<FullMatrixDouble>(ListListD{
 			{ 1, 0, 0 },
 			{ 0, 1, 0 },
 			{ 0, 0, 1 }
@@ -739,7 +739,7 @@ void CADSystem::runPiston()
 		auto marker1 = CREATE<MarkerFrame>::With("/Assembly1/Part2/Marker1");
 		rpmp = std::make_shared<FullColumn<double>>(ListD{ -0.6243797383565, 1.1997705489799e-16, -0.048029210642807 });
 		marker1->setrpmp(rpmp);
-		aApm = std::make_shared<FullMatrix<double>>(ListListD{
+		aApm = std::make_shared<FullMatrixDouble>(ListListD{
 			{1.0, 2.7755575615629e-16, 0.0},
 			{-2.7755575615629e-16, 1.0, 0.0},
 			{0.0, 0.0, 1.0}
@@ -750,7 +750,7 @@ void CADSystem::runPiston()
 		auto marker2 = CREATE<MarkerFrame>::With("/Assembly1/Part2/Marker2");
 		rpmp = std::make_shared<FullColumn<double>>(ListD{ 0.6243797383565, -2.1329254204087e-16, -0.048029210642807 });
 		marker2->setrpmp(rpmp);
-		aApm = std::make_shared<FullMatrix<double>>(ListListD{
+		aApm = std::make_shared<FullMatrixDouble>(ListListD{
 			{1.0, 2.4980018054066e-16, 2.2204460492503e-16},
 			{-2.4980018054066e-16, 1.0, 4.1633363423443e-17},
 			{-2.2204460492503e-16, -4.1633363423443e-17, 1.0}
@@ -781,7 +781,7 @@ void CADSystem::runPiston()
 		auto marker1 = CREATE<MarkerFrame>::With("/Assembly1/Part3/Marker1");
 		rpmp = std::make_shared<FullColumn<double>>(ListD{ -0.48029210642807, 7.6201599718927e-18, -2.816737703896e-17 });
 		marker1->setrpmp(rpmp);
-		aApm = std::make_shared<FullMatrix<double>>(ListListD{
+		aApm = std::make_shared<FullMatrixDouble>(ListListD{
 			{9.2444637330587e-33, 1.0, 2.2204460492503e-16},
 			{1.0, -9.2444637330587e-33, -1.0785207688569e-32},
 			{-1.0785207688569e-32, 2.2204460492503e-16, -1.0}
@@ -792,7 +792,7 @@ void CADSystem::runPiston()
 		auto marker2 = CREATE<MarkerFrame>::With("/Assembly1/Part3/Marker2");
 		rpmp = std::make_shared<FullColumn<double>>(ListD{ 0.48029210642807, 1.7618247880058e-17, 2.5155758471256e-17 });
 		marker2->setrpmp(rpmp);
-		aApm = std::make_shared<FullMatrix<double>>(ListListD{
+		aApm = std::make_shared<FullMatrixDouble>(ListListD{
 			{6.9388939039072e-18, -6.4146353042213e-50, 1.0},
 			{1.0, -6.9388939039072e-18, 6.9388939039072e-18},
 			{-6.9388939039072e-18, 1.0, -7.4837411882581e-50}

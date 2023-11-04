@@ -32,12 +32,12 @@ void EndFrameqct::initialize()
 	prmempt = std::make_shared<FullColumn<double>>(3);
 	pprmemptpt = std::make_shared<FullColumn<double>>(3);
 	aAme = FullMatrixDouble::identitysptr(3);
-	pAmept = std::make_shared<FullMatrix<double>>(3, 3);
-	ppAmeptpt = std::make_shared<FullMatrix<double>>(3, 3);
-	pprOeOpEpt = std::make_shared<FullMatrix<double>>(3, 4);
+	pAmept = std::make_shared<FullMatrixDouble>(3, 3);
+	ppAmeptpt = std::make_shared<FullMatrixDouble>(3, 3);
+	pprOeOpEpt = std::make_shared<FullMatrixDouble>(3, 4);
 	pprOeOptpt = std::make_shared<FullColumn<double>>(3);
 	ppAOepEpt = std::make_shared<FullColumn<FMatDsptr>>(4);
-	ppAOeptpt = std::make_shared<FullMatrix<double>>(3, 3);
+	ppAOeptpt = std::make_shared<FullMatrixDouble>(3, 3);
 }
 
 void EndFrameqct::initializeLocally()
@@ -142,12 +142,12 @@ void EndFrameqct::calcPostDynCorrectorIteration()
 	}
 	auto rpep = markerFrame->rpmp->plusFullColumn(markerFrame->aApm->timesFullColumn(rmem));
 	pprOeOpEpE = EulerParameters<double>::ppApEpEtimesColumn(rpep);
-	aAOe = aAOm->timesFullMatrix(aAme);
+	aAOe = toFMDsptr(aAOm->timesFullMatrix(aAme));
 	for (int i = 0; i < 4; i++)
 	{
-		pAOepE->at(i) = pAOmpE->at(i)->timesFullMatrix(aAme);
+		pAOepE->at(i) = toFMDsptr(pAOmpE->at(i)->timesFullMatrix(aAme));
 	}
-	auto aApe = markerFrame->aApm->timesFullMatrix(aAme);
+	auto aApe = toFMDsptr(markerFrame->aApm->timesFullMatrix(aAme));
 	ppAOepEpE = EulerParameters<double>::ppApEpEtimesMatrix(aApe);
 }
 
@@ -196,7 +196,7 @@ void EndFrameqct::preVelIC()
 	this->evalpAmept();
 	auto& aAOm = markerFrame->aAOm;
 	prOeOpt = aAOm->timesFullColumn(prmempt);
-	pAOept = aAOm->timesFullMatrix(pAmept);
+	pAOept = toFMDsptr(aAOm->timesFullMatrix(pAmept));
 }
 
 void EndFrameqct::postVelIC()
@@ -213,7 +213,7 @@ void EndFrameqct::postVelIC()
 	}
 	for (int i = 0; i < 4; i++)
 	{
-		ppAOepEpt->atiput(i, pAOmpE->at(i)->timesFullMatrix(pAmept));
+		ppAOepEpt->atiput(i, toFMDsptr(pAOmpE->at(i)->timesFullMatrix(pAmept)));
 	}
 }
 
@@ -224,7 +224,7 @@ FColDsptr EndFrameqct::pAjOept(int j)
 
 FMatDsptr EndFrameqct::ppAjOepETpt(int jj)
 {
-	auto answer = std::make_shared<FullMatrix<double>>(4, 3);
+	auto answer = std::make_shared<FullMatrixDouble>(4, 3);
 	for (int i = 0; i < 4; i++)
 	{
 		auto& answeri = answer->at(i);
@@ -326,7 +326,7 @@ void EndFrameqct::evalppAmeptpt()
 		phiThePsi->calc();
 		phiThePsiDot->calc();
 		phiThePsiDDot->calc();
-		ppAmeptpt = phiThePsiDDot->aAddot;
+		ppAmeptpt = toFMDsptr(phiThePsiDDot->aAddot);
 	}
 }
 
@@ -353,11 +353,11 @@ void EndFrameqct::preAccIC()
 	this->evalpAmept();
 	auto& aAOm = markerFrame->aAOm;
 	prOeOpt = aAOm->timesFullColumn(prmempt);
-	pAOept = aAOm->timesFullMatrix(pAmept);
+	pAOept = toFMDsptr(aAOm->timesFullMatrix(pAmept));
 	Item::preAccIC();
 	this->evalpprmemptpt();
 	this->evalppAmeptpt();
 	aAOm = markerFrame->aAOm;
 	pprOeOptpt = aAOm->timesFullColumn(pprmemptpt);
-	ppAOeptpt = aAOm->timesFullMatrix(ppAmeptpt);
+	ppAOeptpt = toFMDsptr(aAOm->timesFullMatrix(ppAmeptpt));
 }

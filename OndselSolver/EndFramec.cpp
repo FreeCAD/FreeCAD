@@ -24,7 +24,7 @@ EndFramec::EndFramec(const char* str) : CartesianFrame(str) {
 
 FMatDsptr MbD::EndFramec::aAeO()
 {
-	return aAOe->transpose();
+	return toFMDsptr(aAOe->transpose());
 }
 
 System* EndFramec::root()

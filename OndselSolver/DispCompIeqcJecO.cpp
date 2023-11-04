@@ -23,7 +23,7 @@ void DispCompIeqcJecO::initializeGlobally()
 {
 	priIeJeOpXI = std::make_shared<FullRow<double>>(3, 0.0);
 	priIeJeOpXI->at(axis) = -1.0;
-	ppriIeJeOpEIpEI = std::static_pointer_cast<EndFrameqc>(frmI)->ppriOeOpEpE(axis)->negated();
+	ppriIeJeOpEIpEI = toFMDsptr(std::static_pointer_cast<EndFrameqc>(frmI)->ppriOeOpEpE(axis)->negated());
 }
 
 FMatDsptr MbD::DispCompIeqcJecO::ppvaluepEIpEI()

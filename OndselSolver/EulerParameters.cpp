@@ -128,14 +128,14 @@ inline FMatFMatDsptr EulerParameters<double>::ppApEpEtimesMatrix(FMatDsptr mat)
     FRowDsptr zero = std::make_shared<FullRow<double>>(3, 0.0);
     auto mat00 = std::make_shared<FullMatrixDouble>(ListFRD{ a2m0, m2m1, m2m2 });
     auto mat01 = std::make_shared<FullMatrixDouble>(ListFRD{ a2m1, a2m0, zero });
-    auto mat02 = std::make_shared<FullMatrix<double>>(ListFRD{ a2m2, zero, a2m0 });
-    auto mat03 = std::make_shared<FullMatrix<double>>(ListFRD{ zero, m2m2, a2m1 });
-    auto mat11 = std::make_shared<FullMatrix<double>>(ListFRD{ m2m0, a2m1, m2m2 });
-    auto mat12 = std::make_shared<FullMatrix<double>>(ListFRD{ zero, a2m2, a2m1 });
-    auto mat13 = std::make_shared<FullMatrix<double>>(ListFRD{ a2m2, zero, m2m0 });
-    auto mat22 = std::make_shared<FullMatrix<double>>(ListFRD{ m2m0, m2m1, a2m2 });
-    auto mat23 = std::make_shared<FullMatrix<double>>(ListFRD{ m2m1, a2m0, zero });
-    auto mat33 = std::make_shared<FullMatrix<double>>(ListFRD{ a2m0, a2m1, a2m2 });
+    auto mat02 = std::make_shared<FullMatrixDouble>(ListFRD{ a2m2, zero, a2m0 });
+    auto mat03 = std::make_shared<FullMatrixDouble>(ListFRD{ zero, m2m2, a2m1 });
+    auto mat11 = std::make_shared<FullMatrixDouble>(ListFRD{ m2m0, a2m1, m2m2 });
+    auto mat12 = std::make_shared<FullMatrixDouble>(ListFRD{ zero, a2m2, a2m1 });
+    auto mat13 = std::make_shared<FullMatrixDouble>(ListFRD{ a2m2, zero, m2m0 });
+    auto mat22 = std::make_shared<FullMatrixDouble>(ListFRD{ m2m0, m2m1, a2m2 });
+    auto mat23 = std::make_shared<FullMatrixDouble>(ListFRD{ m2m1, a2m0, zero });
+    auto mat33 = std::make_shared<FullMatrixDouble>(ListFRD{ a2m0, a2m1, a2m2 });
     auto answer = std::make_shared<FullMatrix<FMatDsptr>>(4, 4);
     auto& row0 = answer->at(0);
     row0->at(0) = mat00;
@@ -157,19 +157,19 @@ inline FMatFMatDsptr EulerParameters<double>::ppApEpEtimesMatrix(FMatDsptr mat)
     row3->at(1) = mat13;
     row3->at(2) = mat23;
     row3->at(3) = mat33;
-    return answer;
+    return toFMFMDsptr(answer);
 }
 
 template<>
 inline void EulerParameters<double>::initialize()
 {
-    aA = FullMatrix<double>::identitysptr(3);
-    aB = std::make_shared<FullMatrix<double>>(3, 4);
-    aC = std::make_shared<FullMatrix<double>>(3, 4);
+    aA = FullMatrixDouble::identitysptr(3);
+    aB = std::make_shared<FullMatrixDouble>(3, 4);
+    aC = std::make_shared<FullMatrixDouble>(3, 4);
     pApE = std::make_shared<FullColumn<FMatDsptr>>(4);
     for (int i = 0; i < 4; i++)
     {
-        pApE->at(i) = std::make_shared<FullMatrix<double>>(3, 3);
+        pApE->at(i) = std::make_shared<FullMatrixDouble>(3, 3);
     }
 }
 template<typename T>
