@@ -4499,9 +4499,7 @@ void CmdSketcherConstrainDistance::applyConstraint(std::vector<SelIdPair>& selSe
         case 2:// {SelEdge}
         case 3:// {SelExternalEdge}
         {
-            GeoId1 = GeoId2 = selSeq.at(0).GeoId;
-            PosId1 = Sketcher::PointPos::start;
-            PosId2 = Sketcher::PointPos::end;
+            GeoId1 = selSeq.at(0).GeoId;
 
             arebothpointsorsegmentsfixed = isPointOrSegmentFixed(Obj, GeoId1);
 
@@ -4549,7 +4547,6 @@ void CmdSketcherConstrainDistance::applyConstraint(std::vector<SelIdPair>& selSe
             GeoId1 = selSeq.at(0).GeoId;
             GeoId2 = selSeq.at(1).GeoId;
             PosId1 = selSeq.at(0).PosId;
-            PosId2 = selSeq.at(1).PosId;
 
             Base::Vector3d pnt = Obj->getPoint(GeoId1, PosId1);
             const Part::Geometry* geom = Obj->getGeometry(GeoId2);

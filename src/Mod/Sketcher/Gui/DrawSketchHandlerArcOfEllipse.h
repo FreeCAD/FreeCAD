@@ -298,10 +298,6 @@ public:
                 minAxisPoint = centerPoint + minAxisDir;
                 endAngle += M_PI / 2;
                 startAngle += M_PI / 2;
-                phi -= M_PI / 2;
-                double t = a;
-                a = b;
-                b = t;  // swap a,b
             }
 
             int currentgeoid = getHighestCurveIndex();

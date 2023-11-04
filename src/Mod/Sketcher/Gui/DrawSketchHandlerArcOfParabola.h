@@ -221,12 +221,9 @@ public:
             double ustartpoint = (cos(phi) * (startingPoint.y - axisPoint.y)
                                   - (startingPoint.x - axisPoint.x) * sin(phi));
 
-            double uendpoint =
-                (cos(phi) * (endPoint.y - axisPoint.y) - (endPoint.x - axisPoint.x) * sin(phi));
-
             double startAngle = ustartpoint;
 
-            double endAngle = uendpoint;
+            double endAngle;
 
             bool isOriginalArcCCW = true;
 
