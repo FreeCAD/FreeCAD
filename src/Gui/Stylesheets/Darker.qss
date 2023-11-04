@@ -2681,3 +2681,23 @@ Gui--OverlayToolButton[objectName="OBTN Float"]:hover {
 Gui--OverlayToolButton[objectName="OBTN Float"]:checked {
   image: url(qss:overlay/float_lighter.svg);
 }
+
+/*==================================================================================================
+Forming windows below are the border settings. See also https://forum.freecad.org/viewtopic.php?p=439797#p439797
+==================================================================================================*/
+QMdiSubWindow {
+  border:2px solid #333333;
+  border-radius: 2px;
+  border-top-right-radius: 7px;
+  border-top-left-radius: 7px;
+  background-color: #333333;
+}
+
+QMdiSubWindow:hover {
+  border:2px solid #696968;
+}
+
+QMdiSubWindow:active {
+  border:2px solid @ThemeAccentColor1;
+}
+
