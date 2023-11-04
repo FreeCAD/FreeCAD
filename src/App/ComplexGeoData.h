@@ -361,6 +361,7 @@ public:
 protected:
 
     void restoreStream(std::istream & stream, std::size_t count);
+    void readElements(Base::XMLReader& reader, size_t count);
 
     /// from local to outside
     inline Base::Vector3d transformToOutside(const Base::Vector3f& vec) const

@@ -470,7 +470,12 @@ void ComplexGeoData::Restore(Base::XMLReader& reader)
         reader.endCharStream();
         return;
     }
+    readElements(reader, count);
+    reader.readEndElement("ElementMap");
+}
 
+void ComplexGeoData::readElements(Base::XMLReader& reader, size_t count)
+{
     size_t invalid_count = 0;
     bool warned = false;
 
@@ -514,7 +519,6 @@ void ComplexGeoData::Restore(Base::XMLReader& reader)
     if (invalid_count != 0) {
         FC_ERR("Found " << invalid_count << " invalid string id");  // NOLINT
     }
-    reader.readEndElement("ElementMap");
 }
 
 void ComplexGeoData::restoreStream(std::istream& stream, std::size_t count)
@@ -531,13 +535,13 @@ void ComplexGeoData::restoreStream(std::istream& stream, std::size_t count)
     try {
         for (size_t i = 0; i < count; ++i) {
             ElementIDRefs sids;
-            std::size_t scount = 0;
-            if (!(stream >> value >> key >> scount)) {
+            std::size_t sCount = 0;
+            if (!(stream >> value >> key >> sCount)) {
                 // NOLINTNEXTLINE
                 FC_THROWM(Base::RuntimeError, "Failed to restore element map " << _persistenceName);
             }
-            sids.reserve(static_cast<int>(scount));
-            for (std::size_t j = 0; j < scount; ++j) {
+            sids.reserve(static_cast<int>(sCount));
+            for (std::size_t j = 0; j < sCount; ++j) {
                 long id = 0;
                 if (!(stream >> id)) {
                     // NOLINTNEXTLINE
@@ -554,7 +558,7 @@ void ComplexGeoData::restoreStream(std::istream& stream, std::size_t count)
                     }
                 }
             }
-            if (scount != 0 && !Hasher) {
+            if (sCount != 0 && !Hasher) {
                 sids.clear();
                 if (!warned) {
                     warned = true;
