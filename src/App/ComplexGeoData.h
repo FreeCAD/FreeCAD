@@ -280,6 +280,19 @@ public:
     virtual void flushElementMap() const;
     //@}
 
+    /** @name Save/restore */
+    //@{
+    void Save (Base::Writer &writer) const;
+    void Restore(Base::XMLReader &reader);
+    void SaveDocFile(Base::Writer &writer) const;
+    void RestoreDocFile(Base::Reader &reader);
+    unsigned int getMemSize (void) const;
+    void setPersistenceFileName(const char *name) const;
+    virtual void beforeSave() const;
+    bool isRestoreFailed() const { return _restoreFailed; }
+    void resetRestoreFailure() const { _restoreFailed = true; }
+    //@}
+
 protected:
 
     /// from local to outside
@@ -347,6 +360,8 @@ public:
 
 protected:
 
+    void restoreStream(std::istream &s, std::size_t count);
+
     /// from local to outside
     inline Base::Vector3d transformToOutside(const Base::Vector3f& vec) const
     {
@@ -370,6 +385,10 @@ protected:
 
 private:
     ElementMapPtr _elementMap;
+
+protected:
+    mutable std::string _PersistenceName;
+    mutable bool _restoreFailed = false;
 };
 
 } //namespace App

@@ -38,9 +38,12 @@
 
 #include <Base/BoundBox.h>
 #include <Base/Placement.h>
+#include <Base/Reader.h>
 #include <Base/Rotation.h>
+#include <Base/Writer.h>
 
 #include <boost/iostreams/device/array.hpp>
+#include <boost/iostreams/stream.hpp>
 
 
 using namespace Data;
@@ -385,5 +388,209 @@ char ComplexGeoData::elementType(const char *name) const {
     }
     return 0;
 }
+
+void ComplexGeoData::setPersistenceFileName(const char *filename) const {
+    if(!filename)
+        filename = "";
+    _PersistenceName = filename;
+}
+
+void ComplexGeoData::Save(Base::Writer &writer) const {
+
+    if(!getElementMapSize()) {
+        writer.Stream() << writer.ind() << "<ElementMap/>\n";
+        return;
+    }
+
+    // Store some dummy map entry to trigger recompute in older version.
+    writer.Stream() << writer.ind()
+                    << "<ElementMap new=\"1\" count=\"1\">"
+                    << "<Element key=\"Dummy\" value=\"Dummy\"/>"
+                    << "</ElementMap>\n";
+
+    // New layout of element map, so we use new xml tag, ElementMap2
+    writer.Stream() << writer.ind() << "<ElementMap2";
+
+    if(_PersistenceName.size()) {
+        writer.Stream() << " file=\""
+                        << writer.addFile((_PersistenceName+".txt").c_str(),this)
+                        << "\"/>\n";
+        return;
+    }
+    writer.Stream() << " count=\"" << _elementMap->size() << "\">\n";
+    _elementMap->save(writer.beginCharStream(Base::CharStreamFormat::Raw) << '\n');
+    writer.endCharStream() << '\n';
+    writer.Stream() << writer.ind() << "</ElementMap2>\n" ;
+}
+
+void ComplexGeoData::Restore(Base::XMLReader &reader) {
+    resetElementMap();
+
+    reader.readElement("ElementMap");
+    bool newtag = false;
+    if (reader.hasAttribute("new") && reader.getAttributeAsInteger("new") > 0) {
+        reader.readEndElement("ElementMap");
+        reader.readElement("ElementMap2");
+        newtag = true;
+    }
+
+    const char *file = "";
+    if (reader.hasAttribute("file")) {
+            reader.getAttribute("file");
+    }
+    if(*file) {
+        reader.addFile(file,this);
+        return;
+    }
+
+    std::size_t count = 0;
+    if (reader.hasAttribute("count")) {
+        reader.getAttributeAsUnsigned("count");
+    }
+    if(!count)
+        return;
+
+    if (newtag) {
+        resetElementMap(std::make_shared<ElementMap>());
+        _elementMap = _elementMap->restore(Hasher, reader.beginCharStream(Base::CharStreamFormat::Raw));
+        reader.endCharStream();
+        reader.readEndElement("ElementMap2");
+        return;
+    }
+
+    if(reader.FileVersion>1) {
+        restoreStream(reader.beginCharStream(Base::CharStreamFormat::Raw), count);
+        reader.endCharStream();
+        return;
+    }
+
+    size_t invalid_count = 0;
+    bool warned = false;
+
+    const auto & types = getElementTypes();
+
+    for(size_t i=0;i<count;++i) {
+        reader.readElement("Element");
+        ElementIDRefs sids;
+        if(reader.hasAttribute("sid")) {
+            if(!Hasher) {
+                if(!warned) {
+                    warned = true;
+                    FC_ERR("missing hasher");
+                }
+            } else {
+                const char *attr = reader.getAttribute("sid");
+                bio::stream<bio::array_source> iss(attr, std::strlen(attr));
+                long id;
+                while((iss >> id)) {
+                    if (id == 0)
+                        continue;
+                    auto sid = Hasher->getID(id);
+                    if(!sid)
+                        ++invalid_count;
+                    else
+                        sids.push_back(sid);
+                    char sep;
+                    iss >> sep;
+                }
+            }
+        }
+        _elementMap->setElementName(IndexedName(reader.getAttribute("value"), types),
+                                    MappedName(reader.getAttribute("key")),
+                                    Tag,
+                                    &sids);
+    }
+    if(invalid_count)
+        FC_ERR("Found " << invalid_count << " invalid string id");
+    reader.readEndElement("ElementMap");
+}
+
+void ComplexGeoData::restoreStream(std::istream &s, std::size_t count) {
+    resetElementMap();
+
+    size_t invalid_count = 0;
+    std::string key,value,sid;
+    bool warned = false;
+
+    const auto & types = getElementTypes();
+    try {
+        for(size_t i=0;i<count;++i) {
+            ElementIDRefs sids;
+            std::size_t scount;
+            if(!(s >> value >> key >> scount))
+                FC_THROWM(Base::RuntimeError,
+                          "Failed to restore element map " << _PersistenceName);
+            sids.reserve(scount);
+            for(std::size_t j=0;j<scount;++j) {
+                long id;
+                if(!(s >> id))
+                    FC_THROWM(Base::RuntimeError,
+                              "Failed to restore element map " << _PersistenceName);
+                if (Hasher) {
+                    auto sid = Hasher->getID(id);
+                    if(!sid)
+                        ++invalid_count;
+                    else
+                        sids.push_back(sid);
+                }
+            }
+            if(scount && !Hasher) {
+                sids.clear();
+                if(!warned) {
+                    warned = true;
+                    FC_ERR("missing hasher");
+                }
+            }
+            _elementMap->setElementName(IndexedName(value.c_str(), types), MappedName(key), Tag, &sids);
+        }
+    } catch (Base::Exception &e) {
+        e.ReportException();
+        _restoreFailed = true;
+        _elementMap.reset();
+    }
+    if(invalid_count)
+        FC_ERR("Found " << invalid_count << " invalid string id");
+}
+
+void ComplexGeoData::SaveDocFile(Base::Writer &writer) const {
+    flushElementMap();
+    if (_elementMap) {
+        writer.Stream() << "BeginElementMap v1\n";
+        _elementMap->save(writer.Stream());
+    }
+}
+
+void ComplexGeoData::RestoreDocFile(Base::Reader &reader) {
+    std::string marker, ver;
+    reader >> marker;
+    if (boost::equals(marker, "BeginElementMap")) {
+        resetElementMap();
+        reader >> ver;
+        if (ver != "v1")
+            FC_WARN("Unknown element map format");
+        else {
+            resetElementMap(std::make_shared<ElementMap>());
+            _elementMap = _elementMap->restore(Hasher, reader);
+            return;
+        }
+    }
+    std::size_t count = atoi(marker.c_str());
+    restoreStream(reader,count);
+}
+
+unsigned int ComplexGeoData::getMemSize(void) const {
+    flushElementMap();
+    if(_elementMap)
+        return _elementMap->size()*10;
+    return 0;
+}
+
+void ComplexGeoData::beforeSave() const
+{
+    flushElementMap();
+    if (this->_elementMap)
+        this->_elementMap->beforeSave(Hasher);
+}
+
 
 // NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic)
