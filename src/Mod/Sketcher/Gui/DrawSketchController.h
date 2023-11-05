@@ -530,13 +530,27 @@ protected:
         if (index >= onViewParameters.size()) {
             index = 0;
         }
+
         while (index < onViewParameters.size()) {
             if (isOnViewParameterOfCurrentMode(index)) {
                 setFocusToOnViewParameter(index);
-                break;
+                return;
             }
             index++;
         }
+        // There is no more onViewParameter after onViewIndexWithFocus + 1 in this mode
+
+        // So we go back to start.
+        index = 0;
+        while (index < onViewParameters.size()) {
+            if (isOnViewParameterOfCurrentMode(index)) {
+                setFocusToOnViewParameter(index);
+                return;
+            }
+            index++;
+        }
+
+        // At that point if no onViewParameter is found, there is none.
     }
 
     /** Returns whether the provided on-view parameter index belongs to the current state of the
