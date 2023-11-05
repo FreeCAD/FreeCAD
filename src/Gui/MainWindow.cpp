@@ -1695,35 +1695,42 @@ void MainWindow::loadWindowSettings()
     QSettings config(vendor, application);
 
     QRect rect = QApplication::primaryScreen()->availableGeometry();
+    int maxHeight = rect.height();
+    int maxWidth = rect.width();
 
     config.beginGroup(qtver);
     QPoint pos = config.value(QStringLiteral("Position"), this->pos()).toPoint();
-    QSize size = config.value(QStringLiteral("Size"), rect.size()).toSize();
+    maxWidth -= pos.x();
+    maxHeight -= pos.y();
+    QSize size = config.value(QStringLiteral("Size"), QSize(maxWidth, maxHeight)).toSize();
     bool max = config.value(QStringLiteral("Maximized"), false).toBool();
     bool showStatusBar = config.value(QStringLiteral("StatusBar"), true).toBool();
     QByteArray windowState = config.value(QStringLiteral("MainWindowState")).toByteArray();
     config.endGroup();
 
+
     std::string geometry = d->hGrp->GetASCII("Geometry");
     std::istringstream iss(geometry);
     int x,y,w,h;
     if (iss >> x >> y >> w >> h) {
-        pos = QPoint(x,y);
-        size = QSize(w,h);
+        pos = QPoint(x, y);
+        size = QSize(w, h);
     }
+
     max = d->hGrp->GetBool("Maximized", max);
     showStatusBar = d->hGrp->GetBool("StatusBar", showStatusBar);
     std::string wstate = d->hGrp->GetASCII("MainWindowState");
-    if (wstate.size())
+    if (!wstate.empty()) {
         windowState = QByteArray::fromBase64(wstate.c_str());
+    }
 
-    x = std::max<int>(rect.left(), std::min<int>(rect.left()+rect.width()/2, pos.x()));
-    y = std::max<int>(rect.top(), std::min<int>(rect.top()+rect.height()/2, pos.y()));
-    w = std::min<int>(rect.width(), size.width());
-    h = std::min<int>(rect.height(), size.height());
-
-    this->move(x, y);
-    this->resize(w, h);
+    resize(size);
+    int x1{},x2{},y1{},y2{};
+    // make sure that the main window is not totally out of the visible rectangle
+    rect.getCoords(&x1, &y1, &x2, &y2);
+    pos.setX(qMin(qMax(pos.x(),x1-this->width()+30),x2-30));
+    pos.setY(qMin(qMax(pos.y(),y1-10),y2-10));
+    this->move(pos);
 
     Base::StateLocker guard(d->_restoring);
 
