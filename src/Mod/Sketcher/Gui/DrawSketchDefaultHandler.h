@@ -437,6 +437,19 @@ public:
             }
         }
     }
+
+    void pressRightButton(Base::Vector2d onSketchPos) override
+    {
+        Q_UNUSED(onSketchPos);
+
+        if (this->isFirstState()) {
+            quit();
+        }
+        else {
+            handleContinuousMode();
+        }
+    }
+
     //@}
 
 

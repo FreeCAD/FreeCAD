@@ -1169,8 +1169,8 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
         if (!pressed) {
             switch (Mode) {
                 case STATUS_SKETCH_UseHandler:
-                    // make the handler quit
-                    sketchHandler->quit();
+                    // delegate to handler whether to quit or do otherwise
+                    sketchHandler->pressRightButton(Base::Vector2d(x, y));
                     return true;
                 case STATUS_NONE: {
                     // A right click shouldn't change the Edit Mode

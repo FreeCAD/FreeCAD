@@ -378,6 +378,13 @@ void DrawSketchHandler::registerPressedKey(bool pressed, int key)
     }
 }
 
+void DrawSketchHandler::pressRightButton(Base::Vector2d /*onSketchPos*/)
+{
+    // the default behaviour is to quit - specific handler categories may
+    // override this behaviour, for example to implement a continuous mode
+    quit();
+}
+
 //**************************************************************************
 // Helpers
 
