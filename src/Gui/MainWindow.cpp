@@ -261,7 +261,6 @@ struct MainWindowP
     int actionUpdateDelay = 0;
     QMap<QString, QPointer<UrlHandler> > urlHandler;
     std::string hiddenDockWindows;
-    QPointer<QScreen> screen;
     boost::signals2::scoped_connection connParam;
     ParameterGrp::handle hGrp;
     bool _restoring = false;
@@ -1695,8 +1694,7 @@ void MainWindow::loadWindowSettings()
     QString qtver = QStringLiteral("Qt%1.%2").arg(major).arg(minor);
     QSettings config(vendor, application);
 
-    QRect rect = d->screen ? d->screen->availableGeometry()
-                           : QApplication::primaryScreen()->availableGeometry();
+    QRect rect = QApplication::primaryScreen()->availableGeometry();
 
     config.beginGroup(qtver);
     QPoint pos = config.value(QStringLiteral("Position"), this->pos()).toPoint();
@@ -1836,11 +1834,6 @@ void MainWindow::startSplasher()
             }
 
             d->splashscreen->show();
-#if QT_VERSION >= QT_VERSION_CHECK(5,14,0)
-            d->screen = d->splashscreen->screen();
-#else
-            d->screen = QApplication::primaryScreen();
-#endif
         }
         else {
             d->splashscreen = nullptr;
