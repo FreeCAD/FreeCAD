@@ -42,7 +42,6 @@ namespace MbD {
 			this->initialize();
 			this->calc();
 		}
-
 		static std::shared_ptr<FullMatrixFullColumnDouble> ppApEpEtimesColumn(FColDsptr col);
 		static FMatDsptr pCpEtimesColumn(FColDsptr col);
 		static FMatDsptr pCTpEtimesColumn(FColDsptr col);
@@ -60,4 +59,5 @@ namespace MbD {
 		FMatDsptr aC;
 		FColFMatDsptr pApE;
 	};
+    template class EulerParameters<double>;
 }

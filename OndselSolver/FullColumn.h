@@ -48,6 +48,10 @@ namespace MbD {
 
 		std::ostream& printOn(std::ostream& s) const override;
 	};
-    template class FullVector<double>;
+    // instantiate on purpose:
+    template class FullColumn<double>;
+    template class FullColumn<int>;
+//    template class FullColumn<std::shared_ptr<MbD::FullMatrixDouble>>;
+//    template class FullColumn<std::shared_ptr<MbD::Symbolic>>;
 }
 

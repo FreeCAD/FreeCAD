@@ -13,7 +13,7 @@
 #include "FullMatrix.ref.h"
 #include "DiagonalMatrix.ref.h"
 #include "Array.h"
-//#include "FullColumn.h"
+#include "FullColumn.h"
 //#include "FullRow.h"
 // #include "FullMatrix.h"
 
@@ -45,5 +45,6 @@ namespace MbD {
 		std::ostream& printOn(std::ostream& s) const override;
 
 	};
+    template class DiagonalMatrix<double>;
 }
 

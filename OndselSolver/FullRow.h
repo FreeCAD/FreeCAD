@@ -147,6 +147,7 @@ namespace MbD {
 		}
 		s << "}";
 		return s;
-	}
+	};
+    // TODO: template class FullRow<double>;
 }
 
