@@ -241,8 +241,6 @@ public:
     /** function that is called by the handler when the construction mode changed */
     void onConstructionMethodChanged()
     {
-        nOnViewParameter = OnViewParametersT::size(handler->constructionMethod());
-
         doConstructionMethodChanged();  // NVI
 
         handler->updateCursor();
@@ -560,6 +558,7 @@ protected:
     /** Resets the on-view parameter controls */
     void resetOnViewParameters()
     {
+        nOnViewParameter = OnViewParametersT::size(handler->constructionMethod());
         initNOnViewParameters(nOnViewParameter);
         onViewIndexWithFocus = 0;
 
