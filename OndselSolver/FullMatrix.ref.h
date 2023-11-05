@@ -1,6 +1,7 @@
 #pragma once
 
 #include "FullColumn.ref.h"
+#include <algorithm>
 
 namespace MbD {
     class FullMatrixDouble;

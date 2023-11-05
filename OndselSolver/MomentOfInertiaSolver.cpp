@@ -188,7 +188,7 @@ void MbD::MomentOfInertiaSolver::calcJoo()
 	auto term22 = rPoPtilde->timesFullMatrix(rocmPtilde);
 	auto term23 = term22->transpose();
 	auto term2 = term21->plusFullMatrix(term22)->plusFullMatrix(term23)->times(m);
-	aJoo = toFMDsptr(aAPo->transposeTimesFullMatrix(term1->plusFullMatrix(term2))->timesFullMatrix(aAPo));
+	aJoo = aAPo->transposeTimesFullMatrix(term1->plusFullMatrix(term2))->timesFullMatrix(aAPo);
 	aJoo->symLowerWithUpper();
 	aJoo->conditionSelfWithTol(aJoo->maxMagnitude() * 1.0e-6);
 }
@@ -198,7 +198,7 @@ void MbD::MomentOfInertiaSolver::calcJpp()
 	//"aJcmP = aJPP + mass*(rPcmPTilde*rPcmPTilde)"
 
 	auto rPcmPtilde = FullMatrixDouble::tildeMatrix(rPcmP);
-	aJcmP = toFMDsptr(aJPP->plusFullMatrix(rPcmPtilde->timesFullMatrix(rPcmPtilde)->times(m)));
+	aJcmP = aJPP->plusFullMatrix(rPcmPtilde->timesFullMatrix(rPcmPtilde)->times(m));
 	aJcmP->symLowerWithUpper();
 	aJcmP->conditionSelfWithTol(aJcmP->maxMagnitude() * 1.0e-6);
 	if (aJcmP->isDiagonal()) {
@@ -249,7 +249,7 @@ FColDsptr MbD::MomentOfInertiaSolver::eigenvectorFor(double lam)
 	//"[aJcmP] - lam[I]."
 
 	double e0, e1, e2;
-	aJcmPcopy = toFMDsptr(aJcmP->copy());
+	aJcmPcopy = aJcmP->copy();
 	colOrder = std::make_shared<FullRow<int>>(3);
 	auto eigenvector = std::make_shared<FullColumn<double>>(3);
 	for (int i = 0; i < 3; i++)

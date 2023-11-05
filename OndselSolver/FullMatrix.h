@@ -17,103 +17,46 @@
 #include "DiagonalMatrix.ref.h"
 #include "EulerParameters.ref.h"
 #include "RowTypeMatrix.h"
-#include "FullRow.h" // exception to normal include pattern
+#include "FullRow.h" // now that refs are resolved, go do the full systems
+//#include "FullColumn.h"
+//#include "DiagonalMatrix.h"
+//#include "EulerParameters.h"
 
 namespace MbD {
-    template<typename T>
-	class FullMatrixTemplate : public RowTypeMatrix<FRowsptr<T>>
-	{
-	public:
-		FullMatrixTemplate() = default;
-		explicit FullMatrixTemplate(int m) : RowTypeMatrix<FRowsptr<T>>(m)
-		{
-		}
-		FullMatrixTemplate(int m, int n) {
-			for (int i = 0; i < m; i++) {
-				auto row = std::make_shared<FullRow<T>>(n);
-				this->push_back(row);
-			}
-		}
-		FullMatrixTemplate(std::initializer_list<FRowsptr<T>> listOfRows) {
-			for (auto& row : listOfRows)
-			{
-				this->push_back(row);
-			}
-		}
-		FullMatrixTemplate(std::initializer_list<std::initializer_list<T>> list2D) {
-			for (auto& rowList : list2D)
-			{
-				auto row = std::make_shared<FullRow<T>>(rowList);
-				this->push_back(row);
-			}
-		}
-//		static std::shared_ptr<FullMatrixTemplate<T>> rotatex(T angle);
-//		static std::shared_ptr<FullMatrixTemplate<T>> rotatey(T angle);
-//		static std::shared_ptr<FullMatrixTemplate<T>> rotatez(T angle);
-//		static std::shared_ptr<FullMatrixTemplate<T>> rotatexrotDot(T angle, T angledot);
-//		static std::shared_ptr<FullMatrixTemplate<T>> rotateyrotDot(T angle, T angledot);
-//		static std::shared_ptr<FullMatrixTemplate<T>> rotatezrotDot(T angle, T angledot);
-		static std::shared_ptr<FullMatrixTemplate<T>> rotatexrotDotrotDDot(T angle, T angleDot, T angleDDot);
-		static std::shared_ptr<FullMatrixTemplate<T>> rotateyrotDotrotDDot(T angle, T angleDot, T angleDDot);
-		static std::shared_ptr<FullMatrixTemplate<T>> rotatezrotDotrotDDot(T angle, T angleDot, T angleDDot);
-		static std::shared_ptr<FullMatrixTemplate<T>> identitysptr(int n);
-		static std::shared_ptr<FullMatrixTemplate<T>> tildeMatrix(FColDsptr col);
-
-        virtual void identity();
-		FColsptr<T> column(int j);
-		FColsptr<T> timesFullColumn(FColsptr<T> fullCol);
-		FColsptr<T> timesFullColumn(FullColumn<T>* fullCol);
-		// std::shared_ptr<FullMatrixTemplate<T>> timesFullMatrix(std::shared_ptr<FullMatrixTemplate<T>> fullMat);
-
-        virtual std::shared_ptr<FullMatrixTemplate<T>> timesTransposeFullMatrix(std::shared_ptr<FullMatrixTemplate<T>> fullMat);
-
-        std::shared_ptr<FullMatrixTemplate<T>> times(T a);
-		// std::shared_ptr<FullMatrixTemplate<T>> transposeTimesFullMatrix(std::shared_ptr<FullMatrixTemplate<T>> fullMat);
-		// std::shared_ptr<FullMatrixTemplate<T>> plusFullMatrix(std::shared_ptr<FullMatrixTemplate<T>> fullMat);
-		std::shared_ptr<FullMatrixTemplate<T>> minusFullMatrix(std::shared_ptr<FullMatrixTemplate<T>> fullMat);
-		// std::shared_ptr<FullMatrixTemplate<T>> transpose();
-//		std::shared_ptr<FullMatrixTemplate<T>> negated();
-		void symLowerWithUpper();
-		void atiput(int i, FRowsptr<T> fullRow) override;
-		void atijput(int i, int j, T value);
-		void atijputFullColumn(int i, int j, FColsptr<T> fullCol);
-		void atijplusFullRow(int i, int j, FRowsptr<T> fullRow);
-		void atijplusNumber(int i, int j, T value);
-		void atijminusNumber(int i, int j, T value);
-		double sumOfSquares() override;
-		void zeroSelf() override;
-//		std::shared_ptr<FullMatrixTemplate<T>> copy();
-		FullMatrixTemplate<T> operator+(const FullMatrixTemplate<T> fullMat);
-		FColsptr<T> transposeTimesFullColumn(const FColsptr<T> fullCol);
-		void magnifySelf(T factor);
-		std::shared_ptr<EulerParameters<T>> asEulerParameters();
-		T trace();
-		double maxMagnitude() override;
-		FColsptr<T> bryantAngles();
-		bool isDiagonal();
-		bool isDiagonalToWithin(double ratio);
-		std::shared_ptr<DiagonalMatrix<T>> asDiagonalMatrix();
-		void conditionSelfWithTol(double tol);
-
-		std::ostream& printOn(std::ostream& s) const override;
-	};
-
     //
-    // FULL MATRIX DOUBLE instantiation
+    // FULL MATRIX DOUBLE
     //
-    class FullMatrixDouble : public FullMatrixTemplate<double> {
+    class FullMatrixDouble : public RowTypeMatrix<FRowsptr<double>> {
     public:
-        FullMatrixDouble() : FullMatrixTemplate<double>() {};
-        explicit FullMatrixDouble(int m) : FullMatrixTemplate<double>(m) {};
-        FullMatrixDouble(int m, int n) : FullMatrixTemplate<double>(m, n) {};
-        FullMatrixDouble(std::initializer_list<std::initializer_list<double>> list2D) : FullMatrixTemplate<double>(list2D) {}
-        FullMatrixDouble(std::initializer_list<FRowsptr<double>> listOfRows) : FullMatrixTemplate<double>(listOfRows) {};
+        FullMatrixDouble() = default;
+        explicit FullMatrixDouble(int m) : RowTypeMatrix<FRowsptr<double>>(m)
+        {
+        }
+        FullMatrixDouble(int m, int n) {
+            for (int i = 0; i < m; i++) {
+                auto row = std::make_shared<FullRow<double>>(n);
+                this->push_back(row);
+            }
+        }
+        FullMatrixDouble(std::initializer_list<FRowsptr<double>> listOfRows) {
+            for (auto& row : listOfRows)
+            {
+                this->push_back(row);
+            }
+        }
+        FullMatrixDouble(std::initializer_list<std::initializer_list<double>> list2D) {
+            for (auto& rowList : list2D)
+            {
+                auto row = std::make_shared<FullRow<double>>(rowList);
+                this->push_back(row);
+            }
+        }
 
         std::shared_ptr<FullMatrixDouble> times(double a);
         std::shared_ptr<FullMatrixDouble> timesTransposeFullMatrix(std::shared_ptr<FullMatrixDouble> fullMat);
-        void identity() override;
+        void identity();
         static std::shared_ptr<MbD::FullMatrixDouble> identitysptr(int n);
-        double sumOfSquares();
+        double sumOfSquares() override;
         std::shared_ptr<FullMatrixDouble> transposeTimesFullMatrix(std::shared_ptr<FullMatrixDouble> fullMat);
         std::shared_ptr<FullMatrixDouble> timesFullMatrix(std::shared_ptr<FullMatrixDouble> fullMat);
         std::shared_ptr<FullMatrixDouble> transpose();
@@ -125,37 +68,82 @@ namespace MbD {
 		static std::shared_ptr<FullMatrixDouble> rotatexrotDot(double angle, double angledot);
 		static std::shared_ptr<FullMatrixDouble> rotateyrotDot(double angle, double angledot);
 		static std::shared_ptr<FullMatrixDouble> rotatezrotDot(double angle, double angledot);
-		std::shared_ptr<FullMatrixDouble> copy();
+		static std::shared_ptr<FullMatrixDouble> rotatexrotDotrotDDot(double angle, double angleDot, double angleDDot);
+		static std::shared_ptr<FullMatrixDouble> rotateyrotDotrotDDot(double angle, double angleDot, double angleDDot);
+		static std::shared_ptr<FullMatrixDouble> rotatezrotDotrotDDot(double angle, double angleDot, double angleDDot);
+        static std::shared_ptr<FullMatrixDouble> tildeMatrix(FColDsptr col);
+        void zeroSelf() override;
+        FColsptr<double> column(int j);
+
+        void atiput(int i, FRowsptr<double> fullRow);
+        void atijput(int i, int j, double value);
+        std::shared_ptr<FullMatrixDouble> copy();
+        double maxMagnitude() override;
+        FullMatrixDouble operator+(const FullMatrixDouble fullMat);
+		std::shared_ptr<FullMatrixDouble> minusFullMatrix(std::shared_ptr<FullMatrixDouble> fullMat);
+        FColsptr<double> transposeTimesFullColumn(FColsptr<double> fullCol);
+        void symLowerWithUpper();
+        void atijputFullColumn(int i1, int j1, FColsptr<double> fullCol);
+        void atijplusFullRow(int i, int j, FRowsptr<double> fullRow);
+        void atijplusNumber(int i, int j, double value);
+        void atijminusNumber(int i, int j, double value);
+        void magnifySelf(double factor);
+        std::shared_ptr<EulerParameters<double>> asEulerParameters();
+        FColsptr<double> bryantAngles();
+        double trace();
+        bool isDiagonal();
+        bool isDiagonalToWithin(double ratio);
+        std::shared_ptr<DiagonalMatrix<double>> asDiagonalMatrix();
+        void conditionSelfWithTol(double tol);
+        std::ostream& printOn(std::ostream& s) const override;
+        FColsptr<double> timesFullColumn(FColsptr<double> fullCol);
+        // FColsptr<double> timesFullColumn(FullColumn<double>* fullCol);
     };
 
     //
-    // FULL MATRIX FULL MATRIX DOUBLE instantiation
+    // FULL MATRIX FULL MATRIX DOUBLE
     //
-    class FullMatrixFullMatrixDouble : public FullMatrixTemplate<FMatDsptr> {
+    class FullMatrixFullMatrixDouble : public RowTypeMatrix<FRowsptr<FMatDsptr>> {
     public:
-        FullMatrixFullMatrixDouble() : FullMatrixTemplate<FMatDsptr>() {};
-        explicit FullMatrixFullMatrixDouble(int m) : FullMatrixTemplate<FMatDsptr>(m) {};
-        FullMatrixFullMatrixDouble(int m, int n) : FullMatrixTemplate<FMatDsptr>(m, n) {};
+        FullMatrixFullMatrixDouble() = default;
+		explicit FullMatrixFullMatrixDouble(int m) : RowTypeMatrix<FRowsptr<FMatDsptr>>(m)
+		{
+		}
+        FullMatrixFullMatrixDouble(int m, int n) {
+            for (int i = 0; i < m; i++) {
+                auto row = std::make_shared<FullRow<FMatDsptr>>(n);
+                this->push_back(row);
+            }
+        }
 
+        double maxMagnitude() override;
+        void zeroSelf() override;
         std::shared_ptr<FullMatrixFullMatrixDouble> times(double a);
         std::shared_ptr<FullMatrixFullMatrixDouble> timesTransposeFullMatrix(std::shared_ptr<FullMatrixFullMatrixDouble> fullMat);
         double sumOfSquares() override;
-        void identity() override;
+        void identity();
         static std::shared_ptr<MbD::FullMatrixFullMatrixDouble> identitysptr(int n);
     };
     //
-    // FULL MATRIX FULL COLUMN DOUBLE instantiation
+    // FULL MATRIX FULL COLUMN DOUBLE
     //
-    class FullMatrixFullColumnDouble : public FullMatrixTemplate<FColDsptr> {
+    class FullMatrixFullColumnDouble : public RowTypeMatrix<FRowsptr<FColDsptr>> {
     public:
-        FullMatrixFullColumnDouble() : FullMatrixTemplate<FColDsptr>() {};
-        explicit FullMatrixFullColumnDouble(int m) : FullMatrixTemplate<FColDsptr>(m) {};
-        FullMatrixFullColumnDouble(int m, int n) : FullMatrixTemplate<FColDsptr>(m, n) {};
+        FullMatrixFullColumnDouble() = default;
+		explicit FullMatrixFullColumnDouble(int m) : RowTypeMatrix<FRowsptr<FColDsptr>>(m)
+		{
+		}
+        FullMatrixFullColumnDouble(int m, int n) {
+            for (int i = 0; i < m; i++) {
+                auto row = std::make_shared<FullRow<FColDsptr>>(n);
+                this->push_back(row);
+            }
+        }
 
-        std::shared_ptr<FullMatrixFullColumnDouble> times(double a);
-        std::shared_ptr<FullMatrixFullColumnDouble> timesTransposeFullMatrix(std::shared_ptr<FullMatrixFullColumnDouble> fullMat);
+        double maxMagnitude() override;
+        void zeroSelf() override;
         double sumOfSquares() override;
-        void identity() override;
-        static std::shared_ptr<MbD::FullMatrixFullColumnDouble> identitysptr(int n);
+        void symLowerWithUpper();
+        std::shared_ptr<FullMatrixFullColumnDouble> times(double a);
     };
 }

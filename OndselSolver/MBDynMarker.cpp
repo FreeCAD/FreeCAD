@@ -21,7 +21,7 @@ void MbD::MBDynMarker::parseMBDyn(std::vector<std::string>& args)
 		auto rOmO = readPosition(args);
 		auto aAOm = readOrientation(args);
 		rPmP = aAOP->transposeTimesFullColumn(rOmO->minusFullColumn(rOPO));
-		aAPm = toFMDsptr(aAOP->transposeTimesFullMatrix(aAOm));
+		aAPm = aAOP->transposeTimesFullMatrix(aAOm);
 	}
 	else if (str.find("offset") != std::string::npos) {
 		rPmP = readPosition(args);

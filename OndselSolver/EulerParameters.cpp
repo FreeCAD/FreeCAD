@@ -7,6 +7,9 @@
  ***************************************************************************/
  
 #include "EulerParameters.h"
+#include "FullColumn.h"
+#include "FullRow.h"
+#include "FullMatrix.h"
 
 using namespace MbD;
 template<>
@@ -160,8 +163,8 @@ inline FMatFMatDsptr EulerParameters<double>::ppApEpEtimesMatrix(FMatDsptr mat)
     return answer;
 }
 
-template<>
-inline void EulerParameters<double>::initialize()
+template<typename T> // this is ALWAYS double; see note below.
+inline void EulerParameters<T>::initialize()
 {
     aA = FullMatrixDouble::identitysptr(3);
     aB = std::make_shared<FullMatrixDouble>(3, 4);
@@ -172,6 +175,14 @@ inline void EulerParameters<double>::initialize()
         pApE->at(i) = std::make_shared<FullMatrixDouble>(3, 3);
     }
 }
+
+// the following  can't be valid as FullMatrix instatiatiates <double>, yet
+// this class needs to see the member functions of FullMatrix
+//template<>
+//inline void EulerParameters<double>::initialize()
+//{
+//}
+
 template<typename T>
 inline void EulerParameters<T>::calc()
 {

@@ -1,5 +1,8 @@
 #pragma once
 
+#include <algorithm>
+#include <memory>
+
 namespace MbD {
     template<typename T>
     class FullColumn;

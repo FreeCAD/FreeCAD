@@ -185,7 +185,7 @@ namespace MbD {
 	inline FColDsptr EulerParametersDot<T>::omeOpO()
 	{
 		auto aaa = this->aB();
-		auto bbb = aaa->timesFullColumn(this);
+		auto bbb = aaa->timesFullColumn((MbD::FColsptr<double>)this);
 		auto ccc = bbb->times(2.0);
 		return ccc;
 		//return this->aB->timesFullColumn(this)->times(2.0);

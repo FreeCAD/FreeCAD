@@ -10,6 +10,7 @@
 #include "ASMTAssembly.h"
 #include "ASMTMarker.h"
 #include "Joint.h"
+#include "FullMatrix.h"
 
 using namespace MbD;
 

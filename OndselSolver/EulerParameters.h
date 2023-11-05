@@ -8,10 +8,12 @@
  
 #pragma once
 
+#include "FullColumn.ref.h"
+#include "FullMatrix.ref.h"
 #include "EulerParameters.ref.h"
 #include "EulerArray.h"
-#include "FullColumn.h"
-#include "FullMatrix.h"
+// #include "FullColumn.h"
+// #include "FullMatrix.h"
 
 namespace MbD {
 

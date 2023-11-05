@@ -30,10 +30,10 @@ void TranslationConstraintIqcJc::calcPostDynCorrectorIteration()
 	pGpXI = riIeqJeIeq->pvaluepXI();
 	pGpEI = (riIeqJeIeq->pvaluepEI())->plusFullRow(riIeqJeIeq->pvaluepEK());
 	ppGpXIpEI = riIeqJeIeq->ppvaluepXIpEK();
-	ppGpEIpEI = toFMDsptr(riIeqJeIeq->ppvaluepEIpEI()
+	ppGpEIpEI = riIeqJeIeq->ppvaluepEIpEI()
             ->plusFullMatrix(riIeqJeIeq->ppvaluepEIpEK())
             ->plusFullMatrix((riIeqJeIeq->ppvaluepEIpEK()->
-                transpose()->plusFullMatrix(riIeqJeIeq->ppvaluepEKpEK()))));
+                transpose()->plusFullMatrix(riIeqJeIeq->ppvaluepEKpEK())));
 }
 
 void TranslationConstraintIqcJc::useEquationNumbers()

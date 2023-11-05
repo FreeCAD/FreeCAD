@@ -70,13 +70,13 @@ void MarkerFrame::calcPostDynCorrectorIteration()
 	auto rOpO = partFrame->rOpO();
 	auto aAOp = partFrame->aAOp();
 	rOmO = rOpO->plusFullColumn(aAOp->timesFullColumn(rpmp));
-	aAOm = toFMDsptr(aAOp->timesFullMatrix(aApm));
+	aAOm = aAOp->timesFullMatrix(aApm);
 	auto pAOppE = partFrame->pAOppE();
 	for (int i = 0; i < 4; i++)
 	{
 		auto& pAOppEi = pAOppE->at(i);
 		prOmOpE->atijputFullColumn(0, i, pAOppEi->timesFullColumn(rpmp));
-		pAOmpE->at(i) = toFMDsptr(pAOppEi->timesFullMatrix(aApm));
+		pAOmpE->at(i) = pAOppEi->timesFullMatrix(aApm);
 	}
 }
 

@@ -7,6 +7,7 @@
  ***************************************************************************/
 
 #include "ASMTMarker.h"
+#include "FullMatrix.h"
 #include "ASMTRefItem.h"
 #include "ASMTPart.h"
 #include "Part.h"

@@ -32,20 +32,20 @@ void MbD::ScrewConstraintIqcJqc::calc_pGpXJ()
 
 void MbD::ScrewConstraintIqcJqc::calc_ppGpEIpEJ()
 {
-	ppGpEIpEJ = toFMDsptr(zIeJeIe->ppvaluepEIpEJ()->times(2.0 * M_PI)
-            ->minusFullMatrix(thezIeJe->ppvaluepEIpEJ()->times(pitch)));
+	ppGpEIpEJ = zIeJeIe->ppvaluepEIpEJ()->times(2.0 * M_PI)
+            ->minusFullMatrix(thezIeJe->ppvaluepEIpEJ()->times(pitch));
 }
 
 void MbD::ScrewConstraintIqcJqc::calc_ppGpEIpXJ()
 {
-	ppGpEIpXJ = toFMDsptr(zIeJeIe->ppvaluepEIpXJ()->times(2.0 * M_PI)
-            ->minusFullMatrix(thezIeJe->ppvaluepEIpXJ()->times(pitch)));
+	ppGpEIpXJ = zIeJeIe->ppvaluepEIpXJ()->times(2.0 * M_PI)
+            ->minusFullMatrix(thezIeJe->ppvaluepEIpXJ()->times(pitch));
 }
 
 void MbD::ScrewConstraintIqcJqc::calc_ppGpEJpEJ()
 {
-	ppGpEJpEJ = toFMDsptr(zIeJeIe->ppvaluepEJpEJ()->times(2.0 * M_PI)
-            ->minusFullMatrix(thezIeJe->ppvaluepEJpEJ()->times(pitch)));
+	ppGpEJpEJ = zIeJeIe->ppvaluepEJpEJ()->times(2.0 * M_PI)
+            ->minusFullMatrix(thezIeJe->ppvaluepEJpEJ()->times(pitch));
 }
 
 void MbD::ScrewConstraintIqcJqc::calcPostDynCorrectorIteration()

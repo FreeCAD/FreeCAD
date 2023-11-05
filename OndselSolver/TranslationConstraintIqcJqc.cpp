@@ -28,8 +28,8 @@ void TranslationConstraintIqcJqc::calcPostDynCorrectorIteration()
 	TranslationConstraintIqcJc::calcPostDynCorrectorIteration();
 	pGpXJ = riIeJeIe->pvaluepXJ();
 	pGpEJ = riIeJeIe->pvaluepEJ();
-	ppGpEIpXJ = toFMDsptr(riIeJeIe->ppvaluepXJpEK()->transpose());
-	ppGpEIpEJ = toFMDsptr(riIeJeIe->ppvaluepEJpEK()->transpose());
+	ppGpEIpXJ = riIeJeIe->ppvaluepXJpEK()->transpose();
+	ppGpEIpEJ = riIeJeIe->ppvaluepEJpEK()->transpose();
 	ppGpEJpEJ = riIeJeIe->ppvaluepEJpEJ();
 }
 

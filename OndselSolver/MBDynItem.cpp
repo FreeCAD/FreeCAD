@@ -164,7 +164,7 @@ FMatDsptr MbD::MBDynItem::readOrientation(std::vector<std::string>& args)
 		auto ref = mbdynReferences()->at(refName);
 		auto aAFf = readBasicOrientation(args);
 		auto aAOF = ref->aAOf;
-		aAOf = toFMDsptr(aAOF->timesFullMatrix(aAFf));
+		aAOf = aAOF->timesFullMatrix(aAFf);
 	}
 	else if (str.find("hinge") != std::string::npos) {
 		args.erase(args.begin());

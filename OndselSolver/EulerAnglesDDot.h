@@ -79,10 +79,10 @@ namespace MbD {
 		auto term7 = phiA->timesFullMatrix(theAdot->timesFullMatrix(psiAdot));
 		auto term8 = phiA->timesFullMatrix(theA->timesFullMatrix(psiAddot));
 
-		aAddot = toFMDsptr(term->plusFullMatrix(term1)->plusFullMatrix(term2)
+		aAddot = term->plusFullMatrix(term1)->plusFullMatrix(term2)
                 ->plusFullMatrix(term3)->plusFullMatrix(term4)
 			    ->plusFullMatrix(term5)->plusFullMatrix(term6)
-                ->plusFullMatrix(term7)->plusFullMatrix(term8));
+                ->plusFullMatrix(term7)->plusFullMatrix(term8);
 	}
 	template<typename T>
 	inline void EulerAnglesDDot<T>::aEulerAngles(EulerAngles<T>* eulerAngles)
