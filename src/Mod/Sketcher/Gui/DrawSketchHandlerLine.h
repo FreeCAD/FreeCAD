@@ -43,7 +43,7 @@ namespace ConstructionMethods
 enum class LineConstructionMethod
 {
     OnePointLengthAngle,
-    OnePointLengthWidth,
+    OnePointWidthHeight,
     TwoPoints,
     End  // Must be the last one
 };
@@ -261,7 +261,7 @@ void DSHLineController::configureToolWidget()
 {
     if (!init) {  // Code to be executed only upon initialisation
         QStringList names = {QStringLiteral("Point, length, angle"),
-                             QStringLiteral("Point, length, width"),
+                             QStringLiteral("Point, width, heigth"),
                              QStringLiteral("2 points")};
         toolWidget->setComboboxElements(WCombobox::FirstCombo, names);
 
@@ -322,7 +322,7 @@ void DSHLineControllerBase::doEnforceControlParameters(Base::Vector2d& onSketchP
             }
         } break;
         case SelectMode::SeekSecond: {
-            if (handler->constructionMethod() == ConstructionMethod::OnePointLengthWidth) {
+            if (handler->constructionMethod() == ConstructionMethod::OnePointWidthHeight) {
                 if (onViewParameters[OnViewParameter::Third]->isSet) {
                     onSketchPos.x = handler->startPoint.x
                         + onViewParameters[OnViewParameter::Third]->getValue();
@@ -401,7 +401,7 @@ void DSHLineController::adaptParameters(Base::Vector2d onSketchPos)
                                                                  toVector3d(onSketchPos));
         } break;
         case SelectMode::SeekSecond: {
-            if (handler->constructionMethod() == ConstructionMethod::OnePointLengthWidth) {
+            if (handler->constructionMethod() == ConstructionMethod::OnePointWidthHeight) {
                 Base::Vector3d start = toVector3d(handler->startPoint);
                 Base::Vector3d end = toVector3d(handler->endPoint);
                 Base::Vector3d vec = end - start;
@@ -624,7 +624,7 @@ void DSHLineController::addConstraints()
         }
 
         if (handler->constructionMethod()
-            == DrawSketchHandlerLine::ConstructionMethod::OnePointLengthWidth) {
+            == DrawSketchHandlerLine::ConstructionMethod::OnePointWidthHeight) {
             if (p3set) {
                 constraintp3DistanceX();
             }
@@ -679,7 +679,7 @@ void DSHLineController::addConstraints()
         auto endpointinfo = handler->getPointInfo(GeoElementId(firstCurve, PointPos::end));
 
         if (handler->constructionMethod()
-            == DrawSketchHandlerLine::ConstructionMethod::OnePointLengthWidth) {
+            == DrawSketchHandlerLine::ConstructionMethod::OnePointWidthHeight) {
 
             int DoFs = startpointinfo.getDoFs();
             DoFs += endpointinfo.getDoFs();
