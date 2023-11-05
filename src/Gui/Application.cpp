@@ -933,7 +933,7 @@ void Application::slotActiveDocument(const App::Document& Doc)
                 Py::Module("FreeCADGui").setAttr(std::string("ActiveDocument"),Py::None());
             }
         }
-        
+
         // Update the application to show the unit change
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath
             ("User parameter:BaseApp/Preferences/Units");
