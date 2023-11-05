@@ -55,15 +55,11 @@ namespace MbD {
     {
         s << "FullCol{";
         s << this->at(0);
-        for (int i = 1; i < this->size(); i++)
+        for (int i = 1; i < int(this->size()); i++)
         {
             s << ", " << this->at(i);
         }
         s << "}";
         return s;
     }
-    // instantiate on purpose to make visible in library api:
-    template class FullColumn<double>;
-    template class FullColumn<int>;
 }
-

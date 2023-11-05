@@ -161,7 +161,11 @@ namespace MbD {
     template<typename T>
     FColsptr<T> FullColumn<T>::simplified()
     {
-        assert(false);
+//        assert(false);
         return FColsptr<T>();
     }
+    // instantiate on purpose to make visible in library api:
+    template class FullColumn<double>;
+    template class FullColumn<int>;
+
 }

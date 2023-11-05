@@ -35,6 +35,5 @@ namespace MbD {
 		FMatDsptr aA;
 
 	};
-    template class EulerAngles<std::shared_ptr<MbD::Symbolic>>;
 }
 

@@ -43,8 +43,8 @@ namespace MbD {
 		double maxMagnitude() override;
 
 		std::ostream& printOn(std::ostream& s) const override;
-
 	};
+
     template class DiagonalMatrix<double>;
 }
 

@@ -83,5 +83,6 @@ namespace MbD {
         rotOrder->at(1) = j;
         rotOrder->at(2) = k;
     }
+    template class EulerAngles<std::shared_ptr<MbD::Symbolic>>;
 }
 
