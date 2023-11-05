@@ -427,6 +427,15 @@ public:
         if (key == SoKeyboardEvent::M && pressed && !this->isLastState()) {
             this->iterateToNextConstructionMethod();
         }
+        else if (key == SoKeyboardEvent::ESCAPE && pressed) {
+
+            if (this->isFirstState()) {
+                quit();
+            }
+            else {
+                handleContinuousMode();
+            }
+        }
     }
     //@}
 

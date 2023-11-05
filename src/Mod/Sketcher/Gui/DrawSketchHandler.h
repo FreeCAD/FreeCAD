@@ -152,8 +152,7 @@ public:
     {
         return false;
     }
-    virtual void registerPressedKey(bool /*pressed*/, int /*key*/)
-    {}
+    virtual void registerPressedKey(bool /*pressed*/, int /*key*/);
 
     virtual void quit();
 
