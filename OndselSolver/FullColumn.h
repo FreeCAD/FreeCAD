@@ -15,6 +15,7 @@
 #include "FullColumn.ref.h"
 #include "FullRow.ref.h"
 #include "FullMatrix.ref.h"
+//#include "Symbolic.h"
 
 namespace MbD {
 	class Symbolic;
@@ -48,10 +49,21 @@ namespace MbD {
 
 		std::ostream& printOn(std::ostream& s) const override;
 	};
-    // instantiate on purpose:
+    // the following "printOn" needs to be in the header for unknown reasons linker
+    template<typename T>
+    std::ostream& FullColumn<T>::printOn(std::ostream& s) const
+    {
+        s << "FullCol{";
+        s << this->at(0);
+        for (int i = 1; i < this->size(); i++)
+        {
+            s << ", " << this->at(i);
+        }
+        s << "}";
+        return s;
+    }
+    // instantiate on purpose to make visible in library api:
     template class FullColumn<double>;
     template class FullColumn<int>;
-//    template class FullColumn<std::shared_ptr<MbD::FullMatrixDouble>>;
-//    template class FullColumn<std::shared_ptr<MbD::Symbolic>>;
 }
 

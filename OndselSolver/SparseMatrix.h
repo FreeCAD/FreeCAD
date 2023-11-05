@@ -13,6 +13,7 @@
 #include "RowTypeMatrix.h"
 #include "SparseRow.h"
 #include "DiagonalMatrix.h"
+#include "FullMatrix.h"
 
 namespace MbD {
 	template<typename T>

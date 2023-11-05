@@ -7,6 +7,7 @@
  ***************************************************************************/
  
 #include "FullRow.h"
+#include "FullMatrix.h"
 
 namespace MbD {
     template<typename T>
@@ -22,45 +23,37 @@ namespace MbD {
         return answer;
     }
 
-    template<typename T>
-    FRowsptr<T> FullRow<T>::timesTransposeFullMatrix(std::shared_ptr<FullMatrixDouble> fullMat)
+    template<>
+    FRowsptr<double> FullRow<double>::timesTransposeFullMatrix(std::shared_ptr<FullMatrixDouble> fullMat)
     {
         //"a*bT = a(1,j)b(k,j)"
         int ncol = fullMat->nrow();
-        auto answer = std::make_shared<FullRow<T>>(ncol);
+        auto answer = std::make_shared<FullRow<double>>(ncol);
         for (int k = 0; k < ncol; k++) {
             answer->at(k) = this->dot(fullMat->at(k));
         }
         return answer;
     }
 
-    template<typename T>
-    FRowsptr<T> FullRow<T>::timesTransposeFullMatrixForFMFMDsptr(std::shared_ptr<FullMatrixFullMatrixDouble> fullMat)
-    {
-        //"a*bT = a(1,j)b(k,j)"
-        int ncol = fullMat->nrow();
-        auto answer = std::make_shared<FullRow<T>>(ncol);
-        for (int k = 0; k < ncol; k++) {
-            answer->at(k) = this->dot(fullMat->at(k));
-        }
-        return answer;
-    }
+// TODO: can't get the following to work, but CLion says the routine that calls it in FullMatrixFullMatrixDouble is also
+//       never called.
+//    template<>
+//    FRowsptr<std::shared_ptr<FullMatrixDouble>> FullRow<std::shared_ptr<FullMatrixDouble>>::timesTransposeFullMatrixForFMFMDsptr(
+//            std::shared_ptr<FullMatrixFullMatrixDouble> fullMat)
+//    {
+//        //"a*bT = a(1,j)b(k,j)"
+//        int ncol = fullMat->nrow();
+//        auto answer = std::make_shared<FullRow<std::shared_ptr<FullMatrixDouble>>>(ncol);
+//        for (int k = 0; k < ncol; k++) {
+//            answer->at(k) = this->dot(fullMat->at(k));
+//        }
+//        return answer;
+//    }
 
-    template<typename T>
-    FRowsptr<T> FullRow<T>::timesFullMatrix(std::shared_ptr<FullMatrixDouble> fullMat)
+    template<>
+    FRowsptr<double> FullRow<double>::timesFullMatrix(std::shared_ptr<FullMatrixDouble> fullMat)
     {
-        FRowsptr<T> answer = fullMat->at(0)->times(this->at(0));
-        for (int j = 1; j < (int) this->size(); j++)
-        {
-            answer->equalSelfPlusFullRowTimes(fullMat->at(j), this->at(j));
-        }
-        return answer;
-    }
-
-    template<typename T>
-    FRowsptr<T> FullRow<T>::timesFullMatrixForFMFMDsptr(std::shared_ptr<FullMatrixFullMatrixDouble> fullMat)
-    {
-        FRowsptr<T> answer = fullMat->at(0)->times(this->at(0));
+        FRowsptr<double> answer = fullMat->at(0)->times(this->at(0));
         for (int j = 1; j < (int) this->size(); j++)
         {
             answer->equalSelfPlusFullRowTimes(fullMat->at(j), this->at(j));

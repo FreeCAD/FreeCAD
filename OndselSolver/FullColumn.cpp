@@ -164,16 +164,4 @@ namespace MbD {
         assert(false);
         return FColsptr<T>();
     }
-    template<typename T>
-    std::ostream& FullColumn<T>::printOn(std::ostream& s) const
-    {
-        s << "FullCol{";
-        s << this->at(0);
-        for (int i = 1; i < this->size(); i++)
-        {
-            s << ", " << this->at(i);
-        }
-        s << "}";
-        return s;
-    }
 }

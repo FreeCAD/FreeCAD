@@ -37,13 +37,10 @@ namespace MbD {
 		void atiplusFullRow(int j, FRowsptr<T> fullRow);
 		std::ostream& printOn(std::ostream& s) const override;
 
-        FRowsptr<T> timesFullMatrix(std::shared_ptr<FullMatrixDouble> fullMat);
-        FRowsptr<T> timesTransposeFullMatrix(std::shared_ptr<FullMatrixDouble> fullMat);
         std::shared_ptr<FullMatrixDouble> transposeTimesFullRow(FRowsptr<T> fullRow);
-
-        FRowsptr<T> timesFullMatrixForFMFMDsptr(std::shared_ptr<FullMatrixFullMatrixDouble> fullMat);
-        FRowsptr<T> timesTransposeFullMatrixForFMFMDsptr(std::shared_ptr<FullMatrixFullMatrixDouble> fullMat);
-        // std::shared_ptr<FullMatrixFullMatrixDouble> transposeTimesFullRow(FRowsptr<T> fullRow);
+        FRowsptr<double> timesTransposeFullMatrix(std::shared_ptr<FullMatrixDouble> fullMat);
+        // FRowsptr<std::shared_ptr<FullMatrixDouble>> timesTransposeFullMatrixForFMFMDsptr(std::shared_ptr<FullMatrixFullMatrixDouble> fullMat);
+        FRowsptr<double> timesFullMatrix(std::shared_ptr<FullMatrixDouble> fullMat);
     };
 
 	template<>
@@ -148,6 +145,6 @@ namespace MbD {
 		s << "}";
 		return s;
 	};
-    // TODO: template class FullRow<double>;
+
 }
 

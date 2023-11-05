@@ -119,7 +119,7 @@ namespace MbD {
         double maxMagnitude() override;
         void zeroSelf() override;
         std::shared_ptr<FullMatrixFullMatrixDouble> times(double a);
-        std::shared_ptr<FullMatrixFullMatrixDouble> timesTransposeFullMatrix(std::shared_ptr<FullMatrixFullMatrixDouble> fullMat);
+        // std::shared_ptr<FullMatrixFullMatrixDouble> timesTransposeFullMatrix(std::shared_ptr<FullMatrixFullMatrixDouble> fullMat);
         double sumOfSquares() override;
         void identity();
         static std::shared_ptr<MbD::FullMatrixFullMatrixDouble> identitysptr(int n);
