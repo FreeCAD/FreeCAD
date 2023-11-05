@@ -215,10 +215,9 @@ public:
 
     void setUserSchema(int userSchema)
     {
-        Base::UnitsApi::setSchema(static_cast<Base::UnitSystem>(userSchema));
         App::Document* doc = App::GetApplication().getActiveDocument();
         if ( doc != nullptr && doc->UnitSystem.getValue() != userSchema ) {
-                doc->UnitSystem.setValue(userSchema);
+            doc->UnitSystem.setValue(userSchema);
         }
         unitChanged();
         // Update the application to show the unit change
@@ -228,7 +227,14 @@ public:
 private:
     void unitChanged()
     {
+        ParameterGrp::handle hGrpu = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/Units");
+        bool ignore = hGrpu->GetBool("IgnoreProjectSchema", false);
+        App::Document* doc = App::GetApplication().getActiveDocument();
         int userSchema = getWindowParameter()->GetInt("UserSchema", 0);
+        if ( doc != nullptr && ! ignore) {
+            userSchema = doc->UnitSystem.getValue();
+        }
         auto actions = menu()->actions();
         if(Q_UNLIKELY(userSchema < 0 || userSchema >= actions.size())) {
             userSchema = 0;

@@ -35,6 +35,7 @@
 # include <boost/filesystem.hpp>
 #endif
 
+#include <App/Document.h>
 #include <Base/Parameter.h>
 #include <Base/UnitsApi.h>
 
@@ -190,6 +191,7 @@ void DlgSettingsGeneral::saveSettings()
     ("User parameter:BaseApp/Preferences/Units");
     hGrpu->SetInt("UserSchema", ui->comboBox_UnitSystem->currentIndex());
     hGrpu->SetInt("Decimals", ui->spinBoxDecimals->value());
+    hGrpu->SetBool("IgnoreProjectSchema", ui->checkBox_projectUnitSystemIgnore->isChecked());
 
     // Set actual value
     Base::UnitsApi::setDecimals(ui->spinBoxDecimals->value());
@@ -207,8 +209,15 @@ void DlgSettingsGeneral::saveSettings()
     Base::QuantityFormat::setDefaultDenominator(FracInch);
 
     // Set and save the Unit System
-    viewSystemIndex = ui->comboBox_UnitSystem->currentIndex();
-    UnitsApi::setSchema(static_cast<UnitSystem>(viewSystemIndex));
+    if ( ui->checkBox_projectUnitSystemIgnore->isChecked() ) {
+        viewSystemIndex = ui->comboBox_UnitSystem->currentIndex();
+        UnitsApi::setSchema(static_cast<UnitSystem>(viewSystemIndex));
+    } else {
+        App::Document* doc = App::GetApplication().getActiveDocument();
+        if ( doc != nullptr ) {
+            UnitsApi::setSchema(static_cast<UnitSystem>(doc->UnitSystem.getValue()));
+        }
+    }
 
     ui->SubstituteDecimal->onSave();
     ui->UseLocaleFormatting->onSave();
@@ -253,6 +262,7 @@ void DlgSettingsGeneral::loadSettings()
     ("User parameter:BaseApp/Preferences/Units");
     ui->comboBox_UnitSystem->setCurrentIndex(hGrpu->GetInt("UserSchema", 0));
     ui->spinBoxDecimals->setValue(hGrpu->GetInt("Decimals", Base::UnitsApi::getDecimals()));
+    ui->checkBox_projectUnitSystemIgnore->setChecked(hGrpu->GetBool("IgnoreProjectSchema", false));
 
     // Get the current user setting for the minimum fractional inch
     FracInch = hGrpu->GetInt("FracInch", Base::QuantityFormat::getDefaultDenominator());
