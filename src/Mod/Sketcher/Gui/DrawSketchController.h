@@ -564,6 +564,10 @@ protected:
         onViewIndexWithFocus = 0;
 
         configureOnViewParameters();
+
+        if (init) {
+            handler->moveCursorToSketchPoint(prevCursorPosition);
+        }
     }
     //@}
 

@@ -690,8 +690,7 @@ bool ViewProviderSketch::keyPressed(bool pressed, int key)
         case SoKeyboardEvent::ESCAPE: {
             // make the handler quit but not the edit mode
             if (isInEditMode() && sketchHandler) {
-                if (!pressed)
-                    sketchHandler->quit();
+                sketchHandler->registerPressedKey(pressed, key); // delegate
                 return true;
             }
             if (isInEditMode() && !drag.DragConstraintSet.empty()) {
