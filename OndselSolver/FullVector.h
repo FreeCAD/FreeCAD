@@ -176,7 +176,7 @@ namespace MbD {
 		}
 	}
 	template<typename T>
-	inline void FullVector<T>::conditionSelfWithTol(double __attribute__((unused))tol)
+	inline void FullVector<T>::conditionSelfWithTol(double tol)
 	{
 		assert(false);
 		return;
