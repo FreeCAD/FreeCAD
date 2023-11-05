@@ -214,8 +214,9 @@ const QString MaterialValue::getYAMLString() const
         }
         else if (getType() == MaterialValue::MultiLineString) {
             yaml = QString::fromLatin1(">2");
-            auto list = getValue().toString().split(QRegularExpression(QString::fromLatin1("[\r\n]")),
-                                                    Qt::SkipEmptyParts);
+            auto list =
+                getValue().toString().split(QRegularExpression(QString::fromLatin1("[\r\n]")),
+                                            Qt::SkipEmptyParts);
             for (auto& it : list) {
                 yaml += QString::fromLatin1("\n      ") + it;
             }

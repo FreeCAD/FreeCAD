@@ -74,7 +74,7 @@
 #endif
 
 
-// use a different name to CreateCommand()
+ // use a different name to CreateCommand()
 void CreateFemCommands();
 
 void loadFemResource()
@@ -85,9 +85,8 @@ void loadFemResource()
     Gui::Translator::instance()->refresh();
 }
 
-namespace FemGui
-{
-extern PyObject* initModule();
+namespace FemGui {
+    extern PyObject* initModule();
 }
 
 
