@@ -334,17 +334,15 @@ namespace MbD {
     }
     std::shared_ptr<FullMatrixFullMatrixDouble> FullMatrixFullMatrixDouble::times(double a)
     {
+        // TODO: correct action?
         assert(false);
+        return std::make_shared<FullMatrixFullMatrixDouble>();
     }
     std::shared_ptr<FullMatrixFullColumnDouble> FullMatrixFullColumnDouble::times(double a)
     {
-//        int m = this->nrow();
-//        auto answer = std::make_shared<FullMatrixFullColumnDouble>(m);
-//        for (int i = 0; i < m; i++) {
-//            answer->at(i) = this->at(i)->times(a);
-//        }
-//        return answer;
+        // TODO: correct action?
         assert(false);
+        return std::make_shared<FullMatrixFullColumnDouble>();
     }
     std::shared_ptr<FullMatrixDouble> FullMatrixDouble::transposeTimesFullMatrix(std::shared_ptr<FullMatrixDouble> fullMat)
     {

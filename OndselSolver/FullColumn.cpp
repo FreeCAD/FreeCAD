@@ -47,6 +47,8 @@ namespace MbD {
     FColsptr<T> FullColumn<T>::times(T a)
     {
         assert(false);
+        auto answer = std::make_shared<FullColumn<T>>();
+        return answer;
     }
     template<typename T>
     FColsptr<T> FullColumn<T>::negated()
