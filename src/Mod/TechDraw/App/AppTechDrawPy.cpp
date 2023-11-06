@@ -961,12 +961,12 @@ private:
     {
         PyObject* pFace(nullptr);
         double scale = 1.0;
-        const char* pPatName = "";
-        const char* pPatFile = "";
+        const char* pPatName = {nullptr};
+        const char* pPatFile = {nullptr};
         TechDraw::DrawViewPart* source = nullptr;
         TopoDS_Face face;
 
-        if (!PyArg_ParseTuple(args.ptr(), "O|detet", &pFace, &scale, "utf-8", &pPatName, "utf-8", &pPatFile)) {
+        if (!PyArg_ParseTuple(args.ptr(), "O|dss", &pFace, &scale, &pPatName, &pPatFile)) {
             throw Py::TypeError("expected (face, [scale], [patName], [patFile])");
         }
 
