@@ -1600,8 +1600,8 @@ template<>
 void DSHRectangleController::configureToolWidget()
 {
     if (!init) {  // Code to be executed only upon initialisation
-        QStringList names = {QStringLiteral("Diagonal corners"),
-                             QStringLiteral("Center and corner"),
+        QStringList names = {QStringLiteral("Corner, length & width"),
+                             QStringLiteral("Center, length & width"),
                              QStringLiteral("3 corners"),
                              QStringLiteral("Center and 2 corners")};
         toolWidget->setComboboxElements(WCombobox::FirstCombo, names);
