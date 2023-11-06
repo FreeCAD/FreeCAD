@@ -23,6 +23,7 @@
 #ifndef U32_HEADER
 #define U32_HEADER
 
+#include "Context.h"
 #include <istream>
 #include <stdint.h>
 

@@ -23,6 +23,7 @@
 #ifndef U16_HEADER
 #define U16_HEADER
 
+#include "Context.h"
 #include <istream>
 #include <stdint.h>
 
