@@ -40,6 +40,35 @@ private:
     App::StringHasherRef _hasher;
 };
 
+// In summary, the class will test the following combinations work:
+
+//    $a#b.c  = from doc a, get object b's property c
+//    $a.d    = from doc a, get document-property d
+
+//    $#b.c = from current doc, get object b's property c
+//    $.d   = from current doc, get document-property d
+
+//    #b.c  = from current doc, get object b's property c
+//    b.c   = from current doc, get object b's property c
+//    #.c   = from current doc, from current object, get property c
+//    .c    = from current doc, from current object, get property c (legacy behavior)
+
+// An "object" can be of many types; this test library will use Spreadsheets for that.
+// So, a spreadsheet called joe in the current doc, cell A1 could be reached as:
+//      $#joe.A1
+//      #joe.A1
+//      joe.A1
+//      .A1   (but only if the "joe" was already the current object.)
+
+// It will also test that the following combinations will NOT work:
+
+//    #b    = this is an object in the current doc, what should be returned?
+//    $a    = this is doc a, what should be returned?
+//    $     = this is the current doc, what should be returned?
+//    #     = this is the current object on the current doc, what should be returned?
+//    #$.x  = out of order; makes no sense
+//    $.#   = out of order; makes no sense
+
 TEST_F(DocumentExpression, spreadsheetBinding) // NOLINT
 {
     // Arrange
