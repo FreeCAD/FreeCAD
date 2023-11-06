@@ -48,6 +48,8 @@
 #include <App/DocumentObject.h>
 #include <App/GeoFeature.h>
 #include <App/GeoFeatureGroupExtension.h>
+#include <App/Part.h>
+#include <App/Link.h>
 #include <App/MeasureDistance.h>
 #include <Base/Console.h>
 #include <Base/Parameter.h>
@@ -883,6 +885,102 @@ void StdCmdToggleVisibility::activated(int iMsg)
 }
 
 bool StdCmdToggleVisibility::isActive()
+{
+    return (Gui::Selection().size() != 0);
+}
+
+//===========================================================================
+// Std_ToggleTransparency
+//===========================================================================
+DEF_STD_CMD_A(StdCmdToggleTransparency)
+
+StdCmdToggleTransparency::StdCmdToggleTransparency()
+    : Command("Std_ToggleTransparency")
+{
+    sGroup = "Standard-View";
+    sMenuText = QT_TR_NOOP("Toggle transparency");
+    static std::string toolTip = std::string("<p>")
+        + QT_TR_NOOP("Toggles transparency of the selected objects. You can also fine tune transparency "
+            "value in the Appearance taskbox (right click an object in the tree, Appearance).")
+        + "</p>";
+    sToolTipText = toolTip.c_str();
+    sStatusTip = sToolTipText;
+    sWhatsThis = "Std_ToggleTransparency";
+    sPixmap = "Std_ToggleTransparency";
+    sAccel = "V,T";
+    eType = Alter3DView;
+}
+
+void StdCmdToggleTransparency::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    getActiveGuiDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Toggle transparency"));
+
+    std::vector<Gui::SelectionSingleton::SelObj> sels = Gui::Selection().getCompleteSelection();
+
+    std::vector<Gui::ViewProvider*> viewsToToggle = {};
+
+    for (Gui::SelectionSingleton::SelObj& sel : sels) {
+        App::DocumentObject* obj = sel.pObject;
+        if (!obj)
+            continue;
+
+        if (!dynamic_cast<App::Part*>(obj) && !dynamic_cast<App::LinkGroup*>(obj)) {
+            Gui::ViewProvider* view = Application::Instance->getDocument(sel.pDoc)->getViewProvider(obj);
+            App::Property* prop = view->getPropertyByName("Transparency");
+            if (prop && prop->getTypeId().isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
+                viewsToToggle.push_back(view);
+            }
+        }
+        else {
+            std::function<void(App::DocumentObject*, std::vector<Gui::ViewProvider*>&)> addSubObjects =
+                [&addSubObjects](App::DocumentObject* obj, std::vector<Gui::ViewProvider*>& viewsToToggle) {
+                if (!dynamic_cast<App::Part*>(obj) && !dynamic_cast<App::LinkGroup*>(obj)) {
+                    App::Document* doc = obj->getDocument();
+                    Gui::ViewProvider* view = Application::Instance->getDocument(doc)->getViewProvider(obj);
+                    App::Property* prop = view->getPropertyByName("Transparency");
+                    if (prop && prop->getTypeId().isDerivedFrom(App::PropertyInteger::getClassTypeId())
+                        && std::find(viewsToToggle.begin(), viewsToToggle.end(), view) == viewsToToggle.end()) {
+                        viewsToToggle.push_back(view);
+                    }
+                }
+                else {
+                    for (App::DocumentObject* subobj : obj->getOutList()) {
+                        addSubObjects(subobj, viewsToToggle);
+                    }
+                }
+            };
+
+            addSubObjects(obj, viewsToToggle);
+        }
+    }
+
+    bool oneTransparent = false;
+    for (auto* view : viewsToToggle) {
+        App::Property* prop = view->getPropertyByName("Transparency");
+        if (prop && prop->getTypeId().isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
+            auto* transparencyProp = dynamic_cast<App::PropertyInteger*>(prop);
+            int transparency = transparencyProp->getValue();
+            if (transparency != 0) {
+                oneTransparent = true;
+            }
+        }
+    }
+
+    int transparency = oneTransparent ? 0 : 70;
+
+    for (auto* view : viewsToToggle) {
+        App::Property* prop = view->getPropertyByName("Transparency");
+        if (prop && prop->getTypeId().isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
+            auto* transparencyProp = dynamic_cast<App::PropertyInteger*>(prop);
+            transparencyProp->setValue(transparency);
+        }
+    }
+
+    getActiveGuiDocument()->commitCommand();
+}
+
+bool StdCmdToggleTransparency::isActive()
 {
     return (Gui::Selection().size() != 0);
 }
@@ -4102,6 +4200,7 @@ void CreateViewStdCommands()
     rcCmdMgr.addCommand(new StdViewDockUndockFullscreen());
     rcCmdMgr.addCommand(new StdCmdSetAppearance());
     rcCmdMgr.addCommand(new StdCmdToggleVisibility());
+    rcCmdMgr.addCommand(new StdCmdToggleTransparency());
     rcCmdMgr.addCommand(new StdCmdToggleSelectability());
     rcCmdMgr.addCommand(new StdCmdShowSelection());
     rcCmdMgr.addCommand(new StdCmdHideSelection());
