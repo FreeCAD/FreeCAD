@@ -60,7 +60,7 @@ EditModeInformationOverlayCoinConverter::EditModeInformationOverlayCoinConverter
 void EditModeInformationOverlayCoinConverter::convert(const Part::Geometry* geometry, int geoid)
 {
 
-    if (geometry->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
+    if (geometry->is<Part::GeomBSplineCurve>()) {
         // at this point all calculations relate to BSplineCurves
         calculate<CalculationType::BSplineDegree>(geometry, geoid);
         calculate<CalculationType::BSplineControlPolygon>(geometry, geoid);
@@ -74,7 +74,7 @@ void EditModeInformationOverlayCoinConverter::convert(const Part::Geometry* geom
         addUpdateNode(knotMultiplicity);
         addUpdateNode(poleWeights);
     }
-    else if (geometry->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+    else if (geometry->is<Part::GeomArcOfCircle>()) {
         // at this point all calculations relate to ArcOfCircle
         calculate<CalculationType::ArcCircleHelper>(geometry, geoid);
         addUpdateNode(circleHelper);

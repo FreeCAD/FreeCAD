@@ -122,6 +122,7 @@ QPainterPath QGIEdge::shape() const
 
 void QGIEdge::mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event)
 {
+    Q_UNUSED(event)
     QGIView *parent = dynamic_cast<QGIView *>(parentItem());
     if (parent && parent->getViewObject() && parent->getViewObject()->isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
         TechDraw::DrawViewPart *baseFeat = static_cast<TechDraw::DrawViewPart *>(parent->getViewObject());

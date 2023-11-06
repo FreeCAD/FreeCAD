@@ -426,20 +426,20 @@ void ViewProviderScattered::attach(App::DocumentObject* pcObj)
 void ViewProviderScattered::updateData(const App::Property* prop)
 {
     ViewProviderPoints::updateData(prop);
-    if (prop->getTypeId() == Points::PropertyPointKernel::getClassTypeId()) {
+    if (prop->is<Points::PropertyPointKernel>()) {
         ViewProviderPointsBuilder builder;
         builder.createPoints(prop, pcPointsCoord, pcPoints);
 
         // The number of points might have changed, so force also a resize of the Inventor internals
         setActiveMode();
     }
-    else if (prop->getTypeId() == Points::PropertyNormalList::getClassTypeId()) {
+    else if (prop->is<Points::PropertyNormalList>()) {
         setActiveMode();
     }
-    else if (prop->getTypeId() == Points::PropertyGreyValueList::getClassTypeId()) {
+    else if (prop->is<Points::PropertyGreyValueList>()) {
         setActiveMode();
     }
-    else if (prop->getTypeId() == App::PropertyColorList::getClassTypeId()) {
+    else if (prop->is<App::PropertyColorList>()) {
         setActiveMode();
     }
 }
@@ -598,7 +598,7 @@ void ViewProviderStructured::attach(App::DocumentObject* pcObj)
 void ViewProviderStructured::updateData(const App::Property* prop)
 {
     ViewProviderPoints::updateData(prop);
-    if (prop->getTypeId() == Points::PropertyPointKernel::getClassTypeId()) {
+    if (prop->is<Points::PropertyPointKernel>()) {
         ViewProviderPointsBuilder builder;
         builder.createPoints(prop, pcPointsCoord, pcPoints);
 

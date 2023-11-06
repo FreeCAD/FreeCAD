@@ -52,7 +52,7 @@ bool ViewProviderPathShape::canDragObjects() const
 
 bool ViewProviderPathShape::canDragObject(App::DocumentObject* obj) const
 {
-    return obj && obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId());
+    return obj && obj->isDerivedFrom<Part::Feature>();
 }
 
 void ViewProviderPathShape::dragObject(App::DocumentObject* obj)
@@ -89,7 +89,7 @@ void ViewProviderPathShape::dropObject(App::DocumentObject* obj)
 void ViewProviderPathShape::updateData(const App::Property* prop)
 {
     PathGui::ViewProviderPath::updateData(prop);
-    if (prop->getTypeId().isDerivedFrom(App::PropertyLinkList::getClassTypeId())) {
+    if (prop->isDerivedFrom<App::PropertyLinkList>()) {
         std::vector<App::DocumentObject*> pShapes = static_cast<const App::PropertyLinkList*>(prop)->getValues();
         for (std::vector<App::DocumentObject*>::iterator it = pShapes.begin(); it != pShapes.end(); ++it) {
             if (*it)

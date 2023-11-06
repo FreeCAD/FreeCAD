@@ -22,19 +22,22 @@
 #ifndef MATERIAL_MODELLIBRARY_H
 #define MATERIAL_MODELLIBRARY_H
 
-#include <Mod/Material/MaterialGlobal.h>
+#include <memory>
 
-#include <Base/BaseClass.h>
-#include <Base/Quantity.h>
 #include <QDir>
 #include <QString>
 
-#include "MaterialValue.h"
+#include <Base/BaseClass.h>
+#include <Base/Quantity.h>
 
+#include <Mod/Material/MaterialGlobal.h>
+
+#include "MaterialValue.h"
+#include "Model.h"
 namespace Materials
 {
 
-class Model;
+// class Model;
 
 class MaterialsExport LibraryBase: public Base::BaseClass
 {
@@ -42,7 +45,7 @@ class MaterialsExport LibraryBase: public Base::BaseClass
 
 public:
     LibraryBase();
-    explicit LibraryBase(const QString& libraryName, const QString& dir, const QString& icon);
+    LibraryBase(const QString& libraryName, const QString& dir, const QString& icon);
     ~LibraryBase() override = default;
 
     const QString getName() const
@@ -68,20 +71,24 @@ public:
     }
     QString getLocalPath(const QString& path) const;
     QString getRelativePath(const QString& path) const;
+    bool isRoot(const QString& path) const;
 
 private:
+    LibraryBase(const LibraryBase&);
+
     QString _name;
     QString _directory;
     QString _iconPath;
 };
 
-class MaterialsExport ModelLibrary: public LibraryBase
+class MaterialsExport ModelLibrary: public LibraryBase,
+                                    public std::enable_shared_from_this<ModelLibrary>
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
     ModelLibrary();
-    explicit ModelLibrary(const QString& libraryName, const QString& dir, const QString& icon);
+    ModelLibrary(const QString& libraryName, const QString& dir, const QString& icon);
     ~ModelLibrary() override = default;
 
     bool operator==(const ModelLibrary& library) const
@@ -92,8 +99,22 @@ public:
     {
         return !operator==(library);
     }
+    std::shared_ptr<Model> getModelByPath(const QString& path) const;
 
-    Model* addModel(const Model& model, const QString& path);
+    std::shared_ptr<Model> addModel(const Model& model, const QString& path);
+
+    // Use this to get a shared_ptr for *this
+    std::shared_ptr<ModelLibrary> getptr()
+    {
+        return shared_from_this();
+    }
+    std::shared_ptr<std::map<QString, std::shared_ptr<ModelTreeNode>>>
+    getModelTree(ModelFilter filter) const;
+
+private:
+    ModelLibrary(const ModelLibrary&);
+
+    std::unique_ptr<std::map<QString, std::shared_ptr<Model>>> _modelPathMap;
 };
 
 }  // namespace Materials

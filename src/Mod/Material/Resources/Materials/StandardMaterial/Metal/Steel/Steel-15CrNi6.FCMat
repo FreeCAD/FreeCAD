@@ -1,7 +1,8 @@
 # File created by ConvertFCMat.py
 General:
   UUID: "6822df30-db32-4a68-a8d7-aaddcb9649d1"
-  AuthorAndLicense: "(c) 2014 M. Münch - GNU Lesser General Public License (LGPL)"
+  Author: "M. Münch"
+  License: "LGPL-2.0-or-later"
   Name: "15CrNi6"
   Description: "High-strength carbon steel"
 Inherits:

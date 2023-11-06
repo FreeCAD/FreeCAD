@@ -27,7 +27,7 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 __title__ = "Path Thread Milling generator"
 __author__ = "sliptonic (Brad Collette)"
-__url__ = "http://www.freecad.org"
+__url__ = "https://www.freecad.org"
 __doc__ = "Path thread milling operation."
 
 if False:

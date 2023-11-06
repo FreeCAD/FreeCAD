@@ -35,7 +35,7 @@ Path.Log.trackModule(Path.Log.thisModule())
 
 class TestRefactoredMach3Mach4Post(PathTestUtils.PathTestBase):
     @classmethod
-    def setUpClass(cls):
+    def setUpClass(cls) -> None:
         """setUpClass()...
         This method is called upon instantiation of this test class.  Add code
         and objects here that are needed for the duration of the test() methods
@@ -49,7 +49,7 @@ class TestRefactoredMach3Mach4Post(PathTestUtils.PathTestBase):
         FreeCAD.newDocument("Unnamed")
 
     @classmethod
-    def tearDownClass(cls):
+    def tearDownClass(cls) -> None:
         """tearDownClass()...
         This method is called prior to destruction of this test class.  Add
         code and objects here that cleanup the test environment after the
@@ -61,7 +61,7 @@ class TestRefactoredMach3Mach4Post(PathTestUtils.PathTestBase):
         FreeCAD.closeDocument(FreeCAD.ActiveDocument.Name)
 
     # Setup and tear down methods called before and after each unit test
-    def setUp(self):
+    def setUp(self) -> None:
         """setUp()...
         This method is called prior to each `test()` method.  Add code and
         objects here that are needed for multiple `test()` methods.
@@ -73,14 +73,14 @@ class TestRefactoredMach3Mach4Post(PathTestUtils.PathTestBase):
             postprocessor
         )  # technical debt.  This shouldn't be necessary but here to bypass a bug
 
-    def tearDown(self):
+    def tearDown(self) -> None:
         """tearDown()...
         This method is called after each test() method. Add cleanup instructions here.
         Such cleanup instructions will likely undo those in the setUp() method.
         """
         FreeCAD.ActiveDocument.removeObject("testpath")
 
-    def test000(self):
+    def test000(self) -> None:
         """Test Output Generation.
         Empty path.  Produces only the preamble and postable.
         """

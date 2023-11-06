@@ -223,32 +223,32 @@ bool ViewProviderFemAnalysis::canDragObject(App::DocumentObject* obj) const
     if (!obj) {
         return false;
     }
-    if (obj->getTypeId().isDerivedFrom(Fem::FemMeshObject::getClassTypeId())) {
+    if (obj->isDerivedFrom<Fem::FemMeshObject>()) {
         return true;
     }
-    else if (obj->getTypeId().isDerivedFrom(Fem::FemSolverObject::getClassTypeId())) {
+    else if (obj->isDerivedFrom<Fem::FemSolverObject>()) {
         return true;
     }
-    else if (obj->getTypeId().isDerivedFrom(Fem::FemResultObject::getClassTypeId())) {
+    else if (obj->isDerivedFrom<Fem::FemResultObject>()) {
         return true;
     }
-    else if (obj->getTypeId().isDerivedFrom(Fem::Constraint::getClassTypeId())) {
+    else if (obj->isDerivedFrom<Fem::Constraint>()) {
         return true;
     }
-    else if (obj->getTypeId().isDerivedFrom(Fem::FemSetObject::getClassTypeId())) {
+    else if (obj->isDerivedFrom<Fem::FemSetObject>()) {
         return true;
     }
     else if (obj->getTypeId().isDerivedFrom(Base::Type::fromName("Fem::FeaturePython"))) {
         return true;
     }
-    else if (obj->getTypeId().isDerivedFrom(App::MaterialObject::getClassTypeId())) {
+    else if (obj->isDerivedFrom<App::MaterialObject>()) {
         return true;
     }
-    else if (obj->getTypeId().isDerivedFrom(App::TextDocument::getClassTypeId())) {
+    else if (obj->isDerivedFrom<App::TextDocument>()) {
         return true;
     }
 #ifdef FC_USE_VTK
-    else if (obj->getTypeId().isDerivedFrom(Fem::FemPostObject::getClassTypeId())) {
+    else if (obj->isDerivedFrom<Fem::FemPostObject>()) {
         return true;
     }
 #endif

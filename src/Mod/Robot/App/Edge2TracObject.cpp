@@ -67,7 +67,7 @@ App::DocumentObjectExecReturn* Edge2TracObject::execute()
     if (!link) {
         return new App::DocumentObjectExecReturn("No object linked");
     }
-    if (!link->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+    if (!link->isDerivedFrom<Part::Feature>()) {
         return new App::DocumentObjectExecReturn("Linked object is not a Part object");
     }
     Part::Feature* base = static_cast<Part::Feature*>(Source.getValue());

@@ -35,7 +35,7 @@ else:
 
 __title__="FreeCAD CutPlane"
 __author__ = "Jonathan Wiedemann"
-__url__ = "http://www.freecad.org"
+__url__ = "https://www.freecad.org"
 
 ## @package ArchCutPlane
 #  \ingroup ARCH

@@ -23,7 +23,7 @@
 
 __title__ = "Path Slot Operation"
 __author__ = "russ4262 (Russell Johnson)"
-__url__ = "http://www.freecad.org"
+__url__ = "https://www.freecad.org"
 __doc__ = "Class and implementation of Slot operation."
 __contributors__ = ""
 

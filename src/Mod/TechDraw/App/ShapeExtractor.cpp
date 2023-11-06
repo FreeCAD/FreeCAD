@@ -68,14 +68,14 @@ std::vector<TopoDS_Shape> ShapeExtractor::getShapes2d(const std::vector<App::Doc
             std::vector<App::DocumentObject*> objs = gex->Group.getValues();
             for (auto& d: objs) {
                 if (is2dObject(d)) {
-                    if (d->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+                    if (d->isDerivedFrom<Part::Feature>()) {
                         shapes2d.push_back(getLocatedShape(d));
                     }
                 }
             }
         } else {
             if (is2dObject(l)) {
-                if (l->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+                if (l->isDerivedFrom<Part::Feature>()) {
                     shapes2d.push_back(getLocatedShape(l));
                 }  // other 2d objects would go here - Draft objects?
             }
@@ -95,7 +95,7 @@ TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> l
         if (is2dObject(l) && !include2d) {
             continue;
         }
-        if (l->getTypeId().isDerivedFrom(App::Link::getClassTypeId())) {
+        if (l->isDerivedFrom<App::Link>()) {
             App::Link* xLink = dynamic_cast<App::Link*>(l);
             std::vector<TopoDS_Shape> xShapes = getXShapes(xLink);
             if (!xShapes.empty()) {
@@ -170,7 +170,7 @@ std::vector<TopoDS_Shape> ShapeExtractor::getXShapes(const App::Link* xLink)
             bool childNeedsTransform = false;
             Base::Placement childPlm;
             Base::Matrix4D childScale;
-            if (l->getTypeId().isDerivedFrom(App::LinkElement::getClassTypeId())) {
+            if (l->isDerivedFrom<App::LinkElement>()) {
                 App::LinkElement* cLinkElem = static_cast<App::LinkElement*>(l);
                 if (cLinkElem->hasPlacement()) {
                     childPlm = cLinkElem->getLinkPlacementProperty()->getValue();
@@ -254,7 +254,7 @@ std::vector<TopoDS_Shape> ShapeExtractor::getShapesFromObject(const App::Documen
     const App::GroupExtension* gex = dynamic_cast<const App::GroupExtension*>(docObj);
     App::Property* gProp = docObj->getPropertyByName("Group");
     App::Property* sProp = docObj->getPropertyByName("Shape");
-    if (docObj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+    if (docObj->isDerivedFrom<Part::Feature>()) {
         result.push_back(getLocatedShape(docObj));
     } else if (gex) {           //is a group extension
         std::vector<App::DocumentObject*> objs = gex->Group.getValues();

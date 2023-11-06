@@ -23,12 +23,21 @@
 #ifndef SKETCHERGUI_DrawSketchHandlerLineSet_H
 #define SKETCHERGUI_DrawSketchHandlerLineSet_H
 
+#include <QApplication>
+
 #include <Inventor/events/SoKeyboardEvent.h>
 #include <boost/math/special_functions/fpclassify.hpp>
 
 #include <Gui/Notifications.h>
+#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 
+#include <Mod/Sketcher/App/SketchObject.h>
+
+#include "DrawSketchHandler.h"
 #include "GeometryCreationMode.h"
+#include "Utils.h"
+#include "ViewProviderSketch.h"
 
 
 namespace SketcherGui
@@ -117,8 +126,7 @@ public:
             if (SegmentMode == SEGMENT_MODE_Line) {
                 switch (TransitionMode) {
                     case TRANSITION_MODE_Free:
-                        if (geom->getTypeId()
-                            == Part::GeomArcOfCircle::getClassTypeId()) {  // 3rd mode
+                        if (geom->is<Part::GeomArcOfCircle>()) {  // 3rd mode
                             SegmentMode = SEGMENT_MODE_Arc;
                             TransitionMode = TRANSITION_MODE_Tangent;
                         }
@@ -127,7 +135,7 @@ public:
                         }
                         break;
                     case TRANSITION_MODE_Perpendicular_L:  // 2nd mode
-                        if (geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+                        if (geom->is<Part::GeomArcOfCircle>()) {
                             TransitionMode = TRANSITION_MODE_Free;
                         }
                         else {
@@ -135,8 +143,7 @@ public:
                         }
                         break;
                     case TRANSITION_MODE_Tangent:
-                        if (geom->getTypeId()
-                            == Part::GeomArcOfCircle::getClassTypeId()) {  // 1st mode
+                        if (geom->is<Part::GeomArcOfCircle>()) {  // 1st mode
                             TransitionMode = TRANSITION_MODE_Perpendicular_L;
                         }
                         else {  // 3rd mode
@@ -159,7 +166,7 @@ public:
                         break;
                     default:  // 6th mode (Perpendicular_R) + unexpected mode
                         SegmentMode = SEGMENT_MODE_Line;
-                        if (geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+                        if (geom->is<Part::GeomArcOfCircle>()) {
                             TransitionMode = TRANSITION_MODE_Tangent;
                         }
                         else {
@@ -342,15 +349,14 @@ public:
                 if (sugConstr1[i].Type == Sketcher::Coincident) {
                     const Part::Geometry* geom =
                         sketchgui->getSketchObject()->getGeometry(sugConstr1[i].GeoId);
-                    if ((geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()
-                         || geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId())
+                    if ((geom->is<Part::GeomLineSegment>() || geom->is<Part::GeomArcOfCircle>())
                         && (sugConstr1[i].PosId == Sketcher::PointPos::start
                             || sugConstr1[i].PosId == Sketcher::PointPos::end)) {
                         previousCurve = sugConstr1[i].GeoId;
                         previousPosId = sugConstr1[i].PosId;
                         updateTransitionData(previousCurve,
                                              previousPosId);  // -> dirVec, EditCurve[0]
-                        if (geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+                        if (geom->is<Part::GeomArcOfCircle>()) {
                             TransitionMode = TRANSITION_MODE_Tangent;
                             SnapMode = SNAP_MODE_Free;
                         }
@@ -456,7 +462,7 @@ public:
                         EditCurve[0].y,
                         EditCurve[1].x,
                         EditCurve[1].y,
-                        geometryCreationMode == Construction ? "True" : "False");
+                        constructionModeAsBooleanText());
                 }
                 catch (const Base::Exception&) {
                     addedGeometry = false;
@@ -486,7 +492,7 @@ public:
                         std::abs(arcRadius),
                         std::min(startAngle, endAngle),
                         std::max(startAngle, endAngle),
-                        geometryCreationMode == Construction ? "True" : "False");
+                        constructionModeAsBooleanText());
                 }
                 catch (const Base::Exception&) {
                     addedGeometry = false;
@@ -785,7 +791,7 @@ protected:
 
         // Use updated startPoint/endPoint as autoconstraints can modify the position
         const Part::Geometry* geom = sketchgui->getSketchObject()->getGeometry(GeoId);
-        if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+        if (geom->is<Part::GeomLineSegment>()) {
             const Part::GeomLineSegment* lineSeg = static_cast<const Part::GeomLineSegment*>(geom);
             dirVec.Set(lineSeg->getEndPoint().x - lineSeg->getStartPoint().x,
                        lineSeg->getEndPoint().y - lineSeg->getStartPoint().y,
@@ -799,7 +805,7 @@ protected:
                 EditCurve[0] = Base::Vector2d(lineSeg->getEndPoint().x, lineSeg->getEndPoint().y);
             }
         }
-        else if (geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+        else if (geom->is<Part::GeomArcOfCircle>()) {
             const Part::GeomArcOfCircle* arcSeg = static_cast<const Part::GeomArcOfCircle*>(geom);
             if (PosId == Sketcher::PointPos::start) {
                 EditCurve[0] = Base::Vector2d(arcSeg->getStartPoint(/*emulateCCW=*/true).x,

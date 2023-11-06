@@ -77,9 +77,21 @@
     </Attribute>
     <Attribute Name="AuthorAndLicense" ReadOnly="true">
       <Documentation>
-        <UserDocu>Author and license information.</UserDocu>
+        <UserDocu>deprecated -- Author and license information.</UserDocu>
       </Documentation>
       <Parameter Name="AuthorAndLicense" Type="String"/>
+    </Attribute>
+    <Attribute Name="Author" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Author information.</UserDocu>
+      </Documentation>
+      <Parameter Name="Author" Type="String"/>
+    </Attribute>
+    <Attribute Name="License" ReadOnly="true">
+      <Documentation>
+        <UserDocu>License information.</UserDocu>
+      </Documentation>
+      <Parameter Name="License" Type="String"/>
     </Attribute>
     <Attribute Name="PhysicalModels" ReadOnly="true">
       <Documentation>

@@ -28,8 +28,15 @@
 #include <cmath>
 
 #include <Gui/Notifications.h>
+#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 
+#include <Mod/Sketcher/App/SketchObject.h>
+
+#include "DrawSketchHandler.h"
 #include "GeometryCreationMode.h"
+#include "Utils.h"
+#include "ViewProviderSketch.h"
 
 
 namespace SketcherGui
@@ -739,7 +746,7 @@ private:
         int count = 0;
         int limit = 25;  // no infinite loops!
         bool success = false;
-        double tempB = b;
+        double tempB;
 
         // adjust b until our mangled vectors produce a good ellipse in GC_MakeEllipse
         // and the mangled major and minor lines in LinePy::PyInit(...) are such that
@@ -799,7 +806,7 @@ private:
                 positiveB.y,
                 centroid.x,
                 centroid.y,
-                geometryCreationMode == Construction ? "True" : "False");
+                constructionModeAsBooleanText());
 
             currentgeoid++;
 

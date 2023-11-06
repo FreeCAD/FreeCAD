@@ -222,7 +222,7 @@ public:
 
         FaceColors* self = static_cast<FaceColors*>(ud);
         self->d->view = nullptr;
-        if (self->d->obj && self->d->obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+        if (self->d->obj && self->d->obj->isDerivedFrom<Part::Feature>()) {
             cb->setHandled();
             const TopoDS_Shape& shape = static_cast<Part::Feature*>(self->d->obj)->Shape.getValue();
             self->d->boxSelection = true;

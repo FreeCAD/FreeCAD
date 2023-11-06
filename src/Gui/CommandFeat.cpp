@@ -160,7 +160,7 @@ void StdCmdSendToPythonConsole::activated(int iMsg)
         cmd = QString::fromLatin1("doc = App.getDocument(\"%1\")").arg(docname);
         Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
         //support links
-        if (obj->getTypeId().isDerivedFrom(App::Link::getClassTypeId())) {
+        if (obj->isDerivedFrom<App::Link>()) {
             cmd = QString::fromLatin1("lnk = doc.getObject(\"%1\")").arg(objname);
             Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
             cmd = QString::fromLatin1("obj = lnk.getLinkedObject()");
@@ -171,7 +171,7 @@ void StdCmdSendToPythonConsole::activated(int iMsg)
             cmd = QString::fromLatin1("obj = doc.getObject(\"%1\")").arg(objname);
             Gui::Command::runCommand(Gui::Command::Gui,cmd.toLatin1());
         }
-        if (obj->getTypeId().isDerivedFrom(App::GeoFeature::getClassTypeId())) {
+        if (obj->isDerivedFrom<App::GeoFeature>()) {
             const auto geoObj = static_cast<const App::GeoFeature*>(obj);
             const App::PropertyGeometry* geo = geoObj->getPropertyOfGeometry();
             if (geo){

@@ -69,7 +69,7 @@ const std::list<gp_Trsf> Scaled::getTransformations(const std::vector<App::Docum
     Part::Feature* originalFeature = static_cast<Part::Feature*>(originals.front());
     TopoDS_Shape original;
 
-    if (originalFeature->getTypeId().isDerivedFrom(PartDesign::FeatureAddSub::getClassTypeId())) {
+    if (originalFeature->isDerivedFrom<PartDesign::FeatureAddSub>()) {
         PartDesign::FeatureAddSub* Feature = static_cast<PartDesign::FeatureAddSub*>(originalFeature);
         //if(Feature->getAddSubType() == FeatureAddSub::Additive)
         //    original = Feature->AddSubShape.getShape().getShape();

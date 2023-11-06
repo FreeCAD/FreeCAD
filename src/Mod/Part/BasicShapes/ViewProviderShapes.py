@@ -22,7 +22,7 @@
 
 __title__ = "BasicShapes.ViewProviderShapes"
 __author__ = "Werner Mayer"
-__url__ = "http://www.freecad.org"
+__url__ = "https://www.freecad.org"
 __doc__ = "Basic shapes"
 
 

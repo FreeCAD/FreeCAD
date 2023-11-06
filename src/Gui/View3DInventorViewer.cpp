@@ -516,9 +516,9 @@ void View3DInventorViewer::init()
     // Important note:
     // When creating a new GL render action we have to copy over the cache context id
     // because otherwise we may get strange rendering behaviour. For more details see
-    // http://forum.freecad.org/viewtopic.php?f=10&t=7486&start=120#p74398 and for
+    // https://forum.freecad.org/viewtopic.php?f=10&t=7486&start=120#p74398 and for
     // the fix and some details what happens behind the scene have a look at this
-    // http://forum.freecad.org/viewtopic.php?f=10&t=7486&p=74777#p74736
+    // https://forum.freecad.org/viewtopic.php?f=10&t=7486&p=74777#p74736
     uint32_t id = this->getSoRenderManager()->getGLRenderAction()->getCacheContext();
     this->getSoRenderManager()->setGLRenderAction(new SoBoxSelectionRenderAction);
     this->getSoRenderManager()->getGLRenderAction()->setCacheContext(id);
@@ -2303,7 +2303,7 @@ void View3DInventorViewer::renderGLImage()
 
 // #define ENABLE_GL_DEPTH_RANGE
 // The calls of glDepthRange inside renderScene() causes problems with transparent objects
-// so that's why it is disabled now: http://forum.freecad.org/viewtopic.php?f=3&t=6037&hilit=transparency
+// so that's why it is disabled now: https://forum.freecad.org/viewtopic.php?f=3&t=6037&hilit=transparency
 
 // Documented in superclass. Overrides this method to be able to draw
 // the axis cross, if selected, and to keep a continuous animation
@@ -2504,7 +2504,7 @@ void View3DInventorViewer::selectAll()
     std::vector<App::DocumentObject*> objs;
 
     for (auto it : _ViewProviderSet) {
-        if (it->getTypeId().isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
+        if (it->isDerivedFrom<ViewProviderDocumentObject>()) {
             auto vp = static_cast<ViewProviderDocumentObject*>(it);  // NOLINT
             App::DocumentObject* obj = vp->getObject();
 

@@ -23,9 +23,19 @@
 #ifndef SKETCHERGUI_DrawSketchHandlerArcOfParabola_H
 #define SKETCHERGUI_DrawSketchHandlerArcOfParabola_H
 
-#include "GeometryCreationMode.h"
+#include <boost/math/special_functions/fpclassify.hpp>
 
 #include <Gui/Notifications.h>
+
+#include <Gui/Command.h>
+#include <Gui/CommandT.h>
+
+#include <Mod/Sketcher/App/SketchObject.h>
+
+#include "DrawSketchHandler.h"
+#include "GeometryCreationMode.h"
+#include "Utils.h"
+#include "ViewProviderSketch.h"
 
 namespace SketcherGui
 {
@@ -211,12 +221,9 @@ public:
             double ustartpoint = (cos(phi) * (startingPoint.y - axisPoint.y)
                                   - (startingPoint.x - axisPoint.x) * sin(phi));
 
-            double uendpoint =
-                (cos(phi) * (endPoint.y - axisPoint.y) - (endPoint.x - axisPoint.x) * sin(phi));
-
             double startAngle = ustartpoint;
 
-            double endAngle = uendpoint;
+            double endAngle;
 
             bool isOriginalArcCCW = true;
 
@@ -246,7 +253,7 @@ public:
                                       axisPoint.y,
                                       startAngle,
                                       endAngle,
-                                      geometryCreationMode == Construction ? "True" : "False");
+                                      constructionModeAsBooleanText());
 
                 currentgeoid++;
 

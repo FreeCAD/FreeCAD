@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   version="1.1"
+   id="svg3136"
+   height="64px"
+   width="64px"
+   sodipodi:docname="Sketcher_OffsetArc.svg"
+   inkscape:version="1.1-beta1 (77e7b44db3, 2021-03-28)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <sodipodi:namedview
+     id="namedview25"
+     pagecolor="#505050"
+     bordercolor="#eeeeee"
+     borderopacity="1"
+     objecttolerance="10.0"
+     gridtolerance="10.0"
+     guidetolerance="10.0"
+     inkscape:pageshadow="0"
+     inkscape:pageopacity="0"
+     inkscape:pagecheckerboard="0"
+     showgrid="false"
+     inkscape:zoom="5.8828125"
+     inkscape:cx="22.52324"
+     inkscape:cy="24.308101"
+     inkscape:window-width="1500"
+     inkscape:window-height="978"
+     inkscape:window-x="-6"
+     inkscape:window-y="-6"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg3136" />
+  <defs
+     id="defs3138">
+    <linearGradient
+       id="linearGradient3802">
+      <stop
+         id="stop3804"
+         offset="0"
+         style="stop-color:#729fcf;stop-opacity:1" />
+      <stop
+         id="stop3806"
+         offset="1"
+         style="stop-color:#204a87;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient
+       id="linearGradient3841">
+      <stop
+         id="stop3843"
+         offset="0"
+         style="stop-color:#0619c0;stop-opacity:1;" />
+      <stop
+         id="stop3845"
+         offset="1"
+         style="stop-color:#379cfb;stop-opacity:1;" />
+    </linearGradient>
+    <linearGradient
+       gradientTransform="translate(1,0)"
+       gradientUnits="userSpaceOnUse"
+       y2="31.75"
+       x2="37"
+       y1="31.75"
+       x1="19.25"
+       id="linearGradient4243"
+       xlink:href="#linearGradient3841" />
+    <linearGradient
+       y2="2560.25"
+       x2="1270.7085"
+       y1="2560.25"
+       x1="844.9165"
+       gradientTransform="matrix(0.1390891,0,0,0.1390891,-116.65366,-325.33528)"
+       gradientUnits="userSpaceOnUse"
+       id="linearGradient4246"
+       xlink:href="#linearGradient3841" />
+    <linearGradient
+       gradientTransform="translate(1)"
+       gradientUnits="userSpaceOnUse"
+       y2="56"
+       x2="44"
+       y1="4"
+       x1="29"
+       id="linearGradient3808"
+       xlink:href="#linearGradient3802" />
+    <linearGradient
+       gradientTransform="matrix(0.35072612,0,0,0.35072612,18.762241,21.142012)"
+       gradientUnits="userSpaceOnUse"
+       y2="56"
+       x2="44"
+       y1="4"
+       x1="29"
+       id="linearGradient3808-7"
+       xlink:href="#linearGradient3802-5" />
+    <linearGradient
+       id="linearGradient3802-5">
+      <stop
+         id="stop3804-3"
+         offset="0"
+         style="stop-color:#729fcf;stop-opacity:1" />
+      <stop
+         id="stop3806-5"
+         offset="1"
+         style="stop-color:#204a87;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient
+       xlink:href="#linearGradient3836-0-6-4"
+       id="linearGradient3801-1-3-7"
+       gradientUnits="userSpaceOnUse"
+       x1="-18"
+       y1="18"
+       x2="-22"
+       y2="5" />
+    <linearGradient
+       id="linearGradient3836-0-6-4">
+      <stop
+         style="stop-color:#a40000;stop-opacity:1"
+         offset="0"
+         id="stop3838-2-7-0" />
+      <stop
+         style="stop-color:#ef2929;stop-opacity:1"
+         offset="1"
+         id="stop3840-5-5-9" />
+    </linearGradient>
+  </defs>
+  <path
+     id="path2996"
+     d="M 6.5999925,17.374804 32.887133,17.253918 c 0,0 11.472924,0.284316 17.811866,6.769642 6.338941,6.485328 5.681663,15.821017 5.681663,15.821017 v 14.510154"
+     style="fill:none;stroke:#2e3436;stroke-width:11.3785;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+     sodipodi:nodetypes="cczcc" />
+  <path
+     id="path2996-3"
+     d="M 6.5999925,17.374804 H 31.920042 c 0,0 13.955461,0.01495 19.504275,7.615848 5.548813,7.600898 4.956345,15.095698 4.956345,15.095698 v 14.268381"
+     style="fill:none;stroke:#d3d7cf;stroke-width:5.68922;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+     sodipodi:nodetypes="cczcc" />
+  <path
+     id="path2996-3-6"
+     d="m 6.1555223,15.863605 25.8856167,0.04536 c 6.66608,-0.152922 14.025735,2.415434 17.830968,5.604311 m -0.595414,3.392376 c 4.754868,4.455799 5.762255,10.604009 5.681665,15.059808 v 12.966963"
+     style="fill:none;stroke:#ffffff;stroke-width:2.8446;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+     sodipodi:nodetypes="cccccc" />
+  <path
+     id="path2996-6"
+     d="m 15.240937,40.057468 18.382848,0.07421 v 12.800745"
+     style="fill:none;stroke:#2e3436;stroke-width:11.3785;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+     sodipodi:nodetypes="ccc" />
+  <path
+     id="path2996-3-2"
+     d="m 15.240937,40.057468 18.382848,0.07421 v 12.969826"
+     style="fill:none;stroke:#d3d7cf;stroke-width:5.68922;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+     sodipodi:nodetypes="ccc" />
+  <path
+     id="path2996-3-6-9"
+     d="m 15.133821,38.709377 h 18.489964 m -1.422306,5.826508 v 6.974236"
+     style="fill:none;stroke:#ffffff;stroke-width:2.8446;stroke-linecap:round;stroke-linejoin:round;stroke-opacity:1"
+     sodipodi:nodetypes="cccc" />
+  <metadata
+     id="metadata5033">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <cc:license
+           rdf:resource="" />
+        <dc:date>Mon Oct 10 13:44:52 2011 +0000</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>[wmayer]</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>FreeCAD LGPL2+</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:publisher>
+          <cc:Agent>
+            <dc:title>FreeCAD</dc:title>
+          </cc:Agent>
+        </dc:publisher>
+        <dc:identifier>FreeCAD/src/Mod/Draft/Resources/icons/Draft_Offset.svg</dc:identifier>
+        <dc:relation>http://www.freecadweb.org/wiki/index.php?title=Artwork</dc:relation>
+        <dc:contributor>
+          <cc:Agent>
+            <dc:title>[agryson] Alexander Gryson</dc:title>
+          </cc:Agent>
+        </dc:contributor>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>offset</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+        <dc:description>An angled and curved shape nested within a similar, but larger version of itself</dc:description>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+</svg>

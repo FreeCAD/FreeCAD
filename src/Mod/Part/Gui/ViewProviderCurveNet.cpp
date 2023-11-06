@@ -99,7 +99,7 @@ void ViewProviderCurveNet::attach(App::DocumentObject *pcFeat)
 void ViewProviderCurveNet::updateData(const App::Property* prop)
 {
     Gui::ViewProviderGeometryObject::updateData(prop); // clazy:exclude=skipped-base-method
-    if (prop->getTypeId() == Part::PropertyPartShape::getClassTypeId()) {
+    if (prop->is<Part::PropertyPartShape>()) {
         TopoDS_Shape cShape = static_cast<const Part::PropertyPartShape*>(prop)->getValue();
         if (cShape.IsNull())
             return;

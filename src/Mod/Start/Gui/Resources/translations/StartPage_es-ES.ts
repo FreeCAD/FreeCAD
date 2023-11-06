@@ -175,8 +175,8 @@
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="98"/>
-      <source>The &lt;a href="http://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
-      <translation>El &lt;a href="http://forum.freecad.org"&gt; foro de FreeCAD &lt;/a&gt; es un excelente lugar para obtener ayuda de otros usuarios y desarrolladores de FreeCAD. El foro tiene muchas secciones para diferentes tipos de problemas y temas de discusión. En caso de duda, publique en la sección &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt; Ayuda sobre el uso de FreeCAD &lt;/a&gt;.</translation>
+      <source>The &lt;a href="https://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
+      <translation>El &lt;a href="https://forum.freecad.org"&gt; foro de FreeCAD &lt;/a&gt; es un excelente lugar para obtener ayuda de otros usuarios y desarrolladores de FreeCAD. El foro tiene muchas secciones para diferentes tipos de problemas y temas de discusión. En caso de duda, publique en la sección &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt; Ayuda sobre el uso de FreeCAD &lt;/a&gt;.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="102"/>

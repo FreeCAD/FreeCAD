@@ -682,48 +682,48 @@ const char* nameByType(Sketch::GeoType type)
 
 int Sketch::addGeometry(const Part::Geometry* geo, bool fixed)
 {
-    if (geo->getTypeId() == GeomPoint::getClassTypeId()) {  // add a point
+    if (geo->is<GeomPoint>()) {  // add a point
         const GeomPoint* point = static_cast<const GeomPoint*>(geo);
         auto pointf = GeometryFacade::getFacade(point);
         // create the definition struct for that geom
         return addPoint(*point, fixed);
     }
-    else if (geo->getTypeId() == GeomLineSegment::getClassTypeId()) {  // add a line
+    else if (geo->is<GeomLineSegment>()) {  // add a line
         const GeomLineSegment* lineSeg = static_cast<const GeomLineSegment*>(geo);
         // create the definition struct for that geom
         return addLineSegment(*lineSeg, fixed);
     }
-    else if (geo->getTypeId() == GeomCircle::getClassTypeId()) {  // add a circle
+    else if (geo->is<GeomCircle>()) {  // add a circle
         const GeomCircle* circle = static_cast<const GeomCircle*>(geo);
         // create the definition struct for that geom
         return addCircle(*circle, fixed);
     }
-    else if (geo->getTypeId() == GeomEllipse::getClassTypeId()) {  // add a ellipse
+    else if (geo->is<GeomEllipse>()) {  // add a ellipse
         const GeomEllipse* ellipse = static_cast<const GeomEllipse*>(geo);
         // create the definition struct for that geom
         return addEllipse(*ellipse, fixed);
     }
-    else if (geo->getTypeId() == GeomArcOfCircle::getClassTypeId()) {  // add an arc
+    else if (geo->is<GeomArcOfCircle>()) {  // add an arc
         const GeomArcOfCircle* aoc = static_cast<const GeomArcOfCircle*>(geo);
         // create the definition struct for that geom
         return addArc(*aoc, fixed);
     }
-    else if (geo->getTypeId() == GeomArcOfEllipse::getClassTypeId()) {  // add an arc
+    else if (geo->is<GeomArcOfEllipse>()) {  // add an arc
         const GeomArcOfEllipse* aoe = static_cast<const GeomArcOfEllipse*>(geo);
         // create the definition struct for that geom
         return addArcOfEllipse(*aoe, fixed);
     }
-    else if (geo->getTypeId() == GeomArcOfHyperbola::getClassTypeId()) {  // add an arc of hyperbola
+    else if (geo->is<GeomArcOfHyperbola>()) {  // add an arc of hyperbola
         const GeomArcOfHyperbola* aoh = static_cast<const GeomArcOfHyperbola*>(geo);
         // create the definition struct for that geom
         return addArcOfHyperbola(*aoh, fixed);
     }
-    else if (geo->getTypeId() == GeomArcOfParabola::getClassTypeId()) {  // add an arc of parabola
+    else if (geo->is<GeomArcOfParabola>()) {  // add an arc of parabola
         const GeomArcOfParabola* aop = static_cast<const GeomArcOfParabola*>(geo);
         // create the definition struct for that geom
         return addArcOfParabola(*aop, fixed);
     }
-    else if (geo->getTypeId() == GeomBSplineCurve::getClassTypeId()) {  // add a bspline
+    else if (geo->is<GeomBSplineCurve>()) {  // add a bspline
         const GeomBSplineCurve* bsp = static_cast<const GeomBSplineCurve*>(geo);
 
         // Current B-Spline implementation relies on OCCT calculations, so a second solve
@@ -4520,7 +4520,7 @@ int Sketch::internalSolve(std::string& solvername, int level)
                 if (soltype > 0) {
                     Base::Console().Log("If you see this message please report a way of "
                                         "reproducing this result at\n");
-                    Base::Console().Log("http://www.freecad.org/tracker/main_page.php\n");
+                    Base::Console().Log("https://www.freecad.org/tracker/main_page.php\n");
                 }
 
                 break;

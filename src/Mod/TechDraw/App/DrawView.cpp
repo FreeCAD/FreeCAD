@@ -303,7 +303,7 @@ int DrawView::countParentPages() const
     parentAll.erase(last, parentAll.end());
 
     for (auto& parent : parentAll) {
-        if (parent->getTypeId().isDerivedFrom(DrawPage::getClassTypeId())) {
+        if (parent->isDerivedFrom<DrawPage>()) {
             count++;
         }
     }
@@ -320,9 +320,9 @@ DrawPage* DrawView::findParentPage() const
     DrawViewCollection *collection = nullptr;
     std::vector<App::DocumentObject*> parentsAll = getInList();
     for (auto& parent : parentsAll) {
-        if (parent->getTypeId().isDerivedFrom(DrawPage::getClassTypeId())) {
+        if (parent->isDerivedFrom<DrawPage>()) {
             page = static_cast<TechDraw::DrawPage *>(parent);
-        } else if (parent->getTypeId().isDerivedFrom(DrawViewCollection::getClassTypeId())) {
+        } else if (parent->isDerivedFrom<DrawViewCollection>()) {
             collection = static_cast<TechDraw::DrawViewCollection *>(parent);
             page = collection->findParentPage();
         }
@@ -344,9 +344,9 @@ std::vector<DrawPage*> DrawView::findAllParentPages() const
     std::vector<App::DocumentObject*> parentsAll = getInList();
 
    for (auto& parent : parentsAll) {
-        if (parent->getTypeId().isDerivedFrom(DrawPage::getClassTypeId())) {
+        if (parent->isDerivedFrom<DrawPage>()) {
             page = static_cast<TechDraw::DrawPage*>(parent);
-        } else if (parent->getTypeId().isDerivedFrom(DrawViewCollection::getClassTypeId())) {
+        } else if (parent->isDerivedFrom<DrawViewCollection>()) {
             collection = static_cast<TechDraw::DrawViewCollection *>(parent);
             page = collection->findParentPage();
         }
@@ -368,7 +368,7 @@ bool DrawView::isInClip()
 {
     std::vector<App::DocumentObject*> parent = getInList();
     for (std::vector<App::DocumentObject*>::iterator it = parent.begin(); it != parent.end(); ++it) {
-        if ((*it)->getTypeId().isDerivedFrom(DrawViewClip::getClassTypeId())) {
+        if ((*it)->isDerivedFrom<DrawViewClip>()) {
             return true;
         }
     }
@@ -380,7 +380,7 @@ DrawViewClip* DrawView::getClipGroup()
     std::vector<App::DocumentObject*> parent = getInList();
     App::DocumentObject* obj = nullptr;
     for (std::vector<App::DocumentObject*>::iterator it = parent.begin(); it != parent.end(); ++it) {
-        if ((*it)->getTypeId().isDerivedFrom(DrawViewClip::getClassTypeId())) {
+        if ((*it)->isDerivedFrom<DrawViewClip>()) {
             obj = (*it);
             DrawViewClip* result = dynamic_cast<DrawViewClip*>(obj);
             return result;
@@ -486,7 +486,7 @@ std::vector<TechDraw::DrawLeaderLine*> DrawView::getLeaders() const
     std::vector<TechDraw::DrawLeaderLine*> result;
     std::vector<App::DocumentObject*> children = getInList();
     for (std::vector<App::DocumentObject*>::iterator it = children.begin(); it != children.end(); ++it) {
-        if ((*it)->getTypeId().isDerivedFrom(DrawLeaderLine::getClassTypeId())) {
+        if ((*it)->isDerivedFrom<DrawLeaderLine>()) {
             TechDraw::DrawLeaderLine* lead = dynamic_cast<TechDraw::DrawLeaderLine*>(*it);
             result.push_back(lead);
         }

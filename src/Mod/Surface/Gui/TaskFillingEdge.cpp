@@ -368,7 +368,7 @@ void FillingEdgePanel::onListUnboundItemDoubleClicked(QListWidgetItem* item)
         try {
             App::Document* doc = App::GetApplication().getDocument(data[0].toByteArray());
             App::DocumentObject* obj = doc ? doc->getObject(data[1].toByteArray()) : nullptr;
-            if (obj && obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+            if (obj && obj->isDerivedFrom<Part::Feature>()) {
                 const Part::TopoShape& shape = static_cast<Part::Feature*>(obj)->Shape.getShape();
                 TopoDS_Shape edge = shape.getSubShape(data[2].toByteArray());
 

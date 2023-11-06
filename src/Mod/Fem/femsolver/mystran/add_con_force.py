@@ -23,7 +23,7 @@
 
 __title__ = "Mystran add force constraint"
 __author__ = "Bernd Hahnebach"
-__url__ = "http://www.freecad.org"
+__url__ = "https://www.freecad.org"
 
 ## \addtogroup FEM
 #  @{

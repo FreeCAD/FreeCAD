@@ -310,7 +310,7 @@ void CmdPointsPolyCut::activated(int iMsg)
         if (it == docObj.begin()) {
             Gui::Document* doc = getActiveGuiDocument();
             Gui::MDIView* view = doc->getActiveView();
-            if (view->getTypeId().isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+            if (view->isDerivedFrom<Gui::View3DInventor>()) {
                 Gui::View3DInventorViewer* viewer = ((Gui::View3DInventor*)view)->getViewer();
                 viewer->setEditing(true);
                 viewer->startSelection(Gui::View3DInventorViewer::Lasso);
@@ -427,7 +427,7 @@ void CmdPointsStructure::activated(int iMsg)
         output->Label.setValue(name);
 
         // Already sorted, so just make a copy
-        if (it->getTypeId().isDerivedFrom(Points::Structured::getClassTypeId())) {
+        if (it->isDerivedFrom<Points::Structured>()) {
             Points::Structured* input = static_cast<Points::Structured*>(it);
 
             Points::PointKernel* kernel = output->Points.startEditing();

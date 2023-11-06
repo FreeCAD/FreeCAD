@@ -877,8 +877,7 @@ gp_Ax2 DrawComplexSection::getCSFromBase(const std::string sectionName) const
     //    Base::Console().Message("DCS::getCSFromBase()\n");
     App::DocumentObject* base = BaseView.getValue();
     if (!base
-        || !base->getTypeId().isDerivedFrom(
-            TechDraw::DrawViewPart::getClassTypeId())) {//is second clause necessary?
+        || !base->isDerivedFrom<TechDraw::DrawViewPart>()) {//is second clause necessary?
         //if this DCS does not have a baseView, we must use the existing SectionCS
         return getSectionCS();
     }
@@ -966,7 +965,7 @@ bool DrawComplexSection::isBaseValid() const
         //complex section is not based on an existing DVP
         return true;
     }
-    if (!base->getTypeId().isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+    if (!base->isDerivedFrom<TechDraw::DrawViewPart>()) {
         //this is probably an error somewhere. the valid options are base = a DVP,
         //or no base
         return false;

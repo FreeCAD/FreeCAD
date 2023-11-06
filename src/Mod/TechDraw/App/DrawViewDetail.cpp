@@ -141,7 +141,7 @@ App::DocumentObjectExecReturn* DrawViewDetail::execute()
         return DrawView::execute();
     }
 
-    if (!baseObj->getTypeId().isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+    if (!baseObj->isDerivedFrom<TechDraw::DrawViewPart>()) {
         //this can only happen via scripting?
         return DrawView::execute();
     }

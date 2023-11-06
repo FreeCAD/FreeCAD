@@ -242,7 +242,7 @@ void DlgDisplayPropertiesImp::slotChangedObject(const Gui::ViewProvider& obj,
         if (!name)
             return;
         std::string prop_name = name;
-        if (prop.getTypeId() == App::PropertyColor::getClassTypeId()) {
+        if (prop.is<App::PropertyColor>()) {
             App::Color value = static_cast<const App::PropertyColor&>(prop).getValue();
             if (prop_name == "ShapeColor") {
                 bool blocked = d->ui.buttonColor->blockSignals(true);
@@ -266,7 +266,7 @@ void DlgDisplayPropertiesImp::slotChangedObject(const Gui::ViewProvider& obj,
                 d->ui.buttonPointColor->blockSignals(blocked);
             }
         }
-        else if (prop.getTypeId().isDerivedFrom(App::PropertyInteger::getClassTypeId())) {
+        else if (prop.isDerivedFrom<App::PropertyInteger>()) {
             long value = static_cast<const App::PropertyInteger&>(prop).getValue();
             if (prop_name == "Transparency") {
                 bool blocked = d->ui.spinTransparency->blockSignals(true);
@@ -285,7 +285,7 @@ void DlgDisplayPropertiesImp::slotChangedObject(const Gui::ViewProvider& obj,
                 d->ui.sliderLineTransparency->blockSignals(blocked);
             }
         }
-        else if (prop.getTypeId().isDerivedFrom(App::PropertyFloat::getClassTypeId())) {
+        else if (prop.isDerivedFrom<App::PropertyFloat>()) {
             double value = static_cast<const App::PropertyFloat&>(prop).getValue();
             if (prop_name == "PointSize") {
                 bool blocked = d->ui.spinPointSize->blockSignals(true);

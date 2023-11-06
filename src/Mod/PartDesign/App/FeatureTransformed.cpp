@@ -107,23 +107,23 @@ Part::Feature* Transformed::getBaseObject(bool silent) const {
 App::DocumentObject* Transformed::getSketchObject() const
 {
     std::vector<DocumentObject*> originals = Originals.getValues();
-    if (!originals.empty() && originals.front()->getTypeId().isDerivedFrom(PartDesign::ProfileBased::getClassTypeId())) {
+    if (!originals.empty() && originals.front()->isDerivedFrom<PartDesign::ProfileBased>()) {
         return (static_cast<PartDesign::ProfileBased*>(originals.front()))->getVerifiedSketch(true);
     }
-    else if (!originals.empty() && originals.front()->getTypeId().isDerivedFrom(PartDesign::FeatureAddSub::getClassTypeId())) {
+    else if (!originals.empty() && originals.front()->isDerivedFrom<PartDesign::FeatureAddSub>()) {
         return nullptr;
     }
-    else if (this->getTypeId().isDerivedFrom(LinearPattern::getClassTypeId())) {
+    else if (this->isDerivedFrom<LinearPattern>()) {
         // if Originals is empty then try the linear pattern's Direction property
         const LinearPattern* pattern = static_cast<const LinearPattern*>(this);
         return pattern->Direction.getValue();
     }
-    else if (this->getTypeId().isDerivedFrom(PolarPattern::getClassTypeId())) {
+    else if (this->isDerivedFrom<PolarPattern>()) {
         // if Originals is empty then try the polar pattern's Axis property
         const PolarPattern* pattern = static_cast<const PolarPattern*>(this);
         return pattern->Axis.getValue();
     }
-    else if (this->getTypeId().isDerivedFrom(Mirrored::getClassTypeId())) {
+    else if (this->isDerivedFrom<Mirrored>()) {
         // if Originals is empty then try the mirror pattern's MirrorPlane property
         const Mirrored* pattern = static_cast<const Mirrored*>(this);
         return pattern->MirrorPlane.getValue();
@@ -143,7 +143,7 @@ void Transformed::handleChangedPropertyType(Base::XMLReader &reader, const char 
     // The property 'Angle' of PolarPattern has changed from PropertyFloat
     // to PropertyAngle and the property 'Length' has changed to PropertyLength.
     Base::Type inputType = Base::Type::fromName(TypeName);
-    if (prop->getTypeId().isDerivedFrom(App::PropertyFloat::getClassTypeId()) &&
+    if (prop->isDerivedFrom<App::PropertyFloat>() &&
         inputType.isDerivedFrom(App::PropertyFloat::getClassTypeId())) {
         // Do not directly call the property's Restore method in case the implementation
         // has changed. So, create a temporary PropertyFloat object and assign the value.
@@ -254,7 +254,7 @@ App::DocumentObjectExecReturn *Transformed::execute()
         Part::TopoShape fuseShape;
         Part::TopoShape cutShape;
 
-        if (original->getTypeId().isDerivedFrom(PartDesign::FeatureAddSub::getClassTypeId())) {
+        if (original->isDerivedFrom<PartDesign::FeatureAddSub>()) {
             PartDesign::FeatureAddSub* feature = static_cast<PartDesign::FeatureAddSub*>(original);
             feature->getAddSubShape(fuseShape, cutShape);
             if (fuseShape.isNull() && cutShape.isNull())

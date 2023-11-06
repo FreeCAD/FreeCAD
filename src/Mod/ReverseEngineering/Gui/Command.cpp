@@ -120,7 +120,7 @@ void CmdApproxPlane::activated(int)
         std::vector<App::Property*> List;
         it->getPropertyList(List);
         for (const auto& jt : List) {
-            if (jt->getTypeId().isDerivedFrom(App::PropertyComplexGeoData::getClassTypeId())) {
+            if (jt->isDerivedFrom<App::PropertyComplexGeoData>()) {
                 const Data::ComplexGeoData* data =
                     static_cast<App::PropertyComplexGeoData*>(jt)->getComplexData();
                 if (data) {

@@ -54,12 +54,12 @@ struct TypeData;
   \code
   void getRightFeature(Base::Base * anode)
   {
-    assert(anode->getTypeId().isDerivedFrom(App::Feature::getClassTypeId()));
+    assert(anode->isDerivedFrom<App::Feature>());
 
-    if (anode->getTypeId() == Mesh::MeshFeature::getClassTypeId()) {
+    if (anode->is<Mesh::MeshFeature>()) {
       // do something..
     }
-    else if (anode->getTypeId() == Part::PartFeature::getClassTypeId()) {
+    else if (anode->is<Part::PartFeature>()) {
       // do something..
     }
     else {

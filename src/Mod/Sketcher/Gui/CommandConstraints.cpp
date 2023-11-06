@@ -238,8 +238,8 @@ bool SketcherGui::calculateAngle(Sketcher::SketchObject* Obj, int& GeoId1, int& 
     const Part::Geometry* geom1 = Obj->getGeometry(GeoId1);
     const Part::Geometry* geom2 = Obj->getGeometry(GeoId2);
 
-    if (!(geom1->getTypeId() == Part::GeomLineSegment::getClassTypeId()) ||
-        !(geom2->getTypeId() == Part::GeomLineSegment::getClassTypeId())) {
+    if (!(geom1->is<Part::GeomLineSegment>()) ||
+        !(geom2->is<Part::GeomLineSegment>())) {
         return false;
     }
 
@@ -787,18 +787,15 @@ int SketchSelection::setUp()
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() == 1) {
         // if one selectetd, only sketch allowed. should be done by activity of command
-        if (!selection[0].getObject()->getTypeId().isDerivedFrom(
-                Sketcher::SketchObject::getClassTypeId())) {
+        if (!selection[0].getObject()->isDerivedFrom<Sketcher::SketchObject>()) {
             ErrorMsg = QObject::tr("Only sketch and its support are allowed to be selected.");
             return -1;
         }
 
-        SketchObj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
         SketchSubNames = selection[0].getSubNames();
     }
     else if (selection.size() == 2) {
-        if (selection[0].getObject()->getTypeId().isDerivedFrom(
-                Sketcher::SketchObject::getClassTypeId())) {
+        if (selection[0].getObject()->isDerivedFrom<Sketcher::SketchObject>()) {
             SketchObj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
             // check if the none sketch object is the support of the sketch
             if (selection[1].getObject() != SketchObj->Support.getValue()) {
@@ -806,13 +803,11 @@ int SketchSelection::setUp()
                 return -1;
             }
             // assume always a Part::Feature derived object as support
-            assert(selection[1].getObject()->getTypeId().isDerivedFrom(
-                Part::Feature::getClassTypeId()));
+            assert(selection[1].getObject()->isDerivedFrom<Part::Feature>());
             SketchSubNames = selection[0].getSubNames();
             SupportSubNames = selection[1].getSubNames();
         }
-        else if (selection[1].getObject()->getTypeId().isDerivedFrom(
-                     Sketcher::SketchObject::getClassTypeId())) {
+        else if (selection[1].getObject()->isDerivedFrom<Sketcher::SketchObject>()) {
             SketchObj = static_cast<Sketcher::SketchObject*>(selection[1].getObject());
             // check if the none sketch object is the support of the sketch
             if (selection[0].getObject() != SketchObj->Support.getValue()) {
@@ -820,8 +815,7 @@ int SketchSelection::setUp()
                 return -1;
             }
             // assume always a Part::Feature derived object as support
-            assert(selection[0].getObject()->getTypeId().isDerivedFrom(
-                Part::Feature::getClassTypeId()));
+            assert(selection[0].getObject()->isDerivedFrom<Part::Feature>());
             SketchSubNames = selection[1].getSubNames();
             SupportSubNames = selection[0].getSubNames();
         }
@@ -2163,6 +2157,9 @@ protected:
         bool isCircleGeom = true;
 
         const Part::Geometry* geom = Obj->getGeometry(GeoId);
+
+        if(!geom)
+            return;
 
         if (geom && isArcOfCircle(*geom)) {
             auto arc = static_cast<const Part::GeomArcOfCircle*>(geom);
@@ -4497,9 +4494,7 @@ void CmdSketcherConstrainDistance::applyConstraint(std::vector<SelIdPair>& selSe
         case 2:// {SelEdge}
         case 3:// {SelExternalEdge}
         {
-            GeoId1 = GeoId2 = selSeq.at(0).GeoId;
-            PosId1 = Sketcher::PointPos::start;
-            PosId2 = Sketcher::PointPos::end;
+            GeoId1 = selSeq.at(0).GeoId;
 
             arebothpointsorsegmentsfixed = isPointOrSegmentFixed(Obj, GeoId1);
 
@@ -4547,7 +4542,6 @@ void CmdSketcherConstrainDistance::applyConstraint(std::vector<SelIdPair>& selSe
             GeoId1 = selSeq.at(0).GeoId;
             GeoId2 = selSeq.at(1).GeoId;
             PosId1 = selSeq.at(0).PosId;
-            PosId2 = selSeq.at(1).PosId;
 
             Base::Vector3d pnt = Obj->getPoint(GeoId1, PosId1);
             const Part::Geometry* geom = Obj->getGeometry(GeoId2);
@@ -5407,8 +5401,6 @@ void CmdSketcherConstrainDistanceY::activated(int iMsg)
 
         Base::Vector3d pnt = Obj->getPoint(GeoId1, PosId1);
         double ActY = pnt.y;
-
-        arebothpointsorsegmentsfixed = isPointOrSegmentFixed(Obj, GeoId1);
 
         openCommand(QT_TRANSLATE_NOOP("Command", "Add fixed y-coordinate constraint"));
         Gui::cmdAppObjectArgs(selection[0].getObject(),

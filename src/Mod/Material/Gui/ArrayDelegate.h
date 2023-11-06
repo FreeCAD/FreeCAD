@@ -22,8 +22,6 @@
 #ifndef MATGUI_ArrayDelegate_H
 #define MATGUI_ArrayDelegate_H
 
-#include <boost/filesystem.hpp>
-
 #include <QDialog>
 #include <QDir>
 #include <QStandardItem>
@@ -35,8 +33,6 @@
 #include <Mod/Material/App/Materials.h>
 #include <Mod/Material/App/ModelManager.h>
 
-namespace fs = boost::filesystem;
-
 namespace MatGui
 {
 
@@ -44,10 +40,9 @@ class ArrayDelegate: public QStyledItemDelegate
 {
     Q_OBJECT
 public:
-    explicit ArrayDelegate(
-        Materials::MaterialValue::ValueType type = Materials::MaterialValue::None,
-        QString units = QString(),
-        QObject* parent = nullptr);
+    ArrayDelegate(Materials::MaterialValue::ValueType type = Materials::MaterialValue::None,
+                  QString units = QString(),
+                  QObject* parent = nullptr);
     virtual ~ArrayDelegate() = default;
 
     void paint(QPainter* painter,

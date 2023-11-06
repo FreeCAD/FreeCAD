@@ -171,7 +171,6 @@ protected Q_SLOTS:
     void reject();
     void helpRequested();
     void clicked (QAbstractButton * button);
-    void onUpdateWatcher();
 
 private:
     void triggerMinimumSizeHint();
@@ -200,7 +199,6 @@ protected:
     QSint::ActionPanel* taskPanel;
     TaskDialog *ActiveDialog;
     TaskEditControl *ActiveCtrl;
-    QTimer *timer;
 
     Connection connectApplicationActiveDocument;
     Connection connectApplicationDeleteDocument;

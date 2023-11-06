@@ -136,7 +136,7 @@ void ViewProviderShapeBinder::highlightReferences(bool on)
         return;
 
     // stop if not a Part feature was found
-    if (!obj || !obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
+    if (!obj || !obj->isDerivedFrom<Part::Feature>())
         return;
 
     PartGui::ViewProviderPart* svp = dynamic_cast<PartGui::ViewProviderPart*>(

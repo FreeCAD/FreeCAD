@@ -27,8 +27,15 @@
 #include <QInputDialog>
 
 #include <Gui/Notifications.h>
+#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 
+#include <Mod/Sketcher/App/SketchObject.h>
+
+#include "DrawSketchHandler.h"
 #include "GeometryCreationMode.h"
+#include "Utils.h"
+#include "ViewProviderSketch.h"
 
 
 namespace SketcherGui
@@ -472,7 +479,7 @@ private:
                                       controlpoints.c_str(),
                                       ConstrMethod == 0 ? "False" : "True",
                                       std::min(maxDegree, SplineDegree),
-                                      geometryCreationMode == Construction ? "True" : "False");
+                                      constructionModeAsBooleanText());
 
                 currentgeoid++;
 

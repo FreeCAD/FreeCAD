@@ -34,6 +34,7 @@
 #include <Inventor/nodes/SoInfo.h>
 
 #include <Mod/Sketcher/App/GeoList.h>
+#include <Mod/Sketcher/App/Constraint.h>
 
 #include "EditModeCoinManagerParameters.h"
 
@@ -60,7 +61,6 @@ class Geometry;
 
 namespace Sketcher
 {
-class Constraint;
 class PropertyConstraintList;
 };  // namespace Sketcher
 

@@ -987,9 +987,9 @@ class _Window(ArchComponent.Component):
                     if not obj.Subvolume.Shape.isNull():
                         sh = obj.Subvolume.Shape.copy()
                         pl = FreeCAD.Placement(sh.Placement)
-                        pl = pl.multiply(obj.Placement)
+                        pl = obj.Placement.multiply(pl)
                         if plac:
-                            pl = pl.multiply(plac)
+                            pl = plac.multiply(pl)
                         sh.Placement = pl
                         return sh
 

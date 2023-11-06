@@ -111,7 +111,7 @@ void TaskBooleanParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
             return;
 
         // if the selected object is not a body then get the body it is part of
-        if (!pcBody->getTypeId().isDerivedFrom(PartDesign::Body::getClassTypeId())) {
+        if (!pcBody->isDerivedFrom<PartDesign::Body>()) {
             pcBody = PartDesign::Body::findBodyOf(pcBody);
             if (!pcBody)
                 return;

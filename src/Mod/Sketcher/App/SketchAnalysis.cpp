@@ -165,7 +165,7 @@ int SketchAnalysis::detectMissingPointOnPointConstraints(double precision,
             continue;
         }
 
-        if (gf->getGeometry()->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+        if (gf->getGeometry()->is<Part::GeomLineSegment>()) {
             const Part::GeomLineSegment* segm =
                 static_cast<const Part::GeomLineSegment*>(gf->getGeometry());
             VertexIds id;
@@ -178,7 +178,7 @@ int SketchAnalysis::detectMissingPointOnPointConstraints(double precision,
             id.v = segm->getEndPoint();
             vertexIds.push_back(id);
         }
-        else if (gf->getGeometry()->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+        else if (gf->getGeometry()->is<Part::GeomArcOfCircle>()) {
             const Part::GeomArcOfCircle* segm =
                 static_cast<const Part::GeomArcOfCircle*>(gf->getGeometry());
             VertexIds id;
@@ -191,7 +191,7 @@ int SketchAnalysis::detectMissingPointOnPointConstraints(double precision,
             id.v = segm->getEndPoint(/*emulateCCW=*/true);
             vertexIds.push_back(id);
         }
-        else if (gf->getGeometry()->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) {
+        else if (gf->getGeometry()->is<Part::GeomArcOfEllipse>()) {
             const Part::GeomArcOfEllipse* segm =
                 static_cast<const Part::GeomArcOfEllipse*>(gf->getGeometry());
             VertexIds id;
@@ -204,7 +204,7 @@ int SketchAnalysis::detectMissingPointOnPointConstraints(double precision,
             id.v = segm->getEndPoint(/*emulateCCW=*/true);
             vertexIds.push_back(id);
         }
-        else if (gf->getGeometry()->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()) {
+        else if (gf->getGeometry()->is<Part::GeomArcOfHyperbola>()) {
             const Part::GeomArcOfHyperbola* segm =
                 static_cast<const Part::GeomArcOfHyperbola*>(gf->getGeometry());
             VertexIds id;
@@ -217,7 +217,7 @@ int SketchAnalysis::detectMissingPointOnPointConstraints(double precision,
             id.v = segm->getEndPoint();
             vertexIds.push_back(id);
         }
-        else if (gf->getGeometry()->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()) {
+        else if (gf->getGeometry()->is<Part::GeomArcOfParabola>()) {
             const Part::GeomArcOfParabola* segm =
                 static_cast<const Part::GeomArcOfParabola*>(gf->getGeometry());
             VertexIds id;
@@ -230,7 +230,7 @@ int SketchAnalysis::detectMissingPointOnPointConstraints(double precision,
             id.v = segm->getEndPoint();
             vertexIds.push_back(id);
         }
-        else if (gf->getGeometry()->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
+        else if (gf->getGeometry()->is<Part::GeomBSplineCurve>()) {
             const Part::GeomBSplineCurve* segm =
                 static_cast<const Part::GeomBSplineCurve*>(gf->getGeometry());
             VertexIds id;
@@ -402,8 +402,7 @@ void SketchAnalysis::analyseMissingPointOnPointCoincident(double angleprecision)
 
         if (curve1 && curve2) {
 
-            if (geo1->getTypeId() == Part::GeomLineSegment::getClassTypeId()
-                && geo2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+            if (geo1->is<Part::GeomLineSegment>() && geo2->is<Part::GeomLineSegment>()) {
 
                 const Part::GeomLineSegment* segm1 =
                     static_cast<const Part::GeomLineSegment*>(geo1);
@@ -508,7 +507,7 @@ int SketchAnalysis::detectMissingVerticalHorizontalConstraints(double anglepreci
     for (std::size_t i = 0; i < geom.size(); i++) {
         Part::Geometry* g = geom[i];
 
-        if (g->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+        if (g->is<Part::GeomLineSegment>()) {
             const Part::GeomLineSegment* segm = static_cast<const Part::GeomLineSegment*>(g);
 
             Base::Vector3d dir = segm->getEndPoint() - segm->getStartPoint();
@@ -606,21 +605,21 @@ int SketchAnalysis::detectMissingEqualityConstraints(double precision)
     for (std::size_t i = 0; i < geom.size(); i++) {
         Part::Geometry* g = geom[i];
 
-        if (g->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+        if (g->is<Part::GeomLineSegment>()) {
             const Part::GeomLineSegment* segm = static_cast<const Part::GeomLineSegment*>(g);
             EdgeIds id;
             id.GeoId = (int)i;
             id.l = (segm->getEndPoint() - segm->getStartPoint()).Length();
             lineedgeIds.push_back(id);
         }
-        else if (g->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+        else if (g->is<Part::GeomArcOfCircle>()) {
             const Part::GeomArcOfCircle* segm = static_cast<const Part::GeomArcOfCircle*>(g);
             EdgeIds id;
             id.GeoId = (int)i;
             id.l = segm->getRadius();
             radiusedgeIds.push_back(id);
         }
-        else if (g->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+        else if (g->is<Part::GeomCircle>()) {
             const Part::GeomCircle* segm = static_cast<const Part::GeomCircle*>(g);
             EdgeIds id;
             id.GeoId = (int)i;
@@ -988,7 +987,7 @@ int SketchAnalysis::detectDegeneratedGeometries(double tolerance)
             continue;
         }
 
-        if (gf->getGeometry()->getTypeId().isDerivedFrom(Part::GeomCurve::getClassTypeId())) {
+        if (gf->getGeometry()->isDerivedFrom<Part::GeomCurve>()) {
             Part::GeomCurve* curve = static_cast<Part::GeomCurve*>(gf->getGeometry());
             double len = curve->length(curve->getFirstParameter(), curve->getLastParameter());
             if (len < tolerance) {
@@ -1011,7 +1010,7 @@ int SketchAnalysis::removeDegeneratedGeometries(double tolerance)
             continue;
         }
 
-        if (gf->getGeometry()->getTypeId().isDerivedFrom(Part::GeomCurve::getClassTypeId())) {
+        if (gf->getGeometry()->isDerivedFrom<Part::GeomCurve>()) {
             Part::GeomCurve* curve = static_cast<Part::GeomCurve*>(gf->getGeometry());
             double len = curve->length(curve->getFirstParameter(), curve->getLastParameter());
             if (len < tolerance) {

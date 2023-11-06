@@ -194,7 +194,6 @@ SET(MaterialModel_Files
     Resources/Models/Legacy/Father.yml
     Resources/Models/Legacy/MaterialStandard.yml
     Resources/Models/Mechanical/Density.yml
-    Resources/Models/Mechanical/HypotheticalExample.yml
     Resources/Models/Mechanical/IsotropicLinearElastic.yml
     Resources/Models/Mechanical/LinearElastic.yml
     Resources/Models/Mechanical/OgdenYld2004p18.yml
@@ -205,6 +204,21 @@ SET(MaterialModel_Files
     Resources/Models/Rendering/VectorRendering.yml
     Resources/Models/Thermal/Thermal.yml
 )
+
+set(MaterialTest_Files
+    materialtests/__init__.py
+    materialtests/TestModels.py
+    materialtests/TestMaterials.py
+)
+
+ADD_CUSTOM_TARGET(MateriaTestLib ALL
+    SOURCES ${MaterialTest_Files}
+)
+
+fc_target_copy_resource(MateriaTestLib
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_BINARY_DIR}/Mod/Material
+    ${MaterialTest_Files})
 
 ADD_CUSTOM_TARGET(MaterialScripts ALL
     SOURCES ${MaterialScripts_Files} ${Material_QRC_SRCS}
@@ -273,6 +287,11 @@ fc_target_copy_resource(MaterialModelLib
 INSTALL(
     FILES ${Material_SRCS} ${Material_QRC_SRCS}
     DESTINATION Mod/Material
+)
+
+INSTALL(
+    FILES ${MaterialTest_Files}
+    DESTINATION Mod/Material/materialtests
 )
 
 foreach(file ${MaterialLib_Files} ${FluidMaterial_Files} ${AppearanceLib_Files} ${MaterialModel_Files})

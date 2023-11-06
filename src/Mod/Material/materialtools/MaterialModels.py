@@ -21,7 +21,7 @@
 
 __title__ = "material model utilities"
 __author__ = "David Carter"
-__url__ = "http://www.freecad.org"
+__url__ = "https://www.freecad.org"
 
 import os
 import io

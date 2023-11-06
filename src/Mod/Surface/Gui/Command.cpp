@@ -75,7 +75,7 @@ void CmdSurfaceCut::activated(int iMsg)
         bool askUser = false;
         for (std::vector<Gui::SelectionObject>::iterator it = Sel.begin(); it != Sel.end(); ++it) {
             App::DocumentObject* obj = it->getObject();
-            if (obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+            if (obj->isDerivedFrom<Part::Feature>()) {
                 const TopoDS_Shape& shape = static_cast<Part::Feature*>(obj)->Shape.getValue();
                 if (!PartGui::checkForSolids(shape) && !askUser) {
                     int ret = QMessageBox::warning(Gui::getMainWindow(), QObject::tr("Non-solids

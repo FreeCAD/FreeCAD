@@ -617,9 +617,9 @@ unsigned validateSketches(std::vector<App::DocumentObject*>& sketches,
         std::vector<App::DocumentObject*>::iterator o = inList.begin();
         while (o != inList.end()) {
             //Base::Console().Error("Inlist: %s\n", (*o)->getNameInDocument());
-            if ((*o)->getTypeId().isDerivedFrom(PartDesign::Body::getClassTypeId()))
+            if ((*o)->isDerivedFrom<PartDesign::Body>())
                 o = inList.erase(o); //ignore bodies
-            else if (!(  (*o)->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId())  ))
+            else if (!(  (*o)->isDerivedFrom<PartDesign::Feature>()  ))
                 o = inList.erase(o); //ignore non-partDesign
             else
                 ++o;
@@ -2244,7 +2244,7 @@ void CmdPartDesignMultiTransform::activated(int iMsg)
     if (!features.empty()) {
         // Throw out MultiTransform features, we don't want to nest them
         for (std::vector<App::DocumentObject*>::iterator f = features.begin(); f != features.end(); ) {
-            if ((*f)->getTypeId().isDerivedFrom(PartDesign::MultiTransform::getClassTypeId()))
+            if ((*f)->isDerivedFrom<PartDesign::MultiTransform>())
                 f = features.erase(f);
             else
                 f++;

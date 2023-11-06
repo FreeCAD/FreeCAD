@@ -363,8 +363,7 @@ void Cell::setContent(const char* value)
                             // check for units in denomainator
                             const auto uDenom =
                                 freecad_dynamic_cast<UnitExpression>(fraction->getRight());
-                            const bool isUnitDenom =
-                                uDenom && uDenom->getTypeId() == UnitExpression::getClassTypeId();
+                            const bool isUnitDenom = uDenom && uDenom->is<UnitExpression>();
 
                             const bool isNomValid = isNumberNom || isQuantityNom;
                             const bool isDenomValid =

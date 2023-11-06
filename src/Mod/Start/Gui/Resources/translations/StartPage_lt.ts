@@ -105,8 +105,8 @@
     </message>
     <message>
       <location filename="TranslationTexts.py" line="62"/>
-      <source>The &lt;a href="http://forum.freecadweb.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecadweb.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
-      <translation>&lt;a href="http://forum.freecadweb.org"&gt;„FreeCAD“ forumas&lt;/a&gt;yra puiki vieta gauti pagalbos iš kitų programos naudotojų ir kūrėjų. Forume rasite daug skilčių įvairiausioms bėdoms ar temoms aptrarti. Jei esate pasimetę, į kurią skiltį kreiptis, palikite įrašą bendresnėje skiltyje &lt;a href="https://forum.freecadweb.org/viewforum.php?f=3"&gt;Pagalba, kaip naudoti „FreeCAD“&lt;/a&gt;.</translation>
+      <source>The &lt;a href="https://forum.freecadweb.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecadweb.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
+      <translation>&lt;a href="https://forum.freecadweb.org"&gt;„FreeCAD“ forumas&lt;/a&gt;yra puiki vieta gauti pagalbos iš kitų programos naudotojų ir kūrėjų. Forume rasite daug skilčių įvairiausioms bėdoms ar temoms aptrarti. Jei esate pasimetę, į kurią skiltį kreiptis, palikite įrašą bendresnėje skiltyje &lt;a href="https://forum.freecadweb.org/viewforum.php?f=3"&gt;Pagalba, kaip naudoti „FreeCAD“&lt;/a&gt;.</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="63"/>

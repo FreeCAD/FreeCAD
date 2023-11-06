@@ -483,15 +483,14 @@ void CmdMeshFromGeometry::activated(int)
     std::vector<App::DocumentObject*> geo =
         Gui::Selection().getObjectsOfType(App::GeoFeature::getClassTypeId());
     for (auto it : geo) {
-        if (!it->getTypeId().isDerivedFrom(Mesh::Feature::getClassTypeId())) {
+        if (!it->isDerivedFrom<Mesh::Feature>()) {
             // exclude meshes
             std::map<std::string, App::Property*> Map;
             it->getPropertyMap(Map);
             Mesh::MeshObject mesh;
             for (const auto& jt : Map) {
                 if (jt.first == "Shape"
-                    && jt.second->getTypeId().isDerivedFrom(
-                        App::PropertyComplexGeoData::getClassTypeId())) {
+                    && jt.second->isDerivedFrom<App::PropertyComplexGeoData>()) {
                     std::vector<Base::Vector3d> aPoints;
                     std::vector<Data::ComplexGeoData::Facet> aTopo;
                     const Data::ComplexGeoData* data =
@@ -675,7 +674,7 @@ void CmdMeshPolySegm::activated(int)
         if (it == docObj.begin()) {
             Gui::Document* doc = getActiveGuiDocument();
             Gui::MDIView* view = doc->getActiveView();
-            if (view->getTypeId().isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+            if (view->isDerivedFrom<Gui::View3DInventor>()) {
                 Gui::View3DInventorViewer* viewer = ((Gui::View3DInventor*)view)->getViewer();
                 viewer->setEditing(true);
                 viewer->startSelection(Gui::View3DInventorViewer::Clip);
@@ -732,7 +731,7 @@ void CmdMeshAddFacet::activated(int)
     for (auto it : docObj) {
         Gui::Document* doc = Gui::Application::Instance->getDocument(it->getDocument());
         Gui::MDIView* view = doc->getActiveView();
-        if (view->getTypeId().isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+        if (view->isDerivedFrom<Gui::View3DInventor>()) {
             MeshGui::MeshFaceAddition* edit =
                 new MeshGui::MeshFaceAddition(static_cast<Gui::View3DInventor*>(view));
             edit->startEditing(static_cast<MeshGui::ViewProviderMesh*>(
@@ -783,7 +782,7 @@ void CmdMeshPolyCut::activated(int)
         if (it == docObj.begin()) {
             Gui::Document* doc = getActiveGuiDocument();
             Gui::MDIView* view = doc->getActiveView();
-            if (view->getTypeId().isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+            if (view->isDerivedFrom<Gui::View3DInventor>()) {
                 Gui::View3DInventorViewer* viewer = ((Gui::View3DInventor*)view)->getViewer();
                 viewer->setEditing(true);
 
@@ -848,7 +847,7 @@ void CmdMeshPolyTrim::activated(int)
         if (it == docObj.begin()) {
             Gui::Document* doc = getActiveGuiDocument();
             Gui::MDIView* view = doc->getActiveView();
-            if (view->getTypeId().isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+            if (view->isDerivedFrom<Gui::View3DInventor>()) {
                 Gui::View3DInventorViewer* viewer = ((Gui::View3DInventor*)view)->getViewer();
                 viewer->setEditing(true);
 
@@ -1001,7 +1000,7 @@ void CmdMeshPolySplit::activated(int)
         if (it == docObj.begin()) {
             Gui::Document* doc = getActiveGuiDocument();
             Gui::MDIView* view = doc->getActiveView();
-            if (view->getTypeId().isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+            if (view->isDerivedFrom<Gui::View3DInventor>()) {
                 Gui::View3DInventorViewer* viewer = ((Gui::View3DInventor*)view)->getViewer();
                 viewer->setEditing(true);
                 viewer->startSelection(Gui::View3DInventorViewer::Clip);

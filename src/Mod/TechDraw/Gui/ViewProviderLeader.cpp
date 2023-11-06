@@ -142,9 +142,9 @@ std::vector<App::DocumentObject*> ViewProviderLeader::claimChildren() const
     const std::vector<App::DocumentObject *> &views = getFeature()->getInList();
     try {
        for(std::vector<App::DocumentObject *>::const_iterator it = views.begin(); it != views.end(); ++it) {
-           if ((*it)->getTypeId().isDerivedFrom(TechDraw::DrawRichAnno::getClassTypeId())) {
+           if ((*it)->isDerivedFrom<TechDraw::DrawRichAnno>()) {
                 temp.push_back((*it));
-           } else if ((*it)->getTypeId().isDerivedFrom(TechDraw::DrawWeldSymbol::getClassTypeId())) {
+           } else if ((*it)->isDerivedFrom<TechDraw::DrawWeldSymbol>()) {
                 temp.push_back((*it));
             }
         }

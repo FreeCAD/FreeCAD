@@ -478,7 +478,7 @@ void PropertyLink::Restore(Base::XMLReader &reader)
     std::string name = reader.getName(reader.getAttribute("value"));
 
     // Property not in a DocumentObject!
-    assert(getContainer()->getTypeId().isDerivedFrom(App::DocumentObject::getClassTypeId()) );
+    assert(getContainer()->isDerivedFrom<App::DocumentObject>() );
 
     if (!name.empty()) {
         DocumentObject* parent = static_cast<DocumentObject*>(getContainer());
@@ -729,7 +729,7 @@ void PropertyLinkList::Restore(Base::XMLReader &reader)
     App::PropertyContainer* container = getContainer();
     if (!container)
         throw Base::RuntimeError("Property is not part of a container");
-    if (!container->getTypeId().isDerivedFrom(App::DocumentObject::getClassTypeId())) {
+    if (!container->isDerivedFrom<App::DocumentObject>()) {
         std::stringstream str;
         str << "Container is not a document object ("
             << container->getTypeId().getName() << ")";
@@ -1330,7 +1330,7 @@ void PropertyLinkSub::Restore(Base::XMLReader &reader)
     int count = reader.getAttributeAsInteger("count");
 
     // Property not in a DocumentObject!
-    assert(getContainer()->getTypeId().isDerivedFrom(App::DocumentObject::getClassTypeId()) );
+    assert(getContainer()->isDerivedFrom<App::DocumentObject>() );
     App::Document* document = static_cast<DocumentObject*>(getContainer())->getDocument();
 
     DocumentObject *pcObject = nullptr;
@@ -3339,7 +3339,7 @@ void PropertyXLink::Restore(Base::XMLReader &reader)
     else
         name = reader.getAttribute("name");
 
-    assert(getContainer()->getTypeId().isDerivedFrom(App::DocumentObject::getClassTypeId()));
+    assert(getContainer()->isDerivedFrom<App::DocumentObject>());
     DocumentObject *object = nullptr;
     if(!name.empty() && file.empty()) {
         DocumentObject* parent = static_cast<DocumentObject*>(getContainer());

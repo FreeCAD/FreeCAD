@@ -723,7 +723,7 @@ std::vector<TechDraw::DrawHatch*> DrawViewPart::getHatches() const
     std::vector<TechDraw::DrawHatch*> result;
     std::vector<App::DocumentObject*> children = getInList();
     for (auto& child : children) {
-        if (child->getTypeId().isDerivedFrom(DrawHatch::getClassTypeId()) && !child->isRemoving()) {
+        if (child->isDerivedFrom<DrawHatch>() && !child->isRemoving()) {
             TechDraw::DrawHatch* hatch = dynamic_cast<TechDraw::DrawHatch*>(child);
             result.push_back(hatch);
         }
@@ -737,7 +737,7 @@ std::vector<TechDraw::DrawGeomHatch*> DrawViewPart::getGeomHatches() const
     std::vector<TechDraw::DrawGeomHatch*> result;
     std::vector<App::DocumentObject*> children = getInList();
     for (auto& child : children) {
-        if (child->getTypeId().isDerivedFrom(DrawGeomHatch::getClassTypeId())
+        if (child->isDerivedFrom<DrawGeomHatch>()
             && !child->isRemoving()) {
             TechDraw::DrawGeomHatch* geom = dynamic_cast<TechDraw::DrawGeomHatch*>(child);
             result.push_back(geom);
@@ -757,7 +757,7 @@ std::vector<TechDraw::DrawViewDimension*> DrawViewPart::getDimensions() const
     std::vector<App::DocumentObject*>::iterator newEnd =
         std::unique(children.begin(), children.end());
     for (std::vector<App::DocumentObject*>::iterator it = children.begin(); it != newEnd; ++it) {
-        if ((*it)->getTypeId().isDerivedFrom(DrawViewDimension::getClassTypeId())) {
+        if ((*it)->isDerivedFrom<DrawViewDimension>()) {
             TechDraw::DrawViewDimension* dim = dynamic_cast<TechDraw::DrawViewDimension*>(*it);
             result.push_back(dim);
         }
@@ -773,7 +773,7 @@ std::vector<TechDraw::DrawViewBalloon*> DrawViewPart::getBalloons() const
     std::vector<App::DocumentObject*>::iterator newEnd =
         std::unique(children.begin(), children.end());
     for (std::vector<App::DocumentObject*>::iterator it = children.begin(); it != newEnd; ++it) {
-        if ((*it)->getTypeId().isDerivedFrom(DrawViewBalloon::getClassTypeId())) {
+        if ((*it)->isDerivedFrom<DrawViewBalloon>()) {
             TechDraw::DrawViewBalloon* balloon = dynamic_cast<TechDraw::DrawViewBalloon*>(*it);
             result.push_back(balloon);
         }
@@ -1164,7 +1164,7 @@ std::vector<DrawViewSection*> DrawViewPart::getSectionRefs() const
     std::vector<DrawViewSection*> result;
     std::vector<App::DocumentObject*> inObjs = getInList();
     for (auto& o : inObjs) {
-        if (o->getTypeId().isDerivedFrom(DrawViewSection::getClassTypeId())) {
+        if (o->isDerivedFrom<DrawViewSection>()) {
             result.push_back(static_cast<TechDraw::DrawViewSection*>(o));
         }
     }
@@ -1176,7 +1176,7 @@ std::vector<DrawViewDetail*> DrawViewPart::getDetailRefs() const
     std::vector<DrawViewDetail*> result;
     std::vector<App::DocumentObject*> inObjs = getInList();
     for (auto& o : inObjs) {
-        if (o->getTypeId().isDerivedFrom(DrawViewDetail::getClassTypeId())) {
+        if (o->isDerivedFrom<DrawViewDetail>()) {
             if (!o->isRemoving()) {
                 result.push_back(static_cast<TechDraw::DrawViewDetail*>(o));
             }

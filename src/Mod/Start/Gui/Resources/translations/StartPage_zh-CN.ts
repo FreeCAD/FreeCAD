@@ -175,8 +175,8 @@
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="98"/>
-      <source>The &lt;a href="http://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
-      <translation>&lt;a href="http://forum.freecad.org"&gt; FreeCAD 论坛&lt;/a&gt;是从其他 FreeCAD 用户和开发人员那里获得帮助的好地方。 该论坛有许多部分，讨论不同类型的问题和讨论主题。 如有疑问，请在&lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;使用 FreeCAD 的帮助&lt;/a&gt; 部分中发布。</translation>
+      <source>The &lt;a href="https://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
+      <translation>&lt;a href="https://forum.freecad.org"&gt; FreeCAD 论坛&lt;/a&gt;是从其他 FreeCAD 用户和开发人员那里获得帮助的好地方。 该论坛有许多部分，讨论不同类型的问题和讨论主题。 如有疑问，请在&lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;使用 FreeCAD 的帮助&lt;/a&gt; 部分中发布。</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="102"/>

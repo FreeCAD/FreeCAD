@@ -162,7 +162,7 @@ Gui::View3DInventorViewer* MeshSelection::getViewer() const
         return nullptr;
     }
     Gui::MDIView* view = doc->getActiveView();
-    if (view && view->getTypeId().isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+    if (view && view->isDerivedFrom<Gui::View3DInventor>()) {
         Gui::View3DInventorViewer* viewer = static_cast<Gui::View3DInventor*>(view)->getViewer();
         return viewer;
     }
@@ -561,7 +561,7 @@ void MeshSelection::pickFaceCallback(void* ud, SoEventCallback* n)
             // By specifying the indexed mesh node 'pcFaceSet' we make sure that the picked point is
             // really from the mesh we render and not from any other geometry
             Gui::ViewProvider* vp = view->getViewProviderByPathFromTail(point->getPath());
-            if (!vp || !vp->getTypeId().isDerivedFrom(ViewProviderMesh::getClassTypeId())) {
+            if (!vp || !vp->isDerivedFrom<ViewProviderMesh>()) {
                 return;
             }
             ViewProviderMesh* mesh = static_cast<ViewProviderMesh*>(vp);

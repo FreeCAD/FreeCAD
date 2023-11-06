@@ -176,8 +176,8 @@ Wie Sie FreeCAD selbst kompilieren können, der FreeCAD-Quellcode strukturiert i
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="98"/>
-      <source>The &lt;a href="http://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
-      <translation>Das &lt;a href="http://forum.freecad.org"&gt;FreeCAD-Forum&lt;/a&gt; ist ein großartiger Ort, um Hilfe von anderen FreeCAD-Benutzern und -Entwicklern zu erhalten. Das Forum enthält viele Bereiche für verschiedene Arten von Problemen und Diskussionsthemen. Wenn Sie sich nicht sicher sind, posten Sie im allgemeinen Abschnitt &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt;.</translation>
+      <source>The &lt;a href="https://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
+      <translation>Das &lt;a href="https://forum.freecad.org"&gt;FreeCAD-Forum&lt;/a&gt; ist ein großartiger Ort, um Hilfe von anderen FreeCAD-Benutzern und -Entwicklern zu erhalten. Das Forum enthält viele Bereiche für verschiedene Arten von Problemen und Diskussionsthemen. Wenn Sie sich nicht sicher sind, posten Sie im allgemeinen Abschnitt &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt;.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="102"/>

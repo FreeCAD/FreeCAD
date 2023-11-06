@@ -70,7 +70,7 @@ App::DocumentObjectExecReturn* HarmonizeNormals::execute()
         return new App::DocumentObjectExecReturn("No mesh linked");
     }
     App::Property* prop = link->getPropertyByName("Mesh");
-    if (prop && prop->getTypeId() == Mesh::PropertyMeshKernel::getClassTypeId()) {
+    if (prop && prop->is<Mesh::PropertyMeshKernel>()) {
         Mesh::PropertyMeshKernel* kernel = static_cast<Mesh::PropertyMeshKernel*>(prop);
         std::unique_ptr<MeshObject> mesh(new MeshObject);
         *mesh = kernel->getValue();
@@ -94,7 +94,7 @@ App::DocumentObjectExecReturn* FlipNormals::execute()
         return new App::DocumentObjectExecReturn("No mesh linked");
     }
     App::Property* prop = link->getPropertyByName("Mesh");
-    if (prop && prop->getTypeId() == Mesh::PropertyMeshKernel::getClassTypeId()) {
+    if (prop && prop->is<Mesh::PropertyMeshKernel>()) {
         Mesh::PropertyMeshKernel* kernel = static_cast<Mesh::PropertyMeshKernel*>(prop);
         std::unique_ptr<MeshObject> mesh(new MeshObject);
         *mesh = kernel->getValue();
@@ -118,7 +118,7 @@ App::DocumentObjectExecReturn* FixNonManifolds::execute()
         return new App::DocumentObjectExecReturn("No mesh linked");
     }
     App::Property* prop = link->getPropertyByName("Mesh");
-    if (prop && prop->getTypeId() == Mesh::PropertyMeshKernel::getClassTypeId()) {
+    if (prop && prop->is<Mesh::PropertyMeshKernel>()) {
         Mesh::PropertyMeshKernel* kernel = static_cast<Mesh::PropertyMeshKernel*>(prop);
         std::unique_ptr<MeshObject> mesh(new MeshObject);
         *mesh = kernel->getValue();
@@ -142,7 +142,7 @@ App::DocumentObjectExecReturn* FixDuplicatedFaces::execute()
         return new App::DocumentObjectExecReturn("No mesh linked");
     }
     App::Property* prop = link->getPropertyByName("Mesh");
-    if (prop && prop->getTypeId() == Mesh::PropertyMeshKernel::getClassTypeId()) {
+    if (prop && prop->is<Mesh::PropertyMeshKernel>()) {
         Mesh::PropertyMeshKernel* kernel = static_cast<Mesh::PropertyMeshKernel*>(prop);
         std::unique_ptr<MeshObject> mesh(new MeshObject);
         *mesh = kernel->getValue();
@@ -166,7 +166,7 @@ App::DocumentObjectExecReturn* FixDuplicatedPoints::execute()
         return new App::DocumentObjectExecReturn("No mesh linked");
     }
     App::Property* prop = link->getPropertyByName("Mesh");
-    if (prop && prop->getTypeId() == Mesh::PropertyMeshKernel::getClassTypeId()) {
+    if (prop && prop->is<Mesh::PropertyMeshKernel>()) {
         Mesh::PropertyMeshKernel* kernel = static_cast<Mesh::PropertyMeshKernel*>(prop);
         std::unique_ptr<MeshObject> mesh(new MeshObject);
         *mesh = kernel->getValue();
@@ -190,7 +190,7 @@ App::DocumentObjectExecReturn* FixDegenerations::execute()
         return new App::DocumentObjectExecReturn("No mesh linked");
     }
     App::Property* prop = link->getPropertyByName("Mesh");
-    if (prop && prop->getTypeId() == Mesh::PropertyMeshKernel::getClassTypeId()) {
+    if (prop && prop->is<Mesh::PropertyMeshKernel>()) {
         Mesh::PropertyMeshKernel* kernel = static_cast<Mesh::PropertyMeshKernel*>(prop);
         std::unique_ptr<MeshObject> mesh(new MeshObject);
         *mesh = kernel->getValue();
@@ -217,7 +217,7 @@ App::DocumentObjectExecReturn* FixDeformations::execute()
         return new App::DocumentObjectExecReturn("No mesh linked");
     }
     App::Property* prop = link->getPropertyByName("Mesh");
-    if (prop && prop->getTypeId() == Mesh::PropertyMeshKernel::getClassTypeId()) {
+    if (prop && prop->is<Mesh::PropertyMeshKernel>()) {
         Mesh::PropertyMeshKernel* kernel = static_cast<Mesh::PropertyMeshKernel*>(prop);
         std::unique_ptr<MeshObject> mesh(new MeshObject);
         *mesh = kernel->getValue();
@@ -242,7 +242,7 @@ App::DocumentObjectExecReturn* FixIndices::execute()
         return new App::DocumentObjectExecReturn("No mesh linked");
     }
     App::Property* prop = link->getPropertyByName("Mesh");
-    if (prop && prop->getTypeId() == Mesh::PropertyMeshKernel::getClassTypeId()) {
+    if (prop && prop->is<Mesh::PropertyMeshKernel>()) {
         Mesh::PropertyMeshKernel* kernel = static_cast<Mesh::PropertyMeshKernel*>(prop);
         std::unique_ptr<MeshObject> mesh(new MeshObject);
         *mesh = kernel->getValue();
@@ -270,7 +270,7 @@ App::DocumentObjectExecReturn* FillHoles::execute()
         return new App::DocumentObjectExecReturn("No mesh linked");
     }
     App::Property* prop = link->getPropertyByName("Mesh");
-    if (prop && prop->getTypeId() == Mesh::PropertyMeshKernel::getClassTypeId()) {
+    if (prop && prop->is<Mesh::PropertyMeshKernel>()) {
         Mesh::PropertyMeshKernel* kernel = static_cast<Mesh::PropertyMeshKernel*>(prop);
         std::unique_ptr<MeshObject> mesh(new MeshObject);
         *mesh = kernel->getValue();
@@ -299,7 +299,7 @@ App::DocumentObjectExecReturn* RemoveComponents::execute()
         return new App::DocumentObjectExecReturn("No mesh linked");
     }
     App::Property* prop = link->getPropertyByName("Mesh");
-    if (prop && prop->getTypeId() == Mesh::PropertyMeshKernel::getClassTypeId()) {
+    if (prop && prop->is<Mesh::PropertyMeshKernel>()) {
         Mesh::PropertyMeshKernel* kernel = static_cast<Mesh::PropertyMeshKernel*>(prop);
         std::unique_ptr<MeshObject> mesh(new MeshObject);
         *mesh = kernel->getValue();

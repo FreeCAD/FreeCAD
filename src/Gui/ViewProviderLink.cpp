@@ -2620,7 +2620,7 @@ bool ViewProviderLink::initDraggingPlacement() {
     Base::PyGILStateLocker lock;
     try {
         auto* proxy = getPropertyByName("Proxy");
-        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
+        if (proxy && proxy->is<App::PropertyPythonObject>()) {
             Py::Object feature = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
             const char *fname = "initDraggingPlacement";
             if (feature.hasAttr(fname)) {
@@ -2940,7 +2940,7 @@ bool ViewProviderLink::callDraggerProxy(const char *fname, bool update) {
     Base::PyGILStateLocker lock;
     try {
         auto* proxy = getPropertyByName("Proxy");
-        if (proxy && proxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
+        if (proxy && proxy->is<App::PropertyPythonObject>()) {
             Py::Object feature = static_cast<App::PropertyPythonObject*>(proxy)->getValue();
             if (feature.hasAttr(fname)) {
                 Py::Callable method(feature.getAttr(fname));

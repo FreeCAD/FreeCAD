@@ -127,7 +127,7 @@ std::vector<DrawTileWeld*> DrawWeldSymbol::getTiles() const
     }
 
     for(std::vector<App::DocumentObject *>::iterator it = tiles.begin(); it != tiles.end(); it++) {
-        if ((*it)->getTypeId().isDerivedFrom(TechDraw::DrawTileWeld::getClassTypeId())) {
+        if ((*it)->isDerivedFrom<TechDraw::DrawTileWeld>()) {
             App::DocumentObject* doTemp = (*it);
             DrawTileWeld* temp = static_cast<DrawTileWeld*>(doTemp);
             result.push_back(temp);

@@ -1,7 +1,8 @@
 # File created by ConvertFCMat.py
 General:
   UUID: "73371529-2983-47dd-b988-6739a2e20029"
-  AuthorAndLicense: "(c) 2013 Juergen Riegel (CC-BY 3.0)"
+  Author: "Juergen Riegel"
+  License: "CC-BY-3.0"
   Name: "ABS"
   Description: "This is a blend AcrylnitrilButadienStyrol (ABS) material card. The values are at the low end of the spectrum. If you need a more precise material definition use the more specialised ABS-blend cards."
   SourceURL: "http://www.matweb.com/search/DataSheet.aspx?MatGUID=eb7a78f5948d481c9493a67f0d089646"

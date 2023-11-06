@@ -247,8 +247,7 @@ bool ViewProviderInspection::setupPoints(const Data::ComplexGeoData* data,
     // If getPoints() doesn't deliver normals check a second property
     if (normals.empty() && container) {
         App::Property* propN = container->getPropertyByName("Normal");
-        if (propN
-            && propN->getTypeId().isDerivedFrom(Points::PropertyNormalList::getClassTypeId())) {
+        if (propN && propN->isDerivedFrom<Points::PropertyNormalList>()) {
             normals = static_cast<Points::PropertyNormalList*>(propN)->getValues();
         }
     }
@@ -327,7 +326,7 @@ void ViewProviderInspection::setupFaceIndexes(const std::vector<Data::ComplexGeo
 void ViewProviderInspection::updateData(const App::Property* prop)
 {
     // set to the expected size
-    if (prop->getTypeId().isDerivedFrom(App::PropertyLink::getClassTypeId())) {
+    if (prop->isDerivedFrom<App::PropertyLink>()) {
         App::GeoFeature* object =
             static_cast<const App::PropertyLink*>(prop)->getValue<App::GeoFeature*>();
         const App::PropertyComplexGeoData* propData =
@@ -343,7 +342,7 @@ void ViewProviderInspection::updateData(const App::Property* prop)
             }
         }
     }
-    else if (prop->getTypeId() == Inspection::PropertyDistanceList::getClassTypeId()) {
+    else if (prop->is<Inspection::PropertyDistanceList>()) {
         // force an update of the Inventor data nodes
         if (this->pcObject) {
             App::Property* link = this->pcObject->getPropertyByName("Actual");
@@ -353,7 +352,7 @@ void ViewProviderInspection::updateData(const App::Property* prop)
             setDistances();
         }
     }
-    else if (prop->getTypeId() == App::PropertyFloat::getClassTypeId()) {
+    else if (prop->is<App::PropertyFloat>()) {
         if (strcmp(prop->getName(), "SearchRadius") == 0) {
             float fSearchRadius = ((App::PropertyFloat*)prop)->getValue();
             this->search_radius = fSearchRadius;
@@ -427,7 +426,7 @@ QIcon ViewProviderInspection::getIcon() const
     // Get the icon of the view provider to the associated feature
     QIcon px = inherited::getIcon();
     App::Property* pActual = pcObject->getPropertyByName("Actual");
-    if (pActual && pActual->getTypeId().isDerivedFrom(App::PropertyLink::getClassTypeId())) {
+    if (pActual && pActual->isDerivedFrom<App::PropertyLink>()) {
         App::DocumentObject* docobj = ((App::PropertyLink*)pActual)->getValue();
         if (docobj) {
             Gui::Document* doc = Gui::Application::Instance->getDocument(docobj->getDocument());
@@ -572,7 +571,7 @@ void ViewProviderInspection::inspectCallback(void* ud, SoEventCallback* n)
 
             // check if we have picked one a node of the view provider we are insterested in
             Gui::ViewProvider* vp = view->getViewProviderByPathFromTail(point->getPath());
-            if (vp && vp->getTypeId().isDerivedFrom(ViewProviderInspection::getClassTypeId())) {
+            if (vp && vp->isDerivedFrom<ViewProviderInspection>()) {
                 ViewProviderInspection* that = static_cast<ViewProviderInspection*>(vp);
                 QString info = that->inspectDistance(point);
                 Gui::getMainWindow()->setPaneText(1, info);
@@ -594,9 +593,7 @@ void ViewProviderInspection::inspectCallback(void* ud, SoEventCallback* n)
                 for (int i = 0; i < pps.getLength(); ++i) {
                     const SoPickedPoint* point = pps[i];
                     vp = view->getViewProviderByPathFromTail(point->getPath());
-                    if (vp
-                        && vp->getTypeId().isDerivedFrom(
-                            ViewProviderInspection::getClassTypeId())) {
+                    if (vp && vp->isDerivedFrom<ViewProviderInspection>()) {
                         ViewProviderInspection* self = static_cast<ViewProviderInspection*>(vp);
                         QString info = self->inspectDistance(point);
                         Gui::getMainWindow()->setPaneText(1, info);
@@ -661,8 +658,7 @@ QString ViewProviderInspection::inspectDistance(const SoPickedPoint* pp) const
         // get the distances of the three points of the picked facet
         const SoFaceDetail* facedetail = static_cast<const SoFaceDetail*>(detail);
         App::Property* pDistance = this->pcObject->getPropertyByName("Distances");
-        if (pDistance
-            && pDistance->getTypeId() == Inspection::PropertyDistanceList::getClassTypeId()) {
+        if (pDistance && pDistance->is<Inspection::PropertyDistanceList>()) {
             Inspection::PropertyDistanceList* dist =
                 static_cast<Inspection::PropertyDistanceList*>(pDistance);
             int index1 = facedetail->getPoint(0)->getCoordinateIndex();
@@ -673,8 +669,7 @@ QString ViewProviderInspection::inspectDistance(const SoPickedPoint* pp) const
             float fVal3 = (*dist)[index3];
 
             App::Property* pActual = this->pcObject->getPropertyByName("Actual");
-            if (pActual
-                && pActual->getTypeId().isDerivedFrom(App::PropertyLink::getClassTypeId())) {
+            if (pActual && pActual->isDerivedFrom<App::PropertyLink>()) {
                 float fSearchRadius = this->search_radius;
                 if (fVal1 > fSearchRadius || fVal2 > fSearchRadius || fVal3 > fSearchRadius) {
                     info = QObject::tr("Distance: > %1").arg(fSearchRadius);
@@ -714,7 +709,7 @@ QString ViewProviderInspection::inspectDistance(const SoPickedPoint* pp) const
         // get the distance of the picked point
         int index = pointdetail->getCoordinateIndex();
         App::Property* prop = this->pcObject->getPropertyByName("Distances");
-        if (prop && prop->getTypeId() == Inspection::PropertyDistanceList::getClassTypeId()) {
+        if (prop && prop->is<Inspection::PropertyDistanceList>()) {
             Inspection::PropertyDistanceList* dist =
                 static_cast<Inspection::PropertyDistanceList*>(prop);
             float fVal = (*dist)[index];

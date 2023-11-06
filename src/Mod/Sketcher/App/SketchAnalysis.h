@@ -27,6 +27,8 @@
 #include <memory>
 #include <vector>
 
+#include <Precision.hxx>
+
 #include <Base/Vector3D.h>
 
 #include "Analyse.h"
