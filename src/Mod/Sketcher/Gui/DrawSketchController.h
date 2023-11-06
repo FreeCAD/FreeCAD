@@ -189,7 +189,12 @@ public:
         , keymanager(std::make_unique<DrawSketchKeyboardManager>())
     {}
 
-    ~DrawSketchController()
+    DrawSketchController(const DrawSketchController&) = delete;
+    DrawSketchController(DrawSketchController&&) = delete;
+    bool operator=(const DrawSketchController&) = delete;
+    bool operator=(DrawSketchController&&) = delete;
+
+    virtual ~DrawSketchController()
     {}
 
     /** @name functions NOT intended for specialisation offering a NVI for extension */
