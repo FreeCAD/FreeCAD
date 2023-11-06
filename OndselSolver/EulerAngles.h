@@ -33,7 +33,9 @@ namespace MbD {
 		std::shared_ptr<FullColumn<int>> rotOrder;
 		FColFMatDsptr cA;
 		FMatDsptr aA;
-
 	};
+//    // NOTE: do NOT instantiate EulerAngles<double> as a whole as differentiateWRT breaks
+//    template <>
+//    void EulerAngles<double>::setRotOrder(int, int, int);
 }
 

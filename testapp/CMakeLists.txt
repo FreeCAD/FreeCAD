@@ -5,5 +5,6 @@ project(OndselSolverLibrary VERSION 1.0.1 DESCRIPTION "Assembly Constraints and 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
-add_subdirectory(OndselSolver)
-add_subdirectory(testapp)
+add_executable(testapp OndselSolver.cpp)
+target_link_libraries(testapp OndselSolver)
+target_include_directories(testapp PUBLIC "../OndselSolver")
