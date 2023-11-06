@@ -725,20 +725,8 @@ void DlgPreferencesImp::restorePageDefaults(PreferencesPageItem* item)
         auto* page = qobject_cast<PreferencePage*>(item->getWidget());
         auto prefs = page->findChildren<QObject*>();
 
-        for (const auto& pref : prefs) {
-            if (!pref->property("prefPath").isNull() && !pref->property("prefEntry").isNull()) {
-                std::string path = pref->property("prefPath").toString().toStdString();
-                std::string entry = pref->property("prefEntry").toString().toStdString();
-
-                ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-                    std::string("User parameter:BaseApp/Preferences/" + path).c_str());
-
-                for (const auto& pn : hGrp->GetParameterNames(entry.c_str())) {
-                    hGrp->RemoveAttribute(pn.first, pn.second.c_str());
-                }
-            }
-        }
-
+        page->resetSettingsToDefaults();
+        
         std::string pageName = page->property(PageNameProperty).toString().toStdString();
         std::string groupName = page->property(GroupNameProperty).toString().toStdString();
 
