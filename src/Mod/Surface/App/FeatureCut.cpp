@@ -63,7 +63,7 @@ App::DocumentObjectExecReturn* Cut::execute()
         Part::TopoShape ts2;
 
         // Get first toposhape
-        if (shapes[0]->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+        if (shapes[0]->isDerivedFrom<Part::Feature>()) {
             ts1 = static_cast<Part::Feature*>(shapes[0])->Shape.getShape();  // Part::TopoShape 1
         }
         else {
@@ -71,7 +71,7 @@ App::DocumentObjectExecReturn* Cut::execute()
         }
 
         // Get second toposhape
-        if (shapes[1]->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+        if (shapes[1]->isDerivedFrom<Part::Feature>()) {
             ts2 = static_cast<Part::Feature*>(shapes[1])->Shape.getShape();
         }
         else {

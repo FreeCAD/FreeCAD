@@ -116,7 +116,7 @@ Part::Feature* Feature::getBaseObject(bool silent) const {
     const char *err = nullptr;
 
     if (BaseLink) {
-        if (BaseLink->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+        if (BaseLink->isDerivedFrom<Part::Feature>()) {
             BaseObject = static_cast<Part::Feature*>(BaseLink);
         }
         if (!BaseObject) {
@@ -191,8 +191,8 @@ PyObject* Feature::getPyObject()
 
 bool Feature::isDatum(const App::DocumentObject* feature)
 {
-    return feature->getTypeId().isDerivedFrom(App::OriginFeature::getClassTypeId()) ||
-           feature->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId());
+    return feature->isDerivedFrom<App::OriginFeature>() ||
+           feature->isDerivedFrom<Part::Datum>();
 }
 
 gp_Pln Feature::makePlnFromPlane(const App::DocumentObject* obj)

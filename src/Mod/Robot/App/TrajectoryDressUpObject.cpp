@@ -81,7 +81,7 @@ App::DocumentObjectExecReturn* TrajectoryDressUpObject::execute()
     if (!link) {
         return new App::DocumentObjectExecReturn("No object linked");
     }
-    if (!link->getTypeId().isDerivedFrom(Robot::TrajectoryObject::getClassTypeId())) {
+    if (!link->isDerivedFrom<Robot::TrajectoryObject>()) {
         return new App::DocumentObjectExecReturn("Linked object is not a Trajectory object");
     }
 

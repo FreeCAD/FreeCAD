@@ -238,8 +238,8 @@ bool SketcherGui::calculateAngle(Sketcher::SketchObject* Obj, int& GeoId1, int& 
     const Part::Geometry* geom1 = Obj->getGeometry(GeoId1);
     const Part::Geometry* geom2 = Obj->getGeometry(GeoId2);
 
-    if (!(geom1->getTypeId() == Part::GeomLineSegment::getClassTypeId()) ||
-        !(geom2->getTypeId() == Part::GeomLineSegment::getClassTypeId())) {
+    if (!(geom1->is<Part::GeomLineSegment>()) ||
+        !(geom2->is<Part::GeomLineSegment>())) {
         return false;
     }
 
@@ -787,8 +787,7 @@ int SketchSelection::setUp()
     // only one sketch with its subelements are allowed to be selected
     if (selection.size() == 1) {
         // if one selectetd, only sketch allowed. should be done by activity of command
-        if (!selection[0].getObject()->getTypeId().isDerivedFrom(
-                Sketcher::SketchObject::getClassTypeId())) {
+        if (!selection[0].getObject()->isDerivedFrom<Sketcher::SketchObject>()) {
             ErrorMsg = QObject::tr("Only sketch and its support are allowed to be selected.");
             return -1;
         }
@@ -796,8 +795,7 @@ int SketchSelection::setUp()
         SketchSubNames = selection[0].getSubNames();
     }
     else if (selection.size() == 2) {
-        if (selection[0].getObject()->getTypeId().isDerivedFrom(
-                Sketcher::SketchObject::getClassTypeId())) {
+        if (selection[0].getObject()->isDerivedFrom<Sketcher::SketchObject>()) {
             SketchObj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
             // check if the none sketch object is the support of the sketch
             if (selection[1].getObject() != SketchObj->Support.getValue()) {
@@ -805,13 +803,11 @@ int SketchSelection::setUp()
                 return -1;
             }
             // assume always a Part::Feature derived object as support
-            assert(selection[1].getObject()->getTypeId().isDerivedFrom(
-                Part::Feature::getClassTypeId()));
+            assert(selection[1].getObject()->isDerivedFrom<Part::Feature>());
             SketchSubNames = selection[0].getSubNames();
             SupportSubNames = selection[1].getSubNames();
         }
-        else if (selection[1].getObject()->getTypeId().isDerivedFrom(
-                     Sketcher::SketchObject::getClassTypeId())) {
+        else if (selection[1].getObject()->isDerivedFrom<Sketcher::SketchObject>()) {
             SketchObj = static_cast<Sketcher::SketchObject*>(selection[1].getObject());
             // check if the none sketch object is the support of the sketch
             if (selection[0].getObject() != SketchObj->Support.getValue()) {
@@ -819,8 +815,7 @@ int SketchSelection::setUp()
                 return -1;
             }
             // assume always a Part::Feature derived object as support
-            assert(selection[0].getObject()->getTypeId().isDerivedFrom(
-                Part::Feature::getClassTypeId()));
+            assert(selection[0].getObject()->isDerivedFrom<Part::Feature>());
             SketchSubNames = selection[1].getSubNames();
             SupportSubNames = selection[0].getSubNames();
         }

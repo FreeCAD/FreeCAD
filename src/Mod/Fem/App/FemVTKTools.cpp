@@ -603,7 +603,7 @@ App::DocumentObject* getObjectByType(const Base::Type type)
     if (obj->getTypeId() == type) {
         return obj;
     }
-    if (obj->getTypeId() == FemAnalysis::getClassTypeId()) {
+    if (obj->is<FemAnalysis>()) {
         std::vector<App::DocumentObject*> fem = (static_cast<FemAnalysis*>(obj))->Group.getValues();
         for (const auto& it : fem) {
             if (it->getTypeId().isDerivedFrom(type)) {
@@ -624,7 +624,7 @@ App::DocumentObject* createObjectByType(const Base::Type type)
     }
     App::DocumentObject* obj = pcDoc->getActiveObject();
 
-    if (obj->getTypeId() == FemAnalysis::getClassTypeId()) {
+    if (obj->is<FemAnalysis>()) {
         App::DocumentObject* newobj = pcDoc->addObject(type.getName());
         static_cast<FemAnalysis*>(obj)->addObject(newobj);
         return newobj;

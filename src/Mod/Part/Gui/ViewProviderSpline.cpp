@@ -102,7 +102,7 @@ void ViewProviderSplineExtension::extensionSetupContextMenu(QMenu* menu, QObject
 void ViewProviderSplineExtension::extensionUpdateData(const App::Property* prop)
 {
     Gui::ViewProviderExtension::extensionUpdateData(prop);
-    if (prop->getTypeId() == Part::PropertyPartShape::getClassTypeId() && strcmp(prop->getName(), "Shape") == 0) {
+    if (prop->is<Part::PropertyPartShape>() && strcmp(prop->getName(), "Shape") == 0) {
         // update control points if there
         if (pcControlPoints) {
             Gui::coinRemoveAllChildren(pcControlPoints);
@@ -139,7 +139,7 @@ void ViewProviderSplineExtension::showControlPoints(bool show, const App::Proper
         return;
 
     // ask for the property we are interested in
-    if (prop && prop->getTypeId() == Part::PropertyPartShape::getClassTypeId()) {
+    if (prop && prop->is<Part::PropertyPartShape>()) {
         const TopoDS_Shape& shape = static_cast<const Part::PropertyPartShape*>(prop)->getValue();
         if (shape.IsNull())
             return; // empty shape

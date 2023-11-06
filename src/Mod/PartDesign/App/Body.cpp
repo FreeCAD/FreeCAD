@@ -189,7 +189,7 @@ bool Body::isMemberOfMultiTransform(const App::DocumentObject* obj)
     // to auto set it when the originals are not null. See:
     // App::DocumentObjectExecReturn *Transformed::execute(void)
     //
-    return (obj->getTypeId().isDerivedFrom(PartDesign::Transformed::getClassTypeId()) &&
+    return (obj->isDerivedFrom<PartDesign::Transformed>() &&
             static_cast<const PartDesign::Transformed*>(obj)->Originals.getValues().empty());
 }
 
@@ -198,7 +198,7 @@ bool Body::isSolidFeature(const App::DocumentObject *obj)
     if (!obj)
         return false;
 
-    if (obj->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId()) &&
+    if (obj->isDerivedFrom<PartDesign::Feature>() &&
         !PartDesign::Feature::isDatum(obj)) {
         // Transformed Features inside a MultiTransform are not solid features
         return !isMemberOfMultiTransform(obj);
@@ -212,15 +212,15 @@ bool Body::isAllowed(const App::DocumentObject *obj)
         return false;
 
     // TODO: Should we introduce a PartDesign::FeaturePython class? This should then also return true for isSolidFeature()
-    return (obj->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId()) ||
-            obj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId())   ||
+    return (obj->isDerivedFrom<PartDesign::Feature>() ||
+            obj->isDerivedFrom<Part::Datum>()   ||
             // TODO Shouldn't we replace it with Sketcher::SketchObject? (2015-08-13, Fat-Zer)
-            obj->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId()) ||
-            obj->getTypeId().isDerivedFrom(PartDesign::ShapeBinder::getClassTypeId()) ||
-            obj->getTypeId().isDerivedFrom(PartDesign::SubShapeBinder::getClassTypeId())
+            obj->isDerivedFrom<Part::Part2DObject>() ||
+            obj->isDerivedFrom<PartDesign::ShapeBinder>() ||
+            obj->isDerivedFrom<PartDesign::SubShapeBinder>()
             // TODO Why this lines was here? why should we allow anything of those? (2015-08-13, Fat-Zer)
-            //obj->getTypeId().isDerivedFrom(Part::FeaturePython::getClassTypeId()) // trouble with this line on Windows!? Linker fails to find getClassTypeId() of the Part::FeaturePython...
-            //obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())
+            //obj->isDerivedFrom<Part::FeaturePython>() // trouble with this line on Windows!? Linker fails to find getClassTypeId() of the Part::FeaturePython...
+            //obj->isDerivedFrom<Part::Feature>()
             );
 }
 

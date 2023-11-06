@@ -110,7 +110,7 @@ const std::list<gp_Trsf> LinearPattern::getTransformations(const std::vector<App
         throw Base::ValueError("No direction reference specified");
 
     gp_Dir dir;
-    if (refObject->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+    if (refObject->isDerivedFrom<Part::Part2DObject>()) {
         Part::Part2DObject* refSketch = static_cast<Part::Part2DObject*>(refObject);
         Base::Axis axis;
         if (subStrings[0] == "H_Axis") {
@@ -151,21 +151,21 @@ const std::list<gp_Trsf> LinearPattern::getTransformations(const std::vector<App
             axis.setDirection(Base::Vector3d(d.X(), d.Y(), d.Z()));
         }
         dir = gp_Dir(axis.getDirection().x, axis.getDirection().y, axis.getDirection().z);
-    } else if (refObject->getTypeId().isDerivedFrom(PartDesign::Plane::getClassTypeId())) {
+    } else if (refObject->isDerivedFrom<PartDesign::Plane>()) {
         PartDesign::Plane* plane = static_cast<PartDesign::Plane*>(refObject);
         Base::Vector3d d = plane->getNormal();
         dir = gp_Dir(d.x, d.y, d.z);
-    } else if (refObject->getTypeId().isDerivedFrom(PartDesign::Line::getClassTypeId())) {
+    } else if (refObject->isDerivedFrom<PartDesign::Line>()) {
         PartDesign::Line* line = static_cast<PartDesign::Line*>(refObject);
         Base::Vector3d d = line->getDirection();
         dir = gp_Dir(d.x, d.y, d.z);
-    } else if (refObject->getTypeId().isDerivedFrom(App::Line::getClassTypeId())) {
+    } else if (refObject->isDerivedFrom<App::Line>()) {
         App::Line* line = static_cast<App::Line*>(refObject);
         Base::Rotation rot = line->Placement.getValue().getRotation();
         Base::Vector3d d(1,0,0);
         rot.multVec(d, d);
         dir = gp_Dir(d.x, d.y, d.z);
-    } else if (refObject->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+    } else if (refObject->isDerivedFrom<Part::Feature>()) {
         if (subStrings[0].empty())
             throw Base::ValueError("No direction reference specified");
         Part::Feature* refFeature = static_cast<Part::Feature*>(refObject);

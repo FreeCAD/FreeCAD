@@ -263,7 +263,7 @@ std::vector<App::DocumentObject*> TaskFeaturePick::buildFeatures()
                         else if (status == notInBody) {
                             activeBody->addObject(copy);
                             // doesn't supposed to get here anything but sketch but to be on the safe side better to check
-                            if (copy->getTypeId().isDerivedFrom(Sketcher::SketchObject::getClassTypeId())) {
+                            if (copy->isDerivedFrom<Sketcher::SketchObject>()) {
                                 Sketcher::SketchObject *sketch = static_cast<Sketcher::SketchObject*>(copy);
                                 PartDesignGui::fixSketchSupport(sketch);
                             }
@@ -325,10 +325,10 @@ App::DocumentObject* TaskFeaturePick::makeCopy(App::DocumentObject* obj, std::st
 
             //independent copies don't have links and are not attached
             if(independent && (
-                prop->getTypeId().isDerivedFrom(App::PropertyLink::getClassTypeId()) ||
-                prop->getTypeId().isDerivedFrom(App::PropertyLinkList::getClassTypeId()) ||
-                prop->getTypeId().isDerivedFrom(App::PropertyLinkSub::getClassTypeId()) ||
-                prop->getTypeId().isDerivedFrom(App::PropertyLinkSubList::getClassTypeId())||
+                prop->isDerivedFrom<App::PropertyLink>() ||
+                prop->isDerivedFrom<App::PropertyLinkList>() ||
+                prop->isDerivedFrom<App::PropertyLinkSub>() ||
+                prop->isDerivedFrom<App::PropertyLinkSubList>()||
                 ( prop->getGroup() && strcmp(prop->getGroup(),"Attachment")==0) ))    {
 
                 ++it;
@@ -378,13 +378,13 @@ App::DocumentObject* TaskFeaturePick::makeCopy(App::DocumentObject* obj, std::st
             long int mode = mmDeactivated;
             Part::Datum *datumCopy = static_cast<Part::Datum*>(copy);
 
-            if(obj->getTypeId() == PartDesign::Point::getClassTypeId()) {
+            if(obj->is<PartDesign::Point>()) {
                 mode = mm0Vertex;
             }
-            else if(obj->getTypeId() == PartDesign::Line::getClassTypeId()) {
+            else if(obj->is<PartDesign::Line>()) {
                 mode = mm1TwoPoints;
             }
-            else if(obj->getTypeId() == PartDesign::Plane::getClassTypeId()) {
+            else if(obj->is<PartDesign::Plane>()) {
                 mode = mmFlatFace;
             }
             else
@@ -401,7 +401,7 @@ App::DocumentObject* TaskFeaturePick::makeCopy(App::DocumentObject* obj, std::st
                 datumCopy->Shape.setValue(static_cast<Part::Datum*>(obj)->Shape.getValue());
             }
         }
-        else if(obj->getTypeId() == PartDesign::ShapeBinder::getClassTypeId() ||
+        else if(obj->is<PartDesign::ShapeBinder>() ||
                 obj->isDerivedFrom(Part::Feature::getClassTypeId())) {
 
             copy = App::GetApplication().getActiveDocument()->addObject("PartDesign::ShapeBinder", name.c_str());

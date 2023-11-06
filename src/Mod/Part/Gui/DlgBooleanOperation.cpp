@@ -126,7 +126,7 @@ void DlgBooleanOperation::slotCreatedObject(const App::DocumentObject& obj)
     if (!activeDoc)
         return;
     App::Document* doc = obj.getDocument();
-    if (activeDoc == doc && obj.getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+    if (activeDoc == doc && obj.isDerivedFrom<Part::Feature>()) {
         observe.push_back(&obj);
     }
 }
@@ -136,7 +136,7 @@ void DlgBooleanOperation::slotChangedObject(const App::DocumentObject& obj,
 {
     std::list<const App::DocumentObject*>::iterator it;
     it = std::find(observe.begin(), observe.end(), &obj);
-    if (it != observe.end() && prop.getTypeId() == Part::PropertyPartShape::getClassTypeId()) {
+    if (it != observe.end() && prop.is<Part::PropertyPartShape>()) {
         const TopoDS_Shape& shape = static_cast<const Part::PropertyPartShape&>(prop).getValue();
         if (!shape.IsNull()) {
             Gui::Document* activeGui = Gui::Application::Instance->getDocument(obj.getDocument());
@@ -198,7 +198,7 @@ void DlgBooleanOperation::slotChangedObject(const App::DocumentObject& obj,
 
 bool DlgBooleanOperation::hasSolids(const App::DocumentObject* obj) const
 {
-    if (obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+    if (obj->isDerivedFrom<Part::Feature>()) {
         const TopoDS_Shape& shape = static_cast<const Part::Feature*>(obj)->Shape.getValue();
         TopExp_Explorer anExp (shape, TopAbs_SOLID);
         if (anExp.More()) {

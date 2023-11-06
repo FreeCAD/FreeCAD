@@ -289,7 +289,7 @@ void ViewProviderMeshCurvature::attach(App::DocumentObject* pcFeat)
 void ViewProviderMeshCurvature::updateData(const App::Property* prop)
 {
     // set to the expected size
-    if (prop->getTypeId().isDerivedFrom(App::PropertyLink::getClassTypeId())) {
+    if (prop->isDerivedFrom<App::PropertyLink>()) {
         Mesh::Feature* object =
             static_cast<const App::PropertyLink*>(prop)->getValue<Mesh::Feature*>();
         Gui::coinRemoveAllChildren(this->pcLinkRoot);
@@ -309,7 +309,7 @@ void ViewProviderMeshCurvature::updateData(const App::Property* prop)
             ViewProviderMesh::updateTransform(p, pcTransform);
         }
     }
-    else if (prop->getTypeId() == Mesh::PropertyCurvatureList::getClassTypeId()) {
+    else if (prop->is<Mesh::PropertyCurvatureList>()) {
         const Mesh::PropertyCurvatureList* curv =
             static_cast<const Mesh::PropertyCurvatureList*>(prop);
         if (curv->getSize() < 3) {  // invalid array
@@ -545,8 +545,7 @@ void ViewProviderMeshCurvature::curvatureInfoCallback(void* ud, SoEventCallback*
             // By specifying the indexed mesh node 'pcFaceSet' we make sure that the picked point is
             // really from the mesh we render and not from any other geometry
             Gui::ViewProvider* vp = view->getViewProviderByPathFromTail(point->getPath());
-            if (!vp
-                || !vp->getTypeId().isDerivedFrom(ViewProviderMeshCurvature::getClassTypeId())) {
+            if (!vp || !vp->isDerivedFrom<ViewProviderMeshCurvature>()) {
                 return;
             }
             ViewProviderMeshCurvature* self = static_cast<ViewProviderMeshCurvature*>(vp);
@@ -582,7 +581,7 @@ void ViewProviderMeshCurvature::curvatureInfoCallback(void* ud, SoEventCallback*
         // By specifying the indexed mesh node 'pcFaceSet' we make sure that the picked point is
         // really from the mesh we render and not from any other geometry
         Gui::ViewProvider* vp = view->getViewProviderByPathFromTail(point->getPath());
-        if (!vp || !vp->getTypeId().isDerivedFrom(ViewProviderMeshCurvature::getClassTypeId())) {
+        if (!vp || !vp->isDerivedFrom<ViewProviderMeshCurvature>()) {
             return;
         }
         ViewProviderMeshCurvature* that = static_cast<ViewProviderMeshCurvature*>(vp);
@@ -605,7 +604,7 @@ ViewProviderMeshCurvature::curvatureInfo(bool detail, int index1, int index2, in
     // get the curvature info of the three points of the picked facet
     App::Property* prop = pcObject->getPropertyByName("CurvInfo");
     std::stringstream str;
-    if (prop && prop->getTypeId() == Mesh::PropertyCurvatureList::getClassTypeId()) {
+    if (prop && prop->is<Mesh::PropertyCurvatureList>()) {
         Mesh::PropertyCurvatureList* curv = static_cast<Mesh::PropertyCurvatureList*>(prop);
         const Mesh::CurvatureInfo& cVal1 = (*curv)[index1];
         const Mesh::CurvatureInfo& cVal2 = (*curv)[index2];

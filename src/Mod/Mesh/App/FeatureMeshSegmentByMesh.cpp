@@ -64,7 +64,7 @@ App::DocumentObjectExecReturn* SegmentByMesh::execute()
     App::DocumentObject* mesh = Source.getValue();
     if (mesh) {
         App::Property* prop = mesh->getPropertyByName("Mesh");
-        if (prop && prop->getTypeId() == Mesh::PropertyMeshKernel::getClassTypeId()) {
+        if (prop && prop->is<Mesh::PropertyMeshKernel>()) {
             kernel = static_cast<Mesh::PropertyMeshKernel*>(prop);
         }
     }
@@ -79,7 +79,7 @@ App::DocumentObjectExecReturn* SegmentByMesh::execute()
     App::DocumentObject* tool = Tool.getValue();
     if (tool) {
         App::Property* prop = tool->getPropertyByName("Mesh");
-        if (prop && prop->getTypeId() == Mesh::PropertyMeshKernel::getClassTypeId()) {
+        if (prop && prop->is<Mesh::PropertyMeshKernel>()) {
             toolmesh = static_cast<Mesh::PropertyMeshKernel*>(prop);
         }
     }

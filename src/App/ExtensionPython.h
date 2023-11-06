@@ -62,7 +62,7 @@ using ExtensionPython = ExtensionPythonT<App::Extension>;
     Py::Object result;\
     try {\
         Property* proxy = this->getExtendedContainer()->getPropertyByName("Proxy");\
-        if (proxy && proxy->getTypeId() == PropertyPythonObject::getClassTypeId()) {\
+        if (proxy && proxy->is<PropertyPythonObject>()) {\
             Py::Object feature = static_cast<PropertyPythonObject*>(proxy)->getValue();\
             if (feature.hasAttr(std::string("function"))) {\
                 if (feature.hasAttr("__object__")) {\

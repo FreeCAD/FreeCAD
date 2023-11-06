@@ -82,7 +82,7 @@ int CurveConstraintPy::PyInit(PyObject* args, PyObject* kwds)
 
 #if OCC_VERSION_HEX >= 0x070600
             Handle(Adaptor3d_Curve) hCurve;
-            if (curve->getTypeId().isDerivedFrom(GeomTrimmedCurve::getClassTypeId())) {
+            if (curve->isDerivedFrom<GeomTrimmedCurve>()) {
                 GeomTrimmedCurve* trim = static_cast<GeomTrimmedCurve*>(curve);
                 hCurve = new GeomAdaptor_Curve(handle, trim->getFirstParameter(), trim->getLastParameter());
             }
@@ -91,7 +91,7 @@ int CurveConstraintPy::PyInit(PyObject* args, PyObject* kwds)
             }
 #else
             Handle(Adaptor3d_HCurve) hCurve;
-            if (curve->getTypeId().isDerivedFrom(GeomTrimmedCurve::getClassTypeId())) {
+            if (curve->isDerivedFrom<GeomTrimmedCurve>()) {
                 GeomTrimmedCurve* trim = static_cast<GeomTrimmedCurve*>(curve);
                 GeomAdaptor_Curve adapt(handle, trim->getFirstParameter(), trim->getLastParameter());
                 hCurve = new GeomAdaptor_HCurve(adapt);

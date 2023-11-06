@@ -648,7 +648,7 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint>& suggested
         // ensure geom exists in case object was called before preselection is updated
         if (geom) {
             GeoId = preSelCrv;
-            if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+            if (geom->is<Part::GeomLineSegment>()) {
                 const Part::GeomLineSegment* line = static_cast<const Part::GeomLineSegment*>(geom);
                 hitShapeDir = line->getEndPoint() - line->getStartPoint();
             }
@@ -768,7 +768,7 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint>& suggested
     for (std::vector<Part::Geometry*>::const_iterator it = geomlist.begin(); it != geomlist.end();
          ++it, i++) {
 
-        if ((*it)->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+        if ((*it)->is<Part::GeomCircle>()) {
             const Part::GeomCircle* circle = static_cast<const Part::GeomCircle*>((*it));
 
             Base::Vector3d center = circle->getCenter();
@@ -790,7 +790,7 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint>& suggested
                 tangDeviation = projDist;
             }
         }
-        else if ((*it)->getTypeId() == Part::GeomEllipse::getClassTypeId()) {
+        else if ((*it)->is<Part::GeomEllipse>()) {
 
             const Part::GeomEllipse* ellipse = static_cast<const Part::GeomEllipse*>((*it));
 
@@ -819,7 +819,7 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint>& suggested
                 tangDeviation = error;
             }
         }
-        else if ((*it)->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+        else if ((*it)->is<Part::GeomArcOfCircle>()) {
             const Part::GeomArcOfCircle* arc = static_cast<const Part::GeomArcOfCircle*>((*it));
 
             Base::Vector3d center = arc->getCenter();
@@ -850,7 +850,7 @@ int DrawSketchHandler::seekAutoConstraint(std::vector<AutoConstraint>& suggested
                 }
             }
         }
-        else if ((*it)->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) {
+        else if ((*it)->is<Part::GeomArcOfEllipse>()) {
             const Part::GeomArcOfEllipse* aoe = static_cast<const Part::GeomArcOfEllipse*>((*it));
 
             Base::Vector3d center = aoe->getCenter();
@@ -993,8 +993,7 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint>&
 
                     // ellipse tangency support using construction elements (lines)
                     if (geom1 && geom2
-                        && (geom1->getTypeId() == Part::GeomEllipse::getClassTypeId()
-                            || geom2->getTypeId() == Part::GeomEllipse::getClassTypeId())) {
+                        && (geom1->is<Part::GeomEllipse>() || geom2->is<Part::GeomEllipse>())) {
 
                         if (geom1->getTypeId() != Part::GeomEllipse::getClassTypeId()) {
                             std::swap(geoId1, geoId2);
@@ -1004,10 +1003,9 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint>&
                         geom1 = Obj->getGeometry(geoId1);
                         geom2 = Obj->getGeometry(geoId2);
 
-                        if (geom2->getTypeId() == Part::GeomEllipse::getClassTypeId()
-                            || geom2->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()
-                            || geom2->getTypeId() == Part::GeomCircle::getClassTypeId()
-                            || geom2->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+                        if (geom2->is<Part::GeomEllipse>() || geom2->is<Part::GeomArcOfEllipse>()
+                            || geom2->is<Part::GeomCircle>()
+                            || geom2->is<Part::GeomArcOfCircle>()) {
                             // in all these cases an intermediate element is needed
                             makeTangentToEllipseviaNewPoint(
                                 Obj,
@@ -1021,8 +1019,8 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint>&
 
                     // arc of ellipse tangency support using external elements
                     if (geom1 && geom2
-                        && (geom1->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()
-                            || geom2->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId())) {
+                        && (geom1->is<Part::GeomArcOfEllipse>()
+                            || geom2->is<Part::GeomArcOfEllipse>())) {
 
                         if (geom1->getTypeId() != Part::GeomArcOfEllipse::getClassTypeId()) {
                             std::swap(geoId1, geoId2);
@@ -1032,9 +1030,8 @@ void DrawSketchHandler::createAutoConstraints(const std::vector<AutoConstraint>&
                         geom1 = Obj->getGeometry(geoId1);
                         geom2 = Obj->getGeometry(geoId2);
 
-                        if (geom2->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()
-                            || geom2->getTypeId() == Part::GeomCircle::getClassTypeId()
-                            || geom2->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+                        if (geom2->is<Part::GeomArcOfEllipse>() || geom2->is<Part::GeomCircle>()
+                            || geom2->is<Part::GeomArcOfCircle>()) {
                             // in all these cases an intermediate element is needed
                             makeTangentToArcOfEllipseviaNewPoint(
                                 Obj,

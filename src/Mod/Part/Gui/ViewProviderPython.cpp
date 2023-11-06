@@ -57,12 +57,12 @@ void ViewProviderCustom::onChanged(const App::Property* prop)
 
 void ViewProviderCustom::updateData(const App::Property* prop)
 {
-    if (prop->getTypeId().isDerivedFrom(App::PropertyComplexGeoData::getClassTypeId())) {
+    if (prop->isDerivedFrom<App::PropertyComplexGeoData>()) {
         std::map<const App::Property*, Gui::ViewProvider*>::iterator it = propView.find(prop);
         if (it == propView.end()) {
             Gui::ViewProvider* view = Gui::ViewProviderBuilder::create(prop->getTypeId());
             if (view) {
-                if (view->getTypeId().isDerivedFrom(Gui::ViewProviderDocumentObject::getClassTypeId())) {
+                if (view->isDerivedFrom<Gui::ViewProviderDocumentObject>()) {
                     static_cast<Gui::ViewProviderDocumentObject*>(view)->attach(this->getObject());
                     static_cast<Gui::ViewProviderDocumentObject*>(view)->setDisplayMode(this->getActiveDisplayMode().c_str());
                 }

@@ -377,7 +377,7 @@ void ViewProviderPartExt::onChanged(const App::Property* prop)
 bool ViewProviderPartExt::allowOverride(const App::DocumentObject &) const {
     // Many derived view providers still uses static_cast to get object
     // pointer, so check for exact type here.
-    return getTypeId() == ViewProviderPartExt::getClassTypeId();
+    return is<ViewProviderPartExt>();
 }
 
 void ViewProviderPartExt::attach(App::DocumentObject *pcFeat)

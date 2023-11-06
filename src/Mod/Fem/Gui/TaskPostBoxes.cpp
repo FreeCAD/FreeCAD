@@ -1332,8 +1332,7 @@ void TaskPostClip::collectImplicitFunctions()
     if (!pipelines.empty()) {
         Fem::FemPostPipeline* pipeline = pipelines.front();
         if (pipeline->Functions.getValue()
-            && pipeline->Functions.getValue()->getTypeId()
-                == Fem::FemPostFunctionProvider::getClassTypeId()) {
+            && pipeline->Functions.getValue()->is<Fem::FemPostFunctionProvider>()) {
 
             ui->FunctionBox->clear();
             QStringList items;
@@ -1383,8 +1382,7 @@ void TaskPostClip::onFunctionBoxCurrentIndexChanged(int idx)
     if (!pipelines.empty()) {
         Fem::FemPostPipeline* pipeline = pipelines.front();
         if (pipeline->Functions.getValue()
-            && pipeline->Functions.getValue()->getTypeId()
-                == Fem::FemPostFunctionProvider::getClassTypeId()) {
+            && pipeline->Functions.getValue()->is<Fem::FemPostFunctionProvider>()) {
 
             const std::vector<App::DocumentObject*>& funcs =
                 static_cast<Fem::FemPostFunctionProvider*>(pipeline->Functions.getValue())
@@ -1617,8 +1615,7 @@ void TaskPostCut::collectImplicitFunctions()
     if (!pipelines.empty()) {
         Fem::FemPostPipeline* pipeline = pipelines.front();
         if (pipeline->Functions.getValue()
-            && pipeline->Functions.getValue()->getTypeId()
-                == Fem::FemPostFunctionProvider::getClassTypeId()) {
+            && pipeline->Functions.getValue()->is<Fem::FemPostFunctionProvider>()) {
 
             ui->FunctionBox->clear();
             QStringList items;
@@ -1668,8 +1665,7 @@ void TaskPostCut::onFunctionBoxCurrentIndexChanged(int idx)
     if (!pipelines.empty()) {
         Fem::FemPostPipeline* pipeline = pipelines.front();
         if (pipeline->Functions.getValue()
-            && pipeline->Functions.getValue()->getTypeId()
-                == Fem::FemPostFunctionProvider::getClassTypeId()) {
+            && pipeline->Functions.getValue()->is<Fem::FemPostFunctionProvider>()) {
 
             const std::vector<App::DocumentObject*>& funcs =
                 static_cast<Fem::FemPostFunctionProvider*>(pipeline->Functions.getValue())

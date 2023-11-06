@@ -226,7 +226,7 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(
     if (pcAnalysis) {
         std::vector<App::DocumentObject*> fem = pcAnalysis->Group.getValues();
         for (auto it : fem) {
-            if (it->getTypeId().isDerivedFrom(Fem::FemMeshObject::getClassTypeId())) {
+            if (it->isDerivedFrom<Fem::FemMeshObject>()) {
                 pcMesh = static_cast<Fem::FemMeshObject*>(it);
             }
         }
@@ -238,7 +238,7 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(
     }
     if (pcMesh) {
         App::Property* prop = pcMesh->getPropertyByName("Shape");  // PropertyLink
-        if (prop && prop->getTypeId().isDerivedFrom(App::PropertyLink::getClassTypeId())) {
+        if (prop && prop->isDerivedFrom<App::PropertyLink>()) {
             App::PropertyLink* pcLink = static_cast<App::PropertyLink*>(prop);
             Part::Feature* pcPart = dynamic_cast<Part::Feature*>(pcLink->getValue());
             if (pcPart) {  // deduct dimension from part_obj.Shape.ShapeType
@@ -267,7 +267,7 @@ TaskFemConstraintFluidBoundary::TaskFemConstraintFluidBoundary(
     if (pcAnalysis) {
         std::vector<App::DocumentObject*> fem = pcAnalysis->Group.getValues();
         for (auto it : fem) {
-            if (it->getTypeId().isDerivedFrom(Fem::FemSolverObject::getClassTypeId())) {
+            if (it->isDerivedFrom<Fem::FemSolverObject>()) {
                 pcSolver = static_cast<Fem::FemSolverObject*>(it);
             }
         }

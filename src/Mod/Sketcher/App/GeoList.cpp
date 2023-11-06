@@ -171,13 +171,13 @@ Base::Vector3d GeoListModel<T>::getPoint(const Part::Geometry* geo, Sketcher::Po
 {
     using namespace Sketcher;
 
-    if (geo->getTypeId() == Part::GeomPoint::getClassTypeId()) {
+    if (geo->is<Part::GeomPoint>()) {
         const Part::GeomPoint* p = static_cast<const Part::GeomPoint*>(geo);
         if (pos == PointPos::start || pos == PointPos::mid || pos == PointPos::end) {
             return p->getPoint();
         }
     }
-    else if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+    else if (geo->is<Part::GeomLineSegment>()) {
         const Part::GeomLineSegment* lineSeg = static_cast<const Part::GeomLineSegment*>(geo);
         if (pos == PointPos::start) {
             return lineSeg->getStartPoint();
@@ -186,19 +186,19 @@ Base::Vector3d GeoListModel<T>::getPoint(const Part::Geometry* geo, Sketcher::Po
             return lineSeg->getEndPoint();
         }
     }
-    else if (geo->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+    else if (geo->is<Part::GeomCircle>()) {
         const Part::GeomCircle* circle = static_cast<const Part::GeomCircle*>(geo);
         if (pos == PointPos::mid) {
             return circle->getCenter();
         }
     }
-    else if (geo->getTypeId() == Part::GeomEllipse::getClassTypeId()) {
+    else if (geo->is<Part::GeomEllipse>()) {
         const Part::GeomEllipse* ellipse = static_cast<const Part::GeomEllipse*>(geo);
         if (pos == PointPos::mid) {
             return ellipse->getCenter();
         }
     }
-    else if (geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+    else if (geo->is<Part::GeomArcOfCircle>()) {
         const Part::GeomArcOfCircle* aoc = static_cast<const Part::GeomArcOfCircle*>(geo);
         if (pos == PointPos::start) {
             return aoc->getStartPoint(/*emulateCCW=*/true);
@@ -210,7 +210,7 @@ Base::Vector3d GeoListModel<T>::getPoint(const Part::Geometry* geo, Sketcher::Po
             return aoc->getCenter();
         }
     }
-    else if (geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) {
+    else if (geo->is<Part::GeomArcOfEllipse>()) {
         const Part::GeomArcOfEllipse* aoc = static_cast<const Part::GeomArcOfEllipse*>(geo);
         if (pos == PointPos::start) {
             return aoc->getStartPoint(/*emulateCCW=*/true);
@@ -222,7 +222,7 @@ Base::Vector3d GeoListModel<T>::getPoint(const Part::Geometry* geo, Sketcher::Po
             return aoc->getCenter();
         }
     }
-    else if (geo->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()) {
+    else if (geo->is<Part::GeomArcOfHyperbola>()) {
         const Part::GeomArcOfHyperbola* aoh = static_cast<const Part::GeomArcOfHyperbola*>(geo);
         if (pos == PointPos::start) {
             return aoh->getStartPoint();
@@ -234,7 +234,7 @@ Base::Vector3d GeoListModel<T>::getPoint(const Part::Geometry* geo, Sketcher::Po
             return aoh->getCenter();
         }
     }
-    else if (geo->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()) {
+    else if (geo->is<Part::GeomArcOfParabola>()) {
         const Part::GeomArcOfParabola* aop = static_cast<const Part::GeomArcOfParabola*>(geo);
         if (pos == PointPos::start) {
             return aop->getStartPoint();
@@ -246,7 +246,7 @@ Base::Vector3d GeoListModel<T>::getPoint(const Part::Geometry* geo, Sketcher::Po
             return aop->getCenter();
         }
     }
-    else if (geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
+    else if (geo->is<Part::GeomBSplineCurve>()) {
         const Part::GeomBSplineCurve* bsp = static_cast<const Part::GeomBSplineCurve*>(geo);
         if (pos == PointPos::start) {
             return bsp->getStartPoint();

@@ -82,7 +82,7 @@ class GeometryFacadePy;
  * Examples getting and setting the construction stations without creating a Facade:
  *
  *  if ((*geo) && GeometryFacade::getConstruction(*geo) &&
- *      (*geo)->getTypeId() == Part::GeomLineSegment::getClassTypeId())
+ *      (*geo)->is<Part::GeomLineSegment>())
  *            count++;
  *
  *  Part::Geometry* copy = v->copy();

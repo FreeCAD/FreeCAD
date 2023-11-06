@@ -1056,14 +1056,14 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
                 case STATUS_SKETCH_DragCurve:
                     if (drag.isDragCurveValid()) {
                         const Part::Geometry* geo = getSketchObject()->getGeometry(drag.DragCurve);
-                        if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()
-                            || geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()
-                            || geo->getTypeId() == Part::GeomCircle::getClassTypeId()
-                            || geo->getTypeId() == Part::GeomEllipse::getClassTypeId()
-                            || geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()
-                            || geo->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()
-                            || geo->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()
-                            || geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
+                        if (geo->is<Part::GeomLineSegment>()
+                            || geo->is<Part::GeomArcOfCircle>()
+                            || geo->is<Part::GeomCircle>()
+                            || geo->is<Part::GeomEllipse>()
+                            || geo->is<Part::GeomArcOfEllipse>()
+                            || geo->is<Part::GeomArcOfParabola>()
+                            || geo->is<Part::GeomArcOfHyperbola>()
+                            || geo->is<Part::GeomBSplineCurve>()) {
                             getDocument()->openCommand(QT_TRANSLATE_NOOP("Command", "Drag Curve"));
 
                             auto geo = getSketchObject()->getGeometry(drag.DragCurve);
@@ -1492,8 +1492,8 @@ bool ViewProviderSketch::mouseMove(const SbVec2s& cursorPos, Gui::View3DInventor
                     }
                 }
 
-                if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()
-                    || geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
+                if (geo->is<Part::GeomLineSegment>()
+                    || geo->is<Part::GeomBSplineCurve>()) {
                     drag.relative = true;
 
                     // Since the cursor moved from where it was clicked, and this is a relative
@@ -1508,7 +1508,7 @@ bool ViewProviderSketch::mouseMove(const SbVec2s& cursorPos, Gui::View3DInventor
                     drag.resetVector();
                 }
 
-                if (geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
+                if (geo->is<Part::GeomBSplineCurve>()) {
                     getSketchObject()->initTemporaryBSplinePieceMove(
                         drag.DragCurve,
                         Sketcher::PointPos::none,
@@ -1662,7 +1662,7 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2d& toPo
         else if (Constr->Second != GeoEnum::GeoUndef) {
             p1 = getSolvedSketch().getPoint(Constr->First, Constr->FirstPos);
             const Part::Geometry* geo = GeoList::getGeometryFromGeoId(geomlist, Constr->Second);
-            if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+            if (geo->is<Part::GeomLineSegment>()) {
                 const Part::GeomLineSegment* lineSeg =
                     static_cast<const Part::GeomLineSegment*>(geo);
                 Base::Vector3d l2p1 = lineSeg->getStartPoint();
@@ -1686,10 +1686,9 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2d& toPo
                     p2 = ct + dir * radius;
                 }
             }
-            else if (geo->getTypeId()
-                     == Part::GeomCircle::getClassTypeId()) {// circle to circle distance
+            else if (geo->is<Part::GeomCircle>()) {// circle to circle distance
                 const Part::Geometry* geo1 = GeoList::getGeometryFromGeoId(geomlist, Constr->First);
-                if (geo1->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+                if (geo1->is<Part::GeomCircle>()) {
                     const Part::GeomCircle* circleSeg1 = static_cast<const Part::GeomCircle*>(geo1);
                     const Part::GeomCircle* circleSeg2 = static_cast<const Part::GeomCircle*>(geo);
                     GetCirclesMinimalDistance(circleSeg1, circleSeg2, p1, p2);
@@ -1709,13 +1708,13 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2d& toPo
         }
         else if (Constr->First != GeoEnum::GeoUndef) {
             const Part::Geometry* geo = GeoList::getGeometryFromGeoId(geomlist, Constr->First);
-            if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+            if (geo->is<Part::GeomLineSegment>()) {
                 const Part::GeomLineSegment* lineSeg =
                     static_cast<const Part::GeomLineSegment*>(geo);
                 p1 = lineSeg->getStartPoint();
                 p2 = lineSeg->getEndPoint();
             }
-            else if (geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+            else if (geo->is<Part::GeomArcOfCircle>()) {
                 const Part::GeomArcOfCircle* arc = static_cast<const Part::GeomArcOfCircle*>(geo);
                 double radius = arc->getRadius();
                 Base::Vector3d center = arc->getCenter();
@@ -1737,7 +1736,7 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2d& toPo
 
                 p2 = center + radius * Base::Vector3d(cos(angle), sin(angle), 0.);
             }
-            else if (geo->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+            else if (geo->is<Part::GeomCircle>()) {
                 const Part::GeomCircle* circle = static_cast<const Part::GeomCircle*>(geo);
                 double radius = circle->getRadius();
                 Base::Vector3d center = circle->getCenter();
@@ -2318,7 +2317,7 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s& startPos, const SbVec2s& 
         if (GeoId >= intGeoCount)
             GeoId = -extGeoCount;
 
-        if ((*it)->getTypeId() == Part::GeomPoint::getClassTypeId()) {
+        if ((*it)->is<Part::GeomPoint>()) {
             // ----- Check if single point lies inside box selection -----/
             const Part::GeomPoint* point = static_cast<const Part::GeomPoint*>(*it);
             Plm.multVec(point->getPoint(), pnt0);
@@ -2331,7 +2330,7 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s& startPos, const SbVec2s& 
                 addSelection2(ss.str());
             }
         }
-        else if ((*it)->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+        else if ((*it)->is<Part::GeomLineSegment>()) {
             // ----- Check if line segment lies inside box selection -----/
             const Part::GeomLineSegment* lineSeg = static_cast<const Part::GeomLineSegment*>(*it);
             Plm.multVec(lineSeg->getStartPoint(), pnt1);
@@ -2373,7 +2372,7 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s& startPos, const SbVec2s& 
                 }
             }
         }
-        else if ((*it)->getTypeId() == Part::GeomCircle::getClassTypeId()) {
+        else if ((*it)->is<Part::GeomCircle>()) {
             // ----- Check if circle lies inside box selection -----/
             /// TODO: Make it impossible to miss the circle if it's big and the selection pretty
             /// thin.
@@ -2425,7 +2424,7 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s& startPos, const SbVec2s& 
                 }
             }
         }
-        else if ((*it)->getTypeId() == Part::GeomEllipse::getClassTypeId()) {
+        else if ((*it)->is<Part::GeomEllipse>()) {
             // ----- Check if ellipse lies inside box selection -----/
             const Part::GeomEllipse* ellipse = static_cast<const Part::GeomEllipse*>(*it);
             pnt0 = ellipse->getCenter();
@@ -2477,7 +2476,7 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s& startPos, const SbVec2s& 
                 }
             }
         }
-        else if ((*it)->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+        else if ((*it)->is<Part::GeomArcOfCircle>()) {
             // Check if arc lies inside box selection
             const Part::GeomArcOfCircle* aoc = static_cast<const Part::GeomArcOfCircle*>(*it);
 
@@ -2556,7 +2555,7 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s& startPos, const SbVec2s& 
                 addSelection2(ss.str());
             }
         }
-        else if ((*it)->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()) {
+        else if ((*it)->is<Part::GeomArcOfEllipse>()) {
             // Check if arc lies inside box selection
             const Part::GeomArcOfEllipse* aoe = static_cast<const Part::GeomArcOfEllipse*>(*it);
 
@@ -2638,7 +2637,7 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s& startPos, const SbVec2s& 
                 addSelection2(ss.str());
             }
         }
-        else if ((*it)->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()) {
+        else if ((*it)->is<Part::GeomArcOfHyperbola>()) {
             // Check if arc lies inside box selection
             const Part::GeomArcOfHyperbola* aoh = static_cast<const Part::GeomArcOfHyperbola*>(*it);
             pnt0 = aoh->getStartPoint();
@@ -2723,7 +2722,7 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s& startPos, const SbVec2s& 
                 }
             }
         }
-        else if ((*it)->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()) {
+        else if ((*it)->is<Part::GeomArcOfParabola>()) {
             // Check if arc lies inside box selection
             const Part::GeomArcOfParabola* aop = static_cast<const Part::GeomArcOfParabola*>(*it);
 
@@ -2809,7 +2808,7 @@ void ViewProviderSketch::doBoxSelection(const SbVec2s& startPos, const SbVec2s& 
                 }
             }
         }
-        else if ((*it)->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
+        else if ((*it)->is<Part::GeomBSplineCurve>()) {
             const Part::GeomBSplineCurve* spline = static_cast<const Part::GeomBSplineCurve*>(*it);
             // std::vector<Base::Vector3d> poles = spline->getPoles();
             VertexId += 2;
@@ -2916,7 +2915,7 @@ void ViewProviderSketch::scaleBSplinePoleCirclesAndUpdateSolverAndSketchObjectGe
         if (GeoId >= geolistfacade.getInternalCount())
             GeoId = -geolistfacade.getExternalCount();
 
-        if ((*it)->getGeometry()->getTypeId() == Part::GeomCircle::getClassTypeId()) {// circle
+        if ((*it)->getGeometry()->is<Part::GeomCircle>()) {// circle
             const Part::GeomCircle* circle =
                 static_cast<const Part::GeomCircle*>((*it)->getGeometry());
             auto& gf = (*it);
@@ -3770,8 +3769,7 @@ bool ViewProviderSketch::onDelete(const std::vector<std::string>& subList)
                 int GeoId;
                 Sketcher::PointPos PosId;
                 getSketchObject()->getGeoVertexIndex(VtId, GeoId, PosId);
-                if (getSketchObject()->getGeometry(GeoId)->getTypeId()
-                    == Part::GeomPoint::getClassTypeId()) {
+                if (getSketchObject()->getGeometry(GeoId)->is<Part::GeomPoint>()) {
                     if (GeoId >= 0)
                         delInternalGeometries.insert(GeoId);
                     else

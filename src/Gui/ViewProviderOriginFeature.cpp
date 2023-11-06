@@ -100,7 +100,7 @@ void ViewProviderOriginFeature::attach(App::DocumentObject* pcObject)
     // Setup font size
     auto font = new SoFont ();
     float fontRatio = 10.0f;
-    if ( pcObject->getTypeId() == App::Line::getClassTypeId() ) {
+    if ( pcObject->is<App::Line>() ) {
         // keep font size on axes equal to font size on planes
         fontRatio *= ViewProviderOrigin::axesScaling;
         const char* axisName = pcObject->getNameInDocument();

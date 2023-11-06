@@ -67,10 +67,8 @@ public:
             int GeoId = std::atoi(element.substr(4, 4000).c_str()) - 1;
             Sketcher::SketchObject* Sketch = static_cast<Sketcher::SketchObject*>(object);
             const Part::Geometry* geom = Sketch->getGeometry(GeoId);
-            if (geom->getTypeId().isDerivedFrom(Part::GeomTrimmedCurve::getClassTypeId())
-                || geom->getTypeId() == Part::GeomCircle::getClassTypeId()
-                || geom->getTypeId() == Part::GeomEllipse::getClassTypeId()
-                || geom->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
+            if (geom->isDerivedFrom<Part::GeomTrimmedCurve>() || geom->is<Part::GeomCircle>()
+                || geom->is<Part::GeomEllipse>() || geom->is<Part::GeomBSplineCurve>()) {
                 // We do not trim internal geometry of complex geometries
                 if (Sketcher::GeometryFacade::isInternalType(geom, Sketcher::InternalType::None)) {
                     return true;
@@ -146,10 +144,8 @@ public:
         int GeoId = getPreselectCurve();
         if (GeoId > -1) {
             const Part::Geometry* geom = sketchgui->getSketchObject()->getGeometry(GeoId);
-            if (geom->getTypeId().isDerivedFrom(Part::GeomTrimmedCurve::getClassTypeId())
-                || geom->getTypeId() == Part::GeomCircle::getClassTypeId()
-                || geom->getTypeId() == Part::GeomEllipse::getClassTypeId()
-                || geom->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
+            if (geom->isDerivedFrom<Part::GeomTrimmedCurve>() || geom->is<Part::GeomCircle>()
+                || geom->is<Part::GeomEllipse>() || geom->is<Part::GeomBSplineCurve>()) {
                 try {
                     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Trim edge"));
                     Gui::cmdAppObjectArgs(sketchgui->getObject(),

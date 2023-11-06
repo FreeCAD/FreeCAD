@@ -2504,7 +2504,7 @@ void View3DInventorViewer::selectAll()
     std::vector<App::DocumentObject*> objs;
 
     for (auto it : _ViewProviderSet) {
-        if (it->getTypeId().isDerivedFrom(ViewProviderDocumentObject::getClassTypeId())) {
+        if (it->isDerivedFrom<ViewProviderDocumentObject>()) {
             auto vp = static_cast<ViewProviderDocumentObject*>(it);  // NOLINT
             App::DocumentObject* obj = vp->getObject();
 

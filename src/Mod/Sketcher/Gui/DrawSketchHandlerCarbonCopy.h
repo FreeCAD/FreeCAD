@@ -160,7 +160,7 @@ public:
                 throw Base::ValueError("Sketcher: Carbon Copy: Invalid object in selection");
             }
 
-            if (obj->getTypeId() == Sketcher::SketchObject::getClassTypeId()) {
+            if (obj->is<Sketcher::SketchObject>()) {
 
                 try {
                     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Create a carbon copy"));

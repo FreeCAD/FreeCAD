@@ -609,9 +609,7 @@ void CurveOnMeshHandler::Private::vertexCallback(void* ud, SoEventCallback* cb)
                 CurveOnMeshHandler* self = static_cast<CurveOnMeshHandler*>(ud);
                 if (!self->d_ptr->wireClosed) {
                     Gui::ViewProvider* vp = view->getViewProviderByPathFromTail(pp->getPath());
-                    if (vp
-                        && vp->getTypeId().isDerivedFrom(
-                            MeshGui::ViewProviderMesh::getClassTypeId())) {
+                    if (vp && vp->isDerivedFrom<MeshGui::ViewProviderMesh>()) {
                         MeshGui::ViewProviderMesh* mesh =
                             static_cast<MeshGui::ViewProviderMesh*>(vp);
                         const SoDetail* detail = pp->getDetail();
@@ -653,9 +651,7 @@ void CurveOnMeshHandler::Private::vertexCallback(void* ud, SoEventCallback* cb)
                         }
                     }
                     // try to 'complete' the curve
-                    else if (vp
-                             && vp->getTypeId().isDerivedFrom(
-                                 ViewProviderCurveOnMesh::getClassTypeId())) {
+                    else if (vp && vp->isDerivedFrom<ViewProviderCurveOnMesh>()) {
                         const SbVec3f& p = pp->getPoint();
                         if (self->tryCloseWire(p)) {
                             self->closeWire();

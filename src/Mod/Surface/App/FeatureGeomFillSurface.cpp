@@ -215,7 +215,7 @@ bool GeomFillSurface::getWire(TopoDS_Wire& aWire)
 
     ShapeValidator validator;
     for (const auto& set : boundary) {
-        if (set.first->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+        if (set.first->isDerivedFrom<Part::Feature>()) {
             for (const auto& jt : set.second) {
                 const Part::TopoShape& ts =
                     static_cast<Part::Feature*>(set.first)->Shape.getShape();

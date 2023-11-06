@@ -765,7 +765,7 @@ void AttachEngine::readLinks(const App::PropertyLinkSubList &references,
     shapes.resize(objs.size());
     types.resize(objs.size());
     for (std::size_t i = 0; i < objs.size(); i++) {
-        if (!objs[i]->getTypeId().isDerivedFrom(App::GeoFeature::getClassTypeId())) {
+        if (!objs[i]->isDerivedFrom<App::GeoFeature>()) {
             throw AttachEngineException("AttachEngine3D: link points to something that is not App::GeoFeature");
         }
         App::GeoFeature* geof = static_cast<App::GeoFeature*>(objs[i]);

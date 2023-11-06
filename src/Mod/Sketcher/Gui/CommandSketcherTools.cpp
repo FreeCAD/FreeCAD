@@ -796,11 +796,11 @@ void CmdSketcherRestoreInternalAlignmentGeometry::activated(int iMsg)
     auto noInternalGeo = [&Obj](const auto& GeoId) {
         const Part::Geometry* geo = Obj->getGeometry(GeoId);
         bool hasInternalGeo = geo
-            && (geo->getTypeId() == Part::GeomEllipse::getClassTypeId()
-                || geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()
-                || geo->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()
-                || geo->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()
-                || geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId());
+            && (geo->is<Part::GeomEllipse>()
+                || geo->is<Part::GeomArcOfEllipse>()
+                || geo->is<Part::GeomArcOfHyperbola>()
+                || geo->is<Part::GeomArcOfParabola>()
+                || geo->is<Part::GeomBSplineCurve>());
         return !hasInternalGeo;// so it's removed
     };
 
@@ -932,7 +932,7 @@ void CmdSketcherSymmetry::activated(int iMsg)
             // reference can be external or non-external
             LastGeo = Obj->getGeometry(LastGeoId);
             // Only for supported types
-            if (LastGeo->getTypeId() == Part::GeomLineSegment::getClassTypeId())
+            if (LastGeo->is<Part::GeomLineSegment>())
                 lastgeotype = line;
             else
                 lastgeotype = invalid;
@@ -950,7 +950,7 @@ void CmdSketcherSymmetry::activated(int iMsg)
             Sketcher::PointPos PosId;
             Obj->getGeoVertexIndex(VtId, GeoId, PosId);
 
-            if (Obj->getGeometry(GeoId)->getTypeId() == Part::GeomPoint::getClassTypeId()) {
+            if (Obj->getGeometry(GeoId)->is<Part::GeomPoint>()) {
                 LastGeoId = GeoId;
                 LastPointPos = Sketcher::PointPos::start;
                 lastgeotype = point;
@@ -1316,7 +1316,7 @@ void SketcherCopy::activate(SketcherCopy::Op op)
             int GeoId;
             Sketcher::PointPos PosId;
             Obj->getGeoVertexIndex(VtId, GeoId, PosId);
-            if (Obj->getGeometry(GeoId)->getTypeId() == Part::GeomPoint::getClassTypeId()) {
+            if (Obj->getGeometry(GeoId)->is<Part::GeomPoint>()) {
                 LastGeoId = GeoId;
                 LastPointPos = Sketcher::PointPos::start;
                 // points to copy
@@ -1361,8 +1361,8 @@ void SketcherCopy::activate(SketcherCopy::Op op)
     // then make the start point of the last element the copy reference (if it exists, if not the
     // center point)
     if (LastPointPos == Sketcher::PointPos::none) {
-        if (LastGeo->getTypeId() == Part::GeomCircle::getClassTypeId()
-            || LastGeo->getTypeId() == Part::GeomEllipse::getClassTypeId()) {
+        if (LastGeo->is<Part::GeomCircle>()
+            || LastGeo->is<Part::GeomEllipse>()) {
             LastPointPos = Sketcher::PointPos::mid;
         }
         else {
@@ -1919,7 +1919,7 @@ void CmdSketcherRectangularArray::activated(int iMsg)
             int GeoId;
             Sketcher::PointPos PosId;
             Obj->getGeoVertexIndex(VtId, GeoId, PosId);
-            if (Obj->getGeometry(GeoId)->getTypeId() == Part::GeomPoint::getClassTypeId()) {
+            if (Obj->getGeometry(GeoId)->is<Part::GeomPoint>()) {
                 LastGeoId = GeoId;
                 LastPointPos = Sketcher::PointPos::start;
                 // points to copy
@@ -1964,8 +1964,8 @@ void CmdSketcherRectangularArray::activated(int iMsg)
     // then make the start point of the last element the copy reference (if it exists, if not the
     // center point)
     if (LastPointPos == Sketcher::PointPos::none) {
-        if (LastGeo->getTypeId() == Part::GeomCircle::getClassTypeId()
-            || LastGeo->getTypeId() == Part::GeomEllipse::getClassTypeId()) {
+        if (LastGeo->is<Part::GeomCircle>()
+            || LastGeo->is<Part::GeomEllipse>()) {
             LastPointPos = Sketcher::PointPos::mid;
         }
         else {
@@ -2207,7 +2207,7 @@ void CmdSketcherRemoveAxesAlignment::activated(int iMsg)
             int GeoId;
             Sketcher::PointPos PosId;
             Obj->getGeoVertexIndex(VtId, GeoId, PosId);
-            if (Obj->getGeometry(GeoId)->getTypeId() == Part::GeomPoint::getClassTypeId()) {
+            if (Obj->getGeometry(GeoId)->is<Part::GeomPoint>()) {
                 LastGeoId = GeoId;
                 // points to copy
                 if (LastGeoId >= 0) {

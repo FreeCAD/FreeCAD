@@ -490,7 +490,7 @@ bool ViewProviderBody::canDropObject(App::DocumentObject* obj) const
 void ViewProviderBody::dropObject(App::DocumentObject* obj)
 {
     PartDesign::Body* body = static_cast<PartDesign::Body*>(getObject());
-    if (obj->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+    if (obj->isDerivedFrom<Part::Part2DObject>()) {
         body->addObject(obj);
     }
     else if (PartDesign::Body::isAllowed(obj) && PartDesignGui::isFeatureMovable(obj)) {
@@ -519,7 +519,7 @@ void ViewProviderBody::dropObject(App::DocumentObject* obj)
     // check if a proxy object has been created for the base feature
     std::vector<App::DocumentObject*> links = body->Group.getValues();
     for (auto it : links) {
-        if (it->getTypeId().isDerivedFrom(PartDesign::FeatureBase::getClassTypeId())) {
+        if (it->isDerivedFrom<PartDesign::FeatureBase>()) {
             PartDesign::FeatureBase* base = static_cast<PartDesign::FeatureBase*>(it);
             if (base && base->BaseFeature.getValue() == obj) {
                 Gui::Application::Instance->hideViewProvider(obj);

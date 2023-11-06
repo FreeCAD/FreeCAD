@@ -1091,7 +1091,7 @@ void CmdFemDefineNodesSet::activated(int)
         if (it == docObj.begin()) {
             Gui::Document* doc = getActiveGuiDocument();
             Gui::MDIView* view = doc->getActiveView();
-            if (view->getTypeId().isDerivedFrom(Gui::View3DInventor::getClassTypeId())) {
+            if (view->isDerivedFrom<Gui::View3DInventor>()) {
                 Gui::View3DInventorViewer* viewer = ((Gui::View3DInventor*)view)->getViewer();
                 viewer->setEditing(true);
                 viewer->startSelection(Gui::View3DInventorViewer::Clip);

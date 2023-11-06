@@ -113,7 +113,7 @@ App::DocumentObjectExecReturn *DrawViewClip::execute()
 
     std::vector<App::DocumentObject*> children = Views.getValues();
     for (std::vector<App::DocumentObject*>::iterator it = children.begin(); it != children.end(); ++it) {
-        if ((*it)->getTypeId().isDerivedFrom(DrawView::getClassTypeId())) {
+        if ((*it)->isDerivedFrom<DrawView>()) {
             TechDraw::DrawView *view = static_cast<TechDraw::DrawView *>(*it);
             view->requestPaint();
         }
@@ -142,7 +142,7 @@ std::vector<std::string> DrawViewClip::getChildViewNames()
     std::vector<std::string> childNames;
     std::vector<App::DocumentObject*> children = Views.getValues();
     for (std::vector<App::DocumentObject*>::iterator it = children.begin(); it != children.end(); ++it) {
-        if ((*it)->getTypeId().isDerivedFrom(DrawView::getClassTypeId())) {
+        if ((*it)->isDerivedFrom<DrawView>()) {
             std::string name = (*it)->getNameInDocument();
             childNames.push_back(name);
         }
