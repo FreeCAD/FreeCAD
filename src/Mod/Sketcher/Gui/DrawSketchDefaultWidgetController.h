@@ -117,7 +117,7 @@ public:
         : ControllerBase(dshandler)
     {}
 
-    ~DrawSketchDefaultWidgetController()
+    ~DrawSketchDefaultWidgetController() override
     {
         connectionParameterValueChanged.disconnect();
         connectionCheckboxCheckedChanged.disconnect();
