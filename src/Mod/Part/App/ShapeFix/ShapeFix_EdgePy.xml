@@ -102,7 +102,6 @@
         <UserDocu>Tries to make edge SameParameter and sets corresponding
    tolerance and SameParameter flag.
    First, it makes edge same range if SameRange flag is not set.
-  
    If flag SameParameter is set, this method calls the
    function ShapeAnalysis_Edge::CheckSameParameter() that
    calculates the maximal deviation of pcurves of the edge from
