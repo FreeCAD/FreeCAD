@@ -31,7 +31,7 @@ if FreeCAD.GuiUp:
 
 __title__ = "Sketcher profile lib handling"
 __author__ = "Juergen Riegel"
-__url__ = "http://www.freecad.org"
+__url__ = "https://www.freecad.org"
 
 
 def isProfileActive():

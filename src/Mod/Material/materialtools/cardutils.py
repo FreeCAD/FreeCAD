@@ -21,7 +21,7 @@
 
 __title__ = "material cards utilities"
 __author__ = "Bernd Hahnebach"
-__url__ = "http://www.freecad.org"
+__url__ = "https://www.freecad.org"
 
 import os
 from os.path import join
