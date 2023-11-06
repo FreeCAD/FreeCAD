@@ -240,9 +240,12 @@ void EditableDatumLabel::positionSpinbox()
     }
 
     QSize wSize = spinBox->size();
+    QSize vSize = viewer->size();
     QPoint pxCoord = viewer->toQPoint(viewer->getPointOnViewport(getTextCenterPoint()));
-    pxCoord.setX(std::max(pxCoord.x() - wSize.width() / 2, 0));
-    pxCoord.setY(std::max(pxCoord.y() - wSize.height() / 2, 0));
+    int posX = std::min(std::max(pxCoord.x() - wSize.width() / 2, 0), vSize.width() - wSize.width());
+    int posY = std::min(std::max(pxCoord.y() - wSize.height() / 2, 0), vSize.height() - wSize.height());
+    pxCoord.setX(posX);
+    pxCoord.setY(posY);
     spinBox->move(pxCoord);
 }
 
