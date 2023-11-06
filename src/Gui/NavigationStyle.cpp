@@ -1286,7 +1286,6 @@ void NavigationStyle::setViewingMode(const ViewerMode newmode)
         break;
 
     case SPINNING:
-        viewer->showRotationCenter(true);
         this->interactiveCountInc();
         viewer->getSoRenderManager()->scheduleRedraw();
         break;
