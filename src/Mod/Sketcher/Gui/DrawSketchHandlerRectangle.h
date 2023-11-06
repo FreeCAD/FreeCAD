@@ -1329,12 +1329,14 @@ private:
                                                   firstCurve + 5,
                                                   Sketcher::PointPos::none,
                                                   firstCurve + 7);
-                            if (fabs(angle123 - M_PI / 2) < Precision::Confusion()) {
-                                addToShapeConstraints(Sketcher::Perpendicular,
-                                                      firstCurve + 4,
-                                                      Sketcher::PointPos::none,
-                                                      firstCurve + 5);
-                            }
+                            addToShapeConstraints(Sketcher::Parallel,
+                                                  firstCurve,
+                                                  Sketcher::PointPos::none,
+                                                  firstCurve + 4);
+                            addToShapeConstraints(Sketcher::Parallel,
+                                                  firstCurve + 1,
+                                                  Sketcher::PointPos::none,
+                                                  firstCurve + 5);
                         }
 
                         // add construction lines
