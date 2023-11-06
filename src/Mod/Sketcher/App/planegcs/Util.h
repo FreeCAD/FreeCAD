@@ -38,11 +38,6 @@ using MAP_pD_D = std::map<double*, double>;
 using MAP_pD_I = std::map<double*, int>;
 using SET_pD = std::set<double*>;
 using SET_I = std::set<int>;
-
-#ifndef M_PI
-#define M_PI 3.14159265358979323846
-#endif
-
 }  // namespace GCS
 
 #endif  // PLANEGCS_UTIL_H
