@@ -1553,14 +1553,24 @@ auto DSHRectangleControllerBase::getState(int labelindex) const
                 return SelectMode::SeekSecond;
                 break;
             case OnViewParameter::Fifth:
-                return SelectMode::SeekThird;
-                break;
-            case OnViewParameter::Sixth:
-                if (!handler->roundCorners) {
+                if (handler->roundCorners) {
                     return SelectMode::SeekThird;
                 }
                 else {
-                    return SelectMode::SeekFourth;
+                    return SelectMode::End;
+                }
+                break;
+            case OnViewParameter::Sixth:
+                if (handler->makeFrame) {
+                    if (!handler->roundCorners) {
+                        return SelectMode::SeekThird;
+                    }
+                    else {
+                        return SelectMode::SeekFourth;
+                    }
+                }
+                else {
+                    return SelectMode::End;
                 }
                 break;
             default:
@@ -1582,14 +1592,24 @@ auto DSHRectangleControllerBase::getState(int labelindex) const
                 return SelectMode::SeekThird;
                 break;
             case OnViewParameter::Seventh:
-                return SelectMode::SeekFourth;
-                break;
-            case OnViewParameter::Eighth:
-                if (!handler->roundCorners) {
+                if (handler->roundCorners) {
                     return SelectMode::SeekFourth;
                 }
                 else {
-                    return SelectMode::SeekFifth;
+                    return SelectMode::End;
+                }
+                break;
+            case OnViewParameter::Eighth:
+                if (handler->makeFrame) {
+                    if (!handler->roundCorners) {
+                        return SelectMode::SeekFourth;
+                    }
+                    else {
+                        return SelectMode::SeekFifth;
+                    }
+                }
+                else {
+                    return SelectMode::End;
                 }
                 break;
             default:
