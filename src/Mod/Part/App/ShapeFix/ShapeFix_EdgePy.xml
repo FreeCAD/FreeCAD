@@ -113,7 +113,7 @@
    variant (one that has minimal tolerance), either
    a. only after computing deviation (as above) or
    b. after calling standard procedure BRepLib::SameParameter
-   and computing deviation (as above). If <tolerance> > 0, it is
+   and computing deviation (as above). If 'tolerance' &gt; 0, it is
    used as parameter for BRepLib::SameParameter, otherwise,
    tolerance of the edge is used.
   
