@@ -41,7 +41,7 @@
       <Documentation>
         <UserDocu> Adds pcurve(s) of the edge if missing (by projecting 3d curve)
    Parameter isSeam indicates if the edge is a seam.
-   The parameter <prec> defines the precision for calculations.
+   The parameter 'prec' defines the precision for calculations.
    If it is 0 (default), the tolerance of the edge is taken.
    Remark : This method is rather for internal use since it accepts parameter
    <surfana> for optimization of computations
