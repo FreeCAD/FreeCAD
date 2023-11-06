@@ -467,7 +467,8 @@ protected:
                                      viewer,
                                      placement,
                                      colorManager.dimConstrDeactivatedColor,
-                                     /*autoDistance = */ true))
+                                     /*autoDistance = */ true,
+                                     /*avoidMouseCursor = */ true))
                                  .get();
 
             QObject::connect(parameter, &Gui::EditableDatumLabel::valueChanged, [=](double value) {
