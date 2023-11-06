@@ -44,7 +44,7 @@
    The parameter 'prec' defines the precision for calculations.
    If it is 0 (default), the tolerance of the edge is taken.
    Remark : This method is rather for internal use since it accepts parameter
-   <surfana> for optimization of computations
+   'surfana' for optimization of computations
    Use    : It is to be called after FixRemovePCurve (if removed) or in any
    case when edge can have no pcurve
    Returns: True if pcurve was added, else False
