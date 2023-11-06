@@ -24,18 +24,16 @@
 
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
+#include <Base/PyObjectBase.h>
 
-
-extern struct PyMethodDef JtReader_methods[];
-
-
-extern "C" {
-void AppJtReaderExport initJtReader()
+namespace JtReaderNS
 {
+extern PyObject* initModule();
+}
 
-    static struct PyModuleDef JtReaderAPIDef =
-        {PyModuleDef_HEAD_INIT, "JtReader", 0, -1, JtReader_methods, NULL, NULL, NULL, NULL};
-    PyModule_Create(&JtReaderAPIDef);
+PyMOD_INIT_FUNC(JtReader)
+{
+    PyObject* jtReaderModule = JtReaderNS::initModule();
 
     // load dependent module
     Base::Interpreter().loadModule("Mesh");
@@ -52,8 +50,5 @@ void AppJtReaderExport initJtReader()
 
     Base::Console().Log("Loading JtReader module... done\n");
 
-    return;
+    PyMOD_Return(jtReaderModule);
 }
-
-
-}  // extern "C" {
