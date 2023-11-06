@@ -186,7 +186,7 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
                 if vobj.AnnotationStyle in self.renamed.keys():
                     # the style has been renamed
                     # temporarily add the new style and switch to it
-                    vobj.AnnotationStyle = vobj.AnnotationStyle + [self.renamed[vobj.AnnotationStyle]]
+                    vobj.AnnotationStyle = [vobj.AnnotationStyle, self.renamed[vobj.AnnotationStyle]]
                     vobj.AnnotationStyle = self.renamed[vobj.AnnotationStyle]
                 if vobj.AnnotationStyle in styles.keys():
                     if vobj.AnnotationStyle in changedstyles:
