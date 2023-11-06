@@ -105,7 +105,7 @@
    If flag SameParameter is set, this method calls the
    function ShapeAnalysis_Edge::CheckSameParameter() that
    calculates the maximal deviation of pcurves of the edge from
-   its 3d curve. If deviation > tolerance, the tolerance of edge
+   its 3d curve. If deviation &gt; tolerance, the tolerance of edge
    is increased to a value of deviation. If deviation < tolerance
    nothing happens.
   
