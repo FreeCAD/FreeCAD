@@ -239,6 +239,10 @@ void EditableDatumLabel::positionSpinbox()
         return;
     }
 
+    if (spinBox->hasFocus()) {
+        spinBox->raise();
+    }
+
     QSize wSize = spinBox->size();
     QSize vSize = viewer->size();
     QPoint pxCoord = viewer->toQPoint(viewer->getPointOnViewport(getTextCenterPoint()));
