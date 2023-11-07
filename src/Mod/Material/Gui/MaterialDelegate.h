@@ -73,6 +73,8 @@ private:
                           const QString& propertyUnits) const;
     QRgb parseColor(const QString& color) const;
     void showColorModal(QStandardItem* item, QString propertyName);
+    void showListModal(const QString& propertyName, QStandardItem* item);
+    void showMultiLineString(const QString& propertyName, QStandardItem* item);
     void showArray2DModal(const QString& propertyName, QStandardItem* item);
     void showArray3DModal(const QString& propertyName, QStandardItem* item);
 };

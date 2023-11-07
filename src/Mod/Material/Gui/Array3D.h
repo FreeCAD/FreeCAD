@@ -26,6 +26,7 @@
 #include <QDialog>
 #include <QStandardItem>
 #include <QTableView>
+
 #include <Mod/Material/App/Materials.h>
 
 namespace MatGui

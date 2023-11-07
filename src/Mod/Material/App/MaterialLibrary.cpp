@@ -42,9 +42,6 @@ using namespace Materials;
 
 TYPESYSTEM_SOURCE(Materials::MaterialLibrary, LibraryBase)
 
-MaterialLibrary::MaterialLibrary()
-{}
-
 MaterialLibrary::MaterialLibrary(const QString& libraryName,
                                  const QString& dir,
                                  const QString& icon,
@@ -232,15 +229,16 @@ std::shared_ptr<Material> MaterialLibrary::saveMaterial(std::shared_ptr<Material
 
     if (file.open(QIODevice::WriteOnly | QIODevice::Text)) {
         QTextStream stream(&file);
-#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
         stream.setCodec("UTF-8");
 #endif
         stream.setGenerateByteOrderMark(true);
 
         // Write the contents
+        material->setName(info.baseName());
         material->setLibrary(getptr());
         material->setDirectory(getRelativePath(path));
-        material->save(stream, saveAsCopy, saveInherited);
+        material->save(stream, overwrite, saveAsCopy, saveInherited);
     }
 
     return addMaterial(material, path);
@@ -338,7 +336,7 @@ MaterialLibrary::getMaterialTree() const
     // Empty folders aren't included in _materialPathMap, so we add them by looking at the file
     // system
     auto folderList = MaterialLoader::getMaterialFolders(*this);
-    for (auto folder : *folderList) {
+    for (auto& folder : *folderList) {
         QStringList list = folder.split(QString::fromStdString("/"));
 
         // Start at the root
@@ -363,9 +361,6 @@ MaterialLibrary::getMaterialTree() const
 }
 
 TYPESYSTEM_SOURCE(Materials::MaterialExternalLibrary, MaterialLibrary::MaterialLibrary)
-
-MaterialExternalLibrary::MaterialExternalLibrary()
-{}
 
 MaterialExternalLibrary::MaterialExternalLibrary(const QString& libraryName,
                                                  const QString& dir,

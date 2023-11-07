@@ -37,7 +37,7 @@
 
 using namespace Materials;
 
-ModelEntry::ModelEntry(std::shared_ptr<ModelLibrary> library,
+ModelEntry::ModelEntry(const std::shared_ptr<ModelLibrary>& library,
                        const QString& baseName,
                        const QString& modelName,
                        const QString& dir,
@@ -228,8 +228,6 @@ void ModelLoader::addToTree(std::shared_ptr<ModelEntry> model,
     auto directory = model->getDirectory();
     auto uuid = model->getUUID();
 
-    QString version = yamlValue(yamlModel["General"], "Version", "");
-
     QString description = yamlValue(yamlModel[base], "Description", "");
     QString url = yamlValue(yamlModel[base], "URL", "");
     QString doi = yamlValue(yamlModel[base], "DOI", "");
@@ -273,7 +271,7 @@ void ModelLoader::addToTree(std::shared_ptr<ModelEntry> model,
                 // Base::Console().Log("Reading columns\n");
                 // Read the columns
                 auto cols = yamlProp["Columns"];
-                for (auto col : cols) {
+                for (const auto& col : cols) {
                     std::string colName = col.first.as<std::string>();
                     // Base::Console().Log("\tColumns '%s'\n", colName.c_str());
 
@@ -316,8 +314,6 @@ void ModelLoader::loadLibrary(std::shared_ptr<ModelLibrary> library)
         QFileInfo file(pathname);
         if (file.isFile()) {
             if (file.suffix().toStdString() == "yml") {
-                QString libraryName = file.baseName();
-
                 try {
                     auto model = getModelFromPath(library, file.canonicalFilePath());
                     (*_modelEntryMap)[model->getUUID()] = model;
