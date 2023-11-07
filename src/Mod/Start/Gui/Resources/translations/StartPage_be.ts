@@ -177,9 +177,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="98"/>
       <source>The &lt;a href="https://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
-      <translation>&lt;a href="https://forum.freecad.org"&gt;Форум FreeCAD&lt;/a&gt; - выдатнае месца, дзе можна атрымаць дапамогу ад іншых карыстальнікаў і распрацоўшчыкаў FreeCAD.
-На форуме ёсць мноства падзелаў для розных тыпаў пытанняў і тэм для абмеркавання.
-Калі вы сумняваецеся, напішыце ў больш агульным падзеле &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Дапамога па ўжыванню FreeCAD&lt;/a&gt;.</translation>
+      <translation type="unfinished">The &lt;a href="https://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="102"/>
@@ -293,7 +291,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../../StartPage/StartPage.py" line="826"/>
+      <location filename="../../../StartPage/StartPage.py" line="871"/>
       <location filename="../../Workbench.cpp" line="62"/>
       <source>Start page</source>
       <translation>Пачатковая старонка</translation>

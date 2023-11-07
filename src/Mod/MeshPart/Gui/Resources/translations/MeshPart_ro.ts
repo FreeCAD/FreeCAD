@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="316"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Plasă</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="317"/>
@@ -44,7 +44,7 @@ Această comandă funcționează doar cu un obiect 'plasă'.</translation>
     <message>
       <location filename="../../Command.cpp" line="58"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Plasă</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="59"/>
@@ -62,7 +62,7 @@ Această comandă funcționează doar cu un obiect 'plasă'.</translation>
     <message>
       <location filename="../../Command.cpp" line="192"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Plasă</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="193"/>
@@ -80,7 +80,7 @@ Această comandă funcționează doar cu un obiect 'plasă'.</translation>
     <message>
       <location filename="../../Command.cpp" line="83"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Plasă</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="84"/>
@@ -198,12 +198,12 @@ Această comandă funcționează doar cu un obiect 'plasă'.</translation>
       <translation>Renunţă</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="626"/>
+      <location filename="../../CurveOnMesh.cpp" line="624"/>
       <source>Wrong mesh picked</source>
       <translation>Ochiurilor de plasă greşit alese</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="667"/>
+      <location filename="../../CurveOnMesh.cpp" line="663"/>
       <source>No point was picked</source>
       <translation>Nu a fost ales nici un punct</translation>
     </message>

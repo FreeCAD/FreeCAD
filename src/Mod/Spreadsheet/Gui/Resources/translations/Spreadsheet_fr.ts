@@ -209,7 +209,7 @@
     <message>
       <location filename="../../Command.cpp" line="121"/>
       <source>Split cell</source>
-      <translation>Diviser la cellule</translation>
+      <translation>Fractionner la cellule</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="122"/>
@@ -681,8 +681,8 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../Command.cpp" line="194"/>
       <location filename="../../Command.cpp" line="254"/>
-      <source>All (*)</source>
-      <translation>Tous (*)</translation>
+      <source>CSV (*.csv *.CSV);;All (*)</source>
+      <translation type="unfinished">CSV (*.csv *.CSV);;All (*)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="196"/>
@@ -738,7 +738,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
       <translation>Reportez-vous à la cellule par l'alias, par exemple Spreadsheet.my_alias_name au lieu de Spreadsheet.B1</translation>
     </message>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="124"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="126"/>
       <source>Spreadsheet</source>
       <translation>Feuille de calcul</translation>
     </message>

@@ -682,8 +682,8 @@ eta propietate-izena zehazteko. Propietatea sortu egingo da lehendik ez badago.<
     <message>
       <location filename="../../Command.cpp" line="194"/>
       <location filename="../../Command.cpp" line="254"/>
-      <source>All (*)</source>
-      <translation>Dena (*)</translation>
+      <source>CSV (*.csv *.CSV);;All (*)</source>
+      <translation type="unfinished">CSV (*.csv *.CSV);;All (*)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="196"/>
@@ -740,7 +740,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
 'KalkuluOrria.nire_aliasa' erabili 'KalkuluOrria.B1' erabili ordez</translation>
     </message>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="124"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="126"/>
       <source>Spreadsheet</source>
       <translation>Kalkulu-orria</translation>
     </message>

@@ -290,7 +290,7 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="189"/>
       <source>Size factor</source>
-      <translation>尺寸因子</translation>
+      <translation>尺寸因數</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="218"/>

@@ -41,7 +41,7 @@
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="77"/>
       <source>Rotation focus</source>
-      <translation>Focus de rotation</translation>
+      <translation>Foyer de rotation</translation>
     </message>
     <message>
       <location filename="../../NavigationIndicatorGui.py" line="78"/>

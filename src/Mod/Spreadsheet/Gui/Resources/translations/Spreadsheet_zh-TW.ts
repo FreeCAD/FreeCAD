@@ -538,7 +538,7 @@ by that property.
     <message>
       <location filename="../../DlgSheetConf.ui" line="57"/>
       <source>Property:</source>
-      <translation type="unfinished">Property:</translation>
+      <translation>屬性：</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="64"/>
@@ -682,8 +682,8 @@ switch the design configuration. The property will be created if not exist.</tra
     <message>
       <location filename="../../Command.cpp" line="194"/>
       <location filename="../../Command.cpp" line="254"/>
-      <source>All (*)</source>
-      <translation>全部(*)</translation>
+      <source>CSV (*.csv *.CSV);;All (*)</source>
+      <translation type="unfinished">CSV (*.csv *.CSV);;All (*)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="196"/>
@@ -740,7 +740,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
 Spreadsheet.my_alias_name取代Spreadsheet.B1</translation>
     </message>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="124"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="126"/>
       <source>Spreadsheet</source>
       <translation>試算表</translation>
     </message>
@@ -901,7 +901,7 @@ Do you want to continue?</translation>
       <location filename="../../DlgBindSheet.cpp" line="276"/>
       <source>Error:
 </source>
-      <translation type="unfinished">Error:
+      <translation>錯誤：
 </translation>
     </message>
     <message>
@@ -920,7 +920,7 @@ Do you want to continue?</translation>
     <message>
       <location filename="../../DlgSettings.ui" line="26"/>
       <source>Display Settings</source>
-      <translation type="unfinished">Display Settings</translation>
+      <translation>顯示設定</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="32"/>
@@ -1067,7 +1067,7 @@ Defaults to: %V = %A
       <location filename="../../SheetTableView.cpp" line="189"/>
       <location filename="../../SheetTableView.cpp" line="657"/>
       <source>Recompute</source>
-      <translation type="unfinished">Recompute</translation>
+      <translation>重新計算</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="193"/>
@@ -1151,7 +1151,7 @@ Defaults to: %V = %A
     <message>
       <location filename="../../Workbench.cpp" line="53"/>
       <source>&amp;Styles</source>
-      <translation type="unfinished">&amp;Styles</translation>
+      <translation>樣式(&amp;S)</translation>
     </message>
   </context>
   <context>

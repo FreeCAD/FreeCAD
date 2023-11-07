@@ -198,12 +198,12 @@ Komando honek 'amarauna' objektuetan soilik funtzionatzen du.</translation>
       <translation>Utzi</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="626"/>
+      <location filename="../../CurveOnMesh.cpp" line="624"/>
       <source>Wrong mesh picked</source>
       <translation>Amaraun okerra aukeratu da</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="667"/>
+      <location filename="../../CurveOnMesh.cpp" line="663"/>
       <source>No point was picked</source>
       <translation>Ez da punturik aukeratu</translation>
     </message>
