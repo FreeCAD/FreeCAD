@@ -254,12 +254,9 @@ App::DocumentObjectExecReturn* Helix::execute()
             shells.push_back(mkPS.Shape());
 
             if (!mkPS.Shape().Closed()) {
-                // shell is not closed - use simulate to get the end wires
-                TopTools_ListOfShape sim;
-                mkPS.Simulate(2, sim);
-
-                frontwires.push_back(TopoDS::Wire(sim.First()));
-                backwires.push_back(TopoDS::Wire(sim.Last()));
+                // shell is not closed - get the end wires
+                frontwires.push_back(TopoDS::Wire(mkPS.FirstShape()));
+                backwires.push_back(TopoDS::Wire(mkPS.LastShape()));
             }
         }
 
