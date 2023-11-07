@@ -11,7 +11,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="40"/>
       <source>Welcome to FreeCAD</source>
-      <translation type="unfinished">Welcome to FreeCAD</translation>
+      <translation>프리캐드에 오신 것을 환영합니다</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="41"/>
@@ -36,12 +36,12 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="45"/>
       <source>Link to the FreeCAD blog</source>
-      <translation type="unfinished">Link to the FreeCAD blog</translation>
+      <translation>프리캐드 블로그에 링크하기</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="46"/>
       <source>New file</source>
-      <translation type="unfinished">New file</translation>
+      <translation>새 파일</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="47"/>
@@ -176,7 +176,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="98"/>
       <source>The &lt;a href="https://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
-      <translation>&lt;a href="https://forum.freecad.org"&gt; FreeCAD 포럼 &lt;/a&gt;은 다른 FreeCAD 사용자 및 개발자의 도움을 받을 수 있는 좋은 곳입니다. 이 포럼에는 다양한 유형의 쟁점과 토론 주제에 대한 섹션이 많이 있습니다. 질문이 있는 경우 &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt; FreeCAD 사용에 대한 도움말 &lt;/a&gt; 섹션에 게시하십시오.</translation>
+      <translation type="unfinished">The &lt;a href="https://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="102"/>
@@ -287,7 +287,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../../StartPage/StartPage.py" line="826"/>
+      <location filename="../../../StartPage/StartPage.py" line="871"/>
       <location filename="../../Workbench.cpp" line="62"/>
       <source>Start page</source>
       <translation>시작 페이지</translation>

@@ -176,7 +176,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="98"/>
       <source>The &lt;a href="https://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
-      <translation>FreeCAD-ის&lt;a href="https://forum.freecad.org"&gt; ფორუმი&lt;/a&gt; შესანიშნავი ადგილია FreeCAD-ის სხვა მომხმარებლებისა და დეველოპერებისგან დახმარების მისაღებად. ფორუმს აქვს მრავალი სექცია სხვადასხვა ტიპის საკითხებისა და სადისკუსიო თემებისთვის. თუ ეჭვი გეპარებათ, გამოაქვეყნეთ უფრო ზოგადი&lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt; დახმარება FreeCAD&lt;/a&gt; განყოფილების გამოყენების შესახებ.</translation>
+      <translation type="unfinished">The &lt;a href="https://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="102"/>
@@ -287,7 +287,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../../StartPage/StartPage.py" line="826"/>
+      <location filename="../../../StartPage/StartPage.py" line="871"/>
       <location filename="../../Workbench.cpp" line="62"/>
       <source>Start page</source>
       <translation>საწყისი გვერდი</translation>

@@ -281,7 +281,7 @@ Wilt u dat de Addon Manager deze automatisch installeert? Kies &quot;Negeren&quo
     <message>
       <location filename="../../AddonManager.ui" line="113"/>
       <source>Update all Addons</source>
-      <translation type="unfinished">Update all Addons</translation>
+      <translation>Update alle uitbreidingen</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="120"/>
@@ -291,7 +291,7 @@ Wilt u dat de Addon Manager deze automatisch installeert? Kies &quot;Negeren&quo
     <message>
       <location filename="../../AddonManager.ui" line="130"/>
       <source>View and update Python package dependencies</source>
-      <translation type="unfinished">View and update Python package dependencies</translation>
+      <translation>Bekijk en update Python pakket afhankelijkheden</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="133"/>
@@ -301,7 +301,7 @@ Wilt u dat de Addon Manager deze automatisch installeert? Kies &quot;Negeren&quo
     <message>
       <location filename="../../AddonManager.ui" line="140"/>
       <source>Developer tools...</source>
-      <translation type="unfinished">Developer tools...</translation>
+      <translation>Ontwikkelaars gereedschap...</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="160"/>

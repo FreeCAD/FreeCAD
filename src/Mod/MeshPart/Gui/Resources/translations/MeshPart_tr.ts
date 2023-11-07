@@ -62,7 +62,7 @@ Bu komut yalnızca bir 'metal örgü' nesnesiyle çalışır.</translation>
     <message>
       <location filename="../../Command.cpp" line="192"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Parçacık</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="193"/>
@@ -198,12 +198,12 @@ Bu komut yalnızca bir 'metal örgü' nesnesiyle çalışır.</translation>
       <translation>İptal</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="626"/>
+      <location filename="../../CurveOnMesh.cpp" line="624"/>
       <source>Wrong mesh picked</source>
       <translation>Yanlış metal örgü seçildi</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="667"/>
+      <location filename="../../CurveOnMesh.cpp" line="663"/>
       <source>No point was picked</source>
       <translation>Hiçbir nokta seçilmedi</translation>
     </message>

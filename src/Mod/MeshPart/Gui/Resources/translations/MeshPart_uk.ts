@@ -62,7 +62,7 @@ This command only works with a 'mesh' object.</source>
     <message>
       <location filename="../../Command.cpp" line="192"/>
       <source>Mesh</source>
-      <translation>Сітка(Меш)</translation>
+      <translation>Сітка</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="193"/>
@@ -198,12 +198,12 @@ This command only works with a 'mesh' object.</source>
       <translation>Скасувати</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="626"/>
+      <location filename="../../CurveOnMesh.cpp" line="624"/>
       <source>Wrong mesh picked</source>
       <translation>Обрана хибна сітка</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="667"/>
+      <location filename="../../CurveOnMesh.cpp" line="663"/>
       <source>No point was picked</source>
       <translation>Жодної точки не вибрано</translation>
     </message>

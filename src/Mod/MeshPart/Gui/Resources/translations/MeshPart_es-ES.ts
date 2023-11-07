@@ -198,12 +198,12 @@ Este comando solo funciona con un objeto 'malla'.</translation>
       <translation>Cancelar</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="626"/>
+      <location filename="../../CurveOnMesh.cpp" line="624"/>
       <source>Wrong mesh picked</source>
       <translation>Malla equivocada seleccionada</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="667"/>
+      <location filename="../../CurveOnMesh.cpp" line="663"/>
       <source>No point was picked</source>
       <translation>No fue elegido ningún punto</translation>
     </message>
@@ -222,7 +222,7 @@ Este comando solo funciona con un objeto 'malla'.</translation>
 This command only works with a 'mesh' object, not a regular face or surface. To convert an object to a mesh use the tools of the Mesh Workbench.</source>
       <translation>Pulse 'Empezar', luego seleccione puntos en la malla; cuando se hayan establecido suficientes puntos, haga clic derecho y seleccione 'Crear'. Repetir este proceso para crear más curvas. Cierre este panel de tareas para completar la operación.
 
-Este comando solo funciona con un objeto 'malla', no con una cara regular o superficie. Para convertir un objeto a una malla utilice las herramientas del Banco de Trabajo Mesh.</translation>
+Este comando solo funciona con un objeto 'malla', no con una cara regular o superficie. Para convertir un objeto a una malla utilice las herramientas del entorno de trabajo Mesh.</translation>
     </message>
     <message>
       <location filename="../../TaskCurveOnMesh.ui" line="38"/>

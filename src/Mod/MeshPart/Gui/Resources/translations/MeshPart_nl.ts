@@ -198,12 +198,12 @@ Deze opdracht werkt alleen met een 'maaswerk' object.</translation>
       <translation>Annuleren</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="626"/>
+      <location filename="../../CurveOnMesh.cpp" line="624"/>
       <source>Wrong mesh picked</source>
       <translation>Verkeerde gaas gepakt</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="667"/>
+      <location filename="../../CurveOnMesh.cpp" line="663"/>
       <source>No point was picked</source>
       <translation>Geen punt was geselecteerd</translation>
     </message>

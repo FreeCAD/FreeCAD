@@ -1817,7 +1817,7 @@ instalirani dodaci će biti provereni da li postoje dostupna ažuriranja
       <location filename="../../install_to_toolbar.py" line="233"/>
       <source>Run</source>
       <comment>Indicates a macro that can be &apos;run&apos;</comment>
-      <translation type="unfinished">Run</translation>
+      <translation>Pokreni</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_utility.py" line="61"/>

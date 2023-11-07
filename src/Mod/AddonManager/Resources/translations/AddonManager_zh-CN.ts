@@ -922,7 +922,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="313"/>
       <source>Display Name</source>
-      <translation type="unfinished">Display Name</translation>
+      <translation>显示名称</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="330"/>

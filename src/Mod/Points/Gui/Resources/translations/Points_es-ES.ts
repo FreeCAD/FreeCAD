@@ -36,7 +36,7 @@
       <location filename="../../Command.cpp" line="122"/>
       <location filename="../../Command.cpp" line="124"/>
       <source>Exports a point cloud</source>
-      <translation>exporta una nube de puntos</translation>
+      <translation>Exporta una nube de puntos</translation>
     </message>
   </context>
   <context>

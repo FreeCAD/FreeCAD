@@ -236,7 +236,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="338"/>
       <source>Save...</source>
-      <translation type="unfinished">Save...</translation>
+      <translation>Kaydet...</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="339"/>
@@ -253,7 +253,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="428"/>
       <source>Open file</source>
-      <translation type="unfinished">Open file</translation>
+      <translation>Dosyayı aç</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="430"/>
@@ -264,7 +264,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="442"/>
       <source>Save file</source>
-      <translation type="unfinished">Save file</translation>
+      <translation>Dosyayı kaydet</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="456"/>
@@ -423,7 +423,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="304"/>
       <source>Replace Object</source>
-      <translation type="unfinished">Replace Object</translation>
+      <translation>Nesneyi Değiştir</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="307"/>
@@ -436,7 +436,7 @@
     <message>
       <location filename="../../OpenSCADCommands.py" line="317"/>
       <source>Remove Objects and their Children</source>
-      <translation type="unfinished">Remove Objects and their Children</translation>
+      <translation>Nesneleri ve onların alt-bağlarını kaldır</translation>
     </message>
     <message>
       <location filename="../../OpenSCADCommands.py" line="320"/>

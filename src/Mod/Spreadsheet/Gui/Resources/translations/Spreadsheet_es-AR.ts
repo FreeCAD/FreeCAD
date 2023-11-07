@@ -682,8 +682,8 @@ la configuración de diseño. La propiedad se creará si no existe.</translation
     <message>
       <location filename="../../Command.cpp" line="194"/>
       <location filename="../../Command.cpp" line="254"/>
-      <source>All (*)</source>
-      <translation>Todos (*)</translation>
+      <source>CSV (*.csv *.CSV);;All (*)</source>
+      <translation type="unfinished">CSV (*.csv *.CSV);;All (*)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="196"/>
@@ -741,7 +741,7 @@ Spreadsheet.mi_nombre_de_alias en lugar de Spreadsheet.B1
 </translation>
     </message>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="124"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="126"/>
       <source>Spreadsheet</source>
       <translation>Hoja de cálculo</translation>
     </message>

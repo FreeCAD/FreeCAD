@@ -71,7 +71,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="56"/>
       <source>Create a part with the Part Design workbench</source>
-      <translation>Utwórz część za pomocą środowiska pracy Część</translation>
+      <translation>Utwórz część za pomocą środowiska pracy Projekt Części</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="57"/>
@@ -176,7 +176,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="98"/>
       <source>The &lt;a href="https://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
-      <translation>&lt;a href="https://forum.freecad.org"&gt; Forum FreeCAD &lt;/a&gt; to świetne miejsce, aby uzyskać pomoc od innych użytkowników i programistów. Posiada ono wiele sekcji dla różnych typów zagadnień i tematów dyskusji. W razie wątpliwości opublikuj wiadomość w sekcji ogólnej &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Pomoc w użytkowaniu FreeCAD&lt;/a&gt;.</translation>
+      <translation type="unfinished">The &lt;a href="https://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="102"/>
@@ -287,7 +287,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../../StartPage/StartPage.py" line="826"/>
+      <location filename="../../../StartPage/StartPage.py" line="871"/>
       <location filename="../../Workbench.cpp" line="62"/>
       <source>Start page</source>
       <translation>Strona startowa</translation>
