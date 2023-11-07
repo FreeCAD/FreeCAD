@@ -7,7 +7,18 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 include(GNUInstallDirs)
 
-add_library(OndselSolver SHARED)
+if( BUILD_SHARED_LIBS )
+    set( ONDSELSOLVER_BUILD_SHARED ON )
+endif()
+
+if ( ONDSELSOLVER_BUILD_SHARED )
+    message( STATUS "[OndselSolver] Building shared library" )
+    add_library(OndselSolver SHARED)
+else()
+    message( STATUS "[OndselSolver] Building static library" )
+    add_library(OndselSolver STATIC)
+endif()
+
 
 set(ONDSELSOLVER_SRC
         OndselSolver/Array.cpp
