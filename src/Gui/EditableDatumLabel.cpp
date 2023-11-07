@@ -346,9 +346,10 @@ void EditableDatumLabel::setPoints(Base::Vector3d p1, Base::Vector3d p2)
 }
 
 // NOLINTNEXTLINE
-void EditableDatumLabel::setLabelType(SoDatumLabel::Type type)
+void EditableDatumLabel::setLabelType(SoDatumLabel::Type type, Function funct)
 {
     label->datumtype = type;
+    function = funct;
 }
 
 // NOLINTNEXTLINE
@@ -393,4 +394,10 @@ void EditableDatumLabel::setSpinboxVisibleToMouse(bool val)
     spinBox->setAttribute(Qt::WA_TransparentForMouseEvents, !val);
 }
 
+EditableDatumLabel::Function EditableDatumLabel::getFunction()
+{
+    return function;
+}
+
 #include "moc_EditableDatumLabel.cpp" // NOLINT
+
