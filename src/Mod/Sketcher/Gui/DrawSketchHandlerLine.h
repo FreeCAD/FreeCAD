@@ -306,11 +306,17 @@ void DSHLineController::configureToolWidget()
     onViewParameters[OnViewParameter::Second]->setLabelType(Gui::SoDatumLabel::DISTANCEY);
 
     if (handler->constructionMethod() == ConstructionMethod::OnePointLengthAngle) {
-        onViewParameters[OnViewParameter::Fourth]->setLabelType(Gui::SoDatumLabel::ANGLE);
+        onViewParameters[OnViewParameter::Fourth]->setLabelType(
+            Gui::SoDatumLabel::ANGLE,
+            Gui::EditableDatumLabel::Function::Dimensioning);
     }
     else {
-        onViewParameters[OnViewParameter::Third]->setLabelType(Gui::SoDatumLabel::DISTANCEX);
-        onViewParameters[OnViewParameter::Fourth]->setLabelType(Gui::SoDatumLabel::DISTANCEY);
+        onViewParameters[OnViewParameter::Third]->setLabelType(
+            Gui::SoDatumLabel::DISTANCEX,
+            Gui::EditableDatumLabel::Function::Dimensioning);
+        onViewParameters[OnViewParameter::Fourth]->setLabelType(
+            Gui::SoDatumLabel::DISTANCEY,
+            Gui::EditableDatumLabel::Function::Dimensioning);
     }
 }
 
@@ -392,11 +398,11 @@ void DSHLineController::adaptParameters(Base::Vector2d onSketchPos)
     switch (handler->state()) {
         case SelectMode::SeekFirst: {
             if (!onViewParameters[OnViewParameter::First]->isSet) {
-                onViewParameters[OnViewParameter::First]->setSpinboxValue(onSketchPos.x);
+                setOnViewParameterValue(OnViewParameter::First, onSketchPos.x);
             }
 
             if (!onViewParameters[OnViewParameter::Second]->isSet) {
-                onViewParameters[OnViewParameter::Second]->setSpinboxValue(onSketchPos.y);
+                setOnViewParameterValue(OnViewParameter::Second, onSketchPos.y);
             }
 
             bool sameSign = onSketchPos.x * onSketchPos.y > 0.;
@@ -414,11 +420,11 @@ void DSHLineController::adaptParameters(Base::Vector2d onSketchPos)
                 Base::Vector3d vec = end - start;
 
                 if (!onViewParameters[OnViewParameter::Third]->isSet) {
-                    onViewParameters[OnViewParameter::Third]->setSpinboxValue(vec.x);
+                    setOnViewParameterValue(OnViewParameter::Third, vec.x);
                 }
 
                 if (!onViewParameters[OnViewParameter::Fourth]->isSet) {
-                    onViewParameters[OnViewParameter::Fourth]->setSpinboxValue(vec.y);
+                    setOnViewParameterValue(OnViewParameter::Fourth, vec.y);
                 }
 
                 bool sameSign = vec.x * vec.y > 0.;
@@ -435,13 +441,14 @@ void DSHLineController::adaptParameters(Base::Vector2d onSketchPos)
                 Base::Vector3d vec = end - start;
 
                 if (!onViewParameters[OnViewParameter::Third]->isSet) {
-                    onViewParameters[OnViewParameter::Third]->setSpinboxValue(vec.Length());
+                    setOnViewParameterValue(OnViewParameter::Third, vec.Length());
                 }
 
                 double range = (handler->endPoint - handler->startPoint).Angle();
                 if (!onViewParameters[OnViewParameter::Fourth]->isSet) {
-                    onViewParameters[OnViewParameter::Fourth]->setSpinboxValue(range * 180 / M_PI,
-                                                                               Base::Unit::Angle);
+                    setOnViewParameterValue(OnViewParameter::Fourth,
+                                            range * 180 / M_PI,
+                                            Base::Unit::Angle);
                 }
 
                 onViewParameters[OnViewParameter::Third]->setPoints(start, end);
@@ -450,11 +457,11 @@ void DSHLineController::adaptParameters(Base::Vector2d onSketchPos)
             }
             else {
                 if (!onViewParameters[OnViewParameter::Third]->isSet) {
-                    onViewParameters[OnViewParameter::Third]->setSpinboxValue(onSketchPos.x);
+                    setOnViewParameterValue(OnViewParameter::Third, onSketchPos.x);
                 }
 
                 if (!onViewParameters[OnViewParameter::Fourth]->isSet) {
-                    onViewParameters[OnViewParameter::Fourth]->setSpinboxValue(onSketchPos.y);
+                    setOnViewParameterValue(OnViewParameter::Fourth, onSketchPos.y);
                 }
 
                 bool sameSign = onSketchPos.x * onSketchPos.y > 0.;

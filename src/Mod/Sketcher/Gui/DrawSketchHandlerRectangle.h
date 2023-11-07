@@ -2005,11 +2005,11 @@ void DSHRectangleController::adaptParameters(Base::Vector2d onSketchPos)
     switch (handler->state()) {
         case SelectMode::SeekFirst: {
             if (!onViewParameters[OnViewParameter::First]->isSet) {
-                onViewParameters[OnViewParameter::First]->setSpinboxValue(onSketchPos.x);
+                setOnViewParameterValue(OnViewParameter::First, onSketchPos.x);
             }
 
             if (!onViewParameters[OnViewParameter::Second]->isSet) {
-                onViewParameters[OnViewParameter::Second]->setSpinboxValue(onSketchPos.y);
+                setOnViewParameterValue(OnViewParameter::Second, onSketchPos.y);
             }
 
             bool sameSign = onSketchPos.x * onSketchPos.y > 0.;
@@ -2025,12 +2025,12 @@ void DSHRectangleController::adaptParameters(Base::Vector2d onSketchPos)
                 || handler->constructionMethod() == ConstructionMethod::CenterAndCorner) {
                 if (!onViewParameters[OnViewParameter::Third]->isSet) {
                     double length = handler->cornersReversed ? handler->width : handler->length;
-                    onViewParameters[OnViewParameter::Third]->setSpinboxValue(length);
+                    setOnViewParameterValue(OnViewParameter::Third, length);
                 }
 
                 if (!onViewParameters[OnViewParameter::Fourth]->isSet) {
                     double width = handler->cornersReversed ? handler->length : handler->width;
-                    onViewParameters[OnViewParameter::Fourth]->setSpinboxValue(width);
+                    setOnViewParameterValue(OnViewParameter::Fourth, width);
                 }
 
                 Base::Vector3d start = toVector3d(handler->corner1);
@@ -2049,16 +2049,16 @@ void DSHRectangleController::adaptParameters(Base::Vector2d onSketchPos)
             }
             else if (handler->constructionMethod() == ConstructionMethod::ThreePoints) {
                 if (!onViewParameters[OnViewParameter::Third]->isSet) {
-                    onViewParameters[OnViewParameter::Third]->setSpinboxValue(handler->length);
+                    setOnViewParameterValue(OnViewParameter::Third, handler->length);
                 }
 
                 onViewParameters[OnViewParameter::Third]->setPoints(toVector3d(handler->corner4),
                                                                     toVector3d(handler->corner3));
 
                 if (!onViewParameters[OnViewParameter::Fourth]->isSet) {
-                    onViewParameters[OnViewParameter::Fourth]->setSpinboxValue(handler->angle * 180
-                                                                                   / M_PI,
-                                                                               Base::Unit::Angle);
+                    setOnViewParameterValue(OnViewParameter::Fourth,
+                                            handler->angle * 180 / M_PI,
+                                            Base::Unit::Angle);
                 }
 
                 onViewParameters[OnViewParameter::Fourth]->setPoints(toVector3d(handler->corner1),
@@ -2068,11 +2068,11 @@ void DSHRectangleController::adaptParameters(Base::Vector2d onSketchPos)
             }
             else {
                 if (!onViewParameters[OnViewParameter::Third]->isSet) {
-                    onViewParameters[OnViewParameter::Third]->setSpinboxValue(onSketchPos.x);
+                    setOnViewParameterValue(OnViewParameter::Third, onSketchPos.x);
                 }
 
                 if (!onViewParameters[OnViewParameter::Fourth]->isSet) {
-                    onViewParameters[OnViewParameter::Fourth]->setSpinboxValue(onSketchPos.y);
+                    setOnViewParameterValue(OnViewParameter::Fourth, onSketchPos.y);
                 }
 
                 bool sameSign = onSketchPos.x * onSketchPos.y > 0.;
@@ -2089,7 +2089,7 @@ void DSHRectangleController::adaptParameters(Base::Vector2d onSketchPos)
                 || handler->constructionMethod() == ConstructionMethod::CenterAndCorner) {
                 if (handler->roundCorners) {
                     if (!onViewParameters[OnViewParameter::Fifth]->isSet) {
-                        onViewParameters[OnViewParameter::Fifth]->setSpinboxValue(handler->radius);
+                        setOnViewParameterValue(OnViewParameter::Fifth, handler->radius);
                     }
 
                     Base::Vector3d center = handler->center3;
@@ -2104,8 +2104,7 @@ void DSHRectangleController::adaptParameters(Base::Vector2d onSketchPos)
                 }
                 else {
                     if (!onViewParameters[OnViewParameter::Sixth]->isSet) {
-                        onViewParameters[OnViewParameter::Sixth]->setSpinboxValue(
-                            handler->thickness);
+                        setOnViewParameterValue(OnViewParameter::Sixth, handler->thickness);
                     }
 
                     Base::Vector3d start = toVector3d(handler->corner3);
@@ -2122,8 +2121,8 @@ void DSHRectangleController::adaptParameters(Base::Vector2d onSketchPos)
                 bool notReversed = threePoints && !handler->cornersReversed;
 
                 if (!onViewParameters[OnViewParameter::Fifth]->isSet) {
-                    onViewParameters[OnViewParameter::Fifth]->setSpinboxValue(
-                        notReversed ? handler->width : handler->length);
+                    setOnViewParameterValue(OnViewParameter::Fifth,
+                                            notReversed ? handler->width : handler->length);
                 }
 
                 Base::Vector3d start = toVector3d(handler->corner1);
@@ -2136,15 +2135,11 @@ void DSHRectangleController::adaptParameters(Base::Vector2d onSketchPos)
                 if (!onViewParameters[OnViewParameter::Sixth]->isSet) {
                     if (threePoints) {
                         double val = handler->angle123 * 180 / M_PI;
-                        onViewParameters[OnViewParameter::Sixth]->setSpinboxValue(
-                            val,
-                            Base::Unit::Angle);
+                        setOnViewParameterValue(OnViewParameter::Sixth, val, Base::Unit::Angle);
                     }
                     else {
                         double val = handler->angle412 * 180 / M_PI;
-                        onViewParameters[OnViewParameter::Sixth]->setSpinboxValue(
-                            val,
-                            Base::Unit::Angle);
+                        setOnViewParameterValue(OnViewParameter::Sixth, val, Base::Unit::Angle);
                     }
                 }
 
@@ -2172,7 +2167,7 @@ void DSHRectangleController::adaptParameters(Base::Vector2d onSketchPos)
             if (handler->constructionMethod() == ConstructionMethod::Diagonal
                 || handler->constructionMethod() == ConstructionMethod::CenterAndCorner) {
                 if (!onViewParameters[OnViewParameter::Sixth]->isSet) {
-                    onViewParameters[OnViewParameter::Sixth]->setSpinboxValue(handler->thickness);
+                    setOnViewParameterValue(OnViewParameter::Sixth, handler->thickness);
                 }
 
                 Base::Vector3d start = toVector3d(handler->corner3);
@@ -2183,8 +2178,7 @@ void DSHRectangleController::adaptParameters(Base::Vector2d onSketchPos)
             else {
                 if (handler->roundCorners) {
                     if (!onViewParameters[OnViewParameter::Seventh]->isSet) {
-                        onViewParameters[OnViewParameter::Seventh]->setSpinboxValue(
-                            handler->radius);
+                        setOnViewParameterValue(OnViewParameter::Seventh, handler->radius);
                     }
 
                     Base::Vector3d center = handler->center3;
@@ -2199,8 +2193,7 @@ void DSHRectangleController::adaptParameters(Base::Vector2d onSketchPos)
                 }
                 else {
                     if (!onViewParameters[OnViewParameter::Eighth]->isSet) {
-                        onViewParameters[OnViewParameter::Eighth]->setSpinboxValue(
-                            handler->thickness);
+                        setOnViewParameterValue(OnViewParameter::Eighth, handler->thickness);
                     }
 
                     Base::Vector3d start = toVector3d(handler->corner3);
@@ -2213,7 +2206,7 @@ void DSHRectangleController::adaptParameters(Base::Vector2d onSketchPos)
         } break;
         case SelectMode::SeekFifth: {
             if (!onViewParameters[OnViewParameter::Eighth]->isSet) {
-                onViewParameters[OnViewParameter::Eighth]->setSpinboxValue(handler->thickness);
+                setOnViewParameterValue(OnViewParameter::Eighth, handler->thickness);
             }
 
             Base::Vector3d start = toVector3d(handler->corner3);

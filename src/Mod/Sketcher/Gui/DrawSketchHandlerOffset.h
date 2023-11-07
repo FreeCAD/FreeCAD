@@ -1140,7 +1140,7 @@ void DSHOffsetController::adaptParameters(Base::Vector2d onSketchPos)
     switch (handler->state()) {
         case SelectMode::SeekFirst: {
             if (!onViewParameters[OnViewParameter::First]->isSet) {
-                onViewParameters[OnViewParameter::First]->setSpinboxValue(handler->offsetLength);
+                setOnViewParameterValue(OnViewParameter::First, handler->offsetLength);
             }
 
             onViewParameters[OnViewParameter::First]->setPoints(
