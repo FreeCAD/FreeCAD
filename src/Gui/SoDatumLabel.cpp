@@ -460,6 +460,8 @@ SbVec3f SoDatumLabel::getLabelTextCenter()
     else if (datumtype.getValue() == SoDatumLabel::ANGLE) {
         return getLabelTextCenterAngle(p1);
     }
+
+    return p1;
 }
 
 SbVec3f SoDatumLabel::getLabelTextCenterDistance(const SbVec3f& p1, const SbVec3f& p2)

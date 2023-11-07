@@ -2520,6 +2520,8 @@ protected:
 
             return !arcInfo.isRadiusDoF();
         }
+
+        return false;
     }
 
     void restartCommand(const char* cstrName) {
