@@ -690,8 +690,7 @@ bool ViewProviderSketch::keyPressed(bool pressed, int key)
         case SoKeyboardEvent::ESCAPE: {
             // make the handler quit but not the edit mode
             if (isInEditMode() && sketchHandler) {
-                if (!pressed)
-                    sketchHandler->quit();
+                sketchHandler->registerPressedKey(pressed, key); // delegate
                 return true;
             }
             if (isInEditMode() && !drag.DragConstraintSet.empty()) {
@@ -1170,8 +1169,8 @@ bool ViewProviderSketch::mouseButtonPressed(int Button, bool pressed, const SbVe
         if (!pressed) {
             switch (Mode) {
                 case STATUS_SKETCH_UseHandler:
-                    // make the handler quit
-                    sketchHandler->quit();
+                    // delegate to handler whether to quit or do otherwise
+                    sketchHandler->pressRightButton(Base::Vector2d(x, y));
                     return true;
                 case STATUS_NONE: {
                     // A right click shouldn't change the Edit Mode

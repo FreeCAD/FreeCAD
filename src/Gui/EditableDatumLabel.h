@@ -45,7 +45,7 @@ class GuiExport EditableDatumLabel : public QObject
     Q_DISABLE_COPY(EditableDatumLabel)
 
 public:
-    EditableDatumLabel(View3DInventorViewer* view, const Base::Placement& plc, SbColor color, bool autoDistance = false);
+    EditableDatumLabel(View3DInventorViewer* view, const Base::Placement& plc, SbColor color, bool autoDistance = false, bool avoidMouseCursor = false);
     ~EditableDatumLabel() override;
 
     void activate();
@@ -76,6 +76,7 @@ public:
     bool isSet;
     bool autoDistance;
     bool autoDistanceReverse;
+    bool avoidMouseCursor;
     double value;
     // NOLINTEND
 

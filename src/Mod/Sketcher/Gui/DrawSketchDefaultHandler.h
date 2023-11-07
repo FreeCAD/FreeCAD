@@ -427,7 +427,29 @@ public:
         if (key == SoKeyboardEvent::M && pressed && !this->isLastState()) {
             this->iterateToNextConstructionMethod();
         }
+        else if (key == SoKeyboardEvent::ESCAPE && pressed) {
+
+            if (this->isFirstState()) {
+                quit();
+            }
+            else {
+                handleContinuousMode();
+            }
+        }
     }
+
+    void pressRightButton(Base::Vector2d onSketchPos) override
+    {
+        Q_UNUSED(onSketchPos);
+
+        if (this->isFirstState()) {
+            quit();
+        }
+        else {
+            handleContinuousMode();
+        }
+    }
+
     //@}
 
 

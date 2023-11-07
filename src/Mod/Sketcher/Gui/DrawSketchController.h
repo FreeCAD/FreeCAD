@@ -241,8 +241,6 @@ public:
     /** function that is called by the handler when the construction mode changed */
     void onConstructionMethodChanged()
     {
-        nOnViewParameter = OnViewParametersT::size(handler->constructionMethod());
-
         doConstructionMethodChanged();  // NVI
 
         handler->updateCursor();
@@ -469,7 +467,8 @@ protected:
                                      viewer,
                                      placement,
                                      colorManager.dimConstrDeactivatedColor,
-                                     /*autoDistance = */ true))
+                                     /*autoDistance = */ true,
+                                     /*avoidMouseCursor = */ true))
                                  .get();
 
             QObject::connect(parameter, &Gui::EditableDatumLabel::valueChanged, [=](double value) {
@@ -532,13 +531,27 @@ protected:
         if (index >= onViewParameters.size()) {
             index = 0;
         }
+
         while (index < onViewParameters.size()) {
             if (isOnViewParameterOfCurrentMode(index)) {
                 setFocusToOnViewParameter(index);
-                break;
+                return;
             }
             index++;
         }
+        // There is no more onViewParameter after onViewIndexWithFocus + 1 in this mode
+
+        // So we go back to start.
+        index = 0;
+        while (index < onViewParameters.size()) {
+            if (isOnViewParameterOfCurrentMode(index)) {
+                setFocusToOnViewParameter(index);
+                return;
+            }
+            index++;
+        }
+
+        // At that point if no onViewParameter is found, there is none.
     }
 
     /** Returns whether the provided on-view parameter index belongs to the current state of the
@@ -560,10 +573,15 @@ protected:
     /** Resets the on-view parameter controls */
     void resetOnViewParameters()
     {
+        nOnViewParameter = OnViewParametersT::size(handler->constructionMethod());
         initNOnViewParameters(nOnViewParameter);
         onViewIndexWithFocus = 0;
 
         configureOnViewParameters();
+
+        if (init) {
+            handler->moveCursorToSketchPoint(prevCursorPosition);
+        }
     }
     //@}
 

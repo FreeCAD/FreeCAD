@@ -26,6 +26,8 @@
 
 #include <QGuiApplication>
 #include <QPainter>
+
+#include <Inventor/events/SoKeyboardEvent.h>
 #endif  // #ifndef _PreComp_
 
 #include <Base/Console.h>
@@ -365,6 +367,22 @@ void DrawSketchHandler::toolWidgetChanged(QWidget* newwidget)
 {
     toolwidget = newwidget;
     onWidgetChanged();
+}
+
+void DrawSketchHandler::registerPressedKey(bool pressed, int key)
+{
+    // the default behaviour is to quit - specific handler categories may
+    // override this behaviour, for example to implement a continuous mode
+    if (key == SoKeyboardEvent::ESCAPE && !pressed) {
+        quit();
+    }
+}
+
+void DrawSketchHandler::pressRightButton(Base::Vector2d /*onSketchPos*/)
+{
+    // the default behaviour is to quit - specific handler categories may
+    // override this behaviour, for example to implement a continuous mode
+    quit();
 }
 
 //**************************************************************************

@@ -152,8 +152,8 @@ public:
     {
         return false;
     }
-    virtual void registerPressedKey(bool /*pressed*/, int /*key*/)
-    {}
+    virtual void registerPressedKey(bool pressed, int key);
+    virtual void pressRightButton(Base::Vector2d onSketchPos);
 
     virtual void quit();
 

@@ -1329,12 +1329,14 @@ private:
                                                   firstCurve + 5,
                                                   Sketcher::PointPos::none,
                                                   firstCurve + 7);
-                            if (fabs(angle123 - M_PI / 2) < Precision::Confusion()) {
-                                addToShapeConstraints(Sketcher::Perpendicular,
-                                                      firstCurve + 4,
-                                                      Sketcher::PointPos::none,
-                                                      firstCurve + 5);
-                            }
+                            addToShapeConstraints(Sketcher::Parallel,
+                                                  firstCurve,
+                                                  Sketcher::PointPos::none,
+                                                  firstCurve + 4);
+                            addToShapeConstraints(Sketcher::Parallel,
+                                                  firstCurve + 1,
+                                                  Sketcher::PointPos::none,
+                                                  firstCurve + 5);
                         }
 
                         // add construction lines
@@ -1551,14 +1553,24 @@ auto DSHRectangleControllerBase::getState(int labelindex) const
                 return SelectMode::SeekSecond;
                 break;
             case OnViewParameter::Fifth:
-                return SelectMode::SeekThird;
-                break;
-            case OnViewParameter::Sixth:
-                if (!handler->roundCorners) {
+                if (handler->roundCorners) {
                     return SelectMode::SeekThird;
                 }
                 else {
-                    return SelectMode::SeekFourth;
+                    return SelectMode::End;
+                }
+                break;
+            case OnViewParameter::Sixth:
+                if (handler->makeFrame) {
+                    if (!handler->roundCorners) {
+                        return SelectMode::SeekThird;
+                    }
+                    else {
+                        return SelectMode::SeekFourth;
+                    }
+                }
+                else {
+                    return SelectMode::End;
                 }
                 break;
             default:
@@ -1580,14 +1592,24 @@ auto DSHRectangleControllerBase::getState(int labelindex) const
                 return SelectMode::SeekThird;
                 break;
             case OnViewParameter::Seventh:
-                return SelectMode::SeekFourth;
-                break;
-            case OnViewParameter::Eighth:
-                if (!handler->roundCorners) {
+                if (handler->roundCorners) {
                     return SelectMode::SeekFourth;
                 }
                 else {
-                    return SelectMode::SeekFifth;
+                    return SelectMode::End;
+                }
+                break;
+            case OnViewParameter::Eighth:
+                if (handler->makeFrame) {
+                    if (!handler->roundCorners) {
+                        return SelectMode::SeekFourth;
+                    }
+                    else {
+                        return SelectMode::SeekFifth;
+                    }
+                }
+                else {
+                    return SelectMode::End;
                 }
                 break;
             default:
@@ -1600,8 +1622,8 @@ template<>
 void DSHRectangleController::configureToolWidget()
 {
     if (!init) {  // Code to be executed only upon initialisation
-        QStringList names = {QStringLiteral("Diagonal corners"),
-                             QStringLiteral("Center and corner"),
+        QStringList names = {QStringLiteral("Corner, length & width"),
+                             QStringLiteral("Center, length & width"),
                              QStringLiteral("3 corners"),
                              QStringLiteral("Center and 2 corners")};
         toolWidget->setComboboxElements(WCombobox::FirstCombo, names);
@@ -1816,7 +1838,7 @@ void DSHRectangleControllerBase::doEnforceControlParameters(Base::Vector2d& onSk
                 else {
                     if (onViewParameters[OnViewParameter::Sixth]->isSet) {
                         double thickness = onViewParameters[OnViewParameter::Sixth]->getValue();
-                        if (thickness < Precision::Confusion()) {
+                        if (thickness <= -std::min(handler->width, handler->length) / 2) {
                             unsetOnViewParameter(onViewParameters[OnViewParameter::Sixth].get());
                             return;
                         }
@@ -1909,7 +1931,7 @@ void DSHRectangleControllerBase::doEnforceControlParameters(Base::Vector2d& onSk
 
                 if (onViewParameters[OnViewParameter::Sixth]->isSet) {
                     double thickness = onViewParameters[OnViewParameter::Sixth]->getValue();
-                    if (thickness < Precision::Confusion()) {
+                    if (thickness <= -std::min(handler->width, handler->length) / 2) {
                         unsetOnViewParameter(onViewParameters[OnViewParameter::Sixth].get());
                         return;
                     }
@@ -1936,7 +1958,7 @@ void DSHRectangleControllerBase::doEnforceControlParameters(Base::Vector2d& onSk
                 else {
                     if (onViewParameters[OnViewParameter::Eighth]->isSet) {
                         double thickness = onViewParameters[OnViewParameter::Eighth]->getValue();
-                        if (thickness < Precision::Confusion()) {
+                        if (thickness <= -std::min(handler->width, handler->length) / 2) {
                             unsetOnViewParameter(onViewParameters[OnViewParameter::Eighth].get());
                             return;
                         }
@@ -1951,7 +1973,7 @@ void DSHRectangleControllerBase::doEnforceControlParameters(Base::Vector2d& onSk
         case SelectMode::SeekFifth: {
             if (onViewParameters[OnViewParameter::Eighth]->isSet) {
                 double thickness = onViewParameters[OnViewParameter::Eighth]->getValue();
-                if (thickness < Precision::Confusion()) {
+                if (thickness <= -std::min(handler->width, handler->length) / 2) {
                     unsetOnViewParameter(onViewParameters[OnViewParameter::Eighth].get());
                     return;
                 }
