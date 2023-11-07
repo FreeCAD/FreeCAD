@@ -25,6 +25,8 @@
 #include "Reciprocal.h"
 #include "GeneralSpline.h"
 #include "ArcSine.h"
+#include "Integral.h"
+#include "RampStepFunction.h"
 
 MbD::SymbolicParser::SymbolicParser()
 {
@@ -360,6 +362,12 @@ bool MbD::SymbolicParser::intrinsic()
 	}
 	else if (peekForTypevalue("word", "spline")) {
 		symfunc = std::make_shared<GeneralSpline>();
+	}
+	else if (peekForTypevalue("word", "integral")) {
+		symfunc = std::make_shared<Integral>();
+	}
+	else if (peekForTypevalue("word", "rampstep")) {
+		symfunc = std::make_shared<RampStepFunction>();
 	}
 	if (symfunc != nullptr) {
 		stack->push(symfunc);

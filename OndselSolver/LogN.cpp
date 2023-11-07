@@ -19,8 +19,13 @@ double MbD::LogN::getValue()
     return std::log(xx->getValue());
 }
 
+Symsptr MbD::LogN::copyWith(Symsptr arg)
+{
+	return std::make_shared<LogN>(arg);
+}
+
 std::ostream& MbD::LogN::printOn(std::ostream& s) const
 {
-	s << "ln(" << xx << ")";
+	s << "ln(" << *xx << ")";
 	return s;
 }

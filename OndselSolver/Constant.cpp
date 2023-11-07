@@ -9,6 +9,7 @@
 #include "Constant.h"
 #include "System.h"
 #include "Units.h"
+#include "Polynomial.h"
 
 using namespace MbD;
 
@@ -22,17 +23,28 @@ Constant::Constant(double val) : Variable(val)
 
 Symsptr MbD::Constant::differentiateWRT(Symsptr var)
 {
-	return std::make_shared<Constant>(0.0);
+	return sptrConstant(0.0);
+}
+
+Symsptr MbD::Constant::integrateWRT(Symsptr var)
+{
+	if (value == 0.0) return clonesptr();
+	auto slope = sptrConstant(value);
+	auto intercept = sptrConstant(0.0);
+	auto coeffs = std::make_shared<std::vector<Symsptr>>();
+	coeffs->push_back(intercept);
+	coeffs->push_back(slope);
+	return std::make_shared<Polynomial>(var, coeffs);
+}
+
+Symsptr MbD::Constant::expandUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>> set)
+{
+	return sptr;
 }
 
 bool Constant::isConstant()
 {
 	return true;
-}
-
-Symsptr MbD::Constant::expandUntil(std::shared_ptr<std::unordered_set<Symsptr>> set)
-{
-	return clonesptr();
 }
 
 Symsptr MbD::Constant::clonesptr()
@@ -56,6 +68,11 @@ void MbD::Constant::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Un
 }
 
 double MbD::Constant::getValue()
+{
+	return value;
+}
+
+double MbD::Constant::getValue(double arg)
 {
 	return value;
 }

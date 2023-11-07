@@ -5,7 +5,7 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include <sstream>
 #include <string>
 
@@ -72,7 +72,7 @@ Symsptr Sum::expandUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symspt
 	}
 	auto newSize = newTerms->size();
 	if (newSize == 0) {
-		return std::make_shared<Constant>(0.0);
+		return sptrConstant(0.0);
 	}
 	else if (newSize == 1) {
 		return newTerms->at(0);
@@ -104,11 +104,11 @@ Symsptr Sum::simplifyUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Syms
 		}
 	}
 	if (constant != 0.0) {
-		newTerms->insert(newTerms->begin(), std::make_shared<Constant>(constant));
+		newTerms->insert(newTerms->begin(), sptrConstant(constant));
 	}
 	auto newSize = newTerms->size();
 	if (newSize == 0) {
-		return std::make_shared<Constant>(0.0);
+		return sptrConstant(0.0);
 	}
 	else if (newSize == 1) {
 		return newTerms->at(0);
@@ -140,13 +140,34 @@ Symsptr MbD::Sum::clonesptr()
 Symsptr MbD::Sum::differentiateWRT(Symsptr var)
 {
 	auto derivatives = std::make_shared<std::vector<Symsptr>>();
-	std::transform(terms->begin(), terms->end(), 
+	std::transform(terms->begin(),
+		terms->end(),
 		std::back_inserter(*derivatives),
 		[var](Symsptr term) { return term->differentiateWRT(var); }
 	);
 	auto answer = std::make_shared<Sum>();
 	answer->terms = derivatives;
 	return answer;
+}
+
+Symsptr MbD::Sum::integrateWRT(Symsptr var)
+{
+	auto simple = simplified();
+	if (simple->isSum()) {
+		auto newTerms = simple->getTerms();
+		auto integrals = std::make_shared<std::vector<Symsptr>>();
+		std::transform(newTerms->begin(),
+			newTerms->end(),
+			std::back_inserter(*integrals),
+			[var](Symsptr term) { return term->integrateWRT(var); }
+		);
+		auto answer = std::make_shared<Sum>();
+		answer->terms = integrals;
+		return answer;
+	}
+	else {
+		return simple->integrateWRT(var);
+	}
 }
 
 std::ostream& Sum::printOn(std::ostream& s) const

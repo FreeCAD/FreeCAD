@@ -1212,6 +1212,7 @@ void MbD::ASMTAssembly::storeOnLevelGeneralConstraintSets(std::ofstream& os, int
 
 void MbD::ASMTAssembly::storeOnTimeSeries(std::ofstream& os)
 {
+	if (times->empty()) return;
 	os << "TimeSeries" << std::endl;
 	os << "Number\tInput\t";
 	for (int i = 1; i < times->size(); i++)

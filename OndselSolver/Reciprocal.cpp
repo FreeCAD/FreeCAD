@@ -24,13 +24,18 @@ double MbD::Reciprocal::getValue()
 
 Symsptr MbD::Reciprocal::differentiateWRTx()
 {
-	auto two = std::make_shared<Constant>(2);
+	auto two = sptrConstant(2);
 	auto sq = std::make_shared<Power>(xx, two);
 	return std::make_shared<Negative>(sq);
 }
 
+Symsptr MbD::Reciprocal::copyWith(Symsptr arg)
+{
+	return std::make_shared<Reciprocal>(arg);
+}
+
 std::ostream& MbD::Reciprocal::printOn(std::ostream& s) const
 {
-	s << "/(" << xx << ")";
+	s << "/(" << *xx << ")";
 	return s;
 }

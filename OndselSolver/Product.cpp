@@ -43,6 +43,13 @@ Symsptr MbD::Product::differentiateWRT(Symsptr var)
 	return answer;
 }
 
+Symsptr MbD::Product::integrateWRT(Symsptr var)
+{
+	//ToDo: Integration by parts
+	assert(false);
+	return Symsptr();
+}
+
 Symsptr Product::expandUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>> set)
 {
 	auto itr = std::find_if(set->begin(), set->end(), [sptr](Symsptr sym) {return sptr.get() == sym.get(); });
@@ -67,7 +74,8 @@ Symsptr Product::expandUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Sy
 	}
 	auto factor = std::make_shared<Product>();
 	factor->terms = productTerms;
-	auto sumOfProductsOfSums = std::make_shared<Sum>(std::make_shared<Constant>(1));
+	//sumOfProductsOfSums = (a + b + ...)*(c + d + ...)
+	auto sumOfProductsOfSums = std::make_shared<Sum>(sptrConstant(1));
 	for (const auto& term : *sumTerms) {
 		sumOfProductsOfSums = std::static_pointer_cast<Sum>(Symbolic::times(sumOfProductsOfSums, term));
 	}
@@ -94,14 +102,14 @@ Symsptr Product::simplifyUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<
 		}
 	}
 	if (factor == 0.0) {
-		return std::make_shared<Constant>(0.0);
+		return sptrConstant(0.0);
 	}
 	if (factor != 1.0) {
-		newTerms->insert(newTerms->begin(), std::make_shared<Constant>(factor));
+		newTerms->insert(newTerms->begin(), sptrConstant(factor));
 	}
 	auto newSize = newTerms->size();
 	if (newSize == 0) {
-		return std::make_shared<Constant>(1.0);
+		return sptrConstant(1.0);
 	}
 	else if (newSize == 1) {
 		return newTerms->at(0);

@@ -3,6 +3,7 @@
 #include <fstream>	
 #include <algorithm>
 #include <numeric>
+#include <iomanip>
 
 #include "MBDynSystem.h"
 #include "CREATE.h"
@@ -14,12 +15,12 @@
 #include "ASMTConstantGravity.h"
 #include "ASMTTime.h"
 #include "MBDynBody.h"
+#include "MBDynJoint.h"
 #include "MBDynStructural.h"
 #include "SymbolicParser.h"
 #include "BasicUserFunction.h"
-#include "MBDynJoint.h"
 #include "MBDynReference.h"
-#include <iomanip>
+#include "MBDynDrive.h"
 
 using namespace MbD;
 
@@ -38,7 +39,6 @@ void MbD::MBDynSystem::runFile(const char* filename)
 	system->setFilename(filename);
 	system->parseMBDyn(statements);
 	system->runKINEMATIC();
-	system->outputFiles();
 }
 
 void MbD::MBDynSystem::parseMBDyn(std::vector<std::string>& lines)
@@ -51,12 +51,27 @@ void MbD::MBDynSystem::parseMBDyn(std::vector<std::string>& lines)
 	readReferences(lines);
 	readNodesBlock(lines);
 	readElementsBlock(lines);
-
+	assert(lines.empty());
 }
 
 std::shared_ptr<std::vector<std::shared_ptr<MBDynNode>>> MbD::MBDynSystem::mbdynNodes()
 {
 	return nodes;
+}
+
+std::shared_ptr<std::vector<std::shared_ptr<MBDynBody>>> MbD::MBDynSystem::mbdynBodies()
+{
+	return bodies;
+}
+
+std::shared_ptr<std::vector<std::shared_ptr<MBDynJoint>>> MbD::MBDynSystem::mbdynJoints()
+{
+	return joints;
+}
+
+std::shared_ptr<std::vector<std::shared_ptr<MBDynDrive>>> MbD::MBDynSystem::mbdynDrives()
+{
+	return drives;
 }
 
 std::shared_ptr<std::map<std::string, Symsptr>> MbD::MBDynSystem::mbdynVariables()
@@ -77,7 +92,8 @@ void MbD::MBDynSystem::createASMT()
 	asmtItem->setName("Assembly");
 	initialValue->createASMT();
 	for (auto& node : *nodes) node->createASMT();
-	for (auto& element : *elements) element->createASMT();
+	for (auto& body : *bodies) body->createASMT();
+	for (auto& joint : *joints) joint->createASMT();
 }
 
 std::shared_ptr<MBDynNode> MbD::MBDynSystem::nodeAt(std::string nodeName)
@@ -95,12 +111,8 @@ int MbD::MBDynSystem::nodeidAt(std::string nodeName)
 
 std::shared_ptr<MBDynBody> MbD::MBDynSystem::bodyWithNode(std::string nodeName)
 {
-	for (auto& element : *elements) {
-		std::string str = typeid(element).name();
-		if (str.find("MBDynBody") != std::string::npos) {
-			auto body = std::static_pointer_cast<MBDynBody>(element);
-			if (body->nodeName == nodeName) return body;
-		}
+	for (auto& body : *bodies) {
+		if (body->nodeName == nodeName) return body;
 	}
 	return nullptr;
 }
@@ -122,8 +134,10 @@ std::vector<std::string> MbD::MBDynSystem::nodeNames()
 void MbD::MBDynSystem::runKINEMATIC()
 {
 	createASMT();
+	asmtAssembly()->outputFile("assembly.asmt");
 	std::static_pointer_cast<ASMTAssembly>(asmtItem)->runKINEMATIC();
 	outputFiles();
+	asmtAssembly()->outputFile("assembly2.asmt");
 }
 
 void MbD::MBDynSystem::outputFiles()
@@ -302,31 +316,47 @@ void MbD::MBDynSystem::parseMBDynNodes(std::vector<std::string>& lines)
 
 void MbD::MBDynSystem::parseMBDynElements(std::vector<std::string>& lines)
 {
-	elements = std::make_shared<std::vector<std::shared_ptr<MBDynElement>>>();
-	std::vector<std::string> bodyToken{ "body:" };
-	std::vector<std::string> jointToken{ "joint:" };
+	assert(lines[0].find("begin: elements") != std::string::npos);
+	lines.erase(lines.begin());
+	bodies = std::make_shared<std::vector<std::shared_ptr<MBDynBody>>>();
+	joints = std::make_shared<std::vector<std::shared_ptr<MBDynJoint>>>();
+	drives = std::make_shared<std::vector<std::shared_ptr<MBDynDrive>>>();
+	std::vector<std::string> bodyTokens{ "body:" };
+	std::vector<std::string> jointTokens{ "joint:" };
+	std::vector<std::string> driveTokens{ "drive", "caller:" };
 	std::vector<std::string>::iterator it;
 	while (true) {
-		it = findLineWith(lines, bodyToken);
+		it = findLineWith(lines, bodyTokens);
 		if (it != lines.end()) {
 			auto body = std::make_shared<MBDynBody>();
 			body->owner = this;
 			body->parseMBDyn(*it);
-			elements->push_back(body);
+			bodies->push_back(body);
 			lines.erase(it);
 			continue;
 		}
-		it = findLineWith(lines, jointToken);
+		it = findLineWith(lines, jointTokens);
 		if (it != lines.end()) {
 			auto joint = std::make_shared<MBDynJoint>();
 			joint->owner = this;
 			joint->parseMBDyn(*it);
-			elements->push_back(joint);
+			joints->push_back(joint);
+			lines.erase(it);
+			continue;
+		}
+		it = findLineWith(lines, driveTokens);
+		if (it != lines.end()) {
+			auto drive = std::make_shared<MBDynDrive>();
+			drive->owner = this;
+			drive->parseMBDyn(*it);
+			drives->push_back(drive);
 			lines.erase(it);
 			continue;
 		}
 		break;
 	}
+	assert(lines[0].find("end: elements") != std::string::npos);
+	lines.erase(lines.begin());
 }
 
 void MbD::MBDynSystem::parseMBDynVariables(std::vector<std::string>& lines)
@@ -349,6 +379,7 @@ void MbD::MBDynSystem::parseMBDynVariables(std::vector<std::string>& lines)
 			auto userFunc = std::make_shared<BasicUserFunction>(str, 1.0);
 			parser->parseUserFunction(userFunc);
 			auto sym = parser->stack->top();
+			auto val = sym->getValue();
 			variables->insert(std::make_pair(variable, sym));
 			lines.erase(it);
 		}

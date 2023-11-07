@@ -19,8 +19,13 @@ double MbD::Abs::getValue()
     return std::abs(xx->getValue());
 }
 
+Symsptr MbD::Abs::copyWith(Symsptr arg)
+{
+	return std::make_shared<Abs>(arg);
+}
+
 std::ostream& MbD::Abs::printOn(std::ostream& s) const
 {
-	s << "abs(" << xx << ")";
+	s << "abs(" << *xx << ")";
 	return s;
 }

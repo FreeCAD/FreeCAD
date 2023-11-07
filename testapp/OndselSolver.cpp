@@ -22,13 +22,14 @@
 
 using namespace MbD;
 void runSpMat();
+void sharedptrTest();
 
 int main()
 {
-	////ASMTAssembly::readWriteFile("piston.asmt");
-	//MBDynSystem::runFile("MBDynCaseJose.mbd");
-	//MBDynSystem::runFile("MBDynCase.mbd");
-	//MBDynSystem::runFile("crank_slider.mbd");
+	ASMTAssembly::readWriteFile("piston.asmt");
+	MBDynSystem::runFile("MBDynCase2.mbd");
+	MBDynSystem::runFile("MBDynCase.mbd");
+	//MBDynSystem::runFile("crank_slider.mbd");	//Needs integration of product
 	////ASMTAssembly::runSinglePendulumSuperSimplified();	//Mass is missing
 	////ASMTAssembly::runSinglePendulumSuperSimplified2();	//DOF has infinite acceleration due to zero mass and inertias
 	ASMTAssembly::runSinglePendulumSimplified();
@@ -49,8 +50,25 @@ int main()
 	cadSystem->runPiston();
 	runSpMat();
 	MomentOfInertiaSolver::example1();
+	sharedptrTest();
 }
+void sharedptrTest() {
+	auto assm = std::make_shared<ASMTAssembly>();
 
+	auto assm1 = assm;	//New shared_ptr to old object. Reference count incremented.
+	assert(assm == assm1);
+	assert(assm.get() == assm1.get());
+	assert(&assm != &assm1);
+	assert(assm->constantGravity == assm1->constantGravity);
+	assert(&(assm->constantGravity) == &(assm1->constantGravity));
+
+	auto assm2 = std::make_shared<ASMTAssembly>(*assm);	//New shared_ptr to new object. Member variables copy old member variables
+	assert(assm != assm2);
+	assert(assm.get() != assm2.get());
+	assert(&assm != &assm2);
+	assert(assm->constantGravity == assm2->constantGravity);	//constantGravity is same object pointed to
+	assert(&(assm->constantGravity) != &(assm2->constantGravity)); //Different shared_ptrs of same reference counter
+}
 void runSpMat() {
 	auto spMat = std::make_shared<SparseMatrix<double>>(3, 3);
 	spMat->atijput(0, 0, 1.0);

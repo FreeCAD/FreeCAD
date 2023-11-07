@@ -25,7 +25,27 @@ void MbD::ASMTTime::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Un
 {
 	auto mbdTime = mbdSys->time;
 	if (xx == mbdTime) return;
-	auto timeScale = std::make_shared<Constant>(mbdUnits->time);
+	auto timeScale = sptrConstant(mbdUnits->time);
 	auto geoTime = std::make_shared<Product>(timeScale, mbdTime);
 	this->xexpression(mbdTime, geoTime->simplified(geoTime));
+}
+
+Symsptr MbD::ASMTTime::expandUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>> set)
+{
+	return sptr;
+}
+
+Symsptr MbD::ASMTTime::simplifyUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>> set)
+{
+	return sptr;
+}
+
+bool MbD::ASMTTime::isVariable()
+{
+	return true;
+}
+
+void MbD::ASMTTime::setValue(double val)
+{
+	xx->setValue(val);
 }

@@ -32,6 +32,55 @@ void MbD::MBDynItem::parseMBDyn(std::vector<std::string>& lines)
 	assert(false);
 }
 
+std::vector<std::string> MbD::MBDynItem::collectArgumentsFor(std::string title, std::string& statement)
+{
+	size_t previousPos = 0;
+	auto pos = statement.find(":");
+	auto front = statement.substr(previousPos, pos - previousPos);
+	assert(front.find(title) != std::string::npos);
+	auto arguments = std::vector<std::string>();
+	std::string argument;
+	while (true) {
+		previousPos = pos;
+		pos = statement.find(",", pos + 1);
+		if (pos != std::string::npos) {
+			argument = statement.substr(previousPos + 1, pos - previousPos - 1);
+			arguments.push_back(argument);
+		}
+		else {
+			argument = statement.substr(previousPos + 1);
+			arguments.push_back(argument);
+			break;
+		}
+	}
+	auto arguments2 = std::vector<std::string>();
+	while (!arguments.empty()) {
+		argument = arguments[0];
+		auto n = std::count(argument.begin(), argument.end(), '"');
+		if ((n % 2) == 0) {
+			arguments2.push_back(argument);
+			arguments.erase(arguments.begin());
+		}
+		else {
+			//Need to find matching '"'
+			auto it = std::find_if(arguments.begin() + 1, arguments.end(), [](const std::string& s) {
+				auto nn = std::count(s.begin(), s.end(), '"');
+				if ((nn % 2) == 1) return true;
+				});
+			std::vector<std::string> needToCombineArgs(arguments.begin(), it + 1);
+			arguments.erase(arguments.begin(), it + 1);
+			std::stringstream ss;
+			ss << needToCombineArgs[0];
+			needToCombineArgs.erase(needToCombineArgs.begin());
+			for (auto& arg : needToCombineArgs) {
+				ss << ',' << arg;
+			}
+			arguments2.push_back(ss.str());
+		}
+	}
+	return arguments2;
+}
+
 std::vector<std::string>::iterator MbD::MBDynItem::findLineWith(std::vector<std::string>& lines, std::vector<std::string>& tokens)
 {
 	auto it = std::find_if(lines.begin(), lines.end(), [&](const std::string& line) {
@@ -54,6 +103,21 @@ bool MbD::MBDynItem::lineHasTokens(const std::string& line, std::vector<std::str
 std::shared_ptr<std::vector<std::shared_ptr<MBDynNode>>> MbD::MBDynItem::mbdynNodes()
 {
 	return owner->mbdynNodes();
+}
+
+std::shared_ptr<std::vector<std::shared_ptr<MBDynBody>>> MbD::MBDynItem::mbdynBodies()
+{
+	return owner->mbdynBodies();
+}
+
+std::shared_ptr<std::vector<std::shared_ptr<MBDynJoint>>> MbD::MBDynItem::mbdynJoints()
+{
+	return owner->mbdynJoints();
+}
+
+std::shared_ptr<std::vector<std::shared_ptr<MBDynDrive>>> MbD::MBDynItem::mbdynDrives()
+{
+	return owner->mbdynDrives();
 }
 
 std::vector<std::string> MbD::MBDynItem::nodeNames()
@@ -94,6 +158,18 @@ std::shared_ptr<MBDynBody> MbD::MBDynItem::bodyWithNode(std::string nodeName)
 std::shared_ptr<ASMTAssembly> MbD::MBDynItem::asmtAssembly()
 {
 	return owner->asmtAssembly();
+}
+
+std::string MbD::MBDynItem::formulaFromDrive(std::string driveName, std::string varName)
+{
+	std::vector<std::string> tokens{ "drive:", driveName };
+	auto drives = mbdynDrives();
+	auto it = std::find_if(drives->begin(), drives->end(), [&](auto& drive) {
+		return lineHasTokens(drive->driveName, tokens);
+		});
+	auto formula = (*it)->formula;
+	assert(varName == "Time");
+	return formula;
 }
 
 FColDsptr MbD::MBDynItem::readVector3(std::vector<std::string>& args)
@@ -332,6 +408,14 @@ std::string MbD::MBDynItem::readStringOffTop(std::vector<std::string>& args)
 {
 	auto iss = std::istringstream(args.at(0));
 	args.erase(args.begin());
+	std::string str;
+	iss >> str;
+	return str;
+}
+
+std::string MbD::MBDynItem::readToken(std::string& line)
+{
+	auto iss = std::istringstream(line);
 	std::string str;
 	iss >> str;
 	return str;

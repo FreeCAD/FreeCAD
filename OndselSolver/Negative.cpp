@@ -22,11 +22,31 @@ double MbD::Negative::getValue()
 
 Symsptr MbD::Negative::differentiateWRTx()
 {
-	return std::make_shared<Constant>(-1);
+	return sptrConstant(-1);
+}
+
+Symsptr MbD::Negative::expandUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>> set)
+{
+	auto expand = xx->expandUntil(xx, set);
+	return std::make_shared<Negative>(expand);
+}
+
+Symsptr MbD::Negative::simplifyUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>> set)
+{
+	auto simple = xx->simplifyUntil(xx, set);
+	if (simple->isConstant()) {
+		return sptrConstant(-simple->getValue());
+	}
+	return std::make_shared<Negative>(simple);
+}
+
+Symsptr MbD::Negative::copyWith(Symsptr arg)
+{
+	return std::make_shared<Negative>(arg);
 }
 
 std::ostream& MbD::Negative::printOn(std::ostream& s) const
 {
-	s << "-(" << xx << ")";
+	s << "-(" << *xx << ")";
 	return s;
 }

@@ -13,6 +13,7 @@
 
 #include "Item.h"
 #include "System.h"
+#include "Symbolic.h"
 
 using namespace MbD;
 
@@ -41,7 +42,7 @@ std::ostream& Item::printOn(std::ostream& s) const
 {
 	std::string str = typeid(*this).name();
 	auto classname = str.substr(11, str.size() - 11);
-	s << classname << std::endl;
+	s << classname;	//Why classname() cannot be used?
 	return s;
 }
 

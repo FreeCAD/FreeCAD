@@ -18,8 +18,11 @@ namespace MbD {
         void parseMBDyn(std::string line);
         void readMarkerI(std::vector<std::string>& args);
         void readMarkerJ(std::vector<std::string>& args);
+        void readClampMarkerJ(std::vector<std::string>& args);
         void readFunction(std::vector<std::string>& args);
         void createASMT() override;
+        std::string asmtFormula();
+        std::string asmtFormulaIntegral();
 
         std::string jointString, joint_type, node_1_label, node_2_label;
         std::shared_ptr<MBDynMarker> mkr1, mkr2;
