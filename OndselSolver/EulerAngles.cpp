@@ -66,16 +66,6 @@ namespace MbD {
         assert(false);
     }
     template<typename T>
-    inline std::shared_ptr<EulerAnglesDot<T>> EulerAngles<T>::differentiateWRT(T var)
-    {
-        auto derivatives = std::make_shared<EulerAnglesDot<T>>();
-        std::transform(this->begin(), this->end(), derivatives->begin(),
-                       [var](T term) { return term->differentiateWRT(var); }
-        );
-        derivatives->aEulerAngles = this;
-        return derivatives;
-    }
-    template<typename T>
     inline void EulerAngles<T>::setRotOrder(int i, int j, int k)
     {
         rotOrder = std::make_shared<FullColumn<int>>(3);
@@ -83,6 +73,15 @@ namespace MbD {
         rotOrder->at(1) = j;
         rotOrder->at(2) = k;
     }
-    template class EulerAngles<std::shared_ptr<MbD::Symbolic>>;
+    // type-specific helper functions
+    std::shared_ptr<EulerAnglesDot<std::shared_ptr<MbD::Symbolic>>> differentiateWRT(EulerAngles<std::shared_ptr<MbD::Symbolic>>& ref, std::shared_ptr<MbD::Symbolic> var)
+    {
+        auto derivatives = std::make_shared<EulerAnglesDot<std::shared_ptr<MbD::Symbolic>>>();
+        std::transform(ref.begin(), ref.end(), derivatives->begin(),
+                       [var](std::shared_ptr<MbD::Symbolic> term) { return term->differentiateWRT(var); }
+        );
+        derivatives->aEulerAngles = &ref;
+        return derivatives;
+    }
 }
 

@@ -32,7 +32,7 @@ void AnyPosICNewtonRaphson::initializeGlobally()
 void AnyPosICNewtonRaphson::createVectorsAndMatrices()
 {
 	qsuOld = std::make_shared<FullColumn<double>>(nqsu);
-	qsuWeights = std::make_shared<DiagonalMatrix<double>>(nqsu);
+	qsuWeights = std::make_shared<DiagonalMatrix>(nqsu);
 	SystemNewtonRaphson::createVectorsAndMatrices();
 }
 

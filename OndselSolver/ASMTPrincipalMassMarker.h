@@ -26,7 +26,7 @@ namespace MbD {
 
         double mass = 0.0;
         double density = 0.0;
-        DiagMatDsptr momentOfInertias = std::make_shared<DiagonalMatrix<double>>(ListD{ 0.,0.,0. });
+        DiagMatDsptr momentOfInertias = std::make_shared<DiagonalMatrix>(ListD{ 0.,0.,0. });
 
     };
 }

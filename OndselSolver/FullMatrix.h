@@ -93,7 +93,7 @@ namespace MbD {
         double trace();
         bool isDiagonal();
         bool isDiagonalToWithin(double ratio);
-        std::shared_ptr<DiagonalMatrix<double>> asDiagonalMatrix();
+        std::shared_ptr<DiagonalMatrix> asDiagonalMatrix();
         void conditionSelfWithTol(double tol);
         std::ostream& printOn(std::ostream& s) const override;
         FColsptr<double> timesFullColumn(FColsptr<double> fullCol);

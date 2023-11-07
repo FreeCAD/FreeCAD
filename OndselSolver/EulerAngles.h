@@ -27,15 +27,14 @@ namespace MbD {
 		EulerAngles(std::initializer_list<T> list) : EulerArray<T>{ list } {}
 		void initialize() override;
 		void calc() override;
-		std::shared_ptr<EulerAnglesDot<T>> differentiateWRT(T var);
 		void setRotOrder(int i, int j, int k);
 
 		std::shared_ptr<FullColumn<int>> rotOrder;
 		FColFMatDsptr cA;
 		FMatDsptr aA;
 	};
-//    // NOTE: do NOT instantiate EulerAngles<double> as a whole as differentiateWRT breaks
-//    template <>
-//    void EulerAngles<double>::setRotOrder(int, int, int);
+    template class EulerAngles<std::shared_ptr<MbD::Symbolic>>;
+    template class EulerAngles<double>;
+    std::shared_ptr<EulerAnglesDot<std::shared_ptr<MbD::Symbolic>>> differentiateWRT(EulerAngles<std::shared_ptr<MbD::Symbolic>>& ref, std::shared_ptr<MbD::Symbolic> var);
 }
 

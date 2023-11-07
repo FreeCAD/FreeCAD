@@ -59,6 +59,4 @@ namespace MbD {
 		FMatDsptr aC;
 		FColFMatDsptr pApE;
 	};
-
-    template class EulerParameters<double>;
 }

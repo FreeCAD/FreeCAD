@@ -13,7 +13,7 @@
 
 namespace MbD {
     template<>
-    inline FMatFColDsptr EulerParameters<double>::ppApEpEtimesColumn(FColDsptr col)
+    FMatFColDsptr EulerParameters<double>::ppApEpEtimesColumn(FColDsptr col)
     {
         double a2c0 = 2 * col->at(0);
         double a2c1 = 2 * col->at(1);
@@ -56,7 +56,7 @@ namespace MbD {
     }
 
     template<>
-    inline FMatDsptr EulerParameters<double>::pCpEtimesColumn(FColDsptr col)
+    FMatDsptr EulerParameters<double>::pCpEtimesColumn(FColDsptr col)
     {
         //"col size = 4."
         auto c0 = col->at(0);
@@ -86,7 +86,7 @@ namespace MbD {
     }
 
     template<typename T>
-    inline FMatDsptr EulerParameters<T>::pCTpEtimesColumn(FColDsptr col)
+    FMatDsptr EulerParameters<T>::pCTpEtimesColumn(FColDsptr col)
     {
         //"col size = 3."
         auto c0 = col->at(0);
@@ -120,7 +120,7 @@ namespace MbD {
     }
 
     template<>
-    inline FMatFMatDsptr EulerParameters<double>::ppApEpEtimesMatrix(FMatDsptr mat)
+    FMatFMatDsptr EulerParameters<double>::ppApEpEtimesMatrix(FMatDsptr mat)
     {
         FRowDsptr a2m0 = mat->at(0)->times(2.0);
         FRowDsptr a2m1 = mat->at(1)->times(2.0);
@@ -164,7 +164,7 @@ namespace MbD {
     }
 
     template<typename T> // this is ALWAYS double; see note below.
-    inline void EulerParameters<T>::initialize()
+    void EulerParameters<T>::initialize()
     {
         aA = FullMatrixDouble::identitysptr(3);
         aB = std::make_shared<FullMatrixDouble>(3, 4);
@@ -179,18 +179,18 @@ namespace MbD {
 // the following  can't be valid as FullMatrix instatiatiates <double>, yet
 // this class needs to see the member functions of FullMatrix
 //template<>
-//inline void EulerParameters<double>::initialize()
+//void EulerParameters<double>::initialize()
 //{
 //}
 
     template<typename T>
-    inline void EulerParameters<T>::calc()
+    void EulerParameters<T>::calc()
     {
         this->calcABC();
         this->calcpApE();
     }
     template<>
-    inline void EulerParameters<double>::calcABC()
+    void EulerParameters<double>::calcABC()
     {
         double aE0 = this->at(0);
         double aE1 = this->at(1);
@@ -235,7 +235,7 @@ namespace MbD {
         aA = aB->timesTransposeFullMatrix(aC);
     }
     template<>
-    inline void EulerParameters<double>::calcpApE()
+    void EulerParameters<double>::calcpApE()
     {
         double a2E0 = 2.0 * (this->at(0));
         double a2E1 = 2.0 * (this->at(1));
@@ -304,9 +304,11 @@ namespace MbD {
         pAipEk->at(2) = a2E3;
     }
     template<typename T>
-    inline void EulerParameters<T>::conditionSelf()
+    void EulerParameters<T>::conditionSelf()
     {
         EulerArray<T>::conditionSelf();
         this->normalizeSelf();
     }
+
+    template class EulerParameters<double>;
 }

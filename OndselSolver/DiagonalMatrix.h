@@ -14,22 +14,19 @@
 #include "DiagonalMatrix.ref.h"
 #include "Array.h"
 #include "FullColumn.h"
-//#include "FullRow.h"
-// #include "FullMatrix.h"
 
 namespace MbD {
-	template<typename T>
-	class DiagonalMatrix : public Array<T>
+	class DiagonalMatrix : public Array<double>
 	{
 		//
 	public:
-		DiagonalMatrix() : Array<T>() {}
-		DiagonalMatrix(int count) : Array<T>(count) {}
-		DiagonalMatrix(int count, const T& value) : Array<T>(count, value) {}
-		DiagonalMatrix(std::initializer_list<T> list) : Array<T>{ list } {}
-		void atiputDiagonalMatrix(int i, std::shared_ptr<DiagonalMatrix<T>> diagMat);
-		DiagMatsptr<T> times(T factor);
-		FColsptr<T> timesFullColumn(FColsptr<T> fullCol);
+		DiagonalMatrix() : Array<double>() {}
+		explicit DiagonalMatrix(int count) : Array<double>(count) {}
+		DiagonalMatrix(int count, const double& value) : Array<double>(count, value) {}
+		DiagonalMatrix(std::initializer_list<double> list) : Array<double>{ list } {}
+		void atiputDiagonalMatrix(int i, std::shared_ptr<DiagonalMatrix> diagMat);
+        DiagMatDsptr times(double factor);
+		FColsptr<double> timesFullColumn(FColsptr<double> fullCol);
 		FMatDsptr timesFullMatrix(FMatDsptr fullMat);
 		int nrow() {
 			return (int)this->size();
@@ -44,7 +41,5 @@ namespace MbD {
 
 		std::ostream& printOn(std::ostream& s) const override;
 	};
-
-    template class DiagonalMatrix<double>;
 }
 

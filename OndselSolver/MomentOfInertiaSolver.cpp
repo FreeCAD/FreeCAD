@@ -295,7 +295,7 @@ void MbD::MomentOfInertiaSolver::calcJppFromDiagJcmP()
 	//"Eigenvalues are orders from smallest to largest."
 
 	double average;
-	auto sortedJ = std::make_shared<DiagonalMatrix<double>>();
+	auto sortedJ = std::make_shared<DiagonalMatrix>();
 	sortedJ->push_back(aJcmP->at(0)->at(0));
 	sortedJ->push_back(aJcmP->at(1)->at(1));
 	sortedJ->push_back(aJcmP->at(2)->at(2));
@@ -326,7 +326,7 @@ void MbD::MomentOfInertiaSolver::calcJppFromDiagJcmP()
 			lam2 = average;
 		}
 	}
-	aJpp = std::make_shared<DiagonalMatrix<double>>(ListD{ lam0, lam1, lam2 });
+	aJpp = std::make_shared<DiagonalMatrix>(ListD{ lam0, lam1, lam2 });
 }
 
 void MbD::MomentOfInertiaSolver::calcJppFromFullJcmP()
@@ -351,7 +351,7 @@ void MbD::MomentOfInertiaSolver::calcJppFromFullJcmP()
 	auto phiDiv3 = modifiedArcCos(-q / std::sqrt(-p * p * p)) / 3.0;
 	auto twoSqrtMinusp = 2.0 * std::sqrt(-p);
 	auto piDiv3 = M_PI / 3.0;
-	auto sortedJ = std::make_shared<DiagonalMatrix<double>>();
+	auto sortedJ = std::make_shared<DiagonalMatrix>();
 	sortedJ->push_back(twoSqrtMinusp * std::cos(phiDiv3));
 	sortedJ->push_back(twoSqrtMinusp * -std::cos(phiDiv3 + piDiv3));
 	sortedJ->push_back(twoSqrtMinusp * -std::cos(phiDiv3 - piDiv3));
@@ -382,7 +382,7 @@ void MbD::MomentOfInertiaSolver::calcJppFromFullJcmP()
 			lam2 = average;
 		}
 	}
-	aJpp = std::make_shared<DiagonalMatrix<double>>(ListD{ lam0, lam1, lam2 });
+	aJpp = std::make_shared<DiagonalMatrix>(ListD{ lam0, lam1, lam2 });
 }
 
 double MbD::MomentOfInertiaSolver::modifiedArcCos(double val)

@@ -5,6 +5,8 @@ project(OndselSolverLibrary VERSION 1.0.1 DESCRIPTION "Assembly Constraints and 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED True)
 
+SET(CMAKE_CXX_FLAGS  "${CMAKE_CXX_FLAGS} -gdwarf-4")
+
 include(GNUInstallDirs)
 
 file(GLOB ONDSELSOLVER_SOURCES "*.cpp")

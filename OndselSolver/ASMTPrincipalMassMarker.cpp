@@ -39,7 +39,7 @@ void MbD::ASMTPrincipalMassMarker::parseASMT(std::vector<std::string>& lines)
 	lines.erase(lines.begin());
 	assert(lines[0] == (leadingTabs + "MomentOfInertias"));
 	lines.erase(lines.begin());
-	momentOfInertias = std::make_shared<DiagonalMatrix<double>>(3);
+	momentOfInertias = std::make_shared<DiagonalMatrix>(3);
 	auto row = readRowOfDoubles(lines[0]);
 	lines.erase(lines.begin());
 	for (int i = 0; i < 3; i++)
@@ -70,7 +70,7 @@ void MbD::ASMTPrincipalMassMarker::setMomentOfInertias(DiagMatDsptr mat)
 // Overloads to simplify syntax.
 void MbD::ASMTPrincipalMassMarker::setMomentOfInertias(double a, double b, double c)
 {
-	momentOfInertias = std::make_shared<DiagonalMatrix<double>>(ListD{ a, b, c });
+	momentOfInertias = std::make_shared<DiagonalMatrix>(ListD{ a, b, c });
 }
 
 void MbD::ASMTPrincipalMassMarker::storeOnLevel(std::ofstream& os, int level)

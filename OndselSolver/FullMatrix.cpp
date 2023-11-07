@@ -665,10 +665,10 @@ namespace MbD {
             return false;
         }
     }
-    std::shared_ptr<DiagonalMatrix<double>> FullMatrixDouble::asDiagonalMatrix()
+    std::shared_ptr<DiagonalMatrix> FullMatrixDouble::asDiagonalMatrix()
     {
         int nrow = this->nrow();
-        auto diagMat = std::make_shared<DiagonalMatrix<double>>(nrow);
+        auto diagMat = std::make_shared<DiagonalMatrix>(nrow);
         for (int i = 0; i < nrow; i++)
         {
             diagMat->atiput(i, this->at(i)->at(i));
