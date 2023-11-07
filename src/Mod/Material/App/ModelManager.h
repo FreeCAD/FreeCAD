@@ -33,7 +33,6 @@
 #include "Model.h"
 #include "ModelLibrary.h"
 
-
 namespace Materials
 {
 

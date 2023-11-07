@@ -40,9 +40,11 @@ set(MatGui_UIC_SRCS
     Array2D.ui
     Array3D.ui
     DlgSettingsMaterial.ui
+    ListEdit.ui
     MaterialSave.ui
     MaterialsEditor.ui
     ModelSelect.ui
+    TextEdit.ui
 )
 
 SET(MatGui_SRCS
@@ -63,6 +65,11 @@ SET(MatGui_SRCS
     DlgSettingsMaterial.cpp
     DlgSettingsMaterial.h
     DlgSettingsMaterial.ui
+    ListModel.cpp
+    ListModel.h
+    ListEdit.cpp
+    ListEdit.h
+    ListEdit.ui
     MaterialDelegate.cpp
     MaterialDelegate.h
     MaterialSave.cpp
@@ -76,6 +83,9 @@ SET(MatGui_SRCS
     ModelSelect.ui
     PreCompiled.cpp
     PreCompiled.h
+    TextEdit.cpp
+    TextEdit.h
+    TextEdit.ui
     Workbench.cpp
     Workbench.h
 )
@@ -87,8 +97,10 @@ if(FREECAD_USE_PCH)
 endif(FREECAD_USE_PCH)
 
 SET(MatGuiIcon_SVG
+    Resources/icons/list.svg
     Resources/icons/Materials_Edit.svg
     Resources/icons/MaterialWorkbench.svg
+    Resources/icons/multiline.svg
     Resources/icons/preferences-material.svg
     Resources/icons/preview-rendered.svg
     Resources/icons/preview-vector.svg

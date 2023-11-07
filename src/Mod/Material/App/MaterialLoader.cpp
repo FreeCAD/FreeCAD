@@ -43,10 +43,7 @@
 
 using namespace Materials;
 
-MaterialEntry::MaterialEntry()
-{}
-
-MaterialEntry::MaterialEntry(std::shared_ptr<MaterialLibrary> library,
+MaterialEntry::MaterialEntry(const std::shared_ptr<MaterialLibrary>& library,
                              const QString& modelName,
                              const QString& dir,
                              const QString& modelUuid)
@@ -56,7 +53,7 @@ MaterialEntry::MaterialEntry(std::shared_ptr<MaterialLibrary> library,
     , _uuid(modelUuid)
 {}
 
-MaterialYamlEntry::MaterialYamlEntry(std::shared_ptr<MaterialLibrary> library,
+MaterialYamlEntry::MaterialYamlEntry(const std::shared_ptr<MaterialLibrary>& library,
                                      const QString& modelName,
                                      const QString& dir,
                                      const QString& modelUuid,
@@ -78,6 +75,17 @@ QString MaterialYamlEntry::yamlValue(const YAML::Node& node,
     return QString::fromStdString(defaultValue);
 }
 
+std::shared_ptr<QList<QVariant>> MaterialYamlEntry::readList(const YAML::Node& node)
+{
+    auto list = std::make_shared<QList<QVariant>>();
+    for (auto it = node.begin(); it != node.end(); it++) {
+        QVariant nodeName = QString::fromStdString(it->as<std::string>());
+        list->append(nodeName);
+    }
+
+    return list;
+}
+
 std::shared_ptr<Material2DArray> MaterialYamlEntry::read2DArray(const YAML::Node& node)
 {
     // Base::Console().Log("Read 2D Array\n");
@@ -86,8 +94,8 @@ std::shared_ptr<Material2DArray> MaterialYamlEntry::read2DArray(const YAML::Node
 
     if (node.size() == 2) {
         // Get the default
-        Base::Quantity defaultValue =
-            Base::Quantity::parse(QString::fromStdString(node[0].as<std::string>()));
+        Base::Quantity defaultValue(
+            Base::Quantity::parse(QString::fromStdString(node[0].as<std::string>())));
         array2d->setDefault(QVariant::fromValue(defaultValue));
 
         auto yamlArray = node[1];
@@ -115,8 +123,8 @@ std::shared_ptr<Material3DArray> MaterialYamlEntry::read3DArray(const YAML::Node
 
     if (node.size() == 2) {
         // Get the default
-        Base::Quantity defaultValue =
-            Base::Quantity::parse(QString::fromStdString(node[0].as<std::string>()));
+        Base::Quantity defaultValue(
+            Base::Quantity::parse(QString::fromStdString(node[0].as<std::string>())));
         array3d->setDefault(QVariant::fromValue(defaultValue));
 
         auto yamlArray = node[1];
@@ -207,7 +215,12 @@ void MaterialYamlEntry::addToTree(
                     auto type = prop->getType();
 
                     try {
-                        if (type == MaterialValue::Array2D) {
+                        if (type == MaterialValue::List) {
+                            auto list = readList(itp->second);
+                            finalModel->setPhysicalValue(QString::fromStdString(propertyName),
+                                                         list);
+                        }
+                        else if (type == MaterialValue::Array2D) {
                             auto array2d = read2DArray(itp->second);
                             finalModel->setPhysicalValue(QString::fromStdString(propertyName),
                                                          array2d);
@@ -259,7 +272,12 @@ void MaterialYamlEntry::addToTree(
                     auto type = prop->getType();
 
                     try {
-                        if (type == MaterialValue::Array2D) {
+                        if (type == MaterialValue::List) {
+                            auto list = readList(itp->second);
+                            finalModel->setAppearanceValue(QString::fromStdString(propertyName),
+                                                           list);
+                        }
+                        else if (type == MaterialValue::Array2D) {
                             auto array2d = read2DArray(itp->second);
                             finalModel->setAppearanceValue(QString::fromStdString(propertyName),
                                                            array2d);
@@ -304,12 +322,6 @@ MaterialLoader::MaterialLoader(
 {
     loadLibraries();
 }
-
-/*
- *  Destroys the object and frees any allocated resources
- */
-MaterialLoader::~MaterialLoader()
-{}
 
 void MaterialLoader::addLibrary(std::shared_ptr<MaterialLibrary> model)
 {
@@ -483,8 +495,6 @@ void MaterialLoader::loadLibrary(std::shared_ptr<MaterialLibrary> library)
         QFileInfo file(pathname);
         if (file.isFile()) {
             if (file.suffix().toStdString() == "FCMat") {
-                QString libraryName = file.baseName();
-
                 auto model = getMaterialFromPath(library, file.canonicalFilePath());
                 if (model) {
                     (*_materialEntryMap)[model->getUUID()] = model;

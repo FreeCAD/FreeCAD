@@ -99,7 +99,7 @@ std::shared_ptr<Model> ModelManager::getModelByPath(const QString& path) const
 {
     QString cleanPath = QDir::cleanPath(path);
 
-    for (auto library : *_libraryList) {
+    for (auto& library : *_libraryList) {
         // Base::Console().Log("ModelManager::getModelByPath() Checking library '%s'->'%s'\n",
         //                     library->getName().toStdString().c_str(),
         //                     library->getDirectory().toStdString().c_str());
@@ -127,7 +127,7 @@ std::shared_ptr<Model> ModelManager::getModelByPath(const QString& path, const Q
 
 std::shared_ptr<ModelLibrary> ModelManager::getLibrary(const QString& name) const
 {
-    for (auto library : *_libraryList) {
+    for (auto& library : *_libraryList) {
         if (library->getName() == name) {
             return library;
         }

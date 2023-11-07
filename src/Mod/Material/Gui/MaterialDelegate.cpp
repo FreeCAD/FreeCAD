@@ -49,8 +49,10 @@
 
 #include "Array2D.h"
 #include "Array3D.h"
+#include "ListEdit.h"
 #include "MaterialDelegate.h"
 #include "MaterialSave.h"
+#include "TextEdit.h"
 
 
 using namespace MatGui;
@@ -89,6 +91,18 @@ bool MaterialDelegate::editorEvent(QEvent* event,
             if (type == "Color") {
                 Base::Console().Log("Edit color\n");
                 showColorModal(item, propertyName);
+                // Mark as handled
+                return true;
+            }
+            else if (type == "MultiLineString") {
+                Base::Console().Log("Edit List\n");
+                showMultiLineString(propertyName, item);
+                // Mark as handled
+                return true;
+            }
+            else if (type == "List") {
+                Base::Console().Log("Edit List\n");
+                showListModal(propertyName, item);
                 // Mark as handled
                 return true;
             }
@@ -144,6 +158,43 @@ void MaterialDelegate::showColorModal(QStandardItem* item, QString propertyName)
 
     dlg->exec();
 }
+
+void MaterialDelegate::showListModal(const QString& propertyName, QStandardItem* item)
+{
+    auto material = item->data().value<std::shared_ptr<Materials::Material>>();
+    auto dlg = new ListEdit(propertyName, material);
+
+    dlg->setAttribute(Qt::WA_DeleteOnClose);
+
+    dlg->adjustSize();
+
+    connect(dlg, &QDialog::finished, this, [&](int result) {
+        if (result == QDialog::Accepted) {
+            Base::Console().Log("Accepted\n");
+        }
+    });
+
+    dlg->exec();
+}
+
+void MaterialDelegate::showMultiLineString(const QString& propertyName, QStandardItem* item)
+{
+    auto material = item->data().value<std::shared_ptr<Materials::Material>>();
+    TextEdit* dlg = new TextEdit(propertyName, material);
+
+    dlg->setAttribute(Qt::WA_DeleteOnClose);
+
+    dlg->adjustSize();
+
+    connect(dlg, &QDialog::finished, this, [&](int result) {
+        if (result == QDialog::Accepted) {
+            Base::Console().Log("Accepted\n");
+        }
+    });
+
+    dlg->exec();
+}
+
 
 void MaterialDelegate::showArray2DModal(const QString& propertyName, QStandardItem* item)
 {
@@ -234,6 +285,38 @@ void MaterialDelegate::paint(QPainter* painter,
         painter->restore();
         return;
     }
+    else if (type == "MultiLineString") {
+        painter->save();
+
+        QImage table(QString::fromStdString(":/icons/multiline.svg"));
+        QRect target(option.rect);
+        if (target.width() > target.height()) {
+            target.setWidth(target.height());
+        }
+        else {
+            target.setHeight(target.width());
+        }
+        painter->drawImage(target, table, table.rect());
+
+        painter->restore();
+        return;
+    }
+    else if (type == "List") {
+        painter->save();
+
+        QImage table(QString::fromStdString(":/icons/list.svg"));
+        QRect target(option.rect);
+        if (target.width() > target.height()) {
+            target.setWidth(target.height());
+        }
+        else {
+            target.setHeight(target.width());
+        }
+        painter->drawImage(target, table, table.rect());
+
+        painter->restore();
+        return;
+    }
     else if (type == "2DArray" || type == "3DArray") {
         // painter->save();
 
@@ -280,7 +363,8 @@ QSize MaterialDelegate::sizeHint(const QStyleOptionViewItem& option, const QMode
     if (type == "Color") {
         return QSize(75, 23);  // Standard QPushButton size
     }
-    else if (type == "2DArray" || type == "3DArray") {
+    else if (type == "2DArray" || type == "3DArray" || type == "MultiLineString"
+             || type == "List") {
         return QSize(23, 23);
     }
 
@@ -387,14 +471,14 @@ QWidget* MaterialDelegate::createWidget(QWidget* parent,
     QWidget* widget = nullptr;
 
     std::string type = propertyType.toStdString();
-    if (type == "String" || type == "URL" || type == "Vector") {
+    if (type == "String" || type == "URL" || type == "List") {
         widget = new Gui::PrefLineEdit(parent);
     }
     else if ((type == "Integer") || (type == "Int")) {
-        Gui::UIntSpinBox* spinner = new Gui::UIntSpinBox(parent);
+        Gui::IntSpinBox* spinner = new Gui::IntSpinBox(parent);
         spinner->setMinimum(0);
-        spinner->setMaximum(UINT_MAX);
-        spinner->setValue(propertyValue.toUInt());
+        spinner->setMaximum(INT_MAX);
+        spinner->setValue(propertyValue.toInt());
         widget = spinner;
     }
     else if (type == "Float") {
