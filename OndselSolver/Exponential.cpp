@@ -19,8 +19,13 @@ double MbD::Exponential::getValue()
     return std::log(xx->getValue());
 }
 
+Symsptr MbD::Exponential::copyWith(Symsptr arg)
+{
+	return std::make_shared<Exponential>(arg);
+}
+
 std::ostream& MbD::Exponential::printOn(std::ostream& s) const
 {
-	s << "exp(" << xx << ")";
+	s << "exp(" << *xx << ")";
 	return s;
 }

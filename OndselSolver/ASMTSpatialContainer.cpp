@@ -550,13 +550,25 @@ void MbD::ASMTSpatialContainer::setOmega3D(double a, double b, double c)
 void MbD::ASMTSpatialContainer::storeOnLevelVelocity(std::ofstream& os, int level)
 {
 	storeOnLevelString(os, level, "Velocity3D");
-	storeOnLevelArray(os, level + 1, *velocity3D);
+	if (vxs == nullptr || vxs->empty()) {
+		storeOnLevelArray(os, level + 1, *velocity3D);
+	}
+	else {
+		auto array = getVelocity3D(0);
+		storeOnLevelArray(os, level + 1, *array);
+	}
 }
 
 void MbD::ASMTSpatialContainer::storeOnLevelOmega(std::ofstream& os, int level)
 {
 	storeOnLevelString(os, level, "Omega3D");
-	storeOnLevelArray(os, level + 1, *omega3D);
+	if (omexs == nullptr || omexs->empty()) {
+		storeOnLevelArray(os, level + 1, *omega3D);
+	}
+	else {
+		auto array = getOmega3D(0);
+		storeOnLevelArray(os, level + 1, *array);
+	}
 }
 
 void MbD::ASMTSpatialContainer::storeOnLevelRefPoints(std::ofstream& os, int level)
@@ -696,4 +708,22 @@ void MbD::ASMTSpatialContainer::storeOnTimeSeries(std::ofstream& os)
 		os << alpzs->at(i) << '\t';
 	}
 	os << std::endl;
+}
+
+FColDsptr MbD::ASMTSpatialContainer::getVelocity3D(size_t i)
+{
+	auto vec3 = std::make_shared<FullColumn<double>>(3);
+	vec3->atiput(0, vxs->at(i));
+	vec3->atiput(1, vys->at(i));
+	vec3->atiput(2, vzs->at(i));
+	return vec3;
+}
+
+FColDsptr MbD::ASMTSpatialContainer::getOmega3D(size_t i)
+{
+	auto vec3 = std::make_shared<FullColumn<double>>(3);
+	vec3->atiput(0, omexs->at(i));
+	vec3->atiput(1, omeys->at(i));
+	vec3->atiput(2, omezs->at(i));
+	return vec3;
 }

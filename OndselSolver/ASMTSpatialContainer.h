@@ -86,16 +86,16 @@ namespace MbD {
         void storeOnLevelRefCurves(std::ofstream& os, int level);
         void storeOnLevelRefSurfaces(std::ofstream& os, int level);
         void storeOnTimeSeries(std::ofstream& os) override;
+        FColDsptr getVelocity3D(size_t i);
+        FColDsptr getOmega3D(size_t i);
 
         FColDsptr velocity3D = std::make_shared<FullColumn<double>>(3);
         FColDsptr omega3D = std::make_shared<FullColumn<double>>(3);
         std::shared_ptr<std::vector<std::shared_ptr<ASMTRefPoint>>> refPoints;
         std::shared_ptr<std::vector<std::shared_ptr<ASMTRefCurve>>> refCurves;
         std::shared_ptr<std::vector<std::shared_ptr<ASMTRefSurface>>> refSurfaces;
-        FRowDsptr xs, ys, zs, bryxs, bryys, bryzs;
         FRowDsptr vxs, vys, vzs, omexs, omeys, omezs;
         FRowDsptr axs, ays, azs, alpxs, alpys, alpzs;
-        FRowDsptr inxs, inys, inzs, inbryxs, inbryys, inbryzs;
         FRowDsptr invxs, invys, invzs, inomexs, inomeys, inomezs;
         FRowDsptr inaxs, inays, inazs, inalpxs, inalpys, inalpzs;
         std::shared_ptr<ASMTPrincipalMassMarker> principalMassMarker = std::make_shared<ASMTPrincipalMassMarker>();

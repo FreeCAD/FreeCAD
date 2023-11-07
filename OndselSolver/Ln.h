@@ -18,6 +18,7 @@ namespace MbD {
         Ln() = default;
         Ln(Symsptr arg);
         double getValue() override;
+        Symsptr copyWith(Symsptr arg) override;
 
 
 

@@ -219,6 +219,7 @@
     <ClCompile Include="FunctionXcParameter.cpp" />
     <ClCompile Include="FunctionXY.cpp" />
     <ClCompile Include="GeneralSpline.cpp" />
+    <ClCompile Include="Integral.cpp" />
     <ClCompile Include="Ln.cpp" />
     <ClCompile Include="Log10.cpp" />
     <ClCompile Include="LogN.cpp" />
@@ -226,6 +227,7 @@
     <ClCompile Include="MBDynBody.cpp" />
     <ClCompile Include="MBDynControlData.cpp" />
     <ClCompile Include="MBDynData.cpp" />
+    <ClCompile Include="MBDynDrive.cpp" />
     <ClCompile Include="MBDynElement.cpp" />
     <ClCompile Include="MBDynInitialValue.cpp" />
     <ClCompile Include="MBDynItem.cpp" />
@@ -237,6 +239,8 @@
     <ClCompile Include="MBDynSystem.cpp" />
     <ClCompile Include="MomentOfInertiaSolver.cpp" />
     <ClCompile Include="Negative.cpp" />
+    <ClCompile Include="PiecewiseFunction.cpp" />
+    <ClCompile Include="Polynomial.cpp" />
     <ClCompile Include="PosVelAccData.cpp" />
     <ClCompile Include="DiagonalMatrix.cpp" />
     <ClCompile Include="DifferenceOperator.cpp" />
@@ -337,7 +341,7 @@
     <ClCompile Include="MatrixLDU.cpp" />
     <ClCompile Include="MatrixSolver.cpp" />
     <ClCompile Include="MaximumIterationError.cpp" />
-    <ClCompile Include="MbdMath.cpp" />
+    <ClCompile Include="MbDMath.cpp" />
     <ClCompile Include="NewtonRaphson.cpp" />
     <ClCompile Include="NewtonRaphsonError.cpp" />
     <ClCompile Include="NoRotationJoint.cpp" />
@@ -367,6 +371,7 @@
     <ClCompile Include="RackPinConstraintIqcJc.cpp" />
     <ClCompile Include="RackPinConstraintIqcJqc.cpp" />
     <ClCompile Include="RackPinJoint.cpp" />
+    <ClCompile Include="RampStepFunction.cpp" />
     <ClCompile Include="Reciprocal.cpp" />
     <ClCompile Include="RedundantConstraint.cpp" />
     <ClCompile Include="RevCylJoint.cpp" />
@@ -390,6 +395,7 @@
     <ClCompile Include="StableBackwardDifference.cpp" />
     <ClCompile Include="LDUFullMat.cpp" />
     <ClCompile Include="StateData.cpp" />
+    <ClCompile Include="StepFunction.cpp" />
     <ClCompile Include="Sum.cpp" />
     <ClCompile Include="Symbolic.cpp" />
     <ClCompile Include="SymbolicParser.cpp" />
@@ -505,6 +511,7 @@
     <ClInclude Include="FunctionXcParameter.h" />
     <ClInclude Include="FunctionXY.h" />
     <ClInclude Include="GeneralSpline.h" />
+    <ClInclude Include="Integral.h" />
     <ClInclude Include="Ln.h" />
     <ClInclude Include="Log10.h" />
     <ClInclude Include="LogN.h" />
@@ -512,6 +519,7 @@
     <ClInclude Include="MBDynBody.h" />
     <ClInclude Include="MBDynControlData.h" />
     <ClInclude Include="MBDynData.h" />
+    <ClInclude Include="MBDynDrive.h" />
     <ClInclude Include="MBDynElement.h" />
     <ClInclude Include="MBDynInitialValue.h" />
     <ClInclude Include="MBDynItem.h" />
@@ -523,6 +531,8 @@
     <ClInclude Include="MBDynSystem.h" />
     <ClInclude Include="MomentOfInertiaSolver.h" />
     <ClInclude Include="Negative.h" />
+    <ClInclude Include="PiecewiseFunction.h" />
+    <ClInclude Include="Polynomial.h" />
     <ClInclude Include="PosVelAccData.h" />
     <ClInclude Include="DiagonalMatrix.h" />
     <ClInclude Include="DifferenceOperator.h" />
@@ -624,7 +634,7 @@
     <ClInclude Include="MatrixLDU.h" />
     <ClInclude Include="MatrixSolver.h" />
     <ClInclude Include="MaximumIterationError.h" />
-    <ClInclude Include="MbdMath.h" />
+    <ClInclude Include="MbDMath.h" />
     <ClInclude Include="NewtonRaphson.h" />
     <ClInclude Include="NewtonRaphsonError.h" />
     <ClInclude Include="NoRotationJoint.h" />
@@ -654,6 +664,7 @@
     <ClInclude Include="RackPinConstraintIqcJc.h" />
     <ClInclude Include="RackPinConstraintIqcJqc.h" />
     <ClInclude Include="RackPinJoint.h" />
+    <ClInclude Include="RampStepFunction.h" />
     <ClInclude Include="Reciprocal.h" />
     <ClInclude Include="RedundantConstraint.h" />
     <ClInclude Include="resource.h" />
@@ -678,6 +689,7 @@
     <ClInclude Include="StableBackwardDifference.h" />
     <ClInclude Include="LDUFullMat.h" />
     <ClInclude Include="StateData.h" />
+    <ClInclude Include="StepFunction.h" />
     <ClInclude Include="Sum.h" />
     <ClInclude Include="Symbolic.h" />
     <ClInclude Include="SymbolicParser.h" />

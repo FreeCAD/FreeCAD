@@ -12,6 +12,11 @@
 
 using namespace MbD;
 
+MbD::ASMTPrincipalMassMarker::ASMTPrincipalMassMarker()
+{
+	name = "MassMarker";
+}
+
 void MbD::ASMTPrincipalMassMarker::parseASMT(std::vector<std::string>& lines)
 {
 	size_t pos = lines[0].find_first_not_of("\t");

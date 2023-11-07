@@ -15,6 +15,7 @@ namespace MbD {
 	{
 	public:
 		void parseMBDyn(std::vector<std::string>& args);
+		void parseMBDynClamp(std::vector<std::string>& args);
 		void createASMT() override;
 
 		std::string nodeStr;

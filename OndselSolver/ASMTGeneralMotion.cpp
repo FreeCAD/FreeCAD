@@ -92,21 +92,21 @@ void MbD::ASMTGeneralMotion::createMbD(std::shared_ptr<System> mbdSys, std::shar
 	userFunc = std::make_shared<BasicUserFunction>(rIJI->at(0), 1.0);
 	parser->parseUserFunction(userFunc);
 	auto geoX = parser->stack->top();
-	geoX = Symbolic::times(geoX, std::make_shared<Constant>(1.0 / mbdUnits->length));
+	geoX = Symbolic::times(geoX, sptrConstant(1.0 / mbdUnits->length));
 	geoX->createMbD(mbdSys, mbdUnits);
 	auto xBlk = geoX->simplified(geoX);
 
 	userFunc = std::make_shared<BasicUserFunction>(rIJI->at(1), 1.0);
 	parser->parseUserFunction(userFunc);
 	auto geoY = parser->stack->top();
-	geoY = Symbolic::times(geoY, std::make_shared<Constant>(1.0 / mbdUnits->length));
+	geoY = Symbolic::times(geoY, sptrConstant(1.0 / mbdUnits->length));
 	geoY->createMbD(mbdSys, mbdUnits);
 	auto yBlk = geoY->simplified(geoY);
 
 	userFunc = std::make_shared<BasicUserFunction>(rIJI->at(2), 1.0);
 	parser->parseUserFunction(userFunc);
 	auto geoZ = parser->stack->top();
-	geoZ = Symbolic::times(geoZ, std::make_shared<Constant>(1.0 / mbdUnits->length));
+	geoZ = Symbolic::times(geoZ, sptrConstant(1.0 / mbdUnits->length));
 	geoZ->createMbD(mbdSys, mbdUnits);
 	auto zBlk = geoZ->simplified(geoZ);
 
@@ -117,21 +117,21 @@ void MbD::ASMTGeneralMotion::createMbD(std::shared_ptr<System> mbdSys, std::shar
 	userFunc = std::make_shared<BasicUserFunction>(angIJJ->at(0), 1.0);
 	parser->parseUserFunction(userFunc);
 	auto geoPhi = parser->stack->top();
-	geoPhi = Symbolic::times(geoPhi, std::make_shared<Constant>(1.0 / mbdUnits->angle));
+	geoPhi = Symbolic::times(geoPhi, sptrConstant(1.0 / mbdUnits->angle));
 	geoPhi->createMbD(mbdSys, mbdUnits);
 	auto phiBlk = geoPhi->simplified(geoPhi);
 
 	userFunc = std::make_shared<BasicUserFunction>(angIJJ->at(1), 1.0);
 	parser->parseUserFunction(userFunc);
 	auto geoThe = parser->stack->top();
-	geoThe = Symbolic::times(geoThe, std::make_shared<Constant>(1.0 / mbdUnits->angle));
+	geoThe = Symbolic::times(geoThe, sptrConstant(1.0 / mbdUnits->angle));
 	geoThe->createMbD(mbdSys, mbdUnits);
 	auto theBlk = geoThe->simplified(geoThe);
 
 	userFunc = std::make_shared<BasicUserFunction>(angIJJ->at(2), 1.0);
 	parser->parseUserFunction(userFunc);
 	auto geoPsi = parser->stack->top();
-	geoPsi = Symbolic::times(geoPsi, std::make_shared<Constant>(1.0 / mbdUnits->angle));
+	geoPsi = Symbolic::times(geoPsi, sptrConstant(1.0 / mbdUnits->angle));
 	geoPsi->createMbD(mbdSys, mbdUnits);
 	auto psiBlk = geoPsi->simplified(geoPsi);
 

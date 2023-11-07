@@ -101,6 +101,8 @@ void EndFrameqct::initpPhiThePsiptBlks()
 		auto vel = var->simplified(var);
 		//std::cout << "vel " << *vel << std::endl;
 		pPhiThePsiptBlks->at(i) = vel;
+		//std::cout << *angle << std::endl;
+		//std::cout << *vel << std::endl;
 	}
 }
 
@@ -113,6 +115,8 @@ void EndFrameqct::initppPhiThePsiptptBlks()
 		auto var = angleVel->differentiateWRT(mbdTime);
 		auto angleAcc = var->simplified(var);
 		ppPhiThePsiptptBlks->at(i) = angleAcc;
+		//std::cout << *angleVel << std::endl;
+		//std::cout << *angleAcc << std::endl;
 	}
 }
 
