@@ -37,7 +37,7 @@ namespace MbD {
 		void atiplusFullRow(int j, FRowsptr<T> fullRow);
 		std::ostream& printOn(std::ostream& s) const override;
 
-        std::shared_ptr<FullMatrixDouble> transposeTimesFullRow(FRowsptr<T> fullRow);
+        std::shared_ptr<FullMatrixDouble> transposeTimesFullRow(FRowsptr<double> fullRow);
         FRowsptr<double> timesTransposeFullMatrix(std::shared_ptr<FullMatrixDouble> fullMat);
         // FRowsptr<std::shared_ptr<FullMatrixDouble>> timesTransposeFullMatrixForFMFMDsptr(std::shared_ptr<FullMatrixFullMatrixDouble> fullMat);
         FRowsptr<double> timesFullMatrix(std::shared_ptr<FullMatrixDouble> fullMat);

@@ -10,8 +10,8 @@
 #include "FullMatrix.h"
 
 namespace MbD {
-    template<typename T>
-    std::shared_ptr<FullMatrixDouble> FullRow<T>::transposeTimesFullRow(FRowsptr<T> fullRow)
+    template<>
+    std::shared_ptr<FullMatrixDouble> FullRow<double>::transposeTimesFullRow(FRowsptr<double> fullRow)
     {
         //"a*b = a(i)b(j)"
         auto nrow = (int)this->size();

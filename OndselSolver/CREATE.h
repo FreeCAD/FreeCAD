@@ -6,7 +6,7 @@
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
  
-//This header file causes wierd problems in Visual Studio when included in subclasses of std::vector or std::map. Why?
+//This header file causes weird problems in Visual Studio when included in subclasses of std::vector or std::map. Why?
 
 #pragma once
 

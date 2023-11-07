@@ -178,8 +178,9 @@ namespace MbD {
 	template<typename T>
 	inline void FullVector<T>::conditionSelfWithTol(double tol)
 	{
-		assert(false);
-		return;
+		assert(false && tol != tol);   // clang++ flips out with warnings if you don't use 'tol'
+                                       // but suppressing that warning breaks Visual Studio.
+		return;                        // Visual Studio demands the unused return
 	}
 	template<typename T>
 	inline std::ostream& FullVector<T>::printOn(std::ostream& s) const

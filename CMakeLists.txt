@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 include(GNUInstallDirs)
 
-add_library(OndselSolver STATIC)
+add_library(OndselSolver SHARED)
 
 set(ONDSELSOLVER_SRC
         OndselSolver/Array.cpp
