@@ -1,3 +1,6 @@
+set(JTREADER_TKJT_INCLUDE_DIRS CACHE PATH  "Include directory of TKJT headers")
+set(JTREADER_TKJT_LIBRARIES CACHE FILEPATH  "File path to TKJT library")
+
 include_directories(
     ${CMAKE_BINARY_DIR}
     ${CMAKE_CURRENT_BINARY_DIR}
@@ -12,6 +15,7 @@ link_directories(${OCC_LIBRARY_DIR})
 
 set(JtReader_LIBS
     Mesh
+    ${OCC_LIBRARIES}
     #${OCC_OCAF_LIBRARIES}
     #${OCC_OCAF_DEBUG_LIBRARIES}
 )
@@ -26,6 +30,19 @@ SET(JtReader_SRCS
     FcLodHandler.h
     FcLodHandler.cpp
 )
+
+if (EXISTS "${JTREADER_TKJT_INCLUDE_DIRS}/JtData_Object.hxx")
+    add_definitions(-DJTREADER_HAVE_TKJT)
+    include_directories(${JTREADER_TKJT_INCLUDE_DIRS})
+    list (APPEND JtReader_LIBS
+        ${JTREADER_TKJT_LIBRARIES}
+    )
+
+    list (APPEND JtReader_SRCS
+        TKJtReader.cpp
+        TKJtReader.h
+    )
+endif ()
 
 set (JtReader_Scripts
     ../Init.py
