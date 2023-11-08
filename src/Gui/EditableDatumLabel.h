@@ -45,12 +45,12 @@ class GuiExport EditableDatumLabel : public QObject
     Q_DISABLE_COPY(EditableDatumLabel)
 
 public:
-    EditableDatumLabel(View3DInventorViewer* view, const Base::Placement& plc, SbColor color, bool autoDistance = false, bool avoidMouseCursor = false);
-
     enum class Function {
         Positioning,
         Dimensioning
     };
+
+    EditableDatumLabel(View3DInventorViewer* view, const Base::Placement& plc, SbColor color, bool autoDistance = false, bool avoidMouseCursor = false);
 
     ~EditableDatumLabel() override;
 

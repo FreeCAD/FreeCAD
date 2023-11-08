@@ -479,7 +479,7 @@ public:
     class ToolManager
     {
     public:
-        ToolManager(ViewProviderSketch* vp);
+        explicit ToolManager(ViewProviderSketch* vp);
 
         /** @brief Factory function returning a tool widget of the type appropriate for the current
          * active tool. If no tool is active, expect a nullptr.

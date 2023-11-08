@@ -79,7 +79,8 @@ class DrawSketchHandlerLine: public DrawSketchHandlerLineBase
     friend DSHLineControllerBase;
 
 public:
-    DrawSketchHandlerLine(ConstructionMethod constrMethod = ConstructionMethod::OnePointLengthAngle)
+    explicit DrawSketchHandlerLine(
+        ConstructionMethod constrMethod = ConstructionMethod::OnePointLengthAngle)
         : DrawSketchHandlerLineBase(constrMethod) {};
     ~DrawSketchHandlerLine() override = default;
 
@@ -271,7 +272,7 @@ void DSHLineController::configureToolWidget()
 {
     if (!init) {  // Code to be executed only upon initialisation
         QStringList names = {QStringLiteral("Point, length, angle"),
-                             QStringLiteral("Point, width, heigth"),
+                             QStringLiteral("Point, width, height"),
                              QStringLiteral("2 points")};
         toolWidget->setComboboxElements(WCombobox::FirstCombo, names);
 

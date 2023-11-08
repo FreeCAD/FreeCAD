@@ -68,7 +68,7 @@ class DrawSketchHandlerPolygon: public DrawSketchHandlerPolygonBase
     friend DSHPolygonControllerBase;
 
 public:
-    DrawSketchHandlerPolygon(int corners = 6)
+    explicit DrawSketchHandlerPolygon(int corners = 6)
         : numberOfCorners(corners)
     {}
     ~DrawSketchHandlerPolygon() override = default;
