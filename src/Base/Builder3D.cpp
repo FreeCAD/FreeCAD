@@ -89,6 +89,30 @@ std::string DrawStyle::patternAsString() const
     return str.str();
 }
 
+const char* VertexOrdering::toString() const
+{
+    switch (ordering) {
+    case Ordering::UnknownOrdering:
+        return "UNKNOWN_ORDERING";
+    case Ordering::Clockwise:
+        return "CLOCKWISE";
+    case Ordering::CounterClockwise:
+        return "COUNTERCLOCKWISE";
+    }
+    return "UNKNOWN_ORDERING";
+}
+
+const char* ShapeType::toString() const
+{
+    switch (type) {
+    case Type::UnknownShapeType:
+        return "UNKNOWN_SHAPE_TYPE";
+    case Type::Convex:
+        return "SOLID";
+    }
+    return "UNKNOWN_SHAPE_TYPE";
+}
+
 const char* BindingElement::bindingAsString() const
 {
     switch (value) {
@@ -631,10 +655,23 @@ ShapeHintsItem::ShapeHintsItem(float creaseAngle) : creaseAngle(creaseAngle)
 
 }
 
+void ShapeHintsItem::setVertexOrdering(VertexOrdering::Ordering value)
+{
+    vertexOrdering.ordering = value;
+}
+
+void ShapeHintsItem::setShapeType(ShapeType::Type value)
+{
+    shapeType.type = value;
+}
+
+
 void ShapeHintsItem::write(InventorOutput& out) const
 {
     out.write() << "ShapeHints {\n";
     out.write() << "  creaseAngle " << creaseAngle << '\n';
+    out.write() << "  vertexOrdering " << vertexOrdering.toString() << '\n';
+    out.write() << "  shapeType " << shapeType.toString() << '\n';
     out.write() << "}\n";
 }
 
@@ -915,10 +952,15 @@ void TransformItem::write(InventorOutput& out) const
 InventorBuilder::InventorBuilder(std::ostream& output)
   : result(output)
 {
-    result << "#Inventor V2.1 ascii \n\n";
+    addHeader();
 }
 
 InventorBuilder:: ~InventorBuilder() = default;
+
+void InventorBuilder::addHeader()
+{
+    result << "#Inventor V2.1 ascii \n\n";
+}
 
 void InventorBuilder::increaseIndent()
 {

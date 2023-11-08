@@ -88,6 +88,33 @@ public:
     unsigned short linePattern = 0xffff;
 };
 
+class BaseExport VertexOrdering
+{
+public:
+    enum class Ordering {
+        UnknownOrdering,
+        Clockwise,
+        CounterClockwise
+    };
+
+    const char* toString() const;
+
+    Ordering ordering = Ordering::UnknownOrdering;
+};
+
+class BaseExport ShapeType
+{
+public:
+    enum class Type {
+        UnknownShapeType,
+        Convex
+    };
+
+    const char* toString() const;
+
+    Type type = Type::UnknownShapeType;
+};
+
 class BaseExport BindingElement
 {
 public:
@@ -367,11 +394,15 @@ private:
 class BaseExport ShapeHintsItem : public NodeItem
 {
 public:
-    explicit ShapeHintsItem(float creaseAngle);
+    explicit ShapeHintsItem(float creaseAngle = 0.0F);
+    void setVertexOrdering(VertexOrdering::Ordering);
+    void setShapeType(ShapeType::Type);
     void write(InventorOutput& out) const override;
 
 private:
-    float creaseAngle;
+    float creaseAngle = 0.0F;
+    VertexOrdering vertexOrdering;
+    ShapeType shapeType;
 };
 
 /*!
@@ -591,6 +622,10 @@ public:
      * \param str - stream to write the content into
      */
     explicit InventorBuilder(std::ostream& str);
+    /*!
+     * \brief Adds the OpenInventor header.
+     */
+    void addHeader();
     /*!
      * \brief Destruction of an InventorBuilder instance
      */
