@@ -193,7 +193,10 @@ private:
 
     bool isWidgetVisible() const override
     {
-        return true;
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/Mod/Sketcher/Tools");
+        int index = hGrp->GetInt("OnViewParameterVisibility", 1);
+        return index != 0;
     };
 
     QPixmap getToolIcon() const override
