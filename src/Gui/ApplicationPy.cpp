@@ -607,11 +607,11 @@ PyObject* Application::sOpen(PyObject * /*self*/, PyObject *args)
 {
     // only used to open Python files
     char* Name;
-    if (!PyArg_ParseTuple(args, "et","utf-8",&Name))
+    if (!PyArg_ParseTuple(args, "s", &Name))
         return nullptr;
 
     std::string Utf8Name = std::string(Name);
-    PyMem_Free(Name);
+    //PyMem_Free(Name);
     PY_TRY {
         QString fileName = QString::fromUtf8(Utf8Name.c_str());
         FileHandler handler(fileName);

@@ -444,6 +444,10 @@ SbVec3f SoDatumLabel::getLabelTextCenter()
 {
     // Get the points stored
     const SbVec3f* points = this->pnts.getValues(0);
+    if (this->pnts.getNum() < 2) {
+        return {};
+    }
+
     SbVec3f p1 = points[0];
     SbVec3f p2 = points[1];
 
@@ -452,14 +456,18 @@ SbVec3f SoDatumLabel::getLabelTextCenter()
         datumtype.getValue() == SoDatumLabel::DISTANCEY) {
         return getLabelTextCenterDistance(p1, p2);
     }
-    else if (datumtype.getValue() == SoDatumLabel::RADIUS ||
+
+    if (datumtype.getValue() == SoDatumLabel::RADIUS ||
         datumtype.getValue() == SoDatumLabel::DIAMETER) {
         return getLabelTextCenterDiameter(p1, p2);
 
     }
-    else if (datumtype.getValue() == SoDatumLabel::ANGLE) {
+
+    if (datumtype.getValue() == SoDatumLabel::ANGLE) {
         return getLabelTextCenterAngle(p1);
     }
+
+    return {};
 }
 
 SbVec3f SoDatumLabel::getLabelTextCenterDistance(const SbVec3f& p1, const SbVec3f& p2)
