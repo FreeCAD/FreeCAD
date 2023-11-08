@@ -240,52 +240,15 @@ App::DocumentObjectExecReturn* Helix::execute()
             mkPS.Add(wire);
         }
 
-        // mkPS.MakeSolid();    // This would be great. but throws an exception
+        mkPS.Build();
 
         if (!mkPS.IsReady())
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Could not build"));
 
-        // Alternative to mkPS.MakeSolid()
-        std::vector<TopoDS_Shape> shells;
-        std::vector<TopoDS_Wire> frontwires, backwires;
+        if (!mkPS.MakeSolid())
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Could not make solid helix with open wire"));
 
-        shells.push_back(mkPS.Shape());
-
-        if (!mkPS.Shape().Closed()) {
-            // shell is not closed - get the end wires
-            frontwires.push_back(TopoDS::Wire(mkPS.FirstShape()));
-            backwires.push_back(TopoDS::Wire(mkPS.LastShape()));
-        }
-
-        BRepBuilderAPI_MakeSolid mkSolid;
-
-        if (!frontwires.empty()) {
-            // build the end faces, sew the shell and build the final solid
-            TopoDS_Shape front = Part::FaceMakerCheese::makeFace(frontwires);
-            TopoDS_Shape back = Part::FaceMakerCheese::makeFace(backwires);
-
-            BRepBuilderAPI_Sewing sewer;
-            sewer.SetTolerance(Precision::Confusion());
-            sewer.Add(front);
-            sewer.Add(back);
-
-            for (TopoDS_Shape& s : shells)
-                sewer.Add(s);
-
-            sewer.Perform();
-            mkSolid.Add(TopoDS::Shell(sewer.SewedShape()));
-        }
-        else {
-            // shells are already closed - add them directly
-            for (TopoDS_Shape& s : shells) {
-                mkSolid.Add(TopoDS::Shell(s));
-            }
-        }
-
-        if (!mkSolid.IsDone())
-            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result is not a solid"));
-
-        TopoDS_Shape result = mkSolid.Shape();
+        TopoDS_Shape result = mkPS.Shape();
 
         BRepClass3d_SolidClassifier SC(result);
         SC.PerformInfinitePoint(Precision::Confusion());
