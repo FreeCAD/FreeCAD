@@ -80,21 +80,15 @@ QGIFace::QGIFace(int index) :
     getParameters();
 
     // set up style & colour defaults
-    App::Color temp {static_cast<uint32_t>(Preferences::getPreferenceGroup("Colors")->GetUnsigned("FaceColor",0xffffffff))};
-    setFillColor(temp.asValue<QColor>());
-    m_colDefFill = temp.asValue<QColor>();
+    m_colDefFill = App::Color(static_cast<uint32_t>(Preferences::getPreferenceGroup("Colors")->GetUnsigned("FaceColor", 0xFFFFFF)))
+                   .asValue<QColor>();
+    m_colDefFill.setAlpha(Preferences::getPreferenceGroup("Colors")->GetBool("ClearFace", false) ? 0 : 255);
+
     m_fillDef = Qt::SolidPattern;
     m_fillSelect = Qt::SolidPattern;
 
-    if (m_defClearFace) {
-        setFillMode(NoFill);
-        m_colDefFill = Qt::transparent;
-        setFill(Qt::transparent, m_fillDef);
-    } else {
-        setFillMode(PlainFill);
-        m_colDefFill = Qt::white;
-        setFill(m_colDefFill, m_fillDef);
-    }
+    setFillMode(m_colDefFill.alpha() ? PlainFill : NoFill);
+    setFill(m_colDefFill, m_fillDef);
 
     m_sharedRender = new QSvgRenderer();
     m_patMaker = new PATPathMaker(this, 1.0, 1.0);
@@ -425,8 +419,6 @@ void QGIFace::getParameters()
 {
     m_maxSeg = Preferences::getPreferenceGroup("PAT")->GetInt("MaxSeg", 10000l);
     m_maxTile = Preferences::getPreferenceGroup("Decorations")->GetInt("MaxSVGTile", 10000l);
-
-    m_defClearFace = Preferences::getPreferenceGroup("Colors")->GetBool("ClearFace", false);
 }
 
 QRectF QGIFace::boundingRect() const

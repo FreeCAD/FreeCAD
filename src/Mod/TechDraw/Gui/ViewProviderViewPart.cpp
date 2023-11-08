@@ -73,6 +73,8 @@ const char* ViewProviderViewPart::LineStyleEnums[] = { "NoLine",
                                                   "DashDotDot",
                                                   nullptr };
 
+const App::PropertyIntegerConstraint::Constraints intPercent = { 0, 100, 5 };
+
 //**************************************************************************
 // Construction/Destruction
 
@@ -84,6 +86,7 @@ ViewProviderViewPart::ViewProviderViewPart()
     static const char *dgroup = "Decoration";
     static const char *hgroup = "Highlight";
     static const char *sgroup = "Section Line";
+    static const char *fgroup = "Faces";
 
     //default line weights
 
@@ -127,6 +130,13 @@ ViewProviderViewPart::ViewProviderViewPart()
     ADD_PROPERTY_TYPE(HighlightAdjust, (0.0), hgroup, App::Prop_None, "Adjusts the rotation of the Detail highlight");
 
     ADD_PROPERTY_TYPE(ShowAllEdges ,(false)    ,dgroup, App::Prop_None, "Temporarily show invisible lines");
+
+    // Faces related properties
+    ADD_PROPERTY_TYPE(FaceColor, (Preferences::getPreferenceGroup("Colors")->GetUnsigned("FaceColor", 0xFFFFFF)),
+                      fgroup, App::Prop_None, "Set color of faces");
+    ADD_PROPERTY_TYPE(FaceTransparency, (Preferences::getPreferenceGroup("Colors")->GetBool("ClearFace", false) ? 100 : 0),
+                      fgroup, App::Prop_None, "Set transparency of faces");
+    FaceTransparency.setConstraints(&intPercent);
 }
 
 ViewProviderViewPart::~ViewProviderViewPart()
@@ -159,8 +169,10 @@ void ViewProviderViewPart::onChanged(const App::Property* prop)
         prop == &(SectionLineMarks) ||
         prop == &(HighlightLineStyle) ||
         prop == &(HighlightLineColor) ||
-        prop == &(HorizCenterLine)  ||
-        prop == &(VertCenterLine) ) {
+        prop == &(HorizCenterLine) ||
+        prop == &(VertCenterLine)  ||
+        prop == &(FaceColor) ||
+        prop == &(FaceTransparency)) {
         // redraw QGIVP
         QGIView* qgiv = getQView();
         if (qgiv) {
