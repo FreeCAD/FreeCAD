@@ -306,9 +306,20 @@ void DSHLineController::configureToolWidget()
     onViewParameters[OnViewParameter::Second]->setLabelType(Gui::SoDatumLabel::DISTANCEY);
 
     if (handler->constructionMethod() == ConstructionMethod::OnePointLengthAngle) {
+        onViewParameters[OnViewParameter::Third]->setLabelType(
+            Gui::SoDatumLabel::DISTANCE,
+            Gui::EditableDatumLabel::Function::Dimensioning);
         onViewParameters[OnViewParameter::Fourth]->setLabelType(
             Gui::SoDatumLabel::ANGLE,
             Gui::EditableDatumLabel::Function::Dimensioning);
+    }
+    else if (handler->constructionMethod() == ConstructionMethod::TwoPoints) {
+        onViewParameters[OnViewParameter::Third]->setLabelType(
+            Gui::SoDatumLabel::DISTANCEX,
+            Gui::EditableDatumLabel::Function::Positioning);
+        onViewParameters[OnViewParameter::Fourth]->setLabelType(
+            Gui::SoDatumLabel::DISTANCEY,
+            Gui::EditableDatumLabel::Function::Positioning);
     }
     else {
         onViewParameters[OnViewParameter::Third]->setLabelType(
