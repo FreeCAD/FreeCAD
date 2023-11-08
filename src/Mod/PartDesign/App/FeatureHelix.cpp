@@ -240,10 +240,10 @@ App::DocumentObjectExecReturn* Helix::execute()
             mkPS.Add(wire);
         }
 
-        mkPS.Build();
-
         if (!mkPS.IsReady())
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Could not build"));
+
+        mkPS.Build();
 
         if (!mkPS.MakeSolid())
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Could not make solid helix with open wire"));
