@@ -1077,6 +1077,10 @@ void DSHOffsetController::configureToolWidget()
             WCheckbox::SecondBox,
             QApplication::translate("TaskSketcherTool_c2_offset", "Add offset constraint (J)"));
     }
+
+    onViewParameters[OnViewParameter::First]->setLabelType(
+        Gui::SoDatumLabel::DISTANCE,
+        Gui::EditableDatumLabel::Function::Dimensioning);
 }
 
 template<>
