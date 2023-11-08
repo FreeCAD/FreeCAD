@@ -134,8 +134,10 @@ int Exporter::addObject(App::DocumentObject* obj, float tol)
                 }
                 Py_DECREF(pyobj);
             }
-        } else if ( it->second.getTransform() != matrix )
+        }
+        else if (it->second.getTransform() != matrix) {
             it->second.setTransform(matrix);
+        }
 
         // Add a new mesh
         if (it != meshCache.end()) {
