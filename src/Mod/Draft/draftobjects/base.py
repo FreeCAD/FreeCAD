@@ -195,19 +195,13 @@ class DraftObject(object):
         if not hasattr(self, "props_changed"):
             return False
 
-        # For an attached object whose Shape depends on one or more source
-        # objects the situation can occur that when those source objects
-        # change its Placement is also changed, but for no apparent reason:
-        # the new Placement is identical to the old. For such an object a
-        # `placement_only` change cannot be detected reliably and therefore
-        # this function should return `False`.
+        # For some objects a dummy Placement property change (new and old
+        # Placement are the same) is used in cases where a full recompute is
+        # required. This function should then return `False`. The common
+        # denominator seems to be a non-empty OutList.
         # https://github.com/FreeCAD/FreeCAD/issues/8771
-        if obj is not None \
-                and obj.OutList \
-                and hasattr(obj, "Support") \
-                and hasattr(obj, "MapMode") \
-                and obj.Support \
-                and obj.MapMode != "Deactivated":
+        # https://forum.freecad.org/viewtopic.php?t=82436
+        if obj is not None and obj.OutList:
             return False
 
         props = set(self.props_changed)
