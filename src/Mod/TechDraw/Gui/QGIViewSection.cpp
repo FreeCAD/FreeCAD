@@ -56,10 +56,10 @@ void QGIViewSection::drawSectionFace()
         return;
     }
 
-    Gui::ViewProvider* gvp = QGIView::getViewProvider(section);
-    ViewProviderViewSection* sectionVp = dynamic_cast<ViewProviderViewSection*>(gvp);
-    if (!sectionVp || !sectionVp->ShowCutSurface.getValue())
+    ViewProviderViewSection* sectionVp = dynamic_cast<ViewProviderViewSection*>(QGIView::getViewProvider(section));
+    if (!sectionVp) {
         return;
+    }
 
     auto sectionFaces( section->getTDFaceGeometry() );
     if (sectionFaces.empty()) {
@@ -83,12 +83,14 @@ void QGIViewSection::drawSectionFace()
 
         if (section->CutSurfaceDisplay.isValue("Hide")) {
             return;
-        } else if (section->CutSurfaceDisplay.isValue("Color")) {
-            newFace->isHatched(false);
-            newFace->setFillMode(QGIFace::PlainFill);
-            QColor faceColor = (sectionVp->CutSurfaceColor.getValue()).asValue<QColor>();
-            newFace->setFillColor(faceColor);
-            newFace->setFillStyle(Qt::SolidPattern);
+        }
+
+        QColor faceColor = (sectionVp->CutSurfaceColor.getValue()).asValue<QColor>();
+        faceColor.setAlpha((100 - sectionVp->CutSurfaceTransparency.getValue())*255/100);
+        newFace->setFillColor(faceColor);
+
+        if (section->CutSurfaceDisplay.isValue("Color")) {
+            newFace->setFillMode(faceColor.alpha() ? QGIFace::PlainFill : QGIFace::NoFill);
         } else if (section->CutSurfaceDisplay.isValue("SvgHatch")) {
             newFace->setFillMode(QGIFace::SvgFill);
             newFace->setHatchColor(sectionVp->HatchColor.getValue());

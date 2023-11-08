@@ -60,6 +60,8 @@ public:
     App::PropertyColor  HighlightLineColor;
     App::PropertyFloat  HighlightAdjust;
     App::PropertyBool   ShowAllEdges;
+    App::PropertyColor   FaceColor;
+    App::PropertyPercent FaceTransparency;
 
     static const char* LineStyleEnums[];
 

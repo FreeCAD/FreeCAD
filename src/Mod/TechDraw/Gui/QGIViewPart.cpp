@@ -192,14 +192,23 @@ void QGIViewPart::drawAllFaces(void)
     // dvp already validated
     auto dvp(static_cast<TechDraw::DrawViewPart*>(getViewObject()));
 
+    QColor faceColor;
+    auto vpp = dynamic_cast<ViewProviderViewPart *>(getViewProvider(getViewObject()));
+    if (vpp) {
+        faceColor = vpp->FaceColor.getValue().asValue<QColor>();
+        faceColor.setAlpha((100 - vpp->FaceTransparency.getValue())*255/100);
+    }
+
     std::vector<TechDraw::DrawHatch*> regularHatches = dvp->getHatches();
     std::vector<TechDraw::DrawGeomHatch*> geomHatches = dvp->getGeomHatches();
     const std::vector<TechDraw::FacePtr>& faceGeoms = dvp->getFaceGeometry();
     int iFace(0);
     for (auto& face : faceGeoms) {
         QGIFace* newFace = drawFace(face, iFace);
-        newFace->isHatched(false);
-        newFace->setFillMode(QGIFace::PlainFill);
+        if (faceColor.isValid()) {
+            newFace->setFillColor(faceColor);
+            newFace->setFillMode(faceColor.alpha() ? QGIFace::PlainFill : QGIFace::NoFill);
+        }
 
         TechDraw::DrawHatch* fHatch = faceIsHatched(iFace, regularHatches);
         TechDraw::DrawGeomHatch* fGeom = faceIsGeomHatched(iFace, geomHatches);
