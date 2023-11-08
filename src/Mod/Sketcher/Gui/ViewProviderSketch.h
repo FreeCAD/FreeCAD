@@ -876,6 +876,7 @@ private:
     void setAxisPickStyle(bool on);
 
     void moveCursorToSketchPoint(Base::Vector2d point);
+    void ensureFocus();
 
     void preselectAtPoint(Base::Vector2d point);
     //@}

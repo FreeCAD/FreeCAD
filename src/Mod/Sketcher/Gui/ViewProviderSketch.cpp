@@ -657,6 +657,13 @@ void ViewProviderSketch::moveCursorToSketchPoint(Base::Vector2d point)
     QCursor::setPos(newPos);
 }
 
+void ViewProviderSketch::ensureFocus()
+{
+
+    Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
+           mdi->setFocus();
+}
+
 void ViewProviderSketch::preselectAtPoint(Base::Vector2d point)
 {
     if (Mode != STATUS_SELECT_Point && Mode != STATUS_SELECT_Edge
