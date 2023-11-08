@@ -227,37 +227,34 @@ App::DocumentObjectExecReturn* Helix::execute()
             return new App::DocumentObjectExecReturn(e.what());
         }
 
-        std::vector<std::vector<TopoDS_Wire>> wiresections;
-        for (TopoDS_Wire& wire : wires)
-            wiresections.emplace_back(1, wire);
-
         //build all shells
+        BRepOffsetAPI_MakePipeShell mkPS(TopoDS::Wire(path));
+
+        mkPS.SetTolerance(Precision::Confusion());
+        mkPS.SetTransitionMode(BRepBuilderAPI_Transformed);
+
+        mkPS.SetMode(TopoDS::Wire(auxpath), true);  // this is for auxiliary
+
+        for (TopoDS_Wire& wire : wires) {
+            wire.Move(invObjLoc);
+            mkPS.Add(wire);
+        }
+
+        // mkPS.MakeSolid();    // This would be great. but throws an exception
+
+        if (!mkPS.IsReady())
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Could not build"));
+
+        // Alternative to mkPS.MakeSolid()
         std::vector<TopoDS_Shape> shells;
         std::vector<TopoDS_Wire> frontwires, backwires;
-        for (std::vector<TopoDS_Wire>& wires : wiresections) {
 
-            BRepOffsetAPI_MakePipeShell mkPS(TopoDS::Wire(path));
+        shells.push_back(mkPS.Shape());
 
-            mkPS.SetTolerance(Precision::Confusion());
-            mkPS.SetTransitionMode(BRepBuilderAPI_Transformed);
-
-            mkPS.SetMode(TopoDS::Wire(auxpath), true);  // this is for auxiliary
-
-            for (TopoDS_Wire& wire : wires) {
-                wire.Move(invObjLoc);
-                mkPS.Add(wire);
-            }
-
-            if (!mkPS.IsReady())
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Could not build"));
-
-            shells.push_back(mkPS.Shape());
-
-            if (!mkPS.Shape().Closed()) {
-                // shell is not closed - get the end wires
-                frontwires.push_back(TopoDS::Wire(mkPS.FirstShape()));
-                backwires.push_back(TopoDS::Wire(mkPS.LastShape()));
-            }
+        if (!mkPS.Shape().Closed()) {
+            // shell is not closed - get the end wires
+            frontwires.push_back(TopoDS::Wire(mkPS.FirstShape()));
+            backwires.push_back(TopoDS::Wire(mkPS.LastShape()));
         }
 
         BRepBuilderAPI_MakeSolid mkSolid;
