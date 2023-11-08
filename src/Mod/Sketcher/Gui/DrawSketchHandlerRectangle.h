@@ -1703,21 +1703,54 @@ void DSHRectangleController::configureToolWidget()
 
     if (handler->constructionMethod() == ConstructionMethod::Diagonal
         || handler->constructionMethod() == ConstructionMethod::CenterAndCorner) {
-
-        onViewParameters[OnViewParameter::Third]->setLabelType(Gui::SoDatumLabel::DISTANCEX);
-        onViewParameters[OnViewParameter::Fourth]->setLabelType(Gui::SoDatumLabel::DISTANCEY);
-        onViewParameters[OnViewParameter::Fifth]->setLabelType(Gui::SoDatumLabel::RADIUS);
+        onViewParameters[OnViewParameter::Third]->setLabelType(
+            Gui::SoDatumLabel::DISTANCEX,
+            Gui::EditableDatumLabel::Function::Dimensioning);
+        onViewParameters[OnViewParameter::Fourth]->setLabelType(
+            Gui::SoDatumLabel::DISTANCEY,
+            Gui::EditableDatumLabel::Function::Dimensioning);
+        onViewParameters[OnViewParameter::Fifth]->setLabelType(
+            Gui::SoDatumLabel::RADIUS,
+            Gui::EditableDatumLabel::Function::Dimensioning);
+        onViewParameters[OnViewParameter::Sixth]->setLabelType(
+            Gui::SoDatumLabel::DISTANCE,
+            Gui::EditableDatumLabel::Function::Dimensioning);
     }
     else if (handler->constructionMethod() == ConstructionMethod::ThreePoints) {
-        onViewParameters[OnViewParameter::Fourth]->setLabelType(Gui::SoDatumLabel::ANGLE);
-        onViewParameters[OnViewParameter::Sixth]->setLabelType(Gui::SoDatumLabel::ANGLE);
-        onViewParameters[OnViewParameter::Seventh]->setLabelType(Gui::SoDatumLabel::RADIUS);
+        onViewParameters[OnViewParameter::Third]->setLabelType(
+            Gui::SoDatumLabel::DISTANCE,
+            Gui::EditableDatumLabel::Function::Dimensioning);
+        onViewParameters[OnViewParameter::Fourth]->setLabelType(
+            Gui::SoDatumLabel::ANGLE,
+            Gui::EditableDatumLabel::Function::Dimensioning);
+        onViewParameters[OnViewParameter::Fifth]->setLabelType(
+            Gui::SoDatumLabel::DISTANCE,
+            Gui::EditableDatumLabel::Function::Dimensioning);
+        onViewParameters[OnViewParameter::Sixth]->setLabelType(
+            Gui::SoDatumLabel::ANGLE,
+            Gui::EditableDatumLabel::Function::Dimensioning);
+        onViewParameters[OnViewParameter::Seventh]->setLabelType(
+            Gui::SoDatumLabel::RADIUS,
+            Gui::EditableDatumLabel::Function::Dimensioning);
+        onViewParameters[OnViewParameter::Eighth]->setLabelType(
+            Gui::SoDatumLabel::DISTANCE,
+            Gui::EditableDatumLabel::Function::Dimensioning);
     }
     else if (handler->constructionMethod() == ConstructionMethod::CenterAnd3Points) {
         onViewParameters[OnViewParameter::Third]->setLabelType(Gui::SoDatumLabel::DISTANCEX);
         onViewParameters[OnViewParameter::Fourth]->setLabelType(Gui::SoDatumLabel::DISTANCEY);
-        onViewParameters[OnViewParameter::Sixth]->setLabelType(Gui::SoDatumLabel::ANGLE);
-        onViewParameters[OnViewParameter::Seventh]->setLabelType(Gui::SoDatumLabel::RADIUS);
+        onViewParameters[OnViewParameter::Fifth]->setLabelType(
+            Gui::SoDatumLabel::DISTANCE,
+            Gui::EditableDatumLabel::Function::Dimensioning);
+        onViewParameters[OnViewParameter::Sixth]->setLabelType(
+            Gui::SoDatumLabel::ANGLE,
+            Gui::EditableDatumLabel::Function::Dimensioning);
+        onViewParameters[OnViewParameter::Seventh]->setLabelType(
+            Gui::SoDatumLabel::RADIUS,
+            Gui::EditableDatumLabel::Function::Dimensioning);
+        onViewParameters[OnViewParameter::Eighth]->setLabelType(
+            Gui::SoDatumLabel::DISTANCE,
+            Gui::EditableDatumLabel::Function::Dimensioning);
     }
 }
 
