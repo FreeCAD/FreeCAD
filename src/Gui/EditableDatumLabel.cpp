@@ -57,6 +57,7 @@ EditableDatumLabel::EditableDatumLabel(View3DInventorViewer* view,
     , viewer(view)
     , spinBox(nullptr)
     , cameraSensor(nullptr)
+    , function(Function::Positioning)
 {
     // NOLINTBEGIN
     root = new SoAnnotation;
