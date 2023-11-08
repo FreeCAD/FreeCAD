@@ -111,6 +111,11 @@ ViewProviderSketchDrawSketchHandlerAttorney::moveCursorToSketchPoint(ViewProvide
     vp.moveCursorToSketchPoint(point);
 }
 
+inline void ViewProviderSketchDrawSketchHandlerAttorney::ensureFocus(ViewProviderSketch& vp)
+{
+    vp.ensureFocus();
+}
+
 inline void ViewProviderSketchDrawSketchHandlerAttorney::preselectAtPoint(ViewProviderSketch& vp,
                                                                           Base::Vector2d point)
 {
@@ -1187,6 +1192,11 @@ void DrawSketchHandler::setAxisPickStyle(bool on)
 void DrawSketchHandler::moveCursorToSketchPoint(Base::Vector2d point)
 {
     ViewProviderSketchDrawSketchHandlerAttorney::moveCursorToSketchPoint(*sketchgui, point);
+}
+
+void DrawSketchHandler::ensureFocus()
+{
+    ViewProviderSketchDrawSketchHandlerAttorney::ensureFocus(*sketchgui);
 }
 
 void DrawSketchHandler::preselectAtPoint(Base::Vector2d point)
