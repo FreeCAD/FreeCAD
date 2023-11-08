@@ -25,6 +25,7 @@
 
 #include <Base/Tools2D.h>
 #include <Gui/EditableDatumLabel.h>
+#include <Gui/MDIView.h>
 
 #include "DrawSketchDefaultHandler.h"
 #include "SketcherToolDefaultWidget.h"
@@ -278,6 +279,10 @@ public:
     /** @brief Resets the controls, such as the widget and the on-view parameters */
     void resetControls()
     {
+        // Make sure we do not loose focus if next methode does not have OVP that take focus.
+        Gui::MDIView* mdi = Gui::Application::Instance->activeDocument()->getActiveView();
+        mdi->setFocus();
+
         doResetControls();  // NVI
 
         firstMoveInit = false;
