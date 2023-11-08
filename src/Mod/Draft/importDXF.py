@@ -2091,73 +2091,73 @@ def getScaleFromDXF(header):
         insunits = 1 if measurement == 0 else 4
     else:
         insunits = 0
-    match insunits:
-        case 0:
-            # Unspecified
-            return 1.0
-        case 1:
-            # Inches
-            return 25.4
-        case 2:
-            # Feet
-            return 25.4 * 12
-        case 3:
-            # Miles
-            return 1609344.0
-        case 4:
-            # Millimeters
-            return 1.0
-        case 5:
-            # Centimeters
-            return 10.0
-        case 6:
-            # Meters
-            return 1000.0
-        case 7:
-            # Kilometers
-            return 1000000.0
-        case 8:
-            # Microinches
-            return 25.4 / 1000.0
-        case 9:
-            # Mils
-            return 25.4 / 1000.0
-        case 10:
-            # Yards
-            return 3 * 12 * 25.4
-        case 11:
-            # Angstroms
-            return 0.0000001
-        case 12:
-            # Nanometers
-            return 0.000001
-        case 13:
-            # Microns
-            return 0.001
-        case 14:
-            # Decimeters
-            return 100.0
-        case 15:
-            # Decameters
-            return 10000.0
-        case 16:
-            # Hectometers
-            return 100000.0
-        case 17:
-            # Gigameters
-            return 1000000000000.0
-        case 18:
-            # AstronomicalUnits
-            return 149597870690000.0
-        case 19:
-            # LightYears
-            return 9454254955500000000.0
-        case 20:
-            # Parsecs
-            return 30856774879000000000.0
-        case _:
-            # Unsupported
-            return 1.0
+
+    if insunits == 0:
+        # Unspecified
+        return 1.0
+    if insunits == 1:
+        # Inches
+        return 25.4
+    if insunits == 2:
+        # Feet
+        return 25.4 * 12
+    if insunits == 3:
+        # Miles
+        return 1609344.0
+    if insunits == 4:
+        # Millimeters
+        return 1.0
+    if insunits == 5:
+        # Centimeters
+        return 10.0
+    if insunits == 6:
+        # Meters
+        return 1000.0
+    if insunits == 7:
+        # Kilometers
+        return 1000000.0
+    if insunits == 8:
+        # Microinches
+        return 25.4 / 1000.0
+    if insunits == 9:
+        # Mils
+        return 25.4 / 1000.0
+    if insunits == 10:
+        # Yards
+        return 3 * 12 * 25.4
+    if insunits == 11:
+        # Angstroms
+        return 0.0000001
+    if insunits == 12:
+        # Nanometers
+        return 0.000001
+    if insunits == 13:
+        # Microns
+        return 0.001
+    if insunits == 14:
+        # Decimeters
+        return 100.0
+    if insunits == 15:
+        # Decameters
+        return 10000.0
+    if insunits == 16:
+        # Hectometers
+        return 100000.0
+    if insunits == 17:
+        # Gigameters
+        return 1000000000000.0
+    if insunits == 18:
+        # AstronomicalUnits
+        return 149597870690000.0
+    if insunits == 19:
+        # LightYears
+        return 9454254955500000000.0
+    if insunits == 20:
+        # Parsecs
+        return 30856774879000000000.0
+
+    # Unsupported
+    return 1.0
 
 
 def processdxf(document, filename, getShapes=False, reComputeFlag=True):
