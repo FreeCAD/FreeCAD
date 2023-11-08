@@ -106,12 +106,16 @@ App::DocumentObjectExecReturn *Boolean::execute()
 
     TopoDS_Shape result = baseTopShape.getShape();
 
+    Base::Placement  sp = baseBody->globalPlacement();
+    sp.invert();
     for (auto tool : tools)
     {
         if(!tool->isDerivedFrom(Part::Feature::getClassTypeId()))
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Cannot do boolean with anything but Part::Feature and its derivatives"));
 
-        TopoDS_Shape shape = static_cast<Part::Feature*>(tool)->Shape.getValue();
+        Part::TopoShape toolShape = static_cast<Part::Feature*>(tool)->Shape.getShape();
+        toolShape.setPlacement(sp *toolShape.getPlacement());
+        TopoDS_Shape shape = toolShape.getShape();
         TopoDS_Shape boolOp;
 
         // Must not pass null shapes to the boolean operations
