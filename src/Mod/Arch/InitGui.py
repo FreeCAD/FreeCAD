@@ -228,6 +228,8 @@ class ArchWorkbench(FreeCADGui.Workbench):
             FreeCADGui.draftToolBar.Activated()
         if hasattr(FreeCADGui, "Snapper"):
             FreeCADGui.Snapper.show()
+        import WorkingPlane
+        WorkingPlane._view_observer_start()
         FreeCAD.Console.PrintLog("Arch workbench activated.\n")
 
     def Deactivated(self):
@@ -236,6 +238,8 @@ class ArchWorkbench(FreeCADGui.Workbench):
             FreeCADGui.draftToolBar.Deactivated()
         if hasattr(FreeCADGui, "Snapper"):
             FreeCADGui.Snapper.hide()
+        import WorkingPlane
+        WorkingPlane._view_observer_stop()
         FreeCAD.Console.PrintLog("Arch workbench deactivated.\n")
 
     def ContextMenu(self, recipient):
