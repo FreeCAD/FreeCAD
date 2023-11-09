@@ -2084,13 +2084,12 @@ def getScaleFromDXF(header):
     header : header object
     """
     data = header.data
+    insunits = 0
     if [9, "$INSUNITS"] in data:
         insunits = data[data.index([9, "$INSUNITS"]) + 1][1]
-    elif [9, "$MEASUREMENT"] in data:
+    if insunits == 0 and [9, "$MEASUREMENT"] in data:
         measurement = data[data.index([9, "$MEASUREMENT"]) + 1][1]
         insunits = 1 if measurement == 0 else 4
-    else:
-        insunits = 0
 
     if insunits == 0:
         # Unspecified
