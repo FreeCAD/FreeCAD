@@ -114,6 +114,7 @@ ObjectIdentifier::ObjectIdentifier(const App::PropertyContainer * _owner,
     , documentNameSet(false)
     , documentObjectNameSet(false)
     , localProperty(false)
+    , containerIsDocument(false)
     , _hash(0)
 {
     if (_owner) {
@@ -138,6 +139,7 @@ ObjectIdentifier::ObjectIdentifier(const App::PropertyContainer * _owner, bool l
     , documentNameSet(false)
     , documentObjectNameSet(false)
     , localProperty(localProperty)
+    , containerIsDocument(false)
     , _hash(0)
 {
     if (_owner) {
@@ -158,6 +160,7 @@ ObjectIdentifier::ObjectIdentifier(const Property &prop, int index)
     , documentNameSet(false)
     , documentObjectNameSet(false)
     , localProperty(false)
+    , containerIsDocument(false)
     , _hash(0)
 {
     DocumentObject * docObj = freecad_dynamic_cast<DocumentObject>(prop.getContainer());
@@ -820,6 +823,7 @@ enum ResolveFlags {
     ResolveByIdentifier,
     ResolveByLabel,
     ResolveAmbiguous,
+    ResolveAsDocumentProperty,
 };
 
 /**
@@ -926,6 +930,20 @@ void ObjectIdentifier::resolve(ResolveResults &results) const
     }
 
     results.resolvedDocumentName = String(results.resolvedDocument->getName(), false, true);
+
+    if (containerIsDocument) {
+        results.flags.set(ResolveAsDocumentProperty);
+        // for when the document itself is being pointed to (not a documentObject)
+        if (documentName.getString().empty()) {  // for "#propName" expression, grab the current doc
+            results.resolvedDocument = owner->getDocument();
+            results.resolvedDocumentName = String(results.resolvedDocument->getName(), false, true);
+        } else {
+            // TODO: handle named "other documents"
+            results.propertyType = 7; // aka PseudoPropertyType::PseudoApp;
+        }
+        results.getProperty(*this);
+        return;
+    }
 
     /* Document object name specified? */
     if (!documentObjectName.getString().empty()) {
@@ -1391,6 +1409,38 @@ ObjectIdentifier::String ObjectIdentifier::getDocumentName() const
     ResolveResults result(*this);
 
     return result.resolvedDocumentName;
+}
+
+void ObjectIdentifier::identifyAsDocumentProperty(bool _containerIsDocument)
+{
+    containerIsDocument = _containerIsDocument;
+}
+
+void ObjectIdentifier::setPropertyContainerName(String &&name, bool force,
+                                                String &&subname, bool checkImport)
+{
+    // FIXME: Copied from `setDocumentObjectName(String &&...)`. Convert accordingly.
+    if(checkImport) {
+        name.checkImport(owner);
+        subname.checkImport(owner,nullptr,&name);
+    }
+
+    documentObjectName = std::move(name);
+    documentObjectNameSet = force;
+    subObjectName = std::move(subname);
+
+    _cache.clear();
+}
+
+void ObjectIdentifier::setPropertyContainerName(const App::PropertyContainer *propCont, bool force,
+                                                String &&subname, bool checkImport)
+{
+    // FIXME: Shouldn't be needed
+    if (!dynamic_cast<const DocumentObject*>(propCont)) {
+        FC_THROWM(Base::RuntimeError,"Containers other than Document Objects are not supported yet.");
+    }
+
+    setDocumentObjectName(static_cast<const DocumentObject*>(propCont), force, std::move(subname), checkImport);
 }
 
 /**
@@ -2006,7 +2056,14 @@ std::string ObjectIdentifier::ResolveResults::resolveErrorString() const
 }
 
 void ObjectIdentifier::ResolveResults::getProperty(const ObjectIdentifier &oi) {
-    resolvedProperty = oi.resolveProperty(
-            resolvedDocumentObject,propertyName.c_str(),resolvedSubObject,propertyType);
+    if (oi.containerIsDocument) {
+        resolvedProperty = this->resolvedDocument->getPropertyByName(this->propertyName.c_str());
+    } else {
+        resolvedProperty = oi.resolveProperty(
+            resolvedDocumentObject,propertyName.c_str(),
+            resolvedSubObject,
+            propertyType
+            );
+    }
 }
 

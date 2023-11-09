@@ -273,6 +273,7 @@ public:
         documentNameSet = other.documentNameSet;
         documentObjectNameSet = other.documentObjectNameSet;
         localProperty = other.localProperty;
+        containerIsDocument = other.containerIsDocument;
         _cache = std::move(other._cache);
         _hash = other._hash;
         return *this;
@@ -295,6 +296,7 @@ public:
     }
 
     std::string getPropertyName() const;
+    void identifyAsDocumentProperty(bool _containerIsDocument);
 
     template<typename C>
     void addComponents(const C &cs) { components.insert(components.end(), cs.begin(), cs.end()); }
@@ -330,6 +332,12 @@ public:
     void setDocumentName(String &&name, bool force = false);
 
     String getDocumentName() const;
+
+    void setPropertyContainerName(String &&name, bool force = false,
+                                  String &&subname = String(), bool checkImport=false);
+
+    void setPropertyContainerName(const App::PropertyContainer *obj, bool force = false,
+                                  String &&subname = String(), bool checkImport=false);
 
     void setDocumentObjectName(String &&name, bool force = false,
             String &&subname = String(), bool checkImport=false);
@@ -491,6 +499,7 @@ protected:
     bool documentNameSet;
     bool documentObjectNameSet;
     bool localProperty;
+    bool containerIsDocument;
 
 private:
     std::string _cache; // Cached string represstation of this identifier

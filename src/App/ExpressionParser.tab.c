@@ -1646,7 +1646,7 @@ yyreduce:
 #line 166 "ExpressionParser.y"
                                             { /* Path to property of a sub-object of the current object*/
                                                 (yyval.path) = ObjectIdentifier(DocumentObject,true);
-                                                (yyval.path).setDocumentObjectName(DocumentObject,false,ObjectIdentifier::String(std::move((yyvsp[-2].string)),true),true);
+                                                (yyval.path).setPropertyContainerName(DocumentObject,false,ObjectIdentifier::String(std::move((yyvsp[-2].string)),true),true);
                                                 (yyval.path).addComponent(ObjectIdentifier::SimpleComponent((yyvsp[0].string)));
                                             }
 #line 1653 "ExpressionParser.tab.c"
@@ -1656,7 +1656,7 @@ yyreduce:
 #line 171 "ExpressionParser.y"
                                             { /* Path to property of the current document object */
                                                 (yyval.path) = ObjectIdentifier(DocumentObject,true);
-                                                (yyval.path).setDocumentObjectName(DocumentObject);
+                                                (yyval.path).setPropertyContainerName(DocumentObject);
                                                 (yyval.path).addComponent(ObjectIdentifier::SimpleComponent((yyvsp[0].string)));
                                             }
 #line 1663 "ExpressionParser.tab.c"
@@ -1666,7 +1666,7 @@ yyreduce:
 #line 176 "ExpressionParser.y"
                                             { /* Path to property of a sub-object */
                                                 (yyval.path) = ObjectIdentifier(DocumentObject);
-                                                (yyval.path).setDocumentObjectName(std::move((yyvsp[-4].string_or_identifier)), true, ObjectIdentifier::String(std::move((yyvsp[-2].string)),true),true);
+                                                (yyval.path).setPropertyContainerName(std::move((yyvsp[-4].string_or_identifier)), true, ObjectIdentifier::String(std::move((yyvsp[-2].string)),true),true);
                                                 (yyval.path).addComponent(ObjectIdentifier::SimpleComponent((yyvsp[0].string)));
                                                 (yyval.path).resolveAmbiguity();
                                             }
@@ -1690,7 +1690,7 @@ yyreduce:
                                             { /* Path to property from an external document, within a named document object */
                                                 (yyval.path) = ObjectIdentifier(DocumentObject);
                                                 (yyval.path).setDocumentName(std::move((yyvsp[-4].string_or_identifier)), true);
-                                                (yyval.path).setDocumentObjectName(std::move((yyvsp[-2].string_or_identifier)), true);
+                                                (yyval.path).setPropertyContainerName(std::move((yyvsp[-2].string_or_identifier)), true);
                                                 (yyval.path).addComponent(ObjectIdentifier::SimpleComponent((yyvsp[0].string)));
                                                 (yyval.path).resolveAmbiguity();
                                             }
@@ -1700,9 +1700,9 @@ yyreduce:
   case 61: /* iden: document '$' IDENTIFIER  */
 #line 197 "ExpressionParser.y"
                                             {   (yyval.path) = ObjectIdentifier(DocumentObject);
-                                                (yyval.path).setDocumentName(std::move((yyvsp[-2].string_or_identifier)), true);
+                                                (yyval.path).identifyAsDocumentProperty(true); // TODO: This should not be necessary
+                                                (yyval.path).setPropertyContainerName(std::move((yyvsp[-2].string_or_identifier)), true, ObjectIdentifier::String(std::move((yyvsp[0].string)),true));
                                                 printf("test");
-                                                (yyval.path).addComponent(ObjectIdentifier::SimpleComponent((yyvsp[0].string)));
                                                 (yyval.path).resolveAmbiguity();
                                             }
 #line 1709 "ExpressionParser.tab.c"
@@ -1712,7 +1712,7 @@ yyreduce:
 #line 204 "ExpressionParser.y"
                                             {   (yyval.path) = ObjectIdentifier(DocumentObject);
                                                 (yyval.path).setDocumentName(std::move((yyvsp[-6].string_or_identifier)), true);
-                                                (yyval.path).setDocumentObjectName(std::move((yyvsp[-4].string_or_identifier)), true, ObjectIdentifier::String(std::move((yyvsp[-2].string)),true));
+                                                (yyval.path).setPropertyContainerName(std::move((yyvsp[-4].string_or_identifier)), true, ObjectIdentifier::String(std::move((yyvsp[-2].string)),true));
                                                 (yyval.path).addComponent(ObjectIdentifier::SimpleComponent((yyvsp[0].string)));
                                                 (yyval.path).resolveAmbiguity();
                                             }
