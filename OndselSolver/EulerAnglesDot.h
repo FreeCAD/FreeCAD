@@ -56,13 +56,13 @@ namespace MbD {
 			auto angle = aEulerAngles->at(i)->getValue();
 			auto angleDot = this->at(i)->getValue();
 			if (axis == 1) {
-				cAdot->atiput(i, FullMatrix<double>::rotatexrotDot(angle, angleDot));
+				cAdot->atiput(i, FullMatrixDouble::rotatexrotDot(angle, angleDot));
 			}
 			else if (axis == 2) {
-				cAdot->atiput(i, FullMatrix<double>::rotateyrotDot(angle, angleDot));
+				cAdot->atiput(i, FullMatrixDouble::rotateyrotDot(angle, angleDot));
 			}
 			else if (axis == 3) {
-				cAdot->atiput(i, FullMatrix<double>::rotatezrotDot(angle, angleDot));
+				cAdot->atiput(i, FullMatrixDouble::rotatezrotDot(angle, angleDot));
 			}
 			else {
 				throw std::runtime_error("Euler angle rotation order must be any permutation of 1,2,3 without consecutive repeats.");
@@ -79,11 +79,11 @@ namespace MbD {
 		auto psiAdot = cAdot->at(2);
 
 		aAdot = phiAdot->timesFullMatrix(theA->timesFullMatrix(psiA))
-			->plusFullMatrix(phiA->timesFullMatrix(theAdot->timesFullMatrix(psiA)))
-			->plusFullMatrix(phiA->timesFullMatrix(theA->timesFullMatrix(psiAdot)));
+                ->plusFullMatrix(phiA->timesFullMatrix(theAdot->timesFullMatrix(psiA)))
+                ->plusFullMatrix(phiA->timesFullMatrix(theA->timesFullMatrix(psiAdot)));
 		omeF = (phiA->column(0)->times(phidot)
-			->plusFullColumn(phiA->timesFullMatrix(theA)->column(1)->times(thedot))
-			->plusFullColumn(aEulerAngles->aA->column(2)->times(psidot)));
+                ->plusFullColumn(phiA->timesFullMatrix(theA)->column(1)->times(thedot))
+                ->plusFullColumn(aEulerAngles->aA->column(2)->times(psidot)));
 		omef = aEulerAngles->aA->transposeTimesFullColumn(omeF);
 	}
 }

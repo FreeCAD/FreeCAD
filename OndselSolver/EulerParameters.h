@@ -8,10 +8,12 @@
  
 #pragma once
 
+#include "FullColumn.ref.h"
+#include "FullMatrix.ref.h"
 #include "EulerParameters.ref.h"
 #include "EulerArray.h"
-#include "FullColumn.h"
-#include "FullMatrix.h"
+// #include "FullColumn.h"
+// #include "FullMatrix.h"
 
 namespace MbD {
 
@@ -40,11 +42,10 @@ namespace MbD {
 			this->initialize();
 			this->calc();
 		}
-
-		static std::shared_ptr<FullMatrix<FColsptr<T>>> ppApEpEtimesColumn(FColDsptr col);
+		static std::shared_ptr<FullMatrixFullColumnDouble> ppApEpEtimesColumn(FColDsptr col);
 		static FMatDsptr pCpEtimesColumn(FColDsptr col);
 		static FMatDsptr pCTpEtimesColumn(FColDsptr col);
-		static std::shared_ptr<FullMatrix<FMatsptr<T>>> ppApEpEtimesMatrix(FMatDsptr mat);
+		static std::shared_ptr<FullMatrixFullMatrixDouble> ppApEpEtimesMatrix(FMatDsptr mat);
 
 
 		void initialize() override;

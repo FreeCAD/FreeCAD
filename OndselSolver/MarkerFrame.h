@@ -72,9 +72,9 @@ namespace MbD {
 
 		PartFrame* partFrame; //Use raw pointer when pointing backwards.
 		FColDsptr rpmp = std::make_shared<FullColumn<double>>(3);
-		FMatDsptr aApm = FullMatrix<double>::identitysptr(3);
+		FMatDsptr aApm = FullMatrixDouble::identitysptr(3);
 		FColDsptr rOmO = std::make_shared<FullColumn<double>>(3);
-		FMatDsptr aAOm = FullMatrix<double>::identitysptr(3);
+		FMatDsptr aAOm = FullMatrixDouble::identitysptr(3);
 		FMatDsptr prOmOpE;
 		FColFMatDsptr pAOmpE;
 		FMatFColDsptr pprOmOpEpE;

@@ -59,7 +59,7 @@ void VelICSolver::runBasic()
 		this->assignEquationNumbers();
 		system->partsJointsMotionsDo([](std::shared_ptr<Item> item) { item->useEquationNumbers(); });
 		auto qsudotOld = std::make_shared<FullColumn<double>>(nqsu);
-		auto qsudotWeights = std::make_shared<DiagonalMatrix<double>>(nqsu);
+		auto qsudotWeights = std::make_shared<DiagonalMatrix>(nqsu);
 		errorVector = std::make_shared<FullColumn<double>>(n);
 		jacobian = std::make_shared<SparseMatrix<double>>(n, n);
 		system->partsJointsMotionsDo([&](std::shared_ptr<Item> item) { item->fillqsudot(qsudotOld); });

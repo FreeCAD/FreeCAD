@@ -10,8 +10,12 @@
 
 #include <string>
 #include <vector>
-
+#include "FullColumn.ref.h"
+#include "FullRow.ref.h"
+#include "DiagonalMatrix.ref.h"
+#include "FullMatrix.ref.h"
 #include "FullColumn.h"
+#include "FullRow.h"
 #include "FullMatrix.h"
 #include "DiagonalMatrix.h"
 #include "SparseMatrix.h"

@@ -30,17 +30,18 @@ namespace MbD {
 		FRowsptr<T> minusFullRow(FRowsptr<T> fullRow);
 		T timesFullColumn(FColsptr<T> fullCol);
 		T timesFullColumn(FullColumn<T>* fullCol);
-		FRowsptr<T> timesFullMatrix(std::shared_ptr<FullMatrix<T>> fullMat);
-		FRowsptr<T> timesTransposeFullMatrix(std::shared_ptr<FullMatrix<T>> fullMat);
 		void equalSelfPlusFullRowTimes(FRowsptr<T> fullRow, double factor);
 		void equalFullRow(FRowsptr<T> fullRow);
 		FColsptr<T> transpose();
 		FRowsptr<T> copy();
 		void atiplusFullRow(int j, FRowsptr<T> fullRow);
-        std::shared_ptr<FullMatrix<T>> transposeTimesFullRow(FRowsptr<T> fullRow);
 		std::ostream& printOn(std::ostream& s) const override;
 
-	};
+        std::shared_ptr<FullMatrixDouble> transposeTimesFullRow(FRowsptr<double> fullRow);
+        FRowsptr<double> timesTransposeFullMatrix(std::shared_ptr<FullMatrixDouble> fullMat);
+        // FRowsptr<std::shared_ptr<FullMatrixDouble>> timesTransposeFullMatrixForFMFMDsptr(std::shared_ptr<FullMatrixFullMatrixDouble> fullMat);
+        FRowsptr<double> timesFullMatrix(std::shared_ptr<FullMatrixDouble> fullMat);
+    };
 
 	template<>
 	inline FRowDsptr FullRow<double>::times(double a)
@@ -143,6 +144,7 @@ namespace MbD {
 		}
 		s << "}";
 		return s;
-	}
+	};
+
 }
 

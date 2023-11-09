@@ -57,7 +57,7 @@ void DifferenceOperator::setorder(int o)
 void DifferenceOperator::instantiateTaylorMatrix()
 {
 	if (taylorMatrix == nullptr || (taylorMatrix->nrow() != (order + 1))) {
-		taylorMatrix = std::make_shared<FullMatrix<double>>(order + 1, order + 1);
+		taylorMatrix = std::make_shared<FullMatrixDouble>(order + 1, order + 1);
 	}
 }
 

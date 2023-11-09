@@ -28,11 +28,11 @@ namespace MbD {
 	template<typename T>
 	inline void EulerAngleszxzDot<T>::initialize()
 	{
-		phiAdot = std::make_shared<FullMatrix<double>>(3, 3);
+		phiAdot = std::make_shared<FullMatrixDouble>(3, 3);
 		phiAdot->zeroSelf();
-		theAdot = std::make_shared<FullMatrix<double>>(3, 3);
+		theAdot = std::make_shared<FullMatrixDouble>(3, 3);
 		theAdot->zeroSelf();
-		psiAdot = std::make_shared<FullMatrix<double>>(3, 3);
+		psiAdot = std::make_shared<FullMatrixDouble>(3, 3);
 		psiAdot->zeroSelf();
 	}
 	template<typename T>

@@ -29,7 +29,7 @@ void EndFrameqct2::initpPhiThePsiptBlks()
 {
 	auto& mbdTime = this->root()->time;
 	auto eulerAngles = std::static_pointer_cast<EulerAngles<Symsptr>>(phiThePsiBlks);
-	pPhiThePsiptBlks = eulerAngles->differentiateWRT(mbdTime);
+	pPhiThePsiptBlks = differentiateWRT(*eulerAngles, mbdTime);
 }
 
 void EndFrameqct2::initppPhiThePsiptptBlks()

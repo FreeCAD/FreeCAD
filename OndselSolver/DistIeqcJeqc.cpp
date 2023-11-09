@@ -122,13 +122,13 @@ void MbD::DistIeqcJeqc::initialize()
 	DistIeqcJec::initialize();
 	prIeJepXJ = std::make_shared<FullRow<double>>(3);
 	prIeJepEJ = std::make_shared<FullRow<double>>(4);
-	pprIeJepXIpXJ = std::make_shared<FullMatrix<double>>(3, 3);
-	pprIeJepEIpXJ = std::make_shared<FullMatrix<double>>(4, 3);
-	pprIeJepXJpXJ = std::make_shared<FullMatrix<double>>(3, 3);
-	pprIeJepXIpEJ = std::make_shared<FullMatrix<double>>(3, 4);
-	pprIeJepEIpEJ = std::make_shared<FullMatrix<double>>(4, 4);
-	pprIeJepXJpEJ = std::make_shared<FullMatrix<double>>(3, 4);
-	pprIeJepEJpEJ = std::make_shared<FullMatrix<double>>(4, 4);
+	pprIeJepXIpXJ = std::make_shared<FullMatrixDouble>(3, 3);
+	pprIeJepEIpXJ = std::make_shared<FullMatrixDouble>(4, 3);
+	pprIeJepXJpXJ = std::make_shared<FullMatrixDouble>(3, 3);
+	pprIeJepXIpEJ = std::make_shared<FullMatrixDouble>(3, 4);
+	pprIeJepEIpEJ = std::make_shared<FullMatrixDouble>(4, 4);
+	pprIeJepXJpEJ = std::make_shared<FullMatrixDouble>(3, 4);
+	pprIeJepEJpEJ = std::make_shared<FullMatrixDouble>(4, 4);
 }
 
 FMatDsptr MbD::DistIeqcJeqc::ppvaluepEIpEJ()

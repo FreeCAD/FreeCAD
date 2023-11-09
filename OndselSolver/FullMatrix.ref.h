@@ -1,20 +1,19 @@
 #pragma once
 
 #include "FullColumn.ref.h"
+#include <algorithm>
 
 namespace MbD {
-    template<typename T>
-    class FullMatrix;
+    class FullMatrixDouble;
+    class FullMatrixFullMatrixDouble;
+    class FullMatrixFullColumnDouble;
 
-    using FMatDsptr = std::shared_ptr<MbD::FullMatrix<double>>;
+    using FMatDsptr = std::shared_ptr<FullMatrixDouble>;
 
-    template<typename T>
-    using FMatsptr = std::shared_ptr<FullMatrix<T>>;
-
-    using FMatFColDsptr = std::shared_ptr<FullMatrix<FColDsptr>>;
-    using FMatFMatDsptr = std::shared_ptr<FullMatrix<FMatDsptr>>;
+    using FMatFMatDsptr = std::shared_ptr<FullMatrixFullMatrixDouble>;
 
     using FColFMatDsptr = std::shared_ptr<FullColumn<FMatDsptr>>;
+    using FMatFColDsptr = std::shared_ptr<FullMatrixFullColumnDouble>;
 }
 
 

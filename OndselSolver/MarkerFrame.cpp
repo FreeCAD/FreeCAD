@@ -31,7 +31,7 @@ System* MarkerFrame::root()
 
 void MarkerFrame::initialize()
 {
-	prOmOpE = std::make_shared<FullMatrix<double>>(3, 4);
+	prOmOpE = std::make_shared<FullMatrixDouble>(3, 4);
 	pAOmpE = std::make_shared<FullColumn<FMatDsptr>>(4);
 	endFrames = std::make_shared<std::vector<EndFrmsptr>>();
 	auto endFrm = CREATE<EndFrameqc>::With();

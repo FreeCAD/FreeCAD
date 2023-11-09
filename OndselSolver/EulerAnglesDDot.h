@@ -47,13 +47,13 @@ namespace MbD {
 			auto angleDot = aEulerAnglesDot->at(i)->getValue();
 			auto angleDDot = this->at(i)->getValue();
 			if (axis == 1) {
-				cAddot->atiput(i, FullMatrix<double>::rotatexrotDotrotDDot(angle, angleDot, angleDDot));
+				cAddot->atiput(i, FullMatrixDouble::rotatexrotDotrotDDot(angle, angleDot, angleDDot));
 			}
 			else if (axis == 2) {
-				cAddot->atiput(i, FullMatrix<double>::rotateyrotDotrotDDot(angle, angleDot, angleDDot));
+				cAddot->atiput(i, FullMatrixDouble::rotateyrotDotrotDDot(angle, angleDot, angleDDot));
 			}
 			else if (axis == 3) {
-				cAddot->atiput(i, FullMatrix<double>::rotatezrotDotrotDDot(angle, angleDot, angleDDot));
+				cAddot->atiput(i, FullMatrixDouble::rotatezrotDotrotDDot(angle, angleDot, angleDDot));
 			}
 			else {
 				throw std::runtime_error("Euler angle rotation order must be any permutation of 1,2,3 without consecutive repeats.");
@@ -79,8 +79,10 @@ namespace MbD {
 		auto term7 = phiA->timesFullMatrix(theAdot->timesFullMatrix(psiAdot));
 		auto term8 = phiA->timesFullMatrix(theA->timesFullMatrix(psiAddot));
 
-		aAddot = term->plusFullMatrix(term1)->plusFullMatrix(term2)->plusFullMatrix(term3)->plusFullMatrix(term4)
-			->plusFullMatrix(term5)->plusFullMatrix(term6)->plusFullMatrix(term7)->plusFullMatrix(term8);
+		aAddot = term->plusFullMatrix(term1)->plusFullMatrix(term2)
+                ->plusFullMatrix(term3)->plusFullMatrix(term4)
+			    ->plusFullMatrix(term5)->plusFullMatrix(term6)
+                ->plusFullMatrix(term7)->plusFullMatrix(term8);
 	}
 	template<typename T>
 	inline void EulerAnglesDDot<T>::aEulerAngles(EulerAngles<T>* eulerAngles)
