@@ -193,6 +193,8 @@ private:
 
                 try {
                     CreateAndDrawShapeGeometry();
+
+                    drawWidthHeightAtCursor(onSketchPos, length, width);
                 }
                 catch (const Base::ValueError&) {
                 }  // equal points while hovering raise an objection that can be safely ignored
@@ -207,10 +209,11 @@ private:
                     || constructionMethod() == ConstructionMethod::CenterAndCorner) {
                     if (roundCorners) {
                         calculateRadius(onSketchPos);
+                        drawDoubleAtCursor(onSketchPos, radius);
                     }
-                    else {
-                        calculateThickness(
-                            onSketchPos);  // This is the case of frame of normal rectangle.
+                    else {  // Normal rectangle with frame.
+                        calculateThickness(onSketchPos);
+                        drawDoubleAtCursor(onSketchPos, thickness);
                     }
                 }
                 else if (constructionMethod() == ConstructionMethod::ThreePoints) {
@@ -242,6 +245,8 @@ private:
                     else {
                         radius = 0.;
                     }
+
+                    drawWidthHeightAtCursor(onSketchPos, length, width);
                 }
                 else {
                     corner2 = onSketchPos;
@@ -270,9 +275,7 @@ private:
                         radius = 0.;
                     }
 
-                    SbString text;
-                    text.sprintf(" (%.1f Angle)", angle412 / M_PI * 180);
-                    setPositionText(onSketchPos, text);
+                    drawWidthHeightAtCursor(onSketchPos, length, width);
                 }
 
                 try {
@@ -293,15 +296,17 @@ private:
             case SelectMode::SeekFourth: {
                 if (constructionMethod() == ConstructionMethod::Diagonal
                     || constructionMethod() == ConstructionMethod::CenterAndCorner) {
-                    calculateThickness(
-                        onSketchPos);  // This is the case of frame of round corner rectangle.
+                    calculateThickness(onSketchPos);
+                    drawDoubleAtCursor(onSketchPos, thickness);
                 }
                 else {
                     if (roundCorners) {
                         calculateRadius(onSketchPos);
+                        drawDoubleAtCursor(onSketchPos, radius);
                     }
                     else {
                         calculateThickness(onSketchPos);
+                        drawDoubleAtCursor(onSketchPos, thickness);
                     }
                 }
 
@@ -309,6 +314,7 @@ private:
             } break;
             case SelectMode::SeekFifth: {
                 calculateThickness(onSketchPos);
+                drawDoubleAtCursor(onSketchPos, thickness);
 
                 CreateAndDrawShapeGeometry();
             } break;

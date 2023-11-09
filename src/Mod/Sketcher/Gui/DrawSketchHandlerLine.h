@@ -89,6 +89,8 @@ private:
     {
         switch (state()) {
             case SelectMode::SeekFirst: {
+                drawPositionAtCursor(onSketchPos);
+
                 startPoint = onSketchPos;
 
                 if (seekAutoConstraint(sugConstraints[0], onSketchPos, Base::Vector2d(0.f, 0.f))) {
@@ -97,6 +99,8 @@ private:
                 }
             } break;
             case SelectMode::SeekSecond: {
+                drawDirectionAtCursor(onSketchPos, startPoint);
+
                 endPoint = onSketchPos;
 
                 try {

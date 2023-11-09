@@ -132,6 +132,7 @@ private:
 
             if (!offsetLengthSet) {
                 findOffsetLength();
+                drawDoubleAtCursor(onSketchPos, offsetLength);
             }
 
             if (fabs(offsetLength) > Precision::Confusion()) {
