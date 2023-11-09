@@ -593,6 +593,47 @@ bool StdCmdDependencyGraph::isActive()
 }
 
 //===========================================================================
+// Std_ExportDependencyGraph
+//===========================================================================
+
+DEF_STD_CMD_A(StdCmdExportDependencyGraph)
+
+StdCmdExportDependencyGraph::StdCmdExportDependencyGraph()
+  : Command("Std_ExportDependencyGraph")
+{
+    sGroup        = "Tools";
+    sMenuText     = QT_TR_NOOP("Export dependency graph...");
+    sToolTipText  = QT_TR_NOOP("Export the dependency graph to a file");
+    sStatusTip    = QT_TR_NOOP("Export the dependency graph to a file");
+    sWhatsThis    = "Std_ExportDependencyGraph";
+    eType         = 0;
+  //sPixmap       = "Std_ExportDependencyGraph";
+}
+
+void StdCmdExportDependencyGraph::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    App::Document* doc = App::GetApplication().getActiveDocument();
+    QString format = QString::fromLatin1("%1 (*.gv)").arg(Gui::GraphvizView::tr("Graphviz format"));
+    QString fn = Gui::FileDialog::getSaveFileName(Gui::getMainWindow(), Gui::GraphvizView::tr("Export graph"), QString(), format);
+    if (!fn.isEmpty()) {
+        QFile file(fn);
+        if (file.open(QFile::WriteOnly)) {
+            std::stringstream str;
+            doc->exportGraphviz(str);
+            QByteArray buffer = QByteArray::fromStdString(str.str());
+            file.write(buffer);
+            file.close();
+        }
+    }
+}
+
+bool StdCmdExportDependencyGraph::isActive()
+{
+    return (getActiveGuiDocument() ? true : false);
+}
+
+//===========================================================================
 // Std_New
 //===========================================================================
 
@@ -1905,6 +1946,7 @@ void CreateDocCommands()
     rcCmdMgr.addCommand(new StdCmdExport());
     rcCmdMgr.addCommand(new StdCmdMergeProjects());
     rcCmdMgr.addCommand(new StdCmdDependencyGraph());
+    rcCmdMgr.addCommand(new StdCmdExportDependencyGraph());
 
     rcCmdMgr.addCommand(new StdCmdSave());
     rcCmdMgr.addCommand(new StdCmdSaveAs());
