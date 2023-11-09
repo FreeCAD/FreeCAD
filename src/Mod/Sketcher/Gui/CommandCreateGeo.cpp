@@ -1666,6 +1666,37 @@ bool CmdSketcherSplit::isActive()
     return isCommandActive(getActiveGuiDocument());
 }
 
+// Comp for curve edition tools =======================================================
+
+class CmdSketcherCompCurveEdition: public Gui::GroupCommand
+{
+public:
+    CmdSketcherCompCurveEdition()
+        : GroupCommand("Sketcher_CompCurveEdition")
+    {
+        sAppModule = "Sketcher";
+        sGroup = "Sketcher";
+        sMenuText = QT_TR_NOOP("Curve Edition");
+        sToolTipText = QT_TR_NOOP("Curve Edition tools.");
+        sWhatsThis = "Sketcher_CompCurveEdition";
+        sStatusTip = sToolTipText;
+        eType = ForEdit;
+
+        setCheckable(false);
+
+        addCommand("Sketcher_Trimming");
+        addCommand("Sketcher_Split");
+        addCommand("Sketcher_Extend");
+    }
+
+    const char* className() const override
+    {
+        return "CmdSketcherCompCurveEdition";
+    }
+};
+
+// ======================================================================================
+
 DEF_STD_CMD_A(CmdSketcherExternal)
 
 CmdSketcherExternal::CmdSketcherExternal()
@@ -2208,6 +2239,7 @@ void CreateSketcherCommandsCreateGeo()
     rcCmdMgr.addCommand(new CmdSketcherTrimming());
     rcCmdMgr.addCommand(new CmdSketcherExtend());
     rcCmdMgr.addCommand(new CmdSketcherSplit());
+    rcCmdMgr.addCommand(new CmdSketcherCompCurveEdition());
     rcCmdMgr.addCommand(new CmdSketcherExternal());
     rcCmdMgr.addCommand(new CmdSketcherCarbonCopy());
 }

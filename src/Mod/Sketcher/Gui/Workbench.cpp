@@ -369,6 +369,23 @@ inline void SketcherAddWorkspaceFillets<Gui::ToolBarItem>(Gui::ToolBarItem& geom
 }
 
 template<typename T>
+void SketcherAddWorkspaceCurveEdition(T& geom);
+
+template<>
+inline void SketcherAddWorkspaceCurveEdition<Gui::MenuItem>(Gui::MenuItem& geom)
+{
+    geom << "Sketcher_Trimming"
+         << "Sketcher_Extend"
+         << "Sketcher_Split";
+}
+
+template<>
+inline void SketcherAddWorkspaceCurveEdition<Gui::ToolBarItem>(Gui::ToolBarItem& geom)
+{
+    geom << "Sketcher_CompCurveEdition";
+}
+
+template<typename T>
 inline void SketcherAddWorkbenchGeometries(T& geom)
 {
     geom << "Sketcher_CreatePoint"
@@ -381,10 +398,8 @@ inline void SketcherAddWorkbenchGeometries(T& geom)
     geom << "Sketcher_CreateSlot"
          << "Separator";
     SketcherAddWorkspaceFillets(geom);
-    geom << "Sketcher_Trimming"
-         << "Sketcher_Extend"
-         << "Sketcher_Split"
-         << "Sketcher_External"
+    SketcherAddWorkspaceCurveEdition(geom);
+    geom << "Sketcher_External"
          << "Sketcher_CarbonCopy"
          << "Sketcher_ToggleConstruction"
         /*<< "Sketcher_CreateText"*/
