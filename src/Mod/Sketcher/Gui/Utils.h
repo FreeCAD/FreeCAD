@@ -209,6 +209,12 @@ inline Base::Vector3d toVector3d(const Base::Vector2d& vector2d)
     return Base::Vector3d(vector2d.x, vector2d.y, 0.);
 }
 
+/// converts a 3D vector in the XY plane into a 2D vector
+inline Base::Vector2d toVector2d(const Base::Vector3d& vector3d)
+{
+    return Base::Vector2d(vector3d.x, vector3d.y);
+}
+
 
 template<typename T>
 auto toPointerVector(const std::vector<std::unique_ptr<T>>& vector)

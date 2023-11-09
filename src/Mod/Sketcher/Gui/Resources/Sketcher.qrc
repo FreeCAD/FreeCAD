@@ -20,6 +20,7 @@
         <file>icons/constraints/Constraint_Horizontal.svg</file>
         <file>icons/constraints/Constraint_HorizontalDistance.svg</file>
         <file>icons/constraints/Constraint_HorizontalDistance_Driven.svg</file>
+        <file>icons/constraints/Constraint_HorVer.svg</file>
         <file>icons/constraints/Constraint_InternalAlignment.svg</file>
         <file>icons/constraints/Constraint_InternalAlignment_Ellipse_Focus1.svg</file>
         <file>icons/constraints/Constraint_InternalAlignment_Ellipse_Focus2.svg</file>
