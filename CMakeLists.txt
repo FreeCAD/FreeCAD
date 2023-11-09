@@ -7,9 +7,13 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 include(GNUInstallDirs)
 
-if( BUILD_SHARED_LIBS )
+if( UNIX )
     set( ONDSELSOLVER_BUILD_SHARED ON )
-endif()
+ELSEIF ( APPLE )
+    set( ONDSELSOLVER_BUILD_SHARED ON )
+ELSE()
+    set( ONDSELSOLVER_BUILD_SHARED OFF )
+ENDIF ()
 
 if ( ONDSELSOLVER_BUILD_SHARED )
     message( STATUS "[OndselSolver] Building shared library" )
