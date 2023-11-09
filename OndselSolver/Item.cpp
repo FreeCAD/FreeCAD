@@ -42,7 +42,7 @@ std::ostream& Item::printOn(std::ostream& s) const
 {
 	std::string str = typeid(*this).name();
 	auto classname = str.substr(11, str.size() - 11);
-	s << classname;	//Why classname() cannot be used?
+	s << classname << std::endl;
 	return s;
 }
 

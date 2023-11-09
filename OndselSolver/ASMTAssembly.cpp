@@ -940,7 +940,7 @@ void MbD::ASMTAssembly::createMbD(std::shared_ptr<System> mbdSys, std::shared_pt
 void MbD::ASMTAssembly::outputFile(std::string filename)
 {
 	std::ofstream os(filename);
-	os << std::setprecision(std::numeric_limits<double>::digits10 + 1);
+	os << std::setprecision(static_cast<std::streamsize>(std::numeric_limits<double>::digits10) + 1);
 	//	try {
 	os << "OndselSolver" << std::endl;
 	storeOnLevel(os, 0);
@@ -1144,7 +1144,7 @@ std::shared_ptr<ASMTPart> MbD::ASMTAssembly::partPartialNamed(std::string partia
 		auto fullName = prt->fullName("");
 		return fullName.find(partialName) != std::string::npos;
 		});
-	auto part = *it;
+	auto& part = *it;
 	return part;
 }
 

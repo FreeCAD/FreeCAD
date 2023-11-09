@@ -10,6 +10,12 @@
 
 using namespace MbD;
 
+FColDsptr MbD::MatrixDecomposition::forAndBackSubsaveOriginal(FColDsptr fullCol, bool saveOriginal)
+{
+	assert(false);
+	return FColDsptr();
+}
+
 void MatrixDecomposition::applyRowOrderOnRightHandSideB()
 {
 	FColDsptr answer = std::make_shared<FullColumn<double>>(m);
@@ -18,4 +24,35 @@ void MatrixDecomposition::applyRowOrderOnRightHandSideB()
 		answer->at(i) = rightHandSideB->at(rowOrder->at(i));
 	}
 	rightHandSideB = answer;
+}
+
+FColDsptr MbD::MatrixDecomposition::basicSolvewithsaveOriginal(FMatDsptr aMatrix, FColDsptr aVector, bool saveOriginal)
+{
+	assert(false);
+	return FColDsptr();
+}
+
+void MbD::MatrixDecomposition::forwardSubstituteIntoL()
+{
+	assert(false);
+}
+
+void MbD::MatrixDecomposition::backSubstituteIntoU()
+{
+	assert(false);
+}
+
+void MbD::MatrixDecomposition::forwardSubstituteIntoLD()
+{
+	assert(false);
+}
+
+void MbD::MatrixDecomposition::postSolve()
+{
+	assert(false);
+}
+
+void MbD::MatrixDecomposition::preSolvesaveOriginal(FMatDsptr aMatrix, bool saveOriginal)
+{
+	assert(false);
 }

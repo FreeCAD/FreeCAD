@@ -21,7 +21,7 @@ namespace MbD {
 
 		void createInPlaneConstraint();
 
-		double offset;
+		double offset = 0.0;
 	};
 }
 

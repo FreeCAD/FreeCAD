@@ -26,9 +26,14 @@ void sharedptrTest();
 
 int main()
 {
+	ASMTAssembly::runFile("cirpendu2.asmt");	//Under constrained. Testing ICKine.
+	ASMTAssembly::runFile("quasikine.asmt");	//Under constrained. Testing ICKine.
 	ASMTAssembly::readWriteFile("piston.asmt");
+	//MBDynSystem::runFile("MBDynCaseDebug2.mbd");
+	//return 0;
 	MBDynSystem::runFile("MBDynCase2.mbd");
 	MBDynSystem::runFile("MBDynCase.mbd");
+	MBDynSystem::runFile("CrankSlider2.mbd");
 	//MBDynSystem::runFile("crank_slider.mbd");	//Needs integration of product
 	////ASMTAssembly::runSinglePendulumSuperSimplified();	//Mass is missing
 	////ASMTAssembly::runSinglePendulumSuperSimplified2();	//DOF has infinite acceleration due to zero mass and inertias
@@ -37,7 +42,6 @@ int main()
 	ASMTAssembly::runFile("../testapp/piston.asmt");
 	ASMTAssembly::runFile("../testapp/00backhoe.asmt");
 	//ASMTAssembly::runFile("circular.asmt");	//Needs checking
-	//ASMTAssembly::runFile("cirpendu.asmt");	//Under constrained. Testing ICKine.
 	//ASMTAssembly::runFile("engine1.asmt");	//Needs checking
 	ASMTAssembly::runFile("../testapp/fourbar.asmt");
 	//ASMTAssembly::runFile("fourbot.asmt");	//Very large but works

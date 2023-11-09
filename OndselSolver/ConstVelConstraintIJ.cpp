@@ -52,40 +52,40 @@ void ConstVelConstraintIJ::postInput()
 {
 	aA01IeJe->postInput();
 	aA10IeJe->postInput();
-	Constraint::postInput();
+	ConstraintIJ::postInput();
 }
 
 void ConstVelConstraintIJ::postPosICIteration()
 {
 	aA01IeJe->postPosICIteration();
 	aA10IeJe->postPosICIteration();
-	Item::postPosICIteration();
+	ConstraintIJ::postPosICIteration();
 }
 
 void ConstVelConstraintIJ::preAccIC()
 {
 	aA01IeJe->preAccIC();
 	aA10IeJe->preAccIC();
-	Constraint::preAccIC();
+	ConstraintIJ::preAccIC();
 }
 
 void ConstVelConstraintIJ::prePosIC()
 {
 	aA01IeJe->prePosIC();
 	aA10IeJe->prePosIC();
-	Constraint::prePosIC();
+	ConstraintIJ::prePosIC();
 }
 
 void ConstVelConstraintIJ::preVelIC()
 {
 	aA01IeJe->preVelIC();
 	aA10IeJe->preVelIC();
-	Item::preVelIC();
+	ConstraintIJ::preVelIC();
 }
 
 void ConstVelConstraintIJ::simUpdateAll()
 {
 	aA01IeJe->simUpdateAll();
 	aA10IeJe->simUpdateAll();
-	Item::simUpdateAll();
+	ConstraintIJ::simUpdateAll();
 }

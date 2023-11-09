@@ -138,6 +138,7 @@ void MbD::MBDynSystem::runKINEMATIC()
 	std::static_pointer_cast<ASMTAssembly>(asmtItem)->runKINEMATIC();
 	outputFiles();
 	asmtAssembly()->outputFile("assembly2.asmt");
+	asmtAssembly()->outputFile("smalltalk.asmt");
 }
 
 void MbD::MBDynSystem::outputFiles()

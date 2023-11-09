@@ -90,10 +90,10 @@ bool MbD::SymbolicParser::minusTerm()
 {
 	if (peekForTypeNoPush("-")) {
 		if (term()) {
-			auto trm = stack->top();
+			Symsptr trm = stack->top();
 			stack->pop();
 			auto negativeTrm = std::make_shared<Negative>(trm);
-			auto sum = stack->top();
+			Symsptr sum = stack->top();
 			sum->addTerm(negativeTrm);
 			return true;
 		}
@@ -105,9 +105,9 @@ bool MbD::SymbolicParser::minusTerm()
 bool MbD::SymbolicParser::plainTerm()
 {
 	if (term()) {
-		auto trm = stack->top();
+		Symsptr trm = stack->top();
 		stack->pop();
-		auto sum = stack->top();
+		Symsptr sum = stack->top();
 		sum->addTerm(trm);
 		return true;
 	}
@@ -120,7 +120,7 @@ bool MbD::SymbolicParser::term()
 	stack->push(product);
 	if (plainFunction()) {
 		while (timesFunction() || divideByFunction()) {}
-		auto term = stack->top();
+		Symsptr term = stack->top();
 		if (term->isProduct()) {
 			if (term->isOne()) {
 				stack->pop();
@@ -141,9 +141,9 @@ bool MbD::SymbolicParser::term()
 bool MbD::SymbolicParser::plainFunction()
 {
 	if (symfunction()) {
-		auto trm = stack->top();
+		Symsptr trm = stack->top();
 		stack->pop();
-		auto product = stack->top();
+		Symsptr product = stack->top();
 		product->addTerm(trm);
 		return true;
 	}
@@ -163,10 +163,10 @@ bool MbD::SymbolicParser::divideByFunction()
 {
 	if (peekForTypeNoPush("/")) {
 		if (symfunction()) {
-			auto trm = stack->top();
+			Symsptr trm = stack->top();
 			stack->pop();
 			auto reciprocalTrm = std::make_shared<Reciprocal>(trm);
-			auto product = stack->top();
+			Symsptr product = stack->top();
 			product->addTerm(reciprocalTrm);
 			return true;
 		}
@@ -287,7 +287,7 @@ bool MbD::SymbolicParser::expression()
 	stack->push(sum);
 	if (plusTerm() || minusTerm() || plainTerm()) {
 		while (plusTerm() || minusTerm()) {}
-		auto term = stack->top();
+		Symsptr term = stack->top();
 		if (term->isSum()) {
 			auto sum1 = std::static_pointer_cast<Sum>(term);
 			if (sum1->isZero()) {
@@ -378,7 +378,7 @@ bool MbD::SymbolicParser::intrinsic()
 				if (stack->size() > startsize) {
 					combineStackTo((int)startsize);
 					if (peekForTypeNoPush(")")) {
-						auto args = stack->top();	//args is a Sum with "terms" containing the actual arguments
+						Symsptr args = stack->top();	//args is a Sum with "terms" containing the actual arguments
 						stack->pop();
 						auto func = std::static_pointer_cast<Function>(stack->top());
 						func->arguments(args);
@@ -409,9 +409,9 @@ bool MbD::SymbolicParser::raisedTo()
 {
 	if (peekForTypeNoPush("^")) {
 		if (symfunction()) {
-			auto exp = stack->top();
+			Symsptr exp = stack->top();
 			stack->pop();
-			auto base = stack->top();
+			Symsptr base = stack->top();
 			stack->pop();
 			auto pow = std::make_shared<Power>(base, exp);
 			stack->push(pow);
@@ -488,7 +488,7 @@ void MbD::SymbolicParser::combineStackTo(int pos)
 {
 	auto args = std::make_shared<std::vector<Symsptr>>();
 	while (stack->size() > pos) {
-		auto arg = stack->top();
+		Symsptr arg = stack->top();
 		stack->pop();
 		args->push_back(arg);
 	}

@@ -39,7 +39,7 @@ Assembly
 			Name
 				structural_node_1
 			Position3D
-				-0.121	-8.796847998598882e-19	-0.08	
+				-0.06210573361337854	0.04852643537547956	-4.033966837940965e-17	
 			RotationMatrix
 				1	0	0	
 				0	1	0	
@@ -77,7 +77,7 @@ Assembly
 							Name
 								Marker0
 							Position3D
-								0.121	8.796847998598882e-19	0.08	
+								0.06210573361337854	-0.04852643537547956	4.033966837940965e-17	
 							RotationMatrix
 								1	0	0	
 								0	1	0	
@@ -94,11 +94,11 @@ Assembly
 							Name
 								Marker1
 							Position3D
-								0	0	0	
+								0.2521057336133785	0.1114735646245204	0.135	
 							RotationMatrix
-								1	0	0	
-								0	1	0	
-								0	0	1	
+								2.220446049250313e-16	-1	0	
+								1	2.220446049250313e-16	0	
+								-0	0	1	
 				RefPoint
 					Position3D
 						0	0	0	
@@ -128,35 +128,18 @@ Assembly
 							Name
 								Marker3
 							Position3D
-								0	0	0	
+								0	0.1114735580310104	2.411867397077946e-17	
 							RotationMatrix
-								1	0	0	
-								0	1	0	
-								0	0	1	
-				RefPoint
-					Position3D
-						0	0	0	
-					RotationMatrix
-						1	0	0	
-						0	1	0	
-						0	0	1	
-					Markers
-						Marker
-							Name
-								Marker4
-							Position3D
-								0	8.796847998604521e-19	0.08	
-							RotationMatrix
-								2.220446049250313e-16	-2.220446049250313e-16	1	
-								1	0	-2.220446049250313e-16	
-								4.930380657631324e-32	1	2.220446049250313e-16	
+								-1.110223024625157e-16	-2.220446049250313e-16	-1	
+								-1	1.232595164407831e-32	1.110223024625157e-16	
+								-1.232595164407831e-32	1	-2.220446049250313e-16	
 			RefCurves
 			RefSurfaces
 		Part
 			Name
 				structural_node_2
 			Position3D
-				-0.015	0.092	0.008	
+				0.01166600667694188	0.1599999999999978	-1.208436328934954e-19	
 			RotationMatrix
 				1	0	0	
 				0	1	0	
@@ -170,15 +153,15 @@ Assembly
 				Name
 					MassMarker
 				Position3D
-					-0.03260146715730948	0	-0.02828676225522106	
+					0	0	2.084363289349543e-20	
 				RotationMatrix
-					0.9047806520640266	0	0.4258778834954861	
-					-0	1	0	
-					-0.4258778834954861	-0	0.9047806520640266	
+					1	0	0	
+					0	1	0	
+					0	0	1	
 				Mass
-					1.448636188351172
+					3.805252376198168
 				MomentOfInertias
-					-6.403381706494366e-05	0.000172946750980814	0.0009386368528037903	
+					0.031674420620509	0.029604112147595	0.002867529429125	
 				Density
 					10
 			RefPoints
@@ -194,11 +177,11 @@ Assembly
 							Name
 								Marker0
 							Position3D
-								-0.07000000000000001	0	-0.055	
+								0.08833399332305812	2.216893335571513e-15	0.065	
 							RotationMatrix
-								1	0	0	
-								0	1	0	
-								0	0	1	
+								2.220446049250313e-16	-1	0	
+								1	2.220446049250313e-16	0	
+								-0	0	1	
 				RefPoint
 					Position3D
 						0	0	0	
@@ -211,35 +194,18 @@ Assembly
 							Name
 								Marker1
 							Position3D
-								0	0	0	
+								-0.1616660066769419	2.216893335571513e-15	0	
 							RotationMatrix
-								1	0	0	
-								0	1	0	
-								0	0	1	
-				RefPoint
-					Position3D
-						0	0	0	
-					RotationMatrix
-						1	0	0	
-						0	1	0	
-						0	0	1	
-					Markers
-						Marker
-							Name
-								Marker2
-							Position3D
-								0	0	0	
-							RotationMatrix
-								1	0	0	
-								0	1	0	
-								0	0	1	
+								2.220446049250313e-16	-1	0	
+								-1	-2.220446049250313e-16	-0	
+								0	0	-1	
 			RefCurves
 			RefSurfaces
 		Part
 			Name
 				structural_node_3
 			Position3D
-				0.08799999999999999	-0.055	0.05	
+				0.2111281366952498	0.16	-2.021769781041616e-18	
 			RotationMatrix
 				1	0	0	
 				0	1	0	
@@ -253,15 +219,15 @@ Assembly
 				Name
 					MassMarker
 				Position3D
-					7.872813512221911e-15	1.030286966852145e-15	-0.02499999999999804	
+					0	0	2.176978104161549e-20	
 				RotationMatrix
 					1	0	0	
 					0	1	0	
 					0	0	1	
 				Mass
-					2.85294865570677
+					15.23878495484552
 				MomentOfInertias
-					0.001956310318021008	0.03371514809951082	0.03383792198797204	
+					0.09813066341583701	0.095433846761275	0.077043262824289	
 				Density
 					10
 			RefPoints
@@ -277,11 +243,11 @@ Assembly
 							Name
 								Marker0
 							Position3D
-								-0.14	0	-0.025	
+								-0.02112813669524979	0	0.135	
 							RotationMatrix
-								0	1	0	
-								-1	0	0	
-								0	-0	1	
+								2.220446049250313e-16	-1	0	
+								1	2.220446049250313e-16	0	
+								-0	0	1	
 				RefPoint
 					Position3D
 						0	0	0	
@@ -294,18 +260,18 @@ Assembly
 							Name
 								Marker1
 							Position3D
-								0.14	0	-0.025	
+								-0.1111281366952498	0	0.065	
 							RotationMatrix
-								1	0	0	
-								0	1	0	
-								0	0	1	
+								2.220446049250313e-16	-1	0	
+								1	2.220446049250313e-16	0	
+								-0	0	1	
 			RefCurves
 			RefSurfaces
 		Part
 			Name
 				structural_node_4
 			Position3D
-				0.3200000010688326	1.479668852873333e-10	0.04999999225971574	
+				-0.1812239275015207	0.1600000016990933	-4.340477856936436e-12	
 			RotationMatrix
 				1	0	0	
 				0	1	0	
@@ -319,15 +285,15 @@ Assembly
 				Name
 					MassMarker
 				Position3D
-					0.04558083463411935	2.029935404126667e-10	-1.256225144885548e-08	
+					0	0	-4.306356366563123e-20	
 				RotationMatrix
 					1	0	0	
 					0	1	0	
 					0	0	1	
 				Mass
-					10.85942720262215
+					2.865603331977783
 				MomentOfInertias
-					0.07706742098795094	0.06635181579849883	0.06179235045624136	
+					0.010133521085753	0.006853402672398001	0.00669113151275	
 				Density
 					10
 			RefPoints
@@ -360,7 +326,7 @@ Assembly
 							Name
 								Marker1
 							Position3D
-								0	0	0	
+								0	-8.292603282173139e-09	4.340448411165876e-12	
 							RotationMatrix
 								1	0	0	
 								0	1	0	
@@ -377,7 +343,7 @@ Assembly
 							Name
 								Marker2
 							Position3D
-								0	0	0	
+								0.03122392750152071	-1.69909327496498e-09	7.275957614183426e-15	
 							RotationMatrix
 								1	0	0	
 								0	1	0	
@@ -394,53 +360,53 @@ Assembly
 					/Assembly/Marker0
 				MarkerJ
 					/Assembly/structural_node_1/Marker0
-			SphericalJoint
+			RevoluteJoint
 				Name
 					joint_2
 				MarkerI
 					/Assembly/structural_node_1/Marker1
 				MarkerJ
-					/Assembly/structural_node_2/Marker0
+					/Assembly/structural_node_3/Marker0
 			RevoluteJoint
 				Name
 					joint_3
 				MarkerI
-					/Assembly/structural_node_2/Marker1
-				MarkerJ
-					/Assembly/structural_node_3/Marker0
-			PointInLineJoint
-				Name
-					joint_5
-				MarkerI
-					/Assembly/structural_node_4/Marker0
+					/Assembly/structural_node_2/Marker0
 				MarkerJ
 					/Assembly/structural_node_3/Marker1
 			NoRotationJoint
 				Name
-					joint_6
+					joint_4
+				MarkerI
+					/Assembly/structural_node_1/Marker2
+				MarkerJ
+					/Assembly/structural_node_4/Marker0
+			PointInLineJoint
+				Name
+					joint_5
 				MarkerI
 					/Assembly/structural_node_1/Marker3
 				MarkerJ
 					/Assembly/structural_node_4/Marker1
 			PointInLineJoint
 				Name
-					joint_7
+					joint_6
 				MarkerI
-					/Assembly/structural_node_1/Marker4
+					/Assembly/structural_node_2/Marker1
 				MarkerJ
 					/Assembly/structural_node_4/Marker2
 		Motions
 			RotationalMotion
 				Name
-					joint_4
+					joint_2Motion
 				MarkerI
-					/Assembly/structural_node_1/Marker2
+					/Assembly/structural_node_1/Marker1
 				MarkerJ
-					/Assembly/structural_node_2/Marker2
+					/Assembly/structural_node_3/Marker0
 				MotionJoint
-					
+					/Assembly/joint_2
 				RotationZ
-					 0
+					integral(time,  rampstep(time, 0.0, 0.0, 1.0, 0.0 + 10.0*(1.0 - 0.0)))
 		GeneralConstraintSets
 	ForceTorques
 	ConstantGravity
@@ -455,7 +421,7 @@ Assembly
 		hmax
 			1
 		hout
-			0.1
+			0.01
 		errorTol
 			1e-06
 	AnimationParameters
