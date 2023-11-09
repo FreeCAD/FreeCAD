@@ -334,13 +334,6 @@ namespace MbD {
 		return tilde;
 	}
 	template<>
-	inline void FullMatrix<double>::zeroSelf()
-	{
-		for (int i = 0; i < this->size(); i++) {
-			this->at(i)->zeroSelf();
-		}
-	}
-	template<>
 	inline void FullMatrix<double>::identity() {
 		this->zeroSelf();
 		for (int i = 0; i < this->size(); i++) {
@@ -495,6 +488,13 @@ namespace MbD {
 	{
 		assert(false);
 		return 0.0;
+	}
+	template<>
+	inline void FullMatrix<double>::zeroSelf()
+	{
+		for (int i = 0; i < this->size(); i++) {
+			this->at(i)->zeroSelf();
+		}
 	}
 	template<typename T>
 	inline void FullMatrix<T>::zeroSelf()

@@ -113,6 +113,7 @@ namespace MbD {
 		std::shared_ptr<StateData> stateData() override;
 		double suggestSmallerOrAcceptDynStepSize(double hnew) override;
 		void postDynStep() override;
+		void postAccIC() override;
 
 		System* system;	//Use raw pointer when pointing backwards.
 		int ipX = -1; 

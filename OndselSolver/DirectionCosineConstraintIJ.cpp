@@ -59,7 +59,7 @@ void DirectionCosineConstraintIJ::prePosIC()
 void DirectionCosineConstraintIJ::postPosICIteration()
 {
 	aAijIeJe->postPosICIteration();
-	Item::postPosICIteration();
+	ConstraintIJ::postPosICIteration();
 }
 
 ConstraintType DirectionCosineConstraintIJ::type()
@@ -70,7 +70,7 @@ ConstraintType DirectionCosineConstraintIJ::type()
 void DirectionCosineConstraintIJ::preVelIC()
 {
 	aAijIeJe->preVelIC();
-	Item::preVelIC();
+	ConstraintIJ::preVelIC();
 }
 
 void MbD::DirectionCosineConstraintIJ::simUpdateAll()

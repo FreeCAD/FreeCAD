@@ -19,6 +19,7 @@ namespace MbD {
 	public:
 		void calcOperatorMatrix();
 		virtual void initialize();
+		virtual void initializeLocally();
 		virtual void setiStep(int i);
 		virtual void setorder(int o);
 		virtual void formTaylorMatrix() = 0;
@@ -29,7 +30,7 @@ namespace MbD {
 		int iStep = 0, order = 0;
 		FMatDsptr taylorMatrix, operatorMatrix;
 		double time = 0.0;
-		std::shared_ptr<std::vector<double>> timeNodes;
+		std::shared_ptr<std::vector<double>> timeNodes;	//"Row of past times in order of increasing past."
 		static FRowDsptr OneOverFactorials;
 	};
 }

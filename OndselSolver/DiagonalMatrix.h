@@ -28,7 +28,7 @@ namespace MbD {
 		DiagonalMatrix(int count) : Array<T>(count) {}
 		DiagonalMatrix(int count, const T& value) : Array<T>(count, value) {}
 		DiagonalMatrix(std::initializer_list<T> list) : Array<T>{ list } {}
-		void atiputDiagonalMatrix(int i, std::shared_ptr<DiagonalMatrix<T>> diagMat);
+		void atiputDiagonalMatrix(int i, DiagMatsptr<T> diagMat);
 		DiagMatsptr<T> times(T factor);
 		FColsptr<T> timesFullColumn(FColsptr<T> fullCol);
 		FMatsptr<T> timesFullMatrix(FMatsptr<T> fullMat);
@@ -45,7 +45,37 @@ namespace MbD {
 
 		std::ostream& printOn(std::ostream& s) const override;
 
+		static DiagMatDsptr Identity3by3;
+		static DiagMatDsptr Identity4by4;
+
 	};
+	template<>
+	DiagMatDsptr DiagonalMatrix<double>::Identity3by3 = []() {
+		auto identity3by3 = std::make_shared<DiagonalMatrix<double>>(3);
+		for (int i = 0; i < 3; i++)
+		{
+			identity3by3->at(i) = 1.0;
+		}
+		return identity3by3;
+	}();
+	template<>
+	DiagMatDsptr DiagonalMatrix<double>::Identity4by4 = []() {
+		auto identity4by4 = std::make_shared<DiagonalMatrix<double>>(4);
+		for (int i = 0; i < 4; i++)
+		{
+			identity4by4->at(i) = 1.0;
+		}
+		return identity4by4;
+	}();
+
+	template<typename T>
+	inline void DiagonalMatrix<T>::atiputDiagonalMatrix(int i, DiagMatsptr<T> diagMat)
+	{
+		for (int ii = 0; ii < diagMat->size(); ii++)
+		{
+			this->at(i + ii) = diagMat->at(ii);
+		}
+	}
 	template<>
 	inline DiagMatDsptr DiagonalMatrix<double>::times(double factor)
 	{
@@ -56,14 +86,6 @@ namespace MbD {
 			answer->at(i) = this->at(i) * factor;
 		}
 		return answer;
-	}
-	template<typename T>
-	inline void DiagonalMatrix<T>::atiputDiagonalMatrix(int i, std::shared_ptr<DiagonalMatrix<T>> diagMat)
-	{
-		for (int ii = 0; ii < diagMat->size(); ii++)
-		{
-			this->at(i + ii) = diagMat->at(ii);
-		}
 	}
 	template<typename T>
 	inline DiagMatsptr<T> DiagonalMatrix<T>::times(T factor)

@@ -581,3 +581,8 @@ void Part::postDynStep()
 {
 	partFrame->postDynStep();
 }
+
+void MbD::Part::postAccIC()
+{
+	calcpdot();
+}

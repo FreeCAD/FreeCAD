@@ -46,7 +46,7 @@ void AtPointConstraintIqcJqc::useEquationNumbers()
 void AtPointConstraintIqcJqc::fillPosICError(FColDsptr col)
 {
 	AtPointConstraintIqcJc::fillPosICError(col);
-	col->at(iqXJminusOnePlusAxis) += lam;
+	col->atiplusNumber(iqXJminusOnePlusAxis, lam);
 	col->atiplusFullVectortimes(iqEJ, pGpEJ, lam);
 }
 

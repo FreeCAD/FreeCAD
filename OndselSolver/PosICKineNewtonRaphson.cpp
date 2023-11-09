@@ -57,3 +57,8 @@ void MbD::PosICKineNewtonRaphson::preRun()
 	system->Solver::logString("MbD: Solving for quasi kinematic position.");
 	PosNewtonRaphson::preRun();
 }
+
+bool MbD::PosICKineNewtonRaphson::isConverged()
+{
+	return dxNorms->at(iterNo) < dxTol || isConvergedToNumericalLimit();
+}

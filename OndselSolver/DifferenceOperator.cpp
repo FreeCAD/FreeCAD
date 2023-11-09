@@ -5,7 +5,7 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include <cmath>
 
 #include "DifferenceOperator.h"
@@ -20,7 +20,7 @@ FRowDsptr DifferenceOperator::OneOverFactorials = []() {
 	auto oneOverFactorials = std::make_shared<FullRow<double>>(10);
 	for (int i = 0; i < oneOverFactorials->size(); i++)
 	{
-		oneOverFactorials->at(i) = 1.0 / std::tgamma(i+1);
+		oneOverFactorials->at(i) = 1.0 / std::tgamma(i + 1);
 	}
 	return oneOverFactorials;
 }();
@@ -42,6 +42,12 @@ void DifferenceOperator::calcOperatorMatrix()
 
 void DifferenceOperator::initialize()
 {
+	//Do nothing
+}
+
+void MbD::DifferenceOperator::initializeLocally()
+{
+	assert(false);
 }
 
 void DifferenceOperator::setiStep(int i)
@@ -75,9 +81,8 @@ void DifferenceOperator::formTaylorRowwithTimeNodederivative(int i, int ii, int 
 	for (int j = k + 1; j < order + 1; j++)
 	{
 		hipower = hipower * hi;
-		assert(false);
-		//aij = hipower * (OneOverFactorials at : j - k - 1);
-		//rowi at : j put : aij
+		auto aij = hipower * OneOverFactorials->at((size_t)j - k);
+		rowi->atiput(j, aij);
 	}
 }
 
