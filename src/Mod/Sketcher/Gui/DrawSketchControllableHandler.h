@@ -102,6 +102,17 @@ public:
         DSDefaultHandler::finish();
         return true;
     }
+
+    bool shouldDrawPositionAtCursor() const override
+    {
+        return toolWidgetManager.shouldDrawPositionAtCursor();
+    }
+
+    bool shouldDrawDimensionsAtCursor() const override
+    {
+        return toolWidgetManager.shouldDrawDimensionsAtCursor();
+    }
+
     //@}
 
 
@@ -159,6 +170,7 @@ private:
 
     void onModeChanged() override
     {
+        DSDefaultHandler::resetPositionText();
         toolWidgetManager.onHandlerModeChanged();
         DSDefaultHandler::onModeChanged();
 

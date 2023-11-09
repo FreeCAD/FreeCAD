@@ -229,6 +229,8 @@ protected:
             dynamicOverride = false;
         }
 
+        OnViewParameterVisibility onViewParameterVisibility;
+
     private:
         void init()
         {
@@ -239,7 +241,6 @@ protected:
                 static_cast<OnViewParameterVisibility>(hGrp->GetInt("OnViewParameterVisibility"));
         }
 
-        OnViewParameterVisibility onViewParameterVisibility;
         bool dynamicOverride = false;
     };
 
@@ -450,6 +451,18 @@ public:
         if (!handler->isState(SelectModeT::End) || handler->continuousMode) {
             handler->mouseMove(prevCursorPosition);
         }
+    }
+
+    bool shouldDrawPositionAtCursor() const
+    {
+        return !(ovpVisibilityManager.onViewParameterVisibility
+                 == OnViewParameterVisibilityManager::OnViewParameterVisibility::ShowAll);
+    }
+
+    bool shouldDrawDimensionsAtCursor() const
+    {
+        return (ovpVisibilityManager.onViewParameterVisibility
+                == OnViewParameterVisibilityManager::OnViewParameterVisibility::Hidden);
     }
 
 protected:
@@ -686,9 +699,10 @@ protected:
     }
     //@}
 
+
 private:
-    ColorManager colorManager;
     OnViewParameterVisibilityManager ovpVisibilityManager;
+    ColorManager colorManager;
     std::unique_ptr<DrawSketchKeyboardManager> keymanager;
 };
 
