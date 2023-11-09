@@ -104,6 +104,7 @@ private:
                                        unsigned int augmentationlevel = 0);
     static inline void setAxisPickStyle(ViewProviderSketch& vp, bool on);
     static inline void moveCursorToSketchPoint(ViewProviderSketch& vp, Base::Vector2d point);
+    static inline void ensureFocus(ViewProviderSketch& vp);
     static inline void preselectAtPoint(ViewProviderSketch& vp, Base::Vector2d point);
     static inline void setAngleSnapping(ViewProviderSketch& vp,
                                         bool enable,
@@ -152,8 +153,8 @@ public:
     {
         return false;
     }
-    virtual void registerPressedKey(bool /*pressed*/, int /*key*/)
-    {}
+    virtual void registerPressedKey(bool pressed, int key);
+    virtual void pressRightButton(Base::Vector2d onSketchPos);
 
     virtual void quit();
 
@@ -276,6 +277,7 @@ protected:
 
     void setAxisPickStyle(bool on);
     void moveCursorToSketchPoint(Base::Vector2d point);
+    void ensureFocus();
     void preselectAtPoint(Base::Vector2d point);
 
     void drawPositionAtCursor(const Base::Vector2d& position);

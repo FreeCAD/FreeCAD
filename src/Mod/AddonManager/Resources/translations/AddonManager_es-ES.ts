@@ -809,7 +809,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="43"/>
       <source>Workbench</source>
-      <translation>Escenario</translation>
+      <translation>Entorno de trabajo</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="51"/>
@@ -846,7 +846,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="125"/>
       <source>Workbench class name</source>
-      <translation>Nombre de la clase del banco de trabajo</translation>
+      <translation>Nombre de la clase del entorno de trabajo</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="132"/>
@@ -1622,7 +1622,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="428"/>
       <source>Workbench</source>
-      <translation>Escenario</translation>
+      <translation>Entorno de trabajo</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="429"/>
@@ -2023,7 +2023,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_list.py" line="753"/>
       <source>Workbenches</source>
-      <translation>Escenarios</translation>
+      <translation>Entornos de trabajo</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="756"/>
@@ -2207,7 +2207,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../Addon.py" line="348"/>
       <source>{}: Unrecognized internal workbench &apos;{}&apos;</source>
-      <translation>{}: Banco de trabajo interno no reconocido &apos;{}&apos;</translation>
+      <translation>{}: Entorno de trabajo interno no reconocido &apos;{}&apos;</translation>
     </message>
     <message>
       <location filename="../../Addon.py" line="381"/>
@@ -2268,7 +2268,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="252"/>
       <source>Workbenches list was updated.</source>
-      <translation>Lista de bancos de trabajo actualizada.</translation>
+      <translation>Lista de entornos de trabajo actualizada.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="268"/>

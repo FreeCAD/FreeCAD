@@ -181,7 +181,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="102"/>
       <source>If it is the first time you are posting on the forum, be sure to &lt;a href="https://forum.freecad.org/viewtopic.php?f=3&amp;t=2264"&gt;read the guidelines&lt;/a&gt; first!</source>
-      <translation>Eğer bu, forumda yayınlayacağınız ilk gönderi ise, öncelikle &lt; A href="https://forum.freecadweb.org/viewtopic.php?f=3&amp;t=2264" &gt; yönergeleri okuyun! &lt; / a &gt;!</translation>
+      <translation>Eğer bu, forumda yayınlayacağınız ilk gönderi ise, öncelikle &lt; A href="http://forum.freecadweb.org/viewtopic.php?f=3&amp;t=2264" &gt; yönergeleri okuyun! &lt; / a &gt;!</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="106"/>
@@ -287,7 +287,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../../StartPage/StartPage.py" line="826"/>
+      <location filename="../../../StartPage/StartPage.py" line="871"/>
       <location filename="../../Workbench.cpp" line="62"/>
       <source>Start page</source>
       <translation>Başlangıç sayfası</translation>

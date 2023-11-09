@@ -68,7 +68,7 @@ class DrawSketchHandlerPolygon: public DrawSketchHandlerPolygonBase
     friend DSHPolygonControllerBase;
 
 public:
-    DrawSketchHandlerPolygon(int corners = 6)
+    explicit DrawSketchHandlerPolygon(int corners = 6)
         : numberOfCorners(corners)
     {}
     ~DrawSketchHandlerPolygon() override = default;
@@ -309,7 +309,12 @@ void DSHPolygonController::configureToolWidget()
 
     onViewParameters[OnViewParameter::First]->setLabelType(Gui::SoDatumLabel::DISTANCEX);
     onViewParameters[OnViewParameter::Second]->setLabelType(Gui::SoDatumLabel::DISTANCEY);
-    onViewParameters[OnViewParameter::Fourth]->setLabelType(Gui::SoDatumLabel::ANGLE);
+    onViewParameters[OnViewParameter::Third]->setLabelType(
+        Gui::SoDatumLabel::DISTANCE,
+        Gui::EditableDatumLabel::Function::Dimensioning);
+    onViewParameters[OnViewParameter::Fourth]->setLabelType(
+        Gui::SoDatumLabel::ANGLE,
+        Gui::EditableDatumLabel::Function::Dimensioning);
 }
 
 template<>
@@ -369,11 +374,11 @@ void DSHPolygonController::adaptParameters(Base::Vector2d onSketchPos)
     switch (handler->state()) {
         case SelectMode::SeekFirst: {
             if (!onViewParameters[OnViewParameter::First]->isSet) {
-                onViewParameters[OnViewParameter::First]->setSpinboxValue(onSketchPos.x);
+                setOnViewParameterValue(OnViewParameter::First, onSketchPos.x);
             }
 
             if (!onViewParameters[OnViewParameter::Second]->isSet) {
-                onViewParameters[OnViewParameter::Second]->setSpinboxValue(onSketchPos.y);
+                setOnViewParameterValue(OnViewParameter::Second, onSketchPos.y);
             }
 
             bool sameSign = onSketchPos.x * onSketchPos.y > 0.;
@@ -390,13 +395,14 @@ void DSHPolygonController::adaptParameters(Base::Vector2d onSketchPos)
             Base::Vector3d vec = end - start;
 
             if (!onViewParameters[OnViewParameter::Third]->isSet) {
-                onViewParameters[OnViewParameter::Third]->setSpinboxValue(vec.Length());
+                setOnViewParameterValue(OnViewParameter::Third, vec.Length());
             }
 
             double range = (handler->firstCorner - handler->centerPoint).Angle();
             if (!onViewParameters[OnViewParameter::Fourth]->isSet) {
-                onViewParameters[OnViewParameter::Fourth]->setSpinboxValue(range * 180 / M_PI,
-                                                                           Base::Unit::Angle);
+                setOnViewParameterValue(OnViewParameter::Fourth,
+                                        range * 180 / M_PI,
+                                        Base::Unit::Angle);
             }
 
             onViewParameters[OnViewParameter::Third]->setPoints(start, end);

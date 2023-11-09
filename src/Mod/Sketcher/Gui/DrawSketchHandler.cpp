@@ -26,6 +26,8 @@
 
 #include <QGuiApplication>
 #include <QPainter>
+
+#include <Inventor/events/SoKeyboardEvent.h>
 #endif  // #ifndef _PreComp_
 
 #include <Base/Console.h>
@@ -107,6 +109,11 @@ ViewProviderSketchDrawSketchHandlerAttorney::moveCursorToSketchPoint(ViewProvide
                                                                      Base::Vector2d point)
 {
     vp.moveCursorToSketchPoint(point);
+}
+
+inline void ViewProviderSketchDrawSketchHandlerAttorney::ensureFocus(ViewProviderSketch& vp)
+{
+    vp.ensureFocus();
 }
 
 inline void ViewProviderSketchDrawSketchHandlerAttorney::preselectAtPoint(ViewProviderSketch& vp,
@@ -365,6 +372,22 @@ void DrawSketchHandler::toolWidgetChanged(QWidget* newwidget)
 {
     toolwidget = newwidget;
     onWidgetChanged();
+}
+
+void DrawSketchHandler::registerPressedKey(bool pressed, int key)
+{
+    // the default behaviour is to quit - specific handler categories may
+    // override this behaviour, for example to implement a continuous mode
+    if (key == SoKeyboardEvent::ESCAPE && !pressed) {
+        quit();
+    }
+}
+
+void DrawSketchHandler::pressRightButton(Base::Vector2d /*onSketchPos*/)
+{
+    // the default behaviour is to quit - specific handler categories may
+    // override this behaviour, for example to implement a continuous mode
+    quit();
 }
 
 //**************************************************************************
@@ -1169,6 +1192,11 @@ void DrawSketchHandler::setAxisPickStyle(bool on)
 void DrawSketchHandler::moveCursorToSketchPoint(Base::Vector2d point)
 {
     ViewProviderSketchDrawSketchHandlerAttorney::moveCursorToSketchPoint(*sketchgui, point);
+}
+
+void DrawSketchHandler::ensureFocus()
+{
+    ViewProviderSketchDrawSketchHandlerAttorney::ensureFocus(*sketchgui);
 }
 
 void DrawSketchHandler::preselectAtPoint(Base::Vector2d point)

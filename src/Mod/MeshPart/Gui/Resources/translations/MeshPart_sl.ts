@@ -80,7 +80,7 @@ Ta ukaz deluje le s "ploskovji".</translation>
     <message>
       <location filename="../../Command.cpp" line="83"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Ploskovje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="84"/>
@@ -198,12 +198,12 @@ Ta ukaz deluje le s "ploskovji".</translation>
       <translation>Prekliči</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="626"/>
+      <location filename="../../CurveOnMesh.cpp" line="624"/>
       <source>Wrong mesh picked</source>
       <translation>Izbrano je napačno ploskovje</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="667"/>
+      <location filename="../../CurveOnMesh.cpp" line="663"/>
       <source>No point was picked</source>
       <translation>Ni izbranih točk</translation>
     </message>

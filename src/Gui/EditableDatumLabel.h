@@ -45,7 +45,13 @@ class GuiExport EditableDatumLabel : public QObject
     Q_DISABLE_COPY(EditableDatumLabel)
 
 public:
-    EditableDatumLabel(View3DInventorViewer* view, const Base::Placement& plc, SbColor color, bool autoDistance = false);
+    enum class Function {
+        Positioning,
+        Dimensioning
+    };
+
+    EditableDatumLabel(View3DInventorViewer* view, const Base::Placement& plc, SbColor color, bool autoDistance = false, bool avoidMouseCursor = false);
+
     ~EditableDatumLabel() override;
 
     void activate();
@@ -63,7 +69,7 @@ public:
     void setPoints(SbVec3f p1, SbVec3f p2);
     void setPoints(Base::Vector3d p1, Base::Vector3d p2);
     void setFocusToSpinbox();
-    void setLabelType(SoDatumLabel::Type type);
+    void setLabelType(SoDatumLabel::Type type, Function function = Function::Positioning);
     void setLabelDistance(double val);
     void setLabelStartAngle(double val);
     void setLabelRange(double val);
@@ -71,11 +77,14 @@ public:
     void setLabelAutoDistanceReverse(bool val);
     void setSpinboxVisibleToMouse(bool val);
 
+    Function getFunction();
+
     // NOLINTBEGIN
     SoDatumLabel* label;
     bool isSet;
     bool autoDistance;
     bool autoDistanceReverse;
+    bool avoidMouseCursor;
     double value;
     // NOLINTEND
 
@@ -93,6 +102,8 @@ private:
     QuantitySpinBox* spinBox;
     SoNodeSensor* cameraSensor;
     SbVec3f midpos;
+
+    Function function;
 };
 
 }

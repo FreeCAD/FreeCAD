@@ -198,12 +198,12 @@ This command only works with a 'mesh' object.</translation>
       <translation>Cancel·la</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="626"/>
+      <location filename="../../CurveOnMesh.cpp" line="624"/>
       <source>Wrong mesh picked</source>
       <translation>S'ha seleccionat una malla incorrecta</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="667"/>
+      <location filename="../../CurveOnMesh.cpp" line="663"/>
       <source>No point was picked</source>
       <translation>No s'ha seleccionat cap punt.</translation>
     </message>

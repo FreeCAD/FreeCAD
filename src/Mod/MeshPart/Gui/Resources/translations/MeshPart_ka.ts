@@ -198,12 +198,12 @@ This command only works with a 'mesh' object.</source>
       <translation>გაუქმება</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="626"/>
+      <location filename="../../CurveOnMesh.cpp" line="624"/>
       <source>Wrong mesh picked</source>
       <translation>არცჩეულია არასწორი მრავალკუთხა ბადე</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="667"/>
+      <location filename="../../CurveOnMesh.cpp" line="663"/>
       <source>No point was picked</source>
       <translation>წერტილი არჩეული არაა</translation>
     </message>

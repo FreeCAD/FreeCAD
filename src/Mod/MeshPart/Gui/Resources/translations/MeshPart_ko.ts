@@ -198,12 +198,12 @@ This command only works with a 'mesh' object.</translation>
       <translation>취소하기</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="626"/>
+      <location filename="../../CurveOnMesh.cpp" line="624"/>
       <source>Wrong mesh picked</source>
       <translation>잘못된 메쉬 선택</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="667"/>
+      <location filename="../../CurveOnMesh.cpp" line="663"/>
       <source>No point was picked</source>
       <translation>포인트가 선택되지 않았습니다</translation>
     </message>

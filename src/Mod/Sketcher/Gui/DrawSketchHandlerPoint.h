@@ -190,11 +190,11 @@ void DSHPointController::adaptParameters(Base::Vector2d onSketchPos)
     switch (handler->state()) {
         case SelectMode::SeekFirst: {
             if (!onViewParameters[OnViewParameter::First]->isSet) {
-                onViewParameters[OnViewParameter::First]->setSpinboxValue(onSketchPos.x);
+                setOnViewParameterValue(OnViewParameter::First, onSketchPos.x);
             }
 
             if (!onViewParameters[OnViewParameter::Second]->isSet) {
-                onViewParameters[OnViewParameter::Second]->setSpinboxValue(onSketchPos.y);
+                setOnViewParameterValue(OnViewParameter::Second, onSketchPos.y);
             }
 
             bool sameSign = onSketchPos.x * onSketchPos.y > 0.;

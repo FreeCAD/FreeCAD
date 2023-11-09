@@ -198,12 +198,12 @@ This command only works with a 'mesh' object.</source>
       <translation>Ακύρωση</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="626"/>
+      <location filename="../../CurveOnMesh.cpp" line="624"/>
       <source>Wrong mesh picked</source>
       <translation>Επιλέχθηκε λάθος πλέγμα</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="667"/>
+      <location filename="../../CurveOnMesh.cpp" line="663"/>
       <source>No point was picked</source>
       <translation>Δεν επιλέχθηκε κανένα σημείο</translation>
     </message>
