@@ -27,10 +27,10 @@
 
 
 # Append the open handler
-#FreeCAD.addImportType("STEP 214 (*.step *.stp)","ImportGui")
-#FreeCAD.addExportType("STEP 214 (*.step *.stp)","ImportGui")
-#FreeCAD.addExportType("IGES files (*.iges *.igs)","ImportGui")
-FreeCAD.addImportType("PLMXML files (*.plmxml)","PlmXmlParser")
-FreeCAD.addImportType("STEPZ Zip File Type (*.stpZ *.stpz)","stepZ")
-FreeCAD.addExportType("STEPZ zip File Type (*.stpZ *.stpz)","stepZ")
-FreeCAD.addExportType("glTF (*.gltf *.glb)","ImportGui")
+# FreeCAD.addImportType("STEP 214 (*.step *.stp)","ImportGui")
+# FreeCAD.addExportType("STEP 214 (*.step *.stp)","ImportGui")
+# FreeCAD.addExportType("IGES files (*.iges *.igs)","ImportGui")
+FreeCAD.addImportType("PLMXML files (*.plmxml *.PLMXML)", "PlmXmlParser")
+FreeCAD.addImportType("STEPZ Zip File Type (*.stpZ *.stpz *.STPZ)", "stepZ")
+FreeCAD.addExportType("STEPZ zip File Type (*.stpZ *.stpz)", "stepZ")
+FreeCAD.addExportType("glTF (*.gltf *.glb)", "ImportGui")

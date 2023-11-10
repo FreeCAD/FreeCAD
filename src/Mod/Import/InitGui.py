@@ -31,9 +31,9 @@
 
 
 # Registered in Part's Init.py file
-FreeCAD.changeImportModule("STEP with colors (*.step *.stp)","Import","ImportGui")
-FreeCAD.changeExportModule("STEP with colors (*.step *.stp)","Import","ImportGui")
-FreeCAD.changeExportModule("glTF (*.gltf *.glb)","Import","ImportGui")
+FreeCAD.changeImportModule("STEP with colors (*.step *.STEP *.stp *.STP)", "Import", "ImportGui")
+FreeCAD.changeExportModule("STEP with colors (*.step *.stp)", "Import", "ImportGui")
+FreeCAD.changeExportModule("glTF (*.gltf *.glb)", "Import", "ImportGui")
 
 """
 class ImportWorkbench ( Workbench ):

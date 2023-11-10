@@ -24,5 +24,5 @@
 # FreeCAD init script of the Points module
 
 # Append the open handler
-FreeCAD.addImportType("Point formats (*.asc *.pcd *.ply *.e57)","Points")
-FreeCAD.addExportType("Point formats (*.asc *.pcd *.ply)","Points")
+FreeCAD.addImportType("Point formats (*.asc *.ASC *.pcd *.PCD *.ply *.PLY *.e57 *.E57)", "Points")
+FreeCAD.addExportType("Point formats (*.asc *.pcd *.ply)", "Points")
