@@ -25,21 +25,21 @@ void runSpMat();
 
 int main()
 {
-//	// ASMTAssembly::readWriteFile("piston.asmt");
-//	MBDynSystem::runFile("MBDynCase.mbd");		//To be completed
-//	MBDynSystem::runFile("crank_slider.mbd");		//To be completed
-//	//ASMTAssembly::runSinglePendulumSuperSimplified();	//Mass is missing
-//	//ASMTAssembly::runSinglePendulumSuperSimplified2();	//DOF has infinite acceleration due to zero mass and inertias
-//	ASMTAssembly::runSinglePendulumSimplified();
-//	ASMTAssembly::runSinglePendulum();
-//	ASMTAssembly::runFile("piston.asmt");
-//	ASMTAssembly::runFile("00backhoe.asmt");
-//	//ASMTAssembly::runFile("circular.asmt");	//Needs checking
-//	//ASMTAssembly::runFile("cirpendu.asmt");	//Under constrained. Testing ICKine.
-//	//ASMTAssembly::runFile("engine1.asmt");	//Needs checking
-//	ASMTAssembly::runFile("fourbar.asmt");
-//	//ASMTAssembly::runFile("fourbot.asmt");	//Very large but works
-//	ASMTAssembly::runFile("wobpump.asmt");
+	// ASMTAssembly::readWriteFile("piston.asmt");
+	// MBDynSystem::runFile("MBDynCase.mbd");		//To be completed
+	// MBDynSystem::runFile("crank_slider.mbd");		//To be completed
+	//ASMTAssembly::runSinglePendulumSuperSimplified();	//Mass is missing
+	//ASMTAssembly::runSinglePendulumSuperSimplified2();	//DOF has infinite acceleration due to zero mass and inertias
+	ASMTAssembly::runSinglePendulumSimplified();
+	ASMTAssembly::runSinglePendulum();
+	ASMTAssembly::runFile("../testapp/piston.asmt");
+	ASMTAssembly::runFile("../testapp/00backhoe.asmt");
+	//ASMTAssembly::runFile("circular.asmt");	//Needs checking
+	//ASMTAssembly::runFile("cirpendu.asmt");	//Under constrained. Testing ICKine.
+	//ASMTAssembly::runFile("engine1.asmt");	//Needs checking
+	ASMTAssembly::runFile("../testapp/fourbar.asmt");
+	//ASMTAssembly::runFile("fourbot.asmt");	//Very large but works
+	ASMTAssembly::runFile("../testapp/wobpump.asmt");
 
 	auto cadSystem = std::make_shared<CADSystem>();
 	cadSystem->runOndselSinglePendulum();

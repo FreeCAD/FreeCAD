@@ -617,3 +617,7 @@ install(TARGETS OndselSolver
         PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/OndselSolver)
 install(FILES ${CMAKE_BINARY_DIR}/OndselSolver.pc
         DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/pkgconfig)
+
+add_executable(testappexe testapp/OndselSolver.cpp)
+target_link_libraries(testappexe OndselSolver)
+target_include_directories(testappexe PUBLIC "../OndselSolver")

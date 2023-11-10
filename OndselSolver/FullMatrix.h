@@ -97,7 +97,7 @@ namespace MbD {
         void conditionSelfWithTol(double tol);
         std::ostream& printOn(std::ostream& s) const override;
         FColsptr<double> timesFullColumn(FColsptr<double> fullCol);
-        // FColsptr<double> timesFullColumn(FullColumn<double>* fullCol);
+        FColsptr<double> timesFullColumn(FullColumn<double>* fullCol);
     };
 
     //

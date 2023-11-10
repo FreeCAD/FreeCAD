@@ -15,7 +15,18 @@
 namespace MbD {
     FColsptr<double> FullMatrixDouble::timesFullColumn(FColsptr<double> fullCol)
     {
-//        return this->timesFullColumn(fullCol.get());
+        return this->timesFullColumn(fullCol.get());
+//        auto nrow = this->nrow();
+//        auto answer = std::make_shared<FullColumn<double>>(nrow);
+//        for (int i = 0; i < nrow; i++)
+//        {
+//            answer->at(i) = this->at(i)->timesFullColumn(fullCol);
+//        }
+//        return answer;
+    }
+    FColsptr<double> FullMatrixDouble::timesFullColumn(FullColumn<double>* fullCol) // local
+    {
+        //"a*b = a(i,j)b(j) sum j."
         auto nrow = this->nrow();
         auto answer = std::make_shared<FullColumn<double>>(nrow);
         for (int i = 0; i < nrow; i++)
@@ -24,17 +35,6 @@ namespace MbD {
         }
         return answer;
     }
-//    FColsptr<double> timesFullColumn(FullColumn<double>* fullCol) // local
-//    {
-//        //"a*b = a(i,j)b(j) sum j."
-//        auto nrow = this->nrow();
-//        auto answer = std::make_shared<FullColumn<double>>(nrow);
-//        for (int i = 0; i < nrow; i++)
-//        {
-//            answer->at(i) = this->at(i)->timesFullColumn(fullCol);
-//        }
-//        return answer;
-//    }
     std::shared_ptr<FullMatrixDouble> FullMatrixDouble::rotatex(double the)
     {
         auto sthe = std::sin(the);
