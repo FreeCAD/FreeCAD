@@ -1758,7 +1758,11 @@ CDxfRead::CDxfRead(const char* filepath)
     memset( m_block_name, '\0', sizeof(m_block_name) );
     m_ignore_errors = true;
 
-    m_ifs = new ifstream(filepath);
+    m_version = RUnknown;
+    m_CodePage = nullptr;
+    m_encoding = nullptr;
+
+    m_ifs = new Base::ifstream(Base::FileInfo(filepath));
     if(!(*m_ifs)){
         m_fail = true;
         printf("DXF file didn't load\n");
@@ -1766,9 +1770,6 @@ CDxfRead::CDxfRead(const char* filepath)
     }
     m_ifs->imbue(std::locale("C"));
 
-    m_version = RUnknown;
-    m_CodePage = NULL;
-    m_encoding = NULL;
     stringToUTF8 = &CDxfRead::UTF8ToUTF8;
 }
 
