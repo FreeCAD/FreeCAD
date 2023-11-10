@@ -57,6 +57,7 @@ FixedTimeAnimation::FixedTimeAnimation(NavigationStyle* navigation, const SbRota
 
 void FixedTimeAnimation::initialize()
 {
+    navigation->findBoundingSphere();
     prevAngle = 0;
     prevTranslation = SbVec3f(0, 0, 0);
 
@@ -133,6 +134,7 @@ SpinningAnimation::SpinningAnimation(NavigationStyle* navigation, const SbVec3f&
 
 void SpinningAnimation::initialize()
 {
+    navigation->findBoundingSphere();
     prevAngle = 0;
 
     navigation->setViewing(true);
