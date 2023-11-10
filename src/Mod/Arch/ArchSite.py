@@ -91,7 +91,10 @@ def toNode(shape):
 
     from pivy import coin
     buf = shape.writeInventor(2,0.01).replace("\n","")
-    pts = [zip(*[iter( c.split() )]*3) for c in re.findall("point \[(.*?)\]",buf)]
+    buf = re.findall("point \[(.*?)\]",buf)
+    pts = []
+    for c in buf:
+        pts.extend(zip(*[iter( c.split() )]*3) )
     pc = []
     for v in pts:
         v = [float(v[0]),float(v[1]),float(v[2])]
