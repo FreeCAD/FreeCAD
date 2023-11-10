@@ -22,9 +22,9 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <cmath>
-# include <limits>
-# include <sstream>
+#include <cmath>
+#include <limits>
+#include <sstream>
 #endif
 
 #include "Unit.h"
@@ -34,6 +34,7 @@
 
 using namespace Base;
 
+// clang-format off
 static inline void checkPow(UnitSignature sig, double exp)
 {
     auto isInt = [](double value) {
@@ -74,7 +75,7 @@ static inline void checkRange(const char * op, int length, int mass, int time, i
         throw Base::UnderflowError((std::string("Unit underflow in ") + std::string(op)).c_str());
 }
 
-Unit::Unit(int8_t Length,
+Unit::Unit(int8_t Length, //NOLINT
            int8_t Mass,
            int8_t Time,
            int8_t ElectricCurrent,
@@ -104,7 +105,7 @@ Unit::Unit(int8_t Length,
 }
 
 
-Unit::Unit()
+Unit::Unit() //NOLINT
 {
     Sig.Length                   = 0;
     Sig.Mass                     = 0;
@@ -333,7 +334,7 @@ QString Unit::getString() const
         if (Sig.Angle > 0) {
             if (mult)
                 ret<<'*';
-            mult = true;
+            mult = true; //NOLINT
             ret << "deg";
             if (Sig.Angle > 1)
                 ret << "^" << Sig.Angle;
@@ -431,7 +432,7 @@ QString Unit::getString() const
         if (Sig.Angle < 0) {
             if (mult)
                 ret<<'*';
-            mult = true;
+            mult = true; //NOLINT
             ret << "deg";
             if (Sig.Angle < -1)
                 ret << "^" << abs(Sig.Angle);
@@ -610,3 +611,4 @@ Unit Unit::VolumetricThermalExpansionCoefficient(0, 0, 0, 0, -1);
 Unit Unit::Work                       (2, 1, -2);
 Unit Unit::YieldStrength              (-1,1,-2);
 Unit Unit::YoungsModulus              (-1,1,-2);
+// clang-format on

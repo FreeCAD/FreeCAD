@@ -44,30 +44,34 @@ using namespace zipios;
 
 // boost iostream filter to escape ']]>' in text file saved into CDATA section.
 // It does not check if the character is valid utf8 or not.
-struct cdata_filter {
+struct cdata_filter
+{
 
     using char_type = char;
     using category = boost::iostreams::output_filter_tag;
 
     template<typename Device>
-    inline bool put(Device& dev, char c) {
-        switch(state) {
+    inline bool put(Device& dev, char c)
+    {
+        switch (state) {
             case 0:
             case 1:
-                if(c == ']')
+                if (c == ']') {
                     ++state;
-                else
+                }
+                else {
                     state = 0;
+                }
                 break;
             case 2:
-                if(c == '>') {
+                if (c == '>') {
                     static const char escape[] = "]]><![CDATA[";
-                    boost::iostreams::write(dev,escape,sizeof(escape)-1);
+                    boost::iostreams::write(dev, escape, sizeof(escape) - 1);
                 }
                 state = 0;
                 break;
         }
-        return boost::iostreams::put(dev,c);
+        return boost::iostreams::put(dev, c);
     }
 
     int state = 0;
@@ -90,9 +94,10 @@ std::ostream& Writer::beginCharStream(CharStreamFormat format)
         throw Base::RuntimeError("Writer::beginCharStream(): invalid state");
     }
     charStreamFormat = format;
-    if(format == CharStreamFormat::Base64Encoded) {
+    if (format == CharStreamFormat::Base64Encoded) {
         CharStream = create_base64_encoder(Stream(), Base::base64DefaultBufferSize);
-    } else {
+    }
+    else {
         Stream() << "<![CDATA[";
         CharStream = std::make_unique<boost::iostreams::filtering_ostream>();
         auto* filteredStream = dynamic_cast<boost::iostreams::filtering_ostream*>(CharStream.get());
@@ -132,13 +137,15 @@ void Writer::insertAsciiFile(const char* FileName)
 {
     Base::FileInfo fi(FileName);
     Base::ifstream from(fi);
-    if (!from)
+    if (!from) {
         throw Base::FileException("Writer::insertAsciiFile() Could not open file!");
+    }
 
     Stream() << "<![CDATA[";
-    char ch{};
-    while (from.get(ch))
+    char ch {};
+    while (from.get(ch)) {
         Stream().put(ch);
+    }
     Stream() << "]]>" << endl;
 }
 
@@ -146,8 +153,9 @@ void Writer::insertBinFile(const char* FileName)
 {
     Base::FileInfo fi(FileName);
     Base::ifstream from(fi, std::ios::in | std::ios::binary | std::ios::ate);
-    if (!from)
+    if (!from) {
         throw Base::FileException("Writer::insertAsciiFile() Could not open file!");
+    }
 
     Stream() << "<![CDATA[";
     std::ifstream::pos_type fileSize = from.tellg();
@@ -203,8 +211,9 @@ std::set<std::string> Writer::getModes() const
 void Writer::clearMode(const std::string& mode)
 {
     std::set<std::string>::iterator it = Modes.find(mode);
-    if (it != Modes.end())
+    if (it != Modes.end()) {
         Modes.erase(it);
+    }
 }
 
 void Writer::clearModes()
@@ -232,7 +241,7 @@ std::vector<std::string> Writer::getErrors() const
     return Errors;
 }
 
-std::string Writer::addFile(const char* Name,const Base::Persistence *Object)
+std::string Writer::addFile(const char* Name, const Base::Persistence* Object)
 {
     // always check isForceXML() before requesting a file!
     assert(!isForceXML());
@@ -243,18 +252,18 @@ std::string Writer::addFile(const char* Name,const Base::Persistence *Object)
 
     FileList.push_back(temp);
 
-    FileNames.push_back( temp.FileName );
+    FileNames.push_back(temp.FileName);
 
     // return the unique file name
     return temp.FileName;
 }
 
-std::string Writer::getUniqueFileName(const char *Name)
+std::string Writer::getUniqueFileName(const char* Name)
 {
     // name in use?
     std::string CleanName = (Name ? Name : "");
     std::vector<std::string>::const_iterator pos;
-    pos = find(FileNames.begin(),FileNames.end(),CleanName);
+    pos = find(FileNames.begin(), FileNames.end(), CleanName);
 
     if (pos == FileNames.end()) {
         // if not, name is OK
@@ -266,16 +275,18 @@ std::string Writer::getUniqueFileName(const char *Name)
         FileInfo fi(CleanName);
         CleanName = fi.fileNamePure();
         std::string ext = fi.extension();
-        for (pos = FileNames.begin();pos != FileNames.end();++pos) {
+        for (pos = FileNames.begin(); pos != FileNames.end(); ++pos) {
             fi.setFile(*pos);
             std::string FileName = fi.fileNamePure();
-            if (fi.extension() == ext)
+            if (fi.extension() == ext) {
                 names.push_back(FileName);
+            }
         }
         std::stringstream str;
         str << Base::Tools::getUniqueName(CleanName, names);
-        if (!ext.empty())
+        if (!ext.empty()) {
             str << "." << ext;
+        }
         return str.str();
     }
 }
@@ -288,11 +299,11 @@ const std::vector<std::string>& Writer::getFilenames() const
 void Writer::incInd()
 {
     if (indent < 1020) {
-        indBuf[indent  ] = ' ';
-        indBuf[indent+1] = ' ';
-        indBuf[indent+2] = ' ';
-        indBuf[indent+3] = ' ';
-        indBuf[indent+4] = '\0';
+        indBuf[indent] = ' ';
+        indBuf[indent + 1] = ' ';
+        indBuf[indent + 2] = ' ';
+        indBuf[indent + 3] = ' ';
+        indBuf[indent + 4] = '\0';
         indent += 4;
     }
 }
@@ -311,7 +322,7 @@ void Writer::decInd()
 // ----------------------------------------------------------------------------
 
 ZipWriter::ZipWriter(const char* FileName)
-  : ZipStream(FileName)
+    : ZipStream(FileName)
 {
 #ifdef _MSC_VER
     ZipStream.imbue(std::locale::empty());
@@ -319,11 +330,11 @@ ZipWriter::ZipWriter(const char* FileName)
     ZipStream.imbue(std::locale::classic());
 #endif
     ZipStream.precision(std::numeric_limits<double>::digits10 + 1);
-    ZipStream.setf(ios::fixed,ios::floatfield);
+    ZipStream.setf(ios::fixed, ios::floatfield);
 }
 
 ZipWriter::ZipWriter(std::ostream& os)
-  : ZipStream(os)
+    : ZipStream(os)
 {
 #ifdef _MSC_VER
     ZipStream.imbue(std::locale::empty());
@@ -331,7 +342,7 @@ ZipWriter::ZipWriter(std::ostream& os)
     ZipStream.imbue(std::locale::classic());
 #endif
     ZipStream.precision(std::numeric_limits<double>::digits10 + 1);
-    ZipStream.setf(ios::fixed,ios::floatfield);
+    ZipStream.setf(ios::fixed, ios::floatfield);
 }
 
 void ZipWriter::writeFiles()
@@ -354,9 +365,9 @@ ZipWriter::~ZipWriter()
 
 // ----------------------------------------------------------------------------
 
-FileWriter::FileWriter(const char* DirName) : DirName(DirName)
-{
-}
+FileWriter::FileWriter(const char* DirName)
+    : DirName(DirName)
+{}
 
 FileWriter::~FileWriter() = default;
 
@@ -366,7 +377,7 @@ void FileWriter::putNextEntry(const char* file)
     this->FileStream.open(fileName.c_str(), std::ios::out | std::ios::binary);
 }
 
-bool FileWriter::shouldWrite(const std::string& , const Base::Persistence *) const
+bool FileWriter::shouldWrite(const std::string&, const Base::Persistence*) const
 {
     return true;
 }

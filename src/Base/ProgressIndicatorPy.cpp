@@ -38,9 +38,9 @@ void ProgressIndicatorPy::init_type()
     behaviors().supportSetattr();
     behaviors().set_tp_new(PyMake);
 
-    add_varargs_method("start",&ProgressIndicatorPy::start,"start(string,int)");
-    add_varargs_method("next",&ProgressIndicatorPy::next,"next()");
-    add_varargs_method("stop",&ProgressIndicatorPy::stop,"stop()");
+    add_varargs_method("start", &ProgressIndicatorPy::start, "start(string,int)");
+    add_varargs_method("next", &ProgressIndicatorPy::next, "next()");
+    add_varargs_method("stop", &ProgressIndicatorPy::stop, "stop()");
 }
 
 Py::PythonType& ProgressIndicatorPy::behaviors()
@@ -58,7 +58,7 @@ bool ProgressIndicatorPy::check(PyObject* p)
     return Py::PythonExtension<ProgressIndicatorPy>::check(p);
 }
 
-PyObject *ProgressIndicatorPy::PyMake(struct _typeobject *, PyObject *, PyObject *)
+PyObject* ProgressIndicatorPy::PyMake(struct _typeobject*, PyObject*, PyObject*)
 {
     return new ProgressIndicatorPy();
 }
@@ -70,26 +70,28 @@ ProgressIndicatorPy::~ProgressIndicatorPy() = default;
 Py::Object ProgressIndicatorPy::repr()
 {
     std::string s = "Base.ProgressIndicator";
-    return Py::String(s); // NOLINT
+    return Py::String(s);  // NOLINT
 }
 
 Py::Object ProgressIndicatorPy::start(const Py::Tuple& args)
 {
     char* text = nullptr;
     unsigned int steps = 0;
-    if (!PyArg_ParseTuple(args.ptr(), "sI",&text,&steps))
+    if (!PyArg_ParseTuple(args.ptr(), "sI", &text, &steps)) {
         throw Py::Exception();
+    }
     if (!_seq.get()) {
-        _seq = std::make_unique<SequencerLauncher>(text,steps);
+        _seq = std::make_unique<SequencerLauncher>(text, steps);
     }
     return Py::None();
 }
 
 Py::Object ProgressIndicatorPy::next(const Py::Tuple& args)
 {
-    int b=0;
-    if (!PyArg_ParseTuple(args.ptr(), "|i",&b))
+    int b = 0;
+    if (!PyArg_ParseTuple(args.ptr(), "|i", &b)) {
         throw Py::Exception();
+    }
     if (_seq.get()) {
         try {
             _seq->next(b ? true : false);
@@ -104,8 +106,9 @@ Py::Object ProgressIndicatorPy::next(const Py::Tuple& args)
 
 Py::Object ProgressIndicatorPy::stop(const Py::Tuple& args)
 {
-    if (!PyArg_ParseTuple(args.ptr(), ""))
+    if (!PyArg_ParseTuple(args.ptr(), "")) {
         throw Py::Exception();
+    }
     _seq.reset();
     return Py::None();
 }

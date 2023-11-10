@@ -89,20 +89,21 @@ public:
     /// Destruction
     virtual ~ClassTemplate();
 
-    int testMe(int a,const char *s);
+    int testMe(int a, const char* s);
 
     /**
      * An enum.
      * More detailed enum description.
      */
 
-    enum TEnum {
+    enum TEnum
+    {
         TVal1, /**< enum value TVal1. */
         TVal2, /**< enum value TVal2. */
         TVal3  /**< enum value TVal3. */
     }
-    *enumPtr{nullptr}, /**< enum pointer. Details. */
-    enumVar{TVal1};  /**< enum variable. Details. */
+        * enumPtr {nullptr}, /**< enum pointer. Details. */
+        enumVar {TVal1};     /**< enum variable. Details. */
 
     /**
      * A pure virtual member.
@@ -110,35 +111,34 @@ public:
      * @param c1 the first argument.
      * @param c2 the second argument.
      */
-    virtual void testMeToo(char c1,char c2) = 0;
+    virtual void testMeToo(char c1, char c2) = 0;
 
     /** @name a group of methods */
     //@{
     /// I am method one
-    virtual void one()=0;
+    virtual void one() = 0;
     /// I am method two
-    virtual void two()=0;
+    virtual void two() = 0;
     /// I am method three
-    virtual void three()=0;
+    virtual void three() = 0;
     //@}
 
 
     /**
-    * a public variable.
-    * Details.
-    */
-    int publicVar{0};
+     * a public variable.
+     * Details.
+     */
+    int publicVar {0};
 
     /**
      * a function variable.
      * Details.
      */
-    int (*handler)(int a,int b){nullptr};
+    int (*handler)(int a, int b) {nullptr};
 
     std::string something;
 };
 
-} //namespace Base
+}  // namespace Base
 
-#endif // BASE_FILETEMPLATE_H
-
+#endif  // BASE_FILETEMPLATE_H

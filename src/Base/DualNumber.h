@@ -25,7 +25,8 @@
 
 #include <cmath>
 
-namespace Base {
+namespace Base
+{
 
 
 /**
@@ -40,55 +41,72 @@ class DualNumber
 public:
     double re = 0.0;
     double du = 0.0;
+
 public:
     DualNumber() = default;
     DualNumber(double re, double du = 0.0)
-        : re(re), du(du)
+        : re(re)
+        , du(du)
     {}
-    DualNumber operator-() const {return {-re,-du};}
+    DualNumber operator-() const
+    {
+        return {-re, -du};
+    }
 };
 
-inline DualNumber operator+(DualNumber a, DualNumber b){
+inline DualNumber operator+(DualNumber a, DualNumber b)
+{
     return {a.re + b.re, a.du + b.du};
 }
-inline DualNumber operator+(DualNumber a, double b){
+inline DualNumber operator+(DualNumber a, double b)
+{
     return {a.re + b, a.du};
 }
-inline DualNumber operator+(double a, DualNumber b){
+inline DualNumber operator+(double a, DualNumber b)
+{
     return {a + b.re, b.du};
 }
 
-inline DualNumber operator-(DualNumber a, DualNumber b){
+inline DualNumber operator-(DualNumber a, DualNumber b)
+{
     return {a.re - b.re, a.du - b.du};
 }
-inline DualNumber operator-(DualNumber a, double b){
+inline DualNumber operator-(DualNumber a, double b)
+{
     return {a.re - b, a.du};
 }
-inline DualNumber operator-(double a, DualNumber b){
+inline DualNumber operator-(double a, DualNumber b)
+{
     return {a - b.re, -b.du};
 }
 
-inline DualNumber operator*(DualNumber a, DualNumber b){
+inline DualNumber operator*(DualNumber a, DualNumber b)
+{
     return {a.re * b.re, a.re * b.du + a.du * b.re};
 }
-inline DualNumber operator*(double a, DualNumber b){
+inline DualNumber operator*(double a, DualNumber b)
+{
     return {a * b.re, a * b.du};
 }
-inline DualNumber operator*(DualNumber a, double b){
+inline DualNumber operator*(DualNumber a, double b)
+{
     return {a.re * b, a.du * b};
 }
 
-inline DualNumber operator/(DualNumber a, DualNumber b){
+inline DualNumber operator/(DualNumber a, DualNumber b)
+{
     return {a.re / b.re, (a.du * b.re - a.re * b.du) / (b.re * b.re)};
 }
-inline DualNumber operator/(DualNumber a, double b){
+inline DualNumber operator/(DualNumber a, double b)
+{
     return {a.re / b, a.du / b};
 }
 
-inline DualNumber pow(DualNumber a, double pw){
+inline DualNumber pow(DualNumber a, double pw)
+{
     return {std::pow(a.re, pw), pw * std::pow(a.re, pw - 1.0) * a.du};
 }
-} //namespace
+}  // namespace Base
 
 
 #endif

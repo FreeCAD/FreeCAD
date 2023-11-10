@@ -23,21 +23,21 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <sstream>
+#include <sstream>
 #endif
 
 #include "GeometryPyCXX.h"
 #include "VectorPy.h"
 
 
-int Py::Vector::Vector_TypeCheck(PyObject * obj)
+int Py::Vector::Vector_TypeCheck(PyObject* obj)
 {
     return PyObject_TypeCheck(obj, &(Base::VectorPy::Type));
 }
 
-bool Py::Vector::accepts (PyObject *obj) const
+bool Py::Vector::accepts(PyObject* obj) const
 {
-    if (obj && Vector_TypeCheck (obj)) {
+    if (obj && Vector_TypeCheck(obj)) {
         return true;
     }
     else if (obj && PySequence_Check(obj)) {
@@ -47,41 +47,42 @@ bool Py::Vector::accepts (PyObject *obj) const
     return false;
 }
 
-Py::Vector::Vector (const Base::Vector3d& v)
+Py::Vector::Vector(const Base::Vector3d& v)
 {
     set(new Base::VectorPy(v), true);
     validate();
 }
 
-Py::Vector::Vector (const Base::Vector3f& v)
+Py::Vector::Vector(const Base::Vector3f& v)
 {
     set(new Base::VectorPy(v), true);
     validate();
 }
 
-Py::Vector& Py::Vector::operator= (PyObject* rhsp)
+Py::Vector& Py::Vector::operator=(PyObject* rhsp)
 {
-    if(ptr() == rhsp)
+    if (ptr() == rhsp) {
         return *this;
-    set (rhsp, false);
+    }
+    set(rhsp, false);
     return *this;
 }
 
-Py::Vector& Py::Vector::operator= (const Base::Vector3d& v)
+Py::Vector& Py::Vector::operator=(const Base::Vector3d& v)
 {
-    set (new Base::VectorPy(v), true);
+    set(new Base::VectorPy(v), true);
     return *this;
 }
 
-Py::Vector& Py::Vector::operator= (const Base::Vector3f& v)
+Py::Vector& Py::Vector::operator=(const Base::Vector3f& v)
 {
-    set (new Base::VectorPy(v), true);
+    set(new Base::VectorPy(v), true);
     return *this;
 }
 
 Base::Vector3d Py::Vector::toVector() const
 {
-    if (Vector_TypeCheck (ptr())) {
+    if (Vector_TypeCheck(ptr())) {
         return static_cast<Base::VectorPy*>(ptr())->value();
     }
     else {
@@ -89,7 +90,8 @@ Base::Vector3d Py::Vector::toVector() const
     }
 }
 
-namespace Base {
+namespace Base
+{
 
 Py::PythonType& Vector2dPy::behaviors()
 {
@@ -101,7 +103,7 @@ PyTypeObject* Vector2dPy::type_object()
     return Py::PythonClass<Vector2dPy>::type_object();
 }
 
-bool Vector2dPy::check( PyObject *p )
+bool Vector2dPy::check(PyObject* p)
 {
     return Py::PythonClass<Vector2dPy>::check(p);
 }
@@ -117,14 +119,15 @@ Py::PythonClassObject<Vector2dPy> Vector2dPy::create(double x, double y)
     Py::Tuple arg(2);
     arg.setItem(0, Py::Float(x));
     arg.setItem(1, Py::Float(y));
-    Py::PythonClassObject<Vector2dPy> o = Py::PythonClassObject<Vector2dPy>(class_type.apply(arg, Py::Dict()));
+    Py::PythonClassObject<Vector2dPy> o =
+        Py::PythonClassObject<Vector2dPy>(class_type.apply(arg, Py::Dict()));
     return o;
 }
 
-Vector2dPy::Vector2dPy(Py::PythonClassInstance *self, Py::Tuple &args, Py::Dict &kwds)
+Vector2dPy::Vector2dPy(Py::PythonClassInstance* self, Py::Tuple& args, Py::Dict& kwds)
     : Py::PythonClass<Vector2dPy>::PythonClass(self, args, kwds)
 {
-    double x=0,y=0;
+    double x = 0, y = 0;
     if (!PyArg_ParseTuple(args.ptr(), "|dd", &x, &y)) {
         throw Py::Exception();
     }
@@ -141,19 +144,18 @@ Py::Object Vector2dPy::repr()
     Py::Float y(v.y);
     std::stringstream str;
     str << "Vector2 (";
-    str << static_cast<std::string>(x.repr()) << ", "
-        << static_cast<std::string>(y.repr());
+    str << static_cast<std::string>(x.repr()) << ", " << static_cast<std::string>(y.repr());
     str << ")";
 
     return Py::String(str.str());
 }
 
-Py::Object Vector2dPy::getattro(const Py::String &name_)
+Py::Object Vector2dPy::getattro(const Py::String& name_)
 {
     // For Py3 either handle __dict__ or implement __dir__ as shown here:
     // https://stackoverflow.com/questions/48609111/how-is-dir-implemented-exactly-and-how-should-i-know-it
     //
-    std::string name( name_.as_std_string( "utf-8" ) );
+    std::string name(name_.as_std_string("utf-8"));
 
     if (name == "__dict__") {
         Py::Dict attr;
@@ -168,13 +170,13 @@ Py::Object Vector2dPy::getattro(const Py::String &name_)
         return Py::Float(v.y);
     }
     else {
-        return genericGetAttro( name_ );
+        return genericGetAttro(name_);
     }
 }
 
-int Vector2dPy::setattro(const Py::String &name_, const Py::Object &value)
+int Vector2dPy::setattro(const Py::String& name_, const Py::Object& value)
 {
-    std::string name( name_.as_std_string( "utf-8" ) );
+    std::string name(name_.as_std_string("utf-8"));
 
     if (name == "x" && !value.isNull()) {
         v.x = static_cast<double>(Py::Float(value));
@@ -185,7 +187,7 @@ int Vector2dPy::setattro(const Py::String &name_, const Py::Object &value)
         return 0;
     }
     else {
-        return genericSetAttro( name_, value );
+        return genericSetAttro(name_, value);
     }
 }
 
@@ -219,21 +221,21 @@ Py::Object Vector2dPy::number_float()
     throw Py::TypeError("Not defined");
 }
 
-Py::Object Vector2dPy::number_add( const Py::Object & py)
+Py::Object Vector2dPy::number_add(const Py::Object& py)
 {
     Vector2d u(Py::toVector2d(py));
     u = v + u;
     return create(u);
 }
 
-Py::Object Vector2dPy::number_subtract( const Py::Object & py)
+Py::Object Vector2dPy::number_subtract(const Py::Object& py)
 {
     Vector2d u(Py::toVector2d(py));
     u = v - u;
     return create(u);
 }
 
-Py::Object Vector2dPy::number_multiply( const Py::Object & py)
+Py::Object Vector2dPy::number_multiply(const Py::Object& py)
 {
     if (PyObject_TypeCheck(py.ptr(), Vector2dPy::type_object())) {
         Vector2d u(Py::toVector2d(py));
@@ -249,42 +251,42 @@ Py::Object Vector2dPy::number_multiply( const Py::Object & py)
     }
 }
 
-Py::Object Vector2dPy::number_remainder( const Py::Object & )
+Py::Object Vector2dPy::number_remainder(const Py::Object&)
 {
     throw Py::TypeError("Not defined");
 }
 
-Py::Object Vector2dPy::number_divmod( const Py::Object & )
+Py::Object Vector2dPy::number_divmod(const Py::Object&)
 {
     throw Py::TypeError("Not defined");
 }
 
-Py::Object Vector2dPy::number_lshift( const Py::Object & )
+Py::Object Vector2dPy::number_lshift(const Py::Object&)
 {
     throw Py::TypeError("Not defined");
 }
 
-Py::Object Vector2dPy::number_rshift( const Py::Object & )
+Py::Object Vector2dPy::number_rshift(const Py::Object&)
 {
     throw Py::TypeError("Not defined");
 }
 
-Py::Object Vector2dPy::number_and( const Py::Object & )
+Py::Object Vector2dPy::number_and(const Py::Object&)
 {
     throw Py::TypeError("Not defined");
 }
 
-Py::Object Vector2dPy::number_xor( const Py::Object & )
+Py::Object Vector2dPy::number_xor(const Py::Object&)
 {
     throw Py::TypeError("Not defined");
 }
 
-Py::Object Vector2dPy::number_or( const Py::Object & )
+Py::Object Vector2dPy::number_or(const Py::Object&)
 {
     throw Py::TypeError("Not defined");
 }
 
-Py::Object Vector2dPy::number_power( const Py::Object &, const Py::Object & )
+Py::Object Vector2dPy::number_power(const Py::Object&, const Py::Object&)
 {
     throw Py::TypeError("Not defined");
 }
@@ -381,8 +383,8 @@ PYCXX_VARARGS_METHOD_DECL(Vector2dPy, projectToLine)
 
 void Vector2dPy::init_type()
 {
-    behaviors().name( "Vector2d" );
-    behaviors().doc( "Vector2d class" );
+    behaviors().name("Vector2d");
+    behaviors().doc("Vector2d class");
     behaviors().supportGetattro();
     behaviors().supportSetattro();
     behaviors().supportRepr();
@@ -405,4 +407,4 @@ void Vector2dPy::init_type()
     behaviors().readyType();
 }
 
-}
+}  // namespace Base

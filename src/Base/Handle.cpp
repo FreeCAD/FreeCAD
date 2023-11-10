@@ -25,8 +25,8 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <cassert>
-# include <iostream>
+#include <cassert>
+#include <iostream>
 #endif
 
 #include <QAtomicInt>
@@ -40,14 +40,14 @@ using namespace Base;
 // Construction/Destruction
 
 Handled::Handled()
-  : _lRefCount(new QAtomicInt(0))
-{
-}
+    : _lRefCount(new QAtomicInt(0))
+{}
 
 Handled::~Handled()
 {
-    if (static_cast<int>(*_lRefCount) != 0)
+    if (static_cast<int>(*_lRefCount) != 0) {
         std::cerr << "Reference counter of deleted object is not zero!!!!!" << std::endl;
+    }
     delete _lRefCount;
 }
 
@@ -67,7 +67,7 @@ void Handled::unref() const
 int Handled::unrefNoDelete() const
 {
     int res = _lRefCount->deref();
-    assert(res>=0);
+    assert(res >= 0);
     return res;
 }
 
@@ -76,7 +76,7 @@ int Handled::getRefCount() const
     return static_cast<int>(*_lRefCount);
 }
 
-Handled& Handled::operator = (const Handled&)
+Handled& Handled::operator=(const Handled&)
 {
     // we must not assign _lRefCount
     return *this;

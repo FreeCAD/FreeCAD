@@ -24,16 +24,16 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <algorithm>
-# include <cassert>
-# include <exception>
-# include <string>
-# include <string_view>
-# include <fstream>
-# include <boost/algorithm/string.hpp>
-# include <boost/algorithm/string/predicate.hpp>
-# include <boost/lexical_cast.hpp>
-# include <boost/tokenizer.hpp>
+#include <algorithm>
+#include <cassert>
+#include <exception>
+#include <string>
+#include <string_view>
+#include <fstream>
+#include <boost/algorithm/string.hpp>
+#include <boost/algorithm/string/predicate.hpp>
+#include <boost/lexical_cast.hpp>
+#include <boost/tokenizer.hpp>
 #endif
 
 #include "Builder3D.h"
@@ -51,16 +51,13 @@ using namespace Base;
 constexpr float valueMinLegal {-1.0F};
 constexpr float valueMaxLegal {1.0F};
 
-ColorRGB::ColorRGB() : Rgb{1.0F, 1.0F, 1.0F}
-{
-}
+ColorRGB::ColorRGB()
+    : Rgb {1.0F, 1.0F, 1.0F}
+{}
 
 ColorRGB::ColorRGB(float red, float green, float blue)
-    : Rgb{valueInRange(red),
-          valueInRange(green),
-          valueInRange(blue)}
-{
-}
+    : Rgb {valueInRange(red), valueInRange(green), valueInRange(blue)}
+{}
 
 float ColorRGB::valueInRange(float value)
 {
@@ -70,14 +67,14 @@ float ColorRGB::valueInRange(float value)
 const char* DrawStyle::styleAsString() const
 {
     switch (style) {
-    case Style::Filled:
-        return "FILLED";
-    case Style::Lines:
-        return "LINES";
-    case Style::Points:
-        return "POINTS";
-    case Style::Invisible:
-        return "INVISIBLE";
+        case Style::Filled:
+            return "FILLED";
+        case Style::Lines:
+            return "LINES";
+        case Style::Points:
+            return "POINTS";
+        case Style::Invisible:
+            return "INVISIBLE";
     }
     return "FILLED";
 }
@@ -92,12 +89,12 @@ std::string DrawStyle::patternAsString() const
 const char* VertexOrdering::toString() const
 {
     switch (ordering) {
-    case Ordering::UnknownOrdering:
-        return "UNKNOWN_ORDERING";
-    case Ordering::Clockwise:
-        return "CLOCKWISE";
-    case Ordering::CounterClockwise:
-        return "COUNTERCLOCKWISE";
+        case Ordering::UnknownOrdering:
+            return "UNKNOWN_ORDERING";
+        case Ordering::Clockwise:
+            return "CLOCKWISE";
+        case Ordering::CounterClockwise:
+            return "COUNTERCLOCKWISE";
     }
     return "UNKNOWN_ORDERING";
 }
@@ -105,10 +102,10 @@ const char* VertexOrdering::toString() const
 const char* ShapeType::toString() const
 {
     switch (type) {
-    case Type::UnknownShapeType:
-        return "UNKNOWN_SHAPE_TYPE";
-    case Type::Convex:
-        return "SOLID";
+        case Type::UnknownShapeType:
+            return "UNKNOWN_SHAPE_TYPE";
+        case Type::Convex:
+            return "SOLID";
     }
     return "UNKNOWN_SHAPE_TYPE";
 }
@@ -116,32 +113,32 @@ const char* ShapeType::toString() const
 const char* BindingElement::bindingAsString() const
 {
     switch (value) {
-    case Binding::PerPart:
-        return "PER_PART";
-    case Binding::PerPartIndexed:
-        return "PER_PART_INDEXED";
-    case Binding::PerFace:
-        return "PER_FACE";
-    case Binding::PerFaceIndexed:
-        return "PER_FACE_INDEXED";
-    case Binding::PerVertex:
-        return "PER_VERTEX";
-    case Binding::PerVertexIndexed:
-        return "PER_VERTEX_INDEXED";
-    default:
-        return "OVERALL";
+        case Binding::PerPart:
+            return "PER_PART";
+        case Binding::PerPartIndexed:
+            return "PER_PART_INDEXED";
+        case Binding::PerFace:
+            return "PER_FACE";
+        case Binding::PerFaceIndexed:
+            return "PER_FACE_INDEXED";
+        case Binding::PerVertex:
+            return "PER_VERTEX";
+        case Binding::PerVertexIndexed:
+            return "PER_VERTEX_INDEXED";
+        default:
+            return "OVERALL";
     }
 }
 
 const char* PolygonOffset::styleAsString() const
 {
     switch (style) {
-    case Style::Filled:
-        return "FILLED";
-    case Style::Lines:
-        return "LINES";
-    case Style::Points:
-        return "POINTS";
+        case Style::Filled:
+            return "FILLED";
+        case Style::Lines:
+            return "LINES";
+        case Style::Points:
+            return "POINTS";
     }
     return "FILLED";
 }
@@ -149,10 +146,9 @@ const char* PolygonOffset::styleAsString() const
 // -----------------------------------------------------------------------------
 
 InventorOutput::InventorOutput(std::ostream& result, Indentation& indent)
-  : result(result)
-  , indent(indent)
-{
-}
+    : result(result)
+    , indent(indent)
+{}
 
 std::ostream& InventorOutput::stream()
 {
@@ -207,32 +203,41 @@ void InventorOutput::decreaseIndent()
 
 // -----------------------------------------------------------------------------
 
-namespace Base {
-template <class type>
-struct field_traits { };
+namespace Base
+{
+template<class type>
+struct field_traits
+{
+};
 
-template <>
-struct field_traits<float> {
+template<>
+struct field_traits<float>
+{
     using field_type = float;
-    static std::ostream& write(std::ostream& out, const field_type& item) {
+    static std::ostream& write(std::ostream& out, const field_type& item)
+    {
         out << item;
         return out;
     }
 };
 
-template <>
-struct field_traits<Vector3f> {
+template<>
+struct field_traits<Vector3f>
+{
     using field_type = Vector3f;
-    static std::ostream& write(std::ostream& out, const field_type& item) {
+    static std::ostream& write(std::ostream& out, const field_type& item)
+    {
         out << item.x << " " << item.y << " " << item.z;
         return out;
     }
 };
 
-template <>
-struct field_traits<ColorRGB> {
+template<>
+struct field_traits<ColorRGB>
+{
     using field_type = ColorRGB;
-    static std::ostream& write(std::ostream& out, const field_type& item) {
+    static std::ostream& write(std::ostream& out, const field_type& item)
+    {
         out << item.red() << " " << item.green() << " " << item.blue();
         return out;
     }
@@ -242,17 +247,21 @@ struct field_traits<ColorRGB> {
  * Writes a field type to a stream.
  * @author Werner Mayer
  */
-class InventorFieldWriter {
+class InventorFieldWriter
+{
 public:
     template<typename T>
     void write(const char* fieldName, const std::vector<T>& fieldData, InventorOutput& out) const;
 };
 
 template<typename T>
-void InventorFieldWriter::write(const char* fieldName, const std::vector<T>& fieldData, InventorOutput& out) const
+void InventorFieldWriter::write(const char* fieldName,
+                                const std::vector<T>& fieldData,
+                                InventorOutput& out) const
 {
-    if (fieldData.empty())
+    if (fieldData.empty()) {
         return;
+    }
 
     if (fieldData.size() == 1) {
         out.write() << fieldName << " ";
@@ -271,36 +280,42 @@ void InventorFieldWriter::write(const char* fieldName, const std::vector<T>& fie
 }
 
 template<>
-void InventorFieldWriter::write<int>(const char* fieldName, const std::vector<int>& fieldData, InventorOutput& out) const
+void InventorFieldWriter::write<int>(const char* fieldName,
+                                     const std::vector<int>& fieldData,
+                                     InventorOutput& out) const
 {
-    if (fieldData.empty())
+    if (fieldData.empty()) {
         return;
+    }
 
     out.write() << fieldName << " [\n";
     out.increaseIndent();
-    std::size_t last_index{fieldData.size()};
-    std::size_t index{};
+    std::size_t last_index {fieldData.size()};
+    std::size_t index {};
     for (auto it : fieldData) {
-        if (index % 8 == 0)
+        if (index % 8 == 0) {
             out.write();
-        if (index < last_index)
+        }
+        if (index < last_index) {
             out.stream() << it << ", ";
-        else
+        }
+        else {
             out.stream() << it << " ] \n";
-        if (++index % 8 == 0)
+        }
+        if (++index % 8 == 0) {
             out.stream() << '\n';
+        }
     }
     out.decreaseIndent();
     out.write() << "]\n";
 }
-}
+}  // namespace Base
 
 // -----------------------------------------------------------------------------
 
-LabelItem::LabelItem(const std::string& text) : text(text)
-{
-
-}
+LabelItem::LabelItem(const std::string& text)
+    : text(text)
+{}
 
 void LabelItem::write(InventorOutput& out) const
 {
@@ -311,10 +326,9 @@ void LabelItem::write(InventorOutput& out) const
 
 // -----------------------------------------------------------------------------
 
-InfoItem::InfoItem(const std::string& text) : text(text)
-{
-
-}
+InfoItem::InfoItem(const std::string& text)
+    : text(text)
+{}
 
 void InfoItem::write(InventorOutput& out) const
 {
@@ -325,10 +339,9 @@ void InfoItem::write(InventorOutput& out) const
 
 // -----------------------------------------------------------------------------
 
-BaseColorItem::BaseColorItem(const ColorRGB& rgb) : rgb(rgb)
-{
-
-}
+BaseColorItem::BaseColorItem(const ColorRGB& rgb)
+    : rgb(rgb)
+{}
 
 void BaseColorItem::write(InventorOutput& out) const
 {
@@ -343,15 +356,14 @@ PointItem::PointItem(const Base::Vector3f& point, DrawStyle drawStyle, const Col
     : point(point)
     , drawStyle(drawStyle)
     , rgb(rgb)
-{
-
-}
+{}
 
 void PointItem::write(InventorOutput& out) const
 {
     out.write() << "Separator { \n";
     out.write() << "  Material { \n";
-    out.write() << "    diffuseColor " << rgb.red() << " "<< rgb.green() << " "<< rgb.blue() << '\n';
+    out.write() << "    diffuseColor " << rgb.red() << " " << rgb.green() << " " << rgb.blue()
+                << '\n';
     out.write() << "  }\n";
     out.write() << "  MaterialBinding { value PER_PART }\n";
     out.write() << "  DrawStyle { pointSize " << drawStyle.pointSize << "}\n";
@@ -359,7 +371,7 @@ void PointItem::write(InventorOutput& out) const
     out.write() << "    point [ " << point.x << " " << point.y << " " << point.z << "]\n";
     out.write() << "  }\n";
     out.write() << "  PointSet { }\n";
-    out.write() <<"}\n";
+    out.write() << "}\n";
 }
 
 // -----------------------------------------------------------------------------
@@ -368,21 +380,21 @@ LineItem::LineItem(const Base::Line3f& line, DrawStyle drawStyle, const ColorRGB
     : line(line)
     , drawStyle(drawStyle)
     , rgb(rgb)
-{
-
-}
+{}
 
 void LineItem::write(InventorOutput& out) const
 {
     std::string pattern = drawStyle.patternAsString();
 
     out.write("  Separator { \n");
-    out.write() << "    Material { diffuseColor " << rgb.red() << " "<< rgb.green() << " "<< rgb.blue() << "} \n";
-    out.write() << "    DrawStyle { lineWidth " << drawStyle.lineWidth << " linePattern " << pattern << " } \n";
+    out.write() << "    Material { diffuseColor " << rgb.red() << " " << rgb.green() << " "
+                << rgb.blue() << "} \n";
+    out.write() << "    DrawStyle { lineWidth " << drawStyle.lineWidth << " linePattern " << pattern
+                << " } \n";
     out.write() << "    Coordinate3 { \n";
     out.write() << "      point [ ";
-    out.write() <<        line.p1.x << " " << line.p1.y << " " << line.p1.z << ",";
-    out.write() <<        line.p2.x << " " << line.p2.y << " " << line.p2.z;
+    out.write() << line.p1.x << " " << line.p1.y << " " << line.p1.z << ",";
+    out.write() << line.p2.x << " " << line.p2.y << " " << line.p2.z;
     out.write() << " ] \n";
     out.write() << "    } \n";
     out.write() << "    LineSet { } \n";
@@ -391,21 +403,23 @@ void LineItem::write(InventorOutput& out) const
 
 // -----------------------------------------------------------------------------
 
-MultiLineItem::MultiLineItem(const std::vector<Vector3f>& points, DrawStyle drawStyle, const ColorRGB& rgb)
-    : points{points}
-    , drawStyle{drawStyle}
-    , rgb{rgb}
-{
-
-}
+MultiLineItem::MultiLineItem(const std::vector<Vector3f>& points,
+                             DrawStyle drawStyle,
+                             const ColorRGB& rgb)
+    : points {points}
+    , drawStyle {drawStyle}
+    , rgb {rgb}
+{}
 
 void MultiLineItem::write(InventorOutput& out) const
 {
     std::string pattern = drawStyle.patternAsString();
 
     out.write() << "Separator {\n";
-    out.write() << "  Material { diffuseColor " << rgb.red() << " "<< rgb.green() << " "<< rgb.blue() << "}\n";
-    out.write() << "  DrawStyle { lineWidth " << drawStyle.lineWidth << " linePattern " << pattern << " }\n";
+    out.write() << "  Material { diffuseColor " << rgb.red() << " " << rgb.green() << " "
+                << rgb.blue() << "}\n";
+    out.write() << "  DrawStyle { lineWidth " << drawStyle.lineWidth << " linePattern " << pattern
+                << " }\n";
     out.write() << "  Coordinate3 {\n";
 
     InventorFieldWriter writer;
@@ -424,9 +438,7 @@ ArrowItem::ArrowItem(const Base::Line3f& line, DrawStyle drawStyle, const ColorR
     : line(line)
     , drawStyle(drawStyle)
     , rgb(rgb)
-{
-
-}
+{}
 
 void ArrowItem::write(InventorOutput& out) const
 {
@@ -434,7 +446,7 @@ void ArrowItem::write(InventorOutput& out) const
     float coneLength = length / 10.0F;
     float coneRadius = coneLength / 2.0F;
     float sf1 = length - coneLength;
-    float sf2 = length - coneLength/2.0F;
+    float sf2 = length - coneLength / 2.0F;
 
     Vector3f dir = line.GetDirection();
     dir.Normalize();
@@ -449,20 +461,19 @@ void ArrowItem::write(InventorOutput& out) const
     float angle = Vector3f(0.0f, 1.0f, 0.0f).GetAngle(dir);
 
     out.write() << "Separator {\n";
-    out.write() << "  Material { diffuseColor " << rgb.red() << " "<< rgb.green() << " "<< rgb.blue() << "}\n";
+    out.write() << "  Material { diffuseColor " << rgb.red() << " " << rgb.green() << " "
+                << rgb.blue() << "}\n";
     out.write() << "  DrawStyle { lineWidth " << drawStyle.lineWidth << " }\n";
     out.write() << "  Coordinate3 {\n";
     out.write() << "    point [ ";
-    out.write() <<        line.p1.x << " " << line.p1.y << " " << line.p1.z << ", ";
-    out.write() <<        pt2s.x << " " << pt2s.y << " " << pt2s.z;
+    out.write() << line.p1.x << " " << line.p1.y << " " << line.p1.z << ", ";
+    out.write() << pt2s.x << " " << pt2s.y << " " << pt2s.z;
     out.write() << " ]\n";
     out.write() << "  }\n";
     out.write() << "  LineSet { }\n";
     out.write() << "  Transform { \n";
-    out.write() << "    translation "
-                << cpt.x << " " << cpt.y << " " << cpt.z << '\n';
-    out.write() << "    rotation "
-                << rot.x << " " << rot.y << " " << rot.z << " " << angle << '\n';
+    out.write() << "    translation " << cpt.x << " " << cpt.y << " " << cpt.z << '\n';
+    out.write() << "    rotation " << rot.x << " " << rot.y << " " << rot.z << " " << angle << '\n';
     out.write() << "  }\n";
     out.write() << "  Cone { bottomRadius " << coneRadius << " height " << coneLength << "} \n";
     out.write() << "}\n";
@@ -470,14 +481,15 @@ void ArrowItem::write(InventorOutput& out) const
 
 // -----------------------------------------------------------------------------
 
-BoundingBoxItem::BoundingBoxItem(const Vector3f& pt1, const Vector3f& pt2, DrawStyle drawStyle, const ColorRGB& rgb)
-    : pt1{pt1}
-    , pt2{pt2}
-    , drawStyle{drawStyle}
-    , rgb{rgb}
-{
-
-}
+BoundingBoxItem::BoundingBoxItem(const Vector3f& pt1,
+                                 const Vector3f& pt2,
+                                 DrawStyle drawStyle,
+                                 const ColorRGB& rgb)
+    : pt1 {pt1}
+    , pt2 {pt2}
+    , drawStyle {drawStyle}
+    , rgb {rgb}
+{}
 
 void BoundingBoxItem::write(InventorOutput& out) const
 {
@@ -491,24 +503,20 @@ void BoundingBoxItem::write(InventorOutput& out) const
     points[6].Set(pt2.x, pt2.y, pt1.z);
     points[7].Set(pt2.x, pt2.y, pt2.z);
 
-    std::vector<int> lineset = {
-        0, 2, 6, 4, 0, -1,
-        1, 5, 7, 3, 1, -1,
-        7, 6, 2, 3, 7, -1,
-        3, 2, 0, 1, 3, -1,
-        5, 1, 0, 4, 5, -1
-    };
+    std::vector<int> lineset = {0, 2, 6,  4, 0, -1, 1, 5, 7,  3, 1, -1, 7, 6, 2,
+                                3, 7, -1, 3, 2, 0,  1, 3, -1, 5, 1, 0,  4, 5, -1};
 
     out.write() << "Separator {\n";
-    out.write() << "  Material { diffuseColor " << rgb.red() << " "<< rgb.green() << " "<< rgb.blue() << "}\n";
+    out.write() << "  Material { diffuseColor " << rgb.red() << " " << rgb.green() << " "
+                << rgb.blue() << "}\n";
     out.write() << "  DrawStyle { lineWidth " << drawStyle.lineWidth << "}\n";
 
-    Coordinate3Item coords{points};
+    Coordinate3Item coords {points};
     out.increaseIndent();
     coords.write(out);
     out.decreaseIndent();
 
-    IndexedLineSetItem indexed{lineset};
+    IndexedLineSetItem indexed {lineset};
     out.increaseIndent();
     indexed.write(out);
     out.decreaseIndent();
@@ -622,16 +630,14 @@ void MaterialBindingItem::setValue(BindingElement::Binding bind)
 
 void MaterialBindingItem::write(InventorOutput& out) const
 {
-    out.write() << "MaterialBinding { value "
-                << value.bindingAsString() << " } \n";
+    out.write() << "MaterialBinding { value " << value.bindingAsString() << " } \n";
 }
 
 // -----------------------------------------------------------------------------
 
 DrawStyleItem::DrawStyleItem(DrawStyle value)
-    : style{value}
-{
-}
+    : style {value}
+{}
 
 void DrawStyleItem::setValue(DrawStyle value)
 {
@@ -650,10 +656,9 @@ void DrawStyleItem::write(InventorOutput& out) const
 
 // -----------------------------------------------------------------------------
 
-ShapeHintsItem::ShapeHintsItem(float creaseAngle) : creaseAngle(creaseAngle)
-{
-
-}
+ShapeHintsItem::ShapeHintsItem(float creaseAngle)
+    : creaseAngle(creaseAngle)
+{}
 
 void ShapeHintsItem::setVertexOrdering(VertexOrdering::Ordering value)
 {
@@ -696,8 +701,7 @@ void PolygonOffsetItem::write(InventorOutput& out) const
 
 Coordinate3Item::Coordinate3Item(const std::vector<Vector3f>& points)
     : points(points)
-{
-}
+{}
 
 void Coordinate3Item::write(InventorOutput& out) const
 {
@@ -737,11 +741,9 @@ void LineSetItem::write(InventorOutput& out) const
 
 FaceSetItem::FaceSetItem(const std::vector<int>& indices)
     : indices(indices)
-{
+{}
 
-}
-
-void FaceSetItem::write(InventorOutput &out) const
+void FaceSetItem::write(InventorOutput& out) const
 {
     out.write() << "FaceSet {\n";
     out.increaseIndent();
@@ -755,11 +757,9 @@ void FaceSetItem::write(InventorOutput &out) const
 
 IndexedLineSetItem::IndexedLineSetItem(const std::vector<int>& indices)
     : indices(indices)
-{
+{}
 
-}
-
-void IndexedLineSetItem::write(InventorOutput &out) const
+void IndexedLineSetItem::write(InventorOutput& out) const
 {
     out.write() << "IndexedLineSet {\n";
     out.increaseIndent();
@@ -773,11 +773,9 @@ void IndexedLineSetItem::write(InventorOutput &out) const
 
 IndexedFaceSetItem::IndexedFaceSetItem(const std::vector<int>& indices)
     : indices(indices)
-{
+{}
 
-}
-
-void IndexedFaceSetItem::write(InventorOutput &out) const
+void IndexedFaceSetItem::write(InventorOutput& out) const
 {
     out.write() << "IndexedFaceSet {\n";
     out.increaseIndent();
@@ -791,8 +789,7 @@ void IndexedFaceSetItem::write(InventorOutput &out) const
 
 NormalItem::NormalItem(const std::vector<Base::Vector3f>& vec)
     : vector(vec)
-{
-}
+{}
 
 void NormalItem::write(InventorOutput& out) const
 {
@@ -823,8 +820,7 @@ void NormalBindingItem::setValue(BindingElement::Binding bind)
 
 void NormalBindingItem::write(InventorOutput& out) const
 {
-    out.write() << "NormalBinding { value "
-                << value.bindingAsString() << " }\n";
+    out.write() << "NormalBinding { value " << value.bindingAsString() << " }\n";
 }
 
 // -----------------------------------------------------------------------------
@@ -909,22 +905,19 @@ void NurbsSurfaceItem::write(InventorOutput& out) const
 
 Text2Item::Text2Item(const std::string& string)
     : string(string)
-{
-
-}
+{}
 
 void Text2Item::write(InventorOutput& out) const
 {
-    out.write() << "Text2 { string \"" << string << "\" " << "}\n";
+    out.write() << "Text2 { string \"" << string << "\" "
+                << "}\n";
 }
 
 // -----------------------------------------------------------------------------
 
 TransformItem::TransformItem(const Base::Placement& placement)
     : placement(placement)
-{
-
-}
+{}
 
 TransformItem::TransformItem(const Matrix4D& transform)
 {
@@ -935,27 +928,26 @@ void TransformItem::write(InventorOutput& out) const
 {
     Base::Vector3d translation = placement.getPosition();
     Base::Vector3d rotationaxis;
-    double angle{};
+    double angle {};
     placement.getRotation().getValue(rotationaxis, angle);
 
     out.write() << "Transform {\n";
-    out.write() << "  translation "
-         << translation.x << " " << translation.y << " " << translation.z << '\n';
-    out.write() << "  rotation "
-         << rotationaxis.x << " " << rotationaxis.y << " " << rotationaxis.z
-         << " " << angle << '\n';
-    out.write() <<  "}" << '\n';
+    out.write() << "  translation " << translation.x << " " << translation.y << " " << translation.z
+                << '\n';
+    out.write() << "  rotation " << rotationaxis.x << " " << rotationaxis.y << " " << rotationaxis.z
+                << " " << angle << '\n';
+    out.write() << "}" << '\n';
 }
 
 // -----------------------------------------------------------------------------
 
 InventorBuilder::InventorBuilder(std::ostream& output)
-  : result(output)
+    : result(output)
 {
     addHeader();
 }
 
-InventorBuilder:: ~InventorBuilder() = default;
+InventorBuilder::~InventorBuilder() = default;
 
 void InventorBuilder::addHeader()
 {
@@ -997,10 +989,9 @@ void InventorBuilder::endSeparator()
  * A more elaborate description of the constructor.
  */
 Builder3D::Builder3D()
-  : result{}
-  , builder{result}
-{
-}
+    : result {}
+    , builder {result}
+{}
 
 /**
  * A destructor.
@@ -1008,7 +999,7 @@ Builder3D::Builder3D()
  */
 Builder3D::~Builder3D() = default;
 
-void Builder3D::clear ()
+void Builder3D::clear()
 {
     // under gcc stringstream::str() returns a copy not a reference
 #if defined(_MSC_VER)
@@ -1027,8 +1018,12 @@ void Builder3D::clear ()
 void Builder3D::saveToLog()
 {
     ILogger* obs = Base::Console().Get("StatusBar");
-    if (obs){
-        obs->SendLog("Builder3D",result.str().c_str(), Base::LogStyle::Log, Base::IntendedRecipient::Developer, Base::ContentType::Untranslatable);
+    if (obs) {
+        obs->SendLog("Builder3D",
+                     result.str().c_str(),
+                     Base::LogStyle::Log,
+                     Base::IntendedRecipient::Developer,
+                     Base::ContentType::Untranslatable);
     }
 }
 
@@ -1043,7 +1038,7 @@ void Builder3D::saveToLog()
 void Builder3D::saveToFile(const char* FileName)
 {
     Base::FileInfo fi(FileName);
-    Base::ofstream  file(fi);
+    Base::ofstream file(fi);
     if (!file) {
         throw FileException("Cannot open file");
     }
@@ -1086,14 +1081,15 @@ std::vector<T> InventorLoader::readData(const char* fieldName) const
         }
     }
 
-    if (!found)
+    if (!found) {
         return {};
+    }
 
     do {
         boost::char_separator<char> sep(" ,");
-        boost::tokenizer<boost::char_separator<char> > tokens(str, sep);
+        boost::tokenizer<boost::char_separator<char>> tokens(str, sep);
         std::vector<std::string> token_results;
-        token_results.assign(tokens.begin(),tokens.end());
+        token_results.assign(tokens.begin(), tokens.end());
 
         for (const auto& it : token_results) {
             try {
@@ -1105,18 +1101,19 @@ std::vector<T> InventorLoader::readData(const char* fieldName) const
         }
 
         // search for ']' to finish the reading
-        if (str.find("]") != std::string::npos)
+        if (str.find("]") != std::string::npos) {
             break;
-    }
-    while (std::getline(inp, str));
+        }
+    } while (std::getline(inp, str));
 
     return fieldValues;
 }
 
 std::vector<Vector3f> InventorLoader::convert(const std::vector<float>& data) const
 {
-    if (data.size() % 3 != 0)
+    if (data.size() % 3 != 0) {
         throw std::string("Reading failed");
+    }
 
     std::size_t len = data.size() / 3;
     std::vector<Vector3f> points;
@@ -1139,11 +1136,11 @@ std::vector<InventorLoader::Face> InventorLoader::convert(const std::vector<int3
     int32_t coordIndex = 0;
     for (const auto it : data) {
         if (it == 3) {
-            faces.emplace_back(coordIndex, coordIndex+1, coordIndex+2);
+            faces.emplace_back(coordIndex, coordIndex + 1, coordIndex + 2);
         }
         else if (it == 4) {
-            faces.emplace_back(coordIndex, coordIndex+1, coordIndex+2);
-            faces.emplace_back(coordIndex, coordIndex+2, coordIndex+3);
+            faces.emplace_back(coordIndex, coordIndex + 1, coordIndex + 2);
+            faces.emplace_back(coordIndex, coordIndex + 2, coordIndex + 3);
         }
         coordIndex += it;
     }
@@ -1164,7 +1161,8 @@ std::vector<std::vector<int32_t>> InventorLoader::split(const std::vector<int32_
     return splitdata;
 }
 
-std::vector<InventorLoader::Face> InventorLoader::convert(const std::vector<std::vector<int32_t>>& coordIndex) const
+std::vector<InventorLoader::Face>
+InventorLoader::convert(const std::vector<std::vector<int32_t>>& coordIndex) const
 {
     std::vector<Face> faces;
     faces.reserve(coordIndex.size());
@@ -1207,15 +1205,17 @@ void InventorLoader::readFaceSet()
 
 bool InventorLoader::read()
 {
-    if (!inp || inp.bad())
+    if (!inp || inp.bad()) {
         return false;
+    }
 
     std::string line;
 
     // Verify it's an Inventor 2.1 file
     std::getline(inp, line);
-    if (line.find("#Inventor V2.1 ascii") == std::string::npos)
+    if (line.find("#Inventor V2.1 ascii") == std::string::npos) {
         return false;
+    }
 
     while (std::getline(inp, line)) {
         // read the normals if they are defined
@@ -1239,30 +1239,36 @@ bool InventorLoader::read()
 
 bool InventorLoader::isValid() const
 {
-    int32_t value{static_cast<int32_t>(points.size())};
+    int32_t value {static_cast<int32_t>(points.size())};
     auto inRange = [value](const Face& f) {
-        if (f.p1 < 0 || f.p1 >= value)
+        if (f.p1 < 0 || f.p1 >= value) {
             return false;
-        if (f.p2 < 0 || f.p2 >= value)
+        }
+        if (f.p2 < 0 || f.p2 >= value) {
             return false;
-        if (f.p3 < 0 || f.p3 >= value)
+        }
+        if (f.p3 < 0 || f.p3 >= value) {
             return false;
+        }
         return true;
     };
     for (auto it : faces) {
-        if (!inRange(it))
+        if (!inRange(it)) {
             return false;
+        }
     }
 
     return true;
 }
 
-namespace Base {
+namespace Base
+{
 BaseExport Vector3f to_vector(std::string str)
 {
     std::string_view view = str;
-    if (!boost::starts_with(view, "(") || !boost::ends_with(str, ")"))
+    if (!boost::starts_with(view, "(") || !boost::ends_with(str, ")")) {
         throw std::runtime_error("string is not a tuple");
+    }
 
     view.remove_prefix(1);
     view.remove_suffix(1);
@@ -1270,12 +1276,13 @@ BaseExport Vector3f to_vector(std::string str)
     str = view;
 
     boost::char_separator<char> sep(" ,");
-    boost::tokenizer<boost::char_separator<char> > tokens(str, sep);
+    boost::tokenizer<boost::char_separator<char>> tokens(str, sep);
     std::vector<std::string> token_results;
     token_results.assign(tokens.begin(), tokens.end());
 
-    if (token_results.size() != 3)
+    if (token_results.size() != 3) {
         throw std::runtime_error("not a tuple of three floats");
+    }
 
     Base::Vector3f vec;
     vec.x = boost::lexical_cast<float>(token_results.at(0));
@@ -1285,4 +1292,4 @@ BaseExport Vector3f to_vector(std::string str)
     return vec;
 }
 
-}
+}  // namespace Base

@@ -24,7 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <sstream>
+#include <sstream>
 #endif
 
 #include "PyObjectBase.h"
@@ -36,6 +36,7 @@
 
 using namespace Base;
 
+// clang-format off
 PyObject* Base::PyExc_FC_GeneralError = nullptr;
 PyObject* Base::PyExc_FC_FreeCADAbort = nullptr;
 PyObject* Base::PyExc_FC_XMLBaseException = nullptr;
@@ -48,13 +49,13 @@ PyObject* Base::PyExc_FC_ExpressionError = nullptr;
 PyObject* Base::PyExc_FC_ParserError = nullptr;
 PyObject* Base::PyExc_FC_CADKernelError = nullptr;
 
-typedef struct {
+typedef struct {            //NOLINT
     PyObject_HEAD
     PyObject* baseobject;
     PyObject* weakreflist;  /* List of weak references */
 } PyBaseProxy;
 
-// Constructor
+// NOLINTNEXTLINE
 PyObjectBase::PyObjectBase(void* voidp, PyTypeObject *T)
   : _pcTwinPointer(voidp)
 {
@@ -78,6 +79,7 @@ PyObjectBase::~PyObjectBase()
 #ifdef FC_LOGPYOBJECTS
     Base::Console().Log("PyO-: %s (%p)\n",Py_TYPE(this)->tp_name, this);
 #endif
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
     if (baseProxy && reinterpret_cast<PyBaseProxy*>(baseProxy)->baseobject == this)
         Py_DECREF(baseProxy);
     Py_XDECREF(attrDict);
@@ -105,6 +107,7 @@ static void
 PyBaseProxy_dealloc(PyObject* self)
 {
     /* Clear weakrefs first before calling any destructors */
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
     if (reinterpret_cast<PyBaseProxy*>(self)->weakreflist)
         PyObject_ClearWeakRefs(self);
     Py_TYPE(self)->tp_free(self);
@@ -164,7 +167,7 @@ static PyTypeObject PyBaseProxyType = {
     0,                                                      /*tp_version_tag */
     nullptr                                                 /*tp_finalize */
 #if PY_VERSION_HEX >= 0x03090000
-    ,0                                                      /*tp_vectorcall */
+    ,0                                            //NOLINT  /*tp_vectorcall */
 #elif PY_VERSION_HEX >= 0x03080000
     ,0                                                      /*tp_vectorcall */
     /* bpo-37250: kept for backwards compatibility in CPython 3.8 only */
@@ -229,7 +232,7 @@ PyTypeObject PyObjectBase::Type = {
     0,                                                      /*tp_version_tag */
     nullptr                                                 /*tp_finalize */
 #if PY_VERSION_HEX >= 0x03090000
-    ,0                                                      /*tp_vectorcall */
+    ,0                                            //NOLINT  /*tp_vectorcall */
 #elif PY_VERSION_HEX >= 0x03080000
     ,0                                                      /*tp_vectorcall */
     /* bpo-37250: kept for backwards compatibility in CPython 3.8 only */
@@ -254,6 +257,7 @@ PyObject* createWeakRef(PyObjectBase* ptr)
     if (!proxy) {
         proxy = PyType_GenericAlloc(&PyBaseProxyType, 0);
         ptr->baseProxy = proxy;
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
         reinterpret_cast<PyBaseProxy*>(proxy)->baseobject = ptr;
     }
 
@@ -266,6 +270,7 @@ PyObjectBase* getFromWeakRef(PyObject* ref)
     if (ref) {
         PyObject* proxy = PyWeakref_GetObject(ref);
         if (proxy && PyObject_TypeCheck(proxy, &PyBaseProxyType)) {
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
             return static_cast<PyObjectBase*>(reinterpret_cast<PyBaseProxy*>(proxy)->baseobject);
         }
     }
@@ -333,6 +338,7 @@ PyObject* PyObjectBase::__getattro(PyObject * obj, PyObject *attro)
         // something is wrong with the Python types. For example, a C++ class
         // that adds an extension uses the same Python type as a wrapper than
         // another C++ class without this extension.
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
         PyCFunctionObject* cfunc = reinterpret_cast<PyCFunctionObject*>(value);
         if (!cfunc->m_self) {
             Py_DECREF(cfunc);
@@ -391,6 +397,7 @@ PyObject *PyObjectBase::_getattr(const char *attr)
         // Note: We must return the type object here,
         // so that our own types feel as really Python objects
         Py_INCREF(Py_TYPE(this));
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
         return reinterpret_cast<PyObject *>(Py_TYPE(this));
     }
     else if (streq(attr, "__members__")) {
@@ -565,3 +572,4 @@ void PyObjectBase::clearAttributes()
         PyDict_Clear(attrDict);
     }
 }
+// clang-format on
