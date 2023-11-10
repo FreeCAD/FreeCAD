@@ -335,8 +335,6 @@ class Edit(gui_base_original.Modifier):
             self.deformat_objects_after_editing(self.edited_objects)
 
         super(Edit, self).finish()
-        if Gui.Snapper.grid:
-            Gui.Snapper.grid.set()
         self.running = False
         # delay resetting edit mode otherwise it doesn't happen
         from PySide import QtCore
