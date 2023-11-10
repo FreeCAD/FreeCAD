@@ -48,18 +48,23 @@ public:
     virtual ~Uuid();
 
     void setValue(const char* sString);
-    void setValue(const std::string &sString);
+    void setValue(const std::string& sString);
     const std::string& getValue() const;
     static std::string createUuid();
 
-    bool operator==(const Uuid &other) const {return _uuid == other._uuid;}
-    bool operator<(const Uuid &other) const {return _uuid < other._uuid;}
+    bool operator==(const Uuid& other) const
+    {
+        return _uuid == other._uuid;
+    }
+    bool operator<(const Uuid& other) const
+    {
+        return _uuid < other._uuid;
+    }
 
 private:
     std::string _uuid;
 };
 
-} //namespace Base
+}  // namespace Base
 
-#endif // BASE_UUID_H
-
+#endif  // BASE_UUID_H

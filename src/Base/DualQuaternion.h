@@ -27,7 +27,8 @@
 #include <FCGlobal.h>
 
 
-namespace Base {
+namespace Base
+{
 
 /**
  * @brief The DualQuat class represents a dual quaternion, as a quaternion of
@@ -40,58 +41,98 @@ namespace Base {
  * where t is quaternion with x,y,z of translation and w of 0, and r is the
  * rotation quaternion.
  */
-class BaseExport DualQuat {
+class BaseExport DualQuat
+{
 public:
     DualNumber x;
     DualNumber y;
     DualNumber z;
     DualNumber w;
+
 public:
-    ///default constructor: init with zeros
+    /// default constructor: init with zeros
     DualQuat() = default;
     DualQuat(DualNumber x, DualNumber y, DualNumber z, DualNumber w)
-        : x(x), y(y), z(z), w(w) {}
-    DualQuat(double x,double y,double z,double w,double dx,double dy,double dz,double dw)
-        : x(x, dx), y(y, dy), z(z, dz), w(w, dw) {}
-    DualQuat(double x,double y,double z,double w)
-        : x(x), y(y), z(z), w(w) {}
+        : x(x)
+        , y(y)
+        , z(z)
+        , w(w)
+    {}
+    DualQuat(double x, double y, double z, double w, double dx, double dy, double dz, double dw)
+        : x(x, dx)
+        , y(y, dy)
+        , z(z, dz)
+        , w(w, dw)
+    {}
+    DualQuat(double x, double y, double z, double w)
+        : x(x)
+        , y(y)
+        , z(z)
+        , w(w)
+    {}
 
-    ///Builds a dual quaternion from real and dual parts provided as pure real quaternions
+    /// Builds a dual quaternion from real and dual parts provided as pure real quaternions
     DualQuat(DualQuat re, DualQuat du);
 
-    ///returns dual quaternion for identity placement
-    static DualQuat identity() {return {0.0, 0.0, 0.0, 1.0};}
+    /// returns dual quaternion for identity placement
+    static DualQuat identity()
+    {
+        return {0.0, 0.0, 0.0, 1.0};
+    }
 
-    ///return a copy with dual part zeroed out
-    DualQuat real() const {return {x.re, y.re, z.re, w.re};}
+    /// return a copy with dual part zeroed out
+    DualQuat real() const
+    {
+        return {x.re, y.re, z.re, w.re};
+    }
 
-    ///return a real-only quaternion made from dual part of this quaternion.
-    DualQuat dual() const {return {x.du, y.du, z.du, w.du};}
+    /// return a real-only quaternion made from dual part of this quaternion.
+    DualQuat dual() const
+    {
+        return {x.du, y.du, z.du, w.du};
+    }
 
-    ///conjugate
-    DualQuat conj() const {return {-x, -y, -z, w};}
+    /// conjugate
+    DualQuat conj() const
+    {
+        return {-x, -y, -z, w};
+    }
 
-    ///return vector part (with scalar part zeroed out)
-    DualQuat vec() const {return {x,y,z,0.0};}
+    /// return vector part (with scalar part zeroed out)
+    DualQuat vec() const
+    {
+        return {x, y, z, 0.0};
+    }
 
-    ///magnitude of the quaternion
-    double length() const {return sqrt(x.re*x.re + y.re*y.re + z.re*z.re + w.re*w.re);}
+    /// magnitude of the quaternion
+    double length() const
+    {
+        return sqrt(x.re * x.re + y.re * y.re + z.re * z.re + w.re * w.re);
+    }
 
-    ///angle of rotation represented by this quaternion, in radians
-    double theta() const {return 2.0 * atan2(vec().length(), w.re);}
+    /// angle of rotation represented by this quaternion, in radians
+    double theta() const
+    {
+        return 2.0 * atan2(vec().length(), w.re);
+    }
 
-    ///dot product between real (rotation) parts of two dual quaternions (to determine if one of them should be negated for shortest interpolation)
+    /// dot product between real (rotation) parts of two dual quaternions (to determine if one of
+    /// them should be negated for shortest interpolation)
     static double dot(DualQuat a, DualQuat b);
 
-    ///ScLERP. t=0.0 returns identity, t=1.0 returns this. t can also be outside of 0..1 bounds.
+    /// ScLERP. t=0.0 returns identity, t=1.0 returns this. t can also be outside of 0..1 bounds.
     DualQuat pow(double t, bool shorten = true) const;
 
-    DualQuat operator-() const {return {-x, -y, -z, -w};}
+    DualQuat operator-() const
+    {
+        return {-x, -y, -z, -w};
+    }
 
-    //DEBUG
-    //void print() const {
-    //    Console().Log("%f, %f, %f, %f; %f, %f, %f, %f", x.re,y.re,z.re,w.re, x.du,y.du,z.du, w.du);
-    //}
+    // DEBUG
+    // void print() const {
+    //     Console().Log("%f, %f, %f, %f; %f, %f, %f, %f", x.re,y.re,z.re,w.re, x.du,y.du,z.du,
+    //     w.du);
+    // }
 };
 
 BaseExport DualQuat operator+(DualQuat a, DualQuat b);
@@ -104,6 +145,6 @@ BaseExport DualQuat operator*(DualQuat a, DualNumber b);
 BaseExport DualQuat operator*(DualNumber a, DualQuat b);
 
 
-} //namespace
+}  // namespace Base
 
 #endif

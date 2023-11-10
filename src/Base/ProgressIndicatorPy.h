@@ -31,10 +31,10 @@
 namespace Base
 {
 // NOLINTNEXTLINE
-class BaseExport ProgressIndicatorPy : public Py::PythonExtension<ProgressIndicatorPy>
+class BaseExport ProgressIndicatorPy: public Py::PythonExtension<ProgressIndicatorPy>
 {
 public:
-    static void init_type();    // announce properties and methods
+    static void init_type();  // announce properties and methods
     static Py::PythonType& behaviors();
     static PyTypeObject* type_object();
     static bool check(PyObject* p);
@@ -49,12 +49,12 @@ public:
     Py::Object stop(const Py::Tuple&);
 
 private:
-    static PyObject *PyMake(struct _typeobject *, PyObject *, PyObject *);
+    static PyObject* PyMake(struct _typeobject*, PyObject*, PyObject*);
 
 private:
     std::unique_ptr<SequencerLauncher> _seq;
 };
 
-} // namespace Base
+}  // namespace Base
 
-#endif // BASE_PROGRESSINDICATORPY_H
+#endif  // BASE_PROGRESSINDICATORPY_H
