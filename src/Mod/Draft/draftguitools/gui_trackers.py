@@ -1065,6 +1065,8 @@ class gridTracker(Tracker):
         s.addChild(texts)
 
         super().__init__(children=[s], name="gridTracker")
+        self.show_during_command = False
+        self.show_always = False
         self.reset()
 
     def getGridColor(self):
@@ -1245,8 +1247,7 @@ class gridTracker(Tracker):
         self.trans.translation.setValue([P.x, P.y, P.z])
         self.displayHumanFigure(wp)
         self.setAxesColor(wp)
-        if tool:
-            self.on()
+        self.on()
 
     def getClosestNode(self, point):
         """Return the closest node from the given point."""
