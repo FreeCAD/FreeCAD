@@ -1044,44 +1044,44 @@ protected:
     }
 
     /** @brief Function to add a line to the ShapeGeometry vector.*/
-    void addLineToShapeGeometry(Base::Vector3d p1, Base::Vector3d p2, bool constructionMode)
+    auto& addLineToShapeGeometry(Base::Vector3d p1, Base::Vector3d p2, bool constructionMode)
     {
         auto line = std::make_unique<Part::GeomLineSegment>();
         line->setPoints(p1, p2);
         Sketcher::GeometryFacade::setConstruction(line.get(), constructionMode);
-        ShapeGeometry.push_back(std::move(line));
+        return ShapeGeometry.emplace_back(std::move(line));
     }
 
     /** @brief Function to add an arc to the ShapeGeometry vector.*/
-    void addArcToShapeGeometry(Base::Vector3d p1,
-                               double start,
-                               double end,
-                               double radius,
-                               bool constructionMode)
+    auto& addArcToShapeGeometry(Base::Vector3d p1,
+                                double start,
+                                double end,
+                                double radius,
+                                bool constructionMode)
     {
         auto arc = std::make_unique<Part::GeomArcOfCircle>();
         arc->setCenter(p1);
         arc->setRange(start, end, true);
         arc->setRadius(radius);
         Sketcher::GeometryFacade::setConstruction(arc.get(), constructionMode);
-        ShapeGeometry.push_back(std::move(arc));
+        return ShapeGeometry.emplace_back(std::move(arc));
     }
 
     /** @brief Function to add a point to the ShapeGeometry vector.*/
-    void addPointToShapeGeometry(Base::Vector3d p1, bool constructionMode)
+    auto& addPointToShapeGeometry(Base::Vector3d p1, bool constructionMode)
     {
         auto point = std::make_unique<Part::GeomPoint>();
         point->setPoint(p1);
         Sketcher::GeometryFacade::setConstruction(point.get(), constructionMode);
-        ShapeGeometry.push_back(std::move(point));
+        return ShapeGeometry.emplace_back(std::move(point));
     }
 
     /** @brief Function to add an ellipse to the ShapeGeometry vector.*/
-    void addEllipseToShapeGeometry(Base::Vector3d centerPoint,
-                                   Base::Vector3d majorAxisDirection,
-                                   double majorRadius,
-                                   double minorRadius,
-                                   bool constructionMode)
+    auto& addEllipseToShapeGeometry(Base::Vector3d centerPoint,
+                                    Base::Vector3d majorAxisDirection,
+                                    double majorRadius,
+                                    double minorRadius,
+                                    bool constructionMode)
     {
         auto ellipse = std::make_unique<Part::GeomEllipse>();
         ellipse->setMajorRadius(majorRadius);
@@ -1089,17 +1089,17 @@ protected:
         ellipse->setMajorAxisDir(majorAxisDirection);
         ellipse->setCenter(centerPoint);
         Sketcher::GeometryFacade::setConstruction(ellipse.get(), constructionMode);
-        ShapeGeometry.push_back(std::move(ellipse));
+        return ShapeGeometry.emplace_back(std::move(ellipse));
     }
 
     /** @brief Function to add a circle to the ShapeGeometry vector.*/
-    void addCircleToShapeGeometry(Base::Vector3d centerPoint, double radius, bool constructionMode)
+    auto& addCircleToShapeGeometry(Base::Vector3d centerPoint, double radius, bool constructionMode)
     {
         auto circle = std::make_unique<Part::GeomCircle>();
         circle->setRadius(radius);
         circle->setCenter(centerPoint);
         Sketcher::GeometryFacade::setConstruction(circle.get(), constructionMode);
-        ShapeGeometry.push_back(std::move(circle));
+        return ShapeGeometry.emplace_back(std::move(circle));
     }
 
     /** @brief Function to add all the geometries and constraints in ShapeGeometry and
