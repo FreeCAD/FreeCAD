@@ -46,7 +46,7 @@ private:                                                                        
 #define TYPESYSTEM_HEADER_WITH_OVERRIDE()                                                          \
 public:                                                                                            \
     static Base::Type getClassTypeId(void);                                                        \
-    virtual Base::Type getTypeId(void) const override;                                             \
+    Base::Type getTypeId(void) const override;                                                     \
     static void init(void);                                                                        \
     static void* create(void);                                                                     \
                                                                                                    \
