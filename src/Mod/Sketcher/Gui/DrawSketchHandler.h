@@ -282,6 +282,9 @@ protected:
 
     void drawPositionAtCursor(const Base::Vector2d& position);
     void drawDirectionAtCursor(const Base::Vector2d& position, const Base::Vector2d& origin);
+    void
+    drawWidthHeightAtCursor(const Base::Vector2d& position, const double val1, const double val2);
+    void drawDoubleAtCursor(const Base::Vector2d& position, const double radius);
 
     int getPreselectPoint() const;
     int getPreselectCurve() const;
