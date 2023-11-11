@@ -480,10 +480,12 @@ public:
         }
     }
 
-    void drawDoubleAtCursor(const Base::Vector2d& position, const double radius)
+    void drawDoubleAtCursor(const Base::Vector2d& position,
+                            const double radius,
+                            Base::Unit unit = Base::Unit::Length)
     {
         if (shouldDrawDimensionsAtCursor()) {
-            handler->drawDoubleAtCursor(position, radius);
+            handler->drawDoubleAtCursor(position, radius, unit);
         }
     }
 
