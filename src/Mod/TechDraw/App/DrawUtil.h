@@ -71,6 +71,8 @@
 namespace TechDraw
 {
 
+class DrawViewPart;
+
 //used by sort_Edges
 struct EdgePoints
 {
@@ -92,6 +94,7 @@ public:
     static double sensibleScale(double working_scale);
     static double angleWithX(TopoDS_Edge e, bool reverse);
     static double angleWithX(TopoDS_Edge e, TopoDS_Vertex v, double tolerance = VERTEXTOLERANCE);
+    static double angleWithX(Base::Vector3d inVec);
     static double incidenceAngleAtVertex(TopoDS_Edge e, TopoDS_Vertex v, double tolerance);
 
     static bool isFirstVert(TopoDS_Edge e, TopoDS_Vertex v, double tolerance = VERTEXTOLERANCE);
@@ -258,6 +261,9 @@ public:
     static bool isCosmeticVertex(App::DocumentObject* owner, std::string element);
     static bool isCosmeticEdge(App::DocumentObject* owner, std::string element);
     static bool isCenterLine(App::DocumentObject* owner, std::string element);
+
+    static Base::Vector3d  toAppSpace(const DrawViewPart& dvp, const Base::Vector3d& inPoint);
+    static Base::Vector3d  toAppSpace(const DrawViewPart& dvp, const QPointF& inPoint);
 
     //debugging routines
     static void dumpVertexes(const char* text, const TopoDS_Shape& s);
