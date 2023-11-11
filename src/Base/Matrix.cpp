@@ -634,7 +634,12 @@ void Matrix4D::inverseOrthogonal()
 void Matrix4D::inverseGauss()
 {
     double matrix[16];
-    double inversematrix[16] = {1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1};
+    // clang-format off
+    double inversematrix[16] = {1, 0, 0, 0,
+                                0, 1, 0, 0,
+                                0, 0, 1, 0,
+                                0, 0, 0, 1};
+    // clang-format on
     getGLMatrix(matrix);
 
     Matrix_gauss(matrix, inversematrix);

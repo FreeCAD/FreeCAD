@@ -43,11 +43,9 @@ PyObject* BaseClassPy::isDerivedFrom(PyObject* args)
         return nullptr;
     }
 
-    // clang-format off
     Base::Type type = Base::Type::fromName(name);
-    bool valid = (type != Base::Type::badType() && getBaseClassPtr()->getTypeId().isDerivedFrom(type));
+    bool valid = (type != Base::Type::badType() && getBaseClassPtr()->isDerivedFrom(type));
     return PyBool_FromLong(valid ? 1 : 0);
-    // clang-format on
 }
 
 PyObject* BaseClassPy::getAllDerivedFrom(PyObject* args)
