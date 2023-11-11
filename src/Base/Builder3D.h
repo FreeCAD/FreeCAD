@@ -466,7 +466,7 @@ private:
 class BaseExport Coordinate3Item: public NodeItem
 {
 public:
-    Coordinate3Item(const std::vector<Vector3f>& points);
+    explicit Coordinate3Item(const std::vector<Vector3f>& points);
     void write(InventorOutput& out) const override;
 
 private:
@@ -499,7 +499,7 @@ public:
 class BaseExport FaceSetItem: public NodeItem
 {
 public:
-    FaceSetItem(const std::vector<int>&);
+    explicit FaceSetItem(const std::vector<int>&);
     void write(InventorOutput& out) const override;
 
 private:
@@ -512,7 +512,7 @@ private:
 class BaseExport IndexedLineSetItem: public NodeItem
 {
 public:
-    IndexedLineSetItem(const std::vector<int>&);
+    explicit IndexedLineSetItem(const std::vector<int>&);
     void write(InventorOutput& out) const override;
 
 private:
@@ -525,7 +525,7 @@ private:
 class BaseExport IndexedFaceSetItem: public NodeItem
 {
 public:
-    IndexedFaceSetItem(const std::vector<int>&);
+    explicit IndexedFaceSetItem(const std::vector<int>&);
     void write(InventorOutput& out) const override;
 
 private:
@@ -627,7 +627,7 @@ private:
 class BaseExport Text2Item: public NodeItem
 {
 public:
-    Text2Item(const std::string&);
+    explicit Text2Item(const std::string&);
     void write(InventorOutput& out) const override;
 
 private:
