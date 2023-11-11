@@ -100,7 +100,7 @@ private:
     {
         switch (state()) {
             case SelectMode::SeekFirst: {
-                drawPositionAtCursor(onSketchPos);
+                toolWidgetManager.drawPositionAtCursor(onSketchPos);
 
                 if (constructionMethod() == ConstructionMethod::Diagonal
                     || constructionMethod() == ConstructionMethod::ThreePoints) {
@@ -117,7 +117,7 @@ private:
             } break;
             case SelectMode::SeekSecond: {
                 if (constructionMethod() == ConstructionMethod::Diagonal) {
-                    drawDirectionAtCursor(onSketchPos, corner1);
+                    toolWidgetManager.drawDirectionAtCursor(onSketchPos, corner1);
 
                     // Note : we swap corner2 and 4 to make sure the corners are CCW.
                     // making things easier down the line.
@@ -136,7 +136,7 @@ private:
                     angle412 = M_PI / 2;
                 }
                 else if (constructionMethod() == ConstructionMethod::CenterAndCorner) {
-                    drawDirectionAtCursor(onSketchPos, center);
+                    toolWidgetManager.drawDirectionAtCursor(onSketchPos, center);
 
                     corner1 = center - (onSketchPos - center);
                     corner3 = onSketchPos;
@@ -154,7 +154,7 @@ private:
                     angle412 = M_PI / 2;
                 }
                 else if (constructionMethod() == ConstructionMethod::ThreePoints) {
-                    drawDirectionAtCursor(onSketchPos, corner1);
+                    toolWidgetManager.drawDirectionAtCursor(onSketchPos, corner1);
 
                     corner2 = onSketchPos;
                     Base::Vector2d perpendicular;
@@ -168,7 +168,7 @@ private:
                     side = getPointSideOfVector(corner3, corner2 - corner1, corner1);
                 }
                 else {
-                    drawDirectionAtCursor(onSketchPos, center);
+                    toolWidgetManager.drawDirectionAtCursor(onSketchPos, center);
 
                     corner1 = onSketchPos;
                     corner3 = center - (onSketchPos - center);
@@ -193,6 +193,8 @@ private:
 
                 try {
                     CreateAndDrawShapeGeometry();
+
+                    toolWidgetManager.drawWidthHeightAtCursor(onSketchPos, length, width);
                 }
                 catch (const Base::ValueError&) {
                 }  // equal points while hovering raise an objection that can be safely ignored
@@ -207,10 +209,11 @@ private:
                     || constructionMethod() == ConstructionMethod::CenterAndCorner) {
                     if (roundCorners) {
                         calculateRadius(onSketchPos);
+                        toolWidgetManager.drawDoubleAtCursor(onSketchPos, radius);
                     }
-                    else {
-                        calculateThickness(
-                            onSketchPos);  // This is the case of frame of normal rectangle.
+                    else {  // Normal rectangle with frame.
+                        calculateThickness(onSketchPos);
+                        toolWidgetManager.drawDoubleAtCursor(onSketchPos, thickness);
                     }
                 }
                 else if (constructionMethod() == ConstructionMethod::ThreePoints) {
@@ -242,6 +245,8 @@ private:
                     else {
                         radius = 0.;
                     }
+
+                    toolWidgetManager.drawWidthHeightAtCursor(onSketchPos, length, width);
                 }
                 else {
                     corner2 = onSketchPos;
@@ -270,9 +275,7 @@ private:
                         radius = 0.;
                     }
 
-                    SbString text;
-                    text.sprintf(" (%.1f Angle)", angle412 / M_PI * 180);
-                    setPositionText(onSketchPos, text);
+                    toolWidgetManager.drawWidthHeightAtCursor(onSketchPos, length, width);
                 }
 
                 try {
@@ -293,15 +296,17 @@ private:
             case SelectMode::SeekFourth: {
                 if (constructionMethod() == ConstructionMethod::Diagonal
                     || constructionMethod() == ConstructionMethod::CenterAndCorner) {
-                    calculateThickness(
-                        onSketchPos);  // This is the case of frame of round corner rectangle.
+                    calculateThickness(onSketchPos);
+                    toolWidgetManager.drawDoubleAtCursor(onSketchPos, thickness);
                 }
                 else {
                     if (roundCorners) {
                         calculateRadius(onSketchPos);
+                        toolWidgetManager.drawDoubleAtCursor(onSketchPos, radius);
                     }
                     else {
                         calculateThickness(onSketchPos);
+                        toolWidgetManager.drawDoubleAtCursor(onSketchPos, thickness);
                     }
                 }
 
@@ -309,6 +314,7 @@ private:
             } break;
             case SelectMode::SeekFifth: {
                 calculateThickness(onSketchPos);
+                toolWidgetManager.drawDoubleAtCursor(onSketchPos, thickness);
 
                 CreateAndDrawShapeGeometry();
             } break;

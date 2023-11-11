@@ -78,6 +78,8 @@ private:
     {
         switch (state()) {
             case SelectMode::SeekFirst: {
+                toolWidgetManager.drawPositionAtCursor(onSketchPos);
+
                 centerPoint = onSketchPos;
 
                 if (seekAutoConstraint(sugConstraints[0], onSketchPos, Base::Vector2d(0.f, 0.f))) {
@@ -86,6 +88,8 @@ private:
                 }
             } break;
             case SelectMode::SeekSecond: {
+                toolWidgetManager.drawDirectionAtCursor(onSketchPos, centerPoint);
+
                 firstCorner = onSketchPos;
 
                 CreateAndDrawShapeGeometry();
