@@ -166,7 +166,7 @@ public:
     }
 
 private:
-    static Type classTypeId;  // NOLINT(cppcoreguidelines-avoid-non-const-global-variables)
+    static Type classTypeId;  // NOLINT
 
 protected:
     static void initSubclass(Base::Type& toInit,
