@@ -58,7 +58,7 @@ using DSHEllipseController =
                                       /*PAutoConstraintSize =*/3,
                                       /*OnViewParametersT =*/OnViewParameters<5, 6>,
                                       /*WidgetParametersT =*/WidgetParameters<0, 0>,
-                                      /*WidgetCheckboxesT =*/WidgetCheckboxes<1, 1>,
+                                      /*WidgetCheckboxesT =*/WidgetCheckboxes<0, 0>,
                                       /*WidgetComboboxesT =*/WidgetComboboxes<1, 1>,
                                       ConstructionMethods::CircleEllipseConstructionMethod,
                                       /*bool PFirstComboboxIsConstructionMethod =*/true>;
@@ -75,7 +75,6 @@ class DrawSketchHandlerEllipse: public DrawSketchHandlerEllipseBase
 public:
     explicit DrawSketchHandlerEllipse(ConstructionMethod constrMethod = ConstructionMethod::Center)
         : DrawSketchHandlerEllipseBase(constrMethod)
-        , showInternal(true)
         , firstRadius(0.0)
         , secondRadius(0.0)
         , majorRadius(0.0)
@@ -88,6 +87,8 @@ private:
     {
         switch (state()) {
             case SelectMode::SeekFirst: {
+                toolWidgetManager.drawPositionAtCursor(onSketchPos);
+
                 if (constructionMethod() == ConstructionMethod::Center) {
                     centerPoint = onSketchPos;
 
@@ -117,6 +118,13 @@ private:
 
                 CreateAndDrawShapeGeometry();
 
+                if (constructionMethod() == ConstructionMethod::Center) {
+                    toolWidgetManager.drawDoubleAtCursor(onSketchPos, firstRadius);
+                }
+                else {
+                    toolWidgetManager.drawPositionAtCursor(onSketchPos);
+                }
+
                 if (seekAutoConstraint(sugConstraints[1],
                                        onSketchPos,
                                        Base::Vector2d(0.f, 0.f),
@@ -129,6 +137,15 @@ private:
                 calculateThroughPointMinorAxisParameters(onSketchPos);
 
                 CreateAndDrawShapeGeometry();
+
+                if (constructionMethod() == ConstructionMethod::Center) {
+                    toolWidgetManager.drawWidthHeightAtCursor(onSketchPos,
+                                                              firstRadius,
+                                                              secondRadius);
+                }
+                else {
+                    toolWidgetManager.drawPositionAtCursor(onSketchPos);
+                }
 
                 if (seekAutoConstraint(sugConstraints[2],
                                        onSketchPos,
@@ -157,8 +174,7 @@ private:
             // in the exceptional event that this may lead to a circle, do not
             // exposeInternalGeometry
             if (!ShapeGeometry.empty()
-                && ShapeGeometry[0]->getTypeId() == Part::GeomEllipse::getClassTypeId()
-                && showInternal) {
+                && ShapeGeometry[0]->getTypeId() == Part::GeomEllipse::getClassTypeId()) {
                 Gui::cmdAppObjectArgs(sketchgui->getObject(),
                                       "exposeInternalGeometry(%d)",
                                       ellipseGeoId);
@@ -371,7 +387,6 @@ private:
         periapsis;            // Center Mode SeekFirst and SeekSecond, 3PointMode SeekFirst
     Base::Vector2d apoapsis;  // 3Point SeekSecond
     Base::Vector2d firstAxis, secondAxis;
-    bool showInternal;
     double firstRadius, secondRadius, majorRadius, minorRadius;
     int ellipseGeoId;
 };
@@ -431,19 +446,6 @@ void DSHEllipseController::configureToolWidget()
                 1,
                 Gui::BitmapFactory().iconFromTheme("Sketcher_CreateEllipse_3points"));
         }
-
-        toolWidget->setCheckboxLabel(
-            WCheckbox::FirstBox,
-            QApplication::translate("TaskSketcherTool_c1_ellipse", "Show Internal geometries (U)"));
-        toolWidget->setCheckboxToolTip(
-            WCheckbox::FirstBox,
-            QApplication::translate("TaskSketcherTool_c1_ellipse",
-                                    "Show internal geometries (press U to toggle)."));
-        syncCheckboxToHandler(WCheckbox::FirstBox, handler->showInternal);
-
-        toolWidget->setCheckboxIcon(
-            WCheckbox::FirstBox,
-            Gui::BitmapFactory().iconFromTheme("Sketcher_Element_Ellipse_All"));
     }
 
     onViewParameters[OnViewParameter::First]->setLabelType(Gui::SoDatumLabel::DISTANCEX);
@@ -466,18 +468,6 @@ void DSHEllipseController::configureToolWidget()
         onViewParameters[OnViewParameter::Fifth]->setLabelType(
             Gui::SoDatumLabel::RADIUS,
             Gui::EditableDatumLabel::Function::Dimensioning);
-    }
-}
-
-template<>
-void DSHEllipseController::adaptDrawingToCheckboxChange(int checkboxindex, bool value)
-{
-    Q_UNUSED(checkboxindex);
-
-    switch (checkboxindex) {
-        case WCheckbox::FirstBox:
-            handler->showInternal = value;
-            break;
     }
 }
 
@@ -575,13 +565,6 @@ void DSHEllipseControllerBase::doEnforceControlParameters(Base::Vector2d& onSket
 template<>
 void DSHEllipseController::adaptParameters(Base::Vector2d onSketchPos)
 {
-
-    // If checkboxes need synchronisation (they were changed by the DSH, e.g. by using 'M' to switch
-    // construction method), synchronise them and return.
-    if (syncCheckboxToHandler(WCheckbox::FirstBox, handler->showInternal)) {
-        return;
-    }
-
     switch (handler->state()) {
         case SelectMode::SeekFirst: {
             if (!onViewParameters[OnViewParameter::First]->isSet) {
@@ -606,13 +589,12 @@ void DSHEllipseController::adaptParameters(Base::Vector2d onSketchPos)
 
                 auto vec = onSketchPos - handler->centerPoint;
                 if (!onViewParameters[OnViewParameter::Third]->isSet) {
-                    onViewParameters[OnViewParameter::Third]->setSpinboxValue(vec.Length());
+                    setOnViewParameterValue(OnViewParameter::Third, vec.Length());
                 }
 
                 if (!onViewParameters[OnViewParameter::Fourth]->isSet) {
                     double angle = vec.Length() > 0 ? vec.Angle() * 180 / M_PI : 0;
-                    onViewParameters[OnViewParameter::Fourth]->setSpinboxValue(angle,
-                                                                               Base::Unit::Angle);
+                    setOnViewParameterValue(OnViewParameter::Fourth, angle, Base::Unit::Angle);
                 }
 
                 Base::Vector3d start = toVector3d(handler->centerPoint);
@@ -647,8 +629,7 @@ void DSHEllipseController::adaptParameters(Base::Vector2d onSketchPos)
             if (handler->constructionMethod()
                 == DrawSketchHandlerEllipse::ConstructionMethod::Center) {
                 if (!onViewParameters[OnViewParameter::Fifth]->isSet) {
-                    onViewParameters[OnViewParameter::Fifth]->setSpinboxValue(
-                        handler->secondAxis.Length());
+                    setOnViewParameterValue(OnViewParameter::Fifth, handler->secondAxis.Length());
                 }
 
                 Base::Vector3d start = toVector3d(handler->centerPoint);
