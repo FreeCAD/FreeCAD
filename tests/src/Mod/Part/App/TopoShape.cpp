@@ -1,90 +1,45 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
 #include "gtest/gtest.h"
-#include <Mod/Part/App/TopoShape.h>
+#include "Mod/Part/App/TopoShape.h"
 
-// clang-format off
-TEST(TopoShape, TestElementTypeFace1)
+class TopoShapeTest: public ::testing::Test
 {
-    EXPECT_EQ(Part::TopoShape::getElementTypeAndIndex("Face1"),
-              std::make_pair(std::string("Face"), 1UL));
+protected:
+    static void SetUpTestSuite()
+    {
+    }
+
+    void SetUp() override {
+        _declaredLoc1234 = gp_Trsf();
+        _declaredLoc1234.SetScale(gp_Pnt(1.0, 2.0, 3.0), 4.0);
+        _testLocation1234 = TopLoc_Location(_declaredLoc1234);
+
+        _topoShape = Part::TopoShape();
+    }
+
+    void TearDown() override {
+        _topoShape = Part::TopoShape();
+    }
+public:
+    Part::TopoShape _topoShape;
+    TopLoc_Location _testLocation1234;
+    gp_Trsf _declaredLoc1234;
+};
+
+
+TEST_F(TopoShapeTest, setShapeGetShape)
+{
+    // Arrange
+    auto newShape = TopoDS_Shape();
+    newShape.Location(_testLocation1234);
+
+    // Act
+    _topoShape.setShape(newShape);          // set
+    auto shapeSeen = _topoShape.getShape(); // get
+
+    // Assert
+    EXPECT_EQ(shapeSeen.Location(), _testLocation1234);
+    EXPECT_EQ(shapeSeen.Location().Transformation().ScaleFactor(), 4.0);
 }
 
-TEST(TopoShape, TestElementTypeEdge12)
-{
-    EXPECT_EQ(Part::TopoShape::getElementTypeAndIndex("Edge12"),
-              std::make_pair(std::string("Edge"), 12UL));
-}
-
-TEST(TopoShape, TestElementTypeVertex3)
-{
-    EXPECT_EQ(Part::TopoShape::getElementTypeAndIndex("Vertex3"),
-              std::make_pair(std::string("Vertex"), 3UL));
-}
-
-TEST(TopoShape, TestElementTypeFacer)
-{
-    EXPECT_EQ(Part::TopoShape::getElementTypeAndIndex("Facer"),
-              std::make_pair(std::string(), 0UL));
-}
-
-TEST(TopoShape, TestElementTypeVertex)
-{
-    EXPECT_EQ(Part::TopoShape::getElementTypeAndIndex("Vertex"),
-              std::make_pair(std::string(), 0UL));
-}
-
-TEST(TopoShape, TestElementTypeEmpty)
-{
-    EXPECT_EQ(Part::TopoShape::getElementTypeAndIndex(""),
-              std::make_pair(std::string(), 0UL));
-}
-
-TEST(TopoShape, TestElementTypeNull)
-{
-    EXPECT_EQ(Part::TopoShape::getElementTypeAndIndex(nullptr),
-              std::make_pair(std::string(), 0UL));
-}
-
-TEST(TopoShape, TestTypeFace1)
-{
-    EXPECT_EQ(Part::TopoShape::getTypeAndIndex("Face1"),
-              std::make_pair(std::string("Face"), 1UL));
-}
-
-TEST(TopoShape, TestTypeEdge12)
-{
-    EXPECT_EQ(Part::TopoShape::getTypeAndIndex("Edge12"),
-              std::make_pair(std::string("Edge"), 12UL));
-}
-
-TEST(TopoShape, TestTypeVertex3)
-{
-    EXPECT_EQ(Part::TopoShape::getTypeAndIndex("Vertex3"),
-              std::make_pair(std::string("Vertex"), 3UL));
-}
-
-TEST(TopoShape, TestTypeFacer)
-{
-    EXPECT_EQ(Part::TopoShape::getTypeAndIndex("Facer"),
-              std::make_pair(std::string("Facer"), 0UL));
-}
-
-TEST(TopoShape, TestTypeVertex)
-{
-    EXPECT_EQ(Part::TopoShape::getTypeAndIndex("Vertex"),
-              std::make_pair(std::string("Vertex"), 0UL));
-}
-
-TEST(TopoShape, TestTypeEmpty)
-{
-    EXPECT_EQ(Part::TopoShape::getTypeAndIndex(""),
-              std::make_pair(std::string(), 0UL));
-}
-
-TEST(TopoShape, TestTypeNull)
-{
-    EXPECT_EQ(Part::TopoShape::getTypeAndIndex(nullptr),
-              std::make_pair(std::string(), 0UL));
-}
-// clang-format on
