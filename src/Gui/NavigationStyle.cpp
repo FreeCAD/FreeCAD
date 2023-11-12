@@ -1300,8 +1300,8 @@ void NavigationStyle::setViewingMode(const ViewerMode newmode)
         // Set up initial projection point for the projector object when
         // first starting a drag operation.
         animator->stop();
-        findBoundingSphere();
         viewer->showRotationCenter(true);
+        findBoundingSphere();
         this->spinprojector->project(this->lastmouseposition);
         this->interactiveCountInc();
         this->clearLog();
