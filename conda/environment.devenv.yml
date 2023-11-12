@@ -66,6 +66,7 @@ dependencies:
 - debugpy
 - doxygen
 - eigen
+- fmt
 - freetype
 - gmsh
 - graphviz
