@@ -390,40 +390,6 @@ such as &quot;Arial:Bold&quot;</string>
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_16">
-        <item>
-         <widget class="QLabel" name="label_14">
-          <property name="text">
-           <string>Text orientation</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="Gui::PrefComboBox" name="gui::prefcombobox_3">
-          <property name="toolTip">
-           <string>This is the orientation of the dimension texts when those dimensions are vertical. Default is left, which is the ISO standard.</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>dimorientation</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-          <item>
-           <property name="text">
-            <string>Left (ISO standard)</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Right</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
        <layout class="QHBoxLayout" name="horizontalLayout_4">
         <item>
          <widget class="QLabel" name="label_12">
