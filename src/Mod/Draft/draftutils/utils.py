@@ -166,7 +166,7 @@ def get_param_type(param):
         `'bool'`, `'unsigned'`, depending on the parameter.
         It returns `None` for unhandled situations.
     """
-    if param in ("dimsymbol", "dimPrecision", "dimorientation",
+    if param in ("dimsymbol", "dimPrecision",
                  "precision", "defaultWP", "snapRange", "gridEvery",
                  "linewidth", "modconstrain", "modsnap",
                  "maxSnapEdges", "modalt", "HatchPatternResolution",
@@ -182,7 +182,7 @@ def get_param_type(param):
                    "dimovershoot", "extovershoot", "HatchPatternSize"):
         return "float"
     elif param in ("selectBaseObjects", "alwaysSnap", "grid",
-                   "fillmode", "saveonexit", "maxSnap",
+                   "fillmode", "maxSnap",
                    "SvgLinesBlack", "dxfStdSize", "showSnapBar",
                    "hideSnapBar", "alwaysShowGrid", "renderPolylineWidth",
                    "showPlaneTracker", "UsePartPrimitives",
