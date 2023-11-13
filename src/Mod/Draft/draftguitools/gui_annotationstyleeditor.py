@@ -293,7 +293,7 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
             QtGui.QApplication.activeWindow(),
             translate("draft","Open styles file"),
             None,
-            translate("draft","JSON file (*.json *.JSON)"))
+            translate("draft","JSON files (*.json *.JSON)"))
         if filename and filename[0]:
             nstyles = {}
             with open(filename[0]) as f:
