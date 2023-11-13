@@ -66,6 +66,7 @@ dependencies:
 - debugpy
 - doxygen
 - eigen
+- fmt
 - freetype
 - gmsh
 - graphviz
@@ -96,5 +97,4 @@ dependencies:
 - xerces-c
 - yaml-cpp
 - zlib
-- pip:
-  - ptvsd
+- debugpy
