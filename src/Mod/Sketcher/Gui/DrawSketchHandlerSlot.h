@@ -53,10 +53,10 @@ using DSHSlotController =
     DrawSketchDefaultWidgetController<DrawSketchHandlerSlot,
                                       StateMachines::ThreeSeekEnd,
                                       /*PAutoConstraintSize =*/2,
-                                      /*OnVieOnViewParametersT =*/OnViewParameters<5>,
-                                      /*WidgetParametersT =*/WidgetParameters<0>,
-                                      /*WidgetCheckboxesT =*/WidgetCheckboxes<0>,
-                                      /*WidgetComboboxesT =*/WidgetComboboxes<0>>;
+                                      /*OnViewParametersT =*/OnViewParameters<5>,   // NOLINT
+                                      /*WidgetParametersT =*/WidgetParameters<0>,   // NOLINT
+                                      /*WidgetCheckboxesT =*/WidgetCheckboxes<0>,   // NOLINT
+                                      /*WidgetComboboxesT =*/WidgetComboboxes<0>>;  // NOLINT
 
 using DSHSlotControllerBase = DSHSlotController::ControllerBase;
 
@@ -84,6 +84,8 @@ private:
     {
         switch (state()) {
             case SelectMode::SeekFirst: {
+                toolWidgetManager.drawPositionAtCursor(onSketchPos);
+
                 startPoint = onSketchPos;
 
                 if (seekAutoConstraint(sugConstraints[0], onSketchPos, Base::Vector2d(0.f, 0.f))) {
@@ -92,6 +94,8 @@ private:
                 }
             } break;
             case SelectMode::SeekSecond: {
+                toolWidgetManager.drawDirectionAtCursor(onSketchPos, startPoint);
+
                 secondPoint = onSketchPos;
                 angle = GetPointAngle(startPoint, secondPoint);
                 checkHorizontalVertical();
@@ -138,6 +142,8 @@ private:
                 else {
                     radius = std::min(L1, L2);
                 }
+
+                toolWidgetManager.drawDoubleAtCursor(onSketchPos, radius);
 
                 CreateAndDrawShapeGeometry();
             } break;
@@ -254,25 +260,22 @@ private:
             return;
         }
 
-        auto arc1 = std::make_unique<Part::GeomArcOfCircle>();
-        arc1->setRadius(radius);
-        arc1->setRange(M_PI / 2 + angle, 1.5 * M_PI + angle, true);
-        arc1->setCenter(toVector3d(startPoint));
-        Sketcher::GeometryFacade::setConstruction(arc1.get(), isConstructionMode());
+        Part::GeomArcOfCircle* arc1 = addArcToShapeGeometry(toVector3d(startPoint),
+                                                            M_PI / 2 + angle,
+                                                            1.5 * M_PI + angle,
+                                                            radius,
+                                                            isConstructionMode());
 
-        auto arc2 = std::make_unique<Part::GeomArcOfCircle>();
-        arc2->setRadius(radius);
-        arc2->setRange(1.5 * M_PI + angle, M_PI / 2 + angle, true);
-        arc2->setCenter(toVector3d(secondPoint));
-        Sketcher::GeometryFacade::setConstruction(arc2.get(), isConstructionMode());
+        Part::GeomArcOfCircle* arc2 = addArcToShapeGeometry(toVector3d(secondPoint),
+                                                            1.5 * M_PI + angle,
+                                                            M_PI / 2 + angle,
+                                                            radius,
+                                                            isConstructionMode());
 
         Base::Vector3d p11 = arc1->getStartPoint();
         Base::Vector3d p12 = arc1->getEndPoint();
         Base::Vector3d p21 = arc2->getStartPoint();
         Base::Vector3d p22 = arc2->getEndPoint();
-
-        ShapeGeometry.push_back(std::move(arc1));
-        ShapeGeometry.push_back(std::move(arc2));
 
         addLineToShapeGeometry(p11, p22, isConstructionMode());
 
@@ -392,7 +395,8 @@ void DSHSlotControllerBase::doEnforceControlParameters(Base::Vector2d& onSketchP
             }
 
             if (onViewParameters[OnViewParameter::Fourth]->isSet) {
-                double angle = onViewParameters[OnViewParameter::Fourth]->getValue() * M_PI / 180;
+                double angle =
+                    Base::toRadians(onViewParameters[OnViewParameter::Fourth]->getValue());
                 onSketchPos.x = handler->startPoint.x + cos(angle) * length;
                 onSketchPos.y = handler->startPoint.y + sin(angle) * length;
             }
@@ -442,13 +446,14 @@ void DSHSlotController::adaptParameters(Base::Vector2d onSketchPos)
             Base::Vector3d vec = end - start;
 
             if (!onViewParameters[OnViewParameter::Third]->isSet) {
-                onViewParameters[OnViewParameter::Third]->setSpinboxValue(vec.Length());
+                setOnViewParameterValue(OnViewParameter::Third, vec.Length());
             }
 
             double range = (handler->secondPoint - handler->startPoint).Angle();
             if (!onViewParameters[OnViewParameter::Fourth]->isSet) {
-                onViewParameters[OnViewParameter::Fourth]->setSpinboxValue(range * 180 / M_PI,
-                                                                           Base::Unit::Angle);
+                setOnViewParameterValue(OnViewParameter::Fourth,
+                                        Base::toDegrees(range),
+                                        Base::Unit::Angle);
             }
 
             onViewParameters[OnViewParameter::Third]->setPoints(start, end);
