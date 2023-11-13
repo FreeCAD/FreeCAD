@@ -250,9 +250,8 @@
         "displayName": "Conda Debug",
         "description": "Conda debug profile",
         "inherits": [
-          "conda",
-          "conda-linux",
-          "debug"
+          "conda-debug",
+          "conda-linux"
         ]
       },
       {
@@ -260,9 +259,8 @@
         "displayName": "Conda Release",
         "description": "Conda release profile",
         "inherits": [
-          "conda",
-          "conda-linux",
-          "release"
+          "conda-release",
+          "conda-linux"
         ]
       },
       {
@@ -270,9 +268,8 @@
         "displayName": "Conda Debug",
         "description": "Conda debug profile",
         "inherits": [
-          "conda",
-          "conda-macos",
-          "debug"
+          "conda-debug",
+          "conda-macos"
         ]
       },
       {
@@ -280,9 +277,8 @@
         "displayName": "Conda Release",
         "description": "Conda release profile",
         "inherits": [
-          "conda",
-          "conda-macos",
-          "release"
+          "conda-release",
+          "conda-macos"
         ]
       },
       {
@@ -290,9 +286,8 @@
         "displayName": "Conda Debug",
         "description": "Conda debug profile",
         "inherits": [
-          "conda",
-          "conda-windows",
-          "debug"
+          "conda-debug",
+          "conda-windows"
         ]
       },
       {
@@ -300,9 +295,8 @@
         "displayName": "Conda Release",
         "description": "Conda release profile",
         "inherits": [
-          "conda",
-          "conda-windows",
-          "release"
+          "conda-release",
+          "conda-windows"
         ]
       }
     ]
