@@ -23,6 +23,7 @@
 #ifndef BASE_PYOBJECTBASE_H
 #define BASE_PYOBJECTBASE_H
 
+// clang-format off
 // Std. configurations
 
 // (re-)defined in pyconfig.h
@@ -553,5 +554,6 @@ inline void PyTypeCheck(PyObject** ptr, int (*method)(PyObject*), const char* ms
 
 } // namespace Base
 
+// clang-format on
 
-#endif // BASE_PYOBJECTBASE_H
+#endif  // BASE_PYOBJECTBASE_H

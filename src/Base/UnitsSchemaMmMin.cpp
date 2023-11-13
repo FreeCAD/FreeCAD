@@ -23,7 +23,7 @@
 
 #include "PreCompiled.h"
 #ifdef __GNUC__
-# include <unistd.h>
+#include <unistd.h>
 #endif
 
 #include <QString>
@@ -34,7 +34,8 @@
 using namespace Base;
 
 
-QString UnitsSchemaMmMin::schemaTranslate(const Quantity &quant, double &factor, QString &unitString)
+QString
+UnitsSchemaMmMin::schemaTranslate(const Quantity& quant, double& factor, QString& unitString)
 {
     Unit unit = quant.getUnit();
     if (unit == Unit::Length) {
@@ -47,7 +48,7 @@ QString UnitsSchemaMmMin::schemaTranslate(const Quantity &quant, double &factor,
     }
     else if (unit == Unit::Velocity) {
         unitString = QString::fromLatin1("mm/min");
-        factor = 1./60.;
+        factor = 1. / 60.;
     }
     else {
         // default action for all cases without special treatment:

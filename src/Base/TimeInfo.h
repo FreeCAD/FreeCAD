@@ -36,7 +36,7 @@
 #include <ctime>
 
 #ifdef __GNUC__
-# include <cstdint>
+#include <cstdint>
 #endif
 
 #include <string>
@@ -65,28 +65,28 @@ public:
 
     /// sets the object to the actual system time
     void setCurrent();
-    void setTime_t (int64_t seconds);
+    void setTime_t(int64_t seconds);
 
     int64_t getSeconds() const;
-    unsigned short  getMiliseconds() const;
+    unsigned short getMiliseconds() const;
 
-    void operator =  (const TimeInfo &time);
-    bool operator == (const TimeInfo &time) const;
-    bool operator != (const TimeInfo &time) const;
+    void operator=(const TimeInfo& time);
+    bool operator==(const TimeInfo& time) const;
+    bool operator!=(const TimeInfo& time) const;
 
-    bool operator <  (const TimeInfo &time) const;
-    bool operator <= (const TimeInfo &time) const;
-    bool operator >= (const TimeInfo &time) const;
-    bool operator >  (const TimeInfo &time) const;
+    bool operator<(const TimeInfo& time) const;
+    bool operator<=(const TimeInfo& time) const;
+    bool operator>=(const TimeInfo& time) const;
+    bool operator>(const TimeInfo& time) const;
 
     static std::string currentDateTimeString();
-    static std::string diffTime(const TimeInfo &timeStart,const TimeInfo &timeEnd = TimeInfo());
-    static float diffTimeF(const TimeInfo &timeStart,const TimeInfo &timeEnd  = TimeInfo());
+    static std::string diffTime(const TimeInfo& timeStart, const TimeInfo& timeEnd = TimeInfo());
+    static float diffTimeF(const TimeInfo& timeStart, const TimeInfo& timeEnd = TimeInfo());
     bool isNull() const;
     static TimeInfo null();
 
 protected:
-#if defined (_MSC_VER)
+#if defined(_MSC_VER)
     struct _timeb timebuffer;
 #elif defined(__GNUC__)
     struct timeb timebuffer;
@@ -94,72 +94,74 @@ protected:
 };
 
 
- inline int64_t TimeInfo::getSeconds() const
- {
-     return timebuffer.time;
- }
-
- inline unsigned short  TimeInfo::getMiliseconds() const
- {
-     return timebuffer.millitm;
- }
-
-inline bool
-TimeInfo::operator != (const TimeInfo &time) const
+inline int64_t TimeInfo::getSeconds() const
 {
-    return (timebuffer.time != time.timebuffer.time || timebuffer.millitm != time.timebuffer.millitm);
+    return timebuffer.time;
 }
 
-inline void
-TimeInfo::operator = (const TimeInfo &time)
+inline unsigned short TimeInfo::getMiliseconds() const
+{
+    return timebuffer.millitm;
+}
+
+inline bool TimeInfo::operator!=(const TimeInfo& time) const
+{
+    return (timebuffer.time != time.timebuffer.time
+            || timebuffer.millitm != time.timebuffer.millitm);
+}
+
+inline void TimeInfo::operator=(const TimeInfo& time)
 {
     timebuffer = time.timebuffer;
 }
 
-inline bool
-TimeInfo::operator == (const TimeInfo &time) const
+inline bool TimeInfo::operator==(const TimeInfo& time) const
 {
-    return (timebuffer.time == time.timebuffer.time && timebuffer.millitm == time.timebuffer.millitm);
+    return (timebuffer.time == time.timebuffer.time
+            && timebuffer.millitm == time.timebuffer.millitm);
 }
 
-inline bool
-TimeInfo::operator <  (const TimeInfo &time) const
+inline bool TimeInfo::operator<(const TimeInfo& time) const
 {
-    if (timebuffer.time == time.timebuffer.time)
+    if (timebuffer.time == time.timebuffer.time) {
         return timebuffer.millitm < time.timebuffer.millitm;
-    else
+    }
+    else {
         return timebuffer.time < time.timebuffer.time;
+    }
 }
 
-inline bool
-TimeInfo::operator <= (const TimeInfo &time) const
+inline bool TimeInfo::operator<=(const TimeInfo& time) const
 {
-    if (timebuffer.time == time.timebuffer.time)
+    if (timebuffer.time == time.timebuffer.time) {
         return timebuffer.millitm <= time.timebuffer.millitm;
-    else
+    }
+    else {
         return timebuffer.time <= time.timebuffer.time;
+    }
 }
 
-inline bool
-TimeInfo::operator >= (const TimeInfo &time) const
+inline bool TimeInfo::operator>=(const TimeInfo& time) const
 {
-    if (timebuffer.time == time.timebuffer.time)
+    if (timebuffer.time == time.timebuffer.time) {
         return timebuffer.millitm >= time.timebuffer.millitm;
-    else
+    }
+    else {
         return timebuffer.time >= time.timebuffer.time;
+    }
 }
 
-inline bool
-TimeInfo::operator >  (const TimeInfo &time) const
+inline bool TimeInfo::operator>(const TimeInfo& time) const
 {
-    if (timebuffer.time == time.timebuffer.time)
+    if (timebuffer.time == time.timebuffer.time) {
         return timebuffer.millitm > time.timebuffer.millitm;
-    else
+    }
+    else {
         return timebuffer.time > time.timebuffer.time;
+    }
 }
 
-} //namespace Base
+}  // namespace Base
 
 
-#endif // BASE_TIMEINFO_H
-
+#endif  // BASE_TIMEINFO_H

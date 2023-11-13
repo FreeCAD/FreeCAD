@@ -27,10 +27,9 @@
 using namespace Base;
 
 Axis::Axis(const Vector3d& Orig, const Vector3d& Dir)
-  : _base{Orig}
-  , _dir{Dir}
-{
-}
+    : _base {Orig}
+    , _dir {Dir}
+{}
 
 void Axis::reverse()
 {
@@ -49,24 +48,24 @@ void Axis::move(const Vector3d& MovVec)
     _base += MovVec;
 }
 
-bool Axis::operator ==(const Axis& that) const
+bool Axis::operator==(const Axis& that) const
 {
     return (this->_base == that._base) && (this->_dir == that._dir);
 }
 
-bool Axis::operator !=(const Axis& that) const
+bool Axis::operator!=(const Axis& that) const
 {
     return !(*this == that);
 }
 
-Axis& Axis::operator *=(const Placement &p)
+Axis& Axis::operator*=(const Placement& p)
 {
     p.multVec(this->_base, this->_base);
     p.getRotation().multVec(this->_dir, this->_dir);
     return *this;
 }
 
-Axis Axis::operator *(const Placement &p) const
+Axis Axis::operator*(const Placement& p) const
 {
     Axis a(*this);
     a *= p;

@@ -1,18 +1,18 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-	<PythonExport
-        Father="Conic2dPy"
+    <PythonExport
         Name="Hyperbola2dPy"
-        PythonName="Part.Geom2d.Hyperbola2d"
+        Namespace="Part"
         Twin="Geom2dHyperbola"
         TwinPointer="Geom2dHyperbola"
-        Include="Mod/Part/App/Geometry2d.h"
-		Namespace="Part"
+        PythonName="Part.Geom2d.Hyperbola2d"
         FatherInclude="Mod/Part/App/Geom2d/Conic2dPy.h"
-		FatherNamespace="Part"
-		Constructor="true">
-		<Documentation>
-			<Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
+        Include="Mod/Part/App/Geometry2d.h"
+        Father="Conic2dPy"
+        FatherNamespace="Part"
+        Constructor="true">
+        <Documentation>
+            <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net"/>
             <UserDocu>Describes a hyperbola in 2D space
                 To create a hyperbola there are several ways:
                 Part.Geom2d.Hyperbola2d()
@@ -20,53 +20,51 @@
                     center in (0,0)
 
                 Part.Geom2d.Hyperbola2d(Hyperbola)
-					Create a copy of the given hyperbola
+                    Create a copy of the given hyperbola
 
                 Part.Geom2d.Hyperbola2d(S1,S2,Center)
                     Creates a hyperbola centered on the point Center, S1 and S2,
-					its major axis is defined by Center and S1,
-					its major radius is the distance between Center and S1, and
-					its minor radius is the distance between S2 and the major axis.
+                    its major axis is defined by Center and S1,
+                    its major radius is the distance between Center and S1, and
+                    its minor radius is the distance between S2 and the major axis.
 
                 Part.Geom2d.Hyperbola2d(Center,MajorRadius,MinorRadius)
                     Creates a hyperbola with major and minor radii MajorRadius and
-                    MinorRadius and located at Center
-			</UserDocu>
-		</Documentation>
-		<Attribute Name="MajorRadius" ReadOnly="false">
-			<Documentation>
-				<UserDocu>The major radius of the hyperbola.</UserDocu>
-			</Documentation>
-			<Parameter Name="MajorRadius" Type="Float"/>
-		</Attribute>
-		<Attribute Name="MinorRadius" ReadOnly="false">
-			<Documentation>
-				<UserDocu>The minor radius of the hyperbola.</UserDocu>
-			</Documentation>
-			<Parameter Name="MinorRadius" Type="Float"/>
-		</Attribute>
-		<Attribute Name="Focal" ReadOnly="true">
-			<Documentation>
-				<UserDocu>The focal distance of the hyperbola.</UserDocu>
-			</Documentation>
-			<Parameter Name="Focal" Type="Float"/>
-		</Attribute>
-		<Attribute Name="Focus1" ReadOnly="true">
-			<Documentation>
-				<UserDocu>The first focus is on the positive side of the major axis of the hyperbola;
+                    MinorRadius and located at Center</UserDocu>
+        </Documentation>
+        <Attribute Name="MajorRadius" ReadOnly="false">
+            <Documentation>
+                <UserDocu>The major radius of the hyperbola.</UserDocu>
+            </Documentation>
+            <Parameter Name="MajorRadius" Type="Float"/>
+        </Attribute>
+        <Attribute Name="MinorRadius" ReadOnly="false">
+            <Documentation>
+                <UserDocu>The minor radius of the hyperbola.</UserDocu>
+            </Documentation>
+            <Parameter Name="MinorRadius" Type="Float"/>
+        </Attribute>
+        <Attribute Name="Focal" ReadOnly="true">
+            <Documentation>
+                <UserDocu>The focal distance of the hyperbola.</UserDocu>
+            </Documentation>
+            <Parameter Name="Focal" Type="Float"/>
+        </Attribute>
+        <Attribute Name="Focus1" ReadOnly="true">
+            <Documentation>
+                <UserDocu>The first focus is on the positive side of the major axis of the hyperbola;
 the second focus is on the negative side.</UserDocu>
-			</Documentation>
-			<Parameter Name="Focus1" Type="Object"/>
-		</Attribute>
-		<Attribute Name="Focus2" ReadOnly="true">
-			<Documentation>
-				<Documentation>
-					<UserDocu>The first focus is on the positive side of the major axis of the hyperbola;
-the second focus is on the negative side.
-					</UserDocu>
-				</Documentation>
-			</Documentation>
-			<Parameter Name="Focus2" Type="Object"/>
-		</Attribute>
-	</PythonExport>
+            </Documentation>
+            <Parameter Name="Focus1" Type="Object"/>
+        </Attribute>
+        <Attribute Name="Focus2" ReadOnly="true">
+            <Documentation>
+                <Documentation>
+                    <UserDocu>The first focus is on the positive side of the major axis of the hyperbola;
+the second focus is on the negative side.</UserDocu>
+                </Documentation>
+            </Documentation>
+            <Parameter Name="Focus2" Type="Object"/>
+        </Attribute>
+    </PythonExport>
 </GenerateModel>

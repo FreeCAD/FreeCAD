@@ -43,22 +43,21 @@ public:
     AbstractProducer() = default;
     virtual ~AbstractProducer() = default;
     /// overwritten by a concrete producer to produce the needed object
-    virtual void* Produce () const = 0;
+    virtual void* Produce() const = 0;
 };
 
 
-
 /** Base class of all factories
-  * This class has the purpose to produce instances of classes at runtime
-  * that are unknown at compile time. It holds a map of so called
-  * producers which are able to produce an instance of a special class.
-  * Producer can be registered at runtime through e.g. application modules
-  */
+ * This class has the purpose to produce instances of classes at runtime
+ * that are unknown at compile time. It holds a map of so called
+ * producers which are able to produce an instance of a special class.
+ * Producer can be registered at runtime through e.g. application modules
+ */
 class BaseExport Factory
 {
 public:
     /// Adds a new prducer instance
-    void AddProducer (const char* sClassName, AbstractProducer *pcProducer);
+    void AddProducer(const char* sClassName, AbstractProducer* pcProducer);
     /// returns true if there is a producer for this class registered
     bool CanProduce(const char* sClassName) const;
     /// returns a list of all registered producer
@@ -66,25 +65,25 @@ public:
 
 protected:
     /// produce a class with the given name
-    void* Produce (const char* sClassName) const;
+    void* Produce(const char* sClassName) const;
     std::map<const std::string, AbstractProducer*> _mpcProducers;
     /// construction
-    Factory () = default;
+    Factory() = default;
     /// destruction
-    virtual ~Factory ();
+    virtual ~Factory();
 };
 
 // --------------------------------------------------------------------
 
 /** The ScriptFactorySingleton singleton
-  */
-class BaseExport ScriptFactorySingleton : public Factory
+ */
+class BaseExport ScriptFactorySingleton: public Factory
 {
 public:
     static ScriptFactorySingleton& Instance();
-    static void Destruct ();
+    static void Destruct();
 
-    const char* ProduceScript (const char* sScriptName) const;
+    const char* ProduceScript(const char* sScriptName) const;
 
 private:
     static ScriptFactorySingleton* _pcSingleton;
@@ -101,22 +100,23 @@ inline ScriptFactorySingleton& ScriptFactory()
 // --------------------------------------------------------------------
 
 /** Script Factory
-  * This class produce Scripts.
-  * @see Factory
-  */
+ * This class produce Scripts.
+ * @see Factory
+ */
 class BaseExport ScriptProducer: public AbstractProducer
 {
 public:
     /// Constructor
-    ScriptProducer (const char* name, const char* script) : mScript(script)
+    ScriptProducer(const char* name, const char* script)
+        : mScript(script)
     {
         ScriptFactorySingleton::Instance().AddProducer(name, this);
     }
 
-    ~ScriptProducer () override = default;
+    ~ScriptProducer() override = default;
 
     /// Produce an instance
-    void* Produce () const override
+    void* Produce() const override
     {
         return const_cast<char*>(mScript);
     }
@@ -125,8 +125,7 @@ private:
     const char* mScript;
 };
 
-} //namespace Base
+}  // namespace Base
 
 
 #endif
-

@@ -28,7 +28,8 @@
 #include <Base/Stream.h>
 
 
-namespace Base {
+namespace Base
+{
 
 //=========================================================================
 // some special observers
@@ -36,17 +37,28 @@ namespace Base {
 /** The LoggingConsoleObserver class
  *  This class is used by the main modules to write Console messages and logs to a file
  */
-class BaseExport ConsoleObserverFile : public ILogger
+class BaseExport ConsoleObserverFile: public ILogger
 {
 public:
-    explicit ConsoleObserverFile(const char *sFileName);
+    explicit ConsoleObserverFile(const char* sFileName);
     ~ConsoleObserverFile() override;
 
-    void SendLog(const std::string& notifiername, const std::string& msg, LogStyle level,
-                 IntendedRecipient recipient, ContentType content) override;
-    const char* Name() override {return "File";}
+    void SendLog(const std::string& notifiername,
+                 const std::string& msg,
+                 LogStyle level,
+                 IntendedRecipient recipient,
+                 ContentType content) override;
+    const char* Name() override
+    {
+        return "File";
+    }
 
-protected:
+    ConsoleObserverFile(const ConsoleObserverFile&) = delete;
+    ConsoleObserverFile(ConsoleObserverFile&&) = delete;
+    ConsoleObserverFile& operator=(const ConsoleObserverFile&) = delete;
+    ConsoleObserverFile& operator=(ConsoleObserverFile&&) = delete;
+
+private:
     Base::ofstream cFileStream;
 };
 
@@ -58,17 +70,28 @@ class BaseExport ConsoleObserverStd: public ILogger
 public:
     ConsoleObserverStd();
     ~ConsoleObserverStd() override;
-    void SendLog(const std::string& notifiername, const std::string& msg, LogStyle level,
-                 IntendedRecipient recipient, ContentType content) override;
-    const char* Name() override {return "Console";}
-protected:
-    bool useColorStderr;
+    void SendLog(const std::string& notifiername,
+                 const std::string& msg,
+                 LogStyle level,
+                 IntendedRecipient recipient,
+                 ContentType content) override;
+    const char* Name() override
+    {
+        return "Console";
+    }
+
+    ConsoleObserverStd(const ConsoleObserverStd&) = delete;
+    ConsoleObserverStd(ConsoleObserverStd&&) = delete;
+    ConsoleObserverStd& operator=(const ConsoleObserverStd&) = delete;
+    ConsoleObserverStd& operator=(ConsoleObserverStd&&) = delete;
+
 private:
-    void Warning        (const char *sWarn);
-    void Message        (const char *sMsg);
-    void Error          (const char *sErr);
-    void Log            (const char *sLog);
-    void Critical(const char *sCritical);
+    bool useColorStderr;
+    void Warning(const char* sWarn);
+    void Message(const char* sMsg);
+    void Error(const char* sErr);
+    void Log(const char* sLog);
+    void Critical(const char* sCritical);
 };
 
 /** The ILoggerBlocker class
@@ -78,24 +101,31 @@ private:
 class BaseExport ILoggerBlocker
 {
 public:
-    // Constructor that will block message types passed as parameter. By default, all types are blocked.
-    inline explicit ILoggerBlocker(const char* co, ConsoleMsgFlags msgTypes =
-        ConsoleSingleton::MsgType_Txt | ConsoleSingleton::MsgType_Log | ConsoleSingleton::MsgType_Wrn | ConsoleSingleton::MsgType_Err |
-        ConsoleSingleton::MsgType_Critical | ConsoleSingleton::MsgType_Notification);
+    // Constructor that will block message types passed as parameter. By default, all types are
+    // blocked.
+    inline explicit ILoggerBlocker(const char* co,
+                                   ConsoleMsgFlags msgTypes = ConsoleSingleton::MsgType_Txt
+                                       | ConsoleSingleton::MsgType_Log
+                                       | ConsoleSingleton::MsgType_Wrn
+                                       | ConsoleSingleton::MsgType_Err
+                                       | ConsoleSingleton::MsgType_Critical
+                                       | ConsoleSingleton::MsgType_Notification);
     // Disable copy & move constructors
     ILoggerBlocker(ILoggerBlocker const&) = delete;
-    ILoggerBlocker(ILoggerBlocker const &&) = delete;
+    ILoggerBlocker(ILoggerBlocker const&&) = delete;
     // Disable assignment & move-assignment operator
     ILoggerBlocker& operator=(ILoggerBlocker const&) = delete;
     ILoggerBlocker& operator=(ILoggerBlocker const&&) = delete;
     // Destructor that will restore message type settings.
     inline ~ILoggerBlocker();
+
 private:
-    ConsoleMsgFlags msgTypesBlocked = 0; // Stores message types blocked by the blocker
-    const char* conObs; //  Stores console observer name that blocker acts on
+    ConsoleMsgFlags msgTypesBlocked = 0;  // Stores message types blocked by the blocker
+    const char* conObs;                   //  Stores console observer name that blocker acts on
 };
 
-ILoggerBlocker::ILoggerBlocker(const char* co, ConsoleMsgFlags msgTypes) : conObs(co)
+ILoggerBlocker::ILoggerBlocker(const char* co, ConsoleMsgFlags msgTypes)
+    : conObs(co)
 {
     msgTypesBlocked = Console().SetEnabledMsgType(conObs, msgTypes, false);
 }
@@ -104,14 +134,15 @@ ILoggerBlocker::~ILoggerBlocker()
 {
 #ifdef FC_DEBUG
     auto debug = Console().SetEnabledMsgType(conObs, msgTypesBlocked, true);
-    if (debug != msgTypesBlocked)
+    if (debug != msgTypesBlocked) {
         Console().Warning("Enabled message types have been changed while ILoggerBlocker was set\n");
+    }
 #else
     Console().SetEnabledMsgType(conObs, msgTypesBlocked, true);
 #endif
 }
 
-class BaseExport RedirectStdOutput : public std::streambuf
+class BaseExport RedirectStdOutput: public std::streambuf
 {
 public:
     RedirectStdOutput();
@@ -124,7 +155,7 @@ private:
     std::string buffer;
 };
 
-class BaseExport RedirectStdError : public std::streambuf
+class BaseExport RedirectStdError: public std::streambuf
 {
 public:
     RedirectStdError();
@@ -137,7 +168,7 @@ private:
     std::string buffer;
 };
 
-class BaseExport RedirectStdLog : public std::streambuf
+class BaseExport RedirectStdLog: public std::streambuf
 {
 public:
     RedirectStdLog();
@@ -151,6 +182,6 @@ private:
 };
 
 
-} // namespace Base
+}  // namespace Base
 
-#endif // BASE_CONSOLEOBSERVER_H
+#endif  // BASE_CONSOLEOBSERVER_H

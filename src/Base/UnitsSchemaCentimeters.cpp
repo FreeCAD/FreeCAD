@@ -23,7 +23,7 @@
 
 #include "PreCompiled.h"
 #ifdef __GNUC__
-# include <unistd.h>
+#include <unistd.h>
 #endif
 
 #include <QString>
@@ -34,7 +34,9 @@
 using namespace Base;
 
 
-QString UnitsSchemaCentimeters::schemaTranslate(const Base::Quantity& quant, double &factor, QString &unitString)
+QString UnitsSchemaCentimeters::schemaTranslate(const Base::Quantity& quant,
+                                                double& factor,
+                                                QString& unitString)
 {
     Unit unit = quant.getUnit();
     if (unit == Unit::Length) {
@@ -66,7 +68,7 @@ QString UnitsSchemaCentimeters::schemaTranslate(const Base::Quantity& quant, dou
     }
     else if (unit == Unit::Velocity) {
         unitString = QString::fromLatin1("mm/min");
-        factor = 1.0/60;
+        factor = 1.0 / 60;
     }
     else {
         // default action for all cases without special treatment:

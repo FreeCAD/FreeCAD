@@ -166,8 +166,8 @@ protected:
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
                 "User parameter:BaseApp/Preferences/View");
 
-            dimConstrColor = SbColor(1.0f, 0.149f, 0.0f);
-            dimConstrDeactivatedColor = SbColor(0.8f, 0.8f, 0.8f);
+            dimConstrColor = SbColor(1.0f, 0.149f, 0.0f);           // NOLINT
+            dimConstrDeactivatedColor = SbColor(0.8f, 0.8f, 0.8f);  // NOLINT
 
             float transparency = 0.f;
             unsigned long color = (unsigned long)(dimConstrColor.getPackedValue());
@@ -480,10 +480,12 @@ public:
         }
     }
 
-    void drawDoubleAtCursor(const Base::Vector2d& position, const double radius)
+    void drawDoubleAtCursor(const Base::Vector2d& position,
+                            const double radius,
+                            Base::Unit unit = Base::Unit::Length)
     {
         if (shouldDrawDimensionsAtCursor()) {
-            handler->drawDoubleAtCursor(position, radius);
+            handler->drawDoubleAtCursor(position, radius, unit);
         }
     }
 
@@ -624,7 +626,7 @@ protected:
             else {
 
                 if (firstOfMode) {
-                    onViewIndexWithFocus = i;
+                    onViewIndexWithFocus = static_cast<int>(i);
                     firstOfMode = false;
                 }
 
@@ -654,7 +656,7 @@ protected:
                 onViewParameters[onviewparameterindex]->setFocusToSpinbox();
             }
 
-            onViewIndexWithFocus = onviewparameterindex;
+            onViewIndexWithFocus = static_cast<int>(onviewparameterindex);
         }
     }
 
