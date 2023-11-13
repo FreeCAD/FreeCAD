@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2022 sliptonic <shopinthewoods@gmail.com>               *
-# *   Copyright (c) 2022 Larry Woestman <LarryWoestman2@gmail.com>          *
+# *   Copyright (c) 2022-2023 Larry Woestman <LarryWoestman2@gmail.com>     *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -118,10 +118,91 @@ class TestRefactoredTestPost(PathTestUtils.PathTestBase):
     #   02000 - 02999  tests for the various M codes at 2000 + 10 * m_code_value
     #
 
-    def test00000(self):
-        """Test Output Generation.
+    def test00100(self):
+        """Test axis modal.
 
-        Empty path.  Produces only the preamble and postable.
+        Suppress the axis coordinate if the same as previous
+        """
+        c = Path.Command("G0 X10 Y20 Z30")
+        c1 = Path.Command("G0 X10 Y30 Z30")
+
+        self.docobj.Path = Path.Path([c, c1])
+        postables = [self.docobj]
+
+        args = "--axis-modal"
+        gcode = postprocessor.export(postables, "gcode.tmp", args)
+        # print("--------\n" + gcode + "--------\n")
+        self.assertEqual(gcode.splitlines()[3], "G0 Y30.000")
+
+        args = "--no-axis-modal"
+        gcode = postprocessor.export(postables, "gcode.tmp", args)
+        # print("--------\n" + gcode + "--------\n")
+        self.assertEqual(gcode.splitlines()[3], "G0 X10.000 Y30.000 Z30.000")
+
+    def test00110(self):
+        """Test axis-precision."""
+        self.compare_third_line(
+            "G0 X10 Y20 Z30", "G0 X10.00 Y20.00 Z30.00", "--axis-precision=2"
+        )
+
+    def test00120(self):
+        """Test bcnc."""
+        self.single_compare(
+            [],
+            """G90
+G21
+(Block-name: testpath)
+(Block-expand: 0)
+(Block-enable: 1)
+(Block-name: post_amble)
+(Block-expand: 0)
+(Block-enable: 1)
+""",
+            "--bcnc",
+        )
+        self.single_compare(
+            [],
+            """G90
+G21
+""",
+            "--no-bcnc",
+        )
+
+    def test00130(self):
+        """Test comments."""
+        c = Path.Command("(comment)")
+        self.docobj.Path = Path.Path([c])
+        postables = [self.docobj]
+        args = "--comments"
+        gcode = postprocessor.export(postables, "gcode.tmp", args)
+        # print("--------\n" + gcode + "--------\n")
+        self.assertEqual(gcode.splitlines()[4], "(comment)")
+
+    def test00140(self):
+        """Test feed-precision."""
+        #
+        c = Path.Command("G1 X10 Y20 Z30 F123.123456")
+
+        self.docobj.Path = Path.Path([c])
+        postables = [self.docobj]
+
+        args = ""
+        gcode = postprocessor.export(postables, "gcode.tmp", args)
+        # print("--------\n" + gcode + "--------\n")
+        # Note:  The "internal" F speed is in mm/s,
+        #        while the output F speed is in mm/min.
+        self.assertEqual(gcode.splitlines()[2], "G1 X10.000 Y20.000 Z30.000 F7387.407")
+
+        args = "--feed-precision=2"
+        gcode = postprocessor.export(postables, "gcode.tmp", args)
+        # print("--------\n" + gcode + "--------\n")
+        # Note:  The "internal" F speed is in mm/s,
+        #        while the output F speed is in mm/min.
+        self.assertEqual(gcode.splitlines()[2], "G1 X10.000 Y20.000 Z30.000 F7387.41")
+
+    def test00150(self):
+        """Test output with an empty path.
+
         Also tests the interactions between --comments and --header.
         """
         self.docobj.Path = Path.Path([])
@@ -185,7 +266,47 @@ G21
         # print("--------\n" + gcode + "--------\n")
         self.assertEqual(gcode, expected)
 
-    def test00010(self):
+    def test00160(self):
+        """Test Line Numbers."""
+        self.compare_third_line(
+            "G0 X10 Y20 Z30", "N120 G0 X10.000 Y20.000 Z30.000", "--line-numbers"
+        )
+
+    def test00170(self):
+        """Test inches."""
+        #
+        c = Path.Command("G0 X10 Y20 Z30 A10 B20 C30 U10 V20 W30")
+
+        self.docobj.Path = Path.Path([c])
+        postables = [self.docobj]
+        args = "--inches"
+        gcode = postprocessor.export(postables, "gcode.tmp", args)
+        # print("--------\n" + gcode + "--------\n")
+        self.assertEqual(gcode.splitlines()[1], "G20")
+        self.assertEqual(
+            gcode.splitlines()[2],
+            "G0 X0.3937 Y0.7874 Z1.1811 A0.3937 B0.7874 C1.1811 U0.3937 V0.7874 W1.1811",
+        )
+
+    def test00180(self):
+        """Test modal.
+
+        Suppress the command name if the same as previous
+        """
+        c = Path.Command("G0 X10 Y20 Z30")
+        c1 = Path.Command("G0 X10 Y30 Z30")
+        self.docobj.Path = Path.Path([c, c1])
+        postables = [self.docobj]
+        args = "--modal"
+        gcode = postprocessor.export(postables, "gcode.tmp", args)
+        # print("--------\n" + gcode + "--------\n")
+        self.assertEqual(gcode.splitlines()[3], "X10.000 Y30.000 Z30.000")
+        args = "--no-modal"
+        gcode = postprocessor.export(postables, "gcode.tmp", args)
+        # print("--------\n" + gcode + "--------\n")
+        self.assertEqual(gcode.splitlines()[3], "G0 X10.000 Y30.000 Z30.000")
+
+    def test00190(self):
         """Test Outputting all arguments.
 
         Empty path.  Outputs all arguments.
@@ -264,136 +385,14 @@ G21
         expected = "".join(expected.split())
         self.assertEqual(gcode, expected)
 
-    def test00020(self):
+    def test00200(self):
         """Test Outputting visible arguments.
 
         Empty path.  Outputs visible arguments.
         """
         self.single_compare([], "", "--output_visible_arguments")
 
-    def test00100(self):
-        """Test bcnc."""
-        self.single_compare(
-            [],
-            """G90
-G21
-(Block-name: testpath)
-(Block-expand: 0)
-(Block-enable: 1)
-(Block-name: post_amble)
-(Block-expand: 0)
-(Block-enable: 1)
-""",
-            "--bcnc",
-        )
-        self.single_compare(
-            [],
-            """G90
-G21
-""",
-            "--no-bcnc",
-        )
-
-    def test00110(self):
-        """Test axis modal.
-
-        Suppress the axis coordinate if the same as previous
-        """
-        c = Path.Command("G0 X10 Y20 Z30")
-        c1 = Path.Command("G0 X10 Y30 Z30")
-
-        self.docobj.Path = Path.Path([c, c1])
-        postables = [self.docobj]
-
-        args = "--axis-modal"
-        gcode = postprocessor.export(postables, "gcode.tmp", args)
-        # print("--------\n" + gcode + "--------\n")
-        self.assertEqual(gcode.splitlines()[3], "G0 Y30.000")
-
-        args = "--no-axis-modal"
-        gcode = postprocessor.export(postables, "gcode.tmp", args)
-        # print("--------\n" + gcode + "--------\n")
-        self.assertEqual(gcode.splitlines()[3], "G0 X10.000 Y30.000 Z30.000")
-
-    def test00120(self):
-        """Test axis-precision."""
-        self.compare_third_line(
-            "G0 X10 Y20 Z30", "G0 X10.00 Y20.00 Z30.00", "--axis-precision=2"
-        )
-
-    def test00130(self):
-        """Test comments."""
-        c = Path.Command("(comment)")
-        self.docobj.Path = Path.Path([c])
-        postables = [self.docobj]
-        args = "--comments"
-        gcode = postprocessor.export(postables, "gcode.tmp", args)
-        # print("--------\n" + gcode + "--------\n")
-        self.assertEqual(gcode.splitlines()[4], "(comment)")
-
-    def test00140(self):
-        """Test feed-precision."""
-        #
-        c = Path.Command("G1 X10 Y20 Z30 F123.123456")
-
-        self.docobj.Path = Path.Path([c])
-        postables = [self.docobj]
-
-        args = ""
-        gcode = postprocessor.export(postables, "gcode.tmp", args)
-        # print("--------\n" + gcode + "--------\n")
-        # Note:  The "internal" F speed is in mm/s,
-        #        while the output F speed is in mm/min.
-        self.assertEqual(gcode.splitlines()[2], "G1 X10.000 Y20.000 Z30.000 F7387.407")
-
-        args = "--feed-precision=2"
-        gcode = postprocessor.export(postables, "gcode.tmp", args)
-        # print("--------\n" + gcode + "--------\n")
-        # Note:  The "internal" F speed is in mm/s,
-        #        while the output F speed is in mm/min.
-        self.assertEqual(gcode.splitlines()[2], "G1 X10.000 Y20.000 Z30.000 F7387.41")
-
-    def test00150(self):
-        """Test Line Numbers."""
-        self.compare_third_line(
-            "G0 X10 Y20 Z30", "N120 G0 X10.000 Y20.000 Z30.000", "--line-numbers"
-        )
-
-    def test00160(self):
-        """Test inches."""
-        #
-        c = Path.Command("G0 X10 Y20 Z30 A10 B20 C30 U10 V20 W30")
-
-        self.docobj.Path = Path.Path([c])
-        postables = [self.docobj]
-        args = "--inches"
-        gcode = postprocessor.export(postables, "gcode.tmp", args)
-        # print("--------\n" + gcode + "--------\n")
-        self.assertEqual(gcode.splitlines()[1], "G20")
-        self.assertEqual(
-            gcode.splitlines()[2],
-            "G0 X0.3937 Y0.7874 Z1.1811 A0.3937 B0.7874 C1.1811 U0.3937 V0.7874 W1.1811",
-        )
-
-    def test00170(self):
-        """Test modal.
-
-        Suppress the command name if the same as previous
-        """
-        c = Path.Command("G0 X10 Y20 Z30")
-        c1 = Path.Command("G0 X10 Y30 Z30")
-        self.docobj.Path = Path.Path([c, c1])
-        postables = [self.docobj]
-        args = "--modal"
-        gcode = postprocessor.export(postables, "gcode.tmp", args)
-        # print("--------\n" + gcode + "--------\n")
-        self.assertEqual(gcode.splitlines()[3], "X10.000 Y30.000 Z30.000")
-        args = "--no-modal"
-        gcode = postprocessor.export(postables, "gcode.tmp", args)
-        # print("--------\n" + gcode + "--------\n")
-        self.assertEqual(gcode.splitlines()[3], "G0 X10.000 Y30.000 Z30.000")
-
-    def test00180(self):
+    def test00210(self):
         """Test Post-amble."""
         self.docobj.Path = Path.Path([])
         postables = [self.docobj]
@@ -403,7 +402,7 @@ G21
         self.assertEqual(gcode.splitlines()[-2], "G0 Z50")
         self.assertEqual(gcode.splitlines()[-1], "M2")
 
-    def test00190(self):
+    def test00220(self):
         """Test Pre-amble."""
         self.docobj.Path = Path.Path([])
         postables = [self.docobj]
@@ -412,7 +411,7 @@ G21
         # print("--------\n" + gcode + "--------\n")
         self.assertEqual(gcode.splitlines()[0], "G18 G55")
 
-    def test00200(self):
+    def test00230(self):
         """Test precision."""
         self.compare_third_line(
             "G1 X10 Y20 Z30 F100",
@@ -425,11 +424,11 @@ G21
             "--inches --precision=2",
         )
 
-    def test00210(self):
+    def test00240(self):
         """Test return-to."""
         self.compare_third_line("", "G0 X12 Y34 Z56", "--return-to='12,34,56'")
 
-    def test00220(self):
+    def test00250(self):
         """Test tlo."""
         c = Path.Command("M6 T2")
         c2 = Path.Command("M3 S3000")
@@ -448,7 +447,7 @@ G21
         self.assertEqual(gcode.splitlines()[2], "M6 T2")
         self.assertEqual(gcode.splitlines()[3], "M3 S3000")
 
-    def test00230(self):
+    def test00260(self):
         """Test tool_change."""
         c = Path.Command("M6 T2")
         c2 = Path.Command("M3 S3000")
@@ -465,7 +464,7 @@ G21
         self.assertEqual(gcode.splitlines()[5], "( M6 T2 )")
         self.assertEqual(gcode.splitlines()[6], "M3 S3000")
 
-    def test00300(self):
+    def test00270(self):
         """Test wait-for-spindle."""
         c = Path.Command("M3 S3000")
         self.docobj.Path = Path.Path([c])
