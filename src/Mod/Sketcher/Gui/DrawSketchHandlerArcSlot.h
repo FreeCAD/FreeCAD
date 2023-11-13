@@ -61,11 +61,11 @@ enum class ArcSlotConstructionMethod
 using DSHArcSlotController =
     DrawSketchDefaultWidgetController<DrawSketchHandlerArcSlot,
                                       StateMachines::FourSeekEnd,
-                                      /*PAutoConstraintSize =*/3,
-                                      /*OnViewParametersT =*/OnViewParameters<6, 6>,
-                                      /*WidgetParametersT =*/WidgetParameters<0, 0>,
-                                      /*WidgetCheckboxesT =*/WidgetCheckboxes<0, 0>,
-                                      /*WidgetComboboxesT =*/WidgetComboboxes<1, 1>,
+                                      /*PAutoConstraintSize =*/3,                     // NOLINT
+                                      /*OnViewParametersT =*/OnViewParameters<6, 6>,  // NOLINT
+                                      /*WidgetParametersT =*/WidgetParameters<0, 0>,  // NOLINT
+                                      /*WidgetCheckboxesT =*/WidgetCheckboxes<0, 0>,  // NOLINT
+                                      /*WidgetComboboxesT =*/WidgetComboboxes<1, 1>,  // NOLINT
                                       ConstructionMethods::ArcSlotConstructionMethod,
                                       /*bool PFirstComboboxIsConstructionMethod =*/true>;
 
@@ -85,6 +85,9 @@ public:
         , startAngleBackup(0.)
         , endAngle(0.)
         , arcAngle(0.)
+        , r(0.)
+        , radius(0.)
+        , angleReversed(false)
     {}
 
     ~DrawSketchHandlerArcSlot() override = default;
@@ -121,10 +124,12 @@ private:
             case SelectMode::SeekThird: {
                 endPoint = centerPoint + (onSketchPos - centerPoint).Normalize() * radius;
                 if (constructionMethod() == DrawSketchHandlerArcSlot::ConstructionMethod::ArcSlot) {
-                    r = radius / 10;
+                    const double scale = 10;
+                    r = radius / scale;
                 }
                 else {
-                    r = radius * 1.2;
+                    const double scale = 1.2;
+                    r = radius * scale;
                 }
 
                 startAngle = startAngleBackup;
@@ -620,14 +625,16 @@ void DSHArcSlotControllerBase::doEnforceControlParameters(Base::Vector2d& onSket
             }
 
             if (onViewParameters[OnViewParameter::Fourth]->isSet) {
-                double angle = onViewParameters[OnViewParameter::Fourth]->getValue() * M_PI / 180;
+                double angle =
+                    Base::toRadians(onViewParameters[OnViewParameter::Fourth]->getValue());
                 onSketchPos.x = handler->centerPoint.x + cos(angle) * radius;
                 onSketchPos.y = handler->centerPoint.y + sin(angle) * radius;
             }
         } break;
         case SelectMode::SeekThird: {
             if (onViewParameters[OnViewParameter::Fifth]->isSet) {
-                double arcAngle = onViewParameters[OnViewParameter::Fifth]->getValue() * M_PI / 180;
+                double arcAngle =
+                    Base::toRadians(onViewParameters[OnViewParameter::Fifth]->getValue());
                 if (fmod(fabs(arcAngle), 2 * M_PI) < Precision::Confusion()) {
                     unsetOnViewParameter(onViewParameters[OnViewParameter::Fifth].get());
                 }
@@ -686,7 +693,7 @@ void DSHArcSlotController::adaptParameters(Base::Vector2d onSketchPos)
             if (!onViewParameters[OnViewParameter::Third]->isSet) {
                 setOnViewParameterValue(OnViewParameter::Third, handler->radius);
             }
-            double range = handler->startAngle * 180 / M_PI;
+            double range = Base::toDegrees(handler->startAngle);
             if (!onViewParameters[OnViewParameter::Fourth]->isSet) {
                 setOnViewParameterValue(OnViewParameter::Fourth, range, Base::Unit::Angle);
             }
@@ -699,7 +706,7 @@ void DSHArcSlotController::adaptParameters(Base::Vector2d onSketchPos)
             onViewParameters[OnViewParameter::Fourth]->setLabelRange(handler->startAngle);
         } break;
         case SelectMode::SeekThird: {
-            double range = handler->arcAngle * 180 / M_PI;
+            double range = Base::toDegrees(handler->arcAngle);
 
             if (!onViewParameters[OnViewParameter::Fifth]->isSet) {
                 setOnViewParameterValue(OnViewParameter::Fifth, range, Base::Unit::Angle);
