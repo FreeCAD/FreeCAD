@@ -68,26 +68,28 @@ private Q_SLOTS:
 
     void test_MaterialBinding_data()
     {
+        // clang-format off
         QTest::addColumn<Base::BindingElement::Binding>("input");
         QTest::addColumn<QString>("result");
-        QTest::newRow("MaterialBinding")
-            << Base::BindingElement::Binding::Overall << "MaterialBinding { value OVERALL } \n";
-        QTest::newRow("MaterialBinding")
-            << Base::BindingElement::Binding::PerPart << "MaterialBinding { value PER_PART } \n";
+        QTest::newRow("MaterialBinding") << Base::BindingElement::Binding::Overall
+                                         << "MaterialBinding { value OVERALL } \n";
+        QTest::newRow("MaterialBinding") << Base::BindingElement::Binding::PerPart
+                                         << "MaterialBinding { value PER_PART } \n";
         QTest::newRow("MaterialBinding") << Base::BindingElement::Binding::PerPartIndexed
                                          << "MaterialBinding { value PER_PART_INDEXED } \n";
-        QTest::newRow("MaterialBinding")
-            << Base::BindingElement::Binding::PerFace << "MaterialBinding { value PER_FACE } \n";
+        QTest::newRow("MaterialBinding") << Base::BindingElement::Binding::PerFace
+                                         << "MaterialBinding { value PER_FACE } \n";
         QTest::newRow("MaterialBinding") << Base::BindingElement::Binding::PerFaceIndexed
                                          << "MaterialBinding { value PER_FACE_INDEXED } \n";
         QTest::newRow("MaterialBinding") << Base::BindingElement::Binding::PerVertex
                                          << "MaterialBinding { value PER_VERTEX } \n";
         QTest::newRow("MaterialBinding") << Base::BindingElement::Binding::PerVertexIndexed
                                          << "MaterialBinding { value PER_VERTEX_INDEXED } \n";
-        QTest::newRow("MaterialBinding")
-            << Base::BindingElement::Binding::Default << "MaterialBinding { value OVERALL } \n";
-        QTest::newRow("MaterialBinding")
-            << Base::BindingElement::Binding::None << "MaterialBinding { value OVERALL } \n";
+        QTest::newRow("MaterialBinding") << Base::BindingElement::Binding::Default
+                                         << "MaterialBinding { value OVERALL } \n";
+        QTest::newRow("MaterialBinding") << Base::BindingElement::Binding::None
+                                         << "MaterialBinding { value OVERALL } \n";
+        // clang-format on
     }
 
     void test_MaterialBinding()
@@ -303,6 +305,8 @@ private Q_SLOTS:
         auto result =
             R"(ShapeHints {
   creaseAngle 0.5
+  vertexOrdering UNKNOWN_ORDERING
+  shapeType UNKNOWN_SHAPE_TYPE
 }
 )";
         QTest::addColumn<float>("input");
@@ -614,26 +618,28 @@ private Q_SLOTS:
 
     void test_NormalBinding_data()
     {
+        // clang-format off
         QTest::addColumn<Base::BindingElement::Binding>("input");
         QTest::addColumn<QString>("result");
-        QTest::newRow("NormalBinding")
-            << Base::BindingElement::Binding::Overall << "NormalBinding { value OVERALL }\n";
-        QTest::newRow("NormalBinding")
-            << Base::BindingElement::Binding::PerPart << "NormalBinding { value PER_PART }\n";
+        QTest::newRow("NormalBinding") << Base::BindingElement::Binding::Overall
+                                       << "NormalBinding { value OVERALL }\n";
+        QTest::newRow("NormalBinding") << Base::BindingElement::Binding::PerPart
+                                       << "NormalBinding { value PER_PART }\n";
         QTest::newRow("NormalBinding") << Base::BindingElement::Binding::PerPartIndexed
                                        << "NormalBinding { value PER_PART_INDEXED }\n";
-        QTest::newRow("NormalBinding")
-            << Base::BindingElement::Binding::PerFace << "NormalBinding { value PER_FACE }\n";
+        QTest::newRow("NormalBinding") << Base::BindingElement::Binding::PerFace
+                                       << "NormalBinding { value PER_FACE }\n";
         QTest::newRow("NormalBinding") << Base::BindingElement::Binding::PerFaceIndexed
                                        << "NormalBinding { value PER_FACE_INDEXED }\n";
-        QTest::newRow("NormalBinding")
-            << Base::BindingElement::Binding::PerVertex << "NormalBinding { value PER_VERTEX }\n";
+        QTest::newRow("NormalBinding") << Base::BindingElement::Binding::PerVertex
+                                       << "NormalBinding { value PER_VERTEX }\n";
         QTest::newRow("NormalBinding") << Base::BindingElement::Binding::PerVertexIndexed
                                        << "NormalBinding { value PER_VERTEX_INDEXED }\n";
-        QTest::newRow("NormalBinding")
-            << Base::BindingElement::Binding::Default << "NormalBinding { value OVERALL }\n";
-        QTest::newRow("NormalBinding")
-            << Base::BindingElement::Binding::None << "NormalBinding { value OVERALL }\n";
+        QTest::newRow("NormalBinding") << Base::BindingElement::Binding::Default
+                                       << "NormalBinding { value OVERALL }\n";
+        QTest::newRow("NormalBinding") << Base::BindingElement::Binding::None
+                                       << "NormalBinding { value OVERALL }\n";
+        // clang-format on
     }
 
     void test_NormalBinding()
