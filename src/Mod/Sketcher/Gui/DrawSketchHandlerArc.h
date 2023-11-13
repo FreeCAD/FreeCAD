@@ -24,6 +24,7 @@
 #ifndef SKETCHERGUI_DrawSketchHandlerArc_H
 #define SKETCHERGUI_DrawSketchHandlerArc_H
 
+#include <Base/Tools.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Notifications.h>
 #include <Gui/CommandT.h>
@@ -53,10 +54,10 @@ using DSHArcController =
     DrawSketchDefaultWidgetController<DrawSketchHandlerArc,
                                       StateMachines::ThreeSeekEnd,
                                       /*PAutoConstraintSize =*/3,
-                                      /*OnViewParametersT =*/OnViewParameters<5, 6>,
-                                      /*WidgetParametersT =*/WidgetParameters<0, 0>,
-                                      /*WidgetCheckboxesT =*/WidgetCheckboxes<0, 0>,
-                                      /*WidgetComboboxesT =*/WidgetComboboxes<1, 1>,
+                                      /*OnViewParametersT =*/OnViewParameters<5, 6>,  // NOLINT
+                                      /*WidgetParametersT =*/WidgetParameters<0, 0>,  // NOLINT
+                                      /*WidgetCheckboxesT =*/WidgetCheckboxes<0, 0>,  // NOLINT
+                                      /*WidgetComboboxesT =*/WidgetComboboxes<1, 1>,  // NOLINT
                                       ConstructionMethods::CircleEllipseConstructionMethod,
                                       /*bool PFirstComboboxIsConstructionMethod =*/true>;
 
@@ -72,12 +73,15 @@ class DrawSketchHandlerArc: public DrawSketchHandlerArcBase
 public:
     explicit DrawSketchHandlerArc(ConstructionMethod constrMethod = ConstructionMethod::Center)
         : DrawSketchHandlerArcBase(constrMethod)
+        , radius(0.0)
         , startAngle(0.0)
         , endAngle(0.0)
         , arcAngle(0.0)
+        , arcPos1(Sketcher::PointPos::none)
+        , arcPos2(Sketcher::PointPos::none)
     {}
 
-    ~DrawSketchHandlerArc() = default;
+    ~DrawSketchHandlerArc() override = default;
 
 private:
     void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) override
@@ -390,17 +394,18 @@ private:
         if (onlyeditoutline) {
             if (constructionMethod() == ConstructionMethod::Center) {
                 if (state() == SelectMode::SeekThird) {
+                    const double scale = 0.8;
                     addLineToShapeGeometry(
                         toVector3d(centerPoint),
-                        Base::Vector3d(centerPoint.x + cos(startAngle) * 0.8 * radius,
-                                       centerPoint.y + sin(startAngle) * 0.8 * radius,
+                        Base::Vector3d(centerPoint.x + cos(startAngle) * scale * radius,
+                                       centerPoint.y + sin(startAngle) * scale * radius,
                                        0.),
                         isConstructionMode());
 
                     addLineToShapeGeometry(
                         toVector3d(centerPoint),
-                        Base::Vector3d(centerPoint.x + cos(endAngle) * 0.8 * radius,
-                                       centerPoint.y + sin(endAngle) * 0.8 * radius,
+                        Base::Vector3d(centerPoint.x + cos(endAngle) * scale * radius,
+                                       centerPoint.y + sin(endAngle) * scale * radius,
                                        0.),
                         isConstructionMode());
                 }
@@ -412,16 +417,17 @@ private:
                                            isConstructionMode());
                 }
                 else if (state() == SelectMode::SeekThird) {
+                    const double scale = 0.8;
                     addLineToShapeGeometry(toVector3d(centerPoint),
                                            toVector3d(centerPoint)
                                                + (toVector3d(secondPoint) - toVector3d(centerPoint))
-                                                   * 0.8,
+                                                   * scale,
                                            isConstructionMode());
 
                     addLineToShapeGeometry(toVector3d(centerPoint),
                                            toVector3d(centerPoint)
                                                + (toVector3d(firstPoint) - toVector3d(centerPoint))
-                                                   * 0.8,
+                                                   * scale,
                                            isConstructionMode());
                 }
             }
@@ -540,7 +546,7 @@ void DSHArcControllerBase::doEnforceControlParameters(Base::Vector2d& onSketchPo
 
                 if (onViewParameters[OnViewParameter::Fourth]->isSet) {
                     double angle =
-                        onViewParameters[OnViewParameter::Fourth]->getValue() * M_PI / 180;
+                        Base::toRadians(onViewParameters[OnViewParameter::Fourth]->getValue());
                     onSketchPos.x = handler->centerPoint.x + cos(angle) * radius;
                     onSketchPos.y = handler->centerPoint.y + sin(angle) * radius;
                 }
@@ -565,7 +571,7 @@ void DSHArcControllerBase::doEnforceControlParameters(Base::Vector2d& onSketchPo
             if (handler->constructionMethod() == DrawSketchHandlerArc::ConstructionMethod::Center) {
                 if (onViewParameters[OnViewParameter::Fifth]->isSet) {
                     double arcAngle =
-                        onViewParameters[OnViewParameter::Fifth]->getValue() * M_PI / 180;
+                        Base::toRadians(onViewParameters[OnViewParameter::Fifth]->getValue());
                     if (fmod(fabs(arcAngle), 2 * M_PI) < Precision::Confusion()) {
                         unsetOnViewParameter(onViewParameters[OnViewParameter::Fifth].get());
                         return;
@@ -617,7 +623,7 @@ void DSHArcController::adaptParameters(Base::Vector2d onSketchPos)
                 if (!onViewParameters[OnViewParameter::Third]->isSet) {
                     setOnViewParameterValue(OnViewParameter::Third, handler->radius);
                 }
-                double range = handler->startAngle * 180 / M_PI;
+                double range = Base::toDegrees(handler->startAngle);
                 if (!onViewParameters[OnViewParameter::Fourth]->isSet) {
                     setOnViewParameterValue(OnViewParameter::Fourth, range, Base::Unit::Angle);
                 }
@@ -649,7 +655,7 @@ void DSHArcController::adaptParameters(Base::Vector2d onSketchPos)
         } break;
         case SelectMode::SeekThird: {
             if (handler->constructionMethod() == DrawSketchHandlerArc::ConstructionMethod::Center) {
-                double range = handler->arcAngle * 180 / M_PI;
+                double range = Base::toDegrees(handler->arcAngle);
 
                 if (!onViewParameters[OnViewParameter::Fifth]->isSet) {
                     setOnViewParameterValue(OnViewParameter::Fifth, range, Base::Unit::Angle);
