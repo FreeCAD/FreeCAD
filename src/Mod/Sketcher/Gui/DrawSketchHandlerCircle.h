@@ -55,10 +55,10 @@ using DSHCircleController =
     DrawSketchDefaultWidgetController<DrawSketchHandlerCircle,
                                       /*SelectModeT*/ StateMachines::ThreeSeekEnd,
                                       /*PAutoConstraintSize =*/3,
-                                      /*OnViewParametersT =*/OnViewParameters<3, 6>,
-                                      /*WidgetParametersT =*/WidgetParameters<0, 0>,
-                                      /*WidgetCheckboxesT =*/WidgetCheckboxes<0, 0>,
-                                      /*WidgetComboboxesT =*/WidgetComboboxes<1, 1>,
+                                      /*OnViewParametersT =*/OnViewParameters<3, 6>,  // NOLINT
+                                      /*WidgetParametersT =*/WidgetParameters<0, 0>,  // NOLINT
+                                      /*WidgetCheckboxesT =*/WidgetCheckboxes<0, 0>,  // NOLINT
+                                      /*WidgetComboboxesT =*/WidgetComboboxes<1, 1>,  // NOLINT
                                       ConstructionMethods::CircleEllipseConstructionMethod,
                                       /*bool PFirstComboboxIsConstructionMethod =*/true>;
 
@@ -75,6 +75,7 @@ class DrawSketchHandlerCircle: public DrawSketchHandlerCircleBase
 public:
     explicit DrawSketchHandlerCircle(ConstructionMethod constrMethod = ConstructionMethod::Center)
         : DrawSketchHandlerCircleBase(constrMethod)
+        , radius(0.0)
     {}
     ~DrawSketchHandlerCircle() override = default;
 
@@ -288,7 +289,7 @@ private:
     }
 
     // reimplement because circle is 2 steps while 3rims is 3 steps
-    virtual void onButtonPressed(Base::Vector2d onSketchPos) override
+    void onButtonPressed(Base::Vector2d onSketchPos) override
     {
         this->updateDataAndDrawToPosition(onSketchPos);
         if (canGoToNextMode()) {
@@ -302,7 +303,7 @@ private:
         }
     }
 
-    virtual void createShape(bool onlyeditoutline) override
+    void createShape(bool onlyeditoutline) override
     {
         Q_UNUSED(onlyeditoutline);
 

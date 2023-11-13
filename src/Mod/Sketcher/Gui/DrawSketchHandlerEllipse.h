@@ -34,8 +34,8 @@
 #include <Gui/Command.h>
 #include <Gui/CommandT.h>
 
+#include <Mod/Sketcher/App/GeoEnum.h>
 #include <Mod/Sketcher/App/SketchObject.h>
-
 #include "DrawSketchDefaultWidgetController.h"
 #include "DrawSketchControllableHandler.h"
 #include "GeometryCreationMode.h"
@@ -56,10 +56,10 @@ using DSHEllipseController =
     DrawSketchDefaultWidgetController<DrawSketchHandlerEllipse,
                                       StateMachines::ThreeSeekEnd,
                                       /*PAutoConstraintSize =*/3,
-                                      /*OnViewParametersT =*/OnViewParameters<5, 6>,
-                                      /*WidgetParametersT =*/WidgetParameters<0, 0>,
-                                      /*WidgetCheckboxesT =*/WidgetCheckboxes<0, 0>,
-                                      /*WidgetComboboxesT =*/WidgetComboboxes<1, 1>,
+                                      /*OnViewParametersT =*/OnViewParameters<5, 6>,  // NOLINT
+                                      /*WidgetParametersT =*/WidgetParameters<0, 0>,  // NOLINT
+                                      /*WidgetCheckboxesT =*/WidgetCheckboxes<0, 0>,  // NOLINT
+                                      /*WidgetComboboxesT =*/WidgetComboboxes<1, 1>,  // NOLINT
                                       ConstructionMethods::CircleEllipseConstructionMethod,
                                       /*bool PFirstComboboxIsConstructionMethod =*/true>;
 
@@ -79,8 +79,9 @@ public:
         , secondRadius(0.0)
         , majorRadius(0.0)
         , minorRadius(0.0)
+        , ellipseGeoId(Sketcher::GeoEnum::GeoUndef)
     {}
-    virtual ~DrawSketchHandlerEllipse() = default;
+    ~DrawSketchHandlerEllipse() override = default;
 
 private:
     void updateDataAndDrawToPosition(Base::Vector2d onSketchPos) override
@@ -346,7 +347,7 @@ private:
         secondRadius = minorradius;
     }
 
-    virtual void createShape(bool onlyeditoutline) override
+    void createShape(bool onlyeditoutline) override
     {
         Q_UNUSED(onlyeditoutline);
 
@@ -355,7 +356,8 @@ private:
         Base::Vector2d majorAxis = firstAxis;
         majorRadius = firstRadius;
         if (state() == SelectMode::SeekSecond) {
-            minorRadius = majorRadius * 0.5;
+            const double scale = 0.5;
+            minorRadius = majorRadius * scale;
         }
         else {  // SelectMode::SeekThird or SelectMode::End
             minorRadius = secondRadius;
@@ -506,7 +508,7 @@ void DSHEllipseControllerBase::doEnforceControlParameters(Base::Vector2d& onSket
 
                 if (onViewParameters[OnViewParameter::Fourth]->isSet) {
                     double angle =
-                        onViewParameters[OnViewParameter::Fourth]->getValue() * M_PI / 180;
+                        Base::toRadians(onViewParameters[OnViewParameter::Fourth]->getValue());
                     onSketchPos.x = handler->centerPoint.x + cos(angle) * length;
                     onSketchPos.y = handler->centerPoint.y + sin(angle) * length;
                 }
@@ -593,7 +595,7 @@ void DSHEllipseController::adaptParameters(Base::Vector2d onSketchPos)
                 }
 
                 if (!onViewParameters[OnViewParameter::Fourth]->isSet) {
-                    double angle = vec.Length() > 0 ? vec.Angle() * 180 / M_PI : 0;
+                    double angle = vec.Length() > 0 ? Base::toDegrees(vec.Angle()) : 0;
                     setOnViewParameterValue(OnViewParameter::Fourth, angle, Base::Unit::Angle);
                 }
 
@@ -707,7 +709,7 @@ void DSHEllipseController::addConstraints()
 
         auto x0 = onViewParameters[OnViewParameter::First]->getValue();
         auto y0 = onViewParameters[OnViewParameter::Second]->getValue();
-        auto angle = onViewParameters[OnViewParameter::Fourth]->getValue() * M_PI / 180;
+        auto angle = Base::toRadians(onViewParameters[OnViewParameter::Fourth]->getValue());
 
         auto x0set = onViewParameters[OnViewParameter::First]->isSet;
         auto y0set = onViewParameters[OnViewParameter::Second]->isSet;
