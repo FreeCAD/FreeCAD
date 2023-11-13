@@ -1024,7 +1024,7 @@ protected:
      * inherent part of it and the shape would not go without them. Lower priority constraints are
      * AutoConstraints and constraints mandated by the widget/on-screen parameters.
      * .*/
-    void addToShapeConstraints(Sketcher::ConstraintType type,
+    auto addToShapeConstraints(Sketcher::ConstraintType type,
                                int first,
                                Sketcher::PointPos firstPos = Sketcher::PointPos::none,
                                int second = -2000,
@@ -1040,7 +1040,7 @@ protected:
         constr->SecondPos = secondPos;
         constr->Third = third;
         constr->ThirdPos = thirdPos;
-        ShapeConstraints.push_back(std::move(constr));
+        return ShapeConstraints.emplace_back(std::move(constr)).get();
     }
 
     /** @brief Function to add a line to the ShapeGeometry vector.*/
