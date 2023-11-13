@@ -97,24 +97,18 @@ private:
                 toolWidgetManager.drawDirectionAtCursor(onSketchPos, startPoint);
 
                 secondPoint = onSketchPos;
-                angle = GetPointAngle(startPoint, secondPoint);
+                angle = (secondPoint - startPoint).Angle();
                 checkHorizontalVertical();
                 length = (secondPoint - startPoint).Length();
-                radius = length / 5;  // radius chosen at 1/5 of length
+                const double scale = 0.2;
+                radius = length * scale;  // radius chosen at 1/5 of length
 
                 CreateAndDrawShapeGeometry();
 
-                if ((isHorizontal || isVertical)
-                    && seekAutoConstraint(sugConstraints[1],
-                                          onSketchPos,
-                                          secondPoint - startPoint,
-                                          AutoConstraint::VERTEX_NO_TANGENCY)) {
-                    renderSuggestConstraintsCursor(sugConstraints[1]);
-                    return;
-                }
-                else if (seekAutoConstraint(sugConstraints[1],
-                                            onSketchPos,
-                                            Base::Vector2d(0.f, 0.f))) {
+                if (seekAutoConstraint(sugConstraints[1],
+                                       onSketchPos,
+                                       secondPoint - startPoint,
+                                       AutoConstraint::VERTEX_NO_TANGENCY)) {
                     renderSuggestConstraintsCursor(sugConstraints[1]);
                     return;
                 }
@@ -181,17 +175,14 @@ private:
 
     void generateAutoConstraints() override
     {
-        bool isHorizontalVertical = isHorizontal || isVertical;
-
         // add auto constraints for the center of 1st arc
         generateAutoConstraintsOnElement(sugConstraints[0],
                                          getHighestCurveIndex() - 3,
                                          Sketcher::PointPos::mid);
 
-        generateAutoConstraintsOnElement(
-            sugConstraints[1],
-            isHorizontalVertical ? getHighestCurveIndex() : getHighestCurveIndex() - 2,
-            isHorizontalVertical ? Sketcher::PointPos::none : Sketcher::PointPos::mid);
+        generateAutoConstraintsOnElement(sugConstraints[1],
+                                         getHighestCurveIndex() - 2,
+                                         Sketcher::PointPos::mid);
 
         // Ensure temporary autoconstraints do not generate a redundancy and that the geometry
         // parameters are accurate This is particularly important for adding widget mandated
@@ -306,17 +297,43 @@ private:
                                   firstCurve,
                                   Sketcher::PointPos::none,
                                   firstCurve + 1);
+
+            // Prevent duplicate with Autocontraint
+            AutoConstraint lastCons = {Sketcher::None,
+                                       Sketcher::GeoEnum::GeoUndef,
+                                       Sketcher::PointPos::none};
+            if (!sugConstraints[1].empty()) {
+                lastCons = sugConstraints[1].back();
+            }
+
+            if (isHorizontal || isVertical) {
+                addToShapeConstraints(isHorizontal ? Sketcher::Horizontal : Sketcher::Vertical,
+                                      firstCurve + 3);
+
+
+                if (lastCons.Type == Sketcher::Horizontal || lastCons.Type == Sketcher::Vertical) {
+                    sugConstraints[1].pop_back();
+                }
+            }
+            else {
+                // If horizontal/vertical Autoconstraint suggested, applied it on first line
+                // (rather than last arc)
+                if (lastCons.Type == Sketcher::Horizontal || lastCons.Type == Sketcher::Vertical) {
+                    sugConstraints[1].back().GeoId = firstCurve + 2;
+                }
+            }
         }
     }
 
     void checkHorizontalVertical()
     {
-        if (fmod(angle, M_PI) < Precision::Confusion()) {
+        isHorizontal = false;
+        isVertical = false;
+
+        if (fmod(fabs(angle), M_PI) < Precision::Confusion()) {
             isHorizontal = true;
-            isVertical = false;
         }
-        else if (fmod(angle + M_PI / 2, M_PI) < Precision::Confusion()) {
-            isHorizontal = false;
+        else if (fmod(fabs(angle + M_PI / 2), M_PI) < Precision::Confusion()) {
             isVertical = true;
         }
     }
@@ -525,29 +542,28 @@ void DSHSlotController::addConstraints()
 
     using namespace Sketcher;
 
-    if (x0set && y0set && x0 == 0. && y0 == 0.) {
+    auto constraintToOrigin = [&]() {
         ConstraintToAttachment(GeoElementId(firstCurve, PointPos::mid),
                                GeoElementId::RtPnt,
                                x0,
-                               handler->sketchgui->getObject());
-    }
-    else {
-        if (x0set) {
-            ConstraintToAttachment(GeoElementId(firstCurve, PointPos::mid),
-                                   GeoElementId::VAxis,
-                                   x0,
-                                   handler->sketchgui->getObject());
-        }
+                               obj);
+    };
 
-        if (y0set) {
-            ConstraintToAttachment(GeoElementId(firstCurve, PointPos::mid),
-                                   GeoElementId::HAxis,
-                                   y0,
-                                   handler->sketchgui->getObject());
-        }
-    }
+    auto constraintx0 = [&]() {
+        ConstraintToAttachment(GeoElementId(firstCurve, PointPos::mid),
+                               GeoElementId::VAxis,
+                               x0,
+                               obj);
+    };
 
-    if (lengthSet) {
+    auto constrainty0 = [&]() {
+        ConstraintToAttachment(GeoElementId(firstCurve, PointPos::mid),
+                               GeoElementId::HAxis,
+                               y0,
+                               obj);
+    };
+
+    auto constraintLength = [&]() {
         Gui::cmdAppObjectArgs(obj,
                               "addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%d,%f)) ",
                               firstCurve,
@@ -555,29 +571,91 @@ void DSHSlotController::addConstraints()
                               firstCurve + 1,
                               3,
                               handler->length);
-    }
+    };
 
-    if (angleSet) {
-        handler->checkHorizontalVertical();
-        if (handler->isHorizontal) {
-            Gui::cmdAppObjectArgs(obj,
-                                  "addConstraint(Sketcher.Constraint('Horizontal',%d)) ",
-                                  firstCurve + 2);
-        }
-        else if (handler->isVertical) {
-            Gui::cmdAppObjectArgs(obj,
-                                  "addConstraint(Sketcher.Constraint('Vertical',%d)) ",
-                                  firstCurve + 2);
-        }
-        else {
+    auto constraintAngle = [&]() {
+        if (!handler->isHorizontal && !handler->isVertical) {
             Gui::cmdAppObjectArgs(obj,
                                   "addConstraint(Sketcher.Constraint('Angle',%d,%d,%f)) ",
                                   Sketcher::GeoEnum::HAxis,
                                   firstCurve + 2,
                                   handler->angle);
+
+            // Prevent duplicate with Autocontraint
+            AutoConstraint lastCons = {Sketcher::None,
+                                       Sketcher::GeoEnum::GeoUndef,
+                                       Sketcher::PointPos::none};
+            if (!handler->sugConstraints[1].empty()) {
+                lastCons = handler->sugConstraints[1].back();
+                if (lastCons.Type == Sketcher::Horizontal || lastCons.Type == Sketcher::Vertical) {
+                    handler->AutoConstraints.pop_back();
+                }
+            }
+        }
+    };
+
+    if (handler->AutoConstraints.empty()) {  // No valid diagnosis. Every constraint can be added.
+
+        if (x0set && y0set && x0 == 0. && y0 == 0.) {
+            constraintToOrigin();
+        }
+        else {
+            if (x0set) {
+                constraintx0();
+            }
+
+            if (y0set) {
+                constrainty0();
+            }
+        }
+
+        if (lengthSet) {
+            constraintLength();
+        }
+
+        if (angleSet) {
+            constraintAngle();
+        }
+    }
+    else {  // Valid diagnosis. Must check which constraints may be added.
+        auto startpointinfo = handler->getPointInfo(GeoElementId(firstCurve, PointPos::mid));
+
+        if (x0set && startpointinfo.isXDoF()) {
+            constraintx0();
+
+            handler->diagnoseWithAutoConstraints();  // ensure we have recalculated parameters after
+                                                     // each constraint addition
+
+            startpointinfo = handler->getPointInfo(
+                GeoElementId(firstCurve, PointPos::start));  // get updated point position
+        }
+
+        if (y0set && startpointinfo.isYDoF()) {
+            constrainty0();
+
+            handler->diagnoseWithAutoConstraints();  // ensure we have recalculated parameters after
+                                                     // each constraint addition
+
+            startpointinfo = handler->getPointInfo(
+                GeoElementId(firstCurve, PointPos::start));  // get updated point position
+        }
+
+        auto endpointinfo = handler->getPointInfo(GeoElementId(firstCurve + 1, PointPos::mid));
+
+        int DoFs = startpointinfo.getDoFs();
+        DoFs += endpointinfo.getDoFs();
+
+        if (lengthSet && DoFs > 0) {
+            constraintLength();
+            DoFs--;
+        }
+
+        if (angleSet && DoFs > 0) {
+            constraintAngle();
         }
     }
 
+    // No auto constraint in seekThird.
     if (radiusSet) {
         Gui::cmdAppObjectArgs(obj,
                               "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
