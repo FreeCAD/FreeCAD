@@ -25,7 +25,7 @@ Configuration and variables of FreeCAD installer
 # Fixme: FC should use different preferences folder for every release
 !define APP_DIR_USERDATA ${APP_NAME}
 #!define APP_DIR_USERDATA "${APP_NAME}${APP_VERSION_MAJOR}.${APP_VERSION_MINOR}"
-!define APP_INFO "${APP_NAME} - Your Own 3D Parametric Modeler"
+!define APP_INFO "${APP_NAME} Installer/Uninstaller"
 !define APP_WEBPAGE "https://www.freecad.org/"
 !define APP_WEBPAGE_INFO "${APP_NAME} Website"
 !define APP_WIKI "https://wiki.freecad.org/Main_Page"
