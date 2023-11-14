@@ -26,6 +26,7 @@ void sharedptrTest();
 
 int main()
 {
+	ASMTAssembly::readWriteFile("failingsolve.asmt");
 	ASMTAssembly::runFile("cirpendu2.asmt");	//Under constrained. Testing ICKine.
 	ASMTAssembly::runFile("quasikine.asmt");	//Under constrained. Testing ICKine.
 	ASMTAssembly::readWriteFile("piston.asmt");
