@@ -55,8 +55,8 @@ public:
     App::PropertyBool    Reversed;
     /// Make extrusion symmetric to sketch plane
     App::PropertyBool    Midplane;
-    /// Face to extrude up to
-    App::PropertyLinkSub UpToFace;
+    /// Faces to extrude up to
+    App::PropertyLinkSubList UpToFace;
 
     App::PropertyBool AllowMultiFace;
 
@@ -131,15 +131,31 @@ protected:
     static void getFaceFromLinkSub(TopoDS_Face& upToFace,
                                    const App::PropertyLinkSub& refFace);
 
+    /// Create a shape with shapes and faces from a given LinkSubList
+    /// return 0 if almost one full shape is selected else the face count
+    static int getShapeFromLinkSubList(TopoDS_Shape& upToFaces,
+                                   const App::PropertyLinkSubList& refFaces);
+
+    ///Remove limits from face
+    static void UnlimitFace(TopoDS_Shape& upToFace,
+                            const TopoDS_Shape& sketchshape,
+                            const gp_Dir& dir);
+
+    /// Check that the upToFace is either not parallel to the extrusion direction
+    /// and that upToFace is not too near
+    static void ValidateFace(TopoDS_Shape& upToFace,
+                             const TopoDS_Shape& sketchshape,
+                             const gp_Dir& dir);
+
     /// Find a valid face to extrude up to
-    static void getUpToFace(TopoDS_Face& upToFace,
+    static void getUpToFace(TopoDS_Shape& upToFace,
                             const TopoDS_Shape& support,
                             const TopoDS_Shape& sketchshape,
                             const std::string& method,
                             const gp_Dir& dir);
 
     /// Add an offset to the face
-    static void addOffsetToFace(TopoDS_Face& upToFace,
+    static void addOffsetToFace(TopoDS_Shape& upToFace,
                                 const gp_Dir& dir,
                                 double offset);
 

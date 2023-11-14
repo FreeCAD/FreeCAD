@@ -55,7 +55,7 @@ Pocket::Pocket()
     ADD_PROPERTY_TYPE(Direction, (Base::Vector3d(1.0, 1.0, 1.0)), "Pocket", App::Prop_None, "Pocket direction vector");
     ADD_PROPERTY_TYPE(ReferenceAxis, (nullptr), "Pocket", App::Prop_None, "Reference axis of direction");
     ADD_PROPERTY_TYPE(AlongSketchNormal, (true), "Pocket", App::Prop_None, "Measure pocket length along the sketch normal direction");
-    ADD_PROPERTY_TYPE(UpToFace, (nullptr), "Pocket", App::Prop_None, "Face where pocket will end");
+    ADD_PROPERTY_TYPE(UpToFace, (nullptr), "Pocket", App::Prop_None, "Face(s) or shape(s) where pocket will end");
     ADD_PROPERTY_TYPE(Offset, (0.0), "Pocket", App::Prop_None, "Offset from face in which pocket will end");
     Offset.setConstraints(&signedLengthConstraint);
     ADD_PROPERTY_TYPE(TaperAngle, (0.0), "Pocket", App::Prop_None, "Taper angle");
@@ -155,14 +155,20 @@ App::DocumentObjectExecReturn *Pocket::execute()
             if (Reversed.getValue())
                 dir.Reverse();
 
+            TopoDS_Shape upToShape;
+            int faceCount = 1;
             // Find a valid face or datum plane to extrude up to
-            TopoDS_Face upToFace;
             if (method == "UpToFace") {
-                getFaceFromLinkSub(upToFace, UpToFace);
-                upToFace.Move(invObjLoc);
+                faceCount = getShapeFromLinkSubList(upToShape, UpToFace);
+                upToShape.Move(invObjLoc);
             }
-            getUpToFace(upToFace, base, profileshape, method, dir);
-            addOffsetToFace(upToFace, dir, Offset.getValue());
+            if (faceCount == 1) {
+                getUpToFace(upToShape, base, profileshape, method, dir);
+                addOffsetToFace(upToShape, dir, Offset.getValue());
+            }
+            else if (fabs(Offset.getValue()) > Precision::Confusion()){
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Pad: Can only offset one face"));
+            }
 
             // BRepFeat_MakePrism(..., 2, 1) in combination with PerForm(upToFace) is buggy when the
             // prism that is being created is contained completely inside the base solid
@@ -176,7 +182,7 @@ App::DocumentObjectExecReturn *Pocket::execute()
                 supportface = TopoDS_Face();
             TopoDS_Shape prism;
             PrismMode mode = PrismMode::CutFromBase;
-            generatePrism(prism, method, base, profileshape, supportface, upToFace, dir, mode, Standard_True);
+            generatePrism(prism, method, base, profileshape, supportface, upToShape, dir, mode, Standard_True);
 
             // And the really expensive way to get the SubShape...
             BRepAlgoAPI_Cut mkCut(base, prism);
