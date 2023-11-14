@@ -219,8 +219,7 @@ public:
 
     /// setter methods for including debug information
     /// intended to use via macro for autofilling of debugging information
-    inline void
-    setDebugInformation(const std::string& file, const int line, const std::string& function);
+    inline void setDebugInformation(const std::string& file, int line, const std::string& function);
 
     inline void setTranslatable(bool translatable);
 
@@ -844,7 +843,7 @@ inline bool Exception::getTranslatable() const
 }
 
 inline void
-Exception::setDebugInformation(const std::string& file, const int line, const std::string& function)
+Exception::setDebugInformation(const std::string& file, int line, const std::string& function)
 {
     _file = file;
     _line = line;

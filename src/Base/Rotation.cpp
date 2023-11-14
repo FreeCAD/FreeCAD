@@ -69,7 +69,7 @@ Rotation::Rotation(const double q[4])
  * q0 = x, q1 = y, q2 = z and q3 = w,
  * where the quaternion is specified by q=w+xi+yj+zk.
  */
-Rotation::Rotation(const double q0, const double q1, const double q2, const double q3)
+Rotation::Rotation(double q0, double q1, double q2, double q3)
     : Rotation()
 {
     this->setValue(q0, q1, q2, q3);
@@ -146,7 +146,7 @@ void Rotation::evaluateVector()
     }
 }
 
-void Rotation::setValue(const double q0, const double q1, const double q2, const double q3)
+void Rotation::setValue(double q0, double q1, double q2, double q3)
 {
     this->quat[0] = q0;
     this->quat[1] = q1;
@@ -258,7 +258,7 @@ void Rotation::setValue(const Matrix4D& m)
     this->evaluateVector();
 }
 
-void Rotation::setValue(const Vector3d& axis, const double fAngle)
+void Rotation::setValue(const Vector3d& axis, double fAngle)
 {
     // Taken from <http://de.wikipedia.org/wiki/Quaternionen>
     //

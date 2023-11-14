@@ -119,7 +119,7 @@ Type Type::badType()
 }
 
 
-const Type Type::createType(const Type parent, const char* name, instantiationMethod method)
+const Type Type::createType(const Type& parent, const char* name, instantiationMethod method)
 {
     Type newType;
     newType.index = static_cast<unsigned int>(Type::typedata.size());
@@ -185,7 +185,7 @@ const Type Type::getParent() const
     return typedata[index]->parent;
 }
 
-bool Type::isDerivedFrom(const Type type) const
+bool Type::isDerivedFrom(const Type& type) const
 {
 
     Type temp(*this);
@@ -199,7 +199,7 @@ bool Type::isDerivedFrom(const Type type) const
     return false;
 }
 
-int Type::getAllDerivedFrom(const Type type, std::vector<Type>& List)
+int Type::getAllDerivedFrom(const Type& type, std::vector<Type>& List)
 {
     int cnt = 0;
 
@@ -217,7 +217,7 @@ int Type::getNumTypes()
     return static_cast<int>(typedata.size());
 }
 
-Type Type::getTypeIfDerivedFrom(const char* name, const Type parent, bool bLoadModule)
+Type Type::getTypeIfDerivedFrom(const char* name, const Type& parent, bool bLoadModule)
 {
     if (bLoadModule) {
         importModule(name);

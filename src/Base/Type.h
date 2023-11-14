@@ -99,29 +99,30 @@ public:
     static Type fromKey(unsigned int key);
     const char* getName() const;
     const Type getParent() const;
-    bool isDerivedFrom(const Type type) const;
+    bool isDerivedFrom(const Type& type) const;
 
-    static int getAllDerivedFrom(const Type type, std::vector<Type>& List);
+    static int getAllDerivedFrom(const Type& type, std::vector<Type>& List);
     /// Returns the given named type if is derived from parent type, otherwise return bad type
-    static Type getTypeIfDerivedFrom(const char* name, const Type parent, bool bLoadModule = false);
+    static Type
+    getTypeIfDerivedFrom(const char* name, const Type& parent, bool bLoadModule = false);
 
     static int getNumTypes();
 
     static const Type
-    createType(const Type parent, const char* name, instantiationMethod method = nullptr);
+    createType(const Type& parent, const char* name, instantiationMethod method = nullptr);
 
     unsigned int getKey() const;
     bool isBad() const;
 
     Type& operator=(const Type& type) = default;
     Type& operator=(Type&& type) = default;
-    bool operator==(const Type type) const;
-    bool operator!=(const Type type) const;
+    bool operator==(const Type& type) const;
+    bool operator!=(const Type& type) const;
 
-    bool operator<(const Type type) const;
-    bool operator<=(const Type type) const;
-    bool operator>=(const Type type) const;
-    bool operator>(const Type type) const;
+    bool operator<(const Type& type) const;
+    bool operator<=(const Type& type) const;
+    bool operator>=(const Type& type) const;
+    bool operator>(const Type& type) const;
 
     static Type badType();
     static void init();
@@ -145,32 +146,32 @@ inline unsigned int Type::getKey() const
     return this->index;
 }
 
-inline bool Type::operator!=(const Type type) const
+inline bool Type::operator!=(const Type& type) const
 {
     return (this->getKey() != type.getKey());
 }
 
-inline bool Type::operator==(const Type type) const
+inline bool Type::operator==(const Type& type) const
 {
     return (this->getKey() == type.getKey());
 }
 
-inline bool Type::operator<(const Type type) const
+inline bool Type::operator<(const Type& type) const
 {
     return (this->getKey() < type.getKey());
 }
 
-inline bool Type::operator<=(const Type type) const
+inline bool Type::operator<=(const Type& type) const
 {
     return (this->getKey() <= type.getKey());
 }
 
-inline bool Type::operator>=(const Type type) const
+inline bool Type::operator>=(const Type& type) const
 {
     return (this->getKey() >= type.getKey());
 }
 
-inline bool Type::operator>(const Type type) const
+inline bool Type::operator>(const Type& type) const
 {
     return (this->getKey() > type.getKey());
 }

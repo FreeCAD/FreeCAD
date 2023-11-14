@@ -41,10 +41,10 @@ public:
     /** Construction. */
     //@{
     Rotation();
-    Rotation(const Vector3d& axis, const double fAngle);
+    Rotation(const Vector3d& axis, double fAngle);
     Rotation(const Matrix4D& matrix);
     Rotation(const double q[4]);
-    Rotation(const double q0, const double q1, const double q2, const double q3);
+    Rotation(double q0, double q1, double q2, double q3);
     Rotation(const Vector3d& rotateFrom, const Vector3d& rotateTo);
     Rotation(const Rotation& rot);
     //@}
@@ -53,7 +53,7 @@ public:
     //@{
     const double* getValue() const;
     void getValue(double& q0, double& q1, double& q2, double& q3) const;
-    void setValue(const double q0, const double q1, const double q2, const double q3);
+    void setValue(double q0, double q1, double q2, double q3);
     /// If not a null quaternion then \a axis will be normalized
     void getValue(Vector3d& axis, double& rfAngle) const;
     /// Does the same as the method above unless normalizing the axis.
@@ -61,7 +61,7 @@ public:
     void getValue(Matrix4D& matrix) const;
     void setValue(const double q[4]);
     void setValue(const Matrix4D& matrix);
-    void setValue(const Vector3d& axis, const double fAngle);
+    void setValue(const Vector3d& axis, double fAngle);
     void setValue(const Vector3d& rotateFrom, const Vector3d& rotateTo);
     /// Euler angles in yaw,pitch,roll notation
     void setYawPitchRoll(double y, double p, double r);
@@ -150,7 +150,7 @@ public:
     Vector3d multVec(const Vector3d& src) const;
     void multVec(const Vector3f& src, Vector3f& dst) const;
     Vector3f multVec(const Vector3f& src) const;
-    void scaleAngle(const double scaleFactor);
+    void scaleAngle(double scaleFactor);
     //@}
 
     /** Specialty constructors */
