@@ -80,8 +80,9 @@ PyObjectBase::~PyObjectBase()
     Base::Console().Log("PyO-: %s (%p)\n",Py_TYPE(this)->tp_name, this);
 #endif
     // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-    if (baseProxy && reinterpret_cast<PyBaseProxy*>(baseProxy)->baseobject == this)
+    if (baseProxy && reinterpret_cast<PyBaseProxy*>(baseProxy)->baseobject == this) {
         Py_DECREF(baseProxy);
+    }
     Py_XDECREF(attrDict);
 }
 
@@ -108,8 +109,9 @@ PyBaseProxy_dealloc(PyObject* self)
 {
     /* Clear weakrefs first before calling any destructors */
     // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-    if (reinterpret_cast<PyBaseProxy*>(self)->weakreflist)
+    if (reinterpret_cast<PyBaseProxy*>(self)->weakreflist) {
         PyObject_ClearWeakRefs(self);
+    }
     Py_TYPE(self)->tp_free(self);
 }
 
@@ -249,8 +251,9 @@ PyObject* createWeakRef(PyObjectBase* ptr)
     static bool init = false;
     if (!init) {
        init = true;
-       if (PyType_Ready(&PyBaseProxyType) < 0)
+       if (PyType_Ready(&PyBaseProxyType) < 0) {
            return nullptr;
+        }
     }
 
     PyObject* proxy = ptr->baseProxy;
@@ -295,8 +298,9 @@ PyObject* PyObjectBase::__getattro(PyObject * obj, PyObject *attro)
     // the wrong type object (#0003311)
     if (streq(attr, "__class__")) {
         PyObject* res = PyObject_GenericGetAttr(obj, attro);
-        if (res)
+        if (res) {
             return res;
+        }
     }
 
     // This should be the entry in Type
@@ -433,8 +437,9 @@ PyObject *PyObjectBase::_getattr(const char *attr)
 
 int PyObjectBase::_setattr(const char *attr, PyObject *value)
 {
-    if (streq(attr,"softspace"))
+    if (streq(attr,"softspace")) {
         return -1; // filter out softspace
+    }
     PyObject *w{};
     // As fallback solution use Python's default method to get generic attributes
     w = PyUnicode_InternFromString(attr); // new reference
@@ -504,8 +509,9 @@ void PyObjectBase::setAttributeOf(const char* attr, PyObject* par)
 
 void PyObjectBase::startNotify()
 {
-    if (!shouldNotify())
+    if (!shouldNotify()) {
         return;
+    }
 
     if (attrDict) {
         // This is the attribute name to the parent structure
@@ -529,8 +535,9 @@ void PyObjectBase::startNotify()
             Py_DECREF(attr); // might be destroyed now
             Py_DECREF(this); // might be destroyed now
 
-            if (PyErr_Occurred())
+            if (PyErr_Occurred()) {
                 PyErr_Clear();
+            }
         }
         Py_DECREF(key1);
         Py_DECREF(key2);

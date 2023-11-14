@@ -91,7 +91,9 @@ void Exception::ReportException() const
         }
         else
 #endif
+        {
             _FC_ERR(_file.c_str(), _line, msg);
+        }
         _isReported = true;
     }
 }
@@ -318,7 +320,9 @@ void FileException::ReportException() const
         }
         else
 #endif
+        {
             _FC_ERR(_file.c_str(), _line, msg);
+        }
         _isReported = true;
     }
 }
