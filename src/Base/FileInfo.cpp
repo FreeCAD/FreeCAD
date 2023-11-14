@@ -218,13 +218,13 @@ boost::filesystem::path FileInfo::stringToPath(const std::string& str)
     return path;
 }
 
-std::string FileInfo::pathToString(const boost::filesystem::path& p)
+std::string FileInfo::pathToString(const boost::filesystem::path& path)
 {
 #if defined(FC_OS_WIN32)
     std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-    return converter.to_bytes(p.wstring());
+    return converter.to_bytes(path.wstring());
 #else
-    return p.string();
+    return path.string();
 #endif
 }
 

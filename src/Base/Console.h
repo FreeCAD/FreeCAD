@@ -487,12 +487,12 @@ namespace Base
 {
 
 #ifndef FC_LOG_NO_TIMING
-inline FC_DURATION GetDuration(FC_TIME_POINT& t)
+inline FC_DURATION GetDuration(FC_TIME_POINT& tp)
 {
     auto tnow = std::chrono::FC_TIME_CLOCK::now();
-    auto d = std::chrono::duration_cast<FC_DURATION>(tnow - t);
-    t = tnow;
-    return d;
+    auto dc = std::chrono::duration_cast<FC_DURATION>(tnow - tp);
+    tp = tnow;
+    return dc;
 }
 #endif
 
@@ -805,11 +805,11 @@ public:
     };
 
     /// Change mode
-    void SetConsoleMode(ConsoleMode m);
+    void SetConsoleMode(ConsoleMode mode);
     /// Change mode
-    void UnsetConsoleMode(ConsoleMode m);
+    void UnsetConsoleMode(ConsoleMode mode);
     /// Enables or disables message types of a certain console observer
-    ConsoleMsgFlags SetEnabledMsgType(const char* sObs, ConsoleMsgFlags type, bool b);
+    ConsoleMsgFlags SetEnabledMsgType(const char* sObs, ConsoleMsgFlags type, bool on);
     /// Checks if message types of a certain console observer are enabled
     bool IsMsgTypeEnabled(const char* sObs, FreeCAD_ConsoleMsgType type) const;
     void SetConnectionMode(ConnectionMode mode);
@@ -957,9 +957,9 @@ public:
         , refresh(refresh)
     {}
 
-    bool isEnabled(int l)
+    bool isEnabled(int lev) const
     {
-        return l <= level();
+        return lev <= level();
     }
 
     int level() const

@@ -158,14 +158,14 @@ PyObject* UnitsApi::sSetSchema(PyObject* /*self*/, PyObject* args)
 
 PyObject* UnitsApi::sSchemaTranslate(PyObject* /*self*/, PyObject* args)
 {
-    PyObject* q {};
+    PyObject* py {};
     int index {};
-    if (!PyArg_ParseTuple(args, "O!i", &(QuantityPy::Type), &q, &index)) {
+    if (!PyArg_ParseTuple(args, "O!i", &(QuantityPy::Type), &py, &index)) {
         return nullptr;
     }
 
     Quantity quant;
-    quant = *static_cast<Base::QuantityPy*>(q)->getQuantityPtr();
+    quant = *static_cast<Base::QuantityPy*>(py)->getQuantityPtr();
 
     std::unique_ptr<UnitsSchema> schema(createSchema(static_cast<UnitSystem>(index)));
     if (!schema.get()) {
@@ -192,9 +192,9 @@ PyObject* UnitsApi::sToNumber(PyObject* /*self*/, PyObject* args)
     int decimals {};
 
     do {
-        PyObject* q {};
-        if (PyArg_ParseTuple(args, "O!|si", &(QuantityPy::Type), &q, &format, &decimals)) {
-            value = static_cast<QuantityPy*>(q)->getQuantityPtr()->getValue();
+        PyObject* py {};
+        if (PyArg_ParseTuple(args, "O!|si", &(QuantityPy::Type), &py, &format, &decimals)) {
+            value = static_cast<QuantityPy*>(py)->getQuantityPtr()->getValue();
             break;
         }
 

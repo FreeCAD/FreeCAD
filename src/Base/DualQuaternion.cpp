@@ -26,6 +26,7 @@
 #include "DualQuaternion.h"
 
 
+// NOLINTBEGIN(readability-identifier-length)
 Base::DualQuat Base::operator+(Base::DualQuat a, Base::DualQuat b)
 {
     return {a.x + b.x, a.y + b.y, a.z + b.z, a.w + b.w};
@@ -131,3 +132,4 @@ Base::DualQuat Base::DualQuat::pow(double t, bool shorten) const
             m * sin(theta / 2) + pitch / 2 * cos(theta / 2) * l
                 + DualQuat(0, 0, 0, -pitch / 2 * sin(theta / 2))};
 }
+// NOLINTEND(readability-identifier-length)

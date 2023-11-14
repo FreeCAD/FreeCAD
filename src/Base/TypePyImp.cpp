@@ -97,8 +97,8 @@ PyObject* TypePy::isBad(PyObject* args)
         return nullptr;
     }
 
-    bool v = getBaseTypePtr()->isBad();
-    return PyBool_FromLong(v ? 1 : 0);
+    bool val = getBaseTypePtr()->isBad();
+    return PyBool_FromLong(val ? 1 : 0);
 }
 
 PyObject* TypePy::isDerivedFrom(PyObject* args)
@@ -113,9 +113,9 @@ PyObject* TypePy::isDerivedFrom(PyObject* args)
         }
 
         PyErr_Clear();
-        PyObject* t {};
-        if (PyArg_ParseTuple(args, "O!", &TypePy::Type, &t)) {
-            type = *static_cast<TypePy*>(t)->getBaseTypePtr();
+        PyObject* py {};
+        if (PyArg_ParseTuple(args, "O!", &TypePy::Type, &py)) {
+            type = *static_cast<TypePy*>(py)->getBaseTypePtr();
             break;
         }
 
@@ -123,8 +123,8 @@ PyObject* TypePy::isDerivedFrom(PyObject* args)
         return nullptr;
     } while (false);
 
-    bool v = (type != Base::Type::badType() && getBaseTypePtr()->isDerivedFrom(type));
-    return PyBool_FromLong(v ? 1 : 0);
+    bool val = (type != Base::Type::badType() && getBaseTypePtr()->isDerivedFrom(type));
+    return PyBool_FromLong(val ? 1 : 0);
 }
 
 PyObject* TypePy::getAllDerivedFrom(PyObject* args)
@@ -139,9 +139,9 @@ PyObject* TypePy::getAllDerivedFrom(PyObject* args)
         }
 
         PyErr_Clear();
-        PyObject* t {};
-        if (PyArg_ParseTuple(args, "O!", &TypePy::Type, &t)) {
-            type = *static_cast<TypePy*>(t)->getBaseTypePtr();
+        PyObject* py {};
+        if (PyArg_ParseTuple(args, "O!", &TypePy::Type, &py)) {
+            type = *static_cast<TypePy*>(py)->getBaseTypePtr();
             break;
         }
 

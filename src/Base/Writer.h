@@ -73,7 +73,7 @@ public:
     /// insert a binary file BASE64 coded as CDATA section in the XML file
     void insertBinFile(const char* FileName);
     /// insert text string as CDATA
-    void insertText(const std::string& s);
+    void insertText(const std::string& str);
 
     /** @name additional file writing */
     //@{

@@ -115,9 +115,9 @@ void PyException::raiseException()
     }
 
     if (_exceptionType == Base::PyExc_FC_FreeCADAbort) {
-        Base::AbortException e(_sErrMsg.c_str());
-        e.setReported(_isReported);
-        throw e;
+        Base::AbortException exc(_sErrMsg.c_str());
+        exc.setReported(_isReported);
+        throw exc;
     }
 
     throw *this;

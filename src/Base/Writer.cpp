@@ -51,12 +51,12 @@ struct cdata_filter
     using category = boost::iostreams::output_filter_tag;
 
     template<typename Device>
-    inline bool put(Device& dev, char c)
+    inline bool put(Device& dev, char ch)
     {
         switch (state) {
             case 0:
             case 1:
-                if (c == ']') {
+                if (ch == ']') {
                     ++state;
                 }
                 else {
@@ -64,14 +64,14 @@ struct cdata_filter
                 }
                 break;
             case 2:
-                if (c == '>') {
+                if (ch == '>') {
                     static const char escape[] = "]]><![CDATA[";
                     boost::iostreams::write(dev, escape, sizeof(escape) - 1);
                 }
                 state = 0;
                 break;
         }
-        return boost::iostreams::put(dev, c);
+        return boost::iostreams::put(dev, ch);
     }
 
     int state = 0;
@@ -127,9 +127,9 @@ std::ostream& Writer::charStream()
     return *CharStream;
 }
 
-void Writer::insertText(const std::string& s)
+void Writer::insertText(const std::string& str)
 {
-    beginCharStream() << s;
+    beginCharStream() << str;
     endCharStream();
 }
 
@@ -177,9 +177,9 @@ bool Writer::isForceXML()
     return forceXML;
 }
 
-void Writer::setFileVersion(int v)
+void Writer::setFileVersion(int version)
 {
-    fileVersion = v;
+    fileVersion = version;
 }
 
 int Writer::getFileVersion() const

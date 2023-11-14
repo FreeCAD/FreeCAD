@@ -79,10 +79,10 @@ public:
 
     void raiseException(PyObject* pydict) const override
     {
-        CLASS c;
-        c.setPyObject(pydict);
+        CLASS cls;
+        cls.setPyObject(pydict);
 
-        throw c;
+        throw cls;
     }
 };
 

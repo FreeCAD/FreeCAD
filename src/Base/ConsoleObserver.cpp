@@ -248,12 +248,12 @@ RedirectStdOutput::RedirectStdOutput()
     buffer.reserve(80);
 }
 
-int RedirectStdOutput::overflow(int c)
+int RedirectStdOutput::overflow(int ch)
 {
-    if (c != EOF) {
-        buffer.push_back(static_cast<char>(c));
+    if (ch != EOF) {
+        buffer.push_back(static_cast<char>(ch));
     }
-    return c;
+    return ch;
 }
 
 int RedirectStdOutput::sync()
@@ -271,12 +271,12 @@ RedirectStdLog::RedirectStdLog()
     buffer.reserve(80);
 }
 
-int RedirectStdLog::overflow(int c)
+int RedirectStdLog::overflow(int ch)
 {
-    if (c != EOF) {
-        buffer.push_back(static_cast<char>(c));
+    if (ch != EOF) {
+        buffer.push_back(static_cast<char>(ch));
     }
-    return c;
+    return ch;
 }
 
 int RedirectStdLog::sync()
@@ -294,12 +294,12 @@ RedirectStdError::RedirectStdError()
     buffer.reserve(80);
 }
 
-int RedirectStdError::overflow(int c)
+int RedirectStdError::overflow(int ch)
 {
-    if (c != EOF) {
-        buffer.push_back(static_cast<char>(c));
+    if (ch != EOF) {
+        buffer.push_back(static_cast<char>(ch));
     }
-    return c;
+    return ch;
 }
 
 int RedirectStdError::sync()
@@ -323,8 +323,8 @@ std::stringstream& LogLevel::prefix(std::stringstream& str, const char* src, int
             _FC_TIME_INIT(s_tstart);
         }
         auto tnow = std::chrono::FC_TIME_CLOCK::now();
-        auto d = std::chrono::duration_cast<FC_DURATION>(tnow - s_tstart);
-        str << d.count() << ' ';
+        auto dc = std::chrono::duration_cast<FC_DURATION>(tnow - s_tstart);
+        str << dc.count() << ' ';
     }
     if (print_tag) {
         str << '<' << tag << "> ";

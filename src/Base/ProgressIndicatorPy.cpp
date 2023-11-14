@@ -53,9 +53,9 @@ PyTypeObject* ProgressIndicatorPy::type_object()
     return Py::PythonExtension<ProgressIndicatorPy>::type_object();
 }
 
-bool ProgressIndicatorPy::check(PyObject* p)
+bool ProgressIndicatorPy::check(PyObject* py)
 {
-    return Py::PythonExtension<ProgressIndicatorPy>::check(p);
+    return Py::PythonExtension<ProgressIndicatorPy>::check(py);
 }
 
 PyObject* ProgressIndicatorPy::PyMake(struct _typeobject*, PyObject*, PyObject*)

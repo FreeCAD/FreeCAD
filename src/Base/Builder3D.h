@@ -212,9 +212,9 @@ public:
     {
         return spaces;
     }
-    friend std::ostream& operator<<(std::ostream& os, Indentation m)
+    friend std::ostream& operator<<(std::ostream& os, Indentation ind)
     {
-        for (int i = 0; i < m.count(); i++) {
+        for (int i = 0; i < ind.count(); i++) {
             os << " ";
         }
         return os;

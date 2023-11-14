@@ -148,7 +148,7 @@ public:
     RedirectStdOutput();
 
 protected:
-    int overflow(int c = EOF) override;
+    int overflow(int ch = EOF) override;
     int sync() override;
 
 private:
@@ -161,7 +161,7 @@ public:
     RedirectStdError();
 
 protected:
-    int overflow(int c = EOF) override;
+    int overflow(int ch = EOF) override;
     int sync() override;
 
 private:
@@ -174,7 +174,7 @@ public:
     RedirectStdLog();
 
 protected:
-    int overflow(int c = EOF) override;
+    int overflow(int ch = EOF) override;
     int sync() override;
 
 private:

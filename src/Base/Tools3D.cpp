@@ -160,9 +160,9 @@ size_t Polygon3<float_type>::GetSize() const
 }
 
 template<typename float_type>
-void Polygon3<float_type>::Add(const Vector3<float_type>& p)
+void Polygon3<float_type>::Add(const Vector3<float_type>& pnt)
 {
-    points.push_back(p);
+    points.push_back(pnt);
 }
 
 template<typename float_type>

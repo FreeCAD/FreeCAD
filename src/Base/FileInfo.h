@@ -158,7 +158,7 @@ public:
     /// Get the path to the dir which is considered to temp files
     static const std::string& getTempPath();
     /// Convert from filesystem path to string
-    static std::string pathToString(const boost::filesystem::path& p);
+    static std::string pathToString(const boost::filesystem::path& path);
     /// Convert from string to filesystem path
     static boost::filesystem::path stringToPath(const std::string& str);
     //@}

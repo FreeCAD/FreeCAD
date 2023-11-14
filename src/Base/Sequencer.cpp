@@ -44,14 +44,14 @@ struct SequencerP
     /** Sets a global sequencer object.
      * Access to the last registered object is performed by @see Sequencer().
      */
-    static void appendInstance(SequencerBase* s)
+    static void appendInstance(SequencerBase* sb)
     {
-        _instances.push_back(s);
+        _instances.push_back(sb);
     }
-    static void removeInstance(SequencerBase* s)
+    static void removeInstance(SequencerBase* sb)
     {
         std::vector<SequencerBase*>::iterator it;
-        it = std::find(_instances.begin(), _instances.end(), s);
+        it = std::find(_instances.begin(), _instances.end(), sb);
         _instances.erase(it);
     }
     static SequencerBase& getInstance()

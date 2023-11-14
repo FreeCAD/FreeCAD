@@ -74,12 +74,12 @@ void* Type::createInstanceByName(const char* TypeName, bool bLoadModule)
     }
 
     // now the type should be in the type map
-    Type t = fromName(TypeName);
-    if (t == badType()) {
+    Type type = fromName(TypeName);
+    if (type == badType()) {
         return nullptr;
     }
 
-    return t.createInstance();
+    return type.createInstance();
 }
 
 void Type::importModule(const char* TypeName)
