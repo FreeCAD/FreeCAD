@@ -42,5 +42,10 @@
 #include <vector>
 #include <unordered_map>
 
+#include <BRepAdaptor_Curve.hxx>
+#include <BRepAdaptor_Surface.hxx>
+#include <TopoDS.hxx>
+#include <TopoDS_Face.hxx>
+
 #endif  // _PreComp_
 #endif  // ASSEMBLY_PRECOMPILED_H

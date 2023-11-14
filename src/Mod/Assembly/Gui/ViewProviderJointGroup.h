@@ -43,6 +43,22 @@ public:
     /// deliver the icon shown in the tree view. Override from ViewProvider.h
     QIcon getIcon() const override;
 
+    // Prevent dragging of the joints and dropping things inside the joint group.
+    bool canDragObjects() const override
+    {
+        return false;
+    };
+    bool canDropObjects() const override
+    {
+        return false;
+    };
+    bool canDragAndDropObject(App::DocumentObject*) const override
+    {
+        return false;
+    };
+
+    bool onDelete(const std::vector<std::string>& subNames) override;
+
     // protected:
     /// get called by the container whenever a property has been changed
     // void onChanged(const App::Property* prop) override;

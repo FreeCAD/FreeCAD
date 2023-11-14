@@ -37,6 +37,10 @@
 #include <sstream>
 #include <iostream>
 
+// Qt
+#ifndef __QtAll__
+#include <Gui/QtAll.h>
+#endif
 
 #endif  //_PreComp_
 

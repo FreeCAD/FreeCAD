@@ -67,3 +67,9 @@ INSTALL(
     DESTINATION
         Mod/Assembly/AssemblyTests
 )
+INSTALL(
+    FILES
+        ${AssemblyScripts_SRCS}
+    DESTINATION
+        Mod/Assembly/Assembly
+)

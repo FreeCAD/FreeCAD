@@ -54,7 +54,7 @@ class CommandExportASMT:
         }
 
     def IsActive(self):
-        return UtilsAssembly.activeAssembly() is not None
+        return UtilsAssembly.isAssemblyCommandActive() and UtilsAssembly.isAssemblyGrounded()
 
     def Activated(self):
         document = App.ActiveDocument

@@ -42,6 +42,18 @@ __author__ = "Ondsel"
 __url__ = "https://www.freecad.org"
 
 
+def isCreateJointActive():
+    return UtilsAssembly.isAssemblyGrounded() and UtilsAssembly.assembly_has_at_least_n_parts(2)
+
+
+def activateJoint(index):
+    if JointObject.activeTask:
+        JointObject.activeTask.reject()
+
+    panel = TaskAssemblyCreateJoint(index)
+    Gui.Control.showDialog(panel)
+
+
 class CommandCreateJointFixed:
     def __init__(self):
         pass
@@ -51,7 +63,7 @@ class CommandCreateJointFixed:
         return {
             "Pixmap": "Assembly_CreateJointFixed",
             "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateJointFixed", "Create Fixed Joint"),
-            "Accel": "F",
+            "Accel": "J",
             "ToolTip": "<p>"
             + QT_TRANSLATE_NOOP(
                 "Assembly_CreateJointFixed",
@@ -62,11 +74,10 @@ class CommandCreateJointFixed:
         }
 
     def IsActive(self):
-        return UtilsAssembly.activeAssembly() is not None
+        return isCreateJointActive()
 
     def Activated(self):
-        panel = TaskAssemblyCreateJoint(0)
-        Gui.Control.showDialog(panel)
+        activateJoint(0)
 
 
 class CommandCreateJointRevolute:
@@ -89,11 +100,10 @@ class CommandCreateJointRevolute:
         }
 
     def IsActive(self):
-        return UtilsAssembly.activeAssembly() is not None
+        return isCreateJointActive()
 
     def Activated(self):
-        panel = TaskAssemblyCreateJoint(1)
-        Gui.Control.showDialog(panel)
+        activateJoint(1)
 
 
 class CommandCreateJointCylindrical:
@@ -118,11 +128,10 @@ class CommandCreateJointCylindrical:
         }
 
     def IsActive(self):
-        return UtilsAssembly.activeAssembly() is not None
+        return isCreateJointActive()
 
     def Activated(self):
-        panel = TaskAssemblyCreateJoint(2)
-        Gui.Control.showDialog(panel)
+        activateJoint(2)
 
 
 class CommandCreateJointSlider:
@@ -145,11 +154,10 @@ class CommandCreateJointSlider:
         }
 
     def IsActive(self):
-        return UtilsAssembly.activeAssembly() is not None
+        return isCreateJointActive()
 
     def Activated(self):
-        panel = TaskAssemblyCreateJoint(3)
-        Gui.Control.showDialog(panel)
+        activateJoint(3)
 
 
 class CommandCreateJointBall:
@@ -172,92 +180,37 @@ class CommandCreateJointBall:
         }
 
     def IsActive(self):
-        return UtilsAssembly.activeAssembly() is not None
+        return isCreateJointActive()
 
     def Activated(self):
-        panel = TaskAssemblyCreateJoint(4)
-        Gui.Control.showDialog(panel)
+        activateJoint(4)
 
 
-class CommandCreateJointPlanar:
+class CommandCreateJointDistance:
     def __init__(self):
         pass
 
     def GetResources(self):
 
         return {
-            "Pixmap": "Assembly_CreateJointPlanar",
-            "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateJointPlanar", "Create Planar Joint"),
-            "Accel": "P",
+            "Pixmap": "Assembly_CreateJointDistance",
+            "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateJointDistance", "Create Distance Joint"),
+            "Accel": "D",
             "ToolTip": "<p>"
             + QT_TRANSLATE_NOOP(
-                "Assembly_CreateJointPlanar",
-                "Create a Planar Joint: Ensures two selected features are in the same plane, restricting movement to that plane.",
+                "Assembly_CreateJointDistance",
+                "Create a Distance Joint: Depending on your selection this tool will apply different constraints.",
             )
             + "</p>",
             "CmdType": "ForEdit",
         }
 
     def IsActive(self):
-        return UtilsAssembly.activeAssembly() is not None
+        # return False
+        return isCreateJointActive()
 
     def Activated(self):
-        panel = TaskAssemblyCreateJoint(5)
-        Gui.Control.showDialog(panel)
-
-
-class CommandCreateJointParallel:
-    def __init__(self):
-        pass
-
-    def GetResources(self):
-
-        return {
-            "Pixmap": "Assembly_CreateJointParallel",
-            "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateJointParallel", "Create Parallel Joint"),
-            "Accel": "L",
-            "ToolTip": "<p>"
-            + QT_TRANSLATE_NOOP(
-                "Assembly_CreateJointParallel",
-                "Create a Parallel Joint: Aligns two features to be parallel, constraining relative movement to parallel translations.",
-            )
-            + "</p>",
-            "CmdType": "ForEdit",
-        }
-
-    def IsActive(self):
-        return UtilsAssembly.activeAssembly() is not None
-
-    def Activated(self):
-        panel = TaskAssemblyCreateJoint(6)
-        Gui.Control.showDialog(panel)
-
-
-class CommandCreateJointTangent:
-    def __init__(self):
-        pass
-
-    def GetResources(self):
-
-        return {
-            "Pixmap": "Assembly_CreateJointTangent",
-            "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateJointTangent", "Create Tangent Joint"),
-            "Accel": "T",
-            "ToolTip": "<p>"
-            + QT_TRANSLATE_NOOP(
-                "Assembly_CreateJointTangent",
-                "Create a Tangent Joint: Forces two features to be tangent, restricting movement to smooth transitions along their contact surface.",
-            )
-            + "</p>",
-            "CmdType": "ForEdit",
-        }
-
-    def IsActive(self):
-        return UtilsAssembly.activeAssembly() is not None
-
-    def Activated(self):
-        panel = TaskAssemblyCreateJoint(7)
-        Gui.Control.showDialog(panel)
+        activateJoint(5)
 
 
 class CommandToggleGrounded:
@@ -269,18 +222,21 @@ class CommandToggleGrounded:
         return {
             "Pixmap": "Assembly_ToggleGrounded",
             "MenuText": QT_TRANSLATE_NOOP("Assembly_ToggleGrounded", "Toggle grounded"),
-            "Accel": "F",
+            "Accel": "G",
             "ToolTip": "<p>"
             + QT_TRANSLATE_NOOP(
                 "Assembly_ToggleGrounded",
-                "Toggle the grounded state of a part. Grounding a part permanently locks its position in the assembly, preventing any movement or rotation. You need at least one grounded part per assembly.",
+                "Grounding a part permanently locks its position in the assembly, preventing any movement or rotation. You need at least one grounded part before starting to assemble.",
             )
             + "</p>",
             "CmdType": "ForEdit",
         }
 
     def IsActive(self):
-        return UtilsAssembly.activeAssembly() is not None
+        return (
+            UtilsAssembly.isAssemblyCommandActive()
+            and UtilsAssembly.assembly_has_at_least_n_parts(1)
+        )
 
     def Activated(self):
         assembly = UtilsAssembly.activeAssembly()
@@ -301,20 +257,33 @@ class CommandToggleGrounded:
 
                 full_element_name = UtilsAssembly.getFullElementName(sel.ObjectName, sub)
                 obj = UtilsAssembly.getObject(full_element_name)
+                part_containing_obj = UtilsAssembly.getContainingPart(full_element_name, obj)
+
+                # Only objects within the assembly.
+                objs_names, element_name = UtilsAssembly.getObjsNamesAndElement(sel.ObjectName, sub)
+                if assembly.Name not in objs_names:
+                    continue
 
                 # Check if part is grounded and if so delete the joint.
                 for joint in joint_group.Group:
-                    if hasattr(joint, "ObjectToGround") and joint.ObjectToGround == obj:
+                    if (
+                        hasattr(joint, "ObjectToGround")
+                        and joint.ObjectToGround == part_containing_obj
+                    ):
+                        # Remove grounded tag.
+                        if part_containing_obj.Label.endswith(" 🔒"):
+                            part_containing_obj.Label = part_containing_obj.Label[:-2]
                         doc = App.ActiveDocument
                         doc.removeObject(joint.Name)
                         doc.recompute()
                         return
 
                 # Create groundedJoint.
+
+                part_containing_obj.Label = part_containing_obj.Label + " 🔒"
                 ground = joint_group.newObject("App::FeaturePython", "GroundedJoint")
-                JointObject.GroundedJoint(ground, obj)
+                JointObject.GroundedJoint(ground, part_containing_obj)
                 JointObject.ViewProviderGroundedJoint(ground.ViewObject)
-        Gui.Selection.clearSelection()
         App.closeActiveTransaction()
 
 
@@ -325,6 +294,4 @@ if App.GuiUp:
     Gui.addCommand("Assembly_CreateJointCylindrical", CommandCreateJointCylindrical())
     Gui.addCommand("Assembly_CreateJointSlider", CommandCreateJointSlider())
     Gui.addCommand("Assembly_CreateJointBall", CommandCreateJointBall())
-    Gui.addCommand("Assembly_CreateJointPlanar", CommandCreateJointPlanar())
-    Gui.addCommand("Assembly_CreateJointParallel", CommandCreateJointParallel())
-    Gui.addCommand("Assembly_CreateJointTangent", CommandCreateJointTangent())
+    Gui.addCommand("Assembly_CreateJointDistance", CommandCreateJointDistance())

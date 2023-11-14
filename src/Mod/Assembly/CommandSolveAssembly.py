@@ -49,7 +49,7 @@ class CommandSolveAssembly:
         return {
             "Pixmap": "Assembly_SolveAssembly",
             "MenuText": QT_TRANSLATE_NOOP("Assembly_SolveAssembly", "Solve Assembly"),
-            "Accel": "F",
+            "Accel": "Z",
             "ToolTip": "<p>"
             + QT_TRANSLATE_NOOP(
                 "Assembly_SolveAssembly",
@@ -60,7 +60,7 @@ class CommandSolveAssembly:
         }
 
     def IsActive(self):
-        return UtilsAssembly.activeAssembly() is not None
+        return UtilsAssembly.isAssemblyCommandActive() and UtilsAssembly.isAssemblyGrounded()
 
     def Activated(self):
         assembly = UtilsAssembly.activeAssembly()

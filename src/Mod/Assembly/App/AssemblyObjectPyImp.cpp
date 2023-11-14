@@ -47,11 +47,54 @@ int AssemblyObjectPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*
 
 PyObject* AssemblyObjectPy::solve(PyObject* args)
 {
+    PyObject* enableUndoPy;
+    bool enableUndo;
+
+    if (!PyArg_ParseTuple(args, "O!", &PyBool_Type, &enableUndoPy)) {
+        PyErr_Clear();
+        if (!PyArg_ParseTuple(args, "")) {
+            return nullptr;
+        }
+        else {
+            enableUndo = false;
+        }
+    }
+    else {
+        enableUndo = Base::asBoolean(enableUndoPy);
+    }
+
+    int ret = this->getAssemblyObjectPtr()->solve(enableUndo);
+    return Py_BuildValue("i", ret);
+}
+
+PyObject* AssemblyObjectPy::undoSolve(PyObject* args)
+{
     if (!PyArg_ParseTuple(args, "")) {
         return nullptr;
     }
-    int ret = this->getAssemblyObjectPtr()->solve();
-    return Py_BuildValue("i", ret);
+    this->getAssemblyObjectPtr()->undoSolve();
+    Py_Return;
+}
+
+PyObject* AssemblyObjectPy::clearUndo(PyObject* args)
+{
+    if (!PyArg_ParseTuple(args, "")) {
+        return nullptr;
+    }
+    this->getAssemblyObjectPtr()->clearUndo();
+    Py_Return;
+}
+
+PyObject* AssemblyObjectPy::isPartConnected(PyObject* args)
+{
+    PyObject* pyobj;
+
+    if (!PyArg_ParseTuple(args, "O", &pyobj)) {
+        return nullptr;
+    }
+    auto* obj = static_cast<App::DocumentObjectPy*>(pyobj)->getDocumentObjectPtr();
+    bool ok = this->getAssemblyObjectPtr()->isPartConnected(obj);
+    return Py_BuildValue("O", (ok ? Py_True : Py_False));
 }
 
 PyObject* AssemblyObjectPy::exportAsASMT(PyObject* args)

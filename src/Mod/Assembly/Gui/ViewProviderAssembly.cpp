@@ -1,4 +1,4 @@
-// SPDX-License-Identifier: LGPL-2.1-or-later
+﻿// SPDX-License-Identifier: LGPL-2.1-or-later
 /****************************************************************************
  *                                                                          *
  *   Copyright (c) 2023 Ondsel <development@ondsel.com>                     *
@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+#include <QMessageBox>
 #include <vector>
 #include <sstream>
 #include <iostream>
@@ -35,11 +36,12 @@
 #include <App/Part.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
-#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 #include <Gui/MDIView.h>
 #include <Gui/View3DInventor.h>
 #include <Gui/View3DInventorViewer.h>
 #include <Mod/Assembly/App/AssemblyObject.h>
+#include <Mod/Assembly/App/JointGroup.h>
 #include <Mod/PartDesign/App/Body.h>
 
 #include "ViewProviderAssembly.h"
@@ -80,6 +82,62 @@ bool ViewProviderAssembly::doubleClicked()
     return true;
 }
 
+bool ViewProviderAssembly::canDragObject(App::DocumentObject* obj) const
+{
+    Base::Console().Warning("ViewProviderAssembly::canDragObject\n");
+    if (!obj || obj->getTypeId() == Assembly::JointGroup::getClassTypeId()) {
+        Base::Console().Warning("so should be false...\n");
+        return false;
+    }
+
+    // else if a solid is removed, remove associated joints if any.
+    bool prompted = false;
+    auto* assemblyPart = static_cast<AssemblyObject*>(getObject());
+    std::vector<App::DocumentObject*> joints = assemblyPart->getJoints();
+
+    // Combine the joints and groundedJoints vectors into one for simplicity.
+    std::vector<App::DocumentObject*> allJoints = assemblyPart->getJoints();
+    std::vector<App::DocumentObject*> groundedJoints = assemblyPart->getGroundedJoints();
+    allJoints.insert(allJoints.end(), groundedJoints.begin(), groundedJoints.end());
+
+    Gui::Command::openCommand(tr("Delete associated joints").toStdString().c_str());
+    for (auto joint : allJoints) {
+        // Assume getLinkObjFromProp can return nullptr if the property doesn't exist.
+        App::DocumentObject* obj1 = assemblyPart->getLinkObjFromProp(joint, "Part1");
+        App::DocumentObject* obj2 = assemblyPart->getLinkObjFromProp(joint, "Part2");
+        App::DocumentObject* obj3 = assemblyPart->getLinkObjFromProp(joint, "ObjectToGround");
+        if (obj == obj1 || obj == obj2 || obj == obj3) {
+            if (!prompted) {
+                prompted = true;
+                QMessageBox msgBox;
+                msgBox.setText(tr("The object is associated to one or more joints."));
+                msgBox.setInformativeText(
+                    tr("Do you want to move the object and delete associated joints?"));
+                msgBox.setStandardButtons(QMessageBox::Yes | QMessageBox::No);
+                msgBox.setDefaultButton(QMessageBox::No);
+                int ret = msgBox.exec();
+
+                if (ret == QMessageBox::No) {
+                    return false;
+                }
+            }
+            Gui::Command::doCommand(Gui::Command::Gui,
+                                    "App.activeDocument().removeObject('%s')",
+                                    joint->getNameInDocument());
+        }
+    }
+    Gui::Command::commitCommand();
+
+    // Remove grounded tag if any. (as it is not done in jointObject.py onDelete)
+    std::string label = obj->Label.getValue();
+
+    if (label.size() >= 4 && label.substr(label.size() - 2) == " 🔒") {
+        label = label.substr(0, label.size() - 2);
+        obj->Label.setValue(label.c_str());
+    }
+
+    return true;
+}
 
 bool ViewProviderAssembly::setEdit(int ModNum)
 {
@@ -308,35 +366,53 @@ App::DocumentObject* ViewProviderAssembly::getObjectFromSubNames(std::vector<std
         // For example we want box in "box.face1"
         return appDoc->getObject(subNames[0].c_str());
     }
-    else {
-        objName = subNames[subNames.size() - 3];
 
+    // From here subnames is at least 3 and can be more. There are several cases to consider :
+    //  bodyOrLink.pad.face1                                    -> bodyOrLink should be the moving
+    //  entity partOrLink.bodyOrLink.pad.face1                         -> partOrLink should be the
+    //  moving entity partOrLink.box.face1                                    -> partOrLink should
+    //  be the moving entity partOrLink1...ParOrLinkn.bodyOrLink.pad.face1           -> partOrLink1
+    //  should be the moving entity assembly1.partOrLink1...ParOrLinkn.bodyOrLink.pad.face1 ->
+    //  partOrLink1 should be the moving entity assembly1.boxOrLink1.face1 -> boxOrLink1 should be
+    //  the moving entity
+
+    for (auto objName : subNames) {
         App::DocumentObject* obj = appDoc->getObject(objName.c_str());
         if (!obj) {
-            return nullptr;
+            continue;
         }
-        if (obj->getTypeId().isDerivedFrom(PartDesign::Body::getClassTypeId())) {
+
+        if (obj->getTypeId().isDerivedFrom(AssemblyObject::getClassTypeId())) {
+            continue;
+        }
+        else if (obj->getTypeId().isDerivedFrom(App::Part::getClassTypeId())
+                 || obj->getTypeId().isDerivedFrom(PartDesign::Body::getClassTypeId())) {
             return obj;
         }
         else if (obj->getTypeId().isDerivedFrom(App::Link::getClassTypeId())) {
-
             App::Link* link = dynamic_cast<App::Link*>(obj);
 
             App::DocumentObject* linkedObj = link->getLinkedObject(true);
+            if (!linkedObj) {
+                continue;
+            }
 
-            if (linkedObj->getTypeId().isDerivedFrom(PartDesign::Body::getClassTypeId())) {
+            if (linkedObj->getTypeId().isDerivedFrom(App::Part::getClassTypeId())
+                || linkedObj->getTypeId().isDerivedFrom(PartDesign::Body::getClassTypeId())) {
                 return obj;
             }
         }
-
-        // then its neither a body or a link to a body.
-        objName = subNames[subNames.size() - 2];
-        return appDoc->getObject(objName.c_str());
     }
+
+    // then its neither a part or body or a link to a part or body. So it is something like
+    // assembly.box.face1
+    objName = subNames[subNames.size() - 2];
+    return appDoc->getObject(objName.c_str());
 }
 
 void ViewProviderAssembly::initMove(Base::Vector3d& mousePosition)
 {
+    Gui::Command::openCommand(tr("Move part").toStdString().c_str());
     partMoving = true;
 
     // prevent selection while moving
@@ -376,6 +452,8 @@ void ViewProviderAssembly::endMove()
 
     auto* assemblyPart = static_cast<AssemblyObject*>(getObject());
     assemblyPart->setObjMasses({});
+
+    Gui::Command::commitCommand();
 }
 
 

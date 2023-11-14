@@ -18,7 +18,13 @@
         <UserDocu>
           Solve the assembly and update part placements.
 
-          solve()
+          solve(enableRedo=False) -> int
+
+          Args:
+          enableRedo: Whether the solve save the initial position of parts
+          to enable undoing it even without a transaction.
+          Defaults to `False` ie the solve cannot be undone if called
+          outside of a transaction.
 
           Returns:
           0 in case of success, otherwise the following codes in this order of
@@ -29,6 +35,41 @@
           -5 if malformed constraints
           -1 if solver error,
           -2 if redundant constraints.
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="undoSolve">
+      <Documentation>
+        <UserDocu>
+          Undo the last solve of the assembly and return part placements to their initial position.
+
+          undoSolve()
+
+          Returns: None
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="clearUndo">
+      <Documentation>
+        <UserDocu>
+          Clear the registered undo positions.
+
+          clearUndo()
+
+          Returns: None
+        </UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="isPartConnected">
+      <Documentation>
+        <UserDocu>
+          Check if a part is connected to the ground through joints.
+
+          isPartConnected(obj) -> bool
+
+          Args: document object to check.
+
+          Returns: True if part is connected to ground
         </UserDocu>
       </Documentation>
     </Methode>
