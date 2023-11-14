@@ -228,6 +228,46 @@ namespace MbD {
 		return true;
 	}
 	template<typename T>
+	inline std::shared_ptr<FullVector<T>> FullVector<T>::clonesptr()
+	{
+		//Return shallow copy of *this wrapped in shared_ptr
+		assert(false);
+		return std::make_shared<FullVector<T>>(*this);
+	}
+	template<typename T>
+	inline bool FullVector<T>::isIncreasing()
+	{
+		return isIncreasingIfExceptionsAreLessThan(0.0);
+	}
+	template<typename T>
+	inline bool FullVector<T>::isIncreasingIfExceptionsAreLessThan(double tol)
+	{
+		//"Test if elements are increasing."
+		//"Ok if spoilers are less than tol."
+		auto next = this->at(0);
+		for (int i = 1; i < this->size(); i++)
+		{
+			auto previous = next;
+			next = this->at(i);
+			if (previous > next && (previous - tol > next)) return false;
+		}
+		return true;
+	}
+	template<typename T>
+	inline bool FullVector<T>::isDecreasingIfExceptionsAreLessThan(double tol)
+	{
+		//"Test if elements are increasing."
+		//"Ok if spoilers are less than tol."
+		auto next = this->at(0);
+		for (int i = 1; i < this->size(); i++)
+		{
+			auto previous = next;
+			next = this->at(i);
+			if (previous < next && (previous + tol < next)) return false;
+		}
+		return true;
+	}
+	template<typename T>
 	inline std::ostream& FullVector<T>::printOn(std::ostream& s) const
 	{
 		s << "FullVec{";
