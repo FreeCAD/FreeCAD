@@ -86,7 +86,7 @@ TaskProjGroup::TaskProjGroup(TechDraw::DrawProjGroup* featView, bool mode) :
     blockUpdate = false;
 
     // Rotation buttons
-    // Note we don't do the custom one here, as it's handled by [a different function that's held up in customs]
+    // Note we don't do the custom one here, as it is handled by [a different function that's held up in customs]
     connect(ui->butTopRotate,   &QPushButton::clicked, this, &TaskProjGroup::rotateButtonClicked);
     connect(ui->butCWRotate,    &QPushButton::clicked, this, &TaskProjGroup::rotateButtonClicked);
     connect(ui->butRightRotate, &QPushButton::clicked, this, &TaskProjGroup::rotateButtonClicked);
@@ -545,7 +545,7 @@ bool TaskProjGroup::reject()
         Gui::Command::doCommand(Gui::Command::Gui, "App.activeDocument().removeObject('%s')", multiViewName.c_str());
         Gui::Command::doCommand(Gui::Command::Gui, "Gui.ActiveDocument.resetEdit()");
     } else {
-        //set the DPG and it's views back to entry state.
+        //set the DPG and its views back to entry state.
         if (Gui::Command::hasPendingCommand()) {
             Gui::Command::abortCommand();
 //            std::vector<std::string> undos = Gui::Application::Instance->activeDocument()->getUndoVector();

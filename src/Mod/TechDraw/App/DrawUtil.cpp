@@ -935,7 +935,7 @@ QPointF DrawUtil::invertY(QPointF v)
     return QPointF(v.x(), -v.y());
 }
 
-//! convert a gui point into it's app space equivalent.  this requires us to
+//! convert a gui point into its app space equivalent.  this requires us to
 //! perform the invert, scale, rotate operations in the reverse order from
 //! that used to generate the qt point.
 //! Note: the centering operation is not considered here

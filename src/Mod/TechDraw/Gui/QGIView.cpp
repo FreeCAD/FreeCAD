@@ -130,7 +130,7 @@ bool QGIView::isVisible()
     return vpdo->Visibility.getValue();
 }
 
-//Set selection state for this and it's children
+//Set selection state for this and its children
 //required for items like dimensions & balloons
 void QGIView::setGroupSelection(bool isSelected)
 {

@@ -2050,7 +2050,7 @@ lineAttributes& _getActiveLineAttributes()
 }
 
 std::string _createBalloon(Gui::Command* cmd, TechDraw::DrawViewPart* objFeat)
-// create a new balloon, return it's name as string
+// create a new balloon, return its name as string
 {
     std::string featName;
     TechDraw::DrawPage* page = objFeat->findParentPage();

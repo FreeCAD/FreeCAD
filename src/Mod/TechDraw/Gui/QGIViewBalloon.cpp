@@ -313,7 +313,7 @@ QVariant QGIViewBalloon::itemChange(GraphicsItemChange change, const QVariant& v
     return QGIView::itemChange(change, value);
 }
 
-//Set selection state for this and it's children
+//Set selection state for this and its children
 void QGIViewBalloon::setGroupSelection(bool isSelected)
 {
     //    Base::Console().Message("QGIVB::setGroupSelection(%d)\n", b);
