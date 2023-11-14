@@ -97,4 +97,3 @@ dependencies:
 - xerces-c
 - yaml-cpp
 - zlib
-- debugpy
