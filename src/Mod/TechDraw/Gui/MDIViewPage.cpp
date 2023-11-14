@@ -1071,7 +1071,7 @@ Py::Object MDIViewPagePy::repr()
     return Py::String(s_out.str());
 }
 
-// Since with PyCXX it's not possible to make a sub-class of MDIViewPy
+// Since with PyCXX it is not possible to make a sub-class of MDIViewPy
 // a trick is to use MDIViewPy as class member and override getattr() to
 // join the attributes of both classes. This way all methods of MDIViewPy
 // appear for SheetViewPy, too.

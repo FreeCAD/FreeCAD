@@ -148,7 +148,7 @@ void QGIPrimPath::setPrettySel() {
     }
 }
 
-//wf: why would a face use it's parent's normal colour?
+//wf: why would a face use its parent's normal colour?
 //this always goes to parameter
 QColor QGIPrimPath::getNormalColor()
 {
