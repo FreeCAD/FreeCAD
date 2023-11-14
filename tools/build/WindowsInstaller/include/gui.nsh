@@ -37,7 +37,10 @@ BrandingText " "
 !define MUI_LICENSEPAGE_TEXT_BOTTOM " "
 !insertmacro MUI_PAGE_LICENSE "${FILES_LICENSE}"
 
-# Decision if it should be installed as admin or not
+# Select install mode
+# set custom function for additional checks after the user selected the install mode
+# note: will not be called in silent mode
+!define MULTIUSER_PAGE_CUSTOMFUNCTION_LEAVE PostMultiUserPageInit
 !insertmacro MULTIUSER_PAGE_INSTALLMODE
 
 # Specify the installation directory.

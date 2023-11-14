@@ -182,7 +182,7 @@ public:
     }
 
     /// Change DSH to reflect a comboBox changed in the widget
-    void adaptDrawingToComboboxChange(int comboboxindex, int value)
+    void adaptDrawingToComboboxChange(int comboboxindex, [[maybe_unused]] int value)
     {
         Q_UNUSED(comboboxindex);
 

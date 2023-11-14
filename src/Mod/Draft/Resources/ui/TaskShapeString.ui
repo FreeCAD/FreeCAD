@@ -180,7 +180,7 @@
         <item row="1" column="1">
          <widget class="Gui::FileChooser" name="fcFontFile">
           <property name="filter">
-           <string>Font files (*.ttf *.otf *.pfb)</string>
+           <string>Font files (*.ttf *.otf *.pfb *.TTF *.OTF *.PFB)</string>
           </property>
          </widget>
         </item>
