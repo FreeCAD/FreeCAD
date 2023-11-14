@@ -31,8 +31,8 @@
     </Methode>
     <Methode Name="index">
         <Documentation>
-            <UserDocu>return  the index  of  the  Shape <S>  and
-  return 0 if the Shape <S> is not found.</UserDocu>
+            <UserDocu>return  the index  of  the  Shape S  and
+  return 0 if the Shape S is not found.</UserDocu>
         </Documentation>
     </Methode>
     <Methode Name="outLinedShapeNullify">
@@ -62,13 +62,13 @@
     </Methode>
     <Methode Name="hide">
         <Documentation>
-            <UserDocu>hide the Shape <S> by itself.
+            <UserDocu>hide the Shape S by itself.
             </UserDocu>
         </Documentation>
     </Methode>
     <Methode Name="hideAll">
         <Documentation>
-            <UserDocu>set to  hide all the  edges of the  Shape <S>.
+            <UserDocu>set to  hide all the  edges of the  Shape S.
             </UserDocu>
         </Documentation>
     </Methode>
@@ -87,13 +87,13 @@
     </Methode>
     <Methode Name="selectEdge">
         <Documentation>
-            <UserDocu>select only the edges of the Shape <S>
+            <UserDocu>select only the edges of the Shape S
             </UserDocu>
         </Documentation>
     </Methode>
     <Methode Name="selectFace">
         <Documentation>
-            <UserDocu>select only the faces of the Shape <S>.
+            <UserDocu>select only the faces of the Shape S.
             </UserDocu>
         </Documentation>
     </Methode>
