@@ -455,9 +455,11 @@ TopoDS_Shape Helix::generateHelixPath(double startOffset0)
         radiusTop = radius + turns * growth;
     else
         radiusTop = radius + height * tan(Base::toRadians(angle));
+
     //build the helix path
     //TopoShape helix = TopoShape().makeLongHelix(pitch, height, radius, angle, leftHanded);
     TopoDS_Shape path = TopoShape().makeSpiralHelix(radius, radiusTop, height, turns, 0, leftHanded);
+
     /*
      * The helix wire is created with the axis coinciding with z-axis and the start point at (radius, 0, 0)
      * We want to move it so that the axis becomes aligned with "dir" and "pnt", we also want (radius,0,0) to
