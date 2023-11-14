@@ -28,20 +28,23 @@
 #include <Base/Quantity.h>
 
 
-namespace Base {
+namespace Base
+{
 
 /** Units systems */
-enum class UnitSystem {
-    SI1 = 0 , /** internal (mm,kg,s) SI system (http://en.wikipedia.org/wiki/International_System_of_Units) */
-    SI2 = 1 , /** MKS (m,kg,s) SI system */
-    Imperial1 = 2, /** the Imperial system (http://en.wikipedia.org/wiki/Imperial_units) */
+enum class UnitSystem
+{
+    SI1 = 0,             /** internal (mm,kg,s) SI system
+                            (http://en.wikipedia.org/wiki/International_System_of_Units) */
+    SI2 = 1,             /** MKS (m,kg,s) SI system */
+    Imperial1 = 2,       /** the Imperial system (http://en.wikipedia.org/wiki/Imperial_units) */
     ImperialDecimal = 3, /** Imperial with length in inch only */
-    Centimeters = 4, /** All lengths in centimeters, areas and volumes in square/cubic meters */
+    Centimeters = 4,     /** All lengths in centimeters, areas and volumes in square/cubic meters */
     ImperialBuilding = 5, /** All lengths in feet + inches + fractions */
     MmMin = 6, /** Lengths in mm, Speed in mm/min. Angle in degrees. Useful for small parts & CNC */
     ImperialCivil = 7, /** Lengths in ft, Speed in ft/sec. Used in Civil Eng in North America */
     FemMilliMeterNewton = 8, /** Lengths in mm, Mass in t, TimeSpan in s, thus force is in N */
-    NumUnitSystemTypes // must be the last item!
+    NumUnitSystemTypes       // must be the last item!
 };
 
 
@@ -54,30 +57,42 @@ class UnitsSchema
 public:
     virtual ~UnitsSchema() = default;
     /** Gets called if this schema gets activated.
-      * Here it's theoretically possible that you can change the static factors
-      * for certain units (e.g. mi = 1,8km instead of mi=1.6km).
-      */
-    virtual void setSchemaUnits(){}
+     * Here it's theoretically possible that you can change the static factors
+     * for certain units (e.g. mi = 1,8km instead of mi=1.6km).
+     */
+    virtual void setSchemaUnits()
+    {}
     /// If you use setSchemaUnits() you also have to impment this method to undo your changes!
-    virtual void resetSchemaUnits(){}
+    virtual void resetSchemaUnits()
+    {}
 
     /// This method translates the quantity in a string as the user may expect it.
-    virtual QString schemaTranslate(const Base::Quantity& quant, double &factor, QString &unitString)=0;
+    virtual QString
+    schemaTranslate(const Base::Quantity& quant, double& factor, QString& unitString) = 0;
 
     QString toLocale(const Base::Quantity& quant, double factor, const QString& unitString) const;
 
-    //return true if this schema uses multiple units for length (ex. Ft/In)
-    virtual bool isMultiUnitLength() const {return false;}
+    // return true if this schema uses multiple units for length (ex. Ft/In)
+    virtual bool isMultiUnitLength() const
+    {
+        return false;
+    }
 
-    //return true if this schema uses multiple units for angles (ex. DMS)
-    virtual bool isMultiUnitAngle() const {return false;}
+    // return true if this schema uses multiple units for angles (ex. DMS)
+    virtual bool isMultiUnitAngle() const
+    {
+        return false;
+    }
 
-    //return the basic length unit for this schema
-    virtual std::string getBasicLengthUnit() const { return {"mm"}; }
+    // return the basic length unit for this schema
+    virtual std::string getBasicLengthUnit() const
+    {
+        return {"mm"};
+    }
 };
 
 
-} // namespace Base
+}  // namespace Base
 
 
-#endif // BASE_UNITSSCHEMA_H
+#endif  // BASE_UNITSSCHEMA_H

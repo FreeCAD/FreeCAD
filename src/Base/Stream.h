@@ -25,7 +25,7 @@
 #define BASE_STREAM_H
 
 #ifdef __GNUC__
-# include <cstdint>
+#include <cstdint>
 #endif
 
 #include <fstream>
@@ -40,12 +40,17 @@ class QIODevice;
 class QBuffer;
 using PyObject = struct _object;
 
-namespace Base {
+namespace Base
+{
 
 class BaseExport Stream
 {
 public:
-    enum ByteOrder { BigEndian, LittleEndian };
+    enum ByteOrder
+    {
+        BigEndian,
+        LittleEndian
+    };
 
     ByteOrder byteOrder() const;
     void setByteOrder(ByteOrder);
@@ -58,38 +63,41 @@ protected:
     Stream& operator=(const Stream&) = default;
     Stream& operator=(Stream&&) = default;
 
-    bool isSwapped() const { return _swap; };
+    bool isSwapped() const
+    {
+        return _swap;
+    };
 
 private:
-    bool _swap{false};
+    bool _swap {false};
 };
 
 /**
  * The OutputStream class provides writing of binary data to an ostream.
  * @author Werner Mayer
  */
-class BaseExport OutputStream : public Stream
+class BaseExport OutputStream: public Stream
 {
 public:
-    OutputStream(std::ostream &rout);
+    OutputStream(std::ostream& rout);
     ~OutputStream() override;
 
-    OutputStream& operator << (bool b);
-    OutputStream& operator << (int8_t ch);
-    OutputStream& operator << (uint8_t uch);
-    OutputStream& operator << (int16_t s);
-    OutputStream& operator << (uint16_t us);
-    OutputStream& operator << (int32_t i);
-    OutputStream& operator << (uint32_t ui);
-    OutputStream& operator << (int64_t l);
-    OutputStream& operator << (uint64_t ul);
-    OutputStream& operator << (float f);
-    OutputStream& operator << (double d);
+    OutputStream& operator<<(bool b);
+    OutputStream& operator<<(int8_t ch);
+    OutputStream& operator<<(uint8_t uch);
+    OutputStream& operator<<(int16_t s);
+    OutputStream& operator<<(uint16_t us);
+    OutputStream& operator<<(int32_t i);
+    OutputStream& operator<<(uint32_t ui);
+    OutputStream& operator<<(int64_t l);
+    OutputStream& operator<<(uint64_t ul);
+    OutputStream& operator<<(float f);
+    OutputStream& operator<<(double d);
 
-    OutputStream (const OutputStream&) = delete;
-    OutputStream (OutputStream&&) = delete;
-    void operator = (const OutputStream&) = delete;
-    void operator = (OutputStream&&) = delete;
+    OutputStream(const OutputStream&) = delete;
+    OutputStream(OutputStream&&) = delete;
+    void operator=(const OutputStream&) = delete;
+    void operator=(OutputStream&&) = delete;
 
 private:
     std::ostream& _out;
@@ -99,23 +107,23 @@ private:
  * The InputStream class provides reading of binary data from an istream.
  * @author Werner Mayer
  */
-class BaseExport InputStream : public Stream
+class BaseExport InputStream: public Stream
 {
 public:
-    InputStream(std::istream &rin);
+    InputStream(std::istream& rin);
     ~InputStream() override;
 
-    InputStream& operator >> (bool& b);
-    InputStream& operator >> (int8_t& ch);
-    InputStream& operator >> (uint8_t& uch);
-    InputStream& operator >> (int16_t& s);
-    InputStream& operator >> (uint16_t& us);
-    InputStream& operator >> (int32_t& i);
-    InputStream& operator >> (uint32_t& ui);
-    InputStream& operator >> (int64_t& l);
-    InputStream& operator >> (uint64_t& ul);
-    InputStream& operator >> (float& f);
-    InputStream& operator >> (double& d);
+    InputStream& operator>>(bool& b);
+    InputStream& operator>>(int8_t& ch);
+    InputStream& operator>>(uint8_t& uch);
+    InputStream& operator>>(int16_t& s);
+    InputStream& operator>>(uint16_t& us);
+    InputStream& operator>>(int32_t& i);
+    InputStream& operator>>(uint32_t& ui);
+    InputStream& operator>>(int64_t& l);
+    InputStream& operator>>(uint64_t& ul);
+    InputStream& operator>>(float& f);
+    InputStream& operator>>(double& d);
 
     operator bool() const
     {
@@ -123,10 +131,10 @@ public:
         return !_in.eof();
     }
 
-    InputStream (const InputStream&) = delete;
-    InputStream (InputStream&&) = delete;
-    void operator = (const InputStream&) = delete;
-    void operator = (InputStream&&) = delete;
+    InputStream(const InputStream&) = delete;
+    InputStream(InputStream&&) = delete;
+    void operator=(const InputStream&) = delete;
+    void operator=(InputStream&&) = delete;
 
 private:
     std::istream& _in;
@@ -139,7 +147,7 @@ private:
  * This class can only be used for writing but not for reading purposes.
  * @author Werner Mayer
  */
-class BaseExport ByteArrayOStreambuf : public std::streambuf
+class BaseExport ByteArrayOStreambuf: public std::streambuf
 {
 public:
     explicit ByteArrayOStreambuf(QByteArray& ba);
@@ -147,14 +155,12 @@ public:
 
 protected:
     int_type overflow(std::streambuf::int_type v) override;
-    std::streamsize xsputn (const char* s, std::streamsize num) override;
+    std::streamsize xsputn(const char* s, std::streamsize num) override;
     pos_type seekoff(std::streambuf::off_type off,
-        std::ios_base::seekdir way,
-        std::ios_base::openmode which =
-            std::ios::in | std::ios::out) override;
+                     std::ios_base::seekdir way,
+                     std::ios_base::openmode which = std::ios::in | std::ios::out) override;
     pos_type seekpos(std::streambuf::pos_type sp,
-        std::ios_base::openmode which =
-            std::ios::in | std::ios::out) override;
+                     std::ios_base::openmode which = std::ios::in | std::ios::out) override;
 
 public:
     ByteArrayOStreambuf(const ByteArrayOStreambuf&) = delete;
@@ -171,7 +177,7 @@ private:
  * This class can only be used for reading but not for writing purposes.
  * @author Werner Mayer
  */
-class BaseExport ByteArrayIStreambuf : public std::streambuf
+class BaseExport ByteArrayIStreambuf: public std::streambuf
 {
 public:
     explicit ByteArrayIStreambuf(const QByteArray& buf);
@@ -183,12 +189,11 @@ protected:
     int_type pbackfail(int_type ch) override;
     std::streamsize showmanyc() override;
     pos_type seekoff(std::streambuf::off_type off,
-        std::ios_base::seekdir way,
-        std::ios_base::openmode which =
-            std::ios::in | std::ios::out) override;
+                     std::ios_base::seekdir way,
+                     std::ios_base::openmode which = std::ios::in | std::ios::out) override;
     pos_type seekpos(std::streambuf::pos_type pos,
-        std::ios_base::openmode which =
-            std::ios::in | std::ios::out) override;
+                     std::ios_base::openmode which = std::ios::in | std::ios::out) override;
+
 public:
     ByteArrayIStreambuf(const ByteArrayIStreambuf&) = delete;
     ByteArrayIStreambuf(ByteArrayIStreambuf&&) = delete;
@@ -205,7 +210,7 @@ private:
  * This class can only be used for writing but not reading purposes.
  * @author Werner Mayer
  */
-class BaseExport IODeviceOStreambuf : public std::streambuf
+class BaseExport IODeviceOStreambuf: public std::streambuf
 {
 public:
     IODeviceOStreambuf(QIODevice* dev);
@@ -213,14 +218,13 @@ public:
 
 protected:
     int_type overflow(std::streambuf::int_type v) override;
-    std::streamsize xsputn (const char* s, std::streamsize num) override;
+    std::streamsize xsputn(const char* s, std::streamsize num) override;
     pos_type seekoff(std::streambuf::off_type off,
-        std::ios_base::seekdir way,
-        std::ios_base::openmode which =
-            std::ios::in | std::ios::out) override;
+                     std::ios_base::seekdir way,
+                     std::ios_base::openmode which = std::ios::in | std::ios::out) override;
     pos_type seekpos(std::streambuf::pos_type sp,
-        std::ios_base::openmode which =
-            std::ios::in | std::ios::out) override;
+                     std::ios_base::openmode which = std::ios::in | std::ios::out) override;
+
 public:
     IODeviceOStreambuf(const IODeviceOStreambuf&) = delete;
     IODeviceOStreambuf(IODeviceOStreambuf&&) = delete;
@@ -236,7 +240,7 @@ private:
  * This class can only be used for readihg but not writing purposes.
  * @author Werner Mayer
  */
-class BaseExport IODeviceIStreambuf : public std::streambuf
+class BaseExport IODeviceIStreambuf: public std::streambuf
 {
 public:
     IODeviceIStreambuf(QIODevice* dev);
@@ -245,12 +249,11 @@ public:
 protected:
     int_type underflow() override;
     pos_type seekoff(std::streambuf::off_type off,
-        std::ios_base::seekdir way,
-        std::ios_base::openmode which =
-            std::ios::in | std::ios::out) override;
+                     std::ios_base::seekdir way,
+                     std::ios_base::openmode which = std::ios::in | std::ios::out) override;
     pos_type seekpos(std::streambuf::pos_type sp,
-        std::ios_base::openmode which =
-            std::ios::in | std::ios::out) override;
+                     std::ios_base::openmode which = std::ios::in | std::ios::out) override;
+
 public:
     IODeviceIStreambuf(const IODeviceIStreambuf&) = delete;
     IODeviceIStreambuf(IODeviceIStreambuf&&) = delete;
@@ -263,21 +266,22 @@ private:
      * - at most, pbSize characters in putback area plus
      * - at most, bufSize characters in ordinary read buffer
      */
-    static const int pbSize = 4;        // size of putback area
-    static const int bufSize = 1024;    // size of the data buffer
-    char buffer[bufSize+pbSize]{};      // data buffer
+    static const int pbSize = 4;       // size of putback area
+    static const int bufSize = 1024;   // size of the data buffer
+    char buffer[bufSize + pbSize] {};  // data buffer
 };
 
-class BaseExport PyStreambuf : public std::streambuf
+class BaseExport PyStreambuf: public std::streambuf
 {
     using int_type = std::streambuf::int_type;
     using pos_type = std::streambuf::pos_type;
     using off_type = std::streambuf::off_type;
-    using seekdir  = std::ios::seekdir;
+    using seekdir = std::ios::seekdir;
     using openmode = std::ios::openmode;
 
 public:
-    enum Type {
+    enum Type
+    {
         StringIO,
         BytesIO,
         Unknown
@@ -285,14 +289,15 @@ public:
 
     PyStreambuf(PyObject* o, std::size_t buf_size = 256, std::size_t put_back = 8);
     ~PyStreambuf() override;
-    void setType(Type t) {
+    void setType(Type t)
+    {
         type = t;
     }
 
 protected:
     int_type underflow() override;
     int_type overflow(int_type c = EOF) override;
-    std::streamsize xsputn (const char* s, std::streamsize num) override;
+    std::streamsize xsputn(const char* s, std::streamsize num) override;
     int sync() override;
     pos_type seekoff(off_type offset, seekdir dir, openmode) override;
     pos_type seekpos(pos_type offset, openmode mode) override;
@@ -309,12 +314,12 @@ public:
 
 private:
     PyObject* inp;
-    Type type{Unknown};
+    Type type {Unknown};
     const std::size_t put_back;
     std::vector<char> buffer;
 };
 
-class BaseExport Streambuf : public std::streambuf
+class BaseExport Streambuf: public std::streambuf
 {
 public:
     explicit Streambuf(const std::string& data);
@@ -326,12 +331,10 @@ protected:
     int_type pbackfail(int_type ch) override;
     std::streamsize showmanyc() override;
     pos_type seekoff(std::streambuf::off_type off,
-        std::ios_base::seekdir way,
-        std::ios_base::openmode which =
-            std::ios::in | std::ios::out) override;
+                     std::ios_base::seekdir way,
+                     std::ios_base::openmode which = std::ios::in | std::ios::out) override;
     pos_type seekpos(std::streambuf::pos_type pos,
-        std::ios_base::openmode which =
-            std::ios::in | std::ios::out) override;
+                     std::ios_base::openmode which = std::ios::in | std::ios::out) override;
 
 public:
     Streambuf(const Streambuf&) = delete;
@@ -355,22 +358,22 @@ class FileInfo;
  * while on Linux platforms the file name is UTF-8 encoded.
  * @author Werner Mayer
  */
-class ofstream : public std::ofstream
+class ofstream: public std::ofstream
 {
 public:
     ofstream() = default;
     ofstream(const ofstream&) = delete;
     ofstream(ofstream&&) = delete;
-    ofstream(const FileInfo& fi, ios_base::openmode mode =
-                                 std::ios::out | std::ios::trunc)
+    ofstream(const FileInfo& fi, ios_base::openmode mode = std::ios::out | std::ios::trunc)
 #ifdef _MSC_VER
-    : std::ofstream(fi.toStdWString().c_str(), mode) {}
+        : std::ofstream(fi.toStdWString().c_str(), mode) {}
 #else
-    : std::ofstream(fi.filePath().c_str(), mode) {}
+        : std::ofstream(fi.filePath().c_str(), mode)
+    {}
 #endif
-    ~ofstream() override = default;
-    void open(const FileInfo& fi, ios_base::openmode mode =
-                                  std::ios::out | std::ios::trunc) {
+        ~ofstream() override = default;
+    void open(const FileInfo& fi, ios_base::openmode mode = std::ios::out | std::ios::trunc)
+    {
 #ifdef _MSC_VER
         std::ofstream::open(fi.toStdWString().c_str(), mode);
 #else
@@ -378,8 +381,8 @@ public:
 #endif
     }
 
-    ofstream& operator = (const ofstream&) = delete;
-    ofstream& operator = (ofstream&&) = delete;
+    ofstream& operator=(const ofstream&) = delete;
+    ofstream& operator=(ofstream&&) = delete;
 };
 
 /**
@@ -388,22 +391,22 @@ public:
  * while on Linux platforms the file name is UTF-8 encoded.
  * @author Werner Mayer
  */
-class ifstream : public std::ifstream
+class ifstream: public std::ifstream
 {
 public:
     ifstream() = default;
     ifstream(const ifstream&) = delete;
     ifstream(ifstream&&) = delete;
-    ifstream(const FileInfo& fi, ios_base::openmode mode =
-                                 std::ios::in)
+    ifstream(const FileInfo& fi, ios_base::openmode mode = std::ios::in)
 #ifdef _MSC_VER
-    : std::ifstream(fi.toStdWString().c_str(), mode) {}
+        : std::ifstream(fi.toStdWString().c_str(), mode) {}
 #else
-    : std::ifstream(fi.filePath().c_str(), mode) {}
+        : std::ifstream(fi.filePath().c_str(), mode)
+    {}
 #endif
-    ~ifstream() override = default;
-    void open(const FileInfo& fi, ios_base::openmode mode =
-                                  std::ios::in) {
+        ~ifstream() override = default;
+    void open(const FileInfo& fi, ios_base::openmode mode = std::ios::in)
+    {
 #ifdef _MSC_VER
         std::ifstream::open(fi.toStdWString().c_str(), mode);
 #else
@@ -411,10 +414,10 @@ public:
 #endif
     }
 
-    ifstream& operator = (const ifstream&) = delete;
-    ifstream& operator = (ifstream&&) = delete;
+    ifstream& operator=(const ifstream&) = delete;
+    ifstream& operator=(ifstream&&) = delete;
 };
 
-} // namespace Base
+}  // namespace Base
 
-#endif // BASE_STREAM_H
+#endif  // BASE_STREAM_H

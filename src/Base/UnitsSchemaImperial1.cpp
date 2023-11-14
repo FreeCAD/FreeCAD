@@ -23,11 +23,11 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <cmath>
-# include <sstream>
+#include <cmath>
+#include <sstream>
 #endif
 #ifdef __GNUC__
-# include <unistd.h>
+#include <unistd.h>
 #endif
 
 #include <QString>
@@ -38,7 +38,8 @@
 using namespace Base;
 
 
-QString UnitsSchemaImperial1::schemaTranslate(const Quantity &quant, double &factor, QString &unitString)
+QString
+UnitsSchemaImperial1::schemaTranslate(const Quantity& quant, double& factor, QString& unitString)
 {
     double UnitValue = std::abs(quant.getValue());
     Unit unit = quant.getUnit();
@@ -46,32 +47,32 @@ QString UnitsSchemaImperial1::schemaTranslate(const Quantity &quant, double &fac
     // mm/kg/s. And all combined units have to be calculated from there!
 
     // now do special treatment on all cases seems necessary:
-    if (unit == Unit::Length) {  // Length handling ============================
-        if (UnitValue < 0.00000254) {// smaller then 0.001 thou -> inch and scientific notation
+    if (unit == Unit::Length) {        // Length handling ============================
+        if (UnitValue < 0.00000254) {  // smaller then 0.001 thou -> inch and scientific notation
             unitString = QString::fromLatin1("in");
             factor = 25.4;
         }
-        else if(UnitValue < 2.54) { // smaller then 0.1 inch -> Thou (mil)
+        else if (UnitValue < 2.54) {  // smaller then 0.1 inch -> Thou (mil)
             unitString = QString::fromLatin1("thou");
             factor = 0.0254;
         }
-        else if(UnitValue < 304.8) {
+        else if (UnitValue < 304.8) {
             unitString = QString::fromLatin1("\"");
             factor = 25.4;
         }
-        else if(UnitValue < 914.4) {
+        else if (UnitValue < 914.4) {
             unitString = QString::fromLatin1("\'");
             factor = 304.8;
         }
-        else if(UnitValue < 1609344.0) {
+        else if (UnitValue < 1609344.0) {
             unitString = QString::fromLatin1("yd");
             factor = 914.4;
         }
-        else if(UnitValue < 1609344000.0) {
+        else if (UnitValue < 1609344000.0) {
             unitString = QString::fromLatin1("mi");
             factor = 1609344.0;
         }
-        else { // bigger then 1000 mi -> scientific notation
+        else {  // bigger then 1000 mi -> scientific notation
             unitString = QString::fromLatin1("in");
             factor = 25.4;
         }
@@ -99,7 +100,7 @@ QString UnitsSchemaImperial1::schemaTranslate(const Quantity &quant, double &fac
         factor = 0.45359237;
     }
     else if (unit == Unit::Pressure) {
-        if (UnitValue < 6894.744) {// psi is the smallest
+        if (UnitValue < 6894.744) {  // psi is the smallest
             unitString = QString::fromLatin1("psi");
             factor = 6.894744825494;
         }
@@ -107,18 +108,18 @@ QString UnitsSchemaImperial1::schemaTranslate(const Quantity &quant, double &fac
             unitString = QString::fromLatin1("ksi");
             factor = 6894.744825494;
         }
-        else { // bigger then 1000 ksi -> psi + scientific notation
+        else {  // bigger then 1000 ksi -> psi + scientific notation
             unitString = QString::fromLatin1("psi");
             factor = 6.894744825494;
         }
     }
-    else if (unit == Unit::Stiffness) { // Conversion to lbf/in
+    else if (unit == Unit::Stiffness) {  // Conversion to lbf/in
         unitString = QString::fromLatin1("lbf/in");
-        factor = 4.448222/0.0254;
+        factor = 4.448222 / 0.0254;
     }
     else if (unit == Unit::Velocity) {
         unitString = QString::fromLatin1("in/min");
-        factor = 25.4/60;
+        factor = 25.4 / 60;
     }
     else {
         // default action for all cases without special treatment:
@@ -129,9 +130,11 @@ QString UnitsSchemaImperial1::schemaTranslate(const Quantity &quant, double &fac
     return toLocale(quant, factor, unitString);
 }
 
-QString UnitsSchemaImperialDecimal::schemaTranslate(const Base::Quantity& quant, double &factor, QString &unitString)
+QString UnitsSchemaImperialDecimal::schemaTranslate(const Base::Quantity& quant,
+                                                    double& factor,
+                                                    QString& unitString)
 {
-    //double UnitValue = std::abs(quant.getValue());
+    // double UnitValue = std::abs(quant.getValue());
     Unit unit = quant.getUnit();
     // for imperial user/programmer mind; UnitValue is in internal system, that means
     // mm/kg/s. And all combined units have to be calculated from there!
@@ -169,7 +172,7 @@ QString UnitsSchemaImperialDecimal::schemaTranslate(const Base::Quantity& quant,
     }
     else if (unit == Unit::Stiffness) {
         unitString = QString::fromLatin1("lbf/in");
-        factor = 4.448222/0.0254;
+        factor = 4.448222 / 0.0254;
     }
     else if (unit == Unit::Velocity) {
         unitString = QString::fromLatin1("in/min");
@@ -188,7 +191,9 @@ QString UnitsSchemaImperialDecimal::schemaTranslate(const Base::Quantity& quant,
     return toLocale(quant, factor, unitString);
 }
 
-QString UnitsSchemaImperialBuilding::schemaTranslate(const Quantity &quant, double &factor, QString &unitString)
+QString UnitsSchemaImperialBuilding::schemaTranslate(const Quantity& quant,
+                                                     double& factor,
+                                                     QString& unitString)
 {
     // this schema expresses distances in feet + inches + fractions
     // ex: 3'- 4 1/4" with proper rounding
@@ -198,21 +203,21 @@ QString UnitsSchemaImperialBuilding::schemaTranslate(const Quantity &quant, doub
         factor = 25.4;
 
         // Total number of inches to format
-        double totalInches = std::abs(quant.getValue())/factor;
+        double totalInches = std::abs(quant.getValue()) / factor;
 
         // minimum denominator (8 for 1/8, 16 for 1/16, etc)
-        int       minden{};
+        int minden {};
 
         // Outputs
-        int       feet{};      // whole feet
-        int       inches{};    // whole inches
-        int       num{},den{}; // numerator and denominator of fractional val
-        std::stringstream output; // output stream
+        int feet {};               // whole feet
+        int inches {};             // whole inches
+        int num {}, den {};        // numerator and denominator of fractional val
+        std::stringstream output;  // output stream
 
         // Intermediate values
-        int       ntot{};        // total fractional units
-        int       a{},b{},d{};   // used to compute greatest common denominator
-        int       tmp{};         // temporary variable for GCD
+        int ntot {};           // total fractional units
+        int a {}, b {}, d {};  // used to compute greatest common denominator
+        int tmp {};            // temporary variable for GCD
 
         // Get the current user specified minimum denominator
         minden = quant.getFormat().getDenominator();
@@ -221,29 +226,28 @@ QString UnitsSchemaImperialBuilding::schemaTranslate(const Quantity &quant, doub
         ntot = static_cast<int>(std::round(totalInches * static_cast<double>(minden)));
 
         // If this is zero, nothing to do but return
-        if( ntot==0 )
+        if (ntot == 0) {
             return QString::fromLatin1("0");
+        }
 
         // Compute the whole number of feet and remaining units
-        feet = static_cast<int>(std::floor(ntot / (12*minden)));
-        ntot = ntot - 12*minden*feet;
+        feet = static_cast<int>(std::floor(ntot / (12 * minden)));
+        ntot = ntot - 12 * minden * feet;
 
         // Compute the remaining number of whole inches
-        inches = static_cast<int>(std::floor(ntot/minden));
+        inches = static_cast<int>(std::floor(ntot / minden));
 
         // Lastly the fractional quantities
-        num = ntot - inches*minden;
+        num = ntot - inches * minden;
         den = minden;
 
         // If numerator is not zero, compute greatest common divisor and reduce
         // fraction
-        if( num!=0 )
-        {
+        if (num != 0) {
             // initialize
             a = num;
             b = den;
-            while (b != 0)
-            {
+            while (b != 0) {
                 tmp = a % b;
 
                 a = b;
@@ -258,31 +262,33 @@ QString UnitsSchemaImperialBuilding::schemaTranslate(const Quantity &quant, doub
         // Process into string. Start with negative sign if quantity is less
         // than zero
         char plusOrMinus;
-        if( quant.getValue() < 0 )
-        {
+        if (quant.getValue() < 0) {
             output << "-";
             plusOrMinus = '-';
         }
-        else plusOrMinus = '+';
+        else {
+            plusOrMinus = '+';
+        }
 
         bool trailingNumber = false;
         // Print feet if we have any
-        if( feet!=0 )
-        {
+        if (feet != 0) {
             output << feet << "'";
             trailingNumber = true;
         }
         // Print whole inches if we have any
-        if( inches!=0 )
-        {
-            if (trailingNumber) output << " ";
+        if (inches != 0) {
+            if (trailingNumber) {
+                output << " ";
+            }
             output << inches << "\"";
             trailingNumber = true;
         }
         // Print fractional inches if we have any
-        if( num!=0 )
-        {
-            if (trailingNumber) output << " " << plusOrMinus << " ";
+        if (num != 0) {
+            if (trailingNumber) {
+                output << " " << plusOrMinus << " ";
+            }
             output << num << "/" << den << "\"";
         }
 
@@ -303,7 +309,7 @@ QString UnitsSchemaImperialBuilding::schemaTranslate(const Quantity &quant, doub
     }
     else if (unit == Unit::Velocity) {
         unitString = QString::fromLatin1("in/min");
-        factor = 25.4/60;
+        factor = 25.4 / 60;
     }
     else {
         unitString = quant.getUnit().getString();
@@ -313,56 +319,58 @@ QString UnitsSchemaImperialBuilding::schemaTranslate(const Quantity &quant, doub
     return toLocale(quant, factor, unitString);
 }
 
-QString UnitsSchemaImperialCivil::schemaTranslate(const Base::Quantity& quant, double &factor, QString &unitString)
+QString UnitsSchemaImperialCivil::schemaTranslate(const Base::Quantity& quant,
+                                                  double& factor,
+                                                  QString& unitString)
 {
-//    double UnitValue = std::abs(quant.getValue());
+    //    double UnitValue = std::abs(quant.getValue());
     Unit unit = quant.getUnit();
     // for imperial user/programmer mind; UnitValue is in internal system, that means
     // mm/kg/s. And all combined units have to be calculated from there!
 
     // now do special treatment on all cases seems necessary:
-    if (unit == Unit::Length) {  // Length handling ============================
-            unitString = QString::fromLatin1("ft");  //always ft
-            factor = 304.8;      //12 * 25.4
+    if (unit == Unit::Length) {                  // Length handling ============================
+        unitString = QString::fromLatin1("ft");  // always ft
+        factor = 304.8;                          // 12 * 25.4
     }
     else if (unit == Unit::Area) {
-        unitString = QString::fromLatin1("ft^2");    //always sq.ft
+        unitString = QString::fromLatin1("ft^2");  // always sq.ft
         factor = 92903.04;
     }
     else if (unit == Unit::Volume) {
-        unitString = QString::fromLatin1("ft^3");    //always cu. ft
+        unitString = QString::fromLatin1("ft^3");  // always cu. ft
         factor = 28316846.592;
     }
     else if (unit == Unit::Mass) {
-        unitString = QString::fromLatin1("lb");     //always lbs.
+        unitString = QString::fromLatin1("lb");  // always lbs.
         factor = 0.45359237;
     }
     else if (unit == Unit::Pressure) {
-            unitString = QString::fromLatin1("psi");
-            factor = 6.894744825494;
+        unitString = QString::fromLatin1("psi");
+        factor = 6.894744825494;
     }
     else if (unit == Unit::Stiffness) {
         unitString = QString::fromLatin1("lbf/in");
-        factor = 4.448222/0.0254;
+        factor = 4.448222 / 0.0254;
     }
     else if (unit == Unit::Velocity) {
         unitString = QString::fromLatin1("mph");
-        factor =  447.04;                         //1mm/sec => mph
+        factor = 447.04;  // 1mm/sec => mph
     }
     // this schema expresses angles in degrees + minutes + seconds
     else if (unit == Unit::Angle) {
         unitString = QString::fromUtf8("deg");
-        QString degreeString = QString::fromUtf8("\xC2\xB0");          //degree symbol
-        QString minuteString = QString::fromUtf8("\xE2\x80\xB2");      //prime symbol
-        QString secondString = QString::fromUtf8("\xE2\x80\xB3");      //double prime symbol
-        factor = 1.0;                                  //1deg = 1"\xC2\xB0 "
+        QString degreeString = QString::fromUtf8("\xC2\xB0");      // degree symbol
+        QString minuteString = QString::fromUtf8("\xE2\x80\xB2");  // prime symbol
+        QString secondString = QString::fromUtf8("\xE2\x80\xB3");  // double prime symbol
+        factor = 1.0;                                              // 1deg = 1"\xC2\xB0 "
 
-        double totalDegrees = quant.getValue()/factor;
+        double totalDegrees = quant.getValue() / factor;
         double wholeDegrees = std::floor(totalDegrees);
-        double sumMinutes = totalDegrees * 60.0;            //quant as minutes
+        double sumMinutes = totalDegrees * 60.0;  // quant as minutes
         double rawMinutes = sumMinutes - wholeDegrees * 60.0;
         double wholeMinutes = std::floor(rawMinutes);
-        double sumSeconds = totalDegrees * 3600.0;          //quant as seconds
+        double sumSeconds = totalDegrees * 3600.0;  // quant as seconds
         double rawSeconds = sumSeconds - (wholeDegrees * 3600.0) - (wholeMinutes * 60);
 
         int outDeg = static_cast<int>(wholeDegrees);
@@ -377,13 +385,13 @@ QString UnitsSchemaImperialCivil::schemaTranslate(const Base::Quantity& quant, d
         if (outSec > 0) {
             output << outSec << secondString.toUtf8().constData();
         }
-// uncomment this for decimals on seconds
-//        if (remainSeconds < (1.0 * pow(10.0,-Base::UnitsApi::getDecimals())) ) {
-//            //NOP too small to display
-//        } else {
-//            output << std::setprecision(Base::UnitsApi::getDecimals()) << std::fixed <<
-//                      rawSeconds << secondString.toStdString();
-//        }
+        // uncomment this for decimals on seconds
+        //        if (remainSeconds < (1.0 * pow(10.0,-Base::UnitsApi::getDecimals())) ) {
+        //            //NOP too small to display
+        //        } else {
+        //            output << std::setprecision(Base::UnitsApi::getDecimals()) << std::fixed <<
+        //                      rawSeconds << secondString.toStdString();
+        //        }
         return QString::fromUtf8(output.str().c_str());
     }
     else {
@@ -394,4 +402,3 @@ QString UnitsSchemaImperialCivil::schemaTranslate(const Base::Quantity& quant, d
 
     return toLocale(quant, factor, unitString);
 }
-

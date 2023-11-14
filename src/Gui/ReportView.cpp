@@ -469,8 +469,6 @@ void ReportOutput::restoreFont()
 void ReportOutput::SendLog(const std::string& notifiername, const std::string& msg, Base::LogStyle level,
                            Base::IntendedRecipient recipient, Base::ContentType content)
 {
-    (void) notifiername;
-
     // Do not log translated messages, or messages intended only to the user to the Report View
     if( recipient == Base::IntendedRecipient::User ||
         content == Base::ContentType::Translated)
@@ -497,7 +495,15 @@ void ReportOutput::SendLog(const std::string& notifiername, const std::string& m
             break;
     }
 
-    QString qMsg = QString::fromUtf8(msg.c_str());
+    QString qMsg;
+
+    if(!notifiername.empty()) {
+        qMsg = QStringLiteral("%1: %2").arg(QString::fromUtf8(notifiername.c_str()),
+                                            QString::fromUtf8(msg.c_str()));
+    }
+    else {
+        qMsg = QString::fromUtf8(msg.c_str());
+    }
 
     // This truncates log messages that are too long
     if (style == ReportHighlighter::LogText) {

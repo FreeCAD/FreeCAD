@@ -66,6 +66,7 @@ protected:
     /** Pops up the context menu with some extensions */
     void contextMenuEvent ( QContextMenuEvent* e ) override;
     void drawMarker(int line, int x, int y, QPainter*) override;
+    void keyPressEvent(QKeyEvent *) override;
 
 private:
     //PythonSyntaxHighlighter* pythonSyntax;

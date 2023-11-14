@@ -41,12 +41,17 @@
 namespace Base
 {
 
-template <class T>
+template<class T>
 struct iotaGen
 {
 public:
-    T operator()() { return n++; }
-    iotaGen(T v) : n(v) {}
+    T operator()()
+    {
+        return n++;
+    }
+    iotaGen(T v)
+        : n(v)
+    {}
 
 private:
     T n;
@@ -54,17 +59,18 @@ private:
 
 // ----------------------------------------------------------------------------
 
-template <class T>
+template<class T>
 class manipulator
 {
     T i_;
     std::ostream& (*f_)(std::ostream&, T);
 
 public:
-    manipulator(std::ostream& (*f)(std::ostream&, T), T i) : i_(i), f_(f)
-    {
-    }
-    friend std::ostream& operator<<( std::ostream& os, manipulator m)
+    manipulator(std::ostream& (*f)(std::ostream&, T), T i)
+        : i_(i)
+        , f_(f)
+    {}
+    friend std::ostream& operator<<(std::ostream& os, manipulator m)
     {
         return m.f_(os, m.i_);
     }
@@ -72,15 +78,17 @@ public:
 
 inline std::ostream& tabsN(std::ostream& os, int n)
 {
-    for (int i=0;i<n;i++)
+    for (int i = 0; i < n; i++) {
         os << "\t";
+    }
     return os;
 }
 
 inline std::ostream& blanksN(std::ostream& os, int n)
 {
-    for (int i=0;i<n;i++)
+    for (int i = 0; i < n; i++) {
         os << " ";
+    }
     return os;
 }
 
@@ -97,34 +105,36 @@ inline manipulator<int> blanks(int n)
 // ----------------------------------------------------------------------------
 
 template<class T>
-inline T clamp (T num, T lower, T upper)
+inline T clamp(T num, T lower, T upper)
 {
-    return std::max<T>(std::min<T>(upper,num),lower);
+    return std::max<T>(std::min<T>(upper, num), lower);
 }
 
 template<class T>
-inline T sgn (T t)
+inline T sgn(T t)
 {
-    if (t == 0)
+    if (t == 0) {
         return T(0);
-    else
+    }
+    else {
         return (t > 0) ? T(1) : T(-1);
+    }
 }
 
 #ifndef M_PI
-#define M_PI       3.14159265358979323846
+#define M_PI 3.14159265358979323846
 #endif
 
 template<class T>
 inline T toRadians(T d)
 {
-    return static_cast<T>((d*M_PI)/180.0);
+    return static_cast<T>((d * M_PI) / 180.0);
 }
 
 template<class T>
 inline T toDegrees(T r)
 {
-    return static_cast<T>((r/M_PI)*180.0);
+    return static_cast<T>((r / M_PI) * 180.0);
 }
 
 template<class T>
@@ -154,28 +164,35 @@ private:
 
 // ----------------------------------------------------------------------------
 
-template<typename Flag=bool>
-struct FlagToggler {
+// NOLINTBEGIN
+template<typename Flag = bool>
+struct FlagToggler
+{
 
-    Flag &flag;
+    Flag& flag;
     bool toggled;
 
-    FlagToggler(Flag &_flag)
-        :flag(_flag),toggled(true)
+    FlagToggler(Flag& _flag)
+        : flag(_flag)
+        , toggled(true)
     {
         flag = !flag;
     }
 
-    FlagToggler(Flag &_flag, Flag check)
-        :flag(_flag),toggled(check==_flag)
+    FlagToggler(Flag& _flag, Flag check)
+        : flag(_flag)
+        , toggled(check == _flag)
     {
-        if (toggled)
+        if (toggled) {
             flag = !flag;
+        }
     }
 
-    ~FlagToggler() {
-        if (toggled)
+    ~FlagToggler()
+    {
+        if (toggled) {
             flag = !flag;
+        }
     }
 };
 
@@ -185,10 +202,18 @@ template<typename Status, class Object>
 class ObjectStatusLocker
 {
 public:
-    ObjectStatusLocker(Status s, Object* o, bool value = true) : status(s), obj(o)
-    { old_value = obj->testStatus(status); obj->setStatus(status, value); }
+    ObjectStatusLocker(Status s, Object* o, bool value = true)
+        : status(s)
+        , obj(o)
+    {
+        old_value = obj->testStatus(status);
+        obj->setStatus(status, value);
+    }
     ~ObjectStatusLocker()
-    { obj->setStatus(status, old_value); }
+    {
+        obj->setStatus(status, old_value);
+    }
+
 private:
     Status status;
     Object* obj;
@@ -200,10 +225,17 @@ private:
 class StateLocker
 {
 public:
-    StateLocker(bool& flag, bool value = true) : lock(flag)
-    { old_value = lock; lock = value; }
+    StateLocker(bool& flag, bool value = true)
+        : lock(flag)
+    {
+        old_value = lock;
+        lock = value;
+    }  // NOLINT
     ~StateLocker()
-    { lock = old_value; }
+    {
+        lock = old_value;
+    }
+
 private:
     bool& lock;
     bool old_value;
@@ -216,39 +248,50 @@ class BitsetLocker
 {
 public:
     BitsetLocker(T& flags, std::size_t flag, bool value = true)
-        : flags(flags), flag(flag)
-    { oldValue = flags.test(flag); flags.set(flag,value); }
+        : flags(flags)
+        , flag(flag)
+    {
+        oldValue = flags.test(flag);
+        flags.set(flag, value);
+    }
     ~BitsetLocker()
-    { flags.set(flag,oldValue); }
+    {
+        flags.set(flag, oldValue);
+    }
+
 private:
-    T &flags;
+    T& flags;
     std::size_t flag;
     bool oldValue;
 };
 
 // ----------------------------------------------------------------------------
 
-class ConnectionBlocker {
+class ConnectionBlocker
+{
     using Connection = boost::signals2::connection;
     using ConnectionBlock = boost::signals2::shared_connection_block;
     ConnectionBlock blocker;
 
 public:
-    ConnectionBlocker(Connection& c) : blocker(c) {
-    }
+    ConnectionBlocker(Connection& c)
+        : blocker(c)
+    {}
     ~ConnectionBlocker() = default;
 };
+// NOLINTEND
 
 // ----------------------------------------------------------------------------
 
 struct BaseExport Tools
 {
-    static std::string getUniqueName(const std::string&, const std::vector<std::string>&,int d=0);
-    static std::string addNumber(const std::string&, unsigned int, int d=0);
+    static std::string
+    getUniqueName(const std::string&, const std::vector<std::string>&, int d = 0);
+    static std::string addNumber(const std::string&, unsigned int, int d = 0);
     static std::string getIdentifier(const std::string&);
     static std::wstring widen(const std::string& str);
     static std::string narrow(const std::wstring& str);
-    static std::string escapedUnicodeFromUtf8(const char *s);
+    static std::string escapedUnicodeFromUtf8(const char* s);
     static std::string escapedUnicodeToUtf8(const std::string& s);
 
     static QString escapeEncodeString(const QString& s);
@@ -261,7 +304,8 @@ struct BaseExport Tools
      * @param s String to convert.
      * @return A std::string encoded as UTF-8.
      */
-    static inline std::string toStdString(const QString& s) {
+    static inline std::string toStdString(const QString& s)
+    {
         QByteArray tmp = s.toUtf8();
         return {tmp.constData(), static_cast<size_t>(tmp.size())};
     }
@@ -271,7 +315,8 @@ struct BaseExport Tools
      * @param s std::string, expected to be UTF-8 encoded.
      * @return String represented as a QString.
      */
-    static inline QString fromStdString(const std::string & s) {
+    static inline QString fromStdString(const std::string& s)
+    {
         return QString::fromUtf8(s.c_str(), static_cast<int>(s.size()));
     }
 
@@ -295,11 +340,10 @@ struct BaseExport Tools
      * @param sep
      * @return
      */
-    static std::string joinList(const std::vector<std::string>& vec,
-                                const std::string& sep = ", ");
+    static std::string joinList(const std::vector<std::string>& vec, const std::string& sep = ", ");
 };
 
 
-} // namespace Base
+}  // namespace Base
 
-#endif // BASE_TOOLS_H
+#endif  // BASE_TOOLS_H

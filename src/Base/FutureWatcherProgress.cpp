@@ -28,16 +28,18 @@
 using namespace Base;
 
 FutureWatcherProgress::FutureWatcherProgress(const char* text, unsigned int steps)
-  : seq(text, 100), steps(steps), current(0)
-{
-}
+    : seq(text, 100)
+    , steps(steps)
+    , current(0)
+{}
 
 FutureWatcherProgress::~FutureWatcherProgress() = default;
 
 void FutureWatcherProgress::progressValueChanged(int v)
 {
-    if (steps == 0)
+    if (steps == 0) {
         return;
+    }
     unsigned int step = (100 * static_cast<unsigned int>(v)) / steps;
     if (step > current) {
         current = step;

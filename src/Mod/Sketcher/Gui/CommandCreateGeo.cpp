@@ -44,6 +44,7 @@
 #include <Mod/Sketcher/App/Constraint.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 
+#include "CircleEllipseConstructionMethod.h"
 #include "GeometryCreationMode.h"
 #include "Utils.h"
 #include "ViewProviderSketch.h"
@@ -54,6 +55,7 @@
 #include "DrawSketchHandlerArcOfEllipse.h"
 #include "DrawSketchHandlerArcOfHyperbola.h"
 #include "DrawSketchHandlerArcOfParabola.h"
+#include "DrawSketchHandlerArcSlot.h"
 #include "DrawSketchHandlerBSpline.h"
 #include "DrawSketchHandlerBSplineByInterpolation.h"
 #include "DrawSketchHandlerCarbonCopy.h"
@@ -446,7 +448,9 @@ CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreate3PointArc, "Sketcher_Create3PointArc
 void CmdSketcherCreate3PointArc::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandler3PointArc());
+    ActivateHandler(
+        getActiveGuiDocument(),
+        new DrawSketchHandlerArc(ConstructionMethods::CircleEllipseConstructionMethod::ThreeRim));
 }
 
 bool CmdSketcherCreate3PointArc::isActive()
@@ -475,7 +479,9 @@ void CmdSketcherCompCreateArc::activated(int iMsg)
         ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerArc());
     }
     else if (iMsg == 1) {
-        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandler3PointArc());
+        ActivateHandler(getActiveGuiDocument(),
+                        new DrawSketchHandlerArc(
+                            ConstructionMethods::CircleEllipseConstructionMethod::ThreeRim));
     }
     else {
         return;
@@ -625,7 +631,7 @@ CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreateEllipseByCenter, "Sketcher_CreateEll
 void CmdSketcherCreateEllipseByCenter::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerEllipse(0));
+    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerEllipse());
 }
 
 bool CmdSketcherCreateEllipseByCenter::isActive()
@@ -658,7 +664,9 @@ CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreateEllipseBy3Points, "Sketcher_CreateEl
 void CmdSketcherCreateEllipseBy3Points::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerEllipse(1));
+    ActivateHandler(getActiveGuiDocument(),
+                    new DrawSketchHandlerEllipse(
+                        ConstructionMethods::CircleEllipseConstructionMethod::ThreeRim));
 }
 
 bool CmdSketcherCreateEllipseBy3Points::isActive()
@@ -777,10 +785,12 @@ CmdSketcherCompCreateConic::CmdSketcherCompCreateConic()
 void CmdSketcherCompCreateConic::activated(int iMsg)
 {
     if (iMsg == 0) {
-        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerEllipse(iMsg));
+        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerEllipse());
     }
     else if (iMsg == 1) {
-        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerEllipse(iMsg));
+        ActivateHandler(getActiveGuiDocument(),
+                        new DrawSketchHandlerEllipse(
+                            ConstructionMethods::CircleEllipseConstructionMethod::ThreeRim));
     }
     else if (iMsg == 2) {
         ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerArcOfEllipse());
@@ -1251,7 +1261,9 @@ CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreate3PointCircle, "Sketcher_Create3Point
 void CmdSketcherCreate3PointCircle::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandler3PointCircle());
+    ActivateHandler(getActiveGuiDocument(),
+                    new DrawSketchHandlerCircle(
+                        ConstructionMethods::CircleEllipseConstructionMethod::ThreeRim));
 }
 
 bool CmdSketcherCreate3PointCircle::isActive()
@@ -1280,7 +1292,9 @@ void CmdSketcherCompCreateCircle::activated(int iMsg)
         ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerCircle());
     }
     else if (iMsg == 1) {
-        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandler3PointCircle());
+        ActivateHandler(getActiveGuiDocument(),
+                        new DrawSketchHandlerCircle(
+                            ConstructionMethods::CircleEllipseConstructionMethod::ThreeRim));
     }
     else {
         return;
@@ -1724,10 +1738,58 @@ bool CmdSketcherCarbonCopy::isActive()
     return isCommandActive(getActiveGuiDocument());
 }
 
+// Comp for slot tools =============================================
 
-/**
- * Create Slot
- */
+class CmdSketcherCompSlot: public Gui::GroupCommand
+{
+public:
+    CmdSketcherCompSlot()
+        : GroupCommand("Sketcher_CompSlot")
+    {
+        sAppModule = "Sketcher";
+        sGroup = "Sketcher";
+        sMenuText = QT_TR_NOOP("Slots");
+        sToolTipText = QT_TR_NOOP("Slot tools.");
+        sWhatsThis = "Sketcher_CompSlot";
+        sStatusTip = sToolTipText;
+        eType = ForEdit;
+
+        setCheckable(false);
+
+        addCommand("Sketcher_CreateSlot");
+        addCommand("Sketcher_CreateArcSlot");
+    }
+
+    void updateAction(int mode) override
+    {
+        Gui::ActionGroup* pcAction = qobject_cast<Gui::ActionGroup*>(getAction());
+        if (!pcAction) {
+            return;
+        }
+
+        QList<QAction*> al = pcAction->actions();
+        int index = pcAction->property("defaultAction").toInt();
+        switch (static_cast<GeometryCreationMode>(mode)) {
+            case GeometryCreationMode::Normal:
+                al[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateSlot"));
+                al[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateArcSlot"));
+                getAction()->setIcon(al[index]->icon());
+                break;
+            case GeometryCreationMode::Construction:
+                al[0]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateSlot_Constr"));
+                al[1]->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateArcSlot_Constr"));
+                getAction()->setIcon(al[index]->icon());
+                break;
+        }
+    }
+
+    const char* className() const override
+    {
+        return "CmdSketcherCompSlot";
+    }
+};
+
+/* Create Slot =============================================================*/
 
 DEF_STD_CMD_AU(CmdSketcherCreateSlot)
 
@@ -1754,6 +1816,37 @@ void CmdSketcherCreateSlot::activated(int iMsg)
 }
 
 bool CmdSketcherCreateSlot::isActive()
+{
+    return isCommandActive(getActiveGuiDocument());
+}
+
+/* Create Arc Slot =========================================================*/
+
+DEF_STD_CMD_AU(CmdSketcherCreateArcSlot)
+
+CmdSketcherCreateArcSlot::CmdSketcherCreateArcSlot()
+    : Command("Sketcher_CreateArcSlot")
+{
+    sAppModule = "Sketcher";
+    sGroup = "Sketcher";
+    sMenuText = QT_TR_NOOP("Create arc slot");
+    sToolTipText = QT_TR_NOOP("Create an arc slot in the sketch");
+    sWhatsThis = "Sketcher_CreateArcSlot";
+    sStatusTip = sToolTipText;
+    sPixmap = "Sketcher_CreateArcSlot";
+    sAccel = "G, S, 2";
+    eType = ForEdit;
+}
+
+CONSTRUCTION_UPDATE_ACTION(CmdSketcherCreateArcSlot, "Sketcher_CreateArcSlot")
+
+void CmdSketcherCreateArcSlot::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerArcSlot());
+}
+
+bool CmdSketcherCreateArcSlot::isActive(void)
 {
     return isCommandActive(getActiveGuiDocument());
 }
@@ -2200,6 +2293,8 @@ void CreateSketcherCommandsCreateGeo()
     rcCmdMgr.addCommand(new CmdSketcherCreateRegularPolygon());
     rcCmdMgr.addCommand(new CmdSketcherCompCreateRectangles());
     rcCmdMgr.addCommand(new CmdSketcherCreateSlot());
+    rcCmdMgr.addCommand(new CmdSketcherCreateArcSlot());
+    rcCmdMgr.addCommand(new CmdSketcherCompSlot());
     rcCmdMgr.addCommand(new CmdSketcherCompCreateFillets());
     rcCmdMgr.addCommand(new CmdSketcherCreateFillet());
     rcCmdMgr.addCommand(new CmdSketcherCreatePointFillet());

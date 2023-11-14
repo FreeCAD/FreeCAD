@@ -30,10 +30,11 @@
 
 using namespace Base;
 
-struct BindingManager::BindingManagerPrivate {
+struct BindingManager::BindingManagerPrivate
+{
     std::unordered_map<const void*, PyObject*> wrapperMapper;
 
-    bool hasWrapper(const void *cptr)
+    bool hasWrapper(const void* cptr)
     {
         auto it = wrapperMapper.find(cptr);
         return it != wrapperMapper.end();
@@ -71,12 +72,11 @@ BindingManager& BindingManager::instance()
 
 BindingManager::BindingManager()
     : p(new BindingManagerPrivate)
-{
-}
+{}
 
 BindingManager::~BindingManager() = default;
 
-bool BindingManager::hasWrapper(const void *cptr)
+bool BindingManager::hasWrapper(const void* cptr)
 {
     return p->hasWrapper(cptr);
 }

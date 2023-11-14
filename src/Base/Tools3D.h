@@ -38,7 +38,8 @@
 #include <FCGlobal.h>
 #endif
 
-namespace Base {
+namespace Base
+{
 
 class Vector2d;
 class BoundBox2d;
@@ -50,7 +51,7 @@ class Polygon2d;
 /**
  * 3D line class.
  */
-template <class float_type>
+template<class float_type>
 class Line3
 {
 public:
@@ -63,13 +64,13 @@ public:
     Line3(const Vector3<float_type>& p1, const Vector3<float_type>& p2);
 
     // operators
-    Line3& operator= (const Line3& line) = default;
-    Line3& operator= (Line3&& line) = default;
-    bool operator== (const Line3& line) const;
+    Line3& operator=(const Line3& line) = default;
+    Line3& operator=(Line3&& line) = default;
+    bool operator==(const Line3& line) const;
 
     // methods
-    float_type Length () const;
-    float_type SqrLength () const;
+    float_type Length() const;
+    float_type SqrLength() const;
     BoundBox3<float_type> CalcBoundBox() const;
     Vector3<float_type> GetBase() const;
     Vector3<float_type> GetDirection() const;
@@ -96,7 +97,7 @@ public:
      * \return
      */
     bool Contains(const Vector3<float_type>& p, float_type eps) const;
-    Vector3<float_type> FromPos (float_type distance) const;
+    Vector3<float_type> FromPos(float_type distance) const;
 };
 
 /** Polygon3 ********************************************/
@@ -104,7 +105,7 @@ public:
 /**
  * 3D polygon class.
  */
-template <class float_type>
+template<class float_type>
 class Polygon3
 {
 public:
@@ -113,15 +114,15 @@ public:
     Polygon3(const Polygon3<float_type>& poly) = default;
     Polygon3(Polygon3<float_type>&& poly) = default;
 
-    Polygon3& operator = (const Polygon3<float_type>& poly) = default;
-    Polygon3& operator = (Polygon3<float_type>&& poly) = default;
+    Polygon3& operator=(const Polygon3<float_type>& poly) = default;
+    Polygon3& operator=(Polygon3<float_type>&& poly) = default;
 
     size_t GetSize() const;
-    void Add (const Vector3<float_type>& p);
-    const Vector3<float_type>& operator[] (size_t pos) const;
-    const Vector3<float_type>& At (size_t pos) const;
-    Vector3<float_type>& operator[] (size_t pos);
-    Vector3<float_type>& At (size_t pos);
+    void Add(const Vector3<float_type>& p);
+    const Vector3<float_type>& operator[](size_t pos) const;
+    const Vector3<float_type>& At(size_t pos) const;
+    Vector3<float_type>& operator[](size_t pos);
+    Vector3<float_type>& At(size_t pos);
     bool Remove(size_t pos);
     void Clear();
 
@@ -144,6 +145,6 @@ using Line3d = Line3<double>;
 using Polygon3f = Polygon3<float>;
 using Polygon3d = Polygon3<double>;
 
-} // namespace Base
+}  // namespace Base
 
-#endif // BASE_TOOLS3D_H
+#endif  // BASE_TOOLS3D_H

@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-	<PythonExport
-		Father="GeometrySurfacePy"
-		Name="PlateSurfacePy"
+    <PythonExport
+        Name="PlateSurfacePy"
+        Namespace="Part"
+        Twin="GeomPlateSurface"
+        TwinPointer="GeomPlateSurface"
         PythonName="Part.PlateSurface"
-		Twin="GeomPlateSurface"
-		TwinPointer="GeomPlateSurface"
-		Include="Mod/Part/App/Geometry.h"
-		Namespace="Part"
-		FatherInclude="Mod/Part/App/GeometrySurfacePy.h"
-		FatherNamespace="Part"
-		Constructor="true">
-		<Documentation>
-			<Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
-			<UserDocu></UserDocu>
-		</Documentation>
-		<Methode Name="makeApprox" Keyword="true">
-			<Documentation>
-				<UserDocu>Approximate the plate surface to a B-Spline surface</UserDocu>
-			</Documentation>
-		</Methode>
-	</PythonExport>
+        FatherInclude="Mod/Part/App/GeometrySurfacePy.h"
+        Include="Mod/Part/App/Geometry.h"
+        Father="GeometrySurfacePy"
+        FatherNamespace="Part"
+        Constructor="true">
+        <Documentation>
+            <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net"/>
+            <UserDocu></UserDocu>
+        </Documentation>
+        <Methode Name="makeApprox" Keyword="true">
+            <Documentation>
+                <UserDocu>Approximate the plate surface to a B-Spline surface</UserDocu>
+            </Documentation>
+        </Methode>
+    </PythonExport>
 </GenerateModel>

@@ -85,7 +85,9 @@ CmdSketcherToggleConstruction::CmdSketcherToggleConstruction()
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateOblong");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CompCreateRectangles");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreatePolyline");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateArcSlot");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateSlot");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CompSlot");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateArc");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_Create3PointArc");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CompCreateArc");

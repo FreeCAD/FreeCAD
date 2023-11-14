@@ -63,7 +63,7 @@ ClassTemplate::~ClassTemplate() = default;
  * @see publicVar()
  * @return The test results
  */
-int ClassTemplate::testMe(int /*a*/,const char* /*s*/)
+int ClassTemplate::testMe(int /*a*/, const char* /*s*/)
 {
     return 0;
 }
@@ -73,6 +73,3 @@ int ClassTemplate::testMe(int /*a*/,const char* /*s*/)
 //**************************************************************************
 // Separator for additional classes
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
-
-

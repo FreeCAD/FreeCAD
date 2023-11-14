@@ -23,7 +23,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <cassert>
+#include <cassert>
 #endif
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
@@ -39,184 +39,196 @@ using namespace std;
 
 struct Base::TypeData
 {
-  TypeData(const char *theName,
-           const Type type = Type::badType(),
-           const Type theParent = Type::badType(),
-           Type::instantiationMethod method = nullptr
-          ):name(theName),parent(theParent),type(type),instMethod(method) { }
+    TypeData(const char* theName,
+             const Type type = Type::badType(),
+             const Type theParent = Type::badType(),
+             Type::instantiationMethod method = nullptr)
+        : name(theName)
+        , parent(theParent)
+        , type(type)
+        , instMethod(method)
+    {}
 
-  std::string name;
-  Type parent;
-  Type type;
-  Type::instantiationMethod instMethod;
+    std::string name;
+    Type parent;
+    Type type;
+    Type::instantiationMethod instMethod;
 };
 
-map<string,unsigned int> Type::typemap;
-vector<TypeData*>        Type::typedata;
-set<string>              Type::loadModuleSet;
+map<string, unsigned int> Type::typemap;
+vector<TypeData*> Type::typedata;
+set<string> Type::loadModuleSet;
 
-void *Type::createInstance()
+void* Type::createInstance()
 {
-  instantiationMethod method = typedata[index]->instMethod;
-  return method ? (*method)() : nullptr;
+    instantiationMethod method = typedata[index]->instMethod;
+    return method ? (*method)() : nullptr;
 }
 
 
-void *Type::createInstanceByName(const char* TypeName, bool bLoadModule)
+void* Type::createInstanceByName(const char* TypeName, bool bLoadModule)
 {
-  // if not already, load the module
-  if (bLoadModule)
-    importModule(TypeName);
+    // if not already, load the module
+    if (bLoadModule) {
+        importModule(TypeName);
+    }
 
-  // now the type should be in the type map
-  Type t = fromName(TypeName);
-  if (t == badType())
-    return nullptr;
+    // now the type should be in the type map
+    Type t = fromName(TypeName);
+    if (t == badType()) {
+        return nullptr;
+    }
 
-  return t.createInstance();
+    return t.createInstance();
 }
 
 void Type::importModule(const char* TypeName)
 {
-  // cut out the module name
-  string Mod = getModuleName(TypeName);
-  // ignore base modules
-  if (Mod != "App" && Mod != "Gui" && Mod != "Base") {
-    // remember already loaded modules
-    set<string>::const_iterator pos = loadModuleSet.find(Mod);
-    if (pos == loadModuleSet.end()) {
-      Interpreter().loadModule(Mod.c_str());
+    // cut out the module name
+    string Mod = getModuleName(TypeName);
+    // ignore base modules
+    if (Mod != "App" && Mod != "Gui" && Mod != "Base") {
+        // remember already loaded modules
+        set<string>::const_iterator pos = loadModuleSet.find(Mod);
+        if (pos == loadModuleSet.end()) {
+            Interpreter().loadModule(Mod.c_str());
 #ifdef FC_LOGLOADMODULE
-      Console().Log("Act: Module %s loaded through class %s \n",Mod.c_str(),TypeName);
+            Console().Log("Act: Module %s loaded through class %s \n", Mod.c_str(), TypeName);
 #endif
-      loadModuleSet.insert(Mod);
+            loadModuleSet.insert(Mod);
+        }
     }
-  }
 }
 
 string Type::getModuleName(const char* ClassName)
 {
-  string temp(ClassName);
-  std::string::size_type pos = temp.find_first_of("::");
+    string temp(ClassName);
+    std::string::size_type pos = temp.find_first_of("::");
 
-  if (pos != std::string::npos)
-    return {temp,0,pos};
-  return {};
+    if (pos != std::string::npos) {
+        return {temp, 0, pos};
+    }
+    return {};
 }
 
 Type Type::badType()
 {
-  Type bad;
-  bad.index = 0;
-  return bad;
+    Type bad;
+    bad.index = 0;
+    return bad;
 }
 
 
-const Type Type::createType(const Type parent, const char *name, instantiationMethod method)
+const Type Type::createType(const Type parent, const char* name, instantiationMethod method)
 {
-  Type newType;
-  newType.index = static_cast<unsigned int>(Type::typedata.size());
-  TypeData * typeData = new TypeData(name, newType, parent,method);
-  Type::typedata.push_back(typeData);
+    Type newType;
+    newType.index = static_cast<unsigned int>(Type::typedata.size());
+    TypeData* typeData = new TypeData(name, newType, parent, method);
+    Type::typedata.push_back(typeData);
 
-  // add to dictionary for fast lookup
-  Type::typemap[name] = newType.getKey();
+    // add to dictionary for fast lookup
+    Type::typemap[name] = newType.getKey();
 
-  return newType;
+    return newType;
 }
 
 
 void Type::init()
 {
-  assert(Type::typedata.size() == 0);
+    assert(Type::typedata.size() == 0);
 
 
-  Type::typedata.push_back(new TypeData("BadType"));
-  Type::typemap["BadType"] = 0;
-
-
+    Type::typedata.push_back(new TypeData("BadType"));
+    Type::typemap["BadType"] = 0;
 }
 
 void Type::destruct()
 {
-  for(auto it : typedata)
-    delete it;
-  typedata.clear();
-  typemap.clear();
-  loadModuleSet.clear();
+    for (auto it : typedata) {
+        delete it;
+    }
+    typedata.clear();
+    typemap.clear();
+    loadModuleSet.clear();
 }
 
-Type Type::fromName(const char *name)
+Type Type::fromName(const char* name)
 {
-  std::map<std::string,unsigned int>::const_iterator pos;
+    std::map<std::string, unsigned int>::const_iterator pos;
 
-  pos = typemap.find(name);
-  if (pos != typemap.end())
-    return typedata[pos->second]->type;
-  else
-    return Type::badType();
+    pos = typemap.find(name);
+    if (pos != typemap.end()) {
+        return typedata[pos->second]->type;
+    }
+    else {
+        return Type::badType();
+    }
 }
 
 Type Type::fromKey(unsigned int key)
 {
-  if (key < typedata.size())
-    return typedata[key]->type;
-  else
-    return Type::badType();
+    if (key < typedata.size()) {
+        return typedata[key]->type;
+    }
+    else {
+        return Type::badType();
+    }
 }
 
-const char *Type::getName() const
+const char* Type::getName() const
 {
-  return typedata[index]->name.c_str();
+    return typedata[index]->name.c_str();
 }
 
 const Type Type::getParent() const
 {
-  return typedata[index]->parent;
+    return typedata[index]->parent;
 }
 
 bool Type::isDerivedFrom(const Type type) const
 {
 
-  Type temp(*this);
-  do {
-    if (temp == type)
-      return true;
-    temp = temp.getParent();
-  } while (temp != badType());
+    Type temp(*this);
+    do {
+        if (temp == type) {
+            return true;
+        }
+        temp = temp.getParent();
+    } while (temp != badType());
 
-  return false;
+    return false;
 }
 
-int Type::getAllDerivedFrom(const Type type, std::vector<Type> & List)
+int Type::getAllDerivedFrom(const Type type, std::vector<Type>& List)
 {
-  int cnt = 0;
+    int cnt = 0;
 
-  for(auto it : typedata)
-  {
-    if (it->type.isDerivedFrom(type))
-    {
-      List.push_back(it->type);
-      cnt++;
+    for (auto it : typedata) {
+        if (it->type.isDerivedFrom(type)) {
+            List.push_back(it->type);
+            cnt++;
+        }
     }
-  }
-  return cnt;
+    return cnt;
 }
 
 int Type::getNumTypes()
 {
-  return static_cast<int>(typedata.size());
+    return static_cast<int>(typedata.size());
 }
 
-Type Type::getTypeIfDerivedFrom(const char* name , const Type parent, bool bLoadModule)
+Type Type::getTypeIfDerivedFrom(const char* name, const Type parent, bool bLoadModule)
 {
-  if (bLoadModule)
-    importModule(name);
+    if (bLoadModule) {
+        importModule(name);
+    }
 
-  Type type = fromName(name);
+    Type type = fromName(name);
 
-  if (type.isDerivedFrom(parent))
-    return type;
-  else
-    return Type::badType();
+    if (type.isDerivedFrom(parent)) {
+        return type;
+    }
+    else {
+        return Type::badType();
+    }
 }

@@ -26,31 +26,42 @@
 
 #include <cmath>
 
-namespace Base {
+namespace Base
+{
 
 // The methods are copied from OCC's Precision class
-class Precision {
+class Precision
+{
 public:
     /*!
      * \brief Angular
-     * Returns the recommended precision value when checking the equality of two angles (given in radians).
-     * \return
+     * Returns the recommended precision value when checking the equality of two angles (given in
+     * radians). \return
      */
-    static double Angular() { return 1.e-12; }
+    static double Angular()
+    {
+        return 1.e-12;
+    }
 
     /*!
      * \brief Confusion
-     * Returns the recommended precision value when checking coincidence of two points in real space.
-     * \return
+     * Returns the recommended precision value when checking coincidence of two points in real
+     * space. \return
      */
-    static double Confusion() { return 1.e-7; }
+    static double Confusion()
+    {
+        return 1.e-7;
+    }
 
     /*!
      * \brief SquareConfusion
      * Returns square of \ref Confusion.
      * \return
      */
-    static double SquareConfusion() { return Confusion() * Confusion(); }
+    static double SquareConfusion()
+    {
+        return Confusion() * Confusion();
+    }
 
     /*!
      * \brief Intersection
@@ -58,7 +69,10 @@ public:
      * used by intersection algorithms to decide that a solution is reached.
      * \return
      */
-    static double Intersection() { return Confusion() * 0.01; }
+    static double Intersection()
+    {
+        return Confusion() * 0.01;
+    }
 
     /*!
      * \brief Approximation
@@ -66,7 +80,10 @@ public:
      * by approximation algorithms.
      * \return
      */
-    static double Approximation() { return Confusion() * 10.0; }
+    static double Approximation()
+    {
+        return Confusion() * 10.0;
+    }
 
     /*!
      * \brief Parametric
@@ -75,7 +92,10 @@ public:
      * \param T
      * \return
      */
-    static double Parametric (const double P, const double T) { return P / T; }
+    static double Parametric(const double P, const double T)
+    {
+        return P / T;
+    }
 
     /*!
      * \brief PConfusion
@@ -83,21 +103,30 @@ public:
      * \param T
      * \return
      */
-    static double PConfusion (const double T) { return Parametric (Confusion(), T); }
+    static double PConfusion(const double T)
+    {
+        return Parametric(Confusion(), T);
+    }
 
     /*!
      * \brief PConfusion
      * Used  to test distances  in parametric  space on a default curve.
      * \return
      */
-    static double PConfusion() { return Parametric (Confusion()); }
+    static double PConfusion()
+    {
+        return Parametric(Confusion());
+    }
 
     /*!
      * \brief SquarePConfusion
      * Returns square of \ref PConfusion.
      * \return
      */
-    static double SquarePConfusion() { return PConfusion() * PConfusion(); }
+    static double SquarePConfusion()
+    {
+        return PConfusion() * PConfusion();
+    }
 
     /*!
      * \brief PIntersection
@@ -106,15 +135,20 @@ public:
      * \param T
      * \return
      */
-    static double PIntersection (const double T) { return Parametric(Intersection(),T); }
+    static double PIntersection(const double T)
+    {
+        return Parametric(Intersection(), T);
+    }
 
     /*!
      * \brief PApproximation
-     *  Returns a precision value in parametric space, which may be used by approximation algorithms.
-     * \param T
-     * \return
+     *  Returns a precision value in parametric space, which may be used by approximation
+     * algorithms. \param T \return
      */
-    static double PApproximation (const double T) { return Parametric(Approximation(),T); }
+    static double PApproximation(const double T)
+    {
+        return Parametric(Approximation(), T);
+    }
 
     /*!
      * \brief Parametric
@@ -122,21 +156,30 @@ public:
      * \param P
      * \return
      */
-    static double Parametric (const double P) { return Parametric (P, 100.0); }
+    static double Parametric(const double P)
+    {
+        return Parametric(P, 100.0);
+    }
 
     /*!
      * \brief PIntersection
      * Used for Intersections  in parametric  space  on a default curve.
      * \return
      */
-    static double PIntersection() { return Parametric (Intersection()); }
+    static double PIntersection()
+    {
+        return Parametric(Intersection());
+    }
 
     /*!
      * \brief PApproximation
      * Used for  Approximations  in parametric space on a default curve.
      * \return
      */
-    static double PApproximation() { return Parametric (Approximation()); }
+    static double PApproximation()
+    {
+        return Parametric(Approximation());
+    }
 
     /*!
      * \brief IsInfinite
@@ -144,7 +187,10 @@ public:
      * \param R
      * \return
      */
-    static double IsInfinite (const double R) { return std::fabs (R) >= (0.5 * Precision::Infinite()); }
+    static double IsInfinite(const double R)
+    {
+        return std::fabs(R) >= (0.5 * Precision::Infinite());
+    }
 
     /*!
      * \brief IsPositiveInfinite
@@ -152,7 +198,10 @@ public:
      * \param R
      * \return
      */
-    static double IsPositiveInfinite (const double R) { return R >= (0.5 * Precision::Infinite()); }
+    static double IsPositiveInfinite(const double R)
+    {
+        return R >= (0.5 * Precision::Infinite());
+    }
 
     /*!
      * \brief IsNegativeInfinite
@@ -160,16 +209,22 @@ public:
      * \param R
      * \return
      */
-    static bool IsNegativeInfinite (const double R) { return R <= -(0.5 * Precision::Infinite()); }
+    static bool IsNegativeInfinite(const double R)
+    {
+        return R <= -(0.5 * Precision::Infinite());
+    }
 
     /*!
      * \brief Infinite
-     * Returns a  big number that  can  be  considered as infinite. Use -Infinite() for a negative big number.
-     * \return
+     * Returns a  big number that  can  be  considered as infinite. Use -Infinite() for a negative
+     * big number. \return
      */
-    static double Infinite() { return 2.e+100; }
+    static double Infinite()
+    {
+        return 2.e+100;
+    }
 };
 
-}
+}  // namespace Base
 
-#endif // BASE_PRECISION_H
+#endif  // BASE_PRECISION_H

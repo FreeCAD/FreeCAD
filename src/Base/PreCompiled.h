@@ -39,7 +39,7 @@
 #include <cfloat>
 #ifdef FC_OS_WIN32
 #define _USE_MATH_DEFINES
-#endif // FC_OS_WIN32
+#endif  // FC_OS_WIN32
 #include <cmath>
 #include <climits>
 #include <codecvt>
@@ -56,7 +56,7 @@
 #include <Rpc.h>
 #endif
 
-#if defined (FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
+#if defined(FC_OS_LINUX) || defined(FC_OS_CYGWIN) || defined(FC_OS_MACOSX) || defined(FC_OS_BSD)
 #include <dirent.h>
 #include <unistd.h>
 #include <sys/stat.h>
@@ -75,7 +75,7 @@
 #include <memory>
 #include <bitset>
 
-//streams
+// streams
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -136,7 +136,6 @@
 #include <QUuid>
 
 
-#endif //_PreComp_
+#endif  //_PreComp_
 
-#endif // BASE_PRECOMPILED_H
-
+#endif  // BASE_PRECOMPILED_H
