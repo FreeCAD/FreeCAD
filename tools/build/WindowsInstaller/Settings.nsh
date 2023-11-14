@@ -16,7 +16,7 @@ SetCompressor /SOLID lzma
 # Version number
 
 !define APP_VERSION_MAJOR 0
-!define APP_VERSION_MINOR 20
+!define APP_VERSION_MINOR 22
 !define APP_VERSION_REVISION 0
 !define APP_VERSION_EMERGENCY "beta" # use "1" for an emergency release of FreeCAD otherwise ""
 	# alternatively you can use APP_VERSION_EMERGENCY for a custom suffix of the version number
@@ -25,7 +25,7 @@ SetCompressor /SOLID lzma
 
 !define APP_VERSION "${APP_VERSION_MAJOR}.${APP_VERSION_MINOR}.${APP_VERSION_REVISION}${APP_EMERGENCY_DOT}${APP_VERSION_EMERGENCY}" # Version to display
 
-!define COPYRIGHT_YEAR 2022
+!define COPYRIGHT_YEAR 2023
 
 #--------------------------------
 # Installer file name
@@ -41,6 +41,6 @@ SetCompressor /SOLID lzma
 # File locations
 # !!! you need to adjust them to the folders in your Windows system !!!
 
-!define FILES_FREECAD "G:\FreeCADInst\Installer\FreeCAD-0-20"
+!define FILES_FREECAD "G:\FreeCADInst\Installer\FreeCAD"
 !define FILES_DEPS "G:\FreeCADInst\Installer\MSVCRedist"
 !define FILES_THUMBS "G:\FreeCADInst\Installer\thumbnail"
