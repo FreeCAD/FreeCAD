@@ -169,5 +169,36 @@ namespace MbD {
     // instantiate on purpose to make visible in library api:
     template class FullColumn<double>;
     template class FullColumn<int>;
+    template<typename T>
+    double FullColumn<T>::dot(std::shared_ptr<FullVector<T>> vec)
+    {
+        int n = (int)this->size();
+        double answer = 0.0;
+        for (int i = 0; i < n; i++) {
+            answer += this->at(i) * vec->at(i);
+        }
+        return answer;
+    }
+    template<typename T>
+    std::shared_ptr<FullVector<T>> FullColumn<T>::dot(std::shared_ptr<std::vector<std::shared_ptr<FullColumn<T>>>> vecvec)
+    {
+        int ncol = (int)this->size();
+        auto nelem = vecvec->at(0)->size();
+        auto answer = std::make_shared<FullVector<T>>(nelem);
+        for (int k = 0; k < nelem; k++) {
+            auto sum = 0.0;
+            for (int i = 0; i < ncol; i++)
+            {
+                sum += this->at(i) * vecvec->at(i)->at(k);
+            }
+            answer->at(k) = sum;
+        }
+        return answer;
+    }
+    template<typename T>
+    std::shared_ptr<FullColumn<T>> FullColumn<T>::clonesptr()
+    {
+        return std::make_shared<FullColumn<T>>(*this);
+    }
 
 }

@@ -26,26 +26,25 @@ void sharedptrTest();
 
 int main()
 {
-	ASMTAssembly::readWriteFile("failingsolve.asmt");
-	ASMTAssembly::runFile("cirpendu2.asmt");	//Under constrained. Testing ICKine.
-	ASMTAssembly::runFile("quasikine.asmt");	//Under constrained. Testing ICKine.
-	ASMTAssembly::readWriteFile("piston.asmt");
-	//MBDynSystem::runFile("MBDynCaseDebug2.mbd");
+	ASMTAssembly::runFile("../testapp/cirpendu2.asmt");	//Under constrained. Testing ICKine.
+	ASMTAssembly::runFile("../testapp/quasikine.asmt");	//Under constrained. Testing ICKine.
+	ASMTAssembly::readWriteFile("../testapp/piston.asmt");
+	//MBDynSystem::runFile("../testapp/MBDynCaseDebug2.mbd");
 	//return 0;
-	MBDynSystem::runFile("MBDynCase2.mbd");
-	MBDynSystem::runFile("MBDynCase.mbd");
-	MBDynSystem::runFile("CrankSlider2.mbd");
-	//MBDynSystem::runFile("crank_slider.mbd");	//Needs integration of product
+	MBDynSystem::runFile("../testapp/MBDynCase2.mbd");
+	//MBDynSystem::runFile("../testapp/MBDynCase.mbd");	//Very large but works
+	MBDynSystem::runFile("../testapp/CrankSlider2.mbd");
+	//MBDynSystem::runFile("../testapp/crank_slider.mbd");	//Needs integration of product
 	////ASMTAssembly::runSinglePendulumSuperSimplified();	//Mass is missing
 	////ASMTAssembly::runSinglePendulumSuperSimplified2();	//DOF has infinite acceleration due to zero mass and inertias
 	ASMTAssembly::runSinglePendulumSimplified();
 	ASMTAssembly::runSinglePendulum();
 	ASMTAssembly::runFile("../testapp/piston.asmt");
 	ASMTAssembly::runFile("../testapp/00backhoe.asmt");
-	//ASMTAssembly::runFile("circular.asmt");	//Needs checking
-	//ASMTAssembly::runFile("engine1.asmt");	//Needs checking
+	//ASMTAssembly::runFile("../testapp/circular.asmt");	//Needs checking
+	//ASMTAssembly::runFile("../testapp/engine1.asmt");	//Needs checking
 	ASMTAssembly::runFile("../testapp/fourbar.asmt");
-	//ASMTAssembly::runFile("fourbot.asmt");	//Very large but works
+	//ASMTAssembly::runFile("../testapp/fourbot.asmt");	//Very large but works
 	ASMTAssembly::runFile("../testapp/wobpump.asmt");
 
 	auto cadSystem = std::make_shared<CADSystem>();

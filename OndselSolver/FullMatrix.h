@@ -107,6 +107,14 @@ namespace MbD {
     public:
         FullMatrixFullMatrixDouble() = default;
 		explicit FullMatrixFullMatrixDouble(int m) : RowTypeMatrix<FRowsptr<FMatDsptr>>(m)
+		{
+		}
+        FullMatrixFullMatrixDouble(int m, int n) {
+            for (int i = 0; i < m; i++) {
+                auto row = std::make_shared<FullRow<FMatDsptr>>(n);
+                this->push_back(row);
+            }
+        }
 
         double maxMagnitude() override;
         void zeroSelf() override;

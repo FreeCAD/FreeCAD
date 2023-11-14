@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="OndselSolver.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Array.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -885,6 +882,9 @@
     <ClCompile Include="Integral.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="..\testapp\OndselSolver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Array.h">
@@ -951,9 +951,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="EndFrameqct.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="OndselSolver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="FullVector.h">
@@ -1761,6 +1758,24 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Integral.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\testapp\OndselSolver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FullRow.ref.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FullMatrix.ref.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="FullColumn.ref.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="EulerParameters.ref.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="DiagonalMatrix.ref.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -35,7 +35,7 @@ namespace MbD {
 		FColsptr<T> transpose();
 		FRowsptr<T> copy();
 		void atiplusFullRow(int j, FRowsptr<T> fullRow);
-		FMatsptr<T> transposeTimesFullRow(FRowsptr<T> fullRow);
+		FMatDsptr transposeTimesFullRow(FRowDsptr fullRow);
 		std::shared_ptr<FullRow<T>> clonesptr();
 		//double dot(std::shared_ptr<FullColumn<T>> vec);
 		//double dot(std::shared_ptr<FullRow<T>> vec);
@@ -45,7 +45,6 @@ namespace MbD {
 		
 		std::ostream& printOn(std::ostream& s) const override;
 
-        std::shared_ptr<FullMatrixDouble> transposeTimesFullRow(FRowsptr<double> fullRow);
         FRowsptr<double> timesTransposeFullMatrix(std::shared_ptr<FullMatrixDouble> fullMat);
         // FRowsptr<std::shared_ptr<FullMatrixDouble>> timesTransposeFullMatrixForFMFMDsptr(std::shared_ptr<FullMatrixFullMatrixDouble> fullMat);
         FRowsptr<double> timesFullMatrix(std::shared_ptr<FullMatrixDouble> fullMat);
@@ -140,18 +139,6 @@ namespace MbD {
 			auto j = j1 + jj;
 			this->at(j) += fullRow->at(jj);
 		}
-	}
-	template<typename T>
-	inline FMatsptr<T> FullRow<T>::transposeTimesFullRow(FRowsptr<T> fullRow)
-	{
-		//"a*b = a(i)b(j)"
-		auto nrow = (int)this->size();
-		auto answer = std::make_shared<FullMatrix<double>>(nrow);
-		for (int i = 0; i < nrow; i++)
-		{
-			answer->atiput(i, fullRow->times(this->at(i)));
-		}
-		return answer;
 	}
 	template<typename T>
 	inline std::shared_ptr<FullRow<T>> FullRow<T>::clonesptr()
