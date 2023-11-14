@@ -585,7 +585,7 @@ class ArchScheduleTaskPanel:
 
         """Imports a CSV file"""
 
-        filename = QtGui.QFileDialog.getOpenFileName(QtGui.QApplication.activeWindow(), translate("Arch","Import CSV File"), None, "CSV file (*.csv)");
+        filename = QtGui.QFileDialog.getOpenFileName(QtGui.QApplication.activeWindow(), translate("Arch","Import CSV file"), None, "CSV files (*.csv *.CSV)")
         if filename:
             filename = filename[0]
             self.form.list.clearContents()
@@ -618,7 +618,7 @@ class ArchScheduleTaskPanel:
             return
 
         filename = QtGui.QFileDialog.getSaveFileName(QtGui.QApplication.activeWindow(),
-                                                     translate("Arch","Export CSV File"),
+                                                     translate("Arch","Export CSV file"),
                                                      None,
                                                      "Comma-separated values (*.csv);;TAB-separated values (*.tsv);;Markdown (*.md)");
         if filename:
