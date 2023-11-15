@@ -115,37 +115,37 @@ shapes to be visualized.
         </Documentation>
     </Methode>
     <Methode Name="initHide">
-        <Documentation><!-- no further documentation available -->
+        <Documentation><!-- OCCT has no further documentation -->
             <UserDocu>initHide()
             </UserDocu>
         </Documentation>
     </Methode>
     <Methode Name="moreHide">
-        <Documentation><!-- no further documentation available -->
+        <Documentation><!-- OCCT has no further documentation -->
             <UserDocu>moreHide()
             </UserDocu>
         </Documentation>
     </Methode>
     <Methode Name="nextHide">
-        <Documentation><!-- no further documentation available -->
+        <Documentation><!-- OCCT has no further documentation -->
             <UserDocu>nextHide()
             </UserDocu>
         </Documentation>
     </Methode>
     <Methode Name="initShow">
-        <Documentation><!-- no further documentation available -->
+        <Documentation><!-- OCCT has no further documentation -->
             <UserDocu>initShow()
             </UserDocu>
         </Documentation>
     </Methode>
     <Methode Name="moreShow">
-        <Documentation><!-- no further documentation available -->
+        <Documentation><!-- OCCT has no further documentation -->
             <UserDocu>moreShow()
             </UserDocu>
         </Documentation>
     </Methode>
     <Methode Name="nextShow">
-        <Documentation><!-- no further documentation available -->
+        <Documentation><!-- OCCT has no further documentation -->
             <UserDocu>nextShow()
             </UserDocu>
         </Documentation>
@@ -159,19 +159,19 @@ Make a shape with the internal outlines in each face of shape S.
         </Documentation>
     </Methode>
     <Attribute Name="Angle">
-        <Documentation><!-- no documentation available -->
+        <Documentation><!-- OCCT has no further documentation -->
             <UserDocu></UserDocu>
         </Documentation>
         <Parameter Name="Angle" Type="Float"/>
     </Attribute>
     <Attribute Name="TolAngular">
-        <Documentation><!-- no documentation available -->
+        <Documentation><!-- OCCT has no further documentation -->
             <UserDocu></UserDocu>
         </Documentation>
         <Parameter Name="TolAngular" Type="Float"/>
     </Attribute>
     <Attribute Name="TolCoef">
-        <Documentation><!-- no documentation available -->
+        <Documentation><!-- OCCT has no further documentation -->
             <UserDocu></UserDocu>
         </Documentation>
         <Parameter Name="TolCoef" Type="Float"/>
