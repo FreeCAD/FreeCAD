@@ -1799,7 +1799,7 @@ private:
                     if (useFCBakExtension) {
                         std::stringstream str;
                         Base::TimeInfo ti = fi.lastModified();
-                        time_t s =ti.getSeconds();
+                        time_t s = ti.getTime_t();
                         struct tm * timeinfo = localtime(& s);
                         char buffer[100];
 
