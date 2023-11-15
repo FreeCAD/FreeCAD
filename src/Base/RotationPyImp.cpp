@@ -53,7 +53,7 @@ std::string RotationPy::representation() const
     return str.str();
 }
 
-PyObject* RotationPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
+PyObject* RotationPy::PyMake(PyTypeObject* /*unused*/, PyObject* /*unused*/, PyObject* /*unused*/)
 {
     // create a new instance of RotationPy and the Twin object
     return new RotationPy(new Rotation);

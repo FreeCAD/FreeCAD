@@ -136,7 +136,7 @@ Vector3f ViewProjMatrix::operator()(const Vector3f& inp) const
     if (!isOrthographic) {
         dst = src;
         perspectiveTransform<Vector3f>(_clMtx, dst);
-        dst.Set(0.5f * dst.x + 0.5f, 0.5f * dst.y + 0.5f, 0.5f * dst.z + 0.5f);
+        dst.Set(0.5F * dst.x + 0.5F, 0.5F * dst.y + 0.5F, 0.5F * dst.z + 0.5F);
     }
     else {
         _clMtx.multVec(src, dst);
@@ -167,7 +167,7 @@ Vector3f ViewProjMatrix::inverse(const Vector3f& src) const
 {
     Vector3f dst;
     if (!isOrthographic) {
-        dst.Set(2.0f * src.x - 1.0f, 2.0f * src.y - 1.0f, 2.0f * src.z - 1.0f);
+        dst.Set(2.0F * src.x - 1.0F, 2.0F * src.y - 1.0F, 2.0F * src.z - 1.0F);
         perspectiveTransform<Vector3f>(_clMtxInv, dst);
     }
     else {

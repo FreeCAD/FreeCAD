@@ -378,7 +378,7 @@ void FileWriter::putNextEntry(const char* file)
     this->FileStream.open(fileName.c_str(), std::ios::out | std::ios::binary);
 }
 
-bool FileWriter::shouldWrite(const std::string&, const Base::Persistence*) const
+bool FileWriter::shouldWrite(const std::string& /*name*/, const Base::Persistence* /*obj*/) const
 {
     return true;
 }

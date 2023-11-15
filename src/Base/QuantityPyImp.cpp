@@ -69,7 +69,7 @@ PyObject* QuantityPy::toStr(PyObject* args)
     return Py_BuildValue("s", ret.str().c_str());
 }
 
-PyObject* QuantityPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
+PyObject* QuantityPy::PyMake(PyTypeObject* /*unused*/, PyObject* /*unused*/, PyObject* /*unused*/)
 {
     // create a new instance of QuantityPy and the Twin object
     return new QuantityPy(new Quantity);

@@ -38,7 +38,8 @@ std::string CoordinateSystemPy::representation() const
     return {"<CoordinateSystem object>"};
 }
 
-PyObject* CoordinateSystemPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
+PyObject*
+CoordinateSystemPy::PyMake(PyTypeObject* /*unused*/, PyObject* /*unused*/, PyObject* /*unused*/)
 {
     // create a new instance of CoordinateSystemPy and the Twin object
     return new CoordinateSystemPy(new CoordinateSystem);

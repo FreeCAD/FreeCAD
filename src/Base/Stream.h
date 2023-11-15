@@ -299,7 +299,7 @@ protected:
     int_type overflow(int_type c = EOF) override;
     std::streamsize xsputn(const char* s, std::streamsize num) override;
     int sync() override;
-    pos_type seekoff(off_type offset, seekdir dir, openmode) override;
+    pos_type seekoff(off_type offset, seekdir dir, openmode mode) override;
     pos_type seekpos(pos_type offset, openmode mode) override;
 
 private:

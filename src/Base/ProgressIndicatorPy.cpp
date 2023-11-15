@@ -58,7 +58,8 @@ bool ProgressIndicatorPy::check(PyObject* py)
     return Py::PythonExtension<ProgressIndicatorPy>::check(py);
 }
 
-PyObject* ProgressIndicatorPy::PyMake(struct _typeobject*, PyObject*, PyObject*)
+PyObject*
+ProgressIndicatorPy::PyMake(PyTypeObject* /*unused*/, PyObject* /*unused*/, PyObject* /*unused*/)
 {
     return new ProgressIndicatorPy();
 }

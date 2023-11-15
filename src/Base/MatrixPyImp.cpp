@@ -52,7 +52,7 @@ std::string MatrixPy::representation() const
     return str.str();
 }
 
-PyObject* MatrixPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
+PyObject* MatrixPy::PyMake(PyTypeObject* /*unused*/, PyObject* /*unused*/, PyObject* /*unused*/)
 {
     // create a new instance of MatrixPy and the Twin object
     return new MatrixPy(new Matrix4D);

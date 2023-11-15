@@ -95,7 +95,7 @@ float TimeInfo::diffTimeF(const TimeInfo& timeStart, const TimeInfo& timeEnd)
     int64_t ds = int64_t(timeEnd.getSeconds() - timeStart.getSeconds());
     int dms = int(timeEnd.getMiliseconds()) - int(timeStart.getMiliseconds());
 
-    return float(ds) + float(dms) * 0.001f;
+    return float(ds) + float(dms) * 0.001F;
 }
 
 TimeInfo TimeInfo::null()

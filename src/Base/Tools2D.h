@@ -113,7 +113,7 @@ public:
     inline BoundBox2d(double fX1, double fY1, double fX2, double fY2);
     ~BoundBox2d() = default;
     inline bool IsValid();
-    inline bool IsEqual(const BoundBox2d&, double tolerance) const;
+    inline bool IsEqual(const BoundBox2d& bbox, double tolerance) const;
 
     // operators
     inline BoundBox2d& operator=(const BoundBox2d&) = default;
@@ -471,16 +471,18 @@ inline bool BoundBox2d::IsValid()
     return (MaxX >= MinX) && (MaxY >= MinY);
 }
 
-inline bool BoundBox2d::IsEqual(const BoundBox2d& b, double tolerance) const
+inline bool BoundBox2d::IsEqual(const BoundBox2d& bbox, double tolerance) const
 {
-    return Vector2d(MinX, MinY).IsEqual(Vector2d(b.MinX, b.MinY), tolerance)
-        && Vector2d(MaxX, MaxY).IsEqual(Vector2d(b.MaxX, b.MaxY), tolerance);
+    return Vector2d(MinX, MinY).IsEqual(Vector2d(bbox.MinX, bbox.MinY), tolerance)
+        && Vector2d(MaxX, MaxY).IsEqual(Vector2d(bbox.MaxX, bbox.MaxY), tolerance);
 }
 
-inline bool BoundBox2d::operator==(const BoundBox2d& rclBB) const
+inline bool BoundBox2d::operator==(const BoundBox2d& bbox) const
 {
-    return (MinX == rclBB.MinX) && (MinY == rclBB.MinY) && (MaxX == rclBB.MaxX)
-        && (MaxY == rclBB.MaxY);
+    // clang-format off
+    return (MinX == bbox.MinX) && (MinY == bbox.MinY)
+        && (MaxX == bbox.MaxX) && (MaxY == bbox.MaxY);
+    // clang-format on
 }
 
 inline double BoundBox2d::Width() const

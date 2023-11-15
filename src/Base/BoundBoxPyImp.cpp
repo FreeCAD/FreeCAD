@@ -45,7 +45,7 @@ std::string BoundBoxPy::representation() const
     return str.str();
 }
 
-PyObject* BoundBoxPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
+PyObject* BoundBoxPy::PyMake(PyTypeObject* /*unused*/, PyObject* /*unused*/, PyObject* /*unused*/)
 {
     // create a new instance of BoundBoxPy and the Twin object
     return new BoundBoxPy(new BoundBox3d);

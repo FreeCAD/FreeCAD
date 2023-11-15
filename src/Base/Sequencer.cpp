@@ -119,8 +119,8 @@ void SequencerBase::startStep()
 bool SequencerBase::next(bool canAbort)
 {
     this->nProgress++;
-    float fDiv = this->nTotalSteps > 0 ? static_cast<float>(this->nTotalSteps) : 1000.0f;
-    int perc = int((float(this->nProgress) * (100.0f / fDiv)));
+    float fDiv = this->nTotalSteps > 0 ? static_cast<float>(this->nTotalSteps) : 1000.0F;
+    int perc = int((float(this->nProgress) * (100.0F / fDiv)));
 
     // do only an update if we have increased by one percent
     if (perc > this->_nLastPercentage) {
@@ -135,10 +135,10 @@ bool SequencerBase::next(bool canAbort)
     return this->nProgress < this->nTotalSteps;
 }
 
-void SequencerBase::nextStep(bool)
+void SequencerBase::nextStep(bool /*next*/)
 {}
 
-void SequencerBase::setProgress(size_t)
+void SequencerBase::setProgress(size_t /*value*/)
 {}
 
 bool SequencerBase::stop()
@@ -204,7 +204,7 @@ void SequencerBase::resetData()
     this->_bCanceled = false;
 }
 
-void SequencerBase::setText(const char*)
+void SequencerBase::setText(const char* /*text*/)
 {}
 
 // ---------------------------------------------------------
@@ -219,7 +219,7 @@ void ConsoleSequencer::setText(const char* pszTxt)
 void ConsoleSequencer::startStep()
 {}
 
-void ConsoleSequencer::nextStep(bool)
+void ConsoleSequencer::nextStep(bool /*canAbort*/)
 {
     if (this->nTotalSteps != 0) {
         printf("\t\t\t\t\t\t(%d %%)\t\r", progressInPercent());

@@ -121,7 +121,7 @@ public:
     //@{
 
     /** @ interface from DOMWriterFilter */
-    FilterAction acceptNode(const XERCES_CPP_NAMESPACE_QUALIFIER DOMNode*) const override;
+    FilterAction acceptNode(const XERCES_CPP_NAMESPACE_QUALIFIER DOMNode* node) const override;
     //@{
 
     ShowType getWhatToShow() const override
@@ -2007,7 +2007,7 @@ void ParameterManager::CheckDocument() const
 // DOMTreeErrorReporter
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-void DOMTreeErrorReporter::warning(const SAXParseException&)
+void DOMTreeErrorReporter::warning(const SAXParseException& /*exc*/)
 {
     //
     // Ignore all warnings.

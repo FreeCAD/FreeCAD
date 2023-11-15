@@ -52,7 +52,7 @@ std::string PlacementPy::representation() const
     return str.str();
 }
 
-PyObject* PlacementPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
+PyObject* PlacementPy::PyMake(PyTypeObject* /*unused*/, PyObject* /*unused*/, PyObject* /*unused*/)
 {
     // create a new instance of PlacementPy and the Twin object
     return new PlacementPy(new Placement);

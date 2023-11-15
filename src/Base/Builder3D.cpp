@@ -456,9 +456,9 @@ void ArrowItem::write(InventorOutput& out) const
     dir.Scale(sf2, sf2, sf2);
     Vector3f cpt = line.p1 + dir;
 
-    Vector3f rot = Vector3f(0.0f, 1.0f, 0.0f) % dir;
+    Vector3f rot = Vector3f(0.0F, 1.0F, 0.0F) % dir;
     rot.Normalize();
-    float angle = Vector3f(0.0f, 1.0f, 0.0f).GetAngle(dir);
+    float angle = Vector3f(0.0F, 1.0F, 0.0F).GetAngle(dir);
 
     out.write() << "Separator {\n";
     out.write() << "  Material { diffuseColor " << rgb.red() << " " << rgb.green() << " "

@@ -52,7 +52,7 @@ std::string VectorPy::representation() const
     return str.str();
 }
 
-PyObject* VectorPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
+PyObject* VectorPy::PyMake(PyTypeObject* /*unused*/, PyObject* /*unused*/, PyObject* /*unused*/)
 {
     // create a new instance of VectorPy and the Twin object
     return new VectorPy(new Vector3d);
@@ -174,7 +174,7 @@ PyObject* VectorPy::number_multiply_handler(PyObject* self, PyObject* other)
     }
 }
 
-Py_ssize_t VectorPy::sequence_length(PyObject*)
+Py_ssize_t VectorPy::sequence_length(PyObject* /*unused*/)
 {
     return 3;
 }
