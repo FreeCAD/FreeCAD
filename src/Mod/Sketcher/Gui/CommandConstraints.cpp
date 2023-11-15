@@ -1355,6 +1355,9 @@ public:
             }
             makeAppropriateConstraint(previousOnSketchPos);
         }
+        else {
+            DrawSketchHandler::registerPressedKey(pressed, key);
+        }
     }
 
     void mouseMove(Base::Vector2d onSketchPos) override
