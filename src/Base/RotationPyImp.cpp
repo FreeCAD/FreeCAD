@@ -515,22 +515,22 @@ PyObject* RotationPy::getCustomAttributes(const char* attr) const
         this->getRotationPtr()->getValue(mat);
         return new MatrixPy(mat);
     }
-    else if (strcmp(attr, "Yaw") == 0) {
+    if (strcmp(attr, "Yaw") == 0) {
         double A {}, B {}, C {};
         this->getRotationPtr()->getYawPitchRoll(A, B, C);
         return PyFloat_FromDouble(A);
     }
-    else if (strcmp(attr, "Pitch") == 0) {
+    if (strcmp(attr, "Pitch") == 0) {
         double A {}, B {}, C {};
         this->getRotationPtr()->getYawPitchRoll(A, B, C);
         return PyFloat_FromDouble(B);
     }
-    else if (strcmp(attr, "Roll") == 0) {
+    if (strcmp(attr, "Roll") == 0) {
         double A {}, B {}, C {};
         this->getRotationPtr()->getYawPitchRoll(A, B, C);
         return PyFloat_FromDouble(C);
     }
-    else if (strcmp(attr, "toEuler") == 0) {
+    if (strcmp(attr, "toEuler") == 0) {
         // NOLINTNEXTLINE(cppcoreguidelines-pro-type-const-cast)
         Py::Object self(const_cast<RotationPy*>(this), false);
         return Py::new_reference_to(self.getAttr("getYawPitchRoll"));

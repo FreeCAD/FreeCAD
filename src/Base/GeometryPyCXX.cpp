@@ -41,7 +41,7 @@ bool Py::Vector::accepts(PyObject* obj) const
     if (obj && Vector_TypeCheck(obj)) {
         return true;
     }
-    else if (obj && PySequence_Check(obj)) {
+    if (obj && PySequence_Check(obj)) {
         return (PySequence_Size(obj) == 3);
     }
 
@@ -86,9 +86,8 @@ Base::Vector3d Py::Vector::toVector() const
     if (Vector_TypeCheck(ptr())) {
         return static_cast<Base::VectorPy*>(ptr())->value();
     }
-    else {
-        return Base::getVectorFromTuple<double>(ptr());
-    }
+
+    return Base::getVectorFromTuple<double>(ptr());
 }
 
 namespace Base
@@ -164,15 +163,14 @@ Py::Object Vector2dPy::getattro(const Py::String& name_)
         attr.setItem(Py::String("y"), Py::Float(v.y));
         return attr;
     }
-    else if (name == "x") {
+    if (name == "x") {
         return Py::Float(v.x);
     }
-    else if (name == "y") {
+    if (name == "y") {
         return Py::Float(v.y);
     }
-    else {
-        return genericGetAttro(name_);
-    }
+
+    return genericGetAttro(name_);
 }
 
 int Vector2dPy::setattro(const Py::String& name_, const Py::Object& value)
@@ -183,13 +181,12 @@ int Vector2dPy::setattro(const Py::String& name_, const Py::Object& value)
         v.x = static_cast<double>(Py::Float(value));
         return 0;
     }
-    else if (name == "y" && !value.isNull()) {
+    if (name == "y" && !value.isNull()) {
         v.y = static_cast<double>(Py::Float(value));
         return 0;
     }
-    else {
-        return genericSetAttro(name_, value);
-    }
+
+    return genericSetAttro(name_, value);
 }
 
 Py::Object Vector2dPy::number_negative()
@@ -243,13 +240,12 @@ Py::Object Vector2dPy::number_multiply(const Py::Object& py)
         double scalar = v * vec;
         return Py::Float(scalar);
     }
-    else if (py.isNumeric()) {
+    if (py.isNumeric()) {
         double scale = static_cast<double>(Py::Float(py));
         return create(v * scale);
     }
-    else {
-        throw Py::TypeError("Argument must be Vector2d or Float");
-    }
+
+    throw Py::TypeError("Argument must be Vector2d or Float");
 }
 
 Py::Object Vector2dPy::number_remainder(const Py::Object&)

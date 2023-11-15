@@ -126,9 +126,7 @@ inline bool TimeInfo::operator<(const TimeInfo& time) const
     if (timebuffer.time == time.timebuffer.time) {
         return timebuffer.millitm < time.timebuffer.millitm;
     }
-    else {
-        return timebuffer.time < time.timebuffer.time;
-    }
+    return timebuffer.time < time.timebuffer.time;
 }
 
 inline bool TimeInfo::operator<=(const TimeInfo& time) const
@@ -136,9 +134,7 @@ inline bool TimeInfo::operator<=(const TimeInfo& time) const
     if (timebuffer.time == time.timebuffer.time) {
         return timebuffer.millitm <= time.timebuffer.millitm;
     }
-    else {
-        return timebuffer.time <= time.timebuffer.time;
-    }
+    return timebuffer.time <= time.timebuffer.time;
 }
 
 inline bool TimeInfo::operator>=(const TimeInfo& time) const
@@ -146,9 +142,7 @@ inline bool TimeInfo::operator>=(const TimeInfo& time) const
     if (timebuffer.time == time.timebuffer.time) {
         return timebuffer.millitm >= time.timebuffer.millitm;
     }
-    else {
-        return timebuffer.time >= time.timebuffer.time;
-    }
+    return timebuffer.time >= time.timebuffer.time;
 }
 
 inline bool TimeInfo::operator>(const TimeInfo& time) const
@@ -156,9 +150,7 @@ inline bool TimeInfo::operator>(const TimeInfo& time) const
     if (timebuffer.time == time.timebuffer.time) {
         return timebuffer.millitm > time.timebuffer.millitm;
     }
-    else {
-        return timebuffer.time > time.timebuffer.time;
-    }
+    return timebuffer.time > time.timebuffer.time;
 }
 
 }  // namespace Base

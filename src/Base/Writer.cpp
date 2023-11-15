@@ -162,8 +162,8 @@ void Writer::insertBinFile(const char* FileName)
     from.seekg(0, std::ios::beg);
     std::vector<unsigned char> bytes(static_cast<size_t>(fileSize));
     // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-    from.read(reinterpret_cast<char*>(&bytes[0]), fileSize);
-    Stream() << Base::base64_encode(&bytes[0], static_cast<unsigned int>(fileSize));
+    from.read(reinterpret_cast<char*>(bytes.data()), fileSize);
+    Stream() << Base::base64_encode(bytes.data(), static_cast<unsigned int>(fileSize));
     Stream() << "]]>" << endl;
 }
 
@@ -269,26 +269,27 @@ std::string Writer::getUniqueFileName(const char* Name)
         // if not, name is OK
         return CleanName;
     }
-    else {
-        std::vector<std::string> names;
-        names.reserve(FileNames.size());
-        FileInfo fi(CleanName);
-        CleanName = fi.fileNamePure();
-        std::string ext = fi.extension();
-        for (pos = FileNames.begin(); pos != FileNames.end(); ++pos) {
-            fi.setFile(*pos);
-            std::string FileName = fi.fileNamePure();
-            if (fi.extension() == ext) {
-                names.push_back(FileName);
-            }
+
+    std::vector<std::string> names;
+    names.reserve(FileNames.size());
+    FileInfo fi(CleanName);
+    CleanName = fi.fileNamePure();
+    std::string ext = fi.extension();
+    for (pos = FileNames.begin(); pos != FileNames.end(); ++pos) {
+        fi.setFile(*pos);
+        std::string FileName = fi.fileNamePure();
+        if (fi.extension() == ext) {
+            names.push_back(FileName);
         }
-        std::stringstream str;
-        str << Base::Tools::getUniqueName(CleanName, names);
-        if (!ext.empty()) {
-            str << "." << ext;
-        }
-        return str.str();
     }
+
+    std::stringstream str;
+    str << Base::Tools::getUniqueName(CleanName, names);
+    if (!ext.empty()) {
+        str << "." << ext;
+    }
+
+    return str.str();
 }
 
 const std::vector<std::string>& Writer::getFilenames() const

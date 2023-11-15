@@ -119,7 +119,7 @@ Type Type::badType()
 }
 
 
-const Type Type::createType(const Type& parent, const char* name, instantiationMethod method)
+Type Type::createType(const Type& parent, const char* name, instantiationMethod method)
 {
     Type newType;
     newType.index = static_cast<unsigned int>(Type::typedata.size());
@@ -135,7 +135,7 @@ const Type Type::createType(const Type& parent, const char* name, instantiationM
 
 void Type::init()
 {
-    assert(Type::typedata.size() == 0);
+    assert(Type::typedata.empty());
 
 
     Type::typedata.push_back(new TypeData("BadType"));
@@ -160,9 +160,8 @@ Type Type::fromName(const char* name)
     if (pos != typemap.end()) {
         return typedata[pos->second]->type;
     }
-    else {
-        return Type::badType();
-    }
+
+    return Type::badType();
 }
 
 Type Type::fromKey(unsigned int key)
@@ -170,9 +169,8 @@ Type Type::fromKey(unsigned int key)
     if (key < typedata.size()) {
         return typedata[key]->type;
     }
-    else {
-        return Type::badType();
-    }
+
+    return Type::badType();
 }
 
 const char* Type::getName() const
@@ -180,7 +178,7 @@ const char* Type::getName() const
     return typedata[index]->name.c_str();
 }
 
-const Type Type::getParent() const
+Type Type::getParent() const
 {
     return typedata[index]->parent;
 }
@@ -228,7 +226,6 @@ Type Type::getTypeIfDerivedFrom(const char* name, const Type& parent, bool bLoad
     if (type.isDerivedFrom(parent)) {
         return type;
     }
-    else {
-        return Type::badType();
-    }
+
+    return Type::badType();
 }

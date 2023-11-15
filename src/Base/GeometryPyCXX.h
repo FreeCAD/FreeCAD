@@ -159,7 +159,7 @@ public:
 
     explicit Vector(const Base::Vector3d&);
     explicit Vector(const Base::Vector3f&);
-    bool accepts(PyObject* pyob) const override;
+    bool accepts(PyObject* obj) const override;
 
     Vector(const Object& other)
         : Object(other.ptr())

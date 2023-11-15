@@ -80,7 +80,7 @@ Py::Object ProgressIndicatorPy::start(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), "sI", &text, &steps)) {
         throw Py::Exception();
     }
-    if (!_seq.get()) {
+    if (!_seq) {
         _seq = std::make_unique<SequencerLauncher>(text, steps);
     }
     return Py::None();
@@ -92,9 +92,9 @@ Py::Object ProgressIndicatorPy::next(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), "|i", &b)) {
         throw Py::Exception();
     }
-    if (_seq.get()) {
+    if (_seq) {
         try {
-            _seq->next(b ? true : false);
+            _seq->next(b != 0);
         }
         catch (const Base::AbortException&) {
             _seq.reset();

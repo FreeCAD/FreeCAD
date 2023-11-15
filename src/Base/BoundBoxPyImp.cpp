@@ -221,10 +221,9 @@ PyObject* BoundBoxPy::closestPoint(PyObject* args)
             vec = *(static_cast<Base::VectorPy*>(object)->getVectorPtr());
             break;
         }
-        else {
-            PyErr_SetString(PyExc_TypeError, "Either three floats or vector expected");
-            return nullptr;
-        }
+
+        PyErr_SetString(PyExc_TypeError, "Either three floats or vector expected");
+        return nullptr;
     } while (false);
 
     Base::Vector3d point = getBoundBoxPtr()->ClosestPoint(vec);
@@ -347,10 +346,9 @@ PyObject* BoundBoxPy::getIntersectionPoint(PyObject* args)
     if (ok) {
         return new VectorPy(point);
     }
-    else {
-        PyErr_SetString(Base::PyExc_FC_GeneralError, "No intersection");
-        return nullptr;
-    }
+
+    PyErr_SetString(Base::PyExc_FC_GeneralError, "No intersection");
+    return nullptr;
 }
 
 PyObject* BoundBoxPy::move(PyObject* args)
@@ -377,10 +375,9 @@ PyObject* BoundBoxPy::move(PyObject* args)
             vec = *(static_cast<Base::VectorPy*>(object)->getVectorPtr());
             break;
         }
-        else {
-            PyErr_SetString(PyExc_TypeError, "Either three floats or vector expected");
-            return nullptr;
-        }
+
+        PyErr_SetString(PyExc_TypeError, "Either three floats or vector expected");
+        return nullptr;
     } while (false);
 
     getBoundBoxPtr()->MoveX(vec.x);
@@ -414,10 +411,9 @@ PyObject* BoundBoxPy::scale(PyObject* args)
             vec = *(static_cast<Base::VectorPy*>(object)->getVectorPtr());
             break;
         }
-        else {
-            PyErr_SetString(PyExc_TypeError, "Either three floats or vector expected");
-            return nullptr;
-        }
+
+        PyErr_SetString(PyExc_TypeError, "Either three floats or vector expected");
+        return nullptr;
     } while (false);
 
     getBoundBoxPtr()->ScaleX(vec.x);

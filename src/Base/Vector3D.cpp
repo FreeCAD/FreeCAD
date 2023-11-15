@@ -434,7 +434,7 @@ _Precision Vector3<_Precision>::GetAngle(const Vector3& rcVect) const
     if (dot <= -1.0) {
         return traits_type::pi();
     }
-    else if (dot >= 1.0) {
+    if (dot >= 1.0) {
         return 0.0;
     }
 

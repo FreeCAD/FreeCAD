@@ -315,9 +315,8 @@ Py::Object ParameterGrpPy::getGroup(const Py::Tuple& args)
             // increment the ref count
             return Py::asObject(pcParamGrp);
         }
-        else {
-            throw Py::RuntimeError("GetGroup failed");
-        }
+
+        throw Py::RuntimeError("GetGroup failed");
     }
     catch (const Base::Exception& e) {
         e.setPyException();

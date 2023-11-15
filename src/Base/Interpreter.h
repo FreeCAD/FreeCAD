@@ -305,7 +305,7 @@ public:
     //@{
     /// generate a SWIG object
     PyObject*
-    createSWIGPointerObj(const char* Modole, const char* TypeName, void* Pointer, int own);
+    createSWIGPointerObj(const char* Module, const char* TypeName, void* Pointer, int own);
     bool convertSWIGPointerObj(const char* Module,
                                const char* TypeName,
                                PyObject* obj,
@@ -333,8 +333,8 @@ public:
      */
     //@{
     /// replaces all char with escapes for usage in python console
-    static const std::string strToPython(const char* Str);
-    static const std::string strToPython(const std::string& Str)
+    static std::string strToPython(const char* Str);
+    static std::string strToPython(const std::string& Str)
     {
         return strToPython(Str.c_str());
     }

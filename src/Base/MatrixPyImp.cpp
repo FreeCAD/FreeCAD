@@ -244,16 +244,15 @@ PyObject* MatrixPy::richCompare(PyObject* v, PyObject* w, int op)
             PyErr_SetString(PyExc_TypeError, "no ordering relation is defined for Matrix");
             return nullptr;
         }
-        else if (op == Py_EQ) {
+        if (op == Py_EQ) {
             res = (m1 == m2) ? Py_True : Py_False;  // NOLINT
             Py_INCREF(res);
             return res;
         }
-        else {
-            res = (m1 != m2) ? Py_True : Py_False;  // NOLINT
-            Py_INCREF(res);
-            return res;
-        }
+
+        res = (m1 != m2) ? Py_True : Py_False;  // NOLINT
+        Py_INCREF(res);
+        return res;
     }
     else {
         // This always returns False
@@ -667,10 +666,9 @@ PyObject* MatrixPy::invert()
             getMatrixPtr()->inverseGauss();
             Py_Return;
         }
-        else {
-            PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot invert singular matrix");
-            return nullptr;
-        }
+
+        PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot invert singular matrix");
+        return nullptr;
     }
     PY_CATCH;
 }
@@ -684,10 +682,9 @@ PyObject* MatrixPy::inverse()
             m.inverseGauss();
             return new MatrixPy(m);
         }
-        else {
-            PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot invert singular matrix");
-            return nullptr;
-        }
+
+        PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot invert singular matrix");
+        return nullptr;
     }
     PY_CATCH;
 }

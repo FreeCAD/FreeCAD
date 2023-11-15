@@ -112,8 +112,8 @@ public:
     };
     static const char* eulerSequenceName(EulerSequence seq);
     static EulerSequence eulerSequenceFromName(const char* name);
-    void getEulerAngles(EulerSequence seq, double& alpha, double& beta, double& gamma) const;
-    void setEulerAngles(EulerSequence seq, double alpha, double beta, double gamma);
+    void getEulerAngles(EulerSequence theOrder, double& alpha, double& beta, double& gamma) const;
+    void setEulerAngles(EulerSequence theOrder, double alpha, double beta, double gamma);
     bool isIdentity() const;
     bool isIdentity(double tol) const;
     bool isNull() const;
@@ -154,7 +154,7 @@ public:
     //@}
 
     /** Specialty constructors */
-    static Rotation slerp(const Rotation& rot0, const Rotation& rot1, double t);
+    static Rotation slerp(const Rotation& q1, const Rotation& q2, double t);
     static Rotation identity();
 
     /**

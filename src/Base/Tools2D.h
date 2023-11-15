@@ -93,7 +93,7 @@ public:
     inline double Distance(const Vector2d& v) const;
     inline bool IsEqual(const Vector2d& v, double tolerance = 0.0) const;
 
-    double GetAngle(const Vector2d& v) const;
+    double GetAngle(const Vector2d& vec) const;
     void ProjectToLine(const Vector2d& point, const Vector2d& line);
 };
 
@@ -198,7 +198,7 @@ public:
     BoundBox2d CalcBoundBox() const;
     bool Contains(const Vector2d& rclV) const;
     void Intersect(const Polygon2d& rclPolygon, std::list<Polygon2d>& rclResultPolygonList) const;
-    bool Intersect(const Polygon2d& rclPolygon) const;
+    bool Intersect(const Polygon2d& other) const;
     bool Intersect(const Vector2d& rclV, double eps) const;
 
 private:

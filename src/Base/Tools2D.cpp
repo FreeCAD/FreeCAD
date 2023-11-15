@@ -33,34 +33,32 @@
 
 using namespace Base;
 
-double Vector2d::GetAngle(const Vector2d& rclVect) const
+double Vector2d::GetAngle(const Vector2d& vec) const
 {
     double fDivid = 0.0, fNum = 0.0;
 
-    fDivid = Length() * rclVect.Length();
+    fDivid = Length() * vec.Length();
 
     if ((fDivid < -1e-10) || (fDivid > 1e-10)) {
-        fNum = (*this * rclVect) / fDivid;
+        fNum = (*this * vec) / fDivid;
         if (fNum < -1) {
             return D_PI;
         }
-        else if (fNum > 1) {
+        if (fNum > 1) {
             return 0.0;
         }
-        else {
-            return acos(fNum);
-        }
+
+        return acos(fNum);
     }
-    else {
-        return -FLOAT_MAX;  // division by zero
-    }
+
+    return -FLOAT_MAX;  // division by zero
 }
 
-void Vector2d::ProjectToLine(const Vector2d& rclPt, const Vector2d& rclLine)
+void Vector2d::ProjectToLine(const Vector2d& point, const Vector2d& line)
 {
-    double l = rclLine.Length();
-    double t1 = (rclPt * rclLine) / l;
-    Vector2d clNormal = rclLine;
+    double l = line.Length();
+    double t1 = (point * line) / l;
+    Vector2d clNormal = line;
     clNormal.Normalize();
     clNormal.Scale(t1);
     *this = clNormal;
@@ -103,30 +101,20 @@ bool BoundBox2d::Intersect(const Line2d& rclLine) const
     clThisLine.clV1 = clThisLine.clV2;
     clThisLine.clV2.x = MinX;
     clThisLine.clV2.y = MinY;
-    if (clThisLine.IntersectAndContain(rclLine, clVct)) {
-        return true;
-    }
-
-    return false;
+    return (clThisLine.IntersectAndContain(rclLine, clVct));
 }
 
 bool BoundBox2d::Intersect(const BoundBox2d& rclBB) const
 {
-    if (MinX < rclBB.MaxX && rclBB.MinX < MaxX && MinY < rclBB.MaxY && rclBB.MinY < MaxY) {
-        return true;
-    }
-    else {  // no intersection
-        return false;
-    }
+    return (MinX < rclBB.MaxX && rclBB.MinX < MaxX && MinY < rclBB.MaxY && rclBB.MinY < MaxY);
 }
 
 bool BoundBox2d::Intersect(const Polygon2d& rclPoly) const
 {
-    unsigned long i = 0;
     Line2d clLine;
 
     // points contained in boundbox
-    for (i = 0; i < rclPoly.GetCtVectors(); i++) {
+    for (unsigned long i = 0; i < rclPoly.GetCtVectors(); i++) {
         if (Contains(rclPoly[i])) {
             return true; /***** RETURN INTERSECTION *********/
         }
@@ -142,7 +130,7 @@ bool BoundBox2d::Intersect(const Polygon2d& rclPoly) const
     if (rclPoly.GetCtVectors() < 3) {
         return false;
     }
-    for (i = 0; i < rclPoly.GetCtVectors(); i++) {
+    for (unsigned long i = 0; i < rclPoly.GetCtVectors(); i++) {
         if (i == rclPoly.GetCtVectors() - 1) {
             clLine.clV1 = rclPoly[i];
             clLine.clV2 = rclPoly[0];
@@ -231,10 +219,7 @@ bool Line2d::Intersect(const Vector2d& rclV, double eps) const
     // point is on line but it is also between V1 and V2?
     double dot = dxc * dxl + dyc * dyl;
     double len = dxl * dxl + dyl * dyl;
-    if (dot < -eps || dot > len + eps) {
-        return false;
-    }
-    return true;
+    return (dot >= -eps && dot <= len + eps);
 }
 
 Vector2d Line2d::FromPos(double fDistance) const
@@ -390,7 +375,7 @@ void Polygon2d::Intersect(const Polygon2d& rclPolygon,
             }
         }
 
-        if (afIntersections.size() > 0)  // intersections founded
+        if (!afIntersections.empty())  // intersections founded
         {
             for (double it : afIntersections) {
                 // intersection point

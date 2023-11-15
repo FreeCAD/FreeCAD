@@ -40,9 +40,7 @@ ExceptionFactory& ExceptionFactory::Instance()
 
 void ExceptionFactory::Destruct()
 {
-    if (_pcSingleton) {
-        delete _pcSingleton;
-    }
+    delete _pcSingleton;
     _pcSingleton = nullptr;
 }
 
@@ -56,7 +54,7 @@ void ExceptionFactory::raiseException(PyObject* pydict) const
 
         std::map<const std::string, AbstractProducer*>::const_iterator pProd;
 
-        pProd = _mpcProducers.find(classname.c_str());
+        pProd = _mpcProducers.find(classname);
         if (pProd != _mpcProducers.end()) {
             static_cast<AbstractExceptionProducer*>(pProd->second)->raiseException(pydict);
         }

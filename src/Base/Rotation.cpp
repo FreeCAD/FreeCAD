@@ -423,13 +423,7 @@ Rotation& Rotation::multLeft(const Base::Rotation& q)
 
 bool Rotation::operator==(const Rotation& q) const
 {
-    if ((this->quat[0] == q.quat[0] && this->quat[1] == q.quat[1] && this->quat[2] == q.quat[2]
-         && this->quat[3] == q.quat[3])
-        || (this->quat[0] == -q.quat[0] && this->quat[1] == -q.quat[1]
-            && this->quat[2] == -q.quat[2] && this->quat[3] == -q.quat[3])) {
-        return true;
-    }
-    return false;
+    return isSame(q);
 }
 
 bool Rotation::operator!=(const Rotation& q) const
@@ -591,9 +585,9 @@ Rotation::makeRotationByAxes(Vector3d xdir, Vector3d ydir, Vector3d zdir, const 
         if (mainDir.Length() > tol) {
             break;
         }
-        else {
-            dropPriority(0);
-        }
+
+        dropPriority(0);
+
         if (i == 2) {
             THROWM(ValueError, "makeRotationByAxes: all directions supplied are zero");
         }
@@ -607,9 +601,9 @@ Rotation::makeRotationByAxes(Vector3d xdir, Vector3d ydir, Vector3d zdir, const 
         if ((hintDir.Cross(mainDir)).Length() > tol) {
             break;
         }
-        else {
-            dropPriority(1);
-        }
+
+        dropPriority(1);
+
         if (i == 1) {
             hintDir = Vector3d();  // no vector can be used as hint direction. Zero it out, to
                                    // indicate that a guess is needed.
@@ -757,13 +751,16 @@ void Rotation::getYawPitchRoll(double& y, double& p, double& r) const
 
 bool Rotation::isSame(const Rotation& q) const
 {
-    if ((this->quat[0] == q.quat[0] && this->quat[1] == q.quat[1] && this->quat[2] == q.quat[2]
-         && this->quat[3] == q.quat[3])
-        || (this->quat[0] == -q.quat[0] && this->quat[1] == -q.quat[1]
-            && this->quat[2] == -q.quat[2] && this->quat[3] == -q.quat[3])) {
-        return true;
-    }
-    return false;
+    // clang-format off
+    return ((this->quat[0] ==  q.quat[0] &&
+             this->quat[1] ==  q.quat[1] &&
+             this->quat[2] ==  q.quat[2] &&
+             this->quat[3] ==  q.quat[3]) ||
+            (this->quat[0] == -q.quat[0] &&
+             this->quat[1] == -q.quat[1] &&
+             this->quat[2] == -q.quat[2] &&
+             this->quat[3] == -q.quat[3]));
+    // clang-format on
 }
 
 bool Rotation::isSame(const Rotation& q, double tol) const

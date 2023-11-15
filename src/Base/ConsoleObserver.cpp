@@ -197,7 +197,7 @@ void ConsoleObserverStd::Error(const char* sErr)
     }
 }
 
-void ConsoleObserverStd::Log(const char* sErr)
+void ConsoleObserverStd::Log(const char* sLog)
 {
     if (useColorStderr) {
 #if defined(FC_OS_WIN32)
@@ -208,7 +208,7 @@ void ConsoleObserverStd::Log(const char* sErr)
 #endif
     }
 
-    fprintf(stderr, "%s", sErr);
+    fprintf(stderr, "%s", sLog);
 
     if (useColorStderr) {
 #if defined(FC_OS_WIN32)

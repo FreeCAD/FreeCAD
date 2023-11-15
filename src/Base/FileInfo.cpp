@@ -107,7 +107,7 @@ const std::string& FileInfo::getTempPath()
 {
     static std::string tempPath;
 
-    if (tempPath == "") {
+    if (tempPath.empty()) {
 #ifdef FC_OS_WIN32
         wchar_t buf[MAX_PATH + 2];
         GetTempPathW(MAX_PATH + 1, buf);
@@ -286,9 +286,8 @@ std::string FileInfo::fileNamePure() const
     if (pos != std::string::npos) {
         return temp.substr(0, pos);
     }
-    else {
-        return temp;
-    }
+
+    return temp;
 }
 
 std::wstring FileInfo::toStdWString() const
@@ -332,12 +331,9 @@ bool FileInfo::hasExtension(const char* Ext) const
 
 bool FileInfo::hasExtension(std::initializer_list<const char*> Exts) const
 {
-    for (const char* Ext : Exts) {
-        if (hasExtension(Ext)) {
-            return true;
-        }
-    }
-    return false;
+    return std::any_of(Exts.begin(), Exts.end(), [this](const char* ext) {
+        return hasExtension(ext);
+    });
 }
 
 bool FileInfo::exists() const

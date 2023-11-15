@@ -98,7 +98,7 @@ public:
     static Type fromName(const char* name);
     static Type fromKey(unsigned int key);
     const char* getName() const;
-    const Type getParent() const;
+    Type getParent() const;
     bool isDerivedFrom(const Type& type) const;
 
     static int getAllDerivedFrom(const Type& type, std::vector<Type>& List);
@@ -108,7 +108,7 @@ public:
 
     static int getNumTypes();
 
-    static const Type
+    static Type
     createType(const Type& parent, const char* name, instantiationMethod method = nullptr);
 
     unsigned int getKey() const;

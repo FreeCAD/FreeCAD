@@ -256,9 +256,8 @@ ConsoleMsgFlags ConsoleSingleton::SetEnabledMsgType(const char* sObs, ConsoleMsg
 
         return flags;
     }
-    else {
-        return 0;
-    }
+
+    return 0;
 }
 
 bool ConsoleSingleton::IsMsgTypeEnabled(const char* sObs, FreeCAD_ConsoleMsgType type) const
@@ -814,9 +813,8 @@ PyObject* ConsoleSingleton::sPySetStatus(PyObject* /*self*/, PyObject* args)
 
             Py_Return;
         }
-        else {
-            Py_Error(Base::PyExc_FC_GeneralError, "Unknown logger type");
-        }
+
+        Py_Error(Base::PyExc_FC_GeneralError, "Unknown logger type");
     }
     PY_CATCH;
 }

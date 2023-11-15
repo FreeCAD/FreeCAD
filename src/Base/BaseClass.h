@@ -196,9 +196,8 @@ T* freecad_dynamic_cast(Base::BaseClass* type)
     if (type && type->isDerivedFrom(T::getClassTypeId())) {
         return static_cast<T*>(type);
     }
-    else {
-        return nullptr;
-    }
+
+    return nullptr;
 }
 
 /**
@@ -212,9 +211,8 @@ const T* freecad_dynamic_cast(const Base::BaseClass* type)
     if (type && type->isDerivedFrom(T::getClassTypeId())) {
         return static_cast<const T*>(type);
     }
-    else {
-        return nullptr;
-    }
+
+    return nullptr;
 }
 
 

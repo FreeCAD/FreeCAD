@@ -576,19 +576,19 @@ public:
         if (category == Base::LogStyle::Log) {
             return bLog;
         }
-        else if (category == Base::LogStyle::Warning) {
+        if (category == Base::LogStyle::Warning) {
             return bWrn;
         }
-        else if (category == Base::LogStyle::Error) {
+        if (category == Base::LogStyle::Error) {
             return bErr;
         }
-        else if (category == Base::LogStyle::Message) {
+        if (category == Base::LogStyle::Message) {
             return bMsg;
         }
-        else if (category == Base::LogStyle::Critical) {
+        if (category == Base::LogStyle::Critical) {
             return bCritical;
         }
-        else if (category == Base::LogStyle::Notification) {
+        if (category == Base::LogStyle::Notification) {
             return bNotification;
         }
 

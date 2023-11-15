@@ -116,9 +116,8 @@ inline T sgn(T t)
     if (t == 0) {
         return T(0);
     }
-    else {
-        return (t > 0) ? T(1) : T(-1);
-    }
+
+    return (t > 0) ? T(1) : T(-1);
 }
 
 #ifndef M_PI

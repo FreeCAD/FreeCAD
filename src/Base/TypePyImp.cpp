@@ -176,7 +176,7 @@ PyObject* TypePy::getAllDerived(PyObject* args)
 
 namespace
 {
-static void deallocPyObject(PyObject* py)
+void deallocPyObject(PyObject* py)
 {
     Base::PyObjectBase* pybase = static_cast<Base::PyObjectBase*>(py);
     Base::BaseClass* base = static_cast<Base::BaseClass*>(pybase->getTwinPointer());
@@ -188,7 +188,7 @@ static void deallocPyObject(PyObject* py)
     Base::PyObjectBase::PyDestructor(py);
 }
 
-static PyObject* createPyObject(Base::BaseClass* base)
+PyObject* createPyObject(Base::BaseClass* base)
 {
     PyObject* py = base->getPyObject();
 

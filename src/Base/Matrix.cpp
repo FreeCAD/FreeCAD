@@ -978,24 +978,23 @@ std::array<Matrix4D, 4> Matrix4D::decompose() const
             prim_dir = i;
             continue;
         }
-        else {
-            Vector3d cross = dirs[prim_dir].Cross(residualMatrix.getCol(i));
-            if (cross.IsNull()) {
-                continue;
-            }
-            cross.Normalize();
-            int last_dir = 3 - i - prim_dir;
-            if (i - prim_dir == 1) {
-                dirs[last_dir] = cross;
-                dirs[i] = cross.Cross(dirs[prim_dir]);
-            }
-            else {
-                dirs[last_dir] = -cross;
-                dirs[i] = dirs[prim_dir].Cross(-cross);
-            }
-            prim_dir = -2;  // done
-            break;
+
+        Vector3d cross = dirs[prim_dir].Cross(residualMatrix.getCol(i));
+        if (cross.IsNull()) {
+            continue;
         }
+        cross.Normalize();
+        int last_dir = 3 - i - prim_dir;
+        if (i - prim_dir == 1) {
+            dirs[last_dir] = cross;
+            dirs[i] = cross.Cross(dirs[prim_dir]);
+        }
+        else {
+            dirs[last_dir] = -cross;
+            dirs[i] = dirs[prim_dir].Cross(-cross);
+        }
+        prim_dir = -2;  // done
+        break;
     }
     if (prim_dir >= 0) {
         // handle case with only one valid direction

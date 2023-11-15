@@ -72,7 +72,7 @@ QRecursiveMutex SequencerP::mutex;
 SequencerBase& SequencerBase::Instance()
 {
     // not initialized?
-    if (SequencerP::_instances.size() == 0) {
+    if (SequencerP::_instances.empty()) {
         new ConsoleSequencer();
     }
 
