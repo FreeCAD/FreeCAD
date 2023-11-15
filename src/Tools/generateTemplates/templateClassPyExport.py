@@ -465,10 +465,8 @@ PyNumberMethods @self.export.Name@::Number[] = { {
     nullptr,    /*nb_inplace_floor_divide*/
     nullptr,    /*nb_inplace_true_divide*/
     nullptr     /*nb_index*/
-#if PY_VERSION_HEX >= 0x03050000
    ,nullptr     /*nb_matrix_multiply*/
    ,nullptr     /*nb_inplace_matrix_multiply*/
-#endif
 } };
 -
 
