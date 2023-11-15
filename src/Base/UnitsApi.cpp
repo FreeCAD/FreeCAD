@@ -65,56 +65,56 @@ int UnitsApi::UserPrefDecimals = 2;
 QString UnitsApi::getDescription(UnitSystem system)
 {
     switch (system) {
-    case UnitSystem::SI1:
-        return tr("Standard (mm, kg, s, degree)");
-    case UnitSystem::SI2:
-        return tr("MKS (m, kg, s, degree)");
-    case UnitSystem::Imperial1:
-        return tr("US customary (in, lb)");
-    case UnitSystem::ImperialDecimal:
-        return tr("Imperial decimal (in, lb)");
-    case UnitSystem::Centimeters:
-        return tr("Building Euro (cm, m², m³)");
-    case UnitSystem::ImperialBuilding:
-        return tr("Building US (ft-in, sqft, cft)");
-    case UnitSystem::MmMin:
-        return tr("Metric small parts & CNC(mm, mm/min)");
-    case UnitSystem::ImperialCivil:
-        return tr("Imperial for Civil Eng (ft, ft/sec)");
-    case UnitSystem::FemMilliMeterNewton:
-        return tr("FEM (mm, N, s)");
-    case UnitSystem::MeterDecimal:
-        return tr("Meter decimal (m, m², m³)");
-    default:
-        return tr("Unknown schema");
+        case UnitSystem::SI1:
+            return tr("Standard (mm, kg, s, degree)");
+        case UnitSystem::SI2:
+            return tr("MKS (m, kg, s, degree)");
+        case UnitSystem::Imperial1:
+            return tr("US customary (in, lb)");
+        case UnitSystem::ImperialDecimal:
+            return tr("Imperial decimal (in, lb)");
+        case UnitSystem::Centimeters:
+            return tr("Building Euro (cm, m², m³)");
+        case UnitSystem::ImperialBuilding:
+            return tr("Building US (ft-in, sqft, cft)");
+        case UnitSystem::MmMin:
+            return tr("Metric small parts & CNC(mm, mm/min)");
+        case UnitSystem::ImperialCivil:
+            return tr("Imperial for Civil Eng (ft, ft/sec)");
+        case UnitSystem::FemMilliMeterNewton:
+            return tr("FEM (mm, N, s)");
+        case UnitSystem::MeterDecimal:
+            return tr("Meter decimal (m, m², m³)");
+        default:
+            return tr("Unknown schema");
     }
 }
 
 UnitsSchemaPtr UnitsApi::createSchema(UnitSystem system)
 {
     switch (system) {
-    case UnitSystem::SI1:
-        return std::make_unique<UnitsSchemaInternal>();
-    case UnitSystem::SI2:
-        return std::make_unique<UnitsSchemaMKS>();
-    case UnitSystem::Imperial1:
-        return std::make_unique<UnitsSchemaImperial1>();
-    case UnitSystem::ImperialDecimal:
-        return std::make_unique<UnitsSchemaImperialDecimal>();
-    case UnitSystem::Centimeters:
-        return std::make_unique<UnitsSchemaCentimeters>();
-    case UnitSystem::ImperialBuilding:
-        return std::make_unique<UnitsSchemaImperialBuilding>();
-    case UnitSystem::MmMin:
-        return std::make_unique<UnitsSchemaMmMin>();
-    case UnitSystem::ImperialCivil:
-        return std::make_unique<UnitsSchemaImperialCivil>();
-    case UnitSystem::FemMilliMeterNewton:
-        return std::make_unique<UnitsSchemaFemMilliMeterNewton>();
-    case UnitSystem::MeterDecimal:
-        return std::make_unique<UnitsSchemaMeterDecimal>();
-    default:
-        break;
+        case UnitSystem::SI1:
+            return std::make_unique<UnitsSchemaInternal>();
+        case UnitSystem::SI2:
+            return std::make_unique<UnitsSchemaMKS>();
+        case UnitSystem::Imperial1:
+            return std::make_unique<UnitsSchemaImperial1>();
+        case UnitSystem::ImperialDecimal:
+            return std::make_unique<UnitsSchemaImperialDecimal>();
+        case UnitSystem::Centimeters:
+            return std::make_unique<UnitsSchemaCentimeters>();
+        case UnitSystem::ImperialBuilding:
+            return std::make_unique<UnitsSchemaImperialBuilding>();
+        case UnitSystem::MmMin:
+            return std::make_unique<UnitsSchemaMmMin>();
+        case UnitSystem::ImperialCivil:
+            return std::make_unique<UnitsSchemaImperialCivil>();
+        case UnitSystem::FemMilliMeterNewton:
+            return std::make_unique<UnitsSchemaFemMilliMeterNewton>();
+        case UnitSystem::MeterDecimal:
+            return std::make_unique<UnitsSchemaMeterDecimal>();
+        default:
+            break;
     }
 
     return nullptr;
