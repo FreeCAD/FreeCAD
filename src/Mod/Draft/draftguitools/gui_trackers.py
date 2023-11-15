@@ -1237,7 +1237,7 @@ class gridTracker(Tracker):
         self.numlines = Draft.getParam("gridSize", 100)
         self.update()
 
-    def set(self,tool=False):
+    def set(self):
         """Move and rotate the grid according to the current working plane."""
         self.reset()
         wp = self._get_wp()

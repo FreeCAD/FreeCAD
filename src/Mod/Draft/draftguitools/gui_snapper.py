@@ -53,7 +53,6 @@ import draftguitools.gui_trackers as trackers
 from draftutils.init_tools import get_draft_snap_commands
 from draftutils.messages import _wrn
 from draftutils.translate import translate
-from draftutils.todo import ToDo
 
 __title__ = "FreeCAD Draft Snap tools"
 __author__ = "Yorik van Havre"
@@ -1607,14 +1606,14 @@ class Snapper:
         self.show_hide_grids(show=False)
 
 
-    def setGrid(self, tool=False):
+    def setGrid(self):
         """Set the grid, if visible."""
         self.setTrackers()
         if self.grid.Visible:
-            self.grid.set(tool)
+            self.grid.set()
 
 
-    def setTrackers(self, tool=False, update_grid=True):
+    def setTrackers(self, update_grid=True):
         """Set the trackers."""
         v = Draft.get3DView()
         if v and (v != self.activeview):
