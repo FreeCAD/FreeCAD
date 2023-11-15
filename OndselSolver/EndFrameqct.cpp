@@ -321,4 +321,3 @@ namespace MbD {
         ppAOeptpt = aAOm->timesFullMatrix(ppAmeptpt);
     }
 }
-

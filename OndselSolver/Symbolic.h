@@ -13,7 +13,7 @@
 #include <memory>
 #include <ostream>
 
-#include "MbdMath.h"
+#include "MbDMath.h"
 #include "System.h"
 #include "Units.h"
 //#include "Constant.h"
@@ -23,7 +23,7 @@ namespace MbD {
 	class Symbolic;
 	using Symsptr = std::shared_ptr<Symbolic>;
 
-	class Symbolic : public MbdMath
+	class Symbolic : public MbDMath
 	{
 	public:
 		Symbolic();
@@ -33,6 +33,7 @@ namespace MbD {
 
 		virtual void initialize();
 		virtual Symsptr differentiateWRT(Symsptr var);
+		virtual Symsptr integrateWRT(Symsptr var);
 		virtual Symsptr simplified();
 		virtual Symsptr simplified(Symsptr sptr);
 		virtual Symsptr expandUntil(std::shared_ptr<std::unordered_set<Symsptr>> set);
@@ -46,9 +47,13 @@ namespace MbD {
 		virtual std::shared_ptr<std::vector<Symsptr>> getTerms();
 		virtual void addTerm(Symsptr trm);
 		virtual double getValue();
+		virtual double getValue(double arg);
+		virtual void setValue(double val);
 		virtual void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits);
 		virtual Symsptr clonesptr();
 		std::shared_ptr<Constant> sptrConstant(double value);
+		virtual bool isVariable();
+		virtual void integrationConstant(double integConstant);
 
 		virtual std::ostream& printOn(std::ostream& s) const;
 		friend std::ostream& operator<<(std::ostream& s, const Symbolic& sym)

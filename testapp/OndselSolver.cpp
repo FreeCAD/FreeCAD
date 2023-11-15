@@ -22,23 +22,29 @@
 
 using namespace MbD;
 void runSpMat();
+void sharedptrTest();
 
 int main()
 {
-	// ASMTAssembly::readWriteFile("piston.asmt");
-	// MBDynSystem::runFile("MBDynCase.mbd");		//To be completed
-	// MBDynSystem::runFile("crank_slider.mbd");		//To be completed
-	//ASMTAssembly::runSinglePendulumSuperSimplified();	//Mass is missing
-	//ASMTAssembly::runSinglePendulumSuperSimplified2();	//DOF has infinite acceleration due to zero mass and inertias
+	ASMTAssembly::runFile("../testapp/cirpendu2.asmt");	//Under constrained. Testing ICKine.
+	ASMTAssembly::runFile("../testapp/quasikine.asmt");	//Under constrained. Testing ICKine.
+	ASMTAssembly::readWriteFile("../testapp/piston.asmt");
+	//MBDynSystem::runFile("../testapp/MBDynCaseDebug2.mbd");
+	//return 0;
+	MBDynSystem::runFile("../testapp/MBDynCase2.mbd");
+	//MBDynSystem::runFile("../testapp/MBDynCase.mbd");	//Very large but works
+	MBDynSystem::runFile("../testapp/CrankSlider2.mbd");
+	//MBDynSystem::runFile("../testapp/crank_slider.mbd");	//Needs integration of product
+	////ASMTAssembly::runSinglePendulumSuperSimplified();	//Mass is missing
+	////ASMTAssembly::runSinglePendulumSuperSimplified2();	//DOF has infinite acceleration due to zero mass and inertias
 	ASMTAssembly::runSinglePendulumSimplified();
 	ASMTAssembly::runSinglePendulum();
 	ASMTAssembly::runFile("../testapp/piston.asmt");
 	ASMTAssembly::runFile("../testapp/00backhoe.asmt");
-	//ASMTAssembly::runFile("circular.asmt");	//Needs checking
-	//ASMTAssembly::runFile("cirpendu.asmt");	//Under constrained. Testing ICKine.
-	//ASMTAssembly::runFile("engine1.asmt");	//Needs checking
+	//ASMTAssembly::runFile("../testapp/circular.asmt");	//Needs checking
+	//ASMTAssembly::runFile("../testapp/engine1.asmt");	//Needs checking
 	ASMTAssembly::runFile("../testapp/fourbar.asmt");
-	//ASMTAssembly::runFile("fourbot.asmt");	//Very large but works
+	//ASMTAssembly::runFile("../testapp/fourbot.asmt");	//Very large but works
 	ASMTAssembly::runFile("../testapp/wobpump.asmt");
 
 	auto cadSystem = std::make_shared<CADSystem>();
@@ -48,8 +54,25 @@ int main()
 	cadSystem->runPiston();
 	runSpMat();
 	MomentOfInertiaSolver::example1();
+	sharedptrTest();
 }
+void sharedptrTest() {
+	auto assm = std::make_shared<ASMTAssembly>();
 
+	auto assm1 = assm;	//New shared_ptr to old object. Reference count incremented.
+	assert(assm == assm1);
+	assert(assm.get() == assm1.get());
+	assert(&assm != &assm1);
+	assert(assm->constantGravity == assm1->constantGravity);
+	assert(&(assm->constantGravity) == &(assm1->constantGravity));
+
+	auto assm2 = std::make_shared<ASMTAssembly>(*assm);	//New shared_ptr to new object. Member variables copy old member variables
+	assert(assm != assm2);
+	assert(assm.get() != assm2.get());
+	assert(&assm != &assm2);
+	assert(assm->constantGravity == assm2->constantGravity);	//constantGravity is same object pointed to
+	assert(&(assm->constantGravity) != &(assm2->constantGravity)); //Different shared_ptrs of same reference counter
+}
 void runSpMat() {
 	auto spMat = std::make_shared<SparseMatrix<double>>(3, 3);
 	spMat->atijput(0, 0, 1.0);

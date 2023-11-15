@@ -27,6 +27,7 @@ namespace MbD {
         bool isConverged() override;
         void xEqualxoldPlusdx() override;
         virtual void basicSolveEquations() = 0;
+        virtual void handleSingularMatrix();
 
         std::shared_ptr<MatrixSolver> matrixSolver;
         int n;

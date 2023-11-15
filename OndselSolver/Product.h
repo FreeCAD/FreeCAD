@@ -24,6 +24,7 @@ namespace MbD {
         Product(Symsptr term, Symsptr term1, Symsptr term2) : FunctionWithManyArgs(term, term1, term2) {}
         Product(std::shared_ptr<std::vector<Symsptr>> _terms) : FunctionWithManyArgs(_terms) {}
         Symsptr differentiateWRT(Symsptr var) override;
+        Symsptr integrateWRT(Symsptr var) override;
         Symsptr expandUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>> set) override;
         Symsptr simplifyUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>> set) override;
         bool isProduct() override;

@@ -5,7 +5,7 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #pragma once
 
 #include <memory>
@@ -25,7 +25,7 @@ namespace MbD {
 	class SparseRow : public SparseVector<T>
 	{
 	public:
-		SparseRow(){}
+		SparseRow() {}
 		SparseRow(int n) : SparseVector<T>(n) {}
 		SparseRow(std::initializer_list<std::pair<const int, T>> list) : SparseVector<T>{ list } {}
 		SparseRow(std::initializer_list<std::initializer_list<T>> list) : SparseVector<T>{ list } {}
@@ -35,6 +35,8 @@ namespace MbD {
 		void atiminusFullRow(int j, FRowsptr<T> fullRow);
 		void atiplusFullRowtimes(int j, FRowsptr<T> fullRow, double factor);
 		T timesFullColumn(FColsptr<T> fullCol);
+		SpRowsptr<T> plusSparseRow(SpRowsptr<T> spMat);
+		SpRowsptr<T> clonesptr();
 
 	};
 	template<>
@@ -91,6 +93,28 @@ namespace MbD {
 			sum += fullCol->at(keyValue.first) * keyValue.second;
 		}
 		return sum;
+	}
+	template<typename T>
+	inline SpRowsptr<T> SparseRow<T>::plusSparseRow(SpRowsptr<T> spRow)
+	{
+		auto answer = clonesptr();
+		for (auto const& keyValue : *spRow)
+		{
+			auto key = keyValue.first;
+			auto val = keyValue.second;
+			if (answer->find(key) == answer->end()) {
+				(*answer)[key] = val;
+			}
+			else {
+				(*answer)[key] = val + answer->at(key);
+			}
+		}
+		return answer;
+	}
+	template<typename T>
+	inline std::shared_ptr<SparseRow<T>> SparseRow<T>::clonesptr()
+	{
+		return std::make_shared<SparseRow<T>>(*this);
 	}
 }
 

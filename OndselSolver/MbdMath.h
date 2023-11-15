@@ -9,8 +9,11 @@
 #pragma once
 
 namespace MbD {
-	class MbdMath
+	class MbDMath
 	{
+	public:
+		void noop();
+
 	};
 }
 

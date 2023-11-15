@@ -25,7 +25,7 @@ namespace MbD {
 		DiagonalMatrix(int count, const double& value) : Array<double>(count, value) {}
 		DiagonalMatrix(std::initializer_list<double> list) : Array<double>{ list } {}
 		void atiputDiagonalMatrix(int i, std::shared_ptr<DiagonalMatrix> diagMat);
-        DiagMatDsptr times(double factor);
+		DiagMatDsptr times(double factor);
 		FColsptr<double> timesFullColumn(FColsptr<double> fullCol);
 		FMatDsptr timesFullMatrix(FMatDsptr fullMat);
 		int nrow() {

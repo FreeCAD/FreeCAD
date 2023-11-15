@@ -8,7 +8,7 @@
  
 #pragma once
 
-#include "OrbitAnglezIeqcJec.h"
+#include "OrbitAngleZIeqcJec.h"
 
 namespace MbD {
 	class OrbitAngleZIeqcJeqc : public OrbitAngleZIeqcJec

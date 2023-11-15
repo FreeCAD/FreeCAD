@@ -18,6 +18,7 @@ namespace MbD {
         ArcTan() = default;
         ArcTan(Symsptr arg);
         double getValue() override;
+        Symsptr copyWith(Symsptr arg) override;
 
         std::ostream& printOn(std::ostream& s) const override;
 

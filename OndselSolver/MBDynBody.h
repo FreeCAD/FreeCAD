@@ -19,7 +19,7 @@ namespace MbD {
         void readInertiaMatrix(std::vector<std::string>& args);
         void createASMT() override;
 
-        std::string bodyString, name, nodeName;
+        std::string bodyString, nodeName;
         double mass;
         FColDsptr rPcmP;
         FMatDsptr aJmat;

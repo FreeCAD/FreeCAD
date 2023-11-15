@@ -14,15 +14,15 @@ using namespace MbD;
 void BasicQuasiIntegrator::firstStep()
 {
 	istep = 0;
-	this->preFirstStep();
+	preFirstStep();
 	iTry = 1;
 	orderNew = 1;
-	this->selectFirstStepSize();
-	this->incrementTime();
-	this->runInitialConditionTypeSolution();
-	//this->reportTrialStepStats();
-	this->postFirstStep();
-	//this->reportStepStats();
+	selectFirstStepSize();
+	incrementTime();
+	runInitialConditionTypeSolution();
+	//reportTrialStepStats();
+	postFirstStep();
+	//reportStepStats();
 }
 
 bool BasicQuasiIntegrator::isRedoingFirstStep()
@@ -32,15 +32,15 @@ bool BasicQuasiIntegrator::isRedoingFirstStep()
 
 void BasicQuasiIntegrator::nextStep()
 {
-	this->preStep();
+	preStep();
 	iTry = 1;
-	this->selectOrder();
-	this->selectStepSize();
-	this->incrementTime();
-	this->runInitialConditionTypeSolution();
-	//this->reportTrialStepStats();
-	this->postStep();
-	//this->reportStepStats();
+	selectOrder();
+	selectStepSize();
+	incrementTime();
+	runInitialConditionTypeSolution();
+	//reportTrialStepStats();
+	postStep();
+	//reportStepStats();
 }
 
 void BasicQuasiIntegrator::runInitialConditionTypeSolution()

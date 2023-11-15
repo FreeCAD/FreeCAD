@@ -35,9 +35,16 @@ namespace MbD {
 		FColsptr<T> transpose();
 		FRowsptr<T> copy();
 		void atiplusFullRow(int j, FRowsptr<T> fullRow);
+		FMatDsptr transposeTimesFullRow(FRowDsptr fullRow);
+		std::shared_ptr<FullRow<T>> clonesptr();
+		//double dot(std::shared_ptr<FullColumn<T>> vec);
+		//double dot(std::shared_ptr<FullRow<T>> vec);
+		double dot(std::shared_ptr<FullVector<T>> vec);
+		std::shared_ptr<FullVector<T>> dot(std::shared_ptr<std::vector<std::shared_ptr<FullColumn<T>>>> vecvec);
+
+		
 		std::ostream& printOn(std::ostream& s) const override;
 
-        std::shared_ptr<FullMatrixDouble> transposeTimesFullRow(FRowsptr<double> fullRow);
         FRowsptr<double> timesTransposeFullMatrix(std::shared_ptr<FullMatrixDouble> fullMat);
         // FRowsptr<std::shared_ptr<FullMatrixDouble>> timesTransposeFullMatrixForFMFMDsptr(std::shared_ptr<FullMatrixFullMatrixDouble> fullMat);
         FRowsptr<double> timesFullMatrix(std::shared_ptr<FullMatrixDouble> fullMat);
@@ -132,6 +139,37 @@ namespace MbD {
 			auto j = j1 + jj;
 			this->at(j) += fullRow->at(jj);
 		}
+	}
+	template<typename T>
+	inline std::shared_ptr<FullRow<T>> FullRow<T>::clonesptr()
+	{
+		return std::make_shared<FullRow<T>>(*this);
+	}
+	template<typename T>
+	inline double FullRow<T>::dot(std::shared_ptr<FullVector<T>> vec)
+	{
+		int n = (int)this->size();
+		double answer = 0.0;
+		for (int i = 0; i < n; i++) {
+			answer += this->at(i) * vec->at(i);
+		}
+		return answer;
+	}
+	template<typename T>
+	inline std::shared_ptr<FullVector<T>> FullRow<T>::dot(std::shared_ptr<std::vector<std::shared_ptr<FullColumn<T>>>> vecvec)
+	{
+		auto ncol = (int)this->size();
+		auto nelem = vecvec->at(0)->size();
+		auto answer = std::make_shared<FullVector<T>>(nelem);
+		for (int k = 0; k < nelem; k++) {
+			auto sum = 0.0;
+			for (int i = 0; i < ncol; i++)
+			{
+				sum += this->at(i) * vecvec->at(i)->at(k);
+			}
+			answer->at(k) = sum;
+		}
+		return answer;
 	}
 	template<typename T>
 	inline std::ostream& FullRow<T>::printOn(std::ostream& s) const

@@ -19,8 +19,13 @@ double MbD::ArcTan::getValue()
     return std::atan(xx->getValue());
 }
 
+Symsptr MbD::ArcTan::copyWith(Symsptr arg)
+{
+	return std::make_shared<ArcTan>(arg);
+}
+
 std::ostream& MbD::ArcTan::printOn(std::ostream& s) const
 {
-	s << "arctan(" << xx << ")";
+	s << "arctan(" << *xx << ")";
 	return s;
 }

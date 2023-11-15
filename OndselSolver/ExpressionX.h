@@ -17,6 +17,7 @@ namespace MbD {
     public:
 
         void xexpression(Symsptr arg, Symsptr func);
+        Symsptr differentiateWRTx() override;
         Symsptr differentiateWRT(Symsptr var) override;
         double getValue() override;
 

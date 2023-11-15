@@ -24,7 +24,10 @@ namespace MbD {
 		const std::string& getName() const;
 		double getValue() override;
 		std::ostream& printOn(std::ostream& s) const override;
-		virtual void setValue(double val);
+		void setValue(double val) override;
+		Symsptr expandUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>> set) override;
+		Symsptr simplifyUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>> set) override;
+		bool isVariable() override;
 
 		std::string name;
 		double value;

@@ -22,6 +22,18 @@ namespace MbD {
         }
         return answer;
     }
+    //template<typename T>
+    //inline FMatDsptr FullRow<T>::transposeTimesFullRow(FRowDsptr fullRow)
+    //{
+    //    //"a*b = a(i)b(j)"
+    //    auto nrow = (int)this->size();
+    //    auto answer = std::make_shared<FullMatrixDouble>(nrow);
+    //    for (int i = 0; i < nrow; i++)
+    //    {
+    //        answer->atiput(i, fullRow->times(this->at(i)));
+    //    }
+    //    return answer;
+    //}
 
     template<>
     FRowsptr<double> FullRow<double>::timesTransposeFullMatrix(std::shared_ptr<FullMatrixDouble> fullMat)

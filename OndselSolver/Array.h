@@ -121,7 +121,7 @@ namespace MbD {
 	{
 		for (int ii = 0; ii < this->size(); ii++)
 		{
-			this->at(ii) = array->at(i + ii);
+			this->at(ii) = array->at((size_t)i + ii);
 		}
 	}
 	//template<>

@@ -5,7 +5,7 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #pragma once
 
 #include <string>
@@ -31,6 +31,7 @@ namespace MbD {
 		FullColumn(typename std::vector<T>::iterator begin, typename std::vector<T>::iterator end) : FullVector<T>(begin, end) {}
 		FullColumn(std::initializer_list<T> list) : FullVector<T>{ list } {}
 		FColsptr<T> plusFullColumn(FColsptr<T> fullCol);
+		FColsptr<T> plusFullColumntimes(FColsptr<T> fullCol, double factor);
 		FColsptr<T> minusFullColumn(FColsptr<T> fullCol);
 		FColsptr<T> times(T a);
 		FColsptr<T> negated();
@@ -42,10 +43,13 @@ namespace MbD {
 		FColsptr<T> copy();
 		FRowsptr<T> transpose();
 		void atiplusFullColumntimes(int i, FColsptr<T> fullCol, T factor);
-		T transposeTimesFullColumn(const FColsptr<T> fullCol);		
+		T transposeTimesFullColumn(const FColsptr<T> fullCol);
 		void equalSelfPlusFullColumntimes(FColsptr<T> fullCol, T factor);
 		FColsptr<T> cross(FColsptr<T> fullCol);
 		FColsptr<T> simplified();
+		std::shared_ptr<FullColumn<T>> clonesptr();
+		double dot(std::shared_ptr<FullVector<T>> vec);
+		std::shared_ptr<FullVector<T>> dot(std::shared_ptr<std::vector<std::shared_ptr<FullColumn<T>>>> vecvec);
 
 		std::ostream& printOn(std::ostream& s) const override;
 	};
