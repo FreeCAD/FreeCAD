@@ -28,6 +28,8 @@
 
 #include "DrawSketchController.h"
 
+#include "DrawSketchKeyboardManager.h"
+
 namespace SketcherGui
 {
 
@@ -292,7 +294,7 @@ private:
         nCheckbox = WidgetCheckboxesT::size(handler->constructionMethod());
         nCombobox = WidgetComboboxesT::size(handler->constructionMethod());
 
-        toolWidget->initNParameters(nParameter);
+        toolWidget->initNParameters(nParameter, keymanager.get());
         toolWidget->initNCheckboxes(nCheckbox);
         toolWidget->initNComboboxes(nCombobox);
 

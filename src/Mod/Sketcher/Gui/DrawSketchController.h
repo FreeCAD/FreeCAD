@@ -122,6 +122,8 @@ protected:
     bool init = false;           // true if the controls have been initialised.
     bool firstMoveInit = false;  // true if first mouse movement not yet performed (resets)
 
+    std::unique_ptr<DrawSketchKeyboardManager> keymanager;
+
     Base::Vector2d prevCursorPosition;
     Base::Vector2d lastControlEnforcedPosition;
 
@@ -742,7 +744,6 @@ private:
 private:
     OnViewParameterVisibilityManager ovpVisibilityManager;
     ColorManager colorManager;
-    std::unique_ptr<DrawSketchKeyboardManager> keymanager;
 };
 
 
