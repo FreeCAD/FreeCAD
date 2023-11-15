@@ -58,8 +58,9 @@ TimeInfo::~TimeInfo() = default;
 
 void TimeInfo::setCurrent()
 {
+    // clang-format off
 #if defined(FC_OS_BSD) || defined(FC_OS_LINUX) || defined(__MINGW32__)
-    struct timeval tv;
+    struct timeval tv {};
     gettimeofday(&tv, nullptr);
     timebuffer.time = tv.tv_sec;
     timebuffer.millitm = tv.tv_usec / 1000;
@@ -68,6 +69,7 @@ void TimeInfo::setCurrent()
 #else
     ftime(&timebuffer);  // deprecated
 #endif
+    // clang-format on
 }
 
 void TimeInfo::setTime_t(int64_t seconds)

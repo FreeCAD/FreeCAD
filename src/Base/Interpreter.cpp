@@ -303,7 +303,7 @@ std::string InterpreterSingleton::runStringWithKey(const char* psCmd,
 
     Py::Object key_return_value = localDictionary.getItem(key);
     if (!key_return_value.isString()) {
-        key_return_value = key_return_value.str();
+        key_return_value = key_return_value.str();  // NOLINT
     }
 
     Py::Bytes str = Py::String(key_return_value).encode("utf-8", "~E~");

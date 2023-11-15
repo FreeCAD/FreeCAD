@@ -90,6 +90,9 @@ public:
     {
         return nullptr;
     }
+
+protected:
+    FC_DEFAULT_COPY_MOVE(Observer)
 };
 
 /** Subject class
@@ -225,8 +228,10 @@ public:
         _ObserverSet.clear();
     }
 
-
 protected:
+    FC_DEFAULT_COPY_MOVE(Subject)
+
+private:
     /// Vector of attached observers
     std::set<Observer<MsgType>*> _ObserverSet;
 };

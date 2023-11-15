@@ -47,6 +47,8 @@ Exception::Exception()
 
 Exception::Exception(const Exception& inst) = default;
 
+Exception::Exception(Exception&& inst) noexcept = default;
+
 Exception::Exception(const char* sMessage)
     : _sErrMsg(sMessage)
     , _line(0)
@@ -67,6 +69,17 @@ Exception& Exception::operator=(const Exception& inst)
     _file = inst._file;
     _line = inst._line;
     _function = inst._function;
+    _isTranslatable = inst._isTranslatable;
+    return *this;
+}
+
+Exception& Exception::operator=(Exception&& inst) noexcept
+{
+    _sErrMsg = std::move(inst._sErrMsg);
+    _file = std::move(inst._file);
+    _line = inst._line;
+    _function = std::move(inst._function);
+    _isTranslatable = inst._isTranslatable;
     return *this;
 }
 
@@ -289,14 +302,6 @@ std::string FileException::getFileName() const
     return file.fileName();
 }
 
-FileException& FileException::operator=(const FileException& inst)
-{
-    Exception::operator=(inst);
-    file = inst.file;
-    _sErrMsgAndFileName = inst._sErrMsgAndFileName;
-    return *this;
-}
-
 const char* FileException::what() const noexcept
 {
     return _sErrMsgAndFileName.c_str();
@@ -402,7 +407,22 @@ MemoryException::MemoryException(const MemoryException& inst)
 #endif
 {}
 
+MemoryException::MemoryException(MemoryException&& inst) noexcept
+#if defined(__GNUC__)
+    : std::bad_alloc()
+    , Exception(inst)
+#else
+    : Exception(inst)
+#endif
+{}
+
 MemoryException& MemoryException::operator=(const MemoryException& inst)
+{
+    Exception::operator=(inst);
+    return *this;
+}
+
+MemoryException& MemoryException::operator=(MemoryException&& inst) noexcept
 {
     Exception::operator=(inst);
     return *this;

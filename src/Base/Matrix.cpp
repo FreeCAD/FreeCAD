@@ -969,8 +969,7 @@ std::array<Matrix4D, 4> Matrix4D::decompose() const
     std::array<Vector3d, 3> dirs = {Vector3d(1., 0., 0.),
                                     Vector3d(0., 1., 0.),
                                     Vector3d(0., 0., 1.)};
-    int i;
-    for (i = 0; i < 3; i++) {
+    for (int i = 0; i < 3; i++) {
         if (residualMatrix.getCol(i).IsNull()) {
             continue;
         }
@@ -1032,7 +1031,7 @@ std::array<Matrix4D, 4> Matrix4D::decompose() const
     // Restore trace in shear matrix
     residualMatrix.setDiagonal(Vector3d(1.0, 1.0, 1.0));
     // Remove values close to zero
-    for (i = 0; i < 3; i++) {
+    for (int i = 0; i < 3; i++) {
         if (std::abs(scaleMatrix.dMtrx4D[i][i]) < 1e-15) {
             scaleMatrix.dMtrx4D[i][i] = 0.0;
         }

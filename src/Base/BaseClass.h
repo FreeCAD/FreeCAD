@@ -30,6 +30,7 @@
 using PyObject = struct _object;
 
 
+// NOLINTBEGIN(cppcoreguidelines-macro-usage)
 /// define for subclassing Base::BaseClass
 #define TYPESYSTEM_HEADER()                                                                        \
 public:                                                                                            \
@@ -129,6 +130,7 @@ private:                                                                        
     {                                                                                              \
         initSubclass(_class_::classTypeId, #_class_, #_parentclass_, &(_class_::create));          \
     }
+// NOLINTEND(cppcoreguidelines-macro-usage)
 
 namespace Base
 {

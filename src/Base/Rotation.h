@@ -46,7 +46,9 @@ public:
     Rotation(const double q[4]);
     Rotation(double q0, double q1, double q2, double q3);
     Rotation(const Vector3d& rotateFrom, const Vector3d& rotateTo);
-    Rotation(const Rotation& rot);
+    Rotation(const Rotation& rot) = default;
+    Rotation(Rotation&& rot) = default;
+    ~Rotation() = default;
     //@}
 
     /** Methods to get or set rotations. */
@@ -141,7 +143,8 @@ public:
     {
         return quat[usIndex];
     }
-    Rotation& operator=(const Rotation&);
+    Rotation& operator=(const Rotation&) = default;
+    Rotation& operator=(Rotation&&) = default;
 
     Rotation& multRight(const Base::Rotation& q);
     Rotation& multLeft(const Base::Rotation& q);

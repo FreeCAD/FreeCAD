@@ -38,7 +38,9 @@ class BaseExport ViewProjMethod
 {
 public:
     ViewProjMethod(const ViewProjMethod&) = default;
+    ViewProjMethod(ViewProjMethod&&) = default;
     ViewProjMethod& operator=(const ViewProjMethod&) = default;
+    ViewProjMethod& operator=(ViewProjMethod&&) = default;
     virtual ~ViewProjMethod() = default;
 
     virtual bool isValid() const;
@@ -87,7 +89,7 @@ public:
 
     Matrix4D getProjectionMatrix() const override;
 
-protected:
+private:
     bool isOrthographic;
     Matrix4D _clMtx, _clMtxInv;
 };
@@ -110,7 +112,7 @@ public:
 
     Matrix4D getProjectionMatrix() const override;
 
-protected:
+private:
     Matrix4D _clMtx, _clMtxInv;
 };
 

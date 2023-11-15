@@ -550,6 +550,10 @@ class BaseExport ILogger
 {
 public:
     ILogger() = default;
+    ILogger(const ILogger&) = delete;
+    ILogger(ILogger&&) = delete;
+    ILogger& operator=(const ILogger&) = delete;
+    ILogger& operator=(ILogger&&) = delete;
     virtual ~ILogger() = 0;
 
     /** Used to send a Log message at the given level.
@@ -841,7 +845,7 @@ public:
 
     inline constexpr FreeCAD_ConsoleMsgType getConsoleMsg(Base::LogStyle style);
 
-protected:
+private:
     // python exports goes here +++++++++++++++++++++++++++++++++++++++++++
     // static python wrapper of the exported functions
     static PyObject* sPyLog(PyObject* self, PyObject* args);
@@ -867,7 +871,13 @@ protected:
 
     // Singleton!
     ConsoleSingleton();
-    virtual ~ConsoleSingleton();
+    ~ConsoleSingleton();
+
+public:
+    ConsoleSingleton(const ConsoleSingleton&) = delete;
+    ConsoleSingleton(ConsoleSingleton&&) = delete;
+    ConsoleSingleton& operator=(const ConsoleSingleton&) = delete;
+    ConsoleSingleton& operator=(ConsoleSingleton&&) = delete;
 
 private:
     void postEvent(ConsoleSingleton::FreeCAD_ConsoleMsgType type,
@@ -883,7 +893,7 @@ private:
 
     // singleton
     static void Destruct();
-    static ConsoleSingleton* _pcSingleton;
+    static ConsoleSingleton* _pcSingleton;  // NOLINT
 
     // observer list
     std::set<ILogger*> _aclObservers;
@@ -929,6 +939,11 @@ public:
     {
         Console().EnableRefresh(true);
     }
+
+    ConsoleRefreshDisabler(const ConsoleRefreshDisabler&) = delete;
+    ConsoleRefreshDisabler(ConsoleRefreshDisabler&&) = delete;
+    ConsoleRefreshDisabler& operator=(const ConsoleRefreshDisabler&) = delete;
+    ConsoleRefreshDisabler& operator=(ConsoleRefreshDisabler&&) = delete;
 };
 
 

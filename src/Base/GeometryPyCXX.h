@@ -236,7 +236,8 @@ public:
     }
     GeometryT& operator=(const Object& rhs)
     {
-        return (*this = *rhs);
+        *this = *rhs;
+        return *this;
     }
     GeometryT& operator=(PyObject* rhsp)
     {

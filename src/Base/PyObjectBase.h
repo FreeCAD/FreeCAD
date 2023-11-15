@@ -24,6 +24,7 @@
 #define BASE_PYOBJECTBASE_H
 
 // clang-format off
+// NOLINTBEGIN(cppcoreguidelines-macro-usage)
 // Std. configurations
 
 // (re-)defined in pyconfig.h
@@ -556,6 +557,7 @@ inline void PyTypeCheck(PyObject** ptr, int (*method)(PyObject*), const char* ms
 
 } // namespace Base
 
+// NOLINTBEGIN(cppcoreguidelines-macro-usage)
 // clang-format on
 
 #endif  // BASE_PYOBJECTBASE_H

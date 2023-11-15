@@ -77,14 +77,6 @@ class DOMTreeErrorReporter: public ErrorHandler
 {
 public:
     // -----------------------------------------------------------------------
-    //  Constructors and Destructor
-    // -----------------------------------------------------------------------
-    DOMTreeErrorReporter() = default;
-
-    ~DOMTreeErrorReporter() override = default;
-
-
-    // -----------------------------------------------------------------------
     //  Implementation of the error handler interface
     // -----------------------------------------------------------------------
     void warning(const SAXParseException& toCatch) override;
@@ -131,10 +123,13 @@ public:
 
     // unimplemented copy ctor and assignment operator
     DOMPrintFilter(const DOMPrintFilter&) = delete;
+    DOMPrintFilter(DOMPrintFilter&&) = delete;
     DOMPrintFilter& operator=(const DOMPrintFilter&) = delete;
+    DOMPrintFilter& operator=(DOMPrintFilter&&) = delete;
 
     ShowType fWhatToShow;
 };
+
 class DOMPrintErrorHandler: public DOMErrorHandler
 {
 public:
@@ -147,8 +142,10 @@ public:
     {}
 
     /* Unimplemented constructors and operators */
-    explicit DOMPrintErrorHandler(const DOMErrorHandler&) = delete;
-    void operator=(const DOMErrorHandler&) = delete;
+    DOMPrintErrorHandler(const DOMPrintErrorHandler&) = delete;
+    DOMPrintErrorHandler(DOMPrintErrorHandler&&) = delete;
+    void operator=(const DOMPrintErrorHandler&) = delete;
+    void operator=(DOMPrintErrorHandler&&) = delete;
 };
 
 

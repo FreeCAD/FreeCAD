@@ -119,12 +119,7 @@ Unit::Unit() //NOLINT
     Sig.Angle                    = 0;
 }
 
-Unit::Unit(const Unit& that)
-{
-    this->Sig = that.Sig;
-}
-
-Unit::Unit(const QString& expr)
+Unit::Unit(const QString& expr)  // NOLINT
 {
     try {
         *this = Quantity::parse(expr).getUnit();
@@ -240,20 +235,6 @@ Unit Unit::operator /(const Unit &right) const
     result.Sig.Angle                    = Sig.Angle                     - right.Sig.Angle;
 
     return result;
-}
-
-Unit& Unit::operator = (const Unit &New)
-{
-    Sig.Length                   = New.Sig.Length;
-    Sig.Mass                     = New.Sig.Mass;
-    Sig.Time                     = New.Sig.Time;
-    Sig.ElectricCurrent          = New.Sig.ElectricCurrent;
-    Sig.ThermodynamicTemperature = New.Sig.ThermodynamicTemperature;
-    Sig.AmountOfSubstance        = New.Sig.AmountOfSubstance;
-    Sig.LuminousIntensity        = New.Sig.LuminousIntensity;
-    Sig.Angle                    = New.Sig.Angle;
-
-    return *this;
 }
 
 QString Unit::getString() const

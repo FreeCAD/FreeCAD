@@ -46,7 +46,7 @@
 namespace Base
 {
 
-class ParameterGrpObserver: public ParameterGrp::ObserverType
+class ParameterGrpObserver: public ParameterGrp::ObserverType  // NOLINT
 {
 public:
     explicit ParameterGrpObserver(const Py::Object& obj)
@@ -100,7 +100,7 @@ private:
 
 using ParameterGrpObserverList = std::list<ParameterGrpObserver*>;
 
-class ParameterGrpPy: public Py::PythonExtension<ParameterGrpPy>
+class ParameterGrpPy: public Py::PythonExtension<ParameterGrpPy>  // NOLINT
 {
 public:
     static void init_type();  // announce properties and methods
@@ -267,7 +267,7 @@ Py::Object ParameterGrpPy::repr()
 {
     std::stringstream s;
     s << "<ParameterGrp at " << this << ">";
-    return Py::String(s.str());
+    return Py::String(s.str());  // NOLINT
 }
 
 Py::Object ParameterGrpPy::importFrom(const Py::Tuple& args)
@@ -372,7 +372,7 @@ Py::Object ParameterGrpPy::getGroupName(const Py::Tuple& args)
 
     // get the Handle of the wanted group
     std::string name = _cParamGrp->GetGroupName();
-    return Py::String(name);
+    return Py::String(name);  // NOLINT
 }
 
 Py::Object ParameterGrpPy::getGroups(const Py::Tuple& args)
@@ -388,7 +388,7 @@ Py::Object ParameterGrpPy::getGroups(const Py::Tuple& args)
         list.append(Py::String(it->GetGroupName()));
     }
 
-    return list;
+    return list;  // NOLINT
 }
 
 Py::Object ParameterGrpPy::setBool(const Py::Tuple& args)
@@ -411,7 +411,7 @@ Py::Object ParameterGrpPy::getBool(const Py::Tuple& args)
         throw Py::Exception();
     }
 
-    return Py::Boolean(_cParamGrp->GetBool(pstr, Bool != 0));
+    return Py::Boolean(_cParamGrp->GetBool(pstr, Bool != 0));  // NOLINT
 }
 
 Py::Object ParameterGrpPy::getBools(const Py::Tuple& args)
@@ -427,7 +427,7 @@ Py::Object ParameterGrpPy::getBools(const Py::Tuple& args)
         list.append(Py::String(it.first));
     }
 
-    return list;
+    return list;  // NOLINT
 }
 
 Py::Object ParameterGrpPy::setInt(const Py::Tuple& args)
@@ -449,7 +449,7 @@ Py::Object ParameterGrpPy::getInt(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), "s|i", &pstr, &Int)) {
         throw Py::Exception();
     }
-    return Py::Long(_cParamGrp->GetInt(pstr, Int));
+    return Py::Long(_cParamGrp->GetInt(pstr, Int));  // NOLINT
 }
 
 Py::Object ParameterGrpPy::getInts(const Py::Tuple& args)
@@ -465,7 +465,7 @@ Py::Object ParameterGrpPy::getInts(const Py::Tuple& args)
         list.append(Py::String(it.first));
     }
 
-    return list;
+    return list;  // NOLINT
 }
 
 Py::Object ParameterGrpPy::setUnsigned(const Py::Tuple& args)
@@ -487,7 +487,7 @@ Py::Object ParameterGrpPy::getUnsigned(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), "s|I", &pstr, &UInt)) {
         throw Py::Exception();
     }
-    return Py::Long(_cParamGrp->GetUnsigned(pstr, UInt));
+    return Py::Long(_cParamGrp->GetUnsigned(pstr, UInt));  // NOLINT
 }
 
 Py::Object ParameterGrpPy::getUnsigneds(const Py::Tuple& args)
@@ -503,7 +503,7 @@ Py::Object ParameterGrpPy::getUnsigneds(const Py::Tuple& args)
         list.append(Py::String(it.first));
     }
 
-    return list;
+    return list;  // NOLINT
 }
 
 Py::Object ParameterGrpPy::setFloat(const Py::Tuple& args)
@@ -526,7 +526,7 @@ Py::Object ParameterGrpPy::getFloat(const Py::Tuple& args)
         throw Py::Exception();
     }
 
-    return Py::Float(_cParamGrp->GetFloat(pstr, Float));
+    return Py::Float(_cParamGrp->GetFloat(pstr, Float));  // NOLINT
 }
 
 Py::Object ParameterGrpPy::getFloats(const Py::Tuple& args)
@@ -542,7 +542,7 @@ Py::Object ParameterGrpPy::getFloats(const Py::Tuple& args)
         list.append(Py::String(it.first));
     }
 
-    return list;
+    return list;  // NOLINT
 }
 
 Py::Object ParameterGrpPy::setString(const Py::Tuple& args)
@@ -565,7 +565,7 @@ Py::Object ParameterGrpPy::getString(const Py::Tuple& args)
         throw Py::Exception();
     }
 
-    return Py::String(_cParamGrp->GetASCII(pstr, str));
+    return Py::String(_cParamGrp->GetASCII(pstr, str));  // NOLINT
 }
 
 Py::Object ParameterGrpPy::getStrings(const Py::Tuple& args)
@@ -581,7 +581,7 @@ Py::Object ParameterGrpPy::getStrings(const Py::Tuple& args)
         list.append(Py::String(it.first));
     }
 
-    return list;
+    return list;  // NOLINT
 }
 
 Py::Object ParameterGrpPy::remInt(const Py::Tuple& args)
@@ -666,7 +666,7 @@ Py::Object ParameterGrpPy::isEmpty(const Py::Tuple& args)
         throw Py::Exception();
     }
 
-    return Py::Boolean(_cParamGrp->IsEmpty());
+    return Py::Boolean(_cParamGrp->IsEmpty());  // NOLINT
 }
 
 Py::Object ParameterGrpPy::hasGroup(const Py::Tuple& args)
@@ -676,7 +676,7 @@ Py::Object ParameterGrpPy::hasGroup(const Py::Tuple& args)
         throw Py::Exception();
     }
 
-    return Py::Boolean(_cParamGrp->HasGroup(pstr));
+    return Py::Boolean(_cParamGrp->HasGroup(pstr));  // NOLINT
 }
 
 Py::Object ParameterGrpPy::attach(const Py::Tuple& args)
@@ -870,7 +870,7 @@ Py::Object ParameterGrpPy::getContents(const Py::Tuple& args)
         list.append(t6);
     }
 
-    return list;
+    return list;  // NOLINT
 }
 
 }  // namespace Base

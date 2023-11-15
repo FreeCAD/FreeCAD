@@ -148,7 +148,7 @@ Py::Object Vector2dPy::repr()
     str << static_cast<std::string>(vx.repr()) << ", " << static_cast<std::string>(vy.repr());
     str << ")";
 
-    return Py::String(str.str());
+    return Py::String(str.str());  // NOLINT
 }
 
 Py::Object Vector2dPy::getattro(const Py::String& name_)
@@ -162,13 +162,13 @@ Py::Object Vector2dPy::getattro(const Py::String& name_)
         Py::Dict attr;
         attr.setItem(Py::String("x"), Py::Float(v.x));
         attr.setItem(Py::String("y"), Py::Float(v.y));
-        return attr;
+        return attr;  // NOLINT
     }
     if (name == "x") {
-        return Py::Float(v.x);
+        return Py::Float(v.x);  // NOLINT
     }
     if (name == "y") {
-        return Py::Float(v.y);
+        return Py::Float(v.y);  // NOLINT
     }
 
     return genericGetAttro(name_);
@@ -192,17 +192,17 @@ int Vector2dPy::setattro(const Py::String& name_, const Py::Object& value)
 
 Py::Object Vector2dPy::number_negative()
 {
-    return create(-v.x, -v.y);
+    return create(-v.x, -v.y);  // NOLINT
 }
 
 Py::Object Vector2dPy::number_positive()
 {
-    return create(v.x, v.y);
+    return create(v.x, v.y);  // NOLINT
 }
 
 Py::Object Vector2dPy::number_absolute()
 {
-    return create(fabs(v.x), fabs(v.y));
+    return create(fabs(v.x), fabs(v.y));  // NOLINT
 }
 
 Py::Object Vector2dPy::number_invert()
@@ -224,14 +224,14 @@ Py::Object Vector2dPy::number_add(const Py::Object& py)
 {
     Vector2d vec(Py::toVector2d(py));
     vec = v + vec;
-    return create(vec);
+    return create(vec);  // NOLINT
 }
 
 Py::Object Vector2dPy::number_subtract(const Py::Object& py)
 {
     Vector2d vec(Py::toVector2d(py));
     vec = v - vec;
-    return create(vec);
+    return create(vec);  // NOLINT
 }
 
 Py::Object Vector2dPy::number_multiply(const Py::Object& py)
@@ -239,11 +239,11 @@ Py::Object Vector2dPy::number_multiply(const Py::Object& py)
     if (PyObject_TypeCheck(py.ptr(), Vector2dPy::type_object())) {
         Vector2d vec(Py::toVector2d(py));
         double scalar = v * vec;
-        return Py::Float(scalar);
+        return Py::Float(scalar);  // NOLINT
     }
     if (py.isNumeric()) {
         double scale = static_cast<double>(Py::Float(py));
-        return create(v * scale);
+        return create(v * scale);  // NOLINT
     }
 
     throw Py::TypeError("Argument must be Vector2d or Float");
@@ -295,25 +295,25 @@ Py::Object Vector2dPy::isNull(const Py::Tuple& args)
     if (args.size() > 0) {
         tol = static_cast<double>(Py::Float(args[0]));
     }
-    return Py::Boolean(v.IsNull(tol));
+    return Py::Boolean(v.IsNull(tol));  // NOLINT
 }
 PYCXX_VARARGS_METHOD_DECL(Vector2dPy, isNull)
 
 Py::Object Vector2dPy::length(const Py::Tuple&)
 {
-    return Py::Float(v.Length());
+    return Py::Float(v.Length());  // NOLINT
 }
 PYCXX_VARARGS_METHOD_DECL(Vector2dPy, length)
 
 Py::Object Vector2dPy::atan2(const Py::Tuple&)
 {
-    return Py::Float(v.Angle());
+    return Py::Float(v.Angle());  // NOLINT
 }
 PYCXX_VARARGS_METHOD_DECL(Vector2dPy, atan2)
 
 Py::Object Vector2dPy::square(const Py::Tuple&)
 {
-    return Py::Float(v.Sqr());
+    return Py::Float(v.Sqr());  // NOLINT
 }
 PYCXX_VARARGS_METHOD_DECL(Vector2dPy, square)
 
@@ -344,14 +344,14 @@ Py::Object Vector2dPy::perpendicular(const Py::Tuple& args)
 {
     bool value = static_cast<bool>(Py::Boolean(args[0]));
     Base::Vector2d pnt = v.Perpendicular(value);
-    return create(pnt);
+    return create(pnt);  // NOLINT
 }
 PYCXX_VARARGS_METHOD_DECL(Vector2dPy, perpendicular)
 
 Py::Object Vector2dPy::distance(const Py::Tuple& args)
 {
     Base::Vector2d pnt = Py::toVector2d(args[0]);
-    return Py::Float(pnt.Distance(v));
+    return Py::Float(pnt.Distance(v));  // NOLINT
 }
 PYCXX_VARARGS_METHOD_DECL(Vector2dPy, distance)
 
@@ -359,14 +359,14 @@ Py::Object Vector2dPy::isEqual(const Py::Tuple& args)
 {
     Base::Vector2d pnt = Py::toVector2d(args[0]);
     double tol = static_cast<double>(Py::Float(args[1]));
-    return Py::Boolean(v.IsEqual(pnt, tol));
+    return Py::Boolean(v.IsEqual(pnt, tol));  // NOLINT
 }
 PYCXX_VARARGS_METHOD_DECL(Vector2dPy, isEqual)
 
 Py::Object Vector2dPy::getAngle(const Py::Tuple& args)
 {
     Base::Vector2d vec = Py::toVector2d(args[0]);
-    return Py::Float(v.GetAngle(vec));
+    return Py::Float(v.GetAngle(vec));  // NOLINT
 }
 PYCXX_VARARGS_METHOD_DECL(Vector2dPy, getAngle)
 

@@ -94,6 +94,11 @@ class ParameterManager;
 class BaseExport ParameterGrp: public Base::Handled, public Base::Subject<const char*>
 {
 public:
+    ParameterGrp(const ParameterGrp&) = delete;
+    ParameterGrp(ParameterGrp&&) = delete;
+    ParameterGrp& operator=(const ParameterGrp&) = delete;
+    ParameterGrp& operator=(ParameterGrp&&) = delete;
+
     /** @name copy and insertation */
     //@{
     /// make a deep copy to the other group
@@ -346,7 +351,9 @@ protected:
 class BaseExport ParameterSerializer
 {
 public:
-    ParameterSerializer(const std::string& fn);
+    explicit ParameterSerializer(const std::string& fn);
+    ParameterSerializer(const ParameterSerializer&) = delete;
+    ParameterSerializer(ParameterSerializer&&) = delete;
     virtual ~ParameterSerializer();
 
     virtual void SaveDocument(const ParameterManager&);
@@ -357,7 +364,10 @@ public:
         return filename;
     }
 
-protected:
+    ParameterSerializer& operator=(const ParameterSerializer&) = delete;
+    ParameterSerializer& operator=(ParameterSerializer&&) = delete;
+
+private:
     std::string filename;
 };
 
@@ -446,7 +456,14 @@ private:
 
 private:
     ParameterManager();
+
+public:
     ~ParameterManager() override;
+    ParameterManager(const ParameterManager&) = delete;
+    ParameterManager(ParameterManager&&) = delete;
+
+    ParameterManager& operator=(const ParameterManager&) = delete;
+    ParameterManager& operator=(ParameterManager&&) = delete;
 };
 
 /** python wrapper function

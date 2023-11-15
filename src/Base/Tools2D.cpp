@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+#include <array>
 #include <cstdlib>
 #include <set>
 #endif
@@ -302,7 +303,7 @@ bool Polygon2d::Contains(const Vector2d& rclV) const
     // Using the number of turns method, determines
     // whether a point is contained within a polygon.
     // The sum of all turns indicates whether yes or no.
-    std::array<double, 4> pfTmp;
+    std::array<double, 4> pfTmp {};
     unsigned long i = 0;
     short sTorsion = 0;
 

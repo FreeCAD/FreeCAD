@@ -401,7 +401,9 @@ bool FileInfo::isFile() const
         }
         return ok;
 #else
-        struct stat st;
+        // clang-format off
+        struct stat st {};
+        // clang-format on
         if (stat(FileName.c_str(), &st) != 0) {
             return false;
         }

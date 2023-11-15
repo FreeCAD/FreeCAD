@@ -68,7 +68,6 @@ public:
         , notifier(notifier)
         , msg(msg)
     {}
-    ~ConsoleEvent() override = default;
 };
 
 class ConsoleOutput: public QObject  // clazy:exclude=missing-qobject-macro
@@ -139,13 +138,10 @@ public:
     }
 
 private:
-    ConsoleOutput() = default;
-    ~ConsoleOutput() override = default;
-
-    static ConsoleOutput* instance;
+    static ConsoleOutput* instance;  // NOLINT
 };
 
-ConsoleOutput* ConsoleOutput::instance = nullptr;
+ConsoleOutput* ConsoleOutput::instance = nullptr;  // NOLINT
 
 }  // namespace Base
 

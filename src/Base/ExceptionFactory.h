@@ -75,8 +75,6 @@ public:
         ExceptionFactory::Instance().AddProducer(typeid(CLASS).name(), this);
     }
 
-    ~ExceptionProducer() override = default;
-
     void raiseException(PyObject* pydict) const override
     {
         CLASS cls;

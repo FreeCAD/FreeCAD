@@ -156,6 +156,11 @@ public:
     int elapsed();
     std::string toString(int ms) const;
 
+    StopWatch(const StopWatch&) = delete;
+    StopWatch(StopWatch&&) = delete;
+    StopWatch& operator=(const StopWatch&) = delete;
+    StopWatch& operator=(StopWatch&&) = delete;
+
 private:
     struct Private;
     Private* d;
