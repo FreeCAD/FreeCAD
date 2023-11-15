@@ -141,7 +141,7 @@ public:
     {
         return quat[usIndex];
     }
-    void operator=(const Rotation&);
+    Rotation& operator=(const Rotation&);
 
     Rotation& multRight(const Base::Rotation& q);
     Rotation& multLeft(const Base::Rotation& q);

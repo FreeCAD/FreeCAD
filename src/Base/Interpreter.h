@@ -47,6 +47,7 @@
 #include "Exception.h"
 
 
+// NOLINTBEGIN
 /** Helper macro to obtain callable from an object
  *
  * @param _pyobj: PyObject pointer
@@ -79,6 +80,7 @@
         if (PyObject_HasAttrString(_pyobj, _name))                                                 \
             _var = Py::asObject(PyObject_GetAttrString(_pyobj, _name));                            \
     } while (0)
+// NOLINTEND
 
 
 namespace Base

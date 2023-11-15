@@ -152,7 +152,7 @@ public:
     }
 
     Vector(const Vector& ob)
-        : Object(*ob)
+        : Object(ob)
     {
         validate();
     }

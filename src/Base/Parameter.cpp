@@ -754,7 +754,7 @@ std::vector<bool> ParameterGrp::GetBools(const char* sFilter) const
         Name = StrX(pcTemp->getAttribute(XStr("Name").unicodeForm())).c_str();
         // check on filter condition
         if (!sFilter || Name.find(sFilter) != std::string::npos) {
-            if (strcmp(StrX(pcTemp->getAttribute(XStr("Value").unicodeForm())).c_str(), "1")) {
+            if (strcmp(StrX(pcTemp->getAttribute(XStr("Value").unicodeForm())).c_str(), "1") != 0) {
                 vrValues.push_back(false);
             }
             else {
@@ -781,7 +781,7 @@ std::vector<std::pair<std::string, bool>> ParameterGrp::GetBoolMap(const char* s
         Name = StrX(pcTemp->getAttribute(XStr("Name").unicodeForm())).c_str();
         // check on filter condition
         if (!sFilter || Name.find(sFilter) != std::string::npos) {
-            if (strcmp(StrX(pcTemp->getAttribute(XStr("Value").unicodeForm())).c_str(), "1")) {
+            if (strcmp(StrX(pcTemp->getAttribute(XStr("Value").unicodeForm())).c_str(), "1") != 0) {
                 vrValues.emplace_back(Name, false);
             }
             else {

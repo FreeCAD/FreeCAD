@@ -258,18 +258,18 @@ BoundBox2d Polygon2d::CalcBoundBox() const
     return clBB;
 }
 
-static short _CalcTorsion(const double* pfLine, double fX, double fY)
+static short CalcTorsion(const std::array<double, 4>& pfLine, double fX, double fY)
 {
-    std::array<int, 2> sQuad;
+    std::array<int, 2> sQuad {};
     double fResX = 0.0;
 
     // Classification of both polygon points into quadrants
-    for (int i = 0; i < 2; i++) {
-        if (pfLine[i * 2] <= fX) {
-            sQuad[i] = (pfLine[i * 2 + 1] > fY) ? 0 : 3;
+    for (std::size_t i = 0; i < 2; i++) {
+        if (pfLine.at(i * 2) <= fX) {
+            sQuad[i] = (pfLine.at(i * 2 + 1) > fY) ? 0 : 3;
         }
         else {
-            sQuad[i] = (pfLine[i * 2 + 1] > fY) ? 1 : 2;
+            sQuad[i] = (pfLine.at(i * 2 + 1) > fY) ? 1 : 2;
         }
     }
 
@@ -302,7 +302,7 @@ bool Polygon2d::Contains(const Vector2d& rclV) const
     // Using the number of turns method, determines
     // whether a point is contained within a polygon.
     // The sum of all turns indicates whether yes or no.
-    double pfTmp[4];
+    std::array<double, 4> pfTmp;
     unsigned long i = 0;
     short sTorsion = 0;
 
@@ -330,7 +330,7 @@ bool Polygon2d::Contains(const Vector2d& rclV) const
         }
 
         // Carry out a cut test and calculate the turn counter
-        sTorsion += _CalcTorsion(pfTmp, rclV.x, rclV.y);
+        sTorsion += CalcTorsion(pfTmp, rclV.x, rclV.y);
     }
 
     // Evaluate turn counter

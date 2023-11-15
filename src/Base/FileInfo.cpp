@@ -93,14 +93,14 @@ std::wstring ConvertToWideString(const std::string& string)
 // FileInfo
 
 
-FileInfo::FileInfo(const char* _FileName)
+FileInfo::FileInfo(const char* fileName)
 {
-    setFile(_FileName);
+    setFile(fileName);
 }
 
-FileInfo::FileInfo(const std::string& _FileName)
+FileInfo::FileInfo(const std::string& fileName)
 {
-    setFile(_FileName.c_str());
+    setFile(fileName.c_str());
 }
 
 const std::string& FileInfo::getTempPath()

@@ -1026,9 +1026,9 @@ std::array<Matrix4D, 4> Matrix4D::decompose() const
     scaleMatrix.dMtrx4D[1][1] = yScale;
     scaleMatrix.dMtrx4D[2][2] = zScale;
     // The remaining shear
-    residualMatrix.scale(xScale ? 1.0 / xScale : 1.0,
-                         yScale ? 1.0 / yScale : 1.0,
-                         zScale ? 1.0 / zScale : 1.0);
+    residualMatrix.scale(xScale != 0 ? 1.0 / xScale : 1.0,
+                         yScale != 0 ? 1.0 / yScale : 1.0,
+                         zScale != 0 ? 1.0 / zScale : 1.0);
     // Restore trace in shear matrix
     residualMatrix.setDiagonal(Vector3d(1.0, 1.0, 1.0));
     // Remove values close to zero

@@ -341,6 +341,7 @@ using PyMethodDef = struct PyMethodDef;
  *
  */
 
+// NOLINTBEGIN(bugprone-reserved-identifier,bugprone-macro-parentheses,cppcoreguidelines-macro-usage)
 #define FC_LOGLEVEL_DEFAULT -1
 #define FC_LOGLEVEL_ERR 0
 #define FC_LOGLEVEL_WARN 1
@@ -479,6 +480,7 @@ using PyMethodDef = struct PyMethodDef;
     } while (0)
 
 #endif  // FC_LOG_NO_TIMING
+// NOLINTEND(bugprone-reserved-identifier,bugprone-macro-parentheses,cppcoreguidelines-macro-usage)
 
 // TODO: Get rid of this typedef
 using ConsoleMsgFlags = unsigned int;

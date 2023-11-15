@@ -602,6 +602,7 @@ PyStreambuf::int_type PyStreambuf::underflow()
             return traits_type::eof();
         }
 
+        // Check: bugprone-not-null-terminated-result
         std::memcpy(start, c.data(), c.size());
     }
     catch (Py::Exception& e) {

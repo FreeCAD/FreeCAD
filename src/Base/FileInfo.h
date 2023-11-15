@@ -59,8 +59,8 @@ public:
     };
 
     /// Construction
-    FileInfo(const char* _FileName = "");
-    FileInfo(const std::string& _FileName);
+    FileInfo(const char* fileName = "");
+    FileInfo(const std::string& fileName);
     /// Set a new file name
     void setFile(const char* name);
     /// Set a new file name

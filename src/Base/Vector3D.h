@@ -276,10 +276,10 @@ inline Vector3<_Precision> operator*(_Precision fFac, const Vector3<_Precision>&
     return Vector3<_Precision>(rcVct.x * fFac, rcVct.y * fFac, rcVct.z * fFac);
 }
 
-template<class _Pr1, class _Pr2>
-inline Vector3<_Pr1> toVector(const Vector3<_Pr2>& v)
+template<class Pr1, class Pr2>
+inline Vector3<Pr1> toVector(const Vector3<Pr2>& v)
 {
-    return Vector3<_Pr1>(static_cast<_Pr1>(v.x), static_cast<_Pr1>(v.y), static_cast<_Pr1>(v.z));
+    return Vector3<Pr1>(static_cast<Pr1>(v.x), static_cast<Pr1>(v.y), static_cast<Pr1>(v.z));
 }
 
 using Vector3f = Vector3<float>;

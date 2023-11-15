@@ -251,11 +251,15 @@ ParameterGrpPy::ParameterGrpPy(const Base::Reference<ParameterGrp>& rcParamGrp)
 
 ParameterGrpPy::~ParameterGrpPy()
 {
-    for (ParameterGrpObserver* obs : _observers) {
-        if (!obs->_target) {
-            _cParamGrp->Detach(obs);
+    try {
+        for (ParameterGrpObserver* obs : _observers) {
+            if (!obs->_target) {
+                _cParamGrp->Detach(obs);
+            }
+            delete obs;
         }
-        delete obs;
+    }
+    catch (...) {
     }
 }
 

@@ -47,6 +47,7 @@ using PyObject = struct _object;
 /// have provided one) at that time it gets translated (e.g. in the UI before showing the message of
 /// the exception).
 
+// NOLINTBEGIN
 #ifdef _MSC_VER
 
 #define THROW(exception)                                                                           \
@@ -185,6 +186,7 @@ using PyObject = struct _object;
         ss << _msg;                                                                                \
         THROWM(_exception, ss.str().c_str());                                                      \
     } while (0)
+// NOLINTEND
 
 namespace Base
 {

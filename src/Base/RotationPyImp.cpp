@@ -674,7 +674,7 @@ PyObject* RotationPy::number_power_handler(PyObject* self, PyObject* other, PyOb
     double rfAngle {};
 
     a.getRawValue(axis, rfAngle);
-    rfAngle *= b;
+    rfAngle *= double(b);
     a.setValue(axis, rfAngle);
 
     return new RotationPy(a);

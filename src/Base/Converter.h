@@ -94,36 +94,36 @@ private:
 };
 
 // type with three floats
-template<class _Vec, typename float_type>
-_Vec make_vec(const std::tuple<float_type, float_type, float_type>&& ft)
+template<class Vec, typename float_type>
+Vec make_vec(const std::tuple<float_type, float_type, float_type>&& ft)
 {
-    using traits_type = vec_traits<_Vec>;
+    using traits_type = vec_traits<Vec>;
     using float_traits_type = typename traits_type::float_type;
-    return _Vec(float_traits_type(std::get<0>(ft)),
-                float_traits_type(std::get<1>(ft)),
-                float_traits_type(std::get<2>(ft)));
+    return Vec(float_traits_type(std::get<0>(ft)),
+               float_traits_type(std::get<1>(ft)),
+               float_traits_type(std::get<2>(ft)));
 }
 
 // type with four floats
-template<class _Vec, typename float_type>
-_Vec make_vec(const std::tuple<float_type, float_type, float_type, float_type>&& ft)
+template<class Vec, typename float_type>
+Vec make_vec(const std::tuple<float_type, float_type, float_type, float_type>&& ft)
 {
-    using traits_type = vec_traits<_Vec>;
+    using traits_type = vec_traits<Vec>;
     using float_traits_type = typename traits_type::float_type;
-    return _Vec(float_traits_type(std::get<0>(ft)),
-                float_traits_type(std::get<1>(ft)),
-                float_traits_type(std::get<2>(ft)),
-                float_traits_type(std::get<3>(ft)));
+    return Vec(float_traits_type(std::get<0>(ft)),
+               float_traits_type(std::get<1>(ft)),
+               float_traits_type(std::get<2>(ft)),
+               float_traits_type(std::get<3>(ft)));
 }
 
-template<class _Vec1, class _Vec2>
-inline _Vec1 convertTo(const _Vec2& vec)
+template<class Vec1, class Vec2>
+inline Vec1 convertTo(const Vec2& vec)
 {
-    using traits_type = vec_traits<_Vec2>;
+    using traits_type = vec_traits<Vec2>;
     using float_type = typename traits_type::float_type;
     traits_type tt(vec);
     auto tuple = tt.get();
-    return make_vec<_Vec1, float_type>(std::move(tuple));
+    return make_vec<Vec1, float_type>(std::move(tuple));
 }
 
 }  // namespace Base

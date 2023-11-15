@@ -33,7 +33,7 @@ ExceptionFactory* ExceptionFactory::_pcSingleton = nullptr;  // NOLINT
 ExceptionFactory& ExceptionFactory::Instance()
 {
     if (!_pcSingleton) {
-        _pcSingleton = new ExceptionFactory;
+        _pcSingleton = new ExceptionFactory;  // NOLINT
     }
     return *_pcSingleton;
 }

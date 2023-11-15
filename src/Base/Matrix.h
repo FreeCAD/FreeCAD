@@ -320,6 +320,10 @@ inline Matrix4D Matrix4D::operator*(const Matrix4D& mat) const
 
 inline Matrix4D& Matrix4D::operator=(const Matrix4D& mat)
 {
+    if (this == &mat) {
+        return *this;
+    }
+
     for (int iz = 0; iz < 4; iz++) {
         for (int is = 0; is < 4; is++) {
             dMtrx4D[iz][is] = mat.dMtrx4D[iz][is];
