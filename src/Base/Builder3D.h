@@ -208,7 +208,7 @@ public:
     {
         spaces -= 2;
     }
-    int count()
+    int count() const
     {
         return spaces;
     }

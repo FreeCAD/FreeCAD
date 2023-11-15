@@ -112,7 +112,7 @@ public:
     inline BoundBox2d(BoundBox2d&&) = default;
     inline BoundBox2d(double fX1, double fY1, double fX2, double fY2);
     ~BoundBox2d() = default;
-    inline bool IsValid();
+    inline bool IsValid() const;
     inline bool IsEqual(const BoundBox2d& bbox, double tolerance) const;
 
     // operators
@@ -466,7 +466,7 @@ inline BoundBox2d::BoundBox2d(double fX1, double fY1, double fX2, double fY2)
     , MaxY(std::max<double>(fY1, fY2))
 {}
 
-inline bool BoundBox2d::IsValid()
+inline bool BoundBox2d::IsValid() const
 {
     return (MaxX >= MinX) && (MaxY >= MinY);
 }

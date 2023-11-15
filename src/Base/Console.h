@@ -571,7 +571,7 @@ public:
     /**
      * Returns whether a LogStyle category is active or not
      */
-    bool isActive(Base::LogStyle category)
+    bool isActive(Base::LogStyle category) const
     {
         if (category == Base::LogStyle::Log) {
             return bLog;

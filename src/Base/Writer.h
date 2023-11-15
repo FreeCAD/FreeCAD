@@ -64,7 +64,7 @@ public:
     /// switch the writer in XML only mode (no files allowed)
     void setForceXML(bool on);
     /// check on state
-    bool isForceXML();
+    bool isForceXML() const;
     void setFileVersion(int);
     int getFileVersion() const;
 

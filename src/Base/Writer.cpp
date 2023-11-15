@@ -172,7 +172,7 @@ void Writer::setForceXML(bool on)
     forceXML = on;
 }
 
-bool Writer::isForceXML()
+bool Writer::isForceXML() const
 {
     return forceXML;
 }
