@@ -61,10 +61,12 @@ PyObject* MatrixPy::PyMake(PyTypeObject* /*unused*/, PyObject* /*unused*/, PyObj
 // constructor method
 int MatrixPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
+    // NOLINTBEGIN
     double a11 = 1.0, a12 = 0.0, a13 = 0.0, a14 = 0.0;
     double a21 = 0.0, a22 = 1.0, a23 = 0.0, a24 = 0.0;
     double a31 = 0.0, a32 = 0.0, a33 = 1.0, a34 = 0.0;
     double a41 = 0.0, a42 = 0.0, a43 = 0.0, a44 = 1.0;
+    // NOLINTEND
 
     // clang-format off
     if (PyArg_ParseTuple(args,
@@ -263,7 +265,9 @@ PyObject* MatrixPy::richCompare(PyObject* v, PyObject* w, int op)
 
 PyObject* MatrixPy::move(PyObject* args)
 {
-    double x {}, y {}, z {};
+    double x {};
+    double y {};
+    double z {};
     Base::Vector3d vec;
     PyObject* pcVecObj {};
 
@@ -304,7 +308,9 @@ PyObject* MatrixPy::move(PyObject* args)
 
 PyObject* MatrixPy::scale(PyObject* args)
 {
-    double x {}, y {}, z {};
+    double x {};
+    double y {};
+    double z {};
     Base::Vector3d vec;
     PyObject* pcVecObj {};
 
@@ -425,7 +431,8 @@ PyObject* MatrixPy::transform(PyObject* args)
 {
     Base::Vector3d vec;
     Matrix4D mat;
-    PyObject *pcVecObj {}, *pcMatObj {};
+    PyObject* pcVecObj {};
+    PyObject* pcMatObj {};
 
     if (!PyArg_ParseTuple(
             args,

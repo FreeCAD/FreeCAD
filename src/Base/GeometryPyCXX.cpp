@@ -127,7 +127,8 @@ Py::PythonClassObject<Vector2dPy> Vector2dPy::create(double vx, double vy)
 Vector2dPy::Vector2dPy(Py::PythonClassInstance* self, Py::Tuple& args, Py::Dict& kwds)
     : Py::PythonClass<Vector2dPy>::PythonClass(self, args, kwds)
 {
-    double vx = 0, vy = 0;
+    double vx = 0;
+    double vy = 0;
     if (!PyArg_ParseTuple(args.ptr(), "|dd", &vx, &vy)) {
         throw Py::Exception();
     }

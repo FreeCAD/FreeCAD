@@ -367,10 +367,9 @@ template<class _Precision>
 void Vector3<_Precision>::RotateX(_Precision f)
 {
     Vector3 cPt(*this);
-    _Precision fsin, fcos;
 
-    fsin = static_cast<_Precision>(sin(f));
-    fcos = static_cast<_Precision>(cos(f));
+    _Precision fsin = static_cast<_Precision>(sin(f));
+    _Precision fcos = static_cast<_Precision>(cos(f));
     y = (cPt.y * fcos) - (cPt.z * fsin);
     z = (cPt.y * fsin) + (cPt.z * fcos);
 }
@@ -379,10 +378,9 @@ template<class _Precision>
 void Vector3<_Precision>::RotateY(_Precision f)
 {
     Vector3 cPt(*this);
-    _Precision fsin, fcos;
 
-    fsin = static_cast<_Precision>(sin(f));
-    fcos = static_cast<_Precision>(cos(f));
+    _Precision fsin = static_cast<_Precision>(sin(f));
+    _Precision fcos = static_cast<_Precision>(cos(f));
     x = (cPt.z * fsin) + (cPt.x * fcos);
     z = (cPt.z * fcos) - (cPt.x * fsin);
 }
@@ -391,10 +389,9 @@ template<class _Precision>
 void Vector3<_Precision>::RotateZ(_Precision f)
 {
     Vector3 cPt(*this);
-    _Precision fsin, fcos;
 
-    fsin = static_cast<_Precision>(sin(f));
-    fcos = static_cast<_Precision>(cos(f));
+    _Precision fsin = static_cast<_Precision>(sin(f));
+    _Precision fcos = static_cast<_Precision>(cos(f));
     x = (cPt.x * fcos) - (cPt.y * fsin);
     y = (cPt.x * fsin) + (cPt.y * fcos);
 }
@@ -446,7 +443,10 @@ void Vector3<_Precision>::TransformToCoordinateSystem(const Vector3& rclBase,
                                                       const Vector3& rclDirX,
                                                       const Vector3& rclDirY)
 {
-    Vector3 clVectX, clVectY, clVectZ, clVectOld;
+    Vector3 clVectX;
+    Vector3 clVectY;
+    Vector3 clVectZ;
+    Vector3 clVectOld;
 
     clVectX = rclDirX;
     clVectY = rclDirY;

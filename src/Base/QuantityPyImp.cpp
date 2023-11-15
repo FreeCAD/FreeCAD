@@ -343,8 +343,10 @@ static Quantity& pyToQuantity(Quantity& q, PyObject* pyobj)
 
 PyObject* QuantityPy::number_add_handler(PyObject* self, PyObject* other)
 {
-    Quantity *pa = nullptr, *pb = nullptr;
-    Quantity a, b;
+    Quantity* pa = nullptr;
+    Quantity* pb = nullptr;
+    Quantity a;
+    Quantity b;
     PY_TRY
     {
         if (PyObject_TypeCheck(self, &(QuantityPy::Type))) {
@@ -367,8 +369,10 @@ PyObject* QuantityPy::number_add_handler(PyObject* self, PyObject* other)
 
 PyObject* QuantityPy::number_subtract_handler(PyObject* self, PyObject* other)
 {
-    Quantity *pa = nullptr, *pb = nullptr;
-    Quantity a, b;
+    Quantity* pa = nullptr;
+    Quantity* pb = nullptr;
+    Quantity a;
+    Quantity b;
     PY_TRY
     {
         if (PyObject_TypeCheck(self, &(QuantityPy::Type))) {
@@ -391,8 +395,10 @@ PyObject* QuantityPy::number_subtract_handler(PyObject* self, PyObject* other)
 
 PyObject* QuantityPy::number_multiply_handler(PyObject* self, PyObject* other)
 {
-    Quantity *pa = nullptr, *pb = nullptr;
-    Quantity a, b;
+    Quantity* pa = nullptr;
+    Quantity* pb = nullptr;
+    Quantity a;
+    Quantity b;
     PY_TRY
     {
         if (PyObject_TypeCheck(self, &(QuantityPy::Type))) {
@@ -415,8 +421,10 @@ PyObject* QuantityPy::number_multiply_handler(PyObject* self, PyObject* other)
 
 PyObject* QuantityPy::number_divide_handler(PyObject* self, PyObject* other)
 {
-    Quantity *pa = nullptr, *pb = nullptr;
-    Quantity a, b;
+    Quantity* pa = nullptr;
+    Quantity* pb = nullptr;
+    Quantity a;
+    Quantity b;
     PY_TRY
     {
         if (PyObject_TypeCheck(self, &(QuantityPy::Type))) {
@@ -444,7 +452,8 @@ PyObject* QuantityPy::number_remainder_handler(PyObject* self, PyObject* other)
         return nullptr;
     }
 
-    double d1 {}, d2 {};
+    double d1 {};
+    double d2 {};
     Base::Quantity* a = static_cast<QuantityPy*>(self)->getQuantityPtr();
     d1 = a->getValue();
 

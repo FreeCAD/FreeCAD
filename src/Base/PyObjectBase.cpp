@@ -420,7 +420,8 @@ PyObject *PyObjectBase::_getattr(const char *attr)
     }
     else {
         // As fallback solution use Python's default method to get generic attributes
-        PyObject *w{}, *res{};
+        PyObject *w{};
+        PyObject *res{};
         w = PyUnicode_InternFromString(attr);
         if (w) {
             res = PyObject_GenericGetAttr(this, w);

@@ -253,7 +253,9 @@ public:
 template<class _Precision>
 inline _Precision Distance(const Vector3<_Precision>& v1, const Vector3<_Precision>& v2)
 {
-    _Precision x = v1.x - v2.x, y = v1.y - v2.y, z = v1.z - v2.z;
+    _Precision x = v1.x - v2.x;
+    _Precision y = v1.y - v2.y;
+    _Precision z = v1.z - v2.z;
     return static_cast<_Precision>(sqrt((x * x) + (y * y) + (z * z)));
 }
 
@@ -261,7 +263,9 @@ inline _Precision Distance(const Vector3<_Precision>& v1, const Vector3<_Precisi
 template<class _Precision>
 inline _Precision DistanceP2(const Vector3<_Precision>& v1, const Vector3<_Precision>& v2)
 {
-    _Precision x = v1.x - v2.x, y = v1.y - v2.y, z = v1.z - v2.z;
+    _Precision x = v1.x - v2.x;
+    _Precision y = v1.y - v2.y;
+    _Precision z = v1.z - v2.z;
     return x * x + y * y + z * z;
 }
 

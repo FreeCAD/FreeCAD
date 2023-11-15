@@ -59,7 +59,12 @@ int BoundBoxPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     }
     PyErr_Clear();  // set by PyArg_ParseTuple()
 
-    double xMin = 0.0, yMin = 0.0, zMin = 0.0, xMax = 0.0, yMax = 0.0, zMax = 0.0;
+    double xMin = 0.0;
+    double yMin = 0.0;
+    double zMin = 0.0;
+    double xMax = 0.0;
+    double yMax = 0.0;
+    double zMax = 0.0;
     PyObject *object1 {}, *object2 {};
     BoundBoxPy::PointerType ptr = getBoundBoxPtr();
     if (PyArg_ParseTuple(args, "d|ddddd", &xMin, &yMin, &zMin, &xMax, &yMax, &zMax)) {
@@ -128,7 +133,9 @@ PyObject* BoundBoxPy::isValid(PyObject* args)
 
 PyObject* BoundBoxPy::add(PyObject* args)
 {
-    double x {}, y {}, z {};
+    double x {};
+    double y {};
+    double z {};
     PyObject* object {};
     if (PyArg_ParseTuple(args, "ddd", &x, &y, &z)) {
         getBoundBoxPtr()->Add(Vector3d(x, y, z));
@@ -189,7 +196,8 @@ PyObject* BoundBoxPy::getEdge(PyObject* args)
         return nullptr;
     }
 
-    Base::Vector3d pnt1, pnt2;
+    Base::Vector3d pnt1;
+    Base::Vector3d pnt2;
     getBoundBoxPtr()->CalcEdge(index, pnt1, pnt2);
     Py::Tuple tuple(2);
     tuple.setItem(0, Py::Vector(pnt1));
@@ -199,7 +207,9 @@ PyObject* BoundBoxPy::getEdge(PyObject* args)
 
 PyObject* BoundBoxPy::closestPoint(PyObject* args)
 {
-    double x {}, y {}, z {};
+    double x {};
+    double y {};
+    double z {};
     PyObject* object {};
 
     Base::Vector3d vec;
@@ -232,7 +242,8 @@ PyObject* BoundBoxPy::closestPoint(PyObject* args)
 
 PyObject* BoundBoxPy::intersect(PyObject* args)
 {
-    PyObject *object {}, *object2 {};
+    PyObject* object1 {};
+    PyObject* object2 {};
     Py::Boolean retVal;
 
     if (!getBoundBoxPtr()->IsValid()) {
@@ -244,23 +255,23 @@ PyObject* BoundBoxPy::intersect(PyObject* args)
         if (PyArg_ParseTuple(args,
                              "O!O!",
                              &(Base::VectorPy::Type),
-                             &object,
+                             &object1,
                              &(Base::VectorPy::Type),
                              &object2)) {
             retVal = getBoundBoxPtr()->IsCutLine(
-                *(static_cast<Base::VectorPy*>(object)->getVectorPtr()),
+                *(static_cast<Base::VectorPy*>(object1)->getVectorPtr()),
                 *(static_cast<Base::VectorPy*>(object2)->getVectorPtr()));
             break;
         }
 
         PyErr_Clear();
-        if (PyArg_ParseTuple(args, "O!", &(Base::BoundBoxPy::Type), &object)) {
-            if (!static_cast<Base::BoundBoxPy*>(object)->getBoundBoxPtr()->IsValid()) {
+        if (PyArg_ParseTuple(args, "O!", &(Base::BoundBoxPy::Type), &object1)) {
+            if (!static_cast<Base::BoundBoxPy*>(object1)->getBoundBoxPtr()->IsValid()) {
                 PyErr_SetString(PyExc_FloatingPointError, "Invalid bounding box argument");
                 return nullptr;
             }
             retVal = getBoundBoxPtr()->Intersect(
-                *(static_cast<Base::BoundBoxPy*>(object)->getBoundBoxPtr()));
+                *(static_cast<Base::BoundBoxPy*>(object1)->getBoundBoxPtr()));
             break;
         }
 
@@ -325,12 +336,13 @@ PyObject* BoundBoxPy::enlarge(PyObject* args)
 
 PyObject* BoundBoxPy::getIntersectionPoint(PyObject* args)
 {
-    PyObject *object {}, *object2 {};
+    PyObject* object1 {};
+    PyObject* object2 {};
     double epsilon = 0.0001;
     if (!PyArg_ParseTuple(args,
                           "O!O!|d;Need base and direction vector",
                           &(Base::VectorPy::Type),
-                          &object,
+                          &object1,
                           &(Base::VectorPy::Type),
                           &object2,
                           &epsilon)) {
@@ -339,7 +351,7 @@ PyObject* BoundBoxPy::getIntersectionPoint(PyObject* args)
 
     Base::Vector3d point;
     bool ok = getBoundBoxPtr()->IntersectionPoint(
-        *(static_cast<Base::VectorPy*>(object)->getVectorPtr()),
+        *(static_cast<Base::VectorPy*>(object1)->getVectorPtr()),
         *(static_cast<Base::VectorPy*>(object2)->getVectorPtr()),
         point,
         epsilon);
@@ -353,7 +365,9 @@ PyObject* BoundBoxPy::getIntersectionPoint(PyObject* args)
 
 PyObject* BoundBoxPy::move(PyObject* args)
 {
-    double x {}, y {}, z {};
+    double x {};
+    double y {};
+    double z {};
     PyObject* object {};
 
     Base::Vector3d vec;
@@ -389,7 +403,9 @@ PyObject* BoundBoxPy::move(PyObject* args)
 
 PyObject* BoundBoxPy::scale(PyObject* args)
 {
-    double x {}, y {}, z {};
+    double x {};
+    double y {};
+    double z {};
     PyObject* object {};
 
     Base::Vector3d vec;
@@ -441,7 +457,8 @@ PyObject* BoundBoxPy::transformed(PyObject* args)
 
 PyObject* BoundBoxPy::isCutPlane(PyObject* args)
 {
-    PyObject *object {}, *object2 {};
+    PyObject* object {};
+    PyObject* object2 {};
     Py::Boolean retVal;
 
     if (!getBoundBoxPtr()->IsValid()) {
@@ -466,7 +483,9 @@ PyObject* BoundBoxPy::isCutPlane(PyObject* args)
 
 PyObject* BoundBoxPy::isInside(PyObject* args)
 {
-    double x {}, y {}, z {};
+    double x {};
+    double y {};
+    double z {};
     PyObject* object {};
     Py::Boolean retVal;
 

@@ -388,9 +388,16 @@ Rotation Rotation::operator*(const Rotation& q) const
 Rotation& Rotation::multRight(const Base::Rotation& q)
 {
     // Taken from <http://de.wikipedia.org/wiki/Quaternionen>
-    double x0 {}, y0 {}, z0 {}, w0 {};
+    double x0 {};
+    double y0 {};
+    double z0 {};
+    double w0 {};
     this->getValue(x0, y0, z0, w0);
-    double x1 {}, y1 {}, z1 {}, w1 {};
+
+    double x1 {};
+    double y1 {};
+    double z1 {};
+    double w1 {};
     q.getValue(x1, y1, z1, w1);
 
     this->setValue(w0 * x1 + x0 * w1 + y0 * z1 - z0 * y1,
@@ -409,9 +416,16 @@ Rotation& Rotation::multRight(const Base::Rotation& q)
 Rotation& Rotation::multLeft(const Base::Rotation& q)
 {
     // Taken from <http://de.wikipedia.org/wiki/Quaternionen>
-    double x0 {}, y0 {}, z0 {}, w0 {};
+    double x0 {};
+    double y0 {};
+    double z0 {};
+    double w0 {};
     q.getValue(x0, y0, z0, w0);
-    double x1 {}, y1 {}, z1 {}, w1 {};
+
+    double x1 {};
+    double y1 {};
+    double z1 {};
+    double w1 {};
     this->getValue(x1, y1, z1, w1);
 
     this->setValue(w0 * x1 + x0 * w1 + y0 * z1 - z0 * y1,
@@ -989,7 +1003,9 @@ void Rotation::setEulerAngles(EulerSequence theOrder,
     theBeta *= D_PI / 180.0;
     theGamma *= D_PI / 180.0;
 
-    double a = theAlpha, b = theBeta, c = theGamma;
+    double a = theAlpha;
+    double b = theBeta;
+    double c = theGamma;
     if (!o.isExtrinsic) {
         std::swap(a, c);
     }

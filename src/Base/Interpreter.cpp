@@ -160,7 +160,10 @@ SystemExitException::SystemExitException()
 
     long int errCode = 1;
     std::string errMsg = "System exit";
-    PyObject *type {}, *value {}, *traceback {}, *code {};
+    PyObject* type {};
+    PyObject* value {};
+    PyObject* traceback {};
+    PyObject* code {};
 
     PyGILStateLocker locker;
     PyErr_Fetch(&type, &value, &traceback);
@@ -228,7 +231,9 @@ InterpreterSingleton::~InterpreterSingleton() = default;
 
 std::string InterpreterSingleton::runString(const char* sCmd)
 {
-    PyObject *module {}, *dict {}, *presult {}; /* "exec code in d, d" */
+    PyObject* module {};
+    PyObject* dict {};
+    PyObject* presult {};
 
     PyGILStateLocker locker;
     module = PP_Load_Module("__main__"); /* get module, init python */
@@ -308,7 +313,9 @@ std::string InterpreterSingleton::runStringWithKey(const char* psCmd,
 
 Py::Object InterpreterSingleton::runStringObject(const char* sCmd)
 {
-    PyObject *module {}, *dict {}, *presult {}; /* "exec code in d, d" */
+    PyObject* module {};
+    PyObject* dict {};
+    PyObject* presult {};
 
     PyGILStateLocker locker;
     module = PP_Load_Module("__main__"); /* get module, init python */
@@ -336,7 +343,9 @@ Py::Object InterpreterSingleton::runStringObject(const char* sCmd)
 void InterpreterSingleton::systemExit()
 {
     /* This code is taken from the original Python code */
-    PyObject *exception {}, *value {}, *tb {};
+    PyObject* exception {};
+    PyObject* value {};
+    PyObject* tb {};
     int exitcode = 0;
 
     PyErr_Fetch(&exception, &value, &tb);
@@ -379,7 +388,9 @@ done:
 
 void InterpreterSingleton::runInteractiveString(const char* sCmd)
 {
-    PyObject *module {}, *dict {}, *presult {}; /* "exec code in d, d" */
+    PyObject* module {};
+    PyObject* dict {};
+    PyObject* presult {};
 
     PyGILStateLocker locker;
     module = PP_Load_Module("__main__"); /* get module, init python */
@@ -398,7 +409,9 @@ void InterpreterSingleton::runInteractiveString(const char* sCmd)
         }
         /* get latest python exception information */
         /* and print the error to the error output */
-        PyObject *errobj {}, *errdata {}, *errtraceback {};
+        PyObject* errobj {};
+        PyObject* errdata {};
+        PyObject* errtraceback {};
         PyErr_Fetch(&errobj, &errdata, &errtraceback);
 
         RuntimeError exc("");  // do not use PyException since this clears the error indicator
@@ -427,7 +440,8 @@ void InterpreterSingleton::runFile(const char* pxFileName, bool local)
 #endif
     if (fp) {
         PyGILStateLocker locker;
-        PyObject *module {}, *dict {};
+        PyObject* module {};
+        PyObject* dict {};
         module = PyImport_AddModule("__main__");
         dict = PyModule_GetDict(module);
         if (local) {
@@ -737,7 +751,9 @@ void InterpreterSingleton::runMethod(PyObject* pobject,
                                      const char* argfmt,
                                      ...) /* convert to python */
 {
-    PyObject *pmeth {}, *pargs {}, *presult {};
+    PyObject* pmeth {};
+    PyObject* pargs {};
+    PyObject* presult {};
     va_list argslist; /* "pobject.method(args)" */
     va_start(argslist, argfmt);
 
@@ -777,7 +793,9 @@ void InterpreterSingleton::runMethod(PyObject* pobject,
 
 PyObject* InterpreterSingleton::getValue(const char* key, const char* result_var)
 {
-    PyObject *module {}, *dict {}, *presult {}; /* "exec code in d, d" */
+    PyObject* module {};
+    PyObject* dict {};
+    PyObject* presult {};
 
     PyGILStateLocker locker;
     module = PP_Load_Module("__main__"); /* get module, init python */

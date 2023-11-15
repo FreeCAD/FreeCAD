@@ -540,6 +540,7 @@ void Matrix4D::inverse()
 
 using Matrix = double*;
 
+// NOLINTBEGIN
 void Matrix_gauss(Matrix a, Matrix b)
 {
     int ipiv[4], indxr[4], indxc[4];
@@ -617,6 +618,7 @@ void Matrix_gauss(Matrix a, Matrix b)
         }
     }
 }
+// NOLINTEND
 
 void Matrix4D::inverseOrthogonal()
 {

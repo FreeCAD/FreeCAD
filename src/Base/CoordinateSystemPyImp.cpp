@@ -53,7 +53,8 @@ int CoordinateSystemPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 
 PyObject* CoordinateSystemPy::setAxes(PyObject* args)
 {
-    PyObject *axis {}, *xdir {};
+    PyObject* axis {};
+    PyObject* xdir {};
     if (PyArg_ParseTuple(args, "O!O!", &(AxisPy::Type), &axis, &(VectorPy::Type), &xdir)) {
         getCoordinateSystemPtr()->setAxes(*static_cast<AxisPy*>(axis)->getAxisPtr(),
                                           *static_cast<VectorPy*>(xdir)->getVectorPtr());

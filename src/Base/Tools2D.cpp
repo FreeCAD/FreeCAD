@@ -35,7 +35,8 @@ using namespace Base;
 
 double Vector2d::GetAngle(const Vector2d& vec) const
 {
-    double fDivid = 0.0, fNum = 0.0;
+    double fDivid = 0.0;
+    double fNum = 0.0;
 
     fDivid = Length() * vec.Length();
 
@@ -162,7 +163,10 @@ BoundBox2d Line2d::CalcBoundBox() const
 
 bool Line2d::Intersect(const Line2d& rclLine, Vector2d& rclV) const
 {
-    double m1 = 0.0, m2 = 0.0, b1 = 0.0, b2 = 0.0;
+    double m1 = 0.0;
+    double m2 = 0.0;
+    double b1 = 0.0;
+    double b2 = 0.0;
 
     // calc coefficients
     if (fabs(clV2.x - clV1.x) > 1e-10) {
@@ -254,14 +258,13 @@ BoundBox2d Polygon2d::CalcBoundBox() const
     return clBB;
 }
 
-static short _CalcTorsion(double* pfLine, double fX, double fY)
+static short _CalcTorsion(const double* pfLine, double fX, double fY)
 {
-    int sQuad[2],
-        i = 0;  // Changing this from short to int allows the compiler to inline this function
+    std::array<int, 2> sQuad;
     double fResX = 0.0;
 
     // Classification of both polygon points into quadrants
-    for (i = 0; i < 2; i++) {
+    for (int i = 0; i < 2; i++) {
         if (pfLine[i * 2] <= fX) {
             sQuad[i] = (pfLine[i * 2 + 1] > fY) ? 0 : 3;
         }
