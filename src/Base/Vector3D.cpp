@@ -23,6 +23,7 @@
 
 #include "PreCompiled.h"
 
+#include <cmath>
 #include <limits>
 
 #include "Vector3D.h"
@@ -215,9 +216,9 @@ bool Vector3<_Precision>::operator!=(const Vector3<_Precision>& rcVct) const
 template<class _Precision>
 bool Vector3<_Precision>::operator==(const Vector3<_Precision>& rcVct) const
 {
-    return (fabs(x - rcVct.x) <= traits_type::epsilon())
-        && (fabs(y - rcVct.y) <= traits_type::epsilon())
-        && (fabs(z - rcVct.z) <= traits_type::epsilon());
+    return (std::fabs(x - rcVct.x) <= traits_type::epsilon())
+        && (std::fabs(y - rcVct.y) <= traits_type::epsilon())
+        && (std::fabs(z - rcVct.z) <= traits_type::epsilon());
 }
 
 template<class _Precision>
@@ -254,15 +255,16 @@ _Precision Vector3<_Precision>::DistanceToPlane(const Vector3<_Precision>& rclBa
 template<class _Precision>
 _Precision Vector3<_Precision>::Length() const
 {
-    return static_cast<_Precision>(sqrt((x * x) + (y * y) + (z * z)));
+    return static_cast<_Precision>(std::sqrt((x * x) + (y * y) + (z * z)));
 }
 
 template<class _Precision>
-_Precision Vector3<_Precision>::DistanceToLine(const Vector3<_Precision>& rclBase,
-                                               const Vector3<_Precision>& rclDirect) const
+_Precision Vector3<_Precision>::DistanceToLine(const Vector3<_Precision>& base,
+                                               const Vector3<_Precision>& dir) const
 {
-    return static_cast<_Precision>(
-        fabs((rclDirect % Vector3(*this - rclBase)).Length() / rclDirect.Length()));
+    // clang-format off
+    return static_cast<_Precision>(std::fabs((dir % Vector3(*this - base)).Length() / dir.Length()));
+    // clang-format on
 }
 
 template<class _Precision>

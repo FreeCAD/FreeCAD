@@ -154,7 +154,7 @@ public:
     //@}
 
     /** Specialty constructors */
-    static Rotation slerp(const Rotation& q1, const Rotation& q2, double t);
+    static Rotation slerp(const Rotation& q0, const Rotation& q1, double t);
     static Rotation identity();
 
     /**

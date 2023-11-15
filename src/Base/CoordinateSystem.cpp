@@ -36,8 +36,6 @@ CoordinateSystem::CoordinateSystem()
     , ydir(0, 1, 0)
 {}
 
-CoordinateSystem::~CoordinateSystem() = default;
-
 void CoordinateSystem::setAxes(const Axis& vec, const Vector3d& xd)
 {
     if (xd.Sqr() < Base::Vector3d::epsilon()) {

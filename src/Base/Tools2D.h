@@ -118,7 +118,7 @@ public:
     // operators
     inline BoundBox2d& operator=(const BoundBox2d&) = default;
     inline BoundBox2d& operator=(BoundBox2d&&) = default;
-    inline bool operator==(const BoundBox2d& rclBB) const;
+    inline bool operator==(const BoundBox2d& bbox) const;
 
     // methods
     inline double Width() const;
@@ -182,7 +182,7 @@ public:
     ~Polygon2d() = default;
 
     inline Polygon2d& operator=(const Polygon2d& rclP);
-    inline Polygon2d& operator=(Polygon2d&& rclP);
+    inline Polygon2d& operator=(Polygon2d&& rclP) noexcept;
 
     // admin-interface
     inline size_t GetCtVectors() const;
@@ -382,7 +382,7 @@ inline bool Vector2d::IsEqual(const Vector2d& v, double tolerance) const
 
 inline Polygon2d& Polygon2d::operator=(const Polygon2d& rclP) = default;
 
-inline Polygon2d& Polygon2d::operator=(Polygon2d&& rclP) = default;
+inline Polygon2d& Polygon2d::operator=(Polygon2d&& rclP) noexcept = default;
 
 inline void Polygon2d::DeleteAll()
 {

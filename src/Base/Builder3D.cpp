@@ -1073,7 +1073,7 @@ std::vector<T> InventorLoader::readData(const char* fieldName) const
     bool found = false;
     while (std::getline(inp, str)) {
         std::string::size_type point = str.find(fieldName);
-        std::string::size_type open = str.find("[");
+        std::string::size_type open = str.find('[');
         if (point != std::string::npos && open > point) {
             str = str.substr(open);
             found = true;
@@ -1101,7 +1101,7 @@ std::vector<T> InventorLoader::readData(const char* fieldName) const
         }
 
         // search for ']' to finish the reading
-        if (str.find("]") != std::string::npos) {
+        if (str.find(']') != std::string::npos) {
             break;
         }
     } while (std::getline(inp, str));

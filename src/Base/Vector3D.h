@@ -118,7 +118,7 @@ public:
     /// Construction
     explicit Vector3(_Precision fx = 0.0, _Precision fy = 0.0, _Precision fz = 0.0);
     Vector3(const Vector3<_Precision>& v) = default;
-    Vector3(Vector3<_Precision>&& v) = default;
+    Vector3(Vector3<_Precision>&& v) noexcept = default;
     ~Vector3() = default;
 
     /** @name Operator */
@@ -145,7 +145,7 @@ public:
     Vector3& operator/=(_Precision fDiv);
     /// Assignment
     Vector3& operator=(const Vector3<_Precision>& v) = default;
-    Vector3& operator=(Vector3<_Precision>&& v) = default;
+    Vector3& operator=(Vector3<_Precision>&& v) noexcept = default;
     /// Scalar product
     _Precision operator*(const Vector3<_Precision>& rcVct) const;
     /// Scalar product

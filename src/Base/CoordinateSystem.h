@@ -41,7 +41,7 @@ public:
     CoordinateSystem();
     CoordinateSystem(const CoordinateSystem&) = default;
     CoordinateSystem(CoordinateSystem&&) = default;
-    ~CoordinateSystem();
+    ~CoordinateSystem() = default;
 
     CoordinateSystem& operator=(const CoordinateSystem&) = default;
     CoordinateSystem& operator=(CoordinateSystem&&) = default;

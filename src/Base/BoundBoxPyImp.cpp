@@ -65,7 +65,8 @@ int BoundBoxPy::PyInit(PyObject* args, PyObject* /*kwd*/)
     double xMax = 0.0;
     double yMax = 0.0;
     double zMax = 0.0;
-    PyObject *object1 {}, *object2 {};
+    PyObject* object1 {};
+    PyObject* object2 {};
     BoundBoxPy::PointerType ptr = getBoundBoxPtr();
     if (PyArg_ParseTuple(args, "d|ddddd", &xMin, &yMin, &zMin, &xMax, &yMax, &zMax)) {
         ptr->MaxX = xMax;
