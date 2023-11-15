@@ -193,6 +193,7 @@ double UnitsApi::toDouble(PyObject* args, const Base::Unit& u)
         }
         throw Base::UnitsMismatchError("Wrong unit type!");
     }
+
     if (PyFloat_Check(args)) {
         return PyFloat_AsDouble(args);
     }

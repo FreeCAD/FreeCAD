@@ -508,20 +508,18 @@ PyObject* QuantityPy::number_power_handler(PyObject* self, PyObject* other, PyOb
 
             return new QuantityPy(new Quantity(q));
         }
-        else if (PyFloat_Check(other)) {
+        if (PyFloat_Check(other)) {
             Base::Quantity* a = static_cast<QuantityPy*>(self)->getQuantityPtr();
             double b = PyFloat_AsDouble(other);
             return new QuantityPy(new Quantity(a->pow(b)));
         }
-        else if (PyLong_Check(other)) {
+        if (PyLong_Check(other)) {
             Base::Quantity* a = static_cast<QuantityPy*>(self)->getQuantityPtr();
             double b = (double)PyLong_AsLong(other);
             return new QuantityPy(new Quantity(a->pow(b)));
         }
-        else {
-            PyErr_SetString(PyExc_TypeError, "Expected quantity or number");
-            return nullptr;
-        }
+        PyErr_SetString(PyExc_TypeError, "Expected quantity or number");
+        return nullptr;
     }
     PY_CATCH
 }
