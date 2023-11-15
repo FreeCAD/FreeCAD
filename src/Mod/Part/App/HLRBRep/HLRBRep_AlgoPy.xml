@@ -14,7 +14,9 @@
       Delete="false">
     <Documentation>
           <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer[at]users.sourceforge.net" />
-          <UserDocu>A framework to compute a shape as seen in a projection
+          <UserDocu>Algo() -> HLRBRep_Algo
+
+A framework to compute a shape as seen in a projection
 plane. This is done by calculating the visible and the hidden parts
 of the shape. HLRBRep_Algo works with three types of entity:
 
@@ -48,7 +50,6 @@ HLRBRep_Algo object provides a framework for:
   calculates the visible and hidden parts of each face in a shape to be
   visualized by comparing each face in the shape with every other face in the
   same shape.
-
 	  </UserDocu>
     </Documentation>
     <Methode Name="add">

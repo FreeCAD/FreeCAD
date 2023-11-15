@@ -14,7 +14,9 @@
       Delete="false">
     <Documentation>
           <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer[at]users.sourceforge.net" />
-          <UserDocu>A framework to compute the shape as seen in a projection
+          <UserDocu>PolyAlgo() -> HLRBRep_PolyAlgo
+
+A framework to compute the shape as seen in a projection
 plane. This is done by calculating the visible and the hidden parts of the
 shape. HLRBRep_PolyAlgo works with three types of entity:
 
