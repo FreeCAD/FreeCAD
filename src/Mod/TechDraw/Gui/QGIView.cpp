@@ -64,18 +64,13 @@
 using namespace TechDrawGui;
 using namespace TechDraw;
 
-#define NODRAG 0
-#define DRAGSTARTED 1
-#define DRAGGING 2
-
 const float labelCaptionFudge = 0.2f;   // temp fiddle for devel
 
 QGIView::QGIView()
     :QGraphicsItemGroup(),
      viewObj(nullptr),
      m_locked(false),
-     m_innerView(false),
-     m_dragState(NODRAG)
+     m_innerView(false)
 {
     setCacheMode(QGraphicsItem::NoCache);
     setHandlesChildEvents(false);
@@ -205,27 +200,17 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
 void QGIView::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
 //    Base::Console().Message("QGIV::mousePressEvent() - %s\n", getViewName());
-    if (m_dragState == NODRAG) {
-        m_dragState = DRAGSTARTED;
-    }
-
     QGraphicsItemGroup::mousePressEvent(event);
 }
 
 void QGIView::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 {
-    if (m_dragState == DRAGSTARTED) {
-        m_dragState = DRAGGING;
-    }
-
     QGraphicsItemGroup::mouseMoveEvent(event);
 }
 
 void QGIView::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
 //    Base::Console().Message("QGIV::mouseReleaseEvent() - %s\n", getViewName());
-    m_dragState = NODRAG;
-
     QGraphicsItemGroup::mouseReleaseEvent(event);
 }
 
