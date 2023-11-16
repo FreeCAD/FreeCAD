@@ -159,10 +159,12 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
             return newPos;
         }
 
+        TechDraw::DrawView *viewObj = getViewObject();
+
         // TODO  find a better data structure for this
         // this is just a pair isn't it?
-        if (getViewObject()->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
-            TechDraw::DrawProjGroupItem* dpgi = static_cast<TechDraw::DrawProjGroupItem*>(getViewObject());
+        if (viewObj->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
+            TechDraw::DrawProjGroupItem* dpgi = static_cast<TechDraw::DrawProjGroupItem*>(viewObj);
             TechDraw::DrawProjGroup* dpg = dpgi->getPGroup();
             if (dpg) {
                 if(alignHash.size() == 1) {   //if aligned.
@@ -176,9 +178,13 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
                 }
             }
         } else {
-            //not a dpgi, not locked, but moved.
-            //feat->setPosition(Rez::appX(newPos.x()), -Rez::appX(newPos.y());
+            Gui::ViewProvider *vp = getViewProvider(viewObj);
+            if (vp && !vp->isRestoring()) {
+                viewObj->setPosition(Rez::appX(newPos.x()),
+                                     Rez::appX(isInnerView() ? getYInClip(newPos.y()) : -newPos.y()));
+            }
         }
+
         return newPos;
     }
 
@@ -203,7 +209,7 @@ void QGIView::mousePressEvent(QGraphicsSceneMouseEvent * event)
         m_dragState = DRAGSTARTED;
     }
 
-    QGraphicsItem::mousePressEvent(event);
+    QGraphicsItemGroup::mousePressEvent(event);
 }
 
 void QGIView::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
@@ -211,26 +217,16 @@ void QGIView::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
     if (m_dragState == DRAGSTARTED) {
         m_dragState = DRAGGING;
     }
-    QGraphicsItem::mouseMoveEvent(event);
+
+    QGraphicsItemGroup::mouseMoveEvent(event);
 }
 
 void QGIView::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
-    //TODO: this should be done in itemChange - item position has changed
 //    Base::Console().Message("QGIV::mouseReleaseEvent() - %s\n", getViewName());
-//    if(scene() && this == scene()->mouseGrabberItem()) {
-    if (m_dragState == DRAGGING && !m_locked) {
-        if (!isInnerView()) {
-            double tempX = x(),
-                   tempY = getY();
-            getViewObject()->setPosition(Rez::appX(tempX), Rez::appX(tempY));
-        } else {
-            getViewObject()->setPosition(Rez::appX(x()), Rez::appX(getYInClip(y())));
-        }
-    }
     m_dragState = NODRAG;
 
-    QGraphicsItem::mouseReleaseEvent(event);
+    QGraphicsItemGroup::mouseReleaseEvent(event);
 }
 
 void QGIView::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
