@@ -206,6 +206,11 @@ bool PreferencesGui::showGrid()
     return Preferences::getPreferenceGroup("General")->GetBool("showGrid", false);
 }
 
+bool PreferencesGui::multiSelection()
+{
+  return Preferences::getPreferenceGroup("General")->GetBool("multiSelection", false);
+}
+
 App::Color PreferencesGui::pageColor()
 {
     App::Color result;

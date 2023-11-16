@@ -72,6 +72,7 @@ static bool showGrid();
 static App::Color gridColor();
 static QColor gridQColor();
 static double gridSpacing();
+static bool multiSelection();
 
 static QColor       getAccessibleQColor(QColor orig);
 static QColor       lightTextQColor();
