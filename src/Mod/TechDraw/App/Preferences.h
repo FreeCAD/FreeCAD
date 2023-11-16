@@ -81,6 +81,8 @@ public:
     static int altDecimals();
 
     static int mattingStyle();
+    static bool showDetailMatting();
+    static bool showDetailHighlight();
 
     static std::string svgFile();
     static std::string patFile();
@@ -105,6 +107,24 @@ public:
 
     static double svgHatchFactor();
     static bool SectionUsePreviousCut();
+
+    static int lineStandard();
+    static std::string lineDefinitionLocation();
+    static std::string lineElementsLocation();
+
+    static std::string lineGroupFile();
+    static int lineGroup();
+    static int SectionLineStyle();
+    static int CenterLineStyle();
+    static int HighlightLineStyle();
+    static int HiddenLineStyle();
+    static int LineCapStyle();
+    static int LineCapIndex();
+
+    static int LineSpacingISO();
+
+    static std::string currentLineDefFile();
+    static std::string currentElementDefFile();
 };
 
 

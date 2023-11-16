@@ -222,7 +222,6 @@ void DrawViewPart::addShapes2d(void)
             geometryObject->addVertex(v1);
         }
         else if (s.ShapeType() == TopAbs_EDGE) {
-            Base::Console().Message("DVP::add2dShapes - found loose edge - isNull: %d\n", s.IsNull());
             TopoDS_Shape sTrans = ShapeUtils::moveShape(s,
                                                       m_saveCentroid * -1.0);
             TopoDS_Shape sScale = ShapeUtils::scaleShape(sTrans,
