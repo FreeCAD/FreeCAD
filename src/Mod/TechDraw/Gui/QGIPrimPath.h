@@ -79,6 +79,11 @@ protected:
     void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
     QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
 
+    virtual bool multiselectEligible() { return false; }
+
+    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
+
     virtual QColor getNormalColor();
     virtual QColor getPreColor();
     virtual QColor getSelectColor();
@@ -86,6 +91,7 @@ protected:
     virtual Qt::PenCapStyle prefCapStyle();
 
     bool isHighlighted;
+    bool multiselectActivated;
 
     QPen m_pen;
     QColor m_colCurrent;
