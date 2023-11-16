@@ -175,8 +175,7 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
         } else {
             Gui::ViewProvider *vp = getViewProvider(viewObj);
             if (vp && !vp->isRestoring()) {
-                viewObj->setPosition(Rez::appX(newPos.x()),
-                                     Rez::appX(isInnerView() ? getYInClip(newPos.y()) : -newPos.y()));
+                viewObj->setPosition(Rez::appX(newPos.x()), Rez::appX(-newPos.y()));
             }
         }
 
@@ -243,26 +242,16 @@ void QGIView::setPosition(qreal xPos, qreal yPos)
 {
 //    Base::Console().Message("QGIV::setPosition(%.3f, %.3f) (gui)\n", x, y);
     double newX = xPos;
-    double newY;
+    double newY = -yPos;
     double oldX = pos().x();
     double oldY = pos().y();
-    if (!isInnerView()) {
-        newY = -yPos;
-    } else {
-        newY = getYInClip(yPos);
-    }
+
     if (TechDraw::DrawUtil::fpCompare(newX, oldX) &&
         TechDraw::DrawUtil::fpCompare(newY, oldY)) {
         return;
     } else {
         setPos(newX, newY);
     }
-}
-
-//is this needed anymore???
-double QGIView::getYInClip(double y)
-{
-    return -y;
 }
 
 QGIViewClip* QGIView::getClipGroup()
