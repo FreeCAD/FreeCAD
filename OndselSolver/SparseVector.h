@@ -34,6 +34,7 @@ namespace MbD {
 				this->insert(std::pair<const int, double>(index, value));
 			}
 		}
+		virtual ~SparseVector() {}
 		double rootMeanSquare();
 		int numberOfElements();
 		double sumOfSquares();

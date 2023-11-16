@@ -27,6 +27,7 @@ namespace MbD {
 	{
 	public:
 		Symbolic();
+		virtual ~Symbolic() {}
 		static Symsptr times(Symsptr arg, Symsptr arg1);
 		static Symsptr sum(Symsptr arg, Symsptr arg1);
 		static Symsptr raisedTo(Symsptr x, Symsptr y);

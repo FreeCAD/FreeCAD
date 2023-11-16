@@ -1215,13 +1215,13 @@ void MbD::ASMTAssembly::storeOnTimeSeries(std::ofstream& os)
 	if (times->empty()) return;
 	os << "TimeSeries" << std::endl;
 	os << "Number\tInput\t";
-	for (int i = 1; i < times->size(); i++)
+	for (size_t i = 1; i < times->size(); i++)
 	{
 		os << i << '\t';
 	}
 	os << std::endl;
 	os << "Time\tInput\t";
-	for (int i = 1; i < times->size(); i++)
+	for (size_t i = 1; i < times->size(); i++)
 	{
 		os << times->at(i) << '\t';
 	}

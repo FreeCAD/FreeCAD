@@ -32,6 +32,7 @@ namespace MbD {
 	public:
 		Item();
 		Item(const char* str);
+		virtual ~Item() {}
 		virtual System* root();
 		void noop();
 

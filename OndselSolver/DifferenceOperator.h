@@ -17,6 +17,7 @@ namespace MbD {
 	{
 		//iStep order taylorMatrix operatorMatrix time timeNodes 
 	public:
+		virtual ~DifferenceOperator() {}
 		void calcOperatorMatrix();
 		virtual void initialize();
 		virtual void initializeLocally();

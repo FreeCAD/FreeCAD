@@ -24,6 +24,7 @@ namespace MbD {
 	{
 		//
 	public:
+		virtual ~MBDynItem() {}
 		virtual MBDynSystem* root();
 
 		virtual void initialize();

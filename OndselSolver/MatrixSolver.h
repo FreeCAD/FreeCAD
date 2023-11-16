@@ -20,6 +20,7 @@ namespace MbD {
         //m n matrixA answerX rightHandSideB rowOrder colOrder rowScalings pivotValues singularPivotTolerance millisecondsToRun 
     public:
         MatrixSolver(){}
+        virtual ~MatrixSolver() {}
         void initialize() override;
         void setSystem(Solver* sys) override;
         virtual FColDsptr solvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal);

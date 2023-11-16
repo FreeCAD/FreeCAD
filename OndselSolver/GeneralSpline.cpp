@@ -245,14 +245,14 @@ std::ostream& MbD::GeneralSpline::printOn(std::ostream& s) const
 	s << degree << ", " << std::endl;
 	s << "xs{";
 	s << xs->at(0);
-	for (int i = 1; i < xs->size(); i++)
+	for (size_t i = 1; i < xs->size(); i++)
 	{
 		s << ", " << xs->at(i);
 	}
 	s << "}, " << std::endl;
 	s << "ys{";
 	s << ys->at(0);
-	for (int i = 1; i < ys->size(); i++)
+	for (size_t i = 1; i < ys->size(); i++)
 	{
 		s << ", " << ys->at(i);
 	}

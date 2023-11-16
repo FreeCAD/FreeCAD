@@ -23,7 +23,7 @@ namespace MbD {
     }
     void DiagonalMatrix::atiputDiagonalMatrix(int i, std::shared_ptr<DiagonalMatrix> diagMat)
     {
-        for (int ii = 0; ii < diagMat->size(); ii++)
+        for (size_t ii = 0; ii < diagMat->size(); ii++)
         {
             this->at(i + ii) = diagMat->at(ii);
         }
@@ -53,7 +53,7 @@ namespace MbD {
     double DiagonalMatrix::sumOfSquares()
     {
         double sum = 0.0;
-        for (int i = 0; i < this->size(); i++)
+        for (size_t i = 0; i < this->size(); i++)
         {
             double element = this->at(i);
             sum += element * element;
@@ -67,14 +67,14 @@ namespace MbD {
     }
     void DiagonalMatrix::zeroSelf()
     {
-        for (int i = 0; i < this->size(); i++) {
+        for (size_t i = 0; i < this->size(); i++) {
             this->at(i) = 0.0;
         }
     }
     double DiagonalMatrix::maxMagnitude()
     {
         double max = 0.0;
-        for (int i = 0; i < this->size(); i++)
+        for (size_t i = 0; i < this->size(); i++)
         {
             double element = this->at(i);
             if (element < 0.0) element = -element;
@@ -86,7 +86,7 @@ namespace MbD {
     {
         s << "DiagMat[";
         s << this->at(0);
-        for (int i = 1; i < this->size(); i++)
+        for (size_t i = 1; i < this->size(); i++)
         {
             s << ", " << this->at(i);
         }

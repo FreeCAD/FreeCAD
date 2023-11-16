@@ -27,7 +27,7 @@ namespace MbD {
     {
         T previous, next;
         next = vec->at(0);
-        for (int i = 1; i < vec->size(); i++)
+        for (std::size_t i = 1; i < vec->size(); i++)
         {
             previous = next;
             next = vec->at(i);

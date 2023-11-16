@@ -99,7 +99,7 @@ namespace MbD {
 	inline T FullRow<T>::timesFullColumn(FullColumn<T>* fullCol)
 	{
 		auto answer = this->at(0) * fullCol->at(0);
-		for (int i = 1; i < this->size(); i++)
+		for (size_t i = 1; i < this->size(); i++)
 		{
 			answer += this->at(i) * fullCol->at(i);
 		}
@@ -134,7 +134,7 @@ namespace MbD {
 	template<typename T>
 	inline void FullRow<T>::atiplusFullRow(int j1, FRowsptr<T> fullRow)
 	{
-		for (int jj = 0; jj < fullRow->size(); jj++)
+		for (size_t jj = 0; jj < fullRow->size(); jj++)
 		{
 			auto j = j1 + jj;
 			this->at(j) += fullRow->at(jj);
@@ -176,7 +176,7 @@ namespace MbD {
 	{
 		s << "FullRow{";
 		s << this->at(0);
-		for (int i = 1; i < this->size(); i++)
+		for (size_t i = 1; i < this->size(); i++)
 		{
 			s << ", " << this->at(i);
 		}

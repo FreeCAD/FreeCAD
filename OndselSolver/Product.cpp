@@ -29,7 +29,7 @@ Symsptr MbD::Product::differentiateWRT(Symsptr var)
 		}
 	);
 	auto derivativeTerms = std::make_shared<std::vector<Symsptr>>();
-	for (int i = 0; i < terms->size(); i++)
+	for (size_t i = 0; i < terms->size(); i++)
 	{
 		auto& derivative = derivatives->at(i);
 		auto newTermFunctions = std::make_shared<std::vector<Symsptr>>(*terms);
@@ -125,7 +125,7 @@ std::ostream& Product::printOn(std::ostream& s) const
 {
 	s << "(";
 	s << *(this->terms->at(0));
-	for (int i = 1; i < this->terms->size(); i++)
+	for (size_t i = 1; i < this->terms->size(); i++)
 	{
 		s << "*" << *(this->terms->at(i));
 	}
@@ -141,7 +141,7 @@ bool Product::isProduct()
 double Product::getValue()
 {
 	double answer = 1.0;
-	for (int i = 0; i < terms->size(); i++) answer *= terms->at(i)->getValue();
+	for (size_t i = 0; i < terms->size(); i++) answer *= terms->at(i)->getValue();
 	return answer;
 }
 

@@ -59,7 +59,7 @@ namespace MbD {
     {
         s << "FullCol{";
         s << this->at(0);
-        for (int i = 1; i < int(this->size()); i++)
+        for (size_t i = 1; i < this->size(); i++)
         {
             s << ", " << this->at(i);
         }
