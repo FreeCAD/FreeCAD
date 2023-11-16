@@ -77,7 +77,6 @@ class TechDrawGuiExport  QGIView : public QObject, public QGraphicsItemGroup
     Q_OBJECT
 public:
     QGIView();
-    ~QGIView() override;
 
     enum {Type = QGraphicsItem::UserType + 101};
     int type() const override { return Type;}
@@ -162,8 +161,6 @@ public:
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
     void mouseMoveEvent(QGraphicsSceneMouseEvent *event) override;
     void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
-
-    boost::signals2::signal<void (QGIView*, QPointF)> signalSelectPoint;
 
 public Q_SLOTS:
     virtual void onSourceChange(TechDraw::DrawView* newParent);
