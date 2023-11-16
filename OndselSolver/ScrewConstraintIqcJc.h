@@ -17,6 +17,8 @@ namespace MbD {
     public:
 		ScrewConstraintIqcJc(EndFrmsptr frmi, EndFrmsptr frmj);
 
+		void initzIeJeIe() override;
+		void initthezIeJe() override;
 		void addToJointForceI(FColDsptr col) override;
 		void addToJointTorqueI(FColDsptr col) override;
 		void calc_pGpEI();

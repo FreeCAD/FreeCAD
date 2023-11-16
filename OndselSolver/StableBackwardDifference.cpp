@@ -61,7 +61,7 @@ void StableBackwardDifference::formTaylorRowwithTimeNodederivative(int i, int ii
 		{
 			rowi->at(j) = 0.0;
 		}
-		rowi->at((size_t)k - 1) = 1.0;
+		rowi->at((int)k - 1) = 1.0;
 	}
 
 	auto hi = timeNodes->at(ii) - time;
@@ -69,7 +69,7 @@ void StableBackwardDifference::formTaylorRowwithTimeNodederivative(int i, int ii
 	for (int j = k; j < order; j++)
 	{
 		hipower *= hi;
-		auto aij = hipower * OneOverFactorials->at((size_t)(j - k + 1));
+		auto aij = hipower * OneOverFactorials->at((int)(j - k + 1));
 		rowi->at(j) = aij;
 	}
 }
@@ -88,7 +88,7 @@ FColDsptr MbD::StableBackwardDifference::derivativepresentpast(int deriv, FColDs
 			{
 				series->at(i) = ypast->at(i)->minusFullColumn(y);
 			}
-			auto& coeffs = operatorMatrix->at((size_t)deriv - 1);
+			auto& coeffs = operatorMatrix->at((int)deriv - 1);
 			auto answer = coeffs->dot(series);
 			return std::static_pointer_cast<FullColumn<double>>(answer);
 		}

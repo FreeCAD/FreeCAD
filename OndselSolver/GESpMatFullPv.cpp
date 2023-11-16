@@ -105,7 +105,7 @@ void GESpMatFullPv::backSubstituteIntoDU()
 	//"Use colOrder to get DU in upper triangular with nonzero diagonals."
 	//"Formula given by Eqn. 9.26 and 9.27 in Chapra's text 2nd Edition."
 
-	double sum, duij, duii;
+	double sum, duij, duii{};
 	//answerX = rightHandSideB->copyEmpty();
 	assert(m == n);
 
@@ -120,7 +120,7 @@ void GESpMatFullPv::backSubstituteIntoDU()
 	//auto rhsZeroElement = this->rhsZeroElement();
 	for (int i = n - 2; i >= 0; i--)
 	{
-		auto& rowi = matrixA->at(i);
+		auto& rowi = matrixA->at((int)i);
 		sum = 0.0; // rhsZeroElement copy.
 		for (auto const& keyValue : *rowi) {
 			auto jj = keyValue.first;

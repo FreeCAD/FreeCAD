@@ -24,7 +24,7 @@ FColDsptr MbD::LinearMultiStepMethod::derivativeatpresentpast(int n, double t, F
 		{
 			auto diydti = this->derivativepresentpast(i, y, ypast);
 			dtpower = dtpower * dt;
-			answer->equalSelfPlusFullColumntimes(diydti, dtpower * (OneOverFactorials->at((size_t)i - n)));
+			answer->equalSelfPlusFullColumntimes(diydti, dtpower * (OneOverFactorials->at((int)i - n)));
 		}
 	}
 	return answer;

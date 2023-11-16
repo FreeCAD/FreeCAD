@@ -20,7 +20,7 @@ namespace MbD {
         void run() override;
         void runBasic();
 
-        int nqsu;
+        int nqsu = -1;
     };
 }
 

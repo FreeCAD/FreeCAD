@@ -26,6 +26,15 @@ void sharedptrTest();
 
 int main()
 {
+	MBDynSystem::runFile("../testapp/MBDynCase9orig.mbd");	//SimulationStoppingError
+	MBDynSystem::runFile("../testapp/MBDynCase8orig.mbd");	//Incompatible geometry at t=3.15
+	MBDynSystem::runFile("../testapp/MBDynCase5orig.mbd");	//Test Product::integrateWRT
+	ASMTAssembly::readWriteFile("../testapp/Gears.asmt");
+	ASMTAssembly::readWriteFile("../testapp/anglejoint.asmt");
+	ASMTAssembly::readWriteFile("../testapp/constvel.asmt");
+	//ASMTAssembly::readWriteFile("../testapp/rackscrew.asmt");	//ToDo new joint
+	ASMTAssembly::readWriteFile("../testapp/planarbug.asmt");
+	MBDynSystem::runFile("../testapp/InitialConditions.mbd");
 	MBDynSystem::runFile("../testapp/SphericalHinge.mbd");
 	ASMTAssembly::runFile("../testapp/cirpendu2.asmt");	//Under constrained. Testing ICKine.
 	ASMTAssembly::runFile("../testapp/quasikine.asmt");	//Under constrained. Testing ICKine.

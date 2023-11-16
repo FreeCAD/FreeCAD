@@ -13,7 +13,7 @@ void MbD::MBDynMarker::parseMBDyn(std::vector<std::string>& args)
 	rPmP = std::make_shared<FullColumn<double>>(3);
 	aAPm = FullMatrixDouble::identitysptr(3);
 	if (args.empty()) return;
-	auto& str = args.at(0);
+	auto str = args.at(0); //Must copy string
 	if (str.find("reference") != std::string::npos) {
 		auto strucNode = std::static_pointer_cast<MBDynStructural>(nodeAt(nodeStr));
 		auto rOPO = strucNode->rOfO;

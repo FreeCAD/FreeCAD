@@ -131,7 +131,7 @@ void MbD::ASMTSpatialItem::storeOnLevelRotationMatrix(std::ofstream& os, int lev
 
 }
 
-FColDsptr MbD::ASMTSpatialItem::getPosition3D(size_t i)
+FColDsptr MbD::ASMTSpatialItem::getPosition3D(int i)
 {
 	auto vec3 = std::make_shared<FullColumn<double>>(3);
 	vec3->atiput(0, xs->at(i));
@@ -140,7 +140,7 @@ FColDsptr MbD::ASMTSpatialItem::getPosition3D(size_t i)
 	return vec3;
 }
 
-FMatDsptr MbD::ASMTSpatialItem::getRotationMatrix(size_t i)
+FMatDsptr MbD::ASMTSpatialItem::getRotationMatrix(int i)
 {
 	auto bryantAngles = std::make_shared<EulerAngles<double>>();
 	bryantAngles->setRotOrder(1, 2, 3);

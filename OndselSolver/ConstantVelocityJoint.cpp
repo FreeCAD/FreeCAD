@@ -22,12 +22,25 @@ MbD::ConstantVelocityJoint::ConstantVelocityJoint(const char* str) : AtPointJoin
 {
 }
 
+void MbD::ConstantVelocityJoint::initializeLocally()
+{
+	if (!constraints->empty())
+	{
+		auto constraint = std::static_pointer_cast<ConstVelConstraintIJ>(constraints->back());
+		constraint->initA01IeJe();
+		constraint->initA10IeJe();
+	}
+	Joint::initializeLocally();
+}
+
 void MbD::ConstantVelocityJoint::initializeGlobally()
 {
 	if (constraints->empty())
 	{
 		createAtPointConstraints();
-		addConstraint(CREATE<ConstVelConstraintIJ>::With(frmI, frmJ));
+		auto constVelIJ = ConstVelConstraintIJ::With(frmI, frmJ);
+		constVelIJ->setConstant(0.0);
+		addConstraint(constVelIJ);
 		this->root()->hasChanged = true;
 	}
 	else {

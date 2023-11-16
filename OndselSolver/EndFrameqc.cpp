@@ -155,3 +155,8 @@ FMatDsptr EndFrameqc::aBOp()
 {
 	return markerFrame->aBOp();
 }
+
+bool MbD::EndFrameqc::isEndFrameqc()
+{
+	return true;
+}

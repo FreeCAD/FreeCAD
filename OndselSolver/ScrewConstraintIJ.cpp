@@ -9,11 +9,17 @@
 #include "corecrt_math_defines.h"
 
 #include "ScrewConstraintIJ.h"
+#include "ScrewConstraintIqcJqc.h"
 
 using namespace MbD;
 
 MbD::ScrewConstraintIJ::ScrewConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj) : ConstraintIJ(frmi, frmj)
 {
+}
+
+std::shared_ptr<ScrewConstraintIJ> MbD::ScrewConstraintIJ::With(EndFrmsptr frmi, EndFrmsptr frmj)
+{
+	return std::make_shared<ScrewConstraintIqcJqc>(frmi, frmj);
 }
 
 void MbD::ScrewConstraintIJ::calcPostDynCorrectorIteration()
@@ -24,6 +30,16 @@ void MbD::ScrewConstraintIJ::calcPostDynCorrectorIteration()
 }
 
 void MbD::ScrewConstraintIJ::init_zthez()
+{
+	assert(false);
+}
+
+void MbD::ScrewConstraintIJ::initzIeJeIe()
+{
+	assert(false);
+}
+
+void MbD::ScrewConstraintIJ::initthezIeJe()
 {
 	assert(false);
 }

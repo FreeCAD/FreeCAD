@@ -70,7 +70,7 @@ Symsptr MbD::PiecewiseFunction::integrateWRT(Symsptr var)
 		std::back_inserter(*integrals),
 		[var](auto& func) { return func->integrateWRT(var); }
 	);
-	for (size_t i = 0; i < transitions->size(); i++)
+	for (int i = 0; i < transitions->size(); i++)
 	{
 		auto x = transitions->at(i)->getValue();
 		auto fi = integrals->at(i)->getValue(x);
@@ -85,7 +85,7 @@ Symsptr MbD::PiecewiseFunction::integrateWRT(Symsptr var)
 double MbD::PiecewiseFunction::getValue()
 {
 	auto xval = xx->getValue();
-	for (size_t i = 0; i < transitions->size(); i++)
+	for (int i = 0; i < transitions->size(); i++)
 	{
 		if (xval < transitions->at(i)->getValue()) {
 			return functions->at(i)->getValue();
@@ -99,14 +99,14 @@ std::ostream& MbD::PiecewiseFunction::printOn(std::ostream& s) const
 	s << "PiecewiseFunction(" << *xx << ", " << std::endl;
 	s << "functions{" << std::endl;
 	s << *functions->at(0) << std::endl;
-	for (size_t i = 1; i < functions->size(); i++)
+	for (int i = 1; i < functions->size(); i++)
 	{
 		s << *functions->at(i) << std::endl;
 	}
 	s << "}, " << std::endl;
 	s << "transitions{" << std::endl;
 	s << *transitions->at(0) << std::endl;
-	for (size_t i = 1; i < transitions->size(); i++)
+	for (int i = 1; i < transitions->size(); i++)
 	{
 		s << *transitions->at(i) << std::endl;
 	}

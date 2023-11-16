@@ -27,6 +27,7 @@ namespace MbD {
 
 		virtual void initialize();
 		void noop();
+		virtual std::string classname();
 		void setName(std::string str);
 		virtual void parseASMT(std::vector<std::string>& lines);
 		FRowDsptr readRowOfDoubles(std::string& line);
@@ -56,6 +57,8 @@ namespace MbD {
 		void storeOnLevelArray(std::ofstream& os, int level, std::vector<double> array);
 		void storeOnLevelName(std::ofstream& os, int level);
 		virtual void storeOnTimeSeries(std::ofstream& os);
+		void logString(std::string& str);
+		void logString(const char* chars);
 
 		std::string name;
 		ASMTItem* owner = nullptr;
@@ -65,7 +68,7 @@ namespace MbD {
 	//inline void ASMTItem::storeOnLevelArray(std::ofstream& os, int level, std::vector<T> array)
 	//{
 	//	storeOnLevelTabs(os, level);
-	//	for (size_t i = 0; i < array.size(); i++)
+	//	for (int i = 0; i < array.size(); i++)
 	//	{
 	//		os << array[i] << '\t';
 	//	}

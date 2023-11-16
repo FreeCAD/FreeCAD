@@ -43,20 +43,25 @@ void MbD::ExternalSystem::outputFor(AnalysisType type)
 
 void MbD::ExternalSystem::logString(std::string& str)
 {
+	std::cout << str << std::endl;
 }
 
 void MbD::ExternalSystem::logString(double value)
 {
+	assert(false);
 }
 
 void MbD::ExternalSystem::runOndselPiston()
 {
+	assert(false);
 }
 
 void MbD::ExternalSystem::runPiston()
 {
+	assert(false);
 }
 
 void MbD::ExternalSystem::postMbDrun()
 {
+	//Do nothing
 }

@@ -155,11 +155,11 @@ void LDUFullMat::backSubstituteIntoDU()
 
 		//| rowi sum |
 	answerX = std::make_shared<FullColumn<double>>(n);
-	answerX->at((size_t)n - 1) = rightHandSideB->at((size_t)m - 1) / matrixA->at((size_t)m - 1)->at((size_t)n - 1);
+	answerX->at((int)n - 1) = rightHandSideB->at((int)m - 1) / matrixA->at((int)m - 1)->at((int)n - 1);
 	for (int i = n - 2; i >= 0; i--)
 	{
 		auto& rowi = matrixA->at(i);
-		double sum = answerX->at((size_t)n - 1) * rowi->at((size_t)n - 1);
+		double sum = answerX->at((int)n - 1) * rowi->at((int)n - 1);
 		for (int j = i + 1; j < n - 1; j++)
 		{
 			sum += answerX->at(j) * rowi->at(j);

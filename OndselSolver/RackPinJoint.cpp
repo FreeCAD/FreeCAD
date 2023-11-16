@@ -21,12 +21,23 @@ MbD::RackPinJoint::RackPinJoint(const char* str) : Joint(str)
 {
 }
 
+void MbD::RackPinJoint::initializeLocally()
+{
+	if (!constraints->empty())
+	{
+		auto constraint = std::static_pointer_cast<RackPinConstraintIJ>(constraints->front());
+		constraint->initxIeJeIe();
+		constraint->initthezIeJe();
+	}
+	Joint::initializeLocally();
+}
+
 void MbD::RackPinJoint::initializeGlobally()
 {
 	if (constraints->empty())
 	{
-		auto rackPinIJ = CREATE<RackPinConstraintIJ>::With(frmI, frmJ);
-		rackPinIJ->setConstant(aConstant);
+		auto rackPinIJ = RackPinConstraintIJ::With(frmI, frmJ);
+		rackPinIJ->setConstant(std::numeric_limits<double>::min());
 		rackPinIJ->pitchRadius = pitchRadius;
 		addConstraint(rackPinIJ);
 		this->root()->hasChanged = true;

@@ -888,6 +888,54 @@
     <ClCompile Include="MBDynGravity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ASMTInLineJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ASMTInPlaneJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ASMTPlanarJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ASMTLineInPlaneJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ASMTAngleJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ASMTConstantVelocityJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ASMTCylSphJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ASMTGearJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ASMTScrewJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ASMTRackPinionJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ASMTParallelAxesJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ASMTPerpendicularJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ASMTRevCylJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ASMTSphSphJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ASMTAtPointJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ASMTCompoundJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Array.h">
@@ -1784,6 +1832,54 @@
     <ClInclude Include="MBDynGravity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="ASMTInLineJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ASMTInPlaneJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ASMTPlanarJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ASMTLineInPlaneJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ASMTAngleJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ASMTConstantVelocityJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ASMTCylSphJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ASMTGearJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ASMTScrewJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ASMTRackPinionJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ASMTParallelAxesJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ASMTPerpendicularJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ASMTRevCylJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ASMTSphSphJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ASMTAtPointJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ASMTCompoundJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="OndselSolver.rc">
@@ -1813,6 +1909,15 @@
     <None Include="..\testapp\robot.asmt" />
     <None Include="..\testapp\SphericalHinge.mbd" />
     <None Include="..\testapp\wobpump.asmt" />
+    <None Include="..\testapp\planarbug.asmt" />
+    <None Include="..\testapp\rackscrew.asmt" />
+    <None Include="..\testapp\constvel.asmt" />
+    <None Include="..\testapp\anglejoint.asmt" />
+    <None Include="..\testapp\Gears.asmt" />
+    <None Include="..\testapp\MBDynCase4orig.mbd" />
+    <None Include="..\testapp\MBDynCase3orig.mbd" />
+    <None Include="..\testapp\MBDynCase5orig.mbd" />
+    <None Include="..\testapp\MBDynCase6orig.mbd" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="..\testapp\CrankSlider2.mov" />

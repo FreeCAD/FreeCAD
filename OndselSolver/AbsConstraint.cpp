@@ -23,10 +23,10 @@ AbsConstraint::AbsConstraint(int i)
 void AbsConstraint::calcPostDynCorrectorIteration()
 {
     if (axis < 3) {
-        aG = static_cast<PartFrame*>(owner)->qX->at((size_t)axis);
+        aG = static_cast<PartFrame*>(owner)->qX->at((int)axis);
     }
     else {
-        aG = static_cast<PartFrame*>(owner)->qE->at((size_t)axis - 3);
+        aG = static_cast<PartFrame*>(owner)->qE->at((int)axis - 3);
     }
 }
 
@@ -63,10 +63,10 @@ void AbsConstraint::fillAccICIterError(FColDsptr col)
     auto partFrame = static_cast<PartFrame*>(owner);
         double sum;
         if (axis < 3) {
-            sum = partFrame->qXddot->at((size_t)axis);
+            sum = partFrame->qXddot->at((int)axis);
         }
         else {
-            sum = partFrame->qEddot->at((size_t)axis - 3);
+            sum = partFrame->qEddot->at((int)axis - 3);
         }
         col->atiplusNumber(iG, sum);
 }

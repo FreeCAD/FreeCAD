@@ -17,6 +17,8 @@ namespace MbD {
     public:
 		ScrewConstraintIqcJqc(EndFrmsptr frmi, EndFrmsptr frmj);
 
+		void initzIeJeIe() override;
+		void initthezIeJe() override;
 		void calc_pGpEJ();
 		void calc_pGpXJ();
 		void calc_ppGpEIpEJ();

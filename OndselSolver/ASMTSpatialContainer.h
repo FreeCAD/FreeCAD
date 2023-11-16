@@ -86,8 +86,8 @@ namespace MbD {
         void storeOnLevelRefCurves(std::ofstream& os, int level);
         void storeOnLevelRefSurfaces(std::ofstream& os, int level);
         void storeOnTimeSeries(std::ofstream& os) override;
-        FColDsptr getVelocity3D(size_t i);
-        FColDsptr getOmega3D(size_t i);
+        FColDsptr getVelocity3D(int i);
+        FColDsptr getOmega3D(int i);
 
         FColDsptr velocity3D = std::make_shared<FullColumn<double>>(3);
         FColDsptr omega3D = std::make_shared<FullColumn<double>>(3);

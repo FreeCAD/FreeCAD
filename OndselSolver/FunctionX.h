@@ -29,6 +29,7 @@ namespace MbD {
 		void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
 		double getValue() override;
 		double getValue(double arg) override;
+		bool isConstant() override;
 
 		Symsptr xx;
 

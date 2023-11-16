@@ -14,7 +14,7 @@ void MbD::ASMTAnimationParameters::parseASMT(std::vector<std::string>& lines)
 {
 	//int nframe, icurrent, istart, iend, framesPerSecond;
 	//bool isForward;
-	size_t pos = lines[0].find_first_not_of("\t");
+	int pos = lines[0].find_first_not_of("\t");
 	auto leadingTabs = lines[0].substr(0, pos);
 	assert(lines[0] == (leadingTabs + "nframe"));
 	lines.erase(lines.begin());

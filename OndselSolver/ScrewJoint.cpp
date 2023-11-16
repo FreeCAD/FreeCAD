@@ -21,12 +21,23 @@ MbD::ScrewJoint::ScrewJoint(const char* str) : Joint(str)
 {
 }
 
+void MbD::ScrewJoint::initializeLocally()
+{
+	if (!constraints->empty())
+	{
+		auto constraint = std::static_pointer_cast<ScrewConstraintIJ>(constraints->front());
+		constraint->initzIeJeIe();
+		constraint->initthezIeJe();
+	}
+	Joint::initializeLocally();
+}
+
 void MbD::ScrewJoint::initializeGlobally()
 {
 	if (constraints->empty())
 	{
-		auto screwIJ = CREATE<ScrewConstraintIJ>::With(frmI, frmJ);
-		screwIJ->setConstant(aConstant);
+		auto screwIJ = ScrewConstraintIJ::With(frmI, frmJ);
+		screwIJ->setConstant(std::numeric_limits<double>::min());
 		screwIJ->pitch = pitch;
 		addConstraint(screwIJ);
 		this->root()->hasChanged = true;

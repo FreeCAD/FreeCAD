@@ -51,7 +51,7 @@ namespace MbD {
     FRowsptr<double> FullRow<double>::timesFullMatrix(std::shared_ptr<FullMatrixDouble> fullMat)
     {
         FRowsptr<double> answer = fullMat->at(0)->times(this->at(0));
-        for (size_t j = 1; j < this->size(); j++)
+        for (int j = 1; j < this->size(); j++)
         {
             answer->equalSelfPlusFullRowTimes(fullMat->at(j), this->at(j));
         }

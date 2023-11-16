@@ -27,6 +27,7 @@ namespace MbD {
         std::shared_ptr<std::vector<Symsptr>> getTerms() override;
         void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
         void arguments(Symsptr args) override;
+        bool isConstant() override;
 
         std::shared_ptr<std::vector<Symsptr>> terms;
     };

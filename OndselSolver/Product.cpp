@@ -29,7 +29,7 @@ Symsptr MbD::Product::differentiateWRT(Symsptr var)
 		}
 	);
 	auto derivativeTerms = std::make_shared<std::vector<Symsptr>>();
-	for (size_t i = 0; i < terms->size(); i++)
+	for (int i = 0; i < terms->size(); i++)
 	{
 		auto& derivative = derivatives->at(i);
 		auto newTermFunctions = std::make_shared<std::vector<Symsptr>>(*terms);
@@ -46,8 +46,29 @@ Symsptr MbD::Product::differentiateWRT(Symsptr var)
 Symsptr MbD::Product::integrateWRT(Symsptr var)
 {
 	//ToDo: Integration by parts
-	assert(false);
-	return Symsptr();
+	auto newTerms = std::make_shared<std::vector<Symsptr>>();
+	double factor = 1.0;
+	for (const auto& term : *terms) {
+		if (term->isConstant()) {
+			factor *= term->getValue();
+		}
+		else {
+			newTerms->push_back(term);
+		}
+	}
+	if (factor == 0.0) {
+		return sptrConstant(0.0);
+	}
+	if (factor == 1.0) {
+		assert(newTerms->size() == 1);
+		return newTerms->front()->integrateWRT(var);
+	}
+	assert(newTerms->size() == 1);
+	auto soleIntegral = newTerms->front()->integrateWRT(var);
+	auto answer = std::make_shared<Product>();
+	answer->terms->push_back(sptrConstant(factor));
+	answer->terms->push_back(soleIntegral);
+	return answer;
 }
 
 Symsptr Product::expandUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>> set)
@@ -107,7 +128,7 @@ Symsptr Product::simplifyUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<
 	if (factor != 1.0) {
 		newTerms->insert(newTerms->begin(), sptrConstant(factor));
 	}
-	auto newSize = newTerms->size();
+	auto newSize = (int)newTerms->size();
 	if (newSize == 0) {
 		return sptrConstant(1.0);
 	}
@@ -125,7 +146,7 @@ std::ostream& Product::printOn(std::ostream& s) const
 {
 	s << "(";
 	s << *(this->terms->at(0));
-	for (size_t i = 1; i < this->terms->size(); i++)
+	for (int i = 1; i < this->terms->size(); i++)
 	{
 		s << "*" << *(this->terms->at(i));
 	}
@@ -141,7 +162,7 @@ bool Product::isProduct()
 double Product::getValue()
 {
 	double answer = 1.0;
-	for (size_t i = 0; i < terms->size(); i++) answer *= terms->at(i)->getValue();
+	for (int i = 0; i < terms->size(); i++) answer *= terms->at(i)->getValue();
 	return answer;
 }
 

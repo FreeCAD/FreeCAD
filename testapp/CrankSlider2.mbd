@@ -10,7 +10,7 @@
 
  begin: initial value;
      initial time: 0.0;
-     final time: 8.0;
+     final time: 3.0;
      time step: 0.01;
      max iterations: 100;
      tolerance: 1e-06;

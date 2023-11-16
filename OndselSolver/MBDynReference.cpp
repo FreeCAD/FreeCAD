@@ -46,7 +46,7 @@ void MbD::MBDynReference::readVelocity(std::vector<std::string>& args)
 	auto parser = std::make_shared<SymbolicParser>();
 	parser->variables = mbdynVariables();
 	vOfO = std::make_shared<FullColumn<double>>(3);
-	auto& str = args.at(0);
+	auto str = args.at(0); //Must copy string
 	if (str.find("null") != std::string::npos) {
 		args.erase(args.begin());
 		return;
@@ -67,7 +67,7 @@ void MbD::MBDynReference::readOmega(std::vector<std::string>& args)
 	auto parser = std::make_shared<SymbolicParser>();
 	parser->variables = mbdynVariables();
 	omeOfO = std::make_shared<FullColumn<double>>(3);
-	auto& str = args.at(0);
+	auto str = args.at(0); //Must copy string
 	if (str.find("null") != std::string::npos) {
 		args.erase(args.begin());
 		return;

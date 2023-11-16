@@ -10,6 +10,7 @@
 #include <assert.h>
 //#include <debugapi.h>
 #include <sstream> 
+#include <chrono>
 
 #include "Item.h"
 #include "System.h"
@@ -18,6 +19,9 @@
 using namespace MbD;
 
 Item::Item() {
+	auto now = std::chrono::high_resolution_clock::now();
+	auto nanoseconds = now.time_since_epoch().count();
+	name = std::to_string(nanoseconds);
 }
 
 Item::Item(const char* str) : name(str)

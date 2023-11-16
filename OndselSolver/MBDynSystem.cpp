@@ -148,13 +148,13 @@ void MbD::MBDynSystem::outputFiles()
 {
 	auto movFile = filename.substr(0, filename.find_last_of('.')) + ".mov";
 	auto asmtAsm = asmtAssembly();
-	auto asmtTimes = asmtAsm->times;
-	auto asmtParts = asmtAsm->parts;
-	auto asmtJoints = asmtAsm->joints;
-	auto asmtMotions = asmtAsm->motions;
+	auto& asmtTimes = asmtAsm->times;
+	auto& asmtParts = asmtAsm->parts;
+	auto& asmtJoints = asmtAsm->joints;
+	auto& asmtMotions = asmtAsm->motions;
 	std::ofstream os(movFile);
-	os << std::setprecision(std::numeric_limits<double>::digits10 + 1);
-	for (size_t i = 1; i < asmtTimes->size(); i++)
+	os << std::setprecision(static_cast<std::streamsize>(std::numeric_limits<double>::digits10) + 1);
+	for (int i = 1; i < asmtTimes->size(); i++)
 	{
 		for (auto& node : *nodes) {
 			node->outputLine(i, os);
@@ -165,6 +165,10 @@ void MbD::MBDynSystem::outputFiles()
 
 void MbD::MBDynSystem::setFilename(std::string str)
 {
+	std::stringstream ss;
+	ss << "FileName = " << str << std::endl;
+	auto str2 = ss.str();
+	logString(str2);
 	filename = str;
 }
 
@@ -244,15 +248,15 @@ void MbD::MBDynSystem::readElementsBlock(std::vector<std::string>& lines)
 
 void MbD::MBDynSystem::eraseComments(std::vector<std::string>& lines)
 {
-	for (size_t i = 0; i < lines.size(); i++)
+	for (int i = 0; i < lines.size(); i++)
 	{
-		auto line = lines[i];
+		auto& line = lines[i];
 		auto it = line.find('#');
 		if (it != std::string::npos) {
 			lines[i] = line.substr(0, it);
 		}
 	}
-	for (int i = lines.size() - 1; i >= 0; i--) {
+	for (int i = (int)lines.size() - 1; i >= 0; i--) {
 		auto& line = lines[i];
 		auto it = std::find_if(line.begin(), line.end(), [](unsigned char ch) { return !std::isspace(ch); });
 		if (it == line.end()) lines.erase(lines.begin() + i);
@@ -265,7 +269,7 @@ std::vector<std::string> MbD::MBDynSystem::collectStatements(std::vector<std::st
 	while (!lines.empty()) {
 		std::stringstream ss;
 		while (!lines.empty()) {
-			auto line = lines[0];
+			std::string line = lines[0];	//Must copy string
 			lines.erase(lines.begin());
 			auto i = line.find(';');
 			if (i != std::string::npos) {
@@ -377,7 +381,6 @@ void MbD::MBDynSystem::parseMBDynVariables(std::vector<std::string>& lines)
 {
 	variables = std::make_shared<std::map<std::string, Symsptr>>();
 	std::string str, variable;
-	double doubleValue;
 	std::vector<std::string> tokens{ "set:", "real" };
 	while (true) {
 		auto it = findLineWith(lines, tokens);
@@ -392,7 +395,7 @@ void MbD::MBDynSystem::parseMBDynVariables(std::vector<std::string>& lines)
 			parser->variables = variables;
 			auto userFunc = std::make_shared<BasicUserFunction>(str, 1.0);
 			parser->parseUserFunction(userFunc);
-			auto sym = parser->stack->top();
+			auto& sym = parser->stack->top();
 			auto val = sym->getValue();
 			variables->insert(std::make_pair(variable, sym));
 			lines.erase(it);
@@ -431,7 +434,6 @@ void MbD::MBDynSystem::parseMBDynReferences(std::vector<std::string>& lines)
 {
 	references = std::make_shared<std::map<std::string, std::shared_ptr<MBDynReference>>>();
 	std::string str, refName;
-	double doubleValue;
 	std::vector<std::string> tokens{ "reference:" };
 	while (true) {
 		auto it = findLineWith(lines, tokens);

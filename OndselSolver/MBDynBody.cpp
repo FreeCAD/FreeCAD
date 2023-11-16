@@ -61,7 +61,7 @@ void MbD::MBDynBody::readInertiaMatrix(std::vector<std::string>& args)
 	auto parser = std::make_shared<SymbolicParser>();
 	parser->variables = mbdynVariables();
 	aJmat = std::make_shared<FullMatrixDouble>(3, 3);
-	auto& str = args.at(0);
+	auto str = args.at(0);	//Must copy string
 	if (str.find("diag") != std::string::npos) {
 		args.erase(args.begin());
 		for (int i = 0; i < 3; i++)

@@ -21,14 +21,24 @@ MbD::GearJoint::GearJoint(const char* str)
 {
 }
 
+void MbD::GearJoint::initializeLocally()
+{
+	if (!constraints->empty())
+	{
+		auto constraint = std::static_pointer_cast<GearConstraintIJ>(constraints->back());
+		constraint->initorbitsIJ();
+	}
+	Joint::initializeLocally();
+}
+
 void MbD::GearJoint::initializeGlobally()
 {
 	if (constraints->empty())
 	{
-		auto gearIJ = CREATE<GearConstraintIJ>::With(frmI, frmJ);
+		auto gearIJ = GearConstraintIJ::With(frmI, frmJ);
 		gearIJ->radiusI = radiusI;
 		gearIJ->radiusJ = radiusJ;
-		gearIJ->setConstant(aConstant);
+		gearIJ->setConstant(std::numeric_limits<double>::min());
 		addConstraint(gearIJ);
 		this->root()->hasChanged = true;
 	}

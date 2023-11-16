@@ -24,7 +24,7 @@ namespace MbD {
         double getmatrixArowimaxMagnitude(int i) override;
 
         SpMatDsptr matrixA;
-        int markowitzPivotRowCount, markowitzPivotColCount;
+        int markowitzPivotRowCount = -1, markowitzPivotColCount = -1;
         std::shared_ptr<std::vector<int>> rowPositionsOfNonZerosInPivotColumn;
     };
 }

@@ -257,32 +257,32 @@ namespace MbD {
     }
     void FullMatrixDouble::zeroSelf()
     {
-        for (size_t i = 0; i < this->size(); i++) {
+        for (int i = 0; i < this->size(); i++) {
             this->at(i)->zeroSelf();
         }
     }
     void FullMatrixFullMatrixDouble::zeroSelf()
     {
-        for (size_t i = 0; i < this->size(); i++) {
+        for (int i = 0; i < this->size(); i++) {
             this->at(i)->zeroSelf();
         }
     }
     void FullMatrixFullColumnDouble::zeroSelf()
     {
-        for (size_t i = 0; i < this->size(); i++) {
+        for (int i = 0; i < this->size(); i++) {
             this->at(i)->zeroSelf();
         }
     }
     void FullMatrixDouble::identity() {
         this->zeroSelf();
-        for (size_t i = 0; i < this->size(); i++) {
+        for (int i = 0; i < this->size(); i++) {
             this->at(i)->at(i) = 1.0;
         }
     }
     void FullMatrixFullMatrixDouble::identity() {
         assert(false);
 //    this->zeroSelf();
-//    for (size_t i = 0; i < this->size(); i++) {
+//    for (int i = 0; i < this->size(); i++) {
 //        this->at(i)->at(i) = 1.0;
 //    }
     }
@@ -410,7 +410,7 @@ namespace MbD {
     }
     void FullMatrixDouble::atijputFullColumn(int i1, int j1, FColsptr<double> fullCol)
     {
-        for (size_t ii = 0; ii < fullCol->size(); ii++)
+        for (int ii = 0; ii < fullCol->size(); ii++)
         {
             this->at(i1 + ii)->at(j1) = fullCol->at(ii);
         }
@@ -432,7 +432,7 @@ namespace MbD {
     double FullMatrixDouble::sumOfSquares()
     {
         double sum = 0.0;
-        for (size_t i = 0; i < this->size(); i++)
+        for (int i = 0; i < this->size(); i++)
         {
             sum += this->at(i)->sumOfSquares();
         }
@@ -441,7 +441,7 @@ namespace MbD {
     double FullMatrixFullMatrixDouble::sumOfSquares()
     {
         double sum = 0.0;
-        for (size_t i = 0; i < this->size(); i++)
+        for (int i = 0; i < this->size(); i++)
         {
             sum += this->at(i)->sumOfSquares();
         }
@@ -450,7 +450,7 @@ namespace MbD {
     double FullMatrixFullColumnDouble::sumOfSquares()
     {
         double sum = 0.0;
-        for (size_t i = 0; i < this->size(); i++)
+        for (int i = 0; i < this->size(); i++)
         {
             sum += this->at(i)->sumOfSquares();
         }
@@ -482,14 +482,14 @@ namespace MbD {
     }
     void FullMatrixDouble::magnifySelf(double factor)
     {
-        for (size_t i = 0; i < this->size(); i++) {
+        for (int i = 0; i < this->size(); i++) {
             this->at(i)->magnifySelf(factor);
         }
     }
     std::ostream& FullMatrixDouble::printOn(std::ostream& s) const
     {
         s << "FullMat[" << std::endl;
-        for (size_t i = 0; i < this->size(); i++)
+        for (int i = 0; i < this->size(); i++)
         {
             s << *(this->at(i)) << std::endl;
         }
@@ -558,7 +558,7 @@ namespace MbD {
     double FullMatrixDouble::trace()
     {
         double trace = 0.0;
-        for (size_t i = 0; i < this->size(); i++)
+        for (int i = 0; i < this->size(); i++)
         {
             trace += this->at(i)->at(i);
         }
@@ -567,7 +567,7 @@ namespace MbD {
     double FullMatrixDouble::maxMagnitude()
     {
         double max = 0.0;
-        for (size_t i = 0; i < this->size(); i++)
+        for (int i = 0; i < this->size(); i++)
         {
             double element = this->at(i)->maxMagnitude();
             if (max < element) max = element;
@@ -577,7 +577,7 @@ namespace MbD {
     double FullMatrixFullMatrixDouble::maxMagnitude()
     {
         double max = 0.0;
-        for (size_t i = 0; i < this->size(); i++)
+        for (int i = 0; i < this->size(); i++)
         {
             double element = this->at(i)->maxMagnitude();
             if (max < element) max = element;
@@ -587,7 +587,7 @@ namespace MbD {
     double FullMatrixFullColumnDouble::maxMagnitude()
     {
         double max = 0.0;
-        for (size_t i = 0; i < this->size(); i++)
+        for (int i = 0; i < this->size(); i++)
         {
             double element = this->at(i)->maxMagnitude();
             if (max < element) max = element;

@@ -18,7 +18,7 @@ using namespace MbD;
 
 FRowDsptr DifferenceOperator::OneOverFactorials = []() {
 	auto oneOverFactorials = std::make_shared<FullRow<double>>(10);
-	for (size_t i = 0; i < oneOverFactorials->size(); i++)
+	for (int i = 0; i < oneOverFactorials->size(); i++)
 	{
 		oneOverFactorials->at(i) = 1.0 / std::tgamma(i + 1);
 	}
@@ -81,7 +81,7 @@ void DifferenceOperator::formTaylorRowwithTimeNodederivative(int i, int ii, int 
 	for (int j = k + 1; j < order + 1; j++)
 	{
 		hipower = hipower * hi;
-		auto aij = hipower * OneOverFactorials->at((size_t)j - k);
+		auto aij = hipower * OneOverFactorials->at((int)j - k);
 		rowi->atiput(j, aij);
 	}
 }

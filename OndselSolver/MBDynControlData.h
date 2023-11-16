@@ -30,6 +30,6 @@ namespace MbD {
 		std::string omegaRotates = "no";
 		std::string print = "none";
 		std::string initialStiffness = "1.0, 1.0";
-		int structuralNodes, rigidBodies, joints;
+		int structuralNodes = -1, rigidBodies = -1, joints = -1;
 	};
 }

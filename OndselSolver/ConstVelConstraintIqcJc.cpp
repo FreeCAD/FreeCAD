@@ -18,6 +18,8 @@ using namespace MbD;
 
 MbD::ConstVelConstraintIqcJc::ConstVelConstraintIqcJc(EndFrmsptr frmi, EndFrmsptr frmj) : ConstVelConstraintIJ(frmi, frmj)
 {
+	pGpEI = std::make_shared<FullRow<double>>(4);
+	ppGpEIpEI = std::make_shared<FullMatrixDouble>(4, 4);
 }
 
 void MbD::ConstVelConstraintIqcJc::calcPostDynCorrectorIteration()
