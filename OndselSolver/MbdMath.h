@@ -9,7 +9,7 @@
 #pragma once
 
 namespace MbD {
-	class MbdMath
+	class MbDMath
 	{
 	};
 }

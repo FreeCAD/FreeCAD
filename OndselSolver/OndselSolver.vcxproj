@@ -337,7 +337,7 @@
     <ClCompile Include="MatrixLDU.cpp" />
     <ClCompile Include="MatrixSolver.cpp" />
     <ClCompile Include="MaximumIterationError.cpp" />
-    <ClCompile Include="MbdMath.cpp" />
+    <ClCompile Include="MbDMath.cpp" />
     <ClCompile Include="NewtonRaphson.cpp" />
     <ClCompile Include="NewtonRaphsonError.cpp" />
     <ClCompile Include="NoRotationJoint.cpp" />
@@ -624,7 +624,7 @@
     <ClInclude Include="MatrixLDU.h" />
     <ClInclude Include="MatrixSolver.h" />
     <ClInclude Include="MaximumIterationError.h" />
-    <ClInclude Include="MbdMath.h" />
+    <ClInclude Include="MbDMath.h" />
     <ClInclude Include="NewtonRaphson.h" />
     <ClInclude Include="NewtonRaphsonError.h" />
     <ClInclude Include="NoRotationJoint.h" />
