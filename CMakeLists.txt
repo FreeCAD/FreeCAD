@@ -7,7 +7,30 @@ set(CMAKE_CXX_STANDARD_REQUIRED True)
 
 include(GNUInstallDirs)
 
-set(ONDSEL_EXPORT
+if( UNIX )
+    set( ONDSELSOLVER_BUILD_SHARED ON )
+ELSEIF ( APPLE )
+    set( ONDSELSOLVER_BUILD_SHARED ON )
+ELSE()
+    set( ONDSELSOLVER_BUILD_SHARED OFF )
+ENDIF ()
+
+if ( ONDSELSOLVER_BUILD_SHARED )
+    message( STATUS "[OndselSolver] Building shared library" )
+    add_library(OndselSolver SHARED)
+else()
+    message( STATUS "[OndselSolver] Building static library" )
+    add_library(OndselSolver STATIC)
+endif()
+
+
+set(ONDSELSOLVER_SRC
+        OndselSolver/Array.cpp
+        OndselSolver/FullVector.cpp
+        OndselSolver/RowTypeMatrix.cpp
+        OndselSolver/FullColumn.cpp
+        OndselSolver/FullMatrix.cpp
+        OndselSolver/FullRow.cpp
         OndselSolver/Abs.cpp
         OndselSolver/AbsConstraint.cpp
         OndselSolver/AccICKineNewtonRaphson.cpp
@@ -20,9 +43,9 @@ set(ONDSEL_EXPORT
         OndselSolver/AngleZIeqcJeqc.cpp
         OndselSolver/AnyGeneralSpline.cpp
         OndselSolver/AnyPosICNewtonRaphson.cpp
+        OndselSolver/ArcSine.cpp
         OndselSolver/ArcTan.cpp
         OndselSolver/ArcTan2.cpp
-        OndselSolver/Array.cpp
         OndselSolver/ASMTAnimationParameters.cpp
         OndselSolver/ASMTAssembly.cpp
         OndselSolver/ASMTConstantGravity.cpp
@@ -38,7 +61,9 @@ set(ONDSEL_EXPORT
         OndselSolver/ASMTKinematicIJ.cpp
         OndselSolver/ASMTMarker.cpp
         OndselSolver/ASMTMotion.cpp
+        OndselSolver/ASMTNoRotationJoint.cpp
         OndselSolver/ASMTPart.cpp
+        OndselSolver/ASMTPointInLineJoint.cpp
         OndselSolver/ASMTPointInPlaneJoint.cpp
         OndselSolver/ASMTPrincipalMassMarker.cpp
         OndselSolver/ASMTRefCurve.cpp
@@ -52,8 +77,8 @@ set(ONDSEL_EXPORT
         OndselSolver/ASMTSpatialItem.cpp
         OndselSolver/ASMTSphericalJoint.cpp
         OndselSolver/ASMTTime.cpp
-        OndselSolver/ASMTTranslationalMotion.cpp
         OndselSolver/ASMTTranslationalJoint.cpp
+        OndselSolver/ASMTTranslationalMotion.cpp
         OndselSolver/ASMTUniversalJoint.cpp
         OndselSolver/AtPointConstraintIJ.cpp
         OndselSolver/AtPointConstraintIqcJc.cpp
@@ -78,24 +103,9 @@ set(ONDSEL_EXPORT
         OndselSolver/CREATE.cpp
         OndselSolver/CylindricalJoint.cpp
         OndselSolver/CylSphJoint.cpp
-        OndselSolver/DifferentiatedGeneralSpline.cpp
-        OndselSolver/EndFrameqct2.cpp
-        OndselSolver/EulerAngles.cpp
-        OndselSolver/EulerAnglesDDot.cpp
-        OndselSolver/EulerAnglesDot.cpp
-        OndselSolver/Exponential.cpp
-        OndselSolver/ExternalSystem.cpp
-        OndselSolver/FunctionFromData.cpp
-        OndselSolver/FunctionXcParameter.cpp
-        OndselSolver/FunctionXY.cpp
-        OndselSolver/GeneralSpline.cpp
-        OndselSolver/Ln.cpp
-        OndselSolver/Log10.cpp
-        OndselSolver/LogN.cpp
-        OndselSolver/Negative.cpp
-        OndselSolver/PosVelAccData.cpp
         OndselSolver/DiagonalMatrix.cpp
         OndselSolver/DifferenceOperator.cpp
+        OndselSolver/DifferentiatedGeneralSpline.cpp
         OndselSolver/DirectionCosineConstraintIJ.cpp
         OndselSolver/DirectionCosineConstraintIqcJc.cpp
         OndselSolver/DirectionCosineConstraintIqcJqc.cpp
@@ -134,9 +144,14 @@ set(ONDSEL_EXPORT
         OndselSolver/DistxyIeqcJec.cpp
         OndselSolver/DistxyIeqcJeqc.cpp
         OndselSolver/DistxyIeqctJeqc.cpp
+        OndselSolver/EigenDecomposition.cpp
         OndselSolver/EndFramec.cpp
         OndselSolver/EndFrameqc.cpp
         OndselSolver/EndFrameqct.cpp
+        OndselSolver/EndFrameqct2.cpp
+        OndselSolver/EulerAngles.cpp
+        OndselSolver/EulerAnglesDDot.cpp
+        OndselSolver/EulerAnglesDot.cpp
         OndselSolver/EulerAngleszxz.cpp
         OndselSolver/EulerAngleszxzDDot.cpp
         OndselSolver/EulerAngleszxzDot.cpp
@@ -145,17 +160,19 @@ set(ONDSEL_EXPORT
         OndselSolver/EulerParameters.cpp
         OndselSolver/EulerParametersDDot.cpp
         OndselSolver/EulerParametersDot.cpp
+        OndselSolver/Exponential.cpp
         OndselSolver/ExpressionX.cpp
+        OndselSolver/ExternalSystem.cpp
         OndselSolver/FixedJoint.cpp
         OndselSolver/ForceTorqueData.cpp
         OndselSolver/ForceTorqueItem.cpp
-        OndselSolver/FullColumn.cpp
-        OndselSolver/FullMatrix.cpp
         OndselSolver/FullMotion.cpp
-        OndselSolver/FullRow.cpp
         OndselSolver/Function.cpp
+        OndselSolver/FunctionFromData.cpp
         OndselSolver/FunctionWithManyArgs.cpp
         OndselSolver/FunctionX.cpp
+        OndselSolver/FunctionXcParameter.cpp
+        OndselSolver/FunctionXY.cpp
         OndselSolver/GearConstraintIJ.cpp
         OndselSolver/GearConstraintIqcJc.cpp
         OndselSolver/GearConstraintIqcJqc.cpp
@@ -163,6 +180,7 @@ set(ONDSEL_EXPORT
         OndselSolver/GEFullMat.cpp
         OndselSolver/GEFullMatFullPv.cpp
         OndselSolver/GEFullMatParPv.cpp
+        OndselSolver/GeneralSpline.cpp
         OndselSolver/GESpMat.cpp
         OndselSolver/GESpMatFullPv.cpp
         OndselSolver/GESpMatFullPvPosIC.cpp
@@ -180,6 +198,7 @@ set(ONDSEL_EXPORT
         OndselSolver/Joint.cpp
         OndselSolver/KineIntegrator.cpp
         OndselSolver/KinematicIeJe.cpp
+        OndselSolver/LDUFullMat.cpp
         OndselSolver/LDUFullMatParPv.cpp
         OndselSolver/LDUSpMat.cpp
         OndselSolver/LDUSpMatParPv.cpp
@@ -187,6 +206,9 @@ set(ONDSEL_EXPORT
         OndselSolver/LDUSpMatParPvPrecise.cpp
         OndselSolver/LinearMultiStepMethod.cpp
         OndselSolver/LineInPlaneJoint.cpp
+        OndselSolver/Ln.cpp
+        OndselSolver/Log10.cpp
+        OndselSolver/LogN.cpp
         OndselSolver/MarkerFrame.cpp
         OndselSolver/MatrixDecomposition.cpp
         OndselSolver/MatrixGaussElimination.cpp
@@ -194,6 +216,21 @@ set(ONDSEL_EXPORT
         OndselSolver/MatrixSolver.cpp
         OndselSolver/MaximumIterationError.cpp
         OndselSolver/MbdMath.cpp
+        OndselSolver/MBDynBlock.cpp
+        OndselSolver/MBDynBody.cpp
+        OndselSolver/MBDynControlData.cpp
+        OndselSolver/MBDynData.cpp
+        OndselSolver/MBDynElement.cpp
+        OndselSolver/MBDynInitialValue.cpp
+        OndselSolver/MBDynItem.cpp
+        OndselSolver/MBDynJoint.cpp
+        OndselSolver/MBDynMarker.cpp
+        OndselSolver/MBDynNode.cpp
+        OndselSolver/MBDynReference.cpp
+        OndselSolver/MBDynStructural.cpp
+        OndselSolver/MBDynSystem.cpp
+        OndselSolver/MomentOfInertiaSolver.cpp
+        OndselSolver/Negative.cpp
         OndselSolver/NewtonRaphson.cpp
         OndselSolver/NewtonRaphsonError.cpp
         OndselSolver/NoRotationJoint.cpp
@@ -214,6 +251,7 @@ set(ONDSEL_EXPORT
         OndselSolver/PosICNewtonRaphson.cpp
         OndselSolver/PosKineNewtonRaphson.cpp
         OndselSolver/PosNewtonRaphson.cpp
+        OndselSolver/PosVelAccData.cpp
         OndselSolver/Power.cpp
         OndselSolver/PrescribedMotion.cpp
         OndselSolver/Product.cpp
@@ -226,7 +264,6 @@ set(ONDSEL_EXPORT
         OndselSolver/RedundantConstraint.cpp
         OndselSolver/RevCylJoint.cpp
         OndselSolver/RevoluteJoint.cpp
-        OndselSolver/RowTypeMatrix.cpp
         OndselSolver/ScalarNewtonRaphson.cpp
         OndselSolver/ScrewConstraintIJ.cpp
         OndselSolver/ScrewConstraintIqcJc.cpp
@@ -243,7 +280,6 @@ set(ONDSEL_EXPORT
         OndselSolver/SphericalJoint.cpp
         OndselSolver/SphSphJoint.cpp
         OndselSolver/StableBackwardDifference.cpp
-        OndselSolver/LDUFullMat.cpp
         OndselSolver/StateData.cpp
         OndselSolver/Sum.cpp
         OndselSolver/Symbolic.cpp
@@ -265,7 +301,6 @@ set(ONDSEL_EXPORT
         OndselSolver/UniversalJoint.cpp
         OndselSolver/UserFunction.cpp
         OndselSolver/Variable.cpp
-        OndselSolver/FullVector.cpp
         OndselSolver/VectorNewtonRaphson.cpp
         OndselSolver/VelICKineSolver.cpp
         OndselSolver/VelICSolver.cpp
@@ -273,25 +308,312 @@ set(ONDSEL_EXPORT
         OndselSolver/VelSolver.cpp
         OndselSolver/ZRotation.cpp
         OndselSolver/ZTranslation.cpp
-        OndselSolver/ASMTAssembly.cpp
 )
 
-add_executable(ondsel-solver OndselSolver/OndselSolver.cpp)
-
-add_library(OndselSolver
-        STATIC ${ONDSEL_EXPORT}
+set(ONDSELSOLVER_HEADERS
+        OndselSolver/Array.h
+        OndselSolver/FullVector.h
+        OndselSolver/RowTypeMatrix.h
+        OndselSolver/FullRow.h
+        OndselSolver/FullColumn.h
+        OndselSolver/FullMatrix.h
+        OndselSolver/Abs.h
+        OndselSolver/AbsConstraint.h
+        OndselSolver/AccICKineNewtonRaphson.h
+        OndselSolver/AccICNewtonRaphson.h
+        OndselSolver/AccKineNewtonRaphson.h
+        OndselSolver/AccNewtonRaphson.h
+        OndselSolver/AngleJoint.h
+        OndselSolver/AngleZIecJec.h
+        OndselSolver/AngleZIeqcJec.h
+        OndselSolver/AngleZIeqcJeqc.h
+        OndselSolver/AnyGeneralSpline.h
+        OndselSolver/AnyPosICNewtonRaphson.h
+        OndselSolver/APIExport.h
+        OndselSolver/ArcSine.h
+        OndselSolver/ArcTan.h
+        OndselSolver/ArcTan2.h
+        OndselSolver/ASMTAnimationParameters.h
+        OndselSolver/ASMTAssembly.h
+        OndselSolver/ASMTConstantGravity.h
+        OndselSolver/ASMTConstraintSet.h
+        OndselSolver/ASMTCylindricalJoint.h
+        OndselSolver/ASMTExtrusion.h
+        OndselSolver/ASMTFixedJoint.h
+        OndselSolver/ASMTForceTorque.h
+        OndselSolver/ASMTGeneralMotion.h
+        OndselSolver/ASMTItem.h
+        OndselSolver/ASMTItemIJ.h
+        OndselSolver/ASMTJoint.h
+        OndselSolver/ASMTKinematicIJ.h
+        OndselSolver/ASMTMarker.h
+        OndselSolver/ASMTMotion.h
+        OndselSolver/ASMTNoRotationJoint.h
+        OndselSolver/ASMTPart.h
+        OndselSolver/ASMTPointInLineJoint.h
+        OndselSolver/ASMTPointInPlaneJoint.h
+        OndselSolver/ASMTPrincipalMassMarker.h
+        OndselSolver/ASMTRefCurve.h
+        OndselSolver/ASMTRefItem.h
+        OndselSolver/ASMTRefPoint.h
+        OndselSolver/ASMTRefSurface.h
+        OndselSolver/ASMTRevoluteJoint.h
+        OndselSolver/ASMTRotationalMotion.h
+        OndselSolver/ASMTSimulationParameters.h
+        OndselSolver/ASMTSpatialContainer.h
+        OndselSolver/ASMTSpatialItem.h
+        OndselSolver/ASMTSphericalJoint.h
+        OndselSolver/ASMTTime.h
+        OndselSolver/ASMTTranslationalJoint.h
+        OndselSolver/ASMTTranslationalMotion.h
+        OndselSolver/ASMTUniversalJoint.h
+        OndselSolver/AtPointConstraintIJ.h
+        OndselSolver/AtPointConstraintIqcJc.h
+        OndselSolver/AtPointConstraintIqcJqc.h
+        OndselSolver/AtPointConstraintIqctJqc.h
+        OndselSolver/AtPointJoint.h
+        OndselSolver/BasicIntegrator.h
+        OndselSolver/BasicQuasiIntegrator.h
+        OndselSolver/BasicUserFunction.h
+        OndselSolver/CADSystem.h
+        OndselSolver/CartesianFrame.h
+        OndselSolver/CompoundJoint.h
+        OndselSolver/Constant.h
+        OndselSolver/ConstantGravity.h
+        OndselSolver/ConstantVelocityJoint.h
+        OndselSolver/Constraint.h
+        OndselSolver/ConstraintIJ.h
+        OndselSolver/ConstVelConstraintIJ.h
+        OndselSolver/ConstVelConstraintIqcJc.h
+        OndselSolver/ConstVelConstraintIqcJqc.h
+        OndselSolver/corecrt_math_defines.h
+        OndselSolver/Cosine.h
+        OndselSolver/CREATE.h
+        OndselSolver/CylindricalJoint.h
+        OndselSolver/CylSphJoint.h
+        OndselSolver/DiagonalMatrix.h
+        OndselSolver/DifferenceOperator.h
+        OndselSolver/DifferentiatedGeneralSpline.h
+        OndselSolver/DirectionCosineConstraintIJ.h
+        OndselSolver/DirectionCosineConstraintIqcJc.h
+        OndselSolver/DirectionCosineConstraintIqcJqc.h
+        OndselSolver/DirectionCosineConstraintIqctJqc.h
+        OndselSolver/DirectionCosineIecJec.h
+        OndselSolver/DirectionCosineIeqcJec.h
+        OndselSolver/DirectionCosineIeqcJeqc.h
+        OndselSolver/DirectionCosineIeqctJeqc.h
+        OndselSolver/DiscontinuityError.h
+        OndselSolver/DispCompIecJecIe.h
+        OndselSolver/DispCompIecJecKec.h
+        OndselSolver/DispCompIecJecKeqc.h
+        OndselSolver/DispCompIecJecO.h
+        OndselSolver/DispCompIeqcJecIe.h
+        OndselSolver/DispCompIeqcJecKeqc.h
+        OndselSolver/DispCompIeqcJecO.h
+        OndselSolver/DispCompIeqcJeqcIe.h
+        OndselSolver/DispCompIeqcJeqcKeqc.h
+        OndselSolver/DispCompIeqcJeqcKeqct.h
+        OndselSolver/DispCompIeqcJeqcO.h
+        OndselSolver/DispCompIeqctJeqcIe.h
+        OndselSolver/DispCompIeqctJeqcKeqct.h
+        OndselSolver/DispCompIeqctJeqcO.h
+        OndselSolver/DistanceConstraintIJ.h
+        OndselSolver/DistanceConstraintIqcJc.h
+        OndselSolver/DistanceConstraintIqcJqc.h
+        OndselSolver/DistanceConstraintIqctJqc.h
+        OndselSolver/DistancexyConstraintIJ.h
+        OndselSolver/DistancexyConstraintIqcJc.h
+        OndselSolver/DistancexyConstraintIqcJqc.h
+        OndselSolver/DistIecJec.h
+        OndselSolver/DistIeqcJec.h
+        OndselSolver/DistIeqcJeqc.h
+        OndselSolver/DistIeqctJeqc.h
+        OndselSolver/DistxyIecJec.h
+        OndselSolver/DistxyIeqcJec.h
+        OndselSolver/DistxyIeqcJeqc.h
+        OndselSolver/DistxyIeqctJeqc.h
+        OndselSolver/EigenDecomposition.h
+        OndselSolver/EndFramec.h
+        OndselSolver/EndFrameqc.h
+        OndselSolver/EndFrameqct.h
+        OndselSolver/EndFrameqct2.h
+        OndselSolver/enum.h
+        OndselSolver/EulerAngles.h
+        OndselSolver/EulerAnglesDDot.h
+        OndselSolver/EulerAnglesDot.h
+        OndselSolver/EulerAngleszxz.h
+        OndselSolver/EulerAngleszxzDDot.h
+        OndselSolver/EulerAngleszxzDot.h
+        OndselSolver/EulerArray.h
+        OndselSolver/EulerConstraint.h
+        OndselSolver/EulerParameters.h
+        OndselSolver/EulerParametersDDot.h
+        OndselSolver/EulerParametersDot.h
+        OndselSolver/Exponential.h
+        OndselSolver/ExpressionX.h
+        OndselSolver/ExternalSystem.h
+        OndselSolver/FixedJoint.h
+        OndselSolver/ForceTorqueData.h
+        OndselSolver/ForceTorqueItem.h
+        OndselSolver/FullMotion.h
+        OndselSolver/FullRow.h
+        OndselSolver/Function.h
+        OndselSolver/FunctionFromData.h
+        OndselSolver/FunctionWithManyArgs.h
+        OndselSolver/FunctionX.h
+        OndselSolver/FunctionXcParameter.h
+        OndselSolver/FunctionXY.h
+        OndselSolver/GearConstraintIJ.h
+        OndselSolver/GearConstraintIqcJc.h
+        OndselSolver/GearConstraintIqcJqc.h
+        OndselSolver/GearJoint.h
+        OndselSolver/GEFullMat.h
+        OndselSolver/GEFullMatFullPv.h
+        OndselSolver/GEFullMatParPv.h
+        OndselSolver/GeneralSpline.h
+        OndselSolver/GESpMat.h
+        OndselSolver/GESpMatFullPv.h
+        OndselSolver/GESpMatFullPvPosIC.h
+        OndselSolver/GESpMatParPv.h
+        OndselSolver/GESpMatParPvMarko.h
+        OndselSolver/GESpMatParPvMarkoFast.h
+        OndselSolver/GESpMatParPvPrecise.h
+        OndselSolver/ICKineIntegrator.h
+        OndselSolver/IndependentVariable.h
+        OndselSolver/InLineJoint.h
+        OndselSolver/InPlaneJoint.h
+        OndselSolver/Integrator.h
+        OndselSolver/IntegratorInterface.h
+        OndselSolver/Item.h
+        OndselSolver/Joint.h
+        OndselSolver/KineIntegrator.h
+        OndselSolver/KinematicIeJe.h
+        OndselSolver/LDUFullMat.h
+        OndselSolver/LDUFullMatParPv.h
+        OndselSolver/LDUSpMat.h
+        OndselSolver/LDUSpMatParPv.h
+        OndselSolver/LDUSpMatParPvMarko.h
+        OndselSolver/LDUSpMatParPvPrecise.h
+        OndselSolver/LinearMultiStepMethod.h
+        OndselSolver/LineInPlaneJoint.h
+        OndselSolver/Ln.h
+        OndselSolver/Log10.h
+        OndselSolver/LogN.h
+        OndselSolver/MarkerFrame.h
+        OndselSolver/MatrixDecomposition.h
+        OndselSolver/MatrixGaussElimination.h
+        OndselSolver/MatrixLDU.h
+        OndselSolver/MatrixSolver.h
+        OndselSolver/MaximumIterationError.h
+        OndselSolver/MbdMath.h
+        OndselSolver/MBDynBlock.h
+        OndselSolver/MBDynBody.h
+        OndselSolver/MBDynControlData.h
+        OndselSolver/MBDynData.h
+        OndselSolver/MBDynElement.h
+        OndselSolver/MBDynInitialValue.h
+        OndselSolver/MBDynItem.h
+        OndselSolver/MBDynJoint.h
+        OndselSolver/MBDynMarker.h
+        OndselSolver/MBDynNode.h
+        OndselSolver/MBDynReference.h
+        OndselSolver/MBDynStructural.h
+        OndselSolver/MBDynSystem.h
+        OndselSolver/MomentOfInertiaSolver.h
+        OndselSolver/Negative.h
+        OndselSolver/NewtonRaphson.h
+        OndselSolver/NewtonRaphsonError.h
+        OndselSolver/NoRotationJoint.h
+        OndselSolver/NotKinematicError.h
+        OndselSolver/Numeric.h
+        OndselSolver/OrbitAnglezIecJec.h
+        OndselSolver/OrbitAnglezIeqcJec.h
+        OndselSolver/OrbitAnglezIeqcJeqc.h
+        OndselSolver/Orientation.h
+        OndselSolver/ParallelAxesJoint.h
+        OndselSolver/Part.h
+        OndselSolver/PartFrame.h
+        OndselSolver/PerpendicularJoint.h
+        OndselSolver/PlanarJoint.h
+        OndselSolver/PointInLineJoint.h
+        OndselSolver/PointInPlaneJoint.h
+        OndselSolver/PosICKineNewtonRaphson.h
+        OndselSolver/PosICNewtonRaphson.h
+        OndselSolver/PosKineNewtonRaphson.h
+        OndselSolver/PosNewtonRaphson.h
+        OndselSolver/PosVelAccData.h
+        OndselSolver/Power.h
+        OndselSolver/PrescribedMotion.h
+        OndselSolver/Product.h
+        OndselSolver/QuasiIntegrator.h
+        OndselSolver/RackPinConstraintIJ.h
+        OndselSolver/RackPinConstraintIqcJc.h
+        OndselSolver/RackPinConstraintIqcJqc.h
+        OndselSolver/RackPinJoint.h
+        OndselSolver/Reciprocal.h
+        OndselSolver/RedundantConstraint.h
+        OndselSolver/resource.h
+        OndselSolver/RevCylJoint.h
+        OndselSolver/RevoluteJoint.h
+        OndselSolver/ScalarNewtonRaphson.h
+        OndselSolver/ScrewConstraintIJ.h
+        OndselSolver/ScrewConstraintIqcJc.h
+        OndselSolver/ScrewConstraintIqcJqc.h
+        OndselSolver/ScrewJoint.h
+        OndselSolver/SimulationStoppingError.h
+        OndselSolver/Sine.h
+        OndselSolver/SingularMatrixError.h
+        OndselSolver/Solver.h
+        OndselSolver/SparseColumn.h
+        OndselSolver/SparseMatrix.h
+        OndselSolver/SparseRow.h
+        OndselSolver/SparseVector.h
+        OndselSolver/SphericalJoint.h
+        OndselSolver/SphSphJoint.h
+        OndselSolver/StableBackwardDifference.h
+        OndselSolver/StateData.h
+        OndselSolver/Sum.h
+        OndselSolver/Symbolic.h
+        OndselSolver/SymbolicParser.h
+        OndselSolver/SyntaxError.h
+        OndselSolver/System.h
+        OndselSolver/SystemNewtonRaphson.h
+        OndselSolver/SystemSolver.h
+        OndselSolver/Time.h
+        OndselSolver/TooManyTriesError.h
+        OndselSolver/TooSmallStepSizeError.h
+        OndselSolver/Translation.h
+        OndselSolver/TranslationalJoint.h
+        OndselSolver/TranslationConstraintIJ.h
+        OndselSolver/TranslationConstraintIqcJc.h
+        OndselSolver/TranslationConstraintIqcJqc.h
+        OndselSolver/TranslationConstraintIqctJqc.h
+        OndselSolver/Units.h
+        OndselSolver/UniversalJoint.h
+        OndselSolver/UserFunction.h
+        OndselSolver/Variable.h
+        OndselSolver/VectorNewtonRaphson.h
+        OndselSolver/VelICKineSolver.h
+        OndselSolver/VelICSolver.h
+        OndselSolver/VelKineSolver.h
+        OndselSolver/VelSolver.h
+        OndselSolver/ZRotation.h
+        OndselSolver/ZTranslation.h
 )
 
-add_subdirectory(OndselSolver)
+target_sources(OndselSolver PRIVATE
+        "${ONDSELSOLVER_SRC}"
+        "${ONDSELSOLVER_HEADERS}")
 
 set_target_properties(OndselSolver
         PROPERTIES VERSION ${PROJECT_VERSION}
         SOVERSION 1
+        PUBLIC_HEADER "${ONDSELSOLVER_HEADERS}"
 )
 
 configure_file(OndselSolver.pc.in ${CMAKE_BINARY_DIR}/OndselSolver.pc @ONLY)
 install(TARGETS OndselSolver
         LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-        PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+        PUBLIC_HEADER DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/OndselSolver)
 install(FILES ${CMAKE_BINARY_DIR}/OndselSolver.pc
         DESTINATION ${CMAKE_INSTALL_DATAROOTDIR}/pkgconfig)

@@ -55,12 +55,14 @@ void MbD::ScrewConstraintIqcJc::calc_pGpXI()
 
 void MbD::ScrewConstraintIqcJc::calc_ppGpEIpEI()
 {
-	ppGpEIpEI = zIeJeIe->ppvaluepEIpEI()->times(2.0 * M_PI)->minusFullMatrix(thezIeJe->ppvaluepEIpEI()->times(pitch));
+	ppGpEIpEI = zIeJeIe->ppvaluepEIpEI()->times(2.0 * M_PI)
+            ->minusFullMatrix(thezIeJe->ppvaluepEIpEI()->times(pitch));
 }
 
 void MbD::ScrewConstraintIqcJc::calc_ppGpXIpEI()
 {
-	ppGpXIpEI = zIeJeIe->ppvaluepXIpEI()->times(2.0 * M_PI)->minusFullMatrix(thezIeJe->ppvaluepXIpEI()->times(pitch));
+	ppGpXIpEI = zIeJeIe->ppvaluepXIpEI()->times(2.0 * M_PI)
+            ->minusFullMatrix(thezIeJe->ppvaluepXIpEI()->times(pitch));
 }
 
 void MbD::ScrewConstraintIqcJc::calcPostDynCorrectorIteration()

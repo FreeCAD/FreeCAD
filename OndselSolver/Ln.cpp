@@ -18,3 +18,8 @@ double MbD::Ln::getValue()
 {
     return std::log(xx->getValue());
 }
+
+Symsptr MbD::Ln::copyWith(Symsptr arg)
+{
+	return std::make_shared<Ln>(arg);
+}

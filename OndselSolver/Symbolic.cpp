@@ -86,6 +86,12 @@ Symsptr MbD::Symbolic::differentiateWRT(Symsptr var)
 	return Symsptr();
 }
 
+Symsptr MbD::Symbolic::integrateWRT(Symsptr var)
+{
+	assert(false);
+	return Symsptr();
+}
+
 Symsptr MbD::Symbolic::simplified()
 {
 	//std::cout << "sptr " << *sptr << std::endl;
@@ -112,17 +118,18 @@ Symsptr Symbolic::simplified(Symsptr sptr)
 
 Symsptr MbD::Symbolic::expandUntil(std::shared_ptr<std::unordered_set<Symsptr>> set)
 {
-	assert(false);
-	return clonesptr();
+	return expandUntil(clonesptr(), set);
 }
 
 Symsptr Symbolic::expandUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>> set)
 {
+	assert(false);
 	return sptr;
 }
 
 Symsptr Symbolic::simplifyUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>> set)
 {
+	assert(false);
 	return sptr;
 }
 
@@ -153,7 +160,10 @@ bool Symbolic::isConstant()
 
 std::ostream& Symbolic::printOn(std::ostream& s) const
 {
-	return s << "(" << typeid(*this).name() << ")";
+	std::string str = typeid(*this).name();
+	auto classname = str.substr(11, str.size() - 11);
+	s << classname;
+	return s;
 }
 
 std::shared_ptr<std::vector<Symsptr>> Symbolic::getTerms()
@@ -173,6 +183,17 @@ double Symbolic::getValue()
 	return 0.0;
 }
 
+double MbD::Symbolic::getValue(double arg)
+{
+	assert(false);
+	return 0.0;
+}
+
+void MbD::Symbolic::setValue(double val)
+{
+	assert(false);
+}
+
 void MbD::Symbolic::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits)
 {
 	assert(false);
@@ -189,6 +210,16 @@ Symsptr MbD::Symbolic::clonesptr()
 std::shared_ptr<Constant> MbD::Symbolic::sptrConstant(double value)
 {
 	return std::make_shared<Constant>(value);
+}
+
+bool MbD::Symbolic::isVariable()
+{
+	return false;
+}
+
+void MbD::Symbolic::integrationConstant(double integConstant)
+{
+	assert(false);
 }
 
 Symsptr MbD::Symbolic::raisedTo(Symsptr x, Symsptr y)

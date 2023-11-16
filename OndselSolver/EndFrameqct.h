@@ -58,7 +58,6 @@ namespace MbD {
 		FMatDsptr aAme, pAmept, ppAmeptpt, pAOept, ppAOeptpt;
 		FMatDsptr pprOeOpEpt;
 		FColFMatDsptr ppAOepEpt;
-		
 	};
 }
 

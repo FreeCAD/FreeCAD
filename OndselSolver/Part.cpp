@@ -10,9 +10,11 @@
 #include "PartFrame.h"
 #include "System.h"
 #include "CREATE.h"
-#include "DiagonalMatrix.h"
 #include "EulerParameters.h"
 #include "PosVelAccData.h"
+#include "FullColumn.h"
+#include "FullMatrix.h"
+#include "DiagonalMatrix.h"
 
 
 using namespace MbD;
@@ -33,18 +35,18 @@ void Part::initialize()
 	partFrame = CREATE<PartFrame>::With();
 	partFrame->setPart(this);
 	pTpE = std::make_shared<FullColumn<double>>(4);
-	ppTpEpE = std::make_shared<FullMatrix<double>>(4, 4);
-	ppTpEpEdot = std::make_shared<FullMatrix<double>>(4, 4);
+	ppTpEpE = std::make_shared<FullMatrixDouble>(4, 4);
+	ppTpEpEdot = std::make_shared<FullMatrixDouble>(4, 4);
 }
 
 void Part::initializeLocally()
 {
 	partFrame->initializeLocally();
 	if (m > 0) {
-		mX = std::make_shared<DiagonalMatrix<double>>(3, m);
+		mX = std::make_shared<DiagonalMatrix>(3, m);
 	}
 	else {
-		mX = std::make_shared<DiagonalMatrix<double>>(3, 0.0);
+		mX = std::make_shared<DiagonalMatrix>(3, 0.0);
 	}
 }
 
@@ -269,8 +271,8 @@ void Part::fillqsuWeights(DiagMatDsptr diagMat)
 	auto aJiMax = this->root()->maximumMomentOfInertia();
 	double minw = 1.0e3;
 	double maxw = 1.0e6;
-	auto wqX = std::make_shared<DiagonalMatrix<double>>(3);
-	auto wqE = std::make_shared<DiagonalMatrix<double>>(4);
+	auto wqX = std::make_shared<DiagonalMatrix>(3);
+	auto wqE = std::make_shared<DiagonalMatrix>(4);
 	if (mMax == 0) { mMax = 1.0; }
 	for (int i = 0; i < 3; i++)
 	{
@@ -317,8 +319,8 @@ void Part::fillqsudotWeights(DiagMatDsptr diagMat)
 	if (maxInertia == 0) maxInertia = 1.0;
 	double minw = 1.0e-12 * maxInertia;
 	double maxw = maxInertia;
-	auto wqXdot = std::make_shared<DiagonalMatrix<double>>(3);
-	auto wqEdot = std::make_shared<DiagonalMatrix<double>>(4);
+	auto wqXdot = std::make_shared<DiagonalMatrix>(3);
+	auto wqEdot = std::make_shared<DiagonalMatrix>(4);
 	for (int i = 0; i < 3; i++)
 	{
 		wqXdot->at(i) = (maxw * m / maxInertia) + minw;
@@ -449,11 +451,11 @@ void Part::calcp()
 	pE = mE->timesFullColumn(partFrame->qEdot);
 }
 
-void Part::calcpdot()
-{
-	pXdot = mX->timesFullColumn(partFrame->qXddot);
-	pEdot = mEdot->timesFullColumn(partFrame->qEdot)->plusFullColumn(mE->timesFullColumn(partFrame->qEddot));
-}
+//void Part::calcpdot()
+//{
+//	pXdot = mX->timesFullColumn(partFrame->qXddot);
+//	pEdot = mEdot->timesFullColumn(partFrame->qEdot)->plusFullColumn(mE->timesFullColumn(partFrame->qEddot));
+//}
 
 void Part::calcmEdot()
 {
@@ -580,4 +582,9 @@ double Part::suggestSmallerOrAcceptDynStepSize(double hnew)
 void Part::postDynStep()
 {
 	partFrame->postDynStep();
+}
+
+void MbD::Part::postAccIC()
+{
+	//calcpdot();
 }

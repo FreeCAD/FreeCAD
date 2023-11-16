@@ -11,14 +11,14 @@
 #include <memory>
 
 #include "Item.h"
-#include "FullColumn.h"
-#include "FullMatrix.h"
+#include "FullColumn.ref.h"
+#include "FullMatrix.ref.h"
+#include "DiagonalMatrix.ref.h"
 #include "EulerParametersDot.h"
 
 namespace MbD {
 	class System;
 	class PartFrame;
-	template<typename T> class DiagonalMatrix;
 
 	class Part : public Item
 	{
@@ -100,7 +100,7 @@ namespace MbD {
 		void fillVelICJacob(SpMatDsptr mat) override;
 		void preAccIC() override;
 		void calcp();
-		void calcpdot();
+//		void calcpdot();
 		void calcmEdot();
 		void calcpTpE();
 		void calcppTpEpE();
@@ -113,6 +113,7 @@ namespace MbD {
 		std::shared_ptr<StateData> stateData() override;
 		double suggestSmallerOrAcceptDynStepSize(double hnew) override;
 		void postDynStep() override;
+		void postAccIC() override;
 
 		System* system;	//Use raw pointer when pointing backwards.
 		int ipX = -1; 

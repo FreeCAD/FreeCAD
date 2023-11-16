@@ -52,3 +52,18 @@ void Variable::setValue(double val)
 {
 	value = val;
 }
+
+Symsptr MbD::Variable::expandUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>> set)
+{
+	return sptr;
+}
+
+Symsptr MbD::Variable::simplifyUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>> set)
+{
+	return sptr;
+}
+
+bool MbD::Variable::isVariable()
+{
+	return true;
+}

@@ -11,6 +11,9 @@
 namespace MbD {
 	class MbDMath
 	{
+	public:
+		void noop();
+
 	};
 }
 

@@ -70,10 +70,15 @@ void VectorNewtonRaphson::calcdxNorm()
 
 bool VectorNewtonRaphson::isConverged()
 {
-	return dxNorms->at(iterNo) < dxTol || this->isConvergedToNumericalLimit();
+	return dxNorms->at(iterNo) < dxTol || isConvergedToNumericalLimit();
 }
 
 void VectorNewtonRaphson::xEqualxoldPlusdx()
 {
 	x = xold->plusFullColumn(dx);
+}
+
+void VectorNewtonRaphson::handleSingularMatrix()
+{
+	assert(false);
 }

@@ -38,9 +38,7 @@ namespace MbD {
 		void addEndFrame(EndFrmsptr x);
 		void initializeLocally() override;
 		void initializeGlobally() override;
-		void postInput() override;
 		void calcPostDynCorrectorIteration() override;
-		void prePosIC() override;
 		int iqX();
 		int iqE();
 		void endFramesDo(const std::function <void(EndFrmsptr)>& f);
@@ -55,12 +53,14 @@ namespace MbD {
 		void setqsudot(FColDsptr col) override;
 		void setqsudotlam(FColDsptr col) override;
 		void setqsuddotlam(FColDsptr col) override;
+		void storeDynState() override;
+		void postInput() override;
 		void postPosICIteration() override;
+		void postVelIC() override;
 		void postPosIC() override;
 		void preDyn() override;
-		void storeDynState() override;
+		void prePosIC() override;
 		void preVelIC() override;
-		void postVelIC() override;
 		void preAccIC() override;
 		FColDsptr qXdot();
 		std::shared_ptr<EulerParametersDot<double>> qEdot();
@@ -72,9 +72,9 @@ namespace MbD {
 
 		PartFrame* partFrame; //Use raw pointer when pointing backwards.
 		FColDsptr rpmp = std::make_shared<FullColumn<double>>(3);
-		FMatDsptr aApm = FullMatrix<double>::identitysptr(3);
+		FMatDsptr aApm = FullMatrixDouble::identitysptr(3);
 		FColDsptr rOmO = std::make_shared<FullColumn<double>>(3);
-		FMatDsptr aAOm = FullMatrix<double>::identitysptr(3);
+		FMatDsptr aAOm = FullMatrixDouble::identitysptr(3);
 		FMatDsptr prOmOpE;
 		FColFMatDsptr pAOmpE;
 		FMatFColDsptr pprOmOpEpE;

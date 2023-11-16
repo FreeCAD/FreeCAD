@@ -12,6 +12,11 @@
 
 using namespace MbD;
 
+MbD::ASMTPrincipalMassMarker::ASMTPrincipalMassMarker()
+{
+	name = "MassMarker";
+}
+
 void MbD::ASMTPrincipalMassMarker::parseASMT(std::vector<std::string>& lines)
 {
 	size_t pos = lines[0].find_first_not_of("\t");
@@ -26,7 +31,7 @@ void MbD::ASMTPrincipalMassMarker::parseASMT(std::vector<std::string>& lines)
 	lines.erase(lines.begin());
 	assert(lines[0] == (leadingTabs + "RotationMatrix"));
 	lines.erase(lines.begin());
-	rotationMatrix = std::make_shared<FullMatrix<double>>(3);
+	rotationMatrix = std::make_shared<FullMatrixDouble>(3);
 	for (int i = 0; i < 3; i++)
 	{
 		auto row = readRowOfDoubles(lines[0]);
@@ -39,7 +44,7 @@ void MbD::ASMTPrincipalMassMarker::parseASMT(std::vector<std::string>& lines)
 	lines.erase(lines.begin());
 	assert(lines[0] == (leadingTabs + "MomentOfInertias"));
 	lines.erase(lines.begin());
-	momentOfInertias = std::make_shared<DiagonalMatrix<double>>(3);
+	momentOfInertias = std::make_shared<DiagonalMatrix>(3);
 	auto row = readRowOfDoubles(lines[0]);
 	lines.erase(lines.begin());
 	for (int i = 0; i < 3; i++)
@@ -70,7 +75,7 @@ void MbD::ASMTPrincipalMassMarker::setMomentOfInertias(DiagMatDsptr mat)
 // Overloads to simplify syntax.
 void MbD::ASMTPrincipalMassMarker::setMomentOfInertias(double a, double b, double c)
 {
-	momentOfInertias = std::make_shared<DiagonalMatrix<double>>(ListD{ a, b, c });
+	momentOfInertias = std::make_shared<DiagonalMatrix>(ListD{ a, b, c });
 }
 
 void MbD::ASMTPrincipalMassMarker::storeOnLevel(std::ofstream& os, int level)

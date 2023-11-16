@@ -9,21 +9,10 @@
 #pragma once
 
 #include "FullVector.h"
-#include "FullMatrix.h"
+#include "FullMatrix.ref.h"
+#include "FullRow.ref.h"
 
 namespace MbD {
-	template<typename T>
-	class FullRow;
-	template<typename T>
-	using FRowsptr = std::shared_ptr<FullRow<T>>;
-	using FRowDsptr = std::shared_ptr<FullRow<double>>;
-	template<typename T>
-	class FullColumn;
-	template<typename T>
-	using FColsptr = std::shared_ptr<FullColumn<T>>;
-	using ListFRD = std::initializer_list<FRowDsptr>;
-    template<typename T>
-    class FullMatrix;
 
 	template<typename T>
 	class FullRow : public FullVector<T>
@@ -41,17 +30,25 @@ namespace MbD {
 		FRowsptr<T> minusFullRow(FRowsptr<T> fullRow);
 		T timesFullColumn(FColsptr<T> fullCol);
 		T timesFullColumn(FullColumn<T>* fullCol);
-		FRowsptr<T> timesFullMatrix(std::shared_ptr<FullMatrix<T>> fullMat);
-		FRowsptr<T> timesTransposeFullMatrix(std::shared_ptr<FullMatrix<T>> fullMat);
 		void equalSelfPlusFullRowTimes(FRowsptr<T> fullRow, double factor);
 		void equalFullRow(FRowsptr<T> fullRow);
 		FColsptr<T> transpose();
 		FRowsptr<T> copy();
 		void atiplusFullRow(int j, FRowsptr<T> fullRow);
-        std::shared_ptr<FullMatrix<T>> transposeTimesFullRow(FRowsptr<T> fullRow);
+		FMatDsptr transposeTimesFullRow(FRowDsptr fullRow);
+		std::shared_ptr<FullRow<T>> clonesptr();
+		//double dot(std::shared_ptr<FullColumn<T>> vec);
+		//double dot(std::shared_ptr<FullRow<T>> vec);
+		double dot(std::shared_ptr<FullVector<T>> vec);
+		std::shared_ptr<FullVector<T>> dot(std::shared_ptr<std::vector<std::shared_ptr<FullColumn<T>>>> vecvec);
+
+		
 		std::ostream& printOn(std::ostream& s) const override;
 
-	};
+        FRowsptr<double> timesTransposeFullMatrix(std::shared_ptr<FullMatrixDouble> fullMat);
+        // FRowsptr<std::shared_ptr<FullMatrixDouble>> timesTransposeFullMatrixForFMFMDsptr(std::shared_ptr<FullMatrixFullMatrixDouble> fullMat);
+        FRowsptr<double> timesFullMatrix(std::shared_ptr<FullMatrixDouble> fullMat);
+    };
 
 	template<>
 	inline FRowDsptr FullRow<double>::times(double a)
@@ -144,6 +141,37 @@ namespace MbD {
 		}
 	}
 	template<typename T>
+	inline std::shared_ptr<FullRow<T>> FullRow<T>::clonesptr()
+	{
+		return std::make_shared<FullRow<T>>(*this);
+	}
+	template<typename T>
+	inline double FullRow<T>::dot(std::shared_ptr<FullVector<T>> vec)
+	{
+		int n = (int)this->size();
+		double answer = 0.0;
+		for (int i = 0; i < n; i++) {
+			answer += this->at(i) * vec->at(i);
+		}
+		return answer;
+	}
+	template<typename T>
+	inline std::shared_ptr<FullVector<T>> FullRow<T>::dot(std::shared_ptr<std::vector<std::shared_ptr<FullColumn<T>>>> vecvec)
+	{
+		auto ncol = (int)this->size();
+		auto nelem = vecvec->at(0)->size();
+		auto answer = std::make_shared<FullVector<T>>(nelem);
+		for (int k = 0; k < nelem; k++) {
+			auto sum = 0.0;
+			for (int i = 0; i < ncol; i++)
+			{
+				sum += this->at(i) * vecvec->at(i)->at(k);
+			}
+			answer->at(k) = sum;
+		}
+		return answer;
+	}
+	template<typename T>
 	inline std::ostream& FullRow<T>::printOn(std::ostream& s) const
 	{
 		s << "FullRow{";
@@ -154,6 +182,7 @@ namespace MbD {
 		}
 		s << "}";
 		return s;
-	}
+	};
+
 }
 

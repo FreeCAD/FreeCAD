@@ -42,6 +42,7 @@ namespace MbD {
 		void atiminusNumber(int i, double value);
 		void zeroSelf();
 		double maxMagnitude();
+		void magnifySelf(T factor);
 
 		virtual std::ostream& printOn(std::ostream& s) const;
 		friend std::ostream& operator<<(std::ostream& s, const SparseVector& spVec)
@@ -99,6 +100,16 @@ namespace MbD {
 			if (max < val) max = val;
 		}
 		return max;
+	}
+	template<typename T>
+	inline void SparseVector<T>::magnifySelf(T factor)
+	{
+		for (const auto& keyValue : *this) {
+			auto key = keyValue.first;
+			auto val = keyValue.second;
+			val *= factor;
+			this->at(key) = val;
+		}
 	}
 	template<typename T>
 	inline std::ostream& SparseVector<T>::printOn(std::ostream& s) const

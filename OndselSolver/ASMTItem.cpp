@@ -11,6 +11,7 @@
 #include "ASMTSpatialContainer.h"
 #include "ASMTAssembly.h"
 #include "Constant.h"
+#include <algorithm>
 
 using namespace MbD;
 

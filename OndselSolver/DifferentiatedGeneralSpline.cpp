@@ -34,6 +34,6 @@ Symsptr MbD::DifferentiatedGeneralSpline::clonesptr()
 
 std::ostream& MbD::DifferentiatedGeneralSpline::printOn(std::ostream& s) const
 {
-	s << "deriv(" << generalSpline << ", " << derivativeOrder << ")";
+	s << "deriv(" << *generalSpline << ", " << derivativeOrder << ")";
 	return s;
 }

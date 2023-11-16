@@ -7,6 +7,7 @@
  ***************************************************************************/
  
 #include <limits>
+#include <cassert>
 
 #include "NewtonRaphson.h"
 #include "SystemSolver.h"
@@ -92,6 +93,7 @@ bool NewtonRaphson::isConverged()
 
 void NewtonRaphson::askSystemToUpdate()
 {
+	assert(false);
 }
 
 bool NewtonRaphson::isConvergedToNumericalLimit()

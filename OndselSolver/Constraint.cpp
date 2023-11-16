@@ -104,7 +104,7 @@ void Constraint::setqsudotlam(FColDsptr col)
 
 void Constraint::fillPosICError(FColDsptr col)
 {
-	col->at(iG) += aG;
+	col->atiplusNumber(iG, aG);
 }
 
 void Constraint::removeRedundantConstraints(std::shared_ptr<std::vector<int>> redundantEqnNos)

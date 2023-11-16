@@ -24,9 +24,9 @@ void DispCompIeqcJeqcKeqc::initialize()
 	DispCompIeqcJecKeqc::initialize();
 	priIeJeKepXJ = std::make_shared<FullRow<double>>(3);
 	priIeJeKepEJ = std::make_shared<FullRow<double>>(4);
-	ppriIeJeKepEJpEJ = std::make_shared<FullMatrix<double>>(4, 4);
-	ppriIeJeKepXJpEK = std::make_shared<FullMatrix<double>>(3, 4);
-	ppriIeJeKepEJpEK = std::make_shared<FullMatrix<double>>(4, 4);
+	ppriIeJeKepEJpEJ = std::make_shared<FullMatrixDouble>(4, 4);
+	ppriIeJeKepXJpEK = std::make_shared<FullMatrixDouble>(3, 4);
+	ppriIeJeKepEJpEK = std::make_shared<FullMatrixDouble>(4, 4);
 }
 
 void DispCompIeqcJeqcKeqc::calcPostDynCorrectorIteration()

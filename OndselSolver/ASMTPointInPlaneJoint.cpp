@@ -25,11 +25,14 @@ void MbD::ASMTPointInPlaneJoint::parseASMT(std::vector<std::string>& lines)
 
 void MbD::ASMTPointInPlaneJoint::readOffset(std::vector<std::string>& lines)
 {
-	assert(lines[0].find("offset") != std::string::npos);
-	lines.erase(lines.begin());
-	offset = readDouble(lines[0]);
-	lines.erase(lines.begin());
-
+	if (lines[0].find("offset") == std::string::npos) {
+		offset = 0.0;
+	}
+	else {
+		lines.erase(lines.begin());
+		offset = readDouble(lines[0]);
+		lines.erase(lines.begin());
+	}
 }
 
 void MbD::ASMTPointInPlaneJoint::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits)

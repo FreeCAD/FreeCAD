@@ -19,8 +19,13 @@ double MbD::Log10::getValue()
     return std::log(xx->getValue());
 }
 
+Symsptr MbD::Log10::copyWith(Symsptr arg)
+{
+	return std::make_shared<Log10>(arg);
+}
+
 std::ostream& MbD::Log10::printOn(std::ostream& s) const
 {
-	s << "lg(" << xx << ")";
+	s << "lg(" << *xx << ")";
 	return s;
 }

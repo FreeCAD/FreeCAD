@@ -6,7 +6,7 @@
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
  
-//This header file causes wierd problems in Visual Studio when included in subclasses of std::vector or std::map. Why?
+//This header file causes weird problems in Visual Studio when included in subclasses of std::vector or std::map. Why?
 
 #pragma once
 
@@ -78,7 +78,7 @@ namespace MbD {
 				else {
 					inst = std::make_shared<AtPointConstraintIqcJqc>(frmi, frmj, axis);
 				}
-			} // "class MbD::Tran
+			}
 			else if(str.find("TranslationConstraintIJ") != std::string::npos) {
 				if (std::dynamic_pointer_cast<EndFrameqct>(frmi)) {
 					inst = std::make_shared<TranslationConstraintIqctJqc>(frmi, frmj, axis);

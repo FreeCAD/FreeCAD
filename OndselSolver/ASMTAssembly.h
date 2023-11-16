@@ -121,7 +121,7 @@ namespace MbD {
 		void storeOnLevelGeneralConstraintSets(std::ofstream& os, int level);
 		void storeOnTimeSeries(std::ofstream& os) override;
 
-		std::string notes;
+		std::string notes = "(Text string: '' runs: (Core.RunArray runs: #() values: #()))";
 		std::shared_ptr<std::vector<std::shared_ptr<ASMTPart>>> parts = std::make_shared<std::vector<std::shared_ptr<ASMTPart>>>();
 		std::shared_ptr<std::vector<std::shared_ptr<ASMTKinematicIJ>>> kinematicIJs = std::make_shared<std::vector<std::shared_ptr<ASMTKinematicIJ>>>();
 		std::shared_ptr<std::vector<std::shared_ptr<ASMTConstraintSet>>> constraintSets = std::make_shared<std::vector<std::shared_ptr<ASMTConstraintSet>>>();
@@ -129,11 +129,11 @@ namespace MbD {
 		std::shared_ptr<std::vector<std::shared_ptr<ASMTMotion>>> motions = std::make_shared<std::vector<std::shared_ptr<ASMTMotion>>>();
 		std::shared_ptr<std::vector<std::shared_ptr<ASMTForceTorque>>> forcesTorques = std::make_shared<std::vector<std::shared_ptr<ASMTForceTorque>>>();
 		std::shared_ptr<ASMTConstantGravity> constantGravity = std::make_shared<ASMTConstantGravity>();
-		std::shared_ptr<ASMTSimulationParameters> simulationParameters;
-		std::shared_ptr<ASMTAnimationParameters> animationParameters;
-		std::shared_ptr<std::vector<double>> times;
+		std::shared_ptr<ASMTSimulationParameters> simulationParameters = std::make_shared<ASMTSimulationParameters>();
+		std::shared_ptr<ASMTAnimationParameters> animationParameters = std::make_shared<ASMTAnimationParameters>();
+		std::shared_ptr<std::vector<double>> times = std::make_shared<std::vector<double>>();
 		std::shared_ptr<ASMTTime> asmtTime = std::make_shared<ASMTTime>();
-		std::shared_ptr<Units> mbdUnits;
+		std::shared_ptr<Units> mbdUnits = std::make_shared<Units>();
 		MBDynSystem* mbdynItem = nullptr;
 	};
 }

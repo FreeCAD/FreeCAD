@@ -11,6 +11,7 @@
 #include <string>
 
 #include "MBDynItem.h"
+#include "MBDynDrive.h"
 
 namespace MbD {
     class MBDynData;
@@ -37,6 +38,9 @@ namespace MbD {
         void parseMBDynLabels(std::vector<std::string>& lines);
         void parseMBDynReferences(std::vector<std::string>& lines);
         std::shared_ptr<std::vector<std::shared_ptr<MBDynNode>>> mbdynNodes() override;
+        std::shared_ptr<std::vector<std::shared_ptr<MBDynBody>>> mbdynBodies() override;
+        std::shared_ptr<std::vector<std::shared_ptr<MBDynJoint>>> mbdynJoints() override;
+        std::shared_ptr<std::vector<std::shared_ptr<MBDynDrive>>> mbdynDrives() override;
         std::shared_ptr<std::map<std::string, Symsptr>> mbdynVariables() override;
         std::shared_ptr<std::map<std::string, std::shared_ptr<MBDynReference>>> mbdynReferences() override;
         void createASMT() override;
@@ -63,7 +67,9 @@ namespace MbD {
         std::shared_ptr<MBDynInitialValue> initialValue;
         std::shared_ptr<MBDynControlData> controlData;
         std::shared_ptr<std::vector<std::shared_ptr<MBDynNode>>> nodes;
-        std::shared_ptr<std::vector<std::shared_ptr<MBDynElement>>> elements;
+        std::shared_ptr<std::vector<std::shared_ptr<MBDynBody>>> bodies;
+        std::shared_ptr<std::vector<std::shared_ptr<MBDynJoint>>> joints;
+        std::shared_ptr<std::vector<std::shared_ptr<MBDynDrive>>> drives;
         std::shared_ptr<std::map<std::string, Symsptr>> variables;
         std::shared_ptr<std::map<std::string, int>> labels;
         std::shared_ptr<std::map<std::string, std::shared_ptr<MBDynReference>>> references;

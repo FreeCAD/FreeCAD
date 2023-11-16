@@ -20,25 +20,26 @@ void MbD::MBDynJoint::initialize()
 void MbD::MBDynJoint::parseMBDyn(std::string line)
 {
 	jointString = line;
-	size_t previousPos = 0;
-	auto pos = line.find(":");
-	auto front = line.substr(previousPos, pos - previousPos);
-	assert(front.find("joint") != std::string::npos);
-	auto arguments = std::vector<std::string>();
-	std::string argument;
-	while (true) {
-		previousPos = pos;
-		pos = line.find(",", pos + 1);
-		if (pos != std::string::npos) {
-			argument = line.substr(previousPos + 1, pos - previousPos - 1);
-			arguments.push_back(argument);
-		}
-		else {
-			argument = line.substr(previousPos + 1);
-			arguments.push_back(argument);
-			break;
-		}
-	}
+	auto arguments = collectArgumentsFor("joint", line);
+	//size_t previousPos = 0;
+	//auto pos = line.find(":");
+	//auto front = line.substr(previousPos, pos - previousPos);
+	//assert(front.find("joint") != std::string::npos);
+	//auto arguments = std::vector<std::string>();
+	//std::string argument;
+	//while (true) {
+	//	previousPos = pos;
+	//	pos = line.find(",", pos + 1);
+	//	if (pos != std::string::npos) {
+	//		argument = line.substr(previousPos + 1, pos - previousPos - 1);
+	//		arguments.push_back(argument);
+	//	}
+	//	else {
+	//		argument = line.substr(previousPos + 1);
+	//		arguments.push_back(argument);
+	//		break;
+	//	}
+	//}
 	auto ss = std::stringstream();
 	auto iss = std::istringstream(arguments.at(0));
 	iss >> name;
@@ -118,8 +119,8 @@ void MbD::MBDynJoint::parseMBDyn(std::string line)
 		mkr1->owner = this;
 		mkr1->nodeStr = "Assembly";
 		mkr1->rPmP = std::make_shared<FullColumn<double>>(3);
-		mkr1->aAPm = FullMatrix<double>::identitysptr(3);
-		readMarkerJ(arguments);
+		mkr1->aAPm = FullMatrixDouble::identitysptr(3);
+		readClampMarkerJ(arguments);
 		return;
 	}
 	else if (joint_type == "prismatic") {
@@ -160,6 +161,15 @@ void MbD::MBDynJoint::readMarkerJ(std::vector<std::string>& args)
 	mkr2->parseMBDyn(args);
 }
 
+void MbD::MBDynJoint::readClampMarkerJ(std::vector<std::string>& args)
+{
+	if (args.empty()) return;
+	mkr2 = std::make_shared<MBDynMarker>();
+	mkr2->owner = this;
+	mkr2->nodeStr = readStringOffTop(args);
+	mkr2->parseMBDynClamp(args);
+}
+
 void MbD::MBDynJoint::readFunction(std::vector<std::string>& args)
 {
 	if (args.empty()) return;
@@ -177,11 +187,17 @@ void MbD::MBDynJoint::readFunction(std::vector<std::string>& args)
 		auto ss = std::stringstream();
 		ss << slope << "*(time - " << initTime << ") + " << initValue;
 		formula = ss.str();
-	} else if (str.find("single") != std::string::npos) {
+	}
+	else if (str.find("single") != std::string::npos) {
 		args.erase(args.begin());
 		auto vec3 = readVector3(args);
 		assert(vec3->at(0) == 0 && vec3->at(1) == 0 && vec3->at(2) == 1);
 		assert(readStringOffTop(args) == "string");
+		formula = popOffTop(args);
+		formula = std::regex_replace(formula, std::regex("\""), "");
+	}
+	else if (str.find("string") != std::string::npos) {
+		args.erase(args.begin());
 		formula = popOffTop(args);
 		formula = std::regex_replace(formula, std::regex("\""), "");
 	}
@@ -216,7 +232,7 @@ void MbD::MBDynJoint::createASMT()
 		asmtItem = asmtMotion;
 		asmtMotion->setName(name.append("Motion"));
 		asmtMotion->setMotionJoint(asmtJoint->fullName(""));
-		asmtMotion->setRotationZ(formula);
+		asmtMotion->setRotationZ(asmtFormulaIntegral());
 		asmtAsm->addMotion(asmtMotion);
 		return;
 	}
@@ -251,4 +267,38 @@ void MbD::MBDynJoint::createASMT()
 	asmtJoint->setMarkerI(mkr1->asmtItem->fullName(""));
 	asmtJoint->setMarkerJ(mkr2->asmtItem->fullName(""));
 	asmtAssembly()->addJoint(asmtJoint);
+}
+
+std::string MbD::MBDynJoint::asmtFormula()
+{
+	auto ss = std::stringstream();
+	std::string drivestr = "model::drive";
+	size_t previousPos = 0;
+	auto pos = formula.find(drivestr);
+	ss << formula.substr(previousPos, pos - previousPos);
+	while (pos != std::string::npos) {
+		previousPos = pos;
+		pos = formula.find('(', pos + 1);
+		previousPos = pos;
+		pos = formula.find(',', pos + 1);
+		auto driveName = formula.substr(previousPos + 1, pos - previousPos - 1);
+		driveName = readToken(driveName);
+		previousPos = pos;
+		pos = formula.find(')', pos + 1);
+		auto varName = formula.substr(previousPos + 1, pos - previousPos - 1);
+		varName = readToken(varName);
+		//Insert drive formula
+		ss << formulaFromDrive(driveName, varName);
+		previousPos = pos;
+		pos = formula.find(drivestr, pos + 1);
+		ss << formula.substr(previousPos + 1, pos - previousPos);
+	}
+	return ss.str();
+}
+
+std::string MbD::MBDynJoint::asmtFormulaIntegral()
+{
+	auto ss = std::stringstream();
+	ss << "integral(time, " << asmtFormula() << ")";
+	return ss.str();
 }

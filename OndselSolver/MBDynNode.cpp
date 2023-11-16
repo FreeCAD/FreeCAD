@@ -20,13 +20,7 @@ void MbD::MBDynNode::outputLine(int i, std::ostream& os)
 	auto x = asmtPart->xs->at(i);
 	auto y = asmtPart->ys->at(i);
 	auto z = asmtPart->zs->at(i);
-	auto bryantAngles = std::make_shared<EulerAngles<double>>();
-	bryantAngles->setRotOrder(1, 2, 3);
-	bryantAngles->at(0) = asmtPart->bryxs->at(i);
-	bryantAngles->at(1) = asmtPart->bryys->at(i);
-	bryantAngles->at(2) = asmtPart->bryzs->at(i);
-	bryantAngles->calc();
-	auto aA = bryantAngles->aA;
+	auto aA = asmtPart->getRotationMatrix(i);
 	auto vx = asmtPart->vxs->at(i);
 	auto vy = asmtPart->vys->at(i);
 	auto vz = asmtPart->vzs->at(i);

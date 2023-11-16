@@ -5,7 +5,7 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include "LDUFullMat.h"
 
 using namespace MbD;
@@ -38,11 +38,11 @@ void LDUFullMat::forwardEliminateWithPivot(int p)
 	//"Save factors in lower triangle for LU decomposition."
 
 		//| rowp app rowi aip factor |
-	auto rowp = matrixA->at(p);
+	auto& rowp = matrixA->at(p);
 	auto app = rowp->at(p);
 	for (int i = p + 1; i < m; i++)
 	{
-		auto rowi = matrixA->at(i);
+		auto& rowi = matrixA->at(i);
 		auto aip = rowi->at(p);
 		auto factor = aip / app;
 		rowi->at(p) = factor;
@@ -116,7 +116,7 @@ FMatDsptr LDUFullMat::inversesaveOriginal(FMatDsptr fullMat, bool saveOriginal)
 
 	this->decomposesaveOriginal(fullMat, saveOriginal);
 	rightHandSideB = std::make_shared<FullColumn<double>>(m);
-	auto matrixAinverse = std::make_shared <FullMatrix<double>>(m, n);
+	auto matrixAinverse = std::make_shared <FullMatrixDouble>(m, n);
 	for (int j = 0; j < n; j++)
 	{
 		rightHandSideB->zeroSelf();
@@ -138,9 +138,9 @@ void LDUFullMat::forwardSubstituteIntoL()
 	auto vectorc = std::make_shared<FullColumn<double>>(n);
 	for (int i = 0; i < n; i++)
 	{
-		auto rowi = matrixA->at(i);
+		auto& rowi = matrixA->at(i);
 		double sum = 0.0;
-		for (int j = 0; j < i - 1; j++)
+		for (int j = 0; j < i; j++)
 		{
 			sum += rowi->at(j) * vectorc->at(j);
 		}
@@ -155,11 +155,11 @@ void LDUFullMat::backSubstituteIntoDU()
 
 		//| rowi sum |
 	answerX = std::make_shared<FullColumn<double>>(n);
-	answerX->at(n - 1) = rightHandSideB->at(m - 1) / matrixA->at(m - 1)->at(n - 1);
+	answerX->at((size_t)n - 1) = rightHandSideB->at((size_t)m - 1) / matrixA->at((size_t)m - 1)->at((size_t)n - 1);
 	for (int i = n - 2; i >= 0; i--)
 	{
-		auto rowi = matrixA->at(i);
-		double sum = answerX->at(n - 1) * rowi->at(n - 1);
+		auto& rowi = matrixA->at(i);
+		double sum = answerX->at((size_t)n - 1) * rowi->at((size_t)n - 1);
 		for (int j = i + 1; j < n - 1; j++)
 		{
 			sum += answerX->at(j) * rowi->at(j);

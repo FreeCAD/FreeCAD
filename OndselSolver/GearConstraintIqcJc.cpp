@@ -9,7 +9,7 @@
 #include "GearConstraintIqcJc.h"
 #include "EndFrameqc.h"
 #include "CREATE.h"
-#include "OrbitAnglezIeqcJec.h"
+#include "OrbitAngleZIeqcJec.h"
 
 using namespace MbD;
 
@@ -62,7 +62,8 @@ void MbD::GearConstraintIqcJc::calc_ppGpXIpEI()
 
 void MbD::GearConstraintIqcJc::calc_ppGpXIpXI()
 {
-	ppGpXIpXI = orbitJeIe->ppvaluepXJpXJ()->plusFullMatrix(orbitIeJe->ppvaluepXIpXI()->times(this->ratio()));
+	ppGpXIpXI = orbitJeIe->ppvaluepXJpXJ()
+            ->plusFullMatrix(orbitIeJe->ppvaluepXIpXI()->times(this->ratio()));
 }
 
 void MbD::GearConstraintIqcJc::calcPostDynCorrectorIteration()

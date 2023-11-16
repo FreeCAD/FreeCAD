@@ -44,7 +44,7 @@ namespace MbD {
 
 		MarkerFrame* markerFrame; //Use raw pointer when pointing backwards.
 		FColDsptr rOeO = std::make_shared<FullColumn<double>>(3);
-		FMatDsptr aAOe = FullMatrix<double>::identitysptr(3);
+		FMatDsptr aAOe = FullMatrixDouble::identitysptr(3);
 	};
 	//using EndFrmsptr = std::shared_ptr<EndFramec>;
 }

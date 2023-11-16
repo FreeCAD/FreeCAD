@@ -31,13 +31,18 @@ namespace MbD {
 		void storeOnLevel(std::ofstream& os, int level) override;
 		void storeOnLevelPosition(std::ofstream& os, int level);
 		void storeOnLevelRotationMatrix(std::ofstream& os, int level);
+		FColDsptr getPosition3D(size_t i);
+		FMatDsptr getRotationMatrix(size_t i);
 
 		FColDsptr position3D = std::make_shared<FullColumn<double>>(3);
-		FMatDsptr rotationMatrix = std::make_shared<FullMatrix<double>>(ListListD{
+		FMatDsptr rotationMatrix = std::make_shared<FullMatrixDouble>(ListListD{
 				{ 1, 0, 0 },
 				{ 0, 1, 0 },
 				{ 0, 0, 1 }
 			});
+		FRowDsptr xs, ys, zs, bryxs, bryys, bryzs;
+		FRowDsptr inxs, inys, inzs, inbryxs, inbryys, inbryzs;
+
 	};
 }
 

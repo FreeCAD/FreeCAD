@@ -6,7 +6,7 @@
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
  
-#include "OrbitAnglezIeqcJeqc.h"
+#include "OrbitAngleZIeqcJeqc.h"
 #include "CREATE.h"
 #include "DispCompIeqcJeqcIe.h"
 
@@ -242,13 +242,13 @@ void MbD::OrbitAngleZIeqcJeqc::initialize()
 	OrbitAngleZIeqcJec::initialize();
 	pthezpXJ = std::make_shared<FullRow<double>>(3);
 	pthezpEJ = std::make_shared<FullRow<double>>(4);
-	ppthezpXIpXJ = std::make_shared<FullMatrix<double>>(3, 3);
-	ppthezpXIpEJ = std::make_shared<FullMatrix<double>>(3, 4);
-	ppthezpEIpXJ = std::make_shared<FullMatrix<double>>(4, 3);
-	ppthezpEIpEJ = std::make_shared<FullMatrix<double>>(4, 4);
-	ppthezpXJpXJ = std::make_shared<FullMatrix<double>>(3, 3);
-	ppthezpXJpEJ = std::make_shared<FullMatrix<double>>(3, 4);
-	ppthezpEJpEJ = std::make_shared<FullMatrix<double>>(4, 4);
+	ppthezpXIpXJ = std::make_shared<FullMatrixDouble>(3, 3);
+	ppthezpXIpEJ = std::make_shared<FullMatrixDouble>(3, 4);
+	ppthezpEIpXJ = std::make_shared<FullMatrixDouble>(4, 3);
+	ppthezpEIpEJ = std::make_shared<FullMatrixDouble>(4, 4);
+	ppthezpXJpXJ = std::make_shared<FullMatrixDouble>(3, 3);
+	ppthezpXJpEJ = std::make_shared<FullMatrixDouble>(3, 4);
+	ppthezpEJpEJ = std::make_shared<FullMatrixDouble>(4, 4);
 }
 
 FMatDsptr MbD::OrbitAngleZIeqcJeqc::ppvaluepEIpEJ()

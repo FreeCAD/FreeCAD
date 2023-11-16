@@ -13,6 +13,7 @@
 
 #include "Item.h"
 #include "System.h"
+#include "Symbolic.h"
 
 using namespace MbD;
 

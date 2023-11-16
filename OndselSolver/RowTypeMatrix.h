@@ -9,7 +9,7 @@
 #pragma once
 
 #include "Array.h"
-#include "FullRow.h"
+#include "FullRow.ref.h"
 
 namespace MbD {
 
@@ -24,13 +24,12 @@ namespace MbD {
 		virtual void zeroSelf() override = 0;
 		//double maxMagnitude() override;
 		int numberOfElements() override;
-
-		int nrow() {
-			return (int) this->size();
-		}
-		int ncol() {
-			return this->at(0)->numberOfElements();
-		}
+        int nrow() {
+            return (int) this->size();
+        }
+        int ncol() {
+            return this->at(0)->numberOfElements();
+        }
 	};
 
 	template<typename T>

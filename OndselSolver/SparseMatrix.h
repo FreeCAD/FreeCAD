@@ -5,7 +5,7 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #pragma once
 
 #include <sstream> 
@@ -13,10 +13,13 @@
 #include "RowTypeMatrix.h"
 #include "SparseRow.h"
 #include "DiagonalMatrix.h"
+#include "FullMatrix.h"
 
 namespace MbD {
 	template<typename T>
 	class SparseMatrix;
+	template<typename T>
+	using SpMatsptr = std::shared_ptr<SparseMatrix<T>>;
 	using SpMatDsptr = std::shared_ptr<SparseMatrix<double>>;
 
 	template<typename T>
@@ -47,15 +50,20 @@ namespace MbD {
 		void zeroSelf() override;
 		void atijplusFullRow(int i, int j, FRowsptr<T> fullRow);
 		void atijplusFullColumn(int i, int j, FColsptr<T> fullCol);
-		void atijplusFullMatrix(int i, int j, FMatsptr<T> fullMat);
-		void atijminusFullMatrix(int i, int j, FMatsptr<T> fullMat);
-		void atijplusTransposeFullMatrix(int i, int j, FMatsptr<T> fullMat);
-		void atijplusFullMatrixtimes(int i, int j, FMatsptr<T> fullMat, T factor);
+		void atijplusFullMatrix(int i, int j, FMatDsptr fullMat);
+		void atijminusFullMatrix(int i, int j, FMatDsptr fullMat);
+		void atijplusTransposeFullMatrix(int i, int j, FMatDsptr fullMat);
+		void atijplusFullMatrixtimes(int i, int j, FMatDsptr fullMat, T factor);
+		void atijminusFullColumn(int i, int j, FColDsptr fullCol);
+		void atijminusTransposeFullMatrix(int i, int j, FMatDsptr fullMat);
 		void atijplusNumber(int i, int j, double value);
 		void atijminusNumber(int i, int j, double value);
 		void atijput(int i, int j, T value);
 		double maxMagnitude() override;
 		FColsptr<T> timesFullColumn(FColsptr<T> fullCol);
+		SpMatsptr<T> plusSparseMatrix(SpMatsptr<T> spMat);
+		std::shared_ptr<SparseMatrix<T>> clonesptr();
+		void magnifySelf(T factor);
 
 		std::ostream& printOn(std::ostream& s) const override;
 
@@ -117,7 +125,15 @@ namespace MbD {
 		}
 	}
 	template<typename T>
-	inline void SparseMatrix<T>::atijplusFullMatrix(int i, int j, FMatsptr<T> fullMat)
+	inline void SparseMatrix<T>::atijminusFullColumn(int i, int j, FColDsptr fullCol)
+	{
+		for (int ii = 0; ii < fullCol->size(); ii++)
+		{
+			this->atijminusNumber(i + ii, j, fullCol->at(ii));
+		}
+	}
+	template<typename T>
+	inline void SparseMatrix<T>::atijplusFullMatrix(int i, int j, FMatDsptr fullMat)
 	{
 		for (int ii = 0; ii < fullMat->nrow(); ii++)
 		{
@@ -125,7 +141,7 @@ namespace MbD {
 		}
 	}
 	template<typename T>
-	inline void SparseMatrix<T>::atijminusFullMatrix(int i, int j, FMatsptr<T> fullMat)
+	inline void SparseMatrix<T>::atijminusFullMatrix(int i, int j, FMatDsptr fullMat)
 	{
 		for (int ii = 0; ii < fullMat->nrow(); ii++)
 		{
@@ -133,7 +149,7 @@ namespace MbD {
 		}
 	}
 	template<typename T>
-	inline void SparseMatrix<T>::atijplusTransposeFullMatrix(int i, int j, FMatsptr<T> fullMat)
+	inline void SparseMatrix<T>::atijplusTransposeFullMatrix(int i, int j, FMatDsptr fullMat)
 	{
 		for (int ii = 0; ii < fullMat->nrow(); ii++)
 		{
@@ -141,7 +157,15 @@ namespace MbD {
 		}
 	}
 	template<typename T>
-	inline void SparseMatrix<T>::atijplusFullMatrixtimes(int i, int j, FMatsptr<T> fullMat, T factor)
+	inline void SparseMatrix<T>::atijminusTransposeFullMatrix(int i, int j, FMatDsptr fullMat)
+	{
+		for (int ii = 0; ii < fullMat->nrow(); ii++)
+		{
+			this->atijminusFullColumn(i, j + ii, fullMat->at(ii)->transpose());
+		}
+	}
+	template<typename T>
+	inline void SparseMatrix<T>::atijplusFullMatrixtimes(int i, int j, FMatDsptr fullMat, T factor)
 	{
 		for (int ii = 0; ii < fullMat->nrow(); ii++)
 		{
@@ -196,5 +220,31 @@ namespace MbD {
 			answer->at(i) = this->at(i)->timesFullColumn(fullCol);
 		}
 		return answer;
+	}
+	template<typename T>
+	inline SpMatsptr<T> SparseMatrix<T>::plusSparseMatrix(SpMatsptr<T> spMat)
+	{
+		//"a + b."
+		//"Assume all checking of validity of this operation has been done."
+		//"Just evaluate quickly."
+
+		auto answer = clonesptr();
+		for (int i = 0; i < answer->size(); i++)
+		{
+			answer->atiput(i, answer->at(i)->plusSparseRow(spMat->at(i)));
+		}
+		return answer;
+	}
+	template<typename T>
+	inline std::shared_ptr<SparseMatrix<T>> SparseMatrix<T>::clonesptr()
+	{
+		return std::make_shared<SparseMatrix<T>>(*this);
+	}
+	template<typename T>
+	inline void SparseMatrix<T>::magnifySelf(T factor)
+	{
+		for (int i = 0; i < this->size(); i++) {
+			this->at(i)->magnifySelf(factor);
+		}
 	}
 }

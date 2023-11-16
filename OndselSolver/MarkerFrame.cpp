@@ -31,7 +31,7 @@ System* MarkerFrame::root()
 
 void MarkerFrame::initialize()
 {
-	prOmOpE = std::make_shared<FullMatrix<double>>(3, 4);
+	prOmOpE = std::make_shared<FullMatrixDouble>(3, 4);
 	pAOmpE = std::make_shared<FullColumn<FMatDsptr>>(4);
 	endFrames = std::make_shared<std::vector<EndFrmsptr>>();
 	auto endFrm = CREATE<EndFrameqc>::With();
@@ -61,7 +61,7 @@ void MarkerFrame::initializeGlobally()
 
 void MarkerFrame::postInput()
 {
-	Item::postInput();
+	CartesianFrame::postInput();
 	endFramesDo([](EndFrmsptr endFrame) { endFrame->postInput(); });
 }
 
@@ -82,7 +82,7 @@ void MarkerFrame::calcPostDynCorrectorIteration()
 
 void MarkerFrame::prePosIC()
 {
-	Item::prePosIC();
+	CartesianFrame::prePosIC();
 	endFramesDo([](EndFrmsptr endFrame) { endFrame->prePosIC(); });
 }
 
@@ -153,7 +153,7 @@ void MarkerFrame::setqsudotlam(FColDsptr col)
 
 void MarkerFrame::postPosICIteration()
 {
-	Item::postPosICIteration();
+	CartesianFrame::postPosICIteration();
 	endFramesDo([](EndFrmsptr endFrame) { endFrame->postPosICIteration(); });
 }
 
@@ -174,7 +174,7 @@ void MarkerFrame::storeDynState()
 
 void MarkerFrame::preVelIC()
 {
-	Item::preVelIC();
+	CartesianFrame::preVelIC();
 	endFramesDo([](EndFrmsptr endFrame) { endFrame->preVelIC(); });
 }
 
@@ -185,7 +185,7 @@ void MarkerFrame::postVelIC()
 
 void MarkerFrame::preAccIC()
 {
-	Item::preAccIC();
+	CartesianFrame::preAccIC();
 	endFramesDo([](EndFrmsptr endFrame) { endFrame->preAccIC(); });
 }
 

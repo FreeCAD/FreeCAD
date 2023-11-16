@@ -5,7 +5,7 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include "FunctionX.h"
 #include "Constant.h"
 #include "Sum.h"
@@ -24,9 +24,43 @@ void MbD::FunctionX::arguments(Symsptr args)
 	xx = sum->terms->front();
 }
 
+Symsptr MbD::FunctionX::copyWith(Symsptr arg)
+{
+	assert(false);
+	return Symsptr();
+}
+
+Symsptr MbD::FunctionX::expandUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>> set)
+{
+	auto itr = std::find_if(set->begin(), set->end(), [sptr](Symsptr sym) {return sptr.get() == sym.get(); });
+	if (itr != set->end()) return sptr;
+	auto newx = xx->expandUntil(xx, set);
+	auto copy = copyWith(newx);
+	if (newx->isConstant()) {
+		return sptrConstant(copy->getValue());
+	}
+	else {
+		return copy;
+	}
+}
+
+Symsptr MbD::FunctionX::simplifyUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>> set)
+{
+	auto itr = std::find_if(set->begin(), set->end(), [sptr](Symsptr sym) {return sptr.get() == sym.get(); });
+	if (itr != set->end()) return sptr;
+	auto newx = xx->simplifyUntil(xx, set);
+	auto copy = copyWith(newx);
+	if (newx->isConstant()) {
+		return sptrConstant(copy->getValue());
+	}
+	else {
+		return copy;
+	}
+}
+
 Symsptr MbD::FunctionX::differentiateWRT(Symsptr var)
 {
-	if (this == var.get()) return std::make_shared<Constant>(1.0);
+	if (this == var.get()) return sptrConstant(1.0);
 	auto dfdx = differentiateWRTx();
 	auto dxdvar = xx->differentiateWRT(var);
 	return Symbolic::times(dfdx, dxdvar);
@@ -41,4 +75,25 @@ Symsptr MbD::FunctionX::differentiateWRTx()
 void MbD::FunctionX::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits)
 {
 	xx->createMbD(mbdSys, mbdUnits);
+}
+
+double MbD::FunctionX::getValue()
+{
+	assert(false);
+	return 0.0;
+}
+
+double MbD::FunctionX::getValue(double arg)
+{
+	double answer;
+	if (xx->isVariable()) {
+		auto oldVal = xx->getValue();
+		xx->setValue(arg);
+		answer = getValue();
+		xx->setValue(oldVal);
+	}
+	else {
+		assert(false);
+	}
+	return answer;
 }

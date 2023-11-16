@@ -119,7 +119,7 @@ void MbD::GeneralSpline::computeDerivatives()
 	}
 	auto solver = CREATE<GESpMatParPvMarkoFast>::With();
 	auto derivsVector = solver->solvewithsaveOriginal(matrix, bvector, false);
-	derivs = std::make_shared<FullMatrix<double>>(n, p);
+	derivs = std::make_shared<FullMatrixDouble>(n, p);
 	auto hmaxpowers = std::make_shared<FullColumn<double>>(p);
 	for (int j = 0; j < p; j++)
 	{
@@ -249,15 +249,13 @@ std::ostream& MbD::GeneralSpline::printOn(std::ostream& s) const
 	{
 		s << ", " << xs->at(i);
 	}
-	s << "}" << std::endl;;
+	s << "}, " << std::endl;
 	s << "ys{";
 	s << ys->at(0);
 	for (int i = 1; i < ys->size(); i++)
 	{
 		s << ", " << ys->at(i);
 	}
-	s << "}";
-	s << ")";
-	s << std::endl;
+	s << "})" << std::endl;
 	return s;
 }
