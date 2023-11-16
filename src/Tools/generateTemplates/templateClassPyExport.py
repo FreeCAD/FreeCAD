@@ -92,7 +92,7 @@ public:
 
 public:
     @self.export.Name@(@self.export.TwinPointer@ *pcObject, PyTypeObject *T = &Type);
-    static PyObject *PyMake(struct _typeobject *, PyObject *, PyObject *);
+    static PyObject *PyMake(PyTypeObject *, PyObject *, PyObject *);
     int PyInit(PyObject* args, PyObject*k) override;
 
 + if (self.export.Initialization):
@@ -731,7 +731,7 @@ int @self.export.Name@::staticCallback_set@i.Name@ (PyObject *self, PyObject *va
 }
 
 + if not (self.export.Constructor):
-PyObject *@self.export.Name@::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
+PyObject *@self.export.Name@::PyMake(PyTypeObject* /*type*/, PyObject* /*args*/, PyObject* /*kwds*/)
 {
     // never create such objects with the constructor
     PyErr_SetString(PyExc_RuntimeError, "You cannot create directly an instance of '@self.export.Name@'.");
@@ -877,7 +877,7 @@ int @self.export.Name@::_setattr(const char *attr, PyObject *value) // __setattr
  */
 
 + if (self.export.Constructor):
-PyObject *@self.export.Name@::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
+PyObject *@self.export.Name@::PyMake(PyTypeObject* /*type*/, PyObject* /*args*/, PyObject* /*kwds*/)
 {
     // create a new instance of @self.export.Name@ and the Twin object
     return new @self.export.Name@(new @self.export.TwinPointer@);
@@ -1224,11 +1224,11 @@ using namespace @self.export.Namespace@;
 // returns a string which represents the object e.g. when printed in python
 std::string @self.export.Name@::representation() const
 {
-    return std::string("<@self.export.Twin@ object>");
+    return {"<@self.export.Twin@ object>"};
 }
 
 + if (self.export.Constructor):
-PyObject *@self.export.Name@::PyMake(struct _typeobject *, PyObject *, PyObject *)  // Python wrapper
+PyObject *@self.export.Name@::PyMake(PyTypeObject* /*type*/, PyObject* /*args*/, PyObject* /*kwds*/)
 {
     // create a new instance of @self.export.Name@ and the Twin object
     return new @self.export.Name@(new @self.export.TwinPointer@);
