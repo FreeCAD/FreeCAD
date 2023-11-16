@@ -34,7 +34,7 @@
 #include <Base/Parameter.h>
 
 #include "Preferences.h"
-
+#include "LineGenerator.h"
 
 //getters for parameters used in multiple places.
 //ensure this is in sync with preference page user interfaces
@@ -238,6 +238,16 @@ int Preferences::altDecimals()
 int Preferences::mattingStyle()
 {
     return getPreferenceGroup("Decorations")->GetInt("MattingStyle", 0);
+}
+
+bool Preferences::showDetailMatting()
+{
+    return getPreferenceGroup("General")->GetBool("ShowDetailMatting", true);
+}
+
+bool Preferences::showDetailHighlight()
+{
+    return getPreferenceGroup("General")->GetBool("ShowDetailHighLight", true);
 }
 
 std::string Preferences::svgFile()
