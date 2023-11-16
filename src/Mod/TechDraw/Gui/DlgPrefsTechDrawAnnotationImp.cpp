@@ -27,13 +27,15 @@
 # include <vector>
 #endif
 
+#include <Base/Tools.h>
+
 #include <Mod/TechDraw/App/LineGroup.h>
+#include <Mod/TechDraw/App/Preferences.h>
+#include <Mod/TechDraw/App/LineGenerator.h>
 
 #include "DlgPrefsTechDrawAnnotationImp.h"
 #include "ui_DlgPrefsTechDrawAnnotation.h"
 #include "DrawGuiUtil.h"
-#include "PreferencesGui.h"
-
 
 using namespace TechDrawGui;
 using namespace TechDraw;
@@ -50,6 +52,7 @@ DlgPrefsTechDrawAnnotationImp::DlgPrefsTechDrawAnnotationImp( QWidget* parent )
     // connect the LineGroup the update the tooltip if index changed
     connect(ui->pcbLineGroup, qOverload<int>(&QComboBox::currentIndexChanged),
             this, &DlgPrefsTechDrawAnnotationImp::onLineGroupChanged);
+     m_lineGenerator = new LineGenerator();
 }
 
 DlgPrefsTechDrawAnnotationImp::~DlgPrefsTechDrawAnnotationImp()
@@ -62,18 +65,23 @@ void DlgPrefsTechDrawAnnotationImp::saveSettings()
     ui->cbAutoHoriz->onSave();
     ui->cbPrintCenterMarks->onSave();
     ui->cbPyramidOrtho->onSave();
-    ui->cbSectionLineStd->onSave();
     ui->cbComplexMarks->onSave();
     ui->cbShowCenterMarks->onSave();
-    ui->pcbLineGroup->onSave();
     ui->pcbBalloonArrow->onSave();
     ui->pcbBalloonShape->onSave();
-    ui->pcbCenterStyle->onSave();
     ui->pcbMatting->onSave();
-    ui->pcbSectionStyle->onSave();
     ui->pdsbBalloonKink->onSave();
     ui->cbCutSurface->onSave();
+
+    ui->pcbLineGroup->onSave();
+    ui->pcbLineStandard->onSave();
+    ui->pcbSectionStyle->onSave();
+    ui->pcbCenterStyle->onSave();
     ui->pcbHighlightStyle->onSave();
+    ui->cbEndCap->onSave();
+    ui->pcbHiddenStyle->onSave();
+
+
 }
 
 void DlgPrefsTechDrawAnnotationImp::loadSettings()
@@ -101,21 +109,50 @@ void DlgPrefsTechDrawAnnotationImp::loadSettings()
     ui->cbAutoHoriz->onRestore();
     ui->cbPrintCenterMarks->onRestore();
     ui->cbPyramidOrtho->onRestore();
-    ui->cbSectionLineStd->onRestore();
     ui->cbComplexMarks->onRestore();
     ui->cbShowCenterMarks->onRestore();
     ui->pcbLineGroup->onRestore();
     ui->pcbBalloonArrow->onRestore();
     ui->pcbBalloonShape->onRestore();
-    ui->pcbCenterStyle->onRestore();
     ui->pcbMatting->onRestore();
-    ui->pcbSectionStyle->onRestore();
     ui->pdsbBalloonKink->onRestore();
     ui->cbCutSurface->onRestore();
-    ui->pcbHighlightStyle->onRestore();
 
+    ui->pcbBalloonArrow->onRestore();
     DrawGuiUtil::loadArrowBox(ui->pcbBalloonArrow);
     ui->pcbBalloonArrow->setCurrentIndex(prefBalloonArrow());
+
+    ui->cbEndCap->onRestore();
+
+    ui->pcbLineStandard->onRestore();
+    DrawGuiUtil::loadLineStandardsChoices(ui->pcbLineStandard);
+    if (ui->pcbLineStandard->count() > Preferences::lineStandard()) {
+        ui->pcbLineStandard->setCurrentIndex(Preferences::lineStandard());
+    }
+
+    ui->pcbSectionStyle->onRestore();
+    DrawGuiUtil::loadLineStyleChoices(ui->pcbSectionStyle, m_lineGenerator);
+    if (ui->pcbSectionStyle->count() > Preferences::SectionLineStyle()) {
+        ui->pcbSectionStyle->setCurrentIndex(Preferences::SectionLineStyle());
+    }
+
+    ui->pcbCenterStyle->onRestore();
+    DrawGuiUtil::loadLineStyleChoices(ui->pcbCenterStyle, m_lineGenerator);
+    if (ui->pcbCenterStyle->count() > Preferences::CenterLineStyle()) {
+        ui->pcbCenterStyle->setCurrentIndex(Preferences::CenterLineStyle());
+    }
+
+    ui->pcbHighlightStyle->onRestore();
+    DrawGuiUtil::loadLineStyleChoices(ui->pcbHighlightStyle, m_lineGenerator);
+    if (ui->pcbHighlightStyle->count() > Preferences::HighlightLineStyle()) {
+        ui->pcbHighlightStyle->setCurrentIndex(Preferences::HighlightLineStyle());
+    }
+
+    ui->pcbHiddenStyle->onRestore();
+    DrawGuiUtil::loadLineStyleChoices(ui->pcbHiddenStyle, m_lineGenerator);
+    if (ui->pcbHiddenStyle->count() > Preferences::HiddenLineStyle()) {
+        ui->pcbHiddenStyle->setCurrentIndex(Preferences::HiddenLineStyle());
+    }
 }
 
 /**

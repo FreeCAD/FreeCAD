@@ -247,7 +247,7 @@ bool Preferences::showDetailMatting()
 
 bool Preferences::showDetailHighlight()
 {
-    return getPreferenceGroup("General")->GetBool("ShowDetailHighLight", true);
+    return getPreferenceGroup("General")->GetBool("ShowDetailHighlight", true);
 }
 
 std::string Preferences::svgFile()
@@ -418,3 +418,94 @@ bool Preferences::SectionUsePreviousCut()
 {
     return getPreferenceGroup("General")->GetBool("SectionUsePreviousCut", false);
 }
+
+//! an index into the list of available line standards/version found in LineGroupDirectory
+int Preferences::lineStandard()
+{
+    return getPreferenceGroup("Standards")->GetInt("LineStandard", 1);
+}
+
+std::string Preferences::lineDefinitionLocation()
+{
+    std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/LineGroup/";
+    std::string prefDir = getPreferenceGroup("Files")->GetASCII("LineDefLocation", defaultDir.c_str());
+    return prefDir;
+}
+
+std::string Preferences::lineElementsLocation()
+{
+    std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/LineGroup/";
+    std::string prefDir = getPreferenceGroup("Files")->GetASCII("LineElementLocation", defaultDir.c_str());
+    return prefDir;
+}
+
+int Preferences::SectionLineStyle()
+{
+    return getPreferenceGroup("Decorations")->GetInt("LineStyleSection", 4);
+}
+
+int Preferences::CenterLineStyle()
+{
+    return getPreferenceGroup("Decorations")->GetInt("LineStyleCenter", 10);
+}
+
+int Preferences::HighlightLineStyle()
+{
+    return getPreferenceGroup("Decorations")->GetInt("LineStyleHighLight", 10);
+}
+
+int Preferences::HiddenLineStyle()
+{
+    return getPreferenceGroup("Decorations")->GetInt("LineStyleHidden", 1);
+}
+
+int Preferences::LineSpacingISO()
+{
+    return getPreferenceGroup("Dimensions")->GetInt("LineSpacingFactorISO", 2);
+}
+
+std::string Preferences::currentLineDefFile()
+{
+    std::string lineDefDir = Preferences::lineDefinitionLocation();
+    std::vector<std::string> choices = LineGenerator::getAvailableLineStandards();
+    std::string fileName = choices.at(Preferences::lineStandard()) + ".LineDef.csv";
+    return lineDefDir + fileName;
+}
+
+std::string Preferences::currentElementDefFile()
+{
+    std::string lineDefDir = Preferences::lineElementsLocation();
+    std::vector<std::string> choices = LineGenerator::getAvailableLineStandards();
+    std::string fileName = choices.at(Preferences::lineStandard()) + ".ElementDef.csv";
+    return lineDefDir + fileName;
+}
+
+//! returns a Qt::PenCapStyle based on the index of the preference comboBox.
+//! the comboBox choices are 0-Round, 1-Square, 2-Flat.  The Qt::PenCapStyles are
+//! 0x00-Flat, 0x10-Square, 0x20-Round
+int Preferences::LineCapStyle()
+{
+    int currentIndex = LineCapIndex();
+    int result{0x20};
+        switch (currentIndex) {
+        case 0:
+            result = static_cast<Qt::PenCapStyle>(0x20);   //round;
+            break;
+        case 1:
+            result = static_cast<Qt::PenCapStyle>(0x10);   //square;
+            break;
+        case 2:
+            result = static_cast<Qt::PenCapStyle>(0x00);   //flat
+            break;
+        default:
+            result = static_cast<Qt::PenCapStyle>(0x20);
+    }
+    return result;
+}
+
+//! returns the line cap index without conversion to a Qt::PenCapStyle
+int Preferences::LineCapIndex()
+{
+    return getPreferenceGroup("General")->GetInt("EdgeCapStyle", 0x20);
+}
+

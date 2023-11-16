@@ -2202,31 +2202,35 @@ void _createThreadLines(std::vector<std::string> SubNames, TechDraw::DrawViewPar
 void _setLineAttributes(TechDraw::CosmeticEdge* cosEdge)
 {
     // set line attributes of a cosmetic edge
-    cosEdge->m_format.m_style = _getActiveLineAttributes().getStyle();
+    cosEdge->m_format.m_style = 2;
     cosEdge->m_format.m_weight = _getActiveLineAttributes().getWidthValue();
     cosEdge->m_format.m_color = _getActiveLineAttributes().getColorValue();
+    cosEdge->m_format.m_lineNumber = _getActiveLineAttributes().getStyle();
 }
 
 void _setLineAttributes(TechDraw::CenterLine* cosEdge)
 {
     // set line attributes of a cosmetic edge
-    cosEdge->m_format.m_style = _getActiveLineAttributes().getStyle();
+    cosEdge->m_format.m_style = 2;
     cosEdge->m_format.m_weight = _getActiveLineAttributes().getWidthValue();
     cosEdge->m_format.m_color = _getActiveLineAttributes().getColorValue();
+    cosEdge->m_format.m_lineNumber = _getActiveLineAttributes().getStyle();
 }
 
 void _setLineAttributes(TechDraw::CosmeticEdge* cosEdge, int style, float weight, App::Color color)
 {
     // set line attributes of a cosmetic edge
-    cosEdge->m_format.m_style = style;
+    cosEdge->m_format.m_style = 2;
     cosEdge->m_format.m_weight = weight;
     cosEdge->m_format.m_color = color;
+    cosEdge->m_format.m_lineNumber = style;
 }
 
 void _setLineAttributes(TechDraw::CenterLine* cosEdge, int style, float weight, App::Color color)
 {
     // set line attributes of a centerline
-    cosEdge->m_format.m_style = style;
+    cosEdge->m_format.m_style = 2;
+    cosEdge->m_format.m_lineNumber = style;
     cosEdge->m_format.m_weight = weight;
     cosEdge->m_format.m_color = color;
 }

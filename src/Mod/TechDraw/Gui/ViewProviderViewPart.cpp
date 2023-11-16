@@ -49,6 +49,9 @@
 #include <Mod/TechDraw/App/LineGroup.h>
 #include <Mod/TechDraw/App/Cosmetic.h>
 #include <Mod/TechDraw/App/CenterLine.h>
+#include <Mod/TechDraw/App/LineNameEnum.h>
+#include <Mod/TechDraw/App/LineGenerator.h>
+
 
 #include "PreferencesGui.h"
 #include "QGIView.h"
@@ -65,13 +68,6 @@ using DU = DrawUtil;
 
 PROPERTY_SOURCE(TechDrawGui::ViewProviderViewPart, TechDrawGui::ViewProviderDrawingView)
 
-const char* ViewProviderViewPart::LineStyleEnums[] = { "NoLine",
-                                                  "Continuous",
-                                                  "Dash",
-                                                  "Dot",
-                                                  "DashDot",
-                                                  "DashDotDot",
-                                                  nullptr };
 
 const App::PropertyIntegerConstraint::Constraints intPercent = { 0, 100, 5 };
 
@@ -111,9 +107,20 @@ ViewProviderViewPart::ViewProviderViewPart()
     ADD_PROPERTY_TYPE(ArcCenterMarks ,(defShowCenters), dgroup, App::Prop_None, "Center marks on/off");
     ADD_PROPERTY_TYPE(CenterScale, (defScale), dgroup, App::Prop_None, "Center mark size adjustment, if enabled");
 
+    std::string bodyName = LineGenerator::getLineStandardsBody();
+    if (bodyName == "ISO") {
+        SectionLineStyle.setEnums(ISOLineName::ISOLineNameEnums);
+        HighlightLineStyle.setEnums(ISOLineName::ISOLineNameEnums);
+    } else if (bodyName == "ANSI") {
+        SectionLineStyle.setEnums(ANSILineName::ANSILineNameEnums);
+        HighlightLineStyle.setEnums(ANSILineName::ANSILineNameEnums);
+    } else if (bodyName == "ASME") {
+    SectionLineStyle.setEnums(ASMELineName::ASMELineNameEnums);
+        HighlightLineStyle.setEnums(ASMELineName::ASMELineNameEnums);
+    }
+
     //properties that affect Section Line
     ADD_PROPERTY_TYPE(ShowSectionLine ,(true)    ,sgroup, App::Prop_None, "Show/hide section line if applicable");
-    SectionLineStyle.setEnums(LineStyleEnums);
     ADD_PROPERTY_TYPE(SectionLineStyle, (PreferencesGui::sectionLineStyle()), sgroup, App::Prop_None,
                         "Set section line style if applicable");
     ADD_PROPERTY_TYPE(SectionLineColor, (prefSectionColor()), sgroup, App::Prop_None,
@@ -122,7 +129,6 @@ ViewProviderViewPart::ViewProviderViewPart()
                         "Show marks at direction changes for ComplexSection");
 
     //properties that affect Detail Highlights
-    HighlightLineStyle.setEnums(LineStyleEnums);
     ADD_PROPERTY_TYPE(HighlightLineStyle, (prefHighlightStyle()), hgroup, App::Prop_None,
                         "Set highlight line style if applicable");
     ADD_PROPERTY_TYPE(HighlightLineColor, (prefHighlightColor()), hgroup, App::Prop_None,

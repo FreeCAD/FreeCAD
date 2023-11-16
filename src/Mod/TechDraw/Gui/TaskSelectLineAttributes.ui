@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>250</width>
-    <height>482</height>
+    <width>332</width>
+    <height>401</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -27,7 +27,7 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout">
    <item>
-    <layout class="QGridLayout" name="lineStyles">
+    <layout class="QGridLayout" name="lineStyles" columnstretch="1,2">
      <item row="0" column="0">
       <widget class="QLabel" name="label_styles">
        <property name="text">
@@ -35,63 +35,8 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="0">
-      <widget class="QRadioButton" name="rbSolid">
-       <property name="toolTip">
-        <string>Set line style to solid</string>
-       </property>
-       <property name="text">
-        <string>Solid</string>
-       </property>
-       <property name="autoExclusive">
-        <bool>true</bool>
-       </property>
-       <attribute name="buttonGroup">
-        <string notr="true">bgLineStyles</string>
-       </attribute>
-      </widget>
-     </item>
-     <item row="2" column="0">
-      <widget class="QRadioButton" name="rbDashed">
-       <property name="text">
-        <string>Dashed</string>
-       </property>
-       <property name="autoExclusive">
-        <bool>true</bool>
-       </property>
-       <attribute name="buttonGroup">
-        <string notr="true">bgLineStyles</string>
-       </attribute>
-      </widget>
-     </item>
-     <item row="3" column="0">
-      <widget class="QRadioButton" name="rbDotted">
-       <property name="text">
-        <string>Dotted</string>
-       </property>
-       <property name="autoExclusive">
-        <bool>true</bool>
-       </property>
-       <attribute name="buttonGroup">
-        <string notr="true">bgLineStyles</string>
-       </attribute>
-      </widget>
-     </item>
-     <item row="4" column="0">
-      <widget class="QRadioButton" name="rbDashDotted">
-       <property name="text">
-        <string>Dashdot</string>
-       </property>
-       <property name="checked">
-        <bool>true</bool>
-       </property>
-       <property name="autoExclusive">
-        <bool>true</bool>
-       </property>
-       <attribute name="buttonGroup">
-        <string notr="true">bgLineStyles</string>
-       </attribute>
-      </widget>
+     <item row="0" column="1">
+      <widget class="QComboBox" name="cbLineStyle"/>
      </item>
     </layout>
    </item>
@@ -307,6 +252,19 @@
      </item>
     </layout>
    </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
+   </item>
   </layout>
  </widget>
  <resources>
@@ -314,17 +272,12 @@
  </resources>
  <connections/>
  <buttongroups>
-  <buttongroup name="bgLineStyles">
+  <buttongroup name="bgLineColor">
    <property name="exclusive">
     <bool>true</bool>
    </property>
   </buttongroup>
   <buttongroup name="bgLineWidth">
-   <property name="exclusive">
-    <bool>true</bool>
-   </property>
-  </buttongroup>
-  <buttongroup name="bgLineColor">
    <property name="exclusive">
     <bool>true</bool>
    </property>

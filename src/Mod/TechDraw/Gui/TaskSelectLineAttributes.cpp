@@ -24,20 +24,22 @@
 
 #include <Gui/BitmapFactory.h>
 
+#include <Mod/TechDraw/App/LineGenerator.h>
+
 #include "ui_TaskSelectLineAttributes.h"
 #include "TaskSelectLineAttributes.h"
-
+#include "DrawGuiUtil.h"
 
 using namespace Gui;
 using namespace TechDraw;
 using namespace TechDrawGui;
 
-enum class EdgeStyle {
-    solid = 1,
-    dashed = 2,
-    dotted = 3,
-    dashdotted = 4
-};
+//enum class EdgeStyle {
+//    solid = 1,
+//    dashed = 2,
+//    dotted = 3,
+//    dashdotted = 4
+//};
 
 enum class EdgeWidth {
     small = 1,
@@ -62,7 +64,7 @@ enum class EdgeColor {
 
 lineAttributes::lineAttributes()
 {
-    style = int(EdgeStyle::dotted);
+    style = 2;
     width = int(EdgeWidth::middle);
     color = int(EdgeColor::black);
 }
@@ -150,6 +152,7 @@ TaskSelectLineAttributes::TaskSelectLineAttributes(lineAttributes * ptActiveAttr
     activeAttributes(ptActiveAttributes),
     ui(new Ui_TaskSelectLineAttributes)
 {
+    m_lineGenerator = new TechDraw::LineGenerator;
 
     ui->setupUi(this);
 
@@ -158,7 +161,7 @@ TaskSelectLineAttributes::TaskSelectLineAttributes(lineAttributes * ptActiveAttr
 
 TaskSelectLineAttributes::~TaskSelectLineAttributes()
 {
-
+    delete m_lineGenerator;
 }
 
 void TaskSelectLineAttributes::updateTask()
@@ -180,21 +183,10 @@ void TaskSelectLineAttributes::setUiEdit()
 {
     setWindowTitle(tr("Select line attributes"));
     int lineStyle = activeAttributes->getStyle();
-    switch(EdgeStyle(lineStyle)) {
-        case EdgeStyle::solid:
-            ui->rbSolid->setChecked(true);
-            break;
-        case EdgeStyle::dashed:
-            ui->rbDashed->setChecked(true);
-            break;
-        case EdgeStyle::dotted:
-            ui->rbDotted->setChecked(true);
-            break;
-        case EdgeStyle::dashdotted:
-            ui->rbDashDotted->setChecked(true);
-            break;
-        default:
-            ui->rbDashDotted->setChecked(true);
+    // line numbering starts at 1, not 0
+    DrawGuiUtil::loadLineStyleChoices(ui->cbLineStyle, m_lineGenerator);
+    if (ui->cbLineStyle->count() >= lineStyle ) {
+        ui->cbLineStyle->setCurrentIndex(lineStyle - 1);
     }
 
     int lineWidth = activeAttributes->getWidth();
@@ -251,21 +243,7 @@ void TaskSelectLineAttributes::setUiEdit()
 
 bool TaskSelectLineAttributes::accept()
 {
-    if (ui->rbSolid->isChecked()){
-        activeAttributes->setStyle(int(EdgeStyle::solid));
-    }
-    else if (ui->rbDashed->isChecked()){
-        activeAttributes->setStyle(int(EdgeStyle::dashed));
-    }
-    else if (ui->rbDotted->isChecked()){
-        activeAttributes->setStyle(int(EdgeStyle::dotted));
-    }
-    else if (ui->rbDashDotted->isChecked()){
-        activeAttributes->setStyle(int(EdgeStyle::dashdotted));
-    }
-    else {
-        activeAttributes->setStyle(int(EdgeStyle::dashdotted));
-    }
+    activeAttributes->setStyle(ui->cbLineStyle->currentIndex() + 1);
 
     if (ui->rbThin->isChecked()){
         activeAttributes->setWidth(int(EdgeWidth::small));
