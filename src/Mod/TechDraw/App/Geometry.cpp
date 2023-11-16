@@ -78,7 +78,7 @@
 #include <Mod/Part/App/TopoShape.h>
 
 #include "Geometry.h"
-#include "GeometryObject.h"
+#include "ShapeUtils.h"
 #include "DrawUtil.h"
 
 
