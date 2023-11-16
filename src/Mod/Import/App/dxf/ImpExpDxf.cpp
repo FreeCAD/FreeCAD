@@ -321,16 +321,51 @@ void ImpExpDxfRead::OnReadText(const double* point,
                                const char* text,
                                const double rotation)
 {
+    // Note that our parameters do not contain all the information needed to properly orient the text.
+    // As a result the text will always appear on the XY plane
     if (optionImportAnnotations) {
         if (LayerName().substr(0, 6) != "BLOCKS") {
-            Base::Interpreter().runString("import Draft");
-            Base::Interpreter().runStringArg("p=FreeCAD.Vector(%f,%f,%f)",
-                                             point[0] * optionScaling,
-                                             point[1] * optionScaling,
-                                             point[2] * optionScaling);
-            Base::Interpreter().runString("a=FreeCAD.Vector(0,0,1)");
-            Base::Interpreter().runStringArg("pl=FreeCAD.Placement(p,a,%f)", rotation);
-            Base::Interpreter().runStringArg("Draft.make_text(\"%s\",pl, height=%f)", text, height);
+            PyObject *freeCadModule = nullptr, *normalVector = nullptr, *position = nullptr,
+                     *placement = nullptr, *draftModule = nullptr, *result = nullptr;
+            do {
+                freeCadModule = PyImport_GetModule(PyUnicode_FromString("FreeCAD"));
+                if (freeCadModule == nullptr)
+                    break;
+                normalVector = PyObject_CallMethod(freeCadModule, "Vector", "fff", 0.0, 0.0, 1.0);
+                if (normalVector == nullptr)
+                    break;
+                position = PyObject_CallMethod(freeCadModule,
+                                               "Vector",
+                                               "fff",
+                                               point[0] * optionScaling,
+                                               point[1] * optionScaling,
+                                               point[2] * optionScaling);
+                if (position == nullptr)
+                    break;
+                placement = PyObject_CallMethod(freeCadModule,
+                                                "Placement",
+                                                "OOf",
+                                                position,
+                                                normalVector,
+                                                rotation);
+                if (placement == nullptr)
+                    break;
+                draftModule = PyImport_ImportModule("Draft");
+                if (draftModule == nullptr)
+                    break;
+                result =
+                    PyObject_CallMethod(draftModule, "make_text", "sOf", text, placement, height);
+            } while (false);
+            // At this point perhaps we should call PyErr_Occurred, issue a message, and clear the error so the rest of the import can proceed,
+            // but we would have to lock the GIL even though we don't know if an error actually occurred because this is the normal path on success.
+
+            // We own all the return values so we must release them.
+            Py_XDECREF(result);
+            Py_XDECREF(draftModule);
+            Py_XDECREF(freeCadModule);
+            Py_XDECREF(normalVector);
+            Py_XDECREF(position);
+            Py_XDECREF(placement);
         }
         // else std::cout << "skipped text in block: " << LayerName() << std::endl;
     }
