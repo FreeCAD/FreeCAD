@@ -38,6 +38,7 @@
 #include "DrawViewPart.h"
 #include "GeometryObject.h"
 #include "LineGroup.h"
+#include "LineGenerator.h"
 #include "Preferences.h"
 
 
@@ -54,7 +55,7 @@ LineFormat::LineFormat()
     m_weight = getDefEdgeWidth();
     m_color= getDefEdgeColor();
     m_visible = true;
-    m_lineNumber = InvalidLine;
+    m_lineNumber = LineGenerator::fromQtStyle((Qt::PenStyle)m_style);
 }
 
 LineFormat::LineFormat(const int style,
@@ -65,7 +66,7 @@ LineFormat::LineFormat(const int style,
     m_weight(weight),
     m_color(color),
     m_visible(visible),
-    m_lineNumber(InvalidLine)
+    m_lineNumber(LineGenerator::fromQtStyle((Qt::PenStyle)m_style))
 {
 }
 

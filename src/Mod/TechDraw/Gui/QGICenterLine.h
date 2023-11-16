@@ -49,6 +49,8 @@ public:
 
     void setIntersection(bool isIntersecting);
 
+    void setLinePen(QPen isoPen);
+
 protected:
     QColor getCenterColor();
     Qt::PenStyle getCenterStyle();

@@ -212,14 +212,16 @@ void QGIPrimPath::setWidth(double w)
 
 void QGIPrimPath::setStyle(Qt::PenStyle s)
 {
-//    Base::Console().Message("QGIPP::setStyle(QTPS: %d)\n", s);
+// TODO: edge lines for faces are drawn with setStyle(Qt::NoPen) and trigger this message.
+//    Base::Console().Warning("QGIPP::setStyle(Qt: %d) is deprecated. Use setLinePen instead\n", s);
     m_styleNormal = s;
     m_styleCurrent = s;
 }
 
 void QGIPrimPath::setStyle(int s)
 {
-//    Base::Console().Message("QGIPP::setStyle(int: %d)\n", s);
+// TODO: edge lines for faces are drawn with setStyle(Qt::NoPen) and trigger this message.
+//    Base::Console().Warning("QGIPP::setStyle(int: %d) is deprecated. Use setLinePen instead\n", s);
     m_styleCurrent = static_cast<Qt::PenStyle>(s);
     m_styleNormal = static_cast<Qt::PenStyle>(s);
 }
@@ -245,23 +247,7 @@ Base::Reference<ParameterGrp> QGIPrimPath::getParmGroup()
 //EdgeCapStyle param changed from UInt (Qt::PenCapStyle) to Int (QComboBox index)
 Qt::PenCapStyle QGIPrimPath::prefCapStyle()
 {
-    Qt::PenCapStyle result;
-    int newStyle;
-    newStyle = Preferences::getPreferenceGroup("General")->GetInt("EdgeCapStyle", 32);    //0x00 FlatCap, 0x10 SquareCap, 0x20 RoundCap
-    switch (newStyle) {
-        case 0:
-            result = static_cast<Qt::PenCapStyle>(0x20);   //round;
-            break;
-        case 1:
-            result = static_cast<Qt::PenCapStyle>(0x10);   //square;
-            break;
-        case 2:
-            result = static_cast<Qt::PenCapStyle>(0x00);   //flat
-            break;
-        default:
-            result = static_cast<Qt::PenCapStyle>(0x20);
-    }
-    return result;
+    return (Qt::PenCapStyle)Preferences::LineCapStyle();
 }
 
 void QGIPrimPath::mousePressEvent(QGraphicsSceneMouseEvent *event)
@@ -331,16 +317,19 @@ void QGIPrimPath::setFillColor(QColor c)
 {
     m_colNormalFill = c;
     m_fillColorCurrent = m_colNormalFill;
-//    m_colDefFill = c;
+}
+
+void QGIPrimPath::setCurrentPen()
+{
+    m_pen.setWidthF(m_width);
+    m_pen.setColor(m_colCurrent);
 }
 
 void QGIPrimPath::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
 
-    m_pen.setWidthF(m_width);
-    m_pen.setColor(m_colCurrent);
-    m_pen.setStyle(m_styleCurrent);
+    setCurrentPen();
     setPen(m_pen);
 
     m_brush.setColor(m_fillColorCurrent);

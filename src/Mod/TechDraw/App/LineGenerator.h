@@ -58,8 +58,8 @@ public:
 
     QPen getBestPen(size_t lineNumber, Qt::PenStyle qtStyle, double width);
     QPen getLinePen(size_t lineNumber, double nominalLineWidth);
-    int fromQtStyle(Qt::PenStyle style) const;
 
+    static int fromQtStyle(Qt::PenStyle style);
     static std::vector<std::string> getAvailableLineStandards();
     static std::string getLineStandardsBody();
 

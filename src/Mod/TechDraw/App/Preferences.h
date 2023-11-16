@@ -64,7 +64,6 @@ public:
     static bool keepPagesUpToDate();
 
     static int projectionAngle();
-    static int lineGroup();
 
     static int balloonArrow();
     static double balloonKinkLength();
@@ -72,7 +71,6 @@ public:
 
     static QString defaultTemplate();
     static QString defaultTemplateDir();
-    static std::string lineGroupFile();
 
     static const double DefaultFontSizeInMM;
     static const double DefaultArrowSize;

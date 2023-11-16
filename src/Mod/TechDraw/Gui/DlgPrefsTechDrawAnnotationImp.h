@@ -25,10 +25,13 @@
 #define DRAWINGGUI_DLGPREFSTECHDRAWIMPANNOTATION_H
 
 #include <memory>
-
+#include <Gui/PrefWidgets.h>
 #include <Gui/PropertyPage.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
+namespace TechDraw {
+class LineGenerator;
+}
 
 namespace TechDrawGui {
 class Ui_DlgPrefsTechDrawAnnotationImp;
@@ -53,6 +56,7 @@ protected:
 
 private:
     std::unique_ptr<Ui_DlgPrefsTechDrawAnnotationImp> ui;
+    TechDraw::LineGenerator* m_lineGenerator;
 };
 
 } // namespace TechDrawGui

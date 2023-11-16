@@ -56,6 +56,7 @@ class LineFormat;
 namespace TechDraw
 {
 class Face;
+class LineGenerator;
 }
 
 namespace TechDrawGui
@@ -107,6 +108,8 @@ protected:
 private:
     lineAttributes* activeAttributes;
     std::unique_ptr<Ui_TaskSelectLineAttributes> ui;
+
+    TechDraw::LineGenerator* m_lineGenerator;
 }; // class TaskSelectLineAttributes
 
 class TaskDlgSelectLineAttributes : public Gui::TaskView::TaskDialog

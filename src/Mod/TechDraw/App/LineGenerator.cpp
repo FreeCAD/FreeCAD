@@ -171,7 +171,7 @@ QPen LineGenerator::getLinePen(size_t lineNumber, double nominalLineWidth)
 
 
 //! convert Qt line style to closest ISO line number
-int LineGenerator::fromQtStyle(Qt::PenStyle style) const
+int LineGenerator::fromQtStyle(Qt::PenStyle style)
 {
 //    Base::Console().Message("DLG::fromQtStyle(%d)\n", style);
 
