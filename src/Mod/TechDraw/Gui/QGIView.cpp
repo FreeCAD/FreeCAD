@@ -70,7 +70,8 @@ QGIView::QGIView()
     :QGraphicsItemGroup(),
      viewObj(nullptr),
      m_locked(false),
-     m_innerView(false)
+     m_innerView(false),
+     m_multiselectActivated(false)
 {
     setCacheMode(QGraphicsItem::NoCache);
     setHandlesChildEvents(false);
@@ -199,7 +200,25 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
 void QGIView::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
 //    Base::Console().Message("QGIV::mousePressEvent() - %s\n", getViewName());
+    Qt::KeyboardModifiers originalModifiers = event->modifiers();
+    if (event->button()&Qt::LeftButton) {
+        m_multiselectActivated = false;
+    }
+
+    if (event->button() == Qt::LeftButton && PreferencesGui::multiSelection()) {
+        std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
+        if (selection.size() == 1
+            && selection.front().getObject() == getViewObject()
+            && selection.front().hasSubNames()) {
+
+            m_multiselectActivated = true;
+            event->setModifiers(originalModifiers | Qt::ControlModifier);
+        }
+    }
+
     QGraphicsItemGroup::mousePressEvent(event);
+
+    event->setModifiers(originalModifiers);
 }
 
 void QGIView::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
@@ -210,7 +229,18 @@ void QGIView::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 void QGIView::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
 //    Base::Console().Message("QGIV::mouseReleaseEvent() - %s\n", getViewName());
+    Qt::KeyboardModifiers originalModifiers = event->modifiers();
+    if ((event->button()&Qt::LeftButton) && m_multiselectActivated) {
+        if (PreferencesGui::multiSelection()) {
+            event->setModifiers(originalModifiers | Qt::ControlModifier);
+        }
+
+        m_multiselectActivated = false;
+    }
+
     QGraphicsItemGroup::mouseReleaseEvent(event);
+
+    event->setModifiers(originalModifiers);
 }
 
 void QGIView::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
