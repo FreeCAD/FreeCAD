@@ -107,11 +107,6 @@ QGIView::QGIView()
     m_lock->hide();
 }
 
-QGIView::~QGIView()
-{
-    signalSelectPoint.disconnect_all_slots();
-}
-
 void QGIView::onSourceChange(TechDraw::DrawView* newParent)
 {
     Q_UNUSED(newParent);
@@ -204,7 +199,6 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
 void QGIView::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
 //    Base::Console().Message("QGIV::mousePressEvent() - %s\n", getViewName());
-    signalSelectPoint(this, event->pos());
     if (m_dragState == NODRAG) {
         m_dragState = DRAGSTARTED;
     }
