@@ -200,7 +200,6 @@ private:
     QPen m_decorPen;
     double m_lockWidth;
     double m_lockHeight;
-    int m_dragState;
     int m_zOrder;
 
 };
