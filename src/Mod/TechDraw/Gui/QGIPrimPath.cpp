@@ -259,26 +259,6 @@ Qt::PenCapStyle QGIPrimPath::prefCapStyle()
     return result;
 }
 
-void QGIPrimPath::mousePressEvent(QGraphicsSceneMouseEvent * event)
-{
-    //wf: this seems a bit of a hack. does it mess up selection of QGIPP??
-    QGIView *parent;
-    QGraphicsItem* qparent = parentItem();
-    if (qparent) {
-        parent = dynamic_cast<QGIView *> (qparent);
-        if (parent) {
-//            Base::Console().Message("QGIPP::mousePressEvent - passing event to QGIV parent\n");
-            parent->mousePressEvent(event);
-        } else {
-//            qparent->mousePressEvent(event);  //protected!
-            QGraphicsPathItem::mousePressEvent(event);
-        }
-    } else {
-//        Base::Console().Message("QGIPP::mousePressEvent - passing event to ancestor\n");
-        QGraphicsPathItem::mousePressEvent(event);
-    }
-}
-
 void QGIPrimPath::setFill(QColor c, Qt::BrushStyle s) {
     setFillColor(c);
     m_fillNormal = s;
