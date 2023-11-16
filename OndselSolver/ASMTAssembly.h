@@ -15,6 +15,8 @@
 #include "MBDynSystem.h"
 #include "ASMTTime.h"
 #include "ASMTConstantGravity.h"
+#include "ASMTSimulationParameters.h"
+#include "ASMTAnimationParameters.h"
 
 namespace MbD {
 	class ASMTRefPoint;
@@ -25,8 +27,8 @@ namespace MbD {
 	class ASMTConstraintSet;
 	class ASMTForceTorque;
 	class ASMTConstantGravity;
-	class ASMTSimulationParameters;
-	class ASMTAnimationParameters;
+	// class ASMTSimulationParameters;
+	// class ASMTAnimationParameters;
 	class ASMTJoint;
 	class ASMTMotion;
 	class Units;

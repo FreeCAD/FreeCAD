@@ -215,7 +215,7 @@ set(ONDSELSOLVER_SRC
         OndselSolver/MatrixLDU.cpp
         OndselSolver/MatrixSolver.cpp
         OndselSolver/MaximumIterationError.cpp
-        OndselSolver/MbdMath.cpp
+        OndselSolver/MbDMath.cpp
         OndselSolver/MBDynBlock.cpp
         OndselSolver/MBDynBody.cpp
         OndselSolver/MBDynControlData.cpp
@@ -236,9 +236,9 @@ set(ONDSELSOLVER_SRC
         OndselSolver/NoRotationJoint.cpp
         OndselSolver/NotKinematicError.cpp
         OndselSolver/Numeric.cpp
-        OndselSolver/OrbitAnglezIecJec.cpp
-        OndselSolver/OrbitAnglezIeqcJec.cpp
-        OndselSolver/OrbitAnglezIeqcJeqc.cpp
+        OndselSolver/OrbitAngleZIecJec.cpp
+        OndselSolver/OrbitAngleZIeqcJec.cpp
+        OndselSolver/OrbitAngleZIeqcJeqc.cpp
         OndselSolver/Orientation.cpp
         OndselSolver/ParallelAxesJoint.cpp
         OndselSolver/Part.cpp
@@ -505,7 +505,7 @@ set(ONDSELSOLVER_HEADERS
         OndselSolver/MatrixLDU.h
         OndselSolver/MatrixSolver.h
         OndselSolver/MaximumIterationError.h
-        OndselSolver/MbdMath.h
+        OndselSolver/MbDMath.h
         OndselSolver/MBDynBlock.h
         OndselSolver/MBDynBody.h
         OndselSolver/MBDynControlData.h
@@ -526,9 +526,9 @@ set(ONDSELSOLVER_HEADERS
         OndselSolver/NoRotationJoint.h
         OndselSolver/NotKinematicError.h
         OndselSolver/Numeric.h
-        OndselSolver/OrbitAnglezIecJec.h
-        OndselSolver/OrbitAnglezIeqcJec.h
-        OndselSolver/OrbitAnglezIeqcJeqc.h
+        OndselSolver/OrbitAngleZIecJec.h
+        OndselSolver/OrbitAngleZIeqcJec.h
+        OndselSolver/OrbitAngleZIeqcJeqc.h
         OndselSolver/Orientation.h
         OndselSolver/ParallelAxesJoint.h
         OndselSolver/Part.h
