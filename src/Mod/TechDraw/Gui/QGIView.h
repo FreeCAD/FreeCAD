@@ -118,7 +118,6 @@ public:
     inline qreal getY() { return y() * -1; }
     bool isInnerView() const { return m_innerView; }
     void isInnerView(bool state) { m_innerView = state; }
-    double getYInClip(double y);
     QGIViewClip* getClipGroup();
 
 
