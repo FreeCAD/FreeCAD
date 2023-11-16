@@ -619,6 +619,12 @@ std::string ConstraintPy::representation() const
                 case ParabolaFocus:
                     result << "'InternalAlignment:ParabolaFocus'>";
                     break;
+                case BSplineControlPoint:
+                    result << "'InternalAlignment:BSplineControlPoint'>";
+                    break;
+                case BSplineKnotPoint:
+                    result << "'InternalAlignment:BSplineKnotPoint'>";
+                    break;
                 default:
                     result << "'InternalAlignment:?'>";
                     break;
