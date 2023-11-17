@@ -30,7 +30,6 @@ import lazy_loader.lazy_loader as lz
 
 import DraftVecUtils
 from FreeCAD import Base
-from draftgeoutils.general import precision
 from draftgeoutils.geometry import are_coplanar
 
 # Delay import of module until first use because it is heavy
