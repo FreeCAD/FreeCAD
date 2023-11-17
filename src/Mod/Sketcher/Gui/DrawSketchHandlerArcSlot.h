@@ -204,9 +204,11 @@ private:
 
         if (constructionMethod() == ConstructionMethod::ArcSlot) {
             generateAutoConstraintsOnElement(ac2,
+                                             getHighestCurveIndex() - 2,
+                                             Sketcher::PointPos::mid);
+            generateAutoConstraintsOnElement(ac3,
                                              getHighestCurveIndex() - 1,
                                              Sketcher::PointPos::mid);
-            generateAutoConstraintsOnElement(ac3, getHighestCurveIndex(), Sketcher::PointPos::mid);
         }
         else {
             generateAutoConstraintsOnElement(ac2,
