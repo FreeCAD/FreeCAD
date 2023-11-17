@@ -1345,7 +1345,7 @@ class DraftToolBar:
             self.angleValue.setText(displayExternal(phi,None,'Angle'))
             if not mask:
                 # automask, phi is rounded to identify one of the below cases
-                phi = round(phi, Draft.getParam("precision"))
+                phi = round(phi, Draft.precision())
                 if phi in [0,180,-180]:
                     mask = "x"
                 elif phi in [90,270,-90,-270]:
