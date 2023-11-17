@@ -635,7 +635,7 @@ PyObject* RotationPy::number_power_handler(PyObject* self, PyObject* other, PyOb
     }
 
     Rotation a = static_cast<RotationPy*>(self)->value();
-    long b = Py::Int(other);
+    long b = Py::Long(other);
 
     Vector3d axis;
     double rfAngle {};

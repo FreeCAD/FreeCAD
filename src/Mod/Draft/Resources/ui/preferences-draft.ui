@@ -136,59 +136,6 @@
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_15">
-        <item>
-         <widget class="QLabel" name="label_7">
-          <property name="text">
-           <string>Tolerance</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer_8">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="Gui::PrefDoubleSpinBox" name="gui::prefdoublespinbox">
-          <property name="maximumSize">
-           <size>
-            <width>60</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="toolTip">
-           <string>This is the value used by functions that use a tolerance.
-Values with differences below this value will be treated as same. This value will be obsoleted soon so the precision level above controls both.</string>
-          </property>
-          <property name="suffix">
-           <string/>
-          </property>
-          <property name="singleStep">
-           <double>0.010000000000000</double>
-          </property>
-          <property name="value">
-           <double>0.050000000000000</double>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>tolerance</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
        <widget class="Gui::PrefCheckBox" name="checkBox_3">
         <property name="toolTip">
          <string>If this option is checked, the layers drop-down list will also show groups, allowing you to automatically add objects to groups too.</string>
@@ -242,39 +189,6 @@ This allows to point the direction and type the distance.</string>
          </widget>
         </item>
         <item row="0" column="1">
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_3">
-          <property name="toolTip">
-           <string>Normally, after copying objects, the copies get selected.
-If this option is checked, the base objects will be selected instead.</string>
-          </property>
-          <property name="text">
-           <string>Select base objects after copying</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>selectBaseObjects</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="Gui::PrefCheckBox" name="checkBox_2">
-          <property name="toolTip">
-           <string>If this option is set, when creating Draft objects on top of an existing face of another object, the "Support" property of the Draft object will be set to the base object. This was the standard behaviour before FreeCAD 0.19</string>
-          </property>
-          <property name="text">
-           <string>Set the Support property when possible</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>useSupport</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
          <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_6">
           <property name="toolTip">
            <string>If this is checked, objects will appear as filled by default.
@@ -294,27 +208,24 @@ Otherwise, they will appear as wireframe</string>
           </property>
          </widget>
         </item>
-        <item row="2" column="0">
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_5">
+        <item row="1" column="0">
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_3">
           <property name="toolTip">
-           <string>If this is checked, copy mode will be kept across command,
-otherwise commands will always start in no-copy mode</string>
+           <string>Normally, after copying objects, the copies get selected.
+If this option is checked, the base objects will be selected instead.</string>
           </property>
           <property name="text">
-           <string>Global copy mode</string>
-          </property>
-          <property name="checked">
-           <bool>false</bool>
+           <string>Select base objects after copying</string>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>copymode</cstring>
+           <cstring>selectBaseObjects</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Draft</cstring>
           </property>
          </widget>
         </item>
-        <item row="2" column="1">
+        <item row="1" column="1">
          <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_13">
           <property name="toolTip">
            <string>Force Draft Tools to create Part primitives instead of Draft objects.

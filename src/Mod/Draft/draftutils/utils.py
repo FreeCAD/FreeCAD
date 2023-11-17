@@ -177,8 +177,7 @@ def get_param_type(param):
                    "FontFile", "ClonePrefix", "overrideUnit",
                    "labeltype", "gridSpacing") or "inCommandShortcut" in param:
         return "string"
-    elif param in ("textheight", "tolerance",
-                   "arrowsize", "extlines", "dimspacing",
+    elif param in ("textheight", "arrowsize", "extlines", "dimspacing",
                    "dimovershoot", "extovershoot", "HatchPatternSize"):
         return "float"
     elif param in ("selectBaseObjects", "alwaysSnap", "grid",
@@ -345,38 +344,14 @@ def precision():
 
 
 def tolerance():
-    """Return the tolerance value from the parameter database.
-
-    This specifies a tolerance around a quantity.
-    ::
-        value + tolerance
-        value - tolerance
-
-    By default the tolerance is 0.05.
+    """Return a tolerance based on the precision() value
 
     Returns
     -------
     float
-        get_param("tolerance", 0.05)
+        10 ** -precision()
     """
-    return getParam("tolerance", 0.05)
-
-
-def epsilon():
-    """Return a small number based on the tolerance for use in comparisons.
-
-    The epsilon value is used in floating point comparisons. Use with caution.
-    ::
-        denom = 10**tolerance
-        num = 1
-        epsilon = num/denom
-
-    Returns
-    -------
-    float
-        1/(10**tolerance)
-    """
-    return 1.0/(10.0**tolerance())
+    return 10 ** -precision()
 
 
 def get_real_name(name):

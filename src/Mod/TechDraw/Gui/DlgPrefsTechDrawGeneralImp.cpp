@@ -71,6 +71,8 @@ void DlgPrefsTechDrawGeneralImp::saveSettings()
     ui->le_NamePattern->onSave();
     ui->cb_ShowGrid->onSave();
     ui->psb_GridSpacing->onSave();
+
+    ui->cbMultiSelection->onSave();
 }
 
 void DlgPrefsTechDrawGeneralImp::loadSettings()
@@ -107,6 +109,10 @@ void DlgPrefsTechDrawGeneralImp::loadSettings()
     double spacingDefault = PreferencesGui::gridSpacing();
     ui->psb_GridSpacing->setValue(spacingDefault);
     ui->psb_GridSpacing->onRestore();
+
+    bool multiSelectionDefault = PreferencesGui::multiSelection();
+    ui->cbMultiSelection->setChecked(multiSelectionDefault);
+    ui->cbMultiSelection->onRestore();
 }
 
 /**

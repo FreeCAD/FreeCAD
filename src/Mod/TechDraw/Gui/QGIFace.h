@@ -150,6 +150,8 @@ protected:
 
     bool m_hideSvgTiles;
 
+    bool multiselectEligible() override { return true; }
+
 private:
     QPixmap m_texture;                          //
 

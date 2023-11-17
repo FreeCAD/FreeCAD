@@ -944,8 +944,7 @@ class DraftToolBar:
         self.isCopy.show()
         self.isSubelementMode.show()
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-        if p.GetBool("copymode",False):
-            self.isCopy.setChecked(p.GetBool("copymodeValue",False))
+        self.isCopy.setChecked(p.GetBool("copymodeValue",False))
         self.continueCmd.show()
 
     def checkLocal(self):
@@ -996,11 +995,11 @@ class DraftToolBar:
 
     def setCopymode(self,val=0):
         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-        p.SetBool("copymodeValue",bool(val))
         # special value for offset command
-        if self.sourceCmd:
-            if self.sourceCmd.featureName == "Offset":
-                p.SetBool("OffsetCopyMode",bool(val))
+        if self.sourceCmd and self.sourceCmd.featureName == "Offset":
+            p.SetBool("OffsetCopyMode",bool(val))
+        else:
+            p.SetBool("copymodeValue",bool(val))
 
     def setSubelementMode(self):
         self.sourceCmd.set_ghosts()
@@ -1346,7 +1345,7 @@ class DraftToolBar:
             self.angleValue.setText(displayExternal(phi,None,'Angle'))
             if not mask:
                 # automask, phi is rounded to identify one of the below cases
-                phi = round(phi, Draft.getParam("precision"))
+                phi = round(phi, Draft.precision())
                 if phi in [0,180,-180]:
                     mask = "x"
                 elif phi in [90,270,-90,-270]:

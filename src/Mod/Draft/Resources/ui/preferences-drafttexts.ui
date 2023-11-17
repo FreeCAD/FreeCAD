@@ -543,7 +543,7 @@ such as &quot;Arial:Bold&quot;</string>
            </size>
           </property>
           <property name="filter">
-           <string>Font files (*.ttf *.otf *.pfb)</string>
+           <string>Font files (*.ttf *.otf *.pfb *.TTF *.OTF *.PFB)</string>
           </property>
           <property name="toolTip">
            <string>Select a font file</string>

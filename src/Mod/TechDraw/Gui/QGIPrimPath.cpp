@@ -32,6 +32,10 @@
 
 #include <App/Application.h>
 
+#include <Gui/Selection.h>
+
+#include <Mod/TechDraw/App/DrawView.h>
+
 #include "QGIPrimPath.h"
 #include "PreferencesGui.h"
 #include "QGIView.h"
@@ -55,6 +59,7 @@ QGIPrimPath::QGIPrimPath():
     setAcceptHoverEvents(true);
 
     isHighlighted = false;
+    multiselectActivated = false;
 
     m_colOverride = false;
     m_colNormal = getNormalColor();
@@ -259,24 +264,48 @@ Qt::PenCapStyle QGIPrimPath::prefCapStyle()
     return result;
 }
 
-void QGIPrimPath::mousePressEvent(QGraphicsSceneMouseEvent * event)
+void QGIPrimPath::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
-    //wf: this seems a bit of a hack. does it mess up selection of QGIPP??
-    QGIView *parent;
-    QGraphicsItem* qparent = parentItem();
-    if (qparent) {
-        parent = dynamic_cast<QGIView *> (qparent);
-        if (parent) {
-//            Base::Console().Message("QGIPP::mousePressEvent - passing event to QGIV parent\n");
-            parent->mousePressEvent(event);
-        } else {
-//            qparent->mousePressEvent(event);  //protected!
-            QGraphicsPathItem::mousePressEvent(event);
-        }
-    } else {
-//        Base::Console().Message("QGIPP::mousePressEvent - passing event to ancestor\n");
-        QGraphicsPathItem::mousePressEvent(event);
+    Qt::KeyboardModifiers originalModifiers = event->modifiers();
+    if (event->button()&Qt::LeftButton) {
+        multiselectActivated = false;
     }
+
+    if (event->button() == Qt::LeftButton
+        && multiselectEligible()
+        && PreferencesGui::multiSelection()) {
+
+        auto parent = dynamic_cast<QGIView *>(parentItem());
+        if (parent) {
+            std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
+            if (selection.size() == 1
+                && selection.front().getObject() == parent->getViewObject()) {
+
+                multiselectActivated = true;
+                event->setModifiers(originalModifiers | Qt::ControlModifier);
+            }
+        }
+    }
+
+    QGraphicsPathItem::mousePressEvent(event);
+
+    event->setModifiers(originalModifiers);
+}
+
+void QGIPrimPath::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
+{
+    Qt::KeyboardModifiers originalModifiers = event->modifiers();
+    if ((event->button()&Qt::LeftButton) && multiselectActivated) {
+        if (PreferencesGui::multiSelection()) {
+            event->setModifiers(originalModifiers | Qt::ControlModifier);
+        }
+
+        multiselectActivated = false;
+    }
+
+    QGraphicsPathItem::mouseReleaseEvent(event);
+
+    event->setModifiers(originalModifiers);
 }
 
 void QGIPrimPath::setFill(QColor c, Qt::BrushStyle s) {

@@ -246,23 +246,26 @@ Function un.DelAppPathSub
 FunctionEnd
 
 #--------------------------------
+#source: https://nsis.sourceforge.io/Trim_quotes
 
-!macro FileCheck Result FileName FilePath
- # checks if a file exists, returns "True" or "False"
+Function TrimQuotes
+Exch $R0
+Push $R1
 
- Push $0
- Push $1
- StrCpy $0 ""
- StrCpy $1 ""
- FileOpen $0 "${FilePath}\${FileName}" r
- ${if} $0 = ""
-  StrCpy $1 "False"
- ${Else}
-  StrCpy $1 "True"
- ${endif}
- FileClose $0
- StrCpy ${Result} $1
- Pop $1
- Pop $0
+  StrCpy $R1 $R0 1
+  StrCmp $R1 `"` 0 +2
+    StrCpy $R0 $R0 `` 1
+  StrCpy $R1 $R0 1 -1
+  StrCmp $R1 `"` 0 +2
+    StrCpy $R0 $R0 -1
 
+Pop $R1
+Exch $R0
+FunctionEnd
+
+!macro _TrimQuotes Input Output
+  Push `${Input}`
+  Call TrimQuotes
+  Pop ${Output}
 !macroend
+!define TrimQuotes `!insertmacro _TrimQuotes`
