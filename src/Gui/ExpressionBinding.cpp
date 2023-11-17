@@ -295,6 +295,7 @@ QPixmap ExpressionWidget::getIcon(const char* name, const QSize& size) const
 void ExpressionWidget::makeLabel(QLineEdit* le)
 {
     defaultPalette = le->palette();
+    defaultPalette.setCurrentColorGroup(QPalette::Active);
 
     /* Icon for f(x) */
     QFontMetrics fm(le->font());
