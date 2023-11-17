@@ -61,10 +61,12 @@ public:
     ~QGIRichAnno() = default;
 
     int type() const override { return Type;}
-    virtual void paint( QPainter * painter,
-                        const QStyleOptionGraphicsItem * option,
-                        QWidget * widget = nullptr ) override;
-    virtual QRectF boundingRect() const override;
+
+    void paint( QPainter * painter,
+                const QStyleOptionGraphicsItem * option,
+                QWidget * widget = nullptr ) override;
+    QRectF boundingRect() const override;
+    QRectF frameRect() const;
 
     virtual void drawBorder() override;
     virtual void updateView(bool update = false) override;
@@ -75,9 +77,9 @@ public:
     QPen rectPen() const;
 
     void setExportingPdf(bool b) { m_isExportingPdf = b; }
-    bool getExportingPdf(void) { return m_isExportingPdf; }
+    bool getExportingPdf() const { return m_isExportingPdf; }
     void setExportingSvg(bool b) { m_isExportingSvg = b; }
-    bool getExportingSvg(void) { return m_isExportingSvg; }
+    bool getExportingSvg() const { return m_isExportingSvg; }
 
 protected:
     virtual void draw() override;
@@ -85,6 +87,8 @@ protected:
     QFont prefFont(void);
 
     virtual void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
+
+    QString convertTextSizes(const QString& inHtml)  const;
 
     bool m_isExportingPdf;
     bool m_isExportingSvg;
