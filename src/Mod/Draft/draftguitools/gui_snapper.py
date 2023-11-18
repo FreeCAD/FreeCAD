@@ -1294,21 +1294,26 @@ class Snapper:
             self.basepoint = basepoint
         delta = point.sub(self.basepoint)
 
+        if Gui.draftToolBar.globalMode:
+            import WorkingPlane
+            wp = WorkingPlane.PlaneBase()  # matches the global coordinate system
+        else:
+            wp = self._get_wp()
+
         # setting constraint axis
-        wp = self._get_wp()
-        if self.mask:
-            self.affinity = self.mask
-        if not self.affinity:
-            self.affinity = wp.get_closest_axis(delta)
-        if isinstance(axis, App.Vector):
-            self.constraintAxis = axis
-        elif axis == "x":
+        if axis == "x":
             self.constraintAxis = wp.u
         elif axis == "y":
             self.constraintAxis = wp.v
         elif axis == "z":
             self.constraintAxis = wp.axis
+        elif isinstance(axis, App.Vector):
+            self.constraintAxis = axis
         else:
+            if self.mask is not None:
+                self.affinity = self.mask
+            if self.affinity is None:
+                self.affinity = wp.get_closest_axis(delta)
             if self.affinity == "x":
                 self.constraintAxis = wp.u
             elif self.affinity == "y":
@@ -1320,7 +1325,7 @@ class Snapper:
             else:
                 self.constraintAxis = None
 
-        if not self.constraintAxis:
+        if self.constraintAxis is None:
             return point
 
         # calculating constrained point
