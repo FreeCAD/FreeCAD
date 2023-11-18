@@ -87,6 +87,13 @@ public:
     TopoDS_Shape Shape;
 };
 
+/// When tracing an element's history, one can either stop the trace when the element's type
+/// changes, or continue tracing the history through the change. This enumeration replaces a boolean
+/// parameter in the original Toponaming branch by realthunder.
+enum class HistoryTraceType {
+    stopOnTypeChange,
+    followTypeChange
+};
 
 
 /** The representation for a CAD Shape
@@ -382,14 +389,14 @@ public:
         return ret;
     }
 
-    static TopoDS_Shape &move(TopoDS_Shape &s, const TopLoc_Location &);
-    static TopoDS_Shape moved(const TopoDS_Shape &s, const TopLoc_Location &);
-    static TopoDS_Shape &move(TopoDS_Shape &s, const gp_Trsf &);
-    static TopoDS_Shape moved(const TopoDS_Shape &s, const gp_Trsf &);
-    static TopoDS_Shape &locate(TopoDS_Shape &s, const TopLoc_Location &loc);
-    static TopoDS_Shape located(const TopoDS_Shape &s, const TopLoc_Location &);
-    static TopoDS_Shape &locate(TopoDS_Shape &s, const gp_Trsf &);
-    static TopoDS_Shape located(const TopoDS_Shape &s, const gp_Trsf &);
+    static TopoDS_Shape& move(TopoDS_Shape& tds, const TopLoc_Location& loc);
+    static TopoDS_Shape moved(const TopoDS_Shape& tds, const TopLoc_Location& loc);
+    static TopoDS_Shape& move(TopoDS_Shape& tds, const gp_Trsf& transfer);
+    static TopoDS_Shape moved(const TopoDS_Shape& tds, const gp_Trsf& transfer);
+    static TopoDS_Shape& locate(TopoDS_Shape& tds, const TopLoc_Location& loc);
+    static TopoDS_Shape located(const TopoDS_Shape& tds, const TopLoc_Location& loc);
+    static TopoDS_Shape& locate(TopoDS_Shape& tds, const gp_Trsf& transfer);
+    static TopoDS_Shape located(const TopoDS_Shape& tds, const gp_Trsf& transfer);
 
     TopoShape &makeGTransform(const TopoShape &shape, const Base::Matrix4D &mat,
             const char *op=nullptr, bool copy=false);
@@ -418,7 +425,7 @@ public:
      * improve performance.
      */
     //@{
-    void initCache(int reset=0, const char *file=nullptr, int line=0) const;
+    void initCache(int reset=0) const;
     int findShape(const TopoDS_Shape &subshape) const;
     TopoDS_Shape findShape(const char *name) const;
     TopoDS_Shape findShape(TopAbs_ShapeEnum type, int idx) const;

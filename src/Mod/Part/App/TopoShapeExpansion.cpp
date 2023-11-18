@@ -22,22 +22,112 @@
  *                                                                          *
  ***************************************************************************/
 
+#include "PreCompiled.h"
+
 #include "TopoShape.h"
 #include "TopoShapeCache.h"
+
+FC_LOG_LEVEL_INIT("TopoShape", true, true)  // NOLINT
 
 namespace Part
 {
 
-void TopoShape::setShape(const TopoDS_Shape& shape, bool resetElementMap)
+void TopoShape::initCache(int reset) const
 {
-    if (resetElementMap)
-        this->resetElementMap();
-    else if (_cache && _cache->isTouched(shape))
-        this->flushElementMap();
-    //_Shape._Shape = shape; // TODO: Replace the next line with this once ShapeProtector is available.
-    _Shape = shape;
-    if (_cache)
-        initCache();
+    if (reset > 0 || !_cache || _cache->isTouched(_Shape)) {
+        if (_parentCache) {
+            _parentCache.reset();
+            _subLocation.Identity();
+        }
+        _cache = std::make_shared<TopoShapeCache>(_Shape);
+    }
 }
 
+void TopoShape::setShape(const TopoDS_Shape& shape, bool resetElementMap)
+{
+    if (resetElementMap) {
+        this->resetElementMap();
+    }
+    else if (_cache && _cache->isTouched(shape)) {
+        this->flushElementMap();
+    }
+    //_Shape._Shape = shape; // TODO: Replace the next line with this once ShapeProtector is
+    // available.
+    _Shape = shape;
+    if (_cache) {
+        initCache();
+    }
 }
+
+
+TopoDS_Shape& TopoShape::move(TopoDS_Shape& tds, const TopLoc_Location& location)
+{
+#if OCC_VERSION_HEX < 0x070600
+    tds.Move(location);
+#else
+    tds.Move(location, false);
+#endif
+    return tds;
+}
+
+TopoDS_Shape TopoShape::moved(const TopoDS_Shape& tds, const TopLoc_Location& location)
+{
+#if OCC_VERSION_HEX < 0x070600
+    return tds.Moved(location);
+#else
+    return tds.Moved(location, false);
+#endif
+}
+
+TopoDS_Shape& TopoShape::move(TopoDS_Shape& tds, const gp_Trsf& transfer)
+{
+#if OCC_VERSION_HEX < 0x070600
+    static constexpr double scalePrecision {1e-14};
+    if (std::abs(transfer.ScaleFactor()) > scalePrecision)
+#else
+    if (std::abs(transfer.ScaleFactor()) > TopLoc_Location::ScalePrec())
+#endif
+    {
+        auto transferCopy(transfer);
+        transferCopy.SetScaleFactor(1.0);
+        tds.Move(transferCopy);
+    }
+    else {
+        tds.Move(transfer);
+    }
+    return tds;
+}
+
+TopoDS_Shape TopoShape::moved(const TopoDS_Shape& tds, const gp_Trsf& transfer)
+{
+    TopoDS_Shape sCopy(tds);
+    return move(sCopy, transfer);
+}
+
+TopoDS_Shape& TopoShape::locate(TopoDS_Shape& tds, const TopLoc_Location& loc)
+{
+    tds.Location(TopLoc_Location());
+    return move(tds, loc);
+}
+
+TopoDS_Shape TopoShape::located(const TopoDS_Shape& tds, const TopLoc_Location& loc)
+{
+    auto sCopy(tds);
+    sCopy.Location(TopLoc_Location());
+    return moved(sCopy, loc);
+}
+
+TopoDS_Shape& TopoShape::locate(TopoDS_Shape& tds, const gp_Trsf& transfer)
+{
+    tds.Location(TopLoc_Location());
+    return move(tds, transfer);
+}
+
+TopoDS_Shape TopoShape::located(const TopoDS_Shape& tds, const gp_Trsf& transfer)
+{
+    auto sCopy(tds);
+    sCopy.Location(TopLoc_Location());
+    return moved(sCopy, transfer);
+}
+
+}  // namespace Part
