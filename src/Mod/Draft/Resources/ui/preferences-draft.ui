@@ -188,26 +188,6 @@ This allows to point the direction and type the distance.</string>
           </property>
          </widget>
         </item>
-        <item row="0" column="1">
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_6">
-          <property name="toolTip">
-           <string>If this is checked, objects will appear as filled by default.
-Otherwise, they will appear as wireframe</string>
-          </property>
-          <property name="text">
-           <string>Fill objects with faces whenever possible</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>fillmode</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-         </widget>
-        </item>
         <item row="1" column="0">
          <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_3">
           <property name="toolTip">
@@ -225,7 +205,7 @@ If this option is checked, the base objects will be selected instead.</string>
           </property>
          </widget>
         </item>
-        <item row="1" column="1">
+        <item row="2" column="0">
          <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_13">
           <property name="toolTip">
            <string>Force Draft Tools to create Part primitives instead of Draft objects.

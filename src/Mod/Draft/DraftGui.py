@@ -52,6 +52,9 @@ from draftutils.todo import todo
 from draftutils.translate import translate
 from draftutils.units import display_external
 
+_param_draft = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+_param_view  = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View")
+
 translate("draft", "Relative")
 translate("draft", "Global")
 translate("draft", "Continue")
@@ -211,6 +214,9 @@ class DraftToolBar:
     subcommands activation, continue mode, etc. from Task Panel Ui
     """
     def __init__(self):
+
+        print("init")
+
         self.tray = None
         self.sourceCmd = None
         self.cancel = None
@@ -219,8 +225,7 @@ class DraftToolBar:
         # OBSOLETE BUT STILL USED BY SOME ADDONS AND MACROS
         self.paramcolor = Draft.getParam("color",255)>>8
         self.color = QtGui.QColor(self.paramcolor)
-        self.facecolor = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View")\
-            .GetUnsigned("DefaultShapeColor",4294967295)>>8
+        self.facecolor = _param_view.GetUnsigned("DefaultShapeColor",4294967295)>>8
         self.linewidth = Draft.getParam("linewidth",2)
         self.fontsize = Draft.getParam("textheight",0.20)
 
@@ -233,7 +238,7 @@ class DraftToolBar:
         self.textbuffer = []
         self.crossedViews = []
         self.isTaskOn = False
-        self.fillmode = Draft.getParam("fillmode", True)
+        self.fillmode = True
         self.mask = None
         self.alock = False
         self.x = 0
@@ -440,11 +445,6 @@ class DraftToolBar:
         self.labelRadius = self._label("labelRadius", rl)
         self.radiusValue = self._inputfield("radiusValue", rl)
         self.radiusValue.setText(FreeCAD.Units.Quantity(0,FreeCAD.Units.Length).UserString)
-        self.isRelative = self._checkbox("isRelative",self.layout,checked=self.relativeMode)
-        self.isGlobal = self._checkbox("isGlobal",self.layout,checked=self.globalMode)
-        self.hasFill = self._checkbox("hasFill",self.layout,checked=self.fillmode)
-        self.continueCmd = self._checkbox("continueCmd",self.layout,checked=self.continueMode)
-        self.occOffset = self._checkbox("occOffset",self.layout,checked=False)
         bl = QtGui.QHBoxLayout()
         self.layout.addLayout(bl)
         self.undoButton = self._pushbutton("undoButton", bl, icon='Draft_Rotate')
@@ -464,8 +464,29 @@ class DraftToolBar:
         self.layout.addLayout(bl)
         self.selectButton = self._pushbutton("selectButton", bl, icon='view-select')
 
-        self.isCopy = self._checkbox("isCopy",self.layout,checked=False)
-        self.isSubelementMode = self._checkbox("isSubelementMode",self.layout,checked=False)
+        # update modes from parameters:
+        self.continueMode = _param_draft.GetBool("ContinueMode", False)
+        self.relativeMode = _param_draft.GetBool("RelativeMode", True)
+        self.globalMode = _param_draft.GetBool("GlobalMode", False)
+        self.fillmode = _param_draft.GetBool("fillmode", True)
+
+        # update checkboxes with parameters and internal modes:
+        self.continueCmd = self._checkbox("continueCmd", self.layout, checked=self.continueMode)
+        self.isRelative = self._checkbox("isRelative", self.layout, checked=self.relativeMode)
+        self.isGlobal = self._checkbox("isGlobal", self.layout, checked=self.globalMode)
+        self.hasFill = self._checkbox("hasFill", self.layout, checked=self.fillmode)
+
+        # update checkboxes with parameters but without internal modes:
+        # self.isCopy is also updated in modUi ("CopyMode") and offsetUi ("OffsetCopyMode")
+        self.isCopy = self._checkbox("isCopy",
+                                     self.layout,
+                                     checked=_param_draft.GetBool("CopyMode", False))
+        self.isSubelementMode = self._checkbox("isSubelementMode",
+                                               self.layout,
+                                               checked=_param_draft.GetBool("SubelementMode", False))
+
+        # update checkboxes without parameters and without internal modes:
+        self.occOffset = self._checkbox("occOffset", self.layout, checked=False)
 
         # spacer
         spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum,
@@ -676,8 +697,7 @@ class DraftToolBar:
         self.checkLocal()
 
     def setFocus(self,f=None):
-        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-        if p.GetBool("focusOnLength",False) and self.lengthValue.isVisible():
+        if _param_draft.GetBool("focusOnLength",False) and self.lengthValue.isVisible():
             self.lengthValue.setFocus()
             self.lengthValue.setSelection(0,self.number_length(self.lengthValue.text()))
         elif self.angleLock.isVisible() and self.angleLock.isChecked():
@@ -818,8 +838,7 @@ class DraftToolBar:
         self.taskUi(translate("draft","Offset"), icon="Draft_Offset")
         self.radiusUi()
         self.isCopy.show()
-        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-        self.isCopy.setChecked(p.GetBool("OffsetCopyMode",False))
+        self.isCopy.setChecked(_param_draft.GetBool("OffsetCopyMode",False))
         self.occOffset.show()
         self.labelRadius.setText(translate("draft","Distance"))
         self.radiusValue.setToolTip(translate("draft", "Offset distance"))
@@ -908,8 +927,7 @@ class DraftToolBar:
     def modUi(self):
         self.isCopy.show()
         self.isSubelementMode.show()
-        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-        self.isCopy.setChecked(p.GetBool("copymodeValue",False))
+        self.isCopy.setChecked(_param_draft.GetBool("CopyMode",False))
         self.continueCmd.show()
 
     def checkLocal(self):
@@ -950,25 +968,6 @@ class DraftToolBar:
                 self.radiusValue.setFocus()
                 self.radiusValue.selectAll()
 
-    def setRelative(self,val=1):
-        self.relativeMode = bool(val)
-        self.checkLocal()
-
-    def setGlobal(self,val=0):
-        self.globalMode = bool(val)
-        self.checkLocal()
-
-    def setCopymode(self,val=0):
-        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-        # special value for offset command
-        if self.sourceCmd and self.sourceCmd.featureName == "Offset":
-            p.SetBool("OffsetCopyMode",bool(val))
-        else:
-            p.SetBool("copymodeValue",bool(val))
-
-    def setSubelementMode(self):
-        self.sourceCmd.set_ghosts()
-
     def relocate(self):
         """relocates the right-aligned buttons depending on the toolbar size"""
         if self.baseWidget.geometry().width() < 400:
@@ -998,13 +997,55 @@ class DraftToolBar:
 # Processing functions
 #---------------------------------------------------------------------------
 
-    def setContinue(self,val):
-        if self.continueCmd.isVisible():
-            self.continueMode = bool(val)
+    def setContinue(self, val):
+        _param_draft.SetBool("ContinueMode", bool(val))
+        self.continueMode = bool(val)
 
-    def setFill(self,val):
-        if self.hasFill.isVisible():
-            self.fillmode = bool(val)
+    # val=-1 is used to temporarily switch to relativeMode and disable the checkbox.
+    # val=-2 is used to switch back.
+    # Used by:
+    #     gui_ellipses.py
+    #     gui_rectangles.py
+    #     gui_stretch.py
+    def setRelative(self, val=-1):
+        if val < 0:
+            QtCore.QObject.disconnect(self.isRelative,
+                                      QtCore.SIGNAL("stateChanged(int)"),
+                                      self.setRelative)
+            if val == -1:
+                self.isRelative.setChecked(True)
+                self.relativeMode = True
+            elif val == -2:
+                val = _param_draft.GetBool("RelativeMode", True)
+                self.isRelative.setChecked(val)
+                self.relativeMode = val
+            QtCore.QObject.connect(self.isRelative,
+                                   QtCore.SIGNAL("stateChanged(int)"),
+                                   self.setRelative)
+        else:
+            _param_draft.SetBool("RelativeMode", bool(val))
+            self.relativeMode = bool(val)
+        self.checkLocal()
+
+    def setGlobal(self, val):
+        _param_draft.SetBool("GlobalMode", bool(val))
+        self.globalMode = bool(val)
+        self.checkLocal()
+
+    def setFill(self, val):
+        _param_draft.SetBool("fillmode", bool(val))
+        self.fillmode = bool(val)
+
+    def setCopymode(self, val):
+        # special value for offset command
+        if self.sourceCmd and self.sourceCmd.featureName == "Offset":
+            _param_draft.SetBool("OffsetCopyMode", bool(val))
+        else:
+            _param_draft.SetBool("CopyMode", bool(val))
+
+    def setSubelementMode(self, val):
+        _param_draft.SetBool("SubelementMode", bool(val))
+        self.sourceCmd.set_ghosts()
 
     def checkx(self):
         if self.yValue.isEnabled():
@@ -1346,20 +1387,17 @@ class DraftToolBar:
             g = float(self.color.green()/255.0)
             b = float(self.color.blue()/255.0)
         elif type == "line":
-            color = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View")\
-                .GetUnsigned("DefaultShapeLineColor",255)
+            color = _param_view.GetUnsigned("DefaultShapeLineColor",255)
             r = ((color>>24)&0xFF)/255
             g = ((color>>16)&0xFF)/255
             b = ((color>>8)&0xFF)/255
         elif type == "text":
-            color = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")\
-                .GetUnsigned("DefaultTextColor",255)
+            color = _param_draft.GetUnsigned("DefaultTextColor",255)
             r = ((color>>24)&0xFF)/255
             g = ((color>>16)&0xFF)/255
             b = ((color>>8)&0xFF)/255
         elif type == "face":
-            color = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View")\
-                .GetUnsigned("DefaultShapeColor",4294967295)
+            color = _param_view.GetUnsigned("DefaultShapeColor",4294967295)
             r = ((color>>24)&0xFF)/255
             g = ((color>>16)&0xFF)/255
             b = ((color>>8)&0xFF)/255
@@ -1418,9 +1456,7 @@ class DraftToolBar:
     def setStyleButton(self):
         "sets icon and text on the style button"
         linecolor = QtGui.QColor(Draft.getParam("color",255)>>8)
-        facecolor = QtGui.QColor(
-            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View")
-            .GetUnsigned( "DefaultShapeColor",4294967295)>>8)
+        facecolor = QtGui.QColor(_param_view.GetUnsigned( "DefaultShapeColor",4294967295)>>8)
         im = QtGui.QImage(32,32,QtGui.QImage.Format_ARGB32)
         im.fill(QtCore.Qt.transparent)
         pt = QtGui.QPainter(im)
