@@ -523,7 +523,7 @@ def main():
             inp = open("%s/src/Build/Version.h.in" % (bindir))
             lines = inp.readlines()
             inp.close()
-            #lines = i.writeVersion(lines)
+            lines = i.writeVersion(lines)
             out = open("%s/src/Build/Version.h.out" % (bindir), "w")
             out.writelines(lines)
             out.write("\n")
