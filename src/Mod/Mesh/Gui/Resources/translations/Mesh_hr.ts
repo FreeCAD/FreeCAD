@@ -1348,12 +1348,12 @@
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="82"/>
       <source>Always export mesh as model type in 3MF format even if not a solid</source>
-      <translation type="unfinished">Always export mesh as model type in 3MF format even if not a solid</translation>
+      <translation>Uvijek izvozite mrežu kao tip modela u 3MF formatu, čak i ako nije čvrsta tvar</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="85"/>
       <source>Export 3MF files as model type</source>
-      <translation type="unfinished">Export 3MF files as model type</translation>
+      <translation>Izvozite 3MF datoteke kao tip modela.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsImportExport.ui" line="114"/>
@@ -1427,7 +1427,7 @@ If not checked, it depends on the option "Enable backlight color"
 will be used or black.</source>
       <translation>Donja strana površine bit će prikazana na isti način kao gornja strana.
 Ako nije potvrđeno, ovisi o opciji "Omogući boju pozadinskog osvjetljenja"
-(odjeljak postavki prikaza -&gt; 3D prikaz). Koristit će se boja pozadinskog
+(odjeljak postavki prikaza -&gt; 3D prikaz). Koristit će se boja pozadinskog 
 osvjetljenja ili crno.
 </translation>
     </message>
@@ -2084,7 +2084,7 @@ vodi do uglađenijeg izgleda.
       <location filename="../../Command.cpp" line="303"/>
       <source>OpenSCAD cannot be found on your system.
 Please visit http://www.openscad.org/index.html to install it.</source>
-      <translation>OpenSCAD nije moguće pronaći na vašem sustavu.
+      <translation>OpenSCAD nije moguće pronaći na vašem sustavu. 
 Posjetite http://www.openscad.org/index.html da biste ga instalirali.</translation>
     </message>
   </context>

@@ -1369,7 +1369,7 @@
       <location filename="../../DlgSettingsImportExportImp.cpp" line="39"/>
       <source>This parameter indicates whether ZIP compression
 is used when writing a file in AMF format</source>
-      <translation>Tämä parametri ilmaisee, on ZIP pakkaaminen
+      <translation>Tämä parametri ilmaisee, on ZIP pakkaaminen 
 käytössä kirjoitettaessa tiedostoa AMF muodossa</translation>
     </message>
   </context>
@@ -1428,7 +1428,7 @@ If not checked, it depends on the option "Enable backlight color"
 will be used or black.</source>
       <translation>Pinnan alareuna on renderöity samalla tavalla kuin yläpuolella.
 Jos ei ole valittuna, se riippuu vaihtoehdosta "Ota taustavalo väri käyttöön"
-(asetruksien osiossa Näyttö -&gt; 3D Näkymä). Joko taustavalon väriä
+(asetruksien osiossa Näyttö -&gt; 3D Näkymä). Joko taustavalon väriä 
 käytetään tai se on musta.</translation>
     </message>
     <message>
@@ -2083,7 +2083,7 @@ sileämpään ulkonäköön.
       <location filename="../../Command.cpp" line="303"/>
       <source>OpenSCAD cannot be found on your system.
 Please visit http://www.openscad.org/index.html to install it.</source>
-      <translation>OpenSCAD:ia ei löydy järjestelmästäsi. Käy
+      <translation>OpenSCAD:ia ei löydy järjestelmästäsi. Käy 
 http://www.openscad.org/index.html asentaaksesi sen.</translation>
     </message>
   </context>

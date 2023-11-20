@@ -812,7 +812,7 @@ instalirani dodaci će se provjeriti na dostupna ažuriranja
     <message>
       <location filename="../../developer_mode_add_content.ui" line="43"/>
       <source>Workbench</source>
-      <translation>Workbench</translation>
+      <translation>Radni prostor</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="51"/>
@@ -1250,18 +1250,18 @@ instalirani dodaci će se provjeriti na dostupna ažuriranja
       <translation>Izvršavanje makro naredbe nije uspjelo. Pogledaj konzolu za detalje o greškama.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="114"/>
       <location filename="../../addonmanager_devmode_people_table.py" line="86"/>
-      <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
+      <location filename="../../addonmanager_devmode.py" line="114"/>
       <location filename="../../package_list.py" line="386"/>
+      <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
       <source>Maintainer</source>
       <translation>Održavatelj</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="115"/>
       <location filename="../../addonmanager_devmode_people_table.py" line="87"/>
-      <location filename="../../addonmanager_devmode_person_editor.py" line="49"/>
+      <location filename="../../addonmanager_devmode.py" line="115"/>
       <location filename="../../package_list.py" line="423"/>
+      <location filename="../../addonmanager_devmode_person_editor.py" line="49"/>
       <source>Author</source>
       <translation>Autor</translation>
     </message>
@@ -1477,8 +1477,8 @@ instalirani dodaci će se provjeriti na dostupna ažuriranja
       <translation>QtWebEngine Python veze nisu instalirane -- koristi se prikaz zaobilaznog README-a.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="476"/>
       <location filename="../../package_details.py" line="644"/>
+      <location filename="../../addonmanager_installer_gui.py" line="476"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="54"/>
       <source>Success</source>
       <translation>Uspješno obavljeno</translation>
@@ -1610,9 +1610,9 @@ instalirani dodaci će se provjeriti na dostupna ažuriranja
       <translation>Izaberi datoteku ikone za ovu stavku sadržaja</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="691"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="274"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="313"/>
+      <location filename="../../addonmanager_devmode.py" line="691"/>
       <source>{} is not a subdirectory of {}</source>
       <translation>{} nije poddirektorij {}</translation>
     </message>
@@ -1629,7 +1629,7 @@ instalirani dodaci će se provjeriti na dostupna ažuriranja
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="428"/>
       <source>Workbench</source>
-      <translation>Workbench</translation>
+      <translation>Radni prostor</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="429"/>

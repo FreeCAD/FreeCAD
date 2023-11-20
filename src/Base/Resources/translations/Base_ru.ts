@@ -4,52 +4,57 @@
   <context>
     <name>UnitsApi</name>
     <message>
-      <location filename="../../UnitsApi.cpp" line="68"/>
+      <location filename="../../UnitsApi.cpp" line="69"/>
       <source>Standard (mm, kg, s, degree)</source>
       <translation>Стандарт (мм, кг, с, градус)</translation>
     </message>
     <message>
-      <location filename="../../UnitsApi.cpp" line="70"/>
+      <location filename="../../UnitsApi.cpp" line="71"/>
       <source>MKS (m, kg, s, degree)</source>
       <translation>МКС (м, кг, сек, градус)</translation>
     </message>
     <message>
-      <location filename="../../UnitsApi.cpp" line="72"/>
+      <location filename="../../UnitsApi.cpp" line="73"/>
       <source>US customary (in, lb)</source>
       <translation>Американская традиционная система мер (дюймы, фунты)</translation>
     </message>
     <message>
-      <location filename="../../UnitsApi.cpp" line="74"/>
+      <location filename="../../UnitsApi.cpp" line="75"/>
       <source>Imperial decimal (in, lb)</source>
       <translation>Английская десятичная (дюймы, фунты)</translation>
     </message>
     <message>
-      <location filename="../../UnitsApi.cpp" line="76"/>
+      <location filename="../../UnitsApi.cpp" line="77"/>
       <source>Building Euro (cm, m², m³)</source>
       <translation>Строительство Евро (см, м2, м3)</translation>
     </message>
     <message>
-      <location filename="../../UnitsApi.cpp" line="78"/>
+      <location filename="../../UnitsApi.cpp" line="79"/>
       <source>Building US (ft-in, sqft, cft)</source>
       <translation>Строительство США (ft-in, sqft, cft)</translation>
     </message>
     <message>
-      <location filename="../../UnitsApi.cpp" line="80"/>
+      <location filename="../../UnitsApi.cpp" line="81"/>
       <source>Metric small parts &amp; CNC(mm, mm/min)</source>
       <translation>Метрические мелкие детали &amp; ЧПУ (мм, мм/мин)</translation>
     </message>
     <message>
-      <location filename="../../UnitsApi.cpp" line="82"/>
+      <location filename="../../UnitsApi.cpp" line="83"/>
       <source>Imperial for Civil Eng (ft, ft/sec)</source>
       <translation>Имперская для Гражданских инженеров (футы, футы/с)</translation>
     </message>
     <message>
-      <location filename="../../UnitsApi.cpp" line="84"/>
+      <location filename="../../UnitsApi.cpp" line="85"/>
       <source>FEM (mm, N, s)</source>
       <translation>МКЭ (мм, Н, с)</translation>
     </message>
     <message>
-      <location filename="../../UnitsApi.cpp" line="86"/>
+      <location filename="../../UnitsApi.cpp" line="87"/>
+      <source>Meter decimal (m, m², m³)</source>
+      <translation type="unfinished">Meter decimal (m, m², m³)</translation>
+    </message>
+    <message>
+      <location filename="../../UnitsApi.cpp" line="89"/>
       <source>Unknown schema</source>
       <translation>Неизвестная схема</translation>
     </message>

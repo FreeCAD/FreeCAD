@@ -176,7 +176,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="98"/>
       <source>The &lt;a href="https://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
-      <translation type="unfinished">The &lt;a href="https://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</translation>
+      <translation>Het &lt;a href="https://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is een goede plek om hulp te krijgen van andere FreeCAD gebruikers en ontwikkelaars. Het forum heeft een aantal sub-forums voor verschillende onderwerpen en discussies. Post in geval van twijfel in het meer algemene &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help over het gebruik van FreeCAD&lt;/a&gt; sub-forum.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="102"/>

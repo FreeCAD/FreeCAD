@@ -176,7 +176,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="98"/>
       <source>The &lt;a href="https://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
-      <translation type="unfinished">The &lt;a href="https://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</translation>
+      <translation>&lt;a href="https://forum.freecad.org"&gt; Forum FreeCAD &lt;/a&gt; jest doskonałym miejscem do uzyskania pomocy od innych użytkowników i programistów tej aplikacji. Posiada ono wiele sekcji poświęconych różnym rodzajom zagadnień i tematów dyskusji. W razie wątpliwości opublikuj wiadomość w sekcji ogólnej &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Pomoc w użytkowaniu FreeCAD&lt;/a&gt;.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="102"/>
@@ -341,7 +341,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="239"/>
       <source>If this is checked, the latest posts from the FreeCAD forum will be displayed on the Activity tab</source>
-      <translation>Jeśli ta opcja jest zaznaczona,
+      <translation>Jeśli ta opcja jest zaznaczona, 
 najnowsze posty z forum FreeCAD będą wyświetlane na karcie Aktywność</translation>
     </message>
     <message>
@@ -359,7 +359,7 @@ Używając ";;" do rozdzielenia ścieżek, możesz dodać tutaj kilka folderów<
     <message>
       <location filename="../../DlgStartPreferences.ui" line="278"/>
       <source>Shows a notepad next to the file thumbnails, where you can keep notes across sessions</source>
-      <translation>Wyświetla notatnik obok miniaturek plików,
+      <translation>Wyświetla notatnik obok miniaturek plików, 
 w którym można przechowywać notatki pomiędzy sesjami</translation>
     </message>
     <message>
@@ -375,7 +375,7 @@ w którym można przechowywać notatki pomiędzy sesjami</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="33"/>
       <source>Workbench to switch to after loading a file from the Start page, only used if Start is the start up workbench</source>
-      <translation>Środowisko pracy, wywoływane po załadowaniu pliku ze strony Start,
+      <translation>Środowisko pracy, wywoływane po załadowaniu pliku ze strony Start, 
 opcja używana tylko wtedy, gdy Start jest startowym środowiskiem pracy</translation>
     </message>
     <message>
@@ -446,7 +446,7 @@ opcja używana tylko wtedy, gdy Start jest startowym środowiskiem pracy</transl
     <message>
       <location filename="../../DlgStartPreferences.ui" line="627"/>
       <source>If this is checked and a style sheet is specified in General preferences, it will be used and override the colors below</source>
-      <translation>Jeśli ta opcja jest zaznaczona i arkusz stylów jest określony w Preferencjach ogólnych,
+      <translation>Jeśli ta opcja jest zaznaczona i arkusz stylów jest określony w Preferencjach ogólnych, 
 zostanie on użyty i zastąpi poniższe kolory</translation>
     </message>
     <message>
@@ -544,7 +544,7 @@ Może to być nazwa czcionki lub seria nazw czcionek zapasowych oddzielonych prz
     <message>
       <location filename="../../DlgStartPreferences.ui" line="47"/>
       <source>If checked, will automatically close the Start page when FreeCAD launches</source>
-      <translation>Jeśli ta opcja jest zaznaczona,
+      <translation>Jeśli ta opcja jest zaznaczona, 
 strona Startowa zostanie automatycznie zamknięta po uruchomieniu programu FreeCAD</translation>
     </message>
     <message>

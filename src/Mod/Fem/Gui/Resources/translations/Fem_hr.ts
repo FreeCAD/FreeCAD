@@ -65,12 +65,12 @@
     <message>
       <location filename="../../Command.cpp" line="338"/>
       <source>Fixed boundary condition</source>
-      <translation type="unfinished">Fixed boundary condition</translation>
+      <translation>Fiksno ograničenje</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="339"/>
       <source>Creates a fixed boundary condition for a geometric entity</source>
-      <translation type="unfinished">Creates a fixed boundary condition for a geometric entity</translation>
+      <translation>Stvori fiksni granični uvijet stanja na geometrijski entitet</translation>
     </message>
   </context>
   <context>
@@ -101,12 +101,12 @@
     <message>
       <location filename="../../Command.cpp" line="440"/>
       <source>Force load</source>
-      <translation type="unfinished">Force load</translation>
+      <translation>Opterećenje silom</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="441"/>
       <source>Creates a force load applied to a geometric entity</source>
-      <translation type="unfinished">Creates a force load applied to a geometric entity</translation>
+      <translation>Stvori primijenjeno opterećenje sile na geometrijski entitet</translation>
     </message>
   </context>
   <context>
@@ -137,12 +137,12 @@
     <message>
       <location filename="../../Command.cpp" line="545"/>
       <source>Heat flux load</source>
-      <translation type="unfinished">Heat flux load</translation>
+      <translation>Opterećenje protokom topline</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="546"/>
       <source>Creates a heat flux load acting on a face</source>
-      <translation type="unfinished">Creates a heat flux load acting on a face</translation>
+      <translation>Stvori opterećenje aktivnog toplinskog toka na lice</translation>
     </message>
   </context>
   <context>
@@ -155,12 +155,12 @@
     <message>
       <location filename="../../Command.cpp" line="602"/>
       <source>Initial temperature</source>
-      <translation type="unfinished">Initial temperature</translation>
+      <translation>Početna temperatura</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="603"/>
       <source>Creates an initial temperature acting on a body</source>
-      <translation type="unfinished">Creates an initial temperature acting on a body</translation>
+      <translation>Stvara početnu temperaturu koja djeluje na tijelo</translation>
     </message>
   </context>
   <context>
@@ -173,12 +173,12 @@
     <message>
       <location filename="../../Command.cpp" line="653"/>
       <source>Plane multi-point constraint</source>
-      <translation type="unfinished">Plane multi-point constraint</translation>
+      <translation>Ograničenje ravnine sa više točaka</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="654"/>
       <source>Creates a plane multi-point constraint for a face</source>
-      <translation type="unfinished">Creates a plane multi-point constraint for a face</translation>
+      <translation>Stvori ravninsko ograničenje s više točaka na površinu</translation>
     </message>
   </context>
   <context>
@@ -191,12 +191,12 @@
     <message>
       <location filename="../../Command.cpp" line="704"/>
       <source>Pressure load</source>
-      <translation type="unfinished">Pressure load</translation>
+      <translation>Opterećenje pritiskom</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="705"/>
       <source>Creates a pressure load acting on a face</source>
-      <translation type="unfinished">Creates a pressure load acting on a face</translation>
+      <translation>Stvara pritisak koji djeluje na površinu</translation>
     </message>
   </context>
   <context>
@@ -209,12 +209,12 @@
     <message>
       <location filename="../../Command.cpp" line="815"/>
       <source>Pulley constraint</source>
-      <translation type="unfinished">Pulley constraint</translation>
+      <translation>Ograničenje remenice</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="816"/>
       <source>Creates a pulley constraint</source>
-      <translation type="unfinished">Creates a pulley constraint</translation>
+      <translation>Stvori ograničenje remenice</translation>
     </message>
   </context>
   <context>
@@ -611,57 +611,58 @@
     <message>
       <location filename="../../Command.cpp" line="355"/>
       <source>Make fixed boundary condition for geometry</source>
-      <translation type="unfinished">Make fixed boundary condition for geometry</translation>
+      <translation>Stvori fiksni granični uvijet stanja za geometriju</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="457"/>
       <source>Make force load on geometry</source>
-      <translation type="unfinished">Make force load on geometry</translation>
+      <translation>Stvori opterećenje silom na geometriju</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="513"/>
       <source>Make gear constraint</source>
-      <translation type="unfinished">Make gear constraint</translation>
+      <translation>Stvori ograničenje zupčanika</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="562"/>
       <source>Make heat flux load on face</source>
-      <translation type="unfinished">Make heat flux load on face</translation>
+      <translation>Stvori opterećenje toplinskog toka na lice</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="619"/>
       <source>Make initial temperature condition on body</source>
-      <translation type="unfinished">Make initial temperature condition on body</translation>
+      <translation>Stvori početni temperaturni uvjet na tijelu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="670"/>
       <source>Make plane multi-point constraint on face</source>
-      <translation type="unfinished">Make plane multi-point constraint on face</translation>
+      <translation>Napravite ravninsko ograničenje s više točaka na licu
+</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="721"/>
       <source>Make pressure load on face</source>
-      <translation type="unfinished">Make pressure load on face</translation>
+      <translation>Stvori opterećenje tlaka na površinu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="777"/>
       <source>Make spring on face</source>
-      <translation type="unfinished">Make spring on face</translation>
+      <translation>Stvori oprugu na površinu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="832"/>
       <source>Make pulley constraint</source>
-      <translation type="unfinished">Make pulley constraint</translation>
+      <translation>Stvori ograničenje remenice</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="885"/>
       <source>Make temperature boundary condition on face</source>
-      <translation type="unfinished">Make temperature boundary condition on face</translation>
+      <translation>Stvori temperaturni granični uvjet na površinu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="936"/>
       <source>Make local coordinate system on face</source>
-      <translation type="unfinished">Make local coordinate system on face</translation>
+      <translation>Stvoriti lokalni koordinatni sustav na površinu</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1041"/>
@@ -1027,10 +1028,10 @@
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation type="unfinished">The specified executable
+      <translation>Navedena izvršna datoteka
 '%1'
- does not exist!
-Specify another file please.</translation>
+ ne postoji!
+Navedi drugu datoteku.</translation>
     </message>
   </context>
   <context>
@@ -1131,10 +1132,10 @@ will be merged to make the volume boundaries invisible.</source>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation type="unfinished">The specified executable
+      <translation>Navedena izvršna datoteka
 '%1'
- does not exist!
-Specify another file please.</translation>
+ ne postoji!
+Navedi drugu datoteku.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="127"/>
@@ -1225,10 +1226,10 @@ koji ne pripadaju plohama i plohe koje ne pripadaju volumenima.
 Every analysis feature and, if there are different materials,
 material consists of two mesh groups, faces and nodes where
 the constraint or material is applied.</source>
-      <translation type="unfinished">Mesh groups are exported too.
-Every analysis feature and, if there are different materials,
-material consists of two mesh groups, faces and nodes where
-the constraint or material is applied.</translation>
+      <translation>Mrežne grupe se također eksportiraju.
+Svako ograničenje i, ako postoje različiti materijali, materijal
+se sastoji od dvije mrežne grupe, površine i čvorove gdje je
+ograničenje ili materijal primijenjeno.</translation>
     </message>
   </context>
   <context>
@@ -1256,7 +1257,7 @@ the constraint or material is applied.</translation>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="72"/>
       <source>Let the application manage (create, delete) the working directories for all solvers. Use temporary directories.</source>
-      <translation type="unfinished">Let the application manage (create, delete) the working directories for all solvers. Use temporary directories.</translation>
+      <translation>Neka aplikacija upravlja (stvara, briše) radne direktorije za sve rješavače. Koristit će se privremeni direktoriji.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="98"/>
@@ -1321,7 +1322,7 @@ dok ne budu prepisani novim pokretanjem rješavača</translation>
       <location filename="../../DlgSettingsFemGeneral.ui" line="331"/>
       <source>The results dialog will be opened
 with the last used dialog settings</source>
-      <translation>Rezultati će se otvoriti u dijalogu
+      <translation>Rezultati će se otvoriti u dijalogu 
 sa posljednjim korištenim postavkama dijaloga</translation>
     </message>
     <message>
@@ -1333,13 +1334,13 @@ sa posljednjim korištenim postavkama dijaloga</translation>
       <location filename="../../DlgSettingsFemGeneral.ui" line="354"/>
       <source>All analysis features are hidden in the model view
 when the results dialog is opened</source>
-      <translation type="unfinished">All analysis features are hidden in the model view
-when the results dialog is opened</translation>
+      <translation>Sva svojstva analize su skrivena u prikazu modela
+ kada se otvori dijalog rezultata</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="358"/>
       <source>Hide analysis features when open result dialog</source>
-      <translation type="unfinished">Hide analysis features when open result dialog</translation>
+      <translation>Sakrij svojstva analize  kada se otvori dijalog rezultata</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="382"/>
@@ -1355,7 +1356,7 @@ when the results dialog is opened</translation>
       <location filename="../../DlgSettingsFemGeneral.ui" line="403"/>
       <source>Default solver to be added when
 adding an analysis container</source>
-      <translation>Zadani alat za rješavanje koji će biti dodan kada
+      <translation>Zadani alat za rješavanje koji će biti dodan kada 
 se dodaje kontejner za analizu</translation>
     </message>
     <message>
@@ -1402,10 +1403,10 @@ se dodaje kontejner za analizu</translation>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation type="unfinished">The specified executable
+      <translation>Navedena izvršna datoteka
 '%1'
- does not exist!
-Specify another file please.</translation>
+ ne postoji!
+Navedi drugu datoteku.</translation>
     </message>
   </context>
   <context>
@@ -1461,7 +1462,7 @@ Objekt FreeCAD rezultata: Uvezeni podaci bit će pretvoreni u FreeCAD FEM objekt
     <message>
       <location filename="../../DlgSettingsFemInOutVtk.ui" line="76"/>
       <source>FreeCAD result object</source>
-      <translation>FreeCAD Objekt rezultata
+      <translation>FreeCAD Objekt rezultata 
 </translation>
     </message>
   </context>
@@ -1513,10 +1514,10 @@ Objekt FreeCAD rezultata: Uvezeni podaci bit će pretvoreni u FreeCAD FEM objekt
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation type="unfinished">The specified executable
+      <translation>Navedena izvršna datoteka
 '%1'
- does not exist!
-Specify another file please.</translation>
+ ne postoji!
+Navedi drugu datoteku.</translation>
     </message>
   </context>
   <context>
@@ -1588,8 +1589,8 @@ You might need to increase this when using the
 Cholesky solver and you get the error message
 that "MAXGS" needs to be increased.</source>
       <translation>Maksimalan broj mjesta u matrici krutosti.
-Možda ćete to morati povećati kada koristite
-Choleskyov rješavač i dobijete poruku o pogrešci
+Možda ćete to morati povećati kada koristite 
+Choleskyov rješavač i dobijete poruku o pogrešci 
 da se "MAXGS" mora povećati."</translation>
     </message>
     <message>
@@ -1606,12 +1607,12 @@ da se "MAXGS" mora povećati."</translation>
 You might need to increase this when using an
 iterative solver and you get the error message
 that "MAXKOI" needs to be increased.</source>
-      <translation>Maksimalan broj mjesta u vektoru koincidencije.
+      <translation>Maksimalan broj mjesta u vektoru koincidencije. 
 (broj čvorova po elementu množeno sa
  broj konačnih elementa)
 
-Možda ćete to morati povećati kada koristite
-iterativni rješavač i dobijete poruku o pogrešci
+Možda ćete to morati povećati kada koristite 
+iterativni rješavač i dobijete poruku o pogrešci 
 da se "MAXKOI" mora povećati</translation>
     </message>
     <message>
@@ -1625,10 +1626,10 @@ da se "MAXKOI" mora povećati</translation>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation type="unfinished">The specified z88r executable
+      <translation>Navedena z88r izvršna datoteka
 '%1'
- does not exist!
-Specify another file please.</translation>
+ ne postoji!
+Navedi drugu datoteku molim.</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="120"/>
@@ -1816,7 +1817,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../TaskFemConstraint.cpp" line="57"/>
       <source>Analysis feature parameters</source>
-      <translation type="unfinished">Analysis feature parameters</translation>
+      <translation>Parametri obilježja analize</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraint.cpp" line="222"/>
@@ -1972,7 +1973,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="363"/>
       <source>Only one type of selection (vertex,face or edge) per analysis feature allowed!</source>
-      <translation type="unfinished">Only one type of selection (vertex,face or edge) per analysis feature allowed!</translation>
+      <translation>Samo je jedna vrsta selekcije (vrh, ploha ili rub) po svojstvu analize dopuštena!</translation>
     </message>
   </context>
   <context>
@@ -2001,7 +2002,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="157"/>
       <source>Only one type of selection (vertex, face or edge) per analysis feature allowed!</source>
-      <translation type="unfinished">Only one type of selection (vertex, face or edge) per analysis feature allowed!</translation>
+      <translation>Samo je jedna vrsta selekcije (vrh, ploha ili rub) po svojstvu analize dopuštena!</translation>
     </message>
   </context>
   <context>
@@ -2130,7 +2131,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="867"/>
       <source>Only one type of selection (vertex, face or edge) per analysis feature allowed!</source>
-      <translation type="unfinished">Only one type of selection (vertex, face or edge) per analysis feature allowed!</translation>
+      <translation>Samo je jedna vrsta selekcije (vrh, ploha ili rub) po svojstvu analize dopuštena!</translation>
     </message>
   </context>
   <context>
@@ -2159,7 +2160,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="173"/>
       <source>Only one type of selection (vertex, face or edge) per analysis feature allowed!</source>
-      <translation type="unfinished">Only one type of selection (vertex, face or edge) per analysis feature allowed!</translation>
+      <translation>Samo je jedna vrsta selekcije (vrh, ploha ili rub) po svojstvu analize dopuštena!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="316"/>
@@ -2247,7 +2248,7 @@ Specify another file please.</translation>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="128"/>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="201"/>
       <source>Only one face can be selected for a plane multi-point constraint!</source>
-      <translation type="unfinished">Only one face can be selected for a plane multi-point constraint!</translation>
+      <translation>Samo jedna ploha se može odabrati za ograničenje ravnine s više točaka</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="137"/>
@@ -2371,7 +2372,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="179"/>
       <source>Analysis feature update error</source>
-      <translation type="unfinished">Analysis feature update error</translation>
+      <translation>Greška ažuriranja svojstva analize</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="180"/>
@@ -2402,17 +2403,17 @@ Specify another file please.</translation>
       <location filename="../../TaskFemConstraintTransform.cpp" line="291"/>
       <location filename="../../TaskFemConstraintTransform.cpp" line="299"/>
       <source>Only one face for rectangular local coordinate system!</source>
-      <translation type="unfinished">Only one face for rectangular local coordinate system!</translation>
+      <translation>Samo jedna ploha za  lokalni pravokutni koordinatni sustav!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="321"/>
       <source>Only one face for local coordinate system!</source>
-      <translation type="unfinished">Only one face for local coordinate system!</translation>
+      <translation>Samo jedna ploha za  lokalni koordinatni sustav!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="380"/>
       <source>Only transformable faces can be selected! Apply displacement boundary condition to surface first then apply local coordinate system to surface</source>
-      <translation type="unfinished">Only transformable faces can be selected! Apply displacement boundary condition to surface first then apply local coordinate system to surface</translation>
+      <translation>Samo transformabilna lica se mogu odabrati! Prvo primjeni ograničenje pomaka na površinu prije nego primjeniš lokalni kordinatni sustav na površinu</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="313"/>
@@ -2546,15 +2547,15 @@ Specify another file please.</translation>
   <context>
     <name>FemMaterial</name>
     <message>
-      <location filename="../ui/Material.ui" line="14"/>
       <location filename="../ui/MaterialReinforcement.ui" line="14"/>
+      <location filename="../ui/Material.ui" line="14"/>
       <source>FEM material</source>
       <translation>FEM material</translation>
     </message>
     <message>
-      <location filename="../ui/Material.ui" line="26"/>
       <location filename="../ui/MaterialReinforcement.ui" line="37"/>
       <location filename="../ui/MaterialReinforcement.ui" line="110"/>
+      <location filename="../ui/Material.ui" line="26"/>
       <source>Material</source>
       <translation>Materijal</translation>
     </message>
@@ -2579,9 +2580,9 @@ Specify another file please.</translation>
       <translation>Ime materijala</translation>
     </message>
     <message>
-      <location filename="../ui/Material.ui" line="71"/>
       <location filename="../ui/MaterialReinforcement.ui" line="74"/>
       <location filename="../ui/MaterialReinforcement.ui" line="147"/>
+      <location filename="../ui/Material.ui" line="71"/>
       <source>TextLabel</source>
       <translation>Tekst oznaka</translation>
     </message>
@@ -2923,17 +2924,17 @@ Specify another file please.</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintTie.ui" line="52"/>
+      <location filename="../ui/MeshRegion.ui" line="56"/>
       <location filename="../ui/ElementFluid1D.ui" line="92"/>
       <location filename="../ui/ElementFluid1D.ui" line="745"/>
       <location filename="../ui/ElementFluid1D.ui" line="766"/>
+      <location filename="../ui/ElementGeometry2D.ui" line="52"/>
+      <location filename="../ui/MeshBoundaryLayer.ui" line="50"/>
       <location filename="../ui/ElementGeometry1D.ui" line="90"/>
       <location filename="../ui/ElementGeometry1D.ui" line="134"/>
       <location filename="../ui/ElementGeometry1D.ui" line="200"/>
       <location filename="../ui/ElementGeometry1D.ui" line="262"/>
       <location filename="../ui/ElementGeometry1D.ui" line="306"/>
-      <location filename="../ui/ElementGeometry2D.ui" line="52"/>
-      <location filename="../ui/MeshBoundaryLayer.ui" line="50"/>
-      <location filename="../ui/MeshRegion.ui" line="56"/>
       <source>0 mm</source>
       <translation>0 mm</translation>
     </message>
@@ -2948,11 +2949,11 @@ Specify another file please.</translation>
       <translation>Centrifugalni parametar</translation>
     </message>
     <message>
-      <location filename="../ui/ConstraintCentrif.ui" line="26"/>
       <location filename="../ui/ConstraintTie.ui" line="26"/>
+      <location filename="../ui/MeshRegion.ui" line="26"/>
       <location filename="../ui/ElementGeometry2D.ui" line="26"/>
       <location filename="../ui/MeshBoundaryLayer.ui" line="26"/>
-      <location filename="../ui/MeshRegion.ui" line="26"/>
+      <location filename="../ui/ConstraintCentrif.ui" line="26"/>
       <source>Parameter</source>
       <translation>Parametar</translation>
     </message>
@@ -2982,15 +2983,15 @@ Specify another file please.</translation>
       <translation>Parametri ispisa presjeka</translation>
     </message>
     <message>
-      <location filename="../ui/BodyHeatSource.ui" line="14"/>
-      <location filename="../ui/CurrentDensity.ui" line="14"/>
+      <location filename="../ui/InitialPressure.ui" line="14"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="14"/>
       <location filename="../ui/FlowVelocity.ui" line="14"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
-      <location filename="../ui/InitialPressure.ui" line="14"/>
+      <location filename="../ui/BodyHeatSource.ui" line="14"/>
       <location filename="../ui/Magnetization.ui" line="14"/>
+      <location filename="../ui/CurrentDensity.ui" line="14"/>
       <source>Analysis feature properties</source>
-      <translation type="unfinished">Analysis feature properties</translation>
+      <translation>Svojstva obilježja analize</translation>
     </message>
     <message>
       <location filename="../ui/BodyHeatSource.ui" line="20"/>
@@ -3003,12 +3004,9 @@ Specify another file please.</translation>
       <translation>Potencijal:</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="94"/>
-      <location filename="../ui/CurrentDensity.ui" line="141"/>
-      <location filename="../ui/CurrentDensity.ui" line="197"/>
-      <location filename="../ui/CurrentDensity.ui" line="243"/>
-      <location filename="../ui/CurrentDensity.ui" line="297"/>
-      <location filename="../ui/CurrentDensity.ui" line="341"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="32"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="87"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="118"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="76"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="218"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="273"/>
@@ -3021,15 +3019,18 @@ Specify another file please.</translation>
       <location filename="../ui/FlowVelocity.ui" line="32"/>
       <location filename="../ui/FlowVelocity.ui" line="87"/>
       <location filename="../ui/FlowVelocity.ui" line="118"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="32"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="87"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="118"/>
       <location filename="../ui/Magnetization.ui" line="91"/>
       <location filename="../ui/Magnetization.ui" line="135"/>
       <location filename="../ui/Magnetization.ui" line="189"/>
       <location filename="../ui/Magnetization.ui" line="233"/>
       <location filename="../ui/Magnetization.ui" line="287"/>
       <location filename="../ui/Magnetization.ui" line="331"/>
+      <location filename="../ui/CurrentDensity.ui" line="94"/>
+      <location filename="../ui/CurrentDensity.ui" line="141"/>
+      <location filename="../ui/CurrentDensity.ui" line="197"/>
+      <location filename="../ui/CurrentDensity.ui" line="243"/>
+      <location filename="../ui/CurrentDensity.ui" line="297"/>
+      <location filename="../ui/CurrentDensity.ui" line="341"/>
       <source>unspecified</source>
       <translation>neodređen</translation>
     </message>
@@ -3052,35 +3053,35 @@ Specify another file please.</translation>
       <location filename="../ui/ElectrostaticPotential.ui" line="104"/>
       <source>Imaginary part is only used for equations
 with a harmonic/oscillating driving force</source>
-      <translation>Imaginarni dio se koristi samo za jednadžbe
+      <translation>Imaginarni dio se koristi samo za jednadžbe 
 s harmoničnim/oscilirajućim pogonskim silom.</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="531"/>
       <source>Whether the boundary condition defines a constant potential</source>
-      <translation type="unfinished">Whether the boundary condition defines a constant potential</translation>
+      <translation>Pokazuje da li je ograničenje definirano konstantnim potencijalom</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="544"/>
       <source>Whether the boundary condition defines a farfield potential</source>
-      <translation type="unfinished">Whether the boundary condition defines a farfield potential</translation>
+      <translation>Pokazuje da li je ograničenje definirano Farfield potencijalom</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="554"/>
       <source>Whether the boundary condition is for the electric force</source>
-      <translation type="unfinished">Whether the boundary condition is for the electric force</translation>
+      <translation>Pokazuje da li se primjenjuje ograničenje za elektrostatičku silu</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="30"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="120"/>
       <location filename="../ui/Magnetization.ui" line="30"/>
+      <location filename="../ui/CurrentDensity.ui" line="30"/>
       <source>Real</source>
       <translation>Realno</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="40"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="130"/>
       <location filename="../ui/Magnetization.ui" line="40"/>
+      <location filename="../ui/CurrentDensity.ui" line="40"/>
       <source>Imaginary</source>
       <translation>Imaginarno</translation>
     </message>
@@ -3100,9 +3101,9 @@ s harmoničnim/oscilirajućim pogonskim silom.</translation>
       <translation>Imaginarni dio skalarnog potencijala</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="50"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="231"/>
       <location filename="../ui/Magnetization.ui" line="50"/>
+      <location filename="../ui/CurrentDensity.ui" line="50"/>
       <source>x</source>
       <translation>x</translation>
     </message>
@@ -3110,20 +3111,20 @@ s harmoničnim/oscilirajućim pogonskim silom.</translation>
       <location filename="../ui/ElectrostaticPotential.ui" line="247"/>
       <source>Real part of potential x-component
 Note: has no effect if a solid was selected</source>
-      <translation>Realni dio potencijalne x-komponente
+      <translation>Realni dio potencijalne x-komponente 
 Napomena: nema utjecaja ako je odabrano volumensko tijelo</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="292"/>
       <source>Imaginary part of potential x-component
 Note: has no effect if a solid was selected</source>
-      <translation>Imaginarni dio potencijalne x-komponente
+      <translation>Imaginarni dio potencijalne x-komponente 
 Napomena: nema utjecaja ako je odabrano volumensko tijelo</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="154"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="331"/>
       <location filename="../ui/Magnetization.ui" line="148"/>
+      <location filename="../ui/CurrentDensity.ui" line="154"/>
       <source>y</source>
       <translation>y</translation>
     </message>
@@ -3131,20 +3132,20 @@ Napomena: nema utjecaja ako je odabrano volumensko tijelo</translation>
       <location filename="../ui/ElectrostaticPotential.ui" line="347"/>
       <source>Real part of potential y-component
 Note: has no effect if a solid was selected</source>
-      <translation>Realni dio potencijalne -komponente
+      <translation>Realni dio potencijalne -komponente 
 Napomena: nema utjecaja ako je odabrano volumensko tijelo</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="392"/>
       <source>Imaginary part of potential y-component
 Note: has no effect if a solid was selected</source>
-      <translation>Imaginarni dio potencijalne y-komponente
+      <translation>Imaginarni dio potencijalne y-komponente 
 Napomena: nema utjecaja ako je odabrano volumensko tijelo</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="256"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="431"/>
       <location filename="../ui/Magnetization.ui" line="246"/>
+      <location filename="../ui/CurrentDensity.ui" line="256"/>
       <source>z</source>
       <translation>z</translation>
     </message>
@@ -3152,14 +3153,14 @@ Napomena: nema utjecaja ako je odabrano volumensko tijelo</translation>
       <location filename="../ui/ElectrostaticPotential.ui" line="447"/>
       <source>Real part of potential z-component
 Note: has no effect if a solid was selected</source>
-      <translation>Realni dio potencijalne z-komponente
+      <translation>Realni dio potencijalne z-komponente 
 Napomena: nema utjecaja ako je odabrano volumensko tijelo</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="492"/>
       <source>Imaginary part of potential z-component
 Note: has no effect if a solid was selected</source>
-      <translation>Imaginarni dio potencijalne z-komponente
+      <translation>Imaginarni dio potencijalne z-komponente 
 Napomena: nema utjecaja ako je odabrano volumensko tijelo</translation>
     </message>
     <message>
@@ -3194,8 +3195,8 @@ Napomena: nema utjecaja ako je odabrano volumensko tijelo</translation>
       <translation>Parametri presjeka grede</translation>
     </message>
     <message>
-      <location filename="../ui/ElementGeometry1D.ui" line="20"/>
       <location filename="../ui/ElementRotation1D.ui" line="20"/>
+      <location filename="../ui/ElementGeometry1D.ui" line="20"/>
       <source>Cross section parameter</source>
       <translation>Parametar poprečnog presjeka</translation>
     </message>
@@ -3248,30 +3249,30 @@ Napomena: nema utjecaja ako je odabrano volumensko tijelo</translation>
       <translation>Rotacija:     </translation>
     </message>
     <message>
-      <location filename="../ui/FlowVelocity.ui" line="25"/>
-      <location filename="../ui/FlowVelocity.ui" line="73"/>
-      <location filename="../ui/FlowVelocity.ui" line="131"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="25"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="73"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="131"/>
+      <location filename="../ui/FlowVelocity.ui" line="25"/>
+      <location filename="../ui/FlowVelocity.ui" line="73"/>
+      <location filename="../ui/FlowVelocity.ui" line="131"/>
       <source>formula</source>
       <translation>formula</translation>
     </message>
     <message>
-      <location filename="../ui/FlowVelocity.ui" line="42"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="42"/>
+      <location filename="../ui/FlowVelocity.ui" line="42"/>
       <source>Velocity x:</source>
       <translation>Protok x:</translation>
     </message>
     <message>
-      <location filename="../ui/FlowVelocity.ui" line="80"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="80"/>
+      <location filename="../ui/FlowVelocity.ui" line="80"/>
       <source>Velocity y:</source>
       <translation>Protok y:</translation>
     </message>
     <message>
-      <location filename="../ui/FlowVelocity.ui" line="138"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="138"/>
+      <location filename="../ui/FlowVelocity.ui" line="138"/>
       <source>Velocity z:</source>
       <translation>Protok z:</translation>
     </message>
@@ -3401,14 +3402,14 @@ Napomena: u 2D je moguće samo podešavanje za x
       <translation>Imaginarni dio potencijala y-komponente</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="272"/>
       <location filename="../ui/Magnetization.ui" line="262"/>
+      <location filename="../ui/CurrentDensity.ui" line="272"/>
       <source>Real part of potential z-component</source>
       <translation>Realni dio potencijala z-komponente</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="316"/>
       <location filename="../ui/Magnetization.ui" line="306"/>
+      <location filename="../ui/CurrentDensity.ui" line="316"/>
       <source>Imaginary part of potential z-component</source>
       <translation>Imaginarni dio potencijala z-komponente</translation>
     </message>
@@ -3526,26 +3527,26 @@ Napomena: u 2D je moguće samo podešavanje za x
       <translation>Otkazati</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFemConstraintBearing.cpp" line="70"/>
       <location filename="../../ViewProviderFemConstraintFixed.cpp" line="70"/>
-      <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="72"/>
-      <location filename="../../ViewProviderFemConstraintForce.cpp" line="71"/>
-      <location filename="../../ViewProviderFemConstraintGear.cpp" line="72"/>
-      <location filename="../../ViewProviderFemConstraintPulley.cpp" line="69"/>
       <location filename="../../ViewProviderFemPostFunction.cpp" line="337"/>
+      <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="72"/>
+      <location filename="../../ViewProviderFemConstraintPulley.cpp" line="69"/>
+      <location filename="../../ViewProviderFemConstraintGear.cpp" line="72"/>
+      <location filename="../../ViewProviderFemConstraintForce.cpp" line="71"/>
       <location filename="../../ViewProviderFemPostObject.cpp" line="862"/>
+      <location filename="../../ViewProviderFemConstraintBearing.cpp" line="70"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Dijalog je već otvoren u ploči zadataka</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFemConstraintBearing.cpp" line="71"/>
       <location filename="../../ViewProviderFemConstraintFixed.cpp" line="71"/>
-      <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="73"/>
-      <location filename="../../ViewProviderFemConstraintForce.cpp" line="72"/>
-      <location filename="../../ViewProviderFemConstraintGear.cpp" line="73"/>
-      <location filename="../../ViewProviderFemConstraintPulley.cpp" line="70"/>
       <location filename="../../ViewProviderFemPostFunction.cpp" line="338"/>
+      <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="73"/>
+      <location filename="../../ViewProviderFemConstraintPulley.cpp" line="70"/>
+      <location filename="../../ViewProviderFemConstraintGear.cpp" line="73"/>
+      <location filename="../../ViewProviderFemConstraintForce.cpp" line="72"/>
       <location filename="../../ViewProviderFemPostObject.cpp" line="863"/>
+      <location filename="../../ViewProviderFemConstraintBearing.cpp" line="71"/>
       <source>Do you want to close this dialog?</source>
       <translation>Želite li zatvoriti ovaj dijalog?</translation>
     </message>
@@ -3643,7 +3644,7 @@ Napomena: u 2D je moguće samo podešavanje za x
     <message>
       <location filename="../../TaskFemConstraintFixed.cpp" line="286"/>
       <source>Fixed boundary condition</source>
-      <translation type="unfinished">Fixed boundary condition</translation>
+      <translation>Fiksno ograničenje</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="1001"/>
@@ -3653,22 +3654,22 @@ Napomena: u 2D je moguće samo podešavanje za x
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="433"/>
       <source>Force load</source>
-      <translation type="unfinished">Force load</translation>
+      <translation>Opterećenje silom</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="438"/>
       <source>Heat flux load</source>
-      <translation type="unfinished">Heat flux load</translation>
+      <translation>Opterećenje protokom topline</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPlaneRotation.cpp" line="312"/>
       <source>Plane multi-point constraint</source>
-      <translation type="unfinished">Plane multi-point constraint</translation>
+      <translation>Ograničenje ravnine sa više točaka</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="302"/>
       <source>Pressure load</source>
-      <translation type="unfinished">Pressure load</translation>
+      <translation>Opterećenje pritiskom</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="366"/>
@@ -3683,7 +3684,7 @@ Napomena: u 2D je moguće samo podešavanje za x
     <message>
       <location filename="../../ViewProviderFemConstraint.cpp" line="140"/>
       <source>Edit analysis feature</source>
-      <translation type="unfinished">Edit analysis feature</translation>
+      <translation>Svojstva analize uređivanja</translation>
     </message>
   </context>
   <context>
@@ -4034,7 +4035,7 @@ Za moguće varijable, pogledaj okvir za opis ispod.</translation>
     <message>
       <location filename="../../TaskAnalysisInfo.ui" line="48"/>
       <source>Analysis features</source>
-      <translation type="unfinished">Analysis features</translation>
+      <translation>Svojstva analize</translation>
     </message>
   </context>
   <context>
@@ -4314,9 +4315,9 @@ for the Elmer solver</source>
 surface force (and thus displacement)
 generated by the flow
 (Option only applies for Elmer solver)</source>
-      <translation>Rješavanje protoka se koristi
+      <translation>Rješavanje protoka se koristi 
 za određivanje površinske sile
- (i time pomaka) generirane strujom
+ (i time pomaka) generirane strujom 
 (Opcija vrijedi samo za Elmerov rješavač)</translation>
     </message>
     <message>
@@ -4419,7 +4420,7 @@ za određivanje površinske sile
       <location filename="../../TaskFemConstraintFluidBoundary.ui" line="273"/>
       <source>The direction of the edge or the direction of the
 normal vector of the face is used as direction</source>
-      <translation>Smjer ruba ili smjer normalnog
+      <translation>Smjer ruba ili smjer normalnog 
 vektora površine koristi se kao smjer</translation>
     </message>
     <message>
@@ -4503,7 +4504,7 @@ vektora površine koristi se kao smjer</translation>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="100"/>
       <source>N</source>
-      <translation type="unfinished">N</translation>
+      <translation>N</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="117"/>
@@ -4519,7 +4520,7 @@ vektora površine koristi se kao smjer</translation>
       <location filename="../../TaskFemConstraintForce.ui" line="127"/>
       <source>The direction of the edge or the direction of the
 normal vector of the face is used as direction</source>
-      <translation>Smjer ruba ili smjer normalnog
+      <translation>Smjer ruba ili smjer normalnog 
 vektora površine koristi se kao smjer</translation>
     </message>
     <message>
@@ -4677,7 +4678,7 @@ vektora površine koristi se kao smjer</translation>
       <location filename="../../TaskFemConstraintSpring.ui" line="116"/>
       <source>What stiffness should be
 used for the Elmer solver</source>
-      <translation>Koja krutost bi se trebala
+      <translation>Koja krutost bi se trebala 
 koristiti za Elmerov rješavač</translation>
     </message>
     <message>
@@ -5176,12 +5177,12 @@ koristiti za Elmerov rješavač</translation>
     <message>
       <location filename="../../Workbench.cpp" line="49"/>
       <source>Electrostatic boundary conditions</source>
-      <translation type="unfinished">Electrostatic boundary conditions</translation>
+      <translation>Elektrostatička ograničenja</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="50"/>
       <source>&amp;Electrostatic boundary conditions</source>
-      <translation type="unfinished">&amp;Electrostatic boundary conditions</translation>
+      <translation>&amp;Elektrostatička ograničenja</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="51"/>
@@ -5201,7 +5202,7 @@ koristiti za Elmerov rješavač</translation>
     <message>
       <location filename="../../Workbench.cpp" line="54"/>
       <source>&amp;Electromagnetic boundary conditions</source>
-      <translation type="unfinished">&amp;Electromagnetic boundary conditions</translation>
+      <translation>&amp;Elektromagnetska ograničenja</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="55"/>
@@ -5448,7 +5449,7 @@ koristiti za Elmerov rješavač</translation>
       <location filename="../../../femcommands/commands.py" line="475"/>
       <source>Creates a FEM equation for
  elasticity (stress)</source>
-      <translation>Stvara FEM jednadžbe za
+      <translation>Stvara FEM jednadžbe za 
  elastičnost (naprezanje)</translation>
     </message>
   </context>
@@ -6340,12 +6341,12 @@ magnetodinamičke sile</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="318"/>
       <source>Magnetization boundary condition</source>
-      <translation type="unfinished">Magnetization boundary condition</translation>
+      <translation>Granični uvjet magnetizacije</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="322"/>
       <source>Creates a magnetization boundary condition</source>
-      <translation type="unfinished">Creates a magnetization boundary condition</translation>
+      <translation>Stvori granični uvjet magnetizacije</translation>
     </message>
   </context>
   <context>
@@ -6353,12 +6354,12 @@ magnetodinamičke sile</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="335"/>
       <source>Section print feature</source>
-      <translation type="unfinished">Section print feature</translation>
+      <translation>Svojstva ispisa odijeljaka</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="339"/>
       <source>Creates a section print feature</source>
-      <translation type="unfinished">Creates a section print feature</translation>
+      <translation>Stvori svojstva ispisa odijeljaka</translation>
     </message>
   </context>
   <context>
@@ -6366,12 +6367,12 @@ magnetodinamičke sile</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="352"/>
       <source>Gravity load</source>
-      <translation type="unfinished">Gravity load</translation>
+      <translation>Gravitacijsko opterećenje</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="356"/>
       <source>Creates a gravity load</source>
-      <translation type="unfinished">Creates a gravity load</translation>
+      <translation>Stvori gravitacijsko opterećenje</translation>
     </message>
   </context>
   <context>

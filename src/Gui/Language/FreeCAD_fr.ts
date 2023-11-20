@@ -106,7 +106,7 @@
     <message>
       <location filename="../CommandView.cpp" line="3429"/>
       <source>Turn on or off the display of all measurements</source>
-      <translation>Activer ou désactiver l’affichage de toutes les mesures</translation>
+      <translation>Activer/désactiver l’affichage de toutes les mesures</translation>
     </message>
   </context>
   <context>
@@ -185,11 +185,11 @@
       <location filename="../Placement.cpp" line="239"/>
       <location filename="../Placement.cpp" line="244"/>
       <source>Placement</source>
-      <translation>Positionnement</translation>
+      <translation>Position</translation>
     </message>
     <message>
-      <location filename="../TaskCSysDragger.cpp" line="75"/>
       <location filename="../Transform.cpp" line="101"/>
+      <location filename="../TaskCSysDragger.cpp" line="75"/>
       <location filename="../ViewProviderAnnotation.cpp" line="416"/>
       <source>Transform</source>
       <translation>Transformer</translation>
@@ -212,17 +212,17 @@
     <message>
       <location filename="../CommandView.cpp" line="883"/>
       <source>Toggle visibility</source>
-      <translation>Basculer la visibilité</translation>
+      <translation>Activer/désactiver la visibilité</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="917"/>
       <source>Toggle transparency</source>
-      <translation type="unfinished">Toggle transparency</translation>
+      <translation>Activer/désactiver la transparence</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1019"/>
       <source>Toggle selectability</source>
-      <translation>Basculer la sélectivité</translation>
+      <translation>Activer/désactiver la sélectivité</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.cpp" line="254"/>
@@ -377,7 +377,7 @@
     <message>
       <location filename="../DlgExpressionInput.ui" line="26"/>
       <source>Expression editor</source>
-      <translation type="unfinished">Expression editor</translation>
+      <translation>Éditeur d'expression</translation>
     </message>
     <message>
       <location filename="../DlgExpressionInput.ui" line="67"/>
@@ -418,7 +418,7 @@
     <message>
       <location filename="../Application.h" line="255"/>
       <source>Default</source>
-      <translation>Par défaut</translation>
+      <translation>Défaut</translation>
     </message>
     <message>
       <location filename="../Application.h" line="256"/>
@@ -461,7 +461,7 @@
     <message>
       <location filename="../QuantitySpinBox_p.h" line="53"/>
       <source>Enter an expression... (=)</source>
-      <translation type="unfinished">Enter an expression... (=)</translation>
+      <translation>Entrer une expression... (=)</translation>
     </message>
     <message>
       <location filename="../QuantitySpinBox_p.h" line="54"/>
@@ -592,7 +592,7 @@
     <message>
       <location filename="../CADNavigationStyle.cpp" line="53"/>
       <source>Press middle mouse button</source>
-      <translation>Appuyer sur la roulette de la souris</translation>
+      <translation>Appuyez sur la roulette de la souris</translation>
     </message>
     <message>
       <location filename="../CADNavigationStyle.cpp" line="55"/>
@@ -1387,7 +1387,7 @@ same time. The one with the highest priority will be triggered.</source>
       <location filename="../DlgKeyboardImp.cpp" line="433"/>
       <location filename="../DlgKeyboardImp.cpp" line="501"/>
       <source>none</source>
-      <translation>rien</translation>
+      <translation>aucun</translation>
     </message>
   </context>
   <context>
@@ -1804,7 +1804,7 @@ same time. The one with the highest priority will be triggered.</source>
       <location filename="../SceneInspector.cpp" line="138"/>
       <location filename="../SceneInspector.cpp" line="206"/>
       <source>Scene Inspector</source>
-      <translation>Inspecteur de scène</translation>
+      <translation>Inspecteur du graphe de scène</translation>
     </message>
   </context>
   <context>
@@ -2215,9 +2215,7 @@ Peut-être une erreur de permission du fichier ?</translation>
       <source>Access denied to '%1'
 
 Specify another directory, please.</source>
-      <translation>Accès refusé à '%1'
-
-Veuillez spécifier un autre répertoire.</translation>
+      <translation>Accès refusé à "%1". Spécifier un autre répertoire.</translation>
     </message>
   </context>
   <context>
@@ -2442,32 +2440,32 @@ Veuillez spécifier un autre répertoire.</translation>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="386"/>
       <source>Reset tab '%1'...</source>
-      <translation type="unfinished">Reset tab '%1'...</translation>
+      <translation>Réinitialiser l'onglet "%1"...</translation>
     </message>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="388"/>
       <source>Resets the user settings for the tab '%1'</source>
-      <translation type="unfinished">Resets the user settings for the tab '%1'</translation>
+      <translation>Réinitialise les paramètres de l'utilisateur pour l'onglet "%1</translation>
     </message>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="393"/>
       <source>Reset group '%1'...</source>
-      <translation type="unfinished">Reset group '%1'...</translation>
+      <translation>Réinitialiser le groupe "%1...</translation>
     </message>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="395"/>
       <source>Resets the user settings for the group '%1'</source>
-      <translation type="unfinished">Resets the user settings for the group '%1'</translation>
+      <translation>Réinitialise les paramètres de l'utilisateur pour le groupe "%1"</translation>
     </message>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="398"/>
       <source>Reset all...</source>
-      <translation type="unfinished">Reset all...</translation>
+      <translation>Tout réinitialiser...</translation>
     </message>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="400"/>
       <source>Resets the user settings entirely</source>
-      <translation type="unfinished">Resets the user settings entirely</translation>
+      <translation>Réinitialise entièrement les paramètres de l'utilisateur</translation>
     </message>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="415"/>
@@ -2487,12 +2485,12 @@ Veuillez spécifier un autre répertoire.</translation>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="442"/>
       <source>Reset Tab Settings</source>
-      <translation type="unfinished">Reset Tab Settings</translation>
+      <translation>Réinitialiser les paramètres des onglets</translation>
     </message>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="443"/>
       <source>All the settings for the tab '%1' will be deleted.</source>
-      <translation type="unfinished">All the settings for the tab '%1' will be deleted.</translation>
+      <translation>Tous les paramètres de l'onglet "%1" seront supprimés.</translation>
     </message>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="444"/>
@@ -2503,12 +2501,12 @@ Veuillez spécifier un autre répertoire.</translation>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="468"/>
       <source>Reset Group Settings</source>
-      <translation type="unfinished">Reset Group Settings</translation>
+      <translation>Réinitialiser les paramètres des groupes</translation>
     </message>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="469"/>
       <source>All the settings for the group '%1' will be deleted.</source>
-      <translation type="unfinished">All the settings for the group '%1' will be deleted.</translation>
+      <translation>Tous les paramètres de le groupe "%1" seront supprimés.</translation>
     </message>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="590"/>
@@ -2788,7 +2786,7 @@ Veuillez spécifier un autre répertoire.</translation>
     <message>
       <location filename="../DlgRunExternal.ui" line="38"/>
       <source>TextLabel</source>
-      <translation>Étiquette de texte</translation>
+      <translation>TextLabel</translation>
     </message>
     <message>
       <location filename="../DlgRunExternal.ui" line="58"/>
@@ -2808,7 +2806,7 @@ Veuillez spécifier un autre répertoire.</translation>
     <message>
       <location filename="../DlgRunExternal.ui" line="118"/>
       <source>Abort program</source>
-      <translation>Abandonner le programme</translation>
+      <translation>Interrompre le programme</translation>
     </message>
     <message>
       <location filename="../DlgRunExternal.ui" line="138"/>
@@ -4088,7 +4086,7 @@ Vous pouvez également utiliser la forme : John Doe &lt;john@doe.com&gt;</transl
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="162"/>
       <source>Default</source>
-      <translation>Défaut</translation>
+      <translation>Par défaut</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="170"/>
@@ -4103,7 +4101,7 @@ Vous pouvez également utiliser la forme : John Doe &lt;john@doe.com&gt;</transl
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="205"/>
       <source>Color</source>
-      <translation>Couleur</translation>
+      <translation>Colorier</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="212"/>
@@ -4244,27 +4242,27 @@ La valeur est le diamètre de la sphère qui rentre à l'écran.</translation>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="574"/>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="577"/>
       <source>Enable navigation animations</source>
-      <translation type="unfinished">Enable navigation animations</translation>
+      <translation>Activer les animations de navigation</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="593"/>
       <source>Duration of navigation animations that have a fixed duration</source>
-      <translation type="unfinished">Duration of navigation animations that have a fixed duration</translation>
+      <translation>Durée des animations de navigation qui ont une durée fixe</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="596"/>
       <source>Animation duration</source>
-      <translation type="unfinished">Animation duration</translation>
+      <translation>Durée de l'animation</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="614"/>
       <source>The duration of navigation animations in milliseconds</source>
-      <translation type="unfinished">The duration of navigation animations in milliseconds</translation>
+      <translation>La durée des animations de navigation est en millisecondes.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="676"/>
       <source>Zoom step</source>
-      <translation type="unfinished">Zoom step</translation>
+      <translation>Pas du zoom</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="657"/>
@@ -4590,7 +4588,7 @@ Une valeur plus grande facilite la sélection, mais peut rendre les petites fonc
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="281"/>
       <source>Tree view</source>
-      <translation>Vue arborescente</translation>
+      <translation>Vue en arborescence</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="328"/>
@@ -4640,7 +4638,7 @@ Une valeur plus grande facilite la sélection, mais peut rendre les petites fonc
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="14"/>
       <source>Units calculator</source>
-      <translation>Calculateur d'unités</translation>
+      <translation>Convertisseur d'unités</translation>
     </message>
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="28"/>
@@ -4650,7 +4648,7 @@ Une valeur plus grande facilite la sélection, mais peut rendre les petites fonc
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="35"/>
       <source>as:</source>
-      <translation>comme :</translation>
+      <translation>en :</translation>
     </message>
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="48"/>
@@ -4671,8 +4669,8 @@ Une valeur plus grande facilite la sélection, mais peut rendre les petites fonc
       <location filename="../DlgUnitsCalculator.ui" line="83"/>
       <source>List of last used calculations.
 To add a calculation press Return in the value input field</source>
-      <translation>Liste des derniers calculs utilisés 
-Pour ajouter un calcul, appuyez sur Valider dans le champ de saisie de la valeur</translation>
+      <translation>Liste des dernières conversions utilisées.
+Pour ajouter une conversion, appuyez sur Valider dans le champ de saisie de la valeur</translation>
     </message>
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="94"/>
@@ -4694,7 +4692,7 @@ Pour ajouter un calcul, appuyez sur Valider dans le champ de saisie de la valeur
       <source>Unit system to be used for the Quantity
 The preference system is the one set in the general preferences.</source>
       <translation>Système d'unité à utiliser pour les quantités.
-Le système par défaut est celui défini dans les préférences générales.</translation>
+Le système de préférences est celui défini dans les préférences générales.</translation>
     </message>
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="132"/>
@@ -4709,12 +4707,12 @@ Le système par défaut est celui défini dans les préférences générales.</t
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="155"/>
       <source>Unit category:</source>
-      <translation>Catégorie d'unité :</translation>
+      <translation>Catégorie d'unités :</translation>
     </message>
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="168"/>
       <source>Unit category for the Quantity</source>
-      <translation>Catégorie d'unité pour la quantité</translation>
+      <translation>Catégorie d'unités pour la quantité</translation>
     </message>
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="193"/>
@@ -4729,7 +4727,7 @@ Le système par défaut est celui défini dans les préférences générales.</t
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="203"/>
       <source>Close</source>
-      <translation>Faible</translation>
+      <translation>Fermer</translation>
     </message>
   </context>
   <context>
@@ -4750,7 +4748,7 @@ Le système par défaut est celui défini dans les préférences générales.</t
     <message>
       <location filename="../Placement.cpp" line="987"/>
       <source>Placement</source>
-      <translation>Positionnement</translation>
+      <translation>Position</translation>
     </message>
   </context>
   <context>
@@ -5224,19 +5222,19 @@ La colonne "État" indique si le document a pu être récupéré.</translation>
       <location filename="../Placement.ui" line="47"/>
       <location filename="../Placement.ui" line="145"/>
       <source>X:</source>
-      <translation>X :</translation>
+      <translation>X :</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="63"/>
       <location filename="../Placement.ui" line="161"/>
       <source>Y:</source>
-      <translation>Y :</translation>
+      <translation>Y :</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="79"/>
       <location filename="../Placement.ui" line="177"/>
       <source>Z:</source>
-      <translation>Z :</translation>
+      <translation>Z :</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="95"/>
@@ -5341,7 +5339,7 @@ La colonne "État" indique si le document a pu être récupéré.</translation>
     <message>
       <location filename="../Placement.ui" line="499"/>
       <source>Close</source>
-      <translation>Faible</translation>
+      <translation>Fermer</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="506"/>
@@ -5438,7 +5436,7 @@ La colonne "État" indique si le document a pu être récupéré.</translation>
     <message>
       <location filename="../SceneInspector.cpp" line="67"/>
       <source>Inventor Tree</source>
-      <translation>Arbre Inventor</translation>
+      <translation>Arborescence d'Inventor</translation>
     </message>
     <message>
       <location filename="../SceneInspector.cpp" line="69"/>
@@ -5609,82 +5607,82 @@ initialement sélectionnés avant d'ouvrir ce dialogue</translation>
   <context>
     <name>Gui::DockWnd::ReportOutput</name>
     <message>
-      <location filename="../ReportView.cpp" line="580"/>
+      <location filename="../ReportView.cpp" line="586"/>
       <source>Options</source>
       <translation>Options</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="585"/>
+      <location filename="../ReportView.cpp" line="591"/>
       <source>Display message types</source>
       <translation>Afficher les types de messages</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="588"/>
-      <location filename="../ReportView.cpp" line="612"/>
+      <location filename="../ReportView.cpp" line="594"/>
+      <location filename="../ReportView.cpp" line="618"/>
       <source>Normal messages</source>
       <translation>Messages normaux</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="592"/>
-      <location filename="../ReportView.cpp" line="616"/>
+      <location filename="../ReportView.cpp" line="598"/>
+      <location filename="../ReportView.cpp" line="622"/>
       <source>Log messages</source>
       <translation>Logs</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="596"/>
-      <location filename="../ReportView.cpp" line="620"/>
+      <location filename="../ReportView.cpp" line="602"/>
+      <location filename="../ReportView.cpp" line="626"/>
       <source>Warnings</source>
       <translation>Avertissements</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="600"/>
-      <location filename="../ReportView.cpp" line="624"/>
+      <location filename="../ReportView.cpp" line="606"/>
+      <location filename="../ReportView.cpp" line="630"/>
       <source>Errors</source>
       <translation>Erreurs</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="604"/>
-      <location filename="../ReportView.cpp" line="628"/>
+      <location filename="../ReportView.cpp" line="610"/>
+      <location filename="../ReportView.cpp" line="634"/>
       <source>Critical messages</source>
       <translation>Messages critiques</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="609"/>
+      <location filename="../ReportView.cpp" line="615"/>
       <source>Show Report view on</source>
       <translation>Afficher la Vue du rapport sur</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="634"/>
+      <location filename="../ReportView.cpp" line="640"/>
       <source>Redirect Python output</source>
       <translation>Rediriger la sortie de Python</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="638"/>
+      <location filename="../ReportView.cpp" line="644"/>
       <source>Redirect Python errors</source>
       <translation>Rediriger les erreurs de Python</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="643"/>
+      <location filename="../ReportView.cpp" line="649"/>
       <source>Go to end</source>
       <translation>Aller à la fin</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="662"/>
+      <location filename="../ReportView.cpp" line="668"/>
       <source>Clear</source>
       <translation>Effacer</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="664"/>
+      <location filename="../ReportView.cpp" line="670"/>
       <source>Save As...</source>
       <translation>Enregistrer sous…</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="672"/>
+      <location filename="../ReportView.cpp" line="678"/>
       <source>Save Report Output</source>
       <translation>Enregistrer la sortie du rapport</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="673"/>
+      <location filename="../ReportView.cpp" line="679"/>
       <source>Plain Text Files</source>
       <translation>Fichiers de texte brut</translation>
     </message>
@@ -6066,15 +6064,15 @@ Voulez enregistrer les modifications ?</translation>
       <translation>Format PDF</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="617"/>
       <location filename="../GraphvizView.cpp" line="448"/>
+      <location filename="../CommandDoc.cpp" line="617"/>
       <source>Graphviz format</source>
       <translation>Format Graphviz</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="618"/>
       <location filename="../GraphvizView.cpp" line="462"/>
       <location filename="../GraphvizView.cpp" line="550"/>
+      <location filename="../CommandDoc.cpp" line="618"/>
       <source>Export graph</source>
       <translation>Export graphique</translation>
     </message>
@@ -6112,7 +6110,7 @@ Voulez enregistrer les modifications ?</translation>
     <message>
       <location filename="../InventorNavigationStyle.cpp" line="57"/>
       <source>Scroll middle mouse button</source>
-      <translation>Faites rouler la roulette de la souris</translation>
+      <translation>Faites défiler le bouton milieu de la souris</translation>
     </message>
   </context>
   <context>
@@ -6240,43 +6238,43 @@ Voulez enregistrer les modifications ?</translation>
       <translation>Dimension</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="487"/>
+      <location filename="../MainWindow.cpp" line="486"/>
       <source>Ready</source>
       <translation>Prêt</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="979"/>
+      <location filename="../MainWindow.cpp" line="978"/>
       <source>Help addon needed!</source>
       <translation>Extension d'aide nécessaire !</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="980"/>
+      <location filename="../MainWindow.cpp" line="979"/>
       <source>The Help system of %1 is now handled by the "Help" addon. It can easily be installed via the Addons Manager</source>
       <translation>Le système d'aide de %1 est maintenant géré par l'extension "Help". Il peut facilement être installé via le gestionnaire des extensions</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="982"/>
+      <location filename="../MainWindow.cpp" line="981"/>
       <source>Open Addon Manager</source>
       <translation>Ouvrir le gestionnaire des extensions</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1177"/>
+      <location filename="../MainWindow.cpp" line="1176"/>
       <source>Close All</source>
       <translation>Fermer tout</translation>
     </message>
     <message>
+      <location filename="../MainWindow.cpp" line="1384"/>
       <location filename="../MainWindow.cpp" line="1385"/>
       <location filename="../MainWindow.cpp" line="1386"/>
-      <location filename="../MainWindow.cpp" line="1387"/>
       <source>Toggles this toolbar</source>
-      <translation>Bascule cette barre d'outils</translation>
+      <translation>Active/désactive cette barre d'outils</translation>
     </message>
     <message>
+      <location filename="../MainWindow.cpp" line="1399"/>
       <location filename="../MainWindow.cpp" line="1400"/>
       <location filename="../MainWindow.cpp" line="1401"/>
-      <location filename="../MainWindow.cpp" line="1402"/>
       <source>Toggles this dockable window</source>
-      <translation>Basculer cette fenêtre ancrable</translation>
+      <translation>Active/désactive cette fenêtre ancrable</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="1909"/>
@@ -6292,7 +6290,7 @@ Voulez enregistrer les modifications ?</translation>
       <location filename="../MainWindow.cpp" line="2114"/>
       <location filename="../MainWindow.cpp" line="2206"/>
       <source>Unsaved document</source>
-      <translation>Document non enregistré</translation>
+      <translation>Document non sauvegardé</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="2115"/>
@@ -6818,22 +6816,22 @@ Voulez vous quitter sans sauvegarder vos données?</translation>
   <context>
     <name>Gui::RecentMacrosAction</name>
     <message>
-      <location filename="../Action.cpp" line="1026"/>
+      <location filename="../Action.cpp" line="1029"/>
       <source>none</source>
-      <translation>aucun</translation>
+      <translation>rien</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1041"/>
+      <location filename="../Action.cpp" line="1044"/>
       <source>Run macro %1 (Shift+click to edit) keyboard shortcut: %2</source>
       <translation>Lancer la macro %1 (Maj+clic pour modifier) le raccourci clavier : %2</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1099"/>
+      <location filename="../Action.cpp" line="1102"/>
       <source>File not found</source>
       <translation>Fichier introuvable</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1099"/>
+      <location filename="../Action.cpp" line="1102"/>
       <source>The file '%1' cannot be opened.</source>
       <translation>Impossible d'ouvrir le fichier '%1'.</translation>
     </message>
@@ -7014,7 +7012,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../TaskElementColors.ui" line="22"/>
       <source>TextLabel</source>
-      <translation>TextLabel</translation>
+      <translation>Étiquette de texte</translation>
     </message>
     <message>
       <location filename="../TaskElementColors.ui" line="40"/>
@@ -7164,7 +7162,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../TinkerCADNavigationStyle.cpp" line="51"/>
       <source>Press middle mouse button</source>
-      <translation>Appuyez sur la roulette de la souris</translation>
+      <translation>Appuyer sur la roulette de la souris</translation>
     </message>
     <message>
       <location filename="../TinkerCADNavigationStyle.cpp" line="53"/>
@@ -7174,7 +7172,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../TinkerCADNavigationStyle.cpp" line="55"/>
       <source>Scroll middle mouse button</source>
-      <translation>Faites défiler le bouton milieu de la souris</translation>
+      <translation>Faites rouler la roulette de la souris</translation>
     </message>
   </context>
   <context>
@@ -7636,7 +7634,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../View3DInventor.cpp" line="247"/>
       <source>Export PDF</source>
-      <translation>Exporter en PDF</translation>
+      <translation>Exporter vers PDF</translation>
     </message>
     <message>
       <location filename="../View3DInventor.cpp" line="248"/>
@@ -7718,17 +7716,17 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../DlgLocationPos.ui" line="22"/>
       <source>X:</source>
-      <translation>X :</translation>
+      <translation>X :</translation>
     </message>
     <message>
       <location filename="../DlgLocationPos.ui" line="43"/>
       <source>Y:</source>
-      <translation>Y :</translation>
+      <translation>Y :</translation>
     </message>
     <message>
       <location filename="../DlgLocationPos.ui" line="64"/>
       <source>Z:</source>
-      <translation>Z :</translation>
+      <translation>Z :</translation>
     </message>
     <message>
       <location filename="../DlgLocationPos.ui" line="86"/>
@@ -7824,47 +7822,47 @@ Do you want to specify another directory?</source>
   <context>
     <name>QDockWidget</name>
     <message>
-      <location filename="../MainWindow.cpp" line="651"/>
+      <location filename="../MainWindow.cpp" line="650"/>
       <source>Tree view</source>
       <translation>Vue en arborescence</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="573"/>
+      <location filename="../MainWindow.cpp" line="572"/>
       <source>Tasks</source>
       <translation>Tâches</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="677"/>
+      <location filename="../MainWindow.cpp" line="676"/>
       <source>Property view</source>
       <translation>Vue des propriétés</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="590"/>
+      <location filename="../MainWindow.cpp" line="589"/>
       <source>Selection view</source>
       <translation>Vue de la sélection</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="705"/>
+      <location filename="../MainWindow.cpp" line="704"/>
       <source>Task List</source>
-      <translation type="unfinished">Task List</translation>
+      <translation>Liste de tâches</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="730"/>
+      <location filename="../MainWindow.cpp" line="729"/>
       <source>Model</source>
       <translation>Modèle</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="756"/>
+      <location filename="../MainWindow.cpp" line="755"/>
       <source>DAG View</source>
       <translation>Vue DAG</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="608"/>
+      <location filename="../MainWindow.cpp" line="607"/>
       <source>Report view</source>
       <translation>Vue rapport</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="628"/>
+      <location filename="../MainWindow.cpp" line="627"/>
       <source>Python console</source>
       <translation>Console Python</translation>
     </message>
@@ -7998,10 +7996,10 @@ Do you want to specify another directory?</source>
       <translation>Exportation PDF ...</translation>
     </message>
     <message>
+      <location filename="../MainWindow.cpp" line="809"/>
       <location filename="../CommandDoc.cpp" line="1230"/>
-      <location filename="../MainWindow.cpp" line="810"/>
       <source>Unsaved document</source>
-      <translation>Document non sauvegardé</translation>
+      <translation>Document non enregistré</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1231"/>
@@ -8583,32 +8581,32 @@ Veuillez ouvrir une fenêtre de navigateur et saisir : http://localhost:%1.</tra
       <translation>Voulez-vous fermer cette fenêtre de dialogue?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="812"/>
+      <location filename="../MainWindow.cpp" line="811"/>
       <source>Do you want to save your changes to document '%1' before closing?</source>
       <translation>Voulez-vous enregistrer les modifications apportées au document "%1" avant sa fermeture ?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="815"/>
+      <location filename="../MainWindow.cpp" line="814"/>
       <source>Do you want to save your changes to document before closing?</source>
       <translation>Voulez-vous enregistrer les modifications apportées au document avant sa fermeture ?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="817"/>
+      <location filename="../MainWindow.cpp" line="816"/>
       <source>If you don't save, your changes will be lost.</source>
       <translation>Si vous n'enregistrez pas, vos modifications seront perdues.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="822"/>
+      <location filename="../MainWindow.cpp" line="821"/>
       <source>Apply answer to all</source>
       <translation>Appliquez la réponse à tout</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="912"/>
+      <location filename="../MainWindow.cpp" line="911"/>
       <source>%1 Document(s) not saved</source>
       <translation>Document(s) %1 non enregistré(s)</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="913"/>
+      <location filename="../MainWindow.cpp" line="912"/>
       <source>Some documents could not be saved. Do you want to cancel closing?</source>
       <translation>Certains documents n'ont pas pu être enregistrés. Voulez-vous annuler la fermeture ?</translation>
     </message>
@@ -8655,7 +8653,7 @@ Veuillez ouvrir une fenêtre de navigateur et saisir : http://localhost:%1.</tra
     <message>
       <location filename="../ViewProviderPart.cpp" line="72"/>
       <source>Toggle active part</source>
-      <translation>Activer/désactiver la pièce</translation>
+      <translation>Activer/désactiver la pièce active</translation>
     </message>
     <message>
       <location filename="../ViewProviderTextDocument.cpp" line="76"/>
@@ -8870,214 +8868,214 @@ apportée à la copie en cours sera perdue.
     <message>
       <location filename="../OverlayManager.cpp" line="1035"/>
       <source>Toggle overlay</source>
-      <translation type="unfinished">Toggle overlay</translation>
+      <translation>Activer/désactiver la surimposition</translation>
     </message>
     <message>
-      <location filename="../OverlayManager.cpp" line="1036"/>
       <location filename="../OverlayWidgets.cpp" line="2180"/>
+      <location filename="../OverlayManager.cpp" line="1036"/>
       <source>Toggle floating window</source>
-      <translation type="unfinished">Toggle floating window</translation>
+      <translation>Activer/désactiver la fenêtre flottante</translation>
     </message>
     <message>
       <location filename="../OverlayManager.cpp" line="1037"/>
       <source>Close dock window</source>
-      <translation type="unfinished">Close dock window</translation>
+      <translation>Fermer la fenêtre ancrable</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="117"/>
       <location filename="../OverlayWidgets.cpp" line="147"/>
       <source>Press ESC to hide hint</source>
-      <translation type="unfinished">Press ESC to hide hint</translation>
+      <translation>Appuyez sur Echap pour masquer l'indice</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="530"/>
       <source>UI</source>
-      <translation type="unfinished">UI</translation>
+      <translation>Interface utilisateur</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="531"/>
       <source>Tree view</source>
-      <translation>Vue arborescente</translation>
+      <translation>Vue en arborescence</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="533"/>
       <source>Item background color</source>
-      <translation type="unfinished">Item background color</translation>
+      <translation>Couleur d'Arrière-plan de l'Élément</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="536"/>
       <source>Item background padding</source>
-      <translation type="unfinished">Item background padding</translation>
+      <translation>Remplissage de l’arrière-plan de l’élément</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="539"/>
       <source>Resizable columns</source>
-      <translation type="unfinished">Resizable columns</translation>
+      <translation>Colonnes redimensionnables</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="541"/>
       <source>Show item checkbox</source>
-      <translation type="unfinished">Show item checkbox</translation>
+      <translation/>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="543"/>
       <source>Hide extra column</source>
-      <translation type="unfinished">Hide extra column</translation>
+      <translation>Masquer une colonne supplémentaire</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="545"/>
       <source>Hide scroll bar</source>
-      <translation type="unfinished">Hide scroll bar</translation>
+      <translation/>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="547"/>
       <source>Hide header</source>
-      <translation type="unfinished">Hide header</translation>
+      <translation>Masquer l'en-tête</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="549"/>
       <source>IconSize</source>
-      <translation type="unfinished">IconSize</translation>
+      <translation>Taille de l'icône</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="552"/>
       <source>FontSize</source>
-      <translation type="unfinished">FontSize</translation>
+      <translation>Taille de la police</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="555"/>
       <source>ItemSpacing</source>
-      <translation type="unfinished">ItemSpacing</translation>
+      <translation>Espacement des éléments</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="557"/>
       <source>Overlay</source>
-      <translation type="unfinished">Overlay</translation>
+      <translation>Surimposition</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="559"/>
       <source>Hide tab bar</source>
-      <translation type="unfinished">Hide tab bar</translation>
+      <translation>Masquer la barre d'onglets</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="561"/>
       <source>Hide property view scroll bar</source>
-      <translation type="unfinished">Hide property view scroll bar</translation>
+      <translation>Masquer la barre de défilement de la vue des propriétés</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="563"/>
       <source>Auto hide in non 3D view</source>
-      <translation type="unfinished">Auto hide in non 3D view</translation>
+      <translation>Masquer automatiquement dans la vue non 3D</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="565"/>
       <source>Auto mouse pass through</source>
-      <translation type="unfinished">Auto mouse pass through</translation>
+      <translation>Passage automatique de la souris</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="567"/>
       <source>Auto mouse wheel pass through</source>
-      <translation type="unfinished">Auto mouse wheel pass through</translation>
+      <translation>Passage automatique de la molette de la souris</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="569"/>
       <source>Delay mouse wheel pass through (ms)</source>
-      <translation type="unfinished">Delay mouse wheel pass through (ms)</translation>
+      <translation>Délai de passage de la molette de la souris (ms)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="572"/>
       <source>Alpha test radius</source>
-      <translation type="unfinished">Alpha test radius</translation>
+      <translation>Test alpha de rayon</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="575"/>
       <source>Check Navigation Cube</source>
-      <translation type="unfinished">Check Navigation Cube</translation>
+      <translation>Vérifier le Cube de Navigation</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="577"/>
       <source>Hint trigger size</source>
-      <translation type="unfinished">Hint trigger size</translation>
+      <translation>Taille de l'indice de déclenchement</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="580"/>
       <source>Hint width</source>
-      <translation type="unfinished">Hint width</translation>
+      <translation>Largeur de l'indice</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="583"/>
       <source>Left panel hint offset</source>
-      <translation type="unfinished">Left panel hint offset</translation>
+      <translation>Décalage de l'indice du panneau gauche</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="586"/>
       <source>Left panel hint length</source>
-      <translation type="unfinished">Left panel hint length</translation>
+      <translation>Longueur de l'indice du panneau gauche</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="589"/>
       <source>Right panel hint offset</source>
-      <translation type="unfinished">Right panel hint offset</translation>
+      <translation>Décalage de l'indice du panneau droit</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="592"/>
       <source>Right panel hint length</source>
-      <translation type="unfinished">Right panel hint length</translation>
+      <translation>Longueur de l'indice du panneau droit</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="595"/>
       <source>Top panel hint offset</source>
-      <translation type="unfinished">Top panel hint offset</translation>
+      <translation>Décalage de l'indice du panneau supérieur</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="598"/>
       <source>Top panel hint length</source>
-      <translation type="unfinished">Top panel hint length</translation>
+      <translation>Longueur de l'indice du panneau supérieur</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="601"/>
       <source>Bottom panel hint offset</source>
-      <translation type="unfinished">Bottom panel hint offset</translation>
+      <translation>Décalage de l'indice du panneau inférieur</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="604"/>
       <source>Bottom panel hint length</source>
-      <translation type="unfinished">Bottom panel hint length</translation>
+      <translation>Longueur de l'indice du panneau inférieur</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="607"/>
       <source>Hint show tab bar</source>
-      <translation type="unfinished">Hint show tab bar</translation>
+      <translation>Afficher la barre des onglets</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="609"/>
       <source>Hint delay (ms)</source>
-      <translation type="unfinished">Hint delay (ms)</translation>
+      <translation>Indice visuel (ms)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="612"/>
       <source>Splitter auto hide delay (ms)</source>
-      <translation type="unfinished">Splitter auto hide delay (ms)</translation>
+      <translation>Délai de masquage automatique du séparateur (ms)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="615"/>
       <source>Activate on hover</source>
-      <translation type="unfinished">Activate on hover</translation>
+      <translation>Activer le survol</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="617"/>
       <source>Layout delay (ms)</source>
-      <translation type="unfinished">Layout delay (ms)</translation>
+      <translation>Délai de la surimposition (ms)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="620"/>
       <source>Animation duration (ms)</source>
-      <translation type="unfinished">Animation duration (ms)</translation>
+      <translation>Durée de l'animation (ms)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="623"/>
       <source>Animation curve type</source>
-      <translation type="unfinished">Animation curve type</translation>
+      <translation>Type de courbe d'animation</translation>
     </message>
   </context>
   <context>
@@ -9192,7 +9190,7 @@ apportée à la copie en cours sera perdue.
     <message>
       <location filename="../CommandView.cpp" line="2202"/>
       <source>Toggle axis cross</source>
-      <translation>Afficher les axes de coordonnées</translation>
+      <translation>Activer/désactiver les axes de coordonnées</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2203"/>
@@ -9468,12 +9466,12 @@ apportée à la copie en cours sera perdue.
     <message>
       <location filename="../CommandDoc.cpp" line="1687"/>
       <source>Toggle &amp;Edit mode</source>
-      <translation>Basculer en mode d'é&amp;dition</translation>
+      <translation>Activer/désactiver le mode d'é&amp;dition</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1688"/>
       <source>Toggles the selected object's edit mode</source>
-      <translation>Active ou désactive le mode d'édition de l'objet sélectionné</translation>
+      <translation>Active/désactive le mode d'édition de l'objet sélectionné</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1690"/>
@@ -9551,12 +9549,12 @@ apportée à la copie en cours sera perdue.
     <message>
       <location filename="../CommandStd.cpp" line="665"/>
       <source>FreeCAD FAQ</source>
-      <translation>FAQ FreeCAD</translation>
+      <translation>Foire aux questions de FreeCAD</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="666"/>
       <source>Frequently Asked Questions on the FreeCAD website</source>
-      <translation>Foire aux Questions sur le site Web de FreeCAD</translation>
+      <translation>Foire aux questions sur le site web de FreeCAD</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="668"/>
@@ -9569,7 +9567,7 @@ apportée à la copie en cours sera perdue.
     <message>
       <location filename="../CommandStd.cpp" line="637"/>
       <source>FreeCAD Forum</source>
-      <translation>Forum FreeCAD</translation>
+      <translation>Forum de FreeCAD</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="638"/>
@@ -9597,7 +9595,7 @@ apportée à la copie en cours sera perdue.
     <message>
       <location filename="../CommandStd.cpp" line="612"/>
       <source>PowerUsers documentation</source>
-      <translation>Documentation « PowerUsers »</translation>
+      <translation>Documentation pour les utilisateurs expérimentés</translation>
     </message>
   </context>
   <context>
@@ -9941,7 +9939,7 @@ Contrairement aux clones, les liens font directement référence à la forme d'o
     <message>
       <location filename="../CommandView.cpp" line="3219"/>
       <source>Measure distance</source>
-      <translation>Mesurer une distance</translation>
+      <translation>Mesurer la distance</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3220"/>
@@ -9955,7 +9953,7 @@ Contrairement aux clones, les liens font directement référence à la forme d'o
     <message>
       <location filename="../CommandStd.cpp" line="746"/>
       <source>Measure distance</source>
-      <translation>Mesurer la distance</translation>
+      <translation>Mesurer une distance</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="747"/>
@@ -10004,8 +10002,8 @@ Contrairement aux clones, les liens font directement référence à la forme d'o
       <translation>Créer un nouveau document vide</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="391"/>
       <location filename="../MainWindow.cpp" line="2311"/>
+      <location filename="../DocumentRecovery.cpp" line="391"/>
       <source>Unnamed</source>
       <translation>Sans nom</translation>
     </message>
@@ -10376,13 +10374,13 @@ Il permet d'organiser les objets qui ont un Part TopoShape de pièce, comme les 
     <message>
       <location filename="../CommandView.cpp" line="3310"/>
       <source>Scene inspector...</source>
-      <translation>Inspecteur de scène...</translation>
+      <translation>Inspecter le graphe de scène...</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3311"/>
       <location filename="../CommandView.cpp" line="3313"/>
       <source>Scene inspector</source>
-      <translation>Inspecteur de scène</translation>
+      <translation>Inspecteur du graphe de scène</translation>
     </message>
   </context>
   <context>
@@ -10494,7 +10492,7 @@ Il permet d'organiser les objets qui ont un Part TopoShape de pièce, comme les 
       <location filename="../CommandWindow.cpp" line="372"/>
       <location filename="../CommandWindow.cpp" line="374"/>
       <source>Toggles the status bar</source>
-      <translation>Bascule l'affichage de la barre d'état</translation>
+      <translation>Active/désactive l'affichage de la barre d'état</translation>
     </message>
   </context>
   <context>
@@ -10544,7 +10542,7 @@ Il permet d'organiser les objets qui ont un Part TopoShape de pièce, comme les 
     <message>
       <location filename="../CommandMacro.cpp" line="285"/>
       <source>Toggle breakpoint</source>
-      <translation>Basculer le point d'arrêt</translation>
+      <translation>Activer/désactiver le point d'arrêt</translation>
     </message>
     <message>
       <location filename="../CommandMacro.cpp" line="286"/>
@@ -10572,7 +10570,7 @@ Il permet d'organiser les objets qui ont un Part TopoShape de pièce, comme les 
     <message>
       <location filename="../CommandView.cpp" line="2153"/>
       <source>Toggle navigation/Edit mode</source>
-      <translation>Basculer entre mode navigation/édition</translation>
+      <translation>Basculer entre le mode navigation et le mode édition</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2154"/>
@@ -10586,13 +10584,13 @@ Il permet d'organiser les objets qui ont un Part TopoShape de pièce, comme les 
     <message>
       <location filename="../CommandView.cpp" line="1147"/>
       <source>Toggle all objects</source>
-      <translation>Basculer tous les objets</translation>
+      <translation>Activer/désactiver tous les objets</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1148"/>
       <location filename="../CommandView.cpp" line="1149"/>
       <source>Toggles visibility of all objects in the active document</source>
-      <translation>Bascule la visibilité de tous les objets dans le document actif</translation>
+      <translation>Active/désactive la visibilité de tous les objets dans le document actif</translation>
     </message>
   </context>
   <context>
@@ -10600,13 +10598,13 @@ Il permet d'organiser les objets qui ont un Part TopoShape de pièce, comme les 
     <message>
       <location filename="../CommandView.cpp" line="997"/>
       <source>Toggle selectability</source>
-      <translation>Basculer la sélectivité</translation>
+      <translation>Activer/désactiver la sélectivité</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="998"/>
       <location filename="../CommandView.cpp" line="999"/>
       <source>Toggles the property of the objects to get selected in the 3D-View</source>
-      <translation>Basculer la propriété des objets à sélectionner dans la vue 3D</translation>
+      <translation>Active/désactive la propriété des objets à sélectionner dans la vue 3D</translation>
     </message>
   </context>
   <context>
@@ -10614,13 +10612,13 @@ Il permet d'organiser les objets qui ont un Part TopoShape de pièce, comme les 
     <message>
       <location filename="../CommandView.cpp" line="870"/>
       <source>Toggle visibility</source>
-      <translation>Basculer la visibilité</translation>
+      <translation>Activer/désactiver la visibilité</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="871"/>
       <location filename="../CommandView.cpp" line="872"/>
       <source>Toggles visibility</source>
-      <translation>Bascule la visibilité</translation>
+      <translation>Active/désactive la visibilité</translation>
     </message>
   </context>
   <context>
@@ -10634,7 +10632,7 @@ Il permet d'organiser les objets qui ont un Part TopoShape de pièce, comme les 
       <location filename="../CommandWindow.cpp" line="317"/>
       <location filename="../CommandWindow.cpp" line="319"/>
       <source>Toggles this window</source>
-      <translation>Bascule cette fenêtre</translation>
+      <translation>Active/désactive cette fenêtre</translation>
     </message>
   </context>
   <context>
@@ -10740,13 +10738,13 @@ Il permet d'organiser les objets qui ont un Part TopoShape de pièce, comme les 
     <message>
       <location filename="../CommandStd.cpp" line="836"/>
       <source>&amp;Units calculator...</source>
-      <translation>Calculateur d'unités...</translation>
+      <translation>Convertir des &amp;unités...</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="837"/>
       <location filename="../CommandStd.cpp" line="839"/>
       <source>Start the units calculator</source>
-      <translation>Démarrer la calculatrice d'unités</translation>
+      <translation>Démarrer le convertisseur d'unités</translation>
     </message>
   </context>
   <context>
@@ -11302,12 +11300,12 @@ cette dernière fonction s'ouvre.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3708"/>
       <source>Initiate dragging</source>
-      <translation>Commencer un déplacement</translation>
+      <translation>Déplacer</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3709"/>
       <source>Initiate dragging of current selected tree items</source>
-      <translation>Commencer le déplacement des éléments sélectionnés</translation>
+      <translation>Déplacer les éléments sélectionnés dans l'arborescence</translation>
     </message>
   </context>
   <context>
@@ -11315,7 +11313,7 @@ cette dernière fonction s'ouvre.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3562"/>
       <source>Multi document</source>
-      <translation>Document multiple</translation>
+      <translation>Tous les documents</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3563"/>
@@ -11329,7 +11327,7 @@ cette dernière fonction s'ouvre.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3672"/>
       <source>Pre-selection</source>
-      <translation>Pré-sélectionner</translation>
+      <translation>Présélectionner</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3673"/>
@@ -11436,13 +11434,13 @@ cette dernière fonction s'ouvre.</translation>
     <message>
       <location filename="../CommandView.cpp" line="1645"/>
       <source>Docked</source>
-      <translation>Ancré</translation>
+      <translation>Ancrer</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1646"/>
       <location filename="../CommandView.cpp" line="1648"/>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
-      <translation>Afficher la vue active soit en plein écran, soit en mode non ancré, soit en mode ancré</translation>
+      <translation>Afficher la vue active soit en plein écran, en mode désancré ou ancré</translation>
     </message>
   </context>
   <context>
@@ -11456,7 +11454,7 @@ cette dernière fonction s'ouvre.</translation>
       <location filename="../CommandView.cpp" line="1766"/>
       <location filename="../CommandView.cpp" line="1768"/>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
-      <translation>Afficher la vue active soit en plein écran, soit en mode non ancré, soit en mode ancré</translation>
+      <translation>Afficher la vue active soit en plein écran, en mode désancré ou ancré</translation>
     </message>
   </context>
   <context>
@@ -11470,7 +11468,7 @@ cette dernière fonction s'ouvre.</translation>
       <location filename="../CommandView.cpp" line="1736"/>
       <location filename="../CommandView.cpp" line="1738"/>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
-      <translation>Afficher la vue active soit en plein écran, soit en mode non ancré, soit en mode ancré</translation>
+      <translation>Afficher la vue active soit en plein écran, en mode désancré ou ancré</translation>
     </message>
   </context>
   <context>
@@ -11492,13 +11490,13 @@ cette dernière fonction s'ouvre.</translation>
     <message>
       <location filename="../CommandView.cpp" line="1674"/>
       <source>Undocked</source>
-      <translation>Non ancré</translation>
+      <translation>Désancrer</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1675"/>
       <location filename="../CommandView.cpp" line="1677"/>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
-      <translation>Afficher la vue active soit en plein écran, soit en mode non ancré, soit en mode ancré</translation>
+      <translation>Afficher la vue active soit en plein écran, en mode désancré ou ancré</translation>
     </message>
   </context>
   <context>
@@ -11689,7 +11687,7 @@ Voulez-vous tout de même continuer ?</translation>
     <message>
       <location filename="../TreeParams.cpp" line="1138"/>
       <source>Tree view item background. Only effective in overlay.</source>
-      <translation>Arrière-plan de l’élément dans la vue en arborescence. Ne fonctionne qu’en cas de superposition.</translation>
+      <translation>Arrière-plan de l’élément dans la vue en arborescence. Ne fonctionne qu’en cas de surimposition.</translation>
     </message>
     <message>
       <location filename="../TreeParams.cpp" line="1166"/>
@@ -11704,12 +11702,12 @@ Voulez-vous tout de même continuer ?</translation>
     <message>
       <location filename="../TreeParams.cpp" line="1222"/>
       <source>Hide tree view scroll bar in dock overlay.</source>
-      <translation>Masquer la barre de défilement de la vue en arborescence dans le panneau ancré.</translation>
+      <translation>Masquer la barre de défilement de la vue en arborescence dans la surimposition du dock.</translation>
     </message>
     <message>
       <location filename="../TreeParams.cpp" line="1250"/>
       <source>Hide tree view header view in dock overlay.</source>
-      <translation>Masquer l'en-tête de la vue en arborescence dans le panneau ancré.</translation>
+      <translation>Masquer l'en-tête de la vue en arborescence dans la surimposition du dock.</translation>
     </message>
     <message>
       <location filename="../TreeParams.cpp" line="1278"/>
@@ -11840,7 +11838,7 @@ Voulez-vous tout de même continuer ?</translation>
     <message>
       <location filename="../MDIView.cpp" line="255"/>
       <source>Export PDF</source>
-      <translation>Exporter vers PDF</translation>
+      <translation>Exporter en PDF</translation>
     </message>
     <message>
       <location filename="../MDIView.cpp" line="256"/>
@@ -11858,7 +11856,7 @@ Voulez-vous tout de même continuer ?</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="20"/>
       <source>Settings</source>
-      <translation>Réglages</translation>
+      <translation>Paramètres</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="26"/>
@@ -12030,7 +12028,7 @@ after FreeCAD launches</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="97"/>
       <source>Workbench selector position:</source>
-      <translation type="unfinished">Workbench selector position:</translation>
+      <translation>Emplacement du sélecteur d'ateliers :</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="104"/>
@@ -12629,7 +12627,7 @@ after FreeCAD launches</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="62"/>
       <source>Unit system for all parts of the application. Can be overridden by specifying a project unit system.</source>
-      <translation type="unfinished">Unit system for all parts of the application. Can be overridden by specifying a project unit system.</translation>
+      <translation>Système d'unités pour toutes les parties de l'application. Peut être remplacé par le système d'unité d'un projet.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="71"/>
@@ -12644,17 +12642,17 @@ after FreeCAD launches</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="93"/>
       <source>Project unit system:</source>
-      <translation type="unfinished">Project unit system:</translation>
+      <translation>Système d'unités de projet :</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="100"/>
       <source>Unit system stored in the current project</source>
-      <translation type="unfinished">Unit system stored in the current project</translation>
+      <translation>Système d'unités stocké dans le projet en cours</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="107"/>
       <source>If enabled, project unit systems are ignored</source>
-      <translation type="unfinished">If enabled, project unit systems are ignored</translation>
+      <translation>Si cette option est activée, les systèmes d'unités de projet sont ignorés</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="110"/>
@@ -12801,12 +12799,12 @@ l'écran de démarrage</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="362"/>
       <source>Activate overlay handling of dock windows</source>
-      <translation type="unfinished">Activate overlay handling of dock windows</translation>
+      <translation>Activer la gestion de la surimposition des fenêtres ancrables</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="365"/>
       <source>Activate overlay handling</source>
-      <translation type="unfinished">Activate overlay handling</translation>
+      <translation>Activer la gestion de la surimposition</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="384"/>
@@ -13113,7 +13111,8 @@ from Python console to Report view panel</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="20"/>
       <source>This page let you customize your current theme. The offered settings are optional for theme developers so they may or may not have an effect in your current theme.</source>
-      <translation>Cette page vous permet de personnaliser votre thème en cours. Les paramètres proposés sont facultatifs pour les développeurs de thèmes et peuvent donc avoir ou non un effet sur votre thème courant.</translation>
+      <translation>Cette page vous permet de personnaliser votre thème en cours.
+Les paramètres proposés sont facultatifs pour les développeurs de thèmes et peuvent donc avoir ou non un effet sur votre thème courant.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="34"/>
@@ -13138,12 +13137,12 @@ from Python console to Report view panel</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="140"/>
       <source>Style sheet how user interface will look like</source>
-      <translation type="unfinished">Style sheet how user interface will look like</translation>
+      <translation>Feuille de style montrant ce à quoi ressemblera l'interface utilisateur</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="156"/>
       <source>Overlay style sheet:</source>
-      <translation type="unfinished">Overlay style sheet:</translation>
+      <translation>Feuille de style de surimposition :</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="47"/>
@@ -13172,7 +13171,7 @@ from Python console to Report view panel</source>
     <message>
       <location filename="../CommandView.cpp" line="3457"/>
       <source>Selection back</source>
-      <translation type="unfinished">Selection back</translation>
+      <translation>Sélection précédente</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3459"/>
@@ -13185,7 +13184,7 @@ from Python console to Report view panel</source>
     <message>
       <location filename="../CommandView.cpp" line="3491"/>
       <source>Selection forward</source>
-      <translation type="unfinished">Selection forward</translation>
+      <translation>Sélection suivante</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3493"/>
@@ -13198,17 +13197,17 @@ from Python console to Report view panel</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="14"/>
       <source>Light Sources</source>
-      <translation type="unfinished">Light Sources</translation>
+      <translation>Sources de lumière</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="20"/>
       <source>Light sources</source>
-      <translation type="unfinished">Light sources</translation>
+      <translation>Sources de lumière</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="26"/>
       <source>Light source</source>
-      <translation type="unfinished">Light source</translation>
+      <translation>Source de lumière</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="72"/>
@@ -13218,7 +13217,7 @@ from Python console to Report view panel</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="107"/>
       <source>Lights</source>
-      <translation type="unfinished">Lights</translation>
+      <translation>Lumières</translation>
     </message>
   </context>
   <context>
@@ -13226,12 +13225,12 @@ from Python console to Report view panel</source>
     <message>
       <location filename="../CommandView.cpp" line="901"/>
       <source>Toggle transparency</source>
-      <translation type="unfinished">Toggle transparency</translation>
+      <translation>Activer/désactiver la transparence</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="903"/>
       <source>Toggles transparency of the selected objects. You can also fine tune transparency value in the Appearance taskbox (right click an object in the tree, Appearance).</source>
-      <translation type="unfinished">Toggles transparency of the selected objects. You can also fine tune transparency value in the Appearance taskbox (right click an object in the tree, Appearance).</translation>
+      <translation>Active/désactive la transparence des objets sélectionnés. Vous pouvez également ajuster la valeur de la transparence depuis la boîte de dialogue d'Apparence (clic droit de la souris sur un objet dans la vue en arboscence, sélectionner Apparence).</translation>
     </message>
   </context>
   <context>
@@ -13239,12 +13238,12 @@ from Python console to Report view panel</source>
     <message>
       <location filename="../CommandView.cpp" line="3828"/>
       <source>Toggle overlay for all</source>
-      <translation type="unfinished">Toggle overlay for all</translation>
+      <translation>Activer/désactiver la surimposition pour tout</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3829"/>
       <source>Toggle overlay mode for all docked windows</source>
-      <translation type="unfinished">Toggle overlay mode for all docked windows</translation>
+      <translation>Activer/désactiver le mode surimposition pour toutes les fenêtres ancrées</translation>
     </message>
   </context>
   <context>
@@ -13252,14 +13251,14 @@ from Python console to Report view panel</source>
     <message>
       <location filename="../CommandView.cpp" line="3852"/>
       <source>Toggle transparent for all</source>
-      <translation type="unfinished">Toggle transparent for all</translation>
+      <translation>Activer/désactiver la transparence pour tout</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3853"/>
       <source>Toggle transparent mode for all docked overlay windows.
 This makes the docked windows stay transparent at all times.</source>
-      <translation type="unfinished">Toggle transparent mode for all docked overlay windows.
-This makes the docked windows stay transparent at all times.</translation>
+      <translation>Activer/désactiver le mode transparent pour toutes les fenêtres surimposées ancrées.
+Cela permet aux fenêtres ancrées de rester transparentes en permanence.</translation>
     </message>
   </context>
   <context>
@@ -13267,12 +13266,12 @@ This makes the docked windows stay transparent at all times.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3877"/>
       <source>Toggle overlay</source>
-      <translation type="unfinished">Toggle overlay</translation>
+      <translation>Activer/désactiver la surimposition</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3878"/>
       <source>Toggle overlay mode for the docked window under the cursor</source>
-      <translation type="unfinished">Toggle overlay mode for the docked window under the cursor</translation>
+      <translation>Activer/désactiver le mode de surimposition pour la fenêtre ancrée sous le curseur</translation>
     </message>
   </context>
   <context>
@@ -13280,14 +13279,14 @@ This makes the docked windows stay transparent at all times.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3901"/>
       <source>Toggle transparent</source>
-      <translation type="unfinished">Toggle transparent</translation>
+      <translation>Activer/désactiver la transparence</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3902"/>
       <source>Toggle transparent mode for the docked window under cursor.
 This makes the docked window stay transparent at all times.</source>
-      <translation type="unfinished">Toggle transparent mode for the docked window under cursor.
-This makes the docked window stay transparent at all times.</translation>
+      <translation>Active/désactive le mode transparent pour la fenêtre surimposée ancrée sous le curseur.
+Cela permet à la fenêtre ancrée de rester transparente en permanence.</translation>
     </message>
   </context>
   <context>
@@ -13295,12 +13294,12 @@ This makes the docked window stay transparent at all times.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3926"/>
       <source>Toggle left</source>
-      <translation type="unfinished">Toggle left</translation>
+      <translation>Basculer vers la gauche</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3927"/>
       <source>Show/hide left overlay panel</source>
-      <translation type="unfinished">Show/hide left overlay panel</translation>
+      <translation>Afficher/masquer le panneau gauche de surimposition</translation>
     </message>
   </context>
   <context>
@@ -13308,12 +13307,12 @@ This makes the docked window stay transparent at all times.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3951"/>
       <source>Toggle right</source>
-      <translation type="unfinished">Toggle right</translation>
+      <translation>Basculer vers la droite</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3952"/>
       <source>Show/hide right overlay panel</source>
-      <translation type="unfinished">Show/hide right overlay panel</translation>
+      <translation>Afficher/masquer le panneau droit de surimposition</translation>
     </message>
   </context>
   <context>
@@ -13321,12 +13320,12 @@ This makes the docked window stay transparent at all times.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3976"/>
       <source>Toggle top</source>
-      <translation type="unfinished">Toggle top</translation>
+      <translation>Basculer vers le haut</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3977"/>
       <source>Show/hide top overlay panel</source>
-      <translation type="unfinished">Show/hide top overlay panel</translation>
+      <translation>Afficher/masquer le panneau supérieur de surimposition</translation>
     </message>
   </context>
   <context>
@@ -13334,12 +13333,12 @@ This makes the docked window stay transparent at all times.</translation>
     <message>
       <location filename="../CommandView.cpp" line="4001"/>
       <source>Toggle bottom</source>
-      <translation type="unfinished">Toggle bottom</translation>
+      <translation>Basculer vers le bas</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="4002"/>
       <source>Show/hide bottom overlay panel</source>
-      <translation type="unfinished">Show/hide bottom overlay panel</translation>
+      <translation>Afficher/masquer le panneau inférieur de surimposition</translation>
     </message>
   </context>
   <context>
@@ -13347,12 +13346,12 @@ This makes the docked window stay transparent at all times.</translation>
     <message>
       <location filename="../CommandView.cpp" line="4026"/>
       <source>Bypass mouse events in docked overlay windows</source>
-      <translation type="unfinished">Bypass mouse events in docked overlay windows</translation>
+      <translation>Ne pas tenir compte des actions de la souris dans les fenêtres surimposées ancrées</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="4027"/>
       <source>Bypass all mouse events in docked overlay windows</source>
-      <translation type="unfinished">Bypass all mouse events in docked overlay windows</translation>
+      <translation>Ne pas tenir compte de toutes les actions de la souris dans les fenêtres surimposées ancrées</translation>
     </message>
   </context>
   <context>
@@ -13360,12 +13359,12 @@ This makes the docked window stay transparent at all times.</translation>
     <message>
       <location filename="../CommandView.cpp" line="4068"/>
       <source>Dock window overlay</source>
-      <translation type="unfinished">Dock window overlay</translation>
+      <translation>Surimposition des fenêtres ancrables</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="4069"/>
       <source>Setting docked window overlay mode</source>
-      <translation type="unfinished">Setting docked window overlay mode</translation>
+      <translation>Réglage du mode surimposition des fenêtres ancrées</translation>
     </message>
   </context>
   <context>
@@ -13373,36 +13372,35 @@ This makes the docked window stay transparent at all times.</translation>
     <message>
       <location filename="../OverlayParams.cpp" line="317"/>
       <source>Overlay dock (re),layout delay.</source>
-      <translation type="unfinished">Overlay dock (re),layout delay.</translation>
+      <translation>Délai de la surimposition des fenêtres ancrables.</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="372"/>
       <source>Overlay splitter handle auto hide delay. Set zero to disable auto hiding.</source>
-      <translation type="unfinished">Overlay splitter handle auto hide delay. Set zero to disable auto hiding.</translation>
+      <translation>Délai de masquage automatique de la poignée de séparation de la surimposition. La valeur zéro désactive le masquage automatique.</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="400"/>
       <source>Show auto hidden dock overlay on mouse over.
 If disabled, then show on mouse click.</source>
-      <translation type="unfinished">Show auto hidden dock overlay on mouse over.
-If disabled, then show on mouse click.</translation>
+      <translation>Afficher la surimposition des fenêtres ancrables au passage de la souris.
+Si cette option est désactivée, elle s'affichera au clic de la souris.</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="429"/>
       <source>Auto mouse click through transparent part of dock overlay.</source>
-      <translation type="unfinished">Auto mouse click through transparent part of dock overlay.</translation>
+      <translation>Clic automatique de la souris sur la partie transparente de la surimposition des fenêtres ancrables.</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="457"/>
       <source>Auto pass through mouse wheel event on transparent dock overlay.</source>
-      <translation type="unfinished">Auto pass through mouse wheel event on transparent dock overlay.</translation>
+      <translation>Passage automatique suite à l'action de la molette de la souris sur la couche transparente de la surimposition des fenêtres ancrables.</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="485"/>
       <source>Delay capturing mouse wheel event for passing through if it is
 previously handled by other widget.</source>
-      <translation type="unfinished">Delay capturing mouse wheel event for passing through if it is
-previously handled by other widget.</translation>
+      <translation>Délai de capture de l'action de la molette de la souris s'il est déjà géré par un autre widget.</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="514"/>
@@ -13410,100 +13408,98 @@ previously handled by other widget.</translation>
 defines a region of alpha test under the mouse cursor.
 Auto click through is only activated if all pixels within
 the region are non-opaque.</source>
-      <translation type="unfinished">If auto mouse click through is enabled, then this radius
-defines a region of alpha test under the mouse cursor.
-Auto click through is only activated if all pixels within
-the region are non-opaque.</translation>
+      <translation>Si le clic automatique de la souris est activé, ce rayon définit une région de test alpha sous le curseur de la souris.
+Le clic automatique n'est activé que si tous les pixels de la région sont non opaques.</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="545"/>
       <source>Leave space for Navigation Cube in dock overlay</source>
-      <translation type="unfinished">Leave space for Navigation Cube in dock overlay</translation>
+      <translation>Laisser de l'espace pour le cube de navigation dans la fenêtre ancrable surimposée</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="573"/>
       <source>Auto hide hint visual display triggering width</source>
-      <translation type="unfinished">Auto hide hint visual display triggering width</translation>
+      <translation>Masquer automatiquement la largeur de déclenchement de l'affichage visuel de l'indice</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="601"/>
       <source>Auto hide hint visual display width</source>
-      <translation type="unfinished">Auto hide hint visual display width</translation>
+      <translation>Masquer automatiquement la largeur de l'affichage visuel de l'indice</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="629"/>
       <source>Auto hide hint visual display length for left panel. Set to zero to fill the space.</source>
-      <translation type="unfinished">Auto hide hint visual display length for left panel. Set to zero to fill the space.</translation>
+      <translation>Masquer automatiquement la longueur d'affichage visuel des indices pour le panneau de gauche. Régler à zéro pour remplir l'espace.</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="657"/>
       <source>Auto hide hint visual display length for right panel. Set to zero to fill the space.</source>
-      <translation type="unfinished">Auto hide hint visual display length for right panel. Set to zero to fill the space.</translation>
+      <translation>Masquer automatiquement la longueur d'affichage visuel des indices pour le panneau de droite. Régler à zéro pour remplir l'espace.</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="685"/>
       <source>Auto hide hint visual display length for top panel. Set to zero to fill the space.</source>
-      <translation type="unfinished">Auto hide hint visual display length for top panel. Set to zero to fill the space.</translation>
+      <translation>Masquer automatiquement la longueur d'affichage visuel des indices pour le panneau supérieur. Régler à zéro pour remplir l'espace.</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="713"/>
       <source>Auto hide hint visual display length for bottom panel. Set to zero to fill the space.</source>
-      <translation type="unfinished">Auto hide hint visual display length for bottom panel. Set to zero to fill the space.</translation>
+      <translation>Masquer automatiquement la longueur d'affichage visuel des indices pour le panneau inférieur. Régler à zéro pour remplir l'espace.</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="741"/>
       <source>Auto hide hint visual display offset for left panel</source>
-      <translation type="unfinished">Auto hide hint visual display offset for left panel</translation>
+      <translation>Masquer automatiquement le décalage d'affichage visuel des indices pour le panneau de gauche</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="769"/>
       <source>Auto hide hint visual display offset for right panel</source>
-      <translation type="unfinished">Auto hide hint visual display offset for right panel</translation>
+      <translation>Masquer automatiquement le décalage de l'affichage visuel des indices pour le panneau de droite</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="797"/>
       <source>Auto hide hint visual display offset for top panel</source>
-      <translation type="unfinished">Auto hide hint visual display offset for top panel</translation>
+      <translation>Masquer automatiquement le décalage d'affichage visuel des indices pour le panneau supérieur</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="825"/>
       <source>Auto hide hint visual display offset for bottom panel</source>
-      <translation type="unfinished">Auto hide hint visual display offset for bottom panel</translation>
+      <translation>Masquer automatiquement le décalage d'affichage visuel des indices pour le panneau inférieur</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="853"/>
       <source>Show tab bar on mouse over when auto hide</source>
-      <translation type="unfinished">Show tab bar on mouse over when auto hide</translation>
+      <translation>Afficher la barre des onglets au passage de la souris en cas de masquage automatique</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="881"/>
       <source>Hide tab bar in dock overlay</source>
-      <translation type="unfinished">Hide tab bar in dock overlay</translation>
+      <translation>Masquer la barre des onglets dans la fenêtre ancrable surimposée</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="909"/>
       <source>Delay before show hint visual</source>
-      <translation type="unfinished">Delay before show hint visual</translation>
+      <translation>Délai avant l'affichage de l'indice visuel</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="937"/>
       <source>Auto hide animation duration, 0 to disable</source>
-      <translation type="unfinished">Auto hide animation duration, 0 to disable</translation>
+      <translation>Masquer automatiquement la durée de l'animation, 0 pour désactiver</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="965"/>
       <source>Auto hide animation curve type</source>
-      <translation type="unfinished">Auto hide animation curve type</translation>
+      <translation>Masquer automatiquement le type de courbe d'animation</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="993"/>
       <source>Hide property view scroll bar in dock overlay</source>
-      <translation type="unfinished">Hide property view scroll bar in dock overlay</translation>
+      <translation>Masquer la barre de défilement de l'affichage des propriétés dans la fenêtre ancrable surimposée</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="1021"/>
       <source>Minimum overlay dock widget width/height</source>
-      <translation type="unfinished">Minimum overlay dock widget width/height</translation>
+      <translation>Largeur/hauteur minimale du widget de la fenêtre ancrable surimposée</translation>
     </message>
   </context>
   <context>
@@ -13511,67 +13507,67 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../OverlayWidgets.cpp" line="856"/>
       <source>Toggle transparent mode</source>
-      <translation type="unfinished">Toggle transparent mode</translation>
+      <translation>Activer/désactiver le mode transparent</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="857"/>
       <source>None</source>
-      <translation>Aucun</translation>
+      <translation>Rien</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="858"/>
       <source>Turn off auto hide/show</source>
-      <translation type="unfinished">Turn off auto hide/show</translation>
+      <translation>Désactiver le masquage/affichage automatique</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="859"/>
       <source>Auto hide</source>
-      <translation type="unfinished">Auto hide</translation>
+      <translation>Masquer automatiquement</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="860"/>
       <source>Auto hide docked widgets on leave</source>
-      <translation type="unfinished">Auto hide docked widgets on leave</translation>
+      <translation>Masquer automatiquement les widgets ancrés en sortant</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="861"/>
       <source>Hide on edit</source>
-      <translation type="unfinished">Hide on edit</translation>
+      <translation>Cacher lors de l'édition</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="862"/>
       <source>Auto hide docked widgets on editing</source>
-      <translation type="unfinished">Auto hide docked widgets on editing</translation>
+      <translation>Masquer automatiquement les widgets ancrés lors de l'édition</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="863"/>
       <source>Show on edit</source>
-      <translation type="unfinished">Show on edit</translation>
+      <translation>Afficher lors de l'édition</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="864"/>
       <source>Auto show docked widgets on editing</source>
-      <translation type="unfinished">Auto show docked widgets on editing</translation>
+      <translation>Afficher automatiquement les widgets ancrés lors de l'édition</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="865"/>
       <source>Auto task</source>
-      <translation type="unfinished">Auto task</translation>
+      <translation>Tâche automatique</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="866"/>
       <source>Auto show task view for any current task, and hide the view when there is no task.</source>
-      <translation type="unfinished">Auto show task view for any current task, and hide the view when there is no task.</translation>
+      <translation>Afficher automatiquement la vue des tâches pour toute tâche en cours et masquer la vue lorsqu'il n'y a pas de tâche.</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="867"/>
       <source>Toggle overlay</source>
-      <translation type="unfinished">Toggle overlay</translation>
+      <translation>Activer/désactiver la surimposition</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="893"/>
       <source>Select auto show/hide mode</source>
-      <translation type="unfinished">Select auto show/hide mode</translation>
+      <translation>Sélectionner le mode d'affichage/masquage automatique</translation>
     </message>
   </context>
   <context>
@@ -13579,7 +13575,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../OverlayWidgets.cpp" line="1836"/>
       <source>Mouse pass through, ESC to stop</source>
-      <translation type="unfinished">Mouse pass through, ESC to stop</translation>
+      <translation>Passage de la souris, Echap pour arrêter</translation>
     </message>
   </context>
 </TS>
