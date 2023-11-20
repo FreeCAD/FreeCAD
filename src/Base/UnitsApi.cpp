@@ -182,10 +182,10 @@ QString UnitsApi::schemaTranslate(const Base::Quantity& quant, double& factor, Q
     return UserPrefSystem->schemaTranslate(quant, factor, unitString);
 }
 
-double UnitsApi::toDouble(PyObject* ArgObj, const Base::Unit& u)
+double UnitsApi::toDouble(PyObject* args, const Base::Unit& u)
 {
-    if (PyUnicode_Check(ArgObj)) {
-        QString str = QString::fromUtf8(PyUnicode_AsUTF8(ArgObj));
+    if (PyUnicode_Check(args)) {
+        QString str = QString::fromUtf8(PyUnicode_AsUTF8(args));
         // Parse the string
         Quantity q = Quantity::parse(str);
         if (q.getUnit() == u) {
@@ -193,31 +193,30 @@ double UnitsApi::toDouble(PyObject* ArgObj, const Base::Unit& u)
         }
         throw Base::UnitsMismatchError("Wrong unit type!");
     }
-    else if (PyFloat_Check(ArgObj)) {
-        return PyFloat_AsDouble(ArgObj);
+    if (PyFloat_Check(args)) {
+        return PyFloat_AsDouble(args);
     }
-    else if (PyLong_Check(ArgObj)) {
-        return static_cast<double>(PyLong_AsLong(ArgObj));
+    if (PyLong_Check(args)) {
+        return static_cast<double>(PyLong_AsLong(args));
     }
-    else {
-        throw Base::UnitsMismatchError("Wrong parameter type!");
-    }
+
+    throw Base::UnitsMismatchError("Wrong parameter type!");
 }
 
-Quantity UnitsApi::toQuantity(PyObject* ArgObj, const Base::Unit& u)
+Quantity UnitsApi::toQuantity(PyObject* args, const Base::Unit& u)
 {
     double d {};
-    if (PyUnicode_Check(ArgObj)) {
-        QString str = QString::fromUtf8(PyUnicode_AsUTF8(ArgObj));
+    if (PyUnicode_Check(args)) {
+        QString str = QString::fromUtf8(PyUnicode_AsUTF8(args));
         // Parse the string
         Quantity q = Quantity::parse(str);
         d = q.getValue();
     }
-    else if (PyFloat_Check(ArgObj)) {
-        d = PyFloat_AsDouble(ArgObj);
+    else if (PyFloat_Check(args)) {
+        d = PyFloat_AsDouble(args);
     }
-    else if (PyLong_Check(ArgObj)) {
-        d = static_cast<double>(PyLong_AsLong(ArgObj));
+    else if (PyLong_Check(args)) {
+        d = static_cast<double>(PyLong_AsLong(args));
     }
     else {
         throw Base::UnitsMismatchError("Wrong parameter type!");

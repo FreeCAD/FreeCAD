@@ -93,21 +93,21 @@ std::wstring ConvertToWideString(const std::string& string)
 // FileInfo
 
 
-FileInfo::FileInfo(const char* _FileName)
+FileInfo::FileInfo(const char* fileName)
 {
-    setFile(_FileName);
+    setFile(fileName);
 }
 
-FileInfo::FileInfo(const std::string& _FileName)
+FileInfo::FileInfo(const std::string& fileName)
 {
-    setFile(_FileName.c_str());
+    setFile(fileName.c_str());
 }
 
 const std::string& FileInfo::getTempPath()
 {
     static std::string tempPath;
 
-    if (tempPath == "") {
+    if (tempPath.empty()) {
 #ifdef FC_OS_WIN32
         wchar_t buf[MAX_PATH + 2];
         GetTempPathW(MAX_PATH + 1, buf);
@@ -218,13 +218,13 @@ boost::filesystem::path FileInfo::stringToPath(const std::string& str)
     return path;
 }
 
-std::string FileInfo::pathToString(const boost::filesystem::path& p)
+std::string FileInfo::pathToString(const boost::filesystem::path& path)
 {
 #if defined(FC_OS_WIN32)
     std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>> converter;
-    return converter.to_bytes(p.wstring());
+    return converter.to_bytes(path.wstring());
 #else
-    return p.string();
+    return path.string();
 #endif
 }
 
@@ -286,9 +286,8 @@ std::string FileInfo::fileNamePure() const
     if (pos != std::string::npos) {
         return temp.substr(0, pos);
     }
-    else {
-        return temp;
-    }
+
+    return temp;
 }
 
 std::wstring FileInfo::toStdWString() const
@@ -332,12 +331,9 @@ bool FileInfo::hasExtension(const char* Ext) const
 
 bool FileInfo::hasExtension(std::initializer_list<const char*> Exts) const
 {
-    for (const char* Ext : Exts) {
-        if (hasExtension(Ext)) {
-            return true;
-        }
-    }
-    return false;
+    return std::any_of(Exts.begin(), Exts.end(), [this](const char* ext) {
+        return hasExtension(ext);
+    });
 }
 
 bool FileInfo::exists() const
@@ -405,7 +401,9 @@ bool FileInfo::isFile() const
         }
         return ok;
 #else
-        struct stat st;
+        // clang-format off
+        struct stat st {};
+        // clang-format on
         if (stat(FileName.c_str(), &st) != 0) {
             return false;
         }

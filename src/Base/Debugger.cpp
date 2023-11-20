@@ -51,7 +51,7 @@ void Debugger::detach()
     isAttached = false;
 }
 
-bool Debugger::eventFilter(QObject*, QEvent* event)
+bool Debugger::eventFilter(QObject* /*watched*/, QEvent* event)
 {
     if (event->type() == QEvent::KeyPress) {
         if (loop.isRunning()) {

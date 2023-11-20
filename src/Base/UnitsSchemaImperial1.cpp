@@ -261,7 +261,7 @@ QString UnitsSchemaImperialBuilding::schemaTranslate(const Quantity& quant,
 
         // Process into string. Start with negative sign if quantity is less
         // than zero
-        char plusOrMinus;
+        char plusOrMinus {};
         if (quant.getValue() < 0) {
             output << "-";
             plusOrMinus = '-';

@@ -36,6 +36,7 @@ from typing import Dict, List, Tuple
 
 import FreeCAD
 import FreeCADGui
+from freecad.utils import get_python_exe
 from PySide import QtCore, QtGui, QtWidgets
 
 import addonmanager_utilities as utils
@@ -89,7 +90,7 @@ def call_pip(args) -> List[str]:
     """Tries to locate the appropriate Python executable and run pip with version checking
     disabled. Fails if Python can't be found or if pip is not installed."""
 
-    python_exe = utils.get_python_exe()
+    python_exe = get_python_exe()
     pip_failed = False
     if python_exe:
         call_args = [python_exe, "-m", "pip", "--disable-pip-version-check"]

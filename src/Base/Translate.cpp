@@ -85,12 +85,12 @@ Py::Object Translate::translate(const Py::Tuple& args)
     char* context = nullptr;
     char* source = nullptr;
     char* disambiguation = nullptr;
-    int n = -1;
-    if (!PyArg_ParseTuple(args.ptr(), "ss|zi", &context, &source, &disambiguation, &n)) {
+    int num = -1;
+    if (!PyArg_ParseTuple(args.ptr(), "ss|zi", &context, &source, &disambiguation, &num)) {
         throw Py::Exception();
     }
 
-    QString str = QCoreApplication::translate(context, source, disambiguation, n);
+    QString str = QCoreApplication::translate(context, source, disambiguation, num);
     return Py::asObject(PyUnicode_FromString(str.toUtf8()));
 }
 

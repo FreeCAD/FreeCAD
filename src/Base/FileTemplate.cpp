@@ -38,12 +38,19 @@ using namespace Base;
  */
 ClassTemplate::ClassTemplate() = default;
 
+ClassTemplate::ClassTemplate(const ClassTemplate&) = default;
+
+ClassTemplate::ClassTemplate(ClassTemplate&&) = default;
+
 /**
  * A destructor.
  * A more elaborate description of the destructor.
  */
 ClassTemplate::~ClassTemplate() = default;
 
+ClassTemplate& ClassTemplate::operator=(const ClassTemplate&) = default;
+
+ClassTemplate& ClassTemplate::operator=(ClassTemplate&&) = default;
 
 //**************************************************************************
 // separator for other implementation aspects

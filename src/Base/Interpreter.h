@@ -47,6 +47,7 @@
 #include "Exception.h"
 
 
+// NOLINTBEGIN
 /** Helper macro to obtain callable from an object
  *
  * @param _pyobj: PyObject pointer
@@ -79,6 +80,7 @@
         if (PyObject_HasAttrString(_pyobj, _name))                                                 \
             _var = Py::asObject(PyObject_GetAttrString(_pyobj, _name));                            \
     } while (0)
+// NOLINTEND
 
 
 namespace Base
@@ -94,8 +96,12 @@ public:
     /// constructor does the whole job
     PyException();
     PyException(const Py::Object& obj);
+    PyException(const PyException&) = default;
+    PyException(PyException&&) = default;
     ~PyException() noexcept override;
 
+    PyException& operator=(const PyException&) = default;
+    PyException& operator=(PyException&&) = default;
     void raiseException();
 
     /// this method determines if the original exception
@@ -120,7 +126,7 @@ public:
     /// Sets the Python error indicator and an error message
     void setPyException() const override;
 
-protected:
+private:
     std::string _stackTrace;
     std::string _errorType;
     PyObject* _exceptionType;
@@ -153,7 +159,11 @@ class BaseExport SystemExitException: public Exception
 {
 public:
     SystemExitException();
+    SystemExitException(const SystemExitException&) = default;
+    SystemExitException(SystemExitException&&) = default;
     ~SystemExitException() noexcept override = default;
+    SystemExitException& operator=(const SystemExitException&) = default;
+    SystemExitException& operator=(SystemExitException&&) = default;
     long getExitCode() const
     {
         return _exitCode;
@@ -175,12 +185,17 @@ class BaseExport PyGILStateLocker
 public:
     PyGILStateLocker()
     {
-        gstate = PyGILState_Ensure();
+        gstate = PyGILState_Ensure();  // NOLINT
     }
     ~PyGILStateLocker()
     {
         PyGILState_Release(gstate);
     }
+
+    PyGILStateLocker(const PyGILStateLocker&) = delete;
+    PyGILStateLocker(PyGILStateLocker&&) = delete;
+    PyGILStateLocker& operator=(const PyGILStateLocker&) = delete;
+    PyGILStateLocker& operator=(PyGILStateLocker&&) = delete;
 
 private:
     PyGILState_STATE gstate;
@@ -201,13 +216,18 @@ public:
     PyGILStateRelease()
     {
         // release the global interpreter lock
-        state = PyEval_SaveThread();
+        state = PyEval_SaveThread();  // NOLINT
     }
     ~PyGILStateRelease()
     {
         // grab the global interpreter lock again
         PyEval_RestoreThread(state);
     }
+
+    PyGILStateRelease(const PyGILStateRelease&) = delete;
+    PyGILStateRelease(PyGILStateRelease&&) = delete;
+    PyGILStateRelease& operator=(const PyGILStateRelease&) = delete;
+    PyGILStateRelease& operator=(PyGILStateRelease&&) = delete;
 
 private:
     PyThreadState* state;
@@ -223,6 +243,11 @@ class BaseExport InterpreterSingleton
 public:
     InterpreterSingleton();
     ~InterpreterSingleton();
+
+    InterpreterSingleton(const InterpreterSingleton&) = delete;
+    InterpreterSingleton(InterpreterSingleton&&) = delete;
+    InterpreterSingleton& operator=(const InterpreterSingleton&) = delete;
+    InterpreterSingleton& operator=(InterpreterSingleton&&) = delete;
 
     /** @name execution methods
      */
@@ -305,7 +330,7 @@ public:
     //@{
     /// generate a SWIG object
     PyObject*
-    createSWIGPointerObj(const char* Modole, const char* TypeName, void* Pointer, int own);
+    createSWIGPointerObj(const char* Module, const char* TypeName, void* Pointer, int own);
     bool convertSWIGPointerObj(const char* Module,
                                const char* TypeName,
                                PyObject* obj,
@@ -333,8 +358,8 @@ public:
      */
     //@{
     /// replaces all char with escapes for usage in python console
-    static const std::string strToPython(const char* Str);
-    static const std::string strToPython(const std::string& Str)
+    static std::string strToPython(const char* Str);
+    static std::string strToPython(const std::string& Str)
     {
         return strToPython(Str.c_str());
     }

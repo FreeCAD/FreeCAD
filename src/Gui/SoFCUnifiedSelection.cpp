@@ -73,6 +73,7 @@
 #include <App/Document.h>
 #include <App/ElementNamingUtils.h>
 #include <Base/Tools.h>
+#include <Base/UnitsApi.h>
 
 #include "SoFCUnifiedSelection.h"
 #include "Application.h"
@@ -494,16 +495,24 @@ bool SoFCUnifiedSelection::setHighlight(SoFullPath *path, const SoDetail *det,
         const char *objname = vpd->getObject()->getNameInDocument();
 
         this->preSelection = 1;
-        static char buf[513];
 
         auto pts = schemaTranslatePoint(x, y, z, 1e-7);
-        snprintf(buf,512,"Preselected: %s.%s.%s (%f %s, %f %s, %f %s)"
-                ,docname,objname,element
-                ,pts[0].first,pts[0].second.c_str()
-                ,pts[1].first,pts[1].second.c_str()
-                ,pts[2].first,pts[2].second.c_str());
 
-        getMainWindow()->showMessage(QString::fromUtf8(buf));
+        int numberDecimals = std::min(6, Base::UnitsApi::getDecimals());
+
+        QString message = QStringLiteral("Preselected: %1.%2.%3 (%4 %5, %6 %7, %8 %9)")
+            .arg(QString::fromUtf8(docname))
+            .arg(QString::fromUtf8(objname))
+            .arg(QString::fromUtf8(element))
+            .arg(QString::number(pts[0].first, 'f', numberDecimals))
+            .arg(QString::fromStdString(pts[0].second))
+            .arg(QString::number(pts[1].first, 'f', numberDecimals))
+            .arg(QString::fromStdString(pts[1].second))
+            .arg(QString::number(pts[2].first, 'f', numberDecimals))
+            .arg(QString::fromStdString(pts[2].second));
+
+        getMainWindow()->showMessage(message);
+
 
         int ret = Gui::Selection().setPreselect(docname,objname,element,x,y,z);
         if(ret<0 && currenthighlight)

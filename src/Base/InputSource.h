@@ -63,7 +63,9 @@ public:
     //  Unimplemented constructors and operators
     // -----------------------------------------------------------------------
     StdInputStream(const StdInputStream&) = delete;
+    StdInputStream(StdInputStream&&) = delete;
     StdInputStream& operator=(const StdInputStream&) = delete;
+    StdInputStream& operator=(StdInputStream&&) = delete;
 
 private:
     // -----------------------------------------------------------------------
@@ -91,7 +93,9 @@ public:
     XERCES_CPP_NAMESPACE_QUALIFIER BinInputStream* makeStream() const override;
 
     StdInputSource(const StdInputSource&) = delete;
+    StdInputSource(StdInputSource&&) = delete;
     StdInputSource& operator=(const StdInputSource&) = delete;
+    StdInputSource& operator=(StdInputSource&&) = delete;
 
 private:
     std::istream& stream;

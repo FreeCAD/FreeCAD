@@ -31,10 +31,10 @@ unsigned short Base::SwapOrder()
     return *((char*)&usDummy) == 1 ? LOW_ENDIAN : HIGH_ENDIAN;
 }
 
-void Base::SwapVar(char&)
+void Base::SwapVar(char& /*unused*/)
 {}
 
-void Base::SwapVar(unsigned char&)
+void Base::SwapVar(unsigned char& /*unused*/)
 {}
 
 void Base::SwapVar(short& s)
