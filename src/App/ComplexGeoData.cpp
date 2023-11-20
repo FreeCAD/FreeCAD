@@ -24,10 +24,10 @@
  ***************************************************************************/
 
 
-#include "PreCompiled.h"// NOLINT
+#include "PreCompiled.h"  // NOLINT
 
 #ifndef _PreComp_
-# include <cstdlib>
+#include <cstdlib>
 #endif
 
 #include <boost/regex.hpp>
@@ -38,17 +38,20 @@
 
 #include <Base/BoundBox.h>
 #include <Base/Placement.h>
+#include <Base/Reader.h>
 #include <Base/Rotation.h>
+#include <Base/Writer.h>
 
 #include <boost/iostreams/device/array.hpp>
+#include <boost/iostreams/stream.hpp>
 
 
 using namespace Data;
 
-TYPESYSTEM_SOURCE_ABSTRACT(Data::Segment , Base::BaseClass)// NOLINT
-TYPESYSTEM_SOURCE_ABSTRACT(Data::ComplexGeoData , Base::Persistence)// NOLINT
+TYPESYSTEM_SOURCE_ABSTRACT(Data::Segment, Base::BaseClass)           // NOLINT
+TYPESYSTEM_SOURCE_ABSTRACT(Data::ComplexGeoData, Base::Persistence)  // NOLINT
 
-FC_LOG_LEVEL_INIT("ComplexGeoData", true,true)// NOLINT
+FC_LOG_LEVEL_INIT("ComplexGeoData", true, true)  // NOLINT
 
 namespace bio = boost::iostreams;
 using namespace Data;
@@ -75,7 +78,7 @@ std::pair<std::string, unsigned long> ComplexGeoData::getTypeAndIndex(const char
 Data::Segment* ComplexGeoData::getSubElementByName(const char* name) const
 {
     auto type = getTypeAndIndex(name);
-    return getSubElement(type.first.c_str(),type.second);
+    return getSubElement(type.first.c_str(), type.second);
 }
 
 void ComplexGeoData::applyTransform(const Base::Matrix4D& rclTrf)
@@ -106,10 +109,7 @@ Base::Placement ComplexGeoData::getPlacement() const
 {
     Base::Matrix4D mat = getTransform();
 
-    return {Base::Vector3d(mat[0][3],
-                           mat[1][3],
-                           mat[2][3]),
-            Base::Rotation(mat)};
+    return {Base::Vector3d(mat[0][3], mat[1][3], mat[2][3]), Base::Rotation(mat)};
 }
 
 double ComplexGeoData::getAccuracy() const
@@ -118,8 +118,8 @@ double ComplexGeoData::getAccuracy() const
 }
 
 void ComplexGeoData::getLinesFromSubElement(const Segment* segment,
-                                            std::vector<Base::Vector3d> &Points,
-                                            std::vector<Line> &lines) const
+                                            std::vector<Base::Vector3d>& Points,
+                                            std::vector<Line>& lines) const
 {
     (void)segment;
     (void)Points;
@@ -127,9 +127,9 @@ void ComplexGeoData::getLinesFromSubElement(const Segment* segment,
 }
 
 void ComplexGeoData::getFacesFromSubElement(const Segment* segment,
-                                            std::vector<Base::Vector3d> &Points,
-                                            std::vector<Base::Vector3d> &PointNormals,
-                                            std::vector<Facet> &faces) const
+                                            std::vector<Base::Vector3d>& Points,
+                                            std::vector<Base::Vector3d>& PointNormals,
+                                            std::vector<Facet>& faces) const
 {
     (void)segment;
     (void)Points;
@@ -145,9 +145,10 @@ Base::Vector3d ComplexGeoData::getPointFromLineIntersection(const Base::Vector3f
     return Base::Vector3d();
 }
 
-void ComplexGeoData::getPoints(std::vector<Base::Vector3d> &Points,
-                               std::vector<Base::Vector3d> &Normals,
-                               double Accuracy, uint16_t flags) const
+void ComplexGeoData::getPoints(std::vector<Base::Vector3d>& Points,
+                               std::vector<Base::Vector3d>& Normals,
+                               double Accuracy,
+                               uint16_t flags) const
 {
     (void)Points;
     (void)Normals;
@@ -155,9 +156,10 @@ void ComplexGeoData::getPoints(std::vector<Base::Vector3d> &Points,
     (void)flags;
 }
 
-void ComplexGeoData::getLines(std::vector<Base::Vector3d> &Points,
-                              std::vector<Line> &lines,
-                              double Accuracy, uint16_t flags) const
+void ComplexGeoData::getLines(std::vector<Base::Vector3d>& Points,
+                              std::vector<Line>& lines,
+                              double Accuracy,
+                              uint16_t flags) const
 {
     (void)Points;
     (void)lines;
@@ -165,9 +167,10 @@ void ComplexGeoData::getLines(std::vector<Base::Vector3d> &Points,
     (void)flags;
 }
 
-void ComplexGeoData::getFaces(std::vector<Base::Vector3d> &Points,
-                              std::vector<Facet> &faces,
-                              double Accuracy, uint16_t flags) const
+void ComplexGeoData::getFaces(std::vector<Base::Vector3d>& Points,
+                              std::vector<Facet>& faces,
+                              double Accuracy,
+                              uint16_t flags) const
 {
     (void)Points;
     (void)faces;
@@ -181,27 +184,30 @@ bool ComplexGeoData::getCenterOfGravity(Base::Vector3d& unused) const
     return false;
 }
 
-size_t ComplexGeoData::getElementMapSize(bool flush) const {
+size_t ComplexGeoData::getElementMapSize(bool flush) const
+{
     if (flush) {
         flushElementMap();
 #ifdef _FC_MEM_TRACE
-        FC_MSG("memory size " << (_MemSize/1024/1024) << "MB, " << (_MemMaxSize/1024/1024));
-        for (auto &unit : _MemUnits)
-            FC_MSG("unit " << unit.first << ": " << unit.second.count << ", " << unit.second.maxcount);
+        FC_MSG("memory size " << (_MemSize / 1024 / 1024) << "MB, " << (_MemMaxSize / 1024 / 1024));
+        for (auto& unit : _MemUnits) {
+            FC_MSG("unit " << unit.first << ": " << unit.second.count << ", "
+                           << unit.second.maxcount);
+        }
 #endif
     }
-    return _elementMap ? _elementMap->size():0;
+    return _elementMap ? _elementMap->size() : 0;
 }
 
-MappedName ComplexGeoData::getMappedName(const IndexedName & element,
+MappedName ComplexGeoData::getMappedName(const IndexedName& element,
                                          bool allowUnmapped,
-                                         ElementIDRefs *sid) const
+                                         ElementIDRefs* sid) const
 {
     if (!element) {
         return {};
     }
     flushElementMap();
-    if(!_elementMap) {
+    if (!_elementMap) {
         if (allowUnmapped) {
             return MappedName(element);
         }
@@ -215,8 +221,7 @@ MappedName ComplexGeoData::getMappedName(const IndexedName & element,
     return name;
 }
 
-IndexedName ComplexGeoData::getIndexedName(const MappedName & name,
-                                           ElementIDRefs *sid) const
+IndexedName ComplexGeoData::getIndexedName(const MappedName& name, ElementIDRefs* sid) const
 {
     flushElementMap();
     if (!name) {
@@ -230,25 +235,23 @@ IndexedName ComplexGeoData::getIndexedName(const MappedName & name,
 }
 
 Data::MappedElement
-ComplexGeoData::getElementName(const char *name,
-                               ElementIDRefs *sid,
-                               bool copy) const
+ComplexGeoData::getElementName(const char* name, ElementIDRefs* sid, bool copy) const
 {
     IndexedName element(name, getElementTypes());
     if (element) {
         return {getMappedName(element, false, sid), element};
     }
 
-    const char * mapped = isMappedElement(name);
+    const char* mapped = isMappedElement(name);
     if (mapped) {
         name = mapped;
     }
 
     MappedElement result;
     // Strip out the trailing '.XXXX' if any
-    const char *dot = strchr(name,'.');
-    if(dot) {
-        result.name = MappedName(name, dot - name);
+    const char* dot = strchr(name, '.');
+    if (dot) {
+        result.name = MappedName(name, static_cast<int>(dot - name));
     }
     else if (copy) {
         result.name = name;
@@ -260,10 +263,11 @@ ComplexGeoData::getElementName(const char *name,
     return result;
 }
 
-std::vector<std::pair<MappedName, ElementIDRefs> >
-ComplexGeoData::getElementMappedNames(const IndexedName & element, bool needUnmapped) const {
+std::vector<std::pair<MappedName, ElementIDRefs>>
+ComplexGeoData::getElementMappedNames(const IndexedName& element, bool needUnmapped) const
+{
     flushElementMap();
-    if(_elementMap) {
+    if (_elementMap) {
         auto res = _elementMap->findAll(element);
         if (!res.empty()) {
             return res;
@@ -276,9 +280,10 @@ ComplexGeoData::getElementMappedNames(const IndexedName & element, bool needUnma
     return {std::make_pair(MappedName(element), ElementIDRefs())};
 }
 
-std::vector<MappedElement> ComplexGeoData::getElementMap() const {
+std::vector<MappedElement> ComplexGeoData::getElementMap() const
+{
     flushElementMap();
-    if(!_elementMap) {
+    if (!_elementMap) {
         return {};
     }
     return _elementMap->getAll();
@@ -293,40 +298,40 @@ ElementMapPtr ComplexGeoData::elementMap(bool flush) const
 }
 
 void ComplexGeoData::flushElementMap() const
-{
-}
+{}
 
-void ComplexGeoData::setElementMap(const std::vector<MappedElement> &map) {
-    _elementMap = std::make_shared<Data::ElementMap>(); // Get rid of the old one, if any, but make
-                                                        // sure the memory exists for the new data.
-    for(auto &element : map) {
+void ComplexGeoData::setElementMap(const std::vector<MappedElement>& map)
+{
+    _elementMap = std::make_shared<Data::ElementMap>();  // Get rid of the old one, if any, but make
+                                                         // sure the memory exists for the new data.
+    for (auto& element : map) {
         _elementMap->setElementName(element.index, element.name, Tag);
     }
 }
 
-char ComplexGeoData::elementType(const Data::MappedName &name) const
+char ComplexGeoData::elementType(const Data::MappedName& name) const
 {
-    if(!name) {
+    if (!name) {
         return 0;
     }
     auto indexedName = getIndexedName(name);
     if (indexedName) {
         return elementType(indexedName);
     }
-    char element_type=0;
-    if (name.findTagInElementName(nullptr,nullptr,nullptr,&element_type) < 0) {
+    char element_type = 0;
+    if (name.findTagInElementName(nullptr, nullptr, nullptr, &element_type) < 0) {
         return elementType(name.toIndexedName());
     }
     return element_type;
 }
 
-char ComplexGeoData::elementType(const Data::IndexedName &element) const
+char ComplexGeoData::elementType(const Data::IndexedName& element) const
 {
-    if(!element) {
+    if (!element) {
         return 0;
     }
-    for(auto &type : getElementTypes()) {
-        if(boost::equals(element.getType(), type)) {
+    for (auto& type : getElementTypes()) {
+        if (boost::equals(element.getType(), type)) {
             return type[0];
         }
     }
@@ -345,27 +350,28 @@ char ComplexGeoData::elementType(const Data::IndexedName &element) const
 //    c) Try to get the elementType based on the MappedName. Return it if found
 // 3) Check to make sure the discovered type is in the list of types, and return its first
 //    character if so.
-char ComplexGeoData::elementType(const char *name) const {
-    if(!name) {
+char ComplexGeoData::elementType(const char* name) const
+{
+    if (!name) {
         return 0;
     }
 
-    const char *type = nullptr;
+    const char* type = nullptr;
     IndexedName element(name, getElementTypes());
     if (element) {
         type = element.getType();
     }
     else {
-        const char * mapped = isMappedElement(name);
+        const char* mapped = isMappedElement(name);
         if (mapped) {
             name = mapped;
         }
 
         MappedName mappedName;
-        const char *dot = strchr(name,'.');
-        if(dot) {
-            mappedName = MappedName(name, dot-name);
-            type = dot+1;
+        const char* dot = strchr(name, '.');
+        if (dot) {
+            mappedName = MappedName(name, static_cast<int>(dot - name));
+            type = dot + 1;
         }
         else {
             mappedName = MappedName::fromRawData(name);
@@ -376,14 +382,252 @@ char ComplexGeoData::elementType(const char *name) const {
         }
     }
 
-    if(type && type[0]) {
-        for(auto &elementTypes : getElementTypes()) {
-            if(boost::starts_with(type, elementTypes)) {
+    if (type && (type[0] != 0)) {
+        for (auto& elementTypes : getElementTypes()) {
+            if (boost::starts_with(type, elementTypes)) {
                 return type[0];
             }
         }
     }
     return 0;
 }
+
+void ComplexGeoData::setPersistenceFileName(const char* filename) const
+{
+    if (!filename) {
+        filename = "";
+    }
+    _persistenceName = filename;
+}
+
+void ComplexGeoData::Save(Base::Writer& writer) const
+{
+
+    if (getElementMapSize() == 0U) {
+        writer.Stream() << writer.ind() << "<ElementMap/>\n";
+        return;
+    }
+
+    // Store some dummy map entry to trigger recompute in older version.
+    writer.Stream() << writer.ind() << R"(<ElementMap new="1" count="1">)"
+                    << R"(<Element key="Dummy" value="Dummy"/>)"
+                    << "</ElementMap>\n";
+
+    // New layout of element map, so we use new xml tag, ElementMap2
+    writer.Stream() << writer.ind() << "<ElementMap2";
+
+    if (!_persistenceName.empty()) {
+        writer.Stream() << " file=\"" << writer.addFile((_persistenceName + ".txt").c_str(), this)
+                        << "\"/>\n";
+        return;
+    }
+    writer.Stream() << " count=\"" << _elementMap->size() << "\">\n";
+    _elementMap->save(writer.beginCharStream(Base::CharStreamFormat::Raw) << '\n');
+    writer.endCharStream() << '\n';
+    writer.Stream() << writer.ind() << "</ElementMap2>\n";
+}
+
+void ComplexGeoData::Restore(Base::XMLReader& reader)
+{
+    resetElementMap();
+
+    reader.readElement("ElementMap");
+    bool newTag = false;
+    if (reader.hasAttribute("new") && reader.getAttributeAsInteger("new") > 0) {
+        reader.readEndElement("ElementMap");
+        reader.readElement("ElementMap2");
+        newTag = true;
+    }
+
+    const char* file = "";
+    if (reader.hasAttribute("file")) {
+        reader.getAttribute("file");
+    }
+    if (*file != 0) {
+        reader.addFile(file, this);
+        return;
+    }
+
+    std::size_t count = 0;
+    if (reader.hasAttribute("count")) {
+        count = reader.getAttributeAsUnsigned("count");
+    }
+    if (count == 0) {
+        return;
+    }
+
+    if (newTag) {
+        resetElementMap(std::make_shared<ElementMap>());
+        _elementMap =
+            _elementMap->restore(Hasher, reader.beginCharStream(Base::CharStreamFormat::Raw));
+        reader.endCharStream();
+        reader.readEndElement("ElementMap2");
+        return;
+    }
+
+    if (reader.FileVersion > 1) {
+        restoreStream(reader.beginCharStream(Base::CharStreamFormat::Raw), count);
+        reader.endCharStream();
+        return;
+    }
+    readElements(reader, count);
+    reader.readEndElement("ElementMap");
+}
+
+void ComplexGeoData::readElements(Base::XMLReader& reader, size_t count)
+{
+    size_t invalid_count = 0;
+    bool warned = false;
+
+    const auto& types = getElementTypes();
+
+    for (size_t i = 0; i < count; ++i) {
+        reader.readElement("Element");
+        ElementIDRefs sids;
+        if (reader.hasAttribute("sid")) {
+            if (!Hasher) {
+                if (!warned) {
+                    warned = true;
+                    FC_ERR("missing hasher");  // NOLINT
+                }
+            }
+            else {
+                const char* attr = reader.getAttribute("sid");
+                bio::stream<bio::array_source> iss(attr, std::strlen(attr));
+                long id {};
+                while ((iss >> id)) {
+                    if (id == 0) {
+                        continue;
+                    }
+                    auto sid = Hasher->getID(id);
+                    if (!sid) {
+                        ++invalid_count;
+                    }
+                    else {
+                        sids.push_back(sid);
+                    }
+                    char sep {};
+                    iss >> sep;
+                }
+            }
+        }
+        _elementMap->setElementName(IndexedName(reader.getAttribute("value"), types),
+                                    MappedName(reader.getAttribute("key")),
+                                    Tag,
+                                    &sids);
+    }
+    if (invalid_count != 0) {
+        FC_ERR("Found " << invalid_count << " invalid string id");  // NOLINT
+    }
+}
+
+void ComplexGeoData::restoreStream(std::istream& stream, std::size_t count)
+{
+    resetElementMap();
+
+    size_t invalid_count = 0;
+    std::string key;
+    std::string value;
+    std::string sid;
+    bool warned = false;
+
+    const auto& types = getElementTypes();
+    try {
+        for (size_t i = 0; i < count; ++i) {
+            ElementIDRefs sids;
+            std::size_t sCount = 0;
+            if (!(stream >> value >> key >> sCount)) {
+                // NOLINTNEXTLINE
+                FC_THROWM(Base::RuntimeError, "Failed to restore element map " << _persistenceName);
+            }
+            sids.reserve(static_cast<int>(sCount));
+            for (std::size_t j = 0; j < sCount; ++j) {
+                long id = 0;
+                if (!(stream >> id)) {
+                    // NOLINTNEXTLINE
+                    FC_THROWM(Base::RuntimeError,
+                              "Failed to restore element map " << _persistenceName);
+                }
+                if (Hasher) {
+                    auto hasherSID = Hasher->getID(id);
+                    if (!hasherSID) {
+                        ++invalid_count;
+                    }
+                    else {
+                        sids.push_back(hasherSID);
+                    }
+                }
+            }
+            if (sCount != 0 && !Hasher) {
+                sids.clear();
+                if (!warned) {
+                    warned = true;
+                    FC_ERR("missing hasher");  // NOLINT
+                }
+            }
+            _elementMap->setElementName(IndexedName(value.c_str(), types),
+                                        MappedName(key),
+                                        Tag,
+                                        &sids);
+        }
+    }
+    catch (Base::Exception& e) {
+        e.ReportException();
+        _restoreFailed = true;
+        _elementMap.reset();
+    }
+    if (invalid_count != 0) {
+        FC_ERR("Found " << invalid_count << " invalid string id");  // NOLINT
+    }
+}
+
+void ComplexGeoData::SaveDocFile(Base::Writer& writer) const
+{
+    flushElementMap();
+    if (_elementMap) {
+        writer.Stream() << "BeginElementMap v1\n";
+        _elementMap->save(writer.Stream());
+    }
+}
+
+void ComplexGeoData::RestoreDocFile(Base::Reader& reader)
+{
+    std::string marker;
+    std::string ver;
+    reader >> marker;
+    if (boost::equals(marker, "BeginElementMap")) {
+        resetElementMap();
+        reader >> ver;
+        if (ver != "v1") {
+            FC_WARN("Unknown element map format");  // NOLINT
+        }
+        else {
+            resetElementMap(std::make_shared<ElementMap>());
+            _elementMap = _elementMap->restore(Hasher, reader);
+            return;
+        }
+    }
+    std::size_t count = atoi(marker.c_str());
+    restoreStream(reader, count);
+}
+
+unsigned int ComplexGeoData::getMemSize() const
+{
+    flushElementMap();
+    if (_elementMap) {
+        static const int multiplier {10};
+        return _elementMap->size() * multiplier;
+    }
+    return 0;
+}
+
+void ComplexGeoData::beforeSave() const
+{
+    flushElementMap();
+    if (this->_elementMap) {
+        this->_elementMap->beforeSave(Hasher);
+    }
+}
+
 
 // NOLINTEND(cppcoreguidelines-pro-bounds-pointer-arithmetic)

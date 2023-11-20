@@ -67,8 +67,8 @@ public:
 
     /** Operators. */
     //@{
-    Axis& operator*=(const Placement& p);
-    Axis operator*(const Placement& p) const;
+    Axis& operator*=(const Placement& plm);
+    Axis operator*(const Placement& plm) const;
     bool operator==(const Axis&) const;
     bool operator!=(const Axis&) const;
     Axis& operator=(const Axis&) = default;

@@ -70,7 +70,8 @@ public:
                   int8_t LuminousIntensity = 0,
                   int8_t Angle = 0);
     Unit();
-    Unit(const Unit&);
+    Unit(const Unit&) = default;
+    Unit(Unit&&) = default;
     explicit Unit(const QString& expr);
     /// Destruction
     ~Unit() = default;
@@ -87,7 +88,8 @@ public:
     {
         return !(*this == that);
     }
-    Unit& operator=(const Unit&);
+    Unit& operator=(const Unit&) = default;
+    Unit& operator=(Unit&&) = default;
     Unit pow(double exp) const;
     //@}
     /// get the unit signature
@@ -171,7 +173,7 @@ public:
     static Unit InverseVolume;
 
     //@}
-protected:
+private:
     UnitSignature Sig;
 };
 

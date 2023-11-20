@@ -60,8 +60,9 @@ public:
     /// Construction
     TimeInfo();
     TimeInfo(const TimeInfo&) = default;
+    TimeInfo(TimeInfo&&) = default;
     /// Destruction
-    virtual ~TimeInfo();
+    ~TimeInfo();
 
     /// sets the object to the actual system time
     void setCurrent();
@@ -70,7 +71,8 @@ public:
     int64_t getSeconds() const;
     unsigned short getMiliseconds() const;
 
-    void operator=(const TimeInfo& time);
+    TimeInfo& operator=(const TimeInfo& time) = default;
+    TimeInfo& operator=(TimeInfo&& time) = default;
     bool operator==(const TimeInfo& time) const;
     bool operator!=(const TimeInfo& time) const;
 
@@ -85,12 +87,14 @@ public:
     bool isNull() const;
     static TimeInfo null();
 
-protected:
+private:
+    // clang-format off
 #if defined(_MSC_VER)
     struct _timeb timebuffer;
 #elif defined(__GNUC__)
-    struct timeb timebuffer;
+    struct timeb timebuffer {};
 #endif
+    // clang-format on
 };
 
 
@@ -110,11 +114,6 @@ inline bool TimeInfo::operator!=(const TimeInfo& time) const
             || timebuffer.millitm != time.timebuffer.millitm);
 }
 
-inline void TimeInfo::operator=(const TimeInfo& time)
-{
-    timebuffer = time.timebuffer;
-}
-
 inline bool TimeInfo::operator==(const TimeInfo& time) const
 {
     return (timebuffer.time == time.timebuffer.time
@@ -126,9 +125,7 @@ inline bool TimeInfo::operator<(const TimeInfo& time) const
     if (timebuffer.time == time.timebuffer.time) {
         return timebuffer.millitm < time.timebuffer.millitm;
     }
-    else {
-        return timebuffer.time < time.timebuffer.time;
-    }
+    return timebuffer.time < time.timebuffer.time;
 }
 
 inline bool TimeInfo::operator<=(const TimeInfo& time) const
@@ -136,9 +133,7 @@ inline bool TimeInfo::operator<=(const TimeInfo& time) const
     if (timebuffer.time == time.timebuffer.time) {
         return timebuffer.millitm <= time.timebuffer.millitm;
     }
-    else {
-        return timebuffer.time <= time.timebuffer.time;
-    }
+    return timebuffer.time <= time.timebuffer.time;
 }
 
 inline bool TimeInfo::operator>=(const TimeInfo& time) const
@@ -146,9 +141,7 @@ inline bool TimeInfo::operator>=(const TimeInfo& time) const
     if (timebuffer.time == time.timebuffer.time) {
         return timebuffer.millitm >= time.timebuffer.millitm;
     }
-    else {
-        return timebuffer.time >= time.timebuffer.time;
-    }
+    return timebuffer.time >= time.timebuffer.time;
 }
 
 inline bool TimeInfo::operator>(const TimeInfo& time) const
@@ -156,9 +149,7 @@ inline bool TimeInfo::operator>(const TimeInfo& time) const
     if (timebuffer.time == time.timebuffer.time) {
         return timebuffer.millitm > time.timebuffer.millitm;
     }
-    else {
-        return timebuffer.time > time.timebuffer.time;
-    }
+    return timebuffer.time > time.timebuffer.time;
 }
 
 }  // namespace Base

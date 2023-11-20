@@ -456,9 +456,9 @@ void ArrowItem::write(InventorOutput& out) const
     dir.Scale(sf2, sf2, sf2);
     Vector3f cpt = line.p1 + dir;
 
-    Vector3f rot = Vector3f(0.0f, 1.0f, 0.0f) % dir;
+    Vector3f rot = Vector3f(0.0F, 1.0F, 0.0F) % dir;
     rot.Normalize();
-    float angle = Vector3f(0.0f, 1.0f, 0.0f).GetAngle(dir);
+    float angle = Vector3f(0.0F, 1.0F, 0.0F).GetAngle(dir);
 
     out.write() << "Separator {\n";
     out.write() << "  Material { diffuseColor " << rgb.red() << " " << rgb.green() << " "
@@ -941,8 +941,8 @@ void TransformItem::write(InventorOutput& out) const
 
 // -----------------------------------------------------------------------------
 
-InventorBuilder::InventorBuilder(std::ostream& output)
-    : result(output)
+InventorBuilder::InventorBuilder(std::ostream& str)
+    : result(str)
 {
     addHeader();
 }
@@ -1020,7 +1020,7 @@ void Builder3D::saveToLog()
     ILogger* obs = Base::Console().Get("StatusBar");
     if (obs) {
         obs->SendLog("Builder3D",
-                     result.str().c_str(),
+                     result.str(),
                      Base::LogStyle::Log,
                      Base::IntendedRecipient::Developer,
                      Base::ContentType::Untranslatable);
@@ -1073,7 +1073,7 @@ std::vector<T> InventorLoader::readData(const char* fieldName) const
     bool found = false;
     while (std::getline(inp, str)) {
         std::string::size_type point = str.find(fieldName);
-        std::string::size_type open = str.find("[");
+        std::string::size_type open = str.find('[');
         if (point != std::string::npos && open > point) {
             str = str.substr(open);
             found = true;
@@ -1101,7 +1101,7 @@ std::vector<T> InventorLoader::readData(const char* fieldName) const
         }
 
         // search for ']' to finish the reading
-        if (str.find("]") != std::string::npos) {
+        if (str.find(']') != std::string::npos) {
             break;
         }
     } while (std::getline(inp, str));
@@ -1240,25 +1240,22 @@ bool InventorLoader::read()
 bool InventorLoader::isValid() const
 {
     int32_t value {static_cast<int32_t>(points.size())};
-    auto inRange = [value](const Face& f) {
-        if (f.p1 < 0 || f.p1 >= value) {
+    auto inRange = [value](const Face& face) {
+        if (face.p1 < 0 || face.p1 >= value) {
             return false;
         }
-        if (f.p2 < 0 || f.p2 >= value) {
+        if (face.p2 < 0 || face.p2 >= value) {
             return false;
         }
-        if (f.p3 < 0 || f.p3 >= value) {
+        if (face.p3 < 0 || face.p3 >= value) {
             return false;
         }
         return true;
     };
-    for (auto it : faces) {
-        if (!inRange(it)) {
-            return false;
-        }
-    }
 
-    return true;
+    return std::all_of(faces.cbegin(), faces.cend(), [&inRange](const Face& face) {
+        return inRange(face);
+    });
 }
 
 namespace Base

@@ -815,7 +815,7 @@ void PrefFontBox::savePreferences()
 
   QFont currFont = currentFont();
   QString currName = currFont.family();
-  getWindowParameter()->SetASCII( entryName() , currName.toUtf8() );
+  getWindowParameter()->SetASCII(entryName(), currName.toUtf8());
 }
 
 #include "moc_PrefWidgets.cpp"

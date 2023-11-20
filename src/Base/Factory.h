@@ -44,6 +44,8 @@ public:
     virtual ~AbstractProducer() = default;
     /// overwritten by a concrete producer to produce the needed object
     virtual void* Produce() const = 0;
+
+    FC_DISABLE_COPY_MOVE(AbstractProducer)
 };
 
 
@@ -62,22 +64,25 @@ public:
     bool CanProduce(const char* sClassName) const;
     /// returns a list of all registered producer
     std::list<std::string> CanProduce() const;
+    /// destruction
+    virtual ~Factory();
+
+    FC_DISABLE_COPY_MOVE(Factory)
 
 protected:
     /// produce a class with the given name
     void* Produce(const char* sClassName) const;
-    std::map<const std::string, AbstractProducer*> _mpcProducers;
     /// construction
     Factory() = default;
-    /// destruction
-    virtual ~Factory();
+
+    std::map<const std::string, AbstractProducer*> _mpcProducers;
 };
 
 // --------------------------------------------------------------------
 
 /** The ScriptFactorySingleton singleton
  */
-class BaseExport ScriptFactorySingleton: public Factory
+class BaseExport ScriptFactorySingleton: public Factory  // NOLINT
 {
 public:
     static ScriptFactorySingleton& Instance();
@@ -85,9 +90,12 @@ public:
 
     const char* ProduceScript(const char* sScriptName) const;
 
-private:
-    static ScriptFactorySingleton* _pcSingleton;
+    FC_DISABLE_COPY_MOVE(ScriptFactorySingleton)
 
+private:
+    static ScriptFactorySingleton* _pcSingleton;  // NOLINT
+
+protected:
     ScriptFactorySingleton() = default;
     ~ScriptFactorySingleton() override = default;
 };
@@ -118,8 +126,11 @@ public:
     /// Produce an instance
     void* Produce() const override
     {
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-type-const-cast)
         return const_cast<char*>(mScript);
     }
+
+    FC_DISABLE_COPY_MOVE(ScriptProducer)
 
 private:
     const char* mScript;

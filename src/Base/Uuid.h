@@ -43,7 +43,9 @@ public:
     /// Construction
     Uuid();
     Uuid(const Uuid&) = default;
+    Uuid(Uuid&&) = default;
     Uuid& operator=(const Uuid&) = default;
+    Uuid& operator=(Uuid&&) = default;
     /// Destruction
     virtual ~Uuid();
 

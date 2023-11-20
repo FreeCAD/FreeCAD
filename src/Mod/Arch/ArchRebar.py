@@ -556,19 +556,13 @@ class _ViewProviderRebar(ArchComponent.ViewProviderComponent):
                     import re
                     self.centerline = coin.SoSeparator()
                     comp = Part.makeCompound(obj.Proxy.wires)
-                    pts = re.findall("point \[(.*?)\]",comp.writeInventor().replace("\n",""))
-                    pts = [p.split(",") for p in pts]
+                    buf = re.findall("point \[(.*?)\]",comp.writeInventor().replace("\n",""))
+                    pts = [zip(*[iter( c.split() )]*3) for c in buf]
                     for pt in pts:
+                        vlist = [ [float(v[0]),float(v[1]),float(v[2])] for v in pt ]
                         ps = coin.SoSeparator()
-                        plist = []
-                        for p in pt:
-                            c = []
-                            for pstr in p.split(" "):
-                                if pstr:
-                                    c.append(float(pstr))
-                            plist.append(c)
                         coords = coin.SoCoordinate3()
-                        coords.point.setValues(plist)
+                        coords.point.setValues(vlist)
                         ps.addChild(coords)
                         ls = coin.SoLineSet()
                         ls.numVertices = -1

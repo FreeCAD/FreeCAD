@@ -68,12 +68,11 @@ std::istream* ZipHeader::getInputStream(const std::string& entry_name, MatchPath
     if (!ent) {
         return nullptr;
     }
-    else {
-        return new zipios::ZipInputStream(
-            _input,
-            static_cast<const zipios::ZipCDirEntry*>(ent.get())->getLocalHeaderOffset()
-                + _vs.startOffset());
-    }
+
+    return new zipios::ZipInputStream(
+        _input,
+        static_cast<const zipios::ZipCDirEntry*>(ent.get())->getLocalHeaderOffset()
+            + _vs.startOffset());
 }
 
 bool ZipHeader::init(std::istream& _zipfile)
@@ -110,11 +109,11 @@ bool ZipHeader::readCentralDirectory(std::istream& _zipfile)
                 throw zipios::IOException(
                     "Error reading zip file while reading zip file central directory");
             }
-            else if (_zipfile.fail()) {
+            if (_zipfile.fail()) {
                 throw zipios::FCollException("Zip file consistency problem. Failure while reading "
                                              "zip file central directory");
             }
-            else if (_zipfile.eof()) {
+            if (_zipfile.eof()) {
                 throw zipios::IOException(
                     "Premature end of file while reading zip file central directory");
             }

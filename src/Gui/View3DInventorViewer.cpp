@@ -1498,6 +1498,8 @@ void View3DInventorViewer::setSceneGraph(SoNode* root)
             static_cast<SoSeparator*>(scene)->insertChild(this->backlight, 0);
         }
     }
+
+    navigation->findBoundingSphere();
 }
 
 void View3DInventorViewer::savePicture(int width, int height, int sample, const QColor& bg, QImage& img) const

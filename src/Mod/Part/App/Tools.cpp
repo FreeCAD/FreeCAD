@@ -65,6 +65,7 @@
 # endif
 #endif
 
+#include <Base/Exception.h>
 #include <Base/Vector3D.h>
 
 #include "Tools.h"
@@ -640,8 +641,10 @@ Handle (Poly_Triangulation) Part::Tools::triangulationOfFace(const TopoDS_Face& 
     selectRange(v1, v2);
 
     Handle(Geom_Surface) surface = BRep_Tool::Surface(face);
+    if ( surface.IsNull() ) {
+        FC_THROWM(Base::CADKernelError, "Cannot create surface from face");
+    }
     BRepBuilderAPI_MakeFace mkBuilder(surface, u1, u2, v1, v2, Precision::Confusion() );
-
     TopoDS_Shape shape = mkBuilder.Shape();
     shape.Location(loc);
 

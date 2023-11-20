@@ -74,12 +74,12 @@ void* Type::createInstanceByName(const char* TypeName, bool bLoadModule)
     }
 
     // now the type should be in the type map
-    Type t = fromName(TypeName);
-    if (t == badType()) {
+    Type type = fromName(TypeName);
+    if (type == badType()) {
         return nullptr;
     }
 
-    return t.createInstance();
+    return type.createInstance();
 }
 
 void Type::importModule(const char* TypeName)
@@ -119,7 +119,7 @@ Type Type::badType()
 }
 
 
-const Type Type::createType(const Type parent, const char* name, instantiationMethod method)
+Type Type::createType(const Type& parent, const char* name, instantiationMethod method)
 {
     Type newType;
     newType.index = static_cast<unsigned int>(Type::typedata.size());
@@ -135,7 +135,7 @@ const Type Type::createType(const Type parent, const char* name, instantiationMe
 
 void Type::init()
 {
-    assert(Type::typedata.size() == 0);
+    assert(Type::typedata.empty());
 
 
     Type::typedata.push_back(new TypeData("BadType"));
@@ -160,9 +160,8 @@ Type Type::fromName(const char* name)
     if (pos != typemap.end()) {
         return typedata[pos->second]->type;
     }
-    else {
-        return Type::badType();
-    }
+
+    return Type::badType();
 }
 
 Type Type::fromKey(unsigned int key)
@@ -170,9 +169,8 @@ Type Type::fromKey(unsigned int key)
     if (key < typedata.size()) {
         return typedata[key]->type;
     }
-    else {
-        return Type::badType();
-    }
+
+    return Type::badType();
 }
 
 const char* Type::getName() const
@@ -180,12 +178,12 @@ const char* Type::getName() const
     return typedata[index]->name.c_str();
 }
 
-const Type Type::getParent() const
+Type Type::getParent() const
 {
     return typedata[index]->parent;
 }
 
-bool Type::isDerivedFrom(const Type type) const
+bool Type::isDerivedFrom(const Type& type) const
 {
 
     Type temp(*this);
@@ -199,7 +197,7 @@ bool Type::isDerivedFrom(const Type type) const
     return false;
 }
 
-int Type::getAllDerivedFrom(const Type type, std::vector<Type>& List)
+int Type::getAllDerivedFrom(const Type& type, std::vector<Type>& List)
 {
     int cnt = 0;
 
@@ -217,7 +215,7 @@ int Type::getNumTypes()
     return static_cast<int>(typedata.size());
 }
 
-Type Type::getTypeIfDerivedFrom(const char* name, const Type parent, bool bLoadModule)
+Type Type::getTypeIfDerivedFrom(const char* name, const Type& parent, bool bLoadModule)
 {
     if (bLoadModule) {
         importModule(name);
@@ -228,7 +226,6 @@ Type Type::getTypeIfDerivedFrom(const char* name, const Type parent, bool bLoadM
     if (type.isDerivedFrom(parent)) {
         return type;
     }
-    else {
-        return Type::badType();
-    }
+
+    return Type::badType();
 }

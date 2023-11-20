@@ -504,7 +504,7 @@ bool Base::XMLReader::isRegistered(Base::Persistence* Object) const
     return false;
 }
 
-void Base::XMLReader::addName(const char*, const char*)
+void Base::XMLReader::addName(const char* /*unused*/, const char* /*unused*/)
 {}
 
 const char* Base::XMLReader::getName(const char* name) const

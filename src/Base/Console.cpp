@@ -68,7 +68,6 @@ public:
         , notifier(notifier)
         , msg(msg)
     {}
-    ~ConsoleEvent() override = default;
 };
 
 class ConsoleOutput: public QObject  // clazy:exclude=missing-qobject-macro
@@ -139,13 +138,10 @@ public:
     }
 
 private:
-    ConsoleOutput() = default;
-    ~ConsoleOutput() override = default;
-
-    static ConsoleOutput* instance;
+    static ConsoleOutput* instance;  // NOLINT
 };
 
-ConsoleOutput* ConsoleOutput::instance = nullptr;
+ConsoleOutput* ConsoleOutput::instance = nullptr;  // NOLINT
 
 }  // namespace Base
 
@@ -176,9 +172,9 @@ ConsoleSingleton::~ConsoleSingleton()
 /**
  *  sets the console in a special mode
  */
-void ConsoleSingleton::SetConsoleMode(ConsoleMode m)
+void ConsoleSingleton::SetConsoleMode(ConsoleMode mode)
 {
-    if (m & Verbose) {
+    if (mode & Verbose) {
         _bVerbose = true;
     }
 }
@@ -186,9 +182,9 @@ void ConsoleSingleton::SetConsoleMode(ConsoleMode m)
 /**
  *  unsets the console from a special mode
  */
-void ConsoleSingleton::UnsetConsoleMode(ConsoleMode m)
+void ConsoleSingleton::UnsetConsoleMode(ConsoleMode mode)
 {
-    if (m & Verbose) {
+    if (mode & Verbose) {
         _bVerbose = false;
     }
 }
@@ -211,54 +207,53 @@ void ConsoleSingleton::UnsetConsoleMode(ConsoleMode m)
  * switches off warnings and error messages and restore the state before the modification.
  * If the observer \a sObs doesn't exist then nothing happens.
  */
-ConsoleMsgFlags ConsoleSingleton::SetEnabledMsgType(const char* sObs, ConsoleMsgFlags type, bool b)
+ConsoleMsgFlags ConsoleSingleton::SetEnabledMsgType(const char* sObs, ConsoleMsgFlags type, bool on)
 {
     ILogger* pObs = Get(sObs);
     if (pObs) {
         ConsoleMsgFlags flags = 0;
 
         if (type & MsgType_Err) {
-            if (pObs->bErr != b) {
+            if (pObs->bErr != on) {
                 flags |= MsgType_Err;
             }
-            pObs->bErr = b;
+            pObs->bErr = on;
         }
         if (type & MsgType_Wrn) {
-            if (pObs->bWrn != b) {
+            if (pObs->bWrn != on) {
                 flags |= MsgType_Wrn;
             }
-            pObs->bWrn = b;
+            pObs->bWrn = on;
         }
         if (type & MsgType_Txt) {
-            if (pObs->bMsg != b) {
+            if (pObs->bMsg != on) {
                 flags |= MsgType_Txt;
             }
-            pObs->bMsg = b;
+            pObs->bMsg = on;
         }
         if (type & MsgType_Log) {
-            if (pObs->bLog != b) {
+            if (pObs->bLog != on) {
                 flags |= MsgType_Log;
             }
-            pObs->bLog = b;
+            pObs->bLog = on;
         }
         if (type & MsgType_Critical) {
-            if (pObs->bCritical != b) {
+            if (pObs->bCritical != on) {
                 flags |= MsgType_Critical;
             }
-            pObs->bCritical = b;
+            pObs->bCritical = on;
         }
         if (type & MsgType_Notification) {
-            if (pObs->bNotification != b) {
+            if (pObs->bNotification != on) {
                 flags |= MsgType_Notification;
             }
-            pObs->bNotification = b;
+            pObs->bNotification = on;
         }
 
         return flags;
     }
-    else {
-        return 0;
-    }
+
+    return 0;
 }
 
 bool ConsoleSingleton::IsMsgTypeEnabled(const char* sObs, FreeCAD_ConsoleMsgType type) const
@@ -814,9 +809,8 @@ PyObject* ConsoleSingleton::sPySetStatus(PyObject* /*self*/, PyObject* args)
 
             Py_Return;
         }
-        else {
-            Py_Error(Base::PyExc_FC_GeneralError, "Unknown logger type");
-        }
+
+        Py_Error(Base::PyExc_FC_GeneralError, "Unknown logger type");
     }
     PY_CATCH;
 }

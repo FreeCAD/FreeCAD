@@ -154,12 +154,12 @@ public:
     ~ByteArrayOStreambuf() override;
 
 protected:
-    int_type overflow(std::streambuf::int_type v) override;
+    int_type overflow(std::streambuf::int_type c) override;
     std::streamsize xsputn(const char* s, std::streamsize num) override;
     pos_type seekoff(std::streambuf::off_type off,
                      std::ios_base::seekdir way,
                      std::ios_base::openmode which = std::ios::in | std::ios::out) override;
-    pos_type seekpos(std::streambuf::pos_type sp,
+    pos_type seekpos(std::streambuf::pos_type pos,
                      std::ios_base::openmode which = std::ios::in | std::ios::out) override;
 
 public:
@@ -180,7 +180,7 @@ private:
 class BaseExport ByteArrayIStreambuf: public std::streambuf
 {
 public:
-    explicit ByteArrayIStreambuf(const QByteArray& buf);
+    explicit ByteArrayIStreambuf(const QByteArray& data);
     ~ByteArrayIStreambuf() override;
 
 protected:
@@ -217,12 +217,12 @@ public:
     ~IODeviceOStreambuf() override;
 
 protected:
-    int_type overflow(std::streambuf::int_type v) override;
+    int_type overflow(std::streambuf::int_type c) override;
     std::streamsize xsputn(const char* s, std::streamsize num) override;
     pos_type seekoff(std::streambuf::off_type off,
                      std::ios_base::seekdir way,
                      std::ios_base::openmode which = std::ios::in | std::ios::out) override;
-    pos_type seekpos(std::streambuf::pos_type sp,
+    pos_type seekpos(std::streambuf::pos_type pos,
                      std::ios_base::openmode which = std::ios::in | std::ios::out) override;
 
 public:
@@ -251,7 +251,7 @@ protected:
     pos_type seekoff(std::streambuf::off_type off,
                      std::ios_base::seekdir way,
                      std::ios_base::openmode which = std::ios::in | std::ios::out) override;
-    pos_type seekpos(std::streambuf::pos_type sp,
+    pos_type seekpos(std::streambuf::pos_type pos,
                      std::ios_base::openmode which = std::ios::in | std::ios::out) override;
 
 public:
@@ -299,7 +299,7 @@ protected:
     int_type overflow(int_type c = EOF) override;
     std::streamsize xsputn(const char* s, std::streamsize num) override;
     int sync() override;
-    pos_type seekoff(off_type offset, seekdir dir, openmode) override;
+    pos_type seekoff(off_type offset, seekdir dir, openmode mode) override;
     pos_type seekpos(pos_type offset, openmode mode) override;
 
 private:

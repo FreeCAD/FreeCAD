@@ -69,7 +69,7 @@ Rotation::Rotation(const double q[4])
  * q0 = x, q1 = y, q2 = z and q3 = w,
  * where the quaternion is specified by q=w+xi+yj+zk.
  */
-Rotation::Rotation(const double q0, const double q1, const double q2, const double q3)
+Rotation::Rotation(double q0, double q1, double q2, double q3)
     : Rotation()
 {
     this->setValue(q0, q1, q2, q3);
@@ -79,33 +79,6 @@ Rotation::Rotation(const Vector3d& rotateFrom, const Vector3d& rotateTo)
     : Rotation()
 {
     this->setValue(rotateFrom, rotateTo);
-}
-
-Rotation::Rotation(const Rotation& rot)
-    : Rotation()
-{
-    this->quat[0] = rot.quat[0];
-    this->quat[1] = rot.quat[1];
-    this->quat[2] = rot.quat[2];
-    this->quat[3] = rot.quat[3];
-
-    this->_axis[0] = rot._axis[0];
-    this->_axis[1] = rot._axis[1];
-    this->_axis[2] = rot._axis[2];
-    this->_angle = rot._angle;
-}
-
-void Rotation::operator=(const Rotation& rot)
-{
-    this->quat[0] = rot.quat[0];
-    this->quat[1] = rot.quat[1];
-    this->quat[2] = rot.quat[2];
-    this->quat[3] = rot.quat[3];
-
-    this->_axis[0] = rot._axis[0];
-    this->_axis[1] = rot._axis[1];
-    this->_axis[2] = rot._axis[2];
-    this->_angle = rot._angle;
 }
 
 const double* Rotation::getValue() const
@@ -146,7 +119,7 @@ void Rotation::evaluateVector()
     }
 }
 
-void Rotation::setValue(const double q0, const double q1, const double q2, const double q3)
+void Rotation::setValue(double q0, double q1, double q2, double q3)
 {
     this->quat[0] = q0;
     this->quat[1] = q1;
@@ -258,7 +231,7 @@ void Rotation::setValue(const Matrix4D& m)
     this->evaluateVector();
 }
 
-void Rotation::setValue(const Vector3d& axis, const double fAngle)
+void Rotation::setValue(const Vector3d& axis, double fAngle)
 {
     // Taken from <http://de.wikipedia.org/wiki/Quaternionen>
     //
@@ -388,9 +361,16 @@ Rotation Rotation::operator*(const Rotation& q) const
 Rotation& Rotation::multRight(const Base::Rotation& q)
 {
     // Taken from <http://de.wikipedia.org/wiki/Quaternionen>
-    double x0 {}, y0 {}, z0 {}, w0 {};
+    double x0 {};
+    double y0 {};
+    double z0 {};
+    double w0 {};
     this->getValue(x0, y0, z0, w0);
-    double x1 {}, y1 {}, z1 {}, w1 {};
+
+    double x1 {};
+    double y1 {};
+    double z1 {};
+    double w1 {};
     q.getValue(x1, y1, z1, w1);
 
     this->setValue(w0 * x1 + x0 * w1 + y0 * z1 - z0 * y1,
@@ -409,9 +389,16 @@ Rotation& Rotation::multRight(const Base::Rotation& q)
 Rotation& Rotation::multLeft(const Base::Rotation& q)
 {
     // Taken from <http://de.wikipedia.org/wiki/Quaternionen>
-    double x0 {}, y0 {}, z0 {}, w0 {};
+    double x0 {};
+    double y0 {};
+    double z0 {};
+    double w0 {};
     q.getValue(x0, y0, z0, w0);
-    double x1 {}, y1 {}, z1 {}, w1 {};
+
+    double x1 {};
+    double y1 {};
+    double z1 {};
+    double w1 {};
     this->getValue(x1, y1, z1, w1);
 
     this->setValue(w0 * x1 + x0 * w1 + y0 * z1 - z0 * y1,
@@ -423,13 +410,7 @@ Rotation& Rotation::multLeft(const Base::Rotation& q)
 
 bool Rotation::operator==(const Rotation& q) const
 {
-    if ((this->quat[0] == q.quat[0] && this->quat[1] == q.quat[1] && this->quat[2] == q.quat[2]
-         && this->quat[3] == q.quat[3])
-        || (this->quat[0] == -q.quat[0] && this->quat[1] == -q.quat[1]
-            && this->quat[2] == -q.quat[2] && this->quat[3] == -q.quat[3])) {
-        return true;
-    }
-    return false;
+    return isSame(q);
 }
 
 bool Rotation::operator!=(const Rotation& q) const
@@ -591,9 +572,9 @@ Rotation::makeRotationByAxes(Vector3d xdir, Vector3d ydir, Vector3d zdir, const 
         if (mainDir.Length() > tol) {
             break;
         }
-        else {
-            dropPriority(0);
-        }
+
+        dropPriority(0);
+
         if (i == 2) {
             THROWM(ValueError, "makeRotationByAxes: all directions supplied are zero");
         }
@@ -607,9 +588,9 @@ Rotation::makeRotationByAxes(Vector3d xdir, Vector3d ydir, Vector3d zdir, const 
         if ((hintDir.Cross(mainDir)).Length() > tol) {
             break;
         }
-        else {
-            dropPriority(1);
-        }
+
+        dropPriority(1);
+
         if (i == 1) {
             hintDir = Vector3d();  // no vector can be used as hint direction. Zero it out, to
                                    // indicate that a guess is needed.
@@ -757,13 +738,16 @@ void Rotation::getYawPitchRoll(double& y, double& p, double& r) const
 
 bool Rotation::isSame(const Rotation& q) const
 {
-    if ((this->quat[0] == q.quat[0] && this->quat[1] == q.quat[1] && this->quat[2] == q.quat[2]
-         && this->quat[3] == q.quat[3])
-        || (this->quat[0] == -q.quat[0] && this->quat[1] == -q.quat[1]
-            && this->quat[2] == -q.quat[2] && this->quat[3] == -q.quat[3])) {
-        return true;
-    }
-    return false;
+    // clang-format off
+    return ((this->quat[0] ==  q.quat[0] &&
+             this->quat[1] ==  q.quat[1] &&
+             this->quat[2] ==  q.quat[2] &&
+             this->quat[3] ==  q.quat[3]) ||
+            (this->quat[0] == -q.quat[0] &&
+             this->quat[1] == -q.quat[1] &&
+             this->quat[2] == -q.quat[2] &&
+             this->quat[3] == -q.quat[3]));
+    // clang-format on
 }
 
 bool Rotation::isSame(const Rotation& q, double tol) const
@@ -992,7 +976,9 @@ void Rotation::setEulerAngles(EulerSequence theOrder,
     theBeta *= D_PI / 180.0;
     theGamma *= D_PI / 180.0;
 
-    double a = theAlpha, b = theBeta, c = theGamma;
+    double a = theAlpha;
+    double b = theBeta;
+    double c = theGamma;
     if (!o.isExtrinsic) {
         std::swap(a, c);
     }
