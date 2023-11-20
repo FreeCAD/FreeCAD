@@ -2420,6 +2420,16 @@ Specify another directory, please.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../DlgPreferences.ui" line="152"/>
+        <source>Reset</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../DlgPreferences.ui" line="192"/>
+        <source>Header</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <source></source>
         <translation type="unfinished"></translation>
     </message>
@@ -2427,98 +2437,72 @@ Specify another directory, please.</source>
 <context>
     <name>Gui::Dialog::DlgPreferencesImp</name>
     <message>
-        <location filename="../DlgPreferencesImp.cpp" line="386"/>
-        <source>Reset tab &apos;%1&apos;...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../DlgPreferencesImp.cpp" line="388"/>
-        <source>Resets the user settings for the tab &apos;%1&apos;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../DlgPreferencesImp.cpp" line="393"/>
-        <source>Reset group &apos;%1&apos;...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../DlgPreferencesImp.cpp" line="395"/>
-        <source>Resets the user settings for the group &apos;%1&apos;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../DlgPreferencesImp.cpp" line="398"/>
-        <source>Reset all...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../DlgPreferencesImp.cpp" line="400"/>
-        <source>Resets the user settings entirely</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../DlgPreferencesImp.cpp" line="415"/>
-        <source>Clear user settings</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../DlgPreferencesImp.cpp" line="416"/>
-        <source>Do you want to clear all your user settings?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../DlgPreferencesImp.cpp" line="417"/>
-        <source>If you agree all your settings will be cleared.</source>
+        <location filename="../DlgPreferencesImp.cpp" line="439"/>
+        <source>Reset page &apos;%1&apos;...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../DlgPreferencesImp.cpp" line="442"/>
-        <source>Reset Tab Settings</source>
+        <source>Resets the user settings for the page &apos;%1&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DlgPreferencesImp.cpp" line="443"/>
-        <source>All the settings for the tab &apos;%1&apos; will be deleted.</source>
+        <location filename="../DlgPreferencesImp.cpp" line="445"/>
+        <source>Reset group &apos;%1&apos;...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DlgPreferencesImp.cpp" line="444"/>
-        <location filename="../DlgPreferencesImp.cpp" line="470"/>
-        <source>Do you want to continue?</source>
+        <location filename="../DlgPreferencesImp.cpp" line="448"/>
+        <source>Resets the user settings for the group &apos;%1&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DlgPreferencesImp.cpp" line="468"/>
-        <source>Reset Group Settings</source>
+        <location filename="../DlgPreferencesImp.cpp" line="451"/>
+        <source>Reset all...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../DlgPreferencesImp.cpp" line="454"/>
+        <source>Resets the user settings entirely</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../DlgPreferencesImp.cpp" line="469"/>
-        <source>All the settings for the group &apos;%1&apos; will be deleted.</source>
+        <source>Clear user settings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DlgPreferencesImp.cpp" line="590"/>
+        <location filename="../DlgPreferencesImp.cpp" line="470"/>
+        <source>Do you want to clear all your user settings?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../DlgPreferencesImp.cpp" line="471"/>
+        <source>If you agree all your settings will be cleared.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../DlgPreferencesImp.cpp" line="571"/>
         <source>Wrong parameter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DlgPreferencesImp.cpp" line="626"/>
+        <location filename="../DlgPreferencesImp.cpp" line="614"/>
         <source>Restart required</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DlgPreferencesImp.cpp" line="627"/>
+        <location filename="../DlgPreferencesImp.cpp" line="615"/>
         <source>You must restart FreeCAD for changes to take effect.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DlgPreferencesImp.cpp" line="632"/>
+        <location filename="../DlgPreferencesImp.cpp" line="620"/>
         <source>Restart now</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DlgPreferencesImp.cpp" line="633"/>
+        <location filename="../DlgPreferencesImp.cpp" line="621"/>
         <source>Restart later</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2527,7 +2511,7 @@ Specify another directory, please.</source>
     <name>Gui::Dialog::DlgProjectInformation</name>
     <message>
         <location filename="../DlgProjectInformation.ui" line="14"/>
-        <source>Project information</source>
+        <source>Document information</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2609,12 +2593,12 @@ Specify another directory, please.</source>
     <name>Gui::Dialog::DlgProjectUtility</name>
     <message>
         <location filename="../DlgProjectUtility.ui" line="14"/>
-        <source>Project utility</source>
+        <source>Document utility</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../DlgProjectUtility.ui" line="22"/>
-        <source>Extract project</source>
+        <source>Extract document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2636,17 +2620,17 @@ Specify another directory, please.</source>
     </message>
     <message>
         <location filename="../DlgProjectUtility.ui" line="72"/>
-        <source>Create project</source>
+        <source>Create document</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../DlgProjectUtility.ui" line="137"/>
+        <source>Load document file after creation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../DlgProjectUtility.ui" line="115"/>
         <source>Create</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../DlgProjectUtility.ui" line="137"/>
-        <source>Load project file after creation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -2680,12 +2664,12 @@ Specify another directory, please.</source>
     </message>
     <message>
         <location filename="../DlgProjectUtility.cpp" line="104"/>
-        <source>Failed to extract project</source>
+        <source>Failed to extract document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../DlgProjectUtility.cpp" line="121"/>
-        <source>Failed to create project</source>
+        <source>Failed to create document</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4312,12 +4296,12 @@ Mouse tilting is not disabled by this setting.</source>
     <name>Gui::Dialog::DlgSettingsPythonConsole</name>
     <message>
         <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="14"/>
-        <source>Python console</source>
+        <source>General</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="20"/>
-        <source>Settings</source>
+        <source>Console</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4359,6 +4343,21 @@ horizontal space in Python console</source>
     <message>
         <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="91"/>
         <source>The interval at which the profiler runs when there&apos;s Python code running (to keep the GUI responding). Set to 0 to disable.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="116"/>
+        <source>Other</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="122"/>
+        <source>Path to external Python executable (optional):</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="141"/>
+        <source>Used for package installation with pip and debugging with debugpy. Autodetected if needed and not specified.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -5352,11 +5351,6 @@ The &apos;Status&apos; column shows whether the document could be recovered.</so
         <source>Port:</source>
         <translation type="unfinished"></translation>
     </message>
-    <message>
-        <location filename="../RemoteDebugger.ui" line="95"/>
-        <source>Redirect output</source>
-        <translation type="unfinished"></translation>
-    </message>
 </context>
 <context>
     <name>Gui::Dialog::SceneInspector</name>
@@ -5551,82 +5545,82 @@ originally selected prior to opening this dialog</source>
 <context>
     <name>Gui::DockWnd::ReportOutput</name>
     <message>
-        <location filename="../ReportView.cpp" line="580"/>
+        <location filename="../ReportView.cpp" line="586"/>
         <source>Options</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReportView.cpp" line="585"/>
+        <location filename="../ReportView.cpp" line="591"/>
         <source>Display message types</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReportView.cpp" line="588"/>
-        <location filename="../ReportView.cpp" line="612"/>
+        <location filename="../ReportView.cpp" line="594"/>
+        <location filename="../ReportView.cpp" line="618"/>
         <source>Normal messages</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReportView.cpp" line="592"/>
-        <location filename="../ReportView.cpp" line="616"/>
+        <location filename="../ReportView.cpp" line="598"/>
+        <location filename="../ReportView.cpp" line="622"/>
         <source>Log messages</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReportView.cpp" line="596"/>
-        <location filename="../ReportView.cpp" line="620"/>
+        <location filename="../ReportView.cpp" line="602"/>
+        <location filename="../ReportView.cpp" line="626"/>
         <source>Warnings</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReportView.cpp" line="600"/>
-        <location filename="../ReportView.cpp" line="624"/>
+        <location filename="../ReportView.cpp" line="606"/>
+        <location filename="../ReportView.cpp" line="630"/>
         <source>Errors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReportView.cpp" line="604"/>
-        <location filename="../ReportView.cpp" line="628"/>
+        <location filename="../ReportView.cpp" line="610"/>
+        <location filename="../ReportView.cpp" line="634"/>
         <source>Critical messages</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReportView.cpp" line="609"/>
+        <location filename="../ReportView.cpp" line="615"/>
         <source>Show Report view on</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReportView.cpp" line="634"/>
+        <location filename="../ReportView.cpp" line="640"/>
         <source>Redirect Python output</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReportView.cpp" line="638"/>
+        <location filename="../ReportView.cpp" line="644"/>
         <source>Redirect Python errors</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReportView.cpp" line="643"/>
+        <location filename="../ReportView.cpp" line="649"/>
         <source>Go to end</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReportView.cpp" line="662"/>
+        <location filename="../ReportView.cpp" line="668"/>
         <source>Clear</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReportView.cpp" line="664"/>
+        <location filename="../ReportView.cpp" line="670"/>
         <source>Save As...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReportView.cpp" line="672"/>
+        <location filename="../ReportView.cpp" line="678"/>
         <source>Save Report Output</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../ReportView.cpp" line="673"/>
+        <location filename="../ReportView.cpp" line="679"/>
         <source>Plain Text Files</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6179,41 +6173,41 @@ Do you want to save your changes?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="487"/>
+        <location filename="../MainWindow.cpp" line="486"/>
         <source>Ready</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="979"/>
+        <location filename="../MainWindow.cpp" line="978"/>
         <source>Help addon needed!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="980"/>
+        <location filename="../MainWindow.cpp" line="979"/>
         <source>The Help system of %1 is now handled by the &quot;Help&quot; addon. It can easily be installed via the Addons Manager</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="982"/>
+        <location filename="../MainWindow.cpp" line="981"/>
         <source>Open Addon Manager</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="1177"/>
+        <location filename="../MainWindow.cpp" line="1176"/>
         <source>Close All</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../MainWindow.cpp" line="1384"/>
         <location filename="../MainWindow.cpp" line="1385"/>
         <location filename="../MainWindow.cpp" line="1386"/>
-        <location filename="../MainWindow.cpp" line="1387"/>
         <source>Toggles this toolbar</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../MainWindow.cpp" line="1399"/>
         <location filename="../MainWindow.cpp" line="1400"/>
         <location filename="../MainWindow.cpp" line="1401"/>
-        <location filename="../MainWindow.cpp" line="1402"/>
         <source>Toggles this dockable window</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6755,22 +6749,22 @@ Do you want to exit without saving your data?</source>
 <context>
     <name>Gui::RecentMacrosAction</name>
     <message>
-        <location filename="../Action.cpp" line="1026"/>
+        <location filename="../Action.cpp" line="1029"/>
         <source>none</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Action.cpp" line="1041"/>
+        <location filename="../Action.cpp" line="1044"/>
         <source>Run macro %1 (Shift+click to edit) keyboard shortcut: %2</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Action.cpp" line="1099"/>
+        <location filename="../Action.cpp" line="1102"/>
         <source>File not found</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Action.cpp" line="1099"/>
+        <location filename="../Action.cpp" line="1102"/>
         <source>The file &apos;%1&apos; cannot be opened.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7759,47 +7753,47 @@ Do you want to specify another directory?</source>
 <context>
     <name>QDockWidget</name>
     <message>
-        <location filename="../MainWindow.cpp" line="651"/>
+        <location filename="../MainWindow.cpp" line="650"/>
         <source>Tree view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="573"/>
+        <location filename="../MainWindow.cpp" line="572"/>
         <source>Tasks</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="677"/>
+        <location filename="../MainWindow.cpp" line="676"/>
         <source>Property view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="590"/>
+        <location filename="../MainWindow.cpp" line="589"/>
         <source>Selection view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="705"/>
+        <location filename="../MainWindow.cpp" line="704"/>
         <source>Task List</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="730"/>
+        <location filename="../MainWindow.cpp" line="729"/>
         <source>Model</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="756"/>
+        <location filename="../MainWindow.cpp" line="755"/>
         <source>DAG View</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="608"/>
+        <location filename="../MainWindow.cpp" line="607"/>
         <source>Report view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="628"/>
+        <location filename="../MainWindow.cpp" line="627"/>
         <source>Python console</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7934,7 +7928,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
         <location filename="../CommandDoc.cpp" line="1230"/>
-        <location filename="../MainWindow.cpp" line="810"/>
+        <location filename="../MainWindow.cpp" line="809"/>
         <source>Unsaved document</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8464,12 +8458,12 @@ Please open a browser window and type in: http://localhost:%1.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../View3DInventorViewer.cpp" line="2358"/>
+        <location filename="../View3DInventorViewer.cpp" line="2360"/>
         <source>Out of memory</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../View3DInventorViewer.cpp" line="2359"/>
+        <location filename="../View3DInventorViewer.cpp" line="2361"/>
         <source>Not enough memory available to display the data.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8485,7 +8479,7 @@ Please open a browser window and type in: http://localhost:%1.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../NavigationStyle.cpp" line="1605"/>
+        <location filename="../NavigationStyle.cpp" line="1627"/>
         <source>Navigation styles</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8506,32 +8500,32 @@ Please open a browser window and type in: http://localhost:%1.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="812"/>
+        <location filename="../MainWindow.cpp" line="811"/>
         <source>Do you want to save your changes to document &apos;%1&apos; before closing?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="815"/>
+        <location filename="../MainWindow.cpp" line="814"/>
         <source>Do you want to save your changes to document before closing?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="817"/>
+        <location filename="../MainWindow.cpp" line="816"/>
         <source>If you don&apos;t save, your changes will be lost.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="822"/>
+        <location filename="../MainWindow.cpp" line="821"/>
         <source>Apply answer to all</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="912"/>
+        <location filename="../MainWindow.cpp" line="911"/>
         <source>%1 Document(s) not saved</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="913"/>
+        <location filename="../MainWindow.cpp" line="912"/>
         <source>Some documents could not be saved. Do you want to cancel closing?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9004,7 +8998,7 @@ the current copy will be lost.
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Selection.cpp" line="908"/>
+        <location filename="../Selection.cpp" line="913"/>
         <source>Selection not allowed by filter</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9883,7 +9877,7 @@ the current copy will be lost.
     <name>StdCmdMergeProjects</name>
     <message>
         <location filename="../CommandDoc.cpp" line="520"/>
-        <source>Merge project...</source>
+        <source>Merge document...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -9891,7 +9885,7 @@ the current copy will be lost.
         <location filename="../CommandDoc.cpp" line="523"/>
         <location filename="../CommandDoc.cpp" line="533"/>
         <location filename="../CommandDoc.cpp" line="542"/>
-        <source>Merge project</source>
+        <source>Merge document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -9901,7 +9895,7 @@ the current copy will be lost.
     </message>
     <message>
         <location filename="../CommandDoc.cpp" line="543"/>
-        <source>Cannot merge project with itself.</source>
+        <source>Cannot merge document with itself.</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -10072,34 +10066,6 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
     <message>
         <location filename="../CommandDoc.cpp" line="921"/>
         <source>Print preview</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>StdCmdProjectInfo</name>
-    <message>
-        <location filename="../CommandDoc.cpp" line="828"/>
-        <source>Project i&amp;nformation...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../CommandDoc.cpp" line="829"/>
-        <location filename="../CommandDoc.cpp" line="831"/>
-        <source>Show details of the currently active project</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>StdCmdProjectUtil</name>
-    <message>
-        <location filename="../CommandDoc.cpp" line="859"/>
-        <source>Project utility...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../CommandDoc.cpp" line="860"/>
-        <location filename="../CommandDoc.cpp" line="861"/>
-        <source>Utility to extract or create project files</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -12527,11 +12493,6 @@ after FreeCAD launches</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="62"/>
-        <source>Unit system for all parts of the application. Can be overridden by specifying a project unit system.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="71"/>
         <source>Number of decimals:</source>
         <translation type="unfinished"></translation>
@@ -12542,18 +12503,23 @@ after FreeCAD launches</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="62"/>
+        <source>Unit system for all parts of the application. Can be overridden by specifying a document unit system.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="93"/>
-        <source>Project unit system:</source>
+        <source>Document unit system:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="100"/>
-        <source>Unit system stored in the current project</source>
+        <source>Unit system stored in the current document</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="107"/>
-        <source>If enabled, project unit systems are ignored</source>
+        <source>If enabled, document unit systems are ignored</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -13461,6 +13427,34 @@ the region are non-opaque.</source>
     <message>
         <location filename="../OverlayWidgets.cpp" line="1836"/>
         <source>Mouse pass through, ESC to stop</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>StdCmdProjectInfo</name>
+    <message>
+        <location filename="../CommandDoc.cpp" line="828"/>
+        <source>Document i&amp;nformation...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CommandDoc.cpp" line="829"/>
+        <location filename="../CommandDoc.cpp" line="831"/>
+        <source>Show details of the currently active document</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>StdCmdProjectUtil</name>
+    <message>
+        <location filename="../CommandDoc.cpp" line="859"/>
+        <source>Document utility...</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../CommandDoc.cpp" line="860"/>
+        <location filename="../CommandDoc.cpp" line="861"/>
+        <source>Utility to extract or create document files</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

@@ -28,8 +28,8 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="107"/>
-      <source>Plane...</source>
-      <translation>Ebene...</translation>
+      <source>Plane</source>
+      <translation>Fläche</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="108"/>
@@ -422,7 +422,7 @@
     <message>
       <location filename="../../Segmentation.ui" line="37"/>
       <source>Plane</source>
-      <translation>Fläche</translation>
+      <translation>Ebene</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="46"/>
@@ -521,7 +521,7 @@
       <location filename="../../SegmentationManual.ui" line="208"/>
       <location filename="../../SegmentationManual.ui" line="261"/>
       <source>Minimum number of faces</source>
-      <translation>Mindestanzahl von Dreiecken</translation>
+      <translation>Minimale Anzahl von Flächen</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="175"/>

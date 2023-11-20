@@ -2045,38 +2045,38 @@ unit to work with when opening the file.</source>
       <translation>სამშენებლო დეტალის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="906"/>
+      <location filename="../../ArchBuildingPart.py" line="908"/>
       <source>Deactivate</source>
       <translation>დეაქტივაცია</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="908"/>
+      <location filename="../../ArchBuildingPart.py" line="910"/>
       <source>Activate</source>
       <translation>აქტივაცია</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="916"/>
+      <location filename="../../ArchBuildingPart.py" line="918"/>
       <source>Set working plane</source>
       <translation>სამუშაო სიბრტყის დაყენება</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="924"/>
+      <location filename="../../ArchBuildingPart.py" line="926"/>
       <source>Write camera position</source>
       <translation>კამერის პოზიციის ჩაწერა</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="931"/>
+      <location filename="../../ArchBuildingPart.py" line="933"/>
       <source>Create group...</source>
       <translation>ჯგუფის შექმნა...</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="938"/>
+      <location filename="../../ArchBuildingPart.py" line="940"/>
       <location filename="../../ArchMaterial.py" line="221"/>
       <source>Reorder children alphabetically</source>
       <translation>შვილების ანბანის მიხედვით დალაგება</translation>
     </message>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="945"/>
+      <location filename="../../ArchBuildingPart.py" line="947"/>
       <source>Clone level up</source>
       <translation>დონის მაღლა კლონირება</translation>
     </message>
@@ -2111,7 +2111,7 @@ unit to work with when opening the file.</source>
       <translation>საიტი</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="542"/>
+      <location filename="../../ArchSite.py" line="540"/>
       <source>Please either select only Building objects or nothing at all!
 
 Site is not allowed to accept any other object besides Building.
@@ -2128,7 +2128,7 @@ Note: You can change that in the preferences.</source>
 შენიშვნა: ეს ქცევა პარამეტრებში შეგიძლიათ შეცვალოთ.</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="545"/>
+      <location filename="../../ArchSite.py" line="543"/>
       <source>There is no valid object in the selection.
 
 Site creation aborted.</source>
@@ -2137,7 +2137,7 @@ Site creation aborted.</source>
 საიტის აშენება შეჩერებულია.</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="552"/>
+      <location filename="../../ArchSite.py" line="550"/>
       <source>Create Site</source>
       <translation>ადგილის შექმნა</translation>
     </message>
@@ -2232,32 +2232,32 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>კარი</translation>
     </message>
     <message>
-      <location filename="../../ArchCutPlane.py" line="154"/>
+      <location filename="../../ArchCutPlane.py" line="195"/>
       <source>Cutting</source>
       <translation>ამოჭრა</translation>
     </message>
     <message>
-      <location filename="../../ArchCutPlane.py" line="188"/>
+      <location filename="../../ArchCutPlane.py" line="223"/>
       <source>Cut Plane</source>
       <translation>ჭრილის სიბრტყე</translation>
     </message>
     <message>
-      <location filename="../../ArchCutPlane.py" line="189"/>
+      <location filename="../../ArchCutPlane.py" line="224"/>
       <source>Cut Plane options</source>
       <translation>ჭრილის სიბრტყის პარამეტრები</translation>
     </message>
     <message>
-      <location filename="../../ArchCutPlane.py" line="190"/>
+      <location filename="../../ArchCutPlane.py" line="225"/>
       <source>Which side to cut</source>
       <translation>რომელი მხარე მოვაჭრა</translation>
     </message>
     <message>
-      <location filename="../../ArchCutPlane.py" line="191"/>
+      <location filename="../../ArchCutPlane.py" line="226"/>
       <source>Behind</source>
       <translation>უკან</translation>
     </message>
     <message>
-      <location filename="../../ArchCutPlane.py" line="192"/>
+      <location filename="../../ArchCutPlane.py" line="227"/>
       <source>Front</source>
       <translation>წინა</translation>
     </message>
@@ -2319,7 +2319,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../importSHP.py" line="135"/>
       <source>The shapefile Python library was not found on your system. Would you like to download it now from &lt;a href="https://github.com/GeospatialPython/pyshp"&gt;https://github.com/GeospatialPython/pyshp&lt;/a&gt;? It will be placed in your macros folder.</source>
-      <translation type="unfinished">The shapefile Python library was not found on your system. Would you like to download it now from &lt;a href="https://github.com/GeospatialPython/pyshp"&gt;https://github.com/GeospatialPython/pyshp&lt;/a&gt;? It will be placed in your macros folder.</translation>
+      <translation>Shapefile Python ბიბლიოთეკა ვერ მოიძებნა თქვენს სისტემაში. გსურთ მისი ჩამოტვირთვა ახლა &lt;a href="https://github.com/GeospatialPython/pyshp"&gt;https://github.com/GeospatialPython/pyshp&lt;/a&gt;-დან? ის განთავსდება თქვენს მაკროს საქაღალდეში.</translation>
     </message>
     <message>
       <location filename="../../importSHP.py" line="141"/>
@@ -2460,7 +2460,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchReference.py" line="502"/>
       <location filename="../../ArchSchedule.py" line="451"/>
       <location filename="../../ArchSectionPlane.py" line="1189"/>
-      <location filename="../../ArchSite.py" line="935"/>
+      <location filename="../../ArchSite.py" line="933"/>
       <location filename="../../ArchWindow.py" line="1803"/>
       <source>Edit</source>
       <translation>ჩასწორება</translation>
@@ -2622,27 +2622,27 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <translation>ფერმის შექმნა</translation>
     </message>
     <message>
-      <location filename="../../importIFClegacy.py" line="113"/>
+      <location filename="../../importIFClegacy.py" line="112"/>
       <source>Couldn't locate IfcOpenShell</source>
       <translation>IfcOpenShell-ის პოვნა ვერ მოხერხდა</translation>
     </message>
     <message>
-      <location filename="../../importIFClegacy.py" line="390"/>
+      <location filename="../../importIFClegacy.py" line="389"/>
       <source>IfcOpenShell not found or disabled, falling back on internal parser.</source>
       <translation>IfcOpenShell ვერ ვიპოვე ან გამორთულია. გამოვიყენებ შიდა ანალიზატორს.</translation>
     </message>
     <message>
-      <location filename="../../importIFClegacy.py" line="396"/>
+      <location filename="../../importIFClegacy.py" line="395"/>
       <source>IFC Schema not found, IFC import disabled.</source>
       <translation>IFC სქემა ვერ მოიძებნა, IFC-ის შემოტანა გამორთულია.</translation>
     </message>
     <message>
-      <location filename="../../importIFClegacy.py" line="931"/>
+      <location filename="../../importIFClegacy.py" line="930"/>
       <source>Error: IfcOpenShell is not installed</source>
       <translation>შეცდომა: IfcOpenShell არ არის დაყენებული</translation>
     </message>
     <message>
-      <location filename="../../importIFClegacy.py" line="938"/>
+      <location filename="../../importIFClegacy.py" line="937"/>
       <source>Error: your IfcOpenShell version is too old</source>
       <translation>შეცდომა: თქვენი IfcOpenShell ვერსია ძალიან ძველია</translation>
     </message>
@@ -3146,12 +3146,16 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="588"/>
-      <source>Import CSV File</source>
+      <source>Import CSV file</source>
       <translation>CSV ფაილის შემოტანა</translation>
     </message>
     <message>
-      <location filename="../../ArchCommands.py" line="1104"/>
       <location filename="../../ArchSchedule.py" line="621"/>
+      <source>Export CSV file</source>
+      <translation>CSV ფაილის გატანა</translation>
+    </message>
+    <message>
+      <location filename="../../ArchCommands.py" line="1104"/>
       <source>Export CSV File</source>
       <translation>CSV ფაილის გატანა</translation>
     </message>
@@ -3286,7 +3290,7 @@ Floor creation aborted.</source>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="1510"/>
-      <location filename="../../ArchSite.py" line="943"/>
+      <location filename="../../ArchSite.py" line="941"/>
       <source>Toggle subcomponents</source>
       <translation>ქვეკომპონენტების ჩართ/გამორთ</translation>
     </message>
@@ -4262,167 +4266,167 @@ Building creation aborted.</source>
       <translation>ფეხების სისქე</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="599"/>
+      <location filename="../../ArchSite.py" line="597"/>
       <source>The base terrain of this site</source>
       <translation>ამ ადგილის ძირითადი რელიეფი</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="601"/>
+      <location filename="../../ArchSite.py" line="599"/>
       <source>The street and house number of this site, with postal box or apartment number if needed</source>
       <translation>ამ ადგილის ქუჩა და ბინის ნომერი. საჭიროების შემთხვევაში დაურთეთ საფოსტო კოდი და ბინის ნომერი</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="603"/>
+      <location filename="../../ArchSite.py" line="601"/>
       <source>The postal or zip code of this site</source>
       <translation>ამ ადგილის საფოსტო ან ზიპ კოდი</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="605"/>
+      <location filename="../../ArchSite.py" line="603"/>
       <source>The city of this site</source>
       <translation>რომელ ქალაქში მდებარეობს ეს ადგილი</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="607"/>
+      <location filename="../../ArchSite.py" line="605"/>
       <source>The region, province or county of this site</source>
       <translation>რომელ რეგიონს, პროვინციას ან გუბერნიას მიეკუთვნება ეს ადგილი</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="609"/>
+      <location filename="../../ArchSite.py" line="607"/>
       <source>The country of this site</source>
       <translation>რომელ ქვეყანაშია ეს ადგილი</translation>
     </message>
     <message>
+      <location filename="../../ArchSite.py" line="609"/>
       <location filename="../../ArchSite.py" line="611"/>
-      <location filename="../../ArchSite.py" line="613"/>
       <source>The latitude of this site</source>
       <translation>ამ ადგილის განედი</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="615"/>
+      <location filename="../../ArchSite.py" line="613"/>
       <source>Angle between the true North and the North direction in this document</source>
       <translation>კუთხე ნამდვილ ჩრდილოეთსა და ამ დოკუმენტში ჩრდილო მიმართულებას შორის</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="620"/>
+      <location filename="../../ArchSite.py" line="618"/>
       <source>The elevation of level 0 of this site</source>
       <translation>ამ ადგილის ნულოვანი დონის სიმაღლე</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="622"/>
+      <location filename="../../ArchSite.py" line="620"/>
       <source>A URL that shows this site in a mapping website</source>
       <translation>URL, რომელიც ამ ადგილს რუკის ვებგვერდზე აჩვენებს</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="199"/>
-      <location filename="../../ArchSite.py" line="624"/>
+      <location filename="../../ArchSite.py" line="622"/>
       <source>Other shapes that are appended to this object</source>
       <translation>სხვა ფორმები, რომლებიც დართულია ამ ობიექტზე</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="201"/>
-      <location filename="../../ArchSite.py" line="626"/>
+      <location filename="../../ArchSite.py" line="624"/>
       <source>Other shapes that are subtracted from this object</source>
       <translation>სხვა ფორმები, რომლებიც გამოაკლდა ამ ობიექტს</translation>
     </message>
     <message>
       <location filename="../../ArchComponent.py" line="224"/>
-      <location filename="../../ArchSite.py" line="628"/>
+      <location filename="../../ArchSite.py" line="626"/>
       <source>The area of the projection of this object onto the XY plane</source>
       <translation>ამ ობიექტის პროექციის ფართობი XY სიბრტყეზე</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="630"/>
+      <location filename="../../ArchSite.py" line="628"/>
       <source>The perimeter length of the projected area</source>
       <translation>პროექციის ფართობის პერიმეტრის სიგრძე</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="632"/>
+      <location filename="../../ArchSite.py" line="630"/>
       <source>The volume of earth to be added to this terrain</source>
       <translation>რელიეფზე დამატებული მიწის რაოდენობა</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="634"/>
+      <location filename="../../ArchSite.py" line="632"/>
       <source>The volume of earth to be removed from this terrain</source>
       <translation>რელიეფიდან გატანილი მიწის მოცულობა</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="636"/>
+      <location filename="../../ArchSite.py" line="634"/>
       <source>An extrusion vector to use when performing boolean operations</source>
       <translation>ბულევური ოპერაციების შესრულებისას გამოყენებული გამოწნევის ვექტორი</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="639"/>
+      <location filename="../../ArchSite.py" line="637"/>
       <source>Remove splitters from the resulting shape</source>
       <translation>მიღებული ფიგურიდან გამყოფების ამოღება</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="641"/>
+      <location filename="../../ArchSite.py" line="639"/>
       <source>An optional offset between the model (0,0,0) origin and the point indicated by the geocoordinates</source>
       <translation>არასავალდებულო წანაცვლება მოდელის (0,0,0) საწყისსა და გეოკოორდინატებით მითითებულ წერტილს შორის</translation>
     </message>
     <message>
       <location filename="../../ArchIFC.py" line="70"/>
-      <location filename="../../ArchSite.py" line="645"/>
+      <location filename="../../ArchSite.py" line="643"/>
       <source>The type of this object</source>
       <translation>ობიექტის ტიპი</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="649"/>
+      <location filename="../../ArchSite.py" line="647"/>
       <source>The time zone where this site is located</source>
       <translation>ამ ადგილის მდებარეობის დროის სარტყელი</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="651"/>
+      <location filename="../../ArchSite.py" line="649"/>
       <source>An optional EPW File for the location of this site. Refer to the Site documentation to know how to obtain one</source>
       <translation>ამ ადგილის მდებარეობის არასავალდებული EPW ფაილი. მიმართეთ დოკუმენტაციას, რომ გაიგოთ, როგორ მიიღოთ იგი</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="855"/>
+      <location filename="../../ArchSite.py" line="853"/>
       <source>Show wind rose diagram or not. Uses solar diagram scale. Needs Ladybug module</source>
       <translation>"ქარის ვარდის" დიაგრამის ჩვენება თუ არა. იყენებს მზის დიაგრამის მასშტაბს. სჭირდება Ladybug მოდული</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="857"/>
+      <location filename="../../ArchSite.py" line="855"/>
       <source>Show solar diagram or not</source>
       <translation>მზის დიაგრამის ჩვენების ჩართ/გამორთ</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="859"/>
+      <location filename="../../ArchSite.py" line="857"/>
       <source>The scale of the solar diagram</source>
       <translation>მზის დიაგრამის მასშტაბი</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="862"/>
+      <location filename="../../ArchSite.py" line="860"/>
       <source>The position of the solar diagram</source>
       <translation>მზის დიაგრამის პოზიცია</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="864"/>
+      <location filename="../../ArchSite.py" line="862"/>
       <source>The color of the solar diagram</source>
       <translation>მზის დიაგრამის ფერი</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="868"/>
+      <location filename="../../ArchSite.py" line="866"/>
       <source>When set to 'True North' the whole geometry will be rotated to match the true north of this site</source>
       <translation>როდესაც დაყენებულია „ჭეშმარიტ ჩრდილოეთზე“, მთელი გეომეტრია შემობრუნდება ამ ადგილის ნამდვილი ჩრდილოეთის შესატყვისად</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="872"/>
+      <location filename="../../ArchSite.py" line="870"/>
       <source>Show compass or not</source>
       <translation>კომპასის ჩვენების ჩართ/გამორთ</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="874"/>
+      <location filename="../../ArchSite.py" line="872"/>
       <source>The rotation of the Compass relative to the Site</source>
       <translation>კომპასის ტრიალი ადგილთან მიმართებაში</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="876"/>
+      <location filename="../../ArchSite.py" line="874"/>
       <source>The position of the Compass relative to the Site placement</source>
       <translation>კომპასის პოზიცია ადგილის მდებარეობასთან მიმართებაში</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="878"/>
+      <location filename="../../ArchSite.py" line="876"/>
       <source>Update the Declination value based on the compass rotation</source>
       <translation>დახრის მნიშვნელობის განახლება კომპასის ბრუნვის საფუძველზე</translation>
     </message>
@@ -6008,7 +6012,7 @@ Building creation aborted.</source>
   <context>
     <name>Draft</name>
     <message>
-      <location filename="../../ArchBuildingPart.py" line="989"/>
+      <location filename="../../ArchBuildingPart.py" line="991"/>
       <source>Writing camera position</source>
       <translation>კამერის პოზიციის ჩაწერა</translation>
     </message>
@@ -6135,12 +6139,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_Site</name>
     <message>
-      <location filename="../../ArchSite.py" line="514"/>
+      <location filename="../../ArchSite.py" line="512"/>
       <source>Site</source>
       <translation>საიტი</translation>
     </message>
     <message>
-      <location filename="../../ArchSite.py" line="518"/>
+      <location filename="../../ArchSite.py" line="516"/>
       <source>Creates a site including selected objects.</source>
       <translation>ქმნის საიტს მონიშნული ობიექტების ჩათვლით.</translation>
     </message>
@@ -6161,12 +6165,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_CutLine</name>
     <message>
-      <location filename="../../ArchCutPlane.py" line="82"/>
+      <location filename="../../ArchCutPlane.py" line="116"/>
       <source>Cut with line</source>
       <translation>ხაზით გაჭრა</translation>
     </message>
     <message>
-      <location filename="../../ArchCutPlane.py" line="85"/>
+      <location filename="../../ArchCutPlane.py" line="119"/>
       <source>Cut an object with a line</source>
       <translation>ობიექტის ხაზით კვეთა</translation>
     </message>
@@ -6174,12 +6178,12 @@ Building creation aborted.</source>
   <context>
     <name>Arch_CutPlane</name>
     <message>
-      <location filename="../../ArchCutPlane.py" line="103"/>
+      <location filename="../../ArchCutPlane.py" line="137"/>
       <source>Cut with plane</source>
       <translation>ჭრილი მოცემულობის სიბრტყით</translation>
     </message>
     <message>
-      <location filename="../../ArchCutPlane.py" line="106"/>
+      <location filename="../../ArchCutPlane.py" line="140"/>
       <source>Cut an object with a plane</source>
       <translation>ობიექტის სიბრტყეში კვეთა</translation>
     </message>
@@ -6818,7 +6822,7 @@ Building creation aborted.</source>
     <message>
       <location filename="../../ArchAxis.py" line="646"/>
       <location filename="../../ArchIFCView.py" line="68"/>
-      <location filename="../../ArchSite.py" line="955"/>
+      <location filename="../../ArchSite.py" line="953"/>
       <source>Transform</source>
       <translation>გარდაქმნა</translation>
     </message>
@@ -6840,9 +6844,9 @@ Building creation aborted.</source>
       <translation>მონახაზი</translation>
     </message>
     <message>
-      <location filename="../../InitGui.py" line="256"/>
-      <location filename="../../InitGui.py" line="257"/>
-      <location filename="../../InitGui.py" line="258"/>
+      <location filename="../../InitGui.py" line="260"/>
+      <location filename="../../InitGui.py" line="261"/>
+      <location filename="../../InitGui.py" line="262"/>
       <source>Import-Export</source>
       <translation>შეტანა-გატანა</translation>
     </message>

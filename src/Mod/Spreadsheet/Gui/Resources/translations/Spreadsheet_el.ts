@@ -671,7 +671,7 @@ switch the design configuration. The property will be created if not exist.</sou
       <location filename="../../Command.cpp" line="194"/>
       <location filename="../../Command.cpp" line="254"/>
       <source>CSV (*.csv *.CSV);;All (*)</source>
-      <translation type="unfinished">CSV (*.csv *.CSV);;All (*)</translation>
+      <translation>CSV (*.csv *.CSV);;Όλα (*)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="196"/>
@@ -1032,9 +1032,9 @@ Defaults to: %V = %A
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="160"/>
       <source>Insert %n column(s) right</source>
-      <translation type="unfinished">
-        <numerusform>Εισαγωγή %n στήλης δεξιά</numerusform>
-        <numerusform>Insert %n column(s) right</numerusform>
+      <translation>
+        <numerusform>Εισαγωγή %n στήλης(ών) δεξιά</numerusform>
+        <numerusform>Εισαγωγή στήλης(ών) %n αριστερά</numerusform>
       </translation>
     </message>
     <message numerus="yes">
@@ -1049,7 +1049,7 @@ Defaults to: %V = %A
       <location filename="../../SheetTableView.cpp" line="172"/>
       <source>Remove column(s)</source>
       <translation type="unfinished">
-        <numerusform>Αφαίρεση στηλών(η)</numerusform>
+        <numerusform>Αφαίρεση στήλη(ών)</numerusform>
         <numerusform>Remove column(s)</numerusform>
       </translation>
     </message>

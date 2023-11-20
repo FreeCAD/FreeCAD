@@ -24,17 +24,17 @@
     <message>
       <location filename="../../Command.cpp" line="106"/>
       <source>Reverse Engineering</source>
-      <translation>Inżynieria wsteczna</translation>
+      <translation>Inżynieria Wsteczna</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="107"/>
-      <source>Plane...</source>
-      <translation>Płaszczyzna...</translation>
+      <source>Plane</source>
+      <translation>Płaszczyzna</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="108"/>
       <source>Approximate a plane</source>
-      <translation>Aproksymuj płaszczyznę</translation>
+      <translation>Przybliżenie płaszczyzny</translation>
     </message>
   </context>
   <context>
@@ -521,7 +521,7 @@
       <location filename="../../SegmentationManual.ui" line="208"/>
       <location filename="../../SegmentationManual.ui" line="261"/>
       <source>Minimum number of faces</source>
-      <translation>Minimalna liczba płaszczyzn</translation>
+      <translation>Minimalna liczba ścian</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="175"/>
@@ -577,7 +577,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="34"/>
       <source>Reverse Engineering</source>
-      <translation>Inżynieria Wsteczna</translation>
+      <translation>Inżynieria wsteczna</translation>
     </message>
   </context>
 </TS>

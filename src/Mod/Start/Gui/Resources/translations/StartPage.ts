@@ -275,11 +275,31 @@
     </message>
     <message>
         <location filename="../../../StartPage/TranslationTexts.py" line="144"/>
-        <source>Notes</source>
+        <source>Size</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../StartPage/TranslationTexts.py" line="145"/>
+        <source>Author</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../StartPage/TranslationTexts.py" line="146"/>
+        <source>License</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../StartPage/TranslationTexts.py" line="147"/>
+        <source>File path</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../StartPage/TranslationTexts.py" line="148"/>
+        <source>Notes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../StartPage/TranslationTexts.py" line="149"/>
         <source>Open start page preferences</source>
         <translation type="unfinished"></translation>
     </message>
@@ -287,7 +307,7 @@
 <context>
     <name>Workbench</name>
     <message>
-        <location filename="../../../StartPage/StartPage.py" line="871"/>
+        <location filename="../../../StartPage/StartPage.py" line="874"/>
         <location filename="../../Workbench.cpp" line="62"/>
         <source>Start page</source>
         <translation type="unfinished"></translation>

@@ -547,7 +547,7 @@
     <message>
       <location filename="../../Command.cpp" line="2564"/>
       <source>Select a result object, please.</source>
-      <translation>Sélectionnez un objet résultat, s'il vous plaît.</translation>
+      <translation>Sélectionner un objet résultat.</translation>
     </message>
   </context>
   <context>
@@ -2738,7 +2738,7 @@ Spécifier un autre fichier.</translation>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="64"/>
       <source>Pipe Area </source>
-      <translation>Zone de conduite </translation>
+      <translation>Section du tube </translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="71"/>
@@ -2765,7 +2765,7 @@ Spécifier un autre fichier.</translation>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="106"/>
       <source>Manning Coefficient</source>
-      <translation>Coefficient d'amortissement</translation>
+      <translation>Coefficient de Manning</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="134"/>
@@ -2776,12 +2776,12 @@ Spécifier un autre fichier.</translation>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="155"/>
       <source>Enlarged Area</source>
-      <translation>Zone élargie</translation>
+      <translation>Section élargie</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="201"/>
       <source>Contracted Area</source>
-      <translation>Zone réduite</translation>
+      <translation>Section réduite</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="224"/>
@@ -2834,27 +2834,27 @@ Spécifier un autre fichier.</translation>
       <location filename="../ui/ElementFluid1D.ui" line="561"/>
       <location filename="../ui/ElementFluid1D.ui" line="717"/>
       <source>Pipe Area</source>
-      <translation>Zone de conduite</translation>
+      <translation>Section du tube</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="390"/>
       <source>Entrance Area</source>
-      <translation>Zone d'entrée</translation>
+      <translation>Section d'entrée</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="436"/>
       <source>Diaphragm Area</source>
-      <translation>Zone de diaphragme</translation>
+      <translation>Section du diaphragme</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="482"/>
       <source>Bend Radius/Pipe Diameter</source>
-      <translation>Rayon de courbure/Diamètre de la conduite</translation>
+      <translation>Rayon de courbure/Diamètre du tuyau</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="509"/>
       <source>Bend Angle</source>
-      <translation>Angle de flexion</translation>
+      <translation>Angle de courbure</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="533"/>
@@ -3137,14 +3137,14 @@ Remarque : n'a pas d'effet si un solide a été sélectionné</translation>
       <location filename="../ui/ElectrostaticPotential.ui" line="447"/>
       <source>Real part of potential z-component
 Note: has no effect if a solid was selected</source>
-      <translation>Partie réelle de la composante en z du potentiel
+      <translation>Partie réelle de la composante en Z du potentiel
 Remarque : n'a pas d'effet si un solide a été sélectionné</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="492"/>
       <source>Imaginary part of potential z-component
 Note: has no effect if a solid was selected</source>
-      <translation>Partie imaginaire de la composante en z du potentiel
+      <translation>Partie imaginaire de la composante en Z du potentiel
 Remarque : n'a pas d'effet si un solide a été sélectionné</translation>
     </message>
     <message>
@@ -3155,7 +3155,7 @@ Remarque : n'a pas d'effet si un solide a été sélectionné</translation>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="547"/>
       <source>Farfield / Electric infinity</source>
-      <translation>Champ lointain/Infinité électrique</translation>
+      <translation>Champ lointain/infinité électrique</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="557"/>
@@ -3166,12 +3166,12 @@ Remarque : n'a pas d'effet si un solide a été sélectionné</translation>
       <location filename="../ui/ElectrostaticPotential.ui" line="566"/>
       <source>Capacity Body: </source>
       <extracomment>Enabled by 'Calculate Capacity Matrix' in Electrostatic equation</extracomment>
-      <translation>Capacité du corps: </translation>
+      <translation>Capacité du corps :</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="602"/>
       <source>Counter of the body (or face) with a capacitance</source>
-      <translation>Compteur du corps (ou de face) avec une capacité</translation>
+      <translation>Nombre de corps (ou de faces) avec une capacité.</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="14"/>
@@ -4482,7 +4482,7 @@ vecteur normal de la face est utilisée comme sens</translation>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="100"/>
       <source>N</source>
-      <translation type="unfinished">N</translation>
+      <translation>N</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="117"/>
@@ -6132,7 +6132,7 @@ Veuillez d'abord sélectionner un type de résultat.</translation>
     <message>
       <location filename="../../BoxWidget.ui" line="20"/>
       <source>Center</source>
-      <translation>Centre</translation>
+      <translation>Au centre</translation>
     </message>
     <message>
       <location filename="../../BoxWidget.ui" line="124"/>
@@ -6173,7 +6173,7 @@ Veuillez d'abord sélectionner un type de résultat.</translation>
     <message>
       <location filename="../../CylinderWidget.ui" line="20"/>
       <source>Center</source>
-      <translation>Centre</translation>
+      <translation>Au centre</translation>
     </message>
     <message>
       <location filename="../../CylinderWidget.ui" line="104"/>

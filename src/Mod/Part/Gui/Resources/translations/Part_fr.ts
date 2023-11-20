@@ -1109,7 +1109,7 @@
     <message>
       <location filename="../../DlgBlock.ui" line="115"/>
       <source>Profile</source>
-      <translation>Profilé</translation>
+      <translation>Profil</translation>
     </message>
     <message>
       <location filename="../../DlgBlock.ui" line="135"/>
@@ -1231,7 +1231,7 @@
     <message>
       <location filename="../../Command.cpp" line="2229"/>
       <source>Clear all dimensions from the active 3D view.</source>
-      <translation type="unfinished">Clear all dimensions from the active 3D view.</translation>
+      <translation>Effacer toutes les dimensions de la vue 3D active.</translation>
     </message>
   </context>
   <context>
@@ -1285,14 +1285,13 @@ if the measured points have moved.</source>
     <message>
       <location filename="../../Command.cpp" line="2294"/>
       <source>Toggle 3D</source>
-      <translation>Basculer vers les mesures dans la 3D</translation>
+      <translation>Activer/désactiver les mesures dans la 3D</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2295"/>
       <source>Toggle on and off all direct dimensions,
 including angular.</source>
-      <translation>Basculer toutes les mesures directes,
-y compris angulaires.</translation>
+      <translation>Activer/désactiver toutes les mesures directes y compris angulaires.</translation>
     </message>
   </context>
   <context>
@@ -1857,7 +1856,7 @@ décomposée en ses composantes X, Y et Z.</translation>
     <message>
       <location filename="../../Command.cpp" line="1627"/>
       <source>3D Offset...</source>
-      <translation>Décalage 3D...</translation>
+      <translation>Décaler en 3D...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1628"/>
@@ -1875,7 +1874,7 @@ décomposée en ses composantes X, Y et Z.</translation>
     <message>
       <location filename="../../Command.cpp" line="1684"/>
       <source>2D Offset...</source>
-      <translation>Décalage 2D...</translation>
+      <translation>Décaler en 2D...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1685"/>
@@ -2282,7 +2281,7 @@ La vue caméra détermine la direction de la projection.</translation>
     <message>
       <location filename="../../Command.cpp" line="1708"/>
       <source>Make 2D Offset</source>
-      <translation>Créer un décalage 2D</translation>
+      <translation>Créer un décalage en 2D</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1888"/>
@@ -5041,7 +5040,7 @@ Remarque : le placement est exprimé dans le système de coordonnées local de l
     <message>
       <location filename="../../TaskAttacher.cpp" line="333"/>
       <source>Attached with mode %1</source>
-      <translation>Accroché avec mode %1</translation>
+      <translation>Ancré par le mode %1</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="337"/>
@@ -6107,12 +6106,12 @@ Voulez-vous continuer ?</translation>
     <message>
       <location filename="../../TaskDimension.cpp" line="1507"/>
       <source>Toggle direct dimensions</source>
-      <translation>Basculer aux cotes directes</translation>
+      <translation>Afficher/masquer les cotes directes</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="1512"/>
       <source>Toggle orthogonal dimensions</source>
-      <translation>Basculer aux cotes orthogonales</translation>
+      <translation>Afficher/masquer les cotes orthogonales</translation>
     </message>
     <message>
       <location filename="../../TaskDimension.cpp" line="1517"/>
@@ -6846,13 +6845,13 @@ Un "filtre composé" peut être utilisé pour extraire les morceaux restants.</t
     <message>
       <location filename="../../CommandFilter.cpp" line="46"/>
       <source>Selection filter</source>
-      <translation type="unfinished">Selection filter</translation>
+      <translation>Filtre de sélection</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="47"/>
       <location filename="../../CommandFilter.cpp" line="48"/>
       <source>Change the selection filter</source>
-      <translation type="unfinished">Change the selection filter</translation>
+      <translation>Changer le filtre de sélection</translation>
     </message>
   </context>
   <context>
@@ -6860,13 +6859,13 @@ Un "filtre composé" peut être utilisé pour extraire les morceaux restants.</t
     <message>
       <location filename="../../CommandFilter.cpp" line="173"/>
       <source>Vertex selection</source>
-      <translation type="unfinished">Vertex selection</translation>
+      <translation>Sélection d'un sommet</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="174"/>
       <location filename="../../CommandFilter.cpp" line="176"/>
       <source>Only allow the selection of vertices</source>
-      <translation type="unfinished">Only allow the selection of vertices</translation>
+      <translation>Autoriser uniquement la sélection des sommets</translation>
     </message>
   </context>
   <context>
@@ -6874,13 +6873,13 @@ Un "filtre composé" peut être utilisé pour extraire les morceaux restants.</t
     <message>
       <location filename="../../CommandFilter.cpp" line="198"/>
       <source>Edge selection</source>
-      <translation type="unfinished">Edge selection</translation>
+      <translation>Sélection d'une arête</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="199"/>
       <location filename="../../CommandFilter.cpp" line="201"/>
       <source>Only allow the selection of edges</source>
-      <translation type="unfinished">Only allow the selection of edges</translation>
+      <translation>Autoriser uniquement la sélection des arêtes</translation>
     </message>
   </context>
   <context>
@@ -6888,13 +6887,13 @@ Un "filtre composé" peut être utilisé pour extraire les morceaux restants.</t
     <message>
       <location filename="../../CommandFilter.cpp" line="223"/>
       <source>Face selection</source>
-      <translation type="unfinished">Face selection</translation>
+      <translation>Sélection d'une face</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="224"/>
       <location filename="../../CommandFilter.cpp" line="226"/>
       <source>Only allow the selection of faces</source>
-      <translation type="unfinished">Only allow the selection of faces</translation>
+      <translation>Autoriser uniquement la sélection des faces</translation>
     </message>
   </context>
   <context>
@@ -6904,7 +6903,7 @@ Un "filtre composé" peut être utilisé pour extraire les morceaux restants.</t
       <location filename="../../CommandFilter.cpp" line="249"/>
       <location filename="../../CommandFilter.cpp" line="251"/>
       <source>All selection filters cleared</source>
-      <translation type="unfinished">All selection filters cleared</translation>
+      <translation>Tous les filtres de sélection ont été effacés</translation>
     </message>
   </context>
 </TS>

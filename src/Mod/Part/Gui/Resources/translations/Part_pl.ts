@@ -1231,7 +1231,7 @@
     <message>
       <location filename="../../Command.cpp" line="2229"/>
       <source>Clear all dimensions from the active 3D view.</source>
-      <translation type="unfinished">Clear all dimensions from the active 3D view.</translation>
+      <translation>Wyczyść wszystkie pomiary z aktywnego widoku 3D.</translation>
     </message>
   </context>
   <context>
@@ -6853,13 +6853,13 @@ Oznacza to, że nakładające się na siebie objętości kształtów zostaną us
     <message>
       <location filename="../../CommandFilter.cpp" line="46"/>
       <source>Selection filter</source>
-      <translation type="unfinished">Selection filter</translation>
+      <translation>Filtr wyboru</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="47"/>
       <location filename="../../CommandFilter.cpp" line="48"/>
       <source>Change the selection filter</source>
-      <translation type="unfinished">Change the selection filter</translation>
+      <translation>Zmienia filtr wyboru</translation>
     </message>
   </context>
   <context>
@@ -6867,13 +6867,13 @@ Oznacza to, że nakładające się na siebie objętości kształtów zostaną us
     <message>
       <location filename="../../CommandFilter.cpp" line="173"/>
       <source>Vertex selection</source>
-      <translation type="unfinished">Vertex selection</translation>
+      <translation>Wybór wierzchołka</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="174"/>
       <location filename="../../CommandFilter.cpp" line="176"/>
       <source>Only allow the selection of vertices</source>
-      <translation type="unfinished">Only allow the selection of vertices</translation>
+      <translation>Zezwala tylko na wybór wierzchołków</translation>
     </message>
   </context>
   <context>
@@ -6881,13 +6881,13 @@ Oznacza to, że nakładające się na siebie objętości kształtów zostaną us
     <message>
       <location filename="../../CommandFilter.cpp" line="198"/>
       <source>Edge selection</source>
-      <translation type="unfinished">Edge selection</translation>
+      <translation>Wybór krawędzi</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="199"/>
       <location filename="../../CommandFilter.cpp" line="201"/>
       <source>Only allow the selection of edges</source>
-      <translation type="unfinished">Only allow the selection of edges</translation>
+      <translation>Zezwala tylko na wybór krawędzi</translation>
     </message>
   </context>
   <context>
@@ -6895,13 +6895,13 @@ Oznacza to, że nakładające się na siebie objętości kształtów zostaną us
     <message>
       <location filename="../../CommandFilter.cpp" line="223"/>
       <source>Face selection</source>
-      <translation type="unfinished">Face selection</translation>
+      <translation>Wybór ściany</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="224"/>
       <location filename="../../CommandFilter.cpp" line="226"/>
       <source>Only allow the selection of faces</source>
-      <translation type="unfinished">Only allow the selection of faces</translation>
+      <translation>Zezwala tylko na wybór ścian</translation>
     </message>
   </context>
   <context>
@@ -6911,7 +6911,7 @@ Oznacza to, że nakładające się na siebie objętości kształtów zostaną us
       <location filename="../../CommandFilter.cpp" line="249"/>
       <location filename="../../CommandFilter.cpp" line="251"/>
       <source>All selection filters cleared</source>
-      <translation type="unfinished">All selection filters cleared</translation>
+      <translation>Wszystkie filtry wyboru wyczyszczone</translation>
     </message>
   </context>
 </TS>

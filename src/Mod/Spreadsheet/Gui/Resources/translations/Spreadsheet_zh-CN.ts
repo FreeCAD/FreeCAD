@@ -683,7 +683,7 @@ switch the design configuration. The property will be created if not exist.</tra
       <location filename="../../Command.cpp" line="194"/>
       <location filename="../../Command.cpp" line="254"/>
       <source>CSV (*.csv *.CSV);;All (*)</source>
-      <translation type="unfinished">CSV (*.csv *.CSV);;All (*)</translation>
+      <translation>CSV (*.csv *.cSV);;所有 (*)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="196"/>
