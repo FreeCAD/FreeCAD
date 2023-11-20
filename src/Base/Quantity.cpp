@@ -491,7 +491,7 @@ double num_change(char* yytext, char dez_delim, char grp_delim)
 #endif
 
 // error func
-void Quantity_yyerror(const char *errorinfo)
+void Quantity_yyerror(const char* errorinfo)
 {
     throw Base::ParserError(errorinfo);
 }
