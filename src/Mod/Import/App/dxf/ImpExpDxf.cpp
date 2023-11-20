@@ -322,8 +322,8 @@ void ImpExpDxfRead::OnReadText(const double* point,
                                const char* text,
                                const double rotation)
 {
-    // Note that our parameters do not contain all the information needed to properly orient the text.
-    // As a result the text will always appear on the XY plane
+    // Note that our parameters do not contain all the information needed to properly orient the
+    // text. As a result the text will always appear on the XY plane
     if (optionImportAnnotations) {
         if (LayerName().substr(0, 6) != "BLOCKS") {
             PyObject* draftModule = nullptr;
@@ -332,8 +332,9 @@ void ImpExpDxfRead::OnReadText(const double* point,
             Base::Rotation rot(Base::Vector3d(0, 0, 1), rotation);
             PyObject* placement = new Base::PlacementPy(Base::Placement(insertionPoint, rot));
             draftModule = PyImport_ImportModule("Draft");
-            if (draftModule != nullptr)
+            if (draftModule != nullptr) {
                 PyObject_CallMethod(draftModule, "make_text", "sOif", text, placement, 0, height);
+            }
             // We own all the return values so we must release them.
             Py_DECREF(placement);
             Py_XDECREF(draftModule);
