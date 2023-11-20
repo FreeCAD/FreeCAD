@@ -777,7 +777,7 @@ size_t BitpackIntegerDecoder<RegisterT>::inputProcessAligned( const char *inbuf,
          destBuffer_->setNextInt64( value );
       }
 
-      /// Store the result in next avaiable position in the user's dest buffer
+      /// Store the result in next available position in the user's dest buffer
 
       /// Calc next bit alignment and which word it starts in
       bitOffset += bitsPerRecord_;
