@@ -27,6 +27,7 @@ from FreeCAD import Units
 from FreeCAD import Base
 App = FreeCAD
 
+from parttests.Geom2d_tests import Geom2dTests
 from parttests.regression_tests import RegressionTests
 from parttests.TopoShapeListTest import TopoShapeListTest
 
