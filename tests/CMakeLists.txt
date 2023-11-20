@@ -71,12 +71,22 @@ function(setup_qt_test)
     endforeach()
 endfunction()
 
-add_executable(Tests_run)
-add_executable(Material_tests_run)
-add_executable(Mesh_tests_run)
-add_executable(Part_tests_run)
-add_executable(Points_tests_run)
-add_executable(Sketcher_tests_run)
+# Add test executables here
+
+set(TestExecutables
+    Tests_run
+    Material_tests_run
+    Mesh_tests_run
+    Part_tests_run
+    Points_tests_run
+    Sketcher_tests_run
+)
+
+# -------------------------
+
+foreach (exe ${TestExecutables})
+    add_executable(${exe})
+endforeach()
 
 add_subdirectory(lib)
 add_subdirectory(src)
@@ -95,9 +105,7 @@ target_link_libraries(Tests_run
 include(GoogleTest)
 # discovers tests by asking the compiled test executable to enumerate its tests
 set(CMAKE_GTEST_DISCOVER_TESTS_DISCOVERY_MODE PRE_TEST)
-gtest_discover_tests(Tests_run)
-gtest_discover_tests(Material_tests_run)
-gtest_discover_tests(Mesh_tests_run)
-gtest_discover_tests(Part_tests_run)
-gtest_discover_tests(Points_tests_run)
-gtest_discover_tests(Sketcher_tests_run)
+
+foreach (exe ${TestExecutables})
+    gtest_discover_tests(${exe})
+endforeach()
