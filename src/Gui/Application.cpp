@@ -2337,7 +2337,7 @@ void Application::runApplication()
 
     // Reactivate the startup workbench
     app.activateWorkbench(start.c_str());
-
+    Gui::Control().showModelView();
     Instance->d->startingUp = false;
 
     // gets called once we start the event loop
