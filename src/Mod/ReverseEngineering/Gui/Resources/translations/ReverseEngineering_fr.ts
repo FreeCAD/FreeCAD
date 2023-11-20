@@ -28,8 +28,8 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="107"/>
-      <source>Plane...</source>
-      <translation>Planifier...</translation>
+      <source>Plane</source>
+      <translation>Plan</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="108"/>
@@ -230,7 +230,7 @@
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="154"/>
       <source>Placement</source>
-      <translation>Positionnement</translation>
+      <translation>Position</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="231"/>

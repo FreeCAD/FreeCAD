@@ -1087,12 +1087,12 @@ Resetiranje briše sve trenutne stavke s popisa i popunjava popis svim okruglim 
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="256"/>
       <source>Angle of the helix ramp entry</source>
-      <translation type="unfinished">Angle of the helix ramp entry</translation>
+      <translation>Kut ulazane rampe spirale (helix)</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="266"/>
       <source>Angle of the helix entry cone</source>
-      <translation type="unfinished">Angle of the helix entry cone</translation>
+      <translation>Kut ulaznog stošca spirale (helix)</translation>
     </message>
     <message>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="279"/>
@@ -1193,7 +1193,7 @@ Resetiranje briše sve trenutne stavke s popisa i popunjava popis svim okruglim 
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="63"/>
       <source>Don't retract after every hole</source>
-      <translation type="unfinished">Don't retract after every hole</translation>
+      <translation>Ne povlači se nazad nakon svake rupe</translation>
     </message>
     <message>
       <location filename="../panels/PageOpDrillingEdit.ui" line="66"/>
@@ -4734,17 +4734,18 @@ mjerna jedinica/minuta. Da biste osigurali ispravan G-kod:
     <message>
       <location filename="../../../Path/Dressup/Tags.py" line="946"/>
       <source>Width of tags.</source>
-      <translation type="unfinished">Width of tags.</translation>
+      <translation>Širina potpornih šipki.</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Tags.py" line="952"/>
       <source>Height of tags.</source>
-      <translation type="unfinished">Height of tags.</translation>
+      <translation>
+Visina potpornih šipki.</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Tags.py" line="958"/>
       <source>Angle of tag plunge and ascent.</source>
-      <translation type="unfinished">Angle of tag plunge and ascent.</translation>
+      <translation>Kut spusta i uspona kod držećih šipki</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Tags.py" line="964"/>
@@ -4754,7 +4755,7 @@ mjerna jedinica/minuta. Da biste osigurali ispravan G-kod:
     <message>
       <location filename="../../../Path/Dressup/Tags.py" line="970"/>
       <source>Locations of inserted holding tags</source>
-      <translation type="unfinished">Locations of inserted holding tags</translation>
+      <translation>Lokacije umetnutih šipki držača</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Tags.py" line="976"/>
@@ -6298,12 +6299,12 @@ Staza koju treba kopirati</translation>
     <message>
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="138"/>
       <source>Horizontal Feed Rate</source>
-      <translation type="unfinished">Horizontal Feed Rate</translation>
+      <translation>Vodoravna brzina pomaka</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="142"/>
       <source>Vertical Feed Rate</source>
-      <translation type="unfinished">Vertical Feed Rate</translation>
+      <translation>Okomita brzina pomaka</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="146"/>
@@ -6346,7 +6347,7 @@ Staza koju treba kopirati</translation>
     <message>
       <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="292"/>
       <source>Select Probe Point File</source>
-      <translation type="unfinished">Select Probe Point File</translation>
+      <translation>Odaberi datoteku mjernih točaka</translation>
     </message>
     <message>
       <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="294"/>
@@ -6357,7 +6358,7 @@ Staza koju treba kopirati</translation>
     <message>
       <location filename="../../../Path/Op/Gui/Probe.py" line="93"/>
       <source>Select Output File</source>
-      <translation type="unfinished">Select Output File</translation>
+      <translation>Odaberite izlaznu datoteku</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Gui/Probe.py" line="107"/>
@@ -6419,7 +6420,7 @@ Staza koju treba kopirati</translation>
     <message>
       <location filename="../../../Path/Main/Job.py" line="263"/>
       <source>Multiaxis</source>
-      <translation type="unfinished">Multiaxis</translation>
+      <translation>Višeosni</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Job.py" line="283"/>
@@ -6623,32 +6624,32 @@ Staza koju treba kopirati</translation>
     <message>
       <location filename="../../../Path/Main/Gui/Sanity.py" line="215"/>
       <source>Setup Report for FreeCAD Job</source>
-      <translation type="unfinished">Setup Report for FreeCAD Job</translation>
+      <translation>Izvještaj o podešenju za posao FreeCAD-a</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Sanity.py" line="216"/>
       <source>Table of Contents</source>
-      <translation type="unfinished">Table of Contents</translation>
+      <translation>Tablica sadržaja</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Sanity.py" line="217"/>
       <source>Part Information</source>
-      <translation type="unfinished">Part Information</translation>
+      <translation>Informacije o dijelu</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Sanity.py" line="218"/>
       <source>Run Summary</source>
-      <translation type="unfinished">Run Summary</translation>
+      <translation>Izvještaj o pokretanju</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Sanity.py" line="219"/>
       <source>Rough Stock</source>
-      <translation type="unfinished">Rough Stock</translation>
+      <translation>Grubi materijal za izradu</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Sanity.py" line="220"/>
       <source>Tool Data</source>
-      <translation type="unfinished">Tool Data</translation>
+      <translation>Podaci alata</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Sanity.py" line="221"/>

@@ -2432,6 +2432,16 @@ Specify another directory, please.</source>
       <translation>偏好設定</translation>
     </message>
     <message>
+      <location filename="../DlgPreferences.ui" line="152"/>
+      <source>Reset</source>
+      <translation>重設</translation>
+    </message>
+    <message>
+      <location filename="../DlgPreferences.ui" line="192"/>
+      <source>Header</source>
+      <translation>標題</translation>
+    </message>
+    <message>
       <source/>
       <translation> </translation>
     </message>
@@ -2439,98 +2449,72 @@ Specify another directory, please.</source>
   <context>
     <name>Gui::Dialog::DlgPreferencesImp</name>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="386"/>
-      <source>Reset tab '%1'...</source>
-      <translation type="unfinished">Reset tab '%1'...</translation>
+      <location filename="../DlgPreferencesImp.cpp" line="439"/>
+      <source>Reset page '%1'...</source>
+      <translation type="unfinished">Reset page '%1'...</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="388"/>
-      <source>Resets the user settings for the tab '%1'</source>
-      <translation type="unfinished">Resets the user settings for the tab '%1'</translation>
+      <location filename="../DlgPreferencesImp.cpp" line="442"/>
+      <source>Resets the user settings for the page '%1'</source>
+      <translation type="unfinished">Resets the user settings for the page '%1'</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="393"/>
+      <location filename="../DlgPreferencesImp.cpp" line="445"/>
       <source>Reset group '%1'...</source>
       <translation type="unfinished">Reset group '%1'...</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="395"/>
+      <location filename="../DlgPreferencesImp.cpp" line="448"/>
       <source>Resets the user settings for the group '%1'</source>
       <translation type="unfinished">Resets the user settings for the group '%1'</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="398"/>
+      <location filename="../DlgPreferencesImp.cpp" line="451"/>
       <source>Reset all...</source>
       <translation type="unfinished">Reset all...</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="400"/>
+      <location filename="../DlgPreferencesImp.cpp" line="454"/>
       <source>Resets the user settings entirely</source>
       <translation type="unfinished">Resets the user settings entirely</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="415"/>
+      <location filename="../DlgPreferencesImp.cpp" line="469"/>
       <source>Clear user settings</source>
       <translation>清除使用者設定</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="416"/>
+      <location filename="../DlgPreferencesImp.cpp" line="470"/>
       <source>Do you want to clear all your user settings?</source>
       <translation>您確定要清除所有的設定嗎？</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="417"/>
+      <location filename="../DlgPreferencesImp.cpp" line="471"/>
       <source>If you agree all your settings will be cleared.</source>
       <translation>當您同意後，所有的設定將會被清除</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="442"/>
-      <source>Reset Tab Settings</source>
-      <translation type="unfinished">Reset Tab Settings</translation>
-    </message>
-    <message>
-      <location filename="../DlgPreferencesImp.cpp" line="443"/>
-      <source>All the settings for the tab '%1' will be deleted.</source>
-      <translation type="unfinished">All the settings for the tab '%1' will be deleted.</translation>
-    </message>
-    <message>
-      <location filename="../DlgPreferencesImp.cpp" line="444"/>
-      <location filename="../DlgPreferencesImp.cpp" line="470"/>
-      <source>Do you want to continue?</source>
-      <translation>您要繼續嗎？</translation>
-    </message>
-    <message>
-      <location filename="../DlgPreferencesImp.cpp" line="468"/>
-      <source>Reset Group Settings</source>
-      <translation type="unfinished">Reset Group Settings</translation>
-    </message>
-    <message>
-      <location filename="../DlgPreferencesImp.cpp" line="469"/>
-      <source>All the settings for the group '%1' will be deleted.</source>
-      <translation type="unfinished">All the settings for the group '%1' will be deleted.</translation>
-    </message>
-    <message>
-      <location filename="../DlgPreferencesImp.cpp" line="590"/>
+      <location filename="../DlgPreferencesImp.cpp" line="571"/>
       <source>Wrong parameter</source>
       <translation>錯誤的參數</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="626"/>
+      <location filename="../DlgPreferencesImp.cpp" line="614"/>
       <source>Restart required</source>
       <translation>需要重新啟動</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="627"/>
+      <location filename="../DlgPreferencesImp.cpp" line="615"/>
       <source>You must restart FreeCAD for changes to take effect.</source>
       <translation>您必須重新啟動 FreeCAD 以使更改生效。</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="632"/>
+      <location filename="../DlgPreferencesImp.cpp" line="620"/>
       <source>Restart now</source>
       <translation>現在重新啟動</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="633"/>
+      <location filename="../DlgPreferencesImp.cpp" line="621"/>
       <source>Restart later</source>
       <translation>稍後重新啟動</translation>
     </message>
@@ -2539,8 +2523,8 @@ Specify another directory, please.</source>
     <name>Gui::Dialog::DlgProjectInformation</name>
     <message>
       <location filename="../DlgProjectInformation.ui" line="14"/>
-      <source>Project information</source>
-      <translation>專案資訊</translation>
+      <source>Document information</source>
+      <translation type="unfinished">Document information</translation>
     </message>
     <message>
       <location filename="../DlgProjectInformation.ui" line="26"/>
@@ -2621,13 +2605,13 @@ Specify another directory, please.</source>
     <name>Gui::Dialog::DlgProjectUtility</name>
     <message>
       <location filename="../DlgProjectUtility.ui" line="14"/>
-      <source>Project utility</source>
-      <translation>專案工具</translation>
+      <source>Document utility</source>
+      <translation type="unfinished">Document utility</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.ui" line="22"/>
-      <source>Extract project</source>
-      <translation>提取專案</translation>
+      <source>Extract document</source>
+      <translation type="unfinished">Extract document</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.ui" line="28"/>
@@ -2648,18 +2632,18 @@ Specify another directory, please.</source>
     </message>
     <message>
       <location filename="../DlgProjectUtility.ui" line="72"/>
-      <source>Create project</source>
-      <translation>建立專案</translation>
+      <source>Create document</source>
+      <translation type="unfinished">Create document</translation>
+    </message>
+    <message>
+      <location filename="../DlgProjectUtility.ui" line="137"/>
+      <source>Load document file after creation</source>
+      <translation type="unfinished">Load document file after creation</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.ui" line="115"/>
       <source>Create</source>
       <translation>建立</translation>
-    </message>
-    <message>
-      <location filename="../DlgProjectUtility.ui" line="137"/>
-      <source>Load project file after creation</source>
-      <translation>於建立後載入專案</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.cpp" line="50"/>
@@ -2692,13 +2676,13 @@ Specify another directory, please.</source>
     </message>
     <message>
       <location filename="../DlgProjectUtility.cpp" line="104"/>
-      <source>Failed to extract project</source>
-      <translation>無法提取專案資料</translation>
+      <source>Failed to extract document</source>
+      <translation type="unfinished">Failed to extract document</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.cpp" line="121"/>
-      <source>Failed to create project</source>
-      <translation>無法建立專案</translation>
+      <source>Failed to create document</source>
+      <translation type="unfinished">Failed to create document</translation>
     </message>
   </context>
   <context>
@@ -4355,13 +4339,13 @@ Mouse tilting is not disabled by this setting.</source>
     <name>Gui::Dialog::DlgSettingsPythonConsole</name>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="14"/>
-      <source>Python console</source>
-      <translation>Python 主控台</translation>
+      <source>General</source>
+      <translation>一般</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="20"/>
-      <source>Settings</source>
-      <translation>設定</translation>
+      <source>Console</source>
+      <translation type="unfinished">Console</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="26"/>
@@ -4403,6 +4387,21 @@ horizontal space in Python console</source>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="91"/>
       <source>The interval at which the profiler runs when there's Python code running (to keep the GUI responding). Set to 0 to disable.</source>
       <translation>當有Python程式運行時，性能分析器運行的間隔（以保持GUI的響應）。設置為0以停用。</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="116"/>
+      <source>Other</source>
+      <translation>其他</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="122"/>
+      <source>Path to external Python executable (optional):</source>
+      <translation type="unfinished">Path to external Python executable (optional):</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="141"/>
+      <source>Used for package installation with pip and debugging with debugpy. Autodetected if needed and not specified.</source>
+      <translation type="unfinished">Used for package installation with pip and debugging with debugpy. Autodetected if needed and not specified.</translation>
     </message>
   </context>
   <context>
@@ -5399,11 +5398,6 @@ The 'Status' column shows whether the document could be recovered.</source>
       <source>Port:</source>
       <translation>埠：</translation>
     </message>
-    <message>
-      <location filename="../RemoteDebugger.ui" line="95"/>
-      <source>Redirect output</source>
-      <translation>重新轉向輸出</translation>
-    </message>
   </context>
   <context>
     <name>Gui::Dialog::SceneInspector</name>
@@ -5598,82 +5592,82 @@ originally selected prior to opening this dialog</source>
   <context>
     <name>Gui::DockWnd::ReportOutput</name>
     <message>
-      <location filename="../ReportView.cpp" line="580"/>
+      <location filename="../ReportView.cpp" line="586"/>
       <source>Options</source>
       <translation>選項</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="585"/>
+      <location filename="../ReportView.cpp" line="591"/>
       <source>Display message types</source>
       <translation>顯示訊息類型</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="588"/>
-      <location filename="../ReportView.cpp" line="612"/>
+      <location filename="../ReportView.cpp" line="594"/>
+      <location filename="../ReportView.cpp" line="618"/>
       <source>Normal messages</source>
       <translation>正常訊息：</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="592"/>
-      <location filename="../ReportView.cpp" line="616"/>
+      <location filename="../ReportView.cpp" line="598"/>
+      <location filename="../ReportView.cpp" line="622"/>
       <source>Log messages</source>
       <translation>日誌訊息</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="596"/>
-      <location filename="../ReportView.cpp" line="620"/>
+      <location filename="../ReportView.cpp" line="602"/>
+      <location filename="../ReportView.cpp" line="626"/>
       <source>Warnings</source>
       <translation>警告</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="600"/>
-      <location filename="../ReportView.cpp" line="624"/>
+      <location filename="../ReportView.cpp" line="606"/>
+      <location filename="../ReportView.cpp" line="630"/>
       <source>Errors</source>
       <translation>錯誤</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="604"/>
-      <location filename="../ReportView.cpp" line="628"/>
+      <location filename="../ReportView.cpp" line="610"/>
+      <location filename="../ReportView.cpp" line="634"/>
       <source>Critical messages</source>
       <translation>關鍵訊息</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="609"/>
+      <location filename="../ReportView.cpp" line="615"/>
       <source>Show Report view on</source>
       <translation>報告檢視顯示</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="634"/>
+      <location filename="../ReportView.cpp" line="640"/>
       <source>Redirect Python output</source>
       <translation>Python輸出重新指定</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="638"/>
+      <location filename="../ReportView.cpp" line="644"/>
       <source>Redirect Python errors</source>
       <translation>重定向Python的錯誤</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="643"/>
+      <location filename="../ReportView.cpp" line="649"/>
       <source>Go to end</source>
       <translation>至最末端</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="662"/>
+      <location filename="../ReportView.cpp" line="668"/>
       <source>Clear</source>
       <translation>清除</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="664"/>
+      <location filename="../ReportView.cpp" line="670"/>
       <source>Save As...</source>
       <translation>另存新檔...</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="672"/>
+      <location filename="../ReportView.cpp" line="678"/>
       <source>Save Report Output</source>
       <translation>儲存報表輸出</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="673"/>
+      <location filename="../ReportView.cpp" line="679"/>
       <source>Plain Text Files</source>
       <translation>純文字檔</translation>
     </message>
@@ -6228,41 +6222,41 @@ Do you want to save your changes?</source>
       <translation>標註</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="487"/>
+      <location filename="../MainWindow.cpp" line="486"/>
       <source>Ready</source>
       <translation>就緒</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="979"/>
+      <location filename="../MainWindow.cpp" line="978"/>
       <source>Help addon needed!</source>
       <translation>需要幫助的附加元件!</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="980"/>
+      <location filename="../MainWindow.cpp" line="979"/>
       <source>The Help system of %1 is now handled by the "Help" addon. It can easily be installed via the Addons Manager</source>
       <translation>%1 的幫助系統現在由 "幫助" 附加元件管理。您可以通過附加元件管理器來輕鬆安裝它</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="982"/>
+      <location filename="../MainWindow.cpp" line="981"/>
       <source>Open Addon Manager</source>
       <translation>開啟附加元件管理員</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1177"/>
+      <location filename="../MainWindow.cpp" line="1176"/>
       <source>Close All</source>
       <translation>全部關閉</translation>
     </message>
     <message>
+      <location filename="../MainWindow.cpp" line="1384"/>
       <location filename="../MainWindow.cpp" line="1385"/>
       <location filename="../MainWindow.cpp" line="1386"/>
-      <location filename="../MainWindow.cpp" line="1387"/>
       <source>Toggles this toolbar</source>
       <translation>切換此工具列</translation>
     </message>
     <message>
+      <location filename="../MainWindow.cpp" line="1399"/>
       <location filename="../MainWindow.cpp" line="1400"/>
       <location filename="../MainWindow.cpp" line="1401"/>
-      <location filename="../MainWindow.cpp" line="1402"/>
       <source>Toggles this dockable window</source>
       <translation>切換此可停靠的視窗</translation>
     </message>
@@ -6806,22 +6800,22 @@ Do you want to exit without saving your data?</source>
   <context>
     <name>Gui::RecentMacrosAction</name>
     <message>
-      <location filename="../Action.cpp" line="1026"/>
+      <location filename="../Action.cpp" line="1029"/>
       <source>none</source>
       <translation>無</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1041"/>
+      <location filename="../Action.cpp" line="1044"/>
       <source>Run macro %1 (Shift+click to edit) keyboard shortcut: %2</source>
       <translation>執行巨集  %1 (Shift+click 來編輯) 快捷鍵： %2</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1099"/>
+      <location filename="../Action.cpp" line="1102"/>
       <source>File not found</source>
       <translation>找不到檔案</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1099"/>
+      <location filename="../Action.cpp" line="1102"/>
       <source>The file '%1' cannot be opened.</source>
       <translation>無法打開'%1'檔案。</translation>
     </message>
@@ -7810,47 +7804,47 @@ Do you want to specify another directory?</source>
   <context>
     <name>QDockWidget</name>
     <message>
-      <location filename="../MainWindow.cpp" line="651"/>
+      <location filename="../MainWindow.cpp" line="650"/>
       <source>Tree view</source>
       <translation>樹狀檢視</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="573"/>
+      <location filename="../MainWindow.cpp" line="572"/>
       <source>Tasks</source>
       <translation>任務</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="677"/>
+      <location filename="../MainWindow.cpp" line="676"/>
       <source>Property view</source>
       <translation>屬性檢視</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="590"/>
+      <location filename="../MainWindow.cpp" line="589"/>
       <source>Selection view</source>
       <translation>選擇視圖</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="705"/>
+      <location filename="../MainWindow.cpp" line="704"/>
       <source>Task List</source>
       <translation type="unfinished">Task List</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="730"/>
+      <location filename="../MainWindow.cpp" line="729"/>
       <source>Model</source>
       <translation>模型</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="756"/>
+      <location filename="../MainWindow.cpp" line="755"/>
       <source>DAG View</source>
       <translation>DAG視圖</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="608"/>
+      <location filename="../MainWindow.cpp" line="607"/>
       <source>Report view</source>
       <translation>報告檢視</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="628"/>
+      <location filename="../MainWindow.cpp" line="627"/>
       <source>Python console</source>
       <translation>Python 主控台</translation>
     </message>
@@ -7985,7 +7979,7 @@ Do you want to specify another directory?</source>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1230"/>
-      <location filename="../MainWindow.cpp" line="810"/>
+      <location filename="../MainWindow.cpp" line="809"/>
       <source>Unsaved document</source>
       <translation>未儲存文件</translation>
     </message>
@@ -8520,12 +8514,12 @@ Please open a browser window and type in: http://localhost:%1.</source>
       <translation>選項 ...</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2358"/>
+      <location filename="../View3DInventorViewer.cpp" line="2360"/>
       <source>Out of memory</source>
       <translation>記憶體不足</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2359"/>
+      <location filename="../View3DInventorViewer.cpp" line="2361"/>
       <source>Not enough memory available to display the data.</source>
       <translation>沒有足夠的記憶體可用來顯示資料。</translation>
     </message>
@@ -8541,7 +8535,7 @@ Please open a browser window and type in: http://localhost:%1.</source>
       <translation>在%2與%3中找不到檔案 %1 </translation>
     </message>
     <message>
-      <location filename="../NavigationStyle.cpp" line="1605"/>
+      <location filename="../NavigationStyle.cpp" line="1627"/>
       <source>Navigation styles</source>
       <translation>導航模式</translation>
     </message>
@@ -8562,32 +8556,32 @@ Please open a browser window and type in: http://localhost:%1.</source>
       <translation>您確定要關閉此對話窗嗎?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="812"/>
+      <location filename="../MainWindow.cpp" line="811"/>
       <source>Do you want to save your changes to document '%1' before closing?</source>
       <translation>於關閉前要儲存「%1」檔嘛?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="815"/>
+      <location filename="../MainWindow.cpp" line="814"/>
       <source>Do you want to save your changes to document before closing?</source>
       <translation>您是否在關閉前要儲存改變至此文件？</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="817"/>
+      <location filename="../MainWindow.cpp" line="816"/>
       <source>If you don't save, your changes will be lost.</source>
       <translation>若不儲存將會失去所有修改</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="822"/>
+      <location filename="../MainWindow.cpp" line="821"/>
       <source>Apply answer to all</source>
       <translation>套用答案到全部</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="912"/>
+      <location filename="../MainWindow.cpp" line="911"/>
       <source>%1 Document(s) not saved</source>
       <translation>%1 文件未儲存</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="913"/>
+      <location filename="../MainWindow.cpp" line="912"/>
       <source>Some documents could not be saved. Do you want to cancel closing?</source>
       <translation>某些文件無法被儲存。請問您是否要關閉它？</translation>
     </message>
@@ -9063,7 +9057,7 @@ the current copy will be lost.
       <translation>不允許：</translation>
     </message>
     <message>
-      <location filename="../Selection.cpp" line="908"/>
+      <location filename="../Selection.cpp" line="913"/>
       <source>Selection not allowed by filter</source>
       <translation>不允許使用過濾器選擇</translation>
     </message>
@@ -9942,16 +9936,16 @@ the current copy will be lost.
     <name>StdCmdMergeProjects</name>
     <message>
       <location filename="../CommandDoc.cpp" line="520"/>
-      <source>Merge project...</source>
-      <translation>合併專案...</translation>
+      <source>Merge document...</source>
+      <translation type="unfinished">Merge document...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="521"/>
       <location filename="../CommandDoc.cpp" line="523"/>
       <location filename="../CommandDoc.cpp" line="533"/>
       <location filename="../CommandDoc.cpp" line="542"/>
-      <source>Merge project</source>
-      <translation>合併專案</translation>
+      <source>Merge document</source>
+      <translation type="unfinished">Merge document</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="534"/>
@@ -9960,8 +9954,8 @@ the current copy will be lost.
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="543"/>
-      <source>Cannot merge project with itself.</source>
-      <translation>不能合併專案本身。</translation>
+      <source>Cannot merge document with itself.</source>
+      <translation type="unfinished">Cannot merge document with itself.</translation>
     </message>
   </context>
   <context>
@@ -10133,34 +10127,6 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
       <location filename="../CommandDoc.cpp" line="921"/>
       <source>Print preview</source>
       <translation>預覽列印</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdProjectInfo</name>
-    <message>
-      <location filename="../CommandDoc.cpp" line="828"/>
-      <source>Project i&amp;nformation...</source>
-      <translation>專案訊息(&amp;N)...</translation>
-    </message>
-    <message>
-      <location filename="../CommandDoc.cpp" line="829"/>
-      <location filename="../CommandDoc.cpp" line="831"/>
-      <source>Show details of the currently active project</source>
-      <translation>顯示目前作業中專案的詳細資訊</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdProjectUtil</name>
-    <message>
-      <location filename="../CommandDoc.cpp" line="859"/>
-      <source>Project utility...</source>
-      <translation>專案工具...</translation>
-    </message>
-    <message>
-      <location filename="../CommandDoc.cpp" line="860"/>
-      <location filename="../CommandDoc.cpp" line="861"/>
-      <source>Utility to extract or create project files</source>
-      <translation>提取或建立專案檔之工具</translation>
     </message>
   </context>
   <context>
@@ -12081,17 +12047,17 @@ after FreeCAD launches</source>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="28"/>
       <source>XY-Plane</source>
-      <translation>XY-平面</translation>
+      <translation type="unfinished">XY-Plane</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="38"/>
       <source>XZ-Plane</source>
-      <translation>XZ-平面</translation>
+      <translation type="unfinished">XZ-Plane</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="45"/>
       <source>YZ-Plane</source>
-      <translation>YZ-平面</translation>
+      <translation type="unfinished">YZ-Plane</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="76"/>
@@ -12101,7 +12067,7 @@ after FreeCAD launches</source>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="83"/>
       <source>Offset:</source>
-      <translation>偏移：</translation>
+      <translation type="unfinished">Offset:</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="103"/>
@@ -12599,11 +12565,6 @@ after FreeCAD launches</source>
       <translation>單位系統：</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="62"/>
-      <source>Unit system for all parts of the application. Can be overridden by specifying a project unit system.</source>
-      <translation type="unfinished">Unit system for all parts of the application. Can be overridden by specifying a project unit system.</translation>
-    </message>
-    <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="71"/>
       <source>Number of decimals:</source>
       <translation>小數位數：</translation>
@@ -12614,19 +12575,24 @@ after FreeCAD launches</source>
       <translation>數字與標註應顯示的小數位數</translation>
     </message>
     <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="62"/>
+      <source>Unit system for all parts of the application. Can be overridden by specifying a document unit system.</source>
+      <translation type="unfinished">Unit system for all parts of the application. Can be overridden by specifying a document unit system.</translation>
+    </message>
+    <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="93"/>
-      <source>Project unit system:</source>
-      <translation type="unfinished">Project unit system:</translation>
+      <source>Document unit system:</source>
+      <translation type="unfinished">Document unit system:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="100"/>
-      <source>Unit system stored in the current project</source>
-      <translation type="unfinished">Unit system stored in the current project</translation>
+      <source>Unit system stored in the current document</source>
+      <translation type="unfinished">Unit system stored in the current document</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="107"/>
-      <source>If enabled, project unit systems are ignored</source>
-      <translation type="unfinished">If enabled, project unit systems are ignored</translation>
+      <source>If enabled, document unit systems are ignored</source>
+      <translation type="unfinished">If enabled, document unit systems are ignored</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="110"/>
@@ -13552,6 +13518,34 @@ the region are non-opaque.</translation>
       <location filename="../OverlayWidgets.cpp" line="1836"/>
       <source>Mouse pass through, ESC to stop</source>
       <translation type="unfinished">Mouse pass through, ESC to stop</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdProjectInfo</name>
+    <message>
+      <location filename="../CommandDoc.cpp" line="828"/>
+      <source>Document i&amp;nformation...</source>
+      <translation type="unfinished">Document i&amp;nformation...</translation>
+    </message>
+    <message>
+      <location filename="../CommandDoc.cpp" line="829"/>
+      <location filename="../CommandDoc.cpp" line="831"/>
+      <source>Show details of the currently active document</source>
+      <translation type="unfinished">Show details of the currently active document</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdProjectUtil</name>
+    <message>
+      <location filename="../CommandDoc.cpp" line="859"/>
+      <source>Document utility...</source>
+      <translation type="unfinished">Document utility...</translation>
+    </message>
+    <message>
+      <location filename="../CommandDoc.cpp" line="860"/>
+      <location filename="../CommandDoc.cpp" line="861"/>
+      <source>Utility to extract or create document files</source>
+      <translation type="unfinished">Utility to extract or create document files</translation>
     </message>
   </context>
 </TS>

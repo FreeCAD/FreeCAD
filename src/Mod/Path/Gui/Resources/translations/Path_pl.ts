@@ -6873,17 +6873,17 @@ Starsze narzędzia nie są obsługiwane przez funkcję Bezpieczeństwo CAM</tran
     <message>
       <location filename="../../../Path/Main/Gui/Sanity.py" line="1343"/>
       <source>Tool number {} used by multiple tools</source>
-      <translation>Przypisany numer narzędzia {} jest wykorzystany wielokrotnie</translation>
+      <translation>Numer narzędzia {} jest wykorzystany wielokrotnie</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Sanity.py" line="1371"/>
       <source>Tool Controller '{}' has no spindlespeed</source>
-      <translation>Kontroler narzędzi '{}' nie ma prędkości wrzeciona</translation>
+      <translation>Kontroler narzędzia '{}' nie ma prędkości wrzeciona</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Sanity.py" line="1399"/>
       <source>Tool Controller '{}' is not used</source>
-      <translation>Kontroler narzędzi '{}' nie jest używany</translation>
+      <translation>Kontroler narzędzia '{}' nie jest używany</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Gui/Sanity.py" line="1494"/>

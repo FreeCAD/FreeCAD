@@ -637,46 +637,36 @@ installed addons will be checked for available updates
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="276"/>
-      <source>Path to Python executable (optional):</source>
-      <translation>Python 可執行檔的路徑(選填):</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManagerOptions.ui" line="308"/>
       <source>Path to git executable (optional):</source>
       <translation>git 可執行檔的路徑(選填):</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="295"/>
-      <source>The path to the Python executable for package installation with pip. Autodetected if needed and not specified.</source>
-      <translation>以 pip 安裝給 Python 可執行檔之套件路徑。如果需要且未指定，則會自動檢測。</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManagerOptions.ui" line="327"/>
       <source>The path to the git executable. Autodetected if needed and not specified.</source>
       <translation>git 可執行檔之路徑。如果需要且未指定，則會自動檢測。</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="348"/>
+      <location filename="../../AddonManagerOptions.ui" line="316"/>
       <source>Advanced Options</source>
       <translation>進階選項</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="354"/>
+      <location filename="../../AddonManagerOptions.ui" line="322"/>
       <source>Show option to change branches (requires git)</source>
       <translation>顯示更改分支的選項 (需要git)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="367"/>
+      <location filename="../../AddonManagerOptions.ui" line="335"/>
       <source>Disable git (fall back to ZIP downloads only)</source>
       <translation>停用 git (返回到僅使用 ZIP 下載)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="380"/>
+      <location filename="../../AddonManagerOptions.ui" line="348"/>
       <source>Activate Addon Manager options intended for developers of new Addons.</source>
       <translation>啟用針對新附加元件開發者設計的附加元件管理員選項。</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="383"/>
+      <location filename="../../AddonManagerOptions.ui" line="351"/>
       <source>Addon developer mode</source>
       <translation>附加元件開發者模式</translation>
     </message>
@@ -1242,7 +1232,7 @@ installed addons will be checked for available updates
       <translation>執行巨集失敗。查看控制台以獲得失敗的細節。</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="114"/>
+      <location filename="../../addonmanager_devmode.py" line="115"/>
       <location filename="../../addonmanager_devmode_people_table.py" line="86"/>
       <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
       <location filename="../../package_list.py" line="386"/>
@@ -1250,7 +1240,7 @@ installed addons will be checked for available updates
       <translation>維護者</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="115"/>
+      <location filename="../../addonmanager_devmode.py" line="116"/>
       <location filename="../../addonmanager_devmode_people_table.py" line="87"/>
       <location filename="../../addonmanager_devmode_person_editor.py" line="49"/>
       <location filename="../../package_list.py" line="423"/>
@@ -1258,28 +1248,28 @@ installed addons will be checked for available updates
       <translation>作者</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="162"/>
+      <location filename="../../manage_python_dependencies.py" line="163"/>
       <source>New Python Version Detected</source>
       <translation>偵測到新的 Python 版本</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="166"/>
+      <location filename="../../manage_python_dependencies.py" line="167"/>
       <source>This appears to be the first time this version of Python has been used with the Addon Manager. Would you like to install the same auto-installed dependencies for it?</source>
       <translation>這似乎是第一次使用這個版本的 Python 與附加元件管理員。您是否想要為其安裝相同的自動安裝相依套件？</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="196"/>
+      <location filename="../../manage_python_dependencies.py" line="197"/>
       <source>Processing, please wait...</source>
       <translation>處理中，請稍候...</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="244"/>
+      <location filename="../../manage_python_dependencies.py" line="245"/>
       <location filename="../../package_details.py" line="872"/>
       <source>Update</source>
       <translation>更新</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="339"/>
+      <location filename="../../manage_python_dependencies.py" line="340"/>
       <source>Updating...</source>
       <translation>正在更新...</translation>
     </message>
@@ -1602,7 +1592,7 @@ installed addons will be checked for available updates
       <translation>選擇一個用於此內容項目的圖示檔案</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="691"/>
+      <location filename="../../addonmanager_devmode.py" line="692"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="274"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="313"/>
       <source>{} is not a subdirectory of {}</source>
@@ -1821,107 +1811,107 @@ installed addons will be checked for available updates
       <translation>無法自 GitHub 讀取資料：請檢查您的網路連線與代理伺服器設定並且再次嘗試。</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="191"/>
+      <location filename="../../addonmanager_devmode.py" line="192"/>
       <source>XML failure while reading metadata from file {}</source>
       <translation>讀取檔案 {} 中的後設資料時發生 XML 錯誤</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="198"/>
+      <location filename="../../addonmanager_devmode.py" line="199"/>
       <source>Invalid metadata in file {}</source>
       <translation>在檔案 {} 中無效的後設資料</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="240"/>
+      <location filename="../../addonmanager_devmode.py" line="241"/>
       <source>WARNING: Path specified in package.xml metadata does not match currently checked-out branch.</source>
       <translation>警告：在 package.xml 後設資料中指定的路徑與當前檢查出的分支不匹配。</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="262"/>
+      <location filename="../../addonmanager_devmode.py" line="263"/>
       <source>Name</source>
       <translation>名稱</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="264"/>
+      <location filename="../../addonmanager_devmode.py" line="265"/>
       <source>Class</source>
       <translation>類別 (Class)</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="267"/>
+      <location filename="../../addonmanager_devmode.py" line="268"/>
       <source>Description</source>
       <translation>說明</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="271"/>
+      <location filename="../../addonmanager_devmode.py" line="272"/>
       <source>Subdirectory</source>
       <translation>子目錄</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="274"/>
+      <location filename="../../addonmanager_devmode.py" line="275"/>
       <source>Files</source>
       <translation>檔案</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="432"/>
+      <location filename="../../addonmanager_devmode.py" line="433"/>
       <source>Select the folder containing your Addon</source>
       <translation>選擇內含你的附加元件之資料夾</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="561"/>
+      <location filename="../../addonmanager_devmode.py" line="562"/>
       <source>No Vermin, cancelling operation.</source>
       <comment>NOTE: Vermin is a Python package and proper noun - do not translate</comment>
       <translation>沒有 Vermin 套件，正在取消操作。</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="566"/>
+      <location filename="../../addonmanager_devmode.py" line="567"/>
       <source>Scanning Addon for Python version compatibility</source>
       <translation>掃描附加元件以檢查 Python 版本的相容性</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="593"/>
+      <location filename="../../addonmanager_devmode.py" line="594"/>
       <source>Minimum Python Version Detected</source>
       <translation>偵測到的最低 Python 版本</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="597"/>
+      <location filename="../../addonmanager_devmode.py" line="598"/>
       <source>Vermin auto-detected a required version of Python 3.{}</source>
       <translation>Vermin 自動檢測到所需的 Python 3.{} 版本</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="609"/>
+      <location filename="../../addonmanager_devmode.py" line="610"/>
       <source>Install Vermin?</source>
       <translation>安裝 Vermin 套件?</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="613"/>
+      <location filename="../../addonmanager_devmode.py" line="614"/>
       <source>Auto-detecting the required version of Python for this Addon requires Vermin (https://pypi.org/project/vermin/). OK to install?</source>
       <translation>自動偵測此附加元件所需的 Python 版本需要使用 Vermin 套件
 (https://pypi.org/project/vermin/)。確定安裝 ?</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="619"/>
+      <location filename="../../addonmanager_devmode.py" line="620"/>
       <source>Attempting to install Vermin from PyPi</source>
       <translation>試圖從 PyPi 安裝 Vermin 套件</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="644"/>
-      <location filename="../../addonmanager_devmode.py" line="659"/>
+      <location filename="../../addonmanager_devmode.py" line="645"/>
+      <location filename="../../addonmanager_devmode.py" line="660"/>
       <source>Installation failed</source>
       <translation>安裝失敗</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="649"/>
+      <location filename="../../addonmanager_devmode.py" line="650"/>
       <source>Failed to install Vermin -- check Report View for details.</source>
       <comment>&apos;Vermin&apos; is the name of a Python package, do not translate</comment>
       <translation>安裝 Vermin 套件失敗 - 檢查報告檢視以看細節。</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="664"/>
+      <location filename="../../addonmanager_devmode.py" line="665"/>
       <source>Failed to import vermin after installation -- cannot scan Addon.</source>
       <comment>&apos;vermin&apos; is the name of a Python package, do not translate</comment>
       <translation>安裝後無法匯入 vermin - 無法掃瞄附加元件。</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="677"/>
+      <location filename="../../addonmanager_devmode.py" line="678"/>
       <source>Select an icon file for this package</source>
       <translation>選擇一個用於此套件的圖示檔案</translation>
     </message>
@@ -2125,22 +2115,22 @@ installed addons will be checked for available updates
       <translation>遠端通新</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_dependency_installer.py" line="129"/>
+      <location filename="../../addonmanager_dependency_installer.py" line="131"/>
       <source>Installation of Python package {} failed</source>
       <translation>安裝 Python 套件 {} 失敗</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_dependency_installer.py" line="155"/>
+      <location filename="../../addonmanager_dependency_installer.py" line="157"/>
       <source>Installation of optional package failed</source>
       <translation>安裝可選套件失敗</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_dependency_installer.py" line="183"/>
+      <location filename="../../addonmanager_dependency_installer.py" line="185"/>
       <source>Installing required dependency {}</source>
       <translation>安裝所需的相依性套件 {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_dependency_installer.py" line="193"/>
+      <location filename="../../addonmanager_dependency_installer.py" line="195"/>
       <source>Installation of Addon {} failed</source>
       <translation>安裝附加元件 {} 失敗</translation>
     </message>

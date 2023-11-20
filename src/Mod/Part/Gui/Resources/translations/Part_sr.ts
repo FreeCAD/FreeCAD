@@ -6848,13 +6848,13 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
     <message>
       <location filename="../../CommandFilter.cpp" line="46"/>
       <source>Selection filter</source>
-      <translation type="unfinished">Selection filter</translation>
+      <translation>Филтер избора</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="47"/>
       <location filename="../../CommandFilter.cpp" line="48"/>
       <source>Change the selection filter</source>
-      <translation type="unfinished">Change the selection filter</translation>
+      <translation>Промени филтер избора</translation>
     </message>
   </context>
   <context>
@@ -6862,13 +6862,13 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
     <message>
       <location filename="../../CommandFilter.cpp" line="173"/>
       <source>Vertex selection</source>
-      <translation type="unfinished">Vertex selection</translation>
+      <translation>Избор темена</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="174"/>
       <location filename="../../CommandFilter.cpp" line="176"/>
       <source>Only allow the selection of vertices</source>
-      <translation type="unfinished">Only allow the selection of vertices</translation>
+      <translation>Дозволи само избор темена</translation>
     </message>
   </context>
   <context>
@@ -6876,13 +6876,13 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
     <message>
       <location filename="../../CommandFilter.cpp" line="198"/>
       <source>Edge selection</source>
-      <translation type="unfinished">Edge selection</translation>
+      <translation>Избор ивице</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="199"/>
       <location filename="../../CommandFilter.cpp" line="201"/>
       <source>Only allow the selection of edges</source>
-      <translation type="unfinished">Only allow the selection of edges</translation>
+      <translation>Дозволи само избор ивица</translation>
     </message>
   </context>
   <context>
@@ -6890,13 +6890,13 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
     <message>
       <location filename="../../CommandFilter.cpp" line="223"/>
       <source>Face selection</source>
-      <translation type="unfinished">Face selection</translation>
+      <translation>Избор странице</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="224"/>
       <location filename="../../CommandFilter.cpp" line="226"/>
       <source>Only allow the selection of faces</source>
-      <translation type="unfinished">Only allow the selection of faces</translation>
+      <translation>Дозволи само избор страница</translation>
     </message>
   </context>
   <context>
@@ -6906,7 +6906,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
       <location filename="../../CommandFilter.cpp" line="249"/>
       <location filename="../../CommandFilter.cpp" line="251"/>
       <source>All selection filters cleared</source>
-      <translation type="unfinished">All selection filters cleared</translation>
+      <translation>Сви филтери избора су обрисани</translation>
     </message>
   </context>
 </TS>

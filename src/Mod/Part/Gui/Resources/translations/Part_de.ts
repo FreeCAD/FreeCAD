@@ -1231,7 +1231,7 @@
     <message>
       <location filename="../../Command.cpp" line="2229"/>
       <source>Clear all dimensions from the active 3D view.</source>
-      <translation type="unfinished">Clear all dimensions from the active 3D view.</translation>
+      <translation>Alle Maße aus der aktiven 3D-Ansicht löschen.</translation>
     </message>
   </context>
   <context>
@@ -6840,13 +6840,13 @@ Ein 'Verbundfilter' kann verwendet werden, um die restlichen Stücke zu extrahie
     <message>
       <location filename="../../CommandFilter.cpp" line="46"/>
       <source>Selection filter</source>
-      <translation type="unfinished">Selection filter</translation>
+      <translation>Auswahlfilter</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="47"/>
       <location filename="../../CommandFilter.cpp" line="48"/>
       <source>Change the selection filter</source>
-      <translation type="unfinished">Change the selection filter</translation>
+      <translation>Auswahlfilter wechseln</translation>
     </message>
   </context>
   <context>
@@ -6854,13 +6854,13 @@ Ein 'Verbundfilter' kann verwendet werden, um die restlichen Stücke zu extrahie
     <message>
       <location filename="../../CommandFilter.cpp" line="173"/>
       <source>Vertex selection</source>
-      <translation type="unfinished">Vertex selection</translation>
+      <translation>Knotenauswahl</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="174"/>
       <location filename="../../CommandFilter.cpp" line="176"/>
       <source>Only allow the selection of vertices</source>
-      <translation type="unfinished">Only allow the selection of vertices</translation>
+      <translation>Lässt nur die Auswahl von Knoten zu</translation>
     </message>
   </context>
   <context>
@@ -6868,13 +6868,13 @@ Ein 'Verbundfilter' kann verwendet werden, um die restlichen Stücke zu extrahie
     <message>
       <location filename="../../CommandFilter.cpp" line="198"/>
       <source>Edge selection</source>
-      <translation type="unfinished">Edge selection</translation>
+      <translation>Kantenauswahl</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="199"/>
       <location filename="../../CommandFilter.cpp" line="201"/>
       <source>Only allow the selection of edges</source>
-      <translation type="unfinished">Only allow the selection of edges</translation>
+      <translation>Lässt nur die Auswahl von Kanten zu</translation>
     </message>
   </context>
   <context>
@@ -6882,13 +6882,13 @@ Ein 'Verbundfilter' kann verwendet werden, um die restlichen Stücke zu extrahie
     <message>
       <location filename="../../CommandFilter.cpp" line="223"/>
       <source>Face selection</source>
-      <translation type="unfinished">Face selection</translation>
+      <translation>Flächenauswahl</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="224"/>
       <location filename="../../CommandFilter.cpp" line="226"/>
       <source>Only allow the selection of faces</source>
-      <translation type="unfinished">Only allow the selection of faces</translation>
+      <translation>Lässt nur die Auswahl von Flächen zu</translation>
     </message>
   </context>
   <context>
@@ -6898,7 +6898,7 @@ Ein 'Verbundfilter' kann verwendet werden, um die restlichen Stücke zu extrahie
       <location filename="../../CommandFilter.cpp" line="249"/>
       <location filename="../../CommandFilter.cpp" line="251"/>
       <source>All selection filters cleared</source>
-      <translation type="unfinished">All selection filters cleared</translation>
+      <translation>Alle Auswahlfilter gelöscht</translation>
     </message>
   </context>
 </TS>

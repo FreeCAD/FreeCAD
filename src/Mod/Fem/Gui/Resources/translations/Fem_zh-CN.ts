@@ -11,12 +11,12 @@
     <message>
       <location filename="../../Command.cpp" line="183"/>
       <source>Bearing constraint</source>
-      <translation type="unfinished">Bearing constraint</translation>
+      <translation>轴承约束</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="184"/>
       <source>Creates a bearing constraint</source>
-      <translation type="unfinished">Creates a bearing constraint</translation>
+      <translation>创建轴承约束</translation>
     </message>
   </context>
   <context>
@@ -101,7 +101,7 @@
     <message>
       <location filename="../../Command.cpp" line="440"/>
       <source>Force load</source>
-      <translation type="unfinished">Force load</translation>
+      <translation>力载荷</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="441"/>
@@ -119,12 +119,12 @@
     <message>
       <location filename="../../Command.cpp" line="497"/>
       <source>Gear constraint</source>
-      <translation type="unfinished">Gear constraint</translation>
+      <translation>齿轮约束</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="498"/>
       <source>Creates a gear constraint</source>
-      <translation type="unfinished">Creates a gear constraint</translation>
+      <translation>创建齿轮约束</translation>
     </message>
   </context>
   <context>
@@ -155,7 +155,7 @@
     <message>
       <location filename="../../Command.cpp" line="602"/>
       <source>Initial temperature</source>
-      <translation type="unfinished">Initial temperature</translation>
+      <translation>初始温度</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="603"/>
@@ -191,7 +191,7 @@
     <message>
       <location filename="../../Command.cpp" line="704"/>
       <source>Pressure load</source>
-      <translation type="unfinished">Pressure load</translation>
+      <translation>压力载荷</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="705"/>
@@ -209,12 +209,12 @@
     <message>
       <location filename="../../Command.cpp" line="815"/>
       <source>Pulley constraint</source>
-      <translation type="unfinished">Pulley constraint</translation>
+      <translation>滑轮约束</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="816"/>
       <source>Creates a pulley constraint</source>
-      <translation type="unfinished">Creates a pulley constraint</translation>
+      <translation>创建滑轮约束</translation>
     </message>
   </context>
   <context>
@@ -227,12 +227,12 @@
     <message>
       <location filename="../../Command.cpp" line="760"/>
       <source>Spring</source>
-      <translation type="unfinished">Spring</translation>
+      <translation>弹簧</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="761"/>
       <source>Creates a spring acting on a face</source>
-      <translation type="unfinished">Creates a spring acting on a face</translation>
+      <translation>创建作用于面的弹簧</translation>
     </message>
   </context>
   <context>
@@ -263,7 +263,7 @@
     <message>
       <location filename="../../Command.cpp" line="919"/>
       <source>Local coordinate system</source>
-      <translation type="unfinished">Local coordinate system</translation>
+      <translation>局部坐标系</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="920"/>
@@ -328,7 +328,7 @@
     <message>
       <location filename="../../Command.cpp" line="2443"/>
       <source>Apply changes to pipeline</source>
-      <translation type="unfinished">Apply changes to pipeline</translation>
+      <translation>将更改应用到管道中</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2444"/>
@@ -374,12 +374,12 @@
     <message>
       <location filename="../../Command.cpp" line="1845"/>
       <source>Function cut filter</source>
-      <translation type="unfinished">Function cut filter</translation>
+      <translation>函数裁剪筛选器</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1846"/>
       <source>Cut the data along an implicit function</source>
-      <translation type="unfinished">Cut the data along an implicit function</translation>
+      <translation>沿隐函数裁剪数据</translation>
     </message>
   </context>
   <context>
@@ -392,12 +392,12 @@
     <message>
       <location filename="../../Command.cpp" line="1897"/>
       <source>Line clip filter</source>
-      <translation type="unfinished">Line clip filter</translation>
+      <translation>线裁剪筛选器</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1898"/>
       <source>Define/create a clip filter which clips a field along a line</source>
-      <translation type="unfinished">Define/create a clip filter which clips a field along a line</translation>
+      <translation>定义/创建一个将场沿线裁剪的筛选器</translation>
     </message>
   </context>
   <context>
@@ -542,7 +542,7 @@
     <message>
       <location filename="../../Command.cpp" line="2563"/>
       <source>Wrong selection type</source>
-      <translation type="unfinished">Wrong selection type</translation>
+      <translation>选项类型错误</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2564"/>
@@ -591,7 +591,7 @@
     <message>
       <location filename="../../Command.cpp" line="406"/>
       <source>Create fluid boundary condition</source>
-      <translation type="unfinished">Create fluid boundary condition</translation>
+      <translation>创建流体边界条件</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="200"/>
@@ -651,7 +651,7 @@
     <message>
       <location filename="../../Command.cpp" line="832"/>
       <source>Make pulley constraint</source>
-      <translation type="unfinished">Make pulley constraint</translation>
+      <translation>创建滑轮约束</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="885"/>
@@ -661,7 +661,7 @@
     <message>
       <location filename="../../Command.cpp" line="936"/>
       <source>Make local coordinate system on face</source>
-      <translation type="unfinished">Make local coordinate system on face</translation>
+      <translation>在面上创建局部坐标系</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1041"/>
@@ -958,7 +958,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="467"/>
       <source>Time End</source>
-      <translation type="unfinished">Time End</translation>
+      <translation>结束时间</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcx.ui" line="506"/>
@@ -1019,7 +1019,7 @@
     <message>
       <location filename="../../DlgSettingsFemCcxImp.cpp" line="145"/>
       <source>File does not exist</source>
-      <translation type="unfinished">File does not exist</translation>
+      <translation>文件不存在</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemCcxImp.cpp" line="146"/>
@@ -1027,10 +1027,10 @@
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation type="unfinished">The specified executable
+      <translation>指定的可执行文件
 '%1'
- does not exist!
-Specify another file please.</translation>
+ 不存在
+请选择另一个文件。</translation>
     </message>
   </context>
   <context>
@@ -1064,7 +1064,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="261"/>
       <source>Multi-CPU core support:</source>
-      <translation type="unfinished">Multi-CPU core support:</translation>
+      <translation>多 CPU 核心支持：</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="268"/>
@@ -1076,7 +1076,7 @@ will be merged to make the volume boundaries invisible.</translation>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="272"/>
       <source>Filter results</source>
-      <translation type="unfinished">Filter results</translation>
+      <translation>筛选结果</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="128"/>
@@ -1106,12 +1106,12 @@ will be merged to make the volume boundaries invisible.</translation>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="205"/>
       <source>Multithreading:</source>
-      <translation type="unfinished">Multithreading:</translation>
+      <translation>多线程:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="217"/>
       <source>CPU cores to be used:</source>
-      <translation type="unfinished">CPU cores to be used:</translation>
+      <translation>要使用的 CPU 核心:</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmer.ui" line="227"/>
@@ -1121,7 +1121,7 @@ will be merged to make the volume boundaries invisible.</translation>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="108"/>
       <source>File does not exist</source>
-      <translation type="unfinished">File does not exist</translation>
+      <translation>文件不存在</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="109"/>
@@ -1129,10 +1129,10 @@ will be merged to make the volume boundaries invisible.</translation>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation type="unfinished">The specified executable
+      <translation>指定的可执行文件
 '%1'
- does not exist!
-Specify another file please.</translation>
+ 不存在
+请选择另一个文件。</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemElmerImp.cpp" line="127"/>
@@ -1251,7 +1251,7 @@ the constraint or material is applied.</translation>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="72"/>
       <source>Let the application manage (create, delete) the working directories for all solvers. Use temporary directories.</source>
-      <translation type="unfinished">Let the application manage (create, delete) the working directories for all solvers. Use temporary directories.</translation>
+      <translation>让应用程序自行管理 (创建或删除) 求解器的工作目录。使用临时目录。</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="98"/>
@@ -1342,7 +1342,7 @@ when the results dialog is opened</translation>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="393"/>
       <source>Default solver</source>
-      <translation type="unfinished">Default solver</translation>
+      <translation>默认求解器</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGeneral.ui" line="403"/>
@@ -1387,7 +1387,7 @@ adding an analysis container</translation>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="79"/>
       <source>File does not exist</source>
-      <translation type="unfinished">File does not exist</translation>
+      <translation>文件不存在</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemGmshImp.cpp" line="80"/>
@@ -1395,10 +1395,10 @@ adding an analysis container</translation>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation type="unfinished">The specified executable
+      <translation>指定的可执行文件
 '%1'
- does not exist!
-Specify another file please.</translation>
+ 不存在
+请选择另一个文件。</translation>
     </message>
   </context>
   <context>
@@ -1406,7 +1406,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../DlgSettingsFemInOutVtk.ui" line="14"/>
       <source>VTK</source>
-      <translation type="unfinished">VTK</translation>
+      <translation>VTK</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemInOutVtk.ui" line="23"/>
@@ -1416,7 +1416,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../DlgSettingsFemInOutVtk.ui" line="31"/>
       <source>Which object to import into</source>
-      <translation type="unfinished">Which object to import into</translation>
+      <translation>要导入的对象</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemInOutVtk.ui" line="38"/>
@@ -1449,7 +1449,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../DlgSettingsFemInOutVtk.ui" line="66"/>
       <source>VTK result object</source>
-      <translation type="unfinished">VTK result object</translation>
+      <translation>VTK 结果对象</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemInOutVtk.ui" line="71"/>
@@ -1502,7 +1502,7 @@ exported from FreeCAD.</translation>
     <message>
       <location filename="../../DlgSettingsFemMystranImp.cpp" line="81"/>
       <source>File does not exist</source>
-      <translation type="unfinished">File does not exist</translation>
+      <translation>文件不存在</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemMystranImp.cpp" line="82"/>
@@ -1510,10 +1510,10 @@ exported from FreeCAD.</translation>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation type="unfinished">The specified executable
+      <translation>指定的可执行文件
 '%1'
- does not exist!
-Specify another file please.</translation>
+ 不存在
+请选择另一个文件。</translation>
     </message>
   </context>
   <context>
@@ -1614,7 +1614,7 @@ that "MAXKOI" needs to be increased.</translation>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="107"/>
       <source>File does not exist</source>
-      <translation type="unfinished">File does not exist</translation>
+      <translation>文件不存在</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsFemZ88Imp.cpp" line="108"/>
@@ -2067,7 +2067,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="632"/>
       <source>Select an edge or a face, please.</source>
-      <translation type="unfinished">Select an edge or a face, please.</translation>
+      <translation>请选择一条边或一个面.</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="644"/>
@@ -2081,7 +2081,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="645"/>
       <source>Selected object is not a part object!</source>
-      <translation type="unfinished">Selected object is not a part object!</translation>
+      <translation>所选之物件并非零件对象!</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="654"/>
@@ -2167,7 +2167,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="316"/>
       <source>Select an edge or a face, please.</source>
-      <translation type="unfinished">Select an edge or a face, please.</translation>
+      <translation>请选择一条边或一个面.</translation>
     </message>
   </context>
   <context>
@@ -2702,7 +2702,7 @@ Specify another file please.</translation>
       <location filename="../ui/MaterialReinforcement.ui" line="45"/>
       <location filename="../ui/MaterialReinforcement.ui" line="118"/>
       <source>Choose</source>
-      <translation type="unfinished">Choose</translation>
+      <translation>选择</translation>
     </message>
     <message>
       <location filename="../ui/MaterialReinforcement.ui" line="53"/>
@@ -2771,12 +2771,12 @@ Specify another file please.</translation>
       <location filename="../ui/ElementFluid1D.ui" line="85"/>
       <location filename="../ui/ElementFluid1D.ui" line="738"/>
       <source>Hydraulic Radius</source>
-      <translation type="unfinished">Hydraulic Radius</translation>
+      <translation>水力半径</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="106"/>
       <source>Manning Coefficient</source>
-      <translation type="unfinished">Manning Coefficient</translation>
+      <translation>曼宁系数</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="134"/>
@@ -2870,7 +2870,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="533"/>
       <source>Head loss coefficient</source>
-      <translation type="unfinished">Head loss coefficient</translation>
+      <translation>压头损失系数</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="582"/>
@@ -2885,12 +2885,12 @@ Specify another file please.</translation>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="646"/>
       <source>Flow rate [mm^3/s]</source>
-      <translation type="unfinished">Flow rate [mm^3/s]</translation>
+      <translation>体积流率[mm^3/s]</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="651"/>
       <source>Head Loss[mm]</source>
-      <translation type="unfinished">Head Loss[mm]</translation>
+      <translation>压头损失[mm]</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="759"/>
@@ -3032,7 +3032,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="51"/>
       <source>Electric potential</source>
-      <translation type="unfinished">Electric potential</translation>
+      <translation>电位</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="88"/>
@@ -3042,7 +3042,7 @@ Specify another file please.</translation>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="91"/>
       <source>Vector Field</source>
-      <translation type="unfinished">Vector Field</translation>
+      <translation>矢量场</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="104"/>
@@ -3071,14 +3071,14 @@ with a harmonic/oscillating driving force</translation>
       <location filename="../ui/ElectrostaticPotential.ui" line="120"/>
       <location filename="../ui/Magnetization.ui" line="30"/>
       <source>Real</source>
-      <translation type="unfinished">Real</translation>
+      <translation>实部</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="40"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="130"/>
       <location filename="../ui/Magnetization.ui" line="40"/>
       <source>Imaginary</source>
-      <translation type="unfinished">Imaginary</translation>
+      <translation>虚部</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="140"/>
@@ -3377,34 +3377,34 @@ Note: for 2D only setting for x is possible,
     <message>
       <location filename="../ui/Magnetization.ui" line="66"/>
       <source>Real part of potential x-component</source>
-      <translation type="unfinished">Real part of potential x-component</translation>
+      <translation>势能X轴分量的实部</translation>
     </message>
     <message>
       <location filename="../ui/Magnetization.ui" line="110"/>
       <source>Imaginary part of potential x-component</source>
-      <translation type="unfinished">Imaginary part of potential x-component</translation>
+      <translation>势能X轴分量的虚部</translation>
     </message>
     <message>
       <location filename="../ui/Magnetization.ui" line="164"/>
       <source>Real part of potential y-component</source>
-      <translation type="unfinished">Real part of potential y-component</translation>
+      <translation>势能Y轴分量的实部</translation>
     </message>
     <message>
       <location filename="../ui/Magnetization.ui" line="208"/>
       <source>Imaginary part of potential y-component</source>
-      <translation type="unfinished">Imaginary part of potential y-component</translation>
+      <translation>势能Y轴分量的虚部</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="272"/>
       <location filename="../ui/Magnetization.ui" line="262"/>
       <source>Real part of potential z-component</source>
-      <translation type="unfinished">Real part of potential z-component</translation>
+      <translation>势能Z轴分量的实部</translation>
     </message>
     <message>
       <location filename="../ui/CurrentDensity.ui" line="316"/>
       <location filename="../ui/Magnetization.ui" line="306"/>
       <source>Imaginary part of potential z-component</source>
-      <translation type="unfinished">Imaginary part of potential z-component</translation>
+      <translation>势能Z轴分量的虚部</translation>
     </message>
     <message>
       <location filename="../ui/FlowVelocity.ui" line="164"/>
@@ -3647,7 +3647,7 @@ Note: for 2D only setting for x is possible,
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="433"/>
       <source>Force load</source>
-      <translation type="unfinished">Force load</translation>
+      <translation>力载荷</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.cpp" line="438"/>
@@ -3662,7 +3662,7 @@ Note: for 2D only setting for x is possible,
     <message>
       <location filename="../../TaskFemConstraintPressure.cpp" line="302"/>
       <source>Pressure load</source>
-      <translation type="unfinished">Pressure load</translation>
+      <translation>压力载荷</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="366"/>
@@ -3672,7 +3672,7 @@ Note: for 2D only setting for x is possible,
     <message>
       <location filename="../../TaskFemConstraintTransform.cpp" line="591"/>
       <source>Local coordinate system</source>
-      <translation type="unfinished">Local coordinate system</translation>
+      <translation>局部坐标系</translation>
     </message>
     <message>
       <location filename="../../ViewProviderFemConstraint.cpp" line="140"/>
@@ -3700,7 +3700,7 @@ Note: for 2D only setting for x is possible,
     <message>
       <location filename="../ui/ResultShow.ui" line="50"/>
       <source>Displacement Magnitude</source>
-      <translation type="unfinished">Displacement Magnitude</translation>
+      <translation>位移</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="57"/>
@@ -3735,7 +3735,7 @@ Note: for 2D only setting for x is possible,
     <message>
       <location filename="../ui/ResultShow.ui" line="117"/>
       <source>Max Shear Stress (Tresca)</source>
-      <translation type="unfinished">Max Shear Stress (Tresca)</translation>
+      <translation>特雷斯卡最大剪应力</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="130"/>
@@ -3871,37 +3871,37 @@ For possible variables, see the description box below.</translation>
     <message>
       <location filename="../ui/ResultHints.ui" line="178"/>
       <source>max shear stress: MS</source>
-      <translation type="unfinished">max shear stress: MS</translation>
+      <translation>最大剪应力: MS</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="188"/>
       <source>max princ. stress vector: s3x, s3y, s3z</source>
-      <translation type="unfinished">max princ. stress vector: s3x, s3y, s3z</translation>
+      <translation>第一主应力矢量: s3x, s3y, s3z</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="198"/>
       <source>max principal stress: P1</source>
-      <translation type="unfinished">max principal stress: P1</translation>
+      <translation>第一主应力: P1</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="208"/>
       <source>med princ. stress vector: s2x, s2y, s2z</source>
-      <translation type="unfinished">med princ. stress vector: s2x, s2y, s2z</translation>
+      <translation>第二主应力矢量: s2x, s2y, s2z</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="218"/>
       <source>med principal stress: P2</source>
-      <translation type="unfinished">med principal stress: P2</translation>
+      <translation>第二主应力: P2</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="228"/>
       <source>min princ. stress vector: s1x, s1y, s1z</source>
-      <translation type="unfinished">min princ. stress vector: s1x, s1y, s1z</translation>
+      <translation>第三主应力矢量: s1x, s1y, s1z</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="238"/>
       <source>min principal stress: P3</source>
-      <translation type="unfinished">min principal stress: P3</translation>
+      <translation>第三主应力: P3</translation>
     </message>
     <message>
       <location filename="../ui/ResultHints.ui" line="148"/>
@@ -4498,7 +4498,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="100"/>
       <source>N</source>
-      <translation type="unfinished">N</translation>
+      <translation>N</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="117"/>
@@ -5359,7 +5359,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="179"/>
       <source>Constant vacuum permittivity</source>
-      <translation type="unfinished">Constant vacuum permittivity</translation>
+      <translation>真空介电系数</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="183"/>
@@ -5738,7 +5738,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1140"/>
       <source>Solver Elmer</source>
-      <translation type="unfinished">Solver Elmer</translation>
+      <translation>Elmer求解器</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1145"/>
@@ -5751,12 +5751,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1156"/>
       <source>Solver Mystran</source>
-      <translation type="unfinished">Solver Mystran</translation>
+      <translation>Mystran求解器</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1158"/>
       <source>Creates a FEM solver Mystran</source>
-      <translation type="unfinished">Creates a FEM solver Mystran</translation>
+      <translation>创建Mystran有限元求解器</translation>
     </message>
   </context>
   <context>
@@ -5777,12 +5777,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femcommands/commands.py" line="1188"/>
       <source>Solver Z88</source>
-      <translation type="unfinished">Solver Z88</translation>
+      <translation>Z88求解器</translation>
     </message>
     <message>
       <location filename="../../../femcommands/commands.py" line="1190"/>
       <source>Creates a FEM solver Z88</source>
-      <translation type="unfinished">Creates a FEM solver Z88</translation>
+      <translation>建立Z88有限元求解器</translation>
     </message>
   </context>
   <context>
@@ -5790,18 +5790,18 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="215"/>
       <source>Solver Control</source>
-      <translation type="unfinished">Solver Control</translation>
+      <translation>求解器控制</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="226"/>
       <source>Working Directory</source>
-      <translation type="unfinished">Working Directory</translation>
+      <translation>工作目录</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="230"/>
       <location filename="../../../femsolver/solver_taskpanel.py" line="306"/>
       <source>Write</source>
-      <translation type="unfinished">Write</translation>
+      <translation>写入</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="231"/>
@@ -5814,7 +5814,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="248"/>
       <source>Elapsed Time:</source>
-      <translation type="unfinished">Elapsed Time:</translation>
+      <translation>耗时:</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="308"/>
@@ -5826,17 +5826,17 @@ used for the Elmer solver</translation>
       <location filename="../../../femsolver/solver_taskpanel.py" line="310"/>
       <location filename="../../../femsolver/solver_taskpanel.py" line="314"/>
       <source>Re-write</source>
-      <translation type="unfinished">Re-write</translation>
+      <translation>重新写入</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="316"/>
       <source>Re-run</source>
-      <translation type="unfinished">Re-run</translation>
+      <translation>重新运行</translation>
     </message>
     <message>
       <location filename="../../../femsolver/solver_taskpanel.py" line="318"/>
       <source>Abort</source>
-      <translation type="unfinished">Abort</translation>
+      <translation>中止</translation>
     </message>
   </context>
   <context>
@@ -5916,7 +5916,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="294"/>
       <source>Displacement Magnitude</source>
-      <translation type="unfinished">Displacement Magnitude</translation>
+      <translation>位移</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="309"/>
@@ -5988,7 +5988,7 @@ Please select a result type first.</translation>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="569"/>
       <source>Histogram of {}</source>
-      <translation type="unfinished">Histogram of {}</translation>
+      <translation>{} 的直方图</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="570"/>

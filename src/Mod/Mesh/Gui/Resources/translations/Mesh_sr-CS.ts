@@ -1219,7 +1219,7 @@
       <location filename="../../DlgRegularSolid.ui" line="236"/>
       <location filename="../../DlgRegularSolid.ui" line="387"/>
       <source>Length:</source>
-      <translation type="unfinished">Length:</translation>
+      <translation>Dužina:</translation>
     </message>
     <message>
       <location filename="../../DlgRegularSolid.ui" line="143"/>

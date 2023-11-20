@@ -4520,7 +4520,7 @@ normal vector of the face is used as direction</translation>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="137"/>
       <source>Reverse direction</source>
-      <translation>Inverter direção</translation>
+      <translation type="unfinished">Reverse direction</translation>
     </message>
   </context>
   <context>
@@ -4929,7 +4929,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="79"/>
       <source>Field</source>
-      <translation>Campo</translation>
+      <translation type="unfinished">Field</translation>
     </message>
     <message>
       <location filename="../../TaskPostDisplay.ui" line="116"/>

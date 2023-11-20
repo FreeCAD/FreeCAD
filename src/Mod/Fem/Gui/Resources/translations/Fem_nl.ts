@@ -5936,7 +5936,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="351"/>
       <source>von Mises Stress</source>
-      <translation>von Mises spanning</translation>
+      <translation type="unfinished">von Mises Stress</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="363"/>
@@ -5946,7 +5946,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="375"/>
       <source>Max Principal Stress</source>
-      <translation>Maximale principiële spanning</translation>
+      <translation type="unfinished">Max Principal Stress</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="387"/>
@@ -5956,7 +5956,7 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="399"/>
       <source>Mass Flow Rate</source>
-      <translation>Massastroomsnelheid</translation>
+      <translation type="unfinished">Mass Flow Rate</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="411"/>
@@ -5966,12 +5966,12 @@ used for the Elmer solver</translation>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="423"/>
       <source>Min Principal Stress</source>
-      <translation>Minimale principiële spanning</translation>
+      <translation type="unfinished">Min Principal Stress</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="435"/>
       <source>Equivalent Plastic Strain</source>
-      <translation>Equivalente plastische rek</translation>
+      <translation type="unfinished">Equivalent Plastic Strain</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="454"/>
