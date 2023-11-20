@@ -86,9 +86,13 @@ class BaseExport ClassTemplate
 public:
     /// Construction
     ClassTemplate();
+    ClassTemplate(const ClassTemplate&);
+    ClassTemplate(ClassTemplate&&);
     /// Destruction
     virtual ~ClassTemplate();
 
+    ClassTemplate& operator=(const ClassTemplate&);
+    ClassTemplate& operator=(ClassTemplate&&);
     int testMe(int a, const char* s);
 
     /**

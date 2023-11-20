@@ -47,6 +47,8 @@ Exception::Exception()
 
 Exception::Exception(const Exception& inst) = default;
 
+Exception::Exception(Exception&& inst) noexcept = default;
+
 Exception::Exception(const char* sMessage)
     : _sErrMsg(sMessage)
     , _line(0)
@@ -67,6 +69,17 @@ Exception& Exception::operator=(const Exception& inst)
     _file = inst._file;
     _line = inst._line;
     _function = inst._function;
+    _isTranslatable = inst._isTranslatable;
+    return *this;
+}
+
+Exception& Exception::operator=(Exception&& inst) noexcept
+{
+    _sErrMsg = std::move(inst._sErrMsg);
+    _file = std::move(inst._file);
+    _line = inst._line;
+    _function = std::move(inst._function);
+    _isTranslatable = inst._isTranslatable;
     return *this;
 }
 
@@ -86,12 +99,14 @@ void Exception::ReportException() const
             msg = _sErrMsg.c_str();
         }
 #ifdef FC_DEBUG
-        if (_function.size()) {
+        if (!_function.empty()) {
             _FC_ERR(_file.c_str(), _line, _function << " -- " << msg);
         }
         else
 #endif
+        {
             _FC_ERR(_file.c_str(), _line, msg);
+        }
         _isReported = true;
     }
 }
@@ -184,9 +199,7 @@ PyObject* AbortException::getPyExceptionType() const
 // ---------------------------------------------------------
 
 
-XMLBaseException::XMLBaseException()
-    : Exception()
-{}
+XMLBaseException::XMLBaseException() = default;
 
 XMLBaseException::XMLBaseException(const char* sMessage)
     : Exception(sMessage)
@@ -289,14 +302,6 @@ std::string FileException::getFileName() const
     return file.fileName();
 }
 
-FileException& FileException::operator=(const FileException& inst)
-{
-    Exception::operator=(inst);
-    file = inst.file;
-    _sErrMsgAndFileName = inst._sErrMsgAndFileName;
-    return *this;
-}
-
 const char* FileException::what() const noexcept
 {
     return _sErrMsgAndFileName.c_str();
@@ -313,12 +318,14 @@ void FileException::ReportException() const
             msg = _sErrMsgAndFileName.c_str();
         }
 #ifdef FC_DEBUG
-        if (_function.size()) {
+        if (!_function.empty()) {
             _FC_ERR(_file.c_str(), _line, _function << " -- " << msg);
         }
         else
 #endif
+        {
             _FC_ERR(_file.c_str(), _line, msg);
+        }
         _isReported = true;
     }
 }
@@ -350,9 +357,7 @@ PyObject* FileException::getPyExceptionType() const
 // ---------------------------------------------------------
 
 
-FileSystemError::FileSystemError()
-    : Exception()
-{}
+FileSystemError::FileSystemError() = default;
 
 FileSystemError::FileSystemError(const char* sMessage)
     : Exception(sMessage)
@@ -370,9 +375,7 @@ PyObject* FileSystemError::getPyExceptionType() const
 // ---------------------------------------------------------
 
 
-BadFormatError::BadFormatError()
-    : Exception()
-{}
+BadFormatError::BadFormatError() = default;
 
 BadFormatError::BadFormatError(const char* sMessage)
     : Exception(sMessage)
@@ -404,7 +407,22 @@ MemoryException::MemoryException(const MemoryException& inst)
 #endif
 {}
 
+MemoryException::MemoryException(MemoryException&& inst) noexcept
+#if defined(__GNUC__)
+    : std::bad_alloc()
+    , Exception(inst)
+#else
+    : Exception(inst)
+#endif
+{}
+
 MemoryException& MemoryException::operator=(const MemoryException& inst)
+{
+    Exception::operator=(inst);
+    return *this;
+}
+
+MemoryException& MemoryException::operator=(MemoryException&& inst) noexcept
 {
     Exception::operator=(inst);
     return *this;
@@ -465,9 +483,7 @@ PyObject* AbnormalProgramTermination::getPyExceptionType() const
 
 // ---------------------------------------------------------
 
-UnknownProgramOption::UnknownProgramOption()
-    : Exception()
-{}
+UnknownProgramOption::UnknownProgramOption() = default;
 
 UnknownProgramOption::UnknownProgramOption(const char* sMessage)
     : Exception(sMessage)
@@ -484,9 +500,7 @@ PyObject* UnknownProgramOption::getPyExceptionType() const
 
 // ---------------------------------------------------------
 
-ProgramInformation::ProgramInformation()
-    : Exception()
-{}
+ProgramInformation::ProgramInformation() = default;
 
 ProgramInformation::ProgramInformation(const char* sMessage)
     : Exception(sMessage)
@@ -498,9 +512,7 @@ ProgramInformation::ProgramInformation(const std::string& sMessage)
 
 // ---------------------------------------------------------
 
-TypeError::TypeError()
-    : Exception()
-{}
+TypeError::TypeError() = default;
 
 TypeError::TypeError(const char* sMessage)
     : Exception(sMessage)
@@ -517,9 +529,7 @@ PyObject* TypeError::getPyExceptionType() const
 
 // ---------------------------------------------------------
 
-ValueError::ValueError()
-    : Exception()
-{}
+ValueError::ValueError() = default;
 
 ValueError::ValueError(const char* sMessage)
     : Exception(sMessage)
@@ -536,9 +546,7 @@ PyObject* ValueError::getPyExceptionType() const
 
 // ---------------------------------------------------------
 
-IndexError::IndexError()
-    : Exception()
-{}
+IndexError::IndexError() = default;
 
 IndexError::IndexError(const char* sMessage)
     : Exception(sMessage)
@@ -555,9 +563,7 @@ PyObject* IndexError::getPyExceptionType() const
 
 // ---------------------------------------------------------
 
-NameError::NameError()
-    : Exception()
-{}
+NameError::NameError() = default;
 
 NameError::NameError(const char* sMessage)
     : Exception(sMessage)
@@ -574,9 +580,7 @@ PyObject* NameError::getPyExceptionType() const
 
 // ---------------------------------------------------------
 
-ImportError::ImportError()
-    : Exception()
-{}
+ImportError::ImportError() = default;
 
 ImportError::ImportError(const char* sMessage)
     : Exception(sMessage)
@@ -593,9 +597,7 @@ PyObject* ImportError::getPyExceptionType() const
 
 // ---------------------------------------------------------
 
-AttributeError::AttributeError()
-    : Exception()
-{}
+AttributeError::AttributeError() = default;
 
 AttributeError::AttributeError(const char* sMessage)
     : Exception(sMessage)
@@ -612,9 +614,7 @@ PyObject* AttributeError::getPyExceptionType() const
 
 // ---------------------------------------------------------
 
-RuntimeError::RuntimeError()
-    : Exception()
-{}
+RuntimeError::RuntimeError() = default;
 
 RuntimeError::RuntimeError(const char* sMessage)
     : Exception(sMessage)
@@ -650,9 +650,7 @@ PyObject* BadGraphError::getPyExceptionType() const
 
 // ---------------------------------------------------------
 
-NotImplementedError::NotImplementedError()
-    : Exception()
-{}
+NotImplementedError::NotImplementedError() = default;
 
 NotImplementedError::NotImplementedError(const char* sMessage)
     : Exception(sMessage)
@@ -669,9 +667,7 @@ PyObject* NotImplementedError::getPyExceptionType() const
 
 // ---------------------------------------------------------
 
-ZeroDivisionError::ZeroDivisionError()
-    : Exception()
-{}
+ZeroDivisionError::ZeroDivisionError() = default;
 
 ZeroDivisionError::ZeroDivisionError(const char* sMessage)
     : Exception(sMessage)
@@ -688,9 +684,7 @@ PyObject* ZeroDivisionError::getPyExceptionType() const
 
 // ---------------------------------------------------------
 
-ReferenceError::ReferenceError()
-    : Exception()
-{}
+ReferenceError::ReferenceError() = default;
 
 ReferenceError::ReferenceError(const char* sMessage)
     : Exception(sMessage)
@@ -707,9 +701,7 @@ PyObject* ReferenceError::getPyExceptionType() const
 
 // ---------------------------------------------------------
 
-ExpressionError::ExpressionError()
-    : Exception()
-{}
+ExpressionError::ExpressionError() = default;
 
 ExpressionError::ExpressionError(const char* sMessage)
     : Exception(sMessage)
@@ -726,9 +718,7 @@ PyObject* ExpressionError::getPyExceptionType() const
 
 // ---------------------------------------------------------
 
-ParserError::ParserError()
-    : Exception()
-{}
+ParserError::ParserError() = default;
 
 ParserError::ParserError(const char* sMessage)
     : Exception(sMessage)
@@ -745,9 +735,7 @@ PyObject* ParserError::getPyExceptionType() const
 
 // ---------------------------------------------------------
 
-UnicodeError::UnicodeError()
-    : Exception()
-{}
+UnicodeError::UnicodeError() = default;
 
 UnicodeError::UnicodeError(const char* sMessage)
     : Exception(sMessage)
@@ -764,9 +752,7 @@ PyObject* UnicodeError::getPyExceptionType() const
 
 // ---------------------------------------------------------
 
-OverflowError::OverflowError()
-    : Exception()
-{}
+OverflowError::OverflowError() = default;
 
 OverflowError::OverflowError(const char* sMessage)
     : Exception(sMessage)
@@ -783,9 +769,7 @@ PyObject* OverflowError::getPyExceptionType() const
 
 // ---------------------------------------------------------
 
-UnderflowError::UnderflowError()
-    : Exception()
-{}
+UnderflowError::UnderflowError() = default;
 
 UnderflowError::UnderflowError(const char* sMessage)
     : Exception(sMessage)
@@ -802,9 +786,7 @@ PyObject* UnderflowError::getPyExceptionType() const
 
 // ---------------------------------------------------------
 
-UnitsMismatchError::UnitsMismatchError()
-    : Exception()
-{}
+UnitsMismatchError::UnitsMismatchError() = default;
 
 UnitsMismatchError::UnitsMismatchError(const char* sMessage)
     : Exception(sMessage)
@@ -821,9 +803,7 @@ PyObject* UnitsMismatchError::getPyExceptionType() const
 
 // ---------------------------------------------------------
 
-CADKernelError::CADKernelError()
-    : Exception()
-{}
+CADKernelError::CADKernelError() = default;
 
 CADKernelError::CADKernelError(const char* sMessage)
     : Exception(sMessage)
@@ -840,9 +820,7 @@ PyObject* CADKernelError::getPyExceptionType() const
 
 // ---------------------------------------------------------
 
-RestoreError::RestoreError()
-    : Exception()
-{}
+RestoreError::RestoreError() = default;
 
 RestoreError::RestoreError(const char* sMessage)
     : Exception(sMessage)

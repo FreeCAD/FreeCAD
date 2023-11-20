@@ -540,6 +540,7 @@ void Matrix4D::inverse()
 
 using Matrix = double*;
 
+// NOLINTBEGIN
 void Matrix_gauss(Matrix a, Matrix b)
 {
     int ipiv[4], indxr[4], indxc[4];
@@ -617,6 +618,7 @@ void Matrix_gauss(Matrix a, Matrix b)
         }
     }
 }
+// NOLINTEND
 
 void Matrix4D::inverseOrthogonal()
 {
@@ -967,8 +969,7 @@ std::array<Matrix4D, 4> Matrix4D::decompose() const
     std::array<Vector3d, 3> dirs = {Vector3d(1., 0., 0.),
                                     Vector3d(0., 1., 0.),
                                     Vector3d(0., 0., 1.)};
-    int i;
-    for (i = 0; i < 3; i++) {
+    for (int i = 0; i < 3; i++) {
         if (residualMatrix.getCol(i).IsNull()) {
             continue;
         }
@@ -978,24 +979,23 @@ std::array<Matrix4D, 4> Matrix4D::decompose() const
             prim_dir = i;
             continue;
         }
-        else {
-            Vector3d cross = dirs[prim_dir].Cross(residualMatrix.getCol(i));
-            if (cross.IsNull()) {
-                continue;
-            }
-            cross.Normalize();
-            int last_dir = 3 - i - prim_dir;
-            if (i - prim_dir == 1) {
-                dirs[last_dir] = cross;
-                dirs[i] = cross.Cross(dirs[prim_dir]);
-            }
-            else {
-                dirs[last_dir] = -cross;
-                dirs[i] = dirs[prim_dir].Cross(-cross);
-            }
-            prim_dir = -2;  // done
-            break;
+
+        Vector3d cross = dirs[prim_dir].Cross(residualMatrix.getCol(i));
+        if (cross.IsNull()) {
+            continue;
         }
+        cross.Normalize();
+        int last_dir = 3 - i - prim_dir;
+        if (i - prim_dir == 1) {
+            dirs[last_dir] = cross;
+            dirs[i] = cross.Cross(dirs[prim_dir]);
+        }
+        else {
+            dirs[last_dir] = -cross;
+            dirs[i] = dirs[prim_dir].Cross(-cross);
+        }
+        prim_dir = -2;  // done
+        break;
     }
     if (prim_dir >= 0) {
         // handle case with only one valid direction
@@ -1025,13 +1025,13 @@ std::array<Matrix4D, 4> Matrix4D::decompose() const
     scaleMatrix.dMtrx4D[1][1] = yScale;
     scaleMatrix.dMtrx4D[2][2] = zScale;
     // The remaining shear
-    residualMatrix.scale(xScale ? 1.0 / xScale : 1.0,
-                         yScale ? 1.0 / yScale : 1.0,
-                         zScale ? 1.0 / zScale : 1.0);
+    residualMatrix.scale(xScale != 0 ? 1.0 / xScale : 1.0,
+                         yScale != 0 ? 1.0 / yScale : 1.0,
+                         zScale != 0 ? 1.0 / zScale : 1.0);
     // Restore trace in shear matrix
     residualMatrix.setDiagonal(Vector3d(1.0, 1.0, 1.0));
     // Remove values close to zero
-    for (i = 0; i < 3; i++) {
+    for (int i = 0; i < 3; i++) {
         if (std::abs(scaleMatrix.dMtrx4D[i][i]) < 1e-15) {
             scaleMatrix.dMtrx4D[i][i] = 0.0;
         }

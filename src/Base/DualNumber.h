@@ -25,6 +25,7 @@
 
 #include <cmath>
 
+// NOLINTBEGIN(readability-identifier-length)
 namespace Base
 {
 
@@ -44,7 +45,7 @@ public:
 
 public:
     DualNumber() = default;
-    DualNumber(double re, double du = 0.0)
+    DualNumber(double re, double du = 0.0)  // NOLINT
         : re(re)
         , du(du)
     {}
@@ -107,6 +108,7 @@ inline DualNumber pow(DualNumber a, double pw)
     return {std::pow(a.re, pw), pw * std::pow(a.re, pw - 1.0) * a.du};
 }
 }  // namespace Base
+// NOLINTEND(readability-identifier-length)
 
 
 #endif

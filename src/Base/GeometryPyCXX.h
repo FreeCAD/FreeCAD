@@ -40,18 +40,18 @@
 namespace Base
 {
 template<typename T>
-inline Vector3<T> getVectorFromTuple(PyObject* o)
+inline Vector3<T> getVectorFromTuple(PyObject* py)
 {
-    Py::Sequence tuple(o);
+    Py::Sequence tuple(py);
     if (tuple.size() != 3) {
         throw Py::ValueError("Expected sequence of size 3");
     }
 
-    T x = static_cast<T>(Py::Float(tuple[0]));
-    T y = static_cast<T>(Py::Float(tuple[1]));
-    T z = static_cast<T>(Py::Float(tuple[2]));
+    T vx = static_cast<T>(Py::Float(tuple[0]));
+    T vy = static_cast<T>(Py::Float(tuple[1]));
+    T vz = static_cast<T>(Py::Float(tuple[2]));
 
-    return Vector3<T>(x, y, z);
+    return Vector3<T>(vx, vy, vz);
 }
 
 class BaseExport Vector2dPy: public Py::PythonClass<Vector2dPy>  // NOLINT
@@ -59,10 +59,10 @@ class BaseExport Vector2dPy: public Py::PythonClass<Vector2dPy>  // NOLINT
 public:
     static Py::PythonType& behaviors();
     static PyTypeObject* type_object();
-    static bool check(PyObject* p);
+    static bool check(PyObject* py);
 
     static Py::PythonClassObject<Vector2dPy> create(const Vector2d&);
-    static Py::PythonClassObject<Vector2dPy> create(double x, double y);
+    static Py::PythonClassObject<Vector2dPy> create(double vx, double vy);
     Vector2dPy(Py::PythonClassInstance* self, Py::Tuple& args, Py::Dict& kwds);
     ~Vector2dPy() override;
 
@@ -78,10 +78,10 @@ public:
     {
         v = n;
     }
-    inline void setValue(double x, double y)
+    inline void setValue(double vx, double vy)
     {
-        v.x = x;
-        v.y = y;
+        v.x = vx;
+        v.y = vy;
     }
 
     /** @name methods for group handling */
@@ -152,14 +152,14 @@ public:
     }
 
     Vector(const Vector& ob)
-        : Object(*ob)
+        : Object(ob)
     {
         validate();
     }
 
     explicit Vector(const Base::Vector3d&);
     explicit Vector(const Base::Vector3f&);
-    bool accepts(PyObject* pyob) const override;
+    bool accepts(PyObject* obj) const override;
 
     Vector(const Object& other)
         : Object(other.ptr())
@@ -220,9 +220,9 @@ public:
         set(new PyT(new T()), true);
         validate();
     }
-    explicit GeometryT(const T& v)
+    explicit GeometryT(const T& val)
     {
-        set(new PyT(new T(v)), true);
+        set(new PyT(new T(val)), true);
         validate();
     }
     GeometryT(const Object& other)
@@ -236,7 +236,8 @@ public:
     }
     GeometryT& operator=(const Object& rhs)
     {
-        return (*this = *rhs);
+        *this = *rhs;
+        return *this;
     }
     GeometryT& operator=(PyObject* rhsp)
     {
@@ -246,9 +247,9 @@ public:
         set(rhsp, false);
         return *this;
     }
-    GeometryT& operator=(const T& v)
+    GeometryT& operator=(const T& val)
     {
-        set(new PyT(v), true);
+        set(new PyT(val), true);
         return *this;
     }
     const T& getValue() const
@@ -256,8 +257,8 @@ public:
         // cast the PyObject pointer to the matching sub-class
         // and call then the defined member function
         PyT* py = static_cast<PyT*>(ptr());
-        T* v = (py->*valuePtr)();
-        return *v;
+        T* val = (py->*valuePtr)();
+        return *val;
     }
     operator T() const
     {

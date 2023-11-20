@@ -115,9 +115,9 @@ void PyException::raiseException()
     }
 
     if (_exceptionType == Base::PyExc_FC_FreeCADAbort) {
-        Base::AbortException e(_sErrMsg.c_str());
-        e.setReported(_isReported);
-        throw e;
+        Base::AbortException exc(_sErrMsg.c_str());
+        exc.setReported(_isReported);
+        throw exc;
     }
 
     throw *this;
@@ -160,7 +160,10 @@ SystemExitException::SystemExitException()
 
     long int errCode = 1;
     std::string errMsg = "System exit";
-    PyObject *type {}, *value {}, *traceback {}, *code {};
+    PyObject* type {};
+    PyObject* value {};
+    PyObject* traceback {};
+    PyObject* code {};
 
     PyGILStateLocker locker;
     PyErr_Fetch(&type, &value, &traceback);
@@ -228,7 +231,9 @@ InterpreterSingleton::~InterpreterSingleton() = default;
 
 std::string InterpreterSingleton::runString(const char* sCmd)
 {
-    PyObject *module {}, *dict {}, *presult {}; /* "exec code in d, d" */
+    PyObject* module {};
+    PyObject* dict {};
+    PyObject* presult {};
 
     PyGILStateLocker locker;
     module = PP_Load_Module("__main__"); /* get module, init python */
@@ -246,10 +251,9 @@ std::string InterpreterSingleton::runString(const char* sCmd)
         if (PyErr_ExceptionMatches(PyExc_SystemExit)) {
             throw SystemExitException();
         }
-        else {
-            PyException::ThrowException();
-            return {};  // just to quieten code analyzers
-        }
+
+        PyException::ThrowException();
+        return {};  // just to quieten code analyzers
     }
 
     PyObject* repr = PyObject_Repr(presult);
@@ -259,10 +263,9 @@ std::string InterpreterSingleton::runString(const char* sCmd)
         Py_DECREF(repr);
         return ret;
     }
-    else {
-        PyErr_Clear();
-        return {};
-    }
+
+    PyErr_Clear();
+    return {};
 }
 
 /** runStringWithKey(psCmd, key, key_initial_value)
@@ -292,16 +295,15 @@ std::string InterpreterSingleton::runStringWithKey(const char* psCmd,
         if (PyErr_ExceptionMatches(PyExc_SystemExit)) {
             throw SystemExitException();
         }
-        else {
-            PyException::ThrowException();
-            return {};  // just to quieten code analyzers
-        }
+
+        PyException::ThrowException();
+        return {};  // just to quieten code analyzers
     }
     Py_DECREF(presult);
 
     Py::Object key_return_value = localDictionary.getItem(key);
     if (!key_return_value.isString()) {
-        key_return_value = key_return_value.str();
+        key_return_value = key_return_value.str();  // NOLINT
     }
 
     Py::Bytes str = Py::String(key_return_value).encode("utf-8", "~E~");
@@ -311,7 +313,9 @@ std::string InterpreterSingleton::runStringWithKey(const char* psCmd,
 
 Py::Object InterpreterSingleton::runStringObject(const char* sCmd)
 {
-    PyObject *module {}, *dict {}, *presult {}; /* "exec code in d, d" */
+    PyObject* module {};
+    PyObject* dict {};
+    PyObject* presult {};
 
     PyGILStateLocker locker;
     module = PP_Load_Module("__main__"); /* get module, init python */
@@ -329,9 +333,8 @@ Py::Object InterpreterSingleton::runStringObject(const char* sCmd)
         if (PyErr_ExceptionMatches(PyExc_SystemExit)) {
             throw SystemExitException();
         }
-        else {
-            throw PyException();
-        }
+
+        throw PyException();
     }
 
     return Py::asObject(presult);
@@ -340,7 +343,9 @@ Py::Object InterpreterSingleton::runStringObject(const char* sCmd)
 void InterpreterSingleton::systemExit()
 {
     /* This code is taken from the original Python code */
-    PyObject *exception {}, *value {}, *tb {};
+    PyObject* exception {};
+    PyObject* value {};
+    PyObject* tb {};
     int exitcode = 0;
 
     PyErr_Fetch(&exception, &value, &tb);
@@ -383,7 +388,9 @@ done:
 
 void InterpreterSingleton::runInteractiveString(const char* sCmd)
 {
-    PyObject *module {}, *dict {}, *presult {}; /* "exec code in d, d" */
+    PyObject* module {};
+    PyObject* dict {};
+    PyObject* presult {};
 
     PyGILStateLocker locker;
     module = PP_Load_Module("__main__"); /* get module, init python */
@@ -402,7 +409,9 @@ void InterpreterSingleton::runInteractiveString(const char* sCmd)
         }
         /* get latest python exception information */
         /* and print the error to the error output */
-        PyObject *errobj {}, *errdata {}, *errtraceback {};
+        PyObject* errobj {};
+        PyObject* errdata {};
+        PyObject* errtraceback {};
         PyErr_Fetch(&errobj, &errdata, &errtraceback);
 
         RuntimeError exc("");  // do not use PyException since this clears the error indicator
@@ -417,9 +426,8 @@ void InterpreterSingleton::runInteractiveString(const char* sCmd)
         }
         throw exc;
     }
-    else {
-        Py_DECREF(presult);
-    }
+
+    Py_DECREF(presult);
 }
 
 void InterpreterSingleton::runFile(const char* pxFileName, bool local)
@@ -432,7 +440,8 @@ void InterpreterSingleton::runFile(const char* pxFileName, bool local)
 #endif
     if (fp) {
         PyGILStateLocker locker;
-        PyObject *module {}, *dict {};
+        PyObject* module {};
+        PyObject* dict {};
         module = PyImport_AddModule("__main__");
         dict = PyModule_GetDict(module);
         if (local) {
@@ -466,9 +475,8 @@ void InterpreterSingleton::runFile(const char* pxFileName, bool local)
             if (PyErr_ExceptionMatches(PyExc_SystemExit)) {
                 throw SystemExitException();
             }
-            else {
-                throw PyException();
-            }
+
+            throw PyException();
         }
         Py_DECREF(result);
     }
@@ -490,9 +498,8 @@ bool InterpreterSingleton::loadModule(const char* psModName)
         if (PyErr_ExceptionMatches(PyExc_SystemExit)) {
             throw SystemExitException();
         }
-        else {
-            throw PyException();
-        }
+
+        throw PyException();
     }
 
     return true;
@@ -744,7 +751,9 @@ void InterpreterSingleton::runMethod(PyObject* pobject,
                                      const char* argfmt,
                                      ...) /* convert to python */
 {
-    PyObject *pmeth {}, *pargs {}, *presult {};
+    PyObject* pmeth {};
+    PyObject* pargs {};
+    PyObject* presult {};
     va_list argslist; /* "pobject.method(args)" */
     va_start(argslist, argfmt);
 
@@ -784,7 +793,9 @@ void InterpreterSingleton::runMethod(PyObject* pobject,
 
 PyObject* InterpreterSingleton::getValue(const char* key, const char* result_var)
 {
-    PyObject *module {}, *dict {}, *presult {}; /* "exec code in d, d" */
+    PyObject* module {};
+    PyObject* dict {};
+    PyObject* presult {};
 
     PyGILStateLocker locker;
     module = PP_Load_Module("__main__"); /* get module, init python */
@@ -825,7 +836,7 @@ void InterpreterSingleton::dbgUnsetBreakPoint(unsigned int /*uiLineNumber*/)
 void InterpreterSingleton::dbgStep()
 {}
 
-const std::string InterpreterSingleton::strToPython(const char* Str)
+std::string InterpreterSingleton::strToPython(const char* Str)
 {
     std::string result;
     const char* It = Str;
@@ -859,40 +870,38 @@ int getSWIGVersionFromModule(const std::string& module)
     if (it != moduleMap.end()) {
         return it->second;
     }
-    else {
-        try {
-            // Get the module and check its __file__ attribute
-            Py::Dict dict(PyImport_GetModuleDict());
-            if (!dict.hasKey(module)) {
-                return 0;
-            }
-            Py::Module mod(module);
-            Py::String file(mod.getAttr("__file__"));
-            std::string filename = (std::string)file;
-            // file can have the extension .py or .pyc
-            filename = filename.substr(0, filename.rfind('.'));
-            filename += ".py";
-            boost::regex rx("^# Version ([1-9])\\.([0-9])\\.([0-9]+)");
-            boost::cmatch what;
+    try {
+        // Get the module and check its __file__ attribute
+        Py::Dict dict(PyImport_GetModuleDict());
+        if (!dict.hasKey(module)) {
+            return 0;
+        }
+        Py::Module mod(module);
+        Py::String file(mod.getAttr("__file__"));
+        std::string filename = (std::string)file;
+        // file can have the extension .py or .pyc
+        filename = filename.substr(0, filename.rfind('.'));
+        filename += ".py";
+        boost::regex rx("^# Version ([1-9])\\.([0-9])\\.([0-9]+)");
+        boost::cmatch what;
 
-            std::string line;
-            Base::FileInfo fi(filename);
+        std::string line;
+        Base::FileInfo fi(filename);
 
-            Base::ifstream str(fi, std::ios::in);
-            while (str && std::getline(str, line)) {
-                if (boost::regex_match(line.c_str(), what, rx)) {
-                    int major = std::atoi(what[1].first);
-                    int minor = std::atoi(what[2].first);
-                    int micro = std::atoi(what[3].first);
-                    int version = (major << 16) + (minor << 8) + micro;
-                    moduleMap[module] = version;
-                    return version;
-                }
+        Base::ifstream str(fi, std::ios::in);
+        while (str && std::getline(str, line)) {
+            if (boost::regex_match(line.c_str(), what, rx)) {
+                int major = std::atoi(what[1].first);
+                int minor = std::atoi(what[2].first);
+                int micro = std::atoi(what[3].first);
+                int version = (major << 16) + (minor << 8) + micro;
+                moduleMap[module] = version;
+                return version;
             }
         }
-        catch (Py::Exception& e) {
-            e.clear();
-        }
+    }
+    catch (Py::Exception& e) {
+        e.clear();
     }
 
 #if (defined(HAVE_SWIG) && (HAVE_SWIG == 1))

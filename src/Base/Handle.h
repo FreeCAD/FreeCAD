@@ -52,8 +52,8 @@ public:
         : _toHandle(nullptr)
     {}
 
-    Reference(T* p)
-        : _toHandle(p)
+    Reference(T* pointer)
+        : _toHandle(pointer)
     {
         if (_toHandle) {
             _toHandle->ref();
@@ -61,8 +61,8 @@ public:
     }
 
     /** Copy constructor */
-    Reference(const Reference<T>& p)
-        : _toHandle(p._toHandle)
+    Reference(const Reference<T>& ref)
+        : _toHandle(ref._toHandle)
     {
         if (_toHandle) {
             _toHandle->ref();
@@ -85,16 +85,16 @@ public:
     // operator implementation
 
     /** Assign operator from a pointer */
-    Reference<T>& operator=(T* p)
+    Reference<T>& operator=(T* pointer)
     {
         // check if we want to reassign the same object
-        if (_toHandle == p) {
+        if (_toHandle == pointer) {
             return *this;
         }
         if (_toHandle) {
             _toHandle->unref();
         }
-        _toHandle = p;
+        _toHandle = pointer;
         if (_toHandle) {
             _toHandle->ref();
         }
@@ -102,16 +102,16 @@ public:
     }
 
     /** Assign operator from a handle */
-    Reference<T>& operator=(const Reference<T>& p)
+    Reference<T>& operator=(const Reference<T>& ref)
     {
         // check if we want to reassign the same object
-        if (_toHandle == p._toHandle) {
+        if (_toHandle == ref._toHandle) {
             return *this;
         }
         if (_toHandle) {
             _toHandle->unref();
         }
-        _toHandle = p._toHandle;
+        _toHandle = ref._toHandle;
         if (_toHandle) {
             _toHandle->ref();
         }

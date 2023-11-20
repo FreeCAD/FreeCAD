@@ -93,7 +93,7 @@ public:
     inline double Distance(const Vector2d& v) const;
     inline bool IsEqual(const Vector2d& v, double tolerance = 0.0) const;
 
-    double GetAngle(const Vector2d& v) const;
+    double GetAngle(const Vector2d& vec) const;
     void ProjectToLine(const Vector2d& point, const Vector2d& line);
 };
 
@@ -112,13 +112,13 @@ public:
     inline BoundBox2d(BoundBox2d&&) = default;
     inline BoundBox2d(double fX1, double fY1, double fX2, double fY2);
     ~BoundBox2d() = default;
-    inline bool IsValid();
-    inline bool IsEqual(const BoundBox2d&, double tolerance) const;
+    inline bool IsValid() const;
+    inline bool IsEqual(const BoundBox2d& bbox, double tolerance) const;
 
     // operators
     inline BoundBox2d& operator=(const BoundBox2d&) = default;
     inline BoundBox2d& operator=(BoundBox2d&&) = default;
-    inline bool operator==(const BoundBox2d& rclBB) const;
+    inline bool operator==(const BoundBox2d& bbox) const;
 
     // methods
     inline double Width() const;
@@ -182,7 +182,7 @@ public:
     ~Polygon2d() = default;
 
     inline Polygon2d& operator=(const Polygon2d& rclP);
-    inline Polygon2d& operator=(Polygon2d&& rclP);
+    inline Polygon2d& operator=(Polygon2d&& rclP) noexcept;
 
     // admin-interface
     inline size_t GetCtVectors() const;
@@ -198,7 +198,7 @@ public:
     BoundBox2d CalcBoundBox() const;
     bool Contains(const Vector2d& rclV) const;
     void Intersect(const Polygon2d& rclPolygon, std::list<Polygon2d>& rclResultPolygonList) const;
-    bool Intersect(const Polygon2d& rclPolygon) const;
+    bool Intersect(const Polygon2d& other) const;
     bool Intersect(const Vector2d& rclV, double eps) const;
 
 private:
@@ -382,7 +382,7 @@ inline bool Vector2d::IsEqual(const Vector2d& v, double tolerance) const
 
 inline Polygon2d& Polygon2d::operator=(const Polygon2d& rclP) = default;
 
-inline Polygon2d& Polygon2d::operator=(Polygon2d&& rclP) = default;
+inline Polygon2d& Polygon2d::operator=(Polygon2d&& rclP) noexcept = default;
 
 inline void Polygon2d::DeleteAll()
 {
@@ -466,21 +466,23 @@ inline BoundBox2d::BoundBox2d(double fX1, double fY1, double fX2, double fY2)
     , MaxY(std::max<double>(fY1, fY2))
 {}
 
-inline bool BoundBox2d::IsValid()
+inline bool BoundBox2d::IsValid() const
 {
     return (MaxX >= MinX) && (MaxY >= MinY);
 }
 
-inline bool BoundBox2d::IsEqual(const BoundBox2d& b, double tolerance) const
+inline bool BoundBox2d::IsEqual(const BoundBox2d& bbox, double tolerance) const
 {
-    return Vector2d(MinX, MinY).IsEqual(Vector2d(b.MinX, b.MinY), tolerance)
-        && Vector2d(MaxX, MaxY).IsEqual(Vector2d(b.MaxX, b.MaxY), tolerance);
+    return Vector2d(MinX, MinY).IsEqual(Vector2d(bbox.MinX, bbox.MinY), tolerance)
+        && Vector2d(MaxX, MaxY).IsEqual(Vector2d(bbox.MaxX, bbox.MaxY), tolerance);
 }
 
-inline bool BoundBox2d::operator==(const BoundBox2d& rclBB) const
+inline bool BoundBox2d::operator==(const BoundBox2d& bbox) const
 {
-    return (MinX == rclBB.MinX) && (MinY == rclBB.MinY) && (MaxX == rclBB.MaxX)
-        && (MaxY == rclBB.MaxY);
+    // clang-format off
+    return (MinX == bbox.MinX) && (MinY == bbox.MinY)
+        && (MaxX == bbox.MaxX) && (MaxY == bbox.MaxY);
+    // clang-format on
 }
 
 inline double BoundBox2d::Width() const

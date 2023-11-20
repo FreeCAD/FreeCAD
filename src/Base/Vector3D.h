@@ -118,7 +118,7 @@ public:
     /// Construction
     explicit Vector3(_Precision fx = 0.0, _Precision fy = 0.0, _Precision fz = 0.0);
     Vector3(const Vector3<_Precision>& v) = default;
-    Vector3(Vector3<_Precision>&& v) = default;
+    Vector3(Vector3<_Precision>&& v) noexcept = default;
     ~Vector3() = default;
 
     /** @name Operator */
@@ -145,7 +145,7 @@ public:
     Vector3& operator/=(_Precision fDiv);
     /// Assignment
     Vector3& operator=(const Vector3<_Precision>& v) = default;
-    Vector3& operator=(Vector3<_Precision>&& v) = default;
+    Vector3& operator=(Vector3<_Precision>&& v) noexcept = default;
     /// Scalar product
     _Precision operator*(const Vector3<_Precision>& rcVct) const;
     /// Scalar product
@@ -253,7 +253,9 @@ public:
 template<class _Precision>
 inline _Precision Distance(const Vector3<_Precision>& v1, const Vector3<_Precision>& v2)
 {
-    _Precision x = v1.x - v2.x, y = v1.y - v2.y, z = v1.z - v2.z;
+    _Precision x = v1.x - v2.x;
+    _Precision y = v1.y - v2.y;
+    _Precision z = v1.z - v2.z;
     return static_cast<_Precision>(sqrt((x * x) + (y * y) + (z * z)));
 }
 
@@ -261,7 +263,9 @@ inline _Precision Distance(const Vector3<_Precision>& v1, const Vector3<_Precisi
 template<class _Precision>
 inline _Precision DistanceP2(const Vector3<_Precision>& v1, const Vector3<_Precision>& v2)
 {
-    _Precision x = v1.x - v2.x, y = v1.y - v2.y, z = v1.z - v2.z;
+    _Precision x = v1.x - v2.x;
+    _Precision y = v1.y - v2.y;
+    _Precision z = v1.z - v2.z;
     return x * x + y * y + z * z;
 }
 
@@ -272,10 +276,10 @@ inline Vector3<_Precision> operator*(_Precision fFac, const Vector3<_Precision>&
     return Vector3<_Precision>(rcVct.x * fFac, rcVct.y * fFac, rcVct.z * fFac);
 }
 
-template<class _Pr1, class _Pr2>
-inline Vector3<_Pr1> toVector(const Vector3<_Pr2>& v)
+template<class Pr1, class Pr2>
+inline Vector3<Pr1> toVector(const Vector3<Pr2>& v)
 {
-    return Vector3<_Pr1>(static_cast<_Pr1>(v.x), static_cast<_Pr1>(v.y), static_cast<_Pr1>(v.z));
+    return Vector3<Pr1>(static_cast<Pr1>(v.x), static_cast<Pr1>(v.y), static_cast<Pr1>(v.z));
 }
 
 using Vector3f = Vector3<float>;
