@@ -362,13 +362,13 @@ class Dimension(gui_base_original.Creator):
             if arg["Key"] == "ESCAPE":
                 self.finish()
         elif arg["Type"] == "SoLocation2Event":  # mouse movement detection
-            shift = gui_tool_utils.hasMod(arg, gui_tool_utils.MODCONSTRAIN)
+            shift = gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_constrain_key())
             if self.arcmode or self.point2:
-                gui_tool_utils.setMod(arg, gui_tool_utils.MODCONSTRAIN, False)
+                gui_tool_utils.setMod(arg, gui_tool_utils.get_mod_constrain_key(), False)
             (self.point,
              ctrlPoint, self.info) = gui_tool_utils.getPoint(self, arg,
                                                              noTracker=(len(self.node)>0))
-            if (gui_tool_utils.hasMod(arg, gui_tool_utils.MODALT)
+            if (gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key())
                     or self.selectmode) and (len(self.node) < 3):
                 self.dimtrack.off()
                 if not self.altdown:
@@ -467,7 +467,7 @@ class Dimension(gui_base_original.Creator):
                     self.ui.redraw()
                     if (not self.node) and (not self.support):
                         gui_tool_utils.getSupport(arg)
-                    if (gui_tool_utils.hasMod(arg, gui_tool_utils.MODALT)
+                    if (gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key())
                             or self.selectmode) and (len(self.node) < 3):
                         # print("snapped: ",self.info)
                         if self.info:

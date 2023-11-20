@@ -171,7 +171,7 @@ class Label(gui_base_original.Creator):
             if hasattr(Gui, "Snapper"):
                 Gui.Snapper.affinity = None  # don't keep affinity
             if len(self.node) == 2:
-                gui_tool_utils.setMod(arg, gui_tool_utils.MODCONSTRAIN, True)
+                gui_tool_utils.setMod(arg, gui_tool_utils.get_mod_constrain_key(), True)
             self.point, ctrlPoint, info = gui_tool_utils.getPoint(self, arg)
             gui_tool_utils.redraw3DView()
         elif arg["Type"] == "SoMouseButtonEvent":
