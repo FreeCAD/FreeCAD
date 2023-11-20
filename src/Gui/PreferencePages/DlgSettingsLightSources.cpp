@@ -28,7 +28,9 @@
 #include <QEvent>
 #include <QGridLayout>
 #include <Inventor/draggers/SoDirectionalLightDragger.h>
+#include <Inventor/events/SoEvent.h>
 #include <Inventor/nodes/SoDirectionalLight.h>
+#include <Inventor/nodes/SoEventCallback.h>
 #include <Inventor/nodes/SoOrthographicCamera.h>
 #include <Inventor/nodes/SoPickStyle.h>
 #include <Inventor/nodes/SoSeparator.h>
@@ -36,7 +38,9 @@
 
 #include "DlgSettingsLightSources.h"
 #include "ui_DlgSettingsLightSources.h"
+#include <App/Application.h>
 #include <Gui/View3DInventorViewer.h>
+#include <Gui/View3DSettings.h>
 
 
 using namespace Gui::Dialog;
@@ -105,10 +109,24 @@ QWidget* DlgSettingsLightSources::createViewer(QWidget* parent)
     auto root = static_cast<SoSeparator*>(view->getSceneGraph());
     root->addChild(createDragger());
 
+    auto callback = new SoEventCallback();
+    root->addChild(callback);
+    callback->addEventCallback(SoEvent::getClassTypeId(),
+                               [] (void* ud, SoEventCallback* cb) {
+        Q_UNUSED(ud)
+        cb->setHandled();
+    });
+
     view->setCameraType(SoOrthographicCamera::getClassTypeId());
     view->setViewDirection(SbVec3f(1, 1, -5));
     view->viewAll();
+    float height = static_cast<SoOrthographicCamera*>(view->getCamera())->height.getValue();
+    static_cast<SoOrthographicCamera*>(view->getCamera())->height.setValue(height / 2.0F);
     // NOLINTEND
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    View3DSettings viewSettings(hGrp, view);
+    viewSettings.OnChange(*hGrp,"BackgroundColor");
 
     const int size = 250;
     view->resize(size, size);

@@ -680,7 +680,7 @@ zainstalowane dodatki zostaną sprawdzone pod kątem dostępnych aktualizacji
     <message>
       <location filename="../../AddonManagerOptions.ui" line="383"/>
       <source>Addon developer mode</source>
-      <translation>Tryb deweloperski dodatków</translation>
+      <translation>Tryb dewelopera dodatków</translation>
     </message>
   </context>
   <context>

@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-	<PythonExport
-		Father="GeometrySurfacePy"
-		Name="RectangularTrimmedSurfacePy"
+    <PythonExport
+        Name="RectangularTrimmedSurfacePy"
+        Namespace="Part"
+        Twin="GeomTrimmedSurface"
+        TwinPointer="GeomTrimmedSurface"
         PythonName="Part.RectangularTrimmedSurface"
-		Twin="GeomTrimmedSurface"
-		TwinPointer="GeomTrimmedSurface"
-		Include="Mod/Part/App/Geometry.h"
-		Namespace="Part"
-		FatherInclude="Mod/Part/App/GeometrySurfacePy.h"
-		FatherNamespace="Part"
-		Constructor="true">
-		<Documentation>
-			<Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net" />
-			<UserDocu>Describes a portion of a surface (a patch) limited by two values of the
+        FatherInclude="Mod/Part/App/GeometrySurfacePy.h"
+        Include="Mod/Part/App/Geometry.h"
+        Father="GeometrySurfacePy"
+        FatherNamespace="Part"
+        Constructor="true">
+        <Documentation>
+            <Author Licence="LGPL" Name="Werner Mayer" EMail="wmayer@users.sourceforge.net"/>
+            <UserDocu>Describes a portion of a surface (a patch) limited by two values of the
 u parameter in the u parametric direction, and two values of the v parameter in the v parametric
 direction. The domain of the trimmed surface must be within the domain of the surface being trimmed.
 
@@ -24,11 +24,11 @@ The trimmed surface is defined by:
 The trimmed surface is built from a copy of the basis surface. Therefore, when the basis surface
 is modified the trimmed surface is not changed. Consequently, the trimmed surface does not
 necessarily have the same orientation as the basis surface.</UserDocu>
-		</Documentation>
+        </Documentation>
         <Methode Name="setTrim">
-          <Documentation>
-            <UserDocu>Modifies this patch by changing the trim values applied to the original surface</UserDocu>
-          </Documentation>
+            <Documentation>
+                <UserDocu>Modifies this patch by changing the trim values applied to the original surface</UserDocu>
+            </Documentation>
         </Methode>
         <Attribute Name="BasisSurface" ReadOnly="true">
             <Documentation>

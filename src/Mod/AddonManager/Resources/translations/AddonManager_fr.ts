@@ -2046,7 +2046,7 @@ les mises à jour disponibles seront vérifiées pour les extensions installées
     <message>
       <location filename="../../package_list.py" line="766"/>
       <source>Any</source>
-      <translation>N’importe le quel</translation>
+      <translation>Tous</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="774"/>
@@ -2266,7 +2266,7 @@ les mises à jour disponibles seront vérifiées pour les extensions installées
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="179"/>
       <source>WARNING: Duplicate addon {} ignored</source>
-      <translation>ATTENTION : extension dupliquée {} ignorée</translation>
+      <translation>ATTENTION : l'extension dupliquée {} est ignorée</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="252"/>
@@ -2276,29 +2276,29 @@ les mises à jour disponibles seront vérifiées pour les extensions installées
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="268"/>
       <source>Git is disabled, skipping git macros</source>
-      <translation>Git est désactivé, les macros git sont ignorées</translation>
+      <translation>Git est désactivé, les macros Git sont ignorées</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="316"/>
       <source>Attempting to change non-git Macro setup to use git
 </source>
-      <translation>Tentative de changement de la configuration de macro non-git pour utiliser git
+      <translation>Tentative de changement de la configuration des macro non-Git pour utiliser Git
 </translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="333"/>
       <source>An error occurred updating macros from GitHub, trying clean checkout...</source>
-      <translation>Une erreur est survenue lors de la mise à jour des macros depuis GitHub, en essayant une extraction fraîche...</translation>
+      <translation>Une erreur est survenue lors de la mise à jour des macros depuis GitHub, en tentant un checkout propre...</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="337"/>
       <source>Attempting to do a clean checkout...</source>
-      <translation>Tentative de faire une extraction fraîche...</translation>
+      <translation>Tentative de faire un checkout propre...</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="349"/>
       <source>Clean checkout succeeded</source>
-      <translation>Extraction fraîche réussie</translation>
+      <translation>Checkout propre réussi</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="359"/>

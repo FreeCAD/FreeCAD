@@ -159,6 +159,7 @@ private:
 
     void onModeChanged() override
     {
+        DrawSketchHandler::resetPositionText();
         toolWidgetManager.onHandlerModeChanged();
         DSDefaultHandler::onModeChanged();
 

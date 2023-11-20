@@ -198,12 +198,12 @@ To polecenie działa tylko z obiektem typu Siatka.</translation>
       <translation>Anuluj</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="626"/>
+      <location filename="../../CurveOnMesh.cpp" line="624"/>
       <source>Wrong mesh picked</source>
       <translation>Wybrano nieodpowiednią siatkę</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="667"/>
+      <location filename="../../CurveOnMesh.cpp" line="663"/>
       <source>No point was picked</source>
       <translation>Nie wybrano żadnego punktu</translation>
     </message>

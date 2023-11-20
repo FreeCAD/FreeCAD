@@ -29,7 +29,8 @@
 // forward declarations
 using PyObject = struct _object;
 
-namespace Py {
+namespace Py
+{
 class Object;
 
 /**
@@ -40,50 +41,50 @@ class Object;
  *
  * \author Werner Mayer
  */
-class BaseExport SmartPtr
+class BaseExport SmartPtr  // NOLINT
 {
 private:
-    PyObject *p;
+    PyObject* p;
 
 protected:
-    void set(PyObject *pyob, bool owned = false);
+    void set(PyObject* pyob, bool owned = false);
     void release();
 
 public:
     SmartPtr();
 
     // Constructor acquires new ownership of pointer unless explicitly told not to.
-    explicit SmartPtr(PyObject *pyob, bool owned = false);
+    explicit SmartPtr(PyObject* pyob, bool owned = false);
 
     // Copy constructor acquires new ownership of pointer
-    SmartPtr(const SmartPtr &ob);
+    SmartPtr(const SmartPtr& ob);
 
     // Assignment acquires new ownership of pointer
-    SmartPtr &operator=( const SmartPtr &rhs );
-    SmartPtr &operator=( const Object &rhs );
+    SmartPtr& operator=(const SmartPtr& rhs);
+    SmartPtr& operator=(const Object& rhs);
 
-    SmartPtr &operator=(PyObject *rhsp);
+    SmartPtr& operator=(PyObject* rhsp);
 
     // Destructor
     virtual ~SmartPtr();
 
     // Loaning the pointer to others, retain ownership
-    PyObject *operator*() const;
+    PyObject* operator*() const;
 
     // Would like to call this pointer() but messes up STL in SeqBase<T>
-    PyObject *ptr() const;
+    PyObject* ptr() const;
     //
     // Queries
     //
 
-    bool is(PyObject *pother) const;
-    bool is(const SmartPtr &other) const;
+    bool is(PyObject* pother) const;
+    bool is(const SmartPtr& other) const;
 
     bool isNull() const;
 };
 
 BaseExport PyObject* new_reference_to(const SmartPtr&);
 
-}
+}  // namespace Py
 
-#endif // PY_SMARTPTRPY_H
+#endif  // PY_SMARTPTRPY_H

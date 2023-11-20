@@ -455,7 +455,7 @@ void DrawView::setPosition(double x, double y, bool force)
     if ( (!isLocked()) ||
          (force) ) {
         double currX = X.getValue();
-        double currY = X.getValue();
+        double currY = Y.getValue();
         if (!DrawUtil::fpCompare(currX, x, 0.001)) {    // 0.001mm tolerance
             X.setValue(x);
         }

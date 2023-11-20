@@ -94,7 +94,7 @@ protected:
                               const TopoDS_Shape& baseshape,
                               const TopoDS_Shape& profileshape,
                               const TopoDS_Face& sketchface,
-                              const TopoDS_Face& uptoface,
+                              const TopoDS_Shape& uptoface,
                               const gp_Dir& direction,
                               PrismMode Mode,
                               Standard_Boolean Modify);

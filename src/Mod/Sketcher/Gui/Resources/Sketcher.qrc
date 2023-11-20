@@ -128,6 +128,8 @@
         <file>icons/geometry/Sketcher_Create3PointCircle_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateArc.svg</file>
         <file>icons/geometry/Sketcher_CreateArc_Constr.svg</file>
+        <file>icons/geometry/Sketcher_CreateArcSlot.svg</file>
+        <file>icons/geometry/Sketcher_CreateArcSlot_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateBSpline.svg</file>
         <file>icons/geometry/Sketcher_CreateBSpline_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateBSplineByInterpolation.svg</file>
@@ -179,6 +181,8 @@
         <file>icons/geometry/Sketcher_CreateRectangle3Points_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateRectangle3Points_Center.svg</file>
         <file>icons/geometry/Sketcher_CreateRectangle3Points_Center_Constr.svg</file>
+        <file>icons/geometry/Sketcher_CreateRectangleSlot.svg</file>
+        <file>icons/geometry/Sketcher_CreateRectangleSlot_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateRegularPolygon.svg</file>
         <file>icons/geometry/Sketcher_CreateRegularPolygon_Constr.svg</file>
         <file>icons/geometry/Sketcher_CreateSlot.svg</file>
@@ -213,6 +217,7 @@
         <file>icons/pointers/Sketcher_Pointer_Create_ArcOfEllipse.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Create_ArcOfHyperbola.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Create_ArcOfParabola.svg</file>
+        <file>icons/pointers/Sketcher_Pointer_Create_ArcSlot.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Create_Box.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Create_Box_Center.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Create_BSpline.svg</file>
@@ -234,6 +239,7 @@
         <file>icons/pointers/Sketcher_Pointer_Oblong_Frame.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Oblong_Frame_Center.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Regular_Polygon.svg</file>
+        <file>icons/pointers/Sketcher_Pointer_Create_RectangleSlot.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Slot.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Splitting.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Trimming.svg</file>

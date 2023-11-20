@@ -68,8 +68,9 @@ class DrawSketchHandlerPolygon: public DrawSketchHandlerPolygonBase
     friend DSHPolygonControllerBase;
 
 public:
-    DrawSketchHandlerPolygon(int corners = 6)
+    explicit DrawSketchHandlerPolygon(int corners = 6)  // NOLINT
         : numberOfCorners(corners)
+        , radius(0.0)
     {}
     ~DrawSketchHandlerPolygon() override = default;
 
@@ -78,6 +79,8 @@ private:
     {
         switch (state()) {
             case SelectMode::SeekFirst: {
+                toolWidgetManager.drawPositionAtCursor(onSketchPos);
+
                 centerPoint = onSketchPos;
 
                 if (seekAutoConstraint(sugConstraints[0], onSketchPos, Base::Vector2d(0.f, 0.f))) {
@@ -86,6 +89,8 @@ private:
                 }
             } break;
             case SelectMode::SeekSecond: {
+                toolWidgetManager.drawDirectionAtCursor(onSketchPos, centerPoint);
+
                 firstCorner = onSketchPos;
 
                 CreateAndDrawShapeGeometry();
@@ -240,7 +245,7 @@ private:
             return;
         }
 
-        double angleOfSeparation = 2.0 * M_PI / static_cast<double>(numberOfCorners);
+        double angleOfSeparation = 2.0 * M_PI / static_cast<double>(numberOfCorners);  // NOLINT
         double cos_v = cos(angleOfSeparation);
         double sin_v = sin(angleOfSeparation);
 
@@ -288,7 +293,7 @@ template<>
 void DSHPolygonController::secondKeyShortcut()
 {
     auto value = toolWidget->getParameter(WParameter::First);
-    if (value > 3.0) {
+    if (value > 3.0) {  // NOLINT
         toolWidget->setParameterWithoutPassingFocus(OnViewParameter::First, value - 1);
     }
 }
@@ -302,14 +307,19 @@ void DSHPolygonController::configureToolWidget()
     toolWidget->setParameter(OnViewParameter::First,
                              handler->numberOfCorners);  // unconditionally set
     toolWidget->configureParameterUnit(OnViewParameter::First, Base::Unit());
-    toolWidget->configureParameterMin(OnViewParameter::First, 3.0);
+    toolWidget->configureParameterMin(OnViewParameter::First, 3.0);  // NOLINT
     // We set a reasonable max to avoid the spinbox from being very large
-    toolWidget->configureParameterMax(OnViewParameter::First, 9999.0);
+    toolWidget->configureParameterMax(OnViewParameter::First, 9999.0);  // NOLINT
     toolWidget->configureParameterDecimals(OnViewParameter::First, 0);
 
     onViewParameters[OnViewParameter::First]->setLabelType(Gui::SoDatumLabel::DISTANCEX);
     onViewParameters[OnViewParameter::Second]->setLabelType(Gui::SoDatumLabel::DISTANCEY);
-    onViewParameters[OnViewParameter::Fourth]->setLabelType(Gui::SoDatumLabel::ANGLE);
+    onViewParameters[OnViewParameter::Third]->setLabelType(
+        Gui::SoDatumLabel::DISTANCE,
+        Gui::EditableDatumLabel::Function::Dimensioning);
+    onViewParameters[OnViewParameter::Fourth]->setLabelType(
+        Gui::SoDatumLabel::ANGLE,
+        Gui::EditableDatumLabel::Function::Dimensioning);
 }
 
 template<>
@@ -353,7 +363,8 @@ void DSHPolygonControllerBase::doEnforceControlParameters(Base::Vector2d& onSket
             }
 
             if (onViewParameters[OnViewParameter::Fourth]->isSet) {
-                double angle = onViewParameters[OnViewParameter::Fourth]->getValue() * M_PI / 180;
+                double angle =
+                    Base::toRadians(onViewParameters[OnViewParameter::Fourth]->getValue());
                 onSketchPos.x = handler->centerPoint.x + cos(angle) * length;
                 onSketchPos.y = handler->centerPoint.y + sin(angle) * length;
             }
@@ -369,11 +380,11 @@ void DSHPolygonController::adaptParameters(Base::Vector2d onSketchPos)
     switch (handler->state()) {
         case SelectMode::SeekFirst: {
             if (!onViewParameters[OnViewParameter::First]->isSet) {
-                onViewParameters[OnViewParameter::First]->setSpinboxValue(onSketchPos.x);
+                setOnViewParameterValue(OnViewParameter::First, onSketchPos.x);
             }
 
             if (!onViewParameters[OnViewParameter::Second]->isSet) {
-                onViewParameters[OnViewParameter::Second]->setSpinboxValue(onSketchPos.y);
+                setOnViewParameterValue(OnViewParameter::Second, onSketchPos.y);
             }
 
             bool sameSign = onSketchPos.x * onSketchPos.y > 0.;
@@ -390,13 +401,14 @@ void DSHPolygonController::adaptParameters(Base::Vector2d onSketchPos)
             Base::Vector3d vec = end - start;
 
             if (!onViewParameters[OnViewParameter::Third]->isSet) {
-                onViewParameters[OnViewParameter::Third]->setSpinboxValue(vec.Length());
+                setOnViewParameterValue(OnViewParameter::Third, vec.Length());
             }
 
             double range = (handler->firstCorner - handler->centerPoint).Angle();
             if (!onViewParameters[OnViewParameter::Fourth]->isSet) {
-                onViewParameters[OnViewParameter::Fourth]->setSpinboxValue(range * 180 / M_PI,
-                                                                           Base::Unit::Angle);
+                setOnViewParameterValue(OnViewParameter::Fourth,
+                                        Base::toDegrees(range),
+                                        Base::Unit::Angle);
             }
 
             onViewParameters[OnViewParameter::Third]->setPoints(start, end);

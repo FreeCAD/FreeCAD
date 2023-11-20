@@ -35,58 +35,56 @@ namespace Base
 {
 
 /// Abstract base class of all exception producers
-class BaseExport AbstractExceptionProducer : public AbstractProducer
+class BaseExport AbstractExceptionProducer: public AbstractProducer
 {
 public:
-    AbstractExceptionProducer () = default;
+    AbstractExceptionProducer() = default;
     // just implement it
-    void* Produce () const override {
+    void* Produce() const override
+    {
         return nullptr;
     }
-    virtual void raiseException(PyObject * pydict) const = 0;
+    virtual void raiseException(PyObject* pydict) const = 0;
 };
 
 // --------------------------------------------------------------------
 
 /** The ExceptionFactory */
-class BaseExport ExceptionFactory : public Factory
+class BaseExport ExceptionFactory: public Factory
 {
 public:
     static ExceptionFactory& Instance();
-    static void Destruct ();
+    static void Destruct();
 
-    void raiseException(PyObject * pydict) const;
+    void raiseException(PyObject* pydict) const;
 
 private:
-    static ExceptionFactory* _pcSingleton;
+    static ExceptionFactory* _pcSingleton;  // NOLINT
 
     ExceptionFactory() = default;
 };
 
 /* Producers */
 
-template <class CLASS>
-class ExceptionProducer : public AbstractExceptionProducer
+template<class CLASS>
+class ExceptionProducer: public AbstractExceptionProducer
 {
 public:
-    ExceptionProducer ()
+    ExceptionProducer()
     {
         ExceptionFactory::Instance().AddProducer(typeid(CLASS).name(), this);
     }
 
-    ~ExceptionProducer () override = default;
-
-    void raiseException(PyObject * pydict) const override
+    void raiseException(PyObject* pydict) const override
     {
-        CLASS c;
-        c.setPyObject(pydict);
+        CLASS cls;
+        cls.setPyObject(pydict);
 
-        throw c;
+        throw cls;
     }
 };
 
-} //namespace Base
+}  // namespace Base
 
 
 #endif
-

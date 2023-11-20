@@ -1065,6 +1065,8 @@ class gridTracker(Tracker):
         s.addChild(texts)
 
         super().__init__(children=[s], name="gridTracker")
+        self.show_during_command = False
+        self.show_always = False
         self.reset()
 
     def getGridColor(self):
@@ -1235,7 +1237,7 @@ class gridTracker(Tracker):
         self.numlines = Draft.getParam("gridSize", 100)
         self.update()
 
-    def set(self,tool=False):
+    def set(self):
         """Move and rotate the grid according to the current working plane."""
         self.reset()
         wp = self._get_wp()
@@ -1245,8 +1247,7 @@ class gridTracker(Tracker):
         self.trans.translation.setValue([P.x, P.y, P.z])
         self.displayHumanFigure(wp)
         self.setAxesColor(wp)
-        if tool:
-            self.on()
+        self.on()
 
     def getClosestNode(self, point):
         """Return the closest node from the given point."""

@@ -44,6 +44,8 @@
  @endcode
 */
 
+// NOLINTBEGIN
+// clang-format off
 // Based on https://stackoverflow.com/questions/1448396/how-to-use-enums-as-flags-in-c
 template<class T = void> struct enum_traits {};
 
@@ -128,5 +130,7 @@ public:
     }
 };
 }
+// clang-format on
+// NOLINTEND
 
 #endif

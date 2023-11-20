@@ -447,6 +447,9 @@ def doFile(tsfilepath, targetpath, lncode, qrcpath):
         ][:-3]
     newname = basename + "_" + lncode + ".ts"
     newpath = targetpath + os.sep + newname
+    if not os.path.exists(newpath):
+        # If this language code does not exist for the given TS file, bail out
+        return
     shutil.copyfile(tsfilepath, newpath)
     if basename in GENERATE_QM:
         print(f"Generating QM for {basename}")

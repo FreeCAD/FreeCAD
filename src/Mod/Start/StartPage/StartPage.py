@@ -126,7 +126,7 @@ def getInfo(filename):
     global iconbank, tempfolder
 
     tformat = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Start").GetString(
-        "TimeFormat", "%m/%d/%Y %H:%M:%S"
+        "TimeFormat", "%c"
     )
 
     def getLocalTime(timestamp):

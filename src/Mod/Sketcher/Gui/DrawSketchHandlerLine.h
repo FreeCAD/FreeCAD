@@ -61,10 +61,10 @@ using DSHLineController =
     DrawSketchDefaultWidgetController<DrawSketchHandlerLine,
                                       /*SelectModeT*/ StateMachines::TwoSeekEnd,
                                       /*PAutoConstraintSize =*/2,
-                                      /*OnViewParametersT =*/OnViewParameters<4, 4, 4>,
-                                      /*WidgetParametersT =*/WidgetParameters<0, 0, 0>,
-                                      /*WidgetCheckboxesT =*/WidgetCheckboxes<0, 0, 0>,
-                                      /*WidgetComboboxesT =*/WidgetComboboxes<1, 1, 1>,
+                                      /*OnViewParametersT =*/OnViewParameters<4, 4, 4>,  // NOLINT
+                                      /*WidgetParametersT =*/WidgetParameters<0, 0, 0>,  // NOLINT
+                                      /*WidgetCheckboxesT =*/WidgetCheckboxes<0, 0, 0>,  // NOLINT
+                                      /*WidgetComboboxesT =*/WidgetComboboxes<1, 1, 1>,  // NOLINT
                                       ConstructionMethods::LineConstructionMethod,
                                       /*bool PFirstComboboxIsConstructionMethod =*/true>;
 
@@ -79,8 +79,10 @@ class DrawSketchHandlerLine: public DrawSketchHandlerLineBase
     friend DSHLineControllerBase;
 
 public:
-    DrawSketchHandlerLine(ConstructionMethod constrMethod = ConstructionMethod::OnePointLengthAngle)
-        : DrawSketchHandlerLineBase(constrMethod) {};
+    explicit DrawSketchHandlerLine(
+        ConstructionMethod constrMethod = ConstructionMethod::OnePointLengthAngle)
+        : DrawSketchHandlerLineBase(constrMethod)
+        , length(0.0) {};
     ~DrawSketchHandlerLine() override = default;
 
 private:
@@ -88,6 +90,8 @@ private:
     {
         switch (state()) {
             case SelectMode::SeekFirst: {
+                toolWidgetManager.drawPositionAtCursor(onSketchPos);
+
                 startPoint = onSketchPos;
 
                 if (seekAutoConstraint(sugConstraints[0], onSketchPos, Base::Vector2d(0.f, 0.f))) {
@@ -96,6 +100,8 @@ private:
                 }
             } break;
             case SelectMode::SeekSecond: {
+                toolWidgetManager.drawDirectionAtCursor(onSketchPos, startPoint);
+
                 endPoint = onSketchPos;
 
                 try {
@@ -193,7 +199,10 @@ private:
 
     bool isWidgetVisible() const override
     {
-        return true;
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/Mod/Sketcher/Tools");
+        auto index = hGrp->GetInt("OnViewParameterVisibility", 1);
+        return index != 0;
     };
 
     QPixmap getToolIcon() const override
@@ -268,7 +277,7 @@ void DSHLineController::configureToolWidget()
 {
     if (!init) {  // Code to be executed only upon initialisation
         QStringList names = {QStringLiteral("Point, length, angle"),
-                             QStringLiteral("Point, width, heigth"),
+                             QStringLiteral("Point, width, height"),
                              QStringLiteral("2 points")};
         toolWidget->setComboboxElements(WCombobox::FirstCombo, names);
 
@@ -306,11 +315,28 @@ void DSHLineController::configureToolWidget()
     onViewParameters[OnViewParameter::Second]->setLabelType(Gui::SoDatumLabel::DISTANCEY);
 
     if (handler->constructionMethod() == ConstructionMethod::OnePointLengthAngle) {
-        onViewParameters[OnViewParameter::Fourth]->setLabelType(Gui::SoDatumLabel::ANGLE);
+        onViewParameters[OnViewParameter::Third]->setLabelType(
+            Gui::SoDatumLabel::DISTANCE,
+            Gui::EditableDatumLabel::Function::Dimensioning);
+        onViewParameters[OnViewParameter::Fourth]->setLabelType(
+            Gui::SoDatumLabel::ANGLE,
+            Gui::EditableDatumLabel::Function::Dimensioning);
+    }
+    else if (handler->constructionMethod() == ConstructionMethod::TwoPoints) {
+        onViewParameters[OnViewParameter::Third]->setLabelType(
+            Gui::SoDatumLabel::DISTANCEX,
+            Gui::EditableDatumLabel::Function::Positioning);
+        onViewParameters[OnViewParameter::Fourth]->setLabelType(
+            Gui::SoDatumLabel::DISTANCEY,
+            Gui::EditableDatumLabel::Function::Positioning);
     }
     else {
-        onViewParameters[OnViewParameter::Third]->setLabelType(Gui::SoDatumLabel::DISTANCEX);
-        onViewParameters[OnViewParameter::Fourth]->setLabelType(Gui::SoDatumLabel::DISTANCEY);
+        onViewParameters[OnViewParameter::Third]->setLabelType(
+            Gui::SoDatumLabel::DISTANCEX,
+            Gui::EditableDatumLabel::Function::Dimensioning);
+        onViewParameters[OnViewParameter::Fourth]->setLabelType(
+            Gui::SoDatumLabel::DISTANCEY,
+            Gui::EditableDatumLabel::Function::Dimensioning);
     }
 }
 
@@ -360,7 +386,7 @@ void DSHLineControllerBase::doEnforceControlParameters(Base::Vector2d& onSketchP
 
                 if (onViewParameters[OnViewParameter::Fourth]->isSet) {
                     double angle =
-                        onViewParameters[OnViewParameter::Fourth]->getValue() * M_PI / 180;
+                        Base::toRadians(onViewParameters[OnViewParameter::Fourth]->getValue());
                     onSketchPos.x = handler->startPoint.x + cos(angle) * length;
                     onSketchPos.y = handler->startPoint.y + sin(angle) * length;
                 }
@@ -392,11 +418,11 @@ void DSHLineController::adaptParameters(Base::Vector2d onSketchPos)
     switch (handler->state()) {
         case SelectMode::SeekFirst: {
             if (!onViewParameters[OnViewParameter::First]->isSet) {
-                onViewParameters[OnViewParameter::First]->setSpinboxValue(onSketchPos.x);
+                setOnViewParameterValue(OnViewParameter::First, onSketchPos.x);
             }
 
             if (!onViewParameters[OnViewParameter::Second]->isSet) {
-                onViewParameters[OnViewParameter::Second]->setSpinboxValue(onSketchPos.y);
+                setOnViewParameterValue(OnViewParameter::Second, onSketchPos.y);
             }
 
             bool sameSign = onSketchPos.x * onSketchPos.y > 0.;
@@ -414,11 +440,11 @@ void DSHLineController::adaptParameters(Base::Vector2d onSketchPos)
                 Base::Vector3d vec = end - start;
 
                 if (!onViewParameters[OnViewParameter::Third]->isSet) {
-                    onViewParameters[OnViewParameter::Third]->setSpinboxValue(vec.x);
+                    setOnViewParameterValue(OnViewParameter::Third, vec.x);
                 }
 
                 if (!onViewParameters[OnViewParameter::Fourth]->isSet) {
-                    onViewParameters[OnViewParameter::Fourth]->setSpinboxValue(vec.y);
+                    setOnViewParameterValue(OnViewParameter::Fourth, vec.y);
                 }
 
                 bool sameSign = vec.x * vec.y > 0.;
@@ -435,13 +461,14 @@ void DSHLineController::adaptParameters(Base::Vector2d onSketchPos)
                 Base::Vector3d vec = end - start;
 
                 if (!onViewParameters[OnViewParameter::Third]->isSet) {
-                    onViewParameters[OnViewParameter::Third]->setSpinboxValue(vec.Length());
+                    setOnViewParameterValue(OnViewParameter::Third, vec.Length());
                 }
 
                 double range = (handler->endPoint - handler->startPoint).Angle();
                 if (!onViewParameters[OnViewParameter::Fourth]->isSet) {
-                    onViewParameters[OnViewParameter::Fourth]->setSpinboxValue(range * 180 / M_PI,
-                                                                               Base::Unit::Angle);
+                    setOnViewParameterValue(OnViewParameter::Fourth,
+                                            Base::toDegrees(range),
+                                            Base::Unit::Angle);
                 }
 
                 onViewParameters[OnViewParameter::Third]->setPoints(start, end);
@@ -450,11 +477,11 @@ void DSHLineController::adaptParameters(Base::Vector2d onSketchPos)
             }
             else {
                 if (!onViewParameters[OnViewParameter::Third]->isSet) {
-                    onViewParameters[OnViewParameter::Third]->setSpinboxValue(onSketchPos.x);
+                    setOnViewParameterValue(OnViewParameter::Third, onSketchPos.x);
                 }
 
                 if (!onViewParameters[OnViewParameter::Fourth]->isSet) {
-                    onViewParameters[OnViewParameter::Fourth]->setSpinboxValue(onSketchPos.y);
+                    setOnViewParameterValue(OnViewParameter::Fourth, onSketchPos.y);
                 }
 
                 bool sameSign = onSketchPos.x * onSketchPos.y > 0.;
@@ -585,7 +612,7 @@ void DSHLineController::addConstraints()
     };
 
     auto constraintp4angle = [&]() {
-        double angle = p4 / 180 * M_PI;
+        double angle = Base::toRadians(p4);
         if (fabs(angle - M_PI) < Precision::Confusion()
             || fabs(angle + M_PI) < Precision::Confusion()
             || fabs(angle) < Precision::Confusion()) {

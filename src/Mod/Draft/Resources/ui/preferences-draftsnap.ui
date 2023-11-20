@@ -30,20 +30,20 @@
     <number>9</number>
    </property>
    <item>
-    <widget class="QGroupBox" name="groupBox_2">
+    <widget class="QGroupBox" name="groupBox_1">
      <property name="title">
       <string>Snapping</string>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout">
+     <layout class="QVBoxLayout" name="verticalLayout_1">
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_11">
+       <layout class="QHBoxLayout" name="horizontalLayout_1">
         <item>
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox">
+         <widget class="Gui::PrefCheckBox" name="checkBox_alwaysSnap">
           <property name="toolTip">
-           <string>If this is checked, snapping is activated without the need to press the snap mod key</string>
+           <string>If checked, snapping is activated without the need to press the Snap mod key</string>
           </property>
           <property name="text">
-           <string>Always snap (disable snap mod)</string>
+           <string>Always snap</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -59,29 +59,102 @@
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_3">
+       <layout class="QHBoxLayout" name="horizontalLayout_2">
         <item>
-         <widget class="QLabel" name="label_20">
+         <widget class="QLabel" name="label_modsnap">
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
           <property name="text">
-           <string>Constrain mod</string>
+           <string>Snap mod</string>
           </property>
          </widget>
         </item>
         <item>
-         <spacer name="horizontalSpacer_5">
+         <spacer name="horizontalSpacer_1">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
             <width>40</width>
-            <height>20</height>
+            <height>0</height>
            </size>
           </property>
          </spacer>
         </item>
         <item>
-         <widget class="Gui::PrefComboBox" name="gui::prefcombobox_5">
+         <widget class="Gui::PrefComboBox" name="comboBox_modsnap">
+          <property name="minimumSize">
+           <size>
+            <width>140</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="enabled">
+           <bool>false</bool>
+          </property>
+          <property name="toolTip">
+           <string>The Snap modifier key</string>
+          </property>
+          <property name="currentIndex">
+           <number>1</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>modsnap</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+          <item>
+           <property name="text">
+            <string>Shift</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Ctrl</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Alt</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="horizontalLayout_3">
+        <item>
+         <widget class="QLabel" name="label_modconstrain">
+          <property name="text">
+           <string>Constrain mod</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>0</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item>
+         <widget class="Gui::PrefComboBox" name="comboBox_modconstrain">
+          <property name="minimumSize">
+           <size>
+            <width>140</width>
+            <height>0</height>
+           </size>
+          </property>
           <property name="toolTip">
            <string>The Constraining modifier key</string>
           </property>
@@ -113,9 +186,9 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_4">
         <item>
-         <widget class="QLabel" name="label_21">
+         <widget class="QLabel" name="label_modalt">
           <property name="text">
-           <string>Snap mod</string>
+           <string>Alt mod</string>
           </property>
          </widget>
         </item>
@@ -127,70 +200,21 @@
           <property name="sizeHint" stdset="0">
            <size>
             <width>40</width>
-            <height>20</height>
+            <height>0</height>
            </size>
           </property>
          </spacer>
         </item>
         <item>
-         <widget class="Gui::PrefComboBox" name="gui::prefcombobox_6">
-          <property name="toolTip">
-           <string>The snap modifier key</string>
-          </property>
-          <property name="currentIndex">
-           <number>1</number>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>modsnap</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-          <item>
-           <property name="text">
-            <string>Shift</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Ctrl</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Alt</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_5">
-        <item>
-         <widget class="QLabel" name="label_22">
-          <property name="text">
-           <string>Alt mod</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer_6">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
+         <widget class="Gui::PrefComboBox" name="comboBox_modalt">
+          <property name="minimumSize">
            <size>
-            <width>40</width>
-            <height>20</height>
+            <width>140</width>
+            <height>0</height>
            </size>
           </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="Gui::PrefComboBox" name="gui::prefcombobox_7">
           <property name="toolTip">
-           <string>The Alt modifier key</string>
+           <string>The Alt modifier key. The function of this key depends on the command.</string>
           </property>
           <property name="currentIndex">
            <number>2</number>
@@ -221,14 +245,14 @@
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_21">
+       <layout class="QHBoxLayout" name="horizontalLayout_5">
         <item>
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_7">
+         <widget class="Gui::PrefCheckBox" name="checkBox_showSnapBar">
           <property name="toolTip">
            <string>If checked, the Snap toolbar will be shown whenever you use snapping</string>
           </property>
           <property name="text">
-           <string>Show Draft Snap toolbar</string>
+           <string>Show Draft snap toolbar</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -246,9 +270,12 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_6">
         <item>
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_9">
+         <widget class="Gui::PrefCheckBox" name="checkBox_hideSnapBar">
+          <property name="enabled">
+           <bool>true</bool>
+          </property>
           <property name="text">
-           <string>Hide Draft snap toolbar after use</string>
+           <string>If checked, the Draft snap toolbar is hidden after use</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>hideSnapBar</cstring>
@@ -261,43 +288,19 @@
        </layout>
       </item>
      </layout>
-     <zorder/>
-     <zorder/>
-     <zorder/>
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox">
+    <widget class="QGroupBox" name="groupBox_2">
      <property name="title">
       <string>Grid</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_2">
       <item>
-       <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_2">
+       <widget class="Gui::PrefCheckBox" name="checkBox_alwaysShowGrid">
         <property name="toolTip">
-         <string>If checked, a grid will appear when drawing</string>
-        </property>
-        <property name="text">
-         <string>Use grid</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>grid</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Draft</cstring>
-        </property>
-       </widget>
-      </item>
-      <item>
-       <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_10">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="toolTip">
-         <string>If checked, the Draft grid will always be visible when the Draft workbench is active. Otherwise only when using a command</string>
+         <string>If checked, the grid will always be visible in new views.
+Use Draft ToggleGrid to change this for the active view.</string>
         </property>
         <property name="text">
          <string>Always show the grid</string>
@@ -314,7 +317,30 @@
        </widget>
       </item>
       <item>
-       <widget class="Gui::PrefCheckBox" name="checkBox">
+       <widget class="Gui::PrefCheckBox" name="checkBox_grid">
+        <property name="enabled">
+         <bool>false</bool>
+        </property>
+        <property name="toolTip">
+         <string>If checked, the grid will be visible during commands in new views.
+Use Draft ToggleGrid to change this for the active view.</string>
+        </property>
+        <property name="text">
+         <string>Show the grid during commands</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>grid</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Draft</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBox_gridBorder">
         <property name="toolTip">
          <string>If checked, an additional border is displayed around the grid, showing the main square size in the bottom left border</string>
         </property>
@@ -333,9 +359,13 @@
        </widget>
       </item>
       <item>
-       <widget class="Gui::PrefCheckBox" name="checkBox_3">
+       <widget class="Gui::PrefCheckBox" name="checkBox_gridShowHuman">
+        <property name="enabled">
+         <bool>true</bool>
+        </property>
         <property name="toolTip">
-         <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;If checked, the outline of a human figure is displayed at the bottom left corner of the grid. This option is only effective if the BIM workbench is installed and if &amp;quot;Show grid border&amp;quot; option is enabled.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+         <string>If checked, the outline of a human figure is displayed at the bottom left corner of the grid.
+This option is only effective if the BIM workbench is installed and if Show grid border is enabled.</string>
         </property>
         <property name="text">
          <string>Show human figure</string>
@@ -352,9 +382,10 @@
        </widget>
       </item>
       <item>
-       <widget class="Gui::PrefCheckBox" name="checkBox_2">
+       <widget class="Gui::PrefCheckBox" name="checkBox_coloredGridAxes">
         <property name="toolTip">
-         <string>If set, the grid will have its two main axes colored in red, green or blue when they match global axes</string>
+         <string>If checked, the two main axes of the grid will be colored red, green or blue
+if they match the X, Y or Z axis of the global coordinate system</string>
         </property>
         <property name="text">
          <string>Use colored axes</string>
@@ -371,40 +402,37 @@
        </widget>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_13">
+       <layout class="QHBoxLayout" name="horizontalLayout_7">
         <item>
-         <widget class="QLabel" name="label_16">
-          <property name="enabled">
-           <bool>true</bool>
-          </property>
+         <widget class="QLabel" name="label_gridEvery">
           <property name="text">
            <string>Main lines every</string>
           </property>
          </widget>
         </item>
         <item>
-         <spacer name="horizontalSpacer_8">
+         <spacer name="horizontalSpacer_4">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
             <width>40</width>
-            <height>20</height>
+            <height>0</height>
            </size>
           </property>
          </spacer>
         </item>
         <item>
-         <widget class="Gui::PrefSpinBox" name="gui::prefspinbox_5">
-          <property name="enabled">
-           <bool>true</bool>
+         <widget class="Gui::PrefSpinBox" name="spinBox_gridEvery">
+          <property name="minimumSize">
+           <size>
+            <width>140</width>
+            <height>0</height>
+           </size>
           </property>
           <property name="toolTip">
-           <string>Mainlines will be drawn thicker. Specify here how many squares between mainlines.</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           <string>The number of squares between main grid lines. These lines are thicker than normal grid lines.</string>
           </property>
           <property name="value">
            <number>10</number>
@@ -420,40 +448,37 @@
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_10">
+       <layout class="QHBoxLayout" name="horizontalLayout_8">
         <item>
-         <widget class="QLabel" name="label_15">
-          <property name="enabled">
-           <bool>true</bool>
-          </property>
+         <widget class="QLabel" name="label_gridSpacing">
           <property name="text">
            <string>Grid spacing</string>
           </property>
          </widget>
         </item>
         <item>
-         <spacer name="horizontalSpacer_7">
+         <spacer name="horizontalSpacer_5">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
             <width>40</width>
-            <height>20</height>
+            <height>0</height>
            </size>
           </property>
          </spacer>
         </item>
         <item>
-         <widget class="Gui::PrefQuantitySpinBox" name="gui::prefdoublespinbox_3">
-          <property name="enabled">
-           <bool>true</bool>
+         <widget class="Gui::PrefQuantitySpinBox" name="spinBox_gridSpacing">
+          <property name="minimumSize">
+           <size>
+            <width>140</width>
+            <height>0</height>
+           </size>
           </property>
           <property name="toolTip">
-           <string>The spacing between each grid line</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           <string>The distance between grid lines</string>
           </property>
           <property name="decimals">
            <number>4</number>
@@ -478,34 +503,37 @@
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout">
+       <layout class="QHBoxLayout" name="horizontalLayout_9">
         <item>
-         <widget class="QLabel" name="label">
+         <widget class="QLabel" name="label_gridSize">
           <property name="text">
            <string>Grid size</string>
           </property>
          </widget>
         </item>
         <item>
-         <spacer name="horizontalSpacer">
+         <spacer name="horizontalSpacer_6">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
             <width>40</width>
-            <height>20</height>
+            <height>0</height>
            </size>
           </property>
          </spacer>
         </item>
         <item>
-         <widget class="Gui::PrefSpinBox" name="spinBox">
-          <property name="toolTip">
-           <string>The number of horizontal or vertical lines of the grid</string>
+         <widget class="Gui::PrefSpinBox" name="spinBox_gridSize">
+          <property name="minimumSize">
+           <size>
+            <width>140</width>
+            <height>0</height>
+           </size>
           </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          <property name="toolTip">
+           <string>The number of horizontal and vertical lines of the grid</string>
           </property>
           <property name="suffix">
            <string> lines</string>
@@ -527,29 +555,35 @@
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_7">
+       <layout class="QHBoxLayout" name="horizontalLayout_10">
         <item>
-         <widget class="QLabel" name="label_2">
+         <widget class="QLabel" name="label_gridColor_gridTransparency">
           <property name="text">
            <string>Grid color and transparency</string>
           </property>
          </widget>
         </item>
         <item>
-         <spacer name="horizontalSpacer_9">
+         <spacer name="horizontalSpacer_7">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
             <width>40</width>
-            <height>20</height>
+            <height>0</height>
            </size>
           </property>
          </spacer>
         </item>
         <item>
-         <widget class="Gui::PrefColorButton" name="gui::prefcolorbutton">
+         <widget class="Gui::PrefColorButton" name="colorButton_gridColor">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
           <property name="toolTip">
            <string>The color of the grid</string>
           </property>
@@ -569,7 +603,13 @@
          </widget>
         </item>
         <item>
-         <widget class="Gui::PrefSpinBox" name="spinBox_2">
+         <widget class="Gui::PrefSpinBox" name="spinBox_gridTransparency">
+          <property name="minimumSize">
+           <size>
+            <width>140</width>
+            <height>0</height>
+           </size>
+          </property>
           <property name="toolTip">
            <string>The overall transparency of the grid</string>
           </property>
@@ -590,61 +630,46 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="verticalGroupBox">
-     <property name="toolTip">
-      <string>Draft Edit preferences</string>
-     </property>
+    <widget class="QGroupBox" name="groupBox_3">
      <property name="title">
       <string>Edit</string>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_9">
+     <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_16" stretch="0,0,0">
-        <property name="leftMargin">
-         <number>0</number>
-        </property>
-        <property name="topMargin">
-         <number>0</number>
-        </property>
-        <property name="rightMargin">
-         <number>0</number>
-        </property>
-        <property name="bottomMargin">
-         <number>0</number>
-        </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_11">
         <item>
-         <widget class="QLabel" name="label_8">
+         <widget class="QLabel" name="label_DraftEditMaxObjects">
           <property name="toolTip">
            <string/>
           </property>
           <property name="text">
-           <string>Maximum number of contemporary edited objects</string>
+           <string>Maximum number of objects for Draft Edit</string>
           </property>
          </widget>
         </item>
         <item>
-         <spacer name="horizontalSpacer_14">
+         <spacer name="horizontalSpacer_8">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
             <width>40</width>
-            <height>20</height>
+            <height>0</height>
            </size>
           </property>
          </spacer>
         </item>
         <item>
-         <widget class="Gui::PrefSpinBox" name="gui::prefspinbox_10">
-          <property name="enabled">
-           <bool>true</bool>
+         <widget class="Gui::PrefSpinBox" name="spinBox_DraftEditMaxObjects">
+          <property name="minimumSize">
+           <size>
+            <width>140</width>
+            <height>0</height>
+           </size>
           </property>
           <property name="toolTip">
-           <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Sets the maximum number of objects Draft Edit&lt;/p&gt;&lt;p&gt;can process at the same time&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           <string>The maximum number of objects Draft Edit is allowed to process at the same time</string>
           </property>
           <property name="minimum">
            <number>1</number>
@@ -669,52 +694,40 @@
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0,0,0">
-        <property name="leftMargin">
-         <number>0</number>
-        </property>
-        <property name="topMargin">
-         <number>0</number>
-        </property>
-        <property name="rightMargin">
-         <number>0</number>
-        </property>
-        <property name="bottomMargin">
-         <number>0</number>
-        </property>
+       <layout class="QHBoxLayout" name="horizontalLayout_12">
         <item>
-         <widget class="QLabel" name="label_3">
+         <widget class="QLabel" name="label_DraftEditPickRadius">
           <property name="toolTip">
            <string/>
           </property>
           <property name="text">
-           <string>Draft edit pick radius</string>
+           <string>Pick radius for Draft Edit</string>
           </property>
          </widget>
         </item>
         <item>
-         <spacer name="horizontalSpacer_4">
+         <spacer name="horizontalSpacer_9">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
             <width>40</width>
-            <height>20</height>
+            <height>0</height>
            </size>
           </property>
          </spacer>
         </item>
         <item>
-         <widget class="Gui::PrefSpinBox" name="gui::prefspinbox_4">
-          <property name="enabled">
-           <bool>true</bool>
+         <widget class="Gui::PrefSpinBox" name="spinBox_DraftEditPickRadius">
+          <property name="minimumSize">
+           <size>
+            <width>140</width>
+            <height>0</height>
+           </size>
           </property>
           <property name="toolTip">
-           <string>Controls pick radius of edit nodes</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+           <string>The pick radius (in pixels) of edit nodes</string>
           </property>
           <property name="minimum">
            <number>1</number>
@@ -736,13 +749,13 @@
     </widget>
    </item>
    <item>
-    <spacer name="verticalSpacer">
+    <spacer name="verticalSpacer_1">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
      </property>
      <property name="sizeHint" stdset="0">
       <size>
-       <width>20</width>
+       <width>0</width>
        <height>40</height>
       </size>
      </property>
@@ -787,20 +800,34 @@
  <resources/>
  <connections>
   <connection>
-   <sender>gui::prefcheckbox_7</sender>
-   <signal>clicked(bool)</signal>
-   <receiver>gui::prefcheckbox_9</receiver>
+   <sender>checkBox_alwaysSnap</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>label_modsnap</receiver>
+   <slot>setDisabled(bool)</slot>
+  </connection>
+  <connection>
+   <sender>checkBox_alwaysSnap</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>comboBox_modsnap</receiver>
+   <slot>setDisabled(bool)</slot>
+  </connection>
+  <connection>
+   <sender>checkBox_showSnapBar</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>checkBox_hideSnapBar</receiver>
    <slot>setEnabled(bool)</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>158</x>
-     <y>290</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>400</x>
-     <y>293</y>
-    </hint>
-   </hints>
+  </connection>
+  <connection>
+   <sender>checkBox_alwaysShowGrid</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>checkBox_grid</receiver>
+   <slot>setDisabled(bool)</slot>
+  </connection>
+  <connection>
+   <sender>checkBox_gridBorder</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>checkBox_gridShowHuman</receiver>
+   <slot>setEnabled(bool)</slot>
   </connection>
  </connections>
 </ui>

@@ -117,7 +117,7 @@ public:
         : ControllerBase(dshandler)
     {}
 
-    ~DrawSketchDefaultWidgetController()
+    ~DrawSketchDefaultWidgetController() override
     {
         connectionParameterValueChanged.disconnect();
         connectionCheckboxCheckedChanged.disconnect();
@@ -182,7 +182,7 @@ public:
     }
 
     /// Change DSH to reflect a comboBox changed in the widget
-    void adaptDrawingToComboboxChange(int comboboxindex, int value)
+    void adaptDrawingToComboboxChange(int comboboxindex, [[maybe_unused]] int value)
     {
         Q_UNUSED(comboboxindex);
 
@@ -253,25 +253,7 @@ protected:
 
     /// Automatic default method update in combobox
     void doConstructionMethodChanged() override
-    {
-        nParameter = WidgetParametersT::size(handler->constructionMethod());
-        nCheckbox = WidgetCheckboxesT::size(handler->constructionMethod());
-        nCombobox = WidgetComboboxesT::size(handler->constructionMethod());
-
-        // update the combobox only if necessary (if the change was not triggered by the
-        // combobox)
-        if constexpr (PFirstComboboxIsConstructionMethod == true) {
-            auto currentindex = toolWidget->getComboboxIndex(WCombobox::FirstCombo);
-            auto methodint = static_cast<int>(handler->constructionMethod());
-
-            if (currentindex != methodint) {
-                // avoid triggering of method change
-                boost::signals2::shared_connection_block combobox_block(
-                    connectionComboboxSelectionChanged);
-                toolWidget->setComboboxIndex(WCombobox::FirstCombo, methodint);
-            }
-        }
-    }
+    {}
     //@}
 
 private:
@@ -306,11 +288,29 @@ private:
         boost::signals2::shared_connection_block checkbox_block(connectionCheckboxCheckedChanged);
         boost::signals2::shared_connection_block combobox_block(connectionComboboxSelectionChanged);
 
+        nParameter = WidgetParametersT::size(handler->constructionMethod());
+        nCheckbox = WidgetCheckboxesT::size(handler->constructionMethod());
+        nCombobox = WidgetComboboxesT::size(handler->constructionMethod());
+
         toolWidget->initNParameters(nParameter);
         toolWidget->initNCheckboxes(nCheckbox);
         toolWidget->initNComboboxes(nCombobox);
 
         configureToolWidget();
+
+        // update the combobox only if necessary (if the change was not triggered by the
+        // combobox)
+        if constexpr (PFirstComboboxIsConstructionMethod == true) {
+            auto currentindex = toolWidget->getComboboxIndex(WCombobox::FirstCombo);
+            auto methodint = static_cast<int>(handler->constructionMethod());
+
+            if (currentindex != methodint) {
+                // avoid triggering of method change
+                boost::signals2::shared_connection_block combobox_block(
+                    connectionComboboxSelectionChanged);
+                toolWidget->setComboboxIndex(WCombobox::FirstCombo, methodint);
+            }
+        }
     }
 
 private:

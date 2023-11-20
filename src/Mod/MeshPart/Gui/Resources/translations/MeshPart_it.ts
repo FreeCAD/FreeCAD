@@ -198,12 +198,12 @@ Questo comando funziona solo con un oggetto 'solido'.</translation>
       <translation>Annulla</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="626"/>
+      <location filename="../../CurveOnMesh.cpp" line="624"/>
       <source>Wrong mesh picked</source>
       <translation>Rilevata mesh errata</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="667"/>
+      <location filename="../../CurveOnMesh.cpp" line="663"/>
       <source>No point was picked</source>
       <translation>Nessun punto è stato selezionato</translation>
     </message>

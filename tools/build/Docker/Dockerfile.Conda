@@ -1,0 +1,18 @@
+FROM ubuntu:22.04
+
+RUN DEBIAN_FRONTEND=noninteractive apt-get update && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends \
+        ca-certificates \
+        curl \
+    && \
+    rm -rf /var/lib/apt/lists/*
+
+# install Miniforge3
+RUN curl -L -O "https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-$(uname)-$(uname -m).sh" && \
+    bash Miniforge3-$(uname)-$(uname -m).sh -b -p /opt/miniforge3 && \
+    rm "Miniforge3-$(uname)-$(uname -m).sh" && \
+    /opt/miniforge3/bin/conda init
+
+WORKDIR /builds
+
+VOLUME [ "/builds" ]

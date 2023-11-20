@@ -24,11 +24,11 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# include <sstream>
-# include <QDateTime>
-# if defined(FC_OS_LINUX) || defined(__MINGW32__)
-# include <sys/time.h>
-# endif
+#include <sstream>
+#include <QDateTime>
+#if defined(FC_OS_LINUX) || defined(__MINGW32__)
+#include <sys/time.h>
+#endif
 #endif
 
 #include "TimeInfo.h"
@@ -58,42 +58,46 @@ TimeInfo::~TimeInfo() = default;
 
 void TimeInfo::setCurrent()
 {
-#if defined (FC_OS_BSD) || defined(FC_OS_LINUX) || defined(__MINGW32__)
-    struct timeval t;
-    gettimeofday(&t, nullptr);
-    timebuffer.time = t.tv_sec;
-    timebuffer.millitm = t.tv_usec / 1000;
+    // clang-format off
+#if defined(FC_OS_BSD) || defined(FC_OS_LINUX) || defined(__MINGW32__)
+    struct timeval tv {};
+    gettimeofday(&tv, nullptr);
+    timebuffer.time = tv.tv_sec;
+    timebuffer.millitm = tv.tv_usec / 1000;
 #elif defined(FC_OS_WIN32)
     _ftime(&timebuffer);
 #else
-    ftime(&timebuffer); // deprecated
+    ftime(&timebuffer);  // deprecated
 #endif
+    // clang-format on
 }
 
-void TimeInfo::setTime_t (int64_t seconds)
+void TimeInfo::setTime_t(int64_t seconds)
 {
     timebuffer.time = seconds;
 }
 
 std::string TimeInfo::currentDateTimeString()
 {
-    return QDateTime::currentDateTime().toTimeSpec(Qt::OffsetFromUTC)
-        .toString(Qt::ISODate).toStdString();
+    return QDateTime::currentDateTime()
+        .toTimeSpec(Qt::OffsetFromUTC)
+        .toString(Qt::ISODate)
+        .toStdString();
 }
 
-std::string TimeInfo::diffTime(const TimeInfo &timeStart,const TimeInfo &timeEnd )
+std::string TimeInfo::diffTime(const TimeInfo& timeStart, const TimeInfo& timeEnd)
 {
-   std::stringstream str;
-   str << diffTimeF(timeStart,timeEnd);
-   return str.str();
+    std::stringstream str;
+    str << diffTimeF(timeStart, timeEnd);
+    return str.str();
 }
 
-float TimeInfo::diffTimeF(const TimeInfo &timeStart,const TimeInfo &timeEnd )
+float TimeInfo::diffTimeF(const TimeInfo& timeStart, const TimeInfo& timeEnd)
 {
     int64_t ds = int64_t(timeEnd.getSeconds() - timeStart.getSeconds());
     int dms = int(timeEnd.getMiliseconds()) - int(timeStart.getMiliseconds());
 
-    return float(ds) + float(dms) * 0.001f;
+    return float(ds) + float(dms) * 0.001F;
 }
 
 TimeInfo TimeInfo::null()

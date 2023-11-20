@@ -2292,20 +2292,40 @@ void CmdSketcherOffset::activated(int iMsg)
     }
 
     // get the needed lists and objects
-    const std::vector<std::string>& SubNames = selection[0].getSubNames();
-    if (!SubNames.empty()) {
-        for (std::vector<std::string>::const_iterator it = SubNames.begin(); it != SubNames.end(); ++it) {
+    auto* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
+    const std::vector<std::string>& subNames = selection[0].getSubNames();
+    if (!subNames.empty()) {
+        for (auto& name : subNames) {
             // only handle non-external edges
-            if (it->size() > 4 && it->substr(0, 4) == "Edge") {
-                int geoId = std::atoi(it->substr(4, 4000).c_str()) - 1;
+            if (name.size() > 4 && name.substr(0, 4) == "Edge") {
+                int geoId = std::atoi(name.substr(4, 4000).c_str()) - 1;
                 if (geoId >= 0) {
-                    listOfGeoIds.push_back(geoId);
+                    const Part::Geometry* geo = Obj->getGeometry(geoId);
+                    if (!isPoint(*geo)
+                        && !isBSplineCurve(*geo)
+                        && !isEllipse(*geo)
+                        && !isArcOfEllipse(*geo)
+                        && !isArcOfHyperbola(*geo)
+                        && !isArcOfParabola(*geo)
+                        && !GeometryFacade::isInternalAligned(geo)) {
+                        // Currently ellipse/parabola/hyperbola/bspline are not handled correctly.
+                        // Occ engine gives offset of those as set of lines and arcs and does not seem to work consistently.
+                        listOfGeoIds.push_back(geoId);
+                    }
                 }
             }
         }
     }
 
-    ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerOffset(listOfGeoIds));
+    if (listOfGeoIds.size() != 0) {
+        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerOffset(listOfGeoIds));
+    }
+    else {
+        getSelection().clearSelection();
+        Gui::NotifyUserError(Obj,
+            QT_TRANSLATE_NOOP("Notifications", "Invalid selection"),
+            QT_TRANSLATE_NOOP("Notifications", "Selection has no valid geometries. BSplines, Points are not supported yet."));
+    }
 }
 
 bool CmdSketcherOffset::isActive()

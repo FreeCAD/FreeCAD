@@ -46,6 +46,8 @@ public:
     virtual void setRadius(float r);
 
 protected:
+    bool multiselectEligible() override { return true; }
+
     int projIndex;
     float m_radius;
 

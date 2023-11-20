@@ -26,6 +26,8 @@
 
 #include <QGuiApplication>
 #include <QPainter>
+
+#include <Inventor/events/SoKeyboardEvent.h>
 #endif  // #ifndef _PreComp_
 
 #include <Base/Console.h>
@@ -107,6 +109,11 @@ ViewProviderSketchDrawSketchHandlerAttorney::moveCursorToSketchPoint(ViewProvide
                                                                      Base::Vector2d point)
 {
     vp.moveCursorToSketchPoint(point);
+}
+
+inline void ViewProviderSketchDrawSketchHandlerAttorney::ensureFocus(ViewProviderSketch& vp)
+{
+    vp.ensureFocus();
 }
 
 inline void ViewProviderSketchDrawSketchHandlerAttorney::preselectAtPoint(ViewProviderSketch& vp,
@@ -365,6 +372,22 @@ void DrawSketchHandler::toolWidgetChanged(QWidget* newwidget)
 {
     toolwidget = newwidget;
     onWidgetChanged();
+}
+
+void DrawSketchHandler::registerPressedKey(bool pressed, int key)
+{
+    // the default behaviour is to quit - specific handler categories may
+    // override this behaviour, for example to implement a continuous mode
+    if (key == SoKeyboardEvent::ESCAPE && !pressed) {
+        quit();
+    }
+}
+
+void DrawSketchHandler::pressRightButton(Base::Vector2d /*onSketchPos*/)
+{
+    // the default behaviour is to quit - specific handler categories may
+    // override this behaviour, for example to implement a continuous mode
+    quit();
 }
 
 //**************************************************************************
@@ -1121,16 +1144,49 @@ void DrawSketchHandler::drawPositionAtCursor(const Base::Vector2d& position)
 void DrawSketchHandler::drawDirectionAtCursor(const Base::Vector2d& position,
                                               const Base::Vector2d& origin)
 {
+    if (!showCursorCoords()) {
+        return;
+    }
+
     float length = (position - origin).Length();
     float angle = (position - origin).GetAngle(Base::Vector2d(1.f, 0.f));
 
-    if (showCursorCoords()) {
-        SbString text;
-        std::string lengthString = lengthToDisplayFormat(length, 1);
-        std::string angleString = angleToDisplayFormat(angle * 180.0 / M_PI, 1);
-        text.sprintf(" (%s, %s)", lengthString.c_str(), angleString.c_str());
-        setPositionText(position, text);
+    SbString text;
+    std::string lengthString = lengthToDisplayFormat(length, 1);
+    std::string angleString = angleToDisplayFormat(angle * 180.0 / M_PI, 1);
+    text.sprintf(" (%s, %s)", lengthString.c_str(), angleString.c_str());
+    setPositionText(position, text);
+}
+
+void DrawSketchHandler::drawWidthHeightAtCursor(const Base::Vector2d& position,
+                                                const double val1,
+                                                const double val2)
+{
+    if (!showCursorCoords()) {
+        return;
     }
+
+    SbString text;
+    std::string val1String = lengthToDisplayFormat(val1, 1);
+    std::string val2String = lengthToDisplayFormat(val2, 1);
+    text.sprintf(" (%s x %s)", val1String.c_str(), val2String.c_str());
+    setPositionText(position, text);
+}
+
+void DrawSketchHandler::drawDoubleAtCursor(const Base::Vector2d& position,
+                                           const double val,
+                                           Base::Unit unit)
+{
+    if (!showCursorCoords()) {
+        return;
+    }
+
+    SbString text;
+    std::string doubleString = unit == Base::Unit::Length
+        ? lengthToDisplayFormat(val, 1)
+        : angleToDisplayFormat(val * 180.0 / M_PI, 1);
+    text.sprintf(" (%s)", doubleString.c_str());
+    setPositionText(position, text);
 }
 
 std::unique_ptr<QWidget> DrawSketchHandler::createToolWidget() const
@@ -1169,6 +1225,11 @@ void DrawSketchHandler::setAxisPickStyle(bool on)
 void DrawSketchHandler::moveCursorToSketchPoint(Base::Vector2d point)
 {
     ViewProviderSketchDrawSketchHandlerAttorney::moveCursorToSketchPoint(*sketchgui, point);
+}
+
+void DrawSketchHandler::ensureFocus()
+{
+    ViewProviderSketchDrawSketchHandlerAttorney::ensureFocus(*sketchgui);
 }
 
 void DrawSketchHandler::preselectAtPoint(Base::Vector2d point)

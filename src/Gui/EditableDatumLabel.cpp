@@ -47,14 +47,17 @@ struct NodeData {
 EditableDatumLabel::EditableDatumLabel(View3DInventorViewer* view,
                                        const Base::Placement& plc,
                                        SbColor color,
-                                       bool autoDistance)
+                                       bool autoDistance,
+                                       bool avoidMouseCursor)
     : isSet(false)
     , autoDistance(autoDistance)
     , autoDistanceReverse(false)
+    , avoidMouseCursor(avoidMouseCursor)
     , value(0.0)
     , viewer(view)
     , spinBox(nullptr)
     , cameraSensor(nullptr)
+    , function(Function::Positioning)
 {
     // NOLINTBEGIN
     root = new SoAnnotation;
@@ -239,10 +242,28 @@ void EditableDatumLabel::positionSpinbox()
         return;
     }
 
+    if (spinBox->hasFocus()) {
+        spinBox->raise();
+    }
+
     QSize wSize = spinBox->size();
+    QSize vSize = viewer->size();
     QPoint pxCoord = viewer->toQPoint(viewer->getPointOnViewport(getTextCenterPoint()));
-    pxCoord.setX(std::max(pxCoord.x() - wSize.width() / 2, 0));
-    pxCoord.setY(std::max(pxCoord.y() - wSize.height() / 2, 0));
+
+    int posX = std::min(std::max(pxCoord.x() - wSize.width() / 2, 0), vSize.width() - wSize.width());
+    int posY = std::min(std::max(pxCoord.y() - wSize.height() / 2, 0), vSize.height() - wSize.height());
+
+    if (avoidMouseCursor) {
+        QPoint cursorPos = viewer->mapFromGlobal(QCursor::pos());
+        int margin = static_cast<int>(wSize.height() * 0.7); // NOLINT
+        if ((cursorPos.x() > posX - margin && cursorPos.x() < posX + wSize.width() + margin)
+            && (cursorPos.y() > posY - margin && cursorPos.y() < posY + wSize.height() + margin)) {
+            posY = cursorPos.y() + ((cursorPos.y() > pxCoord.y()) ? - wSize.height() - margin : margin);
+        }
+    }
+
+    pxCoord.setX(posX);
+    pxCoord.setY(posY);
     spinBox->move(pxCoord);
 }
 
@@ -326,9 +347,10 @@ void EditableDatumLabel::setPoints(Base::Vector3d p1, Base::Vector3d p2)
 }
 
 // NOLINTNEXTLINE
-void EditableDatumLabel::setLabelType(SoDatumLabel::Type type)
+void EditableDatumLabel::setLabelType(SoDatumLabel::Type type, Function funct)
 {
     label->datumtype = type;
+    function = funct;
 }
 
 // NOLINTNEXTLINE
@@ -373,4 +395,10 @@ void EditableDatumLabel::setSpinboxVisibleToMouse(bool val)
     spinBox->setAttribute(Qt::WA_TransparentForMouseEvents, !val);
 }
 
-#include "moc_EditableDatumLabel.cpp"
+EditableDatumLabel::Function EditableDatumLabel::getFunction()
+{
+    return function;
+}
+
+#include "moc_EditableDatumLabel.cpp" // NOLINT
+

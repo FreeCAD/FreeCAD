@@ -109,7 +109,6 @@ class Snapper:
         self.snapInfo = None
         self.lastSnappedObject = None
         self.active = True
-        self.forceGridOff = False
         self.lastExtensions = []
         # the trackers are stored in lists because there can be several views,
         # each with its own set
@@ -1228,7 +1227,7 @@ class Snapper:
         if self.dim2:
             self.dim2.off()
         if self.grid:
-            if not Draft.getParam("alwaysShowGrid", True):
+            if self.grid.show_always is False:
                 self.grid.off()
         if self.holdTracker:
             self.holdTracker.clear()
@@ -1295,21 +1294,26 @@ class Snapper:
             self.basepoint = basepoint
         delta = point.sub(self.basepoint)
 
+        if Gui.draftToolBar.globalMode:
+            import WorkingPlane
+            wp = WorkingPlane.PlaneBase()  # matches the global coordinate system
+        else:
+            wp = self._get_wp()
+
         # setting constraint axis
-        wp = self._get_wp()
-        if self.mask:
-            self.affinity = self.mask
-        if not self.affinity:
-            self.affinity = wp.get_closest_axis(delta)
-        if isinstance(axis, App.Vector):
-            self.constraintAxis = axis
-        elif axis == "x":
+        if axis == "x":
             self.constraintAxis = wp.u
         elif axis == "y":
             self.constraintAxis = wp.v
         elif axis == "z":
             self.constraintAxis = wp.axis
+        elif isinstance(axis, App.Vector):
+            self.constraintAxis = axis
         else:
+            if self.mask is not None:
+                self.affinity = self.mask
+            if self.affinity is None:
+                self.affinity = wp.get_closest_axis(delta)
             if self.affinity == "x":
                 self.constraintAxis = wp.u
             elif self.affinity == "y":
@@ -1321,7 +1325,7 @@ class Snapper:
             else:
                 self.constraintAxis = None
 
-        if not self.constraintAxis:
+        if self.constraintAxis is None:
             return point
 
         # calculating constrained point
@@ -1563,44 +1567,58 @@ class Snapper:
         param.SetString("snapModes",snap_modes)
 
 
+    def show_hide_grids(self, show=True):
+        """Show the grid in all 3D views where it was previously visible, or
+        hide the grid in all 3D view. Used when switching to different workbenches.
+
+        Hiding the grid can be prevented by setting the GridHideInOtherWorkbenches
+        preference to `False`.
+        """
+        param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+        if (not show) and (not param.GetBool("GridHideInOtherWorkbenches", True)):
+            return
+        mw = Gui.getMainWindow()
+        views = mw.getWindowsOfType(App.Base.TypeId.fromName("Gui::View3DInventor"))  # All 3D views.
+        for view in views:
+            if view in self.trackers[0]:
+                i = self.trackers[0].index(view)
+                grid = self.trackers[1][i]
+                if show and grid.show_always:
+                    grid.on()
+                else:
+                    grid.off()
+
+
     def show(self):
-        """Show the toolbar and the grid."""
+        """Show the toolbar, show the grid in all 3D views where it was
+        previously visible, and start the trackers for the active 3D view
+        if it is `tracker-less`.
+        """
         toolbar = self.get_snap_toolbar()
         if toolbar:
             if Draft.getParam("showSnapBar", True):
                 toolbar.show()
             else:
                 toolbar.hide()
-
-        if Gui.ActiveDocument:
-            self.setTrackers()
-            if not App.ActiveDocument.Objects:
-                if Gui.ActiveDocument.ActiveView:
-                    if Gui.ActiveDocument.ActiveView.getCameraType() == 'Orthographic':
-                        c = Gui.ActiveDocument.ActiveView.getCameraNode()
-                        if c.orientation.getValue().getValue() == (0.0, 0.0, 0.0, 1.0):
-                            p = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-                            h = p.GetInt("defaultCameraHeight",0)
-                            if h:
-                                c.height.setValue(h)
+        self.show_hide_grids(show=True)
 
 
     def hide(self):
-        """Hide the toolbar."""
+        """Hide the toolbar and hide the grid in all 3D views."""
         if hasattr(self, "toolbar") and self.toolbar:
             self.toolbar.hide()
             self.toolbar.toggleViewAction().setVisible(False)
+        self.show_hide_grids(show=False)
 
 
-    def setGrid(self, tool=False):
+    def setGrid(self):
         """Set the grid, if visible."""
         self.setTrackers()
-        if self.grid and (not self.forceGridOff):
-            if self.grid.Visible:
-                self.grid.set(tool)
+        if self.grid.Visible:
+            self.grid.set()
 
 
-    def setTrackers(self, tool=False):
+    def setTrackers(self, update_grid=True):
         """Set the trackers."""
         v = Draft.get3DView()
         if v and (v != self.activeview):
@@ -1616,14 +1634,11 @@ class Snapper:
                 self.extLine2 = self.trackers[8][i]
                 self.holdTracker = self.trackers[9][i]
             else:
+                self.grid = trackers.gridTracker()
+                if Draft.getParam("alwaysShowGrid", True):
+                    self.grid.show_always = True
                 if Draft.getParam("grid", True):
-                    self.grid = trackers.gridTracker()
-                    if Draft.getParam("alwaysShowGrid", True) or tool:
-                        self.grid.on()
-                    else:
-                        self.grid.off()
-                else:
-                    self.grid = None
+                    self.grid.show_during_command = True
                 self.tracker = trackers.snapTracker()
                 self.trackLine = trackers.lineTracker()
                 if self.snapStyle:
@@ -1651,8 +1666,14 @@ class Snapper:
                 self.trackers[9].append(self.holdTracker)
             self.activeview = v
 
-        if tool and self.grid and (not self.forceGridOff):
-            self.grid.set(tool)
+        if not update_grid:
+            return
+
+        if self.grid.show_always \
+                or (self.grid.show_during_command \
+                      and hasattr(App, "activeDraftCommand") \
+                      and App.activeDraftCommand):
+            self.grid.set()
 
 
     def addHoldPoint(self):

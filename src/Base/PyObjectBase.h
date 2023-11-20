@@ -23,6 +23,8 @@
 #ifndef BASE_PYOBJECTBASE_H
 #define BASE_PYOBJECTBASE_H
 
+// clang-format off
+// NOLINTBEGIN(cppcoreguidelines-macro-usage)
 // Std. configurations
 
 // (re-)defined in pyconfig.h
@@ -510,8 +512,9 @@ inline PyObject * PyAsUnicodeObject(const char *str)
     // Returns a new reference, don't increment it!
     Py_ssize_t len = Py_SAFE_DOWNCAST(strlen(str), size_t, Py_ssize_t);
     PyObject *p = PyUnicode_DecodeUTF8(str, len, nullptr);
-    if (!p)
+    if (!p) {
         throw Base::UnicodeError("UTF8 conversion failure at PyAsUnicodeString()");
+    }
     return p;
 }
 
@@ -546,12 +549,15 @@ inline void PyTypeCheck(PyObject** ptr, int (*method)(PyObject*), const char* ms
         *ptr = nullptr;
         return;
     }
-    if (!method(*ptr))
+    if (!method(*ptr)) {
         throw Base::TypeError(msg);
+    }
 }
 
 
 } // namespace Base
 
+// NOLINTBEGIN(cppcoreguidelines-macro-usage)
+// clang-format on
 
-#endif // BASE_PYOBJECTBASE_H
+#endif  // BASE_PYOBJECTBASE_H

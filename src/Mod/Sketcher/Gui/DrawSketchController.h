@@ -166,8 +166,8 @@ protected:
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
                 "User parameter:BaseApp/Preferences/View");
 
-            dimConstrColor = SbColor(1.0f, 0.149f, 0.0f);
-            dimConstrDeactivatedColor = SbColor(0.8f, 0.8f, 0.8f);
+            dimConstrColor = SbColor(1.0f, 0.149f, 0.0f);           // NOLINT
+            dimConstrDeactivatedColor = SbColor(0.8f, 0.8f, 0.8f);  // NOLINT
 
             float transparency = 0.f;
             unsigned long color = (unsigned long)(dimConstrColor.getPackedValue());
@@ -180,6 +180,75 @@ protected:
         }
     };
 
+    class OnViewParameterVisibilityManager
+    {
+    public:
+        enum class OnViewParameterVisibility
+        {
+            Hidden = 0,
+            OnlyDimensional = 1,
+            ShowAll = 2
+        };
+
+        OnViewParameterVisibilityManager()
+        {
+            init();
+        }
+
+        OnViewParameterVisibility visibility() const
+        {
+            return onViewParameterVisibility;
+        }
+
+        bool isVisibility(OnViewParameterVisibility visibility) const
+        {
+            return onViewParameterVisibility == visibility;
+        }
+
+        bool isVisible(Gui::EditableDatumLabel* ovp) const
+        {
+            switch (onViewParameterVisibility) {
+
+                case OnViewParameterVisibility::Hidden:
+                    return dynamicOverride;
+                case OnViewParameterVisibility::OnlyDimensional: {
+                    auto isDimensional =
+                        (ovp->getFunction() == Gui::EditableDatumLabel::Function::Dimensioning);
+
+                    return isDimensional != dynamicOverride;
+                }
+                case OnViewParameterVisibility::ShowAll:
+                    return !dynamicOverride;
+            }
+
+            return false;
+        }
+
+        void toggleDynamicOverride()
+        {
+            dynamicOverride = !dynamicOverride;
+        }
+
+        void resetDynamicOverride()
+        {
+            dynamicOverride = false;
+        }
+
+
+    private:
+        void init()
+        {
+            ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+                "User parameter:BaseApp/Preferences/Mod/Sketcher/Tools");
+
+            onViewParameterVisibility = static_cast<OnViewParameterVisibility>(
+                hGrp->GetInt("OnViewParameterVisibility", 1));
+        }
+
+        OnViewParameterVisibility onViewParameterVisibility;
+        bool dynamicOverride = false;
+    };
+
 public:
     /** Creates the controller.
      *  @param dshandler a controllable DSH handler
@@ -189,7 +258,12 @@ public:
         , keymanager(std::make_unique<DrawSketchKeyboardManager>())
     {}
 
-    ~DrawSketchController()
+    DrawSketchController(const DrawSketchController&) = delete;
+    DrawSketchController(DrawSketchController&&) = delete;
+    bool operator=(const DrawSketchController&) = delete;
+    bool operator=(DrawSketchController&&) = delete;
+
+    virtual ~DrawSketchController()
     {}
 
     /** @name functions NOT intended for specialisation offering a NVI for extension */
@@ -210,6 +284,9 @@ public:
     /** @brief Resets the controls, such as the widget and the on-view parameters */
     void resetControls()
     {
+        // Make sure we do not loose focus if next methode does not have OVP that take focus.
+        handler->ensureFocus();
+
         doResetControls();  // NVI
 
         firstMoveInit = false;
@@ -241,8 +318,6 @@ public:
     /** function that is called by the handler when the construction mode changed */
     void onConstructionMethodChanged()
     {
-        nOnViewParameter = OnViewParametersT::size(handler->constructionMethod());
-
         doConstructionMethodChanged();  // NVI
 
         handler->updateCursor();
@@ -266,8 +341,9 @@ public:
      */
     void onViewValueChanged(int onviewparameterindex, double value)
     {
-        if (isOnViewParameterOfCurrentMode(onviewparameterindex + 1)) {
-            setFocusToOnViewParameter(onviewparameterindex + 1);
+        int nextindex = onviewparameterindex + 1;
+        if (isOnViewParameterOfCurrentMode(nextindex)) {
+            setFocusToOnViewParameter(nextindex);
         }
 
         /* That is not supported with on-view parameters.
@@ -382,6 +458,37 @@ public:
         }
     }
 
+    void drawPositionAtCursor(const Base::Vector2d& position)
+    {
+        if (shouldDrawPositionAtCursor()) {
+            handler->drawPositionAtCursor(position);
+        }
+    }
+
+    void drawDirectionAtCursor(const Base::Vector2d& position, const Base::Vector2d& origin)
+    {
+        if (shouldDrawDimensionsAtCursor()) {
+            handler->drawDirectionAtCursor(position, origin);
+        }
+    }
+
+    void
+    drawWidthHeightAtCursor(const Base::Vector2d& position, const double val1, const double val2)
+    {
+        if (shouldDrawDimensionsAtCursor()) {
+            handler->drawWidthHeightAtCursor(position, val1, val2);
+        }
+    }
+
+    void drawDoubleAtCursor(const Base::Vector2d& position,
+                            const double radius,
+                            Base::Unit unit = Base::Unit::Length)
+    {
+        if (shouldDrawDimensionsAtCursor()) {
+            handler->drawDoubleAtCursor(position, radius, unit);
+        }
+    }
+
 protected:
     /** @name NVI for extension of controller functionality in derived classes */
     //@{
@@ -469,7 +576,8 @@ protected:
                                      viewer,
                                      placement,
                                      colorManager.dimConstrDeactivatedColor,
-                                     /*autoDistance = */ true))
+                                     /*autoDistance = */ true,
+                                     /*avoidMouseCursor = */ true))
                                  .get();
 
             QObject::connect(parameter, &Gui::EditableDatumLabel::valueChanged, [=](double value) {
@@ -486,14 +594,29 @@ protected:
         onViewParameter->setColor(colorManager.dimConstrDeactivatedColor);
     }
 
+    void setOnViewParameterValue(OnViewParameter index,
+                                 double val,
+                                 const Base::Unit& unit = Base::Unit::Length)
+    {
+        bool visible = ovpVisibilityManager.isVisible(onViewParameters[index].get());
+
+        if (visible) {
+            onViewParameters[index]->setSpinboxValue(val, unit);
+        }
+    }
+
     /** Activates the correct set of on-view parameters corresponding to current
      * mode. It may be specialized if necessary.*/
     void setModeOnViewParameters()
     {
+        // before each mode change we reset the dynamic override
+        ovpVisibilityManager.resetDynamicOverride();
+
         bool firstOfMode = true;
         onViewIndexWithFocus = -1;
 
         for (size_t i = 0; i < onViewParameters.size(); i++) {
+
             if (!isOnViewParameterOfCurrentMode(i)) {
                 onViewParameters[i]->stopEdit();
                 if (!onViewParameters[i]->isSet || handler->state() == SelectMode::End) {
@@ -501,16 +624,22 @@ protected:
                 }
             }
             else {
+
                 if (firstOfMode) {
-                    onViewIndexWithFocus = i;
+                    onViewIndexWithFocus = static_cast<int>(i);
                     firstOfMode = false;
                 }
 
-                onViewParameters[i]->activate();
+                bool visible = ovpVisibilityManager.isVisible(onViewParameters[i].get());
 
-                // points/value will be overridden by the mouseMove triggered by the mode change.
-                onViewParameters[i]->setPoints(Base::Vector3d(), Base::Vector3d());
-                onViewParameters[i]->startEdit(0.0, keymanager.get());
+                if (visible) {
+                    onViewParameters[i]->activate();
+
+                    // points/value will be overridden by the mouseMove triggered by the mode
+                    // change.
+                    onViewParameters[i]->setPoints(Base::Vector3d(), Base::Vector3d());
+                    onViewParameters[i]->startEdit(0.0, keymanager.get());
+                }
             }
         }
     }
@@ -519,8 +648,15 @@ protected:
     void setFocusToOnViewParameter(unsigned int onviewparameterindex)
     {
         if (onviewparameterindex < onViewParameters.size()) {
-            onViewParameters[onviewparameterindex]->setFocusToSpinbox();
-            onViewIndexWithFocus = onviewparameterindex;
+
+            bool visible =
+                ovpVisibilityManager.isVisible(onViewParameters[onviewparameterindex].get());
+
+            if (visible) {
+                onViewParameters[onviewparameterindex]->setFocusToSpinbox();
+            }
+
+            onViewIndexWithFocus = static_cast<int>(onviewparameterindex);
         }
     }
 
@@ -532,13 +668,32 @@ protected:
         if (index >= onViewParameters.size()) {
             index = 0;
         }
+
+        bool visible = ovpVisibilityManager.isVisible(onViewParameters[index].get());
+
         while (index < onViewParameters.size()) {
             if (isOnViewParameterOfCurrentMode(index)) {
-                setFocusToOnViewParameter(index);
-                break;
+
+                if (visible) {
+                    setFocusToOnViewParameter(index);
+                }
+                return;
             }
             index++;
         }
+        // There is no more onViewParameter after onViewIndexWithFocus + 1 in this mode
+
+        // So we go back to start.
+        index = 0;
+        while (index < onViewParameters.size()) {
+            if (isOnViewParameterOfCurrentMode(index)) {
+                setFocusToOnViewParameter(index);
+                return;
+            }
+            index++;
+        }
+
+        // At that point if no onViewParameter is found, there is none.
     }
 
     /** Returns whether the provided on-view parameter index belongs to the current state of the
@@ -560,6 +715,7 @@ protected:
     /** Resets the on-view parameter controls */
     void resetOnViewParameters()
     {
+        nOnViewParameter = OnViewParametersT::size(handler->constructionMethod());
         initNOnViewParameters(nOnViewParameter);
         onViewIndexWithFocus = 0;
 
@@ -568,6 +724,23 @@ protected:
     //@}
 
 private:
+    /** @name helper functions */
+    //@{
+    bool shouldDrawPositionAtCursor() const
+    {
+        return !(ovpVisibilityManager.isVisibility(
+            OnViewParameterVisibilityManager::OnViewParameterVisibility::ShowAll));
+    }
+
+    bool shouldDrawDimensionsAtCursor() const
+    {
+        return (ovpVisibilityManager.isVisibility(
+            OnViewParameterVisibilityManager::OnViewParameterVisibility::Hidden));
+    }
+    //@}
+
+private:
+    OnViewParameterVisibilityManager ovpVisibilityManager;
     ColorManager colorManager;
     std::unique_ptr<DrawSketchKeyboardManager> keymanager;
 };

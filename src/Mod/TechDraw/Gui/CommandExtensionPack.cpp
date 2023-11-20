@@ -62,6 +62,7 @@
 
 using namespace TechDrawGui;
 using namespace TechDraw;
+using DU = DrawUtil;
 
 
 namespace TechDrawGui
@@ -876,13 +877,12 @@ void execDrawCosmArc(Gui::Command* cmd)
     std::vector<Base::Vector3d> vertexPoints;
     vertexPoints = _getVertexPoints(SubNames, objFeat);
     if (vertexPoints.size() >= 3) {
-        double scale = objFeat->getScale();
         float arcRadius = (vertexPoints[1] - vertexPoints[0]).Length();
         float angle1 = _getAngle(vertexPoints[0], vertexPoints[1]);
         float angle2 = _getAngle(vertexPoints[0], vertexPoints[2]);
         TechDraw::BaseGeomPtr baseGeo = std::make_shared<TechDraw::AOC>(
-            vertexPoints[0] / scale, arcRadius / scale, -angle2, -angle1);
-        std::string arcTag = objFeat->addCosmeticEdge(baseGeo);
+            vertexPoints[0], arcRadius, angle1, angle2);
+        std::string arcTag = objFeat->addCosmeticEdge(baseGeo->inverted());
         TechDraw::CosmeticEdge* arcEdge = objFeat->getCosmeticEdge(arcTag);
         _setLineAttributes(arcEdge);
         objFeat->refreshCEGeoms();
@@ -941,12 +941,11 @@ void execDrawCosmCircle(Gui::Command* cmd)
     std::vector<Base::Vector3d> vertexPoints;
     vertexPoints = _getVertexPoints(SubNames, objFeat);
     if (vertexPoints.size() >= 2) {
-        double scale = objFeat->getScale();
         float circleRadius = (vertexPoints[1] - vertexPoints[0]).Length();
         TechDraw::BaseGeomPtr baseGeo =
-            std::make_shared<TechDraw::Circle>(vertexPoints[0] / scale, circleRadius / scale);
-        std::string cicleTag = objFeat->addCosmeticEdge(baseGeo);
-        TechDraw::CosmeticEdge* circleEdge = objFeat->getCosmeticEdge(cicleTag);
+            std::make_shared<TechDraw::Circle>(vertexPoints[0], circleRadius);
+        std::string circleTag = objFeat->addCosmeticEdge(baseGeo->inverted());
+        TechDraw::CosmeticEdge* circleEdge = objFeat->getCosmeticEdge(circleTag);
         _setLineAttributes(circleEdge);
         objFeat->refreshCEGeoms();
         objFeat->requestPaint();
@@ -1003,14 +1002,14 @@ void execDrawCosmCircle3Points(Gui::Command* cmd)
     std::vector<Base::Vector3d> vertexPoints;
     vertexPoints = _getVertexPoints(SubNames, objFeat);
     if (vertexPoints.size() >= 3) {
-        double scale = objFeat->getScale();
-        Base::Vector3d circleCenter =
-            _circleCenter(vertexPoints[0], vertexPoints[1], vertexPoints[2]);
+        Base::Vector3d circleCenter = _circleCenter(vertexPoints[0],
+                                                    vertexPoints[1],
+                                                    vertexPoints[2]);
         float circleRadius = (vertexPoints[0] - circleCenter).Length();
         TechDraw::BaseGeomPtr theCircle =
-            std::make_shared<TechDraw::Circle>(circleCenter / scale, circleRadius / scale);
-        std::string cicleTag = objFeat->addCosmeticEdge(theCircle);
-        TechDraw::CosmeticEdge* circleEdge = objFeat->getCosmeticEdge(cicleTag);
+            std::make_shared<TechDraw::Circle>(circleCenter, circleRadius);
+        std::string circleTag = objFeat->addCosmeticEdge(theCircle->inverted());
+        TechDraw::CosmeticEdge* circleEdge = objFeat->getCosmeticEdge(circleTag);
         _setLineAttributes(circleEdge);
         objFeat->refreshCEGeoms();
         objFeat->requestPaint();
@@ -1969,35 +1968,30 @@ bool _checkSel(Gui::Command* cmd, std::vector<Gui::SelectionObject>& selection,
     return true;
 }
 
+//! return the vertices in the selection as [Base::Vector3d] in App coords -
+//! inverted, unrotated and unscaled
 std::vector<Base::Vector3d> _getVertexPoints(std::vector<std::string> SubNames,
                                              TechDraw::DrawViewPart* objFeat)
 {
-    // get vertex points as Vector3d
     std::vector<Base::Vector3d> vertexPoints;
     for (const std::string& Name : SubNames) {
         std::string GeoType = TechDraw::DrawUtil::getGeomTypeFromName(Name);
         if (GeoType == "Vertex") {
             int GeoId = TechDraw::DrawUtil::getIndexFromName(Name);
             TechDraw::VertexPtr vert = objFeat->getProjVertexByIndex(GeoId);
-            Base::Vector3d onePoint(vert->point().x, vert->point().y, 0);
+            Base::Vector3d onePoint = DU::toAppSpace(*objFeat, vert->point());
             vertexPoints.push_back(onePoint);
         }
     }
     return vertexPoints;
 }
 
+//! get angle between x-axis and the vector from center to point.
+//! result is [0, 360]
 float _getAngle(Base::Vector3d center, Base::Vector3d point)
 {
-    // get angle between x-axis and the vector from center to point
-    const auto Pi180 = 180.0 / M_PI;
     Base::Vector3d vecCP = point - center;
-    float dy = vecCP.y;
-    float sign = -1.0;
-    if (dy < 0.0)
-        sign = -sign;
-    float angle = acos(vecCP.Normalize().x) * Pi180 * sign;
-    if (angle < 0.0)
-        angle = 360 + angle;
+    double angle = DU::angleWithX(vecCP) * 180.0 / M_PI;
     return angle;
 }
 

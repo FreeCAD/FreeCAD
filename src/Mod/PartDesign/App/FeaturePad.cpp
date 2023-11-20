@@ -38,7 +38,7 @@
 
 using namespace PartDesign;
 
-const char* Pad::TypeEnums[]= {"Length", "UpToLast", "UpToFirst", "UpToFace", "TwoLengths", nullptr};
+const char* Pad::TypeEnums[]= {"Length", "UpToLast", "UpToFirst", "UpToFace", "TwoLengths", "UpToShape", nullptr};
 
 PROPERTY_SOURCE(PartDesign::Pad, PartDesign::FeatureExtrude)
 
@@ -78,6 +78,8 @@ App::DocumentObjectExecReturn *Pad::execute()
     Midplane.setReadOnly(hasReversed);
     Reversed.setReadOnly(hasMidplane);
 
+    std::string method(Type.getValueAsString());
+
     TopoDS_Shape sketchshape;
     try {
         sketchshape = getVerifiedFace();
@@ -92,6 +94,9 @@ App::DocumentObjectExecReturn *Pad::execute()
         base = getBaseShape();
     }
     catch (const Base::Exception&) {
+        if (method == "UpToShape") {
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Pad: Can't pad up to shape without base shape."));
+        }
         base = TopoDS_Shape();
     }
 
@@ -137,8 +142,7 @@ App::DocumentObjectExecReturn *Pad::execute()
         sketchshape.Move(invObjLoc);
 
         TopoDS_Shape prism;
-        std::string method(Type.getValueAsString());
-        if (method == "UpToFirst" || method == "UpToLast" || method == "UpToFace") {
+        if (method == "UpToFirst" || method == "UpToLast" || method == "UpToFace"  || method == "UpToShape") {
               // Note: This will return an unlimited planar face if support is a datum plane
             TopoDS_Face supportface = getSupportFace();
             supportface.Move(invObjLoc);
@@ -146,14 +150,16 @@ App::DocumentObjectExecReturn *Pad::execute()
             if (Reversed.getValue())
                 dir.Reverse();
 
-            // Find a valid face or datum plane to extrude up to
             TopoDS_Face upToFace;
-            if (method == "UpToFace") {
-                getFaceFromLinkSub(upToFace, UpToFace);
-                upToFace.Move(invObjLoc);
+            if (method != "UpToShape") {
+                // Find a valid face or datum plane to extrude up to
+                if (method == "UpToFace") {
+                    getFaceFromLinkSub(upToFace, UpToFace);
+                    upToFace.Move(invObjLoc);
+                }
+                getUpToFace(upToFace, base, sketchshape, method, dir);
+                addOffsetToFace(upToFace, dir, Offset.getValue());
             }
-            getUpToFace(upToFace, base, sketchshape, method, dir);
-            addOffsetToFace(upToFace, dir, Offset.getValue());
 
             // TODO: Write our own PrismMaker which does not depend on a solid base shape
             if (base.IsNull()) {
@@ -165,7 +171,10 @@ App::DocumentObjectExecReturn *Pad::execute()
                     supportface = TopoDS_Face();
 
                 PrismMode mode = PrismMode::None;
-                generatePrism(prism, method, base, sketchshape, supportface, upToFace, dir, mode, Standard_True);
+                if (method == "UpToShape")
+                    generatePrism(prism, "UpToFace", base, sketchshape, supportface, base, dir, mode, Standard_True);
+                else
+                    generatePrism(prism, method, base, sketchshape, supportface, upToFace, dir, mode, Standard_True);
                 base.Nullify();
             }
             else {
@@ -182,7 +191,10 @@ App::DocumentObjectExecReturn *Pad::execute()
                 if (!Ex.More())
                     supportface = TopoDS_Face();
                 PrismMode mode = PrismMode::None;
-                generatePrism(prism, method, base, sketchshape, supportface, upToFace, dir, mode, Standard_True);
+                if (method == "UpToShape")
+                    generatePrism(prism, "UpToFace", base, sketchshape, supportface, base, dir, mode, Standard_True);
+                else
+                    generatePrism(prism, method, base, sketchshape, supportface, upToFace, dir, mode, Standard_True);
             }
         }
         else {

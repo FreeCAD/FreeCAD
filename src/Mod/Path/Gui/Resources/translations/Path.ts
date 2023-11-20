@@ -2876,48 +2876,48 @@ Should multiple tools or tool shapes with the same name exist in different direc
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="54"/>
+        <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="52"/>
         <source>Arc</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="55"/>
+        <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="53"/>
         <source>Tangent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="56"/>
+        <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="54"/>
         <source>Perpendicular</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="169"/>
-        <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="176"/>
+        <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="168"/>
+        <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="175"/>
         <source>Length/Radius positive not Null</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="677"/>
+        <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="464"/>
         <source>LeadInOut</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="681"/>
+        <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="468"/>
         <source>Creates a Cutter Radius Compensation G41/G42 Entry Dressup object from a selected path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="696"/>
+        <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="483"/>
         <source>Please select one path object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="703"/>
+        <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="490"/>
         <source>The selected object is not a path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="709"/>
+        <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="496"/>
         <source>Please select a Profile object</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4523,11 +4523,11 @@ For example:
     </message>
     <message>
         <location filename="../../../Path/Dressup/Boundary.py" line="53"/>
-        <location filename="../../../Path/Dressup/Tags.py" line="943"/>
+        <location filename="../../../Path/Dressup/Tags.py" line="940"/>
         <location filename="../../../Path/Dressup/Gui/AxisMap.py" line="54"/>
         <location filename="../../../Path/Dressup/Gui/Dogbone.py" line="423"/>
         <location filename="../../../Path/Dressup/Gui/Dragknife.py" line="58"/>
-        <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="63"/>
+        <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="61"/>
         <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="57"/>
         <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="62"/>
         <source>The base path to modify</source>
@@ -4544,72 +4544,72 @@ For example:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Dressup/DogboneII.py" line="202"/>
+        <location filename="../../../Path/Dressup/DogboneII.py" line="203"/>
         <source>The base path to dress up</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Dressup/DogboneII.py" line="210"/>
+        <location filename="../../../Path/Dressup/DogboneII.py" line="211"/>
         <location filename="../../../Path/Dressup/Gui/Dogbone.py" line="429"/>
         <source>The side of path to insert bones</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Dressup/DogboneII.py" line="227"/>
+        <location filename="../../../Path/Dressup/DogboneII.py" line="228"/>
         <location filename="../../../Path/Dressup/Gui/Dogbone.py" line="437"/>
         <source>The style of bones</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Dressup/DogboneII.py" line="238"/>
+        <location filename="../../../Path/Dressup/DogboneII.py" line="239"/>
         <location filename="../../../Path/Dressup/Gui/Dogbone.py" line="455"/>
         <source>The algorithm to determine the bone length</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Dressup/DogboneII.py" line="249"/>
+        <location filename="../../../Path/Dressup/DogboneII.py" line="250"/>
         <location filename="../../../Path/Dressup/Gui/Dogbone.py" line="463"/>
         <source>Dressup length if incision is set to &apos;custom&apos;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Dressup/DogboneII.py" line="257"/>
+        <location filename="../../../Path/Dressup/DogboneII.py" line="258"/>
         <location filename="../../../Path/Dressup/Gui/Dogbone.py" line="445"/>
         <source>Bones that aren&apos;t dressed up</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Dressup/Tags.py" line="949"/>
+        <location filename="../../../Path/Dressup/Tags.py" line="946"/>
         <source>Width of tags.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Dressup/Tags.py" line="955"/>
+        <location filename="../../../Path/Dressup/Tags.py" line="952"/>
         <source>Height of tags.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Dressup/Tags.py" line="961"/>
+        <location filename="../../../Path/Dressup/Tags.py" line="958"/>
         <source>Angle of tag plunge and ascent.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Dressup/Tags.py" line="967"/>
+        <location filename="../../../Path/Dressup/Tags.py" line="964"/>
         <source>Radius of the fillet for the tag.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Dressup/Tags.py" line="973"/>
+        <location filename="../../../Path/Dressup/Tags.py" line="970"/>
         <source>Locations of inserted holding tags</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Dressup/Tags.py" line="979"/>
+        <location filename="../../../Path/Dressup/Tags.py" line="976"/>
         <source>IDs of disabled holding tags</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Dressup/Tags.py" line="988"/>
+        <location filename="../../../Path/Dressup/Tags.py" line="985"/>
         <source>Factor determining the # of segments used to approximate rounded tags.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -4639,57 +4639,57 @@ For example:
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="69"/>
+        <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="67"/>
         <source>Calculate roll-on to path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="75"/>
+        <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="73"/>
         <source>Calculate roll-off from path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="81"/>
+        <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="79"/>
         <source>Keep the Tool Down in Path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="87"/>
+        <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="85"/>
         <source>Length or Radius of the approach</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="93"/>
+        <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="91"/>
         <source>Length or Radius of the exit</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="99"/>
+        <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="97"/>
         <source>The Style of motion into the Path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="106"/>
+        <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="104"/>
         <source>The Style of motion out of the Path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="113"/>
+        <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="111"/>
         <source>Extends LeadIn distance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="119"/>
+        <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="117"/>
         <source>Extends LeadOut distance</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="125"/>
+        <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="123"/>
         <source>Perform plunges with G0</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="133"/>
+        <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="131"/>
         <source>Apply LeadInOut to layers within an operation</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5962,17 +5962,17 @@ For example:
 <context>
     <name>Path_DressupTag</name>
     <message>
-        <location filename="../../../Path/Dressup/Tags.py" line="1310"/>
+        <location filename="../../../Path/Dressup/Tags.py" line="1307"/>
         <source>Cannot insert holding tags for this path - please select a Profile path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Dressup/Tags.py" line="1360"/>
+        <location filename="../../../Path/Dressup/Tags.py" line="1357"/>
         <source>The selected object is not a path</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Dressup/Tags.py" line="1365"/>
+        <location filename="../../../Path/Dressup/Tags.py" line="1362"/>
         <source>Please select a Profile object</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6014,21 +6014,21 @@ For example:
     <name>Path_Dressup</name>
     <message>
         <location filename="../../../Path/Dressup/Gui/AxisMap.py" line="284"/>
-        <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="368"/>
+        <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="366"/>
         <source>Please select one path object
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Path/Dressup/Gui/AxisMap.py" line="289"/>
-        <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="373"/>
+        <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="371"/>
         <source>The selected object is not a path
 </source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../Path/Dressup/Gui/AxisMap.py" line="294"/>
-        <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="378"/>
+        <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="376"/>
         <source>Please select a Path object</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6180,12 +6180,12 @@ For example:
 <context>
     <name>Path_Probe</name>
     <message>
-        <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="293"/>
+        <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="292"/>
         <source>Select Probe Point File</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="295"/>
+        <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="294"/>
         <location filename="../../../Path/Op/Gui/Probe.py" line="95"/>
         <source>All Files (*.*)</source>
         <translation type="unfinished"></translation>
@@ -6209,12 +6209,12 @@ For example:
 <context>
     <name>Path_DressupZCorrect</name>
     <message>
-        <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="347"/>
+        <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="346"/>
         <source>Z Depth Correction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="351"/>
+        <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="350"/>
         <source>Use Probe Map to correct Z depth</source>
         <translation type="unfinished"></translation>
     </message>

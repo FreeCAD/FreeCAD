@@ -288,7 +288,7 @@ de documentare, help pentru atelier și documentarea comenzilor individuale făr
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../../StartPage/StartPage.py" line="826"/>
+      <location filename="../../../StartPage/StartPage.py" line="871"/>
       <location filename="../../Workbench.cpp" line="62"/>
       <source>Start page</source>
       <translation>Pagină principală</translation>

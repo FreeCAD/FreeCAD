@@ -49,13 +49,12 @@ else:
 #  and supports exporting faces with more than 3 vertices
 #  and supports object colors / materials
 
-p = Draft.precision()
-
 if open.__module__ in ['__builtin__','io']:
     pythonopen = open
 
 def findVert(aVertex,aList):
     "finds aVertex in aList, returns index"
+    p = Draft.precision()
     for i in range(len(aList)):
         if round(aVertex.X,p) == round(aList[i].X,p):
             if round(aVertex.Y,p) == round(aList[i].Y,p):
@@ -65,6 +64,7 @@ def findVert(aVertex,aList):
 
 def getIndices(obj,shape,offsetv,offsetvn):
     "returns a list with 2 lists: vertices and face indexes, offset with the given amount"
+    p = Draft.precision()
     vlist = []
     vnlist = []
     elist = []

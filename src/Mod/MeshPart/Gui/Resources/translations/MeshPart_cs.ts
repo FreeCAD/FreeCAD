@@ -198,12 +198,12 @@ Tento příkaz funguje pouze se 'síťovým' objektem.</translation>
       <translation>Zrušit</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="626"/>
+      <location filename="../../CurveOnMesh.cpp" line="624"/>
       <source>Wrong mesh picked</source>
       <translation>Je vybrána špatná síť</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="667"/>
+      <location filename="../../CurveOnMesh.cpp" line="663"/>
       <source>No point was picked</source>
       <translation>Nebyl vybrán bod</translation>
     </message>

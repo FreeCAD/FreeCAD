@@ -24,6 +24,7 @@
 
 #include <App/Application.h>
 #include <App/Document.h>
+#include <App/InventorObject.h>
 #include <Base/Console.h>
 #include <Base/FileInfo.h>
 #include <Base/Interpreter.h>
@@ -34,6 +35,7 @@
 #include <CXX/Extensions.hxx>
 
 #include "TestJtReader.h"
+#include "TKJtReader.h"
 
 
 using std::vector;
@@ -64,9 +66,10 @@ public:
     }
 
 private:
+    // NOLINTBEGIN
     Py::Object read(const Py::Tuple& args)
     {
-        char* Name;
+        char* Name {};
         if (!PyArg_ParseTuple(args.ptr(), "et", "utf-8", &Name)) {
             throw Py::Exception();
         }
@@ -77,7 +80,7 @@ private:
     }
     Py::Object open(const Py::Tuple& args)
     {
-        char* Name;
+        char* Name {};
         if (!PyArg_ParseTuple(args.ptr(), "et", "utf-8", &Name)) {
             throw Py::Exception();
         }
@@ -87,11 +90,24 @@ private:
 
 
         // Base::Console().Log("Open in Mesh with %s",Name);
-        Base::FileInfo file(EncodedName.c_str());
+        Base::FileInfo file(EncodedName);
         if (file.hasExtension("jt")) {
             TestJtReader reader;
-            reader.setFile(EncodedName.c_str());
+            reader.setFile(EncodedName);
             reader.read();
+
+#ifdef JTREADER_HAVE_TKJT
+            JtReaderNS::TKJtReader jtReader;
+            jtReader.open(EncodedName);
+
+            App::Document* doc = App::GetApplication().newDocument();
+            std::string objname = file.fileNamePure();
+            auto iv = dynamic_cast<App::InventorObject*>(
+                doc->addObject("App::InventorObject", objname.c_str()));
+            iv->Buffer.setValue(jtReader.getOutput());
+            iv->purgeTouched();
+#endif
+
             return Py::None();
         }
 
@@ -99,8 +115,8 @@ private:
     }
     Py::Object importer(const Py::Tuple& args)
     {
-        char* Name;
-        const char* DocName;
+        char* Name {};
+        const char* DocName {};
         if (!PyArg_ParseTuple(args.ptr(), "ets", "utf-8", &Name, &DocName)) {
             throw Py::Exception();
         }
@@ -112,21 +128,33 @@ private:
 
         if (file.hasExtension("jt")) {
             // add Import feature
-            App::Document* pcDoc = App::GetApplication().getDocument(DocName);
-            if (!pcDoc) {
-                pcDoc = App::GetApplication().newDocument(DocName);
+            App::Document* doc = App::GetApplication().getDocument(DocName);
+            if (!doc) {
+                doc = App::GetApplication().newDocument(DocName);
             }
+
+#ifdef JTREADER_HAVE_TKJT
+            JtReaderNS::TKJtReader jtReader;
+            jtReader.open(EncodedName);
+
+            std::string objname = file.fileNamePure();
+            auto iv = dynamic_cast<App::InventorObject*>(
+                doc->addObject("App::InventorObject", objname.c_str()));
+            iv->Buffer.setValue(jtReader.getOutput());
+            iv->purgeTouched();
+#endif
 
             return Py::None();
         }
 
         throw Py::RuntimeError("unknown file ending");
     }
+    // NOLINTEND
 };
 
 PyObject* initModule()
 {
-    return Base::Interpreter().addModule(new Module);
+    return Base::Interpreter().addModule(new Module);  // NOLINT
 }
 
 }  // namespace JtReaderNS
