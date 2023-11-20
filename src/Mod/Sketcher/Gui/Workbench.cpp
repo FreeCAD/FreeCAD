@@ -432,6 +432,7 @@ inline void SketcherAddWorkbenchConstraints<Gui::MenuItem>(Gui::MenuItem& cons)
          << "Sketcher_ConstrainPointOnObject"
          << "Sketcher_ConstrainVertical"
          << "Sketcher_ConstrainHorizontal"
+         << "Sketcher_ConstrainHorVer"
          << "Sketcher_ConstrainParallel"
          << "Sketcher_ConstrainPerpendicular"
          << "Sketcher_ConstrainTangent"
@@ -462,8 +463,7 @@ inline void SketcherAddWorkbenchConstraints<Gui::ToolBarItem>(Gui::ToolBarItem& 
 
     cons << "Sketcher_ConstrainCoincident"
          << "Sketcher_ConstrainPointOnObject"
-         << "Sketcher_ConstrainVertical"
-         << "Sketcher_ConstrainHorizontal"
+         << "Sketcher_CompHorVer"
          << "Sketcher_ConstrainParallel"
          << "Sketcher_ConstrainPerpendicular"
          << "Sketcher_ConstrainTangent"
