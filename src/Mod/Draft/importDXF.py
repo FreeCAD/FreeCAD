@@ -203,11 +203,6 @@ def getDXFlibs():
             FCC.PrintWarning("DXF libraries not available. Aborting.\n")
 
 
-def prec():
-    """Return the current Draft precision level."""
-    return Draft.getParam("precision", 6)
-
-
 def deformat(text):
     """Remove weird formats in texts and wipes UTF characters.
 
@@ -712,14 +707,15 @@ def vec(pt):
     -----
     Use local variables, not global variables.
     """
+    pre = Draft.precision()
     if isinstance(pt, (int, float)):
-        v = round(pt, prec())
+        v = round(pt, pre)
         if resolvedScale != 1:
             v = v * resolvedScale
     else:
-        v = Vector(round(pt[0], prec()),
-                   round(pt[1], prec()),
-                   round(pt[2], prec()))
+        v = Vector(round(pt[0], pre),
+                   round(pt[1], pre),
+                   round(pt[2], pre))
         if resolvedScale != 1:
             v.multiply(resolvedScale)
     return v
@@ -994,10 +990,11 @@ def drawArc(arc, forceShape=False):
     -----
     Use local variables, not global variables.
     """
+    pre = Draft.precision()
     pl = placementFromDXFOCS(arc)
     rad = vec(arc.radius)
-    firstangle = round(arc.start_angle%360, prec())
-    lastangle = round(arc.end_angle%360, prec())
+    firstangle = round(arc.start_angle%360, pre)
+    lastangle = round(arc.end_angle%360, pre)
     try:
         if (dxfCreateDraft or dxfCreateSketch) and (not forceShape):
             return Draft.make_circle(rad, pl, face=False,
@@ -1094,9 +1091,10 @@ def drawEllipse(ellipse, forceShape=False):
     Use local variables, not global variables.
     """
     try:
+        pre = Draft.precision()
         c = vec(ellipse.loc)
-        start = round(ellipse.start_angle, prec())
-        end = round(ellipse.end_angle, prec())
+        start = round(ellipse.start_angle, pre)
+        end = round(ellipse.end_angle, pre)
         majv = vec(ellipse.major)
         majr = majv.Length
         minr = majr*ellipse.ratio
@@ -1108,7 +1106,7 @@ def drawEllipse(ellipse, forceShape=False):
         pl = FreeCAD.Placement(m)
         pl.move(c)
         if (dxfCreateDraft or dxfCreateSketch) and (not forceShape):
-            if (start != 0.0) or ((end != 0.0) or (end != round(math.pi/2, prec()))):
+            if (start != 0.0) or ((end != 0.0) or (end != round(math.pi/2, pre))):
                 shape = el.toShape(start, end)
                 shape.Placement = pl
                 return shape

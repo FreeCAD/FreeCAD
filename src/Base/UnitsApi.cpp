@@ -38,6 +38,7 @@
 #include "UnitsSchemaMKS.h"
 #include "UnitsSchemaMmMin.h"
 #include "UnitsSchemaFemMilliMeterNewton.h"
+#include "UnitsSchemaMeterDecimal.h"
 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
@@ -82,6 +83,8 @@ QString UnitsApi::getDescription(UnitSystem system)
             return tr("Imperial for Civil Eng (ft, ft/sec)");
         case UnitSystem::FemMilliMeterNewton:
             return tr("FEM (mm, N, s)");
+        case UnitSystem::MeterDecimal:
+            return tr("Meter decimal (m, m², m³)");
         default:
             return tr("Unknown schema");
     }
@@ -108,6 +111,8 @@ UnitsSchemaPtr UnitsApi::createSchema(UnitSystem system)
             return std::make_unique<UnitsSchemaImperialCivil>();
         case UnitSystem::FemMilliMeterNewton:
             return std::make_unique<UnitsSchemaFemMilliMeterNewton>();
+        case UnitSystem::MeterDecimal:
+            return std::make_unique<UnitsSchemaMeterDecimal>();
         default:
             break;
     }

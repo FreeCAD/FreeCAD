@@ -160,7 +160,7 @@ class Stretch(gui_base_original.Modifier):
             # first rctangle point
             _msg(translate("draft", "Pick opposite point "
                                     "of selection rectangle"))
-            self.ui.setRelative()
+            self.ui.setRelative(-1)
             self.rectracker.setorigin(point)
             self.rectracker.on()
             if self.planetrack:
@@ -169,6 +169,7 @@ class Stretch(gui_base_original.Modifier):
         elif self.step == 2:
             # second rectangle point
             _msg(translate("draft", "Pick start point of displacement"))
+            self.ui.setRelative(-2)
             self.rectracker.off()
             nodes = []
             self.ops = []
