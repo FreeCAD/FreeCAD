@@ -99,7 +99,7 @@ void Array2D::setupDefault()
 
     try {
         const Materials::MaterialProperty& column1 = _property->getColumn(0);
-        QString label = tr("Default ") + column1.getName();
+        QString label(tr("Default ") + column1.getName());
         ui->labelDefault->setText(label);
         if (column1.getPropertyType() == QString::fromStdString("Quantity")) {
             ui->editDefault->setMinimum(std::numeric_limits<double>::min());

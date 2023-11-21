@@ -46,7 +46,7 @@ class Subject;
  *  Attach itself to the observed object.
  *  @see FCSubject
  */
-template<class _MessageType>
+template<class MsgType>
 class Observer
 {
 public:
@@ -69,14 +69,14 @@ public:
      * @param rcReason
      * \todo undocumented parameter 2
      */
-    virtual void OnChange(Subject<_MessageType>& rCaller, _MessageType rcReason) = 0;
+    virtual void OnChange(Subject<MsgType>& rCaller, MsgType rcReason) = 0;
 
     /**
      * This method need to be reimplemented from the concrete Observer
      * and get called by the observed class
      * @param rCaller a reference to the calling object
      */
-    virtual void OnDestroy(Subject<_MessageType>& rCaller)
+    virtual void OnDestroy(Subject<MsgType>& rCaller)
     {
         (void)rCaller;
     }
@@ -90,6 +90,9 @@ public:
     {
         return nullptr;
     }
+
+protected:
+    FC_DEFAULT_COPY_MOVE(Observer)
 };
 
 /** Subject class
@@ -99,13 +102,13 @@ public:
  *  Attach itself to the observed object.
  *  @see FCObserver
  */
-template<class _MessageType>
+template<class MsgType>
 class Subject
 {
 public:
-    using ObserverType = Observer<_MessageType>;
-    using MessageType = _MessageType;
-    using SubjectType = Subject<_MessageType>;
+    using ObserverType = Observer<MsgType>;
+    using MessageType = MsgType;
+    using SubjectType = Subject<MsgType>;
 
     /**
      * A constructor.
@@ -131,7 +134,7 @@ public:
      * @param ToObserv A pointer to a concrete Observer
      * @see Notify
      */
-    void Attach(Observer<_MessageType>* ToObserv)
+    void Attach(Observer<MsgType>* ToObserv)
     {
 #ifdef FC_DEBUG
         size_t count = _ObserverSet.size();
@@ -152,7 +155,7 @@ public:
      * @param ToObserv A pointer to a concrete Observer
      * @see Notify
      */
-    void Detach(Observer<_MessageType>* ToObserv)
+    void Detach(Observer<MsgType>* ToObserv)
     {
 #ifdef FC_DEBUG
         size_t count = _ObserverSet.size();
@@ -173,9 +176,9 @@ public:
      * Oberserver and Subject.
      * @see Notify
      */
-    void Notify(_MessageType rcReason)
+    void Notify(MsgType rcReason)
     {
-        for (typename std::set<Observer<_MessageType>*>::iterator Iter = _ObserverSet.begin();
+        for (typename std::set<Observer<MsgType>*>::iterator Iter = _ObserverSet.begin();
              Iter != _ObserverSet.end();
              ++Iter) {
             try {
@@ -202,10 +205,10 @@ public:
      * Get a observer by name if the observer reimplements the Name() mthode.
      * @see Observer
      */
-    Observer<_MessageType>* Get(const char* Name)
+    Observer<MsgType>* Get(const char* Name)
     {
         const char* OName = nullptr;
-        for (typename std::set<Observer<_MessageType>*>::iterator Iter = _ObserverSet.begin();
+        for (typename std::set<Observer<MsgType>*>::iterator Iter = _ObserverSet.begin();
              Iter != _ObserverSet.end();
              ++Iter) {
             OName = (*Iter)->Name();  // get the name
@@ -225,10 +228,12 @@ public:
         _ObserverSet.clear();
     }
 
-
 protected:
+    FC_DEFAULT_COPY_MOVE(Subject)
+
+private:
     /// Vector of attached observers
-    std::set<Observer<_MessageType>*> _ObserverSet;
+    std::set<Observer<MsgType>*> _ObserverSet;
 };
 
 // Workaround for MSVC

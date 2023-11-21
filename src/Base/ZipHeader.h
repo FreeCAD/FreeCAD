@@ -57,8 +57,6 @@ public:
     /** Create a copy of this instance. */
     FileCollection* clone() const override;
 
-    ~ZipHeader() override = default;
-
     void close() override;
 
     std::istream* getInputStream(const ConstEntryPointer& entry) override;

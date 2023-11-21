@@ -53,12 +53,13 @@ PyTypeObject* ProgressIndicatorPy::type_object()
     return Py::PythonExtension<ProgressIndicatorPy>::type_object();
 }
 
-bool ProgressIndicatorPy::check(PyObject* p)
+bool ProgressIndicatorPy::check(PyObject* py)
 {
-    return Py::PythonExtension<ProgressIndicatorPy>::check(p);
+    return Py::PythonExtension<ProgressIndicatorPy>::check(py);
 }
 
-PyObject* ProgressIndicatorPy::PyMake(struct _typeobject*, PyObject*, PyObject*)
+PyObject*
+ProgressIndicatorPy::PyMake(PyTypeObject* /*unused*/, PyObject* /*unused*/, PyObject* /*unused*/)
 {
     return new ProgressIndicatorPy();
 }
@@ -80,7 +81,7 @@ Py::Object ProgressIndicatorPy::start(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), "sI", &text, &steps)) {
         throw Py::Exception();
     }
-    if (!_seq.get()) {
+    if (!_seq) {
         _seq = std::make_unique<SequencerLauncher>(text, steps);
     }
     return Py::None();
@@ -92,9 +93,9 @@ Py::Object ProgressIndicatorPy::next(const Py::Tuple& args)
     if (!PyArg_ParseTuple(args.ptr(), "|i", &b)) {
         throw Py::Exception();
     }
-    if (_seq.get()) {
+    if (_seq) {
         try {
-            _seq->next(b ? true : false);
+            _seq->next(b != 0);
         }
         catch (const Base::AbortException&) {
             _seq.reset();

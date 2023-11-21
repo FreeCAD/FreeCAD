@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="64"
+   height="64"
+   viewBox="0 0 16.933333 16.933333"
+   version="1.1"
+   id="svg5"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs2">
+    <linearGradient
+       id="linearGradient992">
+      <stop
+         style="stop-color:#ff0000;stop-opacity:1;"
+         offset="0"
+         id="stop990" />
+    </linearGradient>
+  </defs>
+  <g
+     id="g299">
+    <rect
+       style="fill:none;stroke:#000000;stroke-width:0.529167;stroke-dasharray:none;stroke-opacity:1"
+       id="rect434"
+       width="14.684375"
+       height="14.122135"
+       x="1.1244792"
+       y="1.3559896" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.982451;stroke-dasharray:none;stroke-opacity:1"
+       d="M 1.9182291,7.3752603 H 14.344339 v 0"
+       id="path2181" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.785398;stroke-dasharray:none;stroke-opacity:1"
+       d="m 1.8800515,4.7867171 h 7.9413322 v 0"
+       id="path2181-5" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.855638;stroke-dasharray:none;stroke-opacity:1"
+       d="m 1.9099611,12.567709 h 9.4252659 v 0"
+       id="path2181-2" />
+    <path
+       style="fill:none;stroke:#000000;stroke-width:0.878532;stroke-dasharray:none;stroke-opacity:1"
+       d="M 1.8935214,10.021094 H 11.82992 v 0"
+       id="path2181-46" />
+  </g>
+</svg>

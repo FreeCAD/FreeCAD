@@ -48,7 +48,7 @@ public:
     static void terminate();
 
 private:
-    static std::unique_ptr<XERCES_CPP_NAMESPACE::XMLTranscoder> transcoder;
+    static std::unique_ptr<XERCES_CPP_NAMESPACE::XMLTranscoder> transcoder;  // NOLINT
 };
 
 //**************************************************************************
@@ -64,6 +64,7 @@ public:
 
     /// Getter method
     const char* c_str() const;
+    FC_DISABLE_COPY_MOVE(StrX)
 
 private:
     //  This is the local code page form of the string.
@@ -143,12 +144,12 @@ class XStr
 public:
     ///  Constructors and Destructor
     XStr(const char* const toTranscode);
-    ///
     ~XStr();
 
 
     ///  Getter method
     const XMLCh* unicodeForm() const;
+    FC_DISABLE_COPY_MOVE(XStr)
 
 private:
     /// This is the Unicode XMLCh format of the string.
@@ -188,6 +189,8 @@ public:
 
     /// Getter method
     const XMLCh* unicodeForm() const;
+
+    FC_DISABLE_COPY_MOVE(XUTF8Str)
 
 private:
     std::basic_string<XMLCh> str;

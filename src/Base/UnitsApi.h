@@ -87,7 +87,7 @@ public:
      * needed represented in scientific notation. The string doesn't include the unit of the
      * quantity.
      */
-    static QString toNumber(double d,
+    static QString toNumber(double value,
                             const QuantityFormat& f = QuantityFormat(QuantityFormat::Default));
 
     /// generate a value for a quantity with default user preferred system

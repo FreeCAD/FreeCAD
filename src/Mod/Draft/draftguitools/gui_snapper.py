@@ -53,7 +53,6 @@ import draftguitools.gui_trackers as trackers
 from draftutils.init_tools import get_draft_snap_commands
 from draftutils.messages import _wrn
 from draftutils.translate import translate
-from draftutils.todo import ToDo
 
 __title__ = "FreeCAD Draft Snap tools"
 __author__ = "Yorik van Havre"
@@ -1295,21 +1294,26 @@ class Snapper:
             self.basepoint = basepoint
         delta = point.sub(self.basepoint)
 
+        if Gui.draftToolBar.globalMode:
+            import WorkingPlane
+            wp = WorkingPlane.PlaneBase()  # matches the global coordinate system
+        else:
+            wp = self._get_wp()
+
         # setting constraint axis
-        wp = self._get_wp()
-        if self.mask:
-            self.affinity = self.mask
-        if not self.affinity:
-            self.affinity = wp.get_closest_axis(delta)
-        if isinstance(axis, App.Vector):
-            self.constraintAxis = axis
-        elif axis == "x":
+        if axis == "x":
             self.constraintAxis = wp.u
         elif axis == "y":
             self.constraintAxis = wp.v
         elif axis == "z":
             self.constraintAxis = wp.axis
+        elif isinstance(axis, App.Vector):
+            self.constraintAxis = axis
         else:
+            if self.mask is not None:
+                self.affinity = self.mask
+            if self.affinity is None:
+                self.affinity = wp.get_closest_axis(delta)
             if self.affinity == "x":
                 self.constraintAxis = wp.u
             elif self.affinity == "y":
@@ -1321,7 +1325,7 @@ class Snapper:
             else:
                 self.constraintAxis = None
 
-        if not self.constraintAxis:
+        if self.constraintAxis is None:
             return point
 
         # calculating constrained point
@@ -1607,14 +1611,14 @@ class Snapper:
         self.show_hide_grids(show=False)
 
 
-    def setGrid(self, tool=False):
+    def setGrid(self):
         """Set the grid, if visible."""
         self.setTrackers()
         if self.grid.Visible:
-            self.grid.set(tool)
+            self.grid.set()
 
 
-    def setTrackers(self, tool=False, update_grid=True):
+    def setTrackers(self, update_grid=True):
         """Set the trackers."""
         v = Draft.get3DView()
         if v and (v != self.activeview):

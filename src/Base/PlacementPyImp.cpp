@@ -40,7 +40,9 @@ using namespace Base;
 // returns a string which represents the object e.g. when printed in python
 std::string PlacementPy::representation() const
 {
-    double yaw {}, pitch {}, roll {};
+    double yaw {};
+    double pitch {};
+    double roll {};
     PlacementPy::PointerType ptr = getPlacementPtr();
     std::stringstream str;
     ptr->getRotation().getYawPitchRoll(yaw, pitch, roll);
@@ -52,7 +54,7 @@ std::string PlacementPy::representation() const
     return str.str();
 }
 
-PyObject* PlacementPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
+PyObject* PlacementPy::PyMake(PyTypeObject* /*unused*/, PyObject* /*unused*/, PyObject* /*unused*/)
 {
     // create a new instance of PlacementPy and the Twin object
     return new PlacementPy(new Placement);
@@ -398,7 +400,8 @@ PyObject* PlacementPy::getCustomAttributes(const char* attr) const
 {
     // for backward compatibility
     if (strcmp(attr, "isNull") == 0) {
-        PyObject *w {}, *res {};
+        PyObject* w {};
+        PyObject* res {};
         w = PyUnicode_InternFromString("isIdentity");
         // NOLINTNEXTLINE(cppcoreguidelines-pro-type-const-cast)
         res = PyObject_GenericGetAttr(const_cast<PlacementPy*>(this), w);

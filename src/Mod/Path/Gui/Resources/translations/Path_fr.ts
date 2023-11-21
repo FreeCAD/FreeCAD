@@ -290,7 +290,7 @@ Pour le brut provenant de la boîte englobante de l'objet de base, il s'agit du 
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="194"/>
       <source>Placement</source>
-      <translation>Positionnement</translation>
+      <translation>Position</translation>
     </message>
     <message>
       <location filename="../panels/DlgJobTemplateExport.ui" line="248"/>
@@ -1978,7 +1978,7 @@ Par défaut : OpToolDiameter</translation>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="103"/>
       <source>Offset</source>
-      <translation>Décalage</translation>
+      <translation>Décaler</translation>
     </message>
     <message>
       <location filename="../panels/SetupGlobal.ui" line="113"/>
@@ -2599,7 +2599,7 @@ Si cette option est laissée vide, aucun modèle ne sera présélectionné.</tra
     <message>
       <location filename="../preferences/PathJob.ui" line="553"/>
       <source>Placement</source>
-      <translation>Positionnement</translation>
+      <translation>Position</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="565"/>
@@ -4095,7 +4095,7 @@ Par défaut : OpToolDiameter</translation>
     <message>
       <location filename="../panels/PathEdit.ui" line="1097"/>
       <source>Offset</source>
-      <translation>Décalage</translation>
+      <translation>Décaler</translation>
     </message>
     <message>
       <location filename="../panels/PathEdit.ui" line="1107"/>
@@ -7158,7 +7158,7 @@ Les valeurs seront converties dans l'unité souhaitée pendant le post-traitemen
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="65"/>
       <source>Center</source>
-      <translation>Centre</translation>
+      <translation>Au centre</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="66"/>
@@ -7173,7 +7173,7 @@ Les valeurs seront converties dans l'unité souhaitée pendant le post-traitemen
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="70"/>
       <source>Offset</source>
-      <translation>Décalage</translation>
+      <translation>Décaler</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/PocketBase.py" line="71"/>
@@ -7558,7 +7558,7 @@ Les valeurs seront converties dans l'unité souhaitée pendant le post-traitemen
     <message>
       <location filename="../../../Path/Op/Surface.py" line="466"/>
       <source>Offset</source>
-      <translation>Décalage</translation>
+      <translation>Décaler</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Surface.py" line="467"/>
@@ -7869,7 +7869,7 @@ Les valeurs seront converties dans l'unité souhaitée pendant le post-traitemen
       <location filename="../../../Path/Op/Waterline.py" line="116"/>
       <location filename="../../../Path/Op/Waterline.py" line="129"/>
       <source>Offset</source>
-      <translation>Décalage</translation>
+      <translation>Décaler</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Waterline.py" line="117"/>

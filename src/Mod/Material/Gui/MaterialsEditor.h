@@ -106,6 +106,8 @@ private:
     std::list<QString> _recents;
     int _recentMax;
 
+    void saveWindow();
+
     void getFavorites();
     void saveFavorites();
     void addFavorite(const QString& uuid);

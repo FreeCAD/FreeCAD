@@ -38,7 +38,8 @@ std::string CoordinateSystemPy::representation() const
     return {"<CoordinateSystem object>"};
 }
 
-PyObject* CoordinateSystemPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
+PyObject*
+CoordinateSystemPy::PyMake(PyTypeObject* /*unused*/, PyObject* /*unused*/, PyObject* /*unused*/)
 {
     // create a new instance of CoordinateSystemPy and the Twin object
     return new CoordinateSystemPy(new CoordinateSystem);
@@ -52,7 +53,8 @@ int CoordinateSystemPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 
 PyObject* CoordinateSystemPy::setAxes(PyObject* args)
 {
-    PyObject *axis {}, *xdir {};
+    PyObject* axis {};
+    PyObject* xdir {};
     if (PyArg_ParseTuple(args, "O!O!", &(AxisPy::Type), &axis, &(VectorPy::Type), &xdir)) {
         getCoordinateSystemPtr()->setAxes(*static_cast<AxisPy*>(axis)->getAxisPtr(),
                                           *static_cast<VectorPy*>(xdir)->getVectorPtr());
@@ -76,20 +78,20 @@ PyObject* CoordinateSystemPy::displacement(PyObject* args)
     if (!PyArg_ParseTuple(args, "O!", &(CoordinateSystemPy::Type), &cs)) {
         return nullptr;
     }
-    Placement p = getCoordinateSystemPtr()->displacement(
+    Placement plm = getCoordinateSystemPtr()->displacement(
         *static_cast<CoordinateSystemPy*>(cs)->getCoordinateSystemPtr());
-    return new PlacementPy(new Placement(p));
+    return new PlacementPy(new Placement(plm));
 }
 
 PyObject* CoordinateSystemPy::transformTo(PyObject* args)
 {
-    PyObject* vec {};
-    if (!PyArg_ParseTuple(args, "O!", &(VectorPy::Type), &vec)) {
+    PyObject* vecpy {};
+    if (!PyArg_ParseTuple(args, "O!", &(VectorPy::Type), &vecpy)) {
         return nullptr;
     }
-    Vector3d v = static_cast<VectorPy*>(vec)->value();
-    getCoordinateSystemPtr()->transformTo(v);
-    return new VectorPy(new Vector3d(v));
+    Vector3d vec = static_cast<VectorPy*>(vecpy)->value();
+    getCoordinateSystemPtr()->transformTo(vec);
+    return new VectorPy(new Vector3d(vec));
 }
 
 PyObject* CoordinateSystemPy::transform(PyObject* args)

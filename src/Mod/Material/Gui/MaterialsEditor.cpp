@@ -77,6 +77,14 @@ MaterialsEditor::MaterialsEditor(QWidget* parent)
     createPreviews();
     setMaterialDefaults();
 
+    // Reset to previous size
+    auto param = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Material/Editor");
+    auto width = param->GetInt("EditorWidth", 835);
+    auto height = param->GetInt("EditorHeight", 542);
+
+    resize(width, height);
+
     ui->buttonURL->setIcon(QIcon(QString::fromStdString(":/icons/internet-web-browser.svg")));
 
     connect(ui->standardButtons->button(QDialogButtonBox::Ok),
@@ -166,7 +174,7 @@ void MaterialsEditor::saveFavorites()
     // Add the current values
     param->SetInt("Favorites", _favorites.size());
     int j = 0;
-    for (auto favorite : _favorites) {
+    for (auto& favorite : _favorites) {
         QString key = QString::fromLatin1("FAV%1").arg(j);
         param->SetASCII(key.toStdString().c_str(), favorite.toStdString());
 
@@ -203,7 +211,7 @@ void MaterialsEditor::removeFavorite(const QString& uuid)
 
 bool MaterialsEditor::isFavorite(const QString& uuid) const
 {
-    for (auto it : _favorites) {
+    for (auto& it : _favorites) {
         if (it == uuid) {
             return true;
         }
@@ -246,7 +254,7 @@ void MaterialsEditor::saveRecents()
     }
     param->SetInt("Recent", size);
     int j = 0;
-    for (auto recent : _recents) {
+    for (auto& recent : _recents) {
         QString key = QString::fromLatin1("MRU%1").arg(j);
         param->SetASCII(key.toStdString().c_str(), recent.toStdString());
 
@@ -283,7 +291,7 @@ void MaterialsEditor::addRecent(const QString& uuid)
 
 bool MaterialsEditor::isRecent(const QString& uuid) const
 {
-    for (auto it : _recents) {
+    for (auto& it : _recents) {
         if (it == uuid) {
             return true;
         }
@@ -546,13 +554,41 @@ void MaterialsEditor::saveMaterial()
 void MaterialsEditor::accept()
 {
     addRecent(_material->getUUID());
+    saveWindow();
     QDialog::accept();
 }
 
 void MaterialsEditor::reject()
 {
+    saveWindow();
     QDialog::reject();
 }
+
+void MaterialsEditor::saveWindow()
+{
+    auto param = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Material/Editor");
+    param->SetInt("EditorWidth", width());
+    param->SetInt("EditorHeight", height());
+
+    // int count = param->GetInt("Favorites", 0);
+    // for (int i = 0; i < count; i++) {
+    //     QString key = QString::fromLatin1("FAV%1").arg(i);
+    //     QString uuid = QString::fromStdString(param->GetASCII(key.toStdString().c_str(), ""));
+    //     _favorites.push_back(uuid);
+    // }
+}
+
+//     def storeSize(self):
+//         "stores the widget size"
+// #store widths
+//         p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Material")
+//         p.SetInt("MaterialEditorWidth", self.widget.width())
+//         p.SetInt("MaterialEditorHeight", self.widget.height())
+//         root = self.widget.treeView.model().invisibleRootItem()
+//         for gg in range(root.rowCount()):
+//             group = root.child(gg)
+//             p.SetBool("TreeExpand"+group.text(), self.widget.treeView.isExpanded(group.index()))
 
 // QIcon MaterialsEditor::errorIcon(const QIcon &icon) const {
 //     auto pixmap = icon.pixmap();
@@ -631,7 +667,6 @@ void MaterialsEditor::createPhysicalTree()
     // connect(selectionModel,
     //         &QItemSelectionModel::selectionChanged,
     //         this,
-    //         &MaterialsEditor::onSelectPhysicalProperty);
 }
 
 void MaterialsEditor::createPreviews()

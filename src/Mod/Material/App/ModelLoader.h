@@ -36,7 +36,7 @@ namespace Materials
 class ModelEntry
 {
 public:
-    ModelEntry(std::shared_ptr<ModelLibrary> library,
+    ModelEntry(const std::shared_ptr<ModelLibrary>& library,
                const QString& baseName,
                const QString& modelName,
                const QString& dir,

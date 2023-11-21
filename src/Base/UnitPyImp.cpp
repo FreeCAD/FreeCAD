@@ -54,7 +54,7 @@ std::string UnitPy::representation() const
     return ret.str();
 }
 
-PyObject* UnitPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
+PyObject* UnitPy::PyMake(PyTypeObject* /*unused*/, PyObject* /*unused*/, PyObject* /*unused*/)
 {
     // create a new instance of UnitPy and the Twin object
     return new UnitPy(new Unit);

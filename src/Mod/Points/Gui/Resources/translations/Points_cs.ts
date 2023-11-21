@@ -183,7 +183,7 @@
     <message>
       <location filename="../../DlgPointsRead.ui" line="70"/>
       <source>Ignore</source>
-      <translation>Ignorováno</translation>
+      <translation>Ignorovat</translation>
     </message>
     <message>
       <location filename="../../DlgPointsRead.ui" line="80"/>

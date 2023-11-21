@@ -31,7 +31,6 @@
 #include <Base/BaseClass.h>
 
 #include <Mod/Material/MaterialGlobal.h>
-
 #include "Materials.h"
 #include "Model.h"
 #include "ModelLibrary.h"
@@ -48,7 +47,7 @@ class MaterialsExport MaterialLibrary: public LibraryBase,
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    MaterialLibrary();
+    MaterialLibrary() = default;
     MaterialLibrary(const MaterialLibrary&) = delete;
     MaterialLibrary(const QString& libraryName,
                     const QString& dir,
@@ -106,7 +105,7 @@ class MaterialsExport MaterialExternalLibrary: public MaterialLibrary
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    MaterialExternalLibrary();
+    MaterialExternalLibrary() = default;
     MaterialExternalLibrary(const QString& libraryName,
                             const QString& dir,
                             const QString& icon,

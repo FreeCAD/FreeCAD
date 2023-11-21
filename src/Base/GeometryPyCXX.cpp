@@ -30,6 +30,7 @@
 #include "VectorPy.h"
 
 
+// NOLINTBEGIN(readability-identifier-length)
 int Py::Vector::Vector_TypeCheck(PyObject* obj)
 {
     return PyObject_TypeCheck(obj, &(Base::VectorPy::Type));
@@ -40,22 +41,22 @@ bool Py::Vector::accepts(PyObject* obj) const
     if (obj && Vector_TypeCheck(obj)) {
         return true;
     }
-    else if (obj && PySequence_Check(obj)) {
+    if (obj && PySequence_Check(obj)) {
         return (PySequence_Size(obj) == 3);
     }
 
     return false;
 }
 
-Py::Vector::Vector(const Base::Vector3d& v)
+Py::Vector::Vector(const Base::Vector3d& vec)
 {
-    set(new Base::VectorPy(v), true);
+    set(new Base::VectorPy(vec), true);
     validate();
 }
 
-Py::Vector::Vector(const Base::Vector3f& v)
+Py::Vector::Vector(const Base::Vector3f& vec)
 {
-    set(new Base::VectorPy(v), true);
+    set(new Base::VectorPy(vec), true);
     validate();
 }
 
@@ -68,15 +69,15 @@ Py::Vector& Py::Vector::operator=(PyObject* rhsp)
     return *this;
 }
 
-Py::Vector& Py::Vector::operator=(const Base::Vector3d& v)
+Py::Vector& Py::Vector::operator=(const Base::Vector3d& vec)
 {
-    set(new Base::VectorPy(v), true);
+    set(new Base::VectorPy(vec), true);
     return *this;
 }
 
-Py::Vector& Py::Vector::operator=(const Base::Vector3f& v)
+Py::Vector& Py::Vector::operator=(const Base::Vector3f& vec)
 {
-    set(new Base::VectorPy(v), true);
+    set(new Base::VectorPy(vec), true);
     return *this;
 }
 
@@ -85,9 +86,8 @@ Base::Vector3d Py::Vector::toVector() const
     if (Vector_TypeCheck(ptr())) {
         return static_cast<Base::VectorPy*>(ptr())->value();
     }
-    else {
-        return Base::getVectorFromTuple<double>(ptr());
-    }
+
+    return Base::getVectorFromTuple<double>(ptr());
 }
 
 namespace Base
@@ -103,51 +103,52 @@ PyTypeObject* Vector2dPy::type_object()
     return Py::PythonClass<Vector2dPy>::type_object();
 }
 
-bool Vector2dPy::check(PyObject* p)
+bool Vector2dPy::check(PyObject* py)
 {
-    return Py::PythonClass<Vector2dPy>::check(p);
+    return Py::PythonClass<Vector2dPy>::check(py);
 }
 
-Py::PythonClassObject<Vector2dPy> Vector2dPy::create(const Vector2d& v)
+Py::PythonClassObject<Vector2dPy> Vector2dPy::create(const Vector2d& vec)
 {
-    return create(v.x, v.y);
+    return create(vec.x, vec.y);
 }
 
-Py::PythonClassObject<Vector2dPy> Vector2dPy::create(double x, double y)
+Py::PythonClassObject<Vector2dPy> Vector2dPy::create(double vx, double vy)
 {
     Py::Callable class_type(type());
     Py::Tuple arg(2);
-    arg.setItem(0, Py::Float(x));
-    arg.setItem(1, Py::Float(y));
-    Py::PythonClassObject<Vector2dPy> o =
+    arg.setItem(0, Py::Float(vx));
+    arg.setItem(1, Py::Float(vy));
+    Py::PythonClassObject<Vector2dPy> py =
         Py::PythonClassObject<Vector2dPy>(class_type.apply(arg, Py::Dict()));
-    return o;
+    return py;
 }
 
 Vector2dPy::Vector2dPy(Py::PythonClassInstance* self, Py::Tuple& args, Py::Dict& kwds)
     : Py::PythonClass<Vector2dPy>::PythonClass(self, args, kwds)
 {
-    double x = 0, y = 0;
-    if (!PyArg_ParseTuple(args.ptr(), "|dd", &x, &y)) {
+    double vx = 0;
+    double vy = 0;
+    if (!PyArg_ParseTuple(args.ptr(), "|dd", &vx, &vy)) {
         throw Py::Exception();
     }
 
-    v.x = x;
-    v.y = y;
+    v.x = vx;
+    v.y = vy;
 }
 
 Vector2dPy::~Vector2dPy() = default;
 
 Py::Object Vector2dPy::repr()
 {
-    Py::Float x(v.x);
-    Py::Float y(v.y);
+    Py::Float vx(v.x);
+    Py::Float vy(v.y);
     std::stringstream str;
     str << "Vector2 (";
-    str << static_cast<std::string>(x.repr()) << ", " << static_cast<std::string>(y.repr());
+    str << static_cast<std::string>(vx.repr()) << ", " << static_cast<std::string>(vy.repr());
     str << ")";
 
-    return Py::String(str.str());
+    return Py::String(str.str());  // NOLINT
 }
 
 Py::Object Vector2dPy::getattro(const Py::String& name_)
@@ -161,17 +162,16 @@ Py::Object Vector2dPy::getattro(const Py::String& name_)
         Py::Dict attr;
         attr.setItem(Py::String("x"), Py::Float(v.x));
         attr.setItem(Py::String("y"), Py::Float(v.y));
-        return attr;
+        return attr;  // NOLINT
     }
-    else if (name == "x") {
-        return Py::Float(v.x);
+    if (name == "x") {
+        return Py::Float(v.x);  // NOLINT
     }
-    else if (name == "y") {
-        return Py::Float(v.y);
+    if (name == "y") {
+        return Py::Float(v.y);  // NOLINT
     }
-    else {
-        return genericGetAttro(name_);
-    }
+
+    return genericGetAttro(name_);
 }
 
 int Vector2dPy::setattro(const Py::String& name_, const Py::Object& value)
@@ -182,28 +182,27 @@ int Vector2dPy::setattro(const Py::String& name_, const Py::Object& value)
         v.x = static_cast<double>(Py::Float(value));
         return 0;
     }
-    else if (name == "y" && !value.isNull()) {
+    if (name == "y" && !value.isNull()) {
         v.y = static_cast<double>(Py::Float(value));
         return 0;
     }
-    else {
-        return genericSetAttro(name_, value);
-    }
+
+    return genericSetAttro(name_, value);
 }
 
 Py::Object Vector2dPy::number_negative()
 {
-    return create(-v.x, -v.y);
+    return create(-v.x, -v.y);  // NOLINT
 }
 
 Py::Object Vector2dPy::number_positive()
 {
-    return create(v.x, v.y);
+    return create(v.x, v.y);  // NOLINT
 }
 
 Py::Object Vector2dPy::number_absolute()
 {
-    return create(fabs(v.x), fabs(v.y));
+    return create(fabs(v.x), fabs(v.y));  // NOLINT
 }
 
 Py::Object Vector2dPy::number_invert()
@@ -223,32 +222,31 @@ Py::Object Vector2dPy::number_float()
 
 Py::Object Vector2dPy::number_add(const Py::Object& py)
 {
-    Vector2d u(Py::toVector2d(py));
-    u = v + u;
-    return create(u);
+    Vector2d vec(Py::toVector2d(py));
+    vec = v + vec;
+    return create(vec);  // NOLINT
 }
 
 Py::Object Vector2dPy::number_subtract(const Py::Object& py)
 {
-    Vector2d u(Py::toVector2d(py));
-    u = v - u;
-    return create(u);
+    Vector2d vec(Py::toVector2d(py));
+    vec = v - vec;
+    return create(vec);  // NOLINT
 }
 
 Py::Object Vector2dPy::number_multiply(const Py::Object& py)
 {
     if (PyObject_TypeCheck(py.ptr(), Vector2dPy::type_object())) {
-        Vector2d u(Py::toVector2d(py));
-        double d = v * u;
-        return Py::Float(d);
+        Vector2d vec(Py::toVector2d(py));
+        double scalar = v * vec;
+        return Py::Float(scalar);  // NOLINT
     }
-    else if (py.isNumeric()) {
-        double d = static_cast<double>(Py::Float(py));
-        return create(v * d);
+    if (py.isNumeric()) {
+        double scale = static_cast<double>(Py::Float(py));
+        return create(v * scale);  // NOLINT
     }
-    else {
-        throw Py::TypeError("Argument must be Vector2d or Float");
-    }
+
+    throw Py::TypeError("Argument must be Vector2d or Float");
 }
 
 Py::Object Vector2dPy::number_remainder(const Py::Object&)
@@ -297,40 +295,40 @@ Py::Object Vector2dPy::isNull(const Py::Tuple& args)
     if (args.size() > 0) {
         tol = static_cast<double>(Py::Float(args[0]));
     }
-    return Py::Boolean(v.IsNull(tol));
+    return Py::Boolean(v.IsNull(tol));  // NOLINT
 }
 PYCXX_VARARGS_METHOD_DECL(Vector2dPy, isNull)
 
 Py::Object Vector2dPy::length(const Py::Tuple&)
 {
-    return Py::Float(v.Length());
+    return Py::Float(v.Length());  // NOLINT
 }
 PYCXX_VARARGS_METHOD_DECL(Vector2dPy, length)
 
 Py::Object Vector2dPy::atan2(const Py::Tuple&)
 {
-    return Py::Float(v.Angle());
+    return Py::Float(v.Angle());  // NOLINT
 }
 PYCXX_VARARGS_METHOD_DECL(Vector2dPy, atan2)
 
 Py::Object Vector2dPy::square(const Py::Tuple&)
 {
-    return Py::Float(v.Sqr());
+    return Py::Float(v.Sqr());  // NOLINT
 }
 PYCXX_VARARGS_METHOD_DECL(Vector2dPy, square)
 
 Py::Object Vector2dPy::scale(const Py::Tuple& args)
 {
-    double f = static_cast<double>(Py::Float(args[0]));
-    v.Scale(f);
+    double value = static_cast<double>(Py::Float(args[0]));
+    v.Scale(value);
     return Py::None();
 }
 PYCXX_VARARGS_METHOD_DECL(Vector2dPy, scale)
 
 Py::Object Vector2dPy::rotate(const Py::Tuple& args)
 {
-    double f = static_cast<double>(Py::Float(args[0]));
-    v.Rotate(f);
+    double value = static_cast<double>(Py::Float(args[0]));
+    v.Rotate(value);
     return Py::None();
 }
 PYCXX_VARARGS_METHOD_DECL(Vector2dPy, rotate)
@@ -344,42 +342,43 @@ PYCXX_VARARGS_METHOD_DECL(Vector2dPy, normalize)
 
 Py::Object Vector2dPy::perpendicular(const Py::Tuple& args)
 {
-    bool f = static_cast<bool>(Py::Boolean(args[0]));
-    Base::Vector2d p = v.Perpendicular(f);
-    return create(p);
+    bool value = static_cast<bool>(Py::Boolean(args[0]));
+    Base::Vector2d pnt = v.Perpendicular(value);
+    return create(pnt);  // NOLINT
 }
 PYCXX_VARARGS_METHOD_DECL(Vector2dPy, perpendicular)
 
 Py::Object Vector2dPy::distance(const Py::Tuple& args)
 {
-    Base::Vector2d p = Py::toVector2d(args[0]);
-    return Py::Float(p.Distance(v));
+    Base::Vector2d pnt = Py::toVector2d(args[0]);
+    return Py::Float(pnt.Distance(v));  // NOLINT
 }
 PYCXX_VARARGS_METHOD_DECL(Vector2dPy, distance)
 
 Py::Object Vector2dPy::isEqual(const Py::Tuple& args)
 {
-    Base::Vector2d p = Py::toVector2d(args[0]);
-    double f = static_cast<double>(Py::Float(args[1]));
-    return Py::Boolean(v.IsEqual(p, f));
+    Base::Vector2d pnt = Py::toVector2d(args[0]);
+    double tol = static_cast<double>(Py::Float(args[1]));
+    return Py::Boolean(v.IsEqual(pnt, tol));  // NOLINT
 }
 PYCXX_VARARGS_METHOD_DECL(Vector2dPy, isEqual)
 
 Py::Object Vector2dPy::getAngle(const Py::Tuple& args)
 {
-    Base::Vector2d p = Py::toVector2d(args[0]);
-    return Py::Float(v.GetAngle(p));
+    Base::Vector2d vec = Py::toVector2d(args[0]);
+    return Py::Float(v.GetAngle(vec));  // NOLINT
 }
 PYCXX_VARARGS_METHOD_DECL(Vector2dPy, getAngle)
 
 Py::Object Vector2dPy::projectToLine(const Py::Tuple& args)
 {
-    Base::Vector2d p = Py::toVector2d(args[0]);
-    Base::Vector2d d = Py::toVector2d(args[1]);
-    v.ProjectToLine(p, d);
+    Base::Vector2d pnt1 = Py::toVector2d(args[0]);
+    Base::Vector2d pnt2 = Py::toVector2d(args[1]);
+    v.ProjectToLine(pnt1, pnt2);
     return Py::None();
 }
 PYCXX_VARARGS_METHOD_DECL(Vector2dPy, projectToLine)
+// NOLINTEND(readability-identifier-length)
 
 void Vector2dPy::init_type()
 {

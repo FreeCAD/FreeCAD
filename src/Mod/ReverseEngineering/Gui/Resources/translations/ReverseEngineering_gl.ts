@@ -28,8 +28,8 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="107"/>
-      <source>Plane...</source>
-      <translation>Plano...</translation>
+      <source>Plane</source>
+      <translation>Plano</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="108"/>

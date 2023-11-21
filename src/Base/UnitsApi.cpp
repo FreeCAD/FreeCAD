@@ -38,6 +38,7 @@
 #include "UnitsSchemaMKS.h"
 #include "UnitsSchemaMmMin.h"
 #include "UnitsSchemaFemMilliMeterNewton.h"
+#include "UnitsSchemaMeterDecimal.h"
 
 #ifndef M_PI
 #define M_PI 3.14159265358979323846
@@ -82,6 +83,8 @@ QString UnitsApi::getDescription(UnitSystem system)
             return tr("Imperial for Civil Eng (ft, ft/sec)");
         case UnitSystem::FemMilliMeterNewton:
             return tr("FEM (mm, N, s)");
+        case UnitSystem::MeterDecimal:
+            return tr("Meter decimal (m, m², m³)");
         default:
             return tr("Unknown schema");
     }
@@ -108,6 +111,8 @@ UnitsSchemaPtr UnitsApi::createSchema(UnitSystem system)
             return std::make_unique<UnitsSchemaImperialCivil>();
         case UnitSystem::FemMilliMeterNewton:
             return std::make_unique<UnitsSchemaFemMilliMeterNewton>();
+        case UnitSystem::MeterDecimal:
+            return std::make_unique<UnitsSchemaMeterDecimal>();
         default:
             break;
     }
@@ -177,10 +182,10 @@ QString UnitsApi::schemaTranslate(const Base::Quantity& quant, double& factor, Q
     return UserPrefSystem->schemaTranslate(quant, factor, unitString);
 }
 
-double UnitsApi::toDouble(PyObject* ArgObj, const Base::Unit& u)
+double UnitsApi::toDouble(PyObject* args, const Base::Unit& u)
 {
-    if (PyUnicode_Check(ArgObj)) {
-        QString str = QString::fromUtf8(PyUnicode_AsUTF8(ArgObj));
+    if (PyUnicode_Check(args)) {
+        QString str = QString::fromUtf8(PyUnicode_AsUTF8(args));
         // Parse the string
         Quantity q = Quantity::parse(str);
         if (q.getUnit() == u) {
@@ -188,31 +193,30 @@ double UnitsApi::toDouble(PyObject* ArgObj, const Base::Unit& u)
         }
         throw Base::UnitsMismatchError("Wrong unit type!");
     }
-    else if (PyFloat_Check(ArgObj)) {
-        return PyFloat_AsDouble(ArgObj);
+    if (PyFloat_Check(args)) {
+        return PyFloat_AsDouble(args);
     }
-    else if (PyLong_Check(ArgObj)) {
-        return static_cast<double>(PyLong_AsLong(ArgObj));
+    if (PyLong_Check(args)) {
+        return static_cast<double>(PyLong_AsLong(args));
     }
-    else {
-        throw Base::UnitsMismatchError("Wrong parameter type!");
-    }
+
+    throw Base::UnitsMismatchError("Wrong parameter type!");
 }
 
-Quantity UnitsApi::toQuantity(PyObject* ArgObj, const Base::Unit& u)
+Quantity UnitsApi::toQuantity(PyObject* args, const Base::Unit& u)
 {
     double d {};
-    if (PyUnicode_Check(ArgObj)) {
-        QString str = QString::fromUtf8(PyUnicode_AsUTF8(ArgObj));
+    if (PyUnicode_Check(args)) {
+        QString str = QString::fromUtf8(PyUnicode_AsUTF8(args));
         // Parse the string
         Quantity q = Quantity::parse(str);
         d = q.getValue();
     }
-    else if (PyFloat_Check(ArgObj)) {
-        d = PyFloat_AsDouble(ArgObj);
+    else if (PyFloat_Check(args)) {
+        d = PyFloat_AsDouble(args);
     }
-    else if (PyLong_Check(ArgObj)) {
-        d = static_cast<double>(PyLong_AsLong(ArgObj));
+    else if (PyLong_Check(args)) {
+        d = static_cast<double>(PyLong_AsLong(args));
     }
     else {
         throw Base::UnitsMismatchError("Wrong parameter type!");

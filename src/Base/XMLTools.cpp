@@ -32,7 +32,7 @@ std::unique_ptr<XMLTranscoder> XMLTools::transcoder;
 
 void XMLTools::initialize()
 {
-    if (!transcoder.get()) {
+    if (!transcoder) {
         XMLTransService::Codes res {};
         transcoder.reset(XMLPlatformUtils::fgTransService->makeNewTranscoderFor(
             XMLRecognizer::UTF_8,

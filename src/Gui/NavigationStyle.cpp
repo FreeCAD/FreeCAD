@@ -479,6 +479,13 @@ void NavigationStyle::viewAll()
     }
 }
 
+void NavigationStyle::findBoundingSphere() {
+    // Find a bounding sphere for the scene
+    SoGetBoundingBoxAction action(viewer->getSoRenderManager()->getViewportRegion());
+    action.apply(viewer->getSceneGraph());
+    boundingSphere.circumscribe(action.getBoundingBox());
+}
+
 /** Rotate the camera by the given amount, then reposition it so we're still pointing at the same
  * focal point
  */
@@ -503,17 +510,31 @@ void NavigationStyle::reorientCamera(SoCamera* camera, const SbRotation& rotatio
     // Set new orientation value by accumulating the new rotation
     camera->orientation = rotation * camera->orientation.getValue();
 
-    // Fix issue with near clipping in orthogonal view
-    if (camera->getTypeId().isDerivedFrom(SoOrthographicCamera::getClassTypeId())) {
-        camera->focalDistance = static_cast<SoOrthographicCamera*>(camera)->height;
-    }
-
     // Distance from rotation center to new camera position in global coordinate system
     SbVec3f newRotationCenterDistance;
     camera->orientation.getValue().multVec(rotationCenterDistanceCam, newRotationCenterDistance);
 
     // Reposition camera so the rotation center stays in the same place
     camera->position = rotationCenter + newRotationCenterDistance;
+
+    // Fix issue with near clipping in orthogonal view
+     if (camera->getTypeId().isDerivedFrom(SoOrthographicCamera::getClassTypeId())) {
+
+         // The center of the bounding sphere in camera coordinate system
+         SbVec3f center;
+         camera->orientation.getValue().inverse().multVec(boundingSphere.getCenter() - camera->position.getValue(), center);
+
+         SbVec3f dir;
+         camera->orientation.getValue().multVec(SbVec3f(0, 0, -1), dir);
+
+         // Reposition the camera but keep the focal point the same
+         // nearDistance is 0 and farDistance is the diameter of the bounding sphere
+         float repositionDistance = -center.getValue()[2] - boundingSphere.getRadius();
+         camera->position = camera->position.getValue() + repositionDistance * dir;
+         camera->nearDistance = 0;
+         camera->farDistance = 2 * boundingSphere.getRadius();
+         camera->focalDistance = camera->focalDistance.getValue() - repositionDistance;
+     }
 }
 
 void NavigationStyle::panCamera(SoCamera * cam, float aspectratio, const SbPlane & panplane,
@@ -1280,6 +1301,7 @@ void NavigationStyle::setViewingMode(const ViewerMode newmode)
         // first starting a drag operation.
         animator->stop();
         viewer->showRotationCenter(true);
+        findBoundingSphere();
         this->spinprojector->project(this->lastmouseposition);
         this->interactiveCountInc();
         this->clearLog();

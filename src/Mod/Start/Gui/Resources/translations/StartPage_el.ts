@@ -66,22 +66,22 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="51"/>
       <source>Standard Part</source>
-      <translation type="unfinished">Standard Part</translation>
+      <translation>Τυπικό Μέρος</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="56"/>
       <source>Create a part with the Part Design workbench</source>
-      <translation type="unfinished">Create a part with the Part Design workbench</translation>
+      <translation>Δημιουργήστε ένα τμήμα με τον πάγκο εργασίας Σχεδίου Εξαρτήματος</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="57"/>
       <source>2D Draft</source>
-      <translation type="unfinished">2D Draft</translation>
+      <translation>2D Πρόχειρο</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="58"/>
       <source>Create a 2D draft with the Draft workbench</source>
-      <translation type="unfinished">Create a 2D draft with the Draft workbench</translation>
+      <translation>Δημιουργήστε ένα 2D προσχέδιο με τον πάγκο εργασίας του Προσχεδίου</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="59"/>
@@ -91,7 +91,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="60"/>
       <source>Create an architecture project</source>
-      <translation type="unfinished">Create an architecture project</translation>
+      <translation>Δημιουργήστε ένα έργο αρχιτεκτονικής</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="61"/>
@@ -176,7 +176,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="98"/>
       <source>The &lt;a href="https://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
-      <translation type="unfinished">The &lt;a href="https://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</translation>
+      <translation>Το φόρουμ &lt;a href="https://forum.freecad.org"&gt;FreeCAD&lt;/a&gt; είναι ένα εξαιρετικό μέρος για να λάβετε βοήθεια από άλλους χρήστες και προγραμματιστές του FreeCAD. Το φόρουμ έχει πολλές ενότητες για διαφορετικούς τύπους θεμάτων και θεμάτων συζήτησης. Αν έχετε αμφιβολίες, δημοσιεύστε τη βοήθεια &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;στην ενότητα FreeCAD&lt;/a&gt;.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="102"/>
@@ -275,11 +275,31 @@
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="144"/>
+      <source>Size</source>
+      <translation>Μέγεθος</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="145"/>
+      <source>Author</source>
+      <translation>Συγγραφέας</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="146"/>
+      <source>License</source>
+      <translation>Άδεια</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="147"/>
+      <source>File path</source>
+      <translation type="unfinished">File path</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="148"/>
       <source>Notes</source>
       <translation>Σημειώσεις</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="145"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="149"/>
       <source>Open start page preferences</source>
       <translation>Προτιμήσεις σελίδας έναρξης</translation>
     </message>
@@ -287,7 +307,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../../StartPage/StartPage.py" line="871"/>
+      <location filename="../../../StartPage/StartPage.py" line="874"/>
       <location filename="../../Workbench.cpp" line="62"/>
       <source>Start page</source>
       <translation>Αρχική σελίδα</translation>
@@ -373,12 +393,12 @@ By using ";;" to separate paths, you can add several folders here</source>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="33"/>
       <source>Workbench to switch to after loading a file from the Start page, only used if Start is the start up workbench</source>
-      <translation type="unfinished">Workbench to switch to after loading a file from the Start page, only used if Start is the start up workbench</translation>
+      <translation>Πάγκος εργασίας για να μεταβείτε μετά τη φόρτωση ενός αρχείου από τη σελίδα έναρξης, χρησιμοποιείται μόνο εάν η Εκκίνηση είναι ο πάγκος εργασίας εκκίνησης</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="122"/>
       <source>The size of file thumbnail icons in recent files and examples sections</source>
-      <translation type="unfinished">The size of file thumbnail icons in recent files and examples sections</translation>
+      <translation>Το μέγεθος των εικονιδίων επισκόπησης αρχείων στις ενότητες πρόσφατων αρχείων και παραδειγμάτων</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="196"/>
@@ -388,12 +408,12 @@ By using ";;" to separate paths, you can add several folders here</source>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="264"/>
       <source>File thumbnail size</source>
-      <translation type="unfinished">File thumbnail size</translation>
+      <translation>Μέγεθος μικρογραφίας αρχείου</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="297"/>
       <source>Show file thumbnails</source>
-      <translation type="unfinished">Show file thumbnails</translation>
+      <translation>Εμφάνιση μικρογραφιών αρχείων</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="331"/>
@@ -577,7 +597,7 @@ By using ";;" to separate paths, you can add several folders here</source>
     <message>
       <location filename="../../DlgStartPreferencesAdvanced.ui" line="26"/>
       <source>An optional HTML template that will be used instead of the default start page.</source>
-      <translation type="unfinished">An optional HTML template that will be used instead of the default start page.</translation>
+      <translation>Ένα προαιρετικό πρότυπο HTML που θα χρησιμοποιηθεί αντί για την προεπιλεγμένη Αρχική σελίδα.</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferencesAdvanced.ui" line="42"/>
@@ -587,7 +607,7 @@ By using ";;" to separate paths, you can add several folders here</source>
     <message>
       <location filename="../../DlgStartPreferencesAdvanced.ui" line="48"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You can paste your custom CSS here and the Start Page will apply it for you. To learn more about how you can style the Start Page, take a look at the HTML and CSS sources:&lt;/p&gt;&lt;p&gt;&lt;a href="https://github.com/FreeCAD/FreeCAD/blob/master/src/Mod/Start/StartPage/StartPage.html"&gt;&lt;span style=" text-decoration: underline; color:#1d99f3;"&gt;https://github.com/FreeCAD/FreeCAD/blob/master/src/Mod/Start/StartPage/StartPage.html&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;a href="https://github.com/FreeCAD/FreeCAD/blob/master/src/Mod/Start/StartPage/StartPage.css"&gt;&lt;span style=" text-decoration: underline; color:#1d99f3;"&gt;https://github.com/FreeCAD/FreeCAD/blob/master/src/Mod/Start/StartPage/StartPage.css&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You can paste your custom CSS here and the Start Page will apply it for you. To learn more about how you can style the Start Page, take a look at the HTML and CSS sources:&lt;/p&gt;&lt;p&gt;&lt;a href="https://github.com/FreeCAD/FreeCAD/blob/master/src/Mod/Start/StartPage/StartPage.html"&gt;&lt;span style=" text-decoration: underline; color:#1d99f3;"&gt;https://github.com/FreeCAD/FreeCAD/blob/master/src/Mod/Start/StartPage/StartPage.html&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;a href="https://github.com/FreeCAD/FreeCAD/blob/master/src/Mod/Start/StartPage/StartPage.css"&gt;&lt;span style=" text-decoration: underline; color:#1d99f3;"&gt;https://github.com/FreeCAD/FreeCAD/blob/master/src/Mod/Start/StartPage/StartPage.css&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Μπορείτε να επικολλήσετε εδώ το προσαρμοσμένο CSS σας και η Αρχική Σελίδα θα το εφαρμόσει για εσάς. Για να μάθετε περισσότερα σχετικά με το πώς μπορείτε να μορφοποιήσετε τη σελίδα έναρξης, ρίξτε μια ματιά στις πηγές HTML και CSS:&lt;/p&gt;&lt;p&gt;&lt;a href="https://github.com/FreeCAD/FreeCAD/blob/master/src/Mod/Start/StartPage/StartPage.html"&gt;&lt;span style=" text-decoration: underline; color:#1d99f3;"&gt;https://github. om/FreeCAD/FreeCAD/blob/master/src/Mod/Start/StartPage/StartPage.html&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;a href="https://github.com/FreeCAD/FreeCAD/blob/master/src/Mod/Start/StartPage/StartPage.css"&gt;&lt;span style=" text-decoration: underline; color:#1d99f3;"&gt;https://github.com/FreeCAD/FreeCAD/blob/master/src/Mod/StartPage/StartPage/StartPage.css&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>

@@ -358,9 +358,9 @@ void ViewProviderSketch::ParameterObserver::initParameters()
           },
           nullptr}},
         {"SegmentsPerGeometry",
-         {[this, packedDefaultGridColor](const std::string& string,
+         {[this](const std::string& string,
                                          [[maybe_unused]] App::Property* property) {
-              auto v = getPreferencesViewParameter(string, 50);
+              auto v = getPreferencesViewParameter(string, 50); //LINT
               Client.viewProviderParameters.stdCountSegments = v;
           },
           nullptr}},
@@ -692,8 +692,6 @@ void ViewProviderSketch::preselectAtPoint(Base::Vector2d point)
         && Mode != STATUS_SKETCH_DragCurve && Mode != STATUS_SKETCH_DragConstraint
         && Mode != STATUS_SKETCH_UseRubberBand) {
 
-        SbVec3f sbpoint(point.x, point.y, 0.f);
-
         Gui::MDIView* mdi = this->getActiveView();
         Gui::View3DInventor* view = qobject_cast<Gui::View3DInventor*>(mdi);
 
@@ -701,6 +699,18 @@ void ViewProviderSketch::preselectAtPoint(Base::Vector2d point)
             return;
 
         Gui::View3DInventorViewer* viewer = view->getViewer();
+
+        Base::Placement Plm = getEditingPlacement();
+
+        auto inPlacementCoords = [&Plm](const Base::Vector3d & point) {
+            Base::Vector3d pnt;
+            Plm.multVec(point, pnt);
+            return pnt;
+        };
+
+        auto pnt = inPlacementCoords(Base::Vector3d(point.x,point.y,0));
+
+        SbVec3f sbpoint(static_cast<float>(pnt.x), static_cast<float>(pnt.y), static_cast<float>(pnt.z));
 
         SbVec2s screencoords = viewer->getPointOnViewport(sbpoint);
 

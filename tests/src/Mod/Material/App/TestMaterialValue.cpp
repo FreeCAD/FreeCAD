@@ -143,7 +143,6 @@ TEST_F(TestMaterialValue, TestQuantityType)
     EXPECT_TRUE(variant.toString().isNull());
     EXPECT_TRUE(variant.toString().isEmpty());
     EXPECT_EQ(variant.toString().size(), 0);
-
     auto quantity = variant.value<Base::Quantity>();
     EXPECT_FALSE(quantity.isValid());
     EXPECT_EQ(quantity.getUserString(), QString::fromStdString("nan "));
@@ -160,7 +159,6 @@ TEST_F(TestMaterialValue, TestQuantityType)
     EXPECT_TRUE(variant.toString().isNull());
     EXPECT_TRUE(variant.toString().isEmpty());
     EXPECT_EQ(variant.toString().size(), 0);
-
     quantity = variant.value<Base::Quantity>();
     EXPECT_FALSE(quantity.isValid());
     EXPECT_EQ(quantity.getUserString(), QString::fromStdString("nan "));
@@ -173,11 +171,16 @@ TEST_F(TestMaterialValue, TestListType)
     EXPECT_EQ(mat1.getType(), Materials::MaterialValue::List);
     EXPECT_TRUE(mat1.isNull());
     auto variant = mat1.getValue();
-    EXPECT_TRUE(variant.isNull());
-    EXPECT_TRUE(variant.canConvert<QString>());
+    EXPECT_TRUE(variant.value<QList<QVariant>>().isEmpty());
+    EXPECT_EQ(variant.value<QList<QVariant>>().size(), 0);
+    EXPECT_FALSE(variant.isNull());
+    EXPECT_FALSE(variant.canConvert<QVariant>());
     EXPECT_TRUE(variant.toString().isNull());
     EXPECT_TRUE(variant.toString().isEmpty());
     EXPECT_EQ(variant.toString().size(), 0);
+    auto list = mat1.getList();
+    EXPECT_TRUE(list.isEmpty());
+    EXPECT_EQ(list.size(), 0);
 }
 
 TEST_F(TestMaterialValue, TestArray2DType)

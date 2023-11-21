@@ -187,7 +187,7 @@ public:
      * \param R
      * \return
      */
-    static double IsInfinite(const double R)
+    static bool IsInfinite(const double R)
     {
         return std::fabs(R) >= (0.5 * Precision::Infinite());
     }
@@ -198,7 +198,7 @@ public:
      * \param R
      * \return
      */
-    static double IsPositiveInfinite(const double R)
+    static bool IsPositiveInfinite(const double R)
     {
         return R >= (0.5 * Precision::Infinite());
     }

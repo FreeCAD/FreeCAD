@@ -36,6 +36,8 @@
 #include <Base/VectorPy.h>
 #include <Base/Writer.h>
 
+#include "ComplexGeoData.h"
+#include "Document.h"
 #include "PropertyGeo.h"
 #include "Placement.h"
 #include "ObjectIdentifier.h"
@@ -1241,3 +1243,18 @@ TYPESYSTEM_SOURCE_ABSTRACT(App::PropertyComplexGeoData , App::PropertyGeometry)
 PropertyComplexGeoData::PropertyComplexGeoData() = default;
 
 PropertyComplexGeoData::~PropertyComplexGeoData() = default;
+
+void PropertyComplexGeoData::afterRestore()
+{
+    auto data = getComplexData();
+    if (data && data->isRestoreFailed()) {
+        data->resetRestoreFailure();
+        auto owner = Base::freecad_dynamic_cast<DocumentObject>(getContainer());
+        if (owner &&
+            owner->getDocument() &&
+            !owner->getDocument()->testStatus(App::Document::PartialDoc)) {
+            owner->getDocument()->addRecomputeObject(owner);
+        }
+    }
+    PropertyGeometry::afterRestore();
+}

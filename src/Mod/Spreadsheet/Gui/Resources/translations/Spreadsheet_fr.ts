@@ -214,7 +214,7 @@
     <message>
       <location filename="../../Command.cpp" line="122"/>
       <source>Split previously merged cells</source>
-      <translation>Diviser les cellules précédemment fusionnées</translation>
+      <translation>Fractionner les cellules précédemment fusionnées</translation>
     </message>
   </context>
   <context>
@@ -232,7 +232,7 @@
     <message>
       <location filename="../../Command.cpp" line="642"/>
       <source>Set text in selected cells bold</source>
-      <translation>Rendre gras le texte des cellules sélectionnées</translation>
+      <translation>Mettre en gras le texte des cellules sélectionnées</translation>
     </message>
   </context>
   <context>
@@ -250,7 +250,7 @@
     <message>
       <location filename="../../Command.cpp" line="725"/>
       <source>Set text in selected cells italic</source>
-      <translation>Rendre italique le texte des cellules sélectionnées</translation>
+      <translation>Mettre en italique le texte des cellules sélectionnées</translation>
     </message>
   </context>
   <context>
@@ -456,8 +456,8 @@ L'expression doit être interprétée comme une chaîne de caractères d'une cer
       <source>The dependency with the referenced spreadsheet will
 be hidden to the dependency checking.
 Useful to avoid cyclic dependencies, but use with caution!</source>
-      <translation>La dépendance avec la feuille de calcul référencée
-sera masquée lors de la vérification des dépendances.
+      <translation>La dépendance avec la feuille de calcul référencée sera masquée lors de la
+vérification des dépendances.
 Utile pour éviter les dépendances cycliques, mais à utiliser avec précaution !</translation>
     </message>
     <message>
@@ -613,7 +613,7 @@ switch the design configuration. The property will be created if not exist.</sou
       <location filename="../../PropertiesDialog.ui" line="102"/>
       <location filename="../../PropertiesDialog.ui" line="155"/>
       <source>Center</source>
-      <translation>Centre</translation>
+      <translation>Au centre</translation>
     </message>
     <message>
       <location filename="../../PropertiesDialog.ui" line="109"/>
@@ -682,7 +682,7 @@ switch the design configuration. The property will be created if not exist.</sou
       <location filename="../../Command.cpp" line="194"/>
       <location filename="../../Command.cpp" line="254"/>
       <source>CSV (*.csv *.CSV);;All (*)</source>
-      <translation type="unfinished">CSV (*.csv *.CSV);;All (*)</translation>
+      <translation>CSV (*.csv *.CSV);;Tout (*)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="196"/>
@@ -878,7 +878,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="226"/>
       <source>Bind cells</source>
-      <translation>Lier les cellules</translation>
+      <translation>Lier des cellules</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="227"/>
@@ -904,7 +904,7 @@ Voulez-vous continuer ?</translation>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="303"/>
       <source>Unbind cells</source>
-      <translation>Délier les cellules</translation>
+      <translation>Délier des cellules</translation>
     </message>
   </context>
   <context>
@@ -1059,7 +1059,7 @@ Par défaut : %V = %A
       <source>Remove column(s)</source>
       <translation>
         <numerusform>Supprimer une ou plusieurs colonnes</numerusform>
-        <numerusform>Supprimer une/des colonnes</numerusform>
+        <numerusform>Supprimer une ou plusieurs colonnes</numerusform>
       </translation>
     </message>
     <message>
@@ -1096,7 +1096,7 @@ Par défaut : %V = %A
       <location filename="../../SheetTableView.cpp" line="207"/>
       <location filename="../../SheetTableView.cpp" line="660"/>
       <source>Split cells</source>
-      <translation>Diviser les cellules</translation>
+      <translation>Fractionner les cellules</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="211"/>

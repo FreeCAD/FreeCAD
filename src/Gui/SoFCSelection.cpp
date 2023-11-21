@@ -40,6 +40,8 @@
 # include <Inventor/misc/SoState.h>
 #endif
 
+#include <Base/UnitsApi.h>
+
 #include "SoFCSelection.h"
 #include "MainWindow.h"
 #include "SoFCSelectionAction.h"
@@ -383,15 +385,21 @@ SoFCSelection::handleEvent(SoHandleEventAction * action)
                 const auto &pt = pp->getPoint();
 
                 auto pts = schemaTranslatePoint(pt[0], pt[1], pt[2], 1e-7);
-                snprintf(buf,512,"Preselected: %s.%s.%s (%f %s, %f %s, %f %s)"
-                                ,documentName.getValue().getString()
-                                ,objectName.getValue().getString()
-                                ,subElementName.getValue().getString()
-                                ,pts[0].first, pts[0].second.c_str()
-                                ,pts[1].first, pts[1].second.c_str()
-                                ,pts[2].first, pts[2].second.c_str());
 
-                getMainWindow()->showMessage(QString::fromUtf8(buf));
+                int numberDecimals = std::min(6, Base::UnitsApi::getDecimals());
+
+                QString message = QStringLiteral("Preselected: %1.%2.%3 (%4 %5, %6 %7, %8 %9)")
+                    .arg(QString::fromUtf8(documentName.getValue().getString()))
+                    .arg(QString::fromUtf8(objectName.getValue().getString()))
+                    .arg(QString::fromUtf8(subElementName.getValue().getString()))
+                    .arg(QString::number(pts[0].first, 'f', numberDecimals))
+                    .arg(QString::fromStdString(pts[0].second))
+                    .arg(QString::number(pts[1].first, 'f', numberDecimals))
+                    .arg(QString::fromStdString(pts[1].second))
+                    .arg(QString::number(pts[2].first, 'f', numberDecimals))
+                    .arg(QString::fromStdString(pts[2].second));
+
+                getMainWindow()->showMessage(message);
             }
             else { // picked point
                 if (highlighted) {

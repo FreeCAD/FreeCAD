@@ -180,6 +180,7 @@ def getInfo(filename):
         lic = TranslationTexts.T_UNKNOWN
         image = None
         descr = ""
+        path = os.path.abspath(filename)
 
         # get additional info from fcstd files
         if filename.lower().endswith(".fcstd"):
@@ -279,7 +280,7 @@ def getInfo(filename):
                 else:
                     image = getDefaultIcon()
                 iconbank[t] = image
-        return [image, size, author, ctime, mtime, descr, company, lic]
+        return [image, size, author, ctime, mtime, descr, company, lic, path]
 
     return None
 
@@ -364,13 +365,15 @@ def buildCard(filename, method, arg=None):
             arg = basename
         finfo = getInfo(filename)
         if finfo:
-            image = finfo[0]
-            size = finfo[1]
-            author = finfo[2]
-            infostring = TranslationTexts.T_CREATIONDATE + ": " + finfo[3] + "\n"
-            infostring += TranslationTexts.T_LASTMODIFIED + ": " + finfo[4]
+            image, size, author, ctime, mtime, descr, company, lic, path = finfo
+            infostring = TranslationTexts.T_CREATIONDATE + ": " + ctime + "\n"
+            infostring += TranslationTexts.T_LASTMODIFIED + ": " + mtime + "\n"
+            infostring += TranslationTexts.T_SIZE + ": " + size + "\n"
+            infostring += TranslationTexts.T_AUTHOR + ": " + author + "\n"
+            infostring += TranslationTexts.T_LICENSE + ": " + lic + "\n"
+            infostring += TranslationTexts.T_FILEPATH + ": " + path + "\n"
             if finfo[5]:
-                infostring += "\n\n" + finfo[5]
+                infostring += "\n\n" + descr
             if size:
                 result += '<li class="file-card">'
                 result += (

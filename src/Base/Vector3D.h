@@ -97,11 +97,11 @@ struct float_traits<double>
 };
 
 /** The Vector Base class. */
-template<class _Precision>
+template<class float_type>
 class Vector3
 {
 public:
-    using num_type = _Precision;
+    using num_type = float_type;
     using traits_type = float_traits<num_type>;
     static inline num_type epsilon()
     {
@@ -110,90 +110,90 @@ public:
 
     /** @name Public data members */
     //@{
-    _Precision x; /**< x-coordinate */
-    _Precision y; /**< y-coordinate */
-    _Precision z; /**< z-coordinate */
+    float_type x; /**< x-coordinate */
+    float_type y; /**< y-coordinate */
+    float_type z; /**< z-coordinate */
     //@}
 
     /// Construction
-    explicit Vector3(_Precision fx = 0.0, _Precision fy = 0.0, _Precision fz = 0.0);
-    Vector3(const Vector3<_Precision>& v) = default;
-    Vector3(Vector3<_Precision>&& v) = default;
+    explicit Vector3(float_type fx = 0.0, float_type fy = 0.0, float_type fz = 0.0);
+    Vector3(const Vector3<float_type>& v) = default;
+    Vector3(Vector3<float_type>&& v) noexcept = default;
     ~Vector3() = default;
 
     /** @name Operator */
     //@{
     /// Returns a reference to a coordinate. \a usIndex must be in the range [0,2]
-    _Precision& operator[](unsigned short usIndex);
+    float_type& operator[](unsigned short usIndex);
     /// Returns a const reference to a coordinate. \a usIndex must be in the range [0,2]
-    const _Precision& operator[](unsigned short usIndex) const;
+    const float_type& operator[](unsigned short usIndex) const;
     /// Vector addition
-    Vector3 operator+(const Vector3<_Precision>& rcVct) const;
-    Vector3 operator&(const Vector3<_Precision>& rcVct) const;
+    Vector3 operator+(const Vector3<float_type>& rcVct) const;
+    Vector3 operator&(const Vector3<float_type>& rcVct) const;
     /// Vector subtraction
-    Vector3 operator-(const Vector3<_Precision>& rcVct) const;
+    Vector3 operator-(const Vector3<float_type>& rcVct) const;
     /// Negative vector
     Vector3 operator-() const;
     /// Vector summation
-    Vector3& operator+=(const Vector3<_Precision>& rcVct);
+    Vector3& operator+=(const Vector3<float_type>& rcVct);
     /// Vector subtraction
-    Vector3& operator-=(const Vector3<_Precision>& rcVct);
+    Vector3& operator-=(const Vector3<float_type>& rcVct);
     /// Vector scaling
-    Vector3 operator*(_Precision fScale) const;
-    Vector3 operator/(_Precision fDiv) const;
-    Vector3& operator*=(_Precision fScale);
-    Vector3& operator/=(_Precision fDiv);
+    Vector3 operator*(float_type fScale) const;
+    Vector3 operator/(float_type fDiv) const;
+    Vector3& operator*=(float_type fScale);
+    Vector3& operator/=(float_type fDiv);
     /// Assignment
-    Vector3& operator=(const Vector3<_Precision>& v) = default;
-    Vector3& operator=(Vector3<_Precision>&& v) = default;
+    Vector3& operator=(const Vector3<float_type>& v) = default;
+    Vector3& operator=(Vector3<float_type>&& v) noexcept = default;
     /// Scalar product
-    _Precision operator*(const Vector3<_Precision>& rcVct) const;
+    float_type operator*(const Vector3<float_type>& rcVct) const;
     /// Scalar product
-    _Precision Dot(const Vector3<_Precision>& rcVct) const;
+    float_type Dot(const Vector3<float_type>& rcVct) const;
     /// Cross product
-    Vector3 operator%(const Vector3<_Precision>& rcVct) const;
+    Vector3 operator%(const Vector3<float_type>& rcVct) const;
     /// Cross product
-    Vector3 Cross(const Vector3<_Precision>& rcVct) const;
+    Vector3 Cross(const Vector3<float_type>& rcVct) const;
 
     /// Comparing for inequality
-    bool operator!=(const Vector3<_Precision>& rcVct) const;
+    bool operator!=(const Vector3<float_type>& rcVct) const;
     /// Comparing for equality
-    bool operator==(const Vector3<_Precision>& rcVct) const;
+    bool operator==(const Vector3<float_type>& rcVct) const;
     //@}
 
     /// Check if Vector is on a line segment
-    bool IsOnLineSegment(const Vector3<_Precision>& startVct,
-                         const Vector3<_Precision>& endVct) const;
+    bool IsOnLineSegment(const Vector3<float_type>& startVct,
+                         const Vector3<float_type>& endVct) const;
 
     /** @name Modification */
     //@{
-    void ScaleX(_Precision f);
-    void ScaleY(_Precision f);
-    void ScaleZ(_Precision f);
-    void Scale(_Precision fX, _Precision fY, _Precision fZ);
-    void MoveX(_Precision f);
-    void MoveY(_Precision f);
-    void MoveZ(_Precision f);
-    void Move(_Precision fX, _Precision fY, _Precision fZ);
-    void RotateX(_Precision f);
-    void RotateY(_Precision f);
-    void RotateZ(_Precision f);
+    void ScaleX(float_type f);
+    void ScaleY(float_type f);
+    void ScaleZ(float_type f);
+    void Scale(float_type fX, float_type fY, float_type fZ);
+    void MoveX(float_type f);
+    void MoveY(float_type f);
+    void MoveZ(float_type f);
+    void Move(float_type fX, float_type fY, float_type fZ);
+    void RotateX(float_type f);
+    void RotateY(float_type f);
+    void RotateZ(float_type f);
     //@}
 
-    void Set(_Precision fX, _Precision fY, _Precision fZ);
+    void Set(float_type fX, float_type fY, float_type fZ);
 
     /** @name Mathematics */
     //@{
     /// Length of the vector.
-    _Precision Length() const;
+    float_type Length() const;
     /// Squared length of the vector.
-    _Precision Sqr() const;
+    float_type Sqr() const;
     /// Set length to 1.
     Vector3& Normalize();
     /// Checks whether this is the null vector
     bool IsNull() const;
     /// Get angle between both vectors. The returned value lies in the interval [0,pi].
-    _Precision GetAngle(const Vector3& rcVect) const;
+    float_type GetAngle(const Vector3& rcVect) const;
     /** Transforms this point to the coordinate system defined by origin \a rclBase,
      * vector \a vector rclDirX and vector \a vector rclDirY.
      * \note \a rclDirX must be perpendicular to \a rclDirY, i.e. \a rclDirX * \a rclDirY = 0..
@@ -209,7 +209,7 @@ public:
      * If the distance to point \a rclPnt is within the tolerance \a tol both points are considered
      * equal.
      */
-    bool IsEqual(const Vector3& rclPnt, _Precision tol) const;
+    bool IsEqual(const Vector3& rclPnt, float_type tol) const;
     /// Projects this point onto the plane given by the base \a rclBase and the normal \a rclNorm.
     Vector3& ProjectToPlane(const Vector3& rclBase, const Vector3& rclNorm);
     /**
@@ -235,9 +235,9 @@ public:
      * the distance can also be negative. The distance is positive if the point is at the same
      * side the plane normal points to, negative otherwise.
      */
-    _Precision DistanceToPlane(const Vector3& rclBase, const Vector3& rclNorm) const;
+    float_type DistanceToPlane(const Vector3& rclBase, const Vector3& rclNorm) const;
     /// Computes the distance from this point to the line given by \a rclBase and \a rclDirect.
-    _Precision DistanceToLine(const Vector3& rclBase, const Vector3& rclDirect) const;
+    float_type DistanceToLine(const Vector3& rclBase, const Vector3& rclDirect) const;
     /** Computes the vector from this point to the point on the line segment with the shortest
      * distance. The line segment is defined by \a rclP1 and \a rclP2.
      * Note: If the projection of this point is outside the segment then the shortest distance
@@ -250,32 +250,36 @@ public:
 // global functions
 
 /// Returns the distance between two points
-template<class _Precision>
-inline _Precision Distance(const Vector3<_Precision>& v1, const Vector3<_Precision>& v2)
+template<class float_type>
+inline float_type Distance(const Vector3<float_type>& v1, const Vector3<float_type>& v2)
 {
-    _Precision x = v1.x - v2.x, y = v1.y - v2.y, z = v1.z - v2.z;
-    return static_cast<_Precision>(sqrt((x * x) + (y * y) + (z * z)));
+    float_type x = v1.x - v2.x;
+    float_type y = v1.y - v2.y;
+    float_type z = v1.z - v2.z;
+    return static_cast<float_type>(sqrt((x * x) + (y * y) + (z * z)));
 }
 
 /// Returns the squared distance between two points
-template<class _Precision>
-inline _Precision DistanceP2(const Vector3<_Precision>& v1, const Vector3<_Precision>& v2)
+template<class float_type>
+inline float_type DistanceP2(const Vector3<float_type>& v1, const Vector3<float_type>& v2)
 {
-    _Precision x = v1.x - v2.x, y = v1.y - v2.y, z = v1.z - v2.z;
+    float_type x = v1.x - v2.x;
+    float_type y = v1.y - v2.y;
+    float_type z = v1.z - v2.z;
     return x * x + y * y + z * z;
 }
 
 /// Multiplication of scalar with vector.
-template<class _Precision>
-inline Vector3<_Precision> operator*(_Precision fFac, const Vector3<_Precision>& rcVct)
+template<class float_type>
+inline Vector3<float_type> operator*(float_type fFac, const Vector3<float_type>& rcVct)
 {
-    return Vector3<_Precision>(rcVct.x * fFac, rcVct.y * fFac, rcVct.z * fFac);
+    return Vector3<float_type>(rcVct.x * fFac, rcVct.y * fFac, rcVct.z * fFac);
 }
 
-template<class _Pr1, class _Pr2>
-inline Vector3<_Pr1> toVector(const Vector3<_Pr2>& v)
+template<class Pr1, class Pr2>
+inline Vector3<Pr1> toVector(const Vector3<Pr2>& v)
 {
-    return Vector3<_Pr1>(static_cast<_Pr1>(v.x), static_cast<_Pr1>(v.y), static_cast<_Pr1>(v.z));
+    return Vector3<Pr1>(static_cast<Pr1>(v.x), static_cast<Pr1>(v.y), static_cast<Pr1>(v.z));
 }
 
 using Vector3f = Vector3<float>;

@@ -1171,6 +1171,7 @@ class gridTracker(Tracker):
         """ Display the human figure at the grid corner.
         The silhouette is displayed only if:
         - BIM Workbench is available;
+        - preference BaseApp/Preferences/Mod/Draft/gridBorder is True;
         - preference BaseApp/Preferences/Mod/Draft/gridShowHuman is True;
         - the working plane normal is vertical.
         """
@@ -1179,12 +1180,13 @@ class gridTracker(Tracker):
         pts = []
         pidx = []
         param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-        if param.GetBool("gridShowHuman", True) and \
-            wp.axis.getAngle(FreeCAD.Vector(0,0,1)) < 0.001:
+        if param.GetBool("gridBorder", True) \
+                and param.GetBool("gridShowHuman", True) \
+                and wp.axis.getAngle(FreeCAD.Vector(0,0,1)) < 0.001:
             try:
-                import BimProject
+                import BimProjectManager
                 loc = FreeCAD.Vector(-bound+self.space/2,-bound+self.space/2,0)
-                hpts = BimProject.getHuman(loc)
+                hpts = BimProjectManager.getHuman(loc)
                 pts.extend([tuple(p) for p in hpts])
                 pidx.append(len(hpts))
             except Exception:
@@ -1237,7 +1239,7 @@ class gridTracker(Tracker):
         self.numlines = Draft.getParam("gridSize", 100)
         self.update()
 
-    def set(self,tool=False):
+    def set(self):
         """Move and rotate the grid according to the current working plane."""
         self.reset()
         wp = self._get_wp()

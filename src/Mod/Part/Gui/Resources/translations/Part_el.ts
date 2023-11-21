@@ -4426,7 +4426,7 @@ will be used or black.</source>
     <message>
       <location filename="../../Location.ui" line="90"/>
       <source>3D view</source>
-      <translation type="unfinished">3D view</translation>
+      <translation>Τρισδιάστατη Προβολή</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="106"/>

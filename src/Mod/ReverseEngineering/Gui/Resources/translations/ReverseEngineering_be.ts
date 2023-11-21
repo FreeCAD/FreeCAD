@@ -28,8 +28,8 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="107"/>
-      <source>Plane...</source>
-      <translation>Плоскасць...</translation>
+      <source>Plane</source>
+      <translation>Плоскасьць</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="108"/>
@@ -422,7 +422,7 @@
     <message>
       <location filename="../../Segmentation.ui" line="37"/>
       <source>Plane</source>
-      <translation>Плоскасьць</translation>
+      <translation>Плоскасць</translation>
     </message>
     <message>
       <location filename="../../Segmentation.ui" line="46"/>

@@ -25,6 +25,7 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
+#include <algorithm>
 #include <cassert>
 #include <memory>
 #include <xercesc/dom/DOM.hpp>
@@ -76,14 +77,6 @@ class DOMTreeErrorReporter: public ErrorHandler
 {
 public:
     // -----------------------------------------------------------------------
-    //  Constructors and Destructor
-    // -----------------------------------------------------------------------
-    DOMTreeErrorReporter() = default;
-
-    ~DOMTreeErrorReporter() override = default;
-
-
-    // -----------------------------------------------------------------------
     //  Implementation of the error handler interface
     // -----------------------------------------------------------------------
     void warning(const SAXParseException& toCatch) override;
@@ -120,7 +113,7 @@ public:
     //@{
 
     /** @ interface from DOMWriterFilter */
-    FilterAction acceptNode(const XERCES_CPP_NAMESPACE_QUALIFIER DOMNode*) const override;
+    FilterAction acceptNode(const XERCES_CPP_NAMESPACE_QUALIFIER DOMNode* node) const override;
     //@{
 
     ShowType getWhatToShow() const override
@@ -130,10 +123,13 @@ public:
 
     // unimplemented copy ctor and assignment operator
     DOMPrintFilter(const DOMPrintFilter&) = delete;
+    DOMPrintFilter(DOMPrintFilter&&) = delete;
     DOMPrintFilter& operator=(const DOMPrintFilter&) = delete;
+    DOMPrintFilter& operator=(DOMPrintFilter&&) = delete;
 
     ShowType fWhatToShow;
 };
+
 class DOMPrintErrorHandler: public DOMErrorHandler
 {
 public:
@@ -146,8 +142,10 @@ public:
     {}
 
     /* Unimplemented constructors and operators */
-    explicit DOMPrintErrorHandler(const DOMErrorHandler&) = delete;
-    void operator=(const DOMErrorHandler&) = delete;
+    DOMPrintErrorHandler(const DOMPrintErrorHandler&) = delete;
+    DOMPrintErrorHandler(DOMPrintErrorHandler&&) = delete;
+    void operator=(const DOMPrintErrorHandler&) = delete;
+    void operator=(DOMPrintErrorHandler&&) = delete;
 };
 
 
@@ -464,7 +462,7 @@ std::string ParameterGrp::GetPath() const
     if (_Parent && _Parent != _Manager) {
         path = _Parent->GetPath();
     }
-    if (path.size() && _cName.size()) {
+    if (!path.empty() && !_cName.empty()) {
         path += "/";
     }
     path += _cName;
@@ -506,9 +504,8 @@ bool ParameterGrp::IsEmpty() const
     if (_pGroupNode && _pGroupNode->getFirstChild()) {
         return false;
     }
-    else {
-        return true;
-    }
+
+    return true;
 }
 
 /// test if a special sub group is in this group
@@ -730,13 +727,9 @@ bool ParameterGrp::GetBool(const char* Name, bool bPreset) const
     if (!pcElem) {
         return bPreset;
     }
+
     // if yes check the value and return
-    if (strcmp(StrX(pcElem->getAttribute(XStr("Value").unicodeForm())).c_str(), "1")) {
-        return false;
-    }
-    else {
-        return true;
-    }
+    return (strcmp(StrX(pcElem->getAttribute(XStr("Value").unicodeForm())).c_str(), "1") == 0);
 }
 
 void ParameterGrp::SetBool(const char* Name, bool bValue)
@@ -758,7 +751,7 @@ std::vector<bool> ParameterGrp::GetBools(const char* sFilter) const
         Name = StrX(pcTemp->getAttribute(XStr("Name").unicodeForm())).c_str();
         // check on filter condition
         if (!sFilter || Name.find(sFilter) != std::string::npos) {
-            if (strcmp(StrX(pcTemp->getAttribute(XStr("Value").unicodeForm())).c_str(), "1")) {
+            if (strcmp(StrX(pcTemp->getAttribute(XStr("Value").unicodeForm())).c_str(), "1") != 0) {
                 vrValues.push_back(false);
             }
             else {
@@ -785,7 +778,7 @@ std::vector<std::pair<std::string, bool>> ParameterGrp::GetBoolMap(const char* s
         Name = StrX(pcTemp->getAttribute(XStr("Name").unicodeForm())).c_str();
         // check on filter condition
         if (!sFilter || Name.find(sFilter) != std::string::npos) {
-            if (strcmp(StrX(pcTemp->getAttribute(XStr("Value").unicodeForm())).c_str(), "1")) {
+            if (strcmp(StrX(pcTemp->getAttribute(XStr("Value").unicodeForm())).c_str(), "1") != 0) {
                 vrValues.emplace_back(Name, false);
             }
             else {
@@ -1381,13 +1374,10 @@ bool ParameterGrp::ShouldRemove() const
     if (this->getRefCount() > 1) {
         return false;
     }
-    for (const auto& it : _GroupMap) {
-        bool ok = it.second->ShouldRemove();
-        if (!ok) {
-            return false;
-        }
-    }
-    return true;
+
+    return std::all_of(_GroupMap.cbegin(), _GroupMap.cend(), [](const auto& it) {
+        return it.second->ShouldRemove();
+    });
 }
 
 XERCES_CPP_NAMESPACE_QUALIFIER DOMElement*
@@ -1710,9 +1700,8 @@ int ParameterManager::LoadDocument()
     if (paramSerializer) {
         return paramSerializer->LoadDocument(*this);
     }
-    else {
-        return -1;
-    }
+
+    return -1;
 }
 
 bool ParameterManager::LoadOrCreateDocument()
@@ -1720,9 +1709,8 @@ bool ParameterManager::LoadOrCreateDocument()
     if (paramSerializer) {
         return paramSerializer->LoadOrCreateDocument(*this);
     }
-    else {
-        return false;
-    }
+
+    return false;
 }
 
 void ParameterManager::SaveDocument() const
@@ -1742,10 +1730,9 @@ bool ParameterManager::LoadOrCreateDocument(const char* sFileName)
         LoadDocument(sFileName);
         return false;
     }
-    else {
-        CreateDocument();
-        return true;
-    }
+
+    CreateDocument();
+    return true;
 }
 
 int ParameterManager::LoadDocument(const char* sFileName)
@@ -2017,7 +2004,7 @@ void ParameterManager::CheckDocument() const
 // DOMTreeErrorReporter
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-void DOMTreeErrorReporter::warning(const SAXParseException&)
+void DOMTreeErrorReporter::warning(const SAXParseException& /*exc*/)
 {
     //
     // Ignore all warnings.

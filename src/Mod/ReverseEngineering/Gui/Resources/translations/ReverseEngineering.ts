@@ -28,7 +28,7 @@
     </message>
     <message>
         <location filename="../../Command.cpp" line="107"/>
-        <source>Plane...</source>
+        <source>Plane</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
