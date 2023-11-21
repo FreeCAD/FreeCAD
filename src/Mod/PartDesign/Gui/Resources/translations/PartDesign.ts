@@ -1834,9 +1834,8 @@ click again to end selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskFilletParameters.cpp" line="193"/>
-        <source>Empty fillet created !
-</source>
+        <location filename="../../TaskFilletParameters.cpp" line="190"/>
+        <source>Empty fillet created!</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -2569,12 +2568,12 @@ measured along the specified direction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskPipeParameters.cpp" line="534"/>
+        <location filename="../../TaskPipeParameters.cpp" line="535"/>
         <source>Section orientation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskPipeParameters.cpp" line="560"/>
+        <location filename="../../TaskPipeParameters.cpp" line="561"/>
         <source>Remove</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2639,7 +2638,7 @@ measured along the specified direction</source>
     </message>
     <message>
         <location filename="../../TaskPipeParameters.cpp" line="422"/>
-        <location filename="../../TaskPipeParameters.cpp" line="520"/>
+        <location filename="../../TaskPipeParameters.cpp" line="521"/>
         <source>Input error</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2682,12 +2681,12 @@ measured along the specified direction</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskPipeParameters.cpp" line="802"/>
+        <location filename="../../TaskPipeParameters.cpp" line="803"/>
         <source>Section transformation</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskPipeParameters.cpp" line="818"/>
+        <location filename="../../TaskPipeParameters.cpp" line="819"/>
         <source>Remove</source>
         <translation type="unfinished"></translation>
     </message>
@@ -2825,66 +2824,118 @@ measured along the specified direction</source>
     <name>PartDesignGui::TaskRevolutionParameters</name>
     <message>
         <location filename="../../TaskRevolutionParameters.ui" line="22"/>
-        <source>Axis:</source>
+        <source>Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../TaskRevolutionParameters.ui" line="30"/>
-        <location filename="../../TaskRevolutionParameters.cpp" line="137"/>
-        <source>Base X axis</source>
+        <location filename="../../TaskRevolutionParameters.cpp" line="144"/>
+        <source>Dimension</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskRevolutionParameters.ui" line="35"/>
-        <location filename="../../TaskRevolutionParameters.cpp" line="138"/>
-        <source>Base Y axis</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskRevolutionParameters.ui" line="40"/>
-        <location filename="../../TaskRevolutionParameters.cpp" line="139"/>
-        <source>Base Z axis</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../TaskRevolutionParameters.ui" line="45"/>
-        <source>Horizontal sketch axis</source>
+        <location filename="../../TaskRevolutionParameters.ui" line="42"/>
+        <source>Axis:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../TaskRevolutionParameters.ui" line="50"/>
-        <source>Vertical sketch axis</source>
+        <location filename="../../TaskRevolutionParameters.cpp" line="188"/>
+        <source>Base X axis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../TaskRevolutionParameters.ui" line="55"/>
-        <location filename="../../TaskRevolutionParameters.cpp" line="146"/>
+        <location filename="../../TaskRevolutionParameters.cpp" line="189"/>
+        <source>Base Y axis</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskRevolutionParameters.ui" line="60"/>
+        <location filename="../../TaskRevolutionParameters.cpp" line="190"/>
+        <source>Base Z axis</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskRevolutionParameters.ui" line="65"/>
+        <source>Horizontal sketch axis</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskRevolutionParameters.ui" line="70"/>
+        <source>Vertical sketch axis</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskRevolutionParameters.ui" line="75"/>
+        <location filename="../../TaskRevolutionParameters.cpp" line="197"/>
         <source>Select reference...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskRevolutionParameters.ui" line="67"/>
+        <location filename="../../TaskRevolutionParameters.ui" line="87"/>
         <source>Angle:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskRevolutionParameters.ui" line="101"/>
+        <location filename="../../TaskRevolutionParameters.ui" line="121"/>
         <source>Symmetric to plane</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskRevolutionParameters.ui" line="108"/>
+        <location filename="../../TaskRevolutionParameters.ui" line="128"/>
         <source>Reversed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskRevolutionParameters.ui" line="122"/>
+        <location filename="../../TaskRevolutionParameters.ui" line="137"/>
+        <source>2nd angle</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskRevolutionParameters.ui" line="170"/>
+        <location filename="../../TaskRevolutionParameters.cpp" line="413"/>
+        <source>Face</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskRevolutionParameters.ui" line="192"/>
         <source>Update view</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../TaskRevolutionParameters.cpp" line="50"/>
         <source>Revolution parameters</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskRevolutionParameters.cpp" line="146"/>
+        <source>To last</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskRevolutionParameters.cpp" line="149"/>
+        <source>Through all</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskRevolutionParameters.cpp" line="151"/>
+        <source>To first</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskRevolutionParameters.cpp" line="152"/>
+        <source>Up to face</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskRevolutionParameters.cpp" line="153"/>
+        <source>Two dimensions</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../TaskRevolutionParameters.cpp" line="399"/>
+        <source>No face selected</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -3045,59 +3096,59 @@ click again to end selection</source>
 <context>
     <name>PartDesignGui::TaskTransformedParameters</name>
     <message>
-        <location filename="../../TaskTransformedParameters.cpp" line="250"/>
+        <location filename="../../TaskTransformedParameters.cpp" line="244"/>
         <source>Normal sketch axis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskTransformedParameters.cpp" line="251"/>
+        <location filename="../../TaskTransformedParameters.cpp" line="245"/>
         <source>Vertical sketch axis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskTransformedParameters.cpp" line="252"/>
+        <location filename="../../TaskTransformedParameters.cpp" line="246"/>
         <source>Horizontal sketch axis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskTransformedParameters.cpp" line="254"/>
-        <location filename="../../TaskTransformedParameters.cpp" line="290"/>
+        <location filename="../../TaskTransformedParameters.cpp" line="248"/>
+        <location filename="../../TaskTransformedParameters.cpp" line="284"/>
         <source>Construction line %1</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskTransformedParameters.cpp" line="268"/>
+        <location filename="../../TaskTransformedParameters.cpp" line="262"/>
         <source>Base X axis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskTransformedParameters.cpp" line="269"/>
+        <location filename="../../TaskTransformedParameters.cpp" line="263"/>
         <source>Base Y axis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskTransformedParameters.cpp" line="270"/>
+        <location filename="../../TaskTransformedParameters.cpp" line="264"/>
         <source>Base Z axis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskTransformedParameters.cpp" line="277"/>
-        <location filename="../../TaskTransformedParameters.cpp" line="313"/>
+        <location filename="../../TaskTransformedParameters.cpp" line="271"/>
+        <location filename="../../TaskTransformedParameters.cpp" line="307"/>
         <source>Select reference...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskTransformedParameters.cpp" line="304"/>
+        <location filename="../../TaskTransformedParameters.cpp" line="298"/>
         <source>Base XY plane</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskTransformedParameters.cpp" line="305"/>
+        <location filename="../../TaskTransformedParameters.cpp" line="299"/>
         <source>Base YZ plane</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskTransformedParameters.cpp" line="306"/>
+        <location filename="../../TaskTransformedParameters.cpp" line="300"/>
         <source>Base XZ plane</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3685,19 +3736,19 @@ This may lead to unexpected results.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskRevolutionParameters.cpp" line="123"/>
-        <location filename="../../TaskTransformedParameters.cpp" line="287"/>
+        <location filename="../../TaskRevolutionParameters.cpp" line="174"/>
+        <location filename="../../TaskTransformedParameters.cpp" line="281"/>
         <source>Vertical sketch axis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskRevolutionParameters.cpp" line="124"/>
-        <location filename="../../TaskTransformedParameters.cpp" line="288"/>
+        <location filename="../../TaskRevolutionParameters.cpp" line="175"/>
+        <location filename="../../TaskTransformedParameters.cpp" line="282"/>
         <source>Horizontal sketch axis</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../TaskRevolutionParameters.cpp" line="126"/>
+        <location filename="../../TaskRevolutionParameters.cpp" line="177"/>
         <source>Construction line %1</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3961,307 +4012,183 @@ Although you will be able to migrate any moment later with &apos;Part Design -&g
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SprocketFeature.ui" line="20"/>
+        <location filename="../../../SprocketFeature.ui" line="26"/>
         <source>Number of teeth:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SprocketFeature.ui" line="40"/>
+        <location filename="../../../SprocketFeature.ui" line="52"/>
         <source>Sprocket Reference</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SprocketFeature.ui" line="48"/>
+        <location filename="../../../SprocketFeature.ui" line="66"/>
         <source>ANSI 25</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SprocketFeature.ui" line="53"/>
+        <location filename="../../../SprocketFeature.ui" line="71"/>
         <source>ANSI 35</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SprocketFeature.ui" line="58"/>
+        <location filename="../../../SprocketFeature.ui" line="76"/>
         <source>ANSI 41</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SprocketFeature.ui" line="63"/>
+        <location filename="../../../SprocketFeature.ui" line="81"/>
         <source>ANSI 40</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SprocketFeature.ui" line="68"/>
+        <location filename="../../../SprocketFeature.ui" line="86"/>
         <source>ANSI 50</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SprocketFeature.ui" line="73"/>
+        <location filename="../../../SprocketFeature.ui" line="91"/>
         <source>ANSI 60</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SprocketFeature.ui" line="78"/>
+        <location filename="../../../SprocketFeature.ui" line="96"/>
         <source>ANSI 80</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SprocketFeature.ui" line="83"/>
+        <location filename="../../../SprocketFeature.ui" line="101"/>
         <source>ANSI 100</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SprocketFeature.ui" line="88"/>
+        <location filename="../../../SprocketFeature.ui" line="106"/>
         <source>ANSI 120</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SprocketFeature.ui" line="93"/>
+        <location filename="../../../SprocketFeature.ui" line="111"/>
         <source>ANSI 140</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SprocketFeature.ui" line="98"/>
+        <location filename="../../../SprocketFeature.ui" line="116"/>
         <source>ANSI 160</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SprocketFeature.ui" line="103"/>
+        <location filename="../../../SprocketFeature.ui" line="121"/>
         <source>ANSI 180</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SprocketFeature.ui" line="108"/>
+        <location filename="../../../SprocketFeature.ui" line="126"/>
         <source>ANSI 200</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SprocketFeature.ui" line="113"/>
+        <location filename="../../../SprocketFeature.ui" line="131"/>
         <source>ANSI 240</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SprocketFeature.ui" line="118"/>
+        <location filename="../../../SprocketFeature.ui" line="136"/>
         <source>Bicycle with Derailleur</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SprocketFeature.ui" line="123"/>
+        <location filename="../../../SprocketFeature.ui" line="141"/>
         <source>Bicycle without Derailleur</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SprocketFeature.ui" line="128"/>
+        <location filename="../../../SprocketFeature.ui" line="146"/>
         <source>ISO 606 06B</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SprocketFeature.ui" line="133"/>
+        <location filename="../../../SprocketFeature.ui" line="151"/>
         <source>ISO 606 08B</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SprocketFeature.ui" line="138"/>
+        <location filename="../../../SprocketFeature.ui" line="156"/>
         <source>ISO 606 10B</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SprocketFeature.ui" line="143"/>
+        <location filename="../../../SprocketFeature.ui" line="161"/>
         <source>ISO 606 12B</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SprocketFeature.ui" line="148"/>
+        <location filename="../../../SprocketFeature.ui" line="166"/>
         <source>ISO 606 16B</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SprocketFeature.ui" line="153"/>
+        <location filename="../../../SprocketFeature.ui" line="171"/>
         <source>ISO 606 20B</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SprocketFeature.ui" line="158"/>
+        <location filename="../../../SprocketFeature.ui" line="176"/>
         <source>ISO 606 24B</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SprocketFeature.ui" line="163"/>
+        <location filename="../../../SprocketFeature.ui" line="181"/>
         <source>Motorcycle 420</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SprocketFeature.ui" line="168"/>
+        <location filename="../../../SprocketFeature.ui" line="186"/>
         <source>Motorcycle 425</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SprocketFeature.ui" line="173"/>
+        <location filename="../../../SprocketFeature.ui" line="191"/>
         <source>Motorcycle 428</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SprocketFeature.ui" line="178"/>
+        <location filename="../../../SprocketFeature.ui" line="196"/>
         <source>Motorcycle 520</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SprocketFeature.ui" line="183"/>
+        <location filename="../../../SprocketFeature.ui" line="201"/>
         <source>Motorcycle 525</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SprocketFeature.ui" line="188"/>
+        <location filename="../../../SprocketFeature.ui" line="206"/>
         <source>Motorcycle 530</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SprocketFeature.ui" line="193"/>
+        <location filename="../../../SprocketFeature.ui" line="211"/>
         <source>Motorcycle 630</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SprocketFeature.ui" line="201"/>
+        <location filename="../../../SprocketFeature.ui" line="219"/>
         <source>Chain Pitch:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SprocketFeature.ui" line="220"/>
+        <location filename="../../../SprocketFeature.ui" line="238"/>
         <source>0 in</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SprocketFeature.ui" line="248"/>
-        <source>Roller Diameter:</source>
+        <location filename="../../../SprocketFeature.ui" line="266"/>
+        <source>Chain Roller Diameter:</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../SprocketFeature.ui" line="292"/>
-        <source>Thickness:</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
-    <name>TaskHole</name>
-    <message>
-        <location filename="../../../FeatureHole/TaskHole.ui" line="24"/>
-        <source>Position</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../FeatureHole/TaskHole.ui" line="35"/>
-        <source>Face</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../FeatureHole/TaskHole.ui" line="49"/>
-        <location filename="../../../FeatureHole/TaskHole.ui" line="87"/>
-        <source>Edge</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../FeatureHole/TaskHole.ui" line="63"/>
-        <location filename="../../../FeatureHole/TaskHole.ui" line="101"/>
-        <source>Distance</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../FeatureHole/TaskHole.ui" line="137"/>
-        <source>Type</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../FeatureHole/TaskHole.ui" line="145"/>
-        <source>Through</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../FeatureHole/TaskHole.ui" line="152"/>
-        <location filename="../../../FeatureHole/TaskHole.ui" line="492"/>
-        <source>Depth</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../FeatureHole/TaskHole.ui" line="161"/>
-        <source>Threaded</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../FeatureHole/TaskHole.ui" line="168"/>
-        <source>Countersink</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../FeatureHole/TaskHole.ui" line="175"/>
-        <source>Counterbore</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../FeatureHole/TaskHole.ui" line="196"/>
-        <source>Hole norm</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../FeatureHole/TaskHole.ui" line="202"/>
-        <source>Custom dimensions</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../FeatureHole/TaskHole.ui" line="218"/>
-        <source>Tolerance</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../FeatureHole/TaskHole.ui" line="249"/>
-        <location filename="../../../FeatureHole/TaskHole.ui" line="368"/>
-        <location filename="../../../FeatureHole/TaskHole.ui" line="474"/>
-        <source>Diameter</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../FeatureHole/TaskHole.ui" line="280"/>
-        <source>Bolt/Washer</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../FeatureHole/TaskHole.ui" line="329"/>
-        <location filename="../../../FeatureHole/TaskHole.ui" line="337"/>
-        <source>Thread norm</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../FeatureHole/TaskHole.ui" line="399"/>
-        <source> Custom thread length</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../FeatureHole/TaskHole.ui" line="423"/>
-        <source>Finish depth</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../FeatureHole/TaskHole.ui" line="466"/>
-        <source>Data</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../FeatureHole/TaskHole.ui" line="510"/>
-        <source>Counterbore/sink dia</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../FeatureHole/TaskHole.ui" line="528"/>
-        <source>Counterbore depth</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../FeatureHole/TaskHole.ui" line="546"/>
-        <source>Countersink angle</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../FeatureHole/TaskHole.ui" line="564"/>
-        <source>Thread length</source>
+        <location filename="../../../SprocketFeature.ui" line="310"/>
+        <source>Tooth Width</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
@@ -4823,11 +4750,11 @@ over 90: larger hole radius at the bottom</source>
     </message>
     <message>
         <location filename="../../../App/FeatureBoolean.cpp" line="132"/>
-        <location filename="../../../App/FeatureGroove.cpp" line="161"/>
+        <location filename="../../../App/FeatureGroove.cpp" line="217"/>
         <location filename="../../../App/FeatureHole.cpp" line="1900"/>
         <location filename="../../../App/FeatureLoft.cpp" line="293"/>
         <location filename="../../../App/FeatureLoft.cpp" line="311"/>
-        <location filename="../../../App/FeaturePad.cpp" line="217"/>
+        <location filename="../../../App/FeaturePad.cpp" line="229"/>
         <location filename="../../../App/FeaturePipe.cpp" line="394"/>
         <location filename="../../../App/FeaturePipe.cpp" line="414"/>
         <location filename="../../../App/FeaturePocket.cpp" line="222"/>
@@ -4851,12 +4778,12 @@ over 90: larger hole radius at the bottom</source>
         <location filename="../../../App/FeatureChamfer.cpp" line="223"/>
         <location filename="../../../App/FeatureDraft.cpp" line="323"/>
         <location filename="../../../App/FeatureFillet.cpp" line="137"/>
-        <location filename="../../../App/FeatureGroove.cpp" line="168"/>
+        <location filename="../../../App/FeatureGroove.cpp" line="224"/>
         <location filename="../../../App/FeatureHole.cpp" line="1908"/>
         <location filename="../../../App/FeatureLoft.cpp" line="296"/>
         <location filename="../../../App/FeatureLoft.cpp" line="314"/>
-        <location filename="../../../App/FeaturePad.cpp" line="221"/>
-        <location filename="../../../App/FeaturePad.cpp" line="230"/>
+        <location filename="../../../App/FeaturePad.cpp" line="233"/>
+        <location filename="../../../App/FeaturePad.cpp" line="242"/>
         <location filename="../../../App/FeaturePipe.cpp" line="398"/>
         <location filename="../../../App/FeaturePipe.cpp" line="418"/>
         <location filename="../../../App/FeaturePocket.cpp" line="191"/>
@@ -4915,17 +4842,17 @@ over 90: larger hole radius at the bottom</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeatureGroove.cpp" line="78"/>
+        <location filename="../../../App/FeatureGroove.cpp" line="87"/>
         <source>Angle of groove too large</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeatureGroove.cpp" line="82"/>
+        <location filename="../../../App/FeatureGroove.cpp" line="91"/>
         <source>Angle of groove too small</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeatureGroove.cpp" line="101"/>
+        <location filename="../../../App/FeatureGroove.cpp" line="108"/>
         <location filename="../../../App/FeatureHole.cpp" line="1669"/>
         <source>The requested feature cannot be created. The reason may be that:
   - the active Body does not contain a base shape, so there is no
@@ -4934,31 +4861,31 @@ over 90: larger hole radius at the bottom</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeatureGroove.cpp" line="118"/>
-        <location filename="../../../App/FeatureRevolution.cpp" line="118"/>
+        <location filename="../../../App/FeatureGroove.cpp" line="130"/>
+        <location filename="../../../App/FeatureRevolution.cpp" line="126"/>
         <source>Creating a face from sketch failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeatureGroove.cpp" line="140"/>
-        <location filename="../../../App/FeatureRevolution.cpp" line="140"/>
+        <location filename="../../../App/FeatureGroove.cpp" line="146"/>
+        <location filename="../../../App/FeatureRevolution.cpp" line="142"/>
         <source>Revolve axis intersects the sketch</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeatureGroove.cpp" line="156"/>
+        <location filename="../../../App/FeatureGroove.cpp" line="212"/>
         <source>Cut out of base feature failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeatureGroove.cpp" line="173"/>
-        <location filename="../../../App/FeatureRevolution.cpp" line="165"/>
+        <location filename="../../../App/FeatureGroove.cpp" line="202"/>
+        <location filename="../../../App/FeatureRevolution.cpp" line="198"/>
         <source>Could not revolve the sketch!</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeatureGroove.cpp" line="180"/>
-        <location filename="../../../App/FeatureRevolution.cpp" line="172"/>
+        <location filename="../../../App/FeatureGroove.cpp" line="236"/>
+        <location filename="../../../App/FeatureRevolution.cpp" line="208"/>
         <source>Could not create face from sketch.
 Intersecting sketch entities in a sketch are not allowed.</source>
         <translation type="unfinished"></translation>
@@ -5221,27 +5148,32 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed for m
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeaturePad.cpp" line="125"/>
+        <location filename="../../../App/FeaturePad.cpp" line="98"/>
+        <source>Pad: Can&apos;t pad up to shape without base shape.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../App/FeaturePad.cpp" line="130"/>
         <source>Pad: Creation failed because direction is orthogonal to sketch&apos;s normal vector</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeaturePad.cpp" line="136"/>
+        <location filename="../../../App/FeaturePad.cpp" line="141"/>
         <source>Pad: Creating a face from sketch failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeaturePad.cpp" line="200"/>
+        <location filename="../../../App/FeaturePad.cpp" line="212"/>
         <source>Pad: Resulting shape is empty</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeaturePad.cpp" line="211"/>
+        <location filename="../../../App/FeaturePad.cpp" line="223"/>
         <source>Pad: Fusion with base feature failed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeaturePad.cpp" line="243"/>
+        <location filename="../../../App/FeaturePad.cpp" line="255"/>
         <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed.</source>
         <translation type="unfinished"></translation>
@@ -5500,17 +5432,17 @@ Intersecting sketch entities or multiple faces in a sketch are not allowed.</sou
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeatureRevolution.cpp" line="77"/>
+        <location filename="../../../App/FeatureRevolution.cpp" line="87"/>
         <source>Angle of revolution too large</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeatureRevolution.cpp" line="81"/>
+        <location filename="../../../App/FeatureRevolution.cpp" line="91"/>
         <source>Angle of revolution too small</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../../App/FeatureRevolution.cpp" line="157"/>
+        <location filename="../../../App/FeatureRevolution.cpp" line="190"/>
         <source>Fusion with base feature failed</source>
         <translation type="unfinished"></translation>
     </message>

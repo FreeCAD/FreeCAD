@@ -1087,7 +1087,7 @@ bool ManualAlignment::computeAlignment(const std::vector<PickedPoint>& movPts,
  */
 void ManualAlignment::alignObject(App::DocumentObject *obj)
 {
-    if (obj->getTypeId().isDerivedFrom(App::GeoFeature::getClassTypeId())) {
+    if (obj->isDerivedFrom<App::GeoFeature>()) {
         auto geom = static_cast<App::GeoFeature*>(obj);
         geom->transformPlacement(this->myTransform);
     }
@@ -1137,7 +1137,7 @@ void ManualAlignment::slotDeletedDocument(const Gui::Document& Doc)
 void ManualAlignment::slotDeletedObject(const Gui::ViewProvider& Obj)
 {
     // remove the view provider either from the left or the right view
-    if (Obj.getTypeId().isDerivedFrom(Gui::ViewProviderDocumentObject::getClassTypeId())) {
+    if (Obj.isDerivedFrom<Gui::ViewProviderDocumentObject>()) {
         // remove the view provider immediately from the split window
         bool found = false;
         auto vp = const_cast<Gui::ViewProviderDocumentObject*>
@@ -1214,7 +1214,7 @@ void ManualAlignment::probePickedCallback(void * ud, SoEventCallback * n)
             const SoPickedPoint * point = view->getPickedPoint(n);
             if (point) {
                 auto vp = static_cast<Gui::ViewProvider*>(view->getViewProviderByPath(point->getPath()));
-                if (vp && vp->getTypeId().isDerivedFrom(Gui::ViewProviderDocumentObject::getClassTypeId())) {
+                if (vp && vp->isDerivedFrom<Gui::ViewProviderDocumentObject>()) {
                     auto that = static_cast<Gui::ViewProviderDocumentObject*>(vp);
                     if (self->applyPickedProbe(that, point)) {
                         const SbVec3f& vec = point->getPoint();

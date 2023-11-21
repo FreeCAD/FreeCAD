@@ -86,7 +86,7 @@ DrawPage* DrawTemplate::getParentPage() const
     TechDraw::DrawPage* page(nullptr);
     std::vector<App::DocumentObject*> parents = getInList();
     for (auto& obj : parents) {
-        if (obj->getTypeId().isDerivedFrom(DrawPage::getClassTypeId())) {
+        if (obj->isDerivedFrom<DrawPage>()) {
             page = static_cast<TechDraw::DrawPage *>(obj);
             break;
         }

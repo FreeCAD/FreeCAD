@@ -186,7 +186,7 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
                 if vobj.AnnotationStyle in self.renamed:
                     # the style has been renamed
                     # temporarily add the new style and switch to it
-                    vobj.AnnotationStyle = vobj.AnnotationStyle + [self.renamed[vobj.AnnotationStyle]]
+                    vobj.AnnotationStyle = [vobj.AnnotationStyle, self.renamed[vobj.AnnotationStyle]]
                     vobj.AnnotationStyle = self.renamed[vobj.AnnotationStyle]
                 if vobj.AnnotationStyle in styles:
                     if vobj.AnnotationStyle in changedstyles:
@@ -293,7 +293,7 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
             QtGui.QApplication.activeWindow(),
             translate("draft","Open styles file"),
             None,
-            translate("draft","JSON file (*.json)"))
+            translate("draft","JSON files (*.json *.JSON)"))
         if filename and filename[0]:
             nstyles = {}
             with open(filename[0]) as f:

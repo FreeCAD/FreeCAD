@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-    <PythonExport 
-        Father="PyObjectBase" 
-        Name="PlacementPy" 
-        Twin="Placement" 
-        TwinPointer="Placement" 
-        Include="Base/Placement.h" 
-        FatherInclude="Base/PyObjectBase.h" 
-        Namespace="Base" 
+    <PythonExport
+        Father="PyObjectBase"
+        Name="PlacementPy"
+        Twin="Placement"
+        TwinPointer="Placement"
+        Include="Base/Placement.h"
+        FatherInclude="Base/PyObjectBase.h"
+        Namespace="Base"
         Constructor="true"
         Delete="true"
         NumberProtocol="true"

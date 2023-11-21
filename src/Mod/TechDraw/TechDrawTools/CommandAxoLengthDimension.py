@@ -75,8 +75,8 @@ class CommandAxoLengthDimension:
                 distanceDim.AngleOverride = True
                 distanceDim.LineAngle = lineAngle
                 distanceDim.ExtensionAngle = extAngle
-                distanceDim.X = (vertexes[0].Point.x+vertexes[1].Point.x)/2
-                distanceDim.Y = (vertexes[0].Point.y+vertexes[1].Point.y)/2
+                distanceDim.X = (vertexes[0].Point.x+vertexes[1].Point.x)*view.Scale/2
+                distanceDim.Y = (vertexes[0].Point.y+vertexes[1].Point.y)*view.Scale/2
                 distanceDim.recompute()
                 view.requestPaint()
             Gui.Selection.clearSelection()

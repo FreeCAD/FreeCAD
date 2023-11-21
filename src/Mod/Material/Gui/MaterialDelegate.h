@@ -22,8 +22,6 @@
 #ifndef MATGUI_MATERIALDELEGATE_H
 #define MATGUI_MATERIALDELEGATE_H
 
-#include <boost/filesystem.hpp>
-
 #include <QDialog>
 #include <QDir>
 #include <QStandardItem>
@@ -34,8 +32,6 @@
 #include <Mod/Material/App/MaterialManager.h>
 #include <Mod/Material/App/Materials.h>
 #include <Mod/Material/App/ModelManager.h>
-
-namespace fs = boost::filesystem;
 
 namespace MatGui
 {
@@ -76,7 +72,9 @@ private:
                           const QString& propertyValue,
                           const QString& propertyUnits) const;
     QRgb parseColor(const QString& color) const;
-    void showColorModal(QStandardItem* item);
+    void showColorModal(QStandardItem* item, QString propertyName);
+    void showListModal(const QString& propertyName, QStandardItem* item);
+    void showMultiLineString(const QString& propertyName, QStandardItem* item);
     void showArray2DModal(const QString& propertyName, QStandardItem* item);
     void showArray3DModal(const QString& propertyName, QStandardItem* item);
 };

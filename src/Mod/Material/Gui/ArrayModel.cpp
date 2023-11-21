@@ -21,11 +21,11 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QMessageBox>
 #endif
 
 #include <QMetaType>
 
+#include <Base/Console.h>
 #include <Gui/MainWindow.h>
 #include <Gui/MetaTypes.h>
 
@@ -46,7 +46,7 @@ AbstractArrayModel::AbstractArrayModel(QObject* parent)
 //===
 
 
-Array2DModel::Array2DModel(const Materials::MaterialProperty* property,
+Array2DModel::Array2DModel(std::shared_ptr<Materials::MaterialProperty> property,
                            std::shared_ptr<Materials::Material2DArray> value,
                            QObject* parent)
     : AbstractArrayModel(parent)
@@ -66,6 +66,12 @@ int Array2DModel::rowCount(const QModelIndex& parent) const
 bool Array2DModel::newRow(const QModelIndex& index) const
 {
     return (index.row() == _value->rows());
+}
+
+void Array2DModel::deleteRow(const QModelIndex& index)
+{
+    removeRows(index.row(), 1);
+    Q_EMIT dataChanged(index, index);
 }
 
 int Array2DModel::columnCount(const QModelIndex& parent) const
@@ -145,7 +151,7 @@ bool Array2DModel::insertRows(int row, int count, const QModelIndex& parent)
 
     int columns = columnCount();
     for (int i = 0; i < count; i++) {
-        std::vector<QVariant>* rowPtr = new std::vector<QVariant>();
+        auto rowPtr = std::make_shared<std::vector<QVariant>>();
         for (int j = 0; j < columns; j++) {
             rowPtr->push_back(_property->getColumnNull(j));
         }
@@ -161,6 +167,10 @@ bool Array2DModel::insertRows(int row, int count, const QModelIndex& parent)
 bool Array2DModel::removeRows(int row, int count, const QModelIndex& parent)
 {
     beginRemoveRows(parent, row, row + count - 1);
+
+    for (int i = 0; i < count; i++) {
+        _value->deleteRow(row);
+    }
 
     endRemoveRows();
 
@@ -187,7 +197,7 @@ bool Array2DModel::removeColumns(int column, int count, const QModelIndex& paren
 
 //===
 
-Array3DDepthModel::Array3DDepthModel(const Materials::MaterialProperty* property,
+Array3DDepthModel::Array3DDepthModel(std::shared_ptr<Materials::MaterialProperty> property,
                                      std::shared_ptr<Materials::Material3DArray> value,
                                      QObject* parent)
     : AbstractArrayModel(parent)
@@ -209,26 +219,34 @@ bool Array3DDepthModel::newRow(const QModelIndex& index) const
     return (index.row() == _value->depth());
 }
 
+void Array3DDepthModel::deleteRow(const QModelIndex& index)
+{
+    removeRows(index.row(), 1);
+    Q_EMIT dataChanged(index, index);
+}
+
 QVariant Array3DDepthModel::data(const QModelIndex& index, int role) const
 {
     if (role == Qt::DisplayRole) {
         try {
-            return _value->getValue(index.row(), index.column());
+            Base::Quantity q = _value->getDepthValue(index.row());
+            return QVariant::fromValue(q);
+        }
+        catch (const Materials::InvalidDepth&) {
+        }
+        catch (const Materials::InvalidRow&) {
+        }
+        catch (const Materials::InvalidColumn&) {
         }
         catch (const Materials::InvalidIndex&) {
         }
 
         try {
-            auto column = _property->getColumnType(index.column());
-            if (column == Materials::MaterialValue::Quantity) {
-                Base::Quantity q = Base::Quantity(0, _property->getColumnUnits(index.column()));
-                return QVariant::fromValue(q);
-            }
+            Base::Quantity q = Base::Quantity(0, _property->getColumnUnits(0));
+            return QVariant::fromValue(q);
         }
         catch (const Materials::InvalidColumn&) {
         }
-
-        return QString();
     }
 
     return QVariant();
@@ -259,8 +277,9 @@ bool Array3DDepthModel::setData(const QModelIndex& index, const QVariant& value,
 
     if (index.row() == _value->depth()) {
         insertRows(index.row(), 1);
+        _value->setCurrentDepth(index.row());
     }
-    _value->setValue(index.row(), index.column(), value);
+    _value->setDepthValue(index.row(), value.value<Base::Quantity>());
 
     Q_EMIT dataChanged(index, index);
     return true;
@@ -277,14 +296,8 @@ bool Array3DDepthModel::insertRows(int row, int count, const QModelIndex& parent
 {
     beginInsertRows(parent, row, row + count - 1);
 
-    int columns = columnCount();
     for (int i = 0; i < count; i++) {
-        std::vector<QVariant>* rowPtr = new std::vector<QVariant>();
-        for (int j = 0; j < columns; j++) {
-            rowPtr->push_back(_property->getColumnNull(j));
-        }
-
-        // _value->insertRow(row, rowPtr);
+        _value->addDepth(row, Base::Quantity(0, _property->getColumnUnits(0)));
     }
 
     endInsertRows();
@@ -295,6 +308,10 @@ bool Array3DDepthModel::insertRows(int row, int count, const QModelIndex& parent
 bool Array3DDepthModel::removeRows(int row, int count, const QModelIndex& parent)
 {
     beginRemoveRows(parent, row, row + count - 1);
+
+    for (int i = 0; i < count; i++) {
+        _value->deleteDepth(row);
+    }
 
     endRemoveRows();
 
@@ -321,7 +338,7 @@ bool Array3DDepthModel::removeColumns(int column, int count, const QModelIndex& 
 
 //===
 
-Array3DModel::Array3DModel(const Materials::MaterialProperty* property,
+Array3DModel::Array3DModel(std::shared_ptr<Materials::MaterialProperty> property,
                            std::shared_ptr<Materials::Material3DArray> value,
                            QObject* parent)
     : AbstractArrayModel(parent)
@@ -335,7 +352,15 @@ int Array3DModel::rowCount(const QModelIndex& parent) const
         return 0;  // No children
     }
 
-    return _value->depth() + 1;  // Will always have 1 empty row
+    try {
+        return _value->rows() + 1;  // Will always have 1 empty row
+    }
+    catch (const Materials::InvalidDepth&) {
+        return 1;
+    }
+    catch (const Materials::InvalidRow&) {
+        return 1;
+    }
 }
 
 int Array3DModel::columnCount(const QModelIndex& parent) const
@@ -347,15 +372,36 @@ int Array3DModel::columnCount(const QModelIndex& parent) const
 
 bool Array3DModel::newRow(const QModelIndex& index) const
 {
-    return (index.row() == _value->depth());
+    try {
+        return (index.row() == _value->rows());
+    }
+    catch (const Materials::InvalidDepth&) {
+        return true;
+    }
+    catch (const Materials::InvalidRow&) {
+        return true;
+    }
+}
+
+void Array3DModel::deleteRow(const QModelIndex& index)
+{
+    removeRows(index.row(), 1);
+    Q_EMIT dataChanged(index, index);
 }
 
 QVariant Array3DModel::data(const QModelIndex& index, int role) const
 {
     if (role == Qt::DisplayRole) {
-        Base::Console().Error("Row %d, column %d\n", index.row(), index.column());
+        // Base::Console().Log("Row %d, column %d\n", index.row(), index.column());
         try {
-            return _value->getValue(index.row(), index.column() + 1);
+            Base::Quantity q = _value->getValue(index.row(), index.column());
+            return QVariant::fromValue(q);
+        }
+        catch (const Materials::InvalidDepth&) {
+        }
+        catch (const Materials::InvalidRow&) {
+        }
+        catch (const Materials::InvalidColumn&) {
         }
         catch (const Materials::InvalidIndex&) {
         }
@@ -364,16 +410,11 @@ QVariant Array3DModel::data(const QModelIndex& index, int role) const
         }
 
         try {
-            auto column = _property->getColumnType(index.column() + 1);
-            if (column == Materials::MaterialValue::Quantity) {
-                Base::Quantity q = Base::Quantity(0, _property->getColumnUnits(index.column() - 1));
-                return QVariant::fromValue(q);
-            }
+            Base::Quantity q = Base::Quantity(0, _property->getColumnUnits(index.column() + 1));
+            return QVariant::fromValue(q);
         }
         catch (const Materials::InvalidColumn&) {
         }
-
-        return QString();
     }
 
     return QVariant();
@@ -402,10 +443,32 @@ bool Array3DModel::setData(const QModelIndex& index, const QVariant& value, int 
 {
     Q_UNUSED(role);
 
-    if (index.row() == _value->depth()) {
+    Base::Console().Log("Array3DModel::setData at (%d, %d, %d)\n",
+                        _value->currentDepth(),
+                        index.row(),
+                        index.column());
+
+    if (_value->depth() == 0) {
+        // Create the first row
+        // _value->addDepth(Base::Quantity(0, _property->getColumnUnits(0)));
+        return false;
+    }
+
+    if (index.row() == _value->rows()) {
         insertRows(index.row(), 1);
     }
-    _value->setValue(index.row(), index.column(), value);
+    try {
+        _value->setValue(index.row(), index.column(), value.value<Base::Quantity>());
+    }
+    catch (const Materials::InvalidDepth&) {
+        Base::Console().Error("Array3DModel::setData - InvalidDepth");
+    }
+    catch (const Materials::InvalidRow&) {
+        Base::Console().Error("Array3DModel::setData - invalidRow");
+    }
+    catch (const Materials::InvalidColumn&) {
+        Base::Console().Error("Array3DModel::setData - InvalidColumn");
+    }
 
     Q_EMIT dataChanged(index, index);
     return true;
@@ -424,12 +487,12 @@ bool Array3DModel::insertRows(int row, int count, const QModelIndex& parent)
 
     int columns = columnCount();
     for (int i = 0; i < count; i++) {
-        std::vector<QVariant>* rowPtr = new std::vector<QVariant>();
+        auto rowPtr = std::make_shared<std::vector<Base::Quantity>>();
         for (int j = 0; j < columns; j++) {
-            rowPtr->push_back(_property->getColumnNull(j));
+            rowPtr->push_back(_property->getColumnNull(j).value<Base::Quantity>());
         }
 
-        // _value->insertRow(row, rowPtr);
+        _value->insertRow(row, rowPtr);
     }
 
     endInsertRows();
@@ -440,6 +503,10 @@ bool Array3DModel::insertRows(int row, int count, const QModelIndex& parent)
 bool Array3DModel::removeRows(int row, int count, const QModelIndex& parent)
 {
     beginRemoveRows(parent, row, row + count - 1);
+
+    for (int i = 0; i < count; i++) {
+        _value->deleteRow(row);
+    }
 
     endRemoveRows();
 
@@ -462,4 +529,14 @@ bool Array3DModel::removeColumns(int column, int count, const QModelIndex& paren
     Q_UNUSED(parent);
 
     return false;
+}
+
+void Array3DModel::updateData()
+{
+    beginResetModel();
+
+    // The table has changed at this point, typically by setting the current depth.
+    // The existing structure needs to be cleared and the table redrawn.
+
+    endResetModel();
 }

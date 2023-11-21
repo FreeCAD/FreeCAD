@@ -283,13 +283,13 @@ bool SnapManager::snapToObject(double& x, double& y)
             }
 
             // If it is a line, then we check if we need to snap to the middle.
-            if (geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+            if (geo->is<Part::GeomLineSegment>()) {
                 const Part::GeomLineSegment* line = static_cast<const Part::GeomLineSegment*>(geo);
                 snapToLineMiddle(pointToOverride, line);
             }
 
             // If it is an arc, then we check if we need to snap to the middle (not the center).
-            if (geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+            if (geo->is<Part::GeomArcOfCircle>()) {
                 const Part::GeomArcOfCircle* arc = static_cast<const Part::GeomArcOfCircle*>(geo);
                 snapToArcMiddle(pointToOverride, arc);
             }

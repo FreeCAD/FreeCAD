@@ -28,7 +28,8 @@
 #include <QString>
 #include <FCGlobal.h>
 
-namespace Base {
+namespace Base
+{
 
 #define UnitSignatureLengthBits 4
 #define UnitSignatureMassBits 4
@@ -42,15 +43,16 @@ namespace Base {
 // Hint:
 // https://en.cppreference.com/w/cpp/language/bit_field
 // https://stackoverflow.com/questions/33723631/signed-bit-field-in-c14
-struct UnitSignature{
-    int32_t Length:UnitSignatureLengthBits;
-    int32_t Mass:UnitSignatureMassBits;
-    int32_t Time:UnitSignatureTimeBits;
-    int32_t ElectricCurrent:UnitSignatureElectricCurrentBits;
-    int32_t ThermodynamicTemperature:UnitSignatureThermodynamicTemperatureBits;
-    int32_t AmountOfSubstance:UnitSignatureAmountOfSubstanceBits;
-    int32_t LuminousIntensity:UnitSignatureLuminousIntensityBits;
-    int32_t Angle:UnitSignatureAngleBits;
+struct UnitSignature
+{
+    int32_t Length: UnitSignatureLengthBits;
+    int32_t Mass: UnitSignatureMassBits;
+    int32_t Time: UnitSignatureTimeBits;
+    int32_t ElectricCurrent: UnitSignatureElectricCurrentBits;
+    int32_t ThermodynamicTemperature: UnitSignatureThermodynamicTemperatureBits;
+    int32_t AmountOfSubstance: UnitSignatureAmountOfSubstanceBits;
+    int32_t LuminousIntensity: UnitSignatureLuminousIntensityBits;
+    int32_t Angle: UnitSignatureAngleBits;
 };
 /**
  * The Unit class.
@@ -59,30 +61,43 @@ class BaseExport Unit
 {
 public:
     /// default constructor
-    explicit Unit(int8_t Length,int8_t Mass=0,int8_t Time=0,int8_t ElectricCurrent=0,
-                  int8_t ThermodynamicTemperature=0, int8_t AmountOfSubstance=0,
-                  int8_t LuminousIntensity=0, int8_t Angle=0);
+    explicit Unit(int8_t Length,
+                  int8_t Mass = 0,
+                  int8_t Time = 0,
+                  int8_t ElectricCurrent = 0,
+                  int8_t ThermodynamicTemperature = 0,
+                  int8_t AmountOfSubstance = 0,
+                  int8_t LuminousIntensity = 0,
+                  int8_t Angle = 0);
     Unit();
-    Unit(const Unit&);
+    Unit(const Unit&) = default;
+    Unit(Unit&&) = default;
     explicit Unit(const QString& expr);
     /// Destruction
-    ~Unit () = default;
+    ~Unit() = default;
 
 
     /** Operators. */
     //@{
-    inline Unit& operator *=(const Unit& that);
-    inline Unit& operator /=(const Unit& that);
-    Unit operator *(const Unit&) const;
-    Unit operator /(const Unit&) const;
-    bool operator ==(const Unit&) const;
-    bool operator !=(const Unit&that) const {return !(*this == that);}
-    Unit& operator =(const Unit&);
-    Unit pow(double exp)const;
+    inline Unit& operator*=(const Unit& that);
+    inline Unit& operator/=(const Unit& that);
+    Unit operator*(const Unit&) const;
+    Unit operator/(const Unit&) const;
+    bool operator==(const Unit&) const;
+    bool operator!=(const Unit& that) const
+    {
+        return !(*this == that);
+    }
+    Unit& operator=(const Unit&) = default;
+    Unit& operator=(Unit&&) = default;
+    Unit pow(double exp) const;
     //@}
     /// get the unit signature
-    const UnitSignature & getSignature()const {return Sig;}
-    bool isEmpty()const;
+    const UnitSignature& getSignature() const
+    {
+        return Sig;
+    }
+    bool isEmpty() const;
 
     QString getString() const;
     /// get the type as an string such as "Area", "Length" or "Pressure".
@@ -158,22 +173,22 @@ public:
     static Unit InverseVolume;
 
     //@}
-protected:
+private:
     UnitSignature Sig;
 };
 
-inline Unit& Unit::operator *=(const Unit& that)
+inline Unit& Unit::operator*=(const Unit& that)
 {
     *this = *this * that;
     return *this;
 }
 
-inline Unit& Unit::operator /=(const Unit& that)
+inline Unit& Unit::operator/=(const Unit& that)
 {
     *this = *this / that;
     return *this;
 }
 
-} // namespace Base
+}  // namespace Base
 
-#endif // BASE_Unit_H
+#endif  // BASE_Unit_H

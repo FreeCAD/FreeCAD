@@ -209,6 +209,8 @@ public:
 
     void initDockWindows(bool show);
 
+    bool isRestoringWindowState() const;
+
 public Q_SLOTS:
     /**
      * Updates the standard actions of a text editor such as Cut, Copy, Paste, Undo and Redo.
@@ -263,8 +265,6 @@ public Q_SLOTS:
     void statusMessageChanged();
 
     void showMessage (const QString & message, int timeout = 0);
-
-    bool isRestoringWindowState() const;
 
 protected:
     /**

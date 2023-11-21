@@ -87,7 +87,7 @@ PyObject* SketchObjectPy::addGeometry(PyObject* args)
         Part::Geometry* geo = static_cast<Part::GeometryPy*>(pcObj)->getGeometryPtr();
         int ret;
         // An arc created with Part.Arc will be converted into a Part.ArcOfCircle
-        if (geo->getTypeId() == Part::GeomTrimmedCurve::getClassTypeId()) {
+        if (geo->is<Part::GeomTrimmedCurve>()) {
             Handle(Geom_TrimmedCurve) trim = Handle(Geom_TrimmedCurve)::DownCast(geo->handle());
             Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast(trim->BasisCurve());
             Handle(Geom_Ellipse) ellipse = Handle(Geom_Ellipse)::DownCast(trim->BasisCurve());
@@ -110,15 +110,11 @@ PyObject* SketchObjectPy::addGeometry(PyObject* args)
                 return nullptr;
             }
         }
-        else if (geo->getTypeId() == Part::GeomPoint::getClassTypeId()
-                 || geo->getTypeId() == Part::GeomCircle::getClassTypeId()
-                 || geo->getTypeId() == Part::GeomEllipse::getClassTypeId()
-                 || geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()
-                 || geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()
-                 || geo->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()
-                 || geo->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()
-                 || geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()
-                 || geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+        else if (geo->is<Part::GeomPoint>() || geo->is<Part::GeomCircle>()
+                 || geo->is<Part::GeomEllipse>() || geo->is<Part::GeomArcOfCircle>()
+                 || geo->is<Part::GeomArcOfEllipse>() || geo->is<Part::GeomArcOfHyperbola>()
+                 || geo->is<Part::GeomArcOfParabola>() || geo->is<Part::GeomBSplineCurve>()
+                 || geo->is<Part::GeomLineSegment>()) {
             ret = this->getSketchObjectPtr()->addGeometry(geo, isConstruction);
         }
         else {
@@ -139,7 +135,7 @@ PyObject* SketchObjectPy::addGeometry(PyObject* args)
                 Part::Geometry* geo = static_cast<Part::GeometryPy*>((*it).ptr())->getGeometryPtr();
 
                 // An arc created with Part.Arc will be converted into a Part.ArcOfCircle
-                if (geo->getTypeId() == Part::GeomTrimmedCurve::getClassTypeId()) {
+                if (geo->is<Part::GeomTrimmedCurve>()) {
                     Handle(Geom_TrimmedCurve) trim =
                         Handle(Geom_TrimmedCurve)::DownCast(geo->handle());
                     Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast(trim->BasisCurve());
@@ -166,15 +162,11 @@ PyObject* SketchObjectPy::addGeometry(PyObject* args)
                         return nullptr;
                     }
                 }
-                else if (geo->getTypeId() == Part::GeomPoint::getClassTypeId()
-                         || geo->getTypeId() == Part::GeomCircle::getClassTypeId()
-                         || geo->getTypeId() == Part::GeomEllipse::getClassTypeId()
-                         || geo->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()
-                         || geo->getTypeId() == Part::GeomArcOfEllipse::getClassTypeId()
-                         || geo->getTypeId() == Part::GeomArcOfHyperbola::getClassTypeId()
-                         || geo->getTypeId() == Part::GeomArcOfParabola::getClassTypeId()
-                         || geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()
-                         || geo->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+                else if (geo->is<Part::GeomPoint>() || geo->is<Part::GeomCircle>()
+                         || geo->is<Part::GeomEllipse>() || geo->is<Part::GeomArcOfCircle>()
+                         || geo->is<Part::GeomArcOfEllipse>() || geo->is<Part::GeomArcOfHyperbola>()
+                         || geo->is<Part::GeomArcOfParabola>() || geo->is<Part::GeomBSplineCurve>()
+                         || geo->is<Part::GeomLineSegment>()) {
                     geoList.push_back(geo);
                 }
                 else {

@@ -37,47 +37,51 @@
 #include <Base/Vector3D.h>
 
 
-namespace Base {
-template <typename T>
-inline Vector3<T> getVectorFromTuple(PyObject* o)
+namespace Base
 {
-    Py::Sequence tuple(o);
+template<typename T>
+inline Vector3<T> getVectorFromTuple(PyObject* py)
+{
+    Py::Sequence tuple(py);
     if (tuple.size() != 3) {
         throw Py::ValueError("Expected sequence of size 3");
     }
 
-    T x = static_cast<T>(Py::Float(tuple[0]));
-    T y = static_cast<T>(Py::Float(tuple[1]));
-    T z = static_cast<T>(Py::Float(tuple[2]));
+    T vx = static_cast<T>(Py::Float(tuple[0]));
+    T vy = static_cast<T>(Py::Float(tuple[1]));
+    T vz = static_cast<T>(Py::Float(tuple[2]));
 
-    return Vector3<T>(x,y,z);
+    return Vector3<T>(vx, vy, vz);
 }
 
-class BaseExport Vector2dPy : public Py::PythonClass<Vector2dPy>
+class BaseExport Vector2dPy: public Py::PythonClass<Vector2dPy>  // NOLINT
 {
 public:
-    static Py::PythonType &behaviors();
-    static PyTypeObject *type_object();
-    static bool check( PyObject *p );
+    static Py::PythonType& behaviors();
+    static PyTypeObject* type_object();
+    static bool check(PyObject* py);
 
     static Py::PythonClassObject<Vector2dPy> create(const Vector2d&);
-    static Py::PythonClassObject<Vector2dPy> create(double x, double y);
-    Vector2dPy(Py::PythonClassInstance *self, Py::Tuple &args, Py::Dict &kwds);
+    static Py::PythonClassObject<Vector2dPy> create(double vx, double vy);
+    Vector2dPy(Py::PythonClassInstance* self, Py::Tuple& args, Py::Dict& kwds);
     ~Vector2dPy() override;
 
     static void init_type();
-    Py::Object getattro(const Py::String &name_) override;
-    int setattro(const Py::String &name_, const Py::Object &value) override;
+    Py::Object getattro(const Py::String& name_) override;
+    int setattro(const Py::String& name_, const Py::Object& value) override;
     Py::Object repr() override;
-    inline const Vector2d& value() const {
+    inline const Vector2d& value() const
+    {
         return v;
     }
-    inline void setValue(const Vector2d& n) {
+    inline void setValue(const Vector2d& n)
+    {
         v = n;
     }
-    inline void setValue(double x, double y) {
-        v.x = x;
-        v.y = y;
+    inline void setValue(double vx, double vy)
+    {
+        v.x = vx;
+        v.y = vy;
     }
 
     /** @name methods for group handling */
@@ -88,17 +92,17 @@ public:
     Py::Object number_invert() override;
     Py::Object number_int() override;
     Py::Object number_float() override;
-    Py::Object number_add( const Py::Object & ) override;
-    Py::Object number_subtract( const Py::Object & ) override;
-    Py::Object number_multiply( const Py::Object & ) override;
-    Py::Object number_remainder( const Py::Object & ) override;
-    Py::Object number_divmod( const Py::Object & ) override;
-    Py::Object number_lshift( const Py::Object & ) override;
-    Py::Object number_rshift( const Py::Object & ) override;
-    Py::Object number_and( const Py::Object & ) override;
-    Py::Object number_xor( const Py::Object & ) override;
-    Py::Object number_or( const Py::Object & ) override;
-    Py::Object number_power( const Py::Object &, const Py::Object & ) override;
+    Py::Object number_add(const Py::Object&) override;
+    Py::Object number_subtract(const Py::Object&) override;
+    Py::Object number_multiply(const Py::Object&) override;
+    Py::Object number_remainder(const Py::Object&) override;
+    Py::Object number_divmod(const Py::Object&) override;
+    Py::Object number_lshift(const Py::Object&) override;
+    Py::Object number_rshift(const Py::Object&) override;
+    Py::Object number_and(const Py::Object&) override;
+    Py::Object number_xor(const Py::Object&) override;
+    Py::Object number_or(const Py::Object&) override;
+    Py::Object number_power(const Py::Object&, const Py::Object&) override;
     //@}
 
     Py::Object isNull(const Py::Tuple&);
@@ -118,53 +122,62 @@ private:
     Vector2d v;
 };
 
-}
+}  // namespace Base
 
-namespace Py {
+namespace Py
+{
 
 using Vector2d = PythonClassObject<Base::Vector2dPy>;
 
-inline Base::Vector2d toVector2d(PyObject *py) {
+inline Base::Vector2d toVector2d(PyObject* py)
+{
     Base::Vector2dPy* py2d = Py::Vector2d(py).getCxxObject();
     return py2d ? py2d->value() : Base::Vector2d();
 }
 
-inline Base::Vector2d toVector2d(const Object& py) {
+inline Base::Vector2d toVector2d(const Object& py)
+{
     Base::Vector2dPy* py2d = Py::Vector2d(py).getCxxObject();
     return py2d ? py2d->value() : Base::Vector2d();
 }
 
 // Implementing the vector class in the fashion of the PyCXX library.
-class BaseExport Vector : public Object
+class BaseExport Vector: public Object  // NOLINT
 {
 public:
-    explicit Vector (PyObject *pyob, bool owned): Object(pyob, owned) {
+    explicit Vector(PyObject* pyob, bool owned)
+        : Object(pyob, owned)
+    {
         validate();
     }
 
-    Vector (const Vector& ob): Object(*ob) {
+    Vector(const Vector& ob)
+        : Object(ob)
+    {
         validate();
     }
 
-    explicit Vector (const Base::Vector3d&);
-    explicit Vector (const Base::Vector3f&);
-    bool accepts (PyObject *pyob) const override;
+    explicit Vector(const Base::Vector3d&);
+    explicit Vector(const Base::Vector3f&);
+    bool accepts(PyObject* obj) const override;
 
-    Vector(const Object& other): Object(other.ptr()) {
+    Vector(const Object& other)
+        : Object(other.ptr())
+    {
         validate();
     }
-    Vector& operator= (const Object& rhs)
+    Vector& operator=(const Object& rhs)
     {
         return (*this = *rhs);
     }
-    Vector& operator= (const Vector& rhs)
+    Vector& operator=(const Vector& rhs)
     {
         return (*this = *rhs);
     }
 
-    Vector& operator= (PyObject* rhsp);
-    Vector& operator= (const Base::Vector3d&);
-    Vector& operator= (const Base::Vector3f&);
+    Vector& operator=(PyObject* rhsp);
+    Vector& operator=(const Base::Vector3d&);
+    Vector& operator=(const Base::Vector3f&);
     operator Base::Vector3d() const
     {
         return toVector();
@@ -173,7 +186,7 @@ public:
     Base::Vector3d toVector() const;
 
 private:
-    static int Vector_TypeCheck(PyObject *);
+    static int Vector_TypeCheck(PyObject*);
 };
 
 /**
@@ -188,45 +201,55 @@ private:
 // The third template parameter is the definition of a pointer to the method
 // of the Python binding class to return the managed geometric instance. In our
 // example this is the method RotationPy::getRotationPtr.
-template <class T, class PyT, T* (PyT::*valuePtr)() const>
-class GeometryT : public Object
+template<class T, class PyT, T* (PyT::*valuePtr)() const>
+class GeometryT: public Object  // NOLINT
 {
 public:
-    explicit GeometryT (PyObject *pyob, bool owned): Object(pyob, owned) {
+    explicit GeometryT(PyObject* pyob, bool owned)
+        : Object(pyob, owned)
+    {
         validate();
     }
-    GeometryT (const GeometryT& ob): Object(*ob) {
+    GeometryT(const GeometryT& ob)
+        : Object(*ob)
+    {
         validate();
     }
-    explicit GeometryT ()
+    explicit GeometryT()
     {
         set(new PyT(new T()), true);
         validate();
     }
-    explicit GeometryT (const T& v)
+    explicit GeometryT(const T& val)
     {
-        set(new PyT(new T(v)), true);
+        set(new PyT(new T(val)), true);
         validate();
     }
-    GeometryT(const Object& other): Object(other.ptr()) {
+    GeometryT(const Object& other)
+        : Object(other.ptr())
+    {
         validate();
     }
-    bool accepts (PyObject *pyob) const override {
-        return pyob && Geometry_TypeCheck (pyob);
-    }
-    GeometryT& operator= (const Object& rhs)
+    bool accepts(PyObject* pyob) const override
     {
-        return (*this = *rhs);
+        return pyob && Geometry_TypeCheck(pyob);
     }
-    GeometryT& operator= (PyObject* rhsp)
+    GeometryT& operator=(const Object& rhs)
     {
-        if(ptr() == rhsp) return *this;
-        set (rhsp, false);
+        *this = *rhs;
         return *this;
     }
-    GeometryT& operator= (const T& v)
+    GeometryT& operator=(PyObject* rhsp)
     {
-        set (new PyT(v), true);
+        if (ptr() == rhsp) {
+            return *this;
+        }
+        set(rhsp, false);
+        return *this;
+    }
+    GeometryT& operator=(const T& val)
+    {
+        set(new PyT(val), true);
         return *this;
     }
     const T& getValue() const
@@ -234,8 +257,8 @@ public:
         // cast the PyObject pointer to the matching sub-class
         // and call then the defined member function
         PyT* py = static_cast<PyT*>(ptr());
-        T* v = (py->*valuePtr)();
-        return *v;
+        T* val = (py->*valuePtr)();
+        return *val;
     }
     operator T() const
     {
@@ -248,22 +271,20 @@ public:
     }
 
 private:
-    static int Geometry_TypeCheck(PyObject * obj)
+    static int Geometry_TypeCheck(PyObject* obj)
     {
         return PyObject_TypeCheck(obj, &(PyT::Type));
     }
 };
 
 // PyCXX wrapper classes Py::Matrix, Py::Rotation, Py::Placement, ...
-using BoundingBox = GeometryT<Base::BoundBox3d, Base::BoundBoxPy,
-                             &Base::BoundBoxPy::getBoundBoxPtr>;
-using Matrix      = GeometryT<Base::Matrix4D, Base::MatrixPy,
-                             &Base::MatrixPy::getMatrixPtr>;
-using Rotation    = GeometryT<Base::Rotation, Base::RotationPy,
-                             &Base::RotationPy::getRotationPtr>;
-using Placement   = GeometryT<Base::Placement, Base::PlacementPy,
-                             &Base::PlacementPy::getPlacementPtr>;
+using BoundingBox =
+    GeometryT<Base::BoundBox3d, Base::BoundBoxPy, &Base::BoundBoxPy::getBoundBoxPtr>;
+using Matrix = GeometryT<Base::Matrix4D, Base::MatrixPy, &Base::MatrixPy::getMatrixPtr>;
+using Rotation = GeometryT<Base::Rotation, Base::RotationPy, &Base::RotationPy::getRotationPtr>;
+using Placement =
+    GeometryT<Base::Placement, Base::PlacementPy, &Base::PlacementPy::getPlacementPtr>;
 
-}
+}  // namespace Py
 
-#endif // PY_GEOMETRYPY_H
+#endif  // PY_GEOMETRYPY_H

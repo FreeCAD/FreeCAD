@@ -67,7 +67,7 @@ App::DocumentObjectExecReturn* FeatureProjection::execute(void)
     if (!link) {
         return new App::DocumentObjectExecReturn("No object linked");
     }
-    if (!link->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+    if (!link->isDerivedFrom<Part::Feature>()) {
         return new App::DocumentObjectExecReturn("Linked object is not a Part object");
     }
     const TopoDS_Shape& shape = static_cast<Part::Feature*>(link)->Shape.getShape().getShape();

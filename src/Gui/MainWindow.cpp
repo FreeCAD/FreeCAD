@@ -267,7 +267,7 @@ struct MainWindowP
     QMdiArea* mdiArea;
     QPointer<MDIView> activeView;
     QSignalMapper* windowMapper;
-    QSplashScreen* splashscreen;
+    SplashScreen* splashscreen;
     StatusBarObserver* status;
     bool whatsthis;
     QString whatstext;
@@ -276,7 +276,6 @@ struct MainWindowP
     int actionUpdateDelay = 0;
     QMap<QString, QPointer<UrlHandler> > urlHandler;
     std::string hiddenDockWindows;
-    QPointer<QScreen> screen;
     boost::signals2::scoped_connection connParam;
     ParameterGrp::handle hGrp;
     bool _restoring = false;
@@ -1710,37 +1709,43 @@ void MainWindow::loadWindowSettings()
     QString qtver = QStringLiteral("Qt%1.%2").arg(major).arg(minor);
     QSettings config(vendor, application);
 
-    QRect rect = d->screen ? d->screen->availableGeometry()
-                           : QApplication::primaryScreen()->availableGeometry();
+    QRect rect = QApplication::primaryScreen()->availableGeometry();
+    int maxHeight = rect.height();
+    int maxWidth = rect.width();
 
     config.beginGroup(qtver);
     QPoint pos = config.value(QStringLiteral("Position"), this->pos()).toPoint();
-    QSize size = config.value(QStringLiteral("Size"), rect.size()).toSize();
+    maxWidth -= pos.x();
+    maxHeight -= pos.y();
+    QSize size = config.value(QStringLiteral("Size"), QSize(maxWidth, maxHeight)).toSize();
     bool max = config.value(QStringLiteral("Maximized"), false).toBool();
     bool showStatusBar = config.value(QStringLiteral("StatusBar"), true).toBool();
     QByteArray windowState = config.value(QStringLiteral("MainWindowState")).toByteArray();
     config.endGroup();
 
+
     std::string geometry = d->hGrp->GetASCII("Geometry");
     std::istringstream iss(geometry);
     int x,y,w,h;
     if (iss >> x >> y >> w >> h) {
-        pos = QPoint(x,y);
-        size = QSize(w,h);
+        pos = QPoint(x, y);
+        size = QSize(w, h);
     }
+
     max = d->hGrp->GetBool("Maximized", max);
     showStatusBar = d->hGrp->GetBool("StatusBar", showStatusBar);
     std::string wstate = d->hGrp->GetASCII("MainWindowState");
-    if (wstate.size())
+    if (!wstate.empty()) {
         windowState = QByteArray::fromBase64(wstate.c_str());
+    }
 
-    x = std::max<int>(rect.left(), std::min<int>(rect.left()+rect.width()/2, pos.x()));
-    y = std::max<int>(rect.top(), std::min<int>(rect.top()+rect.height()/2, pos.y()));
-    w = std::min<int>(rect.width(), size.width());
-    h = std::min<int>(rect.height(), size.height());
-
-    this->move(x, y);
-    this->resize(w, h);
+    resize(size);
+    int x1{},x2{},y1{},y2{};
+    // make sure that the main window is not totally out of the visible rectangle
+    rect.getCoords(&x1, &y1, &x2, &y2);
+    pos.setX(qMin(qMax(pos.x(),x1-this->width()+30),x2-30));
+    pos.setY(qMin(qMax(pos.y(),y1-10),y2-10));
+    this->move(pos);
 
     Base::StateLocker guard(d->_restoring);
 
@@ -1845,12 +1850,12 @@ void MainWindow::startSplasher()
         // first search for an external image file
         if (hGrp->GetBool("ShowSplasher", true)) {
             d->splashscreen = new SplashScreen(this->splashImage());
+
+            if (!hGrp->GetBool("ShowSplasherMessages", true)) {
+                d->splashscreen->setShowMessages(false);
+            }
+
             d->splashscreen->show();
-#if QT_VERSION >= QT_VERSION_CHECK(5,14,0)
-            d->screen = d->splashscreen->screen();
-#else
-            d->screen = QApplication::primaryScreen();
-#endif
         }
         else {
             d->splashscreen = nullptr;

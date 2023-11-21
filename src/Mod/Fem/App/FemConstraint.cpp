@@ -462,19 +462,19 @@ const Base::Vector3d Constraint::getDirection(const App::PropertyLinkSub& direct
         return Base::Vector3d(0, 0, 0);
     }
 
-    if (obj->getTypeId().isDerivedFrom(App::Line::getClassTypeId())) {
+    if (obj->isDerivedFrom<App::Line>()) {
         Base::Vector3d vec(1.0, 0.0, 0.0);
         static_cast<App::Line*>(obj)->Placement.getValue().multVec(vec, vec);
         return vec;
     }
 
-    if (obj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
+    if (obj->isDerivedFrom<App::Plane>()) {
         Base::Vector3d vec(0.0, 0.0, 1.0);
         static_cast<App::Plane*>(obj)->Placement.getValue().multVec(vec, vec);
         return vec;
     }
 
-    if (!obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+    if (!obj->isDerivedFrom<Part::Feature>()) {
         std::stringstream str;
         str << "Type is not a line, plane or Part object";
         throw Base::TypeError(str.str());

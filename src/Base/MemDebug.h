@@ -50,7 +50,6 @@ private:
 
 #endif
 
-} //namespace Base
+}  // namespace Base
 
-#endif // BASE_MEMDEBUG_H
-
+#endif  // BASE_MEMDEBUG_H

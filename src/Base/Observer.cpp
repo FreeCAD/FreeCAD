@@ -26,9 +26,10 @@
 #include "Observer.h"
 
 
-namespace Base {
+namespace Base
+{
 
 template class BaseExport Observer<const char*>;
 template class BaseExport Subject<const char*>;
 
-} //namespace Base
+}  // namespace Base

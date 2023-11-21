@@ -81,7 +81,7 @@ App::DocumentObjectExecReturn* Sewing::execute()
         for (const auto& it : subset) {
             // the subset has the documentobject and the element name which belongs to it,
             // in our case for example the cube object and the "Edge1" string
-            if (it.first->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+            if (it.first->isDerivedFrom<Part::Feature>()) {
                 // we get the shape of the document object which resemble the whole box
                 Part::TopoShape ts = static_cast<Part::Feature*>(it.first)->Shape.getShape();
 

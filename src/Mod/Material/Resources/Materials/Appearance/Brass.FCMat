@@ -1,7 +1,9 @@
+---
 # File created by ConvertFCMat.py
 General:
   UUID: "4151e19c-fd6a-4ca4-83d4-d5e17d76cb9c"
-  AuthorAndLicense: "(c) 2023 David Carter"
+  Author: "David Carter"
+  License: "GPL-2.0-or-later"
   Name: "Brass"
   Description: "Defines the Brass appearance properties"
 AppearanceModels:

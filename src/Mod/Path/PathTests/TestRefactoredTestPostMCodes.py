@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # ***************************************************************************
 # *   Copyright (c) 2022 sliptonic <shopinthewoods@gmail.com>               *
-# *   Copyright (c) 2022 Larry Woestman <LarryWoestman2@gmail.com>          *
+# *   Copyright (c) 2022-2023 Larry Woestman <LarryWoestman2@gmail.com>     *
 # *                                                                         *
 # *   This program is free software; you can redistribute it and/or modify  *
 # *   it under the terms of the GNU Lesser General Public License (LGPL)    *
@@ -110,6 +110,7 @@ class TestRefactoredTestPostMCodes(PathTestUtils.PathTestBase):
             print(f"--------{nl}{gcode}--------{nl}")
         self.assertEqual(gcode.splitlines()[2], expected)
 
+    #############################################################################
     #
     # The tests are organized into groups:
     #
@@ -118,68 +119,95 @@ class TestRefactoredTestPostMCodes(PathTestUtils.PathTestBase):
     #   10000 - 19999  tests for the various G codes at 10000 + 10 * g_code_value
     #   20000 - 29999  tests for the various M codes at 20000 + 10 * m_code_value
     #
+    #############################################################################
 
     def test20000(self):
         """Test M0 command Generation."""
         self.compare_third_line("M0", "M0", "")
         self.compare_third_line("M00", "M00", "")
 
+    #############################################################################
+
     def test20010(self):
         """Test M1 command Generation."""
         self.compare_third_line("M1", "M1", "")
         self.compare_third_line("M01", "M01", "")
+
+    #############################################################################
 
     def test20020(self):
         """Test M2 command Generation."""
         self.compare_third_line("M2", "M2", "")
         self.compare_third_line("M02", "M02", "")
 
+    #############################################################################
+
     def test20030(self):
         """Test M3 command Generation."""
         self.compare_third_line("M3", "M3", "")
         self.compare_third_line("M03", "M03", "")
+
+    #############################################################################
 
     def test20040(self):
         """Test M4 command Generation."""
         self.compare_third_line("M4", "M4", "")
         self.compare_third_line("M04", "M04", "")
 
+    #############################################################################
+
     def test20050(self):
         """Test M5 command Generation."""
         self.compare_third_line("M5", "M5", "")
         self.compare_third_line("M05", "M05", "")
+
+    #############################################################################
 
     def test20060(self):
         """Test M6 command Generation."""
         self.compare_third_line("M6", "M6", "")
         self.compare_third_line("M06", "M06", "")
 
+    #############################################################################
+
     def test20070(self):
         """Test M7 command Generation."""
         self.compare_third_line("M7", "M7", "")
         self.compare_third_line("M07", "M07", "")
+
+    #############################################################################
 
     def test20080(self):
         """Test M8 command Generation."""
         self.compare_third_line("M8", "M8", "")
         self.compare_third_line("M08", "M08", "")
 
+    #############################################################################
+
     def test20090(self):
         """Test M9 command Generation."""
         self.compare_third_line("M9", "M9", "")
         self.compare_third_line("M09", "M09", "")
 
+    #############################################################################
+
     def test20300(self):
         """Test M30 command Generation."""
         self.compare_third_line("M30", "M30", "")
+
+    #############################################################################
 
     def test20480(self):
         """Test M48 command Generation."""
         self.compare_third_line("M48", "M48", "")
 
+    #############################################################################
+
     def test20490(self):
         """Test M49 command Generation."""
         self.compare_third_line("M49", "M49", "")
+
+    #############################################################################
 
     def test20600(self):
         """Test M60 command Generation."""

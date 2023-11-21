@@ -93,7 +93,7 @@ T_DESCR_WBHELP = translate(
 T_COMMUNITYHELP = translate("StartPage", "Getting help from the community")
 T_DESCR_COMMUNITYHELP1 = translate(
     "StartPage",
-    'The <a href="http://forum.freecad.org">FreeCAD forum</a> is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general <a href="https://forum.freecad.org/viewforum.php?f=3">Help on using FreeCAD</a> section.',
+    'The <a href="https://forum.freecad.org">FreeCAD forum</a> is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general <a href="https://forum.freecad.org/viewforum.php?f=3">Help on using FreeCAD</a> section.',
 )
 T_DESCR_COMMUNITYHELP2 = translate(
     "StartPage",
@@ -140,5 +140,9 @@ T_EXTERNALLINKS = translate(
 )
 T_CREATIONDATE = translate("StartPage", "Creation date")
 T_LASTMODIFIED = translate("StartPage", "Last modification")
+T_SIZE = translate("StartPage", "Size")
+T_AUTHOR = translate("StartPage", "Author")
+T_LICENSE = translate("StartPage", "License")
+T_FILEPATH = translate("StartPage", "File path")
 T_NOTES = translate("StartPage", "Notes")
 T_VTOOLTIP = translate("StartPage", "Open start page preferences")

@@ -684,8 +684,8 @@ promijeniti konfiguraciju dizajna. Objekt će se stvoriti ako ne postoji.</trans
     <message>
       <location filename="../../Command.cpp" line="194"/>
       <location filename="../../Command.cpp" line="254"/>
-      <source>All (*)</source>
-      <translation>Sve (*)</translation>
+      <source>CSV (*.csv *.CSV);;All (*)</source>
+      <translation type="unfinished">CSV (*.csv *.CSV);;All (*)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="196"/>
@@ -746,7 +746,7 @@ Spreadsheet.my_alias_name umjesto Spreadsheet.B1
 </translation>
     </message>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="124"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="126"/>
       <source>Spreadsheet</source>
       <translation>Proračunska tablica</translation>
     </message>

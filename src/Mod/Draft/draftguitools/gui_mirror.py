@@ -147,7 +147,7 @@ class Mirror(gui_base_original.Modifier):
                             self.ghost.setMatrix(mtx) # Ignores the position of the matrix.
                             self.ghost.move(App.Vector(mtx.col(3)[:3]))
             if self.extendedCopy:
-                if not gui_tool_utils.hasMod(arg, gui_tool_utils.MODALT):
+                if not gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key()):
                     self.finish()
             gui_tool_utils.redraw3DView()
         elif arg["Type"] == "SoMouseButtonEvent":
@@ -166,11 +166,11 @@ class Mirror(gui_base_original.Modifier):
                     else:
                         last = self.node[0]
                         if (self.ui.isCopy.isChecked()
-                                or gui_tool_utils.hasMod(arg, gui_tool_utils.MODALT)):
+                                or gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key())):
                             self.mirror(last, self.point, True)
                         else:
                             self.mirror(last, self.point)
-                        if gui_tool_utils.hasMod(arg, gui_tool_utils.MODALT):
+                        if gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key()):
                             self.extendedCopy = True
                         else:
                             self.finish()

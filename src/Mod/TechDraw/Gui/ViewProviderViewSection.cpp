@@ -52,17 +52,23 @@ using namespace TechDrawGui;
 
 PROPERTY_SOURCE(TechDrawGui::ViewProviderViewSection, TechDrawGui::ViewProviderViewPart)
 
+const App::PropertyIntegerConstraint::Constraints intPercent = { 0, 100, 5 };
+
 //**************************************************************************
 // Construction/Destruction
 
 ViewProviderViewSection::ViewProviderViewSection()
 {
-    static const char *sgroup = "Cut Surface";
+    static const char *fgroup = "Faces";
     static const char *hgroup = "Surface Hatch";
     sPixmap = "TechDraw_TreeSection";
-    //ShowCutSurface is obsolete - use CutSurfaceDisplay
-    ADD_PROPERTY_TYPE(ShowCutSurface ,(true), sgroup, App::Prop_Hidden, "Show/hide the cut surface");
-    ADD_PROPERTY_TYPE(CutSurfaceColor, (0.0, 0.0, 0.0), sgroup, App::Prop_None, "The color to shade the cut surface");
+
+    ADD_PROPERTY_TYPE(CutSurfaceColor, (Preferences::getPreferenceGroup("Colors")->GetUnsigned("FaceColor", 0xFFFFFF)),
+                      fgroup, App::Prop_None, "Set color of the cut surface");
+    ADD_PROPERTY_TYPE(CutSurfaceTransparency, (Preferences::getPreferenceGroup("Colors")->GetBool("ClearFace", false) ? 100 : 0),
+                      fgroup, App::Prop_None, "Set transparency of the cut surface");
+    CutSurfaceTransparency.setConstraints(&intPercent);
+
     //HatchCutSurface is obsolete - use CutSurfaceDisplay
     ADD_PROPERTY_TYPE(HatchCutSurface ,(false), hgroup, App::Prop_Hidden, "Hatch the cut surface");
 
@@ -88,8 +94,8 @@ void ViewProviderViewSection::onChanged(const App::Property* prop)
 //        prop == &HatchCutSurface ||
         prop == &HatchColor      ||
         prop == &GeomHatchColor      ||
-//        prop == &ShowCutSurface  ||
-        prop == &CutSurfaceColor ) {
+        prop == &CutSurfaceColor ||
+        prop == &CutSurfaceTransparency) {
         updateGraphic();
     }
 

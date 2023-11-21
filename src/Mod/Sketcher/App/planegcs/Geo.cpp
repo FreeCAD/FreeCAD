@@ -325,27 +325,6 @@ DeriVector2 Ellipse::CalculateNormal(const Point& p, const double* derivparam) c
     // return sum of normalized pf2, pf2
     DeriVector2 ret = pf1.getNormalized().sum(pf2.getNormalized());
 
-// numeric derivatives for testing
-#if 0  // make sure to enable DEBUG_DERIVS when enabling
-        if(derivparam) {
-            double const eps = 0.00001;
-            double oldparam = *derivparam;
-            DeriVector2 v0 = this->CalculateNormal(p);
-            *derivparam += eps;
-            DeriVector2 vr = this->CalculateNormal(p);
-            *derivparam = oldparam - eps;
-            DeriVector2 vl = this->CalculateNormal(p);
-            *derivparam = oldparam;
-            //If not nasty, real derivative should be between left one and right one
-            DeriVector2 numretl ((v0.x-vl.x)/eps, (v0.y-vl.y)/eps);
-            DeriVector2 numretr ((vr.x-v0.x)/eps, (vr.y-v0.y)/eps);
-            assert(ret.dx <= std::max(numretl.x,numretr.x) );
-            assert(ret.dx >= std::min(numretl.x,numretr.x) );
-            assert(ret.dy <= std::max(numretl.y,numretr.y) );
-            assert(ret.dy >= std::min(numretl.y,numretr.y) );
-        }
-#endif
-
     return ret;
 }
 

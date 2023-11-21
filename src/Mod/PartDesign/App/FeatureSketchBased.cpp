@@ -130,7 +130,7 @@ Part::Part2DObject* ProfileBased::getVerifiedSketch(bool silent) const {
         err = "No profile linked at all";
     }
     else {
-        if (!result->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+        if (!result->isDerivedFrom<Part::Part2DObject>()) {
             err = "Linked object is not a Sketch or Part2DObject";
             result = nullptr;
         }
@@ -152,7 +152,7 @@ Part::Feature* ProfileBased::getVerifiedObject(bool silent) const {
         err = "No object linked";
     }
     else {
-        if (!result->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
+        if (!result->isDerivedFrom<Part::Feature>())
             err = "Linked object is not a Sketch, Part2DObject or Feature";
     }
 
@@ -213,12 +213,12 @@ TopoDS_Shape ProfileBased::getVerifiedFace(bool silent) const {
         }
     }
     else {
-        if (result->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+        if (result->isDerivedFrom<Part::Part2DObject>()) {
 
             auto wires = getProfileWires();
             return Part::FaceMakerCheese::makeFace(wires);
         }
-        else if (result->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+        else if (result->isDerivedFrom<Part::Feature>()) {
             if (Profile.getSubValues().empty())
                 err = "Linked object has no subshape specified";
             else {
@@ -424,17 +424,17 @@ void ProfileBased::getFaceFromLinkSub(TopoDS_Face& upToFace, const App::Property
     if (!ref)
         throw Base::ValueError("SketchBased: No face selected");
 
-    if (ref->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
+    if (ref->isDerivedFrom<App::Plane>()) {
         upToFace = TopoDS::Face(makeShapeFromPlane(ref));
         return;
     }
-    else if (ref->getTypeId().isDerivedFrom(PartDesign::Plane::getClassTypeId())) {
+    else if (ref->isDerivedFrom<PartDesign::Plane>()) {
         Part::Datum* datum = static_cast<Part::Datum*>(ref);
         upToFace = TopoDS::Face(datum->getShape());
         return;
     }
 
-    if (!ref->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId()))
+    if (!ref->isDerivedFrom<Part::Feature>())
         throw Base::TypeError("SketchBased: Must be face of a feature");
     Part::TopoShape baseShape = static_cast<Part::Feature*>(ref)->Shape.getShape();
 
@@ -1008,7 +1008,7 @@ void ProfileBased::getAxis(const App::DocumentObject * pcReferenceAxis, const st
     App::DocumentObject* profile = Profile.getValue();
     gp_Pln sketchplane;
 
-    if (profile->getTypeId().isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
+    if (profile->isDerivedFrom<Part::Part2DObject>()) {
         Part::Part2DObject* sketch = getVerifiedSketch();
         Base::Placement SketchPlm = sketch->Placement.getValue();
         Base::Vector3d SketchVector = Base::Vector3d(0, 0, 1);
@@ -1048,7 +1048,7 @@ void ProfileBased::getAxis(const App::DocumentObject * pcReferenceAxis, const st
         }
 
     }
-    else if (profile->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+    else if (profile->isDerivedFrom<Part::Feature>()) {
         Base::Placement SketchPlm = getVerifiedObject()->Placement.getValue();
         Base::Vector3d SketchVector = getProfileNormal();
         Base::Vector3d SketchPos = SketchPlm.getPosition();
@@ -1056,7 +1056,7 @@ void ProfileBased::getAxis(const App::DocumentObject * pcReferenceAxis, const st
     }
 
     // get reference axis
-    if (pcReferenceAxis->getTypeId().isDerivedFrom(PartDesign::Line::getClassTypeId())) {
+    if (pcReferenceAxis->isDerivedFrom<PartDesign::Line>()) {
         const PartDesign::Line* line = static_cast<const PartDesign::Line*>(pcReferenceAxis);
         base = line->getBasePoint();
         dir = line->getDirection();
@@ -1065,7 +1065,7 @@ void ProfileBased::getAxis(const App::DocumentObject * pcReferenceAxis, const st
         return;
     }
 
-    if (pcReferenceAxis->getTypeId().isDerivedFrom(App::Line::getClassTypeId())) {
+    if (pcReferenceAxis->isDerivedFrom<App::Line>()) {
         const App::Line* line = static_cast<const App::Line*>(pcReferenceAxis);
         base = Base::Vector3d(0, 0, 0);
         line->Placement.getValue().multVec(Base::Vector3d(1, 0, 0), dir);
@@ -1074,7 +1074,7 @@ void ProfileBased::getAxis(const App::DocumentObject * pcReferenceAxis, const st
         return;
     }
 
-    if (pcReferenceAxis->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+    if (pcReferenceAxis->isDerivedFrom<Part::Feature>()) {
         if (subReferenceAxis.empty())
             throw Base::ValueError("No rotation axis reference specified");
         const Part::Feature* refFeature = static_cast<const Part::Feature*>(pcReferenceAxis);

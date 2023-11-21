@@ -239,7 +239,7 @@ void ViewProviderAnnotation::attach(App::DocumentObject* f)
 
 void ViewProviderAnnotation::updateData(const App::Property* prop)
 {
-    if (prop->getTypeId() == App::PropertyStringList::getClassTypeId() &&
+    if (prop->is<App::PropertyStringList>() &&
         strcmp(prop->getName(),"LabelText") == 0) {
         const std::vector<std::string> lines = static_cast<const App::PropertyStringList*>(prop)->getValues();
         int index=0;
@@ -261,7 +261,7 @@ void ViewProviderAnnotation::updateData(const App::Property* prop)
             index++;
         }
     }
-    else if (prop->getTypeId() == App::PropertyVector::getClassTypeId() &&
+    else if (prop->is<App::PropertyVector>() &&
         strcmp(prop->getName(),"Position") == 0) {
         Base::Vector3d v = static_cast<const App::PropertyVector*>(prop)->getValue();
         pTranslation->translation.setValue(v.x,v.y,v.z);
@@ -324,7 +324,7 @@ void ViewProviderAnnotationLabel::onChanged(const App::Property* prop)
         prop == &FontName || prop == &Frame) {
         if (getObject()) {
             App::Property* label = getObject()->getPropertyByName("LabelText");
-            if (label && label->getTypeId() == App::PropertyStringList::getClassTypeId())
+            if (label && label->is<App::PropertyStringList>())
                 drawImage(static_cast<App::PropertyStringList*>(label)->getValues());
         }
     }
@@ -380,16 +380,16 @@ void ViewProviderAnnotationLabel::attach(App::DocumentObject* f)
 
 void ViewProviderAnnotationLabel::updateData(const App::Property* prop)
 {
-    if (prop->getTypeId() == App::PropertyStringList::getClassTypeId() &&
+    if (prop->is<App::PropertyStringList>() &&
         strcmp(prop->getName(),"LabelText") == 0) {
         drawImage(static_cast<const App::PropertyStringList*>(prop)->getValues());
     }
-    else if (prop->getTypeId() == App::PropertyVector::getClassTypeId() &&
+    else if (prop->is<App::PropertyVector>() &&
         strcmp(prop->getName(),"BasePosition") == 0) {
         Base::Vector3d v = static_cast<const App::PropertyVector*>(prop)->getValue();
         pBaseTranslation->translation.setValue(v.x,v.y,v.z);
     }
-    else if (prop->getTypeId() == App::PropertyVector::getClassTypeId() &&
+    else if (prop->is<App::PropertyVector>() &&
         strcmp(prop->getName(),"TextPosition") == 0) {
         Base::Vector3d v = static_cast<const App::PropertyVector*>(prop)->getValue();
         pCoords->point.set1Value(1, SbVec3f(v.x,v.y,v.z));
@@ -427,7 +427,7 @@ void ViewProviderAnnotationLabel::dragMotionCallback(void *data, SoDragger *drag
     auto that = static_cast<ViewProviderAnnotationLabel*>(data);
     const SbMatrix& mat = drag->getMotionMatrix();
     App::DocumentObject* obj = that->getObject();
-    if (obj && obj->getTypeId() == App::AnnotationLabel::getClassTypeId()) {
+    if (obj && obj->is<App::AnnotationLabel>()) {
         static_cast<App::AnnotationLabel*>(obj)->TextPosition.setValue(mat[3][0],mat[3][1],mat[3][2]);
     }
 }

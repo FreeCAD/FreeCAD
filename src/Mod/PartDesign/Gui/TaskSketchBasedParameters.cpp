@@ -146,11 +146,11 @@ QVariant TaskSketchBasedParameters::setUpToFace(const QString& text)
     if (!obj)
         return {};
 
-    if (obj->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
+    if (obj->isDerivedFrom<App::Plane>()) {
         // everything is OK (we assume a Part can only have exactly 3 App::Plane objects located at the base of the feature tree)
         return {};
     }
-    else if (obj->getTypeId().isDerivedFrom(Part::Datum::getClassTypeId())) {
+    else if (obj->isDerivedFrom<Part::Datum>()) {
         // it's up to the document to check that the datum plane is in the same body
         return {};
     }
@@ -256,7 +256,7 @@ bool TaskDlgSketchBasedParameters::accept() {
 
     // Make sure the feature is what we are expecting
     // Should be fine but you never know...
-    if (!feature->getTypeId().isDerivedFrom(PartDesign::ProfileBased::getClassTypeId())) {
+    if (!feature->isDerivedFrom<PartDesign::ProfileBased>()) {
         throw Base::TypeError("Bad object processed in the sketch based dialog.");
     }
 

@@ -231,7 +231,7 @@ ViewProviderFillet::~ViewProviderFillet() = default;
 void ViewProviderFillet::updateData(const App::Property* prop)
 {
     PartGui::ViewProviderPart::updateData(prop);
-    if (prop->getTypeId() == Part::PropertyShapeHistory::getClassTypeId()) {
+    if (prop->is<Part::PropertyShapeHistory>()) {
         const std::vector<Part::ShapeHistory>& hist = static_cast<const Part::PropertyShapeHistory*>
             (prop)->getValues();
         if (hist.size() != 1)
@@ -341,7 +341,7 @@ ViewProviderChamfer::~ViewProviderChamfer() = default;
 void ViewProviderChamfer::updateData(const App::Property* prop)
 {
     PartGui::ViewProviderPart::updateData(prop);
-    if (prop->getTypeId() == Part::PropertyShapeHistory::getClassTypeId()) {
+    if (prop->is<Part::PropertyShapeHistory>()) {
         const std::vector<Part::ShapeHistory>& hist = static_cast<const Part::PropertyShapeHistory*>
             (prop)->getValues();
         if (hist.size() != 1)

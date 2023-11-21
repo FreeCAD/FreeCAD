@@ -2,7 +2,7 @@
 
 __title__="Document handling module"
 __author__ = "Werner Mayer"
-__url__ = "http://www.freecad.org"
+__url__ = "https://www.freecad.org"
 __doc__ = "Tools for extracting or creating project files"
 
 

@@ -155,7 +155,7 @@ class Arc(gui_base_original.Creator):
                 if not DraftVecUtils.isNull(viewdelta):
                     self.point = self.point.add(viewdelta.negative())
             if self.step == 0:  # choose center
-                if gui_tool_utils.hasMod(arg, gui_tool_utils.MODALT):
+                if gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key()):
                     if not self.altdown:
                         self.altdown = True
                         self.ui.switchUi(True)
@@ -178,7 +178,7 @@ class Arc(gui_base_original.Creator):
                     _c = DraftGeomUtils.findClosestCircle(self.point, cir)
                     self.center = _c.Center
                     self.arctrack.setCenter(self.center)
-                if gui_tool_utils.hasMod(arg, gui_tool_utils.MODALT):
+                if gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key()):
                     if not self.altdown:
                         self.altdown = True
                     if info:
@@ -237,7 +237,7 @@ class Arc(gui_base_original.Creator):
                             gui_tool_utils.getSupport(arg)
                             (self.point,
                              ctrlPoint, info) = gui_tool_utils.getPoint(self, arg)
-                        if gui_tool_utils.hasMod(arg, gui_tool_utils.MODALT):
+                        if gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key()):
                             snapped = self.view.getObjectInfo((arg["Position"][0],
                                                                arg["Position"][1]))
                             if snapped:

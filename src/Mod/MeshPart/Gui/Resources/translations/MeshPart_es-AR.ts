@@ -198,12 +198,12 @@ Este comando solo funciona con un objeto 'malla'.</translation>
       <translation>Cancelar</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="626"/>
+      <location filename="../../CurveOnMesh.cpp" line="624"/>
       <source>Wrong mesh picked</source>
       <translation>Malla equivocada seleccionada</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="667"/>
+      <location filename="../../CurveOnMesh.cpp" line="663"/>
       <source>No point was picked</source>
       <translation>No fue elegido ningún punto</translation>
     </message>

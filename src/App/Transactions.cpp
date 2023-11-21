@@ -76,7 +76,7 @@ Transaction::~Transaction()
             // of an object is not undone or when an addition is undone.
 
             if (!It.first->isAttachedToDocument()) {
-                if (It.first->getTypeId().isDerivedFrom(DocumentObject::getClassTypeId())) {
+                if (It.first->isDerivedFrom<DocumentObject>()) {
                     // #0003323: Crash when clearing transaction list
                     // It can happen that when clearing the transaction list several objects
                     // are destroyed with dependencies which can lead to dangling pointers.

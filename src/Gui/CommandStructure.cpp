@@ -125,7 +125,7 @@ void StdCmdGroup::activated(int iMsg)
     Gui::Document* gui = Application::Instance->activeDocument();
     App::Document* app = gui->getDocument();
     ViewProvider* vp = gui->getViewProvider(app->getActiveObject());
-    if (vp && vp->getTypeId().isDerivedFrom(ViewProviderDocumentObject::getClassTypeId()))
+    if (vp && vp->isDerivedFrom<ViewProviderDocumentObject>())
         gui->signalScrollToObject(*static_cast<ViewProviderDocumentObject*>(vp));
 }
 

@@ -24,9 +24,16 @@
 #define SKETCHERGUI_DrawSketchHandlerFillet_H
 
 #include <Gui/Notifications.h>
+#include <Gui/SelectionFilter.h>
+#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 
+#include <Mod/Sketcher/App/SketchObject.h>
+
+#include "DrawSketchHandler.h"
 #include "GeometryCreationMode.h"
-
+#include "Utils.h"
+#include "ViewProviderSketch.h"
 
 namespace SketcherGui
 {
@@ -56,7 +63,7 @@ public:
             int GeoId = std::atoi(element.substr(4, 4000).c_str()) - 1;
             Sketcher::SketchObject* Sketch = static_cast<Sketcher::SketchObject*>(object);
             const Part::Geometry* geom = Sketch->getGeometry(GeoId);
-            if (geom->getTypeId().isDerivedFrom(Part::GeomBoundedCurve::getClassTypeId())) {
+            if (geom->isDerivedFrom<Part::GeomBoundedCurve>()) {
                 return true;
             }
         }
@@ -69,8 +76,7 @@ public:
             if (GeoIdList.size() == 2 && GeoIdList[0] >= 0 && GeoIdList[1] >= 0) {
                 const Part::Geometry* geom1 = Sketch->getGeometry(GeoIdList[0]);
                 const Part::Geometry* geom2 = Sketch->getGeometry(GeoIdList[1]);
-                if (geom1->getTypeId() == Part::GeomLineSegment::getClassTypeId()
-                    && geom2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+                if (geom1->is<Part::GeomLineSegment>() && geom2->is<Part::GeomLineSegment>()) {
                     return true;
                 }
             }
@@ -125,7 +131,7 @@ public:
             Sketcher::PointPos PosId = Sketcher::PointPos::none;
             sketchgui->getSketchObject()->getGeoVertexIndex(VtId, GeoId, PosId);
             const Part::Geometry* geom = sketchgui->getSketchObject()->getGeometry(GeoId);
-            if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()
+            if (geom->is<Part::GeomLineSegment>()
                 && (PosId == Sketcher::PointPos::start || PosId == Sketcher::PointPos::end)) {
 
                 // guess fillet radius
@@ -143,8 +149,7 @@ public:
                         sketchgui->getSketchObject()->getGeometry(GeoIdList[1]);
                     construction = Sketcher::GeometryFacade::getConstruction(geom1)
                         && Sketcher::GeometryFacade::getConstruction(geom2);
-                    if (geom1->getTypeId() == Part::GeomLineSegment::getClassTypeId()
-                        && geom2->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+                    if (geom1->is<Part::GeomLineSegment>() && geom2->is<Part::GeomLineSegment>()) {
                         const Part::GeomLineSegment* lineSeg1 =
                             static_cast<const Part::GeomLineSegment*>(geom1);
                         const Part::GeomLineSegment* lineSeg2 =
@@ -205,7 +210,7 @@ public:
         int GeoId = getPreselectCurve();
         if (GeoId > -1) {
             const Part::Geometry* geom = sketchgui->getSketchObject()->getGeometry(GeoId);
-            if (geom->getTypeId().isDerivedFrom(Part::GeomBoundedCurve::getClassTypeId())) {
+            if (geom->isDerivedFrom<Part::GeomBoundedCurve>()) {
                 if (Mode == STATUS_SEEK_First) {
                     firstCurve = GeoId;
                     firstPos = onSketchPos;
@@ -233,8 +238,7 @@ public:
 
                     double radius = 0;
 
-                    if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()
-                        && geom1->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+                    if (geom->is<Part::GeomLineSegment>() && geom1->is<Part::GeomLineSegment>()) {
                         // guess fillet radius
                         const Part::GeomLineSegment* lineSeg1 =
                             static_cast<const Part::GeomLineSegment*>(

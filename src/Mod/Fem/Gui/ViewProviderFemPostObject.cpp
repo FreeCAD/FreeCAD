@@ -930,7 +930,7 @@ void ViewProviderFemPostObject::hide()
     App::DocumentObject* firstVisiblePostObject = nullptr;
     // step through the objects
     for (auto it : ObjectsList) {
-        if (it->getTypeId().isDerivedFrom(Fem::FemPostObject::getClassTypeId())) {
+        if (it->isDerivedFrom<Fem::FemPostObject>()) {
             if (!firstVisiblePostObject && it->Visibility.getValue()
                 && !it->isDerivedFrom(Fem::FemPostDataAtPointFilter::getClassTypeId())) {
                 firstVisiblePostObject = it;

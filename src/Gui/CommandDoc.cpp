@@ -517,10 +517,10 @@ StdCmdMergeProjects::StdCmdMergeProjects()
 {
     sAppModule    = "File";
     sGroup        = "File";
-    sMenuText     = QT_TR_NOOP("Merge project...");
-    sToolTipText  = QT_TR_NOOP("Merge project");
+    sMenuText     = QT_TR_NOOP("Merge document...");
+    sToolTipText  = QT_TR_NOOP("Merge document");
     sWhatsThis    = "Std_MergeProjects";
-    sStatusTip    = QT_TR_NOOP("Merge project");
+    sStatusTip    = QT_TR_NOOP("Merge document");
     sPixmap       = "Std_MergeProjects";
 }
 
@@ -530,7 +530,7 @@ void StdCmdMergeProjects::activated(int iMsg)
 
     QString exe = qApp->applicationName();
     QString project = FileDialog::getOpenFileName(Gui::getMainWindow(),
-        QString::fromUtf8(QT_TR_NOOP("Merge project")), FileDialog::getWorkingDirectory(),
+        QString::fromUtf8(QT_TR_NOOP("Merge document")), FileDialog::getWorkingDirectory(),
         QString::fromUtf8(QT_TR_NOOP("%1 document (*.FCStd)")).arg(exe));
     if (!project.isEmpty()) {
         FileDialog::setWorkingDirectory(project);
@@ -539,12 +539,12 @@ void StdCmdMergeProjects::activated(int iMsg)
         QFileInfo proj(project);
         if (proj == info) {
             QMessageBox::critical(Gui::getMainWindow(),
-                QString::fromUtf8(QT_TR_NOOP("Merge project")),
-                QString::fromUtf8(QT_TR_NOOP("Cannot merge project with itself.")));
+                QString::fromUtf8(QT_TR_NOOP("Merge document")),
+                QString::fromUtf8(QT_TR_NOOP("Cannot merge document with itself.")));
             return;
         }
 
-        doc->openTransaction("Merge project");
+        doc->openTransaction("Merge document");
         Base::FileInfo fi((const char*)project.toUtf8());
         Base::ifstream str(fi, std::ios::in | std::ios::binary);
         MergeDocuments md(doc);
@@ -825,10 +825,10 @@ StdCmdProjectInfo::StdCmdProjectInfo()
 {
   // setting the
   sGroup        = "File";
-  sMenuText     = QT_TR_NOOP("Project i&nformation...");
-  sToolTipText  = QT_TR_NOOP("Show details of the currently active project");
+  sMenuText     = QT_TR_NOOP("Document i&nformation...");
+  sToolTipText  = QT_TR_NOOP("Show details of the currently active document");
   sWhatsThis    = "Std_ProjectInfo";
-  sStatusTip    = QT_TR_NOOP("Show details of the currently active project");
+  sStatusTip    = QT_TR_NOOP("Show details of the currently active document");
   sPixmap       = "document-properties";
 }
 
@@ -856,9 +856,9 @@ StdCmdProjectUtil::StdCmdProjectUtil()
     // setting the
     sGroup        = "Tools";
     sWhatsThis    = "Std_ProjectUtil";
-    sMenuText     = QT_TR_NOOP("Project utility...");
-    sToolTipText  = QT_TR_NOOP("Utility to extract or create project files");
-    sStatusTip    = QT_TR_NOOP("Utility to extract or create project files");
+    sMenuText     = QT_TR_NOOP("Document utility...");
+    sToolTipText  = QT_TR_NOOP("Utility to extract or create document files");
+    sStatusTip    = QT_TR_NOOP("Utility to extract or create document files");
     sPixmap       = "Std_ProjectUtil";
 }
 
@@ -1549,7 +1549,7 @@ void StdCmdPlacement::activated(int iMsg)
     auto plm = new Gui::Dialog::TaskPlacement();
     if (!sel.empty()) {
         App::Property* prop = sel.front()->getPropertyByName("Placement");
-        if (prop && prop->getTypeId() == App::PropertyPlacement::getClassTypeId()) {
+        if (prop && prop->is<App::PropertyPlacement>()) {
             plm->setPlacement(static_cast<App::PropertyPlacement*>(prop)->getValue());
 
             std::vector<Gui::SelectionObject> selection;

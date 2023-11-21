@@ -49,7 +49,7 @@ Py::String PersistencePy::getContent() const
     writer.setForceXML(true);
     getPersistencePtr()->Save(writer);
 
-    return  {writer.getString()};
+    return {writer.getString()};
 }
 
 Py::Int PersistencePy::getMemSize() const
@@ -57,54 +57,56 @@ Py::Int PersistencePy::getMemSize() const
     return Py::Int((long)getPersistencePtr()->getMemSize());
 }
 
-PyObject* PersistencePy::dumpContent(PyObject *args, PyObject *kwds)
+PyObject* PersistencePy::dumpContent(PyObject* args, PyObject* kwds)
 {
     int compression = 3;
-    static const std::array<const char *, 2> kwds_def {"Compression", nullptr};
+    static const std::array<const char*, 2> kwds_def {"Compression", nullptr};
     PyErr_Clear();
     if (!Base::Wrapped_ParseTupleAndKeywords(args, kwds, "|i", kwds_def, &compression)) {
         return nullptr;
     }
 
-    //setup the stream. the in flag is needed to make "read" work
-    std::stringstream stream(std::stringstream::out | std::stringstream::in | std::stringstream::binary);
+    // setup the stream. the in flag is needed to make "read" work
+    std::stringstream stream(std::stringstream::out | std::stringstream::in
+                             | std::stringstream::binary);
     try {
         getPersistencePtr()->dumpToStream(stream, compression);
     }
-    catch(Base::NotImplementedError&) {
-        PyErr_SetString(PyExc_NotImplementedError, "Dumping content of this object type is not implemented");
+    catch (Base::NotImplementedError&) {
+        PyErr_SetString(PyExc_NotImplementedError,
+                        "Dumping content of this object type is not implemented");
         return nullptr;
     }
     catch (...) {
-       PyErr_SetString(PyExc_IOError, "Unable to parse content into binary representation");
-       return nullptr;
+        PyErr_SetString(PyExc_IOError, "Unable to parse content into binary representation");
+        return nullptr;
     }
 
-    //build the byte array with correct size
-    if(!stream.seekp(0, stream.end)) {
+    // build the byte array with correct size
+    if (!stream.seekp(0, std::stringstream::end)) {
         PyErr_SetString(PyExc_IOError, "Unable to find end of stream");
         return nullptr;
     }
 
     std::stringstream::pos_type offset = stream.tellp();
-    if (!stream.seekg(0, stream.beg)) {
+    if (!stream.seekg(0, std::stringstream::beg)) {
         PyErr_SetString(PyExc_IOError, "Unable to find begin of stream");
         return nullptr;
     }
 
     PyObject* ba = PyByteArray_FromStringAndSize(nullptr, offset);
 
-    //use the buffer protocol to access the underlying array and write into it
+    // use the buffer protocol to access the underlying array and write into it
     Py_buffer buf = Py_buffer();
     PyObject_GetBuffer(ba, &buf, PyBUF_WRITABLE);
     try {
-        if(!stream.read((char*)buf.buf, offset)) {
+        if (!stream.read((char*)buf.buf, offset)) {
             PyErr_SetString(PyExc_IOError, "Error copying data into byte array");
             return nullptr;
         }
         PyBuffer_Release(&buf);
     }
-    catch(...) {
+    catch (...) {
         PyBuffer_Release(&buf);
         PyErr_SetString(PyExc_IOError, "Error copying data into byte array");
         return nullptr;
@@ -113,28 +115,30 @@ PyObject* PersistencePy::dumpContent(PyObject *args, PyObject *kwds)
     return ba;
 }
 
-PyObject* PersistencePy::restoreContent(PyObject *args)
+PyObject* PersistencePy::restoreContent(PyObject* args)
 {
     PyObject* buffer = nullptr;
-    if( !PyArg_ParseTuple(args, "O", &buffer) )
+    if (!PyArg_ParseTuple(args, "O", &buffer)) {
         return nullptr;
+    }
 
-    //check if it really is a buffer
-    if( !PyObject_CheckBuffer(buffer) ) {
+    // check if it really is a buffer
+    if (!PyObject_CheckBuffer(buffer)) {
         PyErr_SetString(PyExc_TypeError, "Must be a buffer object");
         return nullptr;
     }
 
     Py_buffer buf;
-    if(PyObject_GetBuffer(buffer, &buf, PyBUF_SIMPLE) < 0)
+    if (PyObject_GetBuffer(buffer, &buf, PyBUF_SIMPLE) < 0) {
         return nullptr;
+    }
 
-    if(!PyBuffer_IsContiguous(&buf, 'C')) {
+    if (!PyBuffer_IsContiguous(&buf, 'C')) {
         PyErr_SetString(PyExc_TypeError, "Buffer must be contiguous");
         return nullptr;
     }
 
-    //check if it really is a buffer
+    // check if it really is a buffer
     try {
         using Device = boost::iostreams::basic_array_source<char>;
         boost::iostreams::stream<Device> stream((char*)buf.buf, buf.len);
@@ -148,13 +152,12 @@ PyObject* PersistencePy::restoreContent(PyObject *args)
     Py_Return;
 }
 
-PyObject *PersistencePy::getCustomAttributes(const char*) const
+PyObject* PersistencePy::getCustomAttributes(const char*) const
 {
     return nullptr;
 }
 
-int PersistencePy::setCustomAttributes(const char*,PyObject*)
+int PersistencePy::setCustomAttributes(const char*, PyObject*)
 {
     return 0;
 }
-

@@ -35,7 +35,8 @@ namespace zipios
  * The class is similar to zipios' ZipFile class with the difference that instead of
  * a file a std::istream can be passed.
  */
-class BaseExport ZipHeader : public FileCollection {
+class BaseExport ZipHeader: public FileCollection
+{
 public:
     /** Opens the zip file name. If the zip "file" is
         embedded in a file that contains other data, e.g. a binary
@@ -51,32 +52,29 @@ public:
         archive.
         @throw IOException Thrown if an I/O problem is encountered, while the directory
         of the specified zip archive is being read. */
-    explicit ZipHeader(std::istream &inp, int s_off = 0, int e_off = 0);
+    explicit ZipHeader(std::istream& inp, int s_off = 0, int e_off = 0);
 
     /** Create a copy of this instance. */
-    FileCollection *clone() const override;
-
-    ~ZipHeader() override = default;
+    FileCollection* clone() const override;
 
     void close() override;
 
-    std::istream *getInputStream(const ConstEntryPointer &entry) override;
-    std::istream *getInputStream(const string &entry_name, MatchPath matchpath = MATCH) override;
+    std::istream* getInputStream(const ConstEntryPointer& entry) override;
+    std::istream* getInputStream(const string& entry_name, MatchPath matchpath = MATCH) override;
 
 private:
     std::istream& _input;
     VirtualSeeker _vs;
-    EndOfCentralDirectory  _eocd;
+    EndOfCentralDirectory _eocd;
 
-    bool init(std::istream &_zipfile);
-    bool readCentralDirectory(std::istream &_zipfile);
-    bool readEndOfCentralDirectory(std::istream &_zipfile);
-    bool confirmLocalHeaders(std::istream &_zipfile);
+    bool init(std::istream& _zipfile);
+    bool readCentralDirectory(std::istream& _zipfile);
+    bool readEndOfCentralDirectory(std::istream& _zipfile);
+    bool confirmLocalHeaders(std::istream& _zipfile);
     void setError(std::string error_str);
 };
 
-} //namespace zipios
+}  // namespace zipios
 
 
-#endif // ZIPIOS_ZIP_HEADER_H
-
+#endif  // ZIPIOS_ZIP_HEADER_H

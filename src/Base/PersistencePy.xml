@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <GenerateModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="generateMetaModel_Module.xsd">
-  <PythonExport 
-      Father="BaseClassPy" 
-      Name="PersistencePy" 
-      Twin="Persistence" 
-      TwinPointer="Persistence" 
-      Include="Base/Persistence.h" 
-      FatherInclude="Base/BaseClassPy.h" 
-      Namespace="Base" 
+  <PythonExport
+      Father="BaseClassPy"
+      Name="PersistencePy"
+      Twin="Persistence"
+      TwinPointer="Persistence"
+      Include="Base/Persistence.h"
+      FatherInclude="Base/BaseClassPy.h"
+      Namespace="Base"
       FatherNamespace="Base">
     <Documentation>
       <Author Licence="LGPL" Name="Juergen Riegel" EMail="FreeCAD@juergen-riegel.net" />

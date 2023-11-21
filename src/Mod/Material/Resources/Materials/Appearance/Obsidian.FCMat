@@ -1,7 +1,9 @@
+---
 # File created by ConvertFCMat.py
 General:
   UUID: "a004c270-7d2c-4898-bec6-b1120edacea9"
-  AuthorAndLicense: "(c) 2023 David Carter"
+  Author: "David Carter"
+  License: "GPL-2.0-or-later"
   Name: "Obsidian"
   Description: "Defines the Obsidian appearance properties"
 AppearanceModels:

@@ -191,6 +191,10 @@ public:
         {
             return pstatus[0];
         }
+        bool isRadiusDoF() const
+        {
+            return pstatus[0] == Dependent;
+        }
         ParameterStatus getStartParameter() const
         {
             return pstatus[1];

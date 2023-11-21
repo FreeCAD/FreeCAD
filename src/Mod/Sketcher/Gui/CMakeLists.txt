@@ -54,6 +54,7 @@ SET(SketcherGui_SRCS
     AutoConstraint.h
     Utils.h
     Utils.cpp
+    CircleEllipseConstructionMethod.h
     DrawSketchHandlerLine.h
     DrawSketchHandlerRectangle.h
     DrawSketchHandlerPolygon.h
@@ -64,6 +65,7 @@ SET(SketcherGui_SRCS
     DrawSketchHandlerArcOfEllipse.h
     DrawSketchHandlerArcOfHyperbola.h
     DrawSketchHandlerArcOfParabola.h
+    DrawSketchHandlerArcSlot.h
     DrawSketchHandlerBSpline.h
     DrawSketchHandlerBSplineByInterpolation.h
     DrawSketchHandlerPoint.h
@@ -74,6 +76,7 @@ SET(SketcherGui_SRCS
     DrawSketchHandlerExternal.h
     DrawSketchHandlerCarbonCopy.h
     DrawSketchHandlerSlot.h
+    DrawSketchHandlerOffset.h
     CommandCreateGeo.cpp
     CommandConstraints.h
     CommandConstraints.cpp
@@ -132,6 +135,12 @@ SET(SketcherGui_SRCS
     ViewProviderSketch.h
     DrawSketchHandler.cpp
     DrawSketchHandler.h
+    DrawSketchDefaultHandler.h
+    DrawSketchController.h
+    DrawSketchDefaultWidgetController.h
+    DrawSketchControllableHandler.h
+    DrawSketchKeyboardManager.h
+    DrawSketchKeyboardManager.cpp
     Workbench.cpp
     Workbench.h
     EditDatumDialog.cpp

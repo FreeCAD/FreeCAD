@@ -54,7 +54,7 @@ bool ViewProviderArea::canDragObjects() const
 
 bool ViewProviderArea::canDragObject(App::DocumentObject* obj) const
 {
-    return obj && obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId());
+    return obj && obj->isDerivedFrom<Part::Feature>();
 }
 
 void ViewProviderArea::dragObject(App::DocumentObject* obj)
@@ -91,7 +91,7 @@ void ViewProviderArea::dropObject(App::DocumentObject* obj)
 void ViewProviderArea::updateData(const App::Property* prop)
 {
     PartGui::ViewProviderPart::updateData(prop);
-    if (prop->getTypeId().isDerivedFrom(App::PropertyLinkList::getClassTypeId())) {
+    if (prop->isDerivedFrom<App::PropertyLinkList>()) {
         std::vector<App::DocumentObject*> pShapes = static_cast<const App::PropertyLinkList*>(prop)->getValues();
         for (std::vector<App::DocumentObject*>::iterator it = pShapes.begin(); it != pShapes.end(); ++it) {
             if (*it)
@@ -141,7 +141,7 @@ bool ViewProviderAreaView::canDragObjects() const
 
 bool ViewProviderAreaView::canDragObject(App::DocumentObject* obj) const
 {
-    return obj && obj->getTypeId().isDerivedFrom(Path::FeatureArea::getClassTypeId());
+    return obj && obj->isDerivedFrom<Path::FeatureArea>();
 }
 
 void ViewProviderAreaView::dragObject(App::DocumentObject* )
@@ -169,7 +169,7 @@ void ViewProviderAreaView::dropObject(App::DocumentObject* obj)
 void ViewProviderAreaView::updateData(const App::Property* prop)
 {
     PartGui::ViewProviderPlaneParametric::updateData(prop);
-    if (prop->getTypeId().isDerivedFrom(App::PropertyLink::getClassTypeId()))
+    if (prop->isDerivedFrom<App::PropertyLink>())
         Gui::Application::Instance->hideViewProvider(
                 static_cast<const App::PropertyLink*>(prop)->getValue());
 }

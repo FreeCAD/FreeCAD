@@ -30,7 +30,7 @@ if FreeCAD.GuiUp:
 
 __title__="PartDesign SprocketObject management"
 __author__ = "Adam Spontarelli"
-__url__ = "http://www.freecad.org"
+__url__ = "https://www.freecad.org"
 
 
 def makeSprocket(name):

@@ -57,6 +57,7 @@ FixedTimeAnimation::FixedTimeAnimation(NavigationStyle* navigation, const SbRota
 
 void FixedTimeAnimation::initialize()
 {
+    navigation->findBoundingSphere();
     prevAngle = 0;
     prevTranslation = SbVec3f(0, 0, 0);
 
@@ -65,7 +66,7 @@ void FixedTimeAnimation::initialize()
     float angle;
     SbRotation(navigation->getCamera()->orientation.getValue().inverse() * targetOrientation).getValue(rotationAxisPost, angle);
     if (angle > M_PI) {
-        angle -= 2 * M_PI;
+        angle -= float(2 * M_PI);
     }
 
     // Convert post-multiplication axis to a pre-multiplication axis
@@ -133,6 +134,7 @@ SpinningAnimation::SpinningAnimation(NavigationStyle* navigation, const SbVec3f&
 
 void SpinningAnimation::initialize()
 {
+    navigation->findBoundingSphere();
     prevAngle = 0;
 
     navigation->setViewing(true);

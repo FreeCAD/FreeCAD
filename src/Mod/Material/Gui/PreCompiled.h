@@ -55,10 +55,6 @@
 // OpenCasCade
 // #include <Mod/Part/App/OpenCascadeAll.h>
 
-// Boost
-#include <boost/algorithm/string/predicate.hpp>
-#include <boost/regex.hpp>
-
 // Qt Toolkit
 #ifndef __QtAll__
 #include <Gui/QtAll.h>

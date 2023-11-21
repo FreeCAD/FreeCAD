@@ -506,10 +506,10 @@ void ViewProviderMesh::updateData(const App::Property* prop)
 {
     Gui::ViewProviderGeometryObject::updateData(prop);
 
-    if (prop->getTypeId() == App::PropertyColorList::getClassTypeId()) {
+    if (prop->is<App::PropertyColorList>()) {
         Coloring.setStatus(App::Property::Hidden, false);
     }
-    else if (prop->getTypeId() == Mesh::PropertyMaterial::getClassTypeId()) {
+    else if (prop->is<Mesh::PropertyMaterial>()) {
         Coloring.setStatus(App::Property::Hidden, false);
     }
 }
@@ -1708,7 +1708,7 @@ void ViewProviderMesh::faceInfoCallback(void* ud, SoEventCallback* n)
         // By specifying the indexed mesh node 'pcFaceSet' we make sure that the picked point is
         // really from the mesh we render and not from any other geometry
         Gui::ViewProvider* vp = view->getViewProviderByPathFromTail(point->getPath());
-        if (!vp || !vp->getTypeId().isDerivedFrom(ViewProviderMesh::getClassTypeId())) {
+        if (!vp || !vp->isDerivedFrom<ViewProviderMesh>()) {
             return;
         }
 
@@ -1791,7 +1791,7 @@ void ViewProviderMesh::fillHoleCallback(void* ud, SoEventCallback* n)
         // By specifying the indexed mesh node 'pcFaceSet' we make sure that the picked point is
         // really from the mesh we render and not from any other geometry
         Gui::ViewProvider* vp = view->getViewProviderByPathFromTail(point->getPath());
-        if (!vp || !vp->getTypeId().isDerivedFrom(ViewProviderMesh::getClassTypeId())) {
+        if (!vp || !vp->isDerivedFrom<ViewProviderMesh>()) {
             return;
         }
         ViewProviderMesh* that = static_cast<ViewProviderMesh*>(vp);
@@ -1868,7 +1868,7 @@ void ViewProviderMesh::markPartCallback(void* ud, SoEventCallback* n)
             // By specifying the indexed mesh node 'pcFaceSet' we make sure that the picked point is
             // really from the mesh we render and not from any other geometry
             Gui::ViewProvider* vp = view->getViewProviderByPathFromTail(point->getPath());
-            if (!vp || !vp->getTypeId().isDerivedFrom(ViewProviderMesh::getClassTypeId())) {
+            if (!vp || !vp->isDerivedFrom<ViewProviderMesh>()) {
                 return;
             }
             ViewProviderMesh* that = static_cast<ViewProviderMesh*>(vp);
@@ -2501,7 +2501,7 @@ void ViewProviderIndexedFaceSet::attach(App::DocumentObject* pcFeat)
 void ViewProviderIndexedFaceSet::updateData(const App::Property* prop)
 {
     ViewProviderMesh::updateData(prop);
-    if (prop->getTypeId() == Mesh::PropertyMeshKernel::getClassTypeId()) {
+    if (prop->is<Mesh::PropertyMeshKernel>()) {
         ViewProviderMeshBuilder builder;
         builder.createMesh(prop, pcMeshCoord, pcMeshFaces);
         showOpenEdges(OpenEdges.getValue());
@@ -2592,7 +2592,7 @@ void ViewProviderMeshObject::attach(App::DocumentObject* pcFeat)
 void ViewProviderMeshObject::updateData(const App::Property* prop)
 {
     ViewProviderMesh::updateData(prop);
-    if (prop->getTypeId() == Mesh::PropertyMeshKernel::getClassTypeId()) {
+    if (prop->is<Mesh::PropertyMeshKernel>()) {
         const Mesh::PropertyMeshKernel* mesh = static_cast<const Mesh::PropertyMeshKernel*>(prop);
         this->pcMeshNode->mesh.setValue(
             Base::Reference<const Mesh::MeshObject>(mesh->getValuePtr()));

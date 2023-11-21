@@ -22,13 +22,19 @@
 #ifndef MATGUI_ARRAY2D_H
 #define MATGUI_ARRAY2D_H
 
+#include <memory>
+
 #include <QAbstractTableModel>
+#include <QAction>
 #include <QDialog>
+#include <QPoint>
 #include <QStandardItem>
+#include <QStandardItemModel>
 #include <QTableView>
 
-#include "ArrayModel.h"
 #include <Mod/Material/App/Model.h>
+
+#include "ArrayModel.h"
 
 namespace MatGui
 {
@@ -40,26 +46,38 @@ class Array2D: public QDialog
     Q_OBJECT
 
 public:
-    explicit Array2D(const QString& propertyName,
-                     Materials::Material* material,
-                     QWidget* parent = nullptr);
+    Array2D(const QString& propertyName,
+            std::shared_ptr<Materials::Material> material,
+            QWidget* parent = nullptr);
     ~Array2D() override = default;
 
+    void onDataChanged(const QModelIndex& topLeft,
+                       const QModelIndex& bottomRight,
+                       const QVector<int>& roles = QVector<int>());
     void defaultValueChanged(const Base::Quantity& value);
+    void onDelete(bool checked);
+    void onContextMenu(const QPoint& pos);
 
     void accept() override;
     void reject() override;
 
 private:
     std::unique_ptr<Ui_Array2D> ui;
-    const Materials::MaterialProperty* _property;
+    std::shared_ptr<Materials::Material> _material;
+    std::shared_ptr<Materials::MaterialProperty> _property;
     std::shared_ptr<Materials::Material2DArray> _value;
+
+    QAction _deleteAction;
 
     void setupDefault();
     void setHeaders(QStandardItemModel* model);
     void setColumnWidths(QTableView* table);
     void setColumnDelegates(QTableView* table);
     void setupArray();
+
+    bool newRow(const QModelIndex& index);
+    int confirmDelete();
+    void deleteSelected();
 };
 
 }  // namespace MatGui

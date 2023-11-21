@@ -84,7 +84,7 @@ bool findBSplineAndKnotIndex(Sketcher::SketchObject* Obj,
 
     // TODO: what to do if multiple splines have the same first/last point?
     const Part::Geometry* geo = Obj->getGeometry(knotGeoId);
-    if (geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
+    if (geo->is<Part::GeomBSplineCurve>()) {
         splineGeoId = knotGeoId;
         switch (knotPosId) {
             case Sketcher::PointPos::start:
@@ -224,7 +224,7 @@ void CmdSketcherIncreaseDegree::activated(int iMsg)
             int GeoId = std::atoi(SubNames[i].substr(4, 4000).c_str()) - 1;
             const Part::Geometry* geo = Obj->getGeometry(GeoId);
 
-            if (geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
+            if (geo->is<Part::GeomBSplineCurve>()) {
                 Gui::cmdAppObjectArgs(selection[0].getObject(),
                                       "increaseBSplineDegree(%d) ",
                                       GeoId);
@@ -303,7 +303,7 @@ void CmdSketcherDecreaseDegree::activated(int iMsg)
             int GeoId = std::atoi(SubNames[i].substr(4, 4000).c_str()) - 1;
             const Part::Geometry* geo = Obj->getGeometry(GeoId);
 
-            if (geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
+            if (geo->is<Part::GeomBSplineCurve>()) {
                 Gui::cmdAppObjectArgs(selection[0].getObject(),
                                       "decreaseBSplineDegree(%d) ",
                                       GeoId);
@@ -928,7 +928,7 @@ void CmdSketcherInsertKnot::activated(int iMsg)
     int GeoId = std::atoi(SubNames[0].substr(4, 4000).c_str()) - 1;
     const Part::Geometry* geo = Obj->getGeometry(GeoId);
 
-    if (geo->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
+    if (geo->is<Part::GeomBSplineCurve>()) {
         ActivateBSplineHandler(getActiveGuiDocument(),
                                new DrawSketchHandlerBSplineInsertKnot(Obj, GeoId));
     }

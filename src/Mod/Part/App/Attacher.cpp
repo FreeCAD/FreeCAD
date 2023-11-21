@@ -765,7 +765,7 @@ void AttachEngine::readLinks(const App::PropertyLinkSubList &references,
     shapes.resize(objs.size());
     types.resize(objs.size());
     for (std::size_t i = 0; i < objs.size(); i++) {
-        if (!objs[i]->getTypeId().isDerivedFrom(App::GeoFeature::getClassTypeId())) {
+        if (!objs[i]->isDerivedFrom<App::GeoFeature>()) {
             throw AttachEngineException("AttachEngine3D: link points to something that is not App::GeoFeature");
         }
         App::GeoFeature* geof = static_cast<App::GeoFeature*>(objs[i]);
@@ -1588,7 +1588,7 @@ double AttachEngine3D::calculateFoldAngle(gp_Vec axA, gp_Vec axB, gp_Vec edA, gp
     //DeepSOIC: this hardcore math can probably be replaced with a couple of
     //clever OCC calls... See forum thread "Sketch mapping enhancement" for a
     //picture on how this math was derived.
-    //http://forum.freecad.org/viewtopic.php?f=8&t=10511&sid=007946a934530ff2a6c9259fb32624ec&start=40#p87584
+    //https://forum.freecad.org/viewtopic.php?f=8&t=10511&sid=007946a934530ff2a6c9259fb32624ec&start=40#p87584
     axA.Normalize();
     axB.Normalize();
     edA.Normalize();

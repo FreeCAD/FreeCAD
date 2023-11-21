@@ -746,7 +746,7 @@ PropertyStringItem::PropertyStringItem() = default;
 
 QVariant PropertyStringItem::value(const App::Property* prop) const
 {
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyString::getClassTypeId()));
+    assert(prop && prop->isDerivedFrom<App::PropertyString>());
 
     std::string value = static_cast<const App::PropertyString*>(prop)->getValue();
     return {QString::fromUtf8(value.c_str())};
@@ -798,7 +798,7 @@ PropertyFontItem::PropertyFontItem() = default;
 
 QVariant PropertyFontItem::value(const App::Property* prop) const
 {
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyFont::getClassTypeId()));
+    assert(prop && prop->isDerivedFrom<App::PropertyFont>());
 
     std::string value = static_cast<const App::PropertyFont*>(prop)->getValue();
     return {QString::fromUtf8(value.c_str())};
@@ -861,7 +861,7 @@ PropertyIntegerItem::PropertyIntegerItem() = default;
 
 QVariant PropertyIntegerItem::value(const App::Property* prop) const
 {
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyInteger::getClassTypeId()));
+    assert(prop && prop->isDerivedFrom<App::PropertyInteger>());
 
     int value = (int)static_cast<const App::PropertyInteger*>(prop)->getValue();
     return {value};
@@ -926,7 +926,7 @@ PropertyIntegerConstraintItem::PropertyIntegerConstraintItem() = default;
 
 QVariant PropertyIntegerConstraintItem::value(const App::Property* prop) const
 {
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyIntegerConstraint::getClassTypeId()));
+    assert(prop && prop->isDerivedFrom<App::PropertyIntegerConstraint>());
 
     int value = (int)static_cast<const App::PropertyIntegerConstraint*>(prop)->getValue();
     return {value};
@@ -1018,7 +1018,7 @@ QVariant PropertyFloatItem::toString(const QVariant& prop) const
 
 QVariant PropertyFloatItem::value(const App::Property* prop) const
 {
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyFloat::getClassTypeId()));
+    assert(prop && prop->isDerivedFrom<App::PropertyFloat>());
 
     double value = static_cast<const App::PropertyFloat*>(prop)->getValue();
     return {value};
@@ -1084,7 +1084,7 @@ QVariant PropertyUnitItem::toString(const QVariant& prop) const
 
 QVariant PropertyUnitItem::value(const App::Property* prop) const
 {
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyQuantity::getClassTypeId()));
+    assert(prop && prop->isDerivedFrom<App::PropertyQuantity>());
 
     Base::Quantity value = static_cast<const App::PropertyQuantity*>(prop)->getQuantityValue();
     return QVariant::fromValue<Base::Quantity>(value);
@@ -1187,7 +1187,7 @@ QVariant PropertyFloatConstraintItem::toString(const QVariant& prop) const
 
 QVariant PropertyFloatConstraintItem::value(const App::Property* prop) const
 {
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyFloatConstraint::getClassTypeId()));
+    assert(prop && prop->isDerivedFrom<App::PropertyFloatConstraint>());
 
     double value = static_cast<const App::PropertyFloatConstraint*>(prop)->getValue();
     return {value};
@@ -1284,7 +1284,7 @@ PropertyBoolItem::PropertyBoolItem() = default;
 
 QVariant PropertyBoolItem::value(const App::Property* prop) const
 {
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyBool::getClassTypeId()));
+    assert(prop && prop->isDerivedFrom<App::PropertyBool>());
     
     bool value = static_cast<const App::PropertyBool*>(prop)->getValue();
     return {value};
@@ -1391,7 +1391,7 @@ QVariant PropertyVectorItem::toString(const QVariant& prop) const
 
 QVariant PropertyVectorItem::value(const App::Property* prop) const
 {
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyVector::getClassTypeId()));
+    assert(prop && prop->isDerivedFrom<App::PropertyVector>());
 
     const Base::Vector3d& value = static_cast<const App::PropertyVector*>(prop)->getValue();
     return QVariant::fromValue<Base::Vector3d>(value);
@@ -1604,7 +1604,7 @@ QVariant PropertyVectorListItem::toString(const QVariant& prop) const
 
 QVariant PropertyVectorListItem::value(const App::Property* prop) const
 {
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyVectorList::getClassTypeId()));
+    assert(prop && prop->isDerivedFrom<App::PropertyVectorList>());
 
     const std::vector<Base::Vector3d>& value = static_cast<const App::PropertyVectorList*>(prop)->getValue();
     QList<Base::Vector3d> list;
@@ -1685,7 +1685,7 @@ QVariant PropertyVectorDistanceItem::toString(const QVariant& prop) const
 
 QVariant PropertyVectorDistanceItem::value(const App::Property* prop) const
 {
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyVector::getClassTypeId()));
+    assert(prop && prop->isDerivedFrom<App::PropertyVector>());
 
     const Base::Vector3d& value = static_cast<const App::PropertyVector*>(prop)->getValue();
     return QVariant::fromValue<Base::Vector3d>(value);
@@ -1894,7 +1894,7 @@ QVariant PropertyMatrixItem::toString(const QVariant& prop) const
 
 QVariant PropertyMatrixItem::value(const App::Property* prop) const
 {
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyMatrix::getClassTypeId()));
+    assert(prop && prop->isDerivedFrom<App::PropertyMatrix>());
 
     const Base::Matrix4D& value = static_cast<const App::PropertyMatrix*>(prop)->getValue();
     return QVariant::fromValue<Base::Matrix4D>(value);
@@ -1902,7 +1902,7 @@ QVariant PropertyMatrixItem::value(const App::Property* prop) const
 
 QVariant PropertyMatrixItem::toolTip(const App::Property* prop) const
 {
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyMatrix::getClassTypeId()));
+    assert(prop && prop->isDerivedFrom<App::PropertyMatrix>());
 
     const Base::Matrix4D& value = static_cast<const App::PropertyMatrix*>(prop)->getValue();
     return {QString::fromStdString(value.analyse())};
@@ -2294,7 +2294,7 @@ void PropertyRotationItem::assignProperty(const App::Property* prop)
     // Choose an adaptive epsilon to avoid changing the axis when they are considered to
     // be equal. See https://forum.freecad.org/viewtopic.php?f=10&t=24662&start=10
     double eps = std::pow(10.0, -2*(decimals()+1));
-    if (prop->getTypeId().isDerivedFrom(App::PropertyRotation::getClassTypeId())) {
+    if (prop->isDerivedFrom<App::PropertyRotation>()) {
         const Base::Rotation& value = static_cast<const App::PropertyRotation*>(prop)->getValue();
         h.assignProperty(value, eps);
     }
@@ -2302,7 +2302,7 @@ void PropertyRotationItem::assignProperty(const App::Property* prop)
 
 QVariant PropertyRotationItem::value(const App::Property* prop) const
 {
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyRotation::getClassTypeId()));
+    assert(prop && prop->isDerivedFrom<App::PropertyRotation>());
 
     const Base::Rotation& value = static_cast<const App::PropertyRotation*>(prop)->getValue();
     double angle;
@@ -2339,7 +2339,7 @@ QVariant PropertyRotationItem::value(const App::Property* prop) const
 
 QVariant PropertyRotationItem::toolTip(const App::Property* prop) const
 {
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyRotation::getClassTypeId()));
+    assert(prop && prop->isDerivedFrom<App::PropertyRotation>());
 
     const Base::Rotation& p = static_cast<const App::PropertyRotation*>(prop)->getValue();
     double angle;
@@ -2586,7 +2586,7 @@ void PropertyPlacementItem::assignProperty(const App::Property* prop)
     // Choose an adaptive epsilon to avoid changing the axis when they are considered to
     // be equal. See https://forum.freecad.org/viewtopic.php?f=10&t=24662&start=10
     double eps = std::pow(10.0, -2*(decimals()+1));
-    if (prop->getTypeId().isDerivedFrom(App::PropertyPlacement::getClassTypeId())) {
+    if (prop->isDerivedFrom<App::PropertyPlacement>()) {
         const Base::Placement& value = static_cast<const App::PropertyPlacement*>(prop)->getValue();
         h.assignProperty(value.getRotation(), eps);
     }
@@ -2594,7 +2594,7 @@ void PropertyPlacementItem::assignProperty(const App::Property* prop)
 
 QVariant PropertyPlacementItem::value(const App::Property* prop) const
 {
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyPlacement::getClassTypeId()));
+    assert(prop && prop->isDerivedFrom<App::PropertyPlacement>());
 
     const Base::Placement& value = static_cast<const App::PropertyPlacement*>(prop)->getValue();
     double angle;
@@ -2631,7 +2631,7 @@ QVariant PropertyPlacementItem::value(const App::Property* prop) const
 
 QVariant PropertyPlacementItem::toolTip(const App::Property* prop) const
 {
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyPlacement::getClassTypeId()));
+    assert(prop && prop->isDerivedFrom<App::PropertyPlacement>());
 
     const Base::Placement& p = static_cast<const App::PropertyPlacement*>(prop)->getValue();
     double angle;
@@ -2769,7 +2769,7 @@ QStringList PropertyEnumItem::getEnum() const
 {
     QStringList res;
     auto prop = getFirstProperty();
-    if (prop && prop->getTypeId().isDerivedFrom(App::PropertyEnumeration::getClassTypeId())) {
+    if (prop && prop->isDerivedFrom<App::PropertyEnumeration>()) {
         const auto prop_enum = static_cast<const App::PropertyEnumeration*>(prop);
         std::vector<std::string> enums = prop_enum->getEnumVector();
         for (const auto& it : enums)
@@ -2780,7 +2780,7 @@ QStringList PropertyEnumItem::getEnum() const
 
 QVariant PropertyEnumItem::value(const App::Property* prop) const
 {
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyEnumeration::getClassTypeId()));
+    assert(prop && prop->isDerivedFrom<App::PropertyEnumeration>());
 
     const auto prop_enum = static_cast<const App::PropertyEnumeration*>(prop);
     if(!prop_enum->isValid())
@@ -2857,7 +2857,7 @@ QWidget* PropertyEnumItem::createEditor(QWidget* parent, const QObject* receiver
 
     QStringList commonModes, modes;
     for (auto it = items.begin(); it != items.end(); ++it) {
-        if ((*it)->getTypeId() == App::PropertyEnumeration::getClassTypeId()) {
+        if ((*it)->is<App::PropertyEnumeration>()) {
             auto prop = static_cast<App::PropertyEnumeration*>(*it);
             if (!prop->hasEnums()) {
                 commonModes.clear();
@@ -3012,7 +3012,7 @@ QVariant PropertyStringListItem::toString(const QVariant& prop) const
 
 QVariant PropertyStringListItem::value(const App::Property* prop) const
 {
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyStringList::getClassTypeId()));
+    assert(prop && prop->isDerivedFrom<App::PropertyStringList>());
     QStringList list;
     const std::vector<std::string>& value = (static_cast<const App::PropertyStringList*>(prop))->getValues();
     for (const auto & jt : value) {
@@ -3088,7 +3088,7 @@ QVariant PropertyFloatListItem::toString(const QVariant& prop) const
 
 QVariant PropertyFloatListItem::value(const App::Property* prop) const
 {
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyFloatList::getClassTypeId()));
+    assert(prop && prop->isDerivedFrom<App::PropertyFloatList>());
 
     QStringList list;
     const std::vector<double>& value = static_cast<const App::PropertyFloatList*>(prop)->getValues();
@@ -3161,7 +3161,7 @@ QVariant PropertyIntegerListItem::toString(const QVariant& prop) const
 
 QVariant PropertyIntegerListItem::value(const App::Property* prop) const
 {
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyIntegerList::getClassTypeId()));
+    assert(prop && prop->isDerivedFrom<App::PropertyIntegerList>());
 
     QStringList list;
     const std::vector<long>& value = static_cast<const App::PropertyIntegerList*>(prop)->getValues();
@@ -3216,7 +3216,7 @@ QVariant PropertyColorItem::toString(const QVariant& prop) const
 
 QVariant PropertyColorItem::value(const App::Property* prop) const
 {
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyColor::getClassTypeId()));
+    assert(prop && prop->isDerivedFrom<App::PropertyColor>());
 
     App::Color value = static_cast<const App::PropertyColor*>(prop)->getValue();
     return QVariant(value.asValue<QColor>());
@@ -3467,7 +3467,7 @@ QVariant PropertyMaterialItem::toString(const QVariant& prop) const
 
 QVariant PropertyMaterialItem::toolTip(const App::Property* prop) const
 {
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyMaterial::getClassTypeId()));
+    assert(prop && prop->isDerivedFrom<App::PropertyMaterial>());
 
     const App::Material& value = static_cast<const App::PropertyMaterial*>(prop)->getValue();
     auto dc = value.diffuseColor.asValue<QColor>();
@@ -3496,7 +3496,7 @@ QVariant PropertyMaterialItem::toolTip(const App::Property* prop) const
 
 QVariant PropertyMaterialItem::value(const App::Property* prop) const
 {
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyMaterial::getClassTypeId()));
+    assert(prop && prop->isDerivedFrom<App::PropertyMaterial>());
 
     const App::Material& value = static_cast<const App::PropertyMaterial*>(prop)->getValue();
     Material mat;
@@ -3888,7 +3888,7 @@ QVariant PropertyMaterialListItem::toString(const QVariant& prop) const
 
 QVariant PropertyMaterialListItem::toolTip(const App::Property* prop) const
 {
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyMaterialList::getClassTypeId()));
+    assert(prop && prop->isDerivedFrom<App::PropertyMaterialList>());
 
     const std::vector<App::Material>& values = static_cast<const App::PropertyMaterialList*>(prop)->getValues();
     if (values.empty())
@@ -3921,7 +3921,7 @@ QVariant PropertyMaterialListItem::toolTip(const App::Property* prop) const
 
 QVariant PropertyMaterialListItem::value(const App::Property* prop) const
 {
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyMaterialList::getClassTypeId()));
+    assert(prop && prop->isDerivedFrom<App::PropertyMaterialList>());
 
     const std::vector<App::Material>& value = static_cast<const App::PropertyMaterialList*>(prop)->getValues();
     QVariantList variantList;
@@ -4054,7 +4054,7 @@ PropertyFileItem::PropertyFileItem() = default;
 
 QVariant PropertyFileItem::value(const App::Property* prop) const
 {
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyFile::getClassTypeId()));
+    assert(prop && prop->isDerivedFrom<App::PropertyFile>());
 
     std::string value = static_cast<const App::PropertyFile*>(prop)->getValue();
     return {QString::fromUtf8(value.c_str())};
@@ -4111,7 +4111,7 @@ PropertyPathItem::PropertyPathItem() = default;
 
 QVariant PropertyPathItem::value(const App::Property* prop) const
 {
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyPath::getClassTypeId()));
+    assert(prop && prop->isDerivedFrom<App::PropertyPath>());
 
     std::string value = static_cast<const App::PropertyPath*>(prop)->getValue().string();
     return {QString::fromUtf8(value.c_str())};
@@ -4161,7 +4161,7 @@ PropertyTransientFileItem::PropertyTransientFileItem() = default;
 
 QVariant PropertyTransientFileItem::value(const App::Property* prop) const
 {
-    assert(prop && prop->getTypeId().isDerivedFrom(App::PropertyFileIncluded::getClassTypeId()));
+    assert(prop && prop->isDerivedFrom<App::PropertyFileIncluded>());
 
     std::string value = static_cast<const App::PropertyFileIncluded*>(prop)->getValue();
     return {QString::fromUtf8(value.c_str())};

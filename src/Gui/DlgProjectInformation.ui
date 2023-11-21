@@ -11,7 +11,7 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>Project information</string>
+   <string>Document information</string>
   </property>
   <property name="sizeGripEnabled">
    <bool>true</bool>

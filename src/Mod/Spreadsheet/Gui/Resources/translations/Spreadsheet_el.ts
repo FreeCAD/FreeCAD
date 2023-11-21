@@ -670,8 +670,8 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../Command.cpp" line="194"/>
       <location filename="../../Command.cpp" line="254"/>
-      <source>All (*)</source>
-      <translation>Όλα (*)</translation>
+      <source>CSV (*.csv *.CSV);;All (*)</source>
+      <translation>CSV (*.csv *.CSV);;Όλα (*)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="196"/>
@@ -728,7 +728,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
 Spreadsheet.my_alias_name αντί του Spreadsheet.B1</translation>
     </message>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="124"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="126"/>
       <source>Spreadsheet</source>
       <translation>Υπολογιστικό Φύλλο</translation>
     </message>
@@ -1032,9 +1032,9 @@ Defaults to: %V = %A
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="160"/>
       <source>Insert %n column(s) right</source>
-      <translation type="unfinished">
-        <numerusform>Εισαγωγή %n στήλης δεξιά</numerusform>
-        <numerusform>Insert %n column(s) right</numerusform>
+      <translation>
+        <numerusform>Εισαγωγή %n στήλης(ών) δεξιά</numerusform>
+        <numerusform>Εισαγωγή στήλης(ών) %n αριστερά</numerusform>
       </translation>
     </message>
     <message numerus="yes">
@@ -1049,7 +1049,7 @@ Defaults to: %V = %A
       <location filename="../../SheetTableView.cpp" line="172"/>
       <source>Remove column(s)</source>
       <translation type="unfinished">
-        <numerusform>Αφαίρεση στηλών(η)</numerusform>
+        <numerusform>Αφαίρεση στήλη(ών)</numerusform>
         <numerusform>Remove column(s)</numerusform>
       </translation>
     </message>

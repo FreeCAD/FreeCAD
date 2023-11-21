@@ -231,7 +231,7 @@ void CmdPartDesignBody::activated(int iMsg)
         if (body) {
             std::vector<App::DocumentObject*> links = body->Group.getValues();
             for (auto it : links) {
-                if (it->getTypeId().isDerivedFrom(PartDesign::FeatureBase::getClassTypeId())) {
+                if (it->isDerivedFrom<PartDesign::FeatureBase>()) {
                     PartDesign::FeatureBase* base = static_cast<PartDesign::FeatureBase*>(it);
                     if (base && base->BaseFeature.getValue() == baseFeature) {
                         Gui::Application::Instance->hideViewProvider(baseFeature);
@@ -797,7 +797,7 @@ void CmdPartDesignMoveFeature::activated(int iMsg)
         }
 
         // Fix sketch support
-        if (feat->getTypeId().isDerivedFrom(Sketcher::SketchObject::getClassTypeId())) {
+        if (feat->isDerivedFrom<Sketcher::SketchObject>()) {
             Sketcher::SketchObject *sketch = static_cast<Sketcher::SketchObject*>(feat);
             try {
                 PartDesignGui::fixSketchSupport(sketch);

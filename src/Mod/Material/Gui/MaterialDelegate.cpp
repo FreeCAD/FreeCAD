@@ -49,8 +49,10 @@
 
 #include "Array2D.h"
 #include "Array3D.h"
+#include "ListEdit.h"
 #include "MaterialDelegate.h"
 #include "MaterialSave.h"
+#include "TextEdit.h"
 
 
 using namespace MatGui;
@@ -88,7 +90,19 @@ bool MaterialDelegate::editorEvent(QEvent* event,
             std::string type = propertyType.toStdString();
             if (type == "Color") {
                 Base::Console().Log("Edit color\n");
-                showColorModal(item);
+                showColorModal(item, propertyName);
+                // Mark as handled
+                return true;
+            }
+            else if (type == "MultiLineString") {
+                Base::Console().Log("Edit List\n");
+                showMultiLineString(propertyName, item);
+                // Mark as handled
+                return true;
+            }
+            else if (type == "List") {
+                Base::Console().Log("Edit List\n");
+                showListModal(propertyName, item);
                 // Mark as handled
                 return true;
             }
@@ -109,7 +123,7 @@ bool MaterialDelegate::editorEvent(QEvent* event,
     return QStyledItemDelegate::editorEvent(event, model, option, index);
 }
 
-void MaterialDelegate::showColorModal(QStandardItem* item)
+void MaterialDelegate::showColorModal(QStandardItem* item, QString propertyName)
 {
     QColor currentColor;  // = d->col;
     currentColor.setRgba(parseColor(item->text()));
@@ -126,14 +140,18 @@ void MaterialDelegate::showColorModal(QStandardItem* item)
 
     connect(dlg, &QColorDialog::finished, this, [&](int result) {
         if (result == QDialog::Accepted) {
+            Base::Console().Log("Accepted\n");
             QColor color = dlg->selectedColor();
             if (color.isValid()) {
+                Base::Console().Log("isValid\n");
                 QString colorText = QString(QString::fromStdString("(%1,%2,%3,%4)"))
                                         .arg(color.red() / 255.0)
                                         .arg(color.green() / 255.0)
                                         .arg(color.blue() / 255.0)
                                         .arg(color.alpha() / 255.0);
                 item->setText(colorText);
+                Q_EMIT const_cast<MaterialDelegate*>(this)->propertyChange(propertyName,
+                                                                           item->text());
             }
         }
     });
@@ -141,9 +159,46 @@ void MaterialDelegate::showColorModal(QStandardItem* item)
     dlg->exec();
 }
 
+void MaterialDelegate::showListModal(const QString& propertyName, QStandardItem* item)
+{
+    auto material = item->data().value<std::shared_ptr<Materials::Material>>();
+    auto dlg = new ListEdit(propertyName, material);
+
+    dlg->setAttribute(Qt::WA_DeleteOnClose);
+
+    dlg->adjustSize();
+
+    connect(dlg, &QDialog::finished, this, [&](int result) {
+        if (result == QDialog::Accepted) {
+            Base::Console().Log("Accepted\n");
+        }
+    });
+
+    dlg->exec();
+}
+
+void MaterialDelegate::showMultiLineString(const QString& propertyName, QStandardItem* item)
+{
+    auto material = item->data().value<std::shared_ptr<Materials::Material>>();
+    TextEdit* dlg = new TextEdit(propertyName, material);
+
+    dlg->setAttribute(Qt::WA_DeleteOnClose);
+
+    dlg->adjustSize();
+
+    connect(dlg, &QDialog::finished, this, [&](int result) {
+        if (result == QDialog::Accepted) {
+            Base::Console().Log("Accepted\n");
+        }
+    });
+
+    dlg->exec();
+}
+
+
 void MaterialDelegate::showArray2DModal(const QString& propertyName, QStandardItem* item)
 {
-    Materials::Material* material = item->data().value<Materials::Material*>();
+    auto material = item->data().value<std::shared_ptr<Materials::Material>>();
     Array2D* dlg = new Array2D(propertyName, material);
 
     dlg->setAttribute(Qt::WA_DeleteOnClose);
@@ -161,7 +216,7 @@ void MaterialDelegate::showArray2DModal(const QString& propertyName, QStandardIt
 
 void MaterialDelegate::showArray3DModal(const QString& propertyName, QStandardItem* item)
 {
-    Materials::Material* material = item->data().value<Materials::Material*>();
+    auto material = item->data().value<std::shared_ptr<Materials::Material>>();
     Array3D* dlg = new Array3D(propertyName, material);
 
     dlg->setAttribute(Qt::WA_DeleteOnClose);
@@ -230,6 +285,38 @@ void MaterialDelegate::paint(QPainter* painter,
         painter->restore();
         return;
     }
+    else if (type == "MultiLineString") {
+        painter->save();
+
+        QImage table(QString::fromStdString(":/icons/multiline.svg"));
+        QRect target(option.rect);
+        if (target.width() > target.height()) {
+            target.setWidth(target.height());
+        }
+        else {
+            target.setHeight(target.width());
+        }
+        painter->drawImage(target, table, table.rect());
+
+        painter->restore();
+        return;
+    }
+    else if (type == "List") {
+        painter->save();
+
+        QImage table(QString::fromStdString(":/icons/list.svg"));
+        QRect target(option.rect);
+        if (target.width() > target.height()) {
+            target.setWidth(target.height());
+        }
+        else {
+            target.setHeight(target.width());
+        }
+        painter->drawImage(target, table, table.rect());
+
+        painter->restore();
+        return;
+    }
     else if (type == "2DArray" || type == "3DArray") {
         // painter->save();
 
@@ -276,7 +363,8 @@ QSize MaterialDelegate::sizeHint(const QStyleOptionViewItem& option, const QMode
     if (type == "Color") {
         return QSize(75, 23);  // Standard QPushButton size
     }
-    else if (type == "2DArray" || type == "3DArray") {
+    else if (type == "2DArray" || type == "3DArray" || type == "MultiLineString"
+             || type == "List") {
         return QSize(23, 23);
     }
 
@@ -383,14 +471,14 @@ QWidget* MaterialDelegate::createWidget(QWidget* parent,
     QWidget* widget = nullptr;
 
     std::string type = propertyType.toStdString();
-    if (type == "String" || type == "URL" || type == "Vector") {
+    if (type == "String" || type == "URL" || type == "List") {
         widget = new Gui::PrefLineEdit(parent);
     }
     else if ((type == "Integer") || (type == "Int")) {
-        Gui::UIntSpinBox* spinner = new Gui::UIntSpinBox(parent);
+        Gui::IntSpinBox* spinner = new Gui::IntSpinBox(parent);
         spinner->setMinimum(0);
-        spinner->setMaximum(UINT_MAX);
-        spinner->setValue(propertyValue.toUInt());
+        spinner->setMaximum(INT_MAX);
+        spinner->setValue(propertyValue.toInt());
         widget = spinner;
     }
     else if (type == "Float") {
@@ -411,8 +499,8 @@ QWidget* MaterialDelegate::createWidget(QWidget* parent,
     else if (type == "Boolean") {
         Gui::PrefComboBox* combo = new Gui::PrefComboBox(parent);
         combo->insertItem(0, QString::fromStdString(""));
-        combo->insertItem(1, QString::fromStdString("False"));
-        combo->insertItem(2, QString::fromStdString("True"));
+        combo->insertItem(1, tr("False"));
+        combo->insertItem(2, tr("True"));
         combo->setCurrentText(propertyValue);
         widget = combo;
     }

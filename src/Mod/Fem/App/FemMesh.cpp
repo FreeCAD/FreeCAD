@@ -272,7 +272,7 @@ void FemMesh::copyMeshData(const FemMesh& mesh)
     SMESHDS_Mesh* meshds = this->myMesh->GetMeshDS();
 
     // Some further information is still not copied:
-    // http://forum.freecad.org/viewtopic.php?f=18&t=18982#p148114
+    // https://forum.freecad.org/viewtopic.php?f=18&t=18982#p148114
     SMDS_NodeIteratorPtr aNodeIter = mesh.myMesh->GetMeshDS()->nodesIterator();
     for (; aNodeIter->more();) {
         const SMDS_MeshNode* aNode = aNodeIter->next();
@@ -2047,7 +2047,7 @@ void FemMesh::writeABAQUS(const std::string& Filename, int elemParam, bool group
 
         // since master 0.15
         // added by werner (wmayer) March 2015,
-        // http://forum.freecad.org/viewtopic.php?f=18&t=10110&start=10#p81681
+        // https://forum.freecad.org/viewtopic.php?f=18&t=10110&start=10#p81681
         // https://github.com/FreeCAD/FreeCAD/commit/5d159f5cf352a93b1aff4fb7b82e8b747ee4f35b
         // https://github.com/FreeCAD/FreeCAD/commit/b007bd19e4e4608caa4cdad350a9f480287fac6b
         // tetra4 FreeCAD --> C3D4 CalculiX
@@ -2250,7 +2250,7 @@ void FemMesh::writeABAQUS(const std::string& Filename, int elemParam, bool group
     anABAQUS_Output << "** Nodes" << std::endl;
     anABAQUS_Output << "*Node, NSET=Nall" << std::endl;
     // This way we get sorted output.
-    // See http://forum.freecad.org/viewtopic.php?f=18&t=12646&start=40#p103004
+    // See https://forum.freecad.org/viewtopic.php?f=18&t=12646&start=40#p103004
     for (const auto& it : vertexMap) {
         anABAQUS_Output << it.first << ", " << it.second.x << ", " << it.second.y << ", "
                         << it.second.z << std::endl;

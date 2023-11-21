@@ -28,8 +28,8 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="107"/>
-      <source>Plane...</source>
-      <translation type="unfinished">Plane...</translation>
+      <source>Plane</source>
+      <translation>平面</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="108"/>
@@ -290,7 +290,7 @@
     <message>
       <location filename="../../FitBSplineSurface.ui" line="189"/>
       <source>Size factor</source>
-      <translation>尺寸因子</translation>
+      <translation>尺寸因數</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.ui" line="218"/>

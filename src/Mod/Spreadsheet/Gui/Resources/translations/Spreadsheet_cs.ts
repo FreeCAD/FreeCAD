@@ -682,8 +682,8 @@ změnit konfiguraci návrhu. Pokud vlastnost neexistuje, bude vytvořena.</trans
     <message>
       <location filename="../../Command.cpp" line="194"/>
       <location filename="../../Command.cpp" line="254"/>
-      <source>All (*)</source>
-      <translation>Vše (*)</translation>
+      <source>CSV (*.csv *.CSV);;All (*)</source>
+      <translation>CSV (*.csv *.CSV);;Vše (*)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="196"/>
@@ -740,7 +740,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
 Spreadsheet.alias_nazev místo Spreadsheet.B1</translation>
     </message>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="124"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="126"/>
       <source>Spreadsheet</source>
       <translation>Tabulka</translation>
     </message>
@@ -901,7 +901,7 @@ Chcete pokračovat?</translation>
       <location filename="../../DlgBindSheet.cpp" line="276"/>
       <source>Error:
 </source>
-      <translation type="unfinished">Error:
+      <translation>Chyba:
 </translation>
     </message>
     <message>

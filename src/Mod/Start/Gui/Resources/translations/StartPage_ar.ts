@@ -105,8 +105,8 @@
     </message>
     <message>
       <location filename="TranslationTexts.py" line="62"/>
-      <source>The &lt;a href="http://forum.freecadweb.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecadweb.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
-      <translation>إنّ &lt;a href="http://forum.freecadweb.org"&gt;منتدى فري‌كاد&lt;/a&gt; لهو مكان رائع لتلتمس يد المساعدة من مستخدمي ومطوّري فري‌كاد الآخرين. في المنتدى عدّة أقسام لمختلف المشاكل والمواضيع النقاشية. إن كتت محتارًا أين تضع موضوعك، فضعه في قسم &lt;a href="https://forum.freecadweb.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; العام.</translation>
+      <source>The &lt;a href="https://forum.freecadweb.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecadweb.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
+      <translation>إنّ &lt;a href="https://forum.freecadweb.org"&gt;منتدى فري‌كاد&lt;/a&gt; لهو مكان رائع لتلتمس يد المساعدة من مستخدمي ومطوّري فري‌كاد الآخرين. في المنتدى عدّة أقسام لمختلف المشاكل والمواضيع النقاشية. إن كتت محتارًا أين تضع موضوعك، فضعه في قسم &lt;a href="https://forum.freecadweb.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; العام.</translation>
     </message>
     <message>
       <location filename="TranslationTexts.py" line="63"/>

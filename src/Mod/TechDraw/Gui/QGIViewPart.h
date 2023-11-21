@@ -126,6 +126,9 @@ protected:
     bool formatGeomFromCosmetic(std::string cTag, QGIEdge* item);
     bool formatGeomFromCenterLine(std::string cTag, QGIEdge* item);
 
+    bool showCenterMarks();
+    bool showVertices();
+
 private:
     QList<QGraphicsItem*> deleteItems;
     PathBuilder* m_pathBuilder;

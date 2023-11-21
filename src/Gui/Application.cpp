@@ -222,7 +222,7 @@ FreeCADGui_subgraphFromObject(PyObject * /*self*/, PyObject *args)
         auto base =
             static_cast<Base::BaseClass*>(Base::Type::createInstanceByName(vp.c_str(), true));
         if (base
-            && base->getTypeId().isDerivedFrom(Gui::ViewProviderDocumentObject::getClassTypeId())) {
+            && base->isDerivedFrom<Gui::ViewProviderDocumentObject>()) {
             std::unique_ptr<Gui::ViewProviderDocumentObject> vp(
                 static_cast<Gui::ViewProviderDocumentObject*>(base));
             std::map<std::string, App::Property*> Map;
@@ -231,7 +231,7 @@ FreeCADGui_subgraphFromObject(PyObject * /*self*/, PyObject *args)
 
             // this is needed to initialize Python-based view providers
             App::Property* pyproxy = vp->getPropertyByName("Proxy");
-            if (pyproxy && pyproxy->getTypeId() == App::PropertyPythonObject::getClassTypeId()) {
+            if (pyproxy && pyproxy->is<App::PropertyPythonObject>()) {
                 static_cast<App::PropertyPythonObject*>(pyproxy)->setValue(Py::Long(1));
             }
 
@@ -1702,7 +1702,7 @@ void Application::setupContextMenu(const char* recipient, MenuItem* items) const
     if (actWb) {
         // when populating the context-menu of a Python workbench invoke the method
         // 'ContextMenu' of the handler object
-        if (actWb->getTypeId().isDerivedFrom(PythonWorkbench::getClassTypeId())) {
+        if (actWb->isDerivedFrom<PythonWorkbench>()) {
             static_cast<PythonWorkbench*>(actWb)->clearContextMenu();
             Base::PyGILStateLocker lock;
             PyObject* pWorkbench = nullptr;
@@ -2024,7 +2024,7 @@ void Application::runApplication()
     // if application not yet created by the splasher
     int argc = App::Application::GetARGC();
     GUISingleApplication mainApp(argc, App::Application::GetARGV());
-    // http://forum.freecad.org/viewtopic.php?f=3&t=15540
+    // https://forum.freecad.org/viewtopic.php?f=3&t=15540
     mainApp.setAttribute(Qt::AA_DontShowIconsInMenus, false);
 
     // Make sure that we use '.' as decimal point. See also

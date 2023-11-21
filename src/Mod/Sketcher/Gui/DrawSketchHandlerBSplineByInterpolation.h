@@ -27,8 +27,15 @@
 #include <QInputDialog>
 
 #include <Gui/Notifications.h>
+#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 
+#include <Mod/Sketcher/App/SketchObject.h>
+
+#include "DrawSketchHandler.h"
 #include "GeometryCreationMode.h"
+#include "Utils.h"
+#include "ViewProviderSketch.h"
 
 
 namespace SketcherGui
@@ -542,7 +549,7 @@ private:
                     "(_finalbsp_poles,_finalbsp_mults,_finalbsp_knots,%s,%d,None,False),%s)",
                     ConstrMethod == 0 ? "False" : "True",
                     myDegree,
-                    geometryCreationMode == Construction ? "True" : "False");
+                    constructionModeAsBooleanText());
                 currentgeoid++;
 
                 // TODO: Confirm we do not need to delete individual elements

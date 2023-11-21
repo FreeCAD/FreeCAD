@@ -24,9 +24,16 @@
 #ifndef SKETCHERGUI_SnapManager_H
 #define SKETCHERGUI_SnapManager_H
 
-
 #include <App/Application.h>
 
+#include <Base/Tools2D.h>
+#include <Base/Vector3D.h>
+
+namespace Part
+{
+class GeomLineSegment;
+class GeomArcOfCircle;
+}  // namespace Part
 
 namespace SketcherGui
 {

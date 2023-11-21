@@ -27,6 +27,7 @@
 #define GUI_DIALOG_DLGPREFERENCESIMP_H
 
 #include <QDialog>
+#include <QStandardItemModel>
 #include <memory>
 #include <FCGlobal.h>
 
@@ -34,10 +35,21 @@ class QAbstractButton;
 class QListWidgetItem;
 class QTabWidget;
 
-namespace Gui {
-namespace Dialog {
+namespace Gui::Dialog {
 class PreferencePage;
 class Ui_DlgPreferences;
+
+class PreferencesPageItem : public QStandardItem
+{
+public:
+    QWidget* getWidget() const;
+    void setWidget(QWidget* widget);
+
+    static constexpr char const* PropertyName = "SettingsPageItem";
+
+private:
+    QWidget *_widget = nullptr;
+};
 
 /**
  * This class implements a dialog containing several preference pages.
@@ -120,6 +132,8 @@ public:
     static void getGroupData(const std::string& group, std::string& icon, QString& tip);
     static void reloadSettings();
 
+    static PreferencePage* createPreferencePage(const std::string& pageName, const std::string& groupName);
+
     explicit DlgPreferencesImp(QWidget* parent = nullptr, Qt::WindowFlags fl = Qt::WindowFlags());
     ~DlgPreferencesImp() override;
 
@@ -130,53 +144,63 @@ public:
     void activeGroupPage(QString& group, int& index) const;
 
 protected:
-    void setupConnections();   
     void changeEvent(QEvent *e) override;
     void showEvent(QShowEvent*) override;
-    void resizeEvent(QResizeEvent*) override;
-    void onButtonResetTabClicked();
-    void onButtonResetGroupClicked();
-
 
 protected Q_SLOTS:
-    void changeGroup(QListWidgetItem *current, QListWidgetItem *previous);
     void onButtonBoxClicked(QAbstractButton*);
-    void resizeWindow(int w, int h);
+    void onPageSelected(const QModelIndex &index);
 
 private:
     /** @name for internal use only */
     //@{
     void setupPages();
     void reloadPages();
-    QTabWidget* createTabForGroup(const std::string& groupName);
-    void createPageInGroup(QTabWidget* tabWidget, const std::string& pageName);
+
+    PreferencesPageItem* getCurrentPage() const;
+
+    PreferencesPageItem* createGroup(const std::string& groupName);
+    void createPageInGroup(PreferencesPageItem* item, const std::string& pageName);
+
     void applyChanges();
     void showResetOptions();
     void restoreDefaults();
-    void restorePageDefaults(PreferencePage**);
-    QString longestGroupName() const;
+    void restorePageDefaults(PreferencesPageItem* item);
     void restartIfRequired();
+
+    void updatePageDependentLabels();
+
+    QPixmap loadIconForGroup(const std::string& name) const;
     //@}
 
 private:
     using TGroupPages = std::pair<std::string, std::list<std::string>>;
+
     static std::list<TGroupPages> _pages; /**< Name of all registered preference pages */
+
+    QStandardItemModel _model;
+
     struct Group {
         std::string iconName;
         QString tooltip;
     };
     static std::map<std::string, Group> _groupMap;
     std::unique_ptr<Ui_DlgPreferences> ui;
+
     bool invalidParameter;
     bool canEmbedScrollArea;
     bool restartRequired;
 
-    static const int GroupNameRole; /**< A name for our Qt::UserRole, used when storing user data in a list item */
+    /**< A name for our Qt::UserRole, used when storing user data in a list item */
+    static const int GroupNameRole;
+    static const int PageNameRole;
+
+    static constexpr char const* GroupNameProperty = "GroupName";
+    static constexpr char const* PageNameProperty = "PageName";
 
     static DlgPreferencesImp* _activeDialog; /**< Defaults to the nullptr, points to the current instance if there is one */
 };
 
-} // namespace Dialog
 } // namespace Gui
 
 #endif // GUI_DIALOG_DLGPREFERENCESIMP_H

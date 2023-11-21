@@ -49,13 +49,12 @@ else:
 #  and supports exporting faces with more than 3 vertices
 #  and supports object colors / materials
 
-p = Draft.precision()
-
 if open.__module__ in ['__builtin__','io']:
     pythonopen = open
 
 def findVert(aVertex,aList):
     "finds aVertex in aList, returns index"
+    p = Draft.precision()
     for i in range(len(aList)):
         if round(aVertex.X,p) == round(aList[i].X,p):
             if round(aVertex.Y,p) == round(aList[i].Y,p):
@@ -65,6 +64,7 @@ def findVert(aVertex,aList):
 
 def getIndices(obj,shape,offsetv,offsetvn):
     "returns a list with 2 lists: vertices and face indexes, offset with the given amount"
+    p = Draft.precision()
     vlist = []
     vnlist = []
     elist = []
@@ -146,7 +146,7 @@ def export(exportList,filename,colors=None):
     outfile = codecs.open(filename,"wb",encoding="utf8")
     ver = FreeCAD.Version()
     outfile.write("# FreeCAD v" + ver[0] + "." + ver[1] + " build" + ver[2] + " Arch module\n")
-    outfile.write("# http://www.freecad.org\n")
+    outfile.write("# https://www.freecad.org\n")
     offsetv = 1
     offsetvn = 1
     objectslist = Draft.get_group_contents(exportList, walls=True,

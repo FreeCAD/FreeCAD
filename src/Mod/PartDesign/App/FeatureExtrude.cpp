@@ -194,7 +194,7 @@ void FeatureExtrude::generatePrism(TopoDS_Shape& prism,
                                    const TopoDS_Shape& baseshape,
                                    const TopoDS_Shape& profileshape,
                                    const TopoDS_Face& supportface,
-                                   const TopoDS_Face& uptoface,
+                                   const TopoDS_Shape& uptoface,
                                    const gp_Dir& direction,
                                    PrismMode Mode,
                                    Standard_Boolean Modify)
@@ -333,6 +333,9 @@ void FeatureExtrude::updateProperties(const std::string &method)
         isLength2Enabled = true;
         isTaperVisible = true;
         isTaper2Visible = true;
+        isReversedEnabled = true;
+    }
+    else if (method == "UpToShape") {
         isReversedEnabled = true;
     }
 

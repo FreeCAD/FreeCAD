@@ -85,7 +85,9 @@ CmdSketcherToggleConstruction::CmdSketcherToggleConstruction()
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateOblong");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CompCreateRectangles");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreatePolyline");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateArcSlot");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateSlot");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CompSlot");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateArc");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_Create3PointArc");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CompCreateArc");
@@ -120,11 +122,11 @@ void CmdSketcherToggleConstruction::activated(int iMsg)
 
         Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
 
-        if (geometryCreationMode == Construction) {
-            geometryCreationMode = Normal;
+        if (geometryCreationMode == GeometryCreationMode::Construction) {
+            geometryCreationMode = GeometryCreationMode::Normal;
         }
         else {
-            geometryCreationMode = Construction;
+            geometryCreationMode = GeometryCreationMode::Construction;
         }
 
         rcCmdMgr.updateCommands("ToggleConstruction", static_cast<int>(geometryCreationMode));
@@ -197,7 +199,7 @@ void CmdSketcherToggleConstruction::activated(int iMsg)
 
                 auto geo = Obj->getGeometry(geoId);
 
-                if (geo && geo->getTypeId() == Part::GeomPoint::getClassTypeId()) {
+                if (geo && geo->is<Part::GeomPoint>()) {
                     // issue the actual commands to toggle
                     Gui::cmdAppObjectArgs(selection[0].getObject(),
                                           "toggleConstruction(%d) ",

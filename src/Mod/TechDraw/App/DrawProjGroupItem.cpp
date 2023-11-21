@@ -183,7 +183,7 @@ DrawProjGroup* DrawProjGroupItem::getPGroup() const
 {
     std::vector<App::DocumentObject*> parent = getInList();
     for (std::vector<App::DocumentObject*>::iterator it = parent.begin(); it != parent.end(); ++it) {
-        if ((*it)->getTypeId().isDerivedFrom(DrawProjGroup::getClassTypeId())) {
+        if ((*it)->isDerivedFrom<DrawProjGroup>()) {
             DrawProjGroup* result = dynamic_cast<TechDraw::DrawProjGroup *>(*it);
             return result;
         }

@@ -30,7 +30,8 @@
 #include <FCGlobal.h>
 #endif
 
-namespace Base {
+namespace Base
+{
 /**
   This is a utility class to break the application at a point to inspect e.g. the result of
   an algorithm.
@@ -53,18 +54,18 @@ namespace Base {
   \endcode
  \author Werner Mayer
  */
-class BaseExport Debugger : public QObject
+class BaseExport Debugger: public QObject
 {
     Q_OBJECT
 
 public:
-    Debugger(QObject* parent=nullptr);
+    Debugger(QObject* parent = nullptr);
     ~Debugger() override;
 
     Debugger(const Debugger&) = delete;
     Debugger(Debugger&&) = delete;
-    Debugger& operator= (const Debugger&) = delete;
-    Debugger& operator= (Debugger&&) = delete;
+    Debugger& operator=(const Debugger&) = delete;
+    Debugger& operator=(Debugger&&) = delete;
 
     void attach();
     void detach();
@@ -75,10 +76,10 @@ public Q_SLOTS:
     void quit();
 
 private:
-    bool isAttached;
+    bool isAttached {false};
     QEventLoop loop;
 };
 
-}
+}  // namespace Base
 
-#endif // BASE_DEBUGGER_H
+#endif  // BASE_DEBUGGER_H

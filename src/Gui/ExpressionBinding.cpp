@@ -172,7 +172,7 @@ bool ExpressionBinding::assignToProperty(const std::string & propName, double va
         if (prop && prop->isReadOnly())
             return true;
 
-        if (prop && prop->getTypeId().isDerivedFrom(App::PropertyPlacement::getClassTypeId())) {
+        if (prop && prop->isDerivedFrom<App::PropertyPlacement>()) {
             std::string p = path.getSubPathStr();
             if (p == ".Rotation.Angle") {
                 value = Base::toRadians(value);
@@ -295,6 +295,7 @@ QPixmap ExpressionWidget::getIcon(const char* name, const QSize& size) const
 void ExpressionWidget::makeLabel(QLineEdit* le)
 {
     defaultPalette = le->palette();
+    defaultPalette.setCurrentColorGroup(QPalette::Active);
 
     /* Icon for f(x) */
     QFontMetrics fm(le->font());

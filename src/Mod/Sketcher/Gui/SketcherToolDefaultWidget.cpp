@@ -27,8 +27,6 @@
 #include <Inventor/events/SoKeyboardEvent.h>
 #include <QApplication>
 #include <QEvent>
-#include <QRegularExpression>
-#include <QRegularExpressionMatch>
 #endif
 
 #include "ui_SketcherToolDefaultWidget.h"
@@ -37,8 +35,6 @@
 #include <Gui/BitmapFactory.h>
 #include <Gui/ViewProvider.h>
 #include <Gui/WaitCursor.h>
-#include <Gui/View3DInventor.h>
-#include <Gui/View3DInventorViewer.h>
 #include <Gui/PrefWidgets.h>
 #include <Base/Tools.h>
 #include <Base/UnitsApi.h>
@@ -53,74 +49,11 @@ using namespace SketcherGui;
 using namespace Gui::TaskView;
 
 
-SketcherToolDefaultWidget::KeyboardManager::KeyboardManager()
-    : keyMode(SketcherToolDefaultWidget::KeyboardManager::KeyboardEventHandlingMode::Widget)
-{
-    // get the active viewer, so that we can send it key events
-    auto doc = Gui::Application::Instance->activeDocument();
-
-    if (doc) {
-        auto temp = dynamic_cast<Gui::View3DInventor*>(doc->getActiveView());
-        if (temp) {
-            vpViewer = temp->getViewer();
-            keyMode = KeyboardEventHandlingMode::ViewProvider;
-        }
-    }
-
-    timer.setSingleShot(true);
-
-    QObject::connect(&timer, &QTimer::timeout, [this]() {
-        onTimeOut();
-    });
-}
-
-bool SketcherToolDefaultWidget::KeyboardManager::isMode(
-    SketcherToolDefaultWidget::KeyboardManager::KeyboardEventHandlingMode mode)
-{
-    return mode == keyMode;
-}
-
-SketcherToolDefaultWidget::KeyboardManager::KeyboardEventHandlingMode
-SketcherToolDefaultWidget::KeyboardManager::getMode()
-{
-    return keyMode;
-}
-
-bool SketcherToolDefaultWidget::KeyboardManager::handleKeyEvent(QKeyEvent* keyEvent)
-{
-    detectKeyboardEventHandlingMode(keyEvent);  // determine the handler
-
-    if (vpViewer && isMode(KeyboardEventHandlingMode::ViewProvider)) {
-        return QApplication::sendEvent(vpViewer, keyEvent);
-    }
-
-    return false;  // do not intercept the event and feed it to the widget
-}
-
-void SketcherToolDefaultWidget::KeyboardManager::detectKeyboardEventHandlingMode(
-    QKeyEvent* keyEvent)
-{
-    QRegularExpression rx(QStringLiteral("^[0-9]$"));
-    auto match = rx.match(keyEvent->text());
-    if (keyEvent->key() == Qt::Key_Enter || keyEvent->key() == Qt::Key_Return
-        || keyEvent->key() == Qt::Key_Tab || keyEvent->key() == Qt::Key_Backtab
-        || keyEvent->key() == Qt::Key_Backspace || keyEvent->key() == Qt::Key_Delete
-        || keyEvent->key() == Qt::Key_Minus || keyEvent->key() == Qt::Key_Period
-        || keyEvent->key() == Qt::Key_Comma || match.hasMatch()) {
-        keyMode = KeyboardEventHandlingMode::Widget;
-        timer.start(timeOut);
-    }
-}
-
-void SketcherToolDefaultWidget::KeyboardManager::onTimeOut()
-{
-    keyMode = KeyboardEventHandlingMode::ViewProvider;
-}
-
 SketcherToolDefaultWidget::SketcherToolDefaultWidget(QWidget* parent)
     : QWidget(parent)
     , ui(new Ui_SketcherToolDefaultWidget)
     , blockParameterSlots(false)
+    , blockParameterFocusPassing(false)
 {
     ui->setupUi(this);
 
@@ -224,16 +157,6 @@ bool SketcherToolDefaultWidget::eventFilter(QObject* object, QEvent* event)
             }
         }
     }
-    else if (event->type() == QEvent::KeyPress || event->type() == QEvent::KeyRelease) {
-        /*If a key shortcut is required to work on sketcher when a tool using Tool Setting widget
-        is being used, then you have to add this key to the below section such that the spinbox
-        doesn't keep the keypress event for itself. Note if you want the event to be handled by
-        the spinbox too, you can return false.*/
-
-        auto keyEvent = static_cast<QKeyEvent*>(event);
-
-        return keymanager.handleKeyEvent(keyEvent);
-    }
 
     return false;
 }
@@ -278,7 +201,9 @@ void SketcherToolDefaultWidget::parameterOne_valueChanged(double val)
     if (!blockParameterSlots) {
         isSet[Parameter::First] = true;
         setParameterFontStyle(Parameter::First, FontStyle::Bold);
-        setParameterFocus(Parameter::Second);
+        if (!blockParameterFocusPassing) {
+            setParameterFocus(Parameter::Second);
+        }
         signalParameterValueChanged(Parameter::First, val);
     }
 }
@@ -287,7 +212,9 @@ void SketcherToolDefaultWidget::parameterTwo_valueChanged(double val)
     if (!blockParameterSlots) {
         isSet[Parameter::Second] = true;
         setParameterFontStyle(Parameter::Second, FontStyle::Bold);
-        setParameterFocus(Parameter::Third);
+        if (!blockParameterFocusPassing) {
+            setParameterFocus(Parameter::Third);
+        }
         signalParameterValueChanged(Parameter::Second, val);
     }
 }
@@ -296,7 +223,9 @@ void SketcherToolDefaultWidget::parameterThree_valueChanged(double val)
     if (!blockParameterSlots) {
         isSet[Parameter::Third] = true;
         setParameterFontStyle(Parameter::Third, FontStyle::Bold);
-        setParameterFocus(Parameter::Fourth);
+        if (!blockParameterFocusPassing) {
+            setParameterFocus(Parameter::Fourth);
+        }
         signalParameterValueChanged(Parameter::Third, val);
     }
 }
@@ -305,7 +234,9 @@ void SketcherToolDefaultWidget::parameterFour_valueChanged(double val)
     if (!blockParameterSlots) {
         isSet[Parameter::Fourth] = true;
         setParameterFontStyle(Parameter::Fourth, FontStyle::Bold);
-        setParameterFocus(Parameter::Fifth);
+        if (!blockParameterFocusPassing) {
+            setParameterFocus(Parameter::Fifth);
+        }
         signalParameterValueChanged(Parameter::Fourth, val);
     }
 }
@@ -314,7 +245,9 @@ void SketcherToolDefaultWidget::parameterFive_valueChanged(double val)
     if (!blockParameterSlots) {
         isSet[Parameter::Fifth] = true;
         setParameterFontStyle(Parameter::Fifth, FontStyle::Bold);
-        setParameterFocus(Parameter::Sixth);
+        if (!blockParameterFocusPassing) {
+            setParameterFocus(Parameter::Sixth);
+        }
         signalParameterValueChanged(Parameter::Fifth, val);
     }
 }
@@ -323,6 +256,9 @@ void SketcherToolDefaultWidget::parameterSix_valueChanged(double val)
     if (!blockParameterSlots) {
         isSet[Parameter::Sixth] = true;
         setParameterFontStyle(Parameter::Sixth, FontStyle::Bold);
+        if (!blockParameterFocusPassing) {
+            setParameterFocus(Parameter::Seventh);
+        }
         signalParameterValueChanged(Parameter::Sixth, val);
     }
 }
@@ -331,6 +267,9 @@ void SketcherToolDefaultWidget::parameterSeven_valueChanged(double val)
     if (!blockParameterSlots) {
         isSet[Parameter::Seventh] = true;
         setParameterFontStyle(Parameter::Seventh, FontStyle::Bold);
+        if (!blockParameterFocusPassing) {
+            setParameterFocus(Parameter::Eighth);
+        }
         signalParameterValueChanged(Parameter::Seventh, val);
     }
 }
@@ -339,6 +278,9 @@ void SketcherToolDefaultWidget::parameterEight_valueChanged(double val)
     if (!blockParameterSlots) {
         isSet[Parameter::Eighth] = true;
         setParameterFontStyle(Parameter::Eighth, FontStyle::Bold);
+        if (!blockParameterFocusPassing) {
+            setParameterFocus(Parameter::Ninth);
+        }
         signalParameterValueChanged(Parameter::Eighth, val);
     }
 }
@@ -347,6 +289,9 @@ void SketcherToolDefaultWidget::parameterNine_valueChanged(double val)
     if (!blockParameterSlots) {
         isSet[Parameter::Ninth] = true;
         setParameterFontStyle(Parameter::Ninth, FontStyle::Bold);
+        if (!blockParameterFocusPassing) {
+            setParameterFocus(Parameter::Tenth);
+        }
         signalParameterValueChanged(Parameter::Ninth, val);
     }
 }
@@ -401,6 +346,12 @@ void SketcherToolDefaultWidget::setParameter(int parameterindex, double val)
 
     THROWM(Base::IndexError,
            QT_TRANSLATE_NOOP("Exceptions", "ToolWidget parameter index out of range"));
+}
+
+void SketcherToolDefaultWidget::setParameterWithoutPassingFocus(int parameterindex, double val)
+{
+    Base::StateLocker lock(blockParameterFocusPassing, true);
+    setParameter(parameterindex, val);
 }
 
 void SketcherToolDefaultWidget::configureParameterInitialValue(int parameterindex, double val)

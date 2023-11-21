@@ -250,6 +250,14 @@ void SplashScreen::drawContents ( QPainter * painter )
     QSplashScreen::drawContents(painter);
 }
 
+void SplashScreen::setShowMessages(bool on)
+{
+    messages->bErr = on;
+    messages->bMsg = on;
+    messages->bLog = on;
+    messages->bWrn = on;
+}
+
 // ------------------------------------------------------------------------------
 
 AboutDialogFactory* AboutDialogFactory::factory = nullptr;
@@ -800,7 +808,7 @@ void AboutDialog::copyToClipboard()
             deskInfo = QLatin1String(" (") + deskEnv + QLatin1String("/") + deskSess + QLatin1String(")");
     }
 
-    str << "[code]\n";
+    str << "```\n";
     str << "OS: " << prettyProductInfoWrapper() << deskInfo << '\n';
     str << "Word size of " << exe << ": " << QSysInfo::WordSize << "-bit\n";
     str << "Version: " << major << "." << minor << "." << point << suffix << "." << build;
@@ -881,7 +889,7 @@ void AboutDialog::copyToClipboard()
         }
     }
 
-    str << "[/code]\n";
+    str << "```\n";
     QClipboard* cb = QApplication::clipboard();
     cb->setText(data);
 }

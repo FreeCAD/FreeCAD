@@ -24,8 +24,16 @@
 #define SKETCHERGUI_DrawSketchHandlerExtend_H
 
 #include <Gui/Notifications.h>
+#include <Gui/SelectionFilter.h>
+#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 
+#include <Mod/Sketcher/App/SketchObject.h>
+
+#include "DrawSketchHandler.h"
 #include "GeometryCreationMode.h"
+#include "Utils.h"
+#include "ViewProviderSketch.h"
 
 
 namespace SketcherGui
@@ -60,8 +68,7 @@ public:
             int GeoId = std::atoi(element.substr(4, 4000).c_str()) - 1;
             Sketcher::SketchObject* Sketch = static_cast<Sketcher::SketchObject*>(object);
             const Part::Geometry* geom = Sketch->getGeometry(GeoId);
-            if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()
-                || geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+            if (geom->is<Part::GeomLineSegment>() || geom->is<Part::GeomArcOfCircle>()) {
                 return true;
             }
         }
@@ -105,7 +112,7 @@ public:
         Q_UNUSED(onSketchPos);
         if (Mode == STATUS_SEEK_Second) {
             const Part::Geometry* geom = sketchgui->getSketchObject()->getGeometry(BaseGeoId);
-            if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+            if (geom->is<Part::GeomLineSegment>()) {
                 const Part::GeomLineSegment* lineSeg =
                     static_cast<const Part::GeomLineSegment*>(geom);
                 // project point to the existing curve
@@ -151,7 +158,7 @@ public:
                 }
                 drawEdit(EditCurve);
             }
-            else if (geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+            else if (geom->is<Part::GeomArcOfCircle>()) {
                 const Part::GeomArcOfCircle* arc = static_cast<const Part::GeomArcOfCircle*>(geom);
                 Base::Vector3d center = arc->getCenter();
                 double radius = arc->getRadius();
@@ -246,7 +253,7 @@ public:
             BaseGeoId = getPreselectCurve();
             if (BaseGeoId > -1) {
                 const Part::Geometry* geom = sketchgui->getSketchObject()->getGeometry(BaseGeoId);
-                if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()) {
+                if (geom->is<Part::GeomLineSegment>()) {
                     const Part::GeomLineSegment* seg =
                         static_cast<const Part::GeomLineSegment*>(geom);
                     Base::Vector3d start3d = seg->getStartPoint();
@@ -258,7 +265,7 @@ public:
                     ExtendFromStart = SavedExtendFromStart;
                     Mode = STATUS_SEEK_Second;
                 }
-                else if (geom->getTypeId() == Part::GeomArcOfCircle::getClassTypeId()) {
+                else if (geom->is<Part::GeomArcOfCircle>()) {
                     const Part::GeomArcOfCircle* arc =
                         static_cast<const Part::GeomArcOfCircle*>(geom);
                     double start, end;

@@ -81,7 +81,7 @@ App::DocumentObjectExecReturn* FeatureViewSpreadsheet::execute(void)
     if (!link) {
         return new App::DocumentObjectExecReturn("No spreadsheet linked");
     }
-    if (!link->getTypeId().isDerivedFrom(Spreadsheet::Sheet::getClassTypeId())) {
+    if (!link->isDerivedFrom<Spreadsheet::Sheet>()) {
         return new App::DocumentObjectExecReturn("The linked object is not a spreadsheet");
     }
     if ((scellstart.empty()) || (scellend.empty())) {

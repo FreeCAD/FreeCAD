@@ -111,19 +111,19 @@ void CmdRobotInsertWaypoint::activated(int)
     std::vector<Gui::SelectionSingleton::SelObj> Sel = getSelection().getSelection();
 
     Robot::RobotObject* pcRobotObject = nullptr;
-    if (Sel[0].pObject->getTypeId() == Robot::RobotObject::getClassTypeId()) {
+    if (Sel[0].pObject->is<Robot::RobotObject>()) {
         pcRobotObject = static_cast<Robot::RobotObject*>(Sel[0].pObject);
     }
-    else if (Sel[1].pObject->getTypeId() == Robot::RobotObject::getClassTypeId()) {
+    else if (Sel[1].pObject->is<Robot::RobotObject>()) {
         pcRobotObject = static_cast<Robot::RobotObject*>(Sel[1].pObject);
     }
     std::string RoboName = pcRobotObject->getNameInDocument();
 
     Robot::TrajectoryObject* pcTrajectoryObject = nullptr;
-    if (Sel[0].pObject->getTypeId() == Robot::TrajectoryObject::getClassTypeId()) {
+    if (Sel[0].pObject->is<Robot::TrajectoryObject>()) {
         pcTrajectoryObject = static_cast<Robot::TrajectoryObject*>(Sel[0].pObject);
     }
-    else if (Sel[1].pObject->getTypeId() == Robot::TrajectoryObject::getClassTypeId()) {
+    else if (Sel[1].pObject->is<Robot::TrajectoryObject>()) {
         pcTrajectoryObject = static_cast<Robot::TrajectoryObject*>(Sel[1].pObject);
     }
     std::string TrakName = pcTrajectoryObject->getNameInDocument();
@@ -184,7 +184,7 @@ void CmdRobotInsertWaypointPreselect::activated(int)
 
 
     Robot::TrajectoryObject* pcTrajectoryObject;
-    if (Sel[0].pObject->getTypeId() == Robot::TrajectoryObject::getClassTypeId()) {
+    if (Sel[0].pObject->is<Robot::TrajectoryObject>()) {
         pcTrajectoryObject = static_cast<Robot::TrajectoryObject*>(Sel[0].pObject);
     }
     else {
