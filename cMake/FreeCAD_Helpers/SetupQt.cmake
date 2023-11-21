@@ -69,6 +69,10 @@ if (Qt${FREECAD_QT_MAJOR_VERSION}Core_VERSION VERSION_LESS 5.15.0)
         qt5_add_translation("${_qm_files}" ${ARGN})
         set("${_qm_files}" "${${_qm_files}}" PARENT_SCOPE)
     endfunction()
+
+    # Since Qt 5.15 Q_DISABLE_COPY_MOVE is defined
+    set (HAVE_Q_DISABLE_COPY_MOVE 0)
+    configure_file(${CMAKE_SOURCE_DIR}/src/QtCore.h.cmake ${CMAKE_BINARY_DIR}/src/QtCore.h)
 else()
     # Since Qt 5.15 Q_DISABLE_COPY_MOVE is defined
     set (HAVE_Q_DISABLE_COPY_MOVE 1)
