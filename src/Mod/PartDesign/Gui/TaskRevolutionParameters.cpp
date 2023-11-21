@@ -86,7 +86,7 @@ TaskRevolutionParameters::TaskRevolutionParameters(PartDesignGui::ViewProvider* 
     setupDialog();
 
     blockUpdate = false;
-    updateUI();
+    updateUI(ui->changeMode->currentIndex());
     connectSignals();
 
     setFocus();
@@ -351,7 +351,6 @@ void TaskRevolutionParameters::onSelectionChanged(const Gui::SelectionChanges& m
                 propReferenceAxis->setValue(selObj, axis);
 
                 recomputeFeature();
-                updateUI();
             }
         }
     }
@@ -546,7 +545,7 @@ void TaskRevolutionParameters::onModeChanged(int index)
         break;
     case PartDesign::Revolution::RevolMethod::ToLast:
         if (!isGroove)
-        pcType->setValue("UpToLast");
+            pcType->setValue("UpToLast");
         else
             pcType->setValue("ThroughAll");
         break;
