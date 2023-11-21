@@ -38,6 +38,10 @@
 #include <Mod/Material/App/ModelManager.h>
 #include <Mod/Material/App/ModelUuids.h>
 
+#ifdef _MSC_VER
+#pragma warning(disable : 4834)
+#endif
+
 // clang-format off
 
 class TestMaterial : public ::testing::Test {
