@@ -57,7 +57,7 @@
 
 
 namespace Part {
-    const App::PropertyQuantityConstraint::Constraints apexRange = {-90.0, 90.0, 0.1};
+    const App::PropertyQuantityConstraint::Constraints apexRange = {-89.9, 89.9, 0.1};
     const App::PropertyQuantityConstraint::Constraints torusRangeV = {-180.0, 180.0, 1.0};
     const App::PropertyQuantityConstraint::Constraints angleRangeU = {0.0, 360.0, 1.0};
     const App::PropertyQuantityConstraint::Constraints angleRangeV = {-90.0, 90.0, 1.0};

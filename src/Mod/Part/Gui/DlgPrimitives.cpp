@@ -1153,7 +1153,7 @@ HelixPrimitive::HelixPrimitive(std::shared_ptr<Ui_DlgPrimitives> ui, Part::Helix
     ui->helixPitch->setRange(0, INT_MAX);
     ui->helixHeight->setRange(0, INT_MAX);
     ui->helixRadius->setRange(0, INT_MAX);
-    ui->helixAngle->setRange(-89.99, 89.99);
+    ui->helixAngle->setRange(-89.9, 89.9);
 
     if (feature) {
         ui->helixPitch->setValue(feature->Pitch.getQuantityValue());
