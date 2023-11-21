@@ -55,7 +55,11 @@
 using namespace Gui;
 
 namespace Gui {
-std::array<std::pair<double, std::string>,3 > schemaTranslatePoint(double x, double y, double z, double precision);
+void printPreselectionInfo(const char* documentName,
+                           const char* objectName,
+                           const char* subElementName,
+                           float x, float y, float z,
+                           double precision);
 }
 
 SoFullPath * Gui::SoFCSelection::currenthighlight = nullptr;
@@ -384,22 +388,10 @@ SoFCSelection::handleEvent(SoHandleEventAction * action)
 
                 const auto &pt = pp->getPoint();
 
-                auto pts = schemaTranslatePoint(pt[0], pt[1], pt[2], 1e-7);
-
-                int numberDecimals = std::min(6, Base::UnitsApi::getDecimals());
-
-                QString message = QStringLiteral("Preselected: %1.%2.%3 (%4 %5, %6 %7, %8 %9)")
-                    .arg(QString::fromUtf8(documentName.getValue().getString()))
-                    .arg(QString::fromUtf8(objectName.getValue().getString()))
-                    .arg(QString::fromUtf8(subElementName.getValue().getString()))
-                    .arg(QString::number(pts[0].first, 'f', numberDecimals))
-                    .arg(QString::fromStdString(pts[0].second))
-                    .arg(QString::number(pts[1].first, 'f', numberDecimals))
-                    .arg(QString::fromStdString(pts[1].second))
-                    .arg(QString::number(pts[2].first, 'f', numberDecimals))
-                    .arg(QString::fromStdString(pts[2].second));
-
-                getMainWindow()->showMessage(message);
+                printPreselectionInfo(documentName.getValue().getString(),
+                                      objectName.getValue().getString(),
+                                      subElementName.getValue().getString(),
+                                      pt[0], pt[1], pt[2], 1e-7);
             }
             else { // picked point
                 if (highlighted) {

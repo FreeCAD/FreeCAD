@@ -91,7 +91,11 @@ FC_LOG_LEVEL_INIT("SoFCUnifiedSelection",false,true,true)
 using namespace Gui;
 
 namespace Gui {
-std::array<std::pair<double, std::string>,3 > schemaTranslatePoint(double x, double y, double z, double precision);
+void printPreselectionInfo(const char* documentName,
+                           const char* objectName,
+                           const char* subElementName,
+                           float x, float y, float z,
+                           double precision);
 }
 
 SoFullPath * Gui::SoFCUnifiedSelection::currenthighlight = nullptr;
@@ -496,22 +500,7 @@ bool SoFCUnifiedSelection::setHighlight(SoFullPath *path, const SoDetail *det,
 
         this->preSelection = 1;
 
-        auto pts = schemaTranslatePoint(x, y, z, 1e-7);
-
-        int numberDecimals = std::min(6, Base::UnitsApi::getDecimals());
-
-        QString message = QStringLiteral("Preselected: %1.%2.%3 (%4 %5, %6 %7, %8 %9)")
-            .arg(QString::fromUtf8(docname))
-            .arg(QString::fromUtf8(objname))
-            .arg(QString::fromUtf8(element))
-            .arg(QString::number(pts[0].first, 'f', numberDecimals))
-            .arg(QString::fromStdString(pts[0].second))
-            .arg(QString::number(pts[1].first, 'f', numberDecimals))
-            .arg(QString::fromStdString(pts[1].second))
-            .arg(QString::number(pts[2].first, 'f', numberDecimals))
-            .arg(QString::fromStdString(pts[2].second));
-
-        getMainWindow()->showMessage(message);
+        printPreselectionInfo(docname, objname, element, x, y, z, 1e-7);
 
 
         int ret = Gui::Selection().setPreselect(docname,objname,element,x,y,z);
