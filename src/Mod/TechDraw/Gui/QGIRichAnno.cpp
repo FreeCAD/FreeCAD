@@ -288,12 +288,16 @@ TechDraw::DrawRichAnno* QGIRichAnno::getFeature()
 // TODO: this rect is the right size, but not in the right place
 QRectF QGIRichAnno::boundingRect() const
 {
-    return m_text->boundingRect() | m_rect->boundingRect();
+    QRectF roughRect = m_text->boundingRect() | m_rect->boundingRect();
+    double halfWidth = roughRect.width() / 2.0;
+    double halfHeight = roughRect.height() / 2.0;
+    return { -halfWidth, - halfHeight, halfWidth * 2.0, halfHeight * 2.0 };
 }
 
 void QGIRichAnno::paint ( QPainter * painter, const QStyleOptionGraphicsItem * option, QWidget * widget) {
     QStyleOptionGraphicsItem myOption(*option);
     myOption.state &= ~QStyle::State_Selected;
+
 //    painter->setPen(Qt::blue);
 //    painter->drawRect(boundingRect());          //good for debugging
 
