@@ -22,29 +22,29 @@ MbD::ScrewConstraintIqcJqc::ScrewConstraintIqcJqc(EndFrmsptr frmi, EndFrmsptr fr
 
 void MbD::ScrewConstraintIqcJqc::calc_pGpEJ()
 {
-	pGpEJ = zIeJeIe->pvaluepEJ()->times(2.0 * M_PI)->minusFullRow(thezIeJe->pvaluepEJ()->times(pitch));
+	pGpEJ = zIeJeIe->pvaluepEJ()->times(2.0 * OS_M_PI)->minusFullRow(thezIeJe->pvaluepEJ()->times(pitch));
 }
 
 void MbD::ScrewConstraintIqcJqc::calc_pGpXJ()
 {
-	pGpXJ = zIeJeIe->pvaluepXJ()->times(2.0 * M_PI)->minusFullRow(thezIeJe->pvaluepXJ()->times(pitch));
+	pGpXJ = zIeJeIe->pvaluepXJ()->times(2.0 * OS_M_PI)->minusFullRow(thezIeJe->pvaluepXJ()->times(pitch));
 }
 
 void MbD::ScrewConstraintIqcJqc::calc_ppGpEIpEJ()
 {
-	ppGpEIpEJ = zIeJeIe->ppvaluepEIpEJ()->times(2.0 * M_PI)
+	ppGpEIpEJ = zIeJeIe->ppvaluepEIpEJ()->times(2.0 * OS_M_PI)
             ->minusFullMatrix(thezIeJe->ppvaluepEIpEJ()->times(pitch));
 }
 
 void MbD::ScrewConstraintIqcJqc::calc_ppGpEIpXJ()
 {
-	ppGpEIpXJ = zIeJeIe->ppvaluepEIpXJ()->times(2.0 * M_PI)
+	ppGpEIpXJ = zIeJeIe->ppvaluepEIpXJ()->times(2.0 * OS_M_PI)
             ->minusFullMatrix(thezIeJe->ppvaluepEIpXJ()->times(pitch));
 }
 
 void MbD::ScrewConstraintIqcJqc::calc_ppGpEJpEJ()
 {
-	ppGpEJpEJ = zIeJeIe->ppvaluepEJpEJ()->times(2.0 * M_PI)
+	ppGpEJpEJ = zIeJeIe->ppvaluepEJpEJ()->times(2.0 * OS_M_PI)
             ->minusFullMatrix(thezIeJe->ppvaluepEJpEJ()->times(pitch));
 }
 

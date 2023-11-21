@@ -47,8 +47,8 @@ namespace MbD {
 		void equalSelfPlusFullColumntimes(FColsptr<T> fullCol, T factor);
 		FColsptr<T> cross(FColsptr<T> fullCol);
 		FColsptr<T> simplified();
-		std::shared_ptr<FullColumn<T>> clonesptr();
-		double dot(std::shared_ptr<FullVector<T>> vec);
+		std::shared_ptr<FullColumn<T>> cloneFcSptr();
+		double dotVec(std::shared_ptr<FullVector<T>> vec);
 		std::shared_ptr<FullVector<T>> dot(std::shared_ptr<std::vector<std::shared_ptr<FullColumn<T>>>> vecvec);
 
 		std::ostream& printOn(std::ostream& s) const override;
@@ -66,4 +66,20 @@ namespace MbD {
         s << "}";
         return s;
     }
+    template<typename T>
+    std::shared_ptr<FullColumn<T>> FullColumn<T>::cloneFcSptr()
+    {
+        return std::make_shared<FullColumn<T>>(*this);
+    }
+    template<typename T>
+    double FullColumn<T>::dotVec(std::shared_ptr<FullVector<T>> vec)
+    {
+        int n = (int)this->size();
+        double answer = 0.0;
+        for (int i = 0; i < n; i++) {
+            answer += this->at(i) * vec->at(i);
+        }
+        return answer;
+    }
+
 }

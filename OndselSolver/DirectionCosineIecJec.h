@@ -10,11 +10,10 @@
 
 #include <memory>
 
+#include "FullColumn.h"
 #include "KinematicIeJe.h"
 
 namespace MbD {
-    template<typename T>
-    class FullColumn;
 
     class DirectionCosineIecJec : public KinematicIeJe
     {
@@ -26,8 +25,8 @@ namespace MbD {
         void calcPostDynCorrectorIteration() override;
         double value() override;
 
-        int axisI, axisJ;   //0, 1, 2 = x, y, z
-        double aAijIeJe;
+        int axisI{}, axisJ{};   //0, 1, 2 = x, y, z
+        double aAijIeJe{};
         FColDsptr aAjOIe, aAjOJe;
     };
 }

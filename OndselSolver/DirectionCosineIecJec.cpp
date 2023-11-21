@@ -9,29 +9,28 @@
 #include <memory>
 
 #include "DirectionCosineIecJec.h"
-#include "FullColumn.h"
 #include "EndFramec.h"
 
-using namespace MbD;
+namespace MbD {
+    DirectionCosineIecJec::DirectionCosineIecJec()
+    = default;
 
-DirectionCosineIecJec::DirectionCosineIecJec()
-{
+    DirectionCosineIecJec::DirectionCosineIecJec(EndFrmsptr frmi, EndFrmsptr frmj, int axisi, int axisj) :
+            KinematicIeJe(frmi, frmj), axisI(axisi), axisJ(axisj)
+    {
+
+    }
+
+    void DirectionCosineIecJec::calcPostDynCorrectorIteration()
+    {
+        aAjOIe = frmI->aAjOe(axisI);
+        aAjOJe = frmJ->aAjOe(axisJ);
+        aAijIeJe = aAjOIe->dotVec(aAjOJe);
+    }
+
+    double MbD::DirectionCosineIecJec::value()
+    {
+        return aAijIeJe;
+    }
 }
 
-DirectionCosineIecJec::DirectionCosineIecJec(EndFrmsptr frmi, EndFrmsptr frmj, int axisi, int axisj) :
-	KinematicIeJe(frmi, frmj), axisI(axisi), axisJ(axisj)
-{
-
-}
-
-void DirectionCosineIecJec::calcPostDynCorrectorIteration()
-{
-	aAjOIe = frmI->aAjOe(axisI);
-	aAjOJe = frmJ->aAjOe(axisJ);
-	aAijIeJe = aAjOIe->dot(aAjOJe);
-}
-
-double MbD::DirectionCosineIecJec::value()
-{
-	return aAijIeJe;
-}

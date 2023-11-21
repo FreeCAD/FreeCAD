@@ -60,7 +60,7 @@ void DirectionCosineIeqctJeqc::preVelIC()
 {
 	Item::preVelIC();
 	auto pAjOIept = std::static_pointer_cast<EndFrameqct>(frmI)->pAjOept(axisI);
-	pAijIeJept = pAjOIept->dot(aAjOJe);
+	pAijIeJept = pAjOIept->dotVec(aAjOJe);
 }
 
 double DirectionCosineIeqctJeqc::pvaluept()
@@ -82,7 +82,7 @@ void DirectionCosineIeqctJeqc::preAccIC()
 	}
 	for (int i = 0; i < 4; i++)
 	{
-		ppAijIeJepEJpt->atiput(i, pAjOIept->dot(pAjOJepEJT->at(i)));
+		ppAijIeJepEJpt->atiput(i, pAjOIept->dotVec(pAjOJepEJT->at(i)));
 	}
-	ppAijIeJeptpt = ppAjOIeptpt->dot(aAjOJe);
+	ppAijIeJeptpt = ppAjOIeptpt->dotVec(aAjOJe);
 }

@@ -18,7 +18,7 @@ namespace MbD {
         //
     public:
         void deleteMbD();
-        void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits);
+        void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
         Symsptr expandUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>> set) override;
         Symsptr simplifyUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>> set) override;
         bool isVariable() override;

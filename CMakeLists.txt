@@ -192,6 +192,7 @@ set(ONDSELSOLVER_SRC
         OndselSolver/IndependentVariable.cpp
         OndselSolver/InLineJoint.cpp
         OndselSolver/InPlaneJoint.cpp
+        OndselSolver/Integral.cpp
         OndselSolver/Integrator.cpp
         OndselSolver/IntegratorInterface.cpp
         OndselSolver/Item.cpp
@@ -220,6 +221,7 @@ set(ONDSELSOLVER_SRC
         OndselSolver/MBDynBody.cpp
         OndselSolver/MBDynControlData.cpp
         OndselSolver/MBDynData.cpp
+        OndselSolver/MBDynDrive.cpp
         OndselSolver/MBDynElement.cpp
         OndselSolver/MBDynInitialValue.cpp
         OndselSolver/MBDynItem.cpp
@@ -244,9 +246,11 @@ set(ONDSELSOLVER_SRC
         OndselSolver/Part.cpp
         OndselSolver/PartFrame.cpp
         OndselSolver/PerpendicularJoint.cpp
+        OndselSolver/PiecewiseFunction.cpp
         OndselSolver/PlanarJoint.cpp
         OndselSolver/PointInLineJoint.cpp
         OndselSolver/PointInPlaneJoint.cpp
+        OndselSolver/Polynomial.cpp
         OndselSolver/PosICKineNewtonRaphson.cpp
         OndselSolver/PosICNewtonRaphson.cpp
         OndselSolver/PosKineNewtonRaphson.cpp
@@ -260,6 +264,7 @@ set(ONDSELSOLVER_SRC
         OndselSolver/RackPinConstraintIqcJc.cpp
         OndselSolver/RackPinConstraintIqcJqc.cpp
         OndselSolver/RackPinJoint.cpp
+        OndselSolver/RampStepFunction.cpp
         OndselSolver/Reciprocal.cpp
         OndselSolver/RedundantConstraint.cpp
         OndselSolver/RevCylJoint.cpp

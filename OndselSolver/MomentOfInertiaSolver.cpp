@@ -15,7 +15,7 @@ void MbD::MomentOfInertiaSolver::example1()
 
 	auto rpPp = std::make_shared<FullColumn<double>>(ListD{ 0, 0, 1 });
 	auto rotAxis = std::make_shared<FullColumn<double>>(ListD{ 0, 0, 1 });
-	auto aApP = std::make_shared<EulerParameters<double>>(rotAxis, M_PI*10/180)->aA;
+	auto aApP = std::make_shared<EulerParameters<double>>(rotAxis, OS_M_PI * 10 / 180)->aA;
 	auto solver = std::make_shared<MomentOfInertiaSolver>();
 	solver->setm(4.0);
 	solver->setJPP(aJpp);
@@ -350,7 +350,7 @@ void MbD::MomentOfInertiaSolver::calcJppFromFullJcmP()
 	auto q = (c + (2.0 * aDiv3 * aDiv3 * aDiv3) - (aDiv3 * b)) / 2.0;
 	auto phiDiv3 = modifiedArcCos(-q / std::sqrt(-p * p * p)) / 3.0;
 	auto twoSqrtMinusp = 2.0 * std::sqrt(-p);
-	auto piDiv3 = M_PI / 3.0;
+	auto piDiv3 = OS_M_PI / 3.0;
 	auto sortedJ = std::make_shared<DiagonalMatrix>();
 	sortedJ->push_back(twoSqrtMinusp * std::cos(phiDiv3));
 	sortedJ->push_back(twoSqrtMinusp * -std::cos(phiDiv3 + piDiv3));
@@ -392,7 +392,7 @@ double MbD::MomentOfInertiaSolver::modifiedArcCos(double val)
 	}
 	else {
 		if (val < -1.0) {
-			return M_PI;
+			return OS_M_PI;
 		}
 		else {
 			return std::acos(val);

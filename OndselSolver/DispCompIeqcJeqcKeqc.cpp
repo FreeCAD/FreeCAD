@@ -41,7 +41,7 @@ void DispCompIeqcJeqcKeqc::calcPostDynCorrectorIteration()
 	}
 	for (int i = 0; i < 4; i++)
 	{
-		priIeJeKepEJ->atiput(i, aAjOKe->dot(prIeJeOpEJT->at(i)));
+		priIeJeKepEJ->atiput(i, aAjOKe->dotVec(prIeJeOpEJT->at(i)));
 	}
 	for (int i = 0; i < 3; i++)
 	{
@@ -55,10 +55,10 @@ void DispCompIeqcJeqcKeqc::calcPostDynCorrectorIteration()
 	{
 		auto& pprIeJeOpEJipEJ = pprIeJeOpEJpEJ->at(i);
 		auto& ppriIeJeKepEJipEJ = ppriIeJeKepEJpEJ->at(i);
-		ppriIeJeKepEJipEJ->atiput(i, aAjOKe->dot(pprIeJeOpEJipEJ->at(i)));
+		ppriIeJeKepEJipEJ->atiput(i, aAjOKe->dotVec(pprIeJeOpEJipEJ->at(i)));
 		for (int j = 0; j < 4; j++)
 		{
-			auto ppriIeJeKepEJipEJj = (aAjOKe->dot(pprIeJeOpEJipEJ->at(j)));
+			auto ppriIeJeKepEJipEJj = (aAjOKe->dotVec(pprIeJeOpEJipEJ->at(j)));
 			ppriIeJeKepEJipEJ->atiput(j, ppriIeJeKepEJipEJj);
 			ppriIeJeKepEJpEJ->atijput(j, i, ppriIeJeKepEJipEJj);
 		}

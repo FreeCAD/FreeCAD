@@ -31,10 +31,10 @@ void MbD::DispCompIeqcJecIe::calc_ppvaluepEIpEI()
 		auto ppriIeJeIepEIipEI = ppriIeJeIepEIpEI->at(i);
 		for (int j = i; j < 4; j++)
 		{
-			auto term1 = ppAjOIepEIipEI->at(j)->dot(rIeJeO);
+			auto term1 = ppAjOIepEIipEI->at(j)->dotVec(rIeJeO);
 			auto mterm2 = pAjOIepEIT->at(i)->dot(mprIeJeOpEIT->at(j));
 			auto mterm3 = (i == j) ? mterm2 : pAjOIepEIT->at(j)->dot(mprIeJeOpEIT->at(i));
-			auto mterm4 = aAjOIe->dot(mpprIeJeOpEIipEI->at(j));
+			auto mterm4 = aAjOIe->dotVec(mpprIeJeOpEIipEI->at(j));
 			ppriIeJeIepEIipEI->atiput(j, term1 - mterm2 - mterm3 - mterm4);
 		}
 	}
@@ -60,7 +60,7 @@ void MbD::DispCompIeqcJecIe::calc_pvaluepEI()
 	auto mprIeJeOpEIT = frmIeqc->prOeOpE->transpose();
 	for (int i = 0; i < 4; i++)
 	{
-		priIeJeIepEI->atiput(i, pAjOIepEIT->at(i)->dot(rIeJeO) - aAjOIe->dot(mprIeJeOpEIT->at(i)));
+		priIeJeIepEI->atiput(i, pAjOIepEIT->at(i)->dot(rIeJeO) - aAjOIe->dotVec(mprIeJeOpEIT->at(i)));
 	}
 }
 

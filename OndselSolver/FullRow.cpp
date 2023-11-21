@@ -47,21 +47,6 @@ namespace MbD {
         return answer;
     }
 
-// TODO: can't get the following to work, but CLion says the routine that calls it in FullMatrixFullMatrixDouble is also
-//       never called.
-//    template<>
-//    FRowsptr<std::shared_ptr<FullMatrixDouble>> FullRow<std::shared_ptr<FullMatrixDouble>>::timesTransposeFullMatrixForFMFMDsptr(
-//            std::shared_ptr<FullMatrixFullMatrixDouble> fullMat)
-//    {
-//        //"a*bT = a(1,j)b(k,j)"
-//        int ncol = fullMat->nrow();
-//        auto answer = std::make_shared<FullRow<std::shared_ptr<FullMatrixDouble>>>(ncol);
-//        for (int k = 0; k < ncol; k++) {
-//            answer->at(k) = this->dot(fullMat->at(k));
-//        }
-//        return answer;
-//    }
-
     template<>
     FRowsptr<double> FullRow<double>::timesFullMatrix(std::shared_ptr<FullMatrixDouble> fullMat)
     {

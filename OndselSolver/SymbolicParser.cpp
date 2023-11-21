@@ -330,7 +330,7 @@ bool MbD::SymbolicParser::constant()
 		return true;
 	}
 	if (peekForTypevalue("word", "pi")) {
-		auto symconst = std::make_shared<Constant>(M_PI);
+		auto symconst = std::make_shared<Constant>(OS_M_PI);
 		stack->push(symconst);
 		return true;
 	}

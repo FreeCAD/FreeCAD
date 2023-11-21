@@ -63,7 +63,7 @@ void MbD::DistIeqcJec::calcPrivate()
 		for (int j = 0; j < 4; j++)
 		{
 			auto element = mprIeJeOpEIiT->dot(mprIeJeOpEIT->at(j))
-				- mpprIeJeOpEIipEI->at(j)->dot(rIeJeO) - prIeJepEIi * prIeJepEI->at(j);
+                           - mpprIeJeOpEIipEI->at(j)->dotVec(rIeJeO) - prIeJepEIi * prIeJepEI->at(j);
 			pprIeJepEIipEI->atiput(j, element / rIeJe);
 		}
 	}

@@ -22,7 +22,7 @@ namespace MbD {
         void forwardEliminateWithPivot(int p) override;
         
         void postSolve() override;
-        void preSolvesaveOriginal(FMatDsptr fullMat, bool saveOriginal);
+        void preSolvesaveOriginal(FMatDsptr fullMat, bool saveOriginal) override;
         void decomposesaveOriginal(SpMatDsptr spMat, bool saveOriginal);
         void decomposesaveOriginal(FMatDsptr fullMat, bool saveOriginal);
         FMatDsptr inversesaveOriginal(FMatDsptr fullMat, bool saveOriginal);

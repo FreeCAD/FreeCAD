@@ -26,22 +26,22 @@ double MbD::Numeric::arcTan0to2piYoverX(double y, double x)
 		}
 		else {
 			//"Forth quadrant."
-			return 2.0 * M_PI + std::atan2(y, x);
+			return 2.0 * OS_M_PI + std::atan2(y, x);
 		}
 	}
 	else {
 		if (x < 0.0) {
 			//"Second and Third quadrants."
-			return	M_PI + std::atan2(y, x);
+			return OS_M_PI + std::atan2(y, x);
 		}
 		else {
 			//"x = 0"
 			if (y > 0.0) {
-				return M_PI / 2.0;
+				return OS_M_PI / 2.0;
 			}
 			else {
 				if (y < 0.0) {
-					return 1.5 * M_PI;
+					return 1.5 * OS_M_PI;
 				}
 				else {
 					throw std::invalid_argument("atan2(0, 0) is not defined.");

@@ -45,23 +45,23 @@ void MbD::ScrewConstraintIqcJc::addToJointTorqueI(FColDsptr jointTorque)
 
 void MbD::ScrewConstraintIqcJc::calc_pGpEI()
 {
-	pGpEI = zIeJeIe->pvaluepEI()->times(2.0 * M_PI)->minusFullRow(thezIeJe->pvaluepEI()->times(pitch));
+	pGpEI = zIeJeIe->pvaluepEI()->times(2.0 * OS_M_PI)->minusFullRow(thezIeJe->pvaluepEI()->times(pitch));
 }
 
 void MbD::ScrewConstraintIqcJc::calc_pGpXI()
 {
-	pGpXI = zIeJeIe->pvaluepXI()->times(2.0 * M_PI)->minusFullRow(thezIeJe->pvaluepXI()->times(pitch));
+	pGpXI = zIeJeIe->pvaluepXI()->times(2.0 * OS_M_PI)->minusFullRow(thezIeJe->pvaluepXI()->times(pitch));
 }
 
 void MbD::ScrewConstraintIqcJc::calc_ppGpEIpEI()
 {
-	ppGpEIpEI = zIeJeIe->ppvaluepEIpEI()->times(2.0 * M_PI)
+	ppGpEIpEI = zIeJeIe->ppvaluepEIpEI()->times(2.0 * OS_M_PI)
             ->minusFullMatrix(thezIeJe->ppvaluepEIpEI()->times(pitch));
 }
 
 void MbD::ScrewConstraintIqcJc::calc_ppGpXIpEI()
 {
-	ppGpXIpEI = zIeJeIe->ppvaluepXIpEI()->times(2.0 * M_PI)
+	ppGpXIpEI = zIeJeIe->ppvaluepXIpEI()->times(2.0 * OS_M_PI)
             ->minusFullMatrix(thezIeJe->ppvaluepXIpEI()->times(pitch));
 }
 

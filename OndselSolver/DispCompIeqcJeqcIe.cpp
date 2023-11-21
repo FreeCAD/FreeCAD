@@ -41,7 +41,7 @@ void MbD::DispCompIeqcJeqcIe::calc_ppvaluepEJpEJ()
 		auto ppriIeJeIepEJipEJ = ppriIeJeIepEJpEJ->at(i);
 		for (int j = i; j < 4; j++)
 		{
-			auto term1 = aAjOIe->dot(pprIeJeOpEJipEJ->at(j));
+			auto term1 = aAjOIe->dotVec(pprIeJeOpEJipEJ->at(j));
 			ppriIeJeIepEJipEJ->atiput(j, term1);
 		}
 	}
@@ -54,7 +54,7 @@ void MbD::DispCompIeqcJeqcIe::calc_pvaluepEJ()
 	auto prIeJeOpEJT = frmJeqc->prOeOpE->transpose();
 	for (int i = 0; i < 4; i++)
 	{
-		priIeJeIepEJ->atiput(i, aAjOIe->dot(prIeJeOpEJT->at(i)));
+		priIeJeIepEJ->atiput(i, aAjOIe->dotVec(prIeJeOpEJT->at(i)));
 	}
 }
 

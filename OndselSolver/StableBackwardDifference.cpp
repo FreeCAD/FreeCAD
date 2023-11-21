@@ -79,7 +79,7 @@ FColDsptr MbD::StableBackwardDifference::derivativepresentpast(int deriv, FColDs
 	//"Answer ith derivative given present value and past values."
 
 	if (deriv == 0) {
-		return y->clonesptr();
+		return y->cloneFcSptr();
 	}
 	else {
 		if (deriv <= order) {

@@ -65,7 +65,7 @@ std::vector<std::string> MbD::MBDynItem::collectArgumentsFor(std::string title, 
 			//Need to find matching '"'
 			auto it = std::find_if(arguments.begin() + 1, arguments.end(), [](const std::string& s) {
 				auto nn = std::count(s.begin(), s.end(), '"');
-				if ((nn % 2) == 1) return true;
+				return ((nn % 2) == 1);
 				});
 			std::vector<std::string> needToCombineArgs(arguments.begin(), it + 1);
 			arguments.erase(arguments.begin(), it + 1);

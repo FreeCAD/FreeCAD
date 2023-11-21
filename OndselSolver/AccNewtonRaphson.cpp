@@ -126,18 +126,17 @@ void AccNewtonRaphson::preRun()
 
 void MbD::AccNewtonRaphson::handleSingularMatrix()
 {
-	std::string str = typeid(*matrixSolver).name();
+    auto& r = *matrixSolver;
+	std::string str = typeid(r).name();
 	if (str.find("GESpMatParPvMarkoFast") != std::string::npos) {
 		matrixSolver = CREATE<GESpMatParPvPrecise>::With();
 		this->solveEquations();
-	}
-	else {
-		str = typeid(*matrixSolver).name();
+	} else {
+		str = typeid(r).name();
 		if (str.find("GESpMatParPvPrecise") != std::string::npos) {
 			this->logSingularMatrixMessage();
 			matrixSolver->throwSingularMatrixError("AccAccNewtonRaphson");
-		}
-		else {
+		} else {
 			assert(false);
 		}
 	}

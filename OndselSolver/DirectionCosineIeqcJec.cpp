@@ -56,7 +56,7 @@ void DirectionCosineIeqcJec::calcPostDynCorrectorIteration()
 		auto& ppAjOIepEIipEI = ppAjOIepEIpEI->at(i);
 		for (int j = 0; j < 4; j++)
 		{
-			ppAijIeJepEIipEI->at(j) = ppAjOIepEIipEI->at(j)->dot(aAjOJe);
+			ppAijIeJepEIipEI->at(j) = ppAjOIepEIipEI->at(j)->dotVec(aAjOJe);
 		}
 	}	
 	ppAijIeJepEIpEI->symLowerWithUpper();

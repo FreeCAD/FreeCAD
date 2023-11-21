@@ -20,7 +20,7 @@ void MbD::ScrewConstraintIJ::calcPostDynCorrectorIteration()
 {
 	auto z = zIeJeIe->value();
 	auto thez = thezIeJe->value();
-	aG = (2.0 * M_PI * z) - (pitch * thez) - aConstant;
+	aG = (2.0 * OS_M_PI * z) - (pitch * thez) - aConstant;
 }
 
 void MbD::ScrewConstraintIJ::init_zthez()
@@ -50,7 +50,7 @@ void MbD::ScrewConstraintIJ::postInput()
 {
 	zIeJeIe->postInput();
 	thezIeJe->postInput();
-	aConstant = (2.0 * M_PI * zIeJeIe->value()) - (thezIeJe->value() * pitch);
+	aConstant = (2.0 * OS_M_PI * zIeJeIe->value()) - (thezIeJe->value() * pitch);
 	ConstraintIJ::postInput();
 }
 
