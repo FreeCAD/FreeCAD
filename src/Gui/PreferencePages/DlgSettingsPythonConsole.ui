@@ -15,7 +15,7 @@
   </property>
   <layout class="QGridLayout" name="gridLayout_2">
    <item row="0" column="0">
-    <widget class="QGroupBox" name="GroupBox11">
+    <widget class="QGroupBox" name="GroupBox_console">
      <property name="title">
       <string>Console</string>
      </property>
@@ -111,11 +111,11 @@ horizontal space in Python console</string>
     </widget>
    </item>
    <item row="1" column="0">
-   <widget class="QGroupBox" name="GroupBox11">
+   <widget class="QGroupBox" name="GroupBox_other">
      <property name="title">
       <string>Other</string>
      </property>
-    <layout class="QGridLayout" name="gridLayout">
+    <layout class="QGridLayout" name="gridLayout_3">
      <item row="0" column="0">
       <widget class="QLabel" name="fclabel">
        <property name="text">
