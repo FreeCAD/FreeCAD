@@ -6848,13 +6848,13 @@ Horrek esan nahi du gainjarrita dauden formen bolumenak kendu egingo direla.
     <message>
       <location filename="../../CommandFilter.cpp" line="46"/>
       <source>Selection filter</source>
-      <translation type="unfinished">Selection filter</translation>
+      <translation>Hautapen-iragazkia</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="47"/>
       <location filename="../../CommandFilter.cpp" line="48"/>
       <source>Change the selection filter</source>
-      <translation type="unfinished">Change the selection filter</translation>
+      <translation>Aldatu hautapen-iragazkia</translation>
     </message>
   </context>
   <context>
@@ -6862,7 +6862,7 @@ Horrek esan nahi du gainjarrita dauden formen bolumenak kendu egingo direla.
     <message>
       <location filename="../../CommandFilter.cpp" line="173"/>
       <source>Vertex selection</source>
-      <translation type="unfinished">Vertex selection</translation>
+      <translation>Erpin-hautapena</translation>
     </message>
     <message>
       <location filename="../../CommandFilter.cpp" line="174"/>

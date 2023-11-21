@@ -60,6 +60,7 @@
 #include <Base/Matrix.h>
 #include <Base/Parameter.h>
 #include <Base/Vector3D.h>
+#include <Base/PlacementPy.h>
 #include <Mod/Part/App/PartFeature.h>
 
 #include "ImpExpDxf.h"
@@ -321,16 +322,22 @@ void ImpExpDxfRead::OnReadText(const double* point,
                                const char* text,
                                const double rotation)
 {
+    // Note that our parameters do not contain all the information needed to properly orient the
+    // text. As a result the text will always appear on the XY plane
     if (optionImportAnnotations) {
         if (LayerName().substr(0, 6) != "BLOCKS") {
-            Base::Interpreter().runString("import Draft");
-            Base::Interpreter().runStringArg("p=FreeCAD.Vector(%f,%f,%f)",
-                                             point[0] * optionScaling,
-                                             point[1] * optionScaling,
-                                             point[2] * optionScaling);
-            Base::Interpreter().runString("a=FreeCAD.Vector(0,0,1)");
-            Base::Interpreter().runStringArg("pl=FreeCAD.Placement(p,a,%f)", rotation);
-            Base::Interpreter().runStringArg("Draft.make_text(\"%s\",pl, height=%f)", text, height);
+            PyObject* draftModule = nullptr;
+            Base::Vector3d insertionPoint(point[0], point[1], point[2]);
+            insertionPoint *= optionScaling;
+            Base::Rotation rot(Base::Vector3d(0, 0, 1), rotation);
+            PyObject* placement = new Base::PlacementPy(Base::Placement(insertionPoint, rot));
+            draftModule = PyImport_ImportModule("Draft");
+            if (draftModule != nullptr) {
+                PyObject_CallMethod(draftModule, "make_text", "sOif", text, placement, 0, height);
+            }
+            // We own all the return values so we must release them.
+            Py_DECREF(placement);
+            Py_XDECREF(draftModule);
         }
         // else std::cout << "skipped text in block: " << LayerName() << std::endl;
     }

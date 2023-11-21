@@ -41,7 +41,7 @@ public:
     CoordinateSystem();
     CoordinateSystem(const CoordinateSystem&) = default;
     CoordinateSystem(CoordinateSystem&&) = default;
-    ~CoordinateSystem();
+    ~CoordinateSystem() = default;
 
     CoordinateSystem& operator=(const CoordinateSystem&) = default;
     CoordinateSystem& operator=(CoordinateSystem&&) = default;
@@ -49,7 +49,7 @@ public:
     /** Sets the main axis. X and Y dir are adjusted accordingly.
      * The main axis \a v must not be parallel to the X axis
      */
-    void setAxis(const Axis& v);
+    void setAxis(const Axis& axis);
     /** Sets the main axis. X and Y dir are adjusted accordingly.
      * The main axis must not be parallel to \a xd
      */
@@ -85,9 +85,9 @@ public:
     {
         return axis.getDirection();
     }
-    inline void setPosition(const Vector3d& p)
+    inline void setPosition(const Vector3d& pos)
     {
-        axis.setBase(p);
+        axis.setBase(pos);
     }
     inline const Vector3d& getPosition() const
     {
@@ -99,17 +99,17 @@ public:
      */
     Placement displacement(const CoordinateSystem& cs) const;
 
-    /** Transform the point \a p to be in this coordinate system */
-    void transformTo(Vector3d& p);
+    /** Transform the point \a pnt to be in this coordinate system */
+    void transformTo(Vector3d& pnt);
 
-    /** Apply the placement \a p to the coordinate system. */
-    void transform(const Placement& p);
+    /** Apply the placement \a plm to the coordinate system. */
+    void transform(const Placement& plm);
 
-    /** Apply the rotation \a r to the coordinate system. */
-    void transform(const Rotation& r);
+    /** Apply the rotation \a rot to the coordinate system. */
+    void transform(const Rotation& rot);
 
-    /** Set the placement \a p to the coordinate system. */
-    void setPlacement(const Placement& p);
+    /** Set the placement \a plm to the coordinate system. */
+    void setPlacement(const Placement& plm);
 
 private:
     Axis axis;

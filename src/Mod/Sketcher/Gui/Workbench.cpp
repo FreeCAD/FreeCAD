@@ -385,6 +385,23 @@ inline void SketcherAddWorkspaceFillets<Gui::ToolBarItem>(Gui::ToolBarItem& geom
 }
 
 template<typename T>
+void SketcherAddWorkspaceCurveEdition(T& geom);
+
+template<>
+inline void SketcherAddWorkspaceCurveEdition<Gui::MenuItem>(Gui::MenuItem& geom)
+{
+    geom << "Sketcher_Trimming"
+         << "Sketcher_Extend"
+         << "Sketcher_Split";
+}
+
+template<>
+inline void SketcherAddWorkspaceCurveEdition<Gui::ToolBarItem>(Gui::ToolBarItem& geom)
+{
+    geom << "Sketcher_CompCurveEdition";
+}
+
+template<typename T>
 inline void SketcherAddWorkbenchGeometries(T& geom)
 {
     geom << "Sketcher_CreatePoint"
@@ -397,10 +414,8 @@ inline void SketcherAddWorkbenchGeometries(T& geom)
     SketcherAddWorkspaceslots(geom);
     geom << "Separator";
     SketcherAddWorkspaceFillets(geom);
-    geom << "Sketcher_Trimming"
-         << "Sketcher_Extend"
-         << "Sketcher_Split"
-         << "Sketcher_External"
+    SketcherAddWorkspaceCurveEdition(geom);
+    geom << "Sketcher_External"
          << "Sketcher_CarbonCopy"
          << "Sketcher_ToggleConstruction"
         /*<< "Sketcher_CreateText"*/
@@ -417,6 +432,7 @@ inline void SketcherAddWorkbenchConstraints<Gui::MenuItem>(Gui::MenuItem& cons)
          << "Sketcher_ConstrainPointOnObject"
          << "Sketcher_ConstrainVertical"
          << "Sketcher_ConstrainHorizontal"
+         << "Sketcher_ConstrainHorVer"
          << "Sketcher_ConstrainParallel"
          << "Sketcher_ConstrainPerpendicular"
          << "Sketcher_ConstrainTangent"
@@ -447,8 +463,7 @@ inline void SketcherAddWorkbenchConstraints<Gui::ToolBarItem>(Gui::ToolBarItem& 
 
     cons << "Sketcher_ConstrainCoincident"
          << "Sketcher_ConstrainPointOnObject"
-         << "Sketcher_ConstrainVertical"
-         << "Sketcher_ConstrainHorizontal"
+         << "Sketcher_CompHorVer"
          << "Sketcher_ConstrainParallel"
          << "Sketcher_ConstrainPerpendicular"
          << "Sketcher_ConstrainTangent"

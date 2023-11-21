@@ -68,3 +68,6 @@ const QString ModelUUIDs::ModelUUID_Rendering_Advanced =
     QString::fromStdString("c880f092-cdae-43d6-a24b-55e884aacbbf");
 const QString ModelUUIDs::ModelUUID_Rendering_Vector =
     QString::fromStdString("fdf5a80e-de50-4157-b2e5-b6e5f88b680e");
+
+const QString ModelUUIDs::ModelUUID_Test_Material =
+    QString::fromStdString("c6c64159-19c1-40b5-859c-10561f20f979");

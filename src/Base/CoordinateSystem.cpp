@@ -36,23 +36,21 @@ CoordinateSystem::CoordinateSystem()
     , ydir(0, 1, 0)
 {}
 
-CoordinateSystem::~CoordinateSystem() = default;
-
-void CoordinateSystem::setAxes(const Axis& v, const Vector3d& xd)
+void CoordinateSystem::setAxes(const Axis& vec, const Vector3d& xd)
 {
     if (xd.Sqr() < Base::Vector3d::epsilon()) {
         throw Base::ValueError("Direction is null vector");
     }
-    Vector3d yd = v.getDirection() % xd;
+    Vector3d yd = vec.getDirection() % xd;
     if (yd.Sqr() < Base::Vector3d::epsilon()) {
         throw Base::ValueError("Direction is parallel to Z direction");
     }
     ydir = yd;
     ydir.Normalize();
-    xdir = ydir % v.getDirection();
+    xdir = ydir % vec.getDirection();
     xdir.Normalize();
-    axis.setBase(v.getBase());
-    Base::Vector3d zdir = v.getDirection();
+    axis.setBase(vec.getBase());
+    Base::Vector3d zdir = vec.getDirection();
     zdir.Normalize();
     axis.setDirection(zdir);
 }
@@ -75,9 +73,9 @@ void CoordinateSystem::setAxes(const Vector3d& n, const Vector3d& xd)
     axis.setDirection(zdir);
 }
 
-void CoordinateSystem::setAxis(const Axis& v)
+void CoordinateSystem::setAxis(const Axis& axis)
 {
-    setAxes(v, xdir);
+    setAxes(axis, xdir);
 }
 
 void CoordinateSystem::setXDirection(const Vector3d& dir)
@@ -111,6 +109,7 @@ void CoordinateSystem::setZDirection(const Vector3d& dir)
 
 Placement CoordinateSystem::displacement(const CoordinateSystem& cs) const
 {
+    // NOLINTBEGIN
     const Base::Vector3d& a = axis.getBase();
     const Base::Vector3d& zdir = axis.getDirection();
     Base::Matrix4D At;
@@ -148,36 +147,37 @@ Placement CoordinateSystem::displacement(const CoordinateSystem& cs) const
     Placement PB(B);
     Placement C = PB * PAt;
     return C;
+    // NOLINTEND
 }
 
-void CoordinateSystem::transformTo(Vector3d& p)
+void CoordinateSystem::transformTo(Vector3d& pnt)
 {
-    return p.TransformToCoordinateSystem(axis.getBase(), xdir, ydir);
+    return pnt.TransformToCoordinateSystem(axis.getBase(), xdir, ydir);
 }
 
-void CoordinateSystem::transform(const Placement& p)
+void CoordinateSystem::transform(const Placement& plm)
 {
-    axis *= p;
-    p.getRotation().multVec(this->xdir, this->xdir);
-    p.getRotation().multVec(this->ydir, this->ydir);
+    axis *= plm;
+    plm.getRotation().multVec(this->xdir, this->xdir);
+    plm.getRotation().multVec(this->ydir, this->ydir);
 }
 
-void CoordinateSystem::transform(const Rotation& r)
+void CoordinateSystem::transform(const Rotation& rot)
 {
     Vector3d zdir = axis.getDirection();
-    r.multVec(zdir, zdir);
+    rot.multVec(zdir, zdir);
     axis.setDirection(zdir);
-    r.multVec(this->xdir, this->xdir);
-    r.multVec(this->ydir, this->ydir);
+    rot.multVec(this->xdir, this->xdir);
+    rot.multVec(this->ydir, this->ydir);
 }
 
-void CoordinateSystem::setPlacement(const Placement& p)
+void CoordinateSystem::setPlacement(const Placement& plm)
 {
     Vector3d zdir(0, 0, 1);
-    p.getRotation().multVec(zdir, zdir);
-    axis.setBase(p.getPosition());
+    plm.getRotation().multVec(zdir, zdir);
+    axis.setBase(plm.getPosition());
     axis.setDirection(zdir);
 
-    p.getRotation().multVec(Vector3d(1, 0, 0), this->xdir);
-    p.getRotation().multVec(Vector3d(0, 1, 0), this->ydir);
+    plm.getRotation().multVec(Vector3d(1, 0, 0), this->xdir);
+    plm.getRotation().multVec(Vector3d(0, 1, 0), this->ydir);
 }

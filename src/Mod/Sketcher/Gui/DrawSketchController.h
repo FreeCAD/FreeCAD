@@ -241,8 +241,8 @@ protected:
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
                 "User parameter:BaseApp/Preferences/Mod/Sketcher/Tools");
 
-            onViewParameterVisibility =
-                static_cast<OnViewParameterVisibility>(hGrp->GetInt("OnViewParameterVisibility"));
+            onViewParameterVisibility = static_cast<OnViewParameterVisibility>(
+                hGrp->GetInt("OnViewParameterVisibility", 1));
         }
 
         OnViewParameterVisibility onViewParameterVisibility;

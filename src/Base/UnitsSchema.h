@@ -44,6 +44,7 @@ enum class UnitSystem
     MmMin = 6, /** Lengths in mm, Speed in mm/min. Angle in degrees. Useful for small parts & CNC */
     ImperialCivil = 7, /** Lengths in ft, Speed in ft/sec. Used in Civil Eng in North America */
     FemMilliMeterNewton = 8, /** Lengths in mm, Mass in t, TimeSpan in s, thus force is in N */
+    MeterDecimal = 9,        /** Lengths in metres always */
     NumUnitSystemTypes       // must be the last item!
 };
 
@@ -55,6 +56,11 @@ enum class UnitSystem
 class UnitsSchema
 {
 public:
+    UnitsSchema() = default;
+    UnitsSchema(const UnitsSchema&) = default;
+    UnitsSchema(UnitsSchema&&) = default;
+    UnitsSchema& operator=(const UnitsSchema&) = default;
+    UnitsSchema& operator=(UnitsSchema&&) = default;
     virtual ~UnitsSchema() = default;
     /** Gets called if this schema gets activated.
      * Here it's theoretically possible that you can change the static factors

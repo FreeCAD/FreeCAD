@@ -2070,7 +2070,7 @@ Default: 3 mm</translation>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="65"/>
       <source>Fit</source>
-      <translation type="unfinished">Fit</translation>
+      <translation>Προσαρμογή</translation>
     </message>
     <message>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="85"/>
@@ -2352,7 +2352,7 @@ If the radius is bigger than that which the tag shape itself supports, the resul
     <message>
       <location filename="../preferences/PathJob.ui" line="67"/>
       <source>Template</source>
-      <translation type="unfinished">Template</translation>
+      <translation>Πρότυπο</translation>
     </message>
     <message>
       <location filename="../preferences/PathJob.ui" line="95"/>

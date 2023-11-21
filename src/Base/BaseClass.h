@@ -30,6 +30,7 @@
 using PyObject = struct _object;
 
 
+// NOLINTBEGIN(cppcoreguidelines-macro-usage)
 /// define for subclassing Base::BaseClass
 #define TYPESYSTEM_HEADER()                                                                        \
 public:                                                                                            \
@@ -129,6 +130,7 @@ private:                                                                        
     {                                                                                              \
         initSubclass(_class_::classTypeId, #_class_, #_parentclass_, &(_class_::create));          \
     }
+// NOLINTEND(cppcoreguidelines-macro-usage)
 
 namespace Base
 {
@@ -191,14 +193,13 @@ public:
  *
  */
 template<typename T>
-T* freecad_dynamic_cast(Base::BaseClass* t)
+T* freecad_dynamic_cast(Base::BaseClass* type)
 {
-    if (t && t->isDerivedFrom(T::getClassTypeId())) {
-        return static_cast<T*>(t);
+    if (type && type->isDerivedFrom(T::getClassTypeId())) {
+        return static_cast<T*>(type);
     }
-    else {
-        return nullptr;
-    }
+
+    return nullptr;
 }
 
 /**
@@ -207,14 +208,13 @@ T* freecad_dynamic_cast(Base::BaseClass* t)
  *
  */
 template<typename T>
-const T* freecad_dynamic_cast(const Base::BaseClass* t)
+const T* freecad_dynamic_cast(const Base::BaseClass* type)
 {
-    if (t && t->isDerivedFrom(T::getClassTypeId())) {
-        return static_cast<const T*>(t);
+    if (type && type->isDerivedFrom(T::getClassTypeId())) {
+        return static_cast<const T*>(type);
     }
-    else {
-        return nullptr;
-    }
+
+    return nullptr;
 }
 
 

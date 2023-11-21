@@ -132,14 +132,19 @@ ILoggerBlocker::ILoggerBlocker(const char* co, ConsoleMsgFlags msgTypes)
 
 ILoggerBlocker::~ILoggerBlocker()
 {
+    try {
 #ifdef FC_DEBUG
-    auto debug = Console().SetEnabledMsgType(conObs, msgTypesBlocked, true);
-    if (debug != msgTypesBlocked) {
-        Console().Warning("Enabled message types have been changed while ILoggerBlocker was set\n");
-    }
+        auto debug = Console().SetEnabledMsgType(conObs, msgTypesBlocked, true);
+        if (debug != msgTypesBlocked) {
+            Console().Warning(
+                "Enabled message types have been changed while ILoggerBlocker was set\n");
+        }
 #else
-    Console().SetEnabledMsgType(conObs, msgTypesBlocked, true);
+        Console().SetEnabledMsgType(conObs, msgTypesBlocked, true);
 #endif
+    }
+    catch (...) {
+    }
 }
 
 class BaseExport RedirectStdOutput: public std::streambuf
@@ -148,7 +153,7 @@ public:
     RedirectStdOutput();
 
 protected:
-    int overflow(int c = EOF) override;
+    int overflow(int ch = EOF) override;
     int sync() override;
 
 private:
@@ -161,7 +166,7 @@ public:
     RedirectStdError();
 
 protected:
-    int overflow(int c = EOF) override;
+    int overflow(int ch = EOF) override;
     int sync() override;
 
 private:
@@ -174,7 +179,7 @@ public:
     RedirectStdLog();
 
 protected:
-    int overflow(int c = EOF) override;
+    int overflow(int ch = EOF) override;
     int sync() override;
 
 private:

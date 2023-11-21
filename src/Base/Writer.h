@@ -64,7 +64,7 @@ public:
     /// switch the writer in XML only mode (no files allowed)
     void setForceXML(bool on);
     /// check on state
-    bool isForceXML();
+    bool isForceXML() const;
     void setFileVersion(int);
     int getFileVersion() const;
 
@@ -73,7 +73,7 @@ public:
     /// insert a binary file BASE64 coded as CDATA section in the XML file
     void insertBinFile(const char* FileName);
     /// insert text string as CDATA
-    void insertText(const std::string& s);
+    void insertText(const std::string& str);
 
     /** @name additional file writing */
     //@{
@@ -143,6 +143,7 @@ public:
     /// Return the current character output stream
     std::ostream& charStream();
 
+    // NOLINTBEGIN
     /// name for underlying file saves
     std::string ObjectName;
 
@@ -163,10 +164,13 @@ protected:
 
     bool forceXML {false};
     int fileVersion {1};
+    // NOLINTEND
 
 public:
     Writer(const Writer&) = delete;
+    Writer(Writer&&) = delete;
     Writer& operator=(const Writer&) = delete;
+    Writer& operator=(Writer&&) = delete;
 
 private:
     std::unique_ptr<std::ostream> CharStream;
@@ -206,6 +210,11 @@ public:
     {
         ZipStream.putNextEntry(str);
     }
+
+    ZipWriter(const ZipWriter&) = delete;
+    ZipWriter(ZipWriter&&) = delete;
+    ZipWriter& operator=(const ZipWriter&) = delete;
+    ZipWriter& operator=(ZipWriter&&) = delete;
 
 private:
     zipios::ZipOutputStream ZipStream;
@@ -265,9 +274,16 @@ public:
      */
     virtual bool shouldWrite(const std::string& name, const Base::Persistence* Object) const;
 
+    FileWriter(const FileWriter&) = delete;
+    FileWriter(FileWriter&&) = delete;
+    FileWriter& operator=(const FileWriter&) = delete;
+    FileWriter& operator=(FileWriter&&) = delete;
+
 protected:
+    // NOLINTBEGIN
     std::string DirName;
     std::ofstream FileStream;
+    // NOLINTEND
 };
 
 

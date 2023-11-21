@@ -54,10 +54,11 @@ public:
         Color = 10,
         Image = 11,
         File = 12,
-        URL = 13
+        URL = 13,
+        MultiLineString = 14
     };
     MaterialValue();
-    MaterialValue(const MaterialValue& other);
+    explicit MaterialValue(const MaterialValue& other);
     explicit MaterialValue(ValueType type);
     virtual ~MaterialValue() = default;
 
@@ -73,9 +74,17 @@ public:
         return _valueType;
     }
 
-    const QVariant getValue() const
+    QVariant getValue() const
     {
         return _value;
+    }
+    QList<QVariant> getList()
+    {
+        return _value.value<QList<QVariant>>();
+    }
+    const QList<QVariant> getList() const
+    {
+        return _value.value<QList<QVariant>>();
     }
     virtual bool isNull() const;
 
@@ -88,8 +97,10 @@ public:
     {
         _value = value;
     }
+    void setList(const QList<QVariant>& value);
 
     virtual const QString getYAMLString() const;
+    static QString escapeString(const QString& source);
 
 protected:
     MaterialValue(ValueType type, ValueType inherited);

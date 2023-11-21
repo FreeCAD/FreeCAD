@@ -287,7 +287,7 @@ void MaterialSave::reject()
 void MaterialSave::setLibraries()
 {
     auto libraries = _manager.getMaterialLibraries();
-    for (auto library : *libraries) {
+    for (auto& library : *libraries) {
         if (!library->isReadOnly()) {
             QVariant libraryVariant;
             libraryVariant.setValue(library);
@@ -345,7 +345,6 @@ void MaterialSave::addMaterials(
             node->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled
                            | Qt::ItemIsDropEnabled | Qt::ItemIsEditable);
             addExpanded(tree, &parent, node);
-
             auto treeMap = nodePtr->getFolder();
             addMaterials(*node, treeMap, folderIcon, icon);
         }

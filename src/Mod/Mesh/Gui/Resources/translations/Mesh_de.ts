@@ -346,7 +346,7 @@
     <message>
       <location filename="../../Command.cpp" line="1691"/>
       <source>Merges selected meshes into one</source>
-      <translation>Ausgewählte Netze zu Einem zusammenführen</translation>
+      <translation>Führt ausgewählte Netze zu einem zusammen</translation>
     </message>
   </context>
   <context>

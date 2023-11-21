@@ -602,7 +602,8 @@ PyStreambuf::int_type PyStreambuf::underflow()
             return traits_type::eof();
         }
 
-        std::memcpy(start, &(c[0]), c.size());
+        // Check: bugprone-not-null-terminated-result
+        std::memcpy(start, c.data(), c.size());
     }
     catch (Py::Exception& e) {
         e.clear();
@@ -666,31 +667,29 @@ bool PyStreambuf::writeStr(const char* str, std::streamsize num)
             meth.apply(arg);
             return true;
         }
-        else if (type == BytesIO) {
+        if (type == BytesIO) {
             arg.setItem(0, Py::Bytes(str, num));
             meth.apply(arg);
             return true;
         }
-        else {
-            // try out what works
-            try {
-                arg.setItem(0, Py::String(str, num));
+
+        // try out what works
+        try {
+            arg.setItem(0, Py::String(str, num));
+            meth.apply(arg);
+            type = StringIO;
+            return true;
+        }
+        catch (Py::Exception& e) {
+            if (PyErr_ExceptionMatches(PyExc_TypeError)) {
+                e.clear();
+                arg.setItem(0, Py::Bytes(str, num));
                 meth.apply(arg);
-                type = StringIO;
+                type = BytesIO;
                 return true;
             }
-            catch (Py::Exception& e) {
-                if (PyErr_ExceptionMatches(PyExc_TypeError)) {
-                    e.clear();
-                    arg.setItem(0, Py::Bytes(str, num));
-                    meth.apply(arg);
-                    type = BytesIO;
-                    return true;
-                }
-                else {
-                    throw;  // re-throw
-                }
-            }
+
+            throw;  // re-throw
         }
     }
     catch (Py::Exception& e) {

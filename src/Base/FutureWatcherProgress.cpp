@@ -35,12 +35,12 @@ FutureWatcherProgress::FutureWatcherProgress(const char* text, unsigned int step
 
 FutureWatcherProgress::~FutureWatcherProgress() = default;
 
-void FutureWatcherProgress::progressValueChanged(int v)
+void FutureWatcherProgress::progressValueChanged(int value)
 {
     if (steps == 0) {
         return;
     }
-    unsigned int step = (100 * static_cast<unsigned int>(v)) / steps;
+    unsigned int step = (100 * static_cast<unsigned int>(value)) / steps;
     if (step > current) {
         current = step;
         seq.next();

@@ -60,12 +60,12 @@ public:
     Line3() = default;
     ~Line3() = default;
     Line3(const Line3& line) = default;
-    Line3(Line3&& line) = default;
+    Line3(Line3&& line) noexcept = default;
     Line3(const Vector3<float_type>& p1, const Vector3<float_type>& p2);
 
     // operators
     Line3& operator=(const Line3& line) = default;
-    Line3& operator=(Line3&& line) = default;
+    Line3& operator=(Line3&& line) noexcept = default;
     bool operator==(const Line3& line) const;
 
     // methods
@@ -84,19 +84,19 @@ public:
     /*!
      * \brief Contains
      * Checks if the point \a p is part of the line segment.
-     * \param p
+     * \param pt
      * \return
      */
-    bool Contains(const Vector3<float_type>& p) const;
+    bool Contains(const Vector3<float_type>& pt) const;
     /*!
      * \brief Contains
      * Checks if the distance of point \a p to the line segment is
      * less than \a eps
-     * \param p
+     * \param pt
      * \param eps
      * \return
      */
-    bool Contains(const Vector3<float_type>& p, float_type eps) const;
+    bool Contains(const Vector3<float_type>& pt, float_type eps) const;
     Vector3<float_type> FromPos(float_type distance) const;
 };
 
@@ -112,13 +112,13 @@ public:
     Polygon3() = default;
     ~Polygon3() = default;
     Polygon3(const Polygon3<float_type>& poly) = default;
-    Polygon3(Polygon3<float_type>&& poly) = default;
+    Polygon3(Polygon3<float_type>&& poly) noexcept = default;
 
     Polygon3& operator=(const Polygon3<float_type>& poly) = default;
-    Polygon3& operator=(Polygon3<float_type>&& poly) = default;
+    Polygon3& operator=(Polygon3<float_type>&& poly) noexcept = default;
 
     size_t GetSize() const;
-    void Add(const Vector3<float_type>& p);
+    void Add(const Vector3<float_type>& pnt);
     const Vector3<float_type>& operator[](size_t pos) const;
     const Vector3<float_type>& At(size_t pos) const;
     Vector3<float_type>& operator[](size_t pos);

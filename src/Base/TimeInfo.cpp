@@ -58,16 +58,18 @@ TimeInfo::~TimeInfo() = default;
 
 void TimeInfo::setCurrent()
 {
+    // clang-format off
 #if defined(FC_OS_BSD) || defined(FC_OS_LINUX) || defined(__MINGW32__)
-    struct timeval t;
-    gettimeofday(&t, nullptr);
-    timebuffer.time = t.tv_sec;
-    timebuffer.millitm = t.tv_usec / 1000;
+    struct timeval tv {};
+    gettimeofday(&tv, nullptr);
+    timebuffer.time = tv.tv_sec;
+    timebuffer.millitm = tv.tv_usec / 1000;
 #elif defined(FC_OS_WIN32)
     _ftime(&timebuffer);
 #else
     ftime(&timebuffer);  // deprecated
 #endif
+    // clang-format on
 }
 
 void TimeInfo::setTime_t(int64_t seconds)
@@ -95,7 +97,7 @@ float TimeInfo::diffTimeF(const TimeInfo& timeStart, const TimeInfo& timeEnd)
     int64_t ds = int64_t(timeEnd.getSeconds() - timeStart.getSeconds());
     int dms = int(timeEnd.getMiliseconds()) - int(timeStart.getMiliseconds());
 
-    return float(ds) + float(dms) * 0.001f;
+    return float(ds) + float(dms) * 0.001F;
 }
 
 TimeInfo TimeInfo::null()

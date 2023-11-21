@@ -98,7 +98,7 @@ TEST_F(TestMaterial, TestMaterialsWithModel)
 TEST_F(TestMaterial, TestMaterialByPath)
 {
     auto steel = _materialManager->getMaterialByPath(
-        QString::fromStdString("StandardMaterial/Metal/Steel/CalculiX-Steel.FCMat"),
+        QString::fromStdString("Standard/Metal/Steel/CalculiX-Steel.FCMat"),
         QString::fromStdString("System"));
     EXPECT_NE(&steel, nullptr);
     EXPECT_EQ(steel->getName(), QString::fromStdString("CalculiX-Steel"));
@@ -106,7 +106,7 @@ TEST_F(TestMaterial, TestMaterialByPath)
 
     // The same but with a leading '/'
     auto steel2 = _materialManager->getMaterialByPath(
-        QString::fromStdString("/StandardMaterial/Metal/Steel/CalculiX-Steel.FCMat"),
+        QString::fromStdString("/Standard/Metal/Steel/CalculiX-Steel.FCMat"),
         QString::fromStdString("System"));
     EXPECT_NE(&steel2, nullptr);
     EXPECT_EQ(steel2->getName(), QString::fromStdString("CalculiX-Steel"));
@@ -114,7 +114,7 @@ TEST_F(TestMaterial, TestMaterialByPath)
 
     // Same with the library name as a prefix
     auto steel3 = _materialManager->getMaterialByPath(
-        QString::fromStdString("/System/StandardMaterial/Metal/Steel/CalculiX-Steel.FCMat"),
+        QString::fromStdString("/System/Standard/Metal/Steel/CalculiX-Steel.FCMat"),
         QString::fromStdString("System"));
     EXPECT_NE(&steel3, nullptr);
     EXPECT_EQ(steel3->getName(), QString::fromStdString("CalculiX-Steel"));

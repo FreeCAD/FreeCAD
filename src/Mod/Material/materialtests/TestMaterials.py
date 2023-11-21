@@ -48,13 +48,15 @@ class MaterialTestCases(unittest.TestCase):
         self.assertTrue(steel.hasPhysicalModel(self.uuids.IsotropicLinearElastic))
         self.assertTrue(steel.hasPhysicalModel(self.uuids.Thermal))
         self.assertFalse(steel.hasPhysicalModel(self.uuids.LinearElastic)) # Not in the model
-        self.assertTrue(steel.hasAppearanceModel(self.uuids.BasicRendering)) # inherited from Steel.FCMat
+        # inherited from Steel.FCMat
+        self.assertTrue(steel.hasAppearanceModel(self.uuids.BasicRendering))
 
         self.assertTrue(steel.isPhysicalModelComplete(self.uuids.Density))
         self.assertFalse(steel.isPhysicalModelComplete(self.uuids.IsotropicLinearElastic))
         self.assertTrue(steel.isPhysicalModelComplete(self.uuids.Thermal))
         self.assertFalse(steel.isPhysicalModelComplete(self.uuids.LinearElastic)) # Not in the model
-        self.assertTrue(steel.isAppearanceModelComplete(self.uuids.BasicRendering)) # inherited from Steel.FCMat
+        # inherited from Steel.FCMat
+        self.assertTrue(steel.isAppearanceModelComplete(self.uuids.BasicRendering))
 
         self.assertTrue(steel.hasPhysicalProperty("Density"))
         self.assertTrue(steel.hasPhysicalProperty("BulkModulus"))
@@ -157,16 +159,19 @@ class MaterialTestCases(unittest.TestCase):
 
         self.assertEqual(properties["Density"], parseQuantity("7900.00 kg/m^3").UserString)
         # self.assertEqual(properties["BulkModulus"], "")
-        self.assertAlmostEqual(parseQuantity(properties["PoissonRatio"]).Value, parseQuantity("0.3").Value)
+        self.assertAlmostEqual(parseQuantity(properties["PoissonRatio"]).Value,
+                               parseQuantity("0.3").Value)
         self.assertEqual(properties["YoungsModulus"], parseQuantity("210.00 GPa").UserString)
         # self.assertEqual(properties["ShearModulus"], "")
         self.assertEqual(properties["SpecificHeat"], parseQuantity("590.00 J/kg/K").UserString)
         self.assertEqual(properties["ThermalConductivity"], parseQuantity("43.00 W/m/K").UserString)
-        self.assertEqual(properties["ThermalExpansionCoefficient"], parseQuantity("12.00 µm/m/K").UserString)
+        self.assertEqual(properties["ThermalExpansionCoefficient"],
+                         parseQuantity("12.00 µm/m/K").UserString)
         self.assertEqual(properties["AmbientColor"], "(0.0020, 0.0020, 0.0020, 1.0)")
         self.assertEqual(properties["DiffuseColor"], "(0.0000, 0.0000, 0.0000, 1.0)")
         self.assertEqual(properties["EmissiveColor"], "(0.0000, 0.0000, 0.0000, 1.0)")
-        self.assertAlmostEqual(parseQuantity(properties["Shininess"]).Value, parseQuantity("0.06").Value)
+        self.assertAlmostEqual(parseQuantity(properties["Shininess"]).Value,
+                               parseQuantity("0.06").Value)
         self.assertEqual(properties["SpecularColor"], "(0.9800, 0.9800, 0.9800, 1.0)")
         self.assertAlmostEqual(parseQuantity(properties["Transparency"]).Value, parseQuantity("0").Value)
 
@@ -199,12 +204,15 @@ class MaterialTestCases(unittest.TestCase):
         self.assertAlmostEqual(steel.getAppearanceValue("Transparency"), 0.0)
 
     def testMaterialsWithModel(self):
-        materials = self.MaterialManager.materialsWithModel('f6f9e48c-b116-4e82-ad7f-3659a9219c50') # IsotropicLinearElastic
-        materialsComplete = self.MaterialManager.materialsWithModelComplete('f6f9e48c-b116-4e82-ad7f-3659a9219c50') # IsotropicLinearElastic
+        # IsotropicLinearElastic
+        materials = self.MaterialManager.materialsWithModel('f6f9e48c-b116-4e82-ad7f-3659a9219c50')
+        materialsComplete = self.MaterialManager.materialsWithModelComplete(
+            'f6f9e48c-b116-4e82-ad7f-3659a9219c50')
 
         self.assertTrue(len(materialsComplete) <= len(materials)) # Not all will be complete
-
-        materialsLinearElastic = self.MaterialManager.materialsWithModel('7b561d1d-fb9b-44f6-9da9-56a4f74d7536') # LinearElastic
+        # LinearElastic
+        materialsLinearElastic = self.MaterialManager.materialsWithModel(
+            '7b561d1d-fb9b-44f6-9da9-56a4f74d7536')
 
         # All LinearElastic models should be in IsotropicLinearElastic since it is inherited
         self.assertTrue(len(materialsLinearElastic) <= len(materials))
@@ -212,17 +220,22 @@ class MaterialTestCases(unittest.TestCase):
             self.assertIn(mat, materials)
 
     def testMaterialByPath(self):
-        steel = self.MaterialManager.getMaterialByPath('StandardMaterial/Metal/Steel/CalculiX-Steel.FCMat', 'System')
+        steel = self.MaterialManager.getMaterialByPath(
+            'Standard/Metal/Steel/CalculiX-Steel.FCMat', 'System')
         self.assertIsNotNone(steel)
         self.assertEqual(steel.Name, "CalculiX-Steel")
         self.assertEqual(steel.UUID, "92589471-a6cb-4bbc-b748-d425a17dea7d")
 
-        steel2 = self.MaterialManager.getMaterialByPath('/StandardMaterial/Metal/Steel/CalculiX-Steel.FCMat', 'System')
+        # Same with leading '/'
+        steel2 = self.MaterialManager.getMaterialByPath(
+            '/Standard/Metal/Steel/CalculiX-Steel.FCMat', 'System')
         self.assertIsNotNone(steel2)
         self.assertEqual(steel2.Name, "CalculiX-Steel")
         self.assertEqual(steel2.UUID, "92589471-a6cb-4bbc-b748-d425a17dea7d")
 
-        steel3 = self.MaterialManager.getMaterialByPath('/System/StandardMaterial/Metal/Steel/CalculiX-Steel.FCMat', 'System')
+        # Same with leading '/System'
+        steel3 = self.MaterialManager.getMaterialByPath(
+            '/System/Standard/Metal/Steel/CalculiX-Steel.FCMat', 'System')
         self.assertIsNotNone(steel3)
         self.assertEqual(steel3.Name, "CalculiX-Steel")
         self.assertEqual(steel3.UUID, "92589471-a6cb-4bbc-b748-d425a17dea7d")

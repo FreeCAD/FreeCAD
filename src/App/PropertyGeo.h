@@ -541,6 +541,8 @@ public:
     virtual const Data::ComplexGeoData* getComplexData() const = 0;
     Base::BoundBox3d getBoundingBox() const override = 0;
     //@}
+
+    void afterRestore() override;
 };
 
 } // namespace App
