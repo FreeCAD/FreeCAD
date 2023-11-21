@@ -25,6 +25,8 @@
 #include <QApplication>
 #include <QMessageBox>
 #include <sstream>
+#include <BRepGProp.hxx>
+#include <GProp_GProps.hxx>
 #endif
 
 #include <App/Document.h>
@@ -1789,8 +1791,6 @@ void CmdTechDrawExtensionAreaAnnotation::activated(int iMsg)
     TechDraw::DrawViewPart* objFeat;
     if (!_checkSel(this, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw calculate selected area")))
         return;
-    double faceArea(0.0), totalArea(0.0), xCenter(0.0), yCenter(0.0);
-    int totalPoints(0);
 
     // we must have at least 1 face in the selection
     const std::vector<std::string> subNamesAll = selection[0].getSubNames();
@@ -1810,43 +1810,20 @@ void CmdTechDrawExtensionAreaAnnotation::activated(int iMsg)
     }
 
     // we have at least 1 face
+    Base::Vector3d center;
+    double totalArea = 0.0;
     for (const std::string& name : subNames) {
-        int idx = TechDraw::DrawUtil::getIndexFromName(name);
-        std::vector<TechDraw::BaseGeomPtr> faceEdges = objFeat->getFaceEdgesByIndex(idx);
-        // We filter arcs, circles etc. which are not allowed.
-        for (const TechDraw::BaseGeomPtr& geoPtr : faceEdges)
-            if (geoPtr->getGeomType() != TechDraw::GENERIC)
-                throw Base::TypeError(
-                    "CmdTechDrawAreaAnnotation - forbidden border element found\n");
-        // We create a list of all points along the boundary of the face.
-        // The edges form a closed polygon, but their start- and endpoints may be interchanged.
-        std::vector<Base::Vector3d> facePoints;
-        TechDraw::GenericPtr firstEdge =
-            std::static_pointer_cast<TechDraw::Generic>(faceEdges[0]);
-        facePoints.push_back(firstEdge->points.at(0));
-        facePoints.push_back(firstEdge->points.at(1));
-        for (long unsigned int n = 1; n < faceEdges.size() - 1; n++) {
-            TechDraw::GenericPtr nextEdge =
-                std::static_pointer_cast<TechDraw::Generic>(faceEdges[n]);
-            if ((nextEdge->points.at(0) - facePoints.back()).Length() < 0.01)
-                facePoints.push_back(nextEdge->points.at(1));
-            else
-                facePoints.push_back(nextEdge->points.at(0));
+        TechDraw::FacePtr face = objFeat->getFace(name);
+        if (!face) {
+            continue;
         }
-        facePoints.push_back(facePoints.front());
-        // We calculate the area, using triangles. Each having one point at (0/0).
-        faceArea = 0.0;
-        xCenter = xCenter + facePoints[0].x;
-        yCenter = yCenter + facePoints[0].y;
-        for (long unsigned int n = 0; n < facePoints.size() - 1; n++) {
-            faceArea = faceArea + facePoints[n].x * facePoints[n + 1].y
-                - facePoints[n].y * facePoints[n + 1].x;
-            xCenter = xCenter + facePoints[n + 1].x;
-            yCenter = yCenter + facePoints[n + 1].y;
-        }
-        faceArea = abs(faceArea) / 2.0;
-        totalArea = totalArea + faceArea;
-        totalPoints = totalPoints + facePoints.size();
+
+        GProp_GProps faceProps;
+        BRepGProp::SurfaceProperties(face->toOccFace(), faceProps);
+
+        double faceArea = faceProps.Mass();
+        totalArea += faceArea;
+        center += faceArea*TechDraw::DrawUtil::toVector3d(faceProps.CentreOfMass());
     }
 
     // if area calculation was successful, start the command
@@ -1868,12 +1845,16 @@ void CmdTechDrawExtensionAreaAnnotation::activated(int iMsg)
     Base::Quantity asQuantity;
     asQuantity.setValue(totalArea);
     asQuantity.setUnit(Base::Unit::Area);
+
     QString qUserString = asQuantity.getUserString();
+    if (qUserString.endsWith(QString::fromUtf8("^2"))) {
+        qUserString.chop(2);
+        qUserString.append(QString::fromUtf8("²"));
+    }
     std::string sUserString = Base::Tools::toStdString(qUserString);
 
-    if (totalPoints != 0 && scale != 0.0) {
-        xCenter = (xCenter / totalPoints) / scale;
-        yCenter = (yCenter / totalPoints) / scale;
+    if (totalArea > 0.0) {
+        center /= totalArea;
     }
 
     // set the attributes in the data tab's fields
@@ -1881,10 +1862,10 @@ void CmdTechDrawExtensionAreaAnnotation::activated(int iMsg)
     balloon->BubbleShape.setValue("Rectangle");
     balloon->EndType.setValue("None");
     balloon->KinkLength.setValue(0.0);
-    balloon->X.setValue(xCenter);
-    balloon->Y.setValue(-yCenter);
-    balloon->OriginX.setValue(xCenter);
-    balloon->OriginY.setValue(-yCenter);
+    balloon->X.setValue(center.x);
+    balloon->Y.setValue(-center.y);
+    balloon->OriginX.setValue(center.x);
+    balloon->OriginY.setValue(-center.y);
     balloon->ScaleType.setValue("Page");
     balloon->Text.setValue(sUserString);
     // look for the ballons's view provider
