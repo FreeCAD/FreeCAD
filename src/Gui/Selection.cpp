@@ -716,6 +716,44 @@ std::array<std::pair<double, std::string>, 3> schemaTranslatePoint(double x, dou
                                                          std::make_pair(zuser, zunit.toUtf8().constBegin())};
     return ret;
 }
+
+QString getPreselectionInfo(const char* documentName,
+                            const char* objectName,
+                            const char* subElementName,
+                            float x, float y, float z,
+                            double precision)
+{
+    auto pts = schemaTranslatePoint(x, y, z, precision);
+
+    int numberDecimals = std::min(6, Base::UnitsApi::getDecimals());
+
+    QString message = QStringLiteral("Preselected: %1.%2.%3 (%4 %5, %6 %7, %8 %9)")
+        .arg(QString::fromUtf8(documentName))
+        .arg(QString::fromUtf8(objectName))
+        .arg(QString::fromUtf8(subElementName))
+        .arg(QString::number(pts[0].first, 'f', numberDecimals))
+        .arg(QString::fromStdString(pts[0].second))
+        .arg(QString::number(pts[1].first, 'f', numberDecimals))
+        .arg(QString::fromStdString(pts[1].second))
+        .arg(QString::number(pts[2].first, 'f', numberDecimals))
+        .arg(QString::fromStdString(pts[2].second));
+    return message;
+}
+
+void printPreselectionInfo(const char* documentName,
+                           const char* objectName,
+                           const char* subElementName,
+                           float x, float y, float z,
+                           double precision)
+{
+    if (getMainWindow()) {
+        QString message = getPreselectionInfo(documentName,
+                                              objectName,
+                                              subElementName,
+                                              x, y, z, precision);
+        getMainWindow()->showMessage(message);
+    }
+}
 }
 
 void SelectionSingleton::setPreselectCoord( float x, float y, float z)
@@ -728,24 +766,10 @@ void SelectionSingleton::setPreselectCoord( float x, float y, float z)
     CurrentPreselection.y = y;
     CurrentPreselection.z = z;
 
-    if (getMainWindow()) {
-        auto pts = schemaTranslatePoint(x, y, z, 0.0);
-
-        int numberDecimals = std::min(6, Base::UnitsApi::getDecimals());
-
-        QString message = QStringLiteral("Preselected: %1.%2.%3 (%4 %5, %6 %7, %8 %9)")
-            .arg(QString::fromUtf8(CurrentPreselection.pDocName))
-            .arg(QString::fromUtf8(CurrentPreselection.pObjectName))
-            .arg(QString::fromUtf8(CurrentPreselection.pSubName))
-            .arg(QString::number(pts[0].first, 'f', numberDecimals))
-            .arg(QString::fromStdString(pts[0].second))
-            .arg(QString::number(pts[1].first, 'f', numberDecimals))
-            .arg(QString::fromStdString(pts[1].second))
-            .arg(QString::number(pts[2].first, 'f', numberDecimals))
-            .arg(QString::fromStdString(pts[2].second));
-
-        getMainWindow()->showMessage(message);
-    }
+    printPreselectionInfo(CurrentPreselection.pDocName,
+                          CurrentPreselection.pObjectName,
+                          CurrentPreselection.pSubName,
+                          x, y, z, 0.0);
 }
 
 void SelectionSingleton::rmvPreselect(bool signal)
