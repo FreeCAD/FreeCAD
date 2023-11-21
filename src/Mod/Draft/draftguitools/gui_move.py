@@ -149,7 +149,7 @@ class Move(gui_base_original.Modifier):
                 ghost.move(self.vector)
                 ghost.on()
         if self.extendedCopy:
-            if not gui_tool_utils.hasMod(arg, gui_tool_utils.MODALT):
+            if not gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key()):
                 self.finish()
         gui_tool_utils.redraw3DView()
 
@@ -172,8 +172,8 @@ class Move(gui_base_original.Modifier):
             last = self.node[0]
             self.vector = self.point.sub(last)
             self.move(self.ui.isCopy.isChecked()
-                      or gui_tool_utils.hasMod(arg, gui_tool_utils.MODALT))
-            if gui_tool_utils.hasMod(arg, gui_tool_utils.MODALT):
+                      or gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key()))
+            if gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key()):
                 self.extendedCopy = True
             else:
                 self.finish(cont=None)

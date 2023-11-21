@@ -98,11 +98,6 @@ from draftguitools.gui_layers import Layer
 # update the translation engine
 FreeCADGui.updateLocale()
 
-# Set modifier keys
-from draftguitools.gui_tool_utils import MODCONSTRAIN
-from draftguitools.gui_tool_utils import MODSNAP
-from draftguitools.gui_tool_utils import MODALT
-
 # ---------------------------------------------------------------------------
 # General functions
 # ---------------------------------------------------------------------------
