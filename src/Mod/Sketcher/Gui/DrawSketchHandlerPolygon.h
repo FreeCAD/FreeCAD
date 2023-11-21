@@ -129,7 +129,7 @@ private:
             tryAutoRecomputeIfNotSolve(
                 static_cast<Sketcher::SketchObject*>(sketchgui->getObject()));
         }
-        catch (const Base::Exception& e) {
+        catch (const Base::Exception&) {
             Gui::NotifyError(sketchgui,
                              QT_TRANSLATE_NOOP("Notifications", "Error"),
                              QT_TRANSLATE_NOOP("Notifications", "Failed to add polygon"));
