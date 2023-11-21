@@ -21,6 +21,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <QRegularExpression>
 #endif
 
 #include <QMetaType>
@@ -208,22 +209,22 @@ const QString MaterialValue::getYAMLString() const
         else if (getType() == MaterialValue::Float) {
             auto value = getValue();
             if (!value.isNull()) {
-                yaml += QString(QString::fromStdString("%1")).arg(value.toFloat(), 0, 'g', 6);
+                yaml += QString::fromLatin1("%1").arg(value.toFloat(), 0, 'g', 6);
             }
         }
         else if (getType() == MaterialValue::MultiLineString) {
-            yaml = QString::fromStdString(">2");
-            auto list = getValue().toString().split(QRegExp(QString::fromStdString("[\r\n]")),
+            yaml = QString::fromLatin1(">2");
+            auto list = getValue().toString().split(QRegularExpression(QString::fromLatin1("[\r\n]")),
                                                     Qt::SkipEmptyParts);
             for (auto& it : list) {
-                yaml += QString::fromStdString("\n      ") + it;
+                yaml += QString::fromLatin1("\n      ") + it;
             }
             return yaml;
         }
         else if (getType() == MaterialValue::List) {
             for (auto& it : getList()) {
-                yaml += QString::fromStdString("\n      - \"") + escapeString(it.toString())
-                    + QString::fromStdString("\"");
+                yaml += QString::fromLatin1("\n      - \"") + escapeString(it.toString())
+                    + QString::fromLatin1("\"");
             }
             return yaml;
         }
@@ -231,7 +232,7 @@ const QString MaterialValue::getYAMLString() const
             yaml += getValue().toString();
         }
     }
-    yaml = QString::fromStdString("\"") + escapeString(yaml) + QString::fromStdString("\"");
+    yaml = QString::fromLatin1("\"") + escapeString(yaml) + QString::fromLatin1("\"");
     return yaml;
 }
 
