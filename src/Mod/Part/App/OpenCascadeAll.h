@@ -142,6 +142,7 @@
 #include <BRepExtrema_MapOfIntegerPackedMapOfInteger.hxx>
 #include <BRepExtrema_ShapeProximity.hxx>
 #include <BRepFeat_MakePrism.hxx>
+#include <BRepFeat_MakeRevol.hxx>
 #include <BRepFeat_SplitShape.hxx>
 #include <BRepFill.hxx>
 #include <BRepFill_Filling.hxx>
