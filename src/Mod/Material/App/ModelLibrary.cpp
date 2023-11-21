@@ -123,7 +123,7 @@ std::shared_ptr<Model> ModelLibrary::getModelByPath(const QString& path) const
         std::shared_ptr<Model> model = _modelPathMap->at(filePath);
         return model;
     }
-    catch (std::out_of_range& e) {
+    catch (std::out_of_range&) {
         throw ModelNotFound();
     }
 }
