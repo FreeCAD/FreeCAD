@@ -130,7 +130,7 @@ class Rotate(gui_base_original.Modifier):
             if not DraftVecUtils.isNull(viewdelta):
                 self.point = self.point.add(viewdelta.negative())
         if self.extendedCopy:
-            if not gui_tool_utils.hasMod(arg, gui_tool_utils.MODALT):
+            if not gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key()):
                 self.step = 3
                 self.finish()
         if self.step == 0:
@@ -223,8 +223,8 @@ class Rotate(gui_base_original.Modifier):
         else:
             self.angle = angle - self.firstangle
         self.rotate(self.ui.isCopy.isChecked()
-                    or gui_tool_utils.hasMod(arg, gui_tool_utils.MODALT))
-        if gui_tool_utils.hasMod(arg, gui_tool_utils.MODALT):
+                    or gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key()))
+        if gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key()):
             self.extendedCopy = True
         else:
             self.finish(cont=None)

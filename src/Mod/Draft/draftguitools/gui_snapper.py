@@ -94,7 +94,6 @@ class Snapper:
         self.cursorMode = None
         if Draft.getParam("maxSnap", 0):
             self.maxEdges = Draft.getParam("maxSnapEdges", 0)
-        self.snapStyle = Draft.getParam("snapStyle", 0)
 
         # we still have no 3D view when the draft module initializes
         self.tracker = None
@@ -144,34 +143,7 @@ class Snapper:
                      ]
 
         self.init_active_snaps()
-
-        # the snapmarker has "dot","circle" and "square" available styles
-        if self.snapStyle:
-            self.mk = coll.OrderedDict([('passive',       'empty'),
-                                        ('extension',     'empty'),
-                                        ('parallel',      'empty'),
-                                        ('grid',          'quad'),
-                                        ('endpoint',      'quad'),
-                                        ('midpoint',      'quad'),
-                                        ('perpendicular', 'quad'),
-                                        ('angle',         'quad'),
-                                        ('center',        'quad'),
-                                        ('ortho',         'quad'),
-                                        ('intersection',  'quad'),
-                                        ('special',       'quad')])
-        else:
-            self.mk = coll.OrderedDict([('passive',       'circle'),
-                                        ('extension',     'circle'),
-                                        ('parallel',      'circle'),
-                                        ('grid',          'circle'),
-                                        ('endpoint',      'dot'),
-                                        ('midpoint',      'square'),
-                                        ('perpendicular', 'dot'),
-                                        ('angle',         'square'),
-                                        ('center',        'dot'),
-                                        ('ortho',         'dot'),
-                                        ('intersection',  'dot'),
-                                        ('special',       'dot')])
+        self.set_snap_style()
 
         self.cursors = \
             coll.OrderedDict([('passive',       ':/icons/Draft_Snap_Near.svg'),
@@ -204,6 +176,37 @@ class Snapper:
             if bool(int(snap)):
                 self.active_snaps.append(self.snaps[i])
             i += 1
+
+
+    def set_snap_style(self):
+        self.snapStyle = Draft.getParam("snapStyle", 0)
+        # the snapmarker has "dot","circle" and "square" available styles
+        if self.snapStyle:
+            self.mk = coll.OrderedDict([('passive',       'empty'),
+                                        ('extension',     'empty'),
+                                        ('parallel',      'empty'),
+                                        ('grid',          'quad'),
+                                        ('endpoint',      'quad'),
+                                        ('midpoint',      'quad'),
+                                        ('perpendicular', 'quad'),
+                                        ('angle',         'quad'),
+                                        ('center',        'quad'),
+                                        ('ortho',         'quad'),
+                                        ('intersection',  'quad'),
+                                        ('special',       'quad')])
+        else:
+            self.mk = coll.OrderedDict([('passive',       'circle'),
+                                        ('extension',     'circle'),
+                                        ('parallel',      'circle'),
+                                        ('grid',          'circle'),
+                                        ('endpoint',      'dot'),
+                                        ('midpoint',      'square'),
+                                        ('perpendicular', 'dot'),
+                                        ('angle',         'square'),
+                                        ('center',        'dot'),
+                                        ('ortho',         'dot'),
+                                        ('intersection',  'dot'),
+                                        ('special',       'dot')])
 
 
     def cstr(self, lastpoint, constrain, point):
