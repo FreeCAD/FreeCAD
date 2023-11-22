@@ -1,21 +1,23 @@
+# SPDX-License-Identifier: LGPL-2.1-or-later
 # ***************************************************************************
+# *                                                                         *
 # *   Copyright (c) 2023 FreeCAD Project Association                        *
 # *                                                                         *
-# *   This program is free software; you can redistribute it and/or modify  *
-# *   it under the terms of the GNU Lesser General Public License (LGPL)    *
-# *   as published by the Free Software Foundation; either version 2 of     *
-# *   the License, or (at your option) any later version.                   *
-# *   for detail see the LICENCE text file.                                 *
+# *   This file is part of FreeCAD.                                         *
 # *                                                                         *
-# *   This program is distributed in the hope that it will be useful,       *
-# *   but WITHOUT ANY WARRANTY; without even the implied warranty of        *
-# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the         *
-# *   GNU Library General Public License for more details.                  *
+# *   FreeCAD is free software: you can redistribute it and/or modify it    *
+# *   under the terms of the GNU Lesser General Public License as           *
+# *   published by the Free Software Foundation, either version 2.1 of the  *
+# *   License, or (at your option) any later version.                       *
 # *                                                                         *
-# *   You should have received a copy of the GNU Library General Public     *
-# *   License along with this program; if not, write to the Free Software   *
-# *   Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  *
-# *   USA                                                                   *
+# *   FreeCAD is distributed in the hope that it will be useful, but        *
+# *   WITHOUT ANY WARRANTY; without even the implied warranty of            *
+# *   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU      *
+# *   Lesser General Public License for more details.                       *
+# *                                                                         *
+# *   You should have received a copy of the GNU Lesser General Public      *
+# *   License along with FreeCAD. If not, see                               *
+# *   <https://www.gnu.org/licenses/>.                                      *
 # *                                                                         *
 # ***************************************************************************
 
@@ -37,8 +39,11 @@ class ParamObserver:
                     "gridSpacing", "gridSize", "gridTransparency", "gridColor"):
             _param_observer_callback_grid()
             return
-        if name in ("DisplayStatusbarSnapWidget", "DisplayStatusbarScaleWidget"):
-            _param_observer_callback_statusbar()
+        if name == "DisplayStatusbarSnapWidget":
+            _param_observer_callback_snapwidget()
+            return
+        if name == "DisplayStatusbarScaleWidget":
+            _param_observer_callback_scalewidget()
             return
         if name == "snapStyle":
             _param_observer_callback_snapstyle()
@@ -68,9 +73,28 @@ def _param_observer_callback_grid():
             pass
 
 
-def _param_observer_callback_statusbar():
-    init_draft_statusbar.hide_draft_statusbar()
-    init_draft_statusbar.show_draft_statusbar()
+def _param_observer_callback_snapwidget():
+    if Gui.activeWorkbench().name() == "DraftWorkbench":
+        init_draft_statusbar.hide_draft_statusbar()
+        init_draft_statusbar.show_draft_statusbar()
+        return
+    msg = translate("draft",
+"""The Snap widget is only available in the Draft Workbench.
+Switch to that workbench to see the result of this change.""")
+    res = QtGui.QMessageBox.information(None, "Update Draft statusbar widget", msg,
+                                        QtGui.QMessageBox.Ok)
+
+
+def _param_observer_callback_scalewidget():
+    if Gui.activeWorkbench().name() == "DraftWorkbench":
+        init_draft_statusbar.hide_draft_statusbar()
+        init_draft_statusbar.show_draft_statusbar()
+        return
+    msg = translate("draft",
+"""The Annotation scale widget is only available in the Draft Workbench.
+Switch to that workbench to see the result of this change.""")
+    res = QtGui.QMessageBox.information(None, "Update Draft statusbar widget", msg,
+                                        QtGui.QMessageBox.Ok)
 
 
 def _param_observer_callback_snapstyle():
@@ -88,7 +112,8 @@ def _param_observer_callback_svg_pattern():
     utils.load_svg_patterns()
     if App.ActiveDocument is None:
         return
-    msg = translate("draft", """Do you want to update the SVG pattern options
+    msg = translate("draft",
+"""Do you want to update the SVG pattern options
 of existing objects in all opened documents?""")
     res = QtGui.QMessageBox.question(None, "Update SVG patterns", msg,
                                      QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
