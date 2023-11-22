@@ -7627,7 +7627,7 @@ void SketchObject::rebuildExternalGeometry()
                                         P2 = ProjPointOnPlane_XYZ(pntL, sketchPlane);
                                     }
                                     else {
- 
+
                                     }
                                 }
                             }

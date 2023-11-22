@@ -1202,7 +1202,7 @@ SoGroup* postCylinder()
         for (int j = 0; j < nCirc + 1; ++j) {
             points->point.set1Value(idx,
                                     SbVec3f(std::cos(M_PI * 2 / nCirc * j),
-                                            std::sin(M_PI *2 / nCirc * j),
+                                            std::sin(M_PI * 2 / nCirc * j),
                                             -h / 2. + h * i));
             ++idx;
         }
