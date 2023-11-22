@@ -428,9 +428,17 @@ inline void SketcherAddWorkbenchConstraints(T& cons);
 template<>
 inline void SketcherAddWorkbenchConstraints<Gui::MenuItem>(Gui::MenuItem& cons)
 {
-    cons << "Sketcher_ConstrainCoincident"
-         << "Sketcher_ConstrainPointOnObject"
-         << "Sketcher_ConstrainVertical"
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/Constraints");
+
+    if (hGrp->GetBool("UnifiedCoincident", false)) {
+        cons << "Sketcher_ConstrainCoincidentUnified";
+    }
+    else {
+        cons << "Sketcher_ConstrainCoincident"
+             << "Sketcher_ConstrainPointOnObject";
+    }
+    cons << "Sketcher_ConstrainVertical"
          << "Sketcher_ConstrainHorizontal"
          << "Sketcher_ConstrainHorVer"
          << "Sketcher_ConstrainParallel"
@@ -459,11 +467,16 @@ template<>
 inline void SketcherAddWorkbenchConstraints<Gui::ToolBarItem>(Gui::ToolBarItem& cons)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Sketcher/dimensioning");
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/Constraints");
 
-    cons << "Sketcher_ConstrainCoincident"
-         << "Sketcher_ConstrainPointOnObject"
-         << "Sketcher_CompHorVer"
+    if (hGrp->GetBool("UnifiedCoincident", false)) {
+        cons << "Sketcher_ConstrainCoincidentUnified";
+    }
+    else {
+        cons << "Sketcher_ConstrainCoincident"
+             << "Sketcher_ConstrainPointOnObject";
+    }
+    cons << "Sketcher_CompHorVer"
          << "Sketcher_ConstrainParallel"
          << "Sketcher_ConstrainPerpendicular"
          << "Sketcher_ConstrainTangent"
@@ -471,6 +484,10 @@ inline void SketcherAddWorkbenchConstraints<Gui::ToolBarItem>(Gui::ToolBarItem& 
          << "Sketcher_ConstrainSymmetric"
          << "Sketcher_ConstrainBlock"
          << "Separator";
+
+    hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/dimensioning");
+
     if (hGrp->GetBool("SingleDimensioningTool", true)) {
         if (!hGrp->GetBool("SeparatedDimensioningTools", false)) {
             cons << "Sketcher_CompDimensionTools";
