@@ -81,8 +81,8 @@ def _param_observer_callback_snapwidget():
     msg = translate("draft",
 """The Snap widget is only available in the Draft Workbench.
 Switch to that workbench to see the result of this change.""")
-    res = QtGui.QMessageBox.information(None, "Update Draft statusbar widget", msg,
-                                        QtGui.QMessageBox.Ok)
+    QtGui.QMessageBox.information(None, "Update Draft statusbar widget", msg,
+                                  QtGui.QMessageBox.Ok)
 
 
 def _param_observer_callback_scalewidget():
@@ -93,8 +93,8 @@ def _param_observer_callback_scalewidget():
     msg = translate("draft",
 """The Annotation scale widget is only available in the Draft Workbench.
 Switch to that workbench to see the result of this change.""")
-    res = QtGui.QMessageBox.information(None, "Update Draft statusbar widget", msg,
-                                        QtGui.QMessageBox.Ok)
+    QtGui.QMessageBox.information(None, "Update Draft statusbar widget", msg,
+                                  QtGui.QMessageBox.Ok)
 
 
 def _param_observer_callback_snapstyle():
