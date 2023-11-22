@@ -1704,7 +1704,7 @@ private:
         Base::FileInfo tmp(sourcename);
         if (!tmp.renameFile(targetname.c_str())) {
             throw Base::FileException(
-                "Cannot rename tmp save file to project file", targetname);
+                "Cannot rename tmp save file to project file", Base::FileInfo(targetname));
         }
     }
     void applyTimeStamp(const std::string& sourcename, const std::string& targetname) {

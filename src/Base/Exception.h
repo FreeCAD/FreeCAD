@@ -247,8 +247,8 @@ protected:
      * - a very technical message not intended to be translated or shown to the user in the UI
      * The preferred way of throwing an exception is using the macros above.
      * This way, the file, line, and function are automatically inserted. */
-    Exception(const char* sMessage);
-    Exception(const std::string& sMessage);
+    explicit Exception(const char* sMessage);
+    explicit Exception(const std::string& sMessage);
     Exception();
     Exception(const Exception& inst);
     Exception(Exception&& inst) noexcept;
@@ -273,7 +273,7 @@ class BaseExport AbortException: public Exception
 
 public:
     /// Construction
-    AbortException(const char* sMessage);
+    explicit AbortException(const char* sMessage);
     /// Construction
     AbortException();
     AbortException(const AbortException&) = default;
@@ -299,8 +299,8 @@ class BaseExport XMLBaseException: public Exception
 public:
     /// Construction
     XMLBaseException();
-    XMLBaseException(const char* sMessage);
-    XMLBaseException(const std::string& sMessage);
+    explicit XMLBaseException(const char* sMessage);
+    explicit XMLBaseException(const std::string& sMessage);
     XMLBaseException(const XMLBaseException&) = default;
     XMLBaseException(XMLBaseException&&) = default;
 
@@ -320,9 +320,9 @@ class BaseExport XMLParseException: public XMLBaseException
 {
 public:
     /// Construction
-    XMLParseException(const char* sMessage);
+    explicit XMLParseException(const char* sMessage);
     /// Construction
-    XMLParseException(const std::string& sMessage);
+    explicit XMLParseException(const std::string& sMessage);
     /// Construction
     XMLParseException();
     XMLParseException(const XMLParseException&) = default;
@@ -346,9 +346,9 @@ class BaseExport XMLAttributeError: public XMLBaseException
 {
 public:
     /// Construction
-    XMLAttributeError(const char* sMessage);
+    explicit XMLAttributeError(const char* sMessage);
     /// Construction
-    XMLAttributeError(const std::string& sMessage);
+    explicit XMLAttributeError(const std::string& sMessage);
     /// Construction
     XMLAttributeError();
     XMLAttributeError(const XMLAttributeError&) = default;
@@ -372,7 +372,7 @@ class BaseExport FileException: public Exception
 {
 public:
     /// With massage and file name
-    FileException(const char* sMessage, const char* sFileName = nullptr);
+    explicit FileException(const char* sMessage, const char* sFileName = nullptr);
     /// With massage and file name
     FileException(const char* sMessage, const FileInfo& File);
     /// standard construction
@@ -416,8 +416,8 @@ class BaseExport FileSystemError: public Exception
 public:
     /// Construction
     FileSystemError();
-    FileSystemError(const char* sMessage);
-    FileSystemError(const std::string& sMessage);
+    explicit FileSystemError(const char* sMessage);
+    explicit FileSystemError(const std::string& sMessage);
     FileSystemError(const FileSystemError&) = default;
     FileSystemError(FileSystemError&&) = default;
     /// Destruction
@@ -437,8 +437,8 @@ class BaseExport BadFormatError: public Exception
 public:
     /// Construction
     BadFormatError();
-    BadFormatError(const char* sMessage);
-    BadFormatError(const std::string& sMessage);
+    explicit BadFormatError(const char* sMessage);
+    explicit BadFormatError(const std::string& sMessage);
     BadFormatError(const BadFormatError&) = default;
     BadFormatError(BadFormatError&&) = default;
     /// Destruction
@@ -486,8 +486,8 @@ class BaseExport AccessViolation: public Exception
 public:
     /// Construction
     AccessViolation();
-    AccessViolation(const char* sMessage);
-    AccessViolation(const std::string& sMessage);
+    explicit AccessViolation(const char* sMessage);
+    explicit AccessViolation(const std::string& sMessage);
     AccessViolation(const AccessViolation&) = default;
     AccessViolation(AccessViolation&&) = default;
     /// Destruction
@@ -507,8 +507,8 @@ public:
     /// Construction
     AbnormalProgramTermination();
     /// Construction
-    AbnormalProgramTermination(const char* sMessage);
-    AbnormalProgramTermination(const std::string& sMessage);
+    explicit AbnormalProgramTermination(const char* sMessage);
+    explicit AbnormalProgramTermination(const std::string& sMessage);
     AbnormalProgramTermination(const AbnormalProgramTermination&) = default;
     AbnormalProgramTermination(AbnormalProgramTermination&&) = default;
     /// Destruction
@@ -527,8 +527,8 @@ class BaseExport UnknownProgramOption: public Exception
 public:
     /// Construction
     UnknownProgramOption();
-    UnknownProgramOption(const char* sMessage);
-    UnknownProgramOption(const std::string& sMessage);
+    explicit UnknownProgramOption(const char* sMessage);
+    explicit UnknownProgramOption(const std::string& sMessage);
     UnknownProgramOption(const UnknownProgramOption&) = default;
     UnknownProgramOption(UnknownProgramOption&&) = default;
     /// Destruction
@@ -547,8 +547,8 @@ class BaseExport ProgramInformation: public Exception
 public:
     /// Construction
     ProgramInformation();
-    ProgramInformation(const char* sMessage);
-    ProgramInformation(const std::string& sMessage);
+    explicit ProgramInformation(const char* sMessage);
+    explicit ProgramInformation(const std::string& sMessage);
     ProgramInformation(const ProgramInformation&) = default;
     ProgramInformation(ProgramInformation&&) = default;
 
@@ -567,8 +567,8 @@ class BaseExport TypeError: public Exception
 public:
     /// Construction
     TypeError();
-    TypeError(const char* sMessage);
-    TypeError(const std::string& sMessage);
+    explicit TypeError(const char* sMessage);
+    explicit TypeError(const std::string& sMessage);
     TypeError(const TypeError&) = default;
     TypeError(TypeError&&) = default;
     /// Destruction
@@ -587,8 +587,8 @@ class BaseExport ValueError: public Exception
 public:
     /// Construction
     ValueError();
-    ValueError(const char* sMessage);
-    ValueError(const std::string& sMessage);
+    explicit ValueError(const char* sMessage);
+    explicit ValueError(const std::string& sMessage);
     ValueError(const ValueError&) = default;
     ValueError(ValueError&&) = default;
     /// Destruction
@@ -607,8 +607,8 @@ class BaseExport IndexError: public Exception
 public:
     /// Construction
     IndexError();
-    IndexError(const char* sMessage);
-    IndexError(const std::string& sMessage);
+    explicit IndexError(const char* sMessage);
+    explicit IndexError(const std::string& sMessage);
     IndexError(const IndexError&) = default;
     IndexError(IndexError&&) = default;
     /// Destruction
@@ -623,8 +623,8 @@ class BaseExport NameError: public Exception
 public:
     /// Construction
     NameError();
-    NameError(const char* sMessage);
-    NameError(const std::string& sMessage);
+    explicit NameError(const char* sMessage);
+    explicit NameError(const std::string& sMessage);
     NameError(const NameError&) = default;
     NameError(NameError&&) = default;
     /// Destruction
@@ -639,8 +639,8 @@ class BaseExport ImportError: public Exception
 public:
     /// Construction
     ImportError();
-    ImportError(const char* sMessage);
-    ImportError(const std::string& sMessage);
+    explicit ImportError(const char* sMessage);
+    explicit ImportError(const std::string& sMessage);
     ImportError(const ImportError&) = default;
     ImportError(ImportError&&) = default;
     /// Destruction
@@ -659,8 +659,8 @@ class BaseExport AttributeError: public Exception
 public:
     /// Construction
     AttributeError();
-    AttributeError(const char* sMessage);
-    AttributeError(const std::string& sMessage);
+    explicit AttributeError(const char* sMessage);
+    explicit AttributeError(const std::string& sMessage);
     AttributeError(const AttributeError&) = default;
     AttributeError(AttributeError&&) = default;
     /// Destruction
@@ -679,8 +679,8 @@ class BaseExport RuntimeError: public Exception
 public:
     /// Construction
     RuntimeError();
-    RuntimeError(const char* sMessage);
-    RuntimeError(const std::string& sMessage);
+    explicit RuntimeError(const char* sMessage);
+    explicit RuntimeError(const std::string& sMessage);
     RuntimeError(const RuntimeError&) = default;
     RuntimeError(RuntimeError&&) = default;
     /// Destruction
@@ -699,8 +699,8 @@ class BaseExport BadGraphError: public RuntimeError
 public:
     /// Construction
     BadGraphError();
-    BadGraphError(const char* sMessage);
-    BadGraphError(const std::string& sMessage);
+    explicit BadGraphError(const char* sMessage);
+    explicit BadGraphError(const std::string& sMessage);
     BadGraphError(const BadGraphError&) = default;
     BadGraphError(BadGraphError&&) = default;
     /// Destruction
@@ -719,8 +719,8 @@ class BaseExport NotImplementedError: public Exception
 public:
     /// Construction
     NotImplementedError();
-    NotImplementedError(const char* sMessage);
-    NotImplementedError(const std::string& sMessage);
+    explicit NotImplementedError(const char* sMessage);
+    explicit NotImplementedError(const std::string& sMessage);
     NotImplementedError(const NotImplementedError&) = default;
     NotImplementedError(NotImplementedError&&) = default;
     /// Destruction
@@ -739,8 +739,8 @@ class BaseExport ZeroDivisionError: public Exception
 public:
     /// Construction
     ZeroDivisionError();
-    ZeroDivisionError(const char* sMessage);
-    ZeroDivisionError(const std::string& sMessage);
+    explicit ZeroDivisionError(const char* sMessage);
+    explicit ZeroDivisionError(const std::string& sMessage);
     ZeroDivisionError(const ZeroDivisionError&) = default;
     ZeroDivisionError(ZeroDivisionError&&) = default;
     /// Destruction
@@ -759,8 +759,8 @@ class BaseExport ReferenceError: public Exception
 public:
     /// Construction
     ReferenceError();
-    ReferenceError(const char* sMessage);
-    ReferenceError(const std::string& sMessage);
+    explicit ReferenceError(const char* sMessage);
+    explicit ReferenceError(const std::string& sMessage);
     ReferenceError(const ReferenceError&) = default;
     ReferenceError(ReferenceError&&) = default;
     /// Destruction
@@ -780,8 +780,8 @@ class BaseExport ExpressionError: public Exception
 public:
     /// Construction
     ExpressionError();
-    ExpressionError(const char* sMessage);
-    ExpressionError(const std::string& sMessage);
+    explicit ExpressionError(const char* sMessage);
+    explicit ExpressionError(const std::string& sMessage);
     ExpressionError(const ExpressionError&) = default;
     ExpressionError(ExpressionError&&) = default;
     /// Destruction
@@ -800,8 +800,8 @@ class BaseExport ParserError: public Exception
 public:
     /// Construction
     ParserError();
-    ParserError(const char* sMessage);
-    ParserError(const std::string& sMessage);
+    explicit ParserError(const char* sMessage);
+    explicit ParserError(const std::string& sMessage);
     ParserError(const ParserError&) = default;
     ParserError(ParserError&&) = default;
     /// Destruction
@@ -820,8 +820,8 @@ class BaseExport UnicodeError: public Exception
 public:
     /// Construction
     UnicodeError();
-    UnicodeError(const char* sMessage);
-    UnicodeError(const std::string& sMessage);
+    explicit UnicodeError(const char* sMessage);
+    explicit UnicodeError(const std::string& sMessage);
     UnicodeError(const UnicodeError&) = default;
     UnicodeError(UnicodeError&&) = default;
     /// Destruction
@@ -840,8 +840,8 @@ class BaseExport OverflowError: public Exception
 public:
     /// Construction
     OverflowError();
-    OverflowError(const char* sMessage);
-    OverflowError(const std::string& sMessage);
+    explicit OverflowError(const char* sMessage);
+    explicit OverflowError(const std::string& sMessage);
     OverflowError(const OverflowError&) = default;
     OverflowError(OverflowError&&) = default;
     /// Destruction
@@ -860,8 +860,8 @@ class BaseExport UnderflowError: public Exception
 public:
     /// Construction
     UnderflowError();
-    UnderflowError(const char* sMessage);
-    UnderflowError(const std::string& sMessage);
+    explicit UnderflowError(const char* sMessage);
+    explicit UnderflowError(const std::string& sMessage);
     UnderflowError(const UnderflowError&) = default;
     UnderflowError(UnderflowError&&) = default;
     /// Destruction
@@ -880,8 +880,8 @@ class BaseExport UnitsMismatchError: public Exception
 public:
     /// Construction
     UnitsMismatchError();
-    UnitsMismatchError(const char* sMessage);
-    UnitsMismatchError(const std::string& sMessage);
+    explicit UnitsMismatchError(const char* sMessage);
+    explicit UnitsMismatchError(const std::string& sMessage);
     UnitsMismatchError(const UnitsMismatchError&) = default;
     UnitsMismatchError(UnitsMismatchError&&) = default;
     /// Destruction
@@ -901,8 +901,8 @@ class BaseExport CADKernelError: public Exception
 public:
     /// Construction
     CADKernelError();
-    CADKernelError(const char* sMessage);
-    CADKernelError(const std::string& sMessage);
+    explicit CADKernelError(const char* sMessage);
+    explicit CADKernelError(const std::string& sMessage);
     CADKernelError(const CADKernelError&) = default;
     CADKernelError(CADKernelError&&) = default;
     /// Destruction
@@ -924,8 +924,8 @@ class BaseExport RestoreError: public Exception
 public:
     /// Construction
     RestoreError();
-    RestoreError(const char* sMessage);
-    RestoreError(const std::string& sMessage);
+    explicit RestoreError(const char* sMessage);
+    explicit RestoreError(const std::string& sMessage);
     RestoreError(const RestoreError&) = default;
     RestoreError(RestoreError&&) = default;
     /// Destruction
