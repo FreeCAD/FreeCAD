@@ -81,7 +81,7 @@ public:
             double rx0 = onSketchPos.x - EditCurve[0].x;
             double ry0 = onSketchPos.y - EditCurve[0].y;
             for (int i = 0; i < 16; i++) {
-                double angle = i * M_PI / 16.0;
+                double angle = M_PI * i / 16.0;
                 double rx1 = rx0 * cos(angle) + ry0 * sin(angle);
                 double ry1 = -rx0 * sin(angle) + ry0 * cos(angle);
                 EditCurve[1 + i] = Base::Vector2d(EditCurve[0].x + rx1, EditCurve[0].y + ry1);
@@ -121,7 +121,7 @@ public:
                 / (sin(angleatpoint) * cos(phi));
 
             for (int i = 1; i < 16; i++) {
-                double angle = i * M_PI / 16.0;
+                double angle = M_PI * i / 16.0;
                 double rx1 = a * cos(angle) * cos(phi) - b * sin(angle) * sin(phi);
                 double ry1 = a * cos(angle) * sin(phi) + b * sin(angle) * cos(phi);
                 EditCurve[1 + i] = Base::Vector2d(EditCurve[0].x + rx1, EditCurve[0].y + ry1);

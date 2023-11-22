@@ -185,7 +185,7 @@ private:
                         }
                         startAngle = std::max(angle1, angle2);
                         endAngle = std::min(angle1, angle2);
-                        arcAngle = 2 * M_PI - (startAngle - endAngle);
+                        arcAngle = M_PI * 2 - (startAngle - endAngle);
                     }
                 }
 
@@ -572,7 +572,7 @@ void DSHArcControllerBase::doEnforceControlParameters(Base::Vector2d& onSketchPo
                 if (onViewParameters[OnViewParameter::Fifth]->isSet) {
                     double arcAngle =
                         Base::toRadians(onViewParameters[OnViewParameter::Fifth]->getValue());
-                    if (fmod(fabs(arcAngle), 2 * M_PI) < Precision::Confusion()) {
+                    if (fmod(fabs(arcAngle), M_PI * 2) < Precision::Confusion()) {
                         unsetOnViewParameter(onViewParameters[OnViewParameter::Fifth].get());
                         return;
                     }

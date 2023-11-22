@@ -245,13 +245,6 @@ QPainterPath PathBuilder::geomToPainterPath(BaseGeomPtr baseGeom, double rot) co
         } break;
     }//sb end of switch
 
-    //old rotate path logic. now done on App side.
-    //    if (rot != 0.0) {
-    //        QTransform t;
-    //        t.rotate(-rot);
-    //        path = t.map(path);
-    //    }
-
     return path;
 }
 
@@ -325,9 +318,9 @@ void PathBuilder::pathArc(QPainterPath& path, double rx, double ry, double x_axi
 
     th_arc = th1 - th0;
     if (th_arc < 0 && sweep_flag)
-        th_arc += 2 * M_PI;
+        th_arc += M_PI * 2;
     else if (th_arc > 0 && !sweep_flag)
-        th_arc -= 2 * M_PI;
+        th_arc -= M_PI *2 ;
 
     n_segs = qCeil(qAbs(th_arc / (M_PI * 0.5 + 0.001)));
 

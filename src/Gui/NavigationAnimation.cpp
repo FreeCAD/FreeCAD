@@ -66,7 +66,7 @@ void FixedTimeAnimation::initialize()
     float angle;
     SbRotation(navigation->getCamera()->orientation.getValue().inverse() * targetOrientation).getValue(rotationAxisPost, angle);
     if (angle > M_PI) {
-        angle -= float(2 * M_PI);
+        angle -= M_PI *2 ;
     }
 
     // Convert post-multiplication axis to a pre-multiplication axis
@@ -126,9 +126,9 @@ SpinningAnimation::SpinningAnimation(NavigationStyle* navigation, const SbVec3f&
     : NavigationAnimation(navigation)
     , rotationAxis(axis)
 {
-    setDuration((2 * M_PI / velocity) * 1000.0);
+    setDuration((M_PI * 2 / velocity) * 1000.0);
     setStartValue(0.0);
-    setEndValue(2 * M_PI);
+    setEndValue(M_PI * 2);
     setLoopCount(-1);
 }
 

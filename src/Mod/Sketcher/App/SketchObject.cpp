@@ -2520,11 +2520,11 @@ int SketchObject::fillet(int GeoId1, int GeoId2, const Base::Vector3d& refPnt1,
         if (endAngle < startAngle)
             std::swap(startAngle, endAngle);
 
-        if (endAngle > 2 * M_PI)
-            endAngle -= 2 * M_PI;
+        if (endAngle >  M_PI * 2)
+            endAngle -= M_PI * 2;
 
         if (startAngle < 0)
-            endAngle += 2 * M_PI;
+            endAngle += M_PI * 2 ;
 
         // Create Arc Segment
         Part::GeomArcOfCircle* arc = new Part::GeomArcOfCircle();
@@ -7612,26 +7612,22 @@ void SketchObject::rebuildExternalGeometry()
                                         // P1 = P1, already defined
                                     }
                                     else {
-                                        // P1 = P1, already defined
-                                        // P2 = P2, already defined
+
                                     }
                                 }
                                 else {
-                                    if (endAngle < 2 * M_PI) {
+                                    if (endAngle < M_PI * 2 ) {
                                         P1 = ProjPointOnPlane_XYZ(pntF, sketchPlane);
                                         P2 = ProjPointOnPlane_XYZ(pntL, sketchPlane);
                                     }
-                                    else if (endAngle < 4 * M_PI - startAngle) {
+                                    else if (endAngle < M_PI * 4 - startAngle) {
                                         P1 = ProjPointOnPlane_XYZ(pntF, sketchPlane);
-                                        // P2 = P2, already defined
                                     }
-                                    else if (endAngle < 3 * M_PI) {
-                                        // P1 = P1, already defined
+                                    else if (endAngle < M_PI * 3) {
                                         P2 = ProjPointOnPlane_XYZ(pntL, sketchPlane);
                                     }
                                     else {
-                                        // P1 = P1, already defined
-                                        // P2 = P2, already defined
+ 
                                     }
                                 }
                             }

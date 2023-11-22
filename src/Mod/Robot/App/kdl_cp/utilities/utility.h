@@ -217,10 +217,7 @@ inline double min(double a,double b) {
 
 
 #ifdef _MSC_VER
-    //#pragma inline_depth( 255 )
-    //#pragma inline_recursion( on )
     #define INLINE __forceinline
-    //#define INLINE inline
 #else
     #define INLINE inline
 #endif
@@ -280,16 +277,10 @@ inline void posrandom(double& a) {
 inline double diff(double a,double b,double dt) {
 	return (b-a)/dt;
 }
-//inline float diff(float a,float b,double dt) {
-//return (b-a)/dt;
-//}
+
 inline double addDelta(double a,double da,double dt) {
 	return a+da*dt;
 }
-
-//inline float addDelta(float a,float da,double dt) {
-//	return a+da*dt;
-//}
 
 
 }

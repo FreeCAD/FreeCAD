@@ -293,14 +293,14 @@ public:
                     arcAngle = 0.f;
                 }
                 if (arcRadius >= 0 && arcAngle > 0) {
-                    arcAngle -= 2 * M_PI;
+                    arcAngle -= M_PI * 2;
                 }
                 if (arcRadius < 0 && arcAngle < 0) {
-                    arcAngle += 2 * M_PI;
+                    arcAngle += M_PI * 2;
                 }
 
                 if (SnapMode == SNAP_MODE_45Degree) {
-                    arcAngle = round(arcAngle / (M_PI / 4)) * M_PI / 4;
+                    arcAngle = (double)round(arcAngle / (M_PI / 4)) * M_PI / 4;
                 }
 
                 endAngle = startAngle + arcAngle;

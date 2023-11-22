@@ -1084,7 +1084,7 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         else
             range = std::min(0.2f*range, range + this->imgWidth/(2*r));
 
-        int countSegments = std::max(6, abs(int(50.0 * range / (2 * M_PI))));
+        int countSegments = std::max(6, abs(int(50.0 * range / ( M_PI * 2))));
         double segment = range / (2*countSegments-2);
 
         textOffset = p0 + v0 * r;

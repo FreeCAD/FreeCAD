@@ -1201,8 +1201,8 @@ SoGroup* postCylinder()
     for (int i = 0; i < 2; ++i) {
         for (int j = 0; j < nCirc + 1; ++j) {
             points->point.set1Value(idx,
-                                    SbVec3f(std::cos(2 * M_PI / nCirc * j),
-                                            std::sin(2 * M_PI / nCirc * j),
+                                    SbVec3f(std::cos(M_PI * 2 / nCirc * j),
+                                            std::sin(M_PI *2 / nCirc * j),
                                             -h / 2. + h * i));
             ++idx;
         }
@@ -1211,8 +1211,8 @@ SoGroup* postCylinder()
     for (int i = 0; i < nSide; ++i) {
         for (int j = 0; j < 2; ++j) {
             points->point.set1Value(idx,
-                                    SbVec3f(std::cos(2 * M_PI / nSide * i),
-                                            std::sin(2 * M_PI / nSide * i),
+                                    SbVec3f(std::cos(M_PI * 2 / nSide * i),
+                                            std::sin(M_PI * 2 / nSide * i),
                                             -h / 2. + h * j));
             ++idx;
         }
@@ -1261,17 +1261,17 @@ SoGroup* postSphere()
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 21; j++) {
             points->point.set1Value(idx,
-                                    SbVec3f(std::sin(2 * M_PI / 20 * j) * std::cos(M_PI / 4 * i),
-                                            std::sin(2 * M_PI / 20 * j) * std::sin(M_PI / 4 * i),
-                                            std::cos(2 * M_PI / 20 * j)));
+                                    SbVec3f(std::sin(M_PI * 2 / 20 * j) * std::cos(M_PI / 4 * i),
+                                            std::sin(M_PI * 2 / 20 * j) * std::sin(M_PI / 4 * i),
+                                            std::cos(M_PI * 2 / 20 * j)));
             ++idx;
         }
     }
     for (int i = 0; i < 4; i++) {
         for (int j = 0; j < 21; j++) {
             points->point.set1Value(idx,
-                                    SbVec3f(std::sin(M_PI / 4 * i) * std::cos(2 * M_PI / 20 * j),
-                                            std::sin(M_PI / 4 * i) * std::sin(2 * M_PI / 20 * j),
+                                    SbVec3f(std::sin(M_PI / 4 * i) * std::cos(M_PI * 2 / 20 * j),
+                                            std::sin(M_PI / 4 * i) * std::sin(M_PI * 2 / 20 * j),
                                             std::cos(M_PI / 4 * i)));
             ++idx;
         }

@@ -387,7 +387,6 @@ void QGIViewBalloon::updateView(bool update)
 //update the bubble contents
 void QGIViewBalloon::updateBalloon(bool obtuse)
 {
-    //    Base::Console().Message("QGIVB::updateBalloon()\n");
     (void)obtuse;
     const auto balloon(dynamic_cast<TechDraw::DrawViewBalloon*>(getViewObject()));
     if (!balloon) {
@@ -673,14 +672,14 @@ void QGIViewBalloon::drawBalloon(bool dragged)
         double radius = sqrt(pow((textHeight / 2.0), 2) + pow((textWidth / 2.0), 2));
         radius = radius * scale;
         radius += Rez::guiX(3.0);
-        offsetLR = (tan(30 * M_PI / 180) * radius);
+        offsetLR = (tan(M_PI * 30 / 180) * radius);
         QPolygonF triangle;
         double startAngle = -M_PI / 2;
         double angle = startAngle;
         for (int i = 0; i < 4; i++) {
             triangle +=
                 QPointF(lblCenter.x + (radius * cos(angle)), lblCenter.y + (radius * sin(angle)));
-            angle += (2 * M_PI / 3);
+            angle += (M_PI * 2 / 3);
         }
         balloonPath.moveTo(lblCenter.x + (radius * cos(startAngle)),
                            lblCenter.y + (radius * sin(startAngle)));
@@ -714,12 +713,12 @@ void QGIViewBalloon::drawBalloon(bool dragged)
         radius += Rez::guiX(1.0);
         offsetLR = radius;
         QPolygonF triangle;
-        double startAngle = -2 * M_PI / 3;
+        double startAngle = -M_PI * 2 / 3;
         double angle = startAngle;
         for (int i = 0; i < 7; i++) {
             triangle +=
                 QPointF(lblCenter.x + (radius * cos(angle)), lblCenter.y + (radius * sin(angle)));
-            angle += (2 * M_PI / 6);
+            angle += (M_PI * 2 / 6);
         }
         balloonPath.moveTo(lblCenter.x + (radius * cos(startAngle)),
                            lblCenter.y + (radius * sin(startAngle)));

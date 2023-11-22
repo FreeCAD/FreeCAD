@@ -11,7 +11,6 @@ using namespace ClipperLib;
 
 bool CArea::HolesLinked(){ return false; }
 
-//static const double PI = 3.1415926535897932;
 double CArea::m_clipper_scale = 10000.0;
 
 class DoubleAreaPoint
@@ -83,8 +82,6 @@ static void AddVertex(const CVertex& vertex, const CVertex* prev_vertex)
 
         if (Segments < CArea::m_min_arc_points)
             Segments = CArea::m_min_arc_points;
-        // if (Segments > CArea::m_max_arc_points)
-        //     Segments=CArea::m_max_arc_points;
 
 		dphi=phit/(Segments);
 
@@ -192,7 +189,6 @@ static void OffsetWithLoops(const TPolyPolygon &pp, TPolyPolygon &pp_new, double
 		}
 	}
 
-	//c.ForceOrientation(false);
 	c.Execute(ctUnion, pp_new, pftNonZero, pftNonZero);
 
 	if(inwards)
@@ -245,7 +241,6 @@ static void MakeObround(const Point &pt0, const CVertex &vt1, double radius)
 	AddVertex(v2, &v1);
 	AddVertex(v3, &v2);
 	AddVertex(v4, &v3);
-
 	CArea::m_units = save_units;
 }
 
@@ -510,10 +505,10 @@ void CArea::Clip(ClipType op, const CArea *a,
 }
 
 void CArea::OffsetWithClipper(double offset, 
-                              JoinType joinType/* =jtRound */,
-                              EndType endType/* =etOpenRound */,
-                              double miterLimit/*  = 5.0 */,
-                              double roundPrecision/*  = 0.0 */)
+                              JoinType joinType,
+                              EndType endType,
+                              double miterLimit,
+                              double roundPrecision)
 {
     offset *= m_units*m_clipper_scale;
     if(roundPrecision == 0.0) {
@@ -522,8 +517,6 @@ void CArea::OffsetWithClipper(double offset,
         int Segments=(int)ceil(PI/dphi);
         if (Segments < 2*CArea::m_min_arc_points)
             Segments = 2*CArea::m_min_arc_points;
-        // if (Segments > CArea::m_max_arc_points)
-        //     Segments=CArea::m_max_arc_points;
         dphi = PI/Segments;
         roundPrecision = (1.0-cos(dphi))*fabs(offset);
     }else

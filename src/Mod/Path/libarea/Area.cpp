@@ -22,7 +22,6 @@ double CArea::m_MakeOffsets_increment = 0.0;
 double CArea::m_split_processing_length = 0.0;
 bool CArea::m_set_processing_length_in_split = false;
 double CArea::m_after_MakeOffsets_length = 0.0;
-//static const double PI = 3.1415926535897932;
 
 #define _CAREA_PARAM_DEFINE(_class,_type,_name) \
     _type CArea::get_##_name() {return _class::_name;}\
@@ -518,7 +517,7 @@ static void zigzag(const CArea &input_a)
 
     double height = b.MaxY() - b.MinY();
     int num_steps = int(height / stepover_for_pocket + 1);
-    double y = b.MinY();// + 0.1 * one_over_units;
+    double y = b.MinY();
     Point null_point(0, 0);
 	rightward_for_zigs = true;
 

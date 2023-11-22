@@ -594,7 +594,7 @@ bool wireEncirclesAxis(const TopoDS_Wire& wire, const Handle(Geom_CylindricalSur
                 last = segFirst;
                 totalArc = -totalArc;
                 length = -length;
-            } else { // first.IsEqual(segFirst)
+            } else {
                 last = segLast;
                 totalArc = -totalArc;
             }
@@ -611,9 +611,6 @@ bool wireEncirclesAxis(const TopoDS_Wire& wire, const Handle(Geom_CylindricalSur
         totalArc += length;
     }
 
-    // For an exact calculation, only two results would be possible:
-    // totalArc = 0.0: The wire does not encircle the axis
-    // totalArc = 2 * M_PI * radius: The wire encircles the axis
     return (fabs(totalArc) > M_PI * radius);
 }
 
@@ -1058,10 +1055,8 @@ bool FaceUniter::process()
         for (std::size_t indexEquality(0); indexEquality < equalitySplitter.getGroupCount(); ++indexEquality)
         {
             adjacencySplitter.split(equalitySplitter.getGroup(indexEquality));
-//            std::cout << "      adjacency group count: " << adjacencySplitter.getGroupCount() << std::endl;
             for (std::size_t adjacentIndex(0); adjacentIndex < adjacencySplitter.getGroupCount(); ++adjacentIndex)
             {
-//                    std::cout << "         face count is: " << adjacencySplitter.getGroup(adjacentIndex).size() << std::endl;
                 TopoDS_Face newFace = (*typeIt)->buildFace(adjacencySplitter.getGroup(adjacentIndex));
                 if (!newFace.IsNull())
                 {
