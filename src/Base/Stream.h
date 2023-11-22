@@ -79,7 +79,7 @@ private:
 class BaseExport OutputStream: public Stream
 {
 public:
-    OutputStream(std::ostream& rout);
+    explicit OutputStream(std::ostream& rout);
     ~OutputStream() override;
 
     OutputStream& operator<<(bool b);
@@ -110,7 +110,7 @@ private:
 class BaseExport InputStream: public Stream
 {
 public:
-    InputStream(std::istream& rin);
+    explicit InputStream(std::istream& rin);
     ~InputStream() override;
 
     InputStream& operator>>(bool& b);
@@ -125,7 +125,7 @@ public:
     InputStream& operator>>(float& f);
     InputStream& operator>>(double& d);
 
-    operator bool() const
+    explicit operator bool() const
     {
         // test if _Ipfx succeeded
         return !_in.eof();
@@ -213,7 +213,7 @@ private:
 class BaseExport IODeviceOStreambuf: public std::streambuf
 {
 public:
-    IODeviceOStreambuf(QIODevice* dev);
+    explicit IODeviceOStreambuf(QIODevice* dev);
     ~IODeviceOStreambuf() override;
 
 protected:
@@ -243,7 +243,7 @@ private:
 class BaseExport IODeviceIStreambuf: public std::streambuf
 {
 public:
-    IODeviceIStreambuf(QIODevice* dev);
+    explicit IODeviceIStreambuf(QIODevice* dev);
     ~IODeviceIStreambuf() override;
 
 protected:
@@ -287,7 +287,7 @@ public:
         Unknown
     };
 
-    PyStreambuf(PyObject* o, std::size_t buf_size = 256, std::size_t put_back = 8);
+    explicit PyStreambuf(PyObject* o, std::size_t buf_size = 256, std::size_t put_back = 8);
     ~PyStreambuf() override;
     void setType(Type t)
     {
@@ -364,7 +364,7 @@ public:
     ofstream() = default;
     ofstream(const ofstream&) = delete;
     ofstream(ofstream&&) = delete;
-    ofstream(const FileInfo& fi, ios_base::openmode mode = std::ios::out | std::ios::trunc)
+    explicit ofstream(const FileInfo& fi, ios_base::openmode mode = std::ios::out | std::ios::trunc)
 #ifdef _MSC_VER
         : std::ofstream(fi.toStdWString().c_str(), mode) {}
 #else
@@ -397,7 +397,7 @@ public:
     ifstream() = default;
     ifstream(const ifstream&) = delete;
     ifstream(ifstream&&) = delete;
-    ifstream(const FileInfo& fi, ios_base::openmode mode = std::ios::in)
+    explicit ifstream(const FileInfo& fi, ios_base::openmode mode = std::ios::in)
 #ifdef _MSC_VER
         : std::ifstream(fi.toStdWString().c_str(), mode) {}
 #else

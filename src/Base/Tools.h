@@ -49,7 +49,7 @@ public:
     {
         return n++;
     }
-    iotaGen(T v)
+    explicit iotaGen(T v)
         : n(v)
     {}
 
