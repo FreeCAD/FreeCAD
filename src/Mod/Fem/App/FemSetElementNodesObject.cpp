@@ -38,7 +38,11 @@ PROPERTY_SOURCE(Fem::FemSetElementNodesObject, Fem::FemSetObject)
 
 FemSetElementNodesObject::FemSetElementNodesObject()
 {
-    ADD_PROPERTY_TYPE(Elements, (), "Element indexes", Prop_None, "Elements belonging to the ElementSet");
+    ADD_PROPERTY_TYPE(Elements,
+                      (),
+                      "Element indexes",
+                      Prop_None,
+                      "Elements belonging to the ElementSet");
 }
 
 FemSetElementNodesObject::~FemSetElementNodesObject() = default;
@@ -56,4 +60,3 @@ PyObject* FemSetElementNodesObject::getPyObject()
     }
     return Py::new_reference_to(PythonObject);
 }
-

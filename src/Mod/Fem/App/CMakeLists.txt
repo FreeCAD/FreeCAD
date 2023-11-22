@@ -130,7 +130,7 @@ SET(FemSet_SRCS
     FemSetObject.h
     FemSetNodesObject.cpp
     FemSetNodesObject.h
-    FemSetElementNodesObject.cpp  
+    FemSetElementNodesObject.cpp
     FemSetElementNodesObject.h
     FemSetElementsObject.cpp
     FemSetElementsObject.h

@@ -49,12 +49,12 @@ namespace FemGui
 
 
 /// simulation dialog for the TaskView
-class TaskDlgCreateElementSet : public Gui::TaskView::TaskDialog
+class TaskDlgCreateElementSet: public Gui::TaskView::TaskDialog
 {
     Q_OBJECT
 
 public:
-    TaskDlgCreateElementSet(Fem::FemSetElementNodesObject *);
+    TaskDlgCreateElementSet(Fem::FemSetElementNodesObject*);
     ~TaskDlgCreateElementSet() override;
 
 public:
@@ -79,7 +79,6 @@ protected:
 
     Fem::FemSetElementNodesObject* FemSetElementNodesObject;
 };
-
 
 
 }  // namespace FemGui

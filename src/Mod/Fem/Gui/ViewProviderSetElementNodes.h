@@ -32,7 +32,7 @@
 namespace FemGui
 {
 
-class ViewProviderSetElementNodes : public Gui::ViewProviderGeometryObject
+class ViewProviderSetElementNodes: public Gui::ViewProviderGeometryObject
 {
     PROPERTY_HEADER_WITH_OVERRIDE(FemGui::ViewProviderSetElementNodes);
 

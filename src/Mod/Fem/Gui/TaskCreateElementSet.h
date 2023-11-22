@@ -31,7 +31,6 @@
 #include <QMessageBox>
 
 
-
 class Ui_TaskCreateElementSet;
 class SoEventCallback;
 
@@ -56,17 +55,18 @@ namespace FemGui
 class ViewProviderFemMesh;
 
 
-class TaskCreateElementSet : public Gui::TaskView::TaskBox, public Gui::SelectionObserver
+class TaskCreateElementSet: public Gui::TaskView::TaskBox, public Gui::SelectionObserver
 {
     Q_OBJECT
 
 public:
-    explicit TaskCreateElementSet(Fem::FemSetElementNodesObject* pcObject,QWidget* parent = nullptr);
+    explicit TaskCreateElementSet(Fem::FemSetElementNodesObject* pcObject,
+                                  QWidget* parent = nullptr);
     ~TaskCreateElementSet() override;
 
     std::set<long> elementTempSet;
     ViewProviderFemMesh* MeshViewProvider;
-        static std::string currentProject;
+    static std::string currentProject;
 
 private Q_SLOTS:
     void Poly();
@@ -75,8 +75,8 @@ private Q_SLOTS:
 
 protected:
     Fem::FemSetElementNodesObject* pcObject;
-    static void DefineElementsCallback(void*  ud, SoEventCallback*  n);
-    void DefineNodes(const Base::Polygon2d &polygon,const Gui::ViewVolumeProjection &proj, bool);
+    static void DefineElementsCallback(void* ud, SoEventCallback* n);
+    void DefineNodes(const Base::Polygon2d& polygon, const Gui::ViewVolumeProjection& proj, bool);
 
 protected:
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
@@ -93,4 +93,4 @@ private:
 
 }  // namespace FemGui
 
-#endif // GUI_TASKVIEW_TaskCreateElementSet_H
+#endif  // GUI_TASKVIEW_TaskCreateElementSet_H

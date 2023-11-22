@@ -43,8 +43,9 @@ using namespace FemGui;
 // TaskDialog
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-TaskDlgCreateElementSet::TaskDlgCreateElementSet(Fem::FemSetElementNodesObject *obj)
-    : TaskDialog(),FemSetElementNodesObject(obj)
+TaskDlgCreateElementSet::TaskDlgCreateElementSet(Fem::FemSetElementNodesObject* obj)
+    : TaskDialog()
+    , FemSetElementNodesObject(obj)
 {
     name = new TaskObjectName(obj);
     param = new TaskCreateElementSet(obj);
@@ -54,9 +55,7 @@ TaskDlgCreateElementSet::TaskDlgCreateElementSet(Fem::FemSetElementNodesObject *
 }
 
 TaskDlgCreateElementSet::~TaskDlgCreateElementSet()
-{
-
-}
+{}
 
 //==== calls from the TaskView ===============================================================
 
@@ -66,7 +65,6 @@ void TaskDlgCreateElementSet::open()
     // select->activate();
     // Edge2TaskObject->execute();
     // param->setEdgeAndClusterNbr(Edge2TaskObject->NbrOfEdges,Edge2TaskObject->NbrOfCluster);
-
 }
 
 bool TaskDlgCreateElementSet::accept()

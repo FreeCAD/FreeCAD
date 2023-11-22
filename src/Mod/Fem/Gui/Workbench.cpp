@@ -1,9 +1,9 @@
 /***************************************************************************
  *   Copyright (c) 2023 Peter McB                                          *
- *   additional statement(s) for element sets:                             *         
+ *   additional statement(s) for element sets:                             *
  *   added entry to Gui::MenuItem* mesh                                    *
  *                                                                         *
- *   added to: Workbench.cpp         
+ *   added to: Workbench.cpp
  *   Copyright (c) 2008 Werner Mayer <werner.wm.mayer@gmx.de>              *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *

@@ -1,6 +1,6 @@
 /***************************************************************************
  *   Copyright (c) 2023 Peter McB                                          *
- *   additional statement(s) for element sets                              *         
+ *   additional statement(s) for element sets                              *
  *                                                                         *
  *   added to: AppFemGui.cpp                                               *
  *   Copyright (c) 2008 Jürgen Riegel <juergen.riegel@web.de>              *
@@ -46,7 +46,7 @@
 #include "ViewProviderFemMeshShape.h"
 #include "ViewProviderFemMeshShapeNetgen.h"
 #include "ViewProviderSetElements.h"
-#include "ViewProviderSetElementNodes.h" 
+#include "ViewProviderSetElementNodes.h"
 #include "ViewProviderSetFaces.h"
 #include "ViewProviderSetGeometry.h"
 #include "ViewProviderSetNodes.h"

@@ -248,7 +248,7 @@ SET(FemGui_SRCS_TaskBoxes
     TaskObjectName.h
     TaskCreateElementSet.ui
     TaskCreateElementSet.cpp
-    TaskCreateElementSet.h    
+    TaskCreateElementSet.h
     TaskCreateNodeSet.ui
     TaskCreateNodeSet.cpp
     TaskCreateNodeSet.h
