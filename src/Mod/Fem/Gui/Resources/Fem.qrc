@@ -52,6 +52,7 @@
         <file>icons/FEM_EquationMagnetodynamic2D.svg</file>
 
         <!-- gui command icons: meshes -->
+        <file>icons/FEM_CreateElementsSet.svg</file>
         <file>icons/FEM_CreateNodesSet.svg</file>
         <file>icons/FEM_FEMMesh2Mesh.svg</file>
         <file>icons/FEM_MeshBoundaryLayer.svg</file>
