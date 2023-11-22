@@ -90,9 +90,8 @@ class ViewProviderDraftAnnotation(object):
                              "ScaleMultiplier",
                              "Annotation",
                              _tip)
-            annotation_scale = param.GetFloat("DraftAnnotationScale", 1.0)
-            if annotation_scale != 0:
-                vobj.ScaleMultiplier = 1 / annotation_scale
+            anno_scale = param.GetFloat("DraftAnnotationScale", 1)
+            vobj.ScaleMultiplier = 1 / anno_scale if anno_scale > 0 else 1
 
         if "AnnotationStyle" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
@@ -200,7 +199,7 @@ class ViewProviderDraftAnnotation(object):
                 # unset style
                 _msg(16 * "-")
                 _msg("Unset style")
-                for visprop in utils.ANNOTATION_STYLE.keys():
+                for visprop in utils.get_default_annotation_style().keys():
                     if visprop in properties:
                         # make property writable
                         vobj.setPropertyStatus(visprop, '-ReadOnly')

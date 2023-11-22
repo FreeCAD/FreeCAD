@@ -260,7 +260,7 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
                              "ShowLine",
                              "Graphics",
                              _tip)
-            vobj.ShowLine = True
+            vobj.ShowLine = utils.get_param("DimShowLine", True)
 
     def getDefaultDisplayMode(self):
         """Return the default display mode."""
@@ -361,6 +361,7 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
         self.onChanged(vobj, "LineColor")
         self.onChanged(vobj, "DimOvershoot")
         self.onChanged(vobj, "ExtOvershoot")
+        self.onChanged(vobj, "ShowLine")
 
     def updateData(self, obj, prop):
         """Execute when a property from the Proxy class is changed.
