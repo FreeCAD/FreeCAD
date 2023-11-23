@@ -56,6 +56,7 @@
         <file>icons/constraints/Sketcher_Crosshair.svg</file>
         <file>icons/constraints/Sketcher_ToggleActiveConstraint.svg</file>
         <file>icons/constraints/Sketcher_ToggleConstraint.svg</file>
+        <file>icons/constraints/Sketcher_ToggleConstraint_Driven.svg</file>
         <file>icons/constraints/Sketcher_Toggle_Constraint_Driven.svg</file>
         <file>icons/constraints/Sketcher_Toggle_Constraint_Driving.svg</file>
     </qresource>
@@ -197,6 +198,7 @@
         <file>icons/geometry/Sketcher_External.svg</file>
         <file>icons/geometry/Sketcher_Split.svg</file>
         <file>icons/geometry/Sketcher_ToggleConstruction.svg</file>
+        <file>icons/geometry/Sketcher_ToggleConstruction_Constr.svg</file>
         <file>icons/geometry/Sketcher_Trimming.svg</file>
     </qresource>
     <qresource>
