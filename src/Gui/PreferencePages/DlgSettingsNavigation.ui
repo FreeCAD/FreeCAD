@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>484</width>
-    <height>586</height>
+    <width>516</width>
+    <height>687</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -565,92 +565,6 @@ The value is the diameter of the sphere to fit on the screen.</string>
         </property>
        </widget>
       </item>
-      <item row="5" column="0">
-       <widget class="Gui::PrefCheckBox" name="checkBoxNavigationAnimations">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="toolTip">
-         <string>Enable navigation animations</string>
-        </property>
-        <property name="text">
-         <string>Enable navigation animations</string>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>UseNavigationAnimations</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>View</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="1">
-       <widget class="QLabel" name="navigationAnimationsLabel">
-        <property name="toolTip">
-         <string>Duration of navigation animations that have a fixed duration</string>
-        </property>
-        <property name="text">
-         <string>Animation duration</string>
-        </property>
-        <property name="alignment">
-         <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-        </property>
-       </widget>
-      </item>
-      <item row="5" column="2">
-       <layout class="QHBoxLayout" name="horizontalLayout_3">
-        <item>
-         <widget class="Gui::PrefSpinBox" name="spinBoxAnimationDuration">
-          <property name="maximumSize">
-           <size>
-            <width>60</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="toolTip">
-           <string>The duration of navigation animations in milliseconds</string>
-          </property>
-          <property name="minimum">
-           <number>100</number>
-          </property>
-          <property name="maximum">
-           <number>10000</number>
-          </property>
-          <property name="singleStep">
-           <number>50</number>
-          </property>
-          <property name="value">
-           <number>250</number>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>AnimationDuration</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>View</cstring>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer_5">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeType">
-           <enum>QSizePolicy::MinimumExpanding</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>10</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-       </layout>
-      </item>
       <item row="6" column="0">
        <widget class="Gui::PrefCheckBox" name="checkBoxZoomAtCursor">
         <property name="toolTip">
@@ -771,6 +685,75 @@ Mouse tilting is not disabled by this setting.</string>
          <cstring>View</cstring>
         </property>
        </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="groupBoxAnimations">
+     <property name="title">
+      <string>Animations</string>
+     </property>
+     <property name="checkable">
+      <bool>true</bool>
+     </property>
+     <layout class="QGridLayout" name="gridLayout_4">
+      <item row="1" column="0">
+       <widget class="QLabel" name="navigationAnimationsLabel">
+        <property name="toolTip">
+         <string>Duration of navigation animations that have a fixed duration</string>
+        </property>
+        <property name="text">
+         <string>Animation duration</string>
+        </property>
+        <property name="alignment">
+         <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignVCenter</set>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="Gui::PrefSpinBox" name="spinBoxAnimationDuration">
+        <property name="maximumSize">
+         <size>
+          <width>60</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>The duration of navigation animations in milliseconds</string>
+        </property>
+        <property name="minimum">
+         <number>100</number>
+        </property>
+        <property name="maximum">
+         <number>10000</number>
+        </property>
+        <property name="singleStep">
+         <number>50</number>
+        </property>
+        <property name="value">
+         <number>250</number>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>AnimationDuration</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>View</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="2">
+       <spacer name="horizontalSpacer_6">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
       </item>
      </layout>
     </widget>
