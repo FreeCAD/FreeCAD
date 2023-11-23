@@ -51,6 +51,7 @@ import DraftVecUtils
 
 from draftutils.translate import translate
 import draftutils.utils as utils
+from draftutils.messages import _msg
 
 import draftguitools.gui_trackers as trackers
 

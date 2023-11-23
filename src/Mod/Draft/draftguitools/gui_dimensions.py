@@ -49,7 +49,7 @@ import draftguitools.gui_trackers as trackers
 import draftutils.gui_utils as gui_utils
 
 from draftutils.translate import translate
-from draftutils.messages import _msg
+from draftutils.messages import _toolmsg, _msg
 
 DraftGeomUtils = lz.LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
 
@@ -120,7 +120,7 @@ class Dimension(gui_base_original.Creator):
                 self.info = None
                 self.selectmode = False
                 self.set_selection()
-                _msg(translate("draft", "Pick first point"))
+                _toolmsg(translate("draft", "Pick first point"))
 
     def set_selection(self):
         """Fill the nodes according to the selected geometry."""
