@@ -60,6 +60,7 @@ struct StdInputStream::TextCodec
     {
         QTextCodec* textCodec = QTextCodec::codecForName("UTF-8");
         if (textCodec) {
+            // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
             const QString text = textCodec->toUnicode(reinterpret_cast<char*>(toFill),
                                                       static_cast<int>(len),
                                                       &state);
@@ -85,6 +86,7 @@ struct StdInputStream::TextCodec
 {
     void validateBytes(XMLByte* const toFill, std::streamsize len)
     {
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
         QByteArray encodedString(reinterpret_cast<char*>(toFill), static_cast<int>(len));
         auto toUtf16 = QStringDecoder(QStringDecoder::Utf8);
         QString text = toUtf16(encodedString);
@@ -133,7 +135,7 @@ XMLSize_t StdInputStream::readBytes(XMLByte* const toFill, const XMLSize_t maxTo
     //  Read up to the maximum bytes requested. We return the number
     //  actually read.
     //
-
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
     stream.read(reinterpret_cast<char*>(toFill), static_cast<std::streamsize>(maxToRead));
     std::streamsize len = stream.gcount();
 

@@ -313,8 +313,8 @@ void InventorFieldWriter::write<int>(const char* fieldName,
 
 // -----------------------------------------------------------------------------
 
-LabelItem::LabelItem(const std::string& text)
-    : text(text)
+LabelItem::LabelItem(std::string text)
+    : text(std::move(text))
 {}
 
 void LabelItem::write(InventorOutput& out) const
@@ -326,8 +326,8 @@ void LabelItem::write(InventorOutput& out) const
 
 // -----------------------------------------------------------------------------
 
-InfoItem::InfoItem(const std::string& text)
-    : text(text)
+InfoItem::InfoItem(std::string text)
+    : text(std::move(text))
 {}
 
 void InfoItem::write(InventorOutput& out) const
@@ -403,10 +403,8 @@ void LineItem::write(InventorOutput& out) const
 
 // -----------------------------------------------------------------------------
 
-MultiLineItem::MultiLineItem(const std::vector<Vector3f>& points,
-                             DrawStyle drawStyle,
-                             const ColorRGB& rgb)
-    : points {points}
+MultiLineItem::MultiLineItem(std::vector<Vector3f> points, DrawStyle drawStyle, const ColorRGB& rgb)
+    : points {std::move(points)}
     , drawStyle {drawStyle}
     , rgb {rgb}
 {}
@@ -670,7 +668,6 @@ void ShapeHintsItem::setShapeType(ShapeType::Type value)
     shapeType.type = value;
 }
 
-
 void ShapeHintsItem::write(InventorOutput& out) const
 {
     out.write() << "ShapeHints {\n";
@@ -699,8 +696,8 @@ void PolygonOffsetItem::write(InventorOutput& out) const
 
 // -----------------------------------------------------------------------------
 
-Coordinate3Item::Coordinate3Item(const std::vector<Vector3f>& points)
-    : points(points)
+Coordinate3Item::Coordinate3Item(std::vector<Vector3f> points)
+    : points(std::move(points))
 {}
 
 void Coordinate3Item::write(InventorOutput& out) const
@@ -739,8 +736,8 @@ void LineSetItem::write(InventorOutput& out) const
 
 // -----------------------------------------------------------------------------
 
-FaceSetItem::FaceSetItem(const std::vector<int>& indices)
-    : indices(indices)
+FaceSetItem::FaceSetItem(std::vector<int> indices)
+    : indices(std::move(indices))
 {}
 
 void FaceSetItem::write(InventorOutput& out) const
@@ -755,8 +752,8 @@ void FaceSetItem::write(InventorOutput& out) const
 
 // -----------------------------------------------------------------------------
 
-IndexedLineSetItem::IndexedLineSetItem(const std::vector<int>& indices)
-    : indices(indices)
+IndexedLineSetItem::IndexedLineSetItem(std::vector<int> indices)
+    : indices(std::move(indices))
 {}
 
 void IndexedLineSetItem::write(InventorOutput& out) const
@@ -771,8 +768,8 @@ void IndexedLineSetItem::write(InventorOutput& out) const
 
 // -----------------------------------------------------------------------------
 
-IndexedFaceSetItem::IndexedFaceSetItem(const std::vector<int>& indices)
-    : indices(indices)
+IndexedFaceSetItem::IndexedFaceSetItem(std::vector<int> indices)
+    : indices(std::move(indices))
 {}
 
 void IndexedFaceSetItem::write(InventorOutput& out) const
@@ -787,8 +784,8 @@ void IndexedFaceSetItem::write(InventorOutput& out) const
 
 // -----------------------------------------------------------------------------
 
-NormalItem::NormalItem(const std::vector<Base::Vector3f>& vec)
-    : vector(vec)
+NormalItem::NormalItem(std::vector<Base::Vector3f> vec)
+    : vector(std::move(vec))
 {}
 
 void NormalItem::write(InventorOutput& out) const
@@ -903,8 +900,8 @@ void NurbsSurfaceItem::write(InventorOutput& out) const
 
 // -----------------------------------------------------------------------------
 
-Text2Item::Text2Item(const std::string& string)
-    : string(string)
+Text2Item::Text2Item(std::string string)
+    : string(std::move(string))
 {}
 
 void Text2Item::write(InventorOutput& out) const
@@ -915,6 +912,7 @@ void Text2Item::write(InventorOutput& out) const
 
 // -----------------------------------------------------------------------------
 
+// NOLINTNEXTLINE
 TransformItem::TransformItem(const Base::Placement& placement)
     : placement(placement)
 {}

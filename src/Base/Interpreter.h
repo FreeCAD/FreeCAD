@@ -169,7 +169,7 @@ public:
         return _exitCode;
     }
 
-protected:
+private:
     long _exitCode;
 };
 

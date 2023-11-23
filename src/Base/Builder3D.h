@@ -260,7 +260,7 @@ protected:
 class BaseExport LabelItem: public NodeItem
 {
 public:
-    explicit LabelItem(const std::string& text);
+    explicit LabelItem(std::string text);
     void write(InventorOutput& out) const override;
 
 private:
@@ -273,7 +273,7 @@ private:
 class BaseExport InfoItem: public NodeItem
 {
 public:
-    explicit InfoItem(const std::string& text);
+    explicit InfoItem(std::string text);
     void write(InventorOutput& out) const override;
 
 private:
@@ -326,7 +326,7 @@ class BaseExport MultiLineItem: public NodeItem
 public:
     /// add a line defined by a list of points whereat always a pair (i.e. a point and the following
     /// point) builds a line.
-    explicit MultiLineItem(const std::vector<Vector3f>& points,
+    explicit MultiLineItem(std::vector<Vector3f> points,
                            DrawStyle drawStyle,
                            const ColorRGB& rgb = ColorRGB {1.0F, 1.0F, 1.0F});
     void write(InventorOutput& out) const override;
@@ -466,7 +466,7 @@ private:
 class BaseExport Coordinate3Item: public NodeItem
 {
 public:
-    explicit Coordinate3Item(const std::vector<Vector3f>& points);
+    explicit Coordinate3Item(std::vector<Vector3f> points);
     void write(InventorOutput& out) const override;
 
 private:
@@ -499,7 +499,7 @@ public:
 class BaseExport FaceSetItem: public NodeItem
 {
 public:
-    explicit FaceSetItem(const std::vector<int>&);
+    explicit FaceSetItem(std::vector<int>);
     void write(InventorOutput& out) const override;
 
 private:
@@ -512,7 +512,7 @@ private:
 class BaseExport IndexedLineSetItem: public NodeItem
 {
 public:
-    explicit IndexedLineSetItem(const std::vector<int>&);
+    explicit IndexedLineSetItem(std::vector<int>);
     void write(InventorOutput& out) const override;
 
 private:
@@ -525,7 +525,7 @@ private:
 class BaseExport IndexedFaceSetItem: public NodeItem
 {
 public:
-    explicit IndexedFaceSetItem(const std::vector<int>&);
+    explicit IndexedFaceSetItem(std::vector<int>);
     void write(InventorOutput& out) const override;
 
 private:
@@ -538,7 +538,7 @@ private:
 class BaseExport NormalItem: public NodeItem
 {
 public:
-    explicit NormalItem(const std::vector<Base::Vector3f>& vec);
+    explicit NormalItem(std::vector<Base::Vector3f> vec);
     void write(InventorOutput& out) const override;
 
 private:
@@ -627,7 +627,7 @@ private:
 class BaseExport Text2Item: public NodeItem
 {
 public:
-    explicit Text2Item(const std::string&);
+    explicit Text2Item(std::string);
     void write(InventorOutput& out) const override;
 
 private:

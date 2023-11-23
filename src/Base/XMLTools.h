@@ -78,10 +78,8 @@ inline std::ostream& operator<<(std::ostream& target, const StrX& toDump)
 }
 
 inline StrX::StrX(const XMLCh* const toTranscode)
-{
-    // Call the private transcoding method
-    fLocalForm = XERCES_CPP_NAMESPACE_QUALIFIER XMLString::transcode(toTranscode);
-}
+    : fLocalForm(XERCES_CPP_NAMESPACE_QUALIFIER XMLString::transcode(toTranscode))
+{}
 
 inline StrX::~StrX()
 {
@@ -158,9 +156,8 @@ private:
 
 
 inline XStr::XStr(const char* const toTranscode)
-{
-    fUnicodeForm = XERCES_CPP_NAMESPACE_QUALIFIER XMLString::transcode(toTranscode);
-}
+    : fUnicodeForm(XERCES_CPP_NAMESPACE_QUALIFIER XMLString::transcode(toTranscode))
+{}
 
 inline XStr::~XStr()
 {
