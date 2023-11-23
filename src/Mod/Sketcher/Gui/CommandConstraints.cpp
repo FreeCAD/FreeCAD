@@ -9688,7 +9688,7 @@ bool CmdSketcherConstrainSnellsLaw::isActive()
 
 // ======================================================================================
 /*** Creation Mode / Toggle to or from Reference ***/
-DEF_STD_CMD_A(CmdSketcherToggleDrivingConstraint)
+DEF_STD_CMD_AU(CmdSketcherToggleDrivingConstraint)
 
 CmdSketcherToggleDrivingConstraint::CmdSketcherToggleDrivingConstraint()
     : Command("Sketcher_ToggleDrivingConstraint")
@@ -9718,7 +9718,23 @@ CmdSketcherToggleDrivingConstraint::CmdSketcherToggleDrivingConstraint()
     rcCmdMgr.addCommandMode("ToggleDrivingConstraint", "Sketcher_CompConstrainRadDia");
     rcCmdMgr.addCommandMode("ToggleDrivingConstraint", "Sketcher_Dimension");
     rcCmdMgr.addCommandMode("ToggleDrivingConstraint", "Sketcher_CompDimensionTools");
+    rcCmdMgr.addCommandMode("ToggleDrivingConstraint", "Sketcher_ToggleDrivingConstraint");
     // rcCmdMgr.addCommandMode("ToggleDrivingConstraint", "Sketcher_ConstrainSnellsLaw");
+}
+
+void CmdSketcherToggleDrivingConstraint::updateAction(int mode)
+{
+    auto act = getAction();
+    if (act) {
+        switch (static_cast<ConstraintCreationMode>(mode)) {
+        case ConstraintCreationMode::Driving:
+            act->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_ToggleConstraint"));
+            break;
+        case ConstraintCreationMode::Reference:
+            act->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_ToggleConstraint_Driven"));
+            break;
+        }
+    }
 }
 
 void CmdSketcherToggleDrivingConstraint::activated(int iMsg)

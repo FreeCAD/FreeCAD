@@ -4,7 +4,7 @@
    height="64px"
    id="svg2816"
    version="1.1"
-   sodipodi:docname="Sketcher_ToggleConstraint.svg"
+   sodipodi:docname="Sketcher_ToggleConstraint_Driven.svg"
    inkscape:version="1.1-beta1 (77e7b44db3, 2021-03-28)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -26,9 +26,9 @@
      inkscape:pageopacity="0"
      inkscape:pagecheckerboard="0"
      showgrid="false"
-     inkscape:zoom="2.9414063"
-     inkscape:cx="41.646746"
-     inkscape:cy="13.428951"
+     inkscape:zoom="8.3195534"
+     inkscape:cx="53.067753"
+     inkscape:cy="31.431976"
      inkscape:window-width="3686"
      inkscape:window-height="1571"
      inkscape:window-x="145"
@@ -421,35 +421,35 @@
     </rdf:RDF>
   </metadata>
   <g
-     id="layer1-2"
-     transform="matrix(0,-0.67268112,0.67268112,0,19.350211,45.14815)">
+     id="layer1-3"
+     transform="matrix(0,-0.67983925,0.67983925,0,19.082143,45.338203)">
     <g
-       id="g3894-8"
+       id="g3894-5"
        transform="rotate(-45,34.506097,38.050253)">
       <path
-         id="path3034-8"
-         d="M 17,27 V 19 L -4,32 17,45 v -8 h 40 v 8 L 78,32 57,19 v 8 z"
-         style="fill:#3465a4;stroke:#0b1521;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1" />
-      <path
-         id="path3034-3-7"
-         d="M 15,29 V 22.6 L -0.2,32 15,41.4 V 35 h 44 v 6.4 L 74.2,32 59,22.6 V 29 Z"
-         style="fill:none;stroke:#729fcf;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-    </g>
-  </g>
-  <g
-     id="layer1"
-     transform="matrix(0,-0.92631783,0.92631783,0,0.31000206,64.013997)">
-    <g
-       id="g3894"
-       transform="rotate(-45,34.506097,38.050253)">
-      <path
-         id="path3034"
+         id="path3034-9"
          d="M 17,27 V 19 L -4,32 17,45 v -8 h 40 v 8 L 78,32 57,19 v 8 z"
          style="fill:#cc0000;stroke:#280000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1" />
       <path
-         id="path3034-3"
+         id="path3034-3-6"
          d="M 15,29 V 22.6 L -0.2,32 15,41.4 V 35 h 44 v 6.4 L 74.2,32 59,22.6 V 29 Z"
          style="fill:none;stroke:#ef2929;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+    </g>
+  </g>
+  <g
+     id="layer1-2-7"
+     transform="matrix(0,-0.91715581,0.91715581,0,0.58211243,63.699737)">
+    <g
+       id="g3894-8-3"
+       transform="rotate(-45,34.506097,38.050253)">
+      <path
+         id="path3034-8-9"
+         d="M 17,27 V 19 L -4,32 17,45 v -8 h 40 v 8 L 78,32 57,19 v 8 z"
+         style="fill:#3465a4;stroke:#0b1521;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-opacity:1" />
+      <path
+         id="path3034-3-7-2"
+         d="M 15,29 V 22.6 L -0.2,32 15,41.4 V 35 h 44 v 6.4 L 74.2,32 59,22.6 V 29 Z"
+         style="fill:none;stroke:#729fcf;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
     </g>
   </g>
 </svg>
