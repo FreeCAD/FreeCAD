@@ -49,7 +49,7 @@ public Q_SLOTS:
 
 private:
     Base::SequencerLauncher seq;
-    unsigned int steps, current;
+    unsigned int steps, current {0};
 };
 }  // namespace Base
 

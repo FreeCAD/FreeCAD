@@ -248,7 +248,7 @@ protected:
      * The preferred way of throwing an exception is using the macros above.
      * This way, the file, line, and function are automatically inserted. */
     explicit Exception(const char* sMessage);
-    explicit Exception(const std::string& sMessage);
+    explicit Exception(std::string sMessage);
     Exception();
     Exception(const Exception& inst);
     Exception(Exception&& inst) noexcept;

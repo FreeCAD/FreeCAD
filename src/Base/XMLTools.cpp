@@ -28,7 +28,7 @@
 using namespace Base;
 XERCES_CPP_NAMESPACE_USE
 
-std::unique_ptr<XMLTranscoder> XMLTools::transcoder;
+std::unique_ptr<XMLTranscoder> XMLTools::transcoder;  // NOLINT
 
 void XMLTools::initialize()
 {
@@ -40,7 +40,7 @@ void XMLTools::initialize()
             4096,
             XMLPlatformUtils::fgMemoryManager));
         if (res != XMLTransService::Ok) {
-            throw Base::UnicodeError("Can\'t create transcoder");
+            throw Base::UnicodeError("Can't create transcoder");
         }
     }
 }
@@ -65,6 +65,7 @@ std::string XMLTools::toStdString(const XMLCh* const toTranscode)
                                                128,
                                                eaten,
                                                XMLTranscoder::UnRep_RepChar);
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
         str.append(reinterpret_cast<const char*>(outBuff), outputLength);
         offset += eaten;
         inputLength -= eaten;
@@ -88,6 +89,7 @@ std::basic_string<XMLCh> XMLTools::toXMLString(const char* const fromTranscode)
     initialize();
 
     static XMLCh outBuff[128];
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
     const XMLByte* xmlBytes = reinterpret_cast<const XMLByte*>(fromTranscode);
     XMLSize_t outputLength = 0;
     XMLSize_t eaten = 0;

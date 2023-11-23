@@ -30,7 +30,6 @@ using namespace Base;
 FutureWatcherProgress::FutureWatcherProgress(const char* text, unsigned int steps)
     : seq(text, 100)
     , steps(steps)
-    , current(0)
 {}
 
 FutureWatcherProgress::~FutureWatcherProgress() = default;
