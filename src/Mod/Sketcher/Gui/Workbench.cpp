@@ -538,8 +538,7 @@ inline void SketcherAddWorkbenchTools<Gui::ToolBarItem>(Gui::ToolBarItem& consac
         << "Sketcher_Symmetry"
         << "Sketcher_CompCopy"
         << "Sketcher_RectangularArray"
-        << "Sketcher_RemoveAxesAlignment"
-        << "Sketcher_DeleteAllConstraints";
+        << "Sketcher_RemoveAxesAlignment";
 }
 
 template<typename T>
