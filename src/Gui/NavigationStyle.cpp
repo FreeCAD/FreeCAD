@@ -739,6 +739,12 @@ void NavigationStyle::doZoom(SoCamera* camera, float logfactor, const SbVec2f& p
         SbViewVolume vv = camera->getViewVolume(vp.getViewportAspectRatio());
         SbPlane panplane = vv.getPlane(camera->focalDistance.getValue());
         panCamera(viewer->getSoRenderManager()->getCamera(), ratio, panplane, pos, SbVec2f(0.5,0.5));
+
+        // Change the position of the rotation center indicator after zooming at cursor
+        // Rotation mode is WindowCenter
+        if (!rotationCenterMode) {
+            viewer->changeRotationCenterPosition(getFocalPoint());
+        }
     }
 }
 
