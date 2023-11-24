@@ -1175,7 +1175,10 @@ Restart:
                            || Constr->Second == GeoEnum::GeoUndef);
 
                     SbVec3f p0;
+                    double distance = Constr->LabelDistance;
                     double startangle, range;
+                    double endLineLength1 = 0.0;
+                    double endLineLength2 = 0.0;
                     if (Constr->Second != GeoEnum::GeoUndef) {
                         Base::Vector3d dir1, dir2;
                         if (Constr->Third == GeoEnum::GeoUndef) {  // angle between two lines
@@ -1183,27 +1186,29 @@ Restart:
                                 geolistfacade.getGeometryFromGeoId(Constr->First);
                             const Part::Geometry* geo2 =
                                 geolistfacade.getGeometryFromGeoId(Constr->Second);
-                            if (geo1->getTypeId() != Part::GeomLineSegment::getClassTypeId()
-                                || geo2->getTypeId() != Part::GeomLineSegment::getClassTypeId()) {
+                            if (!isLineSegment(*geo1) || !isLineSegment(*geo2)) {
                                 break;
                             }
-                            const Part::GeomLineSegment* lineSeg1 =
-                                static_cast<const Part::GeomLineSegment*>(geo1);
-                            const Part::GeomLineSegment* lineSeg2 =
-                                static_cast<const Part::GeomLineSegment*>(geo2);
+                            auto* line1 = static_cast<const Part::GeomLineSegment*>(geo1);
+                            auto* line2 = static_cast<const Part::GeomLineSegment*>(geo2);
 
                             bool flip1 = (Constr->FirstPos == PointPos::end);
                             bool flip2 = (Constr->SecondPos == PointPos::end);
                             dir1 = (flip1 ? -1. : 1.)
-                                * (lineSeg1->getEndPoint() - lineSeg1->getStartPoint());
+                                * (line1->getEndPoint() - line1->getStartPoint()).Normalize();
                             dir2 = (flip2 ? -1. : 1.)
-                                * (lineSeg2->getEndPoint() - lineSeg2->getStartPoint());
+                                * (line2->getEndPoint() - line2->getStartPoint()).Normalize();
                             Base::Vector3d pnt1 =
-                                flip1 ? lineSeg1->getEndPoint() : lineSeg1->getStartPoint();
+                                flip1 ? line1->getEndPoint() : line1->getStartPoint();
                             Base::Vector3d pnt2 =
-                                flip2 ? lineSeg2->getEndPoint() : lineSeg2->getStartPoint();
+                                flip2 ? line2->getEndPoint() : line2->getStartPoint();
+                            Base::Vector3d pnt12 =
+                                flip1 ? line1->getStartPoint() : line1->getEndPoint();
+                            Base::Vector3d pnt22 =
+                                flip2 ? line2->getStartPoint() : line2->getEndPoint();
 
                             // line-line intersection
+                            Base::Vector3d intersection;
                             {
                                 double det = dir1.x * dir2.y - dir1.y * dir2.x;
                                 if ((det > 0 ? det : -det) < 1e-10) {
@@ -1211,19 +1216,19 @@ Restart:
                                     // center of the point pairs with the shortest distance is
                                     // used
                                     Base::Vector3d p1[2], p2[2];
-                                    p1[0] = lineSeg1->getStartPoint();
-                                    p1[1] = lineSeg1->getEndPoint();
-                                    p2[0] = lineSeg2->getStartPoint();
-                                    p2[1] = lineSeg2->getEndPoint();
+                                    p1[0] = line1->getStartPoint();
+                                    p1[1] = line1->getEndPoint();
+                                    p2[0] = line2->getStartPoint();
+                                    p2[1] = line2->getEndPoint();
                                     double length = DBL_MAX;
                                     for (int i = 0; i <= 1; i++) {
                                         for (int j = 0; j <= 1; j++) {
                                             double tmp = (p2[j] - p1[i]).Length();
                                             if (tmp < length) {
                                                 length = tmp;
-                                                p0.setValue((p2[j].x + p1[i].x) / 2,
-                                                            (p2[j].y + p1[i].y) / 2,
-                                                            0);
+                                                double x = (p2[j].x + p1[i].x) / 2;
+                                                double y = (p2[j].y + p1[i].y) / 2;
+                                                intersection = Base::Vector3d(x, y, 0.);
                                             }
                                         }
                                     }
@@ -1233,12 +1238,24 @@ Restart:
                                     double c2 = dir2.y * pnt2.x - dir2.x * pnt2.y;
                                     double x = (dir1.x * c2 - dir2.x * c1) / det;
                                     double y = (dir1.y * c2 - dir2.y * c1) / det;
-                                    p0 = SbVec3f(x, y, 0);
+                                    intersection = Base::Vector3d(x, y, 0.);
                                 }
                             }
+                            p0.setValue(intersection.x, intersection.y, 0.);
 
                             range = Constr->getValue();  // WYSIWYG
                             startangle = atan2(dir1.y, dir1.x);
+                            Base::Vector3d vl1 = dir1 * 2 * distance - (pnt1 - intersection);
+                            Base::Vector3d vl2 = dir2 * 2 * distance - (pnt2 - intersection);
+                            Base::Vector3d vl12 = dir1 * 2 * distance - (pnt12 - intersection);
+                            Base::Vector3d vl22 = dir2 * 2 * distance - (pnt22 - intersection);
+
+                            endLineLength1 = vl12.Dot(dir1) > 0 ? vl12.Length()
+                                : vl1.Dot(dir1) < 0             ? -vl1.Length()
+                                                                : 0.0;
+                            endLineLength2 = vl22.Dot(dir2) > 0 ? vl22.Length()
+                                : vl2.Dot(dir2) < 0             ? -vl2.Length()
+                                                                : 0.0;
                         }
                         else {  // angle-via-point
                             Base::Vector3d p =
@@ -1295,9 +1312,11 @@ Restart:
                     asciiText->string =
                         SbString(getPresentationString(Constr).toUtf8().constData());
                     asciiText->datumtype = SoDatumLabel::ANGLE;
-                    asciiText->param1 = Constr->LabelDistance;
+                    asciiText->param1 = distance;
                     asciiText->param2 = startangle;
                     asciiText->param3 = range;
+                    asciiText->param4 = endLineLength1;
+                    asciiText->param5 = endLineLength2;
 
                     asciiText->pnts.setNum(2);
                     SbVec3f* verts = asciiText->pnts.startEditing();
