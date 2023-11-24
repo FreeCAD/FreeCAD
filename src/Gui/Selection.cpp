@@ -2368,7 +2368,7 @@ PyObject *SelectionSingleton::sHasSelection(PyObject * /*self*/, PyObject *args)
 {
     const char *doc = nullptr;
     int resolve = 0;
-    if (!PyArg_ParseTuple(args, "|sO!", &doc, &resolve))
+    if (!PyArg_ParseTuple(args, "|si", &doc, &resolve))
         return nullptr;
 
     PY_TRY {
