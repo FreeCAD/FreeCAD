@@ -247,38 +247,18 @@
       <item>
        <layout class="QHBoxLayout" name="horizontalLayout_5">
         <item>
-         <widget class="Gui::PrefCheckBox" name="checkBox_showSnapBar">
+         <widget class="Gui::PrefCheckBox" name="checkBox_SnapBarShowOnlyDuringCommands">
           <property name="toolTip">
-           <string>If checked, the Snap toolbar will be shown whenever you use snapping</string>
+           <string>If checked, the Snap toolbar will only be visible during commands</string>
           </property>
           <property name="text">
-           <string>Show Draft snap toolbar</string>
+           <string>Only show the Draft snap toolbar during commands</string>
           </property>
           <property name="checked">
-           <bool>true</bool>
+           <bool>false</bool>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>showSnapBar</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_6">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="checkBox_hideSnapBar">
-          <property name="enabled">
-           <bool>true</bool>
-          </property>
-          <property name="text">
-           <string>If checked, the Draft snap toolbar is hidden after use</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>hideSnapBar</cstring>
+           <cstring>SnapBarShowOnlyDuringCommands</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Draft</cstring>
@@ -402,7 +382,7 @@ if they match the X, Y or Z axis of the global coordinate system</string>
        </widget>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_7">
+       <layout class="QHBoxLayout" name="horizontalLayout_6">
         <item>
          <widget class="QLabel" name="label_gridEvery">
           <property name="text">
@@ -448,7 +428,7 @@ if they match the X, Y or Z axis of the global coordinate system</string>
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_8">
+       <layout class="QHBoxLayout" name="horizontalLayout_7">
         <item>
          <widget class="QLabel" name="label_gridSpacing">
           <property name="text">
@@ -503,7 +483,7 @@ if they match the X, Y or Z axis of the global coordinate system</string>
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_9">
+       <layout class="QHBoxLayout" name="horizontalLayout_8">
         <item>
          <widget class="QLabel" name="label_gridSize">
           <property name="text">
@@ -555,7 +535,7 @@ if they match the X, Y or Z axis of the global coordinate system</string>
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_10">
+       <layout class="QHBoxLayout" name="horizontalLayout_9">
         <item>
          <widget class="QLabel" name="label_gridColor_gridTransparency">
           <property name="text">
@@ -636,7 +616,7 @@ if they match the X, Y or Z axis of the global coordinate system</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_3">
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_11">
+       <layout class="QHBoxLayout" name="horizontalLayout_10">
         <item>
          <widget class="QLabel" name="label_DraftEditMaxObjects">
           <property name="toolTip">
@@ -694,7 +674,7 @@ if they match the X, Y or Z axis of the global coordinate system</string>
        </layout>
       </item>
       <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_12">
+       <layout class="QHBoxLayout" name="horizontalLayout_11">
         <item>
          <widget class="QLabel" name="label_DraftEditPickRadius">
           <property name="toolTip">
@@ -810,12 +790,6 @@ if they match the X, Y or Z axis of the global coordinate system</string>
    <signal>toggled(bool)</signal>
    <receiver>comboBox_modsnap</receiver>
    <slot>setDisabled(bool)</slot>
-  </connection>
-  <connection>
-   <sender>checkBox_showSnapBar</sender>
-   <signal>toggled(bool)</signal>
-   <receiver>checkBox_hideSnapBar</receiver>
-   <slot>setEnabled(bool)</slot>
   </connection>
   <connection>
    <sender>checkBox_alwaysShowGrid</sender>

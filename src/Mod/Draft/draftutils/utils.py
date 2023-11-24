@@ -185,8 +185,8 @@ def get_param_type(param):
         return "float"
     elif param in ("selectBaseObjects", "alwaysSnap", "grid",
                    "fillmode", "maxSnap", "DimShowLine",
-                   "SvgLinesBlack", "dxfStdSize", "showSnapBar",
-                   "hideSnapBar", "alwaysShowGrid", "renderPolylineWidth",
+                   "SvgLinesBlack", "dxfStdSize", "SnapBarShowOnlyDuringCommands",
+                   "alwaysShowGrid", "renderPolylineWidth",
                    "showPlaneTracker", "UsePartPrimitives",
                    "DiscretizeEllipses", "showUnit", "coloredGridAxes",
                    "Draft_array_fuse", "Draft_array_Link", "gridBorder"):
