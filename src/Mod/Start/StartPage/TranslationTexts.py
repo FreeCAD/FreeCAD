@@ -136,7 +136,8 @@ def get(handle):
     T_UNKNOWN = translate("StartPage", "Unknown")
     T_FORUM = translate("StartPage", "Forum")
     T_DESCR_FORUM = translate(
-        "StartPage", 'The latest posts on the <a href="https://forum.freecad.org">FreeCAD forum</a>:'
+        "StartPage",
+        'The latest posts on the <a href="https://forum.freecad.org">FreeCAD forum</a>:',
     )
     T_EXTERNALLINKS = translate(
         "StartPage",
