@@ -26,6 +26,7 @@
 #include <gp_Pnt.hxx>
 
 #include <App/Document.h>
+#include <Gui/Document.h>
 #include <Mod/Part/App/TopoShape.h>
 
 #include <Mod/Import/App/dxf/ImpExpDxf.h>
@@ -37,6 +38,11 @@ class ImpExpDxfReadGui: public Import::ImpExpDxfRead
 {
 public:
     ImpExpDxfReadGui(std::string filepath, App::Document* pcDoc);
+
+protected:
+    void ApplyGuiStyles(Part::Feature*);
+    void ApplyGuiStyles(App::FeaturePython*);
+    Gui::Document* GuiDocument;
 };
 }  // namespace ImportGui
 
