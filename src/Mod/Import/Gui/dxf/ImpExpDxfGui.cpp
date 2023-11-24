@@ -50,16 +50,20 @@
 #include <gp_Vec.hxx>
 #endif
 
-//#include <App/Annotation.h>
-//#include <App/Application.h>
-//#include <App/Document.h>
-//#include <Base/Console.h>
-//#include <Base/Interpreter.h>
-//#include <Base/Matrix.h>
-//#include <Base/Parameter.h>
-//#include <Base/Vector3D.h>
-//#include <Base/PlacementPy.h>
-//#include <Mod/Part/App/PartFeature.h>
+// #include <App/Annotation.h>
+// #include <App/Application.h>
+// #include <App/Document.h>
+// #include <Base/Console.h>
+// #include <Base/Interpreter.h>
+// #include <Base/Matrix.h>
+// #include <Base/Parameter.h>
+// #include <Base/Vector3D.h>
+// #include <Base/PlacementPy.h>
+// #include <Mod/Part/App/PartFeature.h>
+#include <Gui/Application.h>
+#include <Gui/ViewProvider.h>
+#include <Gui/ViewProviderDocumentObject.h>
+#include <Mod/Part/Gui/ViewProvider.h>
 
 #include "ImpExpDxfGui.h"
 
@@ -67,5 +71,37 @@ using namespace ImportGui;
 
 ImpExpDxfReadGui::ImpExpDxfReadGui(std::string filepath, App::Document* pcDoc)
     : ImpExpDxfRead(filepath, pcDoc)
+    , GuiDocument(Gui::Application::Instance->getDocument(pcDoc))
 {}
 
+void ImpExpDxfReadGui::ApplyGuiStyles(Part::Feature* object)
+{
+    PartGui::ViewProviderPart* view =
+        static_cast<PartGui::ViewProviderPart*>(GuiDocument->getViewProvider(object));
+    App::Color color = ObjectColor();
+    view->LineColor.setValue(color);
+    view->PointColor.setValue(color);
+    view->ShapeColor.setValue(color);
+}
+
+void ImpExpDxfReadGui::ApplyGuiStyles(App::FeaturePython* object)
+{
+    static Base::Type PropertyColorType = App::PropertyColor::getClassTypeId();
+
+    auto view = static_cast<Gui::ViewProviderDocumentObject*>(GuiDocument->getViewProvider(object));
+    App::Color color = ObjectColor();
+
+    // The properties on this object depend on which Python object is wrapped around it.
+    // For now we look for the two colors we expect in text and dimensions, and check that they
+    // exist and have the correct type before setting them.
+    // A more general choice would be to iterate over all the properties and set all the ones of
+    // this type, or perhaps only if their name ends in "Color"
+    auto prop = view->getPropertyByName("TextColor");
+    if (prop != nullptr && prop->getTypeId() == PropertyColorType) {
+        static_cast<App::PropertyColor*>(prop)->setValue(color);
+    }
+    prop = view->getPropertyByName("LineColor");
+    if (prop != nullptr && prop->getTypeId() == PropertyColorType) {
+        static_cast<App::PropertyColor*>(prop)->setValue(color);
+    }
+}
