@@ -85,7 +85,8 @@ void QGVNavStyleTouchpad::handleKeyReleaseEvent(QKeyEvent *event)
 void QGVNavStyleTouchpad::handleMouseMoveEvent(QMouseEvent *event)
 {
     if (getViewer()->isBalloonPlacing()) {
-        getViewer()->setBalloonCursorPos(event->pos());
+        balloonCursorMovement(event);
+        return;
     }
 
     if (QApplication::keyboardModifiers() == Qt::ShiftModifier) {
