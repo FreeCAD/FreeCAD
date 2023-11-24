@@ -996,6 +996,13 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         SbVec3f p2 = points[1];
 
         SbVec3f dir = (p2-p1);
+        SbVec3f center = p1;
+        double radius = (p2 - p1).length();
+        if (this->datumtype.getValue() == DIAMETER) {
+            center = (p1 + p2) / 2;
+            radius = radius / 2;
+        }
+
         dir.normalize();
         SbVec3f normal (-dir[1],dir[0],0);
 
@@ -1055,7 +1062,22 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
                 glVertex2f(ar1_1[0], ar1_1[1]);
                 glVertex2f(ar2_1[0], ar2_1[1]);
             glEnd();
+        }
 
+        // Draw arc helper if needed
+        float startangle = this->param3.getValue();
+        float range = this->param4.getValue();
+        if (range != 0.0) {
+            int countSegments = std::max(6, abs(int(50.0 * range / (2 * M_PI))));
+            double segment = range / (countSegments - 1);
+
+            glBegin(GL_LINE_STRIP);
+            for (int i = 0; i < countSegments; i++) {
+                double theta = startangle + segment * i;
+                SbVec3f v1 = center + SbVec3f(radius * cos(theta), radius * sin(theta), 0);
+                glVertex2f(v1[0], v1[1]);
+            }
+            glEnd();
         }
 
     }
