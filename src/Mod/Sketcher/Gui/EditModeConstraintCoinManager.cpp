@@ -1330,27 +1330,42 @@ Restart:
                     assert(Constr->First >= -extGeoCount && Constr->First < intGeoCount);
 
                     Base::Vector3d pnt1(0., 0., 0.), pnt2(0., 0., 0.);
+                    double helperStartAngle = 0.;
+                    double helperRange = 0.;
+
                     if (Constr->First != GeoEnum::GeoUndef) {
                         const Part::Geometry* geo =
                             geolistfacade.getGeometryFromGeoId(Constr->First);
 
                         if (geo->is<Part::GeomArcOfCircle>()) {
-                            const Part::GeomArcOfCircle* arc =
-                                static_cast<const Part::GeomArcOfCircle*>(geo);
+                            auto* arc = static_cast<const Part::GeomArcOfCircle*>(geo);
                             double radius = arc->getRadius();
                             double angle = (double)Constr->LabelPosition;
+                            double startAngle, endAngle;
+                            arc->getRange(startAngle, endAngle, /*emulateCCW=*/true);
                             if (angle == 10) {
-                                double startangle, endangle;
-                                arc->getRange(startangle, endangle, /*emulateCCW=*/true);
-                                angle = (startangle + endangle) / 2;
+                                angle = (startAngle + endAngle) / 2;
+                            }
+                            if (!(angle > startAngle && angle < endAngle)) {
+                                if (angle < startAngle
+                                    && startAngle - angle < angle + 2 * M_PI - endAngle) {
+                                    helperStartAngle = angle;
+                                    helperRange = startAngle - angle;
+                                }
+                                else {
+                                    if (angle < endAngle) {
+                                        angle += 2 * M_PI;
+                                    }
+                                    helperStartAngle = endAngle;
+                                    helperRange = angle - endAngle;
+                                }
                             }
                             Base::Vector3d center = arc->getCenter();
                             pnt1 = center - radius * Base::Vector3d(cos(angle), sin(angle), 0.);
                             pnt2 = center + radius * Base::Vector3d(cos(angle), sin(angle), 0.);
                         }
                         else if (geo->is<Part::GeomCircle>()) {
-                            const Part::GeomCircle* circle =
-                                static_cast<const Part::GeomCircle*>(geo);
+                            auto* circle = static_cast<const Part::GeomCircle*>(geo);
                             double radius = circle->getRadius();
                             double angle = (double)Constr->LabelPosition;
                             if (angle == 10) {
@@ -1381,6 +1396,8 @@ Restart:
                     asciiText->datumtype = SoDatumLabel::DIAMETER;
                     asciiText->param1 = Constr->LabelDistance;
                     asciiText->param2 = Constr->LabelPosition;
+                    asciiText->param3 = helperStartAngle;
+                    asciiText->param4 = helperRange;
 
                     asciiText->pnts.setNum(2);
                     SbVec3f* verts = asciiText->pnts.startEditing();
@@ -1395,27 +1412,41 @@ Restart:
                     assert(Constr->First >= -extGeoCount && Constr->First < intGeoCount);
 
                     Base::Vector3d pnt1(0., 0., 0.), pnt2(0., 0., 0.);
+                    double helperStartAngle = 0.;
+                    double helperRange = 0.;
 
                     if (Constr->First != GeoEnum::GeoUndef) {
                         const Part::Geometry* geo =
                             geolistfacade.getGeometryFromGeoId(Constr->First);
 
                         if (geo->is<Part::GeomArcOfCircle>()) {
-                            const Part::GeomArcOfCircle* arc =
-                                static_cast<const Part::GeomArcOfCircle*>(geo);
+                            auto* arc = static_cast<const Part::GeomArcOfCircle*>(geo);
                             double radius = arc->getRadius();
                             double angle = (double)Constr->LabelPosition;
+                            double startAngle, endAngle;
+                            arc->getRange(startAngle, endAngle, /*emulateCCW=*/true);
                             if (angle == 10) {
-                                double startangle, endangle;
-                                arc->getRange(startangle, endangle, /*emulateCCW=*/true);
-                                angle = (startangle + endangle) / 2;
+                                angle = (startAngle + endAngle) / 2;
+                            }
+                            if (!(angle > startAngle && angle < endAngle)) {
+                                if (angle < startAngle
+                                    && startAngle - angle < angle + 2 * M_PI - endAngle) {
+                                    helperStartAngle = angle;
+                                    helperRange = startAngle - angle;
+                                }
+                                else {
+                                    if (angle < endAngle) {
+                                        angle += 2 * M_PI;
+                                    }
+                                    helperStartAngle = endAngle;
+                                    helperRange = angle - endAngle;
+                                }
                             }
                             pnt1 = arc->getCenter();
                             pnt2 = pnt1 + radius * Base::Vector3d(cos(angle), sin(angle), 0.);
                         }
                         else if (geo->is<Part::GeomCircle>()) {
-                            const Part::GeomCircle* circle =
-                                static_cast<const Part::GeomCircle*>(geo);
+                            auto* circle = static_cast<const Part::GeomCircle*>(geo);
                             auto gf = GeometryFacade::getFacade(geo);
 
                             double radius;
@@ -1456,6 +1487,8 @@ Restart:
                     asciiText->datumtype = SoDatumLabel::RADIUS;
                     asciiText->param1 = Constr->LabelDistance;
                     asciiText->param2 = Constr->LabelPosition;
+                    asciiText->param3 = helperStartAngle;
+                    asciiText->param4 = helperRange;
 
                     asciiText->pnts.setNum(2);
                     SbVec3f* verts = asciiText->pnts.startEditing();
