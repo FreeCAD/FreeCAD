@@ -299,7 +299,17 @@ QVariant QGIViewBalloon::itemChange(GraphicsItemChange change, const QVariant& v
             balloonLabel->setSelected(false);
         }
         draw();
+        return value;
     }
+
+    if(change == ItemPositionChange && scene()) {
+        // QGIVBalloon doesn't really change position the way other views do.
+        // If we call QGIView::itemChange it will set the position to (0,0) instead of
+        // using the label's position, and the Balloon will be in the wrong place.
+        // QGIVDimension behaves the same way.
+        return QGraphicsItem::itemChange(change, value);
+    }
+
     return QGIView::itemChange(change, value);
 }
 
