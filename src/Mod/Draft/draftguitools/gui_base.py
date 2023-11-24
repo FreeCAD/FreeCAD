@@ -33,7 +33,7 @@ import FreeCAD as App
 import FreeCADGui as Gui
 import draftutils.todo as todo
 
-from draftutils.messages import _msg, _log
+from draftutils.messages import _toolmsg, _log
 
 
 class GuiCommandSimplest:
@@ -104,8 +104,8 @@ class GuiCommandSimplest:
         self.doc = App.activeDocument()
         _log("Document: {}".format(self.doc.Label))
         _log("GuiCommand: {}".format(self.command_name))
-        _msg("{}".format(16*"-"))
-        _msg("GuiCommand: {}".format(self.command_name))
+        _toolmsg("{}".format(16*"-"))
+        _toolmsg("GuiCommand: {}".format(self.command_name))
 
 
 class GuiCommandNeedsSelection(GuiCommandSimplest):

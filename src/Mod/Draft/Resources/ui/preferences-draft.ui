@@ -17,7 +17,16 @@
    <property name="spacing">
     <number>6</number>
    </property>
-   <property name="margin">
+   <property name="leftMargin">
+    <number>9</number>
+   </property>
+   <property name="topMargin">
+    <number>9</number>
+   </property>
+   <property name="rightMargin">
+    <number>9</number>
+   </property>
+   <property name="bottomMargin">
     <number>9</number>
    </property>
    <item>
@@ -163,7 +172,16 @@
       <string>Draft tools options</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
-      <property name="margin">
+      <property name="leftMargin">
+       <number>9</number>
+      </property>
+      <property name="topMargin">
+       <number>9</number>
+      </property>
+      <property name="rightMargin">
+       <number>9</number>
+      </property>
+      <property name="bottomMargin">
        <number>9</number>
       </property>
       <item>
@@ -188,6 +206,23 @@ This allows to point the direction and type the distance.</string>
           </property>
          </widget>
         </item>
+        <item row="2" column="0">
+         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_13">
+          <property name="toolTip">
+           <string>Force Draft Tools to create Part primitives instead of Draft objects.
+Note that this is not fully supported, and many object will be not editable with Draft Modifiers.</string>
+          </property>
+          <property name="text">
+           <string>Use Part Primitives when available</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>UsePartPrimitives</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/Draft</cstring>
+          </property>
+         </widget>
+        </item>
         <item row="1" column="0">
          <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_3">
           <property name="toolTip">
@@ -205,17 +240,18 @@ If this option is checked, the base objects will be selected instead.</string>
           </property>
          </widget>
         </item>
-        <item row="2" column="0">
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_13">
+        <item row="3" column="0">
+         <widget class="Gui::PrefCheckBox" name="checkBox_2">
           <property name="toolTip">
-           <string>Force Draft Tools to create Part primitives instead of Draft objects.
-Note that this is not fully supported, and many object will be not editable with Draft Modifiers.</string>
+           <string>If this is checked, prompt messages will be printed
+in the report view when using Draft tools, to help
+knowing which action to take next.</string>
           </property>
           <property name="text">
-           <string>Use Part Primitives when available</string>
+           <string>Show prompts in the report view</string>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>UsePartPrimitives</cstring>
+           <cstring>ToolMessages</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Draft</cstring>
@@ -317,7 +353,7 @@ Note that this is not fully supported, and many object will be not editable with
           <property name="toolTip">
            <string>This is the default color for objects being drawn while in construction mode.</string>
           </property>
-          <property name="color" stdset="0">
+          <property name="color">
            <color>
             <red>44</red>
             <green>125</green>
@@ -383,11 +419,6 @@ Note that this is not fully supported, and many object will be not editable with
   <customwidget>
    <class>Gui::PrefLineEdit</class>
    <extends>QLineEdit</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
-  <customwidget>
-   <class>Gui::PrefDoubleSpinBox</class>
-   <extends>QDoubleSpinBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>
