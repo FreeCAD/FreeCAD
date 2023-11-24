@@ -60,6 +60,7 @@ dependencies:
 - cmake
 - coin3d
 - compilers
+- conda
 - conda-build
 - conda-devenv
 - conda-smithy
@@ -72,6 +73,7 @@ dependencies:
 - graphviz
 - hdf5
 - libcxx
+- mamba==1.4.9
 - matplotlib
 - ninja
 - numpy
