@@ -769,12 +769,13 @@ bool ViewProvider::canDropObjects() const {
 bool ViewProvider::canDragAndDropObject(App::DocumentObject* obj) const {
 
     auto vector = getExtensionsDerivedFromType<Gui::ViewProviderExtension>();
-    for(Gui::ViewProviderExtension* ext : vector){
-        if(!ext->extensionCanDragAndDropObject(obj))
-            return false;
+    for (Gui::ViewProviderExtension* ext : vector) {
+        if (ext->extensionCanDragAndDropObject(obj)) {
+            return true;
+        }
     }
 
-    return true;
+    return false;
 }
 
 void ViewProvider::dropObject(App::DocumentObject* obj) {
@@ -782,11 +783,9 @@ void ViewProvider::dropObject(App::DocumentObject* obj) {
     for (Gui::ViewProviderExtension* ext : vector) {
         if (ext->extensionCanDropObject(obj)) {
             ext->extensionDropObject(obj);
-            return;
+            break;
         }
     }
-
-    throw Base::RuntimeError("ViewProvider::dropObject: no extension for dropping given object available.");
 }
 
 bool ViewProvider::canDropObjectEx(App::DocumentObject* obj, App::DocumentObject *owner,
