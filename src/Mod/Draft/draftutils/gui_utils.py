@@ -123,7 +123,7 @@ def autogroup(obj):
                 gr.append(obj)
                 active_group.Group = gr
 
-    if Gui.ActiveDocument.ActiveView.getActiveObject("NativeIFC"):
+    if Gui.ActiveDocument.ActiveView.getActiveObject("NativeIFC") is not None:
         # NativeIFC handling
         try:
             import ifc_tools
@@ -133,7 +133,7 @@ def autogroup(obj):
         except:
             pass
 
-    elif Gui.ActiveDocument.ActiveView.getActiveObject("Arch"):
+    elif Gui.ActiveDocument.ActiveView.getActiveObject("Arch") is not None:
         # add object to active Arch Container
         active_arch_obj = Gui.ActiveDocument.ActiveView.getActiveObject("Arch")
         if active_arch_obj != active_group:
@@ -142,7 +142,7 @@ def autogroup(obj):
                 return
             active_arch_obj.addObject(obj)
 
-    elif Gui.ActiveDocument.ActiveView.getActiveObject("part", False) is not None:
+    elif Gui.ActiveDocument.ActiveView.getActiveObject("part") is not None:
         # add object to active part and change it's placement accordingly
         # so object does not jump to different position, works with App::Link
         # if not scaled. Modified accordingly to realthunder suggestions
