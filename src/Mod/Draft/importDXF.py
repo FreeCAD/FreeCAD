@@ -2813,8 +2813,12 @@ def open(filename):
         doc = FreeCAD.newDocument(docname)
         doc.Label = docname
         FreeCAD.setActiveDocument(doc.Name)
-        import Import
-        Import.readDXF(filename)
+        try:
+            import ImportGui
+            ImportGui.readDXF(filename)
+        except Exception:
+            import Import
+            Import.readDXF(filename)
         Draft.convert_draft_texts() # convert annotations to Draft texts
         doc.recompute()
 
@@ -2855,8 +2859,12 @@ def insert(filename, docname):
         else:
             errorDXFLib(gui)
     else:
-        import Import
-        Import.readDXF(filename)
+        try:
+            import ImportGui
+            ImportGui.readDXF(filename)
+        except Exception:
+            import Import
+            Import.readDXF(filename)
         Draft.convert_draft_texts() # convert annotations to Draft texts
         doc.recompute()
 

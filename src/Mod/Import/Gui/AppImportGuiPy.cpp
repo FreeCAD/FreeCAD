@@ -51,6 +51,7 @@
 #include "ImportOCAFGui.h"
 #include "OCAFBrowser.h"
 
+#include "dxf/ImpExpDxfGui.h"
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
 #include <Base/Console.h>
@@ -93,6 +94,10 @@ public:
         add_keyword_method("insert",
                            &Module::insert,
                            "insert(string,string) -- Insert the file into the given document.");
+        add_varargs_method("readDXF",
+                           &Module::readDXF,
+                           "readDXF(filename,[document,ignore_errors,option_source]): Imports a "
+                           "DXF file into the given document. ignore_errors is True by default.");
         add_varargs_method("exportOptions",
                            &Module::exportOptions,
                            "exportOptions(string) -- Return the export options of a file type.");
@@ -248,6 +253,70 @@ private:
             return vp->getElementColors(subname);
         }
         return {};
+    }
+
+    // This readDXF method is an almost exact duplicate of the one in Import::Module.
+    // The only difference is the CDxfRead class derivation that is created.
+    // It would seem desirable to have most of this code in just one place, passing it
+    // e.g. a pointer to a function that does the 4 lines during the lifetime of the
+    // CDxfRead object, but right now Import::Module and ImportGui::Module cannot see
+    // each other's functions so this shared code would need some place to live where
+    // both places could include a declaration.
+    Py::Object readDXF(const Py::Tuple& args)
+    {
+        char* Name = nullptr;
+        const char* DocName = nullptr;
+        const char* optionSource = nullptr;
+        std::string defaultOptions = "User parameter:BaseApp/Preferences/Mod/Draft";
+        bool IgnoreErrors = true;
+        if (!PyArg_ParseTuple(args.ptr(),
+                              "et|sbs",
+                              "utf-8",
+                              &Name,
+                              &DocName,
+                              &IgnoreErrors,
+                              &optionSource)) {
+            throw Py::Exception();
+        }
+
+        std::string EncodedName = std::string(Name);
+        PyMem_Free(Name);
+
+        Base::FileInfo file(EncodedName.c_str());
+        if (!file.exists()) {
+            throw Py::RuntimeError("File doesn't exist");
+        }
+
+        if (optionSource) {
+            defaultOptions = optionSource;
+        }
+
+        App::Document* pcDoc = nullptr;
+        if (DocName) {
+            pcDoc = App::GetApplication().getDocument(DocName);
+        }
+        else {
+            pcDoc = App::GetApplication().getActiveDocument();
+        }
+        if (!pcDoc) {
+            pcDoc = App::GetApplication().newDocument(DocName);
+        }
+
+        try {
+            // read the DXF file
+            ImpExpDxfReadGui dxf_file(EncodedName, pcDoc);
+            dxf_file.setOptionSource(defaultOptions);
+            dxf_file.setOptions();
+            dxf_file.DoRead(IgnoreErrors);
+            pcDoc->recompute();
+        }
+        catch (const Standard_Failure& e) {
+            throw Py::RuntimeError(e.GetMessageString());
+        }
+        catch (const Base::Exception& e) {
+            throw Py::RuntimeError(e.what());
+        }
+        return Py::None();
     }
 
     Py::Object exportOptions(const Py::Tuple& args)
