@@ -475,6 +475,12 @@ class DocumentBasicCases(unittest.TestCase):
         self.Doc.removeObject(obj.Name)
         del obj
 
+    def testHasSelection(self):
+        if FreeCAD.GuiUp:
+            import FreeCADGui
+
+            self.assertFalse(FreeCADGui.Selection.hasSelection("", 1))
+
     def testPropertyLink_Issue2902Part1(self):
         o1 = self.Doc.addObject("App::FeatureTest", "test1")
         o2 = self.Doc.addObject("App::FeatureTest", "test2")
