@@ -244,7 +244,7 @@ class Snapper:
 
         self.spoint = None
 
-        if Draft.getParam("showSnapBar", True):
+        if Draft.getParam("SnapBarShowOnlyDuringCommands", False):
             toolbar = self.get_snap_toolbar()
             if toolbar:
                 toolbar.show()
@@ -1213,7 +1213,7 @@ class Snapper:
             self.grid.lowerTracker()
 
 
-    def off(self, hideSnapBar=False):
+    def off(self):
         """Finish snapping."""
         if self.tracker:
             self.tracker.off()
@@ -1238,7 +1238,7 @@ class Snapper:
         self.unconstrain()
         self.radius = 0
         self.setCursor()
-        if hideSnapBar or Draft.getParam("hideSnapBar", False):
+        if Draft.getParam("SnapBarShowOnlyDuringCommands", False):
             toolbar = self.get_snap_toolbar()
             if toolbar:
                 toolbar.hide()
@@ -1486,30 +1486,11 @@ class Snapper:
 
     def get_snap_toolbar(self):
         """Get the snap toolbar."""
-
         if not (hasattr(self, "toolbar") and self.toolbar):
             mw = Gui.getMainWindow()
             self.toolbar = mw.findChild(QtGui.QToolBar, "Draft snap")
         if self.toolbar:
-            # Make sure the Python generated BIM snap toolbar shows up in the
-            # toolbar area context menu after switching back to that workbench:
-            self.toolbar.toggleViewAction().setVisible(True)
             return self.toolbar
-
-        # Code required for the BIM workbench which has to work with FC0.20
-        # and FC0.21/1.0. The code relies on the Snapping menu in the BIM WB
-        # to create the actions.
-        self.toolbar = QtGui.QToolBar(mw)
-        mw.addToolBar(QtCore.Qt.TopToolBarArea, self.toolbar)
-        self.toolbar.setObjectName("Draft snap")
-        self.toolbar.setWindowTitle(translate("Workbench", "Draft snap"))
-        for cmd in get_draft_snap_commands():
-            if cmd == "Separator":
-                self.toolbar.addSeparator()
-            else:
-                action = Gui.Command.get(cmd).getAction()[0]
-                self.toolbar.addAction(action)
-        return self.toolbar
 
 
     def toggleGrid(self):
@@ -1593,24 +1574,12 @@ class Snapper:
 
 
     def show(self):
-        """Show the toolbar, show the grid in all 3D views where it was
-        previously visible, and start the trackers for the active 3D view
-        if it is `tracker-less`.
-        """
-        toolbar = self.get_snap_toolbar()
-        if toolbar:
-            if Draft.getParam("showSnapBar", True):
-                toolbar.show()
-            else:
-                toolbar.hide()
+        """Show the grid in all 3D views where it was previously visible."""
         self.show_hide_grids(show=True)
 
 
     def hide(self):
-        """Hide the toolbar and hide the grid in all 3D views."""
-        if hasattr(self, "toolbar") and self.toolbar:
-            self.toolbar.hide()
-            self.toolbar.toggleViewAction().setVisible(False)
+        """Hide the grid in all 3D views."""
         self.show_hide_grids(show=False)
 
 

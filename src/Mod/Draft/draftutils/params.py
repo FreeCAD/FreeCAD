@@ -32,12 +32,16 @@ from draftutils import utils
 from draftutils.translate import translate
 from draftviewproviders import view_base
 
+
 class ParamObserver:
 
     def slotParamChanged(self, param, tp, name, value):
         if name in ("gridBorder", "gridShowHuman", "coloredGridAxes", "gridEvery",
                     "gridSpacing", "gridSize", "gridTransparency", "gridColor"):
             _param_observer_callback_grid()
+            return
+        if name == "SnapBarShowOnlyDuringCommands":
+            _param_observer_callback_snapbar(value)
             return
         if name == "DisplayStatusbarSnapWidget":
             _param_observer_callback_snapwidget()
@@ -73,28 +77,26 @@ def _param_observer_callback_grid():
             pass
 
 
+def _param_observer_callback_snapbar(value):
+    # value is a string: "0" or "1"
+    if Gui.activeWorkbench().name() not in ("DraftWorkbench", "ArchWorkbench", "BIMWorkbench"):
+        return
+    if hasattr(Gui, "Snapper"):
+        toolbar = Gui.Snapper.get_snap_toolbar()
+        if toolbar is not None:
+            toolbar.setVisible(value == "0")
+
+
 def _param_observer_callback_snapwidget():
     if Gui.activeWorkbench().name() == "DraftWorkbench":
         init_draft_statusbar.hide_draft_statusbar()
         init_draft_statusbar.show_draft_statusbar()
-        return
-    msg = translate("draft",
-"""The Snap widget is only available in the Draft Workbench.
-Switch to that workbench to see the result of this change.""")
-    QtGui.QMessageBox.information(None, "Update Draft statusbar widget", msg,
-                                  QtGui.QMessageBox.Ok)
 
 
 def _param_observer_callback_scalewidget():
     if Gui.activeWorkbench().name() == "DraftWorkbench":
         init_draft_statusbar.hide_draft_statusbar()
         init_draft_statusbar.show_draft_statusbar()
-        return
-    msg = translate("draft",
-"""The Annotation scale widget is only available in the Draft Workbench.
-Switch to that workbench to see the result of this change.""")
-    QtGui.QMessageBox.information(None, "Update Draft statusbar widget", msg,
-                                  QtGui.QMessageBox.Ok)
 
 
 def _param_observer_callback_snapstyle():
@@ -112,6 +114,27 @@ def _param_observer_callback_svg_pattern():
     utils.load_svg_patterns()
     if App.ActiveDocument is None:
         return
+
+    pats = list(utils.svg_patterns())
+    pats.sort()
+    pats = ["None"] + pats
+
+    data = []
+    for doc in App.listDocuments().values():
+        vobjs = []
+        for obj in doc.Objects:
+            if hasattr(obj, "ViewObject"):
+                vobj = obj.ViewObject
+                if hasattr(vobj, "Pattern") \
+                        and hasattr(vobj, "Proxy") \
+                        and isinstance(vobj.Proxy, view_base.ViewProviderDraft) \
+                        and vobj.getEnumerationsOfProperty("Pattern") != pats:
+                    vobjs.append(vobj)
+        if vobjs:
+            data.append([doc, vobjs])
+    if not data:
+        return
+
     msg = translate("draft",
 """Do you want to update the SVG pattern options
 of existing objects in all opened documents?""")
@@ -120,25 +143,18 @@ of existing objects in all opened documents?""")
                                      QtGui.QMessageBox.No)
     if res == QtGui.QMessageBox.No:
         return
-    pats = list(utils.svg_patterns())
-    pats.sort()
-    pats = ["None"] + pats
-    for doc in App.listDocuments().values():
+
+    for doc, vobjs in data:
         doc.openTransaction("SVG pattern update")
-        for obj in doc.Objects:
-            if hasattr(obj, "ViewObject") \
-                    and hasattr(obj.ViewObject, "Pattern") \
-                    and hasattr(obj.ViewObject, "Proxy") \
-                    and isinstance(obj.ViewObject.Proxy, view_base.ViewProviderDraft):
-                vobj = obj.ViewObject
-                old = vobj.Pattern
-                if old in pats:
-                    vobj.Pattern = pats
-                else:
-                    tmp_pats = [old] + pats[1:]
-                    tmp_pats.sort()
-                    vobj.Pattern = ["None"] + tmp_pats
-                vobj.Pattern = old
+        for vobj in vobjs:
+            old = vobj.Pattern
+            if old in pats:
+                vobj.Pattern = pats
+            else:
+                tmp_pats = [old] + pats[1:]
+                tmp_pats.sort()
+                vobj.Pattern = ["None"] + tmp_pats
+            vobj.Pattern = old
         doc.commitTransaction()
 
 
