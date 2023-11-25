@@ -1158,7 +1158,7 @@ class DraftToolBar:
         treated as shortcuts
         """
 
-        if txt[0] in "0123456789":
+        if txt[0] in "0123456789.,-":
             self.updateSnapper()
             return
 
