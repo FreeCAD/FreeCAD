@@ -1823,7 +1823,10 @@ void CmdTechDrawExtensionAreaAnnotation::activated(int iMsg)
 
         double faceArea = faceProps.Mass();
         totalArea += faceArea;
-        center += faceArea*TechDraw::DrawUtil::toVector3d(faceProps.CentreOfMass());
+        center += faceArea*DrawUtil::toVector3d(faceProps.CentreOfMass());
+    }
+    if (totalArea > 0.0) {
+        center /= totalArea;
     }
 
     // if area calculation was successful, start the command
@@ -1836,8 +1839,10 @@ void CmdTechDrawExtensionAreaAnnotation::activated(int iMsg)
     if (!balloon)
         throw Base::TypeError("CmdTechDrawNewBalloon - balloon not found\n");
     // the balloon has been created successfully
+
     // calculate needed variables
     double scale = objFeat->getScale();
+    center = DrawUtil::invertY(center/scale);
     double scale2 = scale * scale;
     totalArea = totalArea / scale2;//convert from view scale to internal mm2
 
@@ -1853,19 +1858,15 @@ void CmdTechDrawExtensionAreaAnnotation::activated(int iMsg)
     }
     std::string sUserString = Base::Tools::toStdString(qUserString);
 
-    if (totalArea > 0.0) {
-        center /= totalArea;
-    }
-
     // set the attributes in the data tab's fields
     //    balloon->SourceView.setValue(objFeat);
     balloon->BubbleShape.setValue("Rectangle");
     balloon->EndType.setValue("None");
     balloon->KinkLength.setValue(0.0);
     balloon->X.setValue(center.x);
-    balloon->Y.setValue(-center.y);
+    balloon->Y.setValue(center.y);
     balloon->OriginX.setValue(center.x);
-    balloon->OriginY.setValue(-center.y);
+    balloon->OriginY.setValue(center.y);
     balloon->ScaleType.setValue("Page");
     balloon->Text.setValue(sUserString);
     // look for the ballons's view provider
