@@ -1462,7 +1462,7 @@ PyObject* Application::sGetMarkerIndex(PyObject * /*self*/, PyObject *args)
             marker_arg = (*markerStyle).second;
 
         //get the marker size
-        int sizeList[]={5, 7, 9};
+        auto sizeList = Gui::Inventor::MarkerBitmaps::getSupportedSizes(marker_arg);
 
         if (std::find(std::begin(sizeList), std::end(sizeList), defSize) == std::end(sizeList))
             defSize = 9;
