@@ -27,6 +27,8 @@ __version__ = "00.01"
 __date__ = "2023/02/07"
 
 from PySide.QtCore import QT_TRANSLATE_NOOP
+from PySide import QtGui
+from PySide.QtGui import QMessageBox
 
 import FreeCAD as App
 import FreeCADGui as Gui
@@ -38,27 +40,51 @@ class CommandHoleShaftFit:
 
     def GetResources(self):
         """Return a dictionary with data that will be used by the button or menu item."""
-        return {'Pixmap': 'actions/TechDraw_HoleShaftFit.svg',
-                'Accel': "",
-                'MenuText': QT_TRANSLATE_NOOP("TechDraw_HoleShaftFit", "Add hole or shaft fit"),
-                'ToolTip': QT_TRANSLATE_NOOP("TechDraw_HoleShaftFit", "Add a hole or shaft fit to a dimension<br>\
+        return {
+            "Pixmap": "actions/TechDraw_HoleShaftFit.svg",
+            "Accel": "",
+            "MenuText": QT_TRANSLATE_NOOP(
+                "TechDraw_HoleShaftFit", "Add hole or shaft fit"
+            ),
+            "ToolTip": QT_TRANSLATE_NOOP(
+                "TechDraw_HoleShaftFit",
+                "Add a hole or shaft fit to a dimension<br>\
                 - select one length dimension or diameter dimension<br>\
                 - click the tool button, a panel opens<br>\
                 - select shaft fit / hole fit<br>\
-                - select the desired ISO 286 fit field using the combo box")}
+                - select the desired ISO 286 fit field using the combo box",
+            ),
+        }
 
     def Activated(self):
         """Run the following code when the command is activated (button press)."""
         sel = Gui.Selection.getSelectionEx()
-        #if sel and sel[0].Object.TypeId == 'TechDraw::DrawViewDimension':
-        if sel[0].Object.TypeId == 'TechDraw::DrawViewDimension':
+        # if sel and sel[0].Object.TypeId == 'TechDraw::DrawViewDimension':
+        if sel[0].Object.TypeId == "TechDraw::DrawViewDimension":
             self.ui = TechDrawTools.TaskHoleShaftFit(sel)
             Gui.Control.showDialog(self.ui)
+        else:
+            msgBox = QtGui.QMessageBox()
+            msgTitle = QT_TRANSLATE_NOOP(
+                "TechDraw_HoleShaftFit", "Add a hole or shaft fit to a dimension"
+            )
+            msg = QT_TRANSLATE_NOOP(
+                "TechDraw_HoleShaftFit",
+                "Please select one length dimension or diameter dimension and retry",
+            )
+            msgBox.setText(msg)
+            msgBox.setWindowTitle(msgTitle)
+            msgBox.exec_()
 
     def IsActive(self):
         """Return True when the command should be active or False when it should be disabled (greyed)."""
         if App.ActiveDocument:
-            return TechDrawTools.TDToolsUtil.havePage() and TechDrawTools.TDToolsUtil.haveView()
+            sel = Gui.Selection.getSelectionEx()
+            return (
+                TechDrawTools.TDToolsUtil.havePage()
+                and TechDrawTools.TDToolsUtil.haveView()
+                and len(sel) == 1
+            )
         else:
             return False
 
