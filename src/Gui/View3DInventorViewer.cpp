@@ -2382,7 +2382,7 @@ void View3DInventorViewer::renderScene()
     glDepthRange(0.1,1.0);
 #endif
 
-    // Immediately reschedule to get continuous spin animation.
+    // Immediately reschedule to get continuous animation.
     if (this->isAnimating()) {
         this->getSoRenderManager()->scheduleRedraw();
     }
