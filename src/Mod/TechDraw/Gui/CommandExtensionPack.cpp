@@ -27,6 +27,8 @@
 #include <sstream>
 #include <BRepGProp.hxx>
 #include <GProp_GProps.hxx>
+#include <BRepAdaptor_Curve.hxx>
+#include <GCPnts_AbscissaPoint.hxx>
 #endif
 
 #include <App/Document.h>
@@ -52,13 +54,16 @@
 #include <Mod/TechDraw/App/DrawProjGroupItem.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/DrawViewBalloon.h>
+#include <Mod/TechDraw/App/DrawViewDimension.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawViewSection.h>
+#include <Mod/TechDraw/App/Preferences.h>
 
 #include "DrawGuiUtil.h"
 #include "QGSPage.h"
 #include "TaskSelectLineAttributes.h"
 #include "ViewProviderBalloon.h"
+#include "ViewProviderDimension.h"
 #include "ViewProviderPage.h"
 
 
@@ -1894,6 +1899,145 @@ bool CmdTechDrawExtensionAreaAnnotation::isActive()
 }
 
 //===========================================================================
+// TechDraw_ExtensionArcLengthAnnotation
+//===========================================================================
+
+DEF_STD_CMD_A(CmdTechDrawExtensionArcLengthAnnotation)
+
+CmdTechDrawExtensionArcLengthAnnotation::CmdTechDrawExtensionArcLengthAnnotation()
+    : Command("TechDraw_ExtensionArcLengthAnnotation")
+{
+    sAppModule = "TechDraw";
+    sGroup = QT_TR_NOOP("TechDraw");
+    sMenuText = QT_TR_NOOP("Calculate the arc length of selected edges");
+    sToolTipText = QT_TR_NOOP("Select several edges<br>\
+    - click this tool");
+    sWhatsThis = "TechDraw_ExtensionArcLengthAnnotation";
+    sStatusTip = sToolTipText;
+    sPixmap = "TechDraw_ExtensionArcLengthAnnotation";
+}
+
+void CmdTechDrawExtensionArcLengthAnnotation::activated(int iMsg)
+// Calculate the arc length of selected edge and create a balloon holding the datum
+{
+    Q_UNUSED(iMsg);
+
+    std::vector<Gui::SelectionObject> selection;
+    TechDraw::DrawViewPart *objFeat;
+    if (!_checkSel(this, selection, objFeat, QT_TRANSLATE_NOOP("Command", "TechDraw calculate selected arc length"))) {
+        return;
+    }
+
+    // Collect all edges in the selection
+    std::vector<std::string> subNames;
+    for (auto &name : selection[0].getSubNames()) {
+        if (DrawUtil::getGeomTypeFromName(name) == "Edge") {
+            subNames.push_back(name);
+        }
+    }
+
+    if (subNames.empty()) {
+        QMessageBox::warning(Gui::getMainWindow(),
+                             QObject::tr("Incorrect selection"),
+                             QObject::tr("No edges in selection."));
+        return;
+    }
+
+    // Now we have at least one edge
+    std::vector<double> lengths(subNames.size());
+    double totalLength = 0.0;
+    size_t i;
+    for (i = 0; i < subNames.size(); ++i) {
+        lengths[i] = totalLength;
+        TechDraw::BaseGeomPtr edge = objFeat->getEdge(subNames[i]);
+        if (!edge) {
+            continue;
+        }
+
+        GProp_GProps edgeProps;
+        BRepGProp::LinearProperties(edge->getOCCEdge(), edgeProps);
+
+        totalLength += edgeProps.Mass();
+        lengths[i] = totalLength;
+    }
+
+    // We have calculated the length, let's start the command
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Calculate Edge Length"));
+
+    // First we need to create the balloon
+    std::string balloonName = _createBalloon(this, objFeat);
+    auto balloon = dynamic_cast<TechDraw::DrawViewBalloon *>(getDocument()->getObject(balloonName.c_str()));
+    if (!balloon) {
+        throw Base::TypeError("CmdTechDrawNewBalloon - balloon not found\n");
+    }
+
+    // Find the edge halving the selected path and the offset from its starting point
+    double anchorLength = totalLength*0.5;
+    i = 0;
+    while (i < lengths.size() && lengths[i] < anchorLength) {
+        ++i;
+    }
+    if (i) {
+        anchorLength -= lengths[i - 1];
+    }
+
+    // As reasonable anchor base point seems the "halving" edge endpoint
+    BRepAdaptor_Curve curve(objFeat->getEdge(subNames[i])->getOCCEdge());
+    gp_Pnt midPoint;
+    curve.D0(curve.LastParameter(), midPoint);
+
+    // Now try to get the real path center which lies anchorLength from edge start point
+    GCPnts_AbscissaPoint abscissa(Precision::Confusion(), curve, anchorLength, curve.FirstParameter());
+    if (abscissa.IsDone()) {
+        curve.D0(abscissa.Parameter(), midPoint);
+    }
+
+    double scale = objFeat->getScale();
+    Base::Vector3d anchor = DrawUtil::invertY(DrawUtil::toVector3d(midPoint)/scale);
+    totalLength /= scale;
+
+    // Use virtual dimension view helper to format resulting value
+    TechDraw::DrawViewDimension helperDim;
+    std::string valueStr = helperDim.formatValue(totalLength,
+                                                 QString::fromUtf8(helperDim.FormatSpec.getStrValue().data()),
+                                                 helperDim.isMultiValueSchema() ? 0 : 1);
+    balloon->Text.setValue("◠ " + valueStr);
+
+    // Set balloon format to be referencing dimension-like
+    int stdStyle = Preferences::getPreferenceGroup("Dimensions")->GetInt("StandardAndStyle",
+                       ViewProviderDimension::STD_STYLE_ISO_ORIENTED);
+    bool asmeStyle = stdStyle == ViewProviderDimension::STD_STYLE_ASME_INLINED
+                     || stdStyle == ViewProviderDimension::STD_STYLE_ASME_REFERENCING;
+    balloon->BubbleShape.setValue(asmeStyle ? "None" : "Line");
+    balloon->EndType.setValue(Preferences::getPreferenceGroup("Dimensions")->GetInt("ArrowStyle", 0));
+    balloon->OriginX.setValue(anchor.x);
+    balloon->OriginY.setValue(anchor.y);
+
+    // Set balloon label position a bit upwards and to the right, as QGSPage::createBalloon does
+    double textOffset = 20.0/scale;
+    balloon->X.setValue(anchor.x + textOffset);
+    balloon->Y.setValue(anchor.y + textOffset);
+
+    // Adjust the kink length accordingly to the standard used
+    auto viewProvider = dynamic_cast<ViewProviderBalloon *>(Gui::Application::Instance->getViewProvider(balloon));
+    if (viewProvider) {
+        balloon->KinkLength.setValue((asmeStyle ? 12.0 : 1.0)*viewProvider->LineWidth.getValue());
+    }
+
+    // Close the command and update the view
+    Gui::Command::commitCommand();
+    objFeat->touch(true);
+    Gui::Command::updateActive();
+}
+
+bool CmdTechDrawExtensionArcLengthAnnotation::isActive()
+{
+    bool havePage = DrawGuiUtil::needPage(this);
+    bool haveView = DrawGuiUtil::needView(this);
+    return (havePage && haveView);
+}
+
+//===========================================================================
 // internal helper routines
 //===========================================================================
 namespace TechDrawGui
@@ -2117,4 +2261,5 @@ void CreateTechDrawCommandsExtensions()
     rcCmdMgr.addCommand(new CmdTechDrawExtensionThreadHoleBottom());
     rcCmdMgr.addCommand(new CmdTechDrawExtensionThreadBoltBottom());
     rcCmdMgr.addCommand(new CmdTechDrawExtensionAreaAnnotation());
+    rcCmdMgr.addCommand(new CmdTechDrawExtensionArcLengthAnnotation());
 }
