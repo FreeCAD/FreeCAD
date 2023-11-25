@@ -1231,8 +1231,9 @@ std::list<int> MarkerBitmaps::getSupportedSizes(const std::string& name)
 {
     std::list<int> sizes;
     for (const auto & it : markerIndex) {
-        if (it.first.first == name)
+        if (it.first.first == name) {
             sizes.push_back(it.first.second);
+        }
     }
     return sizes;
 }
