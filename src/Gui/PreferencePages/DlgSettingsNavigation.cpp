@@ -89,6 +89,7 @@ void DlgSettingsNavigation::saveSettings()
     ui->rotationCenterColor->onSave();
     ui->spinBoxZoomStep->onSave();
     ui->spinBoxAnimationDuration->onSave();
+    ui->checkBoxSpinningAnimations->onSave();
     ui->qspinNewDocScale->onSave();
     ui->prefStepByTurn->onSave();
     ui->naviCubeCorner->onSave();
@@ -133,6 +134,7 @@ void DlgSettingsNavigation::loadSettings()
     ui->rotationCenterColor->onRestore();
     ui->spinBoxZoomStep->onRestore();
     ui->spinBoxAnimationDuration->onRestore();
+    ui->checkBoxSpinningAnimations->onRestore();
     ui->qspinNewDocScale->onRestore();
     ui->prefStepByTurn->onRestore();
     ui->naviCubeCorner->onRestore();
