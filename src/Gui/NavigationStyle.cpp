@@ -1103,7 +1103,7 @@ SbBool NavigationStyle::isSpinningAnimationEnabled() const
  */
 SbBool NavigationStyle::isAnimating() const
 {
-    return false;
+    return animator->isAnimating();
 }
 
 /**
