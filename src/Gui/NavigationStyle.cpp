@@ -744,6 +744,7 @@ void NavigationStyle::doZoom(SoCamera* camera, float logfactor, const SbVec2f& p
         // Rotation mode is WindowCenter
         if (!rotationCenterMode) {
             viewer->changeRotationCenterPosition(getFocalPoint());
+            findBoundingSphere();
         }
     }
 }
