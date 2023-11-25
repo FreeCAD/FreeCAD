@@ -180,33 +180,32 @@ class Snapper:
 
     def set_snap_style(self):
         self.snapStyle = Draft.getParam("snapStyle", 0)
-        # the snapmarker has "dot","circle" and "square" available styles
         if self.snapStyle:
-            self.mk = coll.OrderedDict([('passive',       'empty'),
-                                        ('extension',     'empty'),
-                                        ('parallel',      'empty'),
-                                        ('grid',          'quad'),
-                                        ('endpoint',      'quad'),
-                                        ('midpoint',      'quad'),
-                                        ('perpendicular', 'quad'),
-                                        ('angle',         'quad'),
-                                        ('center',        'quad'),
-                                        ('ortho',         'quad'),
-                                        ('intersection',  'quad'),
-                                        ('special',       'quad')])
+            self.mk = coll.OrderedDict([("passive",       "SQUARE_LINE"),
+                                        ("extension",     "SQUARE_LINE"),
+                                        ("parallel",      "SQUARE_LINE"),
+                                        ("grid",          "SQUARE_FILLED"),
+                                        ("endpoint",      "SQUARE_FILLED"),
+                                        ("midpoint",      "SQUARE_FILLED"),
+                                        ("perpendicular", "SQUARE_FILLED"),
+                                        ("angle",         "SQUARE_FILLED"),
+                                        ("center",        "SQUARE_FILLED"),
+                                        ("ortho",         "SQUARE_FILLED"),
+                                        ("intersection",  "SQUARE_FILLED"),
+                                        ("special",       "SQUARE_FILLED")])
         else:
-            self.mk = coll.OrderedDict([('passive',       'circle'),
-                                        ('extension',     'circle'),
-                                        ('parallel',      'circle'),
-                                        ('grid',          'circle'),
-                                        ('endpoint',      'dot'),
-                                        ('midpoint',      'square'),
-                                        ('perpendicular', 'dot'),
-                                        ('angle',         'square'),
-                                        ('center',        'dot'),
-                                        ('ortho',         'dot'),
-                                        ('intersection',  'dot'),
-                                        ('special',       'dot')])
+            self.mk = coll.OrderedDict([("passive",       "CIRCLE_LINE"),
+                                        ("extension",     "CIRCLE_LINE"),
+                                        ("parallel",      "CIRCLE_LINE"),
+                                        ("grid",          "CIRCLE_LINE"),
+                                        ("endpoint",      "CIRCLE_FILLED"),
+                                        ("midpoint",      "DIAMOND_FILLED"),
+                                        ("perpendicular", "CIRCLE_FILLED"),
+                                        ("angle",         "DIAMOND_FILLED"),
+                                        ("center",        "CIRCLE_FILLED"),
+                                        ("ortho",         "CIRCLE_FILLED"),
+                                        ("intersection",  "CIRCLE_FILLED"),
+                                        ("special",       "CIRCLE_FILLED")])
 
 
     def cstr(self, lastpoint, constrain, point):
