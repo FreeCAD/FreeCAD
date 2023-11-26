@@ -26,6 +26,7 @@
 #include <memory>
 
 #include <QApplication>
+#include <QClipboard>
 #include <QMessageBox>
 
 #include <Inventor/SbString.h>
@@ -33,6 +34,8 @@
 
 #include <App/Application.h>
 #include <Base/Console.h>
+#include <Base/Reader.h>
+#include <Base/Writer.h>
 #include <Gui/Action.h>
 #include <Gui/Application.h>
 #include <Gui/BitmapFactory.h>
@@ -136,6 +139,260 @@ Sketcher::SketchObject* getSketchObject()
     ReleaseHandler(doc);
     auto* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
     return vp->getSketchObject();
+}
+
+// ================================================================================
+
+// Copy
+
+bool copySelectionToClipboard() {
+
+    std::vector<Gui::SelectionObject> selection = Gui::Command::getSelection().getSelectionEx();
+    Sketcher::SketchObject* obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
+    // only one sketch with its subelements are allowed to be selected
+    if (selection.size() != 1) { return false; }
+    std::vector<std::string> SubNames = selection[0].getSubNames();
+    if (SubNames.empty()) { return false; }
+
+    //First we need listOfGeoId and sort them.
+    std::vector<int> listOfGeoId;
+    for (std::vector<std::string>::const_iterator it = SubNames.begin(); it != SubNames.end(); ++it) {
+        int GeoId = -1;
+        // only handle non-external edges
+        if (it->size() > 4 && it->substr(0, 4) == "Edge") {
+            GeoId = std::atoi(it->substr(4, 4000).c_str()) - 1;
+            if (GeoId >= 0) {
+                listOfGeoId.push_back(GeoId);
+            }
+        }
+        else if (it->size() > 6 && it->substr(0, 6) == "Vertex") {
+            // only if it is a GeomPoint
+            int VtId = std::atoi(it->substr(6, 4000).c_str()) - 1;
+            Sketcher::PointPos PosId;
+            obj->getGeoVertexIndex(VtId, GeoId, PosId);
+            if (obj->getGeometry(GeoId)->getTypeId() == Part::GeomPoint::getClassTypeId()) {
+                if (GeoId >= 0) {
+                    listOfGeoId.push_back(GeoId);
+                }
+            }
+        }
+    }
+    if (listOfGeoId.empty()) { return false; }
+    sort(listOfGeoId.begin(), listOfGeoId.end());
+
+    Base::StringWriter writer;
+
+    //Export selected geometries as a formated string.
+    std::vector< Part::Geometry* > newVals;
+    for (auto geoId : listOfGeoId) {
+        Part::Geometry* geoNew = obj->getGeometry(geoId)->copy();
+        newVals.push_back(geoNew);
+    }
+    Part::PropertyGeometryList geoToCopy;
+    geoToCopy.setValues(std::move(newVals));
+    geoToCopy.Save(writer);
+
+    //add constraints to the stream string.
+    std::vector< Sketcher::Constraint* > newConstrVals;
+    for (auto constr : obj->Constraints.getValues()) {
+
+        auto isSelectedGeoOrAxis = [](const std::vector<int>& vec, int value) {
+            return (std::find(vec.begin(), vec.end(), value) != vec.end())
+                || value == GeoEnum::GeoUndef || value == GeoEnum::RtPnt
+                || value == GeoEnum::VAxis || value == GeoEnum::HAxis;
+        };
+
+        if (!isSelectedGeoOrAxis(listOfGeoId, constr->First)
+            || !isSelectedGeoOrAxis(listOfGeoId, constr->Second)
+            || !isSelectedGeoOrAxis(listOfGeoId, constr->Third)) {
+            continue;
+        }
+
+        Constraint* temp = constr->copy();
+        for (size_t j = 0; j < listOfGeoId.size(); j++) {
+            if (temp->First == listOfGeoId[j]) {
+                temp->First = j;
+            }
+            if (temp->Second == listOfGeoId[j]) {
+                temp->Second = j;
+            }
+            if (temp->Third == listOfGeoId[j]) {
+                temp->Third = j;
+            }
+        }
+        newConstrVals.push_back(temp);
+    }
+    Sketcher::PropertyConstraintList constToCopy;
+    constToCopy.setValues(std::move(newConstrVals));
+    constToCopy.Save(writer);
+
+    std::string exportedData = writer.getString();
+
+    if (!exportedData.empty()) {
+        QClipboard* clipboard = QGuiApplication::clipboard();
+        clipboard->setText(QString::fromStdString(exportedData));
+        return true;
+    }
+    return false;
+}
+
+DEF_STD_CMD_A(CmdSketcherCopyClipboard)
+
+CmdSketcherCopyClipboard::CmdSketcherCopyClipboard()
+    : Command("Sketcher_CopyClipboard")
+{
+    sAppModule = "Sketcher";
+    sGroup = "Sketcher";
+    sMenuText = QT_TR_NOOP("C&opy in sketcher");
+    sToolTipText = QT_TR_NOOP("Copy selected geometries and constraints to the clipboard");
+    sWhatsThis = "Sketcher_CopyClipboard";
+    sStatusTip = sToolTipText;
+    sPixmap = "edit-copy";
+    sAccel = keySequenceToAccel(QKeySequence::Copy);
+    eType = ForEdit;
+}
+
+void CmdSketcherCopyClipboard::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    copySelectionToClipboard();
+}
+
+bool CmdSketcherCopyClipboard::isActive()
+{
+    return isCommandActive(getActiveGuiDocument(), true);
+}
+
+// ================================================================================
+
+// Cut
+
+DEF_STD_CMD_A(CmdSketcherCut)
+
+CmdSketcherCut::CmdSketcherCut()
+    : Command("Sketcher_Cut")
+{
+    sAppModule = "Sketcher";
+    sGroup = "Sketcher";
+    sMenuText = QT_TR_NOOP("C&ut in sketcher");
+    sToolTipText = QT_TR_NOOP("Cut selected geometries and constraints to the clipboard");
+    sWhatsThis = "Sketcher_Cut";
+    sStatusTip = sToolTipText;
+    sPixmap = "edit-cut";
+    sAccel = keySequenceToAccel(QKeySequence::Cut);
+    eType = ForEdit;
+}
+
+void CmdSketcherCut::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    if (copySelectionToClipboard()) {
+
+        Gui::Document* doc = getActiveGuiDocument();
+        ReleaseHandler(doc);
+        auto* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+
+        Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Cut in Sketcher"));
+        vp->deleteSelected();
+        Gui::Command::commitCommand();
+    }
+}
+
+bool CmdSketcherCut::isActive()
+{
+    return isCommandActive(getActiveGuiDocument(), true);
+}
+
+// ================================================================================
+
+// Paste
+
+DEF_STD_CMD_A(CmdSketcherPaste)
+
+CmdSketcherPaste::CmdSketcherPaste()
+    : Command("Sketcher_Paste")
+{
+    sAppModule = "Sketcher";
+    sGroup = "Sketcher";
+    sMenuText = QT_TR_NOOP("P&aste in sketcher");
+    sToolTipText = QT_TR_NOOP("Paste selected geometries and constraints from the clipboard");
+    sWhatsThis = "Sketcher_Paste";
+    sStatusTip = sToolTipText;
+    sPixmap = "edit-paste";
+    sAccel = keySequenceToAccel(QKeySequence::Paste);
+    eType = ForEdit;
+}
+
+void CmdSketcherPaste::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    Gui::Document* doc = getActiveGuiDocument();
+    ReleaseHandler(doc);
+    auto* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+    Sketcher::SketchObject* Obj = vp->getSketchObject();
+
+    std::string data = QGuiApplication::clipboard()->text().toStdString();
+    int importedFirstGeoId = Obj->getHighestCurveIndex() + 1;
+
+    std::string geoString;
+    if (data.find("</GeometryList>", 0) != std::string::npos) {
+        geoString = data.substr(0, data.find("</GeometryList>", 0) + 16);
+    }
+    else { return ; }
+
+    std::istringstream istream(geoString);
+    Base::XMLReader reader("importingGeo", istream);
+    Part::PropertyGeometryList geoToCopy;
+    geoToCopy.Restore(reader);
+
+    const std::vector<Part::Geometry*>& geos = geoToCopy.getValues();
+    if (geos.empty()) { return; }
+
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Paste in Sketcher"));
+
+    for (auto geo : geos) {
+        Part::Geometry* geocopy = geo->copy();
+        Obj->addGeometry(geocopy);
+    }
+
+    if (data.find("<ConstraintList", 0) != std::string::npos) {
+        std::string constrString;
+        constrString = data.substr(data.find("<ConstraintList", 0), data.size() - data.find("<ConstraintList", 0));
+
+        std::istringstream istream2(constrString);
+        Base::XMLReader reader2("importingConstraints", istream2);
+        Sketcher::PropertyConstraintList constToCopy;
+        constToCopy.Restore(reader2);
+
+        auto isAxisOrRoot = [](int value) {
+            return value == GeoEnum::GeoUndef || value == GeoEnum::RtPnt || value == GeoEnum::VAxis || value == GeoEnum::HAxis;
+        };
+
+        for (auto constr : constToCopy.getValuesForce()) {
+            Sketcher::Constraint* constraintToAdd = constr->copy();
+            //update the geoIds of the constraints
+            if (!isAxisOrRoot(constraintToAdd->First)) {
+                constraintToAdd->First += importedFirstGeoId;
+            }
+            if (!isAxisOrRoot(constraintToAdd->Second)) {
+                constraintToAdd->Second += importedFirstGeoId;
+            }
+            if (!isAxisOrRoot(constraintToAdd->Third)) {
+                constraintToAdd->Third += importedFirstGeoId;
+            }
+            Obj->addConstraint(constraintToAdd);
+        }
+    }
+
+    Obj->solve(true);
+    vp->draw(false, false); // Redraw
+
+    Gui::Command::commitCommand();
+}
+
+bool CmdSketcherPaste::isActive()
+{
+    return isCommandActive(getActiveGuiDocument(), false);
 }
 
 // ================================================================================
@@ -2432,5 +2689,8 @@ void CreateSketcherCommandsConstraintAccel()
     rcCmdMgr.addCommand(new CmdSketcherDeleteAllGeometry());
     rcCmdMgr.addCommand(new CmdSketcherDeleteAllConstraints());
     rcCmdMgr.addCommand(new CmdSketcherRemoveAxesAlignment());
+    rcCmdMgr.addCommand(new CmdSketcherCopyClipboard());
+    rcCmdMgr.addCommand(new CmdSketcherCut());
+    rcCmdMgr.addCommand(new CmdSketcherPaste());
 }
 // clang-format on
