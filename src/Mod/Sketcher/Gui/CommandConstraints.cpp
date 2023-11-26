@@ -2681,7 +2681,6 @@ void horVerActivated(CmdSketcherConstraint* cmd, std::string type)
     // get the needed lists and objects
     const std::vector<std::string>& SubNames = selection[0].getSubNames();
     auto* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
-    const std::vector<Sketcher::Constraint*>& vals = Obj->Constraints.getValues();
 
     std::vector<int> edgegeoids;
     std::vector<int> pointgeoids;
@@ -2800,9 +2799,6 @@ void horVerApplyConstraint(CmdSketcherConstraint* cmd, std::string type, std::ve
     switch (seqIndex) {
     case 0:// {Edge}
     {
-        // create the constraint
-        const std::vector<Sketcher::Constraint*>& vals = Obj->Constraints.getValues();
-
         int CrvId = selSeq.front().GeoId;
         if (CrvId != -1) {
             const Part::Geometry* geo = Obj->getGeometry(CrvId);
