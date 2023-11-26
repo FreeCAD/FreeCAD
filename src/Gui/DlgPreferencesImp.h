@@ -46,10 +46,14 @@ public:
     QWidget* getWidget() const;
     void setWidget(QWidget* widget);
 
+    bool isExpanded() const;
+    void setExpanded(bool expanded);
+
     static constexpr char const* PropertyName = "SettingsPageItem";
 
 private:
-    QWidget *_widget = nullptr;
+    QWidget* _widget = nullptr;
+    bool _expanded = false;
 };
 
 /**
@@ -152,6 +156,9 @@ protected Q_SLOTS:
     void onButtonBoxClicked(QAbstractButton*);
     void onPageSelected(const QModelIndex &index);
     void onStackWidgetChange(int index);
+
+    void onGroupExpanded(const QModelIndex &index);
+    void onGroupCollapsed(const QModelIndex &index);
 
 private:
     /** @name for internal use only */
