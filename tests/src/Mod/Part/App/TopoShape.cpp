@@ -5,6 +5,7 @@
 #include "App/ComplexGeoData.h"
 #include "gtest/gtest.h"
 #include "Mod/Part/App/TopoShape.h"
+#include "Base/BoundBox.h"
 
 class TopoShapeTest: public ::testing::Test
 {
@@ -18,7 +19,7 @@ protected:
         _declaredLoc1234.SetScale(gp_Pnt(1.0, 2.0, 3.0), 4.0);
         _testLocation1234 = TopLoc_Location(_declaredLoc1234);
 
-        gp_Pnt lowerLeftCornerOfBox(1.0, 2.0, 2.0);
+        gp_Pnt lowerLeftCornerOfBox(1.0, 2.0, 3.0);
         BRepPrimAPI_MakeBox boxMaker(lowerLeftCornerOfBox, 10, 11, 12);
         auto box = boxMaker.Shape();
 
@@ -80,7 +81,7 @@ TEST_F(TopoShapeTest, pointsAndFaces)
     EXPECT_EQ(points.size(), 8);
     EXPECT_EQ(thirdPoint.x, 1);
     EXPECT_EQ(thirdPoint.y, 11+2);
-    EXPECT_EQ(thirdPoint.z, 2);
+    EXPECT_EQ(thirdPoint.z, 3);
     EXPECT_EQ(faces.size(), 12);
     EXPECT_EQ(thirdFace.I1, 4);
     EXPECT_EQ(thirdFace.I2, 5);
@@ -104,13 +105,60 @@ TEST_F(TopoShapeTest, faceNaming)
     auto thirdFaceByType = faceSubShapes[2];
 
     // Assert
-//    auto thirdPoint = points[2];
     EXPECT_TRUE(
         std::find(elementTypes.begin(), elementTypes.end(), face) != elementTypes.end());
     EXPECT_TRUE(
         std::find(elementTypes.begin(), elementTypes.end(), edge) != elementTypes.end());
     EXPECT_TRUE(
         std::find(elementTypes.begin(), elementTypes.end(), vertex) != elementTypes.end());
-    EXPECT_EQ(faceSubShapes.size(), 6);
-    EXPECT_EQ(faces.size(), 12);  // why is this twelve???
+    EXPECT_EQ(faceSubShapes.size(), 6); // 6 faces (both in/out facets included)
+    EXPECT_EQ(faces.size(), 12);  // 6 inward facing facets + 6 outward facing facets
+}
+
+TEST_F(TopoShapeTest, faceBySimpleName)
+{
+    // Arrange
+    // NOTE: _topoShape is a box with lower-left corner at (1, 2, 3) of size (10, 11, 12)
+    auto expectedNameForFace = Part::TopoShape::shapeName(TopAbs_FACE); // "Face"
+
+    // Act
+    auto fourthPairRef = Part::TopoShape::getElementTypeAndIndex("Face4");
+    auto fourthPairName = fourthPairRef.first.c_str();
+    auto fourthPairIndex = fourthPairRef.second - 1;
+    auto fourthFace = _topoShape.getSubElement(fourthPairName, fourthPairIndex);
+
+    // Assert
+    EXPECT_EQ(fourthPairName, expectedNameForFace);
+    EXPECT_EQ(fourthPairIndex, 3);
+}
+
+// TODO: for later
+//    >>> d = App.getDocument("Unnamed");
+//    >>> obj = doc.getObject("Box")
+//    >>> shp = obj.Shape
+//    >>> sub = obj.getSubObject("Face2")
+//    >>> sub.BoundBox
+//            BoundBox (10, 0, 0, 10, 10, 10)
+//    >>>
+
+    TEST_F(TopoShapeTest, getCharacteristics)
+{
+    // Arrange
+    Base::Vector3d cog;
+    // NOTE: _topoShape is a box with lower-left corner at (1, 2, 3) of size (10, 11, 12), thus
+    double expectedCogX = 1 + (10 / 2.0); // 6
+    double expectedCogY = 2 + (11 / 2.0); // 7.5
+    double expectedCogZ = 3 + (12 / 2.0); // 9
+
+    // Act
+    auto boundingBox = _topoShape.getBoundBox();
+    _topoShape.getCenterOfGravity(cog);
+
+    // Assert
+    EXPECT_EQ(boundingBox.LengthX(), 10);
+    EXPECT_EQ(boundingBox.LengthY(), 11);
+    EXPECT_EQ(boundingBox.LengthZ(), 12);
+    EXPECT_EQ(cog.x, expectedCogX);
+    EXPECT_EQ(cog.y, expectedCogY);
+    EXPECT_EQ(cog.z, expectedCogZ);
 }
