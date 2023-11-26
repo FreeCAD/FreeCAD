@@ -28,6 +28,7 @@
 
 #include <QDialog>
 #include <QStandardItemModel>
+#include <QStackedWidget>
 #include <memory>
 #include <FCGlobal.h>
 
@@ -150,6 +151,7 @@ protected:
 protected Q_SLOTS:
     void onButtonBoxClicked(QAbstractButton*);
     void onPageSelected(const QModelIndex &index);
+    void onStackWidgetChange(int index);
 
 private:
     /** @name for internal use only */

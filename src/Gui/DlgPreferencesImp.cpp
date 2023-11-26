@@ -114,6 +114,10 @@ DlgPreferencesImp::DlgPreferencesImp(QWidget* parent, Qt::WindowFlags fl)
             &QPushButton::clicked,
             this,
             &DlgPreferencesImp::showResetOptions);
+    connect(ui->groupWidgetStack,
+            &QStackedWidget::currentChanged,
+            this,
+            &DlgPreferencesImp::onStackWidgetChange);
 
     ui->groupsTreeView->setModel(&_model);
     
@@ -193,6 +197,15 @@ PreferencesPageItem* DlgPreferencesImp::createGroup(const std::string &groupName
     auto groupPages = new QStackedWidget;
     groupPages->setProperty(GroupNameProperty, QVariant(groupNameQString));
 
+    connect(groupPages,
+            &QStackedWidget::currentChanged,
+            this,
+            &DlgPreferencesImp::onStackWidgetChange);
+
+
+    if (ui->groupWidgetStack->count() > 0) {
+        groupPages->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+    }
     ui->groupWidgetStack->addWidget(groupPages);
 
     auto item = new PreferencesPageItem;
@@ -255,6 +268,11 @@ void DlgPreferencesImp::createPageInGroup(PreferencesPageItem *groupItem, const 
         page->loadSettings();
 
         auto pages = qobject_cast<QStackedWidget*>(groupItem->getWidget());
+
+        if (pages->count() > 0) {
+            page->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+        }
+
         pages->addWidget(page);
     }
     catch (const Base::Exception& e) {
@@ -637,7 +655,6 @@ void DlgPreferencesImp::restartIfRequired()
 
 void DlgPreferencesImp::showEvent(QShowEvent* ev)
 {
-    this->adjustSize();
     QDialog::showEvent(ev);
 }
 
@@ -666,6 +683,20 @@ void DlgPreferencesImp::onPageSelected(const QModelIndex& index)
     }
 
     updatePageDependentLabels();
+}
+
+void DlgPreferencesImp::onStackWidgetChange(int index)
+{
+    auto stack = qobject_cast<QStackedWidget*>(sender());
+
+    for (int i = 0; i < stack->count(); i++) {
+        auto current = stack->widget(i);
+        current->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+    }
+
+    if (auto selected = stack->widget(index)) {
+        selected->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    }
 }
 
 void DlgPreferencesImp::changeEvent(QEvent *e)
