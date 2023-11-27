@@ -492,10 +492,7 @@ def format_object(target, origin=None):
         tcol = (float(tcol[0]), float(tcol[1]), float(tcol[2]), 0.0)
         fcol = (float(fcol[0]), float(fcol[1]), float(fcol[2]), 0.0)
         lw = utils.getParam("linewidth",2)
-        fs = utils.getParam("textheight",0.20)
         if not origin or not hasattr(origin, 'ViewObject'):
-            if "FontSize" in obrep.PropertiesList:
-                obrep.FontSize = fs
             if "TextColor" in obrep.PropertiesList:
                 obrep.TextColor = tcol
             if "LineWidth" in obrep.PropertiesList:

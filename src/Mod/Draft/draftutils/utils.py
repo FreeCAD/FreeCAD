@@ -173,7 +173,7 @@ def get_param_type(param):
                  "precision", "defaultWP", "snapRange", "gridEvery",
                  "linewidth", "modconstrain", "modsnap",
                  "maxSnapEdges", "modalt", "HatchPatternResolution",
-                 "snapStyle", "dimstyle", "gridSize", "gridTransparency"):
+                 "snapStyle", "DefaultAnnoDisplayMode", "gridSize", "gridTransparency"):
         return "int"
     elif param in ("constructiongroupname", "textfont",
                    "patternFile", "snapModes",
@@ -181,7 +181,8 @@ def get_param_type(param):
                    "labeltype", "gridSpacing") or "inCommandShortcut" in param:
         return "string"
     elif param in ("textheight", "arrowsize", "extlines", "dimspacing",
-                   "dimovershoot", "extovershoot", "HatchPatternSize"):
+                   "dimovershoot", "extovershoot", "HatchPatternSize",
+                   "LineSpacing"):
         return "float"
     elif param in ("selectBaseObjects", "alwaysSnap", "grid",
                    "fillmode", "maxSnap", "DimShowLine",

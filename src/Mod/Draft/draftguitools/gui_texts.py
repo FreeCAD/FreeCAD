@@ -113,7 +113,8 @@ class Text(gui_base_original.Creator):
         _cmd = 'Draft.make_text'
         _cmd += '('
         _cmd += string + ', '
-        _cmd += 'placement=pl'
+        _cmd += 'placement=pl, '
+        _cmd += 'screen=None, height=None, line_spacing=None'
         _cmd += ')'
         _cmd_list = ['pl = FreeCAD.Placement()',
                      'pl.Rotation.Q = ' + rot,
