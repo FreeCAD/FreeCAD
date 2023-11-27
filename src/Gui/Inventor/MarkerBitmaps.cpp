@@ -1098,6 +1098,153 @@ const char circleFilled30_marker[CIRCLE_FILLED30_WIDTH * CIRCLE_FILLED30_HEIGHT 
 "         xxxxxxxxxxxx         "
 "            xxxxxx            "};
 
+//HOURGLASS_FILLED_11_11
+const int HOURGLASS_FILLED11_WIDTH = 11;
+const int HOURGLASS_FILLED11_HEIGHT = 11;
+const char hourglassFilled11_marker[HOURGLASS_FILLED11_WIDTH * HOURGLASS_FILLED11_HEIGHT + 1] = {
+"           "
+" xxxxxxxxxx"
+"  xxxxxxxx "
+"   xxxxxx  "
+"    xxxx   "
+"     xx    "
+"     xx    "
+"    xxxx   "
+"   xxxxxx  "
+"  xxxxxxxx "
+" xxxxxxxxxx"};
+
+
+//HOURGLASS_FILLED_13_13
+const int HOURGLASS_FILLED13_WIDTH = 13;
+const int HOURGLASS_FILLED13_HEIGHT = 13;
+const char hourglassFilled13_marker[HOURGLASS_FILLED13_WIDTH * HOURGLASS_FILLED13_HEIGHT + 1] = {
+"             "
+" xxxxxxxxxxxx"
+"  xxxxxxxxxx "
+"   xxxxxxxx  "
+"    xxxxxx   "
+"     xxxx    "
+"      xx     "
+"      xx     "
+"     xxxx    "
+"    xxxxxx   "
+"   xxxxxxxx  "
+"  xxxxxxxxxx "
+" xxxxxxxxxxxx"};
+
+
+//HOURGLASS_FILLED_15_15
+const int HOURGLASS_FILLED15_WIDTH = 15;
+const int HOURGLASS_FILLED15_HEIGHT = 15;
+const char hourglassFilled15_marker[HOURGLASS_FILLED15_WIDTH * HOURGLASS_FILLED15_HEIGHT + 1] = {
+"               "
+" xxxxxxxxxxxxxx"
+"  xxxxxxxxxxxx "
+"   xxxxxxxxxx  "
+"    xxxxxxxx   "
+"     xxxxxx    "
+"      xxxx     "
+"       xx      "
+"       xx      "
+"      xxxx     "
+"     xxxxxx    "
+"    xxxxxxxx   "
+"   xxxxxxxxxx  "
+"  xxxxxxxxxxxx "
+" xxxxxxxxxxxxxx"};
+
+//HOURGLASS_FILLED_20_20
+const int HOURGLASS_FILLED20_WIDTH = 20;
+const int HOURGLASS_FILLED20_HEIGHT = 20;
+const char hourglassFilled20_marker[HOURGLASS_FILLED20_WIDTH * HOURGLASS_FILLED20_HEIGHT + 1] = {
+"                    "
+" xxxxxxxxxxxxxxxxxxx"
+"  xxxxxxxxxxxxxxxxx "
+"   xxxxxxxxxxxxxxx  "
+"    xxxxxxxxxxxxx   "
+"     xxxxxxxxxxx    "
+"      xxxxxxxxx     "
+"       xxxxxxx      "
+"        xxxxx       "
+"         xxx        "
+"          x         "
+"         xxx        "
+"        xxxxx       "
+"       xxxxxxx      "
+"      xxxxxxxxx     "
+"     xxxxxxxxxxx    "
+"    xxxxxxxxxxxxx   "
+"   xxxxxxxxxxxxxxx  "
+"  xxxxxxxxxxxxxxxxx "
+" xxxxxxxxxxxxxxxxxxx"};
+
+
+//HOURGLASS_FILLED_25_25
+const int HOURGLASS_FILLED25_WIDTH = 25;
+const int HOURGLASS_FILLED25_HEIGHT = 25;
+const char hourglassFilled25_marker[HOURGLASS_FILLED25_WIDTH * HOURGLASS_FILLED25_HEIGHT + 1] = {
+"                         "
+" xxxxxxxxxxxxxxxxxxxxxxxx"
+"  xxxxxxxxxxxxxxxxxxxxxx "
+"   xxxxxxxxxxxxxxxxxxxx  "
+"    xxxxxxxxxxxxxxxxxx   "
+"     xxxxxxxxxxxxxxxx    "
+"      xxxxxxxxxxxxxx     "
+"       xxxxxxxxxxxx      "
+"        xxxxxxxxxx       "
+"         xxxxxxxx        "
+"          xxxxxx        "
+"           xxxx          "
+"            xx           "
+"            xx           "
+"           xxxx          "
+"          xxxxxx         "
+"         xxxxxxxx        "
+"        xxxxxxxxxx       "
+"       xxxxxxxxxxxx      "
+"      xxxxxxxxxxxxxx     "
+"     xxxxxxxxxxxxxxxx    "
+"    xxxxxxxxxxxxxxxxxx   "
+"   xxxxxxxxxxxxxxxxxxxx  "
+"  xxxxxxxxxxxxxxxxxxxxxx "
+" xxxxxxxxxxxxxxxxxxxxxxxx"};
+
+
+//HOURGLASS_FILLED_30_30
+const int HOURGLASS_FILLED30_WIDTH = 30;
+const int HOURGLASS_FILLED30_HEIGHT = 30;
+const char hourglassFilled30_marker[HOURGLASS_FILLED30_WIDTH * HOURGLASS_FILLED30_HEIGHT + 1] = {
+"                              "
+" xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+"  xxxxxxxxxxxxxxxxxxxxxxxxxxx "
+"   xxxxxxxxxxxxxxxxxxxxxxxxx  "
+"    xxxxxxxxxxxxxxxxxxxxxxx   "
+"     xxxxxxxxxxxxxxxxxxxxx    "
+"      xxxxxxxxxxxxxxxxxxx     "
+"       xxxxxxxxxxxxxxxxx      "
+"        xxxxxxxxxxxxxxx       "
+"         xxxxxxxxxxxxx        "
+"          xxxxxxxxxxx         "
+"           xxxxxxxxx          "
+"            xxxxxxx           "
+"             xxxxx            "
+"              xxx             "
+"              xxx             "
+"              xxx             "
+"             xxxxx            "
+"            xxxxxxx           "
+"           xxxxxxxxx          "
+"          xxxxxxxxxxx         "
+"         xxxxxxxxxxxxx        "
+"        xxxxxxxxxxxxxxx       "
+"       xxxxxxxxxxxxxxxxx      "
+"      xxxxxxxxxxxxxxxxxxx     "
+"     xxxxxxxxxxxxxxxxxxxxx    "
+"    xxxxxxxxxxxxxxxxxxxxxxx   "
+"   xxxxxxxxxxxxxxxxxxxxxxxxx  "
+"  xxxxxxxxxxxxxxxxxxxxxxxxxxx "
+" xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"};
 
 
 std::map<MarkerBitmaps::Marker, int> MarkerBitmaps::markerIndex;
@@ -1188,6 +1335,18 @@ MarkerBitmaps::initClass()
     markerIndex [std::make_pair("CIRCLE_FILLED", 9)] = SoMarkerSet::CIRCLE_FILLED_9_9;
     markerIndex [std::make_pair("CIRCLE_FILLED", 7)] = SoMarkerSet::CIRCLE_FILLED_7_7;
     markerIndex [std::make_pair("CIRCLE_FILLED", 5)] = SoMarkerSet::CIRCLE_FILLED_5_5;
+
+    createBitmap("HOURGLASS_FILLED", 11, 11, 11, hourglassFilled11_marker);
+    createBitmap("HOURGLASS_FILLED", 13, 13, 13, hourglassFilled13_marker);
+    createBitmap("HOURGLASS_FILLED", 15, 15, 15, hourglassFilled15_marker);
+    createBitmap("HOURGLASS_FILLED", 20, 20, 20, hourglassFilled20_marker);
+    createBitmap("HOURGLASS_FILLED", 25, 25, 25, hourglassFilled25_marker);
+    createBitmap("HOURGLASS_FILLED", 30, 30, 30, hourglassFilled30_marker);
+
+    // the built-in bitmaps of Coin
+    markerIndex [std::make_pair("HOURGLASS_FILLED", 9)] = SoMarkerSet::HOURGLASS_FILLED_9_9;
+    markerIndex [std::make_pair("HOURGLASS_FILLED", 7)] = SoMarkerSet::HOURGLASS_FILLED_7_7;
+    markerIndex [std::make_pair("HOURGLASS_FILLED", 5)] = SoMarkerSet::HOURGLASS_FILLED_5_5;
 }
 
 void MarkerBitmaps::createBitmap(const std::string& name, int px, int width, int height, const char* marker)

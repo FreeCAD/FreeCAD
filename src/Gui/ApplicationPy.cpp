@@ -1441,6 +1441,7 @@ PyObject* Application::sGetMarkerIndex(PyObject * /*self*/, PyObject *args)
         std::list<std::pair<std::string, std::string> > markerList = {
             {"square", "DIAMOND_FILLED"},
             {"cross", "CROSS"},
+            {"hourglass", "HOURGLASS_FILLED"},
             {"plus", "PLUS"},
             {"empty", "SQUARE_LINE"},
             {"quad", "SQUARE_FILLED"},
