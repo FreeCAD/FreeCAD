@@ -183,7 +183,7 @@ class ViewProviderDraftAnnotation(object):
 
     def getDefaultDisplayMode(self):
         """Return the default display mode."""
-        return "World"
+        return ["World", "Screen"][utils.get_param("DefaultAnnoDisplayMode", 0)]
 
     def setDisplayMode(self, mode):
         """Return the saved display mode."""

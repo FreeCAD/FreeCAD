@@ -262,10 +262,6 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
                              _tip)
             vobj.ShowLine = utils.get_param("DimShowLine", True)
 
-    def getDefaultDisplayMode(self):
-        """Return the default display mode."""
-        return ["World", "Screen"][utils.get_param("dimstyle", 0)]
-
     def getIcon(self):
         """Return the path to the icon used by the viewprovider."""
         return ":/icons/Draft_Dimension_Tree.svg"
@@ -550,7 +546,7 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
         try:
             m = vobj.DisplayMode
         except AssertionError:
-            m = ["World", "Screen"][utils.get_param("dimstyle", 0)]
+            m = ["World", "Screen"][utils.get_param("DefaultAnnoDisplayMode", 0)]
 
         if m == "Screen":
             offset = offset.negative()
@@ -975,7 +971,7 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
         try:
             m = vobj.DisplayMode
         except AssertionError:
-            m = ["World", "Screen"][utils.get_param("dimstyle", 0)]
+            m = ["World", "Screen"][utils.get_param("DefaultAnnoDisplayMode", 0)]
 
         # Set the arc
         first = self.circle.FirstParameter

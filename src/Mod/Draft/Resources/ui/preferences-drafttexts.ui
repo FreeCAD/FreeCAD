@@ -143,7 +143,7 @@ such as &quot;Arial:Bold&quot;</string>
            </size>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>dimstyle</cstring>
+           <cstring>DefaultAnnoDisplayMode</cstring>
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/Draft</cstring>
