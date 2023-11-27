@@ -119,27 +119,23 @@ TEST_F(TopoShapeTest, faceBySimpleName)
 {
     // Arrange
     // NOTE: _topoShape is a box with lower-left corner at (1, 2, 3) of size (10, 11, 12)
+    std::vector<Base::Vector3d> points;
+    std::vector<Data::ComplexGeoData::Facet> faces;
     auto expectedNameForFace = Part::TopoShape::shapeName(TopAbs_FACE); // "Face"
 
     // Act
+    _topoShape.getFaces(points, faces, 0.0); // box at 1,2,3 with dimensions 10,11,12
     auto fourthPairRef = Part::TopoShape::getElementTypeAndIndex("Face4");
     auto fourthPairName = fourthPairRef.first.c_str();
     auto fourthPairIndex = fourthPairRef.second - 1;
-    auto fourthFace = _topoShape.getSubElement(fourthPairName, fourthPairIndex);
 
     // Assert
     EXPECT_EQ(fourthPairName, expectedNameForFace);
     EXPECT_EQ(fourthPairIndex, 3);
+    EXPECT_EQ(faces[fourthPairIndex].I1, 4);
+    EXPECT_EQ(faces[fourthPairIndex].I2, 6);
+    EXPECT_EQ(faces[fourthPairIndex].I3, 7);
 }
-
-// TODO: for later
-//    >>> d = App.getDocument("Unnamed");
-//    >>> obj = doc.getObject("Box")
-//    >>> shp = obj.Shape
-//    >>> sub = obj.getSubObject("Face2")
-//    >>> sub.BoundBox
-//            BoundBox (10, 0, 0, 10, 10, 10)
-//    >>>
 
     TEST_F(TopoShapeTest, getCharacteristics)
 {
