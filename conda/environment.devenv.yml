@@ -58,7 +58,7 @@ dependencies:
 - boost
 - boost-cpp
 - cmake
-- coin3d
+- coin3d==4.0.0
 - compilers
 - conda
 - conda-build
