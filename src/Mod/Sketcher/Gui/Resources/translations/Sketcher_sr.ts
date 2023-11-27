@@ -4029,8 +4029,8 @@ with respect to the others using construction lines</source>
       <source>If selected, it substitutes dimensional constraints by geometric constraints
 in the copies, so that a change in the original element is directly
 reflected on copies</source>
-      <translation>Ако је чекирано, у копијама ће се заменити димензиона ограничења 
-геометријским, тако да ће се промене на оригиналном елементу 
+      <translation>Ако је чекирано, у копијама ће се заменити димензиона ограничења
+геометријским, тако да ће се промене на оригиналном елементу
 директно огледати и на копијама</translation>
     </message>
     <message>

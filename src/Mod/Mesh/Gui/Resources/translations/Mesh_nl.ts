@@ -1464,7 +1464,7 @@ to a smoother appearance.
       <translation>Als deze optie is ingesteld, wordt de Phong-beschaduwing gebruikt, anders vlakke schaduwen.
 De beschaduwing bepaalt het uiterlijk van de oppervlakken.
 
-Bij vlakke beschaduwingen worden de oppervlaktenormen niet per eindpunt gedefinieerd, wat leidt 
+Bij vlakke beschaduwingen worden de oppervlaktenormen niet per eindpunt gedefinieerd, wat leidt
 tot een onrealistisch uiterlijk voor gebogen oppervlakken, terwijl het gebruik van Phong-beschaduwing
 tot een gladder uiterlijk leidt.
 </translation>

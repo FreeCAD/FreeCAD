@@ -340,7 +340,7 @@ Surface deviation multiplied by the length of the current mesh segment (edge)</s
 These groups will be exported for mesh output formats supporting
 this feature (e.g. the format OBJ).</source>
       <translation>ქსელის სეგმენტები დაჯგუფდება ობიექტის ზედაპირის ფერის მიხედვით.
-ეს ჯგუფები გატანილი იქნება ბადის გამომავალი ფორმატებისთვის, 
+ეს ჯგუფები გატანილი იქნება ბადის გამომავალი ფორმატებისთვის,
 რომლებსაც აქვთ ამ თვისების მხარდაჭერა(მაგ. ფორმატი OBJ).</translation>
     </message>
     <message>

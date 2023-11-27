@@ -1536,7 +1536,7 @@ into driving or reference mode</source>
       <location filename="../../Command.cpp" line="787"/>
       <source>Validate a sketch by looking at missing coincidences,
 invalid constraints, degenerated geometry, etc.</source>
-      <translation>Проверить эскиз, просмотрев отсутствующие совпадения, 
+      <translation>Проверить эскиз, просмотрев отсутствующие совпадения,
 недопустимые ограничения, вырожденную геометрию и т. д.</translation>
     </message>
     <message>
@@ -4635,7 +4635,7 @@ Defaults to: %N = %V
       <location filename="../../SketcherSettingsDisplay.ui" line="403"/>
       <source>When entering edit mode, force orthographic view of camera.
 Works only when "Restore camera position after editing" is enabled.</source>
-      <translation>В режиме правки эскиза, вид будет переключен на ортогональный. 
+      <translation>В режиме правки эскиза, вид будет переключен на ортогональный.
 Работает только, если включена функция «Восстановить позицию камеры после редактирования».</translation>
     </message>
     <message>

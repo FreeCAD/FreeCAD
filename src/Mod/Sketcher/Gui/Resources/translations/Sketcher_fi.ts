@@ -595,7 +595,7 @@ and an edge as an interface.</translation>
       <location filename="../../CommandConstraints.cpp" line="9142"/>
       <source>Create a symmetry constraint between two points
 with respect to a line or a third point</source>
-      <translation>Luo symmetriarajoite kahden pisteen välille, 
+      <translation>Luo symmetriarajoite kahden pisteen välille,
 käyttäen jakajana viivaa tai kolmatta pistettä</translation>
     </message>
   </context>
@@ -1514,7 +1514,7 @@ rakennetilan ja tavallisen geometrian välillä edestakaisin</translation>
       <location filename="../../CommandConstraints.cpp" line="9699"/>
       <source>Set the toolbar, or the selected constraints,
 into driving or reference mode</source>
-      <translation>Vaihtaa työkalupalkin kuvakkeen, tai valitut rajoitteet, 
+      <translation>Vaihtaa työkalupalkin kuvakkeen, tai valitut rajoitteet,
 määräävän ja referenssimoodin välillä edestakaisin</translation>
     </message>
   </context>
