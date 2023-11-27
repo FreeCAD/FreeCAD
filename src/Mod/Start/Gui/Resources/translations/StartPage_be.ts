@@ -297,7 +297,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="147"/>
       <source>File path</source>
-      <translation type="unfinished">File path</translation>
+      <translation>Шлях да файла</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="148"/>
