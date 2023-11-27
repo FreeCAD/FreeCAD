@@ -188,8 +188,8 @@
       <translation>Postavitev</translation>
     </message>
     <message>
-      <location filename="../TaskCSysDragger.cpp" line="75"/>
       <location filename="../Transform.cpp" line="101"/>
+      <location filename="../TaskCSysDragger.cpp" line="75"/>
       <location filename="../ViewProviderAnnotation.cpp" line="416"/>
       <source>Transform</source>
       <translation>Preoblikuj</translation>
@@ -418,7 +418,7 @@
     <message>
       <location filename="../Application.h" line="255"/>
       <source>Default</source>
-      <translation>Privzeto</translation>
+      <translation>Privzeti</translation>
     </message>
     <message>
       <location filename="../Application.h" line="256"/>
@@ -587,7 +587,7 @@
     <message>
       <location filename="../CADNavigationStyle.cpp" line="51"/>
       <source>Press left mouse button</source>
-      <translation>Pritisnite levi miškin gumb</translation>
+      <translation>Pritisnite levo miškino tipko</translation>
     </message>
     <message>
       <location filename="../CADNavigationStyle.cpp" line="53"/>
@@ -894,7 +894,7 @@ kliknete na levo oz. desno tipko in premikate miško gor oz. dol</translation>
     <message>
       <location filename="../DemoMode.ui" line="38"/>
       <source>Angle</source>
-      <translation>Kot</translation>
+      <translation>Kót</translation>
     </message>
     <message>
       <location filename="../DemoMode.ui" line="80"/>
@@ -1093,7 +1093,7 @@ Neglede na to ima lastnost v skriptih še vedno polni naziv, kot npr. "obj.Ime_S
     <message>
       <location filename="../DlgCreateNewPreferencePack.ui" line="28"/>
       <source>Name</source>
-      <translation>Naziv</translation>
+      <translation>Ime</translation>
     </message>
     <message>
       <location filename="../DlgCreateNewPreferencePack.ui" line="53"/>
@@ -1390,7 +1390,7 @@ tisti z višjo prednostjo.</translation>
       <location filename="../DlgKeyboardImp.cpp" line="433"/>
       <location filename="../DlgKeyboardImp.cpp" line="501"/>
       <source>none</source>
-      <translation>brez</translation>
+      <translation>nobeden</translation>
     </message>
   </context>
   <context>
@@ -3116,12 +3116,27 @@ očrtnega kvadra trenutno prikazanega prostorskega predmeta.</translation>
       <translation>15px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="160"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="130"/>
+      <source>20px</source>
+      <translation type="unfinished">20px</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="131"/>
+      <source>25px</source>
+      <translation type="unfinished">25px</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="132"/>
+      <source>30px</source>
+      <translation type="unfinished">30px</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="163"/>
       <source>Anti-aliasing</source>
       <translation>Glajenje robov</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="161"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="164"/>
       <source>Open a new viewer or restart %1 to apply anti-aliasing changes.</source>
       <translation>Odprite nov pregledovalnik ali ponovno zaženite %1, da uporabite spremembe glajenja robov.</translation>
     </message>
@@ -4084,7 +4099,7 @@ Lahko uporabite tudi obliko: Neznanec &lt;ne@znanec.com&gt;</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="162"/>
       <source>Default</source>
-      <translation>Privzeti</translation>
+      <translation>Privzeto</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="170"/>
@@ -4359,7 +4374,7 @@ S to nastavitvijo nagibanje z miško ni onemogočeno.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="14"/>
       <source>General</source>
-      <translation>Splošno</translation>
+      <translation>Splošne nastavitve</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="20"/>
@@ -5424,7 +5439,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../SceneInspector.ui" line="14"/>
       <source>Dialog</source>
-      <translation>Pogovorno okno</translation>
+      <translation>Pog. okno</translation>
     </message>
     <message>
       <location filename="../SceneInspector.ui" line="25"/>
@@ -5590,7 +5605,7 @@ izbrani pred odprtjem tega pogovrnega okna</translation>
     <message>
       <location filename="../DlgTreeWidget.ui" line="14"/>
       <source>Dialog</source>
-      <translation>Pog. okno</translation>
+      <translation>Pogovorno okno</translation>
     </message>
     <message>
       <location filename="../DlgTreeWidget.ui" line="27"/>
@@ -6070,15 +6085,15 @@ Ali želite shraniti spremembe?</translation>
       <translation>PDF zapis</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="617"/>
       <location filename="../GraphvizView.cpp" line="448"/>
+      <location filename="../CommandDoc.cpp" line="617"/>
       <source>Graphviz format</source>
       <translation type="unfinished">Graphviz format</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="618"/>
       <location filename="../GraphvizView.cpp" line="462"/>
       <location filename="../GraphvizView.cpp" line="550"/>
+      <location filename="../CommandDoc.cpp" line="618"/>
       <source>Export graph</source>
       <translation>Izvozi graf</translation>
     </message>
@@ -6827,7 +6842,7 @@ Ali želite končati ne da bi shranili podatke?</translation>
     <message>
       <location filename="../Action.cpp" line="1029"/>
       <source>none</source>
-      <translation>nobeden</translation>
+      <translation>brez</translation>
     </message>
     <message>
       <location filename="../Action.cpp" line="1044"/>
@@ -6984,7 +6999,7 @@ Ali želite navesti drugo mapo?</translation>
     <message>
       <location filename="../TaskDlgRelocation.cpp" line="67"/>
       <source>Angle</source>
-      <translation>Kót</translation>
+      <translation>Kot</translation>
     </message>
   </context>
   <context>
@@ -6992,7 +7007,7 @@ Ali želite navesti drugo mapo?</translation>
     <message>
       <location filename="../TaskDlgRelocation.cpp" line="42"/>
       <source>Position</source>
-      <translation>Položaj</translation>
+      <translation type="unfinished">Position</translation>
     </message>
   </context>
   <context>
@@ -7191,7 +7206,7 @@ Ali želite navesti drugo mapo?</translation>
     <message>
       <location filename="../TouchpadNavigationStyle.cpp" line="48"/>
       <source>Press left mouse button</source>
-      <translation>Pritisnite levo miškino tipko</translation>
+      <translation>Pritisnite levi miškin gumb</translation>
     </message>
     <message>
       <location filename="../TouchpadNavigationStyle.cpp" line="50"/>
@@ -7893,7 +7908,7 @@ Ali želite navesti drugo mapo?</translation>
       <location filename="../resource.cpp" line="76"/>
       <location filename="../resource.cpp" line="77"/>
       <source>General</source>
-      <translation>Splošne nastavitve</translation>
+      <translation>Splošno</translation>
     </message>
     <message>
       <location filename="../resource.cpp" line="78"/>
@@ -8007,8 +8022,8 @@ Ali želite navesti drugo mapo?</translation>
       <translation>Izvažanje PDF...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1230"/>
       <location filename="../MainWindow.cpp" line="809"/>
+      <location filename="../CommandDoc.cpp" line="1230"/>
       <source>Unsaved document</source>
       <translation>Neshranjen dokument</translation>
     </message>
@@ -8884,8 +8899,8 @@ bodo izgubljene.
       <translation>Preklopi prekrivanje</translation>
     </message>
     <message>
-      <location filename="../OverlayManager.cpp" line="1036"/>
       <location filename="../OverlayWidgets.cpp" line="2180"/>
+      <location filename="../OverlayManager.cpp" line="1036"/>
       <source>Toggle floating window</source>
       <translation>Preklopi plavajoče okno</translation>
     </message>
@@ -9099,7 +9114,7 @@ bodo izgubljene.
       <translation>Ni dovoljeno:</translation>
     </message>
     <message>
-      <location filename="../Selection.cpp" line="913"/>
+      <location filename="../Selection.cpp" line="937"/>
       <source>Selection not allowed by filter</source>
       <translation>Sito ne dovoljuje izbora</translation>
     </message>
@@ -10014,8 +10029,8 @@ bodo izgubljene.
       <translation>Ustvari nov, prazen dokument</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="391"/>
       <location filename="../MainWindow.cpp" line="2311"/>
+      <location filename="../DocumentRecovery.cpp" line="391"/>
       <source>Unnamed</source>
       <translation>Neimenovan</translation>
     </message>
@@ -11198,7 +11213,7 @@ Namenjen je razpostavitivi predmetov s topografskimi oblikami dela, kot so Osnov
     <message>
       <location filename="../CommandView.cpp" line="1703"/>
       <source>Fullscreen</source>
-      <translation>Celozaslonsko</translation>
+      <translation>Celozaslonski način</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1704"/>
@@ -11444,7 +11459,7 @@ Namenjen je razpostavitivi predmetov s topografskimi oblikami dela, kot so Osnov
     <message>
       <location filename="../CommandView.cpp" line="1735"/>
       <source>Fullscreen</source>
-      <translation>Celozaslonski način</translation>
+      <translation>Celozaslonsko</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1736"/>
@@ -12797,7 +12812,7 @@ bo pozdravno okno prikazano</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="450"/>
       <source>Name</source>
-      <translation>Ime</translation>
+      <translation>Naziv</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="461"/>

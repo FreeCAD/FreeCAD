@@ -188,8 +188,8 @@
       <translation>Položaj</translation>
     </message>
     <message>
-      <location filename="../TaskCSysDragger.cpp" line="75"/>
       <location filename="../Transform.cpp" line="101"/>
+      <location filename="../TaskCSysDragger.cpp" line="75"/>
       <location filename="../ViewProviderAnnotation.cpp" line="416"/>
       <source>Transform</source>
       <translation>Transformiraj</translation>
@@ -2455,12 +2455,12 @@ Specify another directory, please.</source>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="439"/>
       <source>Reset page '%1'...</source>
-      <translation type="unfinished">Reset page '%1'...</translation>
+      <translation>Resetiraj stranicu '%1'...</translation>
     </message>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="442"/>
       <source>Resets the user settings for the page '%1'</source>
-      <translation type="unfinished">Resets the user settings for the page '%1'</translation>
+      <translation>Resetira korisnička podešavanja za stranicu '%1'</translation>
     </message>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="445"/>
@@ -2528,7 +2528,7 @@ Specify another directory, please.</source>
     <message>
       <location filename="../DlgProjectInformation.ui" line="14"/>
       <source>Document information</source>
-      <translation type="unfinished">Document information</translation>
+      <translation>Informacija o dokumentu</translation>
     </message>
     <message>
       <location filename="../DlgProjectInformation.ui" line="26"/>
@@ -2637,12 +2637,12 @@ Specify another directory, please.</source>
     <message>
       <location filename="../DlgProjectUtility.ui" line="72"/>
       <source>Create document</source>
-      <translation type="unfinished">Create document</translation>
+      <translation>Izrađuje dokument</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.ui" line="137"/>
       <source>Load document file after creation</source>
-      <translation type="unfinished">Load document file after creation</translation>
+      <translation>Učitaj datoteku dokumenta nakon izrade</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.ui" line="115"/>
@@ -2681,12 +2681,12 @@ Specify another directory, please.</source>
     <message>
       <location filename="../DlgProjectUtility.cpp" line="104"/>
       <source>Failed to extract document</source>
-      <translation type="unfinished">Failed to extract document</translation>
+      <translation>Nije uspjelo izdvajanje dokumenta</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.cpp" line="121"/>
       <source>Failed to create document</source>
-      <translation type="unfinished">Failed to create document</translation>
+      <translation>Nije uspjelo stvaranje dokumenta</translation>
     </message>
   </context>
   <context>
@@ -3122,12 +3122,27 @@ veličinom graničnog okvira 3D objekta koji se trenutno prikazuje.</translation
       <translation>15px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="160"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="130"/>
+      <source>20px</source>
+      <translation type="unfinished">20px</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="131"/>
+      <source>25px</source>
+      <translation type="unfinished">25px</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="132"/>
+      <source>30px</source>
+      <translation type="unfinished">30px</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="163"/>
       <source>Anti-aliasing</source>
       <translation>Izglađivanje</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="161"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="164"/>
       <source>Open a new viewer or restart %1 to apply anti-aliasing changes.</source>
       <translation>Otvori novi preglednik ili ponovno pokreni %1 za dodavanje promjena izglađivanja.</translation>
     </message>
@@ -4391,7 +4406,7 @@ Naginjanje miša nije onemogućeno ovom postavkom.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="20"/>
       <source>Console</source>
-      <translation type="unfinished">Console</translation>
+      <translation>Konzola</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="26"/>
@@ -4444,7 +4459,7 @@ vodoravni prostor u Python konzoli
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="122"/>
       <source>Path to external Python executable (optional):</source>
-      <translation type="unfinished">Path to external Python executable (optional):</translation>
+      <translation>Putanja ka vanjskoj izvršnoj Python datoteci (neobavezno):</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="141"/>
@@ -6102,15 +6117,15 @@ Do you want to save your changes?</source>
       <translation>PDF format</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="617"/>
       <location filename="../GraphvizView.cpp" line="448"/>
+      <location filename="../CommandDoc.cpp" line="617"/>
       <source>Graphviz format</source>
       <translation>Graphviz format</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="618"/>
       <location filename="../GraphvizView.cpp" line="462"/>
       <location filename="../GraphvizView.cpp" line="550"/>
+      <location filename="../CommandDoc.cpp" line="618"/>
       <source>Export graph</source>
       <translation>Izvoz grafikona</translation>
     </message>
@@ -8046,8 +8061,8 @@ Do you want to specify another directory?</source>
       <translation>Izvoz PDF ...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1230"/>
       <location filename="../MainWindow.cpp" line="809"/>
+      <location filename="../CommandDoc.cpp" line="1230"/>
       <source>Unsaved document</source>
       <translation>Nespremljeni dokument</translation>
     </message>
@@ -8926,8 +8941,8 @@ trenutnu kopiju će biti izgubljene.</translation>
       <translation>Uključite/isključite prekrivanje</translation>
     </message>
     <message>
-      <location filename="../OverlayManager.cpp" line="1036"/>
       <location filename="../OverlayWidgets.cpp" line="2180"/>
+      <location filename="../OverlayManager.cpp" line="1036"/>
       <source>Toggle floating window</source>
       <translation>Uključite/isključite slobodan prozor</translation>
     </message>
@@ -9050,12 +9065,12 @@ trenutnu kopiju će biti izgubljene.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="577"/>
       <source>Hint trigger size</source>
-      <translation type="unfinished">Hint trigger size</translation>
+      <translation>Veličina praga obavijesti</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="580"/>
       <source>Hint width</source>
-      <translation type="unfinished">Hint width</translation>
+      <translation>Širina obavijesti</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="583"/>
@@ -9065,7 +9080,7 @@ trenutnu kopiju će biti izgubljene.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="586"/>
       <source>Left panel hint length</source>
-      <translation type="unfinished">Left panel hint length</translation>
+      <translation>Dužina obavijesti lijevog panela</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="589"/>
@@ -9100,7 +9115,7 @@ trenutnu kopiju će biti izgubljene.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="607"/>
       <source>Hint show tab bar</source>
-      <translation type="unfinished">Hint show tab bar</translation>
+      <translation>Obavijest pokaži traku kartica</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="609"/>
@@ -9110,27 +9125,27 @@ trenutnu kopiju će biti izgubljene.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="612"/>
       <source>Splitter auto hide delay (ms)</source>
-      <translation type="unfinished">Splitter auto hide delay (ms)</translation>
+      <translation>Razmak sakrij automatski kašnjenje (ms)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="615"/>
       <source>Activate on hover</source>
-      <translation type="unfinished">Activate on hover</translation>
+      <translation>Aktiviraj kod lebdenja</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="617"/>
       <source>Layout delay (ms)</source>
-      <translation type="unfinished">Layout delay (ms)</translation>
+      <translation>Razmještaj kašnjenje (ms)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="620"/>
       <source>Animation duration (ms)</source>
-      <translation type="unfinished">Animation duration (ms)</translation>
+      <translation>Trajanje animacije (ms)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="623"/>
       <source>Animation curve type</source>
-      <translation type="unfinished">Animation curve type</translation>
+      <translation>Vrsta krivulje animacije</translation>
     </message>
   </context>
   <context>
@@ -9141,7 +9156,7 @@ trenutnu kopiju će biti izgubljene.</translation>
       <translation>Nije dopušteno:</translation>
     </message>
     <message>
-      <location filename="../Selection.cpp" line="913"/>
+      <location filename="../Selection.cpp" line="937"/>
       <source>Selection not allowed by filter</source>
       <translation>Izbor nije dozvoljen kod ovog filtera</translation>
     </message>
@@ -10028,7 +10043,7 @@ trenutnu kopiju će biti izgubljene.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="520"/>
       <source>Merge document...</source>
-      <translation type="unfinished">Merge document...</translation>
+      <translation>Spoji dokument...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="521"/>
@@ -10036,7 +10051,7 @@ trenutnu kopiju će biti izgubljene.</translation>
       <location filename="../CommandDoc.cpp" line="533"/>
       <location filename="../CommandDoc.cpp" line="542"/>
       <source>Merge document</source>
-      <translation type="unfinished">Merge document</translation>
+      <translation>Spoji dokument</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="534"/>
@@ -10046,7 +10061,7 @@ trenutnu kopiju će biti izgubljene.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="543"/>
       <source>Cannot merge document with itself.</source>
-      <translation type="unfinished">Cannot merge document with itself.</translation>
+      <translation>Ne mogu spojiti dokument sam sa sobom</translation>
     </message>
   </context>
   <context>
@@ -10063,8 +10078,8 @@ trenutnu kopiju će biti izgubljene.</translation>
       <translation>Kreira novi prazni dokument</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="391"/>
       <location filename="../MainWindow.cpp" line="2311"/>
+      <location filename="../DocumentRecovery.cpp" line="391"/>
       <source>Unnamed</source>
       <translation>Neimenovano</translation>
     </message>
@@ -10267,7 +10282,7 @@ Namijenjen je za uređivanje objekata koji imaju Part TopoShape, poput Part Prim
     <message>
       <location filename="../CommandStd.cpp" line="137"/>
       <source>Open Recent</source>
-      <translation type="unfinished">Open Recent</translation>
+      <translation>Otvori Nedavno</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="138"/>
@@ -12073,7 +12088,7 @@ nakon pokretanja FreeCAD-a
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="97"/>
       <source>Workbench selector position:</source>
-      <translation type="unfinished">Workbench selector position:</translation>
+      <translation>Položaj birača radnog prostora:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="104"/>
@@ -12293,7 +12308,7 @@ nakon pokretanja FreeCAD-a
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="240"/>
       <source>Sort alphabetically</source>
-      <translation type="unfinished">Sort alphabetically</translation>
+      <translation>Sortiraj abecedno</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="486"/>
@@ -12682,22 +12697,22 @@ nakon pokretanja FreeCAD-a
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="62"/>
       <source>Unit system for all parts of the application. Can be overridden by specifying a document unit system.</source>
-      <translation type="unfinished">Unit system for all parts of the application. Can be overridden by specifying a document unit system.</translation>
+      <translation>Sistem jedinica za sve dijelove aplikacije. Može se preglasiti navođenjem sustava jedinica dokumenta.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="93"/>
       <source>Document unit system:</source>
-      <translation type="unfinished">Document unit system:</translation>
+      <translation>Mjerna jedinica dokumenta:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="100"/>
       <source>Unit system stored in the current document</source>
-      <translation type="unfinished">Unit system stored in the current document</translation>
+      <translation>Mjerna jedinica spremljena u trenutni dokument</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="107"/>
       <source>If enabled, document unit systems are ignored</source>
-      <translation type="unfinished">If enabled, document unit systems are ignored</translation>
+      <translation>Ako je omogućeno mjerna jedinica dokumenta je zanemarena</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="110"/>
@@ -13301,12 +13316,12 @@ od Python konzole na ploču prikaza izvješća
     <message>
       <location filename="../CommandView.cpp" line="3828"/>
       <source>Toggle overlay for all</source>
-      <translation type="unfinished">Toggle overlay for all</translation>
+      <translation>Prebacuj preklapanje za sve</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3829"/>
       <source>Toggle overlay mode for all docked windows</source>
-      <translation type="unfinished">Toggle overlay mode for all docked windows</translation>
+      <translation>Prebacuj preklapanje za sve pomočne izbornike</translation>
     </message>
   </context>
   <context>
@@ -13314,14 +13329,14 @@ od Python konzole na ploču prikaza izvješća
     <message>
       <location filename="../CommandView.cpp" line="3852"/>
       <source>Toggle transparent for all</source>
-      <translation type="unfinished">Toggle transparent for all</translation>
+      <translation>Prebacuj prozirnost za sve</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3853"/>
       <source>Toggle transparent mode for all docked overlay windows.
 This makes the docked windows stay transparent at all times.</source>
-      <translation type="unfinished">Toggle transparent mode for all docked overlay windows.
-This makes the docked windows stay transparent at all times.</translation>
+      <translation>Prebacuj prozirni mod za sve priklopne prozore prekrivanja.
+Ovo omogućuje da priklopni prozori ostaju prozirni uvijek.</translation>
     </message>
   </context>
   <context>
@@ -13334,7 +13349,7 @@ This makes the docked windows stay transparent at all times.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3878"/>
       <source>Toggle overlay mode for the docked window under the cursor</source>
-      <translation type="unfinished">Toggle overlay mode for the docked window under the cursor</translation>
+      <translation>Prebacuj mod preklapanja za prozor pomoćnog izbornika ispod pokazivača</translation>
     </message>
   </context>
   <context>
@@ -13342,14 +13357,14 @@ This makes the docked windows stay transparent at all times.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3901"/>
       <source>Toggle transparent</source>
-      <translation type="unfinished">Toggle transparent</translation>
+      <translation>Prebacuj prozirnost</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3902"/>
       <source>Toggle transparent mode for the docked window under cursor.
 This makes the docked window stay transparent at all times.</source>
-      <translation type="unfinished">Toggle transparent mode for the docked window under cursor.
-This makes the docked window stay transparent at all times.</translation>
+      <translation>Prebacuj prozirni mod za sve prozore pomoćnih izbornika ispod pokazivača.
+Ovo omogućuje da pomoćni izbornici ostaju uvijek prozirni.</translation>
     </message>
   </context>
   <context>
@@ -13357,12 +13372,12 @@ This makes the docked window stay transparent at all times.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3926"/>
       <source>Toggle left</source>
-      <translation type="unfinished">Toggle left</translation>
+      <translation>Prebaci lijevo</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3927"/>
       <source>Show/hide left overlay panel</source>
-      <translation type="unfinished">Show/hide left overlay panel</translation>
+      <translation>Prikaži/sakrij lijevi preklopni panel</translation>
     </message>
   </context>
   <context>
@@ -13370,12 +13385,12 @@ This makes the docked window stay transparent at all times.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3951"/>
       <source>Toggle right</source>
-      <translation type="unfinished">Toggle right</translation>
+      <translation>Prebaci desno</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3952"/>
       <source>Show/hide right overlay panel</source>
-      <translation type="unfinished">Show/hide right overlay panel</translation>
+      <translation>Prikaži/sakrij desni preklopni panel</translation>
     </message>
   </context>
   <context>
@@ -13383,12 +13398,12 @@ This makes the docked window stay transparent at all times.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3976"/>
       <source>Toggle top</source>
-      <translation type="unfinished">Toggle top</translation>
+      <translation>Prebaci gore</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3977"/>
       <source>Show/hide top overlay panel</source>
-      <translation type="unfinished">Show/hide top overlay panel</translation>
+      <translation>Prikaži/sakrij gornji preklopni panel</translation>
     </message>
   </context>
   <context>
@@ -13396,12 +13411,12 @@ This makes the docked window stay transparent at all times.</translation>
     <message>
       <location filename="../CommandView.cpp" line="4001"/>
       <source>Toggle bottom</source>
-      <translation type="unfinished">Toggle bottom</translation>
+      <translation>Prebaci dolje</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="4002"/>
       <source>Show/hide bottom overlay panel</source>
-      <translation type="unfinished">Show/hide bottom overlay panel</translation>
+      <translation>Prikaži/sakrij donji preklopni panel</translation>
     </message>
   </context>
   <context>
@@ -13588,22 +13603,22 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../OverlayWidgets.cpp" line="859"/>
       <source>Auto hide</source>
-      <translation type="unfinished">Auto hide</translation>
+      <translation>Skriva automatski </translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="860"/>
       <source>Auto hide docked widgets on leave</source>
-      <translation type="unfinished">Auto hide docked widgets on leave</translation>
+      <translation>Automatski skriva otvorene kartice dodataka pri odlasku</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="861"/>
       <source>Hide on edit</source>
-      <translation type="unfinished">Hide on edit</translation>
+      <translation>Skriva kod uređivanja</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="862"/>
       <source>Auto hide docked widgets on editing</source>
-      <translation type="unfinished">Auto hide docked widgets on editing</translation>
+      <translation>Automatski skriva otvorene kartice dodataka pri uređivanju</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="863"/>
@@ -13613,7 +13628,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../OverlayWidgets.cpp" line="864"/>
       <source>Auto show docked widgets on editing</source>
-      <translation type="unfinished">Auto show docked widgets on editing</translation>
+      <translation>Automatski prikazuje otvorene kartice dodataka pri uređivanju</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="865"/>
@@ -13623,7 +13638,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../OverlayWidgets.cpp" line="866"/>
       <source>Auto show task view for any current task, and hide the view when there is no task.</source>
-      <translation type="unfinished">Auto show task view for any current task, and hide the view when there is no task.</translation>
+      <translation>Automatski prikaži pregled zadataka za bilo koji trenutni zadatak, a sakrij pregled kada nema zadataka.</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="867"/>
@@ -13633,7 +13648,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../OverlayWidgets.cpp" line="893"/>
       <source>Select auto show/hide mode</source>
-      <translation type="unfinished">Select auto show/hide mode</translation>
+      <translation>Odaberi automatski način prikaži/sakrij </translation>
     </message>
   </context>
   <context>

@@ -1477,12 +1477,12 @@ This will clear the 'Support' property, if any.</source>
   <context>
     <name>CmdSketcherToggleActiveConstraint</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9841"/>
+      <location filename="../../CommandConstraints.cpp" line="9857"/>
       <source>Activate/deactivate constraint</source>
       <translation>Активирај/деактивирај ограничење</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9842"/>
+      <location filename="../../CommandConstraints.cpp" line="9858"/>
       <source>Activates or deactivates the selected constraints</source>
       <translation>Активира или деактивира изабрана ограничења</translation>
     </message>
@@ -1490,12 +1490,12 @@ This will clear the 'Support' property, if any.</source>
   <context>
     <name>CmdSketcherToggleConstruction</name>
     <message>
-      <location filename="../../CommandAlterGeometry.cpp" line="72"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="73"/>
       <source>Toggle construction geometry</source>
       <translation>Помоћна геометрија</translation>
     </message>
     <message>
-      <location filename="../../CommandAlterGeometry.cpp" line="73"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="74"/>
       <source>Toggles the toolbar or selected geometry to/from construction mode</source>
       <translation>Пребацује палету алатки или изабрану геометрију у/из режим помоћне геометрије</translation>
     </message>
@@ -1924,12 +1924,12 @@ invalid constraints, degenerated geometry, etc.</source>
       <translation>Додај ограничење на основу Снелловог закона</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9796"/>
+      <location filename="../../CommandConstraints.cpp" line="9812"/>
       <source>Toggle constraint to driving/reference</source>
       <translation>Пребаци између референтног и ограничавајућег режима кота</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9885"/>
+      <location filename="../../CommandConstraints.cpp" line="9901"/>
       <source>Activate/Deactivate constraint</source>
       <translation>Активирај/деактивирај ограничење</translation>
     </message>
@@ -1969,7 +1969,7 @@ invalid constraints, degenerated geometry, etc.</source>
       <translation>Обједини скице</translation>
     </message>
     <message>
-      <location filename="../../CommandAlterGeometry.cpp" line="162"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="180"/>
       <source>Toggle draft from/to draft</source>
       <translation type="unfinished">Toggle draft from/to draft</translation>
     </message>
@@ -2148,8 +2148,8 @@ invalid constraints, degenerated geometry, etc.</source>
       <translation>Ажурирај виртуелни простор ограничења</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchDefaultHandler.h" line="847"/>
       <location filename="../../DrawSketchHandler.cpp" line="957"/>
+      <location filename="../../DrawSketchDefaultHandler.h" line="847"/>
       <source>Add auto constraints</source>
       <translation>Додај аутоматска ограничења</translation>
     </message>
@@ -2201,12 +2201,12 @@ invalid constraints, degenerated geometry, etc.</source>
     <message>
       <location filename="../../DrawSketchHandlerPolygon.h" line="112"/>
       <source>Add polygon</source>
-      <translation type="unfinished">Add polygon</translation>
+      <translation>Додај многоугао</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArcSlot.h" line="175"/>
       <source>Add sketch arc slot</source>
-      <translation type="unfinished">Add sketch arc slot</translation>
+      <translation>Додај скицу лучног жљеба</translation>
     </message>
   </context>
   <context>
@@ -2263,7 +2263,7 @@ invalid constraints, degenerated geometry, etc.</source>
       <location filename="../../../App/SketchObject.cpp" line="6445"/>
       <location filename="../../../App/SketchObject.cpp" line="6653"/>
       <source>BSpline Geometry Index (GeoID) is out of bounds.</source>
-      <translation type="unfinished">BSpline Geometry Index (GeoID) is out of bounds.</translation>
+      <translation>Индекс Б-Сплајн геометрије (GeoID) је ван граница.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObject.cpp" line="6450"/>
@@ -2386,8 +2386,20 @@ invalid constraints, degenerated geometry, etc.</source>
       <translation>Немој прикачити</translation>
     </message>
     <message>
-      <location filename="../../CommandAlterGeometry.cpp" line="147"/>
-      <location filename="../../CommandAlterGeometry.cpp" line="156"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="121"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="130"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="157"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="165"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="174"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="169"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="244"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="327"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="380"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="440"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="528"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="576"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="938"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1048"/>
       <location filename="../../CommandConstraints.cpp" line="171"/>
       <location filename="../../CommandConstraints.cpp" line="178"/>
       <location filename="../../CommandConstraints.cpp" line="2273"/>
@@ -2510,20 +2522,11 @@ invalid constraints, degenerated geometry, etc.</source>
       <location filename="../../CommandConstraints.cpp" line="9579"/>
       <location filename="../../CommandConstraints.cpp" line="9590"/>
       <location filename="../../CommandConstraints.cpp" line="9597"/>
-      <location filename="../../CommandConstraints.cpp" line="9741"/>
-      <location filename="../../CommandConstraints.cpp" line="9753"/>
-      <location filename="../../CommandConstraints.cpp" line="9790"/>
-      <location filename="../../CommandConstraints.cpp" line="9867"/>
-      <location filename="../../CommandConstraints.cpp" line="9879"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="169"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="244"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="327"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="380"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="440"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="528"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="576"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="938"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1048"/>
+      <location filename="../../CommandConstraints.cpp" line="9757"/>
+      <location filename="../../CommandConstraints.cpp" line="9769"/>
+      <location filename="../../CommandConstraints.cpp" line="9806"/>
+      <location filename="../../CommandConstraints.cpp" line="9883"/>
+      <location filename="../../CommandConstraints.cpp" line="9895"/>
       <location filename="../../CommandSketcherTools.cpp" line="96"/>
       <location filename="../../CommandSketcherTools.cpp" line="772"/>
       <location filename="../../CommandSketcherTools.cpp" line="888"/>
@@ -2540,15 +2543,12 @@ invalid constraints, degenerated geometry, etc.</source>
       <location filename="../../CommandSketcherTools.cpp" line="2177"/>
       <location filename="../../CommandSketcherTools.cpp" line="2224"/>
       <location filename="../../CommandSketcherTools.cpp" line="2289"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="121"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="130"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="157"/>
       <source>Wrong selection</source>
       <translation>Погрешан избор</translation>
     </message>
     <message>
-      <location filename="../../CommandAlterGeometry.cpp" line="148"/>
-      <location filename="../../CommandAlterGeometry.cpp" line="157"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="166"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="175"/>
       <source>Select edge(s) from the sketch.</source>
       <translation>Изабери ивицу(е) са скице.</translation>
     </message>
@@ -2687,9 +2687,9 @@ invalid constraints, degenerated geometry, etc.</source>
       <translation>Број изабраних објеката није 3</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="739"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="566"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="1071"/>
+      <location filename="../../CommandConstraints.cpp" line="739"/>
       <source>Error</source>
       <translation>Грешка</translation>
     </message>
@@ -3078,11 +3078,11 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>Примена ограничења рефракције (Снеллов закон) на Б-сплајн криву тренутно није подржана.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9742"/>
-      <location filename="../../CommandConstraints.cpp" line="9754"/>
-      <location filename="../../CommandConstraints.cpp" line="9791"/>
-      <location filename="../../CommandConstraints.cpp" line="9868"/>
-      <location filename="../../CommandConstraints.cpp" line="9880"/>
+      <location filename="../../CommandConstraints.cpp" line="9758"/>
+      <location filename="../../CommandConstraints.cpp" line="9770"/>
+      <location filename="../../CommandConstraints.cpp" line="9807"/>
+      <location filename="../../CommandConstraints.cpp" line="9884"/>
+      <location filename="../../CommandConstraints.cpp" line="9896"/>
       <source>Select constraints from the sketch.</source>
       <translation>Изабери ограничења са скице.</translation>
     </message>
@@ -3104,9 +3104,9 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
       <translation>Задај степен Б-сплајн криве, између 1 и %1:</translation>
     </message>
     <message>
+      <location filename="../../DrawSketchHandlerFillet.h" line="292"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="421"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="796"/>
-      <location filename="../../DrawSketchHandlerFillet.h" line="292"/>
       <source>CAD Kernel Error</source>
       <translation>Грешка CAD језгра</translation>
     </message>
@@ -3275,42 +3275,42 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
     <message>
       <location filename="../../DrawSketchHandlerLine.h" line="215"/>
       <source>Line parameters</source>
-      <translation type="unfinished">Line parameters</translation>
+      <translation>Параметри линије</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerOffset.h" line="178"/>
       <source>Offset parameters</source>
-      <translation type="unfinished">Offset parameters</translation>
+      <translation>Параметри одмака</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerPolygon.h" line="205"/>
       <source>Polygon parameters</source>
-      <translation type="unfinished">Polygon parameters</translation>
+      <translation>Параметри многоугла</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerRectangle.h" line="585"/>
       <source>Rectangle parameters</source>
-      <translation type="unfinished">Rectangle parameters</translation>
+      <translation>Параметри правоугаоника</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArc.h" line="347"/>
       <source>Arc parameters</source>
-      <translation type="unfinished">Arc parameters</translation>
+      <translation>Параметри лука</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArcSlot.h" line="272"/>
       <source>Arc Slot parameters</source>
-      <translation type="unfinished">Arc Slot parameters</translation>
+      <translation>Параметри лучног жљеба</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerCircle.h" line="278"/>
       <source>Circle parameters</source>
-      <translation type="unfinished">Circle parameters</translation>
+      <translation>Параметри кружнице</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerEllipse.h" line="284"/>
       <source>Ellipse parameters</source>
-      <translation type="unfinished">Ellipse parameters</translation>
+      <translation>Параметри елипсе</translation>
     </message>
   </context>
   <context>
@@ -4029,8 +4029,8 @@ with respect to the others using construction lines</source>
       <source>If selected, it substitutes dimensional constraints by geometric constraints
 in the copies, so that a change in the original element is directly
 reflected on copies</source>
-      <translation>Ако је чекирано, у копијама ће се заменити димензиона ограничења
-геометријским, тако да ће се промене на оригиналном елементу
+      <translation>Ако је чекирано, у копијама ће се заменити димензиона ограничења 
+геометријским, тако да ће се промене на оригиналном елементу 
 директно огледати и на копијама</translation>
     </message>
     <message>
@@ -4171,7 +4171,7 @@ This setting is only for the toolbar. Whichever you chose, all tools are always 
     <message>
       <location filename="../../SketcherSettings.ui" line="224"/>
       <source>Tool Parameters</source>
-      <translation type="unfinished">Tool Parameters</translation>
+      <translation>Параметри алатке</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="230"/>
@@ -4222,7 +4222,7 @@ This setting is only for the toolbar. Whichever you chose, all tools are always 
     <message>
       <location filename="../../SketcherSettings.cpp" line="170"/>
       <source>Disabled</source>
-      <translation type="unfinished">Disabled</translation>
+      <translation>Онемогућено</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.cpp" line="171"/>
@@ -6337,36 +6337,36 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
 </translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1224"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1801"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2246"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="136"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="354"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="161"/>
       <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="332"/>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="262"/>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="340"/>
+      <location filename="../../DrawSketchHandlerExtend.h" line="336"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="164"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="186"/>
       <location filename="../../DrawSketchHandlerArcOfParabola.h" line="267"/>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="183"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="135"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="216"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="321"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="534"/>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="130"/>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="205"/>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="319"/>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="632"/>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="186"/>
       <location filename="../../DrawSketchHandlerCircle.h" line="181"/>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="188"/>
-      <location filename="../../DrawSketchHandlerExtend.h" line="336"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="262"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="340"/>
+      <location filename="../../DrawSketchHandlerSplitting.h" line="158"/>
       <location filename="../../DrawSketchHandlerExternal.h" line="188"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="136"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="134"/>
       <location filename="../../DrawSketchHandlerLineSet.h" line="470"/>
       <location filename="../../DrawSketchHandlerLineSet.h" line="500"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="135"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="216"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="321"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="534"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="188"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1224"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1801"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2246"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="183"/>
       <location filename="../../DrawSketchHandlerPoint.h" line="93"/>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="134"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="354"/>
-      <location filename="../../DrawSketchHandlerSlot.h" line="164"/>
-      <location filename="../../DrawSketchHandlerSplitting.h" line="158"/>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="161"/>
       <source>Error</source>
       <translation>Грешка</translation>
     </message>
@@ -6396,6 +6396,9 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
       <translation>Ограничење има погрешне индексне информације тако да је неисправно.</translation>
     </message>
     <message>
+      <location filename="../../CommandSketcherBSpline.cpp" line="468"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="604"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="832"/>
       <location filename="../../CommandConstraints.cpp" line="387"/>
       <location filename="../../CommandConstraints.cpp" line="467"/>
       <location filename="../../CommandConstraints.cpp" line="564"/>
@@ -6403,9 +6406,6 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
       <location filename="../../CommandConstraints.cpp" line="728"/>
       <location filename="../../CommandConstraints.cpp" line="6025"/>
       <location filename="../../CommandConstraints.cpp" line="6229"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="468"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="604"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="832"/>
       <location filename="../../CommandSketcherTools.cpp" line="836"/>
       <location filename="../../CommandSketcherTools.cpp" line="1056"/>
       <source>Invalid Constraint</source>
@@ -6447,8 +6447,8 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
       <translation>Грешка приликом прављења пола Б-Сплајн криве</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="535"/>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="633"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="535"/>
       <source>Error creating B-spline</source>
       <translation>Грешка приликом прављења Б-Сплајн криве</translation>
     </message>
@@ -6504,16 +6504,16 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
       <translation>Додавање линије није успело</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArc.h" line="253"/>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="188"/>
-      <location filename="../../DrawSketchHandlerCircle.h" line="186"/>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="193"/>
       <location filename="../../DrawSketchHandlerLine.h" line="141"/>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="139"/>
       <location filename="../../DrawSketchHandlerRectangle.h" line="359"/>
       <location filename="../../DrawSketchHandlerSlot.h" line="169"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="253"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="186"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="139"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="193"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="188"/>
       <source>Tool execution aborted</source>
-      <translation type="unfinished">Tool execution aborted</translation>
+      <translation>Извршавање алатке је прекинуто</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerPoint.h" line="94"/>
@@ -6546,9 +6546,9 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
       <translation>Опсецање ивице није успело</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="249"/>
       <location filename="../../TaskSketcherConstraints.cpp" line="1235"/>
       <location filename="../../TaskSketcherConstraints.cpp" line="1253"/>
+      <location filename="../../EditDatumDialog.cpp" line="249"/>
       <source>Value Error</source>
       <translation>Грешка вредности</translation>
     </message>
@@ -6580,17 +6580,17 @@ The grid spacing change if it becomes smaller than this number of pixel.</source
     <message>
       <location filename="../../DrawSketchHandlerOffset.h" line="1099"/>
       <source>Offset value can't be 0.</source>
-      <translation type="unfinished">Offset value can't be 0.</translation>
+      <translation>Вредност одмака не може бити 0.</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerArcSlot.h" line="184"/>
       <source>Failed to add arc slot</source>
-      <translation type="unfinished">Failed to add arc slot</translation>
+      <translation>Додавање лучног жљебе није успело</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerEllipse.h" line="189"/>
       <source>Failed to add ellipse</source>
-      <translation type="unfinished">Failed to add ellipse</translation>
+      <translation>Додавање елипсе није успело</translation>
     </message>
   </context>
   <context>
@@ -6780,7 +6780,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../CommandConstraints.cpp" line="1159"/>
       <source>Dimension</source>
-      <translation>Кота</translation>
+      <translation>Котирање - Димензиона ограничења</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="1160"/>
@@ -6822,92 +6822,92 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="94"/>
       <source>Parameter 1</source>
-      <translation type="unfinished">Parameter 1</translation>
+      <translation>Параметар 1</translation>
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="115"/>
       <source>Parameter 2</source>
-      <translation type="unfinished">Parameter 2</translation>
+      <translation>Параметар 2</translation>
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="136"/>
       <source>Parameter 3</source>
-      <translation type="unfinished">Parameter 3</translation>
+      <translation>Параметар 3</translation>
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="157"/>
       <source>Parameter 4</source>
-      <translation type="unfinished">Parameter 4</translation>
+      <translation>Параметар 4</translation>
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="178"/>
       <source>Parameter 5</source>
-      <translation type="unfinished">Parameter 5</translation>
+      <translation>Параметар 5</translation>
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="199"/>
       <source>Parameter 6</source>
-      <translation type="unfinished">Parameter 6</translation>
+      <translation>Параметар 6</translation>
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="220"/>
       <source>Parameter 7</source>
-      <translation type="unfinished">Parameter 7</translation>
+      <translation>Параметар 7</translation>
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="241"/>
       <source>Parameter 8</source>
-      <translation type="unfinished">Parameter 8</translation>
+      <translation>Параметар 8</translation>
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="262"/>
       <source>Parameter 9</source>
-      <translation type="unfinished">Parameter 9</translation>
+      <translation>Параметар 9</translation>
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="283"/>
       <source>Parameter 10</source>
-      <translation type="unfinished">Parameter 10</translation>
+      <translation>Параметар 10</translation>
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="305"/>
       <source>Checkbox 1 toolTip</source>
-      <translation type="unfinished">Checkbox 1 toolTip</translation>
+      <translation>Кратак опис поља за потврду 1</translation>
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="308"/>
       <source>Checkbox 1</source>
-      <translation type="unfinished">Checkbox 1</translation>
+      <translation>Поље за потврду 1</translation>
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="327"/>
       <source>Checkbox 2 toolTip</source>
-      <translation type="unfinished">Checkbox 2 toolTip</translation>
+      <translation>Кратак опис поља за потврду 2</translation>
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="330"/>
       <source>Checkbox 2</source>
-      <translation type="unfinished">Checkbox 2</translation>
+      <translation>Поље за потврду 2</translation>
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="349"/>
       <source>Checkbox 3 toolTip</source>
-      <translation type="unfinished">Checkbox 3 toolTip</translation>
+      <translation>Кратак опис поља за потврду 3</translation>
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="352"/>
       <source>Checkbox 3</source>
-      <translation type="unfinished">Checkbox 3</translation>
+      <translation>Поље за потврду 3</translation>
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="371"/>
       <source>Checkbox 4 toolTip</source>
-      <translation type="unfinished">Checkbox 4 toolTip</translation>
+      <translation>Кратак опис поља за потврду 4</translation>
     </message>
     <message>
       <location filename="../../SketcherToolDefaultWidget.ui" line="374"/>
       <source>Checkbox 4</source>
-      <translation type="unfinished">Checkbox 4</translation>
+      <translation>Поље за потврду 4</translation>
     </message>
   </context>
   <context>
@@ -6915,12 +6915,12 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2267"/>
       <source>Offset geometries</source>
-      <translation type="unfinished">Offset geometries</translation>
+      <translation>Одмак</translation>
     </message>
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2268"/>
       <source>Offset selected geometries. A positive offset length makes the offset go outward, a negative length inward.</source>
-      <translation type="unfinished">Offset selected geometries. A positive offset length makes the offset go outward, a negative length inward.</translation>
+      <translation>Одмак изабране геометрије. Позитивна вредност одмакне ка споља, а негативна према унутра.</translation>
     </message>
   </context>
   <context>
@@ -6928,7 +6928,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../DrawSketchHandlerOffset.h" line="1075"/>
       <source>Delete original geometries (U)</source>
-      <translation type="unfinished">Delete original geometries (U)</translation>
+      <translation>Обриши оригиналну геометрију (У)</translation>
     </message>
   </context>
   <context>
@@ -6936,7 +6936,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../DrawSketchHandlerOffset.h" line="1079"/>
       <source>Add offset constraint (J)</source>
-      <translation type="unfinished">Add offset constraint (J)</translation>
+      <translation>Додај коту одмака (Ј)</translation>
     </message>
   </context>
   <context>
@@ -6944,7 +6944,7 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../DrawSketchHandlerPolygon.h" line="306"/>
       <source>Sides 'U'/'J'</source>
-      <translation type="unfinished">Sides 'U'/'J'</translation>
+      <translation>Број страна 'У'/'Ј'</translation>
     </message>
   </context>
   <context>
@@ -6986,12 +6986,12 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../CommandConstraints.cpp" line="2605"/>
       <source>Horizontal/Vertical</source>
-      <translation type="unfinished">Horizontal/Vertical</translation>
+      <translation>Хоризонталност/Вертикалност</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2606"/>
       <source>Constrains a single line to either horizontal or vertical.</source>
-      <translation type="unfinished">Constrains a single line to either horizontal or vertical.</translation>
+      <translation>Ограничи линију да буде хоризонтална или вертикална.</translation>
     </message>
   </context>
   <context>
@@ -6999,12 +6999,12 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../CommandConstraints.cpp" line="2914"/>
       <source>Horizontal/Vertical</source>
-      <translation type="unfinished">Horizontal/Vertical</translation>
+      <translation>Хоризонталност/Вертикалност</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2915"/>
       <source>Constrains a single line to either horizontal or vertical, whichever is closer to current alignment.</source>
-      <translation type="unfinished">Constrains a single line to either horizontal or vertical, whichever is closer to current alignment.</translation>
+      <translation>Ограничи линију да буде хоризонтална или вертикална. Изабери оно стање које је ближе тренутном положају.</translation>
     </message>
   </context>
   <context>
@@ -7012,12 +7012,12 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1693"/>
       <source>Curve Edition</source>
-      <translation type="unfinished">Curve Edition</translation>
+      <translation>Уређивање криве</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1694"/>
       <source>Curve Edition tools.</source>
-      <translation type="unfinished">Curve Edition tools.</translation>
+      <translation>Алатке за уређивање криве.</translation>
     </message>
   </context>
   <context>
@@ -7025,12 +7025,12 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1782"/>
       <source>Slots</source>
-      <translation type="unfinished">Slots</translation>
+      <translation>Жљебови</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1783"/>
       <source>Slot tools.</source>
-      <translation type="unfinished">Slot tools.</translation>
+      <translation>Алатке за жљебове.</translation>
     </message>
   </context>
   <context>
@@ -7038,12 +7038,12 @@ Left clicking on empty space will validate the current constraint. Right clickin
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1863"/>
       <source>Create arc slot</source>
-      <translation type="unfinished">Create arc slot</translation>
+      <translation>Направи лучни жљеб</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1864"/>
       <source>Create an arc slot in the sketch</source>
-      <translation type="unfinished">Create an arc slot in the sketch</translation>
+      <translation>Направи лучни жљеб на скици</translation>
     </message>
   </context>
 </TS>

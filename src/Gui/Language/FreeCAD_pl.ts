@@ -188,8 +188,8 @@
       <translation>Umiejscowienie</translation>
     </message>
     <message>
-      <location filename="../TaskCSysDragger.cpp" line="75"/>
       <location filename="../Transform.cpp" line="101"/>
+      <location filename="../TaskCSysDragger.cpp" line="75"/>
       <location filename="../ViewProviderAnnotation.cpp" line="416"/>
       <source>Transform</source>
       <translation>Przemieszczenie</translation>
@@ -418,7 +418,7 @@
     <message>
       <location filename="../Application.h" line="255"/>
       <source>Default</source>
-      <translation>Domyślnie</translation>
+      <translation>Domyślny</translation>
     </message>
     <message>
       <location filename="../Application.h" line="256"/>
@@ -587,7 +587,7 @@
     <message>
       <location filename="../CADNavigationStyle.cpp" line="51"/>
       <source>Press left mouse button</source>
-      <translation>Naciśnij lewy przycisk myszki</translation>
+      <translation>Wciśnij lewy przycisk myszki</translation>
     </message>
     <message>
       <location filename="../CADNavigationStyle.cpp" line="53"/>
@@ -1119,7 +1119,7 @@ Jeśli ta opcja nie jest zaznaczona, właściwość musi być jednoznacznie nazw
     <message>
       <location filename="../DlgActions.ui" line="17"/>
       <source>Macros</source>
-      <translation>Makropolecenie</translation>
+      <translation>Makrodefinicje</translation>
     </message>
     <message>
       <location filename="../DlgActions.ui" line="29"/>
@@ -1389,7 +1389,7 @@ wyzwolone zostanie to, które ma najwyższy priorytet.</translation>
       <location filename="../DlgKeyboardImp.cpp" line="433"/>
       <location filename="../DlgKeyboardImp.cpp" line="501"/>
       <source>none</source>
-      <translation>żaden</translation>
+      <translation>brak</translation>
     </message>
   </context>
   <context>
@@ -2438,7 +2438,7 @@ Proszę podać inny katalog.</translation>
     <message>
       <location filename="../DlgPreferences.ui" line="152"/>
       <source>Reset</source>
-      <translation>Resetuj</translation>
+      <translation>Reset</translation>
     </message>
     <message>
       <location filename="../DlgPreferences.ui" line="192"/>
@@ -2455,12 +2455,12 @@ Proszę podać inny katalog.</translation>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="439"/>
       <source>Reset page '%1'...</source>
-      <translation type="unfinished">Reset page '%1'...</translation>
+      <translation>Zresetuj ustawienia strony "%1" ...</translation>
     </message>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="442"/>
       <source>Resets the user settings for the page '%1'</source>
-      <translation type="unfinished">Resets the user settings for the page '%1'</translation>
+      <translation>Resetuje ustawienia użytkownika dla strony"%1"</translation>
     </message>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="445"/>
@@ -2528,7 +2528,7 @@ Proszę podać inny katalog.</translation>
     <message>
       <location filename="../DlgProjectInformation.ui" line="14"/>
       <source>Document information</source>
-      <translation type="unfinished">Document information</translation>
+      <translation>Informacje o dokumencie</translation>
     </message>
     <message>
       <location filename="../DlgProjectInformation.ui" line="26"/>
@@ -2610,12 +2610,12 @@ Proszę podać inny katalog.</translation>
     <message>
       <location filename="../DlgProjectUtility.ui" line="14"/>
       <source>Document utility</source>
-      <translation type="unfinished">Document utility</translation>
+      <translation>Narzędzie dokumentu</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.ui" line="22"/>
       <source>Extract document</source>
-      <translation type="unfinished">Extract document</translation>
+      <translation>Wyodrębnij dokument</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.ui" line="28"/>
@@ -2637,12 +2637,12 @@ Proszę podać inny katalog.</translation>
     <message>
       <location filename="../DlgProjectUtility.ui" line="72"/>
       <source>Create document</source>
-      <translation type="unfinished">Create document</translation>
+      <translation>Utwórz dokument</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.ui" line="137"/>
       <source>Load document file after creation</source>
-      <translation type="unfinished">Load document file after creation</translation>
+      <translation>Wczytaj plik dokumentu po utworzeniu</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.ui" line="115"/>
@@ -2681,12 +2681,12 @@ Proszę podać inny katalog.</translation>
     <message>
       <location filename="../DlgProjectUtility.cpp" line="104"/>
       <source>Failed to extract document</source>
-      <translation type="unfinished">Failed to extract document</translation>
+      <translation>Nie udało się wyodrębnić dokumentu</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.cpp" line="121"/>
       <source>Failed to create document</source>
-      <translation type="unfinished">Failed to create document</translation>
+      <translation>Nie udało się utworzyć dokumentu</translation>
     </message>
   </context>
   <context>
@@ -2724,7 +2724,7 @@ Proszę podać inny katalog.</translation>
     <message>
       <location filename="../DlgPropertyLink.cpp" line="106"/>
       <source>Reset</source>
-      <translation>Reset</translation>
+      <translation>Resetuj</translation>
     </message>
     <message>
       <location filename="../DlgPropertyLink.cpp" line="107"/>
@@ -3114,12 +3114,27 @@ rozmiar ramki otaczającej obiekt 3D, który jest aktualnie wyświetlany.</trans
       <translation>15px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="160"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="130"/>
+      <source>20px</source>
+      <translation type="unfinished">20px</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="131"/>
+      <source>25px</source>
+      <translation type="unfinished">25px</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="132"/>
+      <source>30px</source>
+      <translation type="unfinished">30px</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="163"/>
       <source>Anti-aliasing</source>
       <translation>Wygładzanie krawędzi</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="161"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="164"/>
       <source>Open a new viewer or restart %1 to apply anti-aliasing changes.</source>
       <translation>Otwórz nowe okno widoku 3D lub uruchom ponownie %1, aby zobaczyć naniesione zmiany wygładzania krawędzi.</translation>
     </message>
@@ -3289,7 +3304,7 @@ będą wyświetlane na szaro</translation>
     <message>
       <location filename="../DlgSettingsColorGradient.ui" line="163"/>
       <source>Out g&amp;rayed</source>
-      <translation>&amp;Deaktywuj</translation>
+      <translation>Poza zakresem &amp;wyszarzone</translation>
     </message>
     <message>
       <location filename="../DlgSettingsColorGradient.ui" line="166"/>
@@ -3306,7 +3321,7 @@ będą wyświetlane z przezroczystością</translation>
     <message>
       <location filename="../DlgSettingsColorGradient.ui" line="177"/>
       <source>Out &amp;transparent</source>
-      <translation>Na zewnątrz &amp;przezroczysty</translation>
+      <translation>Poza zakresem &amp;przezroczyste</translation>
     </message>
     <message>
       <location filename="../DlgSettingsColorGradient.ui" line="180"/>
@@ -3886,7 +3901,7 @@ Możesz również skorzystać z formatki: John Doe &lt;john@doe.com&gt;</transla
     <message>
       <location filename="../PreferencePages/DlgSettingsMacro.ui" line="14"/>
       <source>Macro</source>
-      <translation>Makropolecenia</translation>
+      <translation>Makrodefinicje</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsMacro.ui" line="20"/>
@@ -4080,7 +4095,7 @@ Możesz również skorzystać z formatki: John Doe &lt;john@doe.com&gt;</transla
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="162"/>
       <source>Default</source>
-      <translation>Domyślny</translation>
+      <translation>Domyślnie</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="170"/>
@@ -4360,7 +4375,7 @@ Obracanie przy pomocy myszki nie jest blokowane.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="20"/>
       <source>Console</source>
-      <translation type="unfinished">Console</translation>
+      <translation>Konsola</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="26"/>
@@ -4412,12 +4427,12 @@ długość wiersza w konsoli Python</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="122"/>
       <source>Path to external Python executable (optional):</source>
-      <translation type="unfinished">Path to external Python executable (optional):</translation>
+      <translation>Ścieżka do zewnętrznego pliku wykonywalnego Python (opcjonalnie):</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="141"/>
       <source>Used for package installation with pip and debugging with debugpy. Autodetected if needed and not specified.</source>
-      <translation type="unfinished">Used for package installation with pip and debugging with debugpy. Autodetected if needed and not specified.</translation>
+      <translation>Używany do instalacji pakietów za pomocą programu i debugowania za pomocą debugpy. Wykrywany automatycznie, jeśli jest potrzebny i nie został określony.</translation>
     </message>
   </context>
   <context>
@@ -6067,15 +6082,15 @@ Do you want to save your changes?</source>
       <translation>Format PDF</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="617"/>
       <location filename="../GraphvizView.cpp" line="448"/>
+      <location filename="../CommandDoc.cpp" line="617"/>
       <source>Graphviz format</source>
       <translation>Format Graphviz</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="618"/>
       <location filename="../GraphvizView.cpp" line="462"/>
       <location filename="../GraphvizView.cpp" line="550"/>
+      <location filename="../CommandDoc.cpp" line="618"/>
       <source>Export graph</source>
       <translation>Eksport wykresu</translation>
     </message>
@@ -6103,7 +6118,7 @@ Do you want to save your changes?</source>
     <message>
       <location filename="../InventorNavigationStyle.cpp" line="53"/>
       <source>Press middle mouse button</source>
-      <translation>Naciśnij środkowy przycisk myszki</translation>
+      <translation>Wciśnij środkowy przycisk myszki</translation>
     </message>
     <message>
       <location filename="../InventorNavigationStyle.cpp" line="55"/>
@@ -6219,7 +6234,7 @@ Do you want to save your changes?</source>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="380"/>
       <source>Macros</source>
-      <translation>Makrodefinicje</translation>
+      <translation>Makropolecenie</translation>
     </message>
     <message>
       <location filename="../Command.cpp" line="1173"/>
@@ -6823,7 +6838,7 @@ Do you want to exit without saving your data?</source>
     <message>
       <location filename="../Action.cpp" line="1029"/>
       <source>none</source>
-      <translation>brak</translation>
+      <translation>żaden</translation>
     </message>
     <message>
       <location filename="../Action.cpp" line="1044"/>
@@ -7165,7 +7180,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../TinkerCADNavigationStyle.cpp" line="51"/>
       <source>Press middle mouse button</source>
-      <translation>Wciśnij środkowy przycisk myszki</translation>
+      <translation>Naciśnij środkowy przycisk myszki</translation>
     </message>
     <message>
       <location filename="../TinkerCADNavigationStyle.cpp" line="53"/>
@@ -7183,7 +7198,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../TouchpadNavigationStyle.cpp" line="48"/>
       <source>Press left mouse button</source>
-      <translation>Wciśnij lewy przycisk myszki</translation>
+      <translation>Naciśnij lewy przycisk myszki</translation>
     </message>
     <message>
       <location filename="../TouchpadNavigationStyle.cpp" line="50"/>
@@ -8000,8 +8015,8 @@ Do you want to specify another directory?</source>
       <translation>Eksportuj do PDF...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1230"/>
       <location filename="../MainWindow.cpp" line="809"/>
+      <location filename="../CommandDoc.cpp" line="1230"/>
       <source>Unsaved document</source>
       <translation>Niezapisany dokument</translation>
     </message>
@@ -8875,8 +8890,8 @@ bieżącej kopii zostaną utracone.
       <translation>Włącz / wyłącz nakładkę</translation>
     </message>
     <message>
-      <location filename="../OverlayManager.cpp" line="1036"/>
       <location filename="../OverlayWidgets.cpp" line="2180"/>
+      <location filename="../OverlayManager.cpp" line="1036"/>
       <source>Toggle floating window</source>
       <translation>Włącz / wyłącz pływające okno</translation>
     </message>
@@ -9090,7 +9105,7 @@ bieżącej kopii zostaną utracone.
       <translation>Niedozwolone:</translation>
     </message>
     <message>
-      <location filename="../Selection.cpp" line="913"/>
+      <location filename="../Selection.cpp" line="937"/>
       <source>Selection not allowed by filter</source>
       <translation>Wybór niedozwolony przez filtr</translation>
     </message>
@@ -9970,7 +9985,7 @@ bieżącej kopii zostaną utracone.
     <message>
       <location filename="../CommandDoc.cpp" line="520"/>
       <source>Merge document...</source>
-      <translation type="unfinished">Merge document...</translation>
+      <translation>Połącz dokument ...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="521"/>
@@ -9978,7 +9993,7 @@ bieżącej kopii zostaną utracone.
       <location filename="../CommandDoc.cpp" line="533"/>
       <location filename="../CommandDoc.cpp" line="542"/>
       <source>Merge document</source>
-      <translation type="unfinished">Merge document</translation>
+      <translation>Połącz dokument</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="534"/>
@@ -9988,7 +10003,7 @@ bieżącej kopii zostaną utracone.
     <message>
       <location filename="../CommandDoc.cpp" line="543"/>
       <source>Cannot merge document with itself.</source>
-      <translation type="unfinished">Cannot merge document with itself.</translation>
+      <translation>Nie można połączyć dokumentu z samym sobą.</translation>
     </message>
   </context>
   <context>
@@ -10005,8 +10020,8 @@ bieżącej kopii zostaną utracone.
       <translation>Utwórz nowy pusty dokument</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="391"/>
       <location filename="../MainWindow.cpp" line="2311"/>
+      <location filename="../DocumentRecovery.cpp" line="391"/>
       <source>Unnamed</source>
       <translation>Nienazwany</translation>
     </message>
@@ -11189,7 +11204,7 @@ Służy do rozmieszczania obiektów, które mają kształt topologiczny, takich 
     <message>
       <location filename="../CommandView.cpp" line="1703"/>
       <source>Fullscreen</source>
-      <translation>Pełny ekran</translation>
+      <translation>Cały ekran</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1704"/>
@@ -11435,7 +11450,7 @@ Służy do rozmieszczania obiektów, które mają kształt topologiczny, takich 
     <message>
       <location filename="../CommandView.cpp" line="1735"/>
       <source>Fullscreen</source>
-      <translation>Cały ekran</translation>
+      <translation>Pełny ekran</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1736"/>
@@ -11788,7 +11803,7 @@ Czy nadal chcesz kontynuować?</translation>
     <message>
       <location filename="../Workbench.cpp" line="553"/>
       <source>Macro</source>
-      <translation>Makrodefinicje</translation>
+      <translation>Makropolecenia</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="554"/>
@@ -12611,22 +12626,22 @@ po uruchomieniu FreeCAD</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="62"/>
       <source>Unit system for all parts of the application. Can be overridden by specifying a document unit system.</source>
-      <translation type="unfinished">Unit system for all parts of the application. Can be overridden by specifying a document unit system.</translation>
+      <translation>Układ jednostek dla wszystkich części aplikacji. Może być zastąpiony przez określenie systemu jednostek projektu.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="93"/>
       <source>Document unit system:</source>
-      <translation type="unfinished">Document unit system:</translation>
+      <translation>Układ jednostek dokumentu:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="100"/>
       <source>Unit system stored in the current document</source>
-      <translation type="unfinished">Unit system stored in the current document</translation>
+      <translation>Układ jednostek zapisany w bieżącym dokumencie</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="107"/>
       <source>If enabled, document unit systems are ignored</source>
-      <translation type="unfinished">If enabled, document unit systems are ignored</translation>
+      <translation>Jeśli opcja jest włączona, układ jednostek z dokumentu jest ignorowany</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="110"/>
@@ -13565,13 +13580,13 @@ gdy wszystkie piksele wewnątrz regionu są nieprzezroczyste.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="828"/>
       <source>Document i&amp;nformation...</source>
-      <translation type="unfinished">Document i&amp;nformation...</translation>
+      <translation>I&amp;nformacja o projekcie ...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="829"/>
       <location filename="../CommandDoc.cpp" line="831"/>
       <source>Show details of the currently active document</source>
-      <translation type="unfinished">Show details of the currently active document</translation>
+      <translation>Pokaż szczegóły obecnie aktywnego projektu</translation>
     </message>
   </context>
   <context>
@@ -13579,13 +13594,13 @@ gdy wszystkie piksele wewnątrz regionu są nieprzezroczyste.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="859"/>
       <source>Document utility...</source>
-      <translation type="unfinished">Document utility...</translation>
+      <translation>Narzędzie dokumentu ...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="860"/>
       <location filename="../CommandDoc.cpp" line="861"/>
       <source>Utility to extract or create document files</source>
-      <translation type="unfinished">Utility to extract or create document files</translation>
+      <translation>Narzędzie do rozpakowywania lub tworzenia plików projektu</translation>
     </message>
   </context>
 </TS>

@@ -188,8 +188,8 @@
       <translation>Sijainti</translation>
     </message>
     <message>
-      <location filename="../TaskCSysDragger.cpp" line="75"/>
       <location filename="../Transform.cpp" line="101"/>
+      <location filename="../TaskCSysDragger.cpp" line="75"/>
       <location filename="../ViewProviderAnnotation.cpp" line="416"/>
       <source>Transform</source>
       <translation>Muunna</translation>
@@ -753,7 +753,7 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.cpp" line="230"/>
       <source>The cache directory %1 exceeds the size of %2.</source>
-      <translation type="unfinished">The cache directory %1 exceeds the size of %2.</translation>
+      <translation>Välimuistin kansio %1 ylittää %2 koon.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.cpp" line="231"/>
@@ -763,7 +763,7 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.cpp" line="232"/>
       <source>Warning: Please make sure that this is the only running %1 instance and that no documents are opened as this may result into data loss!</source>
-      <translation type="unfinished">Warning: Please make sure that this is the only running %1 instance and that no documents are opened as this may result into data loss!</translation>
+      <translation>Varoitus: Varmista, että tämä on ainoa käynnissä oleva %1 instanssi ja että asiakirjoja ei ole avattu, koska tämä voi johtaa tietojen häviämiseen!</translation>
     </message>
   </context>
   <context>
@@ -3076,7 +3076,7 @@ bounding box size of the 3D object that is currently displayed.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="551"/>
       <source>Or&amp;thographic rendering</source>
-      <translation>Ortografinen renderointi</translation>
+      <translation>Ortografinen renderöinti</translation>
     </message>
     <message>
       <source/>
@@ -3116,12 +3116,27 @@ bounding box size of the 3D object that is currently displayed.</translation>
       <translation>15px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="160"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="130"/>
+      <source>20px</source>
+      <translation type="unfinished">20px</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="131"/>
+      <source>25px</source>
+      <translation type="unfinished">25px</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="132"/>
+      <source>30px</source>
+      <translation type="unfinished">30px</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="163"/>
       <source>Anti-aliasing</source>
       <translation>Reunanpehmennys</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="161"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="164"/>
       <source>Open a new viewer or restart %1 to apply anti-aliasing changes.</source>
       <translation>Avaa uusi katsoja tai käynnistä %1 uudelleen ottaaksesi käyttöön reunanpehmennys-muutoksia.</translation>
     </message>
@@ -4068,7 +4083,7 @@ Voit myös käyttää muotoa: John Doe &lt;john@doe.com&gt;</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="126"/>
       <source>Rotate to nearest</source>
-      <translation type="unfinished">Rotate to nearest</translation>
+      <translation>Käännä lähimpään</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="142"/>
@@ -4108,27 +4123,27 @@ Voit myös käyttää muotoa: John Doe &lt;john@doe.com&gt;</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="235"/>
       <source>Rotation center indicator</source>
-      <translation type="unfinished">Rotation center indicator</translation>
+      <translation>Käännön keskiön ilmaisin</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="244"/>
       <source>Sphere size</source>
-      <translation type="unfinished">Sphere size</translation>
+      <translation>Pallon koko</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="251"/>
       <source>Color and transparency</source>
-      <translation type="unfinished">Color and transparency</translation>
+      <translation>Väri ja läpinäkyvyys</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="264"/>
       <source>The size of the rotation center indicator</source>
-      <translation type="unfinished">The size of the rotation center indicator</translation>
+      <translation>Käännön keskiön osoittimen koko</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="292"/>
       <source>The color of the rotation center indicator</source>
-      <translation type="unfinished">The color of the rotation center indicator</translation>
+      <translation>Käännön keskiön osoittimen väri</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="337"/>
@@ -4221,7 +4236,7 @@ Free Turntable: the part will be rotated around the z-axis.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="526"/>
       <source>Camera zoom</source>
-      <translation type="unfinished">Camera zoom</translation>
+      <translation>Kameran zoomaus</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="545"/>
@@ -4239,7 +4254,7 @@ Arvo on pallon halkaisija, joka mahtuu ruudulle.</translation>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="574"/>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="577"/>
       <source>Enable navigation animations</source>
-      <translation type="unfinished">Enable navigation animations</translation>
+      <translation>Ota navigoinnin animaatiot käyttöön</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="593"/>
@@ -4249,17 +4264,17 @@ Arvo on pallon halkaisija, joka mahtuu ruudulle.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="596"/>
       <source>Animation duration</source>
-      <translation type="unfinished">Animation duration</translation>
+      <translation>Animaation kesto</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="614"/>
       <source>The duration of navigation animations in milliseconds</source>
-      <translation type="unfinished">The duration of navigation animations in milliseconds</translation>
+      <translation>Navigoinnin animaatioiden kesto millisekunteina</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="676"/>
       <source>Zoom step</source>
-      <translation type="unfinished">Zoom step</translation>
+      <translation>Zoomauksen askel</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="657"/>
@@ -4433,22 +4448,22 @@ vaakatilan Python-konsolissa</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="41"/>
       <source>Enable preselection, highlighted with specified color</source>
-      <translation type="unfinished">Enable preselection, highlighted with specified color</translation>
+      <translation>Ota esivalinnan korostus käyttöön ja käytä määriteltyä väriä</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="44"/>
       <source>Enable preselection</source>
-      <translation type="unfinished">Enable preselection</translation>
+      <translation>Ota esivalinta käyttöön</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="80"/>
       <source>Enable selection, highlighted with specified color</source>
-      <translation type="unfinished">Enable selection, highlighted with specified color</translation>
+      <translation>Ota valinnan korostus käyttöön ja käytä määriteltyä väriä</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="83"/>
       <source>Enable selection</source>
-      <translation type="unfinished">Enable selection</translation>
+      <translation>Ota valinta käyttöön</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="121"/>
@@ -6070,15 +6085,15 @@ Do you want to save your changes?</source>
       <translation>PDF-muoto</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="617"/>
       <location filename="../GraphvizView.cpp" line="448"/>
+      <location filename="../CommandDoc.cpp" line="617"/>
       <source>Graphviz format</source>
       <translation type="unfinished">Graphviz format</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="618"/>
       <location filename="../GraphvizView.cpp" line="462"/>
       <location filename="../GraphvizView.cpp" line="550"/>
+      <location filename="../CommandDoc.cpp" line="618"/>
       <source>Export graph</source>
       <translation>Vie kaavio</translation>
     </message>
@@ -8005,8 +8020,8 @@ Haluatko valita toisen hakemiston?</translation>
       <translation>Viedään PDF...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1230"/>
       <location filename="../MainWindow.cpp" line="809"/>
+      <location filename="../CommandDoc.cpp" line="1230"/>
       <source>Unsaved document</source>
       <translation>Tallentamaton asiakirja</translation>
     </message>
@@ -8880,8 +8895,8 @@ the current copy will be lost.
       <translation type="unfinished">Toggle overlay</translation>
     </message>
     <message>
-      <location filename="../OverlayManager.cpp" line="1036"/>
       <location filename="../OverlayWidgets.cpp" line="2180"/>
+      <location filename="../OverlayManager.cpp" line="1036"/>
       <source>Toggle floating window</source>
       <translation type="unfinished">Toggle floating window</translation>
     </message>
@@ -9079,7 +9094,7 @@ the current copy will be lost.
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="620"/>
       <source>Animation duration (ms)</source>
-      <translation type="unfinished">Animation duration (ms)</translation>
+      <translation>Animaation kesto (ms)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="623"/>
@@ -9095,7 +9110,7 @@ the current copy will be lost.
       <translation>Ei sallittu:</translation>
     </message>
     <message>
-      <location filename="../Selection.cpp" line="913"/>
+      <location filename="../Selection.cpp" line="937"/>
       <source>Selection not allowed by filter</source>
       <translation>Suodatin ei salli valintaa</translation>
     </message>
@@ -10010,8 +10025,8 @@ the current copy will be lost.
       <translation>Luo uusi tyhjä asiakirja</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="391"/>
       <location filename="../MainWindow.cpp" line="2311"/>
+      <location filename="../DocumentRecovery.cpp" line="391"/>
       <source>Unnamed</source>
       <translation>Nimetön</translation>
     </message>
@@ -11925,7 +11940,7 @@ Haluatko silti jatkaa?</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="204"/>
       <source>Notification width:</source>
-      <translation type="unfinished">Notification width:</translation>
+      <translation>Ilmoitusalueen leveys:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="211"/>
@@ -11940,7 +11955,7 @@ Haluatko silti jatkaa?</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="236"/>
       <source>Hide when other window is activated</source>
-      <translation type="unfinished">Hide when other window is activated</translation>
+      <translation>Piilota kun toinen ikkuna on aktivoitu</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="252"/>
@@ -11950,7 +11965,7 @@ Haluatko silti jatkaa?</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="255"/>
       <source>Do not show when inactive</source>
-      <translation type="unfinished">Do not show when inactive</translation>
+      <translation>Älä näytä kun ei aktiivinen</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="274"/>
@@ -11975,7 +11990,7 @@ Haluatko silti jatkaa?</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="309"/>
       <source>Auto-remove User Notifications</source>
-      <translation type="unfinished">Auto-remove User Notifications</translation>
+      <translation>Poista käyttäjän ilmoitukset automaattisesti</translation>
     </message>
   </context>
   <context>
@@ -12621,7 +12636,7 @@ FreeCAD käynnistyksen jälkeen</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="93"/>
       <source>Document unit system:</source>
-      <translation type="unfinished">Document unit system:</translation>
+      <translation>Dokumentin yksikköjärjestelmä:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="100"/>
@@ -12692,7 +12707,7 @@ dot/period will always be printed.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="241"/>
       <source>Theme:</source>
-      <translation type="unfinished">Theme:</translation>
+      <translation>Teema:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="248"/>
@@ -12778,12 +12793,12 @@ väläysikkunan.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="362"/>
       <source>Activate overlay handling of dock windows</source>
-      <translation type="unfinished">Activate overlay handling of dock windows</translation>
+      <translation>Ota käyttöön päällekkäisten elementtien käsittely telakoiduille ikkunoille</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="365"/>
       <source>Activate overlay handling</source>
-      <translation type="unfinished">Activate overlay handling</translation>
+      <translation>Ota käyttöön päällekkäisten elementtien käsittely</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="384"/>
@@ -13181,17 +13196,17 @@ Python-konsolista Raporttinäkymäpaneeliin</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="14"/>
       <source>Light Sources</source>
-      <translation type="unfinished">Light Sources</translation>
+      <translation>Valonlähteet</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="20"/>
       <source>Light sources</source>
-      <translation type="unfinished">Light sources</translation>
+      <translation>Valonlähteet</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="26"/>
       <source>Light source</source>
-      <translation type="unfinished">Light source</translation>
+      <translation>Valonlähde</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="72"/>
@@ -13201,7 +13216,7 @@ Python-konsolista Raporttinäkymäpaneeliin</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="107"/>
       <source>Lights</source>
-      <translation type="unfinished">Lights</translation>
+      <translation>Valot</translation>
     </message>
   </context>
   <context>

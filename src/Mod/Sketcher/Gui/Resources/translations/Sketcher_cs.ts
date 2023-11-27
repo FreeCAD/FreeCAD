@@ -150,7 +150,7 @@
     <message>
       <location filename="../../CommandConstraints.cpp" line="8427"/>
       <source>Constrain auto radius/diameter</source>
-      <translation>Vazba automatický rádius/průměr</translation>
+      <translation>Vazba automaticky poloměr/průměr</translation>
     </message>
   </context>
   <context>
@@ -171,7 +171,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="469"/>
       <source>Create arc</source>
-      <translation>Vytvoř oblouk</translation>
+      <translation>Vytvořit oblouk</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="470"/>
@@ -194,7 +194,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1088"/>
       <source>Create B-spline</source>
-      <translation>Vytvoří B-splajn</translation>
+      <translation>Vytvořit B-splajn</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1089"/>
@@ -207,7 +207,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1282"/>
       <source>Create circle</source>
-      <translation>Vytvoř kružnici</translation>
+      <translation>Vytvořit kružnici</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1283"/>
@@ -291,7 +291,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="243"/>
       <source>Create rectangle</source>
-      <translation>Vytvoř obdélník</translation>
+      <translation>Vytvořit obdélník</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="244"/>
@@ -319,7 +319,7 @@
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="2103"/>
       <source>Create regular polygon</source>
-      <translation>Vytvoří pravidelný mnohoúhelník</translation>
+      <translation>Vytvořit pravidelný mnohoúhelník</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="2104"/>
@@ -560,12 +560,12 @@ on the selected vertex</source>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7934"/>
       <source>Constrain auto radius/diameter</source>
-      <translation>Vazba automatický rádius/průměr</translation>
+      <translation>Vazba automaticky poloměr/průměr</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="7935"/>
       <source>Fix the diameter if a circle is chosen, or the radius if an arc/spline pole is chosen</source>
-      <translation>Fixujte průměr, pokud je vybrána kružnice, nebo poloměr, pokud je vybrán oblouk/spline pól</translation>
+      <translation>Zadá průměr, pokud je vybrána kružnice nebo poloměr, pokud je vybrán oblouk/pól splajnu</translation>
     </message>
   </context>
   <context>
@@ -654,7 +654,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="437"/>
       <source>Create arc by three points</source>
-      <translation>Vytvoř oblouk třemi body</translation>
+      <translation>Vytvořit oblouk třemi body</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="438"/>
@@ -667,12 +667,12 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1250"/>
       <source>Create circle by three points</source>
-      <translation>Vytvoř kružnici třemi body</translation>
+      <translation>Vytvořit kružnici třemi body</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1251"/>
       <source>Create a circle by 3 perimeter points</source>
-      <translation>Vytvoř kružnici třemi obvodovými body</translation>
+      <translation>Vytvoří kružnici třemi obvodovými body</translation>
     </message>
   </context>
   <context>
@@ -680,7 +680,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="405"/>
       <source>Create arc by center</source>
-      <translation>Vytvoř oblouk podle středu</translation>
+      <translation>Vytvořit oblouk podle středu</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="406"/>
@@ -732,7 +732,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="956"/>
       <source>Create B-spline</source>
-      <translation>Vytvoří B-splajn</translation>
+      <translation>Vytvořit B-splajn</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="957"/>
@@ -745,7 +745,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="586"/>
       <source>Create circle</source>
-      <translation>Vytvoř kružnici</translation>
+      <translation>Vytvořit kružnici</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="587"/>
@@ -758,7 +758,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="653"/>
       <source>Create ellipse by 3 points</source>
-      <translation>Vytvoří elipsu pomocí 3 bodů</translation>
+      <translation>Vytvořit elipsu třemi body</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="654"/>
@@ -771,7 +771,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="620"/>
       <source>Create ellipse by center</source>
-      <translation>Vytvoří elipsu pomocí středu</translation>
+      <translation>Vytvořit elipsu pomocí středu</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="621"/>
@@ -797,7 +797,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="2011"/>
       <source>Create heptagon</source>
-      <translation>Vytvoří sedmiúhelník</translation>
+      <translation>Vytvořit sedmiúhelník</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="2012"/>
@@ -810,7 +810,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1982"/>
       <source>Create hexagon</source>
-      <translation>Vytvoří šestiúhelník</translation>
+      <translation>Vytvořit šestiúhelník</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1983"/>
@@ -823,7 +823,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="112"/>
       <source>Create line</source>
-      <translation>Vytvoř úsečku</translation>
+      <translation>Vytvořit úsečku</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="113"/>
@@ -849,7 +849,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="2040"/>
       <source>Create octagon</source>
-      <translation>Vytvoří osmiúhelník</translation>
+      <translation>Vytvořit osmiúhelník</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="2041"/>
@@ -862,7 +862,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1952"/>
       <source>Create pentagon</source>
-      <translation>Vytvoří pětiúhelník</translation>
+      <translation>Vytvořit pětiúhelník</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1953"/>
@@ -875,7 +875,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="989"/>
       <source>Create periodic B-spline</source>
-      <translation>Vytvoří periodický B-splajn</translation>
+      <translation>Vytvořit periodický B-splajn</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="990"/>
@@ -888,7 +888,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1396"/>
       <source>Create point</source>
-      <translation>Vytvoř bod</translation>
+      <translation>Vytvořit bod</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1397"/>
@@ -914,7 +914,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="373"/>
       <source>Create polyline</source>
-      <translation>Vytvoř lomenou čáru</translation>
+      <translation>Vytvořit lomenou čáru</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="374"/>
@@ -927,7 +927,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="144"/>
       <source>Create rectangle</source>
-      <translation>Vytvoř obdélník</translation>
+      <translation>Vytvořit obdélník</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="145"/>
@@ -953,7 +953,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="2069"/>
       <source>Create regular polygon</source>
-      <translation>Vytvoří pravidelný mnohoúhelník</translation>
+      <translation>Vytvořit pravidelný mnohoúhelník</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="2070"/>
@@ -966,7 +966,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1832"/>
       <source>Create slot</source>
-      <translation>Vytvoř drážku</translation>
+      <translation>Vytvořit drážku</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1833"/>
@@ -979,7 +979,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1923"/>
       <source>Create square</source>
-      <translation>Vytvoří čtverec</translation>
+      <translation>Vytvořit čtverec</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1924"/>
@@ -992,7 +992,7 @@ with respect to a line or a third point</source>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1894"/>
       <source>Create equilateral triangle</source>
-      <translation>Vytvoří rovnostranný trojúhelník</translation>
+      <translation>Vytvořit rovnostranný trojúhelník</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1895"/>
@@ -1477,12 +1477,12 @@ Tímto se vymaže vlastnost "Podpora", pokud existuje.</translation>
   <context>
     <name>CmdSketcherToggleActiveConstraint</name>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9841"/>
+      <location filename="../../CommandConstraints.cpp" line="9857"/>
       <source>Activate/deactivate constraint</source>
       <translation>Aktivovat/deaktivovat vazbu</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9842"/>
+      <location filename="../../CommandConstraints.cpp" line="9858"/>
       <source>Activates or deactivates the selected constraints</source>
       <translation>Aktivuje nebo deaktivuje vybrané vazby</translation>
     </message>
@@ -1490,12 +1490,12 @@ Tímto se vymaže vlastnost "Podpora", pokud existuje.</translation>
   <context>
     <name>CmdSketcherToggleConstruction</name>
     <message>
-      <location filename="../../CommandAlterGeometry.cpp" line="72"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="73"/>
       <source>Toggle construction geometry</source>
-      <translation>Přepne konstrukční geometrii</translation>
+      <translation>Přepnout konstrukční geometrii</translation>
     </message>
     <message>
-      <location filename="../../CommandAlterGeometry.cpp" line="73"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="74"/>
       <source>Toggles the toolbar or selected geometry to/from construction mode</source>
       <translation>Přepne nástrojový panel nebo vybranou geometrii na/z konstrukčního módu</translation>
     </message>
@@ -1924,12 +1924,12 @@ neplatných vazeb, degenerované geometrie atd.</translation>
       <translation>Přidat vazbu Snellova zákona</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9796"/>
+      <location filename="../../CommandConstraints.cpp" line="9812"/>
       <source>Toggle constraint to driving/reference</source>
       <translation>Přepnout vazbu na řídící/referenční</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9885"/>
+      <location filename="../../CommandConstraints.cpp" line="9901"/>
       <source>Activate/Deactivate constraint</source>
       <translation>Aktivovat/Deaktivovat vazbu</translation>
     </message>
@@ -1969,7 +1969,7 @@ neplatných vazeb, degenerované geometrie atd.</translation>
       <translation>Sloučit náčrty</translation>
     </message>
     <message>
-      <location filename="../../CommandAlterGeometry.cpp" line="162"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="180"/>
       <source>Toggle draft from/to draft</source>
       <translation>Přepnout do/z návrhu</translation>
     </message>
@@ -2148,8 +2148,8 @@ neplatných vazeb, degenerované geometrie atd.</translation>
       <translation>Aktualizovat virtuální prostor vazby</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchDefaultHandler.h" line="847"/>
       <location filename="../../DrawSketchHandler.cpp" line="957"/>
+      <location filename="../../DrawSketchDefaultHandler.h" line="847"/>
       <source>Add auto constraints</source>
       <translation>Přidat automatické vazby</translation>
     </message>
@@ -2386,8 +2386,20 @@ neplatných vazeb, degenerované geometrie atd.</translation>
       <translation>Nelze připojit</translation>
     </message>
     <message>
-      <location filename="../../CommandAlterGeometry.cpp" line="147"/>
-      <location filename="../../CommandAlterGeometry.cpp" line="156"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="121"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="130"/>
+      <location filename="../../CommandSketcherVirtualSpace.cpp" line="157"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="165"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="174"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="169"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="244"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="327"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="380"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="440"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="528"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="576"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="938"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="1048"/>
       <location filename="../../CommandConstraints.cpp" line="171"/>
       <location filename="../../CommandConstraints.cpp" line="178"/>
       <location filename="../../CommandConstraints.cpp" line="2273"/>
@@ -2510,20 +2522,11 @@ neplatných vazeb, degenerované geometrie atd.</translation>
       <location filename="../../CommandConstraints.cpp" line="9579"/>
       <location filename="../../CommandConstraints.cpp" line="9590"/>
       <location filename="../../CommandConstraints.cpp" line="9597"/>
-      <location filename="../../CommandConstraints.cpp" line="9741"/>
-      <location filename="../../CommandConstraints.cpp" line="9753"/>
-      <location filename="../../CommandConstraints.cpp" line="9790"/>
-      <location filename="../../CommandConstraints.cpp" line="9867"/>
-      <location filename="../../CommandConstraints.cpp" line="9879"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="169"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="244"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="327"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="380"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="440"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="528"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="576"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="938"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="1048"/>
+      <location filename="../../CommandConstraints.cpp" line="9757"/>
+      <location filename="../../CommandConstraints.cpp" line="9769"/>
+      <location filename="../../CommandConstraints.cpp" line="9806"/>
+      <location filename="../../CommandConstraints.cpp" line="9883"/>
+      <location filename="../../CommandConstraints.cpp" line="9895"/>
       <location filename="../../CommandSketcherTools.cpp" line="96"/>
       <location filename="../../CommandSketcherTools.cpp" line="772"/>
       <location filename="../../CommandSketcherTools.cpp" line="888"/>
@@ -2540,15 +2543,12 @@ neplatných vazeb, degenerované geometrie atd.</translation>
       <location filename="../../CommandSketcherTools.cpp" line="2177"/>
       <location filename="../../CommandSketcherTools.cpp" line="2224"/>
       <location filename="../../CommandSketcherTools.cpp" line="2289"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="121"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="130"/>
-      <location filename="../../CommandSketcherVirtualSpace.cpp" line="157"/>
       <source>Wrong selection</source>
       <translation>Neplatný výběr</translation>
     </message>
     <message>
-      <location filename="../../CommandAlterGeometry.cpp" line="148"/>
-      <location filename="../../CommandAlterGeometry.cpp" line="157"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="166"/>
+      <location filename="../../CommandAlterGeometry.cpp" line="175"/>
       <source>Select edge(s) from the sketch.</source>
       <translation>Vyberte hranu/hrany z náčrtu.</translation>
     </message>
@@ -2687,9 +2687,9 @@ neplatných vazeb, degenerované geometrie atd.</translation>
       <translation>Počet vybraných objektů není 3</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="739"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="566"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="1071"/>
+      <location filename="../../CommandConstraints.cpp" line="739"/>
       <source>Error</source>
       <translation>Chyba</translation>
     </message>
@@ -2701,7 +2701,7 @@ neplatných vazeb, degenerované geometrie atd.</translation>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2727"/>
       <source>The selected item(s) can't accept a horizontal or vertical constraint!</source>
-      <translation type="unfinished">The selected item(s) can't accept a horizontal or vertical constraint!</translation>
+      <translation>Vybrané položky nemohou přijmout vodorovnou nebo svislou vazbu!</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3720"/>
@@ -3078,11 +3078,11 @@ Přijatelné kombinace: dvě křivky; koncový bod a křivka; dva koncové body;
       <translation>Snellův zákon na hraně B-splajnu momentálně není podporován.</translation>
     </message>
     <message>
-      <location filename="../../CommandConstraints.cpp" line="9742"/>
-      <location filename="../../CommandConstraints.cpp" line="9754"/>
-      <location filename="../../CommandConstraints.cpp" line="9791"/>
-      <location filename="../../CommandConstraints.cpp" line="9868"/>
-      <location filename="../../CommandConstraints.cpp" line="9880"/>
+      <location filename="../../CommandConstraints.cpp" line="9758"/>
+      <location filename="../../CommandConstraints.cpp" line="9770"/>
+      <location filename="../../CommandConstraints.cpp" line="9807"/>
+      <location filename="../../CommandConstraints.cpp" line="9884"/>
+      <location filename="../../CommandConstraints.cpp" line="9896"/>
       <source>Select constraints from the sketch.</source>
       <translation>Vybrat vazby z náčrtu.</translation>
     </message>
@@ -3104,9 +3104,9 @@ Přijatelné kombinace: dvě křivky; koncový bod a křivka; dva koncové body;
       <translation>Definovat stupeň B-Splajnu mezi 1 a %1:</translation>
     </message>
     <message>
+      <location filename="../../DrawSketchHandlerFillet.h" line="292"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="421"/>
       <location filename="../../CommandSketcherBSpline.cpp" line="796"/>
-      <location filename="../../DrawSketchHandlerFillet.h" line="292"/>
       <source>CAD Kernel Error</source>
       <translation>Chyba jádra CADu</translation>
     </message>
@@ -3800,7 +3800,7 @@ Přijatelné kombinace: dvě křivky; koncový bod a křivka; dva koncové body;
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="80"/>
       <source>Toggle construction geometry</source>
-      <translation>Přepne konstrukční geometrii</translation>
+      <translation>Přepnout konstrukční geometrii</translation>
     </message>
     <message>
       <location filename="../../TaskSketcherElements.cpp" line="81"/>
@@ -4168,12 +4168,12 @@ Toto nastavení je pouze pro panel nástrojů. Ať už si vyberete cokoliv, vše
     <message>
       <location filename="../../SketcherSettings.ui" line="224"/>
       <source>Tool Parameters</source>
-      <translation type="unfinished">Tool Parameters</translation>
+      <translation>Parametry nástroje</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="230"/>
       <source> On-View-Parameters :</source>
-      <translation type="unfinished"> On-View-Parameters :</translation>
+      <translation> Parametry v pohledu:</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.ui" line="237"/>
@@ -4181,10 +4181,10 @@ Toto nastavení je pouze pro panel nástrojů. Ať už si vyberete cokoliv, vše
 'Disabled': On-View-Parameters are completely disabled.
 'Only dimensional': Only dimensional On-View-Parameters are visible. They are the most useful. For example the radius of a circle.
 'All': Both dimensional and positional On-View-Parameters. Positionals are the (x,y) position of the cursor. For example for the center of a circle.</source>
-      <translation type="unfinished">Choose a visibility mode for the On-View-Parameters:
-'Disabled': On-View-Parameters are completely disabled.
-'Only dimensional': Only dimensional On-View-Parameters are visible. They are the most useful. For example the radius of a circle.
-'All': Both dimensional and positional On-View-Parameters. Positionals are the (x,y) position of the cursor. For example for the center of a circle.</translation>
+      <translation>Vyberte režim viditelnosti pro parametry v pohledu:
+'Deaktivovány': Parametry v pohledu jsou zcela zakázány.
+'Pouze rozměry': Viditelné jsou pouze rozměrové parametery v pohledu. Jsou nejužitečnější. Například poloměr kružnice.
+'Vše': Rozměrové i polohové parametry v pohledu. Polohové jsou (x,y) poloha kurzoru. Například pro střed kružnice.</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.cpp" line="139"/>
@@ -4219,12 +4219,12 @@ Toto nastavení je pouze pro panel nástrojů. Ať už si vyberete cokoliv, vše
     <message>
       <location filename="../../SketcherSettings.cpp" line="170"/>
       <source>Disabled</source>
-      <translation type="unfinished">Disabled</translation>
+      <translation>Deaktivovány</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.cpp" line="171"/>
       <source>Only dimensional</source>
-      <translation type="unfinished">Only dimensional</translation>
+      <translation>Pouze rozměry</translation>
     </message>
     <message>
       <location filename="../../SketcherSettings.cpp" line="172"/>
@@ -6335,36 +6335,36 @@ Rozteč mřížky se změní, pokud bude menší než tento počet pixelů.</tra
 </translation>
     </message>
     <message>
-      <location filename="../../CommandSketcherTools.cpp" line="1224"/>
-      <location filename="../../CommandSketcherTools.cpp" line="1801"/>
-      <location filename="../../CommandSketcherTools.cpp" line="2246"/>
+      <location filename="../../DrawSketchHandlerLine.h" line="136"/>
+      <location filename="../../DrawSketchHandlerRectangle.h" line="354"/>
+      <location filename="../../DrawSketchHandlerTrimming.h" line="161"/>
       <location filename="../../DrawSketchHandlerArcOfEllipse.h" line="332"/>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="262"/>
-      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="340"/>
+      <location filename="../../DrawSketchHandlerExtend.h" line="336"/>
+      <location filename="../../DrawSketchHandlerSlot.h" line="164"/>
+      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="186"/>
       <location filename="../../DrawSketchHandlerArcOfParabola.h" line="267"/>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="183"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="135"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="216"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="321"/>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="534"/>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="130"/>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="205"/>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="319"/>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="632"/>
-      <location filename="../../DrawSketchHandlerCarbonCopy.h" line="186"/>
       <location filename="../../DrawSketchHandlerCircle.h" line="181"/>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="188"/>
-      <location filename="../../DrawSketchHandlerExtend.h" line="336"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="262"/>
+      <location filename="../../DrawSketchHandlerArcOfHyperbola.h" line="340"/>
+      <location filename="../../DrawSketchHandlerSplitting.h" line="158"/>
       <location filename="../../DrawSketchHandlerExternal.h" line="188"/>
-      <location filename="../../DrawSketchHandlerLine.h" line="136"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="134"/>
       <location filename="../../DrawSketchHandlerLineSet.h" line="470"/>
       <location filename="../../DrawSketchHandlerLineSet.h" line="500"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="135"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="216"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="321"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="534"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="188"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1224"/>
+      <location filename="../../CommandSketcherTools.cpp" line="1801"/>
+      <location filename="../../CommandSketcherTools.cpp" line="2246"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="183"/>
       <location filename="../../DrawSketchHandlerPoint.h" line="93"/>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="134"/>
-      <location filename="../../DrawSketchHandlerRectangle.h" line="354"/>
-      <location filename="../../DrawSketchHandlerSlot.h" line="164"/>
-      <location filename="../../DrawSketchHandlerSplitting.h" line="158"/>
-      <location filename="../../DrawSketchHandlerTrimming.h" line="161"/>
       <source>Error</source>
       <translation>Chyba</translation>
     </message>
@@ -6386,7 +6386,7 @@ Rozteč mřížky se změní, pokud bude menší než tento počet pixelů.</tra
     <message>
       <location filename="../../CommandSketcherTools.cpp" line="2327"/>
       <source>Selection has no valid geometries. BSplines, Points are not supported yet.</source>
-      <translation type="unfinished">Selection has no valid geometries. BSplines, Points are not supported yet.</translation>
+      <translation>Výběr nemá platnou geometrii. B-Splajny a body ještě nejsou podporovány.</translation>
     </message>
     <message>
       <location filename="../../../App/SketchObjectPyImp.cpp" line="389"/>
@@ -6394,6 +6394,9 @@ Rozteč mřížky se změní, pokud bude menší než tento počet pixelů.</tra
       <translation>Omezení má neplatné informace o indexu a je chybné.</translation>
     </message>
     <message>
+      <location filename="../../CommandSketcherBSpline.cpp" line="468"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="604"/>
+      <location filename="../../CommandSketcherBSpline.cpp" line="832"/>
       <location filename="../../CommandConstraints.cpp" line="387"/>
       <location filename="../../CommandConstraints.cpp" line="467"/>
       <location filename="../../CommandConstraints.cpp" line="564"/>
@@ -6401,9 +6404,6 @@ Rozteč mřížky se změní, pokud bude menší než tento počet pixelů.</tra
       <location filename="../../CommandConstraints.cpp" line="728"/>
       <location filename="../../CommandConstraints.cpp" line="6025"/>
       <location filename="../../CommandConstraints.cpp" line="6229"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="468"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="604"/>
-      <location filename="../../CommandSketcherBSpline.cpp" line="832"/>
       <location filename="../../CommandSketcherTools.cpp" line="836"/>
       <location filename="../../CommandSketcherTools.cpp" line="1056"/>
       <source>Invalid Constraint</source>
@@ -6445,8 +6445,8 @@ Rozteč mřížky se změní, pokud bude menší než tento počet pixelů.</tra
       <translation>Chyba při vytváření B-splajn pole</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerBSpline.h" line="535"/>
       <location filename="../../DrawSketchHandlerBSplineByInterpolation.h" line="633"/>
+      <location filename="../../DrawSketchHandlerBSpline.h" line="535"/>
       <source>Error creating B-spline</source>
       <translation>Chyba při vytváření B-splajnu</translation>
     </message>
@@ -6502,14 +6502,14 @@ Rozteč mřížky se změní, pokud bude menší než tento počet pixelů.</tra
       <translation>Přidání řádku se nezdařilo</translation>
     </message>
     <message>
-      <location filename="../../DrawSketchHandlerArc.h" line="253"/>
-      <location filename="../../DrawSketchHandlerArcSlot.h" line="188"/>
-      <location filename="../../DrawSketchHandlerCircle.h" line="186"/>
-      <location filename="../../DrawSketchHandlerEllipse.h" line="193"/>
       <location filename="../../DrawSketchHandlerLine.h" line="141"/>
-      <location filename="../../DrawSketchHandlerPolygon.h" line="139"/>
       <location filename="../../DrawSketchHandlerRectangle.h" line="359"/>
       <location filename="../../DrawSketchHandlerSlot.h" line="169"/>
+      <location filename="../../DrawSketchHandlerArc.h" line="253"/>
+      <location filename="../../DrawSketchHandlerCircle.h" line="186"/>
+      <location filename="../../DrawSketchHandlerPolygon.h" line="139"/>
+      <location filename="../../DrawSketchHandlerEllipse.h" line="193"/>
+      <location filename="../../DrawSketchHandlerArcSlot.h" line="188"/>
       <source>Tool execution aborted</source>
       <translation>Spuštění nástroje přerušeno</translation>
     </message>
@@ -6544,9 +6544,9 @@ Rozteč mřížky se změní, pokud bude menší než tento počet pixelů.</tra
       <translation>Nepodařilo se oříznout okraj</translation>
     </message>
     <message>
-      <location filename="../../EditDatumDialog.cpp" line="249"/>
       <location filename="../../TaskSketcherConstraints.cpp" line="1235"/>
       <location filename="../../TaskSketcherConstraints.cpp" line="1253"/>
+      <location filename="../../EditDatumDialog.cpp" line="249"/>
       <source>Value Error</source>
       <translation>Chyba v hodnotě</translation>
     </message>
@@ -6583,12 +6583,12 @@ Rozteč mřížky se změní, pokud bude menší než tento počet pixelů.</tra
     <message>
       <location filename="../../DrawSketchHandlerArcSlot.h" line="184"/>
       <source>Failed to add arc slot</source>
-      <translation type="unfinished">Failed to add arc slot</translation>
+      <translation>Přidání obloukové drážky se nezdařilo</translation>
     </message>
     <message>
       <location filename="../../DrawSketchHandlerEllipse.h" line="189"/>
       <source>Failed to add ellipse</source>
-      <translation type="unfinished">Failed to add ellipse</translation>
+      <translation>Přidání elipsy se nezdařilo</translation>
     </message>
   </context>
   <context>
@@ -6984,12 +6984,12 @@ Levé kliknutí na prázdné místo ověří aktuální vazbu. Pravým kliknutí
     <message>
       <location filename="../../CommandConstraints.cpp" line="2605"/>
       <source>Horizontal/Vertical</source>
-      <translation type="unfinished">Horizontal/Vertical</translation>
+      <translation>Vodorovné/svislé</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2606"/>
       <source>Constrains a single line to either horizontal or vertical.</source>
-      <translation type="unfinished">Constrains a single line to either horizontal or vertical.</translation>
+      <translation>Sváže jednu čáru buď vodorovně nebo svisle.</translation>
     </message>
   </context>
   <context>
@@ -6997,12 +6997,12 @@ Levé kliknutí na prázdné místo ověří aktuální vazbu. Pravým kliknutí
     <message>
       <location filename="../../CommandConstraints.cpp" line="2914"/>
       <source>Horizontal/Vertical</source>
-      <translation type="unfinished">Horizontal/Vertical</translation>
+      <translation>Vodorovné/svislé</translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="2915"/>
       <source>Constrains a single line to either horizontal or vertical, whichever is closer to current alignment.</source>
-      <translation type="unfinished">Constrains a single line to either horizontal or vertical, whichever is closer to current alignment.</translation>
+      <translation>Sváže jednu čáru buď vodorovně nebo svisle, podle toho, co je blíže k aktuálnímu zarovnání.</translation>
     </message>
   </context>
   <context>
@@ -7010,12 +7010,12 @@ Levé kliknutí na prázdné místo ověří aktuální vazbu. Pravým kliknutí
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1693"/>
       <source>Curve Edition</source>
-      <translation type="unfinished">Curve Edition</translation>
+      <translation>Úprava křivky</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1694"/>
       <source>Curve Edition tools.</source>
-      <translation type="unfinished">Curve Edition tools.</translation>
+      <translation>Nástroje úpravy křivky.</translation>
     </message>
   </context>
   <context>
@@ -7023,12 +7023,12 @@ Levé kliknutí na prázdné místo ověří aktuální vazbu. Pravým kliknutí
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1782"/>
       <source>Slots</source>
-      <translation type="unfinished">Slots</translation>
+      <translation>Drážky</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1783"/>
       <source>Slot tools.</source>
-      <translation type="unfinished">Slot tools.</translation>
+      <translation>Nástroje drážky.</translation>
     </message>
   </context>
   <context>
@@ -7036,12 +7036,12 @@ Levé kliknutí na prázdné místo ověří aktuální vazbu. Pravým kliknutí
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1863"/>
       <source>Create arc slot</source>
-      <translation type="unfinished">Create arc slot</translation>
+      <translation>Vytvořit obloukovou drážku</translation>
     </message>
     <message>
       <location filename="../../CommandCreateGeo.cpp" line="1864"/>
       <source>Create an arc slot in the sketch</source>
-      <translation type="unfinished">Create an arc slot in the sketch</translation>
+      <translation>Vytvoří obloukovou drážku v náčrtu</translation>
     </message>
   </context>
 </TS>

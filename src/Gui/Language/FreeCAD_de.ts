@@ -188,8 +188,8 @@
       <translation>Positionierung</translation>
     </message>
     <message>
-      <location filename="../TaskCSysDragger.cpp" line="75"/>
       <location filename="../Transform.cpp" line="101"/>
+      <location filename="../TaskCSysDragger.cpp" line="75"/>
       <location filename="../ViewProviderAnnotation.cpp" line="416"/>
       <source>Transform</source>
       <translation>Transformieren</translation>
@@ -428,7 +428,7 @@
     <message>
       <location filename="../Application.h" line="260"/>
       <source>Transform</source>
-      <translation>Bewegen</translation>
+      <translation>Transformieren</translation>
     </message>
     <message>
       <location filename="../Application.h" line="261"/>
@@ -2341,7 +2341,7 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
       <location filename="../DlgParameterImp.cpp" line="78"/>
       <location filename="../DlgParameterImp.cpp" line="235"/>
       <source>Type</source>
-      <translation>Art</translation>
+      <translation>Typ</translation>
     </message>
     <message>
       <location filename="../DlgParameterImp.cpp" line="78"/>
@@ -2453,12 +2453,12 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="439"/>
       <source>Reset page '%1'...</source>
-      <translation type="unfinished">Reset page '%1'...</translation>
+      <translation>Menüreiter '%1' zurücksetzen...</translation>
     </message>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="442"/>
       <source>Resets the user settings for the page '%1'</source>
-      <translation type="unfinished">Resets the user settings for the page '%1'</translation>
+      <translation>Setzt die Benutzereinstellungen für den Menüreiter '%1 ' zurück</translation>
     </message>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="445"/>
@@ -2526,7 +2526,7 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
     <message>
       <location filename="../DlgProjectInformation.ui" line="14"/>
       <source>Document information</source>
-      <translation type="unfinished">Document information</translation>
+      <translation>Dokumentinformationen</translation>
     </message>
     <message>
       <location filename="../DlgProjectInformation.ui" line="26"/>
@@ -2608,12 +2608,12 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
     <message>
       <location filename="../DlgProjectUtility.ui" line="14"/>
       <source>Document utility</source>
-      <translation type="unfinished">Document utility</translation>
+      <translation>Dokument-Dienstprogramm</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.ui" line="22"/>
       <source>Extract document</source>
-      <translation type="unfinished">Extract document</translation>
+      <translation>Dokument entpacken</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.ui" line="28"/>
@@ -2635,12 +2635,12 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
     <message>
       <location filename="../DlgProjectUtility.ui" line="72"/>
       <source>Create document</source>
-      <translation type="unfinished">Create document</translation>
+      <translation>Dokument erstellen</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.ui" line="137"/>
       <source>Load document file after creation</source>
-      <translation type="unfinished">Load document file after creation</translation>
+      <translation>Dokumentdatei nach der Erstellung laden</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.ui" line="115"/>
@@ -2679,12 +2679,12 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
     <message>
       <location filename="../DlgProjectUtility.cpp" line="104"/>
       <source>Failed to extract document</source>
-      <translation type="unfinished">Failed to extract document</translation>
+      <translation>Dokument konnte nicht extrahiert werden</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.cpp" line="121"/>
       <source>Failed to create document</source>
-      <translation type="unfinished">Failed to create document</translation>
+      <translation>Dokument konnte nicht erstellt werden</translation>
     </message>
   </context>
   <context>
@@ -2727,7 +2727,7 @@ Wählen Sie bitte ein anderes Verzeichnis aus.</translation>
     <message>
       <location filename="../DlgPropertyLink.cpp" line="107"/>
       <source>Clear</source>
-      <translation>Leeren</translation>
+      <translation>Löschen</translation>
     </message>
   </context>
   <context>
@@ -3106,12 +3106,27 @@ Der angegebene Wert ist ein Faktor, der mit der Größe des Hüllquaders des ger
       <translation>15px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="160"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="130"/>
+      <source>20px</source>
+      <translation type="unfinished">20px</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="131"/>
+      <source>25px</source>
+      <translation type="unfinished">25px</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="132"/>
+      <source>30px</source>
+      <translation type="unfinished">30px</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="163"/>
       <source>Anti-aliasing</source>
       <translation>Kantenglättung</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="161"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="164"/>
       <source>Open a new viewer or restart %1 to apply anti-aliasing changes.</source>
       <translation>Öffnen Sie ein neues Fenster oder starten Sie %1 neu, um Änderungen an der Kantenglättung zu übernehmen.</translation>
     </message>
@@ -4354,7 +4369,7 @@ Das Neigen der Maus wird durch diese Einstellung nicht deaktiviert.</translation
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="20"/>
       <source>Console</source>
-      <translation type="unfinished">Console</translation>
+      <translation>Konsole</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="26"/>
@@ -4406,12 +4421,12 @@ wenn sie die verfügbare Zeilenlänge überschreiten</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="122"/>
       <source>Path to external Python executable (optional):</source>
-      <translation type="unfinished">Path to external Python executable (optional):</translation>
+      <translation>Pfad zur ausführbaren Python-Datei (optional):</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="141"/>
       <source>Used for package installation with pip and debugging with debugpy. Autodetected if needed and not specified.</source>
-      <translation type="unfinished">Used for package installation with pip and debugging with debugpy. Autodetected if needed and not specified.</translation>
+      <translation>Wird für die Paketinstallation mit pip und Debugging mit debugpy verwendet. Automatisch erkannt, falls notwendig und nicht spezifiziert.</translation>
     </message>
   </context>
   <context>
@@ -5504,7 +5519,7 @@ The 'Status' column shows whether the document could be recovered.</source>
       <location filename="../Transform.cpp" line="289"/>
       <location filename="../Transform.cpp" line="417"/>
       <source>Transform</source>
-      <translation>Transformierung</translation>
+      <translation>Bewegen</translation>
     </message>
   </context>
   <context>
@@ -6060,15 +6075,15 @@ Sollen die Änderungen gespeichert werden?</translation>
       <translation>PDF-Format</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="617"/>
       <location filename="../GraphvizView.cpp" line="448"/>
+      <location filename="../CommandDoc.cpp" line="617"/>
       <source>Graphviz format</source>
       <translation>Graphviz-Format</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="618"/>
       <location filename="../GraphvizView.cpp" line="462"/>
       <location filename="../GraphvizView.cpp" line="550"/>
+      <location filename="../CommandDoc.cpp" line="618"/>
       <source>Export graph</source>
       <translation>Graphik exportieren</translation>
     </message>
@@ -7997,8 +8012,8 @@ Möchten Sie ein anderes Verzeichnis angeben?</translation>
       <translation>Exportiert als PDF...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1230"/>
       <location filename="../MainWindow.cpp" line="809"/>
+      <location filename="../CommandDoc.cpp" line="1230"/>
       <source>Unsaved document</source>
       <translation>Nicht gespeichertes Dokument</translation>
     </message>
@@ -8482,7 +8497,7 @@ Wählen Sie 'Abbrechen' um abzubrechen</translation>
       <location filename="../MouseSelection.cpp" line="213"/>
       <location filename="../MouseSelection.cpp" line="417"/>
       <source>Clear</source>
-      <translation>Löschen</translation>
+      <translation>Leeren</translation>
     </message>
     <message>
       <location filename="../MouseSelection.cpp" line="214"/>
@@ -8576,7 +8591,7 @@ Bitte starten Sie einen Browser und geben darin ein: http://localhost:%1.</trans
       <location filename="../ViewProviderDragger.cpp" line="85"/>
       <location filename="../ViewProviderLink.cpp" line="2596"/>
       <source>Transform</source>
-      <translation>Bewegen</translation>
+      <translation>Transformierung</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskDialog.cpp" line="76"/>
@@ -8871,8 +8886,8 @@ the current copy will be lost.
       <translation>Überlagerungsmodus umschalten</translation>
     </message>
     <message>
-      <location filename="../OverlayManager.cpp" line="1036"/>
       <location filename="../OverlayWidgets.cpp" line="2180"/>
+      <location filename="../OverlayManager.cpp" line="1036"/>
       <source>Toggle floating window</source>
       <translation>Schwebendes Fenster umschalten</translation>
     </message>
@@ -8905,7 +8920,7 @@ the current copy will be lost.
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="536"/>
       <source>Item background padding</source>
-      <translation type="unfinished">Item background padding</translation>
+      <translation>Element Hintergrund Innenabstand</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="539"/>
@@ -8950,7 +8965,7 @@ the current copy will be lost.
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="557"/>
       <source>Overlay</source>
-      <translation>Overlay</translation>
+      <translation>Überlagerungsmodus</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="559"/>
@@ -8970,17 +8985,17 @@ the current copy will be lost.
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="565"/>
       <source>Auto mouse pass through</source>
-      <translation type="unfinished">Auto mouse pass through</translation>
+      <translation>Automatisches Weitergeben der Maus</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="567"/>
       <source>Auto mouse wheel pass through</source>
-      <translation type="unfinished">Auto mouse wheel pass through</translation>
+      <translation>Automatisches Weitergeben des Mausrads</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="569"/>
       <source>Delay mouse wheel pass through (ms)</source>
-      <translation type="unfinished">Delay mouse wheel pass through (ms)</translation>
+      <translation>Verzögert Mausrad Weitergabe (ms)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="572"/>
@@ -8990,7 +9005,7 @@ the current copy will be lost.
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="575"/>
       <source>Check Navigation Cube</source>
-      <translation type="unfinished">Check Navigation Cube</translation>
+      <translation>Navigationswürfel anzeigen</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="577"/>
@@ -9005,57 +9020,57 @@ the current copy will be lost.
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="583"/>
       <source>Left panel hint offset</source>
-      <translation type="unfinished">Left panel hint offset</translation>
+      <translation>Hinweis-Versatz des linkes Paneels</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="586"/>
       <source>Left panel hint length</source>
-      <translation type="unfinished">Left panel hint length</translation>
+      <translation>Hinweis-Länge des linkes Paneels</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="589"/>
       <source>Right panel hint offset</source>
-      <translation type="unfinished">Right panel hint offset</translation>
+      <translation>Hinweis-Versatz des rechten Paneels</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="592"/>
       <source>Right panel hint length</source>
-      <translation type="unfinished">Right panel hint length</translation>
+      <translation>Hinweis-Länge des rechten Paneels</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="595"/>
       <source>Top panel hint offset</source>
-      <translation type="unfinished">Top panel hint offset</translation>
+      <translation>Hinweis-Versatz des oberen Paneels</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="598"/>
       <source>Top panel hint length</source>
-      <translation type="unfinished">Top panel hint length</translation>
+      <translation>Hinweis-Länge des oberen Paneels</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="601"/>
       <source>Bottom panel hint offset</source>
-      <translation type="unfinished">Bottom panel hint offset</translation>
+      <translation>Hinweis-Versatz des unteren Paneels</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="604"/>
       <source>Bottom panel hint length</source>
-      <translation type="unfinished">Bottom panel hint length</translation>
+      <translation>Hinweis-Länge des unteren Paneels</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="607"/>
       <source>Hint show tab bar</source>
-      <translation type="unfinished">Hint show tab bar</translation>
+      <translation>Hinweis Tab Leiste anzeigen</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="609"/>
       <source>Hint delay (ms)</source>
-      <translation type="unfinished">Hint delay (ms)</translation>
+      <translation>Hinweis-Verzögerung (ms)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="612"/>
       <source>Splitter auto hide delay (ms)</source>
-      <translation type="unfinished">Splitter auto hide delay (ms)</translation>
+      <translation>Verzögerung beim automatischen Ausblenden des Teilers (ms)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="615"/>
@@ -9065,7 +9080,7 @@ the current copy will be lost.
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="617"/>
       <source>Layout delay (ms)</source>
-      <translation type="unfinished">Layout delay (ms)</translation>
+      <translation>Layoutverzögerung (ms)</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="620"/>
@@ -9075,7 +9090,7 @@ the current copy will be lost.
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="623"/>
       <source>Animation curve type</source>
-      <translation type="unfinished">Animation curve type</translation>
+      <translation>Animations-Kurven-Typ</translation>
     </message>
   </context>
   <context>
@@ -9086,7 +9101,7 @@ the current copy will be lost.
       <translation>Nicht erlaubt:</translation>
     </message>
     <message>
-      <location filename="../Selection.cpp" line="913"/>
+      <location filename="../Selection.cpp" line="937"/>
       <source>Selection not allowed by filter</source>
       <translation>Auswahl vom Filter nicht erlaubt</translation>
     </message>
@@ -9966,7 +9981,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandDoc.cpp" line="520"/>
       <source>Merge document...</source>
-      <translation type="unfinished">Merge document...</translation>
+      <translation>Dokument zusammenführen...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="521"/>
@@ -9974,7 +9989,7 @@ the current copy will be lost.
       <location filename="../CommandDoc.cpp" line="533"/>
       <location filename="../CommandDoc.cpp" line="542"/>
       <source>Merge document</source>
-      <translation type="unfinished">Merge document</translation>
+      <translation>Dokument zusammenführen</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="534"/>
@@ -9984,7 +9999,7 @@ the current copy will be lost.
     <message>
       <location filename="../CommandDoc.cpp" line="543"/>
       <source>Cannot merge document with itself.</source>
-      <translation type="unfinished">Cannot merge document with itself.</translation>
+      <translation>Dokument kann nicht mit sich selbst zusammengeführt werden.</translation>
     </message>
   </context>
   <context>
@@ -10001,8 +10016,8 @@ the current copy will be lost.
       <translation>Neues Dokument erstellen</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="391"/>
       <location filename="../MainWindow.cpp" line="2311"/>
+      <location filename="../DocumentRecovery.cpp" line="391"/>
       <source>Unnamed</source>
       <translation>Unbenannt</translation>
     </message>
@@ -10625,7 +10640,7 @@ Es ist dazu gedacht, Objekte zu arrangieren, die eine Topoform von Teilen haben,
     <message>
       <location filename="../CommandDoc.cpp" line="1583"/>
       <source>Transform</source>
-      <translation>Transformieren</translation>
+      <translation>Bewegen</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1584"/>
@@ -12606,22 +12621,22 @@ after FreeCAD launches</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="62"/>
       <source>Unit system for all parts of the application. Can be overridden by specifying a document unit system.</source>
-      <translation type="unfinished">Unit system for all parts of the application. Can be overridden by specifying a document unit system.</translation>
+      <translation>Einheitensystem für alle Bereiche der Anwendung. Kann durch Angabe eines Dokument-Einheitensystems überschrieben werden.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="93"/>
       <source>Document unit system:</source>
-      <translation type="unfinished">Document unit system:</translation>
+      <translation>Dokument-Einheitensystem:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="100"/>
       <source>Unit system stored in the current document</source>
-      <translation type="unfinished">Unit system stored in the current document</translation>
+      <translation>Im aktuellen Dokument gespeichertes Einheitssystem</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="107"/>
       <source>If enabled, document unit systems are ignored</source>
-      <translation type="unfinished">If enabled, document unit systems are ignored</translation>
+      <translation>Wenn aktiviert, werden Dokumenteneinheitssysteme ignoriert</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="110"/>
@@ -12766,12 +12781,12 @@ display the splash screen</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="362"/>
       <source>Activate overlay handling of dock windows</source>
-      <translation type="unfinished">Activate overlay handling of dock windows</translation>
+      <translation>Überlagerung von Dock-Fenstern aktivieren</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="365"/>
       <source>Activate overlay handling</source>
-      <translation type="unfinished">Activate overlay handling</translation>
+      <translation>Überlagerung aktivieren</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="384"/>
@@ -12786,7 +12801,7 @@ display the splash screen</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="461"/>
       <source>Type</source>
-      <translation>Typ</translation>
+      <translation>Art</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="472"/>
@@ -13109,12 +13124,12 @@ Python-Konsole in das Ausgabefenster umgeleitet</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="140"/>
       <source>Style sheet how user interface will look like</source>
-      <translation type="unfinished">Style sheet how user interface will look like</translation>
+      <translation>Vorlage, wie die Benutzeroberfläche aussehen wird</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="156"/>
       <source>Overlay style sheet:</source>
-      <translation type="unfinished">Overlay style sheet:</translation>
+      <translation>Überlagerungs-Stylesheet:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="47"/>
@@ -13202,7 +13217,7 @@ Python-Konsole in das Ausgabefenster umgeleitet</translation>
     <message>
       <location filename="../CommandView.cpp" line="903"/>
       <source>Toggles transparency of the selected objects. You can also fine tune transparency value in the Appearance taskbox (right click an object in the tree, Appearance).</source>
-      <translation type="unfinished">Toggles transparency of the selected objects. You can also fine tune transparency value in the Appearance taskbox (right click an object in the tree, Appearance).</translation>
+      <translation>Schaltet die Transparenz der ausgewählten Objekte um. Sie können auch die Transparenz in der Taskbox anpassen (Rechtsklick auf ein Objekt im Baum, Erscheinungsbild).</translation>
     </message>
   </context>
   <context>
@@ -13210,12 +13225,12 @@ Python-Konsole in das Ausgabefenster umgeleitet</translation>
     <message>
       <location filename="../CommandView.cpp" line="3828"/>
       <source>Toggle overlay for all</source>
-      <translation type="unfinished">Toggle overlay for all</translation>
+      <translation>Überlagerungsmodus für alle umschalten</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3829"/>
       <source>Toggle overlay mode for all docked windows</source>
-      <translation type="unfinished">Toggle overlay mode for all docked windows</translation>
+      <translation>Überlagerungsmodus für alle angedockten Fenster umschalten</translation>
     </message>
   </context>
   <context>
@@ -13223,14 +13238,14 @@ Python-Konsole in das Ausgabefenster umgeleitet</translation>
     <message>
       <location filename="../CommandView.cpp" line="3852"/>
       <source>Toggle transparent for all</source>
-      <translation type="unfinished">Toggle transparent for all</translation>
+      <translation>Umschalten der Transparenz für alle</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3853"/>
       <source>Toggle transparent mode for all docked overlay windows.
 This makes the docked windows stay transparent at all times.</source>
-      <translation type="unfinished">Toggle transparent mode for all docked overlay windows.
-This makes the docked windows stay transparent at all times.</translation>
+      <translation>Schaltet den transparenten Modus für alle angedockten Überlagerungs-Fenster um.
+Dadurch bleiben die angedockten Fenster jederzeit transparent.</translation>
     </message>
   </context>
   <context>
@@ -13243,7 +13258,7 @@ This makes the docked windows stay transparent at all times.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3878"/>
       <source>Toggle overlay mode for the docked window under the cursor</source>
-      <translation type="unfinished">Toggle overlay mode for the docked window under the cursor</translation>
+      <translation>Überlagerungsmodus für das angedockte Fenster unter dem Mauszeiger umschalten</translation>
     </message>
   </context>
   <context>
@@ -13251,14 +13266,14 @@ This makes the docked windows stay transparent at all times.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3901"/>
       <source>Toggle transparent</source>
-      <translation type="unfinished">Toggle transparent</translation>
+      <translation>Transparenz umschalten</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3902"/>
       <source>Toggle transparent mode for the docked window under cursor.
 This makes the docked window stay transparent at all times.</source>
-      <translation type="unfinished">Toggle transparent mode for the docked window under cursor.
-This makes the docked window stay transparent at all times.</translation>
+      <translation>Schaltet den transparenten Modus für das angedockte Fenster unter dem Cursor ein.
+Dadurch bleibt das angedockte Fenster jederzeit transparent.</translation>
     </message>
   </context>
   <context>
@@ -13266,12 +13281,12 @@ This makes the docked window stay transparent at all times.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3926"/>
       <source>Toggle left</source>
-      <translation type="unfinished">Toggle left</translation>
+      <translation>Links umschalten</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3927"/>
       <source>Show/hide left overlay panel</source>
-      <translation type="unfinished">Show/hide left overlay panel</translation>
+      <translation>Linkes Überlagerungs-Paneel ein-/ausblenden</translation>
     </message>
   </context>
   <context>
@@ -13279,12 +13294,12 @@ This makes the docked window stay transparent at all times.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3951"/>
       <source>Toggle right</source>
-      <translation type="unfinished">Toggle right</translation>
+      <translation>Rechts umschalten</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3952"/>
       <source>Show/hide right overlay panel</source>
-      <translation type="unfinished">Show/hide right overlay panel</translation>
+      <translation>Rechtes Überlagerungs-Paneel ein-/ausblenden</translation>
     </message>
   </context>
   <context>
@@ -13292,12 +13307,12 @@ This makes the docked window stay transparent at all times.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3976"/>
       <source>Toggle top</source>
-      <translation type="unfinished">Toggle top</translation>
+      <translation>Oben umschalten</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3977"/>
       <source>Show/hide top overlay panel</source>
-      <translation type="unfinished">Show/hide top overlay panel</translation>
+      <translation>Oberes Überlagerungs-Paneel ein-/ausblenden</translation>
     </message>
   </context>
   <context>
@@ -13305,12 +13320,12 @@ This makes the docked window stay transparent at all times.</translation>
     <message>
       <location filename="../CommandView.cpp" line="4001"/>
       <source>Toggle bottom</source>
-      <translation type="unfinished">Toggle bottom</translation>
+      <translation>Unten umschalten</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="4002"/>
       <source>Show/hide bottom overlay panel</source>
-      <translation type="unfinished">Show/hide bottom overlay panel</translation>
+      <translation>Unteres Überlagerungs-Paneel ein-/ausblenden</translation>
     </message>
   </context>
   <context>
@@ -13318,12 +13333,12 @@ This makes the docked window stay transparent at all times.</translation>
     <message>
       <location filename="../CommandView.cpp" line="4026"/>
       <source>Bypass mouse events in docked overlay windows</source>
-      <translation type="unfinished">Bypass mouse events in docked overlay windows</translation>
+      <translation>Mausereignisse in angedockten Überlagerungs-Fenstern umgehen</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="4027"/>
       <source>Bypass all mouse events in docked overlay windows</source>
-      <translation type="unfinished">Bypass all mouse events in docked overlay windows</translation>
+      <translation>Alle Maus-Ereignisse in angedockten Überlagerungs-Fenstern umgehen</translation>
     </message>
   </context>
   <context>
@@ -13331,12 +13346,12 @@ This makes the docked window stay transparent at all times.</translation>
     <message>
       <location filename="../CommandView.cpp" line="4068"/>
       <source>Dock window overlay</source>
-      <translation type="unfinished">Dock window overlay</translation>
+      <translation>Überlagerungsmodus angedockter Fenster</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="4069"/>
       <source>Setting docked window overlay mode</source>
-      <translation type="unfinished">Setting docked window overlay mode</translation>
+      <translation>Überlagerungsmodus für angedockte Fenster einstellen</translation>
     </message>
   </context>
   <context>
@@ -13344,36 +13359,35 @@ This makes the docked window stay transparent at all times.</translation>
     <message>
       <location filename="../OverlayParams.cpp" line="317"/>
       <source>Overlay dock (re),layout delay.</source>
-      <translation type="unfinished">Overlay dock (re),layout delay.</translation>
+      <translation>Überlagerung angedockter -Dock (re),Layoutverzögerung.</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="372"/>
       <source>Overlay splitter handle auto hide delay. Set zero to disable auto hiding.</source>
-      <translation type="unfinished">Overlay splitter handle auto hide delay. Set zero to disable auto hiding.</translation>
+      <translation>Automatische Verzögerung der Ausblendung von Überlagerungs-Teiler. Null, um automatisches Ausblenden zu deaktivieren.</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="400"/>
       <source>Show auto hidden dock overlay on mouse over.
 If disabled, then show on mouse click.</source>
-      <translation type="unfinished">Show auto hidden dock overlay on mouse over.
-If disabled, then show on mouse click.</translation>
+      <translation>Automatisch versteckte angedockte Überlagerungen mit der Maus anzeigen.
+Wenn deaktiviert, dann mit Mausklick anzeigen.</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="429"/>
       <source>Auto mouse click through transparent part of dock overlay.</source>
-      <translation type="unfinished">Auto mouse click through transparent part of dock overlay.</translation>
+      <translation>Automatischer Mausklick durch transparenten Teil der angedockten Überlagerung.</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="457"/>
       <source>Auto pass through mouse wheel event on transparent dock overlay.</source>
-      <translation type="unfinished">Auto pass through mouse wheel event on transparent dock overlay.</translation>
+      <translation>Automatische Durchgabe von Mausrad-Ereignissen bei transparenten angedockten Überlagerungen.</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="485"/>
       <source>Delay capturing mouse wheel event for passing through if it is
 previously handled by other widget.</source>
-      <translation type="unfinished">Delay capturing mouse wheel event for passing through if it is
-previously handled by other widget.</translation>
+      <translation>Verzögerung der Durchgabe von Maursrad-Ereignissen, falls bereits von anderem Widget verwaltet.</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="514"/>
@@ -13381,100 +13395,100 @@ previously handled by other widget.</translation>
 defines a region of alpha test under the mouse cursor.
 Auto click through is only activated if all pixels within
 the region are non-opaque.</source>
-      <translation type="unfinished">If auto mouse click through is enabled, then this radius
-defines a region of alpha test under the mouse cursor.
-Auto click through is only activated if all pixels within
-the region are non-opaque.</translation>
+      <translation>Wenn die automatische Durchgabe der Mausklicks aktiviert ist, definiert dieser Radius
+einen Transparenz-Test unter dem Mauszeiger.
+Automatisches Durchklicken wird nur aktiviert, wenn alle Pixel innerhalb
+der Region nicht transparent sind.</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="545"/>
       <source>Leave space for Navigation Cube in dock overlay</source>
-      <translation type="unfinished">Leave space for Navigation Cube in dock overlay</translation>
+      <translation>Abstand für Navigationswürfel in der angedockten Überlagerung lassen</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="573"/>
       <source>Auto hide hint visual display triggering width</source>
-      <translation type="unfinished">Auto hide hint visual display triggering width</translation>
+      <translation>Auslösebreite für das automatische Ausblenden</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="601"/>
       <source>Auto hide hint visual display width</source>
-      <translation type="unfinished">Auto hide hint visual display width</translation>
+      <translation>Automatisches Ausblenden der Anzeigenbreite</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="629"/>
       <source>Auto hide hint visual display length for left panel. Set to zero to fill the space.</source>
-      <translation type="unfinished">Auto hide hint visual display length for left panel. Set to zero to fill the space.</translation>
+      <translation>Sichtbare Anzeigelänge für das linke Paneel automatisch ausblenden. Auf Null setzen, um das Leerzeichen zu füllen.</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="657"/>
       <source>Auto hide hint visual display length for right panel. Set to zero to fill the space.</source>
-      <translation type="unfinished">Auto hide hint visual display length for right panel. Set to zero to fill the space.</translation>
+      <translation>Sichtbare Anzeigelänge für das rechte Paneel automatisch ausblenden. Auf Null setzen, um das Leerzeichen zu füllen.</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="685"/>
       <source>Auto hide hint visual display length for top panel. Set to zero to fill the space.</source>
-      <translation type="unfinished">Auto hide hint visual display length for top panel. Set to zero to fill the space.</translation>
+      <translation>Sichtbare Anzeigelänge für das obere Paneel automatisch ausblenden. Auf Null setzen, um das Leerzeichen zu füllen.</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="713"/>
       <source>Auto hide hint visual display length for bottom panel. Set to zero to fill the space.</source>
-      <translation type="unfinished">Auto hide hint visual display length for bottom panel. Set to zero to fill the space.</translation>
+      <translation>Sichtbare Anzeigelänge für das untere Paneel automatisch ausblenden. Auf Null setzen, um das Leerzeichen zu füllen.</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="741"/>
       <source>Auto hide hint visual display offset for left panel</source>
-      <translation type="unfinished">Auto hide hint visual display offset for left panel</translation>
+      <translation>Automatisches Ausblenden des visuellen Versatzes für das linke Paneel</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="769"/>
       <source>Auto hide hint visual display offset for right panel</source>
-      <translation type="unfinished">Auto hide hint visual display offset for right panel</translation>
+      <translation>Automatisches Ausblenden des visuellen Versatzes für das rechte Paneel</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="797"/>
       <source>Auto hide hint visual display offset for top panel</source>
-      <translation type="unfinished">Auto hide hint visual display offset for top panel</translation>
+      <translation>Automatisches Ausblenden des visuellen Versatzes für das obere Paneel</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="825"/>
       <source>Auto hide hint visual display offset for bottom panel</source>
-      <translation type="unfinished">Auto hide hint visual display offset for bottom panel</translation>
+      <translation>Automatisches Ausblenden des visuellen Versatzes für das untere Paneel</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="853"/>
       <source>Show tab bar on mouse over when auto hide</source>
-      <translation type="unfinished">Show tab bar on mouse over when auto hide</translation>
+      <translation>Zeige Tab-Leiste beim Überfahren mit der Maus beim automatischen Ausblenden-Modus</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="881"/>
       <source>Hide tab bar in dock overlay</source>
-      <translation type="unfinished">Hide tab bar in dock overlay</translation>
+      <translation>Tableiste bei angedockter Überlagerung ausblenden</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="909"/>
       <source>Delay before show hint visual</source>
-      <translation type="unfinished">Delay before show hint visual</translation>
+      <translation>Verzögerung beim Anzeigen des Hinweises</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="937"/>
       <source>Auto hide animation duration, 0 to disable</source>
-      <translation type="unfinished">Auto hide animation duration, 0 to disable</translation>
+      <translation>Dauer der Animation automatisch ausblenden, 0 zum Deaktivieren</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="965"/>
       <source>Auto hide animation curve type</source>
-      <translation type="unfinished">Auto hide animation curve type</translation>
+      <translation>Animations-Kurventyp automatisch ausblenden</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="993"/>
       <source>Hide property view scroll bar in dock overlay</source>
-      <translation type="unfinished">Hide property view scroll bar in dock overlay</translation>
+      <translation>Eigenschaften-Scrollleiste im angedockten Überlagerungsmodus ausblenden</translation>
     </message>
     <message>
       <location filename="../OverlayParams.cpp" line="1021"/>
       <source>Minimum overlay dock widget width/height</source>
-      <translation type="unfinished">Minimum overlay dock widget width/height</translation>
+      <translation>Minimale angedockte Widget Breite/Höhe im Überlagerungsmodus</translation>
     </message>
   </context>
   <context>
@@ -13492,47 +13506,47 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../OverlayWidgets.cpp" line="858"/>
       <source>Turn off auto hide/show</source>
-      <translation type="unfinished">Turn off auto hide/show</translation>
+      <translation>Auto-Ausblenden/Anzeigen ausschalten</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="859"/>
       <source>Auto hide</source>
-      <translation type="unfinished">Auto hide</translation>
+      <translation>Automatisch ausblenden</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="860"/>
       <source>Auto hide docked widgets on leave</source>
-      <translation type="unfinished">Auto hide docked widgets on leave</translation>
+      <translation>Andockte Widgets beim Verlassen automatisch ausblenden</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="861"/>
       <source>Hide on edit</source>
-      <translation type="unfinished">Hide on edit</translation>
+      <translation>Beim Bearbeiten ausblenden</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="862"/>
       <source>Auto hide docked widgets on editing</source>
-      <translation type="unfinished">Auto hide docked widgets on editing</translation>
+      <translation>Angedockte Widgets beim Bearbeiten automatisch ausblenden</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="863"/>
       <source>Show on edit</source>
-      <translation type="unfinished">Show on edit</translation>
+      <translation>Beim Bearbeiten anzeigen</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="864"/>
       <source>Auto show docked widgets on editing</source>
-      <translation type="unfinished">Auto show docked widgets on editing</translation>
+      <translation>Angedockte Widgets beim Bearbeiten automatisch anzeigen</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="865"/>
       <source>Auto task</source>
-      <translation type="unfinished">Auto task</translation>
+      <translation>Automatisch bei Aufgaben</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="866"/>
       <source>Auto show task view for any current task, and hide the view when there is no task.</source>
-      <translation type="unfinished">Auto show task view for any current task, and hide the view when there is no task.</translation>
+      <translation>Automatisch Aufgaben-Dialog für jede aktuelle Aufgabe anzeigen und die Ansicht ausblenden, wenn keine Aufgabe vorhanden ist.</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="867"/>
@@ -13542,7 +13556,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../OverlayWidgets.cpp" line="893"/>
       <source>Select auto show/hide mode</source>
-      <translation type="unfinished">Select auto show/hide mode</translation>
+      <translation>Automatischen ein-/ausblenden Modus wählen</translation>
     </message>
   </context>
   <context>
@@ -13550,7 +13564,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../OverlayWidgets.cpp" line="1836"/>
       <source>Mouse pass through, ESC to stop</source>
-      <translation type="unfinished">Mouse pass through, ESC to stop</translation>
+      <translation>Maus durchlassen, ESC um zu stoppen</translation>
     </message>
   </context>
   <context>
@@ -13558,13 +13572,13 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="828"/>
       <source>Document i&amp;nformation...</source>
-      <translation type="unfinished">Document i&amp;nformation...</translation>
+      <translation>Dokumenti&amp;nformation...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="829"/>
       <location filename="../CommandDoc.cpp" line="831"/>
       <source>Show details of the currently active document</source>
-      <translation type="unfinished">Show details of the currently active document</translation>
+      <translation>Details des aktuell aktiven Dokuments anzeigen</translation>
     </message>
   </context>
   <context>
@@ -13572,13 +13586,13 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../CommandDoc.cpp" line="859"/>
       <source>Document utility...</source>
-      <translation type="unfinished">Document utility...</translation>
+      <translation>Dokument-Dienstprogramm...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="860"/>
       <location filename="../CommandDoc.cpp" line="861"/>
       <source>Utility to extract or create document files</source>
-      <translation type="unfinished">Utility to extract or create document files</translation>
+      <translation>Werkzeug zum Entpacken oder Erzeugen von Dokumentdateien</translation>
     </message>
   </context>
 </TS>

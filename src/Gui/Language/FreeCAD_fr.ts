@@ -51,7 +51,7 @@
       <location filename="../propertyeditor/PropertyItem.cpp" line="2248"/>
       <location filename="../propertyeditor/PropertyItem.cpp" line="2510"/>
       <source>Axis</source>
-      <translation>Axes</translation>
+      <translation>Axe de rotation</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyItem.cpp" line="2515"/>
@@ -188,8 +188,8 @@
       <translation>Position</translation>
     </message>
     <message>
-      <location filename="../TaskCSysDragger.cpp" line="75"/>
       <location filename="../Transform.cpp" line="101"/>
+      <location filename="../TaskCSysDragger.cpp" line="75"/>
       <location filename="../ViewProviderAnnotation.cpp" line="416"/>
       <source>Transform</source>
       <translation>Transformer</translation>
@@ -418,7 +418,7 @@
     <message>
       <location filename="../Application.h" line="255"/>
       <source>Default</source>
-      <translation>Par défaut</translation>
+      <translation>Défaut</translation>
     </message>
     <message>
       <location filename="../Application.h" line="256"/>
@@ -592,7 +592,7 @@
     <message>
       <location filename="../CADNavigationStyle.cpp" line="53"/>
       <source>Press middle mouse button</source>
-      <translation>Appuyer sur la roulette de la souris</translation>
+      <translation>Appuyez sur la roulette de la souris</translation>
     </message>
     <message>
       <location filename="../CADNavigationStyle.cpp" line="55"/>
@@ -822,12 +822,12 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../Clipping.ui" line="14"/>
       <source>Clipping</source>
-      <translation>Découpage</translation>
+      <translation>Couper selon des plans</translation>
     </message>
     <message>
       <location filename="../Clipping.ui" line="20"/>
       <source>Clipping X</source>
-      <translation>Découpage suivant X</translation>
+      <translation>Couper suivant X</translation>
     </message>
     <message>
       <location filename="../Clipping.ui" line="32"/>
@@ -847,17 +847,17 @@ while doing a left or right click and move the mouse up or down</source>
     <message>
       <location filename="../Clipping.ui" line="65"/>
       <source>Clipping Y</source>
-      <translation>Découpage suivant Y</translation>
+      <translation>Couper suivant Y</translation>
     </message>
     <message>
       <location filename="../Clipping.ui" line="110"/>
       <source>Clipping Z</source>
-      <translation>Découpage suivant Z</translation>
+      <translation>Couper suivant Z</translation>
     </message>
     <message>
       <location filename="../Clipping.ui" line="155"/>
       <source>Clipping custom direction</source>
-      <translation>Découpage suivant une direction personnalisée</translation>
+      <translation>Couper suivant une direction personnalisée</translation>
     </message>
     <message>
       <location filename="../Clipping.ui" line="190"/>
@@ -1387,7 +1387,7 @@ same time. The one with the highest priority will be triggered.</source>
       <location filename="../DlgKeyboardImp.cpp" line="433"/>
       <location filename="../DlgKeyboardImp.cpp" line="501"/>
       <source>none</source>
-      <translation>rien</translation>
+      <translation>aucun</translation>
     </message>
   </context>
   <context>
@@ -2450,12 +2450,12 @@ Specify another directory, please.</source>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="439"/>
       <source>Reset page '%1'...</source>
-      <translation type="unfinished">Reset page '%1'...</translation>
+      <translation>Réinitialiser la page "%1...</translation>
     </message>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="442"/>
       <source>Resets the user settings for the page '%1'</source>
-      <translation type="unfinished">Resets the user settings for the page '%1'</translation>
+      <translation>Réinitialise les paramètres de l'utilisateur pour la page '%1'</translation>
     </message>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="445"/>
@@ -2523,7 +2523,7 @@ Specify another directory, please.</source>
     <message>
       <location filename="../DlgProjectInformation.ui" line="14"/>
       <source>Document information</source>
-      <translation type="unfinished">Document information</translation>
+      <translation>Informations du document</translation>
     </message>
     <message>
       <location filename="../DlgProjectInformation.ui" line="26"/>
@@ -2605,12 +2605,12 @@ Specify another directory, please.</source>
     <message>
       <location filename="../DlgProjectUtility.ui" line="14"/>
       <source>Document utility</source>
-      <translation type="unfinished">Document utility</translation>
+      <translation>Utilitaire du document</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.ui" line="22"/>
       <source>Extract document</source>
-      <translation type="unfinished">Extract document</translation>
+      <translation>Extraire le document</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.ui" line="28"/>
@@ -2632,12 +2632,12 @@ Specify another directory, please.</source>
     <message>
       <location filename="../DlgProjectUtility.ui" line="72"/>
       <source>Create document</source>
-      <translation type="unfinished">Create document</translation>
+      <translation>Créer un document</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.ui" line="137"/>
       <source>Load document file after creation</source>
-      <translation type="unfinished">Load document file after creation</translation>
+      <translation>Charger le fichier document après la création</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.ui" line="115"/>
@@ -2676,12 +2676,12 @@ Specify another directory, please.</source>
     <message>
       <location filename="../DlgProjectUtility.cpp" line="104"/>
       <source>Failed to extract document</source>
-      <translation type="unfinished">Failed to extract document</translation>
+      <translation>Impossible d'extraire le document</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.cpp" line="121"/>
       <source>Failed to create document</source>
-      <translation type="unfinished">Failed to create document</translation>
+      <translation>La création du document a échouée</translation>
     </message>
   </context>
   <context>
@@ -2770,7 +2770,7 @@ Specify another directory, please.</source>
     <message>
       <location filename="../DlgRunExternal.ui" line="38"/>
       <source>TextLabel</source>
-      <translation>Étiquette de texte</translation>
+      <translation>TextLabel</translation>
     </message>
     <message>
       <location filename="../DlgRunExternal.ui" line="58"/>
@@ -3102,12 +3102,27 @@ la taille de la boîte englobante de l'objet 3D affichée.</translation>
       <translation>15px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="160"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="130"/>
+      <source>20px</source>
+      <translation type="unfinished">20px</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="131"/>
+      <source>25px</source>
+      <translation type="unfinished">25px</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="132"/>
+      <source>30px</source>
+      <translation type="unfinished">30px</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="163"/>
       <source>Anti-aliasing</source>
       <translation>Anticrénelage</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="161"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="164"/>
       <source>Open a new viewer or restart %1 to apply anti-aliasing changes.</source>
       <translation>Ouvrir une nouvelle visionneuse ou redémarrer %1 pour appliquer les modifications d'anticrénelage.</translation>
     </message>
@@ -4070,7 +4085,7 @@ Vous pouvez également utiliser la forme : John Doe &lt;john@doe.com&gt;</transl
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="162"/>
       <source>Default</source>
-      <translation>Défaut</translation>
+      <translation>Par défaut</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="170"/>
@@ -4085,7 +4100,7 @@ Vous pouvez également utiliser la forme : John Doe &lt;john@doe.com&gt;</transl
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="205"/>
       <source>Color</source>
-      <translation>Couleur</translation>
+      <translation>Colorier</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="212"/>
@@ -4350,7 +4365,7 @@ L’inclinaison à la souris n’est pas désactivée par ce réglage.</translat
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="20"/>
       <source>Console</source>
-      <translation type="unfinished">Console</translation>
+      <translation>Console</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="26"/>
@@ -4392,7 +4407,8 @@ dans la console Python</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="91"/>
       <source>The interval at which the profiler runs when there's Python code running (to keep the GUI responding). Set to 0 to disable.</source>
-      <translation>L'intervalle auquel le profileur s'exécute lorsqu'il y a du code Python en cours d'exécution (pour que l'interface graphique continue à répondre). Mettez 0 pour le désactiver.</translation>
+      <translation>L'intervalle auquel le profileur s'exécute lorsqu'il y a du code Python en cours d'exécution,
+pour que l'interface graphique continue à répondre. Mettre à 0 pour le désactiver.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="116"/>
@@ -4402,12 +4418,12 @@ dans la console Python</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="122"/>
       <source>Path to external Python executable (optional):</source>
-      <translation type="unfinished">Path to external Python executable (optional):</translation>
+      <translation>Emplacement vers l'exécutable externe de Python (facultatif) :</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="141"/>
       <source>Used for package installation with pip and debugging with debugpy. Autodetected if needed and not specified.</source>
-      <translation type="unfinished">Used for package installation with pip and debugging with debugpy. Autodetected if needed and not specified.</translation>
+      <translation>Utilisé pour l'installation de paquets avec pip et le débogage avec debugpy. Détecté automatiquement s'il est nécessaire et non spécifié.</translation>
     </message>
   </context>
   <context>
@@ -4721,7 +4737,7 @@ Le système de préférences est celui défini dans les préférences générale
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="196"/>
       <source>Copy</source>
-      <translation>Copie</translation>
+      <translation>Copier</translation>
     </message>
     <message>
       <location filename="../DlgUnitsCalculator.ui" line="203"/>
@@ -6058,15 +6074,15 @@ Voulez enregistrer les modifications ?</translation>
       <translation>Format PDF</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="617"/>
       <location filename="../GraphvizView.cpp" line="448"/>
+      <location filename="../CommandDoc.cpp" line="617"/>
       <source>Graphviz format</source>
       <translation>Format Graphviz</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="618"/>
       <location filename="../GraphvizView.cpp" line="462"/>
       <location filename="../GraphvizView.cpp" line="550"/>
+      <location filename="../CommandDoc.cpp" line="618"/>
       <source>Export graph</source>
       <translation>Export graphique</translation>
     </message>
@@ -6104,7 +6120,7 @@ Voulez enregistrer les modifications ?</translation>
     <message>
       <location filename="../InventorNavigationStyle.cpp" line="57"/>
       <source>Scroll middle mouse button</source>
-      <translation>Faites rouler la roulette de la souris</translation>
+      <translation>Faites défiler le bouton milieu de la souris</translation>
     </message>
   </context>
   <context>
@@ -6812,7 +6828,7 @@ Voulez vous quitter sans sauvegarder vos données?</translation>
     <message>
       <location filename="../Action.cpp" line="1029"/>
       <source>none</source>
-      <translation>aucun</translation>
+      <translation>rien</translation>
     </message>
     <message>
       <location filename="../Action.cpp" line="1044"/>
@@ -7006,7 +7022,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../TaskElementColors.ui" line="22"/>
       <source>TextLabel</source>
-      <translation>TextLabel</translation>
+      <translation>Étiquette de texte</translation>
     </message>
     <message>
       <location filename="../TaskElementColors.ui" line="40"/>
@@ -7156,7 +7172,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../TinkerCADNavigationStyle.cpp" line="51"/>
       <source>Press middle mouse button</source>
-      <translation>Appuyez sur la roulette de la souris</translation>
+      <translation>Appuyer sur la roulette de la souris</translation>
     </message>
     <message>
       <location filename="../TinkerCADNavigationStyle.cpp" line="53"/>
@@ -7166,7 +7182,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../TinkerCADNavigationStyle.cpp" line="55"/>
       <source>Scroll middle mouse button</source>
-      <translation>Faites défiler le bouton milieu de la souris</translation>
+      <translation>Faites rouler la roulette de la souris</translation>
     </message>
   </context>
   <context>
@@ -7990,8 +8006,8 @@ Do you want to specify another directory?</source>
       <translation>Exportation PDF ...</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="1230"/>
       <location filename="../MainWindow.cpp" line="809"/>
+      <location filename="../CommandDoc.cpp" line="1230"/>
       <source>Unsaved document</source>
       <translation>Document non sauvegardé</translation>
     </message>
@@ -8865,8 +8881,8 @@ apportée à la copie en cours sera perdue.
       <translation>Activer/désactiver la surimposition</translation>
     </message>
     <message>
-      <location filename="../OverlayManager.cpp" line="1036"/>
       <location filename="../OverlayWidgets.cpp" line="2180"/>
+      <location filename="../OverlayManager.cpp" line="1036"/>
       <source>Toggle floating window</source>
       <translation>Activer/désactiver la fenêtre flottante</translation>
     </message>
@@ -9080,7 +9096,7 @@ apportée à la copie en cours sera perdue.
       <translation>Non autorisé :</translation>
     </message>
     <message>
-      <location filename="../Selection.cpp" line="913"/>
+      <location filename="../Selection.cpp" line="937"/>
       <source>Selection not allowed by filter</source>
       <translation>Sélection non autorisée par filtre</translation>
     </message>
@@ -9933,7 +9949,7 @@ Contrairement aux clones, les liens font directement référence à la forme d'o
     <message>
       <location filename="../CommandView.cpp" line="3219"/>
       <source>Measure distance</source>
-      <translation>Mesurer une distance</translation>
+      <translation>Mesurer la distance</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3220"/>
@@ -9947,7 +9963,7 @@ Contrairement aux clones, les liens font directement référence à la forme d'o
     <message>
       <location filename="../CommandStd.cpp" line="746"/>
       <source>Measure distance</source>
-      <translation>Mesurer la distance</translation>
+      <translation>Mesurer une distance</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="747"/>
@@ -9961,7 +9977,7 @@ Contrairement aux clones, les liens font directement référence à la forme d'o
     <message>
       <location filename="../CommandDoc.cpp" line="520"/>
       <source>Merge document...</source>
-      <translation type="unfinished">Merge document...</translation>
+      <translation>Fusionner le document...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="521"/>
@@ -9969,7 +9985,7 @@ Contrairement aux clones, les liens font directement référence à la forme d'o
       <location filename="../CommandDoc.cpp" line="533"/>
       <location filename="../CommandDoc.cpp" line="542"/>
       <source>Merge document</source>
-      <translation type="unfinished">Merge document</translation>
+      <translation>Fusionner le document</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="534"/>
@@ -9979,7 +9995,7 @@ Contrairement aux clones, les liens font directement référence à la forme d'o
     <message>
       <location filename="../CommandDoc.cpp" line="543"/>
       <source>Cannot merge document with itself.</source>
-      <translation type="unfinished">Cannot merge document with itself.</translation>
+      <translation>Impossible de fusionner le document avec lui-même.</translation>
     </message>
   </context>
   <context>
@@ -9996,8 +10012,8 @@ Contrairement aux clones, les liens font directement référence à la forme d'o
       <translation>Créer un nouveau document vide</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="391"/>
       <location filename="../MainWindow.cpp" line="2311"/>
+      <location filename="../DocumentRecovery.cpp" line="391"/>
       <source>Unnamed</source>
       <translation>Sans nom</translation>
     </message>
@@ -10522,7 +10538,7 @@ Il permet d'organiser les objets qui ont un Part TopoShape de pièce, comme les 
     <message>
       <location filename="../CommandView.cpp" line="597"/>
       <source>Clipping plane</source>
-      <translation>Plan de coupe</translation>
+      <translation>Couper selon des plans</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="598"/>
@@ -12603,22 +12619,22 @@ after FreeCAD launches</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="62"/>
       <source>Unit system for all parts of the application. Can be overridden by specifying a document unit system.</source>
-      <translation type="unfinished">Unit system for all parts of the application. Can be overridden by specifying a document unit system.</translation>
+      <translation>Système d'unités pour toutes les composantes de l'application. Peut être remplacé par un système d'unités du document.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="93"/>
       <source>Document unit system:</source>
-      <translation type="unfinished">Document unit system:</translation>
+      <translation>Système d'unités des documents :</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="100"/>
       <source>Unit system stored in the current document</source>
-      <translation type="unfinished">Unit system stored in the current document</translation>
+      <translation>Système d'unités enregistré dans le document en cours</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="107"/>
       <source>If enabled, document unit systems are ignored</source>
-      <translation type="unfinished">If enabled, document unit systems are ignored</translation>
+      <translation>Si cette case est cochée, les systèmes d'unités des documents seront ignorés</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="110"/>
@@ -13478,7 +13494,7 @@ Le clic automatique n'est activé que si tous les pixels de la région sont non 
     <message>
       <location filename="../OverlayWidgets.cpp" line="857"/>
       <source>None</source>
-      <translation>Aucun</translation>
+      <translation>Rien</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="858"/>
@@ -13549,13 +13565,13 @@ Le clic automatique n'est activé que si tous les pixels de la région sont non 
     <message>
       <location filename="../CommandDoc.cpp" line="828"/>
       <source>Document i&amp;nformation...</source>
-      <translation type="unfinished">Document i&amp;nformation...</translation>
+      <translation>&amp;Informations sur les documents...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="829"/>
       <location filename="../CommandDoc.cpp" line="831"/>
       <source>Show details of the currently active document</source>
-      <translation type="unfinished">Show details of the currently active document</translation>
+      <translation>Afficher les détails du document actif</translation>
     </message>
   </context>
   <context>
@@ -13563,13 +13579,13 @@ Le clic automatique n'est activé que si tous les pixels de la région sont non 
     <message>
       <location filename="../CommandDoc.cpp" line="859"/>
       <source>Document utility...</source>
-      <translation type="unfinished">Document utility...</translation>
+      <translation>Utilitaire du document...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="860"/>
       <location filename="../CommandDoc.cpp" line="861"/>
       <source>Utility to extract or create document files</source>
-      <translation type="unfinished">Utility to extract or create document files</translation>
+      <translation>Utilitaire pour extraire ou créer des fichiers du document</translation>
     </message>
   </context>
 </TS>
