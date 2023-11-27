@@ -189,8 +189,7 @@ PythonToCppFunc toCppPointerCheckFuncQuantity(PyObject* obj)
 {
     if (PyObject_TypeCheck(obj, &(Base::QuantityPy::Type)))
         return toCppPointerConvFuncQuantity;
-    else
-        return nullptr;
+    return nullptr;
 }
 
 void BaseQuantity_PythonToCpp_QVariant(PyObject* pyIn, void* cppOut)
