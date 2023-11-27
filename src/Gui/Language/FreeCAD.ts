@@ -188,8 +188,8 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../TaskCSysDragger.cpp" line="75"/>
         <location filename="../Transform.cpp" line="101"/>
+        <location filename="../TaskCSysDragger.cpp" line="75"/>
         <location filename="../ViewProviderAnnotation.cpp" line="416"/>
         <source>Transform</source>
         <translation type="unfinished"></translation>
@@ -3076,12 +3076,27 @@ bounding box size of the 3D object that is currently displayed.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="160"/>
+        <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="130"/>
+        <source>20px</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="131"/>
+        <source>25px</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="132"/>
+        <source>30px</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="163"/>
         <source>Anti-aliasing</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="161"/>
+        <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="164"/>
         <source>Open a new viewer or restart %1 to apply anti-aliasing changes.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -5999,15 +6014,15 @@ Do you want to save your changes?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="617"/>
         <location filename="../GraphvizView.cpp" line="448"/>
+        <location filename="../CommandDoc.cpp" line="617"/>
         <source>Graphviz format</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="618"/>
         <location filename="../GraphvizView.cpp" line="462"/>
         <location filename="../GraphvizView.cpp" line="550"/>
+        <location filename="../CommandDoc.cpp" line="618"/>
         <source>Export graph</source>
         <translation type="unfinished"></translation>
     </message>
@@ -7927,8 +7942,8 @@ Do you want to specify another directory?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../CommandDoc.cpp" line="1230"/>
         <location filename="../MainWindow.cpp" line="809"/>
+        <location filename="../CommandDoc.cpp" line="1230"/>
         <source>Unsaved document</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8783,8 +8798,8 @@ the current copy will be lost.
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../OverlayManager.cpp" line="1036"/>
         <location filename="../OverlayWidgets.cpp" line="2180"/>
+        <location filename="../OverlayManager.cpp" line="1036"/>
         <source>Toggle floating window</source>
         <translation type="unfinished"></translation>
     </message>
@@ -8998,7 +9013,7 @@ the current copy will be lost.
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../Selection.cpp" line="913"/>
+        <location filename="../Selection.cpp" line="937"/>
         <source>Selection not allowed by filter</source>
         <translation type="unfinished"></translation>
     </message>
@@ -9913,8 +9928,8 @@ the current copy will be lost.
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../DocumentRecovery.cpp" line="391"/>
         <location filename="../MainWindow.cpp" line="2311"/>
+        <location filename="../DocumentRecovery.cpp" line="391"/>
         <source>Unnamed</source>
         <translation type="unfinished"></translation>
     </message>
