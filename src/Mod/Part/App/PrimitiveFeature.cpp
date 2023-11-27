@@ -802,6 +802,9 @@ App::DocumentObjectExecReturn *Helix::execute()
         Standard_Real myRadiusTop = myRadius + myHeight * tan(myAngle/180.0f*M_PI);
 
         this->Shape.setValue(TopoShape().makeSpiralHelix(myRadius, myRadiusTop, myHeight, nbTurns, mySegLen, myLocalCS));
+        // props.Mass() may seem a strange way to get the Length, but 
+        // https://dev.opencascade.org/doc/refman/html/class_b_rep_g_prop.html#ab1d4bacc290bfaa8df13dd99ae7b8e70
+        // confirms this.
         GProp_GProps props;
         BRepGProp::LinearProperties(Shape.getShape().getShape(), props);
         Length.setValue(props.Mass());
