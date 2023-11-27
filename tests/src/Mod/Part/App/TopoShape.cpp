@@ -88,16 +88,16 @@ TEST_F(TopoShapeTest, pointsAndFaces)
     EXPECT_EQ(thirdFace.I3, 6);
 }
 
-TEST_F(TopoShapeTest, faceNaming)
+TEST_F(TopoShapeTest, facesAndFacets)
 {
     // Arrange
     std::vector<Base::Vector3d> points;
-    std::vector<Data::ComplexGeoData::Facet> faces;
+    std::vector<Data::ComplexGeoData::Facet> facets;
     double accuracy(0.0);
     std::string face = "Face"; // force to string to enable proper std:find matching
     std::string edge = "Edge";
     std::string vertex = "Vertex";
-    _topoShape.getFaces(points, faces, accuracy); // box at 1,2,3 with dimensions 10,11,12
+    _topoShape.getFaces(points, facets, accuracy); // box at 1,2,3 with dimensions 10,11,12
 
     // Act
     auto elementTypes = _topoShape.getElementTypes();
@@ -112,32 +112,13 @@ TEST_F(TopoShapeTest, faceNaming)
     EXPECT_TRUE(
         std::find(elementTypes.begin(), elementTypes.end(), vertex) != elementTypes.end());
     EXPECT_EQ(faceSubShapes.size(), 6); // 6 faces (both in/out facets included)
-    EXPECT_EQ(faces.size(), 12);  // 6 inward facing facets + 6 outward facing facets
+    EXPECT_EQ(facets.size(), 6*2);  // two triangular facets per rectangular face
+    EXPECT_EQ(points[facets[0].I1].x, 1);  // first facet of face0; the first point of the facet is origin (1, 2, 3)
+    EXPECT_EQ(points[facets[0].I1].y, 2);
+    EXPECT_EQ(points[facets[0].I1].z, 3);
 }
 
-TEST_F(TopoShapeTest, faceBySimpleName)
-{
-    // Arrange
-    // NOTE: _topoShape is a box with lower-left corner at (1, 2, 3) of size (10, 11, 12)
-    std::vector<Base::Vector3d> points;
-    std::vector<Data::ComplexGeoData::Facet> faces;
-    auto expectedNameForFace = Part::TopoShape::shapeName(TopAbs_FACE); // "Face"
-
-    // Act
-    _topoShape.getFaces(points, faces, 0.0); // box at 1,2,3 with dimensions 10,11,12
-    auto fourthPairRef = Part::TopoShape::getElementTypeAndIndex("Face4");
-    auto fourthPairName = fourthPairRef.first.c_str();
-    auto fourthPairIndex = fourthPairRef.second - 1;
-
-    // Assert
-    EXPECT_EQ(fourthPairName, expectedNameForFace);
-    EXPECT_EQ(fourthPairIndex, 3);
-    EXPECT_EQ(faces[fourthPairIndex].I1, 4);
-    EXPECT_EQ(faces[fourthPairIndex].I2, 6);
-    EXPECT_EQ(faces[fourthPairIndex].I3, 7);
-}
-
-    TEST_F(TopoShapeTest, getCharacteristics)
+TEST_F(TopoShapeTest, getCharacteristics)
 {
     // Arrange
     Base::Vector3d cog;
