@@ -44,10 +44,12 @@ namespace Base
 class BaseExport StdInputStream: public XERCES_CPP_NAMESPACE_QUALIFIER BinInputStream
 {
 public:
-    StdInputStream(std::istream& Stream,
+    // clang-format off
+    explicit StdInputStream(std::istream& Stream,
                    XERCES_CPP_NAMESPACE_QUALIFIER MemoryManager* const manager =
-                       XERCES_CPP_NAMESPACE_QUALIFIER XMLPlatformUtils::fgMemoryManager);
+                   XERCES_CPP_NAMESPACE_QUALIFIER XMLPlatformUtils::fgMemoryManager);
     ~StdInputStream() override;
+    // clang-format on
 
     // -----------------------------------------------------------------------
     //  Implementation of the input stream interface

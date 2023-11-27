@@ -53,10 +53,12 @@
 #include "Tools.h"
 #include "WidgetFactory.h"
 
+#include <QDesktopWidget>
 
 using namespace Gui::Dialog;
 
-QWidget* PreferencesPageItem::getWidget() const {
+QWidget* PreferencesPageItem::getWidget() const
+{
     return _widget;
 }
 
@@ -68,6 +70,16 @@ void PreferencesPageItem::setWidget(QWidget* widget)
     
     _widget = widget;
     _widget->setProperty(PropertyName, QVariant::fromValue(this));
+}
+
+bool PreferencesPageItem::isExpanded() const
+{
+    return _expanded;
+}
+
+void PreferencesPageItem::setExpanded(bool expanded)
+{
+    _expanded = expanded;
 }
 
 Q_DECLARE_METATYPE(PreferencesPageItem*);
@@ -110,10 +122,22 @@ DlgPreferencesImp::DlgPreferencesImp(QWidget* parent, Qt::WindowFlags fl)
             &QTreeView::clicked,
             this,
             &DlgPreferencesImp::onPageSelected);
+    connect(ui->groupsTreeView,
+            &QTreeView::expanded,
+            this,
+            &DlgPreferencesImp::onGroupExpanded);
+    connect(ui->groupsTreeView,
+            &QTreeView::collapsed,
+            this,
+            &DlgPreferencesImp::onGroupCollapsed);
     connect(ui->buttonReset,
             &QPushButton::clicked,
             this,
             &DlgPreferencesImp::showResetOptions);
+    connect(ui->groupWidgetStack,
+            &QStackedWidget::currentChanged,
+            this,
+            &DlgPreferencesImp::onStackWidgetChange);
 
     ui->groupsTreeView->setModel(&_model);
     
@@ -193,6 +217,15 @@ PreferencesPageItem* DlgPreferencesImp::createGroup(const std::string &groupName
     auto groupPages = new QStackedWidget;
     groupPages->setProperty(GroupNameProperty, QVariant(groupNameQString));
 
+    connect(groupPages,
+            &QStackedWidget::currentChanged,
+            this,
+            &DlgPreferencesImp::onStackWidgetChange);
+
+
+    if (ui->groupWidgetStack->count() > 0) {
+        groupPages->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+    }
     ui->groupWidgetStack->addWidget(groupPages);
 
     auto item = new PreferencesPageItem;
@@ -204,6 +237,7 @@ PreferencesPageItem* DlgPreferencesImp::createGroup(const std::string &groupName
     item->setTextAlignment(Qt::AlignLeft | Qt::AlignVCenter);
     item->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled);
     item->setWidget(groupPages);
+    item->setSelectable(false);
 
     _model.invisibleRootItem()->appendRow(item);
 
@@ -255,6 +289,11 @@ void DlgPreferencesImp::createPageInGroup(PreferencesPageItem *groupItem, const 
         page->loadSettings();
 
         auto pages = qobject_cast<QStackedWidget*>(groupItem->getWidget());
+
+        if (pages->count() > 0) {
+            page->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+        }
+
         pages->addWidget(page);
     }
     catch (const Base::Exception& e) {
@@ -637,7 +676,6 @@ void DlgPreferencesImp::restartIfRequired()
 
 void DlgPreferencesImp::showEvent(QShowEvent* ev)
 {
-    this->adjustSize();
     QDialog::showEvent(ev);
 }
 
@@ -654,18 +692,86 @@ QModelIndex findRootIndex(const QModelIndex& index)
 
 void DlgPreferencesImp::onPageSelected(const QModelIndex& index)
 {
-    auto root = findRootIndex(index);
+    auto* currentItem = static_cast<PreferencesPageItem*>(_model.itemFromIndex(index));
 
-    auto* groupItem = static_cast<PreferencesPageItem*>(_model.itemFromIndex(root));
+    if (currentItem->hasChildren()) {
+        auto pageIndex = currentItem->child(0)->index();
+
+        ui->groupsTreeView->selectionModel()->select(pageIndex, QItemSelectionModel::ClearAndSelect);
+
+        onPageSelected(pageIndex);
+
+        return;
+    }
+
+    auto groupIndex = findRootIndex(index);
+
+    auto* groupItem = static_cast<PreferencesPageItem*>(_model.itemFromIndex(groupIndex));
     auto* pagesStackWidget = static_cast<QStackedWidget*>(groupItem->getWidget());
 
     ui->groupWidgetStack->setCurrentWidget(groupItem->getWidget());
 
-    if (index != root) {
+    if (index != groupIndex) {
         pagesStackWidget->setCurrentIndex(index.row());
     }
 
     updatePageDependentLabels();
+}
+
+void DlgPreferencesImp::onGroupExpanded(const QModelIndex& index)
+{
+    auto root = findRootIndex(index);
+
+    auto* groupItem = static_cast<PreferencesPageItem*>(_model.itemFromIndex(root));
+
+    groupItem->setExpanded(true);
+}
+
+void DlgPreferencesImp::onGroupCollapsed(const QModelIndex& index)
+{
+    auto root = findRootIndex(index);
+
+    auto* groupItem = static_cast<PreferencesPageItem*>(_model.itemFromIndex(root));
+
+    groupItem->setExpanded(false);
+}
+
+void DlgPreferencesImp::onStackWidgetChange(int index)
+{
+    auto stack = qobject_cast<QStackedWidget*>(sender());
+
+    for (int i = 0; i < stack->count(); i++) {
+        auto current = stack->widget(i);
+        current->setSizePolicy(QSizePolicy::Ignored, QSizePolicy::Ignored);
+    }
+
+    if (auto selected = stack->widget(index)) {
+        selected->setSizePolicy(QSizePolicy::Expanding, QSizePolicy::Expanding);
+    }
+
+    auto currentItem = getCurrentPage();
+
+    if (!currentItem) {
+        return;
+    }
+
+    ui->groupsTreeView->selectionModel()->select(currentItem->index(), QItemSelectionModel::ClearAndSelect);
+
+    auto root = _model.invisibleRootItem();
+    for (int i = 0; i < root->rowCount(); i++) {
+        auto currentGroup = static_cast<PreferencesPageItem*>(root->child(i));
+
+        if (!currentGroup->isExpanded()) {
+            ui->groupsTreeView->collapse(currentGroup->index());
+        }
+    }
+
+    auto parentItem = currentItem;
+    while ((parentItem = static_cast<PreferencesPageItem*>(parentItem->parent()))) {
+        bool wasExpanded = parentItem->isExpanded();
+        ui->groupsTreeView->expand(parentItem->index());
+        parentItem->setExpanded(wasExpanded);
+    }
 }
 
 void DlgPreferencesImp::changeEvent(QEvent *e)

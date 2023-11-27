@@ -180,33 +180,32 @@ class Snapper:
 
     def set_snap_style(self):
         self.snapStyle = Draft.getParam("snapStyle", 0)
-        # the snapmarker has "dot","circle" and "square" available styles
         if self.snapStyle:
-            self.mk = coll.OrderedDict([('passive',       'empty'),
-                                        ('extension',     'empty'),
-                                        ('parallel',      'empty'),
-                                        ('grid',          'quad'),
-                                        ('endpoint',      'quad'),
-                                        ('midpoint',      'quad'),
-                                        ('perpendicular', 'quad'),
-                                        ('angle',         'quad'),
-                                        ('center',        'quad'),
-                                        ('ortho',         'quad'),
-                                        ('intersection',  'quad'),
-                                        ('special',       'quad')])
+            self.mk = coll.OrderedDict([("passive",       "SQUARE_LINE"),
+                                        ("extension",     "SQUARE_LINE"),
+                                        ("parallel",      "SQUARE_LINE"),
+                                        ("grid",          "SQUARE_FILLED"),
+                                        ("endpoint",      "SQUARE_FILLED"),
+                                        ("midpoint",      "SQUARE_FILLED"),
+                                        ("perpendicular", "SQUARE_FILLED"),
+                                        ("angle",         "SQUARE_FILLED"),
+                                        ("center",        "SQUARE_FILLED"),
+                                        ("ortho",         "SQUARE_FILLED"),
+                                        ("intersection",  "SQUARE_FILLED"),
+                                        ("special",       "SQUARE_FILLED")])
         else:
-            self.mk = coll.OrderedDict([('passive',       'circle'),
-                                        ('extension',     'circle'),
-                                        ('parallel',      'circle'),
-                                        ('grid',          'circle'),
-                                        ('endpoint',      'dot'),
-                                        ('midpoint',      'square'),
-                                        ('perpendicular', 'dot'),
-                                        ('angle',         'square'),
-                                        ('center',        'dot'),
-                                        ('ortho',         'dot'),
-                                        ('intersection',  'dot'),
-                                        ('special',       'dot')])
+            self.mk = coll.OrderedDict([("passive",       "CIRCLE_LINE"),
+                                        ("extension",     "CIRCLE_LINE"),
+                                        ("parallel",      "CIRCLE_LINE"),
+                                        ("grid",          "CIRCLE_LINE"),
+                                        ("endpoint",      "CIRCLE_FILLED"),
+                                        ("midpoint",      "DIAMOND_FILLED"),
+                                        ("perpendicular", "CIRCLE_FILLED"),
+                                        ("angle",         "DIAMOND_FILLED"),
+                                        ("center",        "CIRCLE_FILLED"),
+                                        ("ortho",         "CIRCLE_FILLED"),
+                                        ("intersection",  "CIRCLE_FILLED"),
+                                        ("special",       "CIRCLE_FILLED")])
 
 
     def cstr(self, lastpoint, constrain, point):
@@ -244,7 +243,7 @@ class Snapper:
 
         self.spoint = None
 
-        if Draft.getParam("showSnapBar", True):
+        if Draft.getParam("SnapBarShowOnlyDuringCommands", False):
             toolbar = self.get_snap_toolbar()
             if toolbar:
                 toolbar.show()
@@ -1213,7 +1212,7 @@ class Snapper:
             self.grid.lowerTracker()
 
 
-    def off(self, hideSnapBar=False):
+    def off(self):
         """Finish snapping."""
         if self.tracker:
             self.tracker.off()
@@ -1238,7 +1237,7 @@ class Snapper:
         self.unconstrain()
         self.radius = 0
         self.setCursor()
-        if hideSnapBar or Draft.getParam("hideSnapBar", False):
+        if Draft.getParam("SnapBarShowOnlyDuringCommands", False):
             toolbar = self.get_snap_toolbar()
             if toolbar:
                 toolbar.hide()
@@ -1486,30 +1485,11 @@ class Snapper:
 
     def get_snap_toolbar(self):
         """Get the snap toolbar."""
-
         if not (hasattr(self, "toolbar") and self.toolbar):
             mw = Gui.getMainWindow()
             self.toolbar = mw.findChild(QtGui.QToolBar, "Draft snap")
         if self.toolbar:
-            # Make sure the Python generated BIM snap toolbar shows up in the
-            # toolbar area context menu after switching back to that workbench:
-            self.toolbar.toggleViewAction().setVisible(True)
             return self.toolbar
-
-        # Code required for the BIM workbench which has to work with FC0.20
-        # and FC0.21/1.0. The code relies on the Snapping menu in the BIM WB
-        # to create the actions.
-        self.toolbar = QtGui.QToolBar(mw)
-        mw.addToolBar(QtCore.Qt.TopToolBarArea, self.toolbar)
-        self.toolbar.setObjectName("Draft snap")
-        self.toolbar.setWindowTitle(translate("Workbench", "Draft snap"))
-        for cmd in get_draft_snap_commands():
-            if cmd == "Separator":
-                self.toolbar.addSeparator()
-            else:
-                action = Gui.Command.get(cmd).getAction()[0]
-                self.toolbar.addAction(action)
-        return self.toolbar
 
 
     def toggleGrid(self):
@@ -1593,24 +1573,12 @@ class Snapper:
 
 
     def show(self):
-        """Show the toolbar, show the grid in all 3D views where it was
-        previously visible, and start the trackers for the active 3D view
-        if it is `tracker-less`.
-        """
-        toolbar = self.get_snap_toolbar()
-        if toolbar:
-            if Draft.getParam("showSnapBar", True):
-                toolbar.show()
-            else:
-                toolbar.hide()
+        """Show the grid in all 3D views where it was previously visible."""
         self.show_hide_grids(show=True)
 
 
     def hide(self):
-        """Hide the toolbar and hide the grid in all 3D views."""
-        if hasattr(self, "toolbar") and self.toolbar:
-            self.toolbar.hide()
-            self.toolbar.toggleViewAction().setVisible(False)
+        """Hide the grid in all 3D views."""
         self.show_hide_grids(show=False)
 
 

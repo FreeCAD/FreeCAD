@@ -38,12 +38,11 @@ TYPESYSTEM_SOURCE(Base::Exception, Base::BaseClass)
 
 
 Exception::Exception()
-    : _line(0)
+    : _sErrMsg("FreeCAD Exception")
+    , _line(0)
     , _isTranslatable(false)
     , _isReported(false)
-{
-    _sErrMsg = "FreeCAD Exception";
-}
+{}
 
 Exception::Exception(const Exception& inst) = default;
 
@@ -56,8 +55,8 @@ Exception::Exception(const char* sMessage)
     , _isReported(false)
 {}
 
-Exception::Exception(const std::string& sMessage)
-    : _sErrMsg(sMessage)
+Exception::Exception(std::string sMessage)
+    : _sErrMsg(std::move(sMessage))
     , _line(0)
     , _isTranslatable(false)
     , _isReported(false)
@@ -283,9 +282,8 @@ FileException::FileException(const char* sMessage, const FileInfo& File)
 
 FileException::FileException()
     : Exception("Unknown file exception happened")
-{
-    _sErrMsgAndFileName = _sErrMsg;
-}
+    , _sErrMsgAndFileName(_sErrMsg)
+{}
 
 void FileException::setFileName(const char* sFileName)
 {

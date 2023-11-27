@@ -114,6 +114,94 @@ const char diamondFilled15_marker[DIAMOND_FILLED15_WIDTH * DIAMOND_FILLED15_HEIG
 "      xxxx     "
 "       xx      "};
 
+
+//DIAMOND_FILLED_20_20
+const int DIAMOND_FILLED20_WIDTH = 20;
+const int DIAMOND_FILLED20_HEIGHT = 20;
+const char diamondFilled20_marker[DIAMOND_FILLED20_WIDTH * DIAMOND_FILLED20_HEIGHT + 1] = {
+"               "
+"       xx      "
+"      xxxx     "
+"     xxxxxx    "
+"    xxxxxxxx   "
+"   xxxxxxxxxx  "
+"  xxxxxxxxxxxx "
+" xxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxx"
+"  xxxxxxxxxxxx "
+"   xxxxxxxxxx  "
+"    xxxxxxxx   "
+"     xxxxxx    "
+"      xxxx     "
+"       xx      "};
+
+//DIAMOND_FILLED_25_25
+const int DIAMOND_FILLED25_WIDTH = 25;
+const int DIAMOND_FILLED25_HEIGHT = 25;
+const char diamondFilled25_marker[DIAMOND_FILLED25_WIDTH * DIAMOND_FILLED25_HEIGHT + 1] = {
+"                         "
+"           xxx           "
+"          xxxxx          "
+"         xxxxxxx         "
+"        xxxxxxxxx        "
+"       xxxxxxxxxxx       "
+"      xxxxxxxxxxxxx      "
+"     xxxxxxxxxxxxxxx     "
+"    xxxxxxxxxxxxxxxxx    "
+"   xxxxxxxxxxxxxxxxxxx   "
+"  xxxxxxxxxxxxxxxxxxxxx  "
+" xxxxxxxxxxxxxxxxxxxxxxx "
+" xxxxxxxxxxxxxxxxxxxxxxx "
+" xxxxxxxxxxxxxxxxxxxxxxx "
+" xxxxxxxxxxxxxxxxxxxxxxx "
+"  xxxxxxxxxxxxxxxxxxxxx  "
+"   xxxxxxxxxxxxxxxxxxx   "
+"    xxxxxxxxxxxxxxxxx    "
+"     xxxxxxxxxxxxxxx     "
+"      xxxxxxxxxxxxx      "
+"       xxxxxxxxxxx       "
+"        xxxxxxxxx        "
+"         xxxxxxx         "
+"          xxxxx          "
+"           xxx           "};
+
+
+//DIAMOND_FILLED_30_30
+const int DIAMOND_FILLED30_WIDTH = 30;
+const int DIAMOND_FILLED30_HEIGHT = 30;
+const char diamondFilled30_marker[DIAMOND_FILLED30_WIDTH * DIAMOND_FILLED30_HEIGHT + 1] = {
+"                              "
+"              xxx             "
+"             xxxxx            "
+"            xxxxxxx           "
+"           xxxxxxxxx          "
+"          xxxxxxxxxxx         "
+"         xxxxxxxxxxxxx        "
+"        xxxxxxxxxxxxxxx       "
+"       xxxxxxxxxxxxxxxxx      "
+"      xxxxxxxxxxxxxxxxxxx     "
+"     xxxxxxxxxxxxxxxxxxxxx    "
+"    xxxxxxxxxxxxxxxxxxxxxxx   "
+"   xxxxxxxxxxxxxxxxxxxxxxxxx  "
+"  xxxxxxxxxxxxxxxxxxxxxxxxxxx "
+" xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+"  xxxxxxxxxxxxxxxxxxxxxxxxxxx "
+"   xxxxxxxxxxxxxxxxxxxxxxxxx  "
+"    xxxxxxxxxxxxxxxxxxxxxxx   "
+"     xxxxxxxxxxxxxxxxxxxxx    "
+"      xxxxxxxxxxxxxxxxxxx     "
+"       xxxxxxxxxxxxxxxxx      "
+"        xxxxxxxxxxxxxxx       "
+"         xxxxxxxxxxxxx        "
+"          xxxxxxxxxxx         "
+"           xxxxxxxxx          "
+"            xxxxxxx           "
+"             xxxxx            "
+"              xxx             "
+"                              "};
+
+
 //CROSS_11_11
 const int CROSS11_WIDTH = 11;
 const int CROSS11_HEIGHT = 11;
@@ -169,6 +257,100 @@ const char cross15_marker[CROSS15_WIDTH * CROSS15_HEIGHT + 1] = {
 "   xx      xx  "
 "  xx        xx "
 " xx          xx"};
+
+//CROSS_20_20
+const int CROSS20_WIDTH = 20;
+const int CROSS20_HEIGHT = 20;
+const char cross20_marker[CROSS20_WIDTH * CROSS20_HEIGHT + 1] = {
+"                    "
+" xx               xx"
+"  xx             xx "
+"   xx           xx  "
+"    xx         xx   "
+"     xx       xx    "
+"      xx     xx     "
+"       xx   xx      "
+"        xx xx       "
+"         xxx        "
+"          x         "
+"         xxx        "
+"        xx xx       "
+"       xx   xx      "
+"      xx     xx     "
+"     xx       xx    "
+"    xx         xx   "
+"   xx           xx  "
+"  xx             xx "
+" xx               xx"};
+
+
+//CROSS_25_25
+const int CROSS25_WIDTH = 25;
+const int CROSS25_HEIGHT = 25;
+const char cross25_marker[CROSS25_WIDTH * CROSS25_HEIGHT + 1] = {
+"                         "
+" xx                    xx"
+"  xx                  xx "
+"   xx                xx  "
+"    xx              xx   "
+"     xx            xx    "
+"      xx          xx     "
+"       xx        xx      "
+"        xx      xx       "
+"         xx    xx        "
+"          xx  xx         "
+"           xxxx          "
+"            xx           "
+"            xx           "
+"           xxxx          "
+"          xx  xx         "
+"         xx    xx        "
+"        xx      xx       "
+"       xx        xx      "
+"      xx          xx     "
+"     xx            xx    "
+"    xx              xx   "
+"   xx                xx  "
+"  xx                  xx "
+" xx                    xx"};
+
+
+//CROSS_30_30
+const int CROSS30_WIDTH = 30;
+const int CROSS30_HEIGHT = 30;
+const char cross30_marker[CROSS30_WIDTH * CROSS30_HEIGHT + 1] = {
+"                              "
+" xxx                       xxx"
+"  xxx                     xxx "
+"   xxx                   xxx  "
+"    xxx                 xxx   "
+"     xxx               xxx    "
+"      xxx             xxx     "
+"       xxx           xxx      "
+"        xxx         xxx       "
+"         xxx       xxx        "
+"          xxx     xxx         "
+"           xxx   xxx          "
+"            xxx xxx           "
+"             xxxxx            "
+"              xxx             "
+"              xxx             "
+"              xxx             "
+"             xxxxx            "
+"            xxx xxx           "
+"           xxx   xxx          "
+"          xxx     xxx         "
+"         xxx       xxx        "
+"        xxx         xxx       "
+"       xxx           xxx      "
+"      xxx             xxx     "
+"     xxx               xxx    "
+"    xxx                 xxx   "
+"   xxx                   xxx  "
+"  xxx                     xxx "
+" xxx                       xxx"};
+
+
 
 //PLUS_11_11
 const int PLUS11_WIDTH = 11;
@@ -226,6 +408,97 @@ const char plus15_marker[PLUS15_WIDTH * PLUS15_HEIGHT + 1] = {
     "       xx      "
     "       xx      "};
 
+
+//PLUS_20_20
+const int PLUS20_WIDTH = 20;
+const int PLUS20_HEIGHT = 20;
+const char plus20_marker[PLUS20_WIDTH * PLUS20_HEIGHT + 1] = {
+    "                    "
+    "          xx        "
+    "          xx        "
+    "          xx        "
+    "          xx        "
+    "          xx        "
+    "          xx        "
+    "          xx        "
+    "          xx        "
+    " xxxxxxxxxxxxxxxxxxx"
+    " xxxxxxxxxxxxxxxxxxx"
+    "          xx        "
+    "          xx        "
+    "          xx        "
+    "          xx        "
+    "          xx        "
+    "          xx        "
+    "          xx        "
+    "          xx        "
+    "          xx        "};
+
+//PLUS_25_25
+const int PLUS25_WIDTH = 25;
+const int PLUS25_HEIGHT = 25;
+const char plus25_marker[PLUS25_WIDTH * PLUS25_HEIGHT + 1] = {
+    "                         "
+    "            xxx          "
+    "            xxx          "
+    "            xxx          "
+    "            xxx          "
+    "            xxx          "
+    "            xxx          "
+    "            xxx          "
+    "            xxx          "
+    "            xxx          "
+    "            xxx          "
+    "            xxx          "
+    " xxxxxxxxxxxxxxxxxxxxxxxx"
+    " xxxxxxxxxxxxxxxxxxxxxxxx"
+    " xxxxxxxxxxxxxxxxxxxxxxxx"
+    "            xxx          "
+    "            xxx          "
+    "            xxx          "
+    "            xxx          "
+    "            xxx          "
+    "            xxx          "
+    "            xxx          "
+    "            xxx          "
+    "            xxx          "
+    "            xxx          "};
+
+//PLUS_30_30
+const int PLUS30_WIDTH = 30;
+const int PLUS30_HEIGHT = 30;
+const char plus30_marker[PLUS30_WIDTH * PLUS30_HEIGHT + 1] = {
+    "                              "
+    "              xxx             "
+    "              xxx             "
+    "              xxx             "
+    "              xxx             "
+    "              xxx             "
+    "              xxx             "
+    "              xxx             "
+    "              xxx             "
+    "              xxx             "
+    "              xxx             "
+    "              xxx             "
+    "              xxx             "
+    "              xxx             "
+    " xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    " xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    " xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    "              xxx             "
+    "              xxx             "
+    "              xxx             "
+    "              xxx             "
+    "              xxx             "
+    "              xxx             "
+    "              xxx             "
+    "              xxx             "
+    "              xxx             "
+    "              xxx             "
+    "              xxx             "
+    "              xxx             "
+    "              xxx             "};
+
 //SQUARE_LINE_11_11
 const int SQUARE_LINE11_WIDTH = 11;
 const int SQUARE_LINE11_HEIGHT = 11;
@@ -281,6 +554,97 @@ const char squareLine15_marker[SQUARE_LINE15_WIDTH * SQUARE_LINE15_HEIGHT + 1] =
 " xx          xx"
 " xxxxxxxxxxxxxx"
 " xxxxxxxxxxxxxx"};
+
+//SQUARE_LINE_20_20
+const int SQUARE_LINE20_WIDTH = 20;
+const int SQUARE_LINE20_HEIGHT = 20;
+const char squareLine20_marker[SQUARE_LINE20_WIDTH * SQUARE_LINE20_HEIGHT + 1] = {
+"                    "
+" xxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxx"
+" xx               xx"
+" xx               xx"
+" xx               xx"
+" xx               xx"
+" xx               xx"
+" xx               xx"
+" xx               xx"
+" xx               xx"
+" xx               xx"
+" xx               xx"
+" xx               xx"
+" xx               xx"
+" xx               xx"
+" xx               xx"
+" xx               xx"
+" xxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxx"};
+
+//SQUARE_LINE_25_25
+const int SQUARE_LINE25_WIDTH = 25;
+const int SQUARE_LINE25_HEIGHT = 25;
+const char squareLine25_marker[SQUARE_LINE25_WIDTH * SQUARE_LINE25_HEIGHT + 1] = {
+"                         "
+" xxxxxxxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxxxxxxx"
+" xx                    xx"
+" xx                    xx"
+" xx                    xx"
+" xx                    xx"
+" xx                    xx"
+" xx                    xx"
+" xx                    xx"
+" xx                    xx"
+" xx                    xx"
+" xx                    xx"
+" xx                    xx"
+" xx                    xx"
+" xx                    xx"
+" xx                    xx"
+" xx                    xx"
+" xx                    xx"
+" xx                    xx"
+" xx                    xx"
+" xx                    xx"
+" xx                    xx"
+" xxxxxxxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxxxxxxx"};
+
+//SQUARE_LINE_30_30
+const int SQUARE_LINE30_WIDTH = 30;
+const int SQUARE_LINE30_HEIGHT = 30;
+const char squareLine30_marker[SQUARE_LINE30_WIDTH * SQUARE_LINE30_HEIGHT + 1] = {
+"                              "
+" xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+" xx                         xx"
+" xx                         xx"
+" xx                         xx"
+" xx                         xx"
+" xx                         xx"
+" xx                         xx"
+" xx                         xx"
+" xx                         xx"
+" xx                         xx"
+" xx                         xx"
+" xx                         xx"
+" xx                         xx"
+" xx                         xx"
+" xx                         xx"
+" xx                         xx"
+" xx                         xx"
+" xx                         xx"
+" xx                         xx"
+" xx                         xx"
+" xx                         xx"
+" xx                         xx"
+" xx                         xx"
+" xx                         xx"
+" xx                         xx"
+" xx                         xx"
+" xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"};
+
 
 //SQUARE_FILLED_11_11
 const int SQUARE_FILLED11_WIDTH = 11;
@@ -338,6 +702,100 @@ const char squareFilled15_marker[SQUARE_FILLED15_WIDTH * SQUARE_FILLED15_HEIGHT 
 " xxxxxxxxxxxxxx"
 " xxxxxxxxxxxxxx"};
 
+//SQUARE_FILLED_20_20
+const int SQUARE_FILLED20_WIDTH = 20;
+const int SQUARE_FILLED20_HEIGHT = 20;
+const char squareFilled20_marker[SQUARE_FILLED20_WIDTH * SQUARE_FILLED20_HEIGHT + 1] = {
+"                    "
+" xxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxx"};
+
+
+//SQUARE_FILLED_25_25
+const int SQUARE_FILLED25_WIDTH = 25;
+const int SQUARE_FILLED25_HEIGHT = 25;
+const char squareFilled25_marker[SQUARE_FILLED25_WIDTH * SQUARE_FILLED25_HEIGHT + 1] = {
+"                         "
+" xxxxxxxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxxxxxxx"};
+
+
+//SQUARE_FILLED_30_30
+const int SQUARE_FILLED30_WIDTH = 30;
+const int SQUARE_FILLED30_HEIGHT = 30;
+const char squareFilled30_marker[SQUARE_FILLED30_WIDTH * SQUARE_FILLED30_HEIGHT + 1] = {
+"                              "
+" xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxxxxxxxxxxxx"};
+
+
+
 //CIRCLE_LINE_11_11
 const int CIRCLE_LINE11_WIDTH = 11;
 const int CIRCLE_LINE11_HEIGHT = 11;
@@ -393,6 +851,103 @@ const char circleLine15_marker[CIRCLE_LINE15_WIDTH * CIRCLE_LINE15_HEIGHT + 1] =
 "  xxx      xxx "
 "   xxxxxxxxxx  "
 "     xxxxxx    "};
+
+//CIRCLE_LINE_20_20
+const int CIRCLE_LINE20_WIDTH = 20;
+const int CIRCLE_LINE20_HEIGHT = 20;
+const char circleLine20_marker[CIRCLE_LINE20_WIDTH * CIRCLE_LINE20_HEIGHT + 1] = {
+"                    "
+"        xxxxx       "
+"      xxxxxxxxx     "
+"     xx       xx    "
+"    xx         xx   "
+"   xx           xx  "
+"  xx             xx "
+"  xx             xx "
+"  xx             xx "
+" xx               xx"
+" xx               xx"
+" xx               xx"
+"  xx             xx "
+"  xx             xx "
+"  xx             xx "
+"   xx           xx  "
+"    xx         xx   "
+"     xx       xx    "
+"      xxxxxxxxx     "
+"        xxxxx       "};
+
+
+
+//CIRCLE_LINE_25_25
+const int CIRCLE_LINE25_WIDTH = 25;
+const int CIRCLE_LINE25_HEIGHT = 25;
+const char circleLine25_marker[CIRCLE_LINE25_WIDTH * CIRCLE_LINE25_HEIGHT + 1] = {
+"                         "
+"         xxxxxxx         "
+"       xxxxxxxxxxx       "
+"     xxx         xxx     "
+"    xx             xx    "
+"   xx               xx   "
+"  xx                 xx  "
+"  xx                 xx  "
+" xx                   xx "
+" xx                   xx "
+" xx                   xx "
+"xx                     xx"
+"xx                     xx"
+"xx                     xx"
+"xx                     xx"
+" xx                   xx "
+" xx                   xx "
+" xx                   xx "
+"  xx                 xx  "
+"  xx                 xx  "
+"   xx               xx   "
+"    xx             xx    "
+"     xxx         xxx     "
+"       xxxxxxxxxxx       "
+"         xxxxxxx         "};
+
+
+
+
+//CIRCLE_LINE_30_30
+const int CIRCLE_LINE30_WIDTH = 30;
+const int CIRCLE_LINE30_HEIGHT = 30;
+const char circleLine30_marker[CIRCLE_LINE30_WIDTH * CIRCLE_LINE30_HEIGHT + 1] = {
+"                              "
+"            xxxxxx            "
+"         xxxxxxxxxxxx         "
+"       xxx          xxx       "
+"      xx              xx      "
+"    xx                  xx    "
+"    xx                  xx    "
+"   xx                    xx   "
+"  xx                      xx  "
+"  xx                      xx  "
+" xx                        xx "
+" xx                        xx "
+" xx                        xx "
+"xx                          xx"
+"xx                          xx"
+"xx                          xx"
+"xx                          xx"
+"xx                          xx"
+" xx                        xx "
+" xx                        xx "
+" xx                        xx "
+"  xx                      xx  "
+"  xx                      xx  "
+"   xx                    xx   "
+"    xx                  xx    "
+"    xx                  xx    "
+"      xx              xx      "
+"       xxx          xxx       "
+"         xxxxxxxxxxxx         "
+"            xxxxxx            "};
+
+
 
 //CIRCLE_FILLED_11_11
 const int CIRCLE_FILLED11_WIDTH = 11;
@@ -450,6 +1005,101 @@ const char circleFilled15_marker[CIRCLE_FILLED15_WIDTH * CIRCLE_FILLED15_HEIGHT 
 "   xxxxxxxxxx  "
 "     xxxxxx    "};
 
+
+//CIRCLE_FILLED_20_20
+const int CIRCLE_FILLED20_WIDTH = 20;
+const int CIRCLE_FILLED20_HEIGHT = 20;
+const char circleFilled20_marker[CIRCLE_FILLED20_WIDTH * CIRCLE_FILLED20_HEIGHT + 1] = {
+"                    "
+"        xxxxx       "
+"      xxxxxxxxx     "
+"     xxxxxxxxxxx    "
+"    xxxxxxxxxxxxx   "
+"   xxxxxxxxxxxxxxx  "
+"  xxxxxxxxxxxxxxxxx "
+"  xxxxxxxxxxxxxxxxx "
+"  xxxxxxxxxxxxxxxxx "
+" xxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxx"
+"  xxxxxxxxxxxxxxxxx "
+"  xxxxxxxxxxxxxxxxx "
+"  xxxxxxxxxxxxxxxxx "
+"   xxxxxxxxxxxxxxx  "
+"    xxxxxxxxxxxxx   "
+"     xxxxxxxxxxx    "
+"      xxxxxxxxx     "
+"        xxxxx       "};
+
+
+//CIRCLE_FILLED_25_25
+const int CIRCLE_FILLED25_WIDTH = 25;
+const int CIRCLE_FILLED25_HEIGHT = 25;
+const char circleFilled25_marker[CIRCLE_FILLED25_WIDTH * CIRCLE_FILLED25_HEIGHT + 1] = {
+"                         "
+"         xxxxxxx         "
+"       xxxxxxxxxxx       "
+"     xxxxxxxxxxxxxxx     "
+"    xxxxxxxxxxxxxxxxx    "
+"   xxxxxxxxxxxxxxxxxxx   "
+"  xxxxxxxxxxxxxxxxxxxxx  "
+"  xxxxxxxxxxxxxxxxxxxxx  "
+" xxxxxxxxxxxxxxxxxxxxxxx "
+" xxxxxxxxxxxxxxxxxxxxxxx "
+" xxxxxxxxxxxxxxxxxxxxxxx "
+"xxxxxxxxxxxxxxxxxxxxxxxxx"
+"xxxxxxxxxxxxxxxxxxxxxxxxx"
+"xxxxxxxxxxxxxxxxxxxxxxxxx"
+"xxxxxxxxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxxxxxx "
+" xxxxxxxxxxxxxxxxxxxxxxx "
+" xxxxxxxxxxxxxxxxxxxxxxx "
+"  xxxxxxxxxxxxxxxxxxxxx  "
+"  xxxxxxxxxxxxxxxxxxxxx  "
+"   xxxxxxxxxxxxxxxxxxx   "
+"    xxxxxxxxxxxxxxxxx    "
+"     xxxxxxxxxxxxxxx     "
+"       xxxxxxxxxxx       "
+"         xxxxxxx         "};
+
+
+//CIRCLE_FILLED_30_30
+const int CIRCLE_FILLED30_WIDTH = 30;
+const int CIRCLE_FILLED30_HEIGHT = 30;
+const char circleFilled30_marker[CIRCLE_FILLED30_WIDTH * CIRCLE_FILLED30_HEIGHT + 1] = {
+"                              "
+"            xxxxxx            "
+"         xxxxxxxxxxxx         "
+"       xxxxxxxxxxxxxxxx       "
+"      xxxxxxxxxxxxxxxxxx      "
+"    xxxxxxxxxxxxxxxxxxxxxx    "
+"    xxxxxxxxxxxxxxxxxxxxxx    "
+"   xxxxxxxxxxxxxxxxxxxxxxxx   "
+"  xxxxxxxxxxxxxxxxxxxxxxxxxx  "
+"  xxxxxxxxxxxxxxxxxxxxxxxxxx  "
+" xxxxxxxxxxxxxxxxxxxxxxxxxxxx "
+" xxxxxxxxxxxxxxxxxxxxxxxxxxxx "
+" xxxxxxxxxxxxxxxxxxxxxxxxxxxx "
+"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+"xxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+" xxxxxxxxxxxxxxxxxxxxxxxxxxxx "
+" xxxxxxxxxxxxxxxxxxxxxxxxxxxx "
+" xxxxxxxxxxxxxxxxxxxxxxxxxxxx "
+"  xxxxxxxxxxxxxxxxxxxxxxxxxx  "
+"  xxxxxxxxxxxxxxxxxxxxxxxxxx  "
+"   xxxxxxxxxxxxxxxxxxxxxxxx   "
+"    xxxxxxxxxxxxxxxxxxxxxx    "
+"    xxxxxxxxxxxxxxxxxxxxxx    "
+"      xxxxxxxxxxxxxxxxxx      "
+"       xxxxxxxxxxxxxxxx       "
+"         xxxxxxxxxxxx         "
+"            xxxxxx            "};
+
+
+
 std::map<MarkerBitmaps::Marker, int> MarkerBitmaps::markerIndex;
 
 void
@@ -458,6 +1108,9 @@ MarkerBitmaps::initClass()
     createBitmap("DIAMOND_FILLED", 11, 11, 11, diamondFilled11_marker);
     createBitmap("DIAMOND_FILLED", 13, 13, 13, diamondFilled13_marker);
     createBitmap("DIAMOND_FILLED", 15, 15, 15, diamondFilled15_marker);
+    createBitmap("DIAMOND_FILLED", 20, 20, 20, diamondFilled20_marker);
+    createBitmap("DIAMOND_FILLED", 25, 25, 25, diamondFilled25_marker);
+    createBitmap("DIAMOND_FILLED", 30, 30, 30, diamondFilled30_marker);
 
     // the built-in bitmaps of Coin
     markerIndex [std::make_pair("DIAMOND_FILLED", 9)] = SoMarkerSet::DIAMOND_FILLED_9_9;
@@ -467,6 +1120,9 @@ MarkerBitmaps::initClass()
     createBitmap("CROSS", 11, 11, 11, cross11_marker);
     createBitmap("CROSS", 13, 13, 13, cross13_marker);
     createBitmap("CROSS", 15, 15, 15, cross15_marker);
+    createBitmap("CROSS", 20, 20, 20, cross20_marker);
+    createBitmap("CROSS", 25, 25, 25, cross25_marker);
+    createBitmap("CROSS", 30, 30, 30, cross30_marker);
 
     // the built-in bitmaps of Coin
     markerIndex [std::make_pair("CROSS", 9)] = SoMarkerSet::CROSS_9_9;
@@ -476,6 +1132,9 @@ MarkerBitmaps::initClass()
     createBitmap("PLUS", 11, 11, 11, plus11_marker);
     createBitmap("PLUS", 13, 13, 13, plus13_marker);
     createBitmap("PLUS", 15, 15, 15, plus15_marker);
+    createBitmap("PLUS", 20, 20, 20, plus20_marker);
+    createBitmap("PLUS", 25, 25, 25, plus25_marker);
+    createBitmap("PLUS", 30, 30, 30, plus30_marker);
 
     // the built-in bitmaps of Coin
     markerIndex [std::make_pair("PLUS", 9)] = SoMarkerSet::PLUS_9_9;
@@ -485,6 +1144,9 @@ MarkerBitmaps::initClass()
     createBitmap("SQUARE_LINE", 11, 11, 11, squareLine11_marker);
     createBitmap("SQUARE_LINE", 13, 13, 13, squareLine13_marker);
     createBitmap("SQUARE_LINE", 15, 15, 15, squareLine15_marker);
+    createBitmap("SQUARE_LINE", 20, 20, 20, squareLine20_marker);
+    createBitmap("SQUARE_LINE", 25, 25, 25, squareLine25_marker);
+    createBitmap("SQUARE_LINE", 30, 30, 30, squareLine30_marker);
 
     // the built-in bitmaps of Coin
     markerIndex [std::make_pair("SQUARE_LINE", 9)] = SoMarkerSet::SQUARE_LINE_9_9;
@@ -494,6 +1156,9 @@ MarkerBitmaps::initClass()
     createBitmap("SQUARE_FILLED", 11, 11, 11, squareFilled11_marker);
     createBitmap("SQUARE_FILLED", 13, 13, 13, squareFilled13_marker);
     createBitmap("SQUARE_FILLED", 15, 15, 15, squareFilled15_marker);
+    createBitmap("SQUARE_FILLED", 20, 20, 20, squareFilled20_marker);
+    createBitmap("SQUARE_FILLED", 25, 25, 25, squareFilled25_marker);
+    createBitmap("SQUARE_FILLED", 30, 30, 30, squareFilled30_marker);
 
     // the built-in bitmaps of Coin
     markerIndex [std::make_pair("SQUARE_FILLED", 9)] = SoMarkerSet::SQUARE_FILLED_9_9;
@@ -503,6 +1168,9 @@ MarkerBitmaps::initClass()
     createBitmap("CIRCLE_LINE", 11, 11, 11, circleLine11_marker);
     createBitmap("CIRCLE_LINE", 13, 13, 13, circleLine13_marker);
     createBitmap("CIRCLE_LINE", 15, 15, 15, circleLine15_marker);
+    createBitmap("CIRCLE_LINE", 20, 20, 20, circleLine20_marker);
+    createBitmap("CIRCLE_LINE", 25, 25, 25, circleLine25_marker);
+    createBitmap("CIRCLE_LINE", 30, 30, 30, circleLine30_marker);
 
     // the built-in bitmaps of Coin
     markerIndex [std::make_pair("CIRCLE_LINE", 9)] = SoMarkerSet::CIRCLE_LINE_9_9;
@@ -512,6 +1180,9 @@ MarkerBitmaps::initClass()
     createBitmap("CIRCLE_FILLED", 11, 11, 11, circleFilled11_marker);
     createBitmap("CIRCLE_FILLED", 13, 13, 13, circleFilled13_marker);
     createBitmap("CIRCLE_FILLED", 15, 15, 15, circleFilled15_marker);
+    createBitmap("CIRCLE_FILLED", 20, 20, 20, circleFilled20_marker);
+    createBitmap("CIRCLE_FILLED", 25, 25, 25, circleFilled25_marker);
+    createBitmap("CIRCLE_FILLED", 30, 30, 30, circleFilled30_marker);
 
     // the built-in bitmaps of Coin
     markerIndex [std::make_pair("CIRCLE_FILLED", 9)] = SoMarkerSet::CIRCLE_FILLED_9_9;
@@ -560,8 +1231,9 @@ std::list<int> MarkerBitmaps::getSupportedSizes(const std::string& name)
 {
     std::list<int> sizes;
     for (const auto & it : markerIndex) {
-        if (it.first.first == name)
+        if (it.first.first == name) {
             sizes.push_back(it.first.second);
+        }
     }
     return sizes;
 }

@@ -86,7 +86,7 @@ PyObject* HLRBRep_PolyAlgoPy::setProjector(PyObject *args, PyObject *kwds)
     PyObject* xd = nullptr;
     double focus = std::numeric_limits<double>::quiet_NaN();
 
-    static const std::array<const char *, 4> kwlist {"Origin", "ZDir", "XDir", nullptr};
+    static const std::array<const char *, 5> kwlist {"Origin", "ZDir", "XDir", "focus", nullptr};
     if (Base::Wrapped_ParseTupleAndKeywords(args, kwds, "|O!O!O!d", kwlist,
                                             &Base::VectorPy::Type, &ps,
                                             &Base::VectorPy::Type, &zd,

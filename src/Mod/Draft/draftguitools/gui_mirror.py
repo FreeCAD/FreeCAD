@@ -46,7 +46,7 @@ import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_trackers as trackers
 import draftguitools.gui_tool_utils as gui_tool_utils
 
-from draftutils.messages import _msg
+from draftutils.messages import _msg, _toolmsg
 from draftutils.translate import translate
 
 # The module is used to prevent complaints from code checkers (flake8)
@@ -89,7 +89,7 @@ class Mirror(gui_base_original.Modifier):
         self.ui.xValue.selectAll()
         self.ghost = trackers.ghostTracker(self.sel, mirror=True)
         self.call = self.view.addEventCallback("SoEvent", self.action)
-        _msg(translate("draft", "Pick start point of mirror line"))
+        _toolmsg(translate("draft", "Pick start point of mirror line"))
         self.ui.isCopy.hide()
 
     def finish(self, cont=False):
@@ -159,7 +159,7 @@ class Mirror(gui_base_original.Modifier):
                         self.ui.isRelative.show()
                         if self.ghost:
                             self.ghost.on()
-                        _msg(translate("draft",
+                        _toolmsg(translate("draft",
                                        "Pick end point of mirror line"))
                         if self.planetrack:
                             self.planetrack.set(self.point)
@@ -186,7 +186,7 @@ class Mirror(gui_base_original.Modifier):
             self.node.append(self.point)
             if self.ghost:
                 self.ghost.on()
-            _msg(translate("draft", "Pick end point of mirror line"))
+            _toolmsg(translate("draft", "Pick end point of mirror line"))
         else:
             last = self.node[-1]
             if self.ui.isCopy.isChecked():

@@ -41,7 +41,7 @@ namespace Base
 class BaseExport PythonTypeExt
 {
 public:
-    PythonTypeExt(Py::PythonType& type);
+    explicit PythonTypeExt(Py::PythonType& type);
 
     Py::PythonType&
     set_tp_descr_get(PyObject* (*tp_descr_get)(PyObject* self, PyObject* obj, PyObject* type));

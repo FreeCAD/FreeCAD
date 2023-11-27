@@ -57,8 +57,6 @@
 #ifndef _QtAll__
 # include <Gui/QtAll.h>
 #endif
-#include <QXmlQuery>
-#include <QXmlResultItems>
 
 // OpenCasCade
 #include <BRep_Tool.hxx>

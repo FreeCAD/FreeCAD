@@ -45,7 +45,7 @@ import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
 import draftguitools.gui_trackers as trackers
 
-from draftutils.messages import _msg, _wrn, _err
+from draftutils.messages import _msg, _wrn, _err, _toolmsg
 from draftutils.translate import translate
 
 # The module is used to prevent complaints from code checkers (flake8)
@@ -143,7 +143,7 @@ class Offset(gui_base_original.Modifier):
                     self.ghost = trackers.wireTracker(self.shape)
                     self.mode = "Wire"
             self.call = self.view.addEventCallback("SoEvent", self.action)
-            _msg(translate("draft", "Pick distance"))
+            _toolmsg(translate("draft", "Pick distance"))
             if self.planetrack:
                 self.planetrack.set(self.shape.Vertexes[0].Point)
             self.running = True

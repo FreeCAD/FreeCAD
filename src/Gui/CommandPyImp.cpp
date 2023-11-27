@@ -27,6 +27,8 @@
 # include <QRegularExpressionMatch>
 #endif
 
+#include <Base/PyWrapParseTupleAndKeywords.h>
+
 #include "Command.h"
 #include "Action.h"
 #include "Application.h"
@@ -34,7 +36,6 @@
 #include "Selection.h"
 #include "Window.h"
 #include "PythonWrapper.h"
-#include <Base/PyWrapParseTupleAndKeywords.h>
 
 // inclusion of the generated files (generated out of CommandPy.xml)
 #include "CommandPy.h"
@@ -297,10 +298,10 @@ PyObject* CommandPy::createCustomCommand(PyObject* args, PyObject* kw)
     const char* statustipTxt = nullptr;
     const char* pixmapTxt = nullptr;
     const char* shortcutTxt = nullptr;
-    static const std::array<const char *, 8> kwlist{"macroFile", "menuText", "toolTip", "whatsThis", "statusTip",
-                                                    "pixmap", "shortcut", nullptr};
+    static std::array<const char *, 8> kwlist {"macroFile", "menuText", "toolTip", "whatsThis",
+                                               "statusTip", "pixmap", "shortcut", nullptr};
     if (!Base::Wrapped_ParseTupleAndKeywords(args, kw, "s|zzzzzz", kwlist, &macroFile, &menuTxt,
-                                            &tooltipTxt, &whatsthisTxt, &statustipTxt, &pixmapTxt, &shortcutTxt)) {
+            &tooltipTxt, &whatsthisTxt, &statustipTxt, &pixmapTxt, &shortcutTxt)) {
         return nullptr;
     }
 

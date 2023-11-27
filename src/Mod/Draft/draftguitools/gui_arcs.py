@@ -44,7 +44,7 @@ import draftguitools.gui_trackers as trackers
 import draftutils.utils as utils
 
 from FreeCAD import Units as U
-from draftutils.messages import _msg, _err
+from draftutils.messages import _err, _toolmsg
 from draftutils.translate import translate
 
 # The module is used to prevent complaints from code checkers (flake8)
@@ -85,7 +85,7 @@ class Arc(gui_base_original.Creator):
             self.linetrack = trackers.lineTracker(dotted=True)
             self.arctrack = trackers.arcTracker()
             self.call = self.view.addEventCallback("SoEvent", self.action)
-            _msg(translate("draft", "Pick center point"))
+            _toolmsg(translate("draft", "Pick center point"))
 
     def finish(self, cont=False):
         """Terminate the operation.
@@ -251,7 +251,7 @@ class Arc(gui_base_original.Creator):
                                     self.step = 1
                                     self.ui.setNextFocus()
                                     self.linetrack.on()
-                                    _msg(translate("draft", "Pick radius"))
+                                    _toolmsg(translate("draft", "Pick radius"))
                         else:
                             if len(self.tangents) == 1:
                                 self.tanpoints.append(self.point)
@@ -267,7 +267,7 @@ class Arc(gui_base_original.Creator):
                             self.step = 1
                             self.ui.setNextFocus()
                             self.linetrack.on()
-                            _msg(translate("draft", "Pick radius"))
+                            _toolmsg(translate("draft", "Pick radius"))
                             if self.planetrack:
                                 self.planetrack.set(self.point)
                     elif self.step == 1:  # choose radius
@@ -280,7 +280,7 @@ class Arc(gui_base_original.Creator):
                             self.linetrack.p1(self.center)
                             self.linetrack.on()
                             self.step = 2
-                            _msg(translate("draft", "Pick start angle"))
+                            _toolmsg(translate("draft", "Pick start angle"))
                     elif self.step == 2:  # choose first angle
                         self.ui.labelRadius.setText(translate("draft", "Aperture angle"))
                         self.ui.radiusValue.setToolTip(translate("draft", "Aperture angle"))
@@ -289,7 +289,7 @@ class Arc(gui_base_original.Creator):
                                                          self.wp.axis)
                         self.arctrack.setStartAngle(self.firstangle - ang_offset)
                         self.step = 3
-                        _msg(translate("draft", "Pick aperture"))
+                        _toolmsg(translate("draft", "Pick aperture"))
                     else:  # choose second angle
                         self.step = 4
                         self.drawArc()
@@ -404,7 +404,7 @@ class Arc(gui_base_original.Creator):
         self.ui.radiusUi()
         self.step = 1
         self.ui.setNextFocus()
-        _msg(translate("draft", "Pick radius"))
+        _toolmsg(translate("draft", "Pick radius"))
 
     def numericRadius(self, rad):
         """Validate the entry radius in the user interface.
@@ -445,7 +445,7 @@ class Arc(gui_base_original.Creator):
                 self.linetrack.on()
                 self.ui.radiusValue.setText("")
                 self.ui.radiusValue.setFocus()
-                _msg(translate("draft", "Pick start angle"))
+                _toolmsg(translate("draft", "Pick start angle"))
         elif self.step == 2:
             self.ui.labelRadius.setText(translate("draft", "Aperture angle"))
             self.ui.radiusValue.setToolTip(translate("draft", "Aperture angle"))
@@ -457,7 +457,7 @@ class Arc(gui_base_original.Creator):
             self.step = 3
             self.ui.radiusValue.setText("")
             self.ui.radiusValue.setFocus()
-            _msg(translate("draft", "Pick aperture angle"))
+            _toolmsg(translate("draft", "Pick aperture angle"))
         else:
             self.updateAngle(rad)
             self.angle = math.radians(rad)

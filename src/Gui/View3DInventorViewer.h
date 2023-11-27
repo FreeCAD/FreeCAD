@@ -416,6 +416,7 @@ public:
     bool hasAxisCross();
 
     void showRotationCenter(bool show);
+    void changeRotationCenterPosition(const SbVec3f& newCenter);
 
     void setEnabledFPSCounter(bool on);
     void setEnabledNaviCube(bool on);

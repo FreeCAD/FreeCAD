@@ -260,11 +260,7 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
                              "ShowLine",
                              "Graphics",
                              _tip)
-            vobj.ShowLine = True
-
-    def getDefaultDisplayMode(self):
-        """Return the default display mode."""
-        return ["World", "Screen"][utils.get_param("dimstyle", 0)]
+            vobj.ShowLine = utils.get_param("DimShowLine", True)
 
     def getIcon(self):
         """Return the path to the icon used by the viewprovider."""
@@ -361,6 +357,7 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
         self.onChanged(vobj, "LineColor")
         self.onChanged(vobj, "DimOvershoot")
         self.onChanged(vobj, "ExtOvershoot")
+        self.onChanged(vobj, "ShowLine")
 
     def updateData(self, obj, prop):
         """Execute when a property from the Proxy class is changed.
@@ -549,7 +546,7 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
         try:
             m = vobj.DisplayMode
         except AssertionError:
-            m = ["World", "Screen"][utils.get_param("dimstyle", 0)]
+            m = ["World", "Screen"][utils.get_param("DefaultAnnoDisplayMode", 0)]
 
         if m == "Screen":
             offset = offset.negative()
@@ -974,7 +971,7 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
         try:
             m = vobj.DisplayMode
         except AssertionError:
-            m = ["World", "Screen"][utils.get_param("dimstyle", 0)]
+            m = ["World", "Screen"][utils.get_param("DefaultAnnoDisplayMode", 0)]
 
         # Set the arc
         first = self.circle.FirstParameter

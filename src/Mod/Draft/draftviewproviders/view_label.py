@@ -90,7 +90,7 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
                              "LineSpacing",
                              "Text",
                              _tip)
-            vobj.LineSpacing = 1.0
+            vobj.LineSpacing = utils.get_param("LineSpacing", 1)
 
     def set_graphics_properties(self, vobj, properties):
         """Set graphics properties only if they don't already exist."""

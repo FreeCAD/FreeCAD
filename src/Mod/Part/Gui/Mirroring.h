@@ -35,7 +35,7 @@ class Property;
 namespace PartGui {
 
 class Ui_Mirroring;
-class Mirroring : public QWidget
+class Mirroring : public QWidget, public Gui::SelectionObserver
 {
     Q_OBJECT
 
@@ -43,14 +43,17 @@ public:
     explicit Mirroring(QWidget* parent = nullptr);
     ~Mirroring() override;
     bool accept();
+    bool reject();
 
 protected:
     void changeEvent(QEvent *e) override;
 
 private:
     void findShapes();
+    void onSelectButtonClicked();
 
 private:
+    void onSelectionChanged(const Gui::SelectionChanges& msg) override;
     QString document;
     std::unique_ptr<Ui_Mirroring> ui;
 };

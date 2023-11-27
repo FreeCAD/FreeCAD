@@ -557,7 +557,7 @@ inline void PyTypeCheck(PyObject** ptr, int (*method)(PyObject*), const char* ms
 
 } // namespace Base
 
-// NOLINTBEGIN(cppcoreguidelines-macro-usage)
+// NOLINTEND(cppcoreguidelines-macro-usage)
 // clang-format on
 
 #endif  // BASE_PYOBJECTBASE_H

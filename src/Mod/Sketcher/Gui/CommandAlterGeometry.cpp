@@ -26,6 +26,7 @@
 
 #include <Gui/Action.h>
 #include <Gui/Application.h>
+#include <Gui/BitmapFactory.h>
 #include <Gui/CommandT.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
@@ -62,7 +63,7 @@ namespace SketcherGui
 extern GeometryCreationMode geometryCreationMode;
 
 /* Constrain commands =======================================================*/
-DEF_STD_CMD_A(CmdSketcherToggleConstruction)
+DEF_STD_CMD_AU(CmdSketcherToggleConstruction)
 
 CmdSketcherToggleConstruction::CmdSketcherToggleConstruction()
     : Command("Sketcher_ToggleConstruction")
@@ -112,6 +113,23 @@ CmdSketcherToggleConstruction::CmdSketcherToggleConstruction()
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreatePeriodicBSpline");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CompCreateBSpline");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CarbonCopy");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_ToggleConstruction");
+}
+
+void CmdSketcherToggleConstruction::updateAction(int mode)
+{
+    auto act = getAction();
+    if (act) {
+        switch (static_cast<GeometryCreationMode>(mode)) {
+            case GeometryCreationMode::Normal:
+                act->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_ToggleConstruction"));
+                break;
+            case GeometryCreationMode::Construction:
+                act->setIcon(
+                    Gui::BitmapFactory().iconFromTheme("Sketcher_ToggleConstruction_Constr"));
+                break;
+        }
+    }
 }
 
 void CmdSketcherToggleConstruction::activated(int iMsg)

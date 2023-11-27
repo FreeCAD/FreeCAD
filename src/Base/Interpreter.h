@@ -95,7 +95,7 @@ class BaseExport PyException: public Exception
 public:
     /// constructor does the whole job
     PyException();
-    PyException(const Py::Object& obj);
+    explicit PyException(const Py::Object& obj);
     PyException(const PyException&) = default;
     PyException(PyException&&) = default;
     ~PyException() noexcept override;
@@ -169,7 +169,7 @@ public:
         return _exitCode;
     }
 
-protected:
+private:
     long _exitCode;
 };
 

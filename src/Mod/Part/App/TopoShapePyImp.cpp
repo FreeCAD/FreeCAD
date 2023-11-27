@@ -2059,7 +2059,7 @@ PyObject* TopoShapePy::reflectLines(PyObject *args, PyObject *kwds)
     static const std::array<const char *, 7> kwlist{"ViewDir", "ViewPos", "UpDir", "EdgeType", "Visible", "OnShape",
                                                     nullptr};
 
-    char* type="OutLine";
+    const char* type="OutLine";
     PyObject* vis = Py_True;
     PyObject* in3d = Py_False;
     PyObject* pPos = nullptr;
@@ -2671,8 +2671,9 @@ PyObject* TopoShapePy::optimalBoundingBox(PyObject *args)
 {
     PyObject* useT = Py_True;
     PyObject* useS = Py_False;
-    if (!PyArg_ParseTuple(args, "|O!O!", &PyBool_Type, &PyBool_Type, &useT, &useS))
+    if (!PyArg_ParseTuple(args, "|O!O!", &PyBool_Type, &useT, &PyBool_Type, &useS)) {
         return nullptr;
+    }
 
     try {
         TopoDS_Shape shape = this->getTopoShapePtr()->getShape();

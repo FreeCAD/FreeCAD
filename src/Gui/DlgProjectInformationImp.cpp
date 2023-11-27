@@ -157,7 +157,7 @@ void DlgProjectInformationImp::accept()
         (QLatin1String("\n"), QString::KeepEmptyParts);
 #endif
     QString text = lines.join(QLatin1String("\\n"));
-    _doc->Comment.setValue(text.isEmpty() ? "" : text.toUtf8());
+    _doc->Comment.setValue(text.isEmpty() ? QByteArray() : text.toUtf8());
 
     QDialog::accept();
 }

@@ -18,3 +18,8 @@ class Geom2dTests(unittest.TestCase):
         e2 = l12.toShape(surf)
         self.assertNotEqual(e1.curveOnSurface(0), None)
         self.assertNotEqual(e2.curveOnSurface(0), None)
+
+    def test_insertKnot(self):
+        with self.assertRaises(TypeError):
+            curve = Part.Geom2d.BSplineCurve2d()
+            curve.insertKnot(0.5, 1, 0.01, 2)

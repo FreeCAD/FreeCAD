@@ -90,8 +90,8 @@ PyObject* WaypointPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Pyth
 int WaypointPy::PyInit(PyObject* args, PyObject* kwd)
 {
     PyObject* pos;
-    char* name = "P";
-    char* type = "PTP";
+    const char* name = "P";
+    const char* type = "PTP";
     PyObject* vel = nullptr;
     PyObject* acc = nullptr;
     int cont = 0;

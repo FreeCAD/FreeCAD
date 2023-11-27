@@ -51,7 +51,7 @@ import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
 import draftguitools.gui_trackers as trackers
 
-from draftutils.messages import _msg, _err
+from draftutils.messages import _msg, _err, _toolmsg
 from draftutils.translate import translate
 
 # The module is used to prevent complaints from code checkers (flake8)
@@ -170,7 +170,7 @@ class Trimex(gui_base_original.Modifier):
         self.force = None
         self.cv = None
         self.call = self.view.addEventCallback("SoEvent", self.action)
-        _msg(translate("draft", "Pick distance"))
+        _toolmsg(translate("draft", "Pick distance"))
 
     def action(self, arg):
         """Handle the 3D scene events.

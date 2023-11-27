@@ -97,22 +97,21 @@ def scale_to_label(scale):
     """
     transform a float number into a 1:X or X:1 scale and return it as label
     """
-    f = round(scale, 2)
-    if f == 1.0:
+    if scale <= 0:
         return "1:1"
-    elif f > 1.0:
+    f = round(scale, 2)
+    if f == 1:
+        return "1:1"
+    if f > 1:
         f = f.as_integer_ratio()
         if f[1] == 1:
             return str(f[0]) + ":1"
-        else:
-            return str(scale)
-    else:
-        f = round(1/scale, 2)
-        f = f.as_integer_ratio()
-        if f[1] == 1:
-            return "1:" + str(f[0])
-        else:
-            return str(scale)
+        return str(scale)
+    f = round(1/scale, 2)
+    f = f.as_integer_ratio()
+    if f[1] == 1:
+        return "1:" + str(f[0])
+    return str(scale)
 
 def label_to_scale(label):
     """

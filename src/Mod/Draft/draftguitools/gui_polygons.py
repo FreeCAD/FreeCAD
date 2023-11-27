@@ -42,7 +42,7 @@ import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
 import draftguitools.gui_trackers as trackers
 
-from draftutils.messages import _msg
+from draftutils.messages import _toolmsg
 from draftutils.translate import translate
 
 
@@ -75,7 +75,7 @@ class Polygon(gui_base_original.Creator):
             self.ui.sourceCmd = self
             self.arctrack = trackers.arcTracker()
             self.call = self.view.addEventCallback("SoEvent", self.action)
-            _msg(translate("draft", "Pick center point"))
+            _toolmsg(translate("draft", "Pick center point"))
 
     def finish(self, cont=False):
         """Terminate the operation.
@@ -193,7 +193,7 @@ class Polygon(gui_base_original.Creator):
                                 self.arctrack.on()
                                 self.ui.radiusUi()
                                 self.step = 1
-                                _msg(translate("draft", "Pick radius"))
+                                _toolmsg(translate("draft", "Pick radius"))
                     else:
                         if len(self.tangents) == 1:
                             self.tanpoints.append(self.point)
@@ -204,7 +204,7 @@ class Polygon(gui_base_original.Creator):
                         self.arctrack.on()
                         self.ui.radiusUi()
                         self.step = 1
-                        _msg(translate("draft", "Pick radius"))
+                        _toolmsg(translate("draft", "Pick radius"))
                         if self.planetrack:
                             self.planetrack.set(self.point)
                 elif self.step == 1:  # choose radius
@@ -264,7 +264,7 @@ class Polygon(gui_base_original.Creator):
         self.ui.radiusUi()
         self.step = 1
         self.ui.radiusValue.setFocus()
-        _msg(translate("draft", "Pick radius"))
+        _toolmsg(translate("draft", "Pick radius"))
 
     def numericRadius(self, rad):
         """Validate the entry radius in the user interface.

@@ -349,7 +349,7 @@ void CmdTechDrawView::activated(int iMsg)
                 if (parent->isDerivedFrom(App::LinkElement::getClassTypeId())
                     || parent->isDerivedFrom(App::LinkGroup::getClassTypeId())
                     || parent->isDerivedFrom(App::Link::getClassTypeId())) {
-                    // We have a link chain from this document to obj, and obj is in another document -> it's an XLink target
+                    // We have a link chain from this document to obj, and obj is in another document -> it is an XLink target
                     is_linked = true;
                 }
             }
@@ -702,7 +702,7 @@ void execComplexSection(Gui::Command* cmd)
                 if (parent->isDerivedFrom(App::LinkElement::getClassTypeId())
                     || parent->isDerivedFrom(App::LinkGroup::getClassTypeId())
                     || parent->isDerivedFrom(App::Link::getClassTypeId())) {
-                    // We have a link chain from this document to obj, and obj is in another document -> it's an XLink target
+                    // We have a link chain from this document to obj, and obj is in another document -> it is an XLink target
                     is_linked = true;
                 }
             }
@@ -847,7 +847,7 @@ void CmdTechDrawProjectionGroup::activated(int iMsg)
                 if (parent->isDerivedFrom(App::LinkElement::getClassTypeId())
                     || parent->isDerivedFrom(App::LinkGroup::getClassTypeId())
                     || parent->isDerivedFrom(App::Link::getClassTypeId())) {
-                    // We have a link chain from this document to obj, and obj is in another document -> it's an XLink target
+                    // We have a link chain from this document to obj, and obj is in another document -> it is an XLink target
                     is_linked = true;
                 }
             }

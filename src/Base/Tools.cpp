@@ -76,8 +76,8 @@ struct string_comp
 class unique_name
 {
 public:
-    unique_name(const std::string& name, const std::vector<std::string>& names, int padding)
-        : base_name {name}
+    unique_name(std::string name, const std::vector<std::string>& names, int padding)
+        : base_name {std::move(name)}
         , padding {padding}
     {
         removeDigitsFromEnd();

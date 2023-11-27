@@ -684,7 +684,7 @@ PyObject* Curve2dPy::approximateBSpline(PyObject *args)
 {
     double tolerance;
     int maxSegment, maxDegree;
-    char* order = "C2";
+    const char* order = "C2";
     if (!PyArg_ParseTuple(args, "dii|s", &tolerance, &maxSegment, &maxDegree, &order))
         return nullptr;
 

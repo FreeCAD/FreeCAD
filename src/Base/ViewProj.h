@@ -80,7 +80,7 @@ private:
 class BaseExport ViewProjMatrix: public ViewProjMethod
 {
 public:
-    ViewProjMatrix(const Matrix4D& rclMtx);
+    explicit ViewProjMatrix(const Matrix4D& rclMtx);
 
     Vector3f operator()(const Vector3f& inp) const override;
     Vector3d operator()(const Vector3d& inp) const override;
@@ -103,7 +103,7 @@ private:
 class BaseExport ViewOrthoProjMatrix: public ViewProjMethod
 {
 public:
-    ViewOrthoProjMatrix(const Matrix4D& rclMtx);
+    explicit ViewOrthoProjMatrix(const Matrix4D& rclMtx);
 
     Vector3f operator()(const Vector3f& rclPt) const override;
     Vector3d operator()(const Vector3d& rclPt) const override;

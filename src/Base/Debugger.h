@@ -59,7 +59,7 @@ class BaseExport Debugger: public QObject
     Q_OBJECT
 
 public:
-    Debugger(QObject* parent = nullptr);
+    explicit Debugger(QObject* parent = nullptr);
     ~Debugger() override;
 
     Debugger(const Debugger&) = delete;

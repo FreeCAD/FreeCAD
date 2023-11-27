@@ -51,7 +51,8 @@ void QGVNavStyleTinkerCAD::handleMousePressEvent(QMouseEvent *event)
 void QGVNavStyleTinkerCAD::handleMouseMoveEvent(QMouseEvent *event)
 {
     if (getViewer()->isBalloonPlacing()) {
-        getViewer()->setBalloonCursorPos(event->pos());
+        balloonCursorMovement(event);
+        return;
     }
 
     //pan mode - MMB + move

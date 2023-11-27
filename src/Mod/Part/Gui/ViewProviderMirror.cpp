@@ -74,9 +74,18 @@ ViewProviderMirror::~ViewProviderMirror()
 
 void ViewProviderMirror::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
+    // don't add plane editor to context menu if MirrorPlane is set because it would override any changes, anyway
+    Part::Mirroring* mf = static_cast<Part::Mirroring*>(getObject());
+    Part::Feature* ref = static_cast<Part::Feature*>(mf->MirrorPlane.getValue());
+    bool enabled = true;
+    if (ref){
+        enabled = false;
+    }
     QAction* act;
     act = menu->addAction(QObject::tr("Edit mirror plane"), receiver, member);
+    act->setEnabled(enabled);
     act->setData(QVariant((int)ViewProvider::Default));
+
     ViewProviderPart::setupContextMenu(menu, receiver, member);
 }
 
@@ -85,6 +94,10 @@ bool ViewProviderMirror::setEdit(int ModNum)
     if (ModNum == ViewProvider::Default) {
         // get the properties from the mirror feature
         Part::Mirroring* mf = static_cast<Part::Mirroring*>(getObject());
+        Part::Feature* ref = static_cast<Part::Feature*>(mf->MirrorPlane.getValue());
+        if (ref) { //skip this editor if MirrorPlane property is set
+            return false;
+        }
         Base::BoundBox3d bbox = mf->Shape.getBoundingBox();
         float len = (float)bbox.CalcDiagonalLength();
         Base::Vector3d base = mf->Base.getValue();

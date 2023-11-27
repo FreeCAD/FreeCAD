@@ -187,8 +187,8 @@ private:
 class BaseExport ZipWriter: public Writer
 {
 public:
-    ZipWriter(const char* FileName);
-    ZipWriter(std::ostream&);
+    explicit ZipWriter(const char* FileName);
+    explicit ZipWriter(std::ostream&);
     ~ZipWriter() override;
 
     void writeFiles() override;
@@ -253,7 +253,7 @@ private:
 class BaseExport FileWriter: public Writer
 {
 public:
-    FileWriter(const char* DirName);
+    explicit FileWriter(const char* DirName);
     ~FileWriter() override;
 
     void putNextEntry(const char* file);

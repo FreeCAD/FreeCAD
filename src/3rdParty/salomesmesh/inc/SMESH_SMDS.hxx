@@ -39,10 +39,6 @@
  #define SMDS_EXPORT
 #endif
 
-#ifdef VTK_HAS_MTIME_TYPE
 #define VTK_MTIME_TYPE vtkMTimeType
-#else
-#define VTK_MTIME_TYPE unsigned long
-#endif
 
 #endif

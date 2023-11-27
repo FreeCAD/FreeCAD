@@ -76,6 +76,7 @@ void StartGui::Workbench::loadStartPage()
         std::string escapedstr = Base::Tools::escapedUnicodeFromUtf8(utf8Title);
         std::stringstream str;
         str << "import WebGui,sys,Start\n"
+            << "from PySide import QtCore\n"
             << "from StartPage import StartPage\n\n"
             << "class WebPage(object):\n"
             << "    def __init__(self):\n"
@@ -89,16 +90,19 @@ void StartGui::Workbench::loadStartPage()
 #endif
             << "    def onChange(self, par, reason):\n"
             << "        try:\n"
-            << "            if reason == 'RecentFiles':\n"
-#if defined(FC_OS_WIN32)
-            << "                self.browser.setHtml(StartPage.handle(), App.getResourceDir() + "
-               "'Mod/Start/StartPage/')\n\n"
-#else
-            << "                self.browser.setHtml(StartPage.handle(), 'file://' + "
-               "App.getResourceDir() + 'Mod/Start/StartPage/')\n\n"
-#endif
+            << "            if reason in ('RecentFiles','Language'):\n"
+            << "                QtCore.QTimer.singleShot(100, self.reload)\n"
             << "        except RuntimeError as e:\n"
             << "            pass\n"
+            << "    def reload(self):\n"
+#if defined(FC_OS_WIN32)
+            << "        self.browser.setHtml(StartPage.handle(), App.getResourceDir() + "
+               "'Mod/Start/StartPage/')\n\n"
+#else
+            << "        self.browser.setHtml(StartPage.handle(), 'file://' + "
+               "App.getResourceDir() + 'Mod/Start/StartPage/')\n\n"
+#endif
+
             << "class WebView(object):\n"
             << "    def __init__(self):\n"
             << "        self.pargrp = FreeCAD.ParamGet('User "

@@ -43,7 +43,7 @@ import draftutils.todo as todo
 import draftguitools.gui_trackers as trackers
 import draftguitools.gui_tool_utils as gui_tool_utils
 
-from draftutils.messages import _msg, _log
+from draftutils.messages import _msg, _log, _toolmsg
 
 
 class DraftTool:
@@ -135,8 +135,8 @@ class DraftTool:
         if hasattr(Gui, "Snapper"):
             Gui.Snapper.setTrackers()
 
-        _msg("{}".format(16*"-"))
-        _msg("GuiCommand: {}".format(self.featureName))
+        _toolmsg("{}".format(16*"-"))
+        _toolmsg("GuiCommand: {}".format(self.featureName))
 
     def finish(self, cont=False):
         """Finish the current command.

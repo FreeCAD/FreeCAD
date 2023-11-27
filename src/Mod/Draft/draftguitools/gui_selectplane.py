@@ -252,23 +252,26 @@ class Draft_SelectPlane:
             pass
         else:
             self.param.SetString("gridSpacing", q.UserString)
+            # ParamObserver handles grid changes. See params.py.
             if self.grid is not None:
                 self.grid.show_during_command = True
-                self.grid.set()
+                self.grid.on()
 
     def on_set_main_line(self, i):
         if i > 1:
             self.param.SetInt("gridEvery", i)
+            # ParamObserver handles grid changes. See params.py.
             if self.grid is not None:
                 self.grid.show_during_command = True
-                self.grid.set()
+                self.grid.on()
 
     def on_set_extension(self, i):
         if i > 1:
             self.param.SetInt("gridSize", i)
+            # ParamObserver handles grid changes. See params.py.
             if self.grid is not None:
                 self.grid.show_during_command = True
-                self.grid.set()
+                self.grid.on()
 
     def on_set_snap_radius(self, i):
         self.param.SetInt("snapRange", i)
