@@ -2799,6 +2799,10 @@ void horVerApplyConstraint(CmdSketcherConstraint* cmd, std::string type, std::ve
     switch (seqIndex) {
     case 0:// {Edge}
     {
+        if (selSeq.empty()) {
+            return;
+        }
+
         int CrvId = selSeq.front().GeoId;
         if (CrvId != -1) {
             const Part::Geometry* geo = Obj->getGeometry(CrvId);
@@ -3240,6 +3244,10 @@ void CmdSketcherConstrainLock::applyConstraint(std::vector<SelIdPair>& selSeq, i
             // check if the edge already has a Block constraint
             bool pointfixed = false;
 
+            if (selSeq.empty()) {
+                return;
+            }
+
             if (isPointOrSegmentFixed(Obj, selSeq.front().GeoId)) {
                 pointfixed = true;
             }
@@ -3451,6 +3459,10 @@ void CmdSketcherConstrainBlock::applyConstraint(std::vector<SelIdPair>& selSeq, 
 
             // check if the edge already has a Block constraint
             const std::vector<Sketcher::Constraint*>& vals = Obj->Constraints.getValues();
+
+            if (selSeq.empty()) {
+                return;
+            }
 
             if (checkConstraint(vals,
                                 Sketcher::Block,
