@@ -26,6 +26,7 @@ void sharedptrTest();
 
 int main()
 {
+	MBDynSystem::runFile("../testapp/SphericalHinge.mbd");
 	ASMTAssembly::runFile("../testapp/cirpendu2.asmt");	//Under constrained. Testing ICKine.
 	ASMTAssembly::runFile("../testapp/quasikine.asmt");	//Under constrained. Testing ICKine.
 	ASMTAssembly::readWriteFile("../testapp/piston.asmt");

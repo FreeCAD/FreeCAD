@@ -21,6 +21,7 @@
 #include "BasicUserFunction.h"
 #include "MBDynReference.h"
 #include "MBDynDrive.h"
+#include "MBDynGravity.h"
 
 using namespace MbD;
 
@@ -94,6 +95,7 @@ void MbD::MBDynSystem::createASMT()
 	for (auto& node : *nodes) node->createASMT();
 	for (auto& body : *bodies) body->createASMT();
 	for (auto& joint : *joints) joint->createASMT();
+	if (gravity) gravity->createASMT();
 }
 
 std::shared_ptr<MBDynNode> MbD::MBDynSystem::nodeAt(std::string nodeName)
@@ -134,11 +136,12 @@ std::vector<std::string> MbD::MBDynSystem::nodeNames()
 void MbD::MBDynSystem::runKINEMATIC()
 {
 	createASMT();
-	asmtAssembly()->outputFile("assembly.asmt");
+	auto debugFile1 = filename.substr(0, filename.find_last_of('.')) + "debug1.asmt";
+	asmtAssembly()->outputFile(debugFile1);
 	std::static_pointer_cast<ASMTAssembly>(asmtItem)->runKINEMATIC();
 	outputFiles();
-	asmtAssembly()->outputFile("assembly2.asmt");
-	asmtAssembly()->outputFile("smalltalk.asmt");
+	auto debugFile2 = filename.substr(0, filename.find_last_of('.')) + "debug2.asmt";
+	asmtAssembly()->outputFile(debugFile2);
 }
 
 void MbD::MBDynSystem::outputFiles()
@@ -325,6 +328,7 @@ void MbD::MBDynSystem::parseMBDynElements(std::vector<std::string>& lines)
 	std::vector<std::string> bodyTokens{ "body:" };
 	std::vector<std::string> jointTokens{ "joint:" };
 	std::vector<std::string> driveTokens{ "drive", "caller:" };
+	std::vector<std::string> gravityTokens{ "gravity" };
 	std::vector<std::string>::iterator it;
 	while (true) {
 		it = findLineWith(lines, bodyTokens);
@@ -351,6 +355,15 @@ void MbD::MBDynSystem::parseMBDynElements(std::vector<std::string>& lines)
 			drive->owner = this;
 			drive->parseMBDyn(*it);
 			drives->push_back(drive);
+			lines.erase(it);
+			continue;
+		}
+		it = findLineWith(lines, gravityTokens);
+		if (it != lines.end()) {
+			auto grav = std::make_shared<MBDynGravity>();
+			grav->owner = this;
+			grav->parseMBDyn(*it);
+			gravity = grav;
 			lines.erase(it);
 			continue;
 		}

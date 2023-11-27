@@ -1,0 +1,439 @@
+OndselSolver
+Assembly
+	Notes
+		(Text string: '' runs: (Core.RunArray runs: #() values: #()))
+	Name
+		Assembly
+	Position3D
+		0	0	0	
+	RotationMatrix
+		1	0	0	
+		0	1	0	
+		0	0	1	
+	Velocity3D
+		0	0	0	
+	Omega3D
+		0	0	0	
+	RefPoints
+		RefPoint
+			Position3D
+				0	0	0	
+			RotationMatrix
+				1	0	0	
+				0	1	0	
+				0	0	1	
+			Markers
+				Marker
+					Name
+						Marker0
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+	RefCurves
+	RefSurfaces
+	Parts
+		Part
+			Name
+				structural_node_1
+			Position3D
+				-0.121	-1.218180697837851e-18	-0.08	
+			RotationMatrix
+				1	0	0	
+				0	1	0	
+				0	0	1	
+			Velocity3D
+				0	0	0	
+			Omega3D
+				0	0	0	
+			FeatureOrder
+			PrincipalMassMarker
+				Name
+					MassMarker
+				Position3D
+					0	0	0	
+				RotationMatrix
+					1	0	0	
+					0	1	0	
+					0	0	1	
+				Mass
+					1
+				MomentOfInertias
+					1	2	3	
+				Density
+					10
+			RefPoints
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								Marker0
+							Position3D
+								0.121	1.218180697837851e-18	0.08	
+							RotationMatrix
+								1	0	0	
+								0	1	0	
+								0	0	1	
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								Marker1
+							Position3D
+								0	1.218180697837851e-18	0.05	
+							RotationMatrix
+								1	0	0	
+								0	1	0	
+								0	0	1	
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								Marker2
+							Position3D
+								0	1.218180697837785e-18	0.08	
+							RotationMatrix
+								2.220446049250313e-16	-2.220446049250313e-16	1	
+								1	0	-2.220446049250313e-16	
+								4.930380657631324e-32	1	2.220446049250313e-16	
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								Marker3
+							Position3D
+								0	0	0	
+							RotationMatrix
+								1	0	0	
+								0	1	0	
+								0	0	1	
+			RefCurves
+			RefSurfaces
+		Part
+			Name
+				structural_node_2
+			Position3D
+				-0.04753704894473842	0.09742200410568831	-0.03029347681223059	
+			RotationMatrix
+				0.9512512425641979	-0.1267494082121462	0.2811683855591535	
+				0.167731259496521	0.9776506595433678	-0.1267494082121462	
+				-0.258819045102521	0.167731259496521	0.9512512425641977	
+			Velocity3D
+				0	0	0	
+			Omega3D
+				0	0	0	
+			FeatureOrder
+			PrincipalMassMarker
+				Name
+					MassMarker
+				Position3D
+					7.105427357601002e-18	0	7.105427357601002e-18	
+				RotationMatrix
+					1	0	0	
+					0	1	0	
+					0	0	1	
+				Mass
+					1.448636188351172
+				MomentOfInertias
+					0.002871751015088	0.002864447840812	0.0007089594589930001	
+				Density
+					10
+			RefPoints
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								Marker0
+							Position3D
+								-0.03739853284269051	0	0.003286762255221063	
+							RotationMatrix
+								1	0	5.204170427930421e-18	
+								-0	1	0	
+								-5.204170427930421e-18	-0	1	
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								Marker1
+							Position3D
+								0.03260146715730949	1.4210854715202e-17	0.05328676225522106	
+							RotationMatrix
+								1	-0	5.204170427930421e-18	
+								0	1	0	
+								-5.204170427930421e-18	0	1	
+			RefCurves
+			RefSurfaces
+		Part
+			Name
+				structural_node_3
+			Position3D
+				0.07099630277370235	-0.07364765799707981	0.05840790082376057	
+			RotationMatrix
+				0.9622501868990581	0.01433011691863463	-0.271788935686915	
+				-0.08715574274765801	0.9622501868990581	-0.2578341604963	
+				0.2578341604963001	0.271788935686915	0.9271743741709766	
+			Velocity3D
+				0	0	0	
+			Omega3D
+				0	0	0	
+			FeatureOrder
+			PrincipalMassMarker
+				Name
+					MassMarker
+				Position3D
+					2.842170943040401e-17	-1.4210854715202e-17	0	
+				RotationMatrix
+					1	0	0	
+					0	1	0	
+					0	0	1	
+				Mass
+					2.852948655706768
+				MomentOfInertias
+					0.03383792198797	0.033715148099504	0.001956310318013	
+				Density
+					10
+			RefPoints
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								Marker0
+							Position3D
+								-0.1400000000000079	-1.044497821567347e-15	0.02499999999999804	
+							RotationMatrix
+								3.322229154067983e-33	1	-5.551115123125784e-17	
+								-1	0	-5.984795992119986e-17	
+								-5.984795992119986e-17	5.551115123125784e-17	1	
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								Marker1
+							Position3D
+								0.1399999999999913	4.423128530106624e-16	9.79127889877418e-15	
+							RotationMatrix
+								0.7254861972346578	0.6882367162699149	2.719509169040251e-15	
+								-0.6882367162699149	0.7254861972346578	1.258675848677982e-14	
+								6.689702964032028e-15	-1.100318561045113e-14	1	
+			RefCurves
+			RefSurfaces
+		Part
+			Name
+				structural_node_4
+			Position3D
+				0.3723079639890564	0.04333150035096042	0.008140985321785409	
+			RotationMatrix
+				0.9659258262890682	-0	0.2588190451025211	
+				0	1	0	
+				-0.2588190451025211	0	0.9659258262890682	
+			Velocity3D
+				0	0	0	
+			Omega3D
+				0	0	0	
+			FeatureOrder
+			PrincipalMassMarker
+				Name
+					MassMarker
+				Position3D
+					2.842170943040401e-16	2.131628207280301e-17	2.273736754432321e-16	
+				RotationMatrix
+					1	0	0	
+					0	1	0	
+					0	0	1	
+				Mass
+					10.85942720262214
+				MomentOfInertias
+					0.07706742098794901	0.066351815798527	0.061792350456255	
+				Density
+					10
+			RefPoints
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								Marker0
+							Position3D
+								-0.04558083463411924	-2.029935401992589e-10	1.256225164070202e-08	
+							RotationMatrix
+								1	0	0	
+								0	1	0	
+								0	0	1	
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								Marker1
+							Position3D
+								-0.04558083463411924	-2.029935401992589e-10	1.256225164070202e-08	
+							RotationMatrix
+								1	0	0	
+								0	1	0	
+								0	0	1	
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								Marker2
+							Position3D
+								0	0	0	
+							RotationMatrix
+								1	0	0	
+								0	1	0	
+								0	0	1	
+			RefCurves
+			RefSurfaces
+	KinematicIJs
+	ConstraintSets
+		Joints
+			FixedJoint
+				Name
+					joint_1
+				MarkerI
+					/Assembly/Marker0
+				MarkerJ
+					/Assembly/structural_node_1/Marker0
+			RevoluteJoint
+				Name
+					joint_2
+				MarkerI
+					/Assembly/structural_node_1/Marker1
+				MarkerJ
+					/Assembly/structural_node_2/Marker0
+			RevoluteJoint
+				Name
+					joint_3
+				MarkerI
+					/Assembly/structural_node_2/Marker1
+				MarkerJ
+					/Assembly/structural_node_3/Marker0
+			PointInLineJoint
+				Name
+					joint_4
+				MarkerI
+					/Assembly/structural_node_3/Marker1
+				MarkerJ
+					/Assembly/structural_node_4/Marker0
+			PointInLineJoint
+				Name
+					joint_5
+				MarkerI
+					/Assembly/structural_node_1/Marker2
+				MarkerJ
+					/Assembly/structural_node_4/Marker1
+			NoRotationJoint
+				Name
+					joint_6
+				MarkerI
+					/Assembly/structural_node_1/Marker3
+				MarkerJ
+					/Assembly/structural_node_4/Marker2
+		Motions
+			RotationalMotion
+				Name
+					joint_2Motion
+				MarkerI
+					/Assembly/structural_node_1/Marker1
+				MarkerJ
+					/Assembly/structural_node_2/Marker0
+				MotionJoint
+					/Assembly/joint_2
+				RotationZ
+					integral(time,  rampstep(time, 0.0, 0.0, 1.0, 0.0 + 6.28*(1.0 - 0.0)))
+		GeneralConstraintSets
+	ForceTorques
+	ConstantGravity
+		0	0	0	
+	SimulationParameters
+		tstart
+			0
+		tend
+			3
+		hmin
+			1e-09
+		hmax
+			1
+		hout
+			0.01
+		errorTol
+			1e-06
+	AnimationParameters
+		nframe
+			1000000
+		icurrent
+			1
+		istart
+			1
+		iend
+			1000000
+		isForward
+			true
+		framesPerSecond
+			30

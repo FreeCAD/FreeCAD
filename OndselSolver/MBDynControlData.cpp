@@ -16,6 +16,7 @@ void MbD::MBDynControlData::parseMBDyn(std::vector<std::string>& lines)
 	readStructuralNodes(lines);
 	readRigidBodies(lines);
 	readJoints(lines);
+	readGravity(lines);
 	assert(lines.size() == 2);
 }
 
@@ -129,5 +130,14 @@ void MbD::MBDynControlData::readJoints(std::vector<std::string>& lines)
 	std::string str;
 	iss >> str;
 	iss >> joints;
+	lines.erase(it);
+}
+
+void MbD::MBDynControlData::readGravity(std::vector<std::string>& lines)
+{
+	//gravity;
+	std::vector<std::string> tokens{ "gravity" };
+	auto it = findLineWith(lines, tokens);
+	if (it == lines.end()) return;
 	lines.erase(it);
 }

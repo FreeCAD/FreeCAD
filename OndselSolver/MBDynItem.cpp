@@ -8,6 +8,8 @@
 #include "FullMatrix.h"
 #include "ASMTItem.h"
 #include "MBDynBody.h"
+#include "MBDynDrive.h"
+#include "MBDynGravity.h"
 
 
 using namespace MbD;

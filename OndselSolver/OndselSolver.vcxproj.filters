@@ -885,6 +885,9 @@
     <ClCompile Include="..\testapp\OndselSolver.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MBDynGravity.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Array.h">
@@ -1778,6 +1781,9 @@
     <ClInclude Include="DiagonalMatrix.ref.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MBDynGravity.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="OndselSolver.rc">
@@ -1785,18 +1791,35 @@
     </ResourceCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="ClassDiagram.cd" />
-    <None Include="piston.asmt" />
-    <None Include="00backhoe.asmt" />
-    <None Include="circular.asmt" />
-    <None Include="cirpendu.asmt" />
-    <None Include="engine1.asmt" />
-    <None Include="fourbar.asmt" />
-    <None Include="fourbot.asmt" />
-    <None Include="gyro.asmt" />
-    <None Include="robot.asmt" />
-    <None Include="wobpump.asmt" />
-    <None Include="crank_slider.mbd" />
-    <None Include="ClassDiagram1.cd" />
+    <None Include="..\testapp\00backhoe.asmt" />
+    <None Include="..\testapp\circular.asmt" />
+    <None Include="..\testapp\cirpendu.asmt" />
+    <None Include="..\testapp\cirpendu2.asmt" />
+    <None Include="..\testapp\CrankSlider2.mbd" />
+    <None Include="..\testapp\crank_slider.mbd" />
+    <None Include="..\testapp\crank_sliderX.mbd" />
+    <None Include="..\testapp\engine1.asmt" />
+    <None Include="..\testapp\fourbar.asmt" />
+    <None Include="..\testapp\fourbot.asmt" />
+    <None Include="..\testapp\gyro.asmt" />
+    <None Include="..\testapp\InitialConditions.mbd" />
+    <None Include="..\testapp\MBDynCase.mbd" />
+    <None Include="..\testapp\MBDynCase2.mbd" />
+    <None Include="..\testapp\MBDynCase2orig.mbd" />
+    <None Include="..\testapp\MBDynCaseDebug1.mbd" />
+    <None Include="..\testapp\MBDynCaseDebug2.mbd" />
+    <None Include="..\testapp\piston.asmt" />
+    <None Include="..\testapp\quasikine.asmt" />
+    <None Include="..\testapp\robot.asmt" />
+    <None Include="..\testapp\SphericalHinge.mbd" />
+    <None Include="..\testapp\wobpump.asmt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Media Include="..\testapp\CrankSlider2.mov" />
+    <Media Include="..\testapp\InitialConditionsMBDyn.mov" />
+    <Media Include="..\testapp\InitialConditionsOndselSolver.mov" />
+    <Media Include="..\testapp\MBDynCase.mov" />
+    <Media Include="..\testapp\MBDynCase2.mov" />
+    <Media Include="..\testapp\SphericalHinge.mov" />
   </ItemGroup>
 </Project>

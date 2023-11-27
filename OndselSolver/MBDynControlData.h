@@ -23,6 +23,7 @@ namespace MbD {
 		void readStructuralNodes(std::vector<std::string>& lines);
 		void readRigidBodies(std::vector<std::string>& lines);
 		void readJoints(std::vector<std::string>& lines);
+		void readGravity(std::vector<std::string>& lines);
 
 		int maxIterations = 1000;
 		std::string defaultOrientation = "euler321";
