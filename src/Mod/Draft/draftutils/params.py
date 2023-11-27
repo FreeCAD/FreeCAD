@@ -33,9 +33,12 @@ from draftutils.translate import translate
 from draftviewproviders import view_base
 
 
-class ParamObserver:
+class ParamObserverDraft:
 
     def slotParamChanged(self, param, tp, name, value):
+        if name == "textheight":
+            _param_observer_callback_tray()
+            return
         if name in ("gridBorder", "gridShowHuman", "coloredGridAxes", "gridEvery",
                     "gridSpacing", "gridSize", "gridTransparency", "gridColor"):
             _param_observer_callback_grid()
@@ -58,6 +61,23 @@ class ParamObserver:
         if name == "patternFile":
             _param_observer_callback_svg_pattern()
             return
+
+
+class ParamObserverView:
+
+    def slotParamChanged(self, param, tp, name, value):
+        if name in ("DefaultShapeColor", "DefaultShapeLineColor", "DefaultShapeLineWidth"):
+            _param_observer_callback_tray()
+            return
+
+
+def _param_observer_callback_tray():
+    if not hasattr(Gui, "draftToolBar"):
+        return
+    tray = Gui.draftToolBar.tray
+    if tray is None:
+        return
+    Gui.draftToolBar.setStyleButton()
 
 
 def _param_observer_callback_grid():
@@ -158,5 +178,14 @@ of existing objects in all opened documents?""")
         doc.commitTransaction()
 
 
-def _param_observer_start(param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")):
-    param.AttachManager(ParamObserver())
+def _param_observer_start():
+    _param_observer_start_draft()
+    _param_observer_start_view()
+
+
+def _param_observer_start_draft(param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")):
+    param.AttachManager(ParamObserverDraft())
+
+
+def _param_observer_start_view(param = App.ParamGet("User parameter:BaseApp/Preferences/View")):
+    param.AttachManager(ParamObserverView())

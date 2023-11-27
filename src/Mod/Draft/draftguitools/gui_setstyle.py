@@ -199,8 +199,6 @@ class Draft_SetStyle_TaskPanel:
         param_draft.SetFloat("dimovershoot",FreeCAD.Units.Quantity(self.form.DimOvershoot.text()).Value)
         param_draft.SetFloat("extlines",FreeCAD.Units.Quantity(self.form.ExtLines.text()).Value)
         param_draft.SetFloat("extovershoot",FreeCAD.Units.Quantity(self.form.ExtOvershoot.text()).Value)
-        if hasattr(FreeCADGui,"draftToolBar"):
-            FreeCADGui.draftToolBar.setStyleButton()
         self.reject()
 
     def onApplyStyle(self):
