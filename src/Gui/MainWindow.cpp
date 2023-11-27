@@ -54,7 +54,7 @@
 # include <QPushButton>
 #endif
 
-#if defined(Q_OS_WIN)
+#if defined(Q_OS_WIN) && QT_VERSION < QT_VERSION_CHECK(6,0,0)
 # include <QtPlatformHeaders/QWindowsWindowFunctions>
 #endif
 
@@ -1740,7 +1740,7 @@ void MainWindow::loadWindowSettings()
     max ? showMaximized() : show();
 
     // make menus and tooltips usable in fullscreen under Windows, see issue #7563
-#if defined(Q_OS_WIN)
+#if defined(Q_OS_WIN) && QT_VERSION < QT_VERSION_CHECK(6,0,0)
     if (QWindow* win = this->windowHandle()) {
         QWindowsWindowFunctions::setHasBorderInFullScreen(win, true);
     }

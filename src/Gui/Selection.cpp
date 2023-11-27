@@ -37,8 +37,8 @@
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
 #include <Base/Tools.h>
-#include <Base/UnitsApi.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>
+#include <Base/UnitsApi.h>
 
 #include "Selection.h"
 #include "SelectionObject.h"
@@ -2145,7 +2145,7 @@ PyObject *SelectionSingleton::sEnablePickedList(PyObject * /*self*/, PyObject *a
 PyObject *SelectionSingleton::sSetPreselection(PyObject * /*self*/, PyObject *args, PyObject *kwd)
 {
     PyObject *object;
-    char* subname = nullptr;
+    const char* subname = nullptr;
     float x = 0, y = 0, z = 0;
     int type = 1;
     static const std::array<const char *, 7> kwlist{"obj", "subname", "x", "y", "z", "tp", nullptr};

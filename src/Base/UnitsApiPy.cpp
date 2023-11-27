@@ -188,9 +188,8 @@ PyObject* UnitsApi::sSchemaTranslate(PyObject* /*self*/, PyObject* args)
 PyObject* UnitsApi::sToNumber(PyObject* /*self*/, PyObject* args)
 {
     double value {};
-    char* format = "g";
+    const char* format = "g";
     int decimals {};
-
     do {
         PyObject* py {};
         if (PyArg_ParseTuple(args, "O!|si", &(QuantityPy::Type), &py, &format, &decimals)) {

@@ -1489,7 +1489,8 @@ PyObject* Application::sReload(PyObject * /*self*/, PyObject *args)
 
 PyObject* Application::sLoadFile(PyObject * /*self*/, PyObject *args)
 {
-    const char *path, *mod = "";
+    const char *path = "";
+    const char *mod = "";
     if (!PyArg_ParseTuple(args, "s|s", &path, &mod))
         return nullptr;
 
@@ -1610,7 +1611,7 @@ PyObject* Application::sGetUserEditMode(PyObject * /*self*/, PyObject *args)
 
 PyObject* Application::sSetUserEditMode(PyObject * /*self*/, PyObject *args)
 {
-    char *mode = "";
+    const char *mode = "";
     if (!PyArg_ParseTuple(args, "s", &mode))
         return nullptr;
 

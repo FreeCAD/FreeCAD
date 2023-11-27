@@ -286,7 +286,7 @@ PyObject*  PropertyContainerPy::setPropertyStatus(PyObject *args)
 
 PyObject*  PropertyContainerPy::getPropertyStatus(PyObject *args)
 {
-    char* name = "";
+    const char* name = "";
     if (!PyArg_ParseTuple(args, "|s", &name))
         return nullptr;
 

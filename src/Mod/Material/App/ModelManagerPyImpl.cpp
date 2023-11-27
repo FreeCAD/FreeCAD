@@ -54,7 +54,7 @@ int ModelManagerPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 
 PyObject* ModelManagerPy::getModel(PyObject* args)
 {
-    char* uuid;
+    char* uuid {};
     if (!PyArg_ParseTuple(args, "s", &uuid)) {
         return nullptr;
     }
@@ -85,8 +85,8 @@ PyObject* ModelManagerPy::getModel(PyObject* args)
 
 PyObject* ModelManagerPy::getModelByPath(PyObject* args)
 {
-    char* path;
-    char* lib = "";
+    char* path {};
+    const char* lib = "";
     if (!PyArg_ParseTuple(args, "s|s", &path, &lib)) {
         return nullptr;
     }
