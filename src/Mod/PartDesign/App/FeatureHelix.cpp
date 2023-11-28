@@ -235,6 +235,13 @@ App::DocumentObjectExecReturn* Helix::execute()
 
         mkPS.SetMode(TopoDS::Wire(auxpath), true);  // this is for auxiliary
 
+        if (Angle.getValue() == 0) {
+            mkPS.SetMode(true);  // This is for frenet, quicker than auxiliary
+                                 // but can introduce to much error, checked below
+        } else {
+            mkPS.SetMode(TopoDS::Wire(auxpath), true);  // this is for auxiliary
+        }
+
         for (TopoDS_Wire& wire : wires) {
             wire.Move(invObjLoc);
             mkPS.Add(wire);
@@ -244,6 +251,13 @@ App::DocumentObjectExecReturn* Helix::execute()
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Could not build"));
 
         mkPS.Build();
+
+        //check for error value at pipe creation and re-build if needed
+        if (Angle.getValue() == 0 && mkPS.ErrorOnSurface() < Precision::Confusion() / 2.0 ) {
+            Base::Console().Log("PartDesign_Helix : Fail back to auxiliary mode\n");
+            mkPS.SetMode(TopoDS::Wire(auxpath), true);
+            mkPS.Build();
+        }
 
         if (!mkPS.MakeSolid())
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Could not make solid helix with open wire"));
