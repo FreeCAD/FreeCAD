@@ -87,14 +87,7 @@
          </item>
         </layout>
        </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="label">
-         <property name="text">
-          <string>Document unit system:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="2">
+       <item row="2" column="0" colspan="3">
         <widget class="QCheckBox" name="checkBox_projectUnitSystemIgnore">
           <property name="toolTip">
            <string>If enabled, document unit systems are ignored</string>
