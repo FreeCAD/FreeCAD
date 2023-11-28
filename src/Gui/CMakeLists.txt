@@ -91,6 +91,7 @@ include_directories(
     ${QtSvgWidgets_INCLUDE_DIRS}
     ${QtNetwork_INCLUDE_DIRS}
     ${QtUiTools_INCLUDE_DIRS}
+    ${QtXml_INCLUDE_DIRS}
 )
 list(APPEND FreeCADGui_LIBS
     ${QtCore_LIBRARIES}

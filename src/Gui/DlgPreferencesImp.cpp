@@ -53,8 +53,6 @@
 #include "Tools.h"
 #include "WidgetFactory.h"
 
-#include <QDesktopWidget>
-
 using namespace Gui::Dialog;
 
 QWidget* PreferencesPageItem::getWidget() const
