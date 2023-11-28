@@ -243,9 +243,10 @@ private:
 #define Base_EXPORT BaseExport
 #endif
 
+#if !defined(__MINGW32__)
 extern template class Base_EXPORT Observer<const char*>;
 extern template class Base_EXPORT Subject<const char*>;
-
+#endif
 
 }  // namespace Base
 
