@@ -232,9 +232,9 @@ private:
                 for (Py::Sequence::iterator it = l.begin(); it != l.end(); ++it) {
                     Py::Tuple t(*it);
                     pts.emplace_back(
-                        (float)Py::Float(t.getItem(0)),
-                        (float)Py::Float(t.getItem(1)),
-                        (float)Py::Float(t.getItem(2))
+                        Py::Float(t.getItem(0)),
+                        Py::Float(t.getItem(1)),
+                        Py::Float(t.getItem(2))
                     );
                 }
             }
@@ -287,24 +287,24 @@ private:
         }
     }
 #if defined(HAVE_PCL_SURFACE)
-    /*
-import ReverseEngineering as Reen
-import Points
-import Mesh
-import random
-
-r=random.Random()
-
-p=Points.Points()
-pts=[]
-for i in range(21):
-  for j in range(21):
-    pts.append(App.Vector(i,j,r.gauss(5,0.05)))
-
-p.addPoints(pts)
-m=Reen.triangulate(Points=p,SearchRadius=2.2)
-Mesh.show(m)
-    */
+    /* 
+import ReverseEngineering as Reen 
+import Points 
+import Mesh 
+import random 
+ 
+r=random.Random() 
+ 
+p=Points.Points() 
+pts=[] 
+for i in range(21): 
+  for j in range(21): 
+    pts.append(App.Vector(i,j,r.gauss(5,0.05))) 
+ 
+p.addPoints(pts) 
+m=Reen.triangulate(Points=p,SearchRadius=2.2) 
+Mesh.show(m) 
+    */ 
     Py::Object triangulate(const Py::Tuple& args, const Py::Dict& kwds)
     {
         PyObject *pts;
@@ -381,35 +381,29 @@ Mesh.show(m)
 
         return Py::asObject(new Mesh::MeshPy(mesh));
     }
-    /*
+   /*
 import ReverseEngineering as Reen
 import Points
 import Mesh
 import random
 import math
-
 r=random.Random()
-
 p=Points.Points()
 pts=[]
 for i in range(21):
   for j in range(21):
     pts.append(App.Vector(i,j,r.random()))
-
 p.addPoints(pts)
 m=Reen.viewTriangulation(p,21,21)
 Mesh.show(m)
-
 def boxmueller():
   r1,r2=random.random(),random.random()
   return math.sqrt(-2*math.log(r1))*math.cos(2*math.pi*r2)
-
 p=Points.Points()
 pts=[]
 for i in range(21):
   for j in range(21):
     pts.append(App.Vector(i,j,r.gauss(5,0.05)))
-
 p.addPoints(pts)
 m=Reen.viewTriangulation(p,21,21)
 Mesh.show(m)
@@ -503,20 +497,17 @@ Mesh.show(m)
 
         return Py::asObject(new Mesh::MeshPy(mesh));
     }
-    /*
+/*
 import ReverseEngineering as Reen
 import Points
 import Mesh
 import random
-
 r=random.Random()
-
 p=Points.Points()
 pts=[]
 for i in range(21):
   for j in range(21):
     pts.append(App.Vector(i,j,r.gauss(5,0.05)))
-
 p.addPoints(pts)
 m=Reen.marchingCubesHoppe(Points=p)
 Mesh.show(m)
@@ -738,41 +729,33 @@ Mesh.show(m)
     }
 #endif
 #if defined(HAVE_PCL_SAMPLE_CONSENSUS)
-    /*
+/*
 import ReverseEngineering as reen
 import Points
 import Part
-
 p = App.ActiveDocument.Points.Points
 data = p.Points
 n = reen.normalEstimation(p, 10)
-
 model = reen.sampleConsensus(SacModel="Plane", Points=p)
 indices = model["Model"]
 param = model["Parameters"]
-
 plane = Part.Plane()
 plane.Axis = param[0:3]
 plane.Position = -plane.Axis * param[3]
-
 np = Points.Points()
 np.addPoints([data[i] for i in indices])
 Points.show(np)
-
 # sort in descending order
 indices = list(indices)
 indices.sort(reverse=True)
-
 # remove points of segment
 for i in indices:
     del data[i]
     del n[i]
-
 p = Points.Points()
 p.addPoints(data)
 model = reen.sampleConsensus(SacModel="Cylinder", Points=p, Normals=n)
 indices = model["Model"]
-
 np = Points.Points()
 np.addPoints([data[i] for i in indices])
 Points.show(np)
