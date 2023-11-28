@@ -100,7 +100,6 @@
 #include "WorkbenchManager.h"
 #include "Workbench.h"
 
-
 #include "MergeDocuments.h"
 #include "ViewProviderExtern.h"
 
@@ -182,7 +181,6 @@ public:
         QObject::connect(actionGrp, &QActionGroup::triggered, this, [this](QAction* action) {
             int userSchema = action->data().toInt();
             setUserSchema(userSchema);
-            // Set and save the Unit System
         } );
         setMenu(menu);
         retranslateUi();
@@ -216,12 +214,23 @@ public:
     void setUserSchema(int userSchema)
     {
         App::Document* doc = App::GetApplication().getActiveDocument();
-        if ( doc != nullptr && doc->UnitSystem.getValue() != userSchema ) {
-            doc->UnitSystem.setValue(userSchema);
-        }
+        if ( doc != nullptr ) {
+            if (doc->UnitSystem.getValue() != userSchema )
+                doc->UnitSystem.setValue(userSchema);
+        } else
+            getWindowParameter()->SetInt("UserSchema", userSchema);
+
         unitChanged();
+        Base::UnitsApi::setSchema(static_cast<Base::UnitSystem>(userSchema));
         // Update the application to show the unit change
         Gui::Application::Instance->onUpdate();
+        // Force PropertyEditor refresh until we find a better way
+        const auto views = getMainWindow()->findChildren<PropertyView*>();
+        for(auto view : views) {
+            bool show = view->showAll();
+            view->setShowAll(!show);
+            view->setShowAll(show);
+        }
     }
 
 private:
