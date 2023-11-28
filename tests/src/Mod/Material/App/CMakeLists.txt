@@ -9,3 +9,7 @@ target_sources(
     ${CMAKE_CURRENT_SOURCE_DIR}/TestModel.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/TestModelProperties.cpp
 )
+
+target_include_directories(Material_tests_run PUBLIC
+    ${QtCore_INCLUDE_DIRS}
+)
