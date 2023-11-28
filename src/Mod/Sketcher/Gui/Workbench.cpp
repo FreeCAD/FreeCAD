@@ -476,8 +476,14 @@ inline void SketcherAddWorkbenchConstraints<Gui::ToolBarItem>(Gui::ToolBarItem& 
         cons << "Sketcher_ConstrainCoincident"
              << "Sketcher_ConstrainPointOnObject";
     }
-    cons << "Sketcher_CompHorVer"
-         << "Sketcher_ConstrainParallel"
+    if (hGrp->GetBool("AutoHorVer", true)) {
+        cons << "Sketcher_CompHorVer";
+    }
+    else {
+        cons << "Sketcher_ConstrainVertical"
+             << "Sketcher_ConstrainHorizontal";
+    }
+    cons << "Sketcher_ConstrainParallel"
          << "Sketcher_ConstrainPerpendicular"
          << "Sketcher_ConstrainTangent"
          << "Sketcher_ConstrainEqual"
