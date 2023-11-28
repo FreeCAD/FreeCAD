@@ -287,24 +287,24 @@ private:
         }
     }
 #if defined(HAVE_PCL_SURFACE)
-    /* 
-import ReverseEngineering as Reen 
-import Points 
-import Mesh 
-import random 
- 
-r=random.Random() 
- 
-p=Points.Points() 
-pts=[] 
-for i in range(21): 
-  for j in range(21): 
-    pts.append(App.Vector(i,j,r.gauss(5,0.05))) 
- 
-p.addPoints(pts) 
-m=Reen.triangulate(Points=p,SearchRadius=2.2) 
-Mesh.show(m) 
-    */ 
+    /*
+import ReverseEngineering as Reen
+import Points
+import Mesh
+import random
+
+r=random.Random()
+
+p=Points.Points()
+pts=[]
+for i in range(21):
+  for j in range(21):
+    pts.append(App.Vector(i,j,r.gauss(5,0.05)))
+
+p.addPoints(pts)
+m=Reen.triangulate(Points=p,SearchRadius=2.2)
+Mesh.show(m)
+    */
     Py::Object triangulate(const Py::Tuple& args, const Py::Dict& kwds)
     {
         PyObject *pts;
