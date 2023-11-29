@@ -104,7 +104,12 @@ TaskRevolutionParameters::TaskRevolutionParameters(PartDesignGui::ViewProvider* 
         catch (const Base::Exception &ex) {
             ex.ReportException();
         }
-     }
+    }
+    bool outside = enableOutside(vp);
+    ui->checkBoxOutside->setEnabled(outside);
+    ui->checkBoxOutside->setVisible(outside);
+    PartDesign::ProfileBased* pcRevolution = static_cast<PartDesign::ProfileBased*>(vp->getObject());
+    ui->checkBoxOutside->setChecked(pcRevolution->Outside.getValue());
 }
 
 void TaskRevolutionParameters::setupDialog()
@@ -344,6 +349,8 @@ void TaskRevolutionParameters::connectSignals()
             this, &TaskRevolutionParameters::onButtonFace);
     connect(ui->lineFaceName, &QLineEdit::textEdited,
             this, &TaskRevolutionParameters::onFaceName);
+    connect(ui->checkBoxOutside, &QCheckBox::toggled,
+            this, &TaskRevolutionParameters::onOutsideChanged);
 }
 
 void TaskRevolutionParameters::updateUI(int index)

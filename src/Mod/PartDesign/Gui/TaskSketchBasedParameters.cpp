@@ -52,7 +52,7 @@ using namespace Gui;
 
 TaskSketchBasedParameters::TaskSketchBasedParameters(PartDesignGui::ViewProvider *vp, QWidget *parent,
                                                      const std::string& pixmapname, const QString& parname)
-    : TaskFeatureParameters(vp, parent, pixmapname, parname)
+    : TaskAddSubParameters(vp, parent, pixmapname, parname)
 {
     // disable selection
     this->blockSelection(true);
@@ -242,7 +242,7 @@ TaskSketchBasedParameters::~TaskSketchBasedParameters()
 //++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 TaskDlgSketchBasedParameters::TaskDlgSketchBasedParameters(PartDesignGui::ViewProvider *vp)
-    : TaskDlgFeatureParameters(vp)
+    : TaskDlgAddSubParameters(vp)
 {
 }
 
@@ -262,7 +262,7 @@ bool TaskDlgSketchBasedParameters::accept() {
 
     // First verify that the feature can be built and then hide the profile as otherwise
     // it will remain hidden if the feature's recompute fails
-    if (TaskDlgFeatureParameters::accept()) {
+    if (TaskDlgAddSubParameters::accept()) {
         App::DocumentObject* sketch = static_cast<PartDesign::ProfileBased*>(feature)->Profile.getValue();
         Gui::cmdAppObjectHide(sketch);
         return true;

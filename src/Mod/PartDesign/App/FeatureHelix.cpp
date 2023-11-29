@@ -24,9 +24,6 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <BRepAdaptor_Surface.hxx>
-# include <BRepAlgoAPI_Common.hxx>
-# include <BRepAlgoAPI_Cut.hxx>
-# include <BRepAlgoAPI_Fuse.hxx>
 # include <BRepBndLib.hxx>
 # include <BRepBuilderAPI_MakeSolid.hxx>
 # include <BRepBuilderAPI_Sewing.hxx>
@@ -99,8 +96,6 @@ Helix::Helix()
             "i.e. counter-clockwise when moving along its axis."));
     ADD_PROPERTY_TYPE(Reversed, (false), group, App::Prop_None,
         QT_TRANSLATE_NOOP("App::Property", "Determines whether the helix points in the opposite direction of the axis."));
-    ADD_PROPERTY_TYPE(Outside, (false), group, App::Prop_None,
-        QT_TRANSLATE_NOOP("App::Property", "If set, the result will be the intersection of the profile and the preexisting body."));
     ADD_PROPERTY_TYPE(HasBeenEdited, (false), group, App::Prop_Hidden,
         QT_TRANSLATE_NOOP("App::Property", "If false, the tool will propose an initial value for the pitch based on the profile bounding box,\n"
             "so that self intersection is avoided."));
@@ -248,7 +243,7 @@ App::DocumentObjectExecReturn* Helix::execute()
 
         if (base.isNull()) {
 
-            if (getAddSubType() == FeatureAddSub::Subtractive)
+            if (isSubtractive())
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: There is nothing to subtract"));
 
             int solidCount = countSolids(result);
@@ -258,59 +253,7 @@ App::DocumentObjectExecReturn* Helix::execute()
             Shape.setValue(getSolid(result));
             return App::DocumentObject::StdReturn;
         }
-
-        if (getAddSubType() == FeatureAddSub::Additive) {
-
-            BRepAlgoAPI_Fuse mkFuse(base.getShape(), result);
-            if (!mkFuse.IsDone())
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Adding the helix failed"));
-            // we have to get the solids (fuse sometimes creates compounds)
-            TopoDS_Shape boolOp = this->getSolid(mkFuse.Shape());
-
-            // lets check if the result is a solid
-            if (boolOp.IsNull())
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result is not a solid"));
-
-            int solidCount = countSolids(boolOp);
-            if (solidCount > 1) {
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result has multiple solids"));
-            }
-
-            boolOp = refineShapeIfActive(boolOp);
-            Shape.setValue(getSolid(boolOp));
-        }
-        else if (getAddSubType() == FeatureAddSub::Subtractive) {
-
-            TopoDS_Shape boolOp;
-
-            if (Outside.getValue()) {  // are we subtracting the inside or the outside of the profile.
-                BRepAlgoAPI_Common mkCom(result, base.getShape());
-                if (!mkCom.IsDone())
-                    return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Intersecting the helix failed"));
-                boolOp = this->getSolid(mkCom.Shape());
-
-            }
-            else {
-                BRepAlgoAPI_Cut mkCut(base.getShape(), result);
-                if (!mkCut.IsDone())
-                    return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Subtracting the helix failed"));
-                boolOp = this->getSolid(mkCut.Shape());
-            }
-
-            // lets check if the result is a solid
-            if (boolOp.IsNull())
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result is not a solid"));
-
-            int solidCount = countSolids(boolOp);
-            if (solidCount > 1) {
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result has multiple solids"));
-            }
-
-            boolOp = refineShapeIfActive(boolOp);
-            Shape.setValue(getSolid(boolOp));
-        }
-
-        return App::DocumentObject::StdReturn;
+        return FeatureAddSub::addSubOp(base.getShape(), result);
     }
     catch (Standard_Failure& e) {
 

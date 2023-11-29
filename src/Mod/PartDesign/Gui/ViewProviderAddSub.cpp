@@ -80,7 +80,7 @@ void ViewProviderAddSub::attach(App::DocumentObject* obj) {
     auto* bind = new SoMaterialBinding();
     bind->value = SoMaterialBinding::OVERALL;
     auto* material = new SoMaterial();
-    if (static_cast<PartDesign::FeatureAddSub*>(obj)->getAddSubType() == PartDesign::FeatureAddSub::Additive)
+    if (static_cast<PartDesign::FeatureAddSub*>(obj)->isAdditive())
         material->diffuseColor = SbColor(1,1,0);
     else
         material->diffuseColor = SbColor(1,0,0);

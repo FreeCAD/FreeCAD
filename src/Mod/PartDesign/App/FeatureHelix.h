@@ -54,7 +54,6 @@ public:
     App::PropertyAngle       Angle;
     App::PropertyDistance    Growth;
     App::PropertyEnumeration Mode;
-    App::PropertyBool        Outside;
     App::PropertyBool        HasBeenEdited;
 
     /** if this property is set to a valid link, both Axis and Base properties

@@ -323,7 +323,7 @@ void DressUp::getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &subShap
             if(base) {
                 baseShape = base->getBaseTopoShape(true);
                 baseShape.move(base->getLocation().Inverted());
-                if (base->getAddSubType() == Additive) {
+                if (base->isAdditive()) {
                     if(!baseShape.isNull() && baseShape.hasSubShape(TopAbs_SOLID))
 #ifdef FC_USE_TNP_FIX
                         shapes.emplace_back(shape.makeElementCut(baseShape.getShape()));
