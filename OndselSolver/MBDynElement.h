@@ -13,6 +13,7 @@ namespace MbD {
     class MBDynElement : public MBDynItem
     {
     public:
+        void parseMBDyn(std::vector<std::string>& lines) override;
         void initialize() override;
 
     };
