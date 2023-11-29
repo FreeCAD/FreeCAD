@@ -34,7 +34,7 @@
 
 #include "ViewProviderPrimitive.h"
 #include "TaskDatumParameters.h"
-#include "TaskFeatureParameters.h"
+#include "TaskAddSubParameters.h"
 
 namespace App
 {
@@ -51,7 +51,7 @@ class LinearGizmo;
 namespace PartDesignGui
 {
 class Ui_DlgPrimitives;
-class TaskBoxPrimitives: public Gui::TaskView::TaskBox, public Gui::DocumentObserver
+class TaskBoxPrimitives : public PartDesignGui::TaskAddSubParameters
 {
     Q_OBJECT
 

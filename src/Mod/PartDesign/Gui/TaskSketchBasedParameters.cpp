@@ -55,7 +55,7 @@ TaskSketchBasedParameters::TaskSketchBasedParameters(
     const std::string& pixmapname,
     const QString& parname
 )
-    : TaskFeatureParameters(vp, parent, pixmapname, parname)
+    : TaskAddSubParameters(vp, parent, pixmapname, parname)
 {
     // disable selection
     this->blockSelection(true);

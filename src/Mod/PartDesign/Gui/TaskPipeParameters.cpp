@@ -93,6 +93,8 @@ TaskPipeParameters::TaskPipeParameters(ViewProviderPipe* PipeView, bool /*newObj
         this,
         &TaskPipeParameters::onTransitionChanged
     );
+    connect(ui->checkBoxOutside, &QCheckBox::toggled,
+            this, &TaskPipeParameters::onOutsideChanged);
 
     // Create context menu
     QAction* remove = new QAction(tr("Remove"), this);
@@ -153,6 +155,10 @@ TaskPipeParameters::TaskPipeParameters(ViewProviderPipe* PipeView, bool /*newObj
 
     ui->comboBoxTransition->setCurrentIndex(pipe->Transition.getValue());
 
+    bool outside = enableOutside(vp);
+    ui->checkBoxOutside->setEnabled(outside);
+    ui->checkBoxOutside->setVisible(outside);
+    ui->checkBoxOutside->setChecked(pipe->Outside.getValue());
     updateUI();
     this->blockSelection(false);
 }

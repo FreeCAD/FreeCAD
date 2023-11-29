@@ -1,5 +1,3 @@
-// SPDX-License-Identifier: LGPL-2.1-or-later
-
 /***************************************************************************
  *   Copyright (c) 2011 Juergen Riegel <FreeCAD@juergen-riegel.net>        *
  *                                                                         *
@@ -29,8 +27,6 @@
 #include <App/FeaturePythonPyImp.h>
 #include <Mod/Part/App/modelRefine.h>
 #include <Mod/Part/App/TopoShapeOpCode.h>
-#include <GProp_GProps.hxx>
-#include <BRepGProp.hxx>
 
 #include "FeatureAddSub.h"
 #include "FeaturePy.h"
@@ -50,11 +46,23 @@ PROPERTY_SOURCE(PartDesign::FeatureAddSub, PartDesign::FeatureRefine)
 FeatureAddSub::FeatureAddSub()
 {
     ADD_PROPERTY(AddSubShape, (TopoDS_Shape()));
+    ADD_PROPERTY_TYPE(Outside, (false),"Part Design", App::Prop_None,
+        QT_TRANSLATE_NOOP("App::Property", "If set, the result will be the intersection of the profile and the preexisting body."));
 }
 
 void FeatureAddSub::onChanged(const App::Property* property)
 {
     Feature::onChanged(property);
+}
+
+bool FeatureAddSub::isAdditive()
+{
+    return addSubType == Additive;
+}
+
+bool FeatureAddSub::isSubtractive()
+{
+    return addSubType == Subtractive;
 }
 
 FeatureAddSub::Type FeatureAddSub::getAddSubType()
@@ -79,6 +87,63 @@ void FeatureAddSub::getAddSubShape(Part::TopoShape& addShape, Part::TopoShape& s
         subShape = AddSubShape.getShape();
     }
 }
+
+TopoDS_Shape FeatureAddSub::subtractiveOp(const TopoDS_Shape &baseShape, const TopoDS_Shape &opShape)
+{
+    Outside.setStatus(App::Property::Hidden, ! isSubtractive());    // Set this after creation, like here.
+    TopoDS_Shape result;
+    if (  Outside.getValue() ) {
+        BRepAlgoAPI_Common mkCom(baseShape, opShape);
+        if (!mkCom.IsDone())
+            throw Base::CADKernelError(QT_TRANSLATE_NOOP("Exception", "Intersection of base feature failed"));
+        result = mkCom.Shape();
+    } else {
+        BRepAlgoAPI_Cut mkCut(baseShape, opShape);
+        if (!mkCut.IsDone())
+            throw Base::CADKernelError(QT_TRANSLATE_NOOP("Exception", "Cut out of base feature failed"));
+        result = mkCut.Shape();
+    }
+    return result;
+}
+
+App::DocumentObjectExecReturn* FeatureAddSub::addSubOp(const TopoDS_Shape &baseShape, const TopoDS_Shape &opShape)
+{
+    AddSubShape.setValue(primitiveShape);
+
+    TopoShape boolOp(0);
+
+    const char* maker;
+    switch (getAddSubType()) {
+        case Additive:
+            maker = Part::OpCodes::Fuse;
+            break;
+        case Subtractive:
+            maker = Part::OpCodes::Cut;
+            break;
+        default:
+            return new App::DocumentObjectExecReturn(
+                QT_TRANSLATE_NOOP("Exception", "Unknown operation type"));
+    }
+    try {
+        boolOp.makeElementBoolean(maker, {base, primitiveShape});
+    }
+    catch (Standard_Failure& e) {
+        return new App::DocumentObjectExecReturn(
+            QT_TRANSLATE_NOOP("Exception", "Failed to perform boolean operation"));
+    }
+    boolOp = this->getSolid(boolOp);
+    // lets check if the result is a solid
+    if (boolOp.isNull()) {
+        return new App::DocumentObjectExecReturn(
+            QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid"));
+    }
+    boolOp = refineShapeIfActive(boolOp);
+    Shape.setValue(getSolid(boolOp));
+    AddSubShape.setValue(opShape);
+
+    return App::DocumentObject::StdReturn;
+}
+
 void FeatureAddSub::updatePreviewShape()
 {
     const auto notifyWarning = [](const QString& message) {
@@ -91,43 +156,10 @@ void FeatureAddSub::updatePreviewShape()
     // for subtractive shapes we want to also showcase removed volume, not only the tool
     if (addSubType == Subtractive) {
         TopoShape base = getBaseTopoShape(true).moved(getLocation().Inverted());
-        const TopoShape& tool = AddSubShape.getShape();
 
-        if (!tool.isEmpty()) {
+        if (const TopoShape& addSubShape = AddSubShape.getShape(); !addSubShape.isEmpty()) {
             try {
-                // Compute removed volume preview (for display)
-                TopoShape common;
-                common.makeElementBoolean(
-                    Part::OpCodes::Common,
-                    {base, tool},
-                    "Preview",
-                    Precision::Confusion()
-                );
-
-                // does CUT change volume?
-                GProp_GProps propsBefore, propsAfter;
-                BRepGProp::VolumeProperties(base.getShape(), propsBefore);
-
-                TopoShape cut;
-                cut.makeElementBoolean(
-                    Part::OpCodes::Cut,
-                    {base, tool},
-                    "PreviewCheck",
-                    Precision::Confusion()
-                );
-
-                BRepGProp::VolumeProperties(cut.getShape(), propsAfter);
-
-                const double removed = propsBefore.Mass() - propsAfter.Mass();
-
-                if (removed <= Precision::Confusion()) {
-                    notifyWarning(
-                        tr("Resulting shape is empty. That may indicate that no material will be "
-                           "removed or a problem with the model.")
-                    );
-                }
-                PreviewShape.setValue(common);
-                return;
+                base.makeElementBoolean(Part::OpCodes::Common, {base, addSubShape});
             }
             catch (Standard_Failure& e) {
                 notifyWarning(QString::fromUtf8(e.GetMessageString()));
@@ -135,6 +167,14 @@ void FeatureAddSub::updatePreviewShape()
             catch (Base::Exception& e) {
                 notifyWarning(QString::fromStdString(e.getMessage()));
             }
+
+            if (base.isEmpty()) {
+                notifyWarning(
+                    tr("Resulting shape is empty. That may indicate that no material will be "
+                       "removed or a problem with the model.")
+                );
+            }
+
             PreviewShape.setValue(base);
             return;
         }
