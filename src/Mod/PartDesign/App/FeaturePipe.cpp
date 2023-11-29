@@ -357,7 +357,8 @@ App::DocumentObjectExecReturn *Pipe::execute()
                 sewer.Add(s);
 
             sewer.Perform();
-            mkSolid.Add(TopoDS::Shell(sewer.SewedShape()));        } else {
+            mkSolid.Add(TopoDS::Shell(sewer.SewedShape()));
+        } else {
             // shells are already closed - add them directly
             for (TopoDS_Shape& s : shells) {
                 mkSolid.Add(TopoDS::Shell(s));

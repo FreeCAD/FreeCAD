@@ -309,14 +309,13 @@ void TaskHelixParameters::adaptVisibilityToMode()
     bool isPitchVisible = false;
     bool isHeightVisible = false;
     bool isTurnsVisible = false;
-    bool isOutsideVisible = false;
+    bool isOutsideVisible = enableOutside(vp);
     bool isAngleVisible = false;
     bool isGrowthVisible = false;
 
     auto helix = getObject<PartDesign::Helix>();
     if (helix->getAddSubType() == PartDesign::FeatureAddSub::Subtractive) {
         isOutsideVisible = true;
-    }
 
     HelixMode mode = static_cast<HelixMode>(propMode->getValue());
     if (mode == HelixMode::pitch_height_angle) {
@@ -643,9 +642,9 @@ bool TaskHelixParameters::showPreview(PartDesign::Helix* helix)
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/PartDesign");
     if ((hGrp->GetBool("SubractiveHelixPreview", true)
-         && helix->getAddSubType() == PartDesign::FeatureAddSub::Subtractive)
+         && helix->isSubtractive())
         || (hGrp->GetBool("AdditiveHelixPreview", false)
-            && helix->getAddSubType() == PartDesign::FeatureAddSub::Additive)) {
+            && helix->isAdditive())) {
         return true;
     }
 
