@@ -421,7 +421,7 @@ void NavigationStyle::boxZoom(const SbBox2s& box)
     const SbViewportRegion & vp = viewer->getSoRenderManager()->getViewportRegion();
     SbViewVolume vv = cam->getViewVolume(vp.getViewportAspectRatio());
 
-    short sizeX,sizeY;
+    short sizeX{},sizeY{};
     box.getSize(sizeX, sizeY);
     SbVec2s size = vp.getViewportSizePixels();
 
@@ -431,7 +431,7 @@ void NavigationStyle::boxZoom(const SbBox2s& box)
         return;
 
     // Get the new center in normalized pixel coordinates
-    short xmin,xmax,ymin,ymax;
+    short xmin{},xmax{},ymin{},ymax{};
     box.getBounds(xmin,ymin,xmax,ymax);
     const SbVec2f center((float) ((xmin+xmax)/2) / (float) std::max((int)(size[0] - 1), 1),
                          (float) (size[1]-(ymin+ymax)/2) / (float) std::max((int)(size[1] - 1), 1));
@@ -856,7 +856,7 @@ void NavigationStyle::spin(const SbVec2f & pointerpos)
     float sensitivity = getSensitivity();
     if (sensitivity > 1.0f) {
         SbVec3f axis;
-        float radians;
+        float radians{};
         r.getValue(axis, radians);
         radians = sensitivity * radians;
         r.setValue(axis, radians);
@@ -878,7 +878,7 @@ void NavigationStyle::spin(const SbVec2f & pointerpos)
     // to a possible spin animation mode appear smooth.
 
     SbVec3f dummy_axis, newaxis;
-    float acc_angle, newangle;
+    float acc_angle{}, newangle{};
     this->spinincrement.getValue(dummy_axis, acc_angle);
     acc_angle *= this->spinsamplecounter; // weight
     r.getValue(newaxis, newangle);
@@ -919,7 +919,7 @@ void NavigationStyle::spin_simplified(SoCamera* cam, SbVec2f curpos, SbVec2f pre
     float sensitivity = getSensitivity();
     if (sensitivity > 1.0f) {
         SbVec3f axis;
-        float radians;
+        float radians{};
         r.getValue(axis, radians);
         radians = sensitivity * radians;
         r.setValue(axis, radians);
@@ -947,7 +947,7 @@ SbBool NavigationStyle::doSpin()
             rot.scaleAngle(float(0.200 / deltatime));
 
             SbVec3f axis;
-            float radians;
+            float radians{};
             rot.getValue(axis, radians);
             if ((radians > 0.01f) && (deltatime < 0.300)) {
                 viewer->startSpinningAnimation(axis, radians * 5);
