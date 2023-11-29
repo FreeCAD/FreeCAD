@@ -80,6 +80,7 @@ void PreferencesPageItem::setExpanded(bool expanded)
     _expanded = expanded;
 }
 
+// NOLINTBEGIN
 Q_DECLARE_METATYPE(PreferencesPageItem*);
 
 const int DlgPreferencesImp::GroupNameRole = Qt::UserRole + 1;
@@ -91,6 +92,7 @@ std::list<DlgPreferencesImp::TGroupPages> DlgPreferencesImp::_pages;
 std::map<std::string, DlgPreferencesImp::Group> DlgPreferencesImp::_groupMap;
 
 DlgPreferencesImp* DlgPreferencesImp::_activeDialog = nullptr;
+// NOLINTEND
 
 /**
  *  Constructs a DlgPreferencesImp which is a child of 'parent', with
@@ -108,6 +110,30 @@ DlgPreferencesImp::DlgPreferencesImp(QWidget* parent, Qt::WindowFlags fl)
     // remove unused help button
     setWindowFlags(windowFlags() & ~Qt::WindowContextHelpButtonHint);
 
+    setupConnections();
+
+    ui->groupsTreeView->setModel(&_model);
+
+    setupPages();
+
+    // Maintain a static pointer to the current active dialog (if there is one) so that
+    // if the static page manipulation functions are called while the dialog is showing
+    // it can update its content.
+    DlgPreferencesImp::_activeDialog = this;
+}
+
+/**
+ *  Destroys the object and frees any allocated resources.
+ */
+DlgPreferencesImp::~DlgPreferencesImp()
+{
+    if (DlgPreferencesImp::_activeDialog == this) {
+        DlgPreferencesImp::_activeDialog = nullptr;
+    }
+}
+
+void DlgPreferencesImp::setupConnections()
+{
     connect(ui->buttonBox,
             &QDialogButtonBox::clicked,
             this,
@@ -136,25 +162,6 @@ DlgPreferencesImp::DlgPreferencesImp(QWidget* parent, Qt::WindowFlags fl)
             &QStackedWidget::currentChanged,
             this,
             &DlgPreferencesImp::onStackWidgetChange);
-
-    ui->groupsTreeView->setModel(&_model);
-    
-    setupPages();
-
-    // Maintain a static pointer to the current active dialog (if there is one) so that
-    // if the static page manipulation functions are called while the dialog is showing
-    // it can update its content.
-    DlgPreferencesImp::_activeDialog = this;
-}
-
-/**
- *  Destroys the object and frees any allocated resources.
- */
-DlgPreferencesImp::~DlgPreferencesImp()
-{
-    if (DlgPreferencesImp::_activeDialog == this) {
-        DlgPreferencesImp::_activeDialog = nullptr;
-    }
 }
 
 void DlgPreferencesImp::setupPages()
@@ -175,23 +182,29 @@ void DlgPreferencesImp::setupPages()
 
 QPixmap DlgPreferencesImp::loadIconForGroup(const std::string &name) const
 {
-    std::string fileName = name;
-
     // normalize file name
-    for (auto& ch : fileName) {
-        ch = ch == ' ' ? '_' : tolower(ch);
-    }
+    auto normalizeName = [](std::string str) {
+        std::transform(str.begin(), str.end(), str.begin(),
+                       [](unsigned char ch) {
+            return ch == ' ' ? '_' : std::tolower(ch);
+        });
+        return str;
+    };
 
+    std::string fileName = normalizeName(name);
     fileName = std::string("preferences-") + fileName;
-    QPixmap icon = Gui::BitmapFactory().pixmapFromSvg(fileName.c_str(), QSize(24, 24));
+
+    const int px = 24;
+    QSize iconSize(px, px);
+    QPixmap icon = Gui::BitmapFactory().pixmapFromSvg(fileName.c_str(), iconSize);
 
     if (icon.isNull()) {
         icon = Gui::BitmapFactory().pixmap(fileName.c_str());
         if (icon.isNull()) {
             qWarning() << "No group icon found for " << fileName.c_str();
         }
-        else if (icon.size() != QSize(24, 24)) {
-            icon = icon.scaled(24, 24, Qt::KeepAspectRatio, Qt::SmoothTransformation);
+        else if (icon.size() != iconSize) {
+            icon = icon.scaled(iconSize, Qt::KeepAspectRatio, Qt::SmoothTransformation);
         }
     }
 
@@ -352,16 +365,15 @@ void DlgPreferencesImp::removePage(const std::string& className, const std::stri
                 _pages.erase(it);
                 return;
             }
-            else {
-                std::list<std::string>& p = it->second;
-                for (auto jt = p.begin(); jt != p.end(); ++jt) {
-                    if (*jt == className) {
-                        p.erase(jt);
-                        if (p.empty()) {
-                            _pages.erase(it);
-                        }
-                        return;
+
+            std::list<std::string>& p = it->second;
+            for (auto jt = p.begin(); jt != p.end(); ++jt) {
+                if (*jt == className) {
+                    p.erase(jt);
+                    if (p.empty()) {
+                        _pages.erase(it);
                     }
+                    return;
                 }
             }
         }
@@ -492,7 +504,8 @@ void DlgPreferencesImp::showResetOptions()
 
     connect(&menu, &QMenu::hovered, [&menu](QAction* hover) {
         QPoint pos = menu.pos();
-        pos.rx() += menu.width() + 10;
+        const int pad = 10;
+        pos.rx() += menu.width() + pad;
         QToolTip::showText(pos, hover->toolTip());
     });
 
@@ -661,12 +674,14 @@ void DlgPreferencesImp::restartIfRequired()
 
         if (exec == QMessageBox::Ok) {
             //restart FreeCAD after a delay to give time to this dialog to close
-            QTimer::singleShot(1000, []() 
+            const int ms = 1000;
+            QTimer::singleShot(ms, []()
             {
                 QStringList args = QApplication::arguments();
                 args.pop_front();
-                if (getMainWindow()->close())
+                if (getMainWindow()->close()) {
                     QProcess::startDetached(QApplication::applicationFilePath(), args);
+                }
             });
         }
     }
@@ -827,7 +842,6 @@ void DlgPreferencesImp::restorePageDefaults(PreferencesPageItem* item)
     }
     else {
         auto* page = qobject_cast<PreferencePage*>(item->getWidget());
-        auto prefs = page->findChildren<QObject*>();
 
         page->resetSettingsToDefaults();
         
