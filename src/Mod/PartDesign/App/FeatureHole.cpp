@@ -26,6 +26,7 @@
 # include <gp_Dir.hxx>
 # include <BRep_Builder.hxx>
 # include <BRepAlgoAPI_Cut.hxx>
+# include <BRepAlgoAPI_Common.hxx>
 # include <BRepAlgoAPI_Fuse.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
@@ -1892,9 +1893,6 @@ App::DocumentObjectExecReturn* Hole::execute()
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Boolean operation failed"));
         }
         TopoDS_Shape result = mkBool.Shape();
-
-
-        // We have to get the solids (fuse sometimes creates compounds)
         base = getSolid(result);
         if (base.IsNull())
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid"));

@@ -172,7 +172,7 @@ void ViewProviderLoft::highlightReferences(Part::Feature* base, const std::vecto
 QIcon ViewProviderLoft::getIcon() const {
     QString str = QString::fromLatin1("PartDesign_");
     auto* prim = static_cast<PartDesign::Loft*>(getObject());
-    if(prim->getAddSubType() == PartDesign::FeatureAddSub::Additive)
+    if(prim->isAdditive())
         str += QString::fromLatin1("Additive");
     else
         str += QString::fromLatin1("Subtractive");

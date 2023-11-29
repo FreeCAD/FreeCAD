@@ -29,6 +29,10 @@
 #include <App/Application.h>
 #include <App/FeaturePythonPyImp.h>
 #include <Base/Parameter.h>
+# include <BRepAlgoAPI_Cut.hxx>
+# include <BRepAlgoAPI_Common.hxx>
+# include <BRepAlgoAPI_Fuse.hxx>
+
 #include <Mod/Part/App/modelRefine.h>
 
 #include "FeatureAddSub.h"
@@ -46,15 +50,22 @@ FeatureAddSub::FeatureAddSub()
 {
     ADD_PROPERTY(AddSubShape,(TopoDS_Shape()));
     ADD_PROPERTY_TYPE(Refine,(0),"Part Design",(App::PropertyType)(App::Prop_None),"Refine shape (clean up redundant edges) after adding/subtracting");
+    ADD_PROPERTY_TYPE(Outside, (false),"Part Design", App::Prop_None,
+        QT_TRANSLATE_NOOP("App::Property", "If set, the result will be the intersection of the profile and the preexisting body."));
     //init Refine property
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign");
     this->Refine.setValue(hGrp->GetBool("RefineModel", false));
 }
 
-FeatureAddSub::Type FeatureAddSub::getAddSubType()
+bool FeatureAddSub::isAdditive()
 {
-    return addSubType;
+    return addSubType == Additive;
+}
+
+bool FeatureAddSub::isSubtractive()
+{
+    return addSubType == Subtractive;
 }
 
 short FeatureAddSub::mustExecute() const
@@ -89,6 +100,56 @@ void FeatureAddSub::getAddSubShape(Part::TopoShape &addShape, Part::TopoShape &s
         addShape = AddSubShape.getShape();
     else if (addSubType == Subtractive)
         subShape = AddSubShape.getShape();
+}
+
+TopoDS_Shape FeatureAddSub::subtractiveOp(const TopoDS_Shape &baseShape, const TopoDS_Shape &opShape)
+{
+    Outside.setStatus(App::Property::Hidden, ! isSubtractive());    // Set this after creation, like here.
+    TopoDS_Shape result;
+    if (  Outside.getValue() ) {
+        BRepAlgoAPI_Common mkCom(baseShape, opShape);
+        if (!mkCom.IsDone())
+            throw Base::CADKernelError(QT_TRANSLATE_NOOP("Exception", "Intersection of base feature failed"));
+        result = mkCom.Shape();
+    } else {
+        BRepAlgoAPI_Cut mkCut(baseShape, opShape);
+        if (!mkCut.IsDone())
+            throw Base::CADKernelError(QT_TRANSLATE_NOOP("Exception", "Cut out of base feature failed"));
+        result = mkCut.Shape();
+    }
+    return result;
+}
+
+App::DocumentObjectExecReturn* FeatureAddSub::addSubOp(const TopoDS_Shape &baseShape, const TopoDS_Shape &opShape)
+{
+    if (addSubType == Additive) {
+        BRepAlgoAPI_Fuse mkFuse(baseShape, opShape);
+        if (!mkFuse.IsDone())
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Adding the object failed"));
+        // we have to get the solids (fuse sometimes creates compounds)
+        TopoDS_Shape boolOp = this->getSolid(mkFuse.Shape());
+        if (boolOp.IsNull())
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result is not a solid"));
+        int solidCount = countSolids(boolOp);
+        if (solidCount > 1) {
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result has multiple solids"));
+        }
+        boolOp = refineShapeIfActive(boolOp);
+        Shape.setValue(getSolid(boolOp));
+    }
+    else if (addSubType == Subtractive) {
+        TopoDS_Shape boolOp = subtractiveOp(baseShape, opShape);
+        if (boolOp.IsNull())
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result is not a solid"));
+        int solidCount = countSolids(boolOp);
+        if (solidCount > 1) {
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result has multiple solids"));
+        }
+        boolOp = refineShapeIfActive(boolOp);
+        Shape.setValue(getSolid(boolOp));
+        AddSubShape.setValue(boolOp);
+    }
+    return App::DocumentObject::StdReturn;
 }
 
 }
