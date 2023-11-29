@@ -2346,6 +2346,16 @@ If zero, it is equal to Radius2</string>
      </widget>
     </widget>
    </item>
+   <item>
+    <widget class="QCheckBox" name="checkBoxOutside">
+     <property name="text">
+      <string>Remove outside of profile</string>
+     </property>
+     <property name="checked">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
   </layout>
  </widget>
  <layoutdefault spacing="6" margin="11"/>

@@ -23,6 +23,7 @@
 
 #include <limits>
 #include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
+# include <Mod/Part/App/FCBRepAlgoAPI_Common.hxx>
 #include <BRep_Builder.hxx>
 #include <BRepFeat_MakePrism.hxx>
 #include <BRepPrimAPI_MakePrism.hxx>
@@ -121,6 +122,21 @@ Base::Vector3d FeatureExtrude::computeDirection(const Base::Vector3d& sketchVect
     // if the sketch's normal vector was used
     Direction.setValue(extrudeDirection);
     return extrudeDirection;
+}
+
+void FeatureExtrude::extendFace(TopoDS_Face& face, const TopoDS_Shape bounds) {
+    if ( ! face.IsNull() ) {
+        BRepAdaptor_Surface adapt = BRepAdaptor_Surface(face);
+        // adapt.Initialize(face);
+        TopoDS_Face plane = BRepBuilderAPI_MakeFace(adapt.Plane());
+        if ( ! bounds.IsNull() ) {
+            BRepAlgoAPI_Common mkCom(bounds, plane);
+            // Protect if a compound with one entry is returned
+            TopExp_Explorer xp = TopExp_Explorer(mkCom.Shape(),TopAbs_FACE);
+            face = TopoDS::Face(xp.Current());
+        } else
+            face = TopoDS::Face(plane);
+    }
 }
 
 bool FeatureExtrude::hasTaperedAngle() const

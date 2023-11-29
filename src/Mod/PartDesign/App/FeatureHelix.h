@@ -55,7 +55,6 @@ public:
     App::PropertyAngle Angle;
     App::PropertyDistance Growth;
     App::PropertyEnumeration Mode;
-    App::PropertyBool Outside;
     App::PropertyBool HasBeenEdited;
     App::PropertyFloatConstraint Tolerance;
 

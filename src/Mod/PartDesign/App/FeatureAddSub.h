@@ -47,6 +47,8 @@ public:
     FeatureAddSub();
 
     void onChanged(const App::Property*) override;
+    bool isAdditive();
+    bool isSubtractive();
     Type getAddSubType();
 
     short mustExecute() const override;
@@ -56,7 +58,7 @@ public:
     void updatePreviewShape() override;
 
     Part::PropertyPartShape AddSubShape;
-
+    App::PropertyBool         Outside;
 
 protected:
     Type addSubType {Additive};

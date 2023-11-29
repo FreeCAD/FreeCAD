@@ -58,7 +58,7 @@ QIcon ViewProviderHelix::getIcon() const
 {
     QString str = QStringLiteral("PartDesign_");
     auto* prim = getObject<PartDesign::Helix>();
-    if (prim->getAddSubType() == PartDesign::FeatureAddSub::Additive) {
+    if(prim->isAdditive())
         str += QStringLiteral("Additive");
     }
     else {

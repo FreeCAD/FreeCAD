@@ -77,6 +77,7 @@ public:
 protected:
     void onDocumentRestored() override;
     Base::Vector3d computeDirection(const Base::Vector3d& sketchVector, bool inverse);
+    void extendFace(TopoDS_Face& face, const TopoDS_Shape bounds);
     bool hasTaperedAngle() const;
     void onChanged(const App::Property* prop) override;
 
