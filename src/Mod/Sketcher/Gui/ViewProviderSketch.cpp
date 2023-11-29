@@ -1698,43 +1698,20 @@ void ViewProviderSketch::moveConstraint(int constNum, const Base::Vector2d& toPo
         }
         else if (Constr->Second != GeoEnum::GeoUndef) {
             p1 = getSolvedSketch().getPoint(Constr->First, Constr->FirstPos);
-            const Part::Geometry* geo = GeoList::getGeometryFromGeoId(geomlist, Constr->Second);
-            if (geo->is<Part::GeomLineSegment>()) {
-                const Part::GeomLineSegment* lineSeg =
-                    static_cast<const Part::GeomLineSegment*>(geo);
+            const Part::Geometry *geo = GeoList::getGeometryFromGeoId (geomlist, Constr->Second);
+            const Part::Geometry *geo1 = GeoList::getGeometryFromGeoId (geomlist, Constr->First);
+            if (geo->is<Part::GeomLineSegment>()) { // point to line distance
+                auto *lineSeg = static_cast<const Part::GeomLineSegment *>(geo);
                 Base::Vector3d l2p1 = lineSeg->getStartPoint();
                 Base::Vector3d l2p2 = lineSeg->getEndPoint();
-                if (Constr->FirstPos != Sketcher::PointPos::none) {// point to line distance
-                    // calculate the projection of p1 onto line2
-                    p2.ProjectToLine(p1 - l2p1, l2p2 - l2p1);
-                    p2 += p1;
-                }
-                else {
-                    const Part::Geometry* geo1 =
-                        GeoList::getGeometryFromGeoId(geomlist, Constr->First);
-                    const Part::GeomCircle* circleSeg = static_cast<const Part::GeomCircle*>(geo1);
-                    Base::Vector3d ct = circleSeg->getCenter();
-                    double radius = circleSeg->getRadius();
-                    p1.ProjectToLine(ct - l2p1,
-                                     l2p2 - l2p1);// project on the line translated to origin
-                    Base::Vector3d dir = p1;
-                    dir.Normalize();
-                    p1 += ct;
-                    p2 = ct + dir * radius;
-                }
-            }
-            else if (geo->is<Part::GeomCircle>()) {// circle to circle distance
-                const Part::Geometry* geo1 = GeoList::getGeometryFromGeoId(geomlist, Constr->First);
-                if (geo1->is<Part::GeomCircle>()) {
-                    const Part::GeomCircle* circleSeg1 = static_cast<const Part::GeomCircle*>(geo1);
-                    const Part::GeomCircle* circleSeg2 = static_cast<const Part::GeomCircle*>(geo);
-                    GetCirclesMinimalDistance(circleSeg1, circleSeg2, p1, p2);
-                } else if (Constr->FirstPos != Sketcher::PointPos::none) { //point to circle distance
-                    auto circleSeg2 = static_cast<const Part::GeomCircle*>(geo);
-                    p1 = getSolvedSketch().getPoint(Constr->First, Constr->FirstPos);
-                    Base::Vector3d v = p1 - circleSeg2->getCenter();
-                    v = v.Normalize();
-                    p2 = circleSeg2->getCenter() + circleSeg2->getRadius() * v;
+                // calculate the projection of p1 onto line2
+                p2.ProjectToLine(p1-l2p1, l2p2-l2p1);
+                p2 += p1;
+            } else if (geo->is<Part::GeomCircle>() // circle to circle distance
+                   || geo->is<Part::GeomArcOfCircle>()) {
+                if (geo1->is<Part::GeomCircle>()
+                || geo1->is<Part::GeomArcOfCircle>()) {
+                    GetCirclesMinimalDistance(geo1, geo, p1, p2);
                 }
             }
             else
