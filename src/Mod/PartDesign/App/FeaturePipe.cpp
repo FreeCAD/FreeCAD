@@ -24,7 +24,6 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <BRepAlgoAPI_Cut.hxx>
-# include <BRepAlgoAPI_Common.hxx>
 # include <BRepAlgoAPI_Fuse.hxx>
 # include <BRepBndLib.hxx>
 # include <BRepBuilderAPI_Sewing.hxx>
