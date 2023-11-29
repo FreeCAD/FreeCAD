@@ -86,48 +86,14 @@ public:
     SbRotation getRotation(const SbVec3f &point1, const SbVec3f &point2) override
     {
         SbRotation rot = inherited::getRotation(point1, point2);
-        if (orbit == Trackball)
-            return rot;
-        else if (orbit == Turntable) {
-            SbVec3f axis;
-            float angle;
-            rot.getValue(axis, angle);
-            SbVec3f dif = point1 - point2;
-            if (fabs(dif[1]) > fabs(dif[0])) {
-                SbVec3f xaxis(1,0,0);
-                if (dif[1] < 0)
-                    angle = -angle;
-                rot.setValue(xaxis, angle);
-            }
-            else {
-                SbVec3f zaxis(0,0,1);
-                this->worldToScreen.multDirMatrix(zaxis, zaxis);
-                if (zaxis[1] < 0) {
-                    if (dif[0] < 0)
-                        angle = -angle;
-                }
-                else {
-                    if (dif[0] > 0)
-                        angle = -angle;
-                }
-                rot.setValue(zaxis, angle);
-            }
-
-            return rot;
-        } else {
-            // Turntable without constraints
-            SbRotation zrot, xrot;
-            SbVec3f dif = point1 - point2;
-
-            SbVec3f zaxis(1,0,0);
-            zrot.setValue(zaxis, dif[1]);
-
-            SbVec3f xaxis(0,0,1);
-            this->worldToScreen.multDirMatrix(xaxis, xaxis);
-            xrot.setValue(xaxis, -dif[0]);
-
-            return zrot * xrot;
+        if (orbit == Turntable) {
+            return getTurntable(rot, point1, point2);
         }
+        if (orbit == FreeTurntable) {
+            return getFreeTurntable(point1, point2);
+        }
+
+        return rot;
     }
 
     void setOrbitStyle(OrbitStyle style)
@@ -138,6 +104,57 @@ public:
     OrbitStyle getOrbitStyle() const
     {
         return this->orbit;
+    }
+
+private:
+    SbRotation getTurntable(SbRotation rot, const SbVec3f &point1, const SbVec3f &point2) const
+    {
+        // 0000333: Turntable camera rotation
+        SbVec3f axis;
+        float angle{};
+        rot.getValue(axis, angle);
+        SbVec3f dif = point1 - point2;
+        if (fabs(dif[1]) > fabs(dif[0])) {
+            SbVec3f xaxis(1,0,0);
+            if (dif[1] < 0) {
+                angle = -angle;
+            }
+            rot.setValue(xaxis, angle);
+        }
+        else {
+            SbVec3f zaxis(0,0,1);
+            this->worldToScreen.multDirMatrix(zaxis, zaxis);
+            if (zaxis[1] < 0) {
+                if (dif[0] < 0) {
+                    angle = -angle;
+                }
+            }
+            else {
+                if (dif[0] > 0) {
+                    angle = -angle;
+                }
+            }
+            rot.setValue(zaxis, angle);
+        }
+
+        return rot;
+    }
+
+    SbRotation getFreeTurntable(const SbVec3f &point1, const SbVec3f &point2) const
+    {
+        // Turntable without constraints
+        SbRotation zrot;
+        SbRotation xrot;
+        SbVec3f dif = point1 - point2;
+
+        SbVec3f zaxis(1,0,0);
+        zrot.setValue(zaxis, dif[1]);
+
+        SbVec3f xaxis(0,0,1);
+        this->worldToScreen.multDirMatrix(xaxis, xaxis);
+        xrot.setValue(xaxis, -dif[0]);
+
+        return zrot * xrot;
     }
 
 private:
