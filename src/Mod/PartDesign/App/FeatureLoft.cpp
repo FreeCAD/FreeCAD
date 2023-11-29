@@ -27,7 +27,6 @@
 # include <TopExp_Explorer.hxx>
 # include <BRepAlgoAPI_Cut.hxx>
 # include <BRepAlgoAPI_Fuse.hxx>
-# include <BRepAlgoAPI_Common.hxx>
 # include <BRepBuilderAPI_MakeSolid.hxx>
 # include <BRepBuilderAPI_Sewing.hxx>
 # include <BRepClass3d_SolidClassifier.hxx>
