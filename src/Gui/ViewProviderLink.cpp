@@ -315,12 +315,12 @@ public:
     // VC2013 has trouble with template argument dependent lookup in
     // namespace. Have to put the below functions in global namespace.
     //
-    // However, gcc seems to behave the oppsite, hence the conditional
+    // However, gcc seems to behave the opposite, hence the conditional
     // compilation  here.
     //
-#ifdef _MSC_VER
-    friend void ::intrusive_ptr_add_ref(LinkInfo *px);
-    friend void ::intrusive_ptr_release(LinkInfo *px);
+#if defined(_MSC_VER)
+    friend void Gui::intrusive_ptr_add_ref(LinkInfo *px);
+    friend void Gui::intrusive_ptr_release(LinkInfo *px);
 #else
     friend inline void intrusive_ptr_add_ref(LinkInfo *px) { px->addref(); }
     friend inline void intrusive_ptr_release(LinkInfo *px) { px->release(); }
@@ -688,13 +688,18 @@ public:
     }
 };
 
-#ifdef _MSC_VER
-void intrusive_ptr_add_ref(Gui::LinkInfo *px){
-    px->addref();
-}
+#if defined(_MSC_VER)
+namespace Gui
+{
+    void intrusive_ptr_add_ref(Gui::LinkInfo* px)
+    {
+        px->addref();
+    }
 
-void intrusive_ptr_release(Gui::LinkInfo *px){
-    px->release();
+    void intrusive_ptr_release(Gui::LinkInfo* px)
+    {
+        px->release();
+    }
 }
 #endif
 

@@ -547,7 +547,7 @@
     <message>
       <location filename="../../Command.cpp" line="2564"/>
       <source>Select a result object, please.</source>
-      <translation>Sélectionnez un objet résultat, s'il vous plaît.</translation>
+      <translation>Sélectionner un objet résultat.</translation>
     </message>
   </context>
   <context>
@@ -1947,13 +1947,13 @@ Spécifier un autre fichier.</translation>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="317"/>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="388"/>
       <source>Nothing selected!</source>
-      <translation>Rien n'a été sélectionné !</translation>
+      <translation>Aucune sélection !</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="327"/>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="398"/>
       <source>Selected object is not a part!</source>
-      <translation>L'objet sélectionné n'est pas une pièce !</translation>
+      <translation>L'objet sélectionné n'est pas un élément !</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.cpp" line="363"/>
@@ -2151,7 +2151,7 @@ Spécifier un autre fichier.</translation>
       <location filename="../../TaskFemConstraintForce.cpp" line="316"/>
       <location filename="../../TaskFemConstraintForce.cpp" line="332"/>
       <source>Wrong selection</source>
-      <translation>Sélection incorrecte</translation>
+      <translation>Sélection invalide</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="316"/>
@@ -2343,13 +2343,13 @@ Spécifier un autre fichier.</translation>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="188"/>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="239"/>
       <source>Nothing selected!</source>
-      <translation>Aucune sélection !</translation>
+      <translation>Rien n'a été sélectionné !</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="198"/>
       <location filename="../../TaskFemConstraintTemperature.cpp" line="249"/>
       <source>Selected object is not a part!</source>
-      <translation>L'objet sélectionné n'est pas un élément !</translation>
+      <translation>L'objet sélectionné n'est pas une pièce !</translation>
     </message>
   </context>
   <context>
@@ -2532,15 +2532,15 @@ Spécifier un autre fichier.</translation>
   <context>
     <name>FemMaterial</name>
     <message>
-      <location filename="../ui/Material.ui" line="14"/>
       <location filename="../ui/MaterialReinforcement.ui" line="14"/>
+      <location filename="../ui/Material.ui" line="14"/>
       <source>FEM material</source>
       <translation>Matériau FEM</translation>
     </message>
     <message>
-      <location filename="../ui/Material.ui" line="26"/>
       <location filename="../ui/MaterialReinforcement.ui" line="37"/>
       <location filename="../ui/MaterialReinforcement.ui" line="110"/>
+      <location filename="../ui/Material.ui" line="26"/>
       <source>Material</source>
       <translation>Matériau</translation>
     </message>
@@ -2565,9 +2565,9 @@ Spécifier un autre fichier.</translation>
       <translation>Nom du matériau</translation>
     </message>
     <message>
-      <location filename="../ui/Material.ui" line="71"/>
       <location filename="../ui/MaterialReinforcement.ui" line="74"/>
       <location filename="../ui/MaterialReinforcement.ui" line="147"/>
+      <location filename="../ui/Material.ui" line="71"/>
       <source>TextLabel</source>
       <translation>Étiquette du texte</translation>
     </message>
@@ -2738,7 +2738,7 @@ Spécifier un autre fichier.</translation>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="64"/>
       <source>Pipe Area </source>
-      <translation>Zone de conduite </translation>
+      <translation>Section du tube </translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="71"/>
@@ -2765,7 +2765,7 @@ Spécifier un autre fichier.</translation>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="106"/>
       <source>Manning Coefficient</source>
-      <translation>Coefficient d'amortissement</translation>
+      <translation>Coefficient de Manning</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="134"/>
@@ -2776,12 +2776,12 @@ Spécifier un autre fichier.</translation>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="155"/>
       <source>Enlarged Area</source>
-      <translation>Zone élargie</translation>
+      <translation>Section élargie</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="201"/>
       <source>Contracted Area</source>
-      <translation>Zone réduite</translation>
+      <translation>Section réduite</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="224"/>
@@ -2834,27 +2834,27 @@ Spécifier un autre fichier.</translation>
       <location filename="../ui/ElementFluid1D.ui" line="561"/>
       <location filename="../ui/ElementFluid1D.ui" line="717"/>
       <source>Pipe Area</source>
-      <translation>Zone de conduite</translation>
+      <translation>Section du tube</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="390"/>
       <source>Entrance Area</source>
-      <translation>Zone d'entrée</translation>
+      <translation>Section d'entrée</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="436"/>
       <source>Diaphragm Area</source>
-      <translation>Zone de diaphragme</translation>
+      <translation>Section du diaphragme</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="482"/>
       <source>Bend Radius/Pipe Diameter</source>
-      <translation>Rayon de courbure/Diamètre de la conduite</translation>
+      <translation>Rayon de courbure/Diamètre du tuyau</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="509"/>
       <source>Bend Angle</source>
-      <translation>Angle de flexion</translation>
+      <translation>Angle de courbure</translation>
     </message>
     <message>
       <location filename="../ui/ElementFluid1D.ui" line="533"/>
@@ -2908,17 +2908,17 @@ Spécifier un autre fichier.</translation>
     </message>
     <message>
       <location filename="../ui/ConstraintTie.ui" line="52"/>
+      <location filename="../ui/MeshRegion.ui" line="56"/>
       <location filename="../ui/ElementFluid1D.ui" line="92"/>
       <location filename="../ui/ElementFluid1D.ui" line="745"/>
       <location filename="../ui/ElementFluid1D.ui" line="766"/>
+      <location filename="../ui/ElementGeometry2D.ui" line="52"/>
+      <location filename="../ui/MeshBoundaryLayer.ui" line="50"/>
       <location filename="../ui/ElementGeometry1D.ui" line="90"/>
       <location filename="../ui/ElementGeometry1D.ui" line="134"/>
       <location filename="../ui/ElementGeometry1D.ui" line="200"/>
       <location filename="../ui/ElementGeometry1D.ui" line="262"/>
       <location filename="../ui/ElementGeometry1D.ui" line="306"/>
-      <location filename="../ui/ElementGeometry2D.ui" line="52"/>
-      <location filename="../ui/MeshBoundaryLayer.ui" line="50"/>
-      <location filename="../ui/MeshRegion.ui" line="56"/>
       <source>0 mm</source>
       <translation>0 mm</translation>
     </message>
@@ -2933,11 +2933,11 @@ Spécifier un autre fichier.</translation>
       <translation>Paramètre de centrifugation</translation>
     </message>
     <message>
-      <location filename="../ui/ConstraintCentrif.ui" line="26"/>
       <location filename="../ui/ConstraintTie.ui" line="26"/>
+      <location filename="../ui/MeshRegion.ui" line="26"/>
       <location filename="../ui/ElementGeometry2D.ui" line="26"/>
       <location filename="../ui/MeshBoundaryLayer.ui" line="26"/>
-      <location filename="../ui/MeshRegion.ui" line="26"/>
+      <location filename="../ui/ConstraintCentrif.ui" line="26"/>
       <source>Parameter</source>
       <translation>Paramètre</translation>
     </message>
@@ -2967,13 +2967,13 @@ Spécifier un autre fichier.</translation>
       <translation>Paramètre d'affichage de la section</translation>
     </message>
     <message>
-      <location filename="../ui/BodyHeatSource.ui" line="14"/>
-      <location filename="../ui/CurrentDensity.ui" line="14"/>
+      <location filename="../ui/InitialPressure.ui" line="14"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="14"/>
       <location filename="../ui/FlowVelocity.ui" line="14"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
-      <location filename="../ui/InitialPressure.ui" line="14"/>
+      <location filename="../ui/BodyHeatSource.ui" line="14"/>
       <location filename="../ui/Magnetization.ui" line="14"/>
+      <location filename="../ui/CurrentDensity.ui" line="14"/>
       <source>Analysis feature properties</source>
       <translation>Propriétés de la fonction d'analyse</translation>
     </message>
@@ -2988,12 +2988,9 @@ Spécifier un autre fichier.</translation>
       <translation>Potentiel :</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="94"/>
-      <location filename="../ui/CurrentDensity.ui" line="141"/>
-      <location filename="../ui/CurrentDensity.ui" line="197"/>
-      <location filename="../ui/CurrentDensity.ui" line="243"/>
-      <location filename="../ui/CurrentDensity.ui" line="297"/>
-      <location filename="../ui/CurrentDensity.ui" line="341"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="32"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="87"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="118"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="76"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="218"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="273"/>
@@ -3006,15 +3003,18 @@ Spécifier un autre fichier.</translation>
       <location filename="../ui/FlowVelocity.ui" line="32"/>
       <location filename="../ui/FlowVelocity.ui" line="87"/>
       <location filename="../ui/FlowVelocity.ui" line="118"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="32"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="87"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="118"/>
       <location filename="../ui/Magnetization.ui" line="91"/>
       <location filename="../ui/Magnetization.ui" line="135"/>
       <location filename="../ui/Magnetization.ui" line="189"/>
       <location filename="../ui/Magnetization.ui" line="233"/>
       <location filename="../ui/Magnetization.ui" line="287"/>
       <location filename="../ui/Magnetization.ui" line="331"/>
+      <location filename="../ui/CurrentDensity.ui" line="94"/>
+      <location filename="../ui/CurrentDensity.ui" line="141"/>
+      <location filename="../ui/CurrentDensity.ui" line="197"/>
+      <location filename="../ui/CurrentDensity.ui" line="243"/>
+      <location filename="../ui/CurrentDensity.ui" line="297"/>
+      <location filename="../ui/CurrentDensity.ui" line="341"/>
       <source>unspecified</source>
       <translation>non spécifié</translation>
     </message>
@@ -3056,16 +3056,16 @@ avec une force motrice harmonique ou oscillante</translation>
       <translation>Si la condition aux limites est pour la force électrique</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="30"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="120"/>
       <location filename="../ui/Magnetization.ui" line="30"/>
+      <location filename="../ui/CurrentDensity.ui" line="30"/>
       <source>Real</source>
       <translation>Réel</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="40"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="130"/>
       <location filename="../ui/Magnetization.ui" line="40"/>
+      <location filename="../ui/CurrentDensity.ui" line="40"/>
       <source>Imaginary</source>
       <translation>Imaginaire</translation>
     </message>
@@ -3085,9 +3085,9 @@ avec une force motrice harmonique ou oscillante</translation>
       <translation>Partie imaginaire du potentiel scalaire</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="50"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="231"/>
       <location filename="../ui/Magnetization.ui" line="50"/>
+      <location filename="../ui/CurrentDensity.ui" line="50"/>
       <source>x</source>
       <translation>X</translation>
     </message>
@@ -3106,9 +3106,9 @@ Note: has no effect if a solid was selected</source>
 Remarque : n'a pas d'effet si un solide a été sélectionné</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="154"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="331"/>
       <location filename="../ui/Magnetization.ui" line="148"/>
+      <location filename="../ui/CurrentDensity.ui" line="154"/>
       <source>y</source>
       <translation>Y</translation>
     </message>
@@ -3127,9 +3127,9 @@ Note: has no effect if a solid was selected</source>
 Remarque : n'a pas d'effet si un solide a été sélectionné</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="256"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="431"/>
       <location filename="../ui/Magnetization.ui" line="246"/>
+      <location filename="../ui/CurrentDensity.ui" line="256"/>
       <source>z</source>
       <translation>Z</translation>
     </message>
@@ -3137,14 +3137,14 @@ Remarque : n'a pas d'effet si un solide a été sélectionné</translation>
       <location filename="../ui/ElectrostaticPotential.ui" line="447"/>
       <source>Real part of potential z-component
 Note: has no effect if a solid was selected</source>
-      <translation>Partie réelle de la composante en z du potentiel
+      <translation>Partie réelle de la composante en Z du potentiel
 Remarque : n'a pas d'effet si un solide a été sélectionné</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="492"/>
       <source>Imaginary part of potential z-component
 Note: has no effect if a solid was selected</source>
-      <translation>Partie imaginaire de la composante en z du potentiel
+      <translation>Partie imaginaire de la composante en Z du potentiel
 Remarque : n'a pas d'effet si un solide a été sélectionné</translation>
     </message>
     <message>
@@ -3155,7 +3155,7 @@ Remarque : n'a pas d'effet si un solide a été sélectionné</translation>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="547"/>
       <source>Farfield / Electric infinity</source>
-      <translation>Champ lointain/Infinité électrique</translation>
+      <translation>Champ lointain/infinité électrique</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="557"/>
@@ -3166,12 +3166,12 @@ Remarque : n'a pas d'effet si un solide a été sélectionné</translation>
       <location filename="../ui/ElectrostaticPotential.ui" line="566"/>
       <source>Capacity Body: </source>
       <extracomment>Enabled by 'Calculate Capacity Matrix' in Electrostatic equation</extracomment>
-      <translation>Capacité du corps: </translation>
+      <translation>Capacité du corps :</translation>
     </message>
     <message>
       <location filename="../ui/ElectrostaticPotential.ui" line="602"/>
       <source>Counter of the body (or face) with a capacitance</source>
-      <translation>Compteur du corps (ou de face) avec une capacité</translation>
+      <translation>Nombre de corps (ou de faces) avec une capacité.</translation>
     </message>
     <message>
       <location filename="../ui/ElementGeometry1D.ui" line="14"/>
@@ -3179,8 +3179,8 @@ Remarque : n'a pas d'effet si un solide a été sélectionné</translation>
       <translation>Paramètre de la section de l'élément 1D</translation>
     </message>
     <message>
-      <location filename="../ui/ElementGeometry1D.ui" line="20"/>
       <location filename="../ui/ElementRotation1D.ui" line="20"/>
+      <location filename="../ui/ElementGeometry1D.ui" line="20"/>
       <source>Cross section parameter</source>
       <translation>Paramètre de section de passage</translation>
     </message>
@@ -3231,30 +3231,30 @@ Remarque : n'a pas d'effet si un solide a été sélectionné</translation>
       <translation>Rotation :     </translation>
     </message>
     <message>
-      <location filename="../ui/FlowVelocity.ui" line="25"/>
-      <location filename="../ui/FlowVelocity.ui" line="73"/>
-      <location filename="../ui/FlowVelocity.ui" line="131"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="25"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="73"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="131"/>
+      <location filename="../ui/FlowVelocity.ui" line="25"/>
+      <location filename="../ui/FlowVelocity.ui" line="73"/>
+      <location filename="../ui/FlowVelocity.ui" line="131"/>
       <source>formula</source>
       <translation>formule</translation>
     </message>
     <message>
-      <location filename="../ui/FlowVelocity.ui" line="42"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="42"/>
+      <location filename="../ui/FlowVelocity.ui" line="42"/>
       <source>Velocity x:</source>
       <translation>Vitesse x :</translation>
     </message>
     <message>
-      <location filename="../ui/FlowVelocity.ui" line="80"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="80"/>
+      <location filename="../ui/FlowVelocity.ui" line="80"/>
       <source>Velocity y:</source>
       <translation>Vitesse y:</translation>
     </message>
     <message>
-      <location filename="../ui/FlowVelocity.ui" line="138"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="138"/>
+      <location filename="../ui/FlowVelocity.ui" line="138"/>
       <source>Velocity z:</source>
       <translation>Vitesse z:</translation>
     </message>
@@ -3381,14 +3381,14 @@ Remarque : pour la 2D, seul le réglage en X est possible, le réglage en Y sera
       <translation>Partie imaginaire de la composante en Y du potentiel</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="272"/>
       <location filename="../ui/Magnetization.ui" line="262"/>
+      <location filename="../ui/CurrentDensity.ui" line="272"/>
       <source>Real part of potential z-component</source>
       <translation>Partie réelle de la composante en Z du potentiel</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="316"/>
       <location filename="../ui/Magnetization.ui" line="306"/>
+      <location filename="../ui/CurrentDensity.ui" line="316"/>
       <source>Imaginary part of potential z-component</source>
       <translation>Partie imaginaire de la composante en Z du potentiel</translation>
     </message>
@@ -3458,19 +3458,19 @@ Remarque : pour la 2D, seul le réglage en X est possible, le réglage en Y sera
       <location filename="../../PlaneWidget.ui" line="26"/>
       <location filename="../../PlaneWidget.ui" line="86"/>
       <source>x</source>
-      <translation>x</translation>
+      <translation>X</translation>
     </message>
     <message>
       <location filename="../../PlaneWidget.ui" line="43"/>
       <location filename="../../PlaneWidget.ui" line="103"/>
       <source>y</source>
-      <translation>y</translation>
+      <translation>Y</translation>
     </message>
     <message>
       <location filename="../../PlaneWidget.ui" line="60"/>
       <location filename="../../PlaneWidget.ui" line="120"/>
       <source>z</source>
-      <translation>z</translation>
+      <translation>Z</translation>
     </message>
     <message>
       <location filename="../../PlaneWidget.ui" line="20"/>
@@ -3506,26 +3506,26 @@ Remarque : pour la 2D, seul le réglage en X est possible, le réglage en Y sera
       <translation>Annuler</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFemConstraintBearing.cpp" line="70"/>
       <location filename="../../ViewProviderFemConstraintFixed.cpp" line="70"/>
-      <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="72"/>
-      <location filename="../../ViewProviderFemConstraintForce.cpp" line="71"/>
-      <location filename="../../ViewProviderFemConstraintGear.cpp" line="72"/>
-      <location filename="../../ViewProviderFemConstraintPulley.cpp" line="69"/>
       <location filename="../../ViewProviderFemPostFunction.cpp" line="337"/>
+      <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="72"/>
+      <location filename="../../ViewProviderFemConstraintPulley.cpp" line="69"/>
+      <location filename="../../ViewProviderFemConstraintGear.cpp" line="72"/>
+      <location filename="../../ViewProviderFemConstraintForce.cpp" line="71"/>
       <location filename="../../ViewProviderFemPostObject.cpp" line="862"/>
+      <location filename="../../ViewProviderFemConstraintBearing.cpp" line="70"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Une fenêtre de dialogue est déjà ouverte dans le panneau des tâches</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFemConstraintBearing.cpp" line="71"/>
       <location filename="../../ViewProviderFemConstraintFixed.cpp" line="71"/>
-      <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="73"/>
-      <location filename="../../ViewProviderFemConstraintForce.cpp" line="72"/>
-      <location filename="../../ViewProviderFemConstraintGear.cpp" line="73"/>
-      <location filename="../../ViewProviderFemConstraintPulley.cpp" line="70"/>
       <location filename="../../ViewProviderFemPostFunction.cpp" line="338"/>
+      <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="73"/>
+      <location filename="../../ViewProviderFemConstraintPulley.cpp" line="70"/>
+      <location filename="../../ViewProviderFemConstraintGear.cpp" line="73"/>
+      <location filename="../../ViewProviderFemConstraintForce.cpp" line="72"/>
       <location filename="../../ViewProviderFemPostObject.cpp" line="863"/>
+      <location filename="../../ViewProviderFemConstraintBearing.cpp" line="71"/>
       <source>Do you want to close this dialog?</source>
       <translation>Voulez-vous fermer cette fenêtre de dialogue?</translation>
     </message>
@@ -3681,7 +3681,7 @@ Remarque : pour la 2D, seul le réglage en X est possible, le réglage en Y sera
     <message>
       <location filename="../ui/ResultShow.ui" line="34"/>
       <source>None</source>
-      <translation>Rien</translation>
+      <translation>Aucun</translation>
     </message>
     <message>
       <location filename="../ui/ResultShow.ui" line="50"/>
@@ -4482,7 +4482,7 @@ vecteur normal de la face est utilisée comme sens</translation>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="100"/>
       <source>N</source>
-      <translation type="unfinished">N</translation>
+      <translation>N</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="117"/>
@@ -6117,17 +6117,17 @@ Veuillez d'abord sélectionner un type de résultat.</translation>
     <message>
       <location filename="../../BoxWidget.ui" line="32"/>
       <source>x</source>
-      <translation>X</translation>
+      <translation>x</translation>
     </message>
     <message>
       <location filename="../../BoxWidget.ui" line="61"/>
       <source>y</source>
-      <translation>Y</translation>
+      <translation>y</translation>
     </message>
     <message>
       <location filename="../../BoxWidget.ui" line="84"/>
       <source>z</source>
-      <translation>Z</translation>
+      <translation>z</translation>
     </message>
     <message>
       <location filename="../../BoxWidget.ui" line="20"/>
@@ -6173,7 +6173,7 @@ Veuillez d'abord sélectionner un type de résultat.</translation>
     <message>
       <location filename="../../CylinderWidget.ui" line="20"/>
       <source>Center</source>
-      <translation>Centre</translation>
+      <translation>Au centre</translation>
     </message>
     <message>
       <location filename="../../CylinderWidget.ui" line="104"/>

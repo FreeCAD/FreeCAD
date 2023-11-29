@@ -37,8 +37,8 @@ namespace Materials
 class MaterialEntry
 {
 public:
-    MaterialEntry();
-    MaterialEntry(std::shared_ptr<MaterialLibrary> library,
+    MaterialEntry() = default;
+    MaterialEntry(const std::shared_ptr<MaterialLibrary>& library,
                   const QString& modelName,
                   const QString& dir,
                   const QString& modelUuid);
@@ -74,7 +74,7 @@ protected:
 class MaterialYamlEntry: public MaterialEntry
 {
 public:
-    MaterialYamlEntry(std::shared_ptr<MaterialLibrary> library,
+    MaterialYamlEntry(const std::shared_ptr<MaterialLibrary>& library,
                       const QString& modelName,
                       const QString& dir,
                       const QString& modelUuid,
@@ -98,6 +98,7 @@ private:
 
     QString
     yamlValue(const YAML::Node& node, const std::string& key, const std::string& defaultValue);
+    std::shared_ptr<QList<QVariant>> readList(const YAML::Node& node);
     std::shared_ptr<Material2DArray> read2DArray(const YAML::Node& node);
     std::shared_ptr<Material3DArray> read3DArray(const YAML::Node& node);
 
@@ -109,7 +110,7 @@ class MaterialLoader
 public:
     MaterialLoader(std::shared_ptr<std::map<QString, std::shared_ptr<Material>>> materialMap,
                    std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> libraryList);
-    virtual ~MaterialLoader();
+    ~MaterialLoader() = default;
 
     std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> getMaterialLibraries();
     static std::shared_ptr<std::list<QString>> getMaterialFolders(const MaterialLibrary& library);

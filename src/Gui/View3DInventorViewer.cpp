@@ -1407,6 +1407,7 @@ void View3DInventorViewer::showRotationCenter(bool show)
             material->transparency = 1.0F - float(color.alphaF());
 
             auto translation = new SoTranslation();
+            translation->setName("translation");
             translation->translation.setValue(center);
 
             auto annotation = new SoAnnotation();
@@ -1431,6 +1432,20 @@ void View3DInventorViewer::showRotationCenter(bool show)
             rotationCenterGroup = nullptr;
         }
     }
+}
+
+// Changes the position of the rotation center indicator
+void View3DInventorViewer::changeRotationCenterPosition(const SbVec3f& newCenter) {
+    if (!rotationCenterGroup) {
+        return;
+    }
+
+    SoTranslation* translation = dynamic_cast<SoTranslation*>(rotationCenterGroup->getByName("translation"));
+    if (!translation) {
+        return;
+    }
+
+    translation->translation = newCenter;
 }
 
 void View3DInventorViewer::setNavigationType(Base::Type type)
@@ -1498,6 +1513,8 @@ void View3DInventorViewer::setSceneGraph(SoNode* root)
             static_cast<SoSeparator*>(scene)->insertChild(this->backlight, 0);
         }
     }
+
+    navigation->findBoundingSphere();
 }
 
 void View3DInventorViewer::savePicture(int width, int height, int sample, const QColor& bg, QImage& img) const

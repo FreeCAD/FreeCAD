@@ -61,7 +61,7 @@
     <message>
       <location filename="../propertyeditor/PropertyItem.cpp" line="2752"/>
       <source>Enum</source>
-      <translation type="unfinished">Enum</translation>
+      <translation>Перелік</translation>
     </message>
     <message>
       <location filename="../propertyeditor/PropertyModel.cpp" line="250"/>
@@ -179,7 +179,7 @@
     <message>
       <location filename="../ManualAlignment.cpp" line="970"/>
       <source>Align</source>
-      <translation>Вирівнювати</translation>
+      <translation>Вирівняти</translation>
     </message>
     <message>
       <location filename="../Placement.cpp" line="239"/>
@@ -188,8 +188,8 @@
       <translation>Розташувати</translation>
     </message>
     <message>
-      <location filename="../TaskCSysDragger.cpp" line="75"/>
       <location filename="../Transform.cpp" line="101"/>
+      <location filename="../TaskCSysDragger.cpp" line="75"/>
       <location filename="../ViewProviderAnnotation.cpp" line="416"/>
       <source>Transform</source>
       <translation>Перетворити</translation>
@@ -217,7 +217,7 @@
     <message>
       <location filename="../CommandView.cpp" line="917"/>
       <source>Toggle transparency</source>
-      <translation type="unfinished">Toggle transparency</translation>
+      <translation>Змінити прозорість</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1019"/>
@@ -377,7 +377,7 @@
     <message>
       <location filename="../DlgExpressionInput.ui" line="26"/>
       <source>Expression editor</source>
-      <translation type="unfinished">Expression editor</translation>
+      <translation>Редактор виразів</translation>
     </message>
     <message>
       <location filename="../DlgExpressionInput.ui" line="67"/>
@@ -461,7 +461,7 @@
     <message>
       <location filename="../QuantitySpinBox_p.h" line="53"/>
       <source>Enter an expression... (=)</source>
-      <translation type="unfinished">Enter an expression... (=)</translation>
+      <translation>Введіть вираз... (=)</translation>
     </message>
     <message>
       <location filename="../QuantitySpinBox_p.h" line="54"/>
@@ -2435,6 +2435,16 @@ Specify another directory, please.</source>
       <translation>Налаштування</translation>
     </message>
     <message>
+      <location filename="../DlgPreferences.ui" line="152"/>
+      <source>Reset</source>
+      <translation>Скинути</translation>
+    </message>
+    <message>
+      <location filename="../DlgPreferences.ui" line="192"/>
+      <source>Header</source>
+      <translation>Заголовок</translation>
+    </message>
+    <message>
       <source/>
       <translation>Про програму</translation>
     </message>
@@ -2442,98 +2452,72 @@ Specify another directory, please.</source>
   <context>
     <name>Gui::Dialog::DlgPreferencesImp</name>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="386"/>
-      <source>Reset tab '%1'...</source>
-      <translation type="unfinished">Reset tab '%1'...</translation>
+      <location filename="../DlgPreferencesImp.cpp" line="439"/>
+      <source>Reset page '%1'...</source>
+      <translation type="unfinished">Reset page '%1'...</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="388"/>
-      <source>Resets the user settings for the tab '%1'</source>
-      <translation type="unfinished">Resets the user settings for the tab '%1'</translation>
+      <location filename="../DlgPreferencesImp.cpp" line="442"/>
+      <source>Resets the user settings for the page '%1'</source>
+      <translation type="unfinished">Resets the user settings for the page '%1'</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="393"/>
+      <location filename="../DlgPreferencesImp.cpp" line="445"/>
       <source>Reset group '%1'...</source>
-      <translation type="unfinished">Reset group '%1'...</translation>
+      <translation>Скинути групу '%1'...</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="395"/>
+      <location filename="../DlgPreferencesImp.cpp" line="448"/>
       <source>Resets the user settings for the group '%1'</source>
-      <translation type="unfinished">Resets the user settings for the group '%1'</translation>
+      <translation>Скидає налаштування користувача для групи '%1'</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="398"/>
+      <location filename="../DlgPreferencesImp.cpp" line="451"/>
       <source>Reset all...</source>
-      <translation type="unfinished">Reset all...</translation>
+      <translation>Скинути все...</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="400"/>
+      <location filename="../DlgPreferencesImp.cpp" line="454"/>
       <source>Resets the user settings entirely</source>
-      <translation type="unfinished">Resets the user settings entirely</translation>
+      <translation>Скидає налаштування користувача повністю</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="415"/>
+      <location filename="../DlgPreferencesImp.cpp" line="469"/>
       <source>Clear user settings</source>
       <translation>Скинути налаштування користувача</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="416"/>
+      <location filename="../DlgPreferencesImp.cpp" line="470"/>
       <source>Do you want to clear all your user settings?</source>
       <translation>Ви дійсно хочете очистити всі Ваші настроювання?</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="417"/>
+      <location filename="../DlgPreferencesImp.cpp" line="471"/>
       <source>If you agree all your settings will be cleared.</source>
       <translation>Якщо Ви згодні, всі ваші настроювання буде знищено.</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="442"/>
-      <source>Reset Tab Settings</source>
-      <translation type="unfinished">Reset Tab Settings</translation>
-    </message>
-    <message>
-      <location filename="../DlgPreferencesImp.cpp" line="443"/>
-      <source>All the settings for the tab '%1' will be deleted.</source>
-      <translation type="unfinished">All the settings for the tab '%1' will be deleted.</translation>
-    </message>
-    <message>
-      <location filename="../DlgPreferencesImp.cpp" line="444"/>
-      <location filename="../DlgPreferencesImp.cpp" line="470"/>
-      <source>Do you want to continue?</source>
-      <translation>Бажаєте продовжити?</translation>
-    </message>
-    <message>
-      <location filename="../DlgPreferencesImp.cpp" line="468"/>
-      <source>Reset Group Settings</source>
-      <translation type="unfinished">Reset Group Settings</translation>
-    </message>
-    <message>
-      <location filename="../DlgPreferencesImp.cpp" line="469"/>
-      <source>All the settings for the group '%1' will be deleted.</source>
-      <translation type="unfinished">All the settings for the group '%1' will be deleted.</translation>
-    </message>
-    <message>
-      <location filename="../DlgPreferencesImp.cpp" line="590"/>
+      <location filename="../DlgPreferencesImp.cpp" line="571"/>
       <source>Wrong parameter</source>
       <translation>Неправильний параметр</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="626"/>
+      <location filename="../DlgPreferencesImp.cpp" line="614"/>
       <source>Restart required</source>
       <translation>Потрібен перезапуск</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="627"/>
+      <location filename="../DlgPreferencesImp.cpp" line="615"/>
       <source>You must restart FreeCAD for changes to take effect.</source>
-      <translation type="unfinished">You must restart FreeCAD for changes to take effect.</translation>
+      <translation>Необхідно перезапустити FreeCAD, щоб зміни набрали сили.</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="632"/>
+      <location filename="../DlgPreferencesImp.cpp" line="620"/>
       <source>Restart now</source>
       <translation>Перезапустити зараз</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="633"/>
+      <location filename="../DlgPreferencesImp.cpp" line="621"/>
       <source>Restart later</source>
       <translation>Перезапустити пізніше</translation>
     </message>
@@ -2542,8 +2526,8 @@ Specify another directory, please.</source>
     <name>Gui::Dialog::DlgProjectInformation</name>
     <message>
       <location filename="../DlgProjectInformation.ui" line="14"/>
-      <source>Project information</source>
-      <translation>Інформація про проєкт</translation>
+      <source>Document information</source>
+      <translation type="unfinished">Document information</translation>
     </message>
     <message>
       <location filename="../DlgProjectInformation.ui" line="26"/>
@@ -2624,13 +2608,13 @@ Specify another directory, please.</source>
     <name>Gui::Dialog::DlgProjectUtility</name>
     <message>
       <location filename="../DlgProjectUtility.ui" line="14"/>
-      <source>Project utility</source>
-      <translation>Утиліта роботи з проєктом</translation>
+      <source>Document utility</source>
+      <translation type="unfinished">Document utility</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.ui" line="22"/>
-      <source>Extract project</source>
-      <translation>Розпакувати проєкт</translation>
+      <source>Extract document</source>
+      <translation type="unfinished">Extract document</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.ui" line="28"/>
@@ -2651,18 +2635,18 @@ Specify another directory, please.</source>
     </message>
     <message>
       <location filename="../DlgProjectUtility.ui" line="72"/>
-      <source>Create project</source>
-      <translation>Створити проєкт</translation>
+      <source>Create document</source>
+      <translation type="unfinished">Create document</translation>
+    </message>
+    <message>
+      <location filename="../DlgProjectUtility.ui" line="137"/>
+      <source>Load document file after creation</source>
+      <translation type="unfinished">Load document file after creation</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.ui" line="115"/>
       <source>Create</source>
       <translation>Створити</translation>
-    </message>
-    <message>
-      <location filename="../DlgProjectUtility.ui" line="137"/>
-      <source>Load project file after creation</source>
-      <translation>Завантажити файл проєкту після створення</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.cpp" line="50"/>
@@ -2695,13 +2679,13 @@ Specify another directory, please.</source>
     </message>
     <message>
       <location filename="../DlgProjectUtility.cpp" line="104"/>
-      <source>Failed to extract project</source>
-      <translation type="unfinished">Failed to extract project</translation>
+      <source>Failed to extract document</source>
+      <translation type="unfinished">Failed to extract document</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.cpp" line="121"/>
-      <source>Failed to create project</source>
-      <translation type="unfinished">Failed to create project</translation>
+      <source>Failed to create document</source>
+      <translation type="unfinished">Failed to create document</translation>
     </message>
   </context>
   <context>
@@ -2724,7 +2708,7 @@ Specify another directory, please.</source>
     <message>
       <location filename="../DlgPropertyLink.ui" line="56"/>
       <source>Sync sub-object selection</source>
-      <translation>Синхронізувати вибір підоб’єкту</translation>
+      <translation>Синхронізувати виділення підоб’єкту</translation>
     </message>
     <message>
       <location filename="../DlgPropertyLink.ui" line="88"/>
@@ -2974,7 +2958,7 @@ but slower response to any scene changes.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="249"/>
       <source>What kind of multisample anti-aliasing is used</source>
-      <translation>Який тип багато вибіркове згладжування використано</translation>
+      <translation>Який тип багато вибіркового згладжування використано</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="259"/>
@@ -3129,12 +3113,27 @@ bounding box size of the 3D object that is currently displayed.</source>
       <translation>15пікс</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="160"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="130"/>
+      <source>20px</source>
+      <translation type="unfinished">20px</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="131"/>
+      <source>25px</source>
+      <translation type="unfinished">25px</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="132"/>
+      <source>30px</source>
+      <translation type="unfinished">30px</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="163"/>
       <source>Anti-aliasing</source>
       <translation>Згладжування</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="161"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="164"/>
       <source>Open a new viewer or restart %1 to apply anti-aliasing changes.</source>
       <translation>Відкрити новий переглядач або перезапустити %1 для застосування змін згладжування.</translation>
     </message>
@@ -3553,7 +3552,7 @@ get date suffix according to the specified format</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="562"/>
       <source>Allow objects to have same label</source>
-      <translation type="unfinished">Allow objects to have same label</translation>
+      <translation>Дозволити обʼєктам мати однакову мітку</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsDocument.ui" line="565"/>
@@ -4089,7 +4088,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="149"/>
       <source>Font name of the navigation cube</source>
-      <translation type="unfinished">Font name of the navigation cube</translation>
+      <translation>Шрифт навігаційного куба</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="162"/>
@@ -4119,7 +4118,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="235"/>
       <source>Rotation center indicator</source>
-      <translation type="unfinished">Rotation center indicator</translation>
+      <translation>Індикатор центру обертання</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="244"/>
@@ -4134,12 +4133,12 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="264"/>
       <source>The size of the rotation center indicator</source>
-      <translation type="unfinished">The size of the rotation center indicator</translation>
+      <translation>Розмір індикатора центру обертання</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="292"/>
       <source>The color of the rotation center indicator</source>
-      <translation type="unfinished">The color of the rotation center indicator</translation>
+      <translation>Колір індикатора центру обертання</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="337"/>
@@ -4260,17 +4259,17 @@ The value is the diameter of the sphere to fit on the screen.</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="596"/>
       <source>Animation duration</source>
-      <translation type="unfinished">Animation duration</translation>
+      <translation>Тривалість анімації</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="614"/>
       <source>The duration of navigation animations in milliseconds</source>
-      <translation type="unfinished">The duration of navigation animations in milliseconds</translation>
+      <translation>Тривалість анімації навігації в мілісекундах</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="676"/>
       <source>Zoom step</source>
-      <translation type="unfinished">Zoom step</translation>
+      <translation>Крок масштабування</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="657"/>
@@ -4368,13 +4367,13 @@ Mouse tilting is not disabled by this setting.</source>
     <name>Gui::Dialog::DlgSettingsPythonConsole</name>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="14"/>
-      <source>Python console</source>
-      <translation>Консоль Python</translation>
+      <source>General</source>
+      <translation>Загальні</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="20"/>
-      <source>Settings</source>
-      <translation>Параметри</translation>
+      <source>Console</source>
+      <translation type="unfinished">Console</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="26"/>
@@ -4411,12 +4410,27 @@ horizontal space in Python console</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="84"/>
       <source>Python profiler interval (milliseconds): </source>
-      <translation type="unfinished">Python profiler interval (milliseconds): </translation>
+      <translation>Інтервал профайлера Python (мс): </translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="91"/>
       <source>The interval at which the profiler runs when there's Python code running (to keep the GUI responding). Set to 0 to disable.</source>
       <translation type="unfinished">The interval at which the profiler runs when there's Python code running (to keep the GUI responding). Set to 0 to disable.</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="116"/>
+      <source>Other</source>
+      <translation>Інші</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="122"/>
+      <source>Path to external Python executable (optional):</source>
+      <translation type="unfinished">Path to external Python executable (optional):</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="141"/>
+      <source>Used for package installation with pip and debugging with debugpy. Autodetected if needed and not specified.</source>
+      <translation type="unfinished">Used for package installation with pip and debugging with debugpy. Autodetected if needed and not specified.</translation>
     </message>
   </context>
   <context>
@@ -4429,12 +4443,12 @@ horizontal space in Python console</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="41"/>
       <source>Enable preselection, highlighted with specified color</source>
-      <translation type="unfinished">Enable preselection, highlighted with specified color</translation>
+      <translation>Вмикає попереднє виділення та підсвічує вказаним кольором</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="44"/>
       <source>Enable preselection</source>
-      <translation type="unfinished">Enable preselection</translation>
+      <translation>Увімкнути попереднє виділення</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="80"/>
@@ -4444,7 +4458,7 @@ horizontal space in Python console</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="83"/>
       <source>Enable selection</source>
-      <translation type="unfinished">Enable selection</translation>
+      <translation>Увімкнути виділення</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsSelection.ui" line="121"/>
@@ -4523,24 +4537,24 @@ Larger value eases to pick things, but can make small features impossible to sel
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="80"/>
       <source>Linear gradient</source>
-      <translation type="unfinished">Linear gradient</translation>
+      <translation>Лінійний градієнт</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="99"/>
       <source>Radial gradient</source>
-      <translation type="unfinished">Radial gradient</translation>
+      <translation>Радіальний градієнт</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="177"/>
       <location filename="../PreferencePages/DlgSettingsViewColor.cpp" line="139"/>
       <source>Top:</source>
-      <translation type="unfinished">Top:</translation>
+      <translation>Згори:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="204"/>
       <location filename="../PreferencePages/DlgSettingsViewColor.cpp" line="140"/>
       <source>Middle:</source>
-      <translation type="unfinished">Middle:</translation>
+      <translation>Посередині:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="412"/>
@@ -4550,7 +4564,7 @@ Larger value eases to pick things, but can make small features impossible to sel
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="459"/>
       <source>Label text color</source>
-      <translation type="unfinished">Label text color</translation>
+      <translation>Колір тексту мітки</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="475"/>
@@ -4560,7 +4574,7 @@ Larger value eases to pick things, but can make small features impossible to sel
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="495"/>
       <source>Label text size</source>
-      <translation type="unfinished">Label text size</translation>
+      <translation>Розмір тексту мітки</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="502"/>
@@ -4631,7 +4645,7 @@ Larger value eases to pick things, but can make small features impossible to sel
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.cpp" line="149"/>
       <source>End:</source>
-      <translation type="unfinished">End:</translation>
+      <translation>В кінці:</translation>
     </message>
   </context>
   <context>
@@ -5049,7 +5063,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../MouseButtons.ui" line="28"/>
       <source>Selection:</source>
-      <translation>Вибір:</translation>
+      <translation>Виділення:</translation>
     </message>
     <message>
       <location filename="../MouseButtons.ui" line="48"/>
@@ -5415,11 +5429,6 @@ The 'Status' column shows whether the document could be recovered.</source>
       <source>Port:</source>
       <translation>Порт:</translation>
     </message>
-    <message>
-      <location filename="../RemoteDebugger.ui" line="95"/>
-      <source>Redirect output</source>
-      <translation>Перенаправити вивід</translation>
-    </message>
   </context>
   <context>
     <name>Gui::Dialog::SceneInspector</name>
@@ -5615,82 +5624,82 @@ originally selected prior to opening this dialog</source>
   <context>
     <name>Gui::DockWnd::ReportOutput</name>
     <message>
-      <location filename="../ReportView.cpp" line="580"/>
+      <location filename="../ReportView.cpp" line="586"/>
       <source>Options</source>
       <translation>Параметри</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="585"/>
+      <location filename="../ReportView.cpp" line="591"/>
       <source>Display message types</source>
       <translation>Показати типи повідомлень</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="588"/>
-      <location filename="../ReportView.cpp" line="612"/>
+      <location filename="../ReportView.cpp" line="594"/>
+      <location filename="../ReportView.cpp" line="618"/>
       <source>Normal messages</source>
       <translation>Звичайні повідомлення</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="592"/>
-      <location filename="../ReportView.cpp" line="616"/>
+      <location filename="../ReportView.cpp" line="598"/>
+      <location filename="../ReportView.cpp" line="622"/>
       <source>Log messages</source>
       <translation>Журнал повідомлень</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="596"/>
-      <location filename="../ReportView.cpp" line="620"/>
+      <location filename="../ReportView.cpp" line="602"/>
+      <location filename="../ReportView.cpp" line="626"/>
       <source>Warnings</source>
       <translation>Застереження</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="600"/>
-      <location filename="../ReportView.cpp" line="624"/>
+      <location filename="../ReportView.cpp" line="606"/>
+      <location filename="../ReportView.cpp" line="630"/>
       <source>Errors</source>
       <translation>Помилки</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="604"/>
-      <location filename="../ReportView.cpp" line="628"/>
+      <location filename="../ReportView.cpp" line="610"/>
+      <location filename="../ReportView.cpp" line="634"/>
       <source>Critical messages</source>
-      <translation type="unfinished">Critical messages</translation>
+      <translation>Критичні повідомлення</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="609"/>
+      <location filename="../ReportView.cpp" line="615"/>
       <source>Show Report view on</source>
       <translation type="unfinished">Show Report view on</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="634"/>
+      <location filename="../ReportView.cpp" line="640"/>
       <source>Redirect Python output</source>
       <translation>Перенаправити вивід Python</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="638"/>
+      <location filename="../ReportView.cpp" line="644"/>
       <source>Redirect Python errors</source>
       <translation>Перенаправити помилки Python</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="643"/>
+      <location filename="../ReportView.cpp" line="649"/>
       <source>Go to end</source>
       <translation>Перейти в кінець</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="662"/>
+      <location filename="../ReportView.cpp" line="668"/>
       <source>Clear</source>
       <translation>Очистити</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="664"/>
+      <location filename="../ReportView.cpp" line="670"/>
       <source>Save As...</source>
       <translation>Зберегти як...</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="672"/>
+      <location filename="../ReportView.cpp" line="678"/>
       <source>Save Report Output</source>
       <translation>Зберегти звіт</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="673"/>
+      <location filename="../ReportView.cpp" line="679"/>
       <source>Plain Text Files</source>
       <translation>Текстові файли</translation>
     </message>
@@ -6072,15 +6081,15 @@ Do you want to save your changes?</source>
       <translation>Формат PDF</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="617"/>
       <location filename="../GraphvizView.cpp" line="448"/>
+      <location filename="../CommandDoc.cpp" line="617"/>
       <source>Graphviz format</source>
       <translation>Формат Graphviz</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="618"/>
       <location filename="../GraphvizView.cpp" line="462"/>
       <location filename="../GraphvizView.cpp" line="550"/>
+      <location filename="../CommandDoc.cpp" line="618"/>
       <source>Export graph</source>
       <translation>Експортувати діаграму</translation>
     </message>
@@ -6246,41 +6255,41 @@ Do you want to save your changes?</source>
       <translation>Розмірність</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="487"/>
+      <location filename="../MainWindow.cpp" line="486"/>
       <source>Ready</source>
       <translation>Готово</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="979"/>
+      <location filename="../MainWindow.cpp" line="978"/>
       <source>Help addon needed!</source>
       <translation>Потрібен Додаток Допомога!</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="980"/>
+      <location filename="../MainWindow.cpp" line="979"/>
       <source>The Help system of %1 is now handled by the "Help" addon. It can easily be installed via the Addons Manager</source>
       <translation>Система Допомоги %1 тепер обробляється додатком "Допомога". Її можна легко встановити через Менеджер доповнень</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="982"/>
+      <location filename="../MainWindow.cpp" line="981"/>
       <source>Open Addon Manager</source>
       <translation>Відкрити менеджер додатків</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1177"/>
+      <location filename="../MainWindow.cpp" line="1176"/>
       <source>Close All</source>
       <translation>Закрити все</translation>
     </message>
     <message>
+      <location filename="../MainWindow.cpp" line="1384"/>
       <location filename="../MainWindow.cpp" line="1385"/>
       <location filename="../MainWindow.cpp" line="1386"/>
-      <location filename="../MainWindow.cpp" line="1387"/>
       <source>Toggles this toolbar</source>
       <translation>Переключення цієї панелі</translation>
     </message>
     <message>
+      <location filename="../MainWindow.cpp" line="1399"/>
       <location filename="../MainWindow.cpp" line="1400"/>
       <location filename="../MainWindow.cpp" line="1401"/>
-      <location filename="../MainWindow.cpp" line="1402"/>
       <source>Toggles this dockable window</source>
       <translation>Переключення цього закріплюваного вікна</translation>
     </message>
@@ -6397,7 +6406,7 @@ How do you want to proceed?</source>
     <message>
       <location filename="../ManualAlignment.cpp" line="1120"/>
       <source>Point_%1</source>
-      <translation type="unfinished">Point_%1</translation>
+      <translation>Точка_%1</translation>
     </message>
     <message>
       <location filename="../ManualAlignment.cpp" line="1222"/>
@@ -6417,12 +6426,12 @@ How do you want to proceed?</source>
     <message>
       <location filename="../ManualAlignment.cpp" line="1247"/>
       <source>&amp;Align</source>
-      <translation type="unfinished">&amp;Align</translation>
+      <translation>&amp;Вирівняти</translation>
     </message>
     <message>
       <location filename="../ManualAlignment.cpp" line="1248"/>
       <source>&amp;Remove last point</source>
-      <translation type="unfinished">&amp;Remove last point</translation>
+      <translation>&amp;Видалити останню точку</translation>
     </message>
     <message>
       <location filename="../ManualAlignment.cpp" line="1250"/>
@@ -6432,7 +6441,7 @@ How do you want to proceed?</source>
     <message>
       <location filename="../ManualAlignment.cpp" line="1254"/>
       <source>&amp;Synchronize views</source>
-      <translation type="unfinished">&amp;Synchronize views</translation>
+      <translation>&amp;Синхронізувати види</translation>
     </message>
   </context>
   <context>
@@ -6824,22 +6833,22 @@ Do you want to exit without saving your data?</source>
   <context>
     <name>Gui::RecentMacrosAction</name>
     <message>
-      <location filename="../Action.cpp" line="1026"/>
+      <location filename="../Action.cpp" line="1029"/>
       <source>none</source>
       <translation>нічого</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1041"/>
+      <location filename="../Action.cpp" line="1044"/>
       <source>Run macro %1 (Shift+click to edit) keyboard shortcut: %2</source>
       <translation>Комбінація клавіш: %2 для виконання макросу %1 (Shift + клац для редагування)</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1099"/>
+      <location filename="../Action.cpp" line="1102"/>
       <source>File not found</source>
       <translation>Файл не знайдено</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1099"/>
+      <location filename="../Action.cpp" line="1102"/>
       <source>The file '%1' cannot be opened.</source>
       <translation>Файл '%1' не вдалося відкрити.</translation>
     </message>
@@ -7120,7 +7129,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../TaskView/TaskSelectLinkProperty.cpp" line="41"/>
       <source>edit selection</source>
-      <translation>редагувати вибір</translation>
+      <translation>редагувати виділення</translation>
     </message>
   </context>
   <context>
@@ -7373,7 +7382,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="Translator.cpp" line="169"/>
       <source>Serbian, Latin</source>
-      <translation type="unfinished">Serbian, Latin</translation>
+      <translation>Сербська, латиниця</translation>
     </message>
     <message>
       <location filename="Translator.cpp" line="170"/>
@@ -7832,47 +7841,47 @@ Do you want to specify another directory?</source>
   <context>
     <name>QDockWidget</name>
     <message>
-      <location filename="../MainWindow.cpp" line="651"/>
+      <location filename="../MainWindow.cpp" line="650"/>
       <source>Tree view</source>
       <translation>Ієрархія документа</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="573"/>
+      <location filename="../MainWindow.cpp" line="572"/>
       <source>Tasks</source>
       <translation>Завдання</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="677"/>
+      <location filename="../MainWindow.cpp" line="676"/>
       <source>Property view</source>
       <translation>Вид Властивості</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="590"/>
+      <location filename="../MainWindow.cpp" line="589"/>
       <source>Selection view</source>
       <translation>Вид Виділення</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="705"/>
+      <location filename="../MainWindow.cpp" line="704"/>
       <source>Task List</source>
-      <translation type="unfinished">Task List</translation>
+      <translation>Список Завдань</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="730"/>
+      <location filename="../MainWindow.cpp" line="729"/>
       <source>Model</source>
       <translation>Модель</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="756"/>
+      <location filename="../MainWindow.cpp" line="755"/>
       <source>DAG View</source>
       <translation>Вид DAG</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="608"/>
+      <location filename="../MainWindow.cpp" line="607"/>
       <source>Report view</source>
       <translation>Вид Звіту</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="628"/>
+      <location filename="../MainWindow.cpp" line="627"/>
       <source>Python console</source>
       <translation>Консоль Python</translation>
     </message>
@@ -7914,7 +7923,7 @@ Do you want to specify another directory?</source>
       <location filename="../resource.cpp" line="87"/>
       <location filename="../resource.cpp" line="88"/>
       <source>Python</source>
-      <translation type="unfinished">Python</translation>
+      <translation>Python</translation>
     </message>
     <message>
       <location filename="../Application.cpp" line="632"/>
@@ -7952,12 +7961,12 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../Application.cpp" line="2227"/>
       <source>This system is running OpenGL %1.%2. FreeCAD requires OpenGL 2.0 or above. Please upgrade your graphics driver and/or card as required.</source>
-      <translation type="unfinished">This system is running OpenGL %1.%2. FreeCAD requires OpenGL 2.0 or above. Please upgrade your graphics driver and/or card as required.</translation>
+      <translation>Ця система працює на OpenGL %1.%2. FreeCAD вимагає OpenGL 2.0 або вище. Будь ласка, оновіть драйвер графіки та/або графічну карту за необхідністю.</translation>
     </message>
     <message>
       <location filename="../Application.cpp" line="2236"/>
       <source>Invalid OpenGL Version</source>
-      <translation type="unfinished">Invalid OpenGL Version</translation>
+      <translation>Неправильна версія OpenGL</translation>
     </message>
     <message>
       <location filename="../Command.cpp" line="488"/>
@@ -8006,8 +8015,8 @@ Do you want to specify another directory?</source>
       <translation>Експорт в PDF ...</translation>
     </message>
     <message>
+      <location filename="../MainWindow.cpp" line="809"/>
       <location filename="../CommandDoc.cpp" line="1230"/>
-      <location filename="../MainWindow.cpp" line="810"/>
       <source>Unsaved document</source>
       <translation>Незбережений документ</translation>
     </message>
@@ -8045,7 +8054,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../CommandDoc.cpp" line="1774"/>
       <source>Paste</source>
-      <translation type="unfinished">Paste</translation>
+      <translation>Вставити</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1879"/>
@@ -8079,21 +8088,21 @@ Please check the Report View for more details.</source>
       <location filename="../CommandStd.cpp" line="760"/>
       <location filename="../CommandStd.cpp" line="766"/>
       <source>Wrong selection</source>
-      <translation>Невірний вибір</translation>
+      <translation>Невірне виділення</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="761"/>
       <source>Only one object selected. Please select two objects.
 Be aware the point where you click matters.</source>
-      <translation>Обрано лише один обʼєкт. Будь ласка, виберіть два обʼєкти. 
-Майте на увазі, що має значення місце, де ви робите вибір.</translation>
+      <translation>Виділено лише один обʼєкт. Будь ласка, виділіть два обʼєкти. 
+Майте на увазі, що має значення точка натискання.</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="767"/>
       <source>Please select two objects.
 Be aware the point where you click matters.</source>
-      <translation>Будь ласка, виберіть два обʼєкти. Майте на увазі,
-що має значення місце, де ви робите вибір.</translation>
+      <translation>Будь ласка, виділіть два обʼєкти. Майте на увазі,
+що має значення точка натискання.</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="340"/>
@@ -8306,12 +8315,12 @@ Do you want to continue?</source>
     <message>
       <location filename="../NotificationArea.cpp" line="971"/>
       <source>Critical Message</source>
-      <translation type="unfinished">Critical Message</translation>
+      <translation>Критичне Повідомлення</translation>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="1037"/>
       <source>Too many opened non-intrusive notifications. Notifications are being omitted!</source>
-      <translation type="unfinished">Too many opened non-intrusive notifications. Notifications are being omitted!</translation>
+      <translation>Занадто багато відкритих ненав'язливих сповіщень. Повідомлення ігноруються!</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="1079"/>
@@ -8455,12 +8464,12 @@ Would you like to save the file with a different name?</source>
     <message>
       <location filename="../Document.cpp" line="2377"/>
       <source>Undo</source>
-      <translation type="unfinished">Undo</translation>
+      <translation>Скасувати</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="2377"/>
       <source>Redo</source>
-      <translation type="unfinished">Redo</translation>
+      <translation>Повторити</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="2379"/>
@@ -8551,12 +8560,12 @@ Please open a browser window and type in: http://localhost:%1.</source>
       <translation>Параметри...</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2358"/>
+      <location filename="../View3DInventorViewer.cpp" line="2360"/>
       <source>Out of memory</source>
       <translation>Не вистачає памʼяті</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2359"/>
+      <location filename="../View3DInventorViewer.cpp" line="2361"/>
       <source>Not enough memory available to display the data.</source>
       <translation>Недостатньо памʼяті для показу даних.</translation>
     </message>
@@ -8572,7 +8581,7 @@ Please open a browser window and type in: http://localhost:%1.</source>
       <translation>Не вдається знайти файл %1 ні в %2 , ні в %3</translation>
     </message>
     <message>
-      <location filename="../NavigationStyle.cpp" line="1605"/>
+      <location filename="../NavigationStyle.cpp" line="1627"/>
       <source>Navigation styles</source>
       <translation>Стилі навігації</translation>
     </message>
@@ -8593,32 +8602,32 @@ Please open a browser window and type in: http://localhost:%1.</source>
       <translation>Ви бажаєте закрити це діалогове вікно?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="812"/>
+      <location filename="../MainWindow.cpp" line="811"/>
       <source>Do you want to save your changes to document '%1' before closing?</source>
       <translation>Бажаєте зберегти внесені зміни в документ '%1' перед його закриттям?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="815"/>
+      <location filename="../MainWindow.cpp" line="814"/>
       <source>Do you want to save your changes to document before closing?</source>
       <translation>Бажаєте зберегти зміни, які були внесені до документа перед його закриттям?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="817"/>
+      <location filename="../MainWindow.cpp" line="816"/>
       <source>If you don't save, your changes will be lost.</source>
       <translation>Якщо ви не збережете, зміни будуть втрачено.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="822"/>
+      <location filename="../MainWindow.cpp" line="821"/>
       <source>Apply answer to all</source>
       <translation>Застосувати відповідь до наступних питань</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="912"/>
+      <location filename="../MainWindow.cpp" line="911"/>
       <source>%1 Document(s) not saved</source>
       <translation>%1 Документ(и/ів) не збережено</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="913"/>
+      <location filename="../MainWindow.cpp" line="912"/>
       <source>Some documents could not be saved. Do you want to cancel closing?</source>
       <translation>Деякі документи не вдалося зберегти. Бажаєте скасувати закриття?</translation>
     </message>
@@ -8876,34 +8885,34 @@ the current copy will be lost.
     <message>
       <location filename="../SoFCColorLegend.cpp" line="87"/>
       <source>Color Legend</source>
-      <translation type="unfinished">Color Legend</translation>
+      <translation>Характеристика кольору</translation>
     </message>
     <message>
       <location filename="../OverlayManager.cpp" line="1035"/>
       <source>Toggle overlay</source>
-      <translation type="unfinished">Toggle overlay</translation>
+      <translation>Перемкнути шари</translation>
     </message>
     <message>
-      <location filename="../OverlayManager.cpp" line="1036"/>
       <location filename="../OverlayWidgets.cpp" line="2180"/>
+      <location filename="../OverlayManager.cpp" line="1036"/>
       <source>Toggle floating window</source>
-      <translation type="unfinished">Toggle floating window</translation>
+      <translation>Перемкнути плаваюче вікно</translation>
     </message>
     <message>
       <location filename="../OverlayManager.cpp" line="1037"/>
       <source>Close dock window</source>
-      <translation type="unfinished">Close dock window</translation>
+      <translation>Закрити док-вікно</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="117"/>
       <location filename="../OverlayWidgets.cpp" line="147"/>
       <source>Press ESC to hide hint</source>
-      <translation type="unfinished">Press ESC to hide hint</translation>
+      <translation>Натисніть ESC, щоб приховати підказку</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="530"/>
       <source>UI</source>
-      <translation type="unfinished">UI</translation>
+      <translation>Інтерфейс користувача</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="531"/>
@@ -8913,17 +8922,17 @@ the current copy will be lost.
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="533"/>
       <source>Item background color</source>
-      <translation type="unfinished">Item background color</translation>
+      <translation>Колір фону</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="536"/>
       <source>Item background padding</source>
-      <translation type="unfinished">Item background padding</translation>
+      <translation>Заповнення фону елемента</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="539"/>
       <source>Resizable columns</source>
-      <translation type="unfinished">Resizable columns</translation>
+      <translation>Стовпці зі змінним розміром</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="541"/>
@@ -8933,17 +8942,17 @@ the current copy will be lost.
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="543"/>
       <source>Hide extra column</source>
-      <translation type="unfinished">Hide extra column</translation>
+      <translation>Приховати додатковий стовпець</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="545"/>
       <source>Hide scroll bar</source>
-      <translation type="unfinished">Hide scroll bar</translation>
+      <translation>Приховати панель прокрутки</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="547"/>
       <source>Hide header</source>
-      <translation type="unfinished">Hide header</translation>
+      <translation>Приховати заголовок</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="549"/>
@@ -8968,7 +8977,7 @@ the current copy will be lost.
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="559"/>
       <source>Hide tab bar</source>
-      <translation type="unfinished">Hide tab bar</translation>
+      <translation>Приховати панель вкладок</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="561"/>
@@ -9099,9 +9108,9 @@ the current copy will be lost.
       <translation>Заборонено:</translation>
     </message>
     <message>
-      <location filename="../Selection.cpp" line="908"/>
+      <location filename="../Selection.cpp" line="937"/>
       <source>Selection not allowed by filter</source>
-      <translation>Вибір забороненого за допомогою фільтра</translation>
+      <translation>Виділення заборонено фільтром</translation>
     </message>
   </context>
   <context>
@@ -9978,16 +9987,16 @@ the current copy will be lost.
     <name>StdCmdMergeProjects</name>
     <message>
       <location filename="../CommandDoc.cpp" line="520"/>
-      <source>Merge project...</source>
-      <translation>Обʼєднати проєкт...</translation>
+      <source>Merge document...</source>
+      <translation type="unfinished">Merge document...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="521"/>
       <location filename="../CommandDoc.cpp" line="523"/>
       <location filename="../CommandDoc.cpp" line="533"/>
       <location filename="../CommandDoc.cpp" line="542"/>
-      <source>Merge project</source>
-      <translation>Обʼєднує проєкт</translation>
+      <source>Merge document</source>
+      <translation type="unfinished">Merge document</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="534"/>
@@ -9996,8 +10005,8 @@ the current copy will be lost.
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="543"/>
-      <source>Cannot merge project with itself.</source>
-      <translation>Неможливо злити проєкт з самим собою.</translation>
+      <source>Cannot merge document with itself.</source>
+      <translation type="unfinished">Cannot merge document with itself.</translation>
     </message>
   </context>
   <context>
@@ -10014,8 +10023,8 @@ the current copy will be lost.
       <translation>Створює новий порожній документ</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="391"/>
       <location filename="../MainWindow.cpp" line="2311"/>
+      <location filename="../DocumentRecovery.cpp" line="391"/>
       <source>Unnamed</source>
       <translation>Без назви</translation>
     </message>
@@ -10172,34 +10181,6 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
     </message>
   </context>
   <context>
-    <name>StdCmdProjectInfo</name>
-    <message>
-      <location filename="../CommandDoc.cpp" line="828"/>
-      <source>Project i&amp;nformation...</source>
-      <translation>Інформація про проєкт...</translation>
-    </message>
-    <message>
-      <location filename="../CommandDoc.cpp" line="829"/>
-      <location filename="../CommandDoc.cpp" line="831"/>
-      <source>Show details of the currently active project</source>
-      <translation>Показує подробиці про активний проєкт</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdProjectUtil</name>
-    <message>
-      <location filename="../CommandDoc.cpp" line="859"/>
-      <source>Project utility...</source>
-      <translation>Утиліта проєкту...</translation>
-    </message>
-    <message>
-      <location filename="../CommandDoc.cpp" line="860"/>
-      <location filename="../CommandDoc.cpp" line="861"/>
-      <source>Utility to extract or create project files</source>
-      <translation>Утиліта для видобування або створення файлів проєкту</translation>
-    </message>
-  </context>
-  <context>
     <name>StdCmdPythonWebsite</name>
     <message>
       <location filename="../CommandStd.cpp" line="693"/>
@@ -10246,7 +10227,7 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
     <message>
       <location filename="../CommandStd.cpp" line="137"/>
       <source>Open Recent</source>
-      <translation type="unfinished">Open Recent</translation>
+      <translation>Відкрити нещодавні</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="138"/>
@@ -11198,7 +11179,7 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
     <message>
       <location filename="../CommandWindow.cpp" line="417"/>
       <source>Activate window</source>
-      <translation type="unfinished">Activate window</translation>
+      <translation>Активувати вікно</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="418"/>
@@ -11337,7 +11318,7 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
     <message>
       <location filename="../CommandView.cpp" line="3672"/>
       <source>Pre-selection</source>
-      <translation>Попередній вибір</translation>
+      <translation>Попереднє виділення</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3673"/>
@@ -11350,7 +11331,7 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
     <message>
       <location filename="../CommandView.cpp" line="3690"/>
       <source>Record selection</source>
-      <translation>Записати вибір</translation>
+      <translation>Записати виділення</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3691"/>
@@ -11876,7 +11857,7 @@ Do you still want to proceed?</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="29"/>
       <source>Enable Notification Area</source>
-      <translation type="unfinished">Enable Notification Area</translation>
+      <translation>Увімкнути область сповіщень</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="45"/>
@@ -11886,12 +11867,12 @@ Do you still want to proceed?</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="48"/>
       <source>Enable non-intrusive notifications</source>
-      <translation type="unfinished">Enable non-intrusive notifications</translation>
+      <translation>Увімкнути ненав'язливі сповіщення</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="67"/>
       <source>Additional data sources</source>
-      <translation type="unfinished">Additional data sources</translation>
+      <translation>Додаткові джерела даних</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="73"/>
@@ -11916,17 +11897,17 @@ Do you still want to proceed?</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="114"/>
       <source>Non-Intrusive Notifications</source>
-      <translation type="unfinished">Non-Intrusive Notifications</translation>
+      <translation>Ненав'язливі Сповіщення</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="120"/>
       <source>Minimum Duration:</source>
-      <translation type="unfinished">Minimum Duration:</translation>
+      <translation>Мінімальна Тривалість:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="130"/>
       <source>Maximum Duration:</source>
-      <translation type="unfinished">Maximum Duration:</translation>
+      <translation>Максимальна Тривалість:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="137"/>
@@ -11957,22 +11938,22 @@ Do you still want to proceed?</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="204"/>
       <source>Notification width:</source>
-      <translation type="unfinished">Notification width:</translation>
+      <translation>Ширина сповіщень:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="211"/>
       <source>Width of the notification in pixels</source>
-      <translation type="unfinished">Width of the notification in pixels</translation>
+      <translation>Ширина сповіщення в пікселях</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="233"/>
       <source>Any open non-intrusive notifications will disappear when another window is activated</source>
-      <translation type="unfinished">Any open non-intrusive notifications will disappear when another window is activated</translation>
+      <translation>Будь-які відкриті ненав'язливі сповіщення зникнуть при активації іншого вікна</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="236"/>
       <source>Hide when other window is activated</source>
-      <translation type="unfinished">Hide when other window is activated</translation>
+      <translation>Приховати коли активовано інше вікно</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="252"/>
@@ -12259,7 +12240,7 @@ after FreeCAD launches</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="240"/>
       <source>Sort alphabetically</source>
-      <translation type="unfinished">Sort alphabetically</translation>
+      <translation>Сортування за алфавітом</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="486"/>
@@ -12323,7 +12304,7 @@ after FreeCAD launches</source>
     <message>
       <location filename="../ImageView.cpp" line="182"/>
       <source>Fit to window</source>
-      <translation type="unfinished">Fit to window</translation>
+      <translation>Підігнати під розмір вікна</translation>
     </message>
     <message>
       <location filename="../ImageView.cpp" line="187"/>
@@ -12341,13 +12322,13 @@ after FreeCAD launches</source>
     <message>
       <location filename="../CommandView.cpp" line="2078"/>
       <source>Load image...</source>
-      <translation type="unfinished">Load image...</translation>
+      <translation>Завантажити зображення...</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="2079"/>
       <location filename="../CommandView.cpp" line="2081"/>
       <source>Loads an image</source>
-      <translation type="unfinished">Loads an image</translation>
+      <translation>Завантажує зображення</translation>
     </message>
   </context>
   <context>
@@ -12355,7 +12336,7 @@ after FreeCAD launches</source>
     <message>
       <location filename="../NaviCube.cpp" line="1164"/>
       <source>Movable navigation cube</source>
-      <translation type="unfinished">Movable navigation cube</translation>
+      <translation>Рухомий куб навігації</translation>
     </message>
     <message>
       <location filename="../NaviCube.cpp" line="1165"/>
@@ -12378,22 +12359,22 @@ after FreeCAD launches</source>
     <message>
       <location filename="../View3DSettings.cpp" line="544"/>
       <source>RIGHT</source>
-      <translation type="unfinished">RIGHT</translation>
+      <translation>Справа</translation>
     </message>
     <message>
       <location filename="../View3DSettings.cpp" line="546"/>
       <source>REAR</source>
-      <translation type="unfinished">REAR</translation>
+      <translation>Позаду</translation>
     </message>
     <message>
       <location filename="../View3DSettings.cpp" line="548"/>
       <source>BOTTOM</source>
-      <translation type="unfinished">BOTTOM</translation>
+      <translation>Знизу</translation>
     </message>
     <message>
       <location filename="../View3DSettings.cpp" line="550"/>
       <source>LEFT</source>
-      <translation type="unfinished">LEFT</translation>
+      <translation>Зліва</translation>
     </message>
   </context>
   <context>
@@ -12402,7 +12383,7 @@ after FreeCAD launches</source>
       <location filename="../Widgets.cpp" line="1598"/>
       <location filename="../Widgets.cpp" line="1665"/>
       <source>An error occurred -- see Report View for information</source>
-      <translation type="unfinished">An error occurred -- see Report View for information</translation>
+      <translation>Сталася помилка -- див. вид звіту для отримання інформації</translation>
     </message>
   </context>
   <context>
@@ -12636,11 +12617,6 @@ after FreeCAD launches</source>
       <translation>Система одиниць вимірювання:</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="62"/>
-      <source>Unit system for all parts of the application. Can be overridden by specifying a project unit system.</source>
-      <translation type="unfinished">Unit system for all parts of the application. Can be overridden by specifying a project unit system.</translation>
-    </message>
-    <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="71"/>
       <source>Number of decimals:</source>
       <translation>Кількість десяткових знаків:</translation>
@@ -12651,19 +12627,24 @@ after FreeCAD launches</source>
       <translation>Визначає кількість десяткових знаків для чисел і розмірів</translation>
     </message>
     <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="62"/>
+      <source>Unit system for all parts of the application. Can be overridden by specifying a document unit system.</source>
+      <translation type="unfinished">Unit system for all parts of the application. Can be overridden by specifying a document unit system.</translation>
+    </message>
+    <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="93"/>
-      <source>Project unit system:</source>
-      <translation type="unfinished">Project unit system:</translation>
+      <source>Document unit system:</source>
+      <translation type="unfinished">Document unit system:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="100"/>
-      <source>Unit system stored in the current project</source>
-      <translation type="unfinished">Unit system stored in the current project</translation>
+      <source>Unit system stored in the current document</source>
+      <translation type="unfinished">Unit system stored in the current document</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="107"/>
-      <source>If enabled, project unit systems are ignored</source>
-      <translation type="unfinished">If enabled, project unit systems are ignored</translation>
+      <source>If enabled, document unit systems are ignored</source>
+      <translation type="unfinished">If enabled, document unit systems are ignored</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="110"/>
@@ -12764,7 +12745,7 @@ this according to your screen size or personal taste</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="288"/>
       <source>Size of recent file list:</source>
-      <translation type="unfinished">Size of recent file list:</translation>
+      <translation>Розмір списку останніх файлів:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="295"/>
@@ -12919,7 +12900,7 @@ display the splash screen</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="600"/>
       <source>Choose a FreeCAD config file to import</source>
-      <translation type="unfinished">Choose a FreeCAD config file to import</translation>
+      <translation>Виберіть файл конфігурації FreeCAD для імпорту</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="611"/>
@@ -12929,7 +12910,7 @@ display the splash screen</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="612"/>
       <source>A preference pack with that name already exists. Overwrite?</source>
-      <translation type="unfinished">A preference pack with that name already exists. Overwrite?</translation>
+      <translation>Набір налаштувань з таким імʼям вже існує. Перезаписати?</translation>
     </message>
   </context>
   <context>
@@ -13152,7 +13133,7 @@ from Python console to Report view panel</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="140"/>
       <source>Style sheet how user interface will look like</source>
-      <translation type="unfinished">Style sheet how user interface will look like</translation>
+      <translation>Таблиця стилів як буде виглядати користувацький інтерфейс</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="156"/>
@@ -13178,7 +13159,7 @@ from Python console to Report view panel</source>
       <location filename="../CommandDoc.cpp" line="606"/>
       <location filename="../CommandDoc.cpp" line="607"/>
       <source>Export the dependency graph to a file</source>
-      <translation type="unfinished">Export the dependency graph to a file</translation>
+      <translation>Експортувати графік залежностей у файл</translation>
     </message>
   </context>
   <context>
@@ -13212,17 +13193,17 @@ from Python console to Report view panel</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="14"/>
       <source>Light Sources</source>
-      <translation type="unfinished">Light Sources</translation>
+      <translation>Джерела Світла</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="20"/>
       <source>Light sources</source>
-      <translation type="unfinished">Light sources</translation>
+      <translation>Джерела світла</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="26"/>
       <source>Light source</source>
-      <translation type="unfinished">Light source</translation>
+      <translation>Джерело світла</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="72"/>
@@ -13232,7 +13213,7 @@ from Python console to Report view panel</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="107"/>
       <source>Lights</source>
-      <translation type="unfinished">Lights</translation>
+      <translation>Світло</translation>
     </message>
   </context>
   <context>
@@ -13240,7 +13221,7 @@ from Python console to Report view panel</source>
     <message>
       <location filename="../CommandView.cpp" line="901"/>
       <source>Toggle transparency</source>
-      <translation type="unfinished">Toggle transparency</translation>
+      <translation>Змінити прозорість</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="903"/>
@@ -13281,7 +13262,7 @@ This makes the docked windows stay transparent at all times.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3877"/>
       <source>Toggle overlay</source>
-      <translation type="unfinished">Toggle overlay</translation>
+      <translation>Перемкнути шари</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3878"/>
@@ -13535,37 +13516,37 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../OverlayWidgets.cpp" line="858"/>
       <source>Turn off auto hide/show</source>
-      <translation type="unfinished">Turn off auto hide/show</translation>
+      <translation>Вимкнути автоприховування/показ</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="859"/>
       <source>Auto hide</source>
-      <translation type="unfinished">Auto hide</translation>
+      <translation>Автоприховування</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="860"/>
       <source>Auto hide docked widgets on leave</source>
-      <translation type="unfinished">Auto hide docked widgets on leave</translation>
+      <translation>Автоматично приховує віджети при деактивації</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="861"/>
       <source>Hide on edit</source>
-      <translation type="unfinished">Hide on edit</translation>
+      <translation>Приховати під час редагування</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="862"/>
       <source>Auto hide docked widgets on editing</source>
-      <translation type="unfinished">Auto hide docked widgets on editing</translation>
+      <translation>Автоматично приховує віджети при редагуванні</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="863"/>
       <source>Show on edit</source>
-      <translation type="unfinished">Show on edit</translation>
+      <translation>Показувати при редагуванні</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="864"/>
       <source>Auto show docked widgets on editing</source>
-      <translation type="unfinished">Auto show docked widgets on editing</translation>
+      <translation>Автоматично показує віджети при редагуванні</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="865"/>
@@ -13580,7 +13561,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../OverlayWidgets.cpp" line="867"/>
       <source>Toggle overlay</source>
-      <translation type="unfinished">Toggle overlay</translation>
+      <translation>Перемкнути шари</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="893"/>
@@ -13594,6 +13575,34 @@ the region are non-opaque.</translation>
       <location filename="../OverlayWidgets.cpp" line="1836"/>
       <source>Mouse pass through, ESC to stop</source>
       <translation type="unfinished">Mouse pass through, ESC to stop</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdProjectInfo</name>
+    <message>
+      <location filename="../CommandDoc.cpp" line="828"/>
+      <source>Document i&amp;nformation...</source>
+      <translation type="unfinished">Document i&amp;nformation...</translation>
+    </message>
+    <message>
+      <location filename="../CommandDoc.cpp" line="829"/>
+      <location filename="../CommandDoc.cpp" line="831"/>
+      <source>Show details of the currently active document</source>
+      <translation type="unfinished">Show details of the currently active document</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdProjectUtil</name>
+    <message>
+      <location filename="../CommandDoc.cpp" line="859"/>
+      <source>Document utility...</source>
+      <translation type="unfinished">Document utility...</translation>
+    </message>
+    <message>
+      <location filename="../CommandDoc.cpp" line="860"/>
+      <location filename="../CommandDoc.cpp" line="861"/>
+      <source>Utility to extract or create document files</source>
+      <translation type="unfinished">Utility to extract or create document files</translation>
     </message>
   </context>
 </TS>

@@ -275,11 +275,31 @@
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="144"/>
+      <source>Size</source>
+      <translation>Dimensione</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="145"/>
+      <source>Author</source>
+      <translation>Autore</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="146"/>
+      <source>License</source>
+      <translation>Licenza</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="147"/>
+      <source>File path</source>
+      <translation>Percorso file</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="148"/>
       <source>Notes</source>
       <translation>Note</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="145"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="149"/>
       <source>Open start page preferences</source>
       <translation>Apri le preferenze della pagina iniziale</translation>
     </message>
@@ -287,7 +307,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../../StartPage/StartPage.py" line="871"/>
+      <location filename="../../../StartPage/StartPage.py" line="874"/>
       <location filename="../../Workbench.cpp" line="62"/>
       <source>Start page</source>
       <translation>Pagina iniziale</translation>

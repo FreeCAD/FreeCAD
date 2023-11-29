@@ -58,7 +58,8 @@ void QGVNavStyleInventor::handleMousePressEvent(QMouseEvent *event)
 void QGVNavStyleInventor::handleMouseMoveEvent(QMouseEvent *event)
 {
     if (getViewer()->isBalloonPlacing()) {
-        getViewer()->setBalloonCursorPos(event->pos());
+        balloonCursorMovement(event);
+        return;
     }
 
     if ((QGuiApplication::mouseButtons() & Qt::LeftButton) &&

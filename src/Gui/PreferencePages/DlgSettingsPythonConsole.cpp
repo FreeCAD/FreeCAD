@@ -45,6 +45,7 @@ void DlgSettingsPythonConsole::saveSettings()
     ui->PythonBlockCursor->onSave();
     ui->PythonSaveHistory->onSave();
     ui->ProfilerInterval->onSave();
+    ui->ExternalPythonExecutable->onSave();
 }
 
 void DlgSettingsPythonConsole::loadSettings()
@@ -53,6 +54,7 @@ void DlgSettingsPythonConsole::loadSettings()
     ui->PythonBlockCursor->onRestore();
     ui->PythonSaveHistory->onRestore();
     ui->ProfilerInterval->onRestore();
+    ui->ExternalPythonExecutable->onRestore();
 }
 
 void DlgSettingsPythonConsole::changeEvent(QEvent* event)

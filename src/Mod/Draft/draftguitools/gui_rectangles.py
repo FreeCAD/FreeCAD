@@ -39,7 +39,7 @@ import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
 import draftguitools.gui_trackers as trackers
 
-from draftutils.messages import _msg, _err
+from draftutils.messages import _toolmsg, _err
 from draftutils.translate import translate
 
 
@@ -66,7 +66,7 @@ class Rectangle(gui_base_original.Creator):
                 self.ui.hasFill.setChecked(True)
             self.call = self.view.addEventCallback("SoEvent", self.action)
             self.rect = trackers.rectangleTracker()
-            _msg(translate("draft", "Pick first point"))
+            _toolmsg(translate("draft", "Pick first point"))
 
     def finish(self, cont=False):
         """Terminate the operation.
@@ -198,7 +198,7 @@ class Rectangle(gui_base_original.Creator):
             self.rect.update(point)
             self.createObject()
         else:
-            _msg(translate("draft", "Pick opposite point"))
+            _toolmsg(translate("draft", "Pick opposite point"))
             self.ui.setRelative()
             self.rect.setorigin(point)
             self.rect.on()

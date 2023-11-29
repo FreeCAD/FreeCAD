@@ -55,7 +55,8 @@ Boolean::Boolean()
     Base::Reference<ParameterGrp> hGrp = App::GetApplication().GetUserParameter()
         .GetGroup("BaseApp")->GetGroup("Preferences")->GetGroup("Mod/PartDesign");
     this->Refine.setValue(hGrp->GetBool("RefineModel", false));
-
+    ADD_PROPERTY_TYPE(UsePlacement,(0),"Part Design",(App::PropertyType)(App::Prop_None),"Apply the placement of the second ( tool ) object");
+    this->UsePlacement.setValue(false);
     initExtension(this);
 }
 
@@ -106,12 +107,16 @@ App::DocumentObjectExecReturn *Boolean::execute()
 
     TopoDS_Shape result = baseTopShape.getShape();
 
+    Base::Placement  bodyPlacement = baseBody->globalPlacement().inverse();
     for (auto tool : tools)
     {
         if(!tool->isDerivedFrom(Part::Feature::getClassTypeId()))
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Cannot do boolean with anything but Part::Feature and its derivatives"));
 
-        TopoDS_Shape shape = static_cast<Part::Feature*>(tool)->Shape.getValue();
+        Part::TopoShape toolShape = static_cast<Part::Feature*>(tool)->Shape.getShape();
+        if ( UsePlacement.getValue() )
+            toolShape.setPlacement(bodyPlacement * toolShape.getPlacement());
+        TopoDS_Shape shape = toolShape.getShape();
         TopoDS_Shape boolOp;
 
         // Must not pass null shapes to the boolean operations

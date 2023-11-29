@@ -381,7 +381,7 @@ void DrawPage::unsetupObject()
         const std::vector<App::DocumentObject*> currViews = Views.getValues();
         for (auto& v : currViews) {
             //NOTE: the order of objects in Page.Views does not reflect the object hierarchy
-            //      this means that a ProjGroup could be deleted before it's child ProjGroupItems.
+            //      this means that a ProjGroup could be deleted before its child ProjGroupItems.
             //      this causes problems when removing objects from document
             if (v->isAttachedToDocument()) {
                 std::string viewName = v->getNameInDocument();

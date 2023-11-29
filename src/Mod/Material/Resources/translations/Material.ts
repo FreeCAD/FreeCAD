@@ -278,8 +278,8 @@ If unchecked, they will be sorted by their name.</source>
     </message>
     <message>
         <location filename="../../Gui/MaterialSave.ui" line="59"/>
-        <location filename="../../Gui/MaterialSave.cpp" line="492"/>
-        <location filename="../../Gui/MaterialSave.cpp" line="503"/>
+        <location filename="../../Gui/MaterialSave.cpp" line="491"/>
+        <location filename="../../Gui/MaterialSave.cpp" line="502"/>
         <source>New Folder</source>
         <translation type="unfinished"></translation>
     </message>
@@ -349,7 +349,7 @@ If unchecked, they will be sorted by their name.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Gui/MaterialSave.cpp" line="558"/>
+        <location filename="../../Gui/MaterialSave.cpp" line="557"/>
         <source>Context menu</source>
         <translation type="unfinished"></translation>
     </message>
@@ -444,61 +444,61 @@ If unchecked, they will be sorted by their name.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Gui/MaterialsEditor.cpp" line="446"/>
+        <location filename="../../Gui/MaterialsEditor.cpp" line="454"/>
         <source>Unnamed</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Gui/MaterialsEditor.cpp" line="614"/>
-        <location filename="../../Gui/MaterialsEditor.cpp" line="659"/>
-        <location filename="../../Gui/MaterialsEditor.cpp" line="869"/>
-        <location filename="../../Gui/MaterialsEditor.cpp" line="928"/>
+        <location filename="../../Gui/MaterialsEditor.cpp" line="650"/>
+        <location filename="../../Gui/MaterialsEditor.cpp" line="694"/>
+        <location filename="../../Gui/MaterialsEditor.cpp" line="904"/>
+        <location filename="../../Gui/MaterialsEditor.cpp" line="963"/>
         <source>Property</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Gui/MaterialsEditor.cpp" line="615"/>
-        <location filename="../../Gui/MaterialsEditor.cpp" line="660"/>
-        <location filename="../../Gui/MaterialsEditor.cpp" line="870"/>
-        <location filename="../../Gui/MaterialsEditor.cpp" line="929"/>
+        <location filename="../../Gui/MaterialsEditor.cpp" line="651"/>
+        <location filename="../../Gui/MaterialsEditor.cpp" line="695"/>
+        <location filename="../../Gui/MaterialsEditor.cpp" line="905"/>
+        <location filename="../../Gui/MaterialsEditor.cpp" line="964"/>
         <source>Value</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Gui/MaterialsEditor.cpp" line="616"/>
-        <location filename="../../Gui/MaterialsEditor.cpp" line="661"/>
-        <location filename="../../Gui/MaterialsEditor.cpp" line="871"/>
-        <location filename="../../Gui/MaterialsEditor.cpp" line="930"/>
+        <location filename="../../Gui/MaterialsEditor.cpp" line="652"/>
+        <location filename="../../Gui/MaterialsEditor.cpp" line="696"/>
+        <location filename="../../Gui/MaterialsEditor.cpp" line="906"/>
+        <location filename="../../Gui/MaterialsEditor.cpp" line="965"/>
         <source>Type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Gui/MaterialsEditor.cpp" line="721"/>
+        <location filename="../../Gui/MaterialsEditor.cpp" line="756"/>
         <source>Favorites</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Gui/MaterialsEditor.cpp" line="726"/>
+        <location filename="../../Gui/MaterialsEditor.cpp" line="761"/>
         <source>Recent</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Gui/MaterialsEditor.cpp" line="931"/>
+        <location filename="../../Gui/MaterialsEditor.cpp" line="966"/>
         <source>Units</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Gui/MaterialsEditor.cpp" line="1098"/>
+        <location filename="../../Gui/MaterialsEditor.cpp" line="1133"/>
         <source>Context menu</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Gui/MaterialsEditor.cpp" line="1100"/>
+        <location filename="../../Gui/MaterialsEditor.cpp" line="1135"/>
         <source>Inherit from</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Gui/MaterialsEditor.cpp" line="1105"/>
+        <location filename="../../Gui/MaterialsEditor.cpp" line="1140"/>
         <source>Inherit new material</source>
         <translation type="unfinished"></translation>
     </message>
@@ -588,12 +588,12 @@ If unchecked, they will be sorted by their name.</source>
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../Gui/AppMatGui.cpp" line="101"/>
+        <location filename="../../Gui/AppMatGui.cpp" line="100"/>
         <source>Material workbench</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Gui/AppMatGui.cpp" line="103"/>
+        <location filename="../../Gui/AppMatGui.cpp" line="102"/>
         <source>Material</source>
         <translation type="unfinished"></translation>
     </message>
@@ -603,44 +603,46 @@ If unchecked, they will be sorted by their name.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../Gui/MaterialSave.cpp" line="378"/>
         <location filename="../../Gui/MaterialSave.cpp" line="379"/>
-        <location filename="../../Gui/MaterialSave.cpp" line="380"/>
         <source>No writeable library</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Gui/MaterialSave.cpp" line="599"/>
+        <location filename="../../Gui/MaterialSave.cpp" line="598"/>
         <source>Are you sure you want to delete &apos;%1&apos;?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Gui/MaterialSave.cpp" line="603"/>
+        <location filename="../../Gui/MaterialSave.cpp" line="602"/>
         <source>Removing this will also remove all contents.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Gui/MaterialsEditor.cpp" line="1153"/>
+        <location filename="../../Gui/MaterialsEditor.cpp" line="1188"/>
         <source>Unsaved Material</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Gui/MaterialsEditor.cpp" line="1154"/>
+        <location filename="../../Gui/MaterialsEditor.cpp" line="1189"/>
         <source>Do you want to save your changes to the material before closing?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Gui/MaterialsEditor.cpp" line="1156"/>
+        <location filename="../../Gui/MaterialsEditor.cpp" line="1191"/>
         <source>If you don&apos;t save, your changes will be lost.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../Gui/Array2D.cpp" line="228"/>
-        <location filename="../../Gui/MaterialSave.cpp" line="596"/>
+        <location filename="../../Gui/ListEdit.cpp" line="156"/>
+        <location filename="../../Gui/MaterialSave.cpp" line="595"/>
         <source>Confirm Delete</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../Gui/Array2D.cpp" line="230"/>
+        <location filename="../../Gui/ListEdit.cpp" line="158"/>
         <source>Are you sure you want to delete the row?</source>
         <translation type="unfinished"></translation>
     </message>
@@ -679,12 +681,12 @@ If unchecked, they will be sorted by their name.</source>
 <context>
     <name>MatGui::MaterialDelegate</name>
     <message>
-        <location filename="../../Gui/MaterialDelegate.cpp" line="418"/>
+        <location filename="../../Gui/MaterialDelegate.cpp" line="502"/>
         <source>False</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Gui/MaterialDelegate.cpp" line="419"/>
+        <location filename="../../Gui/MaterialDelegate.cpp" line="503"/>
         <source>True</source>
         <translation type="unfinished"></translation>
     </message>
@@ -699,6 +701,22 @@ If unchecked, they will be sorted by their name.</source>
     <message>
         <location filename="../../Gui/Workbench.cpp" line="35"/>
         <source>Materials</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>MatGui::ListEdit</name>
+    <message>
+        <location filename="../../Gui/ListEdit.ui" line="14"/>
+        <source>List Edit</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>MatGui::TextEdit</name>
+    <message>
+        <location filename="../../Gui/TextEdit.ui" line="14"/>
+        <source>Text Edit</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

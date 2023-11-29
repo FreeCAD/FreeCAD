@@ -21,11 +21,13 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <QRegularExpression>
 #endif
 
 #include <QMetaType>
 
 #include <App/Application.h>
+#include <Base/QtTools.h>
 #include <Base/Quantity.h>
 #include <Gui/MetaTypes.h>
 
@@ -83,10 +85,18 @@ bool MaterialValue::operator==(const MaterialValue& other) const
     return (_valueType == other._valueType) && (_value == other._value);
 }
 
+QString MaterialValue::escapeString(const QString& source)
+{
+    QString res = source;
+    res.replace(QString::fromStdString("\\"), QString::fromStdString("\\\\"));
+    res.replace(QString::fromStdString("\""), QString::fromStdString("\\\""));
+    return res;
+}
+
 void MaterialValue::setInitialValue(ValueType inherited)
 {
-#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
-    if (_valueType == String) {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    if (_valueType == String || _valueType == MultiLineString) {
         _value = QVariant(static_cast<QVariant::Type>(QMetaType::QString));
     }
     else if (_valueType == Boolean) {
@@ -110,11 +120,8 @@ void MaterialValue::setInitialValue(ValueType inherited)
     else if (_valueType == Image) {
         _value = QVariant(static_cast<QVariant::Type>(QMetaType::QString));
     }
-    else if (_valueType == List) {
-        _value = QVariant(static_cast<QVariant::Type>(QMetaType::QString));
-    }
 #else
-    if (_valueType == String) {
+    if (_valueType == String || _valueType == MultiLineString) {
         _value = QVariant(QMetaType(QMetaType::QString));
     }
     else if (_valueType == Boolean) {
@@ -138,14 +145,15 @@ void MaterialValue::setInitialValue(ValueType inherited)
     else if (_valueType == Image) {
         _value = QVariant(QMetaType(QMetaType::QString));
     }
-    else if (_valueType == List) {
-        _value = QVariant(QMetaType(QMetaType::QString));
-    }
 #endif
     else if (_valueType == Quantity) {
         Base::Quantity qu;
         qu.setInvalid();
         _value = QVariant::fromValue(qu);
+    }
+    else if (_valueType == List) {
+        auto list = QList<QVariant>();
+        _value = QVariant::fromValue(list);
     }
     else if (_valueType == Array2D) {
         if (_valueType != inherited) {
@@ -168,6 +176,11 @@ void MaterialValue::setInitialValue(ValueType inherited)
     }
 }
 
+void MaterialValue::setList(const QList<QVariant>& value)
+{
+    _value = QVariant::fromValue(value);
+}
+
 bool MaterialValue::isNull() const
 {
     if (_value.isNull()) {
@@ -178,12 +191,16 @@ bool MaterialValue::isNull() const
         return !_value.value<Base::Quantity>().isValid();
     }
 
+    if (_valueType == List) {
+        return _value.value<QList<QVariant>>().isEmpty();
+    }
+
     return false;
 }
 
 const QString MaterialValue::getYAMLString() const
 {
-    QString yaml = QString::fromStdString("\"");
+    QString yaml;
     if (!isNull()) {
         if (getType() == MaterialValue::Quantity) {
             Base::Quantity quantity = getValue().value<Base::Quantity>();
@@ -192,14 +209,30 @@ const QString MaterialValue::getYAMLString() const
         else if (getType() == MaterialValue::Float) {
             auto value = getValue();
             if (!value.isNull()) {
-                yaml += QString(QString::fromStdString("%1")).arg(value.toFloat(), 0, 'g', 6);
+                yaml += QString::fromLatin1("%1").arg(value.toFloat(), 0, 'g', 6);
             }
+        }
+        else if (getType() == MaterialValue::MultiLineString) {
+            yaml = QString::fromLatin1(">2");
+            auto list = getValue().toString().split(QRegularExpression(QString::fromLatin1("[\r\n]")),
+                                                    Qt::SkipEmptyParts);
+            for (auto& it : list) {
+                yaml += QString::fromLatin1("\n      ") + it;
+            }
+            return yaml;
+        }
+        else if (getType() == MaterialValue::List) {
+            for (auto& it : getList()) {
+                yaml += QString::fromLatin1("\n      - \"") + escapeString(it.toString())
+                    + QString::fromLatin1("\"");
+            }
+            return yaml;
         }
         else {
             yaml += getValue().toString();
         }
     }
-    yaml += QString::fromStdString("\"");
+    yaml = QString::fromLatin1("\"") + escapeString(yaml) + QString::fromLatin1("\"");
     return yaml;
 }
 
@@ -239,9 +272,9 @@ Material2DArray& Material2DArray::operator=(const Material2DArray& other)
 void Material2DArray::deepCopy(const Material2DArray& other)
 {
     // Deep copy
-    for (auto row : other._rows) {
+    for (auto& row : other._rows) {
         std::vector<QVariant> v;
-        for (auto col : *row) {
+        for (auto& col : *row) {
             QVariant newVariant(col);
             v.push_back(newVariant);
         }
@@ -335,7 +368,7 @@ const QVariant Material2DArray::getValue(int row, int column) const
 void Material2DArray::dumpRow(std::shared_ptr<std::vector<QVariant>> row) const
 {
     Base::Console().Log("row: ");
-    for (auto column : *row) {
+    for (auto& column : *row) {
         Base::Console().Log("'%s' ", column.toString().toStdString().c_str());
     }
     Base::Console().Log("\n");
@@ -343,7 +376,7 @@ void Material2DArray::dumpRow(std::shared_ptr<std::vector<QVariant>> row) const
 
 void Material2DArray::dump() const
 {
-    for (auto row : _rows) {
+    for (auto& row : _rows) {
         dumpRow(row);
     }
 }
@@ -367,7 +400,7 @@ const QString Material2DArray::getYAMLString() const
     // Next the array contents
     yaml += QString::fromStdString("      - [");
     bool firstRow = true;
-    for (auto row : _rows) {
+    for (auto& row : _rows) {
         if (!firstRow) {
             // Each row is on its own line, padded for correct indentation
             yaml += QString::fromStdString(",\n") + pad;
@@ -378,7 +411,7 @@ const QString Material2DArray::getYAMLString() const
         yaml += QString::fromStdString("[");
 
         bool first = true;
-        for (auto column : *row) {
+        for (auto& column : *row) {
             if (!first) {
                 // TODO: Fix for arrays with too many columns to fit on a single line
                 yaml += QString::fromStdString(", ");
@@ -698,7 +731,7 @@ const QString Material3DArray::getYAMLString() const
 
         bool firstRow = true;
         auto rows = getTable(depth);
-        for (auto row : *rows) {
+        for (auto& row : *rows) {
             if (!firstRow) {
                 // Each row is on its own line, padded for correct indentation
                 yaml += QString::fromStdString(",\n") + pad2;
@@ -709,7 +742,7 @@ const QString Material3DArray::getYAMLString() const
             yaml += QString::fromStdString("[");
 
             bool first = true;
-            for (auto column : *row) {
+            for (auto& column : *row) {
                 if (!first) {
                     // TODO: Fix for arrays with too many columns to fit on a single line
                     yaml += QString::fromStdString(", ");

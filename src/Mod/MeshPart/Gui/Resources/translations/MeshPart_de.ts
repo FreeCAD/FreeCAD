@@ -577,8 +577,8 @@ Wähle bitte eine andere Form aus.</translation>
     <name>MeshPart_CreateFlatMesh</name>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="49"/>
-      <source>Unwrap Mesh</source>
-      <translation>Netz abwickeln</translation>
+      <source>Unwrap mesh</source>
+      <translation type="unfinished">Unwrap mesh</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="52"/>
@@ -590,8 +590,8 @@ Wähle bitte eine andere Form aus.</translation>
     <name>MeshPart_CreateFlatFace</name>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="88"/>
-      <source>Unwrap Face</source>
-      <translation>Fläche abwickeln</translation>
+      <source>Unwrap face</source>
+      <translation type="unfinished">Unwrap face</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="91"/>

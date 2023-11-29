@@ -838,7 +838,7 @@ private:
     Py::Object show(const Py::Tuple& args)
     {
         PyObject *pcObj = nullptr;
-        char *name = "Shape";
+        const char *name = "Shape";
         if (!PyArg_ParseTuple(args.ptr(), "O!|s", &(TopoShapePy::Type), &pcObj, &name))
             throw Py::Exception();
 
@@ -1741,7 +1741,7 @@ private:
         PyObject *pshape;
         double radius;
         double tolerance=0.001;
-        char* scont = "C0";
+        const char* scont = "C0";
         int maxdegree = 3;
         int maxsegment = 30;
 

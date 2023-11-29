@@ -957,8 +957,10 @@ bool MDIViewPage::compareSelections(std::vector<Gui::SelectionObject> treeSel,
     }
 
     int treeCount = 0;
+    int subCount = 0;
     int sceneCount = 0;
     int ppCount = 0;
+
     std::vector<std::string> treeNames;
     std::vector<std::string> sceneNames;
 
@@ -966,6 +968,7 @@ bool MDIViewPage::compareSelections(std::vector<Gui::SelectionObject> treeSel,
         if (tn.getObject()->isDerivedFrom(TechDraw::DrawView::getClassTypeId())) {
             std::string s = tn.getObject()->getNameInDocument();
             treeNames.push_back(s);
+            subCount += tn.getSubNames().size();
         }
     }
     std::sort(treeNames.begin(), treeNames.end());
@@ -1017,7 +1020,7 @@ bool MDIViewPage::compareSelections(std::vector<Gui::SelectionObject> treeSel,
     }
 
     //Objects all match, check subs
-    if (treeCount != ppCount) {
+    if (subCount != ppCount) {
         return false;
     }
 
@@ -1068,7 +1071,7 @@ Py::Object MDIViewPagePy::repr()
     return Py::String(s_out.str());
 }
 
-// Since with PyCXX it's not possible to make a sub-class of MDIViewPy
+// Since with PyCXX it is not possible to make a sub-class of MDIViewPy
 // a trick is to use MDIViewPy as class member and override getattr() to
 // join the attributes of both classes. This way all methods of MDIViewPy
 // appear for SheetViewPy, too.

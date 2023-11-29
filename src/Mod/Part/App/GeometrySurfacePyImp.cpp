@@ -726,7 +726,8 @@ Py::String GeometrySurfacePy::getContinuity() const
 PyObject* GeometrySurfacePy::toBSpline(PyObject * args, PyObject * kwds)
 {
     double tol3d=Precision::Confusion();
-    char *ucont="C1", *vcont="C1";
+    const char *ucont = "C1";
+    const char *vcont = "C1";
     int maxDegU=Geom_BSplineSurface::MaxDegree();
     int maxDegV=Geom_BSplineSurface::MaxDegree();
     int maxSegm=1000, prec=0;

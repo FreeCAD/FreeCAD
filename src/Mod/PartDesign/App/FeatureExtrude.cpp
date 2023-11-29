@@ -24,15 +24,20 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <BRepAlgoAPI_Fuse.hxx>
+# include <BRepAlgoAPI_Common.hxx>
+# include <BRepAdaptor_Surface.hxx>
 # include <BRep_Builder.hxx>
+# include <BRepBuilderAPI_MakeFace.hxx>
 # include <BRepFeat_MakePrism.hxx>
 # include <BRepPrimAPI_MakePrism.hxx>
 # include <gp_Dir.hxx>
+# include <gp_Pln.hxx>
 # include <Precision.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopoDS_Compound.hxx>
 # include <TopoDS_Face.hxx>
 # include <TopoDS_Shape.hxx>
+# include <TopoDS.hxx>
 #endif
 
 #include <App/Document.h>
@@ -120,6 +125,22 @@ Base::Vector3d FeatureExtrude::computeDirection(const Base::Vector3d& sketchVect
     return extrudeDirection;
 }
 
+void FeatureExtrude::extendFace(TopoDS_Face& face, const TopoDS_Shape bounds) {
+    if ( ! face.IsNull() ) {
+        BRepAdaptor_Surface adapt = BRepAdaptor_Surface(face);
+        // adapt.Initialize(face);
+        TopoDS_Face plane = BRepBuilderAPI_MakeFace(adapt.Plane());
+        if ( ! bounds.IsNull() ) {
+            BRepAlgoAPI_Common mkCom(bounds, plane);
+            // Protect if a compound with one entry is returned
+            TopExp_Explorer xp = TopExp_Explorer(mkCom.Shape(),TopAbs_FACE);
+            face = TopoDS::Face(xp.Current());
+        } else
+            face = TopoDS::Face(plane);
+    }
+}
+
+
 bool FeatureExtrude::hasTaperedAngle() const
 {
     return fabs(TaperAngle.getValue()) > Base::toRadians(Precision::Angular()) ||
@@ -194,7 +215,7 @@ void FeatureExtrude::generatePrism(TopoDS_Shape& prism,
                                    const TopoDS_Shape& baseshape,
                                    const TopoDS_Shape& profileshape,
                                    const TopoDS_Face& supportface,
-                                   const TopoDS_Face& uptoface,
+                                   const TopoDS_Shape& uptoface,
                                    const gp_Dir& direction,
                                    PrismMode Mode,
                                    Standard_Boolean Modify)
@@ -333,6 +354,9 @@ void FeatureExtrude::updateProperties(const std::string &method)
         isLength2Enabled = true;
         isTaperVisible = true;
         isTaper2Visible = true;
+        isReversedEnabled = true;
+    }
+    else if (method == "UpToShape") {
         isReversedEnabled = true;
     }
 

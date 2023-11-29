@@ -44,7 +44,7 @@ import draftutils.todo as todo
 import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
 
-from draftutils.messages import _msg, _err
+from draftutils.messages import _msg, _err, _toolmsg
 from draftutils.translate import translate
 
 
@@ -79,7 +79,7 @@ class Line(gui_base_original.Creator):
         gui_utils.format_object(self.obj)
 
         self.call = self.view.addEventCallback("SoEvent", self.action)
-        _msg(translate("draft", "Pick first point"))
+        _toolmsg(translate("draft", "Pick first point"))
 
     def action(self, arg):
         """Handle the 3D scene events.
@@ -211,8 +211,8 @@ class Line(gui_base_original.Creator):
                 else:
                     self.obj.ViewObject.hide()
                 # DNC: report on removal
-                # _msg(translate("draft", "Removing last point"))
-                _msg(translate("draft", "Pick next point"))
+                # _toolmsg(translate("draft", "Removing last point"))
+                _toolmsg(translate("draft", "Pick next point"))
 
     def drawSegment(self, point):
         """Draws new line segment."""
@@ -220,14 +220,14 @@ class Line(gui_base_original.Creator):
         if self.planetrack and self.node:
             self.planetrack.set(self.node[-1])
         if len(self.node) == 1:
-            _msg(translate("draft", "Pick next point"))
+            _toolmsg(translate("draft", "Pick next point"))
         elif len(self.node) == 2:
             last = self.node[len(self.node) - 2]
             newseg = Part.LineSegment(last, point).toShape()
             self.obj.Shape = newseg
             self.obj.ViewObject.Visibility = True
             if self.isWire:
-                _msg(translate("draft", "Pick next point"))
+                _toolmsg(translate("draft", "Pick next point"))
         else:
             currentshape = self.obj.Shape.copy()
             last = self.node[len(self.node) - 2]
@@ -235,7 +235,7 @@ class Line(gui_base_original.Creator):
                 newseg = Part.LineSegment(last, point).toShape()
                 newshape = currentshape.fuse(newseg)
                 self.obj.Shape = newshape
-            _msg(translate("draft", "Pick next point"))
+            _toolmsg(translate("draft", "Pick next point"))
 
     def wipe(self):
         """Remove all previous segments and starts from last point."""
@@ -245,7 +245,7 @@ class Line(gui_base_original.Creator):
             self.node = [self.node[-1]]
             if self.planetrack:
                 self.planetrack.set(self.node[0])
-            _msg(translate("draft", "Pick next point"))
+            _toolmsg(translate("draft", "Pick next point"))
 
     def orientWP(self):
         """Orient the working plane."""

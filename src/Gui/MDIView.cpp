@@ -226,12 +226,14 @@ void MDIView::closeEvent(QCloseEvent *e)
         // because otherwise other parts don't work as they should.
         QMainWindow::closeEvent(e);
     }
-    else
+    else {
         e->ignore();
+    }
 }
 
-void MDIView::windowStateChanged( MDIView* )
+void MDIView::windowStateChanged(QWidget* view)
 {
+    Q_UNUSED(view)
 }
 
 void MDIView::print(QPrinter* printer)

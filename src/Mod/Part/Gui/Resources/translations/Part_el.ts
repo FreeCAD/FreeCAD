@@ -3870,7 +3870,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgPrimitives.cpp" line="1732"/>
       <source>Vertex</source>
-      <translation type="unfinished">Vertex</translation>
+      <translation>Κορυφή</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.cpp" line="1910"/>
@@ -4426,7 +4426,7 @@ will be used or black.</source>
     <message>
       <location filename="../../Location.ui" line="90"/>
       <source>3D view</source>
-      <translation type="unfinished">3D view</translation>
+      <translation>Τρισδιάστατη Προβολή</translation>
     </message>
     <message>
       <location filename="../../Location.ui" line="106"/>
@@ -5069,7 +5069,7 @@ of object being attached.</translation>
     <message>
       <location filename="../../TaskAttacher.cpp" line="648"/>
       <source>Vertex</source>
-      <translation>Κορυφή</translation>
+      <translation type="unfinished">Vertex</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.cpp" line="713"/>
@@ -5692,8 +5692,8 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="47"/>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="54"/>
-      <location filename="../../ViewProvider.cpp" line="49"/>
       <location filename="../../ViewProviderPrimitive.cpp" line="53"/>
+      <location filename="../../ViewProvider.cpp" line="49"/>
       <source>Edit %1</source>
       <translation>Επεξεργασία %1</translation>
     </message>
@@ -5786,20 +5786,20 @@ Do you want to continue?</source>
       <translation>Δεν επιλέχθηκε κανένα αντικείμενο αναφοράς</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="75"/>
       <location filename="../../TaskCheckGeometry.cpp" line="81"/>
+      <location filename="../../TaskAttacher.cpp" line="75"/>
       <source>Face</source>
       <translation>Όψη</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="78"/>
       <location filename="../../TaskCheckGeometry.cpp" line="83"/>
+      <location filename="../../TaskAttacher.cpp" line="78"/>
       <source>Edge</source>
       <translation>Ακμή</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="81"/>
       <location filename="../../TaskCheckGeometry.cpp" line="84"/>
+      <location filename="../../TaskAttacher.cpp" line="81"/>
       <source>Vertex</source>
       <translation type="unfinished">Vertex</translation>
     </message>

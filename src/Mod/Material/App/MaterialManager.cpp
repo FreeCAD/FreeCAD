@@ -123,7 +123,7 @@ std::shared_ptr<Material> MaterialManager::getMaterialByPath(const QString& path
 {
     QString cleanPath = QDir::cleanPath(path);
 
-    for (auto library : *_libraryList) {
+    for (auto& library : *_libraryList) {
         // Base::Console().Log("MaterialManager::getMaterialByPath() Checking library '%s'->'%s'\n",
         //                     library->getName().toStdString().c_str(),
         //                     library->getDirectory().toStdString().c_str());
@@ -189,7 +189,7 @@ bool MaterialManager::exists(std::shared_ptr<MaterialLibrary> library, const QSt
 
 std::shared_ptr<MaterialLibrary> MaterialManager::getLibrary(const QString& name) const
 {
-    for (auto library : *_libraryList) {
+    for (auto& library : *_libraryList) {
         if (library->getName() == name) {
             return library;
         }

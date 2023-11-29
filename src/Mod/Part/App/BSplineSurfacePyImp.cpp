@@ -1158,7 +1158,7 @@ PyObject* BSplineSurfacePy::approximate(PyObject *args, PyObject *kwds)
     Standard_Integer degMax=8;
     Standard_Integer continuity=2;
     Standard_Real tol3d = Precision::Approximation();
-    char* parType = "None";
+    const char* parType = "None";
     Standard_Real weight1 = 1.0;
     Standard_Real weight2 = 1.0;
     Standard_Real weight3 = 1.0;

@@ -60,16 +60,16 @@ enum class RectangleConstructionMethod
 
 }
 
-using DSHRectangleController =
-    DrawSketchDefaultWidgetController<DrawSketchHandlerRectangle,
-                                      StateMachines::FiveSeekEnd,
-                                      /*PAutoConstraintSize =*/3,
-                                      /*OnViewParametersT =*/OnViewParameters<6, 6, 8, 8>,
-                                      /*WidgetParametersT =*/WidgetParameters<0, 0, 0, 0>,
-                                      /*WidgetCheckboxesT =*/WidgetCheckboxes<2, 2, 2, 2>,
-                                      /*WidgetComboboxesT =*/WidgetComboboxes<1, 1, 1, 1>,
-                                      ConstructionMethods::RectangleConstructionMethod,
-                                      /*bool PFirstComboboxIsConstructionMethod =*/true>;
+using DSHRectangleController = DrawSketchDefaultWidgetController<
+    DrawSketchHandlerRectangle,
+    StateMachines::FiveSeekEnd,
+    /*PAutoConstraintSize =*/3,
+    /*OnViewParametersT =*/OnViewParameters<6, 6, 8, 8>,  // NOLINT
+    /*WidgetParametersT =*/WidgetParameters<0, 0, 0, 0>,  // NOLINT
+    /*WidgetCheckboxesT =*/WidgetCheckboxes<2, 2, 2, 2>,  // NOLINT
+    /*WidgetComboboxesT =*/WidgetComboboxes<1, 1, 1, 1>,  // NOLINT
+    ConstructionMethods::RectangleConstructionMethod,
+    /*bool PFirstComboboxIsConstructionMethod =*/true>;
 
 using DSHRectangleControllerBase = DSHRectangleController::ControllerBase;
 
@@ -90,7 +90,20 @@ public:
         , roundCorners(roundcorners)
         , makeFrame(frame)
         , cornersReversed(false)
+        , radius(0.0)
+        , length(0.0)
+        , width(0.0)
         , thickness(0.)
+        , radiusFrame(0.0)
+        , angle(0.0)
+        , angle123(0.0)
+        , angle412(0.0)
+        , firstCurve(Sketcher::GeoEnum::GeoUndef)
+        , constructionPointOneId(Sketcher::GeoEnum::GeoUndef)
+        , constructionPointTwoId(Sketcher::GeoEnum::GeoUndef)
+        , constructionPointThreeId(Sketcher::GeoEnum::GeoUndef)
+        , centerPointId(Sketcher::GeoEnum::GeoUndef)
+        , side(0)
     {}
 
     ~DrawSketchHandlerRectangle() override = default;
@@ -185,7 +198,7 @@ private:
                 if (roundCorners) {
                     length = (corner2 - corner1).Length();
                     width = (corner4 - corner1).Length();
-                    radius = std::min(length, width) / 6;
+                    radius = std::min(length, width) / 6;  // NOLINT
                 }
                 else {
                     radius = 0.;
@@ -238,7 +251,7 @@ private:
                     }
                     angle412 = M_PI - angle123;
                     if (roundCorners) {
-                        radius = std::min(length, width) / 6
+                        radius = std::min(length, width) / 6  // NOLINT
                             * std::min(sqrt(1 - cos(angle412) * cos(angle412)),
                                        sqrt(1 - cos(angle123) * cos(angle123)));
                     }
@@ -267,7 +280,7 @@ private:
                     }
                     angle123 = M_PI - angle412;
                     if (roundCorners) {
-                        radius = std::min(length, width) / 6
+                        radius = std::min(length, width) / 6  // NOLINT
                             * std::min(sqrt(1 - cos(angle412) * cos(angle412)),
                                        sqrt(1 - cos(angle123) * cos(angle123)));
                     }
@@ -336,7 +349,7 @@ private:
 
             Gui::Command::commitCommand();
         }
-        catch (const Base::Exception& e) {
+        catch (const Base::Exception&) {
             Gui::NotifyError(sketchgui,
                              QT_TRANSLATE_NOOP("Notifications", "Error"),
                              QT_TRANSLATE_NOOP("Notifications", "Failed to add box"));
@@ -801,42 +814,42 @@ private:
                     addToShapeConstraints(Sketcher::Tangent,
                                           firstCurve,
                                           Sketcher::PointPos::start,
-                                          firstCurve + 4,
+                                          firstCurve + 4,  // NOLINT
                                           Sketcher::PointPos::end);
                     addToShapeConstraints(Sketcher::Tangent,
                                           firstCurve,
                                           Sketcher::PointPos::end,
-                                          firstCurve + 5,
+                                          firstCurve + 5,  // NOLINT
                                           Sketcher::PointPos::start);
                     addToShapeConstraints(Sketcher::Tangent,
-                                          firstCurve + 1,
+                                          firstCurve + 1,  // NOLINT
                                           Sketcher::PointPos::start,
-                                          firstCurve + 5,
+                                          firstCurve + 5,  // NOLINT
                                           Sketcher::PointPos::end);
                     addToShapeConstraints(Sketcher::Tangent,
-                                          firstCurve + 1,
+                                          firstCurve + 1,  // NOLINT
                                           Sketcher::PointPos::end,
-                                          firstCurve + 6,
+                                          firstCurve + 6,  // NOLINT
                                           Sketcher::PointPos::start);
                     addToShapeConstraints(Sketcher::Tangent,
-                                          firstCurve + 2,
+                                          firstCurve + 2,  // NOLINT
                                           Sketcher::PointPos::start,
-                                          firstCurve + 6,
+                                          firstCurve + 6,  // NOLINT
                                           Sketcher::PointPos::end);
                     addToShapeConstraints(Sketcher::Tangent,
-                                          firstCurve + 2,
+                                          firstCurve + 2,  // NOLINT
                                           Sketcher::PointPos::end,
-                                          firstCurve + 7,
+                                          firstCurve + 7,  // NOLINT
                                           Sketcher::PointPos::start);
                     addToShapeConstraints(Sketcher::Tangent,
-                                          firstCurve + 3,
+                                          firstCurve + 3,  // NOLINT
                                           Sketcher::PointPos::start,
-                                          firstCurve + 7,
+                                          firstCurve + 7,  // NOLINT
                                           Sketcher::PointPos::end);
                     addToShapeConstraints(Sketcher::Tangent,
-                                          firstCurve + 3,
+                                          firstCurve + 3,  // NOLINT
                                           Sketcher::PointPos::end,
-                                          firstCurve + 4,
+                                          firstCurve + 4,  // NOLINT
                                           Sketcher::PointPos::start);
 
                     if (fabs(angle) < Precision::Confusion()
@@ -864,68 +877,68 @@ private:
                         }
                     }
                     addToShapeConstraints(Sketcher::Equal,
-                                          firstCurve + 4,
+                                          firstCurve + 4,  // NOLINT
                                           Sketcher::PointPos::none,
-                                          firstCurve + 5);
+                                          firstCurve + 5);  // NOLINT
                     addToShapeConstraints(Sketcher::Equal,
-                                          firstCurve + 5,
+                                          firstCurve + 5,  // NOLINT
                                           Sketcher::PointPos::none,
-                                          firstCurve + 6);
+                                          firstCurve + 6);  // NOLINT
                     addToShapeConstraints(Sketcher::Equal,
-                                          firstCurve + 6,
+                                          firstCurve + 6,  // NOLINT
                                           Sketcher::PointPos::none,
-                                          firstCurve + 7);
+                                          firstCurve + 7);  // NOLINT
 
                     if (fabs(thickness) > Precision::Confusion()) {
                         if (radiusFrame
                             < Precision::Confusion()) {  // case inner rectangle is normal rectangle
 
                             addToShapeConstraints(Sketcher::Coincident,
-                                                  firstCurve + 8,
+                                                  firstCurve + 8,  // NOLINT
                                                   Sketcher::PointPos::end,
-                                                  firstCurve + 9,
+                                                  firstCurve + 9,  // NOLINT
                                                   Sketcher::PointPos::start);
                             addToShapeConstraints(Sketcher::Coincident,
-                                                  firstCurve + 9,
+                                                  firstCurve + 9,  // NOLINT
                                                   Sketcher::PointPos::end,
-                                                  firstCurve + 10,
+                                                  firstCurve + 10,  // NOLINT
                                                   Sketcher::PointPos::start);
                             addToShapeConstraints(Sketcher::Coincident,
-                                                  firstCurve + 10,
+                                                  firstCurve + 10,  // NOLINT
                                                   Sketcher::PointPos::end,
-                                                  firstCurve + 11,
+                                                  firstCurve + 11,  // NOLINT
                                                   Sketcher::PointPos::start);
                             addToShapeConstraints(Sketcher::Coincident,
-                                                  firstCurve + 11,
+                                                  firstCurve + 11,  // NOLINT
                                                   Sketcher::PointPos::end,
-                                                  firstCurve + 8,
+                                                  firstCurve + 8,  // NOLINT
                                                   Sketcher::PointPos::start);
 
                             if (fabs(angle) < Precision::Confusion()
                                 || constructionMethod() == ConstructionMethod::Diagonal
                                 || constructionMethod() == ConstructionMethod::CenterAndCorner) {
-                                addToShapeConstraints(typeA, firstCurve + 8);
-                                addToShapeConstraints(typeA, firstCurve + 10);
-                                addToShapeConstraints(typeB, firstCurve + 9);
-                                addToShapeConstraints(typeB, firstCurve + 11);
+                                addToShapeConstraints(typeA, firstCurve + 8);   // NOLINT
+                                addToShapeConstraints(typeA, firstCurve + 10);  // NOLINT
+                                addToShapeConstraints(typeB, firstCurve + 9);   // NOLINT
+                                addToShapeConstraints(typeB, firstCurve + 11);  // NOLINT
                             }
                             else {
                                 addToShapeConstraints(Sketcher::Parallel,
-                                                      firstCurve + 8,
+                                                      firstCurve + 8,  // NOLINT
                                                       Sketcher::PointPos::none,
-                                                      firstCurve + 10);
+                                                      firstCurve + 10);  // NOLINT
                                 addToShapeConstraints(Sketcher::Parallel,
-                                                      firstCurve + 9,
+                                                      firstCurve + 9,  // NOLINT
                                                       Sketcher::PointPos::none,
-                                                      firstCurve + 11);
+                                                      firstCurve + 11);  // NOLINT
                                 addToShapeConstraints(Sketcher::Parallel,
-                                                      firstCurve + 8,
+                                                      firstCurve + 8,  // NOLINT
                                                       Sketcher::PointPos::none,
                                                       firstCurve);
                                 addToShapeConstraints(Sketcher::Parallel,
-                                                      firstCurve + 9,
+                                                      firstCurve + 9,  // NOLINT
                                                       Sketcher::PointPos::none,
-                                                      firstCurve + 1);
+                                                      firstCurve + 1);  // NOLINT
                             }
 
                             // add construction lines +12, +13, +14, +15
@@ -947,140 +960,140 @@ private:
                                 true);
 
                             addToShapeConstraints(Sketcher::Coincident,
-                                                  firstCurve + 12,
+                                                  firstCurve + 12,  // NOLINT
                                                   Sketcher::PointPos::start,
-                                                  firstCurve + 4,
+                                                  firstCurve + 4,  // NOLINT
                                                   Sketcher::PointPos::mid);
                             addToShapeConstraints(Sketcher::Coincident,
-                                                  firstCurve + 12,
+                                                  firstCurve + 12,  // NOLINT
                                                   Sketcher::PointPos::end,
-                                                  firstCurve + 8,
+                                                  firstCurve + 8,  // NOLINT
                                                   Sketcher::PointPos::start);
                             addToShapeConstraints(Sketcher::Coincident,
-                                                  firstCurve + 13,
+                                                  firstCurve + 13,  // NOLINT
                                                   Sketcher::PointPos::start,
-                                                  firstCurve + 5,
+                                                  firstCurve + 5,  // NOLINT
                                                   Sketcher::PointPos::mid);
                             addToShapeConstraints(Sketcher::Coincident,
-                                                  firstCurve + 13,
+                                                  firstCurve + 13,  // NOLINT
                                                   Sketcher::PointPos::end,
-                                                  firstCurve + 9,
+                                                  firstCurve + 9,  // NOLINT
                                                   Sketcher::PointPos::start);
                             addToShapeConstraints(Sketcher::Coincident,
-                                                  firstCurve + 14,
+                                                  firstCurve + 14,  // NOLINT
                                                   Sketcher::PointPos::start,
-                                                  firstCurve + 6,
+                                                  firstCurve + 6,  // NOLINT
                                                   Sketcher::PointPos::mid);
                             addToShapeConstraints(Sketcher::Coincident,
-                                                  firstCurve + 14,
+                                                  firstCurve + 14,  // NOLINT
                                                   Sketcher::PointPos::end,
-                                                  firstCurve + 10,
+                                                  firstCurve + 10,  // NOLINT
                                                   Sketcher::PointPos::start);
                             addToShapeConstraints(Sketcher::Coincident,
-                                                  firstCurve + 15,
+                                                  firstCurve + 15,  // NOLINT
                                                   Sketcher::PointPos::start,
-                                                  firstCurve + 7,
+                                                  firstCurve + 7,  // NOLINT
                                                   Sketcher::PointPos::mid);
                             addToShapeConstraints(Sketcher::Coincident,
-                                                  firstCurve + 15,
+                                                  firstCurve + 15,  // NOLINT
                                                   Sketcher::PointPos::end,
-                                                  firstCurve + 11,
+                                                  firstCurve + 11,  // NOLINT
                                                   Sketcher::PointPos::start);
 
                             addToShapeConstraints(Sketcher::Perpendicular,
-                                                  firstCurve + 12,
+                                                  firstCurve + 12,  // NOLINT
                                                   Sketcher::PointPos::none,
-                                                  firstCurve + 13);
+                                                  firstCurve + 13);  // NOLINT
                             addToShapeConstraints(Sketcher::Perpendicular,
-                                                  firstCurve + 13,
+                                                  firstCurve + 13,  // NOLINT
                                                   Sketcher::PointPos::none,
-                                                  firstCurve + 14);
+                                                  firstCurve + 14);  // NOLINT
                             addToShapeConstraints(Sketcher::Perpendicular,
-                                                  firstCurve + 14,
+                                                  firstCurve + 14,  // NOLINT
                                                   Sketcher::PointPos::none,
-                                                  firstCurve + 15);
+                                                  firstCurve + 15);  // NOLINT
                         }
                         else {  // case inner rectangle is rounded rectangle
                             addToShapeConstraints(Sketcher::Tangent,
-                                                  firstCurve + 8,
+                                                  firstCurve + 8,  // NOLINT
                                                   Sketcher::PointPos::start,
-                                                  firstCurve + 12,
+                                                  firstCurve + 12,  // NOLINT
                                                   Sketcher::PointPos::end);
                             addToShapeConstraints(Sketcher::Tangent,
-                                                  firstCurve + 8,
+                                                  firstCurve + 8,  // NOLINT
                                                   Sketcher::PointPos::end,
-                                                  firstCurve + 13,
+                                                  firstCurve + 13,  // NOLINT
                                                   Sketcher::PointPos::start);
                             addToShapeConstraints(Sketcher::Tangent,
-                                                  firstCurve + 9,
+                                                  firstCurve + 9,  // NOLINT
                                                   Sketcher::PointPos::start,
-                                                  firstCurve + 13,
+                                                  firstCurve + 13,  // NOLINT
                                                   Sketcher::PointPos::end);
                             addToShapeConstraints(Sketcher::Tangent,
-                                                  firstCurve + 9,
+                                                  firstCurve + 9,  // NOLINT
                                                   Sketcher::PointPos::end,
-                                                  firstCurve + 14,
+                                                  firstCurve + 14,  // NOLINT
                                                   Sketcher::PointPos::start);
                             addToShapeConstraints(Sketcher::Tangent,
-                                                  firstCurve + 10,
+                                                  firstCurve + 10,  // NOLINT
                                                   Sketcher::PointPos::start,
-                                                  firstCurve + 14,
+                                                  firstCurve + 14,  // NOLINT
                                                   Sketcher::PointPos::end);
                             addToShapeConstraints(Sketcher::Tangent,
-                                                  firstCurve + 10,
+                                                  firstCurve + 10,  // NOLINT
                                                   Sketcher::PointPos::end,
-                                                  firstCurve + 15,
+                                                  firstCurve + 15,  // NOLINT
                                                   Sketcher::PointPos::start);
                             addToShapeConstraints(Sketcher::Tangent,
-                                                  firstCurve + 11,
+                                                  firstCurve + 11,  // NOLINT
                                                   Sketcher::PointPos::start,
-                                                  firstCurve + 15,
+                                                  firstCurve + 15,  // NOLINT
                                                   Sketcher::PointPos::end);
                             addToShapeConstraints(Sketcher::Tangent,
-                                                  firstCurve + 11,
+                                                  firstCurve + 11,  // NOLINT
                                                   Sketcher::PointPos::end,
-                                                  firstCurve + 12,
+                                                  firstCurve + 12,  // NOLINT
                                                   Sketcher::PointPos::start);
 
                             addToShapeConstraints(Sketcher::Coincident,
-                                                  firstCurve + 4,
+                                                  firstCurve + 4,  // NOLINT
                                                   Sketcher::PointPos::mid,
-                                                  firstCurve + 12,
+                                                  firstCurve + 12,  // NOLINT
                                                   Sketcher::PointPos::mid);
                             addToShapeConstraints(Sketcher::Coincident,
-                                                  firstCurve + 5,
+                                                  firstCurve + 5,  // NOLINT
                                                   Sketcher::PointPos::mid,
-                                                  firstCurve + 13,
+                                                  firstCurve + 13,  // NOLINT
                                                   Sketcher::PointPos::mid);
                             addToShapeConstraints(Sketcher::Coincident,
-                                                  firstCurve + 6,
+                                                  firstCurve + 6,  // NOLINT
                                                   Sketcher::PointPos::mid,
-                                                  firstCurve + 14,
+                                                  firstCurve + 14,  // NOLINT
                                                   Sketcher::PointPos::mid);
                             addToShapeConstraints(Sketcher::Coincident,
-                                                  firstCurve + 7,
+                                                  firstCurve + 7,  // NOLINT
                                                   Sketcher::PointPos::mid,
-                                                  firstCurve + 15,
+                                                  firstCurve + 15,  // NOLINT
                                                   Sketcher::PointPos::mid);
 
                             if (fabs(angle) < Precision::Confusion()
                                 || constructionMethod() == ConstructionMethod::Diagonal
                                 || constructionMethod() == ConstructionMethod::CenterAndCorner) {
-                                addToShapeConstraints(typeA, firstCurve + 8);
-                                addToShapeConstraints(typeA, firstCurve + 10);
-                                addToShapeConstraints(typeB, firstCurve + 9);
+                                addToShapeConstraints(typeA, firstCurve + 8);   // NOLINT
+                                addToShapeConstraints(typeA, firstCurve + 10);  // NOLINT
+                                addToShapeConstraints(typeB, firstCurve + 9);   // NOLINT
                             }
                             else {
                                 addToShapeConstraints(Sketcher::Parallel,
-                                                      firstCurve + 8,
+                                                      firstCurve + 8,  // NOLINT
                                                       Sketcher::PointPos::none,
-                                                      firstCurve + 10);
+                                                      firstCurve + 10);  // NOLINT
                                 addToShapeConstraints(Sketcher::Parallel,
-                                                      firstCurve + 9,
+                                                      firstCurve + 9,  // NOLINT
                                                       Sketcher::PointPos::none,
-                                                      firstCurve + 11);
+                                                      firstCurve + 11);  // NOLINT
                                 addToShapeConstraints(Sketcher::Parallel,
-                                                      firstCurve + 8,
+                                                      firstCurve + 8,  // NOLINT
                                                       Sketcher::PointPos::none,
                                                       firstCurve);
                             }
@@ -1089,14 +1102,14 @@ private:
 
                     if (constructionMethod() == ConstructionMethod::ThreePoints) {
                         if (fabs(thickness) > Precision::Confusion()) {
-                            constructionPointOneId = firstCurve + 16;
-                            constructionPointTwoId = firstCurve + 17;
-                            constructionPointThreeId = firstCurve + 18;
+                            constructionPointOneId = firstCurve + 16;    // NOLINT
+                            constructionPointTwoId = firstCurve + 17;    // NOLINT
+                            constructionPointThreeId = firstCurve + 18;  // NOLINT
                         }
                         else {
-                            constructionPointOneId = firstCurve + 8;
-                            constructionPointTwoId = firstCurve + 9;
-                            constructionPointThreeId = firstCurve + 10;
+                            constructionPointOneId = firstCurve + 8;     // NOLINT
+                            constructionPointTwoId = firstCurve + 9;     // NOLINT
+                            constructionPointThreeId = firstCurve + 10;  // NOLINT
                         }
 
                         addPointToShapeGeometry(Base::Vector3d(corner1.x, corner1.y, 0.), true);
@@ -1142,14 +1155,14 @@ private:
                     }
                     else if (constructionMethod() == ConstructionMethod::CenterAnd3Points) {
                         if (fabs(thickness) > Precision::Confusion()) {
-                            constructionPointOneId = firstCurve + 16;
-                            constructionPointTwoId = firstCurve + 17;
-                            centerPointId = firstCurve + 18;
+                            constructionPointOneId = firstCurve + 16;  // NOLINT
+                            constructionPointTwoId = firstCurve + 17;  // NOLINT
+                            centerPointId = firstCurve + 18;           // NOLINT
                         }
                         else {
-                            constructionPointOneId = firstCurve + 8;
-                            constructionPointTwoId = firstCurve + 9;
-                            centerPointId = firstCurve + 10;
+                            constructionPointOneId = firstCurve + 8;  // NOLINT
+                            constructionPointTwoId = firstCurve + 9;  // NOLINT
+                            centerPointId = firstCurve + 10;          // NOLINT
                         }
 
                         addPointToShapeGeometry(Base::Vector3d(corner1.x, corner1.y, 0.), true);
@@ -1190,16 +1203,16 @@ private:
                         addToShapeConstraints(Sketcher::PointOnObject,
                                               constructionPointOneId,
                                               Sketcher::PointPos::start,
-                                              firstCurve + 3);
+                                              firstCurve + 3);  // NOLINT
                     }
                     else if (constructionMethod() == ConstructionMethod::CenterAndCorner) {
                         if (fabs(thickness) > Precision::Confusion()) {
-                            constructionPointOneId = firstCurve + 16;
-                            centerPointId = firstCurve + 17;
+                            constructionPointOneId = firstCurve + 16;  // NOLINT
+                            centerPointId = firstCurve + 17;           // NOLINT
                         }
                         else {
-                            constructionPointOneId = firstCurve + 8;
-                            centerPointId = firstCurve + 9;
+                            constructionPointOneId = firstCurve + 8;  // NOLINT
+                            centerPointId = firstCurve + 9;           // NOLINT
                         }
 
                         addPointToShapeGeometry(Base::Vector3d(corner3.x, corner3.y, 0.), true);
@@ -1222,12 +1235,12 @@ private:
                     }
                     else {
                         if (fabs(thickness) > Precision::Confusion()) {
-                            constructionPointOneId = firstCurve + 16;
-                            constructionPointTwoId = firstCurve + 17;
+                            constructionPointOneId = firstCurve + 16;  // NOLINT
+                            constructionPointTwoId = firstCurve + 17;  // NOLINT
                         }
                         else {
-                            constructionPointOneId = firstCurve + 8;
-                            constructionPointTwoId = firstCurve + 9;
+                            constructionPointOneId = firstCurve + 8;  // NOLINT
+                            constructionPointTwoId = firstCurve + 9;  // NOLINT
                         }
 
                         addPointToShapeGeometry(Base::Vector3d(corner1.x, corner1.y, 0.), true);
@@ -1298,51 +1311,51 @@ private:
 
                     if (fabs(thickness) > Precision::Confusion()) {
                         addToShapeConstraints(Sketcher::Coincident,
-                                              firstCurve + 4,
+                                              firstCurve + 4,  // NOLINT
                                               Sketcher::PointPos::end,
-                                              firstCurve + 5,
+                                              firstCurve + 5,  // NOLINT
                                               Sketcher::PointPos::start);
                         addToShapeConstraints(Sketcher::Coincident,
-                                              firstCurve + 5,
+                                              firstCurve + 5,  // NOLINT
                                               Sketcher::PointPos::end,
-                                              firstCurve + 6,
+                                              firstCurve + 6,  // NOLINT
                                               Sketcher::PointPos::start);
                         addToShapeConstraints(Sketcher::Coincident,
-                                              firstCurve + 6,
+                                              firstCurve + 6,  // NOLINT
                                               Sketcher::PointPos::end,
-                                              firstCurve + 7,
+                                              firstCurve + 7,  // NOLINT
                                               Sketcher::PointPos::start);
                         addToShapeConstraints(Sketcher::Coincident,
-                                              firstCurve + 7,
+                                              firstCurve + 7,  // NOLINT
                                               Sketcher::PointPos::end,
-                                              firstCurve + 4,
+                                              firstCurve + 4,  // NOLINT
                                               Sketcher::PointPos::start);
 
                         if (fabs(angle) < Precision::Confusion()
                             || constructionMethod() == ConstructionMethod::Diagonal
                             || constructionMethod() == ConstructionMethod::CenterAndCorner) {
-                            addToShapeConstraints(typeA, firstCurve + 4);
-                            addToShapeConstraints(typeA, firstCurve + 6);
-                            addToShapeConstraints(typeB, firstCurve + 5);
-                            addToShapeConstraints(typeB, firstCurve + 7);
+                            addToShapeConstraints(typeA, firstCurve + 4);  // NOLINT
+                            addToShapeConstraints(typeA, firstCurve + 6);  // NOLINT
+                            addToShapeConstraints(typeB, firstCurve + 5);  // NOLINT
+                            addToShapeConstraints(typeB, firstCurve + 7);  // NOLINT
                         }
                         else {
                             addToShapeConstraints(Sketcher::Parallel,
-                                                  firstCurve + 4,
+                                                  firstCurve + 4,  // NOLINT
                                                   Sketcher::PointPos::none,
-                                                  firstCurve + 6);
+                                                  firstCurve + 6);  // NOLINT
                             addToShapeConstraints(Sketcher::Parallel,
-                                                  firstCurve + 5,
+                                                  firstCurve + 5,  // NOLINT
                                                   Sketcher::PointPos::none,
-                                                  firstCurve + 7);
+                                                  firstCurve + 7);  // NOLINT
                             addToShapeConstraints(Sketcher::Parallel,
                                                   firstCurve,
                                                   Sketcher::PointPos::none,
-                                                  firstCurve + 4);
+                                                  firstCurve + 4);  // NOLINT
                             addToShapeConstraints(Sketcher::Parallel,
-                                                  firstCurve + 1,
+                                                  firstCurve + 1,  // NOLINT
                                                   Sketcher::PointPos::none,
-                                                  firstCurve + 5);
+                                                  firstCurve + 5);  // NOLINT
                         }
 
                         // add construction lines
@@ -1360,72 +1373,72 @@ private:
                                                true);
 
                         addToShapeConstraints(Sketcher::Coincident,
-                                              firstCurve + 8,
+                                              firstCurve + 8,  // NOLINT
                                               Sketcher::PointPos::start,
                                               firstCurve,
                                               Sketcher::PointPos::start);
                         addToShapeConstraints(Sketcher::Coincident,
-                                              firstCurve + 8,
+                                              firstCurve + 8,  // NOLINT
                                               Sketcher::PointPos::end,
-                                              firstCurve + 4,
+                                              firstCurve + 4,  // NOLINT
                                               Sketcher::PointPos::start);
                         addToShapeConstraints(Sketcher::Coincident,
-                                              firstCurve + 9,
+                                              firstCurve + 9,  // NOLINT
                                               Sketcher::PointPos::start,
-                                              firstCurve + 1,
+                                              firstCurve + 1,  // NOLINT
                                               Sketcher::PointPos::start);
                         addToShapeConstraints(Sketcher::Coincident,
-                                              firstCurve + 9,
+                                              firstCurve + 9,  // NOLINT
                                               Sketcher::PointPos::end,
-                                              firstCurve + 5,
+                                              firstCurve + 5,  // NOLINT
                                               Sketcher::PointPos::start);
                         addToShapeConstraints(Sketcher::Coincident,
-                                              firstCurve + 10,
+                                              firstCurve + 10,  // NOLINT
                                               Sketcher::PointPos::start,
-                                              firstCurve + 2,
+                                              firstCurve + 2,  // NOLINT
                                               Sketcher::PointPos::start);
                         addToShapeConstraints(Sketcher::Coincident,
-                                              firstCurve + 10,
+                                              firstCurve + 10,  // NOLINT
                                               Sketcher::PointPos::end,
-                                              firstCurve + 6,
+                                              firstCurve + 6,  // NOLINT
                                               Sketcher::PointPos::start);
                         addToShapeConstraints(Sketcher::Coincident,
-                                              firstCurve + 11,
+                                              firstCurve + 11,  // NOLINT
                                               Sketcher::PointPos::start,
-                                              firstCurve + 3,
+                                              firstCurve + 3,  // NOLINT
                                               Sketcher::PointPos::start);
                         addToShapeConstraints(Sketcher::Coincident,
-                                              firstCurve + 11,
+                                              firstCurve + 11,  // NOLINT
                                               Sketcher::PointPos::end,
-                                              firstCurve + 7,
+                                              firstCurve + 7,  // NOLINT
                                               Sketcher::PointPos::start);
 
                         addToShapeConstraints(Sketcher::Perpendicular,
-                                              firstCurve + 8,
+                                              firstCurve + 8,  // NOLINT
                                               Sketcher::PointPos::none,
-                                              firstCurve + 9);
+                                              firstCurve + 9);  // NOLINT
                         addToShapeConstraints(Sketcher::Perpendicular,
-                                              firstCurve + 9,
+                                              firstCurve + 9,  // NOLINT
                                               Sketcher::PointPos::none,
-                                              firstCurve + 10);
+                                              firstCurve + 10);  // NOLINT
                         addToShapeConstraints(Sketcher::Perpendicular,
-                                              firstCurve + 10,
+                                              firstCurve + 10,  // NOLINT
                                               Sketcher::PointPos::none,
-                                              firstCurve + 11);
+                                              firstCurve + 11);  // NOLINT
                     }
 
                     if (constructionMethod() == ConstructionMethod::CenterAndCorner
                         || constructionMethod() == ConstructionMethod::CenterAnd3Points) {
                         if (fabs(thickness) > Precision::Confusion()) {
-                            centerPointId = firstCurve + 12;
+                            centerPointId = firstCurve + 12;  // NOLINT
                         }
                         else {
-                            centerPointId = firstCurve + 4;
+                            centerPointId = firstCurve + 4;  // NOLINT
                         }
 
                         addPointToShapeGeometry(Base::Vector3d(center.x, center.y, 0.), true);
                         addToShapeConstraints(Sketcher::Symmetric,
-                                              firstCurve + 2,
+                                              firstCurve + 2,  // NOLINT
                                               Sketcher::PointPos::start,
                                               firstCurve,
                                               Sketcher::PointPos::start,
@@ -1504,7 +1517,7 @@ private:
             }
             radius = std::min(
                 radius,
-                std::min(length * 0.999, width * 0.999)
+                std::min(length * 0.999, width * 0.999)  // NOLINT
                     / (cos(angle412 / 2) / sqrt(1 - cos(angle412 / 2) * cos(angle412 / 2))
                        + cos(angle123 / 2) / sqrt(1 - cos(angle123 / 2) * cos(angle123 / 2))));
         }
@@ -1843,7 +1856,7 @@ void DSHRectangleControllerBase::doEnforceControlParameters(Base::Vector2d& onSk
 
                 if (onViewParameters[OnViewParameter::Fourth]->isSet) {
                     double angle =
-                        onViewParameters[OnViewParameter::Fourth]->getValue() * M_PI / 180;
+                        Base::toRadians(onViewParameters[OnViewParameter::Fourth]->getValue());
                     onSketchPos.x = handler->corner1.x + cos(angle) * length;
                     onSketchPos.y = handler->corner1.y + sin(angle) * length;
                 }
@@ -1906,7 +1919,7 @@ void DSHRectangleControllerBase::doEnforceControlParameters(Base::Vector2d& onSk
                 }
                 if (onViewParameters[OnViewParameter::Sixth]->isSet) {
                     double angle =
-                        onViewParameters[OnViewParameter::Sixth]->getValue() * M_PI / 180;
+                        Base::toRadians(onViewParameters[OnViewParameter::Sixth]->getValue());
                     if (fmod(angle, M_PI) < Precision::Confusion()) {
                         unsetOnViewParameter(onViewParameters[OnViewParameter::Sixth].get());
                         return;
@@ -1942,7 +1955,8 @@ void DSHRectangleControllerBase::doEnforceControlParameters(Base::Vector2d& onSk
                     onSketchPos = handler->corner1 + width * dir.Normalize();
                 }
                 if (onViewParameters[OnViewParameter::Sixth]->isSet) {
-                    double c = onViewParameters[OnViewParameter::Sixth]->getValue() * M_PI / 180;
+                    double c =
+                        Base::toRadians(onViewParameters[OnViewParameter::Sixth]->getValue());
                     if (fmod(c, M_PI) < Precision::Confusion()) {
                         unsetOnViewParameter(onViewParameters[OnViewParameter::Sixth].get());
                         return;
@@ -2096,7 +2110,7 @@ void DSHRectangleController::adaptParameters(Base::Vector2d onSketchPos)
 
                 if (!onViewParameters[OnViewParameter::Fourth]->isSet) {
                     setOnViewParameterValue(OnViewParameter::Fourth,
-                                            handler->angle * 180 / M_PI,
+                                            Base::toDegrees(handler->angle),
                                             Base::Unit::Angle);
                 }
 
@@ -2173,11 +2187,11 @@ void DSHRectangleController::adaptParameters(Base::Vector2d onSketchPos)
 
                 if (!onViewParameters[OnViewParameter::Sixth]->isSet) {
                     if (threePoints) {
-                        double val = handler->angle123 * 180 / M_PI;
+                        double val = Base::toDegrees(handler->angle123);
                         setOnViewParameterValue(OnViewParameter::Sixth, val, Base::Unit::Angle);
                     }
                     else {
-                        double val = handler->angle412 * 180 / M_PI;
+                        double val = Base::toDegrees(handler->angle412);
                         setOnViewParameterValue(OnViewParameter::Sixth, val, Base::Unit::Angle);
                     }
                 }
@@ -2366,8 +2380,8 @@ void DSHRectangleController::addConstraints()
     auto radiusSet = onViewParameters[OnViewParameter::Fifth]->isSet;
     auto thicknessSet = onViewParameters[OnViewParameter::Sixth]->isSet;
 
-    auto angle = onViewParameters[OnViewParameter::Fourth]->getValue() / 180 * M_PI;
-    auto innerAngle = onViewParameters[OnViewParameter::Sixth]->getValue() / 180 * M_PI;
+    auto angle = Base::toRadians(onViewParameters[OnViewParameter::Fourth]->getValue());
+    auto innerAngle = Base::toRadians(onViewParameters[OnViewParameter::Sixth]->getValue());
 
     auto angleSet = onViewParameters[OnViewParameter::Fourth]->isSet;
     auto innerAngleSet = onViewParameters[OnViewParameter::Sixth]->isSet;
@@ -2560,14 +2574,14 @@ void DSHRectangleController::addConstraints()
     if (radiusSet && radius > Precision::Confusion()) {
         Gui::cmdAppObjectArgs(obj,
                               "addConstraint(Sketcher.Constraint('Radius',%d,%f)) ",
-                              firstCurve + 5,
+                              firstCurve + 5,  // NOLINT
                               radius);
     }
 
     if (thicknessSet) {
         Gui::cmdAppObjectArgs(obj,
                               "addConstraint(Sketcher.Constraint('Distance',%d,%d,%d,%f)) ",
-                              firstCurve + (handler->roundCorners == true ? 8 : 4),
+                              firstCurve + (handler->roundCorners == true ? 8 : 4),  // NOLINT
                               1,
                               firstCurve,
                               fabs(thickness));

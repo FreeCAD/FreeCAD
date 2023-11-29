@@ -24,6 +24,7 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 # include <BRepAlgoAPI_Cut.hxx>
+# include <BRepAlgoAPI_Common.hxx>
 # include <BRepAlgoAPI_Fuse.hxx>
 # include <BRepBndLib.hxx>
 # include <BRepBuilderAPI_Sewing.hxx>
@@ -373,7 +374,7 @@ App::DocumentObjectExecReturn *Pipe::execute()
         AddSubShape.setValue(result);
 
         if (base.IsNull()) {
-            if (getAddSubType() == FeatureAddSub::Subtractive)
+            if ( isSubtractive() )
                 return new App::DocumentObjectExecReturn(
                     QT_TRANSLATE_NOOP("Exception", "Pipe: There is nothing to subtract from"));
 
@@ -381,49 +382,7 @@ App::DocumentObjectExecReturn *Pipe::execute()
             Shape.setValue(getSolid(result));
             return App::DocumentObject::StdReturn;
         }
-
-        if (getAddSubType() == FeatureAddSub::Additive) {
-
-            BRepAlgoAPI_Fuse mkFuse(base, result);
-            if (!mkFuse.IsDone())
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Adding the pipe failed"));
-            // we have to get the solids (fuse sometimes creates compounds)
-            TopoDS_Shape boolOp = this->getSolid(mkFuse.Shape());
-            // lets check if the result is a solid
-            if (boolOp.IsNull())
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid"));
-
-            int solidCount = countSolids(boolOp);
-            if (solidCount > 1) {
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception",
-                    "Result has multiple solids: that is not currently supported."));
-            }
-
-            boolOp = refineShapeIfActive(boolOp);
-            Shape.setValue(getSolid(boolOp));
-        }
-        else if (getAddSubType() == FeatureAddSub::Subtractive) {
-
-            BRepAlgoAPI_Cut mkCut(base, result);
-            if (!mkCut.IsDone())
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Subtracting the pipe failed"));
-            // we have to get the solids (fuse sometimes creates compounds)
-            TopoDS_Shape boolOp = this->getSolid(mkCut.Shape());
-            // lets check if the result is a solid
-            if (boolOp.IsNull())
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Resulting shape is not a solid"));
-
-            int solidCount = countSolids(boolOp);
-            if (solidCount > 1) {
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception",
-                    "Result has multiple solids: that is not currently supported."));
-            }
-
-            boolOp = refineShapeIfActive(boolOp);
-            Shape.setValue(getSolid(boolOp));
-        }
-
-        return App::DocumentObject::StdReturn;
+        return FeatureAddSub::addSubOp(base, result);
     }
     catch (Standard_Failure& e) {
 

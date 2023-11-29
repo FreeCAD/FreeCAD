@@ -29,6 +29,7 @@
 # include <BRepBuilderAPI_MakeVertex.hxx>
 # include <BRepBuilderAPI_MakeSolid.hxx>
 # include <BRepBuilderAPI_MakePolygon.hxx>
+# include <BRepGProp.hxx>
 # include <BRepPrim_Cylinder.hxx>
 # include <BRepPrim_Wedge.hxx>
 # include <BRepPrimAPI_MakeCone.hxx>
@@ -57,7 +58,7 @@
 
 
 namespace Part {
-    const App::PropertyQuantityConstraint::Constraints apexRange = {-90.0, 90.0, 0.1};
+    const App::PropertyQuantityConstraint::Constraints apexRange = {-89.9, 89.9, 0.1};
     const App::PropertyQuantityConstraint::Constraints torusRangeV = {-180.0, 180.0, 1.0};
     const App::PropertyQuantityConstraint::Constraints angleRangeU = {0.0, 360.0, 1.0};
     const App::PropertyQuantityConstraint::Constraints angleRangeV = {-90.0, 90.0, 1.0};
@@ -746,6 +747,8 @@ Helix::Helix()
     LocalCoord.setEnums(LocalCSEnums);
     ADD_PROPERTY_TYPE(Style,(long(0)),"Helix style",App::Prop_Hidden,"Old style creates incorrect and new style create correct helices");
     Style.setEnums(StyleEnums);
+    ADD_PROPERTY_TYPE(Length,(1.0),"Helix",App::Prop_None,"The length of the helix");
+    Length.setReadOnly(true);
 }
 
 void Helix::onChanged(const App::Property* prop)
@@ -799,6 +802,12 @@ App::DocumentObjectExecReturn *Helix::execute()
         Standard_Real myRadiusTop = myRadius + myHeight * tan(myAngle/180.0f*M_PI);
 
         this->Shape.setValue(TopoShape().makeSpiralHelix(myRadius, myRadiusTop, myHeight, nbTurns, mySegLen, myLocalCS));
+        // props.Mass() may seem a strange way to get the Length, but 
+        // https://dev.opencascade.org/doc/refman/html/class_b_rep_g_prop.html#ab1d4bacc290bfaa8df13dd99ae7b8e70
+        // confirms this.
+        GProp_GProps props;
+        BRepGProp::LinearProperties(Shape.getShape().getShape(), props);
+        Length.setValue(props.Mass());
     }
     catch (Standard_Failure& e) {
 
@@ -820,6 +829,8 @@ Spiral::Spiral()
     Rotations.setConstraints(&quantityRange);
     ADD_PROPERTY_TYPE(SegmentLength,(1.0),"Spiral",App::Prop_None,"The number of turns per spiral subdivision");
     SegmentLength.setConstraints(&quantityRange);
+    ADD_PROPERTY_TYPE(Length,(1.0),"Spiral",App::Prop_None,"The length of the spiral");
+    Length.setReadOnly(true);
 }
 
 void Spiral::onChanged(const App::Property* prop)
@@ -862,6 +873,9 @@ App::DocumentObjectExecReturn *Spiral::execute()
             Standard_Failure::Raise("Number of rotations too small");
 
         this->Shape.setValue(TopoShape().makeSpiralHelix(myRadius, myRadiusTop, 0, myNumRot, mySegLen, Standard_False));
+        GProp_GProps props;
+        BRepGProp::LinearProperties(Shape.getShape().getShape(), props);
+        Length.setValue(props.Mass());
         return Primitive::execute();
     }
     catch (Standard_Failure& e) {

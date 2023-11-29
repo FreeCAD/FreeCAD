@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="230"/>
       <source>Fem</source>
-      <translation>МКЭ (метод конечных элементов)</translation>
+      <translation>Мкэ (метод конечных элементов)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="231"/>
@@ -42,7 +42,7 @@
     <message>
       <location filename="../../Command.cpp" line="287"/>
       <source>Fem</source>
-      <translation>Мкэ (метод конечных элементов)</translation>
+      <translation>МКЭ (метод конечных элементов)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="288"/>
@@ -497,7 +497,7 @@
     <message>
       <location filename="../../Command.cpp" line="1995"/>
       <source>Fem</source>
-      <translation>МКЭ (метод конечных элементов)</translation>
+      <translation>Мкэ (метод конечных элементов)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1996"/>
@@ -513,7 +513,7 @@
       <location filename="../../Command.cpp" line="2031"/>
       <location filename="../../Command.cpp" line="2040"/>
       <source>Wrong selection</source>
-      <translation>Неправильное выделение</translation>
+      <translation>Неправильный выбор</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2032"/>
@@ -2067,7 +2067,7 @@ Specify another file please.</source>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="677"/>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="684"/>
       <source>Wrong selection</source>
-      <translation>Неправильный выбор</translation>
+      <translation>Неправильное выделение</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintFluidBoundary.cpp" line="645"/>
@@ -2153,7 +2153,7 @@ Specify another file please.</source>
       <location filename="../../TaskFemConstraintForce.cpp" line="316"/>
       <location filename="../../TaskFemConstraintForce.cpp" line="332"/>
       <source>Wrong selection</source>
-      <translation>Неправильное выделение</translation>
+      <translation>Неправильный выбор</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.cpp" line="316"/>
@@ -2534,15 +2534,15 @@ Specify another file please.</source>
   <context>
     <name>FemMaterial</name>
     <message>
-      <location filename="../ui/Material.ui" line="14"/>
       <location filename="../ui/MaterialReinforcement.ui" line="14"/>
+      <location filename="../ui/Material.ui" line="14"/>
       <source>FEM material</source>
       <translation>Материал МКЭ</translation>
     </message>
     <message>
-      <location filename="../ui/Material.ui" line="26"/>
       <location filename="../ui/MaterialReinforcement.ui" line="37"/>
       <location filename="../ui/MaterialReinforcement.ui" line="110"/>
+      <location filename="../ui/Material.ui" line="26"/>
       <source>Material</source>
       <translation>Материал</translation>
     </message>
@@ -2567,9 +2567,9 @@ Specify another file please.</source>
       <translation>Название материала</translation>
     </message>
     <message>
-      <location filename="../ui/Material.ui" line="71"/>
       <location filename="../ui/MaterialReinforcement.ui" line="74"/>
       <location filename="../ui/MaterialReinforcement.ui" line="147"/>
+      <location filename="../ui/Material.ui" line="71"/>
       <source>TextLabel</source>
       <translation>Текстовая надпись</translation>
     </message>
@@ -2910,17 +2910,17 @@ Specify another file please.</source>
     </message>
     <message>
       <location filename="../ui/ConstraintTie.ui" line="52"/>
+      <location filename="../ui/MeshRegion.ui" line="56"/>
       <location filename="../ui/ElementFluid1D.ui" line="92"/>
       <location filename="../ui/ElementFluid1D.ui" line="745"/>
       <location filename="../ui/ElementFluid1D.ui" line="766"/>
+      <location filename="../ui/ElementGeometry2D.ui" line="52"/>
+      <location filename="../ui/MeshBoundaryLayer.ui" line="50"/>
       <location filename="../ui/ElementGeometry1D.ui" line="90"/>
       <location filename="../ui/ElementGeometry1D.ui" line="134"/>
       <location filename="../ui/ElementGeometry1D.ui" line="200"/>
       <location filename="../ui/ElementGeometry1D.ui" line="262"/>
       <location filename="../ui/ElementGeometry1D.ui" line="306"/>
-      <location filename="../ui/ElementGeometry2D.ui" line="52"/>
-      <location filename="../ui/MeshBoundaryLayer.ui" line="50"/>
-      <location filename="../ui/MeshRegion.ui" line="56"/>
       <source>0 mm</source>
       <translation>0 мм</translation>
     </message>
@@ -2935,11 +2935,11 @@ Specify another file please.</source>
       <translation>Параметр Центрифугирования</translation>
     </message>
     <message>
-      <location filename="../ui/ConstraintCentrif.ui" line="26"/>
       <location filename="../ui/ConstraintTie.ui" line="26"/>
+      <location filename="../ui/MeshRegion.ui" line="26"/>
       <location filename="../ui/ElementGeometry2D.ui" line="26"/>
       <location filename="../ui/MeshBoundaryLayer.ui" line="26"/>
-      <location filename="../ui/MeshRegion.ui" line="26"/>
+      <location filename="../ui/ConstraintCentrif.ui" line="26"/>
       <source>Parameter</source>
       <translation>Параметр</translation>
     </message>
@@ -2969,13 +2969,13 @@ Specify another file please.</source>
       <translation>Параметр SectionPrint</translation>
     </message>
     <message>
-      <location filename="../ui/BodyHeatSource.ui" line="14"/>
-      <location filename="../ui/CurrentDensity.ui" line="14"/>
+      <location filename="../ui/InitialPressure.ui" line="14"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="14"/>
       <location filename="../ui/FlowVelocity.ui" line="14"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="14"/>
-      <location filename="../ui/InitialPressure.ui" line="14"/>
+      <location filename="../ui/BodyHeatSource.ui" line="14"/>
       <location filename="../ui/Magnetization.ui" line="14"/>
+      <location filename="../ui/CurrentDensity.ui" line="14"/>
       <source>Analysis feature properties</source>
       <translation>Свойства объекта анализа</translation>
     </message>
@@ -2990,12 +2990,9 @@ Specify another file please.</source>
       <translation>Потенциал:</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="94"/>
-      <location filename="../ui/CurrentDensity.ui" line="141"/>
-      <location filename="../ui/CurrentDensity.ui" line="197"/>
-      <location filename="../ui/CurrentDensity.ui" line="243"/>
-      <location filename="../ui/CurrentDensity.ui" line="297"/>
-      <location filename="../ui/CurrentDensity.ui" line="341"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="32"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="87"/>
+      <location filename="../ui/InitialFlowVelocity.ui" line="118"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="76"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="218"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="273"/>
@@ -3008,15 +3005,18 @@ Specify another file please.</source>
       <location filename="../ui/FlowVelocity.ui" line="32"/>
       <location filename="../ui/FlowVelocity.ui" line="87"/>
       <location filename="../ui/FlowVelocity.ui" line="118"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="32"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="87"/>
-      <location filename="../ui/InitialFlowVelocity.ui" line="118"/>
       <location filename="../ui/Magnetization.ui" line="91"/>
       <location filename="../ui/Magnetization.ui" line="135"/>
       <location filename="../ui/Magnetization.ui" line="189"/>
       <location filename="../ui/Magnetization.ui" line="233"/>
       <location filename="../ui/Magnetization.ui" line="287"/>
       <location filename="../ui/Magnetization.ui" line="331"/>
+      <location filename="../ui/CurrentDensity.ui" line="94"/>
+      <location filename="../ui/CurrentDensity.ui" line="141"/>
+      <location filename="../ui/CurrentDensity.ui" line="197"/>
+      <location filename="../ui/CurrentDensity.ui" line="243"/>
+      <location filename="../ui/CurrentDensity.ui" line="297"/>
+      <location filename="../ui/CurrentDensity.ui" line="341"/>
       <source>unspecified</source>
       <translation>не указана</translation>
     </message>
@@ -3058,16 +3058,16 @@ with a harmonic/oscillating driving force</source>
       <translation>Является ли граничное условие для электрической силы</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="30"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="120"/>
       <location filename="../ui/Magnetization.ui" line="30"/>
+      <location filename="../ui/CurrentDensity.ui" line="30"/>
       <source>Real</source>
       <translation>Действительная часть</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="40"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="130"/>
       <location filename="../ui/Magnetization.ui" line="40"/>
+      <location filename="../ui/CurrentDensity.ui" line="40"/>
       <source>Imaginary</source>
       <translation>Мнимая часть</translation>
     </message>
@@ -3087,9 +3087,9 @@ with a harmonic/oscillating driving force</source>
       <translation>Мнимая часть скалярного потенциала</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="50"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="231"/>
       <location filename="../ui/Magnetization.ui" line="50"/>
+      <location filename="../ui/CurrentDensity.ui" line="50"/>
       <source>x</source>
       <translation>x</translation>
     </message>
@@ -3108,9 +3108,9 @@ Note: has no effect if a solid was selected</source>
 Примечание: не влияет если выбрано твердое тело</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="154"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="331"/>
       <location filename="../ui/Magnetization.ui" line="148"/>
+      <location filename="../ui/CurrentDensity.ui" line="154"/>
       <source>y</source>
       <translation>у</translation>
     </message>
@@ -3129,9 +3129,9 @@ Note: has no effect if a solid was selected</source>
 Примечание: не влияет если выбрано твердое тело</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="256"/>
       <location filename="../ui/ElectrostaticPotential.ui" line="431"/>
       <location filename="../ui/Magnetization.ui" line="246"/>
+      <location filename="../ui/CurrentDensity.ui" line="256"/>
       <source>z</source>
       <translation>z</translation>
     </message>
@@ -3181,8 +3181,8 @@ Note: has no effect if a solid was selected</source>
       <translation>Параметр секции балки</translation>
     </message>
     <message>
-      <location filename="../ui/ElementGeometry1D.ui" line="20"/>
       <location filename="../ui/ElementRotation1D.ui" line="20"/>
+      <location filename="../ui/ElementGeometry1D.ui" line="20"/>
       <source>Cross section parameter</source>
       <translation>Поперечный параметр сечения</translation>
     </message>
@@ -3233,30 +3233,30 @@ Note: has no effect if a solid was selected</source>
       <translation>Вращение:     </translation>
     </message>
     <message>
-      <location filename="../ui/FlowVelocity.ui" line="25"/>
-      <location filename="../ui/FlowVelocity.ui" line="73"/>
-      <location filename="../ui/FlowVelocity.ui" line="131"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="25"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="73"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="131"/>
+      <location filename="../ui/FlowVelocity.ui" line="25"/>
+      <location filename="../ui/FlowVelocity.ui" line="73"/>
+      <location filename="../ui/FlowVelocity.ui" line="131"/>
       <source>formula</source>
       <translation>формула</translation>
     </message>
     <message>
-      <location filename="../ui/FlowVelocity.ui" line="42"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="42"/>
+      <location filename="../ui/FlowVelocity.ui" line="42"/>
       <source>Velocity x:</source>
       <translation>Скорость по оси x:</translation>
     </message>
     <message>
-      <location filename="../ui/FlowVelocity.ui" line="80"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="80"/>
+      <location filename="../ui/FlowVelocity.ui" line="80"/>
       <source>Velocity y:</source>
       <translation>Скорость по оси y:</translation>
     </message>
     <message>
-      <location filename="../ui/FlowVelocity.ui" line="138"/>
       <location filename="../ui/InitialFlowVelocity.ui" line="138"/>
+      <location filename="../ui/FlowVelocity.ui" line="138"/>
       <source>Velocity z:</source>
       <translation>Скорость по оси z:</translation>
     </message>
@@ -3386,14 +3386,14 @@ Note: for 2D only setting for x is possible,
       <translation>Мнимая часть y-компоненты комплексного потенциала</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="272"/>
       <location filename="../ui/Magnetization.ui" line="262"/>
+      <location filename="../ui/CurrentDensity.ui" line="272"/>
       <source>Real part of potential z-component</source>
       <translation>Действительная часть z-компоненты комплексного потенциала</translation>
     </message>
     <message>
-      <location filename="../ui/CurrentDensity.ui" line="316"/>
       <location filename="../ui/Magnetization.ui" line="306"/>
+      <location filename="../ui/CurrentDensity.ui" line="316"/>
       <source>Imaginary part of potential z-component</source>
       <translation>Мнимая часть z-компоненты комплексного потенциала</translation>
     </message>
@@ -3463,7 +3463,7 @@ Note: for 2D only setting for x is possible,
       <location filename="../../PlaneWidget.ui" line="26"/>
       <location filename="../../PlaneWidget.ui" line="86"/>
       <source>x</source>
-      <translation>⨯</translation>
+      <translation>x</translation>
     </message>
     <message>
       <location filename="../../PlaneWidget.ui" line="43"/>
@@ -3511,26 +3511,26 @@ Note: for 2D only setting for x is possible,
       <translation>Отмена</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFemConstraintBearing.cpp" line="70"/>
       <location filename="../../ViewProviderFemConstraintFixed.cpp" line="70"/>
-      <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="72"/>
-      <location filename="../../ViewProviderFemConstraintForce.cpp" line="71"/>
-      <location filename="../../ViewProviderFemConstraintGear.cpp" line="72"/>
-      <location filename="../../ViewProviderFemConstraintPulley.cpp" line="69"/>
       <location filename="../../ViewProviderFemPostFunction.cpp" line="337"/>
+      <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="72"/>
+      <location filename="../../ViewProviderFemConstraintPulley.cpp" line="69"/>
+      <location filename="../../ViewProviderFemConstraintGear.cpp" line="72"/>
+      <location filename="../../ViewProviderFemConstraintForce.cpp" line="71"/>
       <location filename="../../ViewProviderFemPostObject.cpp" line="862"/>
+      <location filename="../../ViewProviderFemConstraintBearing.cpp" line="70"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Диалог уже открыт на панели задач</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderFemConstraintBearing.cpp" line="71"/>
       <location filename="../../ViewProviderFemConstraintFixed.cpp" line="71"/>
-      <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="73"/>
-      <location filename="../../ViewProviderFemConstraintForce.cpp" line="72"/>
-      <location filename="../../ViewProviderFemConstraintGear.cpp" line="73"/>
-      <location filename="../../ViewProviderFemConstraintPulley.cpp" line="70"/>
       <location filename="../../ViewProviderFemPostFunction.cpp" line="338"/>
+      <location filename="../../ViewProviderFemConstraintFluidBoundary.cpp" line="73"/>
+      <location filename="../../ViewProviderFemConstraintPulley.cpp" line="70"/>
+      <location filename="../../ViewProviderFemConstraintGear.cpp" line="73"/>
+      <location filename="../../ViewProviderFemConstraintForce.cpp" line="72"/>
       <location filename="../../ViewProviderFemPostObject.cpp" line="863"/>
+      <location filename="../../ViewProviderFemConstraintBearing.cpp" line="71"/>
       <source>Do you want to close this dialog?</source>
       <translation>Вы хотите закрыть этот диалог?</translation>
     </message>
@@ -3547,7 +3547,7 @@ Note: for 2D only setting for x is possible,
       <location filename="../../AppFemGui.cpp" line="178"/>
       <location filename="../../AppFemGui.cpp" line="179"/>
       <source>FEM</source>
-      <translation>МКЭ</translation>
+      <translation>Метод конечных элементов</translation>
     </message>
     <message>
       <location filename="../../AppFemGui.cpp" line="182"/>
@@ -3978,7 +3978,7 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../../SphereWidget.ui" line="26"/>
       <source>x</source>
-      <translation>x</translation>
+      <translation>⨯</translation>
     </message>
     <message>
       <location filename="../../SphereWidget.ui" line="49"/>
@@ -4047,7 +4047,7 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="70"/>
       <source>Box</source>
-      <translation>Коробка</translation>
+      <translation>Куб</translation>
     </message>
     <message>
       <location filename="../../TaskCreateNodeSet.ui" line="80"/>
@@ -4246,7 +4246,7 @@ For possible variables, see the description box below.</source>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="74"/>
       <source>Remove</source>
-      <translation>Удалить</translation>
+      <translation>Убрать</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintDisplacement.ui" line="107"/>
@@ -4489,7 +4489,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="100"/>
       <source>N</source>
-      <translation type="unfinished">N</translation>
+      <translation>N</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="117"/>
@@ -4511,7 +4511,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskFemConstraintForce.ui" line="137"/>
       <source>Reverse direction</source>
-      <translation>Развернуть направление</translation>
+      <translation>В обратном направлении</translation>
     </message>
   </context>
   <context>
@@ -4534,7 +4534,7 @@ normal vector of the face is used as direction</source>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="51"/>
       <source>Remove</source>
-      <translation>Убрать</translation>
+      <translation>Удалить</translation>
     </message>
     <message>
       <location filename="../../TaskFemConstraintHeatflux.ui" line="68"/>
@@ -4983,7 +4983,7 @@ used for the Elmer solver</source>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="57"/>
       <source>Wireframe</source>
-      <translation>Каркасная сетка</translation>
+      <translation>Каркас</translation>
     </message>
     <message>
       <location filename="../../TaskPostScalarClip.ui" line="101"/>
@@ -5122,7 +5122,7 @@ used for the Elmer solver</source>
     <message>
       <location filename="../../Workbench.cpp" line="40"/>
       <source>FEM</source>
-      <translation>Метод конечных элементов</translation>
+      <translation>МКЭ</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="41"/>
@@ -5242,7 +5242,7 @@ used for the Elmer solver</source>
     <message>
       <location filename="../../Workbench.cpp" line="66"/>
       <source>Mesh</source>
-      <translation>Полигональная сетка</translation>
+      <translation>Сеть</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="67"/>
@@ -5983,7 +5983,7 @@ Please select a result type first.</source>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="570"/>
       <source>Nodes</source>
-      <translation>Узлов</translation>
+      <translation>Узлы</translation>
     </message>
     <message>
       <location filename="../../../femtaskpanels/task_result_mechanical.py" line="700"/>
@@ -6017,7 +6017,7 @@ Please select a result type first.</source>
     <message>
       <location filename="../../Command.cpp" line="1194"/>
       <source>Fem</source>
-      <translation>Мкэ (метод конечных элементов)</translation>
+      <translation>МКЭ (метод конечных элементов)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1195"/>

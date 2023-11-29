@@ -159,6 +159,55 @@ void PythonEditor::contextMenuEvent ( QContextMenuEvent * e )
     delete menu;
 }
 
+void PythonEditor::keyPressEvent(QKeyEvent* e)
+{
+    /** When the user presses enter the next line should match the current
+     * indentation unless the line ends in a colon, where the next line
+     * should have an additional indentation.  Shift+Enter should dedent
+     * the next block 1 indentation from what it would have been, if possible.
+     */
+    if (e->key() == Qt::Key_Enter || e->key() == Qt::Key_Return) {
+        bool shiftPressed = e->modifiers() & Qt::ShiftModifier;
+        ParameterGrp::handle hPrefGrp = getWindowParameter();
+        int indent = hPrefGrp->GetInt( "IndentSize", 4 );
+        bool space = hPrefGrp->GetBool( "Spaces", true );
+        QString ch = space ? QString::fromLatin1(" ")
+                           : QString::fromLatin1("\t");
+
+        QTextCursor cursor = textCursor();
+        QString currentLineText = cursor.block().text();
+        bool endsWithColon = currentLineText.endsWith(QLatin1Char(':'));
+        int currentIndentation = 0;
+        //count spaces/tabs at start of current line
+        for (auto c : currentLineText) {
+            if (c == ch) {
+                currentIndentation++;
+            } else {
+                break;
+            }
+        }
+        cursor.insertBlock(); //new line
+        cursor.movePosition(QTextCursor::StartOfBlock); //carriage return
+        //Shift+Enter means dedent, but ensure we are not at column 0
+        if (shiftPressed && currentIndentation >= indent){
+            currentIndentation -= indent;
+        }
+        //insert appropriate number of spaces/tabs to match current indentation
+        cursor.insertText(QString(currentIndentation, ch[0]));
+        //if the line ended in a colon, then we need to add another tab or multiple spaces
+        if (endsWithColon) {
+            if (space){
+                cursor.insertText(QString(indent, ch[0])); //4 more spaces by default
+            } else {
+                cursor.insertText(ch); //1 more tab
+            }
+        }
+        setTextCursor(cursor);
+        return; //skip default handler
+    }
+    TextEditor::keyPressEvent(e); //wasn't enter key, so let base class handle it
+}
+
 void PythonEditor::onComment()
 {
     QTextCursor cursor = textCursor();

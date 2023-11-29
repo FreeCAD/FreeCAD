@@ -30,6 +30,7 @@
 # include <TopoDS.hxx>
 # include <TopoDS_Iterator.hxx>
 # include <TopoDS_Vertex.hxx>
+# include <BRepBuilderAPI_Copy.hxx>
 #endif
 
 #include <App/Document.h>
@@ -56,7 +57,7 @@ using SU = ShapeUtils;
 
 std::vector<TopoDS_Shape> ShapeExtractor::getShapes2d(const std::vector<App::DocumentObject*> links, bool overridePref)
 {
-//    Base::Console().Message("SE::getShapes2d()\n");
+//    Base::Console().Message("SE::getShapes2d() - links: %d\n", links.size());
 
     std::vector<TopoDS_Shape> shapes2d;
     if (!prefAdd2d() && !overridePref) {
@@ -65,19 +66,25 @@ std::vector<TopoDS_Shape> ShapeExtractor::getShapes2d(const std::vector<App::Doc
     for (auto& l:links) {
         const App::GroupExtension* gex = dynamic_cast<const App::GroupExtension*>(l);
         if (gex) {
-            std::vector<App::DocumentObject*> objs = gex->Group.getValues();
-            for (auto& d: objs) {
-                if (is2dObject(d)) {
-                    if (d->isDerivedFrom<Part::Feature>()) {
-                        shapes2d.push_back(getLocatedShape(d));
+            std::vector<App::DocumentObject*> groupAll = gex->Group.getValues();
+            for (auto& item : groupAll) {
+                if (is2dObject(item)) {
+                    if (item->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+                        TopoDS_Shape temp = getLocatedShape(item);
+                        if (!temp.IsNull()) {
+                            shapes2d.push_back(temp);
+                        }
                     }
                 }
             }
         } else {
             if (is2dObject(l)) {
-                if (l->isDerivedFrom<Part::Feature>()) {
-                    shapes2d.push_back(getLocatedShape(l));
-                }  // other 2d objects would go here - Draft objects?
+                if (l->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+                    TopoDS_Shape temp = getLocatedShape(l);
+                    if (!temp.IsNull()) {
+                        shapes2d.push_back(temp);
+                    }
+                }  // other 2d objects would go here - Draft objects? Arch Axis?
             }
         }
     }
@@ -203,7 +210,16 @@ std::vector<TopoDS_Shape> ShapeExtractor::getXShapes(const App::Link* xLink)
     } else {
         // link points to a regular object, not another link? no sublinks?
         TopoDS_Shape xLinkShape = getShapeFromXLink(xLink);
-        xSourceShapes.push_back(xLinkShape);
+        if (!xLinkShape.IsNull()) {
+            // make the "located, oriented" version of the shape.
+            netTransform = xLinkPlacement.toMatrix() * linkScale;
+            // copying the shape prevents "non-orthogonal GTrsf" errors in some versions
+            // of OCC.  Something to do with triangulation of shape??
+            BRepBuilderAPI_Copy copier(xLinkShape);
+            auto ts = Part::TopoShape(copier.Shape());
+            ts.transformGeometry(netTransform);
+            xSourceShapes.push_back(ts.getShape());
+        }
     }
     return xSourceShapes;
 }
@@ -214,6 +230,10 @@ TopoDS_Shape ShapeExtractor::getShapeFromXLink(const App::Link* xLink)
     Base::Placement xLinkPlacement;
     if (xLink->hasPlacement()) {
         xLinkPlacement = xLink->getLinkPlacementProperty()->getValue();
+    }
+    Base::Matrix4D linkScale;  // default constructor is an identity matrix, possibly scale it with link's scale
+    if(xLink->getScaleProperty() || xLink->getScaleVectorProperty()) {
+        linkScale.scale(xLink->getScaleVector());
     }
     int depth = 0;   //0 is default value, related to recursion of Links???
     App::DocumentObject* linkedObject = xLink->getLink(depth);
@@ -229,6 +249,8 @@ TopoDS_Shape ShapeExtractor::getShapeFromXLink(const App::Link* xLink)
         Part::TopoShape ts(shape);
         if (ts.isInfinite()) {
             shape = stripInfiniteShapes(shape);
+            // the shape must have a triangulation or it will cause a failure
+            // when later transforms are applied
             ts = Part::TopoShape(shape);
         }
         //ts might be garbage now, better check

@@ -54,7 +54,7 @@ int MaterialManagerPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 
 PyObject* MaterialManagerPy::getMaterial(PyObject* args)
 {
-    char* uuid;
+    char* uuid {};
     if (!PyArg_ParseTuple(args, "s", &uuid)) {
         return nullptr;
     }
@@ -71,8 +71,8 @@ PyObject* MaterialManagerPy::getMaterial(PyObject* args)
 
 PyObject* MaterialManagerPy::getMaterialByPath(PyObject* args)
 {
-    char* path;
-    char* lib = "";
+    char* path {};
+    const char* lib = "";
     if (!PyArg_ParseTuple(args, "s|s", &path, &lib)) {
         return nullptr;
     }
@@ -152,7 +152,7 @@ int MaterialManagerPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj
 
 PyObject* MaterialManagerPy::materialsWithModel(PyObject* args)
 {
-    char* uuid;
+    char* uuid {};
     if (!PyArg_ParseTuple(args, "s", &uuid)) {
         return nullptr;
     }
@@ -173,7 +173,7 @@ PyObject* MaterialManagerPy::materialsWithModel(PyObject* args)
 
 PyObject* MaterialManagerPy::materialsWithModelComplete(PyObject* args)
 {
-    char* uuid;
+    char* uuid {};
     if (!PyArg_ParseTuple(args, "s", &uuid)) {
         return nullptr;
     }

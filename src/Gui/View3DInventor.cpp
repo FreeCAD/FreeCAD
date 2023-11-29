@@ -675,7 +675,7 @@ void View3DInventor::dump(const char* filename, bool onlyVisible)
     }
 }
 
-void View3DInventor::windowStateChanged(MDIView* view)
+void View3DInventor::windowStateChanged(QWidget* view)
 {
     bool canStartTimer = false;
     if (this != view) {

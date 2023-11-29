@@ -40,10 +40,10 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-# ifdef _MSC_VER
-#  include <ctime>
-#  include <crtdbg.h>
-# endif
+#ifdef _MSC_VER
+#include <ctime>
+#include <crtdbg.h>
+#endif
 #endif
 
 /// Here the FreeCAD includes sorted by Base,App,Gui......
@@ -70,20 +70,26 @@ using namespace Base;
 class MemDebug
 {
 public:
-  /// Construction
-  MemDebug();
-  /// Destruction
-  virtual ~MemDebug();
+    /// Construction
+    MemDebug();
+    /// Destruction
+    virtual ~MemDebug();
 
 protected:
-  static FILE *logFile;
+    static FILE* logFile;
 
-  /** @name static callbacks for the Crt */
-  //@{
-  static void __cdecl sDumpClientHook(void * pUserData, size_t nBytes);
-  static int  __cdecl sAllocHook(int nAllocType, void* pvData, size_t nSize,int nBlockUse,long lRequest,const unsigned char * szFileName,int nLine);
-  static int          sReportHook(int   nRptType,char *szMsg,int  *retVal);
-  //@}
+    /** @name static callbacks for the Crt */
+    //@{
+    static void __cdecl sDumpClientHook(void* pUserData, size_t nBytes);
+    static int __cdecl sAllocHook(int nAllocType,
+                                  void* pvData,
+                                  size_t nSize,
+                                  int nBlockUse,
+                                  long lRequest,
+                                  const unsigned char* szFileName,
+                                  int nLine);
+    static int sReportHook(int nRptType, char* szMsg, int* retVal);
+    //@}
 };
 
 // the one and only MemDebug instance.
@@ -92,10 +98,10 @@ MemDebug cSingelton;
 #endif
 
 
-#define  SET_CRT_DEBUG_FIELD(a)   _CrtSetDbgFlag((a) | _CrtSetDbgFlag(_CRTDBG_REPORT_FLAG))
-#define  CLEAR_CRT_DEBUG_FIELD(a) _CrtSetDbgFlag(~(a) & _CrtSetDbgFlag(_CRTDBG_REPORT_FLAG))
+#define SET_CRT_DEBUG_FIELD(a) _CrtSetDbgFlag((a) | _CrtSetDbgFlag(_CRTDBG_REPORT_FLAG))
+#define CLEAR_CRT_DEBUG_FIELD(a) _CrtSetDbgFlag(~(a)&_CrtSetDbgFlag(_CRTDBG_REPORT_FLAG))
 
-FILE *MemDebug::logFile = NULL;
+FILE* MemDebug::logFile = NULL;
 
 //**************************************************************************
 // Construction/Destruction
@@ -103,52 +109,56 @@ FILE *MemDebug::logFile = NULL;
 
 MemDebug::MemDebug()
 {
-   //_CrtMemState checkPt1;
-   char timeStr[15], dateStr[15];         // Used to set up log file
+    //_CrtMemState checkPt1;
+    char timeStr[15], dateStr[15];  // Used to set up log file
 
 
-   // Send all reports to STDOUT, since this example is a console app
-   _CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_FILE );
-   _CrtSetReportFile(_CRT_WARN, _CRTDBG_FILE_STDERR );
-   _CrtSetReportMode(_CRT_ERROR, _CRTDBG_MODE_FILE );
-   _CrtSetReportFile(_CRT_ERROR, _CRTDBG_FILE_STDERR );
-   _CrtSetReportMode(_CRT_ASSERT, _CRTDBG_MODE_FILE );
-   _CrtSetReportFile(_CRT_ASSERT, _CRTDBG_FILE_STDERR );
+    // Send all reports to STDOUT, since this example is a console app
+    _CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_FILE);
+    _CrtSetReportFile(_CRT_WARN, _CRTDBG_FILE_STDERR);
+    _CrtSetReportMode(_CRT_ERROR, _CRTDBG_MODE_FILE);
+    _CrtSetReportFile(_CRT_ERROR, _CRTDBG_FILE_STDERR);
+    _CrtSetReportMode(_CRT_ASSERT, _CRTDBG_MODE_FILE);
+    _CrtSetReportFile(_CRT_ASSERT, _CRTDBG_FILE_STDERR);
 
-   // Set the debug heap to report memory leaks when the process terminates,
-   // and to keep freed blocks in the linked list.
-   SET_CRT_DEBUG_FIELD( _CRTDBG_LEAK_CHECK_DF | _CRTDBG_DELAY_FREE_MEM_DF );
+    // Set the debug heap to report memory leaks when the process terminates,
+    // and to keep freed blocks in the linked list.
+    SET_CRT_DEBUG_FIELD(_CRTDBG_LEAK_CHECK_DF | _CRTDBG_DELAY_FREE_MEM_DF);
 
-   // Open a log file for the hook functions to use
-   if ( logFile != NULL )
-     throw std::runtime_error("Base::MemDebug::MemDebug():38: Don't call the constructor by your self!");
+    // Open a log file for the hook functions to use
+    if (logFile != NULL) {
+        throw std::runtime_error(
+            "Base::MemDebug::MemDebug():38: Don't call the constructor by your self!");
+    }
 
-   fopen_s( &logFile, "MemLog.txt", "w" );
-   if ( logFile == NULL )
-     throw std::runtime_error("Base::MemDebug::MemDebug():41: File IO Error. Can't open log file...");
-   _strtime_s( timeStr, 15 );
-   _strdate_s( dateStr, 15 );
+    fopen_s(&logFile, "MemLog.txt", "w");
+    if (logFile == NULL) {
+        throw std::runtime_error(
+            "Base::MemDebug::MemDebug():41: File IO Error. Can't open log file...");
+    }
+    _strtime_s(timeStr, 15);
+    _strdate_s(dateStr, 15);
 
-   fprintf( logFile,
+    fprintf(logFile,
             "Memory Allocation Log File for FreeCAD, run at %s on %s.\n",
-            timeStr, dateStr );
-   fputs( "-------------------------------------------------------------------\n", logFile );
+            timeStr,
+            dateStr);
+    fputs("-------------------------------------------------------------------\n", logFile);
 
-   // Install the hook functions
-   _CrtSetDumpClient( sDumpClientHook );
-   _CrtSetAllocHook( sAllocHook );
-   _CrtSetReportHook( sReportHook );
-
+    // Install the hook functions
+    _CrtSetDumpClient(sDumpClientHook);
+    _CrtSetAllocHook(sAllocHook);
+    _CrtSetReportHook(sReportHook);
 }
 
 MemDebug::~MemDebug()
 {
-  _CrtMemDumpAllObjectsSince( NULL );
-  //_CrtCheckMemory( );
+    _CrtMemDumpAllObjectsSince(NULL);
+    //_CrtCheckMemory( );
 
-  // This fflush needs to be removed...
-  fflush( logFile );
-  fclose( logFile );
+    // This fflush needs to be removed...
+    fflush(logFile);
+    fclose(logFile);
 }
 
 
@@ -166,16 +176,17 @@ MemDebug::~MemDebug()
    to return zero, which causes execution to continue. If we want the function
    to start the debugger, we should have _CrtDbgReport return one.
 */
-int MemDebug::sReportHook(int   nRptType,char *szMsg,int  *retVal)
+int MemDebug::sReportHook(int nRptType, char* szMsg, int* retVal)
 {
-   const char *RptTypes[] = { "Warning", "Error", "Assert" };
+    const char* RptTypes[] = {"Warning", "Error", "Assert"};
 
-   if ( ( nRptType > 0 ) || ( strstr( szMsg, "HEAP CORRUPTION DETECTED" ) ) )
-      fprintf( logFile, "%s: %s", RptTypes[nRptType], szMsg );
+    if ((nRptType > 0) || (strstr(szMsg, "HEAP CORRUPTION DETECTED"))) {
+        fprintf(logFile, "%s: %s", RptTypes[nRptType], szMsg);
+    }
 
-   retVal = 0;
+    retVal = 0;
 
-   return( 7 );         // Allow the report to be made as usual (True = 7, False = 0)
+    return (7);  // Allow the report to be made as usual (True = 7, False = 0)
 }
 
 /* ALLOCATION HOOK FUNCTION
@@ -183,37 +194,44 @@ int MemDebug::sReportHook(int   nRptType,char *szMsg,int  *retVal)
    An allocation hook function can have many, many different
    uses. This one simply logs each allocation operation in a file.
 */
-int __cdecl MemDebug::sAllocHook(
-   int      nAllocType,
-   void   * pvData,
-   size_t   nSize,
-   int      nBlockUse,
-   long     lRequest,
-   const unsigned char * szFileName,
-   int      nLine
-   )
+int __cdecl MemDebug::sAllocHook(int nAllocType,
+                                 void* pvData,
+                                 size_t nSize,
+                                 int nBlockUse,
+                                 long lRequest,
+                                 const unsigned char* szFileName,
+                                 int nLine)
 {
-   const char *operation[] = { "       :", "Alloc  :", "Realloc:", "Free   :" };
-   const char *blockType[] = { "Free", "Normal", "CRT", "Ignore", "Client" };
+    const char* operation[] = {"       :", "Alloc  :", "Realloc:", "Free   :"};
+    const char* blockType[] = {"Free", "Normal", "CRT", "Ignore", "Client"};
 
-   if ( nBlockUse == _CRT_BLOCK )   // Ignore internal C runtime library allocations
-      return( 7 ); // (True = 7, False = 0)
+    if (nBlockUse == _CRT_BLOCK) {  // Ignore internal C runtime library allocations
+        return (7);                 // (True = 7, False = 0)
+    }
 
-   _ASSERT( ( nAllocType > 0 ) && ( nAllocType < 4 ) );
-   _ASSERT( ( nBlockUse >= 0 ) && ( nBlockUse < 5 ) );
+    _ASSERT((nAllocType > 0) && (nAllocType < 4));
+    _ASSERT((nBlockUse >= 0) && (nBlockUse < 5));
 
-   if( nBlockUse !=4 )
-     return(7);
+    if (nBlockUse != 4) {
+        return (7);
+    }
 
-   fprintf( logFile,
+    fprintf(logFile,
             "%s (#%7d) %12Iu byte (%s) in %s line %d",
-            operation[nAllocType],lRequest, nSize, blockType[nBlockUse],szFileName, nLine);
-   if ( pvData != NULL )
-      fprintf( logFile, " at %p\n", pvData );
-   else
-     fprintf( logFile, "\n" );
+            operation[nAllocType],
+            lRequest,
+            nSize,
+            blockType[nBlockUse],
+            szFileName,
+            nLine);
+    if (pvData != NULL) {
+        fprintf(logFile, " at %p\n", pvData);
+    }
+    else {
+        fprintf(logFile, "\n");
+    }
 
-   return( 7 );         // Allow the memory operation to proceed (True = 7, False = 0)
+    return (7);  // Allow the memory operation to proceed (True = 7, False = 0)
 }
 
 
@@ -224,15 +242,11 @@ int __cdecl MemDebug::sAllocHook(
    below also checks the data in several ways, and reports corruption
    or inconsistency as an assertion failure.
 */
-void __cdecl MemDebug::sDumpClientHook(
-   void * pUserData,
-   size_t nBytes
-   )
+void __cdecl MemDebug::sDumpClientHook(void* pUserData, size_t nBytes)
 {
-   long requestNumber=0;
-  _CrtIsMemoryBlock(pUserData,(unsigned int)nBytes,&requestNumber,NULL,NULL);
-  fprintf( logFile, "Leak   : (#%7d) %12Iu bytes (%p)  \n", requestNumber, nBytes, pUserData );
-
+    long requestNumber = 0;
+    _CrtIsMemoryBlock(pUserData, (unsigned int)nBytes, &requestNumber, NULL, NULL);
+    fprintf(logFile, "Leak   : (#%7d) %12Iu bytes (%p)  \n", requestNumber, nBytes, pUserData);
 }
 
 // -----------------------------------------------------
@@ -240,26 +254,28 @@ void __cdecl MemDebug::sDumpClientHook(
 MemCheck::MemCheck()
 {
     // Store a memory checkpoint in the s1 memory-state structure
-    _CrtMemCheckpoint( &s1 );
+    _CrtMemCheckpoint(&s1);
 }
 
 MemCheck::~MemCheck()
 {
     // Store a 2nd memory checkpoint in s2
-    _CrtMemCheckpoint( &s2 );
-    if ( _CrtMemDifference( &s3, &s1, &s2 ) )
-        _CrtMemDumpStatistics( &s3 );
+    _CrtMemCheckpoint(&s2);
+    if (_CrtMemDifference(&s3, &s1, &s2)) {
+        _CrtMemDumpStatistics(&s3);
+    }
 }
 
 void MemCheck::setNextCheckpoint()
 {
     // Store a 2nd memory checkpoint in s2
-    _CrtMemCheckpoint( &s2 );
-    if ( _CrtMemDifference( &s3, &s1, &s2 ) )
-        _CrtMemDumpStatistics( &s3 );
+    _CrtMemCheckpoint(&s2);
+    if (_CrtMemDifference(&s3, &s1, &s2)) {
+        _CrtMemDumpStatistics(&s3);
+    }
 
     // Store a memory checkpoint in the s1 memory-state structure
-    _CrtMemCheckpoint( &s1 );
+    _CrtMemCheckpoint(&s1);
 }
 
 bool MemCheck::checkMemory()

@@ -56,28 +56,31 @@ if App.GuiUp:
 ARROW_TYPES = ["Dot", "Circle", "Arrow", "Tick", "Tick-2"]
 arrowtypes = ARROW_TYPES
 
-param_draft = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-param_view  = App.ParamGet("User parameter:BaseApp/Preferences/View")
 
-ANNOTATION_STYLE = {
-    "ArrowSize":       ("float", param_draft.GetFloat("arrowsize", 20)),
-    "ArrowType":       ("index", param_draft.GetInt("dimsymbol", 0)),
-    "Decimals":        ("int",   param_draft.GetInt("dimPrecision", 2)),
-    "DimOvershoot":    ("float", param_draft.GetFloat("dimovershoot", 20)),
-    "ExtLines":        ("float", param_draft.GetFloat("extlines", 300)),
-    "ExtOvershoot":    ("float", param_draft.GetFloat("extovershoot", 20)),
-    "FontName":        ("font",  param_draft.GetString("textfont", "Sans")),
-    "FontSize":        ("float", param_draft.GetFloat("textheight", 100)),
-    "LineColor":       ("color", param_view.GetUnsigned("DefaultShapeLineColor", 255)),
-    "LineSpacing":     ("float", param_draft.GetFloat("LineSpacing", 1)),
-    "LineWidth":       ("int",   param_view.GetInt("DefaultShapeLineWidth", 1)),
-    "ScaleMultiplier": ("float", 1),
-    "ShowLine":        ("bool",  True),
-    "ShowUnit":        ("bool",  param_draft.GetBool("showUnit", True)),
-    "TextColor":       ("color", param_draft.GetUnsigned("DefaultTextColor", 255)),
-    "TextSpacing":     ("float", param_draft.GetFloat("dimspacing", 20)),
-    "UnitOverride":    ("str",   param_draft.GetString("overrideUnit", "")),
-}
+def get_default_annotation_style():
+    param_draft = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+    param_view = App.ParamGet("User parameter:BaseApp/Preferences/View")
+    anno_scale = param_draft.GetFloat("DraftAnnotationScale", 1)
+    scale_mult = 1 / anno_scale if anno_scale > 0 else 1
+    return {
+        "ArrowSize":       ("float", param_draft.GetFloat("arrowsize", 20)),
+        "ArrowType":       ("index", param_draft.GetInt("dimsymbol", 0)),
+        "Decimals":        ("int",   param_draft.GetInt("dimPrecision", 2)),
+        "DimOvershoot":    ("float", param_draft.GetFloat("dimovershoot", 20)),
+        "ExtLines":        ("float", param_draft.GetFloat("extlines", 300)),
+        "ExtOvershoot":    ("float", param_draft.GetFloat("extovershoot", 20)),
+        "FontName":        ("font",  param_draft.GetString("textfont", "Sans")),
+        "FontSize":        ("float", param_draft.GetFloat("textheight", 100)),
+        "LineColor":       ("color", param_view.GetUnsigned("DefaultShapeLineColor", 255)),
+        "LineSpacing":     ("float", param_draft.GetFloat("LineSpacing", 1)),
+        "LineWidth":       ("int",   param_view.GetInt("DefaultShapeLineWidth", 1)),
+        "ScaleMultiplier": ("float", scale_mult),
+        "ShowLine":        ("bool",  param_draft.GetBool("DimShowLine", True)),
+        "ShowUnit":        ("bool",  param_draft.GetBool("showUnit", True)),
+        "TextColor":       ("color", param_draft.GetUnsigned("DefaultTextColor", 255)),
+        "TextSpacing":     ("float", param_draft.GetFloat("dimspacing", 20)),
+        "UnitOverride":    ("str",   param_draft.GetString("overrideUnit", "")),
+    }
 
 
 def string_encode_coin(ustr):
@@ -166,25 +169,25 @@ def get_param_type(param):
         `'bool'`, `'unsigned'`, depending on the parameter.
         It returns `None` for unhandled situations.
     """
-    if param in ("dimsymbol", "dimPrecision", "dimorientation",
+    if param in ("dimsymbol", "dimPrecision",
                  "precision", "defaultWP", "snapRange", "gridEvery",
                  "linewidth", "modconstrain", "modsnap",
                  "maxSnapEdges", "modalt", "HatchPatternResolution",
-                 "snapStyle", "dimstyle", "gridSize", "gridTransparency"):
+                 "snapStyle", "DefaultAnnoDisplayMode", "gridSize", "gridTransparency"):
         return "int"
     elif param in ("constructiongroupname", "textfont",
                    "patternFile", "snapModes",
                    "FontFile", "ClonePrefix", "overrideUnit",
                    "labeltype", "gridSpacing") or "inCommandShortcut" in param:
         return "string"
-    elif param in ("textheight", "tolerance",
-                   "arrowsize", "extlines", "dimspacing",
-                   "dimovershoot", "extovershoot", "HatchPatternSize"):
+    elif param in ("textheight", "arrowsize", "extlines", "dimspacing",
+                   "dimovershoot", "extovershoot", "HatchPatternSize",
+                   "LineSpacing"):
         return "float"
     elif param in ("selectBaseObjects", "alwaysSnap", "grid",
-                   "fillmode", "saveonexit", "maxSnap",
-                   "SvgLinesBlack", "dxfStdSize", "showSnapBar",
-                   "hideSnapBar", "alwaysShowGrid", "renderPolylineWidth",
+                   "fillmode", "maxSnap", "DimShowLine",
+                   "SvgLinesBlack", "dxfStdSize", "SnapBarShowOnlyDuringCommands",
+                   "alwaysShowGrid", "renderPolylineWidth",
                    "showPlaneTracker", "UsePartPrimitives",
                    "DiscretizeEllipses", "showUnit", "coloredGridAxes",
                    "Draft_array_fuse", "Draft_array_Link", "gridBorder"):
@@ -345,38 +348,14 @@ def precision():
 
 
 def tolerance():
-    """Return the tolerance value from the parameter database.
-
-    This specifies a tolerance around a quantity.
-    ::
-        value + tolerance
-        value - tolerance
-
-    By default the tolerance is 0.05.
+    """Return a tolerance based on the precision() value
 
     Returns
     -------
     float
-        get_param("tolerance", 0.05)
+        10 ** -precision()
     """
-    return getParam("tolerance", 0.05)
-
-
-def epsilon():
-    """Return a small number based on the tolerance for use in comparisons.
-
-    The epsilon value is used in floating point comparisons. Use with caution.
-    ::
-        denom = 10**tolerance
-        num = 1
-        epsilon = num/denom
-
-    Returns
-    -------
-    float
-        1/(10**tolerance)
-    """
-    return 1.0/(10.0**tolerance())
+    return 10 ** -precision()
 
 
 def get_real_name(name):

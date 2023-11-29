@@ -461,6 +461,9 @@ private:
             false;  // indicates whether the present virtual space view is the
                     // Real Space or the Virtual Space (virtual space 1 or 2)
         bool buttonPress = false;
+
+        int stdCountSegments =
+            50;  // preferences controlled default geometry sampling for selection
     };
 
     /** @brief Private struct grouping ViewProvider and RenderManager node, to be used as SoNode

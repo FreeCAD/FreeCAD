@@ -42,7 +42,7 @@ import draftguitools.gui_tool_utils as gui_tool_utils
 import draftguitools.gui_lines as gui_lines
 import draftguitools.gui_trackers as trackers
 
-from draftutils.messages import _msg, _err
+from draftutils.messages import _msg, _err, _toolmsg
 from draftutils.translate import translate
 
 
@@ -137,12 +137,12 @@ class BSpline(gui_lines.Line):
             self.bsplinetrack.on()
             if self.planetrack:
                 self.planetrack.set(self.node[0])
-            _msg(translate("draft", "Pick next point"))
+            _toolmsg(translate("draft", "Pick next point"))
         else:
             spline = Part.BSplineCurve()
             spline.interpolate(self.node, False)
             self.obj.Shape = spline.toShape()
-            _msg(translate("draft", "Pick next point"))
+            _toolmsg(translate("draft", "Pick next point"))
 
     def finish(self, cont=False, closed=False):
         """Terminate the operation and close the spline if asked.

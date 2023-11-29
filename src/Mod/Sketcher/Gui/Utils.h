@@ -201,12 +201,20 @@ bool useSystemDecimals();
 std::string lengthToDisplayFormat(double value, int digits);
 std::string angleToDisplayFormat(double value, int digits);
 
+bool areColinear(const Base::Vector2d& p1, const Base::Vector2d& p2, const Base::Vector2d& p3);
+
 }  // namespace SketcherGui
 
 /// converts a 2D vector into a 3D vector in the XY plane
 inline Base::Vector3d toVector3d(const Base::Vector2d& vector2d)
 {
     return Base::Vector3d(vector2d.x, vector2d.y, 0.);
+}
+
+/// converts a 3D vector in the XY plane into a 2D vector
+inline Base::Vector2d toVector2d(const Base::Vector3d& vector3d)
+{
+    return Base::Vector2d(vector3d.x, vector3d.y);
 }
 
 

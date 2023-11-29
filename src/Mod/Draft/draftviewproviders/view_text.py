@@ -66,7 +66,7 @@ class ViewProviderText(ViewProviderDraftAnnotation):
                              "LineSpacing",
                              "Text",
                              _tip)
-            vobj.LineSpacing = 1.0
+            vobj.LineSpacing = utils.get_param("LineSpacing", 1)
 
     def getIcon(self):
         """Return the path to the icon used by the view provider."""

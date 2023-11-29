@@ -1441,6 +1441,7 @@ PyObject* Application::sGetMarkerIndex(PyObject * /*self*/, PyObject *args)
         std::list<std::pair<std::string, std::string> > markerList = {
             {"square", "DIAMOND_FILLED"},
             {"cross", "CROSS"},
+            {"hourglass", "HOURGLASS_FILLED"},
             {"plus", "PLUS"},
             {"empty", "SQUARE_LINE"},
             {"quad", "SQUARE_FILLED"},
@@ -1462,7 +1463,7 @@ PyObject* Application::sGetMarkerIndex(PyObject * /*self*/, PyObject *args)
             marker_arg = (*markerStyle).second;
 
         //get the marker size
-        int sizeList[]={5, 7, 9};
+        auto sizeList = Gui::Inventor::MarkerBitmaps::getSupportedSizes(marker_arg);
 
         if (std::find(std::begin(sizeList), std::end(sizeList), defSize) == std::end(sizeList))
             defSize = 9;
@@ -1489,7 +1490,8 @@ PyObject* Application::sReload(PyObject * /*self*/, PyObject *args)
 
 PyObject* Application::sLoadFile(PyObject * /*self*/, PyObject *args)
 {
-    const char *path, *mod = "";
+    const char *path = "";
+    const char *mod = "";
     if (!PyArg_ParseTuple(args, "s|s", &path, &mod))
         return nullptr;
 
@@ -1610,7 +1612,7 @@ PyObject* Application::sGetUserEditMode(PyObject * /*self*/, PyObject *args)
 
 PyObject* Application::sSetUserEditMode(PyObject * /*self*/, PyObject *args)
 {
-    char *mode = "";
+    const char *mode = "";
     if (!PyArg_ParseTuple(args, "s", &mode))
         return nullptr;
 

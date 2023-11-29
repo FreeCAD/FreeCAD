@@ -57,6 +57,8 @@ protected:
 
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
 
+    bool multiselectEligible() override { return true; }
+
     int projIndex;                                                     //index of edge in Projection. must exist.
 
     bool isCosmetic;

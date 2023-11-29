@@ -46,7 +46,7 @@ import draftguitools.gui_tool_utils as gui_tool_utils
 import draftguitools.gui_lines as gui_lines
 import draftguitools.gui_trackers as trackers
 
-from draftutils.messages import _msg, _err
+from draftutils.messages import _msg, _toolmsg, _err
 from draftutils.translate import translate
 
 
@@ -148,10 +148,10 @@ class BezCurve(gui_lines.Line):
             self.bezcurvetrack.on()
             if self.planetrack:
                 self.planetrack.set(self.node[0])
-            _msg(translate("draft", "Pick next point"))
+            _toolmsg(translate("draft", "Pick next point"))
         else:
             self.obj.Shape = self.updateShape(self.node)
-            _msg(translate("draft", "Pick next point"))
+            _toolmsg(translate("draft", "Pick next point"))
 
     def updateShape(self, pts):
         """Create shape for display during creation process."""
@@ -388,11 +388,11 @@ class CubicBezCurve(gui_lines.Line):
             self.bezcurvetrack.on()
             if self.planetrack:
                 self.planetrack.set(self.node[0])
-            _msg(translate("draft", "Click and drag to define next knot"))
+            _toolmsg(translate("draft", "Click and drag to define next knot"))
         elif (len(self.node) - 1) % self.degree == 1 and len(self.node) > 2:
             # is a knot
             self.obj.Shape = self.updateShape(self.node[:-1])
-            _msg(translate("draft", "Click and drag to define next knot"))
+            _toolmsg(translate("draft", "Click and drag to define next knot"))
 
     def updateShape(self, pts):
         """Create shape for display during creation process."""

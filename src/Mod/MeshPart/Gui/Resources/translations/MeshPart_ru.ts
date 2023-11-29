@@ -44,7 +44,7 @@ This command only works with a 'mesh' object.</source>
     <message>
       <location filename="../../Command.cpp" line="58"/>
       <source>Mesh</source>
-      <translation>Сетка</translation>
+      <translation>Полигональная сетка</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="59"/>
@@ -62,7 +62,7 @@ This command only works with a 'mesh' object.</source>
     <message>
       <location filename="../../Command.cpp" line="192"/>
       <source>Mesh</source>
-      <translation>Сетка</translation>
+      <translation>Сеть</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="193"/>
@@ -80,7 +80,7 @@ This command only works with a 'mesh' object.</source>
     <message>
       <location filename="../../Command.cpp" line="83"/>
       <source>Mesh</source>
-      <translation>Полигональная сетка</translation>
+      <translation>Сеть</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="84"/>
@@ -579,8 +579,8 @@ Select a different shape, please.</source>
     <name>MeshPart_CreateFlatMesh</name>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="49"/>
-      <source>Unwrap Mesh</source>
-      <translation>Развернуть сетку</translation>
+      <source>Unwrap mesh</source>
+      <translation type="unfinished">Unwrap mesh</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="52"/>
@@ -592,8 +592,8 @@ Select a different shape, please.</source>
     <name>MeshPart_CreateFlatFace</name>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="88"/>
-      <source>Unwrap Face</source>
-      <translation>Развернуть грани</translation>
+      <source>Unwrap face</source>
+      <translation type="unfinished">Unwrap face</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="91"/>

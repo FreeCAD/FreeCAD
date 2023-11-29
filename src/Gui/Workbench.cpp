@@ -802,7 +802,7 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     }
 
     // Macro
-    auto macro = new ToolBarItem( root );
+    auto macro = new ToolBarItem( root, ToolBarItem::DefaultVisibility::Hidden);
     macro->setCommand("Macro");
     *macro << "Std_DlgMacroRecord" << "Std_DlgMacroExecute"
            << "Std_DlgMacroExecuteDirect";

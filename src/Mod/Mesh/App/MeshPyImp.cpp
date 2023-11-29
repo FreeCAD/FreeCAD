@@ -1981,7 +1981,7 @@ PyObject* MeshPy::trimByPlane(PyObject* args)
 
 PyObject* MeshPy::smooth(PyObject* args, PyObject* kwds)
 {
-    char* method = "Laplace";
+    const char* method = "Laplace";
     int iter = 1;
     double lambda = 0;
     double micro = 0;

@@ -43,7 +43,7 @@ import draftutils.utils as utils
 import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
 
-from draftutils.messages import _msg, _err
+from draftutils.messages import _msg, _err, _toolmsg
 from draftutils.translate import translate
 
 # The module is used to prevent complaints from code checkers (flake8)
@@ -104,7 +104,7 @@ class Fillet(gui_base_original.Creator):
             # self.linetrack = trackers.lineTracker(dotted=True)
             # self.arctrack = trackers.arcTracker()
             # self.call = self.view.addEventCallback("SoEvent", self.action)
-            _msg(translate("draft","Enter radius."))
+            _toolmsg(translate("draft","Enter radius."))
 
     def action(self, arg):
         """Scene event handler. CURRENTLY NOT USED.
@@ -123,12 +123,12 @@ class Fillet(gui_base_original.Creator):
     def set_delete(self):
         """Execute as a callback when the delete checkbox changes."""
         self.delete = self.ui.check_delete.isChecked()
-        _msg(translate("draft","Delete original objects:") + " " + str(self.delete))
+        _toolmsg(translate("draft","Delete original objects:") + " " + str(self.delete))
 
     def set_chamfer(self):
         """Execute as a callback when the chamfer checkbox changes."""
         self.chamfer = self.ui.check_chamfer.isChecked()
-        _msg(translate("draft","Chamfer mode:") + " " + str(self.chamfer))
+        _toolmsg(translate("draft","Chamfer mode:") + " " + str(self.chamfer))
 
     def numericRadius(self, rad):
         """Validate the entry radius in the user interface.
@@ -149,19 +149,19 @@ class Fillet(gui_base_original.Creator):
             return
 
         for o in wires:
-            _msg(utils.get_type(o))
+            _toolmsg(utils.get_type(o))
 
         _test = translate("draft", "Test object")
         _test_off = translate("draft", "Test object removed")
         _cant = translate("draft", "Fillet cannot be created")
 
-        _msg(4*"=" + _test)
+        _toolmsg(4*"=" + _test)
         arc = Draft.make_fillet(wires, rad)
         if not arc:
             _err(_cant)
             return
         self.doc.removeObject(arc.Name)
-        _msg(4*"=" + _test_off)
+        _toolmsg(4*"=" + _test_off)
 
         _doc = 'FreeCAD.ActiveDocument.'
 

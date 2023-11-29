@@ -54,6 +54,7 @@
 
 // Qt
 #include <QtGlobal>
+#include <QRegularExpression>
 
 #endif  //_PreComp_
 

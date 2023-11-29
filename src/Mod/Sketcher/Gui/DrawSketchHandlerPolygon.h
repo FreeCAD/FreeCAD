@@ -68,8 +68,9 @@ class DrawSketchHandlerPolygon: public DrawSketchHandlerPolygonBase
     friend DSHPolygonControllerBase;
 
 public:
-    explicit DrawSketchHandlerPolygon(int corners = 6)
+    explicit DrawSketchHandlerPolygon(int corners = 6)  // NOLINT
         : numberOfCorners(corners)
+        , radius(0.0)
     {}
     ~DrawSketchHandlerPolygon() override = default;
 
@@ -128,7 +129,7 @@ private:
             tryAutoRecomputeIfNotSolve(
                 static_cast<Sketcher::SketchObject*>(sketchgui->getObject()));
         }
-        catch (const Base::Exception& e) {
+        catch (const Base::Exception&) {
             Gui::NotifyError(sketchgui,
                              QT_TRANSLATE_NOOP("Notifications", "Error"),
                              QT_TRANSLATE_NOOP("Notifications", "Failed to add polygon"));
@@ -244,7 +245,7 @@ private:
             return;
         }
 
-        double angleOfSeparation = 2.0 * M_PI / static_cast<double>(numberOfCorners);
+        double angleOfSeparation = 2.0 * M_PI / static_cast<double>(numberOfCorners);  // NOLINT
         double cos_v = cos(angleOfSeparation);
         double sin_v = sin(angleOfSeparation);
 
@@ -292,7 +293,7 @@ template<>
 void DSHPolygonController::secondKeyShortcut()
 {
     auto value = toolWidget->getParameter(WParameter::First);
-    if (value > 3.0) {
+    if (value > 3.0) {  // NOLINT
         toolWidget->setParameterWithoutPassingFocus(OnViewParameter::First, value - 1);
     }
 }
@@ -306,9 +307,9 @@ void DSHPolygonController::configureToolWidget()
     toolWidget->setParameter(OnViewParameter::First,
                              handler->numberOfCorners);  // unconditionally set
     toolWidget->configureParameterUnit(OnViewParameter::First, Base::Unit());
-    toolWidget->configureParameterMin(OnViewParameter::First, 3.0);
+    toolWidget->configureParameterMin(OnViewParameter::First, 3.0);  // NOLINT
     // We set a reasonable max to avoid the spinbox from being very large
-    toolWidget->configureParameterMax(OnViewParameter::First, 9999.0);
+    toolWidget->configureParameterMax(OnViewParameter::First, 9999.0);  // NOLINT
     toolWidget->configureParameterDecimals(OnViewParameter::First, 0);
 
     onViewParameters[OnViewParameter::First]->setLabelType(Gui::SoDatumLabel::DISTANCEX);
@@ -362,7 +363,8 @@ void DSHPolygonControllerBase::doEnforceControlParameters(Base::Vector2d& onSket
             }
 
             if (onViewParameters[OnViewParameter::Fourth]->isSet) {
-                double angle = onViewParameters[OnViewParameter::Fourth]->getValue() * M_PI / 180;
+                double angle =
+                    Base::toRadians(onViewParameters[OnViewParameter::Fourth]->getValue());
                 onSketchPos.x = handler->centerPoint.x + cos(angle) * length;
                 onSketchPos.y = handler->centerPoint.y + sin(angle) * length;
             }
@@ -405,7 +407,7 @@ void DSHPolygonController::adaptParameters(Base::Vector2d onSketchPos)
             double range = (handler->firstCorner - handler->centerPoint).Angle();
             if (!onViewParameters[OnViewParameter::Fourth]->isSet) {
                 setOnViewParameterValue(OnViewParameter::Fourth,
-                                        range * 180 / M_PI,
+                                        Base::toDegrees(range),
                                         Base::Unit::Angle);
             }
 

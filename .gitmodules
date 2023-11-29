@@ -1,0 +1,3 @@
+[submodule "src/3rdParty/OndselSolver"]
+	path = src/3rdParty/OndselSolver
+	url = https://github.com/Ondsel-Development/OndselSolver.git

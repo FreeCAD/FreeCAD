@@ -25,7 +25,6 @@
     "PrimaryAddonsSubmoduleURL":
         "https://raw.githubusercontent.com/FreeCAD/FreeCAD-addons/master/.gitmodules",
     "ProxyUrl": "",
-    "PythonExecutableForPip": "Not set",
     "RemoteIconCacheURL": "https://addons.freecad.org/icon_cache.zip",
     "SelectedAddon": "",
     "ShowBranchSwitcher": false,

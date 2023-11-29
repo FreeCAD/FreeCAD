@@ -51,7 +51,7 @@ import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
 import draftguitools.gui_trackers as trackers
 
-from draftutils.messages import _msg, _err
+from draftutils.messages import _msg, _err, _toolmsg
 from draftutils.translate import translate
 
 # The module is used to prevent complaints from code checkers (flake8)
@@ -170,7 +170,7 @@ class Trimex(gui_base_original.Modifier):
         self.force = None
         self.cv = None
         self.call = self.view.addEventCallback("SoEvent", self.action)
-        _msg(translate("draft", "Pick distance"))
+        _toolmsg(translate("draft", "Pick distance"))
 
     def action(self, arg):
         """Handle the 3D scene events.
@@ -187,16 +187,15 @@ class Trimex(gui_base_original.Modifier):
             if arg["Key"] == "ESCAPE":
                 self.finish()
         elif arg["Type"] == "SoLocation2Event":  # mouse movement detection
-            self.shift = gui_tool_utils.hasMod(arg,
-                                               gui_tool_utils.MODCONSTRAIN)
-            self.alt = gui_tool_utils.hasMod(arg, gui_tool_utils.MODALT)
-            self.ctrl = gui_tool_utils.hasMod(arg, gui_tool_utils.MODSNAP)
+            self.shift = gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_constrain_key())
+            self.alt = gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key())
+            self.ctrl = gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_snap_key())
             if self.extrudeMode:
                 arg["ShiftDown"] = False
             elif hasattr(Gui, "Snapper"):
                 Gui.Snapper.setSelectMode(not self.ctrl)
             self.point, cp, info = gui_tool_utils.getPoint(self, arg)
-            if gui_tool_utils.hasMod(arg, gui_tool_utils.MODSNAP):
+            if gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_snap_key()):
                 self.snapped = None
             else:
                 self.snapped = self.view.getObjectInfo((arg["Position"][0],
@@ -226,10 +225,9 @@ class Trimex(gui_base_original.Modifier):
         elif arg["Type"] == "SoMouseButtonEvent":
             if (arg["State"] == "DOWN") and (arg["Button"] == "BUTTON1"):
                 cursor = arg["Position"]
-                self.shift = gui_tool_utils.hasMod(arg,
-                                                   gui_tool_utils.MODCONSTRAIN)
-                self.alt = gui_tool_utils.hasMod(arg, gui_tool_utils.MODALT)
-                if gui_tool_utils.hasMod(arg, gui_tool_utils.MODSNAP):
+                self.shift = gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_constrain_key())
+                self.alt = gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key())
+                if gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_snap_key()):
                     self.snapped = None
                 else:
                     self.snapped = self.view.getObjectInfo((cursor[0],

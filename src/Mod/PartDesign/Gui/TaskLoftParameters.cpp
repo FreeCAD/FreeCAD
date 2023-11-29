@@ -67,6 +67,8 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft *LoftView, bool /*newObj
             this, &TaskLoftParameters::onClosed);
     connect(ui->checkBoxUpdateView, &QCheckBox::toggled,
             this, &TaskLoftParameters::onUpdateView);
+    connect(ui->checkBoxOutside, &QCheckBox::toggled,
+        this, &TaskLoftParameters::onOutsideChanged);
 
     // Create context menu
     QAction* remove = new QAction(tr("Remove"), this);
@@ -119,6 +121,10 @@ TaskLoftParameters::TaskLoftParameters(ViewProviderLoft *LoftView, bool /*newObj
     for (QWidget* child : childs)
         child->blockSignals(false);
 
+    bool outside = enableOutside(vp);
+    ui->checkBoxOutside->setEnabled(outside);
+    ui->checkBoxOutside->setVisible(outside);
+    ui->checkBoxOutside->setChecked(loft->Outside.getValue());
     updateUI();
 }
 

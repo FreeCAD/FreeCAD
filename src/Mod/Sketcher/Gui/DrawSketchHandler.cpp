@@ -1173,14 +1173,18 @@ void DrawSketchHandler::drawWidthHeightAtCursor(const Base::Vector2d& position,
     setPositionText(position, text);
 }
 
-void DrawSketchHandler::drawDoubleAtCursor(const Base::Vector2d& position, const double val)
+void DrawSketchHandler::drawDoubleAtCursor(const Base::Vector2d& position,
+                                           const double val,
+                                           Base::Unit unit)
 {
     if (!showCursorCoords()) {
         return;
     }
 
     SbString text;
-    std::string doubleString = lengthToDisplayFormat(val, 1);
+    std::string doubleString = unit == Base::Unit::Length
+        ? lengthToDisplayFormat(val, 1)
+        : angleToDisplayFormat(val * 180.0 / M_PI, 1);
     text.sprintf(" (%s)", doubleString.c_str());
     setPositionText(position, text);
 }

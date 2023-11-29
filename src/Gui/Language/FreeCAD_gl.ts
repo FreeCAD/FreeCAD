@@ -188,8 +188,8 @@
       <translation>Emprazamento</translation>
     </message>
     <message>
-      <location filename="../TaskCSysDragger.cpp" line="75"/>
       <location filename="../Transform.cpp" line="101"/>
+      <location filename="../TaskCSysDragger.cpp" line="75"/>
       <location filename="../ViewProviderAnnotation.cpp" line="416"/>
       <source>Transform</source>
       <translation>Transformar</translation>
@@ -2437,6 +2437,16 @@ Por favor, especifique outro directorio.</translation>
       <translation>Preferencias</translation>
     </message>
     <message>
+      <location filename="../DlgPreferences.ui" line="152"/>
+      <source>Reset</source>
+      <translation>Restaurar</translation>
+    </message>
+    <message>
+      <location filename="../DlgPreferences.ui" line="192"/>
+      <source>Header</source>
+      <translation>Encabezado</translation>
+    </message>
+    <message>
       <source/>
       <translation type="unfinished"/>
     </message>
@@ -2444,98 +2454,72 @@ Por favor, especifique outro directorio.</translation>
   <context>
     <name>Gui::Dialog::DlgPreferencesImp</name>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="386"/>
-      <source>Reset tab '%1'...</source>
-      <translation type="unfinished">Reset tab '%1'...</translation>
+      <location filename="../DlgPreferencesImp.cpp" line="439"/>
+      <source>Reset page '%1'...</source>
+      <translation type="unfinished">Reset page '%1'...</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="388"/>
-      <source>Resets the user settings for the tab '%1'</source>
-      <translation type="unfinished">Resets the user settings for the tab '%1'</translation>
+      <location filename="../DlgPreferencesImp.cpp" line="442"/>
+      <source>Resets the user settings for the page '%1'</source>
+      <translation type="unfinished">Resets the user settings for the page '%1'</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="393"/>
+      <location filename="../DlgPreferencesImp.cpp" line="445"/>
       <source>Reset group '%1'...</source>
       <translation type="unfinished">Reset group '%1'...</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="395"/>
+      <location filename="../DlgPreferencesImp.cpp" line="448"/>
       <source>Resets the user settings for the group '%1'</source>
       <translation type="unfinished">Resets the user settings for the group '%1'</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="398"/>
+      <location filename="../DlgPreferencesImp.cpp" line="451"/>
       <source>Reset all...</source>
       <translation type="unfinished">Reset all...</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="400"/>
+      <location filename="../DlgPreferencesImp.cpp" line="454"/>
       <source>Resets the user settings entirely</source>
       <translation type="unfinished">Resets the user settings entirely</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="415"/>
+      <location filename="../DlgPreferencesImp.cpp" line="469"/>
       <source>Clear user settings</source>
       <translation>Limpar axustes de usuario</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="416"/>
+      <location filename="../DlgPreferencesImp.cpp" line="470"/>
       <source>Do you want to clear all your user settings?</source>
       <translation>Quere desbotar tódolos axustes de usuario?</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="417"/>
+      <location filename="../DlgPreferencesImp.cpp" line="471"/>
       <source>If you agree all your settings will be cleared.</source>
       <translation>Se acepta desbotaranse tódolos axustes feitos.</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="442"/>
-      <source>Reset Tab Settings</source>
-      <translation type="unfinished">Reset Tab Settings</translation>
-    </message>
-    <message>
-      <location filename="../DlgPreferencesImp.cpp" line="443"/>
-      <source>All the settings for the tab '%1' will be deleted.</source>
-      <translation type="unfinished">All the settings for the tab '%1' will be deleted.</translation>
-    </message>
-    <message>
-      <location filename="../DlgPreferencesImp.cpp" line="444"/>
-      <location filename="../DlgPreferencesImp.cpp" line="470"/>
-      <source>Do you want to continue?</source>
-      <translation>Quere seguir?</translation>
-    </message>
-    <message>
-      <location filename="../DlgPreferencesImp.cpp" line="468"/>
-      <source>Reset Group Settings</source>
-      <translation type="unfinished">Reset Group Settings</translation>
-    </message>
-    <message>
-      <location filename="../DlgPreferencesImp.cpp" line="469"/>
-      <source>All the settings for the group '%1' will be deleted.</source>
-      <translation type="unfinished">All the settings for the group '%1' will be deleted.</translation>
-    </message>
-    <message>
-      <location filename="../DlgPreferencesImp.cpp" line="590"/>
+      <location filename="../DlgPreferencesImp.cpp" line="571"/>
       <source>Wrong parameter</source>
       <translation>Parámetro incorrecto</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="626"/>
+      <location filename="../DlgPreferencesImp.cpp" line="614"/>
       <source>Restart required</source>
       <translation type="unfinished">Restart required</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="627"/>
+      <location filename="../DlgPreferencesImp.cpp" line="615"/>
       <source>You must restart FreeCAD for changes to take effect.</source>
       <translation type="unfinished">You must restart FreeCAD for changes to take effect.</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="632"/>
+      <location filename="../DlgPreferencesImp.cpp" line="620"/>
       <source>Restart now</source>
       <translation type="unfinished">Restart now</translation>
     </message>
     <message>
-      <location filename="../DlgPreferencesImp.cpp" line="633"/>
+      <location filename="../DlgPreferencesImp.cpp" line="621"/>
       <source>Restart later</source>
       <translation type="unfinished">Restart later</translation>
     </message>
@@ -2544,8 +2528,8 @@ Por favor, especifique outro directorio.</translation>
     <name>Gui::Dialog::DlgProjectInformation</name>
     <message>
       <location filename="../DlgProjectInformation.ui" line="14"/>
-      <source>Project information</source>
-      <translation>Información do proxecto</translation>
+      <source>Document information</source>
+      <translation type="unfinished">Document information</translation>
     </message>
     <message>
       <location filename="../DlgProjectInformation.ui" line="26"/>
@@ -2626,13 +2610,13 @@ Por favor, especifique outro directorio.</translation>
     <name>Gui::Dialog::DlgProjectUtility</name>
     <message>
       <location filename="../DlgProjectUtility.ui" line="14"/>
-      <source>Project utility</source>
-      <translation>Utilidade do proxecto</translation>
+      <source>Document utility</source>
+      <translation type="unfinished">Document utility</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.ui" line="22"/>
-      <source>Extract project</source>
-      <translation>Extraer proxecto</translation>
+      <source>Extract document</source>
+      <translation type="unfinished">Extract document</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.ui" line="28"/>
@@ -2653,18 +2637,18 @@ Por favor, especifique outro directorio.</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.ui" line="72"/>
-      <source>Create project</source>
-      <translation>Elaborar proxecto</translation>
+      <source>Create document</source>
+      <translation type="unfinished">Create document</translation>
+    </message>
+    <message>
+      <location filename="../DlgProjectUtility.ui" line="137"/>
+      <source>Load document file after creation</source>
+      <translation type="unfinished">Load document file after creation</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.ui" line="115"/>
       <source>Create</source>
       <translation>Facer</translation>
-    </message>
-    <message>
-      <location filename="../DlgProjectUtility.ui" line="137"/>
-      <source>Load project file after creation</source>
-      <translation>Abrir o ficheiro do proxecto logo de se facer</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.cpp" line="50"/>
@@ -2697,13 +2681,13 @@ Por favor, especifique outro directorio.</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.cpp" line="104"/>
-      <source>Failed to extract project</source>
-      <translation type="unfinished">Failed to extract project</translation>
+      <source>Failed to extract document</source>
+      <translation type="unfinished">Failed to extract document</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.cpp" line="121"/>
-      <source>Failed to create project</source>
-      <translation type="unfinished">Failed to create project</translation>
+      <source>Failed to create document</source>
+      <translation type="unfinished">Failed to create document</translation>
     </message>
   </context>
   <context>
@@ -3132,12 +3116,27 @@ bounding box size of the 3D object that is currently displayed.</translation>
       <translation>15px</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="160"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="130"/>
+      <source>20px</source>
+      <translation type="unfinished">20px</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="131"/>
+      <source>25px</source>
+      <translation type="unfinished">25px</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="132"/>
+      <source>30px</source>
+      <translation type="unfinished">30px</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="163"/>
       <source>Anti-aliasing</source>
       <translation>Anti-Aliasing</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="161"/>
+      <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="164"/>
       <source>Open a new viewer or restart %1 to apply anti-aliasing changes.</source>
       <translation>Abra unha nova vista ou reinicie %1 para aplicar os cambios de ante-entrelazado.</translation>
     </message>
@@ -4374,13 +4373,13 @@ Mouse tilting is not disabled by this setting.</translation>
     <name>Gui::Dialog::DlgSettingsPythonConsole</name>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="14"/>
-      <source>Python console</source>
-      <translation>Consola Python</translation>
+      <source>General</source>
+      <translation>Xeral</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="20"/>
-      <source>Settings</source>
-      <translation>Axustes</translation>
+      <source>Console</source>
+      <translation type="unfinished">Console</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="26"/>
@@ -4423,6 +4422,21 @@ horizontal space in Python console</translation>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="91"/>
       <source>The interval at which the profiler runs when there's Python code running (to keep the GUI responding). Set to 0 to disable.</source>
       <translation type="unfinished">The interval at which the profiler runs when there's Python code running (to keep the GUI responding). Set to 0 to disable.</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="116"/>
+      <source>Other</source>
+      <translation>Outros</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="122"/>
+      <source>Path to external Python executable (optional):</source>
+      <translation type="unfinished">Path to external Python executable (optional):</translation>
+    </message>
+    <message>
+      <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="141"/>
+      <source>Used for package installation with pip and debugging with debugpy. Autodetected if needed and not specified.</source>
+      <translation type="unfinished">Used for package installation with pip and debugging with debugpy. Autodetected if needed and not specified.</translation>
     </message>
   </context>
   <context>
@@ -5421,11 +5435,6 @@ A columna 'Estado' amosa se é posible recuperar o documento.</translation>
       <source>Port:</source>
       <translation>Porto:</translation>
     </message>
-    <message>
-      <location filename="../RemoteDebugger.ui" line="95"/>
-      <source>Redirect output</source>
-      <translation>Redirixir saída</translation>
-    </message>
   </context>
   <context>
     <name>Gui::Dialog::SceneInspector</name>
@@ -5621,82 +5630,82 @@ originally selected prior to opening this dialog</translation>
   <context>
     <name>Gui::DockWnd::ReportOutput</name>
     <message>
-      <location filename="../ReportView.cpp" line="580"/>
+      <location filename="../ReportView.cpp" line="586"/>
       <source>Options</source>
       <translation>Opcións</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="585"/>
+      <location filename="../ReportView.cpp" line="591"/>
       <source>Display message types</source>
       <translation>Amosar tipos de mensaxes</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="588"/>
-      <location filename="../ReportView.cpp" line="612"/>
+      <location filename="../ReportView.cpp" line="594"/>
+      <location filename="../ReportView.cpp" line="618"/>
       <source>Normal messages</source>
       <translation>Mensaxes normais</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="592"/>
-      <location filename="../ReportView.cpp" line="616"/>
+      <location filename="../ReportView.cpp" line="598"/>
+      <location filename="../ReportView.cpp" line="622"/>
       <source>Log messages</source>
       <translation>Mensaxes de rexistro</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="596"/>
-      <location filename="../ReportView.cpp" line="620"/>
+      <location filename="../ReportView.cpp" line="602"/>
+      <location filename="../ReportView.cpp" line="626"/>
       <source>Warnings</source>
       <translation>Avisos</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="600"/>
-      <location filename="../ReportView.cpp" line="624"/>
+      <location filename="../ReportView.cpp" line="606"/>
+      <location filename="../ReportView.cpp" line="630"/>
       <source>Errors</source>
       <translation>Erros</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="604"/>
-      <location filename="../ReportView.cpp" line="628"/>
+      <location filename="../ReportView.cpp" line="610"/>
+      <location filename="../ReportView.cpp" line="634"/>
       <source>Critical messages</source>
       <translation type="unfinished">Critical messages</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="609"/>
+      <location filename="../ReportView.cpp" line="615"/>
       <source>Show Report view on</source>
       <translation type="unfinished">Show Report view on</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="634"/>
+      <location filename="../ReportView.cpp" line="640"/>
       <source>Redirect Python output</source>
       <translation>Encamiñar a saída de Python</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="638"/>
+      <location filename="../ReportView.cpp" line="644"/>
       <source>Redirect Python errors</source>
       <translation>Encamiñar os erros de Python</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="643"/>
+      <location filename="../ReportView.cpp" line="649"/>
       <source>Go to end</source>
       <translation>Ir o final</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="662"/>
+      <location filename="../ReportView.cpp" line="668"/>
       <source>Clear</source>
       <translation>Baleirar</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="664"/>
+      <location filename="../ReportView.cpp" line="670"/>
       <source>Save As...</source>
       <translation>Gardar coma...</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="672"/>
+      <location filename="../ReportView.cpp" line="678"/>
       <source>Save Report Output</source>
       <translation>Gardar saída do informe</translation>
     </message>
     <message>
-      <location filename="../ReportView.cpp" line="673"/>
+      <location filename="../ReportView.cpp" line="679"/>
       <source>Plain Text Files</source>
       <translation>Ficheiros de texto sen formato</translation>
     </message>
@@ -6078,15 +6087,15 @@ Quere gardar os cambios?</translation>
       <translation>Formato PDF</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="617"/>
       <location filename="../GraphvizView.cpp" line="448"/>
+      <location filename="../CommandDoc.cpp" line="617"/>
       <source>Graphviz format</source>
       <translation type="unfinished">Graphviz format</translation>
     </message>
     <message>
-      <location filename="../CommandDoc.cpp" line="618"/>
       <location filename="../GraphvizView.cpp" line="462"/>
       <location filename="../GraphvizView.cpp" line="550"/>
+      <location filename="../CommandDoc.cpp" line="618"/>
       <source>Export graph</source>
       <translation>Exportar gráfico</translation>
     </message>
@@ -6252,41 +6261,41 @@ Quere gardar os cambios?</translation>
       <translation>Acoutamento</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="487"/>
+      <location filename="../MainWindow.cpp" line="486"/>
       <source>Ready</source>
       <translation>Pronto</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="979"/>
+      <location filename="../MainWindow.cpp" line="978"/>
       <source>Help addon needed!</source>
       <translation type="unfinished">Help addon needed!</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="980"/>
+      <location filename="../MainWindow.cpp" line="979"/>
       <source>The Help system of %1 is now handled by the "Help" addon. It can easily be installed via the Addons Manager</source>
       <translation type="unfinished">The Help system of %1 is now handled by the "Help" addon. It can easily be installed via the Addons Manager</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="982"/>
+      <location filename="../MainWindow.cpp" line="981"/>
       <source>Open Addon Manager</source>
       <translation type="unfinished">Open Addon Manager</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="1177"/>
+      <location filename="../MainWindow.cpp" line="1176"/>
       <source>Close All</source>
       <translation>Pechar todo</translation>
     </message>
     <message>
+      <location filename="../MainWindow.cpp" line="1384"/>
       <location filename="../MainWindow.cpp" line="1385"/>
       <location filename="../MainWindow.cpp" line="1386"/>
-      <location filename="../MainWindow.cpp" line="1387"/>
       <source>Toggles this toolbar</source>
       <translation>Amosa/agocha esta barra de ferramentas</translation>
     </message>
     <message>
+      <location filename="../MainWindow.cpp" line="1399"/>
       <location filename="../MainWindow.cpp" line="1400"/>
       <location filename="../MainWindow.cpp" line="1401"/>
-      <location filename="../MainWindow.cpp" line="1402"/>
       <source>Toggles this dockable window</source>
       <translation>Alterna esta xanela acoplable</translation>
     </message>
@@ -6835,22 +6844,22 @@ Quere saír sen gardar os seus datos?</translation>
   <context>
     <name>Gui::RecentMacrosAction</name>
     <message>
-      <location filename="../Action.cpp" line="1026"/>
+      <location filename="../Action.cpp" line="1029"/>
       <source>none</source>
       <translation>ningún</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1041"/>
+      <location filename="../Action.cpp" line="1044"/>
       <source>Run macro %1 (Shift+click to edit) keyboard shortcut: %2</source>
       <translation type="unfinished">Run macro %1 (Shift+click to edit) keyboard shortcut: %2</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1099"/>
+      <location filename="../Action.cpp" line="1102"/>
       <source>File not found</source>
       <translation>Ficheiro non atopado</translation>
     </message>
     <message>
-      <location filename="../Action.cpp" line="1099"/>
+      <location filename="../Action.cpp" line="1102"/>
       <source>The file '%1' cannot be opened.</source>
       <translation>O ficheiro '%1', non se pode abrir.</translation>
     </message>
@@ -7843,47 +7852,47 @@ Quere especificar outro directorio?</translation>
   <context>
     <name>QDockWidget</name>
     <message>
-      <location filename="../MainWindow.cpp" line="651"/>
+      <location filename="../MainWindow.cpp" line="650"/>
       <source>Tree view</source>
       <translation>Vista en árbore</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="573"/>
+      <location filename="../MainWindow.cpp" line="572"/>
       <source>Tasks</source>
       <translation>Tarefas</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="677"/>
+      <location filename="../MainWindow.cpp" line="676"/>
       <source>Property view</source>
       <translation>Vista de propiedades</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="590"/>
+      <location filename="../MainWindow.cpp" line="589"/>
       <source>Selection view</source>
       <translation>Vista de selección</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="705"/>
+      <location filename="../MainWindow.cpp" line="704"/>
       <source>Task List</source>
       <translation type="unfinished">Task List</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="730"/>
+      <location filename="../MainWindow.cpp" line="729"/>
       <source>Model</source>
       <translation>Modelo</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="756"/>
+      <location filename="../MainWindow.cpp" line="755"/>
       <source>DAG View</source>
       <translation>Vista DAG</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="608"/>
+      <location filename="../MainWindow.cpp" line="607"/>
       <source>Report view</source>
       <translation>Vista de informe</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="628"/>
+      <location filename="../MainWindow.cpp" line="627"/>
       <source>Python console</source>
       <translation>Consola Python</translation>
     </message>
@@ -8017,8 +8026,8 @@ Quere especificar outro directorio?</translation>
       <translation>Exportando en PDF...</translation>
     </message>
     <message>
+      <location filename="../MainWindow.cpp" line="809"/>
       <location filename="../CommandDoc.cpp" line="1230"/>
-      <location filename="../MainWindow.cpp" line="810"/>
       <source>Unsaved document</source>
       <translation>Documento non gardado</translation>
     </message>
@@ -8559,12 +8568,12 @@ Por favor, abra un buscador e escriba: http://localhost:%1.</translation>
       <translation>Opcións...</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2358"/>
+      <location filename="../View3DInventorViewer.cpp" line="2360"/>
       <source>Out of memory</source>
       <translation>Sen memoria</translation>
     </message>
     <message>
-      <location filename="../View3DInventorViewer.cpp" line="2359"/>
+      <location filename="../View3DInventorViewer.cpp" line="2361"/>
       <source>Not enough memory available to display the data.</source>
       <translation>Non hai memoria dispoñíbel para visualizar os datos.</translation>
     </message>
@@ -8580,7 +8589,7 @@ Por favor, abra un buscador e escriba: http://localhost:%1.</translation>
       <translation>Non se pode atopar o ficheiro %1 nin en %2 nin en %3</translation>
     </message>
     <message>
-      <location filename="../NavigationStyle.cpp" line="1605"/>
+      <location filename="../NavigationStyle.cpp" line="1627"/>
       <source>Navigation styles</source>
       <translation>Estilos de navegación</translation>
     </message>
@@ -8601,32 +8610,32 @@ Por favor, abra un buscador e escriba: http://localhost:%1.</translation>
       <translation type="unfinished">Do you want to close this dialog?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="812"/>
+      <location filename="../MainWindow.cpp" line="811"/>
       <source>Do you want to save your changes to document '%1' before closing?</source>
       <translation>Quere gardar os cambios no documento '%1' antes de pechalo?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="815"/>
+      <location filename="../MainWindow.cpp" line="814"/>
       <source>Do you want to save your changes to document before closing?</source>
       <translation type="unfinished">Do you want to save your changes to document before closing?</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="817"/>
+      <location filename="../MainWindow.cpp" line="816"/>
       <source>If you don't save, your changes will be lost.</source>
       <translation>Se non garda os cambios, hanse perder.</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="822"/>
+      <location filename="../MainWindow.cpp" line="821"/>
       <source>Apply answer to all</source>
       <translation type="unfinished">Apply answer to all</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="912"/>
+      <location filename="../MainWindow.cpp" line="911"/>
       <source>%1 Document(s) not saved</source>
       <translation type="unfinished">%1 Document(s) not saved</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="913"/>
+      <location filename="../MainWindow.cpp" line="912"/>
       <source>Some documents could not be saved. Do you want to cancel closing?</source>
       <translation type="unfinished">Some documents could not be saved. Do you want to cancel closing?</translation>
     </message>
@@ -8891,8 +8900,8 @@ the current copy will be lost.
       <translation type="unfinished">Toggle overlay</translation>
     </message>
     <message>
-      <location filename="../OverlayManager.cpp" line="1036"/>
       <location filename="../OverlayWidgets.cpp" line="2180"/>
+      <location filename="../OverlayManager.cpp" line="1036"/>
       <source>Toggle floating window</source>
       <translation type="unfinished">Toggle floating window</translation>
     </message>
@@ -9106,7 +9115,7 @@ the current copy will be lost.
       <translation>Non permitido:</translation>
     </message>
     <message>
-      <location filename="../Selection.cpp" line="908"/>
+      <location filename="../Selection.cpp" line="937"/>
       <source>Selection not allowed by filter</source>
       <translation>Selección non admitida polo filtro</translation>
     </message>
@@ -9985,16 +9994,16 @@ the current copy will be lost.
     <name>StdCmdMergeProjects</name>
     <message>
       <location filename="../CommandDoc.cpp" line="520"/>
-      <source>Merge project...</source>
-      <translation>Xuntar proxecto...</translation>
+      <source>Merge document...</source>
+      <translation type="unfinished">Merge document...</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="521"/>
       <location filename="../CommandDoc.cpp" line="523"/>
       <location filename="../CommandDoc.cpp" line="533"/>
       <location filename="../CommandDoc.cpp" line="542"/>
-      <source>Merge project</source>
-      <translation>Xuntar proxecto</translation>
+      <source>Merge document</source>
+      <translation type="unfinished">Merge document</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="534"/>
@@ -10003,8 +10012,8 @@ the current copy will be lost.
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="543"/>
-      <source>Cannot merge project with itself.</source>
-      <translation>Non se pode xuntar o proxecto con el mesmo.</translation>
+      <source>Cannot merge document with itself.</source>
+      <translation type="unfinished">Cannot merge document with itself.</translation>
     </message>
   </context>
   <context>
@@ -10021,8 +10030,8 @@ the current copy will be lost.
       <translation>Abrir un documento novo baleiro</translation>
     </message>
     <message>
-      <location filename="../DocumentRecovery.cpp" line="391"/>
       <location filename="../MainWindow.cpp" line="2311"/>
+      <location filename="../DocumentRecovery.cpp" line="391"/>
       <source>Unnamed</source>
       <translation>Sen nome</translation>
     </message>
@@ -10176,34 +10185,6 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
       <location filename="../CommandDoc.cpp" line="921"/>
       <source>Print preview</source>
       <translation>Vista previa para impresión</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdProjectInfo</name>
-    <message>
-      <location filename="../CommandDoc.cpp" line="828"/>
-      <source>Project i&amp;nformation...</source>
-      <translation>&amp;Información do proxecto...</translation>
-    </message>
-    <message>
-      <location filename="../CommandDoc.cpp" line="829"/>
-      <location filename="../CommandDoc.cpp" line="831"/>
-      <source>Show details of the currently active project</source>
-      <translation>Amosar detalles do proxecto activo actual</translation>
-    </message>
-  </context>
-  <context>
-    <name>StdCmdProjectUtil</name>
-    <message>
-      <location filename="../CommandDoc.cpp" line="859"/>
-      <source>Project utility...</source>
-      <translation>Utilidade do proxecto...</translation>
-    </message>
-    <message>
-      <location filename="../CommandDoc.cpp" line="860"/>
-      <location filename="../CommandDoc.cpp" line="861"/>
-      <source>Utility to extract or create project files</source>
-      <translation>Utilidade para extraer ou facer ficheiros de proxectos</translation>
     </message>
   </context>
   <context>
@@ -12643,11 +12624,6 @@ after FreeCAD launches</translation>
       <translation>Sistema de unidades:</translation>
     </message>
     <message>
-      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="62"/>
-      <source>Unit system for all parts of the application. Can be overridden by specifying a project unit system.</source>
-      <translation type="unfinished">Unit system for all parts of the application. Can be overridden by specifying a project unit system.</translation>
-    </message>
-    <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="71"/>
       <source>Number of decimals:</source>
       <translation>Número de decimais:</translation>
@@ -12658,19 +12634,24 @@ after FreeCAD launches</translation>
       <translation type="unfinished">Number of decimals that should be shown for numbers and dimensions</translation>
     </message>
     <message>
+      <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="62"/>
+      <source>Unit system for all parts of the application. Can be overridden by specifying a document unit system.</source>
+      <translation type="unfinished">Unit system for all parts of the application. Can be overridden by specifying a document unit system.</translation>
+    </message>
+    <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="93"/>
-      <source>Project unit system:</source>
-      <translation type="unfinished">Project unit system:</translation>
+      <source>Document unit system:</source>
+      <translation type="unfinished">Document unit system:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="100"/>
-      <source>Unit system stored in the current project</source>
-      <translation type="unfinished">Unit system stored in the current project</translation>
+      <source>Unit system stored in the current document</source>
+      <translation type="unfinished">Unit system stored in the current document</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="107"/>
-      <source>If enabled, project unit systems are ignored</source>
-      <translation type="unfinished">If enabled, project unit systems are ignored</translation>
+      <source>If enabled, document unit systems are ignored</source>
+      <translation type="unfinished">If enabled, document unit systems are ignored</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="110"/>
@@ -13602,6 +13583,34 @@ the region are non-opaque.</translation>
       <location filename="../OverlayWidgets.cpp" line="1836"/>
       <source>Mouse pass through, ESC to stop</source>
       <translation type="unfinished">Mouse pass through, ESC to stop</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdProjectInfo</name>
+    <message>
+      <location filename="../CommandDoc.cpp" line="828"/>
+      <source>Document i&amp;nformation...</source>
+      <translation type="unfinished">Document i&amp;nformation...</translation>
+    </message>
+    <message>
+      <location filename="../CommandDoc.cpp" line="829"/>
+      <location filename="../CommandDoc.cpp" line="831"/>
+      <source>Show details of the currently active document</source>
+      <translation type="unfinished">Show details of the currently active document</translation>
+    </message>
+  </context>
+  <context>
+    <name>StdCmdProjectUtil</name>
+    <message>
+      <location filename="../CommandDoc.cpp" line="859"/>
+      <source>Document utility...</source>
+      <translation type="unfinished">Document utility...</translation>
+    </message>
+    <message>
+      <location filename="../CommandDoc.cpp" line="860"/>
+      <location filename="../CommandDoc.cpp" line="861"/>
+      <source>Utility to extract or create document files</source>
+      <translation type="unfinished">Utility to extract or create document files</translation>
     </message>
   </context>
 </TS>

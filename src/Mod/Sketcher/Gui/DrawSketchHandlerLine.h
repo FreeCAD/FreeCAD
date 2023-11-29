@@ -61,10 +61,10 @@ using DSHLineController =
     DrawSketchDefaultWidgetController<DrawSketchHandlerLine,
                                       /*SelectModeT*/ StateMachines::TwoSeekEnd,
                                       /*PAutoConstraintSize =*/2,
-                                      /*OnViewParametersT =*/OnViewParameters<4, 4, 4>,
-                                      /*WidgetParametersT =*/WidgetParameters<0, 0, 0>,
-                                      /*WidgetCheckboxesT =*/WidgetCheckboxes<0, 0, 0>,
-                                      /*WidgetComboboxesT =*/WidgetComboboxes<1, 1, 1>,
+                                      /*OnViewParametersT =*/OnViewParameters<4, 4, 4>,  // NOLINT
+                                      /*WidgetParametersT =*/WidgetParameters<0, 0, 0>,  // NOLINT
+                                      /*WidgetCheckboxesT =*/WidgetCheckboxes<0, 0, 0>,  // NOLINT
+                                      /*WidgetComboboxesT =*/WidgetComboboxes<1, 1, 1>,  // NOLINT
                                       ConstructionMethods::LineConstructionMethod,
                                       /*bool PFirstComboboxIsConstructionMethod =*/true>;
 
@@ -81,7 +81,8 @@ class DrawSketchHandlerLine: public DrawSketchHandlerLineBase
 public:
     explicit DrawSketchHandlerLine(
         ConstructionMethod constrMethod = ConstructionMethod::OnePointLengthAngle)
-        : DrawSketchHandlerLineBase(constrMethod) {};
+        : DrawSketchHandlerLineBase(constrMethod)
+        , length(0.0) {};
     ~DrawSketchHandlerLine() override = default;
 
 private:
@@ -130,7 +131,7 @@ private:
 
             Gui::Command::commitCommand();
         }
-        catch (const Base::Exception& e) {
+        catch (const Base::Exception&) {
             Gui::NotifyError(sketchgui,
                              QT_TRANSLATE_NOOP("Notifications", "Error"),
                              QT_TRANSLATE_NOOP("Notifications", "Failed to add line"));
@@ -200,7 +201,7 @@ private:
     {
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/Mod/Sketcher/Tools");
-        int index = hGrp->GetInt("OnViewParameterVisibility", 1);
+        auto index = hGrp->GetInt("OnViewParameterVisibility", 1);
         return index != 0;
     };
 
@@ -385,7 +386,7 @@ void DSHLineControllerBase::doEnforceControlParameters(Base::Vector2d& onSketchP
 
                 if (onViewParameters[OnViewParameter::Fourth]->isSet) {
                     double angle =
-                        onViewParameters[OnViewParameter::Fourth]->getValue() * M_PI / 180;
+                        Base::toRadians(onViewParameters[OnViewParameter::Fourth]->getValue());
                     onSketchPos.x = handler->startPoint.x + cos(angle) * length;
                     onSketchPos.y = handler->startPoint.y + sin(angle) * length;
                 }
@@ -466,7 +467,7 @@ void DSHLineController::adaptParameters(Base::Vector2d onSketchPos)
                 double range = (handler->endPoint - handler->startPoint).Angle();
                 if (!onViewParameters[OnViewParameter::Fourth]->isSet) {
                     setOnViewParameterValue(OnViewParameter::Fourth,
-                                            range * 180 / M_PI,
+                                            Base::toDegrees(range),
                                             Base::Unit::Angle);
                 }
 
@@ -611,7 +612,7 @@ void DSHLineController::addConstraints()
     };
 
     auto constraintp4angle = [&]() {
-        double angle = p4 / 180 * M_PI;
+        double angle = Base::toRadians(p4);
         if (fabs(angle - M_PI) < Precision::Confusion()
             || fabs(angle + M_PI) < Precision::Confusion()
             || fabs(angle) < Precision::Confusion()) {

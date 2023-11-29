@@ -65,6 +65,8 @@ public:
     static const QString ModelUUID_Rendering_Texture;
     static const QString ModelUUID_Rendering_Advanced;
     static const QString ModelUUID_Rendering_Vector;
+
+    static const QString ModelUUID_Test_Material;
 };
 
 }  // namespace Materials

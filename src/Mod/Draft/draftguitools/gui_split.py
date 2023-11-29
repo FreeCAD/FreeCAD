@@ -38,7 +38,7 @@ import DraftVecUtils
 import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
 
-from draftutils.messages import _msg
+from draftutils.messages import _toolmsg
 from draftutils.translate import translate
 
 # The module is used to prevent complaints from code checkers (flake8)
@@ -61,7 +61,7 @@ class Split(gui_base_original.Modifier):
         super(Split, self).Activated(name="Split")
         if not self.ui:
             return
-        _msg(translate("draft", "Click anywhere on a line to split it."))
+        _toolmsg(translate("draft", "Click anywhere on a line to split it."))
         self.call = self.view.addEventCallback("SoEvent", self.action)
 
     def action(self, arg):
