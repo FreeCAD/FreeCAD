@@ -23,7 +23,7 @@
 
 #include <limits>
 #include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
-# include <Mod/Part/App/FCBRepAlgoAPI_Common.hxx>
+#include <Mod/Part/App/FCBRepAlgoAPI_Common.hxx>
 #include <BRep_Builder.hxx>
 #include <BRepFeat_MakePrism.hxx>
 #include <BRepPrimAPI_MakePrism.hxx>
@@ -34,6 +34,7 @@
 #include <TopoDS_Compound.hxx>
 #include <TopoDS_Face.hxx>
 #include <TopoDS_Shape.hxx>
+#include <TopoDS.hxx>
 
 #include <App/Document.h>
 #include <Base/Tools.h>
