@@ -5,7 +5,7 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include "FunctionWithManyArgs.h"
 #include "Symbolic.h"
 
@@ -33,7 +33,7 @@ FunctionWithManyArgs::FunctionWithManyArgs(Symsptr term, Symsptr term1, Symsptr 
 
 FunctionWithManyArgs::FunctionWithManyArgs(std::shared_ptr<std::vector<Symsptr>> _terms) {
 	terms = std::make_shared<std::vector<Symsptr>>();
-	for (size_t i = 0; i < _terms->size(); i++)
+	for (int i = 0; i < _terms->size(); i++)
 		terms->push_back(_terms->at(i));
 }
 
@@ -50,5 +50,13 @@ void MbD::FunctionWithManyArgs::createMbD(std::shared_ptr<System> mbdSys, std::s
 void MbD::FunctionWithManyArgs::arguments(Symsptr args)
 {
 	assert(false);
+}
+
+bool MbD::FunctionWithManyArgs::isConstant()
+{
+	for (auto& term : *terms) {
+		if (!term->isConstant()) return false;
+	}
+	return true;
 }
 

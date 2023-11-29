@@ -35,8 +35,8 @@ namespace MbD {
 		std::ostream& printOn(std::ostream& s) const override;
 
 		FMatDsptr derivs;
-		int degree, index;
-		double delta;
+		int degree = -1, index = -1;
+		double delta = std::numeric_limits<double>::min();
 	};
 }
 

@@ -17,14 +17,6 @@ std::shared_ptr<Joint> MbD::ASMTNoRotationJoint::mbdClassNew()
     return CREATE<NoRotationJoint>::With();
 }
 
-void MbD::ASMTNoRotationJoint::storeOnLevel(std::ofstream& os, int level)
-{
-	storeOnLevelString(os, level, "NoRotationJoint");
-	storeOnLevelString(os, level + 1, "Name");
-	storeOnLevelString(os, level + 2, name);
-	ASMTItemIJ::storeOnLevel(os, level);
-}
-
 void MbD::ASMTNoRotationJoint::storeOnTimeSeries(std::ofstream& os)
 {
 	os << "NoRotationJointSeries\t" << fullName("") << std::endl;

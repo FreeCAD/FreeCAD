@@ -17,6 +17,8 @@ namespace MbD {
     public:
         RackPinConstraintIqcJc(EndFrmsptr frmi, EndFrmsptr frmj);
         
+		void initxIeJeIe() override;
+		void initthezIeJe() override;
 		void addToJointForceI(FColDsptr col) override;
 		void addToJointTorqueI(FColDsptr col) override;
 		void calc_pGpEI();

@@ -30,8 +30,8 @@ void MbD::OrbitAngleZIecJec::calcPostDynCorrectorIteration()
 	auto sumOfSquaresSquared = sumOfSquares * sumOfSquares;
 	auto thez0to2pi = Numeric::arcTan0to2piYoverX(y, x);
 	thez = std::round((thez - thez0to2pi) / (2.0 * OS_M_PI)) * (2.0 * OS_M_PI) + thez0to2pi;
-	auto cosOverSSq = x / sumOfSquares;
-	auto sinOverSSq = y / sumOfSquares;
+	cosOverSSq = x / sumOfSquares;
+	sinOverSSq = y / sumOfSquares;
 	twoCosSinOverSSqSq = 2.0 * x * y / sumOfSquaresSquared;
 	dSqOverSSqSq = diffOfSquares / sumOfSquaresSquared;
 }

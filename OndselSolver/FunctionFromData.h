@@ -18,7 +18,7 @@ namespace MbD {
         FunctionFromData() = default;
         FunctionFromData(Symsptr arg);
 
-        double xvalue;
+        double xvalue = std::numeric_limits<double>::min();
         std::shared_ptr<std::vector<double>> xs, ys;
     };
 }

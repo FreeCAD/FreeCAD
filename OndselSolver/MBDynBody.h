@@ -20,7 +20,7 @@ namespace MbD {
         void createASMT() override;
 
         std::string bodyString, nodeName;
-        double mass;
+        double mass = std::numeric_limits<double>::min();
         FColDsptr rPcmP;
         FMatDsptr aJmat;
 

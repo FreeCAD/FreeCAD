@@ -75,7 +75,7 @@ namespace MbD {
         void zeroSelf() override;
         FColsptr<double> column(int j);
 
-        void atiput(int i, FRowsptr<double> fullRow) override;
+        void atiput(int i, FRowsptr<double> fullRow);
         void atijput(int i, int j, double value);
         std::shared_ptr<FullMatrixDouble> copy();
         double maxMagnitude() override;

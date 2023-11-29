@@ -49,7 +49,7 @@ FColDsptr MatrixSolver::timedSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr f
 	auto end = std::chrono::steady_clock::now();
 	auto diff = end - start;
 	millisecondsToRun = std::chrono::duration<double, std::milli>(diff).count();
-	std::cout << "milliseconds to run = " << millisecondsToRun << std::endl;
+	//std::cout << "milliseconds to run = " << millisecondsToRun << std::endl;
 	return answerX;
 }
 

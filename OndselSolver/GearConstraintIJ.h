@@ -18,6 +18,8 @@ namespace MbD {
 	public:
 		GearConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj);
 
+		static std::shared_ptr<GearConstraintIJ> With(EndFrmsptr frmi, EndFrmsptr frmj);
+
 		void calcPostDynCorrectorIteration() override;
 		void initialize() override;
 		void initializeGlobally() override;

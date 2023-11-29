@@ -12,7 +12,10 @@ namespace MbD {
     template<typename T>
     inline void EulerAngles<T>::initialize()
     {
-        assert(false);
+        rotOrder = std::make_shared<FullColumn<int>>(3);
+        rotOrder->at(0) = 0;
+        rotOrder->at(1) = 1;
+        rotOrder->at(2) = 2;
     }
     template<>
     inline void EulerAngles<Symsptr>::calc()

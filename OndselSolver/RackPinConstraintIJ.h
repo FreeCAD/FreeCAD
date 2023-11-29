@@ -19,8 +19,12 @@ namespace MbD {
 	public:
         RackPinConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj);
 
+        static std::shared_ptr<RackPinConstraintIJ> With(EndFrmsptr frmi, EndFrmsptr frmj);
+
         void calcPostDynCorrectorIteration() override;
         virtual void init_xthez();
+        virtual void initxIeJeIe();
+        virtual void initthezIeJe();
         void initialize() override;
         void initializeGlobally() override;
         void initializeLocally() override;

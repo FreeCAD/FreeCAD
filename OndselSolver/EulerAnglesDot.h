@@ -28,7 +28,7 @@ namespace MbD {
 		std::shared_ptr<EulerAnglesDDot<T>> differentiateWRT(T var);
 		void calc() override;
 
-		EulerAngles<T>* aEulerAngles; //Use raw pointer to point backwards
+		EulerAngles<T>* aEulerAngles = nullptr; //Use raw pointer to point backwards
 		FColFMatDsptr cAdot;
 		FMatDsptr aAdot;
 		FColDsptr omeF, omef;
@@ -47,8 +47,8 @@ namespace MbD {
 	inline void EulerAnglesDot<T>::calc()
 	{
 		aEulerAngles->calc();
-		auto rotOrder = aEulerAngles->rotOrder;
-		auto cA = aEulerAngles->cA;
+		auto& rotOrder = aEulerAngles->rotOrder;
+		auto& cA = aEulerAngles->cA;
 		cAdot = std::make_shared<FullColumn<FMatDsptr>>(3);
 		for (int i = 0; i < 3; i++)
 		{
@@ -71,12 +71,12 @@ namespace MbD {
 		auto phidot = this->at(0)->getValue();
 		auto thedot = this->at(1)->getValue();
 		auto psidot = this->at(2)->getValue();
-		auto phiA = cA->at(0);
-		auto theA = cA->at(1);
-		auto psiA = cA->at(2);
-		auto phiAdot = cAdot->at(0);
-		auto theAdot = cAdot->at(1);
-		auto psiAdot = cAdot->at(2);
+		auto& phiA = cA->at(0);
+		auto& theA = cA->at(1);
+		auto& psiA = cA->at(2);
+		auto& phiAdot = cAdot->at(0);
+		auto& theAdot = cAdot->at(1);
+		auto& psiAdot = cAdot->at(2);
 
 		aAdot = phiAdot->timesFullMatrix(theA->timesFullMatrix(psiA))
                 ->plusFullMatrix(phiA->timesFullMatrix(theAdot->timesFullMatrix(psiA)))

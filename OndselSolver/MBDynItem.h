@@ -47,6 +47,7 @@ namespace MbD {
 		virtual std::shared_ptr<MBDynBody> bodyWithNode(std::string nodeName);
 		virtual std::shared_ptr<ASMTAssembly> asmtAssembly();
 		virtual std::string formulaFromDrive(std::string driveName, std::string varName);
+		void logString(std::string& str);
 
 		FColDsptr readVector3(std::vector<std::string>& args);
 		FColDsptr readPosition(std::vector<std::string>& args);
@@ -58,7 +59,7 @@ namespace MbD {
 		std::string readToken(std::string& line);
 
 		std::string name;
-		MBDynItem* owner;
+		MBDynItem* owner = nullptr;
 		std::shared_ptr<ASMTItem> asmtItem;
 
 

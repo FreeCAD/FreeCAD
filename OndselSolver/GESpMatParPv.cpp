@@ -48,7 +48,7 @@ void GESpMatParPv::backSubstituteIntoDU()
 {
 	//"DU is upper triangular with nonzero diagonals."
 
-	double sum, duij, duii;
+	double sum, duij, duii{};
 	//answerX = rightHandSideB->copyEmpty();
 	assert(m == n);
 	answerX = std::make_shared<FullColumn<double>>(m);

@@ -6,6 +6,7 @@
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
  
+#include <iostream>
 #include <limits>
 #include <cassert>
 
@@ -73,7 +74,10 @@ void NewtonRaphson::iterate()
 		this->fillPyPx();
 		this->solveEquations();
 		this->calcDXNormImproveRootCalcYNorm();
-		if (this->isConverged()) break;
+		if (this->isConverged()) {
+			//std::cout << "iterNo = " << iterNo << std::endl;
+			break;
+		}
 	}
 }
 

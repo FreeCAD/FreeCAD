@@ -23,6 +23,7 @@ namespace MbD {
         void arguments(Symsptr args) override;
         virtual Symsptr differentiateWRTx() = 0;
         virtual Symsptr differentiateWRTy() = 0;
+        bool isConstant() override;
 
         Symsptr x, y;
 

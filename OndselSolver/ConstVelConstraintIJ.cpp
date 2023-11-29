@@ -8,11 +8,20 @@
  
 #include "ConstVelConstraintIJ.h"
 #include "DirectionCosineIecJec.h"
+#include "ConstVelConstraintIqcJqc.h"
+#include "EndFrameqc.h"
 
 using namespace MbD;
 
 ConstVelConstraintIJ::ConstVelConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj) : ConstraintIJ(frmi, frmj)
 {
+}
+
+std::shared_ptr<ConstVelConstraintIJ> MbD::ConstVelConstraintIJ::With(EndFrmsptr frmi, EndFrmsptr frmj)
+{
+	assert(frmi->isEndFrameqc());
+	assert(frmj->isEndFrameqc());
+	return std::make_shared<ConstVelConstraintIqcJqc>(frmi, frmj);
 }
 
 void ConstVelConstraintIJ::calcPostDynCorrectorIteration()

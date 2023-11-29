@@ -98,5 +98,5 @@ void GESpMatFullPvPosIC::doPivoting(int p)
 	if (rowPositionsOfNonZerosInPivotColumn->front() == p) {
 		rowPositionsOfNonZerosInPivotColumn->erase(rowPositionsOfNonZerosInPivotColumn->begin());
 	}
-	markowitzPivotColCount = (int) rowPositionsOfNonZerosInPivotColumn->size();
+	markowitzPivotColCount = (int)rowPositionsOfNonZerosInPivotColumn->size();
 }

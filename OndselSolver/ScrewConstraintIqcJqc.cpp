@@ -5,7 +5,7 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include "corecrt_math_defines.h"
 
 #include "ScrewConstraintIqcJqc.h"
@@ -18,6 +18,21 @@ using namespace MbD;
 
 MbD::ScrewConstraintIqcJqc::ScrewConstraintIqcJqc(EndFrmsptr frmi, EndFrmsptr frmj) : ScrewConstraintIqcJc(frmi, frmj)
 {
+	pGpXJ = std::make_shared<FullRow<double>>(3);
+	pGpEJ = std::make_shared<FullRow<double>>(4);
+	ppGpEIpXJ = std::make_shared<FullMatrixDouble>(4, 3);
+	ppGpEIpEJ = std::make_shared<FullMatrixDouble>(4, 4);
+	ppGpEJpEJ = std::make_shared<FullMatrixDouble>(4, 4);
+}
+
+void MbD::ScrewConstraintIqcJqc::initzIeJeIe()
+{
+	zIeJeIe = std::make_shared<DispCompIeqcJeqcIe>(frmI, frmJ, 2);
+}
+
+void MbD::ScrewConstraintIqcJqc::initthezIeJe()
+{
+	thezIeJe = std::make_shared<AngleZIeqcJeqc>(frmI, frmJ);
 }
 
 void MbD::ScrewConstraintIqcJqc::calc_pGpEJ()
@@ -27,19 +42,18 @@ void MbD::ScrewConstraintIqcJqc::calc_pGpEJ()
 
 void MbD::ScrewConstraintIqcJqc::calc_pGpXJ()
 {
-	pGpXJ = zIeJeIe->pvaluepXJ()->times(2.0 * OS_M_PI)->minusFullRow(thezIeJe->pvaluepXJ()->times(pitch));
+	pGpXJ = zIeJeIe->pvaluepXJ()->times(2.0 * OS_M_PI);
 }
 
 void MbD::ScrewConstraintIqcJqc::calc_ppGpEIpEJ()
 {
 	ppGpEIpEJ = zIeJeIe->ppvaluepEIpEJ()->times(2.0 * OS_M_PI)
-            ->minusFullMatrix(thezIeJe->ppvaluepEIpEJ()->times(pitch));
+		->minusFullMatrix(thezIeJe->ppvaluepEIpEJ()->times(pitch));
 }
 
 void MbD::ScrewConstraintIqcJqc::calc_ppGpEIpXJ()
 {
-	ppGpEIpXJ = zIeJeIe->ppvaluepEIpXJ()->times(2.0 * OS_M_PI)
-            ->minusFullMatrix(thezIeJe->ppvaluepEIpXJ()->times(pitch));
+	ppGpEIpXJ = zIeJeIe->ppvaluepEIpXJ()->times(2.0 * OS_M_PI);
 }
 
 void MbD::ScrewConstraintIqcJqc::calc_ppGpEJpEJ()

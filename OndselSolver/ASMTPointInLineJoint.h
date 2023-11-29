@@ -8,15 +8,14 @@
 
 #pragma once
 
-#include "ASMTJoint.h"
+#include "ASMTInLineJoint.h"
 
 namespace MbD {
-    class EXPORT ASMTPointInLineJoint : public ASMTJoint
+    class EXPORT ASMTPointInLineJoint : public ASMTInLineJoint
     {
         //
     public:
         std::shared_ptr<Joint> mbdClassNew() override;
-        void storeOnLevel(std::ofstream& os, int level) override;
         void storeOnTimeSeries(std::ofstream& os) override;
 
     };

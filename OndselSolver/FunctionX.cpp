@@ -97,3 +97,8 @@ double MbD::FunctionX::getValue(double arg)
 	}
 	return answer;
 }
+
+bool MbD::FunctionX::isConstant()
+{
+	return xx->isConstant();
+}

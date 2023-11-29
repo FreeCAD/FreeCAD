@@ -30,7 +30,7 @@ namespace MbD {
         virtual void handleSingularMatrix() override;
 
         std::shared_ptr<MatrixSolver> matrixSolver;
-        int n;
+        int n = -1;
         FColDsptr xold, x, dx, y;
         //std::shared_ptr<RowTypeMatrix<double>> pypx;
     };

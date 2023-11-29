@@ -8,20 +8,13 @@
 #include <fstream>	
 
 #include "ASMTCylindricalJoint.h"
+#include "CylindricalJoint.h"
 
 using namespace MbD;
 
 std::shared_ptr<Joint> MbD::ASMTCylindricalJoint::mbdClassNew()
 {
     return CREATE<CylindricalJoint>::With();
-}
-
-void MbD::ASMTCylindricalJoint::storeOnLevel(std::ofstream& os, int level)
-{
-	storeOnLevelString(os, level, "CylindricalJoint");
-	storeOnLevelString(os, level + 1, "Name");
-	storeOnLevelString(os, level + 2, name);
-	ASMTItemIJ::storeOnLevel(os, level);
 }
 
 void MbD::ASMTCylindricalJoint::storeOnTimeSeries(std::ofstream& os)

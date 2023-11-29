@@ -17,6 +17,11 @@ MbD::DispCompIeqcJeqcIe::DispCompIeqcJeqcIe()
 
 MbD::DispCompIeqcJeqcIe::DispCompIeqcJeqcIe(EndFrmsptr frmi, EndFrmsptr frmj, int axis) : DispCompIeqcJecIe(frmi, frmj, axis)
 {
+	priIeJeIepXJ = std::make_shared<FullRow<double>>(3);
+	priIeJeIepEJ = std::make_shared<FullRow<double>>(4);
+	ppriIeJeIepEIpXJ = std::make_shared<FullMatrixDouble>(4, 3);
+	ppriIeJeIepEIpEJ = std::make_shared<FullMatrixDouble>(4, 4);
+	ppriIeJeIepEJpEJ = std::make_shared<FullMatrixDouble>(4, 4);
 }
 
 void MbD::DispCompIeqcJeqcIe::calc_ppvaluepEIpEJ()

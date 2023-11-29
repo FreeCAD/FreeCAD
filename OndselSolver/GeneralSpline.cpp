@@ -42,7 +42,7 @@ void MbD::GeneralSpline::arguments(Symsptr args)
 	auto yarray = std::make_shared<std::vector<double>>(n);
 	for (int i = 0; i < n; i++)
 	{
-		size_t ii = 2 * ((size_t)i + 1);
+		int ii = 2 * ((int)i + 1);
 		xarray->at(i) = array->at(ii)->getValue();
 		yarray->at(i) = array->at(ii + 1)->getValue();
 	}
@@ -72,13 +72,13 @@ void MbD::GeneralSpline::computeDerivatives()
 	double hmax = 0.0;
 	for (int i = 0; i < n - 1; i++)
 	{
-		double h = xs->at((size_t)i + 1) - xs->at(i);
+		double h = xs->at((int)i + 1) - xs->at(i);
 		hmax = std::max(hmax, std::abs(h));
 		hs->atiput(i, h);
 	}
 	for (int i = 0; i < n - 1; i++)
 	{
-		double offset = i * p;
+		auto offset = i * p;
 		double hbar = hs->at(i) / hmax;
 		for (int j = 1; j < p; j++)
 		{
@@ -94,7 +94,7 @@ void MbD::GeneralSpline::computeDerivatives()
 				matrix->atijput(offset + k - j, offset + k, dum);
 			}
 		}
-		bvector->atiput(offset, ys->at((size_t)i + 1) - ys->at(i));
+		bvector->atiput(offset, ys->at((int)i + 1) - ys->at(i));
 	}
 	if (isCyclic()) {
 		for (int j = 1; j < p + 1; j++)
@@ -151,9 +151,9 @@ double MbD::GeneralSpline::derivativeAt(int n, double xxx)
 	double sum = 0.0;
 	for (int j = degree; j >= n + 1; j--)
 	{
-		sum = (sum + derivsi->at((size_t)j - 1)) * delta / (j - n);
+		sum = (sum + derivsi->at((int)j - 1)) * delta / (j - n);
 	}
-	return derivsi->at((size_t)n - 1) + sum;
+	return derivsi->at((int)n - 1) + sum;
 }
 
 void MbD::GeneralSpline::calcIndexAndDeltaFor(double xxx)
@@ -196,7 +196,7 @@ void MbD::GeneralSpline::calcNonCyclicIndexAndDelta()
 
 void MbD::GeneralSpline::calcIndexAndDelta()
 {
-	if (!(index < xs->size() - 1) || !(xs->at(index) <= xvalue) || !(xvalue < xs->at((size_t)index + 1))) {
+	if (!(index < xs->size() - 1) || !(xs->at(index) <= xvalue) || !(xvalue < xs->at((int)index + 1))) {
 		searchIndexFromto(0, (int)xs->size());	//Using range.
 	}
 	delta = xvalue - xs->at(index);
@@ -233,7 +233,7 @@ double MbD::GeneralSpline::y(double xxx)
 	double sum = 0.0;
 	for (int j = degree; j >= 1; j--)
 	{
-		sum = (sum + derivsi->at((size_t)j - 1)) * delta / j;
+		sum = (sum + derivsi->at((int)j - 1)) * delta / j;
 	}
 	return ys->at(index) + sum;
 }
@@ -245,14 +245,14 @@ std::ostream& MbD::GeneralSpline::printOn(std::ostream& s) const
 	s << degree << ", " << std::endl;
 	s << "xs{";
 	s << xs->at(0);
-	for (size_t i = 1; i < xs->size(); i++)
+	for (int i = 1; i < xs->size(); i++)
 	{
 		s << ", " << xs->at(i);
 	}
 	s << "}, " << std::endl;
 	s << "ys{";
 	s << ys->at(0);
-	for (size_t i = 1; i < ys->size(); i++)
+	for (int i = 1; i < ys->size(); i++)
 	{
 		s << ", " << ys->at(i);
 	}

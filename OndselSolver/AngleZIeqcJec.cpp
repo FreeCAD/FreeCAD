@@ -17,13 +17,15 @@ MbD::AngleZIeqcJec::AngleZIeqcJec()
 
 MbD::AngleZIeqcJec::AngleZIeqcJec(EndFrmsptr frmi, EndFrmsptr frmj) : AngleZIecJec(frmi, frmj)
 {
+	pthezpEI = std::make_shared<FullRow<double>>(4);
+	ppthezpEIpEI = std::make_shared<FullMatrixDouble>(4, 4);
 }
 
 void MbD::AngleZIeqcJec::calcPostDynCorrectorIteration()
 {
 	AngleZIecJec::calcPostDynCorrectorIteration();
-	auto pcthezpEI = aA00IeJe->pvaluepEI();
-	auto psthezpEI = aA10IeJe->pvaluepEI();
+	pcthezpEI = aA00IeJe->pvaluepEI();
+	psthezpEI = aA10IeJe->pvaluepEI();
 	auto ppcthezpEIpEI = aA00IeJe->ppvaluepEIpEI();
 	auto ppsthezpEIpEI = aA10IeJe->ppvaluepEIpEI();
 	for (int i = 0; i < 4; i++)

@@ -1,0 +1,273 @@
+freeCAD: 3D CAD with Motion Simulation  by  askoh.com
+Assembly
+	Notes
+		(Text string: '' runs: (Core.RunArray runs: #() values: #()))
+	Name
+		bug3.iam
+	Position3D
+		0.0 	0.0 	0.0 
+	RotationMatrix
+		1.0 	0.0 	0.0 
+		0.0 	1.0 	0.0 
+		0.0 	0.0 	1.0 
+	Velocity3D
+		0.0 	0.0 	0.0 
+	Omega3D
+		0.0 	0.0 	0.0 
+	RefPoints
+		RefPoint
+			Position3D
+				0.0 	0.0 	0.0 
+			RotationMatrix
+				1.0 	0.0 	0.0 
+				0.0 	1.0 	0.0 
+				0.0 	0.0 	1.0 
+			Markers
+				Marker
+					Name
+						AssemblyOriginMarker
+					Position3D
+						0.0 	0.0 	0.0 
+					RotationMatrix
+						1.0 	0.0 	0.0 
+						0.0 	1.0 	0.0 
+						0.0 	0.0 	1.0 
+		RefPoint
+			Position3D
+				0.0 	0.0 	0.0 
+			RotationMatrix
+				1.0 	0.0 	0.0 
+				0.0 	1.0 	0.0 
+				0.0 	0.0 	1.0 
+			Markers
+				Marker
+					Name
+						FixedMarker:6202
+					Position3D
+						-6.5938683018542 	1.7891057709516 	0.0035692461690602 
+					RotationMatrix
+						1.0 	-1.8369095307336e-16	0.0 
+						1.8369095307336e-16	1.0 	0.0 
+						-1.0784962304122e-33	0.0 	1.0 
+		RefPoint
+			Position3D
+				0.0 	0.0 	0.0 
+			RotationMatrix
+				1.0 	0.0 	0.0 
+				0.0 	1.0 	0.0 
+				0.0 	0.0 	1.0 
+			Markers
+				Marker
+					Name
+						Flush:11(Planar):MarkerJ
+					Position3D
+						0.0 	0.0 	0.0 
+					RotationMatrix
+						0.0 	0.0 	1.0 
+						1.0 	0.0 	0.0 
+						0.0 	1.0 	0.0 
+		RefPoint
+			Position3D
+				0.0 	0.0 	0.0 
+			RotationMatrix
+				1.0 	0.0 	0.0 
+				0.0 	1.0 	0.0 
+				0.0 	0.0 	1.0 
+			Markers
+				Marker
+					Name
+						Flush:12(Planar):MarkerI
+					Position3D
+						0.0 	0.0 	0.0 
+					RotationMatrix
+						1.0 	0.0 	0.0 
+						0.0 	0.0 	1.0 
+						0.0 	-1.0 	0.0 
+		RefPoint
+			Position3D
+				0.0 	0.0 	0.0 
+			RotationMatrix
+				1.0 	0.0 	0.0 
+				0.0 	1.0 	0.0 
+				0.0 	0.0 	1.0 
+			Markers
+				Marker
+					Name
+						Mate:37(Planar):MarkerI
+					Position3D
+						0.0 	0.0 	0.0 
+					RotationMatrix
+						1.0 	0.0 	0.0 
+						0.0 	1.0 	0.0 
+						0.0 	0.0 	1.0 
+	RefCurves
+	RefSurfaces
+	Parts
+		Part
+			Name
+				s430if1:1
+			Position3D
+				-6.5938683018542 	1.7891057709516 	0.0035692461690602 
+			RotationMatrix
+				1.0 	-1.8369095307336e-16	0.0 
+				1.8369095307336e-16	1.0 	0.0 
+				-1.0784962304122e-33	0.0 	1.0 
+			Velocity3D
+				0.0 	0.0 	0.0 
+			Omega3D
+				0.0 	0.0 	0.0 
+			FeatureOrder
+			PrincipalMassMarker
+				Name
+					MassMarker
+				Position3D
+					6.2214786581878 	-2.0490943304506 	0.10234310932766 
+				RotationMatrix
+					0.99965282222213 	-1.9998658555422e-4	-0.026347581078483 
+					2.001852877372e-4	0.9999999799509 	4.9039154214777e-6
+					0.02634757956952 	-1.0176610990394e-5	0.99965284221437 
+				Mass
+					85.975743116779 
+				MomentOfInertias
+					2.4625089862592 	4.0759035246517 	5.8117898719953 
+				Density
+					0.0 
+			RefPoints
+				RefPoint
+					Position3D
+						0.0 	0.0 	0.0 
+					RotationMatrix
+						1.0 	0.0 	0.0 
+						0.0 	1.0 	0.0 
+						0.0 	0.0 	1.0 
+					Markers
+						Marker
+							Name
+								Flush:11(Planar):MarkerI
+							Position3D
+								6.5938683018542 	-2.0491057709516 	-0.0035692461690602 
+							RotationMatrix
+								-1.2246063538224e-16	0.0 	1.0 
+								-1.0 	2.8106880527449e-63	-1.2246063538224e-16
+								1.3207333363363e-49	-1.0 	-1.0784962304122e-33
+				RefPoint
+					Position3D
+						0.0 	0.0 	0.0 
+					RotationMatrix
+						1.0 	0.0 	0.0 
+						0.0 	1.0 	0.0 
+						0.0 	0.0 	1.0 
+					Markers
+						Marker
+							Name
+								Flush:12(Planar):MarkerJ
+							Position3D
+								6.5190408004749 	-1.7891057709516 	-0.0035692461690602 
+							RotationMatrix
+								-1.0 	3.7632527118098e-48	1.2246063538224e-16
+								1.2246063538224e-16	-4.9376952277951e-64	1.0 
+								1.0784962304122e-33	1.0 	-1.3207333363363e-49
+				RefPoint
+					Position3D
+						0.0 	0.0 	0.0 
+					RotationMatrix
+						1.0 	0.0 	0.0 
+						0.0 	1.0 	0.0 
+						0.0 	0.0 	1.0 
+					Markers
+						Marker
+							Name
+								Mate:37(Planar):MarkerJ
+							Position3D
+								6.3365541546997 	-2.049105715396 	-0.0035692461690602 
+							RotationMatrix
+								-1.8369095307336e-16	1.0 	0.0 
+								-1.0 	-1.8369095307336e-16	0.0 
+								1.3207333363363e-49	-1.0784962304122e-33	1.0 
+				RefPoint
+					Position3D
+						0.0 	0.0 	0.0 
+					RotationMatrix
+						1.0 	0.0 	0.0 
+						0.0 	1.0 	0.0 
+						0.0 	0.0 	1.0 
+					Markers
+						Marker
+							Name
+								OriginMarker
+							Position3D
+								0.0 	0.0 	0.0 
+							RotationMatrix
+								1.0 	0.0 	-1.0784962304122e-33
+								0.0 	1.0 	0.0 
+								-1.0784962304122e-33	0.0 	1.0 
+			RefCurves
+			RefSurfaces
+	KinematicIJs
+	ConstraintSets
+		Joints
+			FixedJoint
+				Name
+					FixedJoint:6202
+				MarkerI
+					/bug3.iam/FixedMarker:6202
+				MarkerJ
+					/bug3.iam/s430if1:1/OriginMarker
+			PlanarJoint
+				Name
+					Flush:11(Planar)
+				MarkerI
+					/bug3.iam/s430if1:1/Flush:11(Planar):MarkerI
+				MarkerJ
+					/bug3.iam/Flush:11(Planar):MarkerJ
+				offset
+					1.5919882599691e-17
+			PlanarJoint
+				Name
+					Flush:12(Planar)
+				MarkerI
+					/bug3.iam/Flush:12(Planar):MarkerI
+				MarkerJ
+					/bug3.iam/s430if1:1/Flush:12(Planar):MarkerJ
+				offset
+					0.0 
+			PlanarJoint
+				Name
+					Mate:37(Planar)
+				MarkerI
+					/bug3.iam/Mate:37(Planar):MarkerI
+				MarkerJ
+					/bug3.iam/s430if1:1/Mate:37(Planar):MarkerJ
+				offset
+					0.0 
+		Motions
+		GeneralConstraintSets
+	ForceTorques
+	ConstantGravity
+		0.0 	10.0 	0.0 
+	SimulationParameters
+		tstart
+			0.0 
+		tend
+			1.0 
+		hmin
+			1.0e-9
+		hmax
+			1.0 
+		hout
+			0.01 
+		errorTol
+			1.0e-6
+	AnimationParameters
+		nframe
+			0
+		icurrent
+			1
+		istart
+			0
+		iend
+			0
+		isForward
+			true
+		framesPerSecond
+			30

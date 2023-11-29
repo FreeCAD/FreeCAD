@@ -487,7 +487,7 @@ void MbD::SymbolicParser::notifyat(std::string msg, int mrk)
 void MbD::SymbolicParser::combineStackTo(int pos)
 {
 	auto args = std::make_shared<std::vector<Symsptr>>();
-	while (stack->size() > (size_t) pos) {
+	while (stack->size() > (int) pos) {
 		Symsptr arg = stack->top();
 		stack->pop();
 		args->push_back(arg);

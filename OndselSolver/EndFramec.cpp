@@ -102,3 +102,8 @@ std::shared_ptr<EndFrameqc> MbD::EndFramec::newCopyEndFrameqc()
 	markerFrame->addEndFrame(frmIeqc);
 	return frmIeqc;
 }
+
+bool MbD::EndFramec::isEndFrameqc()
+{
+	return false;
+}

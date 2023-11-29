@@ -17,6 +17,8 @@ namespace MbD {
     public:
 		RackPinConstraintIqcJqc(EndFrmsptr frmi, EndFrmsptr frmj);
 
+		void initxIeJeIe() override;
+		void initthezIeJe() override;
 		void calc_pGpEJ();
 		void calc_pGpXJ();
 		void calc_ppGpEIpEJ();

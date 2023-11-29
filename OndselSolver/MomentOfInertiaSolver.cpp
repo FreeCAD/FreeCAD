@@ -15,7 +15,7 @@ void MbD::MomentOfInertiaSolver::example1()
 
 	auto rpPp = std::make_shared<FullColumn<double>>(ListD{ 0, 0, 1 });
 	auto rotAxis = std::make_shared<FullColumn<double>>(ListD{ 0, 0, 1 });
-	auto aApP = std::make_shared<EulerParameters<double>>(rotAxis, OS_M_PI * 10 / 180)->aA;
+	auto aApP = std::make_shared<EulerParameters<double>>(rotAxis, OS_M_PI*10/180)->aA;
 	auto solver = std::make_shared<MomentOfInertiaSolver>();
 	solver->setm(4.0);
 	solver->setJPP(aJpp);
@@ -56,8 +56,8 @@ void MbD::MomentOfInertiaSolver::doFullPivoting(int p)
 				auto mag = std::abs(aij);
 				if (mag > max) {
 					max = mag;
-					pivotRow = i;
-					pivotCol = j;
+					pivotRow = (int)i;
+					pivotCol = (int)j;
 				}
 			}
 		}

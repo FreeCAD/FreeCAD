@@ -19,8 +19,12 @@ namespace MbD {
     public:
         ScrewConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj);
 
+        static std::shared_ptr<ScrewConstraintIJ> With(EndFrmsptr frmi, EndFrmsptr frmj);
+
         void calcPostDynCorrectorIteration() override;
         virtual void init_zthez();
+        virtual void initzIeJeIe();
+        virtual void initthezIeJe();
         void initialize() override;
         void initializeGlobally() override;
         void initializeLocally() override;

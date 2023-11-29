@@ -21,6 +21,7 @@ namespace MbD {
 		Constraint();
 		Constraint(const char* str);
 
+		void initialize() override;
 		virtual void addToJointForceI(FColDsptr col);
 		virtual void addToJointTorqueI(FColDsptr col);
 		void fillAccICIterJacob(SpMatDsptr mat) override;
@@ -33,7 +34,6 @@ namespace MbD {
 		void fillqsuddotlam(FColDsptr col) override;
 		void fillqsulam(FColDsptr col) override;
 		virtual void fillRedundantConstraints(std::shared_ptr<Constraint> sptr, std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> redunConstraints);
-		void initialize() override;
 		virtual bool isRedundant();
 		void postInput() override;
 		void preAccIC() override;
@@ -42,7 +42,7 @@ namespace MbD {
 		void prePosKine() override;
 		void reactivateRedundantConstraints() override;
 		void removeRedundantConstraints(std::shared_ptr<std::vector<int>> redundantEqnNos) override;
-		virtual void setConstant(double value);
+		void setConstant(double value);
 		void setqsudotlam(FColDsptr col) override;
 		void setqsuddotlam(FColDsptr col) override;
 		void setqsulam(FColDsptr col) override;
@@ -50,6 +50,7 @@ namespace MbD {
 		
 		int iG = -1;
 		double aG = 0.0;		//Constraint function
+		double aConstant = 0.0;
 		double lam = 0.0;		//Lambda is Lagrange Multiplier
 		double mu = 0.0, lamDeriv = 0.0;
 	};

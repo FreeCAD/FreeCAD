@@ -6,6 +6,7 @@
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
  
+#include <iostream>
 #include <sstream> 
 
 #include "PosNewtonRaphson.h"

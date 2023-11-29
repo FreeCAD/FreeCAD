@@ -16,6 +16,20 @@ using namespace MbD;
 
 MbD::RackPinConstraintIqcJc::RackPinConstraintIqcJc(EndFrmsptr frmi, EndFrmsptr frmj) : RackPinConstraintIJ(frmi, frmj)
 {
+	pGpXI = std::make_shared<FullRow<double>>(3);
+	pGpEI = std::make_shared<FullRow<double>>(4);
+	ppGpXIpEI = std::make_shared<FullMatrixDouble>(3, 4);
+	ppGpEIpEI = std::make_shared<FullMatrixDouble>(4, 4);
+}
+
+void MbD::RackPinConstraintIqcJc::initxIeJeIe()
+{
+	xIeJeIe = std::make_shared<DispCompIeqcJecIe>(frmI, frmJ, 0);
+}
+
+void MbD::RackPinConstraintIqcJc::initthezIeJe()
+{
+	thezIeJe = std::make_shared<AngleZIeqcJec>(frmI, frmJ);
 }
 
 void MbD::RackPinConstraintIqcJc::addToJointForceI(FColDsptr col)
@@ -48,7 +62,7 @@ void MbD::RackPinConstraintIqcJc::calc_pGpEI()
 
 void MbD::RackPinConstraintIqcJc::calc_pGpXI()
 {
-	pGpXI = xIeJeIe->pvaluepXI()->plusFullRow(thezIeJe->pvaluepXI()->times(pitchRadius));
+	pGpXI = xIeJeIe->pvaluepXI();
 }
 
 void MbD::RackPinConstraintIqcJc::calc_ppGpEIpEI()
@@ -59,8 +73,7 @@ void MbD::RackPinConstraintIqcJc::calc_ppGpEIpEI()
 
 void MbD::RackPinConstraintIqcJc::calc_ppGpXIpEI()
 {
-	ppGpXIpEI = xIeJeIe->ppvaluepXIpEI()
-            ->plusFullMatrix(thezIeJe->ppvaluepXIpEI()->times(pitchRadius));
+	ppGpXIpEI = xIeJeIe->ppvaluepXIpEI();
 }
 
 void MbD::RackPinConstraintIqcJc::calcPostDynCorrectorIteration()

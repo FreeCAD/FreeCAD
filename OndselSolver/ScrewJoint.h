@@ -17,10 +17,11 @@ namespace MbD {
 	public:
 		ScrewJoint();
 		ScrewJoint(const char* str);
+		void initializeLocally() override;
 		void initializeGlobally() override;
 		void connectsItoJ(EndFrmsptr frmI, EndFrmsptr frmJ) override;
 
-		double pitch, aConstant;
+		double pitch = 1.0, aConstant = 0.0;
 	};
 }
 

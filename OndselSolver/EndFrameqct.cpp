@@ -320,4 +320,8 @@ namespace MbD {
         pprOeOptpt = aAOm->timesFullColumn(pprmemptpt);
         ppAOeptpt = aAOm->timesFullMatrix(ppAmeptpt);
     }
+    bool EndFrameqct::isEndFrameqc()
+    {
+        return false;
+    }
 }

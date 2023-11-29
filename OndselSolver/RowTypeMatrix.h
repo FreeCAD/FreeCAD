@@ -25,7 +25,7 @@ namespace MbD {
 		//double maxMagnitude() override;
 		int numberOfElements() override;
         int nrow() {
-            return (int) this->size();
+            return (int)this->size();
         }
         int ncol() {
             return this->at(0)->numberOfElements();
@@ -35,7 +35,7 @@ namespace MbD {
 	template<typename T>
 	inline void RowTypeMatrix<T>::copyFrom(std::shared_ptr<RowTypeMatrix<T>> x)
 	{
-		for (size_t i = 0; i < x->size(); i++) {
+		for (int i = 0; i < x->size(); i++) {
 			this->at(i)->copyFrom(x->at(i));
 		}
 	}
@@ -43,7 +43,7 @@ namespace MbD {
 	//inline double RowTypeMatrix<T>::maxMagnitude()
 	//{
 	//	double max = 0.0;
-	//	for (size_t i = 0; i < this->size(); i++)
+	//	for (int i = 0; i < this->size(); i++)
 	//	{
 	//		double element = this->at(i)->maxMagnitude();
 	//		if (max < element) max = element;

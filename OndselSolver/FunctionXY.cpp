@@ -5,7 +5,7 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #include "FunctionXY.h"
 #include "Sum.h"
 
@@ -26,4 +26,9 @@ void MbD::FunctionXY::arguments(Symsptr args)
 	assert(sum->terms->size() == 2);
 	x = sum->terms->at(0);
 	y = sum->terms->at(1);
+}
+
+bool MbD::FunctionXY::isConstant()
+{
+	return x->isConstant() && y->isConstant();
 }

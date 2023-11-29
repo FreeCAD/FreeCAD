@@ -1,0 +1,404 @@
+freeCAD: 3D CAD with Motion Simulation  by  askoh.com
+Assembly
+	Notes
+		(Text string: '' runs: (Core.RunArray runs: #() values: #()))
+	Name
+		mateproblem.iam
+	Position3D
+		0.0 	0.0 	0.0 
+	RotationMatrix
+		1.0 	0.0 	0.0 
+		0.0 	1.0 	0.0 
+		0.0 	0.0 	1.0 
+	Velocity3D
+		0.0 	0.0 	0.0 
+	Omega3D
+		0.0 	0.0 	0.0 
+	RefPoints
+		RefPoint
+			Position3D
+				0.0 	0.0 	0.0 
+			RotationMatrix
+				1.0 	0.0 	0.0 
+				0.0 	1.0 	0.0 
+				0.0 	0.0 	1.0 
+			Markers
+				Marker
+					Name
+						AssemblyOriginMarker
+					Position3D
+						0.0 	0.0 	0.0 
+					RotationMatrix
+						1.0 	0.0 	0.0 
+						0.0 	1.0 	0.0 
+						0.0 	0.0 	1.0 
+		RefPoint
+			Position3D
+				0.0 	0.0 	0.0 
+			RotationMatrix
+				1.0 	0.0 	0.0 
+				0.0 	1.0 	0.0 
+				0.0 	0.0 	1.0 
+			Markers
+				Marker
+					Name
+						FixedMarker:6202
+					Position3D
+						-1.1446589824956 	1.1926097411131 	-0.44216971113692 
+					RotationMatrix
+						-1.6846983091513e-15	0.99895819109343 	-0.045634772348932 
+						-1.0 	4.5525637931957e-17	-2.3907408184442e-16
+						3.2073826898419e-16	0.045634772348933 	0.99895819109343 
+		RefPoint
+			Position3D
+				0.0 	0.0 	0.0 
+			RotationMatrix
+				1.0 	0.0 	0.0 
+				0.0 	1.0 	0.0 
+				0.0 	0.0 	1.0 
+			Markers
+				Marker
+					Name
+						Mate:10(2 in)|(Planar):MarkerJ
+					Position3D
+						-0.12500635412659 	0.67208401430587 	-0.90411935882366 
+					RotationMatrix
+						0.99895819109343 	1.8130008014229e-17	-0.045634772348933 
+						0.0 	1.0 	3.9728494481363e-16
+						0.045634772348933 	-3.9687104981968e-16	0.99895819109343 
+		RefPoint
+			Position3D
+				0.0 	0.0 	0.0 
+			RotationMatrix
+				1.0 	0.0 	0.0 
+				0.0 	1.0 	0.0 
+				0.0 	0.0 	1.0 
+			Markers
+				Marker
+					Name
+						Mate:26(7.5 in)|(Planar):MarkerI
+					Position3D
+						1.1187566740882 	0.1905 	-0.33877153177352 
+					RotationMatrix
+						0.99895819109343 	-0.045634772348933 	-1.6121869059509e-15
+						0.0 	3.9728494481363e-16	-1.0 
+						0.045634772348933 	0.99895819109343 	3.2405076134599e-16
+		RefPoint
+			Position3D
+				0.0 	0.0 	0.0 
+			RotationMatrix
+				1.0 	0.0 	0.0 
+				0.0 	1.0 	0.0 
+				0.0 	0.0 	1.0 
+			Markers
+				Marker
+					Name
+						Mate:26(7.5 in)|(Planar):MarkerJ
+					Position3D
+						0.0 	0.0 	0.0 
+					RotationMatrix
+						1.0 	0.0 	0.0 
+						0.0 	0.0 	1.0 
+						0.0 	-1.0 	0.0 
+		RefPoint
+			Position3D
+				0.0 	0.0 	0.0 
+			RotationMatrix
+				1.0 	0.0 	0.0 
+				0.0 	1.0 	0.0 
+				0.0 	0.0 	1.0 
+			Markers
+				Marker
+					Name
+						Mate:4(Cylindrical):MarkerJ
+					Position3D
+						0.85519093211881 	0.40740876872759 	0.15771795275973 
+					RotationMatrix
+						-1.09100912995e-17	-0.99895819109343 	-0.045634772348933 
+						1.0 	0.0 	-2.3907408184442e-16
+						2.3882501233662e-16	-0.045634772348933 	0.99895819109343 
+	RefCurves
+	RefSurfaces
+	Parts
+		Part
+			Name
+				complete tire:2
+			Position3D
+				0.91314709300196 	0.40740876872759 	-1.1109589499289 
+			RotationMatrix
+				0.98933797320498 	-0.13830344293375 	-0.045634772348933 
+				0.13844767895879 	0.99036974923052 	3.9985376121265e-16
+				0.045195298047404 	-0.0063180283115227 	0.99895819109343 
+			Velocity3D
+				0.0 	0.0 	0.0 
+			Omega3D
+				0.0 	0.0 	0.0 
+			FeatureOrder
+			PrincipalMassMarker
+				Name
+					MassMarker
+				Position3D
+					0.0 	0.0 	0.0 
+				RotationMatrix
+					0.0 	1.0 	0.0 
+					-1.0 	0.0 	0.0 
+					0.0 	0.0 	1.0 
+				Mass
+					166.06675560756 
+				MomentOfInertias
+					9.0266040759861 	9.0266040759861 	14.201967212606 
+				Density
+					0.0 
+			RefPoints
+				RefPoint
+					Position3D
+						0.0 	0.0 	0.0 
+					RotationMatrix
+						1.0 	0.0 	0.0 
+						0.0 	1.0 	0.0 
+						0.0 	0.0 	1.0 
+					Markers
+						Marker
+							Name
+								Mate:10(2 in)|(Planar):MarkerI
+							Position3D
+								2.0816681711722e-17	-2.8839777788114e-17	0.2032 
+							RotationMatrix
+								1.0 	-1.6013666087611e-16	-6.9388939039072e-18
+								-6.3317406873153e-17	-1.0 	1.7347234759768e-18
+								1.873501354055e-16	8.673617379884e-19	-1.0 
+				RefPoint
+					Position3D
+						0.0 	0.0 	0.0 
+					RotationMatrix
+						1.0 	0.0 	0.0 
+						0.0 	1.0 	0.0 
+						0.0 	0.0 	1.0 
+					Markers
+						Marker
+							Name
+								Mate:4(Cylindrical):MarkerI
+							Position3D
+								-1.3877787807814e-16	-1.0625181290358e-17	-0.2032 
+							RotationMatrix
+								0.13844767895879 	-0.99036974923052 	6.9388939039072e-18
+								0.99036974923052 	0.13844767895879 	-8.673617379884e-19
+								2.8095230452007e-19	0.0 	1.0 
+				RefPoint
+					Position3D
+						0.0 	0.0 	0.0 
+					RotationMatrix
+						1.0 	0.0 	0.0 
+						0.0 	1.0 	0.0 
+						0.0 	0.0 	1.0 
+					Markers
+						Marker
+							Name
+								OriginMarker
+							Position3D
+								0.0 	0.0 	0.0 
+							RotationMatrix
+								1.0 	2.1087732254843e-17	6.9388939039072e-18
+								2.1087732254843e-17	1.0 	0.0 
+								6.9388939039072e-18	0.0 	1.0 
+			RefCurves
+			RefSurfaces
+		Part
+			Name
+				main body:1
+			Position3D
+				-1.1446589824956 	1.1926097411131 	-0.44216971113692 
+			RotationMatrix
+				2.7755575615629e-17	0.99895819109343 	-0.045634772348933 
+				-1.0 	1.4082128066127e-17	-2.9994930907692e-16
+				-2.9899418450672e-16	0.045634772348933 	0.99895819109343 
+			Velocity3D
+				0.0 	0.0 	0.0 
+			Omega3D
+				0.0 	0.0 	0.0 
+			FeatureOrder
+			PrincipalMassMarker
+				Name
+					MassMarker
+				Position3D
+					0.49933483119892 	0.88468928356923 	-1.4188010055705e-9
+				RotationMatrix
+					0.20590413716162 	0.0 	0.97857216713931 
+					0.97857216713931 	0.0 	-0.20590413716162 
+					0.0 	1.0 	0.0 
+				Mass
+					1967.7725519762 
+				MomentOfInertias
+					308.82446182312 	988.37293486031 	1019.2270991994 
+				Density
+					0.0 
+			RefPoints
+				RefPoint
+					Position3D
+						0.0 	0.0 	0.0 
+					RotationMatrix
+						1.0 	0.0 	0.0 
+						0.0 	1.0 	0.0 
+						0.0 	0.0 	1.0 
+					Markers
+						Marker
+							Name
+								OriginMarker
+							Position3D
+								0.0 	0.0 	0.0 
+							RotationMatrix
+								1.0 	9.2444637330587e-33	4.9303806576313e-32
+								9.2444637330587e-33	1.0 	-2.0816681711722e-17
+								4.9303806576313e-32	-2.0816681711722e-17	1.0 
+			RefCurves
+			RefSurfaces
+	KinematicIJs
+	ConstraintSets
+		Joints
+			FixedJoint
+				Name
+					FixedJoint:6202
+				MarkerI
+					/mateproblem.iam/FixedMarker:6202
+				MarkerJ
+					/mateproblem.iam/main body:1/OriginMarker
+			PlanarJoint
+				Name
+					Mate:10(2 in)|(Planar)
+				MarkerI
+					/mateproblem.iam/complete tire:2/Mate:10(2 in)|(Planar):MarkerI
+				MarkerJ
+					/mateproblem.iam/Mate:10(2 in)|(Planar):MarkerJ
+			PlanarJoint
+				Name
+					Mate:26(7.5 in)|(Planar)
+				MarkerI
+					/mateproblem.iam/Mate:26(7.5 in)|(Planar):MarkerI
+				MarkerJ
+					/mateproblem.iam/Mate:26(7.5 in)|(Planar):MarkerJ
+			CylindricalJoint
+				Name
+					Mate:4(Cylindrical)
+				MarkerI
+					/mateproblem.iam/complete tire:2/Mate:4(Cylindrical):MarkerI
+				MarkerJ
+					/mateproblem.iam/Mate:4(Cylindrical):MarkerJ
+		Motions
+		GeneralConstraintSets
+	ForceTorques
+	ConstantGravity
+		0.0 	0.0 	0.0 
+	SimulationParameters
+		tstart
+			0.0 
+		tend
+			1.0 
+		hmin
+			1.0e-9
+		hmax
+			1.0 
+		hout
+			0.01 
+		errorTol
+			1.0e-6
+	AnimationParameters
+		nframe
+			1
+		icurrent
+			1
+		istart
+			1
+		iend
+			1
+		isForward
+			true
+		framesPerSecond
+			30
+TimeSeries
+Number	Input	1
+Time	Input	0.0 
+AssemblySeries /mateproblem.iam
+X	0.0 	0.0 
+Y	0.0 	0.0 
+Z	0.0 	0.0 
+Bryantx	0.0 	0.0 
+Bryanty	0.0 	0.0 
+Bryantz	0.0 	0.0 
+VX	0.0 	0.0 
+VY	0.0 	0.0 
+VZ	0.0 	0.0 
+OmegaX	0.0 	0.0 
+OmegaY	0.0 	0.0 
+OmegaZ	0.0 	0.0 
+AX	0	0.0 
+AY	0	0.0 
+AZ	0	0.0 
+AlphaX	0	0.0 
+AlphaY	0	0.0 
+AlphaZ	0	0.0 
+PartSeries /mateproblem.iam/complete tire:2
+X	0.91314709300198 	0.91314709300196 
+Y	0.40740876872759 	0.40740876872759 
+Z	-1.1109589499289 	-1.1109589499289 
+Bryantx	-3.3862385916794e-16	-4.0027076686261e-16
+Bryanty	-0.0456506265267 	-0.0456506265267 
+Bryantz	0.13889382666085 	0.13889382666085 
+VX	0.0 	0.0 
+VY	0.0 	0.0 
+VZ	0.0 	0.0 
+OmegaX	0.0 	0.0 
+OmegaY	0.0 	0.0 
+OmegaZ	0.0 	0.0 
+AX	0	0.0 
+AY	0	0.0 
+AZ	0	0.0 
+AlphaX	0	0.0 
+AlphaY	0	0.0 
+AlphaZ	0	0.0 
+PartSeries /mateproblem.iam/main body:1
+X	-1.1446589824956 	-1.1446589824956 
+Y	1.1926097411131 	1.1926097411131 
+Z	-0.44216971113692 	-0.44216971113692 
+Bryantx	1.5978645774097e-16	3.0026212483288e-16
+Bryanty	-0.0456506265267 	-0.0456506265267 
+Bryantz	-1.5707963267949 	-1.5707963267949 
+VX	0.0 	0.0 
+VY	0.0 	0.0 
+VZ	0.0 	0.0 
+OmegaX	0.0 	0.0 
+OmegaY	0.0 	0.0 
+OmegaZ	0.0 	0.0 
+AX	0	0.0 
+AY	0	0.0 
+AZ	0	0.0 
+AlphaX	0	0.0 
+AlphaY	0	0.0 
+AlphaZ	0	0.0 
+FixedJointSeries /mateproblem.iam/FixedJoint:6202
+FXonI	0	0.0 
+FYonI	0	0.0 
+FZonI	0	0.0 
+TXonI	0	0.0 
+TYonI	0	0.0 
+TZonI	0	0.0 
+PlanarJointSeries /mateproblem.iam/Mate:10(2 in)|(Planar)
+FXonI	0	0.0 
+FYonI	0	0.0 
+FZonI	0	0.0 
+TXonI	0	0.0 
+TYonI	0	0.0 
+TZonI	0	0.0 
+PlanarJointSeries /mateproblem.iam/Mate:26(7.5 in)|(Planar)
+FXonI	0	0.0 
+FYonI	0	0.0 
+FZonI	0	0.0 
+TXonI	0	0.0 
+TYonI	0	0.0 
+TZonI	0	0.0 
+CylindricalJointSeries /mateproblem.iam/Mate:4(Cylindrical)
+FXonI	0	0.0 
+FYonI	0	0.0 
+FZonI	0	0.0 
+TXonI	0	0.0 
+TYonI	0	0.0 
+TZonI	0	0.0 

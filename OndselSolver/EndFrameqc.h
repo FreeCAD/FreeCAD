@@ -40,6 +40,7 @@ namespace MbD {
         FColDsptr rpep() override;
         FColFMatDsptr pAOppE() override;
         FMatDsptr aBOp() override;
+        bool isEndFrameqc() override;
 
         FMatDsptr prOeOpE;
         FMatFColDsptr pprOeOpEpE;

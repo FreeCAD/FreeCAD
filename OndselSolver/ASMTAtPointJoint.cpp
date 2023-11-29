@@ -1,0 +1,1 @@
+#include "ASMTAtPointJoint.h"

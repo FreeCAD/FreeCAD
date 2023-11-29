@@ -29,8 +29,8 @@ namespace MbD {
 		void solveEquations();
 		void setSystem(Solver* sys) override;
 
-		SystemSolver* system;
-		int n;
+		SystemSolver* system = nullptr;
+		int n = -1;
 		FColDsptr x, errorVector;
 		SpMatDsptr jacobian;
 		std::shared_ptr<MatrixSolver> matrixSolver;

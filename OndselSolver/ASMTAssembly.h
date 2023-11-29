@@ -75,8 +75,6 @@ namespace MbD {
 		void readMotionSeries(std::vector<std::string>& lines);
 
 		void outputFor(AnalysisType type);
-		void logString(std::string& str);
-		void logString(double value);
 		void preMbDrun(std::shared_ptr<System> mbdSys);
 		void postMbDrun();
 		void calcCharacteristicDimensions();
@@ -122,7 +120,9 @@ namespace MbD {
 		void storeOnLevelMotions(std::ofstream& os, int level);
 		void storeOnLevelGeneralConstraintSets(std::ofstream& os, int level);
 		void storeOnTimeSeries(std::ofstream& os) override;
+		void setFilename(std::string filename);
 
+		std::string filename = "";
 		std::string notes = "(Text string: '' runs: (Core.RunArray runs: #() values: #()))";
 		std::shared_ptr<std::vector<std::shared_ptr<ASMTPart>>> parts = std::make_shared<std::vector<std::shared_ptr<ASMTPart>>>();
 		std::shared_ptr<std::vector<std::shared_ptr<ASMTKinematicIJ>>> kinematicIJs = std::make_shared<std::vector<std::shared_ptr<ASMTKinematicIJ>>>();

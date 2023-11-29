@@ -7,11 +7,17 @@
  ***************************************************************************/
  
 #include "RackPinConstraintIJ.h"
+#include "RackPinConstraintIqcJqc.h"
 
 using namespace MbD;
 
 MbD::RackPinConstraintIJ::RackPinConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj) : ConstraintIJ(frmi, frmj)
 {
+}
+
+std::shared_ptr<RackPinConstraintIJ> MbD::RackPinConstraintIJ::With(EndFrmsptr frmi, EndFrmsptr frmj)
+{
+	return std::make_shared<RackPinConstraintIqcJqc>(frmi, frmj);
 }
 
 void MbD::RackPinConstraintIJ::calcPostDynCorrectorIteration()
@@ -22,6 +28,16 @@ void MbD::RackPinConstraintIJ::calcPostDynCorrectorIteration()
 }
 
 void MbD::RackPinConstraintIJ::init_xthez()
+{
+	assert(false);
+}
+
+void MbD::RackPinConstraintIJ::initxIeJeIe()
+{
+	assert(false);
+}
+
+void MbD::RackPinConstraintIJ::initthezIeJe()
 {
 	assert(false);
 }
@@ -48,7 +64,9 @@ void MbD::RackPinConstraintIJ::postInput()
 {
 	xIeJeIe->postInput();
 	thezIeJe->postInput();
-	aConstant = xIeJeIe->value() + (pitchRadius * thezIeJe->value());
+	if (aConstant == std::numeric_limits<double>::min()) {
+		aConstant = xIeJeIe->value() + (pitchRadius * thezIeJe->value());
+	}
 	ConstraintIJ::postInput();
 }
 

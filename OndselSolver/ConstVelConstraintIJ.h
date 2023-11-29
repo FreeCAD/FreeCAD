@@ -19,6 +19,8 @@ namespace MbD {
     public:
         ConstVelConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj);
 
+        static std::shared_ptr<ConstVelConstraintIJ> With(EndFrmsptr frmi, EndFrmsptr frmj);
+
         void calcPostDynCorrectorIteration() override;
         virtual void initA01IeJe();
         virtual void initA10IeJe();

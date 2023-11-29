@@ -49,8 +49,8 @@ namespace MbD {
 		virtual void evalppAmeptpt();
 		FColDsptr rmeO() override;
 		FColDsptr rpep() override;
-
 		void preAccIC() override;
+		bool isEndFrameqc() override;
 
 		std::shared_ptr<FullColumn<Symsptr>> rmemBlks, prmemptBlks, pprmemptptBlks;
 		std::shared_ptr<FullColumn<Symsptr>> phiThePsiBlks, pPhiThePsiptBlks, ppPhiThePsiptptBlks;

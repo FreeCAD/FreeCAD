@@ -8,20 +8,13 @@
 #include <fstream>	
 
 #include "ASMTTranslationalJoint.h"
+#include "TranslationalJoint.h"
 
 using namespace MbD;
 
 std::shared_ptr<Joint> MbD::ASMTTranslationalJoint::mbdClassNew()
 {
     return CREATE<TranslationalJoint>::With();
-}
-
-void MbD::ASMTTranslationalJoint::storeOnLevel(std::ofstream& os, int level)
-{
-	storeOnLevelString(os, level, "TranslationalJoint");
-	storeOnLevelString(os, level + 1, "Name");
-	storeOnLevelString(os, level + 2, name);
-	ASMTItemIJ::storeOnLevel(os, level);
 }
 
 void MbD::ASMTTranslationalJoint::storeOnTimeSeries(std::ofstream& os)
