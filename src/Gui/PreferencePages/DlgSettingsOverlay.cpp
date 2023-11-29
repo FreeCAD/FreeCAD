@@ -26,8 +26,8 @@
 #include <QTimer>
 
 /*[[[cog
-import DlgSettingsUI
-DlgSettingsUI.define()
+import DlgSettingsOverlay
+DlgSettingsOverlay.define()
 ]]]*/
 
 // Auto generated code (Tools/params_utils.py:567)
@@ -42,111 +42,16 @@ DlgSettingsUI.define()
 #include <Gui/TreeParams.h>
 #include <Gui/OverlayParams.h>
 // Auto generated code (Tools/params_utils.py:589)
-#include "Gui/PreferencePages/DlgSettingsUI.h"
+#include "Gui/PreferencePages/DlgSettingsOverlay.h"
 using namespace Gui::Dialog;
-/* TRANSLATOR Gui::Dialog::DlgSettingsUI */
+/* TRANSLATOR Gui::Dialog::DlgSettingsOverlay */
 
 // Auto generated code (Tools/params_utils.py:598)
-DlgSettingsUI::DlgSettingsUI(QWidget* parent)
+DlgSettingsOverlay::DlgSettingsOverlay(QWidget* parent)
     : PreferencePage( parent )
 {
 
     auto layout = new QVBoxLayout(this);
-
-
-    // Auto generated code (Tools/params_utils.py:420)
-    groupTreeview = new QGroupBox(this);
-    layout->addWidget(groupTreeview);
-    auto layoutHorizTreeview = new QHBoxLayout(groupTreeview);
-    auto layoutTreeview = new QGridLayout();
-    layoutHorizTreeview->addLayout(layoutTreeview);
-    layoutHorizTreeview->addStretch();
-
-    // Auto generated code (Tools/params_utils.py:433)
-    labelItemBackground = new QLabel(this);
-    layoutTreeview->addWidget(labelItemBackground, 0, 0);
-    ItemBackground = new Gui::PrefColorButton(this);
-    layoutTreeview->addWidget(ItemBackground, 0, 1);
-    ItemBackground->setPackedColor(Gui::TreeParams::defaultItemBackground());
-    ItemBackground->setEntryName("ItemBackground");
-    ItemBackground->setParamGrpPath("TreeView");
-    ItemBackground->setAllowTransparency(true);
-
-    // Auto generated code (Tools/params_utils.py:433)
-    labelItemBackgroundPadding = new QLabel(this);
-    layoutTreeview->addWidget(labelItemBackgroundPadding, 1, 0);
-    ItemBackgroundPadding = new Gui::PrefSpinBox(this);
-    layoutTreeview->addWidget(ItemBackgroundPadding, 1, 1);
-    ItemBackgroundPadding->setValue(Gui::TreeParams::defaultItemBackgroundPadding());
-    ItemBackgroundPadding->setEntryName("ItemBackgroundPadding");
-    ItemBackgroundPadding->setParamGrpPath("TreeView");
-    // Auto generated code (Tools/params_utils.py:1134)
-    ItemBackgroundPadding->setMinimum(0);
-    ItemBackgroundPadding->setMaximum(100);
-    ItemBackgroundPadding->setSingleStep(1);
-
-    // Auto generated code (Tools/params_utils.py:433)
-    ResizableColumn = new Gui::PrefCheckBox(this);
-    layoutTreeview->addWidget(ResizableColumn, 2, 0);
-    ResizableColumn->setChecked(Gui::TreeParams::defaultResizableColumn());
-    ResizableColumn->setEntryName("ResizableColumn");
-    ResizableColumn->setParamGrpPath("TreeView");
-
-    // Auto generated code (Tools/params_utils.py:433)
-    CheckBoxesSelection = new Gui::PrefCheckBox(this);
-    layoutTreeview->addWidget(CheckBoxesSelection, 3, 0);
-    CheckBoxesSelection->setChecked(Gui::TreeParams::defaultCheckBoxesSelection());
-    CheckBoxesSelection->setEntryName("CheckBoxesSelection");
-    CheckBoxesSelection->setParamGrpPath("TreeView");
-
-    // Auto generated code (Tools/params_utils.py:433)
-    HideColumn = new Gui::PrefCheckBox(this);
-    layoutTreeview->addWidget(HideColumn, 4, 0);
-    HideColumn->setChecked(Gui::TreeParams::defaultHideColumn());
-    HideColumn->setEntryName("HideColumn");
-    HideColumn->setParamGrpPath("TreeView");
-
-    // Auto generated code (Tools/params_utils.py:433)
-    HideScrollBar = new Gui::PrefCheckBox(this);
-    layoutTreeview->addWidget(HideScrollBar, 5, 0);
-    HideScrollBar->setChecked(Gui::TreeParams::defaultHideScrollBar());
-    HideScrollBar->setEntryName("HideScrollBar");
-    HideScrollBar->setParamGrpPath("TreeView");
-
-    // Auto generated code (Tools/params_utils.py:433)
-    HideHeaderView = new Gui::PrefCheckBox(this);
-    layoutTreeview->addWidget(HideHeaderView, 6, 0);
-    HideHeaderView->setChecked(Gui::TreeParams::defaultHideHeaderView());
-    HideHeaderView->setEntryName("HideHeaderView");
-    HideHeaderView->setParamGrpPath("TreeView");
-
-    // Auto generated code (Tools/params_utils.py:433)
-    labelIconSize = new QLabel(this);
-    layoutTreeview->addWidget(labelIconSize, 7, 0);
-    IconSize = new Gui::PrefSpinBox(this);
-    layoutTreeview->addWidget(IconSize, 7, 1);
-    IconSize->setValue(Gui::TreeParams::defaultIconSize());
-    IconSize->setEntryName("IconSize");
-    IconSize->setParamGrpPath("TreeView");
-
-    // Auto generated code (Tools/params_utils.py:433)
-    labelFontSize = new QLabel(this);
-    layoutTreeview->addWidget(labelFontSize, 8, 0);
-    FontSize = new Gui::PrefSpinBox(this);
-    layoutTreeview->addWidget(FontSize, 8, 1);
-    FontSize->setValue(Gui::TreeParams::defaultFontSize());
-    FontSize->setEntryName("FontSize");
-    FontSize->setParamGrpPath("TreeView");
-
-    // Auto generated code (Tools/params_utils.py:433)
-    labelItemSpacing = new QLabel(this);
-    layoutTreeview->addWidget(labelItemSpacing, 9, 0);
-    ItemSpacing = new Gui::PrefSpinBox(this);
-    layoutTreeview->addWidget(ItemSpacing, 9, 1);
-    ItemSpacing->setValue(Gui::TreeParams::defaultItemSpacing());
-    ItemSpacing->setEntryName("ItemSpacing");
-    ItemSpacing->setParamGrpPath("TreeView");
-
 
     // Auto generated code (Tools/params_utils.py:420)
     groupOverlay = new QGroupBox(this);
@@ -438,24 +343,14 @@ DlgSettingsUI::DlgSettingsUI(QWidget* parent)
 }
 
 // Auto generated code (Tools/params_utils.py:614)
-DlgSettingsUI::~DlgSettingsUI()
+DlgSettingsOverlay::~DlgSettingsOverlay()
 {
 }
 
 // Auto generated code (Tools/params_utils.py:622)
-void DlgSettingsUI::saveSettings()
+void DlgSettingsOverlay::saveSettings()
 {
     // Auto generated code (Tools/params_utils.py:461)
-    ItemBackground->onSave();
-    ItemBackgroundPadding->onSave();
-    ResizableColumn->onSave();
-    CheckBoxesSelection->onSave();
-    HideColumn->onSave();
-    HideScrollBar->onSave();
-    HideHeaderView->onSave();
-    IconSize->onSave();
-    FontSize->onSave();
-    ItemSpacing->onSave();
     DockOverlayHideTabBar->onSave();
     DockOverlayHidePropertyViewScrollBar->onSave();
     DockOverlayAutoView->onSave();
@@ -484,19 +379,9 @@ void DlgSettingsUI::saveSettings()
 }
 
 // Auto generated code (Tools/params_utils.py:631)
-void DlgSettingsUI::loadSettings()
+void DlgSettingsOverlay::loadSettings()
 {
     // Auto generated code (Tools/params_utils.py:449)
-    ItemBackground->onRestore();
-    ItemBackgroundPadding->onRestore();
-    ResizableColumn->onRestore();
-    CheckBoxesSelection->onRestore();
-    HideColumn->onRestore();
-    HideScrollBar->onRestore();
-    HideHeaderView->onRestore();
-    IconSize->onRestore();
-    FontSize->onRestore();
-    ItemSpacing->onRestore();
     DockOverlayHideTabBar->onRestore();
     DockOverlayHidePropertyViewScrollBar->onRestore();
     DockOverlayAutoView->onRestore();
@@ -525,35 +410,9 @@ void DlgSettingsUI::loadSettings()
 }
 
 // Auto generated code (Tools/params_utils.py:640)
-void DlgSettingsUI::retranslateUi()
+void DlgSettingsOverlay::retranslateUi()
 {
-    setWindowTitle(QObject::tr("UI"));
-    groupTreeview->setTitle(QObject::tr("Tree view"));
-    ItemBackground->setToolTip(QApplication::translate("TreeParams", Gui::TreeParams::docItemBackground()));
-    labelItemBackground->setText(QObject::tr("Item background color"));
-    labelItemBackground->setToolTip(ItemBackground->toolTip());
-    ItemBackgroundPadding->setToolTip(QApplication::translate("TreeParams", Gui::TreeParams::docItemBackgroundPadding()));
-    labelItemBackgroundPadding->setText(QObject::tr("Item background padding"));
-    labelItemBackgroundPadding->setToolTip(ItemBackgroundPadding->toolTip());
-    ResizableColumn->setToolTip(QApplication::translate("TreeParams", Gui::TreeParams::docResizableColumn()));
-    ResizableColumn->setText(QObject::tr("Resizable columns"));
-    CheckBoxesSelection->setToolTip(QApplication::translate("TreeParams", Gui::TreeParams::docCheckBoxesSelection()));
-    CheckBoxesSelection->setText(QObject::tr("Show item checkbox"));
-    HideColumn->setToolTip(QApplication::translate("TreeParams", Gui::TreeParams::docHideColumn()));
-    HideColumn->setText(QObject::tr("Hide extra column"));
-    HideScrollBar->setToolTip(QApplication::translate("TreeParams", Gui::TreeParams::docHideScrollBar()));
-    HideScrollBar->setText(QObject::tr("Hide scroll bar"));
-    HideHeaderView->setToolTip(QApplication::translate("TreeParams", Gui::TreeParams::docHideHeaderView()));
-    HideHeaderView->setText(QObject::tr("Hide header"));
-    IconSize->setToolTip(QApplication::translate("TreeParams", Gui::TreeParams::docIconSize()));
-    labelIconSize->setText(QObject::tr("IconSize"));
-    labelIconSize->setToolTip(IconSize->toolTip());
-    FontSize->setToolTip(QApplication::translate("TreeParams", Gui::TreeParams::docFontSize()));
-    labelFontSize->setText(QObject::tr("FontSize"));
-    labelFontSize->setToolTip(FontSize->toolTip());
-    ItemSpacing->setToolTip(QApplication::translate("TreeParams", Gui::TreeParams::docItemSpacing()));
-    labelItemSpacing->setText(QObject::tr("ItemSpacing"));
-    labelItemSpacing->setToolTip(ItemSpacing->toolTip());
+    setWindowTitle(QObject::tr("Overlay"));
     groupOverlay->setTitle(QObject::tr("Overlay"));
     DockOverlayHideTabBar->setToolTip(QApplication::translate("OverlayParams", Gui::OverlayParams::docDockOverlayHideTabBar()));
     DockOverlayHideTabBar->setText(QObject::tr("Hide tab bar"));
@@ -625,7 +484,7 @@ void DlgSettingsUI::retranslateUi()
 }
 
 // Auto generated code (Tools/params_utils.py:657)
-void DlgSettingsUI::changeEvent(QEvent *e)
+void DlgSettingsOverlay::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
         retranslateUi();
@@ -634,13 +493,13 @@ void DlgSettingsUI::changeEvent(QEvent *e)
 }
 
 // Auto generated code (Tools/params_utils.py:670)
-#include "moc_DlgSettingsUI.cpp"
+#include "moc_DlgSettingsOverlay.cpp"
 //[[[end]]]
 
 // -----------------------------------------------------------------------------------
 // user code start
 
-void DlgSettingsUI::init()
+void DlgSettingsOverlay::init()
 {
     timer = new QTimer(this);
     timer->setSingleShot(true);
@@ -652,7 +511,7 @@ void DlgSettingsUI::init()
     });
 
     QObject::connect(DockOverlayAnimationCurve, QOverload<int>::of(&QComboBox::currentIndexChanged),
-                     this, &DlgSettingsUI::onCurveChange);
+                     this, &DlgSettingsOverlay::onCurveChange);
 
     QObject::connect(timer, &QTimer::timeout, [=]() {
         if (animator1->state() != QAbstractAnimation::Running) {
@@ -662,12 +521,12 @@ void DlgSettingsUI::init()
     });
 }
 
-qreal DlgSettingsUI::offset1() const
+qreal DlgSettingsOverlay::offset1() const
 {
     return this->t1;
 }
 
-void DlgSettingsUI::setOffset1(qreal t)
+void DlgSettingsOverlay::setOffset1(qreal t)
 {
     if (t == this->t1)
         return;
@@ -681,7 +540,7 @@ void DlgSettingsUI::setOffset1(qreal t)
     label->move(this->a1 * (1-t) + this->b1 * t, label->y());
 }
 
-void DlgSettingsUI::onCurveChange(int index)
+void DlgSettingsOverlay::onCurveChange(int index)
 {
     if (sender() != DockOverlayAnimationCurve)
         return;

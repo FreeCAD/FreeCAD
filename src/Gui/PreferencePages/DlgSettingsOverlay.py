@@ -19,7 +19,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-'''Auto code generator for preference page of Display/UI
+'''Auto code generator for preference page of User Interface/Overlay
 '''
 import cog, sys
 from os import sys, path
@@ -32,31 +32,17 @@ from params_utils import auto_comment
 
 sys.path.append(path.join(path.dirname(
     path.dirname(path.dirname(path.abspath(__file__)))), 'Gui'))
-import OverlayParams, TreeParams
+import OverlayParams
 
 Title = 'UI'
 NameSpace = 'Gui'
-ClassName = 'DlgSettingsUI'
-ClassDoc = 'Preference dialog for various UI related settings'
+ClassName = 'DlgSettingsOverlay'
+ClassDoc = 'Preference dialog for user interface overlay system'
 UserInit = 'init();'
 
 _OverlayParams = { param.name : param for param in OverlayParams.Params }
-_TreeParams = { param.name : param for param in TreeParams.Params }
 
 ParamGroup = (
-    ('Tree view', [_TreeParams[name] for name in (
-        'ItemBackground',
-        'ItemBackgroundPadding',
-        'ResizableColumn',
-        'CheckBoxesSelection',
-        'HideColumn',
-        'HideScrollBar',
-        'HideHeaderView',
-        'IconSize',
-        'FontSize',
-        'ItemSpacing',
-    )]),
-
     ('Overlay', [_OverlayParams[name] for name in (
         'DockOverlayHideTabBar',
         'DockOverlayHidePropertyViewScrollBar',
