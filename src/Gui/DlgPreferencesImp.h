@@ -163,6 +163,7 @@ protected Q_SLOTS:
 private:
     /** @name for internal use only */
     //@{
+    void setupConnections();
     void setupPages();
     void reloadPages();
 
