@@ -26,7 +26,6 @@
 # include <gp_Dir.hxx>
 # include <BRep_Builder.hxx>
 # include <BRepAlgoAPI_Cut.hxx>
-# include <BRepAlgoAPI_Common.hxx>
 # include <BRepAlgoAPI_Fuse.hxx>
 # include <BRepBuilderAPI_MakeEdge.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
