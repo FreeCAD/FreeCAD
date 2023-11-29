@@ -181,6 +181,13 @@ public:
         QObject::connect(actionGrp, &QActionGroup::triggered, this, [this](QAction* action) {
             int userSchema = action->data().toInt();
             setUserSchema(userSchema);
+            // Force PropertyEditor refresh until we find a better way.  Q_EMIT something?
+            const auto views = getMainWindow()->findChildren<PropertyView*>();
+            for(auto view : views) {
+                bool show = view->showAll();
+                view->setShowAll(!show);
+                view->setShowAll(show);
+            }
         } );
         setMenu(menu);
         retranslateUi();
@@ -222,15 +229,8 @@ public:
 
         unitChanged();
         Base::UnitsApi::setSchema(static_cast<Base::UnitSystem>(userSchema));
-        // Update the application to show the unit change
+        // Update the main window to show the unit change
         Gui::Application::Instance->onUpdate();
-        // Force PropertyEditor refresh until we find a better way
-        const auto views = getMainWindow()->findChildren<PropertyView*>();
-        for(auto view : views) {
-            bool show = view->showAll();
-            view->setShowAll(!show);
-            view->setShowAll(show);
-        }
     }
 
 private:
