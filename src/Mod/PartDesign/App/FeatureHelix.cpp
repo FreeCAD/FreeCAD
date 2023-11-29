@@ -254,7 +254,7 @@ App::DocumentObjectExecReturn* Helix::execute()
 
         //check for error value at pipe creation and re-build if needed
         if (Angle.getValue() == 0 && mkPS.ErrorOnSurface() < Precision::Confusion() / 2.0 ) {
-            Base::Console().Log("PartDesign_Helix : Fail back to auxiliary mode\n");
+            Base::Console().Log("PartDesign_Helix : Fall back to auxiliary mode\n");
             mkPS.SetMode(TopoDS::Wire(auxpath), true);
             mkPS.Build();
         }
