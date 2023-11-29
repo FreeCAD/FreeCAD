@@ -92,7 +92,8 @@ from draftutils.utils import (string_encode_coin,
                               get_rgb,
                               getrgb,
                               argb_to_rgba,
-                              rgba_to_argb)
+                              rgba_to_argb,
+                              get_rgba_tuple)
 
 from draftfunctions.svg import (get_svg,
                                 getSVG)
