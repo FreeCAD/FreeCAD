@@ -26,6 +26,7 @@
 #ifndef _PreComp_
 # include <limits>
 # include <Mod/Part/App/FCBRepAlgoAPI_Fuse.h>
+# include <Mod/Part/App/FCBRepAlgoAPI_Common.h>
 # include <BRepAdaptor_Surface.hxx>
 # include <BRep_Builder.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
