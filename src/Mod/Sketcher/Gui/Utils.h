@@ -165,8 +165,8 @@ inline const char* constructionModeAsBooleanText()
 double GetPointAngle(const Base::Vector2d& p1, const Base::Vector2d& p2);
 
 // Set the two points on circles at minimal distance
-void GetCirclesMinimalDistance(const Part::GeomCircle* circle1,
-                               const Part::GeomCircle* circle2,
+void GetCirclesMinimalDistance(const Part::Geometry* geom1,
+                               const Part::Geometry* geom2,
                                Base::Vector3d& point1,
                                Base::Vector3d& point2);
 
