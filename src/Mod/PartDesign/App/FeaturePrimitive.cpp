@@ -25,7 +25,6 @@
 #ifndef _PreComp_
 # include <BRepPrim_Cylinder.hxx>
 # include <BRepAlgoAPI_Cut.hxx>
-# include <BRepAlgoAPI_Common.hxx>
 # include <BRepAlgoAPI_Fuse.hxx>
 # include <BRepBuilderAPI_GTransform.hxx>
 # include <BRepBuilderAPI_MakeFace.hxx>
