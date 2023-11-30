@@ -58,6 +58,15 @@ using namespace std;
 using namespace SketcherGui;
 using namespace Sketcher;
 
+
+Sketcher::SketchObject* getSketchObject()
+{
+    Gui::Document* doc = Gui::Application::Instance->activeDocument();
+    ReleaseHandler(doc);
+    auto* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+    return vp->getSketchObject();
+}
+
 // ================================================================================
 
 // Select Constraints of selected elements
@@ -161,11 +170,7 @@ CmdSketcherSelectOrigin::CmdSketcherSelectOrigin()
 void CmdSketcherSelectOrigin::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    Gui::Document* doc = getActiveGuiDocument();
-    ReleaseHandler(doc);
-    SketcherGui::ViewProviderSketch* vp =
-        static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-    Sketcher::SketchObject* Obj = vp->getSketchObject();
+    Sketcher::SketchObject * Obj = getSketchObject();
     //    ViewProviderSketch * vp = static_cast<ViewProviderSketch
     //    *>(Gui::Application::Instance->getViewProvider(docobj)); Sketcher::SketchObject* Obj =
     //    vp->getSketchObject();
@@ -209,11 +214,7 @@ CmdSketcherSelectVerticalAxis::CmdSketcherSelectVerticalAxis()
 void CmdSketcherSelectVerticalAxis::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    Gui::Document* doc = getActiveGuiDocument();
-    ReleaseHandler(doc);
-    SketcherGui::ViewProviderSketch* vp =
-        static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-    Sketcher::SketchObject* Obj = vp->getSketchObject();
+    Sketcher::SketchObject* Obj = getSketchObject();
 
     std::string doc_name = Obj->getDocument()->getName();
     std::string obj_name = Obj->getNameInDocument();
@@ -254,11 +255,7 @@ CmdSketcherSelectHorizontalAxis::CmdSketcherSelectHorizontalAxis()
 void CmdSketcherSelectHorizontalAxis::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    Gui::Document* doc = getActiveGuiDocument();
-    ReleaseHandler(doc);
-    SketcherGui::ViewProviderSketch* vp =
-        static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-    Sketcher::SketchObject* Obj = vp->getSketchObject();
+    Sketcher::SketchObject* Obj = getSketchObject();
 
     std::string doc_name = Obj->getDocument()->getName();
     std::string obj_name = Obj->getNameInDocument();
@@ -298,17 +295,13 @@ CmdSketcherSelectRedundantConstraints::CmdSketcherSelectRedundantConstraints()
 void CmdSketcherSelectRedundantConstraints::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    Gui::Document* doc = getActiveGuiDocument();
-    ReleaseHandler(doc);
-    SketcherGui::ViewProviderSketch* vp =
-        static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-    Sketcher::SketchObject* Obj = vp->getSketchObject();
+    Sketcher::SketchObject* Obj = getSketchObject();
 
     std::string doc_name = Obj->getDocument()->getName();
     std::string obj_name = Obj->getNameInDocument();
 
     // get the needed lists and objects
-    const std::vector<int>& solverredundant = vp->getSketchObject()->getLastRedundant();
+    const std::vector<int>& solverredundant = Obj->getLastRedundant();
     const std::vector<Sketcher::Constraint*>& vals = Obj->Constraints.getValues();
 
     getSelection().clearSelection();
@@ -358,17 +351,13 @@ CmdSketcherSelectMalformedConstraints::CmdSketcherSelectMalformedConstraints()
 void CmdSketcherSelectMalformedConstraints::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    Gui::Document* doc = getActiveGuiDocument();
-    ReleaseHandler(doc);
-    SketcherGui::ViewProviderSketch* vp =
-        static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-    Sketcher::SketchObject* Obj = vp->getSketchObject();
+    Sketcher::SketchObject* Obj = getSketchObject();
 
     std::string doc_name = Obj->getDocument()->getName();
     std::string obj_name = Obj->getNameInDocument();
 
     // get the needed lists and objects
-    const std::vector<int>& solvermalformed = vp->getSketchObject()->getLastMalformedConstraints();
+    const std::vector<int>& solvermalformed = Obj->getLastMalformedConstraints();
     const std::vector<Sketcher::Constraint*>& vals = Obj->Constraints.getValues();
 
     getSelection().clearSelection();
@@ -417,18 +406,14 @@ CmdSketcherSelectPartiallyRedundantConstraints::CmdSketcherSelectPartiallyRedund
 void CmdSketcherSelectPartiallyRedundantConstraints::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    Gui::Document* doc = getActiveGuiDocument();
-    ReleaseHandler(doc);
-    SketcherGui::ViewProviderSketch* vp =
-        static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-    Sketcher::SketchObject* Obj = vp->getSketchObject();
+    Sketcher::SketchObject* Obj = getSketchObject();
 
     std::string doc_name = Obj->getDocument()->getName();
     std::string obj_name = Obj->getNameInDocument();
 
     // get the needed lists and objects
     const std::vector<int>& solverpartiallyredundant =
-        vp->getSketchObject()->getLastPartiallyRedundant();
+        Obj->getLastPartiallyRedundant();
     const std::vector<Sketcher::Constraint*>& vals = Obj->Constraints.getValues();
 
     getSelection().clearSelection();
@@ -479,16 +464,13 @@ CmdSketcherSelectConflictingConstraints::CmdSketcherSelectConflictingConstraints
 void CmdSketcherSelectConflictingConstraints::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    Gui::Document* doc = getActiveGuiDocument();
-    ReleaseHandler(doc);
-    SketcherGui::ViewProviderSketch* vp =
-        static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-    Sketcher::SketchObject* Obj = vp->getSketchObject();
+    Sketcher::SketchObject* Obj = getSketchObject();
+
     std::string doc_name = Obj->getDocument()->getName();
     std::string obj_name = Obj->getNameInDocument();
 
     // get the needed lists and objects
-    const std::vector<int>& solverconflicting = vp->getSketchObject()->getLastConflicting();
+    const std::vector<int>& solverconflicting = Obj->getLastConflicting();
     const std::vector<Sketcher::Constraint*>& vals = Obj->Constraints.getValues();
 
     getSelection().clearSelection();
@@ -542,11 +524,7 @@ void CmdSketcherSelectElementsAssociatedWithConstraints::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
-    Gui::Document* doc = getActiveGuiDocument();
-    ReleaseHandler(doc);
-    SketcherGui::ViewProviderSketch* vp =
-        static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-    Sketcher::SketchObject* Obj = vp->getSketchObject();
+    Sketcher::SketchObject* Obj = getSketchObject();
 
     const std::vector<std::string>& SubNames = selection[0].getSubNames();
     const std::vector<Sketcher::Constraint*>& vals = Obj->Constraints.getValues();
@@ -666,11 +644,7 @@ void CmdSketcherSelectElementsWithDoFs::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     getSelection().clearSelection();
-    Gui::Document* doc = getActiveGuiDocument();
-    ReleaseHandler(doc);
-    SketcherGui::ViewProviderSketch* vp =
-        static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-    Sketcher::SketchObject* Obj = vp->getSketchObject();
+    Sketcher::SketchObject* Obj = getSketchObject();
 
     std::string doc_name = Obj->getDocument()->getName();
     std::string obj_name = Obj->getNameInDocument();
@@ -2027,11 +2001,7 @@ void CmdSketcherDeleteAllGeometry::activated(int iMsg)
     // use an equality constraint
     if (ret == QMessageBox::Yes) {
         getSelection().clearSelection();
-        Gui::Document* doc = getActiveGuiDocument();
-        ReleaseHandler(doc);
-        SketcherGui::ViewProviderSketch* vp =
-            static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-        Sketcher::SketchObject* Obj = vp->getSketchObject();
+        Sketcher::SketchObject* Obj = getSketchObject();
 
         try {
             Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Delete all geometry"));
@@ -2095,11 +2065,7 @@ void CmdSketcherDeleteAllConstraints::activated(int iMsg)
 
     if (ret == QMessageBox::Yes) {
         getSelection().clearSelection();
-        Gui::Document* doc = getActiveGuiDocument();
-        ReleaseHandler(doc);
-        SketcherGui::ViewProviderSketch* vp =
-            static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-        Sketcher::SketchObject* Obj = vp->getSketchObject();
+        Sketcher::SketchObject* Obj = getSketchObject();
 
         try {
             Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Delete All Constraints"));
