@@ -36,6 +36,7 @@
 #include "Document.h"
 #include "DlgActivateWindowImp.h"
 #include "DockWindowManager.h"
+#include "ToolBarManager.h"
 
 #include <Base/Exception.h>
 #include <App/Document.h>
@@ -340,6 +341,46 @@ Action * StdCmdToolBarMenu::createAction()
 }
 
 //===========================================================================
+// Std_DlgToggleToolBarLock
+//===========================================================================
+DEF_STD_CMD_C(StdCmdToggleToolBarLock)
+
+StdCmdToggleToolBarLock::StdCmdToggleToolBarLock()
+  :Command("Std_ToggleToolBarLock")
+{
+    sGroup        = "Tools";
+    sMenuText     = QT_TR_NOOP("Lock toolbars");
+    sToolTipText  = QT_TR_NOOP("Locks toolbar so they are no longer moveable");
+    sWhatsThis    = "Std_ToggleToolBarLock";
+    sStatusTip    = QT_TR_NOOP("Locks toolbar so they are no longer moveable");
+    eType         = 0;
+}
+
+
+Action* StdCmdToggleToolBarLock::createAction()
+{
+    Action* action = Command::createAction();
+
+    action->setCheckable(true);
+    action->setChecked(ToolBarManager::getInstance()->areToolBarsLocked(), true);
+
+    return action;
+}
+
+void StdCmdToggleToolBarLock::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+
+    auto manager = ToolBarManager::getInstance();
+    auto toggled = !manager->areToolBarsLocked();
+
+    manager->setToolBarsLocked(toggled);
+
+    getAction()->setChecked(toggled);
+}
+
+
+//===========================================================================
 // Std_ViewStatusBar
 //===========================================================================
 
@@ -475,6 +516,7 @@ void CreateWindowStdCommands()
     rcCmdMgr.addCommand(new StdCmdWindows());
     rcCmdMgr.addCommand(new StdCmdDockViewMenu());
     rcCmdMgr.addCommand(new StdCmdToolBarMenu());
+    rcCmdMgr.addCommand(new StdCmdToggleToolBarLock());
     rcCmdMgr.addCommand(new StdCmdWindowsMenu());
     rcCmdMgr.addCommand(new StdCmdStatusBar());
     rcCmdMgr.addCommand(new StdCmdUserInterface());

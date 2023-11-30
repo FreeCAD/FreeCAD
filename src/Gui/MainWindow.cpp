@@ -1387,6 +1387,10 @@ void MainWindow::onToolBarMenuAboutToShow()
             menu->addAction(action);
         }
     }
+
+    menu->addSeparator();
+
+    Application::Instance->commandManager().getCommandByName("Std_ToggleToolBarLock")->addTo(menu);
 }
 
 void MainWindow::onDockWindowMenuAboutToShow()
