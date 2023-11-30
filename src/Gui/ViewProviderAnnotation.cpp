@@ -388,6 +388,8 @@ void ViewProviderAnnotationLabel::attach(App::DocumentObject* f)
         dragger->addStartCallback(dragStartCallback, this);
         dragger->addFinishCallback(dragFinishCallback, this);
         dragger->addMotionCallback(dragMotionCallback, this);
+
+        dragger->setPartAsPath("translator", imagePath);
     }
 }
 
