@@ -174,7 +174,7 @@ if HAVE_QTNETWORK:
         def _setup_proxy(self):
             """Set up the proxy based on user preferences or prompts on command line"""
 
-            # Set up the proxy, if necesssary:
+            # Set up the proxy, if necessary:
             if HAVE_FREECAD:
                 (
                     noProxyCheck,

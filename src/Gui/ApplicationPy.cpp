@@ -547,7 +547,7 @@ PyObject* Application::sGetDocument(PyObject * /*self*/, PyObject *args)
         return pcDoc->getPyObject();
     }
 
-    PyErr_SetString(PyExc_TypeError, "Either string or App.Document exprected");
+    PyErr_SetString(PyExc_TypeError, "Either string or App.Document expected");
     return nullptr;
 }
 

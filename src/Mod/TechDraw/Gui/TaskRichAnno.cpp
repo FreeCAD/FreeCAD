@@ -310,7 +310,7 @@ void TaskRichAnno::createAnnoFeature()
             m_annoFeat->X.setValue(Rez::appX(vTemp.x));
             m_annoFeat->Y.setValue(Rez::appX(vTemp.y));
         } else {
-            //if we don't have a base featrue, we can't calculate start position, so just put it mid-page
+            //if we don't have a base feature, we can't calculate start position, so just put it mid-page
             m_annoFeat->X.setValue(m_basePage->getPageWidth()/2.0);
             m_annoFeat->Y.setValue(m_basePage->getPageHeight()/2.0);
         }

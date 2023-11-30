@@ -891,7 +891,7 @@ void SubShapeBinder::checkPropertyStatus() {
 
     // Make Shape transient can reduce some file size, and maybe reduce file
     // loading time as well. But there maybe complication arise when doing
-    // TopoShape version upgrade. So we DO NOT set trasient at the moment.
+    // TopoShape version upgrade. So we DO NOT set transient at the moment.
     //
     // Shape.setStatus(App::Property::Transient, !PartialLoad.getValue() && BindMode.getValue()==0);
 }

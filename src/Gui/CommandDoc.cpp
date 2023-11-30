@@ -1286,7 +1286,7 @@ StdCmdSelectAll::StdCmdSelectAll()
     sWhatsThis    = "Std_SelectAll";
     sStatusTip    = QT_TR_NOOP("Select all");
     sPixmap       = "edit-select-all";
-    //sAccel        = "Ctrl+A"; // superseeds shortcuts for text edits
+    //sAccel        = "Ctrl+A"; // supersedes shortcuts for text edits
 }
 
 void StdCmdSelectAll::activated(int iMsg)
