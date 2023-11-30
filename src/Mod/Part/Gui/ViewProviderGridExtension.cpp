@@ -397,7 +397,7 @@ bool GridExtensionP::getEnabled()
 void GridExtensionP::createEditModeInventorNodes()
 {
     // Create Grid Coin nodes ++++++++++++++++++++++++++++++++++++++++++
-    GridRoot = new SoSeparator();
+    GridRoot = (SoSeparator*)(SoType().fromName("SoSkipBoundingGroup").createInstance());
     GridRoot->ref();
     GridRoot->setName("GridRoot");
 
