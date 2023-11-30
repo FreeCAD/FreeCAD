@@ -227,75 +227,42 @@ App::DocumentObjectExecReturn* Helix::execute()
             return new App::DocumentObjectExecReturn(e.what());
         }
 
-        std::vector<std::vector<TopoDS_Wire>> wiresections;
-        for (TopoDS_Wire& wire : wires)
-            wiresections.emplace_back(1, wire);
-
         //build all shells
-        std::vector<TopoDS_Shape> shells;
-        std::vector<TopoDS_Wire> frontwires, backwires;
-        for (std::vector<TopoDS_Wire>& wires : wiresections) {
+        BRepOffsetAPI_MakePipeShell mkPS(TopoDS::Wire(path));
 
-            BRepOffsetAPI_MakePipeShell mkPS(TopoDS::Wire(path));
+        mkPS.SetTolerance(Precision::Confusion());
+        mkPS.SetTransitionMode(BRepBuilderAPI_Transformed);
 
-            mkPS.SetTolerance(Precision::Confusion());
-            mkPS.SetTransitionMode(BRepBuilderAPI_Transformed);
+        mkPS.SetMode(TopoDS::Wire(auxpath), true);  // this is for auxiliary
 
-            if (Angle.getValue() == 0) {
-                mkPS.SetMode(true);  //This is for frenet
-            } else {
-                mkPS.SetMode(TopoDS::Wire(auxpath), true);  // this is for auxiliary
-            }
-
-            for (TopoDS_Wire& wire : wires) {
-                wire.Move(invObjLoc);
-                mkPS.Add(wire);
-            }
-
-            if (!mkPS.IsReady())
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Could not build"));
-
-            shells.push_back(mkPS.Shape());
-
-            if (!mkPS.Shape().Closed()) {
-                // shell is not closed - use simulate to get the end wires
-                TopTools_ListOfShape sim;
-                mkPS.Simulate(2, sim);
-
-                frontwires.push_back(TopoDS::Wire(sim.First()));
-                backwires.push_back(TopoDS::Wire(sim.Last()));
-            }
+        if (Angle.getValue() == 0) {
+            mkPS.SetMode(true);  // This is for frenet, quicker than auxiliary
+                                 // but can introduce to much error, checked below
+        } else {
+            mkPS.SetMode(TopoDS::Wire(auxpath), true);  // this is for auxiliary
         }
 
-        BRepBuilderAPI_MakeSolid mkSolid;
-
-        if (!frontwires.empty()) {
-            // build the end faces, sew the shell and build the final solid
-            TopoDS_Shape front = Part::FaceMakerCheese::makeFace(frontwires);
-            TopoDS_Shape back = Part::FaceMakerCheese::makeFace(backwires);
-
-            BRepBuilderAPI_Sewing sewer;
-            sewer.SetTolerance(Precision::Confusion());
-            sewer.Add(front);
-            sewer.Add(back);
-
-            for (TopoDS_Shape& s : shells)
-                sewer.Add(s);
-
-            sewer.Perform();
-            mkSolid.Add(TopoDS::Shell(sewer.SewedShape()));
-        }
-        else {
-            // shells are already closed - add them directly
-            for (TopoDS_Shape& s : shells) {
-                mkSolid.Add(TopoDS::Shell(s));
-            }
+        for (TopoDS_Wire& wire : wires) {
+            wire.Move(invObjLoc);
+            mkPS.Add(wire);
         }
 
-        if (!mkSolid.IsDone())
-            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result is not a solid"));
+        if (!mkPS.IsReady())
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Could not build"));
 
-        TopoDS_Shape result = mkSolid.Shape();
+        mkPS.Build();
+
+        //check for error value at pipe creation and re-build if needed
+        if (Angle.getValue() == 0 && mkPS.ErrorOnSurface() < Precision::Confusion() / 2.0 ) {
+            Base::Console().Log("PartDesign_Helix : Fall back to auxiliary mode\n");
+            mkPS.SetMode(TopoDS::Wire(auxpath), true);
+            mkPS.Build();
+        }
+
+        if (!mkPS.MakeSolid())
+            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Could not make solid helix with open wire"));
+
+        TopoDS_Shape result = mkPS.Shape();
 
         BRepClass3d_SolidClassifier SC(result);
         SC.PerformInfinitePoint(Precision::Confusion());
