@@ -1427,7 +1427,7 @@ PyObject* Application::sCreateViewer(PyObject * /*self*/, PyObject *args)
 
 PyObject* Application::sGetMarkerIndex(PyObject * /*self*/, PyObject *args)
 {
-    char *pstr;
+    char *pstr {};
     int  defSize = 9;
     if (!PyArg_ParseTuple(args, "s|i", &pstr, &defSize))
         return nullptr;
@@ -1449,18 +1449,12 @@ PyObject* Application::sGetMarkerIndex(PyObject * /*self*/, PyObject *args)
             {"default", "CIRCLE_FILLED"}
         };
 
-        std::list<std::pair<std::string, std::string>>::iterator markerStyle;
+        auto findIt = std::find_if(markerList.begin(), markerList.end(), [&marker_arg](const auto& it) {
+            return marker_arg == it.first || marker_arg == it.second;
+        });
 
-        for (markerStyle = markerList.begin(); markerStyle != markerList.end(); ++markerStyle)
-        {
-            if (marker_arg == (*markerStyle).first || marker_arg == (*markerStyle).second)
-                break;
-        }
+        marker_arg = (findIt != markerList.end() ? findIt->second : "CIRCLE_FILLED");
 
-        marker_arg = "CIRCLE_FILLED";
-
-        if (markerStyle != markerList.end())
-            marker_arg = (*markerStyle).second;
 
         //get the marker size
         auto sizeList = Gui::Inventor::MarkerBitmaps::getSupportedSizes(marker_arg);
