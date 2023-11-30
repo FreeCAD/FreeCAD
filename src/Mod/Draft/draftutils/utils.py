@@ -58,28 +58,27 @@ arrowtypes = ARROW_TYPES
 
 
 def get_default_annotation_style():
-    param_draft = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-    param_view = App.ParamGet("User parameter:BaseApp/Preferences/View")
-    anno_scale = param_draft.GetFloat("DraftAnnotationScale", 1)
+    param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+    anno_scale = param.GetFloat("DraftAnnotationScale", 1)
     scale_mult = 1 / anno_scale if anno_scale > 0 else 1
     return {
-        "ArrowSize":       ("float", param_draft.GetFloat("arrowsize", 20)),
-        "ArrowType":       ("index", param_draft.GetInt("dimsymbol", 0)),
-        "Decimals":        ("int",   param_draft.GetInt("dimPrecision", 2)),
-        "DimOvershoot":    ("float", param_draft.GetFloat("dimovershoot", 20)),
-        "ExtLines":        ("float", param_draft.GetFloat("extlines", 300)),
-        "ExtOvershoot":    ("float", param_draft.GetFloat("extovershoot", 20)),
-        "FontName":        ("font",  param_draft.GetString("textfont", "Sans")),
-        "FontSize":        ("float", param_draft.GetFloat("textheight", 100)),
-        "LineColor":       ("color", param_view.GetUnsigned("DefaultShapeLineColor", 255)),
-        "LineSpacing":     ("float", param_draft.GetFloat("LineSpacing", 1)),
-        "LineWidth":       ("int",   param_view.GetInt("DefaultShapeLineWidth", 1)),
+        "ArrowSize":       ("float", param.GetFloat("arrowsize", 20)),
+        "ArrowType":       ("index", param.GetInt("dimsymbol", 0)),
+        "Decimals":        ("int",   param.GetInt("dimPrecision", 2)),
+        "DimOvershoot":    ("float", param.GetFloat("dimovershoot", 20)),
+        "ExtLines":        ("float", param.GetFloat("extlines", 300)),
+        "ExtOvershoot":    ("float", param.GetFloat("extovershoot", 20)),
+        "FontName":        ("font",  param.GetString("textfont", "Sans")),
+        "FontSize":        ("float", param.GetFloat("textheight", 100)),
+        "LineColor":       ("color", param.GetUnsigned("DefaultAnnoLineColor", 255)),
+        "LineSpacing":     ("float", param.GetFloat("LineSpacing", 1)),
+        "LineWidth":       ("int",   param.GetInt("DefaultAnnoLineWidth", 1)),
         "ScaleMultiplier": ("float", scale_mult),
-        "ShowLine":        ("bool",  param_draft.GetBool("DimShowLine", True)),
-        "ShowUnit":        ("bool",  param_draft.GetBool("showUnit", True)),
-        "TextColor":       ("color", param_draft.GetUnsigned("DefaultTextColor", 255)),
-        "TextSpacing":     ("float", param_draft.GetFloat("dimspacing", 20)),
-        "UnitOverride":    ("str",   param_draft.GetString("overrideUnit", "")),
+        "ShowLine":        ("bool",  param.GetBool("DimShowLine", True)),
+        "ShowUnit":        ("bool",  param.GetBool("showUnit", True)),
+        "TextColor":       ("color", param.GetUnsigned("DefaultTextColor", 255)),
+        "TextSpacing":     ("float", param.GetFloat("dimspacing", 20)),
+        "UnitOverride":    ("str",   param.GetString("overrideUnit", "")),
     }
 
 
@@ -173,7 +172,8 @@ def get_param_type(param):
                  "precision", "defaultWP", "snapRange", "gridEvery",
                  "linewidth", "modconstrain", "modsnap",
                  "maxSnapEdges", "modalt", "HatchPatternResolution",
-                 "snapStyle", "DefaultAnnoDisplayMode", "gridSize", "gridTransparency"):
+                 "snapStyle", "DefaultAnnoDisplayMode", "DefaultAnnoLineWidth",
+                 "gridSize", "gridTransparency"):
         return "int"
     elif param in ("constructiongroupname", "textfont",
                    "patternFile", "snapModes",
@@ -192,8 +192,8 @@ def get_param_type(param):
                    "DiscretizeEllipses", "showUnit", "coloredGridAxes",
                    "Draft_array_fuse", "Draft_array_Link", "gridBorder"):
         return "bool"
-    elif param in ("color", "constructioncolor",
-                   "snapcolor", "gridColor"):
+    elif param in ("color", "constructioncolor", "snapcolor",
+                   "gridColor", "DefaultTextColor", "DefaultAnnoLineColor"):
         return "unsigned"
     else:
         return None
@@ -830,6 +830,27 @@ def rgba_to_argb(color):
     """Change byte order of a 4 byte color int from RGBA (FreeCAD) to ARGB (Qt).
     """
     return ((color & 0xFFFFFF00) >> 8) + ((color & 0xFF) << 24)
+
+
+def get_rgba_tuple(color, typ=1.0):
+    """Return an RGBA tuple.
+
+    Parameters
+    ----------
+    color: int
+        RGBA integer.
+    typ: any float (default = 1.0) or int (use 255)
+        If float the values in the returned tuple are in the 0.0-1.0 range.
+        Else the values are in the 0-255 range.
+    """
+    color = ((color >> 24) & 0xFF,
+             (color >> 16) & 0xFF,
+             (color >> 8) & 0xFF,
+             color & 0xFF)
+    if type(typ) == float:
+        return tuple([x / 255.0 for x in color])
+    else:
+        return color
 
 
 def filter_objects_for_modifiers(objects, isCopied=False):

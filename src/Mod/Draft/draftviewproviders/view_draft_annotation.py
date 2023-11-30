@@ -141,6 +141,7 @@ class ViewProviderDraftAnnotation(object):
                              "TextColor",
                              "Text",
                              _tip)
+            vobj.TextColor = utils.get_param("DefaultTextColor", 255) & 0xFFFFFF00
 
     def set_units_properties(self, vobj, properties):
         return
@@ -153,6 +154,7 @@ class ViewProviderDraftAnnotation(object):
                              "LineWidth",
                              "Graphics",
                              _tip)
+            vobj.LineWidth = utils.get_param("DefaultAnnoLineWidth", 2)
 
         if "LineColor" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property", "Line color")
@@ -160,6 +162,7 @@ class ViewProviderDraftAnnotation(object):
                              "LineColor",
                              "Graphics",
                              _tip)
+            vobj.LineColor = utils.get_param("DefaultAnnoLineColor", 255) & 0xFFFFFF00
 
     def dumps(self):
         """Return a tuple of objects to save or None."""

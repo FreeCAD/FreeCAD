@@ -436,94 +436,73 @@ def get_diffuse_color(objs):
 
 
 def format_object(target, origin=None):
-    """Apply visual properties from the Draft toolbar or another object.
+    """Apply visual properties to an object.
 
-    This function only works if the graphical interface is available
-    as the visual properties are attributes of the view provider
-    (`obj.ViewObject`).
+    This function only works if the graphical interface is available.
+
+    If construction mode is active the `origin` argument is ignored.
+    The `target` is then placed in the construction group and the `constr`
+    color is applied to its applicable color properties:
+    `TextColor`, `PointColor`, `LineColor`, and `ShapeColor`.
 
     Parameters
     ----------
     target: App::DocumentObject
-        Any type of scripted object.
-
-        This object will adopt the applicable visual properties,
-        `FontSize`, `TextColor`, `LineWidth`, `PointColor`, `LineColor`,
-        and `ShapeColor`, defined in the Draft toolbar
-        (`Gui.draftToolBar`) or will adopt
-        the properties from the `origin` object.
-
-        The `target` is also placed in the construction group
-        if the construction mode in the Draft toolbar is active.
 
     origin: App::DocumentObject, optional
-        It defaults to `None`.
-        If it exists, it will provide the visual properties to assign
-        to `target`, with the exception of `BoundingBox`, `Proxy`,
-        `RootNode` and `Visibility`.
+        Defaults to `None`.
+        If construction mode is not active, its visual properties are assigned
+        to `target`, with the exception of `BoundingBox`, `Proxy`, `RootNode`
+        and `Visibility`.
     """
     if not target:
         return
-    obrep = target.ViewObject
-    if not obrep:
+    if not App.GuiUp:
         return
-    ui = None
-    if App.GuiUp:
-        if hasattr(Gui, "draftToolBar"):
-            ui = Gui.draftToolBar
-    if ui:
+    if not hasattr(Gui, "draftToolBar"):
+        return
+    if not hasattr(target, 'ViewObject'):
+        return
+    obrep = target.ViewObject
+    if Gui.draftToolBar.isConstructionMode():
         doc = App.ActiveDocument
-        if ui.isConstructionMode():
-            lcol = fcol = ui.getDefaultColor("constr")
-            tcol = lcol
-            fcol = lcol
-            grp = doc.getObject("Draft_Construction")
-            if not grp:
-                grp = doc.addObject("App::DocumentObjectGroup", "Draft_Construction")
-                grp.Label = utils.get_param("constructiongroupname", "Construction")
-            grp.addObject(target)
-            if hasattr(obrep, "Transparency"):
-                obrep.Transparency = 80
-        else:
-            lcol = ui.getDefaultColor("line")
-            tcol = ui.getDefaultColor("text")
-            fcol = ui.getDefaultColor("face")
-        lcol = (float(lcol[0]), float(lcol[1]), float(lcol[2]), 0.0)
-        tcol = (float(tcol[0]), float(tcol[1]), float(tcol[2]), 0.0)
-        fcol = (float(fcol[0]), float(fcol[1]), float(fcol[2]), 0.0)
-        lw = utils.getParam("linewidth",2)
-        if not origin or not hasattr(origin, 'ViewObject'):
-            if "TextColor" in obrep.PropertiesList:
-                obrep.TextColor = tcol
-            if "LineWidth" in obrep.PropertiesList:
-                obrep.LineWidth = lw
-            if "PointColor" in obrep.PropertiesList:
-                obrep.PointColor = lcol
-            if "LineColor" in obrep.PropertiesList:
-                obrep.LineColor = lcol
-            if "ShapeColor" in obrep.PropertiesList:
-                obrep.ShapeColor = fcol
-        else:
-            matchrep = origin.ViewObject
-            for p in matchrep.PropertiesList:
-                if p not in ("DisplayMode", "BoundingBox",
-                             "Proxy", "RootNode", "Visibility"):
-                    if p in obrep.PropertiesList:
-                        if not obrep.getEditorMode(p):
-                            if hasattr(getattr(matchrep, p), "Value"):
-                                val = getattr(matchrep, p).Value
-                            else:
-                                val = getattr(matchrep, p)
-                            try:
-                                setattr(obrep, p, val)
-                            except Exception:
-                                pass
-            if matchrep.DisplayMode in obrep.listDisplayModes():
-                obrep.DisplayMode = matchrep.DisplayMode
-            if hasattr(obrep, "DiffuseColor"):
-                difcol = get_diffuse_color(origin)
-                if difcol:
-                    obrep.DiffuseColor = difcol
+        col = Gui.draftToolBar.getDefaultColor("constr") + (0.0,)
+        grp = doc.getObject("Draft_Construction")
+        if not grp:
+            grp = doc.addObject("App::DocumentObjectGroup", "Draft_Construction")
+            grp.Label = utils.get_param("constructiongroupname", "Construction")
+        grp.addObject(target)
+        if "TextColor" in obrep.PropertiesList:
+            obrep.TextColor = col
+        if "PointColor" in obrep.PropertiesList:
+            obrep.PointColor = col
+        if "LineColor" in obrep.PropertiesList:
+            obrep.LineColor = col
+        if "ShapeColor" in obrep.PropertiesList:
+            obrep.ShapeColor = col
+        if hasattr(obrep, "Transparency"):
+            obrep.Transparency = 80
+    elif origin and hasattr(origin, 'ViewObject'):
+        matchrep = origin.ViewObject
+        for p in matchrep.PropertiesList:
+            if p not in ("DisplayMode", "BoundingBox",
+                         "Proxy", "RootNode", "Visibility"):
+                if p in obrep.PropertiesList:
+                    if not obrep.getEditorMode(p):
+                        if hasattr(getattr(matchrep, p), "Value"):
+                            val = getattr(matchrep, p).Value
+                        else:
+                            val = getattr(matchrep, p)
+                        try:
+                            setattr(obrep, p, val)
+                        except Exception:
+                            pass
+        if matchrep.DisplayMode in obrep.listDisplayModes():
+            obrep.DisplayMode = matchrep.DisplayMode
+        if hasattr(obrep, "DiffuseColor"):
+            difcol = get_diffuse_color(origin)
+            if difcol:
+                obrep.DiffuseColor = difcol
 
 
 formatObject = format_object

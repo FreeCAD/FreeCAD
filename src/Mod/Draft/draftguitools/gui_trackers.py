@@ -44,6 +44,7 @@ import Draft
 import DraftVecUtils
 
 from FreeCAD import Vector
+from draftutils import utils
 from draftutils.todo import ToDo
 from draftutils.messages import _msg
 
@@ -62,7 +63,6 @@ class Tracker:
         import DraftGeomUtils
         self.ontop = ontop
         self.color = coin.SoBaseColor()
-        self.color.rgb = scolor or FreeCADGui.draftToolBar.getDefaultColor("line")
         drawstyle = coin.SoDrawStyle()
         if swidth:
             drawstyle.lineWidth = swidth
@@ -78,6 +78,7 @@ class Tracker:
             self.switch.setName(name)
         self.switch.addChild(node)
         self.switch.whichChild = -1
+        self.setColor(scolor)
         self.Visible = False
         ToDo.delay(self._insertSwitch, self.switch)
 
@@ -139,6 +140,18 @@ class Tracker:
             sg = Draft.get3DView().getSceneGraph()
             sg.removeChild(self.switch)
             sg.insertChild(self.switch, 0)
+
+    def setColor(self, color=None):
+        """Set the color."""
+        if color is not None:
+            self.color.rgb = color
+        elif hasattr(FreeCAD, "activeDraftCommand") \
+                and FreeCAD.activeDraftCommand is not None \
+                and FreeCAD.activeDraftCommand.featureName in ("Dimension", "Label", "Text"):
+            color = utils.get_rgba_tuple(utils.get_param("DefaultAnnoLineColor", 255))[:3]
+            self.color.rgb = color
+        else:
+            self.color.rgb = FreeCADGui.draftToolBar.getDefaultColor("line")
 
     def _get_wp(self):
         return FreeCAD.DraftWorkingPlane
@@ -696,7 +709,7 @@ class ghostTracker(Tracker):
         self.children.append(rootsep)
         super().__init__(dotted, scolor, swidth,
                          children=self.children, name="ghostTracker")
-        self.setColor()
+        self.setColor(scolor)
 
     def setColor(self, color=None):
         """Set the color."""

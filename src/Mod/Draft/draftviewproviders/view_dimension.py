@@ -358,6 +358,7 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
         self.onChanged(vobj, "DimOvershoot")
         self.onChanged(vobj, "ExtOvershoot")
         self.onChanged(vobj, "ShowLine")
+        self.onChanged(vobj, "LineWidth")
 
     def updateData(self, obj, prop):
         """Execute when a property from the Proxy class is changed.
