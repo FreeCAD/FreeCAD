@@ -372,6 +372,12 @@ public:
         return TopoShape().makeTransform(*this,trsf,op,copy);
     }
 
+    /** Move the shape to a new location
+     *
+     * @param loc: location
+     *
+     * The location is applied in addition to any current transformation of the shape
+     */
     void move(const TopLoc_Location &loc) {
         _Shape.Move(loc);
     }
@@ -387,6 +393,70 @@ public:
         TopoShape ret(*this);
         ret._Shape.Move(loc);
         return ret;
+    }
+    /** Move and/or rotate the shape
+     *
+     * @param trsf: OCCT transformation (must not have scale)
+     *
+     * The transformation is applied in addition to any current transformation
+     * of the shape
+     */
+    void move(const gp_Trsf &trsf) {
+        move(_Shape, trsf);
+    }
+    /** Return a new transformed shape
+     *
+     * @param trsf: OCCT transformation (must not have scale)
+     *
+     * @return Return a shallow copy of the shape transformed to the new
+     *         location that is applied in addition to any current
+     *         transformation of the shape
+     */
+    TopoShape moved(const gp_Trsf &trsf) const {
+        return moved(_Shape, trsf);
+    }
+    /** Set a new location for the shape
+     *
+     * @param loc: shape location
+     *
+     * Any previous location of the shape is discarded before applying the
+     * input location
+     */
+    void locate(const TopLoc_Location &loc) {
+        _Shape.Location(loc);
+    }
+    /** ReturnSet a new location for the shape
+     *
+     * @param loc: shape location
+     *
+     * @return Return a shallow copy the shape in a new location. Any previous
+     *         location of the shape is discarded before applying the input
+     *         location
+     */
+    TopoShape located(const TopLoc_Location &loc) const {
+        TopoShape ret(*this);
+        ret._Shape.Location(loc);
+        return ret;
+    }
+    /** Set a new transformation for the shape
+     *
+     * @param trsf: OCCT transformation (must not have scale)
+     *
+     * Any previous transformation of the shape is discarded before applying
+     * the input transformation
+     */
+    void locate(const gp_Trsf &trsf) {
+        located(_Shape, trsf);
+    }
+    /** Set a new transformation for the shape
+     *
+     * @param trsf: OCCT transformation (must not have scale)
+     *
+     * Any previous transformation of the shape is discarded before applying
+     * the input transformation.
+     */
+    TopoShape located(const gp_Trsf &trsf) const {
+        return located(_Shape, trsf);
     }
 
     static TopoDS_Shape& move(TopoDS_Shape& tds, const TopLoc_Location& loc);
@@ -459,8 +529,74 @@ private:
     mutable std::shared_ptr<TopoShapeCache> _cache;
     mutable TopLoc_Location _subLocation;
 
-private:
-    TopoDS_Shape _Shape;
+    class ShapeProtector : public TopoDS_Shape
+    {
+    public:
+        using TopoDS_Shape::TopoDS_Shape;
+        using TopoDS_Shape::operator=;
+
+        ShapeProtector() = default;
+        ShapeProtector(const TopoDS_Shape& shape) : TopoDS_Shape(shape) {}
+        ShapeProtector(TopoDS_Shape &&shape): TopoDS_Shape(std::move(shape)) {}
+
+        void Nullify() {
+            owner->resetElementMap();
+            owner->_cache.reset();
+            owner->_parentCache.reset();
+        }
+
+        using TopoDS_Shape::Location;
+        void Location (const TopLoc_Location& Loc) {
+            // Location does not affect element map or cache
+            TopoShape::locate(*dynamic_cast<TopoDS_Shape*>(this), Loc);
+        }
+    
+        void Move (const TopLoc_Location& position) {
+            // Move does not affect element map or cache
+            TopoShape::move(*dynamic_cast<TopoDS_Shape*>(this), position);
+        }
+
+        using TopoDS_Shape::Orientation;
+        void Orientation (const TopAbs_Orientation Orient) {
+            owner->flushElementMap();
+            TopoDS_Shape::Orientation(Orient);
+            if (owner->_cache) owner->initCache();
+        }
+    
+        void Reverse() {
+            owner->flushElementMap();
+            TopoDS_Shape::Reverse();
+            if (owner->_cache) owner->initCache();
+        }
+    
+        void Complement() {
+            owner->flushElementMap();
+            TopoDS_Shape::Complement();
+            if (owner->_cache) owner->initCache();
+        }
+    
+        void Compose (const TopAbs_Orientation Orient) {
+            owner->flushElementMap();
+            TopoDS_Shape::Compose(Orient);
+            if (owner->_cache) owner->initCache();
+        }
+    
+        void EmptyCopy() {
+            owner->flushElementMap();
+            TopoDS_Shape::EmptyCopy();
+            if (owner->_cache) owner->initCache();
+        }
+    
+        void TShape (const Handle(TopoDS_TShape)& T) {
+            owner->flushElementMap();
+            TopoDS_Shape::TShape(T);
+            if (owner->_cache) owner->initCache();
+        }
+
+        TopoShape* owner;
+    };
+
+    ShapeProtector _Shape;
 };
 
 } //namespace Part
