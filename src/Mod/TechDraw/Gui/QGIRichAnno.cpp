@@ -243,7 +243,7 @@ QString QGIRichAnno::convertTextSizes(const QString& inHtml)  const
     QStringList findList;
     QStringList replList;
 
-    // find each occurence of "font-size:..." and calculate the equivalent size in scene units
+    // find each occurrence of "font-size:..." and calculate the equivalent size in scene units
     // or CSS pixels
     int pos = 0;
     while ((pos = inHtml.indexOf(rxFontSize, pos, &match)) != -1) {
