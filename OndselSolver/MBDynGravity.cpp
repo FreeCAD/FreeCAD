@@ -48,6 +48,7 @@ void MbD::MBDynGravity::parseMBDyn(std::string line)
 void MbD::MBDynGravity::readFunction(std::vector<std::string>& args)
 {
 	assert(false);
+	noop();
 }
 
 void MbD::MBDynGravity::createASMT()

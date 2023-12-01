@@ -11,7 +11,7 @@ using namespace MbD;
 void MbD::MBDynMarker::parseMBDyn(std::vector<std::string>& args)
 {
 	rPmP = std::make_shared<FullColumn<double>>(3);
-	aAPm = FullMatrixDouble::identitysptr(3);
+	aAPm = FullMatrix<double>::identitysptr(3);
 	if (args.empty()) return;
 	auto str = args.at(0); //Must copy string
 	if (str.find("reference") != std::string::npos) {
@@ -37,7 +37,7 @@ void MbD::MBDynMarker::parseMBDynClamp(std::vector<std::string>& args)
 	//rOmO = rOPO + aAOP*rPmP
 	//aAOm = aAOP * aAPm
 	auto rOmO = std::make_shared<FullColumn<double>>(3);
-	auto aAOm = FullMatrixDouble::identitysptr(3);
+	auto aAOm = FullMatrix<double>::identitysptr(3);
 	auto rOPO = readPosition(args);
 	auto aAOP = readOrientation(args);
 	rPmP = aAOP->transposeTimesFullColumn(rOmO->minusFullColumn(rOPO));

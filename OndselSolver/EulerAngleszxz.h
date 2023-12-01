@@ -29,9 +29,9 @@ namespace MbD {
 	template<typename T>
 	inline void EulerAngleszxz<T>::initialize()
 	{
-		phiA = FullMatrixDouble::identitysptr(3);
-		theA = FullMatrixDouble::identitysptr(3);
-		psiA = FullMatrixDouble::identitysptr(3);
+		phiA = FullMatrix<T>::identitysptr(3);
+		theA = FullMatrix<T>::identitysptr(3);
+		psiA = FullMatrix<T>::identitysptr(3);
 	}
 	template<typename T>
 	inline void EulerAngleszxz<T>::calc()

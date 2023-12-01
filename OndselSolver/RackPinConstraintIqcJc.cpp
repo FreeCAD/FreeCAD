@@ -18,8 +18,8 @@ MbD::RackPinConstraintIqcJc::RackPinConstraintIqcJc(EndFrmsptr frmi, EndFrmsptr 
 {
 	pGpXI = std::make_shared<FullRow<double>>(3);
 	pGpEI = std::make_shared<FullRow<double>>(4);
-	ppGpXIpEI = std::make_shared<FullMatrixDouble>(3, 4);
-	ppGpEIpEI = std::make_shared<FullMatrixDouble>(4, 4);
+	ppGpXIpEI = std::make_shared<FullMatrix<double>>(3, 4);
+	ppGpEIpEI = std::make_shared<FullMatrix<double>>(4, 4);
 }
 
 void MbD::RackPinConstraintIqcJc::initxIeJeIe()

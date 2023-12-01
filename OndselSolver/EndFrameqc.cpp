@@ -25,10 +25,10 @@ EndFrameqc::EndFrameqc(const char* str) : EndFramec(str) {
 
 void EndFrameqc::initialize()
 {
-	prOeOpE = std::make_shared<FullMatrixDouble>(3, 4);
-	pprOeOpEpE = std::make_shared<FullMatrixFullColumnDouble>(4, 4);
+	prOeOpE = std::make_shared<FullMatrix<double>>(3, 4);
+	pprOeOpEpE = std::make_shared<FullMatrix<FColDsptr>>(4, 4);
 	pAOepE = std::make_shared<FullColumn<FMatDsptr>>(4);
-	ppAOepEpE = std::make_shared<FullMatrixFullMatrixDouble>(4, 4);
+	ppAOepEpE = std::make_shared<FullMatrix<FMatDsptr>>(4, 4);
 }
 
 void EndFrameqc::initializeGlobally()
@@ -59,7 +59,7 @@ void MbD::EndFrameqc::initEndFrameqct2()
 
 FMatFColDsptr EndFrameqc::ppAjOepEpE(int jj)
 {
-	auto answer = std::make_shared<FullMatrixFullColumnDouble>(4, 4);
+	auto answer = std::make_shared<FullMatrix<FColDsptr>>(4, 4);
 	for (int i = 0; i < 4; i++) {
 		auto& answeri = answer->at(i);
 		auto& ppAOepEipE = ppAOepEpE->at(i);
@@ -80,7 +80,7 @@ void EndFrameqc::calcPostDynCorrectorIteration()
 
 FMatDsptr EndFrameqc::pAjOepET(int axis)
 {
-	auto answer = std::make_shared<FullMatrixDouble>(4, 3);
+	auto answer = std::make_shared<FullMatrix<double>>(4, 3);
 	for (int i = 0; i < 4; i++) {
 		auto& answeri = answer->at(i);
 		auto& pAOepEi = pAOepE->at(i);
@@ -94,7 +94,7 @@ FMatDsptr EndFrameqc::pAjOepET(int axis)
 
 FMatDsptr EndFrameqc::ppriOeOpEpE(int ii)
 {
-	auto answer = std::make_shared<FullMatrixDouble>(4, 4);
+	auto answer = std::make_shared<FullMatrix<double>>(4, 4);
 	for (int i = 0; i < 4; i++) {
 		auto& answeri = answer->at(i);
 		auto& pprOeOpEipE = pprOeOpEpE->at(i);

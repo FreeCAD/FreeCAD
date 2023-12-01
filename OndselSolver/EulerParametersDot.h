@@ -55,13 +55,13 @@ namespace MbD {
 	template<typename T>
 	inline void EulerParametersDot<T>::initialize()
 	{
-		aAdot = std::make_shared<FullMatrixDouble>(3, 3);
-		aBdot = std::make_shared<FullMatrixDouble>(3, 4);
-		aCdot = std::make_shared<FullMatrixDouble>(3, 4);
+		aAdot = std::make_shared<FullMatrix<double>>(3, 3);
+		aBdot = std::make_shared<FullMatrix<double>>(3, 4);
+		aCdot = std::make_shared<FullMatrix<double>>(3, 4);
 		pAdotpE = std::make_shared<FullColumn<FMatDsptr>>(4);
 		for (int i = 0; i < 4; i++)
 		{
-			pAdotpE->at(i) = std::make_shared<FullMatrixDouble>(3, 3);
+			pAdotpE->at(i) = std::make_shared<FullMatrix<double>>(3, 3);
 		}
 	}
 

@@ -19,8 +19,8 @@ MbD::AngleZIeqcJeqc::AngleZIeqcJeqc()
 MbD::AngleZIeqcJeqc::AngleZIeqcJeqc(EndFrmsptr frmi, EndFrmsptr frmj) : AngleZIeqcJec(frmi, frmj)
 {
 	pthezpEJ = std::make_shared<FullRow<double>>(4);
-	ppthezpEIpEJ = std::make_shared<FullMatrixDouble>(4, 4);
-	ppthezpEJpEJ = std::make_shared<FullMatrixDouble>(4, 4);
+	ppthezpEIpEJ = std::make_shared<FullMatrix<double>>(4, 4);
+	ppthezpEJpEJ = std::make_shared<FullMatrix<double>>(4, 4);
 }
 
 void MbD::AngleZIeqcJeqc::calcPostDynCorrectorIteration()
@@ -88,8 +88,8 @@ void MbD::AngleZIeqcJeqc::initialize()
 {
 	AngleZIeqcJec::initialize();
 	pthezpEJ = std::make_shared<FullRow<double>>(4);
-	ppthezpEIpEJ = std::make_shared<FullMatrixDouble>(4, 4);
-	ppthezpEJpEJ = std::make_shared<FullMatrixDouble>(4, 4);
+	ppthezpEIpEJ = std::make_shared<FullMatrix<double>>(4, 4);
+	ppthezpEJpEJ = std::make_shared<FullMatrix<double>>(4, 4);
 }
 
 FMatDsptr MbD::AngleZIeqcJeqc::ppvaluepEIpEJ()

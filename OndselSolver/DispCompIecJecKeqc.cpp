@@ -22,7 +22,7 @@ DispCompIecJecKeqc::DispCompIecJecKeqc(EndFrmsptr frmi, EndFrmsptr frmj, EndFrms
 void DispCompIecJecKeqc::initialize()
 {
     priIeJeKepEK = std::make_shared<FullRow<double>>(4);
-    ppriIeJeKepEKpEK = std::make_shared<FullMatrixDouble>(4, 4);
+    ppriIeJeKepEKpEK = std::make_shared<FullMatrix<double>>(4, 4);
 }
 
 void DispCompIecJecKeqc::initializeGlobally()
@@ -37,7 +37,7 @@ void DispCompIecJecKeqc::calcPostDynCorrectorIteration()
 	auto efrmKqc = std::static_pointer_cast<EndFrameqc>(efrmK);
 	aAjOKe = efrmKqc->aAjOe(axisK);
 	rIeJeO = frmJqc->rOeO->minusFullColumn(frmIqc->rOeO);
-	riIeJeKe = aAjOKe->dotVec(rIeJeO);
+	riIeJeKe = aAjOKe->dot(rIeJeO);
 	pAjOKepEKT = efrmKqc->pAjOepET(axisK);
 	ppAjOKepEKpEK = efrmKqc->ppAjOepEpE(axisK);
 	for (int i = 0; i < 4; i++)
@@ -45,10 +45,10 @@ void DispCompIecJecKeqc::calcPostDynCorrectorIteration()
 		priIeJeKepEK->at(i) = ((pAjOKepEKT->at(i))->dot(rIeJeO));
 		auto& ppAjOKepEKipEK = ppAjOKepEKpEK->at(i);
 		auto& ppriIeJeKepEKipEK = ppriIeJeKepEKpEK->at(i);
-		ppriIeJeKepEKipEK->at(i) = ((ppAjOKepEKipEK->at(i))->dotVec(rIeJeO));
+		ppriIeJeKepEKipEK->at(i) = ((ppAjOKepEKipEK->at(i))->dot(rIeJeO));
 		for (int j = i + 1; j < 4; j++)
 		{
-			auto ppriIeJeKepEKipEKj = (ppAjOKepEKipEK->at(i))->dotVec(rIeJeO);
+			auto ppriIeJeKepEKipEKj = (ppAjOKepEKipEK->at(i))->dot(rIeJeO);
 			ppriIeJeKepEKipEK->at(j) = ppriIeJeKepEKipEKj;
 			ppriIeJeKepEKpEK->at(j)->at(i) = ppriIeJeKepEKipEKj;
 		}

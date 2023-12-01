@@ -24,8 +24,8 @@ void DirectionCosineIeqcJeqc::initialize()
 {
 	DirectionCosineIeqcJec::initialize();
 	pAijIeJepEJ = std::make_shared<FullRow<double>>(4);
-	ppAijIeJepEIpEJ = std::make_shared<FullMatrixDouble>(4, 4);
-	ppAijIeJepEJpEJ = std::make_shared<FullMatrixDouble>(4, 4);
+	ppAijIeJepEIpEJ = std::make_shared<FullMatrix<double>>(4, 4);
+	ppAijIeJepEJpEJ = std::make_shared<FullMatrix<double>>(4, 4);
 }
 
 void DirectionCosineIeqcJeqc::initializeGlobally()
@@ -45,7 +45,7 @@ void DirectionCosineIeqcJeqc::calcPostDynCorrectorIteration()
 	pAjOJepEJT = std::static_pointer_cast<EndFrameqc>(frmJ)->pAjOepET(axisJ);
 	for (int i = 0; i < 4; i++)
 	{
-		pAijIeJepEJ->at(i) = aAjOIe->dotVec(pAjOJepEJT->at(i));
+		pAijIeJepEJ->at(i) = aAjOIe->dot(pAjOJepEJT->at(i));
 	}
 	for (int i = 0; i < 4; i++)
 	{
@@ -61,7 +61,7 @@ void DirectionCosineIeqcJeqc::calcPostDynCorrectorIteration()
 		auto& ppAjOJepEJipEJ = ppAjOJepEJpEJ->at(i);
 		for (int j = 0; j < 4; j++)
 		{
-			ppAijIeJepEJipEJ->at(j) = aAjOIe->dotVec(ppAjOJepEJipEJ->at(j));
+			ppAijIeJepEJipEJ->at(j) = aAjOIe->dot(ppAjOJepEJipEJ->at(j));
 		}
 	}
 	ppAijIeJepEJpEJ->symLowerWithUpper();

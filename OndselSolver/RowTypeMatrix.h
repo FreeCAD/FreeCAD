@@ -9,7 +9,6 @@
 #pragma once
 
 #include "Array.h"
-#include "FullRow.ref.h"
 
 namespace MbD {
 

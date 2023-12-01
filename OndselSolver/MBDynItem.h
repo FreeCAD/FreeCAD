@@ -31,6 +31,7 @@ namespace MbD {
 		void noop();
 		//void setName(std::string str);
 		virtual void parseMBDyn(std::vector<std::string>& lines);
+		virtual void parseMBDyn(std::string line);
 		static std::vector<std::string> collectArgumentsFor(std::string title, std::string& statement);
 		std::vector<std::string>::iterator findLineWith(std::vector<std::string>& lines, std::vector<std::string>& tokens);
 		bool lineHasTokens(const std::string& line, std::vector<std::string>& tokens);

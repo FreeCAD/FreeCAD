@@ -11,9 +11,6 @@
 #include <memory>
 
 #include "Item.h"
-#include "FullColumn.ref.h"
-#include "FullMatrix.ref.h"
-#include "DiagonalMatrix.ref.h"
 #include "EulerParametersDot.h"
 
 namespace MbD {

@@ -151,6 +151,7 @@ void MbD::ASMTItem::deleteMbD()
 
 void MbD::ASMTItem::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits)
 {
+	noop();
 	assert(false);
 }
 
@@ -184,6 +185,7 @@ std::shared_ptr<Constant> MbD::ASMTItem::sptrConstant(double value)
 
 void MbD::ASMTItem::storeOnLevel(std::ofstream& os, int level)
 {
+	noop();
 	assert(false);
 }
 

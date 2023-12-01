@@ -41,7 +41,7 @@ void MbD::DistIeqcJec::calcPrivate()
 			pprIeJepXIipXI->atiput(j, element / rIeJe);
 		}
 	}
-	pprIeJepXIpEI = std::make_shared<FullMatrixDouble>(3, 4);
+	pprIeJepXIpEI = std::make_shared<FullMatrix<double>>(3, 4);
 	for (int i = 0; i < 3; i++)
 	{
 		auto& pprIeJepXIipEI = pprIeJepXIpEI->at(i);
@@ -53,7 +53,7 @@ void MbD::DistIeqcJec::calcPrivate()
 			pprIeJepXIipEI->atiput(j, element / rIeJe);
 		}
 	}
-	pprIeJepEIpEI = std::make_shared<FullMatrixDouble>(4, 4);
+	pprIeJepEIpEI = std::make_shared<FullMatrix<double>>(4, 4);
 	for (int i = 0; i < 4; i++)
 	{
 		auto& pprIeJepEIipEI = pprIeJepEIpEI->at(i);
@@ -63,7 +63,7 @@ void MbD::DistIeqcJec::calcPrivate()
 		for (int j = 0; j < 4; j++)
 		{
 			auto element = mprIeJeOpEIiT->dot(mprIeJeOpEIT->at(j))
-                           - mpprIeJeOpEIipEI->at(j)->dotVec(rIeJeO) - prIeJepEIi * prIeJepEI->at(j);
+                           - mpprIeJeOpEIipEI->at(j)->dot(rIeJeO) - prIeJepEIi * prIeJepEI->at(j);
 			pprIeJepEIipEI->atiput(j, element / rIeJe);
 		}
 	}
@@ -74,9 +74,9 @@ void MbD::DistIeqcJec::initialize()
 	DistIecJec::initialize();
 	prIeJepXI = std::make_shared<FullRow<double>>(3);
 	prIeJepEI = std::make_shared<FullRow<double>>(4);
-	pprIeJepXIpXI = std::make_shared<FullMatrixDouble>(3, 3);
-	pprIeJepXIpEI = std::make_shared<FullMatrixDouble>(3, 4);
-	pprIeJepEIpEI = std::make_shared<FullMatrixDouble>(4, 4);
+	pprIeJepXIpXI = std::make_shared<FullMatrix<double>>(3, 3);
+	pprIeJepXIpEI = std::make_shared<FullMatrix<double>>(3, 4);
+	pprIeJepEIpEI = std::make_shared<FullMatrix<double>>(4, 4);
 }
 
 FMatDsptr MbD::DistIeqcJec::ppvaluepEIpEI()

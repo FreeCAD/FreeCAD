@@ -20,9 +20,9 @@ MbD::ScrewConstraintIqcJqc::ScrewConstraintIqcJqc(EndFrmsptr frmi, EndFrmsptr fr
 {
 	pGpXJ = std::make_shared<FullRow<double>>(3);
 	pGpEJ = std::make_shared<FullRow<double>>(4);
-	ppGpEIpXJ = std::make_shared<FullMatrixDouble>(4, 3);
-	ppGpEIpEJ = std::make_shared<FullMatrixDouble>(4, 4);
-	ppGpEJpEJ = std::make_shared<FullMatrixDouble>(4, 4);
+	ppGpEIpXJ = std::make_shared<FullMatrix<double>>(4, 3);
+	ppGpEIpEJ = std::make_shared<FullMatrix<double>>(4, 4);
+	ppGpEJpEJ = std::make_shared<FullMatrix<double>>(4, 4);
 }
 
 void MbD::ScrewConstraintIqcJqc::initzIeJeIe()

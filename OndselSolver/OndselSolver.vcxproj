@@ -533,19 +533,14 @@
     <ClInclude Include="CREATE.h" />
     <ClInclude Include="CylindricalJoint.h" />
     <ClInclude Include="CylSphJoint.h" />
-    <ClInclude Include="DiagonalMatrix.ref.h" />
     <ClInclude Include="DifferentiatedGeneralSpline.h" />
     <ClInclude Include="EigenDecomposition.h" />
     <ClInclude Include="EndFrameqct2.h" />
     <ClInclude Include="EulerAngles.h" />
     <ClInclude Include="EulerAnglesDDot.h" />
     <ClInclude Include="EulerAnglesDot.h" />
-    <ClInclude Include="EulerParameters.ref.h" />
     <ClInclude Include="Exponential.h" />
     <ClInclude Include="ExternalSystem.h" />
-    <ClInclude Include="FullColumn.ref.h" />
-    <ClInclude Include="FullMatrix.ref.h" />
-    <ClInclude Include="FullRow.ref.h" />
     <ClInclude Include="FunctionFromData.h" />
     <ClInclude Include="FunctionXcParameter.h" />
     <ClInclude Include="FunctionXY.h" />
@@ -801,6 +796,9 @@
     <Media Include="..\testapp\MBDynCase.mov" />
     <Media Include="..\testapp\MBDynCase2.mov" />
     <Media Include="..\testapp\SphericalHinge.mov" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\CMakeLists.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
