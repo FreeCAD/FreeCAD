@@ -797,6 +797,9 @@
     <Media Include="..\testapp\MBDynCase2.mov" />
     <Media Include="..\testapp\SphericalHinge.mov" />
   </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\CMakeLists.txt" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

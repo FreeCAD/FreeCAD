@@ -46,36 +46,50 @@ set(ONDSELSOLVER_SRC
         OndselSolver/ArcSine.cpp
         OndselSolver/ArcTan.cpp
         OndselSolver/ArcTan2.cpp
+        OndselSolver/ASMTAngleJoint.cpp
         OndselSolver/ASMTAnimationParameters.cpp
         OndselSolver/ASMTAssembly.cpp
+        OndselSolver/ASMTCompoundJoint.cpp
         OndselSolver/ASMTConstantGravity.cpp
+        OndselSolver/ASMTConstantVelocityJoint.cpp
         OndselSolver/ASMTConstraintSet.cpp
         OndselSolver/ASMTCylindricalJoint.cpp
+        OndselSolver/ASMTCylSphJoint.cpp
         OndselSolver/ASMTExtrusion.cpp
         OndselSolver/ASMTFixedJoint.cpp
         OndselSolver/ASMTForceTorque.cpp
+        OndselSolver/ASMTGearJoint.cpp
         OndselSolver/ASMTGeneralMotion.cpp
+        OndselSolver/ASMTInPlaneJoint.cpp
         OndselSolver/ASMTItem.cpp
         OndselSolver/ASMTItemIJ.cpp
         OndselSolver/ASMTJoint.cpp
         OndselSolver/ASMTKinematicIJ.cpp
+        OndselSolver/ASMTLineInPlaneJoint.cpp
         OndselSolver/ASMTMarker.cpp
         OndselSolver/ASMTMotion.cpp
         OndselSolver/ASMTNoRotationJoint.cpp
+        OndselSolver/ASMTParallelAxesJoint.cpp
         OndselSolver/ASMTPart.cpp
+        OndselSolver/ASMTPerpendicularJoint.cpp
+        OndselSolver/ASMTPlanarJoint.cpp
         OndselSolver/ASMTPointInLineJoint.cpp
         OndselSolver/ASMTPointInPlaneJoint.cpp
         OndselSolver/ASMTPrincipalMassMarker.cpp
+        OndselSolver/ASMTRackPinionJoint.cpp
         OndselSolver/ASMTRefCurve.cpp
         OndselSolver/ASMTRefItem.cpp
         OndselSolver/ASMTRefPoint.cpp
         OndselSolver/ASMTRefSurface.cpp
+        OndselSolver/ASMTRevCylJoint.cpp
         OndselSolver/ASMTRevoluteJoint.cpp
         OndselSolver/ASMTRotationalMotion.cpp
+        OndselSolver/ASMTScrewJoint.cpp
         OndselSolver/ASMTSimulationParameters.cpp
         OndselSolver/ASMTSpatialContainer.cpp
         OndselSolver/ASMTSpatialItem.cpp
         OndselSolver/ASMTSphericalJoint.cpp
+        OndselSolver/ASMTSphSphJoint.cpp
         OndselSolver/ASMTTime.cpp
         OndselSolver/ASMTTranslationalJoint.cpp
         OndselSolver/ASMTTranslationalMotion.cpp
@@ -223,6 +237,7 @@ set(ONDSELSOLVER_SRC
         OndselSolver/MBDynData.cpp
         OndselSolver/MBDynDrive.cpp
         OndselSolver/MBDynElement.cpp
+        OndselSolver/MBDynGravity.cpp
         OndselSolver/MBDynInitialValue.cpp
         OndselSolver/MBDynItem.cpp
         OndselSolver/MBDynJoint.cpp
@@ -338,36 +353,50 @@ set(ONDSELSOLVER_HEADERS
         OndselSolver/ArcSine.h
         OndselSolver/ArcTan.h
         OndselSolver/ArcTan2.h
+        OndselSolver/ASMTAngleJoint.h
         OndselSolver/ASMTAnimationParameters.h
         OndselSolver/ASMTAssembly.h
+        OndselSolver/ASMTCylSphJoint.h
+        OndselSolver/ASMTCompoundJoint.h
         OndselSolver/ASMTConstantGravity.h
+        OndselSolver/ASMTConstantVelocityJoint.h
         OndselSolver/ASMTConstraintSet.h
         OndselSolver/ASMTCylindricalJoint.h
         OndselSolver/ASMTExtrusion.h
         OndselSolver/ASMTFixedJoint.h
         OndselSolver/ASMTForceTorque.h
+        OndselSolver/ASMTGearJoint.h
         OndselSolver/ASMTGeneralMotion.h
+        OndselSolver/ASMTInPlaneJoint.h
         OndselSolver/ASMTItem.h
         OndselSolver/ASMTItemIJ.h
         OndselSolver/ASMTJoint.h
         OndselSolver/ASMTKinematicIJ.h
+        OndselSolver/ASMTLineInPlaneJoint.h
         OndselSolver/ASMTMarker.h
         OndselSolver/ASMTMotion.h
         OndselSolver/ASMTNoRotationJoint.h
+        OndselSolver/ASMTParallelAxesJoint.h
         OndselSolver/ASMTPart.h
+        OndselSolver/ASMTPerpendicularJoint.h
+        OndselSolver/ASMTPlanarJoint.h
         OndselSolver/ASMTPointInLineJoint.h
         OndselSolver/ASMTPointInPlaneJoint.h
         OndselSolver/ASMTPrincipalMassMarker.h
+        OndselSolver/ASMTRackPinionJoint.h
         OndselSolver/ASMTRefCurve.h
         OndselSolver/ASMTRefItem.h
         OndselSolver/ASMTRefPoint.h
         OndselSolver/ASMTRefSurface.h
+        OndselSolver/ASMTRevCylJoint.h
         OndselSolver/ASMTRevoluteJoint.h
         OndselSolver/ASMTRotationalMotion.h
+        OndselSolver/ASMTScrewJoint.h
         OndselSolver/ASMTSimulationParameters.h
         OndselSolver/ASMTSpatialContainer.h
         OndselSolver/ASMTSpatialItem.h
         OndselSolver/ASMTSphericalJoint.h
+        OndselSolver/ASMTSphSphJoint.h
         OndselSolver/ASMTTime.h
         OndselSolver/ASMTTranslationalJoint.h
         OndselSolver/ASMTTranslationalMotion.h
@@ -516,6 +545,7 @@ set(ONDSELSOLVER_HEADERS
         OndselSolver/MBDynControlData.h
         OndselSolver/MBDynData.h
         OndselSolver/MBDynElement.h
+        OndselSolver/MBDynGravity.h
         OndselSolver/MBDynInitialValue.h
         OndselSolver/MBDynItem.h
         OndselSolver/MBDynJoint.h
