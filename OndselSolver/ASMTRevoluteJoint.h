@@ -16,7 +16,7 @@ namespace MbD {
         //
     public:
         std::shared_ptr<Joint> mbdClassNew() override;
-        void storeOnTimeSeries(std::ofstream& os) override;
+        //void storeOnTimeSeries(std::ofstream& os) override;
 
     };
 }
