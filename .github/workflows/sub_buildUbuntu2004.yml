@@ -118,6 +118,7 @@ jobs:
                             libzipios++-dev                             \
                             netgen                                      \
                             netgen-headers                              \
+                            ninja-build                                 \
                             occt-draw                                   \
                             pyqt5-dev-tools                             \
                             pyside2-tools                               \
@@ -173,7 +174,7 @@ jobs:
       - name: CMake Configure
         uses: ./.github/workflows/actions/linux/configure
         with:
-          extraParameters: --preset release
+          extraParameters: -G Ninja --preset release
           builddir: ${{ env.builddir }}
           logFile: ${{ env.logdir }}Cmake.log
           errorFile: ${{ env.logdir }}CmakeErrors.log
