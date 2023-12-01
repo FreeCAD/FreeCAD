@@ -51,7 +51,7 @@
 # include <Mod/Part/App/FaceMakerCheese.h>
 
 # include "FeatureHelix.h"
-#include "App/Document.h"
+
 using namespace PartDesign;
 
 const char* Helix::ModeEnums[] = { "pitch-height-angle", "pitch-turns-angle", "height-turns-angle", "height-turns-growth", nullptr };
