@@ -173,6 +173,7 @@ def get_param_type(param):
                  "linewidth", "modconstrain", "modsnap",
                  "maxSnapEdges", "modalt", "HatchPatternResolution",
                  "snapStyle", "DefaultAnnoDisplayMode", "DefaultAnnoLineWidth",
+                 "DefaultDrawStyle", "DefaultDisplayMode",
                  "gridSize", "gridTransparency"):
         return "int"
     elif param in ("constructiongroupname", "textfont",

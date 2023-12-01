@@ -464,6 +464,16 @@ def format_object(target, origin=None):
     if not hasattr(target, 'ViewObject'):
         return
     obrep = target.ViewObject
+    obprops = obrep.PropertiesList
+    if "FontName" not in obprops:
+        if "DrawStyle" in obprops:
+            dstyles = ["Solid", "Dashed", "Dotted", "Dashdot"]
+            obrep.DrawStyle = dstyles[utils.getParam("DefaultDrawStyle", 0)]
+        if "DisplayMode" in obprops:
+            dmodes = ["Flat Lines", "Shaded", "Wireframe", "Points"]
+            dm = dmodes[utils.getParam("DefaultDisplayMode", 0)]
+            if dm in obrep.getEnumerationsOfProperty("DisplayMode"):
+                obrep.DisplayMode = dm
     if Gui.draftToolBar.isConstructionMode():
         doc = App.ActiveDocument
         col = Gui.draftToolBar.getDefaultColor("constr") + (0.0,)
@@ -472,13 +482,13 @@ def format_object(target, origin=None):
             grp = doc.addObject("App::DocumentObjectGroup", "Draft_Construction")
             grp.Label = utils.get_param("constructiongroupname", "Construction")
         grp.addObject(target)
-        if "TextColor" in obrep.PropertiesList:
+        if "TextColor" in obprops:
             obrep.TextColor = col
-        if "PointColor" in obrep.PropertiesList:
+        if "PointColor" in obprops:
             obrep.PointColor = col
-        if "LineColor" in obrep.PropertiesList:
+        if "LineColor" in obprops:
             obrep.LineColor = col
-        if "ShapeColor" in obrep.PropertiesList:
+        if "ShapeColor" in obprops:
             obrep.ShapeColor = col
         if hasattr(obrep, "Transparency"):
             obrep.Transparency = 80
@@ -487,7 +497,7 @@ def format_object(target, origin=None):
         for p in matchrep.PropertiesList:
             if p not in ("DisplayMode", "BoundingBox",
                          "Proxy", "RootNode", "Visibility"):
-                if p in obrep.PropertiesList:
+                if p in obprops:
                     if not obrep.getEditorMode(p):
                         if hasattr(getattr(matchrep, p), "Value"):
                             val = getattr(matchrep, p).Value
