@@ -14,7 +14,7 @@ namespace MbD {
     {
     public:
         void initialize() override;
-        void parseMBDyn(std::string line);
+        void parseMBDyn(std::string line) override;
         void readMass(std::vector<std::string>& args);
         void readInertiaMatrix(std::vector<std::string>& args);
         void createASMT() override;

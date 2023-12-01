@@ -14,7 +14,7 @@ namespace MbD {
     {
     public:
         MBDynStructural();
-        void parseMBDyn(std::string line);
+        void parseMBDyn(std::string line) override;
         void readVelocity(std::vector<std::string>& args);
         void readOmega(std::vector<std::string>& args);
         void createASMT() override;

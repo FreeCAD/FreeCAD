@@ -9,7 +9,5 @@
 #include <sstream>
 
 #include "FullColumn.h"
-#include "FullRow.h"
-#include "FullMatrix.h"
 
 using namespace MbD;

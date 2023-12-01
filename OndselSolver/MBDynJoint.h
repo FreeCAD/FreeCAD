@@ -15,7 +15,7 @@ namespace MbD {
     {
     public:
         void initialize() override;
-        void parseMBDyn(std::string line);
+        void parseMBDyn(std::string line) override;
         void readMarkerI(std::vector<std::string>& args);
         void readMarkerJ(std::vector<std::string>& args);
         void readClampMarkerJ(std::vector<std::string>& args);
