@@ -133,10 +133,10 @@ jobs:
         run: |
           Move-Item -Force -Path ${{ env.libpackdir }}bin -Destination ${{ env.builddir }}
       - name: C++ unit tests
-        if: false # Disabled because seems to not exist on Windows build
+        if: false # Disabled because seems to not function on Windows build
         timeout-minutes: 1
         run: |
-          . ${{ env.builddir }}\test\Tests_run --gtest_output=json:${{ env.reportdir }}gtest_results.json # 2>&1 | tee -filepath ${{ env.logdir }}\unitTests.log
+          . ${{ env.builddir }}\tests\Release\Tests_run --gtest_output=json:${{ env.reportdir }}gtest_results.json # 2>&1 | tee -filepath ${{ env.logdir }}\unitTests.log
       - name: FreeCAD CLI tests
         run: |
           . ${{ env.builddir }}\bin\FreeCADCmd -t 0 # 2>&1 | tee -filepath ${{ env.logdir }}\integrationTests.log

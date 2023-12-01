@@ -113,10 +113,9 @@ jobs:
         run: |
           conda\cmake.cmd  --install build\release
       - name: C++ unit tests
-        if: false # Disabled because seems to not exist on Windows build
         timeout-minutes: 1
         run: |
-          . build\release\test\Tests_run --gtest_output=json:${{ env.reportdir }}gtest_results.json # 2>&1 | tee -filepath ${{ env.logdir }}/unitTests.log
+          . build\release\tests\Tests_run --gtest_output=json:${{ env.reportdir }}gtest_results.json # 2>&1 | tee -filepath ${{ env.logdir }}/unitTests.log
       - name: FreeCAD CLI tests
         run: |
           . build\release\bin\FreeCADCmd -t 0 # 2>&1 | tee -filepath ${{ env.logdir }}/integrationTests.log
