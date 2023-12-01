@@ -2,6 +2,8 @@
 #include "ASMTInPlaneJoint.h"
 #include "InPlaneJoint.h"
 
+using namespace MbD;
+
 void MbD::ASMTInPlaneJoint::parseASMT(std::vector<std::string>& lines)
 {
 	ASMTJoint::parseASMT(lines);
