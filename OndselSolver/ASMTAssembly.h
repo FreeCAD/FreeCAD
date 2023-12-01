@@ -10,19 +10,20 @@
 #include <fstream>	
 
 #include "ASMTSpatialContainer.h"
+//Required for initialization
+#include "ASMTConstantGravity.h"
+#include "ASMTSimulationParameters.h"
+#include "ASMTAnimationParameters.h"
+#include "ASMTTime.h"
+#include "Units.h"
 
 namespace MbD {
 	class ASMTPart;
 	class ASMTKinematicIJ;
 	class ASMTConstraintSet;
 	class ASMTForceTorque;
-	class ASMTConstantGravity;
-	class ASMTSimulationParameters;
-	class ASMTAnimationParameters;
 	class ASMTJoint;
 	class ASMTMotion;
-	class Units;
-	class ASMTTime;
 	class SystemSolver;
 	class ASMTItemIJ;
 	class MBDynSystem;
