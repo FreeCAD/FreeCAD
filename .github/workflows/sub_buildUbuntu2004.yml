@@ -79,6 +79,7 @@ jobs:
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends               \
+                            ccache                                      \
                             doxygen                                     \
                             graphviz                                    \
                             imagemagick                                 \
@@ -131,17 +132,16 @@ jobs:
                             python3-pyside2.qtgui                       \
                             python3-pyside2.qtnetwork                   \
                             python3-pyside2.qtsvg                       \
+                            python3-pyside2.qtwebchannel                \
                             python3-pyside2.qtwebengine                 \
                             python3-pyside2.qtwebenginecore             \
                             python3-pyside2.qtwebenginewidgets          \
-                            python3-pyside2.qtwebchannel                \
                             python3-pyside2.qtwidgets                   \
                             qtbase5-dev                                 \
                             qttools5-dev                                \
                             qtwebengine5-dev                            \
                             shiboken2                                   \
                             swig                                        \
-                            ccache                                      \
                             xvfb
       - name: Make needed directories, files and initializations
         id: Init
