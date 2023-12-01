@@ -40,7 +40,6 @@
 #include "ASMTTime.h"
 #include "SystemSolver.h"
 #include "ASMTItemIJ.h"
-#include "ASMTKinematicIJ.h"
 #include "ASMTAngleJoint.h"
 #include "ASMTConstantVelocityJoint.h"
 #include "ASMTCylSphJoint.h"
@@ -56,6 +55,7 @@
 #include "ASMTRackPinionJoint.h"
 #include "ASMTScrewJoint.h"
 #include "SimulationStoppingError.h"
+#include "ASMTKinematicIJ.h"
 
 using namespace MbD;
 
