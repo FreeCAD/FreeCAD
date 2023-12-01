@@ -61,9 +61,7 @@ dependencies:
 - coin3d==4.0.0
 - compilers
 - conda
-- conda-build
 - conda-devenv
-- conda-smithy
 - debugpy
 - doxygen
 - eigen
