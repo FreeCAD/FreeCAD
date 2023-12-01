@@ -539,7 +539,6 @@
     <ClInclude Include="EulerAngles.h" />
     <ClInclude Include="EulerAnglesDDot.h" />
     <ClInclude Include="EulerAnglesDot.h" />
-    <ClInclude Include="EulerParameters.ref.h" />
     <ClInclude Include="Exponential.h" />
     <ClInclude Include="ExternalSystem.h" />
     <ClInclude Include="FunctionFromData.h" />

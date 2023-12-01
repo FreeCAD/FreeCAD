@@ -11,6 +11,7 @@
 #include <fstream>	
 #include <algorithm>
 #include <numeric>
+#include <iomanip>
 
 #include "ASMTAssembly.h"
 #include "CREATE.h"
@@ -40,7 +41,6 @@
 #include "SystemSolver.h"
 #include "ASMTItemIJ.h"
 #include "ASMTKinematicIJ.h"
-#include <iomanip>
 #include "ASMTAngleJoint.h"
 #include "ASMTConstantVelocityJoint.h"
 #include "ASMTCylSphJoint.h"

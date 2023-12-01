@@ -184,6 +184,7 @@ std::shared_ptr<Constant> MbD::ASMTItem::sptrConstant(double value)
 
 void MbD::ASMTItem::storeOnLevel(std::ofstream& os, int level)
 {
+	noop();
 	assert(false);
 }
 
