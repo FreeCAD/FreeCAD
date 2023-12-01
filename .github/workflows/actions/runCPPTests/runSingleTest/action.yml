@@ -44,12 +44,12 @@ runs:
   using: "composite"
   steps:
     - name: Run C++ tests
-      shell: bash
+      shell: bash -l {0}
       run: stdbuf -oL -eL ${{ inputs.testCommand }} |& tee -a ${{ inputs.testLogFile }}
     - name: Parse test results
       if: always()
       id: report
-      shell: bash
+      shell: bash -l {0}
       run:  |
         result=$(sed -ne "/Global test environment tear-down/,/^$/{/^$/d;p}" ${{ inputs.testLogFile }})
         if grep -qF "[  FAILED  ]" <<< $result
