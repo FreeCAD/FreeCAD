@@ -44,7 +44,7 @@
 
 namespace TechDraw {
 
-class LineGenerator {
+class TechDrawExport LineGenerator {
 public:
     LineGenerator();
     ~LineGenerator() = default;

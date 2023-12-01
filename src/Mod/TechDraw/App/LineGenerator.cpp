@@ -127,7 +127,7 @@ QPen LineGenerator::getLinePen(size_t lineNumber, double nominalLineWidth)
     // there are some lines with numbers >1 that are also continuous, and
     // a dash pattern is not applicable.
     std::string naToken{"n/a"};
-    if (elements.empty() or elements.front() == naToken) {
+    if (elements.empty() || elements.front() == naToken) {
         // plain boring solid line (or possibly an invalid line number)
         linePen.setStyle(Qt::SolidLine);
         return linePen;
