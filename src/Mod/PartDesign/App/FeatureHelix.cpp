@@ -226,7 +226,7 @@ App::DocumentObjectExecReturn* Helix::execute()
         }
 
         TopoDS_Shape face = Part::FaceMakerCheese::makeFace(wires);
-        BRepOffsetAPI_MakePipe mkPS(TopoDS::Wire(path),face);
+        BRepOffsetAPI_MakePipe mkPS(TopoDS::Wire(path), face, GeomFill_Trihedron::GeomFill_IsFrenet, Standard_False);
 
         mkPS.Build();
 
