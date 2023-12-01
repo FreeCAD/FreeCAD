@@ -26,7 +26,6 @@
 #include "ASMTFixedJoint.h"
 #include "ASMTGeneralMotion.h"
 #include "ASMTUniversalJoint.h"
-#include "ExternalSystem.h"
 #include "ASMTPointInPlaneJoint.h"
 #include "ASMTPrincipalMassMarker.h"
 #include "ASMTForceTorque.h"
@@ -34,11 +33,7 @@
 #include "ASMTSimulationParameters.h"
 #include "ASMTAnimationParameters.h"
 #include "Part.h"
-#include "ASMTRefPoint.h"
-#include "ASMTRefCurve.h"
-#include "ASMTRefSurface.h"
 #include "ASMTTime.h"
-#include "SystemSolver.h"
 #include "ASMTItemIJ.h"
 #include "ASMTAngleJoint.h"
 #include "ASMTConstantVelocityJoint.h"
@@ -56,6 +51,11 @@
 #include "ASMTScrewJoint.h"
 #include "SimulationStoppingError.h"
 #include "ASMTKinematicIJ.h"
+#include "ASMTRefPoint.h"
+#include "ASMTRefCurve.h"
+#include "ASMTRefSurface.h"
+#include "ExternalSystem.h"
+#include "SystemSolver.h"
 
 using namespace MbD;
 
