@@ -67,6 +67,7 @@ dependencies:
 - eigen
 - fmt
 - freetype
+- git
 - gmsh
 - graphviz
 - hdf5
