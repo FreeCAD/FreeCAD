@@ -2,7 +2,6 @@
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2023 0penBrain.                                         *
-# *   Copyright (c) 2023 FreeCAD Project Association                        *
 # *                                                                         *
 # *   This file is part of FreeCAD.                                         *
 # *                                                                         *
@@ -22,51 +21,24 @@
 # *                                                                         *
 # ***************************************************************************
 
-name: runCPPTests
-description: "Run C++ tests, generate log and report"
+name: generateCacheKey
+description: "macOS: generates a cache key taking into account distro and compiler"
 
 inputs:
-  testCommand:
-    description: "Test command to be run"
-    required: true
-  testLogFile:
-    description: "Path for the command-line output of the tests"
-    required: true
-  testName:
-    description: "A descriptive name for the test suite"
+  compiler:
+    description: "Binary name/path of compiler to be used"
     required: true
 outputs:
-  reportText:
-    description: "Report text"
-    value: ${{ steps.report.outputs.reportText }}
+  cacheKey:
+    description: "Cache key with distro and compiler version"
+    value: ${{ steps.generateCacheKey.outputs.cacheKey }}
 
 runs:
   using: "composite"
   steps:
-    - name: Run C++ tests
+    - id: generateCacheKey
       shell: bash -l {0}
-      run: ${{ inputs.testCommand }} | tee -a ${{ inputs.testLogFile }}
-    - name: Parse test results
-      if: always()
-      id: report
-      shell: bash -l {0}
-      run:  |
-        result=$(sed -ne "/Global test environment tear-down/,/^$/{/^$/d;p}" ${{ inputs.testLogFile }})
-        if grep -qF "[  FAILED  ]" <<< $result
-        then
-          reportText="<details><summary>:fire: GTest C++ test suite '${{ inputs.testName }}' failed</summary>\n"
-        else
-          reportText="<details><summary>:heavy_check_mark: GTest C++ test suite '${{ inputs.testName }}' succeeded</summary>\n"
-        fi
-        reportText+="\n"
-        reportText+="Results\n"
-        reportText+="\n"
-        reportText+='```\n'
-        reportText+="$result\n"
-        reportText+='```\n'
-        reportText+="</details>\n"
-        reportText+="\n"
-        echo "reportText<<EOD" >> $GITHUB_OUTPUT
-        echo -e "$reportText" >> $GITHUB_OUTPUT
-        echo "EOD" >> $GITHUB_OUTPUT
-        echo -e "$reportText"
+      run: |
+        cacheKey=$(sw_vers --productName)-$(sw_vers --productVersion)-$(basename ${{ inputs.compiler }})$(${{ inputs.compiler }} -dumpfullversion -dumpversion)
+        echo "Generated cache key : $cacheKey"
+        echo "cacheKey=$cacheKey" >> $GITHUB_OUTPUT

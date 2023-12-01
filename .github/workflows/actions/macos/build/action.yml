@@ -2,7 +2,6 @@
 # ***************************************************************************
 # *                                                                         *
 # *   Copyright (c) 2023 0penBrain.                                         *
-# *   Copyright (c) 2023 FreeCAD Project Association                        *
 # *                                                                         *
 # *   This file is part of FreeCAD.                                         *
 # *                                                                         *
@@ -22,51 +21,53 @@
 # *                                                                         *
 # ***************************************************************************
 
-name: runCPPTests
-description: "Run C++ tests, generate log and report"
+name: build
+description: "macOS: build application"
 
 inputs:
-  testCommand:
-    description: "Test command to be run"
+  builddir:
+    description: "Directory where build will happen"
     required: true
-  testLogFile:
-    description: "Path for the command-line output of the tests"
+  logFile:
+    description: "Path for log file"
     required: true
-  testName:
-    description: "A descriptive name for the test suite"
+  errorFile:
+    description: "Path to error file"
     required: true
-outputs:
-  reportText:
-    description: "Report text"
-    value: ${{ steps.report.outputs.reportText }}
+  reportFile:
+    description: "Path for report file"
+    required: true
+  extraParameters:
+    description: "Extra parameters to CMake build"
+    required: false
 
 runs:
   using: "composite"
   steps:
-    - name: Run C++ tests
+    - name: Build
+      id: build
       shell: bash -l {0}
-      run: ${{ inputs.testCommand }} | tee -a ${{ inputs.testLogFile }}
-    - name: Parse test results
+      run: |
+        (cmake --build ${{ inputs.builddir }} -j$(nproc) ${{ inputs.extraParameters }}) \
+        2> >(tee -a ${{ inputs.errorFile }}) | tee -a ${{ inputs.logFile }}
+    - name: Write report
+      shell: bash -l {0}
       if: always()
-      id: report
-      shell: bash -l {0}
-      run:  |
-        result=$(sed -ne "/Global test environment tear-down/,/^$/{/^$/d;p}" ${{ inputs.testLogFile }})
-        if grep -qF "[  FAILED  ]" <<< $result
+      run: |
+        if [ ${{ steps.build.outcome }} == 'success' ]
         then
-          reportText="<details><summary>:fire: GTest C++ test suite '${{ inputs.testName }}' failed</summary>\n"
+          echo "<details><summary>:heavy_check_mark: CMake build succeeded</summary>" >> ${{ inputs.reportFile }}
         else
-          reportText="<details><summary>:heavy_check_mark: GTest C++ test suite '${{ inputs.testName }}' succeeded</summary>\n"
+          echo "<details><summary>:fire: CMake build failed</summary>" >> ${{ inputs.reportFile }}
         fi
-        reportText+="\n"
-        reportText+="Results\n"
-        reportText+="\n"
-        reportText+='```\n'
-        reportText+="$result\n"
-        reportText+='```\n'
-        reportText+="</details>\n"
-        reportText+="\n"
-        echo "reportText<<EOD" >> $GITHUB_OUTPUT
-        echo -e "$reportText" >> $GITHUB_OUTPUT
-        echo "EOD" >> $GITHUB_OUTPUT
-        echo -e "$reportText"
+        echo "" >> ${{ inputs.reportFile }}
+        echo "Build Error Log (stderr output):" >> ${{ inputs.reportFile }}
+        echo '```' >> ${{ inputs.reportFile }}
+        cat ${{ inputs.errorFile }} >> ${{ inputs.reportFile }}
+        echo '```' >> ${{ inputs.reportFile }}
+        echo "Build Log (only built targets reported):" >> ${{ inputs.reportFile }}
+        echo '```' >> ${{ inputs.reportFile }}
+        cat ${{ inputs.logFile }} | sed -ne "/Built target/p" >> ${{ inputs.reportFile }}
+        echo '```' >> ${{ inputs.reportFile }}
+        echo "</details>">> ${{ inputs.reportFile }}
+        echo "" >> ${{ inputs.reportFile }}
