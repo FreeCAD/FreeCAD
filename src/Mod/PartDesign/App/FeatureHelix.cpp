@@ -32,7 +32,6 @@
 # include <BRepBuilderAPI_Sewing.hxx>
 # include <BRepClass3d_SolidClassifier.hxx>
 # include <BRepOffsetAPI_MakePipe.hxx>
-# include <BRepOffsetAPI_MakePipeShell.hxx>
 # include <BRepPrimAPI_MakeRevol.hxx>
 # include <Precision.hxx>
 # include <TopoDS.hxx>
@@ -117,12 +116,6 @@ short Helix::mustExecute() const
         Angle.isTouched())
         return 1;
     return ProfileBased::mustExecute();
-}
-
-void DebAddObj(TopoDS_Shape &obj, char *name) {
-    App::Document *pcDoc = App::GetApplication().getActiveDocument();
-    Part::Feature *pcFeature = static_cast<Part::Feature*>(pcDoc->addObject("Part::Feature", name));
-    pcFeature->Shape.setValue(obj);
 }
 
 App::DocumentObjectExecReturn* Helix::execute()
@@ -222,9 +215,7 @@ App::DocumentObjectExecReturn* Helix::execute()
         base.Move(invObjLoc);
 
         // generate the helix path
-        TopoDS_Shape path = generateHelixPath();
-        TopoDS_Shape auxpath = generateHelixPath(1.0);
-
+        TopoDS_Shape path = generateHelixPath(0.0, 1.0);
 
         std::vector<TopoDS_Wire> wires;
         try {
@@ -233,101 +224,14 @@ App::DocumentObjectExecReturn* Helix::execute()
         catch (const Base::Exception& e) {
             return new App::DocumentObjectExecReturn(e.what());
         }
-std::cerr << "Helix T,G,H,P " << Turns.getValue() << "," << Growth.getValue() << "," << Height.getValue() << "," << Pitch.getValue() << std::endl;
-#if true   // Test alternative B
-        for (TopoDS_Wire& wire : wires)
-            wire.Move(invObjLoc);
-        TopoDS_Shape face = Part::FaceMakerCheese::makeFace(wires);
-        // face.Move(invObjLoc);
- 
-// helix path is someplace insane, why?
-DebAddObj(face,"workingFace");
-DebAddObj(path,"workingpath");
 
+        TopoDS_Shape face = Part::FaceMakerCheese::makeFace(wires);
         BRepOffsetAPI_MakePipe mkPS(TopoDS::Wire(path),face);
 
         mkPS.Build();
 
         TopoDS_Shape result = mkPS.Shape();
-#else // test alternative A
-        std::vector<std::vector<TopoDS_Wire>> wiresections;
-        for (TopoDS_Wire& wire : wires)
-            wiresections.emplace_back(1, wire);
 
-        //build all shells
-        std::vector<TopoDS_Shape> shells;
-        std::vector<TopoDS_Wire> frontwires, backwires;
-        for (std::vector<TopoDS_Wire>& wires : wiresections) {
-
-            BRepOffsetAPI_MakePipeShell mkPS(TopoDS::Wire(path));
-
-            mkPS.SetTolerance(Precision::Confusion());
-            mkPS.SetTransitionMode(BRepBuilderAPI_Transformed);
-
-            if (Angle.getValue() == 0) {
-                mkPS.SetMode(true);  //This is for frenet
-            } else {
-                mkPS.SetMode(TopoDS::Wire(auxpath), true);  // this is for auxiliary
-            }
-
-            for (TopoDS_Wire& wire : wires) {
-                wire.Move(invObjLoc);
-                mkPS.Add(wire);
-            }
-
-            if (!mkPS.IsReady())
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Could not build"));
-            mkPS.Build();
-
-            //check for error value at pipe creation and re-build if needed
-            if (Angle.getValue() == 0 && mkPS.ErrorOnSurface() < Precision::Confusion() / 2.0 ) {
-                Base::Console().Log("PartDesign_Helix : Fall back to auxiliary mode\n");
-                mkPS.SetMode(TopoDS::Wire(auxpath), true);
-                mkPS.Build();
-            }
-            shells.push_back(mkPS.Shape());
-
-            if (!mkPS.Shape().Closed()) {
-                // // shell is not closed - use simulate to get the end wires
-                // TopTools_ListOfShape sim;
-                // mkPS.Simulate(2, sim);
-
-                // frontwires.push_back(TopoDS::Wire(sim.First()));
-                // backwires.push_back(TopoDS::Wire(sim.Last()));
-                // shell is not closed - get the end wires
-                frontwires.push_back(TopoDS::Wire(mkPS.FirstShape()));
-                backwires.push_back(TopoDS::Wire(mkPS.LastShape()));            }
-DebAddObj(path,"workingpath");
-        }
-        BRepBuilderAPI_MakeSolid mkSolid;
-
-        if (!frontwires.empty()) {
-            // build the end faces, sew the shell and build the final solid
-            TopoDS_Shape front = Part::FaceMakerCheese::makeFace(frontwires);
-            TopoDS_Shape back = Part::FaceMakerCheese::makeFace(backwires);
-
-            BRepBuilderAPI_Sewing sewer;
-            sewer.SetTolerance(Precision::Confusion());
-            sewer.Add(front);
-            sewer.Add(back);
-
-            for (TopoDS_Shape& s : shells)
-                sewer.Add(s);
-            sewer.Perform();
-            // while ( sewer.SewedShape().IsNull() );
-            mkSolid.Add(TopoDS::Shell(sewer.SewedShape()));
-        }
-        else {
-            // shells are already closed - add them directly
-            for (TopoDS_Shape& s : shells) {
-                mkSolid.Add(TopoDS::Shell(s));
-            }
-        }
-        if (!mkSolid.IsDone())
-            return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result is not a solid"));
-
-        TopoDS_Shape result = mkSolid.Shape();
-#endif
         BRepClass3d_SolidClassifier SC(result);
         SC.PerformInfinitePoint(Precision::Confusion());
         if (SC.State() == TopAbs_IN)
@@ -425,7 +329,7 @@ void Helix::updateAxis()
     Axis.setValue(dir.x, dir.y, dir.z);
 }
 
-TopoDS_Shape Helix::generateHelixPath(double startOffset0)
+TopoDS_Shape Helix::generateHelixPath(double startOffset0, double scaleProfile)
 {
     double turns = Turns.getValue();
     double height = Height.getValue();
@@ -466,18 +370,18 @@ TopoDS_Shape Helix::generateHelixPath(double startOffset0)
 
     // The factor of 100 below ensures that profile size is small compared to the curvature of the helix.
     // This improves the issue reported in https://forum.freecad.org/viewtopic.php?f=10&t=65048
-    double axisOffset = 100.0 * (profileCenter * start - baseVector * start);
+    double axisOffset = scaleProfile * (profileCenter * start - baseVector * start);
     double radius = std::fabs(axisOffset);
     bool turned = axisOffset < 0;
     // since the factor does not only change the radius but also the path position, we must shift its offset back
     // using the square of the factor
-    double startOffset = 10000.0 * std::fabs(startOffset0 + profileCenter * axisVector - baseVector * axisVector);
+    double startOffset = scaleProfile * scaleProfile * std::fabs(startOffset0 + profileCenter * axisVector - baseVector * axisVector);
 
     if (radius < Precision::Confusion()) {
         // in this case ensure that axis is not in the sketch plane
         if (fabs(axisVector * normal) < Precision::Confusion())
             throw Base::ValueError("Error: Result is self intersecting");
-        radius = 1000.0; //fallback to radius 1000
+        radius = 10.0 * scaleProfile; //fallback to radius 1000
     }
 
     bool growthMode = std::string(Mode.getValueAsString()).find("growth") != std::string::npos;
