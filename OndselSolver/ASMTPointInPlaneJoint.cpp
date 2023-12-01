@@ -23,8 +23,3 @@ void MbD::ASMTPointInPlaneJoint::storeOnTimeSeries(std::ofstream& os)
 	ASMTItemIJ::storeOnTimeSeries(os);
 }
 
-void MbD::ASMTPointInPlaneJoint::storeOnLevel(std::ofstream& os, int level)
-{
-	ASMTInPlaneJoint::storeOnLevel(os, level);
-}
-
