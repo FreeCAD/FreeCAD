@@ -19,9 +19,9 @@ MbD::DispCompIeqcJeqcIe::DispCompIeqcJeqcIe(EndFrmsptr frmi, EndFrmsptr frmj, in
 {
 	priIeJeIepXJ = std::make_shared<FullRow<double>>(3);
 	priIeJeIepEJ = std::make_shared<FullRow<double>>(4);
-	ppriIeJeIepEIpXJ = std::make_shared<FullMatrixDouble>(4, 3);
-	ppriIeJeIepEIpEJ = std::make_shared<FullMatrixDouble>(4, 4);
-	ppriIeJeIepEJpEJ = std::make_shared<FullMatrixDouble>(4, 4);
+	ppriIeJeIepEIpXJ = std::make_shared<FullMatrix<double>>(4, 3);
+	ppriIeJeIepEIpEJ = std::make_shared<FullMatrix<double>>(4, 4);
+	ppriIeJeIepEJpEJ = std::make_shared<FullMatrix<double>>(4, 4);
 }
 
 void MbD::DispCompIeqcJeqcIe::calc_ppvaluepEIpEJ()
@@ -46,7 +46,7 @@ void MbD::DispCompIeqcJeqcIe::calc_ppvaluepEJpEJ()
 		auto ppriIeJeIepEJipEJ = ppriIeJeIepEJpEJ->at(i);
 		for (int j = i; j < 4; j++)
 		{
-			auto term1 = aAjOIe->dotVec(pprIeJeOpEJipEJ->at(j));
+			auto term1 = aAjOIe->dot(pprIeJeOpEJipEJ->at(j));
 			ppriIeJeIepEJipEJ->atiput(j, term1);
 		}
 	}
@@ -59,7 +59,7 @@ void MbD::DispCompIeqcJeqcIe::calc_pvaluepEJ()
 	auto prIeJeOpEJT = frmJeqc->prOeOpE->transpose();
 	for (int i = 0; i < 4; i++)
 	{
-		priIeJeIepEJ->atiput(i, aAjOIe->dotVec(prIeJeOpEJT->at(i)));
+		priIeJeIepEJ->atiput(i, aAjOIe->dot(prIeJeOpEJT->at(i)));
 	}
 }
 
@@ -88,9 +88,9 @@ void MbD::DispCompIeqcJeqcIe::initialize()
 	DispCompIeqcJecIe::initialize();
 	priIeJeIepXJ = std::make_shared<FullRow<double>>(3);
 	priIeJeIepEJ = std::make_shared<FullRow<double>>(4);
-	ppriIeJeIepEIpXJ = std::make_shared<FullMatrixDouble>(4, 3);
-	ppriIeJeIepEIpEJ = std::make_shared<FullMatrixDouble>(4, 4);
-	ppriIeJeIepEJpEJ = std::make_shared<FullMatrixDouble>(4, 4);
+	ppriIeJeIepEIpXJ = std::make_shared<FullMatrix<double>>(4, 3);
+	ppriIeJeIepEIpEJ = std::make_shared<FullMatrix<double>>(4, 4);
+	ppriIeJeIepEJpEJ = std::make_shared<FullMatrix<double>>(4, 4);
 }
 
 FMatDsptr MbD::DispCompIeqcJeqcIe::ppvaluepEIpEJ()

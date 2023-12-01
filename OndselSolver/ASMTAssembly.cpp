@@ -263,7 +263,7 @@ void MbD::ASMTAssembly::runSinglePendulum()
 	assembly->setName(str);
 	auto pos3D = std::make_shared<FullColumn<double>>(ListD{ 0, 0, 0 });
 	assembly->setPosition3D(pos3D);
-	auto rotMat = std::make_shared<FullMatrixDouble>(ListListD{
+	auto rotMat = std::make_shared<FullMatrix<double>>(ListListD{
 		{ 1, 0, 0 },
 		{ 0, 1, 0 },
 		{ 0, 0, 1 }
@@ -277,11 +277,11 @@ void MbD::ASMTAssembly::runSinglePendulum()
 	auto massMarker = std::make_shared<ASMTPrincipalMassMarker>();
 	massMarker->setMass(0.0);
 	massMarker->setDensity(0.0);
-	auto aJ = std::make_shared<DiagonalMatrix>(ListD{ 0, 0, 0 });
+	auto aJ = std::make_shared<DiagonalMatrix<double>>(ListD{ 0, 0, 0 });
 	massMarker->setMomentOfInertias(aJ);
 	pos3D = std::make_shared<FullColumn<double>>(ListD{ 0, 0, 0 });
 	massMarker->setPosition3D(pos3D);
-	rotMat = std::make_shared<FullMatrixDouble>(ListListD{
+	rotMat = std::make_shared<FullMatrix<double>>(ListListD{
 		{ 1, 0, 0 },
 		{ 0, 1, 0 },
 		{ 0, 0, 1 }
@@ -294,7 +294,7 @@ void MbD::ASMTAssembly::runSinglePendulum()
 	mkr->setName(str);
 	pos3D = std::make_shared<FullColumn<double>>(ListD{ 0, 0, 0 });
 	mkr->setPosition3D(pos3D);
-	rotMat = std::make_shared<FullMatrixDouble>(ListListD{
+	rotMat = std::make_shared<FullMatrix<double>>(ListListD{
 		{ 1, 0, 0 },
 		{ 0, 1, 0 },
 		{ 0, 0, 1 }
@@ -307,7 +307,7 @@ void MbD::ASMTAssembly::runSinglePendulum()
 	part->setName(str);
 	pos3D = std::make_shared<FullColumn<double>>(ListD{ -0.1, -0.1, -0.1 });
 	part->setPosition3D(pos3D);
-	rotMat = std::make_shared<FullMatrixDouble>(ListListD{
+	rotMat = std::make_shared<FullMatrix<double>>(ListListD{
 		{ 1, 0, 0 },
 		{ 0, 1, 0 },
 		{ 0, 0, 1 }
@@ -322,11 +322,11 @@ void MbD::ASMTAssembly::runSinglePendulum()
 	massMarker = std::make_shared<ASMTPrincipalMassMarker>();
 	massMarker->setMass(0.2);
 	massMarker->setDensity(10.0);
-	aJ = std::make_shared<DiagonalMatrix>(ListD{ 8.3333333333333e-4, 0.016833333333333, 0.017333333333333 });
+	aJ = std::make_shared<DiagonalMatrix<double>>(ListD{ 8.3333333333333e-4, 0.016833333333333, 0.017333333333333 });
 	massMarker->setMomentOfInertias(aJ);
 	pos3D = std::make_shared<FullColumn<double>>(ListD{ 0.5, 0.1, 0.05 });
 	massMarker->setPosition3D(pos3D);
-	rotMat = std::make_shared<FullMatrixDouble>(ListListD{
+	rotMat = std::make_shared<FullMatrix<double>>(ListListD{
 		{ 1, 0, 0 },
 		{ 0, 1, 0 },
 		{ 0, 0, 1 }
@@ -339,7 +339,7 @@ void MbD::ASMTAssembly::runSinglePendulum()
 	mkr->setName(str);
 	pos3D = std::make_shared<FullColumn<double>>(ListD{ 0.1, 0.1, 0.1 });
 	mkr->setPosition3D(pos3D);
-	rotMat = std::make_shared<FullMatrixDouble>(ListListD{
+	rotMat = std::make_shared<FullMatrix<double>>(ListListD{
 		{ 1, 0, 0 },
 		{ 0, 1, 0 },
 		{ 0, 0, 1 }
@@ -1052,9 +1052,9 @@ void MbD::ASMTAssembly::initprincipalMassMarker()
 	principalMassMarker = std::make_shared<ASMTPrincipalMassMarker>();
 	principalMassMarker->mass = 0.0;
 	principalMassMarker->density = 0.0;
-	principalMassMarker->momentOfInertias = std::make_shared<DiagonalMatrix>(3, 0);
+	principalMassMarker->momentOfInertias = std::make_shared<DiagonalMatrix<double>>(3, 0);
 	//principalMassMarker->position3D = std::make_shared<FullColumn<double>>(3, 0);
-	//principalMassMarker->rotationMatrix = FullMatrixDouble>::identitysptr(3);
+	//principalMassMarker->rotationMatrix = FullMatrix<double>>::identitysptr(3);
 }
 
 std::shared_ptr<ASMTSpatialContainer> MbD::ASMTAssembly::spatialContainerAt(std::shared_ptr<ASMTAssembly> self, std::string& longname)

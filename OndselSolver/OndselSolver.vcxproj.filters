@@ -1814,19 +1814,7 @@
     <ClInclude Include="..\testapp\OndselSolver.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="FullRow.ref.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="FullMatrix.ref.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="FullColumn.ref.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="EulerParameters.ref.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="DiagonalMatrix.ref.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="MBDynGravity.h">

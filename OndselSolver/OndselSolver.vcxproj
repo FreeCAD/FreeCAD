@@ -533,7 +533,6 @@
     <ClInclude Include="CREATE.h" />
     <ClInclude Include="CylindricalJoint.h" />
     <ClInclude Include="CylSphJoint.h" />
-    <ClInclude Include="DiagonalMatrix.ref.h" />
     <ClInclude Include="DifferentiatedGeneralSpline.h" />
     <ClInclude Include="EigenDecomposition.h" />
     <ClInclude Include="EndFrameqct2.h" />
@@ -543,9 +542,6 @@
     <ClInclude Include="EulerParameters.ref.h" />
     <ClInclude Include="Exponential.h" />
     <ClInclude Include="ExternalSystem.h" />
-    <ClInclude Include="FullColumn.ref.h" />
-    <ClInclude Include="FullMatrix.ref.h" />
-    <ClInclude Include="FullRow.ref.h" />
     <ClInclude Include="FunctionFromData.h" />
     <ClInclude Include="FunctionXcParameter.h" />
     <ClInclude Include="FunctionXY.h" />

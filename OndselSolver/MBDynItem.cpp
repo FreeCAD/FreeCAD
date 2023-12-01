@@ -242,7 +242,7 @@ FColDsptr MbD::MBDynItem::readBasicPosition(std::vector<std::string>& args)
 
 FMatDsptr MbD::MBDynItem::readOrientation(std::vector<std::string>& args)
 {
-	auto aAOf = FullMatrixDouble::identitysptr(3);
+	auto aAOf = FullMatrix<double>::identitysptr(3);
 	if (args.empty()) return aAOf;
 	auto str = args.at(0); //Must copy string
 	if (str.find("reference") != std::string::npos) {
@@ -292,7 +292,7 @@ FMatDsptr MbD::MBDynItem::readBasicOrientation(std::vector<std::string>& args)
 	}
 	if (str.find("eye") != std::string::npos) {
 		args.erase(args.begin());
-		auto aAFf = FullMatrixDouble::identitysptr(3);
+		auto aAFf = FullMatrix<double>::identitysptr(3);
 		return aAFf;
 	}
 	auto iss = std::istringstream(str);
@@ -341,7 +341,7 @@ FMatDsptr MbD::MBDynItem::readBasicOrientation(std::vector<std::string>& args)
 		else {
 			assert(false);
 		}
-		auto aAFf = FullMatrixDouble::identitysptr(3);
+		auto aAFf = FullMatrix<double>::identitysptr(3);
 		aAFf->atijputFullColumn(0, 0, vecX);
 		aAFf->atijputFullColumn(0, 1, vecY);
 		aAFf->atijputFullColumn(0, 2, vecZ);
@@ -390,13 +390,13 @@ FMatDsptr MbD::MBDynItem::readBasicOrientation(std::vector<std::string>& args)
 		else {
 			assert(false);
 		}
-		auto aAFf = FullMatrixDouble::identitysptr(3);
+		auto aAFf = FullMatrix<double>::identitysptr(3);
 		aAFf->atijputFullColumn(0, 0, vecX);
 		aAFf->atijputFullColumn(0, 1, vecY);
 		aAFf->atijputFullColumn(0, 2, vecZ);
 		return aAFf;
 	}
-	auto aAFf = FullMatrixDouble::identitysptr(3);
+	auto aAFf = FullMatrix<double>::identitysptr(3);
 	for (int i = 0; i < 3; i++)
 	{
 		auto& rowi = aAFf->at(i);

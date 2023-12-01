@@ -35,7 +35,7 @@ namespace MbD {
 		FMatDsptr getRotationMatrix(int i);
 
 		FColDsptr position3D = std::make_shared<FullColumn<double>>(3);
-		FMatDsptr rotationMatrix = std::make_shared<FullMatrixDouble>(ListListD{
+		FMatDsptr rotationMatrix = std::make_shared<FullMatrix<double>>(ListListD{
 				{ 1, 0, 0 },
 				{ 0, 1, 0 },
 				{ 0, 0, 1 }

@@ -47,7 +47,7 @@ void DispCompIeqcJeqcKeqct::preVelIC()
 {
 	Item::preVelIC();
 	auto pAjOKept = std::static_pointer_cast<EndFrameqct>(efrmK)->pAjOept(axisK);
-	priIeJeKept = pAjOKept->dotVec(rIeJeO);
+	priIeJeKept = pAjOKept->dot(rIeJeO);
 }
 
 double DispCompIeqcJeqcKeqct::pvaluept()
@@ -100,9 +100,9 @@ void DispCompIeqcJeqcKeqct::preAccIC()
 	}
 	for (int i = 0; i < 4; i++)
 	{
-		ppriIeJeKepEIpt->atiput(i, pAjOKept->dotVec(prIeJeOpEIT->at(i)));
-		ppriIeJeKepEJpt->atiput(i, pAjOKept->dotVec(prIeJeOpEJT->at(i)));
+		ppriIeJeKepEIpt->atiput(i, pAjOKept->dot(prIeJeOpEIT->at(i)));
+		ppriIeJeKepEJpt->atiput(i, pAjOKept->dot(prIeJeOpEJT->at(i)));
 		ppriIeJeKepEKpt->atiput(i, ppAjOKepEKTpt->at(i)->dot(rIeJeO));
 	}
-	ppriIeJeKeptpt = ppAjOKeptpt->dotVec(rIeJeO);
+	ppriIeJeKeptpt = ppAjOKeptpt->dot(rIeJeO);
 }

@@ -161,9 +161,9 @@ void MbD::DistxyIeqcJec::initialize()
 	DistxyIecJec::initialize();
 	pdistxypXI = std::make_shared<FullRow<double>>(3);
 	pdistxypEI = std::make_shared<FullRow<double>>(4);
-	ppdistxypXIpXI = std::make_shared<FullMatrixDouble>(3, 3);
-	ppdistxypXIpEI = std::make_shared<FullMatrixDouble>(3, 4);
-	ppdistxypEIpEI = std::make_shared<FullMatrixDouble>(4, 4);
+	ppdistxypXIpXI = std::make_shared<FullMatrix<double>>(3, 3);
+	ppdistxypXIpEI = std::make_shared<FullMatrix<double>>(3, 4);
+	ppdistxypEIpEI = std::make_shared<FullMatrix<double>>(4, 4);
 }
 
 FMatDsptr MbD::DistxyIeqcJec::ppvaluepEIpEI()

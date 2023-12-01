@@ -16,8 +16,8 @@ using namespace MbD;
 MbD::ConstVelConstraintIqcJqc::ConstVelConstraintIqcJqc(EndFrmsptr frmi, EndFrmsptr frmj) : ConstVelConstraintIqcJc(frmi, frmj)
 {
 	pGpEJ = std::make_shared<FullRow<double>>(4);
-	ppGpEIpEJ = std::make_shared<FullMatrixDouble>(4, 4);
-	ppGpEJpEJ = std::make_shared<FullMatrixDouble>(4, 4);
+	ppGpEIpEJ = std::make_shared<FullMatrix<double>>(4, 4);
+	ppGpEJpEJ = std::make_shared<FullMatrix<double>>(4, 4);
 }
 
 void MbD::ConstVelConstraintIqcJqc::calcPostDynCorrectorIteration()
@@ -121,8 +121,8 @@ void MbD::ConstVelConstraintIqcJqc::initialize()
 {
 	ConstVelConstraintIqcJc::initialize();
 	pGpEJ = std::make_shared<FullRow<double>>(4);
-	ppGpEIpEJ = std::make_shared<FullMatrixDouble>(4, 4);
-	ppGpEJpEJ = std::make_shared<FullMatrixDouble>(4, 4);
+	ppGpEIpEJ = std::make_shared<FullMatrix<double>>(4, 4);
+	ppGpEJpEJ = std::make_shared<FullMatrix<double>>(4, 4);
 }
 
 void MbD::ConstVelConstraintIqcJqc::useEquationNumbers()

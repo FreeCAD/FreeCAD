@@ -119,7 +119,7 @@ void MbD::MBDynJoint::parseMBDyn(std::string line)
 		mkr1->owner = this;
 		mkr1->nodeStr = "Assembly";
 		mkr1->rPmP = std::make_shared<FullColumn<double>>(3);
-		mkr1->aAPm = FullMatrixDouble::identitysptr(3);
+		mkr1->aAPm = FullMatrix<double>::identitysptr(3);
 		readClampMarkerJ(arguments);
 		return;
 	}

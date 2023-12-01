@@ -9,10 +9,23 @@
 #pragma once
 
 #include "FullVector.h"
-#include "FullMatrix.ref.h"
-#include "FullRow.ref.h"
+//#include "FullColumn.h"
 
 namespace MbD {
+	template<typename T>
+	class FullRow;
+	template<typename T>
+	using FRowsptr = std::shared_ptr<FullRow<T>>;
+	using FRowDsptr = std::shared_ptr<FullRow<double>>;
+	template<typename T>
+	class FullMatrix;
+	template<typename T>
+	using FMatsptr = std::shared_ptr<FullMatrix<T>>;
+	template<typename T>
+	class FullColumn;
+	template<typename T>
+	using FColsptr = std::shared_ptr<FullColumn<T>>;
+	using ListFRD = std::initializer_list<FRowDsptr>;
 
 	template<typename T>
 	class FullRow : public FullVector<T>
@@ -30,25 +43,20 @@ namespace MbD {
 		FRowsptr<T> minusFullRow(FRowsptr<T> fullRow);
 		T timesFullColumn(FColsptr<T> fullCol);
 		T timesFullColumn(FullColumn<T>* fullCol);
+		FRowsptr<T> timesFullMatrix(FMatsptr<T> fullMat);
+		FRowsptr<T> timesTransposeFullMatrix(FMatsptr<T> fullMat);
 		void equalSelfPlusFullRowTimes(FRowsptr<T> fullRow, double factor);
 		void equalFullRow(FRowsptr<T> fullRow);
 		FColsptr<T> transpose();
 		FRowsptr<T> copy();
 		void atiplusFullRow(int j, FRowsptr<T> fullRow);
-		FMatDsptr transposeTimesFullRow(FRowDsptr fullRow);
-		std::shared_ptr<FullRow<T>> clonesptr();
-		//double dot(std::shared_ptr<FullColumn<T>> vec);
-		//double dot(std::shared_ptr<FullRow<T>> vec);
+		FMatsptr<T> transposeTimesFullRow(FRowsptr<T> fullRow);
 		double dot(std::shared_ptr<FullVector<T>> vec);
 		std::shared_ptr<FullVector<T>> dot(std::shared_ptr<std::vector<std::shared_ptr<FullColumn<T>>>> vecvec);
 
-		
 		std::ostream& printOn(std::ostream& s) const override;
 
-        FRowsptr<double> timesTransposeFullMatrix(std::shared_ptr<FullMatrixDouble> fullMat);
-        // FRowsptr<std::shared_ptr<FullMatrixDouble>> timesTransposeFullMatrixForFMFMDsptr(std::shared_ptr<FullMatrixFullMatrixDouble> fullMat);
-        FRowsptr<double> timesFullMatrix(std::shared_ptr<FullMatrixDouble> fullMat);
-    };
+	};
 
 	template<>
 	inline FRowDsptr FullRow<double>::times(double a)
@@ -73,7 +81,7 @@ namespace MbD {
 	template<typename T>
 	inline FRowsptr<T> FullRow<T>::plusFullRow(FRowsptr<T> fullRow)
 	{
-		int n = (int)this->size();
+		int n = (int) this->size();
 		auto answer = std::make_shared<FullRow<T>>(n);
 		for (int i = 0; i < n; i++) {
 			answer->at(i) = this->at(i) + fullRow->at(i);
@@ -83,7 +91,7 @@ namespace MbD {
 	template<typename T>
 	inline FRowsptr<T> FullRow<T>::minusFullRow(FRowsptr<T> fullRow)
 	{
-		int n = (int)this->size();
+		int n = (int) this->size();
 		auto answer = std::make_shared<FullRow<T>>(n);
 		for (int i = 0; i < n; i++) {
 			answer->at(i) = this->at(i) - fullRow->at(i);
@@ -102,6 +110,17 @@ namespace MbD {
 		for (int i = 1; i < this->size(); i++)
 		{
 			answer += this->at(i) * fullCol->at(i);
+		}
+		return answer;
+	}
+	template<typename T>
+	inline FRowsptr<T> FullRow<T>::timesTransposeFullMatrix(FMatsptr<T> fullMat)
+	{
+		//"a*bT = a(1,j)b(k,j)"
+		int ncol = fullMat->nrow();
+		auto answer = std::make_shared<FullRow<T>>(ncol);
+		for (int k = 0; k < ncol; k++) {
+			answer->at(k) = this->dot(fullMat->at(k));
 		}
 		return answer;
 	}
@@ -141,9 +160,16 @@ namespace MbD {
 		}
 	}
 	template<typename T>
-	inline std::shared_ptr<FullRow<T>> FullRow<T>::clonesptr()
+	inline FMatsptr<T> FullRow<T>::transposeTimesFullRow(FRowsptr<T> fullRow)
 	{
-		return std::make_shared<FullRow<T>>(*this);
+		//"a*b = a(i)b(j)"
+		auto nrow = (int)this->size();
+		auto answer = std::make_shared<FullMatrix<T>>(nrow);
+		for (int i = 0; i < nrow; i++)
+		{
+			answer->atiput(i, fullRow->times(this->at(i)));
+		}
+		return answer;
 	}
 	template<typename T>
 	inline double FullRow<T>::dot(std::shared_ptr<FullVector<T>> vec)
@@ -182,7 +208,17 @@ namespace MbD {
 		}
 		s << "}";
 		return s;
-	};
-
+	}
+	template<typename T>
+	inline FRowsptr<T> FullRow<T>::timesFullMatrix(FMatsptr<T> fullMat)
+	{
+		FRowsptr<T> answer = fullMat->at(0)->times(this->at(0));
+		for (int j = 1; j < (int) this->size(); j++)
+		{
+			answer->equalSelfPlusFullRowTimes(fullMat->at(j), this->at(j));
+		}
+		return answer;
+			//return FRowsptr<T>();
+	}
 }
 

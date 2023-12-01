@@ -48,7 +48,7 @@ void MbD::ASMTSpatialItem::readRotationMatrix(std::vector<std::string>& lines)
 {
 	assert(lines[0].find("RotationMatrix") != std::string::npos);
 	lines.erase(lines.begin());
-	rotationMatrix = std::make_shared<FullMatrixDouble>(3, 0);
+	rotationMatrix = std::make_shared<FullMatrix<double>>(3, 0);
 	for (int i = 0; i < 3; i++)
 	{
 		auto& row = rotationMatrix->at(i);
@@ -87,7 +87,7 @@ void MbD::ASMTSpatialItem::setRotationMatrix(double v11, double v12, double v13,
 	double v21, double v22, double v23,
 	double v31, double v32, double v33)
 {
-	rotationMatrix = std::make_shared<FullMatrixDouble>(ListListD{
+	rotationMatrix = std::make_shared<FullMatrix<double>>(ListListD{
 		{ v11, v12, v13 },
 		{ v21, v22, v23 },
 		{ v31, v32, v33 }

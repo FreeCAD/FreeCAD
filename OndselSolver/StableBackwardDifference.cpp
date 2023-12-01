@@ -48,7 +48,7 @@ FColDsptr MbD::StableBackwardDifference::derivativepresentpastpresentDerivativep
 void StableBackwardDifference::instantiateTaylorMatrix()
 {
 	if (taylorMatrix == nullptr || (taylorMatrix->nrow() != (order))) {
-		taylorMatrix = std::make_shared<FullMatrixDouble>(order, order);
+		taylorMatrix = std::make_shared<FullMatrix<double>>(order, order);
 	}
 }
 
@@ -79,7 +79,7 @@ FColDsptr MbD::StableBackwardDifference::derivativepresentpast(int deriv, FColDs
 	//"Answer ith derivative given present value and past values."
 
 	if (deriv == 0) {
-		return y->cloneFcSptr();
+		return std::static_pointer_cast<FullColumn<double>>(y->clonesptr());
 	}
 	else {
 		if (deriv <= order) {
