@@ -151,6 +151,7 @@ void MbD::ASMTItem::deleteMbD()
 
 void MbD::ASMTItem::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits)
 {
+	noop();
 	assert(false);
 }
 
