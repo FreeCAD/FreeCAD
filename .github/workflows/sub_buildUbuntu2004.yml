@@ -60,7 +60,7 @@ jobs:
       CXX: /usr/bin/g++
       #CC: /usr/bin/clang
       #CXX: /usr/bin/clang++
-      builddir: ${{ github.workspace }}/build/
+      builddir: ${{ github.workspace }}/build/release/
       logdir: /tmp/logs/
       reportdir: /tmp/report/
       reportfilename: ${{ inputs.artifactBasename }}-report.md
@@ -173,6 +173,7 @@ jobs:
       - name: CMake Configure
         uses: ./.github/workflows/actions/linux/configure
         with:
+          extraParameters: --preset release
           builddir: ${{ env.builddir }}
           logFile: ${{ env.logdir }}Cmake.log
           errorFile: ${{ env.logdir }}CmakeErrors.log
@@ -193,7 +194,7 @@ jobs:
         uses: ./.github/workflows/actions/runPythonTests
         with:
           testDescription: "CLI tests on build dir"
-          testCommand: ${{ env.builddir }}bin/FreeCADCmd -t 0
+          testCommand: ${{ env.builddir }}/bin/FreeCADCmd -t 0
           logFile: ${{ env.logdir }}TestCLIBuild.log
           reportFile: ${{env.reportdir}}${{ env.reportfilename }}
       - name: FreeCAD GUI tests on build dir
