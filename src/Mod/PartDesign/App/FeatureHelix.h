@@ -56,6 +56,7 @@ public:
     App::PropertyEnumeration Mode;
     App::PropertyBool        Outside;
     App::PropertyBool        HasBeenEdited;
+    App::PropertyBool        UseMakePipe;
 
     /** if this property is set to a valid link, both Axis and Base properties
      *  are calculated according to the linked line

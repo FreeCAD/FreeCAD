@@ -32,6 +32,7 @@
 # include <BRepBuilderAPI_Sewing.hxx>
 # include <BRepClass3d_SolidClassifier.hxx>
 # include <BRepOffsetAPI_MakePipe.hxx>
+# include <BRepOffsetAPI_MakePipeShell.hxx>
 # include <BRepPrimAPI_MakeRevol.hxx>
 # include <Precision.hxx>
 # include <TopoDS.hxx>
@@ -51,7 +52,7 @@
 # include <Mod/Part/App/FaceMakerCheese.h>
 
 # include "FeatureHelix.h"
-
+#include "App/Document.h"
 using namespace PartDesign;
 
 const char* Helix::ModeEnums[] = { "pitch-height-angle", "pitch-turns-angle", "height-turns-angle", "height-turns-growth", nullptr };
@@ -103,8 +104,11 @@ Helix::Helix()
     ADD_PROPERTY_TYPE(HasBeenEdited, (false), group, App::Prop_Hidden,
         QT_TRANSLATE_NOOP("App::Property", "If false, the tool will propose an initial value for the pitch based on the profile bounding box,\n"
             "so that self intersection is avoided."));
+    ADD_PROPERTY_TYPE(UseMakePipe, (false), group, App::Prop_None, //App::Prop_Hidden,
+        QT_TRANSLATE_NOOP("App::Property", "If set, use the faster MakePipe instead of the legacy MakePipeShape."));
 
     setReadWriteStatusForMode(initialMode);
+    UseMakePipe.setValue(true); // For all new obects
 }
 
 short Helix::mustExecute() const
@@ -214,8 +218,6 @@ App::DocumentObjectExecReturn* Helix::execute()
 
         base.Move(invObjLoc);
 
-        // generate the helix path
-        TopoDS_Shape path = generateHelixPath(0.0, 1.0);
 
         std::vector<TopoDS_Wire> wires;
         try {
@@ -224,14 +226,92 @@ App::DocumentObjectExecReturn* Helix::execute()
         catch (const Base::Exception& e) {
             return new App::DocumentObjectExecReturn(e.what());
         }
+        TopoDS_Shape result;
+        if ( UseMakePipe.getValue() )  {
+            TopoDS_Shape path = generateHelixPath(0.0, 1.0);
+            TopoDS_Shape face = Part::FaceMakerCheese::makeFace(wires);
+            BRepOffsetAPI_MakePipe mkPS(TopoDS::Wire(path), face, GeomFill_Trihedron::GeomFill_IsFrenet, Standard_False);
 
-        TopoDS_Shape face = Part::FaceMakerCheese::makeFace(wires);
-        BRepOffsetAPI_MakePipe mkPS(TopoDS::Wire(path), face, GeomFill_Trihedron::GeomFill_IsFrenet, Standard_False);
+            mkPS.Build();
 
-        mkPS.Build();
+            result = mkPS.Shape();
+        } else {
+            /*  @deprecrated  12/01/2023  This is legacy code, here to maintain backward compatibility with existing models without altering their
+             *  Helixes to have fewer seams, and potentially trigger TNP.  Someday it should go away, and so should the gating
+             *  property.
+             */
 
-        TopoDS_Shape result = mkPS.Shape();
+            // generate the helix path
+            TopoDS_Shape path = generateHelixPath();
+            TopoDS_Shape auxpath = generateHelixPath(1.0);
+            std::vector<std::vector<TopoDS_Wire>> wiresections;
+            for (TopoDS_Wire& wire : wires)
+                wiresections.emplace_back(1, wire);
 
+            //build all shells
+            std::vector<TopoDS_Shape> shells;
+            std::vector<TopoDS_Wire> frontwires, backwires;
+            for (std::vector<TopoDS_Wire>& wires : wiresections) {
+
+                BRepOffsetAPI_MakePipeShell mkPS(TopoDS::Wire(path));
+
+                mkPS.SetTolerance(Precision::Confusion());
+                mkPS.SetTransitionMode(BRepBuilderAPI_Transformed);
+
+                if (Angle.getValue() == 0) {
+                    mkPS.SetMode(true);  //This is for frenet
+                } else {
+                    mkPS.SetMode(TopoDS::Wire(auxpath), true);  // this is for auxiliary
+                }
+
+                for (TopoDS_Wire& wire : wires) {
+                    wire.Move(invObjLoc);
+                    mkPS.Add(wire);
+                }
+
+                if (!mkPS.IsReady())
+                    return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Could not build"));
+                mkPS.Build();
+
+                shells.push_back(mkPS.Shape());
+
+                if (!mkPS.Shape().Closed()) {
+                    // // shell is not closed - use simulate to get the end wires
+                    TopTools_ListOfShape sim;
+                    mkPS.Simulate(2, sim);
+
+                    frontwires.push_back(TopoDS::Wire(sim.First()));
+                    backwires.push_back(TopoDS::Wire(sim.Last()));
+                }
+            }
+            BRepBuilderAPI_MakeSolid mkSolid;
+
+            if (!frontwires.empty()) {
+                // build the end faces, sew the shell and build the final solid
+                TopoDS_Shape front = Part::FaceMakerCheese::makeFace(frontwires);
+                TopoDS_Shape back = Part::FaceMakerCheese::makeFace(backwires);
+
+                BRepBuilderAPI_Sewing sewer;
+                sewer.SetTolerance(Precision::Confusion());
+                sewer.Add(front);
+                sewer.Add(back);
+
+                for (TopoDS_Shape& s : shells)
+                    sewer.Add(s);
+                sewer.Perform();
+                mkSolid.Add(TopoDS::Shell(sewer.SewedShape()));
+            }
+            else {
+                // shells are already closed - add them directly
+                for (TopoDS_Shape& s : shells) {
+                    mkSolid.Add(TopoDS::Shell(s));
+                }
+            }
+            if (!mkSolid.IsDone())
+                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result is not a solid"));
+
+            result = mkSolid.Shape();
+        }
         BRepClass3d_SolidClassifier SC(result);
         SC.PerformInfinitePoint(Precision::Confusion());
         if (SC.State() == TopAbs_IN)
