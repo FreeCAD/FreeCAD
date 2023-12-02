@@ -39,6 +39,7 @@
 # include <QToolTip>
 # include <QProcess>
 # include <QPushButton>
+# include <QWindow>
 #endif
 
 #include <App/Application.h>
@@ -690,6 +691,22 @@ void DlgPreferencesImp::restartIfRequired()
 void DlgPreferencesImp::showEvent(QShowEvent* ev)
 {
     QDialog::showEvent(ev);
+
+    auto screen = windowHandle()->screen();
+    auto availableSize = screen->availableSize();
+
+    // leave at least 100 px of height so preferences window does not take
+    // entire screen height. User will still be able to resize the window,
+    // but it should never start too tall.
+    auto maxStartHeight = availableSize.height() - 100;
+
+    if (height() > maxStartHeight) {
+        auto heightDifference = availableSize.height() - maxStartHeight;
+
+        // resize and reposition window so it is fully visible
+        resize(width(), maxStartHeight);
+        move(x(), heightDifference / 2);
+    }
 }
 
 QModelIndex findRootIndex(const QModelIndex& index)
