@@ -104,11 +104,10 @@ Helix::Helix()
     ADD_PROPERTY_TYPE(HasBeenEdited, (false), group, App::Prop_Hidden,
         QT_TRANSLATE_NOOP("App::Property", "If false, the tool will propose an initial value for the pitch based on the profile bounding box,\n"
             "so that self intersection is avoided."));
-    ADD_PROPERTY_TYPE(UseMakePipe, (false), group, App::Prop_None, //App::Prop_Hidden,
+    ADD_PROPERTY_TYPE(UseMakePipe, (false), group, App::Prop_Hidden,
         QT_TRANSLATE_NOOP("App::Property", "If set, use the faster MakePipe instead of the legacy MakePipeShape."));
 
     setReadWriteStatusForMode(initialMode);
-    UseMakePipe.setValue(true); // For all new obects
 }
 
 short Helix::mustExecute() const
