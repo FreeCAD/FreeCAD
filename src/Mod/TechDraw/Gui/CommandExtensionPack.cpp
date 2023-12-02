@@ -834,7 +834,6 @@ void CmdTechDrawExtensionVertexAtIntersection::activated(int iMsg)
         return;
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Cosmetic Intersection Vertex(es)"));
     const std::vector<std::string> SubNames = selection[0].getSubNames();
-    std::vector<Base::Vector3d> interPoints;
     if (SubNames.size() >= 2) {
         std::string GeoType1 = TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]);
         std::string GeoType2 = TechDraw::DrawUtil::getGeomTypeFromName(SubNames[1]);
@@ -843,15 +842,12 @@ void CmdTechDrawExtensionVertexAtIntersection::activated(int iMsg)
             TechDraw::BaseGeomPtr geom1 = objFeat->getGeomByIndex(GeoId1);
             int GeoId2 = TechDraw::DrawUtil::getIndexFromName(SubNames[1]);
             TechDraw::BaseGeomPtr geom2 = objFeat->getGeomByIndex(GeoId2);
-            interPoints = geom1->intersection(geom2);
-            if (!interPoints.empty()) {
-                double scale = objFeat->getScale();
-                std::string id1 = objFeat->addCosmeticVertex(interPoints[0] / scale);
-                objFeat->add1CVToGV(id1);
-                if (interPoints.size() >= 2) {
-                    std::string id2 = objFeat->addCosmeticVertex(interPoints[1] / scale);
-                    objFeat->add1CVToGV(id2);
-                }
+
+            double scale = objFeat->getScale();
+            std::vector<Base::Vector3d> interPoints = geom1->intersection(geom2);
+            for (auto pt : interPoints) {
+                std::string ptId = objFeat->addCosmeticVertex(pt/scale);
+                objFeat->add1CVToGV(ptId);
             }
         }
     }
