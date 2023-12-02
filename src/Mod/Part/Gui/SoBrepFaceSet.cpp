@@ -643,9 +643,6 @@ void SoBrepFaceSet::GLRender(SoGLRenderAction *action)
     }
 
     if(pushed) {
-        SbBool notify = enableNotify(FALSE);
-        materialIndex.setNum(0);
-        if(notify) enableNotify(notify);
         state->pop();
     }else if(action->isRenderingDelayedPaths()) {
         renderSelection(action,ctx);
@@ -836,9 +833,12 @@ bool SoBrepFaceSet::overrideMaterialBinding(SoGLRenderAction *action, SelContext
             }
         }
 
-        SbBool notify = enableNotify(FALSE);
-        materialIndex.setValuesPointer(matIndex.size(),&matIndex[0]);
-        if(notify) enableNotify(notify);
+        size_t num = materialIndex.getNum();
+        if (num != matIndex.size() || materialIndex.getValues(0) != &matIndex[0]) {
+            SbBool notify = enableNotify(FALSE);
+            materialIndex.setValuesPointer(matIndex.size(), &matIndex[0]);
+            if (notify) enableNotify(notify);
+        }
 
         SoMaterialBindingElement::set(state, this, SoMaterialBindingElement::PER_PART_INDEXED);
         SoLazyElement::setPacked(state, this, packedColors.size(), &packedColors[0], hasTransparency);
