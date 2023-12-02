@@ -329,11 +329,8 @@ void QGIViewPart::drawAllEdges()
         }
 
         if (!(*itGeom)->getHlrVisible()) {
-            // the HiddenLine parameter is 0 (solid) or 1 (dashed)
-            // Qt PenStyle(1) is continuous and PenStyle(2) is dashed
-            int qtStyle = Preferences::getPreferenceGroup("General")->GetInt("HiddenLine", 0) + 1;
-            item->setLinePen(m_dashedLineGenerator->getBestPen( 0, (Qt::PenStyle)qtStyle,
-                            vp->HiddenWidth.getValue()));
+            item->setLinePen(m_dashedLineGenerator->getLinePen(Preferences::HiddenLineStyle(),
+                                                               vp->LineWidth.getValue()));
             item->setWidth(Rez::guiX(vp->HiddenWidth.getValue()));   //thin
             item->setZValue(ZVALUE::HIDEDGE);
         }
