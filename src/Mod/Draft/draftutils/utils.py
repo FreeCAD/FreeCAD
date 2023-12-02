@@ -53,7 +53,10 @@ if App.GuiUp:
     # The module is used to prevent complaints from code checkers (flake8)
     True if Draft_rc else False
 
+
 ARROW_TYPES = ["Dot", "Circle", "Arrow", "Tick", "Tick-2"]
+DISPLAY_MODES = ["Flat Lines", "Shaded", "Wireframe", "Points"]
+DRAW_STYLES = ["Solid", "Dashed", "Dotted", "Dashdot"]
 arrowtypes = ARROW_TYPES
 
 
@@ -61,24 +64,43 @@ def get_default_annotation_style():
     param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
     anno_scale = param.GetFloat("DraftAnnotationScale", 1)
     scale_mult = 1 / anno_scale if anno_scale > 0 else 1
+    arrow_type_index = param.GetInt("dimsymbol", 0)
     return {
-        "ArrowSize":       ("float", param.GetFloat("arrowsize", 20)),
-        "ArrowType":       ("index", param.GetInt("dimsymbol", 0)),
+        "ArrowSize":       ("float", param.GetFloat("arrowsize", 1)),
+        "ArrowType":       ("index", arrow_type_index, ARROW_TYPES[arrow_type_index]),
         "Decimals":        ("int",   param.GetInt("dimPrecision", 2)),
-        "DimOvershoot":    ("float", param.GetFloat("dimovershoot", 20)),
-        "ExtLines":        ("float", param.GetFloat("extlines", 300)),
-        "ExtOvershoot":    ("float", param.GetFloat("extovershoot", 20)),
+        "DimOvershoot":    ("float", param.GetFloat("dimovershoot", 0)),
+        "ExtLines":        ("float", param.GetFloat("extlines", -0.5)),
+        "ExtOvershoot":    ("float", param.GetFloat("extovershoot", 2)),
         "FontName":        ("font",  param.GetString("textfont", "Sans")),
-        "FontSize":        ("float", param.GetFloat("textheight", 100)),
+        "FontSize":        ("float", param.GetFloat("textheight", 3.5)),
         "LineColor":       ("color", param.GetUnsigned("DefaultAnnoLineColor", 255)),
         "LineSpacing":     ("float", param.GetFloat("LineSpacing", 1)),
-        "LineWidth":       ("int",   param.GetInt("DefaultAnnoLineWidth", 1)),
+        "LineWidth":       ("int",   param.GetInt("DefaultAnnoLineWidth", 2)),
         "ScaleMultiplier": ("float", scale_mult),
         "ShowLine":        ("bool",  param.GetBool("DimShowLine", True)),
         "ShowUnit":        ("bool",  param.GetBool("showUnit", True)),
         "TextColor":       ("color", param.GetUnsigned("DefaultTextColor", 255)),
-        "TextSpacing":     ("float", param.GetFloat("dimspacing", 20)),
-        "UnitOverride":    ("str",   param.GetString("overrideUnit", "")),
+        "TextSpacing":     ("float", param.GetFloat("dimspacing", 1)),
+        "UnitOverride":    ("str",   param.GetString("overrideUnit", ""))
+    }
+
+
+def get_default_shape_style():
+    # Uses the same format as get_default_annotation_style().
+    param_draft = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+    param_view = App.ParamGet("User parameter:BaseApp/Preferences/View")
+    display_mode_index = param_draft.GetInt("DefaultDisplayMode", 0)
+    draw_style_index = param_draft.GetInt("DefaultDrawStyle", 0)
+    return {
+        "DisplayMode":  ("index", display_mode_index, DISPLAY_MODES[display_mode_index]),
+        "DrawStyle":    ("index", draw_style_index, DRAW_STYLES[draw_style_index]),
+        "LineColor":    ("color", param_view.GetUnsigned("DefaultShapeLineColor", 255)),
+        "LineWidth":    ("int",   param_view.GetInt("DefaultShapeLineWidth", 2)),
+        "PointColor":   ("color", param_view.GetUnsigned("DefaultShapeVertexColor", 255)),
+        "PointSize":    ("int",   param_view.GetInt("DefaultShapePointSize", 2)),
+        "ShapeColor":   ("color", param_view.GetUnsigned("DefaultShapeColor", 3435973887)),
+        "Transparency": ("int",   param_view.GetInt("DefaultShapeTransparency", 0))
     }
 
 
