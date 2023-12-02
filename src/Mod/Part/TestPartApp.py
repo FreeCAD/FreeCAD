@@ -52,7 +52,7 @@ class PartTestCases(unittest.TestCase):
     def testBoxCase(self):
         self.Box = self.Doc.addObject("Part::Box","Box")
         self.Doc.recompute()
-        self.failUnless(len(self.Box.Shape.Faces)==6)
+        self.assertEqual(len(self.Box.Shape.Faces), 6)
 
     def testIssue2985(self):
         v1 = App.Vector(0.0,0.0,0.0)
