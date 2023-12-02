@@ -256,13 +256,13 @@ public:
                    * b));
 
             if (boost::math::isnan(startAngle) || boost::math::isnan(endAngle)) {
-                sketchgui->purgeHandler();
                 Gui::NotifyError(
                     sketchgui,
                     QT_TRANSLATE_NOOP("Notifications", "Error"),
                     QT_TRANSLATE_NOOP(
                         "Notifications",
                         "Cannot create arc of hyperbola from invalid angles, try again!"));
+                sketchgui->purgeHandler();
                 return false;
             }
 
