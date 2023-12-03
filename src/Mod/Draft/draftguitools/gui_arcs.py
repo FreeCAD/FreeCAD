@@ -276,7 +276,7 @@ class Arc(gui_base_original.Creator):
                         else:
                             self.ui.labelRadius.setText(translate("draft", "Start angle"))
                             self.ui.radiusValue.setToolTip(translate("draft", "Start angle"))
-                            self.ui.radiusValue.setText(U.Quantity(0, U.Angle).UserString)
+                            self.ui.radiusValue.setProperty('value', App.Units.Quantity("{} {}".format(0, "deg")))
                             self.linetrack.p1(self.center)
                             self.linetrack.on()
                             self.step = 2
@@ -443,7 +443,7 @@ class Arc(gui_base_original.Creator):
                 self.ui.radiusValue.setToolTip(translate("draft", "Start angle"))
                 self.linetrack.p1(self.center)
                 self.linetrack.on()
-                self.ui.radiusValue.setText("")
+                self.ui.radiusValue.setProperty('value', App.Units.Quantity("{} {}".format(0, "deg")))
                 self.ui.radiusValue.setFocus()
                 _msg(translate("draft", "Pick start angle"))
         elif self.step == 2:
@@ -455,7 +455,7 @@ class Arc(gui_base_original.Creator):
                                              self.wp.axis)
             self.arctrack.setStartAngle(self.firstangle - ang_offset)
             self.step = 3
-            self.ui.radiusValue.setText("")
+            self.ui.radiusValue.setProperty('value', App.Units.Quantity("{} {}".format(0, "deg")))
             self.ui.radiusValue.setFocus()
             _msg(translate("draft", "Pick aperture angle"))
         else:
