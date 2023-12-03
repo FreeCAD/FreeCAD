@@ -34,6 +34,7 @@ list(APPEND Material_LIBS
 )
 
 generate_from_xml(Array2DPy)
+generate_from_xml(Array3DPy)
 generate_from_xml(MaterialManagerPy)
 generate_from_xml(MaterialPy)
 generate_from_xml(ModelManagerPy)
@@ -45,6 +46,8 @@ SET(Python_SRCS
     Exceptions.h
     Array2DPy.xml
     Array2DPyImpl.cpp
+    Array3DPy.xml
+    Array3DPyImpl.cpp
     MaterialManagerPy.xml
     MaterialManagerPyImpl.cpp
     MaterialPy.xml

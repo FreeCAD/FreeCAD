@@ -58,10 +58,8 @@ void MaterialManager::initLibraries()
 
     if (_materialMap == nullptr) {
         // Load the models first
-        ModelManager* manager = new ModelManager();
+        auto manager = std::make_unique<ModelManager>();
         Q_UNUSED(manager)
-
-        delete manager;
 
         _materialMap = std::make_shared<std::map<QString, std::shared_ptr<Material>>>();
 
@@ -74,18 +72,18 @@ void MaterialManager::initLibraries()
     }
 }
 
-void MaterialManager::saveMaterial(std::shared_ptr<MaterialLibrary> library,
-                                   std::shared_ptr<Material> material,
+void MaterialManager::saveMaterial(const std::shared_ptr<MaterialLibrary>& library,
+                                   const std::shared_ptr<Material>& material,
                                    const QString& path,
                                    bool overwrite,
                                    bool saveAsCopy,
-                                   bool saveInherited)
+                                   bool saveInherited) const
 {
     auto newMaterial = library->saveMaterial(material, path, overwrite, saveAsCopy, saveInherited);
     (*_materialMap)[newMaterial->getUUID()] = newMaterial;
 }
 
-bool MaterialManager::isMaterial(const fs::path& p)
+bool MaterialManager::isMaterial(const fs::path& p) const
 {
     if (!fs::is_regular_file(p)) {
         return false;
@@ -97,7 +95,7 @@ bool MaterialManager::isMaterial(const fs::path& p)
     return false;
 }
 
-bool MaterialManager::isMaterial(const QFileInfo& file)
+bool MaterialManager::isMaterial(const QFileInfo& file) const
 {
     if (!file.isFile()) {
         return false;
@@ -124,21 +122,10 @@ std::shared_ptr<Material> MaterialManager::getMaterialByPath(const QString& path
     QString cleanPath = QDir::cleanPath(path);
 
     for (auto& library : *_libraryList) {
-        // Base::Console().Log("MaterialManager::getMaterialByPath() Checking library '%s'->'%s'\n",
-        //                     library->getName().toStdString().c_str(),
-        //                     library->getDirectory().toStdString().c_str());
-
-
         if (cleanPath.startsWith(library->getDirectory())) {
-            // Base::Console().Log("MaterialManager::getMaterialByPath() Library '%s'\n",
-            //                     library->getDirectory().toStdString().c_str());
-            // Base::Console().Log("MaterialManager::getMaterialByPath() Path '%s'\n",
-            //                     cleanPath.toStdString().c_str());
             return library->getMaterialByPath(cleanPath);
         }
     }
-    Base::Console().Log("MaterialManager::getMaterialByPath() Library not found for path '%s'\n",
-                        cleanPath.toStdString().c_str());
 
     throw MaterialNotFound();
 }
@@ -154,7 +141,7 @@ bool MaterialManager::exists(const QString& uuid) const
 {
     try {
         auto material = getMaterial(uuid);
-        if (material.get() != nullptr) {
+        if (material) {
             return true;
         }
     }
@@ -164,7 +151,8 @@ bool MaterialManager::exists(const QString& uuid) const
     return false;
 }
 
-std::shared_ptr<Material> MaterialManager::getParent(std::shared_ptr<Material> material)
+std::shared_ptr<Material>
+MaterialManager::getParent(const std::shared_ptr<Material>& material) const
 {
     if (material->getParentUUID().isEmpty()) {
         throw MaterialNotFound();
@@ -173,11 +161,12 @@ std::shared_ptr<Material> MaterialManager::getParent(std::shared_ptr<Material> m
     return getMaterial(material->getParentUUID());
 }
 
-bool MaterialManager::exists(std::shared_ptr<MaterialLibrary> library, const QString& uuid) const
+bool MaterialManager::exists(const std::shared_ptr<MaterialLibrary>& library,
+                             const QString& uuid) const
 {
     try {
         auto material = getMaterial(uuid);
-        if (material.get() != nullptr) {
+        if (material) {
             return (*material->getLibrary() == *library);
         }
     }
@@ -198,7 +187,8 @@ std::shared_ptr<MaterialLibrary> MaterialManager::getLibrary(const QString& name
     throw LibraryNotFound();
 }
 
-std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> MaterialManager::getMaterialLibraries()
+std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>>
+MaterialManager::getMaterialLibraries() const
 {
     if (_libraryList == nullptr) {
         if (_materialMap == nullptr) {
@@ -213,20 +203,20 @@ std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> MaterialManager::ge
 }
 
 std::shared_ptr<std::list<QString>>
-MaterialManager::getMaterialFolders(std::shared_ptr<MaterialLibrary> library) const
+MaterialManager::getMaterialFolders(const std::shared_ptr<MaterialLibrary>& library) const
 {
     return MaterialLoader::getMaterialFolders(*library);
 }
 
 std::shared_ptr<std::map<QString, std::shared_ptr<Material>>>
-MaterialManager::materialsWithModel(QString uuid)
+MaterialManager::materialsWithModel(const QString& uuid) const
 {
     std::shared_ptr<std::map<QString, std::shared_ptr<Material>>> dict =
         std::make_shared<std::map<QString, std::shared_ptr<Material>>>();
 
-    for (auto it = _materialMap->begin(); it != _materialMap->end(); it++) {
-        QString key = it->first;
-        auto material = it->second;
+    for (auto& it : *_materialMap) {
+        QString key = it.first;
+        auto material = it.second;
 
         if (material->hasModel(uuid)) {
             (*dict)[key] = material;
@@ -237,14 +227,14 @@ MaterialManager::materialsWithModel(QString uuid)
 }
 
 std::shared_ptr<std::map<QString, std::shared_ptr<Material>>>
-MaterialManager::materialsWithModelComplete(QString uuid)
+MaterialManager::materialsWithModelComplete(const QString& uuid) const
 {
     std::shared_ptr<std::map<QString, std::shared_ptr<Material>>> dict =
         std::make_shared<std::map<QString, std::shared_ptr<Material>>>();
 
-    for (auto it = _materialMap->begin(); it != _materialMap->end(); it++) {
-        QString key = it->first;
-        auto material = it->second;
+    for (auto& it : *_materialMap) {
+        QString key = it.first;
+        auto material = it.second;
 
         if (material->isModelComplete(uuid)) {
             (*dict)[key] = material;
@@ -254,7 +244,7 @@ MaterialManager::materialsWithModelComplete(QString uuid)
     return dict;
 }
 
-void MaterialManager::dereference(std::shared_ptr<Material> material)
+void MaterialManager::dereference(std::shared_ptr<Material> material) const
 {
     MaterialLoader::dereference(_materialMap, material);
 }

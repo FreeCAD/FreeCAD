@@ -26,18 +26,19 @@
 #include <Base/Parameter.h>
 #include <QApplication>
 
-namespace Gui {
+namespace Gui
+{
 class View3DInventorViewer;
 
-class View3DSettings : public ParameterGrp::ObserverType
+class GuiExport View3DSettings: public ParameterGrp::ObserverType
 {
 public:
-    View3DSettings(ParameterGrp::handle hGrp, View3DInventorViewer *);
-    View3DSettings(ParameterGrp::handle hGrp, const std::vector<View3DInventorViewer *>&);
+    View3DSettings(ParameterGrp::handle hGrp, View3DInventorViewer*);
+    View3DSettings(ParameterGrp::handle hGrp, const std::vector<View3DInventorViewer*>&);
     ~View3DSettings() override;
 
     /// Observer message from the ParameterGrp
-    void OnChange(ParameterGrp::SubjectType &rCaller,ParameterGrp::MessageType Reason) override;
+    void OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::MessageType Reason) override;
     void applySettings();
     int stopAnimatingIfDeactivated() const;
 
@@ -56,17 +57,18 @@ class NaviCubeSettings
 {
     Q_DECLARE_TR_FUNCTIONS(NaviCubeSettings)
 public:
-    NaviCubeSettings(ParameterGrp::handle hGrp, View3DInventorViewer *);
+    NaviCubeSettings(ParameterGrp::handle hGrp, View3DInventorViewer*);
     ~NaviCubeSettings();
 
     void applySettings();
+
 private:
     void parameterChanged(ParameterGrp::MessageType pName);
     ParameterGrp::handle hGrp;
-    View3DInventorViewer * _viewer;
+    View3DInventorViewer* _viewer;
     boost::signals2::connection connectParameterChanged;
 };
 
-} // namespace Gui
+}  // namespace Gui
 
 #endif  // GUI_VIEW3DSETTINGS_H

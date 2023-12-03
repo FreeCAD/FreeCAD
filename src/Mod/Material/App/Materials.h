@@ -321,6 +321,14 @@ public:
     {
         _dereferenced = true;
     }
+    bool isOldFormat() const
+    {
+        return _oldFormat;
+    }
+    void setOldFormat(bool isOld)
+    {
+        _oldFormat = isOld;
+    }
 
     /*
      * Normalize models by removing any inherited models
@@ -387,12 +395,13 @@ private:
     std::map<QString, std::shared_ptr<MaterialProperty>> _physical;
     std::map<QString, std::shared_ptr<MaterialProperty>> _appearance;
     bool _dereferenced;
+    bool _oldFormat;
     ModelEdit _editState;
 };
 
 inline QTextStream& operator<<(QTextStream& output, const MaterialProperty& property)
 {
-    output << MaterialValue::escapeString(property.getName()) << ": " << property.getYAMLString();
+    output << MaterialValue::escapeString(property.getName()) << ":" << property.getYAMLString();
     return output;
 }
 
