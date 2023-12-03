@@ -357,13 +357,13 @@ class ArchGridTaskPanel:
         layout.addLayout(hbox3)
         self.wLabel = QtGui.QLabel(self.form)
         hbox3.addWidget(self.wLabel)
-        self.widthUi = uil.createWidget("Gui::InputField")
+        self.widthUi = uil.createWidget("Gui::QuantitySpinBox")
         hbox3.addWidget(self.widthUi)
         hbox4 = QtGui.QHBoxLayout()
         layout.addLayout(hbox4)
         self.hLabel = QtGui.QLabel(self.form)
         hbox4.addWidget(self.hLabel)
-        self.heightUi = uil.createWidget("Gui::InputField")
+        self.heightUi = uil.createWidget("Gui::QuantitySpinBox")
         hbox4.addWidget(self.heightUi)
         self.title = QtGui.QLabel(self.form)
         layout.addWidget(self.title)
@@ -448,8 +448,8 @@ class ArchGridTaskPanel:
                 if i < len(hlabels):
                     hlabels[i] = FreeCAD.Units.Quantity(v,FreeCAD.Units.Length).getUserPreferred()[0]
             self.table.setHorizontalHeaderLabels(hlabels)
-        self.widthUi.setText(self.obj.Width.getUserPreferred()[0])
-        self.heightUi.setText(self.obj.Height.getUserPreferred()[0])
+        self.widthUi.setProperty('value', FreeCAD.Units.Quantity(self.obj.Width.getUserPreferred()[0]))
+        self.heightUi.setProperty('value', FreeCAD.Units.Quantity(self.obj.Height.getUserPreferred()[0]))
         self.spans = []
         for s in self.obj.Spans:
             span = [int(i.strip()) for i in s.split(",")]

@@ -796,27 +796,27 @@ class _PrecastTaskPanel:
         self.grid.addWidget(self.valueSlabType,1,1,1,1)
 
         self.labelChamfer = QtGui.QLabel()
-        self.valueChamfer = FreeCADGui.UiLoader().createWidget("Gui::InputField")
+        self.valueChamfer = FreeCADGui.UiLoader().createWidget("Gui::QuantitySpinBox")
         self.grid.addWidget(self.labelChamfer,2,0,1,1)
         self.grid.addWidget(self.valueChamfer,2,1,1,1)
 
         self.labelDentLength = QtGui.QLabel()
-        self.valueDentLength = FreeCADGui.UiLoader().createWidget("Gui::InputField")
+        self.valueDentLength = FreeCADGui.UiLoader().createWidget("Gui::QuantitySpinBox")
         self.grid.addWidget(self.labelDentLength,3,0,1,1)
         self.grid.addWidget(self.valueDentLength,3,1,1,1)
 
         self.labelDentWidth = QtGui.QLabel()
-        self.valueDentWidth = FreeCADGui.UiLoader().createWidget("Gui::InputField")
+        self.valueDentWidth = FreeCADGui.UiLoader().createWidget("Gui::QuantitySpinBox")
         self.grid.addWidget(self.labelDentWidth,4,0,1,1)
         self.grid.addWidget(self.valueDentWidth,4,1,1,1)
 
         self.labelDentHeight = QtGui.QLabel()
-        self.valueDentHeight = FreeCADGui.UiLoader().createWidget("Gui::InputField")
+        self.valueDentHeight = FreeCADGui.UiLoader().createWidget("Gui::QuantitySpinBox")
         self.grid.addWidget(self.labelDentHeight,5,0,1,1)
         self.grid.addWidget(self.valueDentHeight,5,1,1,1)
 
         self.labelBase = QtGui.QLabel()
-        self.valueBase = FreeCADGui.UiLoader().createWidget("Gui::InputField")
+        self.valueBase = FreeCADGui.UiLoader().createWidget("Gui::QuantitySpinBox")
         self.grid.addWidget(self.labelBase,6,0,1,1)
         self.grid.addWidget(self.valueBase,6,1,1,1)
 
@@ -826,17 +826,17 @@ class _PrecastTaskPanel:
         self.grid.addWidget(self.valueHoleNumber,7,1,1,1)
 
         self.labelHoleMajor = QtGui.QLabel()
-        self.valueHoleMajor = FreeCADGui.UiLoader().createWidget("Gui::InputField")
+        self.valueHoleMajor = FreeCADGui.UiLoader().createWidget("Gui::QuantitySpinBox")
         self.grid.addWidget(self.labelHoleMajor,8,0,1,1)
         self.grid.addWidget(self.valueHoleMajor,8,1,1,1)
 
         self.labelHoleMinor = QtGui.QLabel()
-        self.valueHoleMinor = FreeCADGui.UiLoader().createWidget("Gui::InputField")
+        self.valueHoleMinor = FreeCADGui.UiLoader().createWidget("Gui::QuantitySpinBox")
         self.grid.addWidget(self.labelHoleMinor,9,0,1,1)
         self.grid.addWidget(self.valueHoleMinor,9,1,1,1)
 
         self.labelHoleSpacing = QtGui.QLabel()
-        self.valueHoleSpacing = FreeCADGui.UiLoader().createWidget("Gui::InputField")
+        self.valueHoleSpacing = FreeCADGui.UiLoader().createWidget("Gui::QuantitySpinBox")
         self.grid.addWidget(self.labelHoleSpacing,10,0,1,1)
         self.grid.addWidget(self.valueHoleSpacing,10,1,1,1)
 
@@ -846,17 +846,17 @@ class _PrecastTaskPanel:
         self.grid.addWidget(self.valueGrooveNumber,11,1,1,1)
 
         self.labelGrooveDepth = QtGui.QLabel()
-        self.valueGrooveDepth = FreeCADGui.UiLoader().createWidget("Gui::InputField")
+        self.valueGrooveDepth = FreeCADGui.UiLoader().createWidget("Gui::QuantitySpinBox")
         self.grid.addWidget(self.labelGrooveDepth,12,0,1,1)
         self.grid.addWidget(self.valueGrooveDepth,12,1,1,1)
 
         self.labelGrooveHeight = QtGui.QLabel()
-        self.valueGrooveHeight = FreeCADGui.UiLoader().createWidget("Gui::InputField")
+        self.valueGrooveHeight = FreeCADGui.UiLoader().createWidget("Gui::QuantitySpinBox")
         self.grid.addWidget(self.labelGrooveHeight,13,0,1,1)
         self.grid.addWidget(self.valueGrooveHeight,13,1,1,1)
 
         self.labelGrooveSpacing = QtGui.QLabel()
-        self.valueGrooveSpacing = FreeCADGui.UiLoader().createWidget("Gui::InputField")
+        self.valueGrooveSpacing = FreeCADGui.UiLoader().createWidget("Gui::QuantitySpinBox")
         self.grid.addWidget(self.labelGrooveSpacing,14,0,1,1)
         self.grid.addWidget(self.valueGrooveSpacing,14,1,1,1)
 
@@ -866,17 +866,17 @@ class _PrecastTaskPanel:
         self.grid.addWidget(self.valueRiserNumber,15,1,1,1)
 
         self.labelDownLength = QtGui.QLabel()
-        self.valueDownLength = FreeCADGui.UiLoader().createWidget("Gui::InputField")
+        self.valueDownLength = FreeCADGui.UiLoader().createWidget("Gui::QuantitySpinBox")
         self.grid.addWidget(self.labelDownLength,16,0,1,1)
         self.grid.addWidget(self.valueDownLength,16,1,1,1)
 
         self.labelRiser = QtGui.QLabel()
-        self.valueRiser = FreeCADGui.UiLoader().createWidget("Gui::InputField")
+        self.valueRiser = FreeCADGui.UiLoader().createWidget("Gui::QuantitySpinBox")
         self.grid.addWidget(self.labelRiser,17,0,1,1)
         self.grid.addWidget(self.valueRiser,17,1,1,1)
 
         self.labelTread = QtGui.QLabel()
-        self.valueTread = FreeCADGui.UiLoader().createWidget("Gui::InputField")
+        self.valueTread = FreeCADGui.UiLoader().createWidget("Gui::QuantitySpinBox")
         self.grid.addWidget(self.labelTread,18,0,1,1)
         self.grid.addWidget(self.valueTread,18,1,1,1)
 
@@ -917,7 +917,7 @@ class _PrecastTaskPanel:
         self.form.hide()
 
     def restoreValue(self, widget, val):
-        widget.setText(FreeCAD.Units.Quantity(val, FreeCAD.Units.Length).UserString)
+        widget.setProperty('value', FreeCAD.Units.Quantity("{} {}".format(val, "mm")))
 
     def getValues(self):
         d = {}
@@ -1288,27 +1288,27 @@ class _DentsTaskPanel:
 
         # parameters
         self.labelLength = QtGui.QLabel()
-        self.valueLength = FreeCADGui.UiLoader().createWidget("Gui::InputField")
+        self.valueLength = FreeCADGui.UiLoader().createWidget("Gui::QuantitySpinBox")
         self.grid.addWidget(self.labelLength,4,0,1,1)
         self.grid.addWidget(self.valueLength,4,1,1,1)
 
         self.labelWidth = QtGui.QLabel()
-        self.valueWidth = FreeCADGui.UiLoader().createWidget("Gui::InputField")
+        self.valueWidth = FreeCADGui.UiLoader().createWidget("Gui::QuantitySpinBox")
         self.grid.addWidget(self.labelWidth,5,0,1,1)
         self.grid.addWidget(self.valueWidth,5,1,1,1)
 
         self.labelHeight = QtGui.QLabel()
-        self.valueHeight = FreeCADGui.UiLoader().createWidget("Gui::InputField")
+        self.valueHeight = FreeCADGui.UiLoader().createWidget("Gui::QuantitySpinBox")
         self.grid.addWidget(self.labelHeight,6,0,1,1)
         self.grid.addWidget(self.valueHeight,6,1,1,1)
 
         self.labelSlant = QtGui.QLabel()
-        self.valueSlant = FreeCADGui.UiLoader().createWidget("Gui::InputField")
+        self.valueSlant = FreeCADGui.UiLoader().createWidget("Gui::QuantitySpinBox")
         self.grid.addWidget(self.labelSlant,7,0,1,1)
         self.grid.addWidget(self.valueSlant,7,1,1,1)
 
         self.labelLevel = QtGui.QLabel()
-        self.valueLevel = FreeCADGui.UiLoader().createWidget("Gui::InputField")
+        self.valueLevel = FreeCADGui.UiLoader().createWidget("Gui::QuantitySpinBox")
         self.grid.addWidget(self.labelLevel,8,0,1,1)
         self.grid.addWidget(self.valueLevel,8,1,1,1)
 
@@ -1320,7 +1320,7 @@ class _DentsTaskPanel:
         self.grid.addWidget(self.valueRotation,9,1,1,1)
 
         self.labelOffset = QtGui.QLabel()
-        self.valueOffset = FreeCADGui.UiLoader().createWidget("Gui::InputField")
+        self.valueOffset = FreeCADGui.UiLoader().createWidget("Gui::QuantitySpinBox")
         self.grid.addWidget(self.labelOffset,10,0,1,1)
         self.grid.addWidget(self.valueOffset,10,1,1,1)
 
@@ -1394,13 +1394,13 @@ class _DentsTaskPanel:
             s = self.listDents.currentItem().text()
             s = s.split(":")[1]
             s = s.split(";")
-            self.valueLength.setText(FreeCAD.Units.Quantity(float(s[0]),FreeCAD.Units.Length).UserString)
-            self.valueWidth.setText(FreeCAD.Units.Quantity(float(s[1]),FreeCAD.Units.Length).UserString)
-            self.valueHeight.setText(FreeCAD.Units.Quantity(float(s[2]),FreeCAD.Units.Length).UserString)
-            self.valueSlant.setText(FreeCAD.Units.Quantity(float(s[3]),FreeCAD.Units.Length).UserString)
-            self.valueLevel.setText(FreeCAD.Units.Quantity(float(s[4]),FreeCAD.Units.Length).UserString)
+            self.valueLength.setProperty('value', FreeCAD.Units.Quantity("{} {}".format(float(s[0]), "mm")))
+            self.valueWidth.setProperty('value', FreeCAD.Units.Quantity("{} {}".format(float(s[1]), "mm")))
+            self.valueHeight.setProperty('value', FreeCAD.Units.Quantity("{} {}".format(float(s[2]), "mm")))
+            self.valueSlant.setProperty('value', FreeCAD.Units.Quantity("{} {}".format(float(s[3]), "mm")))
+            self.valueLevel.setProperty('value', FreeCAD.Units.Quantity("{} {}".format(float(s[4]), "mm")))
             self.valueRotation.setCurrentIndex(self.RotationAngles.index(int(s[5])))
-            self.valueOffset.setText(FreeCAD.Units.Quantity(float(s[6]),FreeCAD.Units.Length).UserString)
+            self.valueOffset.setProperty('value', FreeCAD.Units.Quantity("{} {}".format(float(s[6]), "mm")))
 
     def retranslateUi(self, dialog):
         from PySide import QtGui

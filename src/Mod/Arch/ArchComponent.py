@@ -2299,7 +2299,7 @@ if FreeCAD.GuiUp:
                     editor = QtGui.QComboBox(parent)
                     editor.addItems(["True","False"])
                 elif "Measure" in ptype:
-                    editor = FreeCADGui.UiLoader().createWidget("Gui::InputField")
+                    editor = FreeCADGui.UiLoader().createWidget("Gui::QuantitySpinBox")
                     editor.setParent(parent)
                 else:
                     editor = QtGui.QLineEdit(parent)

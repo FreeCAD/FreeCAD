@@ -482,7 +482,8 @@ class _CommandWall:
                 dv = dv.negative()
                 self.tracker.update([b.add(dv),point.add(dv)])
             if self.Length:
-                self.Length.setText(FreeCAD.Units.Quantity(bv.Length,FreeCAD.Units.Length).UserString)
+                quantity = FreeCAD.Units.Quantity("{} {}".format(bv.Length, "mm"))
+                self.Length.setProperty('value', quantity)
 
     def taskbox(self):
         """Set up a simple gui widget for the interactive mode."""
@@ -509,20 +510,20 @@ class _CommandWall:
         grid.addWidget(matCombo,0,0,1,2)
 
         label5 = QtGui.QLabel(translate("Arch","Length"))
-        self.Length = ui.createWidget("Gui::InputField")
-        self.Length.setText("0.00 mm")
+        self.Length = ui.createWidget("Gui::QuantitySpinBox")
+        self.Length.setProperty('value', "0 mm")
         grid.addWidget(label5,1,0,1,1)
         grid.addWidget(self.Length,1,1,1,1)
 
         label1 = QtGui.QLabel(translate("Arch","Width"))
-        value1 = ui.createWidget("Gui::InputField")
-        value1.setText(FreeCAD.Units.Quantity(self.Width,FreeCAD.Units.Length).UserString)
+        value1 = ui.createWidget("Gui::QuantitySpinBox")
+        value1.setProperty('value', FreeCAD.Units.Quantity("{} {}".format(self.Width, "mm")))
         grid.addWidget(label1,2,0,1,1)
         grid.addWidget(value1,2,1,1,1)
 
         label2 = QtGui.QLabel(translate("Arch","Height"))
-        value2 = ui.createWidget("Gui::InputField")
-        value2.setText(FreeCAD.Units.Quantity(self.Height,FreeCAD.Units.Length).UserString)
+        value2 = ui.createWidget("Gui::QuantitySpinBox")
+        value2.setProperty('value', FreeCAD.Units.Quantity("{} {}".format(self.Height, "mm")))
         grid.addWidget(label2,3,0,1,1)
         grid.addWidget(value2,3,1,1,1)
 

@@ -221,22 +221,22 @@ class CommandPanel:
 
         # length
         label1 = QtGui.QLabel(translate("Arch","Length"))
-        self.vLength = ui.createWidget("Gui::InputField")
-        self.vLength.setText(FreeCAD.Units.Quantity(self.Length,FreeCAD.Units.Length).UserString)
+        self.vLength = ui.createWidget("Gui::QuantitySpinBox")
+        self.vLength.setProperty('value', FreeCAD.Units.Quantity("{} {}".format(self.Length, "mm")))
         grid.addWidget(label1,1,0,1,1)
         grid.addWidget(self.vLength,1,1,1,1)
 
         # width
         label2 = QtGui.QLabel(translate("Arch","Width"))
-        self.vWidth = ui.createWidget("Gui::InputField")
-        self.vWidth.setText(FreeCAD.Units.Quantity(self.Width,FreeCAD.Units.Length).UserString)
+        self.vWidth = ui.createWidget("Gui::QuantitySpinBox")
+        self.vWidth.setProperty('value', FreeCAD.Units.Quantity("{} {}".format(self.Width, "mm")))
         grid.addWidget(label2,2,0,1,1)
         grid.addWidget(self.vWidth,2,1,1,1)
 
         # height
         label3 = QtGui.QLabel(translate("Arch","Thickness"))
-        self.vHeight = ui.createWidget("Gui::InputField")
-        self.vHeight.setText(FreeCAD.Units.Quantity(self.Thickness,FreeCAD.Units.Length).UserString)
+        self.vHeight = ui.createWidget("Gui::QuantitySpinBox")
+        self.vHeight.setProperty('value', FreeCAD.Units.Quantity("{} {}".format(self.Thickness, "mm")))
         grid.addWidget(label3,3,0,1,1)
         grid.addWidget(self.vHeight,3,1,1,1)
 
@@ -303,9 +303,9 @@ class CommandPanel:
     def setPreset(self,i):
 
         if i > 0:
-            self.vLength.setText(FreeCAD.Units.Quantity(float(Presets[i][1]),FreeCAD.Units.Length).UserString)
-            self.vWidth.setText(FreeCAD.Units.Quantity(float(Presets[i][2]),FreeCAD.Units.Length).UserString)
-            self.vHeight.setText(FreeCAD.Units.Quantity(float(Presets[i][3]),FreeCAD.Units.Length).UserString)
+            self.vLength.setProperty('value', FreeCAD.Units.Quantity("{} {}".format(float(Presets[i][1]), "mm")))
+            self.vWidth.setProperty('value', FreeCAD.Units.Quantity("{} {}".format(float(Presets[i][2]), "mm")))
+            self.vHeight.setProperty('value', FreeCAD.Units.Quantity("{} {}".format(float(Presets[i][3]), "mm")))
 
     def rotate(self):
 

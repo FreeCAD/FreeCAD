@@ -822,7 +822,7 @@ if FreeCAD.GuiUp:
                 editor = QtGui.QComboBox(parent)
             elif index.column() == 2:
                 ui = FreeCADGui.UiLoader()
-                editor = ui.createWidget("Gui::InputField")
+                editor = ui.createWidget("Gui::QuantitySpinBox")
                 editor.setSizePolicy(QtGui.QSizePolicy.Preferred,QtGui.QSizePolicy.Minimum)
                 editor.setParent(parent)
             else:

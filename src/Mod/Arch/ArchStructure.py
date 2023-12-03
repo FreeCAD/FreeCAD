@@ -459,28 +459,28 @@ class _CommandStructure:
 
         # length
         label1 = QtGui.QLabel(translate("Arch","Length"))
-        self.vLength = ui.createWidget("Gui::InputField")
+        self.vLength = ui.createWidget("Gui::QuantitySpinBox")
         if self.modeb.isChecked():
-            self.vLength.setText(FreeCAD.Units.Quantity(self.Height,FreeCAD.Units.Length).UserString)
+            self.vLength.setProperty('value', FreeCAD.Units.Quantity("{} {}".format(self.Height, "mm")))
         else:
-            self.vLength.setText(FreeCAD.Units.Quantity(self.Length,FreeCAD.Units.Length).UserString)
+            self.vLength.setProperty('value', FreeCAD.Units.Quantity("{} {}".format(self.Length, "mm")))
         grid.addWidget(label1,4,0,1,1)
         grid.addWidget(self.vLength,4,1,1,1)
 
         # width
         label2 = QtGui.QLabel(translate("Arch","Width"))
-        self.vWidth = ui.createWidget("Gui::InputField")
-        self.vWidth.setText(FreeCAD.Units.Quantity(self.Width,FreeCAD.Units.Length).UserString)
+        self.vWidth = ui.createWidget("Gui::QuantitySpinBox")
+        self.vWidth.setProperty('value', FreeCAD.Units.Quantity("{} {}".format(self.Width, "mm")))
         grid.addWidget(label2,5,0,1,1)
         grid.addWidget(self.vWidth,5,1,1,1)
 
         # height
         label3 = QtGui.QLabel(translate("Arch","Height"))
-        self.vHeight = ui.createWidget("Gui::InputField")
+        self.vHeight = ui.createWidget("Gui::QuantitySpinBox")
         if self.modeb.isChecked():
-            self.vHeight.setText(FreeCAD.Units.Quantity(self.Length,FreeCAD.Units.Length).UserString)
+            self.vHeight.setProperty('value', FreeCAD.Units.Quantity("{} {}".format(self.Length, "mm")))
         else:
-            self.vHeight.setText(FreeCAD.Units.Quantity(self.Height,FreeCAD.Units.Length).UserString)
+            self.vHeight.setProperty('value', FreeCAD.Units.Quantity("{} {}".format(self.Height, "mm")))
         grid.addWidget(label3,6,0,1,1)
         grid.addWidget(self.vHeight,6,1,1,1)
 
@@ -555,7 +555,7 @@ class _CommandStructure:
                     self.tracker.update([self.bpoint.add(delta),point.add(delta)])
                     self.tracker.on()
                     l = (point.sub(self.bpoint)).Length
-                    self.vLength.setText(FreeCAD.Units.Quantity(l,FreeCAD.Units.Length).UserString)
+                    self.vLength.setProperty('value', FreeCAD.Units.Quantity("{} {}".format(1, "mm")))
                 else:
                     self.tracker.off()
 
@@ -626,8 +626,8 @@ class _CommandStructure:
                 FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetString("StructurePreset",self.Profile)
             else:
                 p=elt[0]-1 # Presets indexes are 1-based
-                self.vLength.setText(FreeCAD.Units.Quantity(float(Presets[p][4]),FreeCAD.Units.Length).UserString)
-                self.vWidth.setText(FreeCAD.Units.Quantity(float(Presets[p][5]),FreeCAD.Units.Length).UserString)
+                self.vLength.setProperty('value', FreeCAD.Units.Quantity("{} {}".format(float(Presets[p][4]), "mm")))
+                self.vWidth.setProperty('value', FreeCAD.Units.Quantity("{} {}".format(float(Presets[p][5]), "mm")))
                 self.Profile = Presets[p]
                 FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetString("StructurePreset",";".join([str(i) for i in self.Profile]))
 
@@ -647,15 +647,15 @@ class _CommandStructure:
 
         h = self.Height
         l = self.Length
-        self.vLength.setText(FreeCAD.Units.Quantity(h,FreeCAD.Units.Length).UserString)
-        self.vHeight.setText(FreeCAD.Units.Quantity(l,FreeCAD.Units.Length).UserString)
+        self.vLength.setProperty('value', FreeCAD.Units.Quantity("{} {}".format(h, "mm")))
+        self.vHeight.setProperty('value', FreeCAD.Units.Quantity("{} {}".format(1, "mm")))
 
     def rotateLW(self):
 
         w = self.Width
         l = self.Length
-        self.vLength.setText(FreeCAD.Units.Quantity(w,FreeCAD.Units.Length).UserString)
-        self.vWidth.setText(FreeCAD.Units.Quantity(l,FreeCAD.Units.Length).UserString)
+        self.vLength.setProperty('value', FreeCAD.Units.Quantity("{} {}".format(w, "mm")))
+        self.vWidth.setProperty('value', FreeCAD.Units.Quantity("{} {}".format(1, "mm")))
 
 
 class _Structure(ArchComponent.Component):

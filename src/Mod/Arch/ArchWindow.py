@@ -378,7 +378,7 @@ class _CommandWindow:
 
         # sill height
         labels = QtGui.QLabel(translate("Arch","Sill height"))
-        values = ui.createWidget("Gui::InputField")
+        values = ui.createWidget("Gui::QuantitySpinBox")
         grid.addWidget(labels,1,0,1,1)
         grid.addWidget(values,1,1,1,1)
         QtCore.QObject.connect(values,QtCore.SIGNAL("valueChanged(double)"),self.setSill)
@@ -437,23 +437,23 @@ class _CommandWindow:
         i = 5
         for param in self.wparams:
             lab = QtGui.QLabel(translate("Arch",param))
-            setattr(self,"val"+param,ui.createWidget("Gui::InputField"))
+            setattr(self,"val"+param,ui.createWidget("Gui::QuantitySpinBox"))
             wid = getattr(self,"val"+param)
             if param == "Width":
-                wid.setText(FreeCAD.Units.Quantity(self.Width,FreeCAD.Units.Length).UserString)
+                wid.setProperty('value', FreeCAD.Units.Quantity("{} {}".format(self.Width, "mm")))
             elif param == "Height":
-                wid.setText(FreeCAD.Units.Quantity(self.Height,FreeCAD.Units.Length).UserString)
+                wid.setProperty('value', FreeCAD.Units.Quantity("{} {}".format(self.Height, "mm")))
             elif param == "O1":
                 n = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetFloat("WindowO1",0.0)
-                wid.setText(FreeCAD.Units.Quantity(n,FreeCAD.Units.Length).UserString)
+                wid.setProperty('value', FreeCAD.Units.Quantity("{} {}".format(n, "mm")))
                 setattr(self,param,n)
             elif param == "W1":
                 n = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetFloat("WindowW1",self.Thickness*2)
-                wid.setText(FreeCAD.Units.Quantity(n,FreeCAD.Units.Length).UserString)
+                wid.setProperty('value', FreeCAD.Units.Quantity("{} {}".format(n, "mm")))
                 setattr(self,param,n)
             else:
                 n = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetFloat("Window"+param,self.Thickness)
-                wid.setText(FreeCAD.Units.Quantity(n,FreeCAD.Units.Length).UserString)
+                wid.setProperty('value', FreeCAD.Units.Quantity("{} {}".format(n, "mm")))
                 setattr(self,param,n)
             grid.addWidget(lab,i,0,1,1)
             grid.addWidget(wid,i,1,1,1)
@@ -471,7 +471,7 @@ class _CommandWindow:
             d = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetFloat("WindowSill",0)
         if i < valuep.count():
             valuep.setCurrentIndex(i)
-        values.setText(FreeCAD.Units.Quantity(d,FreeCAD.Units.Length).UserString)
+        values.setProperty('value', FreeCAD.Units.Quantity("{} {}".format(d, "mm")))
 
         return w
 
@@ -1425,8 +1425,8 @@ class _ArchWindowTaskPanel:
         self.field1 = QtGui.QLineEdit(self.baseform)
         self.field2 = QtGui.QComboBox(self.baseform)
         self.field3 = QtGui.QLineEdit(self.baseform)
-        self.field4 = ui.createWidget("Gui::InputField")
-        self.field5 = ui.createWidget("Gui::InputField")
+        self.field4 = ui.createWidget("Gui::QuantitySpinBox")
+        self.field5 = ui.createWidget("Gui::QuantitySpinBox")
         self.field6 = QtGui.QPushButton(self.baseform)
         self.field7 = QtGui.QComboBox(self.baseform)
         self.addp4 = QtGui.QCheckBox(self.baseform)
@@ -1605,8 +1605,8 @@ class _ArchWindowTaskPanel:
 
         self.field1.setText('')
         self.field3.setText('')
-        self.field4.setText('')
-        self.field5.setText('')
+        self.field4.setProperty('value', FreeCAD.Units.Quantity("{} {}".format(0, "mm")))
+        self.field5.setProperty('value', FreeCAD.Units.Quantity("{} {}".format(0, "mm")))
         self.field6.setText(QtGui.QApplication.translate("Arch", "Get selected edge", None))
         self.field7.setCurrentIndex(0)
         self.addp4.setChecked(False)
