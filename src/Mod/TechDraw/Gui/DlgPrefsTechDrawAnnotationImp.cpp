@@ -130,28 +130,31 @@ void DlgPrefsTechDrawAnnotationImp::loadSettings()
         ui->pcbLineStandard->setCurrentIndex(Preferences::lineStandard());
     }
 
+    // note: line numbering starts at 1, not 0.  we set the preference to the
+    // currentIndex in saveSettings, Preferences returns the actual line number,
+    // so we need to subtract 1 here to get the index.
     ui->pcbSectionStyle->onRestore();
     DrawGuiUtil::loadLineStyleChoices(ui->pcbSectionStyle, m_lineGenerator);
     if (ui->pcbSectionStyle->count() > Preferences::SectionLineStyle()) {
-        ui->pcbSectionStyle->setCurrentIndex(Preferences::SectionLineStyle());
+        ui->pcbSectionStyle->setCurrentIndex(Preferences::SectionLineStyle() - 1);
     }
 
     ui->pcbCenterStyle->onRestore();
     DrawGuiUtil::loadLineStyleChoices(ui->pcbCenterStyle, m_lineGenerator);
     if (ui->pcbCenterStyle->count() > Preferences::CenterLineStyle()) {
-        ui->pcbCenterStyle->setCurrentIndex(Preferences::CenterLineStyle());
+        ui->pcbCenterStyle->setCurrentIndex(Preferences::CenterLineStyle() - 1);
     }
 
     ui->pcbHighlightStyle->onRestore();
     DrawGuiUtil::loadLineStyleChoices(ui->pcbHighlightStyle, m_lineGenerator);
     if (ui->pcbHighlightStyle->count() > Preferences::HighlightLineStyle()) {
-        ui->pcbHighlightStyle->setCurrentIndex(Preferences::HighlightLineStyle());
+        ui->pcbHighlightStyle->setCurrentIndex(Preferences::HighlightLineStyle() - 1);
     }
 
     ui->pcbHiddenStyle->onRestore();
     DrawGuiUtil::loadLineStyleChoices(ui->pcbHiddenStyle, m_lineGenerator);
     if (ui->pcbHiddenStyle->count() > Preferences::HiddenLineStyle()) {
-        ui->pcbHiddenStyle->setCurrentIndex(Preferences::HiddenLineStyle());
+        ui->pcbHiddenStyle->setCurrentIndex(Preferences::HiddenLineStyle() - 1);
     }
 }
 

@@ -439,24 +439,31 @@ std::string Preferences::lineElementsLocation()
     return prefDir;
 }
 
+// Note: line numbering starts at 1, but the saved parameter is the position of the
+// line style in the list, starting at 0.  We add 1 to the stored value to get the
+// correct line number.
 int Preferences::SectionLineStyle()
 {
-    return getPreferenceGroup("Decorations")->GetInt("LineStyleSection", 4);
+    // default is line #4 long dash dotted, which is index 3
+    return getPreferenceGroup("Decorations")->GetInt("LineStyleSection", 3) + 1;
 }
 
 int Preferences::CenterLineStyle()
 {
-    return getPreferenceGroup("Decorations")->GetInt("LineStyleCenter", 10);
+    // default is line #5 long dash double dotted, which is index 4
+    return getPreferenceGroup("Decorations")->GetInt("LineStyleCenter", 4) + 1;
 }
 
 int Preferences::HighlightLineStyle()
 {
-    return getPreferenceGroup("Decorations")->GetInt("LineStyleHighLight", 10);
+    // default is line #2 dashed, which is index 1
+    return getPreferenceGroup("Decorations")->GetInt("LineStyleHighLight", 1) + 1;
 }
 
 int Preferences::HiddenLineStyle()
 {
-    return getPreferenceGroup("Decorations")->GetInt("LineStyleHidden", 1);
+    // default is line #2 dashed, which is index 1
+    return getPreferenceGroup("Decorations")->GetInt("LineStyleHidden", 1) + 1;
 }
 
 int Preferences::LineSpacingISO()

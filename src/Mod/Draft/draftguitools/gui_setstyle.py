@@ -162,7 +162,7 @@ class Draft_SetStyle_TaskPanel:
 
     def setValues(self,preset):
 
-        # For compatibility with V0.21 and earlier some properties, if missing, revert to others:
+        # For compatibility with <= V0.21 some properties, if missing, reference others:
         #     'new' prop    -> old prop
         #     ---------------------------
         #     PointColor    -> LineColor
@@ -261,12 +261,10 @@ class Draft_SetStyle_TaskPanel:
             if "PointSize" in properties:
                 vobj.PointSize = self.form.PointSize.value()
             if "DrawStyle" in properties:
-                dstyles = ["Solid", "Dashed", "Dotted", "Dashdot"]
-                vobj.DrawStyle = dstyles[self.form.DrawStyle.currentIndex()]
+                vobj.DrawStyle = utils.DRAW_STYLES[self.form.DrawStyle.currentIndex()]
             if "DisplayMode" in properties:
-                dmodes = ["Flat Lines", "Shaded", "Wireframe", "Points"]
-                dm = dmodes[self.form.DisplayMode.currentIndex()]
-                if dm in vobj.getEnumerationsOfProperty("DisplayMode"):
+                dm = utils.DISPLAY_MODES[self.form.DisplayMode.currentIndex()]
+                if dm in vobj.listDisplayModes():
                     vobj.DisplayMode = dm
         else:  # Annotations
             if "TextColor" in properties:
@@ -282,7 +280,7 @@ class Draft_SetStyle_TaskPanel:
             if "LineWidth" in properties:
                 vobj.LineWidth = self.form.AnnoLineWidth.value()
             if "ArrowType" in properties:
-                vobj.ArrowType = ["Dot", "Circle", "Arrow", "Tick", "Tick-2"][self.form.ArrowStyle.currentIndex()]
+                vobj.ArrowType = utils.ARROW_TYPES[self.form.ArrowStyle.currentIndex()]
             if "ArrowSize" in properties:
                 vobj.ArrowSize = U.Quantity(self.form.ArrowSize.text()).Value
             if "ShowUnit" in properties:
