@@ -186,6 +186,7 @@ Q_SIGNALS:
      *  or finished (false).
      */
     void showFormulaDialog(bool);
+    void returnPressed();
 
 private:
     QScopedPointer<QuantitySpinBoxPrivate> d_ptr;

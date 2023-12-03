@@ -407,8 +407,11 @@ void QuantitySpinBox::resizeEvent(QResizeEvent * event)
 
 void Gui::QuantitySpinBox::keyPressEvent(QKeyEvent *event)
 {
-    if (!handleKeyEvent(event->text()))
+    if (!handleKeyEvent(event->text())) {
+        if(event->matches(QKeySequence::InsertParagraphSeparator)) //Key is Enter
+            Q_EMIT returnPressed(); 
         QAbstractSpinBox::keyPressEvent(event);
+    }
 }
 
 void Gui::QuantitySpinBox::paintEvent(QPaintEvent*)
