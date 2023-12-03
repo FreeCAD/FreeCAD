@@ -59,13 +59,6 @@ MaterialProperty::MaterialProperty(const ModelProperty& other)
         MaterialProperty prop(it);
         addColumn(prop);
     }
-
-    if (_valuePtr->getType() == MaterialValue::Array2D) {
-        std::static_pointer_cast<Material2DArray>(_valuePtr)->setDefault(getColumnNull(0), false);
-    }
-    else if (_valuePtr->getType() == MaterialValue::Array3D) {
-        std::static_pointer_cast<Material3DArray>(_valuePtr)->setDefault(getColumnNull(0), false);
-    }
 }
 
 void MaterialProperty::copyValuePtr(const std::shared_ptr<MaterialValue>& value)
@@ -185,20 +178,29 @@ void MaterialProperty::setType(const QString& type)
     else if (type == QString::fromStdString("List")) {
         _valuePtr = std::make_shared<MaterialValue>(MaterialValue::List);
     }
+    else if (type == QString::fromStdString("FileList")) {
+        _valuePtr = std::make_shared<MaterialValue>(MaterialValue::FileList);
+    }
+    else if (type == QString::fromStdString("ImageList")) {
+        _valuePtr = std::make_shared<MaterialValue>(MaterialValue::ImageList);
+    }
     else if (type == QString::fromStdString("MultiLineString")) {
         _valuePtr = std::make_shared<MaterialValue>(MaterialValue::MultiLineString);
     }
     else if (type == QString::fromStdString("2DArray")) {
-        _valuePtr = std::make_shared<Material2DArray>();
+        auto arrayPtr = std::make_shared<Material2DArray>();
+        arrayPtr->setColumns(columns());
+        _valuePtr = arrayPtr;
     }
     else if (type == QString::fromStdString("3DArray")) {
-        _valuePtr = std::make_shared<Material3DArray>();
+        auto arrayPtr = std::make_shared<Material3DArray>();
+        // First column is third dimension
+        arrayPtr->setColumns(columns() - 1);
+        _valuePtr = arrayPtr;
     }
     else {
         // Error. Throw something
         _valuePtr = std::make_shared<MaterialValue>(MaterialValue::None);
-        // std::string stringType = type.toStdString(); - useful for debugging since we can't see
-        // std::string name = getName().toStdString();
         throw UnknownValueType();
     }
 }
@@ -209,7 +211,7 @@ MaterialProperty& MaterialProperty::getColumn(int column)
         return _columns.at(column);
     }
     catch (std::out_of_range const&) {
-        throw InvalidColumn();
+        throw InvalidIndex();
     }
 }
 
@@ -219,7 +221,7 @@ const MaterialProperty& MaterialProperty::getColumn(int column) const
         return _columns.at(column);
     }
     catch (std::out_of_range const&) {
-        throw InvalidColumn();
+        throw InvalidIndex();
     }
 }
 
@@ -229,7 +231,7 @@ MaterialValue::ValueType MaterialProperty::getColumnType(int column) const
         return _columns.at(column).getType();
     }
     catch (std::out_of_range const&) {
-        throw InvalidColumn();
+        throw InvalidIndex();
     }
 }
 
@@ -239,7 +241,7 @@ QString MaterialProperty::getColumnUnits(int column) const
         return _columns.at(column).getUnits();
     }
     catch (std::out_of_range const&) {
-        throw InvalidColumn();
+        throw InvalidIndex();
     }
 }
 
@@ -288,7 +290,6 @@ void MaterialProperty::setValue(const QString& value)
         // This value can't be directly assigned
     }
     else if (_valuePtr->getType() == MaterialValue::Quantity) {
-        // Base::Console().Log("\tParse quantity '%s'\n", value.toStdString().c_str());
         try {
             setQuantity(Base::Quantity::parse(value));
         }
@@ -312,19 +313,16 @@ void MaterialProperty::setValue(const std::shared_ptr<MaterialValue>& value)
 
 void MaterialProperty::setString(const QString& value)
 {
-    // _valueType = MaterialValue::String;
     _valuePtr->setValue(QVariant(value));
 }
 
 void MaterialProperty::setBoolean(bool value)
 {
-    // _valueType = MaterialValue::Boolean;
     _valuePtr->setValue(QVariant(value));
 }
 
 void MaterialProperty::setBoolean(int value)
 {
-    // _valueType = MaterialValue::Boolean;
     _valuePtr->setValue(QVariant(value != 0));
 }
 
@@ -425,6 +423,7 @@ TYPESYSTEM_SOURCE(Materials::Material, Base::BaseClass)
 
 Material::Material()
     : _dereferenced(false)
+    , _oldFormat(false)
     , _editState(ModelEdit_None)
 {}
 
@@ -436,6 +435,7 @@ Material::Material(const std::shared_ptr<MaterialLibrary>& library,
     , _uuid(uuid)
     , _name(name)
     , _dereferenced(false)
+    , _oldFormat(false)
     , _editState(ModelEdit_None)
 {
     setDirectory(directory);
@@ -453,6 +453,7 @@ Material::Material(const Material& other)
     , _url(other._url)
     , _reference(other._reference)
     , _dereferenced(other._dereferenced)
+    , _oldFormat(other._oldFormat)
     , _editState(other._editState)
 {
     for (auto& it : other._tags) {
@@ -666,6 +667,7 @@ void Material::removePhysical(const QString& uuid)
         setEditStateAlter();
     }
     catch (ModelNotFound const&) {
+        Base::Console().Log("Physical model not found '%s'\n", uuid.toStdString().c_str());
     }
 }
 
@@ -701,6 +703,7 @@ void Material::addAppearance(const QString& uuid)
         }
     }
     catch (ModelNotFound const&) {
+        Base::Console().Log("Appearance model not found '%s'\n", uuid.toStdString().c_str());
     }
 }
 
@@ -747,11 +750,15 @@ void Material::removeAppearance(const QString& uuid)
 
 void Material::setPropertyEditState(const QString& name)
 {
-    if (hasPhysicalProperty(name)) {
-        setPhysicalEditState(name);
+    try {
+        if (hasPhysicalProperty(name)) {
+            setPhysicalEditState(name);
+        }
+        else if (hasAppearanceProperty(name)) {
+            setAppearanceEditState(name);
+        }
     }
-    else if (hasAppearanceProperty(name)) {
-        setAppearanceEditState(name);
+    catch (const PropertyNotFound&) {
     }
 }
 
@@ -767,11 +774,15 @@ void Material::setPhysicalEditState(const QString& name)
 
 void Material::setAppearanceEditState(const QString& name)
 {
-    if (getAppearanceProperty(name)->isNull()) {
-        setEditStateExtend();
+    try {
+        if (getAppearanceProperty(name)->isNull()) {
+            setEditStateExtend();
+        }
+        else {
+            setEditStateAlter();
+        }
     }
-    else {
-        setEditStateAlter();
+    catch (const PropertyNotFound&) {
     }
 }
 
@@ -834,7 +845,7 @@ void Material::setAppearanceValue(const QString& name, const std::shared_ptr<Mat
 void Material::setAppearanceValue(const QString& name,
                                   const std::shared_ptr<QList<QVariant>>& value)
 {
-    setPhysicalEditState(name);
+    setAppearanceEditState(name);
 
     _appearance[name]->setList(*value);
 }
@@ -1321,6 +1332,8 @@ void Material::save(QTextStream& stream, bool overwrite, bool saveAsCopy, bool s
     }
     saveModels(stream, saveInherited);
     saveAppearanceModels(stream, saveInherited);
+
+    setOldFormat(false);
 }
 
 Material& Material::operator=(const Material& other)
@@ -1340,6 +1353,7 @@ Material& Material::operator=(const Material& other)
     _url = other._url;
     _reference = other._reference;
     _dereferenced = other._dereferenced;
+    _oldFormat = other._oldFormat;
     _editState = other._editState;
 
     _tags.clear();

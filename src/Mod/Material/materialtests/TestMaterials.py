@@ -48,15 +48,13 @@ class MaterialTestCases(unittest.TestCase):
         self.assertTrue(steel.hasPhysicalModel(self.uuids.IsotropicLinearElastic))
         self.assertTrue(steel.hasPhysicalModel(self.uuids.Thermal))
         self.assertFalse(steel.hasPhysicalModel(self.uuids.LinearElastic)) # Not in the model
-        # inherited from Steel.FCMat
-        self.assertTrue(steel.hasAppearanceModel(self.uuids.BasicRendering))
+        self.assertTrue(steel.hasAppearanceModel(self.uuids.BasicRendering)) # inherited from Steel.FCMat
 
         self.assertTrue(steel.isPhysicalModelComplete(self.uuids.Density))
         self.assertFalse(steel.isPhysicalModelComplete(self.uuids.IsotropicLinearElastic))
         self.assertTrue(steel.isPhysicalModelComplete(self.uuids.Thermal))
         self.assertFalse(steel.isPhysicalModelComplete(self.uuids.LinearElastic)) # Not in the model
-        # inherited from Steel.FCMat
-        self.assertTrue(steel.isAppearanceModelComplete(self.uuids.BasicRendering))
+        self.assertTrue(steel.isAppearanceModelComplete(self.uuids.BasicRendering)) # inherited from Steel.FCMat
 
         self.assertTrue(steel.hasPhysicalProperty("Density"))
         self.assertTrue(steel.hasPhysicalProperty("BulkModulus"))
@@ -159,19 +157,16 @@ class MaterialTestCases(unittest.TestCase):
 
         self.assertEqual(properties["Density"], parseQuantity("7900.00 kg/m^3").UserString)
         # self.assertEqual(properties["BulkModulus"], "")
-        self.assertAlmostEqual(parseQuantity(properties["PoissonRatio"]).Value,
-                               parseQuantity("0.3").Value)
+        self.assertAlmostEqual(parseQuantity(properties["PoissonRatio"]).Value, parseQuantity("0.3").Value)
         self.assertEqual(properties["YoungsModulus"], parseQuantity("210.00 GPa").UserString)
         # self.assertEqual(properties["ShearModulus"], "")
         self.assertEqual(properties["SpecificHeat"], parseQuantity("590.00 J/kg/K").UserString)
         self.assertEqual(properties["ThermalConductivity"], parseQuantity("43.00 W/m/K").UserString)
-        self.assertEqual(properties["ThermalExpansionCoefficient"],
-                         parseQuantity("12.00 µm/m/K").UserString)
+        self.assertEqual(properties["ThermalExpansionCoefficient"], parseQuantity("12.00 µm/m/K").UserString)
         self.assertEqual(properties["AmbientColor"], "(0.0020, 0.0020, 0.0020, 1.0)")
         self.assertEqual(properties["DiffuseColor"], "(0.0000, 0.0000, 0.0000, 1.0)")
         self.assertEqual(properties["EmissiveColor"], "(0.0000, 0.0000, 0.0000, 1.0)")
-        self.assertAlmostEqual(parseQuantity(properties["Shininess"]).Value,
-                               parseQuantity("0.06").Value)
+        self.assertAlmostEqual(parseQuantity(properties["Shininess"]).Value, parseQuantity("0.06").Value)
         self.assertEqual(properties["SpecularColor"], "(0.9800, 0.9800, 0.9800, 1.0)")
         self.assertAlmostEqual(parseQuantity(properties["Transparency"]).Value, parseQuantity("0").Value)
 
@@ -204,15 +199,12 @@ class MaterialTestCases(unittest.TestCase):
         self.assertAlmostEqual(steel.getAppearanceValue("Transparency"), 0.0)
 
     def testMaterialsWithModel(self):
-        # IsotropicLinearElastic
-        materials = self.MaterialManager.materialsWithModel('f6f9e48c-b116-4e82-ad7f-3659a9219c50')
-        materialsComplete = self.MaterialManager.materialsWithModelComplete(
-            'f6f9e48c-b116-4e82-ad7f-3659a9219c50')
+        materials = self.MaterialManager.materialsWithModel('f6f9e48c-b116-4e82-ad7f-3659a9219c50') # IsotropicLinearElastic
+        materialsComplete = self.MaterialManager.materialsWithModelComplete('f6f9e48c-b116-4e82-ad7f-3659a9219c50') # IsotropicLinearElastic
 
         self.assertTrue(len(materialsComplete) <= len(materials)) # Not all will be complete
-        # LinearElastic
-        materialsLinearElastic = self.MaterialManager.materialsWithModel(
-            '7b561d1d-fb9b-44f6-9da9-56a4f74d7536')
+
+        materialsLinearElastic = self.MaterialManager.materialsWithModel('7b561d1d-fb9b-44f6-9da9-56a4f74d7536') # LinearElastic
 
         # All LinearElastic models should be in IsotropicLinearElastic since it is inherited
         self.assertTrue(len(materialsLinearElastic) <= len(materials))
@@ -220,22 +212,203 @@ class MaterialTestCases(unittest.TestCase):
             self.assertIn(mat, materials)
 
     def testMaterialByPath(self):
-        steel = self.MaterialManager.getMaterialByPath(
-            'Standard/Metal/Steel/CalculiX-Steel.FCMat', 'System')
+        steel = self.MaterialManager.getMaterialByPath('Standard/Metal/Steel/CalculiX-Steel.FCMat', 'System')
         self.assertIsNotNone(steel)
         self.assertEqual(steel.Name, "CalculiX-Steel")
         self.assertEqual(steel.UUID, "92589471-a6cb-4bbc-b748-d425a17dea7d")
 
-        # Same with leading '/'
-        steel2 = self.MaterialManager.getMaterialByPath(
-            '/Standard/Metal/Steel/CalculiX-Steel.FCMat', 'System')
+        steel2 = self.MaterialManager.getMaterialByPath('/Standard/Metal/Steel/CalculiX-Steel.FCMat', 'System')
         self.assertIsNotNone(steel2)
         self.assertEqual(steel2.Name, "CalculiX-Steel")
         self.assertEqual(steel2.UUID, "92589471-a6cb-4bbc-b748-d425a17dea7d")
 
-        # Same with leading '/System'
-        steel3 = self.MaterialManager.getMaterialByPath(
-            '/System/Standard/Metal/Steel/CalculiX-Steel.FCMat', 'System')
+        steel3 = self.MaterialManager.getMaterialByPath('/System/Standard/Metal/Steel/CalculiX-Steel.FCMat', 'System')
         self.assertIsNotNone(steel3)
         self.assertEqual(steel3.Name, "CalculiX-Steel")
         self.assertEqual(steel3.UUID, "92589471-a6cb-4bbc-b748-d425a17dea7d")
+
+    def testLists(self):
+        mat = self.MaterialManager.getMaterial("c6c64159-19c1-40b5-859c-10561f20f979")
+        self.assertIsNotNone(mat)
+        self.assertEqual(mat.Name, "Test Material")
+        self.assertEqual(mat.UUID, "c6c64159-19c1-40b5-859c-10561f20f979")
+
+        self.assertTrue(mat.hasPhysicalModel(self.uuids.TestModel))
+        self.assertFalse(mat.isPhysicalModelComplete(self.uuids.TestModel))
+
+        self.assertTrue(mat.hasPhysicalProperty("TestList"))
+
+        list = mat.getPhysicalValue("TestList")
+        self.assertEqual(len(list), 6)
+        self.assertEqual(list[0], "Now is the time for all good men to come to the aid of the party")
+        self.assertEqual(list[1], "The quick brown fox jumps over the lazy dogs back")
+        self.assertEqual(list[2], "Lore Ipsum")
+        self.assertEqual(list[3], "Single quote '")
+        self.assertEqual(list[4], "Double quote \"")
+        self.assertEqual(list[5], "Backslash \\")
+
+        properties = mat.Properties
+        self.assertIn("TestList", properties)
+        self.assertTrue(len(properties["TestList"]) == 0)
+
+    def test2DArray(self):
+        mat = self.MaterialManager.getMaterial("c6c64159-19c1-40b5-859c-10561f20f979")
+        self.assertIsNotNone(mat)
+        self.assertEqual(mat.Name, "Test Material")
+        self.assertEqual(mat.UUID, "c6c64159-19c1-40b5-859c-10561f20f979")
+
+        self.assertTrue(mat.hasPhysicalModel(self.uuids.TestModel))
+        self.assertTrue(mat.isPhysicalModelComplete(self.uuids.TestModel))
+
+        self.assertTrue(mat.hasPhysicalProperty("TestArray2D"))
+
+        array = mat.getPhysicalValue("TestArray2D")
+        self.assertIsNotNone(array)
+        self.assertEqual(array.Rows, 3)
+        self.assertEqual(array.Columns, 2)
+
+        arrayData = array.Array
+        self.assertIsNotNone(arrayData)
+        self.assertEqual(len(arrayData), 3)
+        self.assertEqual(len(arrayData[0]), 2)
+        self.assertEqual(len(arrayData[1]), 2)
+        self.assertEqual(len(arrayData[2]), 2)
+
+        self.assertEqual(arrayData[0][0].UserString, parseQuantity("10.00 C").UserString)
+        self.assertEqual(arrayData[0][1].UserString, parseQuantity("10.00 kg/m^3").UserString)
+        self.assertEqual(arrayData[1][0].UserString, parseQuantity("20.00 C").UserString)
+        self.assertEqual(arrayData[1][1].UserString, parseQuantity("20.00 kg/m^3").UserString)
+        self.assertEqual(arrayData[2][0].UserString, parseQuantity("30.00 C").UserString)
+        self.assertEqual(arrayData[2][1].UserString, parseQuantity("30.00 kg/m^3").UserString)
+
+        self.assertAlmostEqual(arrayData[0][0].Value, 10.0)
+        self.assertAlmostEqual(arrayData[0][1].Value, 1e-8)
+        self.assertAlmostEqual(arrayData[1][0].Value, 20.0)
+        self.assertAlmostEqual(arrayData[1][1].Value, 2e-8)
+        self.assertAlmostEqual(arrayData[2][0].Value, 30.0)
+        self.assertAlmostEqual(arrayData[2][1].Value, 3e-8)
+
+        self.assertAlmostEqual(arrayData[-1][0].Value, 30.0) # Last in list
+        with self.assertRaises(IndexError):
+            self.assertAlmostEqual(arrayData[3][0].Value, 10.0)
+        self.assertAlmostEqual(arrayData[0][-1].Value, 1e-8)
+        with self.assertRaises(IndexError):
+            self.assertAlmostEqual(arrayData[0][2].Value, 10.0)
+
+        self.assertEqual(array.getValue(0,0).UserString, parseQuantity("10.00 C").UserString)
+        self.assertEqual(array.getValue(0,1).UserString, parseQuantity("10.00 kg/m^3").UserString)
+        self.assertEqual(array.getValue(1,0).UserString, parseQuantity("20.00 C").UserString)
+        self.assertEqual(array.getValue(1,1).UserString, parseQuantity("20.00 kg/m^3").UserString)
+        self.assertEqual(array.getValue(2,0).UserString, parseQuantity("30.00 C").UserString)
+        self.assertEqual(array.getValue(2,1).UserString, parseQuantity("30.00 kg/m^3").UserString)
+
+        self.assertAlmostEqual(array.getValue(0,0).Value, 10.0)
+        self.assertAlmostEqual(array.getValue(0,1).Value, 1e-8)
+        self.assertAlmostEqual(array.getValue(1,0).Value, 20.0)
+        self.assertAlmostEqual(array.getValue(1,1).Value, 2e-8)
+        self.assertAlmostEqual(array.getValue(2,0).Value, 30.0)
+        self.assertAlmostEqual(array.getValue(2,1).Value, 3e-8)
+
+        with self.assertRaises(IndexError):
+            self.assertAlmostEqual(array.getValue(-1,0).Value, 10.0)
+        with self.assertRaises(IndexError):
+            self.assertAlmostEqual(array.getValue(3,0).Value, 10.0)
+        with self.assertRaises(IndexError):
+            self.assertAlmostEqual(array.getValue(0,-1).Value, 10.0)
+        with self.assertRaises(IndexError):
+            self.assertAlmostEqual(array.getValue(0,2).Value, 10.0)
+
+        for rowIndex in range(0, array.Rows):
+            row = array.getRow(rowIndex)
+            self.assertIsNotNone(row)
+            self.assertEqual(len(row), 2)
+
+        with self.assertRaises(IndexError):
+            row = array.getRow(-1)
+        with self.assertRaises(IndexError):
+            row = array.getRow(3)
+
+    def test2DArray(self):
+        mat = self.MaterialManager.getMaterial("c6c64159-19c1-40b5-859c-10561f20f979")
+        self.assertIsNotNone(mat)
+        self.assertEqual(mat.Name, "Test Material")
+        self.assertEqual(mat.UUID, "c6c64159-19c1-40b5-859c-10561f20f979")
+
+        self.assertTrue(mat.hasPhysicalModel(self.uuids.TestModel))
+        self.assertFalse(mat.isPhysicalModelComplete(self.uuids.TestModel))
+
+        self.assertTrue(mat.hasPhysicalProperty("TestArray3D"))
+
+        array = mat.getPhysicalValue("TestArray3D")
+        self.assertIsNotNone(array)
+        self.assertEqual(array.Depth, 3)
+        self.assertEqual(array.Columns, 2)
+        self.assertEqual(array.getRows(), 2)
+        self.assertEqual(array.getRows(0), 2)
+        self.assertEqual(array.getRows(1), 0)
+        self.assertEqual(array.getRows(2), 3)
+
+        arrayData = array.Array
+        self.assertIsNotNone(arrayData)
+        self.assertEqual(len(arrayData), 3)
+        self.assertEqual(len(arrayData[0]), 2)
+        self.assertEqual(len(arrayData[1]), 0)
+        self.assertEqual(len(arrayData[2]), 3)
+
+        self.assertEqual(arrayData[0][0][0].UserString, parseQuantity("11.00 Pa").UserString)
+        self.assertEqual(arrayData[0][0][1].UserString, parseQuantity("12.00 Pa").UserString)
+        self.assertEqual(arrayData[0][1][0].UserString, parseQuantity("21.00 Pa").UserString)
+        self.assertEqual(arrayData[0][1][1].UserString, parseQuantity("22.00 Pa").UserString)
+        self.assertEqual(arrayData[2][0][0].UserString, parseQuantity("10.00 Pa").UserString)
+        self.assertEqual(arrayData[2][0][1].UserString, parseQuantity("11.00 Pa").UserString)
+        self.assertEqual(arrayData[2][1][0].UserString, parseQuantity("20.00 Pa").UserString)
+        self.assertEqual(arrayData[2][1][1].UserString, parseQuantity("21.00 Pa").UserString)
+        self.assertEqual(arrayData[2][2][0].UserString, parseQuantity("30.00 Pa").UserString)
+        self.assertEqual(arrayData[2][2][1].UserString, parseQuantity("31.00 Pa").UserString)
+
+        self.assertEqual(array.getDepthValue(0).UserString, parseQuantity("10.00 C").UserString)
+        self.assertEqual(array.getDepthValue(1).UserString, parseQuantity("20.00 C").UserString)
+        self.assertEqual(array.getDepthValue(2).UserString, parseQuantity("30.00 C").UserString)
+
+        self.assertEqual(arrayData[0][0][-1].UserString, parseQuantity("12.00 Pa").UserString)
+        with self.assertRaises(IndexError):
+            self.assertEqual(arrayData[0][0][2].UserString, parseQuantity("11.00 Pa").UserString)
+        self.assertEqual(arrayData[0][-1][0].UserString, parseQuantity("21.00 Pa").UserString)
+        with self.assertRaises(IndexError):
+            self.assertEqual(arrayData[0][2][0].UserString, parseQuantity("11.00 Pa").UserString)
+        with self.assertRaises(IndexError):
+            self.assertEqual(arrayData[1][0][0].UserString, parseQuantity("11.00 Pa").UserString)
+        self.assertEqual(arrayData[-1][0][0].UserString, parseQuantity("10.00 Pa").UserString)
+        with self.assertRaises(IndexError):
+            self.assertEqual(arrayData[3][0][0].UserString, parseQuantity("11.00 Pa").UserString)
+
+        with self.assertRaises(IndexError):
+            self.assertEqual(array.getDepthValue(-1).UserString, parseQuantity("10.00 C").UserString)
+        with self.assertRaises(IndexError):
+            self.assertEqual(array.getDepthValue(3).UserString, parseQuantity("10.00 C").UserString)
+
+        self.assertEqual(array.getValue(0,0,0).UserString, parseQuantity("11.00 Pa").UserString)
+        self.assertEqual(array.getValue(0,0,1).UserString, parseQuantity("12.00 Pa").UserString)
+        self.assertEqual(array.getValue(0,1,0).UserString, parseQuantity("21.00 Pa").UserString)
+        self.assertEqual(array.getValue(0,1,1).UserString, parseQuantity("22.00 Pa").UserString)
+        self.assertEqual(array.getValue(2,0,0).UserString, parseQuantity("10.00 Pa").UserString)
+        self.assertEqual(array.getValue(2,0,1).UserString, parseQuantity("11.00 Pa").UserString)
+        self.assertEqual(array.getValue(2,1,0).UserString, parseQuantity("20.00 Pa").UserString)
+        self.assertEqual(array.getValue(2,1,1).UserString, parseQuantity("21.00 Pa").UserString)
+        self.assertEqual(array.getValue(2,2,0).UserString, parseQuantity("30.00 Pa").UserString)
+        self.assertEqual(array.getValue(2,2,1).UserString, parseQuantity("31.00 Pa").UserString)
+
+        with self.assertRaises(IndexError):
+            self.assertEqual(array.getValue(0,0,-1).UserString, parseQuantity("11.00 Pa").UserString)
+        with self.assertRaises(IndexError):
+            self.assertEqual(array.getValue(0,0,2).UserString, parseQuantity("11.00 Pa").UserString)
+        with self.assertRaises(IndexError):
+            self.assertEqual(array.getValue(0,-1,0).UserString, parseQuantity("11.00 Pa").UserString)
+        with self.assertRaises(IndexError):
+            self.assertEqual(array.getValue(0,2,0).UserString, parseQuantity("11.00 Pa").UserString)
+        with self.assertRaises(IndexError):
+            self.assertEqual(array.getValue(1,0,0).UserString, parseQuantity("11.00 Pa").UserString)
+        with self.assertRaises(IndexError):
+            self.assertEqual(array.getValue(-1,0,0).UserString, parseQuantity("11.00 Pa").UserString)
+        with self.assertRaises(IndexError):
+            self.assertEqual(array.getValue(3,0,0).UserString, parseQuantity("11.00 Pa").UserString)

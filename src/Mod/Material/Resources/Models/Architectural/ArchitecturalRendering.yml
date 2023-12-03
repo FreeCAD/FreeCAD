@@ -21,39 +21,19 @@
 # *                                                                         *
 # ***************************************************************************
 
-Model:
-  Name: "Architectural"
-  UUID: '32439c3b-262f-4b7b-99a8-f7f44e5894c8'
+AppearanceModel:
+  Name: "ArchitecturalRendering"
+  UUID: '27e48ac9-54e1-4a1f-aa49-d5d690242705'
   URL: ''
   Description: "default architectural model"
   DOI: ""
-  EnvironmentalEfficiencyClass:
-    Type: 'String'
+  Color:
+    Type: 'Color'
     Units: ''
     URL: ''
     Description: " "
-  ExecutionInstructions:
+  Finish:
     Type: 'String'
-    Units: ''
-    URL: ''
-    Description: " "
-  FireResistanceClass:
-    Type: 'String'
-    Units: ''
-    URL: ''
-    Description: " "
-  Model:
-    Type: 'String'
-    Units: ''
-    URL: ''
-    Description: " "
-  SoundTransmissionClass:
-    Type: 'String'
-    Units: ''
-    URL: ''
-    Description: " "
-  UnitsPerQuantity:
-    Type: 'Float'
     Units: ''
     URL: ''
     Description: " "

@@ -110,6 +110,22 @@ public:
     ~MaterialExists() noexcept override = default;
 };
 
+class MaterialReadError: public Base::Exception
+{
+public:
+    MaterialReadError()
+    {}
+    explicit MaterialReadError(const char* msg)
+    {
+        this->setMessage(msg);
+    }
+    explicit MaterialReadError(const QString& msg)
+    {
+        this->setMessage(msg.toStdString().c_str());
+    }
+    ~MaterialReadError() noexcept override = default;
+};
+
 class PropertyNotFound: public Base::Exception
 {
 public:
@@ -156,54 +172,6 @@ public:
         this->setMessage(msg.toStdString().c_str());
     }
     ~InvalidModel() noexcept override = default;
-};
-
-class InvalidRow: public Base::Exception
-{
-public:
-    InvalidRow()
-    {}
-    explicit InvalidRow(char* msg)
-    {
-        this->setMessage(msg);
-    }
-    explicit InvalidRow(const QString& msg)
-    {
-        this->setMessage(msg.toStdString().c_str());
-    }
-    ~InvalidRow() noexcept override = default;
-};
-
-class InvalidColumn: public Base::Exception
-{
-public:
-    InvalidColumn()
-    {}
-    explicit InvalidColumn(char* msg)
-    {
-        this->setMessage(msg);
-    }
-    explicit InvalidColumn(const QString& msg)
-    {
-        this->setMessage(msg.toStdString().c_str());
-    }
-    ~InvalidColumn() noexcept override = default;
-};
-
-class InvalidDepth: public Base::Exception
-{
-public:
-    InvalidDepth()
-    {}
-    explicit InvalidDepth(char* msg)
-    {
-        this->setMessage(msg);
-    }
-    explicit InvalidDepth(const QString& msg)
-    {
-        this->setMessage(msg.toStdString().c_str());
-    }
-    ~InvalidDepth() noexcept override = default;
 };
 
 class InvalidIndex: public Base::Exception

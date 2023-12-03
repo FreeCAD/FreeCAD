@@ -19,8 +19,8 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATGUI_ArrayDelegate_H
-#define MATGUI_ArrayDelegate_H
+#ifndef MATGUI_BASEDELEGATE_H
+#define MATGUI_BASEDELEGATE_H
 
 #include <QDialog>
 #include <QDir>
@@ -36,15 +36,16 @@
 namespace MatGui
 {
 
-class ArrayDelegate: public QStyledItemDelegate
+class BaseDelegate: public QStyledItemDelegate
 {
     Q_OBJECT
 public:
-    ArrayDelegate(Materials::MaterialValue::ValueType type = Materials::MaterialValue::None,
-                  const QString& units = QString(),
-                  QObject* parent = nullptr);
-    virtual ~ArrayDelegate() = default;
+    BaseDelegate(Materials::MaterialValue::ValueType type = Materials::MaterialValue::None,
+                 const QString& units = QString(),
+                 QObject* parent = nullptr);
+    virtual ~BaseDelegate() = default;
 
+    QSize sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const;
     void paint(QPainter* painter,
                const QStyleOptionViewItem& option,
                const QModelIndex& index) const override;
@@ -52,14 +53,43 @@ public:
                           const QStyleOptionViewItem& styleOption,
                           const QModelIndex& index) const override;
     void setEditorData(QWidget* editor, const QModelIndex& index) const override;
+    void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const;
 
-private:
+    // Q_SIGNALS:
+    /** Emits this signal when a property has changed */
+    // void propertyChange(const QModelIndex& index, const QString value);
+
+protected:
     Materials::MaterialValue::ValueType _type;
     QString _units;
 
-    QWidget* createWidget(QWidget* parent, const QVariant& item) const;
+
+    QString getStringValue(const QModelIndex& index) const;
+    QRgb parseColor(const QString& color) const;
+
+    void paintQuantity(QPainter* painter,
+                       const QStyleOptionViewItem& option,
+                       const QModelIndex& index) const;
+    void paintImage(QPainter* painter,
+                    const QStyleOptionViewItem& option,
+                    const QModelIndex& index) const;
+    void paintColor(QPainter* painter,
+                    const QStyleOptionViewItem& option,
+                    const QModelIndex& index) const;
+    void paintList(QPainter* painter,
+                   const QStyleOptionViewItem& option,
+                   const QModelIndex& index) const;
+    void paintMultiLineString(QPainter* painter,
+                              const QStyleOptionViewItem& option,
+                              const QModelIndex& index) const;
+    void paintArray(QPainter* painter,
+                    const QStyleOptionViewItem& option,
+                    const QModelIndex& index) const;
+
+    bool newRow(const QAbstractItemModel* model, const QModelIndex& index) const;
+    QWidget* createWidget(QWidget* parent, const QVariant& item, const QModelIndex& index) const;
 };
 
 }  // namespace MatGui
 
-#endif  // MATGUI_ArrayDelegate_H
+#endif  // MATGUI_BASEDELEGATE_H

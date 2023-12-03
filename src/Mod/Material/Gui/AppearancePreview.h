@@ -19,65 +19,59 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATGUI_ARRAY2D_H
-#define MATGUI_ARRAY2D_H
+#ifndef MATGUI_APPEARANCEPREVIEW_H
+#define MATGUI_APPEARANCEPREVIEW_H
 
-#include <memory>
+#include <FCConfig.h>
+#include <Gui/View3DInventorViewer.h>
+#include <Gui/View3DSettings.h>
 
-#include <QAbstractTableModel>
-#include <QAction>
-#include <QDialog>
-#include <QPoint>
-#include <QStandardItem>
-#include <QStandardItemModel>
-#include <QTableView>
-
-#include <Mod/Material/App/Model.h>
-
-#include "ArrayModel.h"
+class SoMaterial;
 
 namespace MatGui
 {
 
-class Ui_Array2D;
+class AppearanceSettings: public Gui::View3DSettings
+{
+public:
+    AppearanceSettings(const ParameterGrp::handle& hGrp, Gui::View3DInventorViewer*);
+    AppearanceSettings(const ParameterGrp::handle& hGrp,
+                       const std::vector<Gui::View3DInventorViewer*>&);
+    ~AppearanceSettings() = default;
 
-class Array2D: public QDialog
+    /// Observer message from the ParameterGrp
+    void OnChange(ParameterGrp::SubjectType& rCaller, ParameterGrp::MessageType Reason) override;
+};
+
+class AppearancePreview: public Gui::View3DInventorViewer
 {
     Q_OBJECT
 
 public:
-    Array2D(const QString& propertyName,
-            const std::shared_ptr<Materials::Material>& material,
-            QWidget* parent = nullptr);
-    ~Array2D() override = default;
+    explicit AppearancePreview(QWidget* parent = nullptr);
+    ~AppearancePreview() override;
 
-    void onDataChanged(const QModelIndex& topLeft,
-                       const QModelIndex& bottomRight,
-                       const QVector<int>& roles = QVector<int>());
-    void onDelete(bool checked);
-    void onContextMenu(const QPoint& pos);
+    void setAmbientColor(const QColor& color);
+    void setDiffuseColor(const QColor& color);
+    void setSpecularColor(const QColor& color);
+    void setEmissiveColor(const QColor& color);
+    void setShininess(double value);
+    void setTransparency(double value);
 
-    void accept() override;
-    void reject() override;
+    void resetAmbientColor();
+    void resetDiffuseColor();
+    void resetSpecularColor();
+    void resetEmissiveColor();
+    void resetShininess();
+    void resetTransparency();
 
 private:
-    std::unique_ptr<Ui_Array2D> ui;
-    std::shared_ptr<Materials::Material> _material;
-    std::shared_ptr<Materials::MaterialProperty> _property;
-    std::shared_ptr<Materials::Material2DArray> _value;
+    SoMaterial* _material;
+    std::unique_ptr<AppearanceSettings> viewSettings;
 
-    QAction _deleteAction;
-
-    void setHeaders(QStandardItemModel* model);
-    void setColumnWidths(QTableView* table);
-    void setColumnDelegates(QTableView* table);
-    void setupArray();
-
-    bool newRow(const QModelIndex& index);
-    int confirmDelete();
-    void deleteSelected();
+    void applySettings();
 };
 
 }  // namespace MatGui
 
-#endif  // MATGUI_ARRAY2D_H
+#endif  // MATGUI_APPEARANCEPREVIEW_H
