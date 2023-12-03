@@ -29,104 +29,92 @@
 #include <CXX/Objects.hxx>
 #include <Gui/MetaTypes.h>
 
-#include "Array2DPy.h"
+#include "Array3DPy.h"
 #include "Exceptions.h"
 #include "Model.h"
 #include "ModelLibrary.h"
 #include "ModelPropertyPy.h"
 #include "ModelUuids.h"
 
-#include "Array2DPy.cpp"
+#include "Array3DPy.cpp"
 
 using namespace Materials;
 
 // returns a string which represents the object e.g. when printed in python
-std::string Array2DPy::representation() const
+std::string Array3DPy::representation() const
 {
     std::stringstream str;
-    str << "<Array2D object at " << getMaterial2DArrayPtr() << ">";
+    str << "<Array3D object at " << getMaterial3DArrayPtr() << ">";
 
     return str.str();
 }
 
-PyObject* Array2DPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
+PyObject* Array3DPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
 {
     // never create such objects with the constructor
-    return new Array2DPy(new Material2DArray());
+    return new Array3DPy(new Material3DArray());
 }
 
 // constructor method
-int Array2DPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
+int Array3DPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 {
     return 0;
 }
 
-Py::List Array2DPy::getArray() const
+Py::List Array3DPy::getArray() const
 {
     Py::List list;
-    auto array = getMaterial2DArrayPtr()->getArray();
+    auto array = getMaterial3DArrayPtr()->getArray();
 
-    for (auto& row : array) {
-        Py::List* rowList = new Py::List();
-        for (auto& column : *row) {
-            auto quantity =
-                new Base::QuantityPy(new Base::Quantity(column.value<Base::Quantity>()));
-            rowList->append(Py::Object(quantity));
+    for (auto& depth : array) {
+        Py::List* depthList = new Py::List();
+        for (auto& row : *std::get<1>(depth)) {
+            Py::List* rowList = new Py::List();
+            for (auto& column : *row) {
+                auto quantity = new Base::QuantityPy(new Base::Quantity(column));
+                rowList->append(Py::Object(quantity));
+            }
+
+            depthList->append(*rowList);
         }
-
-        list.append(*rowList);
+        list.append(*depthList);
     }
 
     return list;
 }
 
-Py::Int Array2DPy::getRows() const
+Py::Int Array3DPy::getColumns() const
 {
-    return Py::Int(getMaterial2DArrayPtr()->rows());
+    return Py::Int(getMaterial3DArrayPtr()->columns());
 }
 
-Py::Int Array2DPy::getColumns() const
+Py::Int Array3DPy::getDepth() const
 {
-    return Py::Int(getMaterial2DArrayPtr()->columns());
+    return Py::Int(getMaterial3DArrayPtr()->depth());
 }
 
-PyObject* Array2DPy::getRow(PyObject* args)
+PyObject* Array3DPy::getRows(PyObject* args)
 {
-    int row;
-    if (!PyArg_ParseTuple(args, "i", &row)) {
+    int depth = getMaterial3DArrayPtr()->currentDepth();
+    if (!PyArg_ParseTuple(args, "|i", &depth)) {
         return nullptr;
     }
 
-    try {
-        Py::List list;
-
-        auto arrayRow = getMaterial2DArrayPtr()->getRow(row);
-        for (auto& column : *arrayRow) {
-            auto quantity =
-                new Base::QuantityPy(new Base::Quantity(column.value<Base::Quantity>()));
-            list.append(Py::Object(quantity));
-        }
-
-        return Py::new_reference_to(list);
-    }
-    catch (const InvalidIndex&) {
-    }
-
-    PyErr_SetString(PyExc_IndexError, "Invalid array index");
-    return nullptr;
+    return PyLong_FromLong(getMaterial3DArrayPtr()->rows(depth));
 }
 
-PyObject* Array2DPy::getValue(PyObject* args)
+PyObject* Array3DPy::getValue(PyObject* args)
 {
+    int depth;
     int row;
     int column;
-    if (!PyArg_ParseTuple(args, "ii", &row, &column)) {
+    if (!PyArg_ParseTuple(args, "iii", &depth, &row, &column)) {
         return nullptr;
     }
 
     try {
-        auto value = getMaterial2DArrayPtr()->getValue(row, column);
-        return new Base::QuantityPy(new Base::Quantity(value.value<Base::Quantity>()));
+        auto value = getMaterial3DArrayPtr()->getValue(depth, row, column);
+        return new Base::QuantityPy(new Base::Quantity(value));
     }
     catch (const InvalidIndex&) {
     }
@@ -135,12 +123,30 @@ PyObject* Array2DPy::getValue(PyObject* args)
     return nullptr;
 }
 
-PyObject* Array2DPy::getCustomAttributes(const char* /*attr*/) const
+PyObject* Array3DPy::getDepthValue(PyObject* args)
+{
+    int depth;
+    if (!PyArg_ParseTuple(args, "i", &depth)) {
+        return nullptr;
+    }
+
+    try {
+        auto value = getMaterial3DArrayPtr()->getDepthValue(depth);
+        return new Base::QuantityPy(new Base::Quantity(value));
+    }
+    catch (const InvalidIndex&) {
+    }
+
+    PyErr_SetString(PyExc_IndexError, "Invalid array index");
+    return nullptr;
+}
+
+PyObject* Array3DPy::getCustomAttributes(const char* /*attr*/) const
 {
     return nullptr;
 }
 
-int Array2DPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
+int Array3DPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
 {
     return 0;
 }

@@ -19,70 +19,73 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATGUI_ARRAY3D_H
-#define MATGUI_ARRAY3D_H
+#ifndef MATGUI_IMAGEEDIT_H
+#define MATGUI_IMAGEEDIT_H
+
+#include <memory>
 
 #include <QAction>
 #include <QDialog>
+#include <QLabel>
+#include <QList>
+#include <QListView>
+#include <QPoint>
+#include <QResizeEvent>
 #include <QStandardItem>
-#include <QTableView>
+#include <QStandardItemModel>
+#include <QVariant>
 
-#include <Mod/Material/App/Materials.h>
+#include <Mod/Material/App/Model.h>
+
+#include "ListModel.h"
 
 namespace MatGui
 {
 
-class Ui_Array3D;
+class Ui_ImageEdit;
 
-class Array3D: public QDialog
+class ImageLabel: public QLabel
 {
     Q_OBJECT
 
 public:
-    Array3D(const QString& propertyName,
-            const std::shared_ptr<Materials::Material>& material,
-            QWidget* parent = nullptr);
-    ~Array3D() override = default;
+    explicit ImageLabel(QWidget* parent = 0);
+    ~ImageLabel() = default;
 
-    void onRowsInserted(const QModelIndex& parent, int first, int last);
-    void onRowsRemoved(const QModelIndex& parent, int first, int last);
-    void onDataChanged(const QModelIndex& topLeft,
-                       const QModelIndex& bottomRight,
-                       const QVector<int>& roles = QVector<int>());
-    void onSelectDepth(const QItemSelection& selected, const QItemSelection& deselected);
-    bool onSplitter(QEvent* e);
-    void onDepthDelete(bool checked);
-    int confirmDepthDelete();
-    void deleteDepthSelected();
-    void on2DDelete(bool checked);
-    int confirm2dDelete();
-    void delete2DSelected();
-    void onDepthContextMenu(const QPoint& pos);
-    void on2DContextMenu(const QPoint& pos);
+    void setPixmap(const QPixmap& pixmap);
 
-    void onOk(bool checked);
-    void onCancel(bool checked);
+protected:
+    void resizeEvent(QResizeEvent* event);
 
 private:
-    std::unique_ptr<Ui_Array3D> ui;
+    QPixmap _pixmap;
+};
+
+class ImageEdit: public QDialog
+{
+    Q_OBJECT
+
+public:
+    ImageEdit(const QString& propertyName,
+              const std::shared_ptr<Materials::Material>& material,
+              QWidget* parent = nullptr);
+    ~ImageEdit() override = default;
+
+    void onFileSelect(bool checked);
+
+    void accept() override;
+    void reject() override;
+
+private:
+    std::unique_ptr<Ui_ImageEdit> ui;
     std::shared_ptr<Materials::Material> _material;
     std::shared_ptr<Materials::MaterialProperty> _property;
-    std::shared_ptr<Materials::Material3DArray> _value;
 
-    QAction _deleteDepthAction;
-    QAction _delete2DAction;
+    QPixmap _pixmap;
 
-    bool newDepthRow(const QModelIndex& index);
-    bool new2DRow(const QModelIndex& index);
-    void setDepthColumnWidth(QTableView* table);
-    void setDepthColumnDelegate(QTableView* table);
-    void setupDepthArray();
-    void setColumnWidths(QTableView* table);
-    void setColumnDelegates(QTableView* table);
-    void setupArray();
-    void update2DArray();
+    void showPixmap();
 };
 
 }  // namespace MatGui
 
-#endif  // MATGUI_ARRAY3D_H
+#endif  // MATGUI_IMAGEEDIT_H

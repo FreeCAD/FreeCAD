@@ -37,14 +37,14 @@ using namespace MatGui;
 
 /* TRANSLATOR MatGui::MaterialsEditor */
 
-MaterialSave::MaterialSave(std::shared_ptr<Materials::Material> material, QWidget* parent)
+MaterialSave::MaterialSave(const std::shared_ptr<Materials::Material>& material, QWidget* parent)
     : QDialog(parent)
     , ui(new Ui_MaterialSave)
     , _material(material)
     , _saveInherited(true)
     , _selectedPath(QString::fromStdString("/"))
     , _selectedFull(QString::fromStdString("/"))
-    , _selectedUUID(QString())
+    , _selectedUUID()
     , _deleteAction(this)
 {
     ui->setupUi(this);
@@ -121,7 +121,6 @@ void MaterialSave::onOk(bool checked)
     Q_UNUSED(checked)
 
     QString name = _filename.remove(QString::fromStdString(".FCMat"), Qt::CaseInsensitive);
-    Base::Console().Log("name '%s'\n", _filename.toStdString().c_str());
     if (name != _material->getName()) {
         _material->setName(name);
         _material->setEditStateAlter();  // ? Does a name change count?
@@ -131,10 +130,6 @@ void MaterialSave::onOk(bool checked)
     auto library = variant.value<std::shared_ptr<Materials::MaterialLibrary>>();
     QFileInfo filepath(_selectedPath + QString::fromStdString("/") + name
                        + QString::fromStdString(".FCMat"));
-    Base::Console().Log("saveMaterial(library(%s), material(%s), path(%s))\n",
-                        library->getName().toStdString().c_str(),
-                        _material->getName().toStdString().c_str(),
-                        filepath.filePath().toStdString().c_str());
 
     if (library->fileExists(filepath.filePath())) {
         // confirm overwrite
@@ -165,7 +160,7 @@ void MaterialSave::onOk(bool checked)
             if (res == QMessageBox::Cancel) {
                 return;
             }
-            else if (res == QMessageBox::Save) {
+            if (res == QMessageBox::Save) {
                 // QMessageBox::Save saves as normal, a duplicate
                 saveAsCopy = true;
             }
@@ -329,8 +324,6 @@ void MaterialSave::addMaterials(
         if (nodePtr->getType() == Materials::MaterialTreeNode::DataNode) {
             std::shared_ptr<Materials::Material> material = nodePtr->getData();
             QString uuid = material->getUUID();
-            Base::Console().Log("Material path '%s'\n",
-                                material->getDirectory().toStdString().c_str());
 
             auto card = new QStandardItem(icon, mat.first);
             card->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled
@@ -340,7 +333,6 @@ void MaterialSave::addMaterials(
             addExpanded(tree, &parent, card);
         }
         else {
-            Base::Console().Log("Material folder path '%s'\n", mat.first.toStdString().c_str());
             auto node = new QStandardItem(folderIcon, mat.first);
             node->setFlags(Qt::ItemIsSelectable | Qt::ItemIsEnabled | Qt::ItemIsDragEnabled
                            | Qt::ItemIsDropEnabled | Qt::ItemIsEditable);
@@ -399,23 +391,19 @@ void MaterialSave::onSelectModel(const QItemSelection& selected, const QItemSele
     Q_UNUSED(deselected);
 
     _filename = QString(ui->editFilename->text());  // No filename by default
-    QStandardItemModel* model = static_cast<QStandardItemModel*>(ui->treeMaterials->model());
+    auto model = static_cast<QStandardItemModel*>(ui->treeMaterials->model());
     QModelIndexList indexes = selected.indexes();
     if (indexes.count() == 0) {
-        Base::Console().Log("Nothing selected\n");
         _selectedPath = QString::fromStdString("/") + _libraryName;
         _selectedFull = _selectedPath;
         _selectedUUID = QString();
-        Base::Console().Log("\tSelected path '%s'\n", _selectedPath.toStdString().c_str());
         return;
     }
     for (auto it = indexes.begin(); it != indexes.end(); it++) {
         QStandardItem* item = model->itemFromIndex(*it);
-        Base::Console().Log("%s\n", item->text().toStdString().c_str());
         if (item) {
             auto _selected = item->data(Qt::UserRole);
             if (_selected.isValid()) {
-                Base::Console().Log("\tuuid %s\n", _selected.toString().toStdString().c_str());
                 _selectedPath = getPath(item->parent());
                 _selectedFull = getPath(item);
                 _selectedUUID = _selected.toString();
@@ -431,9 +419,6 @@ void MaterialSave::onSelectModel(const QItemSelection& selected, const QItemSele
     if (_filename.length() > 0) {
         ui->editFilename->setText(_filename);
     }
-    Base::Console().Log("\tSelected path '%s', filename = '%s'\n",
-                        _selectedPath.toStdString().c_str(),
-                        _filename.toStdString().c_str());
 }
 
 void MaterialSave::currentTextChanged(const QString& value)
@@ -496,7 +481,6 @@ void MaterialSave::onNewFolder(bool checked)
 
     // Folders have no associated data
     if (item->data(Qt::UserRole).isNull()) {
-        Base::Console().Log("Add new folder to '%s'\n", item->text().toStdString().c_str());
         QIcon folderIcon(QString::fromStdString(":/icons/folder.svg"));
 
         QString folderName = tr("New Folder");
@@ -508,9 +492,6 @@ void MaterialSave::onNewFolder(bool checked)
                        | Qt::ItemIsDropEnabled | Qt::ItemIsEditable);
         addExpanded(tree, item, node);
 
-        Base::Console().Log("New folder index valid: %s\n",
-                            node->index().isValid() ? "true" : "false");
-
         QItemSelectionModel* selectionModel = ui->treeMaterials->selectionModel();
         selectionModel->select(node->index(),
                                QItemSelectionModel::ClearAndSelect | QItemSelectionModel::Current);
@@ -521,39 +502,27 @@ void MaterialSave::onNewFolder(bool checked)
 
 void MaterialSave::onItemChanged(QStandardItem* item)
 {
-    Base::Console().Log("MaterialSave::onItemChanged('%s')\n", item->text().toStdString().c_str());
     QString oldPath = _selectedPath;
     _selectedPath = getPath(item);
     _selectedFull = _selectedPath;
-    Base::Console().Log("\tSelected path '%s'\n", _selectedPath.toStdString().c_str());
+
     renameFolder(oldPath, _selectedPath);
 }
 
 void MaterialSave::onFilename(const QString& text)
 {
-    Base::Console().Log("MaterialSave::onFilename('%s')\n", text.toStdString().c_str());
-
     _filename = text;
 }
 
 QString MaterialSave::pathFromIndex(const QModelIndex& index) const
 {
-    auto model = static_cast<const QStandardItemModel*>(index.model());
+    auto model = dynamic_cast<const QStandardItemModel*>(index.model());
     auto item = model->itemFromIndex(index);
     return getPath(item);
 }
 
 void MaterialSave::onContextMenu(const QPoint& pos)
 {
-    Base::Console().Log("MaterialSave::onContextMenu(%d,%d)\n", pos.x(), pos.y());
-    QModelIndex index = ui->treeMaterials->indexAt(pos);
-    QString path = pathFromIndex(index);
-    Base::Console().Log("\tindex at (%d,%d)->'%s'\n",
-                        index.row(),
-                        index.column(),
-                        path.toStdString().c_str());
-
-
     QMenu contextMenu(tr("Context menu"), this);
 
     // QAction action1(tr("Delete"), this);
@@ -568,14 +537,11 @@ void MaterialSave::onDelete(bool checked)
 {
     Q_UNUSED(checked)
 
-    Base::Console().Log("MaterialSave::onDelete()\n");
     QItemSelectionModel* selectionModel = ui->treeMaterials->selectionModel();
     if (!selectionModel->hasSelection()) {
-        Base::Console().Log("\tNothing selected\n");
         return;
     }
 
-    Base::Console().Log("\tSelected path '%s'\n", _selectedFull.toStdString().c_str());
     int res = confirmDelete(this);
     if (res == QMessageBox::Cancel) {
         return;
@@ -632,7 +598,6 @@ bool MaterialSave::selectedHasChildren()
 
 void MaterialSave::deleteSelected()
 {
-    Base::Console().Log("\tDelete selected path '%s'\n", _selectedFull.toStdString().c_str());
     auto library = currentLibrary();
 
     if (!library->isRoot(_selectedFull)) {

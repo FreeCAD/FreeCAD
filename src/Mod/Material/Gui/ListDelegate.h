@@ -19,65 +19,41 @@
  *                                                                         *
  **************************************************************************/
 
-#ifndef MATGUI_ARRAY2D_H
-#define MATGUI_ARRAY2D_H
+#ifndef MATGUI_LISTDELEGATE_H
+#define MATGUI_LISTDELEGATE_H
 
-#include <memory>
-
-#include <QAbstractTableModel>
-#include <QAction>
 #include <QDialog>
-#include <QPoint>
+#include <QDir>
 #include <QStandardItem>
-#include <QStandardItemModel>
-#include <QTableView>
+#include <QStyledItemDelegate>
+#include <QSvgWidget>
+#include <QTreeView>
 
-#include <Mod/Material/App/Model.h>
+#include <Mod/Material/App/MaterialManager.h>
+#include <Mod/Material/App/Materials.h>
+#include <Mod/Material/App/ModelManager.h>
 
-#include "ArrayModel.h"
+#include "BaseDelegate.h"
 
 namespace MatGui
 {
 
-class Ui_Array2D;
-
-class Array2D: public QDialog
+class ListDelegate: public BaseDelegate
 {
     Q_OBJECT
-
 public:
-    Array2D(const QString& propertyName,
-            const std::shared_ptr<Materials::Material>& material,
-            QWidget* parent = nullptr);
-    ~Array2D() override = default;
+    ListDelegate(Materials::MaterialValue::ValueType type = Materials::MaterialValue::None,
+                 const QString& units = QString(),
+                 QObject* parent = nullptr);
+    virtual ~ListDelegate() = default;
 
-    void onDataChanged(const QModelIndex& topLeft,
-                       const QModelIndex& bottomRight,
-                       const QVector<int>& roles = QVector<int>());
-    void onDelete(bool checked);
-    void onContextMenu(const QPoint& pos);
-
-    void accept() override;
-    void reject() override;
+    void paint(QPainter* painter,
+               const QStyleOptionViewItem& option,
+               const QModelIndex& index) const override;
 
 private:
-    std::unique_ptr<Ui_Array2D> ui;
-    std::shared_ptr<Materials::Material> _material;
-    std::shared_ptr<Materials::MaterialProperty> _property;
-    std::shared_ptr<Materials::Material2DArray> _value;
-
-    QAction _deleteAction;
-
-    void setHeaders(QStandardItemModel* model);
-    void setColumnWidths(QTableView* table);
-    void setColumnDelegates(QTableView* table);
-    void setupArray();
-
-    bool newRow(const QModelIndex& index);
-    int confirmDelete();
-    void deleteSelected();
 };
 
 }  // namespace MatGui
 
-#endif  // MATGUI_ARRAY2D_H
+#endif  // MATGUI_LISTDELEGATE_H

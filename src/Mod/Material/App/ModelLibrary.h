@@ -44,7 +44,7 @@ class MaterialsExport LibraryBase: public Base::BaseClass
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    LibraryBase();
+    LibraryBase() = default;
     LibraryBase(const QString& libraryName, const QString& dir, const QString& icon);
     ~LibraryBase() override = default;
 

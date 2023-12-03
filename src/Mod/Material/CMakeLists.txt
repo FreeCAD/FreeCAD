@@ -30,7 +30,6 @@ SET(Material_Icon_Files
 )
 
 # collect all the material cards:
-# FILE( GLOB MaterialLib_Files ./StandardMaterial/*.FCMat ./StandardMaterial/*.txt  )
 SET(MaterialLib_Files
     Resources/Materials/Standard/Aggregate/Concrete-EN-C35_45.FCMat
     Resources/Materials/Standard/Aggregate/Concrete-Generic.FCMat
@@ -192,6 +191,7 @@ SET(MaterialTestLib_Files
 
 SET(MaterialModel_Files
     Resources/Models/Architectural/Architectural.yml
+    Resources/Models/Architectural/ArchitecturalRendering.yml
     Resources/Models/Costs/Costs.yml
     Resources/Models/Electromagnetic/Electromagnetic.yml
     Resources/Models/Fluid/Fluid.yml
