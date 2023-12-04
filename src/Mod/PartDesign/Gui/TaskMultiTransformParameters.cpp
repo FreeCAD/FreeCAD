@@ -301,7 +301,10 @@ void TaskMultiTransformParameters::onTransformAddMirrored()
     App::DocumentObject* sketch = getSketchObject();
     if (sketch)
         FCMD_OBJ_CMD(Feat, "MirrorPlane = ("<<Gui::Command::getObjectCmd(sketch)<<",['V_Axis'])");
-
+    else {
+        App::Origin* orig = pcActiveBody->getOrigin();
+        FCMD_OBJ_CMD(Feat, "MirrorPlane = ("<<Gui::Command::getObjectCmd(orig->getXY())<<",[''])");
+    }
     finishAdd(newFeatName);
     // show the new view when no error
     if (!Feat->isError())
