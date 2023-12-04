@@ -31,8 +31,8 @@ namespace MbD {
 	public:
 		FullColumn() : FullVector<T>() {}
 		FullColumn(std::vector<T> vec) : FullVector<T>(vec) {}
-		FullColumn(int count) : FullVector<T>(count) {}
-		FullColumn(int count, const T& value) : FullVector<T>(count, value) {}
+		FullColumn(size_t count) : FullVector<T>(count) {}
+		FullColumn(size_t count, const T& value) : FullVector<T>(count, value) {}
 		FullColumn(typename std::vector<T>::iterator begin, typename std::vector<T>::iterator end) : FullVector<T>(begin, end) {}
 		FullColumn(std::initializer_list<T> list) : FullVector<T>{ list } {}
 		FColsptr<T> plusFullColumn(FColsptr<T> fullCol);
