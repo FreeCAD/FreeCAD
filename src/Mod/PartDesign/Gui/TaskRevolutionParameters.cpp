@@ -86,7 +86,7 @@ TaskRevolutionParameters::TaskRevolutionParameters(PartDesignGui::ViewProvider* 
     setupDialog();
 
     blockUpdate = false;
-    updateUI();
+    updateUI(ui->changeMode->currentIndex());
     connectSignals();
 
     setFocus();
@@ -115,6 +115,34 @@ void TaskRevolutionParameters::setupDialog()
     ui->revolveAngle->setMaximum(propAngle->getMaximum());
     ui->revolveAngle->setMinimum(propAngle->getMinimum());
 
+    App::DocumentObject* obj = propUpToFace->getValue();
+    std::vector<std::string> subStrings = propUpToFace->getSubValues();
+    std::string upToFace;
+    int faceId = -1;
+    if (obj && !subStrings.empty()) {
+        upToFace = subStrings.front();
+        if (upToFace.compare(0, 4, "Face") == 0)
+            faceId = std::atoi(&upToFace[4]);
+    }
+
+    // Set object labels
+    if (obj && PartDesign::Feature::isDatum(obj)) {
+        ui->lineFaceName->setText(QString::fromUtf8(obj->Label.getValue()));
+        ui->lineFaceName->setProperty("FeatureName", QByteArray(obj->getNameInDocument()));
+    }
+    else if (obj && faceId >= 0) {
+        ui->lineFaceName->setText(QString::fromLatin1("%1:%2%3")
+                                  .arg(QString::fromUtf8(obj->Label.getValue()),
+                                       tr("Face"),
+                                       QString::number(faceId)));
+        ui->lineFaceName->setProperty("FeatureName", QByteArray(obj->getNameInDocument()));
+    }
+    else {
+        ui->lineFaceName->clear();
+        ui->lineFaceName->setProperty("FeatureName", QVariant());
+    }
+
+    ui->lineFaceName->setProperty("FaceName", QByteArray(upToFace.c_str()));
     int index = 0;
 
     // TODO: This should also be implemented for groove
@@ -351,7 +379,6 @@ void TaskRevolutionParameters::onSelectionChanged(const Gui::SelectionChanges& m
                 propReferenceAxis->setValue(selObj, axis);
 
                 recomputeFeature();
-                updateUI();
             }
         }
     }
@@ -546,7 +573,7 @@ void TaskRevolutionParameters::onModeChanged(int index)
         break;
     case PartDesign::Revolution::RevolMethod::ToLast:
         if (!isGroove)
-        pcType->setValue("UpToLast");
+            pcType->setValue("UpToLast");
         else
             pcType->setValue("ThroughAll");
         break;

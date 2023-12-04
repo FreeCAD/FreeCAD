@@ -306,7 +306,7 @@ class AddToConstruction(gui_base.GuiCommandNeedsSelection):
     def GetResources(self):
         """Set icon, menu and tooltip."""
         return {'Pixmap': 'Draft_AddConstruction',
-                'MenuText': QT_TRANSLATE_NOOP("Draft_AddConstruction", "Add to Construction group"),
+                'MenuText': QT_TRANSLATE_NOOP("Draft_AddConstruction", "Add to construction group"),
                 'ToolTip': QT_TRANSLATE_NOOP("Draft_AddConstruction", "Adds the selected objects to the construction group,\nand changes their appearance to the construction style.\nIt creates a construction group if it doesn't exist.")}
 
     def Activated(self):

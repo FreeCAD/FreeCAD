@@ -4516,11 +4516,8 @@ int Sketch::internalSolve(std::string& solvername, int level)
                     Base::Console().Log("Important: the SQP solver succeeded where all single "
                                         "subsystem solvers have failed.\n");
                 }
-
-                if (soltype > 0) {
-                    Base::Console().Log("If you see this message please report a way of "
-                                        "reproducing this result at\n");
-                    Base::Console().Log("https://www.freecad.org/tracker/main_page.php\n");
+                else if (soltype > 0) {
+                    Base::Console().Log("All solvers failed.\n");
                 }
 
                 break;

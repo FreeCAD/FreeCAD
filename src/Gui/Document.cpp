@@ -106,9 +106,6 @@ struct DocumentP
     std::map<std::string,ViewProvider*> _ViewProviderMapAnnotation;
     std::list<ViewProviderDocumentObject*> _redoViewProviders;
     
-    int projectUnitSystem = -1;
-    bool projectUnitSystemIgnore = false;
-
     using Connection = boost::signals2::connection;
     Connection connectNewObject;
     Connection connectDelObject;
@@ -649,30 +646,6 @@ void Document::setPos(const char* name, const Base::Matrix4D& rclMtrx)
     if (pcProv)
         pcProv->setTransformation(rclMtrx);
 
-}
-
-void Document::setProjectUnitSystem(int pUS)
-{
-    if (pUS != d->projectUnitSystem && pUS >= 0) {
-        d->projectUnitSystem = pUS;
-        setModified(true);
-    }
-}
-
-int Document::getProjectUnitSystem() const
-{
-    return d->projectUnitSystem;
-}
-
-void Document::setProjectUnitSystemIgnore(bool ignore)
-{
-    d->projectUnitSystemIgnore = ignore;
-    setModified(true);
-}
-
-bool Document::getProjectUnitSystemIgnore() const
-{
-    return d->projectUnitSystemIgnore;
 }
 
 //*****************************************************************************************************
@@ -1485,14 +1458,6 @@ void Document::RestoreDocFile(Base::Reader &reader)
                 Base::Console().Error("%s\n", e.what());
             }
         }
-
-        if (localreader->readNextElement()) {
-            if (strcmp(localreader->localName(), "ProjectUnitSystem") == 0) {
-                d->projectUnitSystem = localreader->getAttributeAsInteger("US");
-                d->projectUnitSystemIgnore = localreader->getAttributeAsInteger("ignore");
-                localreader->readEndElement("Document");
-            }
-        }
     }
 
     reader.initLocalReader(localreader);
@@ -1614,14 +1579,6 @@ void Document::SaveDocFile (Base::Writer &writer) const
     writer.Stream() << writer.ind() << "<Camera settings=\""
         << encodeAttribute(getCameraSettings()) << "\"/>\n";
     writer.decInd(); // indentation for camera settings
-
-    if (d->projectUnitSystem >= 0) {
-        writer.incInd();
-        writer.Stream() << writer.ind() << "<ProjectUnitSystem US=\""
-                        << d->projectUnitSystem << "\" ignore=\""
-                        << d->projectUnitSystemIgnore << "\"/>\n";
-        writer.decInd();
-    }
 
     writer.Stream() << "</Document>" << std::endl;
 }
@@ -2558,5 +2515,6 @@ void Document::slotChangePropertyEditor(const App::Document &doc, const App::Pro
     if(getDocument() == &doc) {
         FC_LOG(Prop.getFullName() << " editor changed");
         setModified(true);
+        getMainWindow()->setUserSchema(doc.UnitSystem.getValue());
     }
 }
