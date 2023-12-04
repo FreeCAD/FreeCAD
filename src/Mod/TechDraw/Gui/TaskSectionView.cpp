@@ -65,7 +65,8 @@ TaskSectionView::TaskSectionView(TechDraw::DrawViewPart* base) :
     m_saved(false),
     m_applyDeferred(0),
     m_directionIsSet(false),
-    m_modelIsDirty(false)
+    m_modelIsDirty(false),
+    m_scaleEdited(false)
 {
     //existence of base is guaranteed by CmdTechDrawSectionView (Command.cpp)
 
@@ -93,7 +94,8 @@ TaskSectionView::TaskSectionView(TechDraw::DrawViewSection* section) :
     m_saved(false),
     m_applyDeferred(0),
     m_directionIsSet(true),
-    m_modelIsDirty(false)
+    m_modelIsDirty(false),
+    m_scaleEdited(false)
 {
     //existence of section is guaranteed by ViewProviderViewSection.setEdit
 
@@ -202,7 +204,7 @@ void TaskSectionView::setUiCommon(Base::Vector3d origin)
     // will only be triggered when the arrow keys of the spinboxes are used
     //if this is not done, recomputes are triggered on each key press giving
     //unaccceptable UX
-    connect(ui->sbScale, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskSectionView::onScaleChanged);
+    connect(ui->sbScale, qOverload<double>(&QDoubleSpinBox::valueChanged), this, &TaskSectionView::onScaleChanged);
     connect(ui->sbOrgX, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskSectionView::onXChanged);
     connect(ui->sbOrgY, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskSectionView::onYChanged);
     connect(ui->sbOrgZ, qOverload<double>(&QuantitySpinBox::valueChanged), this, &TaskSectionView::onZChanged);
@@ -335,8 +337,10 @@ void TaskSectionView::onIdentifierChanged()
 
 void TaskSectionView::onScaleChanged()
 {
+    m_scaleEdited = true;
     checkAll(false);
     apply();
+
 }
 
 //SectionOrigin changed
@@ -530,8 +534,19 @@ TechDraw::DrawViewSection* TaskSectionView::createSectionView(void)
                            "App.ActiveDocument.%s.SectionOrigin = FreeCAD.Vector(%.6f, %.6f, %.6f)",
                            m_sectionName.c_str(), ui->sbOrgX->value().getValue(),
                            ui->sbOrgY->value().getValue(), ui->sbOrgZ->value().getValue());
-        Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Scale = %0.6f",
-                           m_sectionName.c_str(), ui->sbScale->value().getValue());
+
+        if (m_scaleEdited) {
+            // user has changed the scale
+            Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Scale = %0.7f",
+                           m_sectionName.c_str(), ui->sbScale->value());
+        } else {
+            // scale is untouched, use value from base view
+            Command::doCommand(Command::Doc,
+            "App.ActiveDocument.%s.Scale = App.ActiveDocument.%s.Scale",
+                           m_sectionName.c_str(),
+                           baseName.c_str());
+        }
+
         int scaleType = ui->cmbScaleType->currentIndex();
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.ScaleType = %d",
                            m_sectionName.c_str(), scaleType);
@@ -574,6 +589,8 @@ void TaskSectionView::updateSectionView()
     }
 
     const std::string objectName("SectionView");
+    std::string baseName = m_base->getNameInDocument();
+
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Edit SectionView"));
     if (m_section) {
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.SectionDirection = '%s'",
@@ -594,8 +611,18 @@ void TaskSectionView::updateSectionView()
         Command::doCommand(Command::Doc, "App.activeDocument().%s.translateLabel('DrawViewSection', 'Section', '%s')",
               m_sectionName.c_str(), makeSectionLabel(qTemp).c_str());
 
-        Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Scale = %0.6f",
-                           m_sectionName.c_str(), ui->sbScale->value().getValue());
+        if (m_scaleEdited) {
+            // user has changed the scale
+            Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Scale = %0.7f",
+                           m_sectionName.c_str(), ui->sbScale->value());
+        } else {
+            // scale is untouched, use value from base view
+            Command::doCommand(Command::Doc,
+            "App.ActiveDocument.%s.Scale = App.ActiveDocument.%s.Scale",
+                           m_sectionName.c_str(),
+                           baseName.c_str());
+        }
+
         int scaleType = ui->cmbScaleType->currentIndex();
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.ScaleType = %d",
                            m_sectionName.c_str(), scaleType);
