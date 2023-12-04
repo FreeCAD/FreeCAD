@@ -159,6 +159,44 @@ Requires to re-enter edit mode to take effect.</string>
         </property>
        </widget>
       </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBoxUnifiedCoincident">
+        <property name="toolTip">
+         <string>Unify Coincident and PointOnObject in a single tool.</string>
+        </property>
+        <property name="text">
+         <string>Unify Coincident and PointOnObject</string>
+        </property>
+        <property name="checked">
+         <bool>false</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>UnifiedCoincident</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Sketcher/Constraints</cstring>
+        </property>
+       </widget>
+      </item>
+      <item>
+       <widget class="Gui::PrefCheckBox" name="checkBoxHorVerAuto">
+        <property name="toolTip">
+         <string>Use the automatic horizontal/vertical constraint tool. This create a command group in which you have the auto tool, horizontal and vertical.</string>
+        </property>
+        <property name="text">
+         <string>Auto tool for Horizontal/Vertical</string>
+        </property>
+        <property name="checked">
+         <bool>true</bool>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>AutoHorVer</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Sketcher/Constraints</cstring>
+        </property>
+       </widget>
+      </item>
      </layout>
     </widget>
    </item>
