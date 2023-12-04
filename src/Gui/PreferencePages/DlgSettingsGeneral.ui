@@ -52,7 +52,7 @@
        <item row="1" column="0">
         <widget class="QLabel" name="unitSystemLabel">
          <property name="text">
-          <string>Unit system:</string>
+          <string>Default Unit system:</string>
          </property>
         </widget>
        </item>
@@ -87,27 +87,13 @@
          </item>
         </layout>
        </item>
-       <item row="2" column="0">
-        <widget class="QLabel" name="label">
-         <property name="text">
-          <string>Document unit system:</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="1">
-        <widget class="QComboBox" name="comboBox_projectUnitSystem">
-         <property name="toolTip">
-          <string>Unit system stored in the current document</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="2">
+       <item row="2" column="0" colspan="3">
         <widget class="QCheckBox" name="checkBox_projectUnitSystemIgnore">
           <property name="toolTip">
            <string>If enabled, document unit systems are ignored</string>
           </property>
           <property name="text">
-           <string>Ignore</string>
+           <string>Ignore project unit system and use default</string>
           </property>
         </widget>
        </item>
