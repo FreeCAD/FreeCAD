@@ -176,7 +176,8 @@ NavigationStyle& NavigationStyle::operator = (const NavigationStyle& ns)
 {
     this->panningplane = ns.panningplane;
     this->menuenabled = ns.menuenabled;
-    this->spinanimatingallowed = ns.spinanimatingallowed;
+    this->animationEnabled = ns.animationEnabled;
+    this->spinningAnimationEnabled = ns.spinningAnimationEnabled;
     static_cast<FCSphereSheetProjector*>(this->spinprojector)->setOrbitStyle
         (static_cast<FCSphereSheetProjector*>(ns.spinprojector)->getOrbitStyle());
     return *this;
@@ -194,7 +195,8 @@ void NavigationStyle::initialize()
     this->sensitivity = 2.0f;
     this->resetcursorpos = false;
     this->currentmode = NavigationStyle::IDLE;
-    this->spinanimatingallowed = true;
+    this->animationEnabled = true;
+    this->spinningAnimationEnabled = false;
     this->spinsamplecounter = 0;
     this->spinincrement = SbRotation::identity();
     this->rotationCenterFound = false;
@@ -916,7 +918,7 @@ SbBool NavigationStyle::doSpin()
 {
     if (this->log.historysize >= 3) {
         SbTime stoptime = (SbTime::getTimeOfDay() - this->log.time[0]);
-        if (this->spinanimatingallowed && stoptime.getValue() < 0.100) {
+        if (isSpinningAnimationEnabled() && stoptime.getValue() < 0.100) {
             const SbViewportRegion & vp = viewer->getSoRenderManager()->getViewportRegion();
             const SbVec2s glsize(vp.getViewportSizePixels());
             SbVec3f from = this->spinprojector->project(SbVec2f(float(this->log.position[2][0]) / float(std::max(glsize[0]-1, 1)),
@@ -1061,38 +1063,62 @@ SbBool NavigationStyle::handleEventInForeground(const SoEvent* const e)
     return action.isHandled();
 }
 
-/*!
-  Decide if it should be possible to start a spin animation of the
-  model in the viewer by releasing the mouse button while dragging.
-
-  If the \a enable flag is \c false and we're currently animating, the
-  spin will be stopped.
-*/
-void
-NavigationStyle::setAnimationEnabled(const SbBool enable)
+/**
+ * @brief Decide if it should be possible to start any animation
+ *
+ * If the enable flag is false and we're currently animating, the animation will be stopped
+ */
+void NavigationStyle::setAnimationEnabled(const SbBool enable)
 {
-    this->spinanimatingallowed = enable;
-    if (!enable && this->isAnimating()) { animator->stop(); }
+    animationEnabled = enable;
+    if (!enable && isAnimating()) {
+        animator->stop();
+    }
 }
 
-/*!
-  Query whether or not it is possible to start a spinning animation by
-  releasing the left mouse button while dragging the mouse.
-*/
-
-SbBool
-NavigationStyle::isAnimationEnabled() const
+/**
+ * @brief Decide if it should be possible to start a spin animation of the model in the viewer by releasing the mouse button while dragging
+ *
+ * If the enable flag is false and we're currently animating, the spin animation will be stopped
+ */
+void NavigationStyle::setSpinningAnimationEnabled(const SbBool enable)
 {
-    return this->spinanimatingallowed;
+    spinningAnimationEnabled = enable;
+    if (!enable && isSpinning()) {
+        animator->stop();
+    }
 }
 
-/*!
-  Query if the model in the viewer is currently in spinning mode after
-  a user drag.
-*/
+/**
+ * @return Whether or not it is possible to start any animation
+ */
+SbBool NavigationStyle::isAnimationEnabled() const
+{
+    return animationEnabled;
+}
+
+/**
+ * @return Whether or not it is possible to start a spinning animation e.g. after dragging
+ */
+SbBool NavigationStyle::isSpinningAnimationEnabled() const
+{
+    return animationEnabled && spinningAnimationEnabled;
+}
+
+/**
+ * @return Whether or not any animation is currently active
+ */
 SbBool NavigationStyle::isAnimating() const
 {
-    return this->currentmode == NavigationStyle::SPINNING;
+    return animator->isAnimating();
+}
+
+/**
+ * @return Whether or not a spinning animation is currently active e.g. after a user drag
+ */
+SbBool NavigationStyle::isSpinning() const
+{
+    return currentmode == NavigationStyle::SPINNING;
 }
 
 void NavigationStyle::startAnimating(const std::shared_ptr<NavigationAnimation>& animation, bool wait) const

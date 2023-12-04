@@ -88,8 +88,8 @@ void DlgSettingsNavigation::saveSettings()
     ui->rotationCenterSize->onSave();
     ui->rotationCenterColor->onSave();
     ui->spinBoxZoomStep->onSave();
-    ui->checkBoxNavigationAnimations->onSave();
     ui->spinBoxAnimationDuration->onSave();
+    ui->checkBoxSpinningAnimations->onSave();
     ui->qspinNewDocScale->onSave();
     ui->prefStepByTurn->onSave();
     ui->naviCubeCorner->onSave();
@@ -102,6 +102,9 @@ void DlgSettingsNavigation::saveSettings()
 
     bool showRotationCenter = ui->groupBoxRotationCenter->isChecked();
     hGrp->SetBool("ShowRotationCenter", showRotationCenter);
+
+    bool useNavigationAnimations = ui->groupBoxAnimations->isChecked();
+    hGrp->SetBool("UseNavigationAnimations", useNavigationAnimations);
 
     QVariant camera = ui->comboNewDocView->itemData(ui->comboNewDocView->currentIndex(),
         Qt::UserRole);
@@ -130,8 +133,8 @@ void DlgSettingsNavigation::loadSettings()
     ui->rotationCenterSize->onRestore();
     ui->rotationCenterColor->onRestore();
     ui->spinBoxZoomStep->onRestore();
-    ui->checkBoxNavigationAnimations->onRestore();
     ui->spinBoxAnimationDuration->onRestore();
+    ui->checkBoxSpinningAnimations->onRestore();
     ui->qspinNewDocScale->onRestore();
     ui->prefStepByTurn->onRestore();
     ui->naviCubeCorner->onRestore();
@@ -157,6 +160,9 @@ void DlgSettingsNavigation::loadSettings()
 
     bool showRotationCenter = hGrp->GetBool("ShowRotationCenter", true);
     ui->groupBoxRotationCenter->setChecked(showRotationCenter);
+
+    bool useNavigationAnimations = hGrp->GetBool("UseNavigationAnimations", true);
+    ui->groupBoxAnimations->setChecked(useNavigationAnimations);
 
     ui->comboNewDocView->addItem(tr("Isometric"), QByteArray("Isometric"));
     ui->comboNewDocView->addItem(tr("Dimetric"), QByteArray("Dimetric"));
