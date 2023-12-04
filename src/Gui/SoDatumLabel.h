@@ -75,6 +75,8 @@ public:
     SoSFFloat  param1;
     SoSFFloat  param2;
     SoSFFloat  param3;
+    SoSFFloat  param4;
+    SoSFFloat  param5;
     SoMFVec3f  pnts;
     SoSFVec3f  norm;
     SoSFImage  image;
