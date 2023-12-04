@@ -11,7 +11,7 @@
 #include "ASMTItemIJ.h"
 
 namespace MbD {
-    class EXPORT ASMTKinematicIJ : public ASMTItemIJ
+    class ASMTKinematicIJ : public ASMTItemIJ
     {
         //
     public:

@@ -13,7 +13,7 @@
 #include <string>
 
 namespace MbD {
-    class EXPORT ASMTRefPoint : public ASMTRefItem
+    class ASMTRefPoint : public ASMTRefItem
     {
         //
     public:

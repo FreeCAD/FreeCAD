@@ -11,7 +11,7 @@
 #include "ASMTMotion.h"
 
 namespace MbD {
-    class EXPORT ASMTGeneralMotion : public ASMTMotion
+    class ASMTGeneralMotion : public ASMTMotion
     {
         //
     public:

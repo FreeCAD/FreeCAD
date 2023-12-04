@@ -11,7 +11,7 @@
 #include "ASMTAtPointJoint.h"
 
 namespace MbD {
-    class EXPORT ASMTUniversalJoint : public ASMTAtPointJoint
+    class ASMTUniversalJoint : public ASMTAtPointJoint
     {
         //
     public:

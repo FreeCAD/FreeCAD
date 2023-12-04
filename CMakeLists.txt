@@ -349,7 +349,6 @@ set(ONDSELSOLVER_HEADERS
         OndselSolver/AngleZIeqcJeqc.h
         OndselSolver/AnyGeneralSpline.h
         OndselSolver/AnyPosICNewtonRaphson.h
-        OndselSolver/APIExport.h
         OndselSolver/ArcSine.h
         OndselSolver/ArcTan.h
         OndselSolver/ArcTan2.h

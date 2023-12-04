@@ -29,7 +29,7 @@ namespace MbD {
     class ASMTMotion;
     class ASMTMarker;
 
-    class EXPORT ASMTSpatialContainer : public ASMTSpatialItem
+    class ASMTSpatialContainer : public ASMTSpatialItem
     {
         //
     public:

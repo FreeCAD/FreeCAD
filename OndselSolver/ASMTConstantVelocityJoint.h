@@ -11,7 +11,7 @@
 #include "ASMTAtPointJoint.h"
 
 namespace MbD {
-    class EXPORT ASMTConstantVelocityJoint : public ASMTAtPointJoint
+    class ASMTConstantVelocityJoint : public ASMTAtPointJoint
     {
         //
     public:

@@ -11,7 +11,7 @@
 #include "ASMTItemIJ.h"
 
 namespace MbD {
-    class EXPORT ASMTForceTorque : public ASMTItemIJ
+    class ASMTForceTorque : public ASMTItemIJ
     {
         //
     public:

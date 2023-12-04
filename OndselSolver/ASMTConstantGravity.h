@@ -15,7 +15,7 @@ namespace MbD {
     class System;
     class Units;
 
-    class EXPORT ASMTConstantGravity : public ASMTItem
+    class ASMTConstantGravity : public ASMTItem
     {
         //
     public:

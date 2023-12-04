@@ -11,7 +11,7 @@
 #include "ASMTRefItem.h"
 
 namespace MbD {
-    class EXPORT ASMTRefSurface : public ASMTRefItem
+    class ASMTRefSurface : public ASMTRefItem
     {
         //
     public:

@@ -28,7 +28,7 @@ namespace MbD {
 	class ASMTItemIJ;
 	class MBDynSystem;
 
-	class EXPORT ASMTAssembly : public ASMTSpatialContainer
+	class ASMTAssembly : public ASMTSpatialContainer
 	{
 		//
 	public:

@@ -13,7 +13,7 @@
 namespace MbD {
     class ForceTorqueData;
 
-    class EXPORT ASMTJoint : public ASMTConstraintSet
+    class ASMTJoint : public ASMTConstraintSet
     {
         //
     public:

@@ -11,7 +11,7 @@
 #include "ASMTCompoundJoint.h"
 
 namespace MbD {
-    class EXPORT ASMTSphSphJoint : public ASMTCompoundJoint
+    class ASMTSphSphJoint : public ASMTCompoundJoint
     {
         //
     public:

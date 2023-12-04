@@ -11,7 +11,7 @@
 #include "ASMTInPlaneJoint.h"
 
 namespace MbD {
-    class EXPORT ASMTPointInPlaneJoint : public ASMTInPlaneJoint
+    class ASMTPointInPlaneJoint : public ASMTInPlaneJoint
     {
         //
     public:
