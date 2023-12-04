@@ -32,7 +32,8 @@ namespace MbD {
         void simUpdateAll() override;
         double value() override;
 
-        double thez, cosOverSSq, sinOverSSq, twoCosSinOverSSqSq, dSqOverSSqSq;
+        double thez = std::numeric_limits<double>::min();
+        double cosOverSSq, sinOverSSq, twoCosSinOverSSqSq, dSqOverSSqSq;
         std::shared_ptr<DispCompIecJecIe> xIeJeIe, yIeJeIe;
     };
 }

@@ -11,7 +11,6 @@
 
 namespace MbD {
 	class MBDynSystem;
-	class MBDynVariable;
 	class MBDynReference;
 	class MBDynNode;
 	class ASMTItem;
