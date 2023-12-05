@@ -1808,7 +1808,7 @@ void segmentation_fault_handler(int sig)
 #if defined(FC_DEBUG)
     abort();
 #else
-    exit(1);
+    _exit(1);
 #endif
 #else
     switch (sig) {
