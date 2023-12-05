@@ -3250,20 +3250,25 @@ int Sketch::addDistanceConstraint(int geoId1, int geoId2, double* value, bool dr
     geoId1 = checkGeoId(geoId1);
     geoId2 = checkGeoId(geoId2);
 
-    GCS::Circle *c1, *c2;
     if (Geoms[geoId2].type == Line) {
+        GCS::Circle* c1;
         if (Geoms[geoId1].type == Circle) {
             c1 = &Circles[Geoms[geoId1].index];
         }
         else if (Geoms[geoId1].type == Arc) {
             c1 = &Arcs[Geoms[geoId1].index];
         }
+        else {
+            return -1;
+        }
+
         GCS::Line* l = &Lines[Geoms[geoId2].index];
         int tag = ++ConstraintsCounter;
         GCSsys.addConstraintC2LDistance(*c1, *l, value, tag, driving);
         return ConstraintsCounter;
     }
     else {
+        GCS::Circle *c1, *c2;
         if (Geoms[geoId1].type == Circle) {
             c1 = &Circles[Geoms[geoId1].index];
         }
