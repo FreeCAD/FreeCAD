@@ -1,0 +1,174 @@
+#-----------------------------------------------------------------------------
+ # [Data Block]
+
+ begin: data;
+     problem: initial value;
+ end: data;
+
+ #-----------------------------------------------------------------------------
+ # [Problem Block]
+
+ begin: initial value;
+     initial time: 0.0;
+     final time: 4.0;
+     time step: 0.01;
+     max iterations: 100;
+     tolerance: 1e-06;
+     derivatives tolerance: 0.0001;
+     derivatives max iterations: 100;
+     derivatives coefficient: auto;
+ end: initial value;
+
+ #-----------------------------------------------------------------------------
+ # [Control Data Block]
+
+ begin: control data;
+     max iterations: 1000;
+     default orientation: orientation matrix;
+     omega rotates: no;
+     print: none;
+     initial stiffness: 1.0, 1.0;
+     structural nodes: 2;
+     rigid bodies: 1;
+     joints: 2;
+ end: control data;
+
+ #-----------------------------------------------------------------------------
+ # [Design Variables]
+
+     #Generic bodies
+
+         #body: 2
+             set: integer body_2 = 2; #body label
+             set: real mass_2 = 12.635833504434357; #mass [kg]
+             set: real volume_2 = 0.0015994725954980198; #volume [m^3]
+
+     #Nodes
+
+         #node: 1
+             set: integer structural_node_1 = 1; #node label
+
+         #node: 2
+             set: integer structural_node_2 = 2; #node label
+
+     #Joints
+
+         #joint: 1
+             set: integer joint_1 = 1; #joint label
+
+         #joint: 2_3
+             set: integer joint_2 = 2; #joint label
+
+             set: integer joint_3 = 3; #joint label
+
+     #Nodes: initial conditions
+
+         #node: 1
+             set: real Px_1 = -0.13221311939246777; #X component of the absolute position [m]
+             set: real Py_1 = 0.04215394533365132; #Y component of the absolute position [m]
+             set: real Pz_1 = 0.2000000152587891; #Z component of the absolute position [m]
+
+             set: real Vx_1 = 0.0; #X component of the absolute velocity [m/s]
+             set: real Vy_1 = 0.0; #Y component of the absolute velocity [m/s]
+             set: real Vz_1 = 0.0; #Z component of the absolute velocity [m/s]
+
+             set: real Wx_1 = 0.0; #X component of the absolute angular velocity [rad/s]
+             set: real Wy_1 = 0.0; #Y component of the absolute angular velocity [rad/s]
+             set: real Wz_1 = 0.0; #Z component of the absolute angular velocity [rad/s]
+
+         #node: 2
+             set: real Px_2 = 0.42576986140770334; #X component of the absolute position [m]
+             set: real Py_2 = 0.17328227933817877; #Y component of the absolute position [m]
+             set: real Pz_2 = 0.302175885912376; #Z component of the absolute position [m]
+
+             set: real Vx_2 = 0.0; #X component of the absolute velocity [m/s]
+             set: real Vy_2 = 0.0; #Y component of the absolute velocity [m/s]
+             set: real Vz_2 = 0.0; #Z component of the absolute velocity [m/s]
+
+             set: real Wx_2 = 0.0; #X component of the absolute angular velocity [rad/s]
+             set: real Wy_2 = 0.0; #Y component of the absolute angular velocity [rad/s]
+             set: real Wz_2 = 0.0; #Z component of the absolute angular velocity [rad/s]
+
+ #-----------------------------------------------------------------------------
+ # [Intermediate Variables]
+
+     #Moments of inertia and relative center of mass
+
+         #body 2: 
+             set: real Ixx_2 = 0.08708924866282601; #moment of inertia [kg*m^2]
+             set: real Iyy_2 = 0.085370944710882; #moment of inertia [kg*m^2]
+             set: real Izz_2 = 0.064597123189377; #moment of inertia [kg*m^2]
+
+             set: real Rx_2 = -0.003947705364974695; #X component of the relative center of mass [m]
+             set: real Ry_2 = 0.010426613861126484; #Y component of the relative center of mass [m]
+             set: real Rz_2 = -1.1368683772161603e-16; #Z component of the relative center of mass [m]
+
+ #-----------------------------------------------------------------------------
+ # [Nodes Block]
+
+ begin: nodes;
+
+     structural: structural_node_1,
+                 static,
+                 Px_1, Py_1, Pz_1, #<absolute_position> [m]
+                 3, 0.0, 0.0, 1.0, 2, 0.0, 1.0, 0.0, #<absolute_orientation_matrix>
+                 Vx_1, Vy_1, Vz_1, #<absolute_velocity> [m/s]
+                 Wx_1, Wy_1, Wz_1; #<absolute_angular_velocity> [rad/s]
+
+     structural: structural_node_2,
+                 dynamic,
+                 Px_2, Py_2, Pz_2, #<absolute_position> [m]
+                 3, -0.1066546951805642, 0.2196963614042295, 0.969720725148062, 2, 0.4234982246408653, -0.8723574602808866, 0.24421653346634187, #<absolute_orientation_matrix>
+                 Vx_2, Vy_2, Vz_2, #<absolute_velocity> [m/s]
+                 Wx_2, Wy_2, Wz_2; #<absolute_angular_velocity> [rad/s]
+
+ end: nodes;
+
+ #-----------------------------------------------------------------------------
+ # [Elements Block]
+
+ begin: elements;
+
+     #-----------------------------------------------------------------------------
+     # [Bodies]
+
+         body: body_2,
+               structural_node_2, #<node_label> 
+               mass_2, #<mass> [kg]
+               Rx_2, Ry_2, Rz_2, #<relative_center_of_mass> [m]
+               diag, Ixx_2, Iyy_2, Izz_2, #<inertia matrix> [kg*m^2]
+               orientation, 3, 0.0028768192094494223, -0.0016134085099385742, 1.0006943193724125, 2, 0.3504771628806489, -0.9326094659776577, -0.002311334679062277; 
+
+     #-----------------------------------------------------------------------------
+     # [Joints]
+
+     joint: joint_1,
+         clamp,
+         structural_node_1, #<node_label>
+             -0.13221311939246777, 0.04215394533365132, 0.2000000152587891, #<absolute_pin_position> [m]
+             3, 0.0, 0.0, 1.0, 2, 0.0, 1.0, 0.0; #<absolute_orientation_matrix> 
+
+     joint: joint_2,
+         total joint,
+         structural_node_1, #<node_1_label>
+             position, 0.20321309650428418, 0.11784606885225504, -2.842170943040401e-17, #<relative_position_1> [m]
+             position orientation, 3, 0.0, 2.471452993948174e-16, 1.0, 2, -0.0, 1.0, -2.471452993948174e-16, #<relative_pin_orientation_matrix_1>
+             rotation orientation, 3, 0.0, 2.471452993948174e-16, 1.0, 2, -0.0, 1.0, -2.471452993948174e-16, #<relative_pin_orientation_matrix_1>
+         structural_node_2, #<node_2_label>
+             position, 0.0, 0.0, 0.0, #<relative_position_2> [m]
+             position orientation, 3, 0.0, 0.0, 1.0, 2, 0.0, 1.0, 0.0, #<relative_pin_orientation_matrix_2>
+             rotation orientation, 3, 0.0, 0.0, 1.0, 2, 0.0, 1.0, 0.0, #<relative_pin_orientation_matrix_2>
+         position constraint,
+             active, active, active,
+             null,
+         orientation constraint,
+             active, active, rotation,
+             single, 0., 0., 1., string, "model::drive(1, Time)"; #<angle> [rad]
+
+     #-----------------------------------------------------------------------------
+     # [Drive callers]
+
+     drive caller: 1, name,"drive:1", sine, 0.25, 3.1416, 10.0, forever, 0.0;
+
+ end: elements;
+
