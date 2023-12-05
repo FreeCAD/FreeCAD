@@ -4364,25 +4364,10 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
         const Part::Geometry* geom1 = Obj->getGeometry(GeoId1);
         const Part::Geometry* geom2 = Obj->getGeometry(GeoId2);
 
-        auto isCircleOrArc = [](const Part::Geometry & geo) {
-            return isCircle(geo) || isArcOfCircle(geo);
-        };
-
         if(isCircleOrArc(*geom1) && isCircleOrArc(*geom2)) {
 
-            auto getRadiusCenter = [](const Part::Geometry * geo) {
-                if (isArcOfCircle(*geo)) {
-                    auto arc = static_cast<const Part::GeomArcOfCircle*>(geo); //NOLINT
-                    return std::tuple<double,Base::Vector3d>(arc->getRadius(), arc->getCenter());
-                }
-                else {
-                    auto circ = static_cast<const Part::GeomArcOfCircle*>(geo); //NOLINT
-                    return std::tuple<double,Base::Vector3d>(circ->getRadius(), circ->getCenter());
-                }
-            };
-
-            auto [radius1, center1] = getRadiusCenter(geom1);
-            auto [radius2, center2] = getRadiusCenter(geom2);
+            auto [radius1, center1] = getRadiusCenterCircleArc(geom1);
+            auto [radius2, center2] = getRadiusCenterCircleArc(geom2);
 
             double ActDist = 0.0;
 
