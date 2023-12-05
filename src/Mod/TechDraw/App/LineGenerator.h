@@ -63,6 +63,10 @@ public:
     static std::vector<std::string> getAvailableLineStandards();
     static std::string getLineStandardsBody();
 
+    //! if the line standard changes during a lineGenerator's life time
+    //! then the elements and line descriptions need to be reloaded using the
+    //! new standard.
+    void reloadDescriptions();
     //! get line descriptions from memory
     std::vector<std::string> getLoadedDescriptions();
     //! get line descriptions from file

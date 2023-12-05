@@ -537,6 +537,9 @@
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
+          <property name="maxVisibleItems">
+           <number>6</number>
+          </property>
           <property name="iconSize">
            <size>
             <width>32</width>
@@ -574,6 +577,12 @@
             <verstretch>0</verstretch>
            </sizepolicy>
           </property>
+          <property name="maxVisibleItems">
+           <number>6</number>
+          </property>
+          <property name="sizeAdjustPolicy">
+           <enum>QComboBox::AdjustToContents</enum>
+          </property>
           <property name="iconSize">
            <size>
             <width>32</width>
@@ -607,6 +616,9 @@
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maxVisibleItems">
+           <number>6</number>
           </property>
           <property name="iconSize">
            <size>
@@ -735,6 +747,9 @@
             <horstretch>0</horstretch>
             <verstretch>0</verstretch>
            </sizepolicy>
+          </property>
+          <property name="maxVisibleItems">
+           <number>6</number>
           </property>
           <property name="iconSize">
            <size>

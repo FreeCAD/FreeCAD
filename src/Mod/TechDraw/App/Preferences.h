@@ -107,6 +107,7 @@ public:
     static bool SectionUsePreviousCut();
 
     static int lineStandard();
+    static void setLineStandard(int index);
     static std::string lineDefinitionLocation();
     static std::string lineElementsLocation();
 
