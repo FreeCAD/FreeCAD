@@ -229,13 +229,14 @@ App::DocumentObjectExecReturn* Helix::execute()
         if ( UseMakePipe.getValue() )  {
             TopoDS_Shape path = generateHelixPath(0.0, 1.0);
             TopoDS_Shape face = Part::FaceMakerCheese::makeFace(wires);
+            face.Move(invObjLoc);
             BRepOffsetAPI_MakePipe mkPS(TopoDS::Wire(path), face, GeomFill_Trihedron::GeomFill_IsFrenet, Standard_False);
 
             mkPS.Build();
 
             result = mkPS.Shape();
         } else {
-            /*  @deprecrated  12/01/2023  This is legacy code, here to maintain backward compatibility with existing models without altering their
+            /*  Deprecated  12/01/2023  This is legacy code, here to maintain backward compatibility with existing models without altering their
              *  Helixes to have fewer seams, and potentially trigger TNP.  Someday it should go away, and so should the gating
              *  property.
              */
