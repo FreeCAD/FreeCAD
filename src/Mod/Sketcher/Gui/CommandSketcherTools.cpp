@@ -2264,12 +2264,12 @@ CmdSketcherOffset::CmdSketcherOffset()
 {
     sAppModule = "Sketcher";
     sGroup = "Sketcher";
-    sMenuText = QT_TR_NOOP("Offset geometries");
+    sMenuText = QT_TR_NOOP("Offset geometry");
     sToolTipText = QT_TR_NOOP("Offset selected geometries. A positive offset length makes the offset go outward, a negative length inward.");
     sWhatsThis = "Sketcher_Offset";
     sStatusTip = sToolTipText;
     sPixmap = "Sketcher_Offset";
-    sAccel = "Z, O";
+    sAccel = "Z, T";
     eType = ForEdit;
 }
 
