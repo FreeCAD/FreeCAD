@@ -4363,33 +4363,65 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
     else if (isEdge(GeoId1, PosId1) && isEdge(GeoId2, PosId2)) {
         const Part::Geometry* geom1 = Obj->getGeometry(GeoId1);
         const Part::Geometry* geom2 = Obj->getGeometry(GeoId2);
-        double radius1 = 0.0, radius2 = 0.0;
-        Base::Vector3d center1, center2;
-        if (isArcOfCircle(*geom1)) {
-            auto arcSeg1 = static_cast<const Part::GeomArcOfCircle*>(geom1);
-            radius1 = arcSeg1->getRadius();
-            center1 = arcSeg1->getCenter();
-        }
-        if (isArcOfCircle(*geom2)) {
-            auto arcSeg2 = static_cast<const Part::GeomArcOfCircle*>(geom2);
-            radius2 = arcSeg2->getRadius();
-            center2 = arcSeg2->getCenter();
-        }
-        if (isCircle(*geom1)) {
-            auto circleSeg1 = static_cast<const Part::GeomCircle*>(geom1);
-            radius1 = circleSeg1->getRadius();
-            center1 = circleSeg1->getCenter();
-        }
-        if (isCircle(*geom2)) {
-            auto circleSeg2 = static_cast<const Part::GeomCircle*>(geom2);
-            radius2 = circleSeg2->getRadius();
-            center2 = circleSeg2->getCenter();
-        }
-        if (radius1 == 0.0 || radius2 == 0.0) {
-            Gui::TranslatedNotification(
-                Obj,
-                QObject::tr("Wrong selection"),
-                QObject::tr("Cannot add a length constraint on this selection!"));
+
+        auto isCircleOrArc = [](const Part::Geometry & geo) {
+            return isCircle(geo) || isArcOfCircle(geo);
+        };
+
+        if(isCircleOrArc(*geom1) && isCircleOrArc(*geom2)) {
+
+            auto getRadiusCenter = [](const Part::Geometry * geo) {
+                if (isArcOfCircle(*geo)) {
+                    auto arc = static_cast<const Part::GeomArcOfCircle*>(geo); //NOLINT
+                    return std::tuple<double,Base::Vector3d>(arc->getRadius(), arc->getCenter());
+                }
+                else {
+                    auto circ = static_cast<const Part::GeomArcOfCircle*>(geo); //NOLINT
+                    return std::tuple<double,Base::Vector3d>(circ->getRadius(), circ->getCenter());
+                }
+            };
+
+            auto [radius1, center1] = getRadiusCenter(geom1);
+            auto [radius2, center2] = getRadiusCenter(geom2);
+
+            double ActDist = 0.0;
+
+            Base::Vector3d intercenter = center1 - center2;
+            double intercenterdistance = intercenter.Length();
+
+            if (intercenterdistance >= radius1 && intercenterdistance >= radius2) {
+
+                ActDist = intercenterdistance - radius1 - radius2;
+            }
+            else {
+                double bigradius = std::max(radius1, radius2);
+                double smallradius = std::min(radius1, radius2);
+
+                ActDist = bigradius - smallradius - intercenterdistance;
+            }
+
+            openCommand(QT_TRANSLATE_NOOP("Command", "Add circle to circle distance constraint"));
+            Gui::cmdAppObjectArgs(selection[0].getObject(),
+                                  "addConstraint(Sketcher.Constraint('Distance',%d,%d,%f))",
+                                  GeoId1,
+                                  GeoId2,
+                                  ActDist);
+
+            if (arebothpointsorsegmentsfixed
+                || constraintCreationMode
+                    == Reference) {// it is a constraint on a external line, make it non-driving
+                const std::vector<Sketcher::Constraint*>& ConStr = Obj->Constraints.getValues();
+
+                Gui::cmdAppObjectArgs(selection[0].getObject(),
+                                      "setDriving(%d,%s)",
+                                      ConStr.size() - 1,
+                                      "False");
+                finishDatumConstraint(this, Obj, false);
+            }
+            else {
+                finishDatumConstraint(this, Obj, true);
+            }
+
             return;
         }
         else if ((isCircle(*geom1) && isLineSegment(*geom2))
@@ -4437,45 +4469,13 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
 
             return;
         }
-        double ActDist = 0.0;
-
-        Base::Vector3d intercenter = center1 - center2;
-        double intercenterdistance = intercenter.Length();
-
-        if (intercenterdistance >= radius1 && intercenterdistance >= radius2) {
-
-            ActDist = intercenterdistance - radius1 - radius2;
-        }
         else {
-            double bigradius = std::max(radius1, radius2);
-            double smallradius = std::min(radius1, radius2);
-
-            ActDist = bigradius - smallradius - intercenterdistance;
+            Gui::TranslatedNotification(
+                Obj,
+                QObject::tr("Wrong selection"),
+                QObject::tr("Cannot add a length constraint on this selection!"));
+            return;
         }
-
-        openCommand(QT_TRANSLATE_NOOP("Command", "Add circle to circle distance constraint"));
-        Gui::cmdAppObjectArgs(selection[0].getObject(),
-                              "addConstraint(Sketcher.Constraint('Distance',%d,%d,%f))",
-                              GeoId1,
-                              GeoId2,
-                              ActDist);
-
-        if (arebothpointsorsegmentsfixed
-            || constraintCreationMode
-                == Reference) {// it is a constraint on a external line, make it non-driving
-            const std::vector<Sketcher::Constraint*>& ConStr = Obj->Constraints.getValues();
-
-            Gui::cmdAppObjectArgs(selection[0].getObject(),
-                                  "setDriving(%d,%s)",
-                                  ConStr.size() - 1,
-                                  "False");
-            finishDatumConstraint(this, Obj, false);
-        }
-        else {
-            finishDatumConstraint(this, Obj, true);
-        }
-
-        return;
     }
     else if (isEdge(GeoId1, PosId1)) {// line length
         if (GeoId1 < 0 && GeoId1 >= Sketcher::GeoEnum::VAxis) {
