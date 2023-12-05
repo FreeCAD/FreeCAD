@@ -390,6 +390,11 @@ void ViewProviderAnnotationLabel::attach(App::DocumentObject* f)
         dragger->addMotionCallback(dragMotionCallback, this);
 
         dragger->setPartAsPath("translator", imagePath);
+
+        // Hide the dragger feedback during translation
+        dragger->setPart("translatorActive", NULL);
+        dragger->setPart("xAxisFeedback", NULL);
+        dragger->setPart("yAxisFeedback", NULL);
     }
 }
 
