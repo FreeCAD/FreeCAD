@@ -43,6 +43,12 @@ SET(TechDraw_PATFile
 )
 
 SET(TechDraw_LineGroupFile
+    LineGroup/ANSI.Y14.2M.1992.ElementDef.csv
+    LineGroup/ANSI.Y14.2M.1992.LineDef.csv
+    LineGroup/ASME.Y14.2.2008.ElementDef.csv
+    LineGroup/ASME.Y14.2.2008.LineDef.csv
+    LineGroup/ISO.128.20.1996.ElementDef.csv
+    LineGroup/ISO.128.20.1996.LineDef.csv
     LineGroup/LineGroup.csv
 )
 
