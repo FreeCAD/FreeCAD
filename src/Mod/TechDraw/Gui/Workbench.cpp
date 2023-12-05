@@ -126,7 +126,8 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *toolcenter << "TechDraw_ExtensionThreadBoltSide";
     *toolcenter << "TechDraw_ExtensionThreadBoltBottom";
     *toolcenter << "Separator";
-    *toolcenter << "TechDraw_ExtensionVertexAtIntersection";
+    *toolcenter << "TechDraw_CommandVertexCreationGroup";
+    //*toolcenter << "TechDraw_ExtensionVertexAtIntersection";
     *toolcenter << "TechDraw_ExtensionDrawCosmCircle";
     *toolcenter << "TechDraw_ExtensionDrawCosmArc";
     *toolcenter << "TechDraw_ExtensionDrawCosmCircle3Points";
@@ -345,7 +346,8 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     extcenter->setCommand("TechDraw Centerlines");
     *extcenter << "TechDraw_ExtensionCircleCenterLinesGroup";
     *extcenter << "TechDraw_ExtensionThreadsGroup";
-    *extcenter << "TechDraw_ExtensionVertexAtIntersection";
+    *extcenter << "TechDraw_CommandVertexCreationGroup";
+    //*extcenter << "TechDraw_ExtensionVertexAtIntersection";
     *extcenter << "TechDraw_ExtensionDrawCirclesGroup";
     *extcenter << "TechDraw_ExtensionLinePPGroup";
 
@@ -456,7 +458,8 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     extcenter->setCommand("TechDraw Centerlines");
     *extcenter << "TechDraw_ExtensionCircleCenterLinesGroup";
     *extcenter << "TechDraw_ExtensionThreadsGroup";
-    *extcenter << "TechDraw_ExtensionVertexAtIntersection";
+    *extcenter << "TechDraw_CommandVertexCreationGroup";
+    //*extcenter << "TechDraw_ExtensionVertexAtIntersection";
     *extcenter << "TechDraw_ExtensionDrawCirclesGroup";
     *extcenter << "TechDraw_ExtensionLinePPGroup";
 

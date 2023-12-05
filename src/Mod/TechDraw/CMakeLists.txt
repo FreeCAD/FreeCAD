@@ -21,10 +21,12 @@ set(TechDraw_ToolsScripts
     TechDrawTools/CommandMoveView.py
     TechDrawTools/CommandShareView.py
     TechDrawTools/CommandAxoLengthDimension.py
+    TechDrawTools/CommandVertexCreations.py
     TechDrawTools/CommandHoleShaftFit.py
     TechDrawTools/TaskMoveView.py
     TechDrawTools/TaskShareView.py
     TechDrawTools/TaskHoleShaftFit.py
+    TechDrawTools/TaskAddOffsetVertex.py
     TechDrawTools/TDToolsUtil.py
     TechDrawTools/TDToolsMovers.py
 )
@@ -32,6 +34,7 @@ set(TechDraw_ToolsScripts
 set(TechDraw_ToolsGui
     Gui/TaskMoveView.ui
     Gui/TaskHoleShaftFit.ui
+    Gui/TaskAddOffsetVertex.ui
     Gui/DlgPageChooser.ui
 )
 
