@@ -425,6 +425,12 @@ int Preferences::lineStandard()
     return getPreferenceGroup("Standards")->GetInt("LineStandard", 1);
 }
 
+//! update the line standard preference.  used in the preferences dialog.
+void Preferences::setLineStandard(int index)
+{
+    getPreferenceGroup("Standards")->SetInt("LineStandard", index);
+}
+
 std::string Preferences::lineDefinitionLocation()
 {
     std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/LineGroup/";

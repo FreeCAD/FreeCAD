@@ -56,6 +56,14 @@ using DU = DrawUtil;
 
 LineGenerator::LineGenerator()
 {
+    reloadDescriptions();
+//    m_elementDefs = loadElements();
+//    m_lineDefs = getLineDefinitions();
+//    m_lineDescs = getLineDescriptions();
+}
+
+void LineGenerator::reloadDescriptions()
+{
     m_elementDefs = loadElements();
     m_lineDefs = getLineDefinitions();
     m_lineDescs = getLineDescriptions();
