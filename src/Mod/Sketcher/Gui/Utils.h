@@ -63,6 +63,10 @@ bool isArcOfParabola(const Part::Geometry&);
 bool isBSplineCurve(const Part::Geometry&);
 bool isPoint(const Part::Geometry&);
 
+bool isCircleOrArc(const Part::Geometry& geo);
+
+std::tuple<double, Base::Vector3d> getRadiusCenterCircleArc(const Part::Geometry* geo);
+
 }  // namespace Sketcher
 
 namespace SketcherGui
