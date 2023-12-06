@@ -201,15 +201,12 @@ std::vector<App::DocumentObject*> DrawViewPart::getAllSources() const
     return result;
 }
 
-//! pick supported 2d shapes out of the Source properties and
+//! pick vertex objects out of the Source properties and
 //! add them directly to the geometry without going through HLR
-//! NOTE: this is for loose 2d shapes such as Part line or circle and is
-//! not meant to include complex 2d shapes such as Sketches.
-void DrawViewPart::addShapes2d(void)
+void DrawViewPart::addPoints(void)
 {
-//    Base::Console().Message("DVP::addShapes2d()\n");
-    // get all the 2d shapes in the sources, then pick through them for loose edges
-    // or vertices.
+//    Base::Console().Message("DVP::addPoints()\n");
+    // get all the 2d shapes in the sources, then pick through them for vertices.
     std::vector<TopoDS_Shape> shapes = ShapeExtractor::getShapes2d(getAllSources());
     for (auto& s : shapes) {
         if (s.ShapeType() == TopAbs_VERTEX) {
@@ -220,21 +217,6 @@ void DrawViewPart::addShapes2d(void)
             Base::Vector3d projected = projectPoint(vp * getScale());
             TechDraw::VertexPtr v1(std::make_shared<TechDraw::Vertex>(projected));
             geometryObject->addVertex(v1);
-        }
-        else if (s.ShapeType() == TopAbs_EDGE) {
-            TopoDS_Shape sTrans = ShapeUtils::moveShape(s,
-                                                      m_saveCentroid * -1.0);
-            TopoDS_Shape sScale = ShapeUtils::scaleShape(sTrans,
-                                                       getScale());
-            TopoDS_Shape sMirror = ShapeUtils::mirrorShape(sScale);
-            TopoDS_Edge edge = TopoDS::Edge(sMirror);
-            BaseGeomPtr bg = projectEdge(edge);
-
-            geometryObject->addEdge(bg);
-
-        } else {
-            // message for developers.
-            //Base::Console().Message("DEVEL: DVP::addShapes2d - shape is not a vertex or edge\n");
         }
     }
 }
@@ -448,7 +430,7 @@ void DrawViewPart::postHlrTasks(void)
     addCosmeticVertexesToGeom();
     addCosmeticEdgesToGeom();
     addReferencesToGeom();
-    addShapes2d();
+    addPoints();
 
     //balloons need to be recomputed here because their
     //references will be invalid until the geometry exists

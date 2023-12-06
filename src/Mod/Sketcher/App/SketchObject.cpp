@@ -664,7 +664,12 @@ void SketchObject::reverseAngleConstraintToSupplementary(Constraint* constr, int
 {
     std::swap(constr->First, constr->Second);
     std::swap(constr->FirstPos, constr->SecondPos);
-    constr->FirstPos = (constr->FirstPos == Sketcher::PointPos::start) ? Sketcher::PointPos::end : Sketcher::PointPos::start;
+    if (constr->FirstPos == constr->SecondPos) {
+        constr->FirstPos = (constr->FirstPos == Sketcher::PointPos::start) ? Sketcher::PointPos::end : Sketcher::PointPos::start;
+    }
+    else {
+        constr->SecondPos = (constr->SecondPos == Sketcher::PointPos::start) ? Sketcher::PointPos::end : Sketcher::PointPos::start;
+    }
 
     // Edit the expression if any, else modify constraint value directly
     if (constraintHasExpression(constNum)) {
@@ -675,6 +680,12 @@ void SketchObject::reverseAngleConstraintToSupplementary(Constraint* constr, int
         double actAngle = constr->getValue();
         constr->setValue(M_PI - actAngle);
     }
+}
+
+void SketchObject::inverseAngleConstraint(Constraint* constr)
+{
+    constr->FirstPos = (constr->FirstPos == Sketcher::PointPos::start) ? Sketcher::PointPos::end : Sketcher::PointPos::start;
+    constr->SecondPos = (constr->SecondPos == Sketcher::PointPos::start) ? Sketcher::PointPos::end : Sketcher::PointPos::start;
 }
 
 bool SketchObject::constraintHasExpression(int constNum) const

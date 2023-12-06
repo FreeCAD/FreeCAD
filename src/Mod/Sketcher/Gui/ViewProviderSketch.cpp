@@ -1918,8 +1918,12 @@ void ViewProviderSketch::moveAngleConstraint(int constNum, const Base::Vector2d&
                 sign2 = isLeftOfLine(p21, p22, ap3);
             }
 
+            bool inverse = !(sign1 == sign3 && sign2 == sign4);
+            if (inverse) {
+                obj->inverseAngleConstraint(constr);
+            }
+
             p0 = Base::Vector3d(intersection.x, intersection.y, 0.);
-            factor *= (sign1 == sign3 && sign2 == sign4) ? 1. : -1.;
         }
         else {// angle-via-point
             Base::Vector3d p = getSolvedSketch().getPoint(constr->Third, constr->ThirdPos);

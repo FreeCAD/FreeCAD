@@ -421,7 +421,7 @@ App::DocumentObjectExecReturn* DrawViewSection::execute()
     }
 
     sectionExec(baseShape);
-    addShapes2d();
+    addPoints();
 
     return DrawView::execute();
 }

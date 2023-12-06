@@ -66,6 +66,8 @@ void SketcherSettings::saveSettings()
     ui->checkBoxEnableEscape->onSave();
     ui->checkBoxNotifyConstraintSubstitutions->onSave();
     ui->checkBoxAutoRemoveRedundants->onSave();
+    ui->checkBoxUnifiedCoincident->onSave();
+    ui->checkBoxHorVerAuto->onSave();
 
     enum
     {
@@ -133,6 +135,8 @@ void SketcherSettings::loadSettings()
     ui->checkBoxEnableEscape->onRestore();
     ui->checkBoxNotifyConstraintSubstitutions->onRestore();
     ui->checkBoxAutoRemoveRedundants->onRestore();
+    ui->checkBoxUnifiedCoincident->onRestore();
+    ui->checkBoxHorVerAuto->onRestore();
 
     // Dimensioning constraints mode
     ui->dimensioningMode->clear();

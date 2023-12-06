@@ -93,6 +93,7 @@ recompute path. Also, it enables more complicated dependencies beyond trees.
 #include <Base/Uuid.h>
 #include <Base/Sequencer.h>
 #include <Base/Stream.h>
+#include <Base/UnitsApi.h>
 
 #include "Document.h"
 #include "private/DocumentP.h"
@@ -821,6 +822,18 @@ Document::Document(const char* documentName)
                       0,
                       Prop_None,
                       "Additional tag to save the name of the company");
+    ADD_PROPERTY_TYPE(UnitSystem, (""), 0, Prop_None, "Unit system to use in this project");
+    // Set up the possible enum values for the unit system
+    int num = static_cast<int>(Base::UnitSystem::NumUnitSystemTypes);
+    std::vector<std::string> enumValsAsVector;
+    for (int i = 0; i < num; i++) {
+        QString item = Base::UnitsApi::getDescription(static_cast<Base::UnitSystem>(i));
+        enumValsAsVector.emplace_back(item.toStdString());
+    }
+    UnitSystem.setEnums(enumValsAsVector);
+    // Get the preferences/General unit system as the default for a new document
+    ParameterGrp::handle hGrpu = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Units");
+    UnitSystem.setValue(hGrpu->GetInt("UserSchema", 0));
     ADD_PROPERTY_TYPE(Comment, (""), 0, Prop_None, "Additional tag to save a comment");
     ADD_PROPERTY_TYPE(Meta, (), 0, Prop_None, "Map with additional meta information");
     ADD_PROPERTY_TYPE(Material, (), 0, Prop_None, "Map with material properties");

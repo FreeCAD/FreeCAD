@@ -78,7 +78,6 @@ import draftguitools.gui_selectplane
 import draftguitools.gui_setstyle
 import draftguitools.gui_planeproxy
 from draftguitools.gui_togglemodes import ToggleConstructionMode
-from draftguitools.gui_togglemodes import ToggleContinueMode
 from draftguitools.gui_togglemodes import ToggleDisplayMode
 from draftguitools.gui_groups import AddToGroup
 from draftguitools.gui_groups import SelectGroup
