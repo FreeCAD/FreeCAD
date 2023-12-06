@@ -236,7 +236,7 @@ App::DocumentObjectExecReturn* Helix::execute()
 
             result = mkPS.Shape();
         } else {
-            /*  Deprecated  12/01/2023  This is legacy code, here to maintain backward compatibility with existing models without altering their
+            /*  @deprecated  12/01/2023  This is legacy code, here to maintain backward compatibility with existing models without altering their
              *  Helixes to have fewer seams, and potentially trigger TNP.  Someday it should go away, and so should the gating
              *  property.
              */
