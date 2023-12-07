@@ -59,7 +59,8 @@ class CommandFillTemplateFields:
         TechDrawTools.TaskFillTemplateFields()
 
     def IsActive(self):
-        """Return True when the command should be active or False when it should be disabled (greyed)."""
+        """Return True when the command should be active
+        or False when it should be disabled (greyed)."""
         if App.ActiveDocument:
             objs = App.ActiveDocument.Objects
             for obj in objs:
