@@ -107,8 +107,8 @@ class TaskFillTemplateFields:
                     )
                     msg = QtCore.QT_TRANSLATE_NOOP(
                         "Techdraw_FillTemplateFields",
-                        "There must be a view or projection group to establish data for the scale field in "
-                        + self.page.Label,
+                        "There must be a view or projection group to"
+                        " establish data for the scale field in " + self.page.Label,
                     )
                     msgBox.setText(msg)
                     msgBox.setWindowTitle(msgTitle)
@@ -291,7 +291,11 @@ class TaskFillTemplateFields:
                                 + "\n"
                             )
                             self.s7.setText(
-                                "{0}/{1}/{2}".format(date.today().day, date.today().month, date.today().year)
+                                "{0}/{1}/{2}".format(
+                                    date.today().day,
+                                    date.today().month,
+                                    date.today().year,
+                                )
                             )
                     if str(key).lower() in CreatedDateChkLst:
                         t8 = QtGui.QLabel(value)
@@ -332,7 +336,11 @@ class TaskFillTemplateFields:
                                 + "\n"
                             )
                             self.s8.setText(
-                                "{0}/{1}/{2}".format(date.today().day, date.today().month, date.today().year)
+                                "{0}/{1}/{2}".format(
+                                    date.today().day,
+                                    date.today().month,
+                                    date.today().year,
+                                )
                             )
                 if len(keyLst) > 1:
                     self.cbAll = QtGui.QCheckBox(
