@@ -21,10 +21,12 @@ set(TechDraw_ToolsScripts
     TechDrawTools/CommandMoveView.py
     TechDrawTools/CommandShareView.py
     TechDrawTools/CommandAxoLengthDimension.py
+    TechDrawTools/CommandFillTemplateFields.py
     TechDrawTools/CommandVertexCreations.py
     TechDrawTools/CommandHoleShaftFit.py
     TechDrawTools/TaskMoveView.py
     TechDrawTools/TaskShareView.py
+    TechDrawTools/TaskFillTemplateFields.py
     TechDrawTools/TaskHoleShaftFit.py
     TechDrawTools/TaskAddOffsetVertex.py
     TechDrawTools/TDToolsUtil.py
@@ -42,6 +44,10 @@ SET(TechDraw_PATFile
     PAT/FCPAT.pat
 )
 
+SET(TechDraw_CSVFile
+    CSVdata/FillTemplateFields.csv
+)
+
 SET(TechDraw_LineGroupFile
     LineGroup/ANSI.Y14.2M.1992.ElementDef.csv
     LineGroup/ANSI.Y14.2M.1992.LineDef.csv
@@ -53,7 +59,7 @@ SET(TechDraw_LineGroupFile
 )
 
 add_custom_target(TechDraw_Data ALL
-SOURCES ${TechDraw_Scripts} ${TechDraw_PATFile} ${TechDraw_LineGroupFile} ${TechDraw_ToolsScripts} ${TechDraw_ToolsGui}
+SOURCES ${TechDraw_Scripts} ${TechDraw_PATFile} ${TechDraw_CSVFile} ${TechDraw_LineGroupFile} ${TechDraw_ToolsScripts} ${TechDraw_ToolsGui}
 )
 
 fc_target_copy_resource(TechDraw_Data
@@ -66,6 +72,11 @@ fc_target_copy_resource(TechDraw_Data
     ${CMAKE_CURRENT_SOURCE_DIR}
     ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/TechDraw
     ${TechDraw_PATFile})
+
+fc_target_copy_resource(TechDraw_Data
+    ${CMAKE_CURRENT_SOURCE_DIR}
+    ${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/TechDraw
+    ${TechDraw_CSVFile})
 
 fc_target_copy_resource(TechDraw_Data
     ${CMAKE_CURRENT_SOURCE_DIR}
@@ -95,6 +106,15 @@ INSTALL(
         ${CMAKE_INSTALL_DATADIR}/Mod/TechDraw
     FILES_MATCHING
         PATTERN "*.pat*"
+)
+
+INSTALL(
+    DIRECTORY
+        CSVData
+    DESTINATION
+        ${CMAKE_INSTALL_DATADIR}/Mod/TechDraw
+    FILES_MATCHING
+        PATTERN "*.csv*"
 )
 
 INSTALL(
