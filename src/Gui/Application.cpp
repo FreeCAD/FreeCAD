@@ -1908,8 +1908,13 @@ void setCategoryFilterRules()
     QTextStream stream(&filter);
     stream << "qt.qpa.xcb.warning=false\n";
     stream << "qt.qpa.mime.warning=false\n";
+    stream << "qt.qpa.wayland.warning=false\n";
     stream << "qt.svg.warning=false\n";
     stream << "qt.xkb.compose.warning=false\n";
+    stream << "kf.config.core.warning=false\n";
+    stream << "kf.kio.widgets.warning=false\n";
+    stream << "kf.service.sycoca.warning=false\n";
+    stream << "kf.solid.backends.udisks2=false\n";
     stream.flush();
     QLoggingCategory::setFilterRules(filter);
 }
