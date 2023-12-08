@@ -162,7 +162,8 @@ class snapTracker(Tracker):
 
     def __init__(self):
         self.marker = coin.SoMarkerSet()  # this is the marker symbol
-        self.marker.markerIndex = FreeCADGui.getMarkerIndex("", 9)
+        param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View")
+        self.marker.markerIndex = FreeCADGui.getMarkerIndex("CIRCLE_FILLED", param.GetInt("MarkerSize", 9))
         self.coords = coin.SoCoordinate3()  # this is the coordinate
         self.coords.point.setValue((0, 0, 0))
         node = coin.SoAnnotation()
@@ -173,7 +174,8 @@ class snapTracker(Tracker):
 
     def setMarker(self, style):
         """Set the marker index."""
-        self.marker.markerIndex = FreeCADGui.getMarkerIndex(style, 9)
+        param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View")
+        self.marker.markerIndex = FreeCADGui.getMarkerIndex(style, param.GetInt("MarkerSize", 9))
 
     def setColor(self, color=None):
         """Set the color."""
@@ -697,7 +699,8 @@ class ghostTracker(Tracker):
                 self.coords = coin.SoCoordinate3()
                 self.coords.point.setValue((obj.X, obj.Y, obj.Z))
                 self.marker = coin.SoMarkerSet()  # this is the marker symbol
-                self.marker.markerIndex = FreeCADGui.getMarkerIndex("quad", 9)
+                param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View")
+                self.marker.markerIndex = FreeCADGui.getMarkerIndex("SQUARE_FILLED", param.GetInt("MarkerSize", 9))
                 node = coin.SoAnnotation()
                 selnode = coin.SoSeparator()
                 selnode.addChild(self.coords)
@@ -833,10 +836,13 @@ class editTracker(Tracker):
     """A node edit tracker."""
 
     def __init__(self, pos=Vector(0, 0, 0), name=None, idx=0, objcol=None,
-                 marker=FreeCADGui.getMarkerIndex("quad", 9),
-                 inactive=False):
+                 marker=None, inactive=False):
         self.marker = coin.SoMarkerSet()  # this is the marker symbol
-        self.marker.markerIndex = marker
+        if marker is None:
+            param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View")
+            self.marker.markerIndex = FreeCADGui.getMarkerIndex("SQUARE_FILLED", param.GetInt("MarkerSize", 9))
+        else:
+            self.marker.markerIndex = marker
         self.coords = coin.SoCoordinate3()  # this is the coordinate
         self.coords.point.setValue((pos.x, pos.y, pos.z))
         self.position = pos
