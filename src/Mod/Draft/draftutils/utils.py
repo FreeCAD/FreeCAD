@@ -208,7 +208,7 @@ def get_param_type(param):
                    "LineSpacing"):
         return "float"
     elif param in ("selectBaseObjects", "alwaysSnap", "grid",
-                   "fillmode", "maxSnap", "DimShowLine",
+                   "fillmode", "DimShowLine",
                    "SvgLinesBlack", "dxfStdSize", "SnapBarShowOnlyDuringCommands",
                    "alwaysShowGrid", "renderPolylineWidth",
                    "showPlaneTracker", "UsePartPrimitives",
