@@ -547,10 +547,14 @@ class Edit(gui_base_original.Modifier):
 
     def resetTrackersBezier(self, obj):
         # in future move tracker definition to DraftTrackers
-        knotmarkers = (coin.SoMarkerSet.DIAMOND_FILLED_9_9,#sharp
-                coin.SoMarkerSet.SQUARE_FILLED_9_9,        #tangent
-                coin.SoMarkerSet.HOURGLASS_FILLED_9_9)     #symmetric
-        polemarker = coin.SoMarkerSet.CIRCLE_FILLED_9_9    #pole
+        param = App.ParamGet("User parameter:BaseApp/Preferences/View")
+        size = param.GetInt("MarkerSize", 9)
+        knotmarkers = (
+            Gui.getMarkerIndex("DIAMOND_FILLED", size),   # sharp
+            Gui.getMarkerIndex("SQUARE_FILLED", size),    # tangent
+            Gui.getMarkerIndex("HOURGLASS_FILLED", size)  # symmetric
+        )
+        polemarker = Gui.getMarkerIndex("CIRCLE_FILLED",  size)  # pole
         self.trackers[obj.Name] = []
         cont = obj.Continuity
         firstknotcont = cont[-1] if (obj.Closed and cont) else 0
