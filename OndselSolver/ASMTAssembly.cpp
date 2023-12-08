@@ -521,7 +521,7 @@ void MbD::ASMTAssembly::readKinematicIJs(std::vector<std::string>& lines)
 
 }
 
-void MbD::ASMTAssembly::readKinematicIJ(std::vector<std::string>& lines)
+void MbD::ASMTAssembly::readKinematicIJ(std::vector<std::string>&)
 {
 	assert(false);
 }
@@ -847,7 +847,7 @@ void MbD::ASMTAssembly::readMotionSeries(std::vector<std::string>& lines)
 	motion->readMotionSeries(lines);
 }
 
-void MbD::ASMTAssembly::outputFor(AnalysisType type)
+void MbD::ASMTAssembly::outputFor(AnalysisType)
 {
 	assert(false);
 }
@@ -1273,13 +1273,13 @@ void MbD::ASMTAssembly::storeOnTimeSeries(std::ofstream& os)
 	if (times->empty()) return;
 	os << "TimeSeries" << std::endl;
 	os << "Number\tInput\t";
-	for (int i = 1; i < times->size(); i++)
+	for (int i = 1; i < (int)times->size(); i++)
 	{
 		os << i << '\t';
 	}
 	os << std::endl;
 	os << "Time\tInput\t";
-	for (int i = 1; i < times->size(); i++)
+	for (int i = 1; i < (int)times->size(); i++)
 	{
 		os << times->at(i) << '\t';
 	}

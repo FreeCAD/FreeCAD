@@ -64,7 +64,7 @@ namespace MbD {
 	template<typename T>
 	inline void SparseRow<T>::atiplusFullRow(int j, FRowsptr<T> fullRow)
 	{
-		for (int jj = 0; jj < fullRow->size(); jj++)
+		for (int jj = 0; jj < (int)fullRow->size(); jj++)
 		{
 			(*this)[j + jj] += fullRow->at(jj);
 		}
@@ -72,7 +72,7 @@ namespace MbD {
 	template<typename T>
 	inline void SparseRow<T>::atiminusFullRow(int j, FRowsptr<T> fullRow)
 	{
-		for (int jj = 0; jj < fullRow->size(); jj++)
+		for (int jj = 0; jj < (int)fullRow->size(); jj++)
 		{
 			(*this)[j + jj] -= fullRow->at(jj);
 		}
@@ -80,7 +80,7 @@ namespace MbD {
 	template<typename T>
 	inline void SparseRow<T>::atiplusFullRowtimes(int j, FRowsptr<T> fullRow, double factor)
 	{
-		for (int jj = 0; jj < fullRow->size(); jj++)
+		for (int jj = 0; jj < (int)fullRow->size(); jj++)
 		{
 			(*this)[j + jj] += fullRow->at(jj) * factor;
 		}

@@ -16,7 +16,7 @@ MbD::Orientation::Orientation()
 {
 }
 
-MbD::Orientation::Orientation(const char* str)
+MbD::Orientation::Orientation(const char*)
 {
 }
 

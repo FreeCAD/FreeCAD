@@ -422,7 +422,7 @@ bool MbD::SymbolicParser::raisedTo()
 	return false;
 }
 
-bool MbD::SymbolicParser::expected(std::string msg)
+bool MbD::SymbolicParser::expected(std::string)
 {
 	return false;
 }
@@ -468,7 +468,7 @@ void MbD::SymbolicParser::notify(std::string msg)
 	notifyat(msg, mark);
 }
 
-void MbD::SymbolicParser::notifyat(std::string msg, int mrk)
+void MbD::SymbolicParser::notifyat(std::string, int)
 {
 	//"Temporarily reset source in order to get full contents"
 	auto p = source->tellg();
@@ -487,7 +487,7 @@ void MbD::SymbolicParser::notifyat(std::string msg, int mrk)
 void MbD::SymbolicParser::combineStackTo(int pos)
 {
 	auto args = std::make_shared<std::vector<Symsptr>>();
-	while (stack->size() > (int) pos) {
+	while ((int)stack->size() > pos) {
 		Symsptr arg = stack->top();
 		stack->pop();
 		args->push_back(arg);

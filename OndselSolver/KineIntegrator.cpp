@@ -42,7 +42,7 @@ void KineIntegrator::runInitialConditionTypeSolution()
 	system->runAccKine();
 }
 
-void KineIntegrator::iStep(int i)
+void KineIntegrator::iStep(int)
 {
 	assert(false);
 }

@@ -108,7 +108,7 @@ void Constraint::fillPosICError(FColDsptr col)
 	col->atiplusNumber(iG, aG);
 }
 
-void Constraint::removeRedundantConstraints(std::shared_ptr<std::vector<int>> redundantEqnNos)
+void Constraint::removeRedundantConstraints(std::shared_ptr<std::vector<int>>)
 {
 	//My owner should handle this.
 	assert(false);
@@ -162,10 +162,30 @@ void Constraint::setqsuddotlam(FColDsptr col)
 	lam = col->at(iG);
 }
 
-void Constraint::addToJointForceI(FColDsptr col)
+void Constraint::addToJointForceI(FColDsptr)
 {
 }
 
-void Constraint::addToJointTorqueI(FColDsptr col)
+void Constraint::addToJointTorqueI(FColDsptr)
 {
+}
+
+void Constraint::fillConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> allConstraints) {
+    Item::fillConstraints(allConstraints);
+}
+
+void Constraint::fillRedundantConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> redunConstraints) {
+    Item::fillRedundantConstraints(redunConstraints);
+}
+
+void Constraint::fillDispConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> dispConstraints) {
+    Item::fillDispConstraints(dispConstraints);
+}
+
+void Constraint::fillEssenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints) {
+    Item::fillEssenConstraints(essenConstraints);
+}
+
+void Constraint::fillPerpenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> perpenConstraints) {
+    Item::fillPerpenConstraints(perpenConstraints);
 }

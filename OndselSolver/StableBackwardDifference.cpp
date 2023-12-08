@@ -39,7 +39,9 @@ double MbD::StableBackwardDifference::pvdotpv()
 	return sum;
 }
 
-FColDsptr MbD::StableBackwardDifference::derivativepresentpastpresentDerivativepastDerivative(int n, FColDsptr y, std::shared_ptr<std::vector<FColDsptr>> ypast, FColDsptr ydot, std::shared_ptr<std::vector<FColDsptr>> ydotpast)
+FColDsptr MbD::StableBackwardDifference::derivativepresentpastpresentDerivativepastDerivative(
+        int, FColDsptr, std::shared_ptr<std::vector<FColDsptr>>, FColDsptr,
+        std::shared_ptr<std::vector<FColDsptr>>)
 {
 	assert(false);
 	return FColDsptr();
@@ -93,7 +95,8 @@ FColDsptr MbD::StableBackwardDifference::derivativepresentpast(int deriv, FColDs
 			return std::static_pointer_cast<FullColumn<double>>(answer);
 		}
 		else {
-			return std::make_shared<FullColumn<double>>(y->size(), 0.0);
+            auto ySize = (int)y->size();
+			return std::make_shared<FullColumn<double>>(ySize, 0.0);
 		}
 	}
 }

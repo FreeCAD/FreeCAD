@@ -28,7 +28,7 @@
 
 using namespace MbD;
 
-void CADSystem::outputFor(AnalysisType type)
+void CADSystem::outputFor(AnalysisType)
 {
 	auto str = std::to_string(mbdSystem->mbdTimeValue());
 	this->logString(str);
@@ -45,7 +45,7 @@ void CADSystem::logString(std::string& str)
 	std::cout << str << std::endl;
 }
 
-void CADSystem::logString(double value)
+void CADSystem::logString(double)
 {
 }
 
@@ -834,7 +834,7 @@ void CADSystem::runPiston()
 	TheSystem->runKINEMATIC(TheSystem);
 }
 
-void MbD::CADSystem::preMbDrun(std::shared_ptr<System> mbdSys)
+void MbD::CADSystem::preMbDrun(std::shared_ptr<System>)
 {
 }
 

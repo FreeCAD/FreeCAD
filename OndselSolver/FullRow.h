@@ -69,7 +69,7 @@ namespace MbD {
 		return answer;
 	}
 	template<typename T>
-	inline FRowsptr<T> FullRow<T>::times(T a)
+	inline FRowsptr<T> FullRow<T>::times(T)
 	{
 		assert(false);
 	}
@@ -107,7 +107,7 @@ namespace MbD {
 	inline T FullRow<T>::timesFullColumn(FullColumn<T>* fullCol)
 	{
 		auto answer = this->at(0) * fullCol->at(0);
-		for (int i = 1; i < this->size(); i++)
+		for (int i = 1; i < (int)this->size(); i++)
 		{
 			answer += this->at(i) * fullCol->at(i);
 		}
@@ -187,7 +187,7 @@ namespace MbD {
 		auto ncol = (int)this->size();
 		auto nelem = vecvec->at(0)->size();
 		auto answer = std::make_shared<FullVector<T>>(nelem);
-		for (int k = 0; k < nelem; k++) {
+		for (int k = 0; k < (int)nelem; k++) {
 			auto sum = 0.0;
 			for (int i = 0; i < ncol; i++)
 			{
@@ -202,7 +202,7 @@ namespace MbD {
 	{
 		s << "FullRow{";
 		s << this->at(0);
-		for (int i = 1; i < this->size(); i++)
+		for (int i = 1; i < (int)this->size(); i++)
 		{
 			s << ", " << this->at(i);
 		}

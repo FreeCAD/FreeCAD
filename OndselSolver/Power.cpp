@@ -35,7 +35,7 @@ Symsptr MbD::Power::differentiateWRTy()
 	return deriv->simplified();
 }
 
-Symsptr MbD::Power::simplifyUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>> set)
+Symsptr MbD::Power::simplifyUntil(Symsptr, std::shared_ptr<std::unordered_set<Symsptr>>)
 {
 	assert(false);
 	return Symsptr();

@@ -38,17 +38,16 @@ void MbD::Sum::parse(std::istringstream& iss)
 	}
 }
 
-void MbD::Sum::parseTerm(std::istringstream& iss)
+void MbD::Sum::parseTerm(std::istringstream&)
 {
 }
 
 void MbD::Sum::parsePlusTerm(std::istringstream& iss)
 {
 	iss.get();
-
 }
 
-void MbD::Sum::parseMinusTerm(std::istringstream& iss)
+void MbD::Sum::parseMinusTerm(std::istringstream&)
 {
 }
 
@@ -84,7 +83,7 @@ Symsptr Sum::expandUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symspt
 	}
 }
 
-Symsptr Sum::simplifyUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>> set)
+Symsptr Sum::simplifyUntil(Symsptr, std::shared_ptr<std::unordered_set<Symsptr>> set)
 {
 	auto itr = std::find_if(set->begin(), set->end(), [this](Symsptr sym) {return this == (sym.get()); });
 	if (itr != set->end()) {
@@ -128,7 +127,7 @@ bool Sum::isSum()
 double Sum::getValue()
 {
 	double answer = 0.0;
-	for (int i = 0; i < terms->size(); i++) answer += terms->at(i)->getValue();
+	for (int i = 0; i < (int)terms->size(); i++) answer += terms->at(i)->getValue();
 	return answer;
 }
 
@@ -174,7 +173,7 @@ std::ostream& Sum::printOn(std::ostream& s) const
 {
 	s << "(";
 	s << *(this->terms->at(0));
-	for (int i = 1; i < this->terms->size(); i++)
+	for (int i = 1; i < (int)this->terms->size(); i++)
 	{
 		s << " + " << *(this->terms->at(i));
 	}

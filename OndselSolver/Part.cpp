@@ -244,7 +244,7 @@ void Part::fillEssenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Cons
 	partFrame->fillEssenConstraints(essenConstraints);
 }
 
-void Part::fillRedundantConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> redunConstraints)
+void Part::fillRedundantConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>>)
 {
 }
 

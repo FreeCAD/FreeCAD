@@ -36,7 +36,7 @@ namespace MbD {
 	template<typename T>
 	inline void EulerAngleszxz<T>::calc()
 	{
-		double zero = 0.0;
+		//double zero = 0.0;
 		double phi = this->at(0);
 		double sphi = sin(phi);
 		double cphi = cos(phi);

@@ -47,7 +47,7 @@ void PosICKineNewtonRaphson::assignEquationNumbers()
 		con->iG = eqnNo;
 		eqnNo += 1;
 	}
-	auto lastEqnNo = eqnNo - 1;
+	//auto lastEqnNo = eqnNo - 1;
 	nEqns = eqnNo;	//C++ uses index 0.
 	n = nEqns;
 }

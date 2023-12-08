@@ -12,7 +12,7 @@
 
 using namespace MbD;
 
-void GEFullMat::forwardEliminateWithPivot(int p)
+void GEFullMat::forwardEliminateWithPivot(int)
 {
 	assert(false);
 }
@@ -38,12 +38,12 @@ void GEFullMat::postSolve()
 	assert(false);
 }
 
-void GEFullMat::preSolvewithsaveOriginal(FMatDsptr fullMat, FColDsptr fullCol, bool saveOriginal)
+void GEFullMat::preSolvewithsaveOriginal(FMatDsptr, FColDsptr, bool)
 {
 	assert(false);
 }
 
-void GEFullMat::preSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal)
+void GEFullMat::preSolvewithsaveOriginal(SpMatDsptr, FColDsptr, bool)
 {
 	assert(false);
 }
@@ -66,7 +66,7 @@ FColDsptr GEFullMat::basicSolvewithsaveOriginal(FMatDsptr fullMat, FColDsptr ful
 	return answerX;
 }
 
-FColDsptr GEFullMat::basicSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal)
+FColDsptr GEFullMat::basicSolvewithsaveOriginal(SpMatDsptr, FColDsptr, bool)
 {
 	assert(false);
 	return FColDsptr();

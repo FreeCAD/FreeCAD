@@ -17,7 +17,7 @@ MbD::NoRotationJoint::NoRotationJoint()
 {
 }
 
-MbD::NoRotationJoint::NoRotationJoint(const char* str)
+MbD::NoRotationJoint::NoRotationJoint(const char*)
 {
 }
 

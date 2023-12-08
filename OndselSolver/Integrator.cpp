@@ -10,6 +10,6 @@
 
 using namespace MbD;
 
-void Integrator::setSystem(Solver* sys)
+void Integrator::setSystem(Solver*)
 {
 }

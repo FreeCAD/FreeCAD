@@ -31,18 +31,18 @@ FColDsptr GESpMat::basicSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCo
 	return answerX;
 }
 
-FColDsptr GESpMat::basicSolvewithsaveOriginal(FMatDsptr fullMat, FColDsptr fullCol, bool saveOriginal)
+FColDsptr GESpMat::basicSolvewithsaveOriginal(FMatDsptr, FColDsptr, bool)
 {
 	assert(false);
 	return FColDsptr();
 }
 
-void GESpMat::preSolvewithsaveOriginal(FMatDsptr fullMat, FColDsptr fullCol, bool saveOriginal)
+void GESpMat::preSolvewithsaveOriginal(FMatDsptr, FColDsptr, bool)
 {
 	assert(false);
 }
 
-void GESpMat::preSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal)
+void GESpMat::preSolvewithsaveOriginal(SpMatDsptr, FColDsptr, bool)
 {
 	assert(false);
 }

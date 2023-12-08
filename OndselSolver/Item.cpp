@@ -92,26 +92,26 @@ void Item::calcPostDynCorrectorIteration()
 {
 }
 
-void MbD::Item::checkForCollisionDiscontinuityBetweenand(double impulsePrevious, double impulse)
+void MbD::Item::checkForCollisionDiscontinuityBetweenand(double, double)
 {
 	assert(false);
 }
 
-void Item::removeRedundantConstraints(std::shared_ptr<std::vector<int>> redunEqnNos)
+void Item::removeRedundantConstraints(std::shared_ptr<std::vector<int>>)
 {
 }
 
-void MbD::Item::setpqsumu(FColDsptr col)
-{
-	assert(false);
-}
-
-void MbD::Item::setpqsumuddot(FColDsptr col)
+void MbD::Item::setpqsumu(FColDsptr)
 {
 	assert(false);
 }
 
-void MbD::Item::setpqsumudot(FColDsptr col)
+void MbD::Item::setpqsumuddot(FColDsptr)
+{
+	assert(false);
+}
+
+void MbD::Item::setpqsumudot(FColDsptr)
 {
 	assert(false);
 }
@@ -125,91 +125,91 @@ void MbD::Item::registerName()
 	assert(false);
 }
 
-void Item::fillPosKineError(FColDsptr col)
+void Item::fillPosKineError(FColDsptr)
 {
 }
 
-void Item::fillPosKineJacob(SpMatDsptr mat)
+void Item::fillPosKineJacob(SpMatDsptr)
 {
 }
 
-void MbD::Item::fillpqsumu(FColDsptr col)
-{
-	assert(false);
-}
-
-void MbD::Item::fillpqsumudot(FColDsptr col)
+void MbD::Item::fillpqsumu(FColDsptr)
 {
 	assert(false);
 }
 
-void Item::fillEssenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints)
+void MbD::Item::fillpqsumudot(FColDsptr)
 {
 	assert(false);
 }
 
-void MbD::Item::fillPerpenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> perpenConstraints)
+void Item::fillEssenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>>)
 {
 	assert(false);
 }
 
-void MbD::Item::fillpFpy(SpMatDsptr mat)
+void MbD::Item::fillPerpenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>>)
 {
 	assert(false);
 }
 
-void MbD::Item::fillpFpydot(SpMatDsptr mat)
+void MbD::Item::fillpFpy(SpMatDsptr)
 {
 	assert(false);
 }
 
-void Item::fillRedundantConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> redunConstraints)
-{
-}
-
-void MbD::Item::fillStaticError(FColDsptr col)
+void MbD::Item::fillpFpydot(SpMatDsptr)
 {
 	assert(false);
 }
 
-void MbD::Item::fillStaticJacob(FMatDsptr mat)
+void Item::fillRedundantConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>>)
+{
+}
+
+void MbD::Item::fillStaticError(FColDsptr)
 {
 	assert(false);
 }
 
-void Item::fillConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> allConstraints)
+void MbD::Item::fillStaticJacob(FMatDsptr)
 {
 	assert(false);
 }
 
-void MbD::Item::fillDispConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> dispConstraints)
+void Item::fillConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>>)
 {
 	assert(false);
 }
 
-void MbD::Item::fillDynError(FColDsptr col)
+void MbD::Item::fillDispConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>>)
 {
 	assert(false);
 }
 
-void Item::fillqsu(FColDsptr col)
-{
-}
-
-void Item::fillqsuWeights(DiagMatDsptr diagMat)
-{
-}
-
-void MbD::Item::fillqsuWeightsSmall(FColDsptr col)
+void MbD::Item::fillDynError(FColDsptr)
 {
 	assert(false);
 }
 
-void Item::fillqsulam(FColDsptr col)
+void Item::fillqsu(FColDsptr)
 {
 }
 
-void Item::setqsulam(FColDsptr col)
+void Item::fillqsuWeights(DiagMatDsptr)
+{
+}
+
+void MbD::Item::fillqsuWeightsSmall(FColDsptr)
+{
+	assert(false);
+}
+
+void Item::fillqsulam(FColDsptr)
+{
+}
+
+void Item::setqsulam(FColDsptr)
 {
 }
 
@@ -316,13 +316,13 @@ void Item::storeDynState()
 {
 }
 
-double MbD::Item::suggestSmallerOrAcceptCollisionFirstStepSize(double hnew)
+double MbD::Item::suggestSmallerOrAcceptCollisionFirstStepSize(double)
 {
 	assert(false);
 	return 0.0;
 }
 
-double MbD::Item::suggestSmallerOrAcceptCollisionStepSize(double hnew)
+double MbD::Item::suggestSmallerOrAcceptCollisionStepSize(double)
 {
 	assert(false);
 	return 0.0;
@@ -356,47 +356,47 @@ void Item::postVelIC()
 {
 }
 
-void Item::fillqsudot(FColDsptr col)
+void Item::fillqsudot(FColDsptr)
 {
 }
 
-void MbD::Item::fillqsudotPlam(FColDsptr col)
-{
-	assert(false);
-}
-
-void MbD::Item::fillqsudotPlamDeriv(FColDsptr col)
+void MbD::Item::fillqsudotPlam(FColDsptr)
 {
 	assert(false);
 }
 
-void Item::fillqsudotWeights(DiagMatDsptr diagMat)
-{
-}
-
-void Item::fillVelICError(FColDsptr col)
-{
-}
-
-void Item::fillVelICJacob(SpMatDsptr mat)
-{
-}
-
-void MbD::Item::getString(std::string str)
+void MbD::Item::fillqsudotPlamDeriv(FColDsptr)
 {
 	assert(false);
 }
 
-void Item::setqsudotlam(FColDsptr col)
+void Item::fillqsudotWeights(DiagMatDsptr)
 {
 }
 
-void MbD::Item::setqsudotPlam(FColDsptr col)
+void Item::fillVelICError(FColDsptr)
+{
+}
+
+void Item::fillVelICJacob(SpMatDsptr)
+{
+}
+
+void MbD::Item::getString(std::string)
 {
 	assert(false);
 }
 
-void MbD::Item::setqsudotPlamDeriv(FColDsptr col)
+void Item::setqsudotlam(FColDsptr)
+{
+}
+
+void MbD::Item::setqsudotPlam(FColDsptr)
+{
+	assert(false);
+}
+
+void MbD::Item::setqsudotPlamDeriv(FColDsptr)
 {
 	assert(false);
 }
@@ -469,48 +469,48 @@ void MbD::Item::postCollisionStep()
 	assert(false);
 }
 
-void Item::fillqsuddotlam(FColDsptr col)
+void Item::fillqsuddotlam(FColDsptr)
 {
 }
 
-void Item::fillAccICIterError(FColDsptr col)
+void Item::fillAccICIterError(FColDsptr)
 {
 }
 
-void Item::fillAccICIterJacob(SpMatDsptr mat)
+void Item::fillAccICIterJacob(SpMatDsptr)
 {
 }
 
-void MbD::Item::fillCollisionDerivativeICError(FColDsptr col)
-{
-	assert(false);
-}
-
-void MbD::Item::fillCollisionDerivativeICJacob(SpMatDsptr mat)
+void MbD::Item::fillCollisionDerivativeICError(FColDsptr)
 {
 	assert(false);
 }
 
-void MbD::Item::fillCollisionError(FColDsptr col)
+void MbD::Item::fillCollisionDerivativeICJacob(SpMatDsptr)
 {
 	assert(false);
 }
 
-void MbD::Item::fillCollisionpFpy(SpMatDsptr mat)
+void MbD::Item::fillCollisionError(FColDsptr)
 {
 	assert(false);
 }
 
-void MbD::Item::fillCollisionpFpydot(SpMatDsptr mat)
+void MbD::Item::fillCollisionpFpy(SpMatDsptr)
 {
 	assert(false);
 }
 
-void Item::setqsudot(FColDsptr col)
+void MbD::Item::fillCollisionpFpydot(SpMatDsptr)
+{
+	assert(false);
+}
+
+void Item::setqsudot(FColDsptr)
 {
 }
 
-void Item::setqsuddotlam(FColDsptr col)
+void Item::setqsuddotlam(FColDsptr)
 {
 }
 
@@ -525,16 +525,16 @@ void MbD::Item::storeCollisionState()
 	assert(false);
 }
 
-void Item::discontinuityAtaddTypeTo(double t, std::shared_ptr<std::vector<DiscontinuityType>> disconTypes)
+void Item::discontinuityAtaddTypeTo(double, std::shared_ptr<std::vector<DiscontinuityType>>)
 {
 }
 
-void MbD::Item::discontinuityAtICAddTo(std::shared_ptr<std::vector<DiscontinuityType>> disconTypes)
+void MbD::Item::discontinuityAtICAddTo(std::shared_ptr<std::vector<DiscontinuityType>>)
 {
 	assert(false);
 }
 
-double Item::checkForDynDiscontinuityBetweenand(double tprev, double t)
+double Item::checkForDynDiscontinuityBetweenand(double, double t)
 {
 	//"Check for discontinuity in the last step defined by the interval (tprevious,t]."
 	//"Default is assume no discontinuity and return t."
@@ -546,7 +546,7 @@ void Item::constraintsReport()
 {
 }
 
-void Item::setqsu(FColDsptr qsuOld)
+void Item::setqsu(FColDsptr)
 {
 }
 
@@ -565,17 +565,17 @@ void Item::logString(const char* chars)
 	this->logString(str);
 }
 
-void MbD::Item::logStringwithArgument(const char* chars, const char* chars1)
+void MbD::Item::logStringwithArgument(const char*, const char*)
 {
 	assert(false);
 }
 
-void MbD::Item::logStringwithArguments(const char* chars, std::shared_ptr<std::vector<char*>> arrayOfChars)
+void MbD::Item::logStringwithArguments(const char*, std::shared_ptr<std::vector<char*>>)
 {
 	assert(false);
 }
 
-void MbD::Item::normalImpulse(double imp)
+void MbD::Item::normalImpulse(double)
 {
 	assert(false);
 }
@@ -618,14 +618,14 @@ void MbD::Item::postStaticIteration()
 	assert(false);
 }
 
-void Item::fillPosICError(FColDsptr col)
+void Item::fillPosICError(FColDsptr)
 {
 }
 
-void Item::fillPosICJacob(FMatDsptr mat)
+void Item::fillPosICJacob(FMatDsptr)
 {
 }
 
-void Item::fillPosICJacob(SpMatDsptr mat)
+void Item::fillPosICJacob(SpMatDsptr)
 {
 }

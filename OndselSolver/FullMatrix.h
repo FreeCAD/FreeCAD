@@ -337,14 +337,14 @@ namespace MbD {
 	template<>
 	inline void FullMatrix<double>::zeroSelf()
 	{
-		for (int i = 0; i < this->size(); i++) {
+		for (int i = 0; i < (int)this->size(); i++) {
 			this->at(i)->zeroSelf();
 		}
 	}
 	template<>
 	inline void FullMatrix<double>::identity() {
 		this->zeroSelf();
-		for (int i = 0; i < this->size(); i++) {
+		for (int i = 0; i < (int)this->size(); i++) {
 			this->at(i)->at(i) = 1.0;
 		}
 	}
@@ -388,7 +388,7 @@ namespace MbD {
 		return answer;
 	}
 	template<typename T>
-	inline FMatsptr<T> FullMatrix<T>::times(T a)
+	inline FMatsptr<T> FullMatrix<T>::times(T)
 	{
 		assert(false);
 	}
@@ -459,7 +459,7 @@ namespace MbD {
 	template<typename T>
 	inline void FullMatrix<T>::atijputFullColumn(int i1, int j1, FColsptr<T> fullCol)
 	{
-		for (int ii = 0; ii < fullCol->size(); ii++)
+		for (int ii = 0; ii < (int)fullCol->size(); ii++)
 		{
 			this->at(i1 + ii)->at(j1) = fullCol->at(ii);
 		}
@@ -485,7 +485,7 @@ namespace MbD {
 	inline double FullMatrix<double>::sumOfSquares()
 	{
 		double sum = 0.0;
-		for (int i = 0; i < this->size(); i++)
+		for (int i = 0; i < (int)this->size(); i++)
 		{
 			sum += this->at(i)->sumOfSquares();
 		}
@@ -532,7 +532,7 @@ namespace MbD {
 	template<typename T>
 	inline void FullMatrix<T>::magnifySelf(T factor)
 	{
-		for (int i = 0; i < this->size(); i++) {
+		for (int i = 0; i < (int)this->size(); i++) {
 			this->at(i)->magnifySelf(factor);
 		}
 	}
@@ -540,7 +540,7 @@ namespace MbD {
 	inline std::ostream& FullMatrix<T>::printOn(std::ostream& s) const
 	{
 		s << "FullMat[" << std::endl;
-		for (int i = 0; i < this->size(); i++)
+		for (int i = 0; i < (int)this->size(); i++)
 		{
 			s << *(this->at(i)) << std::endl;
 		}
@@ -611,7 +611,7 @@ namespace MbD {
 	inline T FullMatrix<T>::trace()
 	{
 		T trace = 0.0;
-		for (int i = 0; i < this->size(); i++)
+		for (int i = 0; i < (int)this->size(); i++)
 		{
 			trace += this->at(i)->at(i);
 		}
@@ -621,7 +621,7 @@ namespace MbD {
 	inline double FullMatrix<T>::maxMagnitude()
 	{
 		double max = 0.0;
-		for (int i = 0; i < this->size(); i++)
+		for (int i = 0; i < (int)this->size(); i++)
 		{
 			double element = this->at(i)->maxMagnitude();
 			if (max < element) max = element;

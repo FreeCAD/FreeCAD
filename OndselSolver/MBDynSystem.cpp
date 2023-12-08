@@ -149,12 +149,12 @@ void MbD::MBDynSystem::outputFiles()
 	auto movFile = filename.substr(0, filename.find_last_of('.')) + ".mov";
 	auto asmtAsm = asmtAssembly();
 	auto& asmtTimes = asmtAsm->times;
-	auto& asmtParts = asmtAsm->parts;
-	auto& asmtJoints = asmtAsm->joints;
-	auto& asmtMotions = asmtAsm->motions;
+    //auto& asmtParts = asmtAsm->parts;
+    //auto& asmtJoints = asmtAsm->joints;
+    //auto& asmtMotions = asmtAsm->motions;
 	std::ofstream os(movFile);
 	os << std::setprecision(static_cast<std::streamsize>(std::numeric_limits<double>::digits10) + 1);
-	for (int i = 1; i < asmtTimes->size(); i++)
+	for (int i = 1; i < (int)asmtTimes->size(); i++)
 	{
 		for (auto& node : *nodes) {
 			node->outputLine(i, os);
@@ -248,7 +248,7 @@ void MbD::MBDynSystem::readElementsBlock(std::vector<std::string>& lines)
 
 void MbD::MBDynSystem::eraseComments(std::vector<std::string>& lines)
 {
-	for (int i = 0; i < lines.size(); i++)
+	for (int i = 0; i < (int)lines.size(); i++)
 	{
 		auto& line = lines[i];
 		auto it = line.find('#');
@@ -396,7 +396,7 @@ void MbD::MBDynSystem::parseMBDynVariables(std::vector<std::string>& lines)
 			auto userFunc = std::make_shared<BasicUserFunction>(str, 1.0);
 			parser->parseUserFunction(userFunc);
 			auto& sym = parser->stack->top();
-			auto val = sym->getValue();
+			//auto val = sym->getValue();
 			variables->insert(std::make_pair(variable, sym));
 			lines.erase(it);
 		}

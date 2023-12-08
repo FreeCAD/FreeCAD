@@ -24,7 +24,7 @@ void MatrixSolver::initialize()
 	singularPivotTolerance = 4 * std::numeric_limits<double>::epsilon();
 }
 
-void MatrixSolver::setSystem(Solver* sys)
+void MatrixSolver::setSystem(Solver*)
 {
 }
 
@@ -53,7 +53,7 @@ FColDsptr MatrixSolver::timedSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr f
 	return answerX;
 }
 
-FColDsptr MatrixSolver::timedSolvewithsaveOriginal(FMatDsptr fullMat, FColDsptr fullCol, bool saveOriginal)
+FColDsptr MatrixSolver::timedSolvewithsaveOriginal(FMatDsptr, FColDsptr, bool)
 {
 	return FColDsptr();
 }

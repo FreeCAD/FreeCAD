@@ -33,7 +33,7 @@ FunctionWithManyArgs::FunctionWithManyArgs(Symsptr term, Symsptr term1, Symsptr 
 
 FunctionWithManyArgs::FunctionWithManyArgs(std::shared_ptr<std::vector<Symsptr>> _terms) {
 	terms = std::make_shared<std::vector<Symsptr>>();
-	for (int i = 0; i < _terms->size(); i++)
+	for (int i = 0; i < (int)_terms->size(); i++)
 		terms->push_back(_terms->at(i));
 }
 
@@ -47,7 +47,7 @@ void MbD::FunctionWithManyArgs::createMbD(std::shared_ptr<System> mbdSys, std::s
 	for (auto& term : *terms) term->createMbD(mbdSys, mbdUnits);
 }
 
-void MbD::FunctionWithManyArgs::arguments(Symsptr args)
+void MbD::FunctionWithManyArgs::arguments(Symsptr)
 {
 	assert(false);
 }

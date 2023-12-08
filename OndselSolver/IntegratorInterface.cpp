@@ -69,7 +69,7 @@ void IntegratorInterface::postFirstStep()
 	//this->checkForOutputThrough(integrator->t);
 }
 
-void IntegratorInterface::interpolateAt(double tArg)
+void IntegratorInterface::interpolateAt(double)
 {
 	//"Interpolate for system state at tArg and leave system in that state."
 	assert(false);

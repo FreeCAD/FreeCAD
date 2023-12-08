@@ -34,7 +34,7 @@ namespace MbD {
 	template<typename T>
 	inline void RowTypeMatrix<T>::copyFrom(std::shared_ptr<RowTypeMatrix<T>> x)
 	{
-		for (int i = 0; i < x->size(); i++) {
+		for (int i = 0; i < (int)x->size(); i++) {
 			this->at(i)->copyFrom(x->at(i));
 		}
 	}

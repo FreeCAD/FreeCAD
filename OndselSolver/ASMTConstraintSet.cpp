@@ -14,7 +14,7 @@
 
 using namespace MbD;
 
-void MbD::ASMTConstraintSet::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits)
+void MbD::ASMTConstraintSet::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units>)
 {
 	//self dataSeries : OrderedCollection new.
 	//self discontinuities : OrderedCollection new.
@@ -57,14 +57,14 @@ void MbD::ASMTConstraintSet::updateFromMbD()
 	tzs->push_back(aTIO->at(2));
 }
 
-void MbD::ASMTConstraintSet::compareResults(AnalysisType type)
+void MbD::ASMTConstraintSet::compareResults(AnalysisType)
 {
 	if (infxs == nullptr || infxs->empty()) return;
 	auto mbdUnts = mbdUnits();
-	auto factor = 1.0e-6;
-	auto forceTol = mbdUnts->force * factor;
-	auto torqueTol = mbdUnts->torque * factor;
-	auto i = fxs->size() - 1;
+	//auto factor = 1.0e-6;
+    //auto forceTol = mbdUnts->force * factor;
+    //auto torqueTol = mbdUnts->torque * factor;
+    //auto i = fxs->size() - 1;
 	//assert(Numeric::equaltol(fxs->at(i), infxs->at(i), forceTol));
 	//assert(Numeric::equaltol(fys->at(i), infys->at(i), forceTol));
 	//assert(Numeric::equaltol(fzs->at(i), infzs->at(i), forceTol));
@@ -73,6 +73,6 @@ void MbD::ASMTConstraintSet::compareResults(AnalysisType type)
 	//assert(Numeric::equaltol(tzs->at(i), intzs->at(i), torqueTol));
 }
 
-void MbD::ASMTConstraintSet::outputResults(AnalysisType type)
+void MbD::ASMTConstraintSet::outputResults(AnalysisType)
 {
 }

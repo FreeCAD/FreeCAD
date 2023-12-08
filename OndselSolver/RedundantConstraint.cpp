@@ -10,7 +10,7 @@
 
 using namespace MbD;
 
-void RedundantConstraint::removeRedundantConstraints(std::shared_ptr<std::vector<int>> redundantEqnNos)
+void RedundantConstraint::removeRedundantConstraints(std::shared_ptr<std::vector<int>>)
 {
 }
 
@@ -30,11 +30,11 @@ ConstraintType RedundantConstraint::type()
 	return redundant;
 }
 
-void MbD::RedundantConstraint::fillqsuddotlam(FColDsptr col)
+void MbD::RedundantConstraint::fillqsuddotlam(FColDsptr)
 {
 }
 
-void RedundantConstraint::fillqsulam(FColDsptr col)
+void RedundantConstraint::fillqsulam(FColDsptr)
 {
 }
 
@@ -46,19 +46,19 @@ void RedundantConstraint::prePosIC()
 {
 }
 
-void RedundantConstraint::fillEssenConstraints(std::shared_ptr<Constraint> sptr, std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints)
+void RedundantConstraint::fillEssenConstraints(std::shared_ptr<Constraint>, std::shared_ptr<std::vector<std::shared_ptr<Constraint>>>)
 {
 }
 
-void RedundantConstraint::fillDispConstraints(std::shared_ptr<Constraint> sptr, std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> dispConstraints)
+void RedundantConstraint::fillDispConstraints(std::shared_ptr<Constraint>, std::shared_ptr<std::vector<std::shared_ptr<Constraint>>>)
 {
 }
 
-void RedundantConstraint::fillPerpenConstraints(std::shared_ptr<Constraint> sptr, std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> perpenConstraints)
+void RedundantConstraint::fillPerpenConstraints(std::shared_ptr<Constraint>, std::shared_ptr<std::vector<std::shared_ptr<Constraint>>>)
 {
 }
 
-void RedundantConstraint::fillConstraints(std::shared_ptr<Constraint> sptr, std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> redunConstraints)
+void RedundantConstraint::fillConstraints(std::shared_ptr<Constraint>, std::shared_ptr<std::vector<std::shared_ptr<Constraint>>>)
 {
 }
 
@@ -67,23 +67,23 @@ void RedundantConstraint::fillRedundantConstraints(std::shared_ptr<Constraint> s
 	redunConstraints->push_back(sptr);
 }
 
-void RedundantConstraint::setqsulam(FColDsptr col)
+void RedundantConstraint::setqsulam(FColDsptr)
 {
 }
 
-void RedundantConstraint::setqsudotlam(FColDsptr col)
+void RedundantConstraint::setqsudotlam(FColDsptr)
 {
 }
 
-void RedundantConstraint::fillPosICError(FColDsptr col)
+void RedundantConstraint::fillPosICError(FColDsptr)
 {
 }
 
-void RedundantConstraint::fillPosKineError(FColDsptr col)
+void RedundantConstraint::fillPosKineError(FColDsptr)
 {
 }
 
-void RedundantConstraint::fillPosKineJacob(SpMatDsptr mat)
+void RedundantConstraint::fillPosKineJacob(SpMatDsptr)
 {
 }
 
@@ -95,15 +95,15 @@ void RedundantConstraint::preAccIC()
 {
 }
 
-void RedundantConstraint::fillAccICIterError(FColDsptr col)
+void RedundantConstraint::fillAccICIterError(FColDsptr)
 {
 }
 
-void RedundantConstraint::setqsuddotlam(FColDsptr col)
+void RedundantConstraint::setqsuddotlam(FColDsptr)
 {
 }
 
-void RedundantConstraint::discontinuityAtaddTypeTo(double t, std::shared_ptr<std::vector<DiscontinuityType>> disconTypes)
+void RedundantConstraint::discontinuityAtaddTypeTo(double, std::shared_ptr<std::vector<DiscontinuityType>>)
 {
 	//"Reactivate all constraints."
 	assert(false);

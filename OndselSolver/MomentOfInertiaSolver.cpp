@@ -99,30 +99,30 @@ void MbD::MomentOfInertiaSolver::postSolve()
 {
 }
 
-FColDsptr MbD::MomentOfInertiaSolver::basicSolvewithsaveOriginal(FMatDsptr fullMat, FColDsptr fullCol, bool saveOriginal)
+FColDsptr MbD::MomentOfInertiaSolver::basicSolvewithsaveOriginal(FMatDsptr, FColDsptr, bool)
 {
 	return FColDsptr();
 }
 
-FColDsptr MbD::MomentOfInertiaSolver::basicSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal)
+FColDsptr MbD::MomentOfInertiaSolver::basicSolvewithsaveOriginal(SpMatDsptr, FColDsptr, bool)
 {
 	return FColDsptr();
 }
 
-void MbD::MomentOfInertiaSolver::preSolvewithsaveOriginal(FMatDsptr fullMat, FColDsptr fullCol, bool saveOriginal)
+void MbD::MomentOfInertiaSolver::preSolvewithsaveOriginal(FMatDsptr, FColDsptr, bool)
 {
 }
 
-void MbD::MomentOfInertiaSolver::preSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal)
+void MbD::MomentOfInertiaSolver::preSolvewithsaveOriginal(SpMatDsptr, FColDsptr, bool)
 {
 }
 
-double MbD::MomentOfInertiaSolver::getmatrixArowimaxMagnitude(int i)
+double MbD::MomentOfInertiaSolver::getmatrixArowimaxMagnitude(int)
 {
 	return 0.0;
 }
 
-void MbD::MomentOfInertiaSolver::doPivoting(int p)
+void MbD::MomentOfInertiaSolver::doPivoting(int)
 {
 }
 
@@ -267,7 +267,7 @@ FColDsptr MbD::MomentOfInertiaSolver::eigenvectorFor(double lam)
 	auto row1 = aJcmPcopy->at(1);
 	auto row2 = aJcmPcopy->at(2);
 	auto norm0 = row0->length();
-	auto aaaa = row2->length();
+	//auto aaaa = row2->length();
 	if ((row2->length() / norm0) > 1.0e-5) throw std::runtime_error("3rd row should be very small.");
 	if ((row1->length() / norm0) > 1.0e-5) {
 		e2 = 1.0;

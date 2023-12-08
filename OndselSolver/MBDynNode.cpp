@@ -8,7 +8,7 @@ void MbD::MBDynNode::initialize()
 {
 }
 
-void MbD::MBDynNode::parseMBDyn(std::vector<std::string>& lines)
+void MbD::MBDynNode::parseMBDyn(std::vector<std::string>&)
 {
 	assert(false);
 }

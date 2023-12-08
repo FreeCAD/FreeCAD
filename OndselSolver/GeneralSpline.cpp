@@ -196,7 +196,7 @@ void MbD::GeneralSpline::calcNonCyclicIndexAndDelta()
 
 void MbD::GeneralSpline::calcIndexAndDelta()
 {
-	if (!(index < xs->size() - 1) || !(xs->at(index) <= xvalue) || !(xvalue < xs->at((int)index + 1))) {
+	if (!(index < (int)xs->size() - 1) || !(xs->at(index) <= xvalue) || !(xvalue < xs->at((int)index + 1))) {
 		searchIndexFromto(0, (int)xs->size());	//Using range.
 	}
 	delta = xvalue - xs->at(index);
@@ -245,14 +245,14 @@ std::ostream& MbD::GeneralSpline::printOn(std::ostream& s) const
 	s << degree << ", " << std::endl;
 	s << "xs{";
 	s << xs->at(0);
-	for (int i = 1; i < xs->size(); i++)
+	for (int i = 1; i < (int)xs->size(); i++)
 	{
 		s << ", " << xs->at(i);
 	}
 	s << "}, " << std::endl;
 	s << "ys{";
 	s << ys->at(0);
-	for (int i = 1; i < ys->size(); i++)
+	for (int i = 1; i < (int)ys->size(); i++)
 	{
 		s << ", " << ys->at(i);
 	}

@@ -15,7 +15,7 @@ MbD::PointInPlaneJoint::PointInPlaneJoint()
 {
 }
 
-MbD::PointInPlaneJoint::PointInPlaneJoint(const char* str)
+MbD::PointInPlaneJoint::PointInPlaneJoint(const char*)
 {
 }
 

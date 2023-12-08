@@ -32,12 +32,12 @@ namespace MbD {
     {
     }
 
-    void ASMTMotion::storeOnLevel(std::ofstream& os, int level)
+    void ASMTMotion::storeOnLevel(std::ofstream&, int)
     {
         assert(false);
     }
 
-    void ASMTMotion::storeOnTimeSeries(std::ofstream& os)
+    void ASMTMotion::storeOnTimeSeries(std::ofstream&)
     {
         assert(false);
     }

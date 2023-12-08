@@ -50,7 +50,7 @@ namespace MbD {
         return aApm;
     }
 
-    void ASMTMarker::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits)
+    void ASMTMarker::createMbD(std::shared_ptr<System>, std::shared_ptr<Units> mbdUnits)
     {
         auto mkr = CREATE<MarkerFrame>::With(name.c_str());
         auto prt = std::static_pointer_cast<Part>(partOrAssembly()->mbdObject);

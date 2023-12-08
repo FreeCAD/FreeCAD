@@ -59,7 +59,7 @@ void Solver::postRun()
 	assert(false);
 }
 
-void Solver::logString(std::string& str)
+void Solver::logString(std::string&)
 {
 	assert(false);
 }

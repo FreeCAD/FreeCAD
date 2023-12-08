@@ -16,7 +16,7 @@ MbD::Translation::Translation()
 {
 }
 
-MbD::Translation::Translation(const char* str)
+MbD::Translation::Translation(const char*)
 {
 }
 

@@ -66,14 +66,14 @@ namespace MbD {
 	template<typename T>
 	inline void Array<T>::copyFrom(std::shared_ptr<Array<T>> x)
 	{
-		for (int i = 0; i < x->size(); i++) {
+		for (int i = 0; i < (int)x->size(); i++) {
 			this->at(i) = x->at(i);
 		}
 	}
 	template<typename T>
 	inline void Array<T>::zeroSelf()
 	{
-		for (int i = 0; i < this->size(); i++) {
+		for (int i = 0; i < (int)this->size(); i++) {
 			this->at(i) = (T)0;
 		}
 	}
@@ -110,7 +110,7 @@ namespace MbD {
 	inline double Array<T>::maxMagnitudeOfVector()
 	{
 		double answer = 0.0;
-		for (int i = 0; i < this->size(); i++)
+		for (int i = 0; i < (int)this->size(); i++)
 		{
 			double mag = std::abs(this->at(i));
 			if (answer < mag) answer = mag;
@@ -120,7 +120,7 @@ namespace MbD {
 	template<typename T>
 	inline void Array<T>::equalArrayAt(std::shared_ptr<Array<T>> array, int i)
 	{
-		for (int ii = 0; ii < this->size(); ii++)
+		for (int ii = 0; ii < (int)this->size(); ii++)
 		{
 			this->at(ii) = array->at((int)i + ii);
 		}
@@ -168,7 +168,7 @@ namespace MbD {
 	template<typename T>
 	inline void Array<T>::magnifySelf(T factor)
 	{
-		for (int i = 0; i < this->size(); i++)
+		for (int i = 0; i < (int)this->size(); i++)
 		{
 			this->atitimes(i, factor);
 		}

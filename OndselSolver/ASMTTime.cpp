@@ -30,12 +30,12 @@ void MbD::ASMTTime::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Un
 	this->xexpression(mbdTime, geoTime->simplified(geoTime));
 }
 
-Symsptr MbD::ASMTTime::expandUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>> set)
+Symsptr MbD::ASMTTime::expandUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>>)
 {
 	return sptr;
 }
 
-Symsptr MbD::ASMTTime::simplifyUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>> set)
+Symsptr MbD::ASMTTime::simplifyUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>>)
 {
 	return sptr;
 }

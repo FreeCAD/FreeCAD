@@ -21,7 +21,7 @@ Constant::Constant(double val) : Variable(val)
 {
 }
 
-Symsptr MbD::Constant::differentiateWRT(Symsptr var)
+Symsptr MbD::Constant::differentiateWRT(Symsptr)
 {
 	return sptrConstant(0.0);
 }
@@ -37,7 +37,7 @@ Symsptr MbD::Constant::integrateWRT(Symsptr var)
 	return std::make_shared<Polynomial>(var, coeffs);
 }
 
-Symsptr MbD::Constant::expandUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>> set)
+Symsptr MbD::Constant::expandUntil(Symsptr sptr, std::shared_ptr<std::unordered_set<Symsptr>>)
 {
 	return sptr;
 }
@@ -62,7 +62,7 @@ bool MbD::Constant::isOne()
 	return value == 1.0;
 }
 
-void MbD::Constant::createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits)
+void MbD::Constant::createMbD(std::shared_ptr<System>, std::shared_ptr<Units>)
 {
 	return;
 }
@@ -72,7 +72,7 @@ double MbD::Constant::getValue()
 	return value;
 }
 
-double MbD::Constant::getValue(double arg)
+double MbD::Constant::getValue(double)
 {
 	return value;
 }

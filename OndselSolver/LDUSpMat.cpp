@@ -18,17 +18,17 @@ FColDsptr LDUSpMat::basicSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullC
 	return answer;
 }
 
-void LDUSpMat::decomposesaveOriginal(FMatDsptr fullMat, bool saveOriginal)
+void LDUSpMat::decomposesaveOriginal(FMatDsptr, bool)
 {
 	assert(false);
 }
 
-void LDUSpMat::decomposesaveOriginal(SpMatDsptr spMat, bool saveOriginal)
+void LDUSpMat::decomposesaveOriginal(SpMatDsptr, bool)
 {
 	assert(false);
 }
 
-FColDsptr LDUSpMat::forAndBackSubsaveOriginal(FColDsptr fullCol, bool saveOriginal)
+FColDsptr LDUSpMat::forAndBackSubsaveOriginal(FColDsptr, bool)
 {
 	assert(false);
 	return FColDsptr();

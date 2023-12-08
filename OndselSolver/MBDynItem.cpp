@@ -29,12 +29,12 @@ void MbD::MBDynItem::noop()
 	//No Operations
 }
 
-void MbD::MBDynItem::parseMBDyn(std::vector<std::string>& lines)
+void MbD::MBDynItem::parseMBDyn(std::vector<std::string>&)
 {
 	assert(false);
 }
 
-void MbD::MBDynItem::parseMBDyn(std::string line)
+void MbD::MBDynItem::parseMBDyn(std::string)
 {
 	assert(false);
 }

@@ -45,7 +45,7 @@ void MbD::MBDynGravity::parseMBDyn(std::string line)
 	gvec->magnifySelf(mag);
 }
 
-void MbD::MBDynGravity::readFunction(std::vector<std::string>& args)
+void MbD::MBDynGravity::readFunction(std::vector<std::string>&)
 {
 	assert(false);
 	noop();

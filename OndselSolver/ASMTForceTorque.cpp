@@ -15,12 +15,12 @@ void MbD::ASMTForceTorque::updateFromMbD()
 	assert(false);
 }
 
-void MbD::ASMTForceTorque::compareResults(AnalysisType type)
+void MbD::ASMTForceTorque::compareResults(AnalysisType)
 {
 	assert(false);
 }
 
-void MbD::ASMTForceTorque::outputResults(AnalysisType type)
+void MbD::ASMTForceTorque::outputResults(AnalysisType)
 {
 	assert(false);
 }
