@@ -91,6 +91,7 @@
 #include <BinTools.hxx>
 #include <BinTools_ShapeSet.hxx>
 #include <BOPAlgo_ArgumentAnalyzer.hxx>
+#include <BOPAlgo_Builder.hxx>
 #include <BOPAlgo_ListOfCheckResult.hxx>
 #include <Bnd_Box.hxx>
 
