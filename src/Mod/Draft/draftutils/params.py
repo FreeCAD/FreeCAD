@@ -35,38 +35,41 @@ from draftviewproviders import view_base
 
 class ParamObserverDraft:
 
-    def slotParamChanged(self, param, tp, name, value):
-        if name == "textheight":
+    def slotParamChanged(self, param_grp, typ, entry, value):
+        if entry == "textheight":
             _param_observer_callback_tray()
             return
-        if name in ("gridBorder", "gridShowHuman", "coloredGridAxes", "gridEvery",
+        if entry in ("gridBorder", "gridShowHuman", "coloredGridAxes", "gridEvery",
                     "gridSpacing", "gridSize", "gridTransparency", "gridColor"):
             _param_observer_callback_grid()
             return
-        if name == "SnapBarShowOnlyDuringCommands":
+        if entry == "DefaultAnnoScaleMultiplier":
+            _param_observer_callback_scalemultiplier(value)
+            return
+        if entry == "SnapBarShowOnlyDuringCommands":
             _param_observer_callback_snapbar(value)
             return
-        if name == "DisplayStatusbarSnapWidget":
+        if entry == "DisplayStatusbarSnapWidget":
             _param_observer_callback_snapwidget()
             return
-        if name == "DisplayStatusbarScaleWidget":
+        if entry == "DisplayStatusbarScaleWidget":
             _param_observer_callback_scalewidget()
             return
-        if name == "snapStyle":
+        if entry == "snapStyle":
             _param_observer_callback_snapstyle()
             return
-        if name == "snapcolor":
+        if entry == "snapcolor":
             _param_observer_callback_snapcolor()
             return
-        if name == "patternFile":
+        if entry == "patternFile":
             _param_observer_callback_svg_pattern()
             return
 
 
 class ParamObserverView:
 
-    def slotParamChanged(self, param, tp, name, value):
-        if name in ("DefaultShapeColor", "DefaultShapeLineColor", "DefaultShapeLineWidth"):
+    def slotParamChanged(self, param_grp, typ, entry, value):
+        if entry in ("DefaultShapeColor", "DefaultShapeLineColor", "DefaultShapeLineWidth"):
             _param_observer_callback_tray()
             return
 
@@ -78,6 +81,18 @@ def _param_observer_callback_tray():
     if tray is None:
         return
     Gui.draftToolBar.setStyleButton()
+
+
+def _param_observer_callback_scalemultiplier(value):
+    value = float(value)  # value is a string
+    if value <= 0:
+        return
+    mw = Gui.getMainWindow()
+    sb = mw.statusBar()
+    scale_widget = sb.findChild(QtGui.QToolBar,"draft_scale_widget")
+    if scale_widget is not None:
+        scale_label = init_draft_statusbar.scale_to_label(1 / value)
+        scale_widget.scaleLabel.setText(scale_label)
 
 
 def _param_observer_callback_grid():
@@ -98,13 +113,12 @@ def _param_observer_callback_grid():
 
 
 def _param_observer_callback_snapbar(value):
-    # value is a string: "0" or "1"
     if Gui.activeWorkbench().name() not in ("DraftWorkbench", "ArchWorkbench", "BIMWorkbench"):
         return
     if hasattr(Gui, "Snapper"):
         toolbar = Gui.Snapper.get_snap_toolbar()
         if toolbar is not None:
-            toolbar.setVisible(value == "0")
+            toolbar.setVisible(value == "0")  # value is a string: "0" or "1"
 
 
 def _param_observer_callback_snapwidget():
@@ -183,9 +197,9 @@ def _param_observer_start():
     _param_observer_start_view()
 
 
-def _param_observer_start_draft(param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")):
-    param.AttachManager(ParamObserverDraft())
+def _param_observer_start_draft(param_grp = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")):
+    param_grp.AttachManager(ParamObserverDraft())
 
 
-def _param_observer_start_view(param = App.ParamGet("User parameter:BaseApp/Preferences/View")):
-    param.AttachManager(ParamObserverView())
+def _param_observer_start_view(param_grp = App.ParamGet("User parameter:BaseApp/Preferences/View")):
+    param_grp.AttachManager(ParamObserverView())

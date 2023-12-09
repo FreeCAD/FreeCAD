@@ -126,7 +126,7 @@ def label_to_scale(label):
         elif "=" in label:
             f = label.split("=")
         else:
-            return
+            return None
         if len(f) == 2:
             try:
                 num = App.Units.Quantity(f[0]).Value
@@ -161,14 +161,16 @@ def _set_scale(action):
             scale = label_to_scale(custom_scale[0])
             if scale is None:
                 return
-            param.SetFloat("DraftAnnotationScale", scale)
+            if scale <= 0:
+                return
+            param.SetFloat("DefaultAnnoScaleMultiplier", 1 / scale)
             cs = scale_to_label(scale)
             scale_widget.scaleLabel.setText(cs)
     else:
         text_scale = action.text()
         scale_widget.scaleLabel.setText(text_scale)
         scale = label_to_scale(text_scale)
-        param.SetFloat("DraftAnnotationScale", scale)
+        param.SetFloat("DefaultAnnoScaleMultiplier", 1 / scale)
 
 #----------------------------------------------------------------------------
 # MAIN DRAFT STATUSBAR FUNCTIONS
@@ -190,7 +192,8 @@ def init_draft_statusbar_scale():
     draft_scales = get_scales()
 
     # get draft annotation scale
-    draft_annotation_scale = param.GetFloat("DraftAnnotationScale", 1.0)
+    scale_multiplier = param.GetFloat("DefaultAnnoScaleMultiplier", 1)
+    annotation_scale = 1 / scale_multiplier if scale_multiplier > 0 else 1
 
     # initializes scale widget
     scale_widget.draft_scales = draft_scales
@@ -205,7 +208,7 @@ def init_draft_statusbar_scale():
         menu.addAction(a)
     scaleLabel.setMenu(menu)
     gUnits.triggered.connect(_set_scale)
-    scale_label = scale_to_label(draft_annotation_scale)
+    scale_label = scale_to_label(annotation_scale)
     scaleLabel.setText(scale_label)
     scaleLabel.setToolTip(translate("draft",
                                     "Set the scale used by draft annotation tools"))
