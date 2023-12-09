@@ -26,6 +26,8 @@ void sharedptrTest();
 
 int main()
 {
+	//MBDynSystem::runFile("../testapp/MBDynCase(Cosine-half drive).mbd");
+	//MBDynSystem::runFile("../testapp/MBDynCase(Sine-forever drive).mbd");
 	MBDynSystem::runFile("../testapp/MBDynCase9orig.mbd");	//SimulationStoppingError
 	MBDynSystem::runFile("../testapp/MBDynCase8orig.mbd");	//Incompatible geometry at t=3.15
 	MBDynSystem::runFile("../testapp/MBDynCase5orig.mbd");	//Test Product::integrateWRT

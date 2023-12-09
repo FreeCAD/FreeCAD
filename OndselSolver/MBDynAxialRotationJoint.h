@@ -7,20 +7,20 @@
  ***************************************************************************/
 
 #pragma once
-#include "MBDynItem.h"
+#include "MBDynJoint.h"
 
 namespace MbD {
+    class ASMTJoint;
+    class ASMTRotationalMotion;
 
-	class MBDynMarker : public MBDynItem
-	{
-	public:
-		void parseMBDyn(std::vector<std::string>& args) override;
-		void parseMBDynTotalJointMarker(std::vector<std::string>& args);
-		void parseMBDynClamp(std::vector<std::string>& args);
-		void createASMT() override;
+    class MBDynAxialRotationJoint : public MBDynJoint
+    {
+    public:
+        void parseMBDyn(std::string line) override;
+        void createASMT() override;
+        std::shared_ptr<ASMTJoint> asmtClassNew() override;
 
-		std::string nodeStr;
-		FColDsptr rPmP; //part to marker
-		FMatDsptr aAPm, aAPm2;
-	};
+        std::shared_ptr<ASMTRotationalMotion> asmtMotion;
+    };
+
 }

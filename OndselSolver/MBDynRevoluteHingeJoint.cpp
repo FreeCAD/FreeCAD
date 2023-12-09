@@ -6,21 +6,22 @@
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
 
-#pragma once
-#include "MBDynItem.h"
+#include "MBDynRevoluteHingeJoint.h"
+#include "ASMTRevoluteJoint.h"
 
-namespace MbD {
+using namespace MbD;
 
-	class MBDynMarker : public MBDynItem
-	{
-	public:
-		void parseMBDyn(std::vector<std::string>& args) override;
-		void parseMBDynTotalJointMarker(std::vector<std::string>& args);
-		void parseMBDynClamp(std::vector<std::string>& args);
-		void createASMT() override;
+void MbD::MBDynRevoluteHingeJoint::parseMBDyn(std::string line)
+{
+	MBDynJoint::parseMBDyn(line);
+}
 
-		std::string nodeStr;
-		FColDsptr rPmP; //part to marker
-		FMatDsptr aAPm, aAPm2;
-	};
+void MbD::MBDynRevoluteHingeJoint::createASMT()
+{
+	MBDynJoint::createASMT();
+}
+
+std::shared_ptr<ASMTJoint> MbD::MBDynRevoluteHingeJoint::asmtClassNew()
+{
+	return std::make_shared<ASMTRevoluteJoint>();
 }

@@ -7,20 +7,13 @@
  ***************************************************************************/
 
 #pragma once
-#include "MBDynItem.h"
+
+#include "FunctionWithManyArgs.h"
 
 namespace MbD {
-
-	class MBDynMarker : public MBDynItem
+	class Arguments : public FunctionWithManyArgs
 	{
 	public:
-		void parseMBDyn(std::vector<std::string>& args) override;
-		void parseMBDynTotalJointMarker(std::vector<std::string>& args);
-		void parseMBDynClamp(std::vector<std::string>& args);
-		void createASMT() override;
-
-		std::string nodeStr;
-		FColDsptr rPmP; //part to marker
-		FMatDsptr aAPm, aAPm2;
+		void arguments(Symsptr args) override;
 	};
 }

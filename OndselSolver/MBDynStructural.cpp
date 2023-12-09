@@ -20,25 +20,7 @@ MbD::MBDynStructural::MBDynStructural()
 void MbD::MBDynStructural::parseMBDyn(std::string line)
 {
 	strucString = line;
-	size_t previousPos = 0;
-	auto pos = line.find(":");
-	auto front = line.substr(previousPos, pos - previousPos);
-	assert(front.find("structural") != std::string::npos);
-	auto arguments = std::vector<std::string>();
-	std::string argument;
-	while (true) {
-		previousPos = pos;
-		pos = line.find(",", pos + 1);
-		if (pos != std::string::npos) {
-			argument = line.substr(previousPos + 1, pos - previousPos - 1);
-			arguments.push_back(argument);
-		}
-		else {
-			argument = line.substr(previousPos + 1);
-			arguments.push_back(argument);
-			break;
-		}
-	}
+	arguments = collectArgumentsFor("structural", line);
 	std::istringstream iss(arguments.at(0));
 	iss >> name;
 	arguments.erase(arguments.begin());

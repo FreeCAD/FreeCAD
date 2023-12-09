@@ -346,7 +346,8 @@ void MbD::MBDynSystem::parseMBDynElements(std::vector<std::string>& lines)
 		}
 		it = findLineWith(lines, jointTokens);
 		if (it != lines.end()) {
-			auto joint = std::make_shared<MBDynJoint>();
+			//auto joint = std::make_shared<MBDynJoint>();
+			auto joint = MBDynJoint::newJoint(*it);
 			joint->owner = this;
 			joint->parseMBDyn(*it);
 			joints->push_back(joint);

@@ -6,21 +6,16 @@
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
 
-#pragma once
-#include "MBDynItem.h"
+#include <algorithm>
+#include <iterator>
 
-namespace MbD {
+#include "Arguments.h"
 
-	class MBDynMarker : public MBDynItem
-	{
-	public:
-		void parseMBDyn(std::vector<std::string>& args) override;
-		void parseMBDynTotalJointMarker(std::vector<std::string>& args);
-		void parseMBDynClamp(std::vector<std::string>& args);
-		void createASMT() override;
+using namespace MbD;
 
-		std::string nodeStr;
-		FColDsptr rPmP; //part to marker
-		FMatDsptr aAPm, aAPm2;
-	};
+
+void MbD::Arguments::arguments(Symsptr args)
+{
+	auto arguments = std::static_pointer_cast<Arguments>(args);
+	terms = arguments->terms;
 }

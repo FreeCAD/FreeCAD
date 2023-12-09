@@ -32,7 +32,7 @@ namespace MbD {
 		std::shared_ptr<EulerAnglesDot<T>> differentiateWRT(T var);
 		void setRotOrder(int i, int j, int k);
 
-		std::shared_ptr<FullColumn<int>> rotOrder;
+		std::shared_ptr<std::vector<int>> rotOrder;
 		FColFMatDsptr cA;
 		FMatDsptr aA;
 
@@ -106,7 +106,7 @@ namespace MbD {
 	template<typename T>
 	inline void EulerAngles<T>::setRotOrder(int i, int j, int k)
 	{
-		rotOrder = std::make_shared<FullColumn<int>>(3);
+		rotOrder = std::make_shared<std::vector<int>>(3);
 		rotOrder->at(0) = i;
 		rotOrder->at(1) = j;
 		rotOrder->at(2) = k;

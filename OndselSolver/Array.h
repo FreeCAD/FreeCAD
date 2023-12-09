@@ -33,6 +33,7 @@ namespace MbD {
 		Array(std::initializer_list<T> list) : std::vector<T>{ list } {}
 		virtual ~Array() {}
 		virtual void initialize();
+		static bool equaltol(double x, double xx, double tol);
 		void copyFrom(std::shared_ptr<Array<T>> x);
 		virtual void zeroSelf();
 		virtual double sumOfSquares() = 0;
@@ -62,6 +63,11 @@ namespace MbD {
 	template<typename T>
 	inline void Array<T>::initialize()
 	{
+	}
+	template<>
+	inline bool Array<double>::equaltol(double x, double xx, double tol)
+	{
+		return std::abs(x - xx) < tol;
 	}
 	template<typename T>
 	inline void Array<T>::copyFrom(std::shared_ptr<Array<T>> x)

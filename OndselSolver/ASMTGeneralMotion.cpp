@@ -69,7 +69,12 @@ void MbD::ASMTGeneralMotion::readRotationOrder(std::vector<std::string>& lines)
 {
 	assert(lines[0].find("RotationOrder") != std::string::npos);
 	lines.erase(lines.begin());
-	rotationOrder = readString(lines[0]);
+	std::istringstream iss(lines[0]);
+	rotationOrder = std::make_shared<std::vector<int>>();
+	int i;
+	while (iss >> i) {
+		rotationOrder->push_back(i);
+	}
 	lines.erase(lines.begin());
 }
 
@@ -137,15 +142,7 @@ void MbD::ASMTGeneralMotion::createMbD(std::shared_ptr<System> mbdSys, std::shar
 
 	auto xyzRotBlkList = std::initializer_list<Symsptr>{ phiBlk, theBlk, psiBlk };
 	auto fangIJJ = std::make_shared<EulerAngles<Symsptr>>(xyzRotBlkList);
-	std::istringstream iss(rotationOrder);
-	auto rotOrder = std::make_shared<FullColumn<int>>();
-	int order;
-	for (int i = 0; i < 3; i++)
-	{
-		iss >> order;
-		rotOrder->push_back(order);
-	}
-	fangIJJ->rotOrder = rotOrder;
+	fangIJJ->rotOrder = rotationOrder;
 	fullMotion->fangIJJ = fangIJJ;
 }
 
