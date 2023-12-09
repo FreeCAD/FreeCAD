@@ -129,7 +129,6 @@ If prec is -1 then maxTolerance() is taken.</UserDocu>
         <UserDocu>Applies FixSelfIntersectingEdge(num) and
  FixIntersectingEdges(num) to all edges in the wire and
  FixIntersectingEdges(num1, num2) for all pairs num1 and num2
- such that num2 >= num1 + 2
  and removes wrong edges if any</UserDocu>
       </Documentation>
     </Methode>
@@ -138,10 +137,10 @@ If prec is -1 then maxTolerance() is taken.</UserDocu>
         <UserDocu>Applies FixLacking(num) to all edges in the wire
   Connection between first and last edges is treated only if
   flag ClosedMode is True
-  If <force> is False (default), test for connectness is done with
+  If 'force' is False (default), test for connectness is done with
   precision of vertex between edges, else it is done with minimal
   value of vertex tolerance and Analyzer.Precision().
-  Hence, <force> will lead to inserting lacking edges in replacement
+  Hence, 'force' will lead to inserting lacking edges in replacement
   of vertices which have big tolerances.</UserDocu>
       </Documentation>
     </Methode>
@@ -188,7 +187,7 @@ range on the closed surface</UserDocu>
     </Methode>
     <Methode Name="fixTails">
       <Documentation>
-        <UserDocu>Fixes issues related to "tails" in the geometry.
+        <UserDocu>Fixes issues related to 'tails' in the geometry.
       Tails are typically small, undesired protrusions or deviations in the curves or edges that need correction.
       This method examines the geometry and applies corrective actions to eliminate or reduce the presence of tails.</UserDocu>
       </Documentation>
@@ -221,9 +220,9 @@ and fixConnected() for last and first edges)</UserDocu>
     </Attribute>
     <Attribute Name="PreferencePCurveMode" ReadOnly="false">
       <Documentation>
-        <UserDocu>Mode which defines whether the 2d (True)
-representation of the wire is preferable over 3d one (in the
-case of ambiguity in FixEdgeCurves)</UserDocu>
+        <UserDocu>Mode which defines whether the 2d 'True'
+representation of the wire is preferable over 3d one in the
+case of ambiguity in FixEdgeCurves</UserDocu>
       </Documentation>
       <Parameter Name="PreferencePCurveMode" Type="Boolean"/>
     </Attribute>
@@ -238,7 +237,7 @@ using intersection, extrema, projections) or not</UserDocu>
     <Attribute Name="FixReorderMode" ReadOnly="false">
       <Documentation>
         <UserDocu> Mode which performs an analysis and reorders edges in the wire using class WireOrder.
-Flag <theModeBoth> determines the use of miscible mode if necessary.</UserDocu>
+Flag 'theModeBoth' determines the use of miscible mode if necessary.</UserDocu>
       </Documentation>
       <Parameter Name="FixReorderMode" Type="Boolean"/>
     </Attribute>
@@ -253,7 +252,7 @@ Flag <theModeBoth> determines the use of miscible mode if necessary.</UserDocu>
         <UserDocu>Mode which applies FixConnected(num) to all edges in the wire
  Connection between first and last edges is treated only if
  flag ClosedMode is True
- If <prec> is -1 then MaxTolerance() is taken.</UserDocu>
+ If 'prec' is -1 then MaxTolerance() is taken.</UserDocu>
       </Documentation>
       <Parameter Name="FixConnectedMode" Type="Boolean"/>
     </Attribute>
@@ -285,7 +284,6 @@ Flag <theModeBoth> determines the use of miscible mode if necessary.</UserDocu>
         <UserDocu>Mode which applies FixSelfIntersectingEdge(num) and
   FixIntersectingEdges(num) to all edges in the wire and
   FixIntersectingEdges(num1, num2) for all pairs num1 and num2
-  such that num2 >= num1 + 2
   and removes wrong edges if any</UserDocu>
       </Documentation>
       <Parameter Name="FixSelfIntersectionMode" Type="Boolean"/>
@@ -295,10 +293,10 @@ Flag <theModeBoth> determines the use of miscible mode if necessary.</UserDocu>
         <UserDocu>Mode which applies FixLacking(num) to all edges in the wire
   Connection between first and last edges is treated only if
   flag ClosedMode is True
-  If <force> is False (default), test for connectness is done with
+  If 'force' is False (default), test for connectness is done with
   precision of vertex between edges, else it is done with minimal
   value of vertex tolerance and Analyzer.Precision().
-  Hence, <force> will lead to inserting lacking edges in replacement
+  Hence, 'force' will lead to inserting lacking edges in replacement
   of vertices which have big tolerances.</UserDocu>
       </Documentation>
       <Parameter Name="FixLackingMode" Type="Boolean"/>
