@@ -54,9 +54,6 @@ from draftutils.messages import _msg
 from draftutils.translate import translate
 
 
-param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-
-
 class ViewProviderDraftAnnotation(object):
     """The base class for Draft Annotation viewproviders.
 
@@ -90,8 +87,7 @@ class ViewProviderDraftAnnotation(object):
                              "ScaleMultiplier",
                              "Annotation",
                              _tip)
-            anno_scale = param.GetFloat("DraftAnnotationScale", 1)
-            vobj.ScaleMultiplier = 1 / anno_scale if anno_scale > 0 else 1
+            vobj.ScaleMultiplier = utils.get_param("DefaultAnnoScaleMultiplier", 1)
 
         if "AnnotationStyle" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",

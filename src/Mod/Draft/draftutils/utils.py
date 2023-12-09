@@ -62,8 +62,6 @@ arrowtypes = ARROW_TYPES
 
 def get_default_annotation_style():
     param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-    anno_scale = param.GetFloat("DraftAnnotationScale", 1)
-    scale_mult = 1 / anno_scale if anno_scale > 0 else 1
     arrow_type_index = param.GetInt("dimsymbol", 0)
     return {
         "ArrowSize":       ("float", param.GetFloat("arrowsize", 1)),
@@ -77,7 +75,7 @@ def get_default_annotation_style():
         "LineColor":       ("color", param.GetUnsigned("DefaultAnnoLineColor", 255)),
         "LineSpacing":     ("float", param.GetFloat("LineSpacing", 1)),
         "LineWidth":       ("int",   param.GetInt("DefaultAnnoLineWidth", 2)),
-        "ScaleMultiplier": ("float", scale_mult),
+        "ScaleMultiplier": ("float", param.GetFloat("DefaultAnnoScaleMultiplier", 1)),
         "ShowLine":        ("bool",  param.GetBool("DimShowLine", True)),
         "ShowUnit":        ("bool",  param.GetBool("showUnit", True)),
         "TextColor":       ("color", param.GetUnsigned("DefaultTextColor", 255)),
@@ -205,7 +203,7 @@ def get_param_type(param):
         return "string"
     elif param in ("textheight", "arrowsize", "extlines", "dimspacing",
                    "dimovershoot", "extovershoot", "HatchPatternSize",
-                   "LineSpacing"):
+                   "LineSpacing", "DefaultAnnoScaleMultiplier"):
         return "float"
     elif param in ("selectBaseObjects", "alwaysSnap", "grid",
                    "fillmode", "DimShowLine",
