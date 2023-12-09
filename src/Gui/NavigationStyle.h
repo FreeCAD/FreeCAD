@@ -28,6 +28,7 @@
 #include <Inventor/SbBox2s.h>
 #include <Inventor/SbPlane.h>
 #include <Inventor/SbRotation.h>
+#include <Inventor/SbSphere.h>
 #include <Inventor/SbTime.h>
 #include <Inventor/SbVec2f.h>
 #include <Inventor/SbVec2s.h>
@@ -122,9 +123,11 @@ public:
     void setViewer(View3DInventorViewer*);
 
     void setAnimationEnabled(const SbBool enable);
+    void setSpinningAnimationEnabled(const SbBool enable);
     SbBool isAnimationEnabled() const;
-
+    SbBool isSpinningAnimationEnabled() const;
     SbBool isAnimating() const;
+    SbBool isSpinning() const;
     void startAnimating(const std::shared_ptr<NavigationAnimation>& animation, bool wait = false) const;
     void stopAnimating() const;
 
@@ -151,6 +154,7 @@ public:
     SoCamera* getCamera() const;
     void setCameraOrientation(const SbRotation& orientation, SbBool moveToCenter = false);
     void translateCamera(const SbVec3f& translation);
+    void findBoundingSphere();
     void reorientCamera(SoCamera* camera, const SbRotation& rotation);
     void reorientCamera(SoCamera* camera, const SbRotation& rotation, const SbVec3f& rotationCenter);
 
@@ -240,6 +244,7 @@ protected:
 
     View3DInventorViewer* viewer{nullptr};
     NavigationAnimator* animator;
+    SbBool animationEnabled;
     ViewerMode currentmode;
     SoMouseButtonEvent mouseDownConsumedEvent;
     SbVec2f lastmouseposition;
@@ -264,7 +269,7 @@ protected:
 
     /** @name Spinning data */
     //@{
-    SbBool spinanimatingallowed;
+    SbBool spinningAnimationEnabled;
     int spinsamplecounter;
     SbRotation spinincrement;
     SbSphereSheetProjector * spinprojector;
@@ -278,6 +283,8 @@ private:
     NavigationStyle::RotationCenterModes rotationCenterMode;
     float sensitivity;
     SbBool resetcursorpos;
+
+    SbSphere boundingSphere;
 };
 
 /** Sub-classes of this class appear in the preference dialog where users can

@@ -54,10 +54,7 @@
 
 // Qt
 #include <QtGlobal>
-
-// Boost
-#include <boost/algorithm/string/predicate.hpp>
-#include <boost/regex.hpp>
+#include <QRegularExpression>
 
 #endif  //_PreComp_
 

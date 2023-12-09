@@ -22,8 +22,9 @@
 #ifndef MATGUI_MATERIALSAVE_H
 #define MATGUI_MATERIALSAVE_H
 
-// #include <boost/filesystem.hpp>
+#include <memory>
 
+#include <QAction>
 #include <QDialog>
 #include <QItemSelection>
 #include <QStandardItem>
@@ -41,39 +42,62 @@ class MaterialSave: public QDialog
     Q_OBJECT
 
 public:
-    explicit MaterialSave(Materials::Material* material, QWidget* parent = nullptr);
+    explicit MaterialSave(const std::shared_ptr<Materials::Material>& material,
+                          QWidget* parent = nullptr);
     ~MaterialSave() override;
 
     void setLibraries();
     void createModelTree();
     void addExpanded(QTreeView* tree, QStandardItem* parent, QStandardItem* child);
     void addExpanded(QTreeView* tree, QStandardItemModel* parent, QStandardItem* child);
-    void
-    addMaterials(QStandardItem& parent,
-                 const std::shared_ptr<std::map<QString, Materials::MaterialTreeNode*>> modelTree,
-                 const QIcon& folderIcon,
-                 const QIcon& icon);
+    void addMaterials(
+        QStandardItem& parent,
+        const std::shared_ptr<std::map<QString, std::shared_ptr<Materials::MaterialTreeNode>>>
+            modelTree,
+        const QIcon& folderIcon,
+        const QIcon& icon);
     void showSelectedTree();
 
     void onSelectModel(const QItemSelection& selected, const QItemSelection& deselected);
     void currentTextChanged(const QString& value);
     void onNewFolder(bool checked);
+    void onItemChanged(QStandardItem* item);
     void onFilename(const QString& text);
+    void onContextMenu(const QPoint& pos);
+    void onDelete(bool checked);
+    void onInherited(int state);
     void onOk(bool checked);
     void onCancel(bool checked);
+    int confirmOverwrite(const QString& filename);
+    int confirmNewMaterial();
+    int confirmCopy();
     void accept() override;
     void reject() override;
 
 private:
     std::unique_ptr<Ui_MaterialSave> ui;
     Materials::MaterialManager _manager;
-    Materials::Material* _material;
+    std::shared_ptr<Materials::Material> _material;
+    bool _saveInherited;
     QString _selectedPath;
+    QString _selectedFull;
     QString _selectedUUID;
     QString _libraryName;
     QString _filename;
 
+    QAction _deleteAction;
+
     QString getPath(const QStandardItem* item) const;
+    std::shared_ptr<Materials::MaterialLibrary> currentLibrary();
+    void createFolder(const QString& path);
+    void renameFolder(const QString& oldPath, const QString& newPath);
+    void deleteRecursive(const QString& path);
+    QString pathFromIndex(const QModelIndex& index) const;
+    int confirmDelete(QWidget* parent);
+    bool selectedHasChildren();
+    void deleteSelected();
+    void removeChildren(QStandardItem* item);
+    void removeSelectedFromTree();
 };
 
 }  // namespace MatGui

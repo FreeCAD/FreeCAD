@@ -132,6 +132,8 @@ class DraftWorkbench(FreeCADGui.Workbench):
         # Set up preferences pages
         if hasattr(FreeCADGui, "draftToolBar"):
             if not hasattr(FreeCADGui.draftToolBar, "loadedPreferences"):
+                from draftutils import params
+                params._param_observer_start()
                 FreeCADGui.addPreferencePage(":/ui/preferences-draft.ui", QT_TRANSLATE_NOOP("QObject", "Draft"))
                 FreeCADGui.addPreferencePage(":/ui/preferences-draftinterface.ui", QT_TRANSLATE_NOOP("QObject", "Draft"))
                 FreeCADGui.addPreferencePage(":/ui/preferences-draftsnap.ui", QT_TRANSLATE_NOOP("QObject", "Draft"))
@@ -151,6 +153,8 @@ class DraftWorkbench(FreeCADGui.Workbench):
             FreeCADGui.Snapper.show()
             import draftutils.init_draft_statusbar as dsb
             dsb.show_draft_statusbar()
+        import WorkingPlane
+        WorkingPlane._view_observer_start()  # Updates the draftToolBar when switching views.
         FreeCAD.Console.PrintLog("Draft workbench activated.\n")
 
     def Deactivated(self):
@@ -161,6 +165,8 @@ class DraftWorkbench(FreeCADGui.Workbench):
             FreeCADGui.Snapper.hide()
             import draftutils.init_draft_statusbar as dsb
             dsb.hide_draft_statusbar()
+        import WorkingPlane
+        WorkingPlane._view_observer_stop()
         FreeCAD.Console.PrintLog("Draft workbench deactivated.\n")
 
     def ContextMenu(self, recipient):

@@ -21,10 +21,8 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#include <boost/uuid/uuid_io.hpp>
-#endif
-
+#include "Model.h"
+#include "ModelLibrary.h"
 #include "ModelManager.h"
 #include "ModelManagerPy.h"
 #include "ModelPy.h"
@@ -56,14 +54,14 @@ int ModelManagerPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 
 PyObject* ModelManagerPy::getModel(PyObject* args)
 {
-    char* uuid;
+    char* uuid {};
     if (!PyArg_ParseTuple(args, "s", &uuid)) {
         return nullptr;
     }
 
     try {
-        const Model model = getModelManagerPtr()->getModel(QString::fromStdString(uuid));
-        return new ModelPy(new Model(model));
+        auto model = getModelManagerPtr()->getModel(QString::fromStdString(uuid));
+        return new ModelPy(new Model(*model));
     }
     catch (ModelNotFound const&) {
         QString error = QString::fromStdString("Model not found:\n");
@@ -87,8 +85,8 @@ PyObject* ModelManagerPy::getModel(PyObject* args)
 
 PyObject* ModelManagerPy::getModelByPath(PyObject* args)
 {
-    char* path;
-    char* lib = "";
+    char* path {};
+    const char* lib = "";
     if (!PyArg_ParseTuple(args, "s|s", &path, &lib)) {
         return nullptr;
     }
@@ -96,10 +94,9 @@ PyObject* ModelManagerPy::getModelByPath(PyObject* args)
     std::string libPath(lib);
     if (libPath.length() > 0) {
         try {
-            const Model& model =
-                getModelManagerPtr()->getModelByPath(QString::fromStdString(path),
-                                                     QString::fromStdString(libPath));
-            return new ModelPy(new Model(model));
+            auto model = getModelManagerPtr()->getModelByPath(QString::fromStdString(path),
+                                                              QString::fromStdString(libPath));
+            return new ModelPy(new Model(*model));
         }
         catch (ModelNotFound const&) {
             PyErr_SetString(PyExc_LookupError, "Model not found");
@@ -108,8 +105,8 @@ PyObject* ModelManagerPy::getModelByPath(PyObject* args)
     }
 
     try {
-        const Model& model = getModelManagerPtr()->getModelByPath(QString::fromStdString(path));
-        return new ModelPy(new Model(model));
+        auto model = getModelManagerPtr()->getModelByPath(QString::fromStdString(path));
+        return new ModelPy(new Model(*model));
     }
     catch (ModelNotFound const&) {
         PyErr_SetString(PyExc_LookupError, "Model not found");
@@ -119,11 +116,11 @@ PyObject* ModelManagerPy::getModelByPath(PyObject* args)
 
 Py::List ModelManagerPy::getModelLibraries() const
 {
-    std::shared_ptr<std::list<ModelLibrary*>> libraries = getModelManagerPtr()->getModelLibraries();
+    auto libraries = getModelManagerPtr()->getModelLibraries();
     Py::List list;
 
     for (auto it = libraries->begin(); it != libraries->end(); it++) {
-        ModelLibrary* lib = *it;
+        auto lib = *it;
         Py::Tuple libTuple(3);
         libTuple.setItem(0, Py::String(lib->getName().toStdString()));
         libTuple.setItem(1, Py::String(lib->getDirectoryPath().toStdString()));
@@ -142,7 +139,7 @@ Py::Dict ModelManagerPy::getModels() const
 
     for (auto it = models->begin(); it != models->end(); it++) {
         QString key = it->first;
-        Model* model = it->second;
+        auto model = it->second;
 
         PyObject* modelPy = new ModelPy(new Model(*model));
         dict.setItem(Py::String(key.toStdString()), Py::Object(modelPy, true));

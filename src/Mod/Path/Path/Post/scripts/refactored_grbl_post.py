@@ -26,8 +26,16 @@
 # ***************************************************************************
 
 
+import argparse
+
+from typing import Any, Dict, Union
+
 import Path.Post.UtilsArguments as PostUtilsArguments
 import Path.Post.UtilsExport as PostUtilsExport
+
+# Define some types that are used throughout this file
+Parser = argparse.ArgumentParser
+Values = Dict[str, Any]
 
 #
 # The following variables need to be global variables
@@ -41,7 +49,7 @@ import Path.Post.UtilsExport as PostUtilsExport
 #    need to be defined before the "init_shared_arguments" routine can be
 #    called to create TOOLTIP_ARGS, so they also end up having to be globals.
 #
-TOOLTIP = """
+TOOLTIP: str = """
 Generate g-code from a Path that is compatible with the grbl controller:
 
 import refactored_grbl_post
@@ -50,14 +58,12 @@ refactored_grbl_post.export(object, "/path/to/file.ncc")
 #
 # Default to metric mode
 #
-UNITS = "G21"
+UNITS: str = "G21"
 
 
-def init_values(values):
+def init_values(values: Values) -> None:
     """Initialize values that are used throughout the postprocessor."""
     #
-    global UNITS
-
     PostUtilsArguments.init_shared_values(values)
     #
     # Set any values here that need to override the default values set
@@ -134,7 +140,7 @@ M2"""
     values["USE_TLO"] = False
 
 
-def init_argument_defaults(argument_defaults):
+def init_argument_defaults(argument_defaults: Dict[str, bool]) -> None:
     """Initialize which arguments (in a pair) are shown as the default argument."""
     PostUtilsArguments.init_argument_defaults(argument_defaults)
     #
@@ -156,7 +162,7 @@ def init_argument_defaults(argument_defaults):
     argument_defaults["tool_change"] = False
 
 
-def init_arguments_visible(arguments_visible):
+def init_arguments_visible(arguments_visible: Dict[str, bool]) -> None:
     """Initialize which argument pairs are visible in TOOLTIP_ARGS."""
     PostUtilsArguments.init_arguments_visible(arguments_visible)
     #
@@ -171,9 +177,13 @@ def init_arguments_visible(arguments_visible):
     arguments_visible["wait-for-spindle"] = True
 
 
-def init_arguments(values, argument_defaults, arguments_visible):
+def init_arguments(
+    values: Values,
+    argument_defaults: Dict[str, bool],
+    arguments_visible: Dict[str, bool],
+) -> Parser:
     """Initialize the shared argument definitions."""
-    parser = PostUtilsArguments.init_shared_arguments(
+    parser: Parser = PostUtilsArguments.init_shared_arguments(
         values, argument_defaults, arguments_visible
     )
     #
@@ -187,41 +197,46 @@ def init_arguments(values, argument_defaults, arguments_visible):
 # Creating global variables and using functions to modify them
 # is useful for being able to test things later.
 #
-values = {}
-init_values(values)
-argument_defaults = {}
-init_argument_defaults(argument_defaults)
-arguments_visible = {}
-init_arguments_visible(arguments_visible)
-parser = init_arguments(values, argument_defaults, arguments_visible)
+global_values: Values = {}
+init_values(global_values)
+global_argument_defaults: Dict[str, bool] = {}
+init_argument_defaults(global_argument_defaults)
+global_arguments_visible: Dict[str, bool] = {}
+init_arguments_visible(global_arguments_visible)
+global_parser: Parser = init_arguments(
+    global_values, global_argument_defaults, global_arguments_visible
+)
 #
 # The TOOLTIP_ARGS value is created from the help information about the arguments.
 #
-TOOLTIP_ARGS = parser.format_help()
+TOOLTIP_ARGS: str = global_parser.format_help()
 #
 # Create another parser just to get a list of all possible arguments
 # that may be output using --output_all_arguments.
 #
-all_arguments_visible = {}
-for k in iter(arguments_visible):
-    all_arguments_visible[k] = True
-all_visible = init_arguments(values, argument_defaults, all_arguments_visible)
+global_all_arguments_visible: Dict[str, bool] = {}
+k: str
+for k in iter(global_arguments_visible):
+    global_all_arguments_visible[k] = True
+global_all_visible: Parser = init_arguments(
+    global_values, global_argument_defaults, global_all_arguments_visible
+)
 
 
-def export(objectslist, filename, argstring):
+def export(objectslist, filename, argstring) -> str:
     """Postprocess the objects in objectslist to filename."""
-    #
-    global parser
-    global UNITS
-    global values
+    args: Union[str, argparse.Namespace]
+    flag: bool
+
+    global UNITS  # pylint: disable=global-statement
 
     # print(parser.format_help())
 
     (flag, args) = PostUtilsArguments.process_shared_arguments(
-        values, parser, argstring, all_visible, filename
+        global_values, global_parser, argstring, global_all_visible, filename
     )
     if not flag:
-        return args
+        return args  # type: ignore
     #
     # Process any additional arguments here
     #
@@ -230,6 +245,6 @@ def export(objectslist, filename, argstring):
     # Update the global variables that might have been modified
     # while processing the arguments.
     #
-    UNITS = values["UNITS"]
+    UNITS = global_values["UNITS"]
 
-    return PostUtilsExport.export_common(values, objectslist, filename)
+    return PostUtilsExport.export_common(global_values, objectslist, filename)

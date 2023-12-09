@@ -44,7 +44,7 @@ App::DocumentObjectExecReturn* TrajectoryCompound::execute()
     Robot::Trajectory result;
 
     for (auto it : Tracs) {
-        if (it->getTypeId().isDerivedFrom(Robot::TrajectoryObject::getClassTypeId())) {
+        if (it->isDerivedFrom<Robot::TrajectoryObject>()) {
             const std::vector<Waypoint*>& wps =
                 static_cast<Robot::TrajectoryObject*>(it)->Trajectory.getValue().getWaypoints();
             for (auto wp : wps) {

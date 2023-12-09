@@ -732,7 +732,7 @@ void DlgFilletEdges::onShapeObjectActivated(int itemPos)
     if (!doc)
         return;
     App::DocumentObject* part = doc->getObject((const char*)name);
-    if (part && part->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+    if (part && part->isDerivedFrom<Part::Feature>()) {
         d->object = part;
         TopoDS_Shape myShape = static_cast<Part::Feature*>(part)->Shape.getValue();
 

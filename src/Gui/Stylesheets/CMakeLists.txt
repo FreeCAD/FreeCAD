@@ -29,6 +29,18 @@ SET(Overlay_Stylesheets_Files
     "overlay/edithide.svg"
     "overlay/mode.svg"
     "overlay/transparent.svg"
+    "overlay/taskshow_light.svg"
+    "overlay/mode_lighter.svg"
+    "overlay/overlay_lighter.svg"
+    "overlay/close_lighter.svg"
+    "overlay/close_light.svg"
+    "overlay/float_lighter.svg"
+    "overlay/overlay_light.svg"
+    "overlay/mode_light.svg"
+    "overlay/transparent_light.svg"
+    "overlay/float_light.svg"
+    "overlay/transparent_lighter.svg"
+    "overlay/close_red.svg"
 )
 
 # Find all the image files

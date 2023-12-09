@@ -24,6 +24,8 @@
 #include <QMessageBox>
 #endif
 
+#include <QMenu>
+
 #include <Gui/MainWindow.h>
 
 #include <Mod/Material/App/Exceptions.h>
@@ -39,19 +41,23 @@ using namespace MatGui;
 
 /* TRANSLATOR MatGui::Array2D */
 
-Array2D::Array2D(const QString& propertyName, Materials::Material* material, QWidget* parent)
+Array2D::Array2D(const QString& propertyName,
+                 const std::shared_ptr<Materials::Material>& material,
+                 QWidget* parent)
     : QDialog(parent)
     , ui(new Ui_Array2D)
+    , _material(material)
 {
     ui->setupUi(this);
 
     if (material->hasPhysicalProperty(propertyName)) {
-        _property = &(material->getPhysicalProperty(propertyName));
+        _property = material->getPhysicalProperty(propertyName);
     }
     else if (material->hasAppearanceProperty(propertyName)) {
-        _property = &(material->getAppearanceProperty(propertyName));
+        _property = material->getAppearanceProperty(propertyName);
     }
     else {
+        Base::Console().Log("Property '%s' not found\n", propertyName.toStdString().c_str());
         _property = nullptr;
     }
     if (_property) {
@@ -62,38 +68,18 @@ Array2D::Array2D(const QString& propertyName, Materials::Material* material, QWi
         _value = nullptr;
     }
 
-    setupDefault();
     setupArray();
+
+    ui->tableView->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(ui->tableView, &QWidget::customContextMenuRequested, this, &Array2D::onContextMenu);
+
+    _deleteAction.setText(tr("Delete row"));
+    _deleteAction.setShortcut(Qt::Key_Delete);
+    connect(&_deleteAction, &QAction::triggered, this, &Array2D::onDelete);
+    ui->tableView->addAction(&_deleteAction);
 
     connect(ui->standardButtons, &QDialogButtonBox::accepted, this, &Array2D::accept);
     connect(ui->standardButtons, &QDialogButtonBox::rejected, this, &Array2D::reject);
-}
-
-void Array2D::setupDefault()
-{
-    if (_property == nullptr) {
-        return;
-    }
-
-    try {
-        const Materials::MaterialProperty& column1 = _property->getColumn(0);
-        QString label = QString::fromStdString("Default ") + column1.getName();
-        ui->labelDefault->setText(label);
-        if (column1.getPropertyType() == QString::fromStdString("Quantity")) {
-            ui->editDefault->setMinimum(std::numeric_limits<double>::min());
-            ui->editDefault->setMaximum(std::numeric_limits<double>::max());
-            ui->editDefault->setUnitText(_property->getColumnUnits(0));
-            ui->editDefault->setValue(_value->getDefault().getValue().value<Base::Quantity>());
-
-            connect(ui->editDefault,
-                    qOverload<const Base::Quantity&>(&Gui::QuantitySpinBox::valueChanged),
-                    this,
-                    &Array2D::defaultValueChanged);
-        }
-    }
-    catch (const Materials::PropertyNotFound&) {
-        return;
-    }
 }
 
 void Array2D::setHeaders(QStandardItemModel* model)
@@ -134,15 +120,88 @@ void Array2D::setupArray()
     auto table = ui->tableView;
     auto model = new Array2DModel(_property, _value, this);
     table->setModel(model);
-    table->setEditTriggers(QAbstractItemView::AllEditTriggers);
+    // table->setEditTriggers(QAbstractItemView::AllEditTriggers);
+    table->setSelectionMode(QAbstractItemView::SingleSelection);
 
     setColumnWidths(table);
     setColumnDelegates(table);
+    connect(model, &QAbstractItemModel::dataChanged, this, &Array2D::onDataChanged);
 }
 
-void Array2D::defaultValueChanged(const Base::Quantity& value)
+void Array2D::onDataChanged(const QModelIndex& topLeft,
+                            const QModelIndex& bottomRight,
+                            const QVector<int>& roles)
 {
-    _value->setDefault(QVariant::fromValue(value));
+    Q_UNUSED(topLeft)
+    Q_UNUSED(bottomRight)
+    Q_UNUSED(roles)
+
+    _material->setEditStateAlter();
+}
+
+void Array2D::onContextMenu(const QPoint& pos)
+{
+    QModelIndex index = ui->tableView->indexAt(pos);
+
+    QMenu contextMenu(tr("Context menu"), this);
+
+    contextMenu.addAction(&_deleteAction);
+
+    contextMenu.exec(ui->tableView->mapToGlobal(pos));
+}
+
+bool Array2D::newRow(const QModelIndex& index)
+{
+    auto model = static_cast<Array2DModel*>(ui->tableView->model());
+    return model->newRow(index);
+}
+
+void Array2D::onDelete(bool checked)
+{
+    Q_UNUSED(checked)
+
+    QItemSelectionModel* selectionModel = ui->tableView->selectionModel();
+    if (!selectionModel->hasSelection() || newRow(selectionModel->currentIndex())) {
+        return;
+    }
+
+    int res = confirmDelete();
+    if (res == QMessageBox::Cancel) {
+        return;
+    }
+}
+
+int Array2D::confirmDelete()
+{
+    QMessageBox box(this);
+    box.setIcon(QMessageBox::Question);
+    box.setWindowTitle(QObject::tr("Confirm Delete"));
+
+    QString prompt = QObject::tr("Are you sure you want to delete the row?");
+    box.setText(prompt);
+
+    box.setStandardButtons(QMessageBox::Ok | QMessageBox::Cancel);
+    box.setDefaultButton(QMessageBox::Cancel);
+    box.setEscapeButton(QMessageBox::Cancel);
+
+    int res = QMessageBox::Cancel;
+    box.adjustSize();  // Silence warnings from Qt on Windows
+    switch (box.exec()) {
+        case QMessageBox::Ok:
+            deleteSelected();
+            res = QMessageBox::Ok;
+            break;
+    }
+
+    return res;
+}
+
+void Array2D::deleteSelected()
+{
+    auto model = static_cast<Array2DModel*>(ui->tableView->model());
+    QItemSelectionModel* selectionModel = ui->tableView->selectionModel();
+    auto index = selectionModel->currentIndex();
+    model->deleteRow(index);
 }
 
 void Array2D::accept()

@@ -125,11 +125,11 @@ App::DocumentObjectExecReturn *Draft::execute()
     gp_Dir pullDirection;
     App::DocumentObject* refDirection = PullDirection.getValue();
     if (refDirection) {
-        if (refDirection->getTypeId().isDerivedFrom(PartDesign::Line::getClassTypeId())) {
+        if (refDirection->isDerivedFrom<PartDesign::Line>()) {
                     PartDesign::Line* line = static_cast<PartDesign::Line*>(refDirection);
                     Base::Vector3d d = line->getDirection();
                     pullDirection = gp_Dir(d.x, d.y, d.z);
-        } else if (refDirection->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+        } else if (refDirection->isDerivedFrom<Part::Feature>()) {
             std::vector<std::string> subStrings = PullDirection.getSubValues();
             if (subStrings.empty() || subStrings[0].empty())
                 throw Base::ValueError("No pull direction reference specified");
@@ -209,14 +209,14 @@ App::DocumentObjectExecReturn *Draft::execute()
         if (!found)
             throw Base::RuntimeError("No neutral plane specified and none can be guessed");
     } else {
-        if (refPlane->getTypeId().isDerivedFrom(PartDesign::Plane::getClassTypeId())) {
+        if (refPlane->isDerivedFrom<PartDesign::Plane>()) {
             PartDesign::Plane* plane = static_cast<PartDesign::Plane*>(refPlane);
             Base::Vector3d b = plane->getBasePoint();
             Base::Vector3d n = plane->getNormal();
             neutralPlane = gp_Pln(gp_Pnt(b.x, b.y, b.z), gp_Dir(n.x, n.y, n.z));
-        } else if (refPlane->getTypeId().isDerivedFrom(App::Plane::getClassTypeId())) {
+        } else if (refPlane->isDerivedFrom<App::Plane>()) {
             neutralPlane = Feature::makePlnFromPlane(refPlane);
-        } else if (refPlane->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+        } else if (refPlane->isDerivedFrom<Part::Feature>()) {
             std::vector<std::string> subStrings = NeutralPlane.getSubValues();
             if (subStrings.empty() || subStrings[0].empty())
                 throw Base::ValueError("No neutral plane reference specified");
@@ -298,7 +298,7 @@ App::DocumentObjectExecReturn *Draft::execute()
                 if (!mkDraft.AddDone()) {
                     // Note: the function ProblematicShape returns the face on which the error occurred
                     // Note: mkDraft.Remove() stumbles on a bug in Draft_Modification::Remove() and is
-                    //       therefore unusable. See http://forum.freecad.org/viewtopic.php?f=10&t=3209&start=10#p25341
+                    //       therefore unusable. See https://forum.freecad.org/viewtopic.php?f=10&t=3209&start=10#p25341
                     //       The only solution is to discard mkDraft and start over without the current face
                     // mkDraft.Remove(face);
                     Base::Console().Error("Adding face failed on %s. Omitted\n", it->c_str());

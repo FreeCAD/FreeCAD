@@ -24,8 +24,16 @@
 #define SKETCHERGUI_DrawSketchHandlerSplitting_H
 
 #include <Gui/Notifications.h>
+#include <Gui/SelectionFilter.h>
+#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 
+#include <Mod/Sketcher/App/SketchObject.h>
+
+#include "DrawSketchHandler.h"
 #include "GeometryCreationMode.h"
+#include "Utils.h"
+#include "ViewProviderSketch.h"
 
 
 namespace SketcherGui
@@ -57,11 +65,10 @@ public:
             int GeoId = std::atoi(element.substr(4, 4000).c_str()) - 1;
             Sketcher::SketchObject* Sketch = static_cast<Sketcher::SketchObject*>(object);
             const Part::Geometry* geom = Sketch->getGeometry(GeoId);
-            if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()
-                || geom->getTypeId() == Part::GeomCircle::getClassTypeId()
-                || geom->getTypeId() == Part::GeomEllipse::getClassTypeId()
+            if (geom->is<Part::GeomLineSegment>() || geom->is<Part::GeomCircle>()
+                || geom->is<Part::GeomEllipse>()
                 || geom->isDerivedFrom(Part::GeomArcOfConic::getClassTypeId())
-                || geom->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
+                || geom->is<Part::GeomBSplineCurve>()) {
                 return true;
             }
         }
@@ -107,11 +114,10 @@ public:
         int curveGeoId = getPreselectCurve();
         if (curveGeoId >= 0) {
             const Part::Geometry* geom = sketchgui->getSketchObject()->getGeometry(curveGeoId);
-            if (geom->getTypeId() == Part::GeomLineSegment::getClassTypeId()
-                || geom->getTypeId() == Part::GeomCircle::getClassTypeId()
-                || geom->getTypeId() == Part::GeomEllipse::getClassTypeId()
+            if (geom->is<Part::GeomLineSegment>() || geom->is<Part::GeomCircle>()
+                || geom->is<Part::GeomEllipse>()
                 || geom->isDerivedFrom(Part::GeomArcOfConic::getClassTypeId())
-                || geom->getTypeId() == Part::GeomBSplineCurve::getClassTypeId()) {
+                || geom->is<Part::GeomBSplineCurve>()) {
                 GeoId = curveGeoId;
             }
         }

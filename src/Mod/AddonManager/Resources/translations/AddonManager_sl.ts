@@ -639,46 +639,36 @@ preveril razpoložljivost posodobitev za nameščene dodatke
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="276"/>
-      <source>Path to Python executable (optional):</source>
-      <translation>Pot do Pythonove izvršljive datoteke (možnostno):</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManagerOptions.ui" line="308"/>
       <source>Path to git executable (optional):</source>
       <translation>Pot do git izvršljive datoteke (možnostno):</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="295"/>
-      <source>The path to the Python executable for package installation with pip. Autodetected if needed and not specified.</source>
-      <translation>Pot do Pythonove izvršljive datoteke za namestitev paketov s sliko v sliki. Samodejni popravki, če so potrebni niso določeni.</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManagerOptions.ui" line="327"/>
       <source>The path to the git executable. Autodetected if needed and not specified.</source>
       <translation>Pot do git-ove izvršljive datoteke. Samodejno popravljanje, če je potrebno in ni določeno.</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="348"/>
+      <location filename="../../AddonManagerOptions.ui" line="316"/>
       <source>Advanced Options</source>
       <translation>Napredne možnosti</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="354"/>
+      <location filename="../../AddonManagerOptions.ui" line="322"/>
       <source>Show option to change branches (requires git)</source>
       <translation>Prikaži možnost spreminjanja veje (potreben git)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="367"/>
+      <location filename="../../AddonManagerOptions.ui" line="335"/>
       <source>Disable git (fall back to ZIP downloads only)</source>
       <translation>Onemogoči git (vrnitev na prenos le ZIPa)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="380"/>
+      <location filename="../../AddonManagerOptions.ui" line="348"/>
       <source>Activate Addon Manager options intended for developers of new Addons.</source>
       <translation>Omogoči možnosti upravljalnika dodatkov, ki so namenjene razvijalcem novih dodatkov.</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="383"/>
+      <location filename="../../AddonManagerOptions.ui" line="351"/>
       <source>Addon developer mode</source>
       <translation>Razvijalski način dodatkov</translation>
     </message>
@@ -1246,44 +1236,44 @@ preveril razpoložljivost posodobitev za nameščene dodatke
       <translation>Izvedba makra spodletela. Podrobnosti o napaki si poglejte na ukazni mizi.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="114"/>
       <location filename="../../addonmanager_devmode_people_table.py" line="86"/>
-      <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
+      <location filename="../../addonmanager_devmode.py" line="115"/>
       <location filename="../../package_list.py" line="386"/>
+      <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
       <source>Maintainer</source>
       <translation>Vzdrževalec</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="115"/>
       <location filename="../../addonmanager_devmode_people_table.py" line="87"/>
-      <location filename="../../addonmanager_devmode_person_editor.py" line="49"/>
+      <location filename="../../addonmanager_devmode.py" line="116"/>
       <location filename="../../package_list.py" line="423"/>
+      <location filename="../../addonmanager_devmode_person_editor.py" line="49"/>
       <source>Author</source>
       <translation>Ustvarjalec</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="162"/>
+      <location filename="../../manage_python_dependencies.py" line="163"/>
       <source>New Python Version Detected</source>
       <translation>Zaznana je nova Pythonova različica</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="166"/>
+      <location filename="../../manage_python_dependencies.py" line="167"/>
       <source>This appears to be the first time this version of Python has been used with the Addon Manager. Would you like to install the same auto-installed dependencies for it?</source>
       <translation>Kaže, da je tokrat ta različica Pythona prvič uporabljena z Upravljalnikom dodatkov (Addon Manager). Ali želite zanjo samodejno namestiti enako odvisnost?</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="196"/>
+      <location filename="../../manage_python_dependencies.py" line="197"/>
       <source>Processing, please wait...</source>
       <translation>V obdelavi, prosimo, počakajte ...</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="244"/>
+      <location filename="../../manage_python_dependencies.py" line="245"/>
       <location filename="../../package_details.py" line="872"/>
       <source>Update</source>
       <translation>Posodobi</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="339"/>
+      <location filename="../../manage_python_dependencies.py" line="340"/>
       <source>Updating...</source>
       <translation>Posodabljanje ...</translation>
     </message>
@@ -1473,8 +1463,8 @@ preveril razpoložljivost posodobitev za nameščene dodatke
       <translation type="unfinished">QtWebEngine Python bindings not installed -- using fallback README display.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="476"/>
       <location filename="../../package_details.py" line="644"/>
+      <location filename="../../addonmanager_installer_gui.py" line="476"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="54"/>
       <source>Success</source>
       <translation type="unfinished">Success</translation>
@@ -1606,9 +1596,9 @@ preveril razpoložljivost posodobitev za nameščene dodatke
       <translation type="unfinished">Select an icon file for this content item</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="691"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="274"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="313"/>
+      <location filename="../../addonmanager_devmode.py" line="692"/>
       <source>{} is not a subdirectory of {}</source>
       <translation type="unfinished">{} is not a subdirectory of {}</translation>
     </message>
@@ -1825,106 +1815,106 @@ preveril razpoložljivost posodobitev za nameščene dodatke
       <translation>Podatkov na GitHubu ni mogoče brati: preverite spletno povezavo in nastavitve posredniškega strežnika ter poskusite ponovno.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="191"/>
+      <location filename="../../addonmanager_devmode.py" line="192"/>
       <source>XML failure while reading metadata from file {}</source>
       <translation>XML napaka pri branju samopodatkov iz datoteke {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="198"/>
+      <location filename="../../addonmanager_devmode.py" line="199"/>
       <source>Invalid metadata in file {}</source>
       <translation>Neveljavni samopodatki v datoteki {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="240"/>
+      <location filename="../../addonmanager_devmode.py" line="241"/>
       <source>WARNING: Path specified in package.xml metadata does not match currently checked-out branch.</source>
       <translation>OPOZORILO: Pot, določena v samopodatkih package.xml, se ne sklada s trenutno prevzeto vejo.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="262"/>
+      <location filename="../../addonmanager_devmode.py" line="263"/>
       <source>Name</source>
       <translation>Naziv</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="264"/>
+      <location filename="../../addonmanager_devmode.py" line="265"/>
       <source>Class</source>
       <translation>Razred</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="267"/>
+      <location filename="../../addonmanager_devmode.py" line="268"/>
       <source>Description</source>
       <translation>Opis</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="271"/>
+      <location filename="../../addonmanager_devmode.py" line="272"/>
       <source>Subdirectory</source>
       <translation>Podmapa</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="274"/>
+      <location filename="../../addonmanager_devmode.py" line="275"/>
       <source>Files</source>
       <translation>Datoteke</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="432"/>
+      <location filename="../../addonmanager_devmode.py" line="433"/>
       <source>Select the folder containing your Addon</source>
       <translation>Izberite mapo z vašim dodatkom</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="561"/>
+      <location filename="../../addonmanager_devmode.py" line="562"/>
       <source>No Vermin, cancelling operation.</source>
       <comment>NOTE: Vermin is a Python package and proper noun - do not translate</comment>
       <translation>Brez Vermina, prekinitev dejanja.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="566"/>
+      <location filename="../../addonmanager_devmode.py" line="567"/>
       <source>Scanning Addon for Python version compatibility</source>
       <translation>Pregledovanje združljivosti dodatka s Pythonovo različico</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="593"/>
+      <location filename="../../addonmanager_devmode.py" line="594"/>
       <source>Minimum Python Version Detected</source>
       <translation>Zaznana je minimalna Pythonova različica</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="597"/>
+      <location filename="../../addonmanager_devmode.py" line="598"/>
       <source>Vermin auto-detected a required version of Python 3.{}</source>
       <translation>Vermin je samodejno zaznal zahtevano različico Pythona 3.{}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="609"/>
+      <location filename="../../addonmanager_devmode.py" line="610"/>
       <source>Install Vermin?</source>
       <translation>Želite namestiti Vermin?</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="613"/>
+      <location filename="../../addonmanager_devmode.py" line="614"/>
       <source>Auto-detecting the required version of Python for this Addon requires Vermin (https://pypi.org/project/vermin/). OK to install?</source>
       <translation>Samodejno zaznavanje potrebne različice Pythona javlja, da je za ta dodatek potreben Vermin (https://pypi.org/project/vermin/). Dovolite namestitev?</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="619"/>
+      <location filename="../../addonmanager_devmode.py" line="620"/>
       <source>Attempting to install Vermin from PyPi</source>
       <translation>Poskus namestitve Vermina s PyPi</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="644"/>
-      <location filename="../../addonmanager_devmode.py" line="659"/>
+      <location filename="../../addonmanager_devmode.py" line="645"/>
+      <location filename="../../addonmanager_devmode.py" line="660"/>
       <source>Installation failed</source>
       <translation>Nameščanje spodletelo</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="649"/>
+      <location filename="../../addonmanager_devmode.py" line="650"/>
       <source>Failed to install Vermin -- check Report View for details.</source>
       <comment>&apos;Vermin&apos; is the name of a Python package, do not translate</comment>
       <translation type="unfinished">Failed to install Vermin -- check Report View for details.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="664"/>
+      <location filename="../../addonmanager_devmode.py" line="665"/>
       <source>Failed to import vermin after installation -- cannot scan Addon.</source>
       <comment>&apos;vermin&apos; is the name of a Python package, do not translate</comment>
       <translation type="unfinished">Failed to import vermin after installation -- cannot scan Addon.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="677"/>
+      <location filename="../../addonmanager_devmode.py" line="678"/>
       <source>Select an icon file for this package</source>
       <translation type="unfinished">Select an icon file for this package</translation>
     </message>
@@ -2128,22 +2118,22 @@ preveril razpoložljivost posodobitev za nameščene dodatke
       <translation>Daljinsko posodobljeno</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_dependency_installer.py" line="129"/>
+      <location filename="../../addonmanager_dependency_installer.py" line="131"/>
       <source>Installation of Python package {} failed</source>
       <translation type="unfinished">Installation of Python package {} failed</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_dependency_installer.py" line="155"/>
+      <location filename="../../addonmanager_dependency_installer.py" line="157"/>
       <source>Installation of optional package failed</source>
       <translation type="unfinished">Installation of optional package failed</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_dependency_installer.py" line="183"/>
+      <location filename="../../addonmanager_dependency_installer.py" line="185"/>
       <source>Installing required dependency {}</source>
       <translation type="unfinished">Installing required dependency {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_dependency_installer.py" line="193"/>
+      <location filename="../../addonmanager_dependency_installer.py" line="195"/>
       <source>Installation of Addon {} failed</source>
       <translation type="unfinished">Installation of Addon {} failed</translation>
     </message>

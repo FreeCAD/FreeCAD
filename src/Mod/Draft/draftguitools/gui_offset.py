@@ -45,7 +45,7 @@ import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
 import draftguitools.gui_trackers as trackers
 
-from draftutils.messages import _msg, _wrn, _err
+from draftutils.messages import _msg, _wrn, _err, _toolmsg
 from draftutils.translate import translate
 
 # The module is used to prevent complaints from code checkers (flake8)
@@ -143,7 +143,7 @@ class Offset(gui_base_original.Modifier):
                     self.ghost = trackers.wireTracker(self.shape)
                     self.mode = "Wire"
             self.call = self.view.addEventCallback("SoEvent", self.action)
-            _msg(translate("draft", "Pick distance"))
+            _toolmsg(translate("draft", "Pick distance"))
             if self.planetrack:
                 self.planetrack.set(self.shape.Vertexes[0].Point)
             self.running = True
@@ -166,7 +166,7 @@ class Offset(gui_base_original.Modifier):
                 self.finish()
         elif arg["Type"] == "SoLocation2Event":
             self.point, ctrlPoint, info = gui_tool_utils.getPoint(self, arg)
-            if (gui_tool_utils.hasMod(arg, gui_tool_utils.MODCONSTRAIN)
+            if (gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_constrain_key())
                     and self.constrainSeg):
                 dist = DraftGeomUtils.findPerpendicular(self.point,
                                                         self.shape,
@@ -218,7 +218,7 @@ class Offset(gui_base_original.Modifier):
             self.ui.radiusValue.setFocus()
             self.ui.radiusValue.selectAll()
             if self.extendedCopy:
-                if not gui_tool_utils.hasMod(arg, gui_tool_utils.MODALT):
+                if not gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key()):
                     self.finish()
             gui_tool_utils.redraw3DView()
 
@@ -227,7 +227,7 @@ class Offset(gui_base_original.Modifier):
                 copymode = False
                 occmode = self.ui.occOffset.isChecked()
                 self.param.SetBool("Offset_OCC", occmode)
-                if (gui_tool_utils.hasMod(arg, gui_tool_utils.MODALT)
+                if (gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key())
                         or self.ui.isCopy.isChecked()):
                     copymode = True
                 Gui.addModule("Draft")
@@ -261,7 +261,7 @@ class Offset(gui_base_original.Modifier):
                                  'FreeCAD.ActiveDocument.recompute()']
                     self.commit(translate("draft", "Offset"),
                                 _cmd_list)
-                if gui_tool_utils.hasMod(arg, gui_tool_utils.MODALT):
+                if gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key()):
                     self.extendedCopy = True
                 else:
                     self.finish()

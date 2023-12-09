@@ -132,7 +132,7 @@ private:
             PyObject* item = (*it).ptr();
             if (PyObject_TypeCheck(item, &(App::DocumentObjectPy::Type))) {
                 App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr();
-                if (obj->getTypeId().isDerivedFrom(TechDraw::DrawPage::getClassTypeId())) {
+                if (obj->isDerivedFrom<TechDraw::DrawPage>()) {
                     page = static_cast<TechDraw::DrawPage*>(obj);
                     Gui::Document* activeGui = Gui::Application::Instance->getDocument(page->getDocument());
                     Gui::ViewProvider* vp = activeGui->getViewProvider(obj);

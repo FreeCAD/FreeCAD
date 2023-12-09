@@ -2616,3 +2616,111 @@ Gui--UrlLabel {
   color : rgba(0,91,255,255); /* Deep sky blue */
   text-decoration : underline;
 }
+
+Gui--NotificationLabel {
+  background-color: #444444;
+  border: 1px solid #696968;
+  border-radius: 2px;
+}
+
+Gui--OverlayToolButton:!hover{
+  background-color: transparent;
+  border: 0px solid transparent;
+  image: url(qss:overlay/close_light.svg);
+}
+
+Gui--OverlayToolButton:hover {
+
+  image: url(qss:overlay/close_red.svg);
+}
+
+Gui--OverlayToolButton[objectName="OBTN Transparent"]:!checked  {
+  image: url(qss:overlay/transparent_light.svg);
+}
+
+Gui--OverlayToolButton[objectName="OBTN Transparent"]:hover {
+  image: url(qss:overlay/transparent_lighter.svg);
+}
+
+Gui--OverlayToolButton[objectName="OBTN Transparent"]:checked {
+  image: url(qss:overlay/transparent_lighter.svg);
+}
+
+Gui--OverlayToolButton[objectName="OBTN Overlay"]:!checked{
+  image: url(qss:overlay/overlay_light.svg);
+}
+
+Gui--OverlayToolButton[objectName="OBTN Overlay"]:hover {
+  image: url(qss:overlay/overlay_lighter.svg);
+}
+
+Gui--OverlayToolButton[objectName="OBTN Overlay"]:checked {
+  image: url(qss:overlay/overlay_lighter.svg);
+}
+
+Gui--OverlayToolButton[objectName="OBTN AutoMode"]:!checked {
+  image: url(qss:overlay/mode_light.svg);
+}
+
+Gui--OverlayToolButton[objectName="OBTN AutoMode"]:hover {
+  image: url(qss:overlay/mode_lighter.svg);
+}
+
+Gui--OverlayToolButton[objectName="OBTN AutoMode"]:checked {
+  image: url(qss:overlay/mode_lighter.svg);
+}
+
+Gui--OverlayToolButton[objectName="OBTN Float"]:!checked {
+  image: url(qss:overlay/float_light.svg);
+}
+
+Gui--OverlayToolButton[objectName="OBTN Float"]:hover {
+  image: url(qss:overlay/float_lighter.svg);
+}
+
+Gui--OverlayToolButton[objectName="OBTN Float"]:checked {
+  image: url(qss:overlay/float_lighter.svg);
+}
+
+/*==================================================================================================
+Forming windows below are the border settings. See also https://forum.freecad.org/viewtopic.php?p=439797#p439797
+==================================================================================================*/
+QMdiSubWindow {
+  border:2px solid #333333;
+  border-radius: 2px;
+  border-top-right-radius: 7px;
+  border-top-left-radius: 7px;
+  background-color: #333333;
+}
+
+QMdiSubWindow:hover {
+  border:2px solid #696968;
+}
+
+QMdiSubWindow:active {
+  border:2px solid @ThemeAccentColor1;
+}
+
+/*==================================================================================================
+Settings menu #groupsTreeView:
+==================================================================================================*/
+
+QTreeView::branch#groupsTreeView:closed:has-children:has-siblings  {
+  border-image: none 0;
+}
+
+QTreeView::branch#groupsTreeView:open:has-children:has-siblings  {
+  border-image: none 0;
+}
+
+QTreeView::branch#groupsTreeView:open:has-children:!has-siblings  {
+ border-image: none 0;
+}
+
+QTreeView::branch#groupsTreeView:has-children:!has-siblings:closed  {
+  border-image: none 0;
+}
+
+QTreeView::branch#groupsTreeView:has-siblings:!adjoins-item  {
+  border-image: none 0;
+}

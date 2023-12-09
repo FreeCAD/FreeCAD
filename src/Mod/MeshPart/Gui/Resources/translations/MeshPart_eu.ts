@@ -198,12 +198,12 @@ Komando honek 'amarauna' objektuetan soilik funtzionatzen du.</translation>
       <translation>Utzi</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="626"/>
+      <location filename="../../CurveOnMesh.cpp" line="624"/>
       <source>Wrong mesh picked</source>
       <translation>Amaraun okerra aukeratu da</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="667"/>
+      <location filename="../../CurveOnMesh.cpp" line="663"/>
       <source>No point was picked</source>
       <translation>Ez da punturik aukeratu</translation>
     </message>
@@ -580,8 +580,8 @@ Hautatu beste forma bat.</translation>
     <name>MeshPart_CreateFlatMesh</name>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="49"/>
-      <source>Unwrap Mesh</source>
-      <translation>Desestali amarauna</translation>
+      <source>Unwrap mesh</source>
+      <translation type="unfinished">Unwrap mesh</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="52"/>
@@ -593,8 +593,8 @@ Hautatu beste forma bat.</translation>
     <name>MeshPart_CreateFlatFace</name>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="88"/>
-      <source>Unwrap Face</source>
-      <translation>Desestali aurpegia</translation>
+      <source>Unwrap face</source>
+      <translation type="unfinished">Unwrap face</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="91"/>

@@ -215,7 +215,7 @@ namespace PathApp {
       Py::Object show(const Py::Tuple& args)
       {
           PyObject *pcObj;
-          char *name = "Path";
+          const char *name = "Path";
           if (!PyArg_ParseTuple(args.ptr(), "O!|s", &(Path::PathPy::Type), &pcObj, &name))
               throw Py::Exception();
 

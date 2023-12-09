@@ -22,21 +22,23 @@
 #ifndef MATERIAL_MATERIALMANAGER_H
 #define MATERIAL_MATERIALMANAGER_H
 
-#include <Mod/Material/MaterialGlobal.h>
+#include <memory>
 
 #include <QMutex>
 
 #include <boost/filesystem.hpp>
 
+#include <Mod/Material/MaterialGlobal.h>
+
 #include "FolderTree.h"
 #include "Materials.h"
+
+#include "MaterialLibrary.h"
 
 namespace fs = boost::filesystem;
 
 namespace Materials
 {
-
-typedef FolderTreeNode<Material> MaterialTreeNode;
 
 class MaterialsExport MaterialManager: public Base::BaseClass
 {
@@ -46,37 +48,65 @@ public:
     MaterialManager();
     ~MaterialManager() override = default;
 
-    std::shared_ptr<std::map<QString, Material*>> getMaterials()
+    std::shared_ptr<std::map<QString, std::shared_ptr<Material>>> getMaterials() const
     {
         return _materialMap;
     }
-    const Material& getMaterial(const QString& uuid) const;
-    const Material& getMaterialByPath(const QString& path) const;
-    const Material& getMaterialByPath(const QString& path, const QString& library) const;
-    MaterialLibrary* getLibrary(const QString& name) const;
+    std::shared_ptr<Material> getMaterial(const QString& uuid) const;
+    std::shared_ptr<Material> getMaterialByPath(const QString& path) const;
+    std::shared_ptr<Material> getMaterialByPath(const QString& path, const QString& library) const;
+    std::shared_ptr<Material> getParent(const std::shared_ptr<Material>& material) const;
+    std::shared_ptr<MaterialLibrary> getLibrary(const QString& name) const;
+    bool exists(const QString& uuid) const;
+    bool exists(const std::shared_ptr<MaterialLibrary>& library, const QString& uuid) const;
 
     // Library management
-    static std::shared_ptr<std::list<MaterialLibrary*>> getMaterialLibraries();
-    std::shared_ptr<std::map<QString, MaterialTreeNode*>>
-    getMaterialTree(const MaterialLibrary& library) const;
-    std::shared_ptr<std::list<QString>> getMaterialFolders(const MaterialLibrary& library) const;
-    void createPath(MaterialLibrary* library, const QString& path)
+    std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> getMaterialLibraries() const;
+    std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>>
+    getMaterialTree(const std::shared_ptr<MaterialLibrary>& library) const
     {
-        library->createPath(path);
+        return library->getMaterialTree();
     }
-    void saveMaterial(MaterialLibrary* library,
-                      Material& material,
+    std::shared_ptr<std::list<QString>>
+    getMaterialFolders(const std::shared_ptr<MaterialLibrary>& library) const;
+    void createFolder(const std::shared_ptr<MaterialLibrary>& library, const QString& path) const
+    {
+        library->createFolder(path);
+    }
+    void renameFolder(const std::shared_ptr<MaterialLibrary>& library,
+                      const QString& oldPath,
+                      const QString& newPath) const
+    {
+        library->renameFolder(oldPath, newPath);
+    }
+    void deleteRecursive(const std::shared_ptr<MaterialLibrary>& library, const QString& path) const
+    {
+        library->deleteRecursive(path);
+    }
+    void remove(const QString& uuid) const
+    {
+        _materialMap->erase(uuid);
+    }
+
+    void saveMaterial(const std::shared_ptr<MaterialLibrary>& library,
+                      const std::shared_ptr<Material>& material,
                       const QString& path,
-                      bool saveAsCopy = true);
+                      bool overwrite,
+                      bool saveAsCopy,
+                      bool saveInherited) const;
 
-    static bool isMaterial(const fs::path& p);
+    bool isMaterial(const fs::path& p) const;
+    bool isMaterial(const QFileInfo& file) const;
 
-    std::shared_ptr<std::map<QString, Material*>> materialsWithModel(QString uuid);
-    std::shared_ptr<std::map<QString, Material*>> materialsWithModelComplete(QString uuid);
+    std::shared_ptr<std::map<QString, std::shared_ptr<Material>>>
+    materialsWithModel(const QString& uuid) const;
+    std::shared_ptr<std::map<QString, std::shared_ptr<Material>>>
+    materialsWithModelComplete(const QString& uuid) const;
+    void dereference(std::shared_ptr<Material> material) const;
 
 private:
-    static std::shared_ptr<std::list<MaterialLibrary*>> _libraryList;
-    static std::shared_ptr<std::map<QString, Material*>> _materialMap;
+    static std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> _libraryList;
+    static std::shared_ptr<std::map<QString, std::shared_ptr<Material>>> _materialMap;
     static QMutex _mutex;
 
     static void initLibraries();

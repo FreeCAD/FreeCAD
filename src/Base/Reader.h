@@ -38,13 +38,14 @@
 #include "FileInfo.h"
 
 
-namespace zipios {
+namespace zipios
+{
 class ZipInputStream;
 }
 
 XERCES_CPP_NAMESPACE_BEGIN
-    class DefaultHandler;
-    class SAX2XMLReader;
+class DefaultHandler;
+class SAX2XMLReader;
 XERCES_CPP_NAMESPACE_END
 
 namespace Base
@@ -88,9 +89,9 @@ void PropertyContainer::Save (short indent,std::ostream &str)
     std::map<std::string,Property*>::iterator it;
     for(it = Map.begin(); it != Map.end(); ++it)
     {
-        str << ind(indent+1) << "<Property name=\"" << it->first << "\" type=\"" << it->second->getTypeId().getName() << "\">" ;
-        it->second->Save(indent+2,str);
-        str << "</Property>" << endl;
+        str << ind(indent+1) << "<Property name=\"" << it->first << "\" type=\"" <<
+it->second->getTypeId().getName() << "\">" ; it->second->Save(indent+2,str); str << "</Property>" <<
+endl;
     }
     str << ind(indent) << "</Properties>" << endl;
 }
@@ -116,14 +117,17 @@ void PropertyContainer::Restore(Base::Reader &reader)
  * \see Base::Persistence
  * \author Juergen Riegel
  */
-class BaseExport XMLReader : public XERCES_CPP_NAMESPACE_QUALIFIER DefaultHandler
+class BaseExport XMLReader: public XERCES_CPP_NAMESPACE_QUALIFIER DefaultHandler
 {
 public:
-    enum ReaderStatus {
-        PartialRestore = 0,                     // This bit indicates that a partial restore took place somewhere in this Document
-        PartialRestoreInDocumentObject = 1,     // This bit is local to the DocumentObject being read indicating a partial restore therein
-        PartialRestoreInProperty = 2,           // Local to the Property
-        PartialRestoreInObject = 3              // Local to the object partially restored itself
+    enum ReaderStatus
+    {
+        PartialRestore =
+            0,  // This bit indicates that a partial restore took place somewhere in this Document
+        PartialRestoreInDocumentObject = 1,  // This bit is local to the DocumentObject being read
+                                             // indicating a partial restore therein
+        PartialRestoreInProperty = 2,        // Local to the Property
+        PartialRestoreInObject = 3           // Local to the object partially restored itself
     };
     /// open the file and read the first element
     XMLReader(const char* FileName, std::istream&);
@@ -136,9 +140,18 @@ public:
     std::streamsize read(char_type* s, std::streamsize n);
     //@}
 
-    bool isValid() const { return _valid; }
-    bool isVerbose() const { return _verbose; }
-    void setVerbose(bool on) { _verbose = on; }
+    bool isValid() const
+    {
+        return _valid;
+    }
+    bool isVerbose() const
+    {
+        return _verbose;
+    }
+    void setVerbose(bool on)
+    {
+        _verbose = on;
+    }
 
     /** @name Parser handling */
     //@{
@@ -156,8 +169,9 @@ public:
     /// return true if the end of the document is reached, false otherwise
     bool isEndOfDocument() const;
 
-    /// read until a start element is found (\<name\>) or start-end element (\<name/\>) (with special name if given)
-    void readElement   (const char* ElementName=nullptr);
+    /// read until a start element is found (\<name\>) or start-end element (\<name/\>) (with
+    /// special name if given)
+    void readElement(const char* ElementName = nullptr);
 
     /// Read in the next element. Return true if it succeeded and false otherwise
     bool readNextElement();
@@ -176,7 +190,7 @@ public:
      * child element may have the same name as its parent, otherwise, using \c
      * ElementName is enough.
      */
-    void readEndElement(const char* ElementName=nullptr, int level=-1);
+    void readEndElement(const char* ElementName = nullptr, int level = -1);
     /// read until characters are found
     void readCharacters(const char* filename, CharStreamFormat format = CharStreamFormat::Raw);
 
@@ -186,11 +200,11 @@ public:
      *  auto destroyed when you call with readElement() or readEndElement(), or
      *  you can end it explicitly with endCharStream().
      */
-    std::istream &beginCharStream(CharStreamFormat format = CharStreamFormat::Raw);
+    std::istream& beginCharStream(CharStreamFormat format = CharStreamFormat::Raw);
     /// Manually end the current character stream
     void endCharStream();
     /// Obtain the current character stream
-    std::istream &charStream();
+    std::istream& charStream();
     //@}
 
     /// read binary file
@@ -215,23 +229,23 @@ public:
     /** @name additional file reading */
     //@{
     /// add a read request of a persistent object
-    const char *addFile(const char* Name, Base::Persistence *Object);
+    const char* addFile(const char* Name, Base::Persistence* Object);
     /// process the requested file writes
-    void readFiles(zipios::ZipInputStream &zipstream) const;
+    void readFiles(zipios::ZipInputStream& zipstream) const;
     /// get all registered file names
     const std::vector<std::string>& getFilenames() const;
-    bool isRegistered(Base::Persistence *Object) const;
+    bool isRegistered(Base::Persistence* Object) const;
     virtual void addName(const char*, const char*);
     virtual const char* getName(const char*) const;
     virtual bool doNameMapping() const;
     //@}
 
     /// Schema Version of the document
-    int DocumentSchema{0};
+    int DocumentSchema {0};
     /// Version of FreeCAD that wrote this document
     std::string ProgramVersion;
     /// Version of the file format
-    int FileVersion{0};
+    int FileVersion {0};
 
     /// sets simultaneously the global and local PartialRestore bits
     void setPartialRestore(bool on);
@@ -256,16 +270,21 @@ protected:
     //@{
     void startDocument() override;
     void endDocument() override;
-    void startElement(const XMLCh* const uri, const XMLCh* const localname, const XMLCh* const qname, const XERCES_CPP_NAMESPACE_QUALIFIER Attributes& attrs) override;
-    void endElement  (const XMLCh* const uri, const XMLCh *const localname, const XMLCh *const qname) override;
-    void characters         (const XMLCh* const chars, const XMLSize_t length) override;
+    void startElement(const XMLCh* const uri,
+                      const XMLCh* const localname,
+                      const XMLCh* const qname,
+                      const XERCES_CPP_NAMESPACE_QUALIFIER Attributes& attrs) override;
+    void endElement(const XMLCh* const uri,
+                    const XMLCh* const localname,
+                    const XMLCh* const qname) override;
+    void characters(const XMLCh* const chars, const XMLSize_t length) override;
     void ignorableWhitespace(const XMLCh* const chars, const XMLSize_t length) override;
     //@}
 
     /** @name Lexical handler */
     //@{
-    void startCDATA  () override;
-    void endCDATA    () override;
+    void startCDATA() override;
+    void endCDATA() override;
     //@}
 
     /** @name Document handler */
@@ -286,16 +305,17 @@ protected:
     //@}
 
 private:
-    int Level{0};
+    int Level {0};
     std::string LocalName;
     std::string Characters;
-    unsigned int CharacterCount{0};
-    std::streamsize CharacterOffset{-1};
+    unsigned int CharacterCount {0};
+    std::streamsize CharacterOffset {-1};
 
-    std::map<std::string,std::string> AttrMap;
-    using AttrMapType = std::map<std::string,std::string>;
+    std::map<std::string, std::string> AttrMap;
+    using AttrMapType = std::map<std::string, std::string>;
 
-    enum {
+    enum
+    {
         None = 0,
         Chars,
         StartDocument,
@@ -305,18 +325,19 @@ private:
         EndElement,
         StartCDATA,
         EndCDATA
-    }   ReadType{None};
+    } ReadType {None};
 
 
     FileInfo _File;
     XERCES_CPP_NAMESPACE_QUALIFIER SAX2XMLReader* parser;
     XERCES_CPP_NAMESPACE_QUALIFIER XMLPScanToken token;
-    bool _valid{false};
-    bool _verbose{true};
+    bool _valid {false};
+    bool _verbose {true};
 
-    struct FileEntry {
+    struct FileEntry
+    {
         std::string FileName;
-        Base::Persistence *Object;
+        Base::Persistence* Object;
     };
     std::vector<FileEntry> FileList;
     std::vector<std::string> FileNames;
@@ -326,7 +347,7 @@ private:
     std::unique_ptr<std::istream> CharStream;
 };
 
-class BaseExport Reader : public std::istream
+class BaseExport Reader: public std::istream
 {
 public:
     Reader(std::istream&, const std::string&, int version);
@@ -343,7 +364,7 @@ private:
     std::shared_ptr<Base::XMLReader> localreader;
 };
 
-}
+}  // namespace Base
 
 
 #endif

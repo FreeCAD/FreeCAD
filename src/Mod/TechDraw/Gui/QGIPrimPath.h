@@ -74,11 +74,17 @@ public:
     QColor getFillColor() { return m_colDefFill; }
     void setFillOverride(bool b) { m_fillOverride = b; }
 
+    virtual void setCurrentPen();
+
 protected:
     void hoverEnterEvent(QGraphicsSceneHoverEvent *event) override;
     void hoverLeaveEvent(QGraphicsSceneHoverEvent *event) override;
     QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
+
+    virtual bool multiselectEligible() { return false; }
+
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
+    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
 
     virtual QColor getNormalColor();
     virtual QColor getPreColor();
@@ -87,6 +93,7 @@ protected:
     virtual Qt::PenCapStyle prefCapStyle();
 
     bool isHighlighted;
+    bool multiselectActivated;
 
     QPen m_pen;
     QColor m_colCurrent;

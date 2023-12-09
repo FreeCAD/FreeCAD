@@ -135,6 +135,9 @@ int Exporter::addObject(App::DocumentObject* obj, float tol)
                 Py_DECREF(pyobj);
             }
         }
+        else if (it->second.getTransform() != matrix) {
+            it->second.setTransform(matrix);
+        }
 
         // Add a new mesh
         if (it != meshCache.end()) {
@@ -152,7 +155,7 @@ void Exporter::throwIfNoPermission(const std::string& filename)
     Base::FileInfo fi(filename);
     Base::FileInfo di(fi.dirPath());
     if ((fi.exists() && !fi.isWritable()) || !di.exists() || !di.isWritable()) {
-        throw Base::FileException("No write permission for file", filename);
+        throw Base::FileException("No write permission for file", fi);
     }
 }
 

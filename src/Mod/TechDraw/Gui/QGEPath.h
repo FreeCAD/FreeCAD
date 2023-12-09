@@ -63,6 +63,7 @@ Q_SIGNALS:
     void endEdit();
 
 protected:
+    bool multiselectEligible() override { return false; }
     void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
 
 private:

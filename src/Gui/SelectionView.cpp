@@ -548,7 +548,7 @@ QString SelectionView::getModule(const char* type) const
 QString SelectionView::getProperty(App::DocumentObject* obj) const
 {
     QString property;
-    if (obj->getTypeId().isDerivedFrom(App::GeoFeature::getClassTypeId())) {
+    if (obj->isDerivedFrom<App::GeoFeature>()) {
         App::GeoFeature* geo = static_cast<App::GeoFeature*>(obj);
         const App::PropertyComplexGeoData* data = geo->getPropertyOfGeometry();
         const char* name = data ? data->getName() : nullptr;
@@ -562,7 +562,7 @@ QString SelectionView::getProperty(App::DocumentObject* obj) const
 
 bool SelectionView::supportPart(App::DocumentObject* obj, const QString& part) const
 {
-    if (obj->getTypeId().isDerivedFrom(App::GeoFeature::getClassTypeId())) {
+    if (obj->isDerivedFrom<App::GeoFeature>()) {
         App::GeoFeature* geo = static_cast<App::GeoFeature*>(obj);
         const App::PropertyComplexGeoData* data = geo->getPropertyOfGeometry();
         if (data) {

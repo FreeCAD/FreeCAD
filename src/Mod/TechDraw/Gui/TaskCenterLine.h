@@ -85,7 +85,6 @@ protected:
 
     double getCenterWidth();
     QColor getCenterColor();
-    Qt::PenStyle getCenterStyle();
     double getExtendBy();
 
     int checkPathologicalEdges(int inMode);

@@ -468,7 +468,7 @@ void ViewProviderGridExtension::getClosestGridPoint(double &x, double &y) const
 void ViewProviderGridExtension::extensionUpdateData(const App::Property* prop)
 {
     if(pImpl->getEnabled()) {
-        if (prop->getTypeId() == Part::PropertyPartShape::getClassTypeId()) {
+        if (prop->is<Part::PropertyPartShape>()) {
             pImpl->drawGrid();
         }
     }
@@ -539,7 +539,7 @@ bool ViewProviderGridExtension::extensionHandleChangedPropertyType(Base::XMLRead
 {
     Base::Type inputType = Base::Type::fromName(TypeName);
 
-    if (prop->getTypeId().isDerivedFrom(App::PropertyFloat::getClassTypeId()) &&
+    if (prop->isDerivedFrom<App::PropertyFloat>() &&
         inputType.isDerivedFrom(App::PropertyFloat::getClassTypeId())) {
         // Do not directly call the property's Restore method in case the implementation
         // has changed. So, create a temporary PropertyFloat object and assign the value.

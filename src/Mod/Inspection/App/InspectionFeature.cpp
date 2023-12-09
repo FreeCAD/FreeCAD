@@ -805,15 +805,15 @@ App::DocumentObjectExecReturn* Feature::execute()
     }
 
     InspectActualGeometry* actual = nullptr;
-    if (pcActual->getTypeId().isDerivedFrom(Mesh::Feature::getClassTypeId())) {
+    if (pcActual->isDerivedFrom<Mesh::Feature>()) {
         Mesh::Feature* mesh = static_cast<Mesh::Feature*>(pcActual);
         actual = new InspectActualMesh(mesh->Mesh.getValue());
     }
-    else if (pcActual->getTypeId().isDerivedFrom(Points::Feature::getClassTypeId())) {
+    else if (pcActual->isDerivedFrom<Points::Feature>()) {
         Points::Feature* pts = static_cast<Points::Feature*>(pcActual);
         actual = new InspectActualPoints(pts->Points.getValue());
     }
-    else if (pcActual->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+    else if (pcActual->isDerivedFrom<Part::Feature>()) {
         useMultithreading = false;
         Part::Feature* part = static_cast<Part::Feature*>(pcActual);
         actual = new InspectActualShape(part->Shape.getShape());
@@ -828,15 +828,15 @@ App::DocumentObjectExecReturn* Feature::execute()
     const std::vector<App::DocumentObject*>& nominals = Nominals.getValues();
     for (auto it : nominals) {
         InspectNominalGeometry* nominal = nullptr;
-        if (it->getTypeId().isDerivedFrom(Mesh::Feature::getClassTypeId())) {
+        if (it->isDerivedFrom<Mesh::Feature>()) {
             Mesh::Feature* mesh = static_cast<Mesh::Feature*>(it);
             nominal = new InspectNominalMesh(mesh->Mesh.getValue(), this->SearchRadius.getValue());
         }
-        else if (it->getTypeId().isDerivedFrom(Points::Feature::getClassTypeId())) {
+        else if (it->isDerivedFrom<Points::Feature>()) {
             Points::Feature* pts = static_cast<Points::Feature*>(it);
             nominal = new InspectNominalPoints(pts->Points.getValue(), this->SearchRadius.getValue());
         }
-        else if (it->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+        else if (it->isDerivedFrom<Part::Feature>()) {
             useMultithreading = false;
             Part::Feature* part = static_cast<Part::Feature*>(it);
             nominal = new InspectNominalShape(part->Shape.getValue(), this->SearchRadius.getValue());

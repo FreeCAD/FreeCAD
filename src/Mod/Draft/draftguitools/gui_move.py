@@ -41,7 +41,7 @@ import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
 import draftguitools.gui_trackers as trackers
 
-from draftutils.messages import _msg, _err
+from draftutils.messages import _msg, _err, _toolmsg
 from draftutils.translate import translate
 from draftguitools.gui_subelements import SubelementHighlight
 
@@ -100,7 +100,7 @@ class Move(gui_base_original.Modifier):
         self.ui.xValue.setFocus()
         self.ui.xValue.selectAll()
         self.call = self.view.addEventCallback("SoEvent", self.action)
-        _msg(translate("draft", "Pick start point"))
+        _toolmsg(translate("draft", "Pick start point"))
 
     def finish(self, cont=False):
         """Terminate the operation.
@@ -149,7 +149,7 @@ class Move(gui_base_original.Modifier):
                 ghost.move(self.vector)
                 ghost.on()
         if self.extendedCopy:
-            if not gui_tool_utils.hasMod(arg, gui_tool_utils.MODALT):
+            if not gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key()):
                 self.finish()
         gui_tool_utils.redraw3DView()
 
@@ -165,15 +165,15 @@ class Move(gui_base_original.Modifier):
             self.ui.isRelative.show()
             for ghost in self.ghosts:
                 ghost.on()
-            _msg(translate("draft", "Pick end point"))
+            _toolmsg(translate("draft", "Pick end point"))
             if self.planetrack:
                 self.planetrack.set(self.point)
         else:
             last = self.node[0]
             self.vector = self.point.sub(last)
             self.move(self.ui.isCopy.isChecked()
-                      or gui_tool_utils.hasMod(arg, gui_tool_utils.MODALT))
-            if gui_tool_utils.hasMod(arg, gui_tool_utils.MODALT):
+                      or gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key()))
+            if gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key()):
                 self.extendedCopy = True
             else:
                 self.finish(cont=None)
@@ -312,7 +312,7 @@ class Move(gui_base_original.Modifier):
             self.ui.isCopy.show()
             for ghost in self.ghosts:
                 ghost.on()
-            _msg(translate("draft", "Pick end point"))
+            _toolmsg(translate("draft", "Pick end point"))
         else:
             last = self.node[-1]
             self.vector = self.point.sub(last)

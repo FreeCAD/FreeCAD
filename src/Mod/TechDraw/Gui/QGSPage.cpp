@@ -910,7 +910,7 @@ void QGSPage::findMissingViews(const std::vector<App::DocumentObject*>& list,
         if (!hasQView(*it))
             missing.push_back(*it);
 
-        if ((*it)->getTypeId().isDerivedFrom(TechDraw::DrawViewCollection::getClassTypeId())) {
+        if ((*it)->isDerivedFrom<TechDraw::DrawViewCollection>()) {
             std::vector<App::DocumentObject*> missingChildViews;
             TechDraw::DrawViewCollection* collection =
                 dynamic_cast<TechDraw::DrawViewCollection*>(*it);

@@ -11,7 +11,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="40"/>
       <source>Welcome to FreeCAD</source>
-      <translation type="unfinished">Welcome to FreeCAD</translation>
+      <translation>Tervetuloa FreeCADiin</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="41"/>
@@ -31,37 +31,37 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="44"/>
       <source>Blog</source>
-      <translation type="unfinished">Blog</translation>
+      <translation>Blogi</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="45"/>
       <source>Link to the FreeCAD blog</source>
-      <translation type="unfinished">Link to the FreeCAD blog</translation>
+      <translation>Linkki FreeCADin blogiin</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="46"/>
       <source>New file</source>
-      <translation type="unfinished">New file</translation>
+      <translation>Uusi tiedosto</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="47"/>
       <source>Empty File</source>
-      <translation type="unfinished">Empty File</translation>
+      <translation>Tyhjä tiedosto</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="48"/>
       <source>Create an empty FreeCAD file</source>
-      <translation type="unfinished">Create an empty FreeCAD file</translation>
+      <translation>Luo tyhjä FreeCAD tiedosto</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="49"/>
       <source>Open File</source>
-      <translation type="unfinished">Open File</translation>
+      <translation>Avaa tiedosto</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="50"/>
       <source>Open an existing CAD file or 3D model</source>
-      <translation type="unfinished">Open an existing CAD file or 3D model</translation>
+      <translation>Avaa olemassa oleva CAD-tiedosto tai 3D-malli</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="51"/>
@@ -96,7 +96,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="61"/>
       <source>Recent files</source>
-      <translation type="unfinished">Recent files</translation>
+      <translation>Viimeisimmät tiedostot</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="62"/>
@@ -175,8 +175,8 @@
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="98"/>
-      <source>The &lt;a href="http://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
-      <translation type="unfinished">The &lt;a href="http://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</translation>
+      <source>The &lt;a href="https://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
+      <translation type="unfinished">The &lt;a href="https://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="102"/>
@@ -275,11 +275,31 @@
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="144"/>
+      <source>Size</source>
+      <translation>Koko</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="145"/>
+      <source>Author</source>
+      <translation>Kehittäjä</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="146"/>
+      <source>License</source>
+      <translation>Lisenssi</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="147"/>
+      <source>File path</source>
+      <translation>Tiedostopolku</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="148"/>
       <source>Notes</source>
       <translation>Muistiinpanot</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="145"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="149"/>
       <source>Open start page preferences</source>
       <translation>Avaa aloitussivun asetukset</translation>
     </message>
@@ -287,7 +307,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../../StartPage/StartPage.py" line="826"/>
+      <location filename="../../../StartPage/StartPage.py" line="874"/>
       <location filename="../../Workbench.cpp" line="62"/>
       <source>Start page</source>
       <translation>Aloitussivu</translation>
@@ -388,12 +408,12 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="264"/>
       <source>File thumbnail size</source>
-      <translation type="unfinished">File thumbnail size</translation>
+      <translation>Tiedoston pikkukuvan koko</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="297"/>
       <source>Show file thumbnails</source>
-      <translation type="unfinished">Show file thumbnails</translation>
+      <translation>Näytä tiedoston pikkukuvat</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="331"/>
@@ -582,7 +602,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferencesAdvanced.ui" line="42"/>
       <source>Custom CSS</source>
-      <translation type="unfinished">Custom CSS</translation>
+      <translation>Mukautettu CSS</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferencesAdvanced.ui" line="48"/>

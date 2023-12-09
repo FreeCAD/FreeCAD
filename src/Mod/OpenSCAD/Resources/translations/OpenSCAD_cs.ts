@@ -92,7 +92,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="227"/>
       <source>Transfer directory</source>
-      <translation>Adresář převodu</translation>
+      <translation>Adresář přenosu</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="243"/>

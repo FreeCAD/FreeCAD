@@ -31,7 +31,7 @@ from draftutils.translate import translate
 
 __title__="FreeCAD IFC importer"
 __author__ = "Yorik van Havre"
-__url__ = "http://www.freecad.org"
+__url__ = "https://www.freecad.org"
 
 # config
 subtractiveTypes = ["IfcOpeningElement"] # elements that must be subtracted from their parents
@@ -40,7 +40,6 @@ MAKETEMPFILES = False # if True, shapes are passed from ifcopenshell to freecad 
 DEBUG = True # this is only for the python console, this value is overridden when importing through the GUI
 SKIP = ["IfcBuildingElementProxy","IfcFlowTerminal","IfcFurnishingElement"] # default. overwritten by the GUI options
 IFCLINE_RE = re.compile("#(\d+)[ ]?=[ ]?(.*?)\((.*)\);[\\r]?$")
-PRECISION = 4 # rounding value, in number of digits
 APPLYFIX = True # if true, the ifcopenshell bug-fixing function is applied when saving files
 # end config
 
@@ -944,7 +943,6 @@ def export(exportList,filename):
 
     # creating base IFC project
     getConfig()
-    PRECISION = Draft.precision()
     p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     scaling = p.GetFloat("IfcScalingFactor",1.0)
     exporttxt = p.GetBool("IfcExportList",False)
@@ -1377,7 +1375,7 @@ def explore(filename=None):
     "explore the contents of an ifc file in a Qt dialog"
     if not filename:
         from PySide import QtGui
-        filename = QtGui.QFileDialog.getOpenFileName(QtGui.QApplication.activeWindow(),'IFC files','*.ifc')
+        filename = QtGui.QFileDialog.getOpenFileName(QtGui.QApplication.activeWindow(),'Open IFC file',None,'IFC files (*.ifc *.IFC)')
         if filename:
             filename = filename[0]
     if filename:
@@ -1904,7 +1902,7 @@ def getTuple(vec):
     structures: tuple, list, 3d vector, or occ vertex"""
     def fmt(t):
         t = float(t)
-        t = round(t,PRECISION)
+        t = round(t,Draft.precision())
         return t
     if isinstance(vec,tuple):
         return tuple([fmt(v) for v in vec])
@@ -1918,12 +1916,13 @@ def getTuple(vec):
 def getValueAndDirection(vec):
     """getValueAndDirection(vec): returns a length and a tuple
     representing a normalized vector from a tuple"""
+    pre = Draft.precision()
     vec = getTuple(vec)
-    length = round(math.sqrt(vec[0]**2 + vec[1]**2 + vec[2]**2),PRECISION)
+    length = round(math.sqrt(vec[0]**2 + vec[1]**2 + vec[2]**2),pre)
     ratio = 1/length
-    x = round(vec[0]*ratio,PRECISION)
-    y = round(vec[1]*ratio,PRECISION)
-    z = round(vec[2]*ratio,PRECISION)
+    x = round(vec[0]*ratio,pre)
+    y = round(vec[1]*ratio,pre)
+    z = round(vec[2]*ratio,pre)
     normal = (x,y,z)
     return length,normal
 

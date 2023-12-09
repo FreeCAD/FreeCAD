@@ -22,7 +22,7 @@
 #ifndef MATGUI_MODELSELECT_H
 #define MATGUI_MODELSELECT_H
 
-#include <boost/filesystem.hpp>
+#include <memory>
 
 #include <QDialog>
 #include <QDir>
@@ -31,9 +31,8 @@
 #include <QTreeView>
 
 #include <Mod/Material/App/Materials.h>
+#include <Mod/Material/App/Model.h>
 #include <Mod/Material/App/ModelManager.h>
-
-namespace fs = boost::filesystem;
 
 namespace MatGui
 {
@@ -45,15 +44,15 @@ class ModelSelect: public QDialog
     Q_OBJECT
 
 public:
-    explicit ModelSelect(
-        QWidget* parent = nullptr,
-        Materials::ModelManager::ModelFilter filter = Materials::ModelManager::ModelFilter_None);
+    explicit ModelSelect(QWidget* parent = nullptr,
+                         Materials::ModelFilter filter = Materials::ModelFilter_None);
     ~ModelSelect() override;
 
     void onURL(bool checked);
     void onDOI(bool checked);
     void onFavourite(bool checked);
     void onSelectModel(const QItemSelection& selected, const QItemSelection& deselected);
+    void onDoubleClick(const QModelIndex& index);
     const QString& selectedModel() const
     {
         return _selected;
@@ -77,9 +76,11 @@ private:
     void addExpanded(QTreeView* tree, QStandardItemModel* parent, QStandardItem* child);
     void addRecents(QStandardItem* parent);
     void addFavorites(QStandardItem* parent);
-    void addModels(QStandardItem& parent,
-                   const std::shared_ptr<std::map<QString, Materials::ModelTreeNode*>> modelTree,
-                   const QIcon& icon);
+    void
+    addModels(QStandardItem& parent,
+              const std::shared_ptr<std::map<QString, std::shared_ptr<Materials::ModelTreeNode>>>
+                  modelTree,
+              const QIcon& icon);
     void updateMaterialModel(const QString& uuid);
     void clearMaterialModel();
     void createModelTree();
@@ -88,14 +89,14 @@ private:
 
     void setHeaders(QStandardItemModel* model);
     void setColumnWidths(QTableView* table);
-    void updateModelProperties(const Materials::Model& model);
+    void updateModelProperties(std::shared_ptr<Materials::Model> model);
     void createModelProperties();
     Materials::ModelManager& getModelManager()
     {
         return _modelManager;
     }
 
-    Materials::ModelManager::ModelFilter _filter;
+    Materials::ModelFilter _filter;
     std::unique_ptr<Ui_ModelSelect> ui;
     Materials::ModelManager _modelManager;
     QString _selected;

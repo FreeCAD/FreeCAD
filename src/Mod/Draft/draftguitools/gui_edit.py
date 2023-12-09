@@ -128,7 +128,7 @@ class Edit(gui_base_original.Modifier):
 
     Preferences
     -----------
-    maxObjects: Int
+    max_objects: Int
         set by "DraftEditMaxObjects" in user preferences
         The max number of FreeCAD objects the tool is
         allowed to edit at the same time.
@@ -213,10 +213,10 @@ class Edit(gui_base_original.Modifier):
         # only used by Arch Structure
         self.objs_formats = {}
 
-        # settings
-        param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-        self.maxObjects = param.GetInt("DraftEditMaxObjects", 5)
-        self.pick_radius = param.GetInt("DraftEditPickRadius", 20)
+        # settings (get updated in Activated)
+        self.param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+        self.max_objects = 5
+        self.pick_radius = 20
 
         self.alt_edit_mode = 0 # default edit mode for objects
 
@@ -278,6 +278,8 @@ class Edit(gui_base_original.Modifier):
 
         self.ui = Gui.draftToolBar
         self.view = gui_utils.get_3d_view()
+        self.max_objects = self.param.GetInt("DraftEditMaxObjects", 5)
+        self.pick_radius = self.param.GetInt("DraftEditPickRadius", 20)
 
         if Gui.Selection.getSelection():
             self.proceed()
@@ -335,8 +337,6 @@ class Edit(gui_base_original.Modifier):
             self.deformat_objects_after_editing(self.edited_objects)
 
         super(Edit, self).finish()
-        if Gui.Snapper.grid:
-            Gui.Snapper.grid.set()
         self.running = False
         # delay resetting edit mode otherwise it doesn't happen
         from PySide import QtCore
@@ -547,10 +547,14 @@ class Edit(gui_base_original.Modifier):
 
     def resetTrackersBezier(self, obj):
         # in future move tracker definition to DraftTrackers
-        knotmarkers = (coin.SoMarkerSet.DIAMOND_FILLED_9_9,#sharp
-                coin.SoMarkerSet.SQUARE_FILLED_9_9,        #tangent
-                coin.SoMarkerSet.HOURGLASS_FILLED_9_9)     #symmetric
-        polemarker = coin.SoMarkerSet.CIRCLE_FILLED_9_9    #pole
+        param = App.ParamGet("User parameter:BaseApp/Preferences/View")
+        size = param.GetInt("MarkerSize", 9)
+        knotmarkers = (
+            Gui.getMarkerIndex("DIAMOND_FILLED", size),   # sharp
+            Gui.getMarkerIndex("SQUARE_FILLED", size),    # tangent
+            Gui.getMarkerIndex("HOURGLASS_FILLED", size)  # symmetric
+        )
+        polemarker = Gui.getMarkerIndex("CIRCLE_FILLED",  size)  # pole
         self.trackers[obj.Name] = []
         cont = obj.Continuity
         firstknotcont = cont[-1] if (obj.Closed and cont) else 0
@@ -780,9 +784,9 @@ class Edit(gui_base_original.Modifier):
         """
         selection = Gui.Selection.getSelection()
         self.edited_objects = []
-        if len(selection) > self.maxObjects:
+        if len(selection) > self.max_objects:
             _err = translate("draft", "Too many objects selected, max number set to:")
-            App.Console.PrintMessage(_err + " " + str(self.maxObjects) + "\n")
+            App.Console.PrintMessage(_err + " " + str(self.max_objects) + "\n")
             return None
 
         for obj in selection:

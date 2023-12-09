@@ -44,7 +44,7 @@ This command only works with a 'mesh' object.</source>
     <message>
       <location filename="../../Command.cpp" line="58"/>
       <source>Mesh</source>
-      <translation>Сітка</translation>
+      <translation>Сітка(Меш)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="59"/>
@@ -198,12 +198,12 @@ This command only works with a 'mesh' object.</source>
       <translation>Скасувати</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="626"/>
+      <location filename="../../CurveOnMesh.cpp" line="624"/>
       <source>Wrong mesh picked</source>
       <translation>Обрана хибна сітка</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="667"/>
+      <location filename="../../CurveOnMesh.cpp" line="663"/>
       <source>No point was picked</source>
       <translation>Жодної точки не вибрано</translation>
     </message>
@@ -578,8 +578,8 @@ Select a different shape, please.</translation>
     <name>MeshPart_CreateFlatMesh</name>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="49"/>
-      <source>Unwrap Mesh</source>
-      <translation type="unfinished">Unwrap Mesh</translation>
+      <source>Unwrap mesh</source>
+      <translation type="unfinished">Unwrap mesh</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="52"/>
@@ -591,8 +591,8 @@ Select a different shape, please.</translation>
     <name>MeshPart_CreateFlatFace</name>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="88"/>
-      <source>Unwrap Face</source>
-      <translation type="unfinished">Unwrap Face</translation>
+      <source>Unwrap face</source>
+      <translation type="unfinished">Unwrap face</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="91"/>

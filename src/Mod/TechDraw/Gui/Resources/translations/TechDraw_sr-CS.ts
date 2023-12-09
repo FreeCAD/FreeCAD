@@ -233,12 +233,12 @@
   <context>
     <name>CmdTechDrawCosmeticEraser</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1276"/>
+      <location filename="../../CommandAnnotate.cpp" line="1280"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1277"/>
+      <location filename="../../CommandAnnotate.cpp" line="1281"/>
       <source>Remove Cosmetic Object</source>
       <translation>Ukloni pomoćni objekat</translation>
     </message>
@@ -277,17 +277,17 @@
   <context>
     <name>CmdTechDrawDecorateLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1394"/>
+      <location filename="../../CommandAnnotate.cpp" line="1398"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1395"/>
+      <location filename="../../CommandAnnotate.cpp" line="1399"/>
       <source>Change Appearance of Lines</source>
       <translation>Promeni izgled linija</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1396"/>
+      <location filename="../../CommandAnnotate.cpp" line="1400"/>
       <source>Change Appearance of selected Lines</source>
       <translation>Promenite izgled izabranih linija</translation>
     </message>
@@ -388,17 +388,17 @@
   <context>
     <name>CmdTechDrawExtendShortenLineGroup</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1673"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1679"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1674"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1680"/>
       <source>Extend Line</source>
       <translation>Produži Liniju</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1675"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1681"/>
       <source>Extend a cosmetic line or centerline at both ends:&lt;br&gt;- Specify the delta distance (optional)&lt;br&gt;- Select a single line&lt;br&gt;- Click this tool</source>
       <translation>Produži pomoćnu liniju, simetralu ili osnu liniju na oba kraja:&lt;br&gt;- Navedi delta rastojanje (neobavezno)&lt;br&gt;- Izaberi liniju&lt;br&gt;- Klikni na ovu alatku</translation>
     </message>
@@ -406,17 +406,17 @@
   <context>
     <name>CmdTechDrawExtensionAreaAnnotation</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1776"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1782"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1777"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1783"/>
       <source>Calculate the area of selected faces</source>
       <translation>Izračunaj površinu izabranih stranica</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1778"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1784"/>
       <source>Select several faces&lt;br&gt;    - click this tool</source>
       <translation>Izaberi nekoliko stranica&lt;br&gt; - klikni na ovu alatku</translation>
     </message>
@@ -520,17 +520,17 @@
   <context>
     <name>CmdTechDrawExtensionChangeLineAttributes</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="748"/>
+      <location filename="../../CommandExtensionPack.cpp" line="756"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="749"/>
+      <location filename="../../CommandExtensionPack.cpp" line="757"/>
       <source>Change Line Attributes</source>
       <translation>Promeni svojstva linije</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="750"/>
+      <location filename="../../CommandExtensionPack.cpp" line="758"/>
       <source>Change the attributes of cosmetic lines and centerlines:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more lines&lt;br&gt;- Click this tool</source>
       <translation>Promeni osobine pomoćnih linija, osnih linija i simetrala:&lt;br&gt;- Navedi osobine linije (neobavezno)&lt;br&gt;- Izaberi jednu ili više linija&lt;br&gt;- Klikni na ovu alatku</translation>
     </message>
@@ -538,19 +538,19 @@
   <context>
     <name>CmdTechDrawExtensionCircleCenterLines</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="226"/>
+      <location filename="../../CommandExtensionPack.cpp" line="234"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="227"/>
-      <location filename="../../CommandExtensionPack.cpp" line="329"/>
+      <location filename="../../CommandExtensionPack.cpp" line="235"/>
+      <location filename="../../CommandExtensionPack.cpp" line="337"/>
       <source>Add Circle Centerlines</source>
       <translation>Dodaj simetrale kružnici</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="228"/>
-      <location filename="../../CommandExtensionPack.cpp" line="330"/>
+      <location filename="../../CommandExtensionPack.cpp" line="236"/>
+      <location filename="../../CommandExtensionPack.cpp" line="338"/>
       <source>Add centerlines to circles and arcs:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles or arcs&lt;br&gt;- Click this tool</source>
       <translation>Dodaj simetrale kružnici ili kružnom luku:&lt;br&gt;- Navedi osobine linije (neobavezno)&lt;br&gt;- Izaberi jedan ili više krugova ili kružna luka&lt;br&gt;- Klikni na ovu alatku</translation>
     </message>
@@ -558,17 +558,17 @@
   <context>
     <name>CmdTechDrawExtensionCircleCenterLinesGroup</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="260"/>
+      <location filename="../../CommandExtensionPack.cpp" line="268"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="261"/>
+      <location filename="../../CommandExtensionPack.cpp" line="269"/>
       <source>Add Circle Centerlines</source>
       <translation>Dodaj simetrale kružnici</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="262"/>
+      <location filename="../../CommandExtensionPack.cpp" line="270"/>
       <source>Add centerlines to circles and arcs:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles or arcs&lt;br&gt;- Click this tool</source>
       <translation>Dodaj simetrale kružnici ili kružnom luku:&lt;br&gt;- Navedi osobine linije (neobavezno)&lt;br&gt;- Izaberi jedan ili više krugova ili kružna luka&lt;br&gt;- Klikni na ovu alatku</translation>
     </message>
@@ -828,17 +828,17 @@
   <context>
     <name>CmdTechDrawExtensionDrawCirclesGroup</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1063"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1069"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1064"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1070"/>
       <source>Add Cosmetic Circle</source>
       <translation>Dodaj pomoćnu kružnicu</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1065"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1071"/>
       <source>Add a cosmetic circle based on two vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select vertex 1 (center point)&lt;br&gt;- Select vertex 2 (radius)&lt;br&gt;- Click this tool</source>
       <translation>Dodaj pomoćnu kružnicu pomoću dve tačke:&lt;br&gt;- Navedi osobine linije (neobavezno)&lt;br&gt;- Izaberi tačku 1 (tačka centra)&lt;br&gt;- Izaberi tačku 2 (poluprečnik)&lt;br&gt;- Klikni na ovu alatku</translation>
     </message>
@@ -846,19 +846,19 @@
   <context>
     <name>CmdTechDrawExtensionDrawCosmArc</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="901"/>
+      <location filename="../../CommandExtensionPack.cpp" line="908"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="902"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1150"/>
+      <location filename="../../CommandExtensionPack.cpp" line="909"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1156"/>
       <source>Add Cosmetic Arc</source>
       <translation>Dodaj pomoćni luk</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="903"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1152"/>
+      <location filename="../../CommandExtensionPack.cpp" line="910"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1158"/>
       <source>Add a cosmetic counter clockwise arc based on three vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select vertex 1 (center point)&lt;br&gt;- Select vertex 2 (radius and start angle)&lt;br&gt;- Select vertex 3 (end angle)&lt;br&gt;- Click this tool</source>
       <translation>Dodaj pomoćni kružni luk suprotan smeru kazaljke na satu pomoću tri tačke:&lt;br&gt;- Navedi osobine linije (neobavezno)&lt;br&gt;- Izaberi tačku 1 (tačka centra)&lt;br&gt;- Izaberi tačku 2 (poluprečnik i početni ugao)&lt;br&gt;- Izaberi tačku 3 (krajnji ugao)&lt;br&gt;- Klikni na ovu alatku</translation>
     </message>
@@ -866,19 +866,19 @@
   <context>
     <name>CmdTechDrawExtensionDrawCosmCircle</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="964"/>
+      <location filename="../../CommandExtensionPack.cpp" line="970"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="965"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1141"/>
+      <location filename="../../CommandExtensionPack.cpp" line="971"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1147"/>
       <source>Add Cosmetic Circle</source>
       <translation>Dodaj pomoćnu kružnicu</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="966"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1142"/>
+      <location filename="../../CommandExtensionPack.cpp" line="972"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1148"/>
       <source>Add a cosmetic circle based on two vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select vertex 1 (center point)&lt;br&gt;- Select vertex 2 (radius)&lt;br&gt;- Click this tool</source>
       <translation>Dodaj pomoćnu kružnicu pomoću dve tačke:&lt;br&gt;- Navedi osobine linije (neobavezno)&lt;br&gt;- Izaberi tačku 1 (tačka centra)&lt;br&gt;- Izaberi tačku 2 (poluprečnik)&lt;br&gt;- Klikni na ovu alatku</translation>
     </message>
@@ -886,23 +886,23 @@
   <context>
     <name>CmdTechDrawExtensionDrawCosmCircle3Points</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1028"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1034"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1029"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1161"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1035"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1167"/>
       <source>Add Cosmetic Circle 3 Points</source>
       <translation>Dodaj pomoćnu kružnicu pomoću 3 tačke</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1030"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1036"/>
       <source>Add a cosmetic circle based on three vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select 3 vertexes&lt;br&gt;- Click this tool</source>
       <translation>Dodaj pomoćnu kružnicu pomoću tri tačke:&lt;br&gt;- Navedi osobine linije (neobavezno)&lt;br&gt;- Izaberi 3 tačke&lt;br&gt;- Klikni na ovu alatku</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1163"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1169"/>
       <source>Add a cosmetic circle based on three vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select three vertexes&lt;br&gt;- Click this tool</source>
       <translation>Dodaj pomoćnu kružnicu pomoću tri tačke:&lt;br&gt;- Navedi osobine linije (neobavezno)&lt;br&gt;- Izaberi tri tačke&lt;br&gt;- Klikni na ovu alatku</translation>
     </message>
@@ -910,19 +910,19 @@
   <context>
     <name>CmdTechDrawExtensionExtendLine</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1603"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1609"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1604"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1742"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1610"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1748"/>
       <source>Extend Line</source>
       <translation>Produži Liniju</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1605"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1743"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1611"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1749"/>
       <source>Extend a cosmetic line or centerline at both ends:&lt;br&gt;- Specify the delta distance (optional)&lt;br&gt;- Select a single line&lt;br&gt;- Click this tool</source>
       <translation>Produži pomoćnu liniju, simetralu ili osnu liniju na oba kraja:&lt;br&gt;- Navedi delta rastojanje (neobavezno)&lt;br&gt;- Izaberi liniju&lt;br&gt;- Klikni na ovu alatku</translation>
     </message>
@@ -930,19 +930,19 @@
   <context>
     <name>CmdTechDrawExtensionHoleCircle</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="152"/>
+      <location filename="../../CommandExtensionPack.cpp" line="160"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="153"/>
-      <location filename="../../CommandExtensionPack.cpp" line="338"/>
+      <location filename="../../CommandExtensionPack.cpp" line="161"/>
+      <location filename="../../CommandExtensionPack.cpp" line="346"/>
       <source>Add Bolt Circle Centerlines</source>
       <translation>Dodaj simetrale na kružnicu šrafa</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="154"/>
-      <location filename="../../CommandExtensionPack.cpp" line="339"/>
+      <location filename="../../CommandExtensionPack.cpp" line="162"/>
+      <location filename="../../CommandExtensionPack.cpp" line="347"/>
       <source>Add centerlines to a circular pattern of circles:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select three or more circles forming a circular pattern&lt;br&gt;- Click this tool</source>
       <translation>Dodaj simetrale krugovima raspoređenim po krugu:&lt;br&gt;- Navedi osobine linije (neobavezno)&lt;br&gt;- Izaberi tri ili više kruga koji su raspoređeni po krugu&lt;br&gt;- Klikni na ovu alatku</translation>
     </message>
@@ -1046,17 +1046,17 @@
   <context>
     <name>CmdTechDrawExtensionLinePPGroup</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1300"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1306"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1301"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1307"/>
       <source>Add Cosmetic Parallel Line</source>
       <translation>Dodaj pomoćnu paralelnu liniju</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1302"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1308"/>
       <source>Add a cosmetic line parallel to another line through a vertex:&lt;br&gt;- Select a line&lt;br&gt;- Select a vertex&lt;br&gt;- Click this tool</source>
       <translation>Dodaj pomoćnu liniju paralelnu drugoj liniji kroz tačku:&lt;br&gt;- Izaberi liniju&lt;br&gt;- Izaberi tačku&lt;br&gt;- Klikni na ovu alatku</translation>
     </message>
@@ -1064,19 +1064,19 @@
   <context>
     <name>CmdTechDrawExtensionLineParallel</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1231"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1237"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1232"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1370"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1238"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1376"/>
       <source>Add Cosmetic Parallel Line</source>
       <translation>Dodaj pomoćnu paralelnu liniju</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1233"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1372"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1239"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1378"/>
       <source>Add a cosmetic line parallel to another line through a vertex:&lt;br&gt;- Select a line&lt;br&gt;- Select a vertex&lt;br&gt;- Click this tool</source>
       <translation>Dodaj pomoćnu liniju paralelnu drugoj liniji kroz tačku:&lt;br&gt;- Izaberi liniju&lt;br&gt;- Izaberi tačku&lt;br&gt;- Klikni na ovu alatku</translation>
     </message>
@@ -1084,19 +1084,19 @@
   <context>
     <name>CmdTechDrawExtensionLinePerpendicular</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1265"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1271"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1266"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1379"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1272"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1385"/>
       <source>Add Cosmetic Perpendicular Line</source>
       <translation>Dodaj pomoćnu upravnu liniju</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1268"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1381"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1274"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1387"/>
       <source>Add a cosmetic line perpendicular to another line through a vertex:&lt;br&gt;- Select a line&lt;br&gt;- Select a vertex&lt;br&gt;- Click this tool</source>
       <translation>Dodaj pomoćnu liniju upravnu na dugu liniju kroz tačku:&lt;br&gt;- Izaberi liniju&lt;br&gt;- Izaberi tačku&lt;br&gt;- Klikni na ovu alatku</translation>
     </message>
@@ -1104,17 +1104,17 @@
   <context>
     <name>CmdTechDrawExtensionLockUnlockView</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1407"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1413"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1408"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1414"/>
       <source>Lock/Unlock View</source>
       <translation>Zaključaj/Otključaj pogled</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1409"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1415"/>
       <source>Lock or unlock the position of a view:&lt;br&gt;- Select a single view&lt;br&gt;- Click this tool</source>
       <translation>Zaključaj ili otključaj položaj pogleda:&lt;br&gt;- Izaberi jedan pogled&lt;br&gt;- Klikni ovu alatku</translation>
     </message>
@@ -1200,17 +1200,17 @@
   <context>
     <name>CmdTechDrawExtensionPositionSectionView</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1451"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1457"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1452"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1458"/>
       <source>Position Section View</source>
       <translation>Pozicioniraj presek</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1453"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1459"/>
       <source>Orthogonally align a section view with its source view:&lt;br&gt;- Select a single section view&lt;br&gt;- Click this tool</source>
       <translation>Ortogonalno poravnaj presek sa njegovim izvornim pogledom:&lt;br&gt;- Izaberi jedan presek&lt;br&gt;- Klikni na ovu alatku</translation>
     </message>
@@ -1236,17 +1236,17 @@
   <context>
     <name>CmdTechDrawExtensionSelectLineAttributes</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="713"/>
+      <location filename="../../CommandExtensionPack.cpp" line="721"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="714"/>
+      <location filename="../../CommandExtensionPack.cpp" line="722"/>
       <source>Select Line Attributes, Cascade Spacing and Delta Distance</source>
       <translation>Izaberi svojstva linije, paralelno rastojanje i Delta rastojanje</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="715"/>
+      <location filename="../../CommandExtensionPack.cpp" line="723"/>
       <source>Select the attributes for new cosmetic lines and centerlines, and specify the cascade spacing and delta distance:&lt;br&gt;- Click this tool&lt;br&gt;- Specify the attributes, spacing and distance in the dialog box&lt;br&gt;- Press OK</source>
       <translation>Izaberi osobine za nove pomoćne linije, osne linije i simetrale a takođe navedi paralelno rastojanje između kota i Delta rastojanje:&lt;br&gt;- Klikni na ovu alatku&lt;br&gt;- Navedi osobine i rastojanja u&lt;br&gt;- Pritisni U redu</translation>
     </message>
@@ -1254,19 +1254,19 @@
   <context>
     <name>CmdTechDrawExtensionShortenLine</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1638"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1644"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1639"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1750"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1645"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1756"/>
       <source>Shorten Line</source>
       <translation>Skrati liniju</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1640"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1751"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1646"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1757"/>
       <source>Shorten a cosmetic line or centerline at both ends:&lt;br&gt;- Specify the delta distance (optional)&lt;br&gt;- Select a single line&lt;br&gt;- Click this tool</source>
       <translation>Skrati pomoćnu liniju, simetralu ili osnu liniju na oba kraja:&lt;br&gt;- Navedi delta rastojanje (neobavezno)&lt;br&gt;- Izaberi liniju&lt;br&gt;- Klikni na ovu alatku</translation>
     </message>
@@ -1274,19 +1274,19 @@
   <context>
     <name>CmdTechDrawExtensionThreadBoltBottom</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="538"/>
+      <location filename="../../CommandExtensionPack.cpp" line="546"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="539"/>
-      <location filename="../../CommandExtensionPack.cpp" line="685"/>
+      <location filename="../../CommandExtensionPack.cpp" line="547"/>
+      <location filename="../../CommandExtensionPack.cpp" line="693"/>
       <source>Add Cosmetic Thread Bolt Bottom View</source>
       <translation>Dodaj prikaz spreda (aksijalni) spoljašnjeg navoja</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="541"/>
-      <location filename="../../CommandExtensionPack.cpp" line="687"/>
+      <location filename="../../CommandExtensionPack.cpp" line="549"/>
+      <location filename="../../CommandExtensionPack.cpp" line="695"/>
       <source>Add a cosmetic thread to the top or bottom view of bolts/screws/rods:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles&lt;br&gt;- Click this tool</source>
       <translation>Dodaj prikaz spreda spoljašnjeg navoja:&lt;br&gt;- Navedi osobine linije (neobavezno)&lt;br&gt;- Izaberi jednu ili više kružnca &lt;br&gt;- Klikni na ovu alatku</translation>
     </message>
@@ -1294,19 +1294,19 @@
   <context>
     <name>CmdTechDrawExtensionThreadBoltSide</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="434"/>
+      <location filename="../../CommandExtensionPack.cpp" line="442"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="435"/>
-      <location filename="../../CommandExtensionPack.cpp" line="675"/>
+      <location filename="../../CommandExtensionPack.cpp" line="443"/>
+      <location filename="../../CommandExtensionPack.cpp" line="683"/>
       <source>Add Cosmetic Thread Bolt Side View</source>
       <translation>Dodaj prikaz sa strane spoljašnjeg navoja</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="436"/>
-      <location filename="../../CommandExtensionPack.cpp" line="678"/>
+      <location filename="../../CommandExtensionPack.cpp" line="444"/>
+      <location filename="../../CommandExtensionPack.cpp" line="686"/>
       <source>Add a cosmetic thread to the side view of a bolt/screw/rod:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select two parallel lines&lt;br&gt;- Click this tool</source>
       <translation>Dodaj prikaz sa strane spoljašnjeg navoja:&lt;br&gt;- Navedi osobine linije (neobavezno)&lt;br&gt;- Izaberi dve paralelne linije&lt;br&gt;- Klikni na ovu alatku</translation>
     </message>
@@ -1314,19 +1314,19 @@
   <context>
     <name>CmdTechDrawExtensionThreadHoleBottom</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="486"/>
+      <location filename="../../CommandExtensionPack.cpp" line="494"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="487"/>
-      <location filename="../../CommandExtensionPack.cpp" line="665"/>
+      <location filename="../../CommandExtensionPack.cpp" line="495"/>
+      <location filename="../../CommandExtensionPack.cpp" line="673"/>
       <source>Add Cosmetic Thread Hole Bottom View</source>
       <translation>Dodaj prikaz spreda (aksijalni) unutrašnjeg navoja</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="488"/>
-      <location filename="../../CommandExtensionPack.cpp" line="668"/>
+      <location filename="../../CommandExtensionPack.cpp" line="496"/>
+      <location filename="../../CommandExtensionPack.cpp" line="676"/>
       <source>Add a cosmetic thread to the top or bottom view of holes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select one or more circles&lt;br&gt;- Click this tool</source>
       <translation>Dodaj prikaz spreda unutrašnjeg navoja:&lt;br&gt;- Navedi osobine linije (neobavezno)&lt;br&gt;- Izaberi jednu ili više kružnca &lt;br&gt;- Klikni na ovu alatku</translation>
     </message>
@@ -1334,19 +1334,19 @@
   <context>
     <name>CmdTechDrawExtensionThreadHoleSide</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="382"/>
+      <location filename="../../CommandExtensionPack.cpp" line="390"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="383"/>
-      <location filename="../../CommandExtensionPack.cpp" line="656"/>
+      <location filename="../../CommandExtensionPack.cpp" line="391"/>
+      <location filename="../../CommandExtensionPack.cpp" line="664"/>
       <source>Add Cosmetic Thread Hole Side View</source>
       <translation>Dodaj prikaz sa strane unutrašnjeg navoja</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="384"/>
-      <location filename="../../CommandExtensionPack.cpp" line="658"/>
+      <location filename="../../CommandExtensionPack.cpp" line="392"/>
+      <location filename="../../CommandExtensionPack.cpp" line="666"/>
       <source>Add a cosmetic thread to the side view of a hole:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select two parallel lines&lt;br&gt;- Click this tool</source>
       <translation>Dodaj prikaz sa strane unutrašnjeg navoja:&lt;br&gt;- Navedi osobine linije (neobavezno)&lt;br&gt;- Izaberi dve paralelne linije&lt;br&gt;- Klikni na ovu alatku</translation>
     </message>
@@ -1354,17 +1354,17 @@
   <context>
     <name>CmdTechDrawExtensionThreadsGroup</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="573"/>
+      <location filename="../../CommandExtensionPack.cpp" line="581"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="574"/>
+      <location filename="../../CommandExtensionPack.cpp" line="582"/>
       <source>Add Cosmetic Thread Hole Side View</source>
       <translation>Dodaj prikaz sa strane unutrašnjeg navoja</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="575"/>
+      <location filename="../../CommandExtensionPack.cpp" line="583"/>
       <source>Add a cosmetic thread to the side view of a hole:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select two parallel lines&lt;br&gt;- Click this tool</source>
       <translation>Dodaj prikaz sa strane unutrašnjeg navoja:&lt;br&gt;- Navedi osobine linije (neobavezno)&lt;br&gt;- Izaberi dve paralelne linije&lt;br&gt;- Klikni na ovu alatku</translation>
     </message>
@@ -1372,17 +1372,17 @@
   <context>
     <name>CmdTechDrawExtensionVertexAtIntersection</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="808"/>
+      <location filename="../../CommandExtensionPack.cpp" line="816"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="809"/>
+      <location filename="../../CommandExtensionPack.cpp" line="817"/>
       <source>Add Cosmetic Intersection Vertex(es)</source>
       <translation>Dodaj Pomoćnu presečnu tačku(e)</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="811"/>
+      <location filename="../../CommandExtensionPack.cpp" line="819"/>
       <source>Add cosmetic vertex(es) at the intersection(s) of selected edges:&lt;br&gt;- Select two edges (lines, circles and/or arcs)&lt;br&gt;- Click this tool</source>
       <translation>Dodaj pomoćnu presečnu tačku(e) izabranih ivica:&lt;br&gt;- Izaberi dve ivice (linije, kružnice i/ili lukove)&lt;br&gt;- Klikni na ovu alatku</translation>
     </message>
@@ -1426,12 +1426,12 @@
   <context>
     <name>CmdTechDrawGeometricHatch</name>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="169"/>
+      <location filename="../../CommandDecorate.cpp" line="170"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="170"/>
+      <location filename="../../CommandDecorate.cpp" line="171"/>
       <source>Apply Geometric Hatch to Face</source>
       <translation>Primeni geometrijsku šrafuru na stranicu</translation>
     </message>
@@ -1439,12 +1439,12 @@
   <context>
     <name>CmdTechDrawHatch</name>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="71"/>
+      <location filename="../../CommandDecorate.cpp" line="72"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="72"/>
+      <location filename="../../CommandDecorate.cpp" line="73"/>
       <source>Hatch a Face using Image File</source>
       <translation>Šrafiraj stranicu slikom iz datoteke</translation>
     </message>
@@ -1478,28 +1478,28 @@
   <context>
     <name>CmdTechDrawImage</name>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="241"/>
+      <location filename="../../CommandDecorate.cpp" line="242"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="242"/>
+      <location filename="../../CommandDecorate.cpp" line="243"/>
       <source>Insert Bitmap Image</source>
       <translation>Umetni rastersku sliku</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="243"/>
-      <location filename="../../CommandDecorate.cpp" line="245"/>
+      <location filename="../../CommandDecorate.cpp" line="244"/>
+      <location filename="../../CommandDecorate.cpp" line="246"/>
       <source>Insert Bitmap from a file into a page</source>
       <translation>Umetni rastersku sliku iz datoteke u crtež</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="260"/>
+      <location filename="../../CommandDecorate.cpp" line="261"/>
       <source>Select an Image File</source>
       <translation>Izaberi datoteku slike</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="262"/>
+      <location filename="../../CommandDecorate.cpp" line="263"/>
       <source>Image files (*.jpg *.jpeg *.png *.bmp);;All files (*)</source>
       <translation>Slikovne datoteke (*.jpg *.jpeg *.png *.bmp);;Sve datoteke (*)</translation>
     </message>
@@ -1740,12 +1740,12 @@
   <context>
     <name>CmdTechDrawShowAll</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1473"/>
+      <location filename="../../CommandAnnotate.cpp" line="1477"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1474"/>
+      <location filename="../../CommandAnnotate.cpp" line="1478"/>
       <source>Show/Hide Invisible Edges</source>
       <translation>Prikaži/sakrij nevidljive ivice</translation>
     </message>
@@ -1856,17 +1856,17 @@
   <context>
     <name>CmdTechDrawSurfaceFinishSymbols</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1602"/>
+      <location filename="../../CommandAnnotate.cpp" line="1606"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1603"/>
+      <location filename="../../CommandAnnotate.cpp" line="1607"/>
       <source>Create a Surface Finish Symbol</source>
       <translation>Napravi oznaku kvaliteta obrađene površine</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1604"/>
+      <location filename="../../CommandAnnotate.cpp" line="1608"/>
       <source>Select a view&lt;br&gt;    - click this button&lt;br&gt;    - select surface finish symbol attributes in opened panel</source>
       <translation>Izaberi pogled&lt;br&gt;    - Klikni na ovu alatku&lt;br&gt;    - U otvorenom panelu napravi oznaku kvaliteta površine</translation>
     </message>
@@ -1892,13 +1892,13 @@
   <context>
     <name>CmdTechDrawToggleFrame</name>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="294"/>
+      <location filename="../../CommandDecorate.cpp" line="295"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="295"/>
       <location filename="../../CommandDecorate.cpp" line="296"/>
+      <location filename="../../CommandDecorate.cpp" line="297"/>
       <source>Turn View Frames On/Off</source>
       <translation>Prikaži/Sakrij okvire oko pogleda</translation>
     </message>
@@ -1950,12 +1950,12 @@
   <context>
     <name>CmdTechDrawWeldSymbol</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1538"/>
+      <location filename="../../CommandAnnotate.cpp" line="1542"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1539"/>
+      <location filename="../../CommandAnnotate.cpp" line="1543"/>
       <source>Add Welding Information to Leaderline</source>
       <translation>Dodaj informacije o varu pokaznoj liniji</translation>
     </message>
@@ -2014,8 +2014,8 @@
       <translation>Napravi pogled of tabele</translation>
     </message>
     <message>
+      <location filename="../../PagePrinter.cpp" line="373"/>
       <location filename="../../Command.cpp" line="1636"/>
-      <location filename="../../PagePrinter.cpp" line="357"/>
       <source>Save page to dxf</source>
       <translation>Sačuvaj crtež kao dxf</translation>
     </message>
@@ -2051,32 +2051,32 @@
       <translation>Ažuriraj šrafuru</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="118"/>
+      <location filename="../../CommandDecorate.cpp" line="119"/>
       <source>Remove old Hatch</source>
       <translation>Ukloni staru šrafuru</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="199"/>
+      <location filename="../../CommandDecorate.cpp" line="200"/>
       <source>Create GeomHatch</source>
       <translation>Napravi geometrijsku šrafuru</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="269"/>
+      <location filename="../../CommandDecorate.cpp" line="270"/>
       <source>Create Image</source>
       <translation>Napravi sliku</translation>
     </message>
     <message>
-      <location filename="../../QGIViewBalloon.cpp" line="478"/>
+      <location filename="../../QGIViewBalloon.cpp" line="488"/>
       <source>Drag Balloon</source>
       <translation>Prevuci pozicionu oznaku</translation>
     </message>
     <message>
-      <location filename="../../QGIViewDimension.cpp" line="686"/>
+      <location filename="../../QGIViewDimension.cpp" line="694"/>
       <source>Drag Dimension</source>
       <translation>Prevuci kotu</translation>
     </message>
     <message>
-      <location filename="../../QGSPage.cpp" line="528"/>
+      <location filename="../../QGSPage.cpp" line="527"/>
       <source>Create Balloon</source>
       <translation>Napravi pozicionu oznaku</translation>
     </message>
@@ -2091,15 +2091,15 @@
       <translation>Napravi osnu liniju</translation>
     </message>
     <message>
-      <location filename="../../TaskCosmeticCircle.cpp" line="168"/>
       <location filename="../../TaskCosmeticLine.cpp" line="187"/>
+      <location filename="../../TaskCosmeticCircle.cpp" line="168"/>
       <source>Create Cosmetic Line</source>
       <translation>Napravi pomoćnu liniju</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.cpp" line="230"/>
       <source>Update CosmeticCircle</source>
-      <translation type="unfinished">Update CosmeticCircle</translation>
+      <translation>Ažuriraj pomoćnu kružnicu</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticLine.cpp" line="241"/>
@@ -2112,7 +2112,7 @@
       <translation>Napravi detaljni pogled</translation>
     </message>
     <message>
-      <location filename="../../TaskDetail.cpp" line="478"/>
+      <location filename="../../TaskDetail.cpp" line="477"/>
       <source>Update Detail</source>
       <translation>Ažuriraj detalj</translation>
     </message>
@@ -2268,154 +2268,164 @@
       <translation>Kotiraj dužinu luka</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="97"/>
+      <location filename="../../CommandExtensionPack.cpp" line="105"/>
       <source>TechDraw Hole Circle</source>
       <translation type="unfinished">TechDraw Hole Circle</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="117"/>
+      <location filename="../../CommandExtensionPack.cpp" line="125"/>
       <source>Bolt Circle Centerlines</source>
       <translation>Simetrale kružnice šrafa</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="186"/>
+      <location filename="../../CommandExtensionPack.cpp" line="194"/>
       <source>TechDraw Circle Centerlines</source>
       <translation>TechDraw Simetrale kružnice</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="188"/>
+      <location filename="../../CommandExtensionPack.cpp" line="196"/>
       <source>Circle Centerlines</source>
       <translation>Simetrale kružnice</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="363"/>
+      <location filename="../../CommandExtensionPack.cpp" line="371"/>
       <source>TechDraw Thread Hole Side</source>
       <translation>TechDraw unutrašnji navoj</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="365"/>
+      <location filename="../../CommandExtensionPack.cpp" line="373"/>
       <source>Cosmetic Thread Hole Side</source>
       <translation>Dodaj unutrašnji navoj</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="415"/>
+      <location filename="../../CommandExtensionPack.cpp" line="423"/>
       <source>TechDraw Thread Bolt Side</source>
       <translation>TechDraw Prikaz sa strane spoljašnjeg navoja</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="417"/>
+      <location filename="../../CommandExtensionPack.cpp" line="425"/>
       <source>Cosmetic Thread Bolt Side</source>
       <translation>Dodaj spoljašnji navoj</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="467"/>
+      <location filename="../../CommandExtensionPack.cpp" line="475"/>
       <source>TechDraw Thread Hole Bottom</source>
       <translation>TechDraw Prikaz spreda (aksijalni) unutrašnjeg navoja</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="469"/>
+      <location filename="../../CommandExtensionPack.cpp" line="477"/>
       <source>Cosmetic Thread Hole Bottom</source>
       <translation>Dodaj unutrašnji navoj - aksijalni pogled</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="519"/>
+      <location filename="../../CommandExtensionPack.cpp" line="527"/>
       <source>TechDraw Thread Bolt Bottom</source>
       <translation>TechDraw Prikaz spreda spoljašnjeg navoja</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="521"/>
+      <location filename="../../CommandExtensionPack.cpp" line="529"/>
       <source>Cosmetic Thread Bolt Bottom</source>
       <translation>Dodaj spoljašnji navoj - aksijalni pogled</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="765"/>
+      <location filename="../../CommandExtensionPack.cpp" line="773"/>
       <source>TechDraw Change Line Attributes</source>
       <translation>TechDraw Promeni svojstva linije</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="767"/>
+      <location filename="../../CommandExtensionPack.cpp" line="775"/>
       <source>Change Line Attributes</source>
       <translation>Promeni svojstva linije</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="825"/>
+      <location filename="../../CommandExtensionPack.cpp" line="833"/>
       <source>TechDraw Cosmetic Intersection Vertex(es)</source>
       <translation>TechDraw Pomoćna presečna tačka(e)</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="827"/>
+      <location filename="../../CommandExtensionPack.cpp" line="835"/>
       <source>Cosmetic Intersection Vertex(es)</source>
       <translation>Pomoćna presečna tačka(e)</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="872"/>
+      <location filename="../../CommandExtensionPack.cpp" line="880"/>
       <source>TechDraw Cosmetic Arc</source>
       <translation>TechDraw Pomoćni luk</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="874"/>
+      <location filename="../../CommandExtensionPack.cpp" line="882"/>
       <source>Cosmetic Arc</source>
       <translation>Pomoćni luk</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="937"/>
+      <location filename="../../CommandExtensionPack.cpp" line="944"/>
       <source>TechDraw Cosmetic Circle</source>
       <translation>TechDraw Pomoćna kružnica</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="939"/>
+      <location filename="../../CommandExtensionPack.cpp" line="946"/>
       <source>Cosmetic Circle</source>
       <translation>Pomoćna kružnica</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="999"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1005"/>
       <source>TechDraw Cosmetic Circle 3 Points</source>
       <translation>TechDraw pomoćna kružnica pomoću 3 tačke</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1001"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1007"/>
       <source>Cosmetic Circle 3 Points</source>
       <translation>Pomoćna kružnica pomoću 3 tačke</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1187"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1193"/>
       <source>TechDraw Cosmetic Line Parallel/Perpendicular</source>
       <translation>TechDraw Pomoćna linija paralelna/normalna</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1189"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1195"/>
       <source>Cosmetic Line Parallel/Perpendicular</source>
       <translation>Pomoćna linija paralelna/normalna</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1423"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1429"/>
       <source>TechDraw Lock/Unlock View</source>
       <translation>TechDraw Zaključaj/Otključaj pogled</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1425"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1431"/>
       <source>Lock/Unlock View</source>
       <translation>Zaključaj/Otključaj pogled</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1527"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1533"/>
       <source>TechDraw Extend/Shorten Line</source>
       <translation>TechDraw Produži/Skrati liniju</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1529"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1535"/>
       <source>Extend/Shorten Line</source>
       <translation>Produži/Skrati liniju</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1791"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1797"/>
       <source>TechDraw calculate selected area</source>
       <translation>TechDraw Izračunaj površinu izabrane stranice</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1854"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1838"/>
       <source>Calculate Face Area</source>
       <translation>Izračunaj površinu regiona</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="1927"/>
+      <source>TechDraw calculate selected arc length</source>
+      <translation type="unfinished">TechDraw calculate selected arc length</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="1965"/>
+      <source>Calculate Edge Length</source>
+      <translation type="unfinished">Calculate Edge Length</translation>
     </message>
     <message>
       <location filename="../../TaskCustomizeFormat.cpp" line="191"/>
@@ -2694,6 +2704,16 @@
   <context>
     <name>QObject</name>
     <message>
+      <location filename="../../CommandAnnotate.cpp" line="318"/>
+      <location filename="../../CommandAnnotate.cpp" line="417"/>
+      <location filename="../../CommandAnnotate.cpp" line="1306"/>
+      <location filename="../../CommandAnnotate.cpp" line="1314"/>
+      <location filename="../../CommandAnnotate.cpp" line="1361"/>
+      <location filename="../../CommandAnnotate.cpp" line="1503"/>
+      <location filename="../../CommandAnnotate.cpp" line="1510"/>
+      <location filename="../../CommandAnnotate.cpp" line="1574"/>
+      <location filename="../../CommandCreateDims.cpp" line="1277"/>
+      <location filename="../../CommandCreateDims.cpp" line="1286"/>
       <location filename="../../Command.cpp" line="379"/>
       <location filename="../../Command.cpp" line="608"/>
       <location filename="../../Command.cpp" line="725"/>
@@ -2711,16 +2731,6 @@
       <location filename="../../Command.cpp" line="1445"/>
       <location filename="../../Command.cpp" line="1451"/>
       <location filename="../../Command.cpp" line="1502"/>
-      <location filename="../../CommandAnnotate.cpp" line="318"/>
-      <location filename="../../CommandAnnotate.cpp" line="417"/>
-      <location filename="../../CommandAnnotate.cpp" line="1302"/>
-      <location filename="../../CommandAnnotate.cpp" line="1310"/>
-      <location filename="../../CommandAnnotate.cpp" line="1357"/>
-      <location filename="../../CommandAnnotate.cpp" line="1499"/>
-      <location filename="../../CommandAnnotate.cpp" line="1506"/>
-      <location filename="../../CommandAnnotate.cpp" line="1570"/>
-      <location filename="../../CommandCreateDims.cpp" line="1277"/>
-      <location filename="../../CommandCreateDims.cpp" line="1286"/>
       <source>Wrong selection</source>
       <translation>Pogrešan izbor</translation>
     </message>
@@ -2752,10 +2762,9 @@
       <translation>Nije izabran objekat sa profilom</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="958"/>
-      <location filename="../../Command.cpp" line="965"/>
-      <location filename="../../Command.cpp" line="973"/>
-      <location filename="../../Command.cpp" line="985"/>
+      <location filename="../../CommandDecorate.cpp" line="369"/>
+      <location filename="../../CommandDecorate.cpp" line="376"/>
+      <location filename="../../CommandDecorate.cpp" line="383"/>
       <location filename="../../CommandCreateDims.cpp" line="166"/>
       <location filename="../../CommandCreateDims.cpp" line="292"/>
       <location filename="../../CommandCreateDims.cpp" line="418"/>
@@ -2767,33 +2776,34 @@
       <location filename="../../CommandCreateDims.cpp" line="1443"/>
       <location filename="../../CommandCreateDims.cpp" line="1451"/>
       <location filename="../../CommandCreateDims.cpp" line="1460"/>
-      <location filename="../../CommandDecorate.cpp" line="350"/>
-      <location filename="../../CommandDecorate.cpp" line="357"/>
-      <location filename="../../CommandDecorate.cpp" line="364"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1808"/>
+      <location filename="../../Command.cpp" line="958"/>
+      <location filename="../../Command.cpp" line="965"/>
+      <location filename="../../Command.cpp" line="973"/>
+      <location filename="../../Command.cpp" line="985"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1812"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1941"/>
       <source>Incorrect selection</source>
       <translation>Pogrešan izbor</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="959"/>
       <location filename="../../CommandCreateDims.cpp" line="1444"/>
+      <location filename="../../Command.cpp" line="959"/>
       <source>Select an object first</source>
       <translation>Prvo izaberi objekat</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="966"/>
       <location filename="../../CommandCreateDims.cpp" line="1452"/>
+      <location filename="../../Command.cpp" line="966"/>
       <source>Too many objects selected</source>
       <translation>Previše objekata je izabrano</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="974"/>
       <location filename="../../CommandCreateDims.cpp" line="1461"/>
+      <location filename="../../Command.cpp" line="974"/>
       <source>Create a page first.</source>
       <translation>Prvo napravi stranicu.</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="986"/>
       <location filename="../../CommandCreateDims.cpp" line="167"/>
       <location filename="../../CommandCreateDims.cpp" line="293"/>
       <location filename="../../CommandCreateDims.cpp" line="419"/>
@@ -2802,6 +2812,7 @@
       <location filename="../../CommandCreateDims.cpp" line="714"/>
       <location filename="../../CommandCreateDims.cpp" line="810"/>
       <location filename="../../CommandCreateDims.cpp" line="1085"/>
+      <location filename="../../Command.cpp" line="986"/>
       <source>No View of a Part in selection.</source>
       <translation>Nije izabran pogled dela.</translation>
     </message>
@@ -2913,6 +2924,8 @@
       <translation>Izabrana ivica je B-Splajn. Radijus će biti približan. Nastavi?</translation>
     </message>
     <message>
+      <location filename="../../CommandDecorate.cpp" line="390"/>
+      <location filename="../../CommandDecorate.cpp" line="396"/>
       <location filename="../../CommandCreateDims.cpp" line="187"/>
       <location filename="../../CommandCreateDims.cpp" line="202"/>
       <location filename="../../CommandCreateDims.cpp" line="313"/>
@@ -2932,12 +2945,10 @@
       <location filename="../../CommandCreateDims.cpp" line="1112"/>
       <location filename="../../CommandCreateDims.cpp" line="1126"/>
       <location filename="../../CommandCreateDims.cpp" line="1218"/>
-      <location filename="../../CommandDecorate.cpp" line="371"/>
-      <location filename="../../CommandDecorate.cpp" line="377"/>
-      <location filename="../../TaskDimension.cpp" line="417"/>
       <location filename="../../TaskDimRepair.cpp" line="126"/>
       <location filename="../../TaskDimRepair.cpp" line="138"/>
       <location filename="../../TaskDimRepair.cpp" line="149"/>
+      <location filename="../../TaskDimension.cpp" line="417"/>
       <source>Incorrect Selection</source>
       <translation>Pogrešan izbor</translation>
     </message>
@@ -3065,9 +3076,6 @@
       <translation>Izaberi 2 tačkasta objekta i 1 pogled. (2)</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="491"/>
-      <location filename="../../Command.cpp" line="584"/>
-      <location filename="../../Command.cpp" line="647"/>
       <location filename="../../CommandAnnotate.cpp" line="106"/>
       <location filename="../../CommandAnnotate.cpp" line="167"/>
       <location filename="../../CommandAnnotate.cpp" line="219"/>
@@ -3079,11 +3087,11 @@
       <location filename="../../CommandAnnotate.cpp" line="801"/>
       <location filename="../../CommandAnnotate.cpp" line="876"/>
       <location filename="../../CommandAnnotate.cpp" line="989"/>
-      <location filename="../../CommandAnnotate.cpp" line="1139"/>
-      <location filename="../../CommandAnnotate.cpp" line="1289"/>
-      <location filename="../../CommandAnnotate.cpp" line="1408"/>
-      <location filename="../../CommandAnnotate.cpp" line="1486"/>
-      <location filename="../../CommandAnnotate.cpp" line="1552"/>
+      <location filename="../../CommandAnnotate.cpp" line="1140"/>
+      <location filename="../../CommandAnnotate.cpp" line="1293"/>
+      <location filename="../../CommandAnnotate.cpp" line="1412"/>
+      <location filename="../../CommandAnnotate.cpp" line="1490"/>
+      <location filename="../../CommandAnnotate.cpp" line="1556"/>
       <location filename="../../CommandCreateDims.cpp" line="146"/>
       <location filename="../../CommandCreateDims.cpp" line="272"/>
       <location filename="../../CommandCreateDims.cpp" line="398"/>
@@ -3094,6 +3102,11 @@
       <location filename="../../CommandCreateDims.cpp" line="966"/>
       <location filename="../../CommandCreateDims.cpp" line="1064"/>
       <location filename="../../CommandCreateDims.cpp" line="1177"/>
+      <location filename="../../CommandStack.cpp" line="75"/>
+      <location filename="../../CommandStack.cpp" line="191"/>
+      <location filename="../../CommandStack.cpp" line="251"/>
+      <location filename="../../CommandStack.cpp" line="311"/>
+      <location filename="../../CommandStack.cpp" line="371"/>
       <location filename="../../CommandExtensionDims.cpp" line="266"/>
       <location filename="../../CommandExtensionDims.cpp" line="475"/>
       <location filename="../../CommandExtensionDims.cpp" line="767"/>
@@ -3101,23 +3114,18 @@
       <location filename="../../CommandExtensionDims.cpp" line="1440"/>
       <location filename="../../CommandExtensionDims.cpp" line="1803"/>
       <location filename="../../CommandExtensionDims.cpp" line="2062"/>
-      <location filename="../../CommandExtensionPack.cpp" line="274"/>
-      <location filename="../../CommandExtensionPack.cpp" line="588"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1079"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1315"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1688"/>
-      <location filename="../../CommandStack.cpp" line="75"/>
-      <location filename="../../CommandStack.cpp" line="191"/>
-      <location filename="../../CommandStack.cpp" line="251"/>
-      <location filename="../../CommandStack.cpp" line="311"/>
-      <location filename="../../CommandStack.cpp" line="371"/>
+      <location filename="../../Command.cpp" line="491"/>
+      <location filename="../../Command.cpp" line="584"/>
+      <location filename="../../Command.cpp" line="647"/>
+      <location filename="../../CommandExtensionPack.cpp" line="282"/>
+      <location filename="../../CommandExtensionPack.cpp" line="596"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1085"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1321"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1694"/>
       <source>Task In Progress</source>
       <translation>Zadatak u toku</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="492"/>
-      <location filename="../../Command.cpp" line="585"/>
-      <location filename="../../Command.cpp" line="648"/>
       <location filename="../../CommandAnnotate.cpp" line="107"/>
       <location filename="../../CommandAnnotate.cpp" line="168"/>
       <location filename="../../CommandAnnotate.cpp" line="220"/>
@@ -3129,11 +3137,11 @@
       <location filename="../../CommandAnnotate.cpp" line="802"/>
       <location filename="../../CommandAnnotate.cpp" line="877"/>
       <location filename="../../CommandAnnotate.cpp" line="990"/>
-      <location filename="../../CommandAnnotate.cpp" line="1140"/>
-      <location filename="../../CommandAnnotate.cpp" line="1290"/>
-      <location filename="../../CommandAnnotate.cpp" line="1409"/>
-      <location filename="../../CommandAnnotate.cpp" line="1487"/>
-      <location filename="../../CommandAnnotate.cpp" line="1553"/>
+      <location filename="../../CommandAnnotate.cpp" line="1141"/>
+      <location filename="../../CommandAnnotate.cpp" line="1294"/>
+      <location filename="../../CommandAnnotate.cpp" line="1413"/>
+      <location filename="../../CommandAnnotate.cpp" line="1491"/>
+      <location filename="../../CommandAnnotate.cpp" line="1557"/>
       <location filename="../../CommandCreateDims.cpp" line="147"/>
       <location filename="../../CommandCreateDims.cpp" line="273"/>
       <location filename="../../CommandCreateDims.cpp" line="399"/>
@@ -3144,6 +3152,11 @@
       <location filename="../../CommandCreateDims.cpp" line="967"/>
       <location filename="../../CommandCreateDims.cpp" line="1065"/>
       <location filename="../../CommandCreateDims.cpp" line="1178"/>
+      <location filename="../../CommandStack.cpp" line="76"/>
+      <location filename="../../CommandStack.cpp" line="192"/>
+      <location filename="../../CommandStack.cpp" line="252"/>
+      <location filename="../../CommandStack.cpp" line="312"/>
+      <location filename="../../CommandStack.cpp" line="372"/>
       <location filename="../../CommandExtensionDims.cpp" line="267"/>
       <location filename="../../CommandExtensionDims.cpp" line="476"/>
       <location filename="../../CommandExtensionDims.cpp" line="768"/>
@@ -3151,16 +3164,14 @@
       <location filename="../../CommandExtensionDims.cpp" line="1441"/>
       <location filename="../../CommandExtensionDims.cpp" line="1804"/>
       <location filename="../../CommandExtensionDims.cpp" line="2063"/>
-      <location filename="../../CommandExtensionPack.cpp" line="275"/>
-      <location filename="../../CommandExtensionPack.cpp" line="589"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1080"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1316"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1689"/>
-      <location filename="../../CommandStack.cpp" line="76"/>
-      <location filename="../../CommandStack.cpp" line="192"/>
-      <location filename="../../CommandStack.cpp" line="252"/>
-      <location filename="../../CommandStack.cpp" line="312"/>
-      <location filename="../../CommandStack.cpp" line="372"/>
+      <location filename="../../Command.cpp" line="492"/>
+      <location filename="../../Command.cpp" line="585"/>
+      <location filename="../../Command.cpp" line="648"/>
+      <location filename="../../CommandExtensionPack.cpp" line="283"/>
+      <location filename="../../CommandExtensionPack.cpp" line="597"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1086"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1322"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1695"/>
       <source>Close active task dialog and try again.</source>
       <translation>Zatvori dijalog aktivnog zadatka i pokušaj ponovo.</translation>
     </message>
@@ -3183,15 +3194,15 @@
       <location filename="../../CommandAnnotate.cpp" line="1042"/>
       <location filename="../../CommandAnnotate.cpp" line="1050"/>
       <location filename="../../CommandAnnotate.cpp" line="1070"/>
-      <location filename="../../CommandAnnotate.cpp" line="1105"/>
-      <location filename="../../CommandAnnotate.cpp" line="1169"/>
-      <location filename="../../CommandAnnotate.cpp" line="1192"/>
-      <location filename="../../CommandAnnotate.cpp" line="1212"/>
-      <location filename="../../CommandAnnotate.cpp" line="1247"/>
-      <location filename="../../CommandAnnotate.cpp" line="1421"/>
-      <location filename="../../CommandAnnotate.cpp" line="1428"/>
-      <location filename="../../CommandAnnotate.cpp" line="1683"/>
-      <location filename="../../CommandAnnotate.cpp" line="1696"/>
+      <location filename="../../CommandAnnotate.cpp" line="1106"/>
+      <location filename="../../CommandAnnotate.cpp" line="1170"/>
+      <location filename="../../CommandAnnotate.cpp" line="1193"/>
+      <location filename="../../CommandAnnotate.cpp" line="1215"/>
+      <location filename="../../CommandAnnotate.cpp" line="1251"/>
+      <location filename="../../CommandAnnotate.cpp" line="1425"/>
+      <location filename="../../CommandAnnotate.cpp" line="1432"/>
+      <location filename="../../CommandAnnotate.cpp" line="1687"/>
+      <location filename="../../CommandAnnotate.cpp" line="1700"/>
       <source>Wrong Selection</source>
       <translation>Pogrešan izbor</translation>
     </message>
@@ -3254,7 +3265,7 @@
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="1020"/>
-      <location filename="../../CommandAnnotate.cpp" line="1170"/>
+      <location filename="../../CommandAnnotate.cpp" line="1171"/>
       <source>Selection is empty.</source>
       <translation>Nisi ništa izabrao.</translation>
     </message>
@@ -3269,115 +3280,115 @@
       <translation>Nije izabrana pomoćna linija.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1106"/>
+      <location filename="../../CommandAnnotate.cpp" line="1107"/>
       <source>You must select 2 Vertexes.</source>
       <translation>Moraš izabrati 2 temena.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1193"/>
+      <location filename="../../CommandAnnotate.cpp" line="1194"/>
       <source>You must select a base View for the circle.</source>
-      <translation type="unfinished">You must select a base View for the circle.</translation>
+      <translation>Moraš izabrati osnovni pogled za kružnicu.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1213"/>
-      <source>Selection is not a Cosmetic edge.</source>
-      <translation type="unfinished">Selection is not a Cosmetic edge.</translation>
-    </message>
-    <message>
-      <location filename="../../CommandAnnotate.cpp" line="1248"/>
+      <location filename="../../CommandAnnotate.cpp" line="1252"/>
       <source>Please select a center for the circle.</source>
-      <translation type="unfinished">Please select a center for the circle.</translation>
+      <translation>Izaberi centar kružnice.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1303"/>
-      <location filename="../../CommandAnnotate.cpp" line="1500"/>
+      <location filename="../../CommandAnnotate.cpp" line="1307"/>
+      <location filename="../../CommandAnnotate.cpp" line="1504"/>
       <source>Nothing selected</source>
       <translation>Ništa nije izabrano</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1311"/>
+      <location filename="../../CommandAnnotate.cpp" line="1315"/>
       <source>At least 1 object in selection is not a part view</source>
       <translation>Izabran je najmanje jedan objekat koji nije pogled dela</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1358"/>
+      <location filename="../../CommandAnnotate.cpp" line="1362"/>
       <source>Unknown object type in selection</source>
       <translation>Izabran je nepoznati tip objekta</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1429"/>
+      <location filename="../../CommandAnnotate.cpp" line="1433"/>
       <source>No View in Selection.</source>
       <translation>Nije izabran pogled.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1422"/>
+      <location filename="../../CommandAnnotate.cpp" line="1426"/>
       <source>You must select a View and/or lines.</source>
       <translation>Moraš izabrati pogled i/ili linije.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1507"/>
+      <location filename="../../CommandAnnotate.cpp" line="1216"/>
+      <source>Selection is not a Cosmetic Circle or a Cosmetic Arc of Circle.</source>
+      <translation type="unfinished">Selection is not a Cosmetic Circle or a Cosmetic Arc of Circle.</translation>
+    </message>
+    <message>
+      <location filename="../../CommandAnnotate.cpp" line="1511"/>
       <source>No Part Views in this selection</source>
       <translation>Nije izabran pogled dela</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1571"/>
+      <location filename="../../CommandAnnotate.cpp" line="1575"/>
       <source>Select exactly one Leader line or one Weld symbol.</source>
       <translation>Izaberi tačno jednu pokaznu liniju ili simbol zavarivanja.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1618"/>
-      <location filename="../../CommandAnnotate.cpp" line="1624"/>
+      <location filename="../../CommandAnnotate.cpp" line="1622"/>
+      <location filename="../../CommandAnnotate.cpp" line="1628"/>
       <source>SurfaceFinishSymbols</source>
       <translation>Oznaka kvaliteta površine</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1684"/>
+      <location filename="../../CommandAnnotate.cpp" line="1688"/>
       <source>No Part View in Selection</source>
       <translation>Nije izabran pogled dela</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1697"/>
+      <location filename="../../CommandAnnotate.cpp" line="1701"/>
       <source>No %1 in Selection</source>
       <translation>Nije izabran %1</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="106"/>
+      <location filename="../../CommandDecorate.cpp" line="107"/>
       <source>Replace Hatch?</source>
       <translation>Zameni šrafuru?</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="107"/>
+      <location filename="../../CommandDecorate.cpp" line="108"/>
       <source>Some Faces in selection are already hatched.  Replace?</source>
       <translation>Neke izabrane stranice su već šrafirane. Zameniti?</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="316"/>
+      <location filename="../../CommandDecorate.cpp" line="317"/>
       <source>No TechDraw Page</source>
       <translation>Nema TechDraw crteža</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="317"/>
+      <location filename="../../CommandDecorate.cpp" line="318"/>
       <source>Need a TechDraw Page for this command</source>
       <translation>Potreban je TechDraw crtež za ovu komandu</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="351"/>
+      <location filename="../../CommandDecorate.cpp" line="370"/>
       <source>Select a Face first</source>
       <translation>Prvo izaberi stranicu</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="358"/>
+      <location filename="../../CommandDecorate.cpp" line="377"/>
       <source>No TechDraw object in selection</source>
       <translation>Nije izabran TechDraw objekat</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="365"/>
+      <location filename="../../CommandDecorate.cpp" line="384"/>
       <source>Create a page to insert.</source>
       <translation>Napravi stranicu za umetanje.</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="372"/>
-      <location filename="../../CommandDecorate.cpp" line="378"/>
+      <location filename="../../CommandDecorate.cpp" line="391"/>
+      <location filename="../../CommandDecorate.cpp" line="397"/>
       <source>No Faces to hatch in this selection</source>
       <translation>Nije izabrana stranica za šrafiranje</translation>
     </message>
@@ -3398,40 +3409,40 @@
       <translation>Nema crteža u dokumentu.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="307"/>
+      <location filename="../../MDIViewPage.cpp" line="310"/>
       <source>PDF (*.pdf)</source>
       <translation>PDF (*.pdf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="308"/>
-      <location filename="../../MDIViewPage.cpp" line="493"/>
+      <location filename="../../MDIViewPage.cpp" line="311"/>
+      <location filename="../../MDIViewPage.cpp" line="496"/>
       <source>All Files (*.*)</source>
       <translation>Sve Datoteke (*.*)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="310"/>
+      <location filename="../../MDIViewPage.cpp" line="313"/>
       <source>Export Page As PDF</source>
       <translation>Izvezi crtež kao PDF</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="270"/>
+      <location filename="../../PagePrinter.cpp" line="286"/>
       <source>Document Name: </source>
       <translation>Ime dokumenta: </translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="492"/>
+      <location filename="../../MDIViewPage.cpp" line="495"/>
       <source>SVG (*.svg)</source>
       <translation>SVG (*.svg)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="495"/>
+      <location filename="../../MDIViewPage.cpp" line="498"/>
       <source>Export page as SVG</source>
       <translation>Izvezi crtež kao SVG</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPage.cpp" line="214"/>
-      <location filename="../../ViewProviderProjGroup.cpp" line="161"/>
       <location filename="../../ViewProviderTemplate.cpp" line="201"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="161"/>
       <source>Are you sure you want to continue?</source>
       <translation>Da li si siguran da želiš da nastaviš?</translation>
     </message>
@@ -3466,9 +3477,9 @@
       <translation>Tvorac formatiranog teksta</translation>
     </message>
     <message>
-      <location filename="../../QGIRichAnno.cpp" line="323"/>
       <location filename="../../TaskRichAnno.cpp" line="102"/>
       <location filename="../../TaskRichAnno.cpp" line="240"/>
+      <location filename="../../QGIRichAnno.cpp" line="344"/>
       <source>Rich text editor</source>
       <translation>Urednik za formatiranje teksta</translation>
     </message>
@@ -3566,13 +3577,11 @@
       <translation>Uredite Oznaku vara</translation>
     </message>
     <message>
-      <location filename="../../TaskCosmeticCircle.cpp" line="112"/>
       <location filename="../../TaskCosmeticLine.cpp" line="113"/>
       <source>Create Cosmetic Line</source>
       <translation>Napravi pomoćnu liniju</translation>
     </message>
     <message>
-      <location filename="../../TaskCosmeticCircle.cpp" line="146"/>
       <location filename="../../TaskCosmeticLine.cpp" line="165"/>
       <source>Edit Cosmetic Line</source>
       <translation>Uredi pomoćnu liniju</translation>
@@ -3588,8 +3597,8 @@
       <translation>Uredi detaljni pogled</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderBalloon.cpp" line="88"/>
       <location filename="../../ViewProviderDimension.cpp" line="123"/>
+      <location filename="../../ViewProviderBalloon.cpp" line="88"/>
       <source>Edit %1</source>
       <translation>Uredi %1</translation>
     </message>
@@ -3708,47 +3717,52 @@
       <translation>Nema izabranih podelemenata</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1618"/>
+      <location filename="../../CommandAnnotate.cpp" line="1622"/>
       <location filename="../../CommandExtensionDims.cpp" line="2268"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1469"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1958"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1475"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2083"/>
       <source>Selection is empty</source>
       <translation>Nisi ništa izabrao</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1624"/>
+      <location filename="../../CommandAnnotate.cpp" line="1628"/>
       <location filename="../../CommandExtensionDims.cpp" line="2284"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1965"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2090"/>
       <source>No object selected</source>
       <translation>Nije izabran nijedan objekat</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="113"/>
+      <location filename="../../CommandExtensionPack.cpp" line="121"/>
       <source>TechDraw Hole Circle</source>
       <translation type="unfinished">TechDraw Hole Circle</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="114"/>
+      <location filename="../../CommandExtensionPack.cpp" line="122"/>
       <source>Fewer than three circles selected</source>
       <translation>Izabrano je manje od tri kruga</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1468"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1474"/>
       <source>TechDraw Position Section View</source>
       <translation>TechDraw Pozicioniraj presek</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1809"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1813"/>
       <source>No faces in selection.</source>
       <translation>Nije izabrana stranica.</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="2046"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1942"/>
+      <source>No edges in selection.</source>
+      <translation type="unfinished">No edges in selection.</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="2166"/>
       <source>TechDraw Thread Hole Side</source>
       <translation>TechDraw unutrašnji navoj</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="2047"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2167"/>
       <source>Please select two straight lines</source>
       <translation>Izaberi dve prave linije</translation>
     </message>
@@ -3849,6 +3863,16 @@
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
+    <message>
+      <location filename="../../TaskCosmeticCircle.cpp" line="112"/>
+      <source>Create Cosmetic Circle</source>
+      <translation type="unfinished">Create Cosmetic Circle</translation>
+    </message>
+    <message>
+      <location filename="../../TaskCosmeticCircle.cpp" line="146"/>
+      <source>Edit Cosmetic Circle</source>
+      <translation type="unfinished">Edit Cosmetic Circle</translation>
+    </message>
   </context>
   <context>
     <name>Std_Delete</name>
@@ -3860,22 +3884,22 @@ it has a weld symbol that would become broken.</source>
 ima simbol zavarivanja koji bi se pokvario.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="332"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="344"/>
       <source>You cannot delete this view because it has one or more dependent views that would become broken.</source>
       <translation>Ne možeš obrisati ovaj pogled jer ima jedan ili više zavisnih objekata koji će postati neispravni.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderLeader.cpp" line="226"/>
-      <location filename="../../ViewProviderPage.cpp" line="217"/>
-      <location filename="../../ViewProviderProjGroup.cpp" line="148"/>
-      <location filename="../../ViewProviderProjGroup.cpp" line="164"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="347"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="148"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="157"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="165"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="173"/>
-      <location filename="../../ViewProviderTemplate.cpp" line="205"/>
-      <location filename="../../ViewProviderViewPart.cpp" line="335"/>
+      <location filename="../../ViewProviderLeader.cpp" line="226"/>
       <location filename="../../ViewProviderWeld.cpp" line="145"/>
+      <location filename="../../ViewProviderPage.cpp" line="217"/>
+      <location filename="../../ViewProviderTemplate.cpp" line="205"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="148"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="164"/>
       <source>Object dependencies</source>
       <translation>Međuzavisnosti objekata</translation>
     </message>
@@ -5328,7 +5352,22 @@ for ProjectionGroups</source>
       <translation>Razmak između linija koordinatne mreže crteža.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="879"/>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="891"/>
+      <source>Selection</source>
+      <translation>Izbor</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="905"/>
+      <source>If enabled, clicking without Ctrl does not clear existing vertex/edge/face selection</source>
+      <translation type="unfinished">If enabled, clicking without Ctrl does not clear existing vertex/edge/face selection</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="908"/>
+      <source>Enable Multiselection Mode</source>
+      <translation type="unfinished">Enable Multiselection Mode</translation>
+    </message>
+    <message>
+      <location filename="../../DlgPrefsTechDrawGeneral.ui" line="935"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Napomena:&lt;/span&gt; Stavke napisane &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; fontom su podrazumevane vrednosti za nove objekte. One nemaju uticaj na postojeće objekte.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -5584,61 +5623,61 @@ Brzo, ali rezultat je skup kratkih pravih linija.</translation>
       <translation>Štampaj sve stranice</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="401"/>
+      <location filename="../../MDIViewPage.cpp" line="404"/>
       <source>Different orientation</source>
       <translation>Drugačija orijentacija</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="402"/>
+      <location filename="../../MDIViewPage.cpp" line="405"/>
       <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
       <translation>Štampač koristi drugačiju orijentaciju od crteža.
 Da li želiš da nastaviš?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="411"/>
+      <location filename="../../MDIViewPage.cpp" line="414"/>
       <source>Different paper size</source>
       <translation>Drugačija veličina papira</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="412"/>
+      <location filename="../../MDIViewPage.cpp" line="415"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>Štampač koristi drugačiju veličinu papira od crteža.
 Da li želiš da nastaviš?</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="426"/>
+      <location filename="../../MDIViewPage.cpp" line="429"/>
       <source>Opening file failed</source>
       <translation>Otvaranje datoteke neuspešno</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="427"/>
+      <location filename="../../MDIViewPage.cpp" line="430"/>
       <source>Can not open file %1 for writing.</source>
       <translation>Ne mogu da otvorim datoteku %1 radi upisa.</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="516"/>
+      <location filename="../../MDIViewPage.cpp" line="519"/>
       <source>Save DXF file</source>
       <translation>Sačuvaj DXF datoteku</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="517"/>
+      <location filename="../../MDIViewPage.cpp" line="520"/>
       <source>DXF (*.dxf)</source>
       <translation>DXF (*.dxf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="537"/>
+      <location filename="../../MDIViewPage.cpp" line="540"/>
       <source>Save PDF file</source>
       <translation>Sačuvaj PDF datoteku</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="538"/>
+      <location filename="../../MDIViewPage.cpp" line="541"/>
       <source>PDF (*.pdf)</source>
       <translation>PDF (*.pdf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1029"/>
+      <location filename="../../MDIViewPage.cpp" line="1035"/>
       <source>Selected:</source>
       <translation>Izabrano:</translation>
     </message>
@@ -6923,7 +6962,7 @@ prikazan umesto vrednosti kotnog broja</translation>
   <context>
     <name>TechDrawGui::TaskDlgLineDecor</name>
     <message>
-      <location filename="../../TaskLineDecor.cpp" line="442"/>
+      <location filename="../../TaskLineDecor.cpp" line="455"/>
       <source>Restore Invisible Lines</source>
       <translation>Obnovi nevidljive ivice</translation>
     </message>
@@ -8676,12 +8715,12 @@ umesto dužine</translation>
   <context>
     <name>TechDraw_HoleShaftFit</name>
     <message>
-      <location filename="../../../TechDrawTools/CommandHoleShaftFit.py" line="43"/>
+      <location filename="../../../TechDrawTools/CommandHoleShaftFit.py" line="48"/>
       <source>Add hole or shaft fit</source>
       <translation>Tolerancije mera</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/CommandHoleShaftFit.py" line="50"/>
+      <location filename="../../../TechDrawTools/CommandHoleShaftFit.py" line="56"/>
       <source>Add a hole or shaft fit to a dimension&lt;br&gt;
                 - select one length dimension or diameter dimension&lt;br&gt;
                 - click the tool button, a panel opens&lt;br&gt;
@@ -8692,6 +8731,16 @@ umesto dužine</translation>
                 - klikni na ovu alatku i otvoriće se panel&lt;br&gt;
                 - izaberi sistem naleganja (unutrašnja mera ili spoljašnja mera)&lt;br&gt;
                 - izaberi odgovarajuće tolerancijsko polje</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/CommandHoleShaftFit.py" line="71"/>
+      <source>Add a hole or shaft fit to a dimension</source>
+      <translation type="unfinished">Add a hole or shaft fit to a dimension</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/CommandHoleShaftFit.py" line="75"/>
+      <source>Please select one length dimension or diameter dimension and retry</source>
+      <translation type="unfinished">Please select one length dimension or diameter dimension and retry</translation>
     </message>
     <message>
       <location filename="../../../TechDrawTools/TaskHoleShaftFit.py" line="42"/>
@@ -8992,7 +9041,7 @@ postoji otvoren panel zadataka.</translation>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="61"/>
       <source>Treat the center point as a 2d point within the parent View.  Z coordinate is ignored.</source>
-      <translation type="unfinished">Treat the center point as a 2d point within the parent View.  Z coordinate is ignored.</translation>
+      <translation>Tretiraj centar kao 2D tačku na pogledu kome pripada. Z koordinata se zanemaruje.</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="64"/>
@@ -9002,7 +9051,7 @@ postoji otvoren panel zadataka.</translation>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="77"/>
       <source>Treat the center point as a 3d point and project it onto the parent View.</source>
-      <translation type="unfinished">Treat the center point as a 3d point and project it onto the parent View.</translation>
+      <translation>Tretiraj centar kao 3D tačku i projektuj je na pogled kojem pripada.</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="80"/>
@@ -9012,7 +9061,7 @@ postoji otvoren panel zadataka.</translation>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="90"/>
       <source>Circle Center</source>
-      <translation type="unfinished">Circle Center</translation>
+      <translation>Centar kružnice</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="101"/>
@@ -9037,40 +9086,58 @@ postoji otvoren panel zadataka.</translation>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="180"/>
       <source>Start Angle:</source>
-      <translation type="unfinished">Start Angle:</translation>
+      <translation>Početni ugao:</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="187"/>
       <source>End angle (conventional) of arc in degrees.</source>
-      <translation type="unfinished">End angle (conventional) of arc in degrees.</translation>
+      <translation>Krajnji ugao (konvencionalni) luka u stepenima.</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="200"/>
       <source>End Angle:</source>
-      <translation type="unfinished">End Angle:</translation>
+      <translation>Krajnji ugao:</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="207"/>
       <source>Start angle (conventional) of arc in degrees. </source>
-      <translation type="unfinished">Start angle (conventional) of arc in degrees. </translation>
+      <translation>Početni ugao (konvencionalni) luka u stepenima. </translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.ui" line="220"/>
       <source>Arc of Circle</source>
-      <translation type="unfinished">Arc of Circle</translation>
+      <translation>Kružni luk</translation>
     </message>
   </context>
   <context>
     <name>CmdTechDrawCosmeticCircle</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1125"/>
+      <location filename="../../CommandAnnotate.cpp" line="1126"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1126"/>
+      <location filename="../../CommandAnnotate.cpp" line="1127"/>
       <source>Add Cosmetic Circle</source>
       <translation>Dodaj pomoćnu kružnicu</translation>
+    </message>
+  </context>
+  <context>
+    <name>CmdTechDrawExtensionArcLengthAnnotation</name>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="1911"/>
+      <source>TechDraw</source>
+      <translation>TechDraw</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="1912"/>
+      <source>Calculate the arc length of selected edges</source>
+      <translation type="unfinished">Calculate the arc length of selected edges</translation>
+    </message>
+    <message>
+      <location filename="../../CommandExtensionPack.cpp" line="1913"/>
+      <source>Select several edges&lt;br&gt;    - click this tool</source>
+      <translation type="unfinished">Select several edges&lt;br&gt;    - click this tool</translation>
     </message>
   </context>
 </TS>

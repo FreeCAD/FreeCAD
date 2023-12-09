@@ -319,8 +319,7 @@ void DrawViewSection::onChanged(const App::Property* prop)
     else if (prop == &BaseView) {
         // if the BaseView is a Section, then the option of using UsePreviousCut is
         // valid.
-        if (BaseView.getValue() && BaseView.getValue()->getTypeId().isDerivedFrom(
-                TechDraw::DrawViewSection::getClassTypeId())) {
+        if (BaseView.getValue() && BaseView.getValue()->isDerivedFrom<TechDraw::DrawViewSection>()) {
             UsePreviousCut.setStatus(App::Property::ReadOnly, false);
         }
         else {
@@ -346,18 +345,18 @@ TopoDS_Shape DrawViewSection::getShapeToCut()
     }
 
     TopoDS_Shape shapeToCut;
-    if (base->getTypeId().isDerivedFrom(TechDraw::DrawViewSection::getClassTypeId())) {
+    if (base->isDerivedFrom<TechDraw::DrawViewSection>()) {
         dvs = static_cast<TechDraw::DrawViewSection*>(base);
         shapeToCut = dvs->getShapeToCut();
         if (UsePreviousCut.getValue()) {
             shapeToCut = dvs->getCutShapeRaw();
         }
     }
-    else if (base->getTypeId().isDerivedFrom(TechDraw::DrawViewDetail::getClassTypeId())) {
+    else if (base->isDerivedFrom<TechDraw::DrawViewDetail>()) {
         dvd = static_cast<TechDraw::DrawViewDetail*>(base);
         shapeToCut = dvd->getDetailShape();
     }
-    else if (base->getTypeId().isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+    else if (base->isDerivedFrom<TechDraw::DrawViewPart>()) {
         dvp = static_cast<TechDraw::DrawViewPart*>(base);
         shapeToCut = dvp->getSourceShape();
         if (FuseBeforeCut.getValue()) {
@@ -422,7 +421,7 @@ App::DocumentObjectExecReturn* DrawViewSection::execute()
     }
 
     sectionExec(baseShape);
-    addShapes2d();
+    addPoints();
 
     return DrawView::execute();
 }
@@ -430,7 +429,7 @@ App::DocumentObjectExecReturn* DrawViewSection::execute()
 bool DrawViewSection::isBaseValid() const
 {
     App::DocumentObject* base = BaseView.getValue();
-    if (base && base->getTypeId().isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+    if (base && base->isDerivedFrom<TechDraw::DrawViewPart>()) {
         return true;
     }
     return false;
@@ -683,7 +682,7 @@ void DrawViewSection::postSectionCutTasks()
     //    Base::Console().Message("DVS::postSectionCutTasks()\n");
     std::vector<App::DocumentObject*> children = getInList();
     for (auto& c : children) {
-        if (c->getTypeId().isDerivedFrom(DrawViewPart::getClassTypeId())) {
+        if (c->isDerivedFrom<DrawViewPart>()) {
             // details or sections of this need cut shape
             c->recomputeFeature();
         }
@@ -1191,7 +1190,7 @@ TopoDS_Face DrawViewSection::getSectionTopoDSFace(int i)
 TechDraw::DrawViewPart* DrawViewSection::getBaseDVP() const
 {
     App::DocumentObject* base = BaseView.getValue();
-    if (base && base->getTypeId().isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+    if (base && base->isDerivedFrom<TechDraw::DrawViewPart>()) {
         TechDraw::DrawViewPart* baseDVP = static_cast<TechDraw::DrawViewPart*>(base);
         return baseDVP;
     }

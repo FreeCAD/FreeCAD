@@ -2863,7 +2863,7 @@ TopoDS_Shape TopoShape::makeOffset2D(double offset, short joinType, bool fill, b
                 throw Base::CADKernelError("makeOffset2D: result of offsetting is null!");
 
             //Copying shape to fix strange orientation behavior, OCC7.0.0. See bug #2699
-            // http://www.freecad.org/tracker/view.php?id=2699
+            // https://www.freecad.org/tracker/view.php?id=2699
             offsetShape = BRepBuilderAPI_Copy(offsetShape).Shape();
         }
         else {
@@ -3771,7 +3771,7 @@ void TopoShape::getLinesFromSubElement(const Data::Segment* element,
                                        std::vector<Base::Vector3d> &vertices,
                                        std::vector<Line> &lines) const
 {
-    if (element->getTypeId() == ShapeSegment::getClassTypeId()) {
+    if (element->is<ShapeSegment>()) {
         const TopoDS_Shape& shape = static_cast<const ShapeSegment*>(element)->Shape;
         if (shape.IsNull())
             return;
@@ -3785,7 +3785,7 @@ void TopoShape::getFacesFromSubElement(const Data::Segment* element,
                                        std::vector<Base::Vector3d> &pointNormals,
                                        std::vector<Facet> &faces) const
 {
-    if (element->getTypeId() == ShapeSegment::getClassTypeId()) {
+    if (element->is<ShapeSegment>()) {
         const TopoDS_Shape& shape = static_cast<const ShapeSegment*>(element)->Shape;
         if (shape.IsNull() || shape.ShapeType() != TopAbs_FACE)
             return;

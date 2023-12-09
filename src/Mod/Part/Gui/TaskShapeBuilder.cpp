@@ -152,7 +152,7 @@ void ShapeBuilderWidget::onSelectionChanged(const Gui::SelectionChanges& msg)
                 bool blocked = blockSelection(true);
                 App::Document* doc = App::GetApplication().getDocument(msg.pDocName);
                 App::DocumentObject* obj = doc->getObject(msg.pObjectName);
-                if (obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+                if (obj->isDerivedFrom<Part::Feature>()) {
                     TopoDS_Shape myShape = static_cast<Part::Feature*>(obj)->Shape.getValue();
                     TopTools_IndexedMapOfShape all_faces;
                     TopExp::MapShapes(myShape, TopAbs_FACE, all_faces);

@@ -141,7 +141,7 @@ void MeshObject::getFacesFromSubElement(const Data::Segment* element,
                                         std::vector<Base::Vector3d>& /*pointNormals*/,
                                         std::vector<Facet>& faces) const
 {
-    if (element && element->getTypeId() == MeshSegment::getClassTypeId()) {
+    if (element && element->is<MeshSegment>()) {
         const MeshSegment* segm = static_cast<const MeshSegment*>(element);
         if (segm->segment) {
             Base::Reference<MeshObject> submesh(

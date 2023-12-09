@@ -6,17 +6,17 @@
     <message>
       <location filename="../../AddonManagerOptions_AddCustomRepository.ui" line="14"/>
       <source>Custom repository</source>
-      <translation type="unfinished">Custom repository</translation>
+      <translation>Repositori khusus</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions_AddCustomRepository.ui" line="20"/>
       <source>Repository URL</source>
-      <translation type="unfinished">Repository URL</translation>
+      <translation>URL repositori</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions_AddCustomRepository.ui" line="30"/>
       <source>Branch</source>
-      <translation type="unfinished">Branch</translation>
+      <translation>Cabang</translation>
     </message>
   </context>
   <context>
@@ -31,7 +31,7 @@
       <location filename="../../compact_view.py" line="81"/>
       <location filename="../../compact_view.ui" line="66"/>
       <source>&lt;b&gt;Package Name&lt;/b&gt;</source>
-      <translation type="unfinished">&lt;b&gt;Package Name&lt;/b&gt;</translation>
+      <translation>&lt;b&gt;Nama Paket&lt;/b&gt;</translation>
     </message>
     <message>
       <location filename="../../compact_view.py" line="82"/>
@@ -48,12 +48,12 @@
     <message>
       <location filename="../../compact_view.py" line="88"/>
       <source>Update Available</source>
-      <translation type="unfinished">Update Available</translation>
+      <translation>Pembaruan Tersedia</translation>
     </message>
     <message>
       <location filename="../../compact_view.ui" line="102"/>
       <source>UpdateAvailable</source>
-      <translation type="unfinished">UpdateAvailable</translation>
+      <translation>PembaruanTersedia</translation>
     </message>
   </context>
   <context>
@@ -61,12 +61,12 @@
     <message>
       <location filename="../../developer_mode_dependencies.ui" line="14"/>
       <source>Dependencies</source>
-      <translation type="unfinished">Dependencies</translation>
+      <translation>Dependensi</translation>
     </message>
     <message>
       <location filename="../../developer_mode_dependencies.ui" line="39"/>
       <source>Dependency type</source>
-      <translation type="unfinished">Dependency type</translation>
+      <translation>Tipe dependensi</translation>
     </message>
     <message>
       <location filename="../../developer_mode_dependencies.ui" line="44"/>
@@ -76,7 +76,7 @@
     <message>
       <location filename="../../developer_mode_dependencies.ui" line="49"/>
       <source>Optional?</source>
-      <translation type="unfinished">Optional?</translation>
+      <translation>Opsional?</translation>
     </message>
   </context>
   <context>
@@ -85,31 +85,31 @@
       <location filename="../../dependency_resolution_dialog.ui" line="17"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="175"/>
       <source>Resolve Dependencies</source>
-      <translation type="unfinished">Resolve Dependencies</translation>
+      <translation>Selesaikan Ketergantungan</translation>
     </message>
     <message>
       <location filename="../../dependency_resolution_dialog.ui" line="29"/>
       <source>This Addon has the following required and optional dependencies. You must install them before this Addon can be used.
 
 Do you want the Addon Manager to install them automatically? Choose &quot;Ignore&quot; to install the Addon without installing the dependencies.</source>
-      <translation type="unfinished">This Addon has the following required and optional dependencies. You must install them before this Addon can be used.
+      <translation>Addon ini memiliki dependensi wajib dan opsional. Anda harus menginstalnya sebelum Addon ini dapat digunakan.
 
-Do you want the Addon Manager to install them automatically? Choose &quot;Ignore&quot; to install the Addon without installing the dependencies.</translation>
+Apakah Anda ingin Pengelola Addon menginstalnya secara otomatis? Pilih &quot;Abaikan&quot; untuk menginstal Addon tanpa menginstal dependensi.</translation>
     </message>
     <message>
       <location filename="../../dependency_resolution_dialog.ui" line="43"/>
       <source>FreeCAD Addons</source>
-      <translation type="unfinished">FreeCAD Addons</translation>
+      <translation>Addon FreeCAD</translation>
     </message>
     <message>
       <location filename="../../dependency_resolution_dialog.ui" line="55"/>
       <source>Required Python modules</source>
-      <translation type="unfinished">Required Python modules</translation>
+      <translation>Modul Python yang diperlukan</translation>
     </message>
     <message>
       <location filename="../../dependency_resolution_dialog.ui" line="67"/>
       <source>Optional Python modules</source>
-      <translation type="unfinished">Optional Python modules</translation>
+      <translation>Modul Python opsional</translation>
     </message>
   </context>
   <context>
@@ -117,28 +117,28 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="14"/>
       <source>Addon Developer Tools</source>
-      <translation type="unfinished">Addon Developer Tools</translation>
+      <translation>Alat Pengembang Addon</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="25"/>
       <source>Path to Addon</source>
-      <translation type="unfinished">Path to Addon</translation>
+      <translation>Lokasi ke Addon</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="45"/>
       <location filename="../../developer_mode.ui" line="195"/>
       <source>Browse...</source>
-      <translation type="unfinished">Browse...</translation>
+      <translation>Telusuri...</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="54"/>
       <source>Metadata</source>
-      <translation type="unfinished">Metadata</translation>
+      <translation>Metadata</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="65"/>
       <source>Primary branch</source>
-      <translation type="unfinished">Primary branch</translation>
+      <translation>Cabang utama</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="77"/>
@@ -154,7 +154,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="90"/>
       <source>Discussion URL</source>
-      <translation type="unfinished">Discussion URL</translation>
+      <translation>URL diskusi</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="97"/>
@@ -164,7 +164,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="104"/>
       <source>Bugtracker URL</source>
-      <translation type="unfinished">Bugtracker URL</translation>
+      <translation>URL pelacak bug</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="113"/>
@@ -182,7 +182,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
       <location filename="../../developer_mode.ui" line="180"/>
       <location filename="../../developer_mode.ui" line="218"/>
       <source>(Optional)</source>
-      <translation type="unfinished">(Optional)</translation>
+      <translation>(Opsional)</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="139"/>
@@ -193,7 +193,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="153"/>
       <source>README URL</source>
-      <translation type="unfinished">README URL</translation>
+      <translation>URL README</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="166"/>
@@ -203,22 +203,22 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="173"/>
       <source>Repository URL</source>
-      <translation type="unfinished">Repository URL</translation>
+      <translation>URL repositori</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="204"/>
       <source>Website URL</source>
-      <translation type="unfinished">Website URL</translation>
+      <translation>URL situs web</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="211"/>
       <source>Documentation URL</source>
-      <translation type="unfinished">Documentation URL</translation>
+      <translation>URL dokumentasi</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="228"/>
       <source>Addon Name</source>
-      <translation type="unfinished">Addon Name</translation>
+      <translation>Nama Addon</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="235"/>
@@ -228,7 +228,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="242"/>
       <source>(Recommended)</source>
-      <translation type="unfinished">(Recommended)</translation>
+      <translation>(Direkomendasikan)</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="249"/>
@@ -243,12 +243,12 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="265"/>
       <source>Detect...</source>
-      <translation type="unfinished">Detect...</translation>
+      <translation>Deteksi...</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="277"/>
       <source>Addon Contents</source>
-      <translation type="unfinished">Addon Contents</translation>
+      <translation>Konten Addon</translation>
     </message>
   </context>
   <context>
@@ -256,7 +256,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../AddonManager.ui" line="14"/>
       <source>Addon Manager</source>
-      <translation type="unfinished">Addon Manager</translation>
+      <translation>Pengelola Addon</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="64"/>
@@ -266,12 +266,12 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../AddonManager.ui" line="71"/>
       <source>Stop the cache update</source>
-      <translation type="unfinished">Stop the cache update</translation>
+      <translation>Hentikan pembaruan cache</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="103"/>
       <source>Refresh local cache</source>
-      <translation type="unfinished">Refresh local cache</translation>
+      <translation>Segarkan cache lokal</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="110"/>
@@ -281,12 +281,12 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../AddonManager.ui" line="113"/>
       <source>Update all Addons</source>
-      <translation type="unfinished">Update all Addons</translation>
+      <translation>Perbarui semua Addon</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="120"/>
       <source>Check for updates</source>
-      <translation type="unfinished">Check for updates</translation>
+      <translation>Periksa pembaruan</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="130"/>
@@ -301,12 +301,12 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../AddonManager.ui" line="140"/>
       <source>Developer tools...</source>
-      <translation type="unfinished">Developer tools...</translation>
+      <translation>Alat pengembang...</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="160"/>
       <source>Close the Addon Manager</source>
-      <translation type="unfinished">Close the Addon Manager</translation>
+      <translation>Tutup Pengelola Addon</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="163"/>
@@ -316,7 +316,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_tags.ui" line="14"/>
       <source>Edit Tags</source>
-      <translation type="unfinished">Edit Tags</translation>
+      <translation>Ubah Tanda</translation>
     </message>
     <message>
       <location filename="../../developer_mode_tags.ui" line="20"/>
@@ -331,7 +331,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../first_run.ui" line="17"/>
       <source>Welcome to the Addon Manager</source>
-      <translation type="unfinished">Welcome to the Addon Manager</translation>
+      <translation>Selamat datang di Pengelola Addon</translation>
     </message>
     <message>
       <location filename="../../first_run.ui" line="23"/>
@@ -341,7 +341,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../first_run.ui" line="46"/>
       <source>Download Settings</source>
-      <translation type="unfinished">Download Settings</translation>
+      <translation>Pengaturan Unduhan</translation>
     </message>
     <message>
       <location filename="../../first_run.ui" line="53"/>
@@ -379,7 +379,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="14"/>
       <source>Edit Dependency</source>
-      <translation type="unfinished">Edit Dependency</translation>
+      <translation>Sunting Dependensi</translation>
     </message>
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="20"/>
@@ -389,7 +389,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="30"/>
       <source>Dependency</source>
-      <translation type="unfinished">Dependency</translation>
+      <translation>Dependensi</translation>
     </message>
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="42"/>
@@ -409,7 +409,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="72"/>
       <source>Optional</source>
-      <translation type="unfinished">Optional</translation>
+      <translation>Opsional</translation>
     </message>
   </context>
   <context>
@@ -436,7 +436,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
       <location filename="../../expanded_view.py" line="122"/>
       <location filename="../../expanded_view.ui" line="121"/>
       <source>(tags)</source>
-      <translation type="unfinished">(tags)</translation>
+      <translation>(tanda)</translation>
     </message>
     <message>
       <location filename="../../expanded_view.py" line="125"/>
@@ -448,17 +448,17 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
       <location filename="../../expanded_view.py" line="126"/>
       <location filename="../../expanded_view.ui" line="171"/>
       <source>Maintainer</source>
-      <translation type="unfinished">Maintainer</translation>
+      <translation>Pemelihara</translation>
     </message>
     <message>
       <location filename="../../expanded_view.py" line="129"/>
       <source>Update Available</source>
-      <translation type="unfinished">Update Available</translation>
+      <translation>Pembaruan Tersedia</translation>
     </message>
     <message>
       <location filename="../../expanded_view.ui" line="186"/>
       <source>UpdateAvailable</source>
-      <translation type="unfinished">UpdateAvailable</translation>
+      <translation>PembaruanTersedia</translation>
     </message>
   </context>
   <context>
@@ -466,7 +466,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_licenses_table.ui" line="38"/>
       <source>Licenses</source>
-      <translation type="unfinished">Licenses</translation>
+      <translation>Lisensi</translation>
     </message>
     <message>
       <location filename="../../developer_mode_licenses_table.ui" line="69"/>
@@ -476,17 +476,17 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_licenses_table.ui" line="74"/>
       <source>License file</source>
-      <translation type="unfinished">License file</translation>
+      <translation>Berkas lisensi</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people_table.ui" line="26"/>
       <source>People</source>
-      <translation type="unfinished">People</translation>
+      <translation>Orang</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people_table.ui" line="57"/>
       <source>Kind</source>
-      <translation type="unfinished">Kind</translation>
+      <translation>Jenis</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people_table.ui" line="62"/>
@@ -496,7 +496,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_people_table.ui" line="67"/>
       <source>Email</source>
-      <translation type="unfinished">Email</translation>
+      <translation>Email</translation>
     </message>
   </context>
   <context>
@@ -509,17 +509,17 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="20"/>
       <source>Upcoming versions of the FreeCAD Addon Manager will support developers&apos; setting a specific branch or tag for use with a specific version of FreeCAD (e.g. setting a specific tag as the last version of your Addon to support v0.19, etc.)</source>
-      <translation type="unfinished">Upcoming versions of the FreeCAD Addon Manager will support developers&apos; setting a specific branch or tag for use with a specific version of FreeCAD (e.g. setting a specific tag as the last version of your Addon to support v0.19, etc.)</translation>
+      <translation>Versi Pengelola Addon FreeCAD yang akan datang akan mendukung pengembangan pengembang mengatur cabang atau tanda tertentu untuk digunakan dengan versi FreeCAD tertentu (misalnya, mengatur tanda tertentu sebagai versi terakhir Addon Anda untuk mendukung v0.19, dll.)</translation>
     </message>
     <message>
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="43"/>
       <source>FreeCAD Version</source>
-      <translation type="unfinished">FreeCAD Version</translation>
+      <translation>Versi FreeCAD</translation>
     </message>
     <message>
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="48"/>
       <source>Best-available branch, tag, or commit</source>
-      <translation type="unfinished">Best-available branch, tag, or commit</translation>
+      <translation>Cabang, tag, atau penerapan terbaik yang tersedia</translation>
     </message>
   </context>
   <context>
@@ -527,28 +527,28 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_freecad_versions.ui" line="14"/>
       <source>Supported FreeCAD Versions</source>
-      <translation type="unfinished">Supported FreeCAD Versions</translation>
+      <translation>Versi FreeCAD yang Didukung</translation>
     </message>
     <message>
       <location filename="../../developer_mode_freecad_versions.ui" line="20"/>
       <source>Minimum FreeCAD Version Supported</source>
-      <translation type="unfinished">Minimum FreeCAD Version Supported</translation>
+      <translation>Versi FreeCAD Minimum yang Didukung</translation>
     </message>
     <message>
       <location filename="../../developer_mode_freecad_versions.ui" line="27"/>
       <location filename="../../developer_mode_freecad_versions.ui" line="41"/>
       <source>Optional</source>
-      <translation type="unfinished">Optional</translation>
+      <translation>Opsional</translation>
     </message>
     <message>
       <location filename="../../developer_mode_freecad_versions.ui" line="34"/>
       <source>Maximum FreeCAD Version Supported</source>
-      <translation type="unfinished">Maximum FreeCAD Version Supported</translation>
+      <translation>Versi FreeCAD Maksimum yang Didukung</translation>
     </message>
     <message>
       <location filename="../../developer_mode_freecad_versions.ui" line="48"/>
       <source>Advanced version mapping...</source>
-      <translation type="unfinished">Advanced version mapping...</translation>
+      <translation>Pemetaan versi lanjutan...</translation>
     </message>
   </context>
   <context>
@@ -556,46 +556,46 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../AddonManagerOptions.ui" line="14"/>
       <source>Addon manager options</source>
-      <translation type="unfinished">Addon manager options</translation>
+      <translation>Opsi pengelola Addon</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="20"/>
       <source>If this option is selected, when launching the Addon Manager,
 installed addons will be checked for available updates
 (this requires the GitPython package installed on your system)</source>
-      <translation type="unfinished">If this option is selected, when launching the Addon Manager,
-installed addons will be checked for available updates
-(this requires the GitPython package installed on your system)</translation>
+      <translation>Jika opsi ini dipilih, saat meluncurkan Manajer Addon,
+addon yang terinstal akan diperiksa untuk pembaruan yang tersedia
+(ini membutuhkan paket GitPython yang diinstal di sistem Anda)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="25"/>
       <source>Automatically check for updates at start (requires git)</source>
-      <translation type="unfinished">Automatically check for updates at start (requires git)</translation>
+      <translation>Secara otomatis memeriksa pembaruan di awal (memerlukan git)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="41"/>
       <source>Download Macro metadata (approximately 10MB)</source>
-      <translation type="unfinished">Download Macro metadata (approximately 10MB)</translation>
+      <translation>Unduh metadata Makro (sekitar 10MB)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="56"/>
       <source>Cache update frequency</source>
-      <translation type="unfinished">Cache update frequency</translation>
+      <translation>Frekuensi pembaruan cache</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="76"/>
       <source>Manual (no automatic updates)</source>
-      <translation type="unfinished">Manual (no automatic updates)</translation>
+      <translation>Manual (tidak ada pembaruan otomatis)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="81"/>
       <source>Daily</source>
-      <translation type="unfinished">Daily</translation>
+      <translation>Harian</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="86"/>
       <source>Weekly</source>
-      <translation type="unfinished">Weekly</translation>
+      <translation>Mingguan</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="96"/>
@@ -615,12 +615,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../AddonManagerOptions.ui" line="150"/>
       <source>Custom repositories</source>
-      <translation type="unfinished">Custom repositories</translation>
+      <translation>Repositori khusus</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="204"/>
       <source>Proxy</source>
-      <translation type="unfinished">Proxy</translation>
+      <translation>Proxy</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="210"/>
@@ -639,46 +639,36 @@ installed addons will be checked for available updates
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="276"/>
-      <source>Path to Python executable (optional):</source>
-      <translation type="unfinished">Path to Python executable (optional):</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManagerOptions.ui" line="308"/>
       <source>Path to git executable (optional):</source>
       <translation type="unfinished">Path to git executable (optional):</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="295"/>
-      <source>The path to the Python executable for package installation with pip. Autodetected if needed and not specified.</source>
-      <translation type="unfinished">The path to the Python executable for package installation with pip. Autodetected if needed and not specified.</translation>
-    </message>
-    <message>
-      <location filename="../../AddonManagerOptions.ui" line="327"/>
       <source>The path to the git executable. Autodetected if needed and not specified.</source>
       <translation type="unfinished">The path to the git executable. Autodetected if needed and not specified.</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="348"/>
+      <location filename="../../AddonManagerOptions.ui" line="316"/>
       <source>Advanced Options</source>
-      <translation type="unfinished">Advanced Options</translation>
+      <translation>Pilihan Lanjutan</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="354"/>
+      <location filename="../../AddonManagerOptions.ui" line="322"/>
       <source>Show option to change branches (requires git)</source>
       <translation type="unfinished">Show option to change branches (requires git)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="367"/>
+      <location filename="../../AddonManagerOptions.ui" line="335"/>
       <source>Disable git (fall back to ZIP downloads only)</source>
       <translation type="unfinished">Disable git (fall back to ZIP downloads only)</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="380"/>
+      <location filename="../../AddonManagerOptions.ui" line="348"/>
       <source>Activate Addon Manager options intended for developers of new Addons.</source>
       <translation type="unfinished">Activate Addon Manager options intended for developers of new Addons.</translation>
     </message>
     <message>
-      <location filename="../../AddonManagerOptions.ui" line="383"/>
+      <location filename="../../AddonManagerOptions.ui" line="351"/>
       <source>Addon developer mode</source>
       <translation type="unfinished">Addon developer mode</translation>
     </message>
@@ -693,12 +683,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_details.ui" line="52"/>
       <source>Install</source>
-      <translation type="unfinished">Install</translation>
+      <translation>Pasang</translation>
     </message>
     <message>
       <location filename="../../package_details.ui" line="59"/>
       <source>Uninstall</source>
-      <translation type="unfinished">Uninstall</translation>
+      <translation>Copot pemasangan</translation>
     </message>
     <message>
       <location filename="../../package_details.ui" line="66"/>
@@ -708,12 +698,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_details.ui" line="73"/>
       <source>Run Macro</source>
-      <translation type="unfinished">Run Macro</translation>
+      <translation>Jalankan Makro</translation>
     </message>
     <message>
       <location filename="../../package_details.ui" line="80"/>
       <source>Change branch</source>
-      <translation type="unfinished">Change branch</translation>
+      <translation>Ubah cabang</translation>
     </message>
   </context>
   <context>
@@ -731,22 +721,22 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="59"/>
       <source>Package name</source>
-      <translation type="unfinished">Package name</translation>
+      <translation>Nama paket</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="64"/>
       <source>Installed version</source>
-      <translation type="unfinished">Installed version</translation>
+      <translation>Versi terpasang</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="69"/>
       <source>Available version</source>
-      <translation type="unfinished">Available version</translation>
+      <translation>Versi tersedia</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="74"/>
       <source>Used by</source>
-      <translation type="unfinished">Used by</translation>
+      <translation>Digunakan oleh</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="87"/>
@@ -756,7 +746,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="99"/>
       <source>Update all available</source>
-      <translation type="unfinished">Update all available</translation>
+      <translation>Perbarui semua yang tersedia</translation>
     </message>
   </context>
   <context>
@@ -777,12 +767,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../update_all.ui" line="14"/>
       <source>Updating Addons</source>
-      <translation type="unfinished">Updating Addons</translation>
+      <translation>Memperbarui Addon</translation>
     </message>
     <message>
       <location filename="../../update_all.ui" line="23"/>
       <source>Updating out-of-date addons...</source>
-      <translation type="unfinished">Updating out-of-date addons...</translation>
+      <translation>Memperbarui Addon yang kedaluwarsa...</translation>
     </message>
   </context>
   <context>
@@ -790,12 +780,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="14"/>
       <source>Content Item</source>
-      <translation type="unfinished">Content Item</translation>
+      <translation>Isi item</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="25"/>
       <source>Content type:</source>
-      <translation type="unfinished">Content type:</translation>
+      <translation>Jenis konten:</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="33"/>
@@ -805,7 +795,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="38"/>
       <source>Preference Pack</source>
-      <translation type="unfinished">Preference Pack</translation>
+      <translation>Paket Preferensi</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="43"/>
@@ -837,7 +827,7 @@ installed addons will be checked for available updates
       <location filename="../../developer_mode_add_content.ui" line="161"/>
       <location filename="../../developer_mode_add_content.ui" line="193"/>
       <source>Browse...</source>
-      <translation type="unfinished">Browse...</translation>
+      <translation>Telusuri...</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="111"/>
@@ -877,22 +867,22 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="206"/>
       <source>Tags...</source>
-      <translation type="unfinished">Tags...</translation>
+      <translation>Tanda...</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="213"/>
       <source>Dependencies...</source>
-      <translation type="unfinished">Dependencies...</translation>
+      <translation>Dependensi...</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="220"/>
       <source>FreeCAD Versions...</source>
-      <translation type="unfinished">FreeCAD Versions...</translation>
+      <translation>Versi FreeCAD...</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="258"/>
       <source>Other Metadata</source>
-      <translation type="unfinished">Other Metadata</translation>
+      <translation>Metadata Lainnya</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="264"/>
@@ -917,12 +907,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="304"/>
       <source>Set to today (CalVer style)</source>
-      <translation type="unfinished">Set to today (CalVer style)</translation>
+      <translation>Setel ke hari ini (gaya CalVer)</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="313"/>
       <source>Display Name</source>
-      <translation type="unfinished">Display Name</translation>
+      <translation>Nama Tampilan</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="330"/>
@@ -935,27 +925,27 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../add_toolbar_button_dialog.ui" line="14"/>
       <source>Add button?</source>
-      <translation type="unfinished">Add button?</translation>
+      <translation>Tambah tombol?</translation>
     </message>
     <message>
       <location filename="../../add_toolbar_button_dialog.ui" line="20"/>
       <source>Add a toolbar button for this macro?</source>
-      <translation type="unfinished">Add a toolbar button for this macro?</translation>
+      <translation>Tambahkan tombol toolbar untuk makro ini?</translation>
     </message>
     <message>
       <location filename="../../add_toolbar_button_dialog.ui" line="32"/>
       <source>Yes</source>
-      <translation type="unfinished">Yes</translation>
+      <translation>Ya</translation>
     </message>
     <message>
       <location filename="../../add_toolbar_button_dialog.ui" line="39"/>
       <source>No</source>
-      <translation type="unfinished">No</translation>
+      <translation>Tidak</translation>
     </message>
     <message>
       <location filename="../../add_toolbar_button_dialog.ui" line="46"/>
       <source>Never</source>
-      <translation type="unfinished">Never</translation>
+      <translation>Tidak pernah</translation>
     </message>
   </context>
   <context>
@@ -963,12 +953,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../change_branch.ui" line="14"/>
       <source>Change Branch</source>
-      <translation type="unfinished">Change Branch</translation>
+      <translation>Ubah cabang</translation>
     </message>
     <message>
       <location filename="../../change_branch.ui" line="23"/>
       <source>Change to branch or tag:</source>
-      <translation type="unfinished">Change to branch or tag:</translation>
+      <translation>Ubah ke cabang atau tanda:</translation>
     </message>
   </context>
   <context>
@@ -976,17 +966,17 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_copyright_info.ui" line="14"/>
       <source>Copyright Information</source>
-      <translation type="unfinished">Copyright Information</translation>
+      <translation>Informasi Hak Cipta</translation>
     </message>
     <message>
       <location filename="../../developer_mode_copyright_info.ui" line="22"/>
       <source>Copyright holder:</source>
-      <translation type="unfinished">Copyright holder:</translation>
+      <translation>Pemegang Hak Cipta:</translation>
     </message>
     <message>
       <location filename="../../developer_mode_copyright_info.ui" line="32"/>
       <source>Copyright year:</source>
-      <translation type="unfinished">Copyright year:</translation>
+      <translation>Tahun Hak Cipta:</translation>
     </message>
   </context>
   <context>
@@ -994,7 +984,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_people.ui" line="14"/>
       <source>Add Person</source>
-      <translation type="unfinished">Add Person</translation>
+      <translation>Tambah Orang</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people.ui" line="20"/>
@@ -1009,7 +999,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_people.ui" line="39"/>
       <source>Email:</source>
-      <translation type="unfinished">Email:</translation>
+      <translation>Email:</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people.ui" line="46"/>
@@ -1032,7 +1022,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../proxy_authentication.ui" line="29"/>
       <source>Proxy:</source>
-      <translation type="unfinished">Proxy:</translation>
+      <translation>Proxy:</translation>
     </message>
     <message>
       <location filename="../../proxy_authentication.ui" line="42"/>
@@ -1052,12 +1042,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../proxy_authentication.ui" line="67"/>
       <source>Username</source>
-      <translation type="unfinished">Username</translation>
+      <translation>Nama pengguna</translation>
     </message>
     <message>
       <location filename="../../proxy_authentication.ui" line="77"/>
       <source>Password</source>
-      <translation type="unfinished">Password</translation>
+      <translation>Kata sandi</translation>
     </message>
   </context>
   <context>
@@ -1065,17 +1055,17 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_license.ui" line="14"/>
       <source>Select a license</source>
-      <translation type="unfinished">Select a license</translation>
+      <translation>Pilih Lisensi</translation>
     </message>
     <message>
       <location filename="../../developer_mode_license.ui" line="35"/>
       <source>About...</source>
-      <translation type="unfinished">About...</translation>
+      <translation>Tentang...</translation>
     </message>
     <message>
       <location filename="../../developer_mode_license.ui" line="46"/>
       <source>License name:</source>
-      <translation type="unfinished">License name:</translation>
+      <translation>Nama lisensi:</translation>
     </message>
     <message>
       <location filename="../../developer_mode_license.ui" line="60"/>
@@ -1090,12 +1080,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_license.ui" line="74"/>
       <source>Browse...</source>
-      <translation type="unfinished">Browse...</translation>
+      <translation>Telusuri...</translation>
     </message>
     <message>
       <location filename="../../developer_mode_license.ui" line="81"/>
       <source>Create...</source>
-      <translation type="unfinished">Create...</translation>
+      <translation>Buat...</translation>
     </message>
   </context>
   <context>
@@ -1106,17 +1096,17 @@ installed addons will be checked for available updates
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="412"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="429"/>
       <source>Select Toolbar</source>
-      <translation type="unfinished">Select Toolbar</translation>
+      <translation>Pilih Toolbar</translation>
     </message>
     <message>
       <location filename="../../select_toolbar_dialog.ui" line="26"/>
       <source>Select a toolbar to add this macro to:</source>
-      <translation type="unfinished">Select a toolbar to add this macro to:</translation>
+      <translation>Pilih toolbar untuk menambahkan makro ini ke:</translation>
     </message>
     <message>
       <location filename="../../select_toolbar_dialog.ui" line="36"/>
       <source>Ask every time</source>
-      <translation type="unfinished">Ask every time</translation>
+      <translation>Tanyakan setiap saat</translation>
     </message>
   </context>
   <context>
@@ -1125,27 +1115,27 @@ installed addons will be checked for available updates
       <location filename="../../toolbar_button.ui" line="14"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="486"/>
       <source>Add button?</source>
-      <translation type="unfinished">Add button?</translation>
+      <translation>Tambah tombol?</translation>
     </message>
     <message>
       <location filename="../../toolbar_button.ui" line="20"/>
       <source>Add a toolbar button for this macro?</source>
-      <translation type="unfinished">Add a toolbar button for this macro?</translation>
+      <translation>Tambahkan tombol toolbar untuk makro ini?</translation>
     </message>
     <message>
       <location filename="../../toolbar_button.ui" line="32"/>
       <source>Yes</source>
-      <translation type="unfinished">Yes</translation>
+      <translation>Ya</translation>
     </message>
     <message>
       <location filename="../../toolbar_button.ui" line="39"/>
       <source>No</source>
-      <translation type="unfinished">No</translation>
+      <translation>Tidak</translation>
     </message>
     <message>
       <location filename="../../toolbar_button.ui" line="46"/>
       <source>Never</source>
-      <translation type="unfinished">Never</translation>
+      <translation>Tidak pernah</translation>
     </message>
   </context>
   <context>
@@ -1153,23 +1143,23 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../AddonManager.py" line="228"/>
       <source>Starting up...</source>
-      <translation type="unfinished">Starting up...</translation>
+      <translation>Memulai...</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="267"/>
       <source>Loading addon information</source>
-      <translation type="unfinished">Loading addon information</translation>
+      <translation>Memuat informasi addon</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="293"/>
       <source>Worker process {} is taking a long time to stop...</source>
-      <translation type="unfinished">Worker process {} is taking a long time to stop...</translation>
+      <translation>Proses bekerja {} membutuhkan waktu lama untuk berhenti...</translation>
     </message>
     <message>
       <location filename="../../addonmanager_cache.py" line="95"/>
       <source>Previous cache process was interrupted, restarting...
 </source>
-      <translation type="unfinished">Previous cache process was interrupted, restarting...
+      <translation>Proses cache sebelumnya terhenti, dimulai ulang...
 </translation>
     </message>
     <message>
@@ -1203,7 +1193,7 @@ installed addons will be checked for available updates
       <location filename="../../AddonManager.py" line="427"/>
       <location filename="../../AddonManager.py" line="860"/>
       <source>Refresh local cache</source>
-      <translation type="unfinished">Refresh local cache</translation>
+      <translation>Segarkan cache lokal</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="555"/>
@@ -1246,44 +1236,44 @@ installed addons will be checked for available updates
       <translation type="unfinished">Execution of macro failed. See console for failure details.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="114"/>
       <location filename="../../addonmanager_devmode_people_table.py" line="86"/>
-      <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
+      <location filename="../../addonmanager_devmode.py" line="115"/>
       <location filename="../../package_list.py" line="386"/>
+      <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
       <source>Maintainer</source>
-      <translation type="unfinished">Maintainer</translation>
+      <translation>Pemelihara</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="115"/>
       <location filename="../../addonmanager_devmode_people_table.py" line="87"/>
-      <location filename="../../addonmanager_devmode_person_editor.py" line="49"/>
+      <location filename="../../addonmanager_devmode.py" line="116"/>
       <location filename="../../package_list.py" line="423"/>
+      <location filename="../../addonmanager_devmode_person_editor.py" line="49"/>
       <source>Author</source>
       <translation>Penulis</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="162"/>
+      <location filename="../../manage_python_dependencies.py" line="163"/>
       <source>New Python Version Detected</source>
       <translation type="unfinished">New Python Version Detected</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="166"/>
+      <location filename="../../manage_python_dependencies.py" line="167"/>
       <source>This appears to be the first time this version of Python has been used with the Addon Manager. Would you like to install the same auto-installed dependencies for it?</source>
       <translation type="unfinished">This appears to be the first time this version of Python has been used with the Addon Manager. Would you like to install the same auto-installed dependencies for it?</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="196"/>
+      <location filename="../../manage_python_dependencies.py" line="197"/>
       <source>Processing, please wait...</source>
       <translation type="unfinished">Processing, please wait...</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="244"/>
+      <location filename="../../manage_python_dependencies.py" line="245"/>
       <location filename="../../package_details.py" line="872"/>
       <source>Update</source>
       <translation>Memperbarui</translation>
     </message>
     <message>
-      <location filename="../../manage_python_dependencies.py" line="339"/>
+      <location filename="../../manage_python_dependencies.py" line="340"/>
       <source>Updating...</source>
       <translation type="unfinished">Updating...</translation>
     </message>
@@ -1414,58 +1404,58 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_details.py" line="256"/>
       <source>Update check in progress</source>
-      <translation type="unfinished">Update check in progress</translation>
+      <translation>Pemeriksaan pembaruan sedang berlangsung</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="260"/>
       <source>Automatic update checks disabled</source>
-      <translation type="unfinished">Automatic update checks disabled</translation>
+      <translation>Pembaruan otomatis dinonaktifkan</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="278"/>
       <source>Installation location</source>
-      <translation type="unfinished">Installation location</translation>
+      <translation>Lokasi pemasangan</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="323"/>
       <source>WARNING: This addon is obsolete</source>
-      <translation type="unfinished">WARNING: This addon is obsolete</translation>
+      <translation>PERINGATAN: Addon ini sudah usang</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="331"/>
       <source>WARNING: This addon is Python 2 Only</source>
-      <translation type="unfinished">WARNING: This addon is Python 2 Only</translation>
+      <translation>PERINGATAN: Addon ini hanya untuk Python 2</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="339"/>
       <source>WARNING: This addon requires FreeCAD </source>
-      <translation type="unfinished">WARNING: This addon requires FreeCAD </translation>
+      <translation>PERINGATAN: Addon ini membutuhkan FreeCAD </translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="351"/>
       <source>WARNING: This addon is currently installed, but disabled. Use the &apos;enable&apos; button to re-enable.</source>
-      <translation type="unfinished">WARNING: This addon is currently installed, but disabled. Use the &apos;enable&apos; button to re-enable.</translation>
+      <translation>PERINGATAN: Addon ini sedang dipasang, namun dinonaktifkan. Gunakan tombol &apos;aktifkan&apos; untuk mengaktifkan kembali.</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="476"/>
       <location filename="../../package_details.py" line="487"/>
       <source>No URL or wiki page provided by this macro</source>
-      <translation type="unfinished">No URL or wiki page provided by this macro</translation>
+      <translation>Tidak ada URL atau halaman wiki yang disediakan oleh makro ini</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="589"/>
       <source>Could not load README data from URL {}</source>
-      <translation type="unfinished">Could not load README data from URL {}</translation>
+      <translation>Tidak dapat memuat data README dari URL {}</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="617"/>
       <source>This Addon will be enabled next time you restart FreeCAD.</source>
-      <translation type="unfinished">This Addon will be enabled next time you restart FreeCAD.</translation>
+      <translation>Addon ini akan diaktifkan saat Anda memulai ulang FreeCAD.</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="635"/>
       <source>This Addon will be disabled next time you restart FreeCAD.</source>
-      <translation type="unfinished">This Addon will be disabled next time you restart FreeCAD.</translation>
+      <translation>Addon ini akan dinonaktifkan saat Anda memulai ulang FreeCAD.</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="899"/>
@@ -1473,16 +1463,16 @@ installed addons will be checked for available updates
       <translation type="unfinished">QtWebEngine Python bindings not installed -- using fallback README display.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_installer_gui.py" line="476"/>
       <location filename="../../package_details.py" line="644"/>
+      <location filename="../../addonmanager_installer_gui.py" line="476"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="54"/>
       <source>Success</source>
-      <translation type="unfinished">Success</translation>
+      <translation>Berhasil</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="648"/>
       <source>Branch change succeeded, please restart to use the new version.</source>
-      <translation type="unfinished">Branch change succeeded, please restart to use the new version.</translation>
+      <translation>Perubahan cabang berhasil, silakan mulai ulang untuk menggunakan versi baru.</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="667"/>
@@ -1497,27 +1487,27 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_details.py" line="866"/>
       <source>Install</source>
-      <translation type="unfinished">Install</translation>
+      <translation>Pasang</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="869"/>
       <source>Uninstall</source>
-      <translation type="unfinished">Uninstall</translation>
+      <translation>Copot pemasangan</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="875"/>
       <source>Check for Update</source>
-      <translation type="unfinished">Check for Update</translation>
+      <translation>Periksa pembaruan</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="878"/>
       <source>Run Macro</source>
-      <translation type="unfinished">Run Macro</translation>
+      <translation>Jalankan Makro</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="881"/>
       <source>Change Branch</source>
-      <translation type="unfinished">Change Branch</translation>
+      <translation>Ubah cabang</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="884"/>
@@ -1542,22 +1532,22 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_connection_checker.py" line="68"/>
       <source>Checking connection</source>
-      <translation type="unfinished">Checking connection</translation>
+      <translation>Memeriksa sambungan</translation>
     </message>
     <message>
       <location filename="../../addonmanager_connection_checker.py" line="69"/>
       <source>Checking for connection to GitHub...</source>
-      <translation type="unfinished">Checking for connection to GitHub...</translation>
+      <translation>Memeriksa sambungan ke GitHub...</translation>
     </message>
     <message>
       <location filename="../../addonmanager_connection_checker.py" line="93"/>
       <source>Connection failed</source>
-      <translation type="unfinished">Connection failed</translation>
+      <translation>Sambungan gagal</translation>
     </message>
     <message>
       <location filename="../../addonmanager_connection_checker.py" line="99"/>
       <source>Missing dependency</source>
-      <translation type="unfinished">Missing dependency</translation>
+      <translation>Dependensi Hilang</translation>
     </message>
     <message>
       <location filename="../../addonmanager_connection_checker.py" line="103"/>
@@ -1568,7 +1558,7 @@ installed addons will be checked for available updates
       <location filename="../../addonmanager_devmode_license_selector.py" line="114"/>
       <source>Other...</source>
       <comment>For providing a license other than one listed</comment>
-      <translation type="unfinished">Other...</translation>
+      <translation>Lainnya...</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_license_selector.py" line="204"/>
@@ -1606,9 +1596,9 @@ installed addons will be checked for available updates
       <translation type="unfinished">Select an icon file for this content item</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="691"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="274"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="313"/>
+      <location filename="../../addonmanager_devmode.py" line="692"/>
       <source>{} is not a subdirectory of {}</source>
       <translation type="unfinished">{} is not a subdirectory of {}</translation>
     </message>
@@ -1630,17 +1620,17 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="429"/>
       <source>Addon</source>
-      <translation type="unfinished">Addon</translation>
+      <translation>Tambahan</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="430"/>
       <source>Python</source>
-      <translation type="unfinished">Python</translation>
+      <translation>Python</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="440"/>
       <source>Yes</source>
-      <translation type="unfinished">Yes</translation>
+      <translation>Ya</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="494"/>
@@ -1655,13 +1645,13 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="497"/>
       <source>Python Package</source>
-      <translation type="unfinished">Python Package</translation>
+      <translation>Paket Python</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="559"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="570"/>
       <source>Other...</source>
-      <translation type="unfinished">Other...</translation>
+      <translation>Lainnya...</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="153"/>
@@ -1671,7 +1661,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="159"/>
       <source>Too many to list</source>
-      <translation type="unfinished">Too many to list</translation>
+      <translation>Terlalu banyak untuk dicantumkan</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="164"/>
@@ -1681,7 +1671,7 @@ installed addons will be checked for available updates
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="148"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="159"/>
       <source>Missing Requirement</source>
-      <translation type="unfinished">Missing Requirement</translation>
+      <translation>Persyaratan Kurang</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="184"/>
@@ -1696,13 +1686,13 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="199"/>
       <source>Press OK to install anyway.</source>
-      <translation type="unfinished">Press OK to install anyway.</translation>
+      <translation>Tekan OK untuk tetap memasang.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="243"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="189"/>
       <source>Incompatible Python version</source>
-      <translation type="unfinished">Incompatible Python version</translation>
+      <translation>Versi Python tidak kompatibel</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="247"/>
@@ -1825,118 +1815,118 @@ installed addons will be checked for available updates
       <translation type="unfinished">Unable to read data from GitHub: check your internet connection and proxy settings and try again.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="191"/>
+      <location filename="../../addonmanager_devmode.py" line="192"/>
       <source>XML failure while reading metadata from file {}</source>
       <translation type="unfinished">XML failure while reading metadata from file {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="198"/>
+      <location filename="../../addonmanager_devmode.py" line="199"/>
       <source>Invalid metadata in file {}</source>
       <translation type="unfinished">Invalid metadata in file {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="240"/>
+      <location filename="../../addonmanager_devmode.py" line="241"/>
       <source>WARNING: Path specified in package.xml metadata does not match currently checked-out branch.</source>
       <translation type="unfinished">WARNING: Path specified in package.xml metadata does not match currently checked-out branch.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="262"/>
+      <location filename="../../addonmanager_devmode.py" line="263"/>
       <source>Name</source>
       <translation>Nama</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="264"/>
+      <location filename="../../addonmanager_devmode.py" line="265"/>
       <source>Class</source>
       <translation>Kelas</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="267"/>
+      <location filename="../../addonmanager_devmode.py" line="268"/>
       <source>Description</source>
       <translation>Description</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="271"/>
+      <location filename="../../addonmanager_devmode.py" line="272"/>
       <source>Subdirectory</source>
       <translation type="unfinished">Subdirectory</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="274"/>
+      <location filename="../../addonmanager_devmode.py" line="275"/>
       <source>Files</source>
       <translation>Berkas</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="432"/>
+      <location filename="../../addonmanager_devmode.py" line="433"/>
       <source>Select the folder containing your Addon</source>
       <translation type="unfinished">Select the folder containing your Addon</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="561"/>
+      <location filename="../../addonmanager_devmode.py" line="562"/>
       <source>No Vermin, cancelling operation.</source>
       <comment>NOTE: Vermin is a Python package and proper noun - do not translate</comment>
       <translation type="unfinished">No Vermin, cancelling operation.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="566"/>
+      <location filename="../../addonmanager_devmode.py" line="567"/>
       <source>Scanning Addon for Python version compatibility</source>
       <translation type="unfinished">Scanning Addon for Python version compatibility</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="593"/>
+      <location filename="../../addonmanager_devmode.py" line="594"/>
       <source>Minimum Python Version Detected</source>
-      <translation type="unfinished">Minimum Python Version Detected</translation>
+      <translation>Versi Python Minimum Terdeteksi</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="597"/>
+      <location filename="../../addonmanager_devmode.py" line="598"/>
       <source>Vermin auto-detected a required version of Python 3.{}</source>
       <translation type="unfinished">Vermin auto-detected a required version of Python 3.{}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="609"/>
+      <location filename="../../addonmanager_devmode.py" line="610"/>
       <source>Install Vermin?</source>
-      <translation type="unfinished">Install Vermin?</translation>
+      <translation>Pasang Vermin?</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="613"/>
+      <location filename="../../addonmanager_devmode.py" line="614"/>
       <source>Auto-detecting the required version of Python for this Addon requires Vermin (https://pypi.org/project/vermin/). OK to install?</source>
       <translation type="unfinished">Auto-detecting the required version of Python for this Addon requires Vermin (https://pypi.org/project/vermin/). OK to install?</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="619"/>
+      <location filename="../../addonmanager_devmode.py" line="620"/>
       <source>Attempting to install Vermin from PyPi</source>
       <translation type="unfinished">Attempting to install Vermin from PyPi</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="644"/>
-      <location filename="../../addonmanager_devmode.py" line="659"/>
+      <location filename="../../addonmanager_devmode.py" line="645"/>
+      <location filename="../../addonmanager_devmode.py" line="660"/>
       <source>Installation failed</source>
-      <translation type="unfinished">Installation failed</translation>
+      <translation>Pemasangan gagal</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="649"/>
+      <location filename="../../addonmanager_devmode.py" line="650"/>
       <source>Failed to install Vermin -- check Report View for details.</source>
       <comment>&apos;Vermin&apos; is the name of a Python package, do not translate</comment>
       <translation type="unfinished">Failed to install Vermin -- check Report View for details.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="664"/>
+      <location filename="../../addonmanager_devmode.py" line="665"/>
       <source>Failed to import vermin after installation -- cannot scan Addon.</source>
       <comment>&apos;vermin&apos; is the name of a Python package, do not translate</comment>
       <translation type="unfinished">Failed to import vermin after installation -- cannot scan Addon.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode.py" line="677"/>
+      <location filename="../../addonmanager_devmode.py" line="678"/>
       <source>Select an icon file for this package</source>
-      <translation type="unfinished">Select an icon file for this package</translation>
+      <translation>Pilih file ikon untuk paket ini</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="163"/>
       <source>Filter is valid</source>
-      <translation type="unfinished">Filter is valid</translation>
+      <translation>Filternya valid</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="169"/>
       <source>Filter regular expression is invalid</source>
-      <translation type="unfinished">Filter regular expression is invalid</translation>
+      <translation>Filter ekspresi reguler tidak valid</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="224"/>
@@ -1956,52 +1946,52 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_list.py" line="391"/>
       <source>Maintainers:</source>
-      <translation type="unfinished">Maintainers:</translation>
+      <translation>Pemelihara:</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="396"/>
       <source>Tags</source>
-      <translation type="unfinished">Tags</translation>
+      <translation>Tanda</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="416"/>
       <source>updated</source>
-      <translation type="unfinished">updated</translation>
+      <translation>diperbarui</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="437"/>
       <location filename="../../package_list.py" line="487"/>
       <source>Up-to-date</source>
-      <translation type="unfinished">Up-to-date</translation>
+      <translation>Mutakhir</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="439"/>
       <location filename="../../package_list.py" line="491"/>
       <location filename="../../package_list.py" line="778"/>
       <source>Update available</source>
-      <translation type="unfinished">Update available</translation>
+      <translation>Pembaruan tersedia</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="442"/>
       <location filename="../../package_list.py" line="497"/>
       <source>Pending restart</source>
-      <translation type="unfinished">Pending restart</translation>
+      <translation>Menunggu dimulai ulang</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="444"/>
       <location filename="../../package_list.py" line="500"/>
       <source>DISABLED</source>
-      <translation type="unfinished">DISABLED</translation>
+      <translation>DINONAKTIFKAN</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="459"/>
       <source>Installed version</source>
-      <translation type="unfinished">Installed version</translation>
+      <translation>Versi terpasang</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="465"/>
       <source>Unknown version</source>
-      <translation type="unfinished">Unknown version</translation>
+      <translation>Versi tidak diketahui</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="467"/>
@@ -2011,7 +2001,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_list.py" line="477"/>
       <source>Available version</source>
-      <translation type="unfinished">Available version</translation>
+      <translation>Versi tersedia</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="747"/>
@@ -2051,7 +2041,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_list.py" line="774"/>
       <source>Not installed</source>
-      <translation type="unfinished">Not installed</translation>
+      <translation>Tidak terpasang</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="782"/>
@@ -2089,25 +2079,25 @@ installed addons will be checked for available updates
       <location filename="../../change_branch.py" line="185"/>
       <source>Branch</source>
       <comment>git terminology</comment>
-      <translation type="unfinished">Branch</translation>
+      <translation>Cabang</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="171"/>
       <source>Tag</source>
       <comment>git terminology</comment>
-      <translation type="unfinished">Tag</translation>
+      <translation>Tanda</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="254"/>
       <source>Kind</source>
       <comment>Table header for git ref type (e.g. either Tag or Branch)</comment>
-      <translation type="unfinished">Kind</translation>
+      <translation>Jenis</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="256"/>
       <source>Local name</source>
       <comment>Table header for git ref name</comment>
-      <translation type="unfinished">Local name</translation>
+      <translation>Nama Lokal</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="262"/>
@@ -2119,31 +2109,31 @@ installed addons will be checked for available updates
       <location filename="../../change_branch.py" line="268"/>
       <source>Local updated</source>
       <comment>Table header for git update time of local branch</comment>
-      <translation type="unfinished">Local updated</translation>
+      <translation>Diperbarui secara lokal</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="274"/>
       <source>Remote updated</source>
       <comment>Table header for git update time of remote branch</comment>
-      <translation type="unfinished">Remote updated</translation>
+      <translation>Diperbarui secara jarak jauh</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_dependency_installer.py" line="129"/>
+      <location filename="../../addonmanager_dependency_installer.py" line="131"/>
       <source>Installation of Python package {} failed</source>
       <translation type="unfinished">Installation of Python package {} failed</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_dependency_installer.py" line="155"/>
+      <location filename="../../addonmanager_dependency_installer.py" line="157"/>
       <source>Installation of optional package failed</source>
       <translation type="unfinished">Installation of optional package failed</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_dependency_installer.py" line="183"/>
+      <location filename="../../addonmanager_dependency_installer.py" line="185"/>
       <source>Installing required dependency {}</source>
       <translation type="unfinished">Installing required dependency {}</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_dependency_installer.py" line="193"/>
+      <location filename="../../addonmanager_dependency_installer.py" line="195"/>
       <source>Installation of Addon {} failed</source>
       <translation type="unfinished">Installation of Addon {} failed</translation>
     </message>
@@ -2370,29 +2360,29 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="872"/>
       <source>Retrieving macro description...</source>
-      <translation type="unfinished">Retrieving macro description...</translation>
+      <translation>Mengambil deskripsi makro...</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="874"/>
       <source>Retrieving info from git</source>
-      <translation type="unfinished">Retrieving info from git</translation>
+      <translation>Mengambil info dari git</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="877"/>
       <source>Retrieving info from wiki</source>
-      <translation type="unfinished">Retrieving info from wiki</translation>
+      <translation>Mengambil info dari wiki</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.py" line="262"/>
       <source>Repository URL</source>
       <comment>Preferences header for custom repositories</comment>
-      <translation type="unfinished">Repository URL</translation>
+      <translation>URL repositori</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.py" line="268"/>
       <source>Branch name</source>
       <comment>Preferences header for custom repositories</comment>
-      <translation type="unfinished">Branch name</translation>
+      <translation>Nama cabang</translation>
     </message>
     <message>
       <location filename="../../addonmanager_git.py" line="99"/>
@@ -2412,27 +2402,27 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="74"/>
       <source>Installing</source>
-      <translation type="unfinished">Installing</translation>
+      <translation>Memasang</translation>
     </message>
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="77"/>
       <source>Succeeded</source>
-      <translation type="unfinished">Succeeded</translation>
+      <translation>Berhasil</translation>
     </message>
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="79"/>
       <source>Failed</source>
-      <translation type="unfinished">Failed</translation>
+      <translation>Gagal</translation>
     </message>
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="199"/>
       <source>Update was cancelled</source>
-      <translation type="unfinished">Update was cancelled</translation>
+      <translation>Pembaruan dibatalkan</translation>
     </message>
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="200"/>
       <source>some addons may have been updated</source>
-      <translation type="unfinished">some addons may have been updated</translation>
+      <translation>beberapa addon mungkin telah diperbarui</translation>
     </message>
   </context>
   <context>
@@ -2440,7 +2430,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../AddonManager.py" line="150"/>
       <source>&amp;Addon manager</source>
-      <translation type="unfinished">&amp;Addon manager</translation>
+      <translation>&amp;Pengelola Addon</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="154"/>
@@ -2458,7 +2448,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="127"/>
       <source>Failed to remove some files</source>
-      <translation type="unfinished">Failed to remove some files</translation>
+      <translation>Gagal menghapus beberapa file</translation>
     </message>
   </context>
   <context>
@@ -2466,7 +2456,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="193"/>
       <source>Finished updating the following addons</source>
-      <translation type="unfinished">Finished updating the following addons</translation>
+      <translation>Selesai memperbarui addon berikut</translation>
     </message>
   </context>
   <context>
@@ -2482,7 +2472,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../AddonManager.py" line="123"/>
       <source>Addon Manager</source>
-      <translation type="unfinished">Addon Manager</translation>
+      <translation>Pengelola Addon</translation>
     </message>
   </context>
 </TS>

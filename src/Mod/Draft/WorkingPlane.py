@@ -1716,19 +1716,23 @@ class PlaneGui(PlaneBase):
         FreeCAD.DraftWorkingPlane.weak = self.auto
 
     def _update_grid(self):
-        if FreeCAD.GuiUp and self._view is not None:
-            if hasattr(FreeCADGui, "Snapper"):
-                FreeCADGui.Snapper.setGrid()
-                FreeCADGui.Snapper.restack()  # Required??
+        # Check for draftToolBar because the trackers (grid) depend on it for its colors.
+        if FreeCAD.GuiUp \
+                and hasattr(FreeCADGui, "draftToolBar") \
+                and hasattr(FreeCADGui, "Snapper") \
+                and self._view is not None:
+            FreeCADGui.Snapper.setGrid()
+            FreeCADGui.Snapper.restack()  # Required??
 
     def _update_gui(self):
-        if FreeCAD.GuiUp:
-            if hasattr(FreeCADGui, "draftToolBar"):
-                from PySide import QtGui
-                button = FreeCADGui.draftToolBar.wplabel
-                button.setIcon(QtGui.QIcon(self.icon))
-                button.setText(self.label)
-                button.setToolTip(self.tip)
+        if FreeCAD.GuiUp \
+                and hasattr(FreeCADGui, "draftToolBar") \
+                and self._view is not None:
+            from PySide import QtGui
+            button = FreeCADGui.draftToolBar.wplabel
+            button.setIcon(QtGui.QIcon(self.icon))
+            button.setText(self.label)
+            button.setToolTip(self.tip)
 
 
 def get_working_plane(update=True):
@@ -1757,6 +1761,62 @@ def get_working_plane(update=True):
             FreeCAD.draft_working_planes[1].append(wp)
 
     return wp
+
+
+# View observer code to update the Draft Tray:
+if FreeCAD.GuiUp:
+    from PySide2 import QtWidgets
+    from draftutils.todo import ToDo
+
+    def _update_gui():
+        try:
+            view = gui_utils.get_3d_view()
+            if view is None:
+                return
+            if not hasattr(FreeCAD, "draft_working_planes"):
+                FreeCAD.draft_working_planes = [[], []]
+            if view in FreeCAD.draft_working_planes[0]:
+                i = FreeCAD.draft_working_planes[0].index(view)
+                wp = FreeCAD.draft_working_planes[1][i]
+                wp._update_gui()
+            else:
+                get_working_plane()
+        except Exception:
+            pass
+
+    def _view_observer_callback(sub_win):
+        if sub_win is None:
+            return
+        view = gui_utils.get_3d_view()
+        if view is None:
+            return
+        if not hasattr(FreeCADGui, "draftToolBar"):
+            return
+        tray = FreeCADGui.draftToolBar.tray
+        if tray is None:
+            return
+        if FreeCADGui.draftToolBar.tray.isVisible() is False:
+            return
+        ToDo.delay(_update_gui, None)
+
+    _view_observer_active = False
+
+    def _view_observer_start():
+        mw = FreeCADGui.getMainWindow()
+        mdi = mw.findChild(QtWidgets.QMdiArea)
+        global _view_observer_active
+        if not _view_observer_active:
+            mdi.subWindowActivated.connect(_view_observer_callback)
+            _view_observer_active = True
+            _view_observer_callback(mdi.activeSubWindow())  # Trigger initial update.
+
+    def _view_observer_stop():
+        mw = FreeCADGui.getMainWindow()
+        mdi = mw.findChild(QtWidgets.QMdiArea)
+        global _view_observer_active
+        if _view_observer_active:
+            mdi.subWindowActivated.disconnect(_view_observer_callback)
+            _view_observer_active = False
 
 
 # Compatibility function (V0.22, 2023):

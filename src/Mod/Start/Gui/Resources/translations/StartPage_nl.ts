@@ -106,7 +106,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="66"/>
       <source>Adjust the number of recent files to be shown here in menu Edit -&gt; Preferences -&gt; General -&gt; Size of recent file list</source>
-      <translation>Pas het aantal recente bestanden dat hier getoond wordt aan in het menu Bewerken&gt; Opties&gt; Algemeen&gt; Tabblad Algemeen&gt; Grootte van de recente-bestanden lijst</translation>
+      <translation>Pas het aantal aan, van de recente bestanden die hier getoond worden, in het menu Bewerken&gt; Voorkeuren&gt; Algemeen&gt; Tabblad Algemeen&gt; Grootte van de recente-bestanden lijst</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="67"/>
@@ -175,8 +175,8 @@
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="98"/>
-      <source>The &lt;a href="http://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
-      <translation>Het &lt;a href="http://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is een geweldige plek om hulp te krijgen van andere FreeCAD gebruikers en ontwikkelaars. Het forum heeft vele afdelingen voor verschillende soorten onderwerpen en discussieonderwerpen. Post in geval van twijfel in de meer algemene &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help over het gebruik van FreeCAD&lt;/a&gt; sectie.</translation>
+      <source>The &lt;a href="https://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
+      <translation>Het &lt;a href="https://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is een goede plek om hulp te krijgen van andere FreeCAD gebruikers en ontwikkelaars. Het forum heeft een aantal sub-forums voor verschillende onderwerpen en discussies. Post in geval van twijfel in het meer algemene &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help over het gebruik van FreeCAD&lt;/a&gt; sub-forum.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="102"/>
@@ -275,11 +275,31 @@
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="144"/>
+      <source>Size</source>
+      <translation>Grootte</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="145"/>
+      <source>Author</source>
+      <translation>Auteur</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="146"/>
+      <source>License</source>
+      <translation>Licentie</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="147"/>
+      <source>File path</source>
+      <translation type="unfinished">File path</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="148"/>
       <source>Notes</source>
       <translation>Aantekeningen</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="145"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="149"/>
       <source>Open start page preferences</source>
       <translation>Open start pagina voorkeuren</translation>
     </message>
@@ -287,7 +307,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../../StartPage/StartPage.py" line="826"/>
+      <location filename="../../../StartPage/StartPage.py" line="874"/>
       <location filename="../../Workbench.cpp" line="62"/>
       <source>Start page</source>
       <translation>Startpagina</translation>

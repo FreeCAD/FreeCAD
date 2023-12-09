@@ -69,10 +69,10 @@ std::vector<App::DocumentObject*> ViewProviderAnnotation::claimChildren() const
     try {
         for (std::vector<App::DocumentObject*>::const_iterator it = views.begin();
              it != views.end(); ++it) {
-            if ((*it)->getTypeId().isDerivedFrom(TechDraw::DrawViewBalloon::getClassTypeId())) {
+            if ((*it)->isDerivedFrom<TechDraw::DrawViewBalloon>()) {
                 temp.push_back((*it));
             }
-            else if ((*it)->getTypeId().isDerivedFrom(TechDraw::DrawLeaderLine::getClassTypeId())) {
+            else if ((*it)->isDerivedFrom<TechDraw::DrawLeaderLine>()) {
                 temp.push_back((*it));
             }
         }

@@ -23,8 +23,12 @@
 #ifndef SKETCHERGUI_DrawSketchHandler_H
 #define SKETCHERGUI_DrawSketchHandler_H
 
+#include <QCursor>
+#include <QPixmap>
+
 #include <Inventor/SbString.h>
 
+#include <Base/Parameter.h>
 #include <Base/Tools2D.h>
 #include <Gui/Selection.h>
 #include <Mod/Part/App/Geometry.h>
@@ -32,8 +36,7 @@
 
 #include "AutoConstraint.h"
 
-
-class QPixmap;
+class QWidget;
 
 namespace Sketcher
 {
@@ -101,6 +104,7 @@ private:
                                        unsigned int augmentationlevel = 0);
     static inline void setAxisPickStyle(ViewProviderSketch& vp, bool on);
     static inline void moveCursorToSketchPoint(ViewProviderSketch& vp, Base::Vector2d point);
+    static inline void ensureFocus(ViewProviderSketch& vp);
     static inline void preselectAtPoint(ViewProviderSketch& vp, Base::Vector2d point);
     static inline void setAngleSnapping(ViewProviderSketch& vp,
                                         bool enable,
@@ -149,8 +153,8 @@ public:
     {
         return false;
     }
-    virtual void registerPressedKey(bool /*pressed*/, int /*key*/)
-    {}
+    virtual void registerPressedKey(bool pressed, int key);
+    virtual void pressRightButton(Base::Vector2d onSketchPos);
 
     virtual void quit();
 
@@ -262,17 +266,27 @@ protected:
     qreal devicePixelRatio();
     //@}
 
-    void drawEdit(const std::vector<Base::Vector2d>& EditCurve);
-    void drawEdit(const std::list<std::vector<Base::Vector2d>>& list);
-    void drawEdit(const std::vector<Part::Geometry*>& geometries);
+    void drawEdit(const std::vector<Base::Vector2d>& EditCurve) const;
+    void drawEdit(const std::list<std::vector<Base::Vector2d>>& list) const;
+    void drawEdit(const std::vector<Part::Geometry*>& geometries) const;
     void drawEditMarkers(const std::vector<Base::Vector2d>& EditMarkers,
-                         unsigned int augmentationlevel = 0);
+                         unsigned int augmentationlevel = 0) const;
+
+    void clearEdit() const;
+    void clearEditMarkers() const;
+
     void setAxisPickStyle(bool on);
     void moveCursorToSketchPoint(Base::Vector2d point);
+    void ensureFocus();
     void preselectAtPoint(Base::Vector2d point);
 
     void drawPositionAtCursor(const Base::Vector2d& position);
     void drawDirectionAtCursor(const Base::Vector2d& position, const Base::Vector2d& origin);
+    void
+    drawWidthHeightAtCursor(const Base::Vector2d& position, const double val1, const double val2);
+    void drawDoubleAtCursor(const Base::Vector2d& position,
+                            const double radius,
+                            Base::Unit unit = Base::Unit::Length);
 
     int getPreselectPoint() const;
     int getPreselectCurve() const;

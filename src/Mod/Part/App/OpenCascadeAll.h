@@ -71,7 +71,6 @@
 #include <Standard_ShortReal.hxx>
 #include <Standard_SStream.hxx>
 #include <Standard_Stream.hxx>
-#include <Standard_TooManyUsers.hxx>
 #include <Standard_Transient.hxx>
 #include <Standard_Type.hxx>
 #include <Standard_TypeDef.hxx>
@@ -79,6 +78,10 @@
 #include <Standard_Underflow.hxx>
 #include <Standard_UUID.hxx>
 #include <Standard_Version.hxx>
+
+#if OCC_VERSION_HEX < 0x070700
+# include <Standard_TooManyUsers.hxx>
+#endif
 
 // now in alphabetical order
 #if OCC_VERSION_HEX < 0x070600
@@ -142,6 +145,7 @@
 #include <BRepExtrema_MapOfIntegerPackedMapOfInteger.hxx>
 #include <BRepExtrema_ShapeProximity.hxx>
 #include <BRepFeat_MakePrism.hxx>
+#include <BRepFeat_MakeRevol.hxx>
 #include <BRepFeat_SplitShape.hxx>
 #include <BRepFill.hxx>
 #include <BRepFill_Filling.hxx>
@@ -393,7 +397,11 @@
 // Quan*
 #include <Quantity_Color.hxx>
 #include <Quantity_NameOfColor.hxx>
+
+#if OCC_VERSION_HEX < 0x070700
 #include <Quantity_PhysicalQuantity.hxx>
+#endif
+
 #include <Quantity_TypeOfColor.hxx>
 
 // Shape*

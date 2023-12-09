@@ -225,7 +225,7 @@ protected:
                                                             const gp_Ax2& viewAxis);
     virtual TechDraw::GeometryObjectPtr makeGeometryForShape(TopoDS_Shape& shape);//const??
     void partExec(TopoDS_Shape& shape);
-    virtual void addShapes2d(void);
+    virtual void addPoints(void);
 
     void extractFaces();
     void findFacesNew(const std::vector<TechDraw::BaseGeomPtr>& goEdges);

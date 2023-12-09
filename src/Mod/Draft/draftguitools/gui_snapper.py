@@ -85,16 +85,13 @@ class Snapper:
     def __init__(self):
         self.activeview = None
         self.lastObj = []
-        self.maxEdges = 0
         self.radius = 0
         self.constraintAxis = None
         self.basepoint = None
         self.affinity = None
         self.mask = None
         self.cursorMode = None
-        if Draft.getParam("maxSnap", 0):
-            self.maxEdges = Draft.getParam("maxSnapEdges", 0)
-        self.snapStyle = Draft.getParam("snapStyle", 0)
+        self.maxEdges = Draft.getParam("maxSnapEdges", 0)
 
         # we still have no 3D view when the draft module initializes
         self.tracker = None
@@ -109,7 +106,6 @@ class Snapper:
         self.snapInfo = None
         self.lastSnappedObject = None
         self.active = True
-        self.forceGridOff = False
         self.lastExtensions = []
         # the trackers are stored in lists because there can be several views,
         # each with its own set
@@ -145,34 +141,7 @@ class Snapper:
                      ]
 
         self.init_active_snaps()
-
-        # the snapmarker has "dot","circle" and "square" available styles
-        if self.snapStyle:
-            self.mk = coll.OrderedDict([('passive',       'empty'),
-                                        ('extension',     'empty'),
-                                        ('parallel',      'empty'),
-                                        ('grid',          'quad'),
-                                        ('endpoint',      'quad'),
-                                        ('midpoint',      'quad'),
-                                        ('perpendicular', 'quad'),
-                                        ('angle',         'quad'),
-                                        ('center',        'quad'),
-                                        ('ortho',         'quad'),
-                                        ('intersection',  'quad'),
-                                        ('special',       'quad')])
-        else:
-            self.mk = coll.OrderedDict([('passive',       'circle'),
-                                        ('extension',     'circle'),
-                                        ('parallel',      'circle'),
-                                        ('grid',          'circle'),
-                                        ('endpoint',      'dot'),
-                                        ('midpoint',      'square'),
-                                        ('perpendicular', 'dot'),
-                                        ('angle',         'square'),
-                                        ('center',        'dot'),
-                                        ('ortho',         'dot'),
-                                        ('intersection',  'dot'),
-                                        ('special',       'dot')])
+        self.set_snap_style()
 
         self.cursors = \
             coll.OrderedDict([('passive',       ':/icons/Draft_Snap_Near.svg'),
@@ -189,6 +158,10 @@ class Snapper:
                               ('special',       ':/icons/Draft_Snap_Special.svg')])
 
 
+    def _get_wp(self):
+        return App.DraftWorkingPlane
+
+
     def init_active_snaps(self):
         """
         set self.active_snaps according to user prefs
@@ -201,6 +174,36 @@ class Snapper:
             if bool(int(snap)):
                 self.active_snaps.append(self.snaps[i])
             i += 1
+
+
+    def set_snap_style(self):
+        self.snapStyle = Draft.getParam("snapStyle", 0)
+        if self.snapStyle:
+            self.mk = coll.OrderedDict([("passive",       "SQUARE_LINE"),
+                                        ("extension",     "SQUARE_LINE"),
+                                        ("parallel",      "SQUARE_LINE"),
+                                        ("grid",          "SQUARE_FILLED"),
+                                        ("endpoint",      "SQUARE_FILLED"),
+                                        ("midpoint",      "SQUARE_FILLED"),
+                                        ("perpendicular", "SQUARE_FILLED"),
+                                        ("angle",         "SQUARE_FILLED"),
+                                        ("center",        "SQUARE_FILLED"),
+                                        ("ortho",         "SQUARE_FILLED"),
+                                        ("intersection",  "SQUARE_FILLED"),
+                                        ("special",       "SQUARE_FILLED")])
+        else:
+            self.mk = coll.OrderedDict([("passive",       "CIRCLE_LINE"),
+                                        ("extension",     "CIRCLE_LINE"),
+                                        ("parallel",      "CIRCLE_LINE"),
+                                        ("grid",          "CIRCLE_LINE"),
+                                        ("endpoint",      "CIRCLE_FILLED"),
+                                        ("midpoint",      "DIAMOND_FILLED"),
+                                        ("perpendicular", "CIRCLE_FILLED"),
+                                        ("angle",         "DIAMOND_FILLED"),
+                                        ("center",        "CIRCLE_FILLED"),
+                                        ("ortho",         "CIRCLE_FILLED"),
+                                        ("intersection",  "CIRCLE_FILLED"),
+                                        ("special",       "CIRCLE_FILLED")])
 
 
     def cstr(self, lastpoint, constrain, point):
@@ -238,7 +241,7 @@ class Snapper:
 
         self.spoint = None
 
-        if Draft.getParam("showSnapBar", True):
+        if Draft.getParam("SnapBarShowOnlyDuringCommands", False):
             toolbar = self.get_snap_toolbar()
             if toolbar:
                 toolbar.show()
@@ -324,7 +327,7 @@ class Snapper:
         fp = self.cstr(lastpoint, constrain, point)
         if self.trackLine and lastpoint and (not noTracker):
             self.trackLine.p2(fp)
-            self.trackLine.color.rgb = Gui.draftToolBar.getDefaultColor("line")
+            self.trackLine.setColor()
             self.trackLine.on()
         # Set the arch point tracking
         if lastpoint:
@@ -494,7 +497,7 @@ class Snapper:
             fp = self.cstr(lastpoint, constrain, winner[2])
             if self.trackLine and lastpoint:
                 self.trackLine.p2(fp)
-                self.trackLine.color.rgb = Gui.draftToolBar.getDefaultColor("line")
+                self.trackLine.setColor()
                 self.trackLine.on()
             # set the cursor
             self.setCursor(winner[1])
@@ -512,8 +515,7 @@ class Snapper:
     def toWP(self, point):
         """Project the given point on the working plane, if needed."""
         if self.isEnabled("WorkingPlane"):
-            if hasattr(App, "DraftWorkingPlane"):
-                return App.DraftWorkingPlane.projectPoint(point)
+            return self._get_wp().project_point(point)
         return point
 
 
@@ -522,14 +524,13 @@ class Snapper:
         view = Draft.get3DView()
         pt = view.getPoint(x, y)
         if self.mask != "z":
-            if hasattr(App,"DraftWorkingPlane"):
-                if view.getCameraType() == "Perspective":
-                    camera = view.getCameraNode()
-                    p = camera.getField("position").getValue()
-                    dv = pt.sub(App.Vector(p[0], p[1], p[2]))
-                else:
-                    dv = view.getViewDirection()
-                return App.DraftWorkingPlane.projectPoint(pt, dv)
+            if view.getCameraType() == "Perspective":
+                camera = view.getCameraNode()
+                p = camera.getField("position").getValue()
+                dv = pt.sub(App.Vector(p[0], p[1], p[2]))
+            else:
+                dv = view.getViewDirection()
+            return self._get_wp().project_point(pt, dv)
         return pt
 
 
@@ -556,7 +557,7 @@ class Snapper:
             if self.extLine:
                 self.extLine.p1(tsnap[0])
                 self.extLine.p2(tsnap[2])
-                self.extLine.color.rgb = Gui.draftToolBar.getDefaultColor("line")
+                self.extLine.setColor()
                 self.extLine.on()
             self.setCursor(tsnap[1])
             return tsnap[2], eline
@@ -570,7 +571,7 @@ class Snapper:
                         self.tracker.on()
                     if self.extLine:
                         self.extLine.p2(tsnap[2])
-                        self.extLine.color.rgb = Gui.draftToolBar.getDefaultColor("line")
+                        self.extLine.setColor()
                         self.extLine.on()
                     self.setCursor(tsnap[1])
                     return tsnap[2], eline
@@ -584,7 +585,7 @@ class Snapper:
                             self.tracker.on()
                         if self.extLine:
                             self.extLine.p2(tsnap[2])
-                            self.extLine.color.rgb = Gui.draftToolBar.getDefaultColor("line")
+                            self.extLine.setColor()
                             self.extLine.on()
                         self.setCursor(tsnap[1])
                         return tsnap[2], eline
@@ -620,13 +621,9 @@ class Snapper:
                                         self.tracker.setMarker(self.mk['extension'])
                                         self.tracker.on()
                                     if self.extLine:
-                                        if self.snapStyle:
-                                            dv = np.sub(p0)
-                                            self.extLine.p1(p0.add(dv.multiply(0.5)))
-                                        else:
-                                            self.extLine.p1(p0)
+                                        self.extLine.p1(p0)
                                         self.extLine.p2(np)
-                                        self.extLine.color.rgb = Gui.draftToolBar.getDefaultColor("line")
+                                        self.extLine.setColor()
                                         self.extLine.on()
                                     self.setCursor('extension')
                                     ne = Part.LineSegment(p0,np).toShape()
@@ -678,14 +675,10 @@ class Snapper:
                                     p0 = self.lastExtensions[1].Vertexes[0].Point
                                 else:
                                     p0 = self.lastExtensions[0].Vertexes[0].Point
-                                if self.snapStyle:
-                                    dv = p.sub(p0)
-                                    self.extLine2.p1(p0.add(dv.multiply(0.5)))
-                                else:
-                                    self.extLine2.p1(p0)
+                                self.extLine2.p1(p0)
                                 self.extLine2.p2(p)
                                 self.extLine.p2(p)
-                                self.extLine.color.rgb = Gui.draftToolBar.getDefaultColor("line")
+                                self.extLine.setColor()
                                 self.extLine2.on()
                             return p
         return None
@@ -696,14 +689,8 @@ class Snapper:
         if self.isEnabled('Ortho') and (not self.mask):
             if last:
                 vecs = []
-                if hasattr(App,"DraftWorkingPlane"):
-                    ax = [App.DraftWorkingPlane.u,
-                          App.DraftWorkingPlane.v,
-                          App.DraftWorkingPlane.axis]
-                else:
-                    ax = [App.Vector(1, 0, 0),
-                          App.Vector(0, 1, 0),
-                          App.Vector(0, 0, 1)]
+                wp = self._get_wp()
+                ax = [wp.u, wp.v, wp.axis]
                 for a in self.polarAngles:
                     if a == 90:
                         vecs.extend([ax[0], ax[0].negative()])
@@ -892,12 +879,9 @@ class Snapper:
         """
         if not self.holdPoints:
             return None
-        if hasattr(App, "DraftWorkingPlane"):
-            u = App.DraftWorkingPlane.u
-            v = App.DraftWorkingPlane.v
-        else:
-            u = App.Vector(1, 0, 0)
-            v = App.Vector(0, 1, 0)
+        wp = self._get_wp()
+        u = wp.u
+        v = wp.v
         if len(self.holdPoints) > 1:
             # first try mid points
             if self.isEnabled("Midpoint"):
@@ -1218,7 +1202,7 @@ class Snapper:
             self.grid.lowerTracker()
 
 
-    def off(self, hideSnapBar=False):
+    def off(self):
         """Finish snapping."""
         if self.tracker:
             self.tracker.off()
@@ -1235,7 +1219,7 @@ class Snapper:
         if self.dim2:
             self.dim2.off()
         if self.grid:
-            if not Draft.getParam("alwaysShowGrid", True):
+            if self.grid.show_always is False:
                 self.grid.off()
         if self.holdTracker:
             self.holdTracker.clear()
@@ -1243,7 +1227,7 @@ class Snapper:
         self.unconstrain()
         self.radius = 0
         self.setCursor()
-        if hideSnapBar or Draft.getParam("hideSnapBar", False):
+        if Draft.getParam("SnapBarShowOnlyDuringCommands", False):
             toolbar = self.get_snap_toolbar()
             if toolbar:
                 toolbar.hide()
@@ -1285,18 +1269,11 @@ class Snapper:
         must be constrained. If no basepoint is given, the current point is
         used as basepoint.
         """
-        # without the Draft module fully loaded, no axes system!"
-        if not hasattr(App, "DraftWorkingPlane"):
-            return point
-
         point = App.Vector(point)
 
         # setup trackers if needed
         if not self.constrainLine:
-            if self.snapStyle:
-                self.constrainLine = trackers.lineTracker(scolor=Gui.draftToolBar.getDefaultColor("snap"))
-            else:
-                self.constrainLine = trackers.lineTracker(dotted=True)
+            self.constrainLine = trackers.lineTracker(dotted=True)
 
         # setting basepoint
         if not basepoint:
@@ -1306,32 +1283,38 @@ class Snapper:
             self.basepoint = basepoint
         delta = point.sub(self.basepoint)
 
-        # setting constraint axis
-        if self.mask:
-            self.affinity = self.mask
-        if not self.affinity:
-            self.affinity = App.DraftWorkingPlane.getClosestAxis(delta)
-        if isinstance(axis, App.Vector):
-            self.constraintAxis = axis
-        elif axis == "x":
-            self.constraintAxis = App.DraftWorkingPlane.u
-        elif axis == "y":
-            self.constraintAxis = App.DraftWorkingPlane.v
-        elif axis == "z":
-            self.constraintAxis = App.DraftWorkingPlane.axis
+        if Gui.draftToolBar.globalMode:
+            import WorkingPlane
+            wp = WorkingPlane.PlaneBase()  # matches the global coordinate system
         else:
+            wp = self._get_wp()
+
+        # setting constraint axis
+        if axis == "x":
+            self.constraintAxis = wp.u
+        elif axis == "y":
+            self.constraintAxis = wp.v
+        elif axis == "z":
+            self.constraintAxis = wp.axis
+        elif isinstance(axis, App.Vector):
+            self.constraintAxis = axis
+        else:
+            if self.mask is not None:
+                self.affinity = self.mask
+            if self.affinity is None:
+                self.affinity = wp.get_closest_axis(delta)
             if self.affinity == "x":
-                self.constraintAxis = App.DraftWorkingPlane.u
+                self.constraintAxis = wp.u
             elif self.affinity == "y":
-                self.constraintAxis = App.DraftWorkingPlane.v
+                self.constraintAxis = wp.v
             elif self.affinity == "z":
-                self.constraintAxis = App.DraftWorkingPlane.axis
+                self.constraintAxis = wp.axis
             elif isinstance(self.affinity, App.Vector):
                 self.constraintAxis = self.affinity
             else:
                 self.constraintAxis = None
 
-        if not self.constraintAxis:
+        if self.constraintAxis is None:
             return point
 
         # calculating constrained point
@@ -1411,10 +1394,9 @@ class Snapper:
             shift = event.wasShiftDown()
             self.pt = Gui.Snapper.snap(mousepos, lastpoint=last,
                                        active=ctrl, constrain=shift)
-            if hasattr(App, "DraftWorkingPlane"):
-                self.ui.displayPoint(self.pt, last,
-                                     plane=App.DraftWorkingPlane,
-                                     mask=Gui.Snapper.affinity)
+            self.ui.displayPoint(self.pt, last,
+                                 plane=self._get_wp(),
+                                 mask=Gui.Snapper.affinity)
             if movecallback:
                 movecallback(self.pt, self.snapInfo)
 
@@ -1422,9 +1404,10 @@ class Snapper:
             """Get the global coordinates from a point."""
             # Same algorithm as in validatePoint in DraftGui.py.
             ref = App.Vector(0, 0, 0)
-            if global_mode is False and hasattr(App, "DraftWorkingPlane"):
-                point = App.DraftWorkingPlane.getGlobalRot(point)
-                ref = App.DraftWorkingPlane.getGlobalCoords(ref)
+            if global_mode is False:
+                wp = self._get_wp()
+                point = wp.get_global_coords(point, as_vector=True)
+                ref = wp.get_global_coords(ref)
             if relative_mode is True and last is not None:
                 ref = last
             self.pt = point + ref
@@ -1489,30 +1472,11 @@ class Snapper:
 
     def get_snap_toolbar(self):
         """Get the snap toolbar."""
-
         if not (hasattr(self, "toolbar") and self.toolbar):
             mw = Gui.getMainWindow()
             self.toolbar = mw.findChild(QtGui.QToolBar, "Draft snap")
         if self.toolbar:
-            # Make sure the Python generated BIM snap toolbar shows up in the
-            # toolbar area context menu after switching back to that workbench:
-            self.toolbar.toggleViewAction().setVisible(True)
             return self.toolbar
-
-        # Code required for the BIM workbench which has to work with FC0.20
-        # and FC0.21/1.0. The code relies on the Snapping menu in the BIM WB
-        # to create the actions.
-        self.toolbar = QtGui.QToolBar(mw)
-        mw.addToolBar(QtCore.Qt.TopToolBarArea, self.toolbar)
-        self.toolbar.setObjectName("Draft snap")
-        self.toolbar.setWindowTitle(translate("Workbench", "Draft snap"))
-        for cmd in get_draft_snap_commands():
-            if cmd == "Separator":
-                self.toolbar.addSeparator()
-            else:
-                action = Gui.Command.get(cmd).getAction()[0]
-                self.toolbar.addAction(action)
-        return self.toolbar
 
 
     def toggleGrid(self):
@@ -1573,44 +1537,46 @@ class Snapper:
         param.SetString("snapModes",snap_modes)
 
 
-    def show(self):
-        """Show the toolbar and the grid."""
-        toolbar = self.get_snap_toolbar()
-        if toolbar:
-            if Draft.getParam("showSnapBar", True):
-                toolbar.show()
-            else:
-                toolbar.hide()
+    def show_hide_grids(self, show=True):
+        """Show the grid in all 3D views where it was previously visible, or
+        hide the grid in all 3D view. Used when switching to different workbenches.
 
-        if Gui.ActiveDocument:
-            self.setTrackers()
-            if not App.ActiveDocument.Objects:
-                if Gui.ActiveDocument.ActiveView:
-                    if Gui.ActiveDocument.ActiveView.getCameraType() == 'Orthographic':
-                        c = Gui.ActiveDocument.ActiveView.getCameraNode()
-                        if c.orientation.getValue().getValue() == (0.0, 0.0, 0.0, 1.0):
-                            p = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-                            h = p.GetInt("defaultCameraHeight",0)
-                            if h:
-                                c.height.setValue(h)
+        Hiding the grid can be prevented by setting the GridHideInOtherWorkbenches
+        preference to `False`.
+        """
+        param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+        if (not show) and (not param.GetBool("GridHideInOtherWorkbenches", True)):
+            return
+        mw = Gui.getMainWindow()
+        views = mw.getWindowsOfType(App.Base.TypeId.fromName("Gui::View3DInventor"))  # All 3D views.
+        for view in views:
+            if view in self.trackers[0]:
+                i = self.trackers[0].index(view)
+                grid = self.trackers[1][i]
+                if show and grid.show_always:
+                    grid.on()
+                else:
+                    grid.off()
+
+
+    def show(self):
+        """Show the grid in all 3D views where it was previously visible."""
+        self.show_hide_grids(show=True)
 
 
     def hide(self):
-        """Hide the toolbar."""
-        if hasattr(self, "toolbar") and self.toolbar:
-            self.toolbar.hide()
-            self.toolbar.toggleViewAction().setVisible(False)
+        """Hide the grid in all 3D views."""
+        self.show_hide_grids(show=False)
 
 
-    def setGrid(self, tool=False):
+    def setGrid(self):
         """Set the grid, if visible."""
         self.setTrackers()
-        if self.grid and (not self.forceGridOff):
-            if self.grid.Visible:
-                self.grid.set(tool)
+        if self.grid.Visible:
+            self.grid.set()
 
 
-    def setTrackers(self, tool=False):
+    def setTrackers(self, update_grid=True):
         """Set the trackers."""
         v = Draft.get3DView()
         if v and (v != self.activeview):
@@ -1626,23 +1592,15 @@ class Snapper:
                 self.extLine2 = self.trackers[8][i]
                 self.holdTracker = self.trackers[9][i]
             else:
+                self.grid = trackers.gridTracker()
+                if Draft.getParam("alwaysShowGrid", True):
+                    self.grid.show_always = True
                 if Draft.getParam("grid", True):
-                    self.grid = trackers.gridTracker()
-                    if Draft.getParam("alwaysShowGrid", True) or tool:
-                        self.grid.on()
-                    else:
-                        self.grid.off()
-                else:
-                    self.grid = None
+                    self.grid.show_during_command = True
                 self.tracker = trackers.snapTracker()
                 self.trackLine = trackers.lineTracker()
-                if self.snapStyle:
-                    c = Gui.draftToolBar.getDefaultColor("snap")
-                    self.extLine = trackers.lineTracker(scolor=c)
-                    self.extLine2 = trackers.lineTracker(scolor=c)
-                else:
-                    self.extLine = trackers.lineTracker(dotted=True)
-                    self.extLine2 = trackers.lineTracker(dotted=True)
+                self.extLine = trackers.lineTracker(dotted=True)
+                self.extLine2 = trackers.lineTracker(dotted=True)
                 self.radiusTracker = trackers.radiusTracker()
                 self.dim1 = trackers.archDimTracker(mode=2)
                 self.dim2 = trackers.archDimTracker(mode=3)
@@ -1661,8 +1619,14 @@ class Snapper:
                 self.trackers[9].append(self.holdTracker)
             self.activeview = v
 
-        if tool and self.grid and (not self.forceGridOff):
-            self.grid.set(tool)
+        if not update_grid:
+            return
+
+        if self.grid.show_always \
+                or (self.grid.show_during_command \
+                      and hasattr(App, "activeDraftCommand") \
+                      and App.activeDraftCommand):
+            self.grid.set()
 
 
     def addHoldPoint(self):
@@ -1670,7 +1634,7 @@ class Snapper:
         if self.spoint and self.spoint not in self.holdPoints:
             if self.holdTracker:
                 self.holdTracker.addCoords(self.spoint)
-                self.holdTracker.color.rgb = Gui.draftToolBar.getDefaultColor("line")
+                self.holdTracker.setColor()
                 self.holdTracker.on()
             self.holdPoints.append(self.spoint)
 

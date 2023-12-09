@@ -6,7 +6,7 @@
     <message>
       <location filename="../../Command.cpp" line="960"/>
       <source>Spreadsheet</source>
-      <translation>Kalkulationstabelle</translation>
+      <translation>Tabellenblatt</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="961"/>
@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="526"/>
       <source>Spreadsheet</source>
-      <translation>Kalkulationstabelle</translation>
+      <translation>Tabellenblatt</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="527"/>
@@ -42,7 +42,7 @@
     <message>
       <location filename="../../Command.cpp" line="355"/>
       <source>Spreadsheet</source>
-      <translation>Kalkulationstabelle</translation>
+      <translation>Tabellenblatt</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="356"/>
@@ -60,7 +60,7 @@
     <message>
       <location filename="../../Command.cpp" line="298"/>
       <source>Spreadsheet</source>
-      <translation>Kalkulationstabelle</translation>
+      <translation>Tabellenblatt</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="299"/>
@@ -78,7 +78,7 @@
     <message>
       <location filename="../../Command.cpp" line="412"/>
       <source>Spreadsheet</source>
-      <translation>Kalkulationstabelle</translation>
+      <translation>Tabellenblatt</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="413"/>
@@ -96,7 +96,7 @@
     <message>
       <location filename="../../Command.cpp" line="469"/>
       <source>Spreadsheet</source>
-      <translation>Kalkulationstabelle</translation>
+      <translation>Tabellenblatt</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="470"/>
@@ -114,7 +114,7 @@
     <message>
       <location filename="../../Command.cpp" line="583"/>
       <source>Spreadsheet</source>
-      <translation>Kalkulationstabelle</translation>
+      <translation>Tabellenblatt</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="584"/>
@@ -132,7 +132,7 @@
     <message>
       <location filename="../../Command.cpp" line="235"/>
       <source>Spreadsheet</source>
-      <translation>Kalkulationstabelle</translation>
+      <translation>Tabellenblatt</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="236"/>
@@ -150,7 +150,7 @@
     <message>
       <location filename="../../Command.cpp" line="182"/>
       <source>Spreadsheet</source>
-      <translation>Kalkulationstabelle</translation>
+      <translation>Tabellenblatt</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="183"/>
@@ -168,7 +168,7 @@
     <message>
       <location filename="../../Command.cpp" line="59"/>
       <source>Spreadsheet</source>
-      <translation>Kalkulationstabelle</translation>
+      <translation>Tabellenblatt</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="60"/>
@@ -186,7 +186,7 @@
     <message>
       <location filename="../../Command.cpp" line="889"/>
       <source>Spreadsheet</source>
-      <translation>Kalkulationstabelle</translation>
+      <translation>Tabellenblatt</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="890"/>
@@ -204,7 +204,7 @@
     <message>
       <location filename="../../Command.cpp" line="120"/>
       <source>Spreadsheet</source>
-      <translation>Kalkulationstabelle</translation>
+      <translation>Tabellenblatt</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="121"/>
@@ -222,7 +222,7 @@
     <message>
       <location filename="../../Command.cpp" line="640"/>
       <source>Spreadsheet</source>
-      <translation>Kalkulationstabelle</translation>
+      <translation>Tabellenblatt</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="641"/>
@@ -240,7 +240,7 @@
     <message>
       <location filename="../../Command.cpp" line="723"/>
       <source>Spreadsheet</source>
-      <translation>Kalkulationstabelle</translation>
+      <translation>Tabellenblatt</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="724"/>
@@ -258,7 +258,7 @@
     <message>
       <location filename="../../Command.cpp" line="806"/>
       <source>Spreadsheet</source>
-      <translation>Kalkulationstabelle</translation>
+      <translation>Tabellenblatt</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="807"/>
@@ -679,8 +679,8 @@ switch the design configuration. The property will be created if not exist.</sou
     <message>
       <location filename="../../Command.cpp" line="194"/>
       <location filename="../../Command.cpp" line="254"/>
-      <source>All (*)</source>
-      <translation>Alle (*)</translation>
+      <source>CSV (*.csv *.CSV);;All (*)</source>
+      <translation>CSV (*.csv *.CSV);;Alle (*)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="196"/>
@@ -737,7 +737,7 @@ Spreadsheet.my_alias_name instead of Spreadsheet.B1</source>
 Tabelle.my_Alias_name anstelle von Tabelle.B1</translation>
     </message>
     <message>
-      <location filename="../../AppSpreadsheetGui.cpp" line="124"/>
+      <location filename="../../AppSpreadsheetGui.cpp" line="126"/>
       <source>Spreadsheet</source>
       <translation>Tabelle</translation>
     </message>
@@ -912,7 +912,7 @@ Möchten Sie fortfahren?</translation>
     <message>
       <location filename="../../DlgSettings.ui" line="20"/>
       <source>Spreadsheet</source>
-      <translation>Kalkulationstabelle</translation>
+      <translation>Tabellenblatt</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="26"/>

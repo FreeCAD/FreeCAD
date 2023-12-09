@@ -26,8 +26,15 @@
 #include <boost/math/special_functions/fpclassify.hpp>
 
 #include <Gui/Notifications.h>
+#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 
+#include <Mod/Sketcher/App/SketchObject.h>
+
+#include "DrawSketchHandler.h"
 #include "GeometryCreationMode.h"
+#include "Utils.h"
+#include "ViewProviderSketch.h"
 
 
 namespace SketcherGui
@@ -249,13 +256,13 @@ public:
                    * b));
 
             if (boost::math::isnan(startAngle) || boost::math::isnan(endAngle)) {
-                sketchgui->purgeHandler();
                 Gui::NotifyError(
                     sketchgui,
                     QT_TRANSLATE_NOOP("Notifications", "Error"),
                     QT_TRANSLATE_NOOP(
                         "Notifications",
                         "Cannot create arc of hyperbola from invalid angles, try again!"));
+                sketchgui->purgeHandler();
                 return false;
             }
 
@@ -319,7 +326,7 @@ public:
                                       centerPoint.y,
                                       startAngle,
                                       endAngle,
-                                      geometryCreationMode == Construction ? "True" : "False");
+                                      constructionModeAsBooleanText());
 
                 currentgeoid++;
 

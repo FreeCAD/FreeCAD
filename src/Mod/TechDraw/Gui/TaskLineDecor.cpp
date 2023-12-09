@@ -36,12 +36,15 @@
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/CenterLine.h>
 #include <Mod/TechDraw/App/Geometry.h>
+#include <Mod/TechDraw/App/LineGenerator.h>
+
 
 #include "TaskLineDecor.h"
 #include "ui_TaskLineDecor.h"
 #include "ui_TaskRestoreLines.h"
 #include "QGIView.h"
 #include "ViewProviderViewPart.h"
+#include "DrawGuiUtil.h"
 
 
 using namespace Gui;
@@ -56,9 +59,11 @@ TaskLineDecor::TaskLineDecor(TechDraw::DrawViewPart* partFeat,
     m_apply(true)
 {
     initializeRejectArrays();
+    m_lineGenerator = new TechDraw::LineGenerator;
+
+    ui->setupUi(this);
 
     getDefaults();
-    ui->setupUi(this);
     initUi();
 
     connect(ui->cb_Style, qOverload<int>(&QComboBox::currentIndexChanged), this, &TaskLineDecor::onStyleChanged);
@@ -69,6 +74,7 @@ TaskLineDecor::TaskLineDecor(TechDraw::DrawViewPart* partFeat,
 
 TaskLineDecor::~TaskLineDecor()
 {
+    delete m_lineGenerator;
 }
 
 void TaskLineDecor::initUi()
@@ -87,11 +93,16 @@ void TaskLineDecor::initUi()
     }
     ui->le_Lines->setText(Base::Tools::fromStdString(temp));
 
-    ui->cb_Style->setCurrentIndex(m_style - 1);          //combobox does not have 0:NoLine choice
     ui->cc_Color->setColor(m_color.asValue<QColor>());
     ui->dsb_Weight->setValue(m_weight);
     ui->dsb_Weight->setSingleStep(0.1);
     ui->cb_Visible->setCurrentIndex(m_visible);
+
+    // line numbering starts at 1, not 0
+    DrawGuiUtil::loadLineStyleChoices(ui->cb_Style, m_lineGenerator);
+    if (ui->cb_Style->count() >= m_lineNumber ) {
+        ui->cb_Style->setCurrentIndex(m_lineNumber - 1);
+    }
 }
 
 TechDraw::LineFormat *TaskLineDecor::getFormatAccessPtr(const std::string &edgeName, std::string *newFormatTag)
@@ -133,6 +144,7 @@ TechDraw::LineFormat *TaskLineDecor::getFormatAccessPtr(const std::string &edgeN
             }
         }
     }
+    return {};
 }
 
 void TaskLineDecor::initializeRejectArrays()
@@ -156,10 +168,10 @@ void TaskLineDecor::initializeRejectArrays()
 void TaskLineDecor::getDefaults()
 {
 //    Base::Console().Message("TLD::getDefaults()\n");
-    m_style = LineFormat::getDefEdgeStyle();
     m_color = LineFormat::getDefEdgeColor();
     m_weight = LineFormat::getDefEdgeWidth();
     m_visible = true;
+    m_lineNumber = 1;
 
     //set defaults to format of 1st edge
     if (!m_originalFormats.empty()) {
@@ -168,12 +180,13 @@ void TaskLineDecor::getDefaults()
         m_color = lf.m_color;
         m_weight = lf.m_weight;
         m_visible = lf.m_visible;
+        m_lineNumber = lf.getLineNumber();
     }
 }
 
 void TaskLineDecor::onStyleChanged()
 {
-    m_style = ui->cb_Style->currentIndex() + 1;
+    m_lineNumber = ui->cb_Style->currentIndex() + 1;
     applyDecorations();
     m_partFeat->requestPaint();
 }
@@ -209,6 +222,7 @@ void TaskLineDecor::applyDecorations()
             lf->m_color = m_color;
             lf->m_weight = m_weight;
             lf->m_visible = m_visible;
+            lf->setLineNumber(m_lineNumber);
         }
     }
 }

@@ -21,23 +21,29 @@
 
 #include "PreCompiled.h"
 
-#ifndef _PreComp_
-#include <boost/uuid/uuid_io.hpp>
-#endif
-
 #include <QMetaType>
 
 #include <Base/Quantity.h>
 #include <Base/QuantityPy.h>
+#include <CXX/Objects.hxx>
 #include <Gui/MetaTypes.h>
 
-#include "Exceptions.h"
-#include "MaterialPy.h"
 #include "Materials.h"
+
+#include "Array2DPy.h"
+#include "Array3DPy.h"
+#include "Exceptions.h"
+#include "MaterialLibrary.h"
+#include "MaterialPy.h"
+#include "MaterialValue.h"
 
 #include "MaterialPy.cpp"
 
 using namespace Materials;
+
+// Forward declaration
+static PyObject* _pyObjectFromVariant(const QVariant& value);
+static Py::List getList(const QVariant& value);
 
 // returns a string which represents the object e.g. when printed in python
 std::string MaterialPy::representation() const
@@ -48,12 +54,15 @@ std::string MaterialPy::representation() const
     str << ptr->getName().toStdString();
     str << "), UUID=(";
     str << ptr->getUUID().toStdString();
-    str << "), Library Name=(";
-    str << ptr->getLibrary().getName().toStdString();
-    str << "), Library Root=(";
-    str << ptr->getLibrary().getDirectoryPath().toStdString();
-    str << "), Library Icon=(";
-    str << ptr->getLibrary().getIconPath().toStdString();
+    auto library = ptr->getLibrary();
+    if (library) {
+        str << "), Library Name=(";
+        str << ptr->getLibrary()->getName().toStdString();
+        str << "), Library Root=(";
+        str << ptr->getLibrary()->getDirectoryPath().toStdString();
+        str << "), Library Icon=(";
+        str << ptr->getLibrary()->getIconPath().toStdString();
+    }
     str << "), Directory=(";
     str << ptr->getDirectory().toStdString();
     // str << "), URL=(";
@@ -93,17 +102,20 @@ int MaterialPy::PyInit(PyObject* /*args*/, PyObject* /*kwd*/)
 
 Py::String MaterialPy::getLibraryName() const
 {
-    return Py::String(getMaterialPtr()->getLibrary().getName().toStdString());
+    auto library = getMaterialPtr()->getLibrary();
+    return Py::String(library ? library->getName().toStdString() : "");
 }
 
 Py::String MaterialPy::getLibraryRoot() const
 {
-    return Py::String(getMaterialPtr()->getLibrary().getDirectoryPath().toStdString());
+    auto library = getMaterialPtr()->getLibrary();
+    return Py::String(library ? library->getDirectoryPath().toStdString() : "");
 }
 
 Py::String MaterialPy::getLibraryIcon() const
 {
-    return Py::String(getMaterialPtr()->getLibrary().getIconPath().toStdString());
+    auto library = getMaterialPtr()->getLibrary();
+    return Py::String(library ? library->getIconPath().toStdString() : "");
 }
 
 Py::String MaterialPy::getName() const
@@ -146,15 +158,23 @@ Py::String MaterialPy::getAuthorAndLicense() const
     return Py::String(getMaterialPtr()->getAuthorAndLicense().toStdString());
 }
 
+Py::String MaterialPy::getAuthor() const
+{
+    return Py::String(getMaterialPtr()->getAuthor().toStdString());
+}
+
+Py::String MaterialPy::getLicense() const
+{
+    return Py::String(getMaterialPtr()->getLicense().toStdString());
+}
+
 Py::List MaterialPy::getPhysicalModels() const
 {
-    const std::vector<QString>* models = getMaterialPtr()->getPhysicalModels();
+    auto models = getMaterialPtr()->getPhysicalModels();
     Py::List list;
 
     for (auto it = models->begin(); it != models->end(); it++) {
-        QString uuid = *it;
-
-        list.append(Py::String(uuid.toStdString()));
+        list.append(Py::String(it->toStdString()));
     }
 
     return list;
@@ -162,13 +182,11 @@ Py::List MaterialPy::getPhysicalModels() const
 
 Py::List MaterialPy::getAppearanceModels() const
 {
-    const std::vector<QString>* models = getMaterialPtr()->getAppearanceModels();
+    auto models = getMaterialPtr()->getAppearanceModels();
     Py::List list;
 
     for (auto it = models->begin(); it != models->end(); it++) {
-        QString uuid = *it;
-
-        list.append(Py::String(uuid.toStdString()));
+        list.append(Py::String(it->toStdString()));
     }
 
     return list;
@@ -176,13 +194,11 @@ Py::List MaterialPy::getAppearanceModels() const
 
 Py::List MaterialPy::getTags() const
 {
-    const std::list<QString>& tags = getMaterialPtr()->getTags();
+    auto& tags = getMaterialPtr()->getTags();
     Py::List list;
 
     for (auto it = tags.begin(); it != tags.end(); it++) {
-        QString uuid = *it;
-
-        list.append(Py::String(uuid.toStdString()));
+        list.append(Py::String(it->toStdString()));
     }
 
     return list;
@@ -272,6 +288,8 @@ Py::Dict MaterialPy::getProperties() const
     dict.setItem(Py::String("CardName"), Py::String(getMaterialPtr()->getName().toStdString()));
     dict.setItem(Py::String("AuthorAndLicense"),
                  Py::String(getMaterialPtr()->getAuthorAndLicense().toStdString()));
+    dict.setItem(Py::String("Author"), Py::String(getMaterialPtr()->getAuthor().toStdString()));
+    dict.setItem(Py::String("License"), Py::String(getMaterialPtr()->getLicense().toStdString()));
     dict.setItem(Py::String("Name"), Py::String(getMaterialPtr()->getName().toStdString()));
     dict.setItem(Py::String("Description"),
                  Py::String(getMaterialPtr()->getDescription().toStdString()));
@@ -282,10 +300,10 @@ Py::Dict MaterialPy::getProperties() const
     auto properties = getMaterialPtr()->getPhysicalProperties();
     for (auto it = properties.begin(); it != properties.end(); it++) {
         QString key = it->first;
-        MaterialProperty& materialProperty = it->second;
+        auto materialProperty = it->second;
 
-        if (!materialProperty.isNull()) {
-            auto value = materialProperty.getString();
+        if (!materialProperty->isNull()) {
+            auto value = materialProperty->getString();
             dict.setItem(Py::String(key.toStdString()), Py::String(value.toStdString()));
         }
     }
@@ -293,10 +311,10 @@ Py::Dict MaterialPy::getProperties() const
     properties = getMaterialPtr()->getAppearanceProperties();
     for (auto it = properties.begin(); it != properties.end(); it++) {
         QString key = it->first;
-        MaterialProperty& materialProperty = it->second;
+        auto materialProperty = it->second;
 
-        if (!materialProperty.isNull()) {
-            auto value = materialProperty.getString();
+        if (!materialProperty->isNull()) {
+            auto value = materialProperty->getString();
             dict.setItem(Py::String(key.toStdString()), Py::String(value.toStdString()));
         }
     }
@@ -311,10 +329,10 @@ Py::Dict MaterialPy::getPhysicalProperties() const
     auto properties = getMaterialPtr()->getPhysicalProperties();
     for (auto it = properties.begin(); it != properties.end(); it++) {
         QString key = it->first;
-        MaterialProperty& materialProperty = it->second;
+        auto materialProperty = it->second;
 
-        if (!materialProperty.isNull()) {
-            auto value = materialProperty.getString();
+        if (!materialProperty->isNull()) {
+            auto value = materialProperty->getString();
             dict.setItem(Py::String(key.toStdString()), Py::String(value.toStdString()));
         }
     }
@@ -329,10 +347,10 @@ Py::Dict MaterialPy::getAppearanceProperties() const
     auto properties = getMaterialPtr()->getAppearanceProperties();
     for (auto it = properties.begin(); it != properties.end(); it++) {
         QString key = it->first;
-        MaterialProperty& materialProperty = it->second;
+        auto materialProperty = it->second;
 
-        if (!materialProperty.isNull()) {
-            auto value = materialProperty.getString();
+        if (!materialProperty->isNull()) {
+            auto value = materialProperty->getString();
             dict.setItem(Py::String(key.toStdString()), Py::String(value.toStdString()));
         }
     }
@@ -340,32 +358,47 @@ Py::Dict MaterialPy::getAppearanceProperties() const
     return dict;
 }
 
+static Py::List getList(const QVariant& value)
+{
+    auto listValue = value.value<QList<QVariant>>();
+    Py::List list;
+
+    for (auto& it : listValue) {
+        list.append(Py::Object(_pyObjectFromVariant(it)));
+    }
+
+    return list;
+}
+
 static PyObject* _pyObjectFromVariant(const QVariant& value)
 {
     if (value.isNull()) {
-        return new PyObject();
+        Py_RETURN_NONE;
     }
 
     if (value.userType() == qMetaTypeId<Base::Quantity>()) {
         return new Base::QuantityPy(new Base::Quantity(value.value<Base::Quantity>()));
     }
-    else if (value.userType() == QMetaType::Double) {
+    if (value.userType() == QMetaType::Double) {
         return PyFloat_FromDouble(value.toDouble());
     }
-    else if (value.userType() == QMetaType::Float) {
+    if (value.userType() == QMetaType::Float) {
         return PyFloat_FromDouble(value.toFloat());
     }
-    else if (value.userType() == QMetaType::Int) {
+    if (value.userType() == QMetaType::Int) {
         return PyLong_FromLong(value.toInt());
     }
-    else if (value.userType() == QMetaType::Long) {
+    if (value.userType() == QMetaType::Long) {
         return PyLong_FromLong(value.toInt());
     }
-    else if (value.userType() == QMetaType::Bool) {
-        return value.toBool() ? Py_True : Py_False;
+    if (value.userType() == QMetaType::Bool) {
+        return Py::new_reference_to(Py::Boolean(value.toBool()));
     }
-    else if (value.userType() == QMetaType::QString) {
+    if (value.userType() == QMetaType::QString) {
         return PyUnicode_FromString(value.toString().toStdString().c_str());
+    }
+    if (value.userType() == qMetaTypeId<QList<QVariant>>()) {
+        return Py::new_reference_to(getList(value));
     }
 
     throw UnknownValueType();
@@ -378,7 +411,27 @@ PyObject* MaterialPy::getPhysicalValue(PyObject* args)
         return nullptr;
     }
 
-    QVariant value = getMaterialPtr()->getPhysicalValue(QString::fromStdString(name));
+    if (!getMaterialPtr()->hasPhysicalProperty(QString::fromStdString(name))) {
+        Py_RETURN_NONE;
+    }
+
+    auto property = getMaterialPtr()->getPhysicalProperty(QString::fromStdString(name));
+    if (!property) {
+        Py_RETURN_NONE;
+    }
+
+    if (property->getType() == MaterialValue::Array2D) {
+        auto value =
+            std::static_pointer_cast<Materials::Material2DArray>(property->getMaterialValue());
+        return new Array2DPy(new Material2DArray(*value));
+    }
+    else if (property->getType() == MaterialValue::Array3D) {
+        auto value =
+            std::static_pointer_cast<Materials::Material3DArray>(property->getMaterialValue());
+        return new Array3DPy(new Material3DArray(*value));
+    }
+
+    QVariant value = property->getValue();
     return _pyObjectFromVariant(value);
 }
 

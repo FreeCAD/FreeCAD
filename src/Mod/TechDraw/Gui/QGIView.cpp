@@ -64,10 +64,6 @@
 using namespace TechDrawGui;
 using namespace TechDraw;
 
-#define NODRAG 0
-#define DRAGSTARTED 1
-#define DRAGGING 2
-
 const float labelCaptionFudge = 0.2f;   // temp fiddle for devel
 
 QGIView::QGIView()
@@ -75,7 +71,7 @@ QGIView::QGIView()
      viewObj(nullptr),
      m_locked(false),
      m_innerView(false),
-     m_dragState(NODRAG)
+     m_multiselectActivated(false)
 {
     setCacheMode(QGraphicsItem::NoCache);
     setHandlesChildEvents(false);
@@ -107,11 +103,6 @@ QGIView::QGIView()
     m_lock->hide();
 }
 
-QGIView::~QGIView()
-{
-    signalSelectPoint.disconnect_all_slots();
-}
-
 void QGIView::onSourceChange(TechDraw::DrawView* newParent)
 {
     Q_UNUSED(newParent);
@@ -139,7 +130,7 @@ bool QGIView::isVisible()
     return vpdo->Visibility.getValue();
 }
 
-//Set selection state for this and it's children
+//Set selection state for this and its children
 //required for items like dimensions & balloons
 void QGIView::setGroupSelection(bool isSelected)
 {
@@ -164,10 +155,12 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
             return newPos;
         }
 
+        TechDraw::DrawView *viewObj = getViewObject();
+
         // TODO  find a better data structure for this
         // this is just a pair isn't it?
-        if (getViewObject()->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
-            TechDraw::DrawProjGroupItem* dpgi = static_cast<TechDraw::DrawProjGroupItem*>(getViewObject());
+        if (viewObj->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
+            TechDraw::DrawProjGroupItem* dpgi = static_cast<TechDraw::DrawProjGroupItem*>(viewObj);
             TechDraw::DrawProjGroup* dpg = dpgi->getPGroup();
             if (dpg) {
                 if(alignHash.size() == 1) {   //if aligned.
@@ -181,9 +174,12 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
                 }
             }
         } else {
-            //not a dpgi, not locked, but moved.
-            //feat->setPosition(Rez::appX(newPos.x()), -Rez::appX(newPos.y());
+            Gui::ViewProvider *vp = getViewProvider(viewObj);
+            if (vp && !vp->isRestoring()) {
+                viewObj->setPosition(Rez::appX(newPos.x()), Rez::appX(-newPos.y()));
+            }
         }
+
         return newPos;
     }
 
@@ -204,39 +200,47 @@ QVariant QGIView::itemChange(GraphicsItemChange change, const QVariant &value)
 void QGIView::mousePressEvent(QGraphicsSceneMouseEvent * event)
 {
 //    Base::Console().Message("QGIV::mousePressEvent() - %s\n", getViewName());
-    signalSelectPoint(this, event->pos());
-    if (m_dragState == NODRAG) {
-        m_dragState = DRAGSTARTED;
+    Qt::KeyboardModifiers originalModifiers = event->modifiers();
+    if (event->button()&Qt::LeftButton) {
+        m_multiselectActivated = false;
     }
 
-    QGraphicsItem::mousePressEvent(event);
+    if (event->button() == Qt::LeftButton && PreferencesGui::multiSelection()) {
+        std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
+        if (selection.size() == 1
+            && selection.front().getObject() == getViewObject()
+            && selection.front().hasSubNames()) {
+
+            m_multiselectActivated = true;
+            event->setModifiers(originalModifiers | Qt::ControlModifier);
+        }
+    }
+
+    QGraphicsItemGroup::mousePressEvent(event);
+
+    event->setModifiers(originalModifiers);
 }
 
 void QGIView::mouseMoveEvent(QGraphicsSceneMouseEvent * event)
 {
-    if (m_dragState == DRAGSTARTED) {
-        m_dragState = DRAGGING;
-    }
-    QGraphicsItem::mouseMoveEvent(event);
+    QGraphicsItemGroup::mouseMoveEvent(event);
 }
 
 void QGIView::mouseReleaseEvent(QGraphicsSceneMouseEvent * event)
 {
-    //TODO: this should be done in itemChange - item position has changed
 //    Base::Console().Message("QGIV::mouseReleaseEvent() - %s\n", getViewName());
-//    if(scene() && this == scene()->mouseGrabberItem()) {
-    if (m_dragState == DRAGGING && !m_locked) {
-        if (!isInnerView()) {
-            double tempX = x(),
-                   tempY = getY();
-            getViewObject()->setPosition(Rez::appX(tempX), Rez::appX(tempY));
-        } else {
-            getViewObject()->setPosition(Rez::appX(x()), Rez::appX(getYInClip(y())));
+    Qt::KeyboardModifiers originalModifiers = event->modifiers();
+    if ((event->button()&Qt::LeftButton) && m_multiselectActivated) {
+        if (PreferencesGui::multiSelection()) {
+            event->setModifiers(originalModifiers | Qt::ControlModifier);
         }
-    }
-    m_dragState = NODRAG;
 
-    QGraphicsItem::mouseReleaseEvent(event);
+        m_multiselectActivated = false;
+    }
+
+    QGraphicsItemGroup::mouseReleaseEvent(event);
+
+    event->setModifiers(originalModifiers);
 }
 
 void QGIView::hoverEnterEvent(QGraphicsSceneHoverEvent *event)
@@ -268,26 +272,16 @@ void QGIView::setPosition(qreal xPos, qreal yPos)
 {
 //    Base::Console().Message("QGIV::setPosition(%.3f, %.3f) (gui)\n", x, y);
     double newX = xPos;
-    double newY;
+    double newY = -yPos;
     double oldX = pos().x();
     double oldY = pos().y();
-    if (!isInnerView()) {
-        newY = -yPos;
-    } else {
-        newY = getYInClip(yPos);
-    }
+
     if (TechDraw::DrawUtil::fpCompare(newX, oldX) &&
         TechDraw::DrawUtil::fpCompare(newY, oldY)) {
         return;
     } else {
         setPos(newX, newY);
     }
-}
-
-//is this needed anymore???
-double QGIView::getYInClip(double y)
-{
-    return -y;
 }
 
 QGIViewClip* QGIView::getClipGroup()

@@ -24,8 +24,16 @@
 #define SKETCHERGUI_DrawSketchHandlerArcOfEllipse_H
 
 #include <Gui/Notifications.h>
+#include <Gui/Command.h>
+#include <Gui/CommandT.h>
 
+#include <Mod/Sketcher/App/SketchObject.h>
+
+#include "DrawSketchHandler.h"
 #include "GeometryCreationMode.h"
+#include "Utils.h"
+#include "ViewProviderSketch.h"
+
 
 namespace SketcherGui
 {
@@ -290,10 +298,6 @@ public:
                 minAxisPoint = centerPoint + minAxisDir;
                 endAngle += M_PI / 2;
                 startAngle += M_PI / 2;
-                phi -= M_PI / 2;
-                double t = a;
-                a = b;
-                b = t;  // swap a,b
             }
 
             int currentgeoid = getHighestCurveIndex();
@@ -314,7 +318,7 @@ public:
                                       centerPoint.y,
                                       startAngle,
                                       endAngle,
-                                      geometryCreationMode == Construction ? "True" : "False");
+                                      constructionModeAsBooleanText());
 
                 currentgeoid++;
 

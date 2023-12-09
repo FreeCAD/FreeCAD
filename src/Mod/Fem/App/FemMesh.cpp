@@ -272,7 +272,7 @@ void FemMesh::copyMeshData(const FemMesh& mesh)
     SMESHDS_Mesh* meshds = this->myMesh->GetMeshDS();
 
     // Some further information is still not copied:
-    // http://forum.freecad.org/viewtopic.php?f=18&t=18982#p148114
+    // https://forum.freecad.org/viewtopic.php?f=18&t=18982#p148114
     SMDS_NodeIteratorPtr aNodeIter = mesh.myMesh->GetMeshDS()->nodesIterator();
     for (; aNodeIter->more();) {
         const SMDS_MeshNode* aNode = aNodeIter->next();
@@ -2047,7 +2047,7 @@ void FemMesh::writeABAQUS(const std::string& Filename, int elemParam, bool group
 
         // since master 0.15
         // added by werner (wmayer) March 2015,
-        // http://forum.freecad.org/viewtopic.php?f=18&t=10110&start=10#p81681
+        // https://forum.freecad.org/viewtopic.php?f=18&t=10110&start=10#p81681
         // https://github.com/FreeCAD/FreeCAD/commit/5d159f5cf352a93b1aff4fb7b82e8b747ee4f35b
         // https://github.com/FreeCAD/FreeCAD/commit/b007bd19e4e4608caa4cdad350a9f480287fac6b
         // tetra4 FreeCAD --> C3D4 CalculiX
@@ -2250,7 +2250,7 @@ void FemMesh::writeABAQUS(const std::string& Filename, int elemParam, bool group
     anABAQUS_Output << "** Nodes" << std::endl;
     anABAQUS_Output << "*Node, NSET=Nall" << std::endl;
     // This way we get sorted output.
-    // See http://forum.freecad.org/viewtopic.php?f=18&t=12646&start=40#p103004
+    // See https://forum.freecad.org/viewtopic.php?f=18&t=12646&start=40#p103004
     for (const auto& it : vertexMap) {
         anABAQUS_Output << it.first << ", " << it.second.x << ", " << it.second.y << ", "
                         << it.second.z << std::endl;
@@ -2540,25 +2540,25 @@ void FemMesh::Restore(Base::XMLReader& reader)
         reader.addFile(file.c_str(), this);
     }
     if (reader.hasAttribute("a11")) {
-        _Mtrx[0][0] = (float)reader.getAttributeAsFloat("a11");
-        _Mtrx[0][1] = (float)reader.getAttributeAsFloat("a12");
-        _Mtrx[0][2] = (float)reader.getAttributeAsFloat("a13");
-        _Mtrx[0][3] = (float)reader.getAttributeAsFloat("a14");
+        _Mtrx[0][0] = reader.getAttributeAsFloat("a11");
+        _Mtrx[0][1] = reader.getAttributeAsFloat("a12");
+        _Mtrx[0][2] = reader.getAttributeAsFloat("a13");
+        _Mtrx[0][3] = reader.getAttributeAsFloat("a14");
 
-        _Mtrx[1][0] = (float)reader.getAttributeAsFloat("a21");
-        _Mtrx[1][1] = (float)reader.getAttributeAsFloat("a22");
-        _Mtrx[1][2] = (float)reader.getAttributeAsFloat("a23");
-        _Mtrx[1][3] = (float)reader.getAttributeAsFloat("a24");
+        _Mtrx[1][0] = reader.getAttributeAsFloat("a21");
+        _Mtrx[1][1] = reader.getAttributeAsFloat("a22");
+        _Mtrx[1][2] = reader.getAttributeAsFloat("a23");
+        _Mtrx[1][3] = reader.getAttributeAsFloat("a24");
 
-        _Mtrx[2][0] = (float)reader.getAttributeAsFloat("a31");
-        _Mtrx[2][1] = (float)reader.getAttributeAsFloat("a32");
-        _Mtrx[2][2] = (float)reader.getAttributeAsFloat("a33");
-        _Mtrx[2][3] = (float)reader.getAttributeAsFloat("a34");
+        _Mtrx[2][0] = reader.getAttributeAsFloat("a31");
+        _Mtrx[2][1] = reader.getAttributeAsFloat("a32");
+        _Mtrx[2][2] = reader.getAttributeAsFloat("a33");
+        _Mtrx[2][3] = reader.getAttributeAsFloat("a34");
 
-        _Mtrx[3][0] = (float)reader.getAttributeAsFloat("a41");
-        _Mtrx[3][1] = (float)reader.getAttributeAsFloat("a42");
-        _Mtrx[3][2] = (float)reader.getAttributeAsFloat("a43");
-        _Mtrx[3][3] = (float)reader.getAttributeAsFloat("a44");
+        _Mtrx[3][0] = reader.getAttributeAsFloat("a41");
+        _Mtrx[3][1] = reader.getAttributeAsFloat("a42");
+        _Mtrx[3][2] = reader.getAttributeAsFloat("a43");
+        _Mtrx[3][3] = reader.getAttributeAsFloat("a44");
     }
 }
 
@@ -2707,25 +2707,7 @@ struct Fem::FemMesh::FemMeshInfo FemMesh::getInfo() const
 
     return rtrn;
 }
-//    for (unsigned int i = 0; i < all_elements.size(); i++)
-//        {
-//                // an consistent data structure is only possible
-//                // if the elements are added in the right order
-//                // thus the order is very important
-//                meshds->AddVolumeWithID(
-//                meshds->FindNode(all_elements[i][0]),
-//                meshds->FindNode(all_elements[i][2]),
-//                meshds->FindNode(all_elements[i][1]),
-//                meshds->FindNode(all_elements[i][3]),
-//                meshds->FindNode(all_elements[i][6]),
-//                meshds->FindNode(all_elements[i][5]),
-//                meshds->FindNode(all_elements[i][4]),
-//                meshds->FindNode(all_elements[i][9]),
-//                meshds->FindNode(all_elements[i][7]),
-//                meshds->FindNode(all_elements[i][8]),
-//                element_id[i]
-//            );
-//        }
+
 
 Base::Quantity FemMesh::getVolume() const
 {

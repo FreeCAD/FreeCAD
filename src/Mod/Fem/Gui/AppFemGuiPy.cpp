@@ -87,7 +87,7 @@ private:
             && object) {
             App::DocumentObject* obj =
                 static_cast<App::DocumentObjectPy*>(object)->getDocumentObjectPtr();
-            if (!obj || !obj->getTypeId().isDerivedFrom(Fem::FemAnalysis::getClassTypeId())) {
+            if (!obj || !obj->isDerivedFrom<Fem::FemAnalysis>()) {
                 throw Py::Exception(Base::PyExc_FC_GeneralError,
                                     "Active Analysis object have to be of type Fem::FemAnalysis!");
             }

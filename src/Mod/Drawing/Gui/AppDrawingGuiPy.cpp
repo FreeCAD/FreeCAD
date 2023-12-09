@@ -146,7 +146,7 @@ private:
             if (PyObject_TypeCheck(item, &(App::DocumentObjectPy::Type))) {
                 App::DocumentObject* obj =
                     static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr();
-                if (obj->getTypeId().isDerivedFrom(Drawing::FeaturePage::getClassTypeId())) {
+                if (obj->isDerivedFrom<Drawing::FeaturePage>()) {
                     Base::FileInfo fi_out(EncodedName.c_str());
                     Base::ofstream str_out(fi_out, std::ios::out | std::ios::binary);
                     if (!str_out) {
@@ -176,16 +176,14 @@ private:
                         for (std::vector<App::DocumentObject*>::const_iterator it = views.begin();
                              it != views.end();
                              ++it) {
-                            if ((*it)->getTypeId().isDerivedFrom(
-                                    Drawing::FeatureViewPart::getClassTypeId())) {
+                            if ((*it)->isDerivedFrom<Drawing::FeatureViewPart>()) {
                                 Drawing::FeatureViewPart* view =
                                     static_cast<Drawing::FeatureViewPart*>(*it);
                                 App::DocumentObject* link = view->Source.getValue();
                                 if (!link) {
                                     throw Py::ValueError("No object linked");
                                 }
-                                if (!link->getTypeId().isDerivedFrom(
-                                        Part::Feature::getClassTypeId())) {
+                                if (!link->isDerivedFrom<Part::Feature>()) {
                                     throw Py::TypeError("Linked object is not a Part object");
                                 }
                                 TopoDS_Shape shape =

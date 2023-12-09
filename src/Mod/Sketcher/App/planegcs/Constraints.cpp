@@ -752,7 +752,6 @@ double ConstraintP2PDistance::grad(double* param)
 double ConstraintP2PDistance::maxStep(MAP_pD_D& dir, double lim)
 {
     MAP_pD_D::iterator it;
-    // distance() >= 0
     it = dir.find(distance());
     if (it != dir.end()) {
         if (it->second < 0.) {
@@ -863,12 +862,11 @@ double ConstraintP2PAngle::grad(double* param)
 
 double ConstraintP2PAngle::maxStep(MAP_pD_D& dir, double lim)
 {
-    // step(angle()) <= pi/18 = 10°
     MAP_pD_D::iterator it = dir.find(angle());
     if (it != dir.end()) {
         double step = std::abs(it->second);
-        if (step > M_PI / 18.0) {
-            lim = std::min(lim, (M_PI / 18.0) / step);
+        if (step > pi_18) {
+            lim = std::min(lim, pi_18 / step);
         }
     }
     return lim;
@@ -908,18 +906,14 @@ double ConstraintP2LDistance::error()
     double dx = x2 - x1;
     double dy = y2 - y1;
     double d = sqrt(dx * dx + dy * dy);  // line length
-    double area =
-        std::abs(-x0 * dy + y0 * dx + x1 * y2
-                 - x2 * y1);  // = x1y2 - x2y1 - x0y2 + x2y0 + x0y1 - x1y0 = 2*(triangle area)
+    double area = std::abs(-x0 * dy + y0 * dx + x1 * y2 - x2 * y1);
     return scale * (area / d - dist);
 }
 
 double ConstraintP2LDistance::grad(double* param)
 {
     double deriv = 0.;
-    // darea/dx0 = (y1-y2)      darea/dy0 = (x2-x1)
-    // darea/dx1 = (y2-y0)      darea/dy1 = (x0-x2)
-    // darea/dx2 = (y0-y1)      darea/dy2 = (x1-x0)
+
     if (param == p0x() || param == p0y() || param == p1x() || param == p1y() || param == p2x()
         || param == p2y()) {
         double x0 = *p0x(), x1 = *p1x(), x2 = *p2x();
@@ -961,7 +955,6 @@ double ConstraintP2LDistance::grad(double* param)
 double ConstraintP2LDistance::maxStep(MAP_pD_D& dir, double lim)
 {
     MAP_pD_D::iterator it;
-    // distance() >= 0
     it = dir.find(distance());
     if (it != dir.end()) {
         if (it->second < 0.) {
@@ -1056,17 +1049,13 @@ double ConstraintPointOnLine::error()
     double dx = x2 - x1;
     double dy = y2 - y1;
     double d = sqrt(dx * dx + dy * dy);
-    double area = -x0 * dy + y0 * dx + x1 * y2
-        - x2 * y1;  // = x1y2 - x2y1 - x0y2 + x2y0 + x0y1 - x1y0 = 2*(triangle area)
+    double area = -x0 * dy + y0 * dx + x1 * y2 - x2 * y1;
     return scale * area / d;
 }
 
 double ConstraintPointOnLine::grad(double* param)
 {
     double deriv = 0.;
-    // darea/dx0 = (y1-y2)      darea/dy0 = (x2-x1)
-    // darea/dx1 = (y2-y0)      darea/dy1 = (x0-x2)
-    // darea/dx2 = (y0-y1)      darea/dy2 = (x1-x0)
     if (param == p0x() || param == p0y() || param == p1x() || param == p1y() || param == p2x()
         || param == p2y()) {
         double x0 = *p0x(), x1 = *p1x(), x2 = *p2x();
@@ -1453,12 +1442,11 @@ double ConstraintL2LAngle::grad(double* param)
 
 double ConstraintL2LAngle::maxStep(MAP_pD_D& dir, double lim)
 {
-    // step(angle()) <= pi/18 = 10°
     MAP_pD_D::iterator it = dir.find(angle());
     if (it != dir.end()) {
         double step = std::abs(it->second);
-        if (step > M_PI / 18.0) {
-            lim = std::min(lim, (M_PI / 18.0) / step);
+        if (step > pi_18) {
+            lim = std::min(lim, pi_18 / step);
         }
     }
     return lim;
@@ -1517,17 +1505,13 @@ double ConstraintMidpointOnLine::error()
     double dx = x2 - x1;
     double dy = y2 - y1;
     double d = sqrt(dx * dx + dy * dy);
-    double area = -x0 * dy + y0 * dx + x1 * y2
-        - x2 * y1;  // = x1y2 - x2y1 - x0y2 + x2y0 + x0y1 - x1y0 = 2*(triangle area)
+    double area = -x0 * dy + y0 * dx + x1 * y2 - x2 * y1;  // = 2*(triangle area)
     return scale * area / d;
 }
 
 double ConstraintMidpointOnLine::grad(double* param)
 {
     double deriv = 0.;
-    // darea/dx0 = (y1-y2)      darea/dy0 = (x2-x1)
-    // darea/dx1 = (y2-y0)      darea/dy1 = (x0-x2)
-    // darea/dx2 = (y0-y1)      darea/dy2 = (x1-x0)
     if (param == l1p1x() || param == l1p1y() || param == l1p2x() || param == l1p2y()
         || param == l2p1x() || param == l2p1y() || param == l2p2x() || param == l2p2y()) {
         double x0 = ((*l1p1x()) + (*l1p2x())) / 2;
@@ -1780,7 +1764,7 @@ void ConstraintEllipseTangentLine::rescale(double coef)
 void ConstraintEllipseTangentLine::errorgrad(double* err, double* grad, double* param)
 {
     // DeepSOIC equation
-    // http://forum.freecad.org/viewtopic.php?f=10&t=7520&start=140
+    // https://forum.freecad.org/viewtopic.php?f=10&t=7520&start=140
 
     if (pvecChangedFlag) {
         ReconstructGeomPointers();
@@ -1830,23 +1814,6 @@ double ConstraintEllipseTangentLine::grad(double* param)
 
     double deriv;
     errorgrad(nullptr, &deriv, param);
-
-// use numeric for testing
-#if 0
-        double const eps = 0.00001;
-        double oldparam = *param;
-        double v0 = this->error();
-        *param += eps;
-        double vr = this->error();
-        *param = oldparam - eps;
-        double vl = this->error();
-        *param = oldparam;
-        //If not nasty, real derivative should be between left one and right one
-        double numretl = (v0 - vl) / eps;
-        double numretr = (vr - v0) / eps;
-        assert(deriv <= std::max(numretl, numretr));
-        assert(deriv >= std::min(numretl, numretr));
-#endif
 
     return deriv * scale;
 }
@@ -1969,23 +1936,6 @@ double ConstraintInternalAlignmentPoint2Ellipse::grad(double* param)
 
     double deriv;
     errorgrad(nullptr, &deriv, param);
-
-// use numeric for testing
-#if 0
-        double const eps = 0.00001;
-        double oldparam = *param;
-        double v0 = this->error();
-        *param += eps;
-        double vr = this->error();
-        *param = oldparam - eps;
-        double vl = this->error();
-        *param = oldparam;
-        //If not nasty, real derivative should be between left one and right one
-        double numretl = (v0 - vl) / eps;
-        double numretr = (vr - v0) / eps;
-        assert(deriv <= std::max(numretl, numretr));
-        assert(deriv >= std::min(numretl, numretr));
-#endif
 
     return deriv * scale;
 }
@@ -2374,15 +2324,6 @@ double ConstraintCurveValue::grad(double* param)
 
 double ConstraintCurveValue::maxStep(MAP_pD_D& /*dir*/, double lim)
 {
-    // step(angle()) <= pi/18 = 10°
-    /* TODO: curve-dependent parameter change limiting??
-    MAP_pD_D::iterator it = dir.find(this->u());
-    if (it != dir.end()) {
-        double step = std::abs(it->second);
-        if (step > M_PI/18.)
-            lim = std::min(lim, (M_PI/18.) / step);
-    }
-    */
     return lim;
 }
 
@@ -2436,7 +2377,7 @@ double ConstraintPointOnHyperbola::error()
     double b = *rmin();
 
     // Full sage worksheet at:
-    // http://forum.freecad.org/viewtopic.php?f=10&t=8038&p=110447#p110447
+    // https://forum.freecad.org/viewtopic.php?f=10&t=8038&p=110447#p110447
     //
     // Err = |PF2| - |PF1| - 2*a
     // sage code:
@@ -2706,24 +2647,6 @@ double ConstraintAngleViaPoint::grad(double* param)
     deriv -= ((-n1.dx) * n1.y / pow(n1.length(), 2) + n1.dy * n1.x / pow(n1.length(), 2));
     deriv += ((-n2.dx) * n2.y / pow(n2.length(), 2) + n2.dy * n2.x / pow(n2.length(), 2));
 
-
-// use numeric for testing
-#if 0
-    double const eps = 0.00001;
-    double oldparam = *param;
-    double v0 = this->error();
-    *param += eps;
-    double vr = this->error();
-    *param = oldparam - eps;
-    double vl = this->error();
-    *param = oldparam;
-    //If not nasty, real derivative should be between left one and right one
-    double numretl = (v0-vl)/eps;
-    double numretr = (vr-v0)/eps;
-    assert(deriv <= std::max(numretl,numretr) );
-    assert(deriv >= std::min(numretl,numretr) );
-#endif
-
     return scale * deriv;
 }
 
@@ -2840,23 +2763,6 @@ double ConstraintSnell::grad(double* param)
 
     double deriv;
     errorgrad(nullptr, &deriv, param);
-
-// use numeric for testing
-#if 0
-    double const eps = 0.00001;
-    double oldparam = *param;
-    double v0 = this->error();
-    *param += eps;
-    double vr = this->error();
-    *param = oldparam - eps;
-    double vl = this->error();
-    *param = oldparam;
-    //If not nasty, real derivative should be between left one and right one
-    double numretl = (v0 - vl) / eps;
-    double numretr = (vr - v0) / eps;
-    assert(deriv <= std::max(numretl, numretr));
-    assert(deriv >= std::min(numretl, numretr));
-#endif
 
     return scale * deriv;
 }

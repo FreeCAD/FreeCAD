@@ -225,7 +225,8 @@ void QGVNavStyle::handleMouseMoveEvent(QMouseEvent* event)
 {
     //    Base::Console().Message("QGVNS::handleMouseMoveEvent()\n");
     if (getViewer()->isBalloonPlacing()) {
-        getViewer()->setBalloonCursorPos(event->pos());
+        balloonCursorMovement(event);
+        return;
     }
 
     if (panningActive) {
@@ -396,6 +397,13 @@ void QGVNavStyle::placeBalloon(QPoint p)
     getViewer()->getScene()->createBalloon(getViewer()->mapToScene(p),
                                            getViewer()->getBalloonParent());
     getViewer()->setBalloonPlacing(false);
+}
+
+void QGVNavStyle::balloonCursorMovement(QMouseEvent *event)
+{
+    getViewer()->setBalloonCursorPos(event->pos());
+    event->accept();
+    return;
 }
 
 //****************************************

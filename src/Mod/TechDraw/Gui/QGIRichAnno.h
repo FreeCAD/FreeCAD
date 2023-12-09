@@ -65,6 +65,7 @@ public:
                 const QStyleOptionGraphicsItem * option,
                 QWidget * widget = nullptr ) override;
     QRectF boundingRect() const override;
+    QRectF frameRect() const;
 
     void drawBorder() override;
     void updateView(bool update = false) override;
@@ -75,9 +76,9 @@ public:
     QPen rectPen() const;
 
     void setExportingPdf(bool b) { m_isExportingPdf = b; }
-    bool getExportingPdf() { return m_isExportingPdf; }
+    bool getExportingPdf() const { return m_isExportingPdf; }
     void setExportingSvg(bool b) { m_isExportingSvg = b; }
-    bool getExportingSvg() { return m_isExportingSvg; }
+    bool getExportingSvg() const { return m_isExportingSvg; }
 
 protected:
     void draw() override;
@@ -85,6 +86,8 @@ protected:
     QFont prefFont(void);
 
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
+
+    QString convertTextSizes(const QString& inHtml)  const;
 
     bool m_isExportingPdf;
     bool m_isExportingSvg;

@@ -94,38 +94,38 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="483"/>
+      <location filename="../../ViewProviderInspection.cpp" line="482"/>
       <source>Remove annotations</source>
       <translation>Odstranit poznámky</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="484"/>
+      <location filename="../../ViewProviderInspection.cpp" line="483"/>
       <source>Do you want to remove all annotations?</source>
       <translation>Chcete odstranit všechny poznámky?</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="542"/>
+      <location filename="../../ViewProviderInspection.cpp" line="541"/>
       <source>Annotation</source>
       <translation>Poznámka</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="545"/>
+      <location filename="../../ViewProviderInspection.cpp" line="544"/>
       <source>Leave info mode</source>
       <translation>Opustit info režim</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="680"/>
+      <location filename="../../ViewProviderInspection.cpp" line="675"/>
       <source>Distance: &gt; %1</source>
       <translation>Vzdálenost: &gt; %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="684"/>
+      <location filename="../../ViewProviderInspection.cpp" line="679"/>
       <source>Distance: &lt; %1</source>
       <translation>Vzdálenost: &lt; %1</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderInspection.cpp" line="704"/>
-      <location filename="../../ViewProviderInspection.cpp" line="721"/>
+      <location filename="../../ViewProviderInspection.cpp" line="699"/>
+      <location filename="../../ViewProviderInspection.cpp" line="716"/>
       <source>Distance: %1</source>
       <translation>Vzdálenost: %1</translation>
     </message>

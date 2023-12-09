@@ -23,7 +23,7 @@
 
 __title__ = "BOPTools.BOPFeatures module"
 __author__ = "Werner Mayer"
-__url__ = "http://www.freecad.org"
+__url__ = "https://www.freecad.org"
 __doc__ = "Helper class to create the features for Boolean operations."
 
 import FreeCAD
@@ -104,4 +104,9 @@ class BOPFeatures:
     def copy_visual_attributes(self, target, source):
         if target.ViewObject:
             target.ViewObject.ShapeColor = source.ViewObject.ShapeColor
-            target.ViewObject.DisplayMode = source.ViewObject.DisplayMode
+            displayMode = source.ViewObject.DisplayMode
+            src = source
+            while displayMode == "Link":
+                src = src.LinkedObject
+                displayMode = src.ViewObject.DisplayMode
+            target.ViewObject.DisplayMode = displayMode

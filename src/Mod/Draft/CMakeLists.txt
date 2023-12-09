@@ -71,6 +71,7 @@ SET(Draft_utilities
     draftutils/groups.py
     draftutils/init_tools.py
     draftutils/init_draft_statusbar.py
+    draftutils/params.py
     draftutils/units.py
     draftutils/utils.py
     draftutils/gui_utils.py

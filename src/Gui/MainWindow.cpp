@@ -54,7 +54,7 @@
 # include <QPushButton>
 #endif
 
-#if defined(Q_OS_WIN)
+#if defined(Q_OS_WIN) && QT_VERSION < QT_VERSION_CHECK(6,0,0)
 # include <QtPlatformHeaders/QWindowsWindowFunctions>
 #endif
 
@@ -99,7 +99,6 @@
 #include "WaitCursor.h"
 #include "WorkbenchManager.h"
 #include "Workbench.h"
-
 
 #include "MergeDocuments.h"
 #include "ViewProviderExtern.h"
@@ -181,11 +180,14 @@ public:
         }
         QObject::connect(actionGrp, &QActionGroup::triggered, this, [this](QAction* action) {
             int userSchema = action->data().toInt();
-            // Set and save the Unit System
-            Base::UnitsApi::setSchema(static_cast<Base::UnitSystem>(userSchema));
-            getWindowParameter()->SetInt("UserSchema", userSchema);
-            // Update the application to show the unit change
-            Gui::Application::Instance->onUpdate();
+            setUserSchema(userSchema);
+            // Force PropertyEditor refresh until we find a better way.  Q_EMIT something?
+            const auto views = getMainWindow()->findChildren<PropertyView*>();
+            for(auto view : views) {
+                bool show = view->showAll();
+                view->setShowAll(!show);
+                view->setShowAll(show);
+            }
         } );
         setMenu(menu);
         retranslateUi();
@@ -216,10 +218,32 @@ public:
         }
     }
 
+    void setUserSchema(int userSchema)
+    {
+        App::Document* doc = App::GetApplication().getActiveDocument();
+        if ( doc != nullptr ) {
+            if (doc->UnitSystem.getValue() != userSchema )
+                doc->UnitSystem.setValue(userSchema);
+        } else
+            getWindowParameter()->SetInt("UserSchema", userSchema);
+
+        unitChanged();
+        Base::UnitsApi::setSchema(static_cast<Base::UnitSystem>(userSchema));
+        // Update the main window to show the unit change
+        Gui::Application::Instance->onUpdate();
+    }
+
 private:
     void unitChanged()
     {
+        ParameterGrp::handle hGrpu = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/Units");
+        bool ignore = hGrpu->GetBool("IgnoreProjectSchema", false);
+        App::Document* doc = App::GetApplication().getActiveDocument();
         int userSchema = getWindowParameter()->GetInt("UserSchema", 0);
+        if ( doc != nullptr && ! ignore) {
+            userSchema = doc->UnitSystem.getValue();
+        }
         auto actions = menu()->actions();
         if(Q_UNLIKELY(userSchema < 0 || userSchema >= actions.size())) {
             userSchema = 0;
@@ -242,7 +266,7 @@ private:
 // Pimpl class
 struct MainWindowP
 {
-    QPushButton* sizeLabel;
+    DimensionWidget* sizeLabel;
     QLabel* actionLabel;
     QTimer* actionTimer;
     QTimer* statusTimer;
@@ -252,7 +276,7 @@ struct MainWindowP
     QMdiArea* mdiArea;
     QPointer<MDIView> activeView;
     QSignalMapper* windowMapper;
-    QSplashScreen* splashscreen;
+    SplashScreen* splashscreen;
     StatusBarObserver* status;
     bool whatsthis;
     QString whatstext;
@@ -261,7 +285,6 @@ struct MainWindowP
     int actionUpdateDelay = 0;
     QMap<QString, QPointer<UrlHandler> > urlHandler;
     std::string hiddenDockWindows;
-    QPointer<QScreen> screen;
     boost::signals2::scoped_connection connParam;
     ParameterGrp::handle hGrp;
     bool _restoring = false;
@@ -1388,6 +1411,10 @@ void MainWindow::onToolBarMenuAboutToShow()
             menu->addAction(action);
         }
     }
+
+    menu->addSeparator();
+
+    Application::Instance->commandManager().getCommandByName("Std_ToggleToolBarLock")->addTo(menu);
 }
 
 void MainWindow::onDockWindowMenuAboutToShow()
@@ -1695,37 +1722,43 @@ void MainWindow::loadWindowSettings()
     QString qtver = QStringLiteral("Qt%1.%2").arg(major).arg(minor);
     QSettings config(vendor, application);
 
-    QRect rect = d->screen ? d->screen->availableGeometry()
-                           : QApplication::primaryScreen()->availableGeometry();
+    QRect rect = QApplication::primaryScreen()->availableGeometry();
+    int maxHeight = rect.height();
+    int maxWidth = rect.width();
 
     config.beginGroup(qtver);
     QPoint pos = config.value(QStringLiteral("Position"), this->pos()).toPoint();
-    QSize size = config.value(QStringLiteral("Size"), rect.size()).toSize();
+    maxWidth -= pos.x();
+    maxHeight -= pos.y();
+    QSize size = config.value(QStringLiteral("Size"), QSize(maxWidth, maxHeight)).toSize();
     bool max = config.value(QStringLiteral("Maximized"), false).toBool();
     bool showStatusBar = config.value(QStringLiteral("StatusBar"), true).toBool();
     QByteArray windowState = config.value(QStringLiteral("MainWindowState")).toByteArray();
     config.endGroup();
 
+
     std::string geometry = d->hGrp->GetASCII("Geometry");
     std::istringstream iss(geometry);
     int x,y,w,h;
     if (iss >> x >> y >> w >> h) {
-        pos = QPoint(x,y);
-        size = QSize(w,h);
+        pos = QPoint(x, y);
+        size = QSize(w, h);
     }
+
     max = d->hGrp->GetBool("Maximized", max);
     showStatusBar = d->hGrp->GetBool("StatusBar", showStatusBar);
     std::string wstate = d->hGrp->GetASCII("MainWindowState");
-    if (wstate.size())
+    if (!wstate.empty()) {
         windowState = QByteArray::fromBase64(wstate.c_str());
+    }
 
-    x = std::max<int>(rect.left(), std::min<int>(rect.left()+rect.width()/2, pos.x()));
-    y = std::max<int>(rect.top(), std::min<int>(rect.top()+rect.height()/2, pos.y()));
-    w = std::min<int>(rect.width(), size.width());
-    h = std::min<int>(rect.height(), size.height());
-
-    this->move(x, y);
-    this->resize(w, h);
+    resize(size);
+    int x1{},x2{},y1{},y2{};
+    // make sure that the main window is not totally out of the visible rectangle
+    rect.getCoords(&x1, &y1, &x2, &y2);
+    pos.setX(qMin(qMax(pos.x(),x1-this->width()+30),x2-30));
+    pos.setY(qMin(qMax(pos.y(),y1-10),y2-10));
+    this->move(pos);
 
     Base::StateLocker guard(d->_restoring);
 
@@ -1735,7 +1768,7 @@ void MainWindow::loadWindowSettings()
     max ? showMaximized() : show();
 
     // make menus and tooltips usable in fullscreen under Windows, see issue #7563
-#if defined(Q_OS_WIN)
+#if defined(Q_OS_WIN) && QT_VERSION < QT_VERSION_CHECK(6,0,0)
     if (QWindow* win = this->windowHandle()) {
         QWindowsWindowFunctions::setHasBorderInFullScreen(win, true);
     }
@@ -1830,12 +1863,12 @@ void MainWindow::startSplasher()
         // first search for an external image file
         if (hGrp->GetBool("ShowSplasher", true)) {
             d->splashscreen = new SplashScreen(this->splashImage());
+
+            if (!hGrp->GetBool("ShowSplasherMessages", true)) {
+                d->splashscreen->setShowMessages(false);
+            }
+
             d->splashscreen->show();
-#if QT_VERSION >= QT_VERSION_CHECK(5,14,0)
-            d->screen = d->splashscreen->screen();
-#else
-            d->screen = QApplication::primaryScreen();
-#endif
         }
         else {
             d->splashscreen = nullptr;
@@ -2420,6 +2453,13 @@ void MainWindow::setPaneText(int i, QString text)
         d->sizeLabel->setText(text);
     }
 }
+
+
+void MainWindow::setUserSchema(int userSchema)
+{
+    d->sizeLabel->setUserSchema(userSchema);
+}
+
 
 void MainWindow::customEvent(QEvent* e)
 {

@@ -151,15 +151,15 @@ public:
 
     /// @name Flag accessors
     //@{
-    bool isBinary() const;
-    bool isHashed() const;
-    bool isPostfixed() const;
-    bool isPostfixEncoded() const;
-    bool isIndexed() const;
-    bool isPrefixID() const;
-    bool isPrefixIDIndex() const;
-    bool isMarked() const;
-    bool isPersistent() const;
+    inline bool isBinary() const;
+    inline bool isHashed() const;
+    inline bool isPostfixed() const;
+    inline bool isPostfixEncoded() const;
+    inline bool isIndexed() const;
+    inline bool isPrefixID() const;
+    inline bool isPrefixIDIndex() const;
+    inline bool isMarked() const;
+    inline bool isPersistent() const;
     //@}
 
     /// Checks if this StringID is from the input hasher
@@ -278,7 +278,7 @@ public:
     void mark() const;
 
     /// Mark the StringID as persistent regardless of usage mark
-    void setPersistent(bool enable);
+    inline void setPersistent(bool enable);
 
     bool operator<(const StringID& other) const
     {

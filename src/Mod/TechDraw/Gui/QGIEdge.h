@@ -51,11 +51,16 @@ public:
     bool getSmoothEdge() { return(isSmoothEdge); }
     void setPrettyNormal() override;
 
-    double getEdgeFuzz(void) const;
+    double getEdgeFuzz() const;
+
+    void setLinePen(QPen isoPen);
+
 
 protected:
 
     void mouseDoubleClickEvent(QGraphicsSceneMouseEvent *event) override;
+
+    bool multiselectEligible() override { return true; }
 
     int projIndex;                                                     //index of edge in Projection. must exist.
 

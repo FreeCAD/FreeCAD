@@ -8,6 +8,7 @@
 #include <App/Application.h>
 #include <App/ComplexGeoData.h>
 #include <Base/BoundBox.h>
+#include <Base/Writer.h>
 #include <src/App/InitApplication.h>
 
 
@@ -30,21 +31,6 @@ public:
         (void)number;
         (void)Type;
         return nullptr;
-    }
-
-    unsigned int getMemSize() const override
-    {
-        return 0;
-    }
-
-    void Save(Base::Writer& writer) const override
-    {
-        (void)writer;
-    }
-
-    void Restore(Base::XMLReader& reader) override
-    {
-        (void)reader;
     }
 
     void setTransform(const Base::Matrix4D& rclTrf) override
@@ -409,5 +395,78 @@ TEST_F(ComplexGeoDataTest, flushElementMap)  // NOLINT
 {
     // Does nothing in the base class
 }
+
+TEST_F(ComplexGeoDataTest, saveWithNoElementMap)  // NOLINT
+{
+    // Arrange
+    Base::StringWriter writer;
+    cgd().resetElementMap();
+
+    // Act
+    cgd().Save(writer);
+
+    // Assert - With no element map, that element of the XML is empty
+    EXPECT_TRUE(writer.getString().find("<ElementMap/>") != std::string::npos);
+}
+
+TEST_F(ComplexGeoDataTest, saveWithElementMap)
+{
+    // Arrange
+    Base::StringWriter writer;
+    auto map = createMappedName("SomeElement");
+
+    // Act
+    cgd().Save(writer);
+
+    // Assert
+    EXPECT_TRUE(writer.getString().find("<ElementMap ") != std::string::npos);
+    EXPECT_TRUE(writer.getString().find("<ElementMap2 ") != std::string::npos);
+    EXPECT_TRUE(writer.getString().find(" file=") == std::string::npos);  // No persistence name set
+    // TODO: assert that the elementmap was written in "raw" mode
+}
+
+TEST_F(ComplexGeoDataTest, saveWithPersistenceFilename)
+{
+    // Arrange
+    Base::StringWriter writer;
+    auto map = createMappedName("SomeElement");
+    cgd().setPersistenceFileName("some_file_name.txt");
+
+    // Act
+    cgd().Save(writer);
+
+    // Assert
+    EXPECT_TRUE(writer.getString().find(" file=") != std::string::npos);
+    EXPECT_TRUE(writer.getString().find("some_file_name.txt") != std::string::npos);
+}
+
+TEST_F(ComplexGeoDataTest, saveDocFileWithNoElementMap)
+{
+    // Arrange
+    Base::StringWriter writer;
+    cgd().resetElementMap();
+
+    // Act
+    cgd().SaveDocFile(writer);
+
+    // Assert -- no element map tag if no element map
+    EXPECT_TRUE(writer.getString().find("BeginElementMap") == std::string::npos);
+}
+
+TEST_F(ComplexGeoDataTest, saveDocFileWithElementMap)
+{
+    // Arrange
+    Base::StringWriter writer;
+    auto map = createMappedName("SomeElement");
+
+    // Act
+    cgd().SaveDocFile(writer);
+
+    // Assert -- must begin a v1 ElementMap
+    EXPECT_TRUE(writer.getString().find("BeginElementMap v1") != std::string::npos);
+}
+
+TEST_F(ComplexGeoDataTest, restoreStream)
+{}
 
 // NOLINTEND(readability-magic-numbers)

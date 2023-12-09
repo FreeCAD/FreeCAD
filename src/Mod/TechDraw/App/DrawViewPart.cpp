@@ -201,15 +201,12 @@ std::vector<App::DocumentObject*> DrawViewPart::getAllSources() const
     return result;
 }
 
-//! pick supported 2d shapes out of the Source properties and
+//! pick vertex objects out of the Source properties and
 //! add them directly to the geometry without going through HLR
-//! NOTE: this is for loose 2d shapes such as Part line or circle and is
-//! not meant to include complex 2d shapes such as Sketches.
-void DrawViewPart::addShapes2d(void)
+void DrawViewPart::addPoints(void)
 {
-//    Base::Console().Message("DVP::addShapes2d()\n");
-    // get all the 2d shapes in the sources, then pick through them for loose edges
-    // or vertices.
+//    Base::Console().Message("DVP::addPoints()\n");
+    // get all the 2d shapes in the sources, then pick through them for vertices.
     std::vector<TopoDS_Shape> shapes = ShapeExtractor::getShapes2d(getAllSources());
     for (auto& s : shapes) {
         if (s.ShapeType() == TopAbs_VERTEX) {
@@ -220,22 +217,6 @@ void DrawViewPart::addShapes2d(void)
             Base::Vector3d projected = projectPoint(vp * getScale());
             TechDraw::VertexPtr v1(std::make_shared<TechDraw::Vertex>(projected));
             geometryObject->addVertex(v1);
-        }
-        else if (s.ShapeType() == TopAbs_EDGE) {
-            Base::Console().Message("DVP::add2dShapes - found loose edge - isNull: %d\n", s.IsNull());
-            TopoDS_Shape sTrans = ShapeUtils::moveShape(s,
-                                                      m_saveCentroid * -1.0);
-            TopoDS_Shape sScale = ShapeUtils::scaleShape(sTrans,
-                                                       getScale());
-            TopoDS_Shape sMirror = ShapeUtils::mirrorShape(sScale);
-            TopoDS_Edge edge = TopoDS::Edge(sMirror);
-            BaseGeomPtr bg = projectEdge(edge);
-
-            geometryObject->addEdge(bg);
-
-        } else {
-            // message for developers.
-            //Base::Console().Message("DEVEL: DVP::addShapes2d - shape is not a vertex or edge\n");
         }
     }
 }
@@ -449,7 +430,7 @@ void DrawViewPart::postHlrTasks(void)
     addCosmeticVertexesToGeom();
     addCosmeticEdgesToGeom();
     addReferencesToGeom();
-    addShapes2d();
+    addPoints();
 
     //balloons need to be recomputed here because their
     //references will be invalid until the geometry exists
@@ -723,7 +704,7 @@ std::vector<TechDraw::DrawHatch*> DrawViewPart::getHatches() const
     std::vector<TechDraw::DrawHatch*> result;
     std::vector<App::DocumentObject*> children = getInList();
     for (auto& child : children) {
-        if (child->getTypeId().isDerivedFrom(DrawHatch::getClassTypeId()) && !child->isRemoving()) {
+        if (child->isDerivedFrom<DrawHatch>() && !child->isRemoving()) {
             TechDraw::DrawHatch* hatch = dynamic_cast<TechDraw::DrawHatch*>(child);
             result.push_back(hatch);
         }
@@ -737,7 +718,7 @@ std::vector<TechDraw::DrawGeomHatch*> DrawViewPart::getGeomHatches() const
     std::vector<TechDraw::DrawGeomHatch*> result;
     std::vector<App::DocumentObject*> children = getInList();
     for (auto& child : children) {
-        if (child->getTypeId().isDerivedFrom(DrawGeomHatch::getClassTypeId())
+        if (child->isDerivedFrom<DrawGeomHatch>()
             && !child->isRemoving()) {
             TechDraw::DrawGeomHatch* geom = dynamic_cast<TechDraw::DrawGeomHatch*>(child);
             result.push_back(geom);
@@ -757,7 +738,7 @@ std::vector<TechDraw::DrawViewDimension*> DrawViewPart::getDimensions() const
     std::vector<App::DocumentObject*>::iterator newEnd =
         std::unique(children.begin(), children.end());
     for (std::vector<App::DocumentObject*>::iterator it = children.begin(); it != newEnd; ++it) {
-        if ((*it)->getTypeId().isDerivedFrom(DrawViewDimension::getClassTypeId())) {
+        if ((*it)->isDerivedFrom<DrawViewDimension>()) {
             TechDraw::DrawViewDimension* dim = dynamic_cast<TechDraw::DrawViewDimension*>(*it);
             result.push_back(dim);
         }
@@ -773,7 +754,7 @@ std::vector<TechDraw::DrawViewBalloon*> DrawViewPart::getBalloons() const
     std::vector<App::DocumentObject*>::iterator newEnd =
         std::unique(children.begin(), children.end());
     for (std::vector<App::DocumentObject*>::iterator it = children.begin(); it != newEnd; ++it) {
-        if ((*it)->getTypeId().isDerivedFrom(DrawViewBalloon::getClassTypeId())) {
+        if ((*it)->isDerivedFrom<DrawViewBalloon>()) {
             TechDraw::DrawViewBalloon* balloon = dynamic_cast<TechDraw::DrawViewBalloon*>(*it);
             result.push_back(balloon);
         }
@@ -1164,7 +1145,7 @@ std::vector<DrawViewSection*> DrawViewPart::getSectionRefs() const
     std::vector<DrawViewSection*> result;
     std::vector<App::DocumentObject*> inObjs = getInList();
     for (auto& o : inObjs) {
-        if (o->getTypeId().isDerivedFrom(DrawViewSection::getClassTypeId())) {
+        if (o->isDerivedFrom<DrawViewSection>()) {
             result.push_back(static_cast<TechDraw::DrawViewSection*>(o));
         }
     }
@@ -1176,7 +1157,7 @@ std::vector<DrawViewDetail*> DrawViewPart::getDetailRefs() const
     std::vector<DrawViewDetail*> result;
     std::vector<App::DocumentObject*> inObjs = getInList();
     for (auto& o : inObjs) {
-        if (o->getTypeId().isDerivedFrom(DrawViewDetail::getClassTypeId())) {
+        if (o->isDerivedFrom<DrawViewDetail>()) {
             if (!o->isRemoving()) {
                 result.push_back(static_cast<TechDraw::DrawViewDetail*>(o));
             }

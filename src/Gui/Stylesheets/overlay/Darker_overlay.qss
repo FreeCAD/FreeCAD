@@ -42,38 +42,33 @@ Gui--OverlayProxyWidget {
 
 Gui--OverlayToolButton {
   background-color: qlineargradient(x1:0, y1:0.3, x2:0, y2:1, stop:0 #333333, stop:1 #2a2a2a);
-  padding: -2px;
+  padding: 1px;
   border: 0px outset rgb(255, 255, 255);
   border-radius: 0px;
 }
-
 Gui--OverlayToolButton:hover {
-  background: #ffffff;
   padding: 0px;
 }
 
 Gui--OverlayToolButton:focus {
-  background: #cfcfcf;
+  background: #000000;
   padding: 0px;
+  border: 1px rgb(135, 135, 135);
 }
 
 Gui--OverlayToolButton::pressed {
-  background: rgb(159, 159, 159);
-  border: 2px inset rgb(84, 84, 84);
+  background: #000000;
   padding: 0px;
 }
 
 Gui--OverlayToolButton:checked {
-  background: #bebebe;
-  border: 2px inset #bebebe;
   padding: 0px;
-  border-radius: 2px;
 }
 
 Gui--OverlayToolButton:checked:hover {
-  background: rgba(255, 255, 255, 0.8);
-  border: 2px inset rgb(255, 255, 255);
-
+  background: #000000;
+  border: 1px inset #525252;
+  padding: 0px;
 }
 
 /* Use the following selector to customize title bar for each side */

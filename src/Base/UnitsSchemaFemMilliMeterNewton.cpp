@@ -24,7 +24,7 @@
 
 #include "PreCompiled.h"
 #ifdef __GNUC__
-# include <unistd.h>
+#include <unistd.h>
 #endif
 
 #include <QString>
@@ -35,7 +35,9 @@
 using namespace Base;
 
 
-QString UnitsSchemaFemMilliMeterNewton::schemaTranslate(const Quantity &quant, double &factor, QString &unitString)
+QString UnitsSchemaFemMilliMeterNewton::schemaTranslate(const Quantity& quant,
+                                                        double& factor,
+                                                        QString& unitString)
 {
     Unit unit = quant.getUnit();
     if (unit == Unit::Length) {

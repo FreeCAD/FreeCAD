@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>499</width>
-    <height>776</height>
+    <height>768</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -359,14 +359,7 @@ for ProjectionGroups</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
       <item>
-       <layout class="QGridLayout" name="gridLayout_6" columnstretch="1,0,1">
-        <item row="0" column="0">
-         <widget class="QLabel" name="label_7">
-          <property name="text">
-           <string>Projection Group Angle</string>
-          </property>
-         </widget>
-        </item>
+       <layout class="QGridLayout" name="gridLayout_6" columnstretch="1,0,0">
         <item row="0" column="1">
          <spacer name="horizontalSpacer_3">
           <property name="orientation">
@@ -379,6 +372,13 @@ for ProjectionGroups</string>
            </size>
           </property>
          </spacer>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_7">
+          <property name="text">
+           <string>Projection Group Angle</string>
+          </property>
+         </widget>
         </item>
         <item row="0" column="2">
          <widget class="Gui::PrefComboBox" name="cbProjAngle">
@@ -420,15 +420,8 @@ for ProjectionGroups</string>
           </item>
          </widget>
         </item>
-        <item row="1" column="0">
-         <widget class="QLabel" name="label_14">
-          <property name="text">
-           <string>Hidden Line Style</string>
-          </property>
-         </widget>
-        </item>
         <item row="1" column="2">
-         <widget class="Gui::PrefComboBox" name="cbHiddenLineStyle">
+         <widget class="Gui::PrefComboBox" name="cbSectionLineStd">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
             <horstretch>0</horstretch>
@@ -437,37 +430,44 @@ for ProjectionGroups</string>
           </property>
           <property name="minimumSize">
            <size>
-            <width>0</width>
-            <height>0</height>
+            <width>184</width>
+            <height>22</height>
            </size>
           </property>
           <property name="toolTip">
-           <string>Style for hidden lines</string>
+           <string>Standard to be used to draw section lines.  This affects the position of arrows and symbol.</string>
+          </property>
+          <property name="currentIndex">
+           <number>0</number>
           </property>
           <property name="prefEntry" stdset="0">
-           <cstring>HiddenLine</cstring>
+           <cstring>SectionLineStandard</cstring>
           </property>
           <property name="prefPath" stdset="0">
-           <cstring>Mod/TechDraw/General</cstring>
+           <cstring>Mod/TechDraw/Standards</cstring>
           </property>
           <item>
            <property name="text">
-            <string>Continuous</string>
-           </property>
-           <property name="icon">
-            <iconset resource="Resources/TechDraw.qrc">
-             <normaloff>:/icons/continuous-line.svg</normaloff>:/icons/continuous-line.svg</iconset>
+            <string>ANSI</string>
            </property>
           </item>
           <item>
            <property name="text">
-            <string>Dashed</string>
-           </property>
-           <property name="icon">
-            <iconset resource="Resources/TechDraw.qrc">
-             <normaloff>:/icons/dash-line.svg</normaloff>:/icons/dash-line.svg</iconset>
+            <string>ISO</string>
            </property>
           </item>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="label_13">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="text">
+           <string>Section Line Convention</string>
+          </property>
          </widget>
         </item>
        </layout>
@@ -793,7 +793,20 @@ for ProjectionGroups</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout_5">
       <item>
-       <layout class="QGridLayout" name="gridLayout" columnstretch="1,0,1">
+       <layout class="QGridLayout" name="gridLayout" columnstretch="1,0,0">
+        <item row="1" column="1">
+         <spacer name="horizontalSpacer">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
         <item row="0" column="0">
          <widget class="Gui::PrefCheckBox" name="cb_ShowGrid">
           <property name="font">
@@ -830,19 +843,6 @@ for ProjectionGroups</string>
           </property>
          </widget>
         </item>
-        <item row="1" column="1">
-         <spacer name="horizontalSpacer">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
         <item row="1" column="2">
          <widget class="Gui::PrefUnitSpinBox" name="psb_GridSpacing">
           <property name="toolTip">
@@ -868,6 +868,62 @@ for ProjectionGroups</string>
     </widget>
    </item>
    <item>
+    <widget class="QGroupBox" name="gbSelection">
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>0</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>16777215</width>
+       <height>100</height>
+      </size>
+     </property>
+     <property name="title">
+      <string>Selection</string>
+     </property>
+     <layout class="QVBoxLayout" name="verticalLayout_6">
+      <item>
+       <layout class="QGridLayout" name="gridLayout_7">
+        <item row="0" column="0">
+         <widget class="Gui::PrefCheckBox" name="cbMultiSelection">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="toolTip">
+           <string>If enabled, clicking without Ctrl does not clear existing vertex/edge/face selection</string>
+          </property>
+          <property name="text">
+           <string>Enable Multiselection Mode</string>
+          </property>
+          <property name="checked">
+           <bool>false</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>multiSelection</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/TechDraw/General</cstring>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
     <widget class="QLabel" name="label_12">
      <property name="font">
       <font>
@@ -876,12 +932,25 @@ for ProjectionGroups</string>
       </font>
      </property>
      <property name="text">
-      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Note:&lt;/span&gt; Items in &lt;span style=" font-style:italic;"&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+      <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
      </property>
      <property name="wordWrap">
       <bool>true</bool>
      </property>
     </widget>
+   </item>
+   <item>
+    <spacer name="verticalSpacer">
+     <property name="orientation">
+      <enum>Qt::Vertical</enum>
+     </property>
+     <property name="sizeHint" stdset="0">
+      <size>
+       <width>20</width>
+       <height>40</height>
+      </size>
+     </property>
+    </spacer>
    </item>
   </layout>
  </widget>

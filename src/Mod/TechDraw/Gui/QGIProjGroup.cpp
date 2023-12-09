@@ -98,7 +98,7 @@ QVariant QGIProjGroup::itemChange(GraphicsItemChange change, const QVariant &val
          QGIView* gView = dynamic_cast<QGIView *>(childItem);
          if(gView) {
             TechDraw::DrawView *fView = gView->getViewObject();
-            if(fView->getTypeId().isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
+            if(fView->isDerivedFrom<TechDraw::DrawProjGroupItem>()) {
                 TechDraw::DrawProjGroupItem *projItemPtr = static_cast<TechDraw::DrawProjGroupItem *>(fView);
                 QString type = QString::fromLatin1(projItemPtr->Type.getValueAsString());
 

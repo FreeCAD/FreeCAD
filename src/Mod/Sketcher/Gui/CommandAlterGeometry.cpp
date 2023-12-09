@@ -26,6 +26,7 @@
 
 #include <Gui/Action.h>
 #include <Gui/Application.h>
+#include <Gui/BitmapFactory.h>
 #include <Gui/CommandT.h>
 #include <Gui/Document.h>
 #include <Gui/MainWindow.h>
@@ -62,7 +63,7 @@ namespace SketcherGui
 extern GeometryCreationMode geometryCreationMode;
 
 /* Constrain commands =======================================================*/
-DEF_STD_CMD_A(CmdSketcherToggleConstruction)
+DEF_STD_CMD_AU(CmdSketcherToggleConstruction)
 
 CmdSketcherToggleConstruction::CmdSketcherToggleConstruction()
     : Command("Sketcher_ToggleConstruction")
@@ -85,7 +86,9 @@ CmdSketcherToggleConstruction::CmdSketcherToggleConstruction()
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateOblong");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CompCreateRectangles");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreatePolyline");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateArcSlot");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateSlot");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CompSlot");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreateArc");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_Create3PointArc");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CompCreateArc");
@@ -110,6 +113,23 @@ CmdSketcherToggleConstruction::CmdSketcherToggleConstruction()
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CreatePeriodicBSpline");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CompCreateBSpline");
     rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_CarbonCopy");
+    rcCmdMgr.addCommandMode("ToggleConstruction", "Sketcher_ToggleConstruction");
+}
+
+void CmdSketcherToggleConstruction::updateAction(int mode)
+{
+    auto act = getAction();
+    if (act) {
+        switch (static_cast<GeometryCreationMode>(mode)) {
+            case GeometryCreationMode::Normal:
+                act->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_ToggleConstruction"));
+                break;
+            case GeometryCreationMode::Construction:
+                act->setIcon(
+                    Gui::BitmapFactory().iconFromTheme("Sketcher_ToggleConstruction_Constr"));
+                break;
+        }
+    }
 }
 
 void CmdSketcherToggleConstruction::activated(int iMsg)
@@ -120,11 +140,11 @@ void CmdSketcherToggleConstruction::activated(int iMsg)
 
         Gui::CommandManager& rcCmdMgr = Gui::Application::Instance->commandManager();
 
-        if (geometryCreationMode == Construction) {
-            geometryCreationMode = Normal;
+        if (geometryCreationMode == GeometryCreationMode::Construction) {
+            geometryCreationMode = GeometryCreationMode::Normal;
         }
         else {
-            geometryCreationMode = Construction;
+            geometryCreationMode = GeometryCreationMode::Construction;
         }
 
         rcCmdMgr.updateCommands("ToggleConstruction", static_cast<int>(geometryCreationMode));
@@ -197,7 +217,7 @@ void CmdSketcherToggleConstruction::activated(int iMsg)
 
                 auto geo = Obj->getGeometry(geoId);
 
-                if (geo && geo->getTypeId() == Part::GeomPoint::getClassTypeId()) {
+                if (geo && geo->is<Part::GeomPoint>()) {
                     // issue the actual commands to toggle
                     Gui::cmdAppObjectArgs(selection[0].getObject(),
                                           "toggleConstruction(%d) ",

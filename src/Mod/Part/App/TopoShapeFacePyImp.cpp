@@ -727,7 +727,7 @@ PyObject* TopoShapeFacePy::validate(PyObject *args)
         const TopoDS_Face& face = TopoDS::Face(getTopoShapePtr()->getShape());
         BRepCheck_Analyzer aChecker(face);
         if (!aChecker.IsValid()) {
-            TopoDS_Wire outerwire = ShapeAnalysis::OuterWire(face);
+            TopoDS_Wire outerwire = BRepTools::OuterWire(face);
             TopTools_IndexedMapOfShape myMap;
             myMap.Add(outerwire);
 
@@ -1079,7 +1079,7 @@ Py::Object TopoShapeFacePy::getOuterWire() const
     if (shape.IsNull())
         throw Py::RuntimeError("Null shape");
     if (shape.ShapeType() == TopAbs_FACE) {
-        TopoDS_Wire wire = ShapeAnalysis::OuterWire(TopoDS::Face(shape));
+        TopoDS_Wire wire = BRepTools::OuterWire(TopoDS::Face(shape));
         Base::PyObjectBase* wirepy = new TopoShapeWirePy(new TopoShape(wire));
         wirepy->setNotTracking();
         return Py::asObject(wirepy);

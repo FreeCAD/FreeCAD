@@ -68,7 +68,7 @@ class DocumentBasicCases(unittest.TestCase):
     def testCreateDestroy(self):
         # FIXME: Causes somehow a ref count error but it's _not_ FreeCAD.getDocument()!!!
         # If we remove the whole method no error appears.
-        self.failUnless(FreeCAD.getDocument("CreateTest") is not None, "Creating Document failed")
+        self.assertTrue(FreeCAD.getDocument("CreateTest") is not None, "Creating Document failed")
 
     def testAddition(self):
         # Cannot write a real test case for that but when debugging the
@@ -162,61 +162,61 @@ class DocumentBasicCases(unittest.TestCase):
         self.Doc.UndoNames
         self.Doc.RedoNames
         self.Doc.recompute()
-        self.failUnless(L1.Integer == 4711)
-        self.failUnless(L1.Float - 47.11 < 0.001)
-        self.failUnless(L1.Bool == True)
-        self.failUnless(L1.String == "4711")
+        self.assertTrue(L1.Integer == 4711)
+        self.assertTrue(L1.Float - 47.11 < 0.001)
+        self.assertTrue(L1.Bool == True)
+        self.assertTrue(L1.String == "4711")
         # temporarily not checked because of strange behavior of boost::filesystem JR
-        # self.failUnless(L1.Path  == "c:/temp")
-        self.failUnless(float(L1.Angle) - 3.0 < 0.001)
-        self.failUnless(float(L1.Distance) - 47.11 < 0.001)
+        # self.assertTrue(L1.Path  == "c:/temp")
+        self.assertTrue(float(L1.Angle) - 3.0 < 0.001)
+        self.assertTrue(float(L1.Distance) - 47.11 < 0.001)
 
         # test basic property stuff
-        self.failUnless(not L1.getDocumentationOfProperty("Source1") == "")
-        self.failUnless(L1.getGroupOfProperty("Source1") == "Feature Test")
-        self.failUnless(L1.getTypeOfProperty("Source1") == [])
-        self.failUnless(L1.getEnumerationsOfProperty("Source1") is None)
+        self.assertTrue(not L1.getDocumentationOfProperty("Source1") == "")
+        self.assertTrue(L1.getGroupOfProperty("Source1") == "Feature Test")
+        self.assertTrue(L1.getTypeOfProperty("Source1") == [])
+        self.assertTrue(L1.getEnumerationsOfProperty("Source1") is None)
 
         # test the constraint types ( both are constraint to percent range)
-        self.failUnless(L1.ConstraintInt == 5)
-        self.failUnless(L1.ConstraintFloat - 5.0 < 0.001)
+        self.assertTrue(L1.ConstraintInt == 5)
+        self.assertTrue(L1.ConstraintFloat - 5.0 < 0.001)
         L1.ConstraintInt = 500
         L1.ConstraintFloat = 500.0
-        self.failUnless(L1.ConstraintInt == 100)
-        self.failUnless(L1.ConstraintFloat - 100.0 < 0.001)
+        self.assertTrue(L1.ConstraintInt == 100)
+        self.assertTrue(L1.ConstraintFloat - 100.0 < 0.001)
         L1.ConstraintInt = -500
         L1.ConstraintFloat = -500.0
-        self.failUnless(L1.ConstraintInt == 0)
-        self.failUnless(L1.ConstraintFloat - 0.0 < 0.001)
+        self.assertTrue(L1.ConstraintInt == 0)
+        self.assertTrue(L1.ConstraintFloat - 0.0 < 0.001)
 
         # test enum property
         # in App::FeatureTest the current value is set to 4
-        self.failUnless(L1.Enum == "Four")
+        self.assertTrue(L1.Enum == "Four")
         L1.Enum = "Three"
-        self.failUnless(L1.Enum == "Three", "Different value to 'Three'")
+        self.assertTrue(L1.Enum == "Three", "Different value to 'Three'")
         L1.Enum = 2
-        self.failUnless(L1.Enum == "Two", "Different value to 'Two'")
+        self.assertTrue(L1.Enum == "Two", "Different value to 'Two'")
         try:
             L1.Enum = "SurelyNotInThere!"
         except Exception:
             FreeCAD.Console.PrintLog("   exception thrown, OK\n")
         else:
             self.fail("no exception thrown")
-        self.failUnless(
+        self.assertTrue(
             sorted(L1.getEnumerationsOfProperty("Enum"))
             == sorted(["Zero", "One", "Two", "Three", "Four"])
         )
 
-        # self.failUnless(L1.IntegerList  == [4711]   )
+        # self.assertTrue(L1.IntegerList  == [4711]   )
         # f = L1.FloatList
-        # self.failUnless(f -47.11<0.001    )
-        # self.failUnless(L1.Matrix  == [1.0,2.0,3.0,4.0,5.0,6.0,7.0,8.0,9.0,10.0,11.0,12.0,13.0,14.0,15.0,16.0] )
-        # self.failUnless(L1.Vector  == [1.0,2.0,3.0])
+        # self.assertTrue(f -47.11<0.001    )
+        # self.assertTrue(L1.Matrix  == [1.0,2.0,3.0,4.0,5.0,6.0,7.0,8.0,9.0,10.0,11.0,12.0,13.0,14.0,15.0,16.0] )
+        # self.assertTrue(L1.Vector  == [1.0,2.0,3.0])
 
-        self.failUnless(L1.Label == "Label_1", "Invalid object name")
+        self.assertTrue(L1.Label == "Label_1", "Invalid object name")
         L1.Label = "Label_2"
         self.Doc.recompute()
-        self.failUnless(L1.Label == "Label_2", "Invalid object name")
+        self.assertTrue(L1.Label == "Label_2", "Invalid object name")
         self.Doc.removeObject("Label_1")
 
     def testEnum(self):
@@ -311,9 +311,9 @@ class DocumentBasicCases(unittest.TestCase):
         try:
             L1.Name
         except Exception:
-            self.failUnless(True)
+            self.assertTrue(True)
         else:
-            self.failUnless(False)
+            self.assertTrue(False)
         del L1
 
         # What do we expect here?
@@ -325,9 +325,9 @@ class DocumentBasicCases(unittest.TestCase):
         try:
             L2.Name
         except Exception:
-            self.failUnless(True)
+            self.assertTrue(True)
         else:
-            self.failUnless(False)
+            self.assertTrue(False)
         del L2
 
     def testSubObject(self):
@@ -400,15 +400,15 @@ class DocumentBasicCases(unittest.TestCase):
         grp = self.Doc.addObject("App::DocumentObject", "Extension_2")
         # we should have all methods we need to handle extensions
         try:
-            self.failUnless(not grp.hasExtension("App::GroupExtensionPython"))
+            self.assertTrue(not grp.hasExtension("App::GroupExtensionPython"))
             grp.addExtension("App::GroupExtensionPython")
-            self.failUnless(grp.hasExtension("App::GroupExtension"))
-            self.failUnless(grp.hasExtension("App::GroupExtensionPython"))
+            self.assertTrue(grp.hasExtension("App::GroupExtension"))
+            self.assertTrue(grp.hasExtension("App::GroupExtensionPython"))
             grp.addObject(obj)
-            self.failUnless(len(grp.Group) == 1)
-            self.failUnless(grp.Group[0] == obj)
+            self.assertTrue(len(grp.Group) == 1)
+            self.assertTrue(grp.Group[0] == obj)
         except Exception:
-            self.failUnless(False)
+            self.assertTrue(False)
 
         # test if the method override works
         class SpecialGroup:
@@ -421,11 +421,11 @@ class DocumentBasicCases(unittest.TestCase):
         grp2.Proxy = callback
 
         try:
-            self.failUnless(grp2.hasExtension("App::GroupExtension"))
+            self.assertTrue(grp2.hasExtension("App::GroupExtension"))
             grp2.addObject(obj)
-            self.failUnless(len(grp2.Group) == 0)
+            self.assertTrue(len(grp2.Group) == 0)
         except Exception:
-            self.failUnless(True)
+            self.assertTrue(True)
 
         self.Doc.removeObject(grp.Name)
         self.Doc.removeObject(grp2.Name)
@@ -441,8 +441,8 @@ class DocumentBasicCases(unittest.TestCase):
 
         obj = self.Doc.addObject("App::DocumentObject", "myObj")
         MyExtension(obj)
-        self.failUnless(obj.hasExtension("App::GroupExtension"))
-        self.failUnless(obj.hasExtension("App::GroupExtensionPython"))
+        self.assertTrue(obj.hasExtension("App::GroupExtension"))
+        self.assertTrue(obj.hasExtension("App::GroupExtensionPython"))
         self.Doc.removeObject(obj.Name)
         del obj
 
@@ -465,15 +465,21 @@ class DocumentBasicCases(unittest.TestCase):
 
         obj = self.Doc.addObject("App::FeaturePython", "Layer")
         Layer(obj)
-        self.failUnless(obj.hasExtension("App::GroupExtension"))
+        self.assertTrue(obj.hasExtension("App::GroupExtension"))
 
         if FreeCAD.GuiUp:
             LayerViewProvider(obj.ViewObject)
-            self.failUnless(obj.ViewObject.hasExtension("Gui::ViewProviderGroupExtension"))
-            self.failUnless(obj.ViewObject.hasExtension("Gui::ViewProviderGroupExtensionPython"))
+            self.assertTrue(obj.ViewObject.hasExtension("Gui::ViewProviderGroupExtension"))
+            self.assertTrue(obj.ViewObject.hasExtension("Gui::ViewProviderGroupExtensionPython"))
 
         self.Doc.removeObject(obj.Name)
         del obj
+
+    def testHasSelection(self):
+        if FreeCAD.GuiUp:
+            import FreeCADGui
+
+            self.assertFalse(FreeCADGui.Selection.hasSelection("", 1))
 
     def testPropertyLink_Issue2902Part1(self):
         o1 = self.Doc.addObject("App::FeatureTest", "test1")
@@ -665,7 +671,7 @@ class DocumentSaveRestoreCases(unittest.TestCase):
     def testSaveAndRestore(self):
         # saving and restoring
         SaveName = self.TempPath + os.sep + "SaveRestoreTests.FCStd"
-        self.failUnless(self.Doc.Label_1.TypeTransient == 4711)
+        self.assertTrue(self.Doc.Label_1.TypeTransient == 4711)
         self.Doc.Label_1.TypeTransient = 4712
         # setup Linking
         self.Doc.Label_1.Link = self.Doc.Label_2
@@ -676,16 +682,16 @@ class DocumentSaveRestoreCases(unittest.TestCase):
         self.Doc.saveAs(SaveName)
         FreeCAD.closeDocument("SaveRestoreTests")
         self.Doc = FreeCAD.open(SaveName)
-        self.failUnless(self.Doc.Label_1.Integer == 4711)
-        self.failUnless(self.Doc.Label_2.Integer == 4711)
+        self.assertTrue(self.Doc.Label_1.Integer == 4711)
+        self.assertTrue(self.Doc.Label_2.Integer == 4711)
         # test Linkage
-        self.failUnless(self.Doc.Label_1.Link == self.Doc.Label_2)
-        self.failUnless(self.Doc.Label_2.Link == self.Doc.Label_3)
-        self.failUnless(self.Doc.Label_1.LinkSub == (self.Doc.Label_2, ["Sub1", "Sub2"]))
-        self.failUnless(self.Doc.Label_2.LinkSub == (self.Doc.Label_3, ["Sub3", "Sub4"]))
+        self.assertTrue(self.Doc.Label_1.Link == self.Doc.Label_2)
+        self.assertTrue(self.Doc.Label_2.Link == self.Doc.Label_3)
+        self.assertTrue(self.Doc.Label_1.LinkSub == (self.Doc.Label_2, ["Sub1", "Sub2"]))
+        self.assertTrue(self.Doc.Label_2.LinkSub == (self.Doc.Label_3, ["Sub3", "Sub4"]))
         # do NOT save transient properties
-        self.failUnless(self.Doc.Label_1.TypeTransient == 4711)
-        self.failUnless(self.Doc == FreeCAD.getDocument(self.Doc.Name))
+        self.assertTrue(self.Doc.Label_1.TypeTransient == 4711)
+        self.assertTrue(self.Doc == FreeCAD.getDocument(self.Doc.Name))
 
     def testRestore(self):
         Doc = FreeCAD.newDocument("RestoreTests")
@@ -695,7 +701,7 @@ class DocumentSaveRestoreCases(unittest.TestCase):
         Doc.saveAs(FileName)
         # restore must first clear the current content
         Doc.restore()
-        self.failUnless(len(Doc.Objects) == 1)
+        self.assertTrue(len(Doc.Objects) == 1)
         FreeCAD.closeDocument("RestoreTests")
 
     def testActiveDocument(self):
@@ -707,10 +713,10 @@ class DocumentSaveRestoreCases(unittest.TestCase):
             # This also checks for dangling pointers
             Active = FreeCAD.activeDocument()
             # Second is still a valid object
-            self.failUnless(Second != Active)
+            self.assertTrue(Second != Active)
         except Exception:
             # Okay, no document open
-            self.failUnless(True)
+            self.assertTrue(True)
 
     def testExtensionSaveRestore(self):
         # saving and restoring
@@ -731,16 +737,16 @@ class DocumentSaveRestoreCases(unittest.TestCase):
         FreeCAD.closeDocument("SaveRestoreExtensions")
         Doc = FreeCAD.open(SaveName)
 
-        self.failUnless(Doc.Extension_1.hasExtension("App::GroupExtension"))
-        self.failUnless(Doc.Extension_2.hasExtension("App::GroupExtension"))
-        self.failUnless(Doc.Extension_2.Group[0] is Doc.Obj)
-        self.failUnless(hasattr(Doc.Extension_2.Proxy, "allowObject"))
+        self.assertTrue(Doc.Extension_1.hasExtension("App::GroupExtension"))
+        self.assertTrue(Doc.Extension_2.hasExtension("App::GroupExtension"))
+        self.assertTrue(Doc.Extension_2.Group[0] is Doc.Obj)
+        self.assertTrue(hasattr(Doc.Extension_2.Proxy, "allowObject"))
 
         if FreeCAD.GuiUp:
-            self.failUnless(
+            self.assertTrue(
                 Doc.Extension_2.ViewObject.hasExtension("Gui::ViewProviderGroupExtensionPython")
             )
-            self.failUnless(hasattr(Doc.Extension_2.ViewObject.Proxy, "testFunction"))
+            self.assertTrue(hasattr(Doc.Extension_2.ViewObject.Proxy, "testFunction"))
 
         FreeCAD.closeDocument("SaveRestoreExtensions")
 
@@ -810,10 +816,10 @@ class DocumentRecomputeCases(unittest.TestCase):
         L3.LinkList = [L5, L6]
         L7.Link = L8  # make second root
 
-        self.failUnless(L7 in self.Doc.RootObjects)
-        self.failUnless(L1 in self.Doc.RootObjects)
+        self.assertTrue(L7 in self.Doc.RootObjects)
+        self.assertTrue(L1 in self.Doc.RootObjects)
 
-        self.failUnless(len(self.Doc.Objects) == len(self.Doc.TopologicalSortedObjects))
+        self.assertTrue(len(self.Doc.Objects) == len(self.Doc.TopologicalSortedObjects))
 
         seqDic = {}
         i = 0
@@ -822,58 +828,58 @@ class DocumentRecomputeCases(unittest.TestCase):
             print(obj)
             i += 1
 
-        self.failUnless(seqDic[L2] > seqDic[L1])
-        self.failUnless(seqDic[L3] > seqDic[L1])
-        self.failUnless(seqDic[L5] > seqDic[L2])
-        self.failUnless(seqDic[L5] > seqDic[L3])
-        self.failUnless(seqDic[L5] > seqDic[L1])
+        self.assertTrue(seqDic[L2] > seqDic[L1])
+        self.assertTrue(seqDic[L3] > seqDic[L1])
+        self.assertTrue(seqDic[L5] > seqDic[L2])
+        self.assertTrue(seqDic[L5] > seqDic[L3])
+        self.assertTrue(seqDic[L5] > seqDic[L1])
 
-        self.failUnless(
+        self.assertTrue(
             (0, 0, 0, 0, 0, 0)
             == (L1.ExecCount, L2.ExecCount, L3.ExecCount, L4.ExecCount, L5.ExecCount, L6.ExecCount)
         )
-        self.failUnless(self.Doc.recompute() == 4)
-        self.failUnless(
+        self.assertTrue(self.Doc.recompute() == 4)
+        self.assertTrue(
             (1, 1, 1, 0, 0, 0)
             == (L1.ExecCount, L2.ExecCount, L3.ExecCount, L4.ExecCount, L5.ExecCount, L6.ExecCount)
         )
         L5.enforceRecompute()
-        self.failUnless(
+        self.assertTrue(
             (1, 1, 1, 0, 0, 0)
             == (L1.ExecCount, L2.ExecCount, L3.ExecCount, L4.ExecCount, L5.ExecCount, L6.ExecCount)
         )
-        self.failUnless(self.Doc.recompute() == 4)
-        self.failUnless(
+        self.assertTrue(self.Doc.recompute() == 4)
+        self.assertTrue(
             (2, 2, 2, 0, 1, 0)
             == (L1.ExecCount, L2.ExecCount, L3.ExecCount, L4.ExecCount, L5.ExecCount, L6.ExecCount)
         )
         L4.enforceRecompute()
-        self.failUnless(self.Doc.recompute() == 3)
-        self.failUnless(
+        self.assertTrue(self.Doc.recompute() == 3)
+        self.assertTrue(
             (3, 3, 2, 1, 1, 0)
             == (L1.ExecCount, L2.ExecCount, L3.ExecCount, L4.ExecCount, L5.ExecCount, L6.ExecCount)
         )
         L5.enforceRecompute()
-        self.failUnless(self.Doc.recompute() == 4)
-        self.failUnless(
+        self.assertTrue(self.Doc.recompute() == 4)
+        self.assertTrue(
             (4, 4, 3, 1, 2, 0)
             == (L1.ExecCount, L2.ExecCount, L3.ExecCount, L4.ExecCount, L5.ExecCount, L6.ExecCount)
         )
         L6.enforceRecompute()
-        self.failUnless(self.Doc.recompute() == 3)
-        self.failUnless(
+        self.assertTrue(self.Doc.recompute() == 3)
+        self.assertTrue(
             (5, 4, 4, 1, 2, 1)
             == (L1.ExecCount, L2.ExecCount, L3.ExecCount, L4.ExecCount, L5.ExecCount, L6.ExecCount)
         )
         L2.enforceRecompute()
-        self.failUnless(self.Doc.recompute() == 2)
-        self.failUnless(
+        self.assertTrue(self.Doc.recompute() == 2)
+        self.assertTrue(
             (6, 5, 4, 1, 2, 1)
             == (L1.ExecCount, L2.ExecCount, L3.ExecCount, L4.ExecCount, L5.ExecCount, L6.ExecCount)
         )
         L1.enforceRecompute()
-        self.failUnless(self.Doc.recompute() == 1)
-        self.failUnless(
+        self.assertTrue(self.Doc.recompute() == 1)
+        self.assertTrue(
             (7, 5, 4, 1, 2, 1)
             == (L1.ExecCount, L2.ExecCount, L3.ExecCount, L4.ExecCount, L5.ExecCount, L6.ExecCount)
         )
@@ -1040,8 +1046,8 @@ class UndoRedoCases(unittest.TestCase):
 
         # undo the first transaction
         self.Doc.undo()
-        self.failUnless(self.Doc.getObject("test1") is None)
-        self.failUnless(self.Doc.getObject("Del").Integer == 2)
+        self.assertTrue(self.Doc.getObject("test1") is None)
+        self.assertTrue(self.Doc.getObject("Del").Integer == 2)
         self.assertEqual(self.Doc.UndoNames, [])
         self.assertEqual(self.Doc.UndoCount, 0)
         self.assertEqual(
@@ -1141,14 +1147,14 @@ class UndoRedoCases(unittest.TestCase):
         self.Doc.commitTransaction()
 
         self.Doc.undo()
-        self.failUnless(len(self.Box.InList) == 0)
-        self.failUnless(len(self.Cylinder.InList) == 0)
+        self.assertTrue(len(self.Box.InList) == 0)
+        self.assertTrue(len(self.Cylinder.InList) == 0)
 
         self.Doc.redo()
-        self.failUnless(len(self.Box.InList) == 1)
-        self.failUnless(self.Box.InList[0] == self.Doc.Fuse)
-        self.failUnless(len(self.Cylinder.InList) == 1)
-        self.failUnless(self.Cylinder.InList[0] == self.Doc.Fuse)
+        self.assertTrue(len(self.Box.InList) == 1)
+        self.assertTrue(self.Box.InList[0] == self.Doc.Fuse)
+        self.assertTrue(len(self.Cylinder.InList) == 1)
+        self.assertTrue(self.Cylinder.InList[0] == self.Doc.Fuse)
 
     def testUndoIssue0003150Part1(self):
 
@@ -1190,7 +1196,7 @@ class UndoRedoCases(unittest.TestCase):
         self.Doc.undo()
         self.Doc.undo()
         self.Doc.undo()
-        self.failUnless(self.Doc.recompute() >= 0)
+        self.assertTrue(self.Doc.recompute() >= 0)
 
     def tearDown(self):
         # closing doc
@@ -1206,7 +1212,7 @@ class DocumentGroupCases(unittest.TestCase):
         L2 = self.Doc.addObject("App::FeatureTest", "Label_2")
         G1 = self.Doc.addObject("App::DocumentObjectGroup", "Group")
         G1.addObject(L2)
-        self.failUnless(G1.hasObject(L2))
+        self.assertTrue(G1.hasObject(L2))
 
         # Adding the group to itself must fail
         try:
@@ -1222,9 +1228,9 @@ class DocumentGroupCases(unittest.TestCase):
         self.Doc.openTransaction("Remove")
         self.Doc.removeObject("Label_2")
         self.Doc.commitTransaction()
-        self.failUnless(G1.getObject("Label_2") is None)
+        self.assertTrue(G1.getObject("Label_2") is None)
         self.Doc.undo()
-        self.failUnless(G1.getObject("Label_2") is not None)
+        self.assertTrue(G1.getObject("Label_2") is not None)
 
         # Remove first group and then the object
         self.Doc.openTransaction("Remove")
@@ -1232,43 +1238,43 @@ class DocumentGroupCases(unittest.TestCase):
         self.Doc.removeObject("Label_2")
         self.Doc.commitTransaction()
         self.Doc.undo()
-        self.failUnless(G1.getObject("Label_2") is not None)
+        self.assertTrue(G1.getObject("Label_2") is not None)
 
         # Remove first object and then the group in two transactions
         self.Doc.openTransaction("Remove")
         self.Doc.removeObject("Label_2")
         self.Doc.commitTransaction()
-        self.failUnless(G1.getObject("Label_2") is None)
+        self.assertTrue(G1.getObject("Label_2") is None)
         self.Doc.openTransaction("Remove")
         self.Doc.removeObject("Group")
         self.Doc.commitTransaction()
         self.Doc.undo()
         self.Doc.undo()
-        self.failUnless(G1.getObject("Label_2") is not None)
+        self.assertTrue(G1.getObject("Label_2") is not None)
 
         # Remove first object and then the group in one transaction
         self.Doc.openTransaction("Remove")
         self.Doc.removeObject("Label_2")
-        self.failUnless(G1.getObject("Label_2") is None)
+        self.assertTrue(G1.getObject("Label_2") is None)
         self.Doc.removeObject("Group")
         self.Doc.commitTransaction()
         self.Doc.undo()
         # FIXME: See bug #1820554
-        self.failUnless(G1.getObject("Label_2") is not None)
+        self.assertTrue(G1.getObject("Label_2") is not None)
 
         # Add a second object to the group
         L3 = self.Doc.addObject("App::FeatureTest", "Label_3")
         G1.addObject(L3)
         self.Doc.openTransaction("Remove")
         self.Doc.removeObject("Label_2")
-        self.failUnless(G1.getObject("Label_2") is None)
+        self.assertTrue(G1.getObject("Label_2") is None)
         self.Doc.removeObject("Label_3")
-        self.failUnless(G1.getObject("Label_3") is None)
+        self.assertTrue(G1.getObject("Label_3") is None)
         self.Doc.removeObject("Group")
         self.Doc.commitTransaction()
         self.Doc.undo()
-        self.failUnless(G1.getObject("Label_3") is not None)
-        self.failUnless(G1.getObject("Label_2") is not None)
+        self.assertTrue(G1.getObject("Label_3") is not None)
+        self.assertTrue(G1.getObject("Label_2") is not None)
 
         self.Doc.UndoMode = 0
 
@@ -1284,38 +1290,38 @@ class DocumentGroupCases(unittest.TestCase):
         grp1 = self.Doc.addObject("App::DocumentObjectGroup", "Group1")
         grp2 = self.Doc.addObject("App::DocumentObjectGroup", "Group2")
         grp1.addObject(obj1)
-        self.failUnless(obj1.getParentGroup() == grp1)
-        self.failUnless(obj1.getParentGeoFeatureGroup() is None)
-        self.failUnless(grp1.hasObject(obj1))
+        self.assertTrue(obj1.getParentGroup() == grp1)
+        self.assertTrue(obj1.getParentGeoFeatureGroup() is None)
+        self.assertTrue(grp1.hasObject(obj1))
         grp2.addObject(obj1)
-        self.failUnless(grp1.hasObject(obj1) == False)
-        self.failUnless(grp2.hasObject(obj1))
+        self.assertTrue(grp1.hasObject(obj1) == False)
+        self.assertTrue(grp2.hasObject(obj1))
 
         # an object is allowed to be in a group and a geofeaturegroup
         prt1 = self.Doc.addObject("App::Part", "Part1")
         prt2 = self.Doc.addObject("App::Part", "Part2")
 
         prt1.addObject(grp2)
-        self.failUnless(grp2.getParentGeoFeatureGroup() == prt1)
-        self.failUnless(grp2.getParentGroup() is None)
-        self.failUnless(grp2.hasObject(obj1))
-        self.failUnless(prt1.hasObject(grp2))
-        self.failUnless(prt1.hasObject(obj1))
+        self.assertTrue(grp2.getParentGeoFeatureGroup() == prt1)
+        self.assertTrue(grp2.getParentGroup() is None)
+        self.assertTrue(grp2.hasObject(obj1))
+        self.assertTrue(prt1.hasObject(grp2))
+        self.assertTrue(prt1.hasObject(obj1))
 
         # it is not allowed to be in 2 geofeaturegroups
         prt2.addObject(grp2)
-        self.failUnless(grp2.hasObject(obj1))
-        self.failUnless(prt1.hasObject(grp2) == False)
-        self.failUnless(prt1.hasObject(obj1) == False)
-        self.failUnless(prt2.hasObject(grp2))
-        self.failUnless(prt2.hasObject(obj1))
+        self.assertTrue(grp2.hasObject(obj1))
+        self.assertTrue(prt1.hasObject(grp2) == False)
+        self.assertTrue(prt1.hasObject(obj1) == False)
+        self.assertTrue(prt2.hasObject(grp2))
+        self.assertTrue(prt2.hasObject(obj1))
         try:
             grp = prt1.Group
             grp.append(obj1)
             prt1.Group = grp
         except Exception:
             grp.remove(obj1)
-            self.failUnless(prt1.Group == grp)
+            self.assertTrue(prt1.Group == grp)
         else:
             self.fail("No exception thrown when object is in multiple Groups")
 
@@ -1337,27 +1343,27 @@ class DocumentGroupCases(unittest.TestCase):
         fus = self.Doc.addObject("App::FeatureTest", "Fusion")
         fus.LinkList = [cyl, box]
         self.Doc.recompute()
-        self.failUnless(fus.State[0] == "Up-to-date")
+        self.assertTrue(fus.State[0] == "Up-to-date")
         fus.LinkList = (
             []
         )  # remove all links as addObject would otherwise transfer all linked objects
         prt1.addObject(cyl)
         fus.LinkList = [cyl, box]
         self.Doc.recompute()
-        # self.failUnless(fus.State[0] == 'Invalid')
+        # self.assertTrue(fus.State[0] == 'Invalid')
         fus.LinkList = []
         prt1.addObject(box)
         fus.LinkList = [cyl, box]
         self.Doc.recompute()
-        # self.failUnless(fus.State[0] == 'Invalid')
+        # self.assertTrue(fus.State[0] == 'Invalid')
         fus.LinkList = []
         prt1.addObject(fus)
         fus.LinkList = [cyl, box]
         self.Doc.recompute()
-        self.failUnless(fus.State[0] == "Up-to-date")
+        self.assertTrue(fus.State[0] == "Up-to-date")
         prt2.addObject(box)  # this time addObject should move all dependencies to the new part
         self.Doc.recompute()
-        self.failUnless(fus.State[0] == "Up-to-date")
+        self.assertTrue(fus.State[0] == "Up-to-date")
 
         # grouping must be resilient against cyclic links and not crash: #issue 0002567
         prt1.addObject(prt2)
@@ -1388,12 +1394,12 @@ class DocumentGroupCases(unittest.TestCase):
 
         self.prt = self.Doc.addObject("App::Part")
         self.prt.addObject(self.fus1)
-        self.failUnless(len(self.prt.Group) == 5)
-        self.failUnless(self.fus2.getParentGeoFeatureGroup() == self.prt)
-        self.failUnless(self.prt.hasObject(self.sph))
+        self.assertTrue(len(self.prt.Group) == 5)
+        self.assertTrue(self.fus2.getParentGeoFeatureGroup() == self.prt)
+        self.assertTrue(self.prt.hasObject(self.sph))
 
         self.prt.removeObject(self.fus1)
-        self.failUnless(len(self.prt.Group) == 0)
+        self.assertTrue(len(self.prt.Group) == 0)
 
     def tearDown(self):
         # closing doc
@@ -1415,9 +1421,9 @@ class DocumentPlatformCases(unittest.TestCase):
         FreeCAD.closeDocument("PlatformTests")
         self.Doc = FreeCAD.open(self.DocName)
 
-        self.failUnless(abs(self.Doc.Test.FloatList[0] + 0.05) < 0.01)
-        self.failUnless(abs(self.Doc.Test.FloatList[1] - 2.5) < 0.01)
-        self.failUnless(abs(self.Doc.Test.FloatList[2] - 5.2) < 0.01)
+        self.assertTrue(abs(self.Doc.Test.FloatList[0] + 0.05) < 0.01)
+        self.assertTrue(abs(self.Doc.Test.FloatList[1] - 2.5) < 0.01)
+        self.assertTrue(abs(self.Doc.Test.FloatList[2] - 5.2) < 0.01)
 
     def testColorList(self):
         self.Doc.Test.ColourList = [(1.0, 0.5, 0.0), (0.0, 0.5, 1.0)]
@@ -1427,14 +1433,14 @@ class DocumentPlatformCases(unittest.TestCase):
         FreeCAD.closeDocument("PlatformTests")
         self.Doc = FreeCAD.open(self.DocName)
 
-        self.failUnless(abs(self.Doc.Test.ColourList[0][0] - 1.0) < 0.01)
-        self.failUnless(abs(self.Doc.Test.ColourList[0][1] - 0.5) < 0.01)
-        self.failUnless(abs(self.Doc.Test.ColourList[0][2] - 0.0) < 0.01)
-        self.failUnless(abs(self.Doc.Test.ColourList[0][3] - 0.0) < 0.01)
-        self.failUnless(abs(self.Doc.Test.ColourList[1][0] - 0.0) < 0.01)
-        self.failUnless(abs(self.Doc.Test.ColourList[1][1] - 0.5) < 0.01)
-        self.failUnless(abs(self.Doc.Test.ColourList[1][2] - 1.0) < 0.01)
-        self.failUnless(abs(self.Doc.Test.ColourList[1][3] - 0.0) < 0.01)
+        self.assertTrue(abs(self.Doc.Test.ColourList[0][0] - 1.0) < 0.01)
+        self.assertTrue(abs(self.Doc.Test.ColourList[0][1] - 0.5) < 0.01)
+        self.assertTrue(abs(self.Doc.Test.ColourList[0][2] - 0.0) < 0.01)
+        self.assertTrue(abs(self.Doc.Test.ColourList[0][3] - 0.0) < 0.01)
+        self.assertTrue(abs(self.Doc.Test.ColourList[1][0] - 0.0) < 0.01)
+        self.assertTrue(abs(self.Doc.Test.ColourList[1][1] - 0.5) < 0.01)
+        self.assertTrue(abs(self.Doc.Test.ColourList[1][2] - 1.0) < 0.01)
+        self.assertTrue(abs(self.Doc.Test.ColourList[1][3] - 0.0) < 0.01)
 
     def testVectorList(self):
         self.Doc.Test.VectorList = [(-0.05, 2.5, 5.2), (-0.05, 2.5, 5.2)]
@@ -1444,7 +1450,7 @@ class DocumentPlatformCases(unittest.TestCase):
         FreeCAD.closeDocument("PlatformTests")
         self.Doc = FreeCAD.open(self.DocName)
 
-        self.failUnless(len(self.Doc.Test.VectorList) == 2)
+        self.assertTrue(len(self.Doc.Test.VectorList) == 2)
 
     def testPoints(self):
         try:
@@ -1455,7 +1461,7 @@ class DocumentPlatformCases(unittest.TestCase):
             FreeCAD.closeDocument("PlatformTests")
             self.Doc = FreeCAD.open(self.DocName)
 
-            self.failUnless(self.Doc.Points.Points.count() == 0)
+            self.assertTrue(self.Doc.Points.Points.count() == 0)
         except Exception:
             pass
 
@@ -1492,7 +1498,7 @@ class DocumentFileIncludeCases(unittest.TestCase):
     def testApplyFiles(self):
         self.Doc.openTransaction("Transaction0")
         self.L1 = self.Doc.addObject("App::DocumentObjectFileIncluded", "FileObject1")
-        self.failUnless(self.L1.File == "")
+        self.assertTrue(self.L1.File == "")
         self.Filename = self.L1.File
 
         self.Doc.openTransaction("Transaction1")
@@ -1503,10 +1509,10 @@ class DocumentFileIncludeCases(unittest.TestCase):
         file.close()
         # applying the file
         self.L1.File = (file.name, "Test.txt")
-        self.failUnless(self.L1.File.split("/")[-1] == "Test.txt")
+        self.assertTrue(self.L1.File.split("/")[-1] == "Test.txt")
         # read again
         file = open(self.L1.File, "r")
-        self.failUnless(file.read() == "test No1")
+        self.assertTrue(file.read() == "test No1")
         file.close()
         file = open(self.TempPath + "/testNest.txt", "w")
         file.write("test No2")
@@ -1514,31 +1520,31 @@ class DocumentFileIncludeCases(unittest.TestCase):
         # applying the file
         self.Doc.openTransaction("Transaction2")
         self.L1.File = file.name
-        self.failUnless(self.L1.File.split("/")[-1] == "Test.txt")
+        self.assertTrue(self.L1.File.split("/")[-1] == "Test.txt")
         # read again
         file = open(self.L1.File, "r")
-        self.failUnless(file.read() == "test No2")
+        self.assertTrue(file.read() == "test No2")
         file.close()
         self.Doc.undo()
-        self.failUnless(self.L1.File.split("/")[-1] == "Test.txt")
+        self.assertTrue(self.L1.File.split("/")[-1] == "Test.txt")
         # read again
         file = open(self.L1.File, "r")
-        self.failUnless(file.read() == "test No1")
+        self.assertTrue(file.read() == "test No1")
         file.close()
         self.Doc.undo()
         # read again
-        self.failUnless(self.L1.File == "")
+        self.assertTrue(self.L1.File == "")
         self.Doc.redo()
-        self.failUnless(self.L1.File.split("/")[-1] == "Test.txt")
+        self.assertTrue(self.L1.File.split("/")[-1] == "Test.txt")
         # read again
         file = open(self.L1.File, "r")
-        self.failUnless(file.read() == "test No1")
+        self.assertTrue(file.read() == "test No1")
         file.close()
         self.Doc.redo()
-        self.failUnless(self.L1.File.split("/")[-1] == "Test.txt")
+        self.assertTrue(self.L1.File.split("/")[-1] == "Test.txt")
         # read again
         file = open(self.L1.File, "r")
-        self.failUnless(file.read() == "test No2")
+        self.assertTrue(file.read() == "test No2")
         file.close()
         # Save restore test
         FileName = self.TempPath + "/FileIncludeTests.fcstd"
@@ -1550,8 +1556,8 @@ class DocumentFileIncludeCases(unittest.TestCase):
         file = open(self.L1.File, "r")
         res = file.read()
         FreeCAD.Console.PrintLog(res + "\n")
-        self.failUnless(res == "test No2")
-        self.failUnless(self.L1.File.split("/")[-1] == "Test.txt")
+        self.assertTrue(res == "test No2")
+        self.assertTrue(self.L1.File.split("/")[-1] == "Test.txt")
         file.close()
 
         # test for bug #94 (File overlap in PropertyFileIncluded)
@@ -1571,10 +1577,10 @@ class DocumentFileIncludeCases(unittest.TestCase):
         L3.File = (file2.name, "Test.txt")
 
         file = open(L2.File, "r")
-        self.failUnless(file.read() == "test No1")
+        self.assertTrue(file.read() == "test No1")
         file.close()
         file = open(L3.File, "r")
-        self.failUnless(file.read() == "test No2")
+        self.assertTrue(file.read() == "test No2")
         file.close()
 
         # create a second document, copy a file and close the document
@@ -1588,14 +1594,14 @@ class DocumentFileIncludeCases(unittest.TestCase):
         L6.File = L3.File
         FreeCAD.closeDocument("FileIncludeTests")
         self.Doc = FreeCAD.open(self.TempPath + "/FileIncludeTests.fcstd")
-        self.failUnless(os.path.exists(L4.File))
-        self.failUnless(os.path.exists(L5.File))
-        self.failUnless(os.path.exists(L6.File))
-        self.failUnless(L5.File != L6.File)
+        self.assertTrue(os.path.exists(L4.File))
+        self.assertTrue(os.path.exists(L5.File))
+        self.assertTrue(os.path.exists(L6.File))
+        self.assertTrue(L5.File != L6.File)
         # copy file from L5 which is in the same directory
         L7 = doc2.addObject("App::DocumentObjectFileIncluded", "FileObject3")
         L7.File = (L5.File, "Copy.txt")
-        self.failUnless(os.path.exists(L7.File))
+        self.assertTrue(os.path.exists(L7.File))
         FreeCAD.closeDocument("Doc2")
 
     def tearDown(self):
@@ -2089,66 +2095,66 @@ class DocumentObserverCases(unittest.TestCase):
         self.Obs.clear()
 
         obj = self.Doc1.addObject("App::DocumentObject", "obj")
-        self.failUnless(self.Obs.signal.pop() == "ObjCreated")
-        self.failUnless(self.Obs.parameter.pop() is obj)
+        self.assertTrue(self.Obs.signal.pop() == "ObjCreated")
+        self.assertTrue(self.Obs.parameter.pop() is obj)
         # there are multiple object change signals
         self.Obs.clear()
 
         obj.Label = "myobj"
-        self.failUnless(self.Obs.signal.pop(0) == "ObjBeforeChange")
-        self.failUnless(self.Obs.parameter.pop(0) is obj)
-        self.failUnless(self.Obs.parameter2.pop(0) == "Label")
-        self.failUnless(self.Obs.signal.pop(0) == "ObjChanged")
-        self.failUnless(self.Obs.parameter.pop(0) is obj)
-        self.failUnless(self.Obs.parameter2.pop(0) == "Label")
-        self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
+        self.assertTrue(self.Obs.signal.pop(0) == "ObjBeforeChange")
+        self.assertTrue(self.Obs.parameter.pop(0) is obj)
+        self.assertTrue(self.Obs.parameter2.pop(0) == "Label")
+        self.assertTrue(self.Obs.signal.pop(0) == "ObjChanged")
+        self.assertTrue(self.Obs.parameter.pop(0) is obj)
+        self.assertTrue(self.Obs.parameter2.pop(0) == "Label")
+        self.assertTrue(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
 
         obj.enforceRecompute()
         obj.recompute()
-        self.failUnless(self.Obs.signal.pop(0) == "ObjRecomputed")
-        self.failUnless(self.Obs.parameter.pop(0) is obj)
-        self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
+        self.assertTrue(self.Obs.signal.pop(0) == "ObjRecomputed")
+        self.assertTrue(self.Obs.parameter.pop(0) is obj)
+        self.assertTrue(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
 
         obj.enforceRecompute()
         self.Doc1.recompute()
-        self.failUnless(self.Obs.signal.pop(0) == "ObjRecomputed")
-        self.failUnless(self.Obs.parameter.pop(0) is obj)
-        self.failUnless(self.Obs.signal.pop(0) == "DocRecomputed")
-        self.failUnless(self.Obs.parameter.pop(0) is self.Doc1)
-        self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
+        self.assertTrue(self.Obs.signal.pop(0) == "ObjRecomputed")
+        self.assertTrue(self.Obs.parameter.pop(0) is obj)
+        self.assertTrue(self.Obs.signal.pop(0) == "DocRecomputed")
+        self.assertTrue(self.Obs.parameter.pop(0) is self.Doc1)
+        self.assertTrue(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
 
         FreeCAD.ActiveDocument.removeObject(obj.Name)
-        self.failUnless(self.Obs.signal.pop(0) == "ObjDeleted")
-        self.failUnless(self.Obs.parameter.pop(0) is obj)
-        self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
+        self.assertTrue(self.Obs.signal.pop(0) == "ObjDeleted")
+        self.assertTrue(self.Obs.parameter.pop(0) is obj)
+        self.assertTrue(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
 
         pyobj = self.Doc1.addObject("App::FeaturePython", "pyobj")
         self.Obs.clear()
         pyobj.addProperty("App::PropertyLength", "Prop", "Group", "test property")
-        self.failUnless(self.Obs.signal.pop() == "ObjAddDynProp")
-        self.failUnless(self.Obs.parameter.pop() is pyobj)
-        self.failUnless(self.Obs.parameter2.pop() == "Prop")
-        self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
+        self.assertTrue(self.Obs.signal.pop() == "ObjAddDynProp")
+        self.assertTrue(self.Obs.parameter.pop() is pyobj)
+        self.assertTrue(self.Obs.parameter2.pop() == "Prop")
+        self.assertTrue(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
 
         pyobj.setEditorMode("Prop", ["ReadOnly"])
-        self.failUnless(self.Obs.signal.pop() == "ObjChangePropEdit")
-        self.failUnless(self.Obs.parameter.pop() is pyobj)
-        self.failUnless(self.Obs.parameter2.pop() == "Prop")
-        self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
+        self.assertTrue(self.Obs.signal.pop() == "ObjChangePropEdit")
+        self.assertTrue(self.Obs.parameter.pop() is pyobj)
+        self.assertTrue(self.Obs.parameter2.pop() == "Prop")
+        self.assertTrue(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
 
         pyobj.removeProperty("Prop")
-        self.failUnless(self.Obs.signal.pop() == "ObjRemoveDynProp")
-        self.failUnless(self.Obs.parameter.pop() is pyobj)
-        self.failUnless(self.Obs.parameter2.pop() == "Prop")
-        self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
+        self.assertTrue(self.Obs.signal.pop() == "ObjRemoveDynProp")
+        self.assertTrue(self.Obs.parameter.pop() is pyobj)
+        self.assertTrue(self.Obs.parameter2.pop() == "Prop")
+        self.assertTrue(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
 
         pyobj.addExtension("App::GroupExtensionPython")
-        self.failUnless(self.Obs.signal.pop() == "ObjDynExt")
-        self.failUnless(self.Obs.parameter.pop() is pyobj)
-        self.failUnless(self.Obs.parameter2.pop() == "App::GroupExtensionPython")
-        self.failUnless(self.Obs.signal.pop(0) == "ObjBeforeDynExt")
-        self.failUnless(self.Obs.parameter.pop(0) is pyobj)
-        self.failUnless(self.Obs.parameter2.pop(0) == "App::GroupExtensionPython")
+        self.assertTrue(self.Obs.signal.pop() == "ObjDynExt")
+        self.assertTrue(self.Obs.parameter.pop() is pyobj)
+        self.assertTrue(self.Obs.parameter2.pop() == "App::GroupExtensionPython")
+        self.assertTrue(self.Obs.signal.pop(0) == "ObjBeforeDynExt")
+        self.assertTrue(self.Obs.parameter.pop(0) is pyobj)
+        self.assertTrue(self.Obs.parameter2.pop(0) == "App::GroupExtensionPython")
         # a proxy property was changed, hence those events are also in the signal list
         self.Obs.clear()
 
@@ -2166,7 +2172,7 @@ class DocumentObserverCases(unittest.TestCase):
         self.Doc1.commitTransaction()
         self.Doc1.undo()
         self.Doc1.redo()
-        self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
+        self.assertTrue(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
 
         FreeCAD.closeDocument(self.Doc1.Name)
         self.Obs.clear()
@@ -2186,132 +2192,132 @@ class DocumentObserverCases(unittest.TestCase):
         self.Doc1 = FreeCAD.newDocument("Observer1")
         self.GuiDoc1 = FreeCAD.Gui.getDocument(self.Doc1.Name)
         self.Obs.clear()
-        self.failUnless(self.GuiObs.signal.pop(0) == "DocCreated")
-        self.failUnless(self.GuiObs.parameter.pop(0) is self.GuiDoc1)
-        self.failUnless(self.GuiObs.signal.pop(0) == "DocActivated")
-        self.failUnless(self.GuiObs.parameter.pop(0) is self.GuiDoc1)
-        self.failUnless(self.GuiObs.signal.pop(0) == "DocRelabled")
-        self.failUnless(self.GuiObs.parameter.pop(0) is self.GuiDoc1)
-        self.failUnless(
+        self.assertTrue(self.GuiObs.signal.pop(0) == "DocCreated")
+        self.assertTrue(self.GuiObs.parameter.pop(0) is self.GuiDoc1)
+        self.assertTrue(self.GuiObs.signal.pop(0) == "DocActivated")
+        self.assertTrue(self.GuiObs.parameter.pop(0) is self.GuiDoc1)
+        self.assertTrue(self.GuiObs.signal.pop(0) == "DocRelabled")
+        self.assertTrue(self.GuiObs.parameter.pop(0) is self.GuiDoc1)
+        self.assertTrue(
             not self.GuiObs.signal and not self.GuiObs.parameter and not self.GuiObs.parameter2
         )
 
         self.Doc1.Label = "test"
-        self.failUnless(self.Obs.signal.pop() == "DocRelabled")
-        self.failUnless(self.Obs.parameter.pop() is self.Doc1)
+        self.assertTrue(self.Obs.signal.pop() == "DocRelabled")
+        self.assertTrue(self.Obs.parameter.pop() is self.Doc1)
         # not interested in the change signals
         self.Obs.clear()
-        self.failUnless(self.GuiObs.signal.pop(0) == "DocRelabled")
-        self.failUnless(self.GuiObs.parameter.pop(0) is self.GuiDoc1)
-        self.failUnless(
+        self.assertTrue(self.GuiObs.signal.pop(0) == "DocRelabled")
+        self.assertTrue(self.GuiObs.parameter.pop(0) is self.GuiDoc1)
+        self.assertTrue(
             not self.GuiObs.signal and not self.GuiObs.parameter and not self.GuiObs.parameter2
         )
 
         FreeCAD.setActiveDocument(self.Doc1.Name)
-        self.failUnless(self.Obs.signal.pop() == "DocActivated")
-        self.failUnless(self.Obs.parameter.pop() is self.Doc1)
-        self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
-        self.failUnless(self.GuiObs.signal.pop() == "DocActivated")
-        self.failUnless(self.GuiObs.parameter.pop() is self.GuiDoc1)
-        self.failUnless(
+        self.assertTrue(self.Obs.signal.pop() == "DocActivated")
+        self.assertTrue(self.Obs.parameter.pop() is self.Doc1)
+        self.assertTrue(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
+        self.assertTrue(self.GuiObs.signal.pop() == "DocActivated")
+        self.assertTrue(self.GuiObs.parameter.pop() is self.GuiDoc1)
+        self.assertTrue(
             not self.GuiObs.signal and not self.GuiObs.parameter and not self.GuiObs.parameter2
         )
 
         obj = self.Doc1.addObject("App::FeaturePython", "obj")
-        self.failUnless(self.Obs.signal.pop() == "ObjCreated")
-        self.failUnless(self.Obs.parameter.pop() is obj)
+        self.assertTrue(self.Obs.signal.pop() == "ObjCreated")
+        self.assertTrue(self.Obs.parameter.pop() is obj)
         # there are multiple object change signals
         self.Obs.clear()
-        self.failUnless(self.GuiObs.signal.pop() == "ObjCreated")
-        self.failUnless(self.GuiObs.parameter.pop() is obj.ViewObject)
+        self.assertTrue(self.GuiObs.signal.pop() == "ObjCreated")
+        self.assertTrue(self.GuiObs.parameter.pop() is obj.ViewObject)
 
         # There are object change signals, caused by sync of obj.Visibility. Same below.
         self.GuiObs.clear()
 
         obj.ViewObject.Visibility = False
-        self.failUnless(self.Obs.signal.pop() == "ObjChanged")
-        self.failUnless(self.Obs.parameter.pop() is obj)
-        self.failUnless(self.Obs.parameter2.pop() == "Visibility")
-        self.failUnless(self.Obs.signal.pop() == "ObjBeforeChange")
-        self.failUnless(self.Obs.parameter.pop() is obj)
-        self.failUnless(self.Obs.parameter2.pop() == "Visibility")
-        self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
-        self.failUnless(self.GuiObs.signal.pop(0) == "ObjChanged")
-        self.failUnless(self.GuiObs.parameter.pop(0) is obj.ViewObject)
-        self.failUnless(self.GuiObs.parameter2.pop(0) == "Visibility")
-        self.failUnless(
+        self.assertTrue(self.Obs.signal.pop() == "ObjChanged")
+        self.assertTrue(self.Obs.parameter.pop() is obj)
+        self.assertTrue(self.Obs.parameter2.pop() == "Visibility")
+        self.assertTrue(self.Obs.signal.pop() == "ObjBeforeChange")
+        self.assertTrue(self.Obs.parameter.pop() is obj)
+        self.assertTrue(self.Obs.parameter2.pop() == "Visibility")
+        self.assertTrue(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
+        self.assertTrue(self.GuiObs.signal.pop(0) == "ObjChanged")
+        self.assertTrue(self.GuiObs.parameter.pop(0) is obj.ViewObject)
+        self.assertTrue(self.GuiObs.parameter2.pop(0) == "Visibility")
+        self.assertTrue(
             not self.GuiObs.signal and not self.GuiObs.parameter and not self.GuiObs.parameter2
         )
 
         obj.ViewObject.addProperty("App::PropertyLength", "Prop", "Group", "test property")
-        self.failUnless(self.Obs.signal.pop() == "ObjAddDynProp")
-        self.failUnless(self.Obs.parameter.pop() is obj.ViewObject)
-        self.failUnless(self.Obs.parameter2.pop() == "Prop")
-        self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
-        self.failUnless(
+        self.assertTrue(self.Obs.signal.pop() == "ObjAddDynProp")
+        self.assertTrue(self.Obs.parameter.pop() is obj.ViewObject)
+        self.assertTrue(self.Obs.parameter2.pop() == "Prop")
+        self.assertTrue(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
+        self.assertTrue(
             not self.GuiObs.signal and not self.GuiObs.parameter and not self.GuiObs.parameter2
         )
 
         obj.ViewObject.setEditorMode("Prop", ["ReadOnly"])
-        self.failUnless(self.Obs.signal.pop() == "ObjChangePropEdit")
-        self.failUnless(self.Obs.parameter.pop() is obj.ViewObject)
-        self.failUnless(self.Obs.parameter2.pop() == "Prop")
-        self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
-        self.failUnless(
+        self.assertTrue(self.Obs.signal.pop() == "ObjChangePropEdit")
+        self.assertTrue(self.Obs.parameter.pop() is obj.ViewObject)
+        self.assertTrue(self.Obs.parameter2.pop() == "Prop")
+        self.assertTrue(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
+        self.assertTrue(
             not self.GuiObs.signal and not self.GuiObs.parameter and not self.GuiObs.parameter2
         )
 
         obj.ViewObject.removeProperty("Prop")
-        self.failUnless(self.Obs.signal.pop() == "ObjRemoveDynProp")
-        self.failUnless(self.Obs.parameter.pop() is obj.ViewObject)
-        self.failUnless(self.Obs.parameter2.pop() == "Prop")
-        self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
-        self.failUnless(
+        self.assertTrue(self.Obs.signal.pop() == "ObjRemoveDynProp")
+        self.assertTrue(self.Obs.parameter.pop() is obj.ViewObject)
+        self.assertTrue(self.Obs.parameter2.pop() == "Prop")
+        self.assertTrue(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
+        self.assertTrue(
             not self.GuiObs.signal and not self.GuiObs.parameter and not self.GuiObs.parameter2
         )
 
         self.GuiDoc1.setEdit("obj", 0)
-        self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
-        self.failUnless(self.GuiObs.signal.pop(0) == "ObjInEdit")
-        self.failUnless(self.GuiObs.parameter.pop(0) is obj.ViewObject)
-        self.failUnless(
+        self.assertTrue(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
+        self.assertTrue(self.GuiObs.signal.pop(0) == "ObjInEdit")
+        self.assertTrue(self.GuiObs.parameter.pop(0) is obj.ViewObject)
+        self.assertTrue(
             not self.GuiObs.signal and not self.GuiObs.parameter and not self.GuiObs.parameter2
         )
 
         self.GuiDoc1.resetEdit()
-        self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
-        self.failUnless(self.GuiObs.signal.pop(0) == "ObjResetEdit")
-        self.failUnless(self.GuiObs.parameter.pop(0) is obj.ViewObject)
-        self.failUnless(
+        self.assertTrue(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
+        self.assertTrue(self.GuiObs.signal.pop(0) == "ObjResetEdit")
+        self.assertTrue(self.GuiObs.parameter.pop(0) is obj.ViewObject)
+        self.assertTrue(
             not self.GuiObs.signal and not self.GuiObs.parameter and not self.GuiObs.parameter2
         )
 
         obj.ViewObject.addExtension("Gui::ViewProviderGroupExtensionPython")
-        self.failUnless(self.Obs.signal.pop() == "ObjDynExt")
-        self.failUnless(self.Obs.parameter.pop() is obj.ViewObject)
-        self.failUnless(self.Obs.parameter2.pop() == "Gui::ViewProviderGroupExtensionPython")
-        self.failUnless(self.Obs.signal.pop() == "ObjBeforeDynExt")
-        self.failUnless(self.Obs.parameter.pop() is obj.ViewObject)
-        self.failUnless(self.Obs.parameter2.pop() == "Gui::ViewProviderGroupExtensionPython")
+        self.assertTrue(self.Obs.signal.pop() == "ObjDynExt")
+        self.assertTrue(self.Obs.parameter.pop() is obj.ViewObject)
+        self.assertTrue(self.Obs.parameter2.pop() == "Gui::ViewProviderGroupExtensionPython")
+        self.assertTrue(self.Obs.signal.pop() == "ObjBeforeDynExt")
+        self.assertTrue(self.Obs.parameter.pop() is obj.ViewObject)
+        self.assertTrue(self.Obs.parameter2.pop() == "Gui::ViewProviderGroupExtensionPython")
         # a proxy property was changed, hence those events are also in the signal list (but of GUI observer)
         self.GuiObs.clear()
 
         vo = obj.ViewObject
         FreeCAD.ActiveDocument.removeObject(obj.Name)
-        self.failUnless(self.Obs.signal.pop(0) == "ObjDeleted")
-        self.failUnless(self.Obs.parameter.pop(0) is obj)
-        self.failUnless(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
-        self.failUnless(self.GuiObs.signal.pop() == "ObjDeleted")
-        self.failUnless(self.GuiObs.parameter.pop() is vo)
-        self.failUnless(
+        self.assertTrue(self.Obs.signal.pop(0) == "ObjDeleted")
+        self.assertTrue(self.Obs.parameter.pop(0) is obj)
+        self.assertTrue(not self.Obs.signal and not self.Obs.parameter and not self.Obs.parameter2)
+        self.assertTrue(self.GuiObs.signal.pop() == "ObjDeleted")
+        self.assertTrue(self.GuiObs.parameter.pop() is vo)
+        self.assertTrue(
             not self.GuiObs.signal and not self.GuiObs.parameter and not self.GuiObs.parameter2
         )
 
         FreeCAD.closeDocument(self.Doc1.Name)
         self.Obs.clear()
-        self.failUnless(self.GuiObs.signal.pop() == "DocDeleted")
-        self.failUnless(self.GuiObs.parameter.pop() is self.GuiDoc1)
-        self.failUnless(
+        self.assertTrue(self.GuiObs.signal.pop() == "DocDeleted")
+        self.assertTrue(self.GuiObs.parameter.pop() is self.GuiDoc1)
+        self.assertTrue(
             not self.GuiObs.signal and not self.GuiObs.parameter and not self.GuiObs.parameter2
         )
 

@@ -37,8 +37,8 @@
 #include <Base/Exception.h>
 #include <Base/Interpreter.h>
 #include <Base/Tools.h>
-#include <Base/UnitsApi.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>
+#include <Base/UnitsApi.h>
 
 #include "Selection.h"
 #include "SelectionObject.h"
@@ -716,12 +716,48 @@ std::array<std::pair<double, std::string>, 3> schemaTranslatePoint(double x, dou
                                                          std::make_pair(zuser, zunit.toUtf8().constBegin())};
     return ret;
 }
+
+QString getPreselectionInfo(const char* documentName,
+                            const char* objectName,
+                            const char* subElementName,
+                            float x, float y, float z,
+                            double precision)
+{
+    auto pts = schemaTranslatePoint(x, y, z, precision);
+
+    int numberDecimals = std::min(6, Base::UnitsApi::getDecimals());
+
+    QString message = QStringLiteral("Preselected: %1.%2.%3 (%4 %5, %6 %7, %8 %9)")
+        .arg(QString::fromUtf8(documentName))
+        .arg(QString::fromUtf8(objectName))
+        .arg(QString::fromUtf8(subElementName))
+        .arg(QString::number(pts[0].first, 'f', numberDecimals))
+        .arg(QString::fromStdString(pts[0].second))
+        .arg(QString::number(pts[1].first, 'f', numberDecimals))
+        .arg(QString::fromStdString(pts[1].second))
+        .arg(QString::number(pts[2].first, 'f', numberDecimals))
+        .arg(QString::fromStdString(pts[2].second));
+    return message;
+}
+
+void printPreselectionInfo(const char* documentName,
+                           const char* objectName,
+                           const char* subElementName,
+                           float x, float y, float z,
+                           double precision)
+{
+    if (getMainWindow()) {
+        QString message = getPreselectionInfo(documentName,
+                                              objectName,
+                                              subElementName,
+                                              x, y, z, precision);
+        getMainWindow()->showMessage(message);
+    }
+}
 }
 
 void SelectionSingleton::setPreselectCoord( float x, float y, float z)
 {
-    static char buf[513];
-
     // if nothing is in preselect ignore
     if(CurrentPreselection.Object.getObjectName().empty())
         return;
@@ -730,17 +766,10 @@ void SelectionSingleton::setPreselectCoord( float x, float y, float z)
     CurrentPreselection.y = y;
     CurrentPreselection.z = z;
 
-    auto pts = schemaTranslatePoint(x, y, z, 0.0);
-    snprintf(buf,512,"Preselected: %s.%s.%s (%f %s,%f %s,%f %s)"
-                    ,CurrentPreselection.pDocName
-                    ,CurrentPreselection.pObjectName
-                    ,CurrentPreselection.pSubName
-                    ,pts[0].first, pts[0].second.c_str()
-                    ,pts[1].first, pts[1].second.c_str()
-                    ,pts[2].first, pts[2].second.c_str());
-
-    if (getMainWindow())
-        getMainWindow()->showMessage(QString::fromUtf8(buf));
+    printPreselectionInfo(CurrentPreselection.pDocName,
+                          CurrentPreselection.pObjectName,
+                          CurrentPreselection.pSubName,
+                          x, y, z, 0.0);
 }
 
 void SelectionSingleton::rmvPreselect(bool signal)
@@ -2116,7 +2145,7 @@ PyObject *SelectionSingleton::sEnablePickedList(PyObject * /*self*/, PyObject *a
 PyObject *SelectionSingleton::sSetPreselection(PyObject * /*self*/, PyObject *args, PyObject *kwd)
 {
     PyObject *object;
-    char* subname = nullptr;
+    const char* subname = nullptr;
     float x = 0, y = 0, z = 0;
     int type = 1;
     static const std::array<const char *, 7> kwlist{"obj", "subname", "x", "y", "z", "tp", nullptr};
@@ -2399,7 +2428,7 @@ PyObject *SelectionSingleton::sHasSelection(PyObject * /*self*/, PyObject *args)
 {
     const char *doc = nullptr;
     int resolve = 0;
-    if (!PyArg_ParseTuple(args, "|sO!", &doc, &resolve))
+    if (!PyArg_ParseTuple(args, "|si", &doc, &resolve))
         return nullptr;
 
     PY_TRY {

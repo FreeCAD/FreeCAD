@@ -46,7 +46,7 @@ class CreateFlatMesh(BaseCommand):
     def GetResources(self):
         return {
             "Pixmap": "MeshPart_CreateFlatMesh.svg",
-            "MenuText": QT_TRANSLATE_NOOP("MeshPart_CreateFlatMesh", "Unwrap Mesh"),
+            "MenuText": QT_TRANSLATE_NOOP("MeshPart_CreateFlatMesh", "Unwrap mesh"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "MeshPart_CreateFlatMesh", "Find a flat representation of a mesh."
             ),
@@ -85,7 +85,7 @@ class CreateFlatFace(BaseCommand):
     def GetResources(self):
         return {
             "Pixmap": "MeshPart_CreateFlatFace.svg",
-            "MenuText": QT_TRANSLATE_NOOP("MeshPart_CreateFlatFace", "Unwrap Face"),
+            "MenuText": QT_TRANSLATE_NOOP("MeshPart_CreateFlatFace", "Unwrap face"),
             "ToolTip": QT_TRANSLATE_NOOP(
                 "MeshPart_CreateFlatFace", "Find a flat representation of a face."
             ),

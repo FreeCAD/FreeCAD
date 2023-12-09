@@ -369,7 +369,7 @@ Sweep::Sweep()
     Sections.setSize(0);
     ADD_PROPERTY_TYPE(Spine,(nullptr),"Sweep",App::Prop_None,"Path to sweep along");
     ADD_PROPERTY_TYPE(Solid,(false),"Sweep",App::Prop_None,"Create solid");
-    ADD_PROPERTY_TYPE(Frenet,(false),"Sweep",App::Prop_None,"Frenet");
+    ADD_PROPERTY_TYPE(Frenet,(true),"Sweep",App::Prop_None,"Frenet");
     ADD_PROPERTY_TYPE(Transition,(long(1)),"Sweep",App::Prop_None,"Transition mode");
     Transition.setEnums(TransitionEnums);
 }
@@ -494,7 +494,7 @@ App::DocumentObjectExecReturn *Sweep::execute()
             }
             // There is a weird behaviour of BRepOffsetAPI_MakePipeShell when trying to add the wire as is.
             // If we re-create the wire then everything works fine.
-            // http://forum.freecad.org/viewtopic.php?f=10&t=2673&sid=fbcd2ff4589f0b2f79ed899b0b990648#p20268
+            // https://forum.freecad.org/viewtopic.php?f=10&t=2673&sid=fbcd2ff4589f0b2f79ed899b0b990648#p20268
             if (shape.ShapeType() == TopAbs_FACE) {
                 TopoDS_Wire faceouterWire = ShapeAnalysis::OuterWire(TopoDS::Face(shape));
                 profiles.Append(faceouterWire);

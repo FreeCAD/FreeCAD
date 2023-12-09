@@ -27,6 +27,7 @@
 #include "DlgPrefsTechDrawGeneralImp.h"
 #include "ui_DlgPrefsTechDrawGeneral.h"
 #include "PreferencesGui.h"
+#include "DrawGuiUtil.h"
 
 
 using namespace TechDrawGui;
@@ -60,7 +61,7 @@ void DlgPrefsTechDrawGeneralImp::saveSettings()
     ui->plsb_LabelSize->onSave();
 
     ui->cbProjAngle->onSave();
-    ui->cbHiddenLineStyle->onSave();
+    ui->cbSectionLineStd->onSave();
 
     ui->pfc_DefTemp->onSave();
     ui->pfc_DefDir->onSave();
@@ -71,6 +72,8 @@ void DlgPrefsTechDrawGeneralImp::saveSettings()
     ui->le_NamePattern->onSave();
     ui->cb_ShowGrid->onSave();
     ui->psb_GridSpacing->onSave();
+
+    ui->cbMultiSelection->onSave();
 }
 
 void DlgPrefsTechDrawGeneralImp::loadSettings()
@@ -90,7 +93,7 @@ void DlgPrefsTechDrawGeneralImp::loadSettings()
     ui->plsb_LabelSize->onRestore();
 
     ui->cbProjAngle->onRestore();
-    ui->cbHiddenLineStyle->onRestore();
+    ui->cbSectionLineStd->onRestore();
 
     ui->pfc_DefTemp->onRestore();
     ui->pfc_DefDir->onRestore();
@@ -107,6 +110,10 @@ void DlgPrefsTechDrawGeneralImp::loadSettings()
     double spacingDefault = PreferencesGui::gridSpacing();
     ui->psb_GridSpacing->setValue(spacingDefault);
     ui->psb_GridSpacing->onRestore();
+
+    bool multiSelectionDefault = PreferencesGui::multiSelection();
+    ui->cbMultiSelection->setChecked(multiSelectionDefault);
+    ui->cbMultiSelection->onRestore();
 }
 
 /**

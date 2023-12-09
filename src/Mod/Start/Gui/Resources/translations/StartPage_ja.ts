@@ -11,7 +11,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="40"/>
       <source>Welcome to FreeCAD</source>
-      <translation type="unfinished">Welcome to FreeCAD</translation>
+      <translation>FreeCAD へようこそ</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="41"/>
@@ -66,7 +66,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="51"/>
       <source>Standard Part</source>
-      <translation type="unfinished">Standard Part</translation>
+      <translation>基本部品</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="56"/>
@@ -76,7 +76,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="57"/>
       <source>2D Draft</source>
-      <translation type="unfinished">2D Draft</translation>
+      <translation>2Dドラフト（下書き）</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="58"/>
@@ -175,8 +175,8 @@
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="98"/>
-      <source>The &lt;a href="http://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
-      <translation>&lt;a href="http://forum.freecad.org"&gt;FreeCAD フォーラム&lt;/a&gt; は他の FreeCAD ユーザーや開発者から手助けを得られるすばらしい場所です。フォーラムはさまざまな種類の問題や議題を扱うたくさんのセクションがあります。もしどこに投稿すればいいかわからなければ一般的な話題を扱う &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;FreeCAD 使用時のヘルプ&lt;/a&gt; に投稿してください。</translation>
+      <source>The &lt;a href="https://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
+      <translation type="unfinished">The &lt;a href="https://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="102"/>
@@ -275,11 +275,31 @@
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="144"/>
+      <source>Size</source>
+      <translation>サイズ</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="145"/>
+      <source>Author</source>
+      <translation>作成者</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="146"/>
+      <source>License</source>
+      <translation>ライセンス</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="147"/>
+      <source>File path</source>
+      <translation type="unfinished">File path</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="148"/>
       <source>Notes</source>
       <translation>ノート</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="145"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="149"/>
       <source>Open start page preferences</source>
       <translation>スタートページの設定を開く</translation>
     </message>
@@ -287,7 +307,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../../StartPage/StartPage.py" line="826"/>
+      <location filename="../../../StartPage/StartPage.py" line="874"/>
       <location filename="../../Workbench.cpp" line="62"/>
       <source>Start page</source>
       <translation>スタートページ</translation>
@@ -393,7 +413,7 @@ By using ";;" to separate paths, you can add several folders here</source>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="297"/>
       <source>Show file thumbnails</source>
-      <translation type="unfinished">Show file thumbnails</translation>
+      <translation>ファイルのサムネイルを表示</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="331"/>

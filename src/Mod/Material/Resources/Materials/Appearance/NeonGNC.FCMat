@@ -1,7 +1,9 @@
+---
 # File created by ConvertFCMat.py
 General:
   UUID: "c0341eef-0897-4fcf-a7f7-eddf1a2600a5"
-  AuthorAndLicense: "(c) 2023 David Carter"
+  Author: "David Carter"
+  License: "GPL-2.0-or-later"
   Name: "Neon GNC"
   Description: "Defines the Neon GNC appearance properties"
 AppearanceModels:

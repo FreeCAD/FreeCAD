@@ -23,10 +23,13 @@
 #ifndef _PreComp_
 #endif
 
+#include <string>
+
+#include <App/Application.h>
+
 #include "Exceptions.h"
 #include "Model.h"
 #include "ModelLibrary.h"
-#include <string>
 
 
 using namespace Materials;
@@ -81,12 +84,23 @@ ModelProperty& ModelProperty::operator=(const ModelProperty& other)
     return *this;
 }
 
+bool ModelProperty::operator==(const ModelProperty& other) const
+{
+    if (this == &other) {
+        return true;
+    }
+
+    return (_name == other._name) && (_propertyType == other._propertyType)
+        && (_units == other._units) && (_url == other._url) && (_description == other._description)
+        && (_inheritance == other._inheritance);
+}
+
 TYPESYSTEM_SOURCE(Materials::Model, Base::BaseClass)
 
 Model::Model()
 {}
 
-Model::Model(const ModelLibrary& library,
+Model::Model(std::shared_ptr<ModelLibrary> library,
              ModelType type,
              const QString& name,
              const QString& directory,

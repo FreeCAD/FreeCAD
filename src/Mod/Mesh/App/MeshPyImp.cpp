@@ -260,9 +260,9 @@ PyObject* MeshPy::write(PyObject* args, PyObject* kwds)
             Py::Sequence list(List);
             for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
                 Py::Tuple t(*it);
-                float r = (float)Py::Float(t.getItem(0));
-                float g = (float)Py::Float(t.getItem(1));
-                float b = (float)Py::Float(t.getItem(2));
+                float r = Py::Float(t.getItem(0));
+                float g = Py::Float(t.getItem(1));
+                float b = Py::Float(t.getItem(2));
                 mat.diffuseColor.emplace_back(r, g, b);
             }
 
@@ -313,9 +313,9 @@ PyObject* MeshPy::write(PyObject* args, PyObject* kwds)
             Py::Sequence list(List);
             for (Py::Sequence::iterator it = list.begin(); it != list.end(); ++it) {
                 Py::Tuple t(*it);
-                float r = (float)Py::Float(t.getItem(0));
-                float g = (float)Py::Float(t.getItem(1));
-                float b = (float)Py::Float(t.getItem(2));
+                float r = Py::Float(t.getItem(0));
+                float g = Py::Float(t.getItem(1));
+                float b = Py::Float(t.getItem(2));
                 mat->diffuseColor.emplace_back(r, g, b);
             }
 
@@ -416,12 +416,12 @@ PyObject* MeshPy::crossSections(PyObject* args)
         else if (p1.isTuple() && p2.isTuple()) {
             Py::Tuple b(p1);
             Py::Tuple n(p2);
-            float bx = (float)Py::Float(b.getItem(0));
-            float by = (float)Py::Float(b.getItem(1));
-            float bz = (float)Py::Float(b.getItem(2));
-            float nx = (float)Py::Float(n.getItem(0));
-            float ny = (float)Py::Float(n.getItem(1));
-            float nz = (float)Py::Float(n.getItem(2));
+            float bx = Py::Float(b.getItem(0));
+            float by = Py::Float(b.getItem(1));
+            float bz = Py::Float(b.getItem(2));
+            float nx = Py::Float(n.getItem(0));
+            float ny = Py::Float(n.getItem(1));
+            float nz = Py::Float(n.getItem(2));
 
             MeshObject::TPlane plane;
             plane.first.Set(bx, by, bz);
@@ -769,9 +769,9 @@ PyObject* MeshPy::addFacets(PyObject* args)
                     // 9 consecutive floats expected
                     int index = 0;
                     for (auto& point : facet._aclPoints) {
-                        point.x = (float)(double)Py::Float(seq[index++]);
-                        point.y = (float)(double)Py::Float(seq[index++]);
-                        point.z = (float)(double)Py::Float(seq[index++]);
+                        point.x = Py::Float(seq[index++]);
+                        point.y = Py::Float(seq[index++]);
+                        point.z = Py::Float(seq[index++]);
                     }
                     facet.CalcNormal();
                     facets.push_back(facet);
@@ -1981,7 +1981,7 @@ PyObject* MeshPy::trimByPlane(PyObject* args)
 
 PyObject* MeshPy::smooth(PyObject* args, PyObject* kwds)
 {
-    char* method = "Laplace";
+    const char* method = "Laplace";
     int iter = 1;
     double lambda = 0;
     double micro = 0;
@@ -2184,10 +2184,10 @@ PyObject* MeshPy::getSegmentsByCurvature(PyObject* args)
     std::vector<MeshCore::MeshSurfaceSegmentPtr> segm;
     for (Py::Sequence::iterator it = func.begin(); it != func.end(); ++it) {
         Py::Tuple t(*it);
-        float c1 = (float)Py::Float(t[0]);
-        float c2 = (float)Py::Float(t[1]);
-        float tol1 = (float)Py::Float(t[2]);
-        float tol2 = (float)Py::Float(t[3]);
+        float c1 = Py::Float(t[0]);
+        float c2 = Py::Float(t[1]);
+        float tol1 = Py::Float(t[2]);
+        float tol2 = Py::Float(t[3]);
         int num = (int)Py::Long(t[4]);
         segm.emplace_back(
             std::make_shared<MeshCore::MeshCurvatureFreeformSegment>(meshCurv.GetCurvature(),

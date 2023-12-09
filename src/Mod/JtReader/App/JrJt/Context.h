@@ -23,7 +23,6 @@
 #ifndef Context_HEADER
 #define Context_HEADER
 
-#include "Context.h"
 #include <istream>
 #include <stdint.h>
 

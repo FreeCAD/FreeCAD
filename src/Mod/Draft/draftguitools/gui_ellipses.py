@@ -42,7 +42,7 @@ import draftguitools.gui_tool_utils as gui_tool_utils
 import draftguitools.gui_trackers as trackers
 
 from draftutils.translate import translate
-from draftutils.messages import _msg, _err
+from draftutils.messages import _toolmsg, _err
 
 # The module is used to prevent complaints from code checkers (flake8)
 True if Draft_rc.__name__ else False
@@ -68,7 +68,7 @@ class Ellipse(gui_base_original.Creator):
             self.ui.extUi()
             self.call = self.view.addEventCallback("SoEvent", self.action)
             self.rect = trackers.rectangleTracker()
-            _msg(translate("draft", "Pick first point"))
+            _toolmsg(translate("draft", "Pick first point"))
 
     def finish(self, cont=False):
         """Terminate the operation.
@@ -196,7 +196,7 @@ class Ellipse(gui_base_original.Creator):
             self.rect.update(point)
             self.createObject()
         else:
-            _msg(translate("draft", "Pick opposite point"))
+            _toolmsg(translate("draft", "Pick opposite point"))
             self.ui.setRelative()
             self.rect.setorigin(point)
             self.rect.on()

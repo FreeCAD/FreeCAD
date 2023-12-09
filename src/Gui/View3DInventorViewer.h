@@ -159,16 +159,18 @@ public:
     bool searchNode(SoNode*) const;
 
     void setAnimationEnabled(bool enable);
+    void setSpinningAnimationEnabled(bool enable);
     bool isAnimationEnabled() const;
-
-    void setPopupMenuEnabled(bool on);
-    bool isPopupMenuEnabled() const;
-
+    bool isSpinningAnimationEnabled() const;
+    bool isAnimating() const;
+    bool isSpinning() const;
     void startAnimation(const SbRotation& orientation, const SbVec3f& rotationCenter,
                         const SbVec3f& translation, int duration = -1, bool wait = false);
     void startSpinningAnimation(const SbVec3f& axis, float velocity);
     void stopAnimating();
-    bool isAnimating() const;
+
+    void setPopupMenuEnabled(bool on);
+    bool isPopupMenuEnabled() const;
 
     void setFeedbackVisibility(bool enable);
     bool isFeedbackVisible() const;
@@ -416,6 +418,7 @@ public:
     bool hasAxisCross();
 
     void showRotationCenter(bool show);
+    void changeRotationCenterPosition(const SbVec3f& newCenter);
 
     void setEnabledFPSCounter(bool on);
     void setEnabledNaviCube(bool on);

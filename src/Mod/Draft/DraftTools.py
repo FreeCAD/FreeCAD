@@ -78,7 +78,6 @@ import draftguitools.gui_selectplane
 import draftguitools.gui_setstyle
 import draftguitools.gui_planeproxy
 from draftguitools.gui_togglemodes import ToggleConstructionMode
-from draftguitools.gui_togglemodes import ToggleContinueMode
 from draftguitools.gui_togglemodes import ToggleDisplayMode
 from draftguitools.gui_groups import AddToGroup
 from draftguitools.gui_groups import SelectGroup
@@ -97,11 +96,6 @@ from draftguitools.gui_layers import Layer
 # ---------------------------------------------------------------------------
 # update the translation engine
 FreeCADGui.updateLocale()
-
-# Set modifier keys
-from draftguitools.gui_tool_utils import MODCONSTRAIN
-from draftguitools.gui_tool_utils import MODSNAP
-from draftguitools.gui_tool_utils import MODALT
 
 # ---------------------------------------------------------------------------
 # General functions

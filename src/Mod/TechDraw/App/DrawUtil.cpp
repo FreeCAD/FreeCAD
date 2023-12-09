@@ -174,6 +174,17 @@ double DrawUtil::simpleMinDist(TopoDS_Shape s1, TopoDS_Shape s2)
     }
 }
 
+//! returns 2d vector's angle with X axis. result is [0, 2pi].
+double DrawUtil::angleWithX(Base::Vector3d inVec)
+{
+    double result = atan2(inVec.y, inVec.x);
+    if (result < 0) {
+        result += 2.0 * M_PI;
+    }
+
+    return result;
+}
+
 //! assumes 2d on XY
 //! quick angle for straight edges
 double DrawUtil::angleWithX(TopoDS_Edge e, bool reverse)
@@ -924,6 +935,34 @@ QPointF DrawUtil::invertY(QPointF v)
     return QPointF(v.x(), -v.y());
 }
 
+//! convert a gui point into its app space equivalent.  this requires us to
+//! perform the invert, scale, rotate operations in the reverse order from
+//! that used to generate the qt point.
+//! Note: the centering operation is not considered here
+Base::Vector3d  DrawUtil::toAppSpace(const DrawViewPart& dvp, const Base::Vector3d &qtPoint)
+{
+//    Base::Console().Message("DGU::toPaperSpace(%s)\n", formatVector(qtPoint).c_str());
+    // From Y+ is down to Y+ is up
+    Base::Vector3d appPoint = invertY(qtPoint);
+
+    // remove the effect of the Rotation property
+    double rotDeg = dvp.Rotation.getValue();
+    double rotRad = rotDeg * M_PI / 180.0;
+    if (rotDeg != 0.0) {
+        // we always rotate around the origin.
+        appPoint.RotateZ(-rotRad);
+    }
+
+    // convert to 1:1 scale
+    appPoint = appPoint / dvp.getScale();
+
+    return appPoint;
+}
+
+Base::Vector3d  DrawUtil::toAppSpace(const DrawViewPart& dvp, const QPointF& qtPoint)
+{
+    return toAppSpace(dvp, toVector3d(qtPoint));
+}
 
 //obs? was used in CSV prototype of Cosmetics
 std::vector<std::string> DrawUtil::split(std::string csvLine)

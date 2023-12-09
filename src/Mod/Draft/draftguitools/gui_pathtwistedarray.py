@@ -118,7 +118,7 @@ class PathTwistedLinkArray(PathTwistedArray):
         """Set icon, menu and tooltip."""
 
         return {'Pixmap': 'Draft_PathTwistedLinkArray',
-                'MenuText': QT_TRANSLATE_NOOP("Draft_PathTwistedLinkArray","Path twisted Link array"),
+                'MenuText': QT_TRANSLATE_NOOP("Draft_PathTwistedLinkArray","Path twisted link array"),
                 'ToolTip': QT_TRANSLATE_NOOP("Draft_PathTwistedLinkArray","Like the PathTwistedArray tool, but creates a 'Link array' instead.\nA 'Link array' is more efficient when handling many copies but the 'Fuse' option cannot be used.")}
 
     def Activated(self):

@@ -27,6 +27,8 @@ import os
 import subprocess
 from typing import List
 
+from freecad.utils import get_python_exe
+
 import addonmanager_freecad_interface as fci
 from addonmanager_pyside_interface import QObject, Signal, is_interruption_requested
 
@@ -170,7 +172,7 @@ class DependencyInstaller(QObject):
 
     def _get_python(self) -> str:
         """Wrap Python access so test code can mock it."""
-        python_exe = utils.get_python_exe()
+        python_exe = get_python_exe()
         if not python_exe:
             self.no_python_exe.emit()
         return python_exe

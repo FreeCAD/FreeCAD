@@ -46,7 +46,7 @@ import draftguitools.gui_tool_utils as gui_tool_utils
 import draftguitools.gui_trackers as trackers
 import draftutils.utils as utils
 
-from draftutils.messages import _msg
+from draftutils.messages import _toolmsg
 from draftutils.translate import translate
 
 # The module is used to prevent complaints from code checkers (flake8)
@@ -77,7 +77,7 @@ class Label(gui_base_original.Creator):
         self.ui.xValue.selectAll()
         self.ghost = trackers.lineTracker()
         self.call = self.view.addEventCallback("SoEvent", self.action)
-        _msg(translate("draft", "Pick target point"))
+        _toolmsg(translate("draft", "Pick target point"))
         self.ui.isCopy.hide()
 
     def setmode(self, i):
@@ -171,7 +171,7 @@ class Label(gui_base_original.Creator):
             if hasattr(Gui, "Snapper"):
                 Gui.Snapper.affinity = None  # don't keep affinity
             if len(self.node) == 2:
-                gui_tool_utils.setMod(arg, gui_tool_utils.MODCONSTRAIN, True)
+                gui_tool_utils.setMod(arg, gui_tool_utils.get_mod_constrain_key(), True)
             self.point, ctrlPoint, info = gui_tool_utils.getPoint(self, arg)
             gui_tool_utils.redraw3DView()
         elif arg["Type"] == "SoMouseButtonEvent":
@@ -182,7 +182,7 @@ class Label(gui_base_original.Creator):
                         # first click
                         self.node.append(self.point)
                         self.ui.isRelative.show()
-                        _msg(translate("draft",
+                        _toolmsg(translate("draft",
                                        "Pick endpoint of leader line"))
                         if self.planetrack:
                             self.planetrack.set(self.point)
@@ -193,7 +193,7 @@ class Label(gui_base_original.Creator):
                             self.ghost.p1(self.node[0])
                             self.ghost.p2(self.node[1])
                             self.ghost.on()
-                        _msg(translate("draft", "Pick text position"))
+                        _toolmsg(translate("draft", "Pick text position"))
                     else:
                         # third click
                         self.node.append(self.point)
@@ -210,7 +210,7 @@ class Label(gui_base_original.Creator):
             # first click
             self.node.append(self.point)
             self.ui.isRelative.show()
-            _msg(translate("draft", "Pick endpoint of leader line"))
+            _toolmsg(translate("draft", "Pick endpoint of leader line"))
             if self.planetrack:
                 self.planetrack.set(self.point)
         elif len(self.node) == 1:
@@ -220,7 +220,7 @@ class Label(gui_base_original.Creator):
                 self.ghost.p1(self.node[0])
                 self.ghost.p2(self.node[1])
                 self.ghost.on()
-            _msg(translate("draft", "Pick text position"))
+            _toolmsg(translate("draft", "Pick text position"))
         else:
             # third click
             self.node.append(self.point)

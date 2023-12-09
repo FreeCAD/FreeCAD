@@ -22,19 +22,7 @@
 # *   USA                                                                   *
 # *                                                                         *
 # ***************************************************************************
-"""Provides GUI tools to join lines and wires.
-
-It occasionally fails to join lines even if the lines
-visually share a point. This is due to the underlying `joinWires` method
-not handling the points correctly.
-
-This is a rounding error in the comparison of the shared point;
-a small difference will result in the points being considered different
-and thus the lines not joining.
-
-Test properly using `DraftVecUtils.equals` because then it will consider
-the precision set in the Draft preferences.
-"""
+"""Provides GUI tools to join lines and wires."""
 ## @package gui_join
 # \ingroup draftguitools
 # \brief Provides GUI tools to join lines and wires.
@@ -48,7 +36,7 @@ import Draft_rc
 import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
 
-from draftutils.messages import _msg
+from draftutils.messages import _msg, _toolmsg
 from draftutils.translate import translate
 
 # The module is used to prevent complaints from code checkers (flake8)
@@ -61,14 +49,14 @@ class Join(gui_base_original.Modifier):
     def GetResources(self):
         """Set icon, menu and tooltip."""
 
-        return {'Pixmap': 'Draft_Join',
-                'Accel': "J, O",
-                'MenuText': QT_TRANSLATE_NOOP("Draft_Join", "Join"),
-                'ToolTip': QT_TRANSLATE_NOOP("Draft_Join", "Joins the selected lines or polylines into a single object.\nThe lines must share a common point at the start or at the end for the operation to succeed.")}
+        return {"Pixmap": "Draft_Join",
+                "Accel": "J, O",
+                "MenuText": QT_TRANSLATE_NOOP("Draft_Join", "Join"),
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_Join", "Joins the selected lines or polylines into a single object.\nThe lines must share a common point at the start or at the end for the operation to succeed.")}
 
     def Activated(self):
         """Execute when the command is called."""
-        super(Join, self).Activated(name="Join")
+        super().Activated(name="Join")
         if not self.ui:
             return
         if not Gui.Selection.getSelection():
@@ -90,7 +78,7 @@ class Join(gui_base_original.Modifier):
         if Gui.Selection.getSelection():
             self.print_selection()
             Gui.addModule("Draft")
-            _cmd = "Draft.joinWires"
+            _cmd = "Draft.join_wires"
             _cmd += "("
             _cmd += "FreeCADGui.Selection.getSelection()"
             _cmd += ")"
@@ -107,7 +95,7 @@ class Join(gui_base_original.Modifier):
             labels.append(obj.Label)
 
         labels = ", ".join(labels)
-        _msg(translate("draft","Selection:") + " {}".format(labels))
+        _toolmsg(translate("draft","Selection:") + " {}".format(labels))
 
 
 Gui.addCommand('Draft_Join', Join())

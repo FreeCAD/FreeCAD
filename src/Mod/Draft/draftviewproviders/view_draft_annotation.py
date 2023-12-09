@@ -90,9 +90,8 @@ class ViewProviderDraftAnnotation(object):
                              "ScaleMultiplier",
                              "Annotation",
                              _tip)
-            annotation_scale = param.GetFloat("DraftAnnotationScale", 1.0)
-            if annotation_scale != 0:
-                vobj.ScaleMultiplier = 1 / annotation_scale
+            anno_scale = param.GetFloat("DraftAnnotationScale", 1)
+            vobj.ScaleMultiplier = 1 / anno_scale if anno_scale > 0 else 1
 
         if "AnnotationStyle" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
@@ -142,6 +141,7 @@ class ViewProviderDraftAnnotation(object):
                              "TextColor",
                              "Text",
                              _tip)
+            vobj.TextColor = utils.get_param("DefaultTextColor", 255) & 0xFFFFFF00
 
     def set_units_properties(self, vobj, properties):
         return
@@ -154,6 +154,7 @@ class ViewProviderDraftAnnotation(object):
                              "LineWidth",
                              "Graphics",
                              _tip)
+            vobj.LineWidth = utils.get_param("DefaultAnnoLineWidth", 2)
 
         if "LineColor" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property", "Line color")
@@ -161,6 +162,7 @@ class ViewProviderDraftAnnotation(object):
                              "LineColor",
                              "Graphics",
                              _tip)
+            vobj.LineColor = utils.get_param("DefaultAnnoLineColor", 255) & 0xFFFFFF00
 
     def dumps(self):
         """Return a tuple of objects to save or None."""
@@ -184,7 +186,7 @@ class ViewProviderDraftAnnotation(object):
 
     def getDefaultDisplayMode(self):
         """Return the default display mode."""
-        return "World"
+        return ["World", "Screen"][utils.get_param("DefaultAnnoDisplayMode", 0)]
 
     def setDisplayMode(self, mode):
         """Return the saved display mode."""
@@ -200,7 +202,7 @@ class ViewProviderDraftAnnotation(object):
                 # unset style
                 _msg(16 * "-")
                 _msg("Unset style")
-                for visprop in utils.ANNOTATION_STYLE.keys():
+                for visprop in utils.get_default_annotation_style().keys():
                     if visprop in properties:
                         # make property writable
                         vobj.setPropertyStatus(visprop, '-ReadOnly')

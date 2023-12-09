@@ -198,12 +198,12 @@ Ova naredba radi samo s 'mrežnim' objektom.</translation>
       <translation>Otkazati</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="626"/>
+      <location filename="../../CurveOnMesh.cpp" line="624"/>
       <source>Wrong mesh picked</source>
       <translation>Izabrana pogrešna mreža</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="667"/>
+      <location filename="../../CurveOnMesh.cpp" line="663"/>
       <source>No point was picked</source>
       <translation>Ni jedan vrh nije odabran</translation>
     </message>
@@ -582,8 +582,8 @@ Odaberite drugačiji oblik, molim.</translation>
     <name>MeshPart_CreateFlatMesh</name>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="49"/>
-      <source>Unwrap Mesh</source>
-      <translation>Raširi Mrežu</translation>
+      <source>Unwrap mesh</source>
+      <translation type="unfinished">Unwrap mesh</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="52"/>
@@ -595,8 +595,8 @@ Odaberite drugačiji oblik, molim.</translation>
     <name>MeshPart_CreateFlatFace</name>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="88"/>
-      <source>Unwrap Face</source>
-      <translation>Raširi Lice</translation>
+      <source>Unwrap face</source>
+      <translation type="unfinished">Unwrap face</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="91"/>

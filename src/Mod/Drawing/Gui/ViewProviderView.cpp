@@ -69,7 +69,7 @@ void ViewProviderDrawingView::show(void)
     if (!obj || obj->isRestoring()) {
         return;
     }
-    if (obj->getTypeId().isDerivedFrom(Drawing::FeatureView::getClassTypeId())) {
+    if (obj->isDerivedFrom<Drawing::FeatureView>()) {
         // The 'Visible' property is marked as 'Output'. To update the drawing on recompute
         // the parent page object is touched.
         static_cast<Drawing::FeatureView*>(obj)->Visible.setValue(true);
@@ -88,7 +88,7 @@ void ViewProviderDrawingView::hide(void)
     if (!obj || obj->isRestoring()) {
         return;
     }
-    if (obj->getTypeId().isDerivedFrom(Drawing::FeatureView::getClassTypeId())) {
+    if (obj->isDerivedFrom<Drawing::FeatureView>()) {
         // The 'Visible' property is marked as 'Output'. To update the drawing on recompute
         // the parent page object is touched.
         static_cast<Drawing::FeatureView*>(obj)->Visible.setValue(false);
@@ -172,7 +172,7 @@ void ViewProviderDrawingClip::show(void)
     if (!obj || obj->isRestoring()) {
         return;
     }
-    if (obj->getTypeId().isDerivedFrom(Drawing::FeatureClip::getClassTypeId())) {
+    if (obj->isDerivedFrom<Drawing::FeatureClip>()) {
         // The 'Visible' property is marked as 'Output'. To update the drawing on recompute
         // the parent page object is touched.
         static_cast<Drawing::FeatureClip*>(obj)->Visible.setValue(true);
@@ -191,7 +191,7 @@ void ViewProviderDrawingClip::hide(void)
     if (!obj || obj->isRestoring()) {
         return;
     }
-    if (obj->getTypeId().isDerivedFrom(Drawing::FeatureClip::getClassTypeId())) {
+    if (obj->isDerivedFrom<Drawing::FeatureClip>()) {
         // The 'Visible' property is marked as 'Output'. To update the drawing on recompute
         // the parent page object is touched.
         static_cast<Drawing::FeatureClip*>(obj)->Visible.setValue(false);

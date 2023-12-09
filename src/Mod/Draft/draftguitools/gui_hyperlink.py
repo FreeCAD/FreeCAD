@@ -31,7 +31,7 @@
 import FreeCAD
 import os
 import re
-from draftutils.messages import _msg
+from draftutils.messages import _msg, _toolmsg
 
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -114,7 +114,7 @@ class Draft_Hyperlink:
         else:
             url = QUrl(hyperlink)
 
-        _msg(translate("draft", "Opening hyperlink") + " " + hyperlink)
+        _toolmsg(translate("draft", "Opening hyperlink") + " " + hyperlink)
 
         QDesktopServices.openUrl(url) #ToDo: add management to open FCStd files in the current instance and to open web pages with the Web Workbench
 

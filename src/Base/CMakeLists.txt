@@ -198,6 +198,8 @@ SET(FreeCADBase_UNITAPI_SRCS
     UnitsSchemaMmMin.cpp
     UnitsSchemaFemMilliMeterNewton.h
     UnitsSchemaFemMilliMeterNewton.cpp
+    UnitsSchemaMeterDecimal.h
+    UnitsSchemaMeterDecimal.cpp
     Quantity.h
     Quantity.cpp
     QuantityPyImp.cpp

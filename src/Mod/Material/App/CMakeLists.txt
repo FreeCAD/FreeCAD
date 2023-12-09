@@ -33,14 +33,21 @@ list(APPEND Material_LIBS
     ${YAML_CPP_LIBRARIES}
 )
 
+generate_from_xml(Array2DPy)
+generate_from_xml(Array3DPy)
 generate_from_xml(MaterialManagerPy)
 generate_from_xml(MaterialPy)
 generate_from_xml(ModelManagerPy)
 generate_from_xml(ModelPropertyPy)
 generate_from_xml(ModelPy)
+generate_from_xml(UUIDsPy)
 
 SET(Python_SRCS
     Exceptions.h
+    Array2DPy.xml
+    Array2DPyImpl.cpp
+    Array3DPy.xml
+    Array3DPyImpl.cpp
     MaterialManagerPy.xml
     MaterialManagerPyImpl.cpp
     MaterialPy.xml
@@ -51,6 +58,8 @@ SET(Python_SRCS
     ModelPropertyPyImpl.cpp
     ModelPy.xml
     ModelPyImpl.cpp
+    UUIDsPy.xml
+    UUIDsPyImpl.cpp
 )
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
@@ -78,6 +87,7 @@ SET(Material_SRCS
     ModelLoader.h
     ModelManager.cpp
     ModelManager.h
+    ModelUuids.cpp
     ModelUuids.h
     PreCompiled.cpp
     PreCompiled.h

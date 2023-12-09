@@ -104,7 +104,7 @@ CmdApproxPlane::CmdApproxPlane()
 {
     sAppModule = "Reen";
     sGroup = QT_TR_NOOP("Reverse Engineering");
-    sMenuText = QT_TR_NOOP("Plane...");
+    sMenuText = QT_TR_NOOP("Plane");
     sToolTipText = QT_TR_NOOP("Approximate a plane");
     sWhatsThis = "Reen_ApproxPlane";
     sStatusTip = sToolTipText;
@@ -120,7 +120,7 @@ void CmdApproxPlane::activated(int)
         std::vector<App::Property*> List;
         it->getPropertyList(List);
         for (const auto& jt : List) {
-            if (jt->getTypeId().isDerivedFrom(App::PropertyComplexGeoData::getClassTypeId())) {
+            if (jt->isDerivedFrom<App::PropertyComplexGeoData>()) {
                 const Data::ComplexGeoData* data =
                     static_cast<App::PropertyComplexGeoData*>(jt)->getComplexData();
                 if (data) {
@@ -199,7 +199,7 @@ void CmdApproxPlane::activated(int)
 
 bool CmdApproxPlane::isActive()
 {
-    if (getSelection().countObjectsOfType(App::GeoFeature::getClassTypeId()) == 1) {
+    if (getSelection().countObjectsOfType(App::GeoFeature::getClassTypeId()) > 0) {
         return true;
     }
     return false;

@@ -56,7 +56,7 @@ App::DocumentObjectExecReturn* Sections::execute()
             // get the part object
             App::DocumentObject* obj = edge_obj[index];
             const std::string& sub = edge_sub[index];
-            if (obj && obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+            if (obj && obj->isDerivedFrom<Part::Feature>()) {
                 // get the sub-edge of the part's shape
                 const Part::TopoShape& shape = static_cast<Part::Feature*>(obj)->Shape.getShape();
                 TopoDS_Shape edge = shape.getSubShape(sub.c_str());

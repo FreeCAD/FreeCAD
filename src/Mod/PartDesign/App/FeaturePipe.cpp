@@ -173,7 +173,7 @@ App::DocumentObjectExecReturn *Pipe::execute()
 
         // build the paths
         App::DocumentObject* spine = Spine.getValue();
-        if (!(spine && spine->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())))
+        if (!(spine && spine->isDerivedFrom<Part::Feature>()))
             return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "No spine linked"));
 
         std::vector<std::string> subedge = Spine.getSubValues();
@@ -186,7 +186,7 @@ App::DocumentObjectExecReturn *Pipe::execute()
         TopoDS_Shape auxpath;
         if (Mode.getValue() == 3) {
             App::DocumentObject* auxspine = AuxillerySpine.getValue();
-            if (!(auxspine && auxspine->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())))
+            if (!(auxspine && auxspine->isDerivedFrom<Part::Feature>()))
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "No auxiliary spine linked."));
             std::vector<std::string> auxsubedge = AuxillerySpine.getSubValues();
 

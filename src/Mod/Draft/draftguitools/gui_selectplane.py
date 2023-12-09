@@ -56,8 +56,8 @@ class Draft_SelectPlane:
         """Set icon, menu and tooltip."""
         return {"Pixmap": "Draft_SelectPlane",
                 "Accel": "W, P",
-                "MenuText": QT_TRANSLATE_NOOP("Draft_SelectPlane", "Select Plane"),
-                "ToolTip": QT_TRANSLATE_NOOP("Draft_SelectPlane", "Select 3 vertices, one or more shapes or a WP Proxy to define a working plane.")}
+                "MenuText": QT_TRANSLATE_NOOP("Draft_SelectPlane", "Select plane"),
+                "ToolTip": QT_TRANSLATE_NOOP("Draft_SelectPlane", "Select 3 vertices, one or more shapes or an object to define a working plane.")}
 
     def IsActive(self):
         """Return True when this command should be available."""
@@ -78,6 +78,10 @@ class Draft_SelectPlane:
         # Set variables
         self.wp = WorkingPlane.get_working_plane()
         self.view = self.wp._view
+        self.grid = None
+        if hasattr(Gui, "Snapper"):
+            Gui.Snapper.setTrackers()
+            self.grid = Gui.Snapper.grid
         self.offset = 0
         self.center = self.param.GetBool("CenterPlaneOnView", False)
 
@@ -143,13 +147,15 @@ class Draft_SelectPlane:
         todo.delay(form.setFocus, None)
         _msg(translate(
                 "draft",
-                "Select 3 vertices, one or more shapes or a WP Proxy to define a working plane"))
+                "Select 3 vertices, one or more shapes or an object to define a working plane"))
         self.call = self.view.addEventCallback("SoEvent", self.action)
 
     def finish(self):
         """Execute when the command is terminated."""
         App.activeDraftCommand = None
         Gui.Control.closeDialog()
+        if hasattr(Gui, "Snapper"):
+            Gui.Snapper.off()
         # Terminate coin callbacks
         if self.call:
             try:
@@ -246,20 +252,26 @@ class Draft_SelectPlane:
             pass
         else:
             self.param.SetString("gridSpacing", q.UserString)
-            if hasattr(Gui, "Snapper"):
-                Gui.Snapper.setGrid()
+            # ParamObserver handles grid changes. See params.py.
+            if self.grid is not None:
+                self.grid.show_during_command = True
+                self.grid.on()
 
     def on_set_main_line(self, i):
         if i > 1:
             self.param.SetInt("gridEvery", i)
-            if hasattr(Gui, "Snapper"):
-                Gui.Snapper.setGrid()
+            # ParamObserver handles grid changes. See params.py.
+            if self.grid is not None:
+                self.grid.show_during_command = True
+                self.grid.on()
 
     def on_set_extension(self, i):
         if i > 1:
             self.param.SetInt("gridSize", i)
-            if hasattr(Gui, "Snapper"):
-                Gui.Snapper.setGrid()
+            # ParamObserver handles grid changes. See params.py.
+            if self.grid is not None:
+                self.grid.show_during_command = True
+                self.grid.on()
 
     def on_set_snap_radius(self, i):
         self.param.SetInt("snapRange", i)

@@ -547,7 +547,7 @@ PyObject* Application::sGetDocument(PyObject * /*self*/, PyObject *args)
         return pcDoc->getPyObject();
     }
 
-    PyErr_SetString(PyExc_TypeError, "Either string or App.Document exprected");
+    PyErr_SetString(PyExc_TypeError, "Either string or App.Document expected");
     return nullptr;
 }
 
@@ -1427,7 +1427,7 @@ PyObject* Application::sCreateViewer(PyObject * /*self*/, PyObject *args)
 
 PyObject* Application::sGetMarkerIndex(PyObject * /*self*/, PyObject *args)
 {
-    char *pstr;
+    char *pstr {};
     int  defSize = 9;
     if (!PyArg_ParseTuple(args, "s|i", &pstr, &defSize))
         return nullptr;
@@ -1441,6 +1441,7 @@ PyObject* Application::sGetMarkerIndex(PyObject * /*self*/, PyObject *args)
         std::list<std::pair<std::string, std::string> > markerList = {
             {"square", "DIAMOND_FILLED"},
             {"cross", "CROSS"},
+            {"hourglass", "HOURGLASS_FILLED"},
             {"plus", "PLUS"},
             {"empty", "SQUARE_LINE"},
             {"quad", "SQUARE_FILLED"},
@@ -1448,21 +1449,15 @@ PyObject* Application::sGetMarkerIndex(PyObject * /*self*/, PyObject *args)
             {"default", "CIRCLE_FILLED"}
         };
 
-        std::list<std::pair<std::string, std::string>>::iterator markerStyle;
+        auto findIt = std::find_if(markerList.begin(), markerList.end(), [&marker_arg](const auto& it) {
+            return marker_arg == it.first || marker_arg == it.second;
+        });
 
-        for (markerStyle = markerList.begin(); markerStyle != markerList.end(); ++markerStyle)
-        {
-            if (marker_arg == (*markerStyle).first || marker_arg == (*markerStyle).second)
-                break;
-        }
+        marker_arg = (findIt != markerList.end() ? findIt->second : "CIRCLE_FILLED");
 
-        marker_arg = "CIRCLE_FILLED";
-
-        if (markerStyle != markerList.end())
-            marker_arg = (*markerStyle).second;
 
         //get the marker size
-        int sizeList[]={5, 7, 9};
+        auto sizeList = Gui::Inventor::MarkerBitmaps::getSupportedSizes(marker_arg);
 
         if (std::find(std::begin(sizeList), std::end(sizeList), defSize) == std::end(sizeList))
             defSize = 9;
@@ -1489,7 +1484,8 @@ PyObject* Application::sReload(PyObject * /*self*/, PyObject *args)
 
 PyObject* Application::sLoadFile(PyObject * /*self*/, PyObject *args)
 {
-    const char *path, *mod = "";
+    const char *path = "";
+    const char *mod = "";
     if (!PyArg_ParseTuple(args, "s|s", &path, &mod))
         return nullptr;
 
@@ -1610,7 +1606,7 @@ PyObject* Application::sGetUserEditMode(PyObject * /*self*/, PyObject *args)
 
 PyObject* Application::sSetUserEditMode(PyObject * /*self*/, PyObject *args)
 {
-    char *mode = "";
+    const char *mode = "";
     if (!PyArg_ParseTuple(args, "s", &mode))
         return nullptr;
 

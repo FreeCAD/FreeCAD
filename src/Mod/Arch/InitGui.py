@@ -214,7 +214,10 @@ class ArchWorkbench(FreeCADGui.Workbench):
                 FreeCADGui.addPreferencePage(":/ui/preferences-archdefaults.ui", QT_TRANSLATE_NOOP("QObject", "Arch"))
                 FreeCADGui.draftToolBar.loadedArchPreferences = True
             if not hasattr(FreeCADGui.draftToolBar, "loadedPreferences"):
+                from draftutils import params
+                params._param_observer_start()
                 FreeCADGui.addPreferencePage(":/ui/preferences-draft.ui", QT_TRANSLATE_NOOP("QObject", "Draft"))
+                FreeCADGui.addPreferencePage(":/ui/preferences-draftinterface.ui", QT_TRANSLATE_NOOP("QObject", "Draft"))
                 FreeCADGui.addPreferencePage(":/ui/preferences-draftsnap.ui", QT_TRANSLATE_NOOP("QObject", "Draft"))
                 FreeCADGui.addPreferencePage(":/ui/preferences-draftvisual.ui", QT_TRANSLATE_NOOP("QObject", "Draft"))
                 FreeCADGui.addPreferencePage(":/ui/preferences-drafttexts.ui", QT_TRANSLATE_NOOP("QObject", "Draft"))
@@ -228,6 +231,8 @@ class ArchWorkbench(FreeCADGui.Workbench):
             FreeCADGui.draftToolBar.Activated()
         if hasattr(FreeCADGui, "Snapper"):
             FreeCADGui.Snapper.show()
+        import WorkingPlane
+        WorkingPlane._view_observer_start()
         FreeCAD.Console.PrintLog("Arch workbench activated.\n")
 
     def Deactivated(self):
@@ -236,6 +241,8 @@ class ArchWorkbench(FreeCADGui.Workbench):
             FreeCADGui.draftToolBar.Deactivated()
         if hasattr(FreeCADGui, "Snapper"):
             FreeCADGui.Snapper.hide()
+        import WorkingPlane
+        WorkingPlane._view_observer_stop()
         FreeCAD.Console.PrintLog("Arch workbench deactivated.\n")
 
     def ContextMenu(self, recipient):

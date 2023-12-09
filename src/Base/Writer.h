@@ -42,7 +42,6 @@
 #include "FileInfo.h"
 
 
-
 namespace Base
 {
 
@@ -65,7 +64,7 @@ public:
     /// switch the writer in XML only mode (no files allowed)
     void setForceXML(bool on);
     /// check on state
-    bool isForceXML();
+    bool isForceXML() const;
     void setFileVersion(int);
     int getFileVersion() const;
 
@@ -74,14 +73,14 @@ public:
     /// insert a binary file BASE64 coded as CDATA section in the XML file
     void insertBinFile(const char* FileName);
     /// insert text string as CDATA
-    void insertText(const std::string &s);
+    void insertText(const std::string& str);
 
     /** @name additional file writing */
     //@{
     /// add a write request of a persistent object
-    std::string addFile(const char* Name, const Base::Persistence *Object);
+    std::string addFile(const char* Name, const Base::Persistence* Object);
     /// process the requested file storing
-    virtual void writeFiles()=0;
+    virtual void writeFiles() = 0;
     /// get all registered file names
     const std::vector<std::string>& getFilenames() const;
     /// Set mode
@@ -109,14 +108,17 @@ public:
     /** @name pretty formatting for XML */
     //@{
     /// get the current indentation
-    const char* ind() const {return indBuf;}
+    const char* ind() const
+    {
+        return indBuf;
+    }
     /// increase indentation by one tab
     void incInd();
     /// decrease indentation by one tab
     void decInd();
     //@}
 
-    virtual std::ostream &Stream()=0;
+    virtual std::ostream& Stream() = 0;
 
     /** Create an output stream for storing character content
      * The input is assumed to be valid character with
@@ -137,33 +139,38 @@ public:
     /** End the current character output stream
      * @return Returns the normal writer stream for convenience
      */
-    std::ostream &endCharStream();
+    std::ostream& endCharStream();
     /// Return the current character output stream
-    std::ostream &charStream();
+    std::ostream& charStream();
 
+    // NOLINTBEGIN
     /// name for underlying file saves
     std::string ObjectName;
 
 protected:
-    std::string getUniqueFileName(const char *Name);
-    struct FileEntry {
+    std::string getUniqueFileName(const char* Name);
+    struct FileEntry
+    {
         std::string FileName;
-        const Base::Persistence *Object;
+        const Base::Persistence* Object;
     };
     std::vector<FileEntry> FileList;
     std::vector<std::string> FileNames;
     std::vector<std::string> Errors;
     std::set<std::string> Modes;
 
-    short indent{0};
-    char indBuf[1024]{};
+    short indent {0};
+    char indBuf[1024] {};
 
-    bool forceXML{false};
-    int fileVersion{1};
+    bool forceXML {false};
+    int fileVersion {1};
+    // NOLINTEND
 
 public:
     Writer(const Writer&) = delete;
+    Writer(Writer&&) = delete;
     Writer& operator=(const Writer&) = delete;
+    Writer& operator=(Writer&&) = delete;
 
 private:
     std::unique_ptr<std::ostream> CharStream;
@@ -177,20 +184,37 @@ private:
  * \see Base::Persistence
  * \author Juergen Riegel
  */
-class BaseExport ZipWriter : public Writer
+class BaseExport ZipWriter: public Writer
 {
 public:
-    ZipWriter(const char* FileName);
-    ZipWriter(std::ostream&);
+    explicit ZipWriter(const char* FileName);
+    explicit ZipWriter(std::ostream&);
     ~ZipWriter() override;
 
     void writeFiles() override;
 
-    std::ostream &Stream() override{return ZipStream;}
+    std::ostream& Stream() override
+    {
+        return ZipStream;
+    }
 
-    void setComment(const char* str){ZipStream.setComment(str);}
-    void setLevel(int level){ZipStream.setLevel( level );}
-    void putNextEntry(const char* str){ZipStream.putNextEntry(str);}
+    void setComment(const char* str)
+    {
+        ZipStream.setComment(str);
+    }
+    void setLevel(int level)
+    {
+        ZipStream.setLevel(level);
+    }
+    void putNextEntry(const char* str)
+    {
+        ZipStream.putNextEntry(str);
+    }
+
+    ZipWriter(const ZipWriter&) = delete;
+    ZipWriter(ZipWriter&&) = delete;
+    ZipWriter& operator=(const ZipWriter&) = delete;
+    ZipWriter& operator=(ZipWriter&&) = delete;
 
 private:
     zipios::ZipOutputStream ZipStream;
@@ -202,13 +226,20 @@ private:
  * \see Base::Persistence
  * \author Juergen Riegel
  */
-class BaseExport StringWriter : public Writer
+class BaseExport StringWriter: public Writer
 {
 
 public:
-    std::ostream &Stream() override{return StrStream;}
-    std::string getString() const {return StrStream.str();}
-    void writeFiles() override{}
+    std::ostream& Stream() override
+    {
+        return StrStream;
+    }
+    std::string getString() const
+    {
+        return StrStream.str();
+    }
+    void writeFiles() override
+    {}
 
 private:
     std::stringstream StrStream;
@@ -219,31 +250,44 @@ private:
   \see Base::Persistence
   \author Werner Mayer
  */
-class BaseExport FileWriter : public Writer
+class BaseExport FileWriter: public Writer
 {
 public:
-    FileWriter(const char* DirName);
+    explicit FileWriter(const char* DirName);
     ~FileWriter() override;
 
     void putNextEntry(const char* file);
     void writeFiles() override;
 
-    std::ostream &Stream() override{return FileStream;}
-    void close() {FileStream.close();}
+    std::ostream& Stream() override
+    {
+        return FileStream;
+    }
+    void close()
+    {
+        FileStream.close();
+    }
     /*!
      This method can be re-implemented in sub-classes to avoid
      to write out certain objects. The default implementation
      always returns true.
      */
-    virtual bool shouldWrite(const std::string& name, const Base::Persistence *Object) const;
+    virtual bool shouldWrite(const std::string& name, const Base::Persistence* Object) const;
+
+    FileWriter(const FileWriter&) = delete;
+    FileWriter(FileWriter&&) = delete;
+    FileWriter& operator=(const FileWriter&) = delete;
+    FileWriter& operator=(FileWriter&&) = delete;
 
 protected:
+    // NOLINTBEGIN
     std::string DirName;
     std::ofstream FileStream;
+    // NOLINTEND
 };
 
 
-}  //namespace Base
+}  // namespace Base
 
 
-#endif // BASE_WRITER_H
+#endif  // BASE_WRITER_H

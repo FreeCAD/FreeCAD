@@ -157,7 +157,7 @@ Cette commande ne fonctionne qu'avec un objet "mesh".</translation>
     <message>
       <location filename="../../CrossSections.ui" line="109"/>
       <source>Distance:</source>
-      <translation>Distance</translation>
+      <translation>Longueur :</translation>
     </message>
     <message>
       <location filename="../../CrossSections.ui" line="128"/>
@@ -198,12 +198,12 @@ Cette commande ne fonctionne qu'avec un objet "mesh".</translation>
       <translation>Annuler</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="626"/>
+      <location filename="../../CurveOnMesh.cpp" line="624"/>
       <source>Wrong mesh picked</source>
       <translation>Mauvaise maille choisie</translation>
     </message>
     <message>
-      <location filename="../../CurveOnMesh.cpp" line="667"/>
+      <location filename="../../CurveOnMesh.cpp" line="663"/>
       <source>No point was picked</source>
       <translation>Aucun point n'a été sélectionné</translation>
     </message>
@@ -393,7 +393,7 @@ La valeur la plus petite est 0.</translation>
     <message>
       <location filename="../../Tessellation.ui" line="234"/>
       <source>Very coarse</source>
-      <translation>Très grossier</translation>
+      <translation>Très grossièrement</translation>
     </message>
     <message>
       <location filename="../../Tessellation.ui" line="239"/>
@@ -579,8 +579,8 @@ Merci de sélectionner une forme différente.</translation>
     <name>MeshPart_CreateFlatMesh</name>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="49"/>
-      <source>Unwrap Mesh</source>
-      <translation>Développer un maillage</translation>
+      <source>Unwrap mesh</source>
+      <translation type="unfinished">Unwrap mesh</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="52"/>
@@ -592,8 +592,8 @@ Merci de sélectionner une forme différente.</translation>
     <name>MeshPart_CreateFlatFace</name>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="88"/>
-      <source>Unwrap Face</source>
-      <translation>Développer une face</translation>
+      <source>Unwrap face</source>
+      <translation type="unfinished">Unwrap face</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="91"/>

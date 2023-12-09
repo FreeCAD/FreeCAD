@@ -1,0 +1,9 @@
+# ANSI Y14.2 standard line element definitions
+# NOTE: saving this file from a spreadsheet program (like LibreOffice Calc) may
+# append empty cells to the ends of the lines. this can confuse FreeCAD.
+# NOTE: ANSI does not number line definitions.  The line numbers assigned here are an
+# invention for our purposes
+# element name, length in mm
+Gap,1.5
+Dash,3
+LongDash,20

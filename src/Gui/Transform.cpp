@@ -72,7 +72,7 @@ Base::Vector3d TransformStrategy::getRotationCenter() const
         Base::BoundBox3d bbox;
         bool first=true;
         for (const auto & object : objects) {
-            if (object->getTypeId().isDerivedFrom(App::GeoFeature::getClassTypeId())) {
+            if (object->isDerivedFrom<App::GeoFeature>()) {
                 // search for a data property
                 const App::PropertyGeometry* geo = static_cast<App::GeoFeature*>(object)->getPropertyOfGeometry();
                 if (geo) {
@@ -126,7 +126,7 @@ void TransformStrategy::acceptDataTransform(const Base::Matrix4D& mat, App::Docu
     }
 
     // Apply the transformation
-    if (obj->getTypeId().isDerivedFrom(App::GeoFeature::getClassTypeId())) {
+    if (obj->isDerivedFrom<App::GeoFeature>()) {
         // search for a data property
         const App::PropertyGeometry* geo = static_cast<App::GeoFeature*>(obj)->getPropertyOfGeometry();
         if (geo) {
@@ -225,7 +225,7 @@ void DefaultTransformStrategy::onSelectionChanged(const Gui::SelectionChanges& m
     std::vector<App::DocumentObject*> sel = Gui::Selection().getObjectsOfType
         (App::DocumentObject::getClassTypeId());
     for (const auto & it : sel) {
-        if (it->getTypeId().isDerivedFrom(App::GeoFeature::getClassTypeId())) {
+        if (it->isDerivedFrom<App::GeoFeature>()) {
             // search for a data property
             const App::PropertyGeometry* geo = static_cast<App::GeoFeature*>(it)->getPropertyOfGeometry();
             if (geo) {

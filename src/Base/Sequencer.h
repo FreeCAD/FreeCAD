@@ -126,6 +126,8 @@ public:
      * @see Sequencer
      */
     static SequencerBase& Instance();
+    /** Destruction */
+    virtual ~SequencerBase();
     /**
      * Returns true if the running sequencer is blocking any user input.
      * This might be only of interest of the GUI where the progress bar or dialog
@@ -148,7 +150,8 @@ public:
     bool wasCanceled() const;
 
     /// Check if the  operation is aborted by user
-    virtual void checkAbort() {}
+    virtual void checkAbort()
+    {}
 
 protected:
     /**
@@ -204,14 +207,14 @@ protected:
     /** construction */
     SequencerBase();
     SequencerBase(const SequencerBase&) = default;
+    SequencerBase(SequencerBase&&) = default;
     SequencerBase& operator=(const SequencerBase&) = default;
-    /** Destruction */
-    virtual ~SequencerBase();
+    SequencerBase& operator=(SequencerBase&&) = default;
     /**
      * Sets a text what the pending operation is doing. The default implementation
      * does nothing.
      */
-    virtual void setText (const char* pszTxt);
+    virtual void setText(const char* pszTxt);
     /**
      * This method can be reimplemented in sub-classes to give the user a feedback
      * when a new sequence starts. The default implementation does nothing.
@@ -236,21 +239,21 @@ protected:
     virtual void resetData();
 
 protected:
-    //NOLINTBEGIN
-    size_t nProgress{0}; /**< Stores the current amount of progress.*/
-    size_t nTotalSteps{0}; /**< Stores the total number of steps */
-    //NOLINTEND
+    // NOLINTBEGIN
+    size_t nProgress {0};   /**< Stores the current amount of progress.*/
+    size_t nTotalSteps {0}; /**< Stores the total number of steps */
+    // NOLINTEND
 
 private:
-    bool _bLocked{false}; /**< Lock/unlock sequencer. */
-    bool _bCanceled{false}; /**< Is set to true if the last pending operation was canceled */
-    int _nLastPercentage{-1}; /**< Progress in percent. */
+    bool _bLocked {false};     /**< Lock/unlock sequencer. */
+    bool _bCanceled {false};   /**< Is set to true if the last pending operation was canceled */
+    int _nLastPercentage {-1}; /**< Progress in percent. */
 };
 
 /** This special sequencer might be useful if you want to suppress any indication
  * of the progress to the user.
  */
-class BaseExport EmptySequencer : public Base::SequencerBase
+class BaseExport EmptySequencer: public Base::SequencerBase
 {
 public:
     /** construction */
@@ -260,11 +263,11 @@ public:
 /**
  * \brief This class writes the progress to the console window.
  */
-class BaseExport ConsoleSequencer : public SequencerBase
+class BaseExport ConsoleSequencer: public SequencerBase
 {
 public:
     /** construction */
-    ConsoleSequencer () = default;
+    ConsoleSequencer() = default;
 
 protected:
     /** Starts the sequencer */
@@ -274,21 +277,21 @@ protected:
 
 private:
     /** Puts text to the console window */
-    void setText (const char* pszTxt) override;
+    void setText(const char* pszTxt) override;
     /** Resets the sequencer */
     void resetData() override;
 };
 
 /** The SequencerLauncher class is provided for convenience. It allows you to run an instance of the
- * sequencer by instantiating an object of this class -- most suitable on the stack. So this mechanism
- * can be used for try-catch-blocks to destroy the object automatically if the C++ exception mechanism
- * cleans up the stack.
+ * sequencer by instantiating an object of this class -- most suitable on the stack. So this
+ * mechanism can be used for try-catch-blocks to destroy the object automatically if the C++
+ * exception mechanism cleans up the stack.
  *
- * This class has been introduced to simplify the use with the sequencer. In the FreeCAD Gui layer there
- * is a subclass of SequencerBase called ProgressBar that grabs the keyboard and filters most of the incoming
- * events. If the programmer uses the API of SequencerBase directly to start an instance without due diligence
- * with exceptions then a not handled exception could block the whole application -- the user has to kill the
- * application then.
+ * This class has been introduced to simplify the use with the sequencer. In the FreeCAD Gui layer
+ * there is a subclass of SequencerBase called ProgressBar that grabs the keyboard and filters most
+ * of the incoming events. If the programmer uses the API of SequencerBase directly to start an
+ * instance without due diligence with exceptions then a not handled exception could block the whole
+ * application -- the user has to kill the application then.
  *
  * Below is an example of a not correctly used sequencer.
  *
@@ -304,7 +307,8 @@ private:
  *       runOperation();
  *    } catch(...) {
  *       // the programmer forgot to stop the sequencer here
- *       // Under circumstances the sequencer never gets stopped so the keyboard never gets ungrabbed and
+ *       // Under circumstances the sequencer never gets stopped so the keyboard never gets
+ * ungrabbed and
  *       // all Gui events still gets filtered.
  *    }
  *  }
@@ -367,21 +371,23 @@ public:
     SequencerLauncher(const char* pszStr, size_t steps);
     ~SequencerLauncher();
     size_t numberOfSteps() const;
-    void setText (const char* pszTxt);
+    void setText(const char* pszTxt);
     bool next(bool canAbort = false);
     void setProgress(size_t);
     bool wasCanceled() const;
 
     SequencerLauncher(const SequencerLauncher&) = delete;
+    SequencerLauncher(SequencerLauncher&&) = delete;
     void operator=(const SequencerLauncher&) = delete;
+    void operator=(SequencerLauncher&&) = delete;
 };
 
 /** Access to the only SequencerBase instance */
-inline SequencerBase& Sequencer ()
+inline SequencerBase& Sequencer()
 {
     return SequencerBase::Instance();
 }
 
-} // namespace Base
+}  // namespace Base
 
-#endif // BASE_SEQUENCER_H
+#endif  // BASE_SEQUENCER_H

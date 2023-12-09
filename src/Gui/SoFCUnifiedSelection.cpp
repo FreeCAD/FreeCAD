@@ -73,6 +73,7 @@
 #include <App/Document.h>
 #include <App/ElementNamingUtils.h>
 #include <Base/Tools.h>
+#include <Base/UnitsApi.h>
 
 #include "SoFCUnifiedSelection.h"
 #include "Application.h"
@@ -90,7 +91,11 @@ FC_LOG_LEVEL_INIT("SoFCUnifiedSelection",false,true,true)
 using namespace Gui;
 
 namespace Gui {
-std::array<std::pair<double, std::string>,3 > schemaTranslatePoint(double x, double y, double z, double precision);
+void printPreselectionInfo(const char* documentName,
+                           const char* objectName,
+                           const char* subElementName,
+                           float x, float y, float z,
+                           double precision);
 }
 
 SoFullPath * Gui::SoFCUnifiedSelection::currenthighlight = nullptr;
@@ -288,7 +293,7 @@ SoFCUnifiedSelection::getPickedList(SoHandleEventAction* action, bool singlePick
         int cur_prio = getPriority(info.pp);
         const SbVec3f& cur_pt = info.pp->getPoint();
 
-        if ((cur_prio > picked_prio) && picked_pt.equals(cur_pt, 0.01f)) {
+        if ((cur_prio > picked_prio) && picked_pt.equals(cur_pt, 0.2F)) {
             itPicked = it;
             picked_prio = cur_prio;
         }
@@ -494,16 +499,9 @@ bool SoFCUnifiedSelection::setHighlight(SoFullPath *path, const SoDetail *det,
         const char *objname = vpd->getObject()->getNameInDocument();
 
         this->preSelection = 1;
-        static char buf[513];
 
-        auto pts = schemaTranslatePoint(x, y, z, 1e-7);
-        snprintf(buf,512,"Preselected: %s.%s.%s (%f %s, %f %s, %f %s)"
-                ,docname,objname,element
-                ,pts[0].first,pts[0].second.c_str()
-                ,pts[1].first,pts[1].second.c_str()
-                ,pts[2].first,pts[2].second.c_str());
+        printPreselectionInfo(docname, objname, element, x, y, z, 1e-7);
 
-        getMainWindow()->showMessage(QString::fromUtf8(buf));
 
         int ret = Gui::Selection().setPreselect(docname,objname,element,x,y,z);
         if(ret<0 && currenthighlight)

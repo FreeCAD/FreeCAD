@@ -25,10 +25,13 @@
 #define DRAWINGGUI_DLGPREFSTECHDRAWIMPANNOTATION_H
 
 #include <memory>
-
+#include <Gui/PrefWidgets.h>
 #include <Gui/PropertyPage.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
+namespace TechDraw {
+class LineGenerator;
+}
 
 namespace TechDrawGui {
 class Ui_DlgPrefsTechDrawAnnotationImp;
@@ -43,6 +46,7 @@ public:
 
 public Q_SLOTS:
     void onLineGroupChanged(int);
+    void onLineStandardChanged(int);
 
 protected:
     void saveSettings() override;
@@ -50,9 +54,11 @@ protected:
     void changeEvent(QEvent *e) override;
 
     int prefBalloonArrow() const;
+    void loadLineStyleBoxes();
 
 private:
     std::unique_ptr<Ui_DlgPrefsTechDrawAnnotationImp> ui;
+    TechDraw::LineGenerator* m_lineGenerator;
 };
 
 } // namespace TechDrawGui

@@ -29,6 +29,7 @@ import subprocess
 
 import FreeCAD
 import FreeCADGui
+from freecad.utils import get_python_exe
 
 from PySide.QtWidgets import (
     QFileDialog,
@@ -618,7 +619,7 @@ class DeveloperMode:
             FreeCAD.Console.PrintMessage(
                 translate("AddonsInstaller", "Attempting to install Vermin from PyPi") + "...\n"
             )
-            python_exe = utils.get_python_exe()
+            python_exe = get_python_exe()
             vendor_path = os.path.join(FreeCAD.getUserAppDataDir(), "AdditionalPythonPackages")
             if not os.path.exists(vendor_path):
                 os.makedirs(vendor_path)

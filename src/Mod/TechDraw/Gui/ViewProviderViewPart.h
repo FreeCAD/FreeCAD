@@ -60,8 +60,8 @@ public:
     App::PropertyColor  HighlightLineColor;
     App::PropertyFloat  HighlightAdjust;
     App::PropertyBool   ShowAllEdges;
-
-    static const char* LineStyleEnums[];
+    App::PropertyColor   FaceColor;
+    App::PropertyPercent FaceTransparency;
 
     void attach(App::DocumentObject *) override;
     bool useNewSelectionModel(void) const override {return false;}

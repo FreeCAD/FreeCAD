@@ -141,7 +141,7 @@ void Filling::addConstraints(BRepFill_Filling& builder,
             App::DocumentObject* obj = edge_obj[index];
             const std::string& sub = edge_sub[index];
 
-            if (obj && obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+            if (obj && obj->isDerivedFrom<Part::Feature>()) {
                 // get the sub-edge of the part's shape
                 const Part::TopoShape& shape = static_cast<Part::Feature*>(obj)->Shape.getShape();
                 TopoDS_Shape edge = shape.getSubShape(sub.c_str());
@@ -217,7 +217,7 @@ void Filling::addConstraints(BRepFill_Filling& builder,
         for (std::size_t index = 0; index < face_obj.size(); index++) {
             App::DocumentObject* obj = face_obj[index];
             const std::string& sub = face_sub[index];
-            if (obj && obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+            if (obj && obj->isDerivedFrom<Part::Feature>()) {
                 const Part::TopoShape& shape = static_cast<Part::Feature*>(obj)->Shape.getShape();
                 TopoDS_Shape face = shape.getSubShape(sub.c_str());
                 if (!face.IsNull() && face.ShapeType() == TopAbs_FACE) {
@@ -241,7 +241,7 @@ void Filling::addConstraints(BRepFill_Filling& builder, const App::PropertyLinkS
     for (const auto& it : points) {
         App::DocumentObject* obj = it.first;
         std::vector<std::string> sub = it.second;
-        if (obj && obj->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+        if (obj && obj->isDerivedFrom<Part::Feature>()) {
             const Part::TopoShape& shape = static_cast<Part::Feature*>(obj)->Shape.getShape();
             for (const auto& jt : sub) {
                 TopoDS_Shape subShape = shape.getSubShape(jt.c_str());
@@ -287,7 +287,7 @@ App::DocumentObjectExecReturn* Filling::execute()
 
         // Load the initial surface if set
         App::DocumentObject* initFace = InitialFace.getValue();
-        if (initFace && initFace->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+        if (initFace && initFace->isDerivedFrom<Part::Feature>()) {
             const Part::TopoShape& shape = static_cast<Part::Feature*>(initFace)->Shape.getShape();
             std::vector<std::string> subNames = InitialFace.getSubValues();
             for (const auto& it : subNames) {

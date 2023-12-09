@@ -209,6 +209,8 @@ public:
 
     void initDockWindows(bool show);
 
+    bool isRestoringWindowState() const;
+
 public Q_SLOTS:
     /**
      * Updates the standard actions of a text editor such as Cut, Copy, Paste, Undo and Redo.
@@ -218,6 +220,10 @@ public Q_SLOTS:
      * Sets text to the pane in the status bar.
      */
     void setPaneText(int i, QString text);
+    /**
+     * Sets the userschema in the status bar
+    */
+    void setUserSchema(int userSchema);
     /**
      * Arranges all child windows in a tile pattern.
      */
@@ -259,8 +265,6 @@ public Q_SLOTS:
     void statusMessageChanged();
 
     void showMessage (const QString & message, int timeout = 0);
-
-    bool isRestoringWindowState() const;
 
 protected:
     /**
@@ -347,7 +351,7 @@ private Q_SLOTS:
 
 Q_SIGNALS:
     void timeEvent();
-    void windowStateChanged(Gui::MDIView*);
+    void windowStateChanged(QWidget*);
     void workbenchActivated(const QString&);
     void mainWindowClosed();
 

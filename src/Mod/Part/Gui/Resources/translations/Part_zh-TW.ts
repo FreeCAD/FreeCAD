@@ -130,7 +130,7 @@
       <location filename="../../AttacherTexts.cpp" line="271"/>
       <source>Deactivated</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation>取消連接</translation>
+      <translation>已停用</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="272"/>
@@ -265,7 +265,7 @@
       <location filename="../../AttacherTexts.cpp" line="202"/>
       <source>Deactivated</source>
       <comment>AttachmentLine mode caption</comment>
-      <translation>取消連接</translation>
+      <translation>已停用</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="203"/>
@@ -510,7 +510,7 @@
       <location filename="../../AttacherTexts.cpp" line="127"/>
       <source>Deactivated</source>
       <comment>AttachmentPlane mode caption</comment>
-      <translation>取消連接</translation>
+      <translation>已停用</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="128"/>
@@ -707,7 +707,7 @@
       <location filename="../../AttacherTexts.cpp" line="52"/>
       <source>Deactivated</source>
       <comment>Attachment3D mode caption</comment>
-      <translation>取消連接</translation>
+      <translation>已停用</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="53"/>
@@ -1230,8 +1230,8 @@
     </message>
     <message>
       <location filename="../../Command.cpp" line="2229"/>
-      <source>Clear all dimensions from the screen.</source>
-      <translation>從畫面上清除所有尺寸</translation>
+      <source>Clear all dimensions from the active 3D view.</source>
+      <translation type="unfinished">Clear all dimensions from the active 3D view.</translation>
     </message>
   </context>
   <context>
@@ -3819,12 +3819,12 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2072"/>
       <source>Major radius:</source>
-      <translation>主半徑：</translation>
+      <translation>長軸半徑：</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2092"/>
       <source>Minor radius:</source>
-      <translation>次要半徑：</translation>
+      <translation>短軸半徑：</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="2170"/>
@@ -4236,7 +4236,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="202"/>
       <source>Font name</source>
-      <translation>字體名稱</translation>
+      <translation>字型名稱</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsMeasure.ui" line="213"/>
@@ -4608,7 +4608,7 @@ the sketch plane's normal vector will be used</source>
       <location filename="../../SectionCutting.ui" line="118"/>
       <location filename="../../SectionCutting.ui" line="186"/>
       <source>Offset</source>
-      <translation>偏移複製</translation>
+      <translation>偏移</translation>
     </message>
     <message>
       <location filename="../../SectionCutting.ui" line="71"/>
@@ -4710,7 +4710,7 @@ only created cuts will be visible</source>
       <translation>在關閉時只保留可視切割</translation>
     </message>
     <message>
-      <location filename="../../SectionCutting.cpp" line="520"/>
+      <location filename="../../SectionCutting.cpp" line="1103"/>
       <source>Sliders are disabled for assemblies</source>
       <translation>組件中的滑桿被禁用</translation>
     </message>
@@ -4943,7 +4943,7 @@ only created cuts will be visible</source>
       <location filename="../../TaskAttacher.ui" line="230"/>
       <source>Note: The placement is expressed in local coordinate system
 of object being attached.</source>
-      <translation>注意：附加對象的位置是以其本地座標系統表示的。</translation>
+      <translation>注意：附加物件的位置是以其本地座標系統表示的。</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="175"/>
@@ -4966,7 +4966,7 @@ of object being attached.</source>
 Note: The placement is expressed in local coordinate system
 of object being attached.</source>
       <translation>繞 X 軸旋轉
-注意：附加對象的位置是以其本地座標系統表示的。</translation>
+注意：附加物件的位置是以其本地座標系統表示的。</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="287"/>
@@ -4979,7 +4979,7 @@ of object being attached.</source>
 Note: The placement is expressed in local coordinate system
 of object being attached.</source>
       <translation>繞 Y 軸旋轉
-注意：附加對象的位置是以其本地座標系統表示的。</translation>
+注意：附加物件的位置是以其本地座標系統表示的。</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="327"/>
@@ -4992,7 +4992,7 @@ of object being attached.</source>
 Note: The placement is expressed in local coordinate system
 of object being attached.</source>
       <translation>繞 Z 軸旋轉
-注意：附加對象的位置是以其本地座標系統表示的。</translation>
+注意：附加物件的位置是以其本地座標系統表示的。</translation>
     </message>
     <message>
       <location filename="../../TaskAttacher.ui" line="364"/>
@@ -5406,7 +5406,7 @@ by dragging a selection rectangle in the 3D view</source>
       <location filename="../../TaskOffset.ui" line="14"/>
       <location filename="../../TaskOffset.ui" line="20"/>
       <source>Offset</source>
-      <translation>偏移複製</translation>
+      <translation>偏移</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="34"/>
@@ -5664,27 +5664,27 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="47"/>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="54"/>
-      <location filename="../../ViewProvider.cpp" line="49"/>
       <location filename="../../ViewProviderPrimitive.cpp" line="53"/>
+      <location filename="../../ViewProvider.cpp" line="49"/>
       <source>Edit %1</source>
       <translation>編輯 %1</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="228"/>
+      <location filename="../../AppPartGui.cpp" line="235"/>
       <source>Part and Part Design workbench</source>
       <translation>Part 與 Part Design 工作台</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="229"/>
-      <location filename="../../AppPartGui.cpp" line="230"/>
-      <location filename="../../AppPartGui.cpp" line="231"/>
-      <location filename="../../AppPartGui.cpp" line="232"/>
+      <location filename="../../AppPartGui.cpp" line="236"/>
+      <location filename="../../AppPartGui.cpp" line="237"/>
+      <location filename="../../AppPartGui.cpp" line="238"/>
+      <location filename="../../AppPartGui.cpp" line="239"/>
       <source>Part/Part Design</source>
       <translation>Part/Part Design</translation>
     </message>
     <message>
-      <location filename="../../AppPartGui.cpp" line="233"/>
-      <location filename="../../AppPartGui.cpp" line="234"/>
+      <location filename="../../AppPartGui.cpp" line="240"/>
+      <location filename="../../AppPartGui.cpp" line="241"/>
       <source>Import-Export</source>
       <translation>匯入-匯出</translation>
     </message>
@@ -5757,20 +5757,20 @@ Do you want to continue?</source>
       <translation>尚未選擇參考之物件</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="75"/>
       <location filename="../../TaskCheckGeometry.cpp" line="81"/>
+      <location filename="../../TaskAttacher.cpp" line="75"/>
       <source>Face</source>
       <translation>面</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="78"/>
       <location filename="../../TaskCheckGeometry.cpp" line="83"/>
+      <location filename="../../TaskAttacher.cpp" line="78"/>
       <source>Edge</source>
       <translation>邊</translation>
     </message>
     <message>
-      <location filename="../../TaskAttacher.cpp" line="81"/>
       <location filename="../../TaskCheckGeometry.cpp" line="84"/>
+      <location filename="../../TaskAttacher.cpp" line="81"/>
       <source>Vertex</source>
       <translation type="unfinished">Vertex</translation>
     </message>
@@ -6439,7 +6439,7 @@ It will create a 'Compound Filter' for each shape.</source>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="217"/>
       <source>Continue</source>
-      <translation type="unfinished">Continue</translation>
+      <translation>繼續</translation>
     </message>
     <message>
       <location filename="../../../AttachmentEditor/TaskAttachmentEditor.py" line="272"/>
@@ -6716,47 +6716,47 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
     <message>
       <location filename="../../DlgScale.ui" line="22"/>
       <source>X Factor</source>
-      <translation type="unfinished">X Factor</translation>
+      <translation>X 因數</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="29"/>
       <source>Factor</source>
-      <translation>比例因子</translation>
+      <translation>因數</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="64"/>
       <source>Z Factor</source>
-      <translation type="unfinished">Z Factor</translation>
+      <translation>Z 因數</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="71"/>
       <source>Scale the object by a single factor in all directions.</source>
-      <translation type="unfinished">Scale the object by a single factor in all directions.</translation>
+      <translation>以相同的比例因數在所有方向上縮放物件</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="74"/>
       <source>Uniform Scaling</source>
-      <translation type="unfinished">Uniform Scaling</translation>
+      <translation>均勻縮放</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="112"/>
       <source>Y Factor</source>
-      <translation type="unfinished">Y Factor</translation>
+      <translation>Y 因數</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="119"/>
       <source>Specify a different scale factor for each cardinal direction.</source>
-      <translation type="unfinished">Specify a different scale factor for each cardinal direction.</translation>
+      <translation>為每個主要方向指定不同的縮放因數。</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="122"/>
       <source>Non-Uniform Scaling</source>
-      <translation type="unfinished">Non-Uniform Scaling</translation>
+      <translation>非均勻縮放</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="195"/>
       <source>Select shape(s) that should be scaled</source>
-      <translation type="unfinished">Select shape(s) that should be scaled</translation>
+      <translation>選擇應該被縮放的形狀</translation>
     </message>
     <message>
       <location filename="../../DlgScale.ui" line="199"/>
@@ -6766,7 +6766,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
     <message>
       <location filename="../../DlgScale.cpp" line="198"/>
       <source>No scalable shapes selected</source>
-      <translation type="unfinished">No scalable shapes selected</translation>
+      <translation>選擇不可縮放形狀</translation>
     </message>
     <message>
       <location filename="../../DlgScale.cpp" line="206"/>
@@ -6778,7 +6778,7 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
       <location filename="../../DlgScale.cpp" line="260"/>
       <source>Creating Scale failed.
 %1</source>
-      <translation type="unfinished">Creating Scale failed.
+      <translation>縮放失敗。
 %1</translation>
     </message>
   </context>
@@ -6797,7 +6797,73 @@ A 'Compound Filter' can be used to extract the remaining pieces.</source>
     <message>
       <location filename="../../Command.cpp" line="1309"/>
       <source>Scale a selected shape</source>
-      <translation type="unfinished">Scale a selected shape</translation>
+      <translation>縮放一選擇形狀</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartCmdSelectFilter</name>
+    <message>
+      <location filename="../../CommandFilter.cpp" line="46"/>
+      <source>Selection filter</source>
+      <translation type="unfinished">Selection filter</translation>
+    </message>
+    <message>
+      <location filename="../../CommandFilter.cpp" line="47"/>
+      <location filename="../../CommandFilter.cpp" line="48"/>
+      <source>Change the selection filter</source>
+      <translation type="unfinished">Change the selection filter</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartCmdVertexSelection</name>
+    <message>
+      <location filename="../../CommandFilter.cpp" line="173"/>
+      <source>Vertex selection</source>
+      <translation type="unfinished">Vertex selection</translation>
+    </message>
+    <message>
+      <location filename="../../CommandFilter.cpp" line="174"/>
+      <location filename="../../CommandFilter.cpp" line="176"/>
+      <source>Only allow the selection of vertices</source>
+      <translation type="unfinished">Only allow the selection of vertices</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartCmdEdgeSelection</name>
+    <message>
+      <location filename="../../CommandFilter.cpp" line="198"/>
+      <source>Edge selection</source>
+      <translation type="unfinished">Edge selection</translation>
+    </message>
+    <message>
+      <location filename="../../CommandFilter.cpp" line="199"/>
+      <location filename="../../CommandFilter.cpp" line="201"/>
+      <source>Only allow the selection of edges</source>
+      <translation type="unfinished">Only allow the selection of edges</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartCmdFaceSelection</name>
+    <message>
+      <location filename="../../CommandFilter.cpp" line="223"/>
+      <source>Face selection</source>
+      <translation type="unfinished">Face selection</translation>
+    </message>
+    <message>
+      <location filename="../../CommandFilter.cpp" line="224"/>
+      <location filename="../../CommandFilter.cpp" line="226"/>
+      <source>Only allow the selection of faces</source>
+      <translation type="unfinished">Only allow the selection of faces</translation>
+    </message>
+  </context>
+  <context>
+    <name>PartCmdRemoveSelectionGate</name>
+    <message>
+      <location filename="../../CommandFilter.cpp" line="248"/>
+      <location filename="../../CommandFilter.cpp" line="249"/>
+      <location filename="../../CommandFilter.cpp" line="251"/>
+      <source>All selection filters cleared</source>
+      <translation type="unfinished">All selection filters cleared</translation>
     </message>
   </context>
 </TS>

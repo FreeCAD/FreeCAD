@@ -100,7 +100,7 @@ App::DocumentObjectExecReturn *DrawViewSpreadsheet::execute()
     std::string scellend = CellEnd.getValue();
     if (!link)
         return new App::DocumentObjectExecReturn("No spreadsheet linked");
-    if (!link->getTypeId().isDerivedFrom(Spreadsheet::Sheet::getClassTypeId()))
+    if (!link->isDerivedFrom<Spreadsheet::Sheet>())
         return new App::DocumentObjectExecReturn("The linked object is not a spreadsheet");
     if (scellstart.empty() || scellend.empty())
         return new App::DocumentObjectExecReturn("Empty cell value");
@@ -129,7 +129,7 @@ std::string DrawViewSpreadsheet::getSVGHead()
 {
     return std::string("<svg\n") +
            std::string("	xmlns=\"http://www.w3.org/2000/svg\" version=\"1.1\"\n") +
-           std::string("	xmlns:freecad=\"http://www.freecad.org/wiki/index.php?title=Svg_Namespace\">\n");
+           std::string("	xmlns:freecad=\"https://www.freecad.org/wiki/index.php?title=Svg_Namespace\">\n");
 }
 
 std::string DrawViewSpreadsheet::getSVGTail()

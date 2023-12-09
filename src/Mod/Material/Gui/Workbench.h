@@ -39,6 +39,11 @@ class MatGuiExport Workbench: public Gui::StdWorkbench
 public:
     Workbench();
     ~Workbench() override;
+
+protected:
+    Gui::MenuItem* setupMenuBar() const override;
+    Gui::ToolBarItem* setupToolBars() const override;
+    Gui::ToolBarItem* setupCommandBars() const override;
 };
 
 }  // namespace MatGui

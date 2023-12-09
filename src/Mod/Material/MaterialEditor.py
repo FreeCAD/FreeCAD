@@ -22,7 +22,7 @@
 
 __title__ = "FreeCAD material editor"
 __author__ = "Yorik van Havre, Bernd Hahnebach"
-__url__ = "http://www.freecad.org"
+__url__ = "https://www.freecad.org"
 
 import os
 from pathlib import PurePath

@@ -180,7 +180,7 @@ void DemoMode::onAngleSliderValueChanged(int v)
         SbRotation rot(SbVec3f(-1, 0, 0), angle);
         reorientCamera(cam ,rot);
         this->oldvalue = v;
-        if (view->getViewer()->isAnimating()) {
+        if (view->getViewer()->isSpinning()) {
             startAnimation(view);
         }
     }
@@ -206,7 +206,7 @@ void DemoMode::onSpeedSliderValueChanged(int v)
 {
     Q_UNUSED(v);
     Gui::View3DInventor* view = activeView();
-    if (view && view->getViewer()->isAnimating()) {
+    if (view && view->getViewer()->isSpinning()) {
         startAnimation(view);
     }
 }
@@ -216,7 +216,7 @@ void DemoMode::onPlayButtonToggled(bool pressed)
     Gui::View3DInventor* view = activeView();
     if (view) {
         if (pressed) {
-            if (!view->getViewer()->isAnimating()) {
+            if (!view->getViewer()->isSpinning()) {
                 SoCamera* cam = view->getViewer()->getSoRenderManager()->getCamera();
                 if (cam) {
                     SbRotation rot = cam->orientation.getValue();
@@ -263,7 +263,7 @@ void DemoMode::onTimeoutValueChanged(int v)
 void DemoMode::onAutoPlay()
 {
     Gui::View3DInventor* view = activeView();
-    if (view && !view->getViewer()->isAnimating()) {
+    if (view && !view->getViewer()->isSpinning()) {
         ui->playButton->setChecked(true);
         startAnimation(view);
     }
@@ -271,9 +271,6 @@ void DemoMode::onAutoPlay()
 
 void DemoMode::startAnimation(Gui::View3DInventor* view)
 {
-    if (!view->getViewer()->isAnimationEnabled())
-        view->getViewer()->setAnimationEnabled(true);
-
     view->getViewer()->startSpinningAnimation(getDirection(view),
                                               getSpeed(ui->speedSlider->value()));
 }

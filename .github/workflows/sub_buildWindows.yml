@@ -64,6 +64,8 @@ jobs:
     steps:
       - name: Checking out source code
         uses: actions/checkout@v3
+        with:
+          submodules: true
       - name: Make needed directories, files and initializations
         id: Init
         run: |

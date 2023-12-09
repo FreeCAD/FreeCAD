@@ -258,7 +258,7 @@ void DlgEvaluateMeshImp::changeEvent(QEvent* e)
 void DlgEvaluateMeshImp::slotCreatedObject(const App::DocumentObject& Obj)
 {
     // add new mesh object to the list
-    if (Obj.getTypeId().isDerivedFrom(Mesh::Feature::getClassTypeId())) {
+    if (Obj.isDerivedFrom<Mesh::Feature>()) {
         QString label = QString::fromUtf8(Obj.Label.getValue());
         QString name = QString::fromLatin1(Obj.getNameInDocument());
         d->ui.meshNameButton->addItem(label, name);
@@ -268,7 +268,7 @@ void DlgEvaluateMeshImp::slotCreatedObject(const App::DocumentObject& Obj)
 void DlgEvaluateMeshImp::slotDeletedObject(const App::DocumentObject& Obj)
 {
     // remove mesh objects from the list
-    if (Obj.getTypeId().isDerivedFrom(Mesh::Feature::getClassTypeId())) {
+    if (Obj.isDerivedFrom<Mesh::Feature>()) {
         int index = d->ui.meshNameButton->findData(QString::fromLatin1(Obj.getNameInDocument()));
         if (index > 0) {
             d->ui.meshNameButton->removeItem(index);
@@ -290,16 +290,15 @@ void DlgEvaluateMeshImp::slotChangedObject(const App::DocumentObject& Obj,
                                            const App::Property& Prop)
 {
     // if the current mesh object was modified update everything
-    if (&Obj == d->meshFeature && Prop.getTypeId() == Mesh::PropertyMeshKernel::getClassTypeId()) {
+    if (&Obj == d->meshFeature && Prop.is<Mesh::PropertyMeshKernel>()) {
         removeViewProviders();
         cleanInformation();
         showInformation();
         d->self_intersections.clear();
     }
-    else if (Obj.getTypeId().isDerivedFrom(Mesh::Feature::getClassTypeId())) {
+    else if (Obj.isDerivedFrom<Mesh::Feature>()) {
         // if the label has changed update the entry in the list
-        if (Prop.getTypeId() == App::PropertyString::getClassTypeId()
-            && strcmp(Prop.getName(), "Label") == 0) {
+        if (Prop.is<App::PropertyString>() && strcmp(Prop.getName(), "Label") == 0) {
             QString label = QString::fromUtf8(Obj.Label.getValue());
             QString name = QString::fromLatin1(Obj.getNameInDocument());
             int index = d->ui.meshNameButton->findData(name);
@@ -353,7 +352,7 @@ void DlgEvaluateMeshImp::addViewProvider(const char* name,
     if (d->view) {
         ViewProviderMeshDefects* vp =
             static_cast<ViewProviderMeshDefects*>(Base::Type::createInstanceByName(name));
-        assert(vp->getTypeId().isDerivedFrom(Gui::ViewProvider::getClassTypeId()));
+        assert(vp->isDerivedFrom<Gui::ViewProvider>());
         vp->attach(d->meshFeature);
         d->view->getViewer()->addViewProvider(vp);
         vp->showDefects(indices);

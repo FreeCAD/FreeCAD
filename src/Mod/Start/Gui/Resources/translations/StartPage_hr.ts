@@ -11,7 +11,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="40"/>
       <source>Welcome to FreeCAD</source>
-      <translation type="unfinished">Welcome to FreeCAD</translation>
+      <translation>Dobro došli u FreeCAD</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="41"/>
@@ -36,62 +36,62 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="45"/>
       <source>Link to the FreeCAD blog</source>
-      <translation type="unfinished">Link to the FreeCAD blog</translation>
+      <translation>Poveznica na FreeCAD blog</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="46"/>
       <source>New file</source>
-      <translation type="unfinished">New file</translation>
+      <translation>Nova datoteka</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="47"/>
       <source>Empty File</source>
-      <translation type="unfinished">Empty File</translation>
+      <translation>Prazna datoteka</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="48"/>
       <source>Create an empty FreeCAD file</source>
-      <translation type="unfinished">Create an empty FreeCAD file</translation>
+      <translation>Stvori jedanu praznu FreeCAD datoteku</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="49"/>
       <source>Open File</source>
-      <translation type="unfinished">Open File</translation>
+      <translation>Otvori datoteku</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="50"/>
       <source>Open an existing CAD file or 3D model</source>
-      <translation type="unfinished">Open an existing CAD file or 3D model</translation>
+      <translation>Otvori jednu postojeću CAD datoteku ili 3D model</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="51"/>
       <source>Standard Part</source>
-      <translation type="unfinished">Standard Part</translation>
+      <translation>Standardni Dio</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="56"/>
       <source>Create a part with the Part Design workbench</source>
-      <translation type="unfinished">Create a part with the Part Design workbench</translation>
+      <translation>Stvori dio sa Oblikovanje Dijelova radnim stolom</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="57"/>
       <source>2D Draft</source>
-      <translation type="unfinished">2D Draft</translation>
+      <translation>2D Nacrt</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="58"/>
       <source>Create a 2D draft with the Draft workbench</source>
-      <translation type="unfinished">Create a 2D draft with the Draft workbench</translation>
+      <translation>Stvori 2D nacrt sa Nacrt radnim stolom</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="59"/>
       <source>BIM/Architecture</source>
-      <translation type="unfinished">BIM/Architecture</translation>
+      <translation>BIM/Arhitektura</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="60"/>
       <source>Create an architecture project</source>
-      <translation type="unfinished">Create an architecture project</translation>
+      <translation>Stvori jedan arhitektonski projekt</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="61"/>
@@ -175,8 +175,8 @@
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="98"/>
-      <source>The &lt;a href="http://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
-      <translation>&lt;a href="http://forum.freecad.org"&gt;Forum FreeCAD-a&lt;/a&gt; je sjajno mjesto za dobijanje pomoći od drugih korisnika i programera FreeCAD-a. Forum ima puno odjeljaka za različite vrste problema i teme diskusije. Ako imaš nedoumice, objavi u glavnom odeljku &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Pomoć pri korištenju FreeCAD-a&lt;/a&gt;.</translation>
+      <source>The &lt;a href="https://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
+      <translation>&lt;a href="https://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; Forum FreeCAD je odlično mjesto za dobivanje pomoći od drugih korisnika i programera FreeCAD-a. Forum ima mnogo sekcija za različite vrste problema i tema za razgovor. Ako imate sumnje, objavite u općenitijem odsjeku Pomoć pri korištenju FreeCAD-a  &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; .</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="102"/>
@@ -275,11 +275,31 @@
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="144"/>
+      <source>Size</source>
+      <translation>Veličina</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="145"/>
+      <source>Author</source>
+      <translation>Autor</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="146"/>
+      <source>License</source>
+      <translation>Licenca</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="147"/>
+      <source>File path</source>
+      <translation>Put do datoteke</translation>
+    </message>
+    <message>
+      <location filename="../../../StartPage/TranslationTexts.py" line="148"/>
       <source>Notes</source>
       <translation>Bilješke</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="145"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="149"/>
       <source>Open start page preferences</source>
       <translation>Otvori postavke Početne stranice</translation>
     </message>
@@ -287,7 +307,7 @@
   <context>
     <name>Workbench</name>
     <message>
-      <location filename="../../../StartPage/StartPage.py" line="826"/>
+      <location filename="../../../StartPage/StartPage.py" line="874"/>
       <location filename="../../Workbench.cpp" line="62"/>
       <source>Start page</source>
       <translation>Početna stranica</translation>
@@ -373,12 +393,12 @@ Koristite ";;" da biste odvojili putove, ovdje možete dodati nekoliko mapa</tra
     <message>
       <location filename="../../DlgStartPreferences.ui" line="33"/>
       <source>Workbench to switch to after loading a file from the Start page, only used if Start is the start up workbench</source>
-      <translation type="unfinished">Workbench to switch to after loading a file from the Start page, only used if Start is the start up workbench</translation>
+      <translation>Radni prostor za prebacivanje nakon učitavanja datoteke s početne stranice, koristi se samo ako je Start početna radiona.</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="122"/>
       <source>The size of file thumbnail icons in recent files and examples sections</source>
-      <translation type="unfinished">The size of file thumbnail icons in recent files and examples sections</translation>
+      <translation>Veličina sličica datoteke u nedavnim datotekama i odjeljku primjera</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="196"/>
@@ -388,12 +408,12 @@ Koristite ";;" da biste odvojili putove, ovdje možete dodati nekoliko mapa</tra
     <message>
       <location filename="../../DlgStartPreferences.ui" line="264"/>
       <source>File thumbnail size</source>
-      <translation type="unfinished">File thumbnail size</translation>
+      <translation>Veličina sličica datoteke</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="297"/>
       <source>Show file thumbnails</source>
-      <translation type="unfinished">Show file thumbnails</translation>
+      <translation>Prikaži sličice datoteke</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="331"/>
@@ -572,22 +592,23 @@ Koristite ";;" da biste odvojili putove, ovdje možete dodati nekoliko mapa</tra
     <message>
       <location filename="../../DlgStartPreferencesAdvanced.ui" line="20"/>
       <source>Custom HTML Template</source>
-      <translation type="unfinished">Custom HTML Template</translation>
+      <translation>Prilagođeni HTML predložak</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferencesAdvanced.ui" line="26"/>
       <source>An optional HTML template that will be used instead of the default start page.</source>
-      <translation type="unfinished">An optional HTML template that will be used instead of the default start page.</translation>
+      <translation>Opcionalni HTML predložak koji će se koristiti umjesto zadane početne stranice.</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferencesAdvanced.ui" line="42"/>
       <source>Custom CSS</source>
-      <translation type="unfinished">Custom CSS</translation>
+      <translation>Prilagođeni CSS</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferencesAdvanced.ui" line="48"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You can paste your custom CSS here and the Start Page will apply it for you. To learn more about how you can style the Start Page, take a look at the HTML and CSS sources:&lt;/p&gt;&lt;p&gt;&lt;a href="https://github.com/FreeCAD/FreeCAD/blob/master/src/Mod/Start/StartPage/StartPage.html"&gt;&lt;span style=" text-decoration: underline; color:#1d99f3;"&gt;https://github.com/FreeCAD/FreeCAD/blob/master/src/Mod/Start/StartPage/StartPage.html&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;a href="https://github.com/FreeCAD/FreeCAD/blob/master/src/Mod/Start/StartPage/StartPage.css"&gt;&lt;span style=" text-decoration: underline; color:#1d99f3;"&gt;https://github.com/FreeCAD/FreeCAD/blob/master/src/Mod/Start/StartPage/StartPage.css&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-      <translation type="unfinished">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;You can paste your custom CSS here and the Start Page will apply it for you. To learn more about how you can style the Start Page, take a look at the HTML and CSS sources:&lt;/p&gt;&lt;p&gt;&lt;a href="https://github.com/FreeCAD/FreeCAD/blob/master/src/Mod/Start/StartPage/StartPage.html"&gt;&lt;span style=" text-decoration: underline; color:#1d99f3;"&gt;https://github.com/FreeCAD/FreeCAD/blob/master/src/Mod/Start/StartPage/StartPage.html&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;a href="https://github.com/FreeCAD/FreeCAD/blob/master/src/Mod/Start/StartPage/StartPage.css"&gt;&lt;span style=" text-decoration: underline; color:#1d99f3;"&gt;https://github.com/FreeCAD/FreeCAD/blob/master/src/Mod/Start/StartPage/StartPage.css&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+      <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Možete ovdje zalijepiti svoju prilagođenu CSS datoteku i Start Page će je primijeniti za vas. Da biste saznali više o tome kako možete stilizirati Start Page, pogledajte izvore HTML-a i CSS-a:
+&lt;/p&gt;&lt;p&gt;&lt;a href="https://github.com/FreeCAD/FreeCAD/blob/master/src/Mod/Start/StartPage/StartPage.html"&gt;&lt;span style=" text-decoration: underline; color:#1d99f3;"&gt;https://github.com/FreeCAD/FreeCAD/blob/master/src/Mod/Start/StartPage/StartPage.html&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;p&gt;&lt;a href="https://github.com/FreeCAD/FreeCAD/blob/master/src/Mod/Start/StartPage/StartPage.css"&gt;&lt;span style=" text-decoration: underline; color:#1d99f3;"&gt;https://github.com/FreeCAD/FreeCAD/blob/master/src/Mod/Start/StartPage/StartPage.css&lt;/span&gt;&lt;/a&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
   </context>
   <context>

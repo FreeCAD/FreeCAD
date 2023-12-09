@@ -66,6 +66,8 @@ void SketcherSettings::saveSettings()
     ui->checkBoxEnableEscape->onSave();
     ui->checkBoxNotifyConstraintSubstitutions->onSave();
     ui->checkBoxAutoRemoveRedundants->onSave();
+    ui->checkBoxUnifiedCoincident->onSave();
+    ui->checkBoxHorVerAuto->onSave();
 
     enum
     {
@@ -117,6 +119,12 @@ void SketcherSettings::saveSettings()
     }
     hGrp->SetBool("DimensioningDiameter", Diameter);
     hGrp->SetBool("DimensioningRadius", Radius);
+
+    hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/Tools");
+
+    index = ui->ovpVisibility->currentIndex();
+    hGrp->SetInt("OnViewParameterVisibility", index);
 }
 
 void SketcherSettings::loadSettings()
@@ -127,6 +135,8 @@ void SketcherSettings::loadSettings()
     ui->checkBoxEnableEscape->onRestore();
     ui->checkBoxNotifyConstraintSubstitutions->onRestore();
     ui->checkBoxAutoRemoveRedundants->onRestore();
+    ui->checkBoxUnifiedCoincident->onRestore();
+    ui->checkBoxHorVerAuto->onRestore();
 
     // Dimensioning constraints mode
     ui->dimensioningMode->clear();
@@ -157,6 +167,16 @@ void SketcherSettings::loadSettings()
     bool Radius = hGrp->GetBool("DimensioningRadius", true);
     index = Diameter ? (Radius ? 0 : 1) : 2;
     ui->radiusDiameterMode->setCurrentIndex(index);
+
+    hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/Tools");
+    ui->ovpVisibility->clear();
+    ui->ovpVisibility->addItem(tr("Disabled"));
+    ui->ovpVisibility->addItem(tr("Only dimensional"));
+    ui->ovpVisibility->addItem(tr("All"));
+
+    index = hGrp->GetInt("OnViewParameterVisibility", 1);
+    ui->ovpVisibility->setCurrentIndex(index);
 }
 
 void SketcherSettings::dimensioningModeChanged(int index)

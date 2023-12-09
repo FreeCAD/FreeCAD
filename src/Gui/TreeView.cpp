@@ -59,7 +59,7 @@ void TreeView::mouseDoubleClickEvent (QMouseEvent * event)
         return;
     Base::BaseClass* item = nullptr;
     item = static_cast<Base::BaseClass*>(index.internalPointer());
-    if (item->getTypeId() == Document::getClassTypeId()) {
+    if (item->is<Document>()) {
         QTreeView::mouseDoubleClickEvent(event);
         const Gui::Document* doc = static_cast<Gui::Document*>(item);
         MDIView *view = doc->getActiveView();
@@ -67,7 +67,7 @@ void TreeView::mouseDoubleClickEvent (QMouseEvent * event)
             return;
         getMainWindow()->setActiveWindow(view);
     }
-    else if (item->getTypeId().isDerivedFrom(ViewProvider::getClassTypeId())) {
+    else if (item->isDerivedFrom<ViewProvider>()) {
         if (!static_cast<ViewProvider*>(item)->doubleClicked())
             QTreeView::mouseDoubleClickEvent(event);
     }

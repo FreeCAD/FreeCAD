@@ -90,15 +90,13 @@ def toNode(shape):
     """builds a linear pivy node from a shape"""
 
     from pivy import coin
-    buf = shape.writeInventor(2,0.01)
-    buf = buf.replace("\n","")
+    buf = shape.writeInventor(2,0.01).replace("\n","")
     buf = re.findall("point \[(.*?)\]",buf)
     pts = []
     for c in buf:
-        pts.extend(c.split(","))
+        pts.extend(zip(*[iter( c.split() )]*3) )
     pc = []
-    for p in pts:
-        v = p.strip().split()
+    for v in pts:
         v = [float(v[0]),float(v[1]),float(v[2])]
         if (not pc) or (pc[-1] != v):
             pc.append(v)
@@ -1164,6 +1162,11 @@ class _ViewProviderSite:
 
         if hasattr(self, 'trueNorthRotation') and self.trueNorthRotation is not None:
             return
+        if not FreeCADGui.ActiveDocument.ActiveView:
+            return
+        if not hasattr(FreeCADGui.ActiveDocument.ActiveView, 'getSceneGraph'):
+            return
+
         from pivy import coin
         self.trueNorthRotation = coin.SoTransform()
         sg = FreeCADGui.ActiveDocument.ActiveView.getSceneGraph()
@@ -1172,10 +1175,18 @@ class _ViewProviderSite:
 
     def removeTrueNorthRotation(self):
 
-        if hasattr(self, 'trueNorthRotation') and self.trueNorthRotation is not None:
-            sg = FreeCADGui.ActiveDocument.ActiveView.getSceneGraph()
-            sg.removeChild(self.trueNorthRotation)
-            self.trueNorthRotation = None
+        if not hasattr(self, 'trueNorthRotation'):
+            return
+        if self.trueNorthRotation is None:
+            return
+        if not FreeCADGui.ActiveDocument.ActiveView:
+            return
+        if not hasattr(FreeCADGui.ActiveDocument.ActiveView, 'getSceneGraph'):
+            return
+
+        sg = FreeCADGui.ActiveDocument.ActiveView.getSceneGraph()
+        sg.removeChild(self.trueNorthRotation)
+        self.trueNorthRotation = None
 
     def updateTrueNorthRotation(self):
 

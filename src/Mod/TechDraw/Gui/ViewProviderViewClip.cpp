@@ -64,7 +64,7 @@ void ViewProviderViewClip::show()
     App::DocumentObject* obj = getObject();
     if (!obj || obj->isRestoring())
         return;
-    if (obj->getTypeId().isDerivedFrom(TechDraw::DrawViewClip::getClassTypeId())) {
+    if (obj->isDerivedFrom<TechDraw::DrawViewClip>()) {
         std::vector<App::DocumentObject*> inp = obj->getInList();
         for (std::vector<App::DocumentObject*>::iterator it = inp.begin(); it != inp.end(); ++it)
             (*it)->touch();
@@ -79,7 +79,7 @@ void ViewProviderViewClip::hide()
     App::DocumentObject* obj = getObject();
     if (!obj || obj->isRestoring())
         return;
-    if (obj->getTypeId().isDerivedFrom(TechDraw::DrawViewClip::getClassTypeId())) {
+    if (obj->isDerivedFrom<TechDraw::DrawViewClip>()) {
         std::vector<App::DocumentObject*> inp = obj->getInList();
         for (std::vector<App::DocumentObject*>::iterator it = inp.begin(); it != inp.end(); ++it)
             (*it)->touch();

@@ -26,12 +26,9 @@
 
 // Std. configurations
 
-#ifdef __GNUC__
-# include <cstdint>
-#endif
-
 #include <sstream>
 #include <vector>
+#include <cstdint>
 #include <Base/Tools3D.h>
 #ifndef FC_GLOBAL_H
 #include <FCGlobal.h>
@@ -45,25 +42,33 @@ class BaseExport ColorRGB
 {
 public:
     ColorRGB();
+    ColorRGB(const ColorRGB&) = default;
+    ColorRGB(ColorRGB&&) = default;
     explicit ColorRGB(float red, float green, float blue);
     ~ColorRGB() = default;
+    ColorRGB& operator=(const ColorRGB&) = default;
+    ColorRGB& operator=(ColorRGB&&) = default;
 
-    float red() const {
+    float red() const
+    {
         return Rgb.red;
     }
 
-    float green() const {
+    float green() const
+    {
         return Rgb.green;
     }
 
-    float blue() const {
+    float blue() const
+    {
         return Rgb.blue;
     }
 
-protected:
+private:
     /*! Returns the clamped value in range [-1, +1] */
     static float valueInRange(float value);
-    struct {
+    struct
+    {
         float red;
         float green;
         float blue;
@@ -73,7 +78,8 @@ protected:
 class BaseExport DrawStyle
 {
 public:
-    enum class Style {
+    enum class Style
+    {
         Filled,
         Lines,
         Points,
@@ -88,10 +94,40 @@ public:
     unsigned short linePattern = 0xffff;
 };
 
+class BaseExport VertexOrdering
+{
+public:
+    enum class Ordering
+    {
+        UnknownOrdering,
+        Clockwise,
+        CounterClockwise
+    };
+
+    const char* toString() const;
+
+    Ordering ordering = Ordering::UnknownOrdering;
+};
+
+class BaseExport ShapeType
+{
+public:
+    enum class Type
+    {
+        UnknownShapeType,
+        Convex
+    };
+
+    const char* toString() const;
+
+    Type type = Type::UnknownShapeType;
+};
+
 class BaseExport BindingElement
 {
 public:
-    enum class Binding {
+    enum class Binding
+    {
         Overall = 2,
         PerPart = 3,
         PerPartIndexed = 4,
@@ -110,7 +146,8 @@ public:
 class BaseExport PolygonOffset
 {
 public:
-    enum class Style {
+    enum class Style
+    {
         Filled,
         Lines,
         Points
@@ -129,19 +166,23 @@ public:
     explicit Triangle(const Base::Vector3f& pt1,
                       const Base::Vector3f& pt2,
                       const Base::Vector3f& pt3)
-        : pt1(pt1), pt2(pt2), pt3(pt3)
-    {
-    }
+        : pt1(pt1)
+        , pt2(pt2)
+        , pt3(pt3)
+    {}
 
-    const Base::Vector3f& getPoint1() const {
+    const Base::Vector3f& getPoint1() const
+    {
         return pt1;
     }
 
-    const Base::Vector3f& getPoint2() const {
+    const Base::Vector3f& getPoint2() const
+    {
         return pt2;
     }
 
-    const Base::Vector3f& getPoint3() const {
+    const Base::Vector3f& getPoint3() const
+    {
         return pt3;
     }
 
@@ -151,22 +192,28 @@ private:
     Base::Vector3f pt3;
 };
 
-class Indentation {
+class Indentation
+{
     int spaces = 0;
+
 public:
-    void increaseIndent() {
+    void increaseIndent()
+    {
         spaces += 2;
     }
-    void decreaseIndent() {
+    void decreaseIndent()
+    {
         spaces -= 2;
     }
-    int count() {
+    int count() const
+    {
         return spaces;
     }
-    friend std::ostream& operator<<( std::ostream& os, Indentation m)
+    friend std::ostream& operator<<(std::ostream& os, Indentation ind)
     {
-        for (int i = 0; i < m.count(); i++)
+        for (int i = 0; i < ind.count(); i++) {
             os << " ";
+        }
         return os;
     }
 };
@@ -195,15 +242,22 @@ class BaseExport NodeItem
 public:
     virtual ~NodeItem() = default;
     virtual void write(InventorOutput& out) const = 0;
+
+protected:
+    NodeItem() = default;
+    NodeItem(const NodeItem&) = default;
+    NodeItem(NodeItem&&) = default;
+    NodeItem& operator=(const NodeItem&) = default;
+    NodeItem& operator=(NodeItem&&) = default;
 };
 
 /*!
  * \brief The LabelItem class supports the SoLabel node.
  */
-class BaseExport LabelItem : public NodeItem
+class BaseExport LabelItem: public NodeItem
 {
 public:
-    explicit LabelItem(const std::string& text);
+    explicit LabelItem(std::string text);
     void write(InventorOutput& out) const override;
 
 private:
@@ -213,10 +267,10 @@ private:
 /*!
  * \brief The InfoItem class supports the SoInfo node.
  */
-class BaseExport InfoItem : public NodeItem
+class BaseExport InfoItem: public NodeItem
 {
 public:
-    explicit InfoItem(const std::string& text);
+    explicit InfoItem(std::string text);
     void write(InventorOutput& out) const override;
 
 private:
@@ -226,7 +280,7 @@ private:
 /*!
  * \brief The BaseColorItem class supports the SoBaseColor node.
  */
-class BaseExport BaseColorItem : public NodeItem
+class BaseExport BaseColorItem: public NodeItem
 {
 public:
     explicit BaseColorItem(const ColorRGB& rgb);
@@ -236,10 +290,12 @@ private:
     ColorRGB rgb;
 };
 
-class BaseExport PointItem : public NodeItem
+class BaseExport PointItem: public NodeItem
 {
 public:
-    explicit PointItem(const Base::Vector3f& point, DrawStyle drawStyle, const ColorRGB& rgb = ColorRGB{1.0F, 1.0F, 1.0F});
+    explicit PointItem(const Base::Vector3f& point,
+                       DrawStyle drawStyle,
+                       const ColorRGB& rgb = ColorRGB {1.0F, 1.0F, 1.0F});
     void write(InventorOutput& out) const override;
 
 private:
@@ -248,10 +304,12 @@ private:
     ColorRGB rgb;
 };
 
-class BaseExport LineItem : public NodeItem
+class BaseExport LineItem: public NodeItem
 {
 public:
-    explicit LineItem(const Base::Line3f& line, DrawStyle drawStyle, const ColorRGB& rgb = ColorRGB{1.0F, 1.0F, 1.0F});
+    explicit LineItem(const Base::Line3f& line,
+                      DrawStyle drawStyle,
+                      const ColorRGB& rgb = ColorRGB {1.0F, 1.0F, 1.0F});
     void write(InventorOutput& out) const override;
 
 private:
@@ -260,11 +318,14 @@ private:
     ColorRGB rgb;
 };
 
-class BaseExport MultiLineItem : public NodeItem
+class BaseExport MultiLineItem: public NodeItem
 {
 public:
-    /// add a line defined by a list of points whereat always a pair (i.e. a point and the following point) builds a line.
-    explicit MultiLineItem(const std::vector<Vector3f>& points, DrawStyle drawStyle, const ColorRGB& rgb = ColorRGB{1.0F, 1.0F, 1.0F});
+    /// add a line defined by a list of points whereat always a pair (i.e. a point and the following
+    /// point) builds a line.
+    explicit MultiLineItem(std::vector<Vector3f> points,
+                           DrawStyle drawStyle,
+                           const ColorRGB& rgb = ColorRGB {1.0F, 1.0F, 1.0F});
     void write(InventorOutput& out) const override;
 
 private:
@@ -273,10 +334,12 @@ private:
     ColorRGB rgb;
 };
 
-class BaseExport ArrowItem : public NodeItem
+class BaseExport ArrowItem: public NodeItem
 {
 public:
-    explicit ArrowItem(const Base::Line3f& line, DrawStyle drawStyle, const ColorRGB& rgb = ColorRGB{1.0F, 1.0F, 1.0F});
+    explicit ArrowItem(const Base::Line3f& line,
+                       DrawStyle drawStyle,
+                       const ColorRGB& rgb = ColorRGB {1.0F, 1.0F, 1.0F});
     void write(InventorOutput& out) const override;
 
 private:
@@ -285,10 +348,13 @@ private:
     ColorRGB rgb;
 };
 
-class BaseExport BoundingBoxItem : public NodeItem
+class BaseExport BoundingBoxItem: public NodeItem
 {
 public:
-    explicit BoundingBoxItem(const Vector3f& pt1, const Vector3f& pt2, DrawStyle drawStyle, const ColorRGB& rgb = ColorRGB{1.0F, 1.0F, 1.0F});
+    explicit BoundingBoxItem(const Vector3f& pt1,
+                             const Vector3f& pt2,
+                             DrawStyle drawStyle,
+                             const ColorRGB& rgb = ColorRGB {1.0F, 1.0F, 1.0F});
     void write(InventorOutput& out) const override;
 
 private:
@@ -301,7 +367,7 @@ private:
 /*!
  * \brief The MaterialItem class supports the SoMaterial node.
  */
-class BaseExport MaterialItem : public NodeItem
+class BaseExport MaterialItem: public NodeItem
 {
 public:
     void setAmbientColor(const std::vector<ColorRGB>& rgb);
@@ -334,7 +400,7 @@ private:
 /*!
  * \brief The MaterialBindingItem class supports the SoMaterialBinding node.
  */
-class BaseExport MaterialBindingItem : public NodeItem
+class BaseExport MaterialBindingItem: public NodeItem
 {
 public:
     MaterialBindingItem() = default;
@@ -349,7 +415,7 @@ private:
 /*!
  * \brief The DrawStyleItem class supports the SoDrawStyle node.
  */
-class BaseExport DrawStyleItem : public NodeItem
+class BaseExport DrawStyleItem: public NodeItem
 {
 public:
     DrawStyleItem() = default;
@@ -364,20 +430,24 @@ private:
 /*!
  * \brief The ShapeHintsItem class supports the SoShapeHints node.
  */
-class BaseExport ShapeHintsItem : public NodeItem
+class BaseExport ShapeHintsItem: public NodeItem
 {
 public:
-    explicit ShapeHintsItem(float creaseAngle);
+    explicit ShapeHintsItem(float creaseAngle = 0.0F);
+    void setVertexOrdering(VertexOrdering::Ordering);
+    void setShapeType(ShapeType::Type);
     void write(InventorOutput& out) const override;
 
 private:
-    float creaseAngle;
+    float creaseAngle = 0.0F;
+    VertexOrdering vertexOrdering;
+    ShapeType shapeType;
 };
 
 /*!
  * \brief The PolygonOffsetItem class supports the SoPolygonOffset node.
  */
-class BaseExport PolygonOffsetItem : public NodeItem
+class BaseExport PolygonOffsetItem: public NodeItem
 {
 public:
     void setValue(PolygonOffset value);
@@ -390,10 +460,10 @@ private:
 /*!
  * \brief The Coordinate3Item class supports the SoCoordinate3 node.
  */
-class BaseExport Coordinate3Item : public NodeItem
+class BaseExport Coordinate3Item: public NodeItem
 {
 public:
-    Coordinate3Item(const std::vector<Vector3f>& points);
+    explicit Coordinate3Item(std::vector<Vector3f> points);
     void write(InventorOutput& out) const override;
 
 private:
@@ -405,7 +475,7 @@ private:
 /*!
  * \brief The PointSetItem class supports the SoPointSet node.
  */
-class BaseExport PointSetItem : public NodeItem
+class BaseExport PointSetItem: public NodeItem
 {
 public:
     void write(InventorOutput& out) const override;
@@ -414,7 +484,7 @@ public:
 /*!
  * \brief The LineSetItem class supports the SoLineSet node.
  */
-class BaseExport LineSetItem : public NodeItem
+class BaseExport LineSetItem: public NodeItem
 {
 public:
     void write(InventorOutput& out) const override;
@@ -423,10 +493,10 @@ public:
 /*!
  * \brief The FaceSetItem class supports the SoFaceSet node.
  */
-class BaseExport FaceSetItem : public NodeItem
+class BaseExport FaceSetItem: public NodeItem
 {
 public:
-    FaceSetItem(const std::vector<int>&);
+    explicit FaceSetItem(std::vector<int>);
     void write(InventorOutput& out) const override;
 
 private:
@@ -436,10 +506,10 @@ private:
 /*!
  * \brief The IndexedLineSetItem class supports the SoIndexedLineSet node.
  */
-class BaseExport IndexedLineSetItem : public NodeItem
+class BaseExport IndexedLineSetItem: public NodeItem
 {
 public:
-    IndexedLineSetItem(const std::vector<int>&);
+    explicit IndexedLineSetItem(std::vector<int>);
     void write(InventorOutput& out) const override;
 
 private:
@@ -449,10 +519,10 @@ private:
 /*!
  * \brief The IndexedFaceSetItem class supports the SoIndexedFaceSet node.
  */
-class BaseExport IndexedFaceSetItem : public NodeItem
+class BaseExport IndexedFaceSetItem: public NodeItem
 {
 public:
-    IndexedFaceSetItem(const std::vector<int>&);
+    explicit IndexedFaceSetItem(std::vector<int>);
     void write(InventorOutput& out) const override;
 
 private:
@@ -462,10 +532,10 @@ private:
 /*!
  * \brief The NormalItem class supports the SoNormal node.
  */
-class BaseExport NormalItem : public NodeItem
+class BaseExport NormalItem: public NodeItem
 {
 public:
-    explicit NormalItem(const std::vector<Base::Vector3f>& vec);
+    explicit NormalItem(std::vector<Base::Vector3f> vec);
     void write(InventorOutput& out) const override;
 
 private:
@@ -477,7 +547,7 @@ private:
 /*!
  * \brief The MaterialBindingItem class supports the SoMaterialBinding node.
  */
-class BaseExport NormalBindingItem : public NodeItem
+class BaseExport NormalBindingItem: public NodeItem
 {
 public:
     NormalBindingItem() = default;
@@ -491,7 +561,7 @@ private:
 /*!
  * \brief The CylinderItem class supports the SoCylinder node.
  */
-class BaseExport CylinderItem : public NodeItem
+class BaseExport CylinderItem: public NodeItem
 {
 public:
     void setRadius(float);
@@ -506,7 +576,7 @@ private:
 /*!
  * \brief The ConeItem class supports the SoCone node.
  */
-class BaseExport ConeItem : public NodeItem
+class BaseExport ConeItem: public NodeItem
 {
 public:
     void setBottomRadius(float);
@@ -521,7 +591,7 @@ private:
 /*!
  * \brief The SphereItem class supports the SoSphere node.
  */
-class BaseExport SphereItem : public NodeItem
+class BaseExport SphereItem: public NodeItem
 {
 public:
     void setRadius(float);
@@ -534,7 +604,7 @@ private:
 /*!
  * \brief The NurbsSurfaceItem class supports the SoNurbsSurface node.
  */
-class BaseExport NurbsSurfaceItem : public NodeItem
+class BaseExport NurbsSurfaceItem: public NodeItem
 {
 public:
     void setControlPoints(int numU, int numV);
@@ -551,10 +621,10 @@ private:
 /*!
  * \brief The Text2Item class supports the SoText2 node.
  */
-class BaseExport Text2Item : public NodeItem
+class BaseExport Text2Item: public NodeItem
 {
 public:
-    Text2Item(const std::string&);
+    explicit Text2Item(std::string);
     void write(InventorOutput& out) const override;
 
 private:
@@ -564,7 +634,7 @@ private:
 /*!
  * \brief The TransformItem class supports the SoTransform node.
  */
-class BaseExport TransformItem : public NodeItem
+class BaseExport TransformItem: public NodeItem
 {
 public:
     explicit TransformItem(const Base::Placement&);
@@ -592,6 +662,10 @@ public:
      */
     explicit InventorBuilder(std::ostream& str);
     /*!
+     * \brief Adds the OpenInventor header.
+     */
+    void addHeader();
+    /*!
      * \brief Destruction of an InventorBuilder instance
      */
     virtual ~InventorBuilder();
@@ -614,8 +688,10 @@ private:
     void decreaseIndent();
 
 public:
-    InventorBuilder (const InventorBuilder&) = delete;
-    void operator = (const InventorBuilder&) = delete;
+    InventorBuilder(const InventorBuilder&) = delete;
+    InventorBuilder(InventorBuilder&&) = delete;
+    void operator=(const InventorBuilder&) = delete;
+    void operator=(InventorBuilder&&) = delete;
 
 private:
     std::ostream& result;
@@ -678,6 +754,11 @@ public:
      */
     void endSeparator();
 
+    Builder3D(const Builder3D&) = delete;
+    Builder3D(Builder3D&&) = delete;
+    Builder3D& operator=(const Builder3D&) = delete;
+    Builder3D& operator=(Builder3D&&) = delete;
+
 private:
     /// the result string
     std::stringstream result;
@@ -688,16 +769,22 @@ private:
  * Loads an OpenInventor file.
  * @author Werner Mayer
  */
-class BaseExport InventorLoader {
+class BaseExport InventorLoader
+{
 public:
-    struct Face {
+    struct Face
+    {
         Face(int32_t p1, int32_t p2, int32_t p3)
-            : p1(p1), p2(p2), p3(p3) {}
+            : p1(p1)
+            , p2(p2)
+            , p3(p3)
+        {}
         int32_t p1, p2, p3;
     };
 
-    explicit InventorLoader(std::istream &inp) : inp(inp) {
-    }
+    explicit InventorLoader(std::istream& inp)
+        : inp(inp)
+    {}
 
     /// Start the read process. Returns true if successful and false otherwise.
     /// The obtained data can be accessed with the appropriate getter functions.
@@ -708,22 +795,26 @@ public:
 
     /// Returns true if the data come from a non-indexed node as SoFaceSet.
     /// This means that the read points contain duplicates.
-    bool isNonIndexed() const {
+    bool isNonIndexed() const
+    {
         return isnonindexed;
     }
 
     /// Return the vectors of an SoNormal node
-    const std::vector<Vector3f>& getVector() const {
+    const std::vector<Vector3f>& getVector() const
+    {
         return vector;
     }
 
     /// Return the points of an SoCoordinate3 node
-    const std::vector<Vector3f>& getPoints() const {
+    const std::vector<Vector3f>& getPoints() const
+    {
         return points;
     }
 
     /// Return the faces of an SoIndexedFaceSet node
-    const std::vector<Face>& getFaces() const {
+    const std::vector<Face>& getFaces() const
+    {
         return faces;
     }
 
@@ -744,7 +835,7 @@ private:
     std::vector<Vector3f> vector;
     std::vector<Vector3f> points;
     std::vector<Face> faces;
-    std::istream &inp;
+    std::istream& inp;
 };
 
 /*!
@@ -754,6 +845,6 @@ private:
  */
 BaseExport Base::Vector3f to_vector(std::string);
 
-} //namespace Base
+}  // namespace Base
 
-#endif // BASE_BUILDER3D_H
+#endif  // BASE_BUILDER3D_H

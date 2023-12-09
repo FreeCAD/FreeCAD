@@ -265,7 +265,7 @@ TopoDS_Shape ShapeUtils::mirrorShape(const TopoDS_Shape& input, const gp_Pnt& in
         return transShape;
     }
     try {
-        // Make tempTransform scale the object around it's centre point and
+        // Make tempTransform scale the object around its centre point and
         // mirror about the Y axis
         gp_Trsf tempTransform;
         //BRepBuilderAPI_Transform will loop forever if asked to use 0.0 as scale

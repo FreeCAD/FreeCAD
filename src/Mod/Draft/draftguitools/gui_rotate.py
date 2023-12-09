@@ -43,7 +43,7 @@ import draftguitools.gui_tool_utils as gui_tool_utils
 import draftguitools.gui_trackers as trackers
 
 from FreeCAD import Units as U
-from draftutils.messages import _msg, _err
+from draftutils.messages import _msg, _err, _toolmsg
 from draftutils.translate import translate
 
 # The module is used to prevent complaints from code checkers (flake8)
@@ -96,7 +96,7 @@ class Rotate(gui_base_original.Modifier):
         self.ui.rotateSetCenterUi()
         self.arctrack = trackers.arcTracker()
         self.call = self.view.addEventCallback("SoEvent", self.action)
-        _msg(translate("draft", "Pick rotation center"))
+        _toolmsg(translate("draft", "Pick rotation center"))
 
     def action(self, arg):
         """Handle the 3D scene events.
@@ -130,7 +130,7 @@ class Rotate(gui_base_original.Modifier):
             if not DraftVecUtils.isNull(viewdelta):
                 self.point = self.point.add(viewdelta.negative())
         if self.extendedCopy:
-            if not gui_tool_utils.hasMod(arg, gui_tool_utils.MODALT):
+            if not gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key()):
                 self.step = 3
                 self.finish()
         if self.step == 0:
@@ -194,7 +194,7 @@ class Rotate(gui_base_original.Modifier):
         for ghost in self.ghosts:
             ghost.center(self.center)
         self.step = 1
-        _msg(translate("draft", "Pick base angle"))
+        _toolmsg(translate("draft", "Pick base angle"))
         if self.planetrack:
             self.planetrack.set(self.point)
 
@@ -208,7 +208,7 @@ class Rotate(gui_base_original.Modifier):
         for ghost in self.ghosts:
             ghost.on()
         self.step = 2
-        _msg(translate("draft", "Pick rotation angle"))
+        _toolmsg(translate("draft", "Pick rotation angle"))
 
     def set_rotation_angle(self, arg):
         """Set the rotation angle."""
@@ -223,8 +223,8 @@ class Rotate(gui_base_original.Modifier):
         else:
             self.angle = angle - self.firstangle
         self.rotate(self.ui.isCopy.isChecked()
-                    or gui_tool_utils.hasMod(arg, gui_tool_utils.MODALT))
-        if gui_tool_utils.hasMod(arg, gui_tool_utils.MODALT):
+                    or gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key()))
+        if gui_tool_utils.hasMod(arg, gui_tool_utils.get_mod_alt_key()):
             self.extendedCopy = True
         else:
             self.finish(cont=None)
@@ -397,7 +397,7 @@ class Rotate(gui_base_original.Modifier):
         self.ui.radiusValue.setToolTip(translate("draft", "The base angle you wish to start the rotation from"))
         self.ui.radiusValue.setText(U.Quantity(0, U.Angle).UserString)
         self.step = 1
-        _msg(translate("draft", "Pick base angle"))
+        _toolmsg(translate("draft", "Pick base angle"))
 
     def numericRadius(self, rad):
         """Validate the radius entry field in the user interface.
@@ -415,7 +415,7 @@ class Rotate(gui_base_original.Modifier):
             for ghost in self.ghosts:
                 ghost.on()
             self.step = 2
-            _msg(translate("draft", "Pick rotation angle"))
+            _toolmsg(translate("draft", "Pick rotation angle"))
         else:
             self.angle = math.radians(rad)
             self.rotate(self.ui.isCopy.isChecked())

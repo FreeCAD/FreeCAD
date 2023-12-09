@@ -49,7 +49,7 @@ App::DocumentObjectExecReturn *FeatureCompound::execute()
     Path::Toolpath result;
 
     for (std::vector<DocumentObject*>::const_iterator it= Paths.begin();it!=Paths.end();++it) {
-        if ((*it)->getTypeId().isDerivedFrom(Path::Feature::getClassTypeId())){
+        if ((*it)->isDerivedFrom<Path::Feature>()){
             const std::vector<Command*> &cmds = static_cast<Path::Feature*>(*it)->Path.getValue().getCommands();
             const Base::Placement pl = static_cast<Path::Feature*>(*it)->Placement.getValue();
             for (std::vector<Command*>::const_iterator it2= cmds.begin();it2!=cmds.end();++it2) {

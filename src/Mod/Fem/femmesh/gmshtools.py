@@ -444,14 +444,14 @@ class GmshTools():
     def get_region_data(self):
         # mesh regions
         if not self.mesh_obj.MeshRegionList:
-            # print("  No mesh regions.")
+            # print("  No mesh refinements.")
             pass
         else:
             # Console.PrintMessage("  Mesh regions, we need to get the elements.\n")
             # by the use of MeshRegion object and a BooleanSplitCompound
             # there could be problems with node numbers see
-            # http://forum.freecad.org/viewtopic.php?f=18&t=18780&start=40#p149467
-            # http://forum.freecad.org/viewtopic.php?f=18&t=18780&p=149520#p149520
+            # https://forum.freecad.org/viewtopic.php?f=18&t=18780&start=40#p149467
+            # https://forum.freecad.org/viewtopic.php?f=18&t=18780&p=149520#p149520
             part = self.part_obj
             if (
                 self.mesh_obj.MeshRegionList and part.Shape.ShapeType == "Compound"
@@ -470,13 +470,13 @@ class GmshTools():
                     if mr_obj.References:
                         for sub in mr_obj.References:
                             # print(sub[0])  # Part the elements belongs to
-                            # check if the shape of the mesh region
+                            # check if the shape of the mesh refinements
                             # is an element of the Part to mesh
                             # if not try to find the element in the shape to mesh
                             search_ele_in_shape_to_mesh = False
                             if not self.part_obj.Shape.isSame(sub[0].Shape):
                                 Console.PrintLog(
-                                    "  One element of the meshregion {} is "
+                                    "  One element of the mesh refinement {} is "
                                     "not an element of the Part to mesh.\n"
                                     "But we are going to try to find it in "
                                     "the Shape to mesh :-)\n"
@@ -509,19 +509,19 @@ class GmshTools():
                                     ).Value
                                 else:
                                     Console.PrintError(
-                                        "The element {} of the meshregion {} has "
+                                        "The element {} of the mesh refinement {} has "
                                         "been added to another mesh region.\n"
                                         .format(elems, mr_obj.Name)
                                     )
                     else:
                         Console.PrintError(
-                            "The meshregion: {} is not used to create the mesh "
+                            "The mesh refinement: {} is not used to create the mesh "
                             "because the reference list is empty.\n"
                             .format(mr_obj.Name)
                         )
                 else:
                     Console.PrintError(
-                        "The meshregion: {} is not used to create the "
+                        "The mesh refinement: {} is not used to create the "
                         "mesh because the CharacteristicLength is 0.0 mm.\n"
                         .format(mr_obj.Name)
                     )
@@ -545,8 +545,8 @@ class GmshTools():
         else:
             # Console.PrintMessage("  Mesh boundary layers, we need to get the elements.\n")
             if self.part_obj.Shape.ShapeType == "Compound":
-                # see http://forum.freecad.org/viewtopic.php?f=18&t=18780&start=40#p149467 and
-                # http://forum.freecad.org/viewtopic.php?f=18&t=18780&p=149520#p149520
+                # see https://forum.freecad.org/viewtopic.php?f=18&t=18780&start=40#p149467 and
+                # https://forum.freecad.org/viewtopic.php?f=18&t=18780&p=149520#p149520
                 self.outputCompoundWarning
             for mr_obj in self.mesh_obj.MeshBoundaryLayerList:
                 if mr_obj.MinimumThickness and Units.Quantity(mr_obj.MinimumThickness).Value > 0:
@@ -948,7 +948,7 @@ class GmshTools():
     def outputCompoundWarning(self):
         error_message = (
             "The mesh to shape is a Boolean Split Tools compound "
-            "and the mesh has mesh region list.\n"
+            "and the mesh has mesh refinements list.\n"
             "Gmsh could return unexpected meshes in such circumstances.\n"
             "If this is the case, use the part workbench and "
             "apply a Compound Filter on the compound.\n"

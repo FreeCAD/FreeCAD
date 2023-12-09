@@ -141,7 +141,7 @@ App::DocumentObjectExecReturn* DrawViewDetail::execute()
         return DrawView::execute();
     }
 
-    if (!baseObj->getTypeId().isDerivedFrom(TechDraw::DrawViewPart::getClassTypeId())) {
+    if (!baseObj->isDerivedFrom<TechDraw::DrawViewPart>()) {
         //this can only happen via scripting?
         return DrawView::execute();
     }
@@ -167,7 +167,7 @@ App::DocumentObjectExecReturn* DrawViewDetail::execute()
     }
 
     detailExec(shape, dvp, dvs);
-    addShapes2d();
+    addPoints();
 
     dvp->requestPaint();//to refresh detail highlight in base view
     return DrawView::execute();

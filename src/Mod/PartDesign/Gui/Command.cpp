@@ -47,6 +47,7 @@
 #include <Gui/SelectionObject.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/PartDesign/App/Body.h>
+#include <Mod/PartDesign/App/FeatureBoolean.h>
 #include <Mod/PartDesign/App/FeatureGroove.h>
 #include <Mod/PartDesign/App/FeatureMultiTransform.h>
 #include <Mod/PartDesign/App/FeatureRevolution.h>
@@ -617,9 +618,9 @@ unsigned validateSketches(std::vector<App::DocumentObject*>& sketches,
         std::vector<App::DocumentObject*>::iterator o = inList.begin();
         while (o != inList.end()) {
             //Base::Console().Error("Inlist: %s\n", (*o)->getNameInDocument());
-            if ((*o)->getTypeId().isDerivedFrom(PartDesign::Body::getClassTypeId()))
+            if ((*o)->isDerivedFrom<PartDesign::Body>())
                 o = inList.erase(o); //ignore bodies
-            else if (!(  (*o)->getTypeId().isDerivedFrom(PartDesign::Feature::getClassTypeId())  ))
+            else if (!(  (*o)->isDerivedFrom<PartDesign::Feature>()  ))
                 o = inList.erase(o); //ignore non-partDesign
             else
                 ++o;
@@ -2244,7 +2245,7 @@ void CmdPartDesignMultiTransform::activated(int iMsg)
     if (!features.empty()) {
         // Throw out MultiTransform features, we don't want to nest them
         for (std::vector<App::DocumentObject*>::iterator f = features.begin(); f != features.end(); ) {
-            if ((*f)->getTypeId().isDerivedFrom(PartDesign::MultiTransform::getClassTypeId()))
+            if ((*f)->isDerivedFrom<PartDesign::MultiTransform>())
                 f = features.erase(f);
             else
                 f++;
@@ -2362,6 +2363,7 @@ void CmdPartDesignBoolean::activated(int iMsg)
     std::string FeatName = getUniqueObjectName("Boolean",pcActiveBody);
     FCMD_OBJ_CMD(pcActiveBody,"newObject('PartDesign::Boolean','"<<FeatName<<"')");
     auto Feat = pcActiveBody->getDocument()->getObject(FeatName.c_str());
+    static_cast<PartDesign::Boolean*>(Feat)->UsePlacement.setValue(true);
 
     // If we don't add an object to the boolean group then don't update the body
     // as otherwise this will fail and it will be marked as invalid

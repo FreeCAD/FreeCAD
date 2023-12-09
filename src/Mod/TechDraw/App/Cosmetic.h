@@ -40,6 +40,8 @@ class DrawViewPart;
 class TechDrawExport LineFormat
 {
 public:
+    static constexpr size_t InvalidLine{0};
+
     LineFormat();
     LineFormat(const int style,
                const double weight,
@@ -47,10 +49,14 @@ public:
                const bool visible);
     ~LineFormat() = default;
 
+    int getLineNumber() const { return m_lineNumber; }
+    void setLineNumber(int number) { m_lineNumber = number; }
+
     int m_style;
     double m_weight;
     App::Color m_color;
     bool m_visible;
+    int m_lineNumber {1};
 
     static double getDefEdgeWidth();
     static App::Color getDefEdgeColor();

@@ -495,7 +495,12 @@ void QuantitySpinBox::setValue(const Base::Quantity& value)
 void QuantitySpinBox::setValue(double value)
 {
     Q_D(QuantitySpinBox);
-    setValue(Base::Quantity(value, d->unit));
+
+    Base::QuantityFormat currentformat = d->quantity.getFormat();
+    auto quantity = Base::Quantity(value, d->unit);
+    quantity.setFormat(currentformat);
+
+    setValue(quantity);
 }
 
 bool QuantitySpinBox::hasValidInput() const

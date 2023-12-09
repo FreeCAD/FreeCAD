@@ -62,7 +62,6 @@
 #include "ZVALUE.h"
 #include "PathBuilder.h"
 
-
 using namespace TechDraw;
 using namespace TechDrawGui;
 using namespace std;
@@ -71,7 +70,6 @@ using DU = DrawUtil;
 #define GEOMETRYEDGE 0
 #define COSMETICEDGE 1
 #define CENTERLINE 2
-
 
 const float lineScaleFactor = Rez::guiX(1.);// temp fiddle for devel
 
@@ -87,12 +85,14 @@ QGIViewPart::QGIViewPart()
 
     showSection = false;
     m_pathBuilder = new PathBuilder(this);
+    m_dashedLineGenerator = new LineGenerator();
 }
 
 QGIViewPart::~QGIViewPart()
 {
     tidy();
     delete m_pathBuilder;
+    delete m_dashedLineGenerator;
 }
 
 QVariant QGIViewPart::itemChange(GraphicsItemChange change, const QVariant& value)
@@ -192,14 +192,23 @@ void QGIViewPart::drawAllFaces(void)
     // dvp already validated
     auto dvp(static_cast<TechDraw::DrawViewPart*>(getViewObject()));
 
+    QColor faceColor;
+    auto vpp = dynamic_cast<ViewProviderViewPart *>(getViewProvider(getViewObject()));
+    if (vpp) {
+        faceColor = vpp->FaceColor.getValue().asValue<QColor>();
+        faceColor.setAlpha((100 - vpp->FaceTransparency.getValue())*255/100);
+    }
+
     std::vector<TechDraw::DrawHatch*> regularHatches = dvp->getHatches();
     std::vector<TechDraw::DrawGeomHatch*> geomHatches = dvp->getGeomHatches();
     const std::vector<TechDraw::FacePtr>& faceGeoms = dvp->getFaceGeometry();
     int iFace(0);
     for (auto& face : faceGeoms) {
         QGIFace* newFace = drawFace(face, iFace);
-        newFace->isHatched(false);
-        newFace->setFillMode(QGIFace::PlainFill);
+        if (faceColor.isValid()) {
+            newFace->setFillColor(faceColor);
+            newFace->setFillMode(faceColor.alpha() ? QGIFace::PlainFill : QGIFace::NoFill);
+        }
 
         TechDraw::DrawHatch* fHatch = faceIsHatched(iFace, regularHatches);
         TechDraw::DrawGeomHatch* fGeom = faceIsGeomHatched(iFace, geomHatches);
@@ -270,8 +279,6 @@ void QGIViewPart::drawAllEdges()
     auto dvp(static_cast<TechDraw::DrawViewPart*>(getViewObject()));
     auto vp = static_cast<ViewProviderViewPart*>(getViewProvider(getViewObject()));
 
-    //    float lineWidthExtra = dvp->ExtraWidth.getValue() * lineScaleFactor;  //extra lines not used here
-
     const TechDraw::BaseGeomPtrVector& geoms = dvp->getEdgeGeometry();
     TechDraw::BaseGeomPtrVector::const_iterator itGeom = geoms.begin();
     QGIEdge* item;
@@ -285,9 +292,7 @@ void QGIViewPart::drawAllEdges()
         addToGroup(item);      //item is created at scene(0, 0), not group(0, 0)
         item->setPath(drawPainterPath(*itGeom));
 
-        item->setWidth(vp->LineWidth.getValue() * lineScaleFactor);     //thick
         item->setNormalColor(PreferencesGui::getAccessibleQColor(PreferencesGui::normalQColor()));
-        item->setStyle(Qt::SolidLine);
         if ((*itGeom)->getCosmetic()) {
             // cosmetic edge - format appropriately
             int source = (*itGeom)->source();
@@ -309,21 +314,31 @@ void QGIViewPart::drawAllEdges()
             if (gf) {
                 App::Color  color = Preferences::getAccessibleColor(gf->m_format.m_color);
                 item->setNormalColor(color.asValue<QColor>());
-                item->setWidth(gf->m_format.m_weight * lineScaleFactor);
-                item->setStyle(gf->m_format.m_style);
+                int lineNumber = gf->m_format.getLineNumber();
+                int qtStyle = gf->m_format.m_style;
+                item->setLinePen(m_dashedLineGenerator->getBestPen(lineNumber, (Qt::PenStyle)qtStyle,
+                                                     gf->m_format.m_weight));
+                // but we need to actually draw the lines in QGScene coords (0.1 mm).
+                item->setWidth(Rez::guiX(gf->m_format.m_weight));
                 showItem = gf->m_format.m_visible;
+            } else {
+                // unformatted line, draw as continuous line
+                item->setLinePen(m_dashedLineGenerator->getLinePen(1, vp->LineWidth.getValue()));
+                item->setWidth(Rez::guiX(vp->LineWidth.getValue()));
             }
         }
 
         if (!(*itGeom)->getHlrVisible()) {
-            // TODO: item->setISOLineNumber(getISOLineNumber(iEdge));
-            item->setWidth(vp->HiddenWidth.getValue() * lineScaleFactor);   //thin
-            item->setHiddenEdge(true);
+            item->setLinePen(m_dashedLineGenerator->getLinePen(Preferences::HiddenLineStyle(),
+                                                               vp->LineWidth.getValue()));
+            item->setWidth(Rez::guiX(vp->HiddenWidth.getValue()));   //thin
             item->setZValue(ZVALUE::HIDEDGE);
         }
 
         if ((*itGeom)->getClassOfEdge()  == ecUVISO) {
-            item->setWidth(vp->IsoWidth.getValue() * lineScaleFactor);   //graphic
+            // we don't have a style option for iso-parametric lines so draw continuous
+            item->setLinePen(m_dashedLineGenerator->getLinePen(1, vp->IsoWidth.getValue()));
+            item->setWidth(Rez::guiX(vp->IsoWidth.getValue()));   //graphic
         }
 
         item->setPos(0.0, 0.0);//now at group(0, 0)
@@ -349,23 +364,6 @@ void QGIViewPart::drawAllVertexes()
     auto dvp(static_cast<TechDraw::DrawViewPart*>(getViewObject()));
     auto vp(static_cast<ViewProviderViewPart*>(getViewProvider(getViewObject())));
 
-    bool showVertices = true;
-    bool showCenterMarks = true;
-    if (getFrameState()) {
-        //frames are on
-        if (dvp->CoarseView.getValue()) {
-            // don't show vertexes in CoarseView as there are too many
-            showVertices = false;
-        }
-    } else {
-        //frames are off
-        showVertices = false;
-    }
-
-    if (!vp->ArcCenterMarks.getValue()) {
-        showCenterMarks = false;
-    }
-
     float lineWidth = vp->LineWidth.getValue() * lineScaleFactor;     //thick
     double vertexScaleFactor = Preferences::getPreferenceGroup("General")->GetFloat("VertexScale", 3.0);
     QColor vertexColor = PreferencesGui::getAccessibleQColor(PreferencesGui::vertexQColor());
@@ -374,7 +372,7 @@ void QGIViewPart::drawAllVertexes()
     std::vector<TechDraw::VertexPtr>::const_iterator vert = verts.begin();
     for (int i = 0; vert != verts.end(); ++vert, i++) {
         if ((*vert)->isCenter()) {
-            if (showCenterMarks) {
+            if (showCenterMarks()) {
                 QGICMark* cmItem = new QGICMark(i);
                 addToGroup(cmItem);
                 cmItem->setPos(Rez::guiX((*vert)->x()), Rez::guiX((*vert)->y()));
@@ -385,7 +383,7 @@ void QGIViewPart::drawAllVertexes()
             }
         } else {
             //regular Vertex
-            if (showVertices) {
+            if (showVertices()) {
                 QGIVertex* item = new QGIVertex(i);
                 addToGroup(item);
                 item->setPos(Rez::guiX((*vert)->x()), Rez::guiX((*vert)->y()));
@@ -424,6 +422,51 @@ bool QGIViewPart::showThisEdge(BaseGeomPtr geom)
     return false;
 }
 
+// returns true if vertex dots should be shown
+bool QGIViewPart::showVertices()
+{
+    // dvp and vp already validated
+    auto dvp(static_cast<TechDraw::DrawViewPart*>(getViewObject()));
+
+    if (dvp->CoarseView.getValue()) {
+        // never show vertices in CoarseView
+        return false;
+    }
+    if (!getFrameState()) {
+        // frames are off, don't show vertices
+        return false;
+    }
+
+    return true;
+}
+
+
+// returns true if arc center marks should be shown
+bool QGIViewPart::showCenterMarks()
+{
+    // dvp and vp already validated
+    auto dvp(static_cast<TechDraw::DrawViewPart*>(getViewObject()));
+    auto vp(static_cast<ViewProviderViewPart*>(getViewProvider(dvp)));
+
+    if (!vp->ArcCenterMarks.getValue()) {
+        // no center marks if view property is false
+        return false;
+    }
+
+    if (getFrameState()) {
+        // frames are on and view property is true
+        return true;
+    }
+
+    if (prefPrintCenters()) {
+        // frames are off, view property is true and Print Center Marks is true
+        return true;
+    }
+
+    return false;
+}
+
+
 bool QGIViewPart::formatGeomFromCosmetic(std::string cTag, QGIEdge* item)
 {
     //    Base::Console().Message("QGIVP::formatGeomFromCosmetic(%s)\n", cTag.c_str());
@@ -433,8 +476,10 @@ bool QGIViewPart::formatGeomFromCosmetic(std::string cTag, QGIEdge* item)
     if (ce) {
         App::Color color = Preferences::getAccessibleColor(ce->m_format.m_color);
         item->setNormalColor(color.asValue<QColor>());
-        item->setWidth(ce->m_format.m_weight * lineScaleFactor);
-        item->setStyle(ce->m_format.m_style);
+        item->setLinePen(m_dashedLineGenerator->getBestPen(ce->m_format.getLineNumber(),
+                                                     (Qt::PenStyle)ce->m_format.m_style,
+                                                     ce->m_format.m_weight));
+        item->setWidth(Rez::guiX(ce->m_format.m_weight));
         result = ce->m_format.m_visible;
     }
     return result;
@@ -443,15 +488,17 @@ bool QGIViewPart::formatGeomFromCosmetic(std::string cTag, QGIEdge* item)
 
 bool QGIViewPart::formatGeomFromCenterLine(std::string cTag, QGIEdge* item)
 {
-    //    Base::Console().Message("QGIVP::formatGeomFromCenterLine(%d)\n", sourceIndex);
+//    Base::Console().Message("QGIVP::formatGeomFromCenterLine()\n");
     bool result = true;
     auto partFeat(dynamic_cast<TechDraw::DrawViewPart*>(getViewObject()));
     TechDraw::CenterLine* cl = partFeat ? partFeat->getCenterLine(cTag) : nullptr;
     if (cl) {
         App::Color color = Preferences::getAccessibleColor(cl->m_format.m_color);
         item->setNormalColor(color.asValue<QColor>());
-        item->setWidth(cl->m_format.m_weight * lineScaleFactor);
-        item->setStyle(cl->m_format.m_style);
+        item->setLinePen(m_dashedLineGenerator->getBestPen(cl->m_format.getLineNumber(),
+                                                     (Qt::PenStyle)cl->m_format.m_style,
+                                                     cl->m_format.m_weight));
+        item->setWidth(Rez::guiX(cl->m_format.m_weight));
         result = cl->m_format.m_visible;
     }
     return result;
@@ -589,7 +636,6 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
     if (!vp) {
         return;
     }
-    float lineWidthThin = vp->HiddenWidth.getValue() * lineScaleFactor;//thin
 
     if (b) {
         QGISectionLine* sectionLine = new QGISectionLine();
@@ -634,7 +680,11 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
 
         //set the general parameters
         sectionLine->setPos(0.0, 0.0);
-        sectionLine->setWidth(lineWidthThin);
+        // sectionLines are typically ISO 8 (long dash, short dash) or ISO 4 (long dash, dot)
+        sectionLine->setLinePen(
+                m_dashedLineGenerator->getLinePen((size_t)vp->SectionLineStyle.getValue(),
+                                                    vp->HiddenWidth.getValue()));
+        sectionLine->setWidth(Rez::guiX(vp->HiddenWidth.getValue()));
         double fontSize = Preferences::dimFontSizeMM();
         sectionLine->setFont(getFont(), fontSize);
         sectionLine->setZValue(ZVALUE::SECTIONLINE);
@@ -655,7 +705,6 @@ void QGIViewPart::drawComplexSectionLine(TechDraw::DrawViewSection* viewSection,
     if (!vp) {
         return;
     }
-    float lineWidthThin = vp->HiddenWidth.getValue() * lineScaleFactor;//thin
 
     auto dcs = static_cast<DrawComplexSection*>(viewSection);
     BaseGeomPtrVector edges = dcs->makeSectionLineGeometry();
@@ -706,7 +755,11 @@ void QGIViewPart::drawComplexSectionLine(TechDraw::DrawViewSection* viewSection,
 
     //set the general parameters
     sectionLine->setPos(0.0, 0.0);
-    sectionLine->setWidth(lineWidthThin);
+    // sectionLines are typically ISO 8 (long dash, short dash) or ISO 4 (long dash, dot)
+    sectionLine->setLinePen(
+                            m_dashedLineGenerator->getLinePen((size_t)vp->SectionLineStyle.getValue(),
+                                 vp->HiddenWidth.getValue()));
+    sectionLine->setWidth(Rez::guiX(vp->HiddenWidth.getValue()));
     double fontSize = Preferences::dimFontSizeMM();
     sectionLine->setFont(getFont(), fontSize);
     sectionLine->setZValue(ZVALUE::SECTIONLINE);
@@ -715,6 +768,7 @@ void QGIViewPart::drawComplexSectionLine(TechDraw::DrawViewSection* viewSection,
 }
 
 //TODO: use Cosmetic::CenterLine object for this to make it usable for dims.
+// these are the view center lines (ie x,y axes)
 void QGIViewPart::drawCenterLines(bool b)
 {
     TechDraw::DrawViewPart* viewPart = dynamic_cast<TechDraw::DrawViewPart*>(getViewObject());
@@ -743,7 +797,10 @@ void QGIViewPart::drawCenterLines(bool b)
             yVal = 0.0;
             centerLine->setIntersection(horiz && vert);
             centerLine->setBounds(-xVal, -yVal, xVal, yVal);
+            centerLine->setLinePen(m_dashedLineGenerator->getLinePen((size_t)Preferences::CenterLineStyle(),
+                                  vp->HiddenWidth.getValue()));
             centerLine->setWidth(Rez::guiX(vp->HiddenWidth.getValue()));
+            centerLine->setColor(Qt::green);
             centerLine->setZValue(ZVALUE::SECTIONLINE);
             centerLine->draw();
         }
@@ -757,7 +814,10 @@ void QGIViewPart::drawCenterLines(bool b)
             yVal = sectionSpan / 2.0;
             centerLine->setIntersection(horiz && vert);
             centerLine->setBounds(-xVal, -yVal, xVal, yVal);
+            centerLine->setLinePen(m_dashedLineGenerator->getLinePen((size_t)Preferences::CenterLineStyle(),
+                                  vp->HiddenWidth.getValue()));
             centerLine->setWidth(Rez::guiX(vp->HiddenWidth.getValue()));
+            centerLine->setColor(Qt::red);
             centerLine->setZValue(ZVALUE::SECTIONLINE);
             centerLine->draw();
         }
@@ -766,6 +826,9 @@ void QGIViewPart::drawCenterLines(bool b)
 
 void QGIViewPart::drawAllHighlights()
 {
+    if (!Preferences::showDetailHighlight()) {
+        return;
+    }
     // dvp and vp already validated
     auto dvp(static_cast<TechDraw::DrawViewPart*>(getViewObject()));
 
@@ -791,12 +854,11 @@ void QGIViewPart::drawHighlight(TechDraw::DrawViewDetail* viewDetail, bool b)
         return;
     }
     if (b) {
-        //        double fontSize = getPrefFontSize();
         double fontSize = Preferences::labelFontSizeMM();
         QGIHighlight* highlight = new QGIHighlight();
         scene()->addItem(highlight);
         highlight->setReference(viewDetail->Reference.getValue());
-        highlight->setStyle((Qt::PenStyle)vp->HighlightLineStyle.getValue());
+
         App::Color color = Preferences::getAccessibleColor(vp->HighlightLineColor.getValue());
         highlight->setColor(color.asValue<QColor>());
         highlight->setFeatureName(viewDetail->getNameInDocument());
@@ -812,6 +874,8 @@ void QGIViewPart::drawHighlight(TechDraw::DrawViewDetail* viewDetail, bool b)
         double radius = viewDetail->Radius.getValue() * viewPart->getScale();
         highlight->setBounds(center.x - radius, center.y + radius, center.x + radius,
                              center.y - radius);
+        highlight->setLinePen(m_dashedLineGenerator->getLinePen((size_t)vp->HighlightLineStyle.getValue(),
+                             vp->IsoWidth.getValue()));
         highlight->setWidth(Rez::guiX(vp->IsoWidth.getValue()));
         highlight->setFont(getFont(), fontSize);
         highlight->setZValue(ZVALUE::HIGHLIGHT);
@@ -843,6 +907,9 @@ void QGIViewPart::highlightMoved(QGIHighlight* highlight, QPointF newPos)
 
 void QGIViewPart::drawMatting()
 {
+    if (!Preferences::showDetailMatting()) {
+        return;
+    }
     auto viewPart(dynamic_cast<TechDraw::DrawViewPart*>(getViewObject()));
     TechDraw::DrawViewDetail* dvd = nullptr;
     if (viewPart && viewPart->isDerivedFrom(TechDraw::DrawViewDetail::getClassTypeId())) {
@@ -934,7 +1001,7 @@ void QGIViewPart::dumpPath(const char* text, QPainterPath path)
 {
     QPainterPath::Element elem;
     Base::Console().Message(">>>%s has %d elements\n", text, path.elementCount());
-    char* typeName;
+    const char* typeName;
     for (int iElem = 0; iElem < path.elementCount(); iElem++) {
         elem = path.elementAt(iElem);
         if (elem.isMoveTo()) {
@@ -970,6 +1037,8 @@ void QGIViewPart::paint(QPainter* painter, const QStyleOptionGraphicsItem* optio
 
     QGIView::paint(painter, &myOption, widget);
 }
+
+
 
 //QGIViewPart derived classes do not need a rotate view method as rotation is handled on App side.
 void QGIViewPart::rotateView() {}
