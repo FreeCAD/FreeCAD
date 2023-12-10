@@ -3713,7 +3713,7 @@ bool CDxfRead::ReadUnits()
     if (sscanf(m_str, "%d", &n) == 1) {
         m_eUnits = eDxfUnits_t(n);
         if (m_eUnits != eUnspecified) {
-            m_measurement_inch = false; // prioritize INSUNITS over MEASUREMENT variable
+            m_measurement_inch = false;  // prioritize INSUNITS over MEASUREMENT variable
         }
         return (true);
     }  // End if - then
