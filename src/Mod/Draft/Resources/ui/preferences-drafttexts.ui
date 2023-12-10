@@ -120,13 +120,40 @@ as &quot;Arial&quot;, a style such as &quot;sans&quot;, &quot;serif&quot; or &qu
        </widget>
       </item>
       <item row="3" column="0">
+       <widget class="QLabel" name="label_DefaultAnnoScaleMultiplier">
+        <property name="text">
+         <string>Scale multiplier</string>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="1">
+       <widget class="Gui::PrefDoubleSpinBox" name="spinBox_DefaultAnnoScaleMultiplier">
+        <property name="toolTip">
+         <string>The default annotation scale multiplier. This is the inverse of the scale set
+in the Annotation scale widget. If the scale is 1:100 the multiplier is 100.</string>
+        </property>
+        <property name="minimum">
+         <number>0</number>
+        </property>
+        <property name="value">
+         <double>1.0</double>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>DefaultAnnoScaleMultiplier</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Draft</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0">
        <widget class="QLabel" name="label_DefaultTextColor">
         <property name="text">
          <string>Text color</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="1">
+      <item row="4" column="1">
        <widget class="Gui::PrefColorButton" name="colorButton_DefaultTextColor">
         <property name="toolTip">
          <string>The default color for texts, dimension texts and label texts</string>
@@ -329,41 +356,7 @@ as &quot;Arial&quot;, a style such as &quot;sans&quot;, &quot;serif&quot; or &qu
       <string>Units</string>
      </property>
      <layout class="QGridLayout" name="gridLayout_3">
-      <item row="0" column="0">
-       <widget class="QLabel" name="label_DefaultAnnoScaleMultiplier">
-        <property name="text">
-         <string>Scale multiplier</string>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="1">
-       <widget class="Gui::PrefDoubleSpinBox" name="spinBox_DefaultAnnoScaleMultiplier">
-        <property name="toolTip">
-         <string>The default annotation scale multiplier. This is the inverse of the scale set
-in the Annotation scale widget. If the scale is 1:100 the multiplier is 100.</string>
-        </property>
-        <property name="minimum">
-         <number>0</number>
-        </property>
-        <property name="value">
-         <double>1.0</double>
-        </property>
-        <property name="prefEntry" stdset="0">
-         <cstring>DefaultAnnoScaleMultiplier</cstring>
-        </property>
-        <property name="prefPath" stdset="0">
-         <cstring>Mod/Draft</cstring>
-        </property>
-       </widget>
-      </item>
-      <item row="0" column="2">
-       <spacer name="horizontalSpacer_3">
-        <property name="orientation">
-         <enum>Qt::Horizontal</enum>
-        </property>
-       </spacer>
-      </item>
-      <item row="1" column="0" colspan="3">
+      <item row="0" column="0" colspan="3">
        <widget class="Gui::PrefCheckBox" name="checkBox_showUnit">
         <property name="toolTip">
          <string>If checked, a unit symbol is added to dimension texts by default</string>
@@ -382,14 +375,14 @@ in the Annotation scale widget. If the scale is 1:100 the multiplier is 100.</st
         </property>
        </widget>
       </item>
-      <item row="2" column="0">
+      <item row="1" column="0">
        <widget class="QLabel" name="label_overrideUnit">
         <property name="text">
          <string>Unit override</string>
         </property>
        </widget>
       </item>
-      <item row="2" column="1">
+      <item row="1" column="1">
        <widget class="Gui::PrefLineEdit" name="lineEdit_overrideUnit">
         <property name="maximumSize">
          <size>
@@ -409,14 +402,21 @@ or cm, leave blank to use the current unit defined in FreeCAD.</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="0">
+      <item row="1" column="2">
+       <spacer name="horizontalSpacer_3">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </spacer>
+      </item>
+      <item row="2" column="0">
        <widget class="QLabel" name="label_dimPrecision">
         <property name="text">
          <string>Number of decimals</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="1">
+      <item row="2" column="1">
        <widget class="Gui::PrefSpinBox" name="spinBox_dimPrecision">
         <property name="toolTip">
          <string>The default number of decimal places for dimension texts</string>
@@ -438,14 +438,14 @@ or cm, leave blank to use the current unit defined in FreeCAD.</string>
         </property>
        </widget>
       </item>
-      <item row="4" column="0">
+      <item row="3" column="0">
        <widget class="QLabel" name="label_FeetSeparator">
         <property name="text">
          <string>Feet separator</string>
         </property>
        </widget>
       </item>
-      <item row="4" column="1">
+      <item row="3" column="1">
        <widget class="Gui::PrefLineEdit" name="lineEdit_FeetSeparator">
         <property name="maximumSize">
          <size>
