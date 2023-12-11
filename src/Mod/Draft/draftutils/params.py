@@ -368,11 +368,11 @@ def _get_param_dictionary():
     # For the View parameters we do not check the preferences:
     param_dict["View"] = {
         "DefaultShapeColor":         ("unsigned",  3435973887),
-        "DefaultShapeLineColor":     ("unsigned",  255),
+        "DefaultShapeLineColor":     ("unsigned",  421075455),
         "DefaultShapeLineWidth":     ("int",       2),
         "DefaultShapePointSize":     ("int",       2),
         "DefaultShapeTransparency":  ("int",       0),
-        "DefaultShapeVertexColor":   ("unsigned",  255),
+        "DefaultShapeVertexColor":   ("unsigned",  421075455),
     }
 
     # Preferences ui files are stored in resource files.
@@ -496,6 +496,10 @@ def get_param_arch(entry):
     return get_param(entry, path="Mod/Arch")
 
 
+def get_param_view(entry):
+    return get_param(entry, path="View")
+
+
 def set_param(entry, value, path="Mod/Draft"):
     """Store a parameter value.
 
@@ -538,3 +542,7 @@ def set_param(entry, value, path="Mod/Draft"):
 
 def set_param_arch(entry, value):
     return set_param(entry, value, path="Mod/Arch")
+
+
+def set_param_view(entry, value):
+    return set_param(entry, value, path="View")
