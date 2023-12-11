@@ -40,11 +40,10 @@ class Array3D: public QDialog
 
 public:
     Array3D(const QString& propertyName,
-            std::shared_ptr<Materials::Material> material,
+            const std::shared_ptr<Materials::Material>& material,
             QWidget* parent = nullptr);
     ~Array3D() override = default;
 
-    void defaultValueChanged(const Base::Quantity& value);
     void onRowsInserted(const QModelIndex& parent, int first, int last);
     void onRowsRemoved(const QModelIndex& parent, int first, int last);
     void onDataChanged(const QModelIndex& topLeft,
@@ -75,7 +74,6 @@ private:
 
     bool newDepthRow(const QModelIndex& index);
     bool new2DRow(const QModelIndex& index);
-    void setupDefault();
     void setDepthColumnWidth(QTableView* table);
     void setDepthColumnDelegate(QTableView* table);
     void setupDepthArray();

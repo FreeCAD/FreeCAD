@@ -46,6 +46,7 @@ public:
 
 public Q_SLOTS:
     void onLineGroupChanged(int);
+    void onLineStandardChanged(int);
 
 protected:
     void saveSettings() override;
@@ -53,6 +54,7 @@ protected:
     void changeEvent(QEvent *e) override;
 
     int prefBalloonArrow() const;
+    void loadLineStyleBoxes();
 
 private:
     std::unique_ptr<Ui_DlgPrefsTechDrawAnnotationImp> ui;

@@ -97,6 +97,7 @@ class Draft_SetStyle_TaskPanel:
         self.form.TextFont.setCurrentFont(QtGui.QFont(param_draft.GetString("textfont", "Sans")))
         self.form.TextSize.setText(U.Quantity(param_draft.GetFloat("textheight", 3.5), U.Length).UserString)
         self.form.LineSpacing.setValue(param_draft.GetFloat("LineSpacing", 1))
+        self.form.ScaleMultiplier.setValue(param_draft.GetFloat("DefaultAnnoScaleMultiplier", 1))
         self.form.AnnoLineColor.setProperty("color", self.getColor(param_draft.GetUnsigned("DefaultAnnoLineColor", 255)))
         self.form.AnnoLineWidth.setValue(param_draft.GetInt("DefaultAnnoLineWidth", 2))
         self.form.ArrowStyle.setCurrentIndex(param_draft.GetInt("dimsymbol", 0))
@@ -148,6 +149,7 @@ class Draft_SetStyle_TaskPanel:
         preset["TextFont"] = self.form.TextFont.currentFont().family()
         preset["TextSize"] = U.Quantity(self.form.TextSize.text()).Value
         preset["LineSpacing"] = self.form.LineSpacing.value()
+        preset["ScaleMultiplier"] = self.form.ScaleMultiplier.value()
         preset["AnnoLineColor"] = utils.argb_to_rgba(self.form.AnnoLineColor.property("color").rgba())
         preset["AnnoLineWidth"] = self.form.AnnoLineWidth.value()
         preset["ArrowStyle"] = self.form.ArrowStyle.currentIndex()
@@ -181,6 +183,7 @@ class Draft_SetStyle_TaskPanel:
         self.form.TextFont.setCurrentFont(QtGui.QFont(preset.get("TextFont", "Sans")))
         self.form.TextSize.setText(U.Quantity(preset.get("TextSize", 3.5),U.Length).UserString)
         self.form.LineSpacing.setValue(preset.get("LineSpacing", 1))
+        self.form.ScaleMultiplier.setValue(preset.get("ScaleMultiplier", 1))
         self.form.AnnoLineColor.setProperty("color", self.getColor(preset.get("AnnoLineColor", preset.get("LineColor", 255))))
         self.form.AnnoLineWidth.setValue(preset.get("AnnoLineWidth", preset.get("LineWidth", 2)))
         self.form.ArrowStyle.setCurrentIndex(preset.get("ArrowStyle", 0))
@@ -213,6 +216,7 @@ class Draft_SetStyle_TaskPanel:
         param_draft.SetString("textfont", self.form.TextFont.currentFont().family())
         param_draft.SetFloat("textheight", U.Quantity(self.form.TextSize.text()).Value)
         param_draft.SetFloat("LineSpacing", self.form.LineSpacing.value())
+        param_draft.SetFloat("DefaultAnnoScaleMultiplier", self.form.ScaleMultiplier.value())
         param_draft.SetUnsigned("DefaultAnnoLineColor", utils.argb_to_rgba(self.form.AnnoLineColor.property("color").rgba()))
         param_draft.SetInt("DefaultAnnoLineWidth", self.form.AnnoLineWidth.value())
         param_draft.SetInt("dimsymbol", self.form.ArrowStyle.currentIndex())
@@ -275,6 +279,8 @@ class Draft_SetStyle_TaskPanel:
                 vobj.FontSize = U.Quantity(self.form.TextSize.text()).Value
             if "LineSpacing" in properties:
                 vobj.LineSpacing = self.form.LineSpacing.value()
+            if "ScaleMultiplier" in properties:
+                vobj.ScaleMultiplier = self.form.ScaleMultiplier.value()
             if "LineColor" in properties:
                 vobj.LineColor = self.form.AnnoLineColor.property("color").getRgbF()[:3]
             if "LineWidth" in properties:

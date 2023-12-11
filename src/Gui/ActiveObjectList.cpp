@@ -46,7 +46,7 @@ App::DocumentObject *ActiveObjectList::getObject(const ObjectInfo &info, bool re
     if (subname)
         *subname = info.subname;
     auto obj = info.obj;
-    if (!obj || !obj->getNameInDocument())
+    if (!obj || !obj->isAttachedToDocument())
         return nullptr;
     if (!info.subname.empty()) {
         obj = obj->getSubObject(info.subname.c_str());
@@ -78,7 +78,7 @@ Gui::ActiveObjectList::ObjectInfo Gui::ActiveObjectList::getObjectInfo(App::Docu
 {
     ObjectInfo info;
     info.obj = nullptr;
-    if (!obj || !obj->getNameInDocument())
+    if (!obj || !obj->isAttachedToDocument())
         return info;
 
     if (subname) {

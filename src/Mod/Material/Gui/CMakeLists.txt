@@ -40,6 +40,7 @@ set(MatGui_UIC_SRCS
     Array2D.ui
     Array3D.ui
     DlgSettingsMaterial.ui
+    ImageEdit.ui
     ListEdit.ui
     MaterialSave.ui
     MaterialsEditor.ui
@@ -50,6 +51,8 @@ set(MatGui_UIC_SRCS
 SET(MatGui_SRCS
     ${MatGui_QRC_SRCS}
     ${MatGui_UIC_HDRS}
+    AppearancePreview.h
+    AppearancePreview.cpp
     AppMatGui.cpp
     Array2D.cpp
     Array2D.h
@@ -61,15 +64,22 @@ SET(MatGui_SRCS
     ArrayDelegate.h
     ArrayModel.cpp
     ArrayModel.h
+    BaseDelegate.cpp
+    BaseDelegate.h
     Command.cpp
     DlgSettingsMaterial.cpp
     DlgSettingsMaterial.h
     DlgSettingsMaterial.ui
-    ListModel.cpp
-    ListModel.h
+    ImageEdit.cpp
+    ImageEdit.h
+    ImageEdit.ui
+    ListDelegate.cpp
+    ListDelegate.h
     ListEdit.cpp
     ListEdit.h
     ListEdit.ui
+    ListModel.cpp
+    ListModel.h
     MaterialDelegate.cpp
     MaterialDelegate.h
     MaterialSave.cpp
@@ -107,6 +117,10 @@ SET(MatGuiIcon_SVG
     Resources/icons/table.svg
 )
 
+SET(MatGuiImages
+    Resources/images/default_image.png
+)
+
 add_library(MatGui SHARED ${MatGui_SRCS} ${MatGuiIcon_SVG})
 target_link_libraries(MatGui ${MatGui_LIBS})
 
@@ -114,6 +128,8 @@ SET_BIN_DIR(MatGui MatGui /Mod/Material)
 SET_PYTHON_PREFIX_SUFFIX(MatGui)
 
 fc_copy_sources(MatGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Material" ${MatGuiIcon_SVG})
+fc_copy_sources(MatGui "${CMAKE_BINARY_DIR}/${CMAKE_INSTALL_DATADIR}/Mod/Material" ${MatGuiImages})
 
 INSTALL(TARGETS MatGui DESTINATION ${CMAKE_INSTALL_LIBDIR})
 INSTALL(FILES ${MatGuiIcon_SVG} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Material/Resources/icons")
+INSTALL(FILES ${MatGuiImages} DESTINATION "${CMAKE_INSTALL_DATADIR}/Mod/Material/Resources/images")

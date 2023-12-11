@@ -15,6 +15,12 @@
       <Author Licence="LGPL" Name="DavidCarter" EMail="dcarter@davidcarter.ca" />
       <UserDocu>2D Array of material properties.</UserDocu>
     </Documentation>
+    <Attribute Name="Array" ReadOnly="true">
+      <Documentation>
+        <UserDocu>The 2 dimensional array.</UserDocu>
+      </Documentation>
+      <Parameter Name="Array" Type="List"/>
+    </Attribute>
     <Attribute Name="Rows" ReadOnly="true">
       <Documentation>
         <UserDocu>The number of rows in the array.</UserDocu>
@@ -27,9 +33,14 @@
       </Documentation>
       <Parameter Name="Columns" Type="Int"/>
     </Attribute>
-    <Methode Name="getDefaultValue" ReadOnly="true">
+    <Methode Name="getRow" ReadOnly="true">
       <Documentation>
-        <UserDocu>Get the default value for the first column of the array</UserDocu>
+        <UserDocu>Get the row given the first column value</UserDocu>
+      </Documentation>
+    </Methode>
+    <Methode Name="getValue" ReadOnly="true">
+      <Documentation>
+        <UserDocu>Get the value at the given row and column</UserDocu>
       </Documentation>
     </Methode>
   </PythonExport>

@@ -29,8 +29,8 @@
 #include <QVariant>
 
 #include <Base/BaseClass.h>
-
 #include <Mod/Material/MaterialGlobal.h>
+
 #include "Materials.h"
 #include "Model.h"
 #include "ModelLibrary.h"
@@ -69,13 +69,14 @@ public:
     void renameFolder(const QString& oldPath, const QString& newPath);
     void deleteRecursive(const QString& path);
 
-    std::shared_ptr<Material> saveMaterial(std::shared_ptr<Material> material,
+    std::shared_ptr<Material> saveMaterial(const std::shared_ptr<Material>& material,
                                            const QString& path,
                                            bool overwrite,
                                            bool saveAsCopy,
                                            bool saveInherited);
     bool fileExists(const QString& path) const;
-    std::shared_ptr<Material> addMaterial(std::shared_ptr<Material> material, const QString& path);
+    std::shared_ptr<Material> addMaterial(const std::shared_ptr<Material>& material,
+                                          const QString& path);
     std::shared_ptr<std::map<QString, std::shared_ptr<MaterialTreeNode>>> getMaterialTree() const;
 
     bool isReadOnly() const
@@ -94,7 +95,7 @@ protected:
     void deleteFile(MaterialManager& manager, const QString& path);
 
     void updatePaths(const QString& oldPath, const QString& newPath);
-    const QString getUUIDFromPath(const QString& path) const;
+    QString getUUIDFromPath(const QString& path) const;
 
     bool _readOnly;
     std::unique_ptr<std::map<QString, std::shared_ptr<Material>>> _materialPathMap;
@@ -110,7 +111,7 @@ public:
                             const QString& dir,
                             const QString& icon,
                             bool readOnly = true);
-    ~MaterialExternalLibrary() override;
+    ~MaterialExternalLibrary() = default;
 };
 
 }  // namespace Materials

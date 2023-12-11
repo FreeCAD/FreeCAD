@@ -340,4 +340,33 @@ TEST_F(TestMaterial, TestCalculiXSteel)
 
 }
 
+TEST_F(TestMaterial, TestColumns)
+{
+    // Start with an empty material
+    Materials::Material testMaterial;
+    auto models = testMaterial.getPhysicalModels();
+    EXPECT_NE(&models, nullptr);
+    EXPECT_EQ(models->size(), 0);
+
+    // Add a model
+    testMaterial.addPhysical(Materials::ModelUUIDs::ModelUUID_Test_Model);
+    models = testMaterial.getPhysicalModels();
+    EXPECT_EQ(models->size(), 1);
+
+    EXPECT_TRUE(testMaterial.hasPhysicalProperty(QString::fromStdString("TestArray2D")));
+    auto array2d = testMaterial.getPhysicalProperty(QString::fromStdString("TestArray2D"))->getMaterialValue();
+    EXPECT_TRUE(array2d);
+    EXPECT_EQ(static_cast<Materials::Material2DArray &>(*array2d).columns(), 2);
+
+    EXPECT_TRUE(testMaterial.hasPhysicalProperty(QString::fromStdString("TestArray2D3Column")));
+    auto array2d3Column = testMaterial.getPhysicalProperty(QString::fromStdString("TestArray2D3Column"))->getMaterialValue();
+    EXPECT_TRUE(array2d3Column);
+    EXPECT_EQ(static_cast<Materials::Material2DArray &>(*array2d3Column).columns(), 3);
+
+    EXPECT_TRUE(testMaterial.hasPhysicalProperty(QString::fromStdString("TestArray3D")));
+    auto array3d = testMaterial.getPhysicalProperty(QString::fromStdString("TestArray3D"))->getMaterialValue();
+    EXPECT_TRUE(array3d);
+    EXPECT_EQ(static_cast<Materials::Material3DArray &>(*array3d).columns(), 2);
+}
+
 // clang-format on

@@ -41,7 +41,7 @@ class ArrayDelegate: public QStyledItemDelegate
     Q_OBJECT
 public:
     ArrayDelegate(Materials::MaterialValue::ValueType type = Materials::MaterialValue::None,
-                  QString units = QString(),
+                  const QString& units = QString(),
                   QObject* parent = nullptr);
     virtual ~ArrayDelegate() = default;
 
@@ -49,13 +49,9 @@ public:
                const QStyleOptionViewItem& option,
                const QModelIndex& index) const override;
     QWidget* createEditor(QWidget* parent,
-                          const QStyleOptionViewItem&,
+                          const QStyleOptionViewItem& styleOption,
                           const QModelIndex& index) const override;
     void setEditorData(QWidget* editor, const QModelIndex& index) const override;
-
-    // Q_SIGNALS:
-    /** Emits this signal when a property has changed */
-    // void propertyChange(const QString &property, const QString value);
 
 private:
     Materials::MaterialValue::ValueType _type;
