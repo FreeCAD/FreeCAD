@@ -22,6 +22,7 @@
 
 import FreeCAD as App
 import FreeCADGui as Gui
+import Part
 from PySide.QtCore import QT_TRANSLATE_NOOP
 from PySide import QtGui
 from PySide.QtGui import QMessageBox
@@ -91,3 +92,63 @@ def getSelVertexes(nVertex=1):
     else:
         return vertexes
 
+def getSelEdges(nEdge=1):
+    '''
+    edges = getSelEdges(nEdge)
+    nEdge ... min. number of selected edges
+    Return a list of selected edges if at least nedge edges are selected, otherwise return False
+    '''
+    if getSelView():
+        view = getSelView()
+    else:
+        return False
+    if not Gui.Selection.getSelectionEx():
+        displayMessage('TechDraw_Utils',
+                        QT_TRANSLATE_NOOP('TechDraw_Utils','No edge selected'))
+        return False
+    objectList = Gui.Selection.getSelectionEx()[0].SubElementNames
+
+    edges = []
+    for objectString in objectList:
+        if objectString[0:4] == 'Edge':
+            edges.append(view.getEdgeBySelection(objectString))
+
+    if (len(edges) < nEdge):
+        displayMessage('TechDraw_Utils',
+                        QT_TRANSLATE_NOOP('TechDraw_Utils','Select at least ')+
+                        str(nEdge)+
+                        QT_TRANSLATE_NOOP('TechDraw_Utils',' edges'))
+        return False
+    else:
+        return edges
+
+def getCoordinateVectors(view):
+    '''
+    (px,py,pz) = getCoordinateVectors(view)
+    view ... selcted view
+    (px,py,pz) ... returned tuple of vectors (App.Vector)
+    calculate projected vectors of x-, y- and z-axis
+    '''
+    diagonal = view.Direction
+    xDirection = view.XDirection
+    origin = App.Vector()
+    xAxisProj = App.Vector(1,0,0).projectToPlane(origin,diagonal)
+    yAxisProj = App.Vector(0,1,0).projectToPlane(origin,diagonal)
+    zAxisProj = App.Vector(0,0,1).projectToPlane(origin,diagonal)
+    # create wire polygon and roll back in 3D
+    wire3D = Part.makePolygon([xAxisProj,yAxisProj,zAxisProj,xDirection,xAxisProj])
+    rotation3D = App.Rotation(diagonal,App.Vector(0,0,1))
+    wire3D.Placement.Rotation = rotation3D
+    px = wire3D.Edges[0].Vertexes[0].Point
+    py = wire3D.Edges[1].Vertexes[0].Point
+    pz = wire3D.Edges[2].Vertexes[0].Point
+    pDir = wire3D.Edges[3].Vertexes[0].Point
+    pDir.z = 0.0
+    # rotate inside drawing plane
+    wire2D = Part.makePolygon([px,py,pz,px])
+    rotation2D = App.Rotation(pDir,App.Vector(1,0,0))
+    wire2D.Placement.Rotation = rotation2D
+    px = wire2D.Edges[0].Vertexes[0].Point
+    py = wire2D.Edges[1].Vertexes[0].Point
+    pz = wire2D.Edges[2].Vertexes[0].Point
+    return (px,py,pz)

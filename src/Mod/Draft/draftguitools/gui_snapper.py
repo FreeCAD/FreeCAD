@@ -85,15 +85,13 @@ class Snapper:
     def __init__(self):
         self.activeview = None
         self.lastObj = []
-        self.maxEdges = 0
         self.radius = 0
         self.constraintAxis = None
         self.basepoint = None
         self.affinity = None
         self.mask = None
         self.cursorMode = None
-        if Draft.getParam("maxSnap", 0):
-            self.maxEdges = Draft.getParam("maxSnapEdges", 0)
+        self.maxEdges = Draft.getParam("maxSnapEdges", 0)
 
         # we still have no 3D view when the draft module initializes
         self.tracker = None

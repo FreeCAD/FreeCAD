@@ -195,6 +195,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     pages->setCommand("Page");
     *pages << "TechDraw_PageDefault";
     *pages << "TechDraw_PageTemplate";
+    *pages << "TechDraw_FillTemplateFields";
     *pages << "TechDraw_RedrawPage";
     *pages << "TechDraw_PrintAll";
     *pages << "Separator";
@@ -286,6 +287,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     pages->setCommand("TechDraw Pages");
     *pages << "TechDraw_PageDefault";
     *pages << "TechDraw_PageTemplate";
+    *pages << "TechDraw_FillTemplateFields";
     *pages << "TechDraw_RedrawPage";
     *pages << "TechDraw_PrintAll";
 
@@ -398,6 +400,7 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     pages->setCommand("TechDraw Pages");
     *pages << "TechDraw_PageDefault";
     *pages << "TechDraw_PageTemplate";
+    *pages << "TechDraw_FillTemplateFields";
     *pages << "TechDraw_RedrawPage";
     *pages << "TechDraw_PrintAll";
 

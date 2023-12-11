@@ -36,7 +36,9 @@ from .CommandMoveView import CommandMoveView
 from .CommandAxoLengthDimension import CommandAxoLengthDimension
 from .CommandVertexCreations import CommandVertexCreationGroup
 from .CommandHoleShaftFit import CommandHoleShaftFit
+from .CommandFillTemplateFields import CommandFillTemplateFields
 from .TaskShareView import TaskShareView
 from .TaskMoveView import TaskMoveView
 from .TaskHoleShaftFit import TaskHoleShaftFit
 from .TaskAddOffsetVertex import TaskAddOffsetVertex
+from .TaskFillTemplateFields import TaskFillTemplateFields
