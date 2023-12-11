@@ -419,12 +419,26 @@ std::vector<TopoDS_Edge> DrawProjectSplit::scrubEdges(std::vector<TopoDS_Edge>& 
                                                       std::vector<TopoDS_Edge> &closedEdges)
 {
 //    Base::Console().Message("DPS::scrubEdges() - TopoDS_Edges in: %d\n", origEdges.size());
+    std::vector<TopoDS_Edge> openEdges;
 
-    if (origEdges.empty()) {
-        //how did this happen? if Scale is zero, all the edges will be zero length,
-        //but Scale property has constraint, so this shouldn't happen!
-//        Base::Console().Message("DPS::scrubEdges(2) - origEdges is empty\n");     //debug
-        return std::vector<TopoDS_Edge>();
+    // We must have at least 2 edges to perform the General Fuse operation
+    if (origEdges.size() < 2) {
+        if (origEdges.empty()) {
+            //how did this happen? if Scale is zero, all the edges will be zero length,
+            //but Scale property has constraint, so this shouldn't happen!
+            //Base::Console().Message("DPS::scrubEdges(2) - origEdges is empty\n");
+        }
+        else {
+            TopoDS_Edge &edge = origEdges.front();
+            if (BRep_Tool::IsClosed(edge)) {
+                closedEdges.push_back(edge);
+            }
+            else {
+                openEdges.push_back(edge);
+            }
+        }
+
+        return openEdges;
     }
 
     TopTools_ListOfShape edgeList;
@@ -461,14 +475,16 @@ std::vector<TopoDS_Edge> DrawProjectSplit::scrubEdges(std::vector<TopoDS_Edge>& 
         Base::Console().Warning("DrawProjectSplit::scrubEdges - OCC fuse raised warning(s):\n%s\n", warnStr.c_str());
     }
 
-    std::vector<TopoDS_Edge> openEdges;
     const TopoDS_Shape &bopResult = bopBuilder.Shape();
     if (!bopResult.IsNull()) {
-        TopExp_Explorer explorer(bopResult, TopAbs_EDGE);
-        while (explorer.More()) {
+        for (TopExp_Explorer explorer(bopResult, TopAbs_EDGE); explorer.More(); explorer.Next()) {
             const TopoDS_Edge &edge = TopoDS::Edge(explorer.Current());
-            (BRep_Tool::IsClosed(edge) ? closedEdges : openEdges).push_back(edge);
-            explorer.Next();
+            if (BRep_Tool::IsClosed(edge)) {
+                closedEdges.push_back(edge);
+            }
+            else {
+                openEdges.push_back(edge);
+            }
         }
     }
 
