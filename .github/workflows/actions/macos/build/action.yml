@@ -21,12 +21,12 @@
 # *                                                                         *
 # ***************************************************************************
 
-name: install
-description: "Linux: install application"
+name: build
+description: "macOS: build application"
 
 inputs:
   builddir:
-    description: "Directory where build is stored"
+    description: "Directory where build will happen"
     required: true
   logFile:
     description: "Path for log file"
@@ -38,36 +38,36 @@ inputs:
     description: "Path for report file"
     required: true
   extraParameters:
-    description: "Extra parameters to CMake install"
+    description: "Extra parameters to CMake build"
     required: false
 
 runs:
   using: "composite"
   steps:
-    - name: Install
-      id: install
+    - name: Build
+      id: build
       shell: bash -l {0}
       run: |
-        (stdbuf -oL -eL sudo cmake --install ${{ inputs.builddir }} ${{ inputs.extraParameters }}) \
+        (cmake --build ${{ inputs.builddir }} -j$(nproc) ${{ inputs.extraParameters }}) \
         2> >(tee -a ${{ inputs.errorFile }}) | tee -a ${{ inputs.logFile }}
     - name: Write report
       shell: bash -l {0}
       if: always()
       run: |
-        if [ ${{ steps.install.outcome }} == 'success' ]
+        if [ ${{ steps.build.outcome }} == 'success' ]
         then
-          echo "<details><summary>:heavy_check_mark: CMake install succeeded</summary>" >> ${{ inputs.reportFile }}
+          echo "<details><summary>:heavy_check_mark: CMake build succeeded</summary>" >> ${{ inputs.reportFile }}
         else
-          echo "<details><summary>:fire: CMake install failed</summary>" >> ${{ inputs.reportFile }}
+          echo "<details><summary>:fire: CMake build failed</summary>" >> ${{ inputs.reportFile }}
         fi
         echo "" >> ${{ inputs.reportFile }}
-        echo "Install Error Log (stderr output):" >> ${{ inputs.reportFile }}
+        echo "Build Error Log (stderr output):" >> ${{ inputs.reportFile }}
         echo '```' >> ${{ inputs.reportFile }}
         cat ${{ inputs.errorFile }} >> ${{ inputs.reportFile }}
         echo '```' >> ${{ inputs.reportFile }}
-        echo "Install Error Log (stdout output trimmed to the last 100 Lines):" >> ${{ inputs.reportFile }}
+        echo "Build Log (only built targets reported):" >> ${{ inputs.reportFile }}
         echo '```' >> ${{ inputs.reportFile }}
-        tail -n 100 ${{ inputs.logFile }} >> ${{ inputs.reportFile }}
+        cat ${{ inputs.logFile }} | sed -ne "/Built target/p" >> ${{ inputs.reportFile }}
         echo '```' >> ${{ inputs.reportFile }}
         echo "</details>">> ${{ inputs.reportFile }}
         echo "" >> ${{ inputs.reportFile }}

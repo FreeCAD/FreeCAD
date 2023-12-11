@@ -37,8 +37,8 @@ runs:
   using: "composite"
   steps:
     - id: generateCacheKey
-      shell: bash
+      shell: bash -l {0}
       run: |
-        cacheKey=$(lsb_release -ds | tr -d ' ')-$( basename ${{ inputs.compiler }})$(${{ inputs.compiler }} -dumpfullversion -dumpversion)
+        cacheKey=$(lsb_release -ds | tr -d ' ')-$(basename ${{ inputs.compiler }})$(${{ inputs.compiler }} -dumpfullversion -dumpversion)
         echo "Generated cache key : $cacheKey"
         echo "cacheKey=$cacheKey" >> $GITHUB_OUTPUT

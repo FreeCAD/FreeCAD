@@ -22,7 +22,7 @@
 # ***************************************************************************
 
 name: install
-description: "Linux: install application"
+description: "macOS: install application"
 
 inputs:
   builddir:
@@ -48,7 +48,7 @@ runs:
       id: install
       shell: bash -l {0}
       run: |
-        (stdbuf -oL -eL sudo cmake --install ${{ inputs.builddir }} ${{ inputs.extraParameters }}) \
+        (sudo cmake --install ${{ inputs.builddir }} ${{ inputs.extraParameters }}) \
         2> >(tee -a ${{ inputs.errorFile }}) | tee -a ${{ inputs.logFile }}
     - name: Write report
       shell: bash -l {0}

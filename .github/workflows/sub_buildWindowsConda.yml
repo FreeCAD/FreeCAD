@@ -20,9 +20,9 @@
 # ***************************************************************************
 
 # This is a build and test workflow for CI of FreeCAD.
-# This workflow aims at building and testing FreeCAD on Windows using MSVC.
+# This workflow aims at building and testing FreeCAD using a Conda environment on Windows with MSVC.
 
-name: Build Windows
+name: Build Windows (Conda)
 on:
   workflow_call:
     inputs:
@@ -52,9 +52,7 @@ jobs:
       #CCACHE_SLOPPINESS: "pch_defines,time_macros" # Can't get PCH to work on Windows
       CCACHE_LOGFILE: C:/logs/ccache.log
       ## Have to use C:\ because not enough space on workspace drive
-      builddir: C:/FC/build/release/
-      libpackdir: C:/FC/libpack/
-      ccachebindir: C:/FC/ccache/
+      builddir: C:/FC/build/
       logdir: C:/logs/
       reportdir: C:/report/
       reportfilename: ${{ inputs.artifactBasename }}-report.md
@@ -66,80 +64,61 @@ jobs:
         uses: actions/checkout@v3
         with:
           submodules: true
+      - name: Setup Miniconda
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          activate-environment: .conda/freecad
+          environment-file: conda/conda-env.yaml
+          channels: conda-forge,defaults
+          channel-priority: true
+          miniforge-version: latest
+      - name: Install FreeCAD dependencies
+        run: |
+          conda config --add envs_dirs $PWD/.conda
+          mamba-devenv -f conda/environment.devenv.yml
       - name: Make needed directories, files and initializations
         id: Init
         run: |
           mkdir ${{ env.CCACHE_DIR }}
-          mkdir ${{ env.ccachebindir }}
-          mkdir ${{ env.libpackdir }}
           mkdir ${{ env.builddir }}
           mkdir ${{ env.logdir }}
           mkdir ${{ env.reportdir }}
           echo "reportFile=${{ env.reportfilename }}" >> $GITHUB_OUTPUT
-      - name: Get Ccache
-        uses: ./.github/workflows/actions/windows/getCcache
-        with:
-          ccachebindir: ${{ env.ccachebindir }}
-      - name: Get Libpack
-        uses: ./.github/workflows/actions/windows/getLibpack
-        with:
-          libpackdir: ${{ env.libpackdir }}
       - name: Restore compiler cache
         uses: pat-s/always-upload-cache@v3
         with:
           path: ${{ env.CCACHE_DIR }}
-          key: FC-Windows-${{ github.ref }}-${{ github.run_id }}
+          key: FC-Windows-Conda-${{ github.ref }}-${{ github.run_id }}
           restore-keys: |
-            FC-Windows-${{ github.ref }}-
-            FC-Windows-
+            FC-Windows-Conda-${{ github.ref }}-
+            FC-Windows-Conda-
       - name: Print Ccache statistics before build, reset stats and print config
         run: |
-          . $env:ccachebindir\ccache -s
-          . $env:ccachebindir\ccache -z
-          . $env:ccachebindir\ccache -p
-      - name: Append Libpack bin directory to Path
-        if: false # Disabled because not enough to set FREECAD_COPY_LIBPACK_BIN_TO_BUILD=OFF
-        run: |
-          echo "${{ env.libpackdir }}/bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          ccache -s
+          ccache -z
+          ccache -p
       - name: Configuring CMake
+        shell: cmd /C CALL {0}
         run: >
-          cmake -B"${{ env.builddir }}" .
-          --preset release
-          -DCMAKE_VS_NO_COMPILE_BATCHING=ON
-          -DCMAKE_BUILD_TYPE=Release
-          -DFREECAD_USE_PCH=OFF
-          -DFREECAD_RELEASE_PDB=OFF
-          -DFREECAD_LIBPACK_DIR="${{ env.libpackdir }}"
-          -DPYTHON_DEBUG_LIBRARY="${{ env.libpackdir }}bin/libs/python38_d.lib"
-          -DPYTHON_EXECUTABLE="${{ env.libpackdir }}bin/python.exe"
-          -DPYTHON_INCLUDE_DIR="${{ env.libpackdir }}bin/include"
-          -DPYTHON_LIBRARY="${{ env.libpackdir }}bin/libs/python38.lib"
-          -DXercesC_INCLUDE_DIR="${{ env.libpackdir }}include"
-          -DXercesC_LIBRARY_RELEASE="${{ env.libpackdir }}lib/xerces-c_3.lib"
-          -DXercesC_LIBRARY_DEBUG="${{ env.libpackdir }}lib/xerces-c_3D.lib"
-          -DFREECAD_COPY_DEPEND_DIRS_TO_BUILD=ON
-          -DFREECAD_COPY_LIBPACK_BIN_TO_BUILD=OFF
-          -DFREECAD_COPY_PLUGINS_BIN_TO_BUILD=ON
-      - name: Add msbuild to PATH
-        uses: microsoft/setup-msbuild@v1.3
+          conda\cmake.cmd --preset conda-windows-release -DFREECAD_USE_PCH:BOOL=OFF -DFREECAD_RELEASE_PDB:BOOL=OFF -DFREECAD_USE_CCACHE:BOOL=ON
       - name: Compiling sources
-        run: |
-          cd $env:builddir
-          msbuild ALL_BUILD.vcxproj /m /p:Configuration=Release /p:TrackFileAccess=false /p:CLToolPath=${{ env.ccachebindir }}
+        shell: cmd /C CALL {0}
+        run: >
+          conda\cmake.cmd --build build\release
       - name: Print Ccache statistics after build
         run: |
-          . $env:ccachebindir\ccache -s
-      - name: Move libpack bin folder to build folder # Shorter in time than copying with CMake FREECAD_COPY_LIBPACK_BIN_TO_BUILD
+          ccache -s
+      - name: CMake Install
+        shell: cmd /C CALL {0}
         run: |
-          Move-Item -Force -Path ${{ env.libpackdir }}bin -Destination ${{ env.builddir }}
+          conda\cmake.cmd  --install build\release
       - name: C++ unit tests
-        if: false # Disabled because seems to not function on Windows build
         timeout-minutes: 1
         run: |
-          . ${{ env.builddir }}\tests\Release\Tests_run --gtest_output=json:${{ env.reportdir }}gtest_results.json # 2>&1 | tee -filepath ${{ env.logdir }}\unitTests.log
+          . build\release\tests\Tests_run --gtest_output=json:${{ env.reportdir }}gtest_results.json # 2>&1 | tee -filepath ${{ env.logdir }}/unitTests.log
       - name: FreeCAD CLI tests
         run: |
-          . ${{ env.builddir }}\bin\FreeCADCmd -t 0 # 2>&1 | tee -filepath ${{ env.logdir }}\integrationTests.log
+          . build\release\bin\FreeCADCmd -t 0 # 2>&1 | tee -filepath ${{ env.logdir }}/integrationTests.log
       - name: Upload logs
         if: always()
         uses: actions/upload-artifact@v3
