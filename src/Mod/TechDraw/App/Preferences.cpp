@@ -374,9 +374,9 @@ App::Color Preferences::lightenColor(App::Color orig)
     green += newm;
     blue += newm;
 
-    double redF = (float)red / 255.0;
-    double greenF = (float)green / 255.0;
-    double blueF = (float)blue / 255.0;
+    double redF = (double)red / 255.0;
+    double greenF = (double)green / 255.0;
+    double blueF = (double)blue / 255.0;
 
     return App::Color(redF, greenF, blueF, orig.a);
 }
