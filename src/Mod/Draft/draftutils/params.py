@@ -345,16 +345,27 @@ def _get_param_dictionary():
 
     # Draft parameters that are not in the preferences:
     param_dict["Mod/Draft"] = {
-        "DefaultAnnoDisplayMode":    ("int",       0),
-        "DefaultDisplayMode":        ("int",       0),
-        "DefaultDrawStyle":          ("int",       0),
-        "Draft_array_fuse":          ("bool",      False),
-        "Draft_array_Link":          ("bool",      True),
-        "fillmode":                  ("bool",      True),
-        "HatchPatternResolution":    ("int",       128),
-        "labeltype":                 ("string",    "Custom"),
-        "snapModes":                 ("string",    "100000000000000"),
-        "snapRange":                 ("int",       8),
+        "AnnotationStyleEditorHeight": ("int",       450),
+        "AnnotationStyleEditorWidth":  ("int",       450),
+        "CenterPlaneOnView":           ("bool",      False),
+        "DefaultAnnoDisplayMode":      ("int",       0),
+        "DefaultDisplayMode":          ("int",       0),
+        "DefaultDrawStyle":            ("int",       0),
+        "DefaultPrintColor":           ("unsigned",  255),
+        "Draft_array_fuse":            ("bool",      False),
+        "Draft_array_Link":            ("bool",      True),
+        "fillmode":                    ("bool",      True),
+        "HatchPatternResolution":      ("int",       128),
+        "HatchPatternRotation":        ("float",     0.0),
+        "HatchPatternScale":           ("float",     100.0),
+        "labeltype":                   ("string",    "Custom"),
+        "LayersManagerHeight":         ("int",       320),
+        "LayersManagerWidth":          ("int",       640),
+        "maxSnapEdges":                ("int",       0),
+        "Offset_OCC":                  ("bool",      False),
+        "snapModes":                   ("string",    "100000000000000"),
+        "snapRange":                   ("int",       8),
+        "useSupport":                  ("bool",      False),
 
 
     }
@@ -367,13 +378,25 @@ def _get_param_dictionary():
 
     # For the View parameters we do not check the preferences:
     param_dict["View"] = {
-        "DefaultShapeColor":         ("unsigned",  3435973887),
-        "DefaultShapeLineColor":     ("unsigned",  421075455),
-        "DefaultShapeLineWidth":     ("int",       2),
-        "DefaultShapePointSize":     ("int",       2),
-        "DefaultShapeTransparency":  ("int",       0),
-        "DefaultShapeVertexColor":   ("unsigned",  421075455),
+        "DefaultShapeColor":           ("unsigned",  3435973887),
+        "DefaultShapeLineColor":       ("unsigned",  421075455),
+        "DefaultShapeLineWidth":       ("int",       2),
+        "DefaultShapePointSize":       ("int",       2),
+        "DefaultShapeTransparency":    ("int",       0),
+        "DefaultShapeVertexColor":     ("unsigned",  421075455),
+        "EnableSelection":             ("bool",      True),
+        "MarkerSize":                  ("int",       9),
+
+
     }
+    # For the Mod/TechDraw/PAT parameters we do not check the preferences:
+    param_dict["Mod/TechDraw/PAT"] = {
+        "FilePattern":                 ("string",    ""),
+        "NamePattern":                 ("string",    "Diamant"),
+
+
+    }
+
 
     # Preferences ui files are stored in resource files.
     # For the Draft Workbench: /Mod/Draft/Draft_rc.py
@@ -477,18 +500,18 @@ def get_param(entry, path="Mod/Draft"):
         return None
     if entry not in PARAM_DICT[path]:
         return None
-    param = App.ParamGet("User parameter:BaseApp/Preferences/" + path)
+    param_grp = App.ParamGet("User parameter:BaseApp/Preferences/" + path)
     typ, default = PARAM_DICT[path][entry]
     if typ == "bool":
-        return param.GetBool(entry, default)
+        return param_grp.GetBool(entry, default)
     if typ == "float":
-        return param.GetFloat(entry, default)
+        return param_grp.GetFloat(entry, default)
     if typ == "int":
-        return param.GetInt(entry, default)
+        return param_grp.GetInt(entry, default)
     if typ == "string":
-        return param.GetString(entry, default)
+        return param_grp.GetString(entry, default)
     if typ == "unsigned":
-        return param.GetUnsigned(entry, default)
+        return param_grp.GetUnsigned(entry, default)
     return None
 
 
@@ -522,19 +545,19 @@ def set_param(entry, value, path="Mod/Draft"):
         return False
     if entry not in PARAM_DICT[path]:
         return False
-    param = App.ParamGet("User parameter:BaseApp/Preferences/" + path)
+    param_grp = App.ParamGet("User parameter:BaseApp/Preferences/" + path)
     typ = PARAM_DICT[path][entry][0]
     ret = True
     if typ == "bool":
-        param.SetBool(entry, value)
+        param_grp.SetBool(entry, value)
     elif typ == "float":
-        param.SetFloat(entry, value)
+        param_grp.SetFloat(entry, value)
     elif typ == "int":
-        param.SetInt(entry, value)
+        param_grp.SetInt(entry, value)
     elif typ == "string":
-        param.SetString(entry, value)
+        param_grp.SetString(entry, value)
     elif typ == "unsigned":
-        param.SetUnsigned(entry, value)
+        param_grp.SetUnsigned(entry, value)
     else:
         ret = False
     return ret
