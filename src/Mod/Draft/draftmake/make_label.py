@@ -31,10 +31,10 @@
 ## \addtogroup draftmake
 # @{
 import FreeCAD as App
-import draftutils.gui_utils as gui_utils
-import draftutils.utils as utils
-import draftobjects.label as label
-
+from draftobjects import label
+from draftutils import gui_utils
+from draftutils import params
+from draftutils import utils
 from draftutils.messages import _msg, _wrn, _err
 from draftutils.translate import translate
 
@@ -355,7 +355,7 @@ def make_label(target_point=App.Vector(0, 0, 0),
 
     if App.GuiUp:
         ViewProviderLabel(new_obj.ViewObject)
-        h = utils.get_param("textheight", 0.20)
+        h = params.get_param("textheight")
         new_obj.ViewObject.FontSize = h
 
         gui_utils.format_object(new_obj)
