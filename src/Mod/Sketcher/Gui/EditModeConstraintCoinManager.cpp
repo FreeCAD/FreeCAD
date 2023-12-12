@@ -823,15 +823,16 @@ Restart:
                         pnt2 = geolistfacade.getPoint(Constr->Second, Constr->SecondPos);
                     }
                     else if (Constr->Second != GeoEnum::GeoUndef) {
-                        auto geo = geolistfacade.getGeometryFromGeoId(Constr->Second);
                         auto geo1 = geolistfacade.getGeometryFromGeoId(Constr->First);
-                        if (isLineSegment(*geo)) {
+                        auto geo2 = geolistfacade.getGeometryFromGeoId(Constr->Second);
+                        if (isLineSegment(*geo2)) {
+                            auto lineSeg = static_cast<const Part::GeomLineSegment*>(geo2);
+                            Base::Vector3d l2p1 = lineSeg->getStartPoint();
+                            Base::Vector3d l2p2 = lineSeg->getEndPoint();
+
                             if (Constr->SecondPos != Sketcher::PointPos::none) {
                                 // point to line distance
                                 // NOLINTNEXTLINE
-                                auto lineSeg = static_cast<const Part::GeomLineSegment*>(geo);
-                                Base::Vector3d l2p1 = lineSeg->getStartPoint();
-                                Base::Vector3d l2p2 = lineSeg->getEndPoint();
                                 // calculate the projection of p1 onto line2
                                 pnt2.ProjectToLine(pnt1 - l2p1, l2p2 - l2p1);
                                 pnt2 += pnt1;
@@ -839,12 +840,7 @@ Restart:
                             else {
                                 if (isCircleOrArc(*geo1)) {
                                     // circular to line distance
-                                    auto lineSeg = static_cast<const Part::GeomLineSegment*>(geo);
-
                                     auto [radius, ct] = getRadiusCenterCircleArc(geo1);
-
-                                    Base::Vector3d l2p1 = lineSeg->getStartPoint();
-                                    Base::Vector3d l2p2 = lineSeg->getEndPoint();
                                     // project on the line translated to origin
                                     pnt1.ProjectToLine(ct - l2p1, l2p2 - l2p1);
                                     Base::Vector3d dir = pnt1;
@@ -854,19 +850,18 @@ Restart:
                                 }
                             }
                         }
-                        else if (isCircleOrArc(*geo)) {
+                        else if (isCircleOrArc(*geo2)) {
                             if (Constr->FirstPos != Sketcher::PointPos::none) {
                                 // point to circular distance
-                                auto [rad, ct] = getRadiusCenterCircleArc(geo1);
+                                auto [rad, ct] = getRadiusCenterCircleArc(geo2);
 
-                                pnt1 = geolistfacade.getPoint(Constr->First, Constr->FirstPos);
                                 Base::Vector3d v = pnt1 - ct;
                                 v = v.Normalize();
                                 pnt2 = ct + rad * v;
                             }
                             else if (isCircleOrArc(*geo1)) {
                                 // circular to circular distance
-                                GetCirclesMinimalDistance(geo1, geo, pnt1, pnt2);
+                                GetCirclesMinimalDistance(geo1, geo2, pnt1, pnt2);
                             }
                         }
                         else {
