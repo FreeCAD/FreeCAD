@@ -363,8 +363,13 @@ def _get_param_dictionary():
         "LayersManagerWidth":          ("int",       640),
         "maxSnapEdges":                ("int",       0),
         "Offset_OCC":                  ("bool",      False),
+        "ScaleClone":                  ("bool",      False),
+        "ScaleCopy":                   ("bool",      False),
+        "ScaleRelative":               ("bool",      False),
+        "ScaleUniform":                ("bool",      False),
         "snapModes":                   ("string",    "100000000000000"),
         "snapRange":                   ("int",       8),
+        "SvgLinesBlack":               ("bool",      True),
         "useSupport":                  ("bool",      False),
 
 
@@ -372,6 +377,7 @@ def _get_param_dictionary():
 
     # Arch parameters that are not in the preferences:
     param_dict["Mod/Arch"] = {
+        "ColorHelpers":                ("unsigned",  674321151),
 
 
     }
@@ -386,15 +392,18 @@ def _get_param_dictionary():
         "DefaultShapeVertexColor":     ("unsigned",  421075455),
         "EnableSelection":             ("bool",      True),
         "MarkerSize":                  ("int",       9),
-
-
     }
+
+    # For the Units parameters we do not check the preferences:
+    param_dict["Units"] = {
+        "Decimals":                    ("int",       2),
+        "UserSchema":                  ("int",       0),
+    }
+
     # For the Mod/TechDraw/PAT parameters we do not check the preferences:
     param_dict["Mod/TechDraw/PAT"] = {
         "FilePattern":                 ("string",    ""),
         "NamePattern":                 ("string",    "Diamant"),
-
-
     }
 
 
