@@ -63,7 +63,7 @@ class TestSketchExpression(unittest.TestCase):
         sketch.renameConstraint(length, "Length")
         sketch.renameConstraint(height, "Height")
 
-        sketch.setExpression("Constraints[{}]".format(height), ".Constraints.Length * 2")
+        sketch.setExpression("Constraints[{}]".format(height), ".Constraints.Length")
 
         with self.assertRaises(RuntimeError) as context:
             sketch.setExpression("Constraints.Length", ".Constraints.Length * 2")
