@@ -20,17 +20,17 @@ MbD::ScrewJoint::ScrewJoint()
 MbD::ScrewJoint::ScrewJoint(const char* str) : Joint(str)
 {
 }
-
-void MbD::ScrewJoint::initializeLocally()
-{
-	if (!constraints->empty())
-	{
-		auto constraint = std::static_pointer_cast<ScrewConstraintIJ>(constraints->front());
-		constraint->initzIeJeIe();
-		constraint->initthezIeJe();
-	}
-	Joint::initializeLocally();
-}
+//
+//void MbD::ScrewJoint::initializeLocally()
+//{
+//	if (!constraints->empty())
+//	{
+//		auto constraint = std::static_pointer_cast<ScrewConstraintIJ>(constraints->front());
+//		constraint->initzIeJeIe();
+//		constraint->initthezIeJe();
+//	}
+//	Joint::initializeLocally();
+//}
 
 void MbD::ScrewJoint::initializeGlobally()
 {

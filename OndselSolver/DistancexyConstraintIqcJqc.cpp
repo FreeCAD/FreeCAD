@@ -13,6 +13,10 @@
 
 using namespace MbD;
 
+MbD::DistancexyConstraintIqcJqc::DistancexyConstraintIqcJqc(EndFrmsptr frmi, EndFrmsptr frmj) : DistancexyConstraintIqcJc(frmi, frmj)
+{
+}
+
 void MbD::DistancexyConstraintIqcJqc::calc_pGpXJ()
 {
 	pGpXJ = (xIeJeIe->pvaluepXJ()->times(xIeJeIe->value())->plusFullRow(yIeJeIe->pvaluepXJ()->times(yIeJeIe->value())));

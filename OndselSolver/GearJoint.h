@@ -18,7 +18,7 @@ namespace MbD {
 		GearJoint();
 		GearJoint(const char* str);
 
-		void initializeLocally() override;
+		//void initializeLocally() override;
 		void initializeGlobally() override;
 
 		double radiusI = 0.0, radiusJ = 0.0, aConstant = 0.0;

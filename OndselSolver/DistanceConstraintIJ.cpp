@@ -7,11 +7,22 @@
  ***************************************************************************/
  
 #include "DistanceConstraintIJ.h"
+#include "DistanceConstraintIqcJqc.h"
+#include "EndFrameqc.h"
 
 using namespace MbD;
 
 MbD::DistanceConstraintIJ::DistanceConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj) : ConstraintIJ(frmi, frmj)
 {
+}
+
+std::shared_ptr<DistanceConstraintIJ> MbD::DistanceConstraintIJ::With(EndFrmsptr frmi, EndFrmsptr frmj)
+{
+	assert(frmi->isEndFrameqc());
+	assert(frmj->isEndFrameqc());
+	auto distCon = std::make_shared<DistanceConstraintIqcJqc>(frmi, frmj);
+	distCon->init_distIeJe();
+	return distCon;
 }
 
 void MbD::DistanceConstraintIJ::calcPostDynCorrectorIteration()

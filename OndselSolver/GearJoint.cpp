@@ -20,16 +20,16 @@ MbD::GearJoint::GearJoint()
 MbD::GearJoint::GearJoint(const char*)
 {
 }
-
-void MbD::GearJoint::initializeLocally()
-{
-	if (!constraints->empty())
-	{
-		auto constraint = std::static_pointer_cast<GearConstraintIJ>(constraints->back());
-		constraint->initorbitsIJ();
-	}
-	Joint::initializeLocally();
-}
+//
+//void MbD::GearJoint::initializeLocally()
+//{
+//	if (!constraints->empty())
+//	{
+//		auto constraint = std::static_pointer_cast<GearConstraintIJ>(constraints->back());
+//		constraint->initorbitsIJ();
+//	}
+//	Joint::initializeLocally();
+//}
 
 void MbD::GearJoint::initializeGlobally()
 {

@@ -14,8 +14,8 @@ namespace MbD {
     {
     public:
         void parseMBDyn(std::string line) override;
-        void readMarkerI(std::vector<std::string>& args);
-        void readMarkerJ(std::vector<std::string>& args);
+        void readMarkerI(std::vector<std::string>& args) override;
+        void readMarkerJ(std::vector<std::string>& args) override;
         void readPositionConstraints(std::vector<std::string>& args);
         void readOrientationConstraints(std::vector<std::string>& args);
         void readPositionFormulas(std::vector<std::string>& args);

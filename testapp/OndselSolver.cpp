@@ -26,6 +26,9 @@ void sharedptrTest();
 
 int main()
 {
+	ASMTAssembly::runFile("../testapp/RevCylJt.asmt");
+	ASMTAssembly::runFile("../testapp/CylSphJt.asmt");
+	ASMTAssembly::runFile("../testapp/SphSphJt.asmt");
 	//MBDynSystem::runFile("../testapp/MBDynCase(Cosine-half drive).mbd");
 	//MBDynSystem::runFile("../testapp/MBDynCase(Sine-forever drive).mbd");
 	MBDynSystem::runFile("../testapp/MBDynCase9orig.mbd");	//SimulationStoppingError

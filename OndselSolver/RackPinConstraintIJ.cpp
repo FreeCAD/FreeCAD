@@ -8,6 +8,7 @@
  
 #include "RackPinConstraintIJ.h"
 #include "RackPinConstraintIqcJqc.h"
+#include "EndFrameqc.h"
 
 using namespace MbD;
 
@@ -17,7 +18,12 @@ MbD::RackPinConstraintIJ::RackPinConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj) 
 
 std::shared_ptr<RackPinConstraintIJ> MbD::RackPinConstraintIJ::With(EndFrmsptr frmi, EndFrmsptr frmj)
 {
-	return std::make_shared<RackPinConstraintIqcJqc>(frmi, frmj);
+	assert(frmi->isEndFrameqc());
+	assert(frmj->isEndFrameqc());
+	auto rackPinCon = std::make_shared<RackPinConstraintIqcJqc>(frmi, frmj);
+	rackPinCon->initxIeJeIe();
+	rackPinCon->initthezIeJe();
+	return rackPinCon;
 }
 
 void MbD::RackPinConstraintIJ::calcPostDynCorrectorIteration()

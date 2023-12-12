@@ -333,7 +333,7 @@ void MbD::ASMTSpatialContainer::updateFromMbD()
 	auto mbdPart = std::static_pointer_cast<Part>(mbdObject);
 	auto rOcmO = mbdPart->qX()->times(mbdUnts->length);
 	auto aAOp = mbdPart->aAOp();
-	std::cout << "aAOp" << *aAOp << std::endl;
+	//std::cout << "aAOp" << *aAOp << std::endl;
 	auto vOcmO = mbdPart->qXdot()->times(mbdUnts->velocity);
 	auto omeOPO = mbdPart->omeOpO()->times(mbdUnts->omega);
 	omega3D = omeOPO;
@@ -356,7 +356,7 @@ void MbD::ASMTSpatialContainer::updateFromMbD()
 	bryxs->push_back(bryantAngles->at(0));
 	bryys->push_back(bryantAngles->at(1));
 	bryzs->push_back(bryantAngles->at(2));
-	std::cout << "bry " << *bryantAngles << std::endl;
+	//std::cout << "bry " << *bryantAngles << std::endl;
 	vxs->push_back(vOPO->at(0));
 	vys->push_back(vOPO->at(1));
 	vzs->push_back(vOPO->at(2));

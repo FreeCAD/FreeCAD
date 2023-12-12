@@ -10,6 +10,7 @@
 
 #include "ScrewConstraintIJ.h"
 #include "ScrewConstraintIqcJqc.h"
+#include "EndFrameqc.h"
 
 using namespace MbD;
 
@@ -19,7 +20,12 @@ MbD::ScrewConstraintIJ::ScrewConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj) : Co
 
 std::shared_ptr<ScrewConstraintIJ> MbD::ScrewConstraintIJ::With(EndFrmsptr frmi, EndFrmsptr frmj)
 {
-	return std::make_shared<ScrewConstraintIqcJqc>(frmi, frmj);
+	assert(frmi->isEndFrameqc());
+	assert(frmj->isEndFrameqc());
+	auto screwCon = std::make_shared<ScrewConstraintIqcJqc>(frmi, frmj);
+	screwCon->initzIeJeIe();
+	screwCon->initthezIeJe();
+	return screwCon;
 }
 
 void MbD::ScrewConstraintIJ::calcPostDynCorrectorIteration()

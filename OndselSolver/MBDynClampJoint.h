@@ -17,8 +17,8 @@ namespace MbD {
     public:
         void parseMBDyn(std::string line) override;
         void createASMT() override;
-        void readMarkerI(std::vector<std::string>& args);
-        void readMarkerJ(std::vector<std::string>& args);
+        void readMarkerI(std::vector<std::string>& args) override;
+        void readMarkerJ(std::vector<std::string>& args) override;
         std::shared_ptr<ASMTJoint> asmtClassNew() override;
     };
 }
