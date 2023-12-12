@@ -105,7 +105,7 @@ std::tuple<double, Base::Vector3d> Sketcher::getRadiusCenterCircleArc(const Part
         return std::tuple<double, Base::Vector3d>(arc->getRadius(), arc->getCenter());
     }
     else if (isCircle(*geo)) {
-        auto circ = static_cast<const Part::GeomArcOfCircle*>(geo);  // NOLINT
+        auto circ = static_cast<const Part::GeomCircle*>(geo);  // NOLINT
         return std::tuple<double, Base::Vector3d>(circ->getRadius(), circ->getCenter());
     }
 
