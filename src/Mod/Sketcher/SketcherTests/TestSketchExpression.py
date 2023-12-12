@@ -67,11 +67,15 @@ class TestSketchExpression(unittest.TestCase):
 
         with self.assertRaises(RuntimeError) as context:
             sketch.setExpression("Constraints.Length", ".Constraints.Length * 2")
-        assert ".Constraints.Length reference creates a cyclic dependency." in str(context.exception)
+        assert ".Constraints.Length reference creates a cyclic dependency." in str(
+            context.exception
+        )
 
         with self.assertRaises(RuntimeError) as context:
             sketch.setExpression("Constraints.Length", ".Constraints.Height * 2")
-        assert ".Constraints.Length reference creates a cyclic dependency." in str(context.exception)
+        assert ".Constraints.Length reference creates a cyclic dependency." in str(
+            context.exception
+        )
 
     def tearDown(self):
         # comment out to omit closing document for debugging
