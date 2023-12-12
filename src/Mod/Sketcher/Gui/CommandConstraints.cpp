@@ -4328,11 +4328,10 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
 
             return;
         }
-        else if (isCircle(*geom)) {
-            auto circleSeg = static_cast<const Part::GeomCircle*>(geom);
-            Base::Vector3d ct = circleSeg->getCenter();
-            Base::Vector3d d = ct - pnt;
-            double ActDist = std::abs(d.Length() - circleSeg->getRadius());
+        else if (isCircleOrArc(*geom)) {    // point to circle distance
+            auto [radius, center] = getRadiusCenterCircleArc(geom);
+            Base::Vector3d d = center - pnt;
+            double ActDist = std::abs(d.Length() - radius);
 
             openCommand(QT_TRANSLATE_NOOP("Command", "Add point to circle Distance constraint"));
             Gui::cmdAppObjectArgs(selection[0].getObject(),
@@ -4409,17 +4408,15 @@ void CmdSketcherConstrainDistance::activated(int iMsg)
 
             return;
         }
-        else if ((isCircle(*geom1) && isLineSegment(*geom2))
-            || (isLineSegment(*geom1) && isCircle(*geom2))) {// circle to line distance
+        else if ((isCircleOrArc(*geom1) && isLineSegment(*geom2))
+            || (isLineSegment(*geom1) && isCircleOrArc(*geom2))) {// circle to line distance
 
             if (isLineSegment(*geom1)) {
                 std::swap(geom1, geom2);// Assume circle is first
                 std::swap(GeoId1, GeoId2);
             }
 
-            auto circleSeg = static_cast<const Part::GeomCircle*>(geom1);
-            double radius = circleSeg->getRadius();
-            Base::Vector3d center = circleSeg->getCenter();
+            auto [radius, center] = getRadiusCenterCircleArc(geom1);
 
             auto lineSeg = static_cast<const Part::GeomLineSegment*>(geom2);
             Base::Vector3d pnt1 = lineSeg->getStartPoint();
