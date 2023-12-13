@@ -31,7 +31,6 @@ import Draft_rc
 import Arch_rc
 
 from draftutils import init_draft_statusbar
-from draftutils import utils
 from draftutils.translate import translate
 from draftviewproviders import view_base
 
@@ -151,6 +150,7 @@ def _param_observer_callback_snapcolor():
 
 
 def _param_observer_callback_svg_pattern():
+    from draftutils import utils  # has to happen here to avoid circular import
     utils.load_svg_patterns()
     if App.ActiveDocument is None:
         return
