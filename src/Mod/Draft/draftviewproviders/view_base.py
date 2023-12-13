@@ -35,8 +35,9 @@ import PySide.QtGui as QtGui
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
-import draftutils.utils as utils
-import draftutils.gui_utils as gui_utils
+from draftutils import gui_utils
+from draftutils import params
+from draftutils import utils
 from draftutils.translate import translate
 
 if App.GuiUp:
@@ -116,7 +117,7 @@ class ViewProviderDraft(object):
                              "Draft",
                              QT_TRANSLATE_NOOP("App::Property",
                                                "Defines the size of the SVG pattern."))
-            vobj.PatternSize = utils.get_param("HatchPatternSize", 1)
+            vobj.PatternSize = params.get_param("HatchPatternSize")
 
     def dumps(self):
         """Return a tuple of all serializable objects or None.
@@ -303,7 +304,7 @@ class ViewProviderDraft(object):
                                     if i.exists():
                                         size = None
                                         if ".SVG" in path.upper():
-                                            size = utils.get_param("HatchPatternResolution", 128)
+                                            size = params.get_param("HatchPatternResolution")
                                             if not size:
                                                 size = 128
                                         im = gui_utils.load_texture(path, size)
