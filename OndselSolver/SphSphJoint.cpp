@@ -25,7 +25,7 @@ void MbD::SphSphJoint::initializeGlobally()
 {
 	if (constraints->empty())
 	{
-		auto distxyIJ = CREATE<DistanceConstraintIJ>::With(frmI, frmJ);
+		auto distxyIJ = DistanceConstraintIJ::With(frmI, frmJ);
 		distxyIJ->setConstant(distanceIJ);
 		addConstraint(distxyIJ);
 		this->root()->hasChanged = true;

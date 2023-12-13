@@ -24,8 +24,9 @@ namespace MbD {
         void storeOnLevel(std::ofstream& os, int level) override;
         void storeOnTimeSeries(std::ofstream& os) override;
 
-        std::shared_ptr<FullColumn<std::string>> rIJI, angIJJ;
-        std::string rotationOrder;
+        std::shared_ptr<FullColumn<std::string>> rIJI = std::make_shared<FullColumn<std::string>>(3);
+        std::shared_ptr<FullColumn<std::string>> angIJJ = std::make_shared<FullColumn<std::string>>(3);
+        std::shared_ptr<std::vector<int>> rotationOrder = std::make_shared<std::vector<int>>(std::initializer_list<int>{ 1, 2, 3 });
 
     };
 }

@@ -21,17 +21,17 @@ MbD::ConstantVelocityJoint::ConstantVelocityJoint()
 MbD::ConstantVelocityJoint::ConstantVelocityJoint(const char* str) : AtPointJoint(str)
 {
 }
-
-void MbD::ConstantVelocityJoint::initializeLocally()
-{
-	if (!constraints->empty())
-	{
-		auto constraint = std::static_pointer_cast<ConstVelConstraintIJ>(constraints->back());
-		constraint->initA01IeJe();
-		constraint->initA10IeJe();
-	}
-	Joint::initializeLocally();
-}
+//
+//void MbD::ConstantVelocityJoint::initializeLocally()
+//{
+//	if (!constraints->empty())
+//	{
+//		auto constraint = std::static_pointer_cast<ConstVelConstraintIJ>(constraints->back());
+//		constraint->initA01IeJe();
+//		constraint->initA10IeJe();
+//	}
+//	Joint::initializeLocally();
+//}
 
 void MbD::ConstantVelocityJoint::initializeGlobally()
 {

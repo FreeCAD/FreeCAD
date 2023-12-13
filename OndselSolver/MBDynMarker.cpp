@@ -32,6 +32,13 @@ void MbD::MBDynMarker::parseMBDyn(std::vector<std::string>& args)
 	}
 }
 
+void MbD::MBDynMarker::parseMBDynTotalJointMarker(std::vector<std::string>& args)
+{
+	parseMBDyn(args);
+	aAPm2 = readOrientation(args);
+	assert(aAPm->equaltol(aAPm2, 1.0e-9));
+}
+
 void MbD::MBDynMarker::parseMBDynClamp(std::vector<std::string>& args)
 {
 	//rOmO = rOPO + aAOP*rPmP

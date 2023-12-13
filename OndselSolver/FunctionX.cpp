@@ -9,6 +9,7 @@
 #include "FunctionX.h"
 #include "Constant.h"
 #include "Sum.h"
+#include "Arguments.h"
 
 using namespace MbD;
 
@@ -18,10 +19,9 @@ MbD::FunctionX::FunctionX(Symsptr arg) : xx(arg)
 
 void MbD::FunctionX::arguments(Symsptr args)
 {
-	//args is a Sum with "terms" containing the actual arguments
-	auto sum = std::static_pointer_cast<Sum>(args);
-	assert(sum->terms->size() == 1);
-	xx = sum->terms->front();
+	auto arguments = std::static_pointer_cast<Arguments>(args);
+	assert(arguments->terms->size() == 1);
+	xx = arguments->terms->front();
 }
 
 Symsptr MbD::FunctionX::copyWith(Symsptr)

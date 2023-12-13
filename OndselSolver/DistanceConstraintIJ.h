@@ -18,6 +18,8 @@ namespace MbD {
     public:
         DistanceConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj);
 
+        static std::shared_ptr<DistanceConstraintIJ> With(EndFrmsptr frmi, EndFrmsptr frmj);
+
         void calcPostDynCorrectorIteration() override;
         virtual void init_distIeJe();
         void initialize() override;

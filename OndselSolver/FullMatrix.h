@@ -104,6 +104,7 @@ namespace MbD {
 		FColsptr<T> bryantAngles();
 		bool isDiagonal();
 		bool isDiagonalToWithin(double ratio);
+		bool equaltol(FMatsptr<T> mat, double ratio);
 		std::shared_ptr<DiagonalMatrix<T>> asDiagonalMatrix();
 		void conditionSelfWithTol(double tol);
 
@@ -701,6 +702,22 @@ namespace MbD {
 		else {
 			return false;
 		}
+	}
+	template<typename T>
+	inline bool FullMatrix<T>::equaltol(FMatsptr<T> mat2, double tol)
+	{
+		if (this->size() != mat2->size()) return false;
+		for (size_t i = 0; i < this->size(); i++)
+		{
+			auto& rowi = this->at(i);
+			auto& rowi2 = mat2->at(i);
+			if (rowi->size() != rowi2->size()) return false;
+			for (size_t j = 0; j < rowi->size(); j++)
+			{
+				if (!Array<double>::equaltol((double)rowi->at(j), (double)rowi2->at(j), tol)) return false;
+			}
+		}
+		return true;
 	}
 	template<typename T>
 	inline std::shared_ptr<DiagonalMatrix<T>> FullMatrix<T>::asDiagonalMatrix()

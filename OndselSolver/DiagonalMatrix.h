@@ -25,8 +25,8 @@ namespace MbD {
 		//
 	public:
 		DiagonalMatrix() : Array<T>() {}
-		DiagonalMatrix(int count) : Array<T>(count) {}
-		DiagonalMatrix(int count, const T& value) : Array<T>(count, value) {}
+		DiagonalMatrix(size_t count) : Array<T>(count) {}
+		DiagonalMatrix(size_t count, const T& value) : Array<T>(count, value) {}
 		DiagonalMatrix(std::initializer_list<T> list) : Array<T>{ list } {}
 		void atiputDiagonalMatrix(int i, std::shared_ptr<DiagonalMatrix<T>> diagMat);
 		DiagMatsptr<T> times(T factor);

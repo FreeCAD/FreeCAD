@@ -936,6 +936,45 @@
     <ClCompile Include="ASMTCompoundJoint.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="MBDynAxialRotationJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MBDynClampJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MBDynDriveHingeJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MBDynInLineJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MBDynInPlaneJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MBDynPrismaticJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MBDynRevoluteHingeJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MBDynRevolutePinJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MBDynSphericalHingeJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="MBDynTotalJoint.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Functions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Transitions.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Arguments.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Array.h">
@@ -1865,6 +1904,45 @@
     <ClInclude Include="ASMTCompoundJoint.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="MBDynAxialRotationJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MBDynClampJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MBDynDriveHingeJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MBDynInLineJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MBDynInPlaneJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MBDynPrismaticJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MBDynRevoluteHingeJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MBDynRevolutePinJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MBDynSphericalHingeJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="MBDynTotalJoint.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Functions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Transitions.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Arguments.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="OndselSolver.rc">
@@ -1903,6 +1981,9 @@
     <None Include="..\testapp\MBDynCase3orig.mbd" />
     <None Include="..\testapp\MBDynCase5orig.mbd" />
     <None Include="..\testapp\MBDynCase6orig.mbd" />
+    <None Include="..\testapp\MBDynCase(Cosine-half drive).mbd" />
+    <None Include="..\testapp\MBDynCase(Sine-forever drive).mbd" />
+    <None Include="..\testapp\MBDynCaseBird.mbd" />
   </ItemGroup>
   <ItemGroup>
     <Media Include="..\testapp\CrankSlider2.mov" />
@@ -1911,6 +1992,8 @@
     <Media Include="..\testapp\MBDynCase.mov" />
     <Media Include="..\testapp\MBDynCase2.mov" />
     <Media Include="..\testapp\SphericalHinge.mov" />
+    <Media Include="..\testapp\MBDynCase(Cosine-half drive).mov" />
+    <Media Include="..\testapp\MBDynCase(Sine-forever drive).mov" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\CMakeLists.txt" />

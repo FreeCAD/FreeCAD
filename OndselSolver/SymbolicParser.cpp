@@ -27,6 +27,9 @@
 #include "ArcSine.h"
 #include "Integral.h"
 #include "RampStepFunction.h"
+#include "Arguments.h"
+#include "Functions.h"
+#include "Transitions.h"
 
 MbD::SymbolicParser::SymbolicParser()
 {
@@ -283,6 +286,11 @@ bool MbD::SymbolicParser::symfunction()
 
 bool MbD::SymbolicParser::expression()
 {
+	if (token == "" && tokenType == "end") {
+		auto symNum = std::make_shared<Constant>(0.0);
+		stack->push(symNum);
+		return true;
+	}
 	auto sum = std::make_shared<Sum>();
 	stack->push(sum);
 	if (plusTerm() || minusTerm() || plainTerm()) {
@@ -368,6 +376,15 @@ bool MbD::SymbolicParser::intrinsic()
 	}
 	else if (peekForTypevalue("word", "rampstep")) {
 		symfunc = std::make_shared<RampStepFunction>();
+	}
+	else if (peekForTypevalue("word", "piecewise")) {
+		symfunc = std::make_shared<PiecewiseFunction>();
+	}
+	else if (peekForTypevalue("word", "functions")) {
+		symfunc = std::make_shared<Functions>();
+	}
+	else if (peekForTypevalue("word", "transitions")) {
+		symfunc = std::make_shared<Transitions>();
 	}
 	if (symfunc != nullptr) {
 		stack->push(symfunc);
@@ -493,7 +510,7 @@ void MbD::SymbolicParser::combineStackTo(int pos)
 		args->push_back(arg);
 	}
 	std::reverse(args->begin(), args->end());
-	auto sum = std::make_shared<Sum>();
+	auto sum = std::make_shared<Arguments>();
 	sum->terms = args;
 	stack->push(sum);
 }

@@ -263,7 +263,10 @@ FMatDsptr MbD::MBDynItem::readOrientation(std::vector<std::string>& args)
 		aAOf = readOrientation(args);
 	}
 	else if (str.find("position") != std::string::npos) {
-		//Do nothing
+		if (str.find("orientation") != std::string::npos) {
+			args.erase(args.begin());
+			aAOf = readOrientation(args);
+		}
 	}
 	else if (str.find("orientation") != std::string::npos) {
 		args.erase(args.begin());
@@ -283,7 +286,7 @@ FMatDsptr MbD::MBDynItem::readBasicOrientation(std::vector<std::string>& args)
 	if (str.find("euler") != std::string::npos) {
 		args.erase(args.begin());
 		auto euler = std::make_shared<EulerAngles<Symsptr>>();
-		euler->rotOrder = std::make_shared<FullColumn<int>>(std::initializer_list<int>{ 1, 2, 3 });
+		euler->rotOrder = std::make_shared<std::vector<int>>(std::initializer_list<int>{ 1, 2, 3 });
 		for (int i = 0; i < 3; i++)
 		{
 			auto userFunc = std::make_shared<BasicUserFunction>(popOffTop(args), 1.0);
@@ -430,6 +433,26 @@ std::string MbD::MBDynItem::readStringOffTop(std::vector<std::string>& args)
 	std::string str;
 	iss >> str;
 	return str;
+}
+
+void MbD::MBDynItem::readName(std::vector<std::string>& args)
+{
+	name = readStringOffTop(args);
+}
+
+std::string MbD::MBDynItem::readJointTypeOffTop(std::vector<std::string>& args)
+{
+	auto ss = std::stringstream();
+	auto iss = std::istringstream(popOffTop(args));
+	std::string str;
+	iss >> str;
+	ss << str;
+	while (!iss.eof()) {
+		ss << ' ';
+		iss >> str;
+		ss << str;
+	}
+	return ss.str();
 }
 
 std::string MbD::MBDynItem::readToken(std::string& line)

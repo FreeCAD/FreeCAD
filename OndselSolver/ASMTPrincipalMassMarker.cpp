@@ -19,7 +19,7 @@ MbD::ASMTPrincipalMassMarker::ASMTPrincipalMassMarker()
 
 void MbD::ASMTPrincipalMassMarker::parseASMT(std::vector<std::string>& lines)
 {
-	int pos = lines[0].find_first_not_of("\t");
+	int pos = (int)lines[0].find_first_not_of("\t");
 	auto leadingTabs = lines[0].substr(0, pos);
 	assert(lines[0] == (leadingTabs + "Name"));
 	lines.erase(lines.begin());

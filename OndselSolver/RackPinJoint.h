@@ -17,7 +17,7 @@ namespace MbD {
 	public:
 		RackPinJoint();
 		RackPinJoint(const char* str);
-		void initializeLocally() override;
+		//void initializeLocally() override;
 		void initializeGlobally() override;
 		void connectsItoJ(EndFrmsptr frmI, EndFrmsptr frmJ) override;
 

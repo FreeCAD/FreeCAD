@@ -25,7 +25,7 @@ void MbD::RevCylJoint::initializeGlobally()
 {
 	if (constraints->empty())
 	{
-		auto distxyIJ = CREATE<DistancexyConstraintIJ>::With(frmI, frmJ);
+		auto distxyIJ = DistancexyConstraintIJ::With(frmI, frmJ);
 		distxyIJ->setConstant(distanceIJ);
 		addConstraint(distxyIJ);
 		addConstraint(CREATE<DirectionCosineConstraintIJ>::ConstraintWith(frmI, frmJ, 2, 0));

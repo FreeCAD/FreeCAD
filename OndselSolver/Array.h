@@ -27,12 +27,13 @@ namespace MbD {
 	public:
 		Array() {}
 		Array(std::vector<T> vec) : std::vector<T>(vec) {}
-		Array(int count) : std::vector<T>(count) {}
-		Array(int count, const T& value) : std::vector<T>(count, value) {}
+		Array(size_t count) : std::vector<T>(count) {}
+		Array(size_t count, const T& value) : std::vector<T>(count, value) {}
 		Array(typename std::vector<T>::iterator begin, typename std::vector<T>::iterator end) : std::vector<T>(begin, end) {}
 		Array(std::initializer_list<T> list) : std::vector<T>{ list } {}
 		virtual ~Array() {}
 		virtual void initialize();
+		static bool equaltol(double x, double xx, double tol);
 		void copyFrom(std::shared_ptr<Array<T>> x);
 		virtual void zeroSelf();
 		virtual double sumOfSquares() = 0;
@@ -62,6 +63,11 @@ namespace MbD {
 	template<typename T>
 	inline void Array<T>::initialize()
 	{
+	}
+	template<>
+	inline bool Array<double>::equaltol(double x, double xx, double tol)
+	{
+		return std::abs(x - xx) < tol;
 	}
 	template<typename T>
 	inline void Array<T>::copyFrom(std::shared_ptr<Array<T>> x)

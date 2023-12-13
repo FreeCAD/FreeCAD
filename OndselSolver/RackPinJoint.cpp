@@ -20,17 +20,17 @@ MbD::RackPinJoint::RackPinJoint()
 MbD::RackPinJoint::RackPinJoint(const char* str) : Joint(str)
 {
 }
-
-void MbD::RackPinJoint::initializeLocally()
-{
-	if (!constraints->empty())
-	{
-		auto constraint = std::static_pointer_cast<RackPinConstraintIJ>(constraints->front());
-		constraint->initxIeJeIe();
-		constraint->initthezIeJe();
-	}
-	Joint::initializeLocally();
-}
+//
+//void MbD::RackPinJoint::initializeLocally()
+//{
+//	if (!constraints->empty())
+//	{
+//		auto constraint = std::static_pointer_cast<RackPinConstraintIJ>(constraints->front());
+//		constraint->initxIeJeIe();
+//		constraint->initthezIeJe();
+//	}
+//	Joint::initializeLocally();
+//}
 
 void MbD::RackPinJoint::initializeGlobally()
 {

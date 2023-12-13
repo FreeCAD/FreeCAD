@@ -25,8 +25,8 @@ namespace MbD {
 		//aA aB aC pApE
 	public:
 		EulerParameters() : EulerArray<T>(4) {}
-		EulerParameters(int count) : EulerArray<T>(count) {}
-		EulerParameters(int count, const T& value) : EulerArray<T>(count, value) {}
+		EulerParameters(size_t count) : EulerArray<T>(count) {}
+		EulerParameters(size_t count, const T& value) : EulerArray<T>(count, value) {}
 		EulerParameters(std::initializer_list<T> list) : EulerArray<T>{ list } {}
 		EulerParameters(FColDsptr axis, double theta) : EulerArray<T>(4) {
 			auto halfTheta = theta / 2.0;

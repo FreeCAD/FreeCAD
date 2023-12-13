@@ -18,6 +18,8 @@ namespace MbD {
     public:
         DistancexyConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj);
 
+        static std::shared_ptr<DistancexyConstraintIJ> With(EndFrmsptr frmi, EndFrmsptr frmj);
+
         void calcPostDynCorrectorIteration() override;
         virtual void init_xyIeJeIe();
         void initialize() override;

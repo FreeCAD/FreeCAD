@@ -14,7 +14,7 @@ void MbD::ASMTSimulationParameters::parseASMT(std::vector<std::string>& lines)
 {
 	//tstart, tend, hmin, hmax, hout, errorTol;
 
-	int pos = lines[0].find_first_not_of("\t");
+	int pos = (int)lines[0].find_first_not_of("\t");
 	auto leadingTabs = lines[0].substr(0, pos);
 	assert(lines[0] == (leadingTabs + "tstart"));
 	lines.erase(lines.begin());

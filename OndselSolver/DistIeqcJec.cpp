@@ -25,7 +25,7 @@ void MbD::DistIeqcJec::calcPrivate()
 	if (rIeJe == 0.0) return;
 	auto frmIeqc = std::static_pointer_cast<EndFrameqc>(frmI);
 	auto& mprIeJeOpEI = frmIeqc->prOeOpE;
-	auto mprIeJeOpEIT = mprIeJeOpEI->transpose();
+	mprIeJeOpEIT = mprIeJeOpEI->transpose();
 	auto& mpprIeJeOpEIpEI = frmIeqc->pprOeOpEpE;
 	auto muIeJeOT = muIeJeO->transpose();
 	prIeJepXI = muIeJeOT;

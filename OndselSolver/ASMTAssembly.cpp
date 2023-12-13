@@ -718,6 +718,7 @@ void MbD::ASMTAssembly::readAnimationParameters(std::vector<std::string>& lines)
 
 void MbD::ASMTAssembly::readTimeSeries(std::vector<std::string>& lines)
 {
+	if (lines.empty()) return;
 	assert(lines[0] == "TimeSeries");
 	lines.erase(lines.begin());
 	assert(lines[0].find("Number\tInput") != std::string::npos);
@@ -727,6 +728,7 @@ void MbD::ASMTAssembly::readTimeSeries(std::vector<std::string>& lines)
 
 void MbD::ASMTAssembly::readTimes(std::vector<std::string>& lines)
 {
+	if (lines.empty()) return;
 	std::string str = lines[0];
 	std::string substr = "Time\tInput";
 	auto pos = str.find(substr);
@@ -739,6 +741,7 @@ void MbD::ASMTAssembly::readTimes(std::vector<std::string>& lines)
 
 void MbD::ASMTAssembly::readPartSeriesMany(std::vector<std::string>& lines)
 {
+	if (lines.empty()) return;
 	assert(lines[0].find("PartSeries") != std::string::npos);
 	auto it = std::find_if(lines.begin(), lines.end(), [](const std::string& s) {
 		return s.find("JointSeries") != std::string::npos;
@@ -752,6 +755,7 @@ void MbD::ASMTAssembly::readPartSeriesMany(std::vector<std::string>& lines)
 
 void MbD::ASMTAssembly::readJointSeriesMany(std::vector<std::string>& lines)
 {
+	if (lines.empty()) return;
 	assert(lines[0].find("JointSeries") != std::string::npos);
 	auto it = std::find_if(lines.begin(), lines.end(), [](const std::string& s) {
 		return s.find("MotionSeries") != std::string::npos;
@@ -765,6 +769,7 @@ void MbD::ASMTAssembly::readJointSeriesMany(std::vector<std::string>& lines)
 
 void MbD::ASMTAssembly::readAssemblySeries(std::vector<std::string>& lines)
 {
+	if (lines.empty()) return;
 	std::string str = lines[0];
 	std::string substr = "AssemblySeries";
 	auto pos = str.find(substr);
@@ -796,6 +801,7 @@ void MbD::ASMTAssembly::readAssemblySeries(std::vector<std::string>& lines)
 
 void MbD::ASMTAssembly::readPartSeries(std::vector<std::string>& lines)
 {
+	if (lines.empty()) return;
 	std::string str = lines[0];
 	std::string substr = "PartSeries";
 	auto pos = str.find(substr);
@@ -811,6 +817,7 @@ void MbD::ASMTAssembly::readPartSeries(std::vector<std::string>& lines)
 
 void MbD::ASMTAssembly::readJointSeries(std::vector<std::string>& lines)
 {
+	if (lines.empty()) return;
 	std::string str = lines[0];
 	std::string substr = "JointSeries";
 	auto pos = str.find(substr);
@@ -834,6 +841,7 @@ void MbD::ASMTAssembly::readMotionSeriesMany(std::vector<std::string>& lines)
 
 void MbD::ASMTAssembly::readMotionSeries(std::vector<std::string>& lines)
 {
+	if (lines.empty()) return;
 	std::string str = lines[0];
 	std::string substr = "MotionSeries";
 	auto pos = str.find(substr);

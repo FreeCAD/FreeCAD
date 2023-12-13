@@ -34,7 +34,7 @@ namespace MbD {
 		virtual void parseMBDyn(std::string line);
 		static std::vector<std::string> collectArgumentsFor(std::string title, std::string& statement);
 		std::vector<std::string>::iterator findLineWith(std::vector<std::string>& lines, std::vector<std::string>& tokens);
-		bool lineHasTokens(const std::string& line, std::vector<std::string>& tokens);
+		static bool lineHasTokens(const std::string& line, std::vector<std::string>& tokens);
 		virtual std::shared_ptr<std::vector<std::shared_ptr<MBDynNode>>> mbdynNodes();
 		virtual std::shared_ptr<std::vector<std::shared_ptr<MBDynBody>>> mbdynBodies();
 		virtual std::shared_ptr<std::vector<std::shared_ptr<MBDynJoint>>> mbdynJoints();
@@ -57,11 +57,14 @@ namespace MbD {
 		FMatDsptr readBasicOrientation(std::vector<std::string>& args);
 		std::string popOffTop(std::vector<std::string>& args);
 		std::string readStringOffTop(std::vector<std::string>& args);
+		void readName(std::vector<std::string>& args);
+		std::string readJointTypeOffTop(std::vector<std::string>& args);
 		std::string readToken(std::string& line);
 
 		std::string name;
 		MBDynItem* owner = nullptr;
 		std::shared_ptr<ASMTItem> asmtItem;
+		std::vector<std::string> arguments;
 
 
 	};

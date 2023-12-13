@@ -25,7 +25,7 @@ void MbD::CylSphJoint::initializeGlobally()
 {
 	if (constraints->empty())
 	{
-		auto distxyIJ = CREATE<DistancexyConstraintIJ>::With(frmI, frmJ);
+		auto distxyIJ = DistancexyConstraintIJ::With(frmI, frmJ);
 		distxyIJ->setConstant(distanceIJ);
 		addConstraint(distxyIJ);
 		this->root()->hasChanged = true;

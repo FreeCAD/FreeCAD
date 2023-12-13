@@ -9,25 +9,7 @@ using namespace MbD;
 void MbD::MBDynGravity::parseMBDyn(std::string line)
 {
 	gravityString = line;
-	size_t previousPos = 0;
-	auto pos = line.find(":");
-	auto front = line.substr(previousPos, pos - previousPos);
-	assert(front.find("gravity") != std::string::npos);
-	auto arguments = std::vector<std::string>();
-	std::string argument;
-	while (true) {
-		previousPos = pos;
-		pos = line.find(",", pos + 1);
-		if (pos != std::string::npos) {
-			argument = line.substr(previousPos + 1, pos - previousPos - 1);
-			arguments.push_back(argument);
-		}
-		else {
-			argument = line.substr(previousPos + 1);
-			arguments.push_back(argument);
-			break;
-		}
-	}
+	arguments = collectArgumentsFor("gravity", line);
 	assert(arguments.at(0).find("uniform") != std::string::npos);
 	arguments.erase(arguments.begin());
 	gvec = readPosition(arguments);

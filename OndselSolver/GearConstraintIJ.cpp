@@ -20,7 +20,9 @@ std::shared_ptr<GearConstraintIJ> MbD::GearConstraintIJ::With(EndFrmsptr frmi, E
 {
 	assert(frmi->isEndFrameqc());
 	assert(frmj->isEndFrameqc());
-	return std::make_shared<GearConstraintIqcJqc>(frmi, frmj);
+	auto gearCon = std::make_shared<GearConstraintIqcJqc>(frmi, frmj);
+	gearCon->initorbitsIJ();
+	return gearCon;
 }
 
 void MbD::GearConstraintIJ::calcPostDynCorrectorIteration()

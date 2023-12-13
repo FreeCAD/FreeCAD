@@ -94,6 +94,14 @@ double MbD::PiecewiseFunction::getValue()
 	return functions->back()->getValue();
 }
 
+void MbD::PiecewiseFunction::arguments(Symsptr args)
+{
+	auto arguments = args->getTerms();
+	xx = arguments->at(0);
+	functions = arguments->at(1)->getTerms();
+	transitions = arguments->at(2)->getTerms();
+}
+
 std::ostream& MbD::PiecewiseFunction::printOn(std::ostream& s) const
 {
 	s << "PiecewiseFunction(" << *xx << ", " << std::endl;

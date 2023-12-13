@@ -21,7 +21,10 @@ std::shared_ptr<ConstVelConstraintIJ> MbD::ConstVelConstraintIJ::With(EndFrmsptr
 {
 	assert(frmi->isEndFrameqc());
 	assert(frmj->isEndFrameqc());
-	return std::make_shared<ConstVelConstraintIqcJqc>(frmi, frmj);
+	auto constVelCon = std::make_shared<ConstVelConstraintIqcJqc>(frmi, frmj);
+	constVelCon->initA01IeJe();
+	constVelCon->initA10IeJe();
+	return constVelCon;
 }
 
 void ConstVelConstraintIJ::calcPostDynCorrectorIteration()
