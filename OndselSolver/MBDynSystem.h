@@ -18,7 +18,6 @@ namespace MbD {
     class MBDynControlData;
     class MBDynNode;
     class MBDynElement;
-    class MBDynVariable;
     class MBDynLabel;
     class MBDynReference;
     class MBDynDrive;

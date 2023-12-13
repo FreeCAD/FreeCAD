@@ -46,6 +46,7 @@ set(ONDSELSOLVER_SRC
         OndselSolver/ArcSine.cpp
         OndselSolver/ArcTan.cpp
         OndselSolver/ArcTan2.cpp
+        OndselSolver/Arguments.cpp
         OndselSolver/ASMTAngleJoint.cpp
         OndselSolver/ASMTAnimationParameters.cpp
         OndselSolver/ASMTAssembly.cpp
@@ -83,6 +84,7 @@ set(ONDSELSOLVER_SRC
         OndselSolver/ASMTRefSurface.cpp
         OndselSolver/ASMTRevCylJoint.cpp
         OndselSolver/ASMTRevoluteJoint.cpp
+        OndselSolver/ASMTRevRevJoint.cpp
         OndselSolver/ASMTRotationalMotion.cpp
         OndselSolver/ASMTScrewJoint.cpp
         OndselSolver/ASMTSimulationParameters.cpp
@@ -231,6 +233,16 @@ set(ONDSELSOLVER_SRC
         OndselSolver/MatrixSolver.cpp
         OndselSolver/MaximumIterationError.cpp
         OndselSolver/MbDMath.cpp
+        OndselSolver/MBDynAxialRotationJoint.cpp
+        OndselSolver/MBDynClampJoint.cpp
+        OndselSolver/MBDynDriveHingeJoint.cpp
+        OndselSolver/MBDynInLineJoint.cpp
+        OndselSolver/MBDynInPlaneJoint.cpp
+        OndselSolver/MBDynPrismaticJoint.cpp
+        OndselSolver/MBDynRevoluteHingeJoint.cpp
+        OndselSolver/MBDynRevolutePinJoint.cpp
+        OndselSolver/MBDynSphericalHingeJoint.cpp
+        OndselSolver/MBDynTotalJoint.cpp
         OndselSolver/MBDynBlock.cpp
         OndselSolver/MBDynBody.cpp
         OndselSolver/MBDynControlData.cpp
@@ -284,6 +296,7 @@ set(ONDSELSOLVER_SRC
         OndselSolver/RedundantConstraint.cpp
         OndselSolver/RevCylJoint.cpp
         OndselSolver/RevoluteJoint.cpp
+        OndselSolver/RevRevJoint.cpp
         OndselSolver/ScalarNewtonRaphson.cpp
         OndselSolver/ScrewConstraintIJ.cpp
         OndselSolver/ScrewConstraintIqcJc.cpp
@@ -352,6 +365,7 @@ set(ONDSELSOLVER_HEADERS
         OndselSolver/ArcSine.h
         OndselSolver/ArcTan.h
         OndselSolver/ArcTan2.h
+        OndselSolver/Arguments.h
         OndselSolver/ASMTAngleJoint.h
         OndselSolver/ASMTAnimationParameters.h
         OndselSolver/ASMTAssembly.h
@@ -389,6 +403,7 @@ set(ONDSELSOLVER_HEADERS
         OndselSolver/ASMTRefSurface.h
         OndselSolver/ASMTRevCylJoint.h
         OndselSolver/ASMTRevoluteJoint.h
+        OndselSolver/ASMTRevRevJoint.h
         OndselSolver/ASMTRotationalMotion.h
         OndselSolver/ASMTScrewJoint.h
         OndselSolver/ASMTSimulationParameters.h
@@ -539,6 +554,16 @@ set(ONDSELSOLVER_HEADERS
         OndselSolver/MatrixSolver.h
         OndselSolver/MaximumIterationError.h
         OndselSolver/MbDMath.h
+        OndselSolver/MBDynAxialRotationJoint.h
+        OndselSolver/MBDynClampJoint.h
+        OndselSolver/MBDynDriveHingeJoint.h
+        OndselSolver/MBDynInLineJoint.h
+        OndselSolver/MBDynInPlaneJoint.h
+        OndselSolver/MBDynPrismaticJoint.h
+        OndselSolver/MBDynRevoluteHingeJoint.h
+        OndselSolver/MBDynRevolutePinJoint.h
+        OndselSolver/MBDynSphericalHingeJoint.h
+        OndselSolver/MBDynTotalJoint.h
         OndselSolver/MBDynBlock.h
         OndselSolver/MBDynBody.h
         OndselSolver/MBDynControlData.h
@@ -589,6 +614,7 @@ set(ONDSELSOLVER_HEADERS
         OndselSolver/resource.h
         OndselSolver/RevCylJoint.h
         OndselSolver/RevoluteJoint.h
+        OndselSolver/RevRevJoint.h
         OndselSolver/ScalarNewtonRaphson.h
         OndselSolver/ScrewConstraintIJ.h
         OndselSolver/ScrewConstraintIqcJc.h

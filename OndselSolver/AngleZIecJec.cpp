@@ -29,7 +29,7 @@ void MbD::AngleZIecJec::calcPostDynCorrectorIteration()
 	auto diffOfSquares = sthez * sthez - (cthez * cthez);
 	auto sumOfSquaresSquared = sumOfSquares * sumOfSquares;
 	auto thez0to2pi = Numeric::arcTan0to2piYoverX(sthez, cthez);
-	thez = std::round(thez - thez0to2pi / (2.0 * OS_M_PI)) * (2.0 * OS_M_PI) + thez0to2pi;
+	thez = std::round((thez - thez0to2pi) / (2.0 * OS_M_PI)) * (2.0 * OS_M_PI) + thez0to2pi;
 	cosOverSSq = cthez / sumOfSquares;
 	sinOverSSq = sthez / sumOfSquares;
 	twoCosSinOverSSqSq = 2.0 * cthez * sthez / sumOfSquaresSquared;
@@ -91,6 +91,7 @@ void MbD::AngleZIecJec::prePosIC()
 {
 	aA00IeJe->prePosIC();
 	aA10IeJe->prePosIC();
+	assert(thez != std::numeric_limits<double>::min());
 	KinematicIeJe::prePosIC();
 }
 
