@@ -191,6 +191,7 @@
     <ClCompile Include="ASMTRefSurface.cpp" />
     <ClCompile Include="ASMTRevCylJoint.cpp" />
     <ClCompile Include="ASMTRevoluteJoint.cpp" />
+    <ClCompile Include="ASMTRevRevJoint.cpp" />
     <ClCompile Include="ASMTRotationalMotion.cpp" />
     <ClCompile Include="ASMTScrewJoint.cpp" />
     <ClCompile Include="ASMTSimulationParameters.cpp" />
@@ -405,6 +406,7 @@
     <ClCompile Include="RedundantConstraint.cpp" />
     <ClCompile Include="RevCylJoint.cpp" />
     <ClCompile Include="RevoluteJoint.cpp" />
+    <ClCompile Include="RevRevJoint.cpp" />
     <ClCompile Include="RowTypeMatrix.cpp" />
     <ClCompile Include="ScalarNewtonRaphson.cpp" />
     <ClCompile Include="ScrewConstraintIJ.cpp" />
@@ -513,6 +515,7 @@
     <ClInclude Include="ASMTRefSurface.h" />
     <ClInclude Include="ASMTRevCylJoint.h" />
     <ClInclude Include="ASMTRevoluteJoint.h" />
+    <ClInclude Include="ASMTRevRevJoint.h" />
     <ClInclude Include="ASMTRotationalMotion.h" />
     <ClInclude Include="ASMTScrewJoint.h" />
     <ClInclude Include="ASMTSimulationParameters.h" />
@@ -729,6 +732,7 @@
     <ClInclude Include="resource.h" />
     <ClInclude Include="RevCylJoint.h" />
     <ClInclude Include="RevoluteJoint.h" />
+    <ClInclude Include="RevRevJoint.h" />
     <ClInclude Include="RowTypeMatrix.h" />
     <ClInclude Include="ScalarNewtonRaphson.h" />
     <ClInclude Include="ScrewConstraintIJ.h" />

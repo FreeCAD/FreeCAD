@@ -5,31 +5,14 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
+#include <fstream>	
 
-#include <cmath>
-#include "corecrt_math_defines.h"
-#include <stdexcept>
-
-#include "Numeric.h"
+#include "ASMTRevRevJoint.h"
+#include "RevRevJoint.h"
 
 using namespace MbD;
 
-double MbD::Numeric::arcTan0to2piYoverX(double y, double x)
+std::shared_ptr<Joint> MbD::ASMTRevRevJoint::mbdClassNew()
 {
-	//"(y/x) arcTan in the range 0 to 2*pi."
-	//"Double arcTan0to2piY: 1.0d overX: 1.0d."
-
-	if (y >= 0) {
-		//"First and second quadrants."
-		return std::atan2(y, x);
-	}
-	else {
-		//"Third and forth quadrants."
-		return 2.0 * OS_M_PI + std::atan2(y, x);
-	}
-}
-
-bool MbD::Numeric::equaltol(double x, double xx, double tol)
-{
-	return std::abs(x - xx) < tol;
+    return CREATE<RevRevJoint>::With();
 }

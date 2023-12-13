@@ -31,7 +31,7 @@ std::shared_ptr<ScrewConstraintIJ> MbD::ScrewConstraintIJ::With(EndFrmsptr frmi,
 void MbD::ScrewConstraintIJ::calcPostDynCorrectorIteration()
 {
 	auto z = zIeJeIe->value();
-	auto thez = thezIeJe->value();
+	auto thez = thezIeJe->thez;
 	aG = (2.0 * OS_M_PI * z) - (pitch * thez) - aConstant;
 }
 

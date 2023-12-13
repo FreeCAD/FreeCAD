@@ -56,6 +56,7 @@
 #include "ASMTRefSurface.h"
 #include "ExternalSystem.h"
 #include "SystemSolver.h"
+#include "ASMTRevRevJoint.h"
 
 using namespace MbD;
 
@@ -582,14 +583,17 @@ void MbD::ASMTAssembly::readJoints(std::vector<std::string>& lines)
 			joint = CREATE<ASMTUniversalJoint>::With();
 		}
 		//CompoundJoints
+		else if (jointsLines[0] == "\t\t\tSphSphJoint") {
+			joint = CREATE<ASMTSphSphJoint>::With();
+		}
 		else if (jointsLines[0] == "\t\t\tCylSphJoint") {
 			joint = CREATE<ASMTCylSphJoint>::With();
 		}
 		else if (jointsLines[0] == "\t\t\tRevCylJoint") {
 			joint = CREATE<ASMTRevCylJoint>::With();
 		}
-		else if (jointsLines[0] == "\t\t\tSphSphJoint") {
-			joint = CREATE<ASMTSphSphJoint>::With();
+		else if (jointsLines[0] == "\t\t\tRevRevJoint") {
+			joint = CREATE<ASMTRevRevJoint>::With();
 		}
 		//InLineJoints
 		else if (jointsLines[0] == "\t\t\tCylindricalJoint") {
