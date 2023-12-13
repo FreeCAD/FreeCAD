@@ -349,6 +349,8 @@ def _get_param_dictionary():
         "AnnotationStyleEditorHeight": ("int",       450),
         "AnnotationStyleEditorWidth":  ("int",       450),
         "CenterPlaneOnView":           ("bool",      False),
+        "ContinueMode":                ("bool",      False),
+        "CopyMode":                    ("bool",      False),
         "DefaultAnnoDisplayMode":      ("int",       0),
         "DefaultDisplayMode":          ("int",       0),
         "DefaultDrawStyle":            ("int",       0),
@@ -356,6 +358,7 @@ def _get_param_dictionary():
         "Draft_array_fuse":            ("bool",      False),
         "Draft_array_Link":            ("bool",      True),
         "fillmode":                    ("bool",      True),
+        "GlobalMode":                  ("bool",      False),
         "HatchPatternResolution":      ("int",       128),
         "HatchPatternRotation":        ("float",     0.0),
         "HatchPatternScale":           ("float",     100.0),
@@ -363,13 +366,16 @@ def _get_param_dictionary():
         "LayersManagerHeight":         ("int",       320),
         "LayersManagerWidth":          ("int",       640),
         "maxSnapEdges":                ("int",       0),
+        "OffsetCopyMode":              ("bool",      False),
         "Offset_OCC":                  ("bool",      False),
+        "RelativeMode":                ("bool",      True),
         "ScaleClone":                  ("bool",      False),
         "ScaleCopy":                   ("bool",      False),
         "ScaleRelative":               ("bool",      False),
         "ScaleUniform":                ("bool",      False),
         "snapModes":                   ("string",    "100000000000000"),
         "snapRange":                   ("int",       8),
+        "SubelementMode":              ("bool",      False),
         "SvgLinesBlack":               ("bool",      True),
         "useSupport":                  ("bool",      False),
 
@@ -378,13 +384,15 @@ def _get_param_dictionary():
 
     # Arch parameters that are not in the preferences:
     param_dict["Mod/Arch"] = {
-        "ColorHelpers":                ("unsigned",  674321151),
 
 
     }
 
     # For the View parameters we do not check the preferences:
     param_dict["View"] = {
+        "BackgroundColor":             ("unsigned",  336897023),
+        "BackgroundColor2":            ("unsigned",  859006463),
+        "BackgroundColor3":            ("unsigned",  2543299327),
         "DefaultShapeColor":           ("unsigned",  3435973887),
         "DefaultShapeLineColor":       ("unsigned",  421075455),
         "DefaultShapeLineWidth":       ("int",       2),
@@ -392,7 +400,13 @@ def _get_param_dictionary():
         "DefaultShapeTransparency":    ("int",       0),
         "DefaultShapeVertexColor":     ("unsigned",  421075455),
         "EnableSelection":             ("bool",      True),
+        "Gradient":                    ("bool",      True),
         "MarkerSize":                  ("int",       9),
+    }
+
+    # For the General parameters we do not check the preferences:
+    param_dict["General"] = {
+        "ToolbarIconSize":             ("int",       24),
     }
 
     # For the Units parameters we do not check the preferences:
