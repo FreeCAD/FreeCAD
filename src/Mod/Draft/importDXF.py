@@ -61,9 +61,11 @@ import Mesh
 import DraftVecUtils
 import DraftGeomUtils
 import WorkingPlane
-from Draft import _Dimension
 from FreeCAD import Vector
 from FreeCAD import Console as FCC
+from Draft import LinearDimension
+from draftutils import params
+from draftutils import utils
 
 gui = FreeCAD.GuiUp
 draftui = None
@@ -105,8 +107,7 @@ def errorDXFLib(gui):
     -----
     Use local variables, not global variables.
     """
-    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-    dxfAllowDownload = p.GetBool("dxfAllowDownload", False)
+    dxfAllowDownload = params.get_param("dxfAllowDownload")
     if dxfAllowDownload:
         files = ['dxfColorMap.py', 'dxfImportObjects.py',
                  'dxfLibrary.py', 'dxfReader.py']
@@ -147,7 +148,7 @@ To enabled FreeCAD to download these libraries, answer Yes.""")
                                                QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
                                                QtGui.QMessageBox.No)
             if reply == QtGui.QMessageBox.Yes:
-                p.SetBool("dxfAllowDownload", True)
+                params.set_param("dxfAllowDownload", True)
                 errorDXFLib(gui)
             if reply == QtGui.QMessageBox.No:
                 pass
@@ -534,26 +535,16 @@ def isBrightBackground():
         which is considered light; otherwise it is considered dark
         and returns `False`.
     """
-    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View")
-    if p.GetBool("Gradient"):
-        c1 = p.GetUnsigned("BackgroundColor2")
-        c2 = p.GetUnsigned("BackgroundColor3")
-        r1 = float((c1 >> 24) & 0xFF)
-        g1 = float((c1 >> 16) & 0xFF)
-        b1 = float((c1 >> 8) & 0xFF)
-        r2 = float((c2 >> 24) & 0xFF)
-        g2 = float((c2 >> 16) & 0xFF)
-        b2 = float((c2 >> 8) & 0xFF)
+    if params.get_param_view("Gradient"):
+        r1, g1, b1, _ = utils.get_rgba_tuple(params.get_param_view("BackgroundColor2"))
+        r2, g2, b2, _ = utils.get_rgba_tuple(params.get_param_view("BackgroundColor3"))
         v1 = Vector(r1, g1, b1)
         v2 = Vector(r2, g2, b2)
         v = v2.sub(v1)
         v.multiply(0.5)
         cv = v1.add(v)
     else:
-        c1 = p.GetUnsigned("BackgroundColor")
-        r1 = float((c1 >> 24) & 0xFF)
-        g1 = float((c1 >> 16) & 0xFF)
-        b1 = float((c1 >> 8) & 0xFF)
+        r1, g1, b1, _ = utils.get_rgba_tuple(params.get_param_view("BackgroundColor"))
         cv = Vector(r1, g1, b1)
     value = cv.x*.3 + cv.y*.59 + cv.z*.11
     if value < 128:
@@ -623,16 +614,12 @@ def getColor():
         of the `DefaultShapeLineColor` in the parameter database.
     """
     if gui and draftui:
-        r = float(draftui.color.red()/255.0)
-        g = float(draftui.color.green()/255.0)
-        b = float(draftui.color.blue()/255.0)
+        r = float(draftui.color.red() / 255.0)
+        g = float(draftui.color.green() / 255.0)
+        b = float(draftui.color.blue() / 255.0)
         return (r, g, b, 0.0)
     else:
-        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View")
-        c = p.GetUnsigned("DefaultShapeLineColor", 0)
-        r = float(((c >> 24) & 0xFF)/255)
-        g = float(((c >> 16) & 0xFF)/255)
-        b = float(((c >> 8) & 0xFF)/255)
+        r, g, b, _ = utils.get_rgba_tuple(params.get_param_view("DefaultShapeLineColor"))
         return (r, g, b, 0.0)
 
 
@@ -3026,8 +3013,7 @@ def getSplineSegs(edge):
         If the `segmentlength` variable is zero in the parameters database,
         then it only returns the first and the last point of the `edge`.
     """
-    params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-    seglength = params.GetFloat("maxsegmentlength", 5.0)
+    seglength = params.get_param("maxsegmentlength")
     points = []
     if seglength == 0:
         points.append(edge.Vertexes[0].Point)
@@ -3333,7 +3319,7 @@ def writeShape(sh, ob, dxfobject, nospline=False, lwPoly=False,
                                                         color=getACI(ob),
                                                         layer=layer))
             elif DraftGeomUtils.geomType(edge) == "Ellipse":  # ellipses:
-                if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetBool("DiscretizeEllipses", True):
+                if params.get_param("DiscretizeEllipses"):
                     points = []
                     spline = getSplineSegs(edge)
                     for p in spline:
@@ -3637,7 +3623,7 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
             dxf = dxfLibrary.Drawing()
             # add global variables
             if hasattr(dxf,"header"):
-                dxf.header.append("  9\n$DIMTXT\n 40\n"+str(Draft.getParam("textheight", 20))+"\n")
+                dxf.header.append("  9\n$DIMTXT\n 40\n" + str(params.get_param("textheight")) + "\n")
                 dxf.header.append("  9\n$INSUNITS\n 70\n4\n")
             for ob in exportLayers:
                 if ob.Label != "0":  # dxflibrary already creates it
@@ -3760,11 +3746,11 @@ def export(objectslist, filename, nospline=False, lwPoly=False):
                     if hasattr(ob, "Tessellation"):
                         if ob.Tessellation:
                             tess = [ob.Tessellation, ob.SegmentLength]
-                    if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetBool("dxfmesh"):
+                    if params.get_param("dxfmesh"):
                         sh = None
                         if not ob.Shape.isNull():
                             writeMesh(ob, dxf)
-                    elif gui and FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft").GetBool("dxfproject"):
+                    elif gui and params.get_param("dxfproject"):
                         _view = FreeCADGui.ActiveDocument.ActiveView
                         direction = _view.getViewDirection().multiply(-1)
                         sh = projectShape(ob.Shape, direction, tess)
@@ -4118,17 +4104,12 @@ def readPreferences():
 
     The parameter path is ``User parameter:BaseApp/Preferences/Mod/Draft``
 
-    See also
-    --------
-    FreeCAD.ParamGet, FreeCAD.ParamGet.GetBool
-
     To do
     -----
     Use local variables, not global variables.
     """
     # reading parameters
-    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-    if gui and p.GetBool("dxfShowDialog", False):
+    if gui and params.get_param("dxfShowDialog"):
         FreeCADGui.showPreferences("Import-Export", 3)
     global dxfCreatePart, dxfCreateDraft, dxfCreateSketch
     global dxfDiscretizeCurves, dxfStarBlocks
@@ -4139,25 +4120,25 @@ def readPreferences():
     global dxfFillMode, dxfBrightBackground, dxfDefaultColor
     global dxfUseLegacyImporter, dxfExportBlocks, dxfScaling
     global dxfUseLegacyExporter
-    dxfCreatePart = p.GetBool("dxfCreatePart", True)
-    dxfCreateDraft = p.GetBool("dxfCreateDraft", False)
-    dxfCreateSketch = p.GetBool("dxfCreateSketch", False)
-    dxfDiscretizeCurves = p.GetBool("DiscretizeEllipses", True)
-    dxfStarBlocks = p.GetBool("dxfstarblocks", False)
-    dxfMakeBlocks = p.GetBool("groupLayers", False)
-    dxfJoin = p.GetBool("joingeometry", False)
-    dxfRenderPolylineWidth = p.GetBool("renderPolylineWidth", False)
-    dxfImportTexts = p.GetBool("dxftext", False)
-    dxfImportLayouts = p.GetBool("dxflayouts", False)
-    dxfImportPoints = p.GetBool("dxfImportPoints", False)
-    dxfImportHatches = p.GetBool("importDxfHatches", False)
-    dxfUseStandardSize = p.GetBool("dxfStdSize", False)
-    dxfGetColors = p.GetBool("dxfGetOriginalColors", False)
-    dxfUseDraftVisGroups = p.GetBool("dxfUseDraftVisGroups", True)
-    dxfFillMode = p.GetBool("fillmode", True)
-    dxfUseLegacyImporter = p.GetBool("dxfUseLegacyImporter", False)
-    dxfUseLegacyExporter = p.GetBool("dxfUseLegacyExporter", False)
+    dxfCreatePart = params.get_param("dxfCreatePart")
+    dxfCreateDraft = params.get_param("dxfCreateDraft")
+    dxfCreateSketch = params.get_param("dxfCreateSketch")
+    dxfDiscretizeCurves = params.get_param("DiscretizeEllipses")
+    dxfStarBlocks = params.get_param("dxfstarblocks")
+    dxfMakeBlocks = params.get_param("groupLayers")
+    dxfJoin = params.get_param("joingeometry")
+    dxfRenderPolylineWidth = params.get_param("renderPolylineWidth")
+    dxfImportTexts = params.get_param("dxftext")
+    dxfImportLayouts = params.get_param("dxflayout")
+    dxfImportPoints = params.get_param("dxfImportPoints")
+    dxfImportHatches = params.get_param("importDxfHatches")
+    dxfUseStandardSize = params.get_param("dxfStdSize")
+    dxfGetColors = params.get_param("dxfGetOriginalColors")
+    dxfUseDraftVisGroups = params.get_param("dxfUseDraftVisGroups")
+    dxfFillMode = params.get_param("fillmode")
+    dxfUseLegacyImporter = params.get_param("dxfUseLegacyImporter")
+    dxfUseLegacyExporter = params.get_param("dxfUseLegacyExporter")
     dxfBrightBackground = isBrightBackground()
     dxfDefaultColor = getColor()
-    dxfExportBlocks = p.GetBool("dxfExportBlocks", True)
-    dxfScaling = p.GetFloat("dxfScaling", 1.0)
+    dxfExportBlocks = params.get_param("dxfExportBlocks")
+    dxfScaling = params.get_param("dxfScaling")

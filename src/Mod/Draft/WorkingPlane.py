@@ -42,6 +42,7 @@ import FreeCAD
 import DraftVecUtils
 from FreeCAD import Vector
 from draftutils import gui_utils
+from draftutils import params
 from draftutils import utils
 from draftutils.messages import _wrn
 from draftutils.translate import translate
@@ -1454,7 +1455,7 @@ class PlaneGui(PlaneBase):
 
     def set_to_default(self):
         """Set the WP to the default from the preferences."""
-        default_wp = utils.get_param("defaultWP", 0)
+        default_wp = params.get_param("defaultWP")
         if default_wp == 0:
             self.set_to_auto()
         elif default_wp == 1:

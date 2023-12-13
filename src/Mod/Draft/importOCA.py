@@ -44,6 +44,7 @@ __url__ = "https://www.freecad.org"
 import FreeCAD, os, Part, DraftVecUtils, DraftGeomUtils
 from FreeCAD import Vector
 from FreeCAD import Console as FCC
+from draftutils import params
 
 if FreeCAD.GuiUp:
     from draftutils.translate import translate
@@ -54,8 +55,6 @@ else:
 # Save the native open function to avoid collisions
 if open.__module__ in ['__builtin__', 'io']:
     pythonopen = open
-
-params = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
 
 
 def getpoint(data):
@@ -306,7 +305,7 @@ def parse(filename, doc):
             if _id[0] == "P":
                 # point
                 objects[_id] = getpoint(data)
-            elif ((_id[0] == "A") and params.GetBool("ocaareas")):
+            elif ((_id[0] == "A") and params.get_param("ocaareas")):
                 # area
                 objects[_id] = getarea(data)
                 createobject(_id, doc)
