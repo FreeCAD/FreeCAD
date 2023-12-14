@@ -26,7 +26,7 @@
 # Gathering all the information to start FreeCAD
 # This is the second one of three init scripts, the third one
 # runs when the gui is up
-
+import FreeCAD
 
 class TechDrawWorkbench(Workbench):
     "Technical Drawing workbench object"
@@ -36,8 +36,8 @@ class TechDrawWorkbench(Workbench):
             FreeCAD.getResourceDir()
             + "Mod/TechDraw/Resources/icons/preferences-techdraw.svg"
         )
-        self.__class__.MenuText = "TechDraw"
-        self.__class__.ToolTip = "Technical Drawing workbench"
+        self.__class__.MenuText = FreeCAD.Qt.translate("Workbench", "TechDraw")
+        self.__class__.ToolTip = FreeCAD.Qt.translate("Workbench", "Technical Drawing workbench")
 
     def Initialize(self):
         # load the module

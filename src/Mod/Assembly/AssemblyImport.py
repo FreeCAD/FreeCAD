@@ -20,7 +20,7 @@
 #    <https://www.gnu.org/licenses/>.                                       *
 #                                                                           *
 # ***************************************************************************/
-
+import FreeCAD
 
 def open(filename):
     doc = App.activeDocument()
@@ -29,4 +29,4 @@ def open(filename):
 
 
 def insert(filename, docname):
-    print("Inserting file: " + filename + " into document: " + docname)
+    print(FreeCAD.Qt.translate("Assembly", "Inserting file: ") + filename + FreeCAD.Qt.translate("Assembly"," into document: ") + docname)

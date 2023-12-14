@@ -14,6 +14,7 @@ set(Assembly_Scripts
     Preferences.py
     AssemblyImport.py
     UtilsAssembly.py
+    Assembly_rc.py
 )
 
 if(BUILD_GUI)
