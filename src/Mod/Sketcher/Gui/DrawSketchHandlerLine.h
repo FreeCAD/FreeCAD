@@ -81,8 +81,12 @@ class DrawSketchHandlerLine: public DrawSketchHandlerLineBase
 public:
     explicit DrawSketchHandlerLine(
         ConstructionMethod constrMethod = ConstructionMethod::OnePointLengthAngle)
+<<<<<<< HEAD
         : DrawSketchHandlerLineBase(constrMethod)
         , length(0.0) {};
+=======
+        : DrawSketchHandlerLineBase(constrMethod) {};
+>>>>>>> 6987fc1beb (Update Tranditional Chinese to latest translations development.)
     ~DrawSketchHandlerLine() override = default;
 
 private:
@@ -201,7 +205,11 @@ private:
     {
         ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
             "User parameter:BaseApp/Preferences/Mod/Sketcher/Tools");
+<<<<<<< HEAD
         auto index = hGrp->GetInt("OnViewParameterVisibility", 1);
+=======
+        int index = hGrp->GetInt("OnViewParameterVisibility", 1);
+>>>>>>> 6987fc1beb (Update Tranditional Chinese to latest translations development.)
         return index != 0;
     };
 
@@ -467,7 +475,11 @@ void DSHLineController::adaptParameters(Base::Vector2d onSketchPos)
                 double range = (handler->endPoint - handler->startPoint).Angle();
                 if (!onViewParameters[OnViewParameter::Fourth]->isSet) {
                     setOnViewParameterValue(OnViewParameter::Fourth,
+<<<<<<< HEAD
                                             Base::toDegrees(range),
+=======
+                                            range * 180 / M_PI,
+>>>>>>> 6987fc1beb (Update Tranditional Chinese to latest translations development.)
                                             Base::Unit::Angle);
                 }
 

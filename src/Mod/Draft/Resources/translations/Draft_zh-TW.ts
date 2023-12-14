@@ -3912,15 +3912,15 @@ Or choose one of the options below.</source>
 或選擇以下選項之一.</translation>
     </message>
     <message>
-        <location filename="../ui/TaskSelectPlane.ui" line="20"/>
-        <source>Select a face or working plane proxy or 3 vertices.
-Or choose one of the options below</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../Resources/ui/TaskSelectPlane.ui" line="20"/>
         <source>Select 3 vertices, one or more shapes or a WP Proxy. Then confirm by clicking in the 3D view.
 Or choose one of the options below.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../ui/TaskSelectPlane.ui" line="20"/>
+        <source>Select a face or working plane proxy or 3 vertices.
+Or choose one of the options below</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4010,20 +4010,31 @@ of the buttons above</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+<<<<<<< HEAD
         <location filename="../../Resources/ui/TaskSelectPlane.ui" line="267"/>
         <source>Next</source>
         <translation>下一個</translation>
+=======
+        <location filename="../../Resources/ui/TaskSelectPlane.ui" line="135"/>
+        <source>Or select a single vertex to move the current working plane without changing its orientation. Then press the button below.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Resources/ui/TaskSelectPlane.ui" line="264"/>
+        <source>Resets the working plane to its next position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Resources/ui/TaskSelectPlane.ui" line="267"/>
+        <source>Next</source>
+        <translation type="unfinished"></translation>
+>>>>>>> 6987fc1beb (Update Tranditional Chinese to latest translations development.)
     </message>
     <message>
         <location filename="../ui/TaskSelectPlane.ui" line="135"/>
         <source>Or select a single vertex to move the current
 working plane without changing its orientation.
 Then, press the button below</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Resources/ui/TaskSelectPlane.ui" line="135"/>
-        <source>Or select a single vertex to move the current working plane without changing its orientation. Then press the button below.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4104,14 +4115,9 @@ value by using the [ and ] keys while drawing</source>
         <translation>前一個</translation>
     </message>
     <message>
-        <location filename="../../Resources/ui/TaskSelectPlane.ui" line="264"/>
-        <source>Resets the working plane to its next position</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../Resources/ui/TaskSelectPlane.ui" line="267"/>
-        <source>Next</source>
-        <translation type="unfinished"></translation>
+        <location filename="../ui/dialogHatch.ui" line="14"/>
+        <source>Form</source>
+        <translation>格式</translation>
     </message>
 </context>
 <context>
@@ -4125,6 +4131,7 @@ value by using the [ and ] keys while drawing</source>
         <location filename="../ui/preferences-draftinterface.ui" line="26"/>
         <source>In-Command Shortcuts</source>
         <translation>命令內快捷鍵</translation>
+<<<<<<< HEAD
     </message>
     <message>
         <location filename="../../../../../../../Benson/sources/FreeCAD-0.22.0-git/src/Mod/Draft/Resources/ui/preferences-draftinterface.ui" line="14"/>
@@ -4135,6 +4142,8 @@ value by using the [ and ] keys while drawing</source>
         <location filename="../../../../../../../Benson/sources/FreeCAD-0.22.0-git/src/Mod/Draft/Resources/ui/preferences-draftinterface.ui" line="20"/>
         <source>In-command shortcuts</source>
         <translation>命令內快捷鍵</translation>
+=======
+>>>>>>> 6987fc1beb (Update Tranditional Chinese to latest translations development.)
     </message>
     <message>
         <location filename="../ui/preferences-draftinterface.ui" line="37"/>
@@ -6470,11 +6479,14 @@ pattern definitions to be added to the standard patterns</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+<<<<<<< HEAD
         <location filename="../../DraftGui.py" line="657"/>
         <source>&amp;Undo</source>
         <translation>復原(&amp;U)</translation>
     </message>
     <message>
+=======
+>>>>>>> 6987fc1beb (Update Tranditional Chinese to latest translations development.)
         <location filename="../../DraftGui.py" line="694"/>
         <location filename="../../DraftGui.py" line="729"/>
         <location filename="../../DraftGui.py" line="1058"/>
@@ -6999,6 +7011,9 @@ Not available if Draft preference option &apos;Use Part Primitives&apos; is enab
     </message>
     <message>
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 6987fc1beb (Update Tranditional Chinese to latest translations development.)
         <location filename="../../WorkingPlane.py" line="713"/>
         <location filename="../../draftmake/make_sketch.py" line="127"/>
         <location filename="../../draftmake/make_sketch.py" line="139"/>
@@ -7049,6 +7064,24 @@ Not available if Draft preference option &apos;Use Part Primitives&apos; is enab
         <translation type="unfinished"></translation>
     </message>
     <message>
+<<<<<<< HEAD
+=======
+        <location filename="../../draftguitools/gui_selectplane.py" line="150"/>
+        <source>Pick a face, 3 vertices or a WP Proxy to define the drawing plane</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../draftguitools/gui_selectplane.py" line="274"/>
+        <source>Working plane aligned to global placement of</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../draftguitools/gui_selectplane.py" line="523"/>
+        <source>Dir</source>
+        <translation>方向</translation>
+    </message>
+    <message>
+>>>>>>> 6987fc1beb (Update Tranditional Chinese to latest translations development.)
         <location filename="../../draftguitools/gui_selectplane.py" line="539"/>
         <source>Custom</source>
         <translation>自訂</translation>
@@ -7071,6 +7104,7 @@ Not available if Draft preference option &apos;Use Part Primitives&apos; is enab
     <message>
         <location filename="../../WorkingPlane.py" line="1668"/>
         <source>Position:</source>
+<<<<<<< HEAD
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -7096,6 +7130,17 @@ or try saving to a lower DWG version.</source>
     <message>
 <<<<<<< HEAD
 =======
+=======
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../importDWG.py" line="209"/>
+        <location filename="../../importDWG.py" line="281"/>
+        <source>LibreDWG error</source>
+        <translation>LibreDWG 錯誤</translation>
+    </message>
+    <message>
+>>>>>>> 6987fc1beb (Update Tranditional Chinese to latest translations development.)
         <location filename="../../importDWG.py" line="226"/>
         <source>Error during DWG conversion. Try moving the DWG file to a directory path without spaces and non-english characters, or try saving to a lower DWG version.</source>
         <translation type="unfinished"></translation>
@@ -7113,7 +7158,28 @@ or try saving to a lower DWG version.</source>
         <translation>QCAD 錯誤</translation>
     </message>
     <message>
+<<<<<<< HEAD
 >>>>>>> 220980d336 (Update Tranditional Chinese to latest translations development.)
+=======
+        <location filename="../../importDWG.py" line="284"/>
+        <source>Error during DWG conversion.
+Try moving the DWG file to a directory path without spaces and non-english characters,
+or try saving to a lower DWG version.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../importDWG.py" line="218"/>
+        <location filename="../../importDWG.py" line="290"/>
+        <source>Converting:</source>
+        <translation>轉換中:</translation>
+    </message>
+    <message>
+        <location filename="../../importDWG.py" line="223"/>
+        <source>Conversion successful</source>
+        <translation>轉換成功</translation>
+    </message>
+    <message>
+>>>>>>> 6987fc1beb (Update Tranditional Chinese to latest translations development.)
         <location filename="../../importDWG.py" line="302"/>
         <location filename="../../importDWG.py" line="382"/>
         <source>LibreDWG converter not found</source>
@@ -7163,6 +7229,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
         <translation>製圖</translation>
     </message>
     <message>
+<<<<<<< HEAD
         <location filename="../../draftguitools/gui_selectplane.py" line="150"/>
         <source>Pick a face, 3 vertices or a WP Proxy to define the drawing plane</source>
         <translation type="unfinished"></translation>
@@ -7239,6 +7306,8 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
 >>>>>>> 220980d336 (Update Tranditional Chinese to latest translations development.)
     </message>
     <message>
+=======
+>>>>>>> 6987fc1beb (Update Tranditional Chinese to latest translations development.)
         <source>The Draft workbench is used for 2D drafting on a grid</source>
         <translation>製圖工作台用於在網格上進行平面繪圖</translation>
     </message>
@@ -8227,6 +8296,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     </message>
     <message>
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
         <location filename="../../draftguitools/gui_selectplane.py" line="150"/>
         <source>Pick a face, 3 vertices or a WP Proxy to define the drawing plane</source>
@@ -8244,6 +8314,8 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
     </message>
     <message>
 >>>>>>> 220980d336 (Update Tranditional Chinese to latest translations development.)
+=======
+>>>>>>> 6987fc1beb (Update Tranditional Chinese to latest translations development.)
         <location filename="../../draftguitools/gui_facebinders.py" line="71"/>
         <source>Select faces from existing objects</source>
         <translation type="unfinished"></translation>
@@ -9321,11 +9393,6 @@ The final angle will be the base angle plus this amount.</source>
 <context>
     <name>importOCA</name>
     <message>
-        <location filename="../../importOCA.py" line="360"/>
-        <source>OCA error: couldn&apos;t determine character encoding</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../../importOCA.py" line="445"/>
         <source>OCA: found no data to export</source>
         <translation type="unfinished"></translation>
@@ -9334,6 +9401,11 @@ The final angle will be the base angle plus this amount.</source>
         <location filename="../../importOCA.py" line="490"/>
         <source>successfully exported</source>
         <translation>成功匯出</translation>
+    </message>
+    <message>
+        <location filename="../../importOCA.py" line="360"/>
+        <source>OCA error: couldn&apos;t determine character encoding</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 </TS>

@@ -68,7 +68,11 @@ class DrawSketchHandlerPolygon: public DrawSketchHandlerPolygonBase
     friend DSHPolygonControllerBase;
 
 public:
+<<<<<<< HEAD
     explicit DrawSketchHandlerPolygon(int corners = 6)  // NOLINT
+=======
+    explicit DrawSketchHandlerPolygon(int corners = 6)
+>>>>>>> 6987fc1beb (Update Tranditional Chinese to latest translations development.)
         : numberOfCorners(corners)
         , radius(0.0)
     {}
@@ -407,7 +411,11 @@ void DSHPolygonController::adaptParameters(Base::Vector2d onSketchPos)
             double range = (handler->firstCorner - handler->centerPoint).Angle();
             if (!onViewParameters[OnViewParameter::Fourth]->isSet) {
                 setOnViewParameterValue(OnViewParameter::Fourth,
+<<<<<<< HEAD
                                         Base::toDegrees(range),
+=======
+                                        range * 180 / M_PI,
+>>>>>>> 6987fc1beb (Update Tranditional Chinese to latest translations development.)
                                         Base::Unit::Angle);
             }
 

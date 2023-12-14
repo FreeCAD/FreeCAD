@@ -4500,6 +4500,9 @@ This setting is only for the toolbar. Whichever you chose, all tools are always 
     </message>
     <message>
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 6987fc1beb (Update Tranditional Chinese to latest translations development.)
         <location filename="../../../../../../../../Benson/sources/FreeCAD-0.22.0-git/src/Mod/Sketcher/Gui/SketcherSettings.ui" line="224"/>
         <source>Tool Parameters</source>
         <translation>工具參數</translation>
@@ -4518,8 +4521,11 @@ This setting is only for the toolbar. Whichever you chose, all tools are always 
         <translation type="unfinished"></translation>
     </message>
     <message>
+<<<<<<< HEAD
 =======
 >>>>>>> 220980d336 (Update Tranditional Chinese to latest translations development.)
+=======
+>>>>>>> 6987fc1beb (Update Tranditional Chinese to latest translations development.)
         <location filename="../../SketcherSettings.cpp" line="133"/>
         <source>Single tool</source>
         <translation>單一工具</translation>
@@ -6724,19 +6730,27 @@ Eigen Sparse QR 算法針對稀疏矩陣進行了優化；通常更快</translat
         <location filename="../../../../../../../../Benson/sources/FreeCAD-0.22.0-git/src/Mod/Sketcher/Gui/DrawSketchHandlerRectangle.h" line="1620"/>
         <source>Frame (J)</source>
 <<<<<<< HEAD
+<<<<<<< HEAD
         <translation>外框 (J)</translation>
 =======
         <translation type="unfinished"></translation>
 >>>>>>> 220980d336 (Update Tranditional Chinese to latest translations development.)
+=======
+        <translation>外框 (J)</translation>
+>>>>>>> 6987fc1beb (Update Tranditional Chinese to latest translations development.)
     </message>
     <message>
         <location filename="../../../../../../../../Benson/sources/FreeCAD-0.22.0-git/src/Mod/Sketcher/Gui/DrawSketchHandlerRectangle.h" line="1623"/>
         <source>Create two rectangles, one in the other with a constant thickness.</source>
 <<<<<<< HEAD
+<<<<<<< HEAD
         <translation>建立兩個矩形，其中一個具有恆定的厚度.</translation>
 =======
         <translation type="unfinished"></translation>
 >>>>>>> 220980d336 (Update Tranditional Chinese to latest translations development.)
+=======
+        <translation>建立兩個矩形，其中一個具有恆定的厚度.</translation>
+>>>>>>> 6987fc1beb (Update Tranditional Chinese to latest translations development.)
     </message>
 </context>
 <context>

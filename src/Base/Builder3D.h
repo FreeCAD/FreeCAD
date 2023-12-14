@@ -97,8 +97,12 @@ public:
 class BaseExport VertexOrdering
 {
 public:
+<<<<<<< HEAD
     enum class Ordering
     {
+=======
+    enum class Ordering {
+>>>>>>> 6987fc1beb (Update Tranditional Chinese to latest translations development.)
         UnknownOrdering,
         Clockwise,
         CounterClockwise
@@ -112,8 +116,12 @@ public:
 class BaseExport ShapeType
 {
 public:
+<<<<<<< HEAD
     enum class Type
     {
+=======
+    enum class Type {
+>>>>>>> 6987fc1beb (Update Tranditional Chinese to latest translations development.)
         UnknownShapeType,
         Convex
     };

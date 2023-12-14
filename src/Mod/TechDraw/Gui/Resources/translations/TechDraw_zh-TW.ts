@@ -3635,16 +3635,19 @@
         <location filename="../../../../../../FreeCAD-0.22.0/src/Mod/TechDraw/Gui/CommandAnnotate.cpp" line="1213"/>
         <source>Selection is not a Cosmetic edge.</source>
         <translation>選擇不是裝飾邊緣.</translation>
+<<<<<<< HEAD
     </message>
     <message>
         <location filename="../../../../../../../../Benson/sources/FreeCAD-0.22.0-git/src/Mod/TechDraw/Gui/CommandAnnotate.cpp" line="1216"/>
         <source>Selection is not a Cosmetic Circle or a Cosmetic Arc of Circle.</source>
         <translation>選擇不是修飾圓或修飾圓弧.</translation>
+=======
+>>>>>>> 6987fc1beb (Update Tranditional Chinese to latest translations development.)
     </message>
     <message>
         <location filename="../../../../../../../../Benson/sources/FreeCAD-0.22.0-git/src/Mod/TechDraw/Gui/CommandAnnotate.cpp" line="1216"/>
         <source>Selection is not a Cosmetic Circle or a Cosmetic Arc of Circle.</source>
-        <translation type="unfinished"></translation>
+        <translation>選擇不是修飾圓或修飾圓弧.</translation>
     </message>
     <message>
         <location filename="../../../../../../FreeCAD-0.22.0/src/Mod/TechDraw/Gui/CommandAnnotate.cpp" line="1248"/>

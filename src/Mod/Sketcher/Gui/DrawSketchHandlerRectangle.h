@@ -2110,7 +2110,11 @@ void DSHRectangleController::adaptParameters(Base::Vector2d onSketchPos)
 
                 if (!onViewParameters[OnViewParameter::Fourth]->isSet) {
                     setOnViewParameterValue(OnViewParameter::Fourth,
+<<<<<<< HEAD
                                             Base::toDegrees(handler->angle),
+=======
+                                            handler->angle * 180 / M_PI,
+>>>>>>> 6987fc1beb (Update Tranditional Chinese to latest translations development.)
                                             Base::Unit::Angle);
                 }
 
@@ -2187,11 +2191,19 @@ void DSHRectangleController::adaptParameters(Base::Vector2d onSketchPos)
 
                 if (!onViewParameters[OnViewParameter::Sixth]->isSet) {
                     if (threePoints) {
+<<<<<<< HEAD
                         double val = Base::toDegrees(handler->angle123);
                         setOnViewParameterValue(OnViewParameter::Sixth, val, Base::Unit::Angle);
                     }
                     else {
                         double val = Base::toDegrees(handler->angle412);
+=======
+                        double val = handler->angle123 * 180 / M_PI;
+                        setOnViewParameterValue(OnViewParameter::Sixth, val, Base::Unit::Angle);
+                    }
+                    else {
+                        double val = handler->angle412 * 180 / M_PI;
+>>>>>>> 6987fc1beb (Update Tranditional Chinese to latest translations development.)
                         setOnViewParameterValue(OnViewParameter::Sixth, val, Base::Unit::Angle);
                     }
                 }
