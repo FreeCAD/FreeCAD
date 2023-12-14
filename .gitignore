@@ -41,9 +41,11 @@ install_manifest.txt
 /src/Tools/offlinedoc/localwiki/
 /src/Tools/offlinedoc/*.txt
 /conda/environment.yml
+/.vscode/
 OpenSCAD_rc.py
 tags
 /CMakeUserPresets.json
+Testing
 
 # crowdin file
 src/Tools/freecad.zip

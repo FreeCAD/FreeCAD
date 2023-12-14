@@ -32,13 +32,10 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import FreeCADGui as Gui
-import draftguitools.gui_base as gui_base
-
-from draftutils.translate import translate
+from draftguitools import gui_base
+from draftutils import params
 from draftutils import utils
-from draftutils.utils import ANNOTATION_STYLE as DEFAULT
-
-param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
+from draftutils.translate import translate
 
 
 class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
@@ -95,8 +92,8 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
         self.form = Gui.PySideUic.loadUi(ui_file)
 
         # restore stored size
-        w = param.GetInt("AnnotationStyleEditorWidth", 450)
-        h = param.GetInt("AnnotationStyleEditorHeight", 450)
+        w = params.get_param("AnnotationStyleEditorWidth")
+        h = params.get_param("AnnotationStyleEditorHeight")
         self.form.resize(w, h)
 
         # center the dialog over FreeCAD window
@@ -136,8 +133,8 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
             self.save_meta(self.styles)
 
         # store dialog size
-        param.SetInt("AnnotationStyleEditorWidth", self.form.width())
-        param.SetInt("AnnotationStyleEditorHeight", self.form.height())
+        params.set_param("AnnotationStyleEditorWidth", self.form.width())
+        params.set_param("AnnotationStyleEditorHeight", self.form.height())
 
     def read_meta(self):
         """Read the document Meta attribute and return a dict."""
@@ -326,8 +323,9 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
         Some properties were missing or misspelled.
         Some float values were wrongly stored as strings.
         """
+        default = utils.get_default_annotation_style()
         new = {}
-        for key, val in DEFAULT.items():
+        for key, val in default.items():
             if style.get(key) is None:
                 new[key] = val[1]
             elif type(style[key]) == type(val[1]):
@@ -340,9 +338,10 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
 
     def fill_editor(self, style=None):
         """Fill the editor fields with the contents of a style."""
+        default = utils.get_default_annotation_style()
         if style is None or style == "":
             style = {}
-            for key, val in DEFAULT.items():
+            for key, val in default.items():
                 style[key] = val[1]
         elif isinstance(style, dict):
             pass
@@ -353,23 +352,23 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
 
         for key, value in style.items():
             control = getattr(self.form, key)
-            if DEFAULT[key][0] == "str":
+            if default[key][0] == "str":
                 control.setText(value)
-            elif DEFAULT[key][0] == "font":
+            elif default[key][0] == "font":
                 control.setCurrentFont(QtGui.QFont(value))
-            elif DEFAULT[key][0] == "color":
+            elif default[key][0] == "color":
                 color = QtGui.QColor(utils.rgba_to_argb(value))
                 control.setProperty("color", color)
-            elif DEFAULT[key][0] == "int":
+            elif default[key][0] == "int":
                 control.setValue(value)
-            elif DEFAULT[key][0] == "float":
+            elif default[key][0] == "float":
                 if hasattr(control, "setText"):
                     control.setText(App.Units.Quantity(value, App.Units.Length).UserString)
                 else:
                     control.setValue(value)
-            elif DEFAULT[key][0] == "bool":
+            elif default[key][0] == "bool":
                 control.setChecked(value)
-            elif DEFAULT[key][0] == "index":
+            elif default[key][0] == "index":
                 control.setCurrentIndex(value)
 
     def update_style(self):
@@ -380,25 +379,26 @@ class AnnotationStyleEditor(gui_base.GuiCommandSimplest):
             self.styles[style] = self.get_editor_values()
 
     def get_editor_values(self):
+        default = utils.get_default_annotation_style()
         values = {}
-        for key in DEFAULT.keys():
+        for key in default.keys():
             control = getattr(self.form, key)
-            if DEFAULT[key][0] == "str":
+            if default[key][0] == "str":
                 values[key] = control.text()
-            elif DEFAULT[key][0] == "font":
+            elif default[key][0] == "font":
                 values[key] = control.currentFont().family()
-            elif DEFAULT[key][0] == "color":
+            elif default[key][0] == "color":
                 values[key] = utils.argb_to_rgba(control.property("color").rgba())
-            elif DEFAULT[key][0] == "int":
+            elif default[key][0] == "int":
                 values[key] = control.value()
-            elif DEFAULT[key][0] == "float":
+            elif default[key][0] == "float":
                 if hasattr(control, "setText"):
                     values[key] = App.Units.Quantity(control.text()).Value
                 else:
                     values[key] = control.value()
-            elif DEFAULT[key][0] == "bool":
+            elif default[key][0] == "bool":
                 values[key] = control.isChecked()
-            elif DEFAULT[key][0] == "index":
+            elif default[key][0] == "index":
                 values[key] = control.currentIndex()
         return values
 

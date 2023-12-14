@@ -43,16 +43,21 @@ using namespace App;
 
 PyObject*  DocumentPy::addProperty(PyObject *args, PyObject *kwd)
 {
-    char *sType,*sName=nullptr,*sGroup=nullptr,*sDoc=nullptr;
+    char *sType {nullptr};
+    char *sName {nullptr};
+    char *sGroup {nullptr};
+    char *sDoc {nullptr};
     short attr=0;
     std::string sDocStr;
     PyObject *ro = Py_False, *hd = Py_False;
     PyObject* enumVals = nullptr;
-    static char *kwlist[] = {"type","name","group","doc","attr","read_only","hidden","enum_vals",nullptr};
-    if (!PyArg_ParseTupleAndKeywords(
+    static const std::array<const char *, 9> kwlist{"type", "name", "group", "doc", "attr",
+                                                    "read_only", "hidden", "enum_vals", nullptr};
+    if (!Base::Wrapped_ParseTupleAndKeywords(
             args, kwd, "ss|sethO!O!O", kwlist, &sType, &sName, &sGroup, "utf-8",
-            &sDoc, &attr, &PyBool_Type, &ro, &PyBool_Type, &hd, &enumVals))
+            &sDoc, &attr, &PyBool_Type, &ro, &PyBool_Type, &hd, &enumVals)) {
         return nullptr;
+    }
 
     if (sDoc) {
         sDocStr = sDoc;

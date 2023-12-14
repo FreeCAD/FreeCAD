@@ -43,12 +43,11 @@ struct string_comp
         if (s1.size() < s2.size()) {
             return true;
         }
-        else if (s1.size() > s2.size()) {
+        if (s1.size() > s2.size()) {
             return false;
         }
-        else {
-            return s1 < s2;
-        }
+
+        return s1 < s2;
     }
     static std::string increment(const std::string& s)
     {
@@ -77,8 +76,8 @@ struct string_comp
 class unique_name
 {
 public:
-    unique_name(const std::string& name, const std::vector<std::string>& names, int padding)
-        : base_name {name}
+    unique_name(std::string name, const std::vector<std::string>& names, int padding)
+        : base_name {std::move(name)}
         , padding {padding}
     {
         removeDigitsFromEnd();
@@ -105,7 +104,7 @@ private:
         for (const auto& name : names) {
             if (name.substr(0, base_name.length()) == base_name) {  // same prefix
                 std::string suffix(name.substr(base_name.length()));
-                if (suffix.size() > 0) {
+                if (!suffix.empty()) {
                     std::string::size_type pos = suffix.find_first_not_of("0123456789");
                     if (pos == std::string::npos) {
                         num_suffix = std::max<std::string>(num_suffix, suffix, Base::string_comp());

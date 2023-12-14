@@ -42,6 +42,7 @@ https://knowledge.autodesk.com/support/autocad/downloads/
 
 import FreeCAD
 from FreeCAD import Console as FCC
+from draftutils import params
 
 if FreeCAD.GuiUp:
     from draftutils.translate import translate
@@ -153,8 +154,7 @@ def get_libredwg_converter(typ):
     import os
     import platform
 
-    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-    path = p.GetString("TeighaFileConverter")
+    path = params.get_param("TeighaFileConverter")
 
     if "dwg2dxf" in path or "dxf2dwg" in path: # path set manually
         if typ not in path:
@@ -192,8 +192,7 @@ def get_oda_converter():
     import os
     import platform
 
-    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-    path = p.GetString("TeighaFileConverter")
+    path = params.get_param("TeighaFileConverter")
 
     if "ODAFileConverter" in path: # path set manually
         if os.path.exists(path) and os.path.isfile(path):
@@ -234,8 +233,7 @@ def get_qcad_converter():
     import os
     import platform
 
-    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-    path = p.GetString("TeighaFileConverter")
+    path = params.get_param("TeighaFileConverter")
 
     if "dwg2dwg" in path: # path set manually
         pass
@@ -277,8 +275,7 @@ def convertToDxf(dwgfilename):
     import tempfile
 
     dwgfilename = dwgfilename.replace("\\", "/")
-    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-    conv = p.GetInt("DWGConversion", 0)
+    conv = params.get_param("DWGConversion")
     error_msg = translate("draft", """Error during DWG conversion.
 Try moving the DWG file to a directory path without spaces and non-english characters,
 or try saving to a lower DWG version.""") + "\n"
@@ -367,8 +364,7 @@ def convertToDwg(dxffilename, dwgfilename):
 
     dxffilename = dxffilename.replace("\\", "/")
     dwgfilename = dwgfilename.replace("\\", "/")
-    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-    conv = p.GetInt("DWGConversion", 0)
+    conv = params.get_param("DWGConversion")
 
     if conv in [0, 1]: # LibreDWG
         libredwg = get_libredwg_converter("dxf2dwg")

@@ -104,7 +104,7 @@ void ModelSelect::saveFavorites()
     // Add the current values
     param->SetInt("Favorites", _favorites.size());
     int j = 0;
-    for (auto favorite : _favorites) {
+    for (auto& favorite : _favorites) {
         QString key = QString::fromLatin1("FAV%1").arg(j);
         param->SetASCII(key.toStdString().c_str(), favorite.toStdString());
 
@@ -132,7 +132,7 @@ void ModelSelect::removeFavorite(const QString& uuid)
 
 bool ModelSelect::isFavorite(const QString& uuid) const
 {
-    for (auto it : _favorites) {
+    for (auto& it : _favorites) {
         if (it == uuid) {
             return true;
         }
@@ -175,7 +175,7 @@ void ModelSelect::saveRecents()
     }
     param->SetInt("Recent", size);
     int j = 0;
-    for (auto recent : _recents) {
+    for (auto& recent : _recents) {
         QString key = QString::fromLatin1("MRU%1").arg(j);
         param->SetASCII(key.toStdString().c_str(), recent.toStdString());
 
@@ -203,7 +203,7 @@ void ModelSelect::addRecent(const QString& uuid)
 
 bool ModelSelect::isRecent(const QString& uuid) const
 {
-    for (auto it : _recents) {
+    for (auto& it : _recents) {
         if (it == uuid) {
             return true;
         }
@@ -340,7 +340,7 @@ void ModelSelect::fillTree()
     addRecents(lib);
 
     auto libraries = getModelManager().getModelLibraries();
-    for (auto library : *libraries) {
+    for (auto& library : *libraries) {
         lib = new QStandardItem(library->getName());
         lib->setFlags(Qt::ItemIsEnabled | Qt::ItemIsDragEnabled | Qt::ItemIsDropEnabled);
         addExpanded(tree, model, lib);
@@ -389,18 +389,18 @@ void ModelSelect::createModelProperties()
 void ModelSelect::updateModelProperties(std::shared_ptr<Materials::Model> model)
 {
     QTableView* table = ui->tableProperties;
-    QStandardItemModel* tableModel = static_cast<QStandardItemModel*>(table->model());
+    auto tableModel = dynamic_cast<QStandardItemModel*>(table->model());
     tableModel->clear();
 
     setHeaders(tableModel);
     setColumnWidths(table);
 
-    for (auto itp = model->begin(); itp != model->end(); itp++) {
+    for (auto& itp : *model) {
         QList<QStandardItem*> items;
 
-        QString key = itp->first;
+        QString key = itp.first;
         const Materials::ModelProperty modelProperty =
-            static_cast<const Materials::ModelProperty>(itp->second);
+            static_cast<const Materials::ModelProperty>(itp.second);
 
         auto inherited =
             new QStandardItem(QString::fromStdString(modelProperty.isInherited() ? "*" : ""));
@@ -454,7 +454,7 @@ void ModelSelect::clearMaterialModel()
     ui->tabWidget->setTabText(1, tr("Properties"));
 
     QTableView* table = ui->tableProperties;
-    QStandardItemModel* tableModel = static_cast<QStandardItemModel*>(table->model());
+    auto tableModel = dynamic_cast<QStandardItemModel*>(table->model());
     tableModel->clear();
 
     setHeaders(tableModel);
@@ -465,23 +465,19 @@ void ModelSelect::onSelectModel(const QItemSelection& selected, const QItemSelec
 {
     Q_UNUSED(deselected);
 
-    Base::Console().Log("ModelSelect::onSelectModel()\n");
-    QStandardItemModel* model = static_cast<QStandardItemModel*>(ui->treeModels->model());
+    auto model = dynamic_cast<QStandardItemModel*>(ui->treeModels->model());
     QModelIndexList indexes = selected.indexes();
     for (auto it = indexes.begin(); it != indexes.end(); it++) {
         QStandardItem* item = model->itemFromIndex(*it);
-        Base::Console().Log("%s\n", item->text().toStdString().c_str());
         if (item) {
             try {
                 _selected = item->data(Qt::UserRole).toString();
-                Base::Console().Log("\t%s\n", _selected.toStdString().c_str());
                 updateMaterialModel(_selected);
                 ui->standardButtons->button(QDialogButtonBox::Ok)->setEnabled(true);
                 ui->buttonFavorite->setEnabled(true);
             }
             catch (const std::exception& e) {
                 _selected = QString::fromStdString("");
-                Base::Console().Log("Error %s\n", e.what());
                 clearMaterialModel();
                 ui->standardButtons->button(QDialogButtonBox::Ok)->setEnabled(false);
                 ui->buttonFavorite->setEnabled(false);
@@ -494,7 +490,6 @@ void ModelSelect::onDoubleClick(const QModelIndex& index)
 {
     Q_UNUSED(index)
 
-    Base::Console().Log("ModelSelect::onDoubleClick()\n");
     accept();
 }
 
@@ -502,7 +497,6 @@ void ModelSelect::onURL(bool checked)
 {
     Q_UNUSED(checked)
 
-    Base::Console().Log("URL\n");
     QString url = ui->editURL->text();
     if (url.length() > 0) {
         QDesktopServices::openUrl(QUrl(url, QUrl::TolerantMode));
@@ -513,7 +507,6 @@ void ModelSelect::onDOI(bool checked)
 {
     Q_UNUSED(checked)
 
-    Base::Console().Log("DOI\n");
     QString url = QString::fromStdString("https://doi.org/") + ui->editDOI->text();
     if (url.length() > 0) {
         QDesktopServices::openUrl(QUrl(url, QUrl::TolerantMode));
@@ -524,7 +517,6 @@ void ModelSelect::onFavourite(bool checked)
 {
     Q_UNUSED(checked)
 
-    Base::Console().Log("Favorite\n");
     if (isFavorite(_selected)) {
         removeFavorite(_selected);
     }

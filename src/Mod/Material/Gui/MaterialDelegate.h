@@ -44,7 +44,7 @@ public:
     ~MaterialDelegate() override = default;
 
     QWidget* createEditor(QWidget* parent,
-                          const QStyleOptionViewItem&,
+                          const QStyleOptionViewItem& styleOption,
                           const QModelIndex& index) const override;
     QSize sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const override;
     void paint(QPainter* painter,
@@ -73,6 +73,9 @@ private:
                           const QString& propertyUnits) const;
     QRgb parseColor(const QString& color) const;
     void showColorModal(QStandardItem* item, QString propertyName);
+    void showImageModal(const QString& propertyName, QStandardItem* item);
+    void showListModal(const QString& propertyName, QStandardItem* item);
+    void showMultiLineString(const QString& propertyName, QStandardItem* item);
     void showArray2DModal(const QString& propertyName, QStandardItem* item);
     void showArray3DModal(const QString& propertyName, QStandardItem* item);
 };

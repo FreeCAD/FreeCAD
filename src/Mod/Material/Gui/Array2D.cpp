@@ -42,7 +42,7 @@ using namespace MatGui;
 /* TRANSLATOR MatGui::Array2D */
 
 Array2D::Array2D(const QString& propertyName,
-                 std::shared_ptr<Materials::Material> material,
+                 const std::shared_ptr<Materials::Material>& material,
                  QWidget* parent)
     : QDialog(parent)
     , ui(new Ui_Array2D)
@@ -61,22 +61,13 @@ Array2D::Array2D(const QString& propertyName,
         _property = nullptr;
     }
     if (_property) {
-        Base::Console().Log("Value type %d\n",
-                            static_cast<int>(_property->getMaterialValue()->getType()));
         _value =
             std::static_pointer_cast<Materials::Material2DArray>(_property->getMaterialValue());
     }
     else {
-        Base::Console().Log("No value loaded\n");
         _value = nullptr;
     }
-    if (_value) {
-        Base::Console().Log("Value type %d\n", static_cast<int>(_value->getType()));
-        // auto value = _property->getMaterialValue()->getValue();
-        // Base::Console().Log("\tQVariant type %d\n", value.userType());
-    }
 
-    setupDefault();
     setupArray();
 
     ui->tableView->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -89,36 +80,6 @@ Array2D::Array2D(const QString& propertyName,
 
     connect(ui->standardButtons, &QDialogButtonBox::accepted, this, &Array2D::accept);
     connect(ui->standardButtons, &QDialogButtonBox::rejected, this, &Array2D::reject);
-}
-
-void Array2D::setupDefault()
-{
-    if (_property == nullptr) {
-        return;
-    }
-
-    try {
-        const Materials::MaterialProperty& column1 = _property->getColumn(0);
-        QString label = tr("Default ") + column1.getName();
-        ui->labelDefault->setText(label);
-        if (column1.getPropertyType() == QString::fromStdString("Quantity")) {
-            ui->editDefault->setMinimum(std::numeric_limits<double>::min());
-            ui->editDefault->setMaximum(std::numeric_limits<double>::max());
-            ui->editDefault->setUnitText(_property->getColumnUnits(0));
-            if (!_value->defaultSet()) {
-                _value->setDefault(_property->getColumnNull(0).value<Base::Quantity>());
-            }
-            ui->editDefault->setValue(_value->getDefault().value<Base::Quantity>());
-
-            connect(ui->editDefault,
-                    qOverload<const Base::Quantity&>(&Gui::QuantitySpinBox::valueChanged),
-                    this,
-                    &Array2D::defaultValueChanged);
-        }
-    }
-    catch (const Materials::PropertyNotFound&) {
-        return;
-    }
 }
 
 void Array2D::setHeaders(QStandardItemModel* model)
@@ -178,18 +139,9 @@ void Array2D::onDataChanged(const QModelIndex& topLeft,
     _material->setEditStateAlter();
 }
 
-void Array2D::defaultValueChanged(const Base::Quantity& value)
-{
-    _value->setDefault(QVariant::fromValue(value));
-    _material->setEditStateAlter();
-}
-
 void Array2D::onContextMenu(const QPoint& pos)
 {
-    Base::Console().Log("Array2D::onContextMenu(%d,%d)\n", pos.x(), pos.y());
     QModelIndex index = ui->tableView->indexAt(pos);
-    Base::Console().Log("\tindex at (%d,%d)\n", index.row(), index.column());
-
 
     QMenu contextMenu(tr("Context menu"), this);
 
@@ -200,7 +152,7 @@ void Array2D::onContextMenu(const QPoint& pos)
 
 bool Array2D::newRow(const QModelIndex& index)
 {
-    Array2DModel* model = static_cast<Array2DModel*>(ui->tableView->model());
+    auto model = static_cast<Array2DModel*>(ui->tableView->model());
     return model->newRow(index);
 }
 
@@ -208,10 +160,8 @@ void Array2D::onDelete(bool checked)
 {
     Q_UNUSED(checked)
 
-    Base::Console().Log("Array2D::onDelete()\n");
     QItemSelectionModel* selectionModel = ui->tableView->selectionModel();
     if (!selectionModel->hasSelection() || newRow(selectionModel->currentIndex())) {
-        Base::Console().Log("\tNothing selected\n");
         return;
     }
 
@@ -248,7 +198,7 @@ int Array2D::confirmDelete()
 
 void Array2D::deleteSelected()
 {
-    Array2DModel* model = static_cast<Array2DModel*>(ui->tableView->model());
+    auto model = static_cast<Array2DModel*>(ui->tableView->model());
     QItemSelectionModel* selectionModel = ui->tableView->selectionModel();
     auto index = selectionModel->currentIndex();
     model->deleteRow(index);

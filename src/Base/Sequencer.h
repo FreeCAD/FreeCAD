@@ -126,6 +126,8 @@ public:
      * @see Sequencer
      */
     static SequencerBase& Instance();
+    /** Destruction */
+    virtual ~SequencerBase();
     /**
      * Returns true if the running sequencer is blocking any user input.
      * This might be only of interest of the GUI where the progress bar or dialog
@@ -205,9 +207,9 @@ protected:
     /** construction */
     SequencerBase();
     SequencerBase(const SequencerBase&) = default;
+    SequencerBase(SequencerBase&&) = default;
     SequencerBase& operator=(const SequencerBase&) = default;
-    /** Destruction */
-    virtual ~SequencerBase();
+    SequencerBase& operator=(SequencerBase&&) = default;
     /**
      * Sets a text what the pending operation is doing. The default implementation
      * does nothing.
@@ -375,7 +377,9 @@ public:
     bool wasCanceled() const;
 
     SequencerLauncher(const SequencerLauncher&) = delete;
+    SequencerLauncher(SequencerLauncher&&) = delete;
     void operator=(const SequencerLauncher&) = delete;
+    void operator=(SequencerLauncher&&) = delete;
 };
 
 /** Access to the only SequencerBase instance */

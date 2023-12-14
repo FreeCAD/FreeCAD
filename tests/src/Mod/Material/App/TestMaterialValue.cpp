@@ -143,7 +143,6 @@ TEST_F(TestMaterialValue, TestQuantityType)
     EXPECT_TRUE(variant.toString().isNull());
     EXPECT_TRUE(variant.toString().isEmpty());
     EXPECT_EQ(variant.toString().size(), 0);
-
     auto quantity = variant.value<Base::Quantity>();
     EXPECT_FALSE(quantity.isValid());
     EXPECT_EQ(quantity.getUserString(), QString::fromStdString("nan "));
@@ -160,7 +159,6 @@ TEST_F(TestMaterialValue, TestQuantityType)
     EXPECT_TRUE(variant.toString().isNull());
     EXPECT_TRUE(variant.toString().isEmpty());
     EXPECT_EQ(variant.toString().size(), 0);
-
     quantity = variant.value<Base::Quantity>();
     EXPECT_FALSE(quantity.isValid());
     EXPECT_EQ(quantity.getUserString(), QString::fromStdString("nan "));
@@ -173,11 +171,16 @@ TEST_F(TestMaterialValue, TestListType)
     EXPECT_EQ(mat1.getType(), Materials::MaterialValue::List);
     EXPECT_TRUE(mat1.isNull());
     auto variant = mat1.getValue();
-    EXPECT_TRUE(variant.isNull());
-    EXPECT_TRUE(variant.canConvert<QString>());
+    EXPECT_TRUE(variant.value<QList<QVariant>>().isEmpty());
+    EXPECT_EQ(variant.value<QList<QVariant>>().size(), 0);
+    EXPECT_FALSE(variant.isNull());
+    EXPECT_FALSE(variant.canConvert<QVariant>());
     EXPECT_TRUE(variant.toString().isNull());
     EXPECT_TRUE(variant.toString().isEmpty());
     EXPECT_EQ(variant.toString().size(), 0);
+    auto list = mat1.getList();
+    EXPECT_TRUE(list.isEmpty());
+    EXPECT_EQ(list.size(), 0);
 }
 
 TEST_F(TestMaterialValue, TestArray2DType)
@@ -187,13 +190,6 @@ TEST_F(TestMaterialValue, TestArray2DType)
     auto mat2 = Materials::Material2DArray();
     EXPECT_EQ(mat2.getType(), Materials::MaterialValue::Array2D);
     EXPECT_TRUE(mat2.isNull());
-    auto variant = mat2.getDefault();
-    EXPECT_TRUE(variant.isNull());
-    EXPECT_FALSE(variant.canConvert<QString>());
-    EXPECT_TRUE(variant.toString().isNull());
-    EXPECT_TRUE(variant.toString().isEmpty());
-    EXPECT_EQ(variant.toString().size(), 0);
-
     EXPECT_EQ(mat2.rows(), 0);
 }
 
@@ -202,19 +198,14 @@ TEST_F(TestMaterialValue, TestArray3DType)
     EXPECT_THROW(auto mat1 = Materials::MaterialValue(Materials::MaterialValue::Array3D), Materials::InvalidMaterialType);
 
     auto mat2 = Materials::Material3DArray();
+    mat2.setColumns(2);
     EXPECT_EQ(mat2.getType(), Materials::MaterialValue::Array3D);
     EXPECT_TRUE(mat2.isNull());
-    auto variant = mat2.getDefault();
-    EXPECT_TRUE(variant.isNull());
-    EXPECT_FALSE(variant.canConvert<QString>());
-    EXPECT_TRUE(variant.toString().isNull());
-    EXPECT_TRUE(variant.toString().isEmpty());
-    EXPECT_EQ(variant.toString().size(), 0);
 
     EXPECT_EQ(mat2.depth(), 0);
     EXPECT_EQ(mat2.rows(), 0);
     EXPECT_EQ(mat2.rows(0), 0);
-    EXPECT_THROW(mat2.rows(1), Materials::InvalidDepth);
+    EXPECT_THROW(mat2.rows(1), Materials::InvalidIndex);
 
     Base::Quantity quantity;
     quantity.setInvalid();
@@ -222,19 +213,19 @@ TEST_F(TestMaterialValue, TestArray3DType)
     EXPECT_EQ(mat2.addDepth(0, quantity), 0);
     EXPECT_EQ(mat2.depth(), 1);
     EXPECT_EQ(mat2.rows(0), 0);
-    EXPECT_THROW(mat2.rows(1), Materials::InvalidDepth);
+    EXPECT_THROW(mat2.rows(1), Materials::InvalidIndex);
 
     EXPECT_EQ(mat2.addDepth(quantity), 1);
     EXPECT_EQ(mat2.depth(), 2);
     EXPECT_EQ(mat2.rows(1), 0);
 
-    EXPECT_THROW(mat2.addDepth(99, quantity), Materials::InvalidDepth);
+    EXPECT_THROW(mat2.addDepth(99, quantity), Materials::InvalidIndex);
     EXPECT_EQ(mat2.addDepth(2, quantity), 2);
     EXPECT_EQ(mat2.depth(), 3);
     EXPECT_EQ(mat2.rows(2), 0);
 
     // Add rows
-    auto row = std::make_shared<std::vector<Base::Quantity>>();
+    auto row = std::make_shared<QList<Base::Quantity>>();
     row->push_back(quantity);
     row->push_back(quantity);
 
@@ -293,7 +284,7 @@ TEST_F(TestMaterialValue, TestArray3DType)
     EXPECT_EQ(mat2.getDepthValue(2), Base::Quantity::parse(QString::fromStdString("32 C")));
 
     // Rows are currently empty
-    EXPECT_THROW(mat2.getValue(2, 0), Materials::InvalidRow);
+    EXPECT_THROW(mat2.getValue(2, 0), Materials::InvalidIndex);
     EXPECT_NO_THROW(mat2.getValue(0, 0));
     EXPECT_FALSE(mat2.getValue(0, 0).isValid());
     EXPECT_FALSE(mat2.getValue(0, 1).isValid());
@@ -303,7 +294,7 @@ TEST_F(TestMaterialValue, TestArray3DType)
     EXPECT_TRUE(mat2.getValue(0, 0).isValid());
     mat2.setValue(0, 1, Base::Quantity::parse(QString::fromStdString("9.8 m/s/s")));
     EXPECT_TRUE(mat2.getValue(0, 1).isValid());
-    EXPECT_THROW(mat2.setValue(0, 2, Base::Quantity::parse(QString::fromStdString("32 C"))), Materials::InvalidColumn);
+    EXPECT_THROW(mat2.setValue(0, 2, Base::Quantity::parse(QString::fromStdString("32 C"))), Materials::InvalidIndex);
 
 }
 

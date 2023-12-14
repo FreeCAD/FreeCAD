@@ -26,7 +26,7 @@
 #include "DualNumber.h"
 #include <FCGlobal.h>
 
-
+// NOLINTBEGIN(readability-identifier-length)
 namespace Base
 {
 
@@ -146,5 +146,6 @@ BaseExport DualQuat operator*(DualNumber a, DualQuat b);
 
 
 }  // namespace Base
+// NOLINTEND(readability-identifier-length)
 
 #endif

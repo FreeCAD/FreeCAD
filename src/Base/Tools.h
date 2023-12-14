@@ -49,7 +49,7 @@ public:
     {
         return n++;
     }
-    iotaGen(T v)
+    explicit iotaGen(T v)
         : n(v)
     {}
 
@@ -116,9 +116,8 @@ inline T sgn(T t)
     if (t == 0) {
         return T(0);
     }
-    else {
-        return (t > 0) ? T(1) : T(-1);
-    }
+
+    return (t > 0) ? T(1) : T(-1);
 }
 
 #ifndef M_PI
@@ -156,6 +155,11 @@ public:
     int restart();
     int elapsed();
     std::string toString(int ms) const;
+
+    StopWatch(const StopWatch&) = delete;
+    StopWatch(StopWatch&&) = delete;
+    StopWatch& operator=(const StopWatch&) = delete;
+    StopWatch& operator=(StopWatch&&) = delete;
 
 private:
     struct Private;

@@ -70,7 +70,8 @@ public:
                   int8_t LuminousIntensity = 0,
                   int8_t Angle = 0);
     Unit();
-    Unit(const Unit&);
+    Unit(const Unit&) = default;
+    Unit(Unit&&) = default;
     explicit Unit(const QString& expr);
     /// Destruction
     ~Unit() = default;
@@ -87,7 +88,8 @@ public:
     {
         return !(*this == that);
     }
-    Unit& operator=(const Unit&);
+    Unit& operator=(const Unit&) = default;
+    Unit& operator=(Unit&&) = default;
     Unit pow(double exp) const;
     //@}
     /// get the unit signature
@@ -104,74 +106,74 @@ public:
     /** Predefined Unit types. */
     //@{
     /// Length unit
-    static Unit Length;
+    static const Unit Length;
     /// Mass unit
-    static Unit Mass;
+    static const Unit Mass;
 
     /// Angle
-    static Unit Angle;
-    static Unit AngleOfFriction;
+    static const Unit Angle;
+    static const Unit AngleOfFriction;
 
-    static Unit Density;
+    static const Unit Density;
 
-    static Unit Area;
-    static Unit Volume;
-    static Unit TimeSpan;
-    static Unit Frequency;
-    static Unit Velocity;
-    static Unit Acceleration;
-    static Unit Temperature;
+    static const Unit Area;
+    static const Unit Volume;
+    static const Unit TimeSpan;
+    static const Unit Frequency;
+    static const Unit Velocity;
+    static const Unit Acceleration;
+    static const Unit Temperature;
 
-    static Unit CurrentDensity;
-    static Unit ElectricCurrent;
-    static Unit ElectricPotential;
-    static Unit ElectricCharge;
-    static Unit MagneticFieldStrength;
-    static Unit MagneticFlux;
-    static Unit MagneticFluxDensity;
-    static Unit Magnetization;
-    static Unit ElectricalCapacitance;
-    static Unit ElectricalInductance;
-    static Unit ElectricalConductance;
-    static Unit ElectricalResistance;
-    static Unit ElectricalConductivity;
-    static Unit AmountOfSubstance;
-    static Unit LuminousIntensity;
+    static const Unit CurrentDensity;
+    static const Unit ElectricCurrent;
+    static const Unit ElectricPotential;
+    static const Unit ElectricCharge;
+    static const Unit MagneticFieldStrength;
+    static const Unit MagneticFlux;
+    static const Unit MagneticFluxDensity;
+    static const Unit Magnetization;
+    static const Unit ElectricalCapacitance;
+    static const Unit ElectricalInductance;
+    static const Unit ElectricalConductance;
+    static const Unit ElectricalResistance;
+    static const Unit ElectricalConductivity;
+    static const Unit AmountOfSubstance;
+    static const Unit LuminousIntensity;
 
     // Pressure
-    static Unit CompressiveStrength;
-    static Unit Pressure;
-    static Unit ShearModulus;
-    static Unit Stress;
-    static Unit UltimateTensileStrength;
-    static Unit YieldStrength;
-    static Unit YoungsModulus;
+    static const Unit CompressiveStrength;
+    static const Unit Pressure;
+    static const Unit ShearModulus;
+    static const Unit Stress;
+    static const Unit UltimateTensileStrength;
+    static const Unit YieldStrength;
+    static const Unit YoungsModulus;
 
-    static Unit Stiffness;
+    static const Unit Stiffness;
 
-    static Unit Force;
-    static Unit Work;
-    static Unit Power;
+    static const Unit Force;
+    static const Unit Work;
+    static const Unit Power;
 
-    static Unit SpecificEnergy;
-    static Unit ThermalConductivity;
-    static Unit ThermalExpansionCoefficient;
-    static Unit VolumetricThermalExpansionCoefficient;
-    static Unit SpecificHeat;
-    static Unit ThermalTransferCoefficient;
-    static Unit HeatFlux;
-    static Unit DynamicViscosity;
-    static Unit KinematicViscosity;
-    static Unit VacuumPermittivity;
-    static Unit VolumeFlowRate;
-    static Unit DissipationRate;
+    static const Unit SpecificEnergy;
+    static const Unit ThermalConductivity;
+    static const Unit ThermalExpansionCoefficient;
+    static const Unit VolumetricThermalExpansionCoefficient;
+    static const Unit SpecificHeat;
+    static const Unit ThermalTransferCoefficient;
+    static const Unit HeatFlux;
+    static const Unit DynamicViscosity;
+    static const Unit KinematicViscosity;
+    static const Unit VacuumPermittivity;
+    static const Unit VolumeFlowRate;
+    static const Unit DissipationRate;
 
-    static Unit InverseLength;
-    static Unit InverseArea;
-    static Unit InverseVolume;
+    static const Unit InverseLength;
+    static const Unit InverseArea;
+    static const Unit InverseVolume;
 
     //@}
-protected:
+private:
     UnitSignature Sig;
 };
 

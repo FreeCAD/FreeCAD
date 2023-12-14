@@ -313,8 +313,8 @@ void InventorFieldWriter::write<int>(const char* fieldName,
 
 // -----------------------------------------------------------------------------
 
-LabelItem::LabelItem(const std::string& text)
-    : text(text)
+LabelItem::LabelItem(std::string text)
+    : text(std::move(text))
 {}
 
 void LabelItem::write(InventorOutput& out) const
@@ -326,8 +326,8 @@ void LabelItem::write(InventorOutput& out) const
 
 // -----------------------------------------------------------------------------
 
-InfoItem::InfoItem(const std::string& text)
-    : text(text)
+InfoItem::InfoItem(std::string text)
+    : text(std::move(text))
 {}
 
 void InfoItem::write(InventorOutput& out) const
@@ -403,10 +403,8 @@ void LineItem::write(InventorOutput& out) const
 
 // -----------------------------------------------------------------------------
 
-MultiLineItem::MultiLineItem(const std::vector<Vector3f>& points,
-                             DrawStyle drawStyle,
-                             const ColorRGB& rgb)
-    : points {points}
+MultiLineItem::MultiLineItem(std::vector<Vector3f> points, DrawStyle drawStyle, const ColorRGB& rgb)
+    : points {std::move(points)}
     , drawStyle {drawStyle}
     , rgb {rgb}
 {}
@@ -456,9 +454,9 @@ void ArrowItem::write(InventorOutput& out) const
     dir.Scale(sf2, sf2, sf2);
     Vector3f cpt = line.p1 + dir;
 
-    Vector3f rot = Vector3f(0.0f, 1.0f, 0.0f) % dir;
+    Vector3f rot = Vector3f(0.0F, 1.0F, 0.0F) % dir;
     rot.Normalize();
-    float angle = Vector3f(0.0f, 1.0f, 0.0f).GetAngle(dir);
+    float angle = Vector3f(0.0F, 1.0F, 0.0F).GetAngle(dir);
 
     out.write() << "Separator {\n";
     out.write() << "  Material { diffuseColor " << rgb.red() << " " << rgb.green() << " "
@@ -670,7 +668,6 @@ void ShapeHintsItem::setShapeType(ShapeType::Type value)
     shapeType.type = value;
 }
 
-
 void ShapeHintsItem::write(InventorOutput& out) const
 {
     out.write() << "ShapeHints {\n";
@@ -699,8 +696,8 @@ void PolygonOffsetItem::write(InventorOutput& out) const
 
 // -----------------------------------------------------------------------------
 
-Coordinate3Item::Coordinate3Item(const std::vector<Vector3f>& points)
-    : points(points)
+Coordinate3Item::Coordinate3Item(std::vector<Vector3f> points)
+    : points(std::move(points))
 {}
 
 void Coordinate3Item::write(InventorOutput& out) const
@@ -739,8 +736,8 @@ void LineSetItem::write(InventorOutput& out) const
 
 // -----------------------------------------------------------------------------
 
-FaceSetItem::FaceSetItem(const std::vector<int>& indices)
-    : indices(indices)
+FaceSetItem::FaceSetItem(std::vector<int> indices)
+    : indices(std::move(indices))
 {}
 
 void FaceSetItem::write(InventorOutput& out) const
@@ -755,8 +752,8 @@ void FaceSetItem::write(InventorOutput& out) const
 
 // -----------------------------------------------------------------------------
 
-IndexedLineSetItem::IndexedLineSetItem(const std::vector<int>& indices)
-    : indices(indices)
+IndexedLineSetItem::IndexedLineSetItem(std::vector<int> indices)
+    : indices(std::move(indices))
 {}
 
 void IndexedLineSetItem::write(InventorOutput& out) const
@@ -771,8 +768,8 @@ void IndexedLineSetItem::write(InventorOutput& out) const
 
 // -----------------------------------------------------------------------------
 
-IndexedFaceSetItem::IndexedFaceSetItem(const std::vector<int>& indices)
-    : indices(indices)
+IndexedFaceSetItem::IndexedFaceSetItem(std::vector<int> indices)
+    : indices(std::move(indices))
 {}
 
 void IndexedFaceSetItem::write(InventorOutput& out) const
@@ -787,8 +784,8 @@ void IndexedFaceSetItem::write(InventorOutput& out) const
 
 // -----------------------------------------------------------------------------
 
-NormalItem::NormalItem(const std::vector<Base::Vector3f>& vec)
-    : vector(vec)
+NormalItem::NormalItem(std::vector<Base::Vector3f> vec)
+    : vector(std::move(vec))
 {}
 
 void NormalItem::write(InventorOutput& out) const
@@ -903,8 +900,8 @@ void NurbsSurfaceItem::write(InventorOutput& out) const
 
 // -----------------------------------------------------------------------------
 
-Text2Item::Text2Item(const std::string& string)
-    : string(string)
+Text2Item::Text2Item(std::string string)
+    : string(std::move(string))
 {}
 
 void Text2Item::write(InventorOutput& out) const
@@ -915,6 +912,7 @@ void Text2Item::write(InventorOutput& out) const
 
 // -----------------------------------------------------------------------------
 
+// NOLINTNEXTLINE
 TransformItem::TransformItem(const Base::Placement& placement)
     : placement(placement)
 {}
@@ -941,8 +939,8 @@ void TransformItem::write(InventorOutput& out) const
 
 // -----------------------------------------------------------------------------
 
-InventorBuilder::InventorBuilder(std::ostream& output)
-    : result(output)
+InventorBuilder::InventorBuilder(std::ostream& str)
+    : result(str)
 {
     addHeader();
 }
@@ -1020,7 +1018,7 @@ void Builder3D::saveToLog()
     ILogger* obs = Base::Console().Get("StatusBar");
     if (obs) {
         obs->SendLog("Builder3D",
-                     result.str().c_str(),
+                     result.str(),
                      Base::LogStyle::Log,
                      Base::IntendedRecipient::Developer,
                      Base::ContentType::Untranslatable);
@@ -1073,7 +1071,7 @@ std::vector<T> InventorLoader::readData(const char* fieldName) const
     bool found = false;
     while (std::getline(inp, str)) {
         std::string::size_type point = str.find(fieldName);
-        std::string::size_type open = str.find("[");
+        std::string::size_type open = str.find('[');
         if (point != std::string::npos && open > point) {
             str = str.substr(open);
             found = true;
@@ -1101,7 +1099,7 @@ std::vector<T> InventorLoader::readData(const char* fieldName) const
         }
 
         // search for ']' to finish the reading
-        if (str.find("]") != std::string::npos) {
+        if (str.find(']') != std::string::npos) {
             break;
         }
     } while (std::getline(inp, str));
@@ -1240,25 +1238,22 @@ bool InventorLoader::read()
 bool InventorLoader::isValid() const
 {
     int32_t value {static_cast<int32_t>(points.size())};
-    auto inRange = [value](const Face& f) {
-        if (f.p1 < 0 || f.p1 >= value) {
+    auto inRange = [value](const Face& face) {
+        if (face.p1 < 0 || face.p1 >= value) {
             return false;
         }
-        if (f.p2 < 0 || f.p2 >= value) {
+        if (face.p2 < 0 || face.p2 >= value) {
             return false;
         }
-        if (f.p3 < 0 || f.p3 >= value) {
+        if (face.p3 < 0 || face.p3 >= value) {
             return false;
         }
         return true;
     };
-    for (auto it : faces) {
-        if (!inRange(it)) {
-            return false;
-        }
-    }
 
-    return true;
+    return std::all_of(faces.cbegin(), faces.cend(), [&inRange](const Face& face) {
+        return inRange(face);
+    });
 }
 
 namespace Base

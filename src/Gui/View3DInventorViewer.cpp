@@ -1407,6 +1407,7 @@ void View3DInventorViewer::showRotationCenter(bool show)
             material->transparency = 1.0F - float(color.alphaF());
 
             auto translation = new SoTranslation();
+            translation->setName("translation");
             translation->translation.setValue(center);
 
             auto annotation = new SoAnnotation();
@@ -1431,6 +1432,20 @@ void View3DInventorViewer::showRotationCenter(bool show)
             rotationCenterGroup = nullptr;
         }
     }
+}
+
+// Changes the position of the rotation center indicator
+void View3DInventorViewer::changeRotationCenterPosition(const SbVec3f& newCenter) {
+    if (!rotationCenterGroup) {
+        return;
+    }
+
+    SoTranslation* translation = dynamic_cast<SoTranslation*>(rotationCenterGroup->getByName("translation"));
+    if (!translation) {
+        return;
+    }
+
+    translation->translation = newCenter;
 }
 
 void View3DInventorViewer::setNavigationType(Base::Type type)
@@ -1498,6 +1513,8 @@ void View3DInventorViewer::setSceneGraph(SoNode* root)
             static_cast<SoSeparator*>(scene)->insertChild(this->backlight, 0);
         }
     }
+
+    navigation->findBoundingSphere();
 }
 
 void View3DInventorViewer::savePicture(int width, int height, int sample, const QColor& bg, QImage& img) const
@@ -2380,7 +2397,7 @@ void View3DInventorViewer::renderScene()
     glDepthRange(0.1,1.0);
 #endif
 
-    // Immediately reschedule to get continuous spin animation.
+    // Immediately reschedule to get continuous animation.
     if (this->isAnimating()) {
         this->getSoRenderManager()->scheduleRedraw();
     }
@@ -3216,37 +3233,56 @@ void View3DInventorViewer::viewSelection()
     }
 }
 
-/*!
-  Decide if it should be possible to start a spin animation of the
-  model in the viewer by releasing the mouse button while dragging.
-
-  If the \a enable flag is \c false and we're currently animating, the
-  spin will be stopped.
-*/
-void
-View3DInventorViewer::setAnimationEnabled(bool enable)
+/**
+ * @brief Decide if it should be possible to start any animation
+ *
+ * If the enable flag is false and we're currently animating, the animation will be stopped
+ */
+void View3DInventorViewer::setAnimationEnabled(bool enable)
 {
     navigation->setAnimationEnabled(enable);
 }
 
-/*!
-  Query whether or not it is possible to start a spinning animation by
-  releasing the left mouse button while dragging the mouse.
-*/
+/**
+ * @brief Decide if it should be possible to start a spin animation of the model in the viewer by releasing the mouse button while dragging
+ *
+ * If the enable flag is false and we're currently animating, the spin animation will be stopped
+ */
+void View3DInventorViewer::setSpinningAnimationEnabled(bool enable)
+{
+    navigation->setSpinningAnimationEnabled(enable);
+}
 
-bool
-View3DInventorViewer::isAnimationEnabled() const
+/**
+ * @return Whether or not it is possible to start any animation
+ */
+bool View3DInventorViewer::isAnimationEnabled() const
 {
     return navigation->isAnimationEnabled();
 }
 
-/*!
-  Query if the model in the viewer is currently in spinning mode after
-  a user drag.
-*/
+/**
+ * @return Whether or not it is possible to start a spinning animation e.g. after dragging
+ */
+bool View3DInventorViewer::isSpinningAnimationEnabled() const
+{
+    return navigation->isSpinningAnimationEnabled();
+}
+
+/**
+ * @return Whether or not any animation is currently active
+ */
 bool View3DInventorViewer::isAnimating() const
 {
     return navigation->isAnimating();
+}
+
+/**
+ * @return Whether or not a spinning animation is currently active e.g. after a user drag
+ */
+bool View3DInventorViewer::isSpinning() const
+{
+    return navigation->isSpinning();
 }
 
 /**

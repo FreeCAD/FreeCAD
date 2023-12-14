@@ -1,0 +1,10 @@
+# ISO 128-20 standard line element definitions
+# NOTE: saving this file from a spreadsheet program (like LibreOffice Calc) may
+# append empty cells to the ends of the lines. this can confuse FreeCAD.
+# element name, length in units of pen width
+Dot,1
+Gap,3
+ShortDash,6
+Dash,12
+LongDash,24
+Space,18

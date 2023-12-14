@@ -47,14 +47,13 @@ class Array2D: public QDialog
 
 public:
     Array2D(const QString& propertyName,
-            std::shared_ptr<Materials::Material> material,
+            const std::shared_ptr<Materials::Material>& material,
             QWidget* parent = nullptr);
     ~Array2D() override = default;
 
     void onDataChanged(const QModelIndex& topLeft,
                        const QModelIndex& bottomRight,
                        const QVector<int>& roles = QVector<int>());
-    void defaultValueChanged(const Base::Quantity& value);
     void onDelete(bool checked);
     void onContextMenu(const QPoint& pos);
 
@@ -69,7 +68,6 @@ private:
 
     QAction _deleteAction;
 
-    void setupDefault();
     void setHeaders(QStandardItemModel* model);
     void setColumnWidths(QTableView* table);
     void setColumnDelegates(QTableView* table);

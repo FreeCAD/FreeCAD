@@ -34,6 +34,7 @@
 
 #include <Mod/Material/MaterialGlobal.h>
 
+#include "MaterialValue.h"
 #include "Model.h"
 
 namespace Materials
@@ -47,9 +48,9 @@ class MaterialsExport MaterialProperty: public ModelProperty
 
 public:
     MaterialProperty();
-    MaterialProperty(const MaterialProperty& property);
-    explicit MaterialProperty(const ModelProperty& property);
-    explicit MaterialProperty(std::shared_ptr<MaterialProperty> property);
+    MaterialProperty(const MaterialProperty& other);
+    explicit MaterialProperty(const ModelProperty& other);
+    explicit MaterialProperty(const std::shared_ptr<MaterialProperty>& other);
     ~MaterialProperty() override = default;
 
     MaterialValue::ValueType getType() const
@@ -58,15 +59,24 @@ public:
     }
 
     const QString getModelUUID() const;
-    const QVariant getValue() const;
+    QVariant getValue();
+    QVariant getValue() const;
+    QList<QVariant> getList()
+    {
+        return _valuePtr->getList();
+    }
+    QList<QVariant> getList() const
+    {
+        return _valuePtr->getList();
+    }
     bool isNull() const
     {
         return _valuePtr->isNull();
     }
     std::shared_ptr<MaterialValue> getMaterialValue();
-    const std::shared_ptr<MaterialValue> getMaterialValue() const;
-    const QString getString() const;
-    const QString getYAMLString() const;
+    std::shared_ptr<MaterialValue> getMaterialValue() const;
+    QString getString() const;
+    QString getYAMLString() const;
     bool getBoolean() const;
     int getInt() const;
     double getFloat() const;
@@ -83,7 +93,7 @@ public:
     void setPropertyType(const QString& type) override;
     void setValue(const QVariant& value);
     void setValue(const QString& value);
-    void setValue(std::shared_ptr<MaterialValue> value);
+    void setValue(const std::shared_ptr<MaterialValue>& value);
     void setString(const QString& value);
     void setBoolean(bool value);
     void setBoolean(int value);
@@ -95,14 +105,12 @@ public:
     void setQuantity(const Base::Quantity& value);
     void setQuantity(double value, const QString& units);
     void setQuantity(const QString& value);
+    void setList(const QList<QVariant>& value);
     void setURL(const QString& value);
 
     MaterialProperty& operator=(const MaterialProperty& other);
-    friend QTextStream& operator<<(QTextStream& output, const MaterialProperty& property)
-    {
-        output << property.getName() << ": " << property.getYAMLString();
-        return output;
-    }
+    friend QTextStream& operator<<(QTextStream& output, const MaterialProperty& property);
+
     bool operator==(const MaterialProperty& other) const;
     bool operator!=(const MaterialProperty& other) const
     {
@@ -111,10 +119,13 @@ public:
 
     // void save(QTextStream& stream);
 
+    // Define precision for displaying floating point values
+    static int const PRECISION;
+
 protected:
     void setType(const QString& type);
     // void setType(MaterialValue::ValueType type) { _valueType = type; }
-    void copyValuePtr(std::shared_ptr<MaterialValue> value);
+    void copyValuePtr(const std::shared_ptr<MaterialValue>& value);
 
     void addColumn(MaterialProperty& column)
     {
@@ -140,7 +151,7 @@ public:
     };
 
     Material();
-    Material(std::shared_ptr<MaterialLibrary> library,
+    Material(const std::shared_ptr<MaterialLibrary>& library,
              const QString& directory,
              const QString& uuid,
              const QString& name);
@@ -151,40 +162,40 @@ public:
     {
         return _library;
     }
-    const QString getDirectory() const
+    QString getDirectory() const
     {
         return _directory;
     }
-    const QString getUUID() const
+    QString getUUID() const
     {
         return _uuid;
     }
-    const QString getName() const
+    QString getName() const
     {
         return _name;
     }
-    const QString getAuthorAndLicense() const;
-    const QString getAuthor() const
+    QString getAuthorAndLicense() const;
+    QString getAuthor() const
     {
         return _author;
     }
-    const QString getLicense() const
+    QString getLicense() const
     {
         return _license;
     }
-    const QString getParentUUID() const
+    QString getParentUUID() const
     {
         return _parentUuid;
     }
-    const QString getDescription() const
+    QString getDescription() const
     {
         return _description;
     }
-    const QString getURL() const
+    QString getURL() const
     {
         return _url;
     }
-    const QString getReference() const
+    QString getReference() const
     {
         return _reference;
     }
@@ -205,7 +216,7 @@ public:
         return &_appearanceUuids;
     }
 
-    void setLibrary(std::shared_ptr<MaterialLibrary> library)
+    void setLibrary(const std::shared_ptr<MaterialLibrary>& library)
     {
         _library = library;
     }
@@ -259,22 +270,24 @@ public:
     void setPhysicalValue(const QString& name, const QString& value);
     void setPhysicalValue(const QString& name, int value);
     void setPhysicalValue(const QString& name, double value);
-    void setPhysicalValue(const QString& name, const Base::Quantity value);
-    void setPhysicalValue(const QString& name, std::shared_ptr<MaterialValue> value);
+    void setPhysicalValue(const QString& name, const Base::Quantity& value);
+    void setPhysicalValue(const QString& name, const std::shared_ptr<MaterialValue>& value);
+    void setPhysicalValue(const QString& name, const std::shared_ptr<QList<QVariant>>& value);
 
     void setAppearanceValue(const QString& name, const QString& value);
-    void setAppearanceValue(const QString& name, std::shared_ptr<MaterialValue> value);
+    void setAppearanceValue(const QString& name, const std::shared_ptr<MaterialValue>& value);
+    void setAppearanceValue(const QString& name, const std::shared_ptr<QList<QVariant>>& value);
 
     std::shared_ptr<MaterialProperty> getPhysicalProperty(const QString& name);
-    const std::shared_ptr<MaterialProperty> getPhysicalProperty(const QString& name) const;
+    std::shared_ptr<MaterialProperty> getPhysicalProperty(const QString& name) const;
     std::shared_ptr<MaterialProperty> getAppearanceProperty(const QString& name);
-    const std::shared_ptr<MaterialProperty> getAppearanceProperty(const QString& name) const;
-    const QVariant getPhysicalValue(const QString& name) const;
-    const Base::Quantity getPhysicalQuantity(const QString& name) const;
-    const QString getPhysicalValueString(const QString& name) const;
-    const QVariant getAppearanceValue(const QString& name) const;
-    const Base::Quantity getAppearanceQuantity(const QString& name) const;
-    const QString getAppearanceValueString(const QString& name) const;
+    std::shared_ptr<MaterialProperty> getAppearanceProperty(const QString& name) const;
+    QVariant getPhysicalValue(const QString& name) const;
+    Base::Quantity getPhysicalQuantity(const QString& name) const;
+    QString getPhysicalValueString(const QString& name) const;
+    QVariant getAppearanceValue(const QString& name) const;
+    Base::Quantity getAppearanceQuantity(const QString& name) const;
+    QString getAppearanceValueString(const QString& name) const;
     bool hasPhysicalProperty(const QString& name) const;
     bool hasAppearanceProperty(const QString& name) const;
 
@@ -308,11 +321,19 @@ public:
     {
         _dereferenced = true;
     }
+    bool isOldFormat() const
+    {
+        return _oldFormat;
+    }
+    void setOldFormat(bool isOld)
+    {
+        _oldFormat = isOld;
+    }
 
     /*
      * Normalize models by removing any inherited models
      */
-    QStringList normalizeModels(const QStringList& models);
+    static QStringList normalizeModels(const QStringList& models);
 
     /*
      * Set or change the base material for the current material, updating the properties as
@@ -322,36 +343,35 @@ public:
     /*
      * Return a list of models that are defined in the parent material but not in this one
      */
-    QStringList inheritedMissingModels(const Material& parent);
+    QStringList inheritedMissingModels(const Material& parent) const;
     /*
      * Return a list of models that are defined in this model but not the parent
      */
-    QStringList inheritedAddedModels(const Material& parent);
+    QStringList inheritedAddedModels(const Material& parent) const;
     /*
      * Return a list of properties that have different values from the parent material
      */
     void inheritedPropertyDiff(const QString& parent);
 
-    void save(QTextStream& stream, bool saveAsCopy, bool saveInherited);
+    void save(QTextStream& stream, bool overwrite, bool saveAsCopy, bool saveInherited);
 
     Material& operator=(const Material& other);
 
 protected:
     void addModel(const QString& uuid);
-    void removeModel(const QString& uuid);
-    void removeUUID(QStringList& uuidList, const QString& uuid);
+    static void removeUUID(QStringList& uuidList, const QString& uuid);
 
-    const QVariant
+    static QVariant
     getValue(const std::map<QString, std::shared_ptr<MaterialProperty>>& propertyList,
-             const QString& name) const;
-    const QString
+             const QString& name);
+    static QString
     getValueString(const std::map<QString, std::shared_ptr<MaterialProperty>>& propertyList,
-                   const QString& name) const;
+                   const QString& name);
 
-    bool modelChanged(const std::shared_ptr<Material> parent,
-                      const std::shared_ptr<Model> model) const;
-    bool modelAppearanceChanged(const std::shared_ptr<Material> parent,
-                                const std::shared_ptr<Model> model) const;
+    bool modelChanged(const std::shared_ptr<Material>& parent,
+                      const std::shared_ptr<Model>& model) const;
+    bool modelAppearanceChanged(const std::shared_ptr<Material>& parent,
+                                const std::shared_ptr<Model>& model) const;
     void saveGeneral(QTextStream& stream) const;
     void saveInherits(QTextStream& stream) const;
     void saveModels(QTextStream& stream, bool saveInherited) const;
@@ -375,10 +395,17 @@ private:
     std::map<QString, std::shared_ptr<MaterialProperty>> _physical;
     std::map<QString, std::shared_ptr<MaterialProperty>> _appearance;
     bool _dereferenced;
+    bool _oldFormat;
     ModelEdit _editState;
 };
 
-typedef FolderTreeNode<Material> MaterialTreeNode;
+inline QTextStream& operator<<(QTextStream& output, const MaterialProperty& property)
+{
+    output << MaterialValue::escapeString(property.getName()) << ":" << property.getYAMLString();
+    return output;
+}
+
+using MaterialTreeNode = FolderTreeNode<Material>;
 
 }  // namespace Materials
 

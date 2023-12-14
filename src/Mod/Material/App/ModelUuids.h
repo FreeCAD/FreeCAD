@@ -58,6 +58,7 @@ public:
     static const QString ModelUUID_Electromagnetic_Default;
 
     static const QString ModelUUID_Architectural_Default;
+    static const QString ModelUUID_Rendering_Architectural;
 
     static const QString ModelUUID_Costs_Default;
 
@@ -65,6 +66,25 @@ public:
     static const QString ModelUUID_Rendering_Texture;
     static const QString ModelUUID_Rendering_Advanced;
     static const QString ModelUUID_Rendering_Vector;
+
+    static const QString ModelUUID_Render_Appleseed;
+    static const QString ModelUUID_Render_Carpaint;
+    static const QString ModelUUID_Render_Cycles;
+    static const QString ModelUUID_Render_Diffuse;
+    static const QString ModelUUID_Render_Disney;
+    static const QString ModelUUID_Render_Emission;
+    static const QString ModelUUID_Render_Glass;
+    static const QString ModelUUID_Render_Luxcore;
+    static const QString ModelUUID_Render_Luxrender;
+    static const QString ModelUUID_Render_Mixed;
+    static const QString ModelUUID_Render_Ospray;
+    static const QString ModelUUID_Render_Pbrt;
+    static const QString ModelUUID_Render_Povray;
+    static const QString ModelUUID_Render_SubstancePBR;
+    static const QString ModelUUID_Render_Texture;
+    static const QString ModelUUID_RenderWB;
+
+    static const QString ModelUUID_Test_Model;
 };
 
 }  // namespace Materials

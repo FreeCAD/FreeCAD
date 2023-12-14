@@ -37,16 +37,25 @@ as they operate on selections and graphical properties.
 import FreeCAD as App
 import FreeCADGui as Gui
 import WorkingPlane
-import draftutils.gui_utils as gui_utils
-import draftutils.utils as utils
-
+from draftutils import gui_utils
+from draftutils import params
+from draftutils import utils
 from draftutils.messages import _wrn
 
 # Set modifier keys from the parameter database
 MODS = ["shift", "ctrl", "alt"]
-MODCONSTRAIN = MODS[utils.get_param("modconstrain", 0)]
-MODSNAP = MODS[utils.get_param("modsnap", 1)]
-MODALT = MODS[utils.get_param("modalt", 2)]
+
+
+def get_mod_constrain_key():
+    return MODS[params.get_param("modconstrain")]
+
+
+def get_mod_snap_key():
+    return MODS[params.get_param("modsnap")]
+
+
+def get_mod_alt_key():
+    return MODS[params.get_param("modalt")]
 
 
 def format_unit(exp, unit="mm"):
@@ -187,14 +196,14 @@ def get_point(target, args, noTracker=False):
     else:
         last = None
 
-    amod = has_mod(args, MODSNAP)
-    cmod = has_mod(args, MODCONSTRAIN)
+    smod = has_mod(args, get_mod_snap_key())
+    cmod = has_mod(args, get_mod_constrain_key())
     point = None
 
     if hasattr(Gui, "Snapper"):
         point = Gui.Snapper.snap(args["Position"],
                                  lastpoint=last,
-                                 active=amod,
+                                 active=smod,
                                  constrain=cmod,
                                  noTracker=noTracker)
         info = Gui.Snapper.snapInfo

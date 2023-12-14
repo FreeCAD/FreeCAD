@@ -166,10 +166,12 @@ PyObject* BSplineCurve2dPy::incrementMultiplicity(PyObject * args)
 
 PyObject* BSplineCurve2dPy::insertKnot(PyObject * args)
 {
-    double U, tol = 0.0;
+    double U;
+    double tol = 0.0;
     int M=1;
-    if (!PyArg_ParseTuple(args, "d|idO!", &U, &M, &tol))
+    if (!PyArg_ParseTuple(args, "d|id", &U, &M, &tol)) {
         return nullptr;
+    }
 
     try {
         Handle(Geom2d_BSplineCurve) curve = Handle(Geom2d_BSplineCurve)::DownCast
@@ -730,9 +732,9 @@ PyObject* BSplineCurve2dPy::approximate(PyObject *args, PyObject *kwds)
     PyObject* obj;
     Standard_Integer degMin=3;
     Standard_Integer degMax=8;
-    char* continuity = "C2";
+    const char* continuity = "C2";
     double tol3d = 1e-3;
-    char* parType = "ChordLength";
+    const char* parType = "ChordLength";
     PyObject* par = nullptr;
     double weight1 = 0;
     double weight2 = 0;

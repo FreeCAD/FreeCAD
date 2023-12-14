@@ -38,6 +38,10 @@
 #include <Mod/Material/App/ModelManager.h>
 #include <Mod/Material/App/ModelUuids.h>
 
+#ifdef _MSC_VER
+#pragma warning(disable : 4834)
+#endif
+
 // clang-format off
 
 class TestMaterial : public ::testing::Test {
@@ -98,7 +102,7 @@ TEST_F(TestMaterial, TestMaterialsWithModel)
 TEST_F(TestMaterial, TestMaterialByPath)
 {
     auto steel = _materialManager->getMaterialByPath(
-        QString::fromStdString("StandardMaterial/Metal/Steel/CalculiX-Steel.FCMat"),
+        QString::fromStdString("Standard/Metal/Steel/CalculiX-Steel.FCMat"),
         QString::fromStdString("System"));
     EXPECT_NE(&steel, nullptr);
     EXPECT_EQ(steel->getName(), QString::fromStdString("CalculiX-Steel"));
@@ -106,7 +110,7 @@ TEST_F(TestMaterial, TestMaterialByPath)
 
     // The same but with a leading '/'
     auto steel2 = _materialManager->getMaterialByPath(
-        QString::fromStdString("/StandardMaterial/Metal/Steel/CalculiX-Steel.FCMat"),
+        QString::fromStdString("/Standard/Metal/Steel/CalculiX-Steel.FCMat"),
         QString::fromStdString("System"));
     EXPECT_NE(&steel2, nullptr);
     EXPECT_EQ(steel2->getName(), QString::fromStdString("CalculiX-Steel"));
@@ -114,7 +118,7 @@ TEST_F(TestMaterial, TestMaterialByPath)
 
     // Same with the library name as a prefix
     auto steel3 = _materialManager->getMaterialByPath(
-        QString::fromStdString("/System/StandardMaterial/Metal/Steel/CalculiX-Steel.FCMat"),
+        QString::fromStdString("/System/Standard/Metal/Steel/CalculiX-Steel.FCMat"),
         QString::fromStdString("System"));
     EXPECT_NE(&steel3, nullptr);
     EXPECT_EQ(steel3->getName(), QString::fromStdString("CalculiX-Steel"));
@@ -334,6 +338,35 @@ TEST_F(TestMaterial, TestCalculiXSteel)
     EXPECT_EQ(steel->getPhysicalQuantity(QString::fromStdString("ThermalConductivity")).getUserString(), parseQuantity("43.00 W/m/K"));
     EXPECT_EQ(steel->getPhysicalQuantity(QString::fromStdString("ThermalExpansionCoefficient")).getUserString(), parseQuantity("12.00 µm/m/K"));
 
+}
+
+TEST_F(TestMaterial, TestColumns)
+{
+    // Start with an empty material
+    Materials::Material testMaterial;
+    auto models = testMaterial.getPhysicalModels();
+    EXPECT_NE(&models, nullptr);
+    EXPECT_EQ(models->size(), 0);
+
+    // Add a model
+    testMaterial.addPhysical(Materials::ModelUUIDs::ModelUUID_Test_Model);
+    models = testMaterial.getPhysicalModels();
+    EXPECT_EQ(models->size(), 1);
+
+    EXPECT_TRUE(testMaterial.hasPhysicalProperty(QString::fromStdString("TestArray2D")));
+    auto array2d = testMaterial.getPhysicalProperty(QString::fromStdString("TestArray2D"))->getMaterialValue();
+    EXPECT_TRUE(array2d);
+    EXPECT_EQ(static_cast<Materials::Material2DArray &>(*array2d).columns(), 2);
+
+    EXPECT_TRUE(testMaterial.hasPhysicalProperty(QString::fromStdString("TestArray2D3Column")));
+    auto array2d3Column = testMaterial.getPhysicalProperty(QString::fromStdString("TestArray2D3Column"))->getMaterialValue();
+    EXPECT_TRUE(array2d3Column);
+    EXPECT_EQ(static_cast<Materials::Material2DArray &>(*array2d3Column).columns(), 3);
+
+    EXPECT_TRUE(testMaterial.hasPhysicalProperty(QString::fromStdString("TestArray3D")));
+    auto array3d = testMaterial.getPhysicalProperty(QString::fromStdString("TestArray3D"))->getMaterialValue();
+    EXPECT_TRUE(array3d);
+    EXPECT_EQ(static_cast<Materials::Material3DArray &>(*array3d).columns(), 2);
 }
 
 // clang-format on

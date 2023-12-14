@@ -36,7 +36,7 @@ import PySide.QtGui as QtGui
 
 import FreeCAD as App
 import FreeCADGui as Gui
-
+from draftutils import params
 from draftutils.init_tools import get_draft_snap_commands
 from draftutils.translate import translate
 
@@ -77,8 +77,7 @@ def get_scales(unit_system = 0):
     """
 
     if unit_system == 0:
-        param = App.ParamGet("User parameter:BaseApp/Preferences/Units")
-        scale_units_system = param.GetInt("UserSchema", 0)
+        scale_units_system = params.get_param("UserSchema", path="Units")
         if scale_units_system in [0, 1, 4, 6]:
             return draft_scales_metrics
         elif scale_units_system in [2, 3, 5]:
@@ -97,22 +96,21 @@ def scale_to_label(scale):
     """
     transform a float number into a 1:X or X:1 scale and return it as label
     """
-    f = round(scale, 2)
-    if f == 1.0:
+    if scale <= 0:
         return "1:1"
-    elif f > 1.0:
+    f = round(scale, 2)
+    if f == 1:
+        return "1:1"
+    if f > 1:
         f = f.as_integer_ratio()
         if f[1] == 1:
             return str(f[0]) + ":1"
-        else:
-            return str(scale)
-    else:
-        f = round(1/scale, 2)
-        f = f.as_integer_ratio()
-        if f[1] == 1:
-            return "1:" + str(f[0])
-        else:
-            return str(scale)
+        return str(scale)
+    f = round(1/scale, 2)
+    f = f.as_integer_ratio()
+    if f[1] == 1:
+        return "1:" + str(f[0])
+    return str(scale)
 
 def label_to_scale(label):
     """
@@ -127,7 +125,7 @@ def label_to_scale(label):
         elif "=" in label:
             f = label.split("=")
         else:
-            return
+            return None
         if len(f) == 2:
             try:
                 num = App.Units.Quantity(f[0]).Value
@@ -142,11 +140,8 @@ def label_to_scale(label):
 
 def _set_scale(action):
     """
-    triggered by scale pushbutton, set DraftAnnotationScale in preferences
+    triggered by scale pushbutton, set DefaultAnnoScaleMultiplier in preferences
     """
-    # set the label of the scale button
-    param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-
     mw = Gui.getMainWindow()
     sb = mw.statusBar()
 
@@ -162,14 +157,16 @@ def _set_scale(action):
             scale = label_to_scale(custom_scale[0])
             if scale is None:
                 return
-            param.SetFloat("DraftAnnotationScale", scale)
+            if scale <= 0:
+                return
+            params.set_param("DefaultAnnoScaleMultiplier", 1 / scale)
             cs = scale_to_label(scale)
             scale_widget.scaleLabel.setText(cs)
     else:
         text_scale = action.text()
         scale_widget.scaleLabel.setText(text_scale)
         scale = label_to_scale(text_scale)
-        param.SetFloat("DraftAnnotationScale", scale)
+        params.set_param("DefaultAnnoScaleMultiplier", 1 / scale)
 
 #----------------------------------------------------------------------------
 # MAIN DRAFT STATUSBAR FUNCTIONS
@@ -179,8 +176,6 @@ def init_draft_statusbar_scale():
     """
     this function initializes draft statusbar scale widget
     """
-    param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-
     mw = Gui.getMainWindow()
     sb = mw.statusBar()
 
@@ -191,7 +186,8 @@ def init_draft_statusbar_scale():
     draft_scales = get_scales()
 
     # get draft annotation scale
-    draft_annotation_scale = param.GetFloat("DraftAnnotationScale", 1.0)
+    scale_multiplier = params.get_param("DefaultAnnoScaleMultiplier")
+    annotation_scale = 1 / scale_multiplier if scale_multiplier > 0 else 1
 
     # initializes scale widget
     scale_widget.draft_scales = draft_scales
@@ -206,7 +202,7 @@ def init_draft_statusbar_scale():
         menu.addAction(a)
     scaleLabel.setMenu(menu)
     gUnits.triggered.connect(_set_scale)
-    scale_label = scale_to_label(draft_annotation_scale)
+    scale_label = scale_to_label(annotation_scale)
     scaleLabel.setText(scale_label)
     scaleLabel.setToolTip(translate("draft",
                                     "Set the scale used by draft annotation tools"))
@@ -286,12 +282,10 @@ def show_draft_statusbar():
     """
     shows draft statusbar if present or initializes it
     """
-    params = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-
     mw = Gui.getMainWindow()
     sb = mw.statusBar()
 
-    if params.GetBool("DisplayStatusbarScaleWidget", True):
+    if params.get_param("DisplayStatusbarScaleWidget"):
         scale_widget = sb.findChild(QtGui.QToolBar, "draft_scale_widget")
         if scale_widget:
             scale_widget.show()
@@ -304,7 +298,7 @@ def show_draft_statusbar():
                 t = QtCore.QTimer()
                 t.singleShot(500, init_draft_statusbar_scale)
 
-    if params.GetBool("DisplayStatusbarSnapWidget", True):
+    if params.get_param("DisplayStatusbarSnapWidget"):
         snap_widget = sb.findChild(QtGui.QToolBar, "draft_snap_widget")
         if snap_widget:
             snap_widget.setOrientation(QtCore.Qt.Orientation.Horizontal)

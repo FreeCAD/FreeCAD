@@ -37,7 +37,7 @@ public:
     static void init_type();  // announce properties and methods
     static Py::PythonType& behaviors();
     static PyTypeObject* type_object();
-    static bool check(PyObject* p);
+    static bool check(PyObject* py);
 
     ProgressIndicatorPy();
     ~ProgressIndicatorPy() override;

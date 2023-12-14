@@ -25,6 +25,10 @@
 #include <QApplication>
 #include <QMessageBox>
 #include <sstream>
+#include <BRepGProp.hxx>
+#include <GProp_GProps.hxx>
+#include <BRepAdaptor_Curve.hxx>
+#include <GCPnts_AbscissaPoint.hxx>
 #endif
 
 #include <App/Document.h>
@@ -50,13 +54,16 @@
 #include <Mod/TechDraw/App/DrawProjGroupItem.h>
 #include <Mod/TechDraw/App/DrawUtil.h>
 #include <Mod/TechDraw/App/DrawViewBalloon.h>
+#include <Mod/TechDraw/App/DrawViewDimension.h>
 #include <Mod/TechDraw/App/DrawViewPart.h>
 #include <Mod/TechDraw/App/DrawViewSection.h>
+#include <Mod/TechDraw/App/Preferences.h>
 
 #include "DrawGuiUtil.h"
 #include "QGSPage.h"
 #include "TaskSelectLineAttributes.h"
 #include "ViewProviderBalloon.h"
+#include "ViewProviderDimension.h"
 #include "ViewProviderPage.h"
 
 
@@ -810,7 +817,7 @@ CmdTechDrawExtensionVertexAtIntersection::CmdTechDrawExtensionVertexAtIntersecti
     sMenuText = QT_TR_NOOP("Add Cosmetic Intersection Vertex(es)");
     sToolTipText =
         QT_TR_NOOP("Add cosmetic vertex(es) at the intersection(s) of selected edges:<br>\
-- Select two edges (lines, circles and/or arcs)<br>\
+- Select two edges<br>\
 - Click this tool");
     sWhatsThis = "TechDraw_ExtensionVertexAtIntersection";
     sStatusTip = sMenuText;
@@ -827,7 +834,6 @@ void CmdTechDrawExtensionVertexAtIntersection::activated(int iMsg)
         return;
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Cosmetic Intersection Vertex(es)"));
     const std::vector<std::string> SubNames = selection[0].getSubNames();
-    std::vector<Base::Vector3d> interPoints;
     if (SubNames.size() >= 2) {
         std::string GeoType1 = TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]);
         std::string GeoType2 = TechDraw::DrawUtil::getGeomTypeFromName(SubNames[1]);
@@ -836,15 +842,12 @@ void CmdTechDrawExtensionVertexAtIntersection::activated(int iMsg)
             TechDraw::BaseGeomPtr geom1 = objFeat->getGeomByIndex(GeoId1);
             int GeoId2 = TechDraw::DrawUtil::getIndexFromName(SubNames[1]);
             TechDraw::BaseGeomPtr geom2 = objFeat->getGeomByIndex(GeoId2);
-            interPoints = geom1->intersection(geom2);
-            if (!interPoints.empty()) {
-                double scale = objFeat->getScale();
-                std::string id1 = objFeat->addCosmeticVertex(interPoints[0] / scale);
-                objFeat->add1CVToGV(id1);
-                if (interPoints.size() >= 2) {
-                    std::string id2 = objFeat->addCosmeticVertex(interPoints[1] / scale);
-                    objFeat->add1CVToGV(id2);
-                }
+
+            double scale = objFeat->getScale();
+            std::vector<Base::Vector3d> interPoints = geom1->intersection(geom2);
+            for (auto pt : interPoints) {
+                std::string ptId = objFeat->addCosmeticVertex(pt/scale);
+                objFeat->add1CVToGV(ptId);
             }
         }
     }
@@ -1789,8 +1792,6 @@ void CmdTechDrawExtensionAreaAnnotation::activated(int iMsg)
     TechDraw::DrawViewPart* objFeat;
     if (!_checkSel(this, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw calculate selected area")))
         return;
-    double faceArea(0.0), totalArea(0.0), xCenter(0.0), yCenter(0.0);
-    int totalPoints(0);
 
     // we must have at least 1 face in the selection
     const std::vector<std::string> subNamesAll = selection[0].getSubNames();
@@ -1810,43 +1811,23 @@ void CmdTechDrawExtensionAreaAnnotation::activated(int iMsg)
     }
 
     // we have at least 1 face
+    Base::Vector3d center;
+    double totalArea = 0.0;
     for (const std::string& name : subNames) {
-        int idx = TechDraw::DrawUtil::getIndexFromName(name);
-        std::vector<TechDraw::BaseGeomPtr> faceEdges = objFeat->getFaceEdgesByIndex(idx);
-        // We filter arcs, circles etc. which are not allowed.
-        for (const TechDraw::BaseGeomPtr& geoPtr : faceEdges)
-            if (geoPtr->getGeomType() != TechDraw::GENERIC)
-                throw Base::TypeError(
-                    "CmdTechDrawAreaAnnotation - forbidden border element found\n");
-        // We create a list of all points along the boundary of the face.
-        // The edges form a closed polygon, but their start- and endpoints may be interchanged.
-        std::vector<Base::Vector3d> facePoints;
-        TechDraw::GenericPtr firstEdge =
-            std::static_pointer_cast<TechDraw::Generic>(faceEdges[0]);
-        facePoints.push_back(firstEdge->points.at(0));
-        facePoints.push_back(firstEdge->points.at(1));
-        for (long unsigned int n = 1; n < faceEdges.size() - 1; n++) {
-            TechDraw::GenericPtr nextEdge =
-                std::static_pointer_cast<TechDraw::Generic>(faceEdges[n]);
-            if ((nextEdge->points.at(0) - facePoints.back()).Length() < 0.01)
-                facePoints.push_back(nextEdge->points.at(1));
-            else
-                facePoints.push_back(nextEdge->points.at(0));
+        TechDraw::FacePtr face = objFeat->getFace(name);
+        if (!face) {
+            continue;
         }
-        facePoints.push_back(facePoints.front());
-        // We calculate the area, using triangles. Each having one point at (0/0).
-        faceArea = 0.0;
-        xCenter = xCenter + facePoints[0].x;
-        yCenter = yCenter + facePoints[0].y;
-        for (long unsigned int n = 0; n < facePoints.size() - 1; n++) {
-            faceArea = faceArea + facePoints[n].x * facePoints[n + 1].y
-                - facePoints[n].y * facePoints[n + 1].x;
-            xCenter = xCenter + facePoints[n + 1].x;
-            yCenter = yCenter + facePoints[n + 1].y;
-        }
-        faceArea = abs(faceArea) / 2.0;
-        totalArea = totalArea + faceArea;
-        totalPoints = totalPoints + facePoints.size();
+
+        GProp_GProps faceProps;
+        BRepGProp::SurfaceProperties(face->toOccFace(), faceProps);
+
+        double faceArea = faceProps.Mass();
+        totalArea += faceArea;
+        center += faceArea*DrawUtil::toVector3d(faceProps.CentreOfMass());
+    }
+    if (totalArea > 0.0) {
+        center /= totalArea;
     }
 
     // if area calculation was successful, start the command
@@ -1859,8 +1840,10 @@ void CmdTechDrawExtensionAreaAnnotation::activated(int iMsg)
     if (!balloon)
         throw Base::TypeError("CmdTechDrawNewBalloon - balloon not found\n");
     // the balloon has been created successfully
+
     // calculate needed variables
     double scale = objFeat->getScale();
+    center = DrawUtil::invertY(center/scale);
     double scale2 = scale * scale;
     totalArea = totalArea / scale2;//convert from view scale to internal mm2
 
@@ -1868,23 +1851,23 @@ void CmdTechDrawExtensionAreaAnnotation::activated(int iMsg)
     Base::Quantity asQuantity;
     asQuantity.setValue(totalArea);
     asQuantity.setUnit(Base::Unit::Area);
-    QString qUserString = asQuantity.getUserString();
-    std::string sUserString = Base::Tools::toStdString(qUserString);
 
-    if (totalPoints != 0 && scale != 0.0) {
-        xCenter = (xCenter / totalPoints) / scale;
-        yCenter = (yCenter / totalPoints) / scale;
+    QString qUserString = asQuantity.getUserString();
+    if (qUserString.endsWith(QString::fromUtf8("^2"))) {
+        qUserString.chop(2);
+        qUserString.append(QString::fromUtf8("²"));
     }
+    std::string sUserString = Base::Tools::toStdString(qUserString);
 
     // set the attributes in the data tab's fields
     //    balloon->SourceView.setValue(objFeat);
     balloon->BubbleShape.setValue("Rectangle");
     balloon->EndType.setValue("None");
     balloon->KinkLength.setValue(0.0);
-    balloon->X.setValue(xCenter);
-    balloon->Y.setValue(-yCenter);
-    balloon->OriginX.setValue(xCenter);
-    balloon->OriginY.setValue(-yCenter);
+    balloon->X.setValue(center.x);
+    balloon->Y.setValue(center.y);
+    balloon->OriginX.setValue(center.x);
+    balloon->OriginY.setValue(center.y);
     balloon->ScaleType.setValue("Page");
     balloon->Text.setValue(sUserString);
     // look for the ballons's view provider
@@ -1912,6 +1895,145 @@ bool CmdTechDrawExtensionAreaAnnotation::isActive()
 }
 
 //===========================================================================
+// TechDraw_ExtensionArcLengthAnnotation
+//===========================================================================
+
+DEF_STD_CMD_A(CmdTechDrawExtensionArcLengthAnnotation)
+
+CmdTechDrawExtensionArcLengthAnnotation::CmdTechDrawExtensionArcLengthAnnotation()
+    : Command("TechDraw_ExtensionArcLengthAnnotation")
+{
+    sAppModule = "TechDraw";
+    sGroup = QT_TR_NOOP("TechDraw");
+    sMenuText = QT_TR_NOOP("Calculate the arc length of selected edges");
+    sToolTipText = QT_TR_NOOP("Select several edges<br>\
+    - click this tool");
+    sWhatsThis = "TechDraw_ExtensionArcLengthAnnotation";
+    sStatusTip = sToolTipText;
+    sPixmap = "TechDraw_ExtensionArcLengthAnnotation";
+}
+
+void CmdTechDrawExtensionArcLengthAnnotation::activated(int iMsg)
+// Calculate the arc length of selected edge and create a balloon holding the datum
+{
+    Q_UNUSED(iMsg);
+
+    std::vector<Gui::SelectionObject> selection;
+    TechDraw::DrawViewPart *objFeat;
+    if (!_checkSel(this, selection, objFeat, QT_TRANSLATE_NOOP("Command", "TechDraw calculate selected arc length"))) {
+        return;
+    }
+
+    // Collect all edges in the selection
+    std::vector<std::string> subNames;
+    for (auto &name : selection[0].getSubNames()) {
+        if (DrawUtil::getGeomTypeFromName(name) == "Edge") {
+            subNames.push_back(name);
+        }
+    }
+
+    if (subNames.empty()) {
+        QMessageBox::warning(Gui::getMainWindow(),
+                             QObject::tr("Incorrect selection"),
+                             QObject::tr("No edges in selection."));
+        return;
+    }
+
+    // Now we have at least one edge
+    std::vector<double> lengths(subNames.size());
+    double totalLength = 0.0;
+    size_t i;
+    for (i = 0; i < subNames.size(); ++i) {
+        lengths[i] = totalLength;
+        TechDraw::BaseGeomPtr edge = objFeat->getEdge(subNames[i]);
+        if (!edge) {
+            continue;
+        }
+
+        GProp_GProps edgeProps;
+        BRepGProp::LinearProperties(edge->getOCCEdge(), edgeProps);
+
+        totalLength += edgeProps.Mass();
+        lengths[i] = totalLength;
+    }
+
+    // We have calculated the length, let's start the command
+    Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Calculate Edge Length"));
+
+    // First we need to create the balloon
+    std::string balloonName = _createBalloon(this, objFeat);
+    auto balloon = dynamic_cast<TechDraw::DrawViewBalloon *>(getDocument()->getObject(balloonName.c_str()));
+    if (!balloon) {
+        throw Base::TypeError("CmdTechDrawNewBalloon - balloon not found\n");
+    }
+
+    // Find the edge halving the selected path and the offset from its starting point
+    double anchorLength = totalLength*0.5;
+    i = 0;
+    while (i < lengths.size() && lengths[i] < anchorLength) {
+        ++i;
+    }
+    if (i) {
+        anchorLength -= lengths[i - 1];
+    }
+
+    // As reasonable anchor base point seems the "halving" edge endpoint
+    BRepAdaptor_Curve curve(objFeat->getEdge(subNames[i])->getOCCEdge());
+    gp_Pnt midPoint;
+    curve.D0(curve.LastParameter(), midPoint);
+
+    // Now try to get the real path center which lies anchorLength from edge start point
+    GCPnts_AbscissaPoint abscissa(Precision::Confusion(), curve, anchorLength, curve.FirstParameter());
+    if (abscissa.IsDone()) {
+        curve.D0(abscissa.Parameter(), midPoint);
+    }
+
+    double scale = objFeat->getScale();
+    Base::Vector3d anchor = DrawUtil::invertY(DrawUtil::toVector3d(midPoint)/scale);
+    totalLength /= scale;
+
+    // Use virtual dimension view helper to format resulting value
+    TechDraw::DrawViewDimension helperDim;
+    std::string valueStr = helperDim.formatValue(totalLength,
+                                                 QString::fromUtf8(helperDim.FormatSpec.getStrValue().data()),
+                                                 helperDim.isMultiValueSchema() ? 0 : 1);
+    balloon->Text.setValue("◠ " + valueStr);
+
+    // Set balloon format to be referencing dimension-like
+    int stdStyle = Preferences::getPreferenceGroup("Dimensions")->GetInt("StandardAndStyle",
+                       ViewProviderDimension::STD_STYLE_ISO_ORIENTED);
+    bool asmeStyle = stdStyle == ViewProviderDimension::STD_STYLE_ASME_INLINED
+                     || stdStyle == ViewProviderDimension::STD_STYLE_ASME_REFERENCING;
+    balloon->BubbleShape.setValue(asmeStyle ? "None" : "Line");
+    balloon->EndType.setValue(Preferences::getPreferenceGroup("Dimensions")->GetInt("ArrowStyle", 0));
+    balloon->OriginX.setValue(anchor.x);
+    balloon->OriginY.setValue(anchor.y);
+
+    // Set balloon label position a bit upwards and to the right, as QGSPage::createBalloon does
+    double textOffset = 20.0/scale;
+    balloon->X.setValue(anchor.x + textOffset);
+    balloon->Y.setValue(anchor.y + textOffset);
+
+    // Adjust the kink length accordingly to the standard used
+    auto viewProvider = dynamic_cast<ViewProviderBalloon *>(Gui::Application::Instance->getViewProvider(balloon));
+    if (viewProvider) {
+        balloon->KinkLength.setValue((asmeStyle ? 12.0 : 1.0)*viewProvider->LineWidth.getValue());
+    }
+
+    // Close the command and update the view
+    Gui::Command::commitCommand();
+    objFeat->touch(true);
+    Gui::Command::updateActive();
+}
+
+bool CmdTechDrawExtensionArcLengthAnnotation::isActive()
+{
+    bool havePage = DrawGuiUtil::needPage(this);
+    bool haveView = DrawGuiUtil::needView(this);
+    return (havePage && haveView);
+}
+
+//===========================================================================
 // internal helper routines
 //===========================================================================
 namespace TechDrawGui
@@ -1924,7 +2046,7 @@ lineAttributes& _getActiveLineAttributes()
 }
 
 std::string _createBalloon(Gui::Command* cmd, TechDraw::DrawViewPart* objFeat)
-// create a new balloon, return it's name as string
+// create a new balloon, return its name as string
 {
     std::string featName;
     TechDraw::DrawPage* page = objFeat->findParentPage();
@@ -2076,31 +2198,35 @@ void _createThreadLines(std::vector<std::string> SubNames, TechDraw::DrawViewPar
 void _setLineAttributes(TechDraw::CosmeticEdge* cosEdge)
 {
     // set line attributes of a cosmetic edge
-    cosEdge->m_format.m_style = _getActiveLineAttributes().getStyle();
+    cosEdge->m_format.m_style = 2;
     cosEdge->m_format.m_weight = _getActiveLineAttributes().getWidthValue();
     cosEdge->m_format.m_color = _getActiveLineAttributes().getColorValue();
+    cosEdge->m_format.m_lineNumber = _getActiveLineAttributes().getStyle();
 }
 
 void _setLineAttributes(TechDraw::CenterLine* cosEdge)
 {
     // set line attributes of a cosmetic edge
-    cosEdge->m_format.m_style = _getActiveLineAttributes().getStyle();
+    cosEdge->m_format.m_style = 2;
     cosEdge->m_format.m_weight = _getActiveLineAttributes().getWidthValue();
     cosEdge->m_format.m_color = _getActiveLineAttributes().getColorValue();
+    cosEdge->m_format.m_lineNumber = _getActiveLineAttributes().getStyle();
 }
 
 void _setLineAttributes(TechDraw::CosmeticEdge* cosEdge, int style, float weight, App::Color color)
 {
     // set line attributes of a cosmetic edge
-    cosEdge->m_format.m_style = style;
+    cosEdge->m_format.m_style = 2;
     cosEdge->m_format.m_weight = weight;
     cosEdge->m_format.m_color = color;
+    cosEdge->m_format.m_lineNumber = style;
 }
 
 void _setLineAttributes(TechDraw::CenterLine* cosEdge, int style, float weight, App::Color color)
 {
     // set line attributes of a centerline
-    cosEdge->m_format.m_style = style;
+    cosEdge->m_format.m_style = 2;
+    cosEdge->m_format.m_lineNumber = style;
     cosEdge->m_format.m_weight = weight;
     cosEdge->m_format.m_color = color;
 }
@@ -2135,4 +2261,5 @@ void CreateTechDrawCommandsExtensions()
     rcCmdMgr.addCommand(new CmdTechDrawExtensionThreadHoleBottom());
     rcCmdMgr.addCommand(new CmdTechDrawExtensionThreadBoltBottom());
     rcCmdMgr.addCommand(new CmdTechDrawExtensionAreaAnnotation());
+    rcCmdMgr.addCommand(new CmdTechDrawExtensionArcLengthAnnotation());
 }

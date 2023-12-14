@@ -1215,7 +1215,7 @@ std::set<DocumentObject *> Application::getLinksTo(
     } else {
         std::set<Document*> docs;
         for(auto o : obj->getInList()) {
-            if(o && o->getNameInDocument() && docs.insert(o->getDocument()).second) {
+            if(o && o->isAttachedToDocument() && docs.insert(o->getDocument()).second) {
                 o->getDocument()->getLinksTo(links,obj,options,maxCount);
                 if(maxCount && (int)links.size()>=maxCount)
                     break;
@@ -1808,7 +1808,7 @@ void segmentation_fault_handler(int sig)
 #if defined(FC_DEBUG)
     abort();
 #else
-    exit(1);
+    _exit(1);
 #endif
 #else
     switch (sig) {
@@ -2960,14 +2960,13 @@ void Application::LoadParameters()
     }
 }
 
-
-#if defined(_MSC_VER)
-// fix weird error while linking boost (all versions of VC)
-// VS2010: https://forum.freecad.org/viewtopic.php?f=4&t=1886&p=12553&hilit=boost%3A%3Afilesystem%3A%3Aget#p12553
-namespace boost { namespace program_options { std::string arg="arg"; } }
-namespace boost { namespace program_options {
+#if defined(_MSC_VER) && BOOST_VERSION < 108300
+    // fix weird error while linking boost (all versions of VC)
+    // VS2010: https://forum.freecad.org/viewtopic.php?f=4&t=1886&p=12553&hilit=boost%3A%3Afilesystem%3A%3Aget#p12553
+    namespace boost { namespace program_options { std::string arg="arg"; } }
+    namespace boost { namespace program_options {
     const unsigned options_description::m_default_line_length = 80;
-} }
+    } }
 #endif
 
 // A helper function to simplify the main part.

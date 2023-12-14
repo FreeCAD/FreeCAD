@@ -29,18 +29,15 @@
 ## \addtogroup draftmake
 # @{
 import FreeCAD as App
-import draftutils.utils as utils
-
+from draftobjects.layer import Layer, LayerContainer
+from draftutils import params
+from draftutils import utils
 from draftutils.messages import _msg, _err
 from draftutils.translate import translate
-from draftobjects.layer import (Layer,
-                                LayerContainer)
 
 if App.GuiUp:
     from draftviewproviders.view_layer import (ViewProviderLayer,
                                                ViewProviderLayerContainer)
-
-view_group = App.ParamGet("User parameter:BaseApp/Preferences/View")
 
 
 def get_layer_container():
@@ -171,7 +168,7 @@ def make_layer(name=None,
             _err(translate("draft","Wrong input: must be a tuple of three floats 0.0 to 1.0."))
             return None
     else:
-        c = view_group.GetUnsigned("DefaultShapeLineColor", 255)
+        c = params.get_param_view("DefaultShapeLineColor")
         line_color = (((c >> 24) & 0xFF) / 255,
                       ((c >> 16) & 0xFF) / 255,
                       ((c >> 8) & 0xFF) / 255)
@@ -188,7 +185,7 @@ def make_layer(name=None,
             _err(translate("draft","Wrong input: must be a tuple of three floats 0.0 to 1.0."))
             return None
     else:
-        c = view_group.GetUnsigned("DefaultShapeColor", 4294967295)
+        c = params.get_param_view("DefaultShapeColor")
         shape_color = (((c >> 24) & 0xFF) / 255,
                        ((c >> 16) & 0xFF) / 255,
                        ((c >> 8) & 0xFF) / 255)

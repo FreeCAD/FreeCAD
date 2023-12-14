@@ -48,7 +48,7 @@ public:
     static void terminate();
 
 private:
-    static std::unique_ptr<XERCES_CPP_NAMESPACE::XMLTranscoder> transcoder;
+    static std::unique_ptr<XERCES_CPP_NAMESPACE::XMLTranscoder> transcoder;  // NOLINT
 };
 
 //**************************************************************************
@@ -59,11 +59,12 @@ private:
 class StrX
 {
 public:
-    StrX(const XMLCh* const toTranscode);
+    explicit StrX(const XMLCh* const toTranscode);
     ~StrX();
 
     /// Getter method
     const char* c_str() const;
+    FC_DISABLE_COPY_MOVE(StrX)
 
 private:
     //  This is the local code page form of the string.
@@ -77,10 +78,8 @@ inline std::ostream& operator<<(std::ostream& target, const StrX& toDump)
 }
 
 inline StrX::StrX(const XMLCh* const toTranscode)
-{
-    // Call the private transcoding method
-    fLocalForm = XERCES_CPP_NAMESPACE_QUALIFIER XMLString::transcode(toTranscode);
-}
+    : fLocalForm(XERCES_CPP_NAMESPACE_QUALIFIER XMLString::transcode(toTranscode))
+{}
 
 inline StrX::~StrX()
 {
@@ -104,7 +103,7 @@ inline const char* StrX::c_str() const
 class StrXUTF8
 {
 public:
-    StrXUTF8(const XMLCh* const toTranscode);
+    explicit StrXUTF8(const XMLCh* const toTranscode);
 
     /// Getter method
     const char* c_str() const;
@@ -142,13 +141,13 @@ class XStr
 {
 public:
     ///  Constructors and Destructor
-    XStr(const char* const toTranscode);
-    ///
+    explicit XStr(const char* const toTranscode);
     ~XStr();
 
 
     ///  Getter method
     const XMLCh* unicodeForm() const;
+    FC_DISABLE_COPY_MOVE(XStr)
 
 private:
     /// This is the Unicode XMLCh format of the string.
@@ -157,9 +156,8 @@ private:
 
 
 inline XStr::XStr(const char* const toTranscode)
-{
-    fUnicodeForm = XERCES_CPP_NAMESPACE_QUALIFIER XMLString::transcode(toTranscode);
-}
+    : fUnicodeForm(XERCES_CPP_NAMESPACE_QUALIFIER XMLString::transcode(toTranscode))
+{}
 
 inline XStr::~XStr()
 {
@@ -183,11 +181,13 @@ inline const XMLCh* XStr::unicodeForm() const
 class XUTF8Str
 {
 public:
-    XUTF8Str(const char* const fromTranscode);
+    explicit XUTF8Str(const char* const fromTranscode);
     ~XUTF8Str();
 
     /// Getter method
     const XMLCh* unicodeForm() const;
+
+    FC_DISABLE_COPY_MOVE(XUTF8Str)
 
 private:
     std::basic_string<XMLCh> str;

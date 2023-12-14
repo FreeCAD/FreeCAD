@@ -991,17 +991,17 @@ class _MeshNetgenFromShape(CommandManager):
 
 
 class _MeshRegion(CommandManager):
-    "The FEM_MeshRegion command definition"
+    "The FEM_MeshRefinement command definition"
 
     def __init__(self):
         super(_MeshRegion, self).__init__()
         self.menutext = Qt.QT_TRANSLATE_NOOP(
             "FEM_MeshRegion",
-            "FEM mesh region"
+            "FEM mesh refinement"
         )
         self.tooltip = Qt.QT_TRANSLATE_NOOP(
             "FEM_MeshRegion",
-            "Creates a FEM mesh region"
+            "Creates a FEM mesh refinement"
         )
         self.is_active = "with_gmsh_femmesh"
         self.do_activated = "add_obj_on_gui_selobj_set_edit"

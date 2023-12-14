@@ -47,8 +47,8 @@ public:
 class Array2DModel: public AbstractArrayModel
 {
 public:
-    explicit Array2DModel(std::shared_ptr<Materials::MaterialProperty> property = nullptr,
-                          std::shared_ptr<Materials::Material2DArray> value = nullptr,
+    explicit Array2DModel(const std::shared_ptr<Materials::MaterialProperty>& property = nullptr,
+                          const std::shared_ptr<Materials::Material2DArray>& value = nullptr,
                           QObject* parent = nullptr);
     ~Array2DModel() override = default;
 
@@ -77,9 +77,10 @@ private:
 class Array3DDepthModel: public AbstractArrayModel
 {
 public:
-    explicit Array3DDepthModel(std::shared_ptr<Materials::MaterialProperty> property = nullptr,
-                               std::shared_ptr<Materials::Material3DArray> value = nullptr,
-                               QObject* parent = nullptr);
+    explicit Array3DDepthModel(
+        const std::shared_ptr<Materials::MaterialProperty>& property = nullptr,
+        const std::shared_ptr<Materials::Material3DArray>& value = nullptr,
+        QObject* parent = nullptr);
     ~Array3DDepthModel() override = default;
 
     // Overridden virtual functions
@@ -111,8 +112,8 @@ private:
 class Array3DModel: public AbstractArrayModel
 {
 public:
-    explicit Array3DModel(std::shared_ptr<Materials::MaterialProperty> property = nullptr,
-                          std::shared_ptr<Materials::Material3DArray> value = nullptr,
+    explicit Array3DModel(const std::shared_ptr<Materials::MaterialProperty>& property = nullptr,
+                          const std::shared_ptr<Materials::Material3DArray>& value = nullptr,
                           QObject* parent = nullptr);
     ~Array3DModel() override = default;
 

@@ -11,140 +11,126 @@
    </rect>
   </property>
   <property name="windowTitle">
-   <string>General settings</string>
+   <string>General</string>
   </property>
   <layout class="QVBoxLayout">
-   <property name="spacing">
-    <number>6</number>
-   </property>
-   <property name="margin">
-    <number>9</number>
-   </property>
    <item>
-    <widget class="QGroupBox" name="groupBox">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
+    <widget class="QGroupBox" name="groupBox_1">
      <property name="title">
-      <string>General Draft Settings</string>
+      <string>General</string>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_2">
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_9">
-        <item>
-         <widget class="QLabel" name="label_12">
-          <property name="text">
-           <string>Default working plane</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer_7">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="Gui::PrefComboBox" name="gui::prefcombobox_2">
-          <property name="prefEntry" stdset="0">
-           <cstring>defaultWP</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-          <item>
-           <property name="text">
-            <string>None</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>XY (Top)</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>XZ (Front)</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>YZ (Side)</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-       </layout>
+     <layout class="QGridLayout" name="gridLayout_1">
+      <item row="0" column="0">
+       <widget class="QLabel" name="label_precision">
+        <property name="text">
+         <string>Internal precision level</string>
+        </property>
+       </widget>
       </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_13">
-        <item>
-         <widget class="QLabel" name="label_8">
-          <property name="text">
-           <string>Internal precision level</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="Gui::PrefSpinBox" name="gui::prefspinbox_3">
-          <property name="maximumSize">
-           <size>
-            <width>60</width>
-            <height>16777215</height>
-           </size>
-          </property>
-          <property name="toolTip">
-           <string>The number of decimals in internal coordinates operations (for ex. 3 = 0.001). Values between 6 and 8 are usually considered the best trade-off among FreeCAD users.</string>
-          </property>
-          <property name="maximum">
-           <number>10</number>
-          </property>
-          <property name="value">
-           <number>6</number>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>precision</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <widget class="Gui::PrefCheckBox" name="checkBox_3">
+      <item row="0" column="1">
+       <widget class="Gui::PrefSpinBox" name="spinBox_precision">
+        <property name="minimumSize">
+         <size>
+          <width>140</width>
+          <height>0</height>
+         </size>
+        </property>
         <property name="toolTip">
-         <string>If this option is checked, the layers drop-down list will also show groups, allowing you to automatically add objects to groups too.</string>
+         <string>The number of decimals used in internal coordinate operations (for example 3 = 0.001).
+Values between 6 and 8 are usually considered the best trade-off.</string>
+        </property>
+        <property name="maximum">
+         <number>10</number>
+        </property>
+        <property name="value">
+         <number>6</number>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>precision</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Draft</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <spacer name="horizontalSpacer_1">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </spacer>
+      </item>
+      <item row="1" column="0">
+       <widget class="QLabel" name="label_defaultWP">
+        <property name="text">
+         <string>Default working plane</string>
+        </property>
+       </widget>
+      </item>
+      <item row="1" column="1">
+       <widget class="Gui::PrefComboBox" name="comboBox_defaultWP">
+        <property name="toolTip">
+         <string>The default working plane for new views. If set to &quot;Automatic&quot; the working plane
+will automatically align with the current view whenever a command is started.
+Additionally it will align to preselected planar faces, or when points on planar
+faces are picked during commands.</string>
+        </property>
+        <property name="currentIndex">
+         <number>1</number>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>defaultWP</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Draft</cstring>
+        </property>
+        <item>
+         <property name="text">
+          <string>Automatic</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>XY (Top)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>XZ (Front)</string>
+         </property>
+        </item>
+        <item>
+         <property name="text">
+          <string>YZ (Side)</string>
+         </property>
+        </item>
+       </widget>
+      </item>
+      <item row="2" column="0" colspan="3">
+       <widget class="Gui::PrefCheckBox" name="checkBox_showPlaneTracker">
+        <property name="toolTip">
+         <string>If checked, a widget indicating the current working
+plane orientation appears when picking points</string>
         </property>
         <property name="text">
-         <string>Show groups in layers list drop-down button</string>
+         <string>Show working plane tracker</string>
         </property>
-        <property name="checked">
-         <bool>false</bool>
+        <property name="prefEntry" stdset="0">
+         <cstring>showPlaneTracker</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Draft</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0" colspan="3">
+       <widget class="Gui::PrefCheckBox" name="checkBox_AutogroupAddGroups">
+        <property name="toolTip">
+         <string>If checked, the layers drop-down list also includes groups.
+Objects can then automatically be added to groups as well.</string>
+        </property>
+        <property name="text">
+         <string>Include groups in layer list</string>
         </property>
         <property name="prefEntry" stdset="0">
          <cstring>AutogroupAddGroups</cstring>
@@ -158,215 +144,272 @@
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="verticalGroupBox">
+    <widget class="QGroupBox" name="groupBox_2">
      <property name="title">
-      <string>Draft tools options</string>
+      <string>Command options</string>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout">
-      <property name="margin">
-       <number>9</number>
-      </property>
-      <item>
-       <layout class="QGridLayout" name="gridLayout">
-        <property name="topMargin">
-         <number>0</number>
+     <layout class="QGridLayout" name="gridLayout_2">
+      <item row="0" column="0" colspan="3">
+       <widget class="Gui::PrefCheckBox" name="checkBox_ToolMessages">
+        <property name="toolTip">
+         <string>If checked, instructions are displayed in the Report view when using Draft commands</string>
         </property>
-        <item row="0" column="0">
-         <widget class="Gui::PrefCheckBox" name="checkBox">
-          <property name="toolTip">
-           <string>When drawing lines, set focus on Length instead of X coordinate.
-This allows to point the direction and type the distance.</string>
-          </property>
-          <property name="text">
-           <string>Set focus on Length instead of X coordinate</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>focusOnLength</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="1">
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_6">
-          <property name="toolTip">
-           <string>If this is checked, objects will appear as filled by default.
-Otherwise, they will appear as wireframe</string>
-          </property>
-          <property name="text">
-           <string>Fill objects with faces whenever possible</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>fillmode</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="0">
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_3">
-          <property name="toolTip">
-           <string>Normally, after copying objects, the copies get selected.
-If this option is checked, the base objects will be selected instead.</string>
-          </property>
-          <property name="text">
-           <string>Select base objects after copying</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>selectBaseObjects</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="1" column="1">
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_13">
-          <property name="toolTip">
-           <string>Force Draft Tools to create Part primitives instead of Draft objects.
-Note that this is not fully supported, and many object will be not editable with Draft Modifiers.</string>
-          </property>
-          <property name="text">
-           <string>Use Part Primitives when available</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>UsePartPrimitives</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
+        <property name="text">
+         <string>Show prompts in the Report view</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ToolMessages</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Draft</cstring>
+        </property>
+       </widget>
       </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_3">
-        <item>
-         <widget class="QLabel" name="label">
-          <property name="text">
-           <string>Prefix labels of Clones with:</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="Gui::PrefLineEdit" name="lineEdit">
-          <property name="text">
-           <string/>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>ClonePrefix</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
+      <item row="1" column="0" colspan="3">
+       <widget class="Gui::PrefCheckBox" name="checkBox_focusOnLength">
+        <property name="toolTip">
+         <string>If checked, Length input, instead of the X coordinate, will have the initial focus.
+This allows to indicate a direction and then type a distance.</string>
+        </property>
+        <property name="text">
+         <string>Set focus on Length instead of X coordinate</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>focusOnLength</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Draft</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="2" column="0" colspan="3">
+       <widget class="Gui::PrefCheckBox" name="checkBox_selectBaseObjects">
+        <property name="toolTip">
+         <string>If checked, base objects, instead of created copies, are selected after copying</string>
+        </property>
+        <property name="text">
+         <string>Select base objects after copying</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>selectBaseObjects</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Draft</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="3" column="0" colspan="3">
+       <widget class="Gui::PrefCheckBox" name="checkBox_UsePartPrimitives">
+        <property name="toolTip">
+         <string>If checked, Draft commands will create Part primitives instead of Draft objects.
+Note that this is not fully supported, and many objects will not be editable with
+Draft modification commands.</string>
+        </property>
+        <property name="text">
+         <string>Create Part primitives if possible</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>UsePartPrimitives</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Draft</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="4" column="0" colspan="3">
+       <widget class="Gui::PrefCheckBox" name="checkBox_preserveFaceColor">
+        <property name="toolTip">
+         <string>If checked, Draft Downgrade and Draft Upgrade will keep face colors.
+Only for the splitFaces and makeShell options.</string>
+        </property>
+        <property name="text">
+         <string>Keep face colors during downgrade/upgrade</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>preserveFaceColor</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Draft</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="5" column="0" colspan="3">
+       <widget class="Gui::PrefCheckBox" name="checkBox_preserveFaceNames">
+        <property name="toolTip">
+         <string>If checked, Draft Downgrade and Draft Upgrade will keep face names.
+Only for the splitFaces and makeShell options.</string>
+        </property>
+        <property name="text">
+         <string>Keep face names during downgrade/upgrade</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>preserveFaceNames</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Draft</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="0">
+       <widget class="QLabel" name="label_DraftEditMaxObjects">
+        <property name="text">
+         <string>Max. number of editable objects</string>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="1">
+       <widget class="Gui::PrefSpinBox" name="spinBox_DraftEditMaxObjects">
+        <property name="toolTip">
+         <string>The maximum number of objects Draft Edit is allowed to process at the same time</string>
+        </property>
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="maximum">
+         <number>25</number>
+        </property>
+        <property name="value">
+         <number>5</number>
+        </property>
+        <property name="displayIntegerBase">
+         <number>10</number>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>DraftEditMaxObjects</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Draft</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="6" column="2">
+       <spacer name="horizontalSpacer_2">
+        <property name="orientation">
+         <enum>Qt::Horizontal</enum>
+        </property>
+       </spacer>
+      </item>
+      <item row="7" column="0">
+       <widget class="QLabel" name="label_DraftEditPickRadius">
+        <property name="text">
+         <string>Edit node pick radius</string>
+        </property>
+       </widget>
+      </item>
+      <item row="7" column="1">
+       <widget class="Gui::PrefSpinBox" name="spinBox_DraftEditPickRadius">
+        <property name="toolTip">
+         <string>The pick radius of edit nodes</string>
+        </property>
+        <property name="suffix">
+         <string> px</string>
+        </property>
+        <property name="minimum">
+         <number>1</number>
+        </property>
+        <property name="value">
+         <number>20</number>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>DraftEditPickRadius</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Draft</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="0">
+       <widget class="QLabel" name="label_ClonePrefix">
+        <property name="text">
+         <string>Label prefix for clones</string>
+        </property>
+       </widget>
+      </item>
+      <item row="8" column="1">
+       <widget class="Gui::PrefLineEdit" name="lineEdit_ClonePrefix">
+        <property name="maximumSize">
+         <size>
+          <width>140</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>The default prefix added to the label of new clones</string>
+        </property>
+        <property name="text">
+         <string/>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>ClonePrefix</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Draft</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="0">
+       <widget class="QLabel" name="label_constructiongroupname">
+        <property name="text">
+         <string>Construction group label</string>
+        </property>
+       </widget>
+      </item>
+      <item row="9" column="1">
+       <widget class="Gui::PrefLineEdit" name="lineEdit_constructiongroupname">
+        <property name="maximumSize">
+         <size>
+          <width>140</width>
+          <height>16777215</height>
+         </size>
+        </property>
+        <property name="toolTip">
+         <string>The default label for the construction geometry group</string>
+        </property>
+        <property name="text">
+         <string>Construction</string>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>constructiongroupname</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Draft</cstring>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="0">
+       <widget class="QLabel" name="label_constructioncolor">
+        <property name="text">
+         <string>Construction geometry color</string>
+        </property>
+       </widget>
+      </item>
+      <item row="10" column="1">
+       <widget class="Gui::PrefColorButton" name="colorButton_constructioncolor">
+        <property name="toolTip">
+         <string>The default color for Draft objects in construction mode</string>
+        </property>
+        <property name="color" stdset="0">
+         <color>
+          <red>44</red>
+          <green>125</green>
+          <blue>255</blue>
+         </color>
+        </property>
+        <property name="prefEntry" stdset="0">
+         <cstring>constructioncolor</cstring>
+        </property>
+        <property name="prefPath" stdset="0">
+         <cstring>Mod/Draft</cstring>
+        </property>
+       </widget>
       </item>
      </layout>
     </widget>
    </item>
    <item>
-    <widget class="QGroupBox" name="groupBox_3">
-     <property name="sizePolicy">
-      <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
-       <horstretch>0</horstretch>
-       <verstretch>0</verstretch>
-      </sizepolicy>
-     </property>
-     <property name="title">
-      <string>Construction Geometry</string>
-     </property>
-     <layout class="QVBoxLayout" name="verticalLayout_3" stretch="0,0">
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_10">
-        <item>
-         <widget class="QLabel" name="label_10">
-          <property name="text">
-           <string>Construction group name</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="Gui::PrefLineEdit" name="gui::preflineedit_2">
-          <property name="toolTip">
-           <string>This is the default group name for construction geometry</string>
-          </property>
-          <property name="text">
-           <string>Construction</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>constructiongroupname</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_8">
-        <item>
-         <widget class="QLabel" name="label_9">
-          <property name="text">
-           <string>Construction geometry color</string>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer_9">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="Gui::PrefColorButton" name="gui::prefcolorbutton_3">
-          <property name="toolTip">
-           <string>This is the default color for objects being drawn while in construction mode.</string>
-          </property>
-          <property name="color" stdset="0">
-           <color>
-            <red>44</red>
-            <green>125</green>
-            <blue>255</blue>
-           </color>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>constructioncolor</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
-     </layout>
-    </widget>
-   </item>
-   <item>
-    <spacer name="verticalSpacer">
+    <spacer name="verticalSpacer_1">
      <property name="orientation">
       <enum>Qt::Vertical</enum>
-     </property>
-     <property name="sizeHint" stdset="0">
-      <size>
-       <width>20</width>
-       <height>40</height>
-      </size>
      </property>
     </spacer>
    </item>
@@ -376,28 +419,8 @@ Note that this is not fully supported, and many object will be not editable with
  <pixmapfunction>qPixmapFromMimeSource</pixmapfunction>
  <customwidgets>
   <customwidget>
-   <class>Gui::ColorButton</class>
-   <extends>QPushButton</extends>
-   <header>Gui/Widgets.h</header>
-  </customwidget>
-  <customwidget>
-   <class>Gui::PrefSpinBox</class>
-   <extends>QSpinBox</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
-  <customwidget>
-   <class>Gui::PrefColorButton</class>
-   <extends>Gui::ColorButton</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
-  <customwidget>
    <class>Gui::PrefCheckBox</class>
    <extends>QCheckBox</extends>
-   <header>Gui/PrefWidgets.h</header>
-  </customwidget>
-  <customwidget>
-   <class>Gui::PrefComboBox</class>
-   <extends>QComboBox</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
@@ -406,8 +429,23 @@ Note that this is not fully supported, and many object will be not editable with
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
   <customwidget>
-   <class>Gui::PrefDoubleSpinBox</class>
-   <extends>QDoubleSpinBox</extends>
+   <class>Gui::PrefComboBox</class>
+   <extends>QComboBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefSpinBox</class>
+   <extends>QSpinBox</extends>
+   <header>Gui/PrefWidgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::ColorButton</class>
+   <extends>QPushButton</extends>
+   <header>Gui/Widgets.h</header>
+  </customwidget>
+  <customwidget>
+   <class>Gui::PrefColorButton</class>
+   <extends>Gui::ColorButton</extends>
    <header>Gui/PrefWidgets.h</header>
   </customwidget>
  </customwidgets>

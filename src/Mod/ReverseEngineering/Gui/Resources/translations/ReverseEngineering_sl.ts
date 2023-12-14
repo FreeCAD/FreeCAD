@@ -24,12 +24,12 @@
     <message>
       <location filename="../../Command.cpp" line="106"/>
       <source>Reverse Engineering</source>
-      <translation>Vzvratno inženirstvo</translation>
+      <translation>Vzvratni inženiring</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="107"/>
-      <source>Plane...</source>
-      <translation>Ravnina ...</translation>
+      <source>Plane</source>
+      <translation>Ravnina</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="108"/>
@@ -521,7 +521,7 @@
       <location filename="../../SegmentationManual.ui" line="208"/>
       <location filename="../../SegmentationManual.ui" line="261"/>
       <source>Minimum number of faces</source>
-      <translation>Najmanjše št. ploskev</translation>
+      <translation>Najmanjše število ploskev</translation>
     </message>
     <message>
       <location filename="../../SegmentationManual.ui" line="175"/>
@@ -577,7 +577,7 @@
     <message>
       <location filename="../../Workbench.cpp" line="34"/>
       <source>Reverse Engineering</source>
-      <translation>Vzvratni inženiring</translation>
+      <translation>Vzvratno inženirstvo</translation>
     </message>
   </context>
 </TS>

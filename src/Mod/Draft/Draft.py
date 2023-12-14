@@ -92,7 +92,8 @@ from draftutils.utils import (string_encode_coin,
                               get_rgb,
                               getrgb,
                               argb_to_rgba,
-                              rgba_to_argb)
+                              rgba_to_argb,
+                              get_rgba_tuple)
 
 from draftfunctions.svg import (get_svg,
                                 getSVG)
@@ -106,6 +107,7 @@ from draftutils.gui_utils import (get3DView,
                                   removeHidden,
                                   remove_hidden,
                                   get_diffuse_color,
+                                  apply_current_style,
                                   formatObject,
                                   format_object,
                                   getSelection,

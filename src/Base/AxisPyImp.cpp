@@ -47,7 +47,7 @@ std::string AxisPy::representation() const
     return str.str();
 }
 
-PyObject* AxisPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
+PyObject* AxisPy::PyMake(PyTypeObject* /*unused*/, PyObject* /*unused*/, PyObject* /*unused*/)
 {
     // create a new instance of AxisPy and the Twin object
     return new AxisPy(new Axis);

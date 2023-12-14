@@ -59,8 +59,8 @@ public:
     };
 
     /// Construction
-    FileInfo(const char* _FileName = "");
-    FileInfo(const std::string& _FileName);
+    explicit FileInfo(const char* fileName = "");
+    explicit FileInfo(const std::string& fileName);
     /// Set a new file name
     void setFile(const char* name);
     /// Set a new file name
@@ -158,7 +158,7 @@ public:
     /// Get the path to the dir which is considered to temp files
     static const std::string& getTempPath();
     /// Convert from filesystem path to string
-    static std::string pathToString(const boost::filesystem::path& p);
+    static std::string pathToString(const boost::filesystem::path& path);
     /// Convert from string to filesystem path
     static boost::filesystem::path stringToPath(const std::string& str);
     //@}

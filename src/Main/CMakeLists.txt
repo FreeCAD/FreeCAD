@@ -1,5 +1,3 @@
-#add_defintions(-D_FC_GUI_ENABLED_)
-#add_defintions(-DFREECADMAINPY)
 
 configure_file(freecad.rc.cmake ${CMAKE_CURRENT_BINARY_DIR}/freecad.rc)
 configure_file(freecadCmd.rc.cmake ${CMAKE_CURRENT_BINARY_DIR}/freecadCmd.rc)
@@ -10,6 +8,7 @@ if(BUILD_GUI)
         ${Boost_INCLUDE_DIRS}
         ${COIN3D_INCLUDE_DIRS}
         ${ZLIB_INCLUDE_DIR}
+        ${QtWidgets_INCLUDE_DIRS}
         ${QT_INCLUDE_DIR}
         ${PYTHON_INCLUDE_DIRS}
         ${XercesC_INCLUDE_DIRS}

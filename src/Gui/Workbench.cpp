@@ -620,6 +620,7 @@ void StdWorkbench::setupContextMenu(const char* recipient, MenuItem* item) const
 
 void StdWorkbench::createMainWindowPopupMenu(MenuItem* item) const
 {
+    *item << "Std_ToggleToolBarLock";
     *item << "Std_DlgCustomize";
 }
 
@@ -802,7 +803,7 @@ ToolBarItem* StdWorkbench::setupToolBars() const
     }
 
     // Macro
-    auto macro = new ToolBarItem( root );
+    auto macro = new ToolBarItem( root, ToolBarItem::DefaultVisibility::Hidden);
     macro->setCommand("Macro");
     *macro << "Std_DlgMacroRecord" << "Std_DlgMacroExecute"
            << "Std_DlgMacroExecuteDirect";

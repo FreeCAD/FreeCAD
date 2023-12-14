@@ -341,6 +341,7 @@ using PyMethodDef = struct PyMethodDef;
  *
  */
 
+// NOLINTBEGIN(bugprone-reserved-identifier,bugprone-macro-parentheses,cppcoreguidelines-macro-usage)
 #define FC_LOGLEVEL_DEFAULT -1
 #define FC_LOGLEVEL_ERR 0
 #define FC_LOGLEVEL_WARN 1
@@ -479,6 +480,7 @@ using PyMethodDef = struct PyMethodDef;
     } while (0)
 
 #endif  // FC_LOG_NO_TIMING
+// NOLINTEND(bugprone-reserved-identifier,bugprone-macro-parentheses,cppcoreguidelines-macro-usage)
 
 // TODO: Get rid of this typedef
 using ConsoleMsgFlags = unsigned int;
@@ -487,12 +489,12 @@ namespace Base
 {
 
 #ifndef FC_LOG_NO_TIMING
-inline FC_DURATION GetDuration(FC_TIME_POINT& t)
+inline FC_DURATION GetDuration(FC_TIME_POINT& tp)
 {
     auto tnow = std::chrono::FC_TIME_CLOCK::now();
-    auto d = std::chrono::duration_cast<FC_DURATION>(tnow - t);
-    t = tnow;
-    return d;
+    auto dc = std::chrono::duration_cast<FC_DURATION>(tnow - tp);
+    tp = tnow;
+    return dc;
 }
 #endif
 
@@ -548,6 +550,10 @@ class BaseExport ILogger
 {
 public:
     ILogger() = default;
+    ILogger(const ILogger&) = delete;
+    ILogger(ILogger&&) = delete;
+    ILogger& operator=(const ILogger&) = delete;
+    ILogger& operator=(ILogger&&) = delete;
     virtual ~ILogger() = 0;
 
     /** Used to send a Log message at the given level.
@@ -571,24 +577,24 @@ public:
     /**
      * Returns whether a LogStyle category is active or not
      */
-    bool isActive(Base::LogStyle category)
+    bool isActive(Base::LogStyle category) const
     {
         if (category == Base::LogStyle::Log) {
             return bLog;
         }
-        else if (category == Base::LogStyle::Warning) {
+        if (category == Base::LogStyle::Warning) {
             return bWrn;
         }
-        else if (category == Base::LogStyle::Error) {
+        if (category == Base::LogStyle::Error) {
             return bErr;
         }
-        else if (category == Base::LogStyle::Message) {
+        if (category == Base::LogStyle::Message) {
             return bMsg;
         }
-        else if (category == Base::LogStyle::Critical) {
+        if (category == Base::LogStyle::Critical) {
             return bCritical;
         }
-        else if (category == Base::LogStyle::Notification) {
+        if (category == Base::LogStyle::Notification) {
             return bNotification;
         }
 
@@ -805,11 +811,11 @@ public:
     };
 
     /// Change mode
-    void SetConsoleMode(ConsoleMode m);
+    void SetConsoleMode(ConsoleMode mode);
     /// Change mode
-    void UnsetConsoleMode(ConsoleMode m);
+    void UnsetConsoleMode(ConsoleMode mode);
     /// Enables or disables message types of a certain console observer
-    ConsoleMsgFlags SetEnabledMsgType(const char* sObs, ConsoleMsgFlags type, bool b);
+    ConsoleMsgFlags SetEnabledMsgType(const char* sObs, ConsoleMsgFlags type, bool on);
     /// Checks if message types of a certain console observer are enabled
     bool IsMsgTypeEnabled(const char* sObs, FreeCAD_ConsoleMsgType type) const;
     void SetConnectionMode(ConnectionMode mode);
@@ -839,7 +845,7 @@ public:
 
     inline constexpr FreeCAD_ConsoleMsgType getConsoleMsg(Base::LogStyle style);
 
-protected:
+private:
     // python exports goes here +++++++++++++++++++++++++++++++++++++++++++
     // static python wrapper of the exported functions
     static PyObject* sPyLog(PyObject* self, PyObject* args);
@@ -865,7 +871,13 @@ protected:
 
     // Singleton!
     ConsoleSingleton();
-    virtual ~ConsoleSingleton();
+    ~ConsoleSingleton();
+
+public:
+    ConsoleSingleton(const ConsoleSingleton&) = delete;
+    ConsoleSingleton(ConsoleSingleton&&) = delete;
+    ConsoleSingleton& operator=(const ConsoleSingleton&) = delete;
+    ConsoleSingleton& operator=(ConsoleSingleton&&) = delete;
 
 private:
     void postEvent(ConsoleSingleton::FreeCAD_ConsoleMsgType type,
@@ -881,7 +893,7 @@ private:
 
     // singleton
     static void Destruct();
-    static ConsoleSingleton* _pcSingleton;
+    static ConsoleSingleton* _pcSingleton;  // NOLINT
 
     // observer list
     std::set<ILogger*> _aclObservers;
@@ -927,6 +939,11 @@ public:
     {
         Console().EnableRefresh(true);
     }
+
+    ConsoleRefreshDisabler(const ConsoleRefreshDisabler&) = delete;
+    ConsoleRefreshDisabler(ConsoleRefreshDisabler&&) = delete;
+    ConsoleRefreshDisabler& operator=(const ConsoleRefreshDisabler&) = delete;
+    ConsoleRefreshDisabler& operator=(ConsoleRefreshDisabler&&) = delete;
 };
 
 
@@ -957,9 +974,9 @@ public:
         , refresh(refresh)
     {}
 
-    bool isEnabled(int l)
+    bool isEnabled(int lev) const
     {
-        return l <= level();
+        return lev <= level();
     }
 
     int level() const

@@ -106,11 +106,8 @@ void BaseClass::initSubclass(Base::Type& toInit,
  */
 PyObject* BaseClass::getPyObject()
 {
-    assert(0);
     Py_Return;
 }
 
-void BaseClass::setPyObject(PyObject*)
-{
-    assert(0);
-}
+void BaseClass::setPyObject(PyObject* /*unused*/)
+{}

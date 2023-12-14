@@ -35,12 +35,9 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import FreeCADGui as Gui
-
-import draftutils.utils as utils
+from draftutils import params
 from draftutils.translate import translate
-
-from draftviewproviders.view_draft_annotation \
-    import ViewProviderDraftAnnotation
+from draftviewproviders.view_draft_annotation import ViewProviderDraftAnnotation
 
 
 class ViewProviderText(ViewProviderDraftAnnotation):
@@ -66,7 +63,7 @@ class ViewProviderText(ViewProviderDraftAnnotation):
                              "LineSpacing",
                              "Text",
                              _tip)
-            vobj.LineSpacing = 1.0
+            vobj.LineSpacing = params.get_param("LineSpacing")
 
     def getIcon(self):
         """Return the path to the icon used by the view provider."""

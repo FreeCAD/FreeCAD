@@ -1981,7 +1981,7 @@ void PlyWriter::write(const std::string& filename)
         col += 1;
     }
 
-    Base::ofstream out(filename, std::ios::out);
+    Base::ofstream out(Base::FileInfo(filename), std::ios::out);
     out << "ply" << std::endl
         << "format ascii 1.0" << std::endl
         << "comment FreeCAD generated" << std::endl;
@@ -2130,7 +2130,7 @@ void PcdWriter::write(const std::string& filename)
     }
 
     std::size_t numFields = fields.size();
-    Base::ofstream out(filename, std::ios::out);
+    Base::ofstream out(Base::FileInfo(filename), std::ios::out);
     out << "# .PCD v0.7 - Point Cloud Data file format" << std::endl << "VERSION 0.7" << std::endl;
 
     // the fields

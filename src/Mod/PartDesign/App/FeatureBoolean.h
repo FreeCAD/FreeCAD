@@ -47,6 +47,7 @@ public:
     App::PropertyEnumeration    Type;
 
     App::PropertyBool Refine;
+    App::PropertyBool UsePlacement;
 
    /** @name methods override feature */
     //@{

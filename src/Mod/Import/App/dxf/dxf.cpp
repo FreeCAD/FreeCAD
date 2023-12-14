@@ -15,6 +15,7 @@
 
 #include "dxf.h"
 #include <App/Application.h>
+#include <App/Color.h>
 #include <Base/Console.h>
 #include <Base/FileInfo.h>
 #include <Base/Interpreter.h>
@@ -777,11 +778,7 @@ void CDxfWrite::writeEllipse(const double* c,
                              double end_angle,
                              bool endIsCW)
 {
-    double m[3];
-    m[2] = 0;
-    m[0] = major_radius * sin(rotation);
-    m[1] = major_radius * cos(rotation);
-
+    double m[3] = {major_radius * sin(rotation), major_radius * cos(rotation), 0};
     double ratio = minor_radius / major_radius;
 
     if (!endIsCW) {  // end is NOT CW from start
@@ -894,13 +891,13 @@ void CDxfWrite::writeSpline(const SplineDataOut& sd)
         (*m_ssEntity) << w << endl;
     }
 
-    for (auto& c : sd.control) {
+    for (auto& center : sd.control) {
         (*m_ssEntity) << " 10" << endl;
-        (*m_ssEntity) << c.x << endl;  // X in WCS coordinates
+        (*m_ssEntity) << center.x << endl;  // X in WCS coordinates
         (*m_ssEntity) << " 20" << endl;
-        (*m_ssEntity) << c.y << endl;  // Y in WCS coordinates
+        (*m_ssEntity) << center.y << endl;  // Y in WCS coordinates
         (*m_ssEntity) << " 30" << endl;
-        (*m_ssEntity) << c.z << endl;  // Z in WCS coordinates
+        (*m_ssEntity) << center.z << endl;  // Z in WCS coordinates
     }
     for (auto& f : sd.fit) {
         (*m_ssEntity) << " 11" << endl;
@@ -1688,9 +1685,9 @@ void CDxfWrite::writeRadialDimBlock(const double* centerPoint,
             getBlockHandle(),
             m_saveBlkRecordHandle);
 
-    Base::Vector3d c(centerPoint[0], centerPoint[1], centerPoint[2]);
+    Base::Vector3d center(centerPoint[0], centerPoint[1], centerPoint[2]);
     Base::Vector3d a(arcPoint[0], arcPoint[1], arcPoint[2]);
-    Base::Vector3d para = a - c;
+    Base::Vector3d para = a - center;
     double arrowLen = 5.0;                     // magic number
     double arrowWidth = arrowLen / 6.0 / 2.0;  // magic number calc!
     para.Normalize();
@@ -1798,30 +1795,13 @@ void CDxfWrite::writeObjectsSection()
 CDxfRead::CDxfRead(const char* filepath)
 {
     // start the file
-    memset(m_str, '\0', sizeof(m_str));
-    memset(m_unused_line, '\0', sizeof(m_unused_line));
-    m_fail = false;
-    m_ColorIndex = 0;
-    m_eUnits = eMillimeters;
-    m_measurement_inch = false;
-    strcpy(m_layer_name, "0");  // Default layer name
-    memset(m_section_name, '\0', sizeof(m_section_name));
-    memset(m_block_name, '\0', sizeof(m_block_name));
-    m_ignore_errors = true;
-
-    m_version = RUnknown;
-    m_CodePage = nullptr;
-    m_encoding = nullptr;
-
-    m_ifs = new Base::ifstream(Base::FileInfo(filepath));
+    m_ifs = new ifstream(filepath);
     if (!(*m_ifs)) {
         m_fail = true;
-        printf("DXF file didn't load\n");
+        ImportError("DXF file didn't load\n");
         return;
     }
     m_ifs->imbue(std::locale("C"));
-
-    stringToUTF8 = &CDxfRead::UTF8ToUTF8;
 }
 
 CDxfRead::~CDxfRead()
@@ -1890,1449 +1870,646 @@ double CDxfRead::mm(double value) const
     }                              // End switch
 }  // End mm() method
 
+//
+//  Setup for ProcessCommonEntityAttribute
+void CDxfRead::Setup3DVectorAttribute(int x_record_type, double destination[3])
+{
+    SetupScaledDoubleAttribute(x_record_type, destination[0]);
+    SetupScaledDoubleAttribute(x_record_type + 10, destination[1]);
+    SetupScaledDoubleAttribute(x_record_type + 20, destination[2]);
+    destination[0] = destination[1] = destination[2] = 0.0;
+}
+void CDxfRead::Setup3DCoordinatesIntoLists(int x_record_type,
+                                           list<double>& x_destination,
+                                           list<double>& y_destination,
+                                           list<double>& z_destination)
+{
+    SetupScaledDoubleIntoList(x_record_type, x_destination);
+    SetupScaledDoubleIntoList(x_record_type + 10, y_destination);
+    SetupScaledDoubleIntoList(x_record_type + 20, z_destination);
+}
+void CDxfRead::SetupScaledDoubleAttribute(int x_record_type, double& destination)
+{
+    m_coordinate_attributes.emplace(x_record_type, std::pair(&ProcessScaledDouble, &destination));
+}
+void CDxfRead::SetupScaledDoubleIntoList(int x_record_type, list<double>& destination)
+{
+    m_coordinate_attributes.emplace(x_record_type,
+                                    std::pair(&ProcessScaledDoubleIntoList, &destination));
+}
+void CDxfRead::SetupStringAttribute(int x_record_type, char* destination)
+{
+    m_coordinate_attributes.emplace(x_record_type, std::pair(&ProcessString, destination));
+}
+void CDxfRead::SetupStringAttribute(int x_record_type, std::string& destination)
+{
+    m_coordinate_attributes.emplace(x_record_type, std::pair(&ProcessStdString, &destination));
+}
+template<typename T>
+void CDxfRead::SetupValueAttribute(int record_type, T& destination)
+{
+    m_coordinate_attributes.emplace(record_type, std::pair(&ProcessValue<T>, &destination));
+}
 
+//
+// Static processing helpers for ProcessCommonEntityAttribute
+void CDxfRead::ProcessScaledDouble(CDxfRead* object, void* target)
+{
+    std::istringstream ss;
+    ss.imbue(std::locale("C"));
+
+    ss.str(object->m_record_data);
+    double value;
+    ss >> value;
+    if (ss.fail()) {
+        object->ImportError("Unable to parse value '%s', using zero as its value\n",
+                            object->m_record_data);
+        value = 0;
+    }
+    *static_cast<double*>(target) = object->mm(value);
+}
+void CDxfRead::ProcessScaledDoubleIntoList(CDxfRead* object, void* target)
+{
+    std::istringstream ss;
+    ss.imbue(std::locale("C"));
+
+    ss.str(object->m_record_data);
+    double value;
+    ss >> value;
+    if (ss.fail()) {
+        object->ImportError("Unable to parse value '%s', using zero as its value\n",
+                            object->m_record_data);
+        value = 0;
+    }
+    static_cast<std::list<double>*>(target)->push_back(object->mm(value));
+}
+template<typename T>
+void CDxfRead::ProcessValue(CDxfRead* object, void* target)
+{
+    std::istringstream ss;
+    ss.imbue(std::locale("C"));
+
+    ss.str(object->m_record_data);
+    ss >> *static_cast<T*>(target);
+    if (ss.fail()) {
+        object->ImportError("Unable to parse value '%s', using zero as its value\n",
+                            object->m_record_data);
+        *static_cast<T*>(target) = 0;
+    }
+}
+void CDxfRead::ProcessStdString(CDxfRead* object, void* target)
+{
+    *static_cast<std::string*>(target) = object->m_record_data;
+}
+void CDxfRead::ProcessString(CDxfRead* object, void* target)
+{
+    strcpy(static_cast<char*>(target), object->m_record_data);
+}
+
+void CDxfRead::InitializeAttributes()
+{
+    m_coordinate_attributes.clear();
+}
+void CDxfRead::InitializeCommonEntityAttributes()
+{
+    InitializeAttributes();
+    strcpy(m_layer_name, "0");
+    m_LineType[0] = '\0';
+    m_ColorIndex = ColorBylayer;
+    SetupStringAttribute(6, m_LineType);
+    SetupStringAttribute(8, m_layer_name);
+    SetupValueAttribute(62, m_ColorIndex);
+}
+bool CDxfRead::ProcessAttribute()
+{
+    auto found = m_coordinate_attributes.find(m_record_type);
+    if (found != m_coordinate_attributes.end()) {
+        (*found->second.first)(this, found->second.second);
+        return true;
+    }
+    return false;
+}
+void CDxfRead::ProcessAllAttributes()
+{
+    while (get_next_record() && m_record_type != 0) {
+        ProcessAttribute();
+    }
+    repeat_last_record();
+}
+
+//
+//  The individual Entity reader functions
+//  These return false if they catch an exception and ignore it because of ignore_errors.
 bool CDxfRead::ReadLine()
 {
-    double s[3] = {0, 0, 0};
-    double e[3] = {0, 0, 0};
-    bool hidden = false;
+    double start[3], end[3];
+    Setup3DVectorAttribute(10, start);
+    Setup3DVectorAttribute(11, end);
+    ProcessAllAttributes();
 
-    while (!((*m_ifs).eof())) {
-        get_line();
-        int n;
-
-        if (sscanf(m_str, "%d", &n) != 1) {
-            printf("CDxfRead::ReadLine() Failed to read integer from '%s'\n", m_str);
-            return false;
-        }
-
-        std::istringstream ss;
-        ss.imbue(std::locale("C"));
-        switch (n) {
-            case 0:
-                // next item found, so finish with line
-                ResolveColorIndex();
-                OnReadLine(s, e, hidden);
-                hidden = false;
-                return true;
-
-            case 8:  // Layer name follows
-                get_line();
-                strcpy(m_layer_name, m_str);
-                break;
-
-            case 6:  // line style name follows
-                get_line();
-                if (m_str[0] == 'h' || m_str[0] == 'H') {
-                    hidden = true;
-                }
-                break;
-
-            case 10:
-                // start x
-                get_line();
-                ss.str(m_str);
-                ss >> s[0];
-                s[0] = mm(s[0]);
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 20:
-                // start y
-                get_line();
-                ss.str(m_str);
-                ss >> s[1];
-                s[1] = mm(s[1]);
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 30:
-                // start z
-                get_line();
-                ss.str(m_str);
-                ss >> s[2];
-                s[2] = mm(s[2]);
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 11:
-                // end x
-                get_line();
-                ss.str(m_str);
-                ss >> e[0];
-                e[0] = mm(e[0]);
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 21:
-                // end y
-                get_line();
-                ss.str(m_str);
-                ss >> e[1];
-                e[1] = mm(e[1]);
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 31:
-                // end z
-                get_line();
-                ss.str(m_str);
-                ss >> e[2];
-                e[2] = mm(e[2]);
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 62:
-                // color index
-                get_line();
-                ss.str(m_str);
-                ss >> m_ColorIndex;
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-
-            case 100:
-            case 39:
-            case 210:
-            case 220:
-            case 230:
-                // skip the next line
-                get_line();
-                break;
-            default:
-                // skip the next line
-                get_line();
-                break;
-        }
-    }
-
-    try {
-        ResolveColorIndex();
-        OnReadLine(s, e, false);
-    }
-    catch (...) {
-        if (!IgnoreErrors()) {
-            throw;  // Re-throw the exception.
-        }
-    }
-
-    return false;
+    OnReadLine(start, end, LineTypeIsHidden());
+    return true;
 }
 
 bool CDxfRead::ReadPoint()
 {
-    double s[3] = {0, 0, 0};
+    double location[3];
+    Setup3DVectorAttribute(10, location);
+    ProcessAllAttributes();
 
-    while (!((*m_ifs).eof())) {
-        get_line();
-        int n;
-
-        if (sscanf(m_str, "%d", &n) != 1) {
-            printf("CDxfRead::ReadPoint() Failed to read integer from '%s'\n", m_str);
-            return false;
-        }
-
-        std::istringstream ss;
-        ss.imbue(std::locale("C"));
-        switch (n) {
-            case 0:
-                // next item found, so finish with line
-                ResolveColorIndex();
-                OnReadPoint(s);
-                return true;
-
-            case 8:  // Layer name follows
-                get_line();
-                strcpy(m_layer_name, m_str);
-                break;
-
-            case 10:
-                // start x
-                get_line();
-                ss.str(m_str);
-                ss >> s[0];
-                s[0] = mm(s[0]);
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 20:
-                // start y
-                get_line();
-                ss.str(m_str);
-                ss >> s[1];
-                s[1] = mm(s[1]);
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 30:
-                // start z
-                get_line();
-                ss.str(m_str);
-                ss >> s[2];
-                s[2] = mm(s[2]);
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-
-            case 62:
-                // color index
-                get_line();
-                ss.str(m_str);
-                ss >> m_ColorIndex;
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-
-            case 100:
-            case 39:
-            case 210:
-            case 220:
-            case 230:
-                // skip the next line
-                get_line();
-                break;
-            default:
-                // skip the next line
-                get_line();
-                break;
-        }
-    }
-
-    try {
-        ResolveColorIndex();
-        OnReadPoint(s);
-    }
-    catch (...) {
-        if (!IgnoreErrors()) {
-            throw;  // Re-throw the exception.
-        }
-    }
-
-    return false;
+    OnReadPoint(location);
+    return true;
 }
 
 bool CDxfRead::ReadArc()
 {
-    double start_angle = 0.0;  // in degrees
-    double end_angle = 0.0;
-    double radius = 0.0;
-    double c[3] = {0, 0, 0};  // centre
+    double start_angle_degrees = 0;
+    double end_angle_degrees = 0;
+    double radius = 0;
+    double centre[3];
     double z_extrusion_dir = 1.0;
-    bool hidden = false;
 
-    while (!((*m_ifs).eof())) {
-        get_line();
-        int n;
-        if (sscanf(m_str, "%d", &n) != 1) {
-            printf("CDxfRead::ReadArc() Failed to read integer from '%s'\n", m_str);
-            return false;
-        }
+    Setup3DVectorAttribute(10, centre);
+    SetupScaledDoubleAttribute(40, radius);
+    SetupValueAttribute(50, start_angle_degrees);
+    SetupValueAttribute(51, end_angle_degrees);
+    SetupValueAttribute(230, z_extrusion_dir);
+    ProcessAllAttributes();
 
-        std::istringstream ss;
-        ss.imbue(std::locale("C"));
-        switch (n) {
-            case 0:
-                // next item found, so finish with arc
-                ResolveColorIndex();
-                OnReadArc(start_angle, end_angle, radius, c, z_extrusion_dir, hidden);
-                hidden = false;
-                return true;
-
-            case 8:  // Layer name follows
-                get_line();
-                strcpy(m_layer_name, m_str);
-                break;
-
-            case 6:  // line style name follows
-                get_line();
-                if (m_str[0] == 'h' || m_str[0] == 'H') {
-                    hidden = true;
-                }
-                break;
-
-            case 10:
-                // centre x
-                get_line();
-                ss.str(m_str);
-                ss >> c[0];
-                c[0] = mm(c[0]);
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 20:
-                // centre y
-                get_line();
-                ss.str(m_str);
-                ss >> c[1];
-                c[1] = mm(c[1]);
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 30:
-                // centre z
-                get_line();
-                ss.str(m_str);
-                ss >> c[2];
-                c[2] = mm(c[2]);
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 40:
-                // radius
-                get_line();
-                ss.str(m_str);
-                ss >> radius;
-                radius = mm(radius);
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 50:
-                // start angle
-                get_line();
-                ss.str(m_str);
-                ss >> start_angle;
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 51:
-                // end angle
-                get_line();
-                ss.str(m_str);
-                ss >> end_angle;
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 62:
-                // color index
-                get_line();
-                ss.str(m_str);
-                ss >> m_ColorIndex;
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-
-
-            case 100:
-            case 39:
-            case 210:
-            case 220:
-                // skip the next line
-                get_line();
-                break;
-            case 230:
-                // Z extrusion direction for arc
-                get_line();
-                ss.str(m_str);
-                ss >> z_extrusion_dir;
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-
-            default:
-                // skip the next line
-                get_line();
-                break;
-        }
-    }
-    ResolveColorIndex();
-    OnReadArc(start_angle, end_angle, radius, c, z_extrusion_dir, false);
-    return false;
+    OnReadArc(start_angle_degrees,
+              end_angle_degrees,
+              radius,
+              centre,
+              z_extrusion_dir,
+              LineTypeIsHidden());
+    return true;
 }
 
 bool CDxfRead::ReadSpline()
 {
     struct SplineData sd;
-    sd.norm[0] = 0;
-    sd.norm[1] = 0;
-    sd.norm[2] = 1;
     sd.degree = 0;
     sd.knots = 0;
     sd.flag = 0;
     sd.control_points = 0;
     sd.fit_points = 0;
 
-    double temp_double;
+    Setup3DVectorAttribute(210, sd.norm);
+    SetupValueAttribute(70, sd.flag);
+    SetupValueAttribute(71, sd.degree);
+    SetupValueAttribute(72, sd.knots);
+    SetupValueAttribute(73, sd.control_points);
+    SetupValueAttribute(74, sd.fit_points);
+    SetupScaledDoubleIntoList(40, sd.knot);
+    SetupScaledDoubleIntoList(41, sd.weight);
+    Setup3DCoordinatesIntoLists(10, sd.controlx, sd.controly, sd.controlz);
+    Setup3DCoordinatesIntoLists(11, sd.fitx, sd.fity, sd.fitz);
+    Setup3DCoordinatesIntoLists(12, sd.starttanx, sd.starttany, sd.starttanz);
+    Setup3DCoordinatesIntoLists(12, sd.endtanx, sd.endtany, sd.endtanz);
+    ProcessAllAttributes();
 
-    while (!((*m_ifs).eof())) {
-        get_line();
-        int n;
-        if (sscanf(m_str, "%d", &n) != 1) {
-            printf("CDxfRead::ReadSpline() Failed to read integer from '%s'\n", m_str);
-            return false;
-        }
-        std::istringstream ss;
-        ss.imbue(std::locale("C"));
-        switch (n) {
-            case 0:
-                // next item found, so finish with Spline
-                ResolveColorIndex();
-                OnReadSpline(sd);
-                return true;
-            case 8:  // Layer name follows
-                get_line();
-                strcpy(m_layer_name, m_str);
-                break;
-            case 62:
-                // color index
-                get_line();
-                ss.str(m_str);
-                ss >> m_ColorIndex;
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 210:
-                // normal x
-                get_line();
-                ss.str(m_str);
-                ss >> sd.norm[0];
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 220:
-                // normal y
-                get_line();
-                ss.str(m_str);
-                ss >> sd.norm[1];
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 230:
-                // normal z
-                get_line();
-                ss.str(m_str);
-                ss >> sd.norm[2];
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 70:
-                // flag
-                get_line();
-                ss.str(m_str);
-                ss >> sd.flag;
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 71:
-                // degree
-                get_line();
-                ss.str(m_str);
-                ss >> sd.degree;
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 72:
-                // knots
-                get_line();
-                ss.str(m_str);
-                ss >> sd.knots;
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 73:
-                // control points
-                get_line();
-                ss.str(m_str);
-                ss >> sd.control_points;
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 74:
-                // fit points
-                get_line();
-                ss.str(m_str);
-                ss >> sd.fit_points;
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 12:
-                // starttan x
-                get_line();
-                ss.str(m_str);
-                ss >> temp_double;
-                temp_double = mm(temp_double);
-                if (ss.fail()) {
-                    return false;
-                }
-                sd.starttanx.push_back(temp_double);
-                break;
-            case 22:
-                // starttan y
-                get_line();
-                ss.str(m_str);
-                ss >> temp_double;
-                temp_double = mm(temp_double);
-                if (ss.fail()) {
-                    return false;
-                }
-                sd.starttany.push_back(temp_double);
-                break;
-            case 32:
-                // starttan z
-                get_line();
-                ss.str(m_str);
-                ss >> temp_double;
-                temp_double = mm(temp_double);
-                if (ss.fail()) {
-                    return false;
-                }
-                sd.starttanz.push_back(temp_double);
-                break;
-            case 13:
-                // endtan x
-                get_line();
-                ss.str(m_str);
-                ss >> temp_double;
-                temp_double = mm(temp_double);
-                if (ss.fail()) {
-                    return false;
-                }
-                sd.endtanx.push_back(temp_double);
-                break;
-            case 23:
-                // endtan y
-                get_line();
-                ss.str(m_str);
-                ss >> temp_double;
-                temp_double = mm(temp_double);
-                if (ss.fail()) {
-                    return false;
-                }
-                sd.endtany.push_back(temp_double);
-                break;
-            case 33:
-                // endtan z
-                get_line();
-                ss.str(m_str);
-                ss >> temp_double;
-                temp_double = mm(temp_double);
-                if (ss.fail()) {
-                    return false;
-                }
-                sd.endtanz.push_back(temp_double);
-                break;
-            case 40:
-                // knot
-                get_line();
-                ss.str(m_str);
-                ss >> temp_double;
-                temp_double = mm(temp_double);
-                if (ss.fail()) {
-                    return false;
-                }
-                sd.knot.push_back(temp_double);
-                break;
-            case 41:
-                // weight
-                get_line();
-                ss.str(m_str);
-                ss >> temp_double;
-                temp_double = mm(temp_double);
-                if (ss.fail()) {
-                    return false;
-                }
-                sd.weight.push_back(temp_double);
-                break;
-            case 10:
-                // control x
-                get_line();
-                ss.str(m_str);
-                ss >> temp_double;
-                temp_double = mm(temp_double);
-                if (ss.fail()) {
-                    return false;
-                }
-                sd.controlx.push_back(temp_double);
-                break;
-            case 20:
-                // control y
-                get_line();
-                ss.str(m_str);
-                ss >> temp_double;
-                temp_double = mm(temp_double);
-                if (ss.fail()) {
-                    return false;
-                }
-                sd.controly.push_back(temp_double);
-                break;
-            case 30:
-                // control z
-                get_line();
-                ss.str(m_str);
-                ss >> temp_double;
-                temp_double = mm(temp_double);
-                if (ss.fail()) {
-                    return false;
-                }
-                sd.controlz.push_back(temp_double);
-                break;
-            case 11:
-                // fit x
-                get_line();
-                ss.str(m_str);
-                ss >> temp_double;
-                temp_double = mm(temp_double);
-                if (ss.fail()) {
-                    return false;
-                }
-                sd.fitx.push_back(temp_double);
-                break;
-            case 21:
-                // fit y
-                get_line();
-                ss.str(m_str);
-                ss >> temp_double;
-                temp_double = mm(temp_double);
-                if (ss.fail()) {
-                    return false;
-                }
-                sd.fity.push_back(temp_double);
-                break;
-            case 31:
-                // fit z
-                get_line();
-                ss.str(m_str);
-                ss >> temp_double;
-                temp_double = mm(temp_double);
-                if (ss.fail()) {
-                    return false;
-                }
-                sd.fitz.push_back(temp_double);
-                break;
-            case 42:
-            case 43:
-            case 44:
-                // skip the next line
-                get_line();
-                break;
-            default:
-                // skip the next line
-                get_line();
-                break;
-        }
-    }
-    ResolveColorIndex();
     OnReadSpline(sd);
-    return false;
+    return true;
 }
-
 
 bool CDxfRead::ReadCircle()
 {
     double radius = 0.0;
-    double c[3] = {0, 0, 0};  // centre
-    bool hidden = false;
+    double centre[3];
 
-    while (!((*m_ifs).eof())) {
-        get_line();
-        int n;
-        if (sscanf(m_str, "%d", &n) != 1) {
-            printf("CDxfRead::ReadCircle() Failed to read integer from '%s'\n", m_str);
-            return false;
-        }
-        std::istringstream ss;
-        ss.imbue(std::locale("C"));
-        switch (n) {
-            case 0:
-                // next item found, so finish with Circle
-                ResolveColorIndex();
-                OnReadCircle(c, radius, hidden);
-                hidden = false;
-                return true;
+    Setup3DVectorAttribute(10, centre);
+    SetupScaledDoubleAttribute(40, radius);
+    ProcessAllAttributes();
 
-            case 6:  // line style name follows
-                get_line();
-                if (m_str[0] == 'h' || m_str[0] == 'H') {
-                    hidden = true;
-                }
-                break;
-
-            case 8:  // Layer name follows
-                get_line();
-                strcpy(m_layer_name, m_str);
-                break;
-
-            case 10:
-                // centre x
-                get_line();
-                ss.str(m_str);
-                ss >> c[0];
-                c[0] = mm(c[0]);
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 20:
-                // centre y
-                get_line();
-                ss.str(m_str);
-                ss >> c[1];
-                c[1] = mm(c[1]);
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 30:
-                // centre z
-                get_line();
-                ss.str(m_str);
-                ss >> c[2];
-                c[2] = mm(c[2]);
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 40:
-                // radius
-                get_line();
-                ss.str(m_str);
-                ss >> radius;
-                radius = mm(radius);
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 62:
-                // color index
-                get_line();
-                ss.str(m_str);
-                ss >> m_ColorIndex;
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-
-            case 100:
-            case 39:
-            case 210:
-            case 220:
-            case 230:
-                // skip the next line
-                get_line();
-                break;
-            default:
-                // skip the next line
-                get_line();
-                break;
-        }
-    }
-    ResolveColorIndex();
-    OnReadCircle(c, radius, false);
-    return false;
+    OnReadCircle(centre, radius, LineTypeIsHidden());
+    return true;
 }
-
 
 bool CDxfRead::ReadText()
 {
-    double c[3];  // coordinate
+    double insertionPoint[3];
     double height = 0.03082;
-    double rotation = 0.0;
+    double rotation = 0;
     std::string textPrefix;
 
-    memset(c, 0, sizeof(c));
-
-    while (!((*m_ifs).eof())) {
-        get_line();
-        int n;
-        if (sscanf(m_str, "%d", &n) != 1) {
-            printf("CDxfRead::ReadText() Failed to read integer from '%s'\n", m_str);
-            return false;
-        }
-        std::istringstream ss;
-        ss.imbue(std::locale("C"));
-        switch (n) {
-            case 0:
-                ResolveColorIndex();
-                {
-                    const char* utfStr = (this->*stringToUTF8)(textPrefix.c_str());
-                    OnReadText(c, height * 25.4 / 72.0, utfStr, rotation);
-                    if (utfStr == m_str) {
-                        delete utfStr;
-                    }
-                }
-                return true;
-            case 8:  // Layer name follows
-                get_line();
-                strcpy(m_layer_name, m_str);
-                break;
-
-            case 10:
-                // centre x
-                get_line();
-                ss.str(m_str);
-                ss >> c[0];
-                c[0] = mm(c[0]);
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 20:
-                // centre y
-                get_line();
-                ss.str(m_str);
-                ss >> c[1];
-                c[1] = mm(c[1]);
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 30:
-                // centre z
-                get_line();
-                ss.str(m_str);
-                ss >> c[2];
-                c[2] = mm(c[2]);
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 40:
-                // text height
-                get_line();
-                ss.str(m_str);
-                ss >> height;
-                height = mm(height);
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 50:
-                // text rotation
-                get_line();
-                ss.str(m_str);
-                ss >> rotation;
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 3:
-                // Additional text that goes before the type 1 text
-                // Note that if breaking the text into type-3 records splits a UFT-8 encoding we do
-                // the decoding after splicing the lines together. I'm not sure if this actually
-                // occurs, but handling the text this way will treat this condition properly.
-                get_line();
-                textPrefix.append(m_str);
-                break;
-            case 1:
-                // final text
-                get_line();
-                textPrefix.append(m_str);
-                break;
-
-            case 62:
-                // color index
-                get_line();
-                ss.str(m_str);
-                ss >> m_ColorIndex;
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-
-            case 100:
-            case 39:
-            case 210:
-            case 220:
-            case 230:
-                // skip the next line
-                get_line();
-                break;
-            default:
-                // skip the next line
-                get_line();
-                break;
+    Setup3DVectorAttribute(10, insertionPoint);
+    SetupScaledDoubleAttribute(40, height);
+    SetupValueAttribute(50, rotation);
+    while (get_next_record() && m_record_type != 0) {
+        if (!ProcessAttribute()) {
+            switch (m_record_type) {
+                case 3:
+                    // Additional text that goes before the type 1 text
+                    // Note that if breaking the text into type-3 records splits a UFT-8 encoding we
+                    // do the decoding after splicing the lines together. I'm not sure if this
+                    // actually occurs, but handling the text this way will treat this condition
+                    // properly.
+                    textPrefix.append(m_record_data);
+                    break;
+                case 1:
+                    // final text
+                    textPrefix.append(m_record_data);
+                    break;
+            }
         }
     }
 
-    return false;
+    const char* utfStr = (this->*stringToUTF8)(textPrefix.c_str());
+    if (utfStr != nullptr) {
+        OnReadText(insertionPoint, height * 25.4 / 72.0, utfStr, rotation);
+        if (utfStr != textPrefix.c_str()) {
+            delete utfStr;
+        }
+    }
+    else {
+        ImportError("Unable to process encoding for TEXT/MTEXT '%s'", textPrefix.c_str());
+    }
+    repeat_last_record();
+    return true;
 }
-
 
 bool CDxfRead::ReadEllipse()
 {
-    double c[3] = {0, 0, 0};  // centre
-    double m[3] = {0, 0, 0};  // major axis point
-    double ratio = 0;         // ratio of major to minor axis
-    double start = 0;         // start of arc
-    double end = 0;           // end of arc
+    double centre[3];
+    double majorAxisEnd[3];  //  relative to centre
+    double eccentricity = 0;
+    double startAngleRadians = 0;
+    double endAngleRadians = 2 * M_PI;
 
-    while (!((*m_ifs).eof())) {
-        get_line();
-        int n;
-        if (sscanf(m_str, "%d", &n) != 1) {
-            printf("CDxfRead::ReadEllipse() Failed to read integer from '%s'\n", m_str);
-            return false;
-        }
-        std::istringstream ss;
-        ss.imbue(std::locale("C"));
-        switch (n) {
-            case 0:
-                // next item found, so finish with Ellipse
-                ResolveColorIndex();
-                OnReadEllipse(c, m, ratio, start, end);
-                return true;
-            case 8:  // Layer name follows
-                get_line();
-                strcpy(m_layer_name, m_str);
-                break;
+    Setup3DVectorAttribute(10, centre);
+    Setup3DVectorAttribute(11, majorAxisEnd);
+    SetupValueAttribute(40, eccentricity);
+    SetupValueAttribute(41, startAngleRadians);
+    SetupValueAttribute(42, endAngleRadians);
+    ProcessAllAttributes();
 
-            case 10:
-                // centre x
-                get_line();
-                ss.str(m_str);
-                ss >> c[0];
-                c[0] = mm(c[0]);
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 20:
-                // centre y
-                get_line();
-                ss.str(m_str);
-                ss >> c[1];
-                c[1] = mm(c[1]);
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 30:
-                // centre z
-                get_line();
-                ss.str(m_str);
-                ss >> c[2];
-                c[2] = mm(c[2]);
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 11:
-                // major x
-                get_line();
-                ss.str(m_str);
-                ss >> m[0];
-                m[0] = mm(m[0]);
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 21:
-                // major y
-                get_line();
-                ss.str(m_str);
-                ss >> m[1];
-                m[1] = mm(m[1]);
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 31:
-                // major z
-                get_line();
-                ss.str(m_str);
-                ss >> m[2];
-                m[2] = mm(m[2]);
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 40:
-                // ratio
-                get_line();
-                ss.str(m_str);
-                ss >> ratio;
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 41:
-                // start
-                get_line();
-                ss.str(m_str);
-                ss >> start;
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 42:
-                // end
-                get_line();
-                ss.str(m_str);
-                ss >> end;
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 62:
-                // color index
-                get_line();
-                ss.str(m_str);
-                ss >> m_ColorIndex;
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 100:
-            case 210:
-            case 220:
-            case 230:
-                // skip the next line
-                get_line();
-                break;
-            default:
-                // skip the next line
-                get_line();
-                break;
-        }
-    }
-    ResolveColorIndex();
-    OnReadEllipse(c, m, ratio, start, end);
-    return false;
-}
-
-
-static bool poly_prev_found = false;
-static double poly_prev_x;
-static double poly_prev_y;
-static double poly_prev_z;
-static bool poly_prev_bulge_found = false;
-static double poly_prev_bulge;
-static bool poly_first_found = false;
-static double poly_first_x;
-static double poly_first_y;
-static double poly_first_z;
-
-static void
-AddPolyLinePoint(CDxfRead* dxf_read, double x, double y, double z, bool bulge_found, double bulge)
-{
-
-    try {
-        if (poly_prev_found) {
-            bool arc_done = false;
-            if (poly_prev_bulge_found) {
-                double cot = 0.5 * ((1.0 / poly_prev_bulge) - poly_prev_bulge);
-                double cx = ((poly_prev_x + x) - ((y - poly_prev_y) * cot)) / 2.0;
-                double cy = ((poly_prev_y + y) + ((x - poly_prev_x) * cot)) / 2.0;
-                double ps[3] = {poly_prev_x, poly_prev_y, poly_prev_z};
-                double pe[3] = {x, y, z};
-                double pc[3] = {cx, cy, (poly_prev_z + z) / 2.0};
-                dxf_read->OnReadArc(ps, pe, pc, poly_prev_bulge >= 0, false);
-                arc_done = true;
-            }
-
-            if (!arc_done) {
-                double s[3] = {poly_prev_x, poly_prev_y, poly_prev_z};
-                double e[3] = {x, y, z};
-                dxf_read->OnReadLine(s, e, false);
-            }
-        }
-
-        poly_prev_found = true;
-        poly_prev_x = x;
-        poly_prev_y = y;
-        poly_prev_z = z;
-        if (!poly_first_found) {
-            poly_first_x = x;
-            poly_first_y = y;
-            poly_first_z = z;
-            poly_first_found = true;
-        }
-        poly_prev_bulge_found = bulge_found;
-        poly_prev_bulge = bulge;
-    }
-    catch (...) {
-        if (!dxf_read->IgnoreErrors()) {
-            throw;  // Re-throw it.
-        }
-    }
-}
-
-static void PolyLineStart()
-{
-    poly_prev_found = false;
-    poly_first_found = false;
+    OnReadEllipse(centre, majorAxisEnd, eccentricity, startAngleRadians, endAngleRadians);
+    return true;
 }
 
 bool CDxfRead::ReadLwPolyLine()
 {
-    PolyLineStart();
+    VertexInfo currentVertex = {{0, 0, 0}, 0};
+    list<VertexInfo> vertices;
+    int flags = 0;
 
-    bool x_found = false;
-    bool y_found = false;
-    double x = 0.0;
-    double y = 0.0;
-    double z = 0.0;
-    bool bulge_found = false;
-    double bulge = 0.0;
-    bool closed = false;
-    int flags;
-    bool next_item_found = false;
+    bool have_x = false;
+    bool have_y = false;
 
-    while (!((*m_ifs).eof()) && !next_item_found) {
-        get_line();
-        int n;
-        if (sscanf(m_str, "%d", &n) != 1) {
-            printf("CDxfRead::ReadLwPolyLine() Failed to read integer from '%s'\n", m_str);
-            return false;
+    // The documentation for LZPOLYLINE does not specify how you know if you have a new vertex.
+    // It also does not specify where the bulge, line-width, etc for a particular segment are placed
+    // relative to the two end vertices.
+    // We assume here that if we see an X or Y coordinate but we already have the same coordinate,
+    // a new vertex is starting, and any previous vertex is completely specified. Furthermore, line
+    // attributes like bulge are placed between the X/Y coordinates for the vertex that starts the
+    // stroke and the X/Y coordinates for the vertex that ends the stroke or the end of the entity.
+    // In the latter case the stroke attributes apply to the closure stroke (if any) which ends at
+    // the first vertex.
+    Setup3DVectorAttribute(10, currentVertex.location);
+    SetupScaledDoubleAttribute(42, currentVertex.bulge);
+    SetupValueAttribute(70, flags);
+    while (get_next_record() && m_record_type != 0) {
+        if ((m_record_type == 10 && have_x) || (m_record_type == 21 && have_y)) {
+            // Starting a new vertex and there is a previous vertex. Save it and init a new one.
+            vertices.push_back(currentVertex);
+            currentVertex.location[0] = 0.0;
+            currentVertex.location[1] = 0.0;
+            currentVertex.location[2] = 0.0;
+            currentVertex.bulge = 0.0;
+            have_x = m_record_type == 10;
+            have_y = m_record_type == 20;
         }
-        std::istringstream ss;
-        ss.imbue(std::locale("C"));
-        switch (n) {
-            case 0:
-                // next item found
-
-                ResolveColorIndex();
-                if (x_found && y_found) {
-                    // add point
-                    AddPolyLinePoint(this, x, y, z, bulge_found, bulge);
-                    bulge_found = false;
-                    x_found = false;
-                    y_found = false;
-                }
-                next_item_found = true;
-                break;
-            case 8:  // Layer name follows
-                get_line();
-                strcpy(m_layer_name, m_str);
-                break;
-            case 10:
-                // x
-                get_line();
-                if (x_found && y_found) {
-                    // add point
-                    AddPolyLinePoint(this, x, y, z, bulge_found, bulge);
-                    bulge_found = false;
-                    x_found = false;
-                    y_found = false;
-                }
-                ss.str(m_str);
-                ss >> x;
-                x = mm(x);
-                if (ss.fail()) {
-                    return false;
-                }
-                x_found = true;
-                break;
-            case 20:
-                // y
-                get_line();
-                ss.str(m_str);
-                ss >> y;
-                y = mm(y);
-                if (ss.fail()) {
-                    return false;
-                }
-                y_found = true;
-                break;
-            case 38:
-                // elevation
-                get_line();
-                ss.str(m_str);
-                ss >> z;
-                z = mm(z);
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 42:
-                // bulge
-                get_line();
-                ss.str(m_str);
-                ss >> bulge;
-                if (ss.fail()) {
-                    return false;
-                }
-                bulge_found = true;
-                break;
-            case 70:
-                // flags
-                get_line();
-                if (sscanf(m_str, "%d", &flags) != 1) {
-                    return false;
-                }
-                closed = ((flags & 1) != 0);
-                break;
-            case 62:
-                // color index
-                get_line();
-                ss.str(m_str);
-                ss >> m_ColorIndex;
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            default:
-                // skip the next line
-                get_line();
-                break;
+        else if (m_record_type == 10) {
+            have_x = true;
         }
+        else if (m_record_type == 10) {
+            have_y = true;
+        }
+        ProcessAttribute();
+    }
+    // At the end of the entity if we have vertex information use this as the final vertex.
+    // (else it was a line with no vertices at all)
+    if (have_x || have_y) {
+        vertices.push_back(currentVertex);
     }
 
-    if (next_item_found) {
-        if (closed && poly_first_found) {
-            // repeat the first point
-            ResolveColorIndex();
-            AddPolyLinePoint(this, poly_first_x, poly_first_y, poly_first_z, false, 0.0);
-        }
-        return true;
-    }
-
-    return false;
+    OnReadPolyline(vertices, flags);
+    repeat_last_record();
+    return true;
 }
-
-
-bool CDxfRead::ReadVertex(double* pVertex, bool* bulge_found, double* bulge)
-{
-    bool x_found = false;
-    bool y_found = false;
-
-    double x = 0.0;
-    double y = 0.0;
-    double z = 0.0;
-    *bulge = 0.0;
-    *bulge_found = false;
-
-    pVertex[0] = 0.0;
-    pVertex[1] = 0.0;
-    pVertex[2] = 0.0;
-
-    while (!(*m_ifs).eof()) {
-        get_line();
-        int n;
-        if (sscanf(m_str, "%d", &n) != 1) {
-            printf("CDxfRead::ReadVertex() Failed to read integer from '%s'\n", m_str);
-            return false;
-        }
-        std::istringstream ss;
-        ss.imbue(std::locale("C"));
-        switch (n) {
-            case 0:
-                ResolveColorIndex();
-                put_line(m_str);  // read one line too many.  put it back.
-                return (x_found && y_found);
-                break;
-
-            case 8:  // Layer name follows
-                get_line();
-                strcpy(m_layer_name, m_str);
-                break;
-
-            case 10:
-                // x
-                get_line();
-                ss.str(m_str);
-                ss >> x;
-                pVertex[0] = mm(x);
-                if (ss.fail()) {
-                    return false;
-                }
-                x_found = true;
-                break;
-            case 20:
-                // y
-                get_line();
-                ss.str(m_str);
-                ss >> y;
-                pVertex[1] = mm(y);
-                if (ss.fail()) {
-                    return false;
-                }
-                y_found = true;
-                break;
-            case 30:
-                // z
-                get_line();
-                ss.str(m_str);
-                ss >> z;
-                pVertex[2] = mm(z);
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-
-            case 42:
-                get_line();
-                *bulge_found = true;
-                ss.str(m_str);
-                ss >> *bulge;
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 62:
-                // color index
-                get_line();
-                ss.str(m_str);
-                ss >> m_ColorIndex;
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-
-            default:
-                // skip the next line
-                get_line();
-                break;
-        }
-    }
-
-    return false;
-}
-
 
 bool CDxfRead::ReadPolyLine()
 {
-    PolyLineStart();
+    VertexInfo currentVertex = {{0, 0, 0}, 0};
+    list<VertexInfo> vertices;
+    int flags = 0;
 
-    bool closed = false;
-    int flags;
-    bool first_vertex_section_found = false;
-    double first_vertex[3] = {0, 0, 0};
-    bool bulge_found;
-    double bulge;
+    SetupValueAttribute(70, flags);
+    ProcessAllAttributes();
 
-    while (!(*m_ifs).eof()) {
-        get_line();
-        int n;
-        if (sscanf(m_str, "%d", &n) != 1) {
-            printf("CDxfRead::ReadPolyLine() Failed to read integer from '%s'\n", m_str);
-            return false;
-        }
-        std::istringstream ss;
-        ss.imbue(std::locale("C"));
-        switch (n) {
-            case 0:
-                // next item found
-                ResolveColorIndex();
-                get_line();
-                if (!strcmp(m_str, "VERTEX")) {
-                    double vertex[3] = {0, 0, 0};
-                    if (CDxfRead::ReadVertex(vertex, &bulge_found, &bulge)) {
-                        if (!first_vertex_section_found) {
-                            first_vertex_section_found = true;
-                            memcpy(first_vertex, vertex, 3 * sizeof(double));
-                        }
-                        AddPolyLinePoint(this, vertex[0], vertex[1], vertex[2], bulge_found, bulge);
-                        break;
-                    }
-                }
-                if (!strcmp(m_str, "SEQEND")) {
-                    if (closed && first_vertex_section_found) {
-                        AddPolyLinePoint(this,
-                                         first_vertex[0],
-                                         first_vertex[1],
-                                         first_vertex[2],
-                                         0,
-                                         0);
-                    }
-                    first_vertex_section_found = false;
-                    PolyLineStart();
-                    return (true);
-                }
-                break;
-            case 70:
-                // flags
-                get_line();
-                if (sscanf(m_str, "%d", &flags) != 1) {
-                    return false;
-                }
-                closed = ((flags & 1) != 0);
-                break;
-            case 62:
-                // color index
-                get_line();
-                ss.str(m_str);
-                ss >> m_ColorIndex;
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            default:
-                // skip the next line
-                get_line();
-                break;
-        }
+    // We are now followed by a series of VERTEX entities followed by ENDSEQ.
+    // To avoid eating and discarding the rest of the entieies if ENDSEQ is missing,
+    // we quit on any unknown type-0 record.
+    Setup3DVectorAttribute(10, currentVertex.location);
+    SetupScaledDoubleAttribute(42, currentVertex.bulge);
+    while (get_next_record() && m_record_type == 0 && !strcmp(m_record_data, "VERTEX")) {
+        // Set vertex defaults
+        currentVertex.location[0] = 0.0;
+        currentVertex.location[1] = 0.0;
+        currentVertex.location[2] = 0.0;
+        currentVertex.bulge = 0.0;
+        ProcessAllAttributes();
+        vertices.push_back(currentVertex);
+    }
+    if (strcmp(m_record_data, "SEQEND")) {
+        ImportError("POLYLINE ends with '%s' record rather than 'SEQEND'\n", m_record_data);
+        repeat_last_record();
     }
 
-    return false;
+    OnReadPolyline(vertices, flags);
+    return true;
 }
 
+bool CDxfRead::ReadInsert()
+{
+    double center[3];
+    double scale[3] = {1, 1, 1};
+    double rotationDegrees = 0.0;
+    char blockName[1024] = {0};
+
+    Setup3DVectorAttribute(10, center);
+    SetupValueAttribute(41, scale[0]);
+    SetupValueAttribute(42, scale[1]);
+    SetupValueAttribute(43, scale[2]);
+    SetupValueAttribute(50, rotationDegrees);
+    SetupStringAttribute(2, blockName);
+    ProcessAllAttributes();
+    OnReadInsert(center, scale, blockName, rotationDegrees * M_PI / 180);
+    return (true);
+}
+
+bool CDxfRead::ReadDimension()
+{
+    double start[3];
+    double end[3];
+    double linePosition[3];
+    double textPosition[3];
+    double rotation = 0;
+    int dimensionType = 0;  //  This appears to default to zero
+
+    // Per documentation:
+    // 10 is the "dimension line location"
+    // 11 is the midpoint of the dimension text
+    // 13 is the start point of the 1st extension line
+    // 14 is the start point of the 2nd extension line
+    // 50 is the rotation of the dimension (the direction of the dimension line)
+    // 52 (if present) is the angle relative to the dimension line for the extension lines; default
+    // 90 degrees
+    Setup3DVectorAttribute(13, start);         // WCS
+    Setup3DVectorAttribute(14, end);           // WCS
+    Setup3DVectorAttribute(10, linePosition);  // WCS
+    Setup3DVectorAttribute(11, textPosition);  // OCS
+    SetupValueAttribute(50, rotation);
+    SetupValueAttribute(70, dimensionType);
+    ProcessAllAttributes();
+
+    dimensionType &= ~0xE0;  //  Remove flags
+    switch (dimensionType) {
+        case 0:
+        case 1:
+            OnReadDimension(start, end, linePosition, rotation * M_PI / 180);
+            break;
+        default:
+            UnsupportedFeature("Dimension type '%d'", dimensionType);
+            break;
+    }
+    return (true);
+}
+
+bool CDxfRead::ReadUnknownEntity()
+{
+    UnsupportedFeature("Entity type '%s'", m_record_data);
+    ProcessAllAttributes();
+    return true;
+}
+
+bool CDxfRead::ReadBlockInfo()
+{
+    int blockType = 0;
+    InitializeAttributes();
+    // Both 2 and 3 are the block name.
+    SetupStringAttribute(2, m_block_name);
+    SetupStringAttribute(3, m_block_name);
+    SetupValueAttribute(70, blockType);
+    ProcessAllAttributes();
+
+    // Read the entities in the block definition.
+    // These are processed just like in-drawing entities but the code can
+    // recognize that we are in the BLOCKS section, and which block we are defining,
+    // by looking at the result of LayerName()
+    // Note that the Layer Name in the block entities is ignored even though it
+    // should be used to resolve BYLAYER attributes and also for placing the entity
+    // when the block is inserted.
+    if (blockType & 0x04) {
+        // Note that this doesn't mean there are not entities in the block. I don't
+        // know if the external reference can be cached because there are two other bits
+        // here, 0x10 and 0x20, that seem to handle "resolved" external references.
+        UnsupportedFeature("External (xref) BLOCK");
+    }
+    while (get_next_record() && m_record_type != 0 && strcmp(m_record_data, "ENDBLK")) {
+        if (blockType & 0x01) {
+            // It is an anonymous block used to build dimensions, hatches, etc so we don't need it
+            // and don't want to complaining about unhandled entity types.
+            while (get_next_record() && m_record_type != 0) {}
+            repeat_last_record();
+        }
+        else if (IgnoreErrors()) {
+            try {
+                if (!ReadEntity()) {
+                    return false;
+                }
+            }
+            catch (...) {
+            }
+        }
+        else {
+            if (!ReadEntity()) {
+                return false;
+            }
+        }
+    }
+    return true;
+}
+
+void CDxfRead::UnsupportedFeature(const char* format, ...)
+{
+    // Upcoming C++20 std::format might simplify some of this code
+    va_list args;
+    std::string formattedMessage;
+
+    va_start(args, format);
+    // Make room in formattedMessage for the formatted text and its terminating null byte
+    formattedMessage.resize((size_t)vsnprintf(nullptr, 0, format, args) + 1);
+    va_end(args);
+    va_start(args, format);
+    vsprintf(formattedMessage.data(), format, args);
+    va_end(args);
+    // Remove the null byte
+    formattedMessage.pop_back();
+
+    // We place these formatted messages in a map, count their occurrences and not their first
+    // occurrence.
+    if (m_unsupportedFeaturesNoted[formattedMessage].first++ == 0) {
+        m_unsupportedFeaturesNoted[formattedMessage].second = m_line;
+    }
+}
+
+bool CDxfRead::get_next_record()
+{
+    if (m_repeat_last_record) {
+        m_repeat_last_record = false;
+        return m_not_eof;
+    }
+
+    if ((*m_ifs).eof()) {
+        m_not_eof = false;
+        return false;
+    }
+
+    m_ifs->getline(m_record_data, 1024);
+    ++m_line;
+    if (sscanf(m_record_data, "%d", &m_record_type) != 1) {
+        ImportError("CDxfRead::get_next_record() Failed to get integer record type from '%s'\n",
+                    m_record_data);
+        return (false);
+    }
+    if ((*m_ifs).eof()) {
+        return false;
+    }
+
+    m_ifs->getline(m_record_data, 1024);
+    ++m_line;
+    // Remove any carriage return at the end of m_str which may occur because of inconsistent
+    // handling of LF vs. CRLF line termination.
+    size_t len = strlen(m_record_data);
+    if (len > 0 && m_record_data[len - 1] == '\r') {
+        m_record_data[len - 1] = '\0';
+    }
+    // The code that was here just blindly trimmed leading white space, but if you have, for
+    // instance, a TEXT entity whose text starts with spaces, or, more plausibly, a long TEXT entity
+    // where the text is broken into one or more type-3 records with a final type-1 and the break
+    // happens to be just before a space, this would be wrong.
+    return true;
+}
+
+void CDxfRead::repeat_last_record()
+{
+    m_repeat_last_record = true;
+}
+
+bool CDxfRead::ReadUnits()
+{
+    get_next_record();  // Get the value for the variable
+    int n = 0;
+    if (sscanf(m_record_data, "%d", &n) == 1) {
+        m_eUnits = eDxfUnits_t(n);
+        return (true);
+    }  // End if - then
+    else {
+        ImportError("CDxfRead::ReadUnits() Failed to get integer from '%s'\n", m_record_data);
+        return (false);
+    }
+}
+
+//
+//  Intercepts for On... calls to derived class
+//  (These have distinct signatures from the ones they call)
+bool CDxfRead::OnReadPolyline(std::list<VertexInfo>& vertices, int flags)
+{
+    if (vertices.size() < 2) {
+        // TODO: Warning
+        return true;
+    }
+
+    bool closed = ((flags & 1) != 0);
+    auto startVertex = vertices.end();
+    if (closed) {
+        // If the shape is closed, point at the last vertex. The first stroke drawn will be the
+        // closure.
+        --startVertex;
+    }
+    for (auto endVertex = vertices.begin(); endVertex != vertices.end(); endVertex++) {
+        if (startVertex != vertices.end()) {
+            if (startVertex->bulge != 0.0) {
+                // Bulge is 1/4 tan(arc angle), positive for CCW arc.
+                double cot = 0.5 * ((1.0 / startVertex->bulge) - startVertex->bulge);
+                double cx = ((startVertex->location[0] + endVertex->location[0])
+                             - ((endVertex->location[1] - startVertex->location[1]) * cot))
+                    / 2.0;
+                double cy = ((startVertex->location[1] + endVertex->location[1])
+                             + ((endVertex->location[0] - startVertex->location[0]) * cot))
+                    / 2.0;
+                double pc[3] = {cx, cy, (startVertex->location[2] + endVertex->location[2]) / 2.0};
+                OnReadArc(startVertex->location,
+                          endVertex->location,
+                          pc,
+                          startVertex->bulge >= 0,
+                          false);
+            }
+            else {
+                OnReadLine(startVertex->location, endVertex->location, false);
+            }
+        }
+        startVertex = endVertex;
+    }
+    return true;
+}
 void CDxfRead::OnReadArc(double start_angle,
                          double end_angle,
                          double radius,
-                         const double* c,
+                         const double* center,
                          double z_extrusion_dir,
                          bool hidden)
 {
     double s[3] = {0, 0, 0}, e[3] = {0, 0, 0}, temp[3] = {0, 0, 0};
     if (z_extrusion_dir == 1.0) {
-        temp[0] = c[0];
-        temp[1] = c[1];
-        temp[2] = c[2];
-        s[0] = c[0] + radius * cos(start_angle * M_PI / 180);
-        s[1] = c[1] + radius * sin(start_angle * M_PI / 180);
-        s[2] = c[2];
-        e[0] = c[0] + radius * cos(end_angle * M_PI / 180);
-        e[1] = c[1] + radius * sin(end_angle * M_PI / 180);
-        e[2] = c[2];
+        temp[0] = center[0];
+        temp[1] = center[1];
+        temp[2] = center[2];
+        s[0] = center[0] + radius * cos(start_angle * M_PI / 180);
+        s[1] = center[1] + radius * sin(start_angle * M_PI / 180);
+        s[2] = center[2];
+        e[0] = center[0] + radius * cos(end_angle * M_PI / 180);
+        e[1] = center[1] + radius * sin(end_angle * M_PI / 180);
+        e[2] = center[2];
     }
     else {
-        temp[0] = -c[0];
-        temp[1] = c[1];
-        temp[2] = c[2];
+        temp[0] = -center[0];
+        temp[1] = center[1];
+        temp[2] = center[2];
 
-        e[0] = -(c[0] + radius * cos(start_angle * M_PI / 180));
-        e[1] = (c[1] + radius * sin(start_angle * M_PI / 180));
-        e[2] = c[2];
-        s[0] = -(c[0] + radius * cos(end_angle * M_PI / 180));
-        s[1] = (c[1] + radius * sin(end_angle * M_PI / 180));
-        s[2] = c[2];
+        e[0] = -(center[0] + radius * cos(start_angle * M_PI / 180));
+        e[1] = (center[1] + radius * sin(start_angle * M_PI / 180));
+        e[2] = center[2];
+        s[0] = -(center[0] + radius * cos(end_angle * M_PI / 180));
+        s[1] = (center[1] + radius * sin(end_angle * M_PI / 180));
+        s[2] = center[2];
     }
     OnReadArc(s, e, temp, true, hidden);
 }
 
-void CDxfRead::OnReadCircle(const double* c, double radius, bool hidden)
+void CDxfRead::OnReadCircle(const double* center, double radius, bool hidden)
 {
-    double s[3];
-    double start_angle = 0;
-    s[0] = c[0] + radius * cos(start_angle * M_PI / 180);
-    s[1] = c[1] + radius * sin(start_angle * M_PI / 180);
-    s[2] = c[2];
+    // OnReadCircle wants a start point, so we pick an arbitrary point on the circunference
+    double s[3] = {center[0] + radius, center[1], center[2]};
 
     OnReadCircle(s,
-                 c,
+                 center,
                  false,
                  hidden);  // false to change direction because otherwise the arc length is zero
 }
 
-void CDxfRead::OnReadEllipse(const double* c,
+void CDxfRead::OnReadEllipse(const double* center,
                              const double* m,
                              double ratio,
                              double start_angle,
@@ -3347,434 +2524,7 @@ void CDxfRead::OnReadEllipse(const double* c,
     double rotation = atan2(m[1] / major_radius, m[0] / major_radius);
 
 
-    OnReadEllipse(c, major_radius, minor_radius, rotation, start_angle, end_angle, true);
-}
-
-
-bool CDxfRead::ReadInsert()
-{
-    double c[3] = {0, 0, 0};  // coordinate
-    double s[3] = {1, 1, 1};  // scale
-    double rot = 0.0;         // rotation
-    char name[1024] = {0};
-
-    while (!((*m_ifs).eof())) {
-        get_line();
-        int n;
-        if (sscanf(m_str, "%d", &n) != 1) {
-            printf("CDxfRead::ReadInsert() Failed to read integer from '%s'\n", m_str);
-            return false;
-        }
-        std::istringstream ss;
-        ss.imbue(std::locale("C"));
-        switch (n) {
-            case 0:
-                // next item found
-                ResolveColorIndex();
-                OnReadInsert(c, s, name, rot * M_PI / 180);
-                return (true);
-            case 8:
-                // Layer name follows
-                get_line();
-                strcpy(m_layer_name, m_str);
-                break;
-            case 10:
-                // coord x
-                get_line();
-                ss.str(m_str);
-                ss >> c[0];
-                c[0] = mm(c[0]);
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 20:
-                // coord y
-                get_line();
-                ss.str(m_str);
-                ss >> c[1];
-                c[1] = mm(c[1]);
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 30:
-                // coord z
-                get_line();
-                ss.str(m_str);
-                ss >> c[2];
-                c[2] = mm(c[2]);
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 41:
-                // scale x
-                get_line();
-                ss.str(m_str);
-                ss >> s[0];
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 42:
-                // scale y
-                get_line();
-                ss.str(m_str);
-                ss >> s[1];
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 43:
-                // scale z
-                get_line();
-                ss.str(m_str);
-                ss >> s[2];
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 50:
-                // rotation
-                get_line();
-                ss.str(m_str);
-                ss >> rot;
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 2:
-                // block name
-                get_line();
-                strcpy(name, m_str);
-                break;
-            case 62:
-                // color index
-                get_line();
-                ss.str(m_str);
-                ss >> m_ColorIndex;
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 100:
-            case 39:
-            case 210:
-            case 220:
-            case 230:
-                // skip the next line
-                get_line();
-                break;
-            default:
-                // skip the next line
-                get_line();
-                break;
-        }
-    }
-    return false;
-}
-
-
-bool CDxfRead::ReadDimension()
-{
-    double s[3] = {0, 0, 0};  // startpoint
-    double e[3] = {0, 0, 0};  // endpoint
-    double p[3] = {0, 0, 0};  // dimpoint
-    double rot = -1.0;        // rotation
-
-    while (!((*m_ifs).eof())) {
-        get_line();
-        int n;
-        if (sscanf(m_str, "%d", &n) != 1) {
-            printf("CDxfRead::ReadInsert() Failed to read integer from '%s'\n", m_str);
-            return false;
-        }
-        std::istringstream ss;
-        ss.imbue(std::locale("C"));
-        switch (n) {
-            case 0:
-                // next item found
-                ResolveColorIndex();
-                OnReadDimension(s, e, p, rot * M_PI / 180);
-                return (true);
-            case 8:
-                // Layer name follows
-                get_line();
-                strcpy(m_layer_name, m_str);
-                break;
-            case 13:
-                // start x
-                get_line();
-                ss.str(m_str);
-                ss >> s[0];
-                s[0] = mm(s[0]);
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 23:
-                // start y
-                get_line();
-                ss.str(m_str);
-                ss >> s[1];
-                s[1] = mm(s[1]);
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 33:
-                // start z
-                get_line();
-                ss.str(m_str);
-                ss >> s[2];
-                s[2] = mm(s[2]);
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 14:
-                // end x
-                get_line();
-                ss.str(m_str);
-                ss >> e[0];
-                e[0] = mm(e[0]);
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 24:
-                // end y
-                get_line();
-                ss.str(m_str);
-                ss >> e[1];
-                e[1] = mm(e[1]);
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 34:
-                // end z
-                get_line();
-                ss.str(m_str);
-                ss >> e[2];
-                e[2] = mm(e[2]);
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 10:
-                // dimline x
-                get_line();
-                ss.str(m_str);
-                ss >> p[0];
-                p[0] = mm(p[0]);
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 20:
-                // dimline y
-                get_line();
-                ss.str(m_str);
-                ss >> p[1];
-                p[1] = mm(p[1]);
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 30:
-                // dimline z
-                get_line();
-                ss.str(m_str);
-                ss >> p[2];
-                p[2] = mm(p[2]);
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 50:
-                // rotation
-                get_line();
-                ss.str(m_str);
-                ss >> rot;
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 62:
-                // color index
-                get_line();
-                ss.str(m_str);
-                ss >> m_ColorIndex;
-                if (ss.fail()) {
-                    return false;
-                }
-                break;
-            case 100:
-            case 39:
-            case 210:
-            case 220:
-            case 230:
-                // skip the next line
-                get_line();
-                break;
-            default:
-                // skip the next line
-                get_line();
-                break;
-        }
-    }
-    return false;
-}
-
-
-bool CDxfRead::ReadBlockInfo()
-{
-    while (!((*m_ifs).eof())) {
-        get_line();
-        int n;
-        if (sscanf(m_str, "%d", &n) != 1) {
-            printf("CDxfRead::ReadBlockInfo() Failed to read integer from '%s'\n", m_str);
-            return false;
-        }
-        std::istringstream ss;
-        ss.imbue(std::locale("C"));
-        switch (n) {
-            case 2:
-                // block name
-                get_line();
-                strcpy(m_block_name, m_str);
-                return true;
-            case 3:
-                // block name too???
-                get_line();
-                strcpy(m_block_name, m_str);
-                return true;
-            default:
-                // skip the next line
-                get_line();
-                break;
-        }
-    }
-    return false;
-}
-
-
-void CDxfRead::get_line()
-{
-    if (m_unused_line[0] != '\0') {
-        strcpy(m_str, m_unused_line);
-        memset(m_unused_line, '\0', sizeof(m_unused_line));
-        return;
-    }
-
-    m_ifs->getline(m_str, 1024);
-
-    char str[1024];
-    size_t len = strlen(m_str);
-    int j = 0;
-    bool non_white_found = false;
-    for (size_t i = 0; i < len; i++) {
-        if (non_white_found || (m_str[i] != ' ' && m_str[i] != '\t')) {
-            if (m_str[i] != '\r') {
-                str[j] = m_str[i];
-                j++;
-            }
-            non_white_found = true;
-        }
-    }
-    str[j] = 0;
-    strcpy(m_str, str);
-}
-
-void dxf_strncpy(char* dst, const char* src, size_t size)
-{
-    size_t ret = strlen(src);
-
-    if (size) {
-        size_t len = (ret >= size) ? size - 1 : ret;
-        memcpy(dst, src, len);
-        dst[len] = '\0';
-    }
-}
-
-void CDxfRead::put_line(const char* value)
-{
-    dxf_strncpy(m_unused_line, value, sizeof(m_unused_line));
-}
-
-
-bool CDxfRead::ReadUnits()
-{
-    get_line();  // Skip to next line.
-    get_line();  // Skip to next line.
-    int n = 0;
-    if (sscanf(m_str, "%d", &n) == 1) {
-        m_eUnits = eDxfUnits_t(n);
-        return (true);
-    }  // End if - then
-    else {
-        printf("CDxfRead::ReadUnits() Failed to get integer from '%s'\n", m_str);
-        return (false);
-    }
-}
-
-
-bool CDxfRead::ReadLayer()
-{
-    std::string layername;
-    ColorIndex_t colorIndex = -1;
-
-    while (!((*m_ifs).eof())) {
-        get_line();
-        int n;
-
-        if (sscanf(m_str, "%d", &n) != 1) {
-            printf("CDxfRead::ReadLayer() Failed to read integer from '%s'\n", m_str);
-            return false;
-        }
-
-        std::istringstream ss;
-        ss.imbue(std::locale("C"));
-        switch (n) {
-            case 0:  // next item found, so finish with line
-                if (layername.empty()) {
-                    printf("CDxfRead::ReadLayer() - no layer name\n");
-                    return false;
-                }
-                m_layer_ColorIndex_map[layername] = colorIndex;
-                return true;
-
-            case 2:  // Layer name follows
-                get_line();
-                layername = m_str;
-                break;
-
-            case 62:
-                // layer color ; if negative, layer is off
-                get_line();
-                if (sscanf(m_str, "%d", &colorIndex) != 1) {
-                    return false;
-                }
-                break;
-
-            case 6:   // linetype name
-            case 70:  // layer flags
-            case 100:
-            case 290:
-            case 370:
-            case 390:
-                // skip the next line
-                get_line();
-                break;
-            default:
-                // skip the next line
-                get_line();
-                break;
-        }
-    }
-    return false;
+    OnReadEllipse(center, major_radius, minor_radius, rotation, start_angle, end_angle, true);
 }
 
 bool CDxfRead::ReadVersion()
@@ -3793,16 +2543,15 @@ bool CDxfRead::ReadVersion()
         "AC1032"};
 
     assert(VersionNames.size() == RNewer - ROlder - 1);
-    get_line();
-    get_line();
+    get_next_record();  // Get the value for the variable
     std::vector<std::string>::const_iterator first = VersionNames.cbegin();
     std::vector<std::string>::const_iterator last = VersionNames.cend();
-    std::vector<std::string>::const_iterator found = std::lower_bound(first, last, m_str);
+    std::vector<std::string>::const_iterator found = std::lower_bound(first, last, m_record_data);
     if (found == last) {
         m_version = RNewer;
     }
-    else if (*found == m_str) {
-        m_version = (eDXFVersion_t)(std::distance(first, found) + (ROlder + 1));
+    else if (*found == m_record_data) {
+        m_version = (eDXFVersion_t)((int)std::distance(first, found) + (ROlder + 1));
     }
     else if (found == first) {
         m_version = ROlder;
@@ -3816,11 +2565,10 @@ bool CDxfRead::ReadVersion()
 
 bool CDxfRead::ReadDWGCodePage()
 {
-    get_line();
-    get_line();
+    get_next_record();              // Get the value for the variable
     assert(m_CodePage == nullptr);  // If not, we have found two DWGCODEPAGE variables or DoRead was
                                     // called twice on the same CDxfRead object.
-    m_CodePage = new std::string(m_str);
+    m_CodePage = new std::string(m_record_data);
 
     return ResolveEncoding();
 }
@@ -3843,12 +2591,10 @@ bool CDxfRead::ResolveEncoding()
     else {
         // Codepage names may be of the form "ansi_1252" which we map to "cp1252" but we don't map
         // "ansi_x3xxxx" (which happens to mean "ascii")
+        // Also some DXF files have the codepage name in uppercase so we lowercase it.
         std::string* p = new std::string(*m_CodePage);
-        std::string p_lower;
-        for (std::string::const_iterator i = p->begin(); i != p->end(); ++i) {
-            p_lower += tolower(*i);
-        }
-        if (p_lower.substr(0, 5) == "ansi_" && p_lower.substr(0, 7) != "ansi_x3") {
+        std::transform(p->begin(), p->end(), p->begin(), ::tolower);
+        if (strncmp(p->c_str(), "ansi_", 5) == 0 && strncmp(p->c_str(), "ansi_x3", 7) != 0) {
             p->replace(0, 5, "cp");
         }
         m_encoding = p;
@@ -3914,199 +2660,434 @@ void CDxfRead::DoRead(const bool ignore_errors /* = false */)
         return;
     }
 
-    get_line();
+    // Loop reading and identifying the sections.
+    while (get_next_record()) {
+        if (m_record_type != 0) {
+            ImportError("Found type %d record when expecting start of a SECTION or EOF\n",
+                        m_record_type);
+            continue;
+        }
+        if (!strcmp(m_record_data, "EOF")) {  // TODO: Check for drivel beyond EOF record
+            break;
+        }
+        if (strcmp(m_record_data, "SECTION")) {
+            ImportError("Found %s record when expecting start of a SECTION\n", m_record_data);
+            continue;
+        }
 
-    while (!((*m_ifs).eof())) {
-        if (!strcmp(m_str, "$INSUNITS")) {
-            if (!ReadUnits()) {
+        if (!get_next_record()) {
+            ImportError("Unclosed SECTION at end of file\n");
+            return;
+        }
+        if (m_record_type != 2) {
+            ImportError("Ignored SECTION with no name record\n");
+            if (!ReadIgnoredSection()) {
                 return;
             }
-            continue;
-        }  // End if - then
+        }
+        else if (!strcmp(m_record_data, "HEADER")) {
+            if (!ReadHeaderSection()) {
+                return;
+            }
+        }
+        else if (!strcmp(m_record_data, "TABLES")) {
+            if (!ReadTablesSection()) {
+                return;
+            }
+        }
+        else if (!strcmp(m_record_data, "BLOCKS")) {
+            if (!ReadBlocksSection()) {
+                return;
+            }
+        }
+        else if (!strcmp(m_record_data, "ENTITIES")) {
+            if (!ReadEntitiesSection()) {
+                return;
+            }
+        }
+        else {
+            if (!ReadIgnoredSection()) {
+                return;
+            }
+        }
+    }
+    AddGraphics();
 
-        if (!strcmp(m_str, "$MEASUREMENT")) {
-            get_line();
-            get_line();
+    // FLush out any unsupported features messages
+    auto i = m_unsupportedFeaturesNoted.begin();
+    if (i != m_unsupportedFeaturesNoted.end()) {
+        ImportError("Unsupported DXF features:\n");
+        do {
+            ImportError("%s: %d time(s) first at line %d\n",
+                        i->first,
+                        i->second.first,
+                        i->second.second);
+        } while (++i != m_unsupportedFeaturesNoted.end());
+    }
+}
+
+bool CDxfRead::ReadEntity()
+{
+    InitializeCommonEntityAttributes();
+    // The entity record is already the current record and is already checked as a type 0 record
+    if (!strcmp(m_record_data, "LINE")) {
+        return ReadLine();
+    }
+    else if (!strcmp(m_record_data, "ARC")) {
+        return ReadArc();
+    }
+    else if (!strcmp(m_record_data, "CIRCLE")) {
+        return ReadCircle();
+    }
+    else if (!strcmp(m_record_data, "MTEXT")) {
+        return ReadText();
+    }
+    else if (!strcmp(m_record_data, "TEXT")) {
+        return ReadText();
+    }
+    else if (!strcmp(m_record_data, "ELLIPSE")) {
+        return ReadEllipse();
+    }
+    else if (!strcmp(m_record_data, "SPLINE")) {
+        return ReadSpline();
+    }
+    else if (!strcmp(m_record_data, "LWPOLYLINE")) {
+        return ReadLwPolyLine();
+    }
+    else if (!strcmp(m_record_data, "POLYLINE")) {
+        return ReadPolyLine();
+    }
+    else if (!strcmp(m_record_data, "POINT")) {
+        return ReadPoint();
+    }
+    else if (!strcmp(m_record_data, "INSERT")) {
+        return ReadInsert();
+    }
+    else if (!strcmp(m_record_data, "DIMENSION")) {
+        return ReadDimension();
+    }
+    else {
+        return ReadUnknownEntity();
+    }
+}
+
+bool CDxfRead::ReadHeaderSection()
+{
+    // Read to the next ENDSEC record marking the end of the section.
+    // This section contains variables, most of which we ignore. Each one is a type-9 record giving
+    // the variable name, followed by a single record giving the value; the record type depends on
+    // the variable's data type.
+    while (get_next_record()) {
+        if (m_record_type == 0 && !strcmp(m_record_data, "ENDSEC")) {
+            return true;
+        }
+        else if (m_record_type != 9) {
+            continue;  // Quietly ignore unknown record types
+        }
+        if (!strcmp(m_record_data, "$INSUNITS")) {
+            if (!ReadUnits()) {
+                return false;
+            }
+        }
+        else if (!strcmp(m_record_data, "$MEASUREMENT")) {
+            get_next_record();
             int n = 1;
-            if (sscanf(m_str, "%d", &n) == 1) {
+            if (sscanf(m_record_data, "%d", &n) == 1) {
                 if (n == 0) {
                     m_measurement_inch = true;
                 }
             }
-            continue;
-        }  // End if - then
-
-        if (!strcmp(m_str, "$ACADVER")) {
+        }
+        else if (!strcmp(m_record_data, "$ACADVER")) {
             if (!ReadVersion()) {
-                return;
-            }
-            continue;
-        }  // End if - then
-
-        if (!strcmp(m_str, "$DWGCODEPAGE")) {
-            if (!ReadDWGCodePage()) {
-                return;
-            }
-            continue;
-        }  // End if - then
-
-        if (!strcmp(m_str, "0")) {
-            get_line();
-            if (!strcmp(m_str, "SECTION")) {
-                strcpy(m_section_name, "");
-                get_line();
-                get_line();
-                if (strcmp(m_str, "ENTITIES")) {
-                    strcpy(m_section_name, m_str);
-                }
-                strcpy(m_block_name, "");
-
-            }  // End if - then
-            else if (!strcmp(m_str, "TABLE")) {
-                get_line();
-                get_line();
-            }
-
-            else if (!strcmp(m_str, "LAYER")) {
-                get_line();
-                get_line();
-                if (!ReadLayer()) {
-                    printf("CDxfRead::DoRead() Failed to read layer\n");
-                    // return; Some objects or tables can have "LAYER" as name...
-                }
-                continue;
-            }
-
-            else if (!strcmp(m_str, "BLOCK")) {
-                if (!ReadBlockInfo()) {
-                    printf("CDxfRead::DoRead() Failed to read block info\n");
-                    return;
-                }
-                continue;
-            }  // End if - then
-
-            else if (!strcmp(m_str, "ENDSEC")) {
-                strcpy(m_section_name, "");
-                strcpy(m_block_name, "");
-            }  // End if - then
-            else if (!strcmp(m_str, "LINE")) {
-                if (!ReadLine()) {
-                    printf("CDxfRead::DoRead() Failed to read line\n");
-                    return;
-                }
-                continue;
-            }
-            else if (!strcmp(m_str, "ARC")) {
-                if (!ReadArc()) {
-                    printf("CDxfRead::DoRead() Failed to read arc\n");
-                    return;
-                }
-                continue;
-            }
-            else if (!strcmp(m_str, "CIRCLE")) {
-                if (!ReadCircle()) {
-                    printf("CDxfRead::DoRead() Failed to read circle\n");
-                    return;
-                }
-                continue;
-            }
-            else if (!strcmp(m_str, "MTEXT")) {
-                if (!ReadText()) {
-                    printf("CDxfRead::DoRead() Failed to read text\n");
-                    return;
-                }
-                continue;
-            }
-            else if (!strcmp(m_str, "TEXT")) {
-                if (!ReadText()) {
-                    printf("CDxfRead::DoRead() Failed to read text\n");
-                    return;
-                }
-                continue;
-            }
-            else if (!strcmp(m_str, "ELLIPSE")) {
-                if (!ReadEllipse()) {
-                    printf("CDxfRead::DoRead() Failed to read ellipse\n");
-                    return;
-                }
-                continue;
-            }
-            else if (!strcmp(m_str, "SPLINE")) {
-                if (!ReadSpline()) {
-                    printf("CDxfRead::DoRead() Failed to read spline\n");
-                    return;
-                }
-                continue;
-            }
-            else if (!strcmp(m_str, "LWPOLYLINE")) {
-                if (!ReadLwPolyLine()) {
-                    printf("CDxfRead::DoRead() Failed to read LW Polyline\n");
-                    return;
-                }
-                continue;
-            }
-            else if (!strcmp(m_str, "POLYLINE")) {
-                if (!ReadPolyLine()) {
-                    printf("CDxfRead::DoRead() Failed to read Polyline\n");
-                    return;
-                }
-                continue;
-            }
-            else if (!strcmp(m_str, "POINT")) {
-                if (!ReadPoint()) {
-                    printf("CDxfRead::DoRead() Failed to read Point\n");
-                    return;
-                }
-                continue;
-            }
-            else if (!strcmp(m_str, "INSERT")) {
-                if (!ReadInsert()) {
-                    printf("CDxfRead::DoRead() Failed to read Insert\n");
-                    return;
-                }
-                continue;
-            }
-            else if (!strcmp(m_str, "DIMENSION")) {
-                if (!ReadDimension()) {
-                    printf("CDxfRead::DoRead() Failed to read Dimension\n");
-                    return;
-                }
-                continue;
+                return false;
             }
         }
-
-        get_line();
+        else if (!strcmp(m_record_data, "$DWGCODEPAGE")) {
+            if (!ReadDWGCodePage()) {
+                return false;
+            }
+        }
+        else {
+            // any other variable, skip its value
+            if (!get_next_record()) {
+                return false;
+            }
+        }
     }
-    AddGraphics();
+    return false;
 }
 
-
-void CDxfRead::ResolveColorIndex()
+bool CDxfRead::ReadTablesSection()
 {
-
-    if (m_ColorIndex == ColorBylayer)  // if color = layer color, replace by color from layer
-    {
-        m_ColorIndex = m_layer_ColorIndex_map[std::string(m_layer_name)];
+    // Read to the next ENDSEC record marking the end of the section.
+    // This section contains various tables, many of which we ignore. Each one is a type-0 TABLE
+    // record followed by a type-2 (name) record giving the table name, followed by the table
+    // contents. Each set of contents is terminates by the next type-0 TABLE or ENDSEC directive.
+    while (get_next_record()) {
+        if (m_record_type != 0) {
+            continue;  // Ignore any non-type-0 contents in the section.
+        }
+        if (!strcmp(m_record_data, "ENDSEC")) {
+            return true;
+        }
+        if (strcmp(m_record_data, "TABLE")) {
+            continue;  // Ignore any type-0 non-TABLE contents in the section
+        }
+        get_next_record();
+        if (m_record_type != 2) {
+            ImportError("Found unexpected type %d record instead of table name\n", m_record_type);
+        }
+        else if (!strcmp(m_record_data, "LAYER")) {
+            if (!ReadLayerTable()) {
+                return false;
+            }
+        }
+        else {
+            if (!ReadIgnoredTable()) {
+                return false;
+            }
+        }
     }
+    return false;
+}
+
+bool CDxfRead::ReadIgnoredSection()
+{
+    // Read to the next ENDSEC record marking the end of the section.
+    while (get_next_record()) {
+        if (m_record_type == 0 && !strcmp(m_record_data, "ENDSEC")) {
+            return true;
+        }
+    }
+    return false;
+}
+
+bool CDxfRead::ReadBlocksSection()
+{
+    // Read to the next ENDSEC record marking the end of the section.
+    // Within this section we should find type-0 BLOCK groups
+    while (get_next_record()) {
+        if (m_record_type != 0) {
+            continue;  // quietly ignore non-type-0 records;
+        }
+        if (!strcmp(m_record_data, "ENDSEC")) {
+            // End of section
+            return true;
+        }
+        if (strcmp(m_record_data, "BLOCK")) {
+            continue;  // quietly ignore non-BLOCK records
+        }
+        if (!ReadBlockInfo()) {
+            ImportError("CDxfRead::DoRead() Failed to read block\n");
+        }
+        m_block_name[0] = '\0';
+    }
+
+    return false;
+}
+
+bool CDxfRead::ReadEntitiesSection()
+{
+    // Read to the next ENDSEC record marking the end of the section.
+    // Within this section we should find type-0 BLOCK groups
+    while (get_next_record()) {
+        if (m_record_type != 0) {
+            continue;  // quietly ignore non-type-0 records;
+        }
+        if (!strcmp(m_record_data, "ENDSEC")) {
+            // End of section
+            return true;
+        }
+        if (IgnoreErrors()) {
+            try {
+                if (!ReadEntity()) {
+                    return false;
+                }
+            }
+            catch (...) {
+            }
+        }
+        else {
+            if (!ReadEntity()) {
+                return false;
+            }
+        }
+    }
+
+    return false;
+}
+
+bool CDxfRead::ReadLayer()
+{
+    std::string layername;
+    ColorIndex_t layerColor = 0;
+    int layerFlags = 0;
+    InitializeAttributes();
+
+    SetupStringAttribute(2, layername);
+    SetupValueAttribute(62, layerColor);
+    SetupValueAttribute(70, layerFlags);
+    ProcessAllAttributes();
+    if (layername.empty()) {
+        ImportError("CDxfRead::ReadLayer() - no layer name\n");
+        return false;
+    }
+    if (layerFlags & 0x01) {
+        // Frozen layers are implicitly hidden which we don't do yet.
+        // TODO: Should have an import option to omit frozen layers.
+        UnsupportedFeature("Frozen layers");
+    }
+    if (layerColor < 0) {
+        UnsupportedFeature("Hidden layers");
+        layerColor = -layerColor;
+    }
+    m_layer_ColorIndex_map[layername] = layerColor;
+    return true;
+}
+bool CDxfRead::ReadLayerTable()
+{
+    // Read to the next TABLE record indicating another table in the TABLES section, or to the
+    // ENDSEC record marking the end of the TABLES section. This table contains a series of type-0
+    // LAYER groups
+    while (get_next_record()) {
+        if (m_record_type != 0) {
+            continue;  // quietly ignore non-type-0 records; this table has some preamble
+        }
+        if (!strcmp(m_record_data, "TABLE") || !strcmp(m_record_data, "ENDSEC")) {
+            // End of table
+            repeat_last_record();
+            return true;
+        }
+        if (strcmp(m_record_data, "LAYER")) {
+            continue;  // quietly ignore non-LAYER records
+        }
+        if (!ReadLayer()) {
+            ImportError("CDxfRead::DoRead() Failed to read layer\n");
+        }
+        continue;
+    }
+
+    return false;
+}
+
+bool CDxfRead::ReadIgnoredTable()
+{
+    // Read to the next TABLE record indicating another table in the TABLES section, or to the
+    // ENDSEC record marking the end of the TABLES section.
+    while (get_next_record()) {
+        if (m_record_type == 0
+            && (!strcmp(m_record_data, "TABLE") || !strcmp(m_record_data, "ENDSEC"))) {
+            repeat_last_record();
+            return true;
+        }
+    }
+    return false;
 }
 
 std::string CDxfRead::LayerName() const
 {
     std::string result;
 
-    if (strlen(m_section_name) > 0) {
-        result.append(m_section_name);
-        result.append(" ");
-    }
-
     if (strlen(m_block_name) > 0) {
+        result.append("BLOCKS ");
         result.append(m_block_name);
         result.append(" ");
     }
 
-    if (strlen(m_layer_name) > 0) {
+    else if (strlen(m_layer_name) > 0) {
+        result.append("ENTITIES ");
         result.append(m_layer_name);
     }
 
     return (result);
+}
+
+inline static double level(int distance, double blackLevel)
+{
+    // Distance is the number of 24ths around the color wheel between the desired hue and
+    // the primary hue in question. Coming in it is a ordinate difference and so can be negative
+    // so the first thing we do is take its absolute value.
+    if (distance < 0) {
+        distance = -distance;
+    }
+    // If the distance is greater than 12, it is measuring the long way around the color wheel so we
+    // reduce it to measuring along the short way instead
+    if (distance > 12) {
+        distance = 24 - distance;
+    }
+    if (distance <= 4) {
+        // A distance 4 or less givs full intensity of the primary color
+        return 1.0;
+    }
+    else if (distance < 8) {
+        // Between 4 and 8 gives a blend of the full primary and the black level
+        return ((8 - distance) + blackLevel * (distance - 4)) / 4;
+    }
+    else {
+        // 8 and beyond yield the black level
+        return blackLevel;
+    }
+}
+inline static App::Color wheel(int hue, double blackLevel, double multiplier = 1.0)
+{
+    return App::Color(level(hue - 0, blackLevel) * multiplier,
+                      level(hue - 8, blackLevel) * multiplier,
+                      level(hue - 16, blackLevel) * multiplier);
+}
+App::Color CDxfRead::ObjectColor() const
+{
+    int index = m_ColorIndex;
+    if (index == ColorBylayer)  // if color = layer color, replace by color from layer
+    {
+        auto key = std::string(m_layer_name);
+        index = m_layer_ColorIndex_map.count(key) > 0 ? m_layer_ColorIndex_map.at(key) : 0;
+    }
+    // TODO: If it is ColorByBlock we need to use the color of the INSERT entity.
+    // This is tricky because a block can itself contain INSERT entities and we don't currently
+    // record the required information. IIRC INSERT in a block will do something strange like
+    // try to insert the block into the main drawing instead of into the block being defined.
+
+    // The first 7 colors (1-7) have ad hoc names red, yellow, green, cyan, blue, magenta, and
+    // black. 8, 9, 250-254 are lightening shades of gray. These are rendered by the app in a manner
+    // to contrast with the background color.
+    // For others, (color/10) determines the hue around the
+    // color circle, with even numbers fading to black on the tens digit,
+    // and odd numberd being blended with AA and again fading to black.
+    // The fade is FF BD 81 68 4F (100%, 74%, 50%, 40%, 30%) indexed by (index/2)%5
+    // The AA fades as AA 7E 56 45 35 which is almost the exact same percentages.
+    // For hue, (index-10)/10 : 0 is ff0000, and each step linearly adds green until 4 is pure
+    // yellow ffff00, then red starts to fade... until but not including 24 which is back to ff0000.
+    App::Color result = App::Color();
+    if (index == 0) {
+        // Technically, 0 is BYBLOCK and not a real color, but all that means is that an object in a
+        // block cannot specifically ask to be black. These colors are all contrasted to the
+        // background so there is no objective black colour, through 255 is an objective white.
+        result = App::Color();
+    }
+    else if (index < 7) {
+        result = wheel((index - 1) * 4, 0x00);
+    }
+    else if (index == 7) {
+        result = App::Color(1, 1, 1);
+    }
+    else if (index == 8) {
+        result = App::Color(0.5, 0.5, 0.5);
+    }
+    else if (index == 9) {
+        result = App::Color(0.75, 0.75, 0.75);
+    }
+    else if (index >= 250) {
+        int brightness = (index - 250 + (255 - index) * 0.2) / 5;
+        result = App::Color(brightness, brightness, brightness);
+    }
+    else {
+        int fade = (index / 2) % 5;
+        static double fades[5] = {1.00, 0.74, 0.50, 0.40, 0.30};
+        return wheel(index / 10 - 1, (index & 1) ? 0.69 : 0, fades[fade]);
+    }
+    // TODO: These colors are modified to contrast with the background. In the original program
+    // this is just a rendering feature, but FreeCAD does not support this so the user has the
+    // option of modifying the colors to contrast with the background at time of import.
+    return result;
 }

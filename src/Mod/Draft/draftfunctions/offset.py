@@ -31,8 +31,9 @@ import math
 
 import FreeCAD as App
 import DraftVecUtils
-import draftutils.gui_utils as gui_utils
-import draftutils.utils as utils
+from draftutils import gui_utils
+from draftutils import params
+from draftutils import utils
 
 from draftmake.make_rectangle import make_rectangle
 from draftmake.make_wire import make_wire
@@ -238,7 +239,7 @@ def offset(obj, delta, copy=False, bind=False, sym=False, occ=False):
         elif utils.get_type(obj) == 'Part':
             print("unsupported object") # TODO
         newobj = obj
-    if copy and utils.get_param("selectBaseObjects",False):
+    if copy and params.get_param("selectBaseObjects"):
         gui_utils.select(newobj)
     else:
         gui_utils.select(obj)

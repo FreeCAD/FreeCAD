@@ -64,7 +64,8 @@ void QGVNavStyleBlender::handleMouseMoveEvent(QMouseEvent *event)
 //                            QGuiApplication::keyboardModifiers().testFlag(Qt::ShiftModifier));
 
     if (getViewer()->isBalloonPlacing()) {
-        getViewer()->setBalloonCursorPos(event->pos());
+        balloonCursorMovement(event);
+        return;
     }
 
     if ((QGuiApplication::mouseButtons() & Qt::LeftButton) &&

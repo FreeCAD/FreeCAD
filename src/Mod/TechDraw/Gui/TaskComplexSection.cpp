@@ -74,7 +74,8 @@ TaskComplexSection::TaskComplexSection(TechDraw::DrawPage* page, TechDraw::DrawV
     m_applyDeferred(0),
     m_angle(0.0),
     m_directionIsSet(false),
-    m_modelIsDirty(false)
+    m_modelIsDirty(false),
+    m_scaleEdited(false)
 {
     m_sectionName = std::string();
     if (m_page) {
@@ -105,7 +106,8 @@ TaskComplexSection::TaskComplexSection(TechDraw::DrawComplexSection* complexSect
     m_applyDeferred(0),
     m_angle(0.0),
     m_directionIsSet(true),
-    m_modelIsDirty(false)
+    m_modelIsDirty(false),
+    m_scaleEdited(false)
 {
     m_sectionName = m_section->getNameInDocument();
     m_doc = m_section->getDocument();
@@ -369,6 +371,7 @@ void TaskComplexSection::onIdentifierChanged()
 
 void TaskComplexSection::onScaleChanged()
 {
+    m_scaleEdited = true;
     checkAll(false);
     apply();
 }
@@ -577,6 +580,20 @@ void TaskComplexSection::createComplexSection()
 
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Scale = %0.6f",
                            m_sectionName.c_str(), ui->sbScale->value());
+
+        std::string baseName = m_baseView->getNameInDocument();
+        if (m_scaleEdited) {
+            // user has changed the scale
+            Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Scale = %0.7f",
+                           m_sectionName.c_str(), ui->sbScale->value());
+        } else {
+            // scale is untouched, use value from base view
+            Command::doCommand(Command::Doc,
+            "App.ActiveDocument.%s.Scale = App.ActiveDocument.%s.Scale",
+                           m_sectionName.c_str(),
+                           baseName.c_str());
+        }
+
         int scaleType = ui->cmbScaleType->currentIndex();
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.ScaleType = %d",
                            m_sectionName.c_str(), scaleType);
@@ -654,8 +671,20 @@ void TaskComplexSection::updateComplexSection()
         Command::doCommand(Command::Doc, "App.activeDocument().%s.translateLabel('DrawViewSection', 'Section', '%s')",
               m_sectionName.c_str(), makeSectionLabel(qTemp).c_str());
 
-        Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Scale = %0.6f",
+        std::string baseName = m_baseView->getNameInDocument();
+        if (m_scaleEdited) {
+            // user has changed the scale
+            Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Scale = %0.7f",
                            m_sectionName.c_str(), ui->sbScale->value());
+        } else {
+            // scale is untouched, use value from base view
+            Command::doCommand(Command::Doc,
+            "App.ActiveDocument.%s.Scale = App.ActiveDocument.%s.Scale",
+                           m_sectionName.c_str(),
+                           baseName.c_str());
+        }
+
+
         int scaleType = ui->cmbScaleType->currentIndex();
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.ScaleType = %d",
                            m_sectionName.c_str(), scaleType);

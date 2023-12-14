@@ -83,13 +83,13 @@ PyObject* PersistencePy::dumpContent(PyObject* args, PyObject* kwds)
     }
 
     // build the byte array with correct size
-    if (!stream.seekp(0, stream.end)) {
+    if (!stream.seekp(0, std::stringstream::end)) {
         PyErr_SetString(PyExc_IOError, "Unable to find end of stream");
         return nullptr;
     }
 
     std::stringstream::pos_type offset = stream.tellp();
-    if (!stream.seekg(0, stream.beg)) {
+    if (!stream.seekg(0, std::stringstream::beg)) {
         PyErr_SetString(PyExc_IOError, "Unable to find begin of stream");
         return nullptr;
     }

@@ -56,8 +56,7 @@ public:
         initialize("This module is the MatGui module.");  // register with Python
     }
 
-    ~Module() override
-    {}
+    ~Module() = default;
 
 private:
 };

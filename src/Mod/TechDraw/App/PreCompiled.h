@@ -54,14 +54,11 @@
 
 // Qt
 #include <QDomDocument>
-#include "QDomNodeModel.h"
 #include <QFile>
 #include <QLocale>
 #include <QRegularExpression>
 #include <QRegularExpressionMatch>
 #include <QtConcurrentRun>
-#include <QXmlQuery>
-#include <QXmlResultItems>
 
 // OpenCasCade
 #include <Mod/Part/App/OpenCascadeAll.h>

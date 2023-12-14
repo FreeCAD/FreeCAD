@@ -56,6 +56,11 @@ enum class UnitSystem
 class UnitsSchema
 {
 public:
+    UnitsSchema() = default;
+    UnitsSchema(const UnitsSchema&) = default;
+    UnitsSchema(UnitsSchema&&) = default;
+    UnitsSchema& operator=(const UnitsSchema&) = default;
+    UnitsSchema& operator=(UnitsSchema&&) = default;
     virtual ~UnitsSchema() = default;
     /** Gets called if this schema gets activated.
      * Here it's theoretically possible that you can change the static factors

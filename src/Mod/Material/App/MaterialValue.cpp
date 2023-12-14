@@ -21,11 +21,13 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
+#include <QRegularExpression>
 #endif
 
 #include <QMetaType>
 
 #include <App/Application.h>
+#include <Base/QtTools.h>
 #include <Base/Quantity.h>
 #include <Gui/MetaTypes.h>
 
@@ -83,10 +85,18 @@ bool MaterialValue::operator==(const MaterialValue& other) const
     return (_valueType == other._valueType) && (_value == other._value);
 }
 
+QString MaterialValue::escapeString(const QString& source)
+{
+    QString res = source;
+    res.replace(QString::fromStdString("\\"), QString::fromStdString("\\\\"));
+    res.replace(QString::fromStdString("\""), QString::fromStdString("\\\""));
+    return res;
+}
+
 void MaterialValue::setInitialValue(ValueType inherited)
 {
-#if QT_VERSION < QT_VERSION_CHECK(6,0,0)
-    if (_valueType == String) {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    if (_valueType == String || _valueType == MultiLineString) {
         _value = QVariant(static_cast<QVariant::Type>(QMetaType::QString));
     }
     else if (_valueType == Boolean) {
@@ -110,11 +120,8 @@ void MaterialValue::setInitialValue(ValueType inherited)
     else if (_valueType == Image) {
         _value = QVariant(static_cast<QVariant::Type>(QMetaType::QString));
     }
-    else if (_valueType == List) {
-        _value = QVariant(static_cast<QVariant::Type>(QMetaType::QString));
-    }
 #else
-    if (_valueType == String) {
+    if (_valueType == String || _valueType == MultiLineString) {
         _value = QVariant(QMetaType(QMetaType::QString));
     }
     else if (_valueType == Boolean) {
@@ -138,14 +145,15 @@ void MaterialValue::setInitialValue(ValueType inherited)
     else if (_valueType == Image) {
         _value = QVariant(QMetaType(QMetaType::QString));
     }
-    else if (_valueType == List) {
-        _value = QVariant(QMetaType(QMetaType::QString));
-    }
 #endif
     else if (_valueType == Quantity) {
         Base::Quantity qu;
         qu.setInvalid();
         _value = QVariant::fromValue(qu);
+    }
+    else if (_valueType == List || _valueType == FileList || _valueType == ImageList) {
+        auto list = QList<QVariant>();
+        _value = QVariant::fromValue(list);
     }
     else if (_valueType == Array2D) {
         if (_valueType != inherited) {
@@ -168,6 +176,11 @@ void MaterialValue::setInitialValue(ValueType inherited)
     }
 }
 
+void MaterialValue::setList(const QList<QVariant>& value)
+{
+    _value = QVariant::fromValue(value);
+}
+
 bool MaterialValue::isNull() const
 {
     if (_value.isNull()) {
@@ -178,28 +191,109 @@ bool MaterialValue::isNull() const
         return !_value.value<Base::Quantity>().isValid();
     }
 
+    if (_valueType == List || _valueType == FileList || _valueType == ImageList) {
+        return _value.value<QList<QVariant>>().isEmpty();
+    }
+
     return false;
 }
 
-const QString MaterialValue::getYAMLString() const
+QString MaterialValue::getYAMLStringImage() const
 {
-    QString yaml = QString::fromStdString("\"");
+    QString yaml;
+    yaml = QString::fromStdString(" |-2");
+    QString base64 = getValue().toString();
+    while (!base64.isEmpty()) {
+        yaml += QString::fromStdString("\n      ") + base64.left(74);
+        base64.remove(0, 74);
+    }
+    return yaml;
+}
+
+QString MaterialValue::getYAMLStringList() const
+{
+    QString yaml;
+    for (auto& it : getList()) {
+        yaml += QString::fromStdString("\n      - \"") + escapeString(it.toString())
+            + QString::fromStdString("\"");
+    }
+    return yaml;
+}
+
+QString MaterialValue::getYAMLStringImageList() const
+{
+    QString yaml;
+    for (auto& it : getList()) {
+        yaml += QString::fromStdString("\n      - |-2");
+        QString base64 = it.toString();
+        while (!base64.isEmpty()) {
+            yaml += QString::fromStdString("\n        ") + base64.left(72);
+            base64.remove(0, 72);
+        }
+    }
+    return yaml;
+}
+
+QString MaterialValue::getYAMLStringMultiLine() const
+{
+    QString yaml;
+    yaml = QString::fromStdString(" >2");
+    auto list =
+        getValue().toString().split(QRegExp(QString::fromStdString("[\r\n]")), Qt::SkipEmptyParts);
+    for (auto& it : list) {
+        yaml += QString::fromStdString("\n      ") + it;
+    }
+    return yaml;
+}
+
+QString MaterialValue::getYAMLString() const
+{
+    QString yaml;
     if (!isNull()) {
+        if (getType() == MaterialValue::Image) {
+            return getYAMLStringImage();
+        }
+        if (getType() == MaterialValue::List || getType() == MaterialValue::FileList) {
+            return getYAMLStringList();
+        }
+        if (getType() == MaterialValue::ImageList) {
+            return getYAMLStringImageList();
+        }
+        if (getType() == MaterialValue::MultiLineString) {
+            return getYAMLStringMultiLine();
+        }
         if (getType() == MaterialValue::Quantity) {
-            Base::Quantity quantity = getValue().value<Base::Quantity>();
+            auto quantity = getValue().value<Base::Quantity>();
             yaml += quantity.getUserString();
         }
         else if (getType() == MaterialValue::Float) {
             auto value = getValue();
             if (!value.isNull()) {
-                yaml += QString(QString::fromStdString("%1")).arg(value.toFloat(), 0, 'g', 6);
+                yaml += QString::fromLatin1("%1").arg(value.toFloat(), 0, 'g', 6);
             }
+        }
+        else if (getType() == MaterialValue::MultiLineString) {
+            yaml = QString::fromLatin1(">2");
+            auto list =
+                getValue().toString().split(QRegularExpression(QString::fromLatin1("[\r\n]")),
+                                            Qt::SkipEmptyParts);
+            for (auto& it : list) {
+                yaml += QString::fromLatin1("\n      ") + it;
+            }
+            return yaml;
+        }
+        else if (getType() == MaterialValue::List) {
+            for (auto& it : getList()) {
+                yaml += QString::fromLatin1("\n      - \"") + escapeString(it.toString())
+                    + QString::fromLatin1("\"");
+            }
+            return yaml;
         }
         else {
             yaml += getValue().toString();
         }
     }
-    yaml += QString::fromStdString("\"");
+    yaml = QString::fromLatin1("\"") + escapeString(yaml) + QString::fromLatin1("\"");
     return yaml;
 }
 
@@ -209,7 +303,7 @@ TYPESYSTEM_SOURCE(Materials::Material2DArray, Materials::MaterialValue)
 
 Material2DArray::Material2DArray()
     : MaterialValue(Array2D, Array2D)
-    , _defaultSet(false)
+    , _columns(0)
 {
     // Initialize separatelt to prevent recursion
     // setType(Array2D);
@@ -217,7 +311,7 @@ Material2DArray::Material2DArray()
 
 Material2DArray::Material2DArray(const Material2DArray& other)
     : MaterialValue(other)
-    , _defaultSet(other._defaultSet)
+    , _columns(other._columns)
 {
     deepCopy(other);
 }
@@ -229,7 +323,7 @@ Material2DArray& Material2DArray::operator=(const Material2DArray& other)
     }
 
     MaterialValue::operator=(other);
-    _defaultSet = other._defaultSet;
+    _columns = other._columns;
 
     deepCopy(other);
 
@@ -239,13 +333,13 @@ Material2DArray& Material2DArray::operator=(const Material2DArray& other)
 void Material2DArray::deepCopy(const Material2DArray& other)
 {
     // Deep copy
-    for (auto row : other._rows) {
-        std::vector<QVariant> v;
-        for (auto col : *row) {
+    for (auto& row : other._rows) {
+        QList<QVariant> vv;
+        for (auto& col : *row) {
             QVariant newVariant(col);
-            v.push_back(newVariant);
+            vv.push_back(newVariant);
         }
-        addRow(std::make_shared<std::vector<QVariant>>(v));
+        addRow(std::make_shared<QList<QVariant>>(vv));
     }
 }
 
@@ -254,88 +348,93 @@ bool Material2DArray::isNull() const
     return rows() <= 0;
 }
 
-const QVariant Material2DArray::getDefault() const
+void Material2DArray::validateRow(int row) const
 {
-    if (_defaultSet) {
-        return _value;
+    if (row < 0 || row >= rows()) {
+        throw InvalidIndex();
     }
-
-    return QVariant();
 }
 
-std::shared_ptr<std::vector<QVariant>> Material2DArray::getRow(int row) const
+void Material2DArray::validateColumn(int column) const
 {
+    if (column < 0 || column >= columns()) {
+        throw InvalidIndex();
+    }
+}
+
+std::shared_ptr<QList<QVariant>> Material2DArray::getRow(int row) const
+{
+    validateRow(row);
+
     try {
         return _rows.at(row);
     }
     catch (std::out_of_range const&) {
-        throw InvalidRow();
+        throw InvalidIndex();
     }
 }
 
-std::shared_ptr<std::vector<QVariant>> Material2DArray::getRow(int row)
+std::shared_ptr<QList<QVariant>> Material2DArray::getRow(int row)
 {
+    validateRow(row);
+
     try {
         return _rows.at(row);
     }
     catch (std::out_of_range const&) {
-        throw InvalidRow();
+        throw InvalidIndex();
     }
 }
 
-void Material2DArray::addRow(std::shared_ptr<std::vector<QVariant>> row)
+void Material2DArray::addRow(const std::shared_ptr<QList<QVariant>>& row)
 {
     _rows.push_back(row);
 }
 
-void Material2DArray::insertRow(int index, std::shared_ptr<std::vector<QVariant>> row)
+void Material2DArray::insertRow(int index, const std::shared_ptr<QList<QVariant>>& row)
 {
     _rows.insert(_rows.begin() + index, row);
 }
 
 void Material2DArray::deleteRow(int row)
 {
-    if (static_cast<std::size_t>(row) >= _rows.size() || row < 0) {
-        throw InvalidRow();
+    if (row >= static_cast<int>(_rows.size()) || row < 0) {
+        throw InvalidIndex();
     }
     _rows.erase(_rows.begin() + row);
 }
 
 void Material2DArray::setValue(int row, int column, const QVariant& value)
 {
-    if (row >= rows()) {
-        throw InvalidIndex();
-    }
+    validateRow(row);
+    validateColumn(column);
 
     auto val = getRow(row);
     try {
-        val->at(column) = value;
+        val->replace(column, value);
     }
     catch (const std::out_of_range&) {
         throw InvalidIndex();
     }
 }
 
-const QVariant Material2DArray::getValue(int row, int column) const
+QVariant Material2DArray::getValue(int row, int column) const
 {
+    validateColumn(column);
+
+    auto val = getRow(row);
     try {
-        auto val = getRow(row);
-        try {
-            return val->at(column);
-        }
-        catch (std::out_of_range const&) {
-            throw InvalidIndex();
-        }
+        return val->at(column);
     }
-    catch (const InvalidRow&) {
+    catch (std::out_of_range const&) {
         throw InvalidIndex();
     }
 }
 
-void Material2DArray::dumpRow(std::shared_ptr<std::vector<QVariant>> row) const
+void Material2DArray::dumpRow(const std::shared_ptr<QList<QVariant>>& row)
 {
     Base::Console().Log("row: ");
-    for (auto column : *row) {
+    for (auto& column : *row) {
         Base::Console().Log("'%s' ", column.toString().toStdString().c_str());
     }
     Base::Console().Log("\n");
@@ -343,12 +442,12 @@ void Material2DArray::dumpRow(std::shared_ptr<std::vector<QVariant>> row) const
 
 void Material2DArray::dump() const
 {
-    for (auto row : _rows) {
+    for (auto& row : _rows) {
         dumpRow(row);
     }
 }
 
-const QString Material2DArray::getYAMLString() const
+QString Material2DArray::getYAMLString() const
 {
     if (isNull()) {
         return QString();
@@ -358,16 +457,10 @@ const QString Material2DArray::getYAMLString() const
     QString pad;
     pad.fill(QChar::fromLatin1(' '), 9);
 
-    // Save the default value
-    QString yaml = QString::fromStdString("\n      - \"");
-    Base::Quantity quantity = getDefault().value<Base::Quantity>();
-    yaml += quantity.getUserString();
-    yaml += QString::fromStdString("\"\n");
-
-    // Next the array contents
-    yaml += QString::fromStdString("      - [");
+    // Save the array contents
+    QString yaml = QString::fromStdString("\n      - [");
     bool firstRow = true;
-    for (auto row : _rows) {
+    for (auto& row : _rows) {
         if (!firstRow) {
             // Each row is on its own line, padded for correct indentation
             yaml += QString::fromStdString(",\n") + pad;
@@ -378,7 +471,7 @@ const QString Material2DArray::getYAMLString() const
         yaml += QString::fromStdString("[");
 
         bool first = true;
-        for (auto column : *row) {
+        for (auto& column : *row) {
             if (!first) {
                 // TODO: Fix for arrays with too many columns to fit on a single line
                 yaml += QString::fromStdString(", ");
@@ -387,7 +480,7 @@ const QString Material2DArray::getYAMLString() const
                 first = false;
             }
             yaml += QString::fromStdString("\"");
-            Base::Quantity quantity = column.value<Base::Quantity>();
+            auto quantity = column.value<Base::Quantity>();
             yaml += quantity.getUserString();
             yaml += QString::fromStdString("\"");
         }
@@ -404,8 +497,8 @@ TYPESYSTEM_SOURCE(Materials::Material3DArray, Materials::MaterialValue)
 
 Material3DArray::Material3DArray()
     : MaterialValue(Array3D, Array3D)
-    , _defaultSet(false)
     , _currentDepth(0)
+    , _columns(0)
 {
     // Initialize separatelt to prevent recursion
     // setType(Array3D);
@@ -416,99 +509,121 @@ bool Material3DArray::isNull() const
     return depth() <= 0;
 }
 
-const QVariant Material3DArray::getDefault() const
+void Material3DArray::validateDepth(int level) const
 {
-    return _value;
+    if (level < 0 || level >= depth()) {
+        throw InvalidIndex();
+    }
 }
 
-const std::shared_ptr<std::vector<std::shared_ptr<std::vector<Base::Quantity>>>>&
+void Material3DArray::validateColumn(int column) const
+{
+    if (column < 0 || column >= columns()) {
+        throw InvalidIndex();
+    }
+}
+
+void Material3DArray::validateRow(int level, int row) const
+{
+    validateDepth(level);
+
+    if (row < 0 || row >= rows(level)) {
+        throw InvalidIndex();
+    }
+}
+
+const std::shared_ptr<QList<std::shared_ptr<QList<Base::Quantity>>>>&
 Material3DArray::getTable(const Base::Quantity& depth) const
 {
-    for (auto it = _rowMap.begin(); it != _rowMap.end(); it++) {
-        if (std::get<0>(*it) == depth) {
-            return std::get<1>(*it);
+    for (auto& it : _rowMap) {
+        if (std::get<0>(it) == depth) {
+            return std::get<1>(it);
         }
     }
 
-    throw InvalidDepth();
+    throw InvalidIndex();
 }
 
-const std::shared_ptr<std::vector<std::shared_ptr<std::vector<Base::Quantity>>>>&
+const std::shared_ptr<QList<std::shared_ptr<QList<Base::Quantity>>>>&
 Material3DArray::getTable(int depthIndex) const
 {
     try {
         return std::get<1>(_rowMap.at(depthIndex));
     }
     catch (std::out_of_range const&) {
-        throw InvalidDepth();
+        throw InvalidIndex();
     }
 }
 
-const std::shared_ptr<std::vector<Base::Quantity>> Material3DArray::getRow(int depth, int row) const
+std::shared_ptr<QList<Base::Quantity>> Material3DArray::getRow(int depth, int row) const
 {
+    validateRow(depth, row);
+
     try {
         return getTable(depth)->at(row);
     }
     catch (std::out_of_range const&) {
-        throw InvalidRow();
+        throw InvalidIndex();
     }
 }
 
-std::shared_ptr<std::vector<Base::Quantity>> Material3DArray::getRow(int row) const
+std::shared_ptr<QList<Base::Quantity>> Material3DArray::getRow(int row) const
 {
     // Check if we can convert otherwise throw error
     return getRow(_currentDepth, row);
 }
 
-std::shared_ptr<std::vector<Base::Quantity>> Material3DArray::getRow(int depth, int row)
+std::shared_ptr<QList<Base::Quantity>> Material3DArray::getRow(int depth, int row)
 {
+    validateRow(depth, row);
+
     try {
         return getTable(depth)->at(row);
     }
     catch (std::out_of_range const&) {
-        throw InvalidRow();
+        throw InvalidIndex();
     }
 }
 
-std::shared_ptr<std::vector<Base::Quantity>> Material3DArray::getRow(int row)
+std::shared_ptr<QList<Base::Quantity>> Material3DArray::getRow(int row)
 {
     return getRow(_currentDepth, row);
 }
 
-void Material3DArray::addRow(int depth, std::shared_ptr<std::vector<Base::Quantity>> row)
+void Material3DArray::addRow(int depth, const std::shared_ptr<QList<Base::Quantity>>& row)
 {
     try {
         getTable(depth)->push_back(row);
     }
     catch (std::out_of_range const&) {
-        throw InvalidRow();
+        throw InvalidIndex();
     }
 }
 
-void Material3DArray::addRow(std::shared_ptr<std::vector<Base::Quantity>> row)
+void Material3DArray::addRow(const std::shared_ptr<QList<Base::Quantity>>& row)
 {
     addRow(_currentDepth, row);
 }
 
-int Material3DArray::addDepth(int depth, Base::Quantity value)
+int Material3DArray::addDepth(int depth, const Base::Quantity& value)
 {
     if (depth == this->depth()) {
         // Append to the end
         return addDepth(value);
     }
-    else if (depth > this->depth()) {
-        throw InvalidDepth();
+    if (depth > this->depth()) {
+        throw InvalidIndex();
     }
-    auto rowVector = std::make_shared<std::vector<std::shared_ptr<std::vector<Base::Quantity>>>>();
+    auto rowVector = std::make_shared<QList<std::shared_ptr<QList<Base::Quantity>>>>();
     auto entry = std::make_pair(value, rowVector);
     _rowMap.insert(_rowMap.begin() + depth, entry);
 
     return depth;
 }
 
-int Material3DArray::addDepth(Base::Quantity value)
+int Material3DArray::addDepth(const Base::Quantity& value)
 {
-    auto rowVector = std::make_shared<std::vector<std::shared_ptr<std::vector<Base::Quantity>>>>();
+    auto rowVector = std::make_shared<QList<std::shared_ptr<QList<Base::Quantity>>>>();
     auto entry = std::make_pair(value, rowVector);
     _rowMap.push_back(entry);
 
@@ -517,26 +632,24 @@ int Material3DArray::addDepth(Base::Quantity value)
 
 void Material3DArray::deleteDepth(int depth)
 {
-    deleteRows(depth);  // This may throw an InvalidDepth
+    deleteRows(depth);  // This may throw an InvalidIndex
     _rowMap.erase(_rowMap.begin() + depth);
 }
 
 void Material3DArray::insertRow(int depth,
                                 int row,
-                                std::shared_ptr<std::vector<Base::Quantity>> rowData)
+                                const std::shared_ptr<QList<Base::Quantity>>& rowData)
 {
     try {
         auto table = getTable(depth);
-        // auto it = table->begin();
-        // std::advance(it, row);
         table->insert(table->begin() + row, rowData);
     }
     catch (std::out_of_range const&) {
-        throw InvalidRow();
+        throw InvalidIndex();
     }
 }
 
-void Material3DArray::insertRow(int row, std::shared_ptr<std::vector<Base::Quantity>> rowData)
+void Material3DArray::insertRow(int row, const std::shared_ptr<QList<Base::Quantity>>& rowData)
 {
     insertRow(_currentDepth, row, rowData);
 }
@@ -544,8 +657,8 @@ void Material3DArray::insertRow(int row, std::shared_ptr<std::vector<Base::Quant
 void Material3DArray::deleteRow(int depth, int row)
 {
     auto table = getTable(depth);
-    if (static_cast<std::size_t>(row) >= table->size() || row < 0) {
-        throw InvalidRow();
+    if (row >= static_cast<int>(table->size()) || row < 0) {
+        throw InvalidIndex();
     }
     table->erase(table->begin() + row);
 }
@@ -571,30 +684,22 @@ int Material3DArray::rows(int depth) const
     if (depth < 0 || (depth == 0 && this->depth() == 0)) {
         return 0;
     }
+    validateDepth(depth);
 
     return getTable(depth)->size();
 }
 
-int Material3DArray::columns(int depth) const
-{
-    if (depth < 0 || (depth == 0 && this->depth() == 0)) {
-        return 0;
-    }
-    if (rows() == 0) {
-        return 0;
-    }
-
-    return getTable(depth)->at(0)->size();
-}
-
 void Material3DArray::setValue(int depth, int row, int column, const Base::Quantity& value)
 {
+    validateRow(depth, row);
+    validateColumn(column);
+
     auto val = getRow(depth, row);
     try {
-        val->at(column) = value;
+        val->replace(column, value);
     }
     catch (std::out_of_range const&) {
-        throw InvalidColumn();
+        throw InvalidIndex();
     }
 }
 
@@ -607,10 +712,10 @@ void Material3DArray::setDepthValue(int depth, const Base::Quantity& value)
 {
     try {
         auto oldRows = getTable(depth);
-        _rowMap.at(depth) = std::pair(value, oldRows);
+        _rowMap.replace(depth, std::pair(value, oldRows));
     }
     catch (std::out_of_range const&) {
-        throw InvalidRow();
+        throw InvalidIndex();
     }
 }
 
@@ -620,29 +725,34 @@ void Material3DArray::setDepthValue(const Base::Quantity& value)
 }
 
 
-const Base::Quantity Material3DArray::getValue(int depth, int row, int column) const
+Base::Quantity Material3DArray::getValue(int depth, int row, int column) const
 {
+    // getRow validates depth and row. Do that first
     auto val = getRow(depth, row);
+    validateColumn(column);
+
     try {
         return val->at(column);
     }
     catch (std::out_of_range const&) {
-        throw InvalidColumn();
+        throw InvalidIndex();
     }
 }
 
-const Base::Quantity Material3DArray::getValue(int row, int column) const
+Base::Quantity Material3DArray::getValue(int row, int column) const
 {
     return getValue(_currentDepth, row, column);
 }
 
-const Base::Quantity Material3DArray::getDepthValue(int depth) const
+Base::Quantity Material3DArray::getDepthValue(int depth) const
 {
+    validateDepth(depth);
+
     try {
         return std::get<0>(_rowMap.at(depth));
     }
     catch (std::out_of_range const&) {
-        throw InvalidRow();
+        throw InvalidIndex();
     }
 }
 
@@ -653,10 +763,12 @@ int Material3DArray::currentDepth() const
 
 void Material3DArray::setCurrentDepth(int depth)
 {
-    if (depth < 0 || _rowMap.size() == 0) {
+    validateDepth(depth);
+
+    if (depth < 0 || _rowMap.empty()) {
         _currentDepth = 0;
     }
-    else if (static_cast<std::size_t>(depth) >= _rowMap.size()) {
+    else if (depth >= static_cast<int>(_rowMap.size())) {
         _currentDepth = _rowMap.size() - 1;
     }
     else {
@@ -664,7 +776,7 @@ void Material3DArray::setCurrentDepth(int depth)
     }
 }
 
-const QString Material3DArray::getYAMLString() const
+QString Material3DArray::getYAMLString() const
 {
     if (isNull()) {
         return QString();
@@ -674,14 +786,8 @@ const QString Material3DArray::getYAMLString() const
     QString pad;
     pad.fill(QChar::fromLatin1(' '), 9);
 
-    // Save the default value
-    QString yaml = QString::fromStdString("\n      - \"");
-    Base::Quantity quantity = getDefault().value<Base::Quantity>();
-    yaml += quantity.getUserString();
-    yaml += QString::fromStdString("\"\n");
-
-    // Next the array contents
-    yaml += QString::fromStdString("      - [");
+    // Save the array contents
+    QString yaml = QString::fromStdString("\n      - [");
     for (int depth = 0; depth < this->depth(); depth++) {
         if (depth > 0) {
             // Each row is on its own line, padded for correct indentation
@@ -698,7 +804,7 @@ const QString Material3DArray::getYAMLString() const
 
         bool firstRow = true;
         auto rows = getTable(depth);
-        for (auto row : *rows) {
+        for (auto& row : *rows) {
             if (!firstRow) {
                 // Each row is on its own line, padded for correct indentation
                 yaml += QString::fromStdString(",\n") + pad2;
@@ -709,7 +815,7 @@ const QString Material3DArray::getYAMLString() const
             yaml += QString::fromStdString("[");
 
             bool first = true;
-            for (auto column : *row) {
+            for (auto& column : *row) {
                 if (!first) {
                     // TODO: Fix for arrays with too many columns to fit on a single line
                     yaml += QString::fromStdString(", ");

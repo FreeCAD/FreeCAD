@@ -129,7 +129,7 @@ class PointLinkArray(PointArray):
         """Set icon, menu and tooltip."""
 
         return {'Pixmap': 'Draft_PointLinkArray',
-                'MenuText': QT_TRANSLATE_NOOP("Draft_PointLinkArray", "PointLinkArray"),
+                'MenuText': QT_TRANSLATE_NOOP("Draft_PointLinkArray", "Point link array"),
                 'ToolTip': QT_TRANSLATE_NOOP("Draft_PointLinkArray", "Like the PointArray tool, but creates a 'Point link array' instead.\nA 'Point link array' is more efficient when handling many copies.")}
 
     def Activated(self):

@@ -106,9 +106,6 @@ struct DocumentP
     std::map<std::string,ViewProvider*> _ViewProviderMapAnnotation;
     std::list<ViewProviderDocumentObject*> _redoViewProviders;
     
-    int projectUnitSystem = -1;
-    bool projectUnitSystemIgnore = false;
-
     using Connection = boost::signals2::connection;
     Connection connectNewObject;
     Connection connectDelObject;
@@ -304,7 +301,7 @@ bool Document::setEdit(Gui::ViewProvider* p, int ModNum, const char *subname)
     }
 
     auto obj = vp->getObject();
-    if(!obj->getNameInDocument()) {
+    if(!obj->isAttachedToDocument()) {
         FC_ERR("cannot edit detached object");
         return false;
     }
@@ -316,7 +313,7 @@ bool Document::setEdit(Gui::ViewProvider* p, int ModNum, const char *subname)
         auto sels = Gui::Selection().getCompleteSelection(ResolveMode::NoResolve);
         App::DocumentObject *parentObj = nullptr;
         for(auto &sel : sels) {
-            if(!sel.pObject || !sel.pObject->getNameInDocument())
+            if(!sel.pObject || !sel.pObject->isAttachedToDocument())
                 continue;
             if(!parentObj)
                 parentObj = sel.pObject;
@@ -385,7 +382,7 @@ bool Document::setEdit(Gui::ViewProvider* p, int ModNum, const char *subname)
     //     }
     // }
     auto sobj = obj->getSubObject(subname,nullptr,&d->_editingTransform);
-    if(!sobj || !sobj->getNameInDocument()) {
+    if(!sobj || !sobj->isAttachedToDocument()) {
         FC_ERR("Invalid sub object '" << obj->getFullName()
                 << '.' << (subname?subname:"") << "'");
         return false;
@@ -649,30 +646,6 @@ void Document::setPos(const char* name, const Base::Matrix4D& rclMtrx)
     if (pcProv)
         pcProv->setTransformation(rclMtrx);
 
-}
-
-void Document::setProjectUnitSystem(int pUS)
-{
-    if (pUS != d->projectUnitSystem && pUS >= 0) {
-        d->projectUnitSystem = pUS;
-        setModified(true);
-    }
-}
-
-int Document::getProjectUnitSystem() const
-{
-    return d->projectUnitSystem;
-}
-
-void Document::setProjectUnitSystemIgnore(bool ignore)
-{
-    d->projectUnitSystemIgnore = ignore;
-    setModified(true);
-}
-
-bool Document::getProjectUnitSystemIgnore() const
-{
-    return d->projectUnitSystemIgnore;
 }
 
 //*****************************************************************************************************
@@ -957,7 +930,7 @@ void Document::slotSkipRecompute(const App::Document& doc, const std::vector<App
     }
     if(!obj)
         obj = doc.getActiveObject();
-    if(!obj || !obj->getNameInDocument() || (!objs.empty() && objs.front()!=obj))
+    if(!obj || !obj->isAttachedToDocument() || (!objs.empty() && objs.front()!=obj))
         return;
     obj->recomputeFeature(true);
 }
@@ -1485,14 +1458,6 @@ void Document::RestoreDocFile(Base::Reader &reader)
                 Base::Console().Error("%s\n", e.what());
             }
         }
-
-        if (localreader->readNextElement()) {
-            if (strcmp(localreader->localName(), "ProjectUnitSystem") == 0) {
-                d->projectUnitSystem = localreader->getAttributeAsInteger("US");
-                d->projectUnitSystemIgnore = localreader->getAttributeAsInteger("ignore");
-                localreader->readEndElement("Document");
-            }
-        }
     }
 
     reader.initLocalReader(localreader);
@@ -1614,14 +1579,6 @@ void Document::SaveDocFile (Base::Writer &writer) const
     writer.Stream() << writer.ind() << "<Camera settings=\""
         << encodeAttribute(getCameraSettings()) << "\"/>\n";
     writer.decInd(); // indentation for camera settings
-
-    if (d->projectUnitSystem >= 0) {
-        writer.incInd();
-        writer.Stream() << writer.ind() << "<ProjectUnitSystem US=\""
-                        << d->projectUnitSystem << "\" ignore=\""
-                        << d->projectUnitSystemIgnore << "\"/>\n";
-        writer.decInd();
-    }
 
     writer.Stream() << "</Document>" << std::endl;
 }
@@ -2500,7 +2457,7 @@ void Document::handleChildren3D(ViewProvider* viewProvider, bool deleting)
             // add the remaining old children back to toplevel invertor node
             for(auto vpd : oldChildren) {
                 auto obj = vpd->getObject();
-                if(!obj || !obj->getNameInDocument())
+                if(!obj || !obj->isAttachedToDocument())
                     continue;
 
                 for (BaseView* view : d->baseViews) {
@@ -2558,5 +2515,6 @@ void Document::slotChangePropertyEditor(const App::Document &doc, const App::Pro
     if(getDocument() == &doc) {
         FC_LOG(Prop.getFullName() << " editor changed");
         setModified(true);
+        getMainWindow()->setUserSchema(doc.UnitSystem.getValue());
     }
 }

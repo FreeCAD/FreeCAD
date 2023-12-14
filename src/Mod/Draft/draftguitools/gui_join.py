@@ -36,7 +36,7 @@ import Draft_rc
 import draftguitools.gui_base_original as gui_base_original
 import draftguitools.gui_tool_utils as gui_tool_utils
 
-from draftutils.messages import _msg
+from draftutils.messages import _msg, _toolmsg
 from draftutils.translate import translate
 
 # The module is used to prevent complaints from code checkers (flake8)
@@ -95,7 +95,7 @@ class Join(gui_base_original.Modifier):
             labels.append(obj.Label)
 
         labels = ", ".join(labels)
-        _msg(translate("draft","Selection:") + " {}".format(labels))
+        _toolmsg(translate("draft","Selection:") + " {}".format(labels))
 
 
 Gui.addCommand('Draft_Join', Join())

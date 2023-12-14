@@ -178,7 +178,7 @@ private:
 
             Gui::Command::commitCommand();
         }
-        catch (const Base::Exception& e) {
+        catch (const Base::Exception&) {
             Gui::NotifyError(sketchgui,
                              QT_TRANSLATE_NOOP("Notifications", "Error"),
                              QT_TRANSLATE_NOOP("Notifications", "Failed to add arc slot"));
@@ -204,9 +204,11 @@ private:
 
         if (constructionMethod() == ConstructionMethod::ArcSlot) {
             generateAutoConstraintsOnElement(ac2,
+                                             getHighestCurveIndex() - 2,
+                                             Sketcher::PointPos::mid);
+            generateAutoConstraintsOnElement(ac3,
                                              getHighestCurveIndex() - 1,
                                              Sketcher::PointPos::mid);
-            generateAutoConstraintsOnElement(ac3, getHighestCurveIndex(), Sketcher::PointPos::mid);
         }
         else {
             generateAutoConstraintsOnElement(ac2,

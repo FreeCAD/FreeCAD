@@ -57,21 +57,23 @@ dependencies:
 - sed                                  # [unix]
 - boost
 - boost-cpp
+- ccache
 - cmake
-- coin3d
+- coin3d==4.0.0
 - compilers
-- conda-build
+- conda
 - conda-devenv
-- conda-smithy
 - debugpy
 - doxygen
 - eigen
 - fmt
 - freetype
+- git
 - gmsh
 - graphviz
 - hdf5
 - libcxx
+- mamba==1.4.9
 - matplotlib
 - ninja
 - numpy

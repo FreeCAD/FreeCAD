@@ -40,9 +40,9 @@ import math
 import os
 
 import FreeCAD as App
-import draftutils.utils as utils
-
-from draftutils.messages import _msg, _wrn, _err
+from draftutils import params
+from draftutils import utils
+from draftutils.messages import _err, _msg, _wrn
 from draftutils.translate import translate
 
 if App.GuiUp:
@@ -123,7 +123,7 @@ def autogroup(obj):
                 gr.append(obj)
                 active_group.Group = gr
 
-    if Gui.ActiveDocument.ActiveView.getActiveObject("NativeIFC"):
+    if Gui.ActiveDocument.ActiveView.getActiveObject("NativeIFC") is not None:
         # NativeIFC handling
         try:
             import ifc_tools
@@ -133,7 +133,7 @@ def autogroup(obj):
         except:
             pass
 
-    elif Gui.ActiveDocument.ActiveView.getActiveObject("Arch"):
+    elif Gui.ActiveDocument.ActiveView.getActiveObject("Arch") is not None:
         # add object to active Arch Container
         active_arch_obj = Gui.ActiveDocument.ActiveView.getActiveObject("Arch")
         if active_arch_obj != active_group:
@@ -142,7 +142,7 @@ def autogroup(obj):
                 return
             active_arch_obj.addObject(obj)
 
-    elif Gui.ActiveDocument.ActiveView.getActiveObject("part", False) is not None:
+    elif Gui.ActiveDocument.ActiveView.getActiveObject("part") is not None:
         # add object to active part and change it's placement accordingly
         # so object does not jump to different position, works with App::Link
         # if not scaled. Modified accordingly to realthunder suggestions
@@ -188,7 +188,7 @@ def dim_symbol(symbol=None, invert=False):
     ----------
     symbol: int, optional
         It defaults to `None`, in which it gets the value from the parameter
-        database, `get_param("dimsymbol", 0)`.
+        database, `get_param("dimsymbol")`.
 
         A numerical value defines different markers
          * 0, `SoSphere`
@@ -211,7 +211,7 @@ def dim_symbol(symbol=None, invert=False):
         that will be used as a dimension symbol.
     """
     if symbol is None:
-        symbol = utils.get_param("dimsymbol", 0)
+        symbol = params.get_param("dimsymbol")
 
     if symbol == 0:
         # marker = coin.SoMarkerSet()
@@ -435,98 +435,114 @@ def get_diffuse_color(objs):
     return colors
 
 
-def format_object(target, origin=None):
-    """Apply visual properties from the Draft toolbar or another object.
+def apply_current_style(objs):
+    """Apply the current style to one or more objects.
 
-    This function only works if the graphical interface is available
-    as the visual properties are attributes of the view provider
-    (`obj.ViewObject`).
+    Parameters
+    ----------
+    objs: a single object or an iterable with objects.
+    """
+    if not isinstance(objs, list):
+        objs = [objs]
+    anno_style = utils.get_default_annotation_style()
+    shape_style = utils.get_default_shape_style()
+    for obj in objs:
+        if not hasattr(obj, 'ViewObject'):
+            continue
+        vobj = obj.ViewObject
+        props = vobj.PropertiesList
+        style = anno_style if ("FontName" in props) else shape_style
+        for prop in props:
+            if prop in style:
+                if style[prop][0] == "index":
+                    if style[prop][2] in vobj.getEnumerationsOfProperty(prop):
+                        setattr(vobj, prop, style[prop][2])
+                elif style[prop][0] == "color":
+                    setattr(vobj, prop, style[prop][1] & 0xFFFFFF00)
+                else:
+                    setattr(vobj, prop, style[prop][1])
+
+
+def format_object(target, origin=None):
+    """Apply visual properties to an object.
+
+    This function only works if the graphical interface is available.
+
+    If origin is `None` and target is not an annotation, the DefaultDrawStyle
+    and DefaultDisplayMode preferences are applied. Else, the properties of
+    origin are applied to target.
+
+    If construction mode is active target is then placed in the construction
+    group and the `constr` color is applied to its applicable color properties:
+    TextColor, PointColor, LineColor, and ShapeColor.
 
     Parameters
     ----------
     target: App::DocumentObject
-        Any type of scripted object.
-
-        This object will adopt the applicable visual properties,
-        `FontSize`, `TextColor`, `LineWidth`, `PointColor`, `LineColor`,
-        and `ShapeColor`, defined in the Draft toolbar
-        (`Gui.draftToolBar`) or will adopt
-        the properties from the `origin` object.
-
-        The `target` is also placed in the construction group
-        if the construction mode in the Draft toolbar is active.
 
     origin: App::DocumentObject, optional
-        It defaults to `None`.
-        If it exists, it will provide the visual properties to assign
-        to `target`, with the exception of `BoundingBox`, `Proxy`,
-        `RootNode` and `Visibility`.
+        Defaults to `None`.
+        If construction mode is not active, its visual properties are assigned
+        to `target`, with the exception of `BoundingBox`, `Proxy`, `RootNode`
+        and `Visibility`.
     """
     if not target:
         return
-    obrep = target.ViewObject
-    if not obrep:
+    if not App.GuiUp:
         return
-    ui = None
-    if App.GuiUp:
-        if hasattr(Gui, "draftToolBar"):
-            ui = Gui.draftToolBar
-    if ui:
+    if not hasattr(Gui, "draftToolBar"):
+        return
+    if not hasattr(target, 'ViewObject'):
+        return
+    obrep = target.ViewObject
+    obprops = obrep.PropertiesList
+    if origin and hasattr(origin, 'ViewObject'):
+        matchrep = origin.ViewObject
+        for p in matchrep.PropertiesList:
+            if p not in ("DisplayMode", "BoundingBox",
+                         "Proxy", "RootNode", "Visibility"):
+                if p in obprops:
+                    if not obrep.getEditorMode(p):
+                        if hasattr(getattr(matchrep, p), "Value"):
+                            val = getattr(matchrep, p).Value
+                        else:
+                            val = getattr(matchrep, p)
+                        try:
+                            setattr(obrep, p, val)
+                        except Exception:
+                            pass
+        if matchrep.DisplayMode in obrep.listDisplayModes():
+            obrep.DisplayMode = matchrep.DisplayMode
+        if hasattr(obrep, "DiffuseColor"):
+            difcol = get_diffuse_color(origin)
+            if difcol:
+                obrep.DiffuseColor = difcol
+    elif "FontName" not in obprops:
+        # Apply 2 Draft style preferences, other style preferences are applied by Core.
+        if "DrawStyle" in obprops:
+            obrep.DrawStyle = utils.DRAW_STYLES[params.get_param("DefaultDrawStyle")]
+        if "DisplayMode" in obprops:
+            dm = utils.DISPLAY_MODES[params.get_param("DefaultDisplayMode")]
+            if dm in obrep.listDisplayModes():
+                obrep.DisplayMode = dm
+    if Gui.draftToolBar.isConstructionMode():
         doc = App.ActiveDocument
-        if ui.isConstructionMode():
-            lcol = fcol = ui.getDefaultColor("constr")
-            tcol = lcol
-            fcol = lcol
-            grp = doc.getObject("Draft_Construction")
-            if not grp:
-                grp = doc.addObject("App::DocumentObjectGroup", "Draft_Construction")
-                grp.Label = utils.get_param("constructiongroupname", "Construction")
-            grp.addObject(target)
-            if hasattr(obrep, "Transparency"):
-                obrep.Transparency = 80
-        else:
-            lcol = ui.getDefaultColor("line")
-            tcol = ui.getDefaultColor("text")
-            fcol = ui.getDefaultColor("face")
-        lcol = (float(lcol[0]), float(lcol[1]), float(lcol[2]), 0.0)
-        tcol = (float(tcol[0]), float(tcol[1]), float(tcol[2]), 0.0)
-        fcol = (float(fcol[0]), float(fcol[1]), float(fcol[2]), 0.0)
-        lw = utils.getParam("linewidth",2)
-        fs = utils.getParam("textheight",0.20)
-        if not origin or not hasattr(origin, 'ViewObject'):
-            if "FontSize" in obrep.PropertiesList:
-                obrep.FontSize = fs
-            if "TextColor" in obrep.PropertiesList:
-                obrep.TextColor = tcol
-            if "LineWidth" in obrep.PropertiesList:
-                obrep.LineWidth = lw
-            if "PointColor" in obrep.PropertiesList:
-                obrep.PointColor = lcol
-            if "LineColor" in obrep.PropertiesList:
-                obrep.LineColor = lcol
-            if "ShapeColor" in obrep.PropertiesList:
-                obrep.ShapeColor = fcol
-        else:
-            matchrep = origin.ViewObject
-            for p in matchrep.PropertiesList:
-                if p not in ("DisplayMode", "BoundingBox",
-                             "Proxy", "RootNode", "Visibility"):
-                    if p in obrep.PropertiesList:
-                        if not obrep.getEditorMode(p):
-                            if hasattr(getattr(matchrep, p), "Value"):
-                                val = getattr(matchrep, p).Value
-                            else:
-                                val = getattr(matchrep, p)
-                            try:
-                                setattr(obrep, p, val)
-                            except Exception:
-                                pass
-            if matchrep.DisplayMode in obrep.listDisplayModes():
-                obrep.DisplayMode = matchrep.DisplayMode
-            if hasattr(obrep, "DiffuseColor"):
-                difcol = get_diffuse_color(origin)
-                if difcol:
-                    obrep.DiffuseColor = difcol
+        col = Gui.draftToolBar.getDefaultColor("constr") + (0.0,)
+        grp = doc.getObject("Draft_Construction")
+        if not grp:
+            grp = doc.addObject("App::DocumentObjectGroup", "Draft_Construction")
+            grp.Label = params.get_param("constructiongroupname")
+        grp.addObject(target)
+        if "TextColor" in obprops:
+            obrep.TextColor = col
+        if "PointColor" in obprops:
+            obrep.PointColor = col
+        if "LineColor" in obprops:
+            obrep.LineColor = col
+        if "ShapeColor" in obprops:
+            obrep.ShapeColor = col
+        if hasattr(obrep, "Transparency"):
+            obrep.Transparency = 80
 
 
 formatObject = format_object

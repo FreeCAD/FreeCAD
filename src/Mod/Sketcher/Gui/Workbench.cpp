@@ -385,6 +385,23 @@ inline void SketcherAddWorkspaceFillets<Gui::ToolBarItem>(Gui::ToolBarItem& geom
 }
 
 template<typename T>
+void SketcherAddWorkspaceCurveEdition(T& geom);
+
+template<>
+inline void SketcherAddWorkspaceCurveEdition<Gui::MenuItem>(Gui::MenuItem& geom)
+{
+    geom << "Sketcher_Trimming"
+         << "Sketcher_Extend"
+         << "Sketcher_Split";
+}
+
+template<>
+inline void SketcherAddWorkspaceCurveEdition<Gui::ToolBarItem>(Gui::ToolBarItem& geom)
+{
+    geom << "Sketcher_CompCurveEdition";
+}
+
+template<typename T>
 inline void SketcherAddWorkbenchGeometries(T& geom)
 {
     geom << "Sketcher_CreatePoint"
@@ -397,10 +414,8 @@ inline void SketcherAddWorkbenchGeometries(T& geom)
     SketcherAddWorkspaceslots(geom);
     geom << "Separator";
     SketcherAddWorkspaceFillets(geom);
-    geom << "Sketcher_Trimming"
-         << "Sketcher_Extend"
-         << "Sketcher_Split"
-         << "Sketcher_External"
+    SketcherAddWorkspaceCurveEdition(geom);
+    geom << "Sketcher_External"
          << "Sketcher_CarbonCopy"
          << "Sketcher_ToggleConstruction"
         /*<< "Sketcher_CreateText"*/
@@ -413,10 +428,19 @@ inline void SketcherAddWorkbenchConstraints(T& cons);
 template<>
 inline void SketcherAddWorkbenchConstraints<Gui::MenuItem>(Gui::MenuItem& cons)
 {
-    cons << "Sketcher_ConstrainCoincident"
-         << "Sketcher_ConstrainPointOnObject"
-         << "Sketcher_ConstrainVertical"
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/Constraints");
+
+    if (hGrp->GetBool("UnifiedCoincident", false)) {
+        cons << "Sketcher_ConstrainCoincidentUnified";
+    }
+    else {
+        cons << "Sketcher_ConstrainCoincident"
+             << "Sketcher_ConstrainPointOnObject";
+    }
+    cons << "Sketcher_ConstrainVertical"
          << "Sketcher_ConstrainHorizontal"
+         << "Sketcher_ConstrainHorVer"
          << "Sketcher_ConstrainParallel"
          << "Sketcher_ConstrainPerpendicular"
          << "Sketcher_ConstrainTangent"
@@ -443,19 +467,33 @@ template<>
 inline void SketcherAddWorkbenchConstraints<Gui::ToolBarItem>(Gui::ToolBarItem& cons)
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
-        "User parameter:BaseApp/Preferences/Mod/Sketcher/dimensioning");
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/Constraints");
 
-    cons << "Sketcher_ConstrainCoincident"
-         << "Sketcher_ConstrainPointOnObject"
-         << "Sketcher_ConstrainVertical"
-         << "Sketcher_ConstrainHorizontal"
-         << "Sketcher_ConstrainParallel"
+    if (hGrp->GetBool("UnifiedCoincident", false)) {
+        cons << "Sketcher_ConstrainCoincidentUnified";
+    }
+    else {
+        cons << "Sketcher_ConstrainCoincident"
+             << "Sketcher_ConstrainPointOnObject";
+    }
+    if (hGrp->GetBool("AutoHorVer", true)) {
+        cons << "Sketcher_CompHorVer";
+    }
+    else {
+        cons << "Sketcher_ConstrainVertical"
+             << "Sketcher_ConstrainHorizontal";
+    }
+    cons << "Sketcher_ConstrainParallel"
          << "Sketcher_ConstrainPerpendicular"
          << "Sketcher_ConstrainTangent"
          << "Sketcher_ConstrainEqual"
          << "Sketcher_ConstrainSymmetric"
          << "Sketcher_ConstrainBlock"
          << "Separator";
+
+    hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/dimensioning");
+
     if (hGrp->GetBool("SingleDimensioningTool", true)) {
         if (!hGrp->GetBool("SeparatedDimensioningTools", false)) {
             cons << "Sketcher_CompDimensionTools";
@@ -523,8 +561,7 @@ inline void SketcherAddWorkbenchTools<Gui::ToolBarItem>(Gui::ToolBarItem& consac
         << "Sketcher_Symmetry"
         << "Sketcher_CompCopy"
         << "Sketcher_RectangularArray"
-        << "Sketcher_RemoveAxesAlignment"
-        << "Sketcher_DeleteAllConstraints";
+        << "Sketcher_RemoveAxesAlignment";
 }
 
 template<typename T>

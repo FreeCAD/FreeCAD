@@ -221,6 +221,10 @@ public Q_SLOTS:
      */
     void setPaneText(int i, QString text);
     /**
+     * Sets the userschema in the status bar
+    */
+    void setUserSchema(int userSchema);
+    /**
      * Arranges all child windows in a tile pattern.
      */
     void tile();
@@ -347,7 +351,7 @@ private Q_SLOTS:
 
 Q_SIGNALS:
     void timeEvent();
-    void windowStateChanged(Gui::MDIView*);
+    void windowStateChanged(QWidget*);
     void workbenchActivated(const QString&);
     void mainWindowClosed();
 

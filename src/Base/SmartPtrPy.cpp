@@ -117,10 +117,10 @@ bool SmartPtr::isNull() const
     return p == nullptr;
 }
 
-BaseExport PyObject* new_reference_to(const SmartPtr& g)
+BaseExport PyObject* new_reference_to(const SmartPtr& ptr)
 {
-    PyObject* p = g.ptr();
-    Py::_XINCREF(p);
-    return p;
+    PyObject* py = ptr.ptr();
+    Py::_XINCREF(py);
+    return py;
 }
 }  // namespace Py

@@ -34,7 +34,7 @@
 #include <Base/Parameter.h>
 
 #include "Preferences.h"
-
+#include "LineGenerator.h"
 
 //getters for parameters used in multiple places.
 //ensure this is in sync with preference page user interfaces
@@ -240,6 +240,16 @@ int Preferences::mattingStyle()
     return getPreferenceGroup("Decorations")->GetInt("MattingStyle", 0);
 }
 
+bool Preferences::showDetailMatting()
+{
+    return getPreferenceGroup("General")->GetBool("ShowDetailMatting", true);
+}
+
+bool Preferences::showDetailHighlight()
+{
+    return getPreferenceGroup("General")->GetBool("ShowDetailHighlight", true);
+}
+
 std::string Preferences::svgFile()
 {
     std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/Patterns/";
@@ -408,3 +418,107 @@ bool Preferences::SectionUsePreviousCut()
 {
     return getPreferenceGroup("General")->GetBool("SectionUsePreviousCut", false);
 }
+
+//! an index into the list of available line standards/version found in LineGroupDirectory
+int Preferences::lineStandard()
+{
+    return getPreferenceGroup("Standards")->GetInt("LineStandard", 1);
+}
+
+//! update the line standard preference.  used in the preferences dialog.
+void Preferences::setLineStandard(int index)
+{
+    getPreferenceGroup("Standards")->SetInt("LineStandard", index);
+}
+
+std::string Preferences::lineDefinitionLocation()
+{
+    std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/LineGroup/";
+    std::string prefDir = getPreferenceGroup("Files")->GetASCII("LineDefLocation", defaultDir.c_str());
+    return prefDir;
+}
+
+std::string Preferences::lineElementsLocation()
+{
+    std::string defaultDir = App::Application::getResourceDir() + "Mod/TechDraw/LineGroup/";
+    std::string prefDir = getPreferenceGroup("Files")->GetASCII("LineElementLocation", defaultDir.c_str());
+    return prefDir;
+}
+
+// Note: line numbering starts at 1, but the saved parameter is the position of the
+// line style in the list, starting at 0.  We add 1 to the stored value to get the
+// correct line number.
+int Preferences::SectionLineStyle()
+{
+    // default is line #4 long dash dotted, which is index 3
+    return getPreferenceGroup("Decorations")->GetInt("LineStyleSection", 3) + 1;
+}
+
+int Preferences::CenterLineStyle()
+{
+    // default is line #5 long dash double dotted, which is index 4
+    return getPreferenceGroup("Decorations")->GetInt("LineStyleCenter", 4) + 1;
+}
+
+int Preferences::HighlightLineStyle()
+{
+    // default is line #2 dashed, which is index 1
+    return getPreferenceGroup("Decorations")->GetInt("LineStyleHighLight", 1) + 1;
+}
+
+int Preferences::HiddenLineStyle()
+{
+    // default is line #2 dashed, which is index 1
+    return getPreferenceGroup("Decorations")->GetInt("LineStyleHidden", 1) + 1;
+}
+
+int Preferences::LineSpacingISO()
+{
+    return getPreferenceGroup("Dimensions")->GetInt("LineSpacingFactorISO", 2);
+}
+
+std::string Preferences::currentLineDefFile()
+{
+    std::string lineDefDir = Preferences::lineDefinitionLocation();
+    std::vector<std::string> choices = LineGenerator::getAvailableLineStandards();
+    std::string fileName = choices.at(Preferences::lineStandard()) + ".LineDef.csv";
+    return lineDefDir + fileName;
+}
+
+std::string Preferences::currentElementDefFile()
+{
+    std::string lineDefDir = Preferences::lineElementsLocation();
+    std::vector<std::string> choices = LineGenerator::getAvailableLineStandards();
+    std::string fileName = choices.at(Preferences::lineStandard()) + ".ElementDef.csv";
+    return lineDefDir + fileName;
+}
+
+//! returns a Qt::PenCapStyle based on the index of the preference comboBox.
+//! the comboBox choices are 0-Round, 1-Square, 2-Flat.  The Qt::PenCapStyles are
+//! 0x00-Flat, 0x10-Square, 0x20-Round
+int Preferences::LineCapStyle()
+{
+    int currentIndex = LineCapIndex();
+    int result{0x20};
+        switch (currentIndex) {
+        case 0:
+            result = static_cast<Qt::PenCapStyle>(0x20);   //round;
+            break;
+        case 1:
+            result = static_cast<Qt::PenCapStyle>(0x10);   //square;
+            break;
+        case 2:
+            result = static_cast<Qt::PenCapStyle>(0x00);   //flat
+            break;
+        default:
+            result = static_cast<Qt::PenCapStyle>(0x20);
+    }
+    return result;
+}
+
+//! returns the line cap index without conversion to a Qt::PenCapStyle
+int Preferences::LineCapIndex()
+{
+    return getPreferenceGroup("General")->GetInt("EdgeCapStyle", 0x20);
+}
+

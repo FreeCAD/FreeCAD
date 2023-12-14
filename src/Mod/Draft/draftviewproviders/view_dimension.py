@@ -40,12 +40,11 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import DraftVecUtils
-import draftutils.units as units
-import draftutils.utils as utils
-import draftutils.gui_utils as gui_utils
-
-from draftviewproviders.view_draft_annotation \
-    import ViewProviderDraftAnnotation
+from draftutils import gui_utils
+from draftutils import params
+from draftutils import units
+from draftutils import utils
+from draftviewproviders.view_draft_annotation import ViewProviderDraftAnnotation
 
 # Delay import of module until first use because it is heavy
 Part = lz.LazyLoader("Part", globals(), "Part")
@@ -126,7 +125,7 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
                              "TextSpacing",
                              "Text",
                              _tip)
-            vobj.TextSpacing = utils.get_param("dimspacing", 1)
+            vobj.TextSpacing = params.get_param("dimspacing")
 
         if "FlipText" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
@@ -169,7 +168,7 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
                              "Decimals",
                              "Units",
                              _tip)
-            vobj.Decimals = utils.get_param("dimPrecision", 2)
+            vobj.Decimals = params.get_param("dimPrecision")
 
         if "ShowUnit" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
@@ -178,7 +177,7 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
                              "ShowUnit",
                              "Units",
                              _tip)
-            vobj.ShowUnit = utils.get_param("showUnit", True)
+            vobj.ShowUnit = params.get_param("showUnit")
 
         if "UnitOverride" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
@@ -189,7 +188,7 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
                              "UnitOverride",
                              "Units",
                              _tip)
-            vobj.UnitOverride = utils.get_param("overrideUnit", '')
+            vobj.UnitOverride = params.get_param("overrideUnit")
 
     def set_graphics_properties(self, vobj, properties):
         """Set graphics properties only if they don't already exist."""
@@ -202,7 +201,7 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
                              "ArrowSize",
                              "Graphics",
                              _tip)
-            vobj.ArrowSize = utils.get_param("arrowsize", 1)
+            vobj.ArrowSize = params.get_param("arrowsize")
 
         if "ArrowType" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
@@ -212,7 +211,7 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
                              "Graphics",
                              _tip)
             vobj.ArrowType = utils.ARROW_TYPES
-            vobj.ArrowType = utils.ARROW_TYPES[utils.get_param("dimsymbol", 0)]
+            vobj.ArrowType = utils.ARROW_TYPES[params.get_param("dimsymbol")]
 
         if "FlipArrows" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
@@ -232,7 +231,7 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
                              "DimOvershoot",
                              "Graphics",
                              _tip)
-            vobj.DimOvershoot = utils.get_param("dimovershoot", 0)
+            vobj.DimOvershoot = params.get_param("dimovershoot")
 
         if "ExtLines" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
@@ -241,7 +240,7 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
                              "ExtLines",
                              "Graphics",
                              _tip)
-            vobj.ExtLines = utils.get_param("extlines", 0.3)
+            vobj.ExtLines = params.get_param("extlines")
 
         if "ExtOvershoot" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
@@ -251,7 +250,7 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
                              "ExtOvershoot",
                              "Graphics",
                              _tip)
-            vobj.ExtOvershoot = utils.get_param("extovershoot", 0)
+            vobj.ExtOvershoot = params.get_param("extovershoot")
 
         if "ShowLine" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
@@ -260,11 +259,7 @@ class ViewProviderDimensionBase(ViewProviderDraftAnnotation):
                              "ShowLine",
                              "Graphics",
                              _tip)
-            vobj.ShowLine = True
-
-    def getDefaultDisplayMode(self):
-        """Return the default display mode."""
-        return ["World", "Screen"][utils.get_param("dimstyle", 0)]
+            vobj.ShowLine = params.get_param("DimShowLine")
 
     def getIcon(self):
         """Return the path to the icon used by the viewprovider."""
@@ -361,6 +356,8 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
         self.onChanged(vobj, "LineColor")
         self.onChanged(vobj, "DimOvershoot")
         self.onChanged(vobj, "ExtOvershoot")
+        self.onChanged(vobj, "ShowLine")
+        self.onChanged(vobj, "LineWidth")
 
     def updateData(self, obj, prop):
         """Execute when a property from the Proxy class is changed.
@@ -549,7 +546,7 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
         try:
             m = vobj.DisplayMode
         except AssertionError:
-            m = ["World", "Screen"][utils.get_param("dimstyle", 0)]
+            m = ["World", "Screen"][params.get_param("DefaultAnnoDisplayMode")]
 
         if m == "Screen":
             offset = offset.negative()
@@ -585,14 +582,12 @@ class ViewProviderLinearDimension(ViewProviderDimensionBase):
             unit = vobj.UnitOverride
 
         # Special representation if we use 'Building US' scheme
-        u_params = App.ParamGet("User parameter:BaseApp/Preferences/Units")
-        if u_params.GetInt("UserSchema", 0) == 5:
+        if params.get_param("UserSchema", path="Units") == 5:
             self.string = App.Units.Quantity(length, App.Units.Length).UserString
             if self.string.count('"') > 1:
                 # multiple inch tokens
-                self.string = self.string.replace('"',"",self.string.count('"')-1)
-            d_params = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-            sep = d_params.GetString("FeetSeparator"," ")
+                self.string = self.string.replace('"', "", self.string.count('"')-1)
+            sep = params.get_param("FeetSeparator")
             # use a custom separator
             self.string = self.string.replace("' ", "'" + sep)
             self.string = self.string.replace("+", " ")
@@ -974,7 +969,7 @@ class ViewProviderAngularDimension(ViewProviderDimensionBase):
         try:
             m = vobj.DisplayMode
         except AssertionError:
-            m = ["World", "Screen"][utils.get_param("dimstyle", 0)]
+            m = ["World", "Screen"][params.get_param("DefaultAnnoDisplayMode")]
 
         # Set the arc
         first = self.circle.FirstParameter

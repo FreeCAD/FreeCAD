@@ -40,7 +40,7 @@
 using namespace MatGui;
 
 Array3D::Array3D(const QString& propertyName,
-                 std::shared_ptr<Materials::Material> material,
+                 const std::shared_ptr<Materials::Material>& material,
                  QWidget* parent)
     : QDialog(parent)
     , ui(new Ui_Array3D)
@@ -63,11 +63,9 @@ Array3D::Array3D(const QString& propertyName,
             std::static_pointer_cast<Materials::Material3DArray>(_property->getMaterialValue());
     }
     else {
-        Base::Console().Log("No value loaded\n");
         _value = nullptr;
     }
 
-    setupDefault();
     setupDepthArray();
     setupArray();
 
@@ -86,12 +84,6 @@ Array3D::Array3D(const QString& propertyName,
     // _delete2DAction.setShortcut(Qt::Key_Delete);
     connect(&_delete2DAction, &QAction::triggered, this, &Array3D::on2DDelete);
     ui->table2D->addAction(&_delete2DAction);
-
-    Base::Console().Log("Material '%s'\n", material->getName().toStdString().c_str());
-    Base::Console().Log("\tproperty '%s'\n", propertyName.toStdString().c_str());
-
-    // connect(ui->splitter, &QSplitter::event,
-    //         this, &Array3D::onSplitter);
 
     connect(ui->standardButtons->button(QDialogButtonBox::Ok),
             &QPushButton::clicked,
@@ -112,42 +104,6 @@ bool Array3D::onSplitter(QEvent* e)
     Q_UNUSED(e)
 
     return false;
-}
-
-void Array3D::setupDefault()
-{
-    if (_property == nullptr) {
-        return;
-    }
-
-    try {
-        auto& column1 = _property->getColumn(0);
-        QString label = tr("Default ") + column1.getName();
-        ui->labelDefault->setText(label);
-        if (column1.getPropertyType() == QString::fromStdString("Quantity")) {
-            ui->editDefault->setMinimum(std::numeric_limits<double>::min());
-            ui->editDefault->setMaximum(std::numeric_limits<double>::max());
-            ui->editDefault->setUnitText(_property->getColumnUnits(0));
-            if (!_value->defaultSet()) {
-                _value->setDefault(_property->getColumnNull(0).value<Base::Quantity>());
-            }
-            ui->editDefault->setValue(_value->getDefault().value<Base::Quantity>());
-
-            connect(ui->editDefault,
-                    qOverload<const Base::Quantity&>(&Gui::QuantitySpinBox::valueChanged),
-                    this,
-                    &Array3D::defaultValueChanged);
-        }
-    }
-    catch (const Materials::PropertyNotFound&) {
-        return;
-    }
-}
-
-void Array3D::defaultValueChanged(const Base::Quantity& value)
-{
-    _value->setDefault(QVariant::fromValue(value));
-    _material->setEditStateAlter();
 }
 
 void Array3D::setDepthColumnDelegate(QTableView* table)
@@ -275,11 +231,6 @@ void Array3D::update2DArray()
 
 void Array3D::onDepthContextMenu(const QPoint& pos)
 {
-    Base::Console().Log("Array3D::onDepthContextMenu(%d,%d)\n", pos.x(), pos.y());
-    QModelIndex index = ui->table3D->indexAt(pos);
-    Base::Console().Log("\tindex at (%d,%d)\n", index.row(), index.column());
-
-
     QMenu contextMenu(tr("Context menu"), this);
 
     contextMenu.addAction(&_deleteDepthAction);
@@ -289,7 +240,7 @@ void Array3D::onDepthContextMenu(const QPoint& pos)
 
 bool Array3D::newDepthRow(const QModelIndex& index)
 {
-    Array3DDepthModel* model = static_cast<Array3DDepthModel*>(ui->table3D->model());
+    auto model = static_cast<Array3DDepthModel*>(ui->table3D->model());
     return model->newRow(index);
 }
 
@@ -297,10 +248,8 @@ void Array3D::onDepthDelete(bool checked)
 {
     Q_UNUSED(checked)
 
-    Base::Console().Log("Array3D::onDepthDelete()\n");
     QItemSelectionModel* selectionModel = ui->table3D->selectionModel();
     if (!selectionModel->hasSelection() || newDepthRow(selectionModel->currentIndex())) {
-        Base::Console().Log("\tNothing selected\n");
         return;
     }
 
@@ -338,7 +287,7 @@ int Array3D::confirmDepthDelete()
 
 void Array3D::deleteDepthSelected()
 {
-    Array3DDepthModel* model = static_cast<Array3DDepthModel*>(ui->table3D->model());
+    auto model = static_cast<Array3DDepthModel*>(ui->table3D->model());
     QItemSelectionModel* selectionModel = ui->table3D->selectionModel();
     auto index = selectionModel->currentIndex();
     model->deleteRow(index);
@@ -353,11 +302,6 @@ void Array3D::deleteDepthSelected()
 
 void Array3D::on2DContextMenu(const QPoint& pos)
 {
-    Base::Console().Log("Array3D::onDepthContextMenu(%d,%d)\n", pos.x(), pos.y());
-    QModelIndex index = ui->table2D->indexAt(pos);
-    Base::Console().Log("\tindex at (%d,%d)\n", index.row(), index.column());
-
-
     QMenu contextMenu(tr("Context menu"), this);
 
     contextMenu.addAction(&_delete2DAction);
@@ -368,7 +312,7 @@ void Array3D::on2DContextMenu(const QPoint& pos)
 
 bool Array3D::new2DRow(const QModelIndex& index)
 {
-    Array3DModel* model = static_cast<Array3DModel*>(ui->table2D->model());
+    auto model = static_cast<Array3DModel*>(ui->table2D->model());
     return model->newRow(index);
 }
 
@@ -376,10 +320,8 @@ void Array3D::on2DDelete(bool checked)
 {
     Q_UNUSED(checked)
 
-    Base::Console().Log("Array3D::on2DDelete()\n");
     QItemSelectionModel* selectionModel = ui->table2D->selectionModel();
     if (!selectionModel->hasSelection() || new2DRow(selectionModel->currentIndex())) {
-        Base::Console().Log("\tNothing selected\n");
         return;
     }
 
@@ -416,7 +358,7 @@ int Array3D::confirm2dDelete()
 
 void Array3D::delete2DSelected()
 {
-    Array3DModel* model = static_cast<Array3DModel*>(ui->table2D->model());
+    auto model = static_cast<Array3DModel*>(ui->table2D->model());
     QItemSelectionModel* selectionModel = ui->table2D->selectionModel();
     auto index = selectionModel->currentIndex();
     model->deleteRow(index);

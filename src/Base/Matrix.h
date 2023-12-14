@@ -98,8 +98,8 @@ public:
     inline Vector3d operator*(const Vector3d& vec) const;
     inline void multVec(const Vector3d& src, Vector3d& dst) const;
     inline void multVec(const Vector3f& src, Vector3f& dst) const;
-    inline Matrix4D operator*(double) const;
-    inline Matrix4D& operator*=(double);
+    inline Matrix4D operator*(double scalar) const;
+    inline Matrix4D& operator*=(double scalar);
     /// Comparison
     inline bool operator!=(const Matrix4D& mat) const;
     /// Comparison
@@ -119,11 +119,11 @@ public:
     /// Get trace of the 4x4 matrix
     inline double trace() const;
     /// Set row to vector
-    inline void setRow(unsigned short usNdx, const Vector3d&);
+    inline void setRow(unsigned short usNdx, const Vector3d& vec);
     /// Set column to vector
-    inline void setCol(unsigned short usNdx, const Vector3d&);
+    inline void setCol(unsigned short usNdx, const Vector3d& vec);
     /// Set diagonal to vector
-    inline void setDiagonal(const Vector3d&);
+    inline void setDiagonal(const Vector3d& vec);
     /// Compute the determinant of the matrix
     double determinant() const;
     /// Compute the determinant of the 3x3 sub-matrix
@@ -320,6 +320,10 @@ inline Matrix4D Matrix4D::operator*(const Matrix4D& mat) const
 
 inline Matrix4D& Matrix4D::operator=(const Matrix4D& mat)
 {
+    if (this == &mat) {
+        return *this;
+    }
+
     for (int iz = 0; iz < 4; iz++) {
         for (int is = 0; is < 4; is++) {
             dMtrx4D[iz][is] = mat.dMtrx4D[iz][is];

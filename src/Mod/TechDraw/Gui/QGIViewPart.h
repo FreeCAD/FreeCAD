@@ -26,6 +26,7 @@
 #include <Mod/TechDraw/TechDrawGlobal.h>
 
 #include <Mod/TechDraw/App/Geometry.h>
+#include <Mod/TechDraw/App/LineGenerator.h>
 
 #include <QPainter>
 #include <QStyleOptionGraphicsItem>
@@ -40,7 +41,7 @@ class DrawHatch;
 class DrawGeomHatch;
 class DrawViewDetail;
 class DrawView;
-
+class LineGenerator;
 }
 
 namespace TechDrawGui
@@ -132,6 +133,8 @@ protected:
 private:
     QList<QGraphicsItem*> deleteItems;
     PathBuilder* m_pathBuilder;
+    TechDraw::LineGenerator* m_dashedLineGenerator;
+
 };
 
 } // namespace

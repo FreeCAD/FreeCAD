@@ -55,11 +55,15 @@
 #include <App/Annotation.h>
 #include <App/Application.h>
 #include <App/Document.h>
+#include <App/DocumentObjectPy.h>
+#include <App/FeaturePythonPyImp.h>
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Base/Matrix.h>
 #include <Base/Parameter.h>
 #include <Base/Vector3D.h>
+#include <Base/PlacementPy.h>
+#include <Base/VectorPy.h>
 #include <Mod/Part/App/PartFeature.h>
 
 #include "ImpExpDxf.h"
@@ -91,17 +95,12 @@ void ImpExpDxfRead::setOptions()
     optionScaling = hGrp->GetFloat("dxfScaling", 1.0);
 }
 
-gp_Pnt ImpExpDxfRead::makePoint(const double* p)
+gp_Pnt ImpExpDxfRead::makePoint(const double point3d[3]) const
 {
-    double sp1(p[0]);
-    double sp2(p[1]);
-    double sp3(p[2]);
     if (optionScaling != 1.0) {
-        sp1 = sp1 * optionScaling;
-        sp2 = sp2 * optionScaling;
-        sp3 = sp3 * optionScaling;
+        return {point3d[0] * optionScaling, point3d[1] * optionScaling, point3d[2] * optionScaling};
     }
-    return {sp1, sp2, sp3};
+    return {point3d[0], point3d[1], point3d[2]};
 }
 
 void ImpExpDxfRead::OnReadLine(const double* s, const double* e, bool /*hidden*/)
@@ -321,18 +320,38 @@ void ImpExpDxfRead::OnReadText(const double* point,
                                const char* text,
                                const double rotation)
 {
+    // Note that our parameters do not contain all the information needed to properly orient the
+    // text. As a result the text will always appear on the XY plane
     if (optionImportAnnotations) {
         if (LayerName().substr(0, 6) != "BLOCKS") {
-            Base::Interpreter().runString("import Draft");
-            Base::Interpreter().runStringArg("p=FreeCAD.Vector(%f,%f,%f)",
-                                             point[0] * optionScaling,
-                                             point[1] * optionScaling,
-                                             point[2] * optionScaling);
-            Base::Interpreter().runString("a=FreeCAD.Vector(0,0,1)");
-            Base::Interpreter().runStringArg("pl=FreeCAD.Placement(p,a,%f)", rotation);
-            Base::Interpreter().runStringArg("Draft.make_text(\"%s\",pl, height=%f)", text, height);
+            PyObject* draftModule = nullptr;
+            Base::Vector3d insertionPoint(point[0], point[1], point[2]);
+            insertionPoint *= optionScaling;
+            Base::Rotation rot(Base::Vector3d(0, 0, 1), rotation);
+            PyObject* placement = new Base::PlacementPy(Base::Placement(insertionPoint, rot));
+            draftModule = PyImport_ImportModule("Draft");
+            if (draftModule != nullptr) {
+                // returns a wrapped App::FeaturePython
+                auto builtText = static_cast<App::FeaturePythonPyT<App::DocumentObjectPy>*>(
+                    PyObject_CallMethod(draftModule,
+                                        "make_text",
+                                        "sOif",
+                                        text,
+                                        placement,
+                                        0,
+                                        height));
+                if (builtText != nullptr) {
+                    ApplyGuiStyles(
+                        static_cast<App::FeaturePython*>(builtText->getDocumentObjectPtr()));
+                }
+            }
+            // We own all the return values so we must release them.
+            Py_DECREF(placement);
+            Py_XDECREF(draftModule);
         }
-        // else std::cout << "skipped text in block: " << LayerName() << std::endl;
+        else {
+            UnsupportedFeature("TEXT or MTEXT in BLOCK definition");
+        }
     }
 }
 
@@ -388,27 +407,36 @@ void ImpExpDxfRead::OnReadDimension(const double* s,
                                     double /*rotation*/)
 {
     if (optionImportAnnotations) {
-        Base::Interpreter().runString("import Draft");
-        Base::Interpreter().runStringArg("p1=FreeCAD.Vector(%f,%f,%f)",
-                                         s[0] * optionScaling,
-                                         s[1] * optionScaling,
-                                         s[2] * optionScaling);
-        Base::Interpreter().runStringArg("p2=FreeCAD.Vector(%f,%f,%f)",
-                                         e[0] * optionScaling,
-                                         e[1] * optionScaling,
-                                         e[2] * optionScaling);
-        Base::Interpreter().runStringArg("p3=FreeCAD.Vector(%f,%f,%f)",
-                                         point[0] * optionScaling,
-                                         point[1] * optionScaling,
-                                         point[2] * optionScaling);
-        Base::Interpreter().runString("Draft.makeDimension(p1,p2,p3)");
+        PyObject* draftModule = nullptr;
+        PyObject* start = new Base::VectorPy(Base::Vector3d(s[0], s[1], s[2]) * optionScaling);
+        PyObject* end = new Base::VectorPy(Base::Vector3d(e[0], e[1], e[2]) * optionScaling);
+        PyObject* lineLocation =
+            new Base::VectorPy(Base::Vector3d(point[0], point[1], point[2]) * optionScaling);
+        draftModule = PyImport_ImportModule("Draft");
+        if (draftModule != nullptr) {
+            // returns a wrapped App::FeaturePython
+            auto builtDim = static_cast<App::FeaturePythonPyT<App::DocumentObjectPy>*>(
+                PyObject_CallMethod(draftModule,
+                                    "make_linear_dimension",
+                                    "OOO",
+                                    start,
+                                    end,
+                                    lineLocation));
+            if (builtDim != nullptr) {
+                ApplyGuiStyles(static_cast<App::FeaturePython*>(builtDim->getDocumentObjectPtr()));
+            }
+        }
+        // We own all the return values so we must release them.
+        Py_DECREF(start);
+        Py_DECREF(end);
+        Py_DECREF(lineLocation);
+        Py_XDECREF(draftModule);
     }
 }
 
 
 void ImpExpDxfRead::AddObject(Part::TopoShape* shape)
 {
-    // std::cout << "layer:" << LayerName() << std::endl;
     std::vector<Part::TopoShape*> vec;
     if (layers.count(LayerName())) {
         vec = layers[LayerName()];
@@ -420,6 +448,7 @@ void ImpExpDxfRead::AddObject(Part::TopoShape* shape)
             Part::Feature* pcFeature =
                 static_cast<Part::Feature*>(document->addObject("Part::Feature", "Shape"));
             pcFeature->Shape.setValue(shape->getShape());
+            ApplyGuiStyles(pcFeature);
         }
     }
 }
@@ -510,10 +539,7 @@ void gPntToTuple(double* result, gp_Pnt& p)
 
 point3D gPntTopoint3D(gp_Pnt& p)
 {
-    point3D result;
-    result.x = p.X();
-    result.y = p.Y();
-    result.z = p.Z();
+    point3D result = {p.X(), p.Y(), p.Z()};
     return result;
 }
 

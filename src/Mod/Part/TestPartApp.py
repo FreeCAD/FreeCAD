@@ -27,6 +27,7 @@ from FreeCAD import Units
 from FreeCAD import Base
 App = FreeCAD
 
+from parttests.Geom2d_tests import Geom2dTests
 from parttests.regression_tests import RegressionTests
 from parttests.TopoShapeListTest import TopoShapeListTest
 
@@ -51,7 +52,7 @@ class PartTestCases(unittest.TestCase):
     def testBoxCase(self):
         self.Box = self.Doc.addObject("Part::Box","Box")
         self.Doc.recompute()
-        self.failUnless(len(self.Box.Shape.Faces)==6)
+        self.assertEqual(len(self.Box.Shape.Faces), 6)
 
     def testIssue2985(self):
         v1 = App.Vector(0.0,0.0,0.0)

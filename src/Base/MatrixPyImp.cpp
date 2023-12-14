@@ -52,7 +52,7 @@ std::string MatrixPy::representation() const
     return str.str();
 }
 
-PyObject* MatrixPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python wrapper
+PyObject* MatrixPy::PyMake(PyTypeObject* /*unused*/, PyObject* /*unused*/, PyObject* /*unused*/)
 {
     // create a new instance of MatrixPy and the Twin object
     return new MatrixPy(new Matrix4D);
@@ -61,10 +61,12 @@ PyObject* MatrixPy::PyMake(struct _typeobject*, PyObject*, PyObject*)  // Python
 // constructor method
 int MatrixPy::PyInit(PyObject* args, PyObject* /*kwd*/)
 {
+    // NOLINTBEGIN
     double a11 = 1.0, a12 = 0.0, a13 = 0.0, a14 = 0.0;
     double a21 = 0.0, a22 = 1.0, a23 = 0.0, a24 = 0.0;
     double a31 = 0.0, a32 = 0.0, a33 = 1.0, a34 = 0.0;
     double a41 = 0.0, a42 = 0.0, a43 = 0.0, a44 = 1.0;
+    // NOLINTEND
 
     // clang-format off
     if (PyArg_ParseTuple(args,
@@ -244,16 +246,15 @@ PyObject* MatrixPy::richCompare(PyObject* v, PyObject* w, int op)
             PyErr_SetString(PyExc_TypeError, "no ordering relation is defined for Matrix");
             return nullptr;
         }
-        else if (op == Py_EQ) {
+        if (op == Py_EQ) {
             res = (m1 == m2) ? Py_True : Py_False;  // NOLINT
             Py_INCREF(res);
             return res;
         }
-        else {
-            res = (m1 != m2) ? Py_True : Py_False;  // NOLINT
-            Py_INCREF(res);
-            return res;
-        }
+
+        res = (m1 != m2) ? Py_True : Py_False;  // NOLINT
+        Py_INCREF(res);
+        return res;
     }
     else {
         // This always returns False
@@ -264,7 +265,9 @@ PyObject* MatrixPy::richCompare(PyObject* v, PyObject* w, int op)
 
 PyObject* MatrixPy::move(PyObject* args)
 {
-    double x {}, y {}, z {};
+    double x {};
+    double y {};
+    double z {};
     Base::Vector3d vec;
     PyObject* pcVecObj {};
 
@@ -305,7 +308,9 @@ PyObject* MatrixPy::move(PyObject* args)
 
 PyObject* MatrixPy::scale(PyObject* args)
 {
-    double x {}, y {}, z {};
+    double x {};
+    double y {};
+    double z {};
     Base::Vector3d vec;
     PyObject* pcVecObj {};
 
@@ -426,7 +431,8 @@ PyObject* MatrixPy::transform(PyObject* args)
 {
     Base::Vector3d vec;
     Matrix4D mat;
-    PyObject *pcVecObj {}, *pcMatObj {};
+    PyObject* pcVecObj {};
+    PyObject* pcMatObj {};
 
     if (!PyArg_ParseTuple(
             args,
@@ -667,10 +673,9 @@ PyObject* MatrixPy::invert()
             getMatrixPtr()->inverseGauss();
             Py_Return;
         }
-        else {
-            PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot invert singular matrix");
-            return nullptr;
-        }
+
+        PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot invert singular matrix");
+        return nullptr;
     }
     PY_CATCH;
 }
@@ -684,10 +689,9 @@ PyObject* MatrixPy::inverse()
             m.inverseGauss();
             return new MatrixPy(m);
         }
-        else {
-            PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot invert singular matrix");
-            return nullptr;
-        }
+
+        PyErr_SetString(Base::PyExc_FC_GeneralError, "Cannot invert singular matrix");
+        return nullptr;
     }
     PY_CATCH;
 }

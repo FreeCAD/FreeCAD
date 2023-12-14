@@ -94,6 +94,7 @@ ViewProviderGeometryObject::ViewProviderGeometryObject()
     pcShapeMaterial = new SoMaterial;
     pcShapeMaterial->diffuseColor.setValue(r, g, b);
     pcShapeMaterial->transparency = float(initialTransparency);
+    ShapeMaterial.setTransparency((float)initialTransparency / 100.0f);
     pcShapeMaterial->ref();
 
     pcBoundingBox = new Gui::SoFCBoundingBox;

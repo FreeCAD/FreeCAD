@@ -51,12 +51,12 @@ struct cdata_filter
     using category = boost::iostreams::output_filter_tag;
 
     template<typename Device>
-    inline bool put(Device& dev, char c)
+    inline bool put(Device& dev, char ch)
     {
         switch (state) {
             case 0:
             case 1:
-                if (c == ']') {
+                if (ch == ']') {
                     ++state;
                 }
                 else {
@@ -64,14 +64,14 @@ struct cdata_filter
                 }
                 break;
             case 2:
-                if (c == '>') {
+                if (ch == '>') {
                     static const char escape[] = "]]><![CDATA[";
                     boost::iostreams::write(dev, escape, sizeof(escape) - 1);
                 }
                 state = 0;
                 break;
         }
-        return boost::iostreams::put(dev, c);
+        return boost::iostreams::put(dev, ch);
     }
 
     int state = 0;
@@ -127,9 +127,9 @@ std::ostream& Writer::charStream()
     return *CharStream;
 }
 
-void Writer::insertText(const std::string& s)
+void Writer::insertText(const std::string& str)
 {
-    beginCharStream() << s;
+    beginCharStream() << str;
     endCharStream();
 }
 
@@ -162,8 +162,8 @@ void Writer::insertBinFile(const char* FileName)
     from.seekg(0, std::ios::beg);
     std::vector<unsigned char> bytes(static_cast<size_t>(fileSize));
     // NOLINTNEXTLINE(cppcoreguidelines-pro-type-reinterpret-cast)
-    from.read(reinterpret_cast<char*>(&bytes[0]), fileSize);
-    Stream() << Base::base64_encode(&bytes[0], static_cast<unsigned int>(fileSize));
+    from.read(reinterpret_cast<char*>(bytes.data()), fileSize);
+    Stream() << Base::base64_encode(bytes.data(), static_cast<unsigned int>(fileSize));
     Stream() << "]]>" << endl;
 }
 
@@ -172,14 +172,14 @@ void Writer::setForceXML(bool on)
     forceXML = on;
 }
 
-bool Writer::isForceXML()
+bool Writer::isForceXML() const
 {
     return forceXML;
 }
 
-void Writer::setFileVersion(int v)
+void Writer::setFileVersion(int version)
 {
-    fileVersion = v;
+    fileVersion = version;
 }
 
 int Writer::getFileVersion() const
@@ -269,26 +269,27 @@ std::string Writer::getUniqueFileName(const char* Name)
         // if not, name is OK
         return CleanName;
     }
-    else {
-        std::vector<std::string> names;
-        names.reserve(FileNames.size());
-        FileInfo fi(CleanName);
-        CleanName = fi.fileNamePure();
-        std::string ext = fi.extension();
-        for (pos = FileNames.begin(); pos != FileNames.end(); ++pos) {
-            fi.setFile(*pos);
-            std::string FileName = fi.fileNamePure();
-            if (fi.extension() == ext) {
-                names.push_back(FileName);
-            }
+
+    std::vector<std::string> names;
+    names.reserve(FileNames.size());
+    FileInfo fi(CleanName);
+    CleanName = fi.fileNamePure();
+    std::string ext = fi.extension();
+    for (pos = FileNames.begin(); pos != FileNames.end(); ++pos) {
+        fi.setFile(*pos);
+        std::string FileName = fi.fileNamePure();
+        if (fi.extension() == ext) {
+            names.push_back(FileName);
         }
-        std::stringstream str;
-        str << Base::Tools::getUniqueName(CleanName, names);
-        if (!ext.empty()) {
-            str << "." << ext;
-        }
-        return str.str();
     }
+
+    std::stringstream str;
+    str << Base::Tools::getUniqueName(CleanName, names);
+    if (!ext.empty()) {
+        str << "." << ext;
+    }
+
+    return str.str();
 }
 
 const std::vector<std::string>& Writer::getFilenames() const
@@ -377,7 +378,7 @@ void FileWriter::putNextEntry(const char* file)
     this->FileStream.open(fileName.c_str(), std::ios::out | std::ios::binary);
 }
 
-bool FileWriter::shouldWrite(const std::string&, const Base::Persistence*) const
+bool FileWriter::shouldWrite(const std::string& /*name*/, const Base::Persistence* /*obj*/) const
 {
     return true;
 }

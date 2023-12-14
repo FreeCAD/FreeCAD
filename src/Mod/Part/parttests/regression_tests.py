@@ -19,3 +19,7 @@ class RegressionTests(unittest.TestCase):
         # We should now have empty list...
         with self.assertRaises(IndexError):
             result.pop()
+
+    def test_OptimalBox(self):
+        box = Part.makeBox(1, 1, 1)
+        self.assertTrue(box.optimalBoundingBox(True, False).isValid())

@@ -214,7 +214,7 @@ void PointKernel::RestoreDocFile(Base::Reader& reader)
 
 void PointKernel::save(const char* file) const
 {
-    Base::ofstream out(file, std::ios::out);
+    Base::ofstream out(Base::FileInfo(file), std::ios::out);
     save(out);
 }
 

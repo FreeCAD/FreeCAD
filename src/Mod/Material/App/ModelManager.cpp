@@ -99,22 +99,11 @@ std::shared_ptr<Model> ModelManager::getModelByPath(const QString& path) const
 {
     QString cleanPath = QDir::cleanPath(path);
 
-    for (auto library : *_libraryList) {
-        // Base::Console().Log("ModelManager::getModelByPath() Checking library '%s'->'%s'\n",
-        //                     library->getName().toStdString().c_str(),
-        //                     library->getDirectory().toStdString().c_str());
-
-
+    for (auto& library : *_libraryList) {
         if (cleanPath.startsWith(library->getDirectory())) {
-            // Base::Console().Log("ModelManager::getModelByPath() Library '%s'\n",
-            //                     library->getDirectory().toStdString().c_str());
-            // Base::Console().Log("ModelManager::getModelByPath() Path '%s'\n",
-            //                     cleanPath.toStdString().c_str());
             return library->getModelByPath(cleanPath);
         }
     }
-    Base::Console().Log("ModelManager::getModelByPath() Library not found for path '%s'\n",
-                        cleanPath.toStdString().c_str());
 
     throw MaterialNotFound();
 }
@@ -127,7 +116,7 @@ std::shared_ptr<Model> ModelManager::getModelByPath(const QString& path, const Q
 
 std::shared_ptr<ModelLibrary> ModelManager::getLibrary(const QString& name) const
 {
-    for (auto library : *_libraryList) {
+    for (auto& library : *_libraryList) {
         if (library->getName() == name) {
             return library;
         }

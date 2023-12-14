@@ -36,11 +36,11 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import FreeCADGui as Gui
-
-import draftutils.utils as utils
+from draftobjects.layer import Layer
+from draftutils import params
+from draftutils import utils
 from draftutils.messages import _msg
 from draftutils.translate import translate
-from draftobjects.layer import Layer
 
 
 class ViewProviderLayer:
@@ -92,11 +92,8 @@ class ViewProviderLayer:
                              "Print",
                              _tip)
 
-
     def set_visual_properties(self, vobj, properties):
         """Set visual properties only if they don't already exist."""
-        view_group = App.ParamGet("User parameter:BaseApp/Preferences/View")
-
         if "LineColor" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "The line color of the objects "
@@ -105,11 +102,7 @@ class ViewProviderLayer:
                              "LineColor",
                              "Layer",
                              _tip)
-
-            c = view_group.GetUnsigned("DefaultShapeLineColor", 255)
-            vobj.LineColor = (((c >> 24) & 0xFF) / 255,
-                              ((c >> 16) & 0xFF) / 255,
-                              ((c >> 8) & 0xFF) / 255)
+            vobj.LineColor = params.get_param_view("DefaultShapeLineColor") & 0xFFFFFF00
 
         if "ShapeColor" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
@@ -119,11 +112,7 @@ class ViewProviderLayer:
                              "ShapeColor",
                              "Layer",
                              _tip)
-
-            c = view_group.GetUnsigned("DefaultShapeColor", 4294967295)
-            vobj.ShapeColor = (((c >> 24) & 0xFF) / 255,
-                               ((c >> 16) & 0xFF) / 255,
-                               ((c >> 8) & 0xFF) / 255)
+            vobj.ShapeColor = params.get_param_view("DefaultShapeColor") & 0xFFFFFF00
 
         if "LineWidth" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
@@ -133,9 +122,7 @@ class ViewProviderLayer:
                              "LineWidth",
                              "Layer",
                              _tip)
-
-            width = view_group.GetInt("DefaultShapeLineWidth", 2)
-            vobj.LineWidth = width
+            vobj.LineWidth = params.get_param_view("DefaultShapeLineWidth")
 
         if "DrawStyle" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
@@ -145,8 +132,8 @@ class ViewProviderLayer:
                              "DrawStyle",
                              "Layer",
                              _tip)
-            vobj.DrawStyle = ["Solid", "Dashed", "Dotted", "Dashdot"]
-            vobj.DrawStyle = "Solid"
+            vobj.DrawStyle = utils.DRAW_STYLES
+            vobj.DrawStyle = params.get_param("DefaultDrawStyle")
 
         if "Transparency" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
@@ -156,7 +143,7 @@ class ViewProviderLayer:
                              "Transparency",
                              "Layer",
                              _tip)
-            vobj.Transparency = 0
+            vobj.Transparency = params.get_param_view("DefaultShapeTransparency")
 
         if "LinePrintColor" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
@@ -167,6 +154,7 @@ class ViewProviderLayer:
                              "LinePrintColor",
                              "Print",
                              _tip)
+            vobj.LinePrintColor = params.get_param("DefaultPrintColor")
 
     def getIcon(self):
         """Return the path to the icon used by the viewprovider.

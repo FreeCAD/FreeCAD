@@ -152,7 +152,7 @@ CheckOptions:
   - key:             google-readability-braces-around-statements.ShortStatementLines
     value:           '1'
   - key:             bugprone-reserved-identifier.AllowedIdentifiers
-    value:           ''
+    value:           '_object'
   - key:             cppcoreguidelines-pro-type-member-init.IgnoreArrays
     value:           'false'
   - key:             readability-else-after-return.WarnOnUnfixable

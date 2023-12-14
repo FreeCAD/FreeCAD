@@ -1,5 +1,5 @@
 {
-    "version": 6,
+    "version": 3,
     "cmakeMinimumRequired": {
       "major": 3,
       "minor": 14,
@@ -10,10 +10,6 @@
         "name": "common",
         "hidden": true,
         "cacheVariables": {
-          "FREECAD_USE_PYBIND11": {
-            "type": "BOOL",
-            "value": "ON"
-          }
         }
       },
       {
@@ -88,6 +84,10 @@
             "value": "OFF"
           },
           "FREECAD_USE_PCL": {
+            "type": "BOOL",
+            "value": "ON"
+          },
+          "FREECAD_USE_PYBIND11": {
             "type": "BOOL",
             "value": "ON"
           },

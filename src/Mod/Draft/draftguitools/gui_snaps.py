@@ -282,7 +282,9 @@ class ShowSnapBar(Draft_Snap_Base):
     def Activated(self):
         """Execute when the command is called."""
         if hasattr(Gui, "Snapper"):
-            Gui.Snapper.show()
+            toolbar = Gui.Snapper.get_snap_toolbar()
+            if toolbar is not None:
+                toolbar.show()
 
 
 Gui.addCommand('Draft_ShowSnapBar', ShowSnapBar())

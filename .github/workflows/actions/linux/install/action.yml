@@ -46,12 +46,12 @@ runs:
   steps:
     - name: Install
       id: install
-      shell: bash
+      shell: bash -l {0}
       run: |
         (stdbuf -oL -eL sudo cmake --install ${{ inputs.builddir }} ${{ inputs.extraParameters }}) \
         2> >(tee -a ${{ inputs.errorFile }}) | tee -a ${{ inputs.logFile }}
     - name: Write report
-      shell: bash
+      shell: bash -l {0}
       if: always()
       run: |
         if [ ${{ steps.install.outcome }} == 'success' ]
