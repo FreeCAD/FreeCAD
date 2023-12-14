@@ -41,9 +41,10 @@ from PySide import QtGui
 import FreeCAD as App
 import FreeCADGui as Gui
 import Draft_rc
-import draftutils.utils as utils
-import draftutils.groups as groups
-import draftguitools.gui_base as gui_base
+from draftguitools import gui_base
+from draftutils import groups
+from draftutils import params
+from draftutils import utils
 from draftutils.translate import translate
 
 
@@ -223,12 +224,11 @@ class SetAutoGroup(gui_base.GuiCommandSimplest):
         # and globally initialized in the `Gui` namespace to run
         # some actions.
         # If there is only a group selected, it runs the `AutoGroup` method.
-        params = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
         self.ui = Gui.draftToolBar
         s = Gui.Selection.getSelection()
         if len(s) == 1:
             if (utils.get_type(s[0]) == "Layer"
-                or (params.GetBool("AutogroupAddGroups", False)
+                or (params.get_param("AutogroupAddGroups")
                     and groups.is_group(s[0]))):
                 self.ui.setAutoGroup(s[0].Name)
                 return
@@ -237,7 +237,7 @@ class SetAutoGroup(gui_base.GuiCommandSimplest):
         # including the options "None" and "Add new layer".
         self.groups = [translate("draft", "None")]
         gn = [o.Name for o in self.doc.Objects if utils.get_type(o) == "Layer"]
-        if params.GetBool("AutogroupAddGroups", False):
+        if params.get_param("AutogroupAddGroups"):
             gn.extend(groups.get_group_names())
         self.groups.extend(gn)
         self.labels = [translate("draft", "None")]
@@ -323,7 +323,7 @@ class AddToConstruction(gui_base.GuiCommandNeedsSelection):
         grp = self.doc.getObject("Draft_Construction")
         if not grp:
             grp = self.doc.addObject("App::DocumentObjectGroup", "Draft_Construction")
-            grp.Label = utils.get_param("constructiongroupname", "Construction")
+            grp.Label = params.get_param("constructiongroupname")
 
         for obj in Gui.Selection.getSelection():
             grp.addObject(obj)

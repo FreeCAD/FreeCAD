@@ -57,6 +57,7 @@ dependencies:
 - sed                                  # [unix]
 - boost
 - boost-cpp
+- ccache
 - cmake
 - coin3d==4.0.0
 - compilers

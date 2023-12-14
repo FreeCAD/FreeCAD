@@ -48,8 +48,8 @@ import PySide.QtGui as QtGui
 
 import FreeCAD as App
 import FreeCADGui as Gui
-
-import draftutils.utils as utils
+from draftutils import params
+from draftutils import utils
 from draftutils.messages import _msg
 from draftutils.translate import translate
 
@@ -87,7 +87,7 @@ class ViewProviderDraftAnnotation(object):
                              "ScaleMultiplier",
                              "Annotation",
                              _tip)
-            vobj.ScaleMultiplier = utils.get_param("DefaultAnnoScaleMultiplier", 1)
+            vobj.ScaleMultiplier = params.get_param("DefaultAnnoScaleMultiplier")
 
         if "AnnotationStyle" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
@@ -119,7 +119,7 @@ class ViewProviderDraftAnnotation(object):
                              "FontName",
                              "Text",
                              _tip)
-            vobj.FontName = utils.get_param("textfont", "sans")
+            vobj.FontName = params.get_param("textfont")
 
         if "FontSize" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
@@ -128,7 +128,7 @@ class ViewProviderDraftAnnotation(object):
                              "FontSize",
                              "Text",
                              _tip)
-            vobj.FontSize = utils.get_param("textheight", 1)
+            vobj.FontSize = params.get_param("textheight")
 
         if "TextColor" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
@@ -137,7 +137,7 @@ class ViewProviderDraftAnnotation(object):
                              "TextColor",
                              "Text",
                              _tip)
-            vobj.TextColor = utils.get_param("DefaultTextColor", 255) & 0xFFFFFF00
+            vobj.TextColor = params.get_param("DefaultTextColor") & 0xFFFFFF00
 
     def set_units_properties(self, vobj, properties):
         return
@@ -150,7 +150,7 @@ class ViewProviderDraftAnnotation(object):
                              "LineWidth",
                              "Graphics",
                              _tip)
-            vobj.LineWidth = utils.get_param("DefaultAnnoLineWidth", 2)
+            vobj.LineWidth = params.get_param("DefaultAnnoLineWidth")
 
         if "LineColor" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property", "Line color")
@@ -158,7 +158,7 @@ class ViewProviderDraftAnnotation(object):
                              "LineColor",
                              "Graphics",
                              _tip)
-            vobj.LineColor = utils.get_param("DefaultAnnoLineColor", 255) & 0xFFFFFF00
+            vobj.LineColor = params.get_param("DefaultAnnoLineColor") & 0xFFFFFF00
 
     def dumps(self):
         """Return a tuple of objects to save or None."""
@@ -182,7 +182,7 @@ class ViewProviderDraftAnnotation(object):
 
     def getDefaultDisplayMode(self):
         """Return the default display mode."""
-        return ["World", "Screen"][utils.get_param("DefaultAnnoDisplayMode", 0)]
+        return ["World", "Screen"][params.get_param("DefaultAnnoDisplayMode")]
 
     def setDisplayMode(self, mode):
         """Return the saved display mode."""

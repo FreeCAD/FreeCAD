@@ -33,10 +33,10 @@ import lazy_loader.lazy_loader as lz
 import FreeCAD as App
 import DraftVecUtils
 import WorkingPlane
-import draftutils.utils as utils
-import draftfunctions.svgtext as svgtext
-
+from draftfunctions import svgtext
 from draftfunctions.svgshapes import get_proj, get_circle, get_path
+from draftutils import params
+from draftutils import utils
 from draftutils.messages import _wrn, _err
 
 # Delay import of module until first use because it is heavy
@@ -50,15 +50,14 @@ DraftGeomUtils = lz.LazyLoader("DraftGeomUtils", globals(), "DraftGeomUtils")
 
 def get_line_style(line_style, scale):
     """Return a linestyle scaled by a factor."""
-    param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
     style = None
 
     if line_style == "Dashed":
-        style = param.GetString("svgDashedLine", "2,2")
+        style = params.get_param("svgDashedLine")
     elif line_style == "Dashdot":
-        style = param.GetString("svgDashdotLine", "3,2,0.2,2")
+        style = params.get_param("svgDashdotLine")
     elif line_style == "Dotted":
-        style = param.GetString("svgDottedLine", "0.2,2")
+        style = params.get_param("svgDottedLine")
     elif line_style:
         if "," in line_style:
             style = line_style

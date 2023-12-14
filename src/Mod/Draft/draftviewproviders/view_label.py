@@ -36,16 +36,13 @@ import pivy.coin as coin
 from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
-import draftutils.utils as utils
-import draftutils.gui_utils as gui_utils
-
-from draftviewproviders.view_draft_annotation \
-    import ViewProviderDraftAnnotation
+from draftutils import gui_utils
+from draftutils import params
+from draftutils import utils
+from draftviewproviders.view_draft_annotation import ViewProviderDraftAnnotation
 
 if App.GuiUp:
     import FreeCADGui as Gui
-
-param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
 
 
 class ViewProviderLabel(ViewProviderDraftAnnotation):
@@ -90,7 +87,7 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
                              "LineSpacing",
                              "Text",
                              _tip)
-            vobj.LineSpacing = utils.get_param("LineSpacing", 1)
+            vobj.LineSpacing = params.get_param("LineSpacing")
 
     def set_graphics_properties(self, vobj, properties):
         """Set graphics properties only if they don't already exist."""
@@ -103,7 +100,7 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
                              "ArrowSize",
                              "Graphics",
                              _tip)
-            vobj.ArrowSize = utils.get_param("arrowsize", 1)
+            vobj.ArrowSize = params.get_param("arrowsize")
 
         if "ArrowType" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
@@ -113,7 +110,7 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
                              "Graphics",
                              _tip)
             vobj.ArrowType = utils.ARROW_TYPES
-            vobj.ArrowType = utils.ARROW_TYPES[utils.get_param("dimsymbol", 0)]
+            vobj.ArrowType = utils.ARROW_TYPES[params.get_param("dimsymbol")]
 
         if "Frame" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
@@ -176,7 +173,7 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
         self.text_wld.string = self.text_scr.string = "Label"
         self.text_wld.justification = coin.SoAsciiText.RIGHT
         self.text_scr.justification = coin.SoText2.RIGHT
-        self.font.name = utils.get_param("textfont")
+        self.font.name = params.get_param("textfont")
 
         switchnode = coin.SoSeparator()
         switchnode.addChild(self.line)

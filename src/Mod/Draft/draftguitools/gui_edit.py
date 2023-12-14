@@ -40,17 +40,18 @@ import PySide.QtGui as QtGui
 import FreeCAD as App
 import FreeCADGui as Gui
 import DraftVecUtils
-import draftutils.utils as utils
-import draftutils.gui_utils as gui_utils
-import draftguitools.gui_trackers as trackers
-import draftguitools.gui_base_original as gui_base_original
-import draftguitools.gui_tool_utils as gui_tool_utils
-import draftguitools.gui_edit_draft_objects as edit_draft
-import draftguitools.gui_edit_arch_objects as edit_arch
-import draftguitools.gui_edit_part_objects as edit_part
-import draftguitools.gui_edit_sketcher_objects as edit_sketcher
-
+from draftutils import gui_utils
+from draftutils import params
+from draftutils import utils
 from draftutils.translate import translate
+from draftguitools import gui_base_original
+from draftguitools import gui_edit_arch_objects as edit_arch
+from draftguitools import gui_edit_draft_objects as edit_draft
+from draftguitools import gui_edit_part_objects as edit_part
+from draftguitools import gui_edit_sketcher_objects as edit_sketcher
+from draftguitools import gui_tool_utils
+from draftguitools import gui_trackers as trackers
+
 
 COLORS = {
     "default": Gui.draftToolBar.getDefaultColor("snap"),
@@ -214,7 +215,6 @@ class Edit(gui_base_original.Modifier):
         self.objs_formats = {}
 
         # settings (get updated in Activated)
-        self.param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
         self.max_objects = 5
         self.pick_radius = 20
 
@@ -278,8 +278,8 @@ class Edit(gui_base_original.Modifier):
 
         self.ui = Gui.draftToolBar
         self.view = gui_utils.get_3d_view()
-        self.max_objects = self.param.GetInt("DraftEditMaxObjects", 5)
-        self.pick_radius = self.param.GetInt("DraftEditPickRadius", 20)
+        self.max_objects = params.get_param("DraftEditMaxObjects")
+        self.pick_radius = params.get_param("DraftEditPickRadius")
 
         if Gui.Selection.getSelection():
             self.proceed()
@@ -547,8 +547,7 @@ class Edit(gui_base_original.Modifier):
 
     def resetTrackersBezier(self, obj):
         # in future move tracker definition to DraftTrackers
-        param = App.ParamGet("User parameter:BaseApp/Preferences/View")
-        size = param.GetInt("MarkerSize", 9)
+        size = params.get_param_view("MarkerSize")
         knotmarkers = (
             Gui.getMarkerIndex("DIAMOND_FILLED", size),   # sharp
             Gui.getMarkerIndex("SQUARE_FILLED", size),    # tangent

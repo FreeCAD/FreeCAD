@@ -28,10 +28,10 @@
 ## \addtogroup draftmake
 # @{
 import FreeCAD as App
-import draftutils.utils as utils
-import draftutils.gui_utils as gui_utils
-
 from draftobjects.clone import Clone
+from draftutils import params
+from draftutils import utils
+from draftutils import gui_utils
 
 if App.GuiUp:
     from draftutils.todo import ToDo
@@ -58,7 +58,7 @@ def make_clone(obj, delta=None, forcedraft=False):
 
     """
 
-    prefix = utils.get_param("ClonePrefix","")
+    prefix = params.get_param("ClonePrefix")
 
     cl = None
 

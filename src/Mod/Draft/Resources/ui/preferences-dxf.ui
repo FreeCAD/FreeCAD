@@ -335,11 +335,11 @@ Example: for files in millimeters: 1, in centimeters: 10,
         <item>
          <widget class="Gui::PrefCheckBox" name="checkBox_2">
           <property name="toolTip">
-           <string>Colors will be retrieved from the DXF objects whenever possible.
-Otherwise default colors will be applied. </string>
+           <string>Colors will set as specified in the DXF file whenever possible.
+Otherwise default colors will be applied.</string>
           </property>
           <property name="text">
-           <string>Get original colors from the DXF file (legacy importer only)</string>
+           <string>Use colors from the DXF file</string>
           </property>
           <property name="prefEntry" stdset="0">
            <cstring>dxfGetOriginalColors</cstring>

@@ -1316,7 +1316,7 @@ void PropertyString::setValue(const char* newLabel)
     auto obj = dynamic_cast<DocumentObject*>(getContainer());
     bool commit = false;
 
-    if(obj && obj->getNameInDocument() && this==&obj->Label &&
+    if(obj && obj->isAttachedToDocument() && this==&obj->Label &&
        (!obj->getDocument()->testStatus(App::Document::Restoring)||
         obj->getDocument()->testStatus(App::Document::Importing)) &&
        !obj->getDocument()->isPerformingTransaction())
@@ -1457,7 +1457,7 @@ void PropertyString::Save (Base::Writer &writer) const
     auto obj = dynamic_cast<DocumentObject*>(getContainer());
     writer.Stream() << writer.ind() << "<String ";
     bool exported = false;
-    if(obj && obj->getNameInDocument() &&
+    if(obj && obj->isAttachedToDocument() &&
        obj->isExporting() && &obj->Label==this)
     {
         if(obj->allowDuplicateLabel())
