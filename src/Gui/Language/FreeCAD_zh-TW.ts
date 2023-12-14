@@ -4655,6 +4655,7 @@ Specify another directory, please.</source>
         <source>Preferences</source>
         <translation>偏好設定</translation>
     </message>
+<<<<<<< HEAD
     <message>
         <location filename="../../../../../Benson/sources/FreeCAD-0.22.0-git/src/Gui/DlgPreferences.ui" line="158"/>
         <source>Reset</source>
@@ -4665,10 +4666,13 @@ Specify another directory, please.</source>
         <source>Header</source>
         <translation>標題</translation>
     </message>
+=======
+>>>>>>> 220980d336 (Update Tranditional Chinese to latest translations development.)
 </context>
 <context>
     <name>Gui::Dialog::DlgPreferencesImp</name>
     <message>
+<<<<<<< HEAD
         <location filename="../../../../../Benson/sources/FreeCAD-0.22.0-git/src/Gui/DlgPreferencesImp.cpp" line="489"/>
         <source>Reset page &apos;%1&apos;...</source>
         <translation>重設頁面 &apos;%1&apos;...</translation>
@@ -4677,6 +4681,16 @@ Specify another directory, please.</source>
         <location filename="../../../../../Benson/sources/FreeCAD-0.22.0-git/src/Gui/DlgPreferencesImp.cpp" line="492"/>
         <source>Resets the user settings for the page &apos;%1&apos;</source>
         <translation>重置頁面的使用者設定 &apos;%1&apos;</translation>
+=======
+        <location filename="../DlgPreferencesImp.cpp" line="386"/>
+        <source>Reset tab &apos;%1&apos;...</source>
+        <translation>重設分頁 &apos;%1&apos;...</translation>
+    </message>
+    <message>
+        <location filename="../DlgPreferencesImp.cpp" line="388"/>
+        <source>Resets the user settings for the tab &apos;%1&apos;</source>
+        <translation>重置分頁欄的使用者設定 &apos;%1&apos;</translation>
+>>>>>>> 220980d336 (Update Tranditional Chinese to latest translations development.)
     </message>
     <message>
         <location filename="../DlgPreferencesImp.cpp" line="393"/>
@@ -4697,6 +4711,56 @@ Specify another directory, please.</source>
         <location filename="../DlgPreferencesImp.cpp" line="400"/>
         <source>Resets the user settings entirely</source>
         <translation>完全重置使用者設定</translation>
+<<<<<<< HEAD
+    </message>
+    <message>
+        <location filename="../DlgPreferencesImp.cpp" line="442"/>
+        <source>Reset Tab Settings</source>
+        <translation>重置分頁設定</translation>
+    </message>
+    <message>
+        <location filename="../DlgPreferencesImp.cpp" line="443"/>
+        <source>All the settings for the tab &apos;%1&apos; will be deleted.</source>
+        <translation>分頁欄的全部設定 &apos;%1&apos; 將被刪除.</translation>
+    </message>
+    <message>
+        <location filename="../DlgPreferencesImp.cpp" line="444"/>
+        <location filename="../DlgPreferencesImp.cpp" line="470"/>
+        <source>Do you want to continue?</source>
+        <translation>您要繼續嗎?</translation>
+    </message>
+    <message>
+        <location filename="../DlgPreferencesImp.cpp" line="468"/>
+        <source>Reset Group Settings</source>
+        <translation>重置群組設定</translation>
+    </message>
+    <message>
+        <location filename="../DlgPreferencesImp.cpp" line="469"/>
+        <source>All the settings for the group &apos;%1&apos; will be deleted.</source>
+        <translation>群組的全部設定 &apos;%1&apos; 將被刪除.</translation>
+=======
+>>>>>>> 220980d336 (Update Tranditional Chinese to latest translations development.)
+    </message>
+    <message>
+        <location filename="../DlgPreferencesImp.cpp" line="268"/>
+        <source>Clear user settings</source>
+        <translatorcomment>msgctxt &quot;Gui::Dialog::DlgPreferences|&quot;
+msgid &quot;&quot;
+msgstr &quot; &quot;
+
+
+</translatorcomment>
+        <translation>清除使用者設定</translation>
+    </message>
+    <message>
+        <location filename="../DlgPreferencesImp.cpp" line="269"/>
+        <source>Do you want to clear all your user settings?</source>
+        <translation>您確定要清除所有的設定嗎?</translation>
+    </message>
+    <message>
+        <location filename="../DlgPreferencesImp.cpp" line="270"/>
+        <source>If you agree all your settings will be cleared.</source>
+        <translation>當您同意後，所有的設定將會被清除.</translation>
     </message>
     <message>
         <location filename="../DlgPreferencesImp.cpp" line="442"/>
@@ -4725,27 +4789,6 @@ Specify another directory, please.</source>
         <translation>群組的全部設定 &apos;%1&apos; 將被刪除.</translation>
     </message>
     <message>
-        <location filename="../DlgPreferencesImp.cpp" line="268"/>
-        <source>Clear user settings</source>
-        <translatorcomment>msgctxt &quot;Gui::Dialog::DlgPreferences|&quot;
-msgid &quot;&quot;
-msgstr &quot; &quot;
-
-
-</translatorcomment>
-        <translation>清除使用者設定</translation>
-    </message>
-    <message>
-        <location filename="../DlgPreferencesImp.cpp" line="269"/>
-        <source>Do you want to clear all your user settings?</source>
-        <translation>您確定要清除所有的設定嗎?</translation>
-    </message>
-    <message>
-        <location filename="../DlgPreferencesImp.cpp" line="270"/>
-        <source>If you agree all your settings will be cleared.</source>
-        <translation>當您同意後，所有的設定將會被清除.</translation>
-    </message>
-    <message>
         <location filename="../DlgPreferencesImp.cpp" line="368"/>
         <source>Wrong parameter</source>
         <translation>錯誤的參數</translation>
@@ -4770,6 +4813,7 @@ msgstr &quot; &quot;
         <source>Restart later</source>
         <translation>稍後重新啟動</translation>
     </message>
+<<<<<<< HEAD
     <message>
         <location filename="../DlgPreferencesImp.cpp" line="386"/>
         <source>Reset tab &apos;%1&apos;...</source>
@@ -4780,6 +4824,8 @@ msgstr &quot; &quot;
         <source>Resets the user settings for the tab &apos;%1&apos;</source>
         <translation>重置分頁欄的使用者設定 &apos;%1&apos;</translation>
     </message>
+=======
+>>>>>>> 220980d336 (Update Tranditional Chinese to latest translations development.)
 </context>
 <context>
     <name>Gui::Dialog::DlgProjectInformation</name>
@@ -6605,36 +6651,46 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
         <translation>應用於應用程式所有零件的單位系統</translation>
     </message>
     <message>
+<<<<<<< HEAD
         <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="62"/>
         <source>Unit system for all parts of the application. Can be overridden by specifying a project unit system.</source>
         <translation>應用程式所有零件的單位系統. 可以透過指定專案單位系統來覆蓋.</translation>
     </message>
     <message>
+=======
+>>>>>>> 220980d336 (Update Tranditional Chinese to latest translations development.)
         <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="93"/>
         <source>Project Unit system:</source>
         <translation>專案單位系統:</translation>
     </message>
     <message>
+<<<<<<< HEAD
         <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="93"/>
         <source>Project unit system:</source>
         <translation>專案單位系統:</translation>
     </message>
     <message>
+=======
+>>>>>>> 220980d336 (Update Tranditional Chinese to latest translations development.)
         <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="100"/>
         <source>Unit system used for display metrics stored in project</source>
         <translation>用於顯示專案中儲存標注的單位系統</translation>
     </message>
     <message>
+<<<<<<< HEAD
         <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="100"/>
         <source>Unit system stored in the current project</source>
         <translation>目前專案中儲存的單位系統</translation>
     </message>
     <message>
+=======
+>>>>>>> 220980d336 (Update Tranditional Chinese to latest translations development.)
         <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="107"/>
         <source>If enabled, Unit System stored in project will be ignored.</source>
         <translation>如果啟用，儲存在專案中的單位系統將被忽略.</translation>
     </message>
     <message>
+<<<<<<< HEAD
         <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="107"/>
         <source>If enabled, project unit systems are ignored</source>
         <translation>如果啟用，專案單位系統將被忽略</translation>
@@ -6653,6 +6709,11 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
         <location filename="../../../../../Benson/sources/FreeCAD-0.22.0-git/src/Gui/PreferencePages/DlgSettingsGeneral.ui" line="62"/>
         <source>Unit system for all parts of the application. Can be overridden by specifying a document unit system.</source>
         <translation>應用程式所有零件的單位系統.  可以透過指定文件單位系統來覆蓋.</translation>
+=======
+        <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="62"/>
+        <source>Unit system for all parts of the application. Can be overridden by specifying a project unit system.</source>
+        <translation>應用程式所有零件的單位系統. 可以透過指定專案單位系統來覆蓋.</translation>
+>>>>>>> 220980d336 (Update Tranditional Chinese to latest translations development.)
     </message>
     <message>
         <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="71"/>
@@ -6665,6 +6726,7 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
         <translation>數字與尺寸應顯示的小數位數</translation>
     </message>
     <message>
+<<<<<<< HEAD
         <location filename="../../../../../Benson/sources/FreeCAD-0.22.0-git/src/Gui/PreferencePages/DlgSettingsGeneral.ui" line="93"/>
         <source>If enabled, document unit systems are ignored</source>
         <translation>如果啟用，文件單位系統將被忽略</translation>
@@ -6673,6 +6735,26 @@ You can also use the form: John Doe &lt;john@doe.com&gt;</source>
         <location filename="../../../../../Benson/sources/FreeCAD-0.22.0-git/src/Gui/PreferencePages/DlgSettingsGeneral.ui" line="96"/>
         <source>Ignore project unit system and use default</source>
         <translation>忽略專案單位系統並使用預設值</translation>
+=======
+        <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="93"/>
+        <source>Project unit system:</source>
+        <translation>專案單位系統:</translation>
+    </message>
+    <message>
+        <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="100"/>
+        <source>Unit system stored in the current project</source>
+        <translation>目前專案中儲存的單位系統</translation>
+    </message>
+    <message>
+        <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="107"/>
+        <source>If enabled, project unit systems are ignored</source>
+        <translation>如果啟用，專案單位系統將被忽略</translation>
+    </message>
+    <message>
+        <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="110"/>
+        <source>Ignore</source>
+        <translation>忽略</translation>
+>>>>>>> 220980d336 (Update Tranditional Chinese to latest translations development.)
     </message>
     <message>
         <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="93"/>
@@ -7661,6 +7743,30 @@ The value is the diameter of the sphere to fit on the screen.</source>
         <translation>mm</translation>
     </message>
     <message>
+<<<<<<< HEAD
+=======
+        <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="574"/>
+        <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="577"/>
+        <source>Enable navigation animations</source>
+        <translation>啟用旋轉動畫</translation>
+    </message>
+    <message>
+        <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="593"/>
+        <source>Duration of navigation animations that have a fixed duration</source>
+        <translation>具有固定持續時間的導航動畫持續時間</translation>
+    </message>
+    <message>
+        <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="596"/>
+        <source>Animation duration</source>
+        <translation>動畫持續時間</translation>
+    </message>
+    <message>
+        <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="614"/>
+        <source>The duration of navigation animations in milliseconds</source>
+        <translation>導航動畫持續時間(以毫秒為單位)</translation>
+    </message>
+    <message>
+>>>>>>> 220980d336 (Update Tranditional Chinese to latest translations development.)
         <location filename="../DlgSettingsNavigation.ui" line="433"/>
         <location filename="../DlgSettingsNavigation.ui" line="534"/>
         <source>Zoom operations will be performed at position of mouse pointer</source>
@@ -12870,6 +12976,34 @@ the region are non-opaque.</source>
         <location filename="../MainWindow.cpp" line="396"/>
         <source>Selection view</source>
         <translation>選擇檢視</translation>
+<<<<<<< HEAD
+=======
+    </message>
+    <message>
+        <location filename="../MainWindow.cpp" line="421"/>
+        <source>Report view</source>
+        <translation>報表檢視</translation>
+    </message>
+    <message>
+        <location filename="../MainWindow.cpp" line="432"/>
+        <source>Python console</source>
+        <translation>Python 控制台</translation>
+    </message>
+    <message>
+        <location filename="../MainWindow.cpp" line="365"/>
+        <source>Tree view</source>
+        <translation>樹狀檢視</translation>
+    </message>
+    <message>
+        <location filename="../MainWindow.cpp" line="386"/>
+        <source>Property view</source>
+        <translation>屬性檢視</translation>
+    </message>
+    <message>
+        <location filename="../MainWindow.cpp" line="705"/>
+        <source>Task List</source>
+        <translation>工作清單</translation>
+>>>>>>> 220980d336 (Update Tranditional Chinese to latest translations development.)
     </message>
     <message>
         <location filename="../MainWindow.cpp" line="344"/>
@@ -12882,14 +13016,14 @@ the region are non-opaque.</source>
         <translation>複合檢視</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="421"/>
-        <source>Report view</source>
-        <translation>報表檢視</translation>
+        <location filename="../MainWindow.cpp" line="344"/>
+        <source>Toolbox</source>
+        <translation>工具箱</translation>
     </message>
     <message>
-        <location filename="../MainWindow.cpp" line="432"/>
-        <source>Python console</source>
-        <translation>Python 控制台</translation>
+        <location filename="../MainWindow.cpp" line="411"/>
+        <source>Combo View</source>
+        <translation>複合檢視</translation>
     </message>
     <message>
         <location filename="../MainWindow.cpp" line="365"/>
@@ -13635,11 +13769,14 @@ Choose &apos;Abort&apos; to abort</source>
         <location filename="../NavigationStyle.cpp" line="1748"/>
         <source>Navigation styles</source>
         <translation>導航模式</translation>
+<<<<<<< HEAD
     </message>
     <message>
         <location filename="../../../../../Benson/sources/FreeCAD-0.22.0-git/src/Gui/NotificationArea.cpp" line="431"/>
         <source> (%1 times)</source>
         <translation type="unfinished"></translation>
+=======
+>>>>>>> 220980d336 (Update Tranditional Chinese to latest translations development.)
     </message>
     <message>
         <location filename="../NotificationArea.cpp" line="553"/>
@@ -14147,9 +14284,30 @@ the current copy will be lost.
         <translation>在%2與%3中找不到檔案 %1</translation>
     </message>
     <message>
+<<<<<<< HEAD
         <location filename="../ViewProviderAnnotation.cpp" line="410"/>
         <source>Move annotation</source>
         <translation>移動標註</translation>
+=======
+        <location filename="../Document.cpp" line="190"/>
+        <source>Too many message notifications. Notification temporarily stopped. Look at the report view for more information.</source>
+        <translation>通知訊息過多. 暫時停止通知. 檢視報告視窗以獲取更多資訊.</translation>
+    </message>
+    <message>
+        <location filename="../Document.cpp" line="209"/>
+        <source>Warning</source>
+        <translation>警告</translation>
+    </message>
+    <message>
+        <location filename="../Document.cpp" line="213"/>
+        <source>Information</source>
+        <translation>資訊</translation>
+    </message>
+    <message>
+        <location filename="../Document.cpp" line="217"/>
+        <source>Critical</source>
+        <translation>關鍵</translation>
+>>>>>>> 220980d336 (Update Tranditional Chinese to latest translations development.)
     </message>
 </context>
 <context>
@@ -15357,6 +15515,14 @@ This makes the docked windows stay transparent at all times.</source>
         <translation>合併專案</translation>
     </message>
     <message>
+<<<<<<< HEAD
+=======
+        <location filename="../CommandDoc.cpp" line="523"/>
+        <source>%1 document (*.FCStd)</source>
+        <translation>%1 文件（*.FCStd）</translation>
+    </message>
+    <message>
+>>>>>>> 220980d336 (Update Tranditional Chinese to latest translations development.)
         <location filename="../CommandDoc.cpp" line="532"/>
         <source>Cannot merge project with itself.</source>
         <translation>不能合併專案本身.</translation>
@@ -16101,6 +16267,7 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
     </message>
 </context>
 <context>
+<<<<<<< HEAD
     <name>StdCmdToggleToolBarLock</name>
     <message>
         <location filename="../../../../../Benson/sources/FreeCAD-0.22.0-git/src/Gui/CommandWindow.cpp" line="352"/>
@@ -16115,6 +16282,8 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
     </message>
 </context>
 <context>
+=======
+>>>>>>> 220980d336 (Update Tranditional Chinese to latest translations development.)
     <name>StdCmdToggleTransparency</name>
     <message>
         <location filename="../../../../../Benson/sources/FreeCAD-0.22.0-git/src/Gui/CommandView.cpp" line="901"/>
@@ -17037,6 +17206,14 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
         <location filename="../CommandView.cpp" line="1807"/>
         <source>Creates a screenshot of the active view</source>
         <translation>建立目前檢視畫面的螢幕截圖</translation>
+<<<<<<< HEAD
+=======
+    </message>
+    <message>
+        <location filename="../CommandView.cpp" line="1804"/>
+        <source>Save picture...</source>
+        <translation>儲存圖片...</translation>
+>>>>>>> 220980d336 (Update Tranditional Chinese to latest translations development.)
     </message>
 </context>
 <context>

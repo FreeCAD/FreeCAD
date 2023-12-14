@@ -28,7 +28,7 @@ if App.GuiUp:
 
 # translate = App.Qt.translate
 
-__title__ = App.Qt.translate("Assembly", "Assembly utilitary functions")
+__title__ = "Assembly utilitary functions"
 __author__ = "Ondsel"
 __url__ = "https://www.freecad.org"
 
@@ -64,7 +64,7 @@ def getObject(full_name):
     doc = App.ActiveDocument
     if len(parts) < 3:
         App.Console.PrintError(
-            App.Qt.translate("Assembly", "getObject() in UtilsAssembly.py the object name is too short, at minimum it should be something like 'Assembly.Box.edge16'. It shouldn't be shorter")
+            "getObject() in UtilsAssembly.py the object name is too short, at minimum it should be something like 'Assembly.Box.edge16'. It shouldn't be shorter"
         )
         return None
 

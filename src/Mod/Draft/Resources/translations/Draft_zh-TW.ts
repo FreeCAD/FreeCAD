@@ -2173,11 +2173,14 @@ A Link array is more efficient when creating multiple copies, but it cannot be f
         <translation>字型檔</translation>
     </message>
     <message>
+<<<<<<< HEAD
         <location filename="../../../../../../../Benson/sources/FreeCAD-0.22.0-git/src/Mod/Draft/Resources/ui/TaskShapeString.ui" line="183"/>
         <source>Font files (*.ttf *.otf *.pfb *.TTF *.OTF *.PFB)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+=======
+>>>>>>> 220980d336 (Update Tranditional Chinese to latest translations development.)
         <location filename="../../Resources/ui/TaskShapeString.ui" line="183"/>
         <source>Font files (*.ttf *.otf *.pfb)</source>
         <translation>字型檔(*.ttf *.otf *.pfb)</translation>
@@ -3804,6 +3807,7 @@ for linear dimensions.</source>
         <translation>鉤號-2</translation>
     </message>
     <message>
+<<<<<<< HEAD
         <location filename="../../../../../../../Benson/sources/FreeCAD-0.22.0-git/src/Mod/Draft/Resources/ui/TaskPanel_SetStyle.ui" line="385"/>
         <source>If checked, a unit symbol is added to dimension texts</source>
         <translation type="unfinished"></translation>
@@ -3814,6 +3818,8 @@ for linear dimensions.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+=======
+>>>>>>> 220980d336 (Update Tranditional Chinese to latest translations development.)
         <location filename="../../Resources/ui/TaskPanel_SetStyle.ui" line="327"/>
         <source>Ext lines</source>
         <translation>延伸線</translation>
@@ -3909,6 +3915,12 @@ Or choose one of the options below.</source>
         <location filename="../ui/TaskSelectPlane.ui" line="20"/>
         <source>Select a face or working plane proxy or 3 vertices.
 Or choose one of the options below</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Resources/ui/TaskSelectPlane.ui" line="20"/>
+        <source>Select 3 vertices, one or more shapes or a WP Proxy. Then confirm by clicking in the 3D view.
+Or choose one of the options below.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -4010,6 +4022,11 @@ Then, press the button below</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../../Resources/ui/TaskSelectPlane.ui" line="135"/>
+        <source>Or select a single vertex to move the current working plane without changing its orientation. Then press the button below.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../ui/TaskSelectPlane.ui" line="147"/>
         <source>Moves the working plane without changing its
 orientation. If no point is selected, the plane
@@ -4085,6 +4102,16 @@ value by using the [ and ] keys while drawing</source>
         <location filename="../ui/TaskSelectPlane.ui" line="254"/>
         <source>Previous</source>
         <translation>前一個</translation>
+    </message>
+    <message>
+        <location filename="../../Resources/ui/TaskSelectPlane.ui" line="264"/>
+        <source>Resets the working plane to its next position</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../Resources/ui/TaskSelectPlane.ui" line="267"/>
+        <source>Next</source>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -6760,9 +6787,15 @@ Not available if Draft preference option &apos;Use Part Primitives&apos; is enab
         <translation type="unfinished"></translation>
     </message>
     <message>
+<<<<<<< HEAD
         <location filename="../../../../../../../Benson/sources/FreeCAD-0.22.0-git/src/Mod/Draft/DraftGui.py" line="567"/>
         <source>Undo</source>
         <translation>復原</translation>
+=======
+        <location filename="../../DraftGui.py" line="657"/>
+        <source>&amp;Undo</source>
+        <translation>復原(&amp;U)</translation>
+>>>>>>> 220980d336 (Update Tranditional Chinese to latest translations development.)
     </message>
     <message>
         <location filename="../../DraftGui.py" line="789"/>
@@ -6885,7 +6918,11 @@ Not available if Draft preference option &apos;Use Part Primitives&apos; is enab
     <message>
         <location filename="../../DraftGui.py" line="848"/>
         <source>Label type</source>
+<<<<<<< HEAD
         <translation>標籤樣式</translation>
+=======
+        <translation type="unfinished"></translation>
+>>>>>>> 220980d336 (Update Tranditional Chinese to latest translations development.)
     </message>
     <message>
         <location filename="../../DraftGui.py" line="1036"/>
@@ -6961,6 +6998,7 @@ Not available if Draft preference option &apos;Use Part Primitives&apos; is enab
         <translation>面連接器</translation>
     </message>
     <message>
+<<<<<<< HEAD
         <location filename="../../WorkingPlane.py" line="713"/>
         <location filename="../../draftmake/make_sketch.py" line="127"/>
         <location filename="../../draftmake/make_sketch.py" line="139"/>
@@ -7036,6 +7074,8 @@ Not available if Draft preference option &apos;Use Part Primitives&apos; is enab
         <translation type="unfinished"></translation>
     </message>
     <message>
+=======
+>>>>>>> 220980d336 (Update Tranditional Chinese to latest translations development.)
         <location filename="../../importDWG.py" line="284"/>
         <source>Error during DWG conversion.
 Try moving the DWG file to a directory path without spaces and non-english characters,
@@ -7054,6 +7094,26 @@ or try saving to a lower DWG version.</source>
         <translation>轉換成功</translation>
     </message>
     <message>
+<<<<<<< HEAD
+=======
+        <location filename="../../importDWG.py" line="226"/>
+        <source>Error during DWG conversion. Try moving the DWG file to a directory path without spaces and non-english characters, or try saving to a lower DWG version.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../importDWG.py" line="229"/>
+        <location filename="../../importDWG.py" line="296"/>
+        <source>ODA File Converter not found</source>
+        <translation>沒找到 ODA 檔案轉換</translation>
+    </message>
+    <message>
+        <location filename="../../importDWG.py" line="242"/>
+        <location filename="../../importDWG.py" line="306"/>
+        <source>QCAD error</source>
+        <translation>QCAD 錯誤</translation>
+    </message>
+    <message>
+>>>>>>> 220980d336 (Update Tranditional Chinese to latest translations development.)
         <location filename="../../importDWG.py" line="302"/>
         <location filename="../../importDWG.py" line="382"/>
         <source>LibreDWG converter not found</source>
@@ -7113,6 +7173,7 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
         <translation type="unfinished"></translation>
     </message>
     <message>
+<<<<<<< HEAD
         <location filename="../../draftguitools/gui_selectplane.py" line="523"/>
         <source>Dir</source>
         <translation>方向</translation>
@@ -7139,6 +7200,43 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
         <location filename="../../importDWG.py" line="306"/>
         <source>QCAD error</source>
         <translation>QCAD 錯誤</translation>
+=======
+        <location filename="../../WorkingPlane.py" line="1198"/>
+        <location filename="../../WorkingPlane.py" line="1657"/>
+        <source>Current working plane:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../WorkingPlane.py" line="1264"/>
+        <location filename="../../WorkingPlane.py" line="1289"/>
+        <source>Selected shapes do not define a plane</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../draftguitools/gui_selectplane.py" line="539"/>
+        <source>Custom</source>
+        <translation>自訂</translation>
+    </message>
+    <message>
+        <location filename="../../WorkingPlane.py" line="1616"/>
+        <source>No previous working plane</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../WorkingPlane.py" line="1626"/>
+        <source>No next working plane</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../WorkingPlane.py" line="1661"/>
+        <source>Axes:</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../WorkingPlane.py" line="1668"/>
+        <source>Position:</source>
+        <translation type="unfinished"></translation>
+>>>>>>> 220980d336 (Update Tranditional Chinese to latest translations development.)
     </message>
     <message>
         <source>The Draft workbench is used for 2D drafting on a grid</source>
@@ -8128,6 +8226,24 @@ https://github.com/yorikvanhavre/Draft-dxf-importer
         <translation>切換格線</translation>
     </message>
     <message>
+<<<<<<< HEAD
+=======
+        <location filename="../../draftguitools/gui_selectplane.py" line="150"/>
+        <source>Pick a face, 3 vertices or a WP Proxy to define the drawing plane</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../draftguitools/gui_selectplane.py" line="274"/>
+        <source>Working plane aligned to global placement of</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../draftguitools/gui_selectplane.py" line="523"/>
+        <source>Dir</source>
+        <translation>方向</translation>
+    </message>
+    <message>
+>>>>>>> 220980d336 (Update Tranditional Chinese to latest translations development.)
         <location filename="../../draftguitools/gui_facebinders.py" line="71"/>
         <source>Select faces from existing objects</source>
         <translation type="unfinished"></translation>

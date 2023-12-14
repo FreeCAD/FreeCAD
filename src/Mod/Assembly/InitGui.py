@@ -22,14 +22,6 @@
 # ***************************************************************************/
 
 import Assembly_rc
-import FreeCAD
-import FreeCADGui
-from PySide import QtCore, QtGui
-from PySide.QtCore import QT_TRANSLATE_NOOP
-
-FreeCADGui.addLanguagePath(":/translations")
-FreeCADGui.addIconPath(":/icons")
-FreeCADGui.updateLocale()
 
 
 class AssemblyCommandGroup:
@@ -57,17 +49,15 @@ class AssemblyWorkbench(Workbench):
     "Assembly workbench"
 
     def __init__(self):
-        print(FreeCAD.Qt.translate("Assembly", "Loading Assembly workbench..."))
+        print("Loading Assembly workbench...")
         self.__class__.Icon = (
             FreeCAD.getResourceDir() + "Mod/Assembly/Resources/icons/AssemblyWorkbench.svg"
         )
-        self.__class__.MenuText = FreeCAD.Qt.translate("Workbench", "Assembly")
-        self.__class__.ToolTip = FreeCAD.Qt.translate(
-            "Workbench", "Assembly workbench")
+        self.__class__.MenuText = "Assembly"
+        self.__class__.ToolTip = "Assembly workbench"
 
     def Initialize(self):
-        print(FreeCAD.Qt.translate("Assembly",
-              "Initializing Assembly workbench..."))
+        print("Initializing Assembly workbench...")
         global AssemblyCommandGroup
 
         translate = FreeCAD.Qt.translate
@@ -75,9 +65,7 @@ class AssemblyWorkbench(Workbench):
         # load the builtin modules
         from PySide import QtCore, QtGui
         from PySide.QtCore import QT_TRANSLATE_NOOP
-        import CommandCreateAssembly
-        import CommandInsertLink
-        import CommandCreateJoint
+        import CommandCreateAssembly, CommandInsertLink, CommandCreateJoint
         from Preferences import PreferencesPage
 
         # from Preferences import preferences
@@ -85,8 +73,7 @@ class AssemblyWorkbench(Workbench):
         FreeCADGui.addLanguagePath(":/translations")
         FreeCADGui.addIconPath(":/icons")
 
-        FreeCADGui.addPreferencePage(
-            PreferencesPage, QT_TRANSLATE_NOOP("QObject", "Assembly"))
+        FreeCADGui.addPreferencePage(PreferencesPage, QT_TRANSLATE_NOOP("QObject", "Assembly"))
 
         # build commands list
         cmdlist = ["Assembly_CreateAssembly", "Assembly_InsertLink"]
@@ -102,15 +89,14 @@ class AssemblyWorkbench(Workbench):
         ]
 
         self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Assembly"), cmdlist)
-        self.appendToolbar(QT_TRANSLATE_NOOP(
-            "Workbench", "Assembly Joints"), cmdListJoints)
+        self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Assembly Joints"), cmdListJoints)
 
         self.appendMenu(
             [QT_TRANSLATE_NOOP("Workbench", "&Assembly")],
             cmdlist + ["Separator"] + cmdListJoints,
         )
 
-        print(FreeCAD.Qt.translate("Assembly", "Assembly workbench loaded"))
+        print("Assembly workbench loaded")
 
     def Activated(self):
         # update the translation engine

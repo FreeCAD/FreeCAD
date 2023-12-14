@@ -26,8 +26,6 @@
 # Gathering all the information to start FreeCAD
 # This is the second one of three init scripts, the third one
 # runs when the gui is up
-import FreeCAD
-import FreeCADGui
 
 
 class SketcherWorkbench(Workbench):
@@ -37,9 +35,8 @@ class SketcherWorkbench(Workbench):
         self.__class__.Icon = (
             FreeCAD.getResourceDir() + "Mod/Sketcher/Resources/icons/SketcherWorkbench.svg"
         )
-        self.__class__.MenuText = FreeCAD.Qt.translate("Workbench", "Sketcher")
-        self.__class__.ToolTip = FreeCAD.Qt.translate(
-            "Workbench", "Sketcher workbench")
+        self.__class__.MenuText = "Sketcher"
+        self.__class__.ToolTip = "Sketcher workbench"
 
     def Initialize(self):
         # load the module

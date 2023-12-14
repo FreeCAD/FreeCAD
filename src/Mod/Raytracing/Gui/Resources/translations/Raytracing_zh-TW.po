@@ -1,0 +1,493 @@
+#
+# Translators:
+# DrBenson <Benson.Dr@GMail.com>, 2023
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: FreeCAD Raytracing Language Translations v0.21_pre\n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: DrBenson <Benson.Dr@GMail.com>\n"
+"Language-Team: \n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+"X-Language: zh_TW\n"
+"X-Source-Language: en_US\n"
+"X-Qt-Contexts: true\n"
+"X-Generator: Poedit 3.2.2\n"
+
+#: ../../Command.cpp:523
+msgctxt "CmdRaytracingExportProject|"
+msgid "File"
+msgstr "檔案"
+
+#: ../../Command.cpp:524
+msgctxt "CmdRaytracingExportProject|"
+msgid "&Export project..."
+msgstr "匯出專案(&E)..."
+
+#: ../../Command.cpp:525
+msgctxt "CmdRaytracingExportProject|"
+msgid "Export a Raytracing project to a file"
+msgstr "匯出一個光線追蹤專案到檔案中"
+
+#: ../../Command.cpp:768
+msgctxt "CmdRaytracingNewLuxProject|"
+msgid "Raytracing"
+msgstr "光線追蹤"
+
+#: ../../Command.cpp:769
+msgctxt "CmdRaytracingNewLuxProject|"
+msgid "New Luxrender project"
+msgstr "新 Luxrender 專案"
+
+#: ../../Command.cpp:770
+msgctxt "CmdRaytracingNewLuxProject|"
+msgid "Insert new Luxrender project into the document"
+msgstr "加入新的Luxrender專案至文件中"
+
+#: ../../Command.cpp:822
+msgctxt "CmdRaytracingNewLuxProject|"
+msgid "No template"
+msgstr "無範本"
+
+#: ../../Command.cpp:823
+msgctxt "CmdRaytracingNewLuxProject|"
+msgid "No template available"
+msgstr "無可用範本"
+
+#: ../../Command.cpp:439
+msgctxt "CmdRaytracingNewPartSegment|"
+msgid "Raytracing"
+msgstr "光線追蹤"
+
+#: ../../Command.cpp:440
+msgctxt "CmdRaytracingNewPartSegment|"
+msgid "Insert part"
+msgstr "插入零件"
+
+#: ../../Command.cpp:441
+msgctxt "CmdRaytracingNewPartSegment|"
+msgid "Insert a new part object into a Raytracing project"
+msgstr "插入一個新的零件物件至光線追蹤專案中"
+
+#: ../../Command.cpp:322
+msgctxt "CmdRaytracingNewPovrayProject|"
+msgid "Raytracing"
+msgstr "光線追蹤"
+
+#: ../../Command.cpp:323
+msgctxt "CmdRaytracingNewPovrayProject|"
+msgid "New POV-Ray project"
+msgstr "新 Pov-ray 專案"
+
+#: ../../Command.cpp:324
+msgctxt "CmdRaytracingNewPovrayProject|"
+msgid "Insert new POV-Ray project into the document"
+msgstr "於檔案中新增 POV-Ray 專案"
+
+#: ../../Command.cpp:376
+msgctxt "CmdRaytracingNewPovrayProject|"
+msgid "No template"
+msgstr "無範本"
+
+#: ../../Command.cpp:377
+msgctxt "CmdRaytracingNewPovrayProject|"
+msgid "No template available"
+msgstr "無可用範本"
+
+#: ../../Command.cpp:586
+msgctxt "CmdRaytracingRender|"
+msgid "Raytracing"
+msgstr "光線追蹤"
+
+#: ../../Command.cpp:587
+msgctxt "CmdRaytracingRender|"
+msgid "&Render"
+msgstr "算繪(&)"
+
+#: ../../Command.cpp:588
+msgctxt "CmdRaytracingRender|"
+msgid "Renders the current raytracing project with an external renderer"
+msgstr "以外部算繪器算繪目前的光線追蹤專案"
+
+#: ../../Command.cpp:881
+msgctxt "CmdRaytracingResetCamera|"
+msgid "Raytracing"
+msgstr "光線追蹤"
+
+#: ../../Command.cpp:882
+msgctxt "CmdRaytracingResetCamera|"
+msgid "&Reset Camera"
+msgstr "重設攝影機(&R)"
+
+#: ../../Command.cpp:883
+msgctxt "CmdRaytracingResetCamera|"
+msgid ""
+"Sets the camera of the selected Raytracing project to match the current view"
+msgstr "設定所選光線追蹤專案之攝影機來配合目前視圖"
+
+#: ../../Command.cpp:85
+msgctxt "CmdRaytracingWriteCamera|"
+msgid "Raytracing"
+msgstr "光線追蹤"
+
+#: ../../Command.cpp:86
+msgctxt "CmdRaytracingWriteCamera|"
+msgid "Export camera to POV-Ray..."
+msgstr "匯出相機至 POV-Ray ..."
+
+#: ../../Command.cpp:87
+msgctxt "CmdRaytracingWriteCamera|"
+msgid ""
+"Export the camera position of the active 3D view in POV-Ray format to a file"
+msgstr "以POV-Ray格式儲存目前3D視圖之相機位置至檔案"
+
+#: ../../Command.cpp:178
+msgctxt "CmdRaytracingWritePart|"
+msgid "Raytracing"
+msgstr "光線追蹤"
+
+#: ../../Command.cpp:179
+msgctxt "CmdRaytracingWritePart|"
+msgid "Export part to POV-Ray..."
+msgstr "匯出零件至 POV-Ray ..."
+
+#: ../../Command.cpp:180
+msgctxt "CmdRaytracingWritePart|"
+msgid "Write the selected Part (object) as a POV-Ray file"
+msgstr "將所選零件(物件)存為 POV-Ray 檔"
+
+#: ../../Command.cpp:101 ../../Command.cpp:241 ../../Command.cpp:338
+#: ../../Command.cpp:784
+msgctxt "CmdRaytracingWriteView|"
+msgid "No perspective camera"
+msgstr "無透視鏡頭"
+
+#: ../../Command.cpp:102 ../../Command.cpp:242 ../../Command.cpp:339
+msgctxt "CmdRaytracingWriteView|"
+msgid ""
+"The current view camera is not perspective and thus resulting in a POV-Ray "
+"image that may look different than what was expected.\n"
+"Do you want to continue?"
+msgstr ""
+"目前檢視的相機不是透視圖並且會導致POV-Ray 圖片看起來可能與預期的有所不同.\n"
+"你要繼續嗎？"
+
+#: ../../Command.cpp:225
+msgctxt "CmdRaytracingWriteView|"
+msgid "Raytracing"
+msgstr "光線追蹤"
+
+#: ../../Command.cpp:226
+msgctxt "CmdRaytracingWriteView|"
+msgid "Export view to POV-Ray..."
+msgstr "匯出視圖至 POV-Ray ..."
+
+#: ../../Command.cpp:227
+msgctxt "CmdRaytracingWriteView|"
+msgid ""
+"Write the active 3D view with camera and all its content to a POV-Ray file"
+msgstr "將目前3D視圖中相機及所有內容存為 POV-Ray 檔"
+
+#: ../../Command.cpp:353 ../../Command.cpp:799
+msgctxt "CmdRaytracingWriteView|"
+msgid "No template"
+msgstr "無範本"
+
+#: ../../Command.cpp:354 ../../Command.cpp:800
+msgctxt "CmdRaytracingWriteView|"
+msgid "Cannot create a project because there is no template installed."
+msgstr "無法建立專案因為沒有安裝任何樣板."
+
+#: ../../Command.cpp:785
+msgctxt "CmdRaytracingWriteView|"
+msgid ""
+"The current view camera is not perspective and thus resulting in a luxrender "
+"image that may look different than what was expected.\n"
+"Do you want to continue?"
+msgstr ""
+"目前檢視的相機不是透視圖並且會導致在luxender 圖片看起來可能與預期的有所不"
+"同.\n"
+"你要繼續嗎？"
+
+#: ../../Command.cpp:138 ../../Command.cpp:189 ../../Command.cpp:252
+#: ../../Command.cpp:547
+msgctxt "QObject|"
+msgid "POV-Ray"
+msgstr "POV-Ray"
+
+#: ../../Command.cpp:139 ../../Command.cpp:190 ../../Command.cpp:253
+#: ../../Command.cpp:552 ../../Command.cpp:662
+msgctxt "QObject|"
+msgid "All Files"
+msgstr "所有檔案"
+
+#: ../../Command.cpp:140 ../../Command.cpp:191 ../../Command.cpp:255
+#: ../../Command.cpp:554
+msgctxt "QObject|"
+msgid "Export page"
+msgstr "匯出頁面"
+
+#: ../../Command.cpp:451 ../../Command.cpp:538 ../../Command.cpp:602
+#: ../../Command.cpp:895
+msgctxt "QObject|"
+msgid "Wrong selection"
+msgstr "錯誤的選取"
+
+#: ../../Command.cpp:452
+msgctxt "QObject|"
+msgid "Select a Part object."
+msgstr "選取零件物件。"
+
+#: ../../Command.cpp:462 ../../Command.cpp:474
+msgctxt "QObject|"
+msgid "No Raytracing project to insert"
+msgstr "未插入光線追蹤專案"
+
+#: ../../Command.cpp:463
+msgctxt "QObject|"
+msgid "Create a Raytracing project to insert a view."
+msgstr "於視圖中建立一個光線追蹤專案."
+
+#: ../../Command.cpp:475
+msgctxt "QObject|"
+msgid "Select a Raytracing project to insert the view."
+msgstr "選擇一個光線追蹤專案插入視圖中."
+
+#: ../../Command.cpp:539 ../../Command.cpp:603 ../../Command.cpp:896
+msgctxt "QObject|"
+msgid "Select one Raytracing project object."
+msgstr "選擇一個光線追蹤專案物體."
+
+#: ../../Command.cpp:543
+msgctxt "QObject|"
+msgid "Luxrender"
+msgstr "Luxrender"
+
+#: ../../Command.cpp:618 ../../Command.cpp:624
+msgctxt "QObject|"
+msgid "POV-Ray not found"
+msgstr "未發現POV-Ray"
+
+#: ../../Command.cpp:619
+msgctxt "QObject|"
+msgid "Please set the path to the POV-Ray executable in the preferences."
+msgstr "請於偏好設定中設定 POV-Ray 執行檔之路徑."
+
+#: ../../Command.cpp:625
+msgctxt "QObject|"
+msgid "Please correct the path to the POV-Ray executable in the preferences."
+msgstr "請於偏好設定中更新 POV-Ray 執行檔之路徑."
+
+#: ../../Command.cpp:632 ../../Command.cpp:638
+msgctxt "QObject|"
+msgid "Luxrender not found"
+msgstr "無Luxrender"
+
+#: ../../Command.cpp:633
+msgctxt "QObject|"
+msgid ""
+"Please set the path to the luxrender or luxconsole executable in the "
+"preferences."
+msgstr "請於偏好設定中設定 luxrender或luxconsole執行檔路徑."
+
+#: ../../Command.cpp:639
+msgctxt "QObject|"
+msgid ""
+"Please correct the path to the luxrender or luxconsole executable in the "
+"preferences."
+msgstr "請於偏好設定中修正 luxrender或luxconsole執行檔路徑."
+
+#: ../../Command.cpp:651
+msgctxt "QObject|"
+msgid "POV-Ray file missing"
+msgstr "無 POV-Ray 檔"
+
+#: ../../Command.cpp:652
+msgctxt "QObject|"
+msgid "The POV-Ray project file doesn't exist."
+msgstr "無 POV-Ray 專案檔案."
+
+#: ../../Command.cpp:658 ../../Command.cpp:660 ../../Command.cpp:663
+msgctxt "QObject|"
+msgid "Rendered image"
+msgstr "渲染影像"
+
+#: ../../Command.cpp:735
+msgctxt "QObject|"
+msgid "Lux project file missing"
+msgstr "無 Lux 檔"
+
+#: ../../Command.cpp:736
+msgctxt "QObject|"
+msgid "The Lux project file doesn't exist."
+msgstr "無 Lux 專案檔案."
+
+#: ../../DlgSettingsRay.ui:14
+msgctxt "RaytracingGui::DlgSettingsRay|"
+msgid "Raytracing"
+msgstr "光線追蹤"
+
+#: ../../DlgSettingsRay.ui:26
+msgctxt "RaytracingGui::DlgSettingsRay|"
+msgid "Render"
+msgstr "渲染"
+
+#: ../../DlgSettingsRay.ui:34
+msgctxt "RaytracingGui::DlgSettingsRay|"
+msgid "POV-Ray executable:"
+msgstr "POV-Ray 執行檔："
+
+#: ../../DlgSettingsRay.ui:51
+msgctxt "RaytracingGui::DlgSettingsRay|"
+msgid "POV-Ray output parameters:"
+msgstr "POV-Ray 輸出參數："
+
+#: ../../DlgSettingsRay.ui:60
+msgctxt "RaytracingGui::DlgSettingsRay|"
+msgid "The POV-Ray parameters to be passed to the render."
+msgstr "POV-Ray 參數傳被送至渲染器."
+
+#: ../../DlgSettingsRay.ui:63
+msgctxt "RaytracingGui::DlgSettingsRay|"
+msgid "+P +A"
+msgstr "+P +A"
+
+#: ../../DlgSettingsRay.ui:76
+msgctxt "RaytracingGui::DlgSettingsRay|"
+msgid "+W: "
+msgstr "+W: "
+
+#: ../../DlgSettingsRay.ui:83
+msgctxt "RaytracingGui::DlgSettingsRay|"
+msgid "The width of the rendered image"
+msgstr "渲染影像之寬度"
+
+#: ../../DlgSettingsRay.ui:102
+msgctxt "RaytracingGui::DlgSettingsRay|"
+msgid " +H : "
+msgstr " +H : "
+
+#: ../../DlgSettingsRay.ui:109
+msgctxt "RaytracingGui::DlgSettingsRay|"
+msgid "The height of the rendered image"
+msgstr "渲染影像之高度"
+
+#: ../../DlgSettingsRay.ui:130
+msgctxt "RaytracingGui::DlgSettingsRay|"
+msgid "Luxrender executable:"
+msgstr "Luxrender 執行檔："
+
+#: ../../DlgSettingsRay.ui:137
+msgctxt "RaytracingGui::DlgSettingsRay|"
+msgid "The path to the luxrender (or luxconsole) executable"
+msgstr "以luxrender(或 luxconsole) 的可執行檔案路徑"
+
+#: ../../DlgSettingsRay.ui:155
+msgctxt "RaytracingGui::DlgSettingsRay|"
+msgid "Directories"
+msgstr "目錄"
+
+#: ../../DlgSettingsRay.ui:175
+msgctxt "RaytracingGui::DlgSettingsRay|"
+msgid "Default Project dir:"
+msgstr "預設專案目錄："
+
+#: ../../DlgSettingsRay.ui:185 ../../DlgSettingsRay.ui:208
+#: ../../DlgSettingsRay.ui:231
+msgctxt "RaytracingGui::DlgSettingsRay|"
+msgid "Used by utility tools"
+msgstr "被工具程式所使用"
+
+#: ../../DlgSettingsRay.ui:201
+msgctxt "RaytracingGui::DlgSettingsRay|"
+msgid "Camera file name:"
+msgstr "攝影機檔案名稱："
+
+#: ../../DlgSettingsRay.ui:211
+msgctxt "RaytracingGui::DlgSettingsRay|"
+msgid "TempCamera.inc"
+msgstr "TempCamera.inc"
+
+#: ../../DlgSettingsRay.ui:224
+msgctxt "RaytracingGui::DlgSettingsRay|"
+msgid "Part file name:"
+msgstr "零件檔案名稱："
+
+#: ../../DlgSettingsRay.ui:234
+msgctxt "RaytracingGui::DlgSettingsRay|"
+msgid "TempPart.inc"
+msgstr "TempPart.inc"
+
+#: ../../DlgSettingsRay.ui:252
+msgctxt "RaytracingGui::DlgSettingsRay|"
+msgid "Mesh export settings"
+msgstr "網格匯出設定"
+
+#: ../../DlgSettingsRay.ui:278
+msgctxt "RaytracingGui::DlgSettingsRay|"
+msgid "Max mesh deviation:"
+msgstr "網格最大誤差："
+
+#: ../../DlgSettingsRay.ui:306
+msgctxt "RaytracingGui::DlgSettingsRay|"
+msgid "Do not calculate vertex normals"
+msgstr "不計算頂點法線"
+
+#: ../../DlgSettingsRay.ui:319
+msgctxt "RaytracingGui::DlgSettingsRay|"
+msgid "Write u,v coordinates"
+msgstr "寫入 u、 v 座標"
+
+#: ../../DlgSettingsRayImp.cpp:47
+#, qt-format
+msgctxt "RaytracingGui::DlgSettingsRayImp|"
+msgid "The path to the POV-Ray executable, if you want to render from %1"
+msgstr "若您想要執行渲染 %1, 請輸入 POV-Ray 執行檔之路徑"
+
+#: ../../ViewProvider.cpp:68
+msgctxt "RaytracingGui::ViewProviderLux|"
+msgid "Edit LuxRender project"
+msgstr "編輯LuxRender專案"
+
+#: ../../ViewProvider.cpp:99
+msgctxt "RaytracingGui::ViewProviderLux|"
+msgid "LuxRender template"
+msgstr "LuxRender範本"
+
+#: ../../ViewProvider.cpp:99
+msgctxt "RaytracingGui::ViewProviderLux|"
+msgid "Select a LuxRender template"
+msgstr "選擇一個LuxRender範本"
+
+#: ../../ViewProvider.cpp:147
+msgctxt "RaytracingGui::ViewProviderPovray|"
+msgid "Edit Povray project"
+msgstr "編輯Povray專案"
+
+#: ../../ViewProvider.cpp:178
+msgctxt "RaytracingGui::ViewProviderPovray|"
+msgid "Povray template"
+msgstr "Povray範本"
+
+#: ../../ViewProvider.cpp:178
+msgctxt "RaytracingGui::ViewProviderPovray|"
+msgid "Select a Povray template"
+msgstr "選擇一個Povray範本"
+
+#: ../../Workbench.cpp:37
+msgctxt "Workbench|"
+msgid "&Raytracing"
+msgstr "光線追蹤(&R)"
+
+msgctxt "Workbench|"
+msgid "Raytracing"
+msgstr "光線追蹤"
+
+msgctxt "Workbench|"
+msgid "Raytracing workbench"
+msgstr "光線追蹤工作台"

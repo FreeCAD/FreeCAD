@@ -44,13 +44,17 @@ class CommandInsertLink:
         pass
 
     def GetResources(self):
-        tooltip = App.Qt.translate("Assembly", "<p>Insert a Link into the assembly. This will create dynamic links to parts/bodies/primitives/assemblies.To insert external objects, make sure that the file is <b>open in the current session</b></p><p>Press shift to add several links while clicking on the view.")
+        tooltip = "<p>Insert a Link into the assembly. "
+        tooltip += "This will create dynamic links to parts/bodies/primitives/assemblies."
+        tooltip += "To insert external objects, make sure that the file "
+        tooltip += "is <b>open in the current session</b></p>"
+        tooltip += "<p>Press shift to add several links while clicking on the view."
 
         return {
             "Pixmap": "Assembly_InsertLink",
-            "MenuText": App.Qt.translate("Assembly", "Insert Link"),
+            "MenuText": QT_TRANSLATE_NOOP("Assembly_InsertLink", "Insert Link"),
             "Accel": "I",
-            "ToolTip": App.Qt.translate("Assembly", tooltip),
+            "ToolTip": QT_TRANSLATE_NOOP("Assembly_InsertLink", tooltip),
             "CmdType": "ForEdit",
         }
 
@@ -159,9 +163,9 @@ class TaskAssemblyInsertLink(QtCore.QObject):
     def openFiles(self):
         selected_files, _ = QtGui.QFileDialog.getOpenFileNames(
             None,
-            App.Qt.translate("Assembly", "Select FreeCAD documents to import parts from"),
+            "Select FreeCAD documents to import parts from",
             "",
-            App.Qt.translate("Assembly", "Supported Formats (*.FCStd *.fcstd);;All files (*)"),
+            "Supported Formats (*.FCStd *.fcstd);;All files (*)",
         )
 
         for filename in selected_files:
@@ -188,7 +192,7 @@ class TaskAssemblyInsertLink(QtCore.QObject):
 
         # check that the current document had been saved or that it's the same document as that of the selected part
         if not self.doc.FileName != "" and not self.doc == selectedPart.Document:
-            print(App.Qt.translate("Assembly", "The current document must be saved before inserting an external part"))
+            print("The current document must be saved before inserting an external part")
             return
 
         self.createdLink = self.assembly.newObject("App::Link", selectedPart.Name)

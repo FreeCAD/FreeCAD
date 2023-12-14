@@ -1,270 +1,270 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
-  <class>Gui::Dialog::AboutApplication</class>
-  <widget class="QDialog" name="Gui::Dialog::AboutApplication">
-    <property name="geometry">
-      <rect>
-        <x>0</x>
-        <y>0</y>
-        <width>470</width>
-        <height>617</height>
-      </rect>
-    </property>
-    <property name="windowTitle">
-      <string>About</string>
-    </property>
-    <property name="modal">
-      <bool>true</bool>
-    </property>
-    <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="0">
-        <widget class="QTabWidget" name="tabWidget">
-          <property name="currentIndex">
-            <number>1</number>
-          </property>
-          <widget class="QWidget" name="tab_about">
-            <attribute name="title">
-              <string>About</string>
-            </attribute>
-            <layout class="QVBoxLayout" name="verticalLayout">
-              <item>
-                <widget class="QLabel" name="labelSplashPicture">
-                  <property name="text">
-                    <string/>
-                  </property>
-                  <property name="pixmap">
-                    <pixmap resource="Icons/resource.qrc">:/icons/freecadsplash.png</pixmap>
-                  </property>
-                  <property name="alignment">
-                    <set>Qt::AlignCenter</set>
-                  </property>
-                </widget>
-              </item>
-              <item>
-                <spacer name="spacer">
-                  <property name="orientation">
-                    <enum>Qt::Vertical</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                    <size>
-                      <width>430</width>
-                      <height>17</height>
-                    </size>
-                  </property>
-                </spacer>
-              </item>
-              <item>
-                <layout class="QVBoxLayout" name="boxInfo">
-                  <property name="spacing">
-                    <number>6</number>
-                  </property>
-                  <property name="margin">
-                    <number>0</number>
-                  </property>
-                  <item>
-                    <layout class="QHBoxLayout" name="boxAuthor">
-                      <property name="spacing">
-                        <number>6</number>
-                      </property>
-                      <property name="margin">
-                        <number>0</number>
-                      </property>
-                      <item>
-                        <spacer>
-                          <property name="orientation">
-                            <enum>Qt::Horizontal</enum>
-                          </property>
-                          <property name="sizeHint" stdset="0">
-                            <size>
-                              <width>31</width>
-                              <height>20</height>
-                            </size>
-                          </property>
-                        </spacer>
-                      </item>
-                      <item>
-                        <widget class="Gui::UrlLabel" name="labelAuthor">
-                          <property name="text">
-                            <string notr="true">Unknown Application (c) Unknown Author</string>
-                          </property>
-                          <property name="textFormat">
-                            <enum>Qt::PlainText</enum>
-                          </property>
-                        </widget>
-                      </item>
-                      <item>
-                        <spacer>
-                          <property name="orientation">
-                            <enum>Qt::Horizontal</enum>
-                          </property>
-                          <property name="sizeHint" stdset="0">
-                            <size>
-                              <width>31</width>
-                              <height>20</height>
-                            </size>
-                          </property>
-                        </spacer>
-                      </item>
-                    </layout>
-                  </item>
-                  <item>
-                    <layout class="QGridLayout" name="boxVersion" rowstretch="0,0,0,0,0,0,0">
-                      <property name="margin">
-                        <number>0</number>
-                      </property>
-                      <property name="spacing">
-                        <number>6</number>
-                      </property>
-                      <item row="0" column="0">
-                        <widget class="QLabel" name="labelVersion">
-                          <property name="text">
-                            <string>Version</string>
-                          </property>
-                        </widget>
-                      </item>
-                      <item row="0" column="1">
-                        <widget class="QLabel" name="labelBuildVersion">
-                          <property name="text">
-                            <string notr="true">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style="font-weight:600;"&gt;Unknown&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                          </property>
-                        </widget>
-                      </item>
-                      <item row="1" column="0">
-                        <widget class="QLabel" name="labelRevision">
-                          <property name="text">
-                            <string>Revision number</string>
-                          </property>
-                        </widget>
-                      </item>
-                      <item row="1" column="1">
-                        <widget class="QLabel" name="labelBuildRevision">
-                          <property name="text">
-                            <string notr="true">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style="font-weight:600;"&gt;Unknown&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                          </property>
-                        </widget>
-                      </item>
-                      <item row="2" column="0">
-                        <widget class="QLabel" name="labelDate">
-                          <property name="text">
-                            <string>Release date</string>
-                          </property>
-                        </widget>
-                      </item>
-                      <item row="2" column="1">
-                        <widget class="QLabel" name="labelBuildDate">
-                          <property name="text">
-                            <string notr="true">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Unknown&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                          </property>
-                        </widget>
-                      </item>
-                      <item row="3" column="0">
-                        <widget class="QLabel" name="labelOS">
-                          <property name="text">
-                            <string>Operating system</string>
-                          </property>
-                        </widget>
-                      </item>
-                      <item row="3" column="1">
-                        <widget class="QLabel" name="labelBuildOS">
-                          <property name="text">
-                            <string notr="true">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style="font-weight:600;"&gt;Unknown&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                          </property>
-                        </widget>
-                      </item>
-                      <item row="4" column="0">
-                        <widget class="QLabel" name="labelPlatform">
-                          <property name="text">
-                            <string>Word size</string>
-                          </property>
-                        </widget>
-                      </item>
-                      <item row="4" column="1">
-                        <widget class="QLabel" name="labelBuildPlatform">
-                          <property name="text">
-                            <string notr="true">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style="font-weight:600;"&gt;Unknown&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                          </property>
-                        </widget>
-                      </item>
-                      <item row="5" column="0">
-                        <widget class="QLabel" name="labelBranch">
-                          <property name="text">
-                            <string>Branch</string>
-                          </property>
-                        </widget>
-                      </item>
-                      <item row="5" column="1">
-                        <widget class="QLabel" name="labelBuildBranch">
-                          <property name="text">
-                            <string notr="true">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style="font-weight:600;"&gt;Unknown&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                          </property>
-                        </widget>
-                      </item>
-                      <item row="6" column="0">
-                        <widget class="QLabel" name="labelHash">
-                          <property name="text">
-                            <string>Hash</string>
-                          </property>
-                        </widget>
-                      </item>
-                      <item row="6" column="1">
-                        <widget class="Gui::UrlLabel" name="labelBuildHash">
-                          <property name="text">
-                            <string notr="true">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style="font-weight:600;"&gt;Unknown&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                          </property>
-                        </widget>
-                      </item>
-                    </layout>
-                  </item>
-                </layout>
-              </item>
-              <item>
-                <layout class="QHBoxLayout" name="horizontalLayout">
-                  <item>
-                    <widget class="QPushButton" name="copyButton">
-                      <property name="text">
-                        <string>Copy to clipboard</string>
-                      </property>
-                    </widget>
-                  </item>
-                  <item>
-                    <spacer name="horizontalSpacer">
-                      <property name="orientation">
-                        <enum>Qt::Horizontal</enum>
-                      </property>
-                      <property name="sizeHint" stdset="0">
-                        <size>
-                          <width>40</width>
-                          <height>20</height>
-                        </size>
-                      </property>
-                    </spacer>
-                  </item>
-                </layout>
-              </item>
-              <item>
-                <spacer name="spacer_4">
-                  <property name="orientation">
-                    <enum>Qt::Vertical</enum>
-                  </property>
-                  <property name="sizeHint" stdset="0">
-                    <size>
-                      <width>430</width>
-                      <height>17</height>
-                    </size>
-                  </property>
-                </spacer>
-              </item>
-            </layout>
+ <class>Gui::Dialog::AboutApplication</class>
+ <widget class="QDialog" name="Gui::Dialog::AboutApplication">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>470</width>
+    <height>617</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>About</string>
+  </property>
+  <property name="modal">
+   <bool>true</bool>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="QTabWidget" name="tabWidget">
+     <property name="currentIndex">
+      <number>1</number>
+     </property>
+     <widget class="QWidget" name="tab_about">
+      <attribute name="title">
+       <string>About</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QLabel" name="labelSplashPicture">
+         <property name="text">
+          <string/>
+         </property>
+         <property name="pixmap">
+          <pixmap resource="Icons/resource.qrc">:/icons/freecadsplash.png</pixmap>
+         </property>
+         <property name="alignment">
+          <set>Qt::AlignCenter</set>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="spacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>430</width>
+           <height>17</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+       <item>
+        <layout class="QVBoxLayout" name="boxInfo">
+         <property name="spacing">
+          <number>6</number>
+         </property>
+         <property name="margin">
+          <number>0</number>
+         </property>
+         <item>
+          <layout class="QHBoxLayout" name="boxAuthor">
+           <property name="spacing">
+            <number>6</number>
+           </property>
+           <property name="margin">
+            <number>0</number>
+           </property>
+           <item>
+            <spacer>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>31</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+           <item>
+            <widget class="Gui::UrlLabel" name="labelAuthor">
+             <property name="text">
+              <string notr="true">Unknown Application (c) Unknown Author</string>
+             </property>
+             <property name="textFormat">
+              <enum>Qt::PlainText</enum>
+             </property>
+            </widget>
+           </item>
+           <item>
+            <spacer>
+             <property name="orientation">
+              <enum>Qt::Horizontal</enum>
+             </property>
+             <property name="sizeHint" stdset="0">
+              <size>
+               <width>31</width>
+               <height>20</height>
+              </size>
+             </property>
+            </spacer>
+           </item>
+          </layout>
+         </item>
+         <item>
+          <layout class="QGridLayout" name="boxVersion" rowstretch="0,0,0,0,0,0,0">
+           <property name="margin">
+            <number>0</number>
+           </property>
+           <property name="spacing">
+            <number>6</number>
+           </property>
+           <item row="0" column="0">
+            <widget class="QLabel" name="labelVersion">
+             <property name="text">
+              <string>Version</string>
+             </property>
+            </widget>
+           </item>
+           <item row="0" column="1">
+            <widget class="QLabel" name="labelBuildVersion">
+             <property name="text">
+              <string notr="true">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style="font-weight:600;"&gt;Unknown&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QLabel" name="labelRevision">
+             <property name="text">
+              <string>Revision number</string>
+             </property>
+            </widget>
+           </item>
+           <item row="1" column="1">
+            <widget class="QLabel" name="labelBuildRevision">
+             <property name="text">
+              <string notr="true">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style="font-weight:600;"&gt;Unknown&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="0">
+            <widget class="QLabel" name="labelDate">
+             <property name="text">
+              <string>Release date</string>
+             </property>
+            </widget>
+           </item>
+           <item row="2" column="1">
+            <widget class="QLabel" name="labelBuildDate">
+             <property name="text">
+              <string notr="true">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=" font-weight:600;"&gt;Unknown&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="0">
+            <widget class="QLabel" name="labelOS">
+             <property name="text">
+              <string>Operating system</string>
+             </property>
+            </widget>
+           </item>
+           <item row="3" column="1">
+            <widget class="QLabel" name="labelBuildOS">
+             <property name="text">
+              <string notr="true">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style="font-weight:600;"&gt;Unknown&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="0">
+            <widget class="QLabel" name="labelPlatform">
+             <property name="text">
+              <string>Word size</string>
+             </property>
+            </widget>
+           </item>
+           <item row="4" column="1">
+            <widget class="QLabel" name="labelBuildPlatform">
+             <property name="text">
+              <string notr="true">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style="font-weight:600;"&gt;Unknown&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="0">
+            <widget class="QLabel" name="labelBranch">
+             <property name="text">
+              <string notr="true">Branch</string>
+             </property>
+            </widget>
+           </item>
+           <item row="5" column="1">
+            <widget class="QLabel" name="labelBuildBranch">
+             <property name="text">
+              <string notr="true">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style="font-weight:600;"&gt;Unknown&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+            </widget>
+           </item>
+           <item row="6" column="0">
+            <widget class="QLabel" name="labelHash">
+             <property name="text">
+              <string notr="true">Hash</string>
+             </property>
+            </widget>
+           </item>
+          <item row="6" column="1">
+            <widget class="Gui::UrlLabel" name="labelBuildHash">
+             <property name="text">
+              <string notr="true">&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style="font-weight:600;"&gt;Unknown&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+             </property>
+            </widget>
+           </item>
+           </layout>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="horizontalLayout">
+         <item>
+          <widget class="QPushButton" name="copyButton">
+           <property name="text">
+            <string>Copy to clipboard</string>
+           </property>
           </widget>
-          <widget class="QWidget" name="tab_license">
-            <attribute name="title">
-              <string>License</string>
-            </attribute>
-            <layout class="QVBoxLayout" name="verticalLayout_3">
-              <item>
-                <widget class="QTextBrowser" name="textBrowserLicense">
-                  <property name="html">
-                    <string>&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"&gt;
+         </item>
+         <item>
+          <spacer name="horizontalSpacer">
+           <property name="orientation">
+            <enum>Qt::Horizontal</enum>
+           </property>
+           <property name="sizeHint" stdset="0">
+            <size>
+             <width>40</width>
+             <height>20</height>
+            </size>
+           </property>
+          </spacer>
+         </item>
+        </layout>
+       </item>
+       <item>
+        <spacer name="spacer_4">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>430</width>
+           <height>17</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="tab_license">
+      <attribute name="title">
+       <string>License</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout_3">
+       <item>
+        <widget class="QTextBrowser" name="textBrowserLicense">
+         <property name="html">
+          <string notr="true">&lt;!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0//EN" "http://www.w3.org/TR/REC-html40/strict.dtd"&gt;
 &lt;html&gt;&lt;head&gt;&lt;meta name="qrichtext" content="1" /&gt;&lt;style type="text/css"&gt;
 p, li { white-space: pre-wrap; }
 &lt;/style&gt;&lt;/head&gt;&lt;body style=" font-family:'Fira Sans'; font-size:9pt; font-weight:400; font-style:normal;"&gt;
@@ -348,74 +348,74 @@ p, li { white-space: pre-wrap; }
 &lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;15.&lt;/span&gt; BECAUSE THE LIBRARY IS LICENSED FREE OF CHARGE, THERE IS NO WARRANTY FOR THE LIBRARY, TO THE EXTENT PERMITTED BY APPLICABLE LAW. EXCEPT WHEN OTHERWISE STATED IN WRITING THE COPYRIGHT HOLDERS AND/OR OTHER PARTIES PROVIDE THE LIBRARY &amp;quot;AS IS&amp;quot; WITHOUT WARRANTY OF ANY KIND, EITHER EXPRESSED OR IMPLIED, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE ENTIRE RISK AS TO THE QUALITY AND PERFORMANCE OF THE LIBRARY IS WITH YOU. SHOULD THE LIBRARY PROVE DEFECTIVE, YOU ASSUME THE COST OF ALL NECESSARY SERVICING, REPAIR OR CORRECTION. &lt;/p&gt;
 &lt;p style=" margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;span style=" font-weight:600;"&gt;16.&lt;/span&gt; IN NO EVENT UNLESS REQUIRED BY APPLICABLE LAW OR AGREED TO IN WRITING WILL ANY COPYRIGHT HOLDER, OR ANY OTHER PARTY WHO MAY MODIFY AND/OR REDISTRIBUTE THE LIBRARY AS PERMITTED ABOVE, BE LIABLE TO YOU FOR DAMAGES, INCLUDING ANY GENERAL, SPECIAL, INCIDENTAL OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OR INABILITY TO USE THE LIBRARY (INCLUDING BUT NOT LIMITED TO LOSS OF DATA OR DATA BEING RENDERED INACCURATE OR LOSSES SUSTAINED BY YOU OR THIRD PARTIES OR A FAILURE OF THE LIBRARY TO OPERATE WITH ANY OTHER SOFTWARE), EVEN IF SUCH HOLDER OR OTHER PARTY HAS BEEN ADVISED OF THE POSSIBILITY OF SUCH DAMAGES. &lt;/p&gt;
 &lt;p style="-qt-paragraph-type:empty; margin-top:12px; margin-bottom:12px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;"&gt;&lt;br /&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-                  </property>
-                  <property name="openExternalLinks">
-                    <bool>true</bool>
-                  </property>
-                </widget>
-              </item>
-            </layout>
-          </widget>
+         </property>
+         <property name="openExternalLinks">
+          <bool>true</bool>
+         </property>
         </widget>
-      </item>
-      <item row="1" column="0">
-        <layout class="QHBoxLayout" name="boxOK">
-          <property name="spacing">
-            <number>6</number>
-          </property>
-          <property name="margin">
-            <number>0</number>
-          </property>
-          <item>
-            <spacer>
-              <property name="orientation">
-                <enum>Qt::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-                <size>
-                  <width>160</width>
-                  <height>31</height>
-                </size>
-              </property>
-            </spacer>
-          </item>
-          <item>
-            <widget class="QPushButton" name="okButton">
-              <property name="text">
-                <string>OK</string>
-              </property>
-            </widget>
-          </item>
-        </layout>
-      </item>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  <item row="1" column="0">
+    <layout class="QHBoxLayout" name="boxOK">
+     <property name="spacing">
+      <number>6</number>
+     </property>
+     <property name="margin">
+      <number>0</number>
+     </property>
+     <item>
+      <spacer>
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>160</width>
+         <height>31</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+     <item>
+      <widget class="QPushButton" name="okButton">
+       <property name="text">
+        <string>OK</string>
+       </property>
+      </widget>
+     </item>
     </layout>
-  </widget>
-  <customwidgets>
-    <customwidget>
-      <class>Gui::UrlLabel</class>
-      <extends>QLabel</extends>
-      <header>Gui/Widgets.h</header>
-    </customwidget>
-  </customwidgets>
-  <resources>
-    <include location="Icons/resource.qrc"/>
-  </resources>
-  <connections>
-    <connection>
-      <sender>okButton</sender>
-      <signal>clicked()</signal>
-      <receiver>Gui::Dialog::AboutApplication</receiver>
-      <slot>accept()</slot>
-      <hints>
-        <hint type="sourcelabel">
-          <x>417</x>
-          <y>565</y>
-        </hint>
-        <hint type="destinationlabel">
-          <x>464</x>
-          <y>493</y>
-        </hint>
-      </hints>
-    </connection>
-  </connections>
+   </item>
+   </layout>
+ </widget>
+ <customwidgets>
+  <customwidget>
+   <class>Gui::UrlLabel</class>
+   <extends>QLabel</extends>
+   <header>Gui/Widgets.h</header>
+  </customwidget>
+ </customwidgets>
+ <resources>
+  <include location="Icons/resource.qrc"/>
+ </resources>
+ <connections>
+  <connection>
+   <sender>okButton</sender>
+   <signal>clicked()</signal>
+   <receiver>Gui::Dialog::AboutApplication</receiver>
+   <slot>accept()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>417</x>
+     <y>565</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>464</x>
+     <y>493</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

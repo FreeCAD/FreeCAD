@@ -1429,11 +1429,14 @@ as mirroring reference.</source>
     <name>CmdSketcherOffset</name>
     <message>
         <location filename="../../../../../../../../Benson/sources/FreeCAD-0.22.0-git/src/Mod/Sketcher/Gui/CommandSketcherTools.cpp" line="2267"/>
+<<<<<<< HEAD
         <source>Offset geometry</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../../../../../../../../Benson/sources/FreeCAD-0.22.0-git/src/Mod/Sketcher/Gui/CommandSketcherTools.cpp" line="2267"/>
+=======
+>>>>>>> 220980d336 (Update Tranditional Chinese to latest translations development.)
         <source>Offset geometries</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1888,6 +1891,25 @@ invalid constraints, degenerated geometry, etc.</source>
         <translation>新增距離Y拘束</translation>
     </message>
     <message>
+<<<<<<< HEAD
+=======
+        <source>Add horizontal constraint</source>
+        <translation>新增水平約束</translation>
+    </message>
+    <message>
+        <source>Add horizontal alignment</source>
+        <translation>新增水平對齊</translation>
+    </message>
+    <message>
+        <source>Add vertical constraint</source>
+        <translation>建立垂直約束</translation>
+    </message>
+    <message>
+        <source>Add vertical alignment</source>
+        <translation>垂直對齊</translation>
+    </message>
+    <message>
+>>>>>>> 220980d336 (Update Tranditional Chinese to latest translations development.)
         <source>Add &apos;Lock&apos; constraint</source>
         <translation>新增定位拘束</translation>
     </message>
@@ -1942,6 +1964,13 @@ invalid constraints, degenerated geometry, etc.</source>
         <location filename="../../CommandConstraints.cpp" line="2712"/>
         <source>Add circle to line distance constraint</source>
         <translation>增加圓到線距離約束</translation>
+<<<<<<< HEAD
+=======
+    </message>
+    <message>
+        <source>Add point on object constraint</source>
+        <translation>在物體拘束上新增點</translation>
+>>>>>>> 220980d336 (Update Tranditional Chinese to latest translations development.)
     </message>
     <message>
         <source>Add point to point horizontal distance constraint</source>
@@ -2205,6 +2234,7 @@ invalid constraints, degenerated geometry, etc.</source>
         <translation>新增多邊形</translation>
     </message>
     <message>
+<<<<<<< HEAD
         <location filename="../../../../../../../../Benson/sources/FreeCAD-0.22.0-git/src/Mod/Sketcher/Gui/DrawSketchHandlerArcSlot.h" line="175"/>
         <source>Add sketch arc slot</source>
         <translation>新增弧線槽草圖</translation>
@@ -2226,6 +2256,8 @@ invalid constraints, degenerated geometry, etc.</source>
         <translation>垂直對齊</translation>
     </message>
     <message>
+=======
+>>>>>>> 220980d336 (Update Tranditional Chinese to latest translations development.)
         <source>Add hexagon</source>
         <translation>建立六角形</translation>
     </message>
@@ -2666,6 +2698,7 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
         <source>Offset value can&apos;t be 0.</source>
         <translation type="unfinished"></translation>
     </message>
+<<<<<<< HEAD
     <message>
         <location filename="../../../../../../../../Benson/sources/FreeCAD-0.22.0-git/src/Mod/Sketcher/Gui/DrawSketchHandlerArcSlot.h" line="184"/>
         <source>Failed to add arc slot</source>
@@ -2681,6 +2714,8 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
         <source>Failed to add an ellipse</source>
         <translation type="unfinished"></translation>
     </message>
+=======
+>>>>>>> 220980d336 (Update Tranditional Chinese to latest translations development.)
 </context>
 <context>
     <name>QObject</name>
@@ -2762,11 +2797,14 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
         <translation type="unfinished"></translation>
     </message>
     <message>
+<<<<<<< HEAD
         <location filename="../../CommandConstraints.cpp" line="3199"/>
         <source>Select either one point and several curves, or one curve and several points.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
+=======
+>>>>>>> 220980d336 (Update Tranditional Chinese to latest translations development.)
         <source>Only sketch and its support are allowed to be selected.</source>
         <translation>只允許選擇草圖及其支撐.</translation>
     </message>
@@ -2848,6 +2886,54 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
         <translation>僅有邊線能從草圖中被選取.</translation>
     </message>
     <message>
+<<<<<<< HEAD
+=======
+        <source>Endpoint to endpoint tangency was applied instead.</source>
+        <translation>已被取代為終點對終點相切.</translation>
+    </message>
+    <message>
+        <location filename="../../CommandConstraints.cpp" line="2249"/>
+        <source>B-spline knot to endpoint tangency was applied instead.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select two or more points from the sketch.</source>
+        <translation>從草圖中選取二個或更多點.</translation>
+    </message>
+    <message>
+        <source>Select two or more vertices from the sketch.</source>
+        <translation>從草圖中選取兩個或更多頂點.</translation>
+    </message>
+    <message>
+        <location filename="../../CommandConstraints.cpp" line="2321"/>
+        <source>Select two or more vertices from the sketch for a coincident constraint, or two or more circles, ellipses, arcs or arcs of ellipse for a concentric constraint.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../CommandConstraints.cpp" line="2406"/>
+        <source>Select two vertices from the sketch for a coincident constraint, or two circles, ellipses, arcs or arcs of ellipse for a concentric constraint.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>Select exactly one line or one point and one line or two points from the sketch.</source>
+        <translation>由草圖中選取一條線或一個點,以及一條線或兩個點.</translation>
+    </message>
+    <message>
+        <source>Cannot add a length constraint on an axis!</source>
+        <translation>無法於軸上增加長度拘束!</translation>
+    </message>
+    <message>
+        <location filename="../../CommandConstraints.cpp" line="2774"/>
+        <location filename="../../CommandConstraints.cpp" line="2998"/>
+        <source>Select exactly one line or one point and one line or two points or two circles from the sketch.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <source>This constraint does not make sense for non-linear curves.</source>
+        <translation>此拘束條件在非線性曲線上並不合理.</translation>
+    </message>
+    <message>
+>>>>>>> 220980d336 (Update Tranditional Chinese to latest translations development.)
         <source>Endpoint to edge tangency was applied instead.</source>
         <translation>改為應用端點到邊相切.</translation>
     </message>
@@ -2884,8 +2970,13 @@ Points must be set closer than a fifth of the grid size to a grid line to snap.<
         <translation>沒有任何被選擇點被拘束在其個別的曲線上，因為它們是同一個元件的一部份，因為它們都是外部幾何，或是因為其邊不符合條件.</translation>
     </message>
     <message>
+<<<<<<< HEAD
         <location filename="../../CommandConstraints.cpp" line="2321"/>
         <source>Select two or more vertices from the sketch for a coincident constraint, or two or more circles, ellipses, arcs or arcs of ellipse for a concentric constraint.</source>
+=======
+        <location filename="../../CommandConstraints.cpp" line="3199"/>
+        <source>Select either one point and several curves, or one curve and several points.</source>
+>>>>>>> 220980d336 (Update Tranditional Chinese to latest translations development.)
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -3277,6 +3368,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <translation>矩形屬性</translation>
     </message>
     <message>
+<<<<<<< HEAD
         <location filename="../../../../../../../../Benson/sources/FreeCAD-0.22.0-git/src/Mod/Sketcher/Gui/DrawSketchHandlerArc.h" line="347"/>
         <source>Arc parameters</source>
         <translation>弧參數</translation>
@@ -3313,6 +3405,8 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
         <translation>從草圖中選取兩個或更多頂點.</translation>
     </message>
     <message>
+=======
+>>>>>>> 220980d336 (Update Tranditional Chinese to latest translations development.)
         <source>Distance constraint</source>
         <translation>距離拘束</translation>
     </message>
@@ -4350,6 +4444,7 @@ Requires to re-enter edit mode to take effect.</source>
         <translation>拘束被自動替換時通知</translation>
     </message>
     <message>
+<<<<<<< HEAD
         <location filename="../../../../../../../../Benson/sources/FreeCAD-0.22.0-git/src/Mod/Sketcher/Gui/SketcherSettings.ui" line="165"/>
         <source>Unify Coincident and PointOnObject in a single tool.</source>
         <translation>在單一工具中統一重合和物件上的點.</translation>
@@ -4370,6 +4465,8 @@ Requires to re-enter edit mode to take effect.</source>
         <translation>水平/垂直自動工具</translation>
     </message>
     <message>
+=======
+>>>>>>> 220980d336 (Update Tranditional Chinese to latest translations development.)
         <location filename="../../SketcherSettings.ui" line="174"/>
         <source>Dimension Constraint</source>
         <translation>尺寸約束</translation>
@@ -4402,6 +4499,7 @@ This setting is only for the toolbar. Whichever you chose, all tools are always 
         <translation type="unfinished"></translation>
     </message>
     <message>
+<<<<<<< HEAD
         <location filename="../../../../../../../../Benson/sources/FreeCAD-0.22.0-git/src/Mod/Sketcher/Gui/SketcherSettings.ui" line="224"/>
         <source>Tool Parameters</source>
         <translation>工具參數</translation>
@@ -4420,6 +4518,8 @@ This setting is only for the toolbar. Whichever you chose, all tools are always 
         <translation type="unfinished"></translation>
     </message>
     <message>
+=======
+>>>>>>> 220980d336 (Update Tranditional Chinese to latest translations development.)
         <location filename="../../SketcherSettings.cpp" line="133"/>
         <source>Single tool</source>
         <translation>單一工具</translation>
@@ -6623,12 +6723,20 @@ Eigen Sparse QR 算法針對稀疏矩陣進行了優化；通常更快</translat
     <message>
         <location filename="../../../../../../../../Benson/sources/FreeCAD-0.22.0-git/src/Mod/Sketcher/Gui/DrawSketchHandlerRectangle.h" line="1620"/>
         <source>Frame (J)</source>
+<<<<<<< HEAD
         <translation>外框 (J)</translation>
+=======
+        <translation type="unfinished"></translation>
+>>>>>>> 220980d336 (Update Tranditional Chinese to latest translations development.)
     </message>
     <message>
         <location filename="../../../../../../../../Benson/sources/FreeCAD-0.22.0-git/src/Mod/Sketcher/Gui/DrawSketchHandlerRectangle.h" line="1623"/>
         <source>Create two rectangles, one in the other with a constant thickness.</source>
+<<<<<<< HEAD
         <translation>建立兩個矩形，其中一個具有恆定的厚度.</translation>
+=======
+        <translation type="unfinished"></translation>
+>>>>>>> 220980d336 (Update Tranditional Chinese to latest translations development.)
     </message>
 </context>
 <context>

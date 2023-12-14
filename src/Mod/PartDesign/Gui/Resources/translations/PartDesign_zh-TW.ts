@@ -2753,6 +2753,14 @@ click again to end selection</source>
         <location filename="../../../../../../../../Benson/sources/FreeCAD-0.22.0-git/src/Mod/PartDesign/Gui/TaskFilletParameters.cpp" line="190"/>
         <source>Empty fillet created!</source>
         <translation>建立空圓角!</translation>
+<<<<<<< HEAD
+=======
+    </message>
+    <message>
+        <location filename="../../TaskFilletParameters.ui" line="14"/>
+        <source>Form</source>
+        <translation>格式</translation>
+>>>>>>> 220980d336 (Update Tranditional Chinese to latest translations development.)
     </message>
     <message>
         <location filename="../../TaskFilletParameters.cpp" line="193"/>
@@ -2993,6 +3001,11 @@ click again to end selection</source>
 <context>
     <name>PartDesignGui::TaskLinearPatternParameters</name>
     <message>
+        <location filename="../../TaskLinearPatternParameters.ui" line="14"/>
+        <source>Form</source>
+        <translation>格式</translation>
+    </message>
+    <message>
         <location filename="../../TaskLinearPatternParameters.ui" line="22"/>
         <source>Add feature</source>
         <translation>加入特徵</translation>
@@ -3062,11 +3075,6 @@ click again to end selection</source>
         <location filename="../../TaskLinearPatternParameters.cpp" line="333"/>
         <source>Error</source>
         <translation>錯誤</translation>
-    </message>
-    <message>
-        <location filename="../../TaskLinearPatternParameters.ui" line="14"/>
-        <source>Form</source>
-        <translation>格式</translation>
     </message>
 </context>
 <context>
@@ -3332,6 +3340,11 @@ click again to end selection</source>
         <location filename="../../TaskPadPocketParameters.ui" line="58"/>
         <source>Offset to face</source>
         <translation>偏移至面</translation>
+    </message>
+    <message>
+        <location filename="../../TaskPadPocketParameters.ui" line="14"/>
+        <source>Form</source>
+        <translation>格式</translation>
     </message>
     <message>
         <location filename="../../TaskPadPocketParameters.ui" line="102"/>
@@ -3769,6 +3782,11 @@ measured along the specified direction</source>
         <location filename="../../TaskPolarPatternParameters.ui" line="77"/>
         <source>Angle</source>
         <translation>角度</translation>
+    </message>
+    <message>
+        <location filename="../../TaskPolarPatternParameters.ui" line="14"/>
+        <source>Form</source>
+        <translation>格式</translation>
     </message>
     <message>
         <location filename="../../TaskPolarPatternParameters.ui" line="159"/>
