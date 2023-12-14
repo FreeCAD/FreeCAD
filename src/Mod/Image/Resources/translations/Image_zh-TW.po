@@ -1,0 +1,238 @@
+#
+# Translators:
+# DrBenson <Benson.Dr@GMail.com>, 2023
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Last-Translator: DrBenson <Benson.Dr@GMail.com>\n"
+"Language-Team: \n"
+"Language: zh_TW\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Language: zh_TW\n"
+"X-Source-Language: en_US\n"
+"X-Qt-Contexts: true\n"
+"X-Generator: Poedit 3.2.2\n"
+
+#: ../../Command.cpp:100
+msgctxt "CmdCreateImagePlane|"
+msgid "Image"
+msgstr "影像"
+
+#: ../../Command.cpp:101
+msgctxt "CmdCreateImagePlane|"
+msgid "Create image plane..."
+msgstr "建立影像平面..."
+
+#: ../../Command.cpp:102
+msgctxt "CmdCreateImagePlane|"
+msgid "Create a planar image in the 3D space"
+msgstr "於3D空間建立平面影像"
+
+#: ../../Command.cpp:55
+msgctxt "CmdImageOpen|"
+msgid "Image"
+msgstr "影像"
+
+#: ../../Command.cpp:56
+msgctxt "CmdImageOpen|"
+msgid "Open..."
+msgstr "開啟..."
+
+#: ../../Command.cpp:57
+msgctxt "CmdImageOpen|"
+msgid "Open image view"
+msgstr "開啟影像檢視"
+
+#: ../../Command.cpp:175
+msgctxt "CmdImageScaling|"
+msgid "Image"
+msgstr "影像"
+
+#: ../../Command.cpp:176
+msgctxt "CmdImageScaling|"
+msgid "Scale..."
+msgstr "縮放比例..."
+
+#: ../../Command.cpp:177
+msgctxt "CmdImageScaling|"
+msgid "Image Scaling"
+msgstr "影像縮放"
+
+#: ../../Command.cpp:150
+msgctxt "Command|"
+msgid "Create ImagePlane"
+msgstr "建立平面影像"
+
+#: ../../../ImageTools/_CommandImageScaling.py:138
+msgctxt "Dialog|"
+msgid "Scale image plane"
+msgstr "縮放影像平面"
+
+#: ../../../ImageTools/_CommandImageScaling.py:139
+msgctxt "Dialog|"
+msgid "Distance [mm]"
+msgstr "距離 [mm]"
+
+#: ../../../ImageTools/_CommandImageScaling.py:140
+msgctxt "Dialog|"
+msgid "Select first point"
+msgstr "選擇第一個點"
+
+#: ../../../ImageTools/_CommandImageScaling.py:165
+msgctxt "Dialog|"
+msgid "Enter distance"
+msgstr "輸入距離"
+
+#: ../../../ImageTools/_CommandImageScaling.py:168
+msgctxt "Dialog|"
+msgid "Select ImagePlane"
+msgstr "選擇影像平面"
+
+#: ../../../ImageTools/_CommandImageScaling.py:193
+msgctxt "Dialog|"
+msgid "Select second point"
+msgstr "選擇第二個點"
+
+#: ../../../ImageTools/_CommandImageScaling.py:202
+msgctxt "Dialog|"
+msgid "Select Image Plane and type distance"
+msgstr "選擇影像平面並輸入距離"
+
+#: ../../OpenGLImageBox.cpp:392
+msgctxt "ImageGui::GLImageBox|"
+msgid "Image pixel format"
+msgstr "影像像素格式"
+
+#: ../../OpenGLImageBox.cpp:393
+msgctxt "ImageGui::GLImageBox|"
+msgid "Undefined type of colour space for image viewing"
+msgstr "未定義影像視圖的色彩模式"
+
+#: ../../ImageOrientationDialog.ui:14
+msgctxt "ImageGui::ImageOrientationDialog|"
+msgid "Choose orientation"
+msgstr "選擇方向"
+
+#: ../../ImageOrientationDialog.ui:20
+msgctxt "ImageGui::ImageOrientationDialog|"
+msgid "Image plane"
+msgstr "影像平面"
+
+#: ../../ImageOrientationDialog.ui:26
+msgctxt "ImageGui::ImageOrientationDialog|"
+msgid "XY-Plane"
+msgstr "XY 平面"
+
+#: ../../ImageOrientationDialog.ui:36
+msgctxt "ImageGui::ImageOrientationDialog|"
+msgid "XZ-Plane"
+msgstr "XZ 平面"
+
+#: ../../ImageOrientationDialog.ui:43
+msgctxt "ImageGui::ImageOrientationDialog|"
+msgid "YZ-Plane"
+msgstr "YZ 平面"
+
+#: ../../ImageOrientationDialog.ui:72
+msgctxt "ImageGui::ImageOrientationDialog|"
+msgid "Reverse direction"
+msgstr "反轉方向"
+
+#: ../../ImageOrientationDialog.ui:81
+msgctxt "ImageGui::ImageOrientationDialog|"
+msgid "Offset:"
+msgstr "偏移:"
+
+#: ../../ImageView.cpp:107
+msgctxt "ImageGui::ImageView|"
+msgid "&Fit image"
+msgstr "符合影像尺寸(&F)"
+
+#: ../../ImageView.cpp:109
+msgctxt "ImageGui::ImageView|"
+msgid "Stretch the image to fit the view"
+msgstr "延伸影像符合視圖大小"
+
+#: ../../ImageView.cpp:113
+msgctxt "ImageGui::ImageView|"
+msgid "&1:1 scale"
+msgstr "&1:1 比例"
+
+#: ../../ImageView.cpp:115
+msgctxt "ImageGui::ImageView|"
+msgid "Display the image at a 1:1 scale"
+msgstr "在1:1的比例顯示影像"
+
+#: ../../ImageView.cpp:124
+msgctxt "ImageGui::ImageView|"
+msgid "Standard"
+msgstr "標準"
+
+#: ../../ImageView.cpp:142
+msgctxt "ImageGui::ImageView|"
+msgid "Ready..."
+msgstr "準備..."
+
+#: ../../ImageView.cpp:543
+msgctxt "ImageGui::ImageView|"
+msgid "grey"
+msgstr "灰色"
+
+#: ../../ImageView.cpp:544 ../../ImageView.cpp:547 ../../ImageView.cpp:557
+#: ../../ImageView.cpp:562 ../../ImageView.cpp:572 ../../ImageView.cpp:577
+#: ../../ImageView.cpp:588 ../../ImageView.cpp:593 ../../ImageView.cpp:604
+#: ../../ImageView.cpp:609
+msgctxt "ImageGui::ImageView|"
+msgid "zoom"
+msgstr "縮放"
+
+#: ../../ImageView.cpp:547 ../../ImageView.cpp:557 ../../ImageView.cpp:572
+#: ../../ImageView.cpp:588 ../../ImageView.cpp:604
+msgctxt "ImageGui::ImageView|"
+msgid "outside image"
+msgstr "外部影像"
+
+#: ../../../ImageTools/_CommandImageScaling.py:56
+msgctxt "Image_Scaling|"
+msgid "Scale image plane"
+msgstr "縮放影像平面"
+
+#: ../../../ImageTools/_CommandImageScaling.py:60
+msgctxt "Image_Scaling|"
+msgid "Scales an image plane by defining a distance between two points"
+msgstr "透過定義兩個點之間的距離來縮放影像平面"
+
+#: ../../Command.cpp:70 ../../Command.cpp:114
+msgctxt "QObject|"
+msgid "Images"
+msgstr "影像"
+
+#: ../../Command.cpp:75 ../../Command.cpp:119
+msgctxt "QObject|"
+msgid "All files"
+msgstr "所有檔案"
+
+#: ../../Command.cpp:77 ../../Command.cpp:121
+msgctxt "QObject|"
+msgid "Choose an image file to open"
+msgstr "選擇要打開的影像檔"
+
+#: ../../Command.cpp:127
+msgctxt "QObject|"
+msgid "Error opening image"
+msgstr "開啟圖像發生錯誤"
+
+#: ../../Command.cpp:128
+msgctxt "QObject|"
+msgid "Could not load the chosen image"
+msgstr "無法載入選擇的圖像"
+
+#: ../../Workbench.cpp:32
+msgctxt "Workbench|"
+msgid "Image"
+msgstr "影像"

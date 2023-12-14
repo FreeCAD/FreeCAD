@@ -3645,11 +3645,14 @@
 >>>>>>> 6987fc1beb (Update Tranditional Chinese to latest translations development.)
     </message>
     <message>
+<<<<<<< HEAD
         <location filename="../../../../../../../../Benson/sources/FreeCAD-0.22.0-git/src/Mod/TechDraw/Gui/CommandAnnotate.cpp" line="1216"/>
         <source>Selection is not a Cosmetic Circle or a Cosmetic Arc of Circle.</source>
         <translation>選擇不是修飾圓或修飾圓弧.</translation>
     </message>
     <message>
+=======
+>>>>>>> b927b64f9c (Update Tranditional Chinese to latest translations development.)
         <location filename="../../../../../../FreeCAD-0.22.0/src/Mod/TechDraw/Gui/CommandAnnotate.cpp" line="1248"/>
         <source>Please select a center for the circle.</source>
         <translation>請選擇圓的中心.</translation>
@@ -4069,14 +4072,11 @@
         <location filename="../../CommandExtensionPack.cpp" line="1809"/>
         <source>No faces in selection.</source>
         <translation>選擇中沒有表面.</translation>
-<<<<<<< HEAD
     </message>
     <message>
         <location filename="../../../../../../../../Benson/sources/FreeCAD-0.22.0-git/src/Mod/TechDraw/Gui/CommandExtensionPack.cpp" line="1938"/>
         <source>No edges in selection.</source>
         <translation>選擇中沒有邊緣.</translation>
-=======
->>>>>>> 220980d336 (Update Tranditional Chinese to latest translations development.)
     </message>
     <message>
         <location filename="../../CommandExtensionPack.cpp" line="2046"/>
@@ -4842,15 +4842,9 @@ This directory will be used for the symbol selection.</source>
         <translation>剖面前先融合</translation>
     </message>
     <message>
-<<<<<<< HEAD
         <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="310"/>
         <source>Line End Cap Shape</source>
         <translation>線終端蓋形狀</translation>
-=======
-        <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="115"/>
-        <source>If checked, system will attempt to automatically correct dimension references when the model changes.</source>
-        <translation>如果選中，系統將在模型變更時嘗試自動修正尺寸參考.</translation>
->>>>>>> 220980d336 (Update Tranditional Chinese to latest translations development.)
     </message>
     <message>
         <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="442"/>
@@ -4858,38 +4852,9 @@ This directory will be used for the symbol selection.</source>
         <translation>在剖面檢視處理期間傾印中間結果</translation>
     </message>
     <message>
-<<<<<<< HEAD
         <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="445"/>
         <source>Debug Section</source>
         <translation>剖面除錯</translation>
-=======
-        <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="155"/>
-        <source>Selection area around center marks
-Each unit is approx. 0.1 mm wide</source>
-        <translation>中心標誌周圍的選擇區域
-每個單位大約是 0.1 mm 寬</translation>
-    </message>
-    <message>
-        <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="184"/>
-        <source>Maximum hatch line segments to use
-when hatching a face with a PAT pattern</source>
-        <translation>當使用 PAT 樣式來填充一個面時，所使用的最大填充線段值</translation>
-    </message>
-    <message>
-        <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="213"/>
-        <source>Max SVG Hatch Tiles</source>
-        <translation>最大 SVG 填充磁磚</translation>
-    </message>
-    <message>
-        <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="220"/>
-        <source>Issue progress messages while building View geometry</source>
-        <translation>在構建檢視幾何時發出進度訊息</translation>
-    </message>
-    <message>
-        <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="223"/>
-        <source>Report Progress</source>
-        <translation>進度報告</translation>
->>>>>>> 220980d336 (Update Tranditional Chinese to latest translations development.)
     </message>
     <message>
         <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="254"/>
@@ -4899,35 +4864,9 @@ Each unit is approx. 0.1 mm wide</source>
 每個單元約略是 0.1 mm 寬</translation>
     </message>
     <message>
-<<<<<<< HEAD
         <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="523"/>
         <source>Edge Fuzz</source>
         <translation>邊緣模糊尺寸</translation>
-=======
-        <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="289"/>
-        <source>Dump intermediate results during Detail view processing</source>
-        <translation>在詳細檢視處理期間傾印中間結果</translation>
-    </message>
-    <message>
-        <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="292"/>
-        <source>Debug Detail</source>
-        <translation>除錯細節</translation>
-    </message>
-    <message>
-        <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="310"/>
-        <source>Line End Cap Shape</source>
-        <translation>線終端蓋形狀</translation>
-    </message>
-    <message>
-        <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="323"/>
-        <source>Mark Fuzz</source>
-        <translation>標誌模糊尺寸</translation>
-    </message>
-    <message>
-        <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="330"/>
-        <source>Max PAT Hatch Segments</source>
-        <translation>最大 PAT 填充片段</translation>
->>>>>>> 220980d336 (Update Tranditional Chinese to latest translations development.)
     </message>
     <message>
         <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="343"/>
@@ -5014,15 +4953,9 @@ Only change unless you know what you are doing!</source>
         <translation>平</translation>
     </message>
     <message>
-<<<<<<< HEAD
         <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="492"/>
         <source>Include 2D Objects in projection</source>
         <translation>包含 2D 物件在投射中</translation>
-=======
-        <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="442"/>
-        <source>Dump intermediate results during Section view processing</source>
-        <translation>在剖面檢視處理期間傾印中間結果</translation>
->>>>>>> 220980d336 (Update Tranditional Chinese to latest translations development.)
     </message>
     <message>
         <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="495"/>
@@ -5074,34 +5007,6 @@ can be a performance penalty in complex models.</source>
         <translation>偵測面</translation>
     </message>
     <message>
-<<<<<<< HEAD
-=======
-        <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="492"/>
-        <source>Include 2D Objects in projection</source>
-        <translation>包含 2D 物件在投射中</translation>
-    </message>
-    <message>
-        <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="495"/>
-        <source>Show Loose 2D Geom</source>
-        <translation>顯示鬆散 2D 幾何</translation>
-    </message>
-    <message>
-        <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="523"/>
-        <source>Edge Fuzz</source>
-        <translation>邊緣模糊尺寸</translation>
-    </message>
-    <message>
-        <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="530"/>
-        <source>If checked, FreeCAD will use the new face finder algorithm.  If not checked, FreeCAD will use the original face finder.</source>
-        <translation>如果選中，FreeCAD 將使用新的表面尋找演算法. 如果未選中，FreeCAD 將使用原始表面尋找器.</translation>
-    </message>
-    <message>
-        <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="533"/>
-        <source>Use New Face Finder Algorithm</source>
-        <translation>使用新的平面尋找演算法</translation>
-    </message>
-    <message>
->>>>>>> 220980d336 (Update Tranditional Chinese to latest translations development.)
         <location filename="../../DlgPrefsTechDrawAdvanced.ui" line="567"/>
         <source>Overlap Edges Scrub Passes</source>
         <translation>重疊邊緣磨砂掠過</translation>
@@ -5131,7 +5036,6 @@ can be a performance penalty in complex models.</source>
         <translation>注釋</translation>
     </message>
     <message>
-<<<<<<< HEAD
         <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="361"/>
         <source>Length of horizontal portion of Balloon leader</source>
         <translation>件號圓圈焊接線水平部份長度</translation>
@@ -5140,21 +5044,6 @@ can be a performance penalty in complex models.</source>
         <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="364"/>
         <source>Ballon Leader Kink Length</source>
         <translation>件號圓圈焊接線紐結長度</translation>
-=======
-        <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="45"/>
-        <source>Detail View Outline Shape</source>
-        <translation>詳細檢視輪廓形狀</translation>
-    </message>
-    <message>
-        <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="82"/>
-        <source>Show arc center marks in views</source>
-        <translation>在檢視中顯示弧中心標誌</translation>
-    </message>
-    <message>
-        <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="85"/>
-        <source>Show Center Marks</source>
-        <translation>顯示中心標誌</translation>
->>>>>>> 220980d336 (Update Tranditional Chinese to latest translations development.)
     </message>
     <message>
         <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="113"/>
@@ -5320,15 +5209,9 @@ can be a performance penalty in complex models.</source>
         <translation>ISO</translation>
     </message>
     <message>
-<<<<<<< HEAD
         <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="652"/>
         <source>Type for centerlines</source>
         <translation>中心線類型</translation>
-=======
-        <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="346"/>
-        <source>Line style of detail highlight on base view</source>
-        <translation>基礎檢視上強調細節的線條式樣</translation>
->>>>>>> 220980d336 (Update Tranditional Chinese to latest translations development.)
     </message>
     <message>
         <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="141"/>
@@ -5421,35 +5304,9 @@ can be a performance penalty in complex models.</source>
         <translation>中心線式樣</translation>
     </message>
     <message>
-<<<<<<< HEAD
         <location filename="../../../../../../../../Benson/sources/FreeCAD-0.22.0-git/src/Mod/TechDraw/Gui/DlgPrefsTechDrawAnnotation.ui" line="677"/>
         <source>Standard to be used to draw non-continuous lines.</source>
         <translation type="unfinished"></translation>
-=======
-        <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="795"/>
-        <source>Default appearance of cut surface in section view</source>
-        <translation>剖面檢視中切割面的預設外觀</translation>
-    </message>
-    <message>
-        <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="808"/>
-        <source>Hide</source>
-        <translation>隱藏</translation>
-    </message>
-    <message>
-        <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="813"/>
-        <source>Solid Color</source>
-        <translation>實心顏色</translation>
-    </message>
-    <message>
-        <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="818"/>
-        <source>SVG Hatch</source>
-        <translation>SVG 填充</translation>
-    </message>
-    <message>
-        <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="823"/>
-        <source>PAT Hatch</source>
-        <translation>PAT 填充</translation>
->>>>>>> 220980d336 (Update Tranditional Chinese to latest translations development.)
     </message>
     <message>
         <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="836"/>
