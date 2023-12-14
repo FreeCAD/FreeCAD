@@ -83,7 +83,6 @@ import re
 
 class FreeCADFileHandler(xml.sax.ContentHandler):
     def __init__(self, zfile, short=0):  # short: 0=normal, 1=short, 2=veryshort
-
         xml.sax.ContentHandler.__init__(self)
         self.zfile = zfile
         self.obj = None
@@ -93,7 +92,6 @@ class FreeCADFileHandler(xml.sax.ContentHandler):
         self.short = short
 
     def startElement(self, tag, attributes):
-
         if tag == "Document":
             self.obj = tag
             self.contents = {}
@@ -223,7 +221,6 @@ class FreeCADFileHandler(xml.sax.ContentHandler):
             self.contents = {}
 
     def endElement(self, tag):
-
         if (tag == "Document") and (self.short != 2):
             items = self.contents.items()
             items = sorted(items)
@@ -236,13 +233,11 @@ class FreeCADFileHandler(xml.sax.ContentHandler):
                     print("        " + key + " : " + value)
 
     def clean(self, value):
-
         value = value.strip()
         return value
 
 
 if __name__ == "__main__":
-
     if len(sys.argv) < 2:
         print(__doc__)
         sys.exit()

@@ -197,7 +197,6 @@ QT_VERSION_MAJOR = ""
 
 
 def find_tools(noobsolete=True):
-
     print(Usage + "\nFirst, lets find all necessary tools on your system")
     global QMAKE, LUPDATE, PYLUPDATE, LCONVERT, QT_VERSION_MAJOR
 
@@ -271,7 +270,6 @@ def find_tools(noobsolete=True):
 
 
 def update_translation(entry):
-
     global QMAKE, LUPDATE, LCONVERT, QT_VERSION_MAJOR
     cur = os.getcwd()
     log_redirect = f" 2>> {cur}/tsupdate_stderr.log 1>> {cur}/tsupdate_stdout.log"
@@ -415,7 +413,6 @@ def update_translation(entry):
 
 
 def main(mod=None):
-
     find_tools()
     path = os.path.realpath(__file__)
     path = os.path.dirname(path)

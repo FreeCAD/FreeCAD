@@ -35,7 +35,6 @@ from addonmanager_git import GitManager, NoGitFound, GitFailed
 
 
 class TestGit(unittest.TestCase):
-
     MODULE = "test_git"  # file name without extension
 
     def setUp(self):

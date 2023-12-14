@@ -36,7 +36,6 @@ from addonmanager_utilities import (
 
 
 class TestUtilities(unittest.TestCase):
-
     MODULE = "test_utilities"  # file name without extension
 
     def setUp(self):

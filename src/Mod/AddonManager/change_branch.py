@@ -39,7 +39,6 @@ except Exception:
 
 
 class ChangeBranchDialog(QtWidgets.QWidget):
-
     branch_changed = QtCore.Signal(str)
 
     def __init__(self, path: os.PathLike, parent=None):
@@ -80,7 +79,6 @@ class ChangeBranchDialog(QtWidgets.QWidget):
 
     def exec(self):
         if self.ui.exec() == QtWidgets.QDialog.Accepted:
-
             selection = self.ui.tableView.selectedIndexes()
             index = self.item_filter.mapToSource(selection[0])
             ref = self.item_model.data(index, ChangeBranchDialogModel.RefAccessRole)
@@ -137,7 +135,6 @@ class ChangeBranchDialog(QtWidgets.QWidget):
 
 
 class ChangeBranchDialogModel(QtCore.QAbstractTableModel):
-
     refs = []
     display_data = []
     DataSortRole = QtCore.Qt.UserRole

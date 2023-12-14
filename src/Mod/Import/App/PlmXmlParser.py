@@ -154,7 +154,6 @@ def main():
 
 
 def parse(fileName):
-
     tree = ET.parse(fileName)
     root = tree.getroot()
     ProductDef = root.find("{http://www.plmxml.org/Schemas/PLMXMLSchema}ProductDef")

@@ -78,7 +78,6 @@ def sayzerr(msg):
 
 
 def import_stpz(fn, fc, doc):
-
     # sayz(fn)
     ext = os.path.splitext(os.path.basename(fn))[1]
     fname = os.path.splitext(os.path.basename(fn))[0]
@@ -106,7 +105,6 @@ def import_stpz(fn, fc, doc):
 
 
 def open(filename, doc=None):
-
     if zf.is_zipfile(filename):
         with zf.ZipFile(filename, "r") as fz:
             file_names = fz.namelist()
@@ -127,7 +125,6 @@ def open(filename, doc=None):
 
 
 def insert(filename, doc):
-
     doc = FreeCAD.ActiveDocument
     open(filename, doc)
 

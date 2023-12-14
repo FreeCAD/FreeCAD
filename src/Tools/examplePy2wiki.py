@@ -36,7 +36,6 @@ def Process(line):
 
 
 def main():
-
     try:
         opts, args = getopt.getopt(
             sys.argv[1:], "hi:o:", ["help", "verbose", "in-file=", "out-file="]

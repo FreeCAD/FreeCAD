@@ -69,7 +69,6 @@ class UpdateMetadataCacheWorker(QtCore.QThread):
         ICON = auto()
 
     def __init__(self, repos):
-
         QtCore.QThread.__init__(self)
         self.repos = repos
         self.requests: Dict[int, (Addon, UpdateMetadataCacheWorker.RequestType)] = {}

@@ -428,7 +428,8 @@ if HAVE_QTNETWORK:
             authenticator: QtNetwork.QAuthenticator,
         ):
             """If proxy authentication is required, attempt to authenticate. If the GUI is running this displays
-            a window asking for credentials. If the GUI is not running, it prompts on the command line."""
+            a window asking for credentials. If the GUI is not running, it prompts on the command line.
+            """
             if HAVE_FREECAD and FreeCAD.GuiUp:
                 proxy_authentication = FreeCADGui.PySideUic.loadUi(
                     os.path.join(os.path.dirname(__file__), "proxy_authentication.ui")
@@ -618,7 +619,6 @@ def InitializeNetworkManager():
 
 
 if __name__ == "__main__":
-
     app = QtCore.QCoreApplication()
 
     InitializeNetworkManager()

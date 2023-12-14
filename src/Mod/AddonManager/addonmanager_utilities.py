@@ -44,7 +44,6 @@ except ImportError:
 import addonmanager_freecad_interface as fci
 
 if fci.FreeCADGui:
-
     # If the GUI is up, we can use the NetworkManager to handle our downloads. If there is no event
     # loop running this is not possible, so fall back to requests (if available), or the native
     # Python urllib.request (if requests is not available).

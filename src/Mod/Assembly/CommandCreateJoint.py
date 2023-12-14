@@ -46,7 +46,6 @@ class CommandCreateJointFixed:
         pass
 
     def GetResources(self):
-
         return {
             "Pixmap": "Assembly_CreateJointFixed",
             "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateJointFixed", "Create Fixed Joint"),
@@ -76,7 +75,6 @@ class CommandCreateJointRevolute:
         pass
 
     def GetResources(self):
-
         return {
             "Pixmap": "Assembly_CreateJointRevolute",
             "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateJointRevolute", "Create Revolute Joint"),
@@ -106,7 +104,6 @@ class CommandCreateJointCylindrical:
         pass
 
     def GetResources(self):
-
         return {
             "Pixmap": "Assembly_CreateJointCylindrical",
             "MenuText": QT_TRANSLATE_NOOP(
@@ -138,7 +135,6 @@ class CommandCreateJointSlider:
         pass
 
     def GetResources(self):
-
         return {
             "Pixmap": "Assembly_CreateJointSlider",
             "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateJointSlider", "Create Slider Joint"),
@@ -168,7 +164,6 @@ class CommandCreateJointBall:
         pass
 
     def GetResources(self):
-
         return {
             "Pixmap": "Assembly_CreateJointBall",
             "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateJointBall", "Create Ball Joint"),
@@ -198,7 +193,6 @@ class CommandCreateJointPlanar:
         pass
 
     def GetResources(self):
-
         return {
             "Pixmap": "Assembly_CreateJointPlanar",
             "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateJointPlanar", "Create Planar Joint"),
@@ -228,7 +222,6 @@ class CommandCreateJointParallel:
         pass
 
     def GetResources(self):
-
         return {
             "Pixmap": "Assembly_CreateJointParallel",
             "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateJointParallel", "Create Parallel Joint"),
@@ -258,7 +251,6 @@ class CommandCreateJointTangent:
         pass
 
     def GetResources(self):
-
         return {
             "Pixmap": "Assembly_CreateJointTangent",
             "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateJointTangent", "Create Tangent Joint"),

@@ -42,7 +42,6 @@ run_slow_tests = False
 
 
 class TestWorkersStartup(unittest.TestCase):
-
     MODULE = "test_workers_startup"  # file name without extension
 
     @unittest.skipUnless(run_slow_tests, "This integration test is slow and uses the network")
