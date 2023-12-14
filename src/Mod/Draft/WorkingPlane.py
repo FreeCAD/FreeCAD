@@ -1601,8 +1601,7 @@ class PlaneGui(PlaneBase):
         """Align the view to the WP."""
         if self._view is not None:
             try:
-                param = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View")
-                default_cam_dist = abs(param.GetFloat("NewDocumentCameraScale", 100.0))
+                default_cam_dist = abs(params.get_param_view("NewDocumentCameraScale"))
                 cam = self._view.getCameraNode()
                 cur_cam_dist = abs(self.get_local_coords(Vector(cam.position.getValue().getValue())).z)
                 cam_dist = max(default_cam_dist, cur_cam_dist)
@@ -1678,7 +1677,7 @@ class PlaneGui(PlaneBase):
         return FreeCAD.Units.Quantity(coord, FreeCAD.Units.Length).UserString
 
     def _format_vector(self, vec):
-        dec = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals", 2)
+        dec = params.get_param("Decimals", path="Units")
         return f"({vec.x:.{dec}f}  {vec.y:.{dec}f}  {vec.z:.{dec}f})"
 
     def _update_all(self, _hist_add=True):
