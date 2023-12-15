@@ -369,6 +369,7 @@ def _get_param_dictionary():
         "Draft_array_Link":            ("bool",      True),
         "fillmode":                    ("bool",      True),
         "GlobalMode":                  ("bool",      False),
+        "GridHideInOtherWorkbenches":  ("bool",      True),
         "HatchPatternResolution":      ("int",       128),
         "HatchPatternRotation":        ("float",     0.0),
         "HatchPatternScale":           ("float",     100.0),
@@ -512,7 +513,6 @@ def _get_param_dictionary():
 PARAM_DICT = _get_param_dictionary()
 
 
-# get_param("gridSpacing")
 def get_param(entry, path="Mod/Draft"):
     """Return a stored parameter value or its default.
 
@@ -529,9 +529,8 @@ def get_param(entry, path="Mod/Draft"):
     -------
     bool, float, int or str (if successful) or `None`.
     """
-    if path not in PARAM_DICT:
-        return None
-    if entry not in PARAM_DICT[path]:
+    if path not in PARAM_DICT or entry not in PARAM_DICT[path]:
+        print(f"draftutils.params.get_param: Unable to find '{entry}' in '{path}'")
         return None
     param_grp = App.ParamGet("User parameter:BaseApp/Preferences/" + path)
     typ, default = PARAM_DICT[path][entry]
@@ -574,9 +573,8 @@ def set_param(entry, value, path="Mod/Draft"):
     -------
     `True` (if successful) or `False`.
     """
-    if path not in PARAM_DICT:
-        return False
-    if entry not in PARAM_DICT[path]:
+    if path not in PARAM_DICT or entry not in PARAM_DICT[path]:
+        print(f"draftutils.params.set_param: Unable to find '{entry}' in '{path}'")
         return False
     param_grp = App.ParamGet("User parameter:BaseApp/Preferences/" + path)
     typ = PARAM_DICT[path][entry][0]
