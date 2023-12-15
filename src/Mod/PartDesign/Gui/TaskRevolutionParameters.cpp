@@ -357,7 +357,10 @@ void TaskRevolutionParameters::updateUI(int index)
 void TaskRevolutionParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
-        if (selectionFace) {
+        int mode = ui->changeMode->currentIndex();
+        if (static_cast<PartDesign::Revolution::RevolMethod>(mode)
+                == PartDesign::Revolution::RevolMethod::ToFace
+            && selectionFace) {
             QString refText = onAddSelection(msg);
             if (refText.length() > 0) {
                 QSignalBlocker block(ui->lineFaceName);
@@ -371,7 +374,7 @@ void TaskRevolutionParameters::onSelectionChanged(const Gui::SelectionChanges& m
                 clearFaceName();
             }
         }
-        else {
+        else { // Reference Selection for datum lines and edges
             exitSelectionMode();
             std::vector<std::string> axis;
             App::DocumentObject* selObj;
@@ -379,6 +382,7 @@ void TaskRevolutionParameters::onSelectionChanged(const Gui::SelectionChanges& m
                 propReferenceAxis->setValue(selObj, axis);
 
                 recomputeFeature();
+                updateUI();
             }
         }
     }
