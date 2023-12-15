@@ -382,7 +382,7 @@ void TaskRevolutionParameters::onSelectionChanged(const Gui::SelectionChanges& m
                 propReferenceAxis->setValue(selObj, axis);
 
                 recomputeFeature();
-                updateUI();
+                updateUI(mode);
             }
         }
     }
