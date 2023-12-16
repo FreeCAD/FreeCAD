@@ -143,6 +143,9 @@ public:
     void setVisible (bool) override;
     void setIsMode(bool check) { _isMode = check; }
 
+    void setRememberLast(bool);
+    bool doesRememberLast() const;
+
     void setDropDownMenu(bool check) { _dropDown = check; }
     QAction* addAction(QAction*);
     QAction* addAction(const QString&);
@@ -171,6 +174,7 @@ private:
     QActionGroup* _group;
     bool _dropDown;
     bool _isMode;
+    bool _rememberLast;
 
 private:
     Q_DISABLE_COPY(ActionGroup)
