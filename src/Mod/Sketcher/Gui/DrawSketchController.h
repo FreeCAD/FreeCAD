@@ -195,25 +195,17 @@ protected:
             init();
         }
 
-<<<<<<< HEAD
         OnViewParameterVisibility visibility() const
-=======
-        OnViewParameterVisibility visibility()
->>>>>>> 6987fc1beb (Update Tranditional Chinese to latest translations development.)
         {
             return onViewParameterVisibility;
         }
 
-<<<<<<< HEAD
         bool isVisibility(OnViewParameterVisibility visibility) const
         {
             return onViewParameterVisibility == visibility;
         }
 
         bool isVisible(Gui::EditableDatumLabel* ovp) const
-=======
-        bool isVisible(Gui::EditableDatumLabel* ovp)
->>>>>>> 6987fc1beb (Update Tranditional Chinese to latest translations development.)
         {
             switch (onViewParameterVisibility) {
 
@@ -242,23 +234,15 @@ protected:
             dynamicOverride = false;
         }
 
-<<<<<<< HEAD
 
-=======
->>>>>>> 6987fc1beb (Update Tranditional Chinese to latest translations development.)
     private:
         void init()
         {
             ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
                 "User parameter:BaseApp/Preferences/Mod/Sketcher/Tools");
 
-<<<<<<< HEAD
             onViewParameterVisibility = static_cast<OnViewParameterVisibility>(
                 hGrp->GetInt("OnViewParameterVisibility", 1));
-=======
-            onViewParameterVisibility =
-                static_cast<OnViewParameterVisibility>(hGrp->GetInt("OnViewParameterVisibility"));
->>>>>>> 6987fc1beb (Update Tranditional Chinese to latest translations development.)
         }
 
         OnViewParameterVisibility onViewParameterVisibility;
@@ -672,11 +656,7 @@ protected:
                 onViewParameters[onviewparameterindex]->setFocusToSpinbox();
             }
 
-<<<<<<< HEAD
             onViewIndexWithFocus = static_cast<int>(onviewparameterindex);
-=======
-            onViewIndexWithFocus = onviewparameterindex;
->>>>>>> 6987fc1beb (Update Tranditional Chinese to latest translations development.)
         }
     }
 
@@ -762,7 +742,6 @@ private:
 private:
     OnViewParameterVisibilityManager ovpVisibilityManager;
     ColorManager colorManager;
-    OnViewParameterVisibilityManager ovpVisibilityManager;
     std::unique_ptr<DrawSketchKeyboardManager> keymanager;
 };
 

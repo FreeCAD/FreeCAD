@@ -89,21 +89,12 @@ std::string DrawStyle::patternAsString() const
 const char* VertexOrdering::toString() const
 {
     switch (ordering) {
-<<<<<<< HEAD
         case Ordering::UnknownOrdering:
             return "UNKNOWN_ORDERING";
         case Ordering::Clockwise:
             return "CLOCKWISE";
         case Ordering::CounterClockwise:
             return "COUNTERCLOCKWISE";
-=======
-    case Ordering::UnknownOrdering:
-        return "UNKNOWN_ORDERING";
-    case Ordering::Clockwise:
-        return "CLOCKWISE";
-    case Ordering::CounterClockwise:
-        return "COUNTERCLOCKWISE";
->>>>>>> 6987fc1beb (Update Tranditional Chinese to latest translations development.)
     }
     return "UNKNOWN_ORDERING";
 }
@@ -111,17 +102,10 @@ const char* VertexOrdering::toString() const
 const char* ShapeType::toString() const
 {
     switch (type) {
-<<<<<<< HEAD
         case Type::UnknownShapeType:
             return "UNKNOWN_SHAPE_TYPE";
         case Type::Convex:
             return "SOLID";
-=======
-    case Type::UnknownShapeType:
-        return "UNKNOWN_SHAPE_TYPE";
-    case Type::Convex:
-        return "SOLID";
->>>>>>> 6987fc1beb (Update Tranditional Chinese to latest translations development.)
     }
     return "UNKNOWN_SHAPE_TYPE";
 }
@@ -684,17 +668,6 @@ void ShapeHintsItem::setShapeType(ShapeType::Type value)
     shapeType.type = value;
 }
 
-void ShapeHintsItem::setVertexOrdering(VertexOrdering::Ordering value)
-{
-    vertexOrdering.ordering = value;
-}
-
-void ShapeHintsItem::setShapeType(ShapeType::Type value)
-{
-    shapeType.type = value;
-}
-
-
 void ShapeHintsItem::write(InventorOutput& out) const
 {
     out.write() << "ShapeHints {\n";
@@ -976,19 +949,9 @@ InventorBuilder::~InventorBuilder() = default;
 
 void InventorBuilder::addHeader()
 {
-    addHeader();
-}
-
-<<<<<<< HEAD
-=======
-InventorBuilder:: ~InventorBuilder() = default;
-
-void InventorBuilder::addHeader()
-{
     result << "#Inventor V2.1 ascii \n\n";
 }
 
->>>>>>> 6987fc1beb (Update Tranditional Chinese to latest translations development.)
 void InventorBuilder::increaseIndent()
 {
     indent.increaseIndent();

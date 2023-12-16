@@ -261,11 +261,7 @@ This setting is only for the toolbar. Whichever you chose, all tools are always 
      <property name="title">
       <string>Tool Parameters</string>
      </property>
-<<<<<<< HEAD
      <layout class="QGridLayout" name="gridLayout_vis">
-=======
-     <layout class="QGridLayout" name="gridLayout_general">
->>>>>>> 6987fc1beb (Update Tranditional Chinese to latest translations development.)
       <item row="0" column="0">
        <widget class="QLabel" name="ovpVisibilityLabel">
         <property name="text">

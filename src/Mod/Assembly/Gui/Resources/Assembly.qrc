@@ -1,4 +1,3 @@
-<?xml version="1.0"?>
 <RCC>
     <qresource>
         <file>icons/Assembly_InsertLink.svg</file>
@@ -14,6 +13,5 @@
         <file>panels/TaskAssemblyCreateJoint.ui</file>
         <file>panels/TaskAssemblyInsertLink.ui</file>
         <file>preferences/Assembly.ui</file>
-        <file>translations/Assembly_zh-TW.qm</file>
     </qresource>
 </RCC>
