@@ -1163,6 +1163,7 @@ public:
         eType = ForEdit;
 
         setCheckable(false);
+        setRememberLast(false);
 
         addCommand("Sketcher_Dimension");
         addCommand(); //separator

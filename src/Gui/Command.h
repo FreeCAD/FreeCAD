@@ -656,6 +656,8 @@ protected:
     void setCheckable(bool);
     bool isExclusive() const;
     void setExclusive(bool);
+    bool doesRememberLast() const;
+    void setRememberLast(bool);
     bool hasDropDownMenu() const;
     void setDropDownMenu(bool);
     void activated(int iMsg) override;
@@ -667,6 +669,7 @@ protected:
 protected:
     bool checkable = true;
     bool exclusive = false;
+    bool rememberLast = true;
     bool dropDownMenu = true;
     std::vector<std::pair<Command*,size_t> > cmds;
 };
