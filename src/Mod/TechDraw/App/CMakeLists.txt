@@ -20,19 +20,13 @@ set(TechDrawLIBS
     PartDesign
 )
 
-if(FREECAD_QT_MAJOR_VERSION EQUAL 5)
-    include_directories(
-        ${QtXmlPatterns_INCLUDE_DIRS}
-    )
-endif()
-
 include_directories(
     ${QtConcurrent_INCLUDE_DIRS}
     ${QtCore_INCLUDE_DIR}
     ${QtGui_INCLUDE_DIR}
     ${QtWidgets_INCLUDE_DIRS}
 )
-set(QtXmlPatternsLib ${QtXmlPatterns_LIBRARIES})
+
 list(APPEND TechDrawLIBS
     ${QtConcurrent_LIBRARIES}
     ${QtCore_LIBRARIES}
@@ -273,7 +267,7 @@ endif(FREECAD_USE_PCH)
 
 add_library(TechDraw SHARED ${TechDraw_SRCS} ${Draw_SRCS} ${TechDrawAlgos_SRCS}
                            ${Geometry_SRCS} ${Python_SRCS})
-target_link_libraries(TechDraw ${TechDrawLIBS};${QtXmlPatternsLib};${TechDraw})
+target_link_libraries(TechDraw ${TechDrawLIBS} ${TechDraw})
 
 ADD_CUSTOM_COMMAND(TARGET TechDraw
                    POST_BUILD

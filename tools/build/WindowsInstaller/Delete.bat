@@ -88,7 +88,6 @@ del Qt5WebViewd.dll
 del Qt5Widgetsd.dll
 del Qt5WinExtrasd.dll
 del Qt5Xmld.dll
-del Qt5XmlPatternsd.dll
 del QtWebEngineProcessd.exe
 del Quarter1d.dll
 del xerces-c_3_2D.dll

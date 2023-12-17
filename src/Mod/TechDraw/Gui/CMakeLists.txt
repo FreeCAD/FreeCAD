@@ -24,12 +24,6 @@ include_directories(
     ${XercesC_INCLUDE_DIRS}
 )
 
-if(FREECAD_QT_MAJOR_VERSION EQUAL 5)
-    include_directories(
-        ${QtXmlPatterns_INCLUDE_DIRS}
-    )
-endif()
-
 # The XML files
 set(TechDrawGui_XML_SRCS
 )
