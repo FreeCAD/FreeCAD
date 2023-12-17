@@ -826,13 +826,14 @@ Restart:
                         auto geo1 = geolistfacade.getGeometryFromGeoId(Constr->First);
                         auto geo2 = geolistfacade.getGeometryFromGeoId(Constr->Second);
                         if (isLineSegment(*geo2)) {
+                            // point to line distance
+                            // NOLINTNEXTLINE
                             auto lineSeg = static_cast<const Part::GeomLineSegment*>(geo2);
                             Base::Vector3d l2p1 = lineSeg->getStartPoint();
                             Base::Vector3d l2p2 = lineSeg->getEndPoint();
 
                             if (Constr->SecondPos != Sketcher::PointPos::none) {
-                                // point to line distance
-                                // NOLINTNEXTLINE
+
                                 // calculate the projection of p1 onto line2
                                 pnt2.ProjectToLine(pnt1 - l2p1, l2p2 - l2p1);
                                 pnt2 += pnt1;
