@@ -279,3 +279,16 @@ QColor PreferencesGui::lightenColor(QColor orig)
     return QColor(red, green, blue, alpha);
 }
 
+
+double PreferencesGui::templateClickBoxSize()
+{
+    return Preferences::getPreferenceGroup("General")->GetFloat("TemplateDotSize", 5.0);
+}
+
+
+QColor PreferencesGui::templateClickBoxColor()
+{
+    App::Color fcColor;
+    fcColor.setPackedValue(Preferences::getPreferenceGroup("Colors")->GetUnsigned("TemplateUnderlineColor", 0x0000FFFF));  //#0000FF blue
+    return fcColor.asValue<QColor>();
+}
