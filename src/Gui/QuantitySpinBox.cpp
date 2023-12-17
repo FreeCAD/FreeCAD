@@ -171,11 +171,21 @@ public:
         QString reverseUnitStr = unitStr;
         std::reverse(reverseUnitStr.begin(), reverseUnitStr.end());
 
+        unsigned int lengthOffset = 0;
+        QRegularExpressionMatchIterator expressionChunk;
+        QRegularExpression chunkRe;
+
+        //Check if Str matches the us_building format exactly, if it does skip all attempts to fix input:
+        QRegularExpression usBuildingSkipSearch(QString::fromUtf8("\\d+(?:'?\\s*)?(?:\\d+\\s*)?\\d+\\/\\d+\""));
+        QRegularExpressionMatch usBuildingSkipMatch = usBuildingSkipSearch.match(copy);
+        if (usBuildingSkipMatch.hasMatch() && usBuildingSkipMatch.captured(0) == copy){
+            goto SkipToEval;
+        }
+
         //Prep for expression parser
         //This regex matches chunks between +,-,$,^ accounting for matching parenthesis.
-        QRegularExpression chunkRe(QString::fromUtf8("(?<=^|[\\+\\-])((\\((?>[^()]|(?2))*\\))|[^\\+\\-\n])*(?=$|[\\+\\-])"));
-        QRegularExpressionMatchIterator expressionChunk = chunkRe.globalMatch(copy);
-        unsigned int lengthOffset = 0;
+        chunkRe.setPattern(QString::fromUtf8("(?:\\d+'\\s*)?(?:\\d+\\s*)?\\d+\\/\\d+\""));
+        expressionChunk = chunkRe.globalMatch(copy);
         while (expressionChunk.hasNext()) {
             QRegularExpressionMatch matchChunk = expressionChunk.next();
             QString origionalChunk = matchChunk.captured(0);
@@ -186,12 +196,12 @@ public:
             static const std::string regexUnits = "sAV|VC|lim|nim|im|hpm|[mf]?bl|°|ged|dar|nog|″|′|rroT[uµm]?|K[uµm]?|A[mkM]?|F[pnuµm]?|C|S[uµmkM]?|zH[kMGT]?|H[nuµm]?|mhO[kM]?|J[mk]?|Ve[kM]?|V[mk]?|hWk|sW|lack?|N[mkM]?|g[uµmk]?|lm?|(?<=\\b|[^a-zA-Z])m[nuµmcdk]?|uoht|ni|\"|'|dy|dc|bW|T|t|zo|ts|twc|Wk?|aP[kMG]?|is[pk]|h|G|M|tfc|tfqs|tf|s";
             static const std::string regexUnitlessFunctions = "soca|nisa|2nata|nata|hsoc|hnis|hnat|soc|nat|nis|pxe|gol|01gol";
             static const std::string regexConstants = "e|ip|lomm|lom";
-            static const std::string regexNumber = "\\d+\\s*\\.?\\s*\\d*|\\.\\s*\\d+";
+            static const std::string regexNumber = "(?:\\d+\\.?\\d*|\\d*\\s*\\.\\s*\\d+)";
 
             // If expression does not contain /*() or ^, this regex will not find anything
             if (copy.contains(QLatin1Char('/')) || copy.contains(QLatin1Char('*')) || copy.contains(QLatin1Char('(')) || copy.contains(QLatin1Char(')')) || copy.contains(QLatin1Char('^'))){
                 //Find units and replace 1/2mm -> 1/2*(1mm), 1^2mm -> 1^2*(1mm)
-                QRegularExpression fixUnits(QString::fromStdString("("+regexUnits+")(\\s*\\)|(?:\\*|(?:\\)(?:(?:\\s*(?:"+regexConstants+"|\\)(?:[^()]|(?R))*\\((?:"+regexUnitlessFunctions+")|"+regexNumber+"))|(?R))*\\(|(?:\\s*(?:"+regexConstants+"|\\)(?:[^()]|(?R))*\\((?:"+regexUnitlessFunctions+")|"+regexNumber+"))))+(?:[\\/\\^]|(.*$))(?!("+regexUnits+")))"));
+                QRegularExpression fixUnits(QString::fromStdString("("+regexUnits+")(\\s*\\)|(?:\\*|(?:\\)(?:(?:\\s*(?:"+regexConstants+"|\\)(?:[^()]|(?R))*\\((?:"+regexUnitlessFunctions+")|"+regexNumber+"))|(?R))*\\(|(?:\\s*(?:"+regexConstants+"|\\)(?:[^()]|(?R))*\\((?:"+regexUnitlessFunctions+")|"+regexNumber+"))))+(?:[\\/\\^]|(.*$))(?!\\d+\\s+\\d|(?:"+regexUnits+")))"));
                 QRegularExpressionMatch fixUnitsMatch = fixUnits.match(copyChunk);
 
                 //3rd capture group being filled indicates regex bailed out; no match.
@@ -217,6 +227,8 @@ public:
                     matchChunk.capturedEnd() - matchChunk.capturedStart(), copyChunk);
             lengthOffset += copyChunk.length() - origionalChunk.length();
         }
+
+SkipToEval:
 
         ok = parseString(copy, res, value, path);
 
