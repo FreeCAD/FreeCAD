@@ -1693,6 +1693,218 @@ bool OperatorExpression::isRightAssociative() const
 }
 
 //
+// ImperialAngle class
+//
+
+TYPESYSTEM_SOURCE(App::ImperialAngle, App::Expression)
+
+ImperialAngle::ImperialAngle(const App::DocumentObject *_owner, Expression *_deg, Expression *_prime, Expression *_doublePrime)
+    : UnitExpression(_owner)
+    , deg(_deg)
+    , prime(_prime)
+    , doublePrime(_doublePrime)
+{
+
+}
+
+ImperialAngle::~ImperialAngle()
+{
+    delete deg;
+    delete prime;
+    delete doublePrime;
+}
+
+bool ImperialAngle::isTouched() const
+{
+    return deg->isTouched() || prime->isTouched() || doublePrime->isTouched();
+}
+
+Py::Object ImperialAngle::_getPyValue() const {
+    Expression * degExpression = new OperatorExpression(owner, deg, OperatorExpression::UNIT, new App::UnitExpression(owner, Quantity(1, QString::fromLatin1("deg")), string("deg")));
+    Expression * primeExpression = new OperatorExpression(owner, prime, OperatorExpression::UNIT, new App::UnitExpression(owner, Quantity(1, QString::fromLatin1("M")), string("M")));
+    Expression * doublePrimeExpression = new OperatorExpression(owner, doublePrime, OperatorExpression::UNIT, new App::UnitExpression(owner, Quantity(1, QString::fromLatin1("AS")), string("AS")));
+    return calc(this,OperatorExpression::ADD, degExpression, new OperatorExpression(owner, primeExpression, OperatorExpression::ADD, doublePrimeExpression),false);
+}
+
+Expression *ImperialAngle::simplify() const
+{
+    Expression * v1 = deg->simplify();
+    Expression * v2 = prime->simplify();
+    Expression * v3 = doublePrime->simplify();
+
+    // All arguments reduced to numerics? Then evaluate and return answer
+    if (freecad_dynamic_cast<NumberExpression>(v1) && freecad_dynamic_cast<NumberExpression>(v2) && freecad_dynamic_cast<NumberExpression>(v3)) {
+        delete v1;
+        delete v2;
+        delete v3;
+        return eval();
+    }
+    else
+        return new ImperialAngle(owner, v1, v2, v3);
+}
+
+void ImperialAngle::_toString(std::ostream &s, bool persistent,int) const
+{
+    std::string degStr = deg->toString(persistent);
+    std::string primeStr = prime->toString(persistent);
+    std::string doublePrimeStr = doublePrime->toString(persistent);
+
+    s << deg->toString(persistent) << "\xC2\xB0";
+    if (primeStr != "0" || doublePrimeStr != "0")
+        s << prime->toString(persistent) << "\xE2\x80\xB2";
+    if (doublePrimeStr != "0")
+        s << doublePrime->toString(persistent) << "\xE2\x80\xB3";
+}
+
+Expression *ImperialAngle::_copy() const
+{
+    return new ImperialAngle(owner, deg->copy(), prime->copy(), doublePrime->copy());
+}
+
+int ImperialAngle::priority() const
+{
+    return 6;
+}
+
+void ImperialAngle::_visit(ExpressionVisitor &v)
+{
+    if (deg)
+        deg->visit(v);
+    if (prime)
+        prime->visit(v);
+    if (doublePrime)
+        doublePrime->visit(v);
+}
+
+bool ImperialAngle::isCommutative() const
+{
+    return false;
+}
+
+bool ImperialAngle::isLeftAssociative() const
+{
+    return true;
+}
+
+bool ImperialAngle::isRightAssociative() const
+{
+    return false;
+}
+
+//
+// ImperialDistance class
+//
+
+TYPESYSTEM_SOURCE(App::ImperialDistance, App::Expression)
+
+ImperialDistance::ImperialDistance(const App::DocumentObject *_owner, Expression *_feet, Expression *_inches, Expression *_fractionTop, Expression *_fractionBottom)
+    : UnitExpression(_owner)
+    , feet(_feet)
+    , inches(_inches)
+    , fractionTop(_fractionTop)
+    , fractionBottom(_fractionBottom)
+{
+
+}
+
+ImperialDistance::~ImperialDistance()
+{
+    delete feet;
+    delete inches;
+    delete fractionTop;
+    delete fractionBottom;
+}
+
+bool ImperialDistance::isTouched() const
+{
+    return feet->isTouched() || inches->isTouched() || fractionTop->isTouched() || fractionBottom->isTouched();
+}
+
+Py::Object ImperialDistance::_getPyValue() const {
+    Expression * feetExpression = new OperatorExpression(owner, feet, OperatorExpression::UNIT, new App::UnitExpression(owner, Quantity(1, QString::fromLatin1("ft")), string("ft")));
+    Expression * inchesExpression = new OperatorExpression(owner, inches, OperatorExpression::UNIT, new App::UnitExpression(owner, Quantity(1, QString::fromLatin1("in")), string("in")));
+    Expression * fractionTopExpression = fractionTop;//new OperatorExpression(owner, fractionTop, OperatorExpression::UNIT, new App::UnitExpression(owner, Quantity(1, QString::fromLatin1("")), string("")));
+    Expression * fractionBottomExpression = fractionBottom;//new OperatorExpression(owner, fractionBottom, OperatorExpression::UNIT, new App::UnitExpression(owner, Quantity(1, QString::fromLatin1("")), string("")));
+    return calc(this,OperatorExpression::ADD, feetExpression, new OperatorExpression(owner, inchesExpression, OperatorExpression::ADD, new OperatorExpression(owner, new OperatorExpression(owner, fractionTopExpression, OperatorExpression::DIV, fractionBottomExpression), OperatorExpression::UNIT, new App::UnitExpression(owner, Quantity(1, QString::fromLatin1("in")), string("in")))),false);
+}
+
+Expression *ImperialDistance::simplify() const
+{
+    Expression * v1 = feet->simplify();
+    Expression * v2 = inches->simplify();
+    Expression * v3 = fractionTop->simplify();
+    Expression * v4 = fractionBottom->simplify();
+
+    // All arguments reduced to numerics? Then evaluate and return answer
+    if (freecad_dynamic_cast<NumberExpression>(v1) && freecad_dynamic_cast<NumberExpression>(v2) && freecad_dynamic_cast<NumberExpression>(v3) && freecad_dynamic_cast<NumberExpression>(v4)) {
+        delete v1;
+        delete v2;
+        delete v3;
+        delete v4;
+        return eval();
+    }
+    else
+        return new ImperialDistance(owner, v1, v2, v3, v4);
+}
+
+void ImperialDistance::_toString(std::ostream &s, bool persistent,int) const
+{
+    std::string feetStr = feet->toString(persistent);
+    std::string inchesStr = inches->toString(persistent);
+    std::string topStr = fractionTop->toString(persistent);
+    std::string bottomStr = fractionBottom->toString(persistent);
+
+    if (feetStr != "0")
+        s << feetStr << "ft ";
+    if (inchesStr != "0")
+        s << inchesStr; 
+    if (inchesStr != "0" && (topStr != "0" && bottomStr != "0"))
+        s << " ";
+    if (topStr != "0" && bottomStr != "0")
+        s << topStr << "/" << bottomStr << "in";
+    else
+        s << "in";
+
+}
+
+Expression *ImperialDistance::_copy() const
+{
+    return new ImperialDistance(owner, feet->copy(), inches->copy(), fractionTop->copy(), fractionBottom->copy());
+}
+
+int ImperialDistance::priority() const
+{
+    return 6;
+}
+
+void ImperialDistance::_visit(ExpressionVisitor &v)
+{
+    if (feet)
+        feet->visit(v);
+    if (inches)
+        inches->visit(v);
+    if (fractionTop)
+        fractionTop->visit(v);
+    if (fractionBottom)
+        fractionBottom->visit(v);
+}
+
+bool ImperialDistance::isCommutative() const
+{
+    return false;
+}
+
+bool ImperialDistance::isLeftAssociative() const
+{
+    return true;
+}
+
+bool ImperialDistance::isRightAssociative() const
+{
+    return false;
+}
+
+//
 // FunctionExpression class. This class handles functions with one or two parameters.
 //
 

@@ -40,7 +40,7 @@ std::stack<FunctionExpression::Function> functions;                /**< Function
      %token ONE
      %token NUM
      %token IDENTIFIER
-     %token UNIT USUNIT
+     %token UNIT UNITINCH UNITFOOT UNITDEG UNITARCMIN UNITARCSEC
      %token INTEGER
      %token CONSTANT
      %token CELLADDRESS
@@ -49,8 +49,8 @@ std::stack<FunctionExpression::Function> functions;                /**< Function
      %token DOCUMENT OBJECT
      %token EXPONENT
      %type <arguments> args
-     %type <expr> input unit_num us_building_unit other_unit exp unit_exp cond indexable
-     %type <quantity> UNIT USUNIT
+     %type <expr> input unit_num unit_inch unit_foot unit_degree unit_arcminute unit_arcsecond unit_other exp unit_exp cond indexable
+     %type <quantity> UNIT UNITINCH UNITFOOT UNITDEG UNITARCMIN UNITARCSEC
      %type <string> id_or_cell STRING IDENTIFIER CELLADDRESS
      %type <ivalue> INTEGER
      %type <string> PROPERTY_REF
@@ -87,7 +87,16 @@ input:     exp                                  { ScanResult = $1; valueExpressi
      ;
 
 unit_num: num unit_exp %prec NUM_AND_UNIT       { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::UNIT, $2);  } 
-        | num us_building_unit num us_building_unit %prec NUM_AND_UNIT   { $$ = new OperatorExpression(DocumentObject, new OperatorExpression(DocumentObject, $1, OperatorExpression::UNIT, $2), OperatorExpression::ADD, new OperatorExpression(DocumentObject, $3, OperatorExpression::UNIT, $4));}
+        //1ft 1 1/2in
+        | num unit_foot num num '/' num unit_inch %prec NUM_AND_UNIT       { $$ = new ImperialDistance(DocumentObject, $1, $3, $4, $6);  } 
+        //1ft 1/2in
+        | num unit_foot num '/' num unit_inch %prec NUM_AND_UNIT       { $$ = new ImperialDistance(DocumentObject, $1, new NumberExpression(DocumentObject, Quantity(0)), $3, $5);  } 
+        //1ft 1in
+        | num unit_foot num unit_inch %prec NUM_AND_UNIT       { $$ = new ImperialDistance(DocumentObject, $1, $3, new NumberExpression(DocumentObject, Quantity(0)), new NumberExpression(DocumentObject, Quantity(1)));  } 
+        //1 1/2in
+        | num num '/' num unit_inch %prec NUM_AND_UNIT       { $$ = new ImperialDistance(DocumentObject, new NumberExpression(DocumentObject, Quantity(0)), $1, $2, $4);  } 
+        | num unit_degree num unit_arcminute num unit_arcsecond %prec NUM_AND_UNIT   { $$ = new ImperialAngle(DocumentObject, $1, $3, $5);}
+        | num unit_degree num unit_arcminute %prec NUM_AND_UNIT   { $$ = new ImperialAngle(DocumentObject, $1, $3, new NumberExpression(DocumentObject, Quantity(0)));}
         ;
 
 exp:      num                                   { $$ = $1;                                                                        }
@@ -134,11 +143,19 @@ cond: exp EQ exp                                { $$ = new OperatorExpression(Do
     | '(' cond ')'                              { $$ = $2; }
     ;
 
-us_building_unit: USUNIT                        { $$ = new UnitExpression(DocumentObject, $1.scaler, $1.unitStr );                }
-other_unit: UNIT                                { $$ = new UnitExpression(DocumentObject, $1.scaler, $1.unitStr );                }
+unit_inch: UNITINCH                             { $$ = new UnitExpression(DocumentObject, $1.scaler, $1.unitStr );                }
+unit_foot: UNITFOOT                             { $$ = new UnitExpression(DocumentObject, $1.scaler, $1.unitStr );                }
+unit_degree: UNITDEG                            { $$ = new UnitExpression(DocumentObject, $1.scaler, $1.unitStr );                }
+unit_arcminute: UNITARCMIN                      { $$ = new UnitExpression(DocumentObject, $1.scaler, $1.unitStr );                }
+unit_arcsecond: UNITARCSEC                      { $$ = new UnitExpression(DocumentObject, $1.scaler, $1.unitStr );                }
+unit_other: UNIT                                { $$ = new UnitExpression(DocumentObject, $1.scaler, $1.unitStr );                }
 
-unit_exp: other_unit                            { $$ = $1; }
-        | us_building_unit                      { $$ = $1; }
+unit_exp: unit_other                            { $$ = $1; }
+        | unit_inch                             { $$ = $1; }
+        | unit_foot                             { $$ = $1; }
+        | unit_degree                           { $$ = $1; }
+        | unit_arcminute                        { $$ = $1; }
+        | unit_arcsecond                        { $$ = $1; }
         | unit_exp '/' unit_exp                 { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::DIV, $3);   }
         | unit_exp '*' unit_exp                 { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::MUL, $3);   }
         | unit_exp '^' integer                  { $$ = new OperatorExpression(DocumentObject, $1, OperatorExpression::POW, new NumberExpression(DocumentObject, Quantity((double)$3)));   }
