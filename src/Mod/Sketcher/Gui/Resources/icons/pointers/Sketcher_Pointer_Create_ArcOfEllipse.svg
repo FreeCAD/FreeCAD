@@ -19,9 +19,9 @@
      inkscape:pageopacity="0.0"
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
-     inkscape:zoom="4.71875"
-     inkscape:cx="7.8410596"
-     inkscape:cy="25.430464"
+     inkscape:zoom="6.6733202"
+     inkscape:cx="2.5474575"
+     inkscape:cy="46.603488"
      inkscape:window-width="1368"
      inkscape:window-height="842"
      inkscape:window-x="-6"
@@ -34,19 +34,19 @@
      id="symbol"
      style="fill:none;stroke:#cc0000;stroke-width:2">
     <path
-       d="M 41.272834,21.607072 C 4.7480784,49.920843 10.628042,66.934903 44.624247,55.42199"
+       d="M 41.272834,25.607073 C 4.7480784,50.897163 10.628042,66.094259 44.624247,55.810832"
        id="path2"
        sodipodi:nodetypes="cc"
        style="stroke-width:2" />
     <circle
-       cx="49.945007"
-       cy="35.44054"
+       cx="50.368847"
+       cy="37.983585"
        id="circle4"
        style="stroke-width:2"
        r="4" />
     <circle
-       cx="16.818642"
-       cy="54.572369"
+       cx="16.93918"
+       cy="55.306599"
        id="circle4-8"
        style="fill:none;stroke:#cc0000;stroke-width:2"
        r="4" />
@@ -58,7 +58,7 @@
        r="4" />
     <circle
        cx="41.272835"
-       cy="21.607073"
+       cy="25.607073"
        id="circle4-8-5"
        style="fill:none;stroke:#cc0000;stroke-width:2"
        r="4" />
