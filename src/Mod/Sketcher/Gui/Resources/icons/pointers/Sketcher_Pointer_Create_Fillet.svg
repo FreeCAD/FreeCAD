@@ -21,14 +21,14 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:zoom="2"
-     inkscape:cx="6.4999999"
+     inkscape:cx="6.5"
      inkscape:cy="1.5"
      inkscape:window-width="1368"
      inkscape:window-height="842"
      inkscape:window-x="-6"
      inkscape:window-y="-6"
      inkscape:window-maximized="1"
-     inkscape:current-layer="symbol" />
+     inkscape:current-layer="svg10" />
   <defs
      id="defs14">
     <inkscape:path-effect
@@ -106,7 +106,8 @@
   </defs>
   <g
      id="symbol"
-     style="display:inline;fill:none;stroke:#cc0000;stroke-width:2">
+     style="display:inline;fill:none;stroke:#cc0000;stroke-width:2"
+     transform="translate(4,-2)">
     <circle
        cx="26.439085"
        cy="38.106495"
