@@ -23,14 +23,14 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:zoom="7.296875"
-     inkscape:cx="32"
-     inkscape:cy="31.931478"
+     inkscape:cx="15.897216"
+     inkscape:cy="40.154176"
      inkscape:window-width="1368"
      inkscape:window-height="842"
      inkscape:window-x="-6"
      inkscape:window-y="-6"
      inkscape:window-maximized="1"
-     inkscape:current-layer="svg8" />
+     inkscape:current-layer="symbol" />
   <metadata
      id="metadata14">
     <rdf:RDF>
@@ -47,13 +47,49 @@
   <g
      style="fill:#cc0000;stroke:none;stroke-width:1.20001"
      id="symbol"
-     transform="matrix(0.83333333,0,0,0.83333333,5.3333334,5.3333334)">
+     transform="matrix(0.83333333,0,0,0.83333333,3.3333334,3.3333334)">
     <circle
        id="circle2"
        r="6"
-       cy="32"
-       cx="32"
+       cy="29.6"
+       cx="29.6"
        style="stroke-width:1.20001" />
+    <circle
+       cx="26"
+       cy="56"
+       id="circle4755"
+       style="fill:none;stroke:#cc0000;stroke-width:2"
+       r="4"
+       transform="matrix(1.2,0,0,1.2,-4.0000001,-4.0000001)" />
+    <circle
+       cx="56"
+       cy="-27"
+       id="circle4757"
+       style="fill:none;stroke:#cc0000;stroke-width:2"
+       transform="matrix(1.2,0,0,-1.2,-4.0000001,-4.0000001)"
+       r="4" />
+    <path
+       style="fill:none;fill-rule:evenodd;stroke:#cc0000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 26,56 38.245154,44.163018"
+       id="path4792"
+       transform="matrix(1.2,0,0,1.2,-4.0000001,-4.0000001)" />
+    <path
+       id="path4794"
+       d="M 43.754846,38.836982 56,27"
+       style="fill:none;fill-rule:evenodd;stroke:#cc0000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       transform="matrix(1.2,0,0,1.2,-4.0000001,-4.0000001)" />
+    <path
+       d="M 28.193812,28.193812 38.84457,38.84457"
+       stroke-dasharray="3 2"
+       id="path2"
+       style="fill:none;stroke:#cc0000;stroke-width:2;stroke-dasharray:2, 2;stroke-dashoffset:0"
+       sodipodi:nodetypes="cc"
+       transform="matrix(1.2,0,0,1.2,-4.0000001,-4.0000001)" />
+    <path
+       d="m 41.150758,36.150758 v 5 h -5 z"
+       id="path4"
+       style="fill:#cc0000;fill-opacity:1;stroke:#cc0000;stroke-width:2"
+       transform="matrix(1.2,0,0,1.2,-4.0000001,-4.0000001)" />
   </g>
   <g
      style="stroke:#ffffff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:miter"
@@ -62,25 +98,4 @@
        id="path5"
        d="m16,3v9m0,8v9m-13-13h9m8,0h9" />
   </g>
-  <circle
-     cx="26"
-     cy="56"
-     id="circle4755"
-     style="fill:none;stroke:#cc0000;stroke-width:2"
-     r="4" />
-  <circle
-     cx="56"
-     cy="-27"
-     id="circle4757"
-     style="fill:none;stroke:#cc0000;stroke-width:2"
-     transform="scale(1,-1)"
-     r="4" />
-  <path
-     style="fill:none;fill-rule:evenodd;stroke:#cc0000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-     d="M 26,56 38.245154,44.163018"
-     id="path4792" />
-  <path
-     id="path4794"
-     d="M 43.754846,38.836982 56,27"
-     style="fill:none;fill-rule:evenodd;stroke:#cc0000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
 </svg>
