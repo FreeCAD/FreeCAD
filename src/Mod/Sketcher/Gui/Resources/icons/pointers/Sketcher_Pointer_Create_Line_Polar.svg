@@ -58,14 +58,14 @@
      style="fill:none;stroke:#cc0000;stroke-width:2"
      id="line2"
      y2="28"
-     x2="50"
+     x2="54"
      y1="57"
-     x1="20" />
+     x1="24" />
   <circle
      style="fill:none;stroke:#cc0000;stroke-width:2"
      id="circle4"
      cy="57"
-     cx="20"
+     cx="24"
      r="4" />
   <g
      id="crosshair"
@@ -76,7 +76,7 @@
   </g>
   <path
      style="fill:#ef2929;stroke:#cc0000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:2, 2;stroke-dashoffset:0;stroke-opacity:1"
-     d="m 53.931873,57.1926 c -28.284271,0 -28.859544,-10e-7 -28.859544,-10e-7"
+     d="m 57.931873,57.1926 c -28.284271,0 -28.859544,-10e-7 -28.859544,-10e-7"
      id="path840" />
   <ellipse
      style="fill:none;stroke:#cc0000;stroke-width:2"

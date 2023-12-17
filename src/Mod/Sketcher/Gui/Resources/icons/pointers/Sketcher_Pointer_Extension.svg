@@ -20,7 +20,7 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:zoom="5.1596698"
-     inkscape:cx="36.727156"
+     inkscape:cx="36.630251"
      inkscape:cy="25.970654"
      inkscape:window-width="1368"
      inkscape:window-height="842"
@@ -32,14 +32,15 @@
      id="defs16" />
   <g
      id="symbol"
-     style="fill:none;stroke:#cc0000;stroke-width:2">
+     style="fill:none;stroke:#cc0000;stroke-width:2"
+     transform="translate(8,2)">
     <path
-       d="m19,53l30,-30"
+       d="M 19,53 49,23"
        stroke-dasharray="3 2"
        id="path2"
-       style="stroke-dasharray:2,2;stroke-dashoffset:0" />
+       style="stroke-dasharray:2, 2;stroke-dashoffset:0" />
     <path
-       d="m44,23h5v5z"
+       d="m 44,23 h 5 v 5 z"
        id="path4"
        style="fill:#cc0000;fill-opacity:1" />
     <circle
