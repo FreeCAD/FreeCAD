@@ -1,11 +1,96 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<svg version="1.1" height="64" width="64" id="svg10" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
-  <defs id="defs14" />
-  <g id="symbol" style="fill:none;stroke:#cc0000;stroke-width:2">
-    <path d="m22,29v15l11,11h15" id="path2" />
-    <circle cx="39" cy="36" r="4" id="circle4" />
+<svg
+   version="1.1"
+   height="64"
+   width="64"
+   id="svg10"
+   sodipodi:docname="Sketcher_Pointer_Create_Fillet.svg"
+   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview1"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="5.6568543"
+     inkscape:cx="13.258252"
+     inkscape:cy="44.37095"
+     inkscape:window-width="1368"
+     inkscape:window-height="842"
+     inkscape:window-x="-6"
+     inkscape:window-y="-6"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="svg10" />
+  <defs
+     id="defs14">
+    <linearGradient
+       xlink:href="#linearGradient3836-9"
+       id="linearGradient3801-7"
+       gradientUnits="userSpaceOnUse"
+       x1="-18"
+       y1="18"
+       x2="-22"
+       y2="5"
+       gradientTransform="translate(-90,-5.9999999)" />
+    <linearGradient
+       id="linearGradient3836-9">
+      <stop
+         style="stop-color:#a40000;stop-opacity:1"
+         offset="0"
+         id="stop3838-8" />
+      <stop
+         style="stop-color:#ef2929;stop-opacity:1"
+         offset="1"
+         id="stop3840-1" />
+    </linearGradient>
+    <linearGradient
+       y2="5"
+       x2="-22"
+       y1="18"
+       x1="-18"
+       gradientUnits="userSpaceOnUse"
+       id="linearGradient3082-3"
+       xlink:href="#linearGradient3836-9" />
+  </defs>
+  <g
+     id="symbol"
+     style="display:inline;fill:none;stroke:#cc0000;stroke-width:2">
+    <path
+       id="path3081"
+       style="stroke-width:25.8713;stroke-miterlimit:4;stroke-dasharray:none;display:inline;fill:none;stroke:#cc0000;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1"
+       d="m 74.775895,611.44047 80.826775,20.51644 M 339.8134,1046.3175 362.19497,958.14287 M 155.60268,631.95689 c 161.65355,41.03288 240.16466,193.92396 206.5923,326.18596"
+       transform="matrix(-0.07493664,0.01901774,-0.01902133,-0.07492248,71.681006,99.388566)" />
+    <circle
+       cx="26.314175"
+       cy="34.490257"
+       r="4"
+       id="circle4" />
+    <circle
+       cx="48"
+       cy="55"
+       r="4"
+       id="circle4-9"
+       style="display:inline;fill:none;stroke:#cc0000;stroke-width:2" />
+    <circle
+       cx="26.314175"
+       cy="55"
+       r="4"
+       id="circle4-5"
+       style="display:inline;fill:none;stroke:#cc0000;stroke-width:2" />
   </g>
-  <g id="crosshair" style="stroke:#ffffff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:miter">
-    <path d="m16,3v9m0,8v9m-13-13h9m8,0h9" id="path7" />
+  <g
+     id="crosshair"
+     style="stroke:#ffffff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:miter">
+    <path
+       d="m16,3v9m0,8v9m-13-13h9m8,0h9"
+       id="path7" />
   </g>
 </svg>
