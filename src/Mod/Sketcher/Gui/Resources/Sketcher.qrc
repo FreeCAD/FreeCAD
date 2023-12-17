@@ -215,6 +215,7 @@
     </qresource>
     <qresource>
         <file>icons/pointers/Sketcher_Pointer_CarbonCopy.svg</file>
+        <file>icons/pointers/Sketcher_Pointer_Copy.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Create_3PointArc.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Create_3PointCircle.svg</file>
         <file>icons/pointers/Sketcher_Pointer_Create_Arc.svg</file>
