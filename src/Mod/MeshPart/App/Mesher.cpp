@@ -61,7 +61,9 @@
 #include <StdMeshers_AutomaticLength.hxx>
 #include <StdMeshers_Deflection1D.hxx>
 #include <StdMeshers_LocalLength.hxx>
+#if SMESH_VERSION_MAJOR <= 9 && SMESH_VERSION_MINOR < 10
 #include <StdMeshers_MEFISTO_2D.hxx>
+#endif
 #include <StdMeshers_MaxElementArea.hxx>
 #include <StdMeshers_NumberOfSegments.hxx>
 #include <StdMeshers_QuadranglePreference.hxx>
@@ -409,6 +411,7 @@ Mesh::MeshObject* Mesher::createMesh() const
             hypoth.push_back(alg2d);
         } break;
 #endif
+#if SMESH_VERSION_MAJOR <= 9 && SMESH_VERSION_MINOR < 10
 #if defined(HAVE_MEFISTO)
         case Mefisto: {
             if (maxLength > 0) {
@@ -499,6 +502,7 @@ Mesh::MeshObject* Mesher::createMesh() const
 #endif
             hypoth.push_back(alg2d);
         } break;
+#endif
 #endif
         default:
             break;

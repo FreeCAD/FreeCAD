@@ -103,7 +103,9 @@ PyMOD_INIT_FUNC(Fem)
     Fem::StdMeshers_LayerDistributionPy         ::init_type(femModule);
     Fem::StdMeshers_LengthFromEdgesPy           ::init_type(femModule);
     Fem::StdMeshers_MaxElementVolumePy          ::init_type(femModule);
+#if SMESH_VERSION_MAJOR <= 9 && SMESH_VERSION_MINOR < 10
     Fem::StdMeshers_MEFISTO_2DPy                ::init_type(femModule);
+#endif
     Fem::StdMeshers_NumberOfLayersPy            ::init_type(femModule);
     Fem::StdMeshers_NumberOfSegmentsPy          ::init_type(femModule);
     Fem::StdMeshers_Prism_3DPy                  ::init_type(femModule);
