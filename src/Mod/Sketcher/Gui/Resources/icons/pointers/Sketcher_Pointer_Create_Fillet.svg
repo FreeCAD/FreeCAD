@@ -20,17 +20,61 @@
      inkscape:pageopacity="0.0"
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
-     inkscape:zoom="4"
-     inkscape:cx="33.25"
-     inkscape:cy="61.499999"
+     inkscape:zoom="2"
+     inkscape:cx="6.4999999"
+     inkscape:cy="1.5"
      inkscape:window-width="1368"
      inkscape:window-height="842"
      inkscape:window-x="-6"
      inkscape:window-y="-6"
      inkscape:window-maximized="1"
-     inkscape:current-layer="svg10" />
+     inkscape:current-layer="symbol" />
   <defs
      id="defs14">
+    <inkscape:path-effect
+       effect="dashed_stroke"
+       id="path-effect4"
+       is_visible="true"
+       lpeversion="1"
+       numberdashes="3"
+       holefactor="-0.16"
+       splitsegments="true"
+       halfextreme="false"
+       unifysegment="false"
+       message="Add &lt;b&gt;&quot;Fill Between Many LPE&quot;&lt;/b&gt; to add fill." />
+    <inkscape:path-effect
+       effect="dashed_stroke"
+       id="path-effect3"
+       is_visible="true"
+       lpeversion="1"
+       numberdashes="3"
+       holefactor="0.18"
+       splitsegments="true"
+       halfextreme="false"
+       unifysegment="false"
+       message="Add &lt;b&gt;&quot;Fill Between Many LPE&quot;&lt;/b&gt; to add fill." />
+    <inkscape:path-effect
+       effect="dashed_stroke"
+       id="path-effect2"
+       is_visible="true"
+       lpeversion="1"
+       numberdashes="3"
+       holefactor="0"
+       splitsegments="true"
+       halfextreme="false"
+       unifysegment="true"
+       message="Add &lt;b&gt;&quot;Fill Between Many LPE&quot;&lt;/b&gt; to add fill." />
+    <inkscape:path-effect
+       effect="dashed_stroke"
+       id="path-effect1"
+       is_visible="true"
+       lpeversion="1"
+       numberdashes="4"
+       holefactor="0.11"
+       splitsegments="true"
+       halfextreme="false"
+       unifysegment="true"
+       message="Add &lt;b&gt;&quot;Fill Between Many LPE&quot;&lt;/b&gt; to add fill." />
     <linearGradient
        xlink:href="#linearGradient3836-9"
        id="linearGradient3801-7"
@@ -63,28 +107,41 @@
   <g
      id="symbol"
      style="display:inline;fill:none;stroke:#cc0000;stroke-width:2">
-    <path
-       id="rect2"
-       style="fill:none;stroke:#cc0000;stroke-width:2"
-       d="M 57.01535,55 H 46.98465 C 35.428404,55 26.125,45.696596 26.125,34.14035 v -10.0307"
-       sodipodi:nodetypes="cssc" />
     <circle
-       cx="26.125"
-       cy="34.14035"
+       cx="26.439085"
+       cy="38.106495"
        r="4"
        id="circle4" />
     <circle
-       cx="26.125"
-       cy="55"
-       r="4"
-       id="circle4-6"
-       style="display:inline;fill:none;stroke:#cc0000;stroke-width:2" />
-    <circle
-       cx="46.98465"
-       cy="55"
+       cx="42.978943"
+       cy="54.646351"
        r="4"
        id="circle4-9"
        style="display:inline;fill:none;stroke:#cc0000;stroke-width:2" />
+    <path
+       id="rect4"
+       d="M 53.021065,54.646352 H 42.978943 c -9.163081,0 -16.539858,-7.376777 -16.539858,-16.539858 V 28.064372"
+       sodipodi:nodetypes="cssc" />
+    <path
+       style="fill:none;stroke:#cc0000;stroke-width:2;stroke-linecap:butt;stroke-dasharray:none;stroke-dashoffset:0"
+       d="m 26.439086,53.646352 v 5"
+       id="path4"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="display:inline;fill:none;stroke:#cc0000;stroke-width:2;stroke-linecap:butt;stroke-dasharray:none;stroke-dashoffset:0"
+       d="m 26.439086,47.646352 v 3"
+       id="path4-9"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#cc0000;stroke-width:2;stroke-linecap:butt;stroke-dasharray:none;stroke-dashoffset:0"
+       d="m 27.439086,54.646352 -5.000001,-10e-7"
+       id="path5"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="display:inline;fill:none;stroke:#cc0000;stroke-width:2;stroke-linecap:butt;stroke-dasharray:none;stroke-dashoffset:0"
+       d="m 33.439086,54.646352 -3.000001,-10e-7"
+       id="path5-5"
+       sodipodi:nodetypes="cc" />
   </g>
   <g
      id="crosshair"
