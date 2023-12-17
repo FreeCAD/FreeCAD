@@ -20,9 +20,9 @@
      inkscape:pageopacity="0.0"
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
-     inkscape:zoom="5.6568543"
-     inkscape:cx="13.258252"
-     inkscape:cy="44.37095"
+     inkscape:zoom="4"
+     inkscape:cx="33.25"
+     inkscape:cy="61.499999"
      inkscape:window-width="1368"
      inkscape:window-height="842"
      inkscape:window-x="-6"
@@ -64,26 +64,26 @@
      id="symbol"
      style="display:inline;fill:none;stroke:#cc0000;stroke-width:2">
     <path
-       id="path3081"
-       style="stroke-width:25.8713;stroke-miterlimit:4;stroke-dasharray:none;display:inline;fill:none;stroke:#cc0000;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1"
-       d="m 74.775895,611.44047 80.826775,20.51644 M 339.8134,1046.3175 362.19497,958.14287 M 155.60268,631.95689 c 161.65355,41.03288 240.16466,193.92396 206.5923,326.18596"
-       transform="matrix(-0.07493664,0.01901774,-0.01902133,-0.07492248,71.681006,99.388566)" />
+       id="rect2"
+       style="fill:none;stroke:#cc0000;stroke-width:2"
+       d="M 57.01535,55 H 46.98465 C 35.428404,55 26.125,45.696596 26.125,34.14035 v -10.0307"
+       sodipodi:nodetypes="cssc" />
     <circle
-       cx="26.314175"
-       cy="34.490257"
+       cx="26.125"
+       cy="34.14035"
        r="4"
        id="circle4" />
     <circle
-       cx="48"
+       cx="26.125"
+       cy="55"
+       r="4"
+       id="circle4-6"
+       style="display:inline;fill:none;stroke:#cc0000;stroke-width:2" />
+    <circle
+       cx="46.98465"
        cy="55"
        r="4"
        id="circle4-9"
-       style="display:inline;fill:none;stroke:#cc0000;stroke-width:2" />
-    <circle
-       cx="26.314175"
-       cy="55"
-       r="4"
-       id="circle4-5"
        style="display:inline;fill:none;stroke:#cc0000;stroke-width:2" />
   </g>
   <g
