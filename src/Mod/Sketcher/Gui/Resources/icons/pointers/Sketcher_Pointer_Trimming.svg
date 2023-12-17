@@ -20,17 +20,28 @@
      inkscape:pageopacity="0.0"
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
-     inkscape:zoom="9.34375"
-     inkscape:cx="32"
-     inkscape:cy="32"
+     inkscape:zoom="6.607029"
+     inkscape:cx="40.865569"
+     inkscape:cy="43.438586"
      inkscape:window-width="1368"
      inkscape:window-height="842"
      inkscape:window-x="-6"
      inkscape:window-y="-6"
      inkscape:window-maximized="1"
-     inkscape:current-layer="svg12" />
+     inkscape:current-layer="symbol" />
   <defs
      id="defs16">
+    <inkscape:path-effect
+       effect="dashed_stroke"
+       id="path-effect1"
+       is_visible="true"
+       lpeversion="1"
+       numberdashes="3"
+       holefactor="0"
+       splitsegments="true"
+       halfextreme="false"
+       unifysegment="false"
+       message="Add &lt;b&gt;&quot;Fill Between Many LPE&quot;&lt;/b&gt; to add fill." />
     <linearGradient
        y2="5"
        x2="-22"
@@ -55,17 +66,17 @@
      id="symbol"
      style="fill:none;stroke:#cc0000;stroke-width:2">
     <path
-       d="M 26.702894,29.485972 41.005753,41.650121"
+       d="M 58.140255,57.630184 40.801654,42.107848"
        stroke-dasharray="2, 2"
-       id="path2-4"
-       sodipodi:nodetypes="cc"
-       style="fill:none;stroke:#cc0000;stroke-width:2;stroke-dasharray:0, 2, 2, 0;stroke-dashoffset:0" />
-    <path
-       d="m 41.005753,41.650121 18.19398,14.769231"
-       stroke-dasharray="2, 2"
-       id="path2-4-4"
+       id="path2-4-4-7-8"
        sodipodi:nodetypes="cc"
        style="fill:none;stroke:#cc0000;stroke-width:2;stroke-dasharray:none;stroke-dashoffset:0" />
+    <path
+       d="M 40.801654,42.107848 26.702894,29.485972"
+       stroke-dasharray="2, 2"
+       id="path2-4-4-7-8-6"
+       sodipodi:nodetypes="cc"
+       style="display:inline;fill:none;stroke:#cc0000;stroke-width:2;stroke-dasharray:0,4,4,4,4,18;stroke-dashoffset:0" />
     <path
        d="M 33.150502,59.266798 48.861005,24.033445"
        stroke-dasharray="4, 2"
@@ -74,9 +85,10 @@
        style="stroke-dasharray:none" />
     <circle
        id="circle6"
-       cy="41.65012"
-       cx="41.005753"
-       r="3" />
+       cy="42.107849"
+       cx="40.801655"
+       style="stroke-width:2"
+       r="4" />
   </g>
   <g
      id="crosshair"
