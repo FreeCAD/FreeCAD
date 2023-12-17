@@ -78,7 +78,9 @@
 #include <StdMeshers_LayerDistribution.hxx>
 #include <StdMeshers_LengthFromEdges.hxx>
 #include <StdMeshers_LocalLength.hxx>
+#if SMESH_VERSION_MAJOR <= 9 && SMESH_VERSION_MINOR < 10
 #include <StdMeshers_MEFISTO_2D.hxx>
+#endif
 #include <StdMeshers_MaxElementArea.hxx>
 #include <StdMeshers_MaxElementVolume.hxx>
 #include <StdMeshers_MaxLength.hxx>

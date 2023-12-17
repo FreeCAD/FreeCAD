@@ -354,6 +354,7 @@ public:
     Py::Object getNumLayers(const Py::Tuple& args);
 };
 
+#if SMESH_VERSION_MAJOR <= 9 && SMESH_VERSION_MINOR < 10
 class StdMeshers_MEFISTO_2DPy: public SMESH_HypothesisPy<StdMeshers_MEFISTO_2DPy>
 {
 public:
@@ -361,6 +362,7 @@ public:
     StdMeshers_MEFISTO_2DPy(int hypId, SMESH_Gen* gen);
     ~StdMeshers_MEFISTO_2DPy();
 };
+#endif
 
 class StdMeshers_MaxElementVolumePy: public SMESH_HypothesisPy<StdMeshers_MaxElementVolumePy>
 {
@@ -693,6 +695,7 @@ public:
     Py::Object getNumLayers(const Py::Tuple& args);
 };
 
+#if SMESH_VERSION_MAJOR <= 9 && SMESH_VERSION_MINOR < 10
 class StdMeshers_MEFISTO_2DPy: public SMESH_HypothesisPy<StdMeshers_MEFISTO_2DPy>
 {
 public:
@@ -700,6 +703,7 @@ public:
     StdMeshers_MEFISTO_2DPy(int hypId, int studyId, SMESH_Gen* gen);
     ~StdMeshers_MEFISTO_2DPy() override;
 };
+#endif
 
 class StdMeshers_MaxElementVolumePy: public SMESH_HypothesisPy<StdMeshers_MaxElementVolumePy>
 {
