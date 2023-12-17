@@ -20,7 +20,7 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:zoom="5.1596698"
-     inkscape:cx="37.114778"
+     inkscape:cx="37.017873"
      inkscape:cy="41.087901"
      inkscape:window-width="1368"
      inkscape:window-height="842"
@@ -34,14 +34,9 @@
      id="symbol"
      style="fill:none;stroke:#cc0000;stroke-width:1.92924"
      transform="matrix(1.0366786,0,0,1.0366786,-0.1467704,-6.1737144)">
-    <rect
-       style="fill:none;stroke:#cc0000;stroke-width:1.92924;stroke-opacity:1"
+    <path
        id="rect3"
-       width="27.009335"
-       height="27.009335"
-       x="26.186295"
-       y="32"
-       ry="0" />
+       d="m 32.938626,32 h 13.504671 c 3.740792,0 6.752332,3.01154 6.752332,6.752332 v 13.504671 c 0,3.740792 -3.01154,6.752332 -6.752332,6.752332 H 32.938626 c -3.740791,0 -6.752331,-3.01154 -6.752331,-6.752332 V 38.752332 C 26.186295,35.01154 29.197835,32 32.938626,32 Z" />
     <circle
        cx="39.69096"
        cy="45.504665"
