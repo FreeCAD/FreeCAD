@@ -110,7 +110,7 @@ INSTALL(
 
 INSTALL(
     DIRECTORY
-        CSVData
+        CSVdata
     DESTINATION
         ${CMAKE_INSTALL_DATADIR}/Mod/TechDraw
     FILES_MATCHING
