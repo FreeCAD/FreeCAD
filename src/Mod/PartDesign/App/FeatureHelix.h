@@ -56,7 +56,6 @@ public:
     App::PropertyEnumeration Mode;
     App::PropertyBool        Outside;
     App::PropertyBool        HasBeenEdited;
-    App::PropertyBool        UseMakePipe;
 
     /** if this property is set to a valid link, both Axis and Base properties
      *  are calculated according to the linked line
@@ -81,7 +80,7 @@ protected:
     void updateAxis();
 
     /// generate helix and move it to the right location.
-    TopoDS_Shape generateHelixPath(double startOffset0 = 0.0, double scaleProfile = 100.0);
+    TopoDS_Shape generateHelixPath(double startOffset0 = 0.0);
 
     // project shape on plane. Used for detecting self intersection.
     TopoDS_Shape projectShape(const TopoDS_Shape& input, const gp_Ax2& plane);

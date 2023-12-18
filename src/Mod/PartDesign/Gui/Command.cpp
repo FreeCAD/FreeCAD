@@ -1463,7 +1463,6 @@ void CmdPartDesignAdditiveHelix::activated(int iMsg)
 
         // specific parameters for helix
         Gui::Command::updateActive();
-        static_cast<PartDesign::Helix*>(Feat)->UseMakePipe.setValue(true);
 
         if (sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
             FCMD_OBJ_CMD(Feat,"ReferenceAxis = (" << getObjectCmd(sketch) << ",['V_Axis'])");
@@ -1535,7 +1534,6 @@ void CmdPartDesignSubtractiveHelix::activated(int iMsg)
 
         // specific parameters for helix
         Gui::Command::updateActive();
-        static_cast<PartDesign::Helix*>(Feat)->UseMakePipe.setValue(true);
 
         if (sketch->isDerivedFrom(Part::Part2DObject::getClassTypeId())) {
             FCMD_OBJ_CMD(Feat,"ReferenceAxis = (" << getObjectCmd(sketch) << ",['V_Axis'])");

@@ -104,8 +104,6 @@ Helix::Helix()
     ADD_PROPERTY_TYPE(HasBeenEdited, (false), group, App::Prop_Hidden,
         QT_TRANSLATE_NOOP("App::Property", "If false, the tool will propose an initial value for the pitch based on the profile bounding box,\n"
             "so that self intersection is avoided."));
-    ADD_PROPERTY_TYPE(UseMakePipe, (false), group, App::Prop_Hidden,
-        QT_TRANSLATE_NOOP("App::Property", "If set, use the faster MakePipe instead of the legacy MakePipeShape."));
 
     setReadWriteStatusForMode(initialMode);
 }
@@ -226,24 +224,19 @@ App::DocumentObjectExecReturn* Helix::execute()
             return new App::DocumentObjectExecReturn(e.what());
         }
         TopoDS_Shape result;
-        if ( UseMakePipe.getValue() )  {
-            TopoDS_Shape path = generateHelixPath(0.0, 1.0);
+
+        // generate the helix path
+        TopoDS_Shape path = generateHelixPath();
+        TopoDS_Shape auxpath = generateHelixPath(1.0);
+
+        // Use MakePipe for frenet ( Angle is 0 ) calculations, faster than MakePipeShell
+        if ( Angle.getValue() == 0 ) {
             TopoDS_Shape face = Part::FaceMakerCheese::makeFace(wires);
             face.Move(invObjLoc);
             BRepOffsetAPI_MakePipe mkPS(TopoDS::Wire(path), face, GeomFill_Trihedron::GeomFill_IsFrenet, Standard_False);
-
             mkPS.Build();
-
             result = mkPS.Shape();
         } else {
-            /*  @deprecated  12/01/2023  This is legacy code, here to maintain backward compatibility with existing models without altering their
-             *  Helixes to have fewer seams, and potentially trigger TNP.  Someday it should go away, and so should the gating
-             *  property.
-             */
-
-            // generate the helix path
-            TopoDS_Shape path = generateHelixPath();
-            TopoDS_Shape auxpath = generateHelixPath(1.0);
             std::vector<std::vector<TopoDS_Wire>> wiresections;
             for (TopoDS_Wire& wire : wires)
                 wiresections.emplace_back(1, wire);
@@ -255,14 +248,9 @@ App::DocumentObjectExecReturn* Helix::execute()
 
                 BRepOffsetAPI_MakePipeShell mkPS(TopoDS::Wire(path));
 
-                mkPS.SetTolerance(Precision::Confusion());
-                mkPS.SetTransitionMode(BRepBuilderAPI_Transformed);
-
-                if (Angle.getValue() == 0) {
-                    mkPS.SetMode(true);  //This is for frenet
-                } else {
-                    mkPS.SetMode(TopoDS::Wire(auxpath), true);  // this is for auxiliary
-                }
+                // Frenet mode doesn't place the face quite right on an angled helix, so
+                // use the auxiliary spine to force that.
+                mkPS.SetMode(TopoDS::Wire(auxpath), true);  // this is for auxiliary
 
                 for (TopoDS_Wire& wire : wires) {
                     wire.Move(invObjLoc);
@@ -283,35 +271,36 @@ App::DocumentObjectExecReturn* Helix::execute()
                     frontwires.push_back(TopoDS::Wire(sim.First()));
                     backwires.push_back(TopoDS::Wire(sim.Last()));
                 }
-            }
-            BRepBuilderAPI_MakeSolid mkSolid;
+                BRepBuilderAPI_MakeSolid mkSolid;
 
-            if (!frontwires.empty()) {
-                // build the end faces, sew the shell and build the final solid
-                TopoDS_Shape front = Part::FaceMakerCheese::makeFace(frontwires);
-                TopoDS_Shape back = Part::FaceMakerCheese::makeFace(backwires);
+                if (!frontwires.empty()) {
+                    // build the end faces, sew the shell and build the final solid
+                    TopoDS_Shape front = Part::FaceMakerCheese::makeFace(frontwires);
+                    TopoDS_Shape back = Part::FaceMakerCheese::makeFace(backwires);
 
-                BRepBuilderAPI_Sewing sewer;
-                sewer.SetTolerance(Precision::Confusion());
-                sewer.Add(front);
-                sewer.Add(back);
+                    BRepBuilderAPI_Sewing sewer;
+                    sewer.SetTolerance(Precision::Confusion());
+                    sewer.Add(front);
+                    sewer.Add(back);
 
-                for (TopoDS_Shape& s : shells)
-                    sewer.Add(s);
-                sewer.Perform();
-                mkSolid.Add(TopoDS::Shell(sewer.SewedShape()));
-            }
-            else {
-                // shells are already closed - add them directly
-                for (TopoDS_Shape& s : shells) {
-                    mkSolid.Add(TopoDS::Shell(s));
+                    for (TopoDS_Shape& s : shells)
+                        sewer.Add(s);
+                    sewer.Perform();
+                    mkSolid.Add(TopoDS::Shell(sewer.SewedShape()));
                 }
-            }
-            if (!mkSolid.IsDone())
-                return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result is not a solid"));
+                else {
+                    // shells are already closed - add them directly
+                    for (TopoDS_Shape& s : shells) {
+                        mkSolid.Add(TopoDS::Shell(s));
+                    }
+                }
+                if (!mkSolid.IsDone())
+                    return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Error: Result is not a solid"));
 
-            result = mkSolid.Shape();
+                result = mkSolid.Shape();
+            }
         }
+
         BRepClass3d_SolidClassifier SC(result);
         SC.PerformInfinitePoint(Precision::Confusion());
         if (SC.State() == TopAbs_IN)
@@ -409,7 +398,7 @@ void Helix::updateAxis()
     Axis.setValue(dir.x, dir.y, dir.z);
 }
 
-TopoDS_Shape Helix::generateHelixPath(double startOffset0, double scaleProfile)
+TopoDS_Shape Helix::generateHelixPath(double startOffset0)
 {
     double turns = Turns.getValue();
     double height = Height.getValue();
@@ -450,18 +439,18 @@ TopoDS_Shape Helix::generateHelixPath(double startOffset0, double scaleProfile)
 
     // The factor of 100 below ensures that profile size is small compared to the curvature of the helix.
     // This improves the issue reported in https://forum.freecad.org/viewtopic.php?f=10&t=65048
-    double axisOffset = scaleProfile * (profileCenter * start - baseVector * start);
+    double axisOffset = 100 * (profileCenter * start - baseVector * start);
     double radius = std::fabs(axisOffset);
     bool turned = axisOffset < 0;
     // since the factor does not only change the radius but also the path position, we must shift its offset back
     // using the square of the factor
-    double startOffset = scaleProfile * scaleProfile * std::fabs(startOffset0 + profileCenter * axisVector - baseVector * axisVector);
+    double startOffset = 10000 * std::fabs(startOffset0 + profileCenter * axisVector - baseVector * axisVector);
 
     if (radius < Precision::Confusion()) {
         // in this case ensure that axis is not in the sketch plane
         if (fabs(axisVector * normal) < Precision::Confusion())
             throw Base::ValueError("Error: Result is self intersecting");
-        radius = 10.0 * scaleProfile; //fallback to radius 1000
+        radius = 1000.0; //fallback to radius 1000
     }
 
     bool growthMode = std::string(Mode.getValueAsString()).find("growth") != std::string::npos;
