@@ -51,7 +51,24 @@ public:
                const QStyleOptionViewItem& option,
                const QModelIndex& index) const override;
 
+protected:
+    Materials::MaterialValue::ValueType getType(const QModelIndex& index) const override
+    {
+        return _type;
+    }
+    QString getUnits(const QModelIndex& index) const override
+    {
+        return _units;
+    }
+    QVariant getValue(const QModelIndex& index) const override;
+    void setValue(QAbstractItemModel* model,
+                  const QModelIndex& index,
+                  const QVariant& value) const override;
+    void notifyChanged(const QAbstractItemModel* model, const QModelIndex& index) const override;
+
 private:
+    Materials::MaterialValue::ValueType _type;
+    QString _units;
 };
 
 }  // namespace MatGui

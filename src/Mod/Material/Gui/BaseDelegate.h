@@ -40,12 +40,10 @@ class BaseDelegate: public QStyledItemDelegate
 {
     Q_OBJECT
 public:
-    BaseDelegate(Materials::MaterialValue::ValueType type = Materials::MaterialValue::None,
-                 const QString& units = QString(),
-                 QObject* parent = nullptr);
+    BaseDelegate(QObject* parent = nullptr);
     virtual ~BaseDelegate() = default;
 
-    QSize sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const;
+    QSize sizeHint(const QStyleOptionViewItem& option, const QModelIndex& index) const override;
     void paint(QPainter* painter,
                const QStyleOptionViewItem& option,
                const QModelIndex& index) const override;
@@ -53,16 +51,21 @@ public:
                           const QStyleOptionViewItem& styleOption,
                           const QModelIndex& index) const override;
     void setEditorData(QWidget* editor, const QModelIndex& index) const override;
-    void setModelData(QWidget* editor, QAbstractItemModel* model, const QModelIndex& index) const;
+    void setModelData(QWidget* editor,
+                      QAbstractItemModel* model,
+                      const QModelIndex& index) const override;
 
     // Q_SIGNALS:
     /** Emits this signal when a property has changed */
     // void propertyChange(const QModelIndex& index, const QString value);
 
 protected:
-    Materials::MaterialValue::ValueType _type;
-    QString _units;
-
+    virtual Materials::MaterialValue::ValueType getType(const QModelIndex& index) const = 0;
+    virtual QString getUnits(const QModelIndex& index) const = 0;
+    virtual QVariant getValue(const QModelIndex& index) const = 0;
+    virtual void
+    setValue(QAbstractItemModel* model, const QModelIndex& index, const QVariant& value) const = 0;
+    virtual void notifyChanged(const QAbstractItemModel* model, const QModelIndex& index) const = 0;
 
     QString getStringValue(const QModelIndex& index) const;
     QRgb parseColor(const QString& color) const;
@@ -73,6 +76,8 @@ protected:
     void paintImage(QPainter* painter,
                     const QStyleOptionViewItem& option,
                     const QModelIndex& index) const;
+    void
+    paintSVG(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const;
     void paintColor(QPainter* painter,
                     const QStyleOptionViewItem& option,
                     const QModelIndex& index) const;

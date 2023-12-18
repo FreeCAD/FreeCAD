@@ -77,6 +77,11 @@ Model:
     Units: ''
     URL: ''
     Description: "A File"
+  TestSVG:
+    Type: 'SVG'
+    Units: ''
+    URL: ''
+    Description: "An SVG"
   TestImage:
     Type: 'Image'
     Units: ''

@@ -58,20 +58,47 @@ using namespace MatGui;
 ListDelegate::ListDelegate(Materials::MaterialValue::ValueType type,
                            const QString& units,
                            QObject* parent)
-    : BaseDelegate(type, units, parent)
+    : BaseDelegate(parent)
+    , _type(type)
+    , _units(units)
 {}
+
+QVariant ListDelegate::getValue(const QModelIndex& index) const
+{
+    auto model = index.model();
+    auto item = model->data(index);
+
+    return item;
+}
+
+void ListDelegate::setValue(QAbstractItemModel* model,
+                            const QModelIndex& index,
+                            const QVariant& value) const
+{
+    auto matModel = dynamic_cast<QStandardItemModel*>(model);
+    matModel->setData(index, value);
+
+    notifyChanged(model, index);
+}
+
+void ListDelegate::notifyChanged(const QAbstractItemModel* model, const QModelIndex& index) const
+{
+    Q_UNUSED(model)
+    Q_UNUSED(index)
+}
 
 void ListDelegate::paint(QPainter* painter,
                          const QStyleOptionViewItem& option,
                          const QModelIndex& index) const
 {
 
-    if (_type == Materials::MaterialValue::Quantity) {
+    auto type = getType(index);
+    if (type == Materials::MaterialValue::Quantity) {
         paintQuantity(painter, option, index);
         return;
     }
 
-    if (_type == Materials::MaterialValue::Image || _type == Materials::MaterialValue::ImageList) {
+    if (type == Materials::MaterialValue::Image || type == Materials::MaterialValue::ImageList) {
         paintImage(painter, option, index);
         return;
     }

@@ -25,9 +25,13 @@
 #endif
 
 #include <QBuffer>
+#include <QFile>
 #include <QMenu>
+#include <QPainter>
 #include <QPixmap>
 #include <QString>
+#include <QSvgRenderer>
+#include <QTextStream>
 
 #include <Gui/FileDialog.h>
 #include <Gui/MainWindow.h>
@@ -53,16 +57,53 @@ ImageLabel::ImageLabel(QWidget* parent)
 void ImageLabel::setPixmap(const QPixmap& pixmap)
 {
     _pixmap = pixmap;
+    _svg.clear();
     QLabel::setPixmap(pixmap);
+}
+
+void ImageLabel::setSVG(const QString& svg)
+{
+    _svg = svg;
+    _pixmap = QPixmap();
+    update();
+    // renderSVG();
+}
+
+void ImageLabel::renderSVG()
+{
+    QPainter painter(this);
+    QSvgRenderer renderer(_svg.toUtf8(), this);
+
+    painter.begin(this);
+
+    renderer.render(&painter);
+
+    painter.end();
 }
 
 void ImageLabel::resizeEvent(QResizeEvent* event)
 {
-    QPixmap px = _pixmap.scaled(event->size(), Qt::KeepAspectRatio);
-    QLabel::setPixmap(px);
-    QLabel::resizeEvent(event);
+    if (_svg.isEmpty()) {
+        QPixmap px = _pixmap.scaled(event->size(), Qt::KeepAspectRatio);
+        QLabel::setPixmap(px);
+        QLabel::resizeEvent(event);
+    }
+    // else {
+    //     renderSVG();
+    // }
 }
 
+void ImageLabel::paintEvent(QPaintEvent* event)
+{
+    if (!_svg.isEmpty()) {
+        QSvgRenderer renderer(_svg.toUtf8());
+        QPainter painter(this);
+        renderer.render(&painter, QRectF(event->rect()));
+    }
+    else {
+        QLabel::paintEvent(event);
+    }
+}
 //===
 
 ImageEdit::ImageEdit(const QString& propertyName,
@@ -86,17 +127,24 @@ ImageEdit::ImageEdit(const QString& propertyName,
         _property = nullptr;
     }
     if (_property) {
-        QString value = _property->getString();
-        if (!value.isEmpty()) {
-            QByteArray by = QByteArray::fromBase64(value.toUtf8());
-            QImage img = QImage::fromData(by, "PNG");
-            _pixmap = QPixmap::fromImage(img);
+        if (_property->getType() == Materials::MaterialValue::SVG) {
+            _svg = _property->getString();
+            showSVG();
+        }
+        else {
+            QString value = _property->getString();
+            if (!value.isEmpty()) {
+                QByteArray by = QByteArray::fromBase64(value.toUtf8());
+                QImage img = QImage::fromData(by, "PNG");
+                _pixmap = QPixmap::fromImage(img);
+            }
+            showPixmap();
         }
     }
     else {
         Base::Console().Log("No value loaded\n");
+        showPixmap();
     }
-    showPixmap();
 
     connect(ui->buttonFileSelect, &QPushButton::clicked, this, &ImageEdit::onFileSelect);
 
@@ -114,30 +162,74 @@ void ImageEdit::showPixmap()
     ui->editHeight->setText(text.setNum(_pixmap.height()));
 }
 
+void ImageEdit::showSVG()
+{
+    ui->labelThumb->setSVG(_svg);
+    ui->labelThumb->setFixedSize(64, 64);
+    ui->labelImage->setSVG(_svg);
+    // QString text;
+    // ui->editWidth->setText(text.setNum(_pixmap.width()));
+    // ui->editHeight->setText(text.setNum(_pixmap.height()));
+}
+
 void ImageEdit::onFileSelect(bool checked)
 {
     Q_UNUSED(checked)
 
+    if (_property && _property->getType() == Materials::MaterialValue::SVG) {
+        onFileSelectSVG();
+    }
+    else {
+        onFileSelectImage();
+    }
+}
+
+QString ImageEdit::selectFile(const QString& filePatterns)
+{
     QFileDialog::Options dlgOpt;
     if (Gui::DialogOptions::dontUseNativeFileDialog()) {
         dlgOpt = QFileDialog::DontUseNativeDialog;
     }
 
     QString directory = Gui::FileDialog::getWorkingDirectory();
-    QString fn = Gui::FileDialog::getOpenFileName(
-        this,
-        tr("Select an image"),
-        directory,
-        tr("Image files (*.jpg *.jpeg *.png *.bmp);;All files (*)"),
-        nullptr,
-        dlgOpt);
+    QString fn = Gui::FileDialog::getOpenFileName(this,
+                                                  tr("Select an image"),
+                                                  directory,
+                                                  filePatterns,
+                                                  nullptr,
+                                                  dlgOpt);
 
+    return fn;
+}
+
+void ImageEdit::onFileSelectImage()
+{
+    QString fn = selectFile(tr("Image files (*.jpg *.jpeg *.png *.bmp);;All files (*)"));
     if (!fn.isEmpty()) {
         fn = QDir::fromNativeSeparators(fn);
-        Gui::FileDialog::setWorkingDirectory(fn);
 
         _pixmap = QPixmap(fn);
+        _svg.clear();
         showPixmap();
+    }
+}
+
+void ImageEdit::onFileSelectSVG()
+{
+    QString fn = selectFile(tr("Image files (*.svg);;All files (*)"));
+    if (!fn.isEmpty()) {
+        fn = QDir::fromNativeSeparators(fn);
+
+        _pixmap = QPixmap();
+        QFile file(fn);
+        if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            _svg.clear();
+        }
+        else {
+            QTextStream stream(&file);
+            _svg = stream.readAll();
+        }
+        showSVG();
     }
 }
 
@@ -145,12 +237,17 @@ void ImageEdit::onFileSelect(bool checked)
 void ImageEdit::accept()
 {
     if (_property) {
-        QBuffer buffer;
-        buffer.open(QIODevice::WriteOnly);
-        _pixmap.save(&buffer, "PNG");
-        QByteArray base64 = buffer.data().toBase64();
-        QString encoded = QString::fromUtf8(base64);
-        _property->setValue(encoded);
+        if (_property->getType() == Materials::MaterialValue::SVG) {
+            _property->setValue(_svg);
+        }
+        else {
+            QBuffer buffer;
+            buffer.open(QIODevice::WriteOnly);
+            _pixmap.save(&buffer, "PNG");
+            QByteArray base64 = buffer.data().toBase64();
+            QString encoded = QString::fromUtf8(base64);
+            _property->setValue(encoded);
+        }
     }
     QDialog::accept();
 }
