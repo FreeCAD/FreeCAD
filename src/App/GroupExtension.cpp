@@ -365,7 +365,7 @@ void GroupExtension::extensionOnChanged(const Property* p) {
 
 void GroupExtension::slotChildChanged(const DocumentObject &obj, const Property &prop) {
     if(&prop == &obj.Visibility)
-        _GroupTouched.touch();}
+        _GroupTouched.touch();
 }
 
 bool GroupExtension::extensionGetSubObject(DocumentObject *&ret, const char *subname,
