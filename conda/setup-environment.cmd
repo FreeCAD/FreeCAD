@@ -7,4 +7,4 @@ call conda config --add envs_dirs %CD%/.conda
 call conda config --set env_prompt "({name})"
 
 :: install the FreeCAD dependencies into the environment
-call mamba run --live-stream -n freecad mamba-devenv -f conda/environment.devenv.yml
+call mamba run --live-stream -n freecad mamba-devenv --no-prune -f conda/environment.devenv.yml
