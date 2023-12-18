@@ -535,10 +535,10 @@ private:
             if (constructionMethod() == ConstructionMethod::CenterAndCorner) {
                 return QString::fromLatin1("Sketcher_Pointer_Create_Box_Center");
             }
-            else if (constructionMethod() == ConstructionMethod::ThreePoints)  {
+            else if (constructionMethod() == ConstructionMethod::ThreePoints) {
                 return QString::fromLatin1("Sketcher_Pointer_Create_Box_3Points");
             }
-            else if (constructionMethod() == ConstructionMethod::CenterAnd3Points)  {
+            else if (constructionMethod() == ConstructionMethod::CenterAnd3Points) {
                 return QString::fromLatin1("Sketcher_Pointer_Create_Box_3Points_Center");
             }
             else {
