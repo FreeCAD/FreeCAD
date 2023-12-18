@@ -42,22 +42,7 @@
 class TestModelProperties : public ::testing::Test {
  protected:
   static void SetUpTestSuite() {
-    // if (App::Application::GetARGC() == 0) {
-    //     constexpr int argc = 1;
-    //     std::array<char*, argc> argv {"FreeCAD"};
-    //     App::Application::Config()["ExeName"] = "FreeCAD";
-    //     App::Application::init(argc, argv.data());
-    // }
   }
-
-//   void SetUp() override {
-//     _modelManager = new Materials::ModelManager();
-//     _materialManager = new Materials::MaterialManager();
-//   }
-
-  // void TearDown() override {}
-//   Materials::ModelManager* _modelManager;
-//   Materials::MaterialManager* _materialManager;
 };
 
 TEST_F(TestModelProperties, TestEmpty)

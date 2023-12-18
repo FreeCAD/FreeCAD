@@ -82,7 +82,7 @@ void ModelSelect::getFavorites()
     auto param = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Material/Models/Favorites");
     int count = param->GetInt("Favorites", 0);
-    for (int i = 0; i < count; i++) {
+    for (int i = 0; static_cast<long>(i) < count; i++) {
         QString key = QString::fromLatin1("FAV%1").arg(i);
         QString uuid = QString::fromStdString(param->GetASCII(key.toStdString().c_str(), ""));
         _favorites.push_back(uuid);
@@ -96,7 +96,7 @@ void ModelSelect::saveFavorites()
 
     // Clear out the existing favorites
     int count = param->GetInt("Favorites", 0);
-    for (int i = 0; i < count; i++) {
+    for (int i = 0; static_cast<long>(i) < count; i++) {
         QString key = QString::fromLatin1("FAV%1").arg(i);
         param->RemoveASCII(key.toStdString().c_str());
     }
@@ -149,7 +149,7 @@ void ModelSelect::getRecents()
         "User parameter:BaseApp/Preferences/Mod/Material/Models/Recent");
     _recentMax = param->GetInt("RecentMax", 5);
     int count = param->GetInt("Recent", 0);
-    for (int i = 0; i < count; i++) {
+    for (int i = 0; static_cast<long>(i) < count; i++) {
         QString key = QString::fromLatin1("MRU%1").arg(i);
         QString uuid = QString::fromStdString(param->GetASCII(key.toStdString().c_str(), ""));
         _recents.push_back(uuid);
@@ -163,7 +163,7 @@ void ModelSelect::saveRecents()
 
     // Clear out the existing favorites
     int count = param->GetInt("Recent", 0);
-    for (int i = 0; i < count; i++) {
+    for (int i = 0; static_cast<long>(i) < count; i++) {
         QString key = QString::fromLatin1("MRU%1").arg(i);
         param->RemoveASCII(key.toStdString().c_str());
     }
