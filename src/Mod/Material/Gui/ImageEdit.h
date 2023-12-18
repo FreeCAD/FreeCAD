@@ -53,12 +53,16 @@ public:
     ~ImageLabel() = default;
 
     void setPixmap(const QPixmap& pixmap);
+    void setSVG(const QString& svg);
+    void renderSVG();
 
 protected:
     void resizeEvent(QResizeEvent* event);
+    void paintEvent(QPaintEvent* event);
 
 private:
     QPixmap _pixmap;
+    QString _svg;
 };
 
 class ImageEdit: public QDialog
@@ -71,10 +75,11 @@ public:
               QWidget* parent = nullptr);
     ~ImageEdit() override = default;
 
-    void onFileSelect(bool checked);
-
     void accept() override;
     void reject() override;
+
+private Q_SLOTS:
+    void onFileSelect(bool checked);
 
 private:
     std::unique_ptr<Ui_ImageEdit> ui;
@@ -82,8 +87,14 @@ private:
     std::shared_ptr<Materials::MaterialProperty> _property;
 
     QPixmap _pixmap;
+    QString _svg;
 
     void showPixmap();
+    void showSVG();
+
+    QString selectFile(const QString& filePatterns);
+    void onFileSelectImage();
+    void onFileSelectSVG();
 };
 
 }  // namespace MatGui
