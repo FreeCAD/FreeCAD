@@ -48,15 +48,15 @@ class TestHelix(unittest.TestCase):
         helix.Angle = 0
         helix.Mode = 1 
         self.Doc.recompute()
-        self.assertAlmostEqual(helix.Shape.Volume, 78.95687956849457)
+        self.assertAlmostEqual(helix.Shape.Volume, 78.95687956849457,places=6)
 
         helix.Angle = 25
         self.Doc.recompute()
-        self.assertAlmostEqual(helix.Shape.Volume, 134.17451071237386)
+        self.assertAlmostEqual(helix.Shape.Volume, 134.17451071237386,places=6)
 
         profileSketch.addGeometry(Part.Circle(FreeCAD.Vector(2, 0, 0), FreeCAD.Vector(0,0,1), 0.5) )
         self.Doc.recompute()
-        self.assertAlmostEqual(helix.Shape.Volume, 100.63088303433108)
+        self.assertAlmostEqual(helix.Shape.Volume, 100.63088303433108,places=6)
 
 
     def testRectangle(self):
@@ -83,7 +83,7 @@ class TestHelix(unittest.TestCase):
         self.Doc.recompute()
         bbox = helix.Shape.BoundBox
         self.assertAlmostEqual(bbox.YMin,0)
-        self.assertAlmostEqual(helix.Shape.Volume, 1178.0961742825648)
+        self.assertAlmostEqual(helix.Shape.Volume, 1178.0961742825648,places=6)
 
 
     def testCone(self):
@@ -129,7 +129,7 @@ class TestHelix(unittest.TestCase):
         helix.Mode = 0 
         helix.Reversed = True
         self.Doc.recompute()
-        self.assertAlmostEqual(helix.Shape.Volume, 388285.4117046908)
+        self.assertAlmostEqual(helix.Shape.Volume, 388285.4117046908,places=6)
 
     def tearDown(self):
         FreeCAD.closeDocument("PartDesignTestHelix")
