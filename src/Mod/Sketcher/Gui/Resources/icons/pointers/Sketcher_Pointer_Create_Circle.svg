@@ -20,7 +20,7 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:zoom="7.296875"
-     inkscape:cx="32"
+     inkscape:cx="31.931478"
      inkscape:cy="32.068522"
      inkscape:window-width="1368"
      inkscape:window-height="842"
@@ -32,7 +32,8 @@
      id="defs14" />
   <g
      id="symbol"
-     style="fill:none;stroke:#cc0000;stroke-width:2">
+     style="fill:none;stroke:#cc0000;stroke-width:2"
+     transform="translate(0,4)">
     <circle
        cx="40"
        cy="40"

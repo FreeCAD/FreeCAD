@@ -8,7 +8,6 @@
    inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
-   xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
   <sodipodi:namedview
@@ -30,65 +29,31 @@
      inkscape:window-maximized="1"
      inkscape:current-layer="symbol" />
   <defs
-     id="defs16">
-    <inkscape:path-effect
-       effect="dashed_stroke"
-       id="path-effect1"
-       is_visible="true"
-       lpeversion="1"
-       numberdashes="3"
-       holefactor="0"
-       splitsegments="true"
-       halfextreme="false"
-       unifysegment="false"
-       message="Add &lt;b&gt;&quot;Fill Between Many LPE&quot;&lt;/b&gt; to add fill." />
-    <linearGradient
-       y2="5"
-       x2="-22"
-       y1="18"
-       x1="-18"
-       gradientUnits="userSpaceOnUse"
-       id="linearGradient3108"
-       xlink:href="#linearGradient3836-9-3-7-2-7-7-2" />
-    <linearGradient
-       id="linearGradient3836-9-3-7-2-7-7-2">
-      <stop
-         style="stop-color:#a40000;stop-opacity:1"
-         offset="0"
-         id="stop3838-8-5-4-4-6-4-4" />
-      <stop
-         style="stop-color:#ef2929;stop-opacity:1"
-         offset="1"
-         id="stop3840-1-6-0-5-1-0-5" />
-    </linearGradient>
-  </defs>
+     id="defs16" />
   <g
      id="symbol"
      style="fill:none;stroke:#cc0000;stroke-width:2">
-    <path
-       d="M 58.140255,57.630184 40.801654,42.107848"
-       stroke-dasharray="2, 2"
-       id="path2-4-4-7-8"
-       sodipodi:nodetypes="cc"
-       style="fill:none;stroke:#cc0000;stroke-width:2;stroke-dasharray:none;stroke-dashoffset:0" />
-    <path
-       d="M 40.801654,42.107848 26.702894,29.485972"
-       stroke-dasharray="2, 2"
-       id="path2-4-4-7-8-6"
-       sodipodi:nodetypes="cc"
-       style="display:inline;fill:none;stroke:#cc0000;stroke-width:2;stroke-dasharray:0,4,4,4,4,18;stroke-dashoffset:0" />
-    <path
-       d="M 33.150502,59.266798 48.861005,24.033445"
-       stroke-dasharray="4, 2"
-       id="path4"
-       sodipodi:nodetypes="cc"
-       style="stroke-dasharray:none" />
     <circle
        id="circle6"
-       cy="42.107849"
-       cx="40.801655"
+       cy="40.971458"
+       cx="39.036678"
        style="stroke-width:2"
        r="4" />
+    <path
+       style="fill:none;stroke:#cc0000;stroke-width:2;stroke-dasharray:none"
+       d="M 30.803782,58.854389 46.050537,25.73644"
+       id="path1"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#cc0000;stroke-width:2;stroke-dasharray:none"
+       d="M 39.036678,40.971459 57.088949,59.988908"
+       id="path1-7"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#cc0000;stroke-width:2;stroke-dasharray:2, 2;stroke-dashoffset:0"
+       d="M 35.739389,37.497878 22.847876,23.91711"
+       id="path1-7-7"
+       sodipodi:nodetypes="cc" />
   </g>
   <g
      id="crosshair"

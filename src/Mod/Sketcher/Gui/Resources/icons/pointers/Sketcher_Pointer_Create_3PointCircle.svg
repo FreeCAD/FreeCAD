@@ -28,7 +28,7 @@
      inkscape:window-x="-6"
      inkscape:window-y="-6"
      inkscape:window-maximized="1"
-     inkscape:current-layer="symbol" />
+     inkscape:current-layer="svg14" />
   <defs
      id="defs18">
     <linearGradient
@@ -81,7 +81,8 @@
   </defs>
   <g
      id="symbol"
-     style="fill:none;stroke:#cc0000;stroke-width:2">
+     style="fill:none;stroke:#cc0000;stroke-width:2"
+     transform="translate(0,4)">
     <circle
        cx="40"
        cy="40"
