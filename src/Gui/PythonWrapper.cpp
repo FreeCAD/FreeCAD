@@ -263,7 +263,7 @@ PyTypeObject *getPyTypeObjectForTypeName();
  */
 class WrapperManager : public QObject
 {
-    std::unordered_map<QObject*, std::list<Py::Object>> wrappers;
+
 
 public:
     static WrapperManager& instance()
@@ -275,52 +275,38 @@ public:
      * \brief addQObject
      * \param obj
      * \param pyobj
-     * Add the QObject and its Python wrapper to the list.
+     * Connects destruction event of a QObject with invalidation of its PythonWrapper via a helper QObject.
      */
     void addQObject(QObject* obj, PyObject* pyobj)
     {
-        if (wrappers.find(obj) == wrappers.end()) {
-            QObject::connect(obj, &QObject::destroyed, this, &WrapperManager::destroyed);
-        }
+        const auto PyW_unique_name = QString::number(reinterpret_cast <quintptr> (pyobj));
+        auto PyW_invalidator = findChild <QObject *> (PyW_unique_name, Qt::FindDirectChildrenOnly);
 
-        auto& pylist = wrappers[obj];
-        if (std::find_if(pylist.cbegin(), pylist.cend(),
-                [pyobj](const Py::Object& py) {
-                    return py.ptr() == pyobj;
-                }) == pylist.end()) {
+        if (PyW_invalidator == nullptr) {
+            PyW_invalidator = new QObject(this);
+            PyW_invalidator->setObjectName(PyW_unique_name);
 
-            pylist.emplace_back(pyobj);
-        }
-    }
+            Py_INCREF (pyobj);
+        } else
+            PyW_invalidator->disconnect();
+
+        auto destroyedFun = [pyobj](){
+#if defined (HAVE_SHIBOKEN)
+            auto sbk_ptr = reinterpret_cast <SbkObject *> (pyobj);
+            if (sbk_ptr != nullptr) {
+                Base::PyGILStateLocker lock;
+                Shiboken::Object::setValidCpp(sbk_ptr, false);
+            } else
+                Base::Console().DeveloperError("WrapperManager", "A QObject has just been destroyed after its Pythonic wrapper.\n");
+#endif
+            Py_DECREF (pyobj);
+        };
+
+        QObject::connect(PyW_invalidator, &QObject::destroyed, this, destroyedFun);
+        QObject::connect(obj, &QObject::destroyed, PyW_invalidator, &QObject::deleteLater);
+}
 
 private:
-    /*!
-     * \brief destroyed
-     * \param obj
-     * The listed QObject is about to be destroyed. Invalidate its Python wrappers now.
-     */
-    void destroyed(QObject* obj = nullptr)
-    {
-        if (obj) {
-#if defined (HAVE_SHIBOKEN) && defined(HAVE_PYSIDE)
-            auto key = wrappers.find(obj);
-            if (key != wrappers.end()) {
-                Base::PyGILStateLocker lock;
-                for (const auto& it : key->second) {
-                    auto value = it.ptr();
-                    Shiboken::Object::setValidCpp(reinterpret_cast<SbkObject*>(value), false);
-                }
-
-                wrappers.erase(key);
-            }
-#endif
-        }
-    }
-    void clear()
-    {
-        Base::PyGILStateLocker lock;
-        wrappers.clear();
-    }
     void wrapQApplication()
     {
         // We have to explicitly hold a reference to the wrapper of the QApplication
@@ -347,8 +333,6 @@ private:
 
     WrapperManager()
     {
-        connect(QApplication::instance(), &QCoreApplication::aboutToQuit,
-                this, &WrapperManager::clear);
         wrapQApplication();
     }
     ~WrapperManager() override = default;
