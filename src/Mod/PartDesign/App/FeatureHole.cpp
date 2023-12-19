@@ -2013,8 +2013,8 @@ TopoDS_Compound Hole::findHoles(const TopoDS_Shape& profileshape,
             for (int j = 1; j < holePointsListSize; j++) {
                 if (holePointsList[j].IsEqual(loc, Precision::Confusion())) {
                     Base::Console().Log(
-                        "PartDesign_Hole - There is a duplicate hole/curve center at %.2f : %.2f "
-                        ": %.2f therefore not passing paramter\n",
+                        "PartDesign_Hole - There is a duplicate circle/curve center at %.2f : %.2f "
+                        ": %.2f therefore not passing parameter\n",
                         loc.X(),
                         loc.Y(),
                         loc.Z());
