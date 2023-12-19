@@ -713,7 +713,7 @@ int VectorPy::setCustomAttributes(const char* /*attr*/, PyObject* /*obj*/)
     return 0;
 }
 
-// TODO for v0.18:
+// TODO: for v0.18
 // In generation script allow to more precisely define which slots
 // of the number protocol should be supported instead of setting all.
 

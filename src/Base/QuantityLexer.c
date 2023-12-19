@@ -2149,7 +2149,7 @@ static int yy_get_next_buffer (void)
     void yy_switch_to_buffer  (YY_BUFFER_STATE  new_buffer )
 {
 
-	/* TODO. We should be able to replace this entire function body
+	/* TODO: We should be able to replace this entire function body
 	 * with
 	 *		yypop_buffer_state();
 	 *		yypush_buffer_state(new_buffer);

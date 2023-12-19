@@ -117,7 +117,7 @@ UnitsSchemaInternal::schemaTranslate(const Quantity& quant, double& factor, QStr
         }
     }
     else if (unit == Unit::Angle) {
-        // TODO Cascade for the Areas
+        // TODO: Cascade for the Areas
         // default action for all cases without special treatment:
         unitString = QString::fromUtf8("\xC2\xB0");
         factor = 1.0;
