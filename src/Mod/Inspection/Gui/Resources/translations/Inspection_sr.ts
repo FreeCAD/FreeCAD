@@ -96,12 +96,12 @@
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="482"/>
       <source>Remove annotations</source>
-      <translation type="unfinished">Remove annotations</translation>
+      <translation>Уклони напомене</translation>
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="483"/>
       <source>Do you want to remove all annotations?</source>
-      <translation type="unfinished">Do you want to remove all annotations?</translation>
+      <translation>Да ли желиш да уклониш све напомене?</translation>
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="541"/>

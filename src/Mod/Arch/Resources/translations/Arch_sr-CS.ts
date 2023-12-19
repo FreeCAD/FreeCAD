@@ -6703,12 +6703,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1467"/>
       <source>Select non-manifold meshes</source>
-      <translation type="unfinished">Select non-manifold meshes</translation>
+      <translation>Izaberi geometriju bez mnogostrukosti</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1470"/>
       <source>Selects all non-manifold meshes from the document or from the selected groups</source>
-      <translation type="unfinished">Selects all non-manifold meshes from the document or from the selected groups</translation>
+      <translation>Izaberi iz dokumenta ili izabrane grupe sve mreže bez mnogostrukosti</translation>
     </message>
   </context>
   <context>

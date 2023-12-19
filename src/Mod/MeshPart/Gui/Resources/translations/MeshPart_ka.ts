@@ -62,7 +62,7 @@ This command only works with a 'mesh' object.</source>
     <message>
       <location filename="../../Command.cpp" line="192"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>ბადე</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="193"/>
@@ -80,7 +80,7 @@ This command only works with a 'mesh' object.</source>
     <message>
       <location filename="../../Command.cpp" line="83"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>ბადე</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="84"/>
@@ -340,7 +340,7 @@ Surface deviation multiplied by the length of the current mesh segment (edge)</s
 These groups will be exported for mesh output formats supporting
 this feature (e.g. the format OBJ).</source>
       <translation>ქსელის სეგმენტები დაჯგუფდება ობიექტის ზედაპირის ფერის მიხედვით.
-ეს ჯგუფები გატანილი იქნება ბადის გამომავალი ფორმატებისთვის,
+ეს ჯგუფები გატანილი იქნება ბადის გამომავალი ფორმატებისთვის, 
 რომლებსაც აქვთ ამ თვისების მხარდაჭერა(მაგ. ფორმატი OBJ).</translation>
     </message>
     <message>
@@ -580,7 +580,7 @@ Select a different shape, please.</source>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="49"/>
       <source>Unwrap mesh</source>
-      <translation type="unfinished">Unwrap mesh</translation>
+      <translation>ბადის განშლა</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="52"/>
@@ -593,7 +593,7 @@ Select a different shape, please.</source>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="88"/>
       <source>Unwrap face</source>
-      <translation type="unfinished">Unwrap face</translation>
+      <translation>ზედაპირის განშლა</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="91"/>
