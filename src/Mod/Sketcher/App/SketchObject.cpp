@@ -445,8 +445,11 @@ int SketchObject::setDatum(int ConstrId, double Datum)
     if (!vals[ConstrId]->isDimensional() && type != Tangent && type != Perpendicular)
         return -1;
 
-    if ((type == Distance || type == Radius || type == Diameter || type == Weight) && Datum <= 0)
+    if ((type == Radius || type == Diameter || type == Weight) && Datum <= 0)
         return (Datum == 0) ? -5 : -4;
+
+    if (type == Distance && Datum == 0)
+            return -5;
 
     // copy the list
     std::vector<Constraint*> newVals(vals);

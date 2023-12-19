@@ -94,6 +94,8 @@ void DlgPrefsTechDrawAnnotationImp::saveSettings()
     ui->pcbHighlightStyle->onSave();
     ui->cbEndCap->onSave();
     ui->pcbHiddenStyle->onSave();
+    ui->pcbDetailMatting->onSave();
+    ui->pcbDetailHighlight->onSave();
 }
 
 void DlgPrefsTechDrawAnnotationImp::loadSettings()
@@ -129,6 +131,9 @@ void DlgPrefsTechDrawAnnotationImp::loadSettings()
     ui->pcbMatting->onRestore();
     ui->pdsbBalloonKink->onRestore();
     ui->cbCutSurface->onRestore();
+    ui->pcbDetailMatting->onRestore();
+    ui->pcbDetailHighlight->onRestore();
+
 
     ui->pcbBalloonArrow->onRestore();
     DrawGuiUtil::loadArrowBox(ui->pcbBalloonArrow);

@@ -27,6 +27,7 @@
 
 #include <App/Document.h>
 #include <Mod/Part/App/TopoShape.h>
+#include <Mod/Part/App/PartFeature.h>
 
 #include "dxf.h"
 
@@ -83,9 +84,13 @@ public:
     void setOptions();
 
 private:
-    gp_Pnt makePoint(const double* p);
+    gp_Pnt makePoint(const double point3d[3]) const;
 
 protected:
+    virtual void ApplyGuiStyles(Part::Feature*)
+    {}
+    virtual void ApplyGuiStyles(App::FeaturePython*)
+    {}
     App::Document* document;
     bool optionGroupLayers;
     bool optionImportAnnotations;

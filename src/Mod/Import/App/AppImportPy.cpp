@@ -363,6 +363,13 @@ private:
         return Py::None();
     }
 
+    // This readDXF method is an almost exact duplicate of the one in ImportGui::Module.
+    // The only difference is the CDxfRead class derivation that is created.
+    // It would seem desirable to have most of this code in just one place, passing it
+    // e.g. a pointer to a function that does the 4 lines during the lifetime of the
+    // CDxfRead object, but right now Import::Module and ImportGui::Module cannot see
+    // each other's functions so this shared code would need some place to live where
+    // both places could include a declaration.
     Py::Object readDXF(const Py::Tuple& args)
     {
         char* Name = nullptr;

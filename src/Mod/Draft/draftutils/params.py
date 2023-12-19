@@ -150,7 +150,7 @@ def _param_observer_callback_snapcolor():
 
 def _param_observer_callback_svg_pattern():
     # imports have to happen here to avoid circular imports
-    from draftutils import utils 
+    from draftutils import utils
     from draftviewproviders import view_base
     utils.load_svg_patterns()
     if App.ActiveDocument is None:
@@ -264,7 +264,7 @@ def _param_from_PrefDoubleSpinBox(widget):
     for elem in list(widget):
         if "name" in elem.keys():
             att_name = elem.attrib["name"]
-            if att_name == "value": # Can be missing.
+            if att_name == "value":  # Can be missing.
                 value = float(elem.find("double").text)
             elif att_name == "prefEntry":
                 entry = elem.find("cstring").text
@@ -274,7 +274,17 @@ def _param_from_PrefDoubleSpinBox(widget):
 
 
 def _param_from_PrefUnitSpinBox(widget):
-    return _param_from_PrefDoubleSpinBox(widget)
+    value = 0.0
+    for elem in list(widget):
+        if "name" in elem.keys():
+            att_name = elem.attrib["name"]
+            if att_name == "rawValue":  # Can be missing.
+                value = float(elem.find("double").text)
+            elif att_name == "prefEntry":
+                entry = elem.find("cstring").text
+            elif att_name == "prefPath":
+                path = elem.find("cstring").text
+    return path, entry, value
 
 
 def _param_from_PrefQuantitySpinBox(widget):
@@ -282,7 +292,7 @@ def _param_from_PrefQuantitySpinBox(widget):
     for elem in list(widget):
         if "name" in elem.keys():
             att_name = elem.attrib["name"]
-            if att_name == "rawValue":  # Not sure if this can be missing.
+            if att_name == "rawValue":  # Can be missing.
                 value = elem.find("double").text.rstrip(".0")
             elif att_name == "unit":
                 unit = elem.find("string").text
@@ -359,6 +369,7 @@ def _get_param_dictionary():
         "Draft_array_Link":            ("bool",      True),
         "fillmode":                    ("bool",      True),
         "GlobalMode":                  ("bool",      False),
+        "GridHideInOtherWorkbenches":  ("bool",      True),
         "HatchPatternResolution":      ("int",       128),
         "HatchPatternRotation":        ("float",     0.0),
         "HatchPatternScale":           ("float",     100.0),
@@ -378,8 +389,6 @@ def _get_param_dictionary():
         "SubelementMode":              ("bool",      False),
         "SvgLinesBlack":               ("bool",      True),
         "useSupport":                  ("bool",      False),
-
-
     }
 
     # Arch parameters that are not in the preferences:
@@ -402,6 +411,7 @@ def _get_param_dictionary():
         "EnableSelection":             ("bool",      True),
         "Gradient":                    ("bool",      True),
         "MarkerSize":                  ("int",       9),
+        "NewDocumentCameraScale":      ("float",     100.0),
     }
 
     # For the General parameters we do not check the preferences:
@@ -503,7 +513,6 @@ def _get_param_dictionary():
 PARAM_DICT = _get_param_dictionary()
 
 
-# get_param("gridSpacing")
 def get_param(entry, path="Mod/Draft"):
     """Return a stored parameter value or its default.
 
@@ -520,9 +529,8 @@ def get_param(entry, path="Mod/Draft"):
     -------
     bool, float, int or str (if successful) or `None`.
     """
-    if path not in PARAM_DICT:
-        return None
-    if entry not in PARAM_DICT[path]:
+    if path not in PARAM_DICT or entry not in PARAM_DICT[path]:
+        print(f"draftutils.params.get_param: Unable to find '{entry}' in '{path}'")
         return None
     param_grp = App.ParamGet("User parameter:BaseApp/Preferences/" + path)
     typ, default = PARAM_DICT[path][entry]
@@ -565,9 +573,8 @@ def set_param(entry, value, path="Mod/Draft"):
     -------
     `True` (if successful) or `False`.
     """
-    if path not in PARAM_DICT:
-        return False
-    if entry not in PARAM_DICT[path]:
+    if path not in PARAM_DICT or entry not in PARAM_DICT[path]:
+        print(f"draftutils.params.set_param: Unable to find '{entry}' in '{path}'")
         return False
     param_grp = App.ParamGet("User parameter:BaseApp/Preferences/" + path)
     typ = PARAM_DICT[path][entry][0]

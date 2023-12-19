@@ -45,7 +45,6 @@ from draftguitools import gui_base_original
 from draftguitools import gui_tool_utils
 from draftguitools import gui_trackers as trackers
 from draftutils import params
-from draftutils import utils
 from draftutils.messages import _toolmsg
 from draftutils.translate import translate
 
@@ -84,7 +83,7 @@ class Label(gui_base_original.Creator):
         """Set the type of label, if it is associated to an object."""
         from draftobjects.label import get_label_types
         self.labeltype = get_label_types()[i]
-        utils.setParam("labeltype", self.labeltype)
+        params.set_param("labeltype", self.labeltype)
 
     def finish(self, cont=False):
         """Finish the command."""

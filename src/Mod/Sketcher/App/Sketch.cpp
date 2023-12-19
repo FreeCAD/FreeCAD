@@ -3178,7 +3178,7 @@ int Sketch::addDistanceConstraint(int geoId, double* value, bool driving)
     return ConstraintsCounter;
 }
 
-// point to line distance constraint
+// point to line or circular distance constraint
 int Sketch::addDistanceConstraint(int geoId1,
                                   PointPos pos1,
                                   int geoId2,
@@ -3201,15 +3201,20 @@ int Sketch::addDistanceConstraint(int geoId1,
         GCSsys.addConstraintP2LDistance(p1, l2, value, tag, driving);
         return ConstraintsCounter;
     }
-    else if (Geoms[geoId2].type == Circle) {
-        GCS::Circle& c2 = Circles[Geoms[geoId2].index];
-
-        int tag = ++ConstraintsCounter;
-        GCSsys.addConstraintP2CDistance(p1, c2, value, tag, driving);
-        return ConstraintsCounter;
-    }
     else {
-        return -1;
+        GCS::Circle* c2;
+        if (Geoms[geoId2].type == Circle) {
+            c2 = &Circles[Geoms[geoId2].index];
+        }
+        else if (Geoms[geoId2].type == Arc) {
+            c2 = &Arcs[Geoms[geoId2].index];
+        }
+        else {
+            return -1;
+        }
+        int tag = ++ConstraintsCounter;
+        GCSsys.addConstraintP2CDistance(p1, *c2, value, tag, driving);
+        return ConstraintsCounter;
     }
 }
 
@@ -3239,29 +3244,51 @@ int Sketch::addDistanceConstraint(int geoId1,
     return -1;
 }
 
-// circle-(circle or line) distance constraint
+// circular-(circular or line) distance constraint
 int Sketch::addDistanceConstraint(int geoId1, int geoId2, double* value, bool driving)
 {
     geoId1 = checkGeoId(geoId1);
     geoId2 = checkGeoId(geoId2);
 
-    if (Geoms[geoId1].type == Circle) {
-        if (Geoms[geoId2].type == Circle) {
-            GCS::Circle& c1 = Circles[Geoms[geoId1].index];
-            GCS::Circle& c2 = Circles[Geoms[geoId2].index];
-            int tag = ++ConstraintsCounter;
-            GCSsys.addConstraintC2CDistance(c1, c2, value, tag, driving);
-            return ConstraintsCounter;
+    if (Geoms[geoId2].type == Line) {
+        GCS::Circle* c1;
+        if (Geoms[geoId1].type == Circle) {
+            c1 = &Circles[Geoms[geoId1].index];
         }
-        else if (Geoms[geoId2].type == Line) {
-            GCS::Circle& c = Circles[Geoms[geoId1].index];
-            GCS::Line& l = Lines[Geoms[geoId2].index];
-            int tag = ++ConstraintsCounter;
-            GCSsys.addConstraintC2LDistance(c, l, value, tag, driving);
-            return ConstraintsCounter;
+        else if (Geoms[geoId1].type == Arc) {
+            c1 = &Arcs[Geoms[geoId1].index];
         }
+        else {
+            return -1;
+        }
+
+        GCS::Line* l = &Lines[Geoms[geoId2].index];
+        int tag = ++ConstraintsCounter;
+        GCSsys.addConstraintC2LDistance(*c1, *l, value, tag, driving);
+        return ConstraintsCounter;
     }
-    return -1;
+    else {
+        GCS::Circle *c1, *c2;
+        if (Geoms[geoId1].type == Circle) {
+            c1 = &Circles[Geoms[geoId1].index];
+        }
+        else if (Geoms[geoId1].type == Arc) {
+            c1 = &Arcs[Geoms[geoId1].index];
+        }
+        if (Geoms[geoId2].type == Circle) {
+            c2 = &Circles[Geoms[geoId2].index];
+        }
+        else if (Geoms[geoId2].type == Arc) {
+            c2 = &Arcs[Geoms[geoId2].index];
+        }
+        if (c1 == nullptr || c2 == nullptr) {
+            return -1;
+        }
+
+        int tag = ++ConstraintsCounter;
+        GCSsys.addConstraintC2CDistance(*c1, *c2, value, tag, driving);
+        return ConstraintsCounter;
+    }
 }
 
 
