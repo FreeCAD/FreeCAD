@@ -2013,7 +2013,10 @@ void CmdFemPostLinearizedStressesFilter::activated(int)
         if ((FieldName == "Tresca Stress") || (FieldName == "von Mises Stress")
             || (FieldName == "Major Principal Stress")
             || (FieldName == "Intermediate Principal Stress")
-            || (FieldName == "Minor Principal Stress")
+            || (FieldName == "Minor Principal Stress") || (FieldName == "Stress xx component")
+            || (FieldName == "Stress xy component") || (FieldName == "Stress xz component")
+            || (FieldName == "Stress yy component") || (FieldName == "Stress yz component")
+            || (FieldName == "Stress zz component")
             // names need to match with names in FemVTKTools.cpp, this is not failsafe,
             // but at the moment there is no better way for test on a stress result in vtk pipeline
         ) {

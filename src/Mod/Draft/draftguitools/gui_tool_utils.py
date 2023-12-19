@@ -37,9 +37,9 @@ as they operate on selections and graphical properties.
 import FreeCAD as App
 import FreeCADGui as Gui
 import WorkingPlane
-import draftutils.gui_utils as gui_utils
-import draftutils.utils as utils
-
+from draftutils import gui_utils
+from draftutils import params
+from draftutils import utils
 from draftutils.messages import _wrn
 
 # Set modifier keys from the parameter database
@@ -47,15 +47,15 @@ MODS = ["shift", "ctrl", "alt"]
 
 
 def get_mod_constrain_key():
-    return MODS[utils.get_param("modconstrain", 0)]
+    return MODS[params.get_param("modconstrain")]
 
 
 def get_mod_snap_key():
-    return MODS[utils.get_param("modsnap", 1)]
+    return MODS[params.get_param("modsnap")]
 
 
 def get_mod_alt_key():
-    return MODS[utils.get_param("modalt", 2)]
+    return MODS[params.get_param("modalt")]
 
 
 def format_unit(exp, unit="mm"):

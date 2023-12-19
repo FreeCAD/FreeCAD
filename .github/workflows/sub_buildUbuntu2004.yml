@@ -60,7 +60,7 @@ jobs:
       CXX: /usr/bin/g++
       #CC: /usr/bin/clang
       #CXX: /usr/bin/clang++
-      builddir: ${{ github.workspace }}/build/
+      builddir: ${{ github.workspace }}/build/release/
       logdir: /tmp/logs/
       reportdir: /tmp/report/
       reportfilename: ${{ inputs.artifactBasename }}-report.md
@@ -79,6 +79,7 @@ jobs:
         run: |
           sudo apt-get update -qq
           sudo apt-get install -y --no-install-recommends               \
+                            ccache                                      \
                             doxygen                                     \
                             graphviz                                    \
                             imagemagick                                 \
@@ -117,6 +118,7 @@ jobs:
                             libzipios++-dev                             \
                             netgen                                      \
                             netgen-headers                              \
+                            ninja-build                                 \
                             occt-draw                                   \
                             pyqt5-dev-tools                             \
                             pyside2-tools                               \
@@ -131,17 +133,16 @@ jobs:
                             python3-pyside2.qtgui                       \
                             python3-pyside2.qtnetwork                   \
                             python3-pyside2.qtsvg                       \
+                            python3-pyside2.qtwebchannel                \
                             python3-pyside2.qtwebengine                 \
                             python3-pyside2.qtwebenginecore             \
                             python3-pyside2.qtwebenginewidgets          \
-                            python3-pyside2.qtwebchannel                \
                             python3-pyside2.qtwidgets                   \
                             qtbase5-dev                                 \
                             qttools5-dev                                \
                             qtwebengine5-dev                            \
                             shiboken2                                   \
                             swig                                        \
-                            ccache                                      \
                             xvfb
       - name: Make needed directories, files and initializations
         id: Init
@@ -173,6 +174,7 @@ jobs:
       - name: CMake Configure
         uses: ./.github/workflows/actions/linux/configure
         with:
+          extraParameters: -G Ninja --preset release
           builddir: ${{ env.builddir }}
           logFile: ${{ env.logdir }}Cmake.log
           errorFile: ${{ env.logdir }}CmakeErrors.log
@@ -193,7 +195,7 @@ jobs:
         uses: ./.github/workflows/actions/runPythonTests
         with:
           testDescription: "CLI tests on build dir"
-          testCommand: ${{ env.builddir }}bin/FreeCADCmd -t 0
+          testCommand: ${{ env.builddir }}/bin/FreeCADCmd -t 0
           logFile: ${{ env.logdir }}TestCLIBuild.log
           reportFile: ${{env.reportdir}}${{ env.reportfilename }}
       - name: FreeCAD GUI tests on build dir

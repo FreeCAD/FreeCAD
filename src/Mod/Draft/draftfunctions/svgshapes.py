@@ -33,8 +33,8 @@ import lazy_loader.lazy_loader as lz
 import FreeCAD as App
 import DraftVecUtils
 import WorkingPlane
-import draftutils.utils as utils
-
+from draftutils import params
+from draftutils import utils
 from draftutils.messages import _msg, _wrn
 
 # Delay import of module until first use because it is heavy
@@ -90,8 +90,7 @@ def getProj(vec, plane=None):
 
 def get_discretized(edge, plane):
     """Get a discretized edge on a plane."""
-    param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-    pieces = param.GetFloat("svgDiscretization", 10.0)
+    pieces = params.get_param("svgDiscretization")
 
     if pieces == 0:
         pieces = 10

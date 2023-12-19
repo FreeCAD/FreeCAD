@@ -40,9 +40,9 @@ import math
 import os
 
 import FreeCAD as App
-import draftutils.utils as utils
-
-from draftutils.messages import _msg, _wrn, _err
+from draftutils import params
+from draftutils import utils
+from draftutils.messages import _err, _msg, _wrn
 from draftutils.translate import translate
 
 if App.GuiUp:
@@ -188,7 +188,7 @@ def dim_symbol(symbol=None, invert=False):
     ----------
     symbol: int, optional
         It defaults to `None`, in which it gets the value from the parameter
-        database, `get_param("dimsymbol", 0)`.
+        database, `get_param("dimsymbol")`.
 
         A numerical value defines different markers
          * 0, `SoSphere`
@@ -211,7 +211,7 @@ def dim_symbol(symbol=None, invert=False):
         that will be used as a dimension symbol.
     """
     if symbol is None:
-        symbol = utils.get_param("dimsymbol", 0)
+        symbol = params.get_param("dimsymbol")
 
     if symbol == 0:
         # marker = coin.SoMarkerSet()
@@ -520,9 +520,9 @@ def format_object(target, origin=None):
     elif "FontName" not in obprops:
         # Apply 2 Draft style preferences, other style preferences are applied by Core.
         if "DrawStyle" in obprops:
-            obrep.DrawStyle = utils.DRAW_STYLES[utils.getParam("DefaultDrawStyle", 0)]
+            obrep.DrawStyle = utils.DRAW_STYLES[params.get_param("DefaultDrawStyle")]
         if "DisplayMode" in obprops:
-            dm = utils.DISPLAY_MODES[utils.getParam("DefaultDisplayMode", 0)]
+            dm = utils.DISPLAY_MODES[params.get_param("DefaultDisplayMode")]
             if dm in obrep.listDisplayModes():
                 obrep.DisplayMode = dm
     if Gui.draftToolBar.isConstructionMode():
@@ -531,7 +531,7 @@ def format_object(target, origin=None):
         grp = doc.getObject("Draft_Construction")
         if not grp:
             grp = doc.addObject("App::DocumentObjectGroup", "Draft_Construction")
-            grp.Label = utils.get_param("constructiongroupname", "Construction")
+            grp.Label = params.get_param("constructiongroupname")
         grp.addObject(target)
         if "TextColor" in obprops:
             obrep.TextColor = col

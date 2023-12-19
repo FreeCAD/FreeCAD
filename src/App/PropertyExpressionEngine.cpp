@@ -129,7 +129,7 @@ Property *PropertyExpressionEngine::Copy() const
 void PropertyExpressionEngine::hasSetValue()
 {
     App::DocumentObject *owner = dynamic_cast<App::DocumentObject*>(getContainer());
-    if(!owner || !owner->getNameInDocument() || owner->isRestoring() || testFlag(LinkDetached)) {
+    if(!owner || !owner->isAttachedToDocument() || owner->isRestoring() || testFlag(LinkDetached)) {
         PropertyExpressionContainer::hasSetValue();
         return;
     }

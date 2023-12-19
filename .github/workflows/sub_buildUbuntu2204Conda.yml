@@ -22,9 +22,9 @@
 # ***************************************************************************
 
 # This is a build and test workflow for CI of FreeCAD.
-# This workflow aims at building and testing FreeCAD on Ubuntu 22.04 using Clang.
+# This workflow aims at building and testing FreeCAD on a Conda environment on Linux.
 
-name: Build Ubuntu 22.04
+name: Build Ubuntu 22.04 (Conda)
 on:
   workflow_call:
     inputs:
@@ -54,17 +54,13 @@ jobs:
       CCACHE_COMPILERCHECK: "%compiler% -dumpfullversion -dumpversion" # default:mtime
       CCACHE_COMPRESS: true
       CCACHE_COMPRESSLEVEL: 1
-      #CC: /usr/bin/gcc
-      #CXX: /usr/bin/g++
-      CC: /usr/bin/clang
-      CXX: /usr/bin/clang++
-      builddir: ${{ github.workspace }}/build/
+      builddir: ${{ github.workspace }}/build/release/
       logdir: /tmp/logs/
       reportdir: /tmp/report/
       reportfilename: ${{ inputs.artifactBasename }}-report.md
     defaults:
       run:
-        shell: bash
+        shell: bash -l {0}
     outputs:
       reportFile: ${{ steps.Init.outputs.reportFile }}
 
@@ -73,74 +69,21 @@ jobs:
         uses: actions/checkout@v3
         with:
           submodules: true
+      - name: Setup Miniconda
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          activate-environment: .conda/freecad
+          environment-file: conda/conda-env.yaml
+          channels: conda-forge,defaults
+          channel-priority: true
+          miniforge-version: latest
       - name: Install FreeCAD dependencies
         run: |
-          sudo apt-get update -qq
-          sudo apt-get install -y --no-install-recommends               \
-                            doxygen                                     \
-                            graphviz                                    \
-                            imagemagick                                 \
-                            libboost-date-time-dev                      \
-                            libboost-dev                                \
-                            libboost-filesystem-dev                     \
-                            libboost-graph-dev                          \
-                            libboost-iostreams-dev                      \
-                            libboost-program-options-dev                \
-                            libboost-python-dev                         \
-                            libboost-regex-dev                          \
-                            libboost-serialization-dev                  \
-                            libboost-thread-dev                         \
-                            libcoin-dev                                 \
-                            libeigen3-dev                               \
-                            libgts-bin                                  \
-                            libgts-dev                                  \
-                            libkdtree++-dev                             \
-                            libmedc-dev                                 \
-                            libocct-data-exchange-dev                   \
-                            libocct-ocaf-dev                            \
-                            libocct-visualization-dev                   \
-                            libopencv-dev                               \
-                            libproj-dev                                 \
-                            libpyside2-dev                              \
-                            libqt5opengl5-dev                           \
-                            libqt5svg5-dev                              \
-                            libqt5x11extras5-dev                        \
-                            libqt5xmlpatterns5-dev                      \
-                            libshiboken2-dev                            \
-                            libspnav-dev                                \
-                            libvtk7-dev                                 \
-                            libx11-dev                                  \
-                            libxerces-c-dev                             \
-                            libyaml-cpp-dev                             \
-                            libzipios++-dev                             \
-                            netgen                                      \
-                            netgen-headers                              \
-                            occt-draw                                   \
-                            pyqt5-dev-tools                             \
-                            pyside2-tools                               \
-                            python3-dev                                 \
-                            python3-git                                 \
-                            python3-markdown                            \
-                            python3-matplotlib                          \
-                            python3-packaging                           \
-                            python3-pivy                                \
-                            python3-ply                                 \
-                            python3-pyside2.qtcore                      \
-                            python3-pyside2.qtgui                       \
-                            python3-pyside2.qtnetwork                   \
-                            python3-pyside2.qtsvg                       \
-                            python3-pyside2.qtwebengine                 \
-                            python3-pyside2.qtwebenginecore             \
-                            python3-pyside2.qtwebenginewidgets          \
-                            python3-pyside2.qtwebchannel                \
-                            python3-pyside2.qtwidgets                   \
-                            qtbase5-dev                                 \
-                            qttools5-dev                                \
-                            qtwebengine5-dev                            \
-                            shiboken2                                   \
-                            swig                                        \
-                            ccache                                      \
-                            xvfb
+          ./conda/setup-environment.sh
+      - name: Set Environment Variables
+        run: |
+          echo "CC=$CC" >> "$GITHUB_ENV"
+          echo "CXX=$CXX" >> "$GITHUB_ENV"
       - name: Make needed directories, files and initializations
         id: Init
         run: |
@@ -171,6 +114,7 @@ jobs:
       - name: CMake Configure
         uses: ./.github/workflows/actions/linux/configure
         with:
+          extraParameters: --preset conda-linux-release -DCMAKE_INSTALL_PREFIX=${{ github.workspace }}/.conda/freecad/opt/freecad
           builddir: ${{ env.builddir }}
           logFile: ${{ env.logdir }}Cmake.log
           errorFile: ${{ env.logdir }}CmakeErrors.log
@@ -191,7 +135,7 @@ jobs:
         uses: ./.github/workflows/actions/runPythonTests
         with:
           testDescription: "CLI tests on build dir"
-          testCommand: ${{ env.builddir }}bin/FreeCADCmd -t 0
+          testCommand: ${{ env.builddir }}/bin/FreeCADCmd -t 0
           logFile: ${{ env.logdir }}TestCLIBuild.log
           reportFile: ${{env.reportdir}}${{ env.reportfilename }}
       - name: FreeCAD GUI tests on build dir
@@ -222,7 +166,7 @@ jobs:
         uses: ./.github/workflows/actions/runPythonTests
         with:
           testDescription: "CLI tests on install"
-          testCommand: FreeCADCmd -t 0
+          testCommand: ${{ github.workspace }}/.conda/freecad/opt/freecad/bin/FreeCADCmd -t 0
           logFile: ${{ env.logdir }}TestCLIInstall.log
           reportFile: ${{env.reportdir}}${{ env.reportfilename }}
       - name: FreeCAD GUI tests on install
@@ -230,7 +174,7 @@ jobs:
         uses: ./.github/workflows/actions/runPythonTests
         with:
           testDescription: "GUI tests on install"
-          testCommand: xvfb-run FreeCAD -t 0
+          testCommand: xvfb-run ${{ github.workspace }}/.conda/freecad/opt/freecad/bin/FreeCAD -t 0
           logFile: ${{ env.logdir }}TestGUIInstall.log
           reportFile: ${{env.reportdir}}${{ env.reportfilename }}
       - name: Upload logs

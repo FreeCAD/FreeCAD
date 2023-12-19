@@ -34,215 +34,7 @@
      <layout class="QGridLayout" name="gridLayout_3">
       <item row="1" column="0">
        <layout class="QGridLayout" name="gridLayout_2" columnstretch="2,0,1">
-        <item row="5" column="0">
-         <widget class="QLabel" name="label_18">
-          <property name="font">
-           <font>
-            <italic>true</italic>
-           </font>
-          </property>
-          <property name="toolTip">
-           <string>Length of horizontal portion of Balloon leader</string>
-          </property>
-          <property name="text">
-           <string>Ballon Leader Kink Length</string>
-          </property>
-         </widget>
-        </item>
-        <item row="7" column="2">
-         <widget class="Gui::PrefCheckBox" name="cbPrintCenterMarks">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="toolTip">
-           <string>Show arc centers in printed output</string>
-          </property>
-          <property name="text">
-           <string>Print Center Marks</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>PrintCenterMarks</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/TechDraw/Decorations</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="5" column="2">
-         <widget class="Gui::PrefUnitSpinBox" name="pdsbBalloonKink">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="toolTip">
-           <string>Length of balloon leader line kink</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="value">
-           <double>5.000000000000000</double>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>BalloonKink</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/TechDraw/Dimensions</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="0">
-         <widget class="QLabel" name="label_5">
-          <property name="font">
-           <font>
-            <italic>true</italic>
-           </font>
-          </property>
-          <property name="text">
-           <string>Balloon Shape</string>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="2">
-         <widget class="Gui::PrefComboBox" name="cbCutSurface">
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>22</height>
-           </size>
-          </property>
-          <property name="toolTip">
-           <string>Default appearance of cut surface in section view</string>
-          </property>
-          <property name="currentIndex">
-           <number>2</number>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>CutSurfaceDisplay</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>/Mod/TechDraw/Decorations</cstring>
-          </property>
-          <item>
-           <property name="text">
-            <string>Hide</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>Solid Color</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>SVG Hatch</string>
-           </property>
-          </item>
-          <item>
-           <property name="text">
-            <string>PAT Hatch</string>
-           </property>
-          </item>
-         </widget>
-        </item>
-        <item row="4" column="0">
-         <widget class="QLabel" name="label_3">
-          <property name="font">
-           <font>
-            <italic>true</italic>
-           </font>
-          </property>
-          <property name="text">
-           <string>Balloon Leader End</string>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="0">
-         <widget class="Gui::PrefCheckBox" name="cbPyramidOrtho">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="toolTip">
-           <string>Restrict Filled Triangle line end to vertical or horizontal directions</string>
-          </property>
-          <property name="text">
-           <string>Balloon Orthogonal Triangle</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>PyramidOrtho</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/TechDraw/Decorations</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="2" column="1">
-         <spacer name="horizontalSpacer_2">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item row="1" column="0">
-         <widget class="Gui::PrefCheckBox" name="cbComplexMarks">
-          <property name="font">
-           <font>
-            <italic>true</italic>
-           </font>
-          </property>
-          <property name="toolTip">
-           <string>Show or hide marks at direction changes on ComplexSection lines.</string>
-          </property>
-          <property name="text">
-           <string>Complex Section Line Marks</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>SectionLineMarks</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/TechDraw/Decorations</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="6" column="2">
+        <item row="8" column="2">
          <widget class="Gui::PrefCheckBox" name="cbAutoHoriz">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -270,6 +62,93 @@
           </property>
           <property name="prefPath" stdset="0">
            <cstring>Mod/TechDraw/LeaderLine</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="9" column="0">
+         <widget class="Gui::PrefCheckBox" name="cbShowCenterMarks">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="toolTip">
+           <string>Show arc center marks in views</string>
+          </property>
+          <property name="text">
+           <string>Show Center Marks</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ShowCenterMarks</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/TechDraw/Decorations</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="Gui::PrefCheckBox" name="cbComplexMarks">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="toolTip">
+           <string>Show or hide marks at direction changes on ComplexSection lines.</string>
+          </property>
+          <property name="text">
+           <string>Complex Section Line Marks</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>SectionLineMarks</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/TechDraw/Decorations</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="0">
+         <widget class="QLabel" name="label_19">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="text">
+           <string>Section Cut Surface</string>
+          </property>
+         </widget>
+        </item>
+        <item row="7" column="0">
+         <widget class="QLabel" name="label_18">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="toolTip">
+           <string>Length of horizontal portion of Balloon leader</string>
+          </property>
+          <property name="text">
+           <string>Ballon Leader Kink Length</string>
           </property>
          </widget>
         </item>
@@ -316,68 +195,7 @@
           </item>
          </widget>
         </item>
-        <item row="4" column="2">
-         <widget class="Gui::PrefComboBox" name="pcbBalloonArrow">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="toolTip">
-           <string>Style for balloon leader line ends</string>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>BalloonArrow</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/TechDraw/Decorations</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="7" column="0">
-         <widget class="Gui::PrefCheckBox" name="cbShowCenterMarks">
-          <property name="sizePolicy">
-           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-            <horstretch>0</horstretch>
-            <verstretch>0</verstretch>
-           </sizepolicy>
-          </property>
-          <property name="minimumSize">
-           <size>
-            <width>0</width>
-            <height>0</height>
-           </size>
-          </property>
-          <property name="font">
-           <font>
-            <italic>true</italic>
-           </font>
-          </property>
-          <property name="toolTip">
-           <string>Show arc center marks in views</string>
-          </property>
-          <property name="text">
-           <string>Show Center Marks</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>ShowCenterMarks</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/TechDraw/Decorations</cstring>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="2">
+        <item row="5" column="2">
          <widget class="Gui::PrefComboBox" name="pcbBalloonShape">
           <property name="sizePolicy">
            <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -474,15 +292,121 @@
           </item>
          </widget>
         </item>
-        <item row="0" column="0">
-         <widget class="QLabel" name="label_19">
+        <item row="7" column="2">
+         <widget class="Gui::PrefUnitSpinBox" name="pdsbBalloonKink">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Length of balloon leader line kink</string>
+          </property>
+          <property name="alignment">
+           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+          </property>
+          <property name="value">
+           <double>5.000000000000000</double>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>BalloonKink</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/TechDraw/Dimensions</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="8" column="0">
+         <widget class="Gui::PrefCheckBox" name="cbPyramidOrtho">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Restrict Filled Triangle line end to vertical or horizontal directions</string>
+          </property>
+          <property name="text">
+           <string>Balloon Orthogonal Triangle</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>PyramidOrtho</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/TechDraw/Decorations</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <spacer name="horizontalSpacer_2">
+          <property name="orientation">
+           <enum>Qt::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="6" column="0">
+         <widget class="QLabel" name="label_3">
           <property name="font">
            <font>
             <italic>true</italic>
            </font>
           </property>
           <property name="text">
-           <string>Section Cut Surface</string>
+           <string>Balloon Leader End</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="Gui::PrefCheckBox" name="pcbDetailMatting">
+          <property name="toolTip">
+           <string>This checkbox controls whether or not to display the outline around a detail view.</string>
+          </property>
+          <property name="text">
+           <string>Detail View Show Matting</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ShowDetailMatting</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/General</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="5" column="0">
+         <widget class="QLabel" name="label_5">
+          <property name="font">
+           <font>
+            <italic>true</italic>
+           </font>
+          </property>
+          <property name="text">
+           <string>Balloon Shape</string>
           </property>
          </widget>
         </item>
@@ -495,6 +419,120 @@
           </property>
           <property name="text">
            <string>Detail View Outline Shape</string>
+          </property>
+         </widget>
+        </item>
+        <item row="9" column="2">
+         <widget class="Gui::PrefCheckBox" name="cbPrintCenterMarks">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Show arc centers in printed output</string>
+          </property>
+          <property name="text">
+           <string>Print Center Marks</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>PrintCenterMarks</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/TechDraw/Decorations</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="Gui::PrefComboBox" name="cbCutSurface">
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>22</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Default appearance of cut surface in section view</string>
+          </property>
+          <property name="currentIndex">
+           <number>2</number>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>CutSurfaceDisplay</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/Decorations</cstring>
+          </property>
+          <item>
+           <property name="text">
+            <string>Hide</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>Solid Color</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>SVG Hatch</string>
+           </property>
+          </item>
+          <item>
+           <property name="text">
+            <string>PAT Hatch</string>
+           </property>
+          </item>
+         </widget>
+        </item>
+        <item row="6" column="2">
+         <widget class="Gui::PrefComboBox" name="pcbBalloonArrow">
+          <property name="sizePolicy">
+           <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+            <horstretch>0</horstretch>
+            <verstretch>0</verstretch>
+           </sizepolicy>
+          </property>
+          <property name="minimumSize">
+           <size>
+            <width>0</width>
+            <height>0</height>
+           </size>
+          </property>
+          <property name="toolTip">
+           <string>Style for balloon leader line ends</string>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>BalloonArrow</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>Mod/TechDraw/Decorations</cstring>
+          </property>
+         </widget>
+        </item>
+        <item row="4" column="0">
+         <widget class="Gui::PrefCheckBox" name="pcbDetailHighlight">
+          <property name="toolTip">
+           <string>This checkbox controls whether or not to display a highlight around the detail area in the detail's source view.</string>
+          </property>
+          <property name="text">
+           <string>Detail Source Show Highlight</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+          <property name="prefEntry" stdset="0">
+           <cstring>ShowDetailHighlight</cstring>
+          </property>
+          <property name="prefPath" stdset="0">
+           <cstring>/Mod/TechDraw/General</cstring>
           </property>
          </widget>
         </item>
