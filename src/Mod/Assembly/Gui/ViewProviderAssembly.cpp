@@ -72,7 +72,8 @@ bool ViewProviderAssembly::doubleClicked()
 {
     if (isInEditMode()) {
         // Part is already 'Active' so we exit edit mode.
-        Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
+        // Gui::Command::doCommand(Gui::Command::Gui, "Gui.activeDocument().resetEdit()");
+        Gui::Application::Instance->activeDocument()->resetEdit();
     }
     else {
         // Part is not 'Active' so we enter edit mode to make it so.
@@ -159,6 +160,16 @@ void ViewProviderAssembly::unsetEdit(int ModNum)
     canStartDragging = false;
     partMoving = false;
     docsToMove = {};
+
+    // Check if the view is still active before trying to deactivate the assembly.
+    auto activeDoc = Gui::Application::Instance->activeDocument();
+    if (!activeDoc) {
+        return;
+    }
+    auto activeView = activeDoc->getActiveView();
+    if (!activeView) {
+        return;
+    }
 
     // Set the part as not 'Activated' ie not bold in the tree.
     Gui::Command::doCommand(Gui::Command::Gui,

@@ -90,43 +90,82 @@ def assembly_has_at_least_n_parts(n):
 
 
 def getObject(full_name):
-    # full_name is "Assembly.Assembly1.LinkOrPart1.Box.Edge16"
-    # or           "Assembly.Assembly1.LinkOrPart1.Body.pad.Edge16"
-    # or           "Assembly.Assembly1.LinkOrPart1.Body.Local_CS.X"
-    # We want either Body or Box or Local_CS.
+    # full_name is "Assembly.LinkOrAssembly1.LinkOrPart1.LinkOrBox.Edge16"
+    # or           "Assembly.LinkOrAssembly1.LinkOrPart1.LinkOrBody.pad.Edge16"
+    # or           "Assembly.LinkOrAssembly1.LinkOrPart1.LinkOrBody.Local_CS.X"
+    # We want either LinkOrBody or LinkOrBox or Local_CS.
     names = full_name.split(".")
     doc = App.ActiveDocument
+
     if len(names) < 3:
         App.Console.PrintError(
             "getObject() in UtilsAssembly.py the object name is too short, at minimum it should be something like 'Assembly.Box.edge16'. It shouldn't be shorter"
         )
         return None
 
-    obj = doc.getObject(names[-2])
+    prevObj = None
 
-    if obj and obj.TypeId == "PartDesign::CoordinateSystem":
-        return doc.getObject(names[-2])
+    for i, objName in enumerate(names):
+        if i == 0:
+            prevObj = doc.getObject(objName)
+            if prevObj.TypeId == "App::Link":
+                prevObj = prevObj.getLinkedObject()
+            continue
 
-    obj = doc.getObject(names[-3])  # So either 'Body', or 'Assembly'
+        obj = None
+        if prevObj.TypeId in {"App::Part", "Assembly::AssemblyObject", "App::DocumentObjectGroup"}:
+            for obji in prevObj.OutList:
+                if obji.Name == objName:
+                    obj = obji
+                    break
 
-    if not obj:
-        return None
+        if obj is None:
+            return None
 
-    if obj.TypeId == "PartDesign::Body":
-        return obj
-    elif obj.TypeId == "App::Link":
-        linked_obj = obj.getLinkedObject()
-        if linked_obj.TypeId == "PartDesign::Body":
+        # the last is the element name. So if we are at the last but one name, then it must be the selected
+        if i == len(names) - 2:
             return obj
 
-    # primitive, fastener, gear ... or link to primitive, fastener, gear...
-    return doc.getObject(names[-2])
+        if obj.TypeId == "App::Link":
+            linked_obj = obj.getLinkedObject()
+            if linked_obj.TypeId == "PartDesign::Body":
+                if i + 1 < len(names):
+                    obj2 = doc.getObject(names[i + 1])
+                    if obj2 and obj2.TypeId == "PartDesign::CoordinateSystem":
+                        return obj2
+                return obj
+            elif linked_obj.isDerivedFrom("Part::Feature"):
+                return obj
+            else:
+                prevObj = linked_obj
+                continue
+
+        elif obj.TypeId in {"App::Part", "Assembly::AssemblyObject", "App::DocumentObjectGroup"}:
+            prevObj = obj
+            continue
+
+        elif obj.TypeId == "PartDesign::Body":
+            if i + 1 < len(names):
+                obj2 = doc.getObject(names[i + 1])
+                if obj2 and obj2.TypeId == "PartDesign::CoordinateSystem":
+                    return obj2
+            return obj
+
+        elif obj.isDerivedFrom("Part::Feature"):
+            # primitive, fastener, gear ...
+            return obj
+
+    return None
 
 
 def getContainingPart(full_name, selected_object):
     # full_name is "Assembly.Assembly1.LinkOrPart1.Box.Edge16"
     # or           "Assembly.Assembly1.LinkOrPart1.Body.pad.Edge16"
     # We want either Body or Box.
+    if selected_object is None:
+        App.Console.PrintError("getContainingPart() in UtilsAssembly.py selected_object is None")
+        return None
+
     names = full_name.split(".")
     doc = App.ActiveDocument
     if len(names) < 3:
@@ -140,6 +179,9 @@ def getContainingPart(full_name, selected_object):
 
         if not obj:
             continue
+
+        if obj == selected_object:
+            return selected_object
 
         if (
             obj.TypeId == "PartDesign::Body"
@@ -156,11 +198,28 @@ def getContainingPart(full_name, selected_object):
         elif obj.TypeId == "App::Link":
             linked_obj = obj.getLinkedObject()
             if linked_obj.TypeId == "App::Part":
+                # linked_obj_doc = linked_obj.Document
+                # selected_obj_in_doc = doc.getObject(selected_object.Name)
                 if linked_obj.hasObject(selected_object, True):
                     return obj
 
     # no container found so we return the object itself.
     return selected_object
+
+
+def getObjectInPart(objName, part):
+    if part.Name == objName:
+        return part
+
+    if part.TypeId == "App::Link":
+        part = part.getLinkedObject()
+
+    if part.TypeId in {"App::Part", "Assembly::AssemblyObject", "App::DocumentObjectGroup"}:
+        for obji in part.OutList:
+            if obji.Name == objName:
+                return obji
+
+    return None
 
 
 # The container is used to support cases where the same object appears at several places

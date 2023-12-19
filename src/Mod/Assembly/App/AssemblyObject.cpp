@@ -27,6 +27,9 @@
 #include <BRepAdaptor_Surface.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Face.hxx>
+#include <gp_Circ.hxx>
+#include <gp_Cylinder.hxx>
+#include <gp_Sphere.hxx>
 #include <cmath>
 #include <vector>
 #include <unordered_map>
@@ -36,6 +39,7 @@
 #include <App/Document.h>
 #include <App/DocumentObjectGroup.h>
 #include <App/FeaturePythonPyImp.h>
+#include <App/Link.h>
 #include <App/PropertyPythonObject.h>
 #include <Base/Console.h>
 #include <Base/Placement.h>
@@ -444,8 +448,8 @@ std::shared_ptr<ASMTJoint> AssemblyObject::makeMbdJointDistanceEdgeEdge(App::Doc
 {
     const char* elt1 = getElementFromProp(joint, "Element1");
     const char* elt2 = getElementFromProp(joint, "Element2");
-    auto* obj1 = getLinkedObjFromProp(joint, "Object1");
-    auto* obj2 = getLinkedObjFromProp(joint, "Object2");
+    auto* obj1 = getLinkedObjFromNameProp(joint, "Object1", "Part1");
+    auto* obj2 = getLinkedObjFromNameProp(joint, "Object2", "Part2");
 
     if (isEdgeType(obj1, elt1, GeomAbs_Line) || isEdgeType(obj2, elt2, GeomAbs_Line)) {
         if (!isEdgeType(obj1, elt1, GeomAbs_Line)) {
@@ -492,8 +496,8 @@ std::shared_ptr<ASMTJoint> AssemblyObject::makeMbdJointDistanceFaceFace(App::Doc
 {
     const char* elt1 = getElementFromProp(joint, "Element1");
     const char* elt2 = getElementFromProp(joint, "Element2");
-    auto* obj1 = getLinkedObjFromProp(joint, "Object1");
-    auto* obj2 = getLinkedObjFromProp(joint, "Object2");
+    auto* obj1 = getLinkedObjFromNameProp(joint, "Object1", "Part1");
+    auto* obj2 = getLinkedObjFromNameProp(joint, "Object2", "Part2");
 
     if (isFaceType(obj1, elt1, GeomAbs_Plane) || isFaceType(obj2, elt2, GeomAbs_Plane)) {
         if (!isFaceType(obj1, elt1, GeomAbs_Plane)) {
@@ -623,7 +627,7 @@ std::shared_ptr<ASMTJoint>
 AssemblyObject::makeMbdJointDistanceFaceVertex(App::DocumentObject* joint)
 {
     const char* elt1 = getElementFromProp(joint, "Element1");
-    auto* obj1 = getLinkedObjFromProp(joint, "Object1");
+    auto* obj1 = getLinkedObjFromNameProp(joint, "Object1", "Part1");
 
     if (isFaceType(obj1, elt1, GeomAbs_Plane)) {
         auto mbdJoint = CREATE<ASMTPointInPlaneJoint>::With();
@@ -654,7 +658,7 @@ std::shared_ptr<ASMTJoint>
 AssemblyObject::makeMbdJointDistanceEdgeVertex(App::DocumentObject* joint)
 {
     const char* elt1 = getElementFromProp(joint, "Element1");
-    auto* obj1 = getLinkedObjFromProp(joint, "Object1");
+    auto* obj1 = getLinkedObjFromNameProp(joint, "Object1", "Part1");
 
     if (isEdgeType(obj1, elt1, GeomAbs_Line)) {  // Point on line joint.
         auto mbdJoint = CREATE<ASMTCylSphJoint>::With();
@@ -676,7 +680,7 @@ AssemblyObject::makeMbdJointDistanceEdgeVertex(App::DocumentObject* joint)
 std::shared_ptr<ASMTJoint> AssemblyObject::makeMbdJointDistanceFaceEdge(App::DocumentObject* joint)
 {
     const char* elt2 = getElementFromProp(joint, "Element2");
-    auto* obj2 = getLinkedObjFromProp(joint, "Object2");
+    auto* obj2 = getLinkedObjFromNameProp(joint, "Object2", "Part2");
 
     if (isEdgeType(obj2, elt2, GeomAbs_Line)) {
         // Make line in plane joint.
@@ -705,16 +709,16 @@ AssemblyObject::makeMbdJoint(App::DocumentObject* joint)
         return {};
     }
 
-    std::string fullMarkerName1 = handleOneSideOfJoint(joint, jointType, "Part1", "Placement1");
-    std::string fullMarkerName2 = handleOneSideOfJoint(joint, jointType, "Part2", "Placement2");
+    std::string fullMarkerName1 = handleOneSideOfJoint(joint, "Part1", "Placement1");
+    std::string fullMarkerName2 = handleOneSideOfJoint(joint, "Part2", "Placement2");
 
     mbdJoint->setMarkerI(fullMarkerName1);
     mbdJoint->setMarkerJ(fullMarkerName2);
 
     return {mbdJoint};
 }
+
 std::string AssemblyObject::handleOneSideOfJoint(App::DocumentObject* joint,
-                                                 JointType jointType,
                                                  const char* propLinkName,
                                                  const char* propPlcName)
 {
@@ -843,10 +847,10 @@ void AssemblyObject::swapJCS(App::DocumentObject* joint)
         propPlacement1->setValue(propPlacement2->getValue());
         propPlacement2->setValue(temp);
     }
-    auto propObject1 = dynamic_cast<App::PropertyLink*>(joint->getPropertyByName("Object1"));
-    auto propObject2 = dynamic_cast<App::PropertyLink*>(joint->getPropertyByName("Object2"));
+    auto propObject1 = dynamic_cast<App::PropertyString*>(joint->getPropertyByName("Object1"));
+    auto propObject2 = dynamic_cast<App::PropertyString*>(joint->getPropertyByName("Object2"));
     if (propObject1 && propObject2) {
-        auto temp = propObject1->getValue();
+        auto temp = std::string(propObject1->getValue());
         propObject1->setValue(propObject2->getValue());
         propObject2->setValue(temp);
     }
@@ -885,6 +889,10 @@ void AssemblyObject::savePlacementsForUndo()
 
 void AssemblyObject::undoSolve()
 {
+    if (previousPositions.size() == 0) {
+        return;
+    }
+
     for (auto& pair : previousPositions) {
         App::DocumentObject* obj = pair.first;
         if (!obj) {
@@ -1004,7 +1012,7 @@ bool AssemblyObject::isFaceType(App::DocumentObject* obj,
                                 GeomAbs_SurfaceType type)
 {
     auto base = static_cast<PartApp::Feature*>(obj);
-    const PartApp::TopoShape& TopShape = base->Shape.getShape();
+    PartApp::TopoShape TopShape = base->Shape.getShape();
 
     // Check for valid face types
     TopoDS_Face face = TopoDS::Face(TopShape.getSubShape(elName));
@@ -1127,10 +1135,41 @@ App::DocumentObject* AssemblyObject::getLinkObjFromProp(App::DocumentObject* joi
     return propObj->getValue();
 }
 
-App::DocumentObject* AssemblyObject::getLinkedObjFromProp(App::DocumentObject* joint,
-                                                          const char* propLinkName)
+App::DocumentObject* AssemblyObject::getLinkedObjFromNameProp(App::DocumentObject* joint,
+                                                              const char* pObjName,
+                                                              const char* pPart)
 {
-    return getLinkObjFromProp(joint, propLinkName)->getLinkedObject(true);
+    auto* propObjName = dynamic_cast<App::PropertyString*>(joint->getPropertyByName(pObjName));
+    if (!propObjName) {
+        return nullptr;
+    }
+    std::string objName = std::string(propObjName->getValue());
+
+    App::DocumentObject* containingPart = getLinkObjFromProp(joint, pPart);
+    if (!containingPart) {
+        return nullptr;
+    }
+
+    if (objName == containingPart->getNameInDocument()) {
+        return containingPart->getLinkedObject(true);
+    }
+
+    if (containingPart->getTypeId().isDerivedFrom(App::Link::getClassTypeId())) {
+        App::Link* link = dynamic_cast<App::Link*>(containingPart);
+
+        containingPart = link->getLinkedObject(true);
+        if (!containingPart) {
+            return nullptr;
+        }
+    }
+
+    for (auto obj : containingPart->getOutList()) {
+        if (objName == obj->getNameInDocument()) {
+            return obj->getLinkedObject(true);
+        }
+    }
+
+    return nullptr;
 }
 
 Base::Placement AssemblyObject::getPlacementFromProp(App::DocumentObject* obj, const char* propName)

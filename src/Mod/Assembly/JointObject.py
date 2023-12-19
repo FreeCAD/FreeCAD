@@ -40,6 +40,7 @@ __url__ = "https://www.freecad.org"
 
 from pivy import coin
 import UtilsAssembly
+import Preferences
 
 JointTypes = [
     QT_TRANSLATE_NOOP("AssemblyJoint", "Fixed"),
@@ -73,6 +74,11 @@ JointUsingReverse = [
 ]
 
 
+def solveIfAllowed(assembly, storePrev=False):
+    if Preferences.preferences().GetBool("SolveInJointCreation", True):
+        assembly.solve(storePrev)
+
+
 def flipPlacement(plc, localXAxis):
     flipRot = App.Rotation(localXAxis, 180)
     plc.Rotation = plc.Rotation.multiply(flipRot)
@@ -96,10 +102,10 @@ class Joint:
 
         # First Joint Connector
         joint.addProperty(
-            "App::PropertyLink",
+            "App::PropertyString",  # Not PropertyLink because they don't support external objects
             "Object1",
             "Joint Connector 1",
-            QT_TRANSLATE_NOOP("App::Property", "The first object of the joint"),
+            QT_TRANSLATE_NOOP("App::Property", "The name of the first object of the joint"),
         )
 
         joint.addProperty(
@@ -133,12 +139,22 @@ class Joint:
             ),
         )
 
+        joint.addProperty(
+            "App::PropertyBool",
+            "Detach1",
+            "Joint Connector 1",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "This prevent Placement1 from recomputing, enabling custom positioning of the placement.",
+            ),
+        )
+
         # Second Joint Connector
         joint.addProperty(
-            "App::PropertyLink",
+            "App::PropertyString",
             "Object2",
             "Joint Connector 2",
-            QT_TRANSLATE_NOOP("App::Property", "The second object of the joint"),
+            QT_TRANSLATE_NOOP("App::Property", "The name of the second object of the joint"),
         )
 
         joint.addProperty(
@@ -169,6 +185,16 @@ class Joint:
             QT_TRANSLATE_NOOP(
                 "App::Property",
                 "This is the local coordinate system within the object2 that will be used to joint.",
+            ),
+        )
+
+        joint.addProperty(
+            "App::PropertyBool",
+            "Detach2",
+            "Joint Connector 2",
+            QT_TRANSLATE_NOOP(
+                "App::Property",
+                "This prevent Placement2 from recomputing, enabling custom positioning of the placement.",
             ),
         )
 
@@ -236,7 +262,7 @@ class Joint:
             if hasattr(
                 joint, "Vertex1"
             ):  # during loading the onchanged may be triggered before full init.
-                self.getAssembly(joint).solve()
+                solveIfAllowed(self.getAssembly(joint))
 
     def execute(self, fp):
         """Do something when doing a recomputation, this method is mandatory"""
@@ -251,7 +277,7 @@ class Joint:
             joint.Part1 = None
             joint.FirstPartConnected = assembly.isPartConnected(current_selection[0]["part"])
 
-            joint.Object1 = current_selection[0]["object"]
+            joint.Object1 = current_selection[0]["object"].Name
             joint.Part1 = current_selection[0]["part"]
             joint.Element1 = current_selection[0]["element_name"]
             joint.Vertex1 = current_selection[0]["vertex_name"]
@@ -259,24 +285,24 @@ class Joint:
                 joint, joint.Object1, joint.Part1, joint.Element1, joint.Vertex1
             )
         else:
-            joint.Object1 = None
+            joint.Object1 = ""
             joint.Part1 = None
             joint.Element1 = ""
             joint.Vertex1 = ""
             joint.Placement1 = App.Placement()
 
         if len(current_selection) >= 2:
-            joint.Object2 = current_selection[1]["object"]
+            joint.Object2 = current_selection[1]["object"].Name
             joint.Part2 = current_selection[1]["part"]
             joint.Element2 = current_selection[1]["element_name"]
             joint.Vertex2 = current_selection[1]["vertex_name"]
             joint.Placement2 = self.findPlacement(
                 joint, joint.Object2, joint.Part2, joint.Element2, joint.Vertex2, True
             )
-            assembly.solve(True)
+            solveIfAllowed(assembly, True)
 
         else:
-            joint.Object2 = None
+            joint.Object2 = ""
             joint.Part2 = None
             joint.Element2 = ""
             joint.Vertex2 = ""
@@ -284,12 +310,15 @@ class Joint:
             assembly.undoSolve()
 
     def updateJCSPlacements(self, joint):
-        joint.Placement1 = self.findPlacement(
-            joint, joint.Object1, joint.Part1, joint.Element1, joint.Vertex1
-        )
-        joint.Placement2 = self.findPlacement(
-            joint, joint.Object2, joint.Part2, joint.Element2, joint.Vertex2, True
-        )
+        if not joint.Detach1:
+            joint.Placement1 = self.findPlacement(
+                joint, joint.Object1, joint.Part1, joint.Element1, joint.Vertex1
+            )
+
+        if not joint.Detach2:
+            joint.Placement2 = self.findPlacement(
+                joint, joint.Object2, joint.Part2, joint.Element2, joint.Vertex2, True
+            )
 
     """
     So here we want to find a placement that corresponds to a local coordinate system that would be placed at the selected vertex.
@@ -301,7 +330,11 @@ class Joint:
     - if elt is a cylindrical face, vtx can also be the center of the arcs of the cylindrical face.
     """
 
-    def findPlacement(self, joint, obj, part, elt, vtx, isSecond=False):
+    def findPlacement(self, joint, objName, part, elt, vtx, isSecond=False):
+        if not objName or not part:
+            return App.Placement()
+
+        obj = UtilsAssembly.getObjectInPart(objName, part)
         assembly = self.getAssembly(joint)
         plc = App.Placement()
 
@@ -430,7 +463,8 @@ class Joint:
             plc = joint.Part1.Placement.inverse() * joint.Placement1
             localXAxis = plc.Rotation.multVec(App.Vector(1, 0, 0))
             joint.Part1.Placement = flipPlacement(joint.Part1.Placement, localXAxis)
-        self.getAssembly(joint).solve()
+
+        solveIfAllowed(self.getAssembly(joint))
 
     def findCylindersIntersection(self, obj, surface, edge, elt_index):
         for j, facej in enumerate(obj.Shape.Faces):
@@ -887,7 +921,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
 
         self.deactivate()
 
-        self.assembly.solve()
+        solveIfAllowed(self.assembly)
 
         App.closeActiveTransaction()
         return True
@@ -974,15 +1008,18 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         self.current_selection = []
         self.preselection_dict = None
 
+        obj1 = UtilsAssembly.getObjectInPart(self.joint.Object1, self.joint.Part1)
+        obj2 = UtilsAssembly.getObjectInPart(self.joint.Object2, self.joint.Part2)
+
         selection_dict1 = {
-            "object": self.joint.Object1,
+            "object": obj1,
             "part": self.joint.Part1,
             "element_name": self.joint.Element1,
             "vertex_name": self.joint.Vertex1,
         }
 
         selection_dict2 = {
-            "object": self.joint.Object2,
+            "object": obj2,
             "part": self.joint.Part2,
             "element_name": self.joint.Element2,
             "vertex_name": self.joint.Vertex2,
@@ -991,14 +1028,15 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         self.current_selection.append(selection_dict1)
         self.current_selection.append(selection_dict2)
 
-        elName = self.getObjSubNameFromObj(self.joint.Object1, self.joint.Element1)
-        """print(
-            f"Gui.Selection.addSelection('{self.doc.Name}', '{self.joint.Object1.Name}', '{elName}')"
-        )"""
-        Gui.Selection.addSelection(self.doc.Name, self.joint.Object1.Name, elName)
+        elName = self.getObjSubNameFromObj(obj1, self.joint.Element1)
+        if obj1 != self.joint.Part1:
+            elName = obj1.Name + "." + elName
+        Gui.Selection.addSelection(self.doc.Name, self.joint.Part1.Name, elName)
 
-        elName = self.getObjSubNameFromObj(self.joint.Object2, self.joint.Element2)
-        Gui.Selection.addSelection(self.doc.Name, self.joint.Object2.Name, elName)
+        elName = self.getObjSubNameFromObj(obj2, self.joint.Element2)
+        if obj2 != self.joint.Part2:
+            elName = obj2.Name + "." + elName
+        Gui.Selection.addSelection(self.doc.Name, self.joint.Part2.Name, elName)
 
         self.form.distanceSpinbox.setProperty("rawValue", self.joint.Distance)
         self.form.offsetSpinbox.setProperty("rawValue", self.joint.Offset.z)
@@ -1033,7 +1071,6 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         self.form.featureList.clear()
         simplified_names = []
         for sel in self.current_selection:
-            # TODO: ideally we probably want to hide the feature name in case of PartDesign bodies. ie body.face12 and not body.pad2.face12
             sname = sel["object"].Label
             if sel["element_name"] != "":
                 sname = sname + "." + sel["element_name"]
@@ -1076,7 +1113,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
 
         placement = self.joint.Proxy.findPlacement(
             self.joint,
-            self.preselection_dict["object"],
+            self.preselection_dict["object"].Name,
             self.preselection_dict["part"],
             self.preselection_dict["element_name"],
             self.preselection_dict["vertex_name"],
