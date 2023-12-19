@@ -439,12 +439,12 @@ TopoDS_Shape Helix::generateHelixPath(double startOffset0)
 
     // The factor of 100 below ensures that profile size is small compared to the curvature of the helix.
     // This improves the issue reported in https://forum.freecad.org/viewtopic.php?f=10&t=65048
-    double axisOffset = 100 * (profileCenter * start - baseVector * start);
+    double axisOffset = 100.0 * (profileCenter * start - baseVector * start);
     double radius = std::fabs(axisOffset);
     bool turned = axisOffset < 0;
     // since the factor does not only change the radius but also the path position, we must shift its offset back
     // using the square of the factor
-    double startOffset = 10000 * std::fabs(startOffset0 + profileCenter * axisVector - baseVector * axisVector);
+    double startOffset = 10000.0 * std::fabs(startOffset0 + profileCenter * axisVector - baseVector * axisVector);
 
     if (radius < Precision::Confusion()) {
         // in this case ensure that axis is not in the sketch plane
@@ -462,7 +462,7 @@ TopoDS_Shape Helix::generateHelixPath(double startOffset0)
 
     //build the helix path
     //TopoShape helix = TopoShape().makeLongHelix(pitch, height, radius, angle, leftHanded);
-    TopoDS_Shape path = TopoShape().makeSpiralHelix(radius, radiusTop, height, turns, 1, leftHanded);
+    TopoDS_Shape path = TopoShape().makeSpiralHelix(radius, radiusTop, height, turns, 0, leftHanded);
 
     /*
      * The helix wire is created with the axis coinciding with z-axis and the start point at (radius, 0, 0)
