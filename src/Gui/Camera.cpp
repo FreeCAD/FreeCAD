@@ -105,13 +105,13 @@ SbRotation Camera::bottom()
 
 SbRotation Camera::front()
 {
-    auto root = (float)(sqrt(2.0)/2.0);
+    auto root = sqrtf(2.0)/2.0f;
     return {root, 0, 0, root};
 }
 
 SbRotation Camera::rear()
 {
-    auto root = (float)(sqrt(2.0)/2.0);
+    auto root = sqrtf(2.0)/2.0f;
     return {0, root, root, 0};
 }
 
@@ -127,25 +127,6 @@ SbRotation Camera::left()
 
 SbRotation Camera::isometric()
 {
-    //from math import sqrt, degrees, asin
-    //p1=App.Rotation(App.Vector(1,0,0),45)
-    //p2=App.Rotation(App.Vector(0,0,1),-45)
-    //p3=p2.multiply(p1)
-    //return SbRotation(0.353553f, -0.146447f, -0.353553f, 0.853553f);
-
-    //from math import sqrt, degrees, asin
-    //p1=App.Rotation(App.Vector(1,0,0),90)
-    //p2=App.Rotation(App.Vector(0,0,1),135)
-    //p3=App.Rotation(App.Vector(-1,1,0),degrees(asin(-sqrt(1.0/3.0))))
-    //p4=p3.multiply(p2).multiply(p1)
-    //return SbRotation(0.17592, 0.424708, 0.820473, 0.339851);
-
-    //from math import sqrt, degrees, asin
-    //p1=App.Rotation(App.Vector(1,0,0),90)
-    //p2=App.Rotation(App.Vector(0,0,1),45)
-    //#p3=App.Rotation(App.Vector(1,1,0),45)
-    //p3=App.Rotation(App.Vector(1,1,0),degrees(asin(-sqrt(1.0/3.0))))
-    //p4=p3.multiply(p2).multiply(p1)
     return {0.424708F, 0.17592F, 0.339851F, 0.820473F};
 }
 
