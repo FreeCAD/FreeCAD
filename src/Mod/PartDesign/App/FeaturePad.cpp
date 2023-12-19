@@ -216,8 +216,21 @@ App::DocumentObjectExecReturn *Pad::execute()
         this->AddSubShape.setValue(prism);
 
         if (!base.IsNull()) {
-            // Let's call algorithm computing a fuse operation:
-            BRepAlgoAPI_Fuse mkFuse(base, prism);
+            // We need to set the FuzzyValue before the computation, so use parameterless constructor
+            BRepAlgoAPI_Fuse mkFuse;
+            TopTools_ListOfShape shapeArguments,shapeTools;
+            shapeArguments.Append(base);
+            shapeTools.Append(prism);
+            mkFuse.SetArguments(shapeArguments);
+            mkFuse.SetTools(shapeTools);
+            // Fuse defaults to Precision::Confusion() or 1e-07.  It is possible to create legitimate shapes
+            // (like FeatureHelix) that are well within this precision at 2e-12 but still result in this Fuse
+            // generating multiple adjacent solids that are closer than the precision setting.  Reducing the
+            // precision by two orders of magnitude stops this misbehavior.  No other setting, including the
+            // Glue in use, CheckInverted or attempting a SimplyResult will affect the fuse result.
+            mkFuse.SetFuzzyValue(Precision::Confusion()*100);
+            mkFuse.Build();
+
             // Let's check if the fusion has been successful
             if (!mkFuse.IsDone())
                 return new App::DocumentObjectExecReturn(QT_TRANSLATE_NOOP("Exception", "Pad: Fusion with base feature failed"));
