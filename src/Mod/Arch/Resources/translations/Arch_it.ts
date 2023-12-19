@@ -3150,12 +3150,12 @@ Se Base = 0 allora la Base viene calcolata in modo che l'altezza sia la stessa d
     <message>
       <location filename="../../ArchSchedule.py" line="588"/>
       <source>Import CSV file</source>
-      <translation type="unfinished">Import CSV file</translation>
+      <translation>Importa file CSV</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="621"/>
       <source>Export CSV file</source>
-      <translation type="unfinished">Export CSV file</translation>
+      <translation>Esporta file CSV</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1104"/>
@@ -6689,7 +6689,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1467"/>
       <source>Select non-manifold meshes</source>
-      <translation type="unfinished">Select non-manifold meshes</translation>
+      <translation>Seleziona le mesh non-manifold</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1470"/>
@@ -6702,7 +6702,7 @@ Creazione Edificio interrotta.</translation>
     <message>
       <location filename="../../ArchCommands.py" line="1496"/>
       <source>Remove Shape from Arch</source>
-      <translation>Rimuovi la forma dal modulo Architettura</translation>
+      <translation>Rimuovi forma</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1499"/>

@@ -340,7 +340,7 @@ felületeltérés szorozva az aktuális hálószakasz hosszával (él)</translat
 These groups will be exported for mesh output formats supporting
 this feature (e.g. the format OBJ).</source>
       <translation>A hálószegmensek az objektum felületek színe szerint lesznek csoportosítva.
-Ezek a csoportok a hálókimeneti formátumokhoz lesznek exportálva, amelyek
+Ezek a csoportok a hálókimeneti formátumokhoz lesznek exportálva, amelyek 
 támogatják ezt a tulajdonságot (pl. OBJ formátum).</translation>
     </message>
     <message>
@@ -580,7 +580,7 @@ Válasszon másik alakzatot.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="49"/>
       <source>Unwrap mesh</source>
-      <translation type="unfinished">Unwrap mesh</translation>
+      <translation>Háló kiterítése</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="52"/>
@@ -593,7 +593,7 @@ Válasszon másik alakzatot.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="88"/>
       <source>Unwrap face</source>
-      <translation type="unfinished">Unwrap face</translation>
+      <translation>Felület kiterítése</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="91"/>

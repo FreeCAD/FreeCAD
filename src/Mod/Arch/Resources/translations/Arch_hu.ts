@@ -3164,12 +3164,12 @@ Ha Futás = 0, akkor a futás kiszámítása úgy történik, hogy a magasság m
     <message>
       <location filename="../../ArchSchedule.py" line="588"/>
       <source>Import CSV file</source>
-      <translation type="unfinished">Import CSV file</translation>
+      <translation>CSV fájl importálása</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="621"/>
       <source>Export CSV file</source>
-      <translation type="unfinished">Export CSV file</translation>
+      <translation>CSV file exportálása</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1104"/>

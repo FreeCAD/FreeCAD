@@ -563,8 +563,8 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
       <source>If this option is selected, when launching the Addon Manager,
 installed addons will be checked for available updates
 (this requires the GitPython package installed on your system)</source>
-      <translation>Якщо вибрано цей параметр, під час запуску Менеджера Додатків
-встановлені додатки буде перевірено на наявність оновлень
+      <translation>Якщо вибрано цей параметр, під час запуску Менеджера Додатків 
+встановлені додатки буде перевірено на наявність оновлень 
 (необхідно встановити в систему пакет GitPython)</translation>
     </message>
     <message>
