@@ -1991,27 +1991,47 @@ TopoDS_Compound Hole::findHoles(const TopoDS_Shape& profileshape,
     builder.MakeCompound(holes);
     TopTools_IndexedMapOfShape edgeMap;
     TopExp::MapShapes(profileshape, TopAbs_EDGE, edgeMap);
+    int holePointsListSize = 0;
+    std::vector<gp_Pnt> holePointsList;
     for (int i = 1; i <= edgeMap.Extent(); i++) {
+        bool dupCenter = false;
         Standard_Real c_start;
         Standard_Real c_end;
         TopoDS_Edge edge = TopoDS::Edge(edgeMap(i));
         Handle(Geom_Curve) c = BRep_Tool::Curve(edge, c_start, c_end);
 
         // Circle?
-        if (c->DynamicType() != STANDARD_TYPE(Geom_Circle))
+        if (c->DynamicType() != STANDARD_TYPE(Geom_Circle)) {
             continue;
+        }
 
         Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast(c);
+
         gp_Pnt loc = circle->Axis().Location();
 
-
-        gp_Trsf localSketchTransformation;
-        localSketchTransformation.SetTranslation(gp_Pnt(0, 0, 0),
-            gp_Pnt(loc.X(), loc.Y(), loc.Z()));
-
-        TopoDS_Shape copy = protohole;
-        copy.Move(localSketchTransformation);
-        builder.Add(holes, copy);
+        if (holePointsListSize > 1) {
+            for (int j = 1; j < holePointsListSize; j++) {
+                if (holePointsList[j].IsEqual(loc, Precision::Confusion())) {
+                    Base::Console().Log(
+                        "PartDesign_Hole - There is a duplicate hole/curve center at %.2f : %.2f "
+                        ": %.2f therefore not passing paramter\n",
+                        loc.X(),
+                        loc.Y(),
+                        loc.Z());
+                    dupCenter = true;
+                }
+            }
+        }
+        if (!dupCenter) {
+            holePointsList.push_back(loc);
+            holePointsListSize++;
+            gp_Trsf localSketchTransformation;
+            localSketchTransformation.SetTranslation(gp_Pnt(0, 0, 0),
+                                                     gp_Pnt(loc.X(), loc.Y(), loc.Z()));
+            TopoDS_Shape copy = protohole;
+            copy.Move(localSketchTransformation);
+            builder.Add(holes, copy);
+        }
     }
 
     return holes;
