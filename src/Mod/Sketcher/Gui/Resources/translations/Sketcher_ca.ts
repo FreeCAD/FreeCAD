@@ -5780,7 +5780,7 @@ Trieu un mètode per unir aquest croquis als objectes seleccionats.</translation
       <location filename="../../Command.cpp" line="726"/>
       <source>Can't map a sketch to support:
 %1</source>
-      <translation>No es pot mapar un croquis al suport: 
+      <translation>No es pot mapar un croquis al suport:
 %1</translation>
     </message>
   </context>
@@ -5817,7 +5817,7 @@ Trieu un mètode per unir aquest croquis als objectes seleccionats.</translation
       <location filename="../../Command.cpp" line="432"/>
       <source>Sketch with a support face cannot be reoriented.
 Do you want to detach it from the support?</source>
-      <translation>El croquis amb una cara de suport no es pot reorientar. 
+      <translation>El croquis amb una cara de suport no es pot reorientar.
 Voleu separar-lo del suport?</translation>
     </message>
   </context>

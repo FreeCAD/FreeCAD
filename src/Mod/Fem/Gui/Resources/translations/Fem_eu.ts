@@ -1222,7 +1222,7 @@ Every analysis feature and, if there are different materials,
 material consists of two mesh groups, faces and nodes where
 the constraint or material is applied.</source>
       <translation>Amaraun-taldeak ere esportatzen dira.
-Analisi-elementu guztiak eta, material desberdinak badaude, material 
+Analisi-elementu guztiak eta, material desberdinak badaude, material
 guztiak ere, bi amaraun-taldez, aurpegiz eta nodoz osatuta daude,
 non murrizketa edo materiala aplikatzen den.</translation>
     </message>
@@ -1623,7 +1623,7 @@ mezu bat jaso daiteke.</translation>
 '%1'
  does not exist!
 Specify another file please.</source>
-      <translation>Zehaztutako z88r exekutagarria: 
+      <translation>Zehaztutako z88r exekutagarria:
 '%1'
 ez da existitzen.
 Zehaztu beste fitxategi bat.</translation>
@@ -5444,7 +5444,7 @@ Elmer ebazlean</translation>
       <location filename="../../../femcommands/commands.py" line="475"/>
       <source>Creates a FEM equation for
  elasticity (stress)</source>
-      <translation>FEM ekuazio bat sortzen du 
+      <translation>FEM ekuazio bat sortzen du
 elastikotasunerako (estreserako)</translation>
     </message>
   </context>

@@ -4018,7 +4018,7 @@ Geaccepteerde combinaties: twee curven; een eindpunt en een curve; twee eindpunt
       <location filename="../../SketchRectangularArrayDialog.ui" line="93"/>
       <source>If selected, each element in the array is constrained
 with respect to the others using construction lines</source>
-      <translation>Indien geselecteerd, elk element in de matrix wordt beperkt 
+      <translation>Indien geselecteerd, elk element in de matrix wordt beperkt
 ten opzichte van de anderen met behulp van constructielijnen</translation>
     </message>
     <message>
