@@ -2254,7 +2254,7 @@ of projection.</source>
     <message>
       <location filename="../../Command.cpp" line="923"/>
       <source>Section</source>
-      <translation>Разделить</translation>
+      <translation>Разрез (Сечение)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="975"/>
@@ -2360,7 +2360,7 @@ of projection.</source>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="521"/>
       <source>Solid</source>
-      <translation>Твердотельный объект</translation>
+      <translation>Твердое тело</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="365"/>
@@ -2368,7 +2368,7 @@ of projection.</source>
       <translation>Профиль по траектории</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="198"/>
+      <location filename="../../ViewProviderMirror.cpp" line="211"/>
       <source>Edit Mirror</source>
       <translation>Изменить зеркалирование</translation>
     </message>
@@ -2557,7 +2557,7 @@ Note: The placement is expressed in local space of object being attached.</sourc
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="56"/>
       <source>Section</source>
-      <translation>Разрез (Сечение)</translation>
+      <translation>Разделить</translation>
     </message>
     <message>
       <location filename="../../DlgBooleanOperation.ui" line="76"/>
@@ -2685,7 +2685,7 @@ Note: The placement is expressed in local space of object being attached.</sourc
     <message>
       <location filename="../../DlgExportStep.ui" line="14"/>
       <source>STEP</source>
-      <translation>ШАГ</translation>
+      <translation>STEP</translation>
     </message>
     <message>
       <location filename="../../DlgExportStep.ui" line="20"/>
@@ -2994,7 +2994,7 @@ If both lengths are zero, magnitude of direction is used.</source>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="20"/>
       <source>Shape</source>
-      <translation>Фигура</translation>
+      <translation>Фигура(ы)</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.ui" line="32"/>
@@ -3278,7 +3278,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgImportStep.ui" line="20"/>
       <source>Import</source>
-      <translation>Импорт</translation>
+      <translation>импорт</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="26"/>
@@ -3389,7 +3389,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgPartBox.ui" line="20"/>
       <source>Position:</source>
-      <translation>Позиция:</translation>
+      <translation>Расположение:</translation>
     </message>
     <message>
       <location filename="../../DlgPartBox.ui" line="32"/>
@@ -3442,7 +3442,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="20"/>
       <source>Position:</source>
-      <translation>Расположение:</translation>
+      <translation>Позиция:</translation>
     </message>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="32"/>
@@ -3524,7 +3524,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgPartImportStepImp.cpp" line="67"/>
       <source>STEP</source>
-      <translation>STEP</translation>
+      <translation>ШАГ</translation>
     </message>
     <message>
       <location filename="../../DlgPartImportStepImp.cpp" line="68"/>
@@ -4514,7 +4514,7 @@ the sketch plane's normal vector will be used</source>
     <message>
       <location filename="../../TaskLoft.cpp" line="241"/>
       <source>Loft</source>
-      <translation>Профиль</translation>
+      <translation>Чердак (под крышей)</translation>
     </message>
   </context>
   <context>
@@ -4525,57 +4525,78 @@ the sketch plane's normal vector will be used</source>
       <translation>Зеркальное отражение</translation>
     </message>
     <message>
-      <location filename="../../Mirroring.ui" line="33"/>
+      <location filename="../../Mirroring.ui" line="121"/>
+      <source>Use selected reference</source>
+      <translation type="unfinished">Use selected reference</translation>
+    </message>
+    <message>
+      <location filename="../../Mirroring.ui" line="142"/>
       <source>Shapes</source>
       <translation>Фигуры</translation>
     </message>
     <message>
-      <location filename="../../Mirroring.ui" line="41"/>
+      <location filename="../../Mirroring.ui" line="98"/>
       <source>Mirror plane:</source>
       <translation>Плоскость симметрии:</translation>
     </message>
     <message>
-      <location filename="../../Mirroring.ui" line="49"/>
+      <location filename="../../Mirroring.ui" line="106"/>
       <source>XY plane</source>
       <translation>Плоскость XY</translation>
     </message>
     <message>
-      <location filename="../../Mirroring.ui" line="54"/>
+      <location filename="../../Mirroring.ui" line="111"/>
       <source>XZ plane</source>
       <translation>Плоскость XZ</translation>
     </message>
     <message>
-      <location filename="../../Mirroring.ui" line="59"/>
+      <location filename="../../Mirroring.ui" line="116"/>
       <source>YZ plane</source>
       <translation>Плоскость YZ</translation>
     </message>
     <message>
-      <location filename="../../Mirroring.ui" line="67"/>
+      <location filename="../../Mirroring.ui" line="150"/>
+      <location filename="../../Mirroring.cpp" line="215"/>
+      <source>Selecting</source>
+      <translation type="unfinished">Selecting</translation>
+    </message>
+    <message>
+      <location filename="../../Mirroring.ui" line="166"/>
+      <source>Mirror plane reference</source>
+      <translation type="unfinished">Mirror plane reference</translation>
+    </message>
+    <message>
+      <location filename="../../Mirroring.ui" line="20"/>
       <source>Base point</source>
       <translation>Базовая точка</translation>
     </message>
     <message>
-      <location filename="../../Mirroring.ui" line="73"/>
+      <location filename="../../Mirroring.ui" line="26"/>
       <source>x</source>
       <translation>x</translation>
     </message>
     <message>
-      <location filename="../../Mirroring.ui" line="96"/>
+      <location filename="../../Mirroring.ui" line="49"/>
       <source>y</source>
       <translation>у</translation>
     </message>
     <message>
-      <location filename="../../Mirroring.ui" line="119"/>
+      <location filename="../../Mirroring.ui" line="72"/>
       <source>z</source>
       <translation>z</translation>
     </message>
     <message>
-      <location filename="../../Mirroring.cpp" line="126"/>
+      <location filename="../../Mirroring.cpp" line="211"/>
+      <source>Select reference</source>
+      <translation>Выберите ориентир</translation>
+    </message>
+    <message>
+      <location filename="../../Mirroring.cpp" line="280"/>
       <source>Select a shape for mirroring, first.</source>
       <translation>Сначала выберите фигуру для зеркального отображения.</translation>
     </message>
     <message>
-      <location filename="../../Mirroring.cpp" line="133"/>
+      <location filename="../../Mirroring.cpp" line="287"/>
       <source>No such document '%1'.</source>
       <translation>Нет такого документа '%1'.</translation>
     </message>
@@ -4757,7 +4778,7 @@ only created cuts will be visible</source>
       <location filename="../../TaskShapeBuilder.cpp" line="423"/>
       <location filename="../../TaskShapeBuilder.cpp" line="484"/>
       <source>Wrong selection</source>
-      <translation>Неправильный выбор</translation>
+      <translation>Неправильное выделение</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="231"/>
@@ -4870,7 +4891,7 @@ only created cuts will be visible</source>
     <message>
       <location filename="../../TaskSweep.cpp" line="339"/>
       <source>Wrong selection</source>
-      <translation>Неправильное выделение</translation>
+      <translation>Неправильный выбор</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="339"/>
@@ -5413,7 +5434,7 @@ by dragging a selection rectangle in the 3D view</source>
     <message>
       <location filename="../../TaskLoft.ui" line="14"/>
       <source>Loft</source>
-      <translation>Чердак (под крышей)</translation>
+      <translation>Профиль</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.ui" line="23"/>
@@ -5807,8 +5828,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="77"/>
       <source>Compound</source>
-      <translation>Соединить
-Группировка</translation>
+      <translation>Объединение</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="78"/>
@@ -5818,7 +5838,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="79"/>
       <source>Solid</source>
-      <translation>Твердое тело</translation>
+      <translation>Твердотельный объект</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="80"/>
@@ -5833,7 +5853,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="85"/>
       <source>Shape</source>
-      <translation>Фигура(ы)</translation>
+      <translation>Фигура</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="100"/>
@@ -6123,27 +6143,27 @@ Do you want to continue?</source>
       <translation>Установите цвета ...</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="78"/>
+      <location filename="../../ViewProviderMirror.cpp" line="85"/>
       <source>Edit mirror plane</source>
       <translation>Редактировать плоскость симметрии</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="282"/>
+      <location filename="../../ViewProviderMirror.cpp" line="295"/>
       <source>Edit fillet edges</source>
       <translation>Изменение скруглений ребер</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="392"/>
+      <location filename="../../ViewProviderMirror.cpp" line="405"/>
       <source>Edit chamfer edges</source>
       <translation>Редактировать фаску грани</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="528"/>
+      <location filename="../../ViewProviderMirror.cpp" line="541"/>
       <source>Edit offset</source>
       <translation>Изменить смещение</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="610"/>
+      <location filename="../../ViewProviderMirror.cpp" line="623"/>
       <source>Edit thickness</source>
       <translation>Изменить толщину</translation>
     </message>
@@ -6193,7 +6213,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Workbench.cpp" line="36"/>
       <source>Solids</source>
-      <translation>Твердотельные объекты</translation>
+      <translation>Массивы</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="37"/>
@@ -6223,7 +6243,8 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Workbench.cpp" line="42"/>
       <source>Compound</source>
-      <translation>Объединение</translation>
+      <translation>Соединить
+Группировка</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="43"/>
@@ -6233,7 +6254,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../../Workbench.cpp" line="44"/>
       <source>Measure</source>
-      <translation>Измерить</translation>
+      <translation>Измерения</translation>
     </message>
   </context>
   <context>
@@ -6595,7 +6616,7 @@ It will create a 'Compound Filter' for each shape.</source>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="65"/>
       <source>Solids</source>
-      <translation>Массивы</translation>
+      <translation>Твердотельные объекты</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="71"/>

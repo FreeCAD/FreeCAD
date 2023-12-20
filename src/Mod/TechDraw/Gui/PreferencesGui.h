@@ -78,6 +78,9 @@ static QColor       getAccessibleQColor(QColor orig);
 static QColor       lightTextQColor();
 static QColor       reverseColor(QColor orig);
 static QColor       lightenColor(QColor orig);
+
+static double       templateClickBoxSize();
+static QColor       templateClickBoxColor();
 };
 
 } //end namespace TechDrawGui

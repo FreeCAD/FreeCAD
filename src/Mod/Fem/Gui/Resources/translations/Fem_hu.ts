@@ -24,7 +24,7 @@
     <message>
       <location filename="../../Command.cpp" line="230"/>
       <source>Fem</source>
-      <translation>Végeselemes analízis Vem</translation>
+      <translation>Végeselemes analízis FEM</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="231"/>
@@ -60,7 +60,7 @@
     <message>
       <location filename="../../Command.cpp" line="337"/>
       <source>Fem</source>
-      <translation>Vem</translation>
+      <translation>Végeselemes analízis Vem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="338"/>
@@ -78,7 +78,7 @@
     <message>
       <location filename="../../Command.cpp" line="387"/>
       <source>Fem</source>
-      <translation>Végeselemes analízis Vem</translation>
+      <translation>Vem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="388"/>
@@ -114,7 +114,7 @@
     <message>
       <location filename="../../Command.cpp" line="496"/>
       <source>Fem</source>
-      <translation>Vem</translation>
+      <translation>Végeselemes analízis Vem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="497"/>
@@ -321,17 +321,17 @@
   <context>
     <name>CmdFemPostApllyChanges</name>
     <message>
-      <location filename="../../Command.cpp" line="2442"/>
+      <location filename="../../Command.cpp" line="2445"/>
       <source>Fem</source>
       <translation>Vem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2443"/>
+      <location filename="../../Command.cpp" line="2446"/>
       <source>Apply changes to pipeline</source>
       <translation>Változások alkalmazása a folyamatokra</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2444"/>
+      <location filename="../../Command.cpp" line="2447"/>
       <source>Apply changes to parameters directly and not on recompute only...</source>
       <translation>Változtatások mentése a paraméterekre közvetlenül és nem csak újraszámolása...</translation>
     </message>
@@ -341,7 +341,7 @@
     <message>
       <location filename="../../Command.cpp" line="1791"/>
       <source>Fem</source>
-      <translation>Végeselemes analízis Vem</translation>
+      <translation>Vem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1792"/>
@@ -354,12 +354,12 @@
       <translation>Kivágás szűrő definiálása/létrehozása, amely függvények segítségével határozza meg a vágott régiót</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2344"/>
+      <location filename="../../Command.cpp" line="2347"/>
       <source>Wrong selection</source>
       <translation>Rossz kijelölés</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2345"/>
+      <location filename="../../Command.cpp" line="2348"/>
       <source>Select a pipeline, please.</source>
       <translation>Kérjük, válasszon ki egy folyamatot.</translation>
     </message>
@@ -369,7 +369,7 @@
     <message>
       <location filename="../../Command.cpp" line="1844"/>
       <source>Fem</source>
-      <translation>Vem</translation>
+      <translation>Végeselemes analízis Vem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1845"/>
@@ -421,37 +421,37 @@
   <context>
     <name>CmdFemPostFunctions</name>
     <message>
-      <location filename="../../Command.cpp" line="2215"/>
+      <location filename="../../Command.cpp" line="2218"/>
       <source>Fem</source>
-      <translation>Végeselemes analízis Vem</translation>
+      <translation>Vem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2216"/>
+      <location filename="../../Command.cpp" line="2219"/>
       <source>Filter functions</source>
       <translation>Szűrési funkciók</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2217"/>
+      <location filename="../../Command.cpp" line="2220"/>
       <source>Functions for use in postprocessing filter...</source>
       <translation>Az utófeldolgozási szűrőben használható funkciók...</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2396"/>
+      <location filename="../../Command.cpp" line="2399"/>
       <source>Plane</source>
       <translation>Sík</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2403"/>
+      <location filename="../../Command.cpp" line="2406"/>
       <source>Sphere</source>
       <translation>Gömb</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2410"/>
+      <location filename="../../Command.cpp" line="2413"/>
       <source>Cylinder</source>
       <translation>Henger</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2417"/>
+      <location filename="../../Command.cpp" line="2420"/>
       <source>Box</source>
       <translation>Doboz</translation>
     </message>
@@ -497,7 +497,7 @@
     <message>
       <location filename="../../Command.cpp" line="1995"/>
       <source>Fem</source>
-      <translation>Vem</translation>
+      <translation>Végeselemes analízis Vem</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1996"/>
@@ -510,14 +510,14 @@
       <translation>Nyomés linearizációs diagramok definiálása/létrehozása</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2031"/>
-      <location filename="../../Command.cpp" line="2040"/>
+      <location filename="../../Command.cpp" line="2034"/>
+      <location filename="../../Command.cpp" line="2043"/>
       <source>Wrong selection</source>
       <translation>Rossz kijelölés</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2032"/>
-      <location filename="../../Command.cpp" line="2041"/>
+      <location filename="../../Command.cpp" line="2035"/>
+      <location filename="../../Command.cpp" line="2044"/>
       <source>Select a Clip filter which clips a STRESS field along a line, please.</source>
       <translation>Kérjük, válasszon ki egy Kivágás szűrőt, amely egy VONAL MENTÉN rögzíti a NYOMÁS mezőt.</translation>
     </message>
@@ -525,27 +525,27 @@
   <context>
     <name>CmdFemPostPipelineFromResult</name>
     <message>
-      <location filename="../../Command.cpp" line="2483"/>
+      <location filename="../../Command.cpp" line="2486"/>
       <source>Fem</source>
       <translation>Vem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2484"/>
+      <location filename="../../Command.cpp" line="2487"/>
       <source>Post pipeline from result</source>
       <translation>Folyamat feladása az eredményből</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2485"/>
+      <location filename="../../Command.cpp" line="2488"/>
       <source>Creates a post processing pipeline from a result object</source>
       <translation>Utófeldolgozási folyamatot hoz létre egy eredmény tárgyból</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2563"/>
+      <location filename="../../Command.cpp" line="2566"/>
       <source>Wrong selection type</source>
       <translation>Hibás kiválasztási típus</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2564"/>
+      <location filename="../../Command.cpp" line="2567"/>
       <source>Select a result object, please.</source>
       <translation>Jelöljön ki egy eredmény tárgyat.</translation>
     </message>
@@ -553,17 +553,17 @@
   <context>
     <name>CmdFemPostScalarClipFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2067"/>
+      <location filename="../../Command.cpp" line="2070"/>
       <source>Fem</source>
       <translation>Vem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2068"/>
+      <location filename="../../Command.cpp" line="2071"/>
       <source>Scalar clip filter</source>
       <translation>Skaláris vágószűrő</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2070"/>
+      <location filename="../../Command.cpp" line="2073"/>
       <source>Define/create a clip filter which clips a field with a scalar value</source>
       <translation>Vágásszűrő definiálása/hozzáadása, amely skaláris értékkel vágja le a mezőt</translation>
     </message>
@@ -571,17 +571,17 @@
   <context>
     <name>CmdFemPostWarpVectorFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2117"/>
+      <location filename="../../Command.cpp" line="2120"/>
       <source>Fem</source>
-      <translation>Végeselemes analízis FEM</translation>
+      <translation>Vem</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2118"/>
+      <location filename="../../Command.cpp" line="2121"/>
       <source>Warp filter</source>
       <translation>Deformációs vizualizációs szűrő</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2119"/>
+      <location filename="../../Command.cpp" line="2122"/>
       <source>Warp the geometry along a vector field by a certain factor</source>
       <translation>Deformálja a geometriát egy vektormező mentén egy bizonyos tényezővel</translation>
     </message>
@@ -684,12 +684,12 @@
       <translation>Szűrő létrehozása</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2249"/>
+      <location filename="../../Command.cpp" line="2252"/>
       <source>Create function</source>
       <translation>Függvény létrehozása</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2535"/>
+      <location filename="../../Command.cpp" line="2538"/>
       <source>Create pipeline from result</source>
       <translation>Folyamat létrehozása az eredményből</translation>
     </message>
@@ -776,22 +776,22 @@
   <context>
     <name>FEM_PostCreateFunctions</name>
     <message>
-      <location filename="../../Command.cpp" line="2398"/>
+      <location filename="../../Command.cpp" line="2401"/>
       <source>Create a plane function, defined by its origin and normal</source>
       <translation>Kezdőpont és aktuális pont alapján definiált rétegfüggvény létrehozása</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2405"/>
+      <location filename="../../Command.cpp" line="2408"/>
       <source>Create a sphere function, defined by its center and radius</source>
       <translation>Gömbfüggvény létrehozása, amelyet a középpontja és a sugara határoz meg</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2411"/>
+      <location filename="../../Command.cpp" line="2414"/>
       <source>Create a cylinder function, defined by its center, axis and radius</source>
       <translation>Hengerfüggvény létrehozása, amelyet a középpontja, tengelye és sugara határoz meg</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2418"/>
+      <location filename="../../Command.cpp" line="2421"/>
       <source>Create a box function, defined by its center, length, width and height</source>
       <translation>Hozzon létre egy doboz funkciót, amelyet a középpontja, hossza, szélessége és magassága határoz meg</translation>
     </message>
@@ -1639,7 +1639,7 @@ Kérjük, adjon meg egy másik fájlt.</translation>
     <message>
       <location filename="../../TaskAnalysisInfo.cpp" line="35"/>
       <source>Nodes set</source>
-      <translation>Csomópontok beállítása</translation>
+      <translation>Csomópontok beálítása</translation>
     </message>
   </context>
   <context>
@@ -1647,7 +1647,7 @@ Kérjük, adjon meg egy másik fájlt.</translation>
     <message>
       <location filename="../../TaskCreateNodeSet.cpp" line="57"/>
       <source>Nodes set</source>
-      <translation>Csomópontok beálítása</translation>
+      <translation>Csomópontok beállítása</translation>
     </message>
   </context>
   <context>
@@ -3301,8 +3301,8 @@ Megjegyzés: nincs hatása, ha szilárdtestet választottunk ki</translation>
     </message>
     <message>
       <location filename="../ui/MeshRegion.ui" line="14"/>
-      <source>Mesh region</source>
-      <translation>VEM háló terület</translation>
+      <source>Mesh refinement</source>
+      <translation type="unfinished">Mesh refinement</translation>
     </message>
     <message>
       <location filename="../ui/MeshRegion.ui" line="37"/>
@@ -5658,19 +5658,6 @@ az Elmer megoldóhoz</translation>
     </message>
   </context>
   <context>
-    <name>FEM_MeshRegion</name>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="1002"/>
-      <source>FEM mesh region</source>
-      <translation>VEM háló terület</translation>
-    </message>
-    <message>
-      <location filename="../../../femcommands/commands.py" line="1006"/>
-      <source>Creates a FEM mesh region</source>
-      <translation>Egy VEM háló területet hoz létre</translation>
-    </message>
-  </context>
-  <context>
     <name>FEM_ResultShow</name>
     <message>
       <location filename="../../../femcommands/commands.py" line="1019"/>
@@ -6083,17 +6070,17 @@ Kérjük, először válassza ki az eredmény típusát.</translation>
   <context>
     <name>CmdFemPostContoursFilter</name>
     <message>
-      <location filename="../../Command.cpp" line="2166"/>
+      <location filename="../../Command.cpp" line="2169"/>
       <source>Fem</source>
       <translation>Végeselemes analízis FEM</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2167"/>
+      <location filename="../../Command.cpp" line="2170"/>
       <source>Contours filter</source>
       <translation>Kontúr szűrő</translation>
     </message>
     <message>
-      <location filename="../../Command.cpp" line="2168"/>
+      <location filename="../../Command.cpp" line="2171"/>
       <source>Define/create a contours filter which displays iso contours</source>
       <translation>Kontúrszűrő definiálása/készítése, amely az iso kontúrokat jeleníti meg</translation>
     </message>
@@ -6367,6 +6354,19 @@ Kérjük, először válassza ki az eredmény típusát.</translation>
       <location filename="../../../femcommands/commands.py" line="373"/>
       <source>Creates a tie constraint</source>
       <translation>Létrehoz egy kötési kényszerítést</translation>
+    </message>
+  </context>
+  <context>
+    <name>FEM_MeshRegion</name>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="1002"/>
+      <source>FEM mesh refinement</source>
+      <translation type="unfinished">FEM mesh refinement</translation>
+    </message>
+    <message>
+      <location filename="../../../femcommands/commands.py" line="1006"/>
+      <source>Creates a FEM mesh refinement</source>
+      <translation type="unfinished">Creates a FEM mesh refinement</translation>
     </message>
   </context>
 </TS>

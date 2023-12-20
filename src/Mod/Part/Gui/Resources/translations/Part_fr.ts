@@ -1167,7 +1167,7 @@
     <message>
       <location filename="../../Command.cpp" line="2065"/>
       <source>Part</source>
-      <translation>Pièce</translation>
+      <translation>Part</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="2066"/>
@@ -1694,7 +1694,7 @@ décomposée en ses composantes X, Y et Z.</translation>
     <message>
       <location filename="../../Command.cpp" line="1280"/>
       <source>Extrude...</source>
-      <translation>Extrusion...</translation>
+      <translation>Extruder...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1281"/>
@@ -2206,7 +2206,7 @@ La vue caméra détermine la direction de la projection.</translation>
     <message>
       <location filename="../../CommandSimple.cpp" line="296"/>
       <source>Part</source>
-      <translation>Part</translation>
+      <translation>Pièce</translation>
     </message>
     <message>
       <location filename="../../CommandSimple.cpp" line="297"/>
@@ -2340,7 +2340,7 @@ La vue caméra détermine la direction de la projection.</translation>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="304"/>
       <source>Wire</source>
-      <translation>Polyligne</translation>
+      <translation>Fil</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="356"/>
@@ -2364,7 +2364,7 @@ La vue caméra détermine la direction de la projection.</translation>
       <translation>Balayage</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="198"/>
+      <location filename="../../ViewProviderMirror.cpp" line="211"/>
       <source>Edit Mirror</source>
       <translation>Editer le miroir</translation>
     </message>
@@ -3064,7 +3064,7 @@ Si les deux longueurs sont nulles, la grandeur de la direction est utilisée.</t
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="270"/>
       <source>Length:</source>
-      <translation>Longueur :</translation>
+      <translation>Longueur :</translation>
     </message>
     <message>
       <location filename="../../DlgFilletEdges.cpp" line="274"/>
@@ -3272,7 +3272,7 @@ Please check one or more edge entities first.</source>
     <message>
       <location filename="../../DlgImportStep.ui" line="20"/>
       <source>Import</source>
-      <translation>Importation</translation>
+      <translation>Importer</translation>
     </message>
     <message>
       <location filename="../../DlgImportStep.ui" line="26"/>
@@ -3382,7 +3382,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgPartBox.ui" line="20"/>
       <source>Position:</source>
-      <translation>Position :</translation>
+      <translation>Position :</translation>
     </message>
     <message>
       <location filename="../../DlgPartBox.ui" line="32"/>
@@ -3435,7 +3435,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="20"/>
       <source>Position:</source>
-      <translation>Position :</translation>
+      <translation>Position :</translation>
     </message>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="32"/>
@@ -3465,12 +3465,12 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="121"/>
       <source>Radius:</source>
-      <translation>Rayon :</translation>
+      <translation>Rayon :</translation>
     </message>
     <message>
       <location filename="../../DlgPartCylinder.ui" line="141"/>
       <source>Height:</source>
-      <translation>Hauteur :</translation>
+      <translation>Hauteur :</translation>
     </message>
   </context>
   <context>
@@ -3630,13 +3630,13 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgPrimitives.ui" line="180"/>
       <source>Parameter</source>
-      <translation>Paramètres</translation>
+      <translation>Paramètre</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="240"/>
       <location filename="../../DlgPrimitives.ui" line="331"/>
       <source>Length:</source>
-      <translation>Longueur :</translation>
+      <translation>Longueur :</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="260"/>
@@ -3660,7 +3660,7 @@ during file reading (slower but higher details).</source>
       <location filename="../../DlgPrimitives.ui" line="1914"/>
       <location filename="../../DlgPrimitives.ui" line="1970"/>
       <source>Radius:</source>
-      <translation>Rayon :</translation>
+      <translation>Rayon :</translation>
     </message>
     <message>
       <location filename="../../DlgPrimitives.ui" line="485"/>
@@ -3949,17 +3949,17 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="156"/>
       <source>X:</source>
-      <translation>X :</translation>
+      <translation>X :</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="186"/>
       <source>Y:</source>
-      <translation>Y :</translation>
+      <translation>Y :</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.ui" line="213"/>
       <source>Z:</source>
-      <translation>Z :</translation>
+      <translation>Z :</translation>
     </message>
     <message>
       <location filename="../../DlgProjectionOnSurface.cpp" line="135"/>
@@ -4039,7 +4039,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgRevolution.ui" line="281"/>
       <source>Angle:</source>
-      <translation>Angle :</translation>
+      <translation>Angle :</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="315"/>
@@ -4307,7 +4307,7 @@ during file reading (slower but higher details).</source>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="151"/>
       <source>Line width</source>
-      <translation>Épaisseur des lignes</translation>
+      <translation>Largeur des lignes</translation>
     </message>
     <message>
       <location filename="../../DlgSettingsObjectColor.ui" line="158"/>
@@ -4518,57 +4518,78 @@ le vecteur normal du plan de l'esquisse sera utilisé</translation>
       <translation>Mise en miroir</translation>
     </message>
     <message>
-      <location filename="../../Mirroring.ui" line="33"/>
+      <location filename="../../Mirroring.ui" line="121"/>
+      <source>Use selected reference</source>
+      <translation type="unfinished">Use selected reference</translation>
+    </message>
+    <message>
+      <location filename="../../Mirroring.ui" line="142"/>
       <source>Shapes</source>
       <translation>Formes</translation>
     </message>
     <message>
-      <location filename="../../Mirroring.ui" line="41"/>
+      <location filename="../../Mirroring.ui" line="98"/>
       <source>Mirror plane:</source>
       <translation>Plan miroir :</translation>
     </message>
     <message>
-      <location filename="../../Mirroring.ui" line="49"/>
+      <location filename="../../Mirroring.ui" line="106"/>
       <source>XY plane</source>
       <translation>Plan XY</translation>
     </message>
     <message>
-      <location filename="../../Mirroring.ui" line="54"/>
+      <location filename="../../Mirroring.ui" line="111"/>
       <source>XZ plane</source>
       <translation>Plan XZ</translation>
     </message>
     <message>
-      <location filename="../../Mirroring.ui" line="59"/>
+      <location filename="../../Mirroring.ui" line="116"/>
       <source>YZ plane</source>
       <translation>Plan YZ</translation>
     </message>
     <message>
-      <location filename="../../Mirroring.ui" line="67"/>
+      <location filename="../../Mirroring.ui" line="150"/>
+      <location filename="../../Mirroring.cpp" line="215"/>
+      <source>Selecting</source>
+      <translation type="unfinished">Selecting</translation>
+    </message>
+    <message>
+      <location filename="../../Mirroring.ui" line="166"/>
+      <source>Mirror plane reference</source>
+      <translation type="unfinished">Mirror plane reference</translation>
+    </message>
+    <message>
+      <location filename="../../Mirroring.ui" line="20"/>
       <source>Base point</source>
       <translation>Point de base</translation>
     </message>
     <message>
-      <location filename="../../Mirroring.ui" line="73"/>
+      <location filename="../../Mirroring.ui" line="26"/>
       <source>x</source>
       <translation>X</translation>
     </message>
     <message>
-      <location filename="../../Mirroring.ui" line="96"/>
+      <location filename="../../Mirroring.ui" line="49"/>
       <source>y</source>
       <translation>Y</translation>
     </message>
     <message>
-      <location filename="../../Mirroring.ui" line="119"/>
+      <location filename="../../Mirroring.ui" line="72"/>
       <source>z</source>
       <translation>Z</translation>
     </message>
     <message>
-      <location filename="../../Mirroring.cpp" line="126"/>
+      <location filename="../../Mirroring.cpp" line="211"/>
+      <source>Select reference</source>
+      <translation>Sélectionner une référence</translation>
+    </message>
+    <message>
+      <location filename="../../Mirroring.cpp" line="280"/>
       <source>Select a shape for mirroring, first.</source>
       <translation>Sélectionner d'abord une forme à mettre en miroir.</translation>
     </message>
     <message>
-      <location filename="../../Mirroring.cpp" line="133"/>
+      <location filename="../../Mirroring.cpp" line="287"/>
       <source>No such document '%1'.</source>
       <translation>Aucun document '%1'.</translation>
     </message>
@@ -4748,7 +4769,7 @@ seules les coupes créées seront visibles</translation>
       <location filename="../../TaskShapeBuilder.cpp" line="423"/>
       <location filename="../../TaskShapeBuilder.cpp" line="484"/>
       <source>Wrong selection</source>
-      <translation>Sélection invalide</translation>
+      <translation>Sélection incorrecte</translation>
     </message>
     <message>
       <location filename="../../TaskShapeBuilder.cpp" line="231"/>
@@ -4861,7 +4882,7 @@ seules les coupes créées seront visibles</translation>
     <message>
       <location filename="../../TaskSweep.cpp" line="339"/>
       <source>Wrong selection</source>
-      <translation>Sélection incorrecte</translation>
+      <translation>Sélection invalide</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.cpp" line="339"/>
@@ -5418,7 +5439,7 @@ faces en traçant un rectangle de sélection dans la vue 3D.</translation>
     <message>
       <location filename="../../TaskLoft.ui" line="23"/>
       <source>Create solid</source>
-      <translation>Créer un solide</translation>
+      <translation>Créer le solide</translation>
     </message>
     <message>
       <location filename="../../TaskLoft.ui" line="30"/>
@@ -5447,7 +5468,7 @@ faces en traçant un rectangle de sélection dans la vue 3D.</translation>
     <message>
       <location filename="../../TaskOffset.ui" line="42"/>
       <source>Skin</source>
-      <translation>Boîte sans top</translation>
+      <translation>Boîte sans couvercle</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="47"/>
@@ -5493,7 +5514,7 @@ faces en traçant un rectangle de sélection dans la vue 3D.</translation>
     <message>
       <location filename="../../TaskOffset.ui" line="114"/>
       <source>Faces</source>
-      <translation>Faces </translation>
+      <translation>Faces</translation>
     </message>
     <message>
       <location filename="../../TaskOffset.ui" line="144"/>
@@ -5580,7 +5601,7 @@ faces en traçant un rectangle de sélection dans la vue 3D.</translation>
     <message>
       <location filename="../../TaskSweep.ui" line="53"/>
       <source>Create solid</source>
-      <translation>Créer le solide</translation>
+      <translation>Créer un solide</translation>
     </message>
     <message>
       <location filename="../../TaskSweep.ui" line="60"/>
@@ -5604,7 +5625,7 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../BasicShapes/TaskTube.ui" line="23"/>
       <source>Parameter</source>
-      <translation>Paramètre</translation>
+      <translation>Paramètres</translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/TaskTube.ui" line="46"/>
@@ -5619,7 +5640,7 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../BasicShapes/TaskTube.ui" line="92"/>
       <source>Height:</source>
-      <translation>Hauteur :</translation>
+      <translation>Hauteur :</translation>
     </message>
   </context>
   <context>
@@ -5808,7 +5829,7 @@ Voulez-vous continuer ?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="77"/>
       <source>Compound</source>
-      <translation>Composés</translation>
+      <translation>Composé</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="78"/>
@@ -5828,7 +5849,7 @@ Voulez-vous continuer ?</translation>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="82"/>
       <source>Wire</source>
-      <translation>Fil</translation>
+      <translation>Polyligne</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="85"/>
@@ -6123,27 +6144,27 @@ Voulez-vous continuer ?</translation>
       <translation>Définir les couleurs...</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="78"/>
+      <location filename="../../ViewProviderMirror.cpp" line="85"/>
       <source>Edit mirror plane</source>
       <translation>Éditer le plan du miroir</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="282"/>
+      <location filename="../../ViewProviderMirror.cpp" line="295"/>
       <source>Edit fillet edges</source>
       <translation>Modifier les arêtes du congé</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="392"/>
+      <location filename="../../ViewProviderMirror.cpp" line="405"/>
       <source>Edit chamfer edges</source>
       <translation>Modifier les arêtes du chanfrein</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="528"/>
+      <location filename="../../ViewProviderMirror.cpp" line="541"/>
       <source>Edit offset</source>
       <translation>Modifier le décalage</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderMirror.cpp" line="610"/>
+      <location filename="../../ViewProviderMirror.cpp" line="623"/>
       <source>Edit thickness</source>
       <translation>Modifier l'épaisseur</translation>
     </message>
@@ -6223,7 +6244,7 @@ Voulez-vous continuer ?</translation>
     <message>
       <location filename="../../Workbench.cpp" line="42"/>
       <source>Compound</source>
-      <translation>Composé</translation>
+      <translation>Composés</translation>
     </message>
     <message>
       <location filename="../../Workbench.cpp" line="43"/>
@@ -6233,7 +6254,7 @@ Voulez-vous continuer ?</translation>
     <message>
       <location filename="../../Workbench.cpp" line="44"/>
       <source>Measure</source>
-      <translation>Mesure</translation>
+      <translation>Mesures</translation>
     </message>
   </context>
   <context>
@@ -6583,7 +6604,7 @@ Cela créera un "filtre composé" pour chaque forme.</translation>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="53"/>
       <source>Faces</source>
-      <translation>Faces</translation>
+      <translation>Faces </translation>
     </message>
     <message>
       <location filename="../../../BasicShapes/ShapeContent.py" line="59"/>

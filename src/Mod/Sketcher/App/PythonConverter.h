@@ -43,7 +43,6 @@ class Constraint;
 
 class SketcherExport PythonConverter
 {
-
     class SingleGeometry
     {
     public:
@@ -52,14 +51,22 @@ class SketcherExport PythonConverter
     };
 
 public:
+    enum class Mode
+    {
+        CreateInternalGeometry,
+        OmitInternalGeometry
+    };
+
     explicit PythonConverter() = delete;
     ~PythonConverter() = delete;
 
     /// Convert a geometry into the string representing the command creating it
-    static std::string convert(const Part::Geometry* geo);
+    static std::string convert(const Part::Geometry* geo, Mode mode = Mode::CreateInternalGeometry);
 
     /// Convert a vector of geometries into the string representing the command creating them
-    static std::string convert(const std::string& doc, const std::vector<Part::Geometry*>& geos);
+    static std::string convert(const std::string& doc,
+                               const std::vector<Part::Geometry*>& geos,
+                               Mode mode = Mode::CreateInternalGeometry);
 
     static std::string convert(const Sketcher::Constraint* constraint);
 

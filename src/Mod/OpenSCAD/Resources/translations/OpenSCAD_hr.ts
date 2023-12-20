@@ -6,7 +6,7 @@
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="14"/>
       <source>General settings</source>
-      <translation>Glavne postavke</translation>
+      <translation>Opće postavke</translation>
     </message>
     <message>
       <location filename="../ui/openscadprefs-base.ui" line="35"/>

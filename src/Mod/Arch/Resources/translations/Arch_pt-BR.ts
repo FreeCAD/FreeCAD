@@ -3136,12 +3136,12 @@ Se a extensão = 0, ela será calculada de modo que a altura seja a mesma do per
     <message>
       <location filename="../../ArchSchedule.py" line="588"/>
       <source>Import CSV file</source>
-      <translation type="unfinished">Import CSV file</translation>
+      <translation>Importar arquivo CSV</translation>
     </message>
     <message>
       <location filename="../../ArchSchedule.py" line="621"/>
       <source>Export CSV file</source>
-      <translation type="unfinished">Export CSV file</translation>
+      <translation>Exportar arquivo CSV</translation>
     </message>
     <message>
       <location filename="../../ArchCommands.py" line="1104"/>
@@ -4468,27 +4468,27 @@ Criação de edifício abortada.</translation>
     <message>
       <location filename="../../ArchReference.py" line="97"/>
       <source>The way the referenced objects are included in the current document. 'Normal' includes the shape, 'Transient' discards the shape when the object is switched off (smaller filesize), 'Lightweight' does not import the shape but only the OpenInventor representation</source>
-      <translation type="unfinished">The way the referenced objects are included in the current document. 'Normal' includes the shape, 'Transient' discards the shape when the object is switched off (smaller filesize), 'Lightweight' does not import the shape but only the OpenInventor representation</translation>
+      <translation>A maneira como os objetos referenciados são incluídos no documento atual. 'Normal' inclui o shape, 'Transiente' descarta o shape quando o objeto é desligado (tamanho de arquivo menor), 'Leve' o shape não importa, apenas sua representação OpenInventor</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="105"/>
       <source>Fuse objects of same material</source>
-      <translation type="unfinished">Fuse objects of same material</translation>
+      <translation>Fundir objetos de mesmo material</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="390"/>
       <source>The latest time stamp of the linked file</source>
-      <translation type="unfinished">The latest time stamp of the linked file</translation>
+      <translation>O último registro de tempo do arquivo vinculado</translation>
     </message>
     <message>
       <location filename="../../ArchReference.py" line="393"/>
       <source>If true, the colors from the linked file will be kept updated</source>
-      <translation type="unfinished">If true, the colors from the linked file will be kept updated</translation>
+      <translation>Se verdadeiro, as cores do arquivo vinculado serão mantidas atualizadas</translation>
     </message>
     <message>
       <location filename="../../ArchFrame.py" line="114"/>
       <source>The profile used to build this frame</source>
-      <translation type="unfinished">The profile used to build this frame</translation>
+      <translation>O perfil utilizado para construir esse quadro</translation>
     </message>
     <message>
       <location filename="../../ArchFrame.py" line="116"/>

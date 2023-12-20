@@ -45,7 +45,9 @@ runs:
   steps:
     - name: Run C++ tests
       shell: bash -l {0}
-      run: ${{ inputs.testCommand }} | tee -a ${{ inputs.testLogFile }}
+      run: |
+        set -o pipefail
+        ${{ inputs.testCommand }} | tee -a ${{ inputs.testLogFile }}
     - name: Parse test results
       if: always()
       id: report
