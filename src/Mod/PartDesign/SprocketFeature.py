@@ -142,7 +142,6 @@ class Sprocket:
         obj.Proxy = self
 
     def onDocumentRestored(self, obj):
-        print(self.sprockRef[1])
         """hook used to migrate older versions of this object"""
         self._ensure_properties(obj, is_restore=True)
 
