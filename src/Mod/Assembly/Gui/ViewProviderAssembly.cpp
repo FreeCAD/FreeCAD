@@ -205,8 +205,6 @@ App::DocumentObject* ViewProviderAssembly::getActivePart()
 
 bool ViewProviderAssembly::mouseMove(const SbVec2s& cursorPos, Gui::View3DInventorViewer* viewer)
 {
-    // Base::Console().Warning("Mouse move\n");
-
     // Initialize or end the dragging of parts
     if (canStartDragging) {
         canStartDragging = false;

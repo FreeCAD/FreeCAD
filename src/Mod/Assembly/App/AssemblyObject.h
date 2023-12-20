@@ -104,6 +104,7 @@ public:
 
     std::string handleOneSideOfJoint(App::DocumentObject* joint,
                                      const char* propObjLinkName,
+                                     const char* propPartName,
                                      const char* propPlcName);
     void jointParts(std::vector<App::DocumentObject*> joints);
     std::vector<App::DocumentObject*> getJoints();
@@ -124,6 +125,7 @@ public:
     void swapJCS(App::DocumentObject* joint);
 
     void setNewPlacements();
+    void redrawJointPlacements(std::vector<App::DocumentObject*> joints);
     void recomputeJointPlacements(std::vector<App::DocumentObject*> joints);
 
     bool isPartConnected(App::DocumentObject* obj);
@@ -141,8 +143,9 @@ public:
     JointType getJointType(App::DocumentObject* joint);
     const char* getElementFromProp(App::DocumentObject* obj, const char* propName);
     std::string getElementTypeFromProp(App::DocumentObject* obj, const char* propName);
-    Base::Placement getPlacementFromProp(App::DocumentObject* obj, const char* propName);
     App::DocumentObject* getLinkObjFromProp(App::DocumentObject* joint, const char* propName);
+    App::DocumentObject*
+    getObjFromNameProp(App::DocumentObject* joint, const char* pObjName, const char* pPart);
     App::DocumentObject*
     getLinkedObjFromNameProp(App::DocumentObject* joint, const char* pObjName, const char* pPart);
 

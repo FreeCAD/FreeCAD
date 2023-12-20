@@ -428,11 +428,11 @@ class Joint:
         plc = obj.Placement.inverse() * plc
 
         # change plc to be relative to the origin of the document.
-        global_plc = UtilsAssembly.getGlobalPlacement(obj, part)
-        plc = global_plc * plc
+        # global_plc = UtilsAssembly.getGlobalPlacement(obj, part)
+        # plc = global_plc * plc
 
         # change plc to be relative to the assembly.
-        plc = assembly.Placement.inverse() * plc
+        # plc = assembly.Placement.inverse() * plc
 
         # We apply rotation / reverse / offset it necessary, but only to the second JCS.
         if isSecond:
@@ -621,7 +621,12 @@ class ViewProviderJoint:
 
         return camera.height.getValue() / 20
 
-    def set_JCS_placement(self, soTransform, placement):
+    def set_JCS_placement(self, soTransform, placement, objName, part):
+        # change plc to be relative to the origin of the document.
+        obj = UtilsAssembly.getObjectInPart(objName, part)
+        global_plc = UtilsAssembly.getGlobalPlacement(obj, part)
+        placement = global_plc * placement
+
         t = placement.Base
         soTransform.translation.setValue(t.x, t.y, t.z)
 
@@ -632,20 +637,22 @@ class ViewProviderJoint:
         """If a property of the handled feature has changed we have the chance to handle this here"""
         # joint is the handled feature, prop is the name of the property that has changed
         if prop == "Placement1":
-            plc = joint.getPropertyByName("Placement1")
-            if joint.getPropertyByName("Object1"):
+            if joint.Object1:
+                plc = joint.Placement1
                 self.switch_JCS1.whichChild = coin.SO_SWITCH_ALL
-                self.set_JCS_placement(self.transform1, plc)
+
+                if joint.Part1:  # prevent an unwanted call by assembly.isPartConnected
+                    self.set_JCS_placement(self.transform1, plc, joint.Object1, joint.Part1)
             else:
                 self.switch_JCS1.whichChild = coin.SO_SWITCH_NONE
 
         if prop == "Placement2":
-            plc = joint.getPropertyByName("Placement2")
-            if joint.getPropertyByName("Object2"):
+            if joint.Object2:
+                plc = joint.Placement2
                 self.switch_JCS2.whichChild = coin.SO_SWITCH_ALL
-                if self.areJCSReversed(joint):
-                    plc = flipPlacement(plc, App.Vector(1, 0, 0))
-                self.set_JCS_placement(self.transform2, plc)
+                # if self.areJCSReversed(joint):
+                #    plc = flipPlacement(plc, App.Vector(1, 0, 0))
+                self.set_JCS_placement(self.transform2, plc, joint.Object2, joint.Part2)
             else:
                 self.switch_JCS2.whichChild = coin.SO_SWITCH_NONE
 
@@ -656,10 +663,10 @@ class ViewProviderJoint:
         sameDir = zaxis1.dot(zaxis2) > 0
         return not sameDir
 
-    def showPreviewJCS(self, visible, placement=None):
+    def showPreviewJCS(self, visible, placement=None, objName="", part=None):
         if visible:
             self.switch_JCS_preview.whichChild = coin.SO_SWITCH_ALL
-            self.set_JCS_placement(self.transform3, placement)
+            self.set_JCS_placement(self.transform3, placement, objName, part)
         else:
             self.switch_JCS_preview.whichChild = coin.SO_SWITCH_NONE
 
@@ -1110,16 +1117,17 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
             )
 
         isSecond = len(self.current_selection) == 1
-
+        objName = self.preselection_dict["object"].Name
+        part = self.preselection_dict["part"]
         placement = self.joint.Proxy.findPlacement(
             self.joint,
-            self.preselection_dict["object"].Name,
-            self.preselection_dict["part"],
+            objName,
+            part,
             self.preselection_dict["element_name"],
             self.preselection_dict["vertex_name"],
             isSecond,
         )
-        self.joint.ViewObject.Proxy.showPreviewJCS(True, placement)
+        self.joint.ViewObject.Proxy.showPreviewJCS(True, placement, objName, part)
         self.previewJCSVisible = True
 
     # 3D view keyboard handler
@@ -1155,6 +1163,9 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
 
         self.current_selection.append(selection_dict)
         self.updateJoint()
+
+        # We hide the preview JCS if we just added to the selection
+        self.joint.ViewObject.Proxy.showPreviewJCS(False)
 
     def removeSelection(self, doc_name, obj_name, sub_name, mousePos=None):
         full_element_name = UtilsAssembly.getFullElementName(obj_name, sub_name)

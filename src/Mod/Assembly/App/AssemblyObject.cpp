@@ -80,6 +80,105 @@ namespace PartApp = Part;
 using namespace Assembly;
 using namespace MbD;
 
+// ======================================= Utils ======================================
+
+Base::Placement getPlacementFromProp(App::DocumentObject* obj, const char* propName)
+{
+    Base::Placement plc = Base::Placement();
+    auto* propPlacement = dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName(propName));
+    if (propPlacement) {
+        plc = propPlacement->getValue();
+    }
+    return plc;
+}
+/* // Currently unused
+Base::Placement* getTargetPlacementRelativeTo(
+    App::DocumentObject* targetObj, App::DocumentObject* part, App::DocumentObject* container,
+    bool inContainerBranch, bool ignorePlacement = false)
+{
+    inContainerBranch = inContainerBranch || (!ignorePlacement && part == container);
+
+    Base::Console().Warning("sub --------------\n");
+    if (targetObj == part && inContainerBranch && !ignorePlacement) {
+        Base::Console().Warning("found0\n");
+        return &getPlacementFromProp(targetObj, "Placement");
+    }
+
+    if (auto group = dynamic_cast<App::DocumentObjectGroup*>(part)) {
+        for (auto& obj : group->getOutList()) {
+            auto foundPlacement = getTargetPlacementRelativeTo(
+                targetObj, obj, container, inContainerBranch, ignorePlacement
+            );
+            if (foundPlacement != nullptr) {
+                return foundPlacement;
+            }
+        }
+    }
+    else if (auto assembly = dynamic_cast<AssemblyObject*>(part)) {
+        Base::Console().Warning("h3\n");
+        for (auto& obj : assembly->getOutList()) {
+            auto foundPlacement = getTargetPlacementRelativeTo(
+                targetObj, obj, container, inContainerBranch
+            );
+            if (foundPlacement == nullptr) {
+                continue;
+            }
+
+            if (!ignorePlacement) {
+                *foundPlacement = getPlacementFromProp(part, "Placement") * *foundPlacement;
+            }
+
+            Base::Console().Warning("found\n");
+            return foundPlacement;
+        }
+    }
+    else if (auto link = dynamic_cast<App::Link*>(part)) {
+        Base::Console().Warning("h4\n");
+        auto linked_obj = link->getLinkedObject();
+
+        if (dynamic_cast<App::Part*>(linked_obj) || dynamic_cast<AssemblyObject*>(linked_obj)) {
+            for (auto& obj : linked_obj->getOutList()) {
+                auto foundPlacement = getTargetPlacementRelativeTo(
+                    targetObj, obj, container, inContainerBranch
+                );
+                if (foundPlacement == nullptr) {
+                    continue;
+                }
+
+                *foundPlacement = getPlacementFromProp(link, "Placement") * *foundPlacement;
+                return foundPlacement;
+            }
+        }
+
+        auto foundPlacement = getTargetPlacementRelativeTo(
+            targetObj, linked_obj, container, inContainerBranch, true
+        );
+
+        if (foundPlacement != nullptr && !ignorePlacement) {
+            *foundPlacement = getPlacementFromProp(link, "Placement") * *foundPlacement;
+        }
+
+        Base::Console().Warning("found2\n");
+        return foundPlacement;
+    }
+
+    return nullptr;
+}
+
+Base::Placement getGlobalPlacement(App::DocumentObject* targetObj, App::DocumentObject* container =
+nullptr) { bool inContainerBranch = container == nullptr; auto rootObjects =
+App::GetApplication().getActiveDocument()->getRootObjects(); for (auto& part : rootObjects) { auto
+foundPlacement = getTargetPlacementRelativeTo(targetObj, part, container, inContainerBranch); if
+(foundPlacement != nullptr) { Base::Placement plc(foundPlacement->toMatrix()); return plc;
+        }
+    }
+
+    return Base::Placement();
+}
+*/
+
+// ================================ Assembly Object ============================
+
 PROPERTY_SOURCE(Assembly::AssemblyObject, App::Part)
 
 AssemblyObject::AssemblyObject()
@@ -357,11 +456,7 @@ int AssemblyObject::solve(bool enableRedo)
 
     setNewPlacements();
 
-    // The Placement1 and Placement2 of each joint needs to be updated as the parts moved.
-    // Note calling only recomputeJointPlacements makes a weird illegal storage access
-    // When solving while moving part. Happens in Py::Callable(attr).apply();
-    // it apparently can't access the JointObject 'updateJCSPlacements' function.
-    getJoints();
+    redrawJointPlacements(joints);
 
     return 0;
 }
@@ -709,8 +804,8 @@ AssemblyObject::makeMbdJoint(App::DocumentObject* joint)
         return {};
     }
 
-    std::string fullMarkerName1 = handleOneSideOfJoint(joint, "Part1", "Placement1");
-    std::string fullMarkerName2 = handleOneSideOfJoint(joint, "Part2", "Placement2");
+    std::string fullMarkerName1 = handleOneSideOfJoint(joint, "Object1", "Part1", "Placement1");
+    std::string fullMarkerName2 = handleOneSideOfJoint(joint, "Object2", "Part2", "Placement2");
 
     mbdJoint->setMarkerI(fullMarkerName1);
     mbdJoint->setMarkerJ(fullMarkerName2);
@@ -719,18 +814,24 @@ AssemblyObject::makeMbdJoint(App::DocumentObject* joint)
 }
 
 std::string AssemblyObject::handleOneSideOfJoint(App::DocumentObject* joint,
-                                                 const char* propLinkName,
+                                                 const char* propObjName,
+                                                 const char* propPartName,
                                                  const char* propPlcName)
 {
-    App::DocumentObject* obj = getLinkObjFromProp(joint, propLinkName);
+    App::DocumentObject* part = getLinkObjFromProp(joint, propPartName);
+    App::DocumentObject* obj = getObjFromNameProp(joint, propObjName, propPartName);
 
-    std::shared_ptr<ASMTPart> mbdPart = getMbDPart(obj);
+    std::shared_ptr<ASMTPart> mbdPart = getMbDPart(part);
+    Base::Placement partPlc = getPlacementFromProp(part, "Placement");
     Base::Placement objPlc = getPlacementFromProp(obj, "Placement");
     Base::Placement plc = getPlacementFromProp(joint, propPlcName);
-    // Now we have plc which is the JCS placement, but its relative to the doc origin, not to the
-    // obj.
+    // Now we have plc which is the JCS placement, but its relative to the Object, not to the
+    // containing Part.
 
-    plc = objPlc.inverse() * plc;
+    if (obj->getNameInDocument() != part->getNameInDocument()) {
+        // Make plc relative to the containing part
+        plc = objPlc * plc;
+    }
 
     std::string markerName = joint->getFullName();
     auto mbdMarker = makeMbdMarker(markerName, plc);
@@ -964,11 +1065,27 @@ void AssemblyObject::setNewPlacements()
     }
 }
 
+void AssemblyObject::redrawJointPlacements(std::vector<App::DocumentObject*> joints)
+{
+    // Notify the joint objects that the transform of the coin object changed.
+    for (auto* joint : joints) {
+        auto* propPlacement =
+            dynamic_cast<App::PropertyPlacement*>(joint->getPropertyByName("Placement1"));
+        if (propPlacement) {
+            propPlacement->setValue(propPlacement->getValue());
+        }
+        propPlacement =
+            dynamic_cast<App::PropertyPlacement*>(joint->getPropertyByName("Placement2"));
+        if (propPlacement) {
+            propPlacement->setValue(propPlacement->getValue());
+        }
+    }
+}
+
 void AssemblyObject::recomputeJointPlacements(std::vector<App::DocumentObject*> joints)
 {
     // The Placement1 and Placement2 of each joint needs to be updated as the parts moved.
     for (auto* joint : joints) {
-
         App::PropertyPythonObject* proxy = joint
             ? dynamic_cast<App::PropertyPythonObject*>(joint->getPropertyByName("Proxy"))
             : nullptr;
@@ -1135,9 +1252,9 @@ App::DocumentObject* AssemblyObject::getLinkObjFromProp(App::DocumentObject* joi
     return propObj->getValue();
 }
 
-App::DocumentObject* AssemblyObject::getLinkedObjFromNameProp(App::DocumentObject* joint,
-                                                              const char* pObjName,
-                                                              const char* pPart)
+App::DocumentObject* AssemblyObject::getObjFromNameProp(App::DocumentObject* joint,
+                                                        const char* pObjName,
+                                                        const char* pPart)
 {
     auto* propObjName = dynamic_cast<App::PropertyString*>(joint->getPropertyByName(pObjName));
     if (!propObjName) {
@@ -1151,13 +1268,13 @@ App::DocumentObject* AssemblyObject::getLinkedObjFromNameProp(App::DocumentObjec
     }
 
     if (objName == containingPart->getNameInDocument()) {
-        return containingPart->getLinkedObject(true);
+        return containingPart;
     }
 
     if (containingPart->getTypeId().isDerivedFrom(App::Link::getClassTypeId())) {
         App::Link* link = dynamic_cast<App::Link*>(containingPart);
 
-        containingPart = link->getLinkedObject(true);
+        containingPart = link->getLinkedObject();
         if (!containingPart) {
             return nullptr;
         }
@@ -1165,22 +1282,24 @@ App::DocumentObject* AssemblyObject::getLinkedObjFromNameProp(App::DocumentObjec
 
     for (auto obj : containingPart->getOutList()) {
         if (objName == obj->getNameInDocument()) {
-            return obj->getLinkedObject(true);
+            return obj;
         }
     }
 
     return nullptr;
 }
 
-Base::Placement AssemblyObject::getPlacementFromProp(App::DocumentObject* obj, const char* propName)
+App::DocumentObject* AssemblyObject::getLinkedObjFromNameProp(App::DocumentObject* joint,
+                                                              const char* pObjName,
+                                                              const char* pPart)
 {
-    Base::Placement plc = Base::Placement();
-    auto* propPlacement = dynamic_cast<App::PropertyPlacement*>(obj->getPropertyByName(propName));
-    if (propPlacement) {
-        plc = propPlacement->getValue();
+    auto* obj = getObjFromNameProp(joint, pObjName, pPart);
+    if (obj) {
+        return obj->getLinkedObject(true);
     }
-    return plc;
+    return nullptr;
 }
+
 
 /*void Part::handleChangedPropertyType(Base::XMLReader& reader, const char* TypeName, App::Property*
 prop)
