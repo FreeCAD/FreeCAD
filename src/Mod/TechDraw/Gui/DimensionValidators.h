@@ -59,6 +59,7 @@ enum DimensionGeometryEnum {
         isAngle3Pt,
         isMultiEdge,
         isZLimited,
+        isHybrid,
         isViewReference         //never needs to be specified in the acceptable list
     };
 
