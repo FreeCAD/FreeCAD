@@ -126,8 +126,9 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *toolcenter << "TechDraw_ExtensionThreadBoltSide";
     *toolcenter << "TechDraw_ExtensionThreadBoltBottom";
     *toolcenter << "Separator";
-    *toolcenter << "TechDraw_CommandVertexCreationGroup";
-    //*toolcenter << "TechDraw_ExtensionVertexAtIntersection";
+    *toolcenter << "TechDraw_ExtensionVertexAtIntersection";
+    *toolcenter << "TechDraw_CommandAddOffsetVertex";
+    *toolcenter << "Separator";
     *toolcenter << "TechDraw_ExtensionDrawCosmCircle";
     *toolcenter << "TechDraw_ExtensionDrawCosmArc";
     *toolcenter << "TechDraw_ExtensionDrawCosmCircle3Points";
