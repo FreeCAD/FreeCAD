@@ -377,6 +377,26 @@ PyObject* VectorPy::isEqual(PyObject* args)
     return Py::new_reference_to(eq);
 }
 
+PyObject* VectorPy::isParallel(PyObject* args)
+{
+    PyObject* obj = nullptr;
+    double tolerance = 0;
+    if (!PyArg_ParseTuple(args, "O!d", &(VectorPy::Type), &obj, &tolerance)) {
+        return nullptr;
+    }
+
+    VectorPy* vec = static_cast<VectorPy*>(obj);
+
+    VectorPy::PointerType v1_ptr = getVectorPtr();
+    VectorPy::PointerType v2_ptr = vec->getVectorPtr();
+    
+    double dot = abs((*v1_ptr)*(*v2_ptr));
+    double mag = v1_ptr->Length()*v2_ptr->Length();
+    
+    Py::Boolean parallel(abs(dot-mag) < tolerance);
+    return Py::new_reference_to(parallel);
+}
+
 PyObject* VectorPy::scale(PyObject* args)
 {
     double factorX = 0.0;
