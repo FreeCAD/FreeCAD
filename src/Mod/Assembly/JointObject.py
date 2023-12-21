@@ -342,10 +342,8 @@ class Joint:
             return App.Placement()
 
         if not elt or not vtx:
-            # case of whole parts such as PartDesign::Body or PartDesign::CordinateSystem.
-            plc = UtilsAssembly.getGlobalPlacement(obj, part)
-            plc = assembly.Placement.inverse() * plc
-            return plc
+            # case of whole parts such as PartDesign::Body or PartDesign::CordinateSystem/Point/Line/Plane.
+            return App.Placement()
 
         elt_type, elt_index = UtilsAssembly.extract_type_and_number(elt)
         vtx_type, vtx_index = UtilsAssembly.extract_type_and_number(vtx)

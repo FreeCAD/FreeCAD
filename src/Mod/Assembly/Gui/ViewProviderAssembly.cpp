@@ -76,6 +76,16 @@ bool ViewProviderAssembly::doubleClicked()
         Gui::Application::Instance->activeDocument()->resetEdit();
     }
     else {
+        // assure the PartDesign workbench
+        if (App::GetApplication()
+                .GetUserParameter()
+                .GetGroup("BaseApp")
+                ->GetGroup("Preferences")
+                ->GetGroup("Mod/Assembly")
+                ->GetBool("SwitchToWB", true)) {
+            Gui::Command::assureWorkbench("AssemblyWorkbench");
+        }
+
         // Part is not 'Active' so we enter edit mode to make it so.
         Gui::Application::Instance->activeDocument()->setEdit(this);
     }

@@ -131,7 +131,7 @@ def getObject(full_name):
             if linked_obj.TypeId == "PartDesign::Body":
                 if i + 1 < len(names):
                     obj2 = doc.getObject(names[i + 1])
-                    if obj2 and obj2.TypeId == "PartDesign::CoordinateSystem":
+                    if obj2 and isBodySubObject(obj2.TypeId):
                         return obj2
                 return obj
             elif linked_obj.isDerivedFrom("Part::Feature"):
@@ -147,7 +147,7 @@ def getObject(full_name):
         elif obj.TypeId == "PartDesign::Body":
             if i + 1 < len(names):
                 obj2 = doc.getObject(names[i + 1])
-                if obj2 and obj2.TypeId == "PartDesign::CoordinateSystem":
+                if obj2 and isBodySubObject(obj2.TypeId):
                     return obj2
             return obj
 
@@ -158,10 +158,20 @@ def getObject(full_name):
     return None
 
 
+def isBodySubObject(typeId):
+    return (
+        typeId == "Sketcher::SketchObject"
+        or typeId == "PartDesign::Point"
+        or typeId == "PartDesign::Line"
+        or typeId == "PartDesign::Plane"
+        or typeId == "PartDesign::CoordinateSystem"
+    )
+
+
 def getContainingPart(full_name, selected_object):
-    # full_name is "Assembly.Assembly1.LinkOrPart1.Box.Edge16"
-    # or           "Assembly.Assembly1.LinkOrPart1.Body.pad.Edge16"
-    # We want either Body or Box.
+    # full_name is "Assembly.Assembly1.LinkOrPart1.LinkOrBox.Edge16" -> LinkOrPart1
+    # or           "Assembly.Assembly1.LinkOrPart1.LinkOrBody.pad.Edge16" -> LinkOrPart1
+    # or           "Assembly.Assembly1.LinkOrPart1.LinkOrBody.Sketch.Edge1" -> LinkOrBody
     if selected_object is None:
         App.Console.PrintError("getContainingPart() in UtilsAssembly.py selected_object is None")
         return None
@@ -183,10 +193,7 @@ def getContainingPart(full_name, selected_object):
         if obj == selected_object:
             return selected_object
 
-        if (
-            obj.TypeId == "PartDesign::Body"
-            and selected_object.TypeId == "PartDesign::CoordinateSystem"
-        ):
+        if obj.TypeId == "PartDesign::Body" and isBodySubObject(selected_object.TypeId):
             if obj.hasObject(selected_object, True):
                 return obj
 
@@ -197,6 +204,9 @@ def getContainingPart(full_name, selected_object):
 
         elif obj.TypeId == "App::Link":
             linked_obj = obj.getLinkedObject()
+            if linked_obj.TypeId == "PartDesign::Body" and isBodySubObject(selected_object.TypeId):
+                if linked_obj.hasObject(selected_object, True):
+                    return obj
             if linked_obj.TypeId == "App::Part":
                 # linked_obj_doc = linked_obj.Document
                 # selected_obj_in_doc = doc.getObject(selected_object.Name)
@@ -214,7 +224,12 @@ def getObjectInPart(objName, part):
     if part.TypeId == "App::Link":
         part = part.getLinkedObject()
 
-    if part.TypeId in {"App::Part", "Assembly::AssemblyObject", "App::DocumentObjectGroup"}:
+    if part.TypeId in {
+        "App::Part",
+        "Assembly::AssemblyObject",
+        "App::DocumentObjectGroup",
+        "PartDesign::Body",
+    }:
         for obji in part.OutList:
             if obji.Name == objName:
                 return obji
@@ -250,7 +265,7 @@ def getTargetPlacementRelativeTo(
             if foundPlacement is not None:
                 return foundPlacement
 
-    elif part.TypeId == "App::Part" or part.TypeId == "Assembly::AssemblyObject":
+    elif part.TypeId in {"App::Part", "Assembly::AssemblyObject", "PartDesign::Body"}:
         for obj in part.OutList:
             foundPlacement = getTargetPlacementRelativeTo(
                 targetObj, obj, container, inContainerBranch
@@ -267,7 +282,7 @@ def getTargetPlacementRelativeTo(
     elif part.TypeId == "App::Link":
         linked_obj = part.getLinkedObject()
 
-        if linked_obj.TypeId == "App::Part" or linked_obj.TypeId == "Assembly::AssemblyObject":
+        if linked_obj.TypeId in {"App::Part", "Assembly::AssemblyObject", "PartDesign::Body"}:
             for obj in linked_obj.OutList:
                 foundPlacement = getTargetPlacementRelativeTo(
                     targetObj, obj, container, inContainerBranch
@@ -299,8 +314,8 @@ def getElementName(full_name):
         # At minimum "Assembly.Box.edge16". It shouldn't be shorter
         return ""
 
-    # case of PartDesign::CoordinateSystem
-    if parts[-1] == "X" or parts[-1] == "Y" or parts[-1] == "Z":
+    # case of PartDesign datums : CoordinateSystem, point, line, plane
+    if parts[-1] in {"X", "Y", "Z", "Point", "Line", "Plane"}:
         return ""
 
     return parts[-1]

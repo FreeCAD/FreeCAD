@@ -807,6 +807,7 @@ AssemblyObject::makeMbdJoint(App::DocumentObject* joint)
     std::string fullMarkerName1 = handleOneSideOfJoint(joint, "Object1", "Part1", "Placement1");
     std::string fullMarkerName2 = handleOneSideOfJoint(joint, "Object2", "Part2", "Placement2");
 
+    mbdJoint->setName(joint->getFullName());
     mbdJoint->setMarkerI(fullMarkerName1);
     mbdJoint->setMarkerJ(fullMarkerName2);
 
