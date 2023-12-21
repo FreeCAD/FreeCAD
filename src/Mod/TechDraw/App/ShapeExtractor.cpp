@@ -406,12 +406,14 @@ bool ShapeExtractor::isEdgeType(App::DocumentObject* obj)
 
 bool ShapeExtractor::isPointType(App::DocumentObject* obj)
 {
-//    Base::Console().Message("SE::isPointType(%s)\n", obj->getNameInDocument());
+    // Base::Console().Message("SE::isPointType(%s)\n", obj->getNameInDocument());
     if (obj) {
         Base::Type t = obj->getTypeId();
         if (t.isDerivedFrom(Part::Vertex::getClassTypeId())) {
             return true;
         } else if (isDraftPoint(obj)) {
+            return true;
+        } else if (isDatumPoint(obj)) {
             return true;
         }
     }
@@ -433,11 +435,21 @@ bool ShapeExtractor::isDraftPoint(App::DocumentObject* obj)
     return false;
 }
 
+bool ShapeExtractor::isDatumPoint(App::DocumentObject* obj)
+{
+    std::string objTypeName = obj->getTypeId().getName();
+    std::string pointToken("Point");
+    if (objTypeName.find(pointToken) != std::string::npos) {
+        return true;
+    }
+    return false;
+}
+
 
 //! get the location of a point object
 Base::Vector3d ShapeExtractor::getLocation3dFromFeat(App::DocumentObject* obj)
 {
-    Base::Console().Message("SE::getLocation3dFromFeat()\n");
+    // Base::Console().Message("SE::getLocation3dFromFeat()\n");
     if (!isPointType(obj)) {
         return Base::Vector3d(0.0, 0.0, 0.0);
     }
