@@ -151,7 +151,7 @@ TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> l
 
 std::vector<TopoDS_Shape> ShapeExtractor::getXShapes(const App::Link* xLink)
 {
-//    Base::Console().Message("SE::getXShapes() - %s\n", xLink->getNameInDocument());
+    // Base::Console().Message("SE::getXShapes() - %s\n", xLink->getNameInDocument());
     std::vector<TopoDS_Shape> xSourceShapes;
     if (!xLink) {
         return xSourceShapes;
@@ -211,22 +211,19 @@ std::vector<TopoDS_Shape> ShapeExtractor::getXShapes(const App::Link* xLink)
         // link points to a regular object, not another link? no sublinks?
         TopoDS_Shape xLinkShape = getShapeFromXLink(xLink);
         if (!xLinkShape.IsNull()) {
-            // make the "located, oriented" version of the shape.
-            netTransform = xLinkPlacement.toMatrix() * linkScale;
             // copying the shape prevents "non-orthogonal GTrsf" errors in some versions
             // of OCC.  Something to do with triangulation of shape??
             BRepBuilderAPI_Copy copier(xLinkShape);
-            auto ts = Part::TopoShape(copier.Shape());
-            ts.transformGeometry(netTransform);
-            xSourceShapes.push_back(ts.getShape());
+            xSourceShapes.push_back(copier.Shape());
         }
     }
     return xSourceShapes;
 }
 
-// get the shape for a single childless App::Link
+// get the located shape for a single childless App::Link
 TopoDS_Shape ShapeExtractor::getShapeFromXLink(const App::Link* xLink)
 {
+    // Base::Console().Message("SE::getShapeFromXLink()\n");
     Base::Placement xLinkPlacement;
     if (xLink->hasPlacement()) {
         xLinkPlacement = xLink->getLinkPlacementProperty()->getValue();
@@ -242,15 +239,11 @@ TopoDS_Shape ShapeExtractor::getShapeFromXLink(const App::Link* xLink)
         TopoDS_Shape shape = Part::Feature::getShape(linkedObject);
         if (shape.IsNull()) {
             // this is where we need to parse the target for objects with a shape??
-            Base::Console().Message("SE::getXShapes - link has no shape\n");
-            // std::vector<TopoDS_Shape> shapesFromObject = getShapesFromObject(linkedObject);  // getXShapes?
             return TopoDS_Shape();
         }
         Part::TopoShape ts(shape);
         if (ts.isInfinite()) {
             shape = stripInfiniteShapes(shape);
-            // the shape must have a triangulation or it will cause a failure
-            // when later transforms are applied
             ts = Part::TopoShape(shape);
         }
         //ts might be garbage now, better check
