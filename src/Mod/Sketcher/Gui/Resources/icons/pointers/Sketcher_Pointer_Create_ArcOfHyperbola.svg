@@ -4,30 +4,8 @@
    height="64"
    width="64"
    id="svg10"
-   sodipodi:docname="Sketcher_Pointer_Create_ArcOfHyperbola.svg"
-   inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg">
-  <sodipodi:namedview
-     id="namedview1"
-     pagecolor="#ffffff"
-     bordercolor="#000000"
-     borderopacity="0.25"
-     inkscape:showpageshadow="2"
-     inkscape:pageopacity="0.0"
-     inkscape:pagecheckerboard="0"
-     inkscape:deskcolor="#d1d1d1"
-     inkscape:zoom="6.6733202"
-     inkscape:cx="28.621435"
-     inkscape:cy="31.918144"
-     inkscape:window-width="1368"
-     inkscape:window-height="842"
-     inkscape:window-x="-6"
-     inkscape:window-y="-6"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="symbol" />
   <defs
      id="defs14" />
   <g
@@ -35,37 +13,36 @@
      style="fill:none;stroke:#cc0000;stroke-width:2"
      transform="rotate(-20 41 45)">
     <ellipse
-       cx="34.000671"
-       cy="23.297182"
+       cx="35.280918"
+       cy="23.28476"
        id="circle4-5"
        style="fill:none;stroke:#cc0000;stroke-width:2"
        rx="4.0014977"
        ry="4.0015597" />
     <ellipse
-       cx="52.794525"
-       cy="30.137585"
+       cx="54.074772"
+       cy="30.125162"
        id="circle4-5-8"
        style="fill:none;stroke:#cc0000;stroke-width:2"
        rx="4.0014977"
        ry="4.0015597" />
     <ellipse
-       cx="37.177113"
-       cy="43.808022"
+       cx="38.457359"
+       cy="43.795589"
        id="circle4-5-8-4"
        style="fill:none;stroke:#cc0000;stroke-width:2"
        rx="4.0014977"
        ry="4.0015597" />
     <ellipse
-       cx="33.238667"
-       cy="54.628807"
+       cx="33.937374"
+       cy="56.214138"
        id="circle4-5-8-4-1"
        style="fill:none;stroke:#cc0000;stroke-width:2"
        rx="4.0014977"
        ry="4.0015597" />
     <path
        id="path2"
-       d="M 52.794523,30.137585 C 49.359045,39.576484 42.366892,45.696947 37.177114,43.808022 31.987335,41.919097 30.565193,32.736081 34.000671,23.297182"
-       sodipodi:nodetypes="csc" />
+       d="M 54.074783,30.125162 C 50.639305,39.564061 43.647152,45.684524 38.457374,43.795599 33.267595,41.906674 31.845453,32.723658 35.280931,23.284759" />
   </g>
   <g
      id="crosshair"
