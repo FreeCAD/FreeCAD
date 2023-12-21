@@ -192,9 +192,13 @@ std::vector<TopoDS_Shape> ShapeExtractor::getXShapes(const App::Link* xLink)
             Part::TopoShape ts(shape);
             if (ts.isInfinite()) {
                 shape = stripInfiniteShapes(shape);
-                ts = Part::TopoShape(shape);
             }
-            if(!shape.IsNull()) {
+            // copying the shape prevents "non-orthogonal GTrsf" errors in some versions
+            // of OCC.  Something to do with triangulation of shape??
+            // it may be that incremental mesh would work here too.
+            BRepBuilderAPI_Copy copier(shape);
+            ts = Part::TopoShape(copier.Shape());
+            if(!ts.isNull()) {
                 if (needsTransform || childNeedsTransform) {
                     // Multiplication is associative, but the braces show the idea of combining the two transforms:
                     // ( link placement and scale ) combined to ( child placement and scale )
