@@ -269,25 +269,25 @@ sort: whether to topologically sort the return list
   </Attribute>
     <Attribute Name="ActiveObject" ReadOnly="true">
       <Documentation>
-        <UserDocu>The active object of the document</UserDocu>
+        <UserDocu>The last created object in this document</UserDocu>
       </Documentation>
       <Parameter Name="ActiveObject" Type="Object" />
     </Attribute>
     <Attribute Name="Objects" ReadOnly="true">
       <Documentation>
-        <UserDocu>The list of object handled by this document</UserDocu>
+        <UserDocu>The list of objects in this document</UserDocu>
       </Documentation>
       <Parameter Name="Objects" Type="List" />
     </Attribute>
     <Attribute Name="TopologicalSortedObjects" ReadOnly="true">
       <Documentation>
-        <UserDocu>The list of object of this document in topological sorted order</UserDocu>
+        <UserDocu>The list of objects in this document in topological sorted order</UserDocu>
       </Documentation>
       <Parameter Name="ToplogicalSortedObjects" Type="List" />
     </Attribute>
     <Attribute Name="RootObjects" ReadOnly="true">
       <Documentation>
-        <UserDocu>The list of root object of this document</UserDocu>
+        <UserDocu>The list of root objects in this document</UserDocu>
       </Documentation>
       <Parameter Name="RootObjects" Type="List" />
     </Attribute>
