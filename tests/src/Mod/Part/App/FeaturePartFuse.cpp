@@ -206,8 +206,6 @@ TEST_F(FeaturePartFuseTest, testMustExecute)
 
 TEST_F(FeaturePartFuseTest, testGetProviderName)
 {
-    // Arrange
-
     // Act
     _fuse->execute();
     const char* name = _fuse->getViewProviderName();

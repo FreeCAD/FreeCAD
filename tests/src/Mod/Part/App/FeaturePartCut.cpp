@@ -96,12 +96,12 @@ TEST_F(FeaturePartCutTest, testIntersecting)
     Base::BoundBox3d bb = ts.getBoundBox();
 
     // Assert
-    EXPECT_EQ(bb.MinX, 0);
-    EXPECT_EQ(bb.MinY, 0);
-    EXPECT_EQ(bb.MinZ, 0);
-    EXPECT_EQ(bb.MaxX, 1);
-    EXPECT_EQ(bb.MaxY, 1);
-    EXPECT_EQ(bb.MaxZ, 3);
+    EXPECT_FLOAT_EQ(bb.MinX, 0);
+    EXPECT_FLOAT_EQ(bb.MinY, 0);
+    EXPECT_FLOAT_EQ(bb.MinZ, 0);
+    EXPECT_FLOAT_EQ(bb.MaxX, 1);
+    EXPECT_FLOAT_EQ(bb.MaxY, 1);
+    EXPECT_FLOAT_EQ(bb.MaxZ, 3);
 }
 
 TEST_F(FeaturePartCutTest, testNonIntersecting)
@@ -116,12 +116,12 @@ TEST_F(FeaturePartCutTest, testNonIntersecting)
     Base::BoundBox3d bb = ts.getBoundBox();
 
     // Assert
-    EXPECT_EQ(bb.MinX, 0);
-    EXPECT_EQ(bb.MinY, 0);
-    EXPECT_EQ(bb.MinZ, 0);
-    EXPECT_EQ(bb.MaxX, 1);
-    EXPECT_EQ(bb.MaxY, 2);
-    EXPECT_EQ(bb.MaxZ, 3);
+    EXPECT_FLOAT_EQ(bb.MinX, 0);
+    EXPECT_FLOAT_EQ(bb.MinY, 0);
+    EXPECT_FLOAT_EQ(bb.MinZ, 0);
+    EXPECT_FLOAT_EQ(bb.MaxX, 1);
+    EXPECT_FLOAT_EQ(bb.MaxY, 2);
+    EXPECT_FLOAT_EQ(bb.MaxZ, 3);
 }
 
 TEST_F(FeaturePartCutTest, testTouching)
@@ -136,12 +136,12 @@ TEST_F(FeaturePartCutTest, testTouching)
     Base::BoundBox3d bb = ts.getBoundBox();
 
     // Assert
-    EXPECT_EQ(bb.MinX, 0);
-    EXPECT_EQ(bb.MinY, 0);
-    EXPECT_EQ(bb.MinZ, 0);
-    EXPECT_EQ(bb.MaxX, 1);
-    EXPECT_EQ(bb.MaxY, 2);
-    EXPECT_EQ(bb.MaxZ, 3);
+    EXPECT_FLOAT_EQ(bb.MinX, 0);
+    EXPECT_FLOAT_EQ(bb.MinY, 0);
+    EXPECT_FLOAT_EQ(bb.MinZ, 0);
+    EXPECT_FLOAT_EQ(bb.MaxX, 1);
+    EXPECT_FLOAT_EQ(bb.MaxY, 2);
+    EXPECT_FLOAT_EQ(bb.MaxZ, 3);
 }
 
 TEST_F(FeaturePartCutTest, testAlmostTouching)
@@ -156,12 +156,12 @@ TEST_F(FeaturePartCutTest, testAlmostTouching)
     Base::BoundBox3d bb = ts.getBoundBox();
 
     // Assert
-    EXPECT_EQ(bb.MinX, 0);
-    EXPECT_EQ(bb.MinY, 0);
-    EXPECT_EQ(bb.MinZ, 0);
-    EXPECT_EQ(bb.MaxX, 1);
-    EXPECT_EQ(bb.MaxY, 2);
-    EXPECT_EQ(bb.MaxZ, 3);
+    EXPECT_FLOAT_EQ(bb.MinX, 0);
+    EXPECT_FLOAT_EQ(bb.MinY, 0);
+    EXPECT_FLOAT_EQ(bb.MinZ, 0);
+    EXPECT_FLOAT_EQ(bb.MaxX, 1);
+    EXPECT_FLOAT_EQ(bb.MaxY, 2);
+    EXPECT_FLOAT_EQ(bb.MaxZ, 3);
 }
 
 TEST_F(FeaturePartCutTest, testBarelyIntersecting)
@@ -176,12 +176,12 @@ TEST_F(FeaturePartCutTest, testBarelyIntersecting)
     Base::BoundBox3d bb = ts.getBoundBox();
 
     // Assert
-    EXPECT_EQ(bb.MinX, 0);
-    EXPECT_EQ(bb.MinY, 0);
-    EXPECT_EQ(bb.MinZ, 0);
-    EXPECT_EQ(bb.MaxX, 1);
-    EXPECT_EQ(bb.MaxY, 1.9999);
-    EXPECT_EQ(bb.MaxZ, 3);
+    EXPECT_FLOAT_EQ(bb.MinX, 0);
+    EXPECT_FLOAT_EQ(bb.MinY, 0);
+    EXPECT_FLOAT_EQ(bb.MinZ, 0);
+    EXPECT_FLOAT_EQ(bb.MaxX, 1);
+    EXPECT_FLOAT_EQ(bb.MaxY, 1.9999);
+    EXPECT_FLOAT_EQ(bb.MaxZ, 3);
 }
 
 TEST_F(FeaturePartCutTest, testMustExecute)
@@ -206,8 +206,6 @@ TEST_F(FeaturePartCutTest, testMustExecute)
 
 TEST_F(FeaturePartCutTest, testGetProviderName)
 {
-    // Arrange
-
     // Act
     _cut->execute();
     const char* name = _cut->getViewProviderName();

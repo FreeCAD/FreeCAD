@@ -12,8 +12,6 @@
 #include "Mod/Part/App/FeaturePartCommon.h"
 #include <src/App/InitApplication.h>
 
-// #include <BRep_TVertex.hxx>
-
 // Should some of this go into a FeaturePartBoolean.cpp test suite?
 
 class FeaturePartCommonTest: public ::testing::Test
@@ -196,8 +194,6 @@ TEST_F(FeaturePartCommonTest, testMustExecute)
 
 TEST_F(FeaturePartCommonTest, testGetProviderName)
 {
-    // Arrange
-
     // Act
     _common->execute();
     const char* name = _common->getViewProviderName();
