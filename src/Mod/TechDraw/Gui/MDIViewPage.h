@@ -69,7 +69,7 @@ public:
     void preSelectionChanged(const QPoint &pos);
 
     /// QGraphicsScene selection routines
-    void selectQGIView(App::DocumentObject *obj, bool isSelected);
+    void selectQGIView(App::DocumentObject *obj, bool isSelected, const std::vector<std::string> &subNames);
     void clearSceneSelection();
     void blockSceneSelection(bool isBlocked);
 

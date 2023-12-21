@@ -525,6 +525,11 @@ QVariant QGIViewDimension::itemChange(GraphicsItemChange change, const QVariant&
     return QGIView::itemChange(change, value);
 }
 
+bool QGIViewDimension::getGroupSelection()
+{
+    return datumLabel->isSelected();
+}
+
 //Set selection state for this and its children
 void QGIViewDimension::setGroupSelection(bool isSelected)
 {

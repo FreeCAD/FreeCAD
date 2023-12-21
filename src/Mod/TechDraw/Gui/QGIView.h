@@ -102,7 +102,9 @@ public:
     virtual void isVisible(bool state);
     virtual bool isVisible();
 
+    virtual bool getGroupSelection();
     virtual void setGroupSelection(bool isSelected);
+    virtual void setGroupSelection(bool isSelected, const std::vector<std::string> &subNames);
 
     virtual void draw();
     virtual void drawCaption();
