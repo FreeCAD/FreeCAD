@@ -1441,83 +1441,6 @@ bool CmdTechDrawExtensionLockUnlockView::isActive()
 }
 
 //===========================================================================
-// TechDraw_ExtensionPositionSectionView
-//===========================================================================
-
-DEF_STD_CMD_A(CmdTechDrawExtensionPositionSectionView)
-
-CmdTechDrawExtensionPositionSectionView::CmdTechDrawExtensionPositionSectionView()
-    : Command("TechDraw_ExtensionPositionSectionView")
-{
-    sAppModule = "TechDraw";
-    sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Position Section View");
-    sToolTipText = QT_TR_NOOP("Orthogonally align a section view with its source view:<br>\
-- Select a single section view<br>\
-- Click this tool");
-    sWhatsThis = "TechDraw_ExtensionPositionSectionView";
-    sStatusTip = sMenuText;
-    sPixmap = "TechDraw_ExtensionPositionSectionView";
-}
-
-void CmdTechDrawExtensionPositionSectionView::activated(int iMsg)
-{
-    // position a section view
-    Q_UNUSED(iMsg);
-    //Base::Console().Message("PositionSectionView started\n");
-    auto selection = getSelection().getSelectionEx();
-    if (selection.empty()) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("TechDraw Position Section View"),
-                             QObject::tr("Selection is empty"));
-        return;
-    }
-
-    double xPos = 0.0, yPos = 0.0;
-    TechDraw::DrawViewPart* baseView;
-    auto objFeat = selection[0].getObject();
-    if (objFeat && objFeat->isDerivedFrom(TechDraw::DrawViewSection::getClassTypeId())) {
-        TechDraw::DrawViewSection* sectionView = static_cast<TechDraw::DrawViewSection*>(objFeat);
-        baseView = sectionView->getBaseDVP();
-        if (baseView && baseView->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
-            std::vector<App::DocumentObject*> parentViews = baseView->getInList();
-            if (!parentViews.empty()) {
-                TechDraw::DrawProjGroup* groupBase =
-                    dynamic_cast<TechDraw::DrawProjGroup*>(parentViews[0]);
-                if (groupBase) {
-                    xPos = groupBase->X.getValue();
-                    yPos = groupBase->Y.getValue();
-                }
-            }
-        }
-        else if (baseView) {
-            xPos = baseView->X.getValue();
-            yPos = baseView->Y.getValue();
-        }
-        std::string direction = sectionView->SectionDirection.getValueAsString();
-        if ((direction == "Right") || (direction == "Left"))
-            sectionView->Y.setValue(yPos);
-        else if ((direction == "Up") || (direction == "Down"))
-            sectionView->X.setValue(xPos);
-        else if (direction == "Aligned")
-        {
-            Base::Vector3d pBase(xPos,yPos,0.0);
-            Base::Vector3d dirView(sectionView->Direction.getValue());
-            Base::Vector3d pSection(sectionView->X.getValue(),sectionView->Y.getValue(),0.0);
-            Base::Vector3d newPos = DrawUtil::getTrianglePoint(pBase, dirView, pSection);
-            sectionView->X.setValue(newPos.x);
-            sectionView->Y.setValue(newPos.y);
-        }
-    }
-}
-
-bool CmdTechDrawExtensionPositionSectionView::isActive()
-{
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this);
-    return (havePage && haveView);
-}
-
-//===========================================================================
 // TechDraw_ExtensionExtendLine
 //===========================================================================
 
@@ -2198,7 +2121,7 @@ void _createThreadLines(std::vector<std::string> SubNames, TechDraw::DrawViewPar
 void _setLineAttributes(TechDraw::CosmeticEdge* cosEdge)
 {
     // set line attributes of a cosmetic edge
-    cosEdge->m_format.m_style = 2;
+    cosEdge->m_format.m_style = _getActiveLineAttributes().getStyle();
     cosEdge->m_format.m_weight = _getActiveLineAttributes().getWidthValue();
     cosEdge->m_format.m_color = _getActiveLineAttributes().getColorValue();
     cosEdge->m_format.m_lineNumber = _getActiveLineAttributes().getStyle();
@@ -2207,7 +2130,7 @@ void _setLineAttributes(TechDraw::CosmeticEdge* cosEdge)
 void _setLineAttributes(TechDraw::CenterLine* cosEdge)
 {
     // set line attributes of a cosmetic edge
-    cosEdge->m_format.m_style = 2;
+    cosEdge->m_format.m_style = _getActiveLineAttributes().getStyle();
     cosEdge->m_format.m_weight = _getActiveLineAttributes().getWidthValue();
     cosEdge->m_format.m_color = _getActiveLineAttributes().getColorValue();
     cosEdge->m_format.m_lineNumber = _getActiveLineAttributes().getStyle();
@@ -2216,7 +2139,7 @@ void _setLineAttributes(TechDraw::CenterLine* cosEdge)
 void _setLineAttributes(TechDraw::CosmeticEdge* cosEdge, int style, float weight, App::Color color)
 {
     // set line attributes of a cosmetic edge
-    cosEdge->m_format.m_style = 2;
+    cosEdge->m_format.m_style = _getActiveLineAttributes().getStyle();
     cosEdge->m_format.m_weight = weight;
     cosEdge->m_format.m_color = color;
     cosEdge->m_format.m_lineNumber = style;
@@ -2225,7 +2148,7 @@ void _setLineAttributes(TechDraw::CosmeticEdge* cosEdge, int style, float weight
 void _setLineAttributes(TechDraw::CenterLine* cosEdge, int style, float weight, App::Color color)
 {
     // set line attributes of a centerline
-    cosEdge->m_format.m_style = 2;
+    cosEdge->m_format.m_style = _getActiveLineAttributes().getStyle();
     cosEdge->m_format.m_lineNumber = style;
     cosEdge->m_format.m_weight = weight;
     cosEdge->m_format.m_color = color;
@@ -2242,7 +2165,6 @@ void CreateTechDrawCommandsExtensions()
     rcCmdMgr.addCommand(new CmdTechDrawExtensionExtendLine());
     rcCmdMgr.addCommand(new CmdTechDrawExtensionShortenLine());
     rcCmdMgr.addCommand(new CmdTechDrawExtensionLockUnlockView());
-    rcCmdMgr.addCommand(new CmdTechDrawExtensionPositionSectionView());
     rcCmdMgr.addCommand(new CmdTechDrawExtensionChangeLineAttributes());
     rcCmdMgr.addCommand(new CmdTechDrawExtensionCircleCenterLinesGroup());
     rcCmdMgr.addCommand(new CmdTechDrawExtensionCircleCenterLines());
