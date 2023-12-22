@@ -1349,7 +1349,8 @@ void execCreateObliqueChainDimension(Gui::Command* cmd) {
             nextPoint.y = -nextPoint.y;
             oldVertex.point.y = -oldVertex.point.y;
             if ((oldVertex.point - nextPoint).Length() > 0.01) {
-                std::string vertTag = objFeat->addCosmeticVertex(nextPoint / scale);
+                Base::Vector3d cvPoint = CosmeticVertex::makeCanonicalPoint(objFeat, nextPoint);
+                std::string vertTag = objFeat->addCosmeticVertex(cvPoint);
                 int vertNumber = objFeat->add1CVToGV(vertTag);
                 std::stringstream ss;
                 ss << "Vertex" << vertNumber;
@@ -1703,7 +1704,8 @@ void execCreateObliqueCoordDimension(Gui::Command* cmd) {
             nextPoint.y = -nextPoint.y;
             oldVertex.point.y = -oldVertex.point.y;
             if ((oldVertex.point - nextPoint).Length() > 0.01) {
-                std::string vertTag = objFeat->addCosmeticVertex(nextPoint / scale);
+                Base::Vector3d cvPoint = CosmeticVertex::makeCanonicalPoint(objFeat, nextPoint);
+                std::string vertTag = objFeat->addCosmeticVertex(cvPoint);
                 int vertNumber = objFeat->add1CVToGV(vertTag);
                 std::stringstream ss;
                 ss << "Vertex" << vertNumber;
@@ -2180,10 +2182,12 @@ void CmdTechDrawExtensionCreateLengthArc::activated(int iMsg) {
         endPt.y = -endPt.y;
         std::stringstream startName, endName, formatSpec;
         double scale = objFeat->getScale();
-        std::string startVertTag = objFeat->addCosmeticVertex(startPt / scale);
+        Base::Vector3d cvPoint = CosmeticVertex::makeCanonicalPoint(objFeat, startPt);
+        std::string startVertTag = objFeat->addCosmeticVertex(cvPoint);
         int startVertNumber = objFeat->add1CVToGV(startVertTag);
         startName << "Vertex" << startVertNumber;
-        std::string endVertTag = objFeat->addCosmeticVertex(endPt / scale);
+        cvPoint = CosmeticVertex::makeCanonicalPoint(objFeat, endPt);
+        std::string endVertTag = objFeat->addCosmeticVertex(cvPoint);
         int endVertNumber = objFeat->add1CVToGV(endVertTag);
         endName << "Vertex" << endVertNumber;
         TechDraw::DrawViewDimension* dim;
