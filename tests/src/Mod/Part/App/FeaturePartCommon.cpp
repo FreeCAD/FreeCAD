@@ -2,19 +2,12 @@
 
 #include "gtest/gtest.h"
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <Base/Placement.h>
-#include <Base/Precision.h>
-#include <Base/Rotation.h>
-#include <Base/Vector3D.h>
-#include "Mod/Part/App/FeaturePartBox.h"
 #include "Mod/Part/App/FeaturePartCommon.h"
 #include <src/App/InitApplication.h>
 
-// Should some of this go into a FeaturePartBoolean.cpp test suite?
+#include "PartTestHelpers.h"
 
-class FeaturePartCommonTest: public ::testing::Test
+class FeaturePartCommonTest: public ::testing::Test, public PartTestHelpers::PartTestHelperClass
 {
 protected:
     static void SetUpTestSuite()
@@ -25,61 +18,14 @@ protected:
 
     void SetUp() override
     {
-        _docName = App::GetApplication().getUniqueDocumentName("test");
-        _doc = App::GetApplication().newDocument(_docName.c_str(), "testUser");
-        _box1obj = static_cast<Part::Box*>(_doc->addObject("Part::Box"));
-        _box2obj = static_cast<Part::Box*>(_doc->addObject("Part::Box"));
-        _box3obj = static_cast<Part::Box*>(_doc->addObject("Part::Box"));
-        _box4obj = static_cast<Part::Box*>(_doc->addObject("Part::Box"));
-        _box5obj = static_cast<Part::Box*>(_doc->addObject("Part::Box"));
-        _box6obj = static_cast<Part::Box*>(_doc->addObject("Part::Box"));
-        _box1obj->Length.setValue(1);
-        _box1obj->Width.setValue(2);
-        _box1obj->Height.setValue(3);
-        _box1obj->Placement.setValue(
-            Base::Placement(Base::Vector3d(), Base::Rotation(), Base::Vector3d()));
-        _box2obj->Placement.setValue(
-            Base::Placement(Base::Vector3d(0, 1, 0), Base::Rotation(), Base::Vector3d()));
-        _box2obj->Length.setValue(1);
-        _box2obj->Width.setValue(2);
-        _box2obj->Height.setValue(3);
-        _box3obj->Placement.setValue(
-            Base::Placement(Base::Vector3d(0, 3, 0), Base::Rotation(), Base::Vector3d()));
-        _box3obj->Length.setValue(1);
-        _box3obj->Width.setValue(2);
-        _box3obj->Height.setValue(3);
-        _box4obj->Placement.setValue(
-            Base::Placement(Base::Vector3d(0, 2, 0), Base::Rotation(), Base::Vector3d()));
-        _box4obj->Length.setValue(1);
-        _box4obj->Width.setValue(2);
-        _box4obj->Height.setValue(3);
-        _box5obj->Placement.setValue(
-            Base::Placement(Base::Vector3d(0, 2 + Base::Precision::Confusion(), 0),
-                            Base::Rotation(),
-                            Base::Vector3d()));
-        _box5obj->Length.setValue(1);
-        _box5obj->Width.setValue(2);
-        _box5obj->Height.setValue(3);
-        _box6obj->Placement.setValue(
-            Base::Placement(Base::Vector3d(0, 2 - Base::Precision::Confusion() * 1000, 0),
-                            Base::Rotation(),
-                            Base::Vector3d()));
-        _box6obj->Length.setValue(1);
-        _box6obj->Width.setValue(2);
-        _box6obj->Height.setValue(3);
+        createTestFile();
         _common = static_cast<Part::Common*>(_doc->addObject("Part::Common"));
     }
 
     void TearDown() override
     {}
 
-
-    Part::Box *_box1obj, *_box2obj, *_box3obj, *_box4obj, *_box5obj, *_box6obj;
     Part::Common* _common;
-    App::Document* _doc;
-
-private:
-    std::string _docName;
 };
 
 TEST_F(FeaturePartCommonTest, testIntersecting)
@@ -91,15 +37,18 @@ TEST_F(FeaturePartCommonTest, testIntersecting)
     // Act
     _common->execute();
     Part::TopoShape ts = _common->Shape.getValue();
-    Base::BoundBox3d bb = ts.getBoundBox();
+    // Base::BoundBox3d bb = ts.getBoundBox();
 
     // Assert
-    EXPECT_EQ(bb.MinX, 0);
-    EXPECT_EQ(bb.MinY, 1);
-    EXPECT_EQ(bb.MinZ, 0);
-    EXPECT_EQ(bb.MaxX, 1);
-    EXPECT_EQ(bb.MaxY, 2);
-    EXPECT_EQ(bb.MaxZ, 3);
+    // If we wanted to be excessive, we could check the bounds:
+    // EXPECT_EQ(bb.MinX, 0);
+    // EXPECT_EQ(bb.MinY, 1);
+    // EXPECT_EQ(bb.MinZ, 0);
+    // EXPECT_EQ(bb.MaxX, 1);
+    // EXPECT_EQ(bb.MaxY, 2);
+    // EXPECT_EQ(bb.MaxZ, 3);
+    double volume = PartTestHelpers::getVolume(ts.getShape());
+    EXPECT_DOUBLE_EQ(volume,3.0);
 }
 
 TEST_F(FeaturePartCommonTest, testNonIntersecting)
@@ -115,8 +64,8 @@ TEST_F(FeaturePartCommonTest, testNonIntersecting)
 
     // Assert
     EXPECT_FALSE(bb.IsValid());
-    // EXPECT_EQ(bb.Volume(),-1);
-    // EXPECT_EQ(bb.Volume(),0);
+    double volume = PartTestHelpers::getVolume(ts.getShape());
+    EXPECT_DOUBLE_EQ(volume,0.0);
 }
 
 TEST_F(FeaturePartCommonTest, testTouching)
@@ -132,7 +81,8 @@ TEST_F(FeaturePartCommonTest, testTouching)
 
     // Assert
     EXPECT_FALSE(bb.IsValid());
-    // EXPECT_EQ(bb.Volume(),0);
+    double volume = PartTestHelpers::getVolume(ts.getShape());
+    EXPECT_DOUBLE_EQ(volume,0.0);
 }
 
 TEST_F(FeaturePartCommonTest, testAlmostTouching)
@@ -148,8 +98,8 @@ TEST_F(FeaturePartCommonTest, testAlmostTouching)
 
     // Assert
     EXPECT_FALSE(bb.IsValid());
-    // EXPECT_EQ(bb.Volume(),-1);
-    // EXPECT_EQ(bb.Volume(),0);
+    double volume = PartTestHelpers::getVolume(ts.getShape());
+    EXPECT_DOUBLE_EQ(volume,0.0);
 }
 
 TEST_F(FeaturePartCommonTest, testBarelyIntersecting)
@@ -170,6 +120,10 @@ TEST_F(FeaturePartCommonTest, testBarelyIntersecting)
     EXPECT_EQ(bb.MaxX, 1);
     EXPECT_EQ(bb.MaxY, 2);
     EXPECT_EQ(bb.MaxZ, 3);
+    double volume = PartTestHelpers::getVolume(ts.getShape());
+    double target = Base::Precision::Confusion() * 3 * 1000;
+    // FLOAT, not DOUBLE here, because ULP accuracy would be too precise.
+    EXPECT_FLOAT_EQ(volume,target); // 0.00029999999999996696);
 }
 
 TEST_F(FeaturePartCommonTest, testMustExecute)

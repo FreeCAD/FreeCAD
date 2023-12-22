@@ -2,21 +2,13 @@
 
 #include "gtest/gtest.h"
 
-#include <App/Application.h>
-#include <App/Document.h>
-#include <Base/Placement.h>
-#include <Base/Precision.h>
-#include <Base/Rotation.h>
-#include <Base/Vector3D.h>
-#include "Mod/Part/App/FeaturePartBox.h"
 #include "Mod/Part/App/FeaturePartFuse.h"
 #include <src/App/InitApplication.h>
 
-#include <BRep_TVertex.hxx>
+#include "PartTestHelpers.h"
 
-// MOST OF THIS SHOULD GO INTO A FeaturePartBoolean.cpp test suite!
 
-class FeaturePartFuseTest: public ::testing::Test
+class FeaturePartFuseTest: public ::testing::Test, public PartTestHelpers::PartTestHelperClass
 {
 protected:
     static void SetUpTestSuite()
@@ -27,61 +19,14 @@ protected:
 
     void SetUp() override
     {
-        _docName = App::GetApplication().getUniqueDocumentName("test");
-        _doc = App::GetApplication().newDocument(_docName.c_str(), "testUser");
-        _box1obj = static_cast<Part::Box*>(_doc->addObject("Part::Box"));
-        _box1obj->Length.setValue(1);
-        _box1obj->Width.setValue(2);
-        _box1obj->Height.setValue(3);
-        _box1obj->Placement.setValue(
-            Base::Placement(Base::Vector3d(0, 0, 0), Base::Rotation(), Base::Vector3d(0, 0, 0)));
-        _box2obj = static_cast<Part::Box*>(_doc->addObject("Part::Box"));
-        _box2obj->Placement.setValue(
-            Base::Placement(Base::Vector3d(0, 1, 0), Base::Rotation(), Base::Vector3d(0, 0, 0)));
-        _box2obj->Length.setValue(1);
-        _box2obj->Width.setValue(2);
-        _box2obj->Height.setValue(3);
-        _box3obj = static_cast<Part::Box*>(_doc->addObject("Part::Box"));
-        _box3obj->Placement.setValue(
-            Base::Placement(Base::Vector3d(0, 3, 0), Base::Rotation(), Base::Vector3d(0, 0, 0)));
-        _box3obj->Length.setValue(1);
-        _box3obj->Width.setValue(2);
-        _box3obj->Height.setValue(3);
-        _box4obj = static_cast<Part::Box*>(_doc->addObject("Part::Box"));
-        _box4obj->Placement.setValue(
-            Base::Placement(Base::Vector3d(0, 2, 0), Base::Rotation(), Base::Vector3d(0, 0, 0)));
-        _box4obj->Length.setValue(1);
-        _box4obj->Width.setValue(2);
-        _box4obj->Height.setValue(3);
-        _box5obj = static_cast<Part::Box*>(_doc->addObject("Part::Box"));
-        _box5obj->Placement.setValue(
-            Base::Placement(Base::Vector3d(0, 2 + Base::Precision::Confusion(), 0),
-                            Base::Rotation(),
-                            Base::Vector3d()));
-        _box5obj->Length.setValue(1);
-        _box5obj->Width.setValue(2);
-        _box5obj->Height.setValue(3);
-        _box6obj = static_cast<Part::Box*>(_doc->addObject("Part::Box"));
-        _box6obj->Placement.setValue(
-            Base::Placement(Base::Vector3d(0, 2 - Base::Precision::Confusion() * 1000, 0),
-                            Base::Rotation(),
-                            Base::Vector3d()));
-        _box6obj->Length.setValue(1);
-        _box6obj->Width.setValue(2);
-        _box6obj->Height.setValue(3);
+        createTestFile();
         _fuse = static_cast<Part::Fuse*>(_doc->addObject("Part::Fuse"));
     }
 
     void TearDown() override
     {}
 
-
-    Part::Box *_box1obj, *_box2obj, *_box3obj, *_box4obj, *_box5obj, *_box6obj;
     Part::Fuse* _fuse;
-    App::Document* _doc;
-
-private:
-    std::string _docName;
 };
 
 TEST_F(FeaturePartFuseTest, testIntersecting)
@@ -93,15 +38,8 @@ TEST_F(FeaturePartFuseTest, testIntersecting)
     // Act
     _fuse->execute();
     Part::TopoShape ts = _fuse->Shape.getValue();
-    Base::BoundBox3d bb = ts.getBoundBox();
-
-    // Assert
-    EXPECT_FLOAT_EQ(bb.MinX, 0);
-    EXPECT_FLOAT_EQ(bb.MinY, 0);
-    EXPECT_FLOAT_EQ(bb.MinZ, 0);
-    EXPECT_FLOAT_EQ(bb.MaxX, 1);
-    EXPECT_FLOAT_EQ(bb.MaxY, 3);
-    EXPECT_FLOAT_EQ(bb.MaxZ, 3);
+    double volume = PartTestHelpers::getVolume(ts.getShape());
+    EXPECT_DOUBLE_EQ(volume,9.0);
 }
 
 TEST_F(FeaturePartFuseTest, testNonIntersecting)
@@ -113,15 +51,8 @@ TEST_F(FeaturePartFuseTest, testNonIntersecting)
     // Act
     _fuse->execute();
     Part::TopoShape ts = _fuse->Shape.getValue();
-    Base::BoundBox3d bb = ts.getBoundBox();
-
-    // Assert
-    EXPECT_FLOAT_EQ(bb.MinX, 0);
-    EXPECT_FLOAT_EQ(bb.MinY, 0);
-    EXPECT_FLOAT_EQ(bb.MinZ, 0);
-    EXPECT_FLOAT_EQ(bb.MaxX, 1);
-    EXPECT_FLOAT_EQ(bb.MaxY, 5);
-    EXPECT_FLOAT_EQ(bb.MaxZ, 3);
+    double volume = PartTestHelpers::getVolume(ts.getShape());
+    EXPECT_DOUBLE_EQ(volume,12.0);
 }
 
 TEST_F(FeaturePartFuseTest, testTouching)
@@ -133,15 +64,8 @@ TEST_F(FeaturePartFuseTest, testTouching)
     // Act
     _fuse->execute();
     Part::TopoShape ts = _fuse->Shape.getValue();
-    Base::BoundBox3d bb = ts.getBoundBox();
-
-    // Assert
-    EXPECT_FLOAT_EQ(bb.MinX, 0);
-    EXPECT_FLOAT_EQ(bb.MinY, 0);
-    EXPECT_FLOAT_EQ(bb.MinZ, 0);
-    EXPECT_FLOAT_EQ(bb.MaxX, 1);
-    EXPECT_FLOAT_EQ(bb.MaxY, 4);
-    EXPECT_FLOAT_EQ(bb.MaxZ, 3);
+    double volume = PartTestHelpers::getVolume(ts.getShape());
+    EXPECT_DOUBLE_EQ(volume,12.0);
 }
 
 TEST_F(FeaturePartFuseTest, testAlmostTouching)
@@ -153,15 +77,8 @@ TEST_F(FeaturePartFuseTest, testAlmostTouching)
     // Act
     _fuse->execute();
     Part::TopoShape ts = _fuse->Shape.getValue();
-    Base::BoundBox3d bb = ts.getBoundBox();
-
-    // Assert
-    EXPECT_FLOAT_EQ(bb.MinX, 0);
-    EXPECT_FLOAT_EQ(bb.MinY, 0);
-    EXPECT_FLOAT_EQ(bb.MinZ, 0);
-    EXPECT_FLOAT_EQ(bb.MaxX, 1);
-    EXPECT_FLOAT_EQ(bb.MaxY, 4);
-    EXPECT_FLOAT_EQ(bb.MaxZ, 3);
+    double volume = PartTestHelpers::getVolume(ts.getShape());
+    EXPECT_FLOAT_EQ(volume,12.0);
 }
 
 TEST_F(FeaturePartFuseTest, testBarelyIntersecting)
@@ -173,15 +90,9 @@ TEST_F(FeaturePartFuseTest, testBarelyIntersecting)
     // Act
     _fuse->execute();
     Part::TopoShape ts = _fuse->Shape.getValue();
-    Base::BoundBox3d bb = ts.getBoundBox();
-
-    // Assert
-    EXPECT_FLOAT_EQ(bb.MinX, 0);
-    EXPECT_FLOAT_EQ(bb.MinY, 0);
-    EXPECT_FLOAT_EQ(bb.MinZ, 0);
-    EXPECT_FLOAT_EQ(bb.MaxX, 1);
-    EXPECT_FLOAT_EQ(bb.MaxY, 3.9999);
-    EXPECT_FLOAT_EQ(bb.MaxZ, 3);
+    double volume = PartTestHelpers::getVolume(ts.getShape());
+    double target = 12 - Base::Precision::Confusion() * 3 * 1000;
+    EXPECT_FLOAT_EQ(volume,target);
 }
 
 TEST_F(FeaturePartFuseTest, testMustExecute)
