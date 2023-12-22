@@ -4,7 +4,7 @@
    width="64"
    height="64"
    version="1.1"
-   sodipodi:docname="Sketcher_Pointer_Regular_Polygon.svg"
+   sodipodi:docname="Sketcher_Pointer_Hexagon.svg"
    inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -55,8 +55,8 @@
        id="circle4"
        r="4" />
     <circle
-       cx="53.06963"
-       cy="41.020416"
+       cx="56.014557"
+       cy="43.266895"
        style="opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#cc0000;stroke-width:2;stroke-miterlimit:4;stroke-dasharray:none"
        id="circle4-3"
        r="4" />
@@ -75,7 +75,7 @@
        inkscape:rounded="0"
        inkscape:randomized="0"
        d="M 40.158899,17.409435 29.294445,20.320557 21.341112,12.367224 24.252234,1.5027695 35.116688,-1.4083524 43.070021,6.5449805 Z"
-       transform="matrix(0.89130546,-0.8913055,0.90142604,0.90142602,8.7812674,73.509148)" />
+       transform="matrix(1.0916218,-0.63024817,0.63740447,1.1040169,4.8265812,63.185929)" />
   </g>
   <g
      style="stroke:#ffffff;stroke-width:2.5;stroke-linecap:round;stroke-linejoin:miter"

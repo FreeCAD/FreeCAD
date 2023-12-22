@@ -4,7 +4,7 @@
    height="64"
    width="64"
    id="svg12"
-   sodipodi:docname="Sketcher_Pointer_Create_Frame.svg"
+   sodipodi:docname="Sketcher_Pointer_Create_Box_3Points_Center.svg"
    inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -20,8 +20,8 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:zoom="7.296875"
-     inkscape:cx="32.137045"
-     inkscape:cy="32.205567"
+     inkscape:cx="32.068522"
+     inkscape:cy="32.068522"
      inkscape:window-width="1368"
      inkscape:window-height="842"
      inkscape:window-x="-6"
@@ -39,27 +39,30 @@
        id="rect3"
        width="27.009335"
        height="27.009335"
-       x="26.186295"
-       y="32" />
-    <rect
-       style="fill:none;stroke:#cc0000;stroke-width:1.92924;stroke-opacity:1"
-       id="rect3-5"
-       width="17.363144"
-       height="17.363144"
-       x="31.341948"
-       y="37.155651" />
+       x="12.990646"
+       y="41.221565"
+       transform="rotate(-15)" />
     <circle
-       cx="53.195629"
-       cy="32"
+       cx="39.999981"
+       cy="41.221565"
        id="circle6"
        style="stroke-width:1.92924"
-       r="3.8584757" />
+       r="3.8584757"
+       transform="rotate(-15)" />
     <circle
-       cx="26.186295"
-       cy="59.009335"
+       cx="39.999981"
+       cy="68.230904"
+       id="circle6-4"
+       style="fill:none;stroke:#cc0000;stroke-width:1.92924"
+       r="3.8584757"
+       transform="rotate(-15)" />
+    <circle
+       cx="26.495312"
+       cy="54.726231"
        id="circle6-1"
        style="fill:none;stroke:#cc0000;stroke-width:1.92924"
-       r="3.8584757" />
+       r="3.8584757"
+       transform="rotate(-15)" />
   </g>
   <g
      id="crosshair"

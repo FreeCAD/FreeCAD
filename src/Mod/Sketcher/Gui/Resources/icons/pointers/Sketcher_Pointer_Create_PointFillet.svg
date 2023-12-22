@@ -4,7 +4,7 @@
    height="64"
    width="64"
    id="svg10"
-   sodipodi:docname="Sketcher_Pointer_Create_Fillet.svg"
+   sodipodi:docname="Sketcher_Pointer_Create_PointFillet.svg"
    inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -20,15 +20,15 @@
      inkscape:pageopacity="0.0"
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
-     inkscape:zoom="2"
-     inkscape:cx="6.5"
-     inkscape:cy="1.5"
+     inkscape:zoom="8"
+     inkscape:cx="33.125"
+     inkscape:cy="42.375"
      inkscape:window-width="1368"
      inkscape:window-height="842"
      inkscape:window-x="-6"
      inkscape:window-y="-6"
      inkscape:window-maximized="1"
-     inkscape:current-layer="svg10" />
+     inkscape:current-layer="symbol" />
   <defs
      id="defs14">
     <inkscape:path-effect
@@ -119,30 +119,16 @@
        r="4"
        id="circle4-9"
        style="display:inline;fill:none;stroke:#cc0000;stroke-width:2" />
+    <circle
+       cx="26.439085"
+       cy="54.646351"
+       r="4"
+       id="circle4-9-7"
+       style="display:inline;fill:none;stroke:#cc0000;stroke-width:2" />
     <path
        id="rect4"
        d="M 53.021065,54.646352 H 42.978943 c -9.163081,0 -16.539858,-7.376777 -16.539858,-16.539858 V 28.064372"
        sodipodi:nodetypes="cssc" />
-    <path
-       style="fill:none;stroke:#cc0000;stroke-width:2;stroke-linecap:butt;stroke-dasharray:none;stroke-dashoffset:0"
-       d="m 26.439086,53.646352 v 5"
-       id="path4"
-       sodipodi:nodetypes="cc" />
-    <path
-       style="display:inline;fill:none;stroke:#cc0000;stroke-width:2;stroke-linecap:butt;stroke-dasharray:none;stroke-dashoffset:0"
-       d="m 26.439086,47.646352 v 3"
-       id="path4-9"
-       sodipodi:nodetypes="cc" />
-    <path
-       style="fill:none;stroke:#cc0000;stroke-width:2;stroke-linecap:butt;stroke-dasharray:none;stroke-dashoffset:0"
-       d="m 27.439086,54.646352 -5.000001,-10e-7"
-       id="path5"
-       sodipodi:nodetypes="cc" />
-    <path
-       style="display:inline;fill:none;stroke:#cc0000;stroke-width:2;stroke-linecap:butt;stroke-dasharray:none;stroke-dashoffset:0"
-       d="m 33.439086,54.646352 -3.000001,-10e-7"
-       id="path5-5"
-       sodipodi:nodetypes="cc" />
   </g>
   <g
      id="crosshair"

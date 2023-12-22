@@ -4,7 +4,7 @@
    height="64"
    width="64"
    id="svg16"
-   sodipodi:docname="Sketcher_Pointer_Create_BSpline.svg"
+   sodipodi:docname="Sketcher_Pointer_Create_Periodic_BSpline.svg"
    inkscape:version="1.3.2 (091e20e, 2023-11-25, custom)"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
@@ -21,7 +21,7 @@
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
      inkscape:zoom="6.607029"
-     inkscape:cx="34.58438"
+     inkscape:cx="34.660057"
      inkscape:cy="39.049322"
      inkscape:window-width="1368"
      inkscape:window-height="842"
@@ -55,35 +55,35 @@
      id="symbol"
      style="fill:none;stroke:#cc0000;stroke-width:2"
      transform="translate(1.1788527,3.8661511)">
-    <path
-       style="fill:none;stroke:#cc0000;stroke-width:19.143;display:inline;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       d="m 1856.4296,467.6716 c -13.6954,253.36462 -253.3646,0 -273.9077,273.90769"
-       id="path3266-9-2"
-       transform="matrix(0.10447668,0,0,0.10447681,-142.05205,-24.47784)" />
     <circle
-       cx="23.284584"
-       cy="53"
+       cx="17.999966"
+       cy="54.245457"
        id="circle6"
        style="stroke-width:2"
        r="4" />
     <circle
-       cx="26.871147"
-       cy="27.250849"
+       cx="25.429577"
+       cy="27.690033"
        id="circle8"
        style="stroke-width:2"
        r="4" />
     <circle
-       cx="49.765148"
-       cy="50.148849"
+       cx="47.962303"
+       cy="50.087288"
        id="circle8-8"
        style="fill:none;stroke:#cc0000;stroke-width:2"
        r="4" />
     <circle
-       cx="51.90155"
-       cy="24.382998"
+       cx="56.821148"
+       cy="23.764732"
        id="circle10"
        style="stroke-width:2"
        r="4" />
+    <path
+       style="display:inline;fill:none;stroke:#cc0000;stroke-width:2;stroke-linecap:butt;stroke-linejoin:round;stroke-dasharray:none;stroke-opacity:1"
+       d="M 23.297354,48.548164 C 11.939585,38.359889 28.58861,39.65841 32.351293,32.7207 36.540231,24.99705 47.969854,12.196919 49.047349,23.560944 50.08735,34.529529 62.821147,33.092853 45.446559,42.24712 32.966441,48.822604 34.655119,58.736438 23.297354,48.548164 Z"
+       id="path3234-1-8"
+       sodipodi:nodetypes="sssss" />
   </g>
   <g
      id="crosshair"

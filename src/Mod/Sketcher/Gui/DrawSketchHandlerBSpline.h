@@ -395,7 +395,12 @@ private:
 
     QString getCrosshairCursorSVGName() const override
     {
-        return QString::fromLatin1("Sketcher_Pointer_Create_BSpline");
+        if (SketcherGui::DrawSketchHandlerBSpline::ConstrMethod == 1) {
+            return QString::fromLatin1("Sketcher_Pointer_Create_Periodic_BSpline");
+        }
+        else {
+            return QString::fromLatin1("Sketcher_Pointer_Create_BSpline");
+        }
     }
 
     void addSugConstraint()
