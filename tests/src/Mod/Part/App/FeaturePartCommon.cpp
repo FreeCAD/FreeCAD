@@ -48,7 +48,7 @@ TEST_F(FeaturePartCommonTest, testIntersecting)
     // EXPECT_EQ(bb.MaxY, 2);
     // EXPECT_EQ(bb.MaxZ, 3);
     double volume = PartTestHelpers::getVolume(ts.getShape());
-    EXPECT_DOUBLE_EQ(volume,3.0);
+    EXPECT_DOUBLE_EQ(volume, 3.0);
 }
 
 TEST_F(FeaturePartCommonTest, testNonIntersecting)
@@ -65,7 +65,7 @@ TEST_F(FeaturePartCommonTest, testNonIntersecting)
     // Assert
     EXPECT_FALSE(bb.IsValid());
     double volume = PartTestHelpers::getVolume(ts.getShape());
-    EXPECT_DOUBLE_EQ(volume,0.0);
+    EXPECT_DOUBLE_EQ(volume, 0.0);
 }
 
 TEST_F(FeaturePartCommonTest, testTouching)
@@ -82,7 +82,7 @@ TEST_F(FeaturePartCommonTest, testTouching)
     // Assert
     EXPECT_FALSE(bb.IsValid());
     double volume = PartTestHelpers::getVolume(ts.getShape());
-    EXPECT_DOUBLE_EQ(volume,0.0);
+    EXPECT_DOUBLE_EQ(volume, 0.0);
 }
 
 TEST_F(FeaturePartCommonTest, testAlmostTouching)
@@ -99,7 +99,7 @@ TEST_F(FeaturePartCommonTest, testAlmostTouching)
     // Assert
     EXPECT_FALSE(bb.IsValid());
     double volume = PartTestHelpers::getVolume(ts.getShape());
-    EXPECT_DOUBLE_EQ(volume,0.0);
+    EXPECT_DOUBLE_EQ(volume, 0.0);
 }
 
 TEST_F(FeaturePartCommonTest, testBarelyIntersecting)
@@ -123,7 +123,7 @@ TEST_F(FeaturePartCommonTest, testBarelyIntersecting)
     double volume = PartTestHelpers::getVolume(ts.getShape());
     double target = Base::Precision::Confusion() * 3 * 1000;
     // FLOAT, not DOUBLE here, because ULP accuracy would be too precise.
-    EXPECT_FLOAT_EQ(volume,target); // 0.00029999999999996696);
+    EXPECT_FLOAT_EQ(volume, target);  // 0.00029999999999996696);
 }
 
 TEST_F(FeaturePartCommonTest, testMustExecute)

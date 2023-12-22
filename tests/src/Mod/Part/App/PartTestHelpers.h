@@ -6,11 +6,13 @@
 #include "Mod/Part/App/FeatureFillet.h"
 #include <BRepGProp.hxx>
 
-namespace PartTestHelpers {
+namespace PartTestHelpers
+{
 
 double getVolume(TopoDS_Shape shape);
 
-class PartTestHelperClass {
+class PartTestHelperClass
+{
 public:
     App::Document* _doc;
     std::string _docName;
@@ -19,4 +21,4 @@ public:
     void createTestFile();
 };
 
-}
+}  // namespace PartTestHelpers

@@ -39,7 +39,7 @@ TEST_F(FeaturePartCutTest, testIntersecting)
     _cut->execute();
     Part::TopoShape ts = _cut->Shape.getValue();
     double volume = PartTestHelpers::getVolume(ts.getShape());
-    EXPECT_DOUBLE_EQ(volume,3.0);
+    EXPECT_DOUBLE_EQ(volume, 3.0);
 }
 
 TEST_F(FeaturePartCutTest, testNonIntersecting)
@@ -52,7 +52,7 @@ TEST_F(FeaturePartCutTest, testNonIntersecting)
     _cut->execute();
     Part::TopoShape ts = _cut->Shape.getValue();
     double volume = PartTestHelpers::getVolume(ts.getShape());
-    EXPECT_DOUBLE_EQ(volume,6.0);
+    EXPECT_DOUBLE_EQ(volume, 6.0);
 }
 
 TEST_F(FeaturePartCutTest, testTouching)
@@ -67,7 +67,7 @@ TEST_F(FeaturePartCutTest, testTouching)
     double volume = PartTestHelpers::getVolume(ts.getShape());
 
     // Assert
-    EXPECT_DOUBLE_EQ(volume,6.0);
+    EXPECT_DOUBLE_EQ(volume, 6.0);
 }
 
 TEST_F(FeaturePartCutTest, testAlmostTouching)
@@ -80,7 +80,7 @@ TEST_F(FeaturePartCutTest, testAlmostTouching)
     _cut->execute();
     Part::TopoShape ts = _cut->Shape.getValue();
     double volume = PartTestHelpers::getVolume(ts.getShape());
-    EXPECT_DOUBLE_EQ(volume,6.0);
+    EXPECT_DOUBLE_EQ(volume, 6.0);
 }
 
 TEST_F(FeaturePartCutTest, testBarelyIntersecting)
@@ -94,7 +94,7 @@ TEST_F(FeaturePartCutTest, testBarelyIntersecting)
     Part::TopoShape ts = _cut->Shape.getValue();
     double volume = PartTestHelpers::getVolume(ts.getShape());
     double target = 6 - Base::Precision::Confusion() * 3 * 1000;
-    EXPECT_FLOAT_EQ(volume,target);
+    EXPECT_FLOAT_EQ(volume, target);
 }
 
 TEST_F(FeaturePartCutTest, testMustExecute)
