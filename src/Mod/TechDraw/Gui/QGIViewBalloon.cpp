@@ -313,6 +313,11 @@ QVariant QGIViewBalloon::itemChange(GraphicsItemChange change, const QVariant& v
     return QGIView::itemChange(change, value);
 }
 
+bool QGIViewBalloon::getGroupSelection()
+{
+    return balloonLabel->isSelected();
+}
+
 //Set selection state for this and its children
 void QGIViewBalloon::setGroupSelection(bool isSelected)
 {
