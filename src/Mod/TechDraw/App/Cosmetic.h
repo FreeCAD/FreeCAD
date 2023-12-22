@@ -85,6 +85,7 @@ public:
     TechDraw::BaseGeomPtr scaledGeometry(const double scale);
     TechDraw::BaseGeomPtr scaledAndRotatedGeometry(const double scale, const double rotDegrees);
 
+    static TechDraw::BaseGeomPtr makeCanonicalLine(DrawViewPart* dvp, Base::Vector3d start, Base::Vector3d end);
     std::string toString() const override;
     void dump(const char* title) const;
 

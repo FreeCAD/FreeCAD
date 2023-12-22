@@ -843,11 +843,15 @@ void CmdTechDrawExtensionVertexAtIntersection::activated(int iMsg)
             int GeoId2 = TechDraw::DrawUtil::getIndexFromName(SubNames[1]);
             TechDraw::BaseGeomPtr geom2 = objFeat->getGeomByIndex(GeoId2);
 
-            double scale = objFeat->getScale();
+            // double scale = objFeat->getScale();
             std::vector<Base::Vector3d> interPoints = geom1->intersection(geom2);
             for (auto pt : interPoints) {
-                std::string ptId = objFeat->addCosmeticVertex(pt/scale);
-                objFeat->add1CVToGV(ptId);
+                // std::string ptId = objFeat->addCosmeticVertex(pt/scale);
+                // objFeat->add1CVToGV(ptId);
+                // invert the point so the math works correctly
+                Base::Vector3d temp = DrawUtil::invertY(pt);
+                temp = CosmeticVertex::makeCanonicalPoint(objFeat, temp);
+                objFeat->addCosmeticVertex(temp);
             }
         }
     }
@@ -1193,33 +1197,41 @@ void execLineParallelPerpendicular(Gui::Command* cmd, bool isParallel)
     if (SubNames.size() >= 2) {
         std::string GeoType1 = TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]);
         std::string GeoType2 = TechDraw::DrawUtil::getGeomTypeFromName(SubNames[1]);
+        int EdgeId;
+        int VertId;
         if (GeoType1 == "Edge" && GeoType2 == "Vertex") {
-            double scale = objFeat->getScale();
-            int GeoId1 = TechDraw::DrawUtil::getIndexFromName(SubNames[0]);
-            TechDraw::BaseGeomPtr geom1 = objFeat->getGeomByIndex(GeoId1);
-            int GeoId2 = TechDraw::DrawUtil::getIndexFromName(SubNames[1]);
-            TechDraw::GenericPtr lineGen = std::static_pointer_cast<TechDraw::Generic>(geom1);
-            Base::Vector3d lineStart = lineGen->points.at(0);
-            Base::Vector3d lineEnd = lineGen->points.at(1);
-            TechDraw::VertexPtr vert = objFeat->getProjVertexByIndex(GeoId2);
-            Base::Vector3d vertexPoint(vert->point().x, vert->point().y, 0.0);
-            Base::Vector3d halfVector = (lineEnd - lineStart) / 2.0;
-            if (!isParallel) {
-                float dummy = halfVector.x;
-                halfVector.x = -halfVector.y;
-                halfVector.y = dummy;
-            }
-            Base::Vector3d startPoint = vertexPoint + halfVector;
-            Base::Vector3d endPoint = vertexPoint - halfVector;
-            startPoint.y = -startPoint.y;
-            endPoint.y = -endPoint.y;
-            std::string lineTag = objFeat->addCosmeticEdge(startPoint / scale, endPoint / scale);
-            TechDraw::CosmeticEdge* lineEdge = objFeat->getCosmeticEdge(lineTag);
-            _setLineAttributes(lineEdge);
-            objFeat->refreshCEGeoms();
-            objFeat->requestPaint();
-            cmd->getSelection().clearSelection();
+            EdgeId = TechDraw::DrawUtil::getIndexFromName(SubNames[0]);
+            VertId = TechDraw::DrawUtil::getIndexFromName(SubNames[1]);
+        } else if (GeoType2 == "Edge" && GeoType1 == "Vertex") {
+            EdgeId = TechDraw::DrawUtil::getIndexFromName(SubNames[1]);
+            VertId = TechDraw::DrawUtil::getIndexFromName(SubNames[0]);
+        } else {
+            // we don't have an edge + vertex as selection
+            return;
         }
+        TechDraw::BaseGeomPtr geom1 = objFeat->getGeomByIndex(EdgeId);
+        TechDraw::GenericPtr lineGen = std::static_pointer_cast<TechDraw::Generic>(geom1);
+        Base::Vector3d lineStart = lineGen->points.at(0);
+        Base::Vector3d lineEnd = lineGen->points.at(1);
+        TechDraw::VertexPtr vert = objFeat->getProjVertexByIndex(VertId);
+        Base::Vector3d vertexPoint(vert->point().x, vert->point().y, 0.0);
+        Base::Vector3d halfVector = (lineEnd - lineStart) / 2.0;
+        if (!isParallel) {
+            float dummy = halfVector.x;
+            halfVector.x = -halfVector.y;
+            halfVector.y = dummy;
+        }
+        Base::Vector3d startPoint = vertexPoint + halfVector;
+        Base::Vector3d endPoint = vertexPoint - halfVector;
+        startPoint.y = -startPoint.y;
+        endPoint.y = -endPoint.y;
+        TechDraw::BaseGeomPtr cLine = CosmeticEdge::makeCanonicalLine(objFeat, startPoint, endPoint);
+        std::string lineTag = objFeat->addCosmeticEdge(cLine);
+        TechDraw::CosmeticEdge* lineEdge = objFeat->getCosmeticEdge(lineTag);
+        _setLineAttributes(lineEdge);
+        objFeat->refreshCEGeoms();
+        objFeat->requestPaint();
+        cmd->getSelection().clearSelection();
     }
     Gui::Command::commitCommand();
 }

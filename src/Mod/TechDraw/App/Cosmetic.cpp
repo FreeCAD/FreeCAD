@@ -44,6 +44,7 @@
 
 using namespace TechDraw;
 using namespace std;
+using DU = DrawUtil;
 
 #define GEOMETRYEDGE 0
 #define COSMETICEDGE 1
@@ -213,6 +214,19 @@ TechDraw::BaseGeomPtr CosmeticEdge::scaledAndRotatedGeometry(const double scale,
     newGeom->source(COSMETICEDGE);
     newGeom->setCosmeticTag(getTagAsString());
     return newGeom;
+}
+
+//! makes an unscaled, unrotated line from two scaled & rotated end points.  If points is Gui space coordinates,
+//! they should be inverted (DU::invertY) before calling this method.
+//! the result of this method should be used in addCosmeticEdge().
+TechDraw::BaseGeomPtr CosmeticEdge::makeCanonicalLine(DrawViewPart* dvp, Base::Vector3d start, Base::Vector3d end)
+{
+    Base::Vector3d cStart = CosmeticVertex::makeCanonicalPoint(dvp, start);
+    Base::Vector3d cEnd   = CosmeticVertex::makeCanonicalPoint(dvp, end);
+    gp_Pnt gStart  = DU::togp_Pnt(cStart);
+    gp_Pnt gEnd    = DU::togp_Pnt(cEnd);
+    TopoDS_Edge edge = BRepBuilderAPI_MakeEdge(gStart, gEnd);
+    return TechDraw::BaseGeom::baseFactory(edge)->inverted();
 }
 
 std::string CosmeticEdge::toString() const
