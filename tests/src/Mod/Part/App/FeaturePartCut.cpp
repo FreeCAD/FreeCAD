@@ -129,7 +129,7 @@ TEST_F(FeaturePartCutTest, testBarelyIntersecting)
     _cut->execute();
     Part::TopoShape ts = _cut->Shape.getValue();
     double volume = PartTestHelpers::getVolume(ts.getShape());
-    double target = 6 - PartTestHelpers::minimalDistance * 3; // 3 dimensions in a Volume
+    double target = 6 - PartTestHelpers::minimalDistance * 3;  // 3 dimensions in a Volume
     Base::BoundBox3d bb = ts.getBoundBox();
 
     // Assert

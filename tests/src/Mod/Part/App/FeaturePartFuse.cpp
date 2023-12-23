@@ -130,7 +130,7 @@ TEST_F(FeaturePartFuseTest, testBarelyIntersecting)
     _fuse->execute();
     Part::TopoShape ts = _fuse->Shape.getValue();
     double volume = PartTestHelpers::getVolume(ts.getShape());
-    double target = 12 - PartTestHelpers::minimalDistance * 3; // 3 dimensions in a Volume
+    double target = 12 - PartTestHelpers::minimalDistance * 3;  // 3 dimensions in a Volume
     Base::BoundBox3d bb = ts.getBoundBox();
 
     // Assert
