@@ -22,6 +22,7 @@
  *                                                                          *
  ***************************************************************************/
 
+#include <BRep_Tool.hxx>
 #include "PreCompiled.h"
 
 #include "TopoShape.h"
@@ -128,6 +129,72 @@ TopoDS_Shape TopoShape::located(const TopoDS_Shape& tds, const gp_Trsf& transfer
     auto sCopy(tds);
     sCopy.Location(TopLoc_Location());
     return moved(sCopy, transfer);
+}
+
+
+int TopoShape::findShape(const TopoDS_Shape& subshape) const
+{
+    initCache();
+    return _cache->findShape(_Shape, subshape);
+}
+
+static const std::string _SubShape("SubShape");
+
+TopoDS_Shape TopoShape::findShape(const char* name) const
+{
+    if (!name) {
+        return TopoDS_Shape();
+    }
+
+    Data::MappedElement res = getElementName(name);
+    if (!res.index) {
+        return TopoDS_Shape();
+    }
+
+    auto idx = shapeTypeAndIndex(name);
+    if (!idx.second) {
+        return TopoDS_Shape();
+    }
+    initCache();
+    return _cache->findShape(_Shape, idx.first, idx.second);
+}
+
+TopoDS_Shape TopoShape::findShape(TopAbs_ShapeEnum type, int idx) const
+{
+    initCache();
+    return _cache->findShape(_Shape, type, idx);
+}
+
+int TopoShape::findAncestor(const TopoDS_Shape& subshape, TopAbs_ShapeEnum type) const
+{
+    initCache();
+    return _cache->findShape(_Shape, _cache->findAncestor(_Shape, subshape, type));
+}
+
+TopoDS_Shape TopoShape::findAncestorShape(const TopoDS_Shape& subshape, TopAbs_ShapeEnum type) const
+{
+    initCache();
+    return _cache->findAncestor(_Shape, subshape, type);
+}
+
+std::vector<int> TopoShape::findAncestors(const TopoDS_Shape& subshape, TopAbs_ShapeEnum type) const
+{
+    const auto& shapes = findAncestorsShapes(subshape, type);
+    std::vector<int> ret;
+    ret.reserve(shapes.size());
+    for (const auto& shape : shapes) {
+        ret.push_back(findShape(shape));
+    }
+    return ret;
+}
+
+std::vector<TopoDS_Shape> TopoShape::findAncestorsShapes(const TopoDS_Shape& subshape,
+                                                         TopAbs_ShapeEnum type) const
+{
+    initCache();
+    std::vector<TopoDS_Shape> shapes;
+    _cache->findAncestor(_Shape, subshape, type, &shapes);
+    return shapes;
 }
 
 }  // namespace Part

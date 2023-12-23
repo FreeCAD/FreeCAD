@@ -444,10 +444,11 @@ public:
      * @param tol: tolerance to check coincident vertices
      * @param atol: tolerance to check for same angles
      */
-    std::vector<TopoShape> searchSubShape(const TopoShape &subshape,
-                                          std::vector<std::string> *names=nullptr,
-                                          bool checkGeometry=true,
-                                          double tol=1e-7, double atol=1e-12) const;
+    // TODO: Implement this method and its tests later in Toponaming Phase 3.
+    //std::vector<TopoShape> searchSubShape(const TopoShape &subshape,
+    //                                      std::vector<std::string> *names=nullptr,
+    //                                      bool checkGeometry=true,
+    //                                      double tol=1e-7, double atol=1e-12) const;
     //@}
 
     friend class TopoShapeCache;
