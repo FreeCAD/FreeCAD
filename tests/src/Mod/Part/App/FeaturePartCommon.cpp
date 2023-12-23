@@ -18,7 +18,7 @@ protected:
 
     void SetUp() override
     {
-        createTestFile();
+        createTestDoc();
         _common = static_cast<Part::Common*>(_doc->addObject("Part::Common"));
     }
 
@@ -31,119 +31,119 @@ protected:
 TEST_F(FeaturePartCommonTest, testIntersecting)
 {
     // Arrange
-    _common->Base.setValue(_box1obj);
-    _common->Tool.setValue(_box2obj);
+    _common->Base.setValue(_boxes[0]);
+    _common->Tool.setValue(_boxes[1]);
 
     // Act
     _common->execute();
     Part::TopoShape ts = _common->Shape.getValue();
-    // Base::BoundBox3d bb = ts.getBoundBox();
+    double volume = PartTestHelpers::getVolume(ts.getShape());
+    Base::BoundBox3d bb = ts.getBoundBox();
 
     // Assert
-    // If we wanted to be excessive, we could check the bounds:
-    // EXPECT_EQ(bb.MinX, 0);
-    // EXPECT_EQ(bb.MinY, 1);
-    // EXPECT_EQ(bb.MinZ, 0);
-    // EXPECT_EQ(bb.MaxX, 1);
-    // EXPECT_EQ(bb.MaxY, 2);
-    // EXPECT_EQ(bb.MaxZ, 3);
-    double volume = PartTestHelpers::getVolume(ts.getShape());
     EXPECT_DOUBLE_EQ(volume, 3.0);
+    // double check using bounds:
+    EXPECT_DOUBLE_EQ(bb.MinX, 0.0);
+    EXPECT_DOUBLE_EQ(bb.MinY, 1.0);
+    EXPECT_DOUBLE_EQ(bb.MinZ, 0.0);
+    EXPECT_DOUBLE_EQ(bb.MaxX, 1.0);
+    EXPECT_DOUBLE_EQ(bb.MaxY, 2.0);
+    EXPECT_DOUBLE_EQ(bb.MaxZ, 3.0);
 }
 
 TEST_F(FeaturePartCommonTest, testNonIntersecting)
 {
     // Arrange
-    _common->Base.setValue(_box1obj);
-    _common->Tool.setValue(_box3obj);
+    _common->Base.setValue(_boxes[0]);
+    _common->Tool.setValue(_boxes[2]);
 
     // Act
     _common->execute();
     Part::TopoShape ts = _common->Shape.getValue();
+    double volume = PartTestHelpers::getVolume(ts.getShape());
     Base::BoundBox3d bb = ts.getBoundBox();
 
     // Assert
     EXPECT_FALSE(bb.IsValid());
-    double volume = PartTestHelpers::getVolume(ts.getShape());
     EXPECT_DOUBLE_EQ(volume, 0.0);
 }
 
 TEST_F(FeaturePartCommonTest, testTouching)
 {
     // Arrange
-    _common->Base.setValue(_box1obj);
-    _common->Tool.setValue(_box4obj);
+    _common->Base.setValue(_boxes[0]);
+    _common->Tool.setValue(_boxes[3]);
 
     // Act
     _common->execute();
     Part::TopoShape ts = _common->Shape.getValue();
+    double volume = PartTestHelpers::getVolume(ts.getShape());
     Base::BoundBox3d bb = ts.getBoundBox();
 
     // Assert
     EXPECT_FALSE(bb.IsValid());
-    double volume = PartTestHelpers::getVolume(ts.getShape());
     EXPECT_DOUBLE_EQ(volume, 0.0);
 }
 
 TEST_F(FeaturePartCommonTest, testAlmostTouching)
 {
     // Arrange
-    _common->Base.setValue(_box1obj);
-    _common->Tool.setValue(_box5obj);
+    _common->Base.setValue(_boxes[0]);
+    _common->Tool.setValue(_boxes[4]);
 
     // Act
     _common->execute();
     Part::TopoShape ts = _common->Shape.getValue();
+    double volume = PartTestHelpers::getVolume(ts.getShape());
     Base::BoundBox3d bb = ts.getBoundBox();
 
     // Assert
     EXPECT_FALSE(bb.IsValid());
-    double volume = PartTestHelpers::getVolume(ts.getShape());
     EXPECT_DOUBLE_EQ(volume, 0.0);
 }
 
 TEST_F(FeaturePartCommonTest, testBarelyIntersecting)
 {
     // Arrange
-    _common->Base.setValue(_box1obj);
-    _common->Tool.setValue(_box6obj);
+    _common->Base.setValue(_boxes[0]);
+    _common->Tool.setValue(_boxes[5]);
 
     // Act
     _common->execute();
     Part::TopoShape ts = _common->Shape.getValue();
+    double volume = PartTestHelpers::getVolume(ts.getShape());
+    double target = Base::Precision::Confusion() * 3 * 1000; // Reduce precision to 1e04 over 3 dimensions
     Base::BoundBox3d bb = ts.getBoundBox();
 
     // Assert
-    EXPECT_EQ(bb.MinX, 0);
-    EXPECT_EQ(bb.MinY, 1.9999);
-    EXPECT_EQ(bb.MinZ, 0);
-    EXPECT_EQ(bb.MaxX, 1);
-    EXPECT_EQ(bb.MaxY, 2);
-    EXPECT_EQ(bb.MaxZ, 3);
-    double volume = PartTestHelpers::getVolume(ts.getShape());
-    double target = Base::Precision::Confusion() * 3 * 1000;
-    // FLOAT, not DOUBLE here, because ULP accuracy would be too precise.
-    EXPECT_FLOAT_EQ(volume, target);  // 0.00029999999999996696);
+    // Using FLOAT, not DOUBLE here so test library comparison is of reasonable precision 1e07 rather than 1e15
+    // See https://google.github.io/googletest/reference/assertions.html#floating-point
+    EXPECT_FLOAT_EQ(volume, target); // Should be approximately 0.00029999999999996696
+    // double check using bounds:
+    EXPECT_DOUBLE_EQ(bb.MinX, 0.0);
+    EXPECT_DOUBLE_EQ(bb.MinY, 1.9999);
+    EXPECT_DOUBLE_EQ(bb.MinZ, 0.0);
+    EXPECT_DOUBLE_EQ(bb.MaxX, 1.0);
+    EXPECT_DOUBLE_EQ(bb.MaxY, 2.0);
+    EXPECT_DOUBLE_EQ(bb.MaxZ, 3.0);
 }
 
 TEST_F(FeaturePartCommonTest, testMustExecute)
 {
-    // Act
-    short mE = _common->mustExecute();
-    // Assert
-    EXPECT_FALSE(mE);
-    _common->Base.setValue(_box1obj);
-    // Assert
-    mE = _common->mustExecute();
-    EXPECT_FALSE(mE);
-    // Act
-    _common->Tool.setValue(_box2obj);
-    // Assert
-    mE = _common->mustExecute();
-    EXPECT_TRUE(mE);
+    // Assert initially we don't need to execute
+    EXPECT_FALSE(_common->mustExecute());
+    // Act to change one property
+    _common->Base.setValue(_boxes[0]);
+    // Assert we still can't execute
+    EXPECT_FALSE(_common->mustExecute());
+    // Act to complete the properties we need
+    _common->Tool.setValue(_boxes[1]);
+    // Assert that we now must execute
+    EXPECT_TRUE(_common->mustExecute());
+    // Act to execute
     _doc->recompute();
-    mE = _common->mustExecute();
-    EXPECT_FALSE(mE);
+    // Assert we don't need to execute anymore
+    EXPECT_FALSE(_common->mustExecute());
 }
 
 TEST_F(FeaturePartCommonTest, testGetProviderName)
@@ -155,55 +155,38 @@ TEST_F(FeaturePartCommonTest, testGetProviderName)
     EXPECT_STREQ(name, "PartGui::ViewProviderBoolean");
 }
 
-namespace Part
-{
-void PrintTo(ShapeHistory sh, std::ostream* os)
-{
-    const char* types[] =
-        {"Compound", "CompSolid", "Solid", "Shell", "Face", "Wire", "Edge", "Vertex", "Shape"};
-    *os << "History for " << types[sh.type] << " is ";
-    for (const auto& it : sh.shapeMap) {
-        int old_shape_index = it.first;
-        *os << " " << old_shape_index << ": ";
-        if (!it.second.empty()) {
-            for (auto it2 : it.second) {
-                *os << it2 << " ";
-            }
-        }
-    }
-    *os << std::endl;
-}
-}  // namespace Part
-
 TEST_F(FeaturePartCommonTest, testHistory)
 {
     // Arrange
-    _common->Base.setValue(_box1obj);
-    _common->Tool.setValue(_box2obj);
-
-    // Act and Assert
-    std::vector<Part::ShapeHistory> hist = _common->History.getValues();
-    EXPECT_EQ(hist.size(), 0);
-
-    // This creates the histories classically generated by FreeCAD for comparison
+    _common->Base.setValue(_boxes[0]);
+    _common->Tool.setValue(_boxes[1]);
+    // Manually create the histories classically generated by FreeCAD for comparison
     using MapList = std::map<int, std::vector<int>>;
     using List = std::vector<int>;
     MapList compare1 =
-        {{0, List {0}}, {1, List {5}}, {2, List()}, {3, List {2}}, {4, List {3}}, {5, List {1}}};
+        {{0, List {0}}, {1, List {5}}, {2, List () }, {3, List {2}}, {4, List {3}}, {5, List {1}}};
     MapList compare2 =
-        {{0, List {0}}, {1, List {5}}, {2, List {4}}, {3, List()}, {4, List {3}}, {5, List {1}}};
+        {{0, List {0}}, {1, List {5}}, {2, List {4}}, {3, List () }, {4, List {3}}, {5, List {1}}};
 
+    // Act and Assert no histories yet
+    std::vector<Part::ShapeHistory> hist = _common->History.getValues();
+    EXPECT_EQ(hist.size(), 0);
+
+    // Act to generate histories
     _common->execute();
     hist = _common->History.getValues();
-    EXPECT_EQ(hist.size(), 2);
+    // Assert
+    ASSERT_EQ(hist.size(), 2);
     EXPECT_EQ(hist[0].shapeMap, compare1);
     EXPECT_EQ(hist[1].shapeMap, compare2);
-    _common->Base.setValue(_box2obj);
-    _common->Tool.setValue(_box1obj);
+
+    // Act to reverse the histories
+    _common->Base.setValue(_boxes[1]);
+    _common->Tool.setValue(_boxes[0]);
     _common->execute();
     hist = _common->History.getValues();
-    // std::cout << testing::PrintToString(hist[0]) << testing::PrintToString(hist[1]);
-    EXPECT_EQ(hist.size(), 2);
-    EXPECT_EQ(hist[1].shapeMap, compare1);
+    // Assert
+    ASSERT_EQ(hist.size(), 2);
     EXPECT_EQ(hist[0].shapeMap, compare2);
+    EXPECT_EQ(hist[1].shapeMap, compare1);
 }

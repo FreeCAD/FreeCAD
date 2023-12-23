@@ -16,9 +16,8 @@ class PartTestHelperClass
 public:
     App::Document* _doc;
     std::string _docName;
-    Part::Box *_box1obj, *_box2obj, *_box3obj, *_box4obj, *_box5obj, *_box6obj;
-
-    void createTestFile();
+    std::array<Part::Box *, 6> _boxes;
+    void createTestDoc();
 };
 
 }  // namespace PartTestHelpers
