@@ -129,12 +129,14 @@ TEST_F(FeaturePartCutTest, testBarelyIntersecting)
     _cut->execute();
     Part::TopoShape ts = _cut->Shape.getValue();
     double volume = PartTestHelpers::getVolume(ts.getShape());
-    double target = 6 - Base::Precision::Confusion() * 3 * 1000;    // Reduce precision to 1e04 over 3 dimensions
+    double target =
+        6 - Base::Precision::Confusion() * 3 * 1000;  // Reduce precision to 1e04 over 3 dimensions
     Base::BoundBox3d bb = ts.getBoundBox();
 
     // Assert
-    // Using FLOAT, not DOUBLE here so test library comparison is of reasonable precision 1e07 rather than 1e15
-    // See https://google.github.io/googletest/reference/assertions.html#floating-point
+    // Using FLOAT, not DOUBLE here so test library comparison is of reasonable precision 1e07
+    // rather than 1e15 See
+    // https://google.github.io/googletest/reference/assertions.html#floating-point
     EXPECT_FLOAT_EQ(volume, target);
     // double check using bounds:
     EXPECT_DOUBLE_EQ(bb.MinX, 0.0);

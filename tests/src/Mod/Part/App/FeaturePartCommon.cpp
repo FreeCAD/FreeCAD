@@ -112,13 +112,15 @@ TEST_F(FeaturePartCommonTest, testBarelyIntersecting)
     _common->execute();
     Part::TopoShape ts = _common->Shape.getValue();
     double volume = PartTestHelpers::getVolume(ts.getShape());
-    double target = Base::Precision::Confusion() * 3 * 1000; // Reduce precision to 1e04 over 3 dimensions
+    double target =
+        Base::Precision::Confusion() * 3 * 1000;  // Reduce precision to 1e04 over 3 dimensions
     Base::BoundBox3d bb = ts.getBoundBox();
 
     // Assert
-    // Using FLOAT, not DOUBLE here so test library comparison is of reasonable precision 1e07 rather than 1e15
-    // See https://google.github.io/googletest/reference/assertions.html#floating-point
-    EXPECT_FLOAT_EQ(volume, target); // Should be approximately 0.00029999999999996696
+    // Using FLOAT, not DOUBLE here so test library comparison is of reasonable precision 1e07
+    // rather than 1e15 See
+    // https://google.github.io/googletest/reference/assertions.html#floating-point
+    EXPECT_FLOAT_EQ(volume, target);  // Should be approximately 0.00029999999999996696
     // double check using bounds:
     EXPECT_DOUBLE_EQ(bb.MinX, 0.0);
     EXPECT_DOUBLE_EQ(bb.MinY, 1.9999);
@@ -164,9 +166,9 @@ TEST_F(FeaturePartCommonTest, testHistory)
     using MapList = std::map<int, std::vector<int>>;
     using List = std::vector<int>;
     MapList compare1 =
-        {{0, List {0}}, {1, List {5}}, {2, List () }, {3, List {2}}, {4, List {3}}, {5, List {1}}};
+        {{0, List {0}}, {1, List {5}}, {2, List()}, {3, List {2}}, {4, List {3}}, {5, List {1}}};
     MapList compare2 =
-        {{0, List {0}}, {1, List {5}}, {2, List {4}}, {3, List () }, {4, List {3}}, {5, List {1}}};
+        {{0, List {0}}, {1, List {5}}, {2, List {4}}, {3, List()}, {4, List {3}}, {5, List {1}}};
 
     // Act and Assert no histories yet
     std::vector<Part::ShapeHistory> hist = _common->History.getValues();

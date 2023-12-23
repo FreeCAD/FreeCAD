@@ -13,30 +13,30 @@ double getVolume(TopoDS_Shape shape)
 
 void PartTestHelperClass::createTestDoc()
 {
-        _docName = App::GetApplication().getUniqueDocumentName("test");
-        _doc = App::GetApplication().newDocument(_docName.c_str(), "testUser");
-        std::array<Base::Vector3d, 6> box_origins = {
-            Base::Vector3d(),            // First box at 0,0,0
-            Base::Vector3d(0, 1, 0),     // Overlap with first box
-            Base::Vector3d(0, 3, 0),     // Don't Overlap with first box
-            Base::Vector3d(0, 2, 0),     // Touch the first box
-            Base::Vector3d(0, 2 + Base::Precision::Confusion(), 0),     // Just Outside of touching
-            // For just inside of touching, go enough that precision rounding doesn't make us overlap.
-            Base::Vector3d(0, 2 - Base::Precision::Confusion() * 1000, 0)
-        };
+    _docName = App::GetApplication().getUniqueDocumentName("test");
+    _doc = App::GetApplication().newDocument(_docName.c_str(), "testUser");
+    std::array<Base::Vector3d, 6> box_origins = {
+        Base::Vector3d(),                                        // First box at 0,0,0
+        Base::Vector3d(0, 1, 0),                                 // Overlap with first box
+        Base::Vector3d(0, 3, 0),                                 // Don't Overlap with first box
+        Base::Vector3d(0, 2, 0),                                 // Touch the first box
+        Base::Vector3d(0, 2 + Base::Precision::Confusion(), 0),  // Just Outside of touching
+        // For just inside of touching, go enough that precision rounding doesn't make us overlap.
+        Base::Vector3d(0, 2 - Base::Precision::Confusion() * 1000, 0)};
 
-        // for (auto& [box, origin] : zip(_boxes, box_origins) ) {
-        // for ( int i : range(0,_boxes.size())) {
-        for ( unsigned i=0; i < _boxes.size(); i++ ) { 
-            auto box = _boxes[i] = static_cast<Part::Box*>(_doc->addObject("Part::Box"));
-            box->Length.setValue(1);
-            box->Width.setValue(2);
-            box->Height.setValue(3);
-            box->Placement.setValue(Base::Placement(box_origins[i], Base::Rotation(), Base::Vector3d() ) );
-        }
+    // for (auto& [box, origin] : zip(_boxes, box_origins) ) {
+    // for ( int i : range(0,_boxes.size())) {
+    for (unsigned i = 0; i < _boxes.size(); i++) {
+        auto box = _boxes[i] = static_cast<Part::Box*>(_doc->addObject("Part::Box"));
+        box->Length.setValue(1);
+        box->Width.setValue(2);
+        box->Height.setValue(3);
+        box->Placement.setValue(
+            Base::Placement(box_origins[i], Base::Rotation(), Base::Vector3d()));
+    }
 }
 
-}
+}  // namespace PartTestHelpers
 
 // https://google.github.io/googletest/advanced.html#teaching-googletest-how-to-print-your-values
 namespace Part
