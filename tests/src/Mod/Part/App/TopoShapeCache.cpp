@@ -8,9 +8,7 @@
 #include <gp_Quaternion.hxx>
 #include <TopoDS_TVertex.hxx>
 #include <BRep_TVertex.hxx>
-#include <BRep_TEdge.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
-#include <BRepAlgoAPI_Common.hxx>
 #include <BRepAlgoAPI_Fuse.hxx>
 #include <BRepPrimAPI_MakeBox.hxx>
 #include <TopoDS_Edge.hxx>
@@ -61,22 +59,6 @@ private:
     QVector<App::StringIDRef>* _sids = nullptr;
     App::StringHasherRef _hasher;
 };
-
-/*
-Methods to test
- -------------
-DONE - explicit TopoShapeCache(const TopoDS_Shape& tds);
-DONE - void insertRelation(const ShapeRelationKey& key, const QVector<Data::MappedElement>& value);
-DONE - bool isTouched(const TopoDS_Shape& tds) const;
-DONE Ancestry& getAncestry(TopAbs_ShapeEnum type);
-DONE int countShape(TopAbs_ShapeEnum type);
-DONE int findShape(const TopoDS_Shape& parent, const TopoDS_Shape& subShape);
-DONE TopoDS_Shape findShape(const TopoDS_Shape& parent, TopAbs_ShapeEnum type, int index);
-TopoDS_Shape findAncestor(const TopoDS_Shape& parent,
-                         const TopoDS_Shape& subShape,
-                         TopAbs_ShapeEnum type,
-                         std::vector<TopoDS_Shape>* ancestors = nullptr);
- */
 
 TEST_F(TopoShapeCacheTest, ConstructionFromTopoDS_Shape)
 {

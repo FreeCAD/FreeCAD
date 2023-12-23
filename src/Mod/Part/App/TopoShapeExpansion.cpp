@@ -138,22 +138,21 @@ int TopoShape::findShape(const TopoDS_Shape& subshape) const
     return _cache->findShape(_Shape, subshape);
 }
 
-static const std::string _SubShape("SubShape");
 
 TopoDS_Shape TopoShape::findShape(const char* name) const
 {
     if (!name) {
-        return TopoDS_Shape();
+        return {};
     }
 
     Data::MappedElement res = getElementName(name);
     if (!res.index) {
-        return TopoDS_Shape();
+        return {};
     }
 
     auto idx = shapeTypeAndIndex(name);
-    if (!idx.second) {
-        return TopoDS_Shape();
+    if (idx.second == 0) {
+        return {};
     }
     initCache();
     return _cache->findShape(_Shape, idx.first, idx.second);

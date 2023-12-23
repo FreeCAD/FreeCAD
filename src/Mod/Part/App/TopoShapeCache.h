@@ -79,14 +79,14 @@ public:
     /// Inverse of location
     TopLoc_Location locationInverse;
 
-    struct AncestorInfo
+    struct PartExport AncestorInfo
     {
         bool initialized = false;
         TopTools_IndexedDataMapOfShapeListOfShape shapes;
     };
 
     /// Class for caching the ancestor and children shapes mapping
-    class Ancestry
+    class PartExport Ancestry
     {
     private:
         TopoShapeCache* owner = nullptr;
