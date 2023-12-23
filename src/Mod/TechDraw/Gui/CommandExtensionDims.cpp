@@ -2334,10 +2334,10 @@ namespace TechDrawGui {
             throw Base::TypeError("CmdTechDrawExtensionCreateLinDimension - dim not found\n");
         dim->References2D.setValues(objs, subs);
         cmd->doCommand(cmd->Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(), FeatName.c_str());
+
+        // Touch the parent feature so the dimension in tree view appears as a child
+        objFeat->touch();
         dim->recomputeFeature();
-        //Horrible hack to force Tree update
-        double x = objFeat->X.getValue();
-        objFeat->X.setValue(x);
         return dim;
     }
 

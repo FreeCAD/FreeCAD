@@ -239,10 +239,6 @@ void execRadius(Gui::Command* cmd)
     //build the dimension
     //    DrawViewDimension* dim =
     dimensionMaker(partFeat, "Radius", references2d, references3d);
-
-    //Horrible hack to force Tree update
-    double x = partFeat->X.getValue();
-    partFeat->X.setValue(x);
 }
 
 //===========================================================================
@@ -365,10 +361,6 @@ void execDiameter(Gui::Command* cmd)
     //build the dimension
     //    DrawViewDimension* dim =
     dimensionMaker(partFeat, "Diameter", references2d, references3d);
-
-    //Horrible hack to force Tree update
-    double x = partFeat->X.getValue();
-    partFeat->X.setValue(x);
 }
 
 //===========================================================================
@@ -464,10 +456,6 @@ void execDistance(Gui::Command* cmd)
 
     //position the Dimension text on the view
     positionDimText(dim);
-
-    //Horrible hack to force Tree update (claimChildren)
-    double x = partFeat->X.getValue();
-    partFeat->X.setValue(x);
 }
 
 //===========================================================================
@@ -560,13 +548,8 @@ void execDistanceX(Gui::Command* cmd)
     //build the dimension
     DrawViewDimension* dim = dimensionMaker(partFeat, "DistanceX", references2d, references3d);
 
-
     //position the Dimension text on the view
     positionDimText(dim);
-
-    //Horrible hack to force Tree update (claimChildren)
-    double x = partFeat->X.getValue();
-    partFeat->X.setValue(x);
 }
 
 //===========================================================================
@@ -660,10 +643,6 @@ void execDistanceY(Gui::Command* cmd)
 
     //position the Dimension text on the view
     positionDimText(dim);
-
-    //Horrible hack to force Tree update (claimChildren)
-    double x = partFeat->X.getValue();
-    partFeat->X.setValue(x);
 }
 
 //===========================================================================
@@ -756,10 +735,6 @@ void execAngle(Gui::Command* cmd)
 
     //position the Dimension text on the view
     positionDimText(dim);
-
-    //Horrible hack to force Tree update (claimChildren)
-    double x = partFeat->X.getValue();
-    partFeat->X.setValue(x);
 }
 
 //===========================================================================
@@ -849,12 +824,9 @@ void execAngle3Pt(Gui::Command* cmd)
 
     //build the dimension
     DrawViewDimension* dim = dimensionMaker(partFeat, "Angle3Pt", references2d, references3d);
+
     //position the Dimension text on the view
     positionDimText(dim);
-
-    //Horrible hack to force Tree update (claimChildren)
-    double x = partFeat->X.getValue();
-    partFeat->X.setValue(x);
 }
 
 //! link 3D geometry to Dimension(s) on a Page
@@ -1337,11 +1309,11 @@ void CmdTechDrawLandmarkDimension::activated(int iMsg)
               FeatName.c_str());
 
     commitCommand();
-    dim->recomputeFeature();
 
-    //Horrible hack to force Tree update
-    double x = dvp->X.getValue();
-    dvp->X.setValue(x);
+    // Touch the parent feature so the dimension in tree view appears as a child
+    dvp->touch(true);
+
+    dim->recomputeFeature();
 }
 
 bool CmdTechDrawLandmarkDimension::isActive()
@@ -1416,6 +1388,14 @@ DrawViewDimension* dimensionMaker(TechDraw::DrawViewPart* dvp, std::string dimTy
                             dimName.c_str());
 
     Gui::Command::commitCommand();
+
+    // Touch the parent feature so the dimension in tree view appears as a child
+    dvp->touch(true);
+
+    // Select only the newly created dimension
+    Gui::Selection().clearSelection();
+    Gui::Selection().addSelection(dvp->getDocument()->getName(), dim->getNameInDocument());
+
     dim->recomputeFeature();
     return dim;
 }
