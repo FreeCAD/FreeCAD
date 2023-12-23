@@ -148,6 +148,19 @@ void QGIViewPart::updateView(bool update)
 
 void QGIViewPart::draw()
 {
+    auto viewPart(dynamic_cast<TechDraw::DrawViewPart*>(getViewObject()));
+    if (!viewPart) {
+        return;
+    }
+
+    auto doc = viewPart->getDocument();
+    if (!doc || doc->testStatus(App::Document::Status::Restoring)) {
+        // if the document is still restoring, we may not have all the information
+        // we need to draw the source objects, so we wait until restore is finished.
+        // Base::Console().Message("QGIVP::draw - document is restoring, do not draw\n");
+        return;
+    }
+
     if (!isVisible())
         return;
 
@@ -697,6 +710,7 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
 void QGIViewPart::drawComplexSectionLine(TechDraw::DrawViewSection* viewSection, bool b)
 {
     Q_UNUSED(b);
+
     TechDraw::DrawViewPart* viewPart = static_cast<TechDraw::DrawViewPart*>(getViewObject());
     if (!viewPart)
         return;
