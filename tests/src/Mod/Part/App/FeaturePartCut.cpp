@@ -18,13 +18,13 @@ protected:
     void SetUp() override
     {
         createTestDoc();
-        _cut = static_cast<Part::Cut*>(_doc->addObject("Part::Cut"));
+        _cut = dynamic_cast<Part::Cut*>(_doc->addObject("Part::Cut"));
     }
 
     void TearDown() override
     {}
 
-    Part::Cut* _cut;
+    Part::Cut* _cut;    // NOLINT Can't be private in a test framework
 };
 
 TEST_F(FeaturePartCutTest, testIntersecting)
@@ -123,7 +123,7 @@ TEST_F(FeaturePartCutTest, testBarelyIntersecting)
 {
     // Arrange
     _cut->Base.setValue(_boxes[0]);
-    _cut->Tool.setValue(_boxes[5]);
+    _cut->Tool.setValue(_boxes[5]);  // NOLINT magic number
 
     // Act
     _cut->execute();

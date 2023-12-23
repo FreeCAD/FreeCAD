@@ -19,13 +19,13 @@ protected:
     void SetUp() override
     {
         createTestDoc();
-        _common = static_cast<Part::Common*>(_doc->addObject("Part::Common"));
+        _common = dynamic_cast<Part::Common*>(_doc->addObject("Part::Common"));
     }
 
     void TearDown() override
     {}
 
-    Part::Common* _common;
+    Part::Common* _common;  // NOLINT Can't be private in a test framework
 };
 
 TEST_F(FeaturePartCommonTest, testIntersecting)
@@ -106,7 +106,7 @@ TEST_F(FeaturePartCommonTest, testBarelyIntersecting)
 {
     // Arrange
     _common->Base.setValue(_boxes[0]);
-    _common->Tool.setValue(_boxes[5]);
+    _common->Tool.setValue(_boxes[5]);  // NOLINT magic number
 
     // Act
     _common->execute();
@@ -165,9 +165,9 @@ TEST_F(FeaturePartCommonTest, testHistory)
     using MapList = std::map<int, std::vector<int>>;
     using List = std::vector<int>;
     MapList compare1 =
-        {{0, List {0}}, {1, List {5}}, {2, List()}, {3, List {2}}, {4, List {3}}, {5, List {1}}};
+        {{0, List {0}}, {1, List {5}}, {2, List()}, {3, List {2}}, {4, List {3}}, {5, List {1}}};  // NOLINT magic number
     MapList compare2 =
-        {{0, List {0}}, {1, List {5}}, {2, List {4}}, {3, List()}, {4, List {3}}, {5, List {1}}};
+        {{0, List {0}}, {1, List {5}}, {2, List {4}}, {3, List()}, {4, List {3}}, {5, List {1}}};  // NOLINT magic number
 
     // Act and Assert no histories yet
     std::vector<Part::ShapeHistory> hist = _common->History.getValues();

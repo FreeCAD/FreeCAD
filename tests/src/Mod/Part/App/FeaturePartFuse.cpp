@@ -19,13 +19,13 @@ protected:
     void SetUp() override
     {
         createTestDoc();
-        _fuse = static_cast<Part::Fuse*>(_doc->addObject("Part::Fuse"));
+        _fuse = dynamic_cast<Part::Fuse*>(_doc->addObject("Part::Fuse"));
     }
 
     void TearDown() override
     {}
 
-    Part::Fuse* _fuse;
+    Part::Fuse* _fuse;  // NOLINT Can't be private in a test framework
 };
 
 TEST_F(FeaturePartFuseTest, testIntersecting)
@@ -124,7 +124,7 @@ TEST_F(FeaturePartFuseTest, testBarelyIntersecting)
 {
     // Arrange
     _fuse->Base.setValue(_boxes[0]);
-    _fuse->Tool.setValue(_boxes[5]);
+    _fuse->Tool.setValue(_boxes[5]);    // NOLINT magic number
 
     // Act
     _fuse->execute();
