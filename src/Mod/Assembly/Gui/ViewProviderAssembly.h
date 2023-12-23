@@ -70,6 +70,16 @@ public:
 
     App::DocumentObject* getActivePart();
 
+    enum class MoveMode
+    {
+        Translation,
+        TranslationOnAxis,
+        Rotation,
+        RotationOnPlane,
+        TranslationOnAxisAndRotationOnePlane,
+    };
+    MoveMode moveMode;
+
     /// is called when the provider is in edit and the mouse is moved
     bool mouseMove(const SbVec2s& pos, Gui::View3DInventorViewer* viewer) override;
     /// is called when the Provider is in edit and the mouse is clicked
@@ -77,9 +87,10 @@ public:
                             bool pressed,
                             const SbVec2s& cursorPos,
                             const Gui::View3DInventorViewer* viewer) override;
-
-    void initMove(Base::Vector3d& mousePosition);
+    MoveMode findMoveMode();
+    void initMove();
     void endMove();
+
 
     bool getSelectedObjectsWithinAssembly();
     App::DocumentObject* getObjectFromSubNames(std::vector<std::string>& subNames);
@@ -107,9 +118,13 @@ public:
     bool partMoving;
     bool enableMovement;
     int numberOfSel;
+    Base::Vector3d initialPosition;
+    Base::Vector3d initialPositionRot;
+    Base::Placement jcsPlc;
+    Base::Placement jcsGlobalPlc;
 
     std::vector<std::pair<App::DocumentObject*, double>> objectMasses;
-    std::vector<std::pair<App::DocumentObject*, Base::Vector3d>> docsToMove;
+    std::vector<std::pair<App::DocumentObject*, Base::Placement>> docsToMove;
 };
 
 }  // namespace AssemblyGui

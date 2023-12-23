@@ -12,6 +12,7 @@ link_directories(${OCC_LIBRARY_DIR})
 
 set(Assembly_LIBS
     Part
+    PartDesign
     FreeCADApp
 	OndselSolver
 )

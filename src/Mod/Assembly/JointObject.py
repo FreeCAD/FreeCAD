@@ -299,6 +299,7 @@ class Joint:
             joint.Placement2 = self.findPlacement(
                 joint, joint.Object2, joint.Part2, joint.Element2, joint.Vertex2, True
             )
+            self.preventOrthogonal(joint)
             solveIfAllowed(assembly, True)
 
         else:
@@ -446,21 +447,42 @@ class Joint:
         return plc
 
     def applyRotationToPlacement(self, plc, angle):
+        return self.applyRotationToPlacementAlongAxis(plc, angle, App.Vector(0, 0, 1))
+
+    def applyRotationToPlacementAlongAxis(self, plc, angle, axis):
         rot = plc.Rotation
-        zRotation = App.Rotation(App.Vector(0, 0, 1), angle)
-        rot = rot.multiply(zRotation)
-        plc.Rotation = rot
+        zRotation = App.Rotation(axis, angle)
+        plc.Rotation = rot * zRotation
         return plc
 
     def flipPart(self, joint):
         if joint.FirstPartConnected:
-            plc = joint.Part2.Placement.inverse() * joint.Placement2
-            localXAxis = plc.Rotation.multVec(App.Vector(1, 0, 0))
-            joint.Part2.Placement = flipPlacement(joint.Part2.Placement, localXAxis)
+            plc = joint.Placement2  # relative to obj
+            obj = UtilsAssembly.getObjectInPart(joint.Object2, joint.Part2)
+
+            # we need plc to be relative to the containing part
+            obj_global_plc = UtilsAssembly.getGlobalPlacement(obj, joint.Part2)
+            part_global_plc = UtilsAssembly.getGlobalPlacement(joint.Part2)
+            plc = obj_global_plc * plc
+            plc = part_global_plc.inverse() * plc
+
+            jcsXAxis = plc.Rotation.multVec(App.Vector(1, 0, 0))
+
+            joint.Part2.Placement = flipPlacement(joint.Part2.Placement, jcsXAxis)
+
         else:
-            plc = joint.Part1.Placement.inverse() * joint.Placement1
-            localXAxis = plc.Rotation.multVec(App.Vector(1, 0, 0))
-            joint.Part1.Placement = flipPlacement(joint.Part1.Placement, localXAxis)
+            plc = joint.Placement1  # relative to obj
+            obj = UtilsAssembly.getObjectInPart(joint.Object1, joint.Part1)
+
+            # we need plc to be relative to the containing part
+            obj_global_plc = UtilsAssembly.getGlobalPlacement(obj, joint.Part1)
+            part_global_plc = UtilsAssembly.getGlobalPlacement(joint.Part1)
+            plc = obj_global_plc * plc
+            plc = part_global_plc.inverse() * plc
+
+            jcsXAxis = plc.Rotation.multVec(App.Vector(1, 0, 0))
+
+            joint.Part1.Placement = flipPlacement(joint.Part1.Placement, jcsXAxis)
 
         solveIfAllowed(self.getAssembly(joint))
 
@@ -485,6 +507,19 @@ class Joint:
                     if res:
                         return App.Vector(res[0].X, res[0].Y, res[0].Z)
         return surface.Center
+
+    def preventOrthogonal(self, joint):
+        zAxis1 = joint.Placement1.Rotation.multVec(App.Vector(0, 0, 1))
+        zAxis2 = joint.Placement2.Rotation.multVec(App.Vector(0, 0, 1))
+        if abs(zAxis1.dot(zAxis2)) < Part.Precision.confusion():
+            if joint.FirstPartConnected:
+                joint.Part2.Placement = self.applyRotationToPlacementAlongAxis(
+                    joint.Part2.Placement, 30.0, App.Vector(1, 2, 0)
+                )
+            else:
+                joint.Part1.Placement = self.applyRotationToPlacementAlongAxis(
+                    joint.Part1.Placement, 30.0, App.Vector(1, 2, 0)
+                )
 
 
 class ViewProviderJoint:
@@ -639,8 +674,7 @@ class ViewProviderJoint:
                 plc = joint.Placement1
                 self.switch_JCS1.whichChild = coin.SO_SWITCH_ALL
 
-                if joint.Part1:  # prevent an unwanted call by assembly.isPartConnected
-                    self.set_JCS_placement(self.transform1, plc, joint.Object1, joint.Part1)
+                self.set_JCS_placement(self.transform1, plc, joint.Object1, joint.Part1)
             else:
                 self.switch_JCS1.whichChild = coin.SO_SWITCH_NONE
 
@@ -650,15 +684,16 @@ class ViewProviderJoint:
                 self.switch_JCS2.whichChild = coin.SO_SWITCH_ALL
                 # if self.areJCSReversed(joint):
                 #    plc = flipPlacement(plc, App.Vector(1, 0, 0))
+
                 self.set_JCS_placement(self.transform2, plc, joint.Object2, joint.Part2)
             else:
                 self.switch_JCS2.whichChild = coin.SO_SWITCH_NONE
 
     def areJCSReversed(self, joint):
-        zaxis1 = joint.Placement1.Rotation.multVec(App.Vector(0, 0, 1))
-        zaxis2 = joint.Placement2.Rotation.multVec(App.Vector(0, 0, 1))
+        zAxis1 = joint.Placement1.Rotation.multVec(App.Vector(0, 0, 1))
+        zAxis2 = joint.Placement2.Rotation.multVec(App.Vector(0, 0, 1))
 
-        sameDir = zaxis1.dot(zaxis2) > 0
+        sameDir = zAxis1.dot(zAxis2) > 0
         return not sameDir
 
     def showPreviewJCS(self, visible, placement=None, objName="", part=None):

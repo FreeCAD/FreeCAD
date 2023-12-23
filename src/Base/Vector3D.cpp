@@ -465,6 +465,22 @@ float_type Vector3<float_type>::GetAngle(const Vector3& rcVect) const
 }
 
 template<class float_type>
+float_type Vector3<float_type>::GetAngleOriented(const Vector3& rcVect, const Vector3& norm) const
+{
+    float_type angle = GetAngle(rcVect);
+
+    Vector3<float_type> crossProduct = Cross(rcVect);
+
+    // Use dot product to determine the sign
+    float_type dot = crossProduct.Dot(norm);
+    if (dot < 0) {
+        angle = 2 * traits_type::pi() - angle;
+    }
+
+    return angle;
+}
+
+template<class float_type>
 void Vector3<float_type>::TransformToCoordinateSystem(const Vector3& rclBase,
                                                       const Vector3& rclDirX,
                                                       const Vector3& rclDirY)

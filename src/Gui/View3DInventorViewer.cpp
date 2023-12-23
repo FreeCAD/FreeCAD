@@ -2647,6 +2647,108 @@ SbVec2f View3DInventorViewer::getNormalizedPosition(const SbVec2s& pnt) const
     return {pX, pY};
 }
 
+SbVec3f View3DInventorViewer::getPointOnXYPlaneOfPlacement(const SbVec2s& pnt, Base::Placement& plc) const
+{
+    SbVec2f pnt2d = getNormalizedPosition(pnt);
+    SoCamera* pCam = this->getSoRenderManager()->getCamera();
+
+    if (!pCam) {
+        // return invalid point
+        return {};
+    }
+
+    SbViewVolume  vol = pCam->getViewVolume();
+    SbLine line;
+    vol.projectPointToLine(pnt2d, line);
+
+    // Calculate the plane using plc
+    Base::Rotation rot = plc.getRotation();
+    Base::Vector3d normalVector = rot.multVec(Base::Vector3d(0, 0, 1));
+    SbVec3f planeNormal(normalVector.x, normalVector.y, normalVector.z);
+
+    // Get the position and convert Base::Vector3d to SbVec3f
+    Base::Vector3d pos = plc.getPosition();
+    SbVec3f planePosition(pos.x, pos.y, pos.z);
+    SbPlane xyPlane(planeNormal, planePosition);
+
+    SbVec3f pt;
+    if (xyPlane.intersect(line, pt)) {
+        return pt; // Intersection point on the XY plane
+    }
+    else {
+        // No intersection found
+        return {};
+    }
+
+    return pt;
+}
+
+SbVec3f projectPointOntoPlane(const SbVec3f& point, const SbPlane& plane) {
+    SbVec3f planeNormal = plane.getNormal();
+    float d = plane.getDistanceFromOrigin();
+    float distance = planeNormal.dot(point) + d;
+    return point - planeNormal * distance;
+}
+
+// Project a line onto a plane
+SbLine projectLineOntoPlane(const SbVec3f& p1, const SbVec3f& p2, const SbPlane& plane) {
+    SbVec3f projectedPoint1 = projectPointOntoPlane(p1, plane);
+    SbVec3f projectedPoint2 = projectPointOntoPlane(p2, plane);
+    return SbLine(projectedPoint1, projectedPoint2);
+}
+
+SbVec3f intersection(const SbVec3f& p11, const SbVec3f& p12, const SbVec3f& p21, const SbVec3f& p22)
+{
+    SbVec3f da = p12 - p11;
+    SbVec3f db = p22 - p21;
+    SbVec3f dc = p21 - p11;
+
+    double s = (dc.cross(db)).dot(da.cross(db)) / da.cross(db).sqrLength();
+    return p11 + da * s;
+}
+
+SbVec3f View3DInventorViewer::getPointOnLine(const SbVec2s& pnt, const SbVec3f& axisCenter, const SbVec3f& axis) const
+{
+    SbVec2f pnt2d = getNormalizedPosition(pnt);
+    SoCamera* pCam = this->getSoRenderManager()->getCamera();
+
+    if (!pCam) {
+        // return invalid point
+        return {};
+    }
+
+    // First we get pnt projection on the focal plane
+    SbViewVolume  vol = pCam->getViewVolume();
+
+    float nearDist = pCam->nearDistance.getValue();
+    float farDist = pCam->farDistance.getValue();
+    float focalDist = pCam->focalDistance.getValue();
+
+    if (focalDist < nearDist || focalDist > farDist) {
+        focalDist = 0.5F * (nearDist + farDist);  // NOLINT
+    }
+
+    SbLine line;
+    SbVec3f pt, ptOnFocalPlaneAndOnLine, ptOnFocalPlane;
+    SbPlane focalPlane = vol.getPlane(focalDist);
+    vol.projectPointToLine(pnt2d, line);
+    focalPlane.intersect(line, ptOnFocalPlane);
+
+    SbLine projectedLine = projectLineOntoPlane(axisCenter, axisCenter + axis, focalPlane);
+    ptOnFocalPlaneAndOnLine = projectedLine.getClosestPoint(ptOnFocalPlane);
+
+    // now we need the intersection point between 
+    // - the line passing by ptOnFocalPlaneAndOnLine normal to focalPlane
+    // - The line (axisCenter, axisCenter + axis)
+
+    // Line normal to focal plane through ptOnFocalPlane
+    SbLine normalLine(ptOnFocalPlane, ptOnFocalPlane + focalPlane.getNormal());
+    SbLine axisLine(axisCenter, axisCenter + axis);
+    pt = intersection(ptOnFocalPlane, ptOnFocalPlane + focalPlane.getNormal(), axisCenter, axisCenter + axis);
+
+    return pt;
+}
+
 SbVec3f View3DInventorViewer::getPointOnFocalPlane(const SbVec2s& pnt) const
 {
     SbVec2f pnt2d = getNormalizedPosition(pnt);
