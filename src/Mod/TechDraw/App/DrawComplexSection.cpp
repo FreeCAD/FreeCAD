@@ -820,9 +820,14 @@ TopoDS_Wire DrawComplexSection::makeSectionLineWire()
     App::DocumentObject* toolObj = CuttingToolWireObject.getValue();
     DrawViewPart* baseDvp = dynamic_cast<DrawViewPart*>(BaseView.getValue());
     if (baseDvp) {
+        TopoDS_Shape toolShape = Part::Feature::getShape(toolObj);
+        if (toolShape.IsNull()) {
+            // CuttingToolWireObject is likely still restoring and has no shape yet
+            return {};
+        }
         Base::Vector3d centroid = baseDvp->getCurrentCentroid();
         TopoDS_Shape sTrans =
-            TechDraw::moveShape(Part::Feature::getShape(toolObj), centroid * -1.0);
+            TechDraw::moveShape(toolShape, centroid * -1.0);
         TopoDS_Shape sScaled = TechDraw::scaleShape(sTrans, baseDvp->getScale());
         //we don't mirror the scaled shape here as it will be mirrored by the projection
 
