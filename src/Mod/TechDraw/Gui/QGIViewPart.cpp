@@ -1089,7 +1089,7 @@ QGraphicsItem *QGIViewPart::getQGISubItemByName(const std::string &subName) cons
             scanType = QGIFace::Type;
         }
     }
-    catch (Base::ValueError e) {
+    catch (Base::ValueError& e) {
         // No action
     }
     if (!scanType) {
@@ -1100,7 +1100,7 @@ QGraphicsItem *QGIViewPart::getQGISubItemByName(const std::string &subName) cons
     try {
         scanIndex = TechDraw::DrawUtil::getIndexFromName(subName);
     }
-    catch (Base::ValueError e) {
+    catch (Base::ValueError& e) {
         // No action
     }
     if (scanIndex < 0) {
