@@ -20,4 +20,6 @@ public:
     void createTestDoc();
 };
 
+const double minimalDistance = Base::Precision::Confusion() * 1000;
+
 }  // namespace PartTestHelpers

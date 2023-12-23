@@ -130,8 +130,7 @@ TEST_F(FeaturePartFuseTest, testBarelyIntersecting)
     _fuse->execute();
     Part::TopoShape ts = _fuse->Shape.getValue();
     double volume = PartTestHelpers::getVolume(ts.getShape());
-    double target =
-        12 - Base::Precision::Confusion() * 3 * 1000;  // Reduce precision to 1e04 over 3 dimensions
+    double target = 12 - PartTestHelpers::minimalDistance * 3; // 3 dimensions in a Volume
     Base::BoundBox3d bb = ts.getBoundBox();
 
     // Assert
@@ -144,7 +143,7 @@ TEST_F(FeaturePartFuseTest, testBarelyIntersecting)
     EXPECT_DOUBLE_EQ(bb.MinY, 0.0);
     EXPECT_DOUBLE_EQ(bb.MinZ, 0.0);
     EXPECT_DOUBLE_EQ(bb.MaxX, 1.0);
-    EXPECT_DOUBLE_EQ(bb.MaxY, 3.9999);
+    EXPECT_DOUBLE_EQ(bb.MaxY, 4.0 - PartTestHelpers::minimalDistance);
     EXPECT_DOUBLE_EQ(bb.MaxZ, 3.0);
 }
 

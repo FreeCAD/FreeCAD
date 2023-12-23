@@ -22,7 +22,7 @@ void PartTestHelperClass::createTestDoc()
         Base::Vector3d(0, 2, 0),                                 // Touch the first box
         Base::Vector3d(0, 2 + Base::Precision::Confusion(), 0),  // Just Outside of touching
         // For just inside of touching, go enough that precision rounding doesn't make us overlap.
-        Base::Vector3d(0, 2 - Base::Precision::Confusion() * 1000, 0)};
+        Base::Vector3d(0, 2 - minimalDistance, 0)};
 
     // for (auto& [box, origin] : zip(_boxes, box_origins) ) {
     // for ( int i : range(0,_boxes.size())) {
