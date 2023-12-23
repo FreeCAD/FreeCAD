@@ -21,11 +21,9 @@ void PartTestHelperClass::createTestDoc()
         Base::Vector3d(0, 3, 0),                                 // Don't Overlap with first box
         Base::Vector3d(0, 2, 0),                                 // Touch the first box
         Base::Vector3d(0, 2 + Base::Precision::Confusion(), 0),  // Just Outside of touching
-        // For just inside of touching, go enough that precision rounding doesn't make us overlap.
+        // For the Just Inside Of Touching case, go enough that we exceed precision rounding
         Base::Vector3d(0, 2 - minimalDistance, 0)};
 
-    // for (auto& [box, origin] : zip(_boxes, box_origins) ) {
-    // for ( int i : range(0,_boxes.size())) {
     for (unsigned i = 0; i < _boxes.size(); i++) {
         auto box = _boxes[i] = static_cast<Part::Box*>(_doc->addObject("Part::Box"));
         box->Length.setValue(1);
