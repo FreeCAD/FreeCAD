@@ -24,7 +24,7 @@ protected:
     void TearDown() override
     {}
 
-    Part::Cut* _cut;    // NOLINT Can't be private in a test framework
+    Part::Cut* _cut;  // NOLINT Can't be private in a test framework
 };
 
 TEST_F(FeaturePartCutTest, testIntersecting)

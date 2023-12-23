@@ -124,7 +124,7 @@ TEST_F(FeaturePartFuseTest, testBarelyIntersecting)
 {
     // Arrange
     _fuse->Base.setValue(_boxes[0]);
-    _fuse->Tool.setValue(_boxes[5]);    // NOLINT magic number
+    _fuse->Tool.setValue(_boxes[5]);  // NOLINT magic number
 
     // Act
     _fuse->execute();

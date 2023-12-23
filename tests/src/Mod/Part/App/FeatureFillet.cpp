@@ -6,9 +6,11 @@
 
 #include "PartTestHelpers.h"
 
-std::vector<Part::FilletElement> _getFilletEdges(std::vector<int> edges = {1,2}, double startRadius = 0.3, double endRadius = 0.3) {
+std::vector<Part::FilletElement>
+_getFilletEdges(std::vector<int> edges = {1, 2}, double startRadius = 0.3, double endRadius = 0.3)
+{
     std::vector<Part::FilletElement> filletElements;
-    for ( auto e : edges ) {
+    for (auto e : edges) {
         Part::FilletElement fe = {e, startRadius, endRadius};
         filletElements.push_back(fe);
     }
@@ -47,7 +49,7 @@ protected:
     void TearDown() override
     {}
 
-    Part::Fuse *_fused;
+    Part::Fuse* _fused;
     Part::Fillet* _fillet;
 };
 
@@ -55,39 +57,39 @@ TEST_F(FeatureFilletTest, testInner)
 {
     // Arrange
     _fillet->Base.setValue(_fused);
-    Part::TopoShape rf = _fused->Shape.getValue(); 
+    Part::TopoShape rf = _fused->Shape.getValue();
     std::vector<const char*> get = rf.getElementTypes();
-    ASSERT_EQ(get.size(),3);
-    EXPECT_STREQ(get[0],"Face");
-    EXPECT_STREQ(get[1],"Edge");
-    EXPECT_STREQ(get[2],"Vertex");
+    ASSERT_EQ(get.size(), 3);
+    EXPECT_STREQ(get[0], "Face");
+    EXPECT_STREQ(get[1], "Edge");
+    EXPECT_STREQ(get[2], "Vertex");
     unsigned long sec = rf.countSubElements("Edge");
-    EXPECT_EQ(sec,25);
+    EXPECT_EQ(sec, 25);
     _fused->Refine.setValue(true);
     _fused->execute();
     rf = _fused->Shape.getValue();
     sec = rf.countSubElements("Edge");
-    EXPECT_EQ(sec,24);
+    EXPECT_EQ(sec, 24);
 
     _fillet->Edges.setValues(_getFilletEdges());
 
     // Act
     double volume;
-    
-    volume = PartTestHelpers::getVolume(_fused->Shape.getValue()); 
-    EXPECT_DOUBLE_EQ(volume,126.0);
-    volume = PartTestHelpers::getVolume(_fillet->Shape.getValue()); 
-    EXPECT_DOUBLE_EQ(volume,0.0);
+
+    volume = PartTestHelpers::getVolume(_fused->Shape.getValue());
+    EXPECT_DOUBLE_EQ(volume, 126.0);
+    volume = PartTestHelpers::getVolume(_fillet->Shape.getValue());
+    EXPECT_DOUBLE_EQ(volume, 0.0);
     _fillet->execute();
-    volume = PartTestHelpers::getVolume(_fillet->Shape.getValue()); 
-    EXPECT_DOUBLE_EQ(volume,125.80944686460914);
+    volume = PartTestHelpers::getVolume(_fillet->Shape.getValue());
+    EXPECT_DOUBLE_EQ(volume, 125.80944686460914);
 }
 
 TEST_F(FeatureFilletTest, testOuter)
 {
     // Arrange
     _fillet->Base.setValue(_fused);
-    _fillet->Edges.setValues(_getFilletEdges({3,4,5,6,7,8,9,10}));
+    _fillet->Edges.setValues(_getFilletEdges({3, 4, 5, 6, 7, 8, 9, 10}));
 
     // Act
     _fillet->execute();
