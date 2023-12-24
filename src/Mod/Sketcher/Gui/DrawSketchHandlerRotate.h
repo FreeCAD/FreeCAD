@@ -490,11 +490,12 @@ void DSHRotateController::configureToolWidget()
             QApplication::translate("TaskSketcherTool_c1_offset", "Clone constraints"));
         toolWidget->setCheckboxToolTip(
             WCheckbox::FirstBox,
-            QApplication::translate(
-                "TaskSketcherTool_c1_offset",
-                "This concerns the datum constraints like distances. If you activate Clone, "
-                "then the tool will copy the datum. Else it will try to replace them with "
-                "equalities between the initial geometries and the new copies."));
+            QString::fromLatin1("<p>")
+                + QApplication::translate("TaskSketcherTool_c1_offset",
+                                          "This concerns the datum constraints (e.g. distance)."
+                                          "If you activate Clone, the tool will copy the datum."
+                                          "Else it will try to replace them with equalities.")
+                + QString::fromLatin1("</p>"));
     }
 
     onViewParameters[OnViewParameter::First]->setLabelType(Gui::SoDatumLabel::DISTANCEX);
@@ -508,7 +509,7 @@ void DSHRotateController::configureToolWidget()
 
     toolWidget->setParameterLabel(
         WParameter::First,
-        QApplication::translate("TaskSketcherTool_p4_rotate", "Copies 'U'/'J'"));
+        QApplication::translate("TaskSketcherTool_p4_rotate", "Copies (+'U'/ -'J')"));
     toolWidget->setParameter(OnViewParameter::First, 0.0);
     toolWidget->configureParameterUnit(OnViewParameter::First, Base::Unit());
     toolWidget->configureParameterMin(OnViewParameter::First, 0.0);     // NOLINT
