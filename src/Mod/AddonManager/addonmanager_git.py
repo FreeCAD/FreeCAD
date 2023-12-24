@@ -326,10 +326,12 @@ class GitManager:
             git_exe = shutil.which("git")
 
         if not git_exe or not os.path.exists(git_exe):
+            print("Git is not installed")
             return
 
         prefs.SetString("GitExecutable", git_exe)
         self.git_exe = git_exe
+        print("Git is installed")
 
     def _synchronous_call_git(self, args: List[str]) -> str:
         """Calls git and returns its output."""
