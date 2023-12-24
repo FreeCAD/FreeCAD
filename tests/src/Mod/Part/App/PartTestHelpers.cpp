@@ -35,24 +35,3 @@ void PartTestHelperClass::createTestDoc()
 }
 
 }  // namespace PartTestHelpers
-
-// https://google.github.io/googletest/advanced.html#teaching-googletest-how-to-print-your-values
-namespace Part
-{
-void PrintTo(ShapeHistory sh, std::ostream* os)
-{
-    const char* types[] =
-        {"Compound", "CompSolid", "Solid", "Shell", "Face", "Wire", "Edge", "Vertex", "Shape"};
-    *os << "History for " << types[sh.type] << " is ";
-    for (const auto& it : sh.shapeMap) {
-        int old_shape_index = it.first;
-        *os << " " << old_shape_index << ": ";
-        if (!it.second.empty()) {
-            for (auto it2 : it.second) {
-                *os << it2 << " ";
-            }
-        }
-    }
-    *os << std::endl;
-}
-}  // namespace Part
