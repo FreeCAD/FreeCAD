@@ -15,7 +15,8 @@ void PartTestHelperClass::createTestDoc()
 {
     _docName = App::GetApplication().getUniqueDocumentName("test");
     _doc = App::GetApplication().newDocument(_docName.c_str(), "testUser");
-    std::array<Base::Vector3d, 6> box_origins = {  // NOLINT magic number
+    std::array<Base::Vector3d, 6> box_origins = {
+        // NOLINT magic number
         Base::Vector3d(),                                        // First box at 0,0,0
         Base::Vector3d(0, 1, 0),                                 // Overlap with first box
         Base::Vector3d(0, 3, 0),                                 // Don't Overlap with first box
