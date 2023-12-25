@@ -10,7 +10,8 @@
 // #include <BRep_Tool.hxx>
 // #include <TopoDS.hxx>
 
-namespace PartTestHelpers {
+namespace PartTestHelpers
+{
 
 class FeatureFilletTest: public ::testing::Test, public PartTestHelpers::PartTestHelperClass
 {
@@ -43,7 +44,7 @@ protected:
     void TearDown() override
     {}
 
-    Part::Fuse* _fused;  // NOLINT Can't be private in a test framework
+    Part::Fuse* _fused;     // NOLINT Can't be private in a test framework
     Part::Fillet* _fillet;  // NOLINT Can't be private in a test framework
 
     std::vector<Part::FilletElement>
@@ -80,7 +81,7 @@ TEST_F(FeatureFilletTest, testOtherEdges)
     EXPECT_EQ(sec, 24);
 
     // Act
-    _fillet->Edges.setValues(_getFilletEdges({15,17}, 0.5, 0.5));
+    _fillet->Edges.setValues(_getFilletEdges({15, 17}, 0.5, 0.5));
     fusedVolume = PartTestHelpers::getVolume(_fused->Shape.getValue());
     filletVolume = PartTestHelpers::getVolume(_fillet->Shape.getValue());
     // Assert
@@ -99,8 +100,10 @@ TEST_F(FeatureFilletTest, testMostEdges)
     _fused->Refine.setValue(true);
     // _fused->execute();
     _fillet->Base.setValue(_fused);
-    _fillet->Edges.setValues(_getFilletEdges({1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14,
-        16, 18, 19, 20, 22, 23, 24}, 0.4, 0.4) );
+    _fillet->Edges.setValues(
+        _getFilletEdges({1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 18, 19, 20, 22, 23, 24},
+                        0.4,
+                        0.4));
     // Act
     _fillet->execute();
     double filletVolume = PartTestHelpers::getVolume(_fillet->Shape.getValue());
@@ -121,7 +124,7 @@ TEST_F(FeatureFilletTest, testMustExecute)
     // Assert
     EXPECT_TRUE(_fillet->mustExecute());
     // Act
-    _fillet->Edges.setValues(_getFilletEdges({1}, 0.5, 0.5) );
+    _fillet->Edges.setValues(_getFilletEdges({1}, 0.5, 0.5));
     // Assert
     EXPECT_TRUE(_fillet->mustExecute());
     // Act
@@ -170,4 +173,4 @@ TEST_F(FeatureFilletTest, testGetProviderName)
 // }
 
 
-}
+}  // namespace PartTestHelpers

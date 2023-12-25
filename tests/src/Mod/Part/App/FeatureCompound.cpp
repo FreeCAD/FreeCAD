@@ -31,7 +31,7 @@ protected:
 TEST_F(FeatureCompoundTest, testIntersecting)
 {
     // Arrange
-    _compound->Links.setValues({_boxes[0],_boxes[1]});
+    _compound->Links.setValues({_boxes[0], _boxes[1]});
 
     // Act
     _compound->execute();
@@ -53,7 +53,7 @@ TEST_F(FeatureCompoundTest, testIntersecting)
 TEST_F(FeatureCompoundTest, testNonIntersecting)
 {
     // Arrange
-    _compound->Links.setValues({_boxes[0],_boxes[2]});
+    _compound->Links.setValues({_boxes[0], _boxes[2]});
 
     // Act
     _compound->execute();
@@ -70,4 +70,3 @@ TEST_F(FeatureCompoundTest, testNonIntersecting)
     EXPECT_DOUBLE_EQ(bb.MaxY, 5.0);
     EXPECT_DOUBLE_EQ(bb.MaxZ, 3.0);
 }
-

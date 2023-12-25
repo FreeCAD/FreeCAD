@@ -39,7 +39,7 @@ protected:
     void TearDown() override
     {}
 
-    Part::Fuse* _fused;  // NOLINT Can't be private in a test framework
+    Part::Fuse* _fused;       // NOLINT Can't be private in a test framework
     Part::Chamfer* _chamfer;  // NOLINT Can't be private in a test framework
 
     std::vector<Part::FilletElement>
@@ -94,8 +94,10 @@ TEST_F(FeatureChamferTest, testMost)
     _fused->Refine.setValue(true);
     _fused->execute();
     _chamfer->Base.setValue(_fused);
-    _chamfer->Edges.setValues(_getFilletEdges({ 3, 4, 5, 6, 7, 8, 9, 
-        10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24}, 0.4, 0.4) );
+    _chamfer->Edges.setValues(_getFilletEdges(
+        {3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24},
+        0.4,
+        0.4));
     // Act
     _chamfer->execute();
     double chamferVolume = PartTestHelpers::getVolume(_chamfer->Shape.getValue());
@@ -116,7 +118,7 @@ TEST_F(FeatureChamferTest, testMustExecute)
     // Assert
     EXPECT_TRUE(_chamfer->mustExecute());
     // Act
-    _chamfer->Edges.setValues(_getFilletEdges({1}, 0.5, 0.5) );
+    _chamfer->Edges.setValues(_getFilletEdges({1}, 0.5, 0.5));
     // Assert
     EXPECT_TRUE(_chamfer->mustExecute());
     // Act
