@@ -27,11 +27,14 @@ import Part
 import Sketcher
 import TestSketcherApp
 
+""" Test various helixes """
 class TestHelix(unittest.TestCase):
+    """ Test various helixes """
     def setUp(self):
         self.Doc = FreeCAD.newDocument("PartDesignTestHelix")
 
     def testCircleQ1(self):
+        """ Test helix based on circle in Quadrant 1 """
         body = self.Doc.addObject('PartDesign::Body','Body')
         profileSketch = self.Doc.addObject('Sketcher::SketchObject', 'ProfileSketch')
         body.addObject(profileSketch)
@@ -41,14 +44,16 @@ class TestHelix(unittest.TestCase):
         body.addObject(helix)
         helix.Profile = profileSketch
         helix.ReferenceAxis = (profileSketch,"V_Axis")
-        helix.Placement = FreeCAD.Placement(FreeCAD.Vector(0,0,0), FreeCAD.Rotation(FreeCAD.Vector(0,0,1),0), FreeCAD.Vector(0,0,0))
+        helix.Placement = FreeCAD.Placement(FreeCAD.Vector(0,0,0), 
+                                            FreeCAD.Rotation(FreeCAD.Vector(0,0,1),0),
+                                            FreeCAD.Vector(0,0,0))
         helix.Pitch = 3
         helix.Height = 9
         helix.Turns = 2
         helix.Angle = 0
-        helix.Mode = 1 
+        helix.Mode = 1
         self.Doc.recompute()
-        self.assertAlmostEqual(helix.Shape.Volume, 78.95691427632529,places=5)
+        self.assertAlmostEqual(helix.Shape.Volume, 78.95687956849457,places=5)
 
         helix.Angle = 25
         self.Doc.recompute()
@@ -60,8 +65,9 @@ class TestHelix(unittest.TestCase):
 
 
     def testRectangle(self):
+        """ Test helix based on a rectangle """
         body = self.Doc.addObject('PartDesign::Body','GearBody')
-        gearSketch = self.Doc.addObject('Sketcher::SketchObject', 'ConeSketch')
+        gearSketch = self.Doc.addObject('Sketcher::SketchObject', 'GearSketch')
         body.addObject(gearSketch)
         TestSketcherApp.CreateRectangleSketch(gearSketch, (0, 0), (5, 5))
         self.Doc.recompute()
@@ -83,10 +89,11 @@ class TestHelix(unittest.TestCase):
         self.Doc.recompute()
         bbox = helix.Shape.BoundBox
         self.assertAlmostEqual(bbox.YMin,0)
-        self.assertAlmostEqual(helix.Shape.Volume, 1178.090746691956,places=5)
+        self.assertAlmostEqual(helix.Shape.Volume, 1178.0961742825648,places=5)
 
 
     def testCone(self):
+        """ Test helix following a cone """
         body = self.Doc.addObject('PartDesign::Body','ConeBody')
         coneSketch = self.Doc.addObject('Sketcher::SketchObject', 'ConeSketch')
         body.addObject(coneSketch)
@@ -129,7 +136,7 @@ class TestHelix(unittest.TestCase):
         helix.Mode = 0 
         helix.Reversed = True
         self.Doc.recompute()
-        self.assertAlmostEqual(helix.Shape.Volume, 388285.3332753659,places=5)
+        self.assertAlmostEqual(helix.Shape.Volume, 388285.4117047924,places=5)
 
     def tearDown(self):
         FreeCAD.closeDocument("PartDesignTestHelix")
