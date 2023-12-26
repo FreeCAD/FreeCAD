@@ -814,27 +814,27 @@ public:
             return;
         case OverlayManager::OverlayMode::ToggleLeft:
             if (OverlayTabWidget::_LeftOverlay->isVisible())
-                OverlayTabWidget::_LeftOverlay->setState(OverlayTabWidget::State::Hidden);
+                OverlayTabWidget::_LeftOverlay->setState(OverlayTabWidget::State::Hidden, /*user_triggered*/true);
             else
-                OverlayTabWidget::_LeftOverlay->setState(OverlayTabWidget::State::Showing);
+                OverlayTabWidget::_LeftOverlay->setState(OverlayTabWidget::State::Showing, /*user_triggered*/true);
             break;
         case OverlayManager::OverlayMode::ToggleRight:
             if (OverlayTabWidget::_RightOverlay->isVisible())
-                OverlayTabWidget::_RightOverlay->setState(OverlayTabWidget::State::Hidden);
+                OverlayTabWidget::_RightOverlay->setState(OverlayTabWidget::State::Hidden, /*user_triggered*/true);
             else
-                OverlayTabWidget::_RightOverlay->setState(OverlayTabWidget::State::Showing);
+                OverlayTabWidget::_RightOverlay->setState(OverlayTabWidget::State::Showing, /*user_triggered*/true);
             break;
         case OverlayManager::OverlayMode::ToggleTop:
             if (OverlayTabWidget::_TopOverlay->isVisible())
-                OverlayTabWidget::_TopOverlay->setState(OverlayTabWidget::State::Hidden);
+                OverlayTabWidget::_TopOverlay->setState(OverlayTabWidget::State::Hidden, /*user_triggered*/true);
             else
-                OverlayTabWidget::_TopOverlay->setState(OverlayTabWidget::State::Showing);
+                OverlayTabWidget::_TopOverlay->setState(OverlayTabWidget::State::Showing, /*user_triggered*/true);
             break;
         case OverlayManager::OverlayMode::ToggleBottom:
             if (OverlayTabWidget::_BottomOverlay->isVisible())
-                OverlayTabWidget::_BottomOverlay->setState(OverlayTabWidget::State::Hidden);
+                OverlayTabWidget::_BottomOverlay->setState(OverlayTabWidget::State::Hidden, /*user_triggered*/true);
             else
-                OverlayTabWidget::_BottomOverlay->setState(OverlayTabWidget::State::Showing);
+                OverlayTabWidget::_BottomOverlay->setState(OverlayTabWidget::State::Showing, /*user_triggered*/true);
             break;
         default:
             break;

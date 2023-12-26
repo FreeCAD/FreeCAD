@@ -282,7 +282,9 @@ public:
         Hidden,
     };
     /// Set state of the tab widget
-    void setState(State);
+    /// @params state: the new state
+    /// @params user_triggered: whether the change is triggered by user action
+    void setState(State state, bool user_triggered=false);
     /// Get the state of the widget
     State getState() const {return _state;}
 
