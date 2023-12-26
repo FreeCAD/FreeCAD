@@ -281,8 +281,17 @@ public:
         /// The tab widget is explicitly hidden by user
         Hidden,
     };
+    /// Source for the change of tab state
+    enum class StateChangeSource {
+        /// Event originating from the internal source code
+        Internal,
+        /// Event triggered explicitly by the user
+        User,
+    };
     /// Set state of the tab widget
-    void setState(State);
+    /// @params state: the new state
+    /// @params source: source responsible for triggering change
+    void setState(State state, StateChangeSource source = StateChangeSource::Internal);
     /// Get the state of the widget
     State getState() const {return _state;}
 
