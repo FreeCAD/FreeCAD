@@ -92,6 +92,14 @@ std::string PropertyPythonObject::toString() const
             Py::Callable state(this->object.getAttr("dumps"));
             dump = state.apply(args);
         }
+#if PY_VERSION_HEX < 0x030b0000
+        // support add-ons that use the old method names
+        else if (this->object.hasAttr("__getstate__")) {
+            Py::Tuple args;
+            Py::Callable state(this->object.getAttr("__getstate__"));
+            dump = state.apply(args);
+        }
+#endif
         else if (this->object.hasAttr("__dict__")) {
             dump = this->object.getAttr("__dict__");
         }
@@ -135,6 +143,15 @@ void PropertyPythonObject::fromString(const std::string& repr)
             Py::Callable state(this->object.getAttr("loads"));
             state.apply(args);
         }
+#if PY_VERSION_HEX < 0x030b0000
+        // support add-ons that use the old method names
+        else if (this->object.hasAttr("__setstate__")) {
+            Py::Tuple args(1);
+            args.setItem(0, res);
+            Py::Callable state(this->object.getAttr("__setstate__"));
+            state.apply(args);
+        }
+#endif
         else if (this->object.hasAttr("__dict__")) {
             if (!res.isNone()) {
                 this->object.setAttr("__dict__", res);
@@ -156,7 +173,7 @@ void PropertyPythonObject::loadPickle(const std::string& str)
     Base::PyGILStateLocker lock;
     try {
         std::string buffer = str;
-        boost::regex pickle("S'(\\w+)'.+S'(\\w+)'\\n");
+        boost::regex pickle(R"(S'(\w+)'.+S'(\w+)'\n)");
         boost::match_results<std::string::const_iterator> what;
         std::string::const_iterator start, end;
         start = buffer.begin();
@@ -179,19 +196,19 @@ void PropertyPythonObject::loadPickle(const std::string& str)
 std::string PropertyPythonObject::encodeValue(const std::string& str) const
 {
     std::string tmp;
-    for (std::string::const_iterator it = str.begin(); it != str.end(); ++it) {
-        if (*it == '<')
+    for (char it : str) {
+        if (it == '<')
             tmp += "&lt;";
-        else if (*it == '"')
+        else if (it == '"')
             tmp += "&quot;";
-        else if (*it == '&')
+        else if (it == '&')
             tmp += "&amp;";
-        else if (*it == '>')
+        else if (it == '>')
             tmp += "&gt";
-        else if (*it == '\n')
+        else if (it == '\n')
             tmp += "\\n";
         else
-            tmp += *it;
+            tmp += it;
     }
 
     return tmp;
@@ -271,7 +288,7 @@ void PropertyPythonObject::Save (Base::Writer &writer) const
         repr = Base::base64_encode((const unsigned char*)repr.c_str(), repr.size());
         std::string val = /*encodeValue*/(repr);
         writer.Stream() << writer.ind() << "<Python value=\"" << val
-                        << "\" encoded=\"yes\"";
+                        << R"(" encoded="yes")";
 
         Base::PyGILStateLocker lock;
         try {
@@ -324,7 +341,7 @@ void PropertyPythonObject::Restore(Base::XMLReader &reader)
 
         Base::PyGILStateLocker lock;
         try {
-            boost::regex pickle("^\\(i(\\w+)\\n(\\w+)\\n");
+            boost::regex pickle(R"(^\(i(\w+)\n(\w+)\n)");
             boost::match_results<std::string::const_iterator> what;
             std::string::const_iterator start, end;
             start = buffer.begin();
@@ -384,8 +401,8 @@ void PropertyPythonObject::Restore(Base::XMLReader &reader)
 void PropertyPythonObject::SaveDocFile (Base::Writer &writer) const
 {
     std::string buffer = this->toString();
-    for (std::string::iterator it = buffer.begin(); it != buffer.end(); ++it)
-        writer.Stream().put(*it);
+    for (char it : buffer)
+        writer.Stream().put(it);
 }
 
 void PropertyPythonObject::RestoreDocFile(Base::Reader &reader)
