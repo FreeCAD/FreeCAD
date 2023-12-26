@@ -1361,6 +1361,7 @@ void execCreateObliqueChainDimension(Gui::Command* cmd) {
                 std::string edgeTag = objFeat->addCosmeticEdge(oldVertex.point / scale, nextPoint / scale);
                 auto edge = objFeat->getCosmeticEdge(edgeTag);
                 edge->m_format.m_style = 1;
+                edge->m_format.m_lineNumber = 1;
                 edge->m_format.m_weight = 0.15;
                 edge->m_format.m_color = App::Color(0.0f, 0.0f, 0.0f);
             }
@@ -1716,6 +1717,7 @@ void execCreateObliqueCoordDimension(Gui::Command* cmd) {
                 std::string edgeTag = objFeat->addCosmeticEdge(oldVertex.point / scale, nextPoint / scale);
                 auto edge = objFeat->getCosmeticEdge(edgeTag);
                 edge->m_format.m_style = 1;
+                edge->m_format.m_lineNumber = 1;
                 edge->m_format.m_weight = 0.15;
                 edge->m_format.m_color = App::Color(0.0f, 0.0f, 0.0f);
             }

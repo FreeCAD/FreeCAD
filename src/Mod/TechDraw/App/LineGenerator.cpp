@@ -113,12 +113,6 @@ QPen LineGenerator::getLinePen(size_t lineNumber, double nominalLineWidth)
         proportionalAdjust = nominalLineWidth;
     }
 
-    // Note: if the cap style is Round or Square, the lengths of the lines, or
-    // dots/dashes within the line, will be wrong by 1 pen width.  To get the
-    // exact line lengths or dash pattern, you must use Flat caps.  Flat caps
-    // look terrible at the corners.
-    linePen.setCapStyle((Qt::PenCapStyle)Preferences::LineCapStyle());
-
     // valid line numbers are [1, number of line definitions]
     // line 1 is always (?) continuous
     // 0 substitutes for LineFormat::InvalidLine here
