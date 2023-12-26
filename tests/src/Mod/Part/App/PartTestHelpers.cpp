@@ -34,4 +34,15 @@ void PartTestHelperClass::createTestDoc()
     }
 }
 
+std::vector<Part::FilletElement>
+    _getFilletEdges(std::vector<int> edges, double startRadius, double endRadius)
+    {
+        std::vector<Part::FilletElement> filletElements;
+        for (auto edge : edges) {
+            Part::FilletElement fe = {edge, startRadius, endRadius};
+            filletElements.push_back(fe);
+        }
+        return filletElements;
+    }
+
 }  // namespace PartTestHelpers

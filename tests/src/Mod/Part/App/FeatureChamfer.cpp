@@ -7,7 +7,6 @@
 #include "PartTestHelpers.h"
 #include "Mod/Part/App/FeatureChamfer.h"
 
-
 class FeatureChamferTest: public ::testing::Test, public PartTestHelpers::PartTestHelperClass
 {
 protected:
@@ -20,12 +19,13 @@ protected:
     {
         createTestDoc();
         _boxes[0]->Length.setValue(4);
-        _boxes[0]->Width.setValue(5);
-        _boxes[0]->Height.setValue(6);
+        _boxes[0]->Width.setValue(5);  // NOLINT magic number
+        _boxes[0]->Height.setValue(6);  // NOLINT magic number
         _boxes[0]->Placement.setValue(
             Base::Placement(Base::Vector3d(), Base::Rotation(), Base::Vector3d()));
         _boxes[1]->Placement.setValue(
             Base::Placement(Base::Vector3d(0, 1, 6), Base::Rotation(), Base::Vector3d()));
+            // NOLINT magic number
         _boxes[1]->Length.setValue(1);
         _boxes[1]->Width.setValue(2);
         _boxes[1]->Height.setValue(3);
@@ -39,19 +39,8 @@ protected:
     void TearDown() override
     {}
 
-    Part::Fuse* _fused;       // NOLINT Can't be private in a test framework
-    Part::Chamfer* _chamfer;  // NOLINT Can't be private in a test framework
-
-    std::vector<Part::FilletElement>
-    _getFilletEdges(std::vector<int> edges, double startRadius, double endRadius)
-    {
-        std::vector<Part::FilletElement> filletElements;
-        for (auto e : edges) {
-            Part::FilletElement fe = {e, startRadius, endRadius};
-            filletElements.push_back(fe);
-        }
-        return filletElements;
-    }
+    Part::Fuse* _fused = nullptr;  // NOLINT Can't be private in a test framework
+    Part::Chamfer* _chamfer = nullptr;  // NOLINT Can't be private in a test framework
 };
 
 // Unfortunately for these next two tests, there are upstream errors in OCCT
@@ -64,7 +53,6 @@ TEST_F(FeatureChamferTest, testOther)
     _chamfer->Base.setValue(_fused);
     Part::TopoShape ts = _fused->Shape.getValue();
     unsigned long sec = ts.countSubElements("Edge");
-    double fusedVolume, chamferVolume;
     // Assert
     EXPECT_EQ(sec, 25);
     // Act
@@ -75,9 +63,9 @@ TEST_F(FeatureChamferTest, testOther)
     // Assert
     EXPECT_EQ(sec, 24);
     // Act
-    _chamfer->Edges.setValues(_getFilletEdges({1, 2}, 0.5, 0.5));
-    fusedVolume = PartTestHelpers::getVolume(_fused->Shape.getValue());
-    chamferVolume = PartTestHelpers::getVolume(_chamfer->Shape.getValue());
+    _chamfer->Edges.setValues(PartTestHelpers::_getFilletEdges({1, 2}, 0.5, 0.5));
+    double fusedVolume = PartTestHelpers::getVolume(_fused->Shape.getValue());
+    double chamferVolume = PartTestHelpers::getVolume(_chamfer->Shape.getValue());
     // Assert
     EXPECT_DOUBLE_EQ(fusedVolume, 126.0);
     EXPECT_DOUBLE_EQ(chamferVolume, 0.0);
@@ -94,7 +82,7 @@ TEST_F(FeatureChamferTest, testMost)
     _fused->Refine.setValue(true);
     _fused->execute();
     _chamfer->Base.setValue(_fused);
-    _chamfer->Edges.setValues(_getFilletEdges(
+    _chamfer->Edges.setValues(PartTestHelpers::_getFilletEdges(
         {3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24},
         0.4,
         0.4));
@@ -105,9 +93,8 @@ TEST_F(FeatureChamferTest, testMost)
     EXPECT_FLOAT_EQ(chamferVolume, 121.46667);
 }
 
-// Hmmmm...  FeaturePartCommon with insufficent parameters says MustExecute false,
-// but FeatureChamfer says MustExecute true ...  Neither of these should really
-// happen, though.
+// Worth noting that FeaturePartCommon with insufficient parameters says MustExecute false,
+// but FeatureChamfer says MustExecute true.  Not a condition that should ever really be hit.
 
 TEST_F(FeatureChamferTest, testMustExecute)
 {
@@ -118,7 +105,7 @@ TEST_F(FeatureChamferTest, testMustExecute)
     // Assert
     EXPECT_TRUE(_chamfer->mustExecute());
     // Act
-    _chamfer->Edges.setValues(_getFilletEdges({1}, 0.5, 0.5));
+    _chamfer->Edges.setValues(PartTestHelpers::_getFilletEdges({1}, 0.5, 0.5));
     // Assert
     EXPECT_TRUE(_chamfer->mustExecute());
     // Act

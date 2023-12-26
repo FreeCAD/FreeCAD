@@ -11,6 +11,9 @@ namespace PartTestHelpers
 
 double getVolume(TopoDS_Shape shape);
 
+std::vector<Part::FilletElement>
+    _getFilletEdges(std::vector<int> edges, double startRadius, double endRadius);
+
 class PartTestHelperClass
 {
 public:

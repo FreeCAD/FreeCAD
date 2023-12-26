@@ -10,9 +10,6 @@
 // #include <BRep_Tool.hxx>
 // #include <TopoDS.hxx>
 
-namespace PartTestHelpers
-{
-
 class FeatureFilletTest: public ::testing::Test, public PartTestHelpers::PartTestHelperClass
 {
 protected:
@@ -44,19 +41,9 @@ protected:
     void TearDown() override
     {}
 
-    Part::Fuse* _fused;     // NOLINT Can't be private in a test framework
-    Part::Fillet* _fillet;  // NOLINT Can't be private in a test framework
+    Part::Fuse* _fused = nullptr;     // NOLINT Can't be private in a test framework
+    Part::Fillet* _fillet = nullptr;  // NOLINT Can't be private in a test framework
 
-    std::vector<Part::FilletElement>
-    _getFilletEdges(std::vector<int> edges, double startRadius, double endRadius)
-    {
-        std::vector<Part::FilletElement> filletElements;
-        for (auto e : edges) {
-            Part::FilletElement fe = {e, startRadius, endRadius};
-            filletElements.push_back(fe);
-        }
-        return filletElements;
-    }
 };
 
 // Unfortunately for these next two tests, there are upstream errors in OCCT
@@ -69,7 +56,6 @@ TEST_F(FeatureFilletTest, testOtherEdges)
     _fillet->Base.setValue(_fused);
     Part::TopoShape ts = _fused->Shape.getValue();
     unsigned long sec = ts.countSubElements("Edge");
-    double fusedVolume, filletVolume;
     // Assert
     EXPECT_EQ(sec, 25);
     // Act
@@ -81,9 +67,9 @@ TEST_F(FeatureFilletTest, testOtherEdges)
     EXPECT_EQ(sec, 24);
 
     // Act
-    _fillet->Edges.setValues(_getFilletEdges({15, 17}, 0.5, 0.5));
-    fusedVolume = PartTestHelpers::getVolume(_fused->Shape.getValue());
-    filletVolume = PartTestHelpers::getVolume(_fillet->Shape.getValue());
+    _fillet->Edges.setValues(PartTestHelpers::_getFilletEdges({15, 17}, 0.5, 0.5));
+    double fusedVolume = PartTestHelpers::getVolume(_fused->Shape.getValue());
+    double filletVolume = PartTestHelpers::getVolume(_fillet->Shape.getValue());
     // Assert
     EXPECT_DOUBLE_EQ(fusedVolume, 126.0);
     EXPECT_DOUBLE_EQ(filletVolume, 0.0);
@@ -101,9 +87,8 @@ TEST_F(FeatureFilletTest, testMostEdges)
     // _fused->execute();
     _fillet->Base.setValue(_fused);
     _fillet->Edges.setValues(
-        _getFilletEdges({1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 18, 19, 20, 22, 23, 24},
-                        0.4,
-                        0.4));
+        PartTestHelpers::_getFilletEdges({1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
+            11, 12, 13, 14, 16, 18, 19, 20, 22, 23, 24}, 0.4, 0.4));
     // Act
     _fillet->execute();
     double filletVolume = PartTestHelpers::getVolume(_fillet->Shape.getValue());
@@ -111,9 +96,8 @@ TEST_F(FeatureFilletTest, testMostEdges)
     EXPECT_FLOAT_EQ(filletVolume, 118.38763);
 }
 
-// Hmmmm...  FeaturePartCommon with insufficent parameters says MustExecute false,
-// but FeatureFillet says MustExecute true ...  Neither of these should really
-// happen, though.
+// Worth noting that FeaturePartCommon with insufficient parameters says MustExecute false,
+// but FeatureFillet says MustExecute true.  Not a condition that should ever really be hit.
 
 TEST_F(FeatureFilletTest, testMustExecute)
 {
@@ -124,7 +108,7 @@ TEST_F(FeatureFilletTest, testMustExecute)
     // Assert
     EXPECT_TRUE(_fillet->mustExecute());
     // Act
-    _fillet->Edges.setValues(_getFilletEdges({1}, 0.5, 0.5));
+    _fillet->Edges.setValues(PartTestHelpers::_getFilletEdges({1}, 0.5, 0.5));
     // Assert
     EXPECT_TRUE(_fillet->mustExecute());
     // Act
@@ -172,5 +156,3 @@ TEST_F(FeatureFilletTest, testGetProviderName)
 //     }
 // }
 
-
-}  // namespace PartTestHelpers
