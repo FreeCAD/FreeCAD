@@ -43,7 +43,6 @@ protected:
 
     Part::Fuse* _fused = nullptr;     // NOLINT Can't be private in a test framework
     Part::Fillet* _fillet = nullptr;  // NOLINT Can't be private in a test framework
-
 };
 
 // Unfortunately for these next two tests, there are upstream errors in OCCT
@@ -86,9 +85,10 @@ TEST_F(FeatureFilletTest, testMostEdges)
     _fused->Refine.setValue(true);
     // _fused->execute();
     _fillet->Base.setValue(_fused);
-    _fillet->Edges.setValues(
-        PartTestHelpers::_getFilletEdges({1, 2, 3, 4, 5, 6, 7, 8, 9, 10,
-            11, 12, 13, 14, 16, 18, 19, 20, 22, 23, 24}, 0.4, 0.4));
+    _fillet->Edges.setValues(PartTestHelpers::_getFilletEdges(
+        {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 16, 18, 19, 20, 22, 23, 24},
+        0.4,
+        0.4));
     // Act
     _fillet->execute();
     double filletVolume = PartTestHelpers::getVolume(_fillet->Shape.getValue());
@@ -155,4 +155,3 @@ TEST_F(FeatureFilletTest, testGetProviderName)
 //         }
 //     }
 // }
-

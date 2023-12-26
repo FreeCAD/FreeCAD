@@ -28,7 +28,7 @@ protected:
 
     Part::Revolution* _revolution;  // NOLINT Can't be private in a test framework
 };
-    
+
 TEST_F(FeatureRevolutionTest, testExecute)
 {
     // Test perumtations of these settings:
@@ -41,18 +41,14 @@ TEST_F(FeatureRevolutionTest, testExecute)
     // App::PropertyBool Symmetric; //like "Midplane" in PartDesign
     // App::PropertyBool Solid;
     // App::PropertyString FaceMakerClass;
-
 }
 
 TEST_F(FeatureRevolutionTest, testMustExecute)
-{
-
-}
+{}
 
 TEST_F(FeatureRevolutionTest, testOnChanged)
 {
     // void onChanged(const App::Property* prop) override;
-
 }
 
 TEST_F(FeatureRevolutionTest, testGetProviderName)
@@ -66,7 +62,7 @@ TEST_F(FeatureRevolutionTest, testGetProviderName)
 
 TEST_F(FeatureRevolutionTest, testFetchAxisLink)
 {
-// /**
+    // /**
     //  * @brief fetchAxisLink: read AxisLink to obtain the axis parameters and
     //  * angle span. Note: this routine is re-used in Revolve dialog, hence it
     //  * is static.

@@ -19,13 +19,13 @@ protected:
     {
         createTestDoc();
         _boxes[0]->Length.setValue(4);
-        _boxes[0]->Width.setValue(5);  // NOLINT magic number
+        _boxes[0]->Width.setValue(5);   // NOLINT magic number
         _boxes[0]->Height.setValue(6);  // NOLINT magic number
         _boxes[0]->Placement.setValue(
             Base::Placement(Base::Vector3d(), Base::Rotation(), Base::Vector3d()));
         _boxes[1]->Placement.setValue(
             Base::Placement(Base::Vector3d(0, 1, 6), Base::Rotation(), Base::Vector3d()));
-            // NOLINT magic number
+        // NOLINT magic number
         _boxes[1]->Length.setValue(1);
         _boxes[1]->Width.setValue(2);
         _boxes[1]->Height.setValue(3);
@@ -39,7 +39,7 @@ protected:
     void TearDown() override
     {}
 
-    Part::Fuse* _fused = nullptr;  // NOLINT Can't be private in a test framework
+    Part::Fuse* _fused = nullptr;       // NOLINT Can't be private in a test framework
     Part::Chamfer* _chamfer = nullptr;  // NOLINT Can't be private in a test framework
 };
 

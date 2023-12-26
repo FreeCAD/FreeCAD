@@ -45,7 +45,6 @@ TEST_F(FeatureExtrusionTest, testExecute)
     // App::PropertyAngle TaperAngle;
     // App::PropertyAngle TaperAngleRev;
     // App::PropertyString FaceMakerClass;
-
 }
 
 TEST_F(FeatureExtrusionTest, testMustExecute)
@@ -99,7 +98,6 @@ TEST_F(FeatureExtrusionTest, testExtrudeShape)
     //  * @return result of extrusion
     //  */
     // static TopoShape extrudeShape(const TopoShape& source, const ExtrusionParameters& params);
-
 }
 
 
@@ -118,7 +116,6 @@ TEST_F(FeatureExtrusionTest, testFetchAxisLink)
     // static bool fetchAxisLink(const App::PropertyLinkSub& axisLink,
     //                           Base::Vector3d& basepoint,
     //                           Base::Vector3d& dir);
-
 }
 
 TEST_F(FeatureExtrusionTest, testComputeFinalParameters)
