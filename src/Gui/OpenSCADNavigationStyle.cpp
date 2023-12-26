@@ -143,9 +143,10 @@ SbBool OpenSCADNavigationStyle::processSoEvent(const SoEvent * const ev)
             if (!viewer->isEditing()) {
                 // If we are in zoom or pan mode ignore RMB events otherwise
                 // the canvas doesn't get any release events
-                if (curmode != NavigationStyle::ZOOMING &&
+                if ((curmode != NavigationStyle::ZOOMING &&
                     curmode != NavigationStyle::PANNING &&
-                    curmode != NavigationStyle::DRAGGING) {
+                    curmode != NavigationStyle::DRAGGING) ||
+                    (curmode == NavigationStyle::PANNING && !hasPanned)) {
                     if (this->isPopupMenuEnabled()) {
                         if (!press) { // release right mouse button
                             this->openPopupMenu(event->getPosition());

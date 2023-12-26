@@ -257,6 +257,8 @@ void NavigationStyle::initialize()
         setRotationCenterMode(NavigationStyle::RotationCenterMode::ScenePointAtCursor |
                               NavigationStyle::RotationCenterMode::BoundingBoxCenter);
     }
+
+    this->hasPanned = false;
 }
 
 void NavigationStyle::finalize()
@@ -583,6 +585,7 @@ void NavigationStyle::panCamera(SoCamera * cam, float aspectratio, const SbPlane
     // Reposition camera according to the vector difference between the
     // projected points.
     cam->position = cam->position.getValue() - (current_planept - old_planept);
+    hasPanned = true;
 }
 
 void NavigationStyle::pan(SoCamera* camera)
@@ -1365,6 +1368,7 @@ void NavigationStyle::setViewingMode(const ViewerMode newmode)
     case PANNING:
         animator->stop();
         pan(viewer->getSoRenderManager()->getCamera());
+        hasPanned = false;
         this->interactiveCountInc();
         break;
 
@@ -1386,8 +1390,12 @@ void NavigationStyle::setViewingMode(const ViewerMode newmode)
     case SPINNING:
     case DRAGGING:
         viewer->showRotationCenter(false);
-        [[fallthrough]];
+        this->interactiveCountDec();
+        break;
     case PANNING:
+        hasPanned = false;
+        this->interactiveCountDec();
+        break;
     case ZOOMING:
     case BOXZOOM:
         this->interactiveCountDec();
