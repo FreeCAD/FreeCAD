@@ -132,10 +132,23 @@ void ViewProviderBody::setupContextMenu(QMenu* menu, QObject* receiver, const ch
     Q_UNUSED(receiver);
     Q_UNUSED(member);
     Gui::ActionFunction* func = new Gui::ActionFunction(menu);
-    QAction* act = menu->addAction(tr("Toggle active body"));
+
+    auto activeDoc = Gui::Application::Instance->activeDocument();
+    if(!activeDoc)
+        activeDoc = getDocument();
+    auto activeView = activeDoc->setActiveView(this);
+
+     if (activeView->isActiveObject(getObject(),PDBODYKEY)) {
+        QAction* act = menu->addAction(tr("Unset active body"));
     func->trigger(act, [this]() {
         this->doubleClicked();
     });
+    } else {
+        QAction* act = menu->addAction(tr("Set active body"));
+    func->trigger(act, [this]() {
+        this->doubleClicked();
+    });
+    }
 
     Gui::ViewProviderGeometryObject::setupContextMenu(menu, receiver, member); // clazy:exclude=skipped-base-method
 }

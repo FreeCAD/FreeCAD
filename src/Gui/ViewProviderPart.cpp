@@ -68,11 +68,26 @@ void ViewProviderPart::onChanged(const App::Property* prop) {
 
 void ViewProviderPart::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
+    App::DocumentObject* activePart = nullptr;
+    auto activeDoc = Gui::Application::Instance->activeDocument();
+    if(!activeDoc)
+        activeDoc = getDocument();
+    auto activeView = activeDoc->setActiveView(this);
+    activePart = activeView->getActiveObject<App::DocumentObject*> (PARTKEY);
+
     auto func = new Gui::ActionFunction(menu);
-    QAction* act = menu->addAction(QObject::tr("Toggle active part"));
-    func->trigger(act, [this](){
+
+    if (activePart == this->getObject()){
+        QAction* act = menu->addAction(QObject::tr("Unset active object"));
+        func->trigger(act, [this](){
         this->doubleClicked();
     });
+    } else {
+        QAction* act = menu->addAction(QObject::tr("Set active object"));
+        func->trigger(act, [this](){
+        this->doubleClicked();
+    });
+    }
 
     ViewProviderDragger::setupContextMenu(menu, receiver, member);
 }
