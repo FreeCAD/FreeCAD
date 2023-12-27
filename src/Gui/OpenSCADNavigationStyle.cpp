@@ -166,6 +166,9 @@ SbBool OpenSCADNavigationStyle::processSoEvent(const SoEvent * const ev)
                 newmode = NavigationStyle::IDLE;
                 processed = true;
             }
+            else if (!press && curmode == NavigationStyle::PANNING && hasPanned) {
+                processed = true;
+            }
             break;
         case SoMouseButtonEvent::BUTTON3:
             this->button3down = press;
