@@ -142,6 +142,9 @@ SbBool TinkerCADNavigationStyle::processSoEvent(const SoEvent * const ev)
                 this->centerTime = ev->getTime();
                 processed = true;
             }
+            else if (!press && curmode == NavigationStyle::DRAGGING && hasDragged) {
+                processed = true;
+            }
             else if (!press && curmode == NavigationStyle::DRAGGING && !hasDragged) {
                 newmode = NavigationStyle::IDLE;
                 if (!viewer->isEditing()) {
