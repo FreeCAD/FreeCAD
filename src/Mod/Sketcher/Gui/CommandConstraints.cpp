@@ -2610,6 +2610,7 @@ public:
         eType = ForEdit;
 
         setCheckable(false);
+        setRememberLast(false);
 
         addCommand("Sketcher_ConstrainHorVer");
         addCommand("Sketcher_ConstrainHorizontal");
