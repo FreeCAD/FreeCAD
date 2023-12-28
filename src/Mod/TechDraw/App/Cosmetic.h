@@ -23,7 +23,10 @@
 #ifndef TECHDRAW_COSMETIC_H
 #define TECHDRAW_COSMETIC_H
 
+#include <QColor>
+
 #include <App/FeaturePython.h>
+#include <App/Color.h>
 #include <Base/Persistence.h>
 #include <Base/Vector3D.h>
 
@@ -49,6 +52,16 @@ public:
                const bool visible);
     ~LineFormat() = default;
 
+    int getStyle() const { return m_style; }
+    void setStyle(int style) { m_style = style; }
+    double getWidth() const { return m_weight; }
+    void setWidth(double width) {m_weight = width; }
+    App::Color getColor() const { return m_color; }
+    void setColor(App::Color color) { m_color = color; }
+    QColor getQColor() const { return m_color.asValue<QColor>(); }
+    void setQColor(QColor qColor) { m_color.set(qColor.redF(), qColor.greenF(), qColor.blueF(), 1.0 - qColor.alphaF()); }
+    bool getVisible() const { return m_visible; }
+    void setVisible(bool viz) { m_visible = viz; }
     int getLineNumber() const { return m_lineNumber; }
     void setLineNumber(int number) { m_lineNumber = number; }
 
@@ -85,6 +98,7 @@ public:
     TechDraw::BaseGeomPtr scaledGeometry(const double scale);
     TechDraw::BaseGeomPtr scaledAndRotatedGeometry(const double scale, const double rotDegrees);
 
+    static TechDraw::BaseGeomPtr makeCanonicalLine(DrawViewPart* dvp, Base::Vector3d start, Base::Vector3d end);
     std::string toString() const override;
     void dump(const char* title) const;
 

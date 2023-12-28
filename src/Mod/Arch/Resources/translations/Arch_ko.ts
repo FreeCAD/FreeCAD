@@ -253,7 +253,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="71"/>
       <source>The property to retrieve from each object.Can be 'Count' to count the objects, or property names like 'Length' or 'Shape.Volume' to retrieve a certain property.</source>
-      <translation type="unfinished">The property to retrieve from each object.Can be 'Count' to count the objects, or property names like 'Length' or 'Shape.Volume' to retrieve a certain property.</translation>
+      <translation>각 오브젝트에서 얻어질 속성입니다. 오브젝트 수를 세는 'Count'가 될 수도 있고, 특정 속성을 얻는 'Length' 또는 'Shape.Volume'과 같은 속성 이름이 될 수도 있습니다.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="108"/>
@@ -268,7 +268,7 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="118"/>
       <source>If this is enabled, additional lines will be filled with each object considered. If not, only the totals.</source>
-      <translation type="unfinished">If this is enabled, additional lines will be filled with each object considered. If not, only the totals.</translation>
+      <translation>이 옵션을 켜면 고려된 각 오브젝트로 추가 줄이 채워집니다. 그렇지 않은 경우 합계만 표시합니다.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="121"/>
@@ -278,12 +278,12 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="128"/>
       <source>If this is enabled, the schedule and the associated spreadsheet are updated whenever the document is recomputed.</source>
-      <translation type="unfinished">If this is enabled, the schedule and the associated spreadsheet are updated whenever the document is recomputed.</translation>
+      <translation>이 옵션을 켜면 문서가 다시 계산될 때마다 일정 및 관련 스프레드시트가 업데이트됩니다.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="131"/>
       <source>Auto update</source>
-      <translation type="unfinished">Auto update</translation>
+      <translation>자동 업데이트</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="142"/>
@@ -318,12 +318,12 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="184"/>
       <source>Put selected objects into the 'Objects' column of the selected row</source>
-      <translation type="unfinished">Put selected objects into the 'Objects' column of the selected row</translation>
+      <translation>선택한 오브젝트를 선택한 행의 'Objects' 열에 넣습니다.</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="208"/>
       <source>This exports the results to a CSV or Markdown file. Note for CSV export: In Libreoffice, you can keep this CSV file linked by right-clicking the Sheets tab bar, New sheet, From file, Link (Note: as of LibreOffice v6.x the correct path now is: Sheet, Insert Sheet..., From file, Browse...)</source>
-      <translation type="unfinished">This exports the results to a CSV or Markdown file. Note for CSV export: In Libreoffice, you can keep this CSV file linked by right-clicking the Sheets tab bar, New sheet, From file, Link (Note: as of LibreOffice v6.x the correct path now is: Sheet, Insert Sheet..., From file, Browse...)</translation>
+      <translation>결과를 CSV 또는 Markdown 파일로 내보냅니다. CSV 내보내기에 대한 참고: Libreoffice에서는 Sheets tab bar, New sheet, From file, Link를 우클릭하여 이 CSV 파일을 계속 링크시킬 수 있습니다.(참고: Libreoffice v6.x에서 현재 올바른 경로는 Sheet, Insert Sheet..., From file, Browse... 입니다.)</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="187"/>

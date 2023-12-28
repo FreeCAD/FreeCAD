@@ -50,6 +50,7 @@ public:
     static bool isEdgeType(App::DocumentObject* obj);
     static bool isPointType(App::DocumentObject* obj);
     static bool isDraftPoint(App::DocumentObject* obj);
+    static bool isDatumPoint(App::DocumentObject* obj);
     static Base::Vector3d getLocation3dFromFeat(App::DocumentObject *obj);
 
     static TopoDS_Shape stripInfiniteShapes(TopoDS_Shape inShape);

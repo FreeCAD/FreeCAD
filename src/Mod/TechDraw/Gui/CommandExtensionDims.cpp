@@ -1349,7 +1349,8 @@ void execCreateObliqueChainDimension(Gui::Command* cmd) {
             nextPoint.y = -nextPoint.y;
             oldVertex.point.y = -oldVertex.point.y;
             if ((oldVertex.point - nextPoint).Length() > 0.01) {
-                std::string vertTag = objFeat->addCosmeticVertex(nextPoint / scale);
+                Base::Vector3d cvPoint = CosmeticVertex::makeCanonicalPoint(objFeat, nextPoint);
+                std::string vertTag = objFeat->addCosmeticVertex(cvPoint);
                 int vertNumber = objFeat->add1CVToGV(vertTag);
                 std::stringstream ss;
                 ss << "Vertex" << vertNumber;
@@ -1360,6 +1361,7 @@ void execCreateObliqueChainDimension(Gui::Command* cmd) {
                 std::string edgeTag = objFeat->addCosmeticEdge(oldVertex.point / scale, nextPoint / scale);
                 auto edge = objFeat->getCosmeticEdge(edgeTag);
                 edge->m_format.m_style = 1;
+                edge->m_format.m_lineNumber = 1;
                 edge->m_format.m_weight = 0.15;
                 edge->m_format.m_color = App::Color(0.0f, 0.0f, 0.0f);
             }
@@ -1703,7 +1705,8 @@ void execCreateObliqueCoordDimension(Gui::Command* cmd) {
             nextPoint.y = -nextPoint.y;
             oldVertex.point.y = -oldVertex.point.y;
             if ((oldVertex.point - nextPoint).Length() > 0.01) {
-                std::string vertTag = objFeat->addCosmeticVertex(nextPoint / scale);
+                Base::Vector3d cvPoint = CosmeticVertex::makeCanonicalPoint(objFeat, nextPoint);
+                std::string vertTag = objFeat->addCosmeticVertex(cvPoint);
                 int vertNumber = objFeat->add1CVToGV(vertTag);
                 std::stringstream ss;
                 ss << "Vertex" << vertNumber;
@@ -1714,6 +1717,7 @@ void execCreateObliqueCoordDimension(Gui::Command* cmd) {
                 std::string edgeTag = objFeat->addCosmeticEdge(oldVertex.point / scale, nextPoint / scale);
                 auto edge = objFeat->getCosmeticEdge(edgeTag);
                 edge->m_format.m_style = 1;
+                edge->m_format.m_lineNumber = 1;
                 edge->m_format.m_weight = 0.15;
                 edge->m_format.m_color = App::Color(0.0f, 0.0f, 0.0f);
             }
@@ -2180,10 +2184,12 @@ void CmdTechDrawExtensionCreateLengthArc::activated(int iMsg) {
         endPt.y = -endPt.y;
         std::stringstream startName, endName, formatSpec;
         double scale = objFeat->getScale();
-        std::string startVertTag = objFeat->addCosmeticVertex(startPt / scale);
+        Base::Vector3d cvPoint = CosmeticVertex::makeCanonicalPoint(objFeat, startPt);
+        std::string startVertTag = objFeat->addCosmeticVertex(cvPoint);
         int startVertNumber = objFeat->add1CVToGV(startVertTag);
         startName << "Vertex" << startVertNumber;
-        std::string endVertTag = objFeat->addCosmeticVertex(endPt / scale);
+        cvPoint = CosmeticVertex::makeCanonicalPoint(objFeat, endPt);
+        std::string endVertTag = objFeat->addCosmeticVertex(cvPoint);
         int endVertNumber = objFeat->add1CVToGV(endVertTag);
         endName << "Vertex" << endVertNumber;
         TechDraw::DrawViewDimension* dim;
@@ -2334,10 +2340,10 @@ namespace TechDrawGui {
             throw Base::TypeError("CmdTechDrawExtensionCreateLinDimension - dim not found\n");
         dim->References2D.setValues(objs, subs);
         cmd->doCommand(cmd->Doc, "App.activeDocument().%s.addView(App.activeDocument().%s)", PageName.c_str(), FeatName.c_str());
+
+        // Touch the parent feature so the dimension in tree view appears as a child
+        objFeat->touch();
         dim->recomputeFeature();
-        //Horrible hack to force Tree update
-        double x = objFeat->X.getValue();
-        objFeat->X.setValue(x);
         return dim;
     }
 

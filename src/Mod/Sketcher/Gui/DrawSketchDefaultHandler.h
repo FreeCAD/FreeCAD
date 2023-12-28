@@ -1110,11 +1110,12 @@ protected:
     void commandAddShapeGeometryAndConstraints()
     {
         auto shapeGeometry = toPointerVector(ShapeGeometry);
-        Gui::Command::doCommand(
-            Gui::Command::Doc,
-            Sketcher::PythonConverter::convert(Gui::Command::getObjectCmd(sketchgui->getObject()),
-                                               shapeGeometry)
-                .c_str());
+        Gui::Command::doCommand(Gui::Command::Doc,
+                                Sketcher::PythonConverter::convert(
+                                    Gui::Command::getObjectCmd(sketchgui->getObject()),
+                                    shapeGeometry,
+                                    Sketcher::PythonConverter::Mode::OmitInternalGeometry)
+                                    .c_str());
 
         auto shapeConstraints = toPointerVector(ShapeConstraints);
         Gui::Command::doCommand(

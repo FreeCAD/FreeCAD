@@ -261,7 +261,12 @@ private:
 
     QString getCrosshairCursorSVGName() const override
     {
-        return QString::fromLatin1("Sketcher_Pointer_Create_Ellipse");
+        if (constructionMethod() == DrawSketchHandlerEllipse::ConstructionMethod::Center) {
+            return QString::fromLatin1("Sketcher_Pointer_Create_EllipseByCenter");
+        }
+        else {
+            return QString::fromLatin1("Sketcher_Pointer_Create_Ellipse_3points");
+        }
     }
 
     std::unique_ptr<QWidget> createWidget() const override

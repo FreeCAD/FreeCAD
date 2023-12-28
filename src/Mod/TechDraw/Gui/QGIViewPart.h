@@ -109,6 +109,12 @@ public:
                                      double x, double y,
                                      double curx, double cury);
 
+    bool getGroupSelection() override;
+    void setGroupSelection(bool isSelected) override;
+    void setGroupSelection(bool isSelected, const std::vector<std::string> &subNames) override;
+
+    virtual QGraphicsItem *getQGISubItemByName(const std::string &subName) const;
+
 protected:
     QPainterPath drawPainterPath(TechDraw::BaseGeomPtr baseGeom) const;
     void drawViewPart();

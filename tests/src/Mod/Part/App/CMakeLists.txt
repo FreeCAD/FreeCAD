@@ -13,5 +13,5 @@ target_sources(
             ${CMAKE_CURRENT_SOURCE_DIR}/FeaturePartFuse.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/FeatureRevolution.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/PartTestHelpers.cpp
-            # ${CMAKE_CURRENT_SOURCE_DIR}/ShapeBinder.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/TopoShapeCache.cpp
 )

@@ -473,7 +473,7 @@
     <message>
       <location filename="../../Command.cpp" line="1136"/>
       <source>Remove components...</source>
-      <translation>Rimuovi componente...</translation>
+      <translation>Rimuovi componenti...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1137"/>

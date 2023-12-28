@@ -2136,14 +2136,12 @@ Note: You can change that in the preferences.</source>
       <source>There is no valid object in the selection.
 
 Site creation aborted.</source>
-      <translation type="unfinished">There is no valid object in the selection.
-
-Site creation aborted.</translation>
+      <translation>選擇中沒有有效物件，中斷基地建立。</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="550"/>
       <source>Create Site</source>
-      <translation type="unfinished">Create Site</translation>
+      <translation>建立基地</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="222"/>
@@ -3603,12 +3601,12 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchWall.py" line="531"/>
       <source>Left</source>
-      <translation>左視圖</translation>
+      <translation>靠左</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="532"/>
       <source>Right</source>
-      <translation>右視圖</translation>
+      <translation>靠右</translation>
     </message>
     <message>
       <location filename="../../ArchWall.py" line="548"/>
@@ -4272,7 +4270,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchSite.py" line="597"/>
       <source>The base terrain of this site</source>
-      <translation type="unfinished">The base terrain of this site</translation>
+      <translation>本基地的基礎地形</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="599"/>
@@ -4287,7 +4285,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchSite.py" line="603"/>
       <source>The city of this site</source>
-      <translation type="unfinished">The city of this site</translation>
+      <translation>此基地所在城市</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="605"/>
@@ -4297,7 +4295,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchSite.py" line="607"/>
       <source>The country of this site</source>
-      <translation type="unfinished">The country of this site</translation>
+      <translation>此基地所在國家</translation>
     </message>
     <message>
       <location filename="../../ArchSite.py" line="609"/>
