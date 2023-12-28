@@ -595,7 +595,7 @@ void StdWorkbench::setupContextMenu(const char* recipient, MenuItem* item) const
         *measure << "View_Measure_Toggle_All" << "View_Measure_Clear_All";
 
 
-        *item << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_DrawStyle" 
+        *item << "Std_ViewFitAll" << "Std_ViewFitSelection" << "Std_DrawStyle"
               << StdViews << measure << "Separator"
               << "Std_ViewDockUndockFullscreen";
 
@@ -603,13 +603,13 @@ void StdWorkbench::setupContextMenu(const char* recipient, MenuItem* item) const
             *item << "Separator" << "Std_SetAppearance" << "Std_ToggleVisibility"
                   << "Std_ToggleSelectability" << "Std_TreeSelection"
                   << "Std_RandomColor" << "Std_ToggleTransparency" << "Separator" << "Std_Delete"
-                  << "Std_SendToPythonConsole" << "Std_TransformManip";
+                  << "Std_SendToPythonConsole" << "Std_TransformManip" << "Std_Placement";
         }
     }
     else if (strcmp(recipient,"Tree") == 0)
     {
         if (Gui::Selection().countObjectsOfType(App::DocumentObject::getClassTypeId()) > 0) {
-            *item << "Std_ToggleVisibility" << "Std_ShowSelection" << "Std_HideSelection"
+            *item << "Std_Placement" << "Std_ToggleVisibility" << "Std_ShowSelection" << "Std_HideSelection"
                   << "Std_ToggleSelectability" << "Std_TreeSelectAllInstances" << "Separator"
                   << "Std_SetAppearance" << "Std_RandomColor" << "Std_ToggleTransparency" << "Separator"
                   << "Std_Cut" << "Std_Copy" << "Std_Paste" << "Std_Delete"
