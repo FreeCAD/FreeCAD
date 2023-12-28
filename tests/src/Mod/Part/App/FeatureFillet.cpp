@@ -51,6 +51,10 @@ protected:
 
 TEST_F(FeatureFilletTest, testOtherEdges)
 {
+    const double baseVolume = _boxes[0]->Length.getValue() * 
+        _boxes[0]->Width.getValue() * _boxes[0]->Height.getValue() +
+        _boxes[1]->Length.getValue() *
+        _boxes[1]->Width.getValue() * _boxes[1]->Height.getValue();
     // Arrange
     _fillet->Base.setValue(_fused);
     Part::TopoShape ts = _fused->Shape.getValue();
@@ -70,7 +74,7 @@ TEST_F(FeatureFilletTest, testOtherEdges)
     double fusedVolume = PartTestHelpers::getVolume(_fused->Shape.getValue());
     double filletVolume = PartTestHelpers::getVolume(_fillet->Shape.getValue());
     // Assert
-    EXPECT_DOUBLE_EQ(fusedVolume, 126.0);
+    EXPECT_DOUBLE_EQ(fusedVolume, baseVolume);
     EXPECT_DOUBLE_EQ(filletVolume, 0.0);
     // Act
     _fillet->execute();

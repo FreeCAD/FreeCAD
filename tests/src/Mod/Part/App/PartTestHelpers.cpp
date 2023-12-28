@@ -7,8 +7,10 @@ namespace PartTestHelpers
 double getVolume(TopoDS_Shape shape)
 {
     GProp_GProps prop;
-    BRepGProp::VolumeProperties(shape, prop);
-    return prop.Mass();
+
+    BRepGProp::VolumeProperties(shape, prop); //, 1.0e-1, Standard_False, Standard_False);
+    // BRepGProp::VolumePropertiesGK(shape, prop, 1.0e-5, Standard_False, Standard_False);
+    return prop.Mass(); // Yes, Mass is how you get Volume in opencascade.
 }
 
 void PartTestHelperClass::createTestDoc()

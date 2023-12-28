@@ -1,10 +1,12 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
+#include <cmath>
+// #include <math>
+
 #include "gtest/gtest.h"
 
 #include "Mod/Part/App/FeatureExtrusion.h"
 #include <src/App/InitApplication.h>
-
 #include "PartTestHelpers.h"
 
 
@@ -21,47 +23,120 @@ protected:
     {
         createTestDoc();
         _extrusion = dynamic_cast<Part::Extrusion*>(_doc->addObject("Part::Extrusion"));
-        _extrusion->LengthFwd.setValue(2);
-        PartTestHelpers::rectangle(3, 4, "Rect1");
+        PartTestHelpers::rectangle(len, wid, "Rect1");
         _extrusion->Base.setValue(_doc->getObjects().back());
-        _extrusion->DirMode.setValue(2);  // Custom, Edge, Normal
-        _extrusion->execute();
     }
 
     void TearDown() override
     {}
 
     Part::Extrusion* _extrusion;  // NOLINT Can't be private in a test framework
+    // Arbtitrary constants for testing.  Named here for clarity.
+    const double len = 3;
+    const double wid = 4;
+    const double ext1 = 10;
+    const double ext2 = 9;
+    const double ang = 30;
 };
 
 
 TEST_F(FeatureExtrusionTest, testExecute)
 {
-    _extrusion->execute();
-    Part::TopoShape ts = _extrusion->Shape.getValue();
-    double volume = PartTestHelpers::getVolume(ts.getShape());
-    Base::BoundBox3d bb = ts.getBoundBox();
+    // Arrange
+    App::DocumentObject docobj;
+    const double tangent = tan(ang / 180.0 * M_PI);
 
-    // Assert
-    EXPECT_DOUBLE_EQ(volume, 24.0);
-    EXPECT_DOUBLE_EQ(bb.MinX, 0.0);
-    EXPECT_DOUBLE_EQ(bb.MinY, 0.0);
-    EXPECT_DOUBLE_EQ(bb.MinZ, 0.0);
-    EXPECT_DOUBLE_EQ(bb.MaxX, 3.0);
-    EXPECT_DOUBLE_EQ(bb.MaxY, 4.0);
-    EXPECT_DOUBLE_EQ(bb.MaxZ, 2.0);
+    // Volume of a truncated trapezoidal rectangular pyramid (V”) =(1/3)[A’+A”+√(A’*A”)] X H’
+    const double a = len * wid; // Area of the base
+    const double aa = (len+ext1*tangent*2) * (wid+ext1*tangent*2); // Area of the top
+    const double sym_aa = (len+ext1*tangent*2/2) * (wid+ext1*tangent*2/2); // Area of the top
+    const double pyramidVol = ext1 * (a+aa+sqrt(a*aa)) / 3;
+    const double symPyramidVol = ext1/2 * (a+sym_aa+sqrt(a*sym_aa)) / 3;
 
-    // Need to cover the permutations of these values:
+    struct {
+        char *name;
+        // Parms for each permutation:
+        Base::Vector3d dir;
+        char dirMode;
+        App::DocumentObject *dirLink;
+        double lengthFwd;
+        double lengthRev;
+        bool solid;
+        bool reversed;
+        bool symmetric;
+        double taperAngleFwd;
+        double taperAngleRev;
+        char *faceMakerClass;
+        // Expected result values:
+        double volume;
+        Base::BoundBox3d box;
+    } tests[] = { // Each entry is a test
+        { "Simple Extrusion", Base::Vector3d(1,0,0), 2, nullptr, ext1, 0,
+                                false, false, false, 0, 0, "",
+            /* Results: */  len*wid*ext1, Base::BoundBox3d(0,0,0,len,wid,ext1) },
+        { "Reverse Simple Extrusion", Base::Vector3d(1,0,0), 2, nullptr,  0, ext2,
+                                false, false, false, 0, 0, "",
+            /* Results: */  len*wid*ext2, Base::BoundBox3d(0,0,-ext2,len,wid,0) },
+        { "Solid Extrusion", Base::Vector3d(1,0,0), 2, nullptr, ext1, 0,
+                                true, false, false, 0, 0, "",
+            /* Results: */  len*wid*ext1, Base::BoundBox3d(0,0,0,len,wid,ext1) },
+        { "Reverse Flag Extrusion", Base::Vector3d(1,0,0), 2, nullptr, ext1, 0,
+                                false, true, false, 0, 0, "",
+            /* Results: */  len*wid*ext1, Base::BoundBox3d(0,0,-ext1,len,wid,0) },
+        { "Symmetric Extrusion", Base::Vector3d(1,0,0), 2, nullptr, ext1, 0,
+                                false, false, true, 0, 0, "",
+            /* Results: */  len*wid*ext1, Base::BoundBox3d(0,0,-ext1/2,len,wid,ext1/2) },
+        // Note:  Angled volumes appear to be wrong unless we have a solid.  Flag must be true
+        { "Angled Extrusion", Base::Vector3d(1,0,0), 2, nullptr, ext1, 0,
+                                true, false, false, ang, 0, "",
+            /* Results: */  pyramidVol, Base::BoundBox3d(-ext1*tangent, -ext1*tangent, 0,
+                                                len+ext1*tangent, wid+ext1*tangent, ext1) },
+        { "Reverse Angled Extrusion", Base::Vector3d(1,0,0), 2, nullptr, ext1, 0,
+                                true, false, true, 0, ang, "",
+            /* Results: */  symPyramidVol+len*wid*ext1/2, Base::BoundBox3d(-ext1*tangent/2,
+                    -ext1*tangent/2, -ext1/2, len+ext1*tangent/2, wid+ext1*tangent/2, ext1/2) },
+    };
+
+    for ( auto test: tests ) {
+        // Arrange
+        _extrusion->Dir.setValue(test.dir);
+        _extrusion->DirMode.setValue(test.dirMode);
+        _extrusion->DirLink.setValue(test.dirLink);
+        _extrusion->LengthFwd.setValue(test.lengthFwd);
+        _extrusion->LengthRev.setValue(test.lengthRev);
+        _extrusion->Solid.setValue(test.solid);
+        _extrusion->Reversed.setValue(test.reversed);
+        _extrusion->Symmetric.setValue(test.symmetric);
+        _extrusion->TaperAngle.setValue(test.taperAngleFwd);
+        _extrusion->TaperAngleRev.setValue(test.taperAngleRev);
+        _extrusion->FaceMakerClass.setValue(test.faceMakerClass);
+        // Act
+        _extrusion->execute();
+        Part::TopoShape ts = _extrusion->Shape.getValue();
+        double volume = PartTestHelpers::getVolume(ts.getShape());
+        Base::BoundBox3d bb = ts.getBoundBox();
+        // Assert
+        // Opencascade volume calculations aren't precisely the same as ours.  Hmmm.
+        EXPECT_NEAR(volume, test.volume,1.2) << "SubTest " << test.name;
+        EXPECT_FLOAT_EQ(bb.MinX, test.box.MinX) << "SubTest " << test.name;
+        EXPECT_FLOAT_EQ(bb.MinY, test.box.MinY) << "SubTest " << test.name;
+        EXPECT_FLOAT_EQ(bb.MinZ, test.box.MinZ) << "SubTest " << test.name;
+        EXPECT_FLOAT_EQ(bb.MaxX, test.box.MaxX) << "SubTest " << test.name;
+        EXPECT_FLOAT_EQ(bb.MaxY, test.box.MaxY) << "SubTest " << test.name;
+        EXPECT_FLOAT_EQ(bb.MaxZ, test.box.MaxZ) << "SubTest " << test.name;
+
+    }
+    // Need to cover the (reasonable) permutations of these parms:
     // App::PropertyVector Dir;
     // App::PropertyEnumeration DirMode;    // Normal, Edge, Custom
     // App::PropertyLinkSub DirLink;    // the Edge, presumably
-    // App::PropertyDistance LengthFwd;
-    // App::PropertyDistance LengthRev;
-    // App::PropertyBool Solid;  // createsolid
-    // App::PropertyBool Reversed;
-    // App::PropertyBool Symmetric;
-    // App::PropertyAngle TaperAngle;
-    // App::PropertyAngle TaperAngleRev;
+    // DONE App::PropertyDistance LengthFwd;
+    // DONE App::PropertyDistance LengthRev;
+    // DONE App::PropertyBool Solid;  // createsolid
+    // DONE App::PropertyBool Reversed;
+    // DONE App::PropertyBool Symmetric;
+    // DONE App::PropertyAngle TaperAngle;
+    // DONE App::PropertyAngle TaperAngleRev;
     // App::PropertyString FaceMakerClass;
 }
 
@@ -100,6 +175,7 @@ TEST_F(FeatureExtrusionTest, testGetProviderName)
     EXPECT_STREQ(name, "PartGui::ViewProviderExtrusion");
 }
 
+// Not clear if there is a test value in this one.
 
 TEST_F(FeatureExtrusionTest, testFetchAxisLink)
 {

@@ -49,6 +49,10 @@ protected:
 
 TEST_F(FeatureChamferTest, testOther)
 {
+    const double baseVolume = _boxes[0]->Length.getValue() * 
+        _boxes[0]->Width.getValue() * _boxes[0]->Height.getValue() +
+        _boxes[1]->Length.getValue() *
+        _boxes[1]->Width.getValue() * _boxes[1]->Height.getValue();
     // Arrange
     _chamfer->Base.setValue(_fused);
     Part::TopoShape ts = _fused->Shape.getValue();
@@ -67,13 +71,13 @@ TEST_F(FeatureChamferTest, testOther)
     double fusedVolume = PartTestHelpers::getVolume(_fused->Shape.getValue());
     double chamferVolume = PartTestHelpers::getVolume(_chamfer->Shape.getValue());
     // Assert
-    EXPECT_DOUBLE_EQ(fusedVolume, 126.0);
+    EXPECT_DOUBLE_EQ(fusedVolume, baseVolume);
     EXPECT_DOUBLE_EQ(chamferVolume, 0.0);
     // Act
     _chamfer->execute();
     chamferVolume = PartTestHelpers::getVolume(_chamfer->Shape.getValue());
     // Assert
-    EXPECT_FLOAT_EQ(chamferVolume, 124.79166);
+    EXPECT_FLOAT_EQ(chamferVolume, 124.79166); // FIXME we can calculate this
 }
 
 TEST_F(FeatureChamferTest, testMost)
@@ -90,7 +94,7 @@ TEST_F(FeatureChamferTest, testMost)
     _chamfer->execute();
     double chamferVolume = PartTestHelpers::getVolume(_chamfer->Shape.getValue());
     // Assert
-    EXPECT_FLOAT_EQ(chamferVolume, 121.46667);
+    EXPECT_FLOAT_EQ(chamferVolume, 121.46667); // FIXME we can calcuate this
 }
 
 // Worth noting that FeaturePartCommon with insufficient parameters says MustExecute false,
