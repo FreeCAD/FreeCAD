@@ -5,6 +5,10 @@
 #include "Mod/Part/App/FeaturePartFuse.h"
 #include "Mod/Part/App/FeatureFillet.h"
 #include <BRepGProp.hxx>
+#include "Base/Interpreter.h"
+#include <boost/algorithm/string/regex.hpp>
+#include <boost/format.hpp>
+
 
 namespace PartTestHelpers
 {
@@ -25,4 +29,7 @@ public:
 
 const double minimalDistance = Base::Precision::Confusion() * 1000;
 
+void executePython(std::vector<std::string> python);
+
+void rectangle(double height, double width, char *name);
 }  // namespace PartTestHelpers

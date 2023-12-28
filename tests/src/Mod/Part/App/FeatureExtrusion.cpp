@@ -7,41 +7,6 @@
 
 #include "PartTestHelpers.h"
 
-// #include "Python.h"
-
-#include "Base/Interpreter.h"
-
-// #include "PreCompiled.h"
-// #ifndef _PreComp_
-#include <boost/algorithm/string/regex.hpp>
-#include <boost/format.hpp>
-// #endif  // #ifndef _PreComp_
-
-
-void executePython(std::vector<std::string> python)
-{
-    Base::InterpreterSingleton is = Base::InterpreterSingleton();
-
-    for (auto line : python) {
-        is.runInteractiveString(line.c_str());
-    }
-}
-
-
-void rectangle(double height, double width, char* name)
-{
-    std::vector<std::string> v {
-        "import FreeCAD, Part",
-        "V1 = FreeCAD.Vector(0, 0, 0)",
-        boost::str(boost::format("V2 = FreeCAD.Vector(%d, 0, 0)") % height),
-        boost::str(boost::format("V3 = FreeCAD.Vector(%d, %d, 0)") % height % width),
-        boost::str(boost::format("V4 = FreeCAD.Vector(0, %d, 0)") % width),
-        "P1 = Part.makePolygon([V1, V2, V3, V4, V1])",
-        "F1 = Part.Face(P1)",  // Make the face or the volume calc won't work right.
-        boost::str(boost::format("Part.show(F1,'%s')") % name),
-    };
-    executePython(v);
-}
 
 class FeatureExtrusionTest: public ::testing::Test, public PartTestHelpers::PartTestHelperClass
 {
@@ -57,7 +22,7 @@ protected:
         createTestDoc();
         _extrusion = dynamic_cast<Part::Extrusion*>(_doc->addObject("Part::Extrusion"));
         _extrusion->LengthFwd.setValue(2);
-        rectangle(3, 4, "Rect1");
+        PartTestHelpers::rectangle(3, 4, "Rect1");
         _extrusion->Base.setValue(_doc->getObjects().back());
         _extrusion->DirMode.setValue(2);  // Custom, Edge, Normal
         _extrusion->execute();

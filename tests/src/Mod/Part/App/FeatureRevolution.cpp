@@ -5,8 +5,12 @@
 #include "Mod/Part/App/FeatureRevolution.h"
 #include <src/App/InitApplication.h>
 
-#include "PartTestHelpers.h"
+#include "Base/Interpreter.h"
 
+#include <boost/algorithm/string/regex.hpp>
+#include <boost/format.hpp>
+
+#include "PartTestHelpers.h"
 
 class FeatureRevolutionTest: public ::testing::Test, public PartTestHelpers::PartTestHelperClass
 {
@@ -21,6 +25,9 @@ protected:
     {
         createTestDoc();
         _revolution = dynamic_cast<Part::Revolution*>(_doc->addObject("Part::Revolution"));
+        PartTestHelpers::rectangle(3,4, "Rect1");
+        _revolution->Source.setValue(_doc->getObjects().back());
+        _revolution->Axis.setValue(0,1,0);
     }
 
     void TearDown() override
@@ -31,7 +38,21 @@ protected:
 
 TEST_F(FeatureRevolutionTest, testExecute)
 {
-    // Test perumtations of these settings:
+    _revolution->execute();
+    Part::TopoShape ts = _revolution->Shape.getValue();
+    double volume = PartTestHelpers::getVolume(ts.getShape());
+    Base::BoundBox3d bb = ts.getBoundBox();
+
+    // Assert
+    EXPECT_FLOAT_EQ(volume, 113.09733552923254);
+    EXPECT_DOUBLE_EQ(bb.MinX, -3.0);
+    EXPECT_DOUBLE_EQ(bb.MinY, 0.0);
+    EXPECT_DOUBLE_EQ(bb.MinZ, -3.0);
+    EXPECT_DOUBLE_EQ(bb.MaxX, 3.0);
+    EXPECT_DOUBLE_EQ(bb.MaxY, 4.0);
+    EXPECT_DOUBLE_EQ(bb.MaxZ, 3.0);
+
+    // Test permutations of these settings:
 
     // App::PropertyLink Source;
     // App::PropertyVector Base;
