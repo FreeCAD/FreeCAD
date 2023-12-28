@@ -6,13 +6,13 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1000</width>
+    <width>900</width>
     <height>900</height>
    </rect>
   </property>
   <property name="minimumSize">
    <size>
-    <width>1000</width>
+    <width>600</width>
     <height>500</height>
    </size>
   </property>
@@ -226,7 +226,7 @@ QFrame::item { padding: 6px 8px };</string>
            <enum>QFrame::NoFrame</enum>
           </property>
           <property name="horizontalScrollBarPolicy">
-           <enum>Qt::ScrollBarAlwaysOff</enum>
+           <enum>Qt::ScrollBarAsNeeded</enum>
           </property>
           <property name="sizeAdjustPolicy">
            <enum>QAbstractScrollArea::AdjustIgnored</enum>
@@ -239,8 +239,8 @@ QFrame::item { padding: 6px 8px };</string>
             <rect>
              <x>0</x>
              <y>0</y>
-             <width>726</width>
-             <height>669</height>
+             <width>626</width>
+             <height>772</height>
             </rect>
            </property>
            <property name="sizePolicy">
