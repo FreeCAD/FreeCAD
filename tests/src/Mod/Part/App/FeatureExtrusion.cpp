@@ -47,18 +47,20 @@ TEST_F(FeatureExtrusionTest, testExecute)
     const double tangent = tan(ang / 180.0 * M_PI);
 
     // Volume of a truncated trapezoidal rectangular pyramid (V”) =(1/3)[A’+A”+√(A’*A”)] X H’
-    const double a = len * wid; // Area of the base
-    const double aa = (len+ext1*tangent*2) * (wid+ext1*tangent*2); // Area of the top
-    const double sym_aa = (len+ext1*tangent*2/2) * (wid+ext1*tangent*2/2); // Area of the top
-    const double pyramidVol = ext1 * (a+aa+sqrt(a*aa)) / 3;
-    const double symPyramidVol = ext1/2 * (a+sym_aa+sqrt(a*sym_aa)) / 3;
+    const double a = len * wid;                                                 // Area of the base
+    const double aa = (len + ext1 * tangent * 2) * (wid + ext1 * tangent * 2);  // Area of the top
+    const double sym_aa =
+        (len + ext1 * tangent * 2 / 2) * (wid + ext1 * tangent * 2 / 2);  // Area of the top
+    const double pyramidVol = ext1 * (a + aa + sqrt(a * aa)) / 3;
+    const double symPyramidVol = ext1 / 2 * (a + sym_aa + sqrt(a * sym_aa)) / 3;
 
-    struct {
-        char *name;
+    struct
+    {
+        char* name;
         // Parms for each permutation:
         Base::Vector3d dir;
         char dirMode;
-        App::DocumentObject *dirLink;
+        App::DocumentObject* dirLink;
         double lengthFwd;
         double lengthRev;
         bool solid;
@@ -66,38 +68,124 @@ TEST_F(FeatureExtrusionTest, testExecute)
         bool symmetric;
         double taperAngleFwd;
         double taperAngleRev;
-        char *faceMakerClass;
+        char* faceMakerClass;
         // Expected result values:
         double volume;
         Base::BoundBox3d box;
-    } tests[] = { // Each entry is a test
-        { "Simple Extrusion", Base::Vector3d(1,0,0), 2, nullptr, ext1, 0,
-                                false, false, false, 0, 0, "",
-            /* Results: */  len*wid*ext1, Base::BoundBox3d(0,0,0,len,wid,ext1) },
-        { "Reverse Simple Extrusion", Base::Vector3d(1,0,0), 2, nullptr,  0, ext2,
-                                false, false, false, 0, 0, "",
-            /* Results: */  len*wid*ext2, Base::BoundBox3d(0,0,-ext2,len,wid,0) },
-        { "Solid Extrusion", Base::Vector3d(1,0,0), 2, nullptr, ext1, 0,
-                                true, false, false, 0, 0, "",
-            /* Results: */  len*wid*ext1, Base::BoundBox3d(0,0,0,len,wid,ext1) },
-        { "Reverse Flag Extrusion", Base::Vector3d(1,0,0), 2, nullptr, ext1, 0,
-                                false, true, false, 0, 0, "",
-            /* Results: */  len*wid*ext1, Base::BoundBox3d(0,0,-ext1,len,wid,0) },
-        { "Symmetric Extrusion", Base::Vector3d(1,0,0), 2, nullptr, ext1, 0,
-                                false, false, true, 0, 0, "",
-            /* Results: */  len*wid*ext1, Base::BoundBox3d(0,0,-ext1/2,len,wid,ext1/2) },
+    } tests[] = {
+        // Each entry is a test
+        {"Simple Extrusion",
+         Base::Vector3d(1, 0, 0),
+         2,
+         nullptr,
+         ext1,
+         0,
+         false,
+         false,
+         false,
+         0,
+         0,
+         "",
+         /* Results: */ len * wid * ext1,
+         Base::BoundBox3d(0, 0, 0, len, wid, ext1)},
+        {"Reverse Simple Extrusion",
+         Base::Vector3d(1, 0, 0),
+         2,
+         nullptr,
+         0,
+         ext2,
+         false,
+         false,
+         false,
+         0,
+         0,
+         "",
+         /* Results: */ len * wid * ext2,
+         Base::BoundBox3d(0, 0, -ext2, len, wid, 0)},
+        {"Solid Extrusion",
+         Base::Vector3d(1, 0, 0),
+         2,
+         nullptr,
+         ext1,
+         0,
+         true,
+         false,
+         false,
+         0,
+         0,
+         "",
+         /* Results: */ len * wid * ext1,
+         Base::BoundBox3d(0, 0, 0, len, wid, ext1)},
+        {"Reverse Flag Extrusion",
+         Base::Vector3d(1, 0, 0),
+         2,
+         nullptr,
+         ext1,
+         0,
+         false,
+         true,
+         false,
+         0,
+         0,
+         "",
+         /* Results: */ len * wid * ext1,
+         Base::BoundBox3d(0, 0, -ext1, len, wid, 0)},
+        {"Symmetric Extrusion",
+         Base::Vector3d(1, 0, 0),
+         2,
+         nullptr,
+         ext1,
+         0,
+         false,
+         false,
+         true,
+         0,
+         0,
+         "",
+         /* Results: */ len * wid * ext1,
+         Base::BoundBox3d(0, 0, -ext1 / 2, len, wid, ext1 / 2)},
         // Note:  Angled volumes appear to be wrong unless we have a solid.  Flag must be true
-        { "Angled Extrusion", Base::Vector3d(1,0,0), 2, nullptr, ext1, 0,
-                                true, false, false, ang, 0, "",
-            /* Results: */  pyramidVol, Base::BoundBox3d(-ext1*tangent, -ext1*tangent, 0,
-                                                len+ext1*tangent, wid+ext1*tangent, ext1) },
-        { "Reverse Angled Extrusion", Base::Vector3d(1,0,0), 2, nullptr, ext1, 0,
-                                true, false, true, 0, ang, "",
-            /* Results: */  symPyramidVol+len*wid*ext1/2, Base::BoundBox3d(-ext1*tangent/2,
-                    -ext1*tangent/2, -ext1/2, len+ext1*tangent/2, wid+ext1*tangent/2, ext1/2) },
+        {"Angled Extrusion",
+         Base::Vector3d(1, 0, 0),
+         2,
+         nullptr,
+         ext1,
+         0,
+         true,
+         false,
+         false,
+         ang,
+         0,
+         "",
+         /* Results: */ pyramidVol,
+         Base::BoundBox3d(-ext1 * tangent,
+                          -ext1 * tangent,
+                          0,
+                          len + ext1 * tangent,
+                          wid + ext1 * tangent,
+                          ext1)},
+        {"Reverse Angled Extrusion",
+         Base::Vector3d(1, 0, 0),
+         2,
+         nullptr,
+         ext1,
+         0,
+         true,
+         false,
+         true,
+         0,
+         ang,
+         "",
+         /* Results: */ symPyramidVol + len * wid * ext1 / 2,
+         Base::BoundBox3d(-ext1 * tangent / 2,
+                          -ext1 * tangent / 2,
+                          -ext1 / 2,
+                          len + ext1 * tangent / 2,
+                          wid + ext1 * tangent / 2,
+                          ext1 / 2)},
     };
 
-    for ( auto test: tests ) {
+    for (auto test : tests) {
         // Arrange
         _extrusion->Dir.setValue(test.dir);
         _extrusion->DirMode.setValue(test.dirMode);
@@ -117,14 +205,13 @@ TEST_F(FeatureExtrusionTest, testExecute)
         Base::BoundBox3d bb = ts.getBoundBox();
         // Assert
         // Opencascade volume calculations aren't precisely the same as ours.  Hmmm.
-        EXPECT_NEAR(volume, test.volume,1.2) << "SubTest " << test.name;
+        EXPECT_NEAR(volume, test.volume, 1.2) << "SubTest " << test.name;
         EXPECT_FLOAT_EQ(bb.MinX, test.box.MinX) << "SubTest " << test.name;
         EXPECT_FLOAT_EQ(bb.MinY, test.box.MinY) << "SubTest " << test.name;
         EXPECT_FLOAT_EQ(bb.MinZ, test.box.MinZ) << "SubTest " << test.name;
         EXPECT_FLOAT_EQ(bb.MaxX, test.box.MaxX) << "SubTest " << test.name;
         EXPECT_FLOAT_EQ(bb.MaxY, test.box.MaxY) << "SubTest " << test.name;
         EXPECT_FLOAT_EQ(bb.MaxZ, test.box.MaxZ) << "SubTest " << test.name;
-
     }
     // Need to cover the (reasonable) permutations of these parms:
     // App::PropertyVector Dir;

@@ -51,10 +51,9 @@ protected:
 
 TEST_F(FeatureFilletTest, testOtherEdges)
 {
-    const double baseVolume = _boxes[0]->Length.getValue() * 
-        _boxes[0]->Width.getValue() * _boxes[0]->Height.getValue() +
-        _boxes[1]->Length.getValue() *
-        _boxes[1]->Width.getValue() * _boxes[1]->Height.getValue();
+    const double baseVolume =
+        _boxes[0]->Length.getValue() * _boxes[0]->Width.getValue() * _boxes[0]->Height.getValue()
+        + _boxes[1]->Length.getValue() * _boxes[1]->Width.getValue() * _boxes[1]->Height.getValue();
     // Arrange
     _fillet->Base.setValue(_fused);
     Part::TopoShape ts = _fused->Shape.getValue();

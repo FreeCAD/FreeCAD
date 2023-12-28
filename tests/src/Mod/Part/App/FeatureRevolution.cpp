@@ -43,7 +43,7 @@ TEST_F(FeatureRevolutionTest, testExecute)
     double volume = PartTestHelpers::getVolume(ts.getShape());
     Base::BoundBox3d bb = ts.getBoundBox();
 
-    // FIXME:  Replace this with multiple tests and actual side math ala FeatureExtrusion.  
+    // FIXME:  Replace this with multiple tests and actual side math ala FeatureExtrusion.
     // Assert
     EXPECT_FLOAT_EQ(volume, 113.09733552923254);
     EXPECT_DOUBLE_EQ(bb.MinX, -3.0);
