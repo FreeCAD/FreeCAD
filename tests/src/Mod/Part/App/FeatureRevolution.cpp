@@ -25,9 +25,9 @@ protected:
     {
         createTestDoc();
         _revolution = dynamic_cast<Part::Revolution*>(_doc->addObject("Part::Revolution"));
-        PartTestHelpers::rectangle(3,4, "Rect1");
+        PartTestHelpers::rectangle(3, 4, "Rect1");
         _revolution->Source.setValue(_doc->getObjects().back());
-        _revolution->Axis.setValue(0,1,0);
+        _revolution->Axis.setValue(0, 1, 0);
     }
 
     void TearDown() override
