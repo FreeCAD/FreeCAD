@@ -7,6 +7,42 @@
 
 #include "PartTestHelpers.h"
 
+// #include "Python.h"
+
+#include "Base/Interpreter.h"
+
+// #include "PreCompiled.h"
+// #ifndef _PreComp_
+#include <boost/algorithm/string/regex.hpp>
+#include <boost/format.hpp>
+// #endif  // #ifndef _PreComp_
+
+
+void executePython(std::vector<std::string> python)
+{
+    Base::InterpreterSingleton is = Base::InterpreterSingleton();
+    
+    for ( auto line : python ) {
+        is.runInteractiveString(line.c_str());
+    }
+}
+
+
+void rectangle(double height, double width, char *name)
+{
+    std::vector<std::string> v { 
+        "import FreeCAD, Part",
+        "V1 = FreeCAD.Vector(0, 0, 0)",
+        boost::str(boost::format("V2 = FreeCAD.Vector(%d, 0, 0)") % height),
+        boost::str(boost::format("V3 = FreeCAD.Vector(%d, %d, 0)") % height % width),
+        boost::str(boost::format("V4 = FreeCAD.Vector(0, %d, 0)") % width),
+        "P1 = Part.makePolygon([V1, V2, V3, V4, V1])",
+        "F1 = Part.Face(P1)",   // Make the face or the volume calc won't work right.
+        boost::str(boost::format("Part.show(F1,'%s')") % name),
+    };
+    executePython(v);
+}
+
 class FeatureExtrusionTest: public ::testing::Test, public PartTestHelpers::PartTestHelperClass
 {
 protected:
@@ -20,8 +56,11 @@ protected:
     {
         createTestDoc();
         _extrusion = dynamic_cast<Part::Extrusion*>(_doc->addObject("Part::Extrusion"));
-        _extrusion->Base.setValue(_boxes[0]);
-        _extrusion->LengthFwd.setValue(10);
+        _extrusion->LengthFwd.setValue(2);
+        rectangle(3,4, "Rect1");
+        _extrusion->Base.setValue(_doc->getObjects().back());
+        _extrusion->DirMode.setValue(2); // Custom, Edge, Normal
+        _extrusion->execute();
     }
 
     void TearDown() override
@@ -30,16 +69,30 @@ protected:
     Part::Extrusion* _extrusion;  // NOLINT Can't be private in a test framework
 };
 
+
 TEST_F(FeatureExtrusionTest, testExecute)
 {
+    _extrusion->execute();
+    Part::TopoShape ts = _extrusion->Shape.getValue();
+    double volume = PartTestHelpers::getVolume(ts.getShape());
+    Base::BoundBox3d bb = ts.getBoundBox();
+
+    // Assert
+    EXPECT_DOUBLE_EQ(volume, 24.0);
+    EXPECT_DOUBLE_EQ(bb.MinX, 0.0);
+    EXPECT_DOUBLE_EQ(bb.MinY, 0.0);
+    EXPECT_DOUBLE_EQ(bb.MinZ, 0.0);
+    EXPECT_DOUBLE_EQ(bb.MaxX, 3.0);
+    EXPECT_DOUBLE_EQ(bb.MaxY, 4.0);
+    EXPECT_DOUBLE_EQ(bb.MaxZ, 2.0);
 
     // Need to cover the permutations of these values:
     // App::PropertyVector Dir;
-    // App::PropertyEnumeration DirMode;
-    // App::PropertyLinkSub DirLink;
+    // App::PropertyEnumeration DirMode;    // Normal, Edge, Custom
+    // App::PropertyLinkSub DirLink;    // the Edge, presumably
     // App::PropertyDistance LengthFwd;
     // App::PropertyDistance LengthRev;
-    // App::PropertyBool Solid;
+    // App::PropertyBool Solid;  // createsolid
     // App::PropertyBool Reversed;
     // App::PropertyBool Symmetric;
     // App::PropertyAngle TaperAngle;
@@ -49,20 +102,28 @@ TEST_F(FeatureExtrusionTest, testExecute)
 
 TEST_F(FeatureExtrusionTest, testMustExecute)
 {
-    // // Assert
-    // EXPECT_TRUE(_fillet->mustExecute());
-    // // Act
-    // _fillet->Base.setValue(_boxes[0]);
-    // // Assert
-    // EXPECT_TRUE(_fillet->mustExecute());
-    // // Act
-    // _fillet->Edges.setValues(PartTestHelpers::_getFilletEdges({1}, 0.5, 0.5));
-    // // Assert
-    // EXPECT_TRUE(_fillet->mustExecute());
-    // // Act
-    // _doc->recompute();
-    // // Assert
-    // EXPECT_FALSE(_fillet->mustExecute());
+    // Assert
+    EXPECT_TRUE(_extrusion->mustExecute());
+    // Act
+    _doc->recompute();
+    // Assert
+    EXPECT_FALSE(_extrusion->mustExecute());
+    // Act
+    _extrusion->Base.setValue(_extrusion->Base.getValue());
+    // Assert
+    EXPECT_TRUE(_extrusion->mustExecute());
+    // Act
+    _doc->recompute();
+    // Assert
+    EXPECT_FALSE(_extrusion->mustExecute());
+    // Act
+    _extrusion->Solid.setValue(Standard_True);
+    // Assert
+    EXPECT_TRUE(_extrusion->mustExecute());
+    // Act
+    _doc->recompute();
+    // Assert
+    EXPECT_FALSE(_extrusion->mustExecute());
 }
 
 TEST_F(FeatureExtrusionTest, testGetProviderName)
@@ -73,6 +134,28 @@ TEST_F(FeatureExtrusionTest, testGetProviderName)
     // Assert
     EXPECT_STREQ(name, "PartGui::ViewProviderExtrusion");
 }
+
+
+TEST_F(FeatureExtrusionTest, testFetchAxisLink)
+{
+    // /**
+    //  * @brief fetchAxisLink: read AxisLink to obtain the direction and
+    //  * length. Note: this routine is re-used in Extrude dialog, hence it
+    //  * is static.
+    //  * @param axisLink (input): the link
+    //  * @param basepoint (output): starting point of edge. Not used by extrude as of now.
+    //  * @param dir (output): direction of axis, with magnitude (length)
+    //  * @return true if link was fetched. false if link was empty. Throws if the
+    //  * link is wrong.
+    //  */
+    // static bool fetchAxisLink(const App::PropertyLinkSub& axisLink,
+    //                           Base::Vector3d& basepoint,
+    //                           Base::Vector3d& dir);
+}
+
+// Filling in these next two tests seems very redundant, since they are used in execute()
+// and thus tested by the results there.  In the event that ever went funny, then maybe
+// implementation here would make sense.
 
 TEST_F(FeatureExtrusionTest, testExtrudeShape)
 {
@@ -98,24 +181,6 @@ TEST_F(FeatureExtrusionTest, testExtrudeShape)
     //  * @return result of extrusion
     //  */
     // static TopoShape extrudeShape(const TopoShape& source, const ExtrusionParameters& params);
-}
-
-
-TEST_F(FeatureExtrusionTest, testFetchAxisLink)
-{
-    // /**
-    //  * @brief fetchAxisLink: read AxisLink to obtain the direction and
-    //  * length. Note: this routine is re-used in Extrude dialog, hence it
-    //  * is static.
-    //  * @param axisLink (input): the link
-    //  * @param basepoint (output): starting point of edge. Not used by extrude as of now.
-    //  * @param dir (output): direction of axis, with magnitude (length)
-    //  * @return true if link was fetched. false if link was empty. Throws if the
-    //  * link is wrong.
-    //  */
-    // static bool fetchAxisLink(const App::PropertyLinkSub& axisLink,
-    //                           Base::Vector3d& basepoint,
-    //                           Base::Vector3d& dir);
 }
 
 TEST_F(FeatureExtrusionTest, testComputeFinalParameters)
