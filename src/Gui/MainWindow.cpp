@@ -166,12 +166,15 @@ public:
     {
         setFlat(true);
         setText(qApp->translate("Gui::MainWindow", "Dimension"));
+        setToolTip(
+            qApp->translate("Gui::MainWindow", "Select the Unit Schema for the current document"));
         setMinimumWidth(120);
 
-        //create the action buttons
+        // create the action buttons
         auto* menu = new QMenu(this);
         auto* actionGrp = new QActionGroup(menu);
         int num = static_cast<int>(Base::UnitSystem::NumUnitSystemTypes);
+
         for (int i = 0; i < num; i++) {
             QAction* action = menu->addAction(QStringLiteral("UnitSchema%1").arg(i));
             actionGrp->addAction(action);
@@ -179,16 +182,68 @@ public:
             action->setData(i);
         }
         QObject::connect(actionGrp, &QActionGroup::triggered, this, [this](QAction* action) {
-            int userSchema = action->data().toInt();
-            setUserSchema(userSchema);
+            bool onceRun = App::GetApplication()
+                               .GetParameterGroupByPath("User parameter:BaseApp/Preferences/Units")
+                               ->GetBool("DoNotShowDocUnitsMsgBox", false);
+            if (!onceRun) {
+                QMessageBox msgBox;
+                QAbstractButton* myYesButton =
+                    msgBox.addButton(tr("OK, but do not show this again"), QMessageBox::YesRole);
+                QAbstractButton* myNoButton = msgBox.addButton(tr("OK"), QMessageBox::NoRole);
+                QAbstractButton* myCancelButton =
+                    msgBox.addButton(tr("Cancel"), QMessageBox::RejectRole);
+                msgBox.setText(tr("Document Unit Schema Change"));
+                msgBox.setInformativeText(
+                    QString::fromLatin1("<html><head/><body>%1 "
+                                        "<a href=\"https://wiki.freecad.org/Status_bar\">%2"
+                                        "</a><p>%3</p></body></html>")
+                        .arg(
+                            tr("For users upgrading from version 0.21.x this widget changes the "
+                               "Unit Schema "),
+                            tr("only for the current document not the entire system as in previous "
+                               "versions."),
+                            tr("For system Unit Schema changes use Edit menu > Preferences > "
+                               "General")));
+
+                msgBox.setIcon(QMessageBox::Warning);
+                int result = msgBox.exec();
+                if (result == 0 || msgBox.clickedButton() == myYesButton) {
+                    ParameterGrp::handle hGrpu = App::GetApplication().GetParameterGroupByPath(
+                        "User parameter:BaseApp/Preferences/Units");
+                    hGrpu->SetBool("DoNotShowDocUnitsMsgBox", true);
+                    int userSchema = action->data().toInt();
+                    setUserSchema(userSchema);
+                }
+
+                if (result == 1 || msgBox.clickedButton() == myNoButton) {
+                    int userSchema = action->data().toInt();
+                    setUserSchema(userSchema);
+                }
+
+                if (result == 2 || msgBox.clickedButton() == myCancelButton) {
+                    App::Document* doc = App::GetApplication().getActiveDocument();
+                    int userSchema = 0;
+                    if (doc != nullptr) {
+                        userSchema = doc->UnitSystem.getValue();
+                    }
+                    else {
+                        userSchema = getWindowParameter()->GetInt("UserSchema");
+                    }
+                    setUserSchema(userSchema);
+                }
+            }
+            else {
+                int userSchema = action->data().toInt();
+                setUserSchema(userSchema);
+            }
             // Force PropertyEditor refresh until we find a better way.  Q_EMIT something?
             const auto views = getMainWindow()->findChildren<PropertyView*>();
-            for(auto view : views) {
+            for (auto view : views) {
                 bool show = view->showAll();
                 view->setShowAll(!show);
                 view->setShowAll(show);
             }
-        } );
+        });
         setMenu(menu);
         retranslateUi();
         unitChanged();
