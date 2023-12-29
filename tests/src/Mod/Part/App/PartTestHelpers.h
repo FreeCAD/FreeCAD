@@ -1,3 +1,6 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
+
+#include "gtest/gtest.h"
 #include <App/Application.h>
 #include <App/Document.h>
 #include <Base/Precision.h>
@@ -32,4 +35,6 @@ const double minimalDistance = Base::Precision::Confusion() * 1000;
 void executePython(std::vector<std::string> python);
 
 void rectangle(double height, double width, char* name);
+
+testing::AssertionResult boxesMatch(Base::BoundBox3d b1, Base::BoundBox3d, double prec = 1e-05);
 }  // namespace PartTestHelpers

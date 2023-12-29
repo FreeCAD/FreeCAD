@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: LGPL-2.1-or-later
 
 #include "PartTestHelpers.h"
 
@@ -72,5 +73,18 @@ void rectangle(double height, double width, char* name)
     executePython(v);
 }
 
+testing::AssertionResult boxesMatch(Base::BoundBox3d b1, Base::BoundBox3d b2, double prec)
+{
+    if (abs(b1.MinX - b2.MinX) < prec && abs(b1.MinY - b2.MinY) < prec
+        && abs(b1.MinZ - b2.MinZ) < prec && abs(b1.MaxX - b2.MaxX) < prec
+        && abs(b1.MaxY - b2.MaxY) < prec && abs(b1.MaxZ - b2.MaxZ) < prec) {
+        return testing::AssertionSuccess();
+    }
+    else {
+        return testing::AssertionFailure()
+            << "(" << b1.MinX << "," << b1.MinY << "," << b1.MinZ << ") != (" << b2.MinX << ","
+            << b2.MinY << "," << b2.MinZ << ")";
+    }
+}
 
 }  // namespace PartTestHelpers
