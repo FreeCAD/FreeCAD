@@ -53,6 +53,9 @@ public:
     /// enabling to set data member dependent icons (i.e. for different construction methods)
     void updateCursor();
 
+    virtual QString getToolHintText() const;
+    void updateHint() const;
+
 private:  // NVI
     virtual void preActivated()
     {}

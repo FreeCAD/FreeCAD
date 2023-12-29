@@ -56,6 +56,8 @@ void MainWindowPy::init_type()
     add_varargs_method("getActiveWindow", &MainWindowPy::getActiveWindow, "getActiveWindow()");
     add_varargs_method("addWindow", &MainWindowPy::addWindow, "addWindow(MDIView)");
     add_varargs_method("removeWindow", &MainWindowPy::removeWindow, "removeWindow(MDIView)");
+    add_varargs_method("showHint",&MainWindowPy::showHint,"showHint(hint)");
+    add_varargs_method("hideHint",&MainWindowPy::hideHint,"hideHint()");
 }
 
 PyObject *MainWindowPy::extension_object_new(struct _typeobject * /*type*/, PyObject * /*args*/, PyObject * /*kwds*/)
@@ -87,7 +89,14 @@ Py::Object MainWindowPy::createWrapper(MainWindow *mw)
     }
 
     // copy attributes
-    std::list<std::string> attr = {"getWindows", "getWindowsOfType", "setActiveWindow", "getActiveWindow", "addWindow", "removeWindow"};
+    const auto attr = {"getWindows",
+                       "getWindowsOfType",
+                       "setActiveWindow",
+                       "getActiveWindow",
+                       "addWindow",
+                       "removeWindow",
+                       "showHint",
+                       "hideHint"};
 
     Py::Object py = wrap.fromQWidget(mw, "QMainWindow");
     Py::ExtensionObject<MainWindowPy> inst(create(mw));
@@ -213,5 +222,25 @@ Py::Object MainWindowPy::removeWindow(const Py::Tuple& args)
     if (_mw) {
         _mw->removeWindow(mdi.extensionObject()->getMDIViewPtr());
     }
+    return Py::None();
+}
+
+Py::Object MainWindowPy::showHint(const Py::Tuple& args)
+{
+    char* hint {};
+
+    if (!PyArg_ParseTuple(args.ptr(), "s", &hint)) {
+        throw Py::Exception();
+    }
+
+    _mw->showHint(QString::fromUtf8(hint));
+
+    return Py::None();
+}
+
+Py::Object MainWindowPy::hideHint(const Py::Tuple&)
+{
+    _mw->hideHint();
+
     return Py::None();
 }

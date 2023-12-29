@@ -201,7 +201,10 @@ public:
     void updateActions(bool delay = false);
 
     enum StatusType {None, Err, Wrn, Pane, Msg, Log, Tmp, Critical};
-    void showStatus(int type, const QString & message);
+    void showStatus(int type, const QString& message);
+
+    void showHint(const QString& hint);
+    void hideHint();
 
     void initDockWindows(bool show);
 
