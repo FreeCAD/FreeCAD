@@ -10,83 +10,47 @@
 #include "PartTestHelpers.h"
 
 
-class FeatureExtrusionTest: public ::testing::Test, public PartTestHelpers::PartTestHelperClass
+struct extrusionParms
 {
-protected:
-    static void SetUpTestSuite()
-    {
-        tests::initApplication();
-    }
-
-
-    void SetUp() override
-    {
-        createTestDoc();
-        _extrusion = dynamic_cast<Part::Extrusion*>(_doc->addObject("Part::Extrusion"));
-        PartTestHelpers::rectangle(len, wid, "Rect1");
-        _extrusion->Base.setValue(_doc->getObjects().back());
-    }
-
-    void TearDown() override
-    {}
-
-    Part::Extrusion* _extrusion;  // NOLINT Can't be private in a test framework
-    // Arbtitrary constants for testing.  Named here for clarity.
-    const double len = 3;
-    const double wid = 4;
-    const double ext1 = 10;
-    const double ext2 = 9;
-    const double ang = 30;
+    char* name;
+    // Parms for each permutation:
+    Base::Vector3d dir;
+    char dirMode;
+    App::DocumentObject* dirLink;
+    double lengthFwd;
+    double lengthRev;
+    bool solid;
+    bool reversed;
+    bool symmetric;
+    double taperAngleFwd;
+    double taperAngleRev;
+    char* faceMakerClass;
+    // Expected result values:
+    double volume;
+    Base::BoundBox3d box;
 };
 
+// Arbtitrary constants for testing.  Named here for clarity.
+const double len = 3;
+const double wid = 4;
+const double ext1 = 10;
+const double ext2 = 9;
+const double ang = 30;
 
-TEST_F(FeatureExtrusionTest, testExecute)
-{
-    // Arrange
-    App::DocumentObject docobj;
-    const double tangent = tan(ang / 180.0 * M_PI);
+const double tangent = tan(ang / 180.0 * M_PI);
 
-    // Volume of a truncated trapezoidal rectangular pyramid (V”) =(1/3)[A’+A”+√(A’*A”)] X H’
-    const double a = len * wid;                                                 // Area of the base
-    const double aa = (len + ext1 * tangent * 2) * (wid + ext1 * tangent * 2);  // Area of the top
-    const double sym_aa =
-        (len + ext1 * tangent * 2 / 2) * (wid + ext1 * tangent * 2 / 2);  // Area of the top
-    const double pyramidVol = ext1 * (a + aa + sqrt(a * aa)) / 3;
-    const double symPyramidVol = ext1 / 2 * (a + sym_aa + sqrt(a * sym_aa)) / 3;
+// Volume of a truncated trapezoidal rectangular pyramid (V”) =(1/3)[A’+A”+√(A’*A”)] X H’
+const double a = len * wid;                                                 // Area of the base
+const double aa = (len + ext1 * tangent * 2) * (wid + ext1 * tangent * 2);  // Area of the top
+const double sym_aa =
+    (len + ext1 * tangent * 2 / 2) * (wid + ext1 * tangent * 2 / 2);  // Area of the top
+const double pyramidVol = ext1 * (a + aa + sqrt(a * aa)) / 3;
+const double symPyramidVol = ext1 / 2 * (a + sym_aa + sqrt(a * sym_aa)) / 3;
 
-    struct
-    {
-        char* name;
-        // Parms for each permutation:
-        Base::Vector3d dir;
-        char dirMode;
-        App::DocumentObject* dirLink;
-        double lengthFwd;
-        double lengthRev;
-        bool solid;
-        bool reversed;
-        bool symmetric;
-        double taperAngleFwd;
-        double taperAngleRev;
-        char* faceMakerClass;
-        // Expected result values:
-        double volume;
-        Base::BoundBox3d box;
-    } tests[] = {
-        // Each entry is a test
-        {"Simple Extrusion",
-         Base::Vector3d(1, 0, 0),
-         2,
-         nullptr,
-         ext1,
-         0,
-         false,
-         false,
-         false,
-         0,
-         0,
-         "",
-         /* Results: */ len * wid * ext1,
+extrusionParms testslist[] = {
+        {"Simple Extrusion", Base::Vector3d(1, 0, 0), 2, nullptr,
+         ext1, 0, false, false, false, 0, 0, "",
+         /* Results: */ len * wid * ext1, 
          Base::BoundBox3d(0, 0, 0, len, wid, ext1)},
         {"Reverse Simple Extrusion",
          Base::Vector3d(1, 0, 0),
@@ -183,36 +147,73 @@ TEST_F(FeatureExtrusionTest, testExecute)
                           len + ext1 * tangent / 2,
                           wid + ext1 * tangent / 2,
                           ext1 / 2)},
-    };
+};
 
-    for (auto test : tests) {
-        // Arrange
-        _extrusion->Dir.setValue(test.dir);
-        _extrusion->DirMode.setValue(test.dirMode);
-        _extrusion->DirLink.setValue(test.dirLink);
-        _extrusion->LengthFwd.setValue(test.lengthFwd);
-        _extrusion->LengthRev.setValue(test.lengthRev);
-        _extrusion->Solid.setValue(test.solid);
-        _extrusion->Reversed.setValue(test.reversed);
-        _extrusion->Symmetric.setValue(test.symmetric);
-        _extrusion->TaperAngle.setValue(test.taperAngleFwd);
-        _extrusion->TaperAngleRev.setValue(test.taperAngleRev);
-        _extrusion->FaceMakerClass.setValue(test.faceMakerClass);
-        // Act
-        _extrusion->execute();
-        Part::TopoShape ts = _extrusion->Shape.getValue();
-        double volume = PartTestHelpers::getVolume(ts.getShape());
-        Base::BoundBox3d bb = ts.getBoundBox();
-        // Assert
-        // Opencascade volume calculations aren't precisely the same as ours.  Hmmm.
-        EXPECT_NEAR(volume, test.volume, 1.2) << "SubTest " << test.name;
-        EXPECT_FLOAT_EQ(bb.MinX, test.box.MinX) << "SubTest " << test.name;
-        EXPECT_FLOAT_EQ(bb.MinY, test.box.MinY) << "SubTest " << test.name;
-        EXPECT_FLOAT_EQ(bb.MinZ, test.box.MinZ) << "SubTest " << test.name;
-        EXPECT_FLOAT_EQ(bb.MaxX, test.box.MaxX) << "SubTest " << test.name;
-        EXPECT_FLOAT_EQ(bb.MaxY, test.box.MaxY) << "SubTest " << test.name;
-        EXPECT_FLOAT_EQ(bb.MaxZ, test.box.MaxZ) << "SubTest " << test.name;
+
+class FeatureExtrusionTest: public ::testing::TestWithParam<extrusionParms>, public PartTestHelpers::PartTestHelperClass
+{
+protected:
+    static void SetUpTestSuite()
+    {
+        tests::initApplication();
     }
+
+
+    void SetUp() override
+    {
+        createTestDoc();
+        _extrusion = dynamic_cast<Part::Extrusion*>(_doc->addObject("Part::Extrusion"));
+        PartTestHelpers::rectangle(len, wid, "Rect1");
+        _extrusion->Base.setValue(_doc->getObjects().back());
+    }
+
+    void TearDown() override
+    {}
+
+    Part::Extrusion* _extrusion;  // NOLINT Can't be private in a test framework
+};
+
+
+TEST_P(FeatureExtrusionTest, testExecute)
+{
+    // Arrange
+    // App::DocumentObject docobj;
+    // const double tangent = tan(ang / 180.0 * M_PI);
+
+    // // Volume of a truncated trapezoidal rectangular pyramid (V”) =(1/3)[A’+A”+√(A’*A”)] X H’
+    // const double a = len * wid;                                                 // Area of the base
+    // const double aa = (len + ext1 * tangent * 2) * (wid + ext1 * tangent * 2);  // Area of the top
+    // const double sym_aa =
+    //     (len + ext1 * tangent * 2 / 2) * (wid + ext1 * tangent * 2 / 2);  // Area of the top
+    // const double pyramidVol = ext1 * (a + aa + sqrt(a * aa)) / 3;
+    // const double symPyramidVol = ext1 / 2 * (a + sym_aa + sqrt(a * sym_aa)) / 3;
+
+    auto test = GetParam();
+    _extrusion->Dir.setValue(test.dir);
+    _extrusion->DirMode.setValue(test.dirMode);
+    _extrusion->DirLink.setValue(test.dirLink);
+    _extrusion->LengthFwd.setValue(test.lengthFwd);
+    _extrusion->LengthRev.setValue(test.lengthRev);
+    _extrusion->Solid.setValue(test.solid);
+    _extrusion->Reversed.setValue(test.reversed);
+    _extrusion->Symmetric.setValue(test.symmetric);
+    _extrusion->TaperAngle.setValue(test.taperAngleFwd);
+    _extrusion->TaperAngleRev.setValue(test.taperAngleRev);
+    _extrusion->FaceMakerClass.setValue(test.faceMakerClass);
+    // Act
+    _extrusion->execute();
+    Part::TopoShape ts = _extrusion->Shape.getValue();
+    double volume = PartTestHelpers::getVolume(ts.getShape());
+    Base::BoundBox3d bb = ts.getBoundBox();
+    // Assert
+    // Opencascade volume calculations aren't precisely the same as ours.  Hmmm.
+    EXPECT_NEAR(volume, test.volume, 1.2) << "SubTest " << test.name;
+    EXPECT_FLOAT_EQ(bb.MinX, test.box.MinX) << "SubTest " << test.name;
+    EXPECT_FLOAT_EQ(bb.MinY, test.box.MinY) << "SubTest " << test.name;
+    EXPECT_FLOAT_EQ(bb.MinZ, test.box.MinZ) << "SubTest " << test.name;
+    EXPECT_FLOAT_EQ(bb.MaxX, test.box.MaxX) << "SubTest " << test.name;
+    EXPECT_FLOAT_EQ(bb.MaxY, test.box.MaxY) << "SubTest " << test.name;
+    EXPECT_FLOAT_EQ(bb.MaxZ, test.box.MaxZ) << "SubTest " << test.name;
     // Need to cover the (reasonable) permutations of these parms:
     // App::PropertyVector Dir;
     // App::PropertyEnumeration DirMode;    // Normal, Edge, Custom
@@ -322,3 +323,5 @@ TEST_F(FeatureExtrusionTest, testComputeFinalParameters)
 
     // static Base::Vector3d calculateShapeNormal(const App::PropertyLink& shapeLink);
 }
+
+INSTANTIATE_TEST_SUITE_P(ExecuteTests, FeatureExtrusionTest, ::testing::ValuesIn(testslist));
