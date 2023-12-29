@@ -173,9 +173,9 @@ TEST_F(FeatureExtrusionTest, testExecuteSymmetric)
 //     const double tangent = tan(ang / 180.0 * M_PI);
 
 //     // Volume of a truncated trapezoidal rectangular pyramid (V”) =(1/3)[A’+A”+√(A’*A”)] X H’
-//     const double a = len * wid;                                                 // Area of the base
-//     const double aa = (len + ext1 * tangent * 2) * (wid + ext1 * tangent * 2);  // Area of the top
-//     const double pyramidVol = ext1 * (a + aa + sqrt(a * aa)) / 3;
+//     const double a = len * wid;                                                 // Area of the
+//     base const double aa = (len + ext1 * tangent * 2) * (wid + ext1 * tangent * 2);  // Area of
+//     the top const double pyramidVol = ext1 * (a + aa + sqrt(a * aa)) / 3;
 //     _extrusion->Solid.setValue(true);
 //     _extrusion->TaperAngle.setValue(ang);
 //     // Act
