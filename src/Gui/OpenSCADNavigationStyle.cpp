@@ -189,7 +189,7 @@ SbBool OpenSCADNavigationStyle::processSoEvent(const SoEvent * const ev)
     if (type.isDerivedFrom(SoLocation2Event::getClassTypeId())) {
         this->lockrecenter = true;
         const auto event = (const SoLocation2Event *) ev;
-        if (curmode == NavigationStyle::SELECTION) {
+        if (!viewer->isEditing() && curmode == NavigationStyle::SELECTION) {
             newmode = NavigationStyle::DRAGGING;
             saveCursorPosition(ev);
             this->centerTime = ev->getTime();
