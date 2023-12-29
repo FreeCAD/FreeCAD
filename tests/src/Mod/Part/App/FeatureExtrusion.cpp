@@ -1,21 +1,21 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
 #include <cmath>
-// #include <math>
 
 #include "gtest/gtest.h"
 
 #include "Mod/Part/App/FeatureExtrusion.h"
 #include <src/App/InitApplication.h>
+
+#include "BRepBuilderAPI_MakeEdge.hxx"
+
 #include "PartTestHelpers.h"
 
 struct extrusionParms
 {
     char* name;
     // Parms for each permutation:
-    Base::Vector3d dir;
     char dirMode;
-    App::DocumentObject* dirLink;
     double lengthFwd;
     double lengthRev;
     bool solid;
@@ -61,9 +61,12 @@ TEST_P(FeatureExtrusionTest, testExecute)
 {
     // Arrange
     auto test = GetParam();
-    _extrusion->Dir.setValue(test.dir);
+    _extrusion->Dir.setValue(Base::Vector3d(0, 0, 1));
     _extrusion->DirMode.setValue(test.dirMode);
-    _extrusion->DirLink.setValue(test.dirLink);
+    BRepBuilderAPI_MakeEdge e1(gp_Pnt(0, 0, 0), gp_Pnt(10, 10, 10));
+    auto edge = static_cast<Part::Feature*>(_doc->addObject("Part::Feature", "Edge"));
+    edge->Shape.setValue(e1);
+    _extrusion->DirLink.setValue(edge);
     _extrusion->LengthFwd.setValue(test.lengthFwd);
     _extrusion->LengthRev.setValue(test.lengthRev);
     _extrusion->Solid.setValue(test.solid);
@@ -80,12 +83,7 @@ TEST_P(FeatureExtrusionTest, testExecute)
     // Assert
     // Opencascade volume calculations aren't precisely the same as ours.  Hmmm.
     EXPECT_NEAR(volume, test.volume, 1.2) << "SubTest " << test.name;
-    EXPECT_FLOAT_EQ(bb.MinX, test.box.MinX) << "SubTest " << test.name;
-    EXPECT_FLOAT_EQ(bb.MinY, test.box.MinY) << "SubTest " << test.name;
-    EXPECT_FLOAT_EQ(bb.MinZ, test.box.MinZ) << "SubTest " << test.name;
-    EXPECT_FLOAT_EQ(bb.MaxX, test.box.MaxX) << "SubTest " << test.name;
-    EXPECT_FLOAT_EQ(bb.MaxY, test.box.MaxY) << "SubTest " << test.name;
-    EXPECT_FLOAT_EQ(bb.MaxZ, test.box.MaxZ) << "SubTest " << test.name;
+    EXPECT_TRUE(PartTestHelpers::boxesMatch(bb, test.box)) << "SubTest " << test.name;
 }
 
 TEST_F(FeatureExtrusionTest, testMustExecute)
@@ -127,16 +125,6 @@ TEST_F(FeatureExtrusionTest, testGetProviderName)
 
 TEST_F(FeatureExtrusionTest, testFetchAxisLink)
 {
-    // /**
-    //  * @brief fetchAxisLink: read AxisLink to obtain the direction and
-    //  * length. Note: this routine is re-used in Extrude dialog, hence it
-    //  * is static.
-    //  * @param axisLink (input): the link
-    //  * @param basepoint (output): starting point of edge. Not used by extrude as of now.
-    //  * @param dir (output): direction of axis, with magnitude (length)
-    //  * @return true if link was fetched. false if link was empty. Throws if the
-    //  * link is wrong.
-    //  */
     // static bool fetchAxisLink(const App::PropertyLinkSub& axisLink,
     //                           Base::Vector3d& basepoint,
     //                           Base::Vector3d& dir);
@@ -148,40 +136,12 @@ TEST_F(FeatureExtrusionTest, testFetchAxisLink)
 
 TEST_F(FeatureExtrusionTest, testExtrudeShape)
 {
-    // /**
-    //  * @brief The ExtrusionParameters struct is supposed to be filled with final
-    //  * extrusion parameters, after resolving links, applying mode logic,
-    //  * reversing, etc., and be passed to extrudeShape.
-    //  */
-    // struct ExtrusionParameters {
-    //     gp_Dir dir;
-    //     double lengthFwd{0};
-    //     double lengthRev{0};
-    //     bool solid{false};
-    //     double taperAngleFwd{0}; //in radians
-    //     double taperAngleRev{0};
-    //     std::string faceMakerClass;
-    // };
-
-    // /**
-    //  * @brief extrudeShape powers the extrusion feature.
-    //  * @param source: the shape to be extruded
-    //  * @param params: extrusion parameters
-    //  * @return result of extrusion
-    //  */
     // static TopoShape extrudeShape(const TopoShape& source, const ExtrusionParameters& params);
 }
 
 TEST_F(FeatureExtrusionTest, testComputeFinalParameters)
 {
-    // /**
-    //  * @brief computeFinalParameters: applies mode logic and fetches links, to
-    //  * compute the actual parameters of extrusion. Dir property is updated in
-    //  * the process, hence the function is non-const.
-    //  */
     // ExtrusionParameters computeFinalParameters();
-
-    // static Base::Vector3d calculateShapeNormal(const App::PropertyLink& shapeLink);
 }
 
 // Arbtitrary constants for testing.  Named here for clarity.
@@ -199,129 +159,87 @@ const double sym_aa =
 const double pyramidVol = ext1 * (a + aa + sqrt(a * aa)) / 3;
 const double symPyramidVol = ext1 / 2 * (a + sym_aa + sqrt(a * sym_aa)) / 3;
 
-// Need to cover the (reasonable) permutations of these parms:
-// App::PropertyVector Dir;
-// App::PropertyEnumeration DirMode;    // Normal, Edge, Custom
-// App::PropertyLinkSub DirLink;    // the Edge, presumably
-// DONE App::PropertyDistance LengthFwd;
-// DONE App::PropertyDistance LengthRev;
-// DONE App::PropertyBool Solid;  // createsolid
-// DONE App::PropertyBool Reversed;
-// DONE App::PropertyBool Symmetric;
-// DONE App::PropertyAngle TaperAngle;
-// DONE App::PropertyAngle TaperAngleRev;
-// App::PropertyString FaceMakerClass;
+const double sin45 = sin(45 / 180.0 * M_PI);
 
+TEST_F(FeatureExtrusionTest, testExecuteSimple)
+{
+    // Arrange
+    // auto test = GetParam();
+    // _extrusion->Dir.setValue(Base::Vector3d(0, 0, 1));
+    // _extrusion->DirMode.setValue(test.dirMode);
+    // BRepBuilderAPI_MakeEdge e1(gp_Pnt(0, 0, 0), gp_Pnt(10, 10, 10));
+    // auto edge = static_cast<Part::Feature*>(_doc->addObject("Part::Feature","Edge"));
+    // edge->Shape.setValue(e1);
+    // _extrusion->DirLink.setValue(edge);
+    _extrusion->LengthFwd.setValue(ext1);
+    // _extrusion->LengthRev.setValue(test.lengthRev);
+    // _extrusion->Solid.setValue(test.solid);
+    // _extrusion->Reversed.setValue(test.reversed);
+    // _extrusion->Symmetric.setValue(test.symmetric);
+    // _extrusion->TaperAngle.setValue(test.taperAngleFwd);
+    // _extrusion->TaperAngleRev.setValue(test.taperAngleRev);
+    // _extrusion->FaceMakerClass.setValue(test.faceMakerClass);
+    // Act
+    _extrusion->execute();
+    Part::TopoShape ts = _extrusion->Shape.getValue();
+    double volume = PartTestHelpers::getVolume(ts.getShape());
+    Base::BoundBox3d bb = ts.getBoundBox();
+    // Assert
+    EXPECT_FLOAT_EQ(volume, len * wid * ext1);
+    EXPECT_TRUE(PartTestHelpers::boxesMatch(bb, Base::BoundBox3d(0, 0, 0, len, wid, ext1)));
+}
+
+// clang-format off
 extrusionParms testslist[] = {
-    {"Simple Extrusion",
-     Base::Vector3d(1, 0, 0),
-     2,
-     nullptr,
-     ext1,
-     0,
-     false,
-     false,
-     false,
-     0,
-     0,
-     "",
-     /* Results: */ len* wid* ext1,
-     Base::BoundBox3d(0, 0, 0, len, wid, ext1)},
-    {"Reverse Simple Extrusion",
-     Base::Vector3d(1, 0, 0),
-     2,
-     nullptr,
-     0,
-     ext2,
-     false,
-     false,
-     false,
-     0,
-     0,
-     "",
-     /* Results: */ len* wid* ext2,
-     Base::BoundBox3d(0, 0, -ext2, len, wid, 0)},
-    {"Solid Extrusion",
-     Base::Vector3d(1, 0, 0),
-     2,
-     nullptr,
-     ext1,
-     0,
-     true,
-     false,
-     false,
-     0,
-     0,
-     "",
-     /* Results: */ len* wid* ext1,
-     Base::BoundBox3d(0, 0, 0, len, wid, ext1)},
-    {"Reverse Flag Extrusion",
-     Base::Vector3d(1, 0, 0),
-     2,
-     nullptr,
-     ext1,
-     0,
-     false,
-     true,
-     false,
-     0,
-     0,
-     "",
-     /* Results: */ len* wid* ext1,
-     Base::BoundBox3d(0, 0, -ext1, len, wid, 0)},
-    {"Symmetric Extrusion",
-     Base::Vector3d(1, 0, 0),
-     2,
-     nullptr,
-     ext1,
-     0,
-     false,
-     false,
-     true,
-     0,
-     0,
-     "",
-     /* Results: */ len* wid* ext1,
-     Base::BoundBox3d(0, 0, -ext1 / 2, len, wid, ext1 / 2)},
+    {"Simple Extrusion", 2, ext1, 0, 
+                         false, false, false, 0, 0, "",
+     /* Results: */ len* wid* ext1, Base::BoundBox3d(0, 0, 0, len, wid, ext1)},
+
+    {"Reverse Simple Extrusion", 2, 0, ext2,
+                         false, false, false, 0, 0, "",
+     /* Results: */ len* wid* ext2, Base::BoundBox3d(0, 0, -ext2, len, wid, 0)},
+
+    {"Solid Extrusion", 2, ext1, 0,
+                         true, false, false, 0, 0, "",
+     /* Results: */ len* wid* ext1, Base::BoundBox3d(0, 0, 0, len, wid, ext1)},
+
+    {"Reverse Flag Extrusion", 2, ext1, 0,
+                         false, true, false, 0, 0, "",
+     /* Results: */ len* wid* ext1, Base::BoundBox3d(0, 0, -ext1, len, wid, 0)},
+
+    {"Symmetric Extrusion", 2, ext1, 0,
+                         false, false, true, 0, 0, "",
+     /* Results: */ len* wid* ext1, Base::BoundBox3d(0, 0, -ext1 / 2, len, wid, ext1 / 2)},
+
     // Note:  Angled volumes appear to be wrong unless we have a solid.  Flag must be true
-    {"Angled Extrusion",
-     Base::Vector3d(1, 0, 0),
-     2,
-     nullptr,
-     ext1,
-     0,
-     true,
-     false,
-     false,
-     ang,
-     0,
-     "",
-     /* Results: */ pyramidVol,
-     Base::BoundBox3d(-ext1* tangent,
-                      -ext1* tangent,
-                      0,
-                      len + ext1 * tangent,
-                      wid + ext1 * tangent,
-                      ext1)},
-    {"Reverse Angled Extrusion",
-     Base::Vector3d(1, 0, 0),
-     2,
-     nullptr,
-     ext1,
-     0,
-     true,
-     false,
-     true,
-     0,
-     ang,
-     "",
-     /* Results: */ symPyramidVol + len* wid* ext1 / 2,
-     Base::BoundBox3d(-ext1* tangent / 2,
-                      -ext1* tangent / 2,
-                      -ext1 / 2,
-                      len + ext1 * tangent / 2,
-                      wid + ext1 * tangent / 2,
-                      ext1 / 2)},
+    {"Angled Extrusion", 2, ext1, 0,
+                         true, false, false, ang, 0, "",
+     /* Results: */ pyramidVol, 
+                    Base::BoundBox3d(-ext1 * tangent, -ext1 * tangent, 0,
+                                    len + ext1 * tangent, wid + ext1 * tangent, ext1)},
+
+    {"Reverse Angled Extrusion", 2, ext1, 0,
+                         true, false, true, 0, ang, "",
+     /* Results: */ symPyramidVol + len * wid * ext1 / 2, 
+                    Base::BoundBox3d(-ext1 * tangent / 2, -ext1 * tangent / 2, -ext1 / 2,
+                                    len + ext1 * tangent / 2, wid + ext1 * tangent / 2, ext1 / 2)},
+
+    {"Simple Extrusion Vector1", 1, ext1, 0, 
+                         false, false, false, 0, 0, "",
+     /* Results: */ len* wid* ext1 * tangent, Base::BoundBox3d(0, 0, 0,
+                                    len + ext1 * tangent, wid + ext1 * tangent, ext1 * tangent)},
+
+    // Set the dir!
+    // {"Simple Extrusion Vector0", 0, ext1, 0, 
+    //                      false, false, false, 0, 0, "",
+    //  /* Results: */ len* wid* ext1 * sin45, 
+    //                 Base::BoundBox3d(0, 0, 0, len, wid + ext1 * sin45, ext1 * sin45)},
+
+    {"Simple Extrusion Cheese", 2, ext1, 0, 
+                         false, false, false, 0, 0, "Part::FaceMakerCheese",
+     /* Results: */ len* wid* ext1, Base::BoundBox3d(0, 0, 0, len, wid, ext1)},
+
 };
+// clang-format on
 
 INSTANTIATE_TEST_SUITE_P(ExecuteTests, FeatureExtrusionTest, ::testing::ValuesIn(testslist));
