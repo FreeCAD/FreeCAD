@@ -32,41 +32,28 @@ TEST_F(FeatureCompoundTest, testIntersecting)
 {
     // Arrange
     _compound->Links.setValues({_boxes[0], _boxes[1]});
-
     // Act
     _compound->execute();
     Part::TopoShape ts = _compound->Shape.getValue();
     double volume = PartTestHelpers::getVolume(ts.getShape());
     Base::BoundBox3d bb = ts.getBoundBox();
-
     // Assert
     EXPECT_DOUBLE_EQ(volume, 12.0);
-    // double check using bounds:
-    EXPECT_DOUBLE_EQ(bb.MinX, 0.0);
-    EXPECT_DOUBLE_EQ(bb.MinY, 0.0);
-    EXPECT_DOUBLE_EQ(bb.MinZ, 0.0);
-    EXPECT_DOUBLE_EQ(bb.MaxX, 1.0);
-    EXPECT_DOUBLE_EQ(bb.MaxY, 3.0);
-    EXPECT_DOUBLE_EQ(bb.MaxZ, 3.0);
+    EXPECT_TRUE(PartTestHelpers::boxesMatch(bb, Base::BoundBox3d(0.0, 0.0, 0.0, 1.0, 3.0, 3.0)));
+    EXPECT_EQ(ts.countSubShapes(TopAbs_SHAPE), 2);
 }
 
 TEST_F(FeatureCompoundTest, testNonIntersecting)
 {
     // Arrange
     _compound->Links.setValues({_boxes[0], _boxes[2]});
-
     // Act
     _compound->execute();
     Part::TopoShape ts = _compound->Shape.getValue();
     double volume = PartTestHelpers::getVolume(ts.getShape());
     Base::BoundBox3d bb = ts.getBoundBox();
-
     // Assert
     EXPECT_DOUBLE_EQ(volume, 12.0);
-    EXPECT_DOUBLE_EQ(bb.MinX, 0.0);
-    EXPECT_DOUBLE_EQ(bb.MinY, 0.0);
-    EXPECT_DOUBLE_EQ(bb.MinZ, 0.0);
-    EXPECT_DOUBLE_EQ(bb.MaxX, 1.0);
-    EXPECT_DOUBLE_EQ(bb.MaxY, 5.0);
-    EXPECT_DOUBLE_EQ(bb.MaxZ, 3.0);
+    EXPECT_TRUE(PartTestHelpers::boxesMatch(bb, Base::BoundBox3d(0.0, 0.0, 0.0, 1.0, 5.0, 3.0)));
+    EXPECT_EQ(ts.countSubShapes(TopAbs_SHAPE), 2);
 }

@@ -9,7 +9,6 @@
 #include "Mod/Part/App/FeatureFillet.h"
 #include <BRepGProp.hxx>
 #include "Base/Interpreter.h"
-#include <boost/algorithm/string/regex.hpp>
 #include <boost/format.hpp>
 
 

@@ -50,7 +50,6 @@ TEST_F(FeatureRevolutionTest, testExecute)
     Part::TopoShape ts = _revolution->Shape.getValue();
     double volume = PartTestHelpers::getVolume(ts.getShape());
     Base::BoundBox3d bb = ts.getBoundBox();
-
     // Assert
     EXPECT_FLOAT_EQ(volume, puckVolume);
     EXPECT_TRUE(PartTestHelpers::boxesMatch(bb, Base::BoundBox3d(-len, 0, -len, len, wid, len)));
