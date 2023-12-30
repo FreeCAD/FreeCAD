@@ -66,8 +66,15 @@ void rectangle(double height, double width, char* name)
         boost::str(boost::format("V2 = FreeCAD.Vector(%d, 0, 0)") % height),
         boost::str(boost::format("V3 = FreeCAD.Vector(%d, %d, 0)") % height % width),
         boost::str(boost::format("V4 = FreeCAD.Vector(0, %d, 0)") % width),
-        "P1 = Part.makePolygon([V1, V2, V3, V4, V1])",
+        "P1 = Part.makePolygon([V1, V2, V3, V4],True)",
         "F1 = Part.Face(P1)",  // Make the face or the volume calc won't work right.
+        // "L1 = Part.LineSegment(V1, V2)",
+        // "L2 = Part.LineSegment(V2, V3)",
+        // "L3 = Part.LineSegment(V3, V4)",
+        // "L4 = Part.LineSegment(V4, V1)",
+        // "S1 = Part.Shape([L1,L2,L3,L4])",
+        // "W1 = Part.Wire(S1.Edges)",
+        // "F1 = Part.Face(W1)",  // Make the face or the volume calc won't work right.
         boost::str(boost::format("Part.show(F1,'%s')") % name),
     };
     executePython(v);
@@ -82,8 +89,10 @@ testing::AssertionResult boxesMatch(Base::BoundBox3d b1, Base::BoundBox3d b2, do
     }
     else {
         return testing::AssertionFailure()
-            << "(" << b1.MinX << "," << b1.MinY << "," << b1.MinZ << ") != (" << b2.MinX << ","
-            << b2.MinY << "," << b2.MinZ << ")";
+            << "(" << b1.MinX << "," << b1.MinY << "," << b1.MinZ << " ; "
+            << "(" << b1.MaxX << "," << b1.MaxY << "," << b1.MaxZ << ") != (" << b2.MinX << ","
+            << b2.MinY << "," << b2.MinZ << " ; " << b2.MaxX << "," << b2.MaxY << "," << b2.MaxZ
+            << ")";
     }
 }
 

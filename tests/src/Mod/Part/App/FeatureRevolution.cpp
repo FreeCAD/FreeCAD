@@ -7,8 +7,9 @@
 
 #include "Base/Interpreter.h"
 
-#include <boost/algorithm/string/regex.hpp>
-#include <boost/format.hpp>
+#include "BRepBuilderAPI_MakeEdge.hxx"
+
+#include "TopoDS_Iterator.hxx"
 
 #include "PartTestHelpers.h"
 
@@ -25,7 +26,7 @@ protected:
     {
         createTestDoc();
         _revolution = dynamic_cast<Part::Revolution*>(_doc->addObject("Part::Revolution"));
-        PartTestHelpers::rectangle(3, 4, "Rect1");
+        PartTestHelpers::rectangle(len, wid, "Rect1");
         _revolution->Source.setValue(_doc->getObjects().back());
         _revolution->Axis.setValue(0, 1, 0);
     }
@@ -34,44 +35,143 @@ protected:
     {}
 
     Part::Revolution* _revolution;  // NOLINT Can't be private in a test framework
+    // Arbtitrary constants for testing.  Named here for clarity.
+    const double len = 3;
+    const double wid = 4;
+    const double ext1 = 10;
 };
 
 TEST_F(FeatureRevolutionTest, testExecute)
 {
+    // Arrange
+    double puckVolume = len * len * M_PI * wid;  // Area is PIr2; apply height
+    // Act
     _revolution->execute();
     Part::TopoShape ts = _revolution->Shape.getValue();
     double volume = PartTestHelpers::getVolume(ts.getShape());
     Base::BoundBox3d bb = ts.getBoundBox();
 
-    // FIXME:  Replace this with multiple tests and actual side math ala FeatureExtrusion.
     // Assert
-    EXPECT_FLOAT_EQ(volume, 113.09733552923254);
-    EXPECT_DOUBLE_EQ(bb.MinX, -3.0);
-    EXPECT_DOUBLE_EQ(bb.MinY, 0.0);
-    EXPECT_DOUBLE_EQ(bb.MinZ, -3.0);
-    EXPECT_DOUBLE_EQ(bb.MaxX, 3.0);
-    EXPECT_DOUBLE_EQ(bb.MaxY, 4.0);
-    EXPECT_DOUBLE_EQ(bb.MaxZ, 3.0);
+    EXPECT_FLOAT_EQ(volume, puckVolume);
+    EXPECT_TRUE(PartTestHelpers::boxesMatch(bb, Base::BoundBox3d(-len, 0, -len, len, wid, len)));
+}
 
-    // Test permutations of these settings:
+TEST_F(FeatureRevolutionTest, testExecuteBase)
+{
+    // Arrange
+    double rad = len + 1.0;
+    double rad2 = 1.0;
+    double outerPuckVolume = rad * rad * M_PI * wid;    // Area is PIr2; apply height
+    double innerPuckVolume = rad2 * rad2 * M_PI * wid;  // Area is PIr2; apply height
+    _revolution->Base.setValue(Base::Vector3d(len + 1, 0, 0));
+    // Act
+    _revolution->execute();
+    Part::TopoShape ts = _revolution->Shape.getValue();
+    double volume = PartTestHelpers::getVolume(ts.getShape());
+    Base::BoundBox3d bb = ts.getBoundBox();
+    // Assert
+    EXPECT_FLOAT_EQ(volume, outerPuckVolume - innerPuckVolume);
+    EXPECT_TRUE(PartTestHelpers::boxesMatch(bb, Base::BoundBox3d(0, 0, -wid, wid * 2, wid, wid)));
+}
 
-    // App::PropertyLink Source;
-    // App::PropertyVector Base;
-    // App::PropertyVector Axis;
-    // App::PropertyLinkSub AxisLink;
-    // App::PropertyFloatConstraint Angle;
-    // App::PropertyBool Symmetric; //like "Midplane" in PartDesign
-    // App::PropertyBool Solid;
-    // App::PropertyString FaceMakerClass;
+
+TEST_F(FeatureRevolutionTest, testAxis)
+{
+    // Arrange
+    double puckVolume = wid * wid * M_PI * len;  // Area is PIr2 times height
+    _revolution->Axis.setValue(Base::Vector3d(1, 0, 0));
+    // Act
+    _revolution->execute();
+    Part::TopoShape ts = _revolution->Shape.getValue();
+    double volume = PartTestHelpers::getVolume(ts.getShape());
+    Base::BoundBox3d bb = ts.getBoundBox();
+    // Assert
+    EXPECT_FLOAT_EQ(volume, puckVolume);
+    EXPECT_TRUE(PartTestHelpers::boxesMatch(bb, Base::BoundBox3d(0, -wid, -wid, len, wid, wid)));
+}
+
+TEST_F(FeatureRevolutionTest, testAxisLink)
+{
+    // Arrange
+    double lineLen = 10;
+    BRepBuilderAPI_MakeEdge e1(gp_Pnt(0, 0, 0), gp_Pnt(0, 0, lineLen));
+    auto edge = static_cast<Part::Feature*>(_doc->addObject("Part::Feature", "Edge"));
+    edge->Shape.setValue(e1);
+    _revolution->AxisLink.setValue(edge);
+    double puckVolume = wid * wid * M_PI * len;  // Area is PIr2; apply height
+    // Act
+    _revolution->execute();
+    Part::TopoShape ts = _revolution->Shape.getValue();
+    double volume = PartTestHelpers::getVolume(ts.getShape());
+    Base::BoundBox3d bb = ts.getBoundBox();
+    // Assert
+    puckVolume = 0;  // FIXME  make this test use a more interesting edge angle
+    EXPECT_FLOAT_EQ(volume, puckVolume);
+    EXPECT_TRUE(PartTestHelpers::boxesMatch(
+        bb,
+        Base::BoundBox3d(-lineLen / 2, -lineLen / 2, 0, lineLen / 2, lineLen / 2, 0)));
+}
+
+TEST_F(FeatureRevolutionTest, testSymmetric)
+{
+    // Arrange
+    double puckVolume = len * len * M_PI * wid;  // Area is PIr2 times height
+    _revolution->Symmetric.setValue(true);
+    // Act
+    _revolution->execute();
+    Part::TopoShape ts = _revolution->Shape.getValue();
+    double volume = PartTestHelpers::getVolume(ts.getShape());
+    Base::BoundBox3d bb = ts.getBoundBox();
+    // Assert
+    EXPECT_FLOAT_EQ(volume, puckVolume);
+    EXPECT_TRUE(PartTestHelpers::boxesMatch(bb, Base::BoundBox3d(-len, 0, -len, len, wid, len)));
+}
+
+TEST_F(FeatureRevolutionTest, testAngle)
+{
+    // Arrange
+    double puckVolume = len * len * M_PI * wid;  // Area is PIr2 times height
+    _revolution->Angle.setValue(90);
+    // Act
+    _revolution->execute();
+    Part::TopoShape ts = _revolution->Shape.getValue();
+    double volume = PartTestHelpers::getVolume(ts.getShape());
+    Base::BoundBox3d bb = ts.getBoundBox();
+    // Assert
+    EXPECT_FLOAT_EQ(volume, puckVolume / 4);
+    EXPECT_TRUE(PartTestHelpers::boxesMatch(bb, Base::BoundBox3d(0, 0, -len, len, wid, 0)));
 }
 
 TEST_F(FeatureRevolutionTest, testMustExecute)
-{}
-
-TEST_F(FeatureRevolutionTest, testOnChanged)
 {
-    // void onChanged(const App::Property* prop) override;
+    // Assert
+    EXPECT_TRUE(_revolution->mustExecute());
+    // Act
+    _doc->recompute();
+    // Assert
+    EXPECT_FALSE(_revolution->mustExecute());
+    // Act
+    _revolution->Base.setValue(_revolution->Base.getValue());
+    // Assert
+    EXPECT_TRUE(_revolution->mustExecute());
+    // Act
+    _doc->recompute();
+    // Assert
+    EXPECT_FALSE(_revolution->mustExecute());
+    // Act
+    _revolution->Solid.setValue(Standard_True);
+    // Assert
+    EXPECT_TRUE(_revolution->mustExecute());
+    // Act
+    _doc->recompute();
+    // Assert
+    EXPECT_FALSE(_revolution->mustExecute());
 }
+
+// TEST_F(FeatureRevolutionTest, testOnChanged)
+// {
+//     // void onChanged(const App::Property* prop) override;
+// }
 
 TEST_F(FeatureRevolutionTest, testGetProviderName)
 {
@@ -82,22 +182,26 @@ TEST_F(FeatureRevolutionTest, testGetProviderName)
     EXPECT_STREQ(name, "PartGui::ViewProviderRevolution");
 }
 
-TEST_F(FeatureRevolutionTest, testFetchAxisLink)
+// Tested by execute above
+// TEST_F(FeatureRevolutionTest, testFetchAxisLink)
+// {
+//     // static bool fetchAxisLink(const App::PropertyLinkSub& axisLink,
+//     //                           Base::Vector3d &center,
+//     //                           Base::Vector3d &dir,
+//     //                           double &angle);
+// }
+
+void dumpTopoDSShape(TopoDS_Shape tsd, std::ostream& o)
 {
-    // /**
-    //  * @brief fetchAxisLink: read AxisLink to obtain the axis parameters and
-    //  * angle span. Note: this routine is re-used in Revolve dialog, hence it
-    //  * is static.
-    //  * @param axisLink (input): the link
-    //  * @param center (output): base point of axis
-    //  * @param dir (output): direction of axis
-    //  * @param angle (output): if edge is an arc of circle, this argument is
-    //  * used to return the angle span of the arc.
-    //  * @return true if link was fetched. false if link was empty. Throws if the
-    //  * link is wrong.
-    //  */
-    // static bool fetchAxisLink(const App::PropertyLinkSub& axisLink,
-    //                           Base::Vector3d &center,
-    //                           Base::Vector3d &dir,
-    //                           double &angle);
+    tsd.DumpJson(o);
+    o << std::endl;
+    if (tsd.NbChildren() > 0) {
+        TopoDS_Iterator ti(tsd);
+        do {
+            dumpTopoDSShape(ti.Value(), o);
+            if (ti.More()) {
+                ti.Next();
+            }
+        } while (ti.More());
+    }
 }
