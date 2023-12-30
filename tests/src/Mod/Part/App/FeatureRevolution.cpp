@@ -190,18 +190,3 @@ TEST_F(FeatureRevolutionTest, testGetProviderName)
 //     //                           Base::Vector3d &dir,
 //     //                           double &angle);
 // }
-
-void dumpTopoDSShape(TopoDS_Shape tsd, std::ostream& o)
-{
-    tsd.DumpJson(o);
-    o << std::endl;
-    if (tsd.NbChildren() > 0) {
-        TopoDS_Iterator ti(tsd);
-        do {
-            dumpTopoDSShape(ti.Value(), o);
-            if (ti.More()) {
-                ti.Next();
-            }
-        } while (ti.More());
-    }
-}
