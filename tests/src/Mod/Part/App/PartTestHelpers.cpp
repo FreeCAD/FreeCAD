@@ -28,12 +28,12 @@ void PartTestHelperClass::createTestDoc()
         Base::Vector3d(0, 2 - minimalDistance, 0)};
 
     for (unsigned i = 0; i < _boxes.size(); i++) {
-        auto box = _boxes[i] = dynamic_cast<Part::Box*>(_doc->addObject("Part::Box"));
+        auto box = _boxes[i] = dynamic_cast<Part::Box*>(_doc->addObject("Part::Box"));  // NOLINT
         box->Length.setValue(1);
         box->Width.setValue(2);
         box->Height.setValue(3);
         box->Placement.setValue(
-            Base::Placement(box_origins[i], Base::Rotation(), Base::Vector3d()));
+            Base::Placement(box_origins[i], Base::Rotation(), Base::Vector3d()));  // NOLINT
     }
 }
 

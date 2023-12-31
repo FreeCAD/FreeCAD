@@ -35,5 +35,5 @@ void executePython(const std::vector<std::string>& python);
 void rectangle(double height, double width, char* name);
 
 testing::AssertionResult
-boxesMatch(const Base::BoundBox3d& b1, const Base::BoundBox3d& b2, double prec = 1e-05);
+boxesMatch(const Base::BoundBox3d& b1, const Base::BoundBox3d& b2, double prec = 1e-05);  // NOLINT
 }  // namespace PartTestHelpers

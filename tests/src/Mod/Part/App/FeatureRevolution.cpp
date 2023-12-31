@@ -35,7 +35,7 @@ protected:
     {}
 
     // NOLINTBEGIN(cppcoreguidelines-non-private-member-variables-in-classes)
-    Part::Revolution* _revolution;  // NOLINT Can't be private in a test framework
+    Part::Revolution* _revolution = nullptr;
     // Arbtitrary constants for testing.  Named here for clarity.
     const double len = 3;
     const double wid = 4;
@@ -94,8 +94,7 @@ TEST_F(FeatureRevolutionTest, testAxis)
 TEST_F(FeatureRevolutionTest, testAxisLink)
 {
     // Arrange
-    double lineLen = 10;
-    BRepBuilderAPI_MakeEdge e1(gp_Pnt(0, 0, 0), gp_Pnt(0, 0, lineLen));
+    BRepBuilderAPI_MakeEdge e1(gp_Pnt(0, 0, 0), gp_Pnt(0, 0, ext1));
     auto edge = dynamic_cast<Part::Feature*>(_doc->addObject("Part::Feature", "Edge"));
     edge->Shape.setValue(e1);
     _revolution->AxisLink.setValue(edge);
