@@ -126,7 +126,7 @@ TEST_F(FeatureFilletTest, testGetProviderName)
     EXPECT_STREQ(name, "PartGui::ViewProviderFillet");
 }
 
-// NOLINTBEGIN(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
+// NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
 
 // void PrintTo(const TopoDS_Shape& ds, std::ostream* os)
 // {

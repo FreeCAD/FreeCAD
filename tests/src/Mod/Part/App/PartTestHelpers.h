@@ -30,7 +30,7 @@ public:
 
 const double minimalDistance = Base::Precision::Confusion() * 1000;
 
-void executePython(std::vector<std::string> python);
+void executePython(const std::vector<std::string>& python);
 
 void rectangle(double height, double width, char* name);
 

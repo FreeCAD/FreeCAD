@@ -48,7 +48,7 @@ _getFilletEdges(const std::vector<int>& edges, double startRadius, double endRad
     return filletElements;
 }
 
-void executePython(std::vector<std::string> python)
+void executePython(const std::vector<std::string>& python)
 {
     Base::InterpreterSingleton is = Base::InterpreterSingleton();
 
