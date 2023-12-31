@@ -109,7 +109,7 @@ TEST_F(FeatureRevolutionTest, testAxisLink)
     EXPECT_FLOAT_EQ(volume, puckVolume);
     EXPECT_TRUE(PartTestHelpers::boxesMatch(
         bb,
-        Base::BoundBox3d(-lineLen / 2, -lineLen / 2, 0, lineLen / 2, lineLen / 2, 0)));
+        Base::BoundBox3d(-ext1 / 2, -ext1 / 2, 0, ext1 / 2, ext1 / 2, 0)));
 }
 
 TEST_F(FeatureRevolutionTest, testSymmetric)
