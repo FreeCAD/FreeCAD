@@ -105,7 +105,7 @@ TEST_F(FeatureRevolutionTest, testAxisLink)
     double volume = PartTestHelpers::getVolume(ts.getShape());
     Base::BoundBox3d bb = ts.getBoundBox();
     // Assert
-    double puckVolume = 0;  // FIXME  make this test use a more interesting edge angle
+    double puckVolume = 0;  // Someday make this test use a more interesting edge angle
     EXPECT_FLOAT_EQ(volume, puckVolume);
     EXPECT_TRUE(PartTestHelpers::boxesMatch(
         bb,
