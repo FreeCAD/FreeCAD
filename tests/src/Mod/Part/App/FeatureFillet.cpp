@@ -6,10 +6,7 @@
 
 #include "PartTestHelpers.h"
 
-// #include <TopExp_Explorer.hxx>
-// #include <BRep_Tool.hxx>
-// #include <TopoDS.hxx>
-
+// NOLINTBEGIN(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
 class FeatureFilletTest: public ::testing::Test, public PartTestHelpers::PartTestHelperClass
 {
 protected:
@@ -128,6 +125,8 @@ TEST_F(FeatureFilletTest, testGetProviderName)
     // Assert
     EXPECT_STREQ(name, "PartGui::ViewProviderFillet");
 }
+
+// NOLINTBEGIN(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
 
 // void PrintTo(const TopoDS_Shape& ds, std::ostream* os)
 // {

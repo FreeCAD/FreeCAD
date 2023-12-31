@@ -25,7 +25,7 @@ protected:
     void TearDown() override
     {}
 
-    Part::Compound* _compound;  // NOLINT Can't be private in a test framework
+    Part::Compound* _compound = nullptr;  // NOLINT Can't be private in a test framework
 };
 
 TEST_F(FeatureCompoundTest, testIntersecting)

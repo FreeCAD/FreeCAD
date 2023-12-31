@@ -14,10 +14,10 @@
 namespace PartTestHelpers
 {
 
-double getVolume(TopoDS_Shape shape);
+double getVolume(const TopoDS_Shape &shape);
 
 std::vector<Part::FilletElement>
-_getFilletEdges(std::vector<int> edges, double startRadius, double endRadius);
+_getFilletEdges(const std::vector<int> &edges, double startRadius, double endRadius);
 
 class PartTestHelperClass
 {
@@ -34,5 +34,5 @@ void executePython(std::vector<std::string> python);
 
 void rectangle(double height, double width, char* name);
 
-testing::AssertionResult boxesMatch(Base::BoundBox3d b1, Base::BoundBox3d, double prec = 1e-05);
+testing::AssertionResult boxesMatch(const Base::BoundBox3d &b1,const Base::BoundBox3d &b2, double prec = 1e-05);
 }  // namespace PartTestHelpers

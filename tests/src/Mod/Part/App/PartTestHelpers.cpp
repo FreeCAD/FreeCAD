@@ -5,7 +5,7 @@
 namespace PartTestHelpers
 {
 
-double getVolume(const TopoDS_Shape shape)
+double getVolume(const TopoDS_Shape &shape)
 {
     GProp_GProps prop;
     BRepGProp::VolumeProperties(shape, prop);
@@ -16,7 +16,7 @@ void PartTestHelperClass::createTestDoc()
 {
     _docName = App::GetApplication().getUniqueDocumentName("test");
     _doc = App::GetApplication().newDocument(_docName.c_str(), "testUser");
-    std::array<Base::Vector3d, 6> box_origins = {
+    std::array<Base::Vector3d, 6> box_origins = {  // NOLINT magic number
         // NOLINT magic number
         Base::Vector3d(),                                        // First box at 0,0,0
         Base::Vector3d(0, 1, 0),                                 // Overlap with first box
@@ -26,8 +26,8 @@ void PartTestHelperClass::createTestDoc()
         // For the Just Inside Of Touching case, go enough that we exceed precision rounding
         Base::Vector3d(0, 2 - minimalDistance, 0)};
 
-    for (int i = 0; i < (int)_boxes.size(); i++) {
-        auto box = _boxes[i] = static_cast<Part::Box*>(_doc->addObject("Part::Box"));
+    for (unsigned i = 0; i < _boxes.size(); i++) {
+        auto box = _boxes[i] = dynamic_cast<Part::Box*>(_doc->addObject("Part::Box"));
         box->Length.setValue(1);
         box->Width.setValue(2);
         box->Height.setValue(3);
@@ -37,7 +37,7 @@ void PartTestHelperClass::createTestDoc()
 }
 
 std::vector<Part::FilletElement>
-_getFilletEdges(std::vector<int> edges, double startRadius, double endRadius)
+_getFilletEdges(const std::vector<int> &edges, double startRadius, double endRadius)
 {
     std::vector<Part::FilletElement> filletElements;
     for (auto edge : edges) {
@@ -59,7 +59,7 @@ void executePython(std::vector<std::string> python)
 
 void rectangle(double height, double width, char* name)
 {
-    std::vector<std::string> v {
+    std::vector<std::string> rectstring {
         "import FreeCAD, Part",
         "V1 = FreeCAD.Vector(0, 0, 0)",
         boost::str(boost::format("V2 = FreeCAD.Vector(%d, 0, 0)") % height),
@@ -76,23 +76,21 @@ void rectangle(double height, double width, char* name)
         // "F1 = Part.Face(W1)",  // Make the face or the volume calc won't work right.
         boost::str(boost::format("Part.show(F1,'%s')") % name),
     };
-    executePython(v);
+    executePython(rectstring);
 }
 
-testing::AssertionResult boxesMatch(Base::BoundBox3d b1, Base::BoundBox3d b2, double prec)
+testing::AssertionResult boxesMatch(const Base::BoundBox3d &b1, const Base::BoundBox3d &b2, double prec)
 {
     if (abs(b1.MinX - b2.MinX) < prec && abs(b1.MinY - b2.MinY) < prec
         && abs(b1.MinZ - b2.MinZ) < prec && abs(b1.MaxX - b2.MaxX) < prec
         && abs(b1.MaxY - b2.MaxY) < prec && abs(b1.MaxZ - b2.MaxZ) < prec) {
         return testing::AssertionSuccess();
     }
-    else {
-        return testing::AssertionFailure()
-            << "(" << b1.MinX << "," << b1.MinY << "," << b1.MinZ << " ; "
-            << "(" << b1.MaxX << "," << b1.MaxY << "," << b1.MaxZ << ") != (" << b2.MinX << ","
-            << b2.MinY << "," << b2.MinZ << " ; " << b2.MaxX << "," << b2.MaxY << "," << b2.MaxZ
-            << ")";
-    }
+    return testing::AssertionFailure()
+        << "(" << b1.MinX << "," << b1.MinY << "," << b1.MinZ << " ; "
+        << "(" << b1.MaxX << "," << b1.MaxY << "," << b1.MaxZ << ") != (" << b2.MinX << ","
+        << b2.MinY << "," << b2.MinZ << " ; " << b2.MaxX << "," << b2.MaxY << "," << b2.MaxZ
+        << ")";
 }
 
 }  // namespace PartTestHelpers

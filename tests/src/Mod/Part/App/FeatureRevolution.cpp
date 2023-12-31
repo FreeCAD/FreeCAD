@@ -34,11 +34,13 @@ protected:
     void TearDown() override
     {}
 
+    // NOLINTBEGIN(cppcoreguidelines-non-private-member-variables-in-classes)
     Part::Revolution* _revolution;  // NOLINT Can't be private in a test framework
     // Arbtitrary constants for testing.  Named here for clarity.
     const double len = 3;
     const double wid = 4;
     const double ext1 = 10;
+    // NOLINTEND(cppcoreguidelines-non-private-member-variables-in-classes)
 };
 
 TEST_F(FeatureRevolutionTest, testExecute)
@@ -94,17 +96,17 @@ TEST_F(FeatureRevolutionTest, testAxisLink)
     // Arrange
     double lineLen = 10;
     BRepBuilderAPI_MakeEdge e1(gp_Pnt(0, 0, 0), gp_Pnt(0, 0, lineLen));
-    auto edge = static_cast<Part::Feature*>(_doc->addObject("Part::Feature", "Edge"));
+    auto edge = dynamic_cast<Part::Feature*>(_doc->addObject("Part::Feature", "Edge"));
     edge->Shape.setValue(e1);
     _revolution->AxisLink.setValue(edge);
-    double puckVolume = wid * wid * M_PI * len;  // Area is PIr2; apply height
+    // double puckVolume = wid * wid * M_PI * len;  // Area is PIr2; apply height
     // Act
     _revolution->execute();
     Part::TopoShape ts = _revolution->Shape.getValue();
     double volume = PartTestHelpers::getVolume(ts.getShape());
     Base::BoundBox3d bb = ts.getBoundBox();
     // Assert
-    puckVolume = 0;  // FIXME  make this test use a more interesting edge angle
+    double puckVolume = 0;  // FIXME  make this test use a more interesting edge angle
     EXPECT_FLOAT_EQ(volume, puckVolume);
     EXPECT_TRUE(PartTestHelpers::boxesMatch(
         bb,
@@ -130,7 +132,7 @@ TEST_F(FeatureRevolutionTest, testAngle)
 {
     // Arrange
     double puckVolume = len * len * M_PI * wid;  // Area is PIr2 times height
-    _revolution->Angle.setValue(90);
+    _revolution->Angle.setValue(90);  // NOLINT magic number
     // Act
     _revolution->execute();
     Part::TopoShape ts = _revolution->Shape.getValue();

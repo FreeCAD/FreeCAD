@@ -29,11 +29,13 @@ protected:
     void TearDown() override
     {}
 
-    Part::Extrusion* _extrusion;  // NOLINT Can't be private in a test framework
+    // NOLINTBEGIN(cppcoreguidelines-non-private-member-variables-in-classes)
+    Part::Extrusion* _extrusion = nullptr;
     // Arbtitrary constants for testing.  Named here for clarity.
     const double len = 3.0;
     const double wid = 4.0;
     const double ext1 = 10.0;
+    // NOLINTEND(cppcoreguidelines-non-private-member-variables-in-classes)
 };
 
 TEST_F(FeatureExtrusionTest, testMustExecute)
@@ -248,8 +250,8 @@ TEST_F(FeatureExtrusionTest, testExecuteEdge)
     // Arrange
     const double ang = 30;
     const double tangent = tan(ang / 180.0 * M_PI);
-    BRepBuilderAPI_MakeEdge e1(gp_Pnt(0, 0, 0), gp_Pnt(10, 10, 10));
-    auto edge = static_cast<Part::Feature*>(_doc->addObject("Part::Feature", "Edge"));
+    BRepBuilderAPI_MakeEdge e1(gp_Pnt(0, 0, 0), gp_Pnt(ext1, ext1, ext1));
+    auto edge = dynamic_cast<Part::Feature*>(_doc->addObject("Part::Feature", "Edge"));
     edge->Shape.setValue(e1);
     _extrusion->DirLink.setValue(edge);
     _extrusion->DirMode.setValue(1);
