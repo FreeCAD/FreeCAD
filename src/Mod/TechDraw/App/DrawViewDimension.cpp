@@ -399,11 +399,15 @@ App::DocumentObjectExecReturn* DrawViewDimension::execute()
     resetAngular();
     resetArc();
 
-    m_referencesCorrect = compareSavedGeometry();
-    if (!m_referencesCorrect) {
-        m_referencesCorrect = fixExactMatch();
+    const std::vector<TopoShape> savedGeometry = SavedGeometry.getValues();
+    if (!savedGeometry.empty()) {
+        // we can only correct references if we have saved geometry for comparison
+        m_referencesCorrect = compareSavedGeometry();
         if (!m_referencesCorrect) {
-            handleNoExactMatch();
+            m_referencesCorrect = fixExactMatch();
+            if (!m_referencesCorrect) {
+                handleNoExactMatch();
+            }
         }
     }
 
@@ -1426,7 +1430,7 @@ bool DrawViewDimension::compareSavedGeometry()
     if (savedGeometry.empty()) {
         // no saved geometry, so we have nothing to compare, so we don't know if there has been a change
         // this should return false, since something != nothing
-//        Base::Console().Warning("%s has no saved reference geometry!\n", getNameInDocument());
+//        Base::Console().("%s has no saved reference geometry!\n", getNameInDocument());
         return false;
     }
 
@@ -1500,7 +1504,7 @@ bool DrawViewDimension::fixExactMatch()
                 std::pair<int, std::string> toFix(iRef, newReference);
                 refsToFix3d.push_back(toFix);
             } else {
-                Base::Console().Warning("%s - no exact match for changed 3d reference: %d\n", getNameInDocument(), iRef);
+                Base::Console().Message("%s - no exact match for changed 3d reference: %d\n", getNameInDocument(), iRef);
                 success = false;
             }
         } else {
@@ -1513,7 +1517,7 @@ bool DrawViewDimension::fixExactMatch()
                 std::pair<int, std::string> toFix(iRef, newReference);
                 refsToFix2d.push_back(toFix);
             } else {
-                Base::Console().Warning("%s - no exact match for changed 2d reference: %d\n", getNameInDocument(), iRef);
+                Base::Console().Message("%s - no exact match for changed 2d reference: %d\n", getNameInDocument(), iRef);
                 success = false;
             }
         }

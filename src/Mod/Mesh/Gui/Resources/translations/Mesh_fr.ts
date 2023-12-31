@@ -435,13 +435,13 @@
     <message>
       <location filename="../../Command.cpp" line="1184"/>
       <source>Refinement...</source>
-      <translation>Affiner...</translation>
+      <translation>Remailler...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="1185"/>
       <location filename="../../Command.cpp" line="1186"/>
       <source>Refine existing mesh</source>
-      <translation>Affiner le maillage existant</translation>
+      <translation>Remailler le maillage existant</translation>
     </message>
   </context>
   <context>
@@ -796,7 +796,7 @@
     <message>
       <location filename="../../ViewProvider.cpp" line="1176"/>
       <source>Split</source>
-      <translation>Éclater</translation>
+      <translation>Recomposer</translation>
     </message>
     <message>
       <location filename="../../ViewProvider.cpp" line="1249"/>
@@ -969,7 +969,7 @@
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="806"/>
       <source>All above tests together</source>
-      <translation>Tous les tests ensemble</translation>
+      <translation>Tous les tests ci-dessus combinés</translation>
     </message>
     <message>
       <location filename="../../DlgEvaluateMesh.ui" line="830"/>
@@ -1169,7 +1169,7 @@
     <message>
       <location filename="../../DlgEvaluateSettings.ui" line="40"/>
       <source>Only consider zero area faces as degenerated</source>
-      <translation>Considérer uniquement les faces de surface nulle comme dégénérés</translation>
+      <translation>Ne considérer que les faces de surface nulle comme dégénérées</translation>
     </message>
   </context>
   <context>
@@ -1673,7 +1673,7 @@ l'ombrage Phong conduit à un aspect plus lisse.
     <message>
       <location filename="../../SegmentationBestFit.cpp" line="306"/>
       <source>Before fitting the surface select an area.</source>
-      <translation>Avant d’ajuster la surface, sélectionnez une zone.</translation>
+      <translation>Avant d’ajuster la surface, sélectionner une zone.</translation>
     </message>
   </context>
   <context>
@@ -1681,7 +1681,7 @@ l'ombrage Phong conduit à un aspect plus lisse.
     <message>
       <location filename="../../RemeshGmsh.ui" line="14"/>
       <source>Remesh by Gmsh</source>
-      <translation>Remailler par Gmsh</translation>
+      <translation>Remaillage par Gmsh</translation>
     </message>
     <message>
       <location filename="../../RemeshGmsh.ui" line="26"/>

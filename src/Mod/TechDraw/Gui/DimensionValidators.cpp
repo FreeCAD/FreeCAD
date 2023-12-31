@@ -278,7 +278,12 @@ bool TechDraw::checkGeometryOccurences(StringVector subNames, GeomCountMap keyed
 //return the first valid configuration contained in the already validated references
 DimensionGeometryType TechDraw::getGeometryConfiguration(ReferenceVector valid2dReferences)
 {
-    DimensionGeometryType config = isValidMultiEdge(valid2dReferences);
+    DimensionGeometryType config = isValidHybrid(valid2dReferences);
+    if (config > isInvalid) {
+        return config;
+    }
+
+    config = isValidMultiEdge(valid2dReferences);
     if (config > isInvalid) {
         return config;
     }
@@ -287,10 +292,6 @@ DimensionGeometryType TechDraw::getGeometryConfiguration(ReferenceVector valid2d
         return config;
     }
     config = isValidSingleEdge(valid2dReferences.front());
-    if (config > isInvalid) {
-        return config;
-    }
-    config = isValidHybrid(valid2dReferences);
     if (config > isInvalid) {
         return config;
     }
@@ -660,7 +661,7 @@ DimensionGeometryType TechDraw::isValidHybrid(ReferenceVector refs)
     }
     if (vertexCount > 0 && edgeCount > 0) {
         //must be a diagonal dim? could it be isHorizontal or isVertical?
-        return isDiagonal;
+        return isHybrid;
     }
 
     return isInvalid;
@@ -670,7 +671,7 @@ DimensionGeometryType TechDraw::isValidHybrid(ReferenceVector refs)
 DimensionGeometryType TechDraw::isValidHybrid3d(DrawViewPart* dvp, ReferenceVector refs)
 {
     (void)dvp;
-    //we don't have a special check for 3d in this case
+    //we can reuse the 2d check here.
     return isValidHybrid(refs);
 }
 

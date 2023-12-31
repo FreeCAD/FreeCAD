@@ -130,11 +130,24 @@ bool QGIView::isVisible()
     return vpdo->Visibility.getValue();
 }
 
+//Gets selection state for this view and/or eventually its children
+bool QGIView::getGroupSelection()
+{
+    return isSelected();
+}
+
 //Set selection state for this and its children
 //required for items like dimensions & balloons
 void QGIView::setGroupSelection(bool isSelected)
 {
     setSelected(isSelected);
+}
+
+// Set selection state of the feature (empty subName) or its sub items
+void QGIView::setGroupSelection(bool isSelected, const std::vector<std::string> &subNames)
+{
+    Q_UNUSED(subNames);
+    setGroupSelection(isSelected);
 }
 
 void QGIView::alignTo(QGraphicsItem*item, const QString &alignment)

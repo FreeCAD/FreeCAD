@@ -74,10 +74,10 @@ using DU = DrawUtil;
 
 namespace TechDrawGui
 {
-//LineAttributes activeAttributes; // container holding global line attributes
+//TechDraw::LineFormat activeAttributes; // container holding global line attributes
 
 //internal helper functions
-lineAttributes& _getActiveLineAttributes();
+TechDraw::LineFormat& _getActiveLineAttributes();
 Base::Vector3d _circleCenter(Base::Vector3d p1, Base::Vector3d p2, Base::Vector3d p3);
 void _createThreadCircle(std::string Name, TechDraw::DrawViewPart* objFeat, float factor);
 void _createThreadLines(std::vector<std::string> SubNames, TechDraw::DrawViewPart* objFeat,
@@ -843,11 +843,15 @@ void CmdTechDrawExtensionVertexAtIntersection::activated(int iMsg)
             int GeoId2 = TechDraw::DrawUtil::getIndexFromName(SubNames[1]);
             TechDraw::BaseGeomPtr geom2 = objFeat->getGeomByIndex(GeoId2);
 
-            double scale = objFeat->getScale();
+            // double scale = objFeat->getScale();
             std::vector<Base::Vector3d> interPoints = geom1->intersection(geom2);
             for (auto pt : interPoints) {
-                std::string ptId = objFeat->addCosmeticVertex(pt/scale);
-                objFeat->add1CVToGV(ptId);
+                // std::string ptId = objFeat->addCosmeticVertex(pt/scale);
+                // objFeat->add1CVToGV(ptId);
+                // invert the point so the math works correctly
+                Base::Vector3d temp = DrawUtil::invertY(pt);
+                temp = CosmeticVertex::makeCanonicalPoint(objFeat, temp);
+                objFeat->addCosmeticVertex(temp);
             }
         }
     }
@@ -1193,33 +1197,41 @@ void execLineParallelPerpendicular(Gui::Command* cmd, bool isParallel)
     if (SubNames.size() >= 2) {
         std::string GeoType1 = TechDraw::DrawUtil::getGeomTypeFromName(SubNames[0]);
         std::string GeoType2 = TechDraw::DrawUtil::getGeomTypeFromName(SubNames[1]);
+        int EdgeId;
+        int VertId;
         if (GeoType1 == "Edge" && GeoType2 == "Vertex") {
-            double scale = objFeat->getScale();
-            int GeoId1 = TechDraw::DrawUtil::getIndexFromName(SubNames[0]);
-            TechDraw::BaseGeomPtr geom1 = objFeat->getGeomByIndex(GeoId1);
-            int GeoId2 = TechDraw::DrawUtil::getIndexFromName(SubNames[1]);
-            TechDraw::GenericPtr lineGen = std::static_pointer_cast<TechDraw::Generic>(geom1);
-            Base::Vector3d lineStart = lineGen->points.at(0);
-            Base::Vector3d lineEnd = lineGen->points.at(1);
-            TechDraw::VertexPtr vert = objFeat->getProjVertexByIndex(GeoId2);
-            Base::Vector3d vertexPoint(vert->point().x, vert->point().y, 0.0);
-            Base::Vector3d halfVector = (lineEnd - lineStart) / 2.0;
-            if (!isParallel) {
-                float dummy = halfVector.x;
-                halfVector.x = -halfVector.y;
-                halfVector.y = dummy;
-            }
-            Base::Vector3d startPoint = vertexPoint + halfVector;
-            Base::Vector3d endPoint = vertexPoint - halfVector;
-            startPoint.y = -startPoint.y;
-            endPoint.y = -endPoint.y;
-            std::string lineTag = objFeat->addCosmeticEdge(startPoint / scale, endPoint / scale);
-            TechDraw::CosmeticEdge* lineEdge = objFeat->getCosmeticEdge(lineTag);
-            _setLineAttributes(lineEdge);
-            objFeat->refreshCEGeoms();
-            objFeat->requestPaint();
-            cmd->getSelection().clearSelection();
+            EdgeId = TechDraw::DrawUtil::getIndexFromName(SubNames[0]);
+            VertId = TechDraw::DrawUtil::getIndexFromName(SubNames[1]);
+        } else if (GeoType2 == "Edge" && GeoType1 == "Vertex") {
+            EdgeId = TechDraw::DrawUtil::getIndexFromName(SubNames[1]);
+            VertId = TechDraw::DrawUtil::getIndexFromName(SubNames[0]);
+        } else {
+            // we don't have an edge + vertex as selection
+            return;
         }
+        TechDraw::BaseGeomPtr geom1 = objFeat->getGeomByIndex(EdgeId);
+        TechDraw::GenericPtr lineGen = std::static_pointer_cast<TechDraw::Generic>(geom1);
+        Base::Vector3d lineStart = lineGen->points.at(0);
+        Base::Vector3d lineEnd = lineGen->points.at(1);
+        TechDraw::VertexPtr vert = objFeat->getProjVertexByIndex(VertId);
+        Base::Vector3d vertexPoint(vert->point().x, vert->point().y, 0.0);
+        Base::Vector3d halfVector = (lineEnd - lineStart) / 2.0;
+        if (!isParallel) {
+            float dummy = halfVector.x;
+            halfVector.x = -halfVector.y;
+            halfVector.y = dummy;
+        }
+        Base::Vector3d startPoint = vertexPoint + halfVector;
+        Base::Vector3d endPoint = vertexPoint - halfVector;
+        startPoint.y = -startPoint.y;
+        endPoint.y = -endPoint.y;
+        TechDraw::BaseGeomPtr cLine = CosmeticEdge::makeCanonicalLine(objFeat, startPoint, endPoint);
+        std::string lineTag = objFeat->addCosmeticEdge(cLine);
+        TechDraw::CosmeticEdge* lineEdge = objFeat->getCosmeticEdge(lineTag);
+        _setLineAttributes(lineEdge);
+        objFeat->refreshCEGeoms();
+        objFeat->requestPaint();
+        cmd->getSelection().clearSelection();
     }
     Gui::Command::commitCommand();
 }
@@ -1441,83 +1453,6 @@ bool CmdTechDrawExtensionLockUnlockView::isActive()
 }
 
 //===========================================================================
-// TechDraw_ExtensionPositionSectionView
-//===========================================================================
-
-DEF_STD_CMD_A(CmdTechDrawExtensionPositionSectionView)
-
-CmdTechDrawExtensionPositionSectionView::CmdTechDrawExtensionPositionSectionView()
-    : Command("TechDraw_ExtensionPositionSectionView")
-{
-    sAppModule = "TechDraw";
-    sGroup = QT_TR_NOOP("TechDraw");
-    sMenuText = QT_TR_NOOP("Position Section View");
-    sToolTipText = QT_TR_NOOP("Orthogonally align a section view with its source view:<br>\
-- Select a single section view<br>\
-- Click this tool");
-    sWhatsThis = "TechDraw_ExtensionPositionSectionView";
-    sStatusTip = sMenuText;
-    sPixmap = "TechDraw_ExtensionPositionSectionView";
-}
-
-void CmdTechDrawExtensionPositionSectionView::activated(int iMsg)
-{
-    // position a section view
-    Q_UNUSED(iMsg);
-    //Base::Console().Message("PositionSectionView started\n");
-    auto selection = getSelection().getSelectionEx();
-    if (selection.empty()) {
-        QMessageBox::warning(Gui::getMainWindow(), QObject::tr("TechDraw Position Section View"),
-                             QObject::tr("Selection is empty"));
-        return;
-    }
-
-    double xPos = 0.0, yPos = 0.0;
-    TechDraw::DrawViewPart* baseView;
-    auto objFeat = selection[0].getObject();
-    if (objFeat && objFeat->isDerivedFrom(TechDraw::DrawViewSection::getClassTypeId())) {
-        TechDraw::DrawViewSection* sectionView = static_cast<TechDraw::DrawViewSection*>(objFeat);
-        baseView = sectionView->getBaseDVP();
-        if (baseView && baseView->isDerivedFrom(TechDraw::DrawProjGroupItem::getClassTypeId())) {
-            std::vector<App::DocumentObject*> parentViews = baseView->getInList();
-            if (!parentViews.empty()) {
-                TechDraw::DrawProjGroup* groupBase =
-                    dynamic_cast<TechDraw::DrawProjGroup*>(parentViews[0]);
-                if (groupBase) {
-                    xPos = groupBase->X.getValue();
-                    yPos = groupBase->Y.getValue();
-                }
-            }
-        }
-        else if (baseView) {
-            xPos = baseView->X.getValue();
-            yPos = baseView->Y.getValue();
-        }
-        std::string direction = sectionView->SectionDirection.getValueAsString();
-        if ((direction == "Right") || (direction == "Left"))
-            sectionView->Y.setValue(yPos);
-        else if ((direction == "Up") || (direction == "Down"))
-            sectionView->X.setValue(xPos);
-        else if (direction == "Aligned")
-        {
-            Base::Vector3d pBase(xPos,yPos,0.0);
-            Base::Vector3d dirView(sectionView->Direction.getValue());
-            Base::Vector3d pSection(sectionView->X.getValue(),sectionView->Y.getValue(),0.0);
-            Base::Vector3d newPos = DrawUtil::getTrianglePoint(pBase, dirView, pSection);
-            sectionView->X.setValue(newPos.x);
-            sectionView->Y.setValue(newPos.y);
-        }
-    }
-}
-
-bool CmdTechDrawExtensionPositionSectionView::isActive()
-{
-    bool havePage = DrawGuiUtil::needPage(this);
-    bool haveView = DrawGuiUtil::needView(this);
-    return (havePage && haveView);
-}
-
-//===========================================================================
 // TechDraw_ExtensionExtendLine
 //===========================================================================
 
@@ -1553,7 +1488,7 @@ void execExtendShortenLine(Gui::Command* cmd, bool extend)
                         toDelete.push_back(uniTag);
                         if (baseGeo->source() == 1) {
                             auto cosEdge = objFeat->getCosmeticEdge(uniTag);
-                            oldStyle = cosEdge->m_format.m_style;
+                            oldStyle = cosEdge->m_format.m_lineNumber;
                             oldWeight = cosEdge->m_format.m_weight;
                             oldColor = cosEdge->m_format.m_color;
                             objFeat->removeCosmeticEdge(toDelete);
@@ -2039,9 +1974,9 @@ bool CmdTechDrawExtensionArcLengthAnnotation::isActive()
 namespace TechDrawGui
 {
 
-lineAttributes& _getActiveLineAttributes()
+LineFormat& _getActiveLineAttributes()
 {
-    static lineAttributes attributes;
+    static TechDraw::LineFormat attributes;
     return attributes;
 }
 
@@ -2198,37 +2133,37 @@ void _createThreadLines(std::vector<std::string> SubNames, TechDraw::DrawViewPar
 void _setLineAttributes(TechDraw::CosmeticEdge* cosEdge)
 {
     // set line attributes of a cosmetic edge
-    cosEdge->m_format.m_style = 2;
-    cosEdge->m_format.m_weight = _getActiveLineAttributes().getWidthValue();
-    cosEdge->m_format.m_color = _getActiveLineAttributes().getColorValue();
-    cosEdge->m_format.m_lineNumber = _getActiveLineAttributes().getStyle();
+    cosEdge->m_format.setStyle(_getActiveLineAttributes().getStyle());
+    cosEdge->m_format.setWidth(_getActiveLineAttributes().getWidth());
+    cosEdge->m_format.setColor(_getActiveLineAttributes().getColor());
+    cosEdge->m_format.setLineNumber(_getActiveLineAttributes().getLineNumber());
 }
 
 void _setLineAttributes(TechDraw::CenterLine* cosEdge)
 {
     // set line attributes of a cosmetic edge
-    cosEdge->m_format.m_style = 2;
-    cosEdge->m_format.m_weight = _getActiveLineAttributes().getWidthValue();
-    cosEdge->m_format.m_color = _getActiveLineAttributes().getColorValue();
-    cosEdge->m_format.m_lineNumber = _getActiveLineAttributes().getStyle();
+    cosEdge->m_format.m_style = _getActiveLineAttributes().getStyle();
+    cosEdge->m_format.m_weight = _getActiveLineAttributes().getWidth();
+    cosEdge->m_format.m_color = _getActiveLineAttributes().getColor();
+    cosEdge->m_format.setLineNumber(_getActiveLineAttributes().getLineNumber());
 }
 
 void _setLineAttributes(TechDraw::CosmeticEdge* cosEdge, int style, float weight, App::Color color)
 {
     // set line attributes of a cosmetic edge
-    cosEdge->m_format.m_style = 2;
+    cosEdge->m_format.m_style = _getActiveLineAttributes().getStyle();
     cosEdge->m_format.m_weight = weight;
     cosEdge->m_format.m_color = color;
-    cosEdge->m_format.m_lineNumber = style;
+    cosEdge->m_format.setLineNumber(style);
 }
 
 void _setLineAttributes(TechDraw::CenterLine* cosEdge, int style, float weight, App::Color color)
 {
     // set line attributes of a centerline
-    cosEdge->m_format.m_style = 2;
-    cosEdge->m_format.m_lineNumber = style;
+    cosEdge->m_format.m_style = _getActiveLineAttributes().getStyle();
     cosEdge->m_format.m_weight = weight;
     cosEdge->m_format.m_color = color;
+    cosEdge->m_format.setLineNumber(style);
 }
 }// namespace TechDrawGui
 
@@ -2242,7 +2177,6 @@ void CreateTechDrawCommandsExtensions()
     rcCmdMgr.addCommand(new CmdTechDrawExtensionExtendLine());
     rcCmdMgr.addCommand(new CmdTechDrawExtensionShortenLine());
     rcCmdMgr.addCommand(new CmdTechDrawExtensionLockUnlockView());
-    rcCmdMgr.addCommand(new CmdTechDrawExtensionPositionSectionView());
     rcCmdMgr.addCommand(new CmdTechDrawExtensionChangeLineAttributes());
     rcCmdMgr.addCommand(new CmdTechDrawExtensionCircleCenterLinesGroup());
     rcCmdMgr.addCommand(new CmdTechDrawExtensionCircleCenterLines());

@@ -4,37 +4,12 @@
    height="64px"
    id="svg2816"
    version="1.1"
-   sodipodi:docname="Sketcher_Element_SelectionTypeInvalid.svg"
-   inkscape:version="1.1-beta1 (77e7b44db3, 2021-03-28)"
-   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns="http://www.w3.org/2000/svg"
    xmlns:svg="http://www.w3.org/2000/svg"
    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
    xmlns:cc="http://creativecommons.org/ns#"
    xmlns:dc="http://purl.org/dc/elements/1.1/">
-  <sodipodi:namedview
-     id="namedview40"
-     pagecolor="#505050"
-     bordercolor="#eeeeee"
-     borderopacity="1"
-     objecttolerance="10.0"
-     gridtolerance="10.0"
-     guidetolerance="10.0"
-     inkscape:pageshadow="0"
-     inkscape:pageopacity="0"
-     inkscape:pagecheckerboard="0"
-     showgrid="false"
-     inkscape:zoom="5.8828125"
-     inkscape:cx="61.280212"
-     inkscape:cy="15.383798"
-     inkscape:window-width="3840"
-     inkscape:window-height="1571"
-     inkscape:window-x="-9"
-     inkscape:window-y="-9"
-     inkscape:window-maximized="1"
-     inkscape:current-layer="svg2816" />
   <defs
      id="defs2818">
     <linearGradient
@@ -226,8 +201,15 @@
       </cc:Work>
     </rdf:RDF>
   </metadata>
+  <rect
+     style="fill:#2e3436;stroke:#151819;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:none;paint-order:markers fill stroke;stroke-opacity:1"
+     id="rect2"
+     width="28"
+     height="3.4847345"
+     x="18"
+     y="30.257633" />
   <path
-     style="fill:none;stroke:#a3a3a3;stroke-width:0.975351;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-     d="M 17.872682,31.957503 H 46.169813"
+     style="fill:#888a85;stroke:#888a85;stroke-width:0.999996;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+     d="M 19.228182,31.500002 H 44.745308"
      id="path894-1" />
 </svg>

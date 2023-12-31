@@ -321,17 +321,17 @@
 <context>
     <name>CmdFemPostApllyChanges</name>
     <message>
-        <location filename="../../Command.cpp" line="2442"/>
+        <location filename="../../Command.cpp" line="2445"/>
         <source>Fem</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2443"/>
+        <location filename="../../Command.cpp" line="2446"/>
         <source>Apply changes to pipeline</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2444"/>
+        <location filename="../../Command.cpp" line="2447"/>
         <source>Apply changes to parameters directly and not on recompute only...</source>
         <translation type="unfinished"></translation>
     </message>
@@ -354,12 +354,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2344"/>
+        <location filename="../../Command.cpp" line="2347"/>
         <source>Wrong selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2345"/>
+        <location filename="../../Command.cpp" line="2348"/>
         <source>Select a pipeline, please.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -421,37 +421,37 @@
 <context>
     <name>CmdFemPostFunctions</name>
     <message>
-        <location filename="../../Command.cpp" line="2215"/>
+        <location filename="../../Command.cpp" line="2218"/>
         <source>Fem</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2216"/>
+        <location filename="../../Command.cpp" line="2219"/>
         <source>Filter functions</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2217"/>
+        <location filename="../../Command.cpp" line="2220"/>
         <source>Functions for use in postprocessing filter...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2396"/>
+        <location filename="../../Command.cpp" line="2399"/>
         <source>Plane</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2403"/>
+        <location filename="../../Command.cpp" line="2406"/>
         <source>Sphere</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2410"/>
+        <location filename="../../Command.cpp" line="2413"/>
         <source>Cylinder</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2417"/>
+        <location filename="../../Command.cpp" line="2420"/>
         <source>Box</source>
         <translation type="unfinished"></translation>
     </message>
@@ -510,14 +510,14 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2031"/>
-        <location filename="../../Command.cpp" line="2040"/>
+        <location filename="../../Command.cpp" line="2034"/>
+        <location filename="../../Command.cpp" line="2043"/>
         <source>Wrong selection</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2032"/>
-        <location filename="../../Command.cpp" line="2041"/>
+        <location filename="../../Command.cpp" line="2035"/>
+        <location filename="../../Command.cpp" line="2044"/>
         <source>Select a Clip filter which clips a STRESS field along a line, please.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -525,27 +525,27 @@
 <context>
     <name>CmdFemPostPipelineFromResult</name>
     <message>
-        <location filename="../../Command.cpp" line="2483"/>
+        <location filename="../../Command.cpp" line="2486"/>
         <source>Fem</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2484"/>
+        <location filename="../../Command.cpp" line="2487"/>
         <source>Post pipeline from result</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2485"/>
+        <location filename="../../Command.cpp" line="2488"/>
         <source>Creates a post processing pipeline from a result object</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2563"/>
+        <location filename="../../Command.cpp" line="2566"/>
         <source>Wrong selection type</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2564"/>
+        <location filename="../../Command.cpp" line="2567"/>
         <source>Select a result object, please.</source>
         <translation type="unfinished"></translation>
     </message>
@@ -553,17 +553,17 @@
 <context>
     <name>CmdFemPostScalarClipFilter</name>
     <message>
-        <location filename="../../Command.cpp" line="2067"/>
+        <location filename="../../Command.cpp" line="2070"/>
         <source>Fem</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2068"/>
+        <location filename="../../Command.cpp" line="2071"/>
         <source>Scalar clip filter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2070"/>
+        <location filename="../../Command.cpp" line="2073"/>
         <source>Define/create a clip filter which clips a field with a scalar value</source>
         <translation type="unfinished"></translation>
     </message>
@@ -571,17 +571,17 @@
 <context>
     <name>CmdFemPostWarpVectorFilter</name>
     <message>
-        <location filename="../../Command.cpp" line="2117"/>
+        <location filename="../../Command.cpp" line="2120"/>
         <source>Fem</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2118"/>
+        <location filename="../../Command.cpp" line="2121"/>
         <source>Warp filter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2119"/>
+        <location filename="../../Command.cpp" line="2122"/>
         <source>Warp the geometry along a vector field by a certain factor</source>
         <translation type="unfinished"></translation>
     </message>
@@ -684,12 +684,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2249"/>
+        <location filename="../../Command.cpp" line="2252"/>
         <source>Create function</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2535"/>
+        <location filename="../../Command.cpp" line="2538"/>
         <source>Create pipeline from result</source>
         <translation type="unfinished"></translation>
     </message>
@@ -775,22 +775,22 @@
 <context>
     <name>FEM_PostCreateFunctions</name>
     <message>
-        <location filename="../../Command.cpp" line="2398"/>
+        <location filename="../../Command.cpp" line="2401"/>
         <source>Create a plane function, defined by its origin and normal</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2405"/>
+        <location filename="../../Command.cpp" line="2408"/>
         <source>Create a sphere function, defined by its center and radius</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2411"/>
+        <location filename="../../Command.cpp" line="2414"/>
         <source>Create a cylinder function, defined by its center, axis and radius</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2418"/>
+        <location filename="../../Command.cpp" line="2421"/>
         <source>Create a box function, defined by its center, length, width and height</source>
         <translation type="unfinished"></translation>
     </message>
@@ -3254,7 +3254,7 @@ Note: has no effect if a solid was selected</source>
     </message>
     <message>
         <location filename="../ui/MeshRegion.ui" line="14"/>
-        <source>Mesh region</source>
+        <source>Mesh refinement</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -5591,19 +5591,6 @@ used for the Elmer solver</source>
     </message>
 </context>
 <context>
-    <name>FEM_MeshRegion</name>
-    <message>
-        <location filename="../../../femcommands/commands.py" line="1002"/>
-        <source>FEM mesh region</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../../../femcommands/commands.py" line="1006"/>
-        <source>Creates a FEM mesh region</source>
-        <translation type="unfinished"></translation>
-    </message>
-</context>
-<context>
     <name>FEM_ResultShow</name>
     <message>
         <location filename="../../../femcommands/commands.py" line="1019"/>
@@ -6014,17 +6001,17 @@ Please select a result type first.</source>
 <context>
     <name>CmdFemPostContoursFilter</name>
     <message>
-        <location filename="../../Command.cpp" line="2166"/>
+        <location filename="../../Command.cpp" line="2169"/>
         <source>Fem</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2167"/>
+        <location filename="../../Command.cpp" line="2170"/>
         <source>Contours filter</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../../Command.cpp" line="2168"/>
+        <location filename="../../Command.cpp" line="2171"/>
         <source>Define/create a contours filter which displays iso contours</source>
         <translation type="unfinished"></translation>
     </message>
@@ -6296,6 +6283,19 @@ Please select a result type first.</source>
     <message>
         <location filename="../../../femcommands/commands.py" line="373"/>
         <source>Creates a tie constraint</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>FEM_MeshRegion</name>
+    <message>
+        <location filename="../../../femcommands/commands.py" line="1002"/>
+        <source>FEM mesh refinement</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../../../femcommands/commands.py" line="1006"/>
+        <source>Creates a FEM mesh refinement</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

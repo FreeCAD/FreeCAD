@@ -44,6 +44,7 @@
 #include <Mod/TechDraw/App/DrawViewSection.h>
 #include <Mod/TechDraw/App/Geometry.h>
 
+#include "DrawGuiUtil.h"
 #include "MDIViewPage.h"
 #include "PreferencesGui.h"
 #include "QGICMark.h"
@@ -147,6 +148,19 @@ void QGIViewPart::updateView(bool update)
 
 void QGIViewPart::draw()
 {
+    auto viewPart(dynamic_cast<TechDraw::DrawViewPart*>(getViewObject()));
+    if (!viewPart) {
+        return;
+    }
+
+    auto doc = viewPart->getDocument();
+    if (!doc || doc->testStatus(App::Document::Status::Restoring)) {
+        // if the document is still restoring, we may not have all the information
+        // we need to draw the source objects, so we wait until restore is finished.
+        // Base::Console().Message("QGIVP::draw - document is restoring, do not draw\n");
+        return;
+    }
+
     if (!isVisible())
         return;
 
@@ -696,6 +710,7 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
 void QGIViewPart::drawComplexSectionLine(TechDraw::DrawViewSection* viewSection, bool b)
 {
     Q_UNUSED(b);
+
     TechDraw::DrawViewPart* viewPart = static_cast<TechDraw::DrawViewPart*>(getViewObject());
     if (!viewPart)
         return;
@@ -1057,4 +1072,94 @@ bool QGIViewPart::prefPrintCenters()
 {
     bool printCenters = Preferences::getPreferenceGroup("Decorations")->GetBool("PrintCenterMarks", false);//true matches v0.18 behaviour
     return printCenters;
+}
+
+QGraphicsItem *QGIViewPart::getQGISubItemByName(const std::string &subName) const
+{
+    int scanType = 0;
+    try {
+        const std::string &subType = TechDraw::DrawUtil::getGeomTypeFromName(subName);
+        if (subType == "Vertex") {
+            scanType = QGIVertex::Type;
+        }
+        else if (subType == "Edge") {
+            scanType = QGIEdge::Type;
+        }
+        else if (subType == "Face") {
+            scanType = QGIFace::Type;
+        }
+    }
+    catch (Base::ValueError& e) {
+        // No action
+    }
+    if (!scanType) {
+        return nullptr;
+    }
+
+    int scanIndex = -1;
+    try {
+        scanIndex = TechDraw::DrawUtil::getIndexFromName(subName);
+    }
+    catch (Base::ValueError& e) {
+        // No action
+    }
+    if (scanIndex < 0) {
+        return nullptr;
+    }
+
+    for (auto child : childItems()) {
+        if (child->type() != scanType) {
+            continue;
+        }
+
+        int projIndex;
+        switch (scanType) {
+            case QGIVertex::Type:
+                projIndex = static_cast<QGIVertex *>(child)->getProjIndex();
+                break;
+            case QGIEdge::Type:
+                projIndex = static_cast<QGIEdge *>(child)->getProjIndex();
+                break;
+            case QGIFace::Type:
+                projIndex = static_cast<QGIFace *>(child)->getProjIndex();
+                break;
+            default:
+                projIndex = -1;
+                break;
+        }
+
+        if (projIndex == scanIndex) {
+            return child;
+        }
+    }
+
+    return nullptr;
+}
+
+bool QGIViewPart::getGroupSelection() {
+    return DrawGuiUtil::isSelectedInTree(this);
+}
+
+void QGIViewPart::setGroupSelection(bool isSelected) {
+    DrawGuiUtil::setSelectedTree(this, isSelected);
+}
+
+void QGIViewPart::setGroupSelection(bool isSelected, const std::vector<std::string> &subNames)
+{
+    if (subNames.empty()) {
+        setSelected(isSelected);
+        return;
+    }
+
+    for (const std::string &subName : subNames) {
+        if (subName.empty()) {
+            setSelected(isSelected);
+            continue;
+        }
+
+        QGraphicsItem *subItem = getQGISubItemByName(subName);
+        if (subItem) {
+            subItem->setSelected(isSelected);
+        }
+    }
 }

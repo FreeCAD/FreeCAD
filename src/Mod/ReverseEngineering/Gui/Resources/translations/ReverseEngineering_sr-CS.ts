@@ -334,7 +334,7 @@
       <location filename="../../FitBSplineSurface.cpp" line="165"/>
       <location filename="../../FitBSplineSurface.cpp" line="238"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Greška pri unosu</translation>
     </message>
     <message>
       <location filename="../../FitBSplineSurface.cpp" line="206"/>
@@ -377,7 +377,7 @@
     <message>
       <location filename="../../Poisson.cpp" line="90"/>
       <source>Input error</source>
-      <translation type="unfinished">Input error</translation>
+      <translation>Greška pri unosu</translation>
     </message>
   </context>
   <context>

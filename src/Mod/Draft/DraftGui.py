@@ -1092,86 +1092,87 @@ class DraftToolBar:
         treated as shortcuts
         """
 
-        if txt[0] in "0123456789.,-":
+        if txt == "" or txt[0] in "0123456789.,-":
             self.updateSnapper()
             return
 
+        txt = txt[0].upper()
         spec = False
         # Most frequently used shortcuts first:
-        if txt.upper().startswith(_get_incmd_shortcut("Relative")):
+        if txt == _get_incmd_shortcut("Relative"):
             if self.isRelative.isVisible():
                 self.isRelative.setChecked(not self.isRelative.isChecked())
                 self.relativeMode = self.isRelative.isChecked()
             spec = True
-        elif txt.upper().startswith(_get_incmd_shortcut("Global")):
+        elif txt == _get_incmd_shortcut("Global"):
             if self.isGlobal.isVisible():
                 self.isGlobal.setChecked(not self.isGlobal.isChecked())
                 self.globalMode = self.isGlobal.isChecked()
             spec = True
-        elif txt.upper().startswith(_get_incmd_shortcut("Length")):
+        elif txt == _get_incmd_shortcut("Length"):
             if self.lengthValue.isVisible():
                 self.constrain("angle")
                 self.displayPoint()
             spec = True
-        elif txt.upper().startswith(_get_incmd_shortcut("RestrictX")):
+        elif txt == _get_incmd_shortcut("RestrictX"):
             self.constrain("x")
             self.displayPoint()
             spec = True
-        elif txt.upper().startswith(_get_incmd_shortcut("RestrictY")):
+        elif txt == _get_incmd_shortcut("RestrictY"):
             self.constrain("y")
             self.displayPoint()
             spec = True
-        elif txt.upper().startswith(_get_incmd_shortcut("RestrictZ")):
+        elif txt == _get_incmd_shortcut("RestrictZ"):
             self.constrain("z")
             self.displayPoint()
             spec = True
-        elif txt.upper().startswith(_get_incmd_shortcut("Copy")):
+        elif txt == _get_incmd_shortcut("Copy"):
             if self.isCopy.isVisible():
                 self.isCopy.setChecked(not self.isCopy.isChecked())
             spec = True
-        elif txt.upper().startswith(_get_incmd_shortcut("Exit")):
+        elif txt == _get_incmd_shortcut("Exit"):
             if self.finishButton.isVisible():
                 self.finish()
-        elif txt.upper().startswith(_get_incmd_shortcut("Close")):
+        elif txt == _get_incmd_shortcut("Close"):
             if self.closeButton.isVisible():
                 self.closeLine()
-        elif txt.upper().startswith(_get_incmd_shortcut("AddHold")):
+        elif txt == _get_incmd_shortcut("AddHold"):
             if hasattr(FreeCADGui,"Snapper"):
                 FreeCADGui.Snapper.addHoldPoint()
             spec = True
-        elif txt.upper().startswith(_get_incmd_shortcut("Snap")):
+        elif txt == _get_incmd_shortcut("Snap"):
             self.togglesnap()
             spec = True
-        elif txt.upper().startswith(_get_incmd_shortcut("Fill")):
+        elif txt == _get_incmd_shortcut("Fill"):
             if self.hasFill.isVisible():
                 self.hasFill.setChecked(not self.hasFill.isChecked())
             spec = True
-        elif txt.upper().startswith(_get_incmd_shortcut("Continue")):
+        elif txt == _get_incmd_shortcut("Continue"):
             if self.continueCmd.isVisible():
                 self.toggleContinue()
             spec = True
-        elif txt.upper().startswith(_get_incmd_shortcut("SetWP")):
+        elif txt == _get_incmd_shortcut("SetWP"):
             if self.orientWPButton.isVisible():
                 self.orientWP()
             spec = True
-        elif txt.upper().startswith(_get_incmd_shortcut("SelectEdge")):
+        elif txt == _get_incmd_shortcut("SelectEdge"):
             self.selectEdge()
             spec = True
-        elif txt.upper().startswith(_get_incmd_shortcut("SubelementMode")):
+        elif txt == _get_incmd_shortcut("SubelementMode"):
             if self.isSubelementMode.isVisible():
                 self.isSubelementMode.setChecked(not self.isSubelementMode.isChecked())
             spec = True
-        elif txt.upper().startswith(_get_incmd_shortcut("Wipe")):
+        elif txt == _get_incmd_shortcut("Wipe"):
             if self.wipeButton.isVisible():
                 self.wipeLine()
             spec = True
-        elif txt.upper().startswith(_get_incmd_shortcut("Undo")):
+        elif txt == _get_incmd_shortcut("Undo"):
             self.undoSegment()
             spec = True
-        elif txt.upper().startswith(_get_incmd_shortcut("IncreaseRadius")):
+        elif txt == _get_incmd_shortcut("IncreaseRadius"):
             self.toggleradius(1)
             spec = True
-        elif txt.upper().startswith(_get_incmd_shortcut("DecreaseRadius")):
+        elif txt == _get_incmd_shortcut("DecreaseRadius"):
             self.toggleradius(-1)
             spec = True
 

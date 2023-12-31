@@ -539,3 +539,33 @@ double DrawGuiUtil::roundToDigits(double original, int digits)
     temp = rounded / factor;
     return temp;
 }
+
+// Returns true if the item or any of its descendants is selected
+bool DrawGuiUtil::isSelectedInTree(QGraphicsItem *item)
+{
+    if (item) {
+        if (item->isSelected()) {
+            return true;
+        }
+
+        for (QGraphicsItem *child : item->childItems()) {
+           if (isSelectedInTree(child)) {
+               return true;
+           }
+        }
+    }
+
+    return false;
+}
+
+// Selects or deselects the item and all its descendants
+void DrawGuiUtil::setSelectedTree(QGraphicsItem *item, bool selected)
+{
+    if (item) {
+        item->setSelected(selected);
+
+        for (QGraphicsItem *child : item->childItems()) {
+            setSelectedTree(child, selected);
+        }
+    }
+}
