@@ -38,14 +38,14 @@ protected:
     void TearDown() override
     {}
 
-    // NOLINTBEGIN(cppcoreguidelines-non-private-member-variables-inc-lasses)
+    // NOLINTBEGIN(cppcoreguidelines-non-private-member-variables-in-classes)
     const double length = 4.0;
     const double width = 5.0;
     const double height = 6.0;
     const double chamfer = 0.5;
     Part::Fuse* _fused = nullptr;
     Part::Chamfer* _chamfer = nullptr;
-    // NOLINTEND
+    // NOLINTEND(cppcoreguidelines-non-private-member-variables-in-classes)
 };
 
 // Unfortunately for these next two tests, there are upstream errors in OCCT
@@ -96,8 +96,8 @@ TEST_F(FeatureChamferTest, testMost)
     _chamfer->Edges.setValues(PartTestHelpers::_getFilletEdges(
         {3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14,  // NOLINT magic number
          15, 16, 17, 18, 19, 20, 21, 22, 23, 24},         // NOLINT magic number
-        0.4,
-        0.4));
+        0.4,                                              // NOLINT magic number
+        0.4));                                            // NOLINT magic number
     // Act
     _chamfer->execute();
     double chamferVolume = PartTestHelpers::getVolume(_chamfer->Shape.getValue());
@@ -117,7 +117,7 @@ TEST_F(FeatureChamferTest, testMustExecute)
     // Assert
     EXPECT_TRUE(_chamfer->mustExecute());
     // Act
-    _chamfer->Edges.setValues(PartTestHelpers::_getFilletEdges({1}, 0.5, 0.5));
+    _chamfer->Edges.setValues(PartTestHelpers::_getFilletEdges({1}, chamfer, chamfer));
     // Assert
     EXPECT_TRUE(_chamfer->mustExecute());
     // Act
