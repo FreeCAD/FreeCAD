@@ -132,7 +132,7 @@ TEST_F(FeatureRevolutionTest, testAngle)
 {
     // Arrange
     double puckVolume = len * len * M_PI * wid;  // Area is PIr2 times height
-    _revolution->Angle.setValue(90);  // NOLINT magic number
+    _revolution->Angle.setValue(90);             // NOLINT magic number
     // Act
     _revolution->execute();
     Part::TopoShape ts = _revolution->Shape.getValue();

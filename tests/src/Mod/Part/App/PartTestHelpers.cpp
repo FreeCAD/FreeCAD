@@ -5,7 +5,7 @@
 namespace PartTestHelpers
 {
 
-double getVolume(const TopoDS_Shape &shape)
+double getVolume(const TopoDS_Shape& shape)
 {
     GProp_GProps prop;
     BRepGProp::VolumeProperties(shape, prop);
@@ -16,7 +16,8 @@ void PartTestHelperClass::createTestDoc()
 {
     _docName = App::GetApplication().getUniqueDocumentName("test");
     _doc = App::GetApplication().newDocument(_docName.c_str(), "testUser");
-    std::array<Base::Vector3d, 6> box_origins = {  // NOLINT magic number
+    std::array<Base::Vector3d, 6> box_origins = {
+        // NOLINT magic number
         // NOLINT magic number
         Base::Vector3d(),                                        // First box at 0,0,0
         Base::Vector3d(0, 1, 0),                                 // Overlap with first box
@@ -37,7 +38,7 @@ void PartTestHelperClass::createTestDoc()
 }
 
 std::vector<Part::FilletElement>
-_getFilletEdges(const std::vector<int> &edges, double startRadius, double endRadius)
+_getFilletEdges(const std::vector<int>& edges, double startRadius, double endRadius)
 {
     std::vector<Part::FilletElement> filletElements;
     for (auto edge : edges) {
@@ -79,7 +80,8 @@ void rectangle(double height, double width, char* name)
     executePython(rectstring);
 }
 
-testing::AssertionResult boxesMatch(const Base::BoundBox3d &b1, const Base::BoundBox3d &b2, double prec)
+testing::AssertionResult
+boxesMatch(const Base::BoundBox3d& b1, const Base::BoundBox3d& b2, double prec)
 {
     if (abs(b1.MinX - b2.MinX) < prec && abs(b1.MinY - b2.MinY) < prec
         && abs(b1.MinZ - b2.MinZ) < prec && abs(b1.MaxX - b2.MaxX) < prec
@@ -89,8 +91,7 @@ testing::AssertionResult boxesMatch(const Base::BoundBox3d &b1, const Base::Boun
     return testing::AssertionFailure()
         << "(" << b1.MinX << "," << b1.MinY << "," << b1.MinZ << " ; "
         << "(" << b1.MaxX << "," << b1.MaxY << "," << b1.MaxZ << ") != (" << b2.MinX << ","
-        << b2.MinY << "," << b2.MinZ << " ; " << b2.MaxX << "," << b2.MaxY << "," << b2.MaxZ
-        << ")";
+        << b2.MinY << "," << b2.MinZ << " ; " << b2.MaxX << "," << b2.MaxY << "," << b2.MaxZ << ")";
 }
 
 }  // namespace PartTestHelpers
