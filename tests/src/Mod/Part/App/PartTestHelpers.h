@@ -11,7 +11,6 @@
 #include "Base/Interpreter.h"
 #include <boost/format.hpp>
 
-
 namespace PartTestHelpers
 {
 
