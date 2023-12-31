@@ -52,7 +52,7 @@ void executePython(std::vector<std::string> python)
 {
     Base::InterpreterSingleton is = Base::InterpreterSingleton();
 
-    for (auto line : python) {
+    for (std::string line : python) {
         is.runInteractiveString(line.c_str());
     }
 }

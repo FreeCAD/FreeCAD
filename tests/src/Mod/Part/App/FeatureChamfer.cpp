@@ -18,14 +18,13 @@ protected:
     void SetUp() override
     {
         createTestDoc();
-        _boxes[0]->Length.setValue(4);
-        _boxes[0]->Width.setValue(5);   // NOLINT magic number
-        _boxes[0]->Height.setValue(6);  // NOLINT magic number
+        _boxes[0]->Length.setValue(length);
+        _boxes[0]->Width.setValue(width);
+        _boxes[0]->Height.setValue(height);
         _boxes[0]->Placement.setValue(
             Base::Placement(Base::Vector3d(), Base::Rotation(), Base::Vector3d()));
         _boxes[1]->Placement.setValue(
-            Base::Placement(Base::Vector3d(0, 1, 6), Base::Rotation(), Base::Vector3d()));
-        // NOLINT magic number
+            Base::Placement(Base::Vector3d(0, 1, height), Base::Rotation(), Base::Vector3d()));
         _boxes[1]->Length.setValue(1);
         _boxes[1]->Width.setValue(2);
         _boxes[1]->Height.setValue(3);
@@ -39,6 +38,10 @@ protected:
     void TearDown() override
     {}
 
+    const double length = 4.0;
+    const double width = 5.0;
+    const double height = 6.0;
+    const double chamfer = 0.5;
     Part::Fuse* _fused = nullptr;       // NOLINT Can't be private in a test framework
     Part::Chamfer* _chamfer = nullptr;  // NOLINT Can't be private in a test framework
 };
@@ -66,7 +69,8 @@ TEST_F(FeatureChamferTest, testOther)
     // Assert
     EXPECT_EQ(sec, 24);
     // Act
-    _chamfer->Edges.setValues(PartTestHelpers::_getFilletEdges({1, 2}, 0.5, 0.5));
+    // _chamfer->Edges.setValues(PartTestHelpers::_getFilletEdges({1, 2}, chamfer, chamfer));
+    _chamfer->Edges.setValues(PartTestHelpers::_getFilletEdges({1, 2}, chamfer, chamfer));
     double fusedVolume = PartTestHelpers::getVolume(_fused->Shape.getValue());
     double chamferVolume = PartTestHelpers::getVolume(_chamfer->Shape.getValue());
     // Assert
@@ -75,8 +79,10 @@ TEST_F(FeatureChamferTest, testOther)
     // Act
     _chamfer->execute();
     chamferVolume = PartTestHelpers::getVolume(_chamfer->Shape.getValue());
+    double cv = (_boxes[0]->Length.getValue()) * chamfer * chamfer / 2
+        + (_boxes[0]->Height.getValue()) * chamfer * chamfer / 2 - chamfer * chamfer * chamfer / 3;
     // Assert
-    EXPECT_FLOAT_EQ(chamferVolume, 124.79166);  // FIXME we can calculate this
+    EXPECT_FLOAT_EQ(chamferVolume, baseVolume - cv);
 }
 
 TEST_F(FeatureChamferTest, testMost)
@@ -86,14 +92,15 @@ TEST_F(FeatureChamferTest, testMost)
     _fused->execute();
     _chamfer->Base.setValue(_fused);
     _chamfer->Edges.setValues(PartTestHelpers::_getFilletEdges(
-        {3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24},
+        {3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14,  // NOLINT magic number
+         15, 16, 17, 18, 19, 20, 21, 22, 23, 24},
         0.4,
         0.4));
     // Act
     _chamfer->execute();
     double chamferVolume = PartTestHelpers::getVolume(_chamfer->Shape.getValue());
     // Assert
-    EXPECT_FLOAT_EQ(chamferVolume, 121.46667);  // FIXME we can calcuate this
+    EXPECT_FLOAT_EQ(chamferVolume, 121.46667);  // This is calculable, but painful.
 }
 
 // Worth noting that FeaturePartCommon with insufficient parameters says MustExecute false,

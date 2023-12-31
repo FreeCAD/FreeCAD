@@ -31,9 +31,9 @@ protected:
 
     Part::Extrusion* _extrusion;  // NOLINT Can't be private in a test framework
     // Arbtitrary constants for testing.  Named here for clarity.
-    const double len = 3;
-    const double wid = 4;
-    const double ext1 = 10;
+    const double len = 3.0;
+    const double wid = 4.0;
+    const double ext1 = 10.0;
 };
 
 TEST_F(FeatureExtrusionTest, testMustExecute)
@@ -172,10 +172,19 @@ TEST_F(FeatureExtrusionTest, testExecuteAngled)
     const double ang = 30;
     const double tangent = tan(ang / 180.0 * M_PI);
 
-    // Volume of a truncated trapezoidal rectangular pyramid (V”) =(1/3)[A’+A”+√(A’*A”)] X H’
-    const double a = len * wid;                                                 // Area of the base
-    const double aa = (len + ext1 * tangent * 2) * (wid + ext1 * tangent * 2);  // Area of the top
-    const double pyramidVol = ext1 * (a + aa + sqrt(a * aa)) / 3;
+    // The shape is a truncated pyramid elongated by a truncated triangular prism in the middle.
+    // Calc the volume of full size pyramid and prism, and subtract top volumes to truncate.
+    const double shorterSide = len > wid ? wid : len;
+    const double longerSide = len < wid ? wid : len;
+    const double centerWidth = longerSide - shorterSide;  // Width of the triang prism.
+    const double topHeight = shorterSide / tangent / 2;   // Height of the truncation
+    const double fullHeight = ext1 + topHeight;
+    const double fullPrismVol =
+        fullHeight * (shorterSide + ext1 * tangent * 2.0) / 2.0 * centerWidth;
+    const double fullPyrVol = pow(shorterSide + ext1 * tangent * 2.0, 2.0) / 3.0 * fullHeight;
+    const double topPrismVol = topHeight * shorterSide / 2.0 * centerWidth;
+    const double topPyrVol = pow(shorterSide, 2.0) / 3.0 * topHeight;
+    const double targetVol = (fullPyrVol + fullPrismVol) - (topPyrVol + topPrismVol);
     _extrusion->Solid.setValue(true);
     _extrusion->TaperAngle.setValue(ang);
     // Act
@@ -184,8 +193,7 @@ TEST_F(FeatureExtrusionTest, testExecuteAngled)
     double volume = PartTestHelpers::getVolume(ts.getShape());
     Base::BoundBox3d bb = ts.getBoundBox();
     // Assert
-    // EXPECT_FLOAT_EQ(volume, pyramidVol);
-    EXPECT_NEAR(volume, pyramidVol, 1.2);
+    EXPECT_FLOAT_EQ(volume, targetVol);
     EXPECT_TRUE(PartTestHelpers::boxesMatch(bb,
                                             Base::BoundBox3d(-ext1 * tangent,
                                                              -ext1 * tangent,
@@ -200,12 +208,21 @@ TEST_F(FeatureExtrusionTest, testExecuteAngledRev)
     // Arrange
     const double ang = 30;
     const double tangent = tan(ang / 180.0 * M_PI);
-
-    // Volume of a truncated trapezoidal rectangular pyramid (V”) =(1/3)[A’+A”+√(A’*A”)] X H’
-    const double a = len * wid;  // Area of the base
-    const double sym_aa =
-        (len + ext1 * tangent * 2 / 2) * (wid + ext1 * tangent * 2 / 2);  // Area of the top
-    const double symPyramidVol = ext1 / 2 * (a + sym_aa + sqrt(a * sym_aa)) / 3;
+    // The shape is a truncated pyramid elongated by a truncated triangular prism in the middle,
+    // plus a rectangular prism.
+    // Calc the volume of full size pyramid and prism, and subtract top volumes to truncate.
+    const double shorterSide = len > wid ? wid : len;
+    const double longerSide = len < wid ? wid : len;
+    const double centerWidth = longerSide - shorterSide;  // Width of the triang prism.
+    const double topHeight = shorterSide / tangent / 2;   // Height of the truncation
+    const double fullHeight = ext1 / 2 + topHeight;
+    const double fullPrismVol =
+        fullHeight * (shorterSide + ext1 / 2 * tangent * 2.0) / 2.0 * centerWidth;
+    const double fullPyrVol = pow(shorterSide + ext1 / 2 * tangent * 2.0, 2.0) / 3.0 * fullHeight;
+    const double topPrismVol = topHeight * shorterSide / 2.0 * centerWidth;
+    const double topPyrVol = pow(shorterSide, 2.0) / 3.0 * topHeight;
+    const double targetVol =
+        (fullPyrVol + fullPrismVol) - (topPyrVol + topPrismVol) + len * wid * ext1 / 2;
 
     _extrusion->Solid.setValue(true);
     _extrusion->Symmetric.setValue(true);
@@ -216,8 +233,7 @@ TEST_F(FeatureExtrusionTest, testExecuteAngledRev)
     double volume = PartTestHelpers::getVolume(ts.getShape());
     Base::BoundBox3d bb = ts.getBoundBox();
     // Assert
-    // EXPECT_FLOAT_EQ(volume, symPyramidVol + len * wid * ext1 / 2);
-    EXPECT_NEAR(volume, symPyramidVol + len * wid * ext1 / 2, 1.2);
+    EXPECT_FLOAT_EQ(volume, targetVol);
     EXPECT_TRUE(PartTestHelpers::boxesMatch(bb,
                                             Base::BoundBox3d(-ext1 * tangent / 2,
                                                              -ext1 * tangent / 2,
