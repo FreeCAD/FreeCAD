@@ -24,7 +24,7 @@ class PartTestHelperClass
 public:
     App::Document* _doc;
     std::string _docName;
-    std::array<Part::Box*, 6> _boxes;
+    std::array<Part::Box*, 6> _boxes;   // NOLINT magic number
     void createTestDoc();
 };
 
