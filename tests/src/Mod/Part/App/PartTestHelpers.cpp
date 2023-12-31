@@ -2,6 +2,8 @@
 
 #include "PartTestHelpers.h"
 
+// NOLINTBEGIN(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
+
 namespace PartTestHelpers
 {
 
@@ -17,8 +19,6 @@ void PartTestHelperClass::createTestDoc()
     _docName = App::GetApplication().getUniqueDocumentName("test");
     _doc = App::GetApplication().newDocument(_docName.c_str(), "testUser");
     std::array<Base::Vector3d, 6> box_origins = {
-        // NOLINT magic number
-        // NOLINT magic number
         Base::Vector3d(),                                        // First box at 0,0,0
         Base::Vector3d(0, 1, 0),                                 // Overlap with first box
         Base::Vector3d(0, 3, 0),                                 // Don't Overlap with first box
@@ -95,3 +95,5 @@ boxesMatch(const Base::BoundBox3d& b1, const Base::BoundBox3d& b2, double prec)
 }
 
 }  // namespace PartTestHelpers
+
+// NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
