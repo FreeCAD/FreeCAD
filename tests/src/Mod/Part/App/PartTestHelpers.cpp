@@ -26,7 +26,7 @@ void PartTestHelperClass::createTestDoc()
         // For the Just Inside Of Touching case, go enough that we exceed precision rounding
         Base::Vector3d(0, 2 - minimalDistance, 0)};
 
-    for (int i = 0; i < (int) _boxes.size(); i++) {
+    for (int i = 0; i < (int)_boxes.size(); i++) {
         auto box = _boxes[i] = static_cast<Part::Box*>(_doc->addObject("Part::Box"));
         box->Length.setValue(1);
         box->Width.setValue(2);
@@ -51,7 +51,7 @@ void executePython(std::vector<std::string> python)
 {
     Base::InterpreterSingleton is = Base::InterpreterSingleton();
 
-    for (auto const &line : python) {
+    for (auto const& line : python) {
         is.runInteractiveString(line.c_str());
     }
 }
