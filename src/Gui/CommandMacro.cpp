@@ -257,7 +257,7 @@ StdCmdMacroStepInto::StdCmdMacroStepInto()
     sGroup        = "Macro";
     sMenuText     = QT_TR_NOOP("Step into");
     sToolTipText  = QT_TR_NOOP("Step to the next line executed");
-    //sWhatsThis    = "Std_MacroStepOver";
+    sWhatsThis    = "Std_MacroStepInto";
     sStatusTip    = QT_TR_NOOP("Step to the next line executed");
     sPixmap       = nullptr;
     sAccel        = "F11";
