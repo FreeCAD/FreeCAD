@@ -645,19 +645,26 @@ class _Window(ArchComponent.Component):
 
         if prop in ["Base","WindowParts","Placement","HoleDepth","Height","Width","Hosts"]:
             setattr(self,prop,getattr(obj,prop))
+        if prop in ["Height","Width"]:
+            self.TouchOnShapeChange = True  # touch hosts after next "Shape" change
 
     def onChanged(self,obj,prop):
 
         self.hideSubobjects(obj,prop)
         if not "Restore" in obj.State:
-            if prop in ["Base","WindowParts","Placement","HoleDepth","Height","Width","Hosts"]:
+            if prop in ["Base","WindowParts","Placement","HoleDepth","Height","Width","Hosts","Shape"]:
                 # anti-recursive loops, bc the base sketch will touch the Placement all the time
                 touchhosts = False
-                if hasattr(self,prop):
-                    if getattr(self,prop) != getattr(obj,prop):
+                if prop == "Shape":
+                    if hasattr(self,"TouchOnShapeChange") and self.TouchOnShapeChange:
+                        self.TouchOnShapeChange = False
                         touchhosts = True
-                if touchhosts and hasattr(self, "Hosts") and hasattr(obj, "Hosts"):
-                    for host in set(self.Hosts + obj.Hosts): # use set to remove duplicates
+                elif hasattr(self,prop) and getattr(self,prop) != getattr(obj,prop):
+                    touchhosts = True
+                if touchhosts:
+                    hosts = self.Hosts if hasattr(self, "Hosts") else []
+                    hosts += obj.Hosts if hasattr(obj, "Hosts") else []
+                    for host in set(hosts): # use set to remove duplicates
                         # mark host to recompute so it can detect this object
                         host.touch()
             if prop in ["Width","Height","Frame"]:
