@@ -334,7 +334,14 @@ Leave blank to use all objects from the document</source>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="98"/>
       <source>An optional semicolon (;) separated list of property:value filters. Prepend ! to a property name to invert the effect of the filter (exclude objects that match the filter). Objects whose property contains the value will be matched. Examples of valid filters (everything is case-insensitive): Name:Wall - Will only consider objects with 'wall' in their name (internal name); !Name:Wall - Will only consider objects which DON'T have 'wall' in their name (internal name); Description:Win - Will only consider objects with 'win' in their description; !Label:Win - Will only consider objects which DO NOT have 'win' in their label; IfcType:Wall - Will only consider objects which Ifc Type is 'Wall'; !Tag:Wall - Will only consider objects which tag is NOT 'Wall'. If you leave this field empty, no filtering is applied</source>
-      <translation type="unfinished">An optional semicolon (;) separated list of property:value filters. Prepend ! to a property name to invert the effect of the filter (exclude objects that match the filter). Objects whose property contains the value will be matched. Examples of valid filters (everything is case-insensitive): Name:Wall - Will only consider objects with 'wall' in their name (internal name); !Name:Wall - Will only consider objects which DON'T have 'wall' in their name (internal name); Description:Win - Will only consider objects with 'win' in their description; !Label:Win - Will only consider objects which DO NOT have 'win' in their label; IfcType:Wall - Will only consider objects which Ifc Type is 'Wall'; !Tag:Wall - Will only consider objects which tag is NOT 'Wall'. If you leave this field empty, no filtering is applied</translation>
+      <translation>Перелік фільтрів розділений крапкой з комою (;) Додайте знак оклику (!) до ім'я властивості, щоб інвертувати дію фільтра (видалити об'єкти, які відповідають фільтру). Об'єкти у яких є значення, будуть знайдені. Приклад використання фільтра(фільтри не чутливі до регістру): 
+ Name:Wall - будуть розлядатись тільки об'єкти які містять "wall" в назві (внутрішнє ім'я);
+ !Name:Wall - будуть розглядатись об'єкти у яких немає в назві сполучення "wall" (внутрішнє ім'я);
+ Description:Win - будуть розлядатись тільки об'єкти, які мають сполучення "win" в опису;
+ !Label:Win - будуть розглядатись тільки об'єкти, які не мають "win" в мітці; 
+ IfcType:Wall - будуть розглядатись об'єкти IfcType типу у яких є буквенне сполучення "wall";
+ !Tag:Wall - будуть розглядатись тільки об'єкти у яких немає буквенного сполучення "Wall". 
+Якщо поле оставити незаповненним (пустим), фільрування об'єктів не буде застосовуватись</translation>
     </message>
     <message>
       <location filename="../ui/ArchSchedule.ui" line="194"/>
@@ -1760,27 +1767,27 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../ArchStructure.py" line="150"/>
       <source>StructuralSystem</source>
-      <translation type="unfinished">StructuralSystem</translation>
+      <translation>Структура системи</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="204"/>
       <source>Create Structures From Selection</source>
-      <translation type="unfinished">Create Structures From Selection</translation>
+      <translation>Створити Структуру з обраного</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="221"/>
       <source>Please select the base object first and then the edges to use as extrusion paths</source>
-      <translation type="unfinished">Please select the base object first and then the edges to use as extrusion paths</translation>
+      <translation>Будь ласка, спочатку виберіть базовий об'єкт, а потім ребра, які будуть використовуватись в як напрямок видавлювання</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="244"/>
       <source>Create Structural System</source>
-      <translation type="unfinished">Create Structural System</translation>
+      <translation>Створити структурну систему</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="255"/>
       <source>Please select at least an axis object</source>
-      <translation type="unfinished">Please select at least an axis object</translation>
+      <translation>Будь ласка, виберіть хоча б вісь об'єкта</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="301"/>
@@ -1791,12 +1798,12 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../ArchStructure.py" line="326"/>
       <source>First point of the beam</source>
-      <translation type="unfinished">First point of the beam</translation>
+      <translation>Перша точка балки</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="328"/>
       <source>Base point of column</source>
-      <translation type="unfinished">Base point of column</translation>
+      <translation>Базова точка колони</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="341"/>
@@ -1827,7 +1834,7 @@ unit to work with when opening the file.</source>
       <location filename="../../ArchWindow.py" line="411"/>
       <location filename="../../ArchPanel.py" line="213"/>
       <source>Preset</source>
-      <translation type="unfinished">Preset</translation>
+      <translation>Налаштування</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="461"/>
@@ -1856,12 +1863,12 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../ArchStructure.py" line="488"/>
       <source>Switch L/H</source>
-      <translation type="unfinished">Switch L/H</translation>
+      <translation>Перемкнути Д/В [Довжина/Висота]</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="490"/>
       <source>Switch L/W</source>
-      <translation type="unfinished">Switch L/W</translation>
+      <translation>Перемкнути Д/Ш [Довжина/Ширина]</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="494"/>
@@ -1873,19 +1880,19 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../ArchStructure.py" line="774"/>
       <source>Error: The base shape couldn't be extruded along this tool object</source>
-      <translation type="unfinished">Error: The base shape couldn't be extruded along this tool object</translation>
+      <translation>Помилка: базова фігура не може бути видавити уздовж вибраного об'єкта</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="800"/>
       <location filename="../../ArchWall.py" line="963"/>
       <source>This mesh is an invalid solid</source>
-      <translation type="unfinished">This mesh is an invalid solid</translation>
+      <translation>Ця сітка не може бути тілом</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="864"/>
       <location filename="../../ArchPanel.py" line="523"/>
       <source>Facemaker returned an error</source>
-      <translation type="unfinished">Facemaker returned an error</translation>
+      <translation>Генератор граней повернув помилку</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1179"/>
@@ -1895,7 +1902,7 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../ArchStructure.py" line="1184"/>
       <source>Reset nodes</source>
-      <translation type="unfinished">Reset nodes</translation>
+      <translation>Скинути вузли</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1191"/>
@@ -1925,17 +1932,17 @@ unit to work with when opening the file.</source>
     <message>
       <location filename="../../ArchStructure.py" line="1211"/>
       <source>Toggle all nodes</source>
-      <translation type="unfinished">Toggle all nodes</translation>
+      <translation>Перемкнути всі вузли</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1212"/>
       <source>Toggles all structural nodes of the document on/off</source>
-      <translation type="unfinished">Toggles all structural nodes of the document on/off</translation>
+      <translation>Увімкнути/вимкнути всі структурні вузли документа</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1217"/>
       <source>Extrusion Tools</source>
-      <translation type="unfinished">Extrusion Tools</translation>
+      <translation>Інструменти видавлювання</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1222"/>
@@ -1952,13 +1959,13 @@ unit to work with when opening the file.</source>
       <location filename="../../ArchStructure.py" line="1246"/>
       <location filename="../../ArchStructure.py" line="1278"/>
       <source>Choose another Structure object:</source>
-      <translation type="unfinished">Choose another Structure object:</translation>
+      <translation>Виберіть інший Конструктивний об'єкт:</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1251"/>
       <location filename="../../ArchStructure.py" line="1283"/>
       <source>The chosen object is not a Structure</source>
-      <translation type="unfinished">The chosen object is not a Structure</translation>
+      <translation>Обраний об'єкт не є структурою</translation>
     </message>
     <message>
       <location filename="../../ArchStructure.py" line="1254"/>
@@ -2232,7 +2239,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchRoof.py" line="1016"/>
       <source>Thickness (mm)</source>
-      <translation type="unfinished">Thickness (mm)</translation>
+      <translation>Товщина (мм)</translation>
     </message>
     <message>
       <location filename="../../ArchRoof.py" line="1017"/>
@@ -2546,13 +2553,13 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchWindow.py" line="1815"/>
       <source>Opening mode</source>
-      <translation type="unfinished">Opening mode</translation>
+      <translation>Режим відкриття</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1816"/>
       <location filename="../../ArchWindow.py" line="1818"/>
       <source>+ default</source>
-      <translation type="unfinished">+ default</translation>
+      <translation>+ за замовчуванням</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1817"/>
@@ -2573,13 +2580,13 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../ArchWindow.py" line="1263"/>
       <location filename="../../ArchWindow.py" line="1822"/>
       <source>Invert opening direction</source>
-      <translation type="unfinished">Invert opening direction</translation>
+      <translation>Інвертувати напрям відкриття</translation>
     </message>
     <message>
       <location filename="../../ArchWindow.py" line="1272"/>
       <location filename="../../ArchWindow.py" line="1823"/>
       <source>Invert hinge position</source>
-      <translation type="unfinished">Invert hinge position</translation>
+      <translation>Перевернути положення шарніру</translation>
     </message>
     <message>
       <location filename="../../ArchAxisSystem.py" line="59"/>
@@ -2589,17 +2596,17 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchAxisSystem.py" line="84"/>
       <source>Only axes must be selected</source>
-      <translation type="unfinished">Only axes must be selected</translation>
+      <translation>Потрібно вибрати тільки осі</translation>
     </message>
     <message>
       <location filename="../../ArchAxisSystem.py" line="88"/>
       <source>Create Axis System</source>
-      <translation type="unfinished">Create Axis System</translation>
+      <translation>Створити систему координат (осей)</translation>
     </message>
     <message>
       <location filename="../../ArchAxisSystem.py" line="93"/>
       <source>Please select at least one axis</source>
-      <translation type="unfinished">Please select at least one axis</translation>
+      <translation>Виберіть принаймні одну вісь</translation>
     </message>
     <message>
       <location filename="../../ArchAxisSystem.py" line="371"/>
@@ -2612,7 +2619,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchAxisSystem.py" line="374"/>
       <source>Axis system components</source>
-      <translation type="unfinished">Axis system components</translation>
+      <translation>Компоненти системи координат</translation>
     </message>
     <message>
       <location filename="../../importJSON.py" line="61"/>
@@ -2620,49 +2627,49 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
       <location filename="../../importOBJ.py" line="261"/>
       <location filename="../../importOBJ.py" line="285"/>
       <source>Successfully written</source>
-      <translation type="unfinished">Successfully written</translation>
+      <translation>Записано успішно</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="65"/>
       <source>Truss</source>
-      <translation type="unfinished">Truss</translation>
+      <translation>Ферма</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="94"/>
       <location filename="../../ArchCurtainWall.py" line="113"/>
       <source>Please select only one base object or none</source>
-      <translation type="unfinished">Please select only one base object or none</translation>
+      <translation>Виберіть лише один базовий об'єкт або нічого не вибирайте, будь ласка</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="98"/>
       <location filename="../../ArchTruss.py" line="125"/>
       <source>Create Truss</source>
-      <translation type="unfinished">Create Truss</translation>
+      <translation>Створити ферму</translation>
     </message>
     <message>
       <location filename="../../importIFClegacy.py" line="112"/>
       <source>Couldn't locate IfcOpenShell</source>
-      <translation type="unfinished">Couldn't locate IfcOpenShell</translation>
+      <translation>Не вдалося знайти IfcOpenShell</translation>
     </message>
     <message>
       <location filename="../../importIFClegacy.py" line="389"/>
       <source>IfcOpenShell not found or disabled, falling back on internal parser.</source>
-      <translation type="unfinished">IfcOpenShell not found or disabled, falling back on internal parser.</translation>
+      <translation>IfcOpenShell не знайдено або вимкнуто, повернення у внутрішньому синтаксичному аналізаторі.</translation>
     </message>
     <message>
       <location filename="../../importIFClegacy.py" line="395"/>
       <source>IFC Schema not found, IFC import disabled.</source>
-      <translation type="unfinished">IFC Schema not found, IFC import disabled.</translation>
+      <translation>Схема IFC не знайдена. Імпортування IFC вимкнено.</translation>
     </message>
     <message>
       <location filename="../../importIFClegacy.py" line="930"/>
       <source>Error: IfcOpenShell is not installed</source>
-      <translation type="unfinished">Error: IfcOpenShell is not installed</translation>
+      <translation>Помилка: IfcOpenShell не встановлений</translation>
     </message>
     <message>
       <location filename="../../importIFClegacy.py" line="937"/>
       <source>Error: your IfcOpenShell version is too old</source>
-      <translation type="unfinished">Error: your IfcOpenShell version is too old</translation>
+      <translation>Помилка: ваша версія IfcOpenShell застаріла</translation>
     </message>
     <message>
       <location filename="../../ArchProject.py" line="76"/>
@@ -2687,7 +2694,7 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchStairs.py" line="219"/>
       <source>Create Stairs</source>
-      <translation type="unfinished">Create Stairs</translation>
+      <translation>Створити сходи</translation>
     </message>
     <message>
       <location filename="../../ArchStairs.py" line="428"/>
@@ -2707,12 +2714,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchMaterial.py" line="157"/>
       <source>Create multi-material</source>
-      <translation type="unfinished">Create multi-material</translation>
+      <translation>Створити багатошаровий матеріал</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="214"/>
       <source>Merge duplicates</source>
-      <translation type="unfinished">Merge duplicates</translation>
+      <translation>Об'єднати дублікати</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="56"/>
@@ -2724,12 +2731,12 @@ If Run = 0 then the run is calculated so that the height is the same as the rela
     <message>
       <location filename="../../ArchMaterial.py" line="88"/>
       <source>MultiMaterial</source>
-      <translation type="unfinished">MultiMaterial</translation>
+      <translation>Мультиматеріал</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="920"/>
       <source>New layer</source>
-      <translation type="unfinished">New layer</translation>
+      <translation>Новий шар</translation>
     </message>
     <message>
       <location filename="../../ArchMaterial.py" line="957"/>
@@ -6257,7 +6264,7 @@ Building creation aborted.</translation>
     <message>
       <location filename="../../ArchTruss.py" line="82"/>
       <source>Truss</source>
-      <translation type="unfinished">Truss</translation>
+      <translation>Ферма</translation>
     </message>
     <message>
       <location filename="../../ArchTruss.py" line="86"/>

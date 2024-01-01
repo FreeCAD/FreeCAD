@@ -51,12 +51,92 @@
 #include "ViewProviderSketch.h"
 
 #include "DrawSketchHandlerOffset.h"
+#include "DrawSketchHandlerRotate.h"
 
 // Hint: this is to prevent to re-format big parts of the file. Remove it later again.
 // clang-format off
 using namespace std;
 using namespace SketcherGui;
 using namespace Sketcher;
+
+std::vector<int> getListOfSelectedGeoIds(bool forceInternalSelection)
+{
+    std::vector<int> listOfGeoIds = {};
+
+    // get the selection
+    std::vector<Gui::SelectionObject> selection;
+    selection = Gui::Selection().getSelectionEx(0, Sketcher::SketchObject::getClassTypeId());
+
+    // only one sketch with its subelements are allowed to be selected
+    if (selection.size() != 1) {
+        QMessageBox::warning(Gui::getMainWindow(),
+            QObject::tr("Wrong selection"),
+            QObject::tr("Select elements from a single sketch."));
+        return {};
+    }
+
+    // get the needed lists and objects
+    auto* Obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
+    const std::vector<std::string>& subNames = selection[0].getSubNames();
+    if (!subNames.empty()) {
+
+        for (auto& name : subNames) {
+            // only handle non-external edges
+            if (name.size() > 4 && name.substr(0, 4) == "Edge") {
+                int geoId = std::atoi(name.substr(4, 4000).c_str()) - 1;
+                if (geoId >= 0) {
+                    listOfGeoIds.push_back(geoId);
+                }
+            }
+            else if (name.size() > 6 && name.substr(0, 6) == "Vertex") {
+                // only if it is a GeomPoint
+                int VtId = std::atoi(name.substr(6, 4000).c_str()) - 1;
+                int geoId;
+                Sketcher::PointPos PosId;
+                Obj->getGeoVertexIndex(VtId, geoId, PosId);
+                if (isPoint(*Obj->getGeometry(geoId))) {
+                    if (geoId >= 0) {
+                        listOfGeoIds.push_back(geoId);
+                    }
+                }
+            }
+        }
+    }
+
+    if (forceInternalSelection) {
+        size_t loopSize = listOfGeoIds.size();
+        for (size_t i = 0; i < loopSize; i++) {
+            const Part::Geometry* geo = Obj->getGeometry(listOfGeoIds[i]);
+            if (isEllipse(*geo) || isArcOfEllipse(*geo) || isArcOfHyperbola(*geo) || isArcOfParabola(*geo) || isBSplineCurve(*geo)) {
+                const std::vector<Sketcher::Constraint*>& constraints = Obj->Constraints.getValues();
+                for (auto constr : constraints) {
+                    if (constr->Type == InternalAlignment && constr->Second == listOfGeoIds[i]) {
+                        if (std::find(listOfGeoIds.begin(), listOfGeoIds.end(), constr->First) == listOfGeoIds.end()) {
+                            // If the value is not found, add it to the vector
+                            listOfGeoIds.push_back(constr->First);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    if (listOfGeoIds.empty()) {
+        Gui::NotifyUserError(Obj,
+            QT_TRANSLATE_NOOP("Notifications", "Invalid selection"),
+            QT_TRANSLATE_NOOP("Notifications", "Selection has no valid geometries."));
+    }
+
+    return listOfGeoIds;
+}
+
+Sketcher::SketchObject* getSketchObject()
+{
+    Gui::Document* doc = Gui::Application::Instance->activeDocument();
+    ReleaseHandler(doc);
+    auto* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
+    return vp->getSketchObject();
+}
 
 // ================================================================================
 
@@ -161,11 +241,7 @@ CmdSketcherSelectOrigin::CmdSketcherSelectOrigin()
 void CmdSketcherSelectOrigin::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    Gui::Document* doc = getActiveGuiDocument();
-    ReleaseHandler(doc);
-    SketcherGui::ViewProviderSketch* vp =
-        static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-    Sketcher::SketchObject* Obj = vp->getSketchObject();
+    Sketcher::SketchObject * Obj = getSketchObject();
     //    ViewProviderSketch * vp = static_cast<ViewProviderSketch
     //    *>(Gui::Application::Instance->getViewProvider(docobj)); Sketcher::SketchObject* Obj =
     //    vp->getSketchObject();
@@ -209,11 +285,7 @@ CmdSketcherSelectVerticalAxis::CmdSketcherSelectVerticalAxis()
 void CmdSketcherSelectVerticalAxis::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    Gui::Document* doc = getActiveGuiDocument();
-    ReleaseHandler(doc);
-    SketcherGui::ViewProviderSketch* vp =
-        static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-    Sketcher::SketchObject* Obj = vp->getSketchObject();
+    Sketcher::SketchObject* Obj = getSketchObject();
 
     std::string doc_name = Obj->getDocument()->getName();
     std::string obj_name = Obj->getNameInDocument();
@@ -254,11 +326,7 @@ CmdSketcherSelectHorizontalAxis::CmdSketcherSelectHorizontalAxis()
 void CmdSketcherSelectHorizontalAxis::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    Gui::Document* doc = getActiveGuiDocument();
-    ReleaseHandler(doc);
-    SketcherGui::ViewProviderSketch* vp =
-        static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-    Sketcher::SketchObject* Obj = vp->getSketchObject();
+    Sketcher::SketchObject* Obj = getSketchObject();
 
     std::string doc_name = Obj->getDocument()->getName();
     std::string obj_name = Obj->getNameInDocument();
@@ -298,17 +366,13 @@ CmdSketcherSelectRedundantConstraints::CmdSketcherSelectRedundantConstraints()
 void CmdSketcherSelectRedundantConstraints::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    Gui::Document* doc = getActiveGuiDocument();
-    ReleaseHandler(doc);
-    SketcherGui::ViewProviderSketch* vp =
-        static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-    Sketcher::SketchObject* Obj = vp->getSketchObject();
+    Sketcher::SketchObject* Obj = getSketchObject();
 
     std::string doc_name = Obj->getDocument()->getName();
     std::string obj_name = Obj->getNameInDocument();
 
     // get the needed lists and objects
-    const std::vector<int>& solverredundant = vp->getSketchObject()->getLastRedundant();
+    const std::vector<int>& solverredundant = Obj->getLastRedundant();
     const std::vector<Sketcher::Constraint*>& vals = Obj->Constraints.getValues();
 
     getSelection().clearSelection();
@@ -358,17 +422,13 @@ CmdSketcherSelectMalformedConstraints::CmdSketcherSelectMalformedConstraints()
 void CmdSketcherSelectMalformedConstraints::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    Gui::Document* doc = getActiveGuiDocument();
-    ReleaseHandler(doc);
-    SketcherGui::ViewProviderSketch* vp =
-        static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-    Sketcher::SketchObject* Obj = vp->getSketchObject();
+    Sketcher::SketchObject* Obj = getSketchObject();
 
     std::string doc_name = Obj->getDocument()->getName();
     std::string obj_name = Obj->getNameInDocument();
 
     // get the needed lists and objects
-    const std::vector<int>& solvermalformed = vp->getSketchObject()->getLastMalformedConstraints();
+    const std::vector<int>& solvermalformed = Obj->getLastMalformedConstraints();
     const std::vector<Sketcher::Constraint*>& vals = Obj->Constraints.getValues();
 
     getSelection().clearSelection();
@@ -417,18 +477,14 @@ CmdSketcherSelectPartiallyRedundantConstraints::CmdSketcherSelectPartiallyRedund
 void CmdSketcherSelectPartiallyRedundantConstraints::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    Gui::Document* doc = getActiveGuiDocument();
-    ReleaseHandler(doc);
-    SketcherGui::ViewProviderSketch* vp =
-        static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-    Sketcher::SketchObject* Obj = vp->getSketchObject();
+    Sketcher::SketchObject* Obj = getSketchObject();
 
     std::string doc_name = Obj->getDocument()->getName();
     std::string obj_name = Obj->getNameInDocument();
 
     // get the needed lists and objects
     const std::vector<int>& solverpartiallyredundant =
-        vp->getSketchObject()->getLastPartiallyRedundant();
+        Obj->getLastPartiallyRedundant();
     const std::vector<Sketcher::Constraint*>& vals = Obj->Constraints.getValues();
 
     getSelection().clearSelection();
@@ -479,16 +535,13 @@ CmdSketcherSelectConflictingConstraints::CmdSketcherSelectConflictingConstraints
 void CmdSketcherSelectConflictingConstraints::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    Gui::Document* doc = getActiveGuiDocument();
-    ReleaseHandler(doc);
-    SketcherGui::ViewProviderSketch* vp =
-        static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-    Sketcher::SketchObject* Obj = vp->getSketchObject();
+    Sketcher::SketchObject* Obj = getSketchObject();
+
     std::string doc_name = Obj->getDocument()->getName();
     std::string obj_name = Obj->getNameInDocument();
 
     // get the needed lists and objects
-    const std::vector<int>& solverconflicting = vp->getSketchObject()->getLastConflicting();
+    const std::vector<int>& solverconflicting = Obj->getLastConflicting();
     const std::vector<Sketcher::Constraint*>& vals = Obj->Constraints.getValues();
 
     getSelection().clearSelection();
@@ -542,11 +595,7 @@ void CmdSketcherSelectElementsAssociatedWithConstraints::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     std::vector<Gui::SelectionObject> selection = Gui::Selection().getSelectionEx();
-    Gui::Document* doc = getActiveGuiDocument();
-    ReleaseHandler(doc);
-    SketcherGui::ViewProviderSketch* vp =
-        static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-    Sketcher::SketchObject* Obj = vp->getSketchObject();
+    Sketcher::SketchObject* Obj = getSketchObject();
 
     const std::vector<std::string>& SubNames = selection[0].getSubNames();
     const std::vector<Sketcher::Constraint*>& vals = Obj->Constraints.getValues();
@@ -666,11 +715,7 @@ void CmdSketcherSelectElementsWithDoFs::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
     getSelection().clearSelection();
-    Gui::Document* doc = getActiveGuiDocument();
-    ReleaseHandler(doc);
-    SketcherGui::ViewProviderSketch* vp =
-        static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-    Sketcher::SketchObject* Obj = vp->getSketchObject();
+    Sketcher::SketchObject* Obj = getSketchObject();
 
     std::string doc_name = Obj->getDocument()->getName();
     std::string obj_name = Obj->getNameInDocument();
@@ -2027,11 +2072,7 @@ void CmdSketcherDeleteAllGeometry::activated(int iMsg)
     // use an equality constraint
     if (ret == QMessageBox::Yes) {
         getSelection().clearSelection();
-        Gui::Document* doc = getActiveGuiDocument();
-        ReleaseHandler(doc);
-        SketcherGui::ViewProviderSketch* vp =
-            static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-        Sketcher::SketchObject* Obj = vp->getSketchObject();
+        Sketcher::SketchObject* Obj = getSketchObject();
 
         try {
             Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Delete all geometry"));
@@ -2095,11 +2136,7 @@ void CmdSketcherDeleteAllConstraints::activated(int iMsg)
 
     if (ret == QMessageBox::Yes) {
         getSelection().clearSelection();
-        Gui::Document* doc = getActiveGuiDocument();
-        ReleaseHandler(doc);
-        SketcherGui::ViewProviderSketch* vp =
-            static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-        Sketcher::SketchObject* Obj = vp->getSketchObject();
+        Sketcher::SketchObject* Obj = getSketchObject();
 
         try {
             Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Delete All Constraints"));
@@ -2333,6 +2370,40 @@ bool CmdSketcherOffset::isActive()
     return isCommandActive(getActiveGuiDocument(), true);
 }
 
+// Rotate tool =====================================================================
+
+DEF_STD_CMD_A(CmdSketcherRotate)
+
+CmdSketcherRotate::CmdSketcherRotate()
+    : Command("Sketcher_Rotate")
+{
+    sAppModule = "Sketcher";
+    sGroup = "Sketcher";
+    sMenuText = QT_TR_NOOP("Polar transform");
+    sToolTipText = QT_TR_NOOP("Rotate selected geometries, making n copies, enable creation of circular patterns.");
+    sWhatsThis = "Sketcher_Rotate";
+    sStatusTip = sToolTipText;
+    sPixmap = "Sketcher_Rotate";
+    sAccel = "Z, P";
+    eType = ForEdit;
+}
+
+void CmdSketcherRotate::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    std::vector<int> listOfGeoIds = getListOfSelectedGeoIds(true);
+
+    if (!listOfGeoIds.empty()) {
+        ActivateHandler(getActiveGuiDocument(), new DrawSketchHandlerRotate(listOfGeoIds));
+    }
+    getSelection().clearSelection();
+}
+
+bool CmdSketcherRotate::isActive()
+{
+    return isCommandActive(getActiveGuiDocument(), true);
+}
+
 
 
 void CreateSketcherCommandsConstraintAccel()
@@ -2351,6 +2422,7 @@ void CreateSketcherCommandsConstraintAccel()
     rcCmdMgr.addCommand(new CmdSketcherSelectElementsWithDoFs());
     rcCmdMgr.addCommand(new CmdSketcherRestoreInternalAlignmentGeometry());
     rcCmdMgr.addCommand(new CmdSketcherOffset());
+    rcCmdMgr.addCommand(new CmdSketcherRotate());
     rcCmdMgr.addCommand(new CmdSketcherSymmetry());
     rcCmdMgr.addCommand(new CmdSketcherCopy());
     rcCmdMgr.addCommand(new CmdSketcherClone());

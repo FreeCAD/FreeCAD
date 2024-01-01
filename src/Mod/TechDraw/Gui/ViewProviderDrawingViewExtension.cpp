@@ -58,9 +58,24 @@ void ViewProviderDrawingViewExtension::extensionDragObject(App::DocumentObject* 
 //extension to try to drop on us and cause problems
 bool ViewProviderDrawingViewExtension::extensionCanDropObjects() const { return true; }
 
-//let the page have any drops we receive
+//let the page have any drops we receive.
 bool ViewProviderDrawingViewExtension::extensionCanDropObject(App::DocumentObject* obj) const
 {
+    // it can happen that if the tree gets badly corrupted, there can be loose
+    // objects that have no page or view provider, so we need to check that
+    // all these objects exist.
+    auto vpdv = getViewProviderDrawingView();
+    if (!vpdv) {
+        return false;
+    }
+    auto vpp  = vpdv->getViewProviderPage();
+    if (!vpp) {
+        return false;
+    }
+    auto vppEx = vpp->getVPPExtension();
+    if (!vppEx) {
+        return false;
+    }
     return getViewProviderDrawingView()
         ->getViewProviderPage()
         ->getVPPExtension()

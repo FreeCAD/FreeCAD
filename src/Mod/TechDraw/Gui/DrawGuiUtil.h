@@ -25,6 +25,7 @@
 
 #include <string>
 #include <QCoreApplication>
+#include <QGraphicsItem>
 
 #include <Base/Vector3D.h>
 #include <Mod/TechDraw/TechDrawGlobal.h>
@@ -77,6 +78,8 @@ class TechDrawGuiExport DrawGuiUtil {
 
     static double roundToDigits(double original, int digits);
 
+    static bool isSelectedInTree(QGraphicsItem *item);
+    static void setSelectedTree(QGraphicsItem *item, bool selected);
 
 };
 

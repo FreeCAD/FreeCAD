@@ -521,7 +521,7 @@ Merci de sélectionner une forme différente.</translation>
     <message>
       <location filename="../../Command.cpp" line="206"/>
       <source>Select plane</source>
-      <translation>Sélectionnez un plan</translation>
+      <translation>Sélectionner un plan</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="207"/>
@@ -534,7 +534,7 @@ Merci de sélectionner une forme différente.</translation>
     <message>
       <location filename="../../Command.cpp" line="95"/>
       <source>Select plane</source>
-      <translation>Sélectionnez un plan</translation>
+      <translation>Sélectionner un plan</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="96"/>
@@ -549,7 +549,7 @@ Merci de sélectionner une forme différente.</translation>
     <message>
       <location filename="../../Command.cpp" line="104"/>
       <source>Select the side you want to keep.</source>
-      <translation>Sélectionnez le coté que vous souhaitez conserver.</translation>
+      <translation>Sélectionner le coté à conserver.</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="106"/>
@@ -580,7 +580,7 @@ Merci de sélectionner une forme différente.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="49"/>
       <source>Unwrap mesh</source>
-      <translation type="unfinished">Unwrap mesh</translation>
+      <translation>Développer un maillage</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="52"/>
@@ -593,7 +593,7 @@ Merci de sélectionner une forme différente.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="88"/>
       <source>Unwrap face</source>
-      <translation type="unfinished">Unwrap face</translation>
+      <translation>Développer une face</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="91"/>

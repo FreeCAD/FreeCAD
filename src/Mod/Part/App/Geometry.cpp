@@ -2958,6 +2958,18 @@ Base::Vector3d GeomArcOfEllipse::getMajorAxisDir() const
 }
 
 /*!
+ * \brief GeomArcOfEllipse::getMinorAxisDir
+ * \return the direction vector (unit-length) of minor axis of the ellipse.
+ */
+Base::Vector3d GeomArcOfEllipse::getMinorAxisDir() const
+{
+    Handle(Geom_Ellipse) c = Handle(Geom_Ellipse)::DownCast(myCurve->BasisCurve());
+    assert(!c.IsNull());
+    gp_Dir ydir = c->YAxis().Direction();
+    return Base::Vector3d(ydir.X(), ydir.Y(), ydir.Z());
+}
+
+/*!
  * \brief GeomArcOfEllipse::setMajorAxisDir Rotates the ellipse in its plane, so
  * that its major axis is as close as possible to the provided direction.
  * \param newdir [in] is the new direction. If the vector is small, the
@@ -3385,6 +3397,18 @@ Base::Vector3d GeomArcOfHyperbola::getMajorAxisDir() const
     assert(!c.IsNull());
     gp_Dir xdir = c->XAxis().Direction();
     return Base::Vector3d(xdir.X(), xdir.Y(), xdir.Z());
+}
+
+/*!
+ * \brief GeomArcOfHyperbola::getMinorAxisDir
+ * \return the direction vector (unit-length) of minor axis of the hyperbola.
+ */
+Base::Vector3d GeomArcOfHyperbola::getMinorAxisDir() const
+{
+    Handle(Geom_Hyperbola) c = Handle(Geom_Hyperbola)::DownCast( myCurve->BasisCurve() );
+    assert(!c.IsNull());
+    gp_Dir ydir = c->YAxis().Direction();
+    return Base::Vector3d(ydir.X(), ydir.Y(), ydir.Z());
 }
 
 /*!

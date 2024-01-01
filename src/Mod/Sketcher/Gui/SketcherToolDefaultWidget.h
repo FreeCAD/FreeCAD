@@ -126,9 +126,10 @@ public:
 
     void reset();
 
-    void initNParameters(int nparameters);
+    void initNParameters(int nparameters, QObject* filteringObject = nullptr);
 
     void setParameterLabel(int parameterindex, const QString& string);
+    void setParameterFilteringObject(int parameterindex, QObject* filteringObject);
 
     void setNoticeText(const QString& string);
     void setNoticeVisible(bool visible);

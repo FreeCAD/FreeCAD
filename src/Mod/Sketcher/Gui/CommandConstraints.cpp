@@ -2610,6 +2610,7 @@ public:
         eType = ForEdit;
 
         setCheckable(false);
+        setRememberLast(false);
 
         addCommand("Sketcher_ConstrainHorVer");
         addCommand("Sketcher_ConstrainHorizontal");
@@ -3542,7 +3543,7 @@ CmdSketcherConstrainCoincidentUnified::CmdSketcherConstrainCoincidentUnified(con
         "or a concentric constraint between circles, arcs, and ellipses");
     sWhatsThis = "Sketcher_ConstrainCoincidentUnified";
     sStatusTip = sToolTipText;
-    sPixmap = "Constraint_PointOnObject";
+    sPixmap = "Constraint_Coincident";
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher/Constraints");
