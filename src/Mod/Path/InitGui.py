@@ -267,30 +267,6 @@ class PathWorkbench(Workbench):
         )
         Log("Loading Path workbench... done\n")
 
-        # Warn user if current schema doesn't use minute for time in velocity
-        if not Path.Preferences.suppressVelocity():
-            velString = FreeCAD.Units.Quantity(
-                1, FreeCAD.Units.Velocity
-            ).getUserPreferred()[2][3:]
-
-            if velString != "min":
-                current_schema = FreeCAD.Units.listSchemas(FreeCAD.Units.getSchema())
-
-                msg = translate(
-                    "Path",
-                    "The currently selected unit schema: \n     '{}'\n Does not use 'minutes' for velocity values. \n \nCNC machines require feed rate to be expressed in \nunit/minute. To ensure correct G-code: \nSelect a minute-based schema in preferences.\nFor example:\n    'Metric, Small Parts & CNC'\n    'US Customary'\n    'Imperial Decimal'",
-                ).format(current_schema)
-                header = translate("Path", "Warning")
-                msgbox = QtGui.QMessageBox(QtGui.QMessageBox.Warning, header, msg)
-
-                msgbox.addButton(translate("Path", "Ok"), QtGui.QMessageBox.AcceptRole)
-                msgbox.addButton(
-                    translate("Path", "Don't Show This Anymore"),
-                    QtGui.QMessageBox.ActionRole,
-                )
-                if msgbox.exec_() == 1:
-                    preferences().SetBool("WarningSuppressVelocity", True)
-
     def GetClassName(self):
         return "Gui::PythonWorkbench"
 
