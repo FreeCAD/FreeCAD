@@ -56,6 +56,34 @@ class JobCreate:
     DataObject = QtCore.Qt.ItemDataRole.UserRole
 
     def __init__(self, parent=None, sel=None):
+        # Warn user if current schema doesn't use minute for time in velocity
+        if not Path.Preferences.suppressVelocity():
+            schemes = FreeCAD.Units.listSchemas()
+            for idx, val in enumerate(schemes):
+                if FreeCAD.ActiveDocument.UnitSystem == FreeCAD.Units.listSchemas(idx):
+                    current_schema = FreeCAD.Units.listSchemas(idx)
+                    if idx not in [2, 3, 6]:
+                        msg = translate(
+                            "Path",
+                            "The currently selected unit schema: \n     '{}' for this document\n Does not use 'minutes' for velocity values. \n \nCNC machines require feed rate to be expressed in \nunit/minute. To ensure correct G-code: \nSelect a minute-based schema in preferences.\nFor example:\n    'Metric, Small Parts & CNC'\n    'US Customary'\n    'Imperial Decimal'",
+                        ).format(current_schema)
+                        header = translate("Path", "Warning")
+                        msgbox = QtGui.QMessageBox(
+                            QtGui.QMessageBox.Warning, header, msg
+                        )
+
+                        msgbox.addButton(
+                            translate("Path", "Ok"), QtGui.QMessageBox.AcceptRole
+                        )
+                        msgbox.addButton(
+                            translate("Path", "Don't Show This Anymore"),
+                            QtGui.QMessageBox.ActionRole,
+                        )
+                        if msgbox.exec_() == 1:
+                            from Path.Preferences import preferences
+
+                            preferences().SetBool("WarningSuppressVelocity", True)
+
         self.dialog = FreeCADGui.PySideUic.loadUi(":/panels/DlgJobCreate.ui")
         self.itemsSolid = QtGui.QStandardItem(translate("Path_Job", "Solids"))
         self.items2D = QtGui.QStandardItem(translate("Path_Job", "2D"))

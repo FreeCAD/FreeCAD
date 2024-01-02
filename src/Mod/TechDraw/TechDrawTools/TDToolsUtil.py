@@ -128,7 +128,7 @@ def getSelEdges(nEdge=1, nSel=0):
 def getCoordinateVectors(view):
     '''
     (px,py,pz) = getCoordinateVectors(view)
-    view ... selcted view
+    view ... selected view
     (px,py,pz) ... returned tuple of vectors (App.Vector)
     calculate projected vectors of x-, y- and z-axis
     '''
