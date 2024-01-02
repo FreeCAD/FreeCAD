@@ -374,8 +374,8 @@ void SketcherAddWorkspaceFillets(T& geom);
 template<>
 inline void SketcherAddWorkspaceFillets<Gui::MenuItem>(Gui::MenuItem& geom)
 {
-    geom << "Sketcher_CreateFillet"
-         << "Sketcher_CreatePointFillet";
+    geom << "Sketcher_CreatePointFillet"
+         << "Sketcher_CreateFillet";
 }
 
 template<>
