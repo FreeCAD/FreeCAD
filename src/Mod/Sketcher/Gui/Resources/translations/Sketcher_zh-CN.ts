@@ -2869,7 +2869,7 @@ invalid constraints, degenerated geometry, etc.</source>
 
 Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</source>
       <comment>perpendicular constraint</comment>
-      <translation>可以采用多种方法来应用此约束。 
+      <translation>可以采用多种方法来应用此约束。
 
 接受的组合: 两条曲线; 一个端点和一个曲线; 两个端点; 两条曲线和一个点。</translation>
     </message>
@@ -2914,7 +2914,7 @@ Accepted combinations: two curves; an endpoint and a curve; two endpoints; two c
 
 Accepted combinations: two curves; an endpoint and a curve; two endpoints; two curves and a point.</source>
       <comment>tangent constraint</comment>
-      <translation>可以使用多种方法来应用此约束。 
+      <translation>可以使用多种方法来应用此约束。
 
 接受的组合: 两条曲线; 一个端点和一个曲线; 两个端点; 两条曲线和一个点。</translation>
     </message>
@@ -4776,7 +4776,7 @@ Then objects are only visible behind the sketch plane.</source>
 Click "Swap endpoints in constraints" button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15</source>
       <translation>%1 发现了反向的外部几何圆弧。它们的端点在3维视图中环绕。
 
-%2 约束链接到端点。这些约束已在报告视图 (菜单视图-&gt;&gt; 视图-&gt;&gt; 报告视图) 中列出。 
+%2 约束链接到端点。这些约束已在报告视图 (菜单视图-&gt;&gt; 视图-&gt;&gt; 报告视图) 中列出。
 
 单击 "在约束中交换端点" 按钮以重新分配端点。仅在 FreeCAD 中创建的草图是 v0.15以下旧版本时使用。</translation>
     </message>
@@ -4785,7 +4785,7 @@ Click "Swap endpoints in constraints" button to reassign endpoints. Do this only
       <source>%1 reversed external-geometry arcs were found. Their endpoints are encircled in 3d view.
 
 However, no constraints linking to the endpoints were found.</source>
-      <translation>%1 发现了反向的外部几何圆弧。它们的端点在3d 视图中环绕。 
+      <translation>%1 发现了反向的外部几何圆弧。它们的端点在3d 视图中环绕。
 
 但是, 未找到链接到端点的约束。</translation>
     </message>

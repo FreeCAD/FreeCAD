@@ -1608,7 +1608,7 @@ nevaljana ograničenja, degenerirana geometrija itd.
     <message>
       <location filename="../../CommandConstraints.cpp" line="3141"/>
       <source>Add 'Lock' constraint</source>
-      <translation>Dodajte 'Zaključaj' ograničenje 
+      <translation>Dodajte 'Zaključaj' ograničenje
 
 </translation>
     </message>
@@ -1625,20 +1625,20 @@ nevaljana ograničenja, degenerirana geometrija itd.
     <message>
       <location filename="../../CommandConstraints.cpp" line="3432"/>
       <source>Add 'Block' constraint</source>
-      <translation>Dodajte 'Blok' ograničenje 
+      <translation>Dodajte 'Blok' ograničenje
 </translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3481"/>
       <source>Add block constraint</source>
-      <translation>Dodaje blok ograničenje 
+      <translation>Dodaje blok ograničenje
 </translation>
     </message>
     <message>
       <location filename="../../CommandConstraints.cpp" line="3820"/>
       <location filename="../../CommandConstraints.cpp" line="4009"/>
       <source>Add coincident constraint</source>
-      <translation>Dodajte podudarno ograničenje 
+      <translation>Dodajte podudarno ograničenje
 </translation>
     </message>
     <message>
@@ -4126,7 +4126,7 @@ u odnosu na ostale elemente korištenjem konstrukcijskih linija</translation>
 in the copies, so that a change in the original element is directly
 reflected on copies</source>
       <translation>Ako je odabrano to je zamjena dimenzijskih ograničenja sa geometrijskim
-ograničenjima u kopijama, tako da se promjena u originalnom elementu 
+ograničenjima u kopijama, tako da se promjena u originalnom elementu
 izravno odražava na kopijama</translation>
     </message>
     <message>
@@ -4291,9 +4291,9 @@ Ova postavka vrijedi samo za alatnu traku. Bez obzira što ste odabrali, svi ala
 'Auto': The tool will apply radius to arcs and diameter to circles.
 'Diameter': The tool will apply diameter to both arcs and circles.
 'Radius': The tool will apply radius to both arcs and circles.</source>
-      <translation>Tijekom korištenja alata za dimenzioniranje možete odabrati kako upravljati krugovima i lukovima: 
-'Automatski': Alat će primijeniti polumjer na luk i promjer na krug. 
-'Promjer': Alat će primijeniti promjer na oba luka i kružnice. 
+      <translation>Tijekom korištenja alata za dimenzioniranje možete odabrati kako upravljati krugovima i lukovima:
+'Automatski': Alat će primijeniti polumjer na luk i promjer na krug.
+'Promjer': Alat će primijeniti promjer na oba luka i kružnice.
 'Polumjer': Alat će primijeniti polumjer na oba luka i kružnice.</translation>
     </message>
     <message>
@@ -4312,9 +4312,9 @@ Ova postavka vrijedi samo za alatnu traku. Bez obzira što ste odabrali, svi ala
 'Disabled': On-View-Parameters are completely disabled.
 'Only dimensional': Only dimensional On-View-Parameters are visible. They are the most useful. For example the radius of a circle.
 'All': Both dimensional and positional On-View-Parameters. Positionals are the (x,y) position of the cursor. For example for the center of a circle.</source>
-      <translation>Odaberite način vidljivosti za parametre Na pogledu: 
-'Onemogućeno': parametri Na pogledu su potpuno onemogućeni. 
-'Samo dimenzionalni': Vidljivi su samo dimenzionalni parametri Na pogledu. Oni su najkorisniji. Na primjer, polumjer kruga. 
+      <translation>Odaberite način vidljivosti za parametre Na pogledu:
+'Onemogućeno': parametri Na pogledu su potpuno onemogućeni.
+'Samo dimenzionalni': Vidljivi su samo dimenzionalni parametri Na pogledu. Oni su najkorisniji. Na primjer, polumjer kruga.
 'Sve': Parametri Na pogledu, i dimenzionalni i položajni. Položajni su (x, y) položaj pokazivača. Na primjer, za središte kruga.</translation>
     </message>
     <message>
@@ -4712,7 +4712,7 @@ Defaults to: %N = %V
 %N - name parameter
 %V - dimension value</source>
       <translation>Format prezentacije niza dimenzijskih ograničenja.
-Zadano na: %N = %V 
+Zadano na: %N = %V
 
 %N - ime parametra
 %V - vrijednost dimenzije</translation>
@@ -4886,7 +4886,7 @@ Tada su vidljivi samo objekti iza ravnine skice.</translation>
 Click "Swap endpoints in constraints" button to reassign endpoints. Do this only once to sketches created in FreeCAD older than v0.15</source>
       <translation>%1 obrnuti lukovi su pronađeni u vanjskoj geometriji. Njihove krajnje točke su uokvirene u 3d prikazu.
 
-%2 ograničenja su povezana sa krajnjim točkama. Ograničenja su navedena u kartici Ograničenja (izbornik: Kombinirani pregled -&gt; Ograničenja). 
+%2 ograničenja su povezana sa krajnjim točkama. Ograničenja su navedena u kartici Ograničenja (izbornik: Kombinirani pregled -&gt; Ograničenja).
 
 Kliknite "Zamijeni krajnje točke u ograničenja" gumb da biste ponovo pridružili krajnje točke. Napravite to samo jedanput za skice u FreeCAD prije v0.15</translation>
     </message>
@@ -6199,7 +6199,7 @@ Eigen Sparse QR algoritam optimiziran je za rijetke matrice; obično brže</tran
     <message>
       <location filename="../../TaskSketcherSolverAdvanced.ui" line="461"/>
       <source>Same as 'Sketch size multiplier', but for redundant solving</source>
-      <translation>Isto kao i "Množitelj veličine skice", ali za rješavanje suvišnog 
+      <translation>Isto kao i "Množitelj veličine skice", ali za rješavanje suvišnog
 
 </translation>
     </message>
@@ -6943,8 +6943,8 @@ Točke moraju biti postavljene bliže od petine razdaljine rešetke kako bi se p
       <source>Constrain contextually based on your selection.
 Depending on your selection you might have several constraints available. You can cycle through them using M key.
 Left clicking on empty space will validate the current constraint. Right clicking or pressing Esc will cancel.</source>
-      <translation>Ograničite kontekstualno na temelju vašeg odabira. 
-Ovisno o vašem odabiru, možda imate nekoliko dostupnih ograničenja. Možete se kretati kroz njih pomoću tipke M. 
+      <translation>Ograničite kontekstualno na temelju vašeg odabira.
+Ovisno o vašem odabiru, možda imate nekoliko dostupnih ograničenja. Možete se kretati kroz njih pomoću tipke M.
 Kliknite lijevom tipkom miša na prazno mjesto, trenutačno ograničenje će se potvrditi. Desnim klikom miša ili pritiskom tipke Esc će se otkazati.</translation>
     </message>
   </context>

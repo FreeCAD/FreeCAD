@@ -1600,11 +1600,11 @@ You might need to increase this when using an
 iterative solver and you get the error message
 that "MAXKOI" needs to be increased.</source>
       <translation>Μέγιστες θέσεις σε τυχαίο διάνυσμα.
-(αριθμός κόμπων ανά στοιχείο επί τον 
+(αριθμός κόμπων ανά στοιχείο επί τον
 αριθμό των πεπερασμένων στοιχείων)
 
 Ίσως, χρειαστεί να το αυξήσετε όταν χρησιμοποιείτε
-έναν επαναληπτικό λύτη όταν λαμβάνετε το μήνυμα 
+έναν επαναληπτικό λύτη όταν λαμβάνετε το μήνυμα
 σφάλματος ότι πρέπει να αυξηθεί το "MAXKOI".</translation>
     </message>
     <message>
