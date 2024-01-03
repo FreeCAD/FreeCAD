@@ -583,7 +583,7 @@ Odaberite drugačiji oblik, molim.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="49"/>
       <source>Unwrap mesh</source>
-      <translation type="unfinished">Unwrap mesh</translation>
+      <translation>Razmotaj mrežu</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="52"/>
@@ -596,7 +596,7 @@ Odaberite drugačiji oblik, molim.</translation>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="88"/>
       <source>Unwrap face</source>
-      <translation type="unfinished">Unwrap face</translation>
+      <translation>Razmotaj lice</translation>
     </message>
     <message>
       <location filename="../../MeshFlatteningCommand.py" line="91"/>

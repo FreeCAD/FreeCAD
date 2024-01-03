@@ -48,7 +48,7 @@
     <message>
       <location filename="../../compact_view.py" line="88"/>
       <source>Update Available</source>
-      <translation type="unfinished">Update Available</translation>
+      <translation>Uppdatering tillgänglig</translation>
     </message>
     <message>
       <location filename="../../compact_view.ui" line="102"/>
@@ -61,12 +61,12 @@
     <message>
       <location filename="../../developer_mode_dependencies.ui" line="14"/>
       <source>Dependencies</source>
-      <translation type="unfinished">Dependencies</translation>
+      <translation>Beroenden</translation>
     </message>
     <message>
       <location filename="../../developer_mode_dependencies.ui" line="39"/>
       <source>Dependency type</source>
-      <translation type="unfinished">Dependency type</translation>
+      <translation>Beroendetyp</translation>
     </message>
     <message>
       <location filename="../../developer_mode_dependencies.ui" line="44"/>
@@ -76,7 +76,7 @@
     <message>
       <location filename="../../developer_mode_dependencies.ui" line="49"/>
       <source>Optional?</source>
-      <translation type="unfinished">Optional?</translation>
+      <translation>Valfri?</translation>
     </message>
   </context>
   <context>
@@ -85,7 +85,7 @@
       <location filename="../../dependency_resolution_dialog.ui" line="17"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="175"/>
       <source>Resolve Dependencies</source>
-      <translation type="unfinished">Resolve Dependencies</translation>
+      <translation>Lös beroenden</translation>
     </message>
     <message>
       <location filename="../../dependency_resolution_dialog.ui" line="29"/>
@@ -104,12 +104,12 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../dependency_resolution_dialog.ui" line="55"/>
       <source>Required Python modules</source>
-      <translation type="unfinished">Required Python modules</translation>
+      <translation>Obligatoriska Pythonmoduler</translation>
     </message>
     <message>
       <location filename="../../dependency_resolution_dialog.ui" line="67"/>
       <source>Optional Python modules</source>
-      <translation type="unfinished">Optional Python modules</translation>
+      <translation>Valfria Pythonmoduler</translation>
     </message>
   </context>
   <context>
@@ -128,17 +128,17 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
       <location filename="../../developer_mode.ui" line="45"/>
       <location filename="../../developer_mode.ui" line="195"/>
       <source>Browse...</source>
-      <translation type="unfinished">Browse...</translation>
+      <translation>Bläddra...</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="54"/>
       <source>Metadata</source>
-      <translation type="unfinished">Metadata</translation>
+      <translation>Metadata</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="65"/>
       <source>Primary branch</source>
-      <translation type="unfinished">Primary branch</translation>
+      <translation>Primär gren</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="77"/>
@@ -182,7 +182,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
       <location filename="../../developer_mode.ui" line="180"/>
       <location filename="../../developer_mode.ui" line="218"/>
       <source>(Optional)</source>
-      <translation type="unfinished">(Optional)</translation>
+      <translation>(Valfri)</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="139"/>
@@ -228,7 +228,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="242"/>
       <source>(Recommended)</source>
-      <translation type="unfinished">(Recommended)</translation>
+      <translation>(Rekommenderad)</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="249"/>
@@ -243,7 +243,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode.ui" line="265"/>
       <source>Detect...</source>
-      <translation type="unfinished">Detect...</translation>
+      <translation>Upptäck...</translation>
     </message>
     <message>
       <location filename="../../developer_mode.ui" line="277"/>
@@ -266,7 +266,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../AddonManager.ui" line="71"/>
       <source>Stop the cache update</source>
-      <translation type="unfinished">Stop the cache update</translation>
+      <translation>Stoppa cache-uppdateringen</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="103"/>
@@ -281,12 +281,12 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../AddonManager.ui" line="113"/>
       <source>Update all Addons</source>
-      <translation type="unfinished">Update all Addons</translation>
+      <translation>Uppdatera alla tillägg</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="120"/>
       <source>Check for updates</source>
-      <translation type="unfinished">Check for updates</translation>
+      <translation>Sök efter uppdateringar</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="130"/>
@@ -296,7 +296,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../AddonManager.ui" line="133"/>
       <source>Python dependencies...</source>
-      <translation type="unfinished">Python dependencies...</translation>
+      <translation>Pythonberoenden...</translation>
     </message>
     <message>
       <location filename="../../AddonManager.ui" line="140"/>
@@ -341,7 +341,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../first_run.ui" line="46"/>
       <source>Download Settings</source>
-      <translation type="unfinished">Download Settings</translation>
+      <translation>Nedladdningsinställningar</translation>
     </message>
     <message>
       <location filename="../../first_run.ui" line="53"/>
@@ -379,17 +379,17 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="14"/>
       <source>Edit Dependency</source>
-      <translation type="unfinished">Edit Dependency</translation>
+      <translation>Redigera beroende</translation>
     </message>
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="20"/>
       <source>Dependency Type</source>
-      <translation type="unfinished">Dependency Type</translation>
+      <translation>Beroendetyp</translation>
     </message>
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="30"/>
       <source>Dependency</source>
-      <translation type="unfinished">Dependency</translation>
+      <translation>Beroende</translation>
     </message>
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="42"/>
@@ -409,7 +409,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_edit_dependency.ui" line="72"/>
       <source>Optional</source>
-      <translation type="unfinished">Optional</translation>
+      <translation>Valfri</translation>
     </message>
   </context>
   <context>
@@ -453,7 +453,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../expanded_view.py" line="129"/>
       <source>Update Available</source>
-      <translation type="unfinished">Update Available</translation>
+      <translation>Uppdatering tillgänglig</translation>
     </message>
     <message>
       <location filename="../../expanded_view.ui" line="186"/>
@@ -466,7 +466,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_licenses_table.ui" line="38"/>
       <source>Licenses</source>
-      <translation type="unfinished">Licenses</translation>
+      <translation>Licenser</translation>
     </message>
     <message>
       <location filename="../../developer_mode_licenses_table.ui" line="69"/>
@@ -476,7 +476,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_licenses_table.ui" line="74"/>
       <source>License file</source>
-      <translation type="unfinished">License file</translation>
+      <translation>Licensfil</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people_table.ui" line="26"/>
@@ -486,7 +486,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_people_table.ui" line="57"/>
       <source>Kind</source>
-      <translation type="unfinished">Kind</translation>
+      <translation>Sort</translation>
     </message>
     <message>
       <location filename="../../developer_mode_people_table.ui" line="62"/>
@@ -514,7 +514,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
     <message>
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="43"/>
       <source>FreeCAD Version</source>
-      <translation type="unfinished">FreeCAD Version</translation>
+      <translation>FreeCAD-version</translation>
     </message>
     <message>
       <location filename="../../developer_mode_advanced_freecad_versions.ui" line="48"/>
@@ -538,7 +538,7 @@ Do you want the Addon Manager to install them automatically? Choose &quot;Ignore
       <location filename="../../developer_mode_freecad_versions.ui" line="27"/>
       <location filename="../../developer_mode_freecad_versions.ui" line="41"/>
       <source>Optional</source>
-      <translation type="unfinished">Optional</translation>
+      <translation>Valfri</translation>
     </message>
     <message>
       <location filename="../../developer_mode_freecad_versions.ui" line="34"/>
@@ -585,12 +585,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../AddonManagerOptions.ui" line="76"/>
       <source>Manual (no automatic updates)</source>
-      <translation type="unfinished">Manual (no automatic updates)</translation>
+      <translation>Manuell (inga automatiska uppdateringar)</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="81"/>
       <source>Daily</source>
-      <translation type="unfinished">Daily</translation>
+      <translation>Dagligen</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="86"/>
@@ -650,7 +650,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../AddonManagerOptions.ui" line="316"/>
       <source>Advanced Options</source>
-      <translation type="unfinished">Advanced Options</translation>
+      <translation>Avancerade alternativ</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.ui" line="322"/>
@@ -711,7 +711,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="14"/>
       <source>Manage Python Dependencies</source>
-      <translation type="unfinished">Manage Python Dependencies</translation>
+      <translation>Hantera Python-beroenden</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="20"/>
@@ -721,17 +721,17 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="59"/>
       <source>Package name</source>
-      <translation type="unfinished">Package name</translation>
+      <translation>Paketnamn</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="64"/>
       <source>Installed version</source>
-      <translation type="unfinished">Installed version</translation>
+      <translation>Installerad version</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="69"/>
       <source>Available version</source>
-      <translation type="unfinished">Available version</translation>
+      <translation>Tillgänglig version</translation>
     </message>
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="74"/>
@@ -746,7 +746,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../PythonDependencyUpdateDialog.ui" line="99"/>
       <source>Update all available</source>
-      <translation type="unfinished">Update all available</translation>
+      <translation>Uppdatera alla tillgängliga</translation>
     </message>
   </context>
   <context>
@@ -767,7 +767,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../update_all.ui" line="14"/>
       <source>Updating Addons</source>
-      <translation type="unfinished">Updating Addons</translation>
+      <translation>Uppdaterar tillägg</translation>
     </message>
     <message>
       <location filename="../../update_all.ui" line="23"/>
@@ -827,7 +827,7 @@ installed addons will be checked for available updates
       <location filename="../../developer_mode_add_content.ui" line="161"/>
       <location filename="../../developer_mode_add_content.ui" line="193"/>
       <source>Browse...</source>
-      <translation type="unfinished">Browse...</translation>
+      <translation>Bläddra...</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="111"/>
@@ -847,7 +847,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="145"/>
       <source>Subdirectory</source>
-      <translation type="unfinished">Subdirectory</translation>
+      <translation>Underkatalog</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="154"/>
@@ -872,7 +872,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="213"/>
       <source>Dependencies...</source>
-      <translation type="unfinished">Dependencies...</translation>
+      <translation>Beroenden...</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="220"/>
@@ -882,7 +882,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_add_content.ui" line="258"/>
       <source>Other Metadata</source>
-      <translation type="unfinished">Other Metadata</translation>
+      <translation>Annan metadata</translation>
     </message>
     <message>
       <location filename="../../developer_mode_add_content.ui" line="264"/>
@@ -925,7 +925,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../add_toolbar_button_dialog.ui" line="14"/>
       <source>Add button?</source>
-      <translation type="unfinished">Add button?</translation>
+      <translation>Lägg till knapp?</translation>
     </message>
     <message>
       <location filename="../../add_toolbar_button_dialog.ui" line="20"/>
@@ -966,17 +966,17 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_copyright_info.ui" line="14"/>
       <source>Copyright Information</source>
-      <translation type="unfinished">Copyright Information</translation>
+      <translation>Upphovsrättsinformation</translation>
     </message>
     <message>
       <location filename="../../developer_mode_copyright_info.ui" line="22"/>
       <source>Copyright holder:</source>
-      <translation type="unfinished">Copyright holder:</translation>
+      <translation>Upphovsrättsinnehavare:</translation>
     </message>
     <message>
       <location filename="../../developer_mode_copyright_info.ui" line="32"/>
       <source>Copyright year:</source>
-      <translation type="unfinished">Copyright year:</translation>
+      <translation>Upphovsrättsår:</translation>
     </message>
   </context>
   <context>
@@ -1042,12 +1042,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../proxy_authentication.ui" line="67"/>
       <source>Username</source>
-      <translation type="unfinished">Username</translation>
+      <translation>Användarnamn</translation>
     </message>
     <message>
       <location filename="../../proxy_authentication.ui" line="77"/>
       <source>Password</source>
-      <translation type="unfinished">Password</translation>
+      <translation>Lösenord</translation>
     </message>
   </context>
   <context>
@@ -1055,7 +1055,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_license.ui" line="14"/>
       <source>Select a license</source>
-      <translation type="unfinished">Select a license</translation>
+      <translation>Välj en licens</translation>
     </message>
     <message>
       <location filename="../../developer_mode_license.ui" line="35"/>
@@ -1065,12 +1065,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_license.ui" line="46"/>
       <source>License name:</source>
-      <translation type="unfinished">License name:</translation>
+      <translation>Licensnamn:</translation>
     </message>
     <message>
       <location filename="../../developer_mode_license.ui" line="60"/>
       <source>Path to license file:</source>
-      <translation type="unfinished">Path to license file:</translation>
+      <translation>Sökväg till licensfil:</translation>
     </message>
     <message>
       <location filename="../../developer_mode_license.ui" line="67"/>
@@ -1080,12 +1080,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../developer_mode_license.ui" line="74"/>
       <source>Browse...</source>
-      <translation type="unfinished">Browse...</translation>
+      <translation>Bläddra...</translation>
     </message>
     <message>
       <location filename="../../developer_mode_license.ui" line="81"/>
       <source>Create...</source>
-      <translation type="unfinished">Create...</translation>
+      <translation>Skapa...</translation>
     </message>
   </context>
   <context>
@@ -1106,7 +1106,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../select_toolbar_dialog.ui" line="36"/>
       <source>Ask every time</source>
-      <translation type="unfinished">Ask every time</translation>
+      <translation>Fråga varje gång</translation>
     </message>
   </context>
   <context>
@@ -1115,7 +1115,7 @@ installed addons will be checked for available updates
       <location filename="../../toolbar_button.ui" line="14"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="486"/>
       <source>Add button?</source>
-      <translation type="unfinished">Add button?</translation>
+      <translation>Lägg till knapp?</translation>
     </message>
     <message>
       <location filename="../../toolbar_button.ui" line="20"/>
@@ -1143,12 +1143,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../AddonManager.py" line="228"/>
       <source>Starting up...</source>
-      <translation type="unfinished">Starting up...</translation>
+      <translation>Startar upp...</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="267"/>
       <source>Loading addon information</source>
-      <translation type="unfinished">Loading addon information</translation>
+      <translation>Laddar tilläggsinformation</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="293"/>
@@ -1172,7 +1172,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../AddonManager.py" line="348"/>
       <source>Addon manager</source>
-      <translation type="unfinished">Addon manager</translation>
+      <translation>Tilläggshanterare</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="355"/>
@@ -1182,12 +1182,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../AddonManager.py" line="361"/>
       <source>Restart now</source>
-      <translation type="unfinished">Restart now</translation>
+      <translation>Starta om nu</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="362"/>
       <source>Restart later</source>
-      <translation type="unfinished">Restart later</translation>
+      <translation>Starta om senare</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="427"/>
@@ -1198,7 +1198,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../AddonManager.py" line="555"/>
       <source>Updating cache...</source>
-      <translation type="unfinished">Updating cache...</translation>
+      <translation>Uppdaterar cache...</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="589"/>
@@ -1211,7 +1211,7 @@ installed addons will be checked for available updates
       <location filename="../../AddonManager.py" line="617"/>
       <location filename="../../AddonManager.py" line="650"/>
       <source>Checking for updates...</source>
-      <translation type="unfinished">Checking for updates...</translation>
+      <translation>Söker efter uppdateringar...</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="645"/>
@@ -1221,7 +1221,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../AddonManager.py" line="654"/>
       <source>No updates available</source>
-      <translation type="unfinished">No updates available</translation>
+      <translation>Inga uppdateringar tillgängliga</translation>
     </message>
     <message>
       <location filename="../../AddonManager.py" line="787"/>
@@ -1236,18 +1236,18 @@ installed addons will be checked for available updates
       <translation type="unfinished">Execution of macro failed. See console for failure details.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode_people_table.py" line="86"/>
       <location filename="../../addonmanager_devmode.py" line="115"/>
-      <location filename="../../package_list.py" line="386"/>
+      <location filename="../../addonmanager_devmode_people_table.py" line="86"/>
       <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
+      <location filename="../../package_list.py" line="386"/>
       <source>Maintainer</source>
       <translation type="unfinished">Maintainer</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode_people_table.py" line="87"/>
       <location filename="../../addonmanager_devmode.py" line="116"/>
-      <location filename="../../package_list.py" line="423"/>
+      <location filename="../../addonmanager_devmode_people_table.py" line="87"/>
       <location filename="../../addonmanager_devmode_person_editor.py" line="49"/>
+      <location filename="../../package_list.py" line="423"/>
       <source>Author</source>
       <translation>Upphovsman</translation>
     </message>
@@ -1275,7 +1275,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../manage_python_dependencies.py" line="340"/>
       <source>Updating...</source>
-      <translation type="unfinished">Updating...</translation>
+      <translation>Uppdaterar...</translation>
     </message>
     <message>
       <location filename="../../NetworkManager.py" line="96"/>
@@ -1312,7 +1312,7 @@ installed addons will be checked for available updates
       <location filename="../../AddonManagerTest/gui/test_uninstaller_gui.py" line="61"/>
       <location filename="../../AddonManagerTest/gui/test_uninstaller_gui.py" line="71"/>
       <source>Confirm remove</source>
-      <translation type="unfinished">Confirm remove</translation>
+      <translation>Bekräfta borttagning</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="80"/>
@@ -1329,19 +1329,19 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="91"/>
       <source>Removing {}</source>
-      <translation type="unfinished">Removing {}</translation>
+      <translation>Tar bort {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="114"/>
       <location filename="../../AddonManagerTest/gui/test_uninstaller_gui.py" line="109"/>
       <source>Uninstall complete</source>
-      <translation type="unfinished">Uninstall complete</translation>
+      <translation>Avinstallation slutförd</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="126"/>
       <location filename="../../AddonManagerTest/gui/test_uninstaller_gui.py" line="118"/>
       <source>Uninstall failed</source>
-      <translation type="unfinished">Uninstall failed</translation>
+      <translation>Avinstallation misslyckades</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="63"/>
@@ -1361,7 +1361,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_details.py" line="188"/>
       <source>Installed on {date}</source>
-      <translation type="unfinished">Installed on {date}</translation>
+      <translation>Installerad den {date}</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="191"/>
@@ -1369,7 +1369,7 @@ installed addons will be checked for available updates
       <location filename="../../package_list.py" line="483"/>
       <location filename="../../package_list.py" line="770"/>
       <source>Installed</source>
-      <translation type="unfinished">Installed</translation>
+      <translation>Installerad</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="200"/>
@@ -1379,12 +1379,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_details.py" line="207"/>
       <source>Update available to version</source>
-      <translation type="unfinished">Update available to version</translation>
+      <translation>Uppdatering tillgänglig till version</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="218"/>
       <source>An update is available</source>
-      <translation type="unfinished">An update is available</translation>
+      <translation>En uppdatering är tillgänglig</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="236"/>
@@ -1414,7 +1414,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_details.py" line="278"/>
       <source>Installation location</source>
-      <translation type="unfinished">Installation location</translation>
+      <translation>Installationsplats</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="323"/>
@@ -1463,8 +1463,8 @@ installed addons will be checked for available updates
       <translation type="unfinished">QtWebEngine Python bindings not installed -- using fallback README display.</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="644"/>
       <location filename="../../addonmanager_installer_gui.py" line="476"/>
+      <location filename="../../package_details.py" line="644"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="54"/>
       <source>Success</source>
       <translation type="unfinished">Success</translation>
@@ -1497,7 +1497,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_details.py" line="875"/>
       <source>Check for Update</source>
-      <translation type="unfinished">Check for Update</translation>
+      <translation>Sök efter uppdateringar</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="878"/>
@@ -1507,7 +1507,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_details.py" line="881"/>
       <source>Change Branch</source>
-      <translation type="unfinished">Change Branch</translation>
+      <translation>Ändra gren</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="884"/>
@@ -1522,7 +1522,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_details.py" line="890"/>
       <source>Return to package list</source>
-      <translation type="unfinished">Return to package list</translation>
+      <translation>Tillbaka till paketlistan</translation>
     </message>
     <message>
       <location filename="../../package_details.py" line="907"/>
@@ -1532,7 +1532,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_connection_checker.py" line="68"/>
       <source>Checking connection</source>
-      <translation type="unfinished">Checking connection</translation>
+      <translation>Kontrollerar anslutning</translation>
     </message>
     <message>
       <location filename="../../addonmanager_connection_checker.py" line="69"/>
@@ -1542,7 +1542,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_connection_checker.py" line="93"/>
       <source>Connection failed</source>
-      <translation type="unfinished">Connection failed</translation>
+      <translation>Anslutningen misslyckades</translation>
     </message>
     <message>
       <location filename="../../addonmanager_connection_checker.py" line="99"/>
@@ -1558,7 +1558,7 @@ installed addons will be checked for available updates
       <location filename="../../addonmanager_devmode_license_selector.py" line="114"/>
       <source>Other...</source>
       <comment>For providing a license other than one listed</comment>
-      <translation type="unfinished">Other...</translation>
+      <translation>Annat...</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_license_selector.py" line="204"/>
@@ -1568,7 +1568,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_devmode_license_selector.py" line="237"/>
       <source>Location for new license file</source>
-      <translation type="unfinished">Location for new license file</translation>
+      <translation>Plats för ny licensfil</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer.py" line="348"/>
@@ -1578,7 +1578,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_installer.py" line="497"/>
       <source>Failed to install macro {}</source>
-      <translation type="unfinished">Failed to install macro {}</translation>
+      <translation>Det gick inte att installera makro {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="127"/>
@@ -1596,9 +1596,9 @@ installed addons will be checked for available updates
       <translation type="unfinished">Select an icon file for this content item</translation>
     </message>
     <message>
+      <location filename="../../addonmanager_devmode.py" line="692"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="274"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="313"/>
-      <location filename="../../addonmanager_devmode.py" line="692"/>
       <source>{} is not a subdirectory of {}</source>
       <translation type="unfinished">{} is not a subdirectory of {}</translation>
     </message>
@@ -1620,12 +1620,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="429"/>
       <source>Addon</source>
-      <translation type="unfinished">Addon</translation>
+      <translation>Tillägg</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="430"/>
       <source>Python</source>
-      <translation type="unfinished">Python</translation>
+      <translation>Python</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="440"/>
@@ -1635,12 +1635,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="494"/>
       <source>Internal Workbench</source>
-      <translation type="unfinished">Internal Workbench</translation>
+      <translation>Intern arbetsbänk</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="496"/>
       <source>External Addon</source>
-      <translation type="unfinished">External Addon</translation>
+      <translation>Externt tillägg</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode_add_content.py" line="497"/>
@@ -1651,7 +1651,7 @@ installed addons will be checked for available updates
       <location filename="../../addonmanager_devmode_add_content.py" line="559"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="570"/>
       <source>Other...</source>
-      <translation type="unfinished">Other...</translation>
+      <translation>Annat...</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="153"/>
@@ -1661,7 +1661,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="159"/>
       <source>Too many to list</source>
-      <translation type="unfinished">Too many to list</translation>
+      <translation>För många för att lista</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="164"/>
@@ -1671,7 +1671,7 @@ installed addons will be checked for available updates
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="148"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="159"/>
       <source>Missing Requirement</source>
-      <translation type="unfinished">Missing Requirement</translation>
+      <translation>Krav ej uppfyllda</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="184"/>
@@ -1708,13 +1708,13 @@ installed addons will be checked for available updates
       <location filename="../../addonmanager_installer_gui.py" line="314"/>
       <location filename="../../addonmanager_installer_gui.py" line="315"/>
       <source>Installing dependencies</source>
-      <translation type="unfinished">Installing dependencies</translation>
+      <translation>Installerar beroenden</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="340"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="76"/>
       <source>Cannot execute Python</source>
-      <translation type="unfinished">Cannot execute Python</translation>
+      <translation>Kan inte köra Python</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="345"/>
@@ -1767,7 +1767,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="450"/>
       <source>Cancelling</source>
-      <translation type="unfinished">Cancelling</translation>
+      <translation>Avbryter</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="451"/>
@@ -1783,12 +1783,12 @@ installed addons will be checked for available updates
       <location filename="../../addonmanager_installer_gui.py" line="489"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="64"/>
       <source>Installation Failed</source>
-      <translation type="unfinished">Installation Failed</translation>
+      <translation>Installationen misslyckades</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="490"/>
       <source>Failed to install {}</source>
-      <translation type="unfinished">Failed to install {}</translation>
+      <translation>Det gick inte att installera {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="607"/>
@@ -1800,7 +1800,7 @@ installed addons will be checked for available updates
       <location filename="../../addonmanager_installer_gui.py" line="733"/>
       <location filename="../../install_to_toolbar.py" line="231"/>
       <source>A macro installed with the FreeCAD Addon Manager</source>
-      <translation type="unfinished">A macro installed with the FreeCAD Addon Manager</translation>
+      <translation>Ett makro installerat med FreeCAD Addon Manager</translation>
     </message>
     <message>
       <location filename="../../addonmanager_installer_gui.py" line="735"/>
@@ -1822,7 +1822,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_devmode.py" line="199"/>
       <source>Invalid metadata in file {}</source>
-      <translation type="unfinished">Invalid metadata in file {}</translation>
+      <translation>Ogiltig metadata i fil {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="241"/>
@@ -1847,7 +1847,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_devmode.py" line="272"/>
       <source>Subdirectory</source>
-      <translation type="unfinished">Subdirectory</translation>
+      <translation>Underkatalog</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="275"/>
@@ -1883,7 +1883,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_devmode.py" line="610"/>
       <source>Install Vermin?</source>
-      <translation type="unfinished">Install Vermin?</translation>
+      <translation>Installera Vermin?</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="614"/>
@@ -1899,7 +1899,7 @@ installed addons will be checked for available updates
       <location filename="../../addonmanager_devmode.py" line="645"/>
       <location filename="../../addonmanager_devmode.py" line="660"/>
       <source>Installation failed</source>
-      <translation type="unfinished">Installation failed</translation>
+      <translation>Installationen misslyckades</translation>
     </message>
     <message>
       <location filename="../../addonmanager_devmode.py" line="650"/>
@@ -1916,12 +1916,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_devmode.py" line="678"/>
       <source>Select an icon file for this package</source>
-      <translation type="unfinished">Select an icon file for this package</translation>
+      <translation>Välj en ikonfil för detta paket</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="163"/>
       <source>Filter is valid</source>
-      <translation type="unfinished">Filter is valid</translation>
+      <translation>Filtret är giltigt</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="169"/>
@@ -1956,7 +1956,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_list.py" line="416"/>
       <source>updated</source>
-      <translation type="unfinished">updated</translation>
+      <translation>uppdaterad</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="437"/>
@@ -1969,44 +1969,44 @@ installed addons will be checked for available updates
       <location filename="../../package_list.py" line="491"/>
       <location filename="../../package_list.py" line="778"/>
       <source>Update available</source>
-      <translation type="unfinished">Update available</translation>
+      <translation>Uppdatering tillgänglig</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="442"/>
       <location filename="../../package_list.py" line="497"/>
       <source>Pending restart</source>
-      <translation type="unfinished">Pending restart</translation>
+      <translation>Väntande omstart</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="444"/>
       <location filename="../../package_list.py" line="500"/>
       <source>DISABLED</source>
-      <translation type="unfinished">DISABLED</translation>
+      <translation>INAKTIVERAD</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="459"/>
       <source>Installed version</source>
-      <translation type="unfinished">Installed version</translation>
+      <translation>Installerad version</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="465"/>
       <source>Unknown version</source>
-      <translation type="unfinished">Unknown version</translation>
+      <translation>Okänd version</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="467"/>
       <source>Installed on</source>
-      <translation type="unfinished">Installed on</translation>
+      <translation>Installerad den</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="477"/>
       <source>Available version</source>
-      <translation type="unfinished">Available version</translation>
+      <translation>Tillgänglig version</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="747"/>
       <source>Show Addons containing:</source>
-      <translation type="unfinished">Show Addons containing:</translation>
+      <translation>Visa tillägg som innehåller:</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="750"/>
@@ -2041,7 +2041,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../package_list.py" line="774"/>
       <source>Not installed</source>
-      <translation type="unfinished">Not installed</translation>
+      <translation>Inte installerad</translation>
     </message>
     <message>
       <location filename="../../package_list.py" line="782"/>
@@ -2066,7 +2066,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../change_branch.py" line="107"/>
       <source>There are local changes</source>
-      <translation type="unfinished">There are local changes</translation>
+      <translation>Det finns lokala ändringar</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="111"/>
@@ -2091,13 +2091,13 @@ installed addons will be checked for available updates
       <location filename="../../change_branch.py" line="254"/>
       <source>Kind</source>
       <comment>Table header for git ref type (e.g. either Tag or Branch)</comment>
-      <translation type="unfinished">Kind</translation>
+      <translation>Sort</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="256"/>
       <source>Local name</source>
       <comment>Table header for git ref name</comment>
-      <translation type="unfinished">Local name</translation>
+      <translation>Lokalt namn</translation>
     </message>
     <message>
       <location filename="../../change_branch.py" line="262"/>
@@ -2175,7 +2175,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_macro.py" line="161"/>
       <source>Unable to fetch the code of this macro.</source>
-      <translation type="unfinished">Unable to fetch the code of this macro.</translation>
+      <translation>Kan inte hämta koden för detta makro.</translation>
     </message>
     <message>
       <location filename="../../addonmanager_macro.py" line="176"/>
@@ -2221,7 +2221,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_uninstaller.py" line="104"/>
       <source>An unknown error occurred</source>
-      <translation type="unfinished">An unknown error occurred</translation>
+      <translation>Ett okänt fel har uppstått</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller.py" line="127"/>
@@ -2236,17 +2236,17 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_uninstaller.py" line="170"/>
       <source>Removed extra installed file {}</source>
-      <translation type="unfinished">Removed extra installed file {}</translation>
+      <translation>Tog bort extra installerad fil {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller.py" line="184"/>
       <source>Error while trying to remove extra installed file {}</source>
-      <translation type="unfinished">Error while trying to remove extra installed file {}</translation>
+      <translation>Fel vid försök att ta bort extra installerad fil {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller.py" line="245"/>
       <source>Error while trying to remove macro file {}: </source>
-      <translation type="unfinished">Error while trying to remove macro file {}: </translation>
+      <translation>Fel vid försök att ta bort makrofil {}: </translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="121"/>
@@ -2323,7 +2323,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="727"/>
       <source>Caching macro code...</source>
-      <translation type="unfinished">Caching macro code...</translation>
+      <translation>Cachar makrokod...</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="750"/>
@@ -2343,7 +2343,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="826"/>
       <source>Getting metadata from macro {}</source>
-      <translation type="unfinished">Getting metadata from macro {}</translation>
+      <translation>Hämtar metadata från makro {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="840"/>
@@ -2360,17 +2360,17 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="872"/>
       <source>Retrieving macro description...</source>
-      <translation type="unfinished">Retrieving macro description...</translation>
+      <translation>Hämtar makrobeskrivning...</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="874"/>
       <source>Retrieving info from git</source>
-      <translation type="unfinished">Retrieving info from git</translation>
+      <translation>Hämtar information från git</translation>
     </message>
     <message>
       <location filename="../../addonmanager_workers_startup.py" line="877"/>
       <source>Retrieving info from wiki</source>
-      <translation type="unfinished">Retrieving info from wiki</translation>
+      <translation>Hämtar information från wiki</translation>
     </message>
     <message>
       <location filename="../../AddonManagerOptions.py" line="262"/>
@@ -2402,7 +2402,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="74"/>
       <source>Installing</source>
-      <translation type="unfinished">Installing</translation>
+      <translation>Installerar</translation>
     </message>
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="77"/>
@@ -2412,17 +2412,17 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="79"/>
       <source>Failed</source>
-      <translation type="unfinished">Failed</translation>
+      <translation>Misslyckades</translation>
     </message>
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="199"/>
       <source>Update was cancelled</source>
-      <translation type="unfinished">Update was cancelled</translation>
+      <translation>Uppdateringen avbröts</translation>
     </message>
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="200"/>
       <source>some addons may have been updated</source>
-      <translation type="unfinished">some addons may have been updated</translation>
+      <translation>vissa tillägg kan ha uppdaterats</translation>
     </message>
   </context>
   <context>
@@ -2443,12 +2443,12 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="115"/>
       <source>Finished removing {}</source>
-      <translation type="unfinished">Finished removing {}</translation>
+      <translation>Tog bort {}</translation>
     </message>
     <message>
       <location filename="../../addonmanager_uninstaller_gui.py" line="127"/>
       <source>Failed to remove some files</source>
-      <translation type="unfinished">Failed to remove some files</translation>
+      <translation>Det gick inte att ta bort några filer</translation>
     </message>
   </context>
   <context>
@@ -2456,7 +2456,7 @@ installed addons will be checked for available updates
     <message>
       <location filename="../../addonmanager_update_all_gui.py" line="193"/>
       <source>Finished updating the following addons</source>
-      <translation type="unfinished">Finished updating the following addons</translation>
+      <translation>Uppdatering av följande tillägg slutfördes</translation>
     </message>
   </context>
   <context>

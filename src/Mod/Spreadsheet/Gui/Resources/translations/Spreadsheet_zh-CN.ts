@@ -463,12 +463,12 @@ Useful to avoid cyclic dependencies, but use with caution!</translation>
     <message>
       <location filename="../../DlgBindSheet.ui" line="131"/>
       <source>Hide dependency of binding</source>
-      <translation type="unfinished">Hide dependency of binding</translation>
+      <translation>隐藏绑定的依赖关系</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="140"/>
       <source>Unbind</source>
-      <translation type="unfinished">Unbind</translation>
+      <translation>取消绑定</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="147"/>
@@ -486,12 +486,12 @@ Useful to avoid cyclic dependencies, but use with caution!</translation>
     <message>
       <location filename="../../DlgSheetConf.ui" line="14"/>
       <source>Setup Configuration Table</source>
-      <translation type="unfinished">Setup Configuration Table</translation>
+      <translation>设置配置表</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="20"/>
       <source>Cell range:</source>
-      <translation type="unfinished">Cell range:</translation>
+      <translation>单元格范围</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="27"/>
@@ -538,7 +538,7 @@ by that property.
     <message>
       <location filename="../../DlgSheetConf.ui" line="57"/>
       <source>Property:</source>
-      <translation type="unfinished">Property:</translation>
+      <translation>属性:</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="64"/>
@@ -550,7 +550,7 @@ switch the design configuration. The property will be created if not exist.</tra
     <message>
       <location filename="../../DlgSheetConf.ui" line="72"/>
       <source>Group:</source>
-      <translation type="unfinished">Group:</translation>
+      <translation>分组:</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="79"/>
@@ -560,7 +560,7 @@ switch the design configuration. The property will be created if not exist.</tra
     <message>
       <location filename="../../DlgSheetConf.ui" line="88"/>
       <source>Unsetup</source>
-      <translation type="unfinished">Unsetup</translation>
+      <translation>取消设置</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="95"/>
@@ -881,7 +881,7 @@ Spreadsheet.my_alias_name代替Spreadsheet.B1</translation>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="226"/>
       <source>Bind cells</source>
-      <translation type="unfinished">Bind cells</translation>
+      <translation>绑定单元格：</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="227"/>
@@ -901,13 +901,13 @@ Do you want to continue?</translation>
       <location filename="../../DlgBindSheet.cpp" line="276"/>
       <source>Error:
 </source>
-      <translation type="unfinished">Error:
+      <translation>错误：
 </translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.cpp" line="303"/>
       <source>Unbind cells</source>
-      <translation type="unfinished">Unbind cells</translation>
+      <translation>取消绑定单元格</translation>
     </message>
   </context>
   <context>
@@ -991,12 +991,12 @@ Defaults to: %V = %A
     <message>
       <location filename="../../DlgSheetConf.cpp" line="283"/>
       <source>Setup configuration table</source>
-      <translation type="unfinished">Setup configuration table</translation>
+      <translation>设置配置表</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.cpp" line="341"/>
       <source>Unsetup configuration table</source>
-      <translation type="unfinished">Unsetup configuration table</translation>
+      <translation>取消配置表格</translation>
     </message>
   </context>
   <context>
@@ -1073,13 +1073,13 @@ Defaults to: %V = %A
       <location filename="../../SheetTableView.cpp" line="193"/>
       <location filename="../../SheetTableView.cpp" line="665"/>
       <source>Bind...</source>
-      <translation type="unfinished">Bind...</translation>
+      <translation>绑定...</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="197"/>
       <location filename="../../SheetTableView.cpp" line="658"/>
       <source>Configuration table...</source>
-      <translation type="unfinished">Configuration table...</translation>
+      <translation>配置表...</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="205"/>
@@ -1151,7 +1151,7 @@ Defaults to: %V = %A
     <message>
       <location filename="../../Workbench.cpp" line="53"/>
       <source>&amp;Styles</source>
-      <translation type="unfinished">&amp;Styles</translation>
+      <translation>样式(&amp;S)</translation>
     </message>
   </context>
   <context>

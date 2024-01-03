@@ -188,8 +188,8 @@
       <translation>Ubicación</translation>
     </message>
     <message>
-      <location filename="../Transform.cpp" line="101"/>
       <location filename="../TaskCSysDragger.cpp" line="75"/>
+      <location filename="../Transform.cpp" line="101"/>
       <location filename="../ViewProviderAnnotation.cpp" line="426"/>
       <source>Transform</source>
       <translation>Transformar</translation>
@@ -2558,12 +2558,12 @@ Especifique otro directorio, por favor.</translation>
     <message>
       <location filename="../DlgProjectInformation.ui" line="142"/>
       <source>Unit System:</source>
-      <translation type="unfinished">Unit System:</translation>
+      <translation>Sistema de unidades:</translation>
     </message>
     <message>
       <location filename="../DlgProjectInformation.ui" line="152"/>
       <source>Unit system for this file</source>
-      <translation type="unfinished">Unit system for this file</translation>
+      <translation>Sistema de unidades para este archivo</translation>
     </message>
     <message>
       <location filename="../DlgProjectInformation.ui" line="159"/>
@@ -4258,17 +4258,17 @@ El valor es el diámetro de la esfera que cabe en la pantalla.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="695"/>
       <source>Animations</source>
-      <translation type="unfinished">Animations</translation>
+      <translation>Animaciones</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="761"/>
       <source>Enable spinning animations that are used in some navigation styles after dragging</source>
-      <translation type="unfinished">Enable spinning animations that are used in some navigation styles after dragging</translation>
+      <translation>Habilita las animaciones giratorias que se utilizan en algunos estilos de navegación después de arrastrar</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="764"/>
       <source>Enable spinning animations</source>
-      <translation type="unfinished">Enable spinning animations</translation>
+      <translation>Activar animaciones giratorias</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="704"/>
@@ -6097,15 +6097,15 @@ Desea guardar los cambios?</translation>
       <translation>Formato PDF</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="448"/>
       <location filename="../CommandDoc.cpp" line="617"/>
+      <location filename="../GraphvizView.cpp" line="448"/>
       <source>Graphviz format</source>
       <translation>Formato Graphviz</translation>
     </message>
     <message>
+      <location filename="../CommandDoc.cpp" line="618"/>
       <location filename="../GraphvizView.cpp" line="462"/>
       <location filename="../GraphvizView.cpp" line="550"/>
-      <location filename="../CommandDoc.cpp" line="618"/>
       <source>Export graph</source>
       <translation>Exportar gráfico</translation>
     </message>
@@ -6317,7 +6317,7 @@ Desea guardar los cambios?</translation>
     <message>
       <location filename="../MainWindow.cpp" line="1938"/>
       <source>Please do not use it in a production environment.</source>
-      <translation>No se utilice en entornos de producción.</translation>
+      <translation>Por favor, no utilizar en un entorno de producción.</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="2142"/>
@@ -8031,15 +8031,15 @@ Do you want to specify another directory?</source>
       <translation>Exportando a PDF...</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="833"/>
       <location filename="../CommandDoc.cpp" line="1230"/>
+      <location filename="../MainWindow.cpp" line="833"/>
       <source>Unsaved document</source>
       <translation>Documento sin guardar</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1231"/>
       <source>The exported object contains external link. Please save the documentat least once before exporting.</source>
-      <translation>El objeto exportado contiene un enlace externo. Por favor, guarde el documento al menos una vez antes de exportar.</translation>
+      <translation>El objeto exportado contiene un vínculo externo. Por favor, guarde el documento al menos una vez antes de exportar.</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1432"/>
@@ -8301,7 +8301,7 @@ Desea continuar?</translation>
     <message>
       <location filename="../NotificationArea.cpp" line="431"/>
       <source> (%1 times)</source>
-      <translation type="unfinished"> (%1 times)</translation>
+      <translation> (%1 veces)</translation>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="664"/>
@@ -8905,8 +8905,8 @@ la copia actual se perderá.
       <translation>Alternar superposición</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="2180"/>
       <location filename="../OverlayManager.cpp" line="1036"/>
+      <location filename="../OverlayWidgets.cpp" line="2180"/>
       <source>Toggle floating window</source>
       <translation>Alternar ventana flotante</translation>
     </message>
@@ -10013,7 +10013,7 @@ la copia actual se perderá.
     <message>
       <location filename="../CommandDoc.cpp" line="534"/>
       <source>%1 document (*.FCStd)</source>
-      <translation>Documento %1 (*.FCStd)</translation>
+      <translation>%1 documento (*.FCStd)</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="543"/>
@@ -10035,8 +10035,8 @@ la copia actual se perderá.
       <translation>Crea un documento vacío nuevo</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2339"/>
       <location filename="../DocumentRecovery.cpp" line="391"/>
+      <location filename="../MainWindow.cpp" line="2339"/>
       <source>Unnamed</source>
       <translation>Sin nombre</translation>
     </message>
@@ -10295,13 +10295,13 @@ Está pensado para organizar objetos que tienen una parte de TopoShape, como pri
     <message>
       <location filename="../CommandStd.cpp" line="718"/>
       <source>Report a bug</source>
-      <translation>Informar un error</translation>
+      <translation>Informar de un error</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="719"/>
       <location filename="../CommandStd.cpp" line="721"/>
       <source>Report a bug or suggest a feature</source>
-      <translation>Informar un error o sugerir una nueva función</translation>
+      <translation>Informar de un error o sugerir una nueva característica</translation>
     </message>
   </context>
   <context>
@@ -11833,7 +11833,7 @@ Por favor, compruebe la Vista de Reportes para más detalles.
     <message>
       <location filename="../Workbench.cpp" line="557"/>
       <source>Link actions</source>
-      <translation>Enlazar acciones</translation>
+      <translation>Acciones de vínculos</translation>
     </message>
   </context>
   <context>
@@ -12125,7 +12125,7 @@ after FreeCAD launches</source>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="76"/>
       <source>Reverse direction</source>
-      <translation>Dirección inversa</translation>
+      <translation>Invertir dirección</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="83"/>
@@ -12645,12 +12645,12 @@ after FreeCAD launches</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="55"/>
       <source>Default Unit system:</source>
-      <translation type="unfinished">Default Unit system:</translation>
+      <translation>Sistema de Unidad por defecto:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="96"/>
       <source>Ignore project unit system and use default</source>
-      <translation type="unfinished">Ignore project unit system and use default</translation>
+      <translation>Ignorar el sistema de unidades de proyecto y utilizar por defecto</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="103"/>
@@ -13608,13 +13608,13 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../CommandWindow.cpp" line="352"/>
       <source>Lock toolbars</source>
-      <translation type="unfinished">Lock toolbars</translation>
+      <translation>Bloquear barra de herramientas</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="353"/>
       <location filename="../CommandWindow.cpp" line="355"/>
       <source>Locks toolbar so they are no longer moveable</source>
-      <translation type="unfinished">Locks toolbar so they are no longer moveable</translation>
+      <translation>Bloquea la barra de herramientas para que ya no puedan moverse</translation>
     </message>
   </context>
 </TS>

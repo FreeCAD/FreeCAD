@@ -11,7 +11,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="44"/>
       <source>Welcome to FreeCAD</source>
-      <translation type="unfinished">Welcome to FreeCAD</translation>
+      <translation>Välkommen till FreeCAD</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="45"/>
@@ -36,27 +36,27 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="49"/>
       <source>Link to the FreeCAD blog</source>
-      <translation type="unfinished">Link to the FreeCAD blog</translation>
+      <translation>Länk till FreeCAD-bloggen</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="50"/>
       <source>New file</source>
-      <translation type="unfinished">New file</translation>
+      <translation>Ny fil</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="51"/>
       <source>Empty File</source>
-      <translation type="unfinished">Empty File</translation>
+      <translation>Tom fil</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="52"/>
       <source>Create an empty FreeCAD file</source>
-      <translation type="unfinished">Create an empty FreeCAD file</translation>
+      <translation>Skapa en tom FreeCAD-fil</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="53"/>
       <source>Open File</source>
-      <translation type="unfinished">Open File</translation>
+      <translation>Öppna fil</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="54"/>
@@ -96,7 +96,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="65"/>
       <source>Recent files</source>
-      <translation type="unfinished">Recent files</translation>
+      <translation>Senaste filer</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="66"/>
@@ -291,7 +291,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="152"/>
       <source>File path</source>
-      <translation type="unfinished">File path</translation>
+      <translation>Filsökväg</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="153"/>
@@ -602,7 +602,7 @@ By using ";;" to separate paths, you can add several folders here</translation>
     <message>
       <location filename="../../DlgStartPreferencesAdvanced.ui" line="42"/>
       <source>Custom CSS</source>
-      <translation type="unfinished">Custom CSS</translation>
+      <translation>Anpassad CSS</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferencesAdvanced.ui" line="48"/>

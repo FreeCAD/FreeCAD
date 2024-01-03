@@ -241,7 +241,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="135"/>
       <source>build</source>
-      <translation>izgradnja</translation>
+      <translation>sastav</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="136"/>
@@ -361,7 +361,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="239"/>
       <source>If this is checked, the latest posts from the FreeCAD forum will be displayed on the Activity tab</source>
-      <translation>Ako je ovo čekirano, poslednje objave sa FreeCAD foruma biće prikazane u kartici aktivnosti</translation>
+      <translation>Ako je ovo označeno, poslednje objave sa FreeCAD foruma biće prikazane u kartici aktivnosti</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="307"/>
@@ -463,7 +463,7 @@ Ako koristiš ";;" da bi razdvojio putanje, možeš dodati nekoliko fascikli</tr
     <message>
       <location filename="../../DlgStartPreferences.ui" line="627"/>
       <source>If this is checked and a style sheet is specified in General preferences, it will be used and override the colors below</source>
-      <translation>Ako je ovo čekirano i lista stilova je navedena u opštim podešavanjima, ona će se koristiti i zameniti boje ispod</translation>
+      <translation>Ako je ovo označeno i lista stilova je navedena u opštim podešavanjima, ona će se koristiti i zameniti boje ispod</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="370"/>
@@ -559,7 +559,7 @@ Ako koristiš ";;" da bi razdvojio putanje, možeš dodati nekoliko fascikli</tr
     <message>
       <location filename="../../DlgStartPreferences.ui" line="47"/>
       <source>If checked, will automatically close the Start page when FreeCAD launches</source>
-      <translation>Ako je čekirano, automatski će zatvoriti početnu stranicu kada se FreeCAD pokrene</translation>
+      <translation>Ako je označeno, automatski će zatvoriti početnu stranicu kada se FreeCAD pokrene</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="26"/>
