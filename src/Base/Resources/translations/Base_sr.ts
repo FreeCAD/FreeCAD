@@ -6,7 +6,7 @@
     <message>
       <location filename="../../UnitsApi.cpp" line="69"/>
       <source>Standard (mm, kg, s, degree)</source>
-      <translation>Стандард (mm, kg,, s, степени)</translation>
+      <translation>Cтандард (мм, кг, с, степени)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="71"/>

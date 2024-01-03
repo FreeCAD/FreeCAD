@@ -4,7 +4,7 @@
   <context>
     <name>Cmd2LineCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="651"/>
+      <location filename="../../CommandAnnotate.cpp" line="653"/>
       <source>Add Centerline between 2 Lines</source>
       <translation>在兩條線中加入中心線</translation>
     </message>
@@ -12,7 +12,7 @@
   <context>
     <name>Cmd2PointCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="655"/>
+      <location filename="../../CommandAnnotate.cpp" line="657"/>
       <source>Add Centerline between 2 Points</source>
       <translation>加入中心線在兩點間</translation>
     </message>
@@ -36,12 +36,12 @@
   <context>
     <name>CmdTechDraw2LineCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="787"/>
+      <location filename="../../CommandAnnotate.cpp" line="789"/>
       <source>TechDraw</source>
       <translation>工程製圖</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="788"/>
+      <location filename="../../CommandAnnotate.cpp" line="790"/>
       <source>Add Centerline between 2 Lines</source>
       <translation>在兩條線中加入中心線</translation>
     </message>
@@ -49,12 +49,12 @@
   <context>
     <name>CmdTechDraw2PointCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="862"/>
+      <location filename="../../CommandAnnotate.cpp" line="864"/>
       <source>TechDraw</source>
       <translation>工程製圖</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="863"/>
+      <location filename="../../CommandAnnotate.cpp" line="865"/>
       <source>Add Centerline between 2 Points</source>
       <translation>加入中心線在兩點間</translation>
     </message>
@@ -62,12 +62,12 @@
   <context>
     <name>CmdTechDraw2PointCosmeticLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="975"/>
+      <location filename="../../CommandAnnotate.cpp" line="977"/>
       <source>TechDraw</source>
       <translation>工程製圖</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="976"/>
+      <location filename="../../CommandAnnotate.cpp" line="978"/>
       <source>Add Cosmetic Line Through 2 Points</source>
       <translation>通過 2 點添加裝飾線</translation>
     </message>
@@ -75,12 +75,12 @@
   <context>
     <name>CmdTechDraw3PtAngleDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="775"/>
+      <location filename="../../CommandCreateDims.cpp" line="750"/>
       <source>TechDraw</source>
       <translation>工程製圖</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="776"/>
+      <location filename="../../CommandCreateDims.cpp" line="751"/>
       <source>Insert 3-Point Angle Dimension</source>
       <translation>插入三點角度標註</translation>
     </message>
@@ -101,12 +101,12 @@
   <context>
     <name>CmdTechDrawAngleDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="679"/>
+      <location filename="../../CommandCreateDims.cpp" line="658"/>
       <source>TechDraw</source>
       <translation>工程製圖</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="680"/>
+      <location filename="../../CommandCreateDims.cpp" line="659"/>
       <source>Insert Angle Dimension</source>
       <translation>插入角度標註</translation>
     </message>
@@ -114,12 +114,12 @@
   <context>
     <name>CmdTechDrawAnnotation</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="530"/>
+      <location filename="../../CommandAnnotate.cpp" line="532"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="531"/>
+      <location filename="../../CommandAnnotate.cpp" line="533"/>
       <source>Insert Annotation</source>
       <translation>插入註釋</translation>
     </message>
@@ -158,17 +158,17 @@
   <context>
     <name>CmdTechDrawCenterLineGroup</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="573"/>
+      <location filename="../../CommandAnnotate.cpp" line="575"/>
       <source>TechDraw</source>
       <translation>工程製圖</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="574"/>
+      <location filename="../../CommandAnnotate.cpp" line="576"/>
       <source>Insert Center Line</source>
       <translation>插入中央線</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="647"/>
+      <location filename="../../CommandAnnotate.cpp" line="649"/>
       <source>Add Centerline to Faces</source>
       <translation>添加中心線至面</translation>
     </message>
@@ -233,12 +233,12 @@
   <context>
     <name>CmdTechDrawCosmeticEraser</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1280"/>
+      <location filename="../../CommandAnnotate.cpp" line="1282"/>
       <source>TechDraw</source>
       <translation>工程製圖</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1281"/>
+      <location filename="../../CommandAnnotate.cpp" line="1283"/>
       <source>Remove Cosmetic Object</source>
       <translation>移除裝飾物件</translation>
     </message>
@@ -246,12 +246,12 @@
   <context>
     <name>CmdTechDrawCosmeticVertex</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="391"/>
+      <location filename="../../CommandAnnotate.cpp" line="393"/>
       <source>TechDraw</source>
       <translation>工程製圖</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="392"/>
+      <location filename="../../CommandAnnotate.cpp" line="394"/>
       <source>Add Cosmetic Vertex</source>
       <translation>添加裝飾頂點</translation>
     </message>
@@ -277,17 +277,17 @@
   <context>
     <name>CmdTechDrawDecorateLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1398"/>
+      <location filename="../../CommandAnnotate.cpp" line="1400"/>
       <source>TechDraw</source>
       <translation>工程製圖</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1399"/>
+      <location filename="../../CommandAnnotate.cpp" line="1401"/>
       <source>Change Appearance of Lines</source>
       <translation>改變線之外觀</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1400"/>
+      <location filename="../../CommandAnnotate.cpp" line="1402"/>
       <source>Change Appearance of selected Lines</source>
       <translation>更改選取線條的外觀</translation>
     </message>
@@ -308,12 +308,12 @@
   <context>
     <name>CmdTechDrawDiameterDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="258"/>
+      <location filename="../../CommandCreateDims.cpp" line="254"/>
       <source>TechDraw</source>
       <translation>工程製圖</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="259"/>
+      <location filename="../../CommandCreateDims.cpp" line="255"/>
       <source>Insert Diameter Dimension</source>
       <translation>插入直徑標註</translation>
     </message>
@@ -388,17 +388,17 @@
   <context>
     <name>CmdTechDrawExtendShortenLineGroup</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1675"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1610"/>
       <source>TechDraw</source>
       <translation>工程製圖</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1676"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1611"/>
       <source>Extend Line</source>
       <translation>延伸線段</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1677"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1612"/>
       <source>Extend a cosmetic line or centerline at both ends:&lt;br&gt;- Specify the delta distance (optional)&lt;br&gt;- Select a single line&lt;br&gt;- Click this tool</source>
       <translation>由兩端延伸裝飾線或是在中心線:&lt;br&gt;- 指定增量距離(可選)&lt;br&gt;- 選擇單一線段&lt;br&gt;- 點選此工具</translation>
     </message>
@@ -406,17 +406,17 @@
   <context>
     <name>CmdTechDrawExtensionAreaAnnotation</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1778"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1713"/>
       <source>TechDraw</source>
       <translation>工程製圖</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1779"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1714"/>
       <source>Calculate the area of selected faces</source>
       <translation>計算選擇面之面積</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1780"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1715"/>
       <source>Select several faces&lt;br&gt;    - click this tool</source>
       <translation>選擇數個面&lt;br&gt;    -  點選此工具</translation>
     </message>
@@ -502,17 +502,17 @@
   <context>
     <name>CmdTechDrawExtensionChamferDimensionGroup</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2048"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2052"/>
       <source>TechDraw</source>
       <translation>工程製圖</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2049"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2053"/>
       <source>Create Horizontal Chamfer Dimension</source>
       <translation>建立水平倒角標註</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2050"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2054"/>
       <source>Create a horizontal size and angle dimension for a chamfer:&lt;br&gt;- Select two vertexes&lt;br&gt;- Click this tool</source>
       <translation>建立一個倒角的水平尺寸與角度標註：&lt;br&gt;- 選擇兩個頂點&lt;br&gt;- 點擊此工具</translation>
     </message>
@@ -576,17 +576,17 @@
   <context>
     <name>CmdTechDrawExtensionCreateChainDimensionGroup</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1426"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1428"/>
       <source>TechDraw</source>
       <translation>工程製圖</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1427"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1429"/>
       <source>Create Horizontal Chain Dimensions</source>
       <translation>建立水平連續標註</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1428"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1430"/>
       <source>Create a sequence of aligned horizontal dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- Click this tool</source>
       <translation>建立一系列的對齊水平標註：&lt;br&gt;- 選擇三個或更多的點&lt;br&gt;- 點選此工具</translation>
     </message>
@@ -594,17 +594,17 @@
   <context>
     <name>CmdTechDrawExtensionCreateCoordDimensionGroup</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1787"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1791"/>
       <source>TechDraw</source>
       <translation>工程製圖</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1788"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1792"/>
       <source>Create Horizontal Coordinate Dimensions</source>
       <translation>建立水平座標標註</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1789"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1793"/>
       <source>Create multiple evenly spaced horizontal dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- Click this tool</source>
       <translation>從同一基線開始創建多個均勻間距的水平標註:&lt;br&gt;- 指定串級間距 (可選)&lt;br&gt;- 選擇三個或更多頂點&lt;br&gt;- 選擇順序中的前兩個頂點決定了基線的位置&lt;br&gt;- 點選此工具</translation>
     </message>
@@ -618,13 +618,13 @@
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1234"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1501"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1503"/>
       <source>Create Horizontal Chain Dimensions</source>
       <translation>建立水平連續標註</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1235"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1502"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1504"/>
       <source>Create a sequence of aligned horizontal dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- Click this tool</source>
       <translation>建立一系列的對齊水平標註：&lt;br&gt;- 選擇三個或更多的點&lt;br&gt;- 點選此工具</translation>
     </message>
@@ -632,19 +632,19 @@
   <context>
     <name>CmdTechDrawExtensionCreateHorizChamferDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1946"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1950"/>
       <source>TechDraw</source>
       <translation>工程製圖</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1947"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2116"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1951"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2120"/>
       <source>Create Horizontal Chamfer Dimension</source>
       <translation>建立水平倒角標註</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1948"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2117"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1952"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2121"/>
       <source>Create a horizontal size and angle dimension for a chamfer:&lt;br&gt;- Select two vertexes&lt;br&gt;- Click this tool</source>
       <translation>建立一個倒角的水平尺寸與角度標註：&lt;br&gt;- 選擇兩個頂點&lt;br&gt;- 點擊此工具</translation>
     </message>
@@ -652,19 +652,19 @@
   <context>
     <name>CmdTechDrawExtensionCreateHorizCoordDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1579"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1581"/>
       <source>TechDraw</source>
       <translation>工程製圖</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1580"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1864"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1582"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1868"/>
       <source>Create Horizontal Coordinate Dimensions</source>
       <translation>建立水平座標標註</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1581"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1865"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1583"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1869"/>
       <source>Create multiple evenly spaced horizontal dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- Click this tool</source>
       <translation>從同一基線開始創建多個均勻間距的水平標註:&lt;br&gt;- 指定串級間距 (可選)&lt;br&gt;- 選擇三個或更多頂點&lt;br&gt;- 選擇順序中的前兩個頂點決定了基線的位置&lt;br&gt;- 點選此工具</translation>
     </message>
@@ -672,17 +672,17 @@
   <context>
     <name>CmdTechDrawExtensionCreateLengthArc</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2148"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2152"/>
       <source>TechDraw</source>
       <translation>工程製圖</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2149"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2153"/>
       <source>Create Arc Length Dimension</source>
       <translation>建立弧長標註</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2150"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2154"/>
       <source>Create an arc length dimension:&lt;br&gt;- Select a single arc&lt;br&gt;- Click this tool</source>
       <translation>建立弧長尺寸:&lt;br&gt;- 選擇一弧&lt;br&gt;- 點選此工具</translation>
     </message>
@@ -690,19 +690,19 @@
   <context>
     <name>CmdTechDrawExtensionCreateObliqueChainDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1392"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1394"/>
       <source>TechDraw</source>
       <translation>工程製圖</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1393"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1515"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1395"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1517"/>
       <source>Create Oblique Chain Dimensions</source>
       <translation>建立傾斜連續標註</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1394"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1516"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1396"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1518"/>
       <source>Create a sequence of aligned oblique dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The first two vertexes define the direction&lt;br&gt;- Click this tool</source>
       <translation>建立一系列的對齊斜標註：&lt;br&gt;- 選擇三個或更多的點&lt;br&gt;前二個點定義其方向&lt;br&gt;- 點選此工具</translation>
     </message>
@@ -710,19 +710,19 @@
   <context>
     <name>CmdTechDrawExtensionCreateObliqueCoordDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1751"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1755"/>
       <source>TechDraw</source>
       <translation>工程製圖</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1752"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1882"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1756"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1886"/>
       <source>Create Oblique Coordinate Dimensions</source>
       <translation>建立斜座標標註</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1753"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1883"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1757"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1887"/>
       <source>Create multiple evenly spaced oblique dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- The first two vertexes also define the direction&lt;br&gt;- Click this tool</source>
       <translation>從同一基線開始創建多個均勻間距的傾斜尺寸:&lt;br&gt;- 指定串級間距 (可選)&lt;br&gt;- 選擇三個或更多頂點&lt;br&gt;- 選擇順序中的前兩個頂點決定了基線的位置&lt;br&gt;- 前兩個頂點也同時定義了方向&lt;br&gt;- 點選此工具</translation>
     </message>
@@ -736,13 +736,13 @@
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1301"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1508"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1510"/>
       <source>Create Vertical Chain Dimensions</source>
       <translation>建立垂直連續標註</translation>
     </message>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="1302"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1509"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1511"/>
       <source>Create a sequence of aligned vertical dimensions:&lt;br&gt;- Select three or more vertexes&lt;br&gt;- Click this tool</source>
       <translation>建立一系列的對齊垂直標註：&lt;br&gt;- 選擇三個或更多的點&lt;br&gt;- 點選此工具</translation>
     </message>
@@ -750,19 +750,19 @@
   <context>
     <name>CmdTechDrawExtensionCreateVertChamferDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2015"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2019"/>
       <source>TechDraw</source>
       <translation>工程製圖</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2016"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2123"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2020"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2127"/>
       <source>Create Vertical Chamfer Dimension</source>
       <translation>建立垂直倒角標註</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2017"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2124"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2021"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2128"/>
       <source>Create a vertical size and angle dimension for a chamfer:&lt;br&gt;- Select two vertexes&lt;br&gt;- Click this tool</source>
       <translation>建立一個倒角的垂直尺寸與角度標註：&lt;br&gt;- 選擇兩個頂點&lt;br&gt;- 點擊此工具</translation>
     </message>
@@ -770,19 +770,19 @@
   <context>
     <name>CmdTechDrawExtensionCreateVertCoordDimension</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1652"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1654"/>
       <source>TechDraw</source>
       <translation>工程製圖</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1653"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1873"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1655"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1877"/>
       <source>Create Vertical Coordinate Dimensions</source>
       <translation>建立垂直座標標註</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1654"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1874"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1656"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1878"/>
       <source>Create multiple evenly spaced vertical dimensions starting from the same baseline:&lt;br&gt;- Specify the cascade spacing (optional)&lt;br&gt;- Select three or more vertexes&lt;br&gt;- The selection order of the first two vertexes determines the position of the baseline&lt;br&gt;- Click this tool</source>
       <translation>從同一基線開始創建多個均勻間距的垂直標註:&lt;br&gt;- 指定串級間距 (可選)&lt;br&gt;- 選擇三個或更多頂點&lt;br&gt;- 選擇順序中的前兩個頂點決定了基線的位置&lt;br&gt;- 點選此工具</translation>
     </message>
@@ -790,17 +790,17 @@
   <context>
     <name>CmdTechDrawExtensionCustomizeFormat</name>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2226"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2232"/>
       <source>TechDraw</source>
       <translation>工程製圖</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2227"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2233"/>
       <source>Customize Format Label</source>
       <translation>自訂格式標籤</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2228"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2234"/>
       <source>Select a dimension or a balloon&lt;br&gt;    - click this tool&lt;br&gt;    - edit the Format field, using the keyboard and/or the special buttons</source>
       <translation>選擇一個標註或一個件號圓圈&lt;br&gt; -  點選此工具&lt;br&gt;   - 編輯格式欄位，使用鍵盤與/或特別按鍵</translation>
     </message>
@@ -828,17 +828,17 @@
   <context>
     <name>CmdTechDrawExtensionDrawCirclesGroup</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1065"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1069"/>
       <source>TechDraw</source>
       <translation>工程製圖</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1066"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1070"/>
       <source>Add Cosmetic Circle</source>
       <translation>添加裝飾圓</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1067"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1071"/>
       <source>Add a cosmetic circle based on two vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select vertex 1 (center point)&lt;br&gt;- Select vertex 2 (radius)&lt;br&gt;- Click this tool</source>
       <translation>基於兩頂點添加一個裝飾圓:&lt;br&gt;- 指定線屬性(可選) &lt;br&gt;- 選擇頂點 1 (中心點)&lt;br&gt;- 選擇頂點 2 (半徑)&lt;br&gt;- 點選此工具</translation>
     </message>
@@ -846,19 +846,19 @@
   <context>
     <name>CmdTechDrawExtensionDrawCosmArc</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="904"/>
+      <location filename="../../CommandExtensionPack.cpp" line="908"/>
       <source>TechDraw</source>
       <translation>工程製圖</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="905"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1152"/>
+      <location filename="../../CommandExtensionPack.cpp" line="909"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1156"/>
       <source>Add Cosmetic Arc</source>
       <translation>添加裝飾弧</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="906"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1154"/>
+      <location filename="../../CommandExtensionPack.cpp" line="910"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1158"/>
       <source>Add a cosmetic counter clockwise arc based on three vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select vertex 1 (center point)&lt;br&gt;- Select vertex 2 (radius and start angle)&lt;br&gt;- Select vertex 3 (end angle)&lt;br&gt;- Click this tool</source>
       <translation>基於三個頂點添加裝飾性逆時針弧:&lt;br&gt;- 指定線屬性 (可選)&lt;br&gt;- 選擇頂點 1 (中心點)&lt;br&gt;- 選擇頂點 2 (半徑與起始角度)&lt;br&gt;- 選擇頂點 3 (結束角度)&lt;br&gt;- 點選此工具</translation>
     </message>
@@ -866,19 +866,19 @@
   <context>
     <name>CmdTechDrawExtensionDrawCosmCircle</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="966"/>
+      <location filename="../../CommandExtensionPack.cpp" line="970"/>
       <source>TechDraw</source>
       <translation>工程製圖</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="967"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1143"/>
+      <location filename="../../CommandExtensionPack.cpp" line="971"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1147"/>
       <source>Add Cosmetic Circle</source>
       <translation>添加裝飾圓</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="968"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1144"/>
+      <location filename="../../CommandExtensionPack.cpp" line="972"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1148"/>
       <source>Add a cosmetic circle based on two vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select vertex 1 (center point)&lt;br&gt;- Select vertex 2 (radius)&lt;br&gt;- Click this tool</source>
       <translation>基於兩頂點添加一個裝飾圓:&lt;br&gt;- 指定線屬性(可選) &lt;br&gt;- 選擇頂點 1 (中心點)&lt;br&gt;- 選擇頂點 2 (半徑)&lt;br&gt;- 點選此工具</translation>
     </message>
@@ -886,23 +886,23 @@
   <context>
     <name>CmdTechDrawExtensionDrawCosmCircle3Points</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1030"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1034"/>
       <source>TechDraw</source>
       <translation>工程製圖</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1031"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1163"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1035"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1167"/>
       <source>Add Cosmetic Circle 3 Points</source>
       <translation>以三點方式添加裝飾圓</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1032"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1036"/>
       <source>Add a cosmetic circle based on three vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select 3 vertexes&lt;br&gt;- Click this tool</source>
       <translation>基於三個頂點添加一個裝飾圓:&lt;br&gt;- 指定線屬性 (可選)&lt;br&gt;- 選擇 3 個頂點&lt;br&gt;- 點選此工具</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1165"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1169"/>
       <source>Add a cosmetic circle based on three vertexes:&lt;br&gt;- Specify the line attributes (optional)&lt;br&gt;- Select three vertexes&lt;br&gt;- Click this tool</source>
       <translation>基於三個頂點添加一個裝飾圓:&lt;br&gt;- 指定線屬性 (可選)&lt;br&gt;- 選擇 3 個頂點&lt;br&gt;- 點選此工具</translation>
     </message>
@@ -910,19 +910,19 @@
   <context>
     <name>CmdTechDrawExtensionExtendLine</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1605"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1540"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1606"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1744"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1541"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1679"/>
       <source>Extend Line</source>
       <translation>延伸線段</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1607"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1745"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1542"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1680"/>
       <source>Extend a cosmetic line or centerline at both ends:&lt;br&gt;- Specify the delta distance (optional)&lt;br&gt;- Select a single line&lt;br&gt;- Click this tool</source>
       <translation>由兩端延伸裝飾線或是在中心線:&lt;br&gt;- 指定增量距離(可選)&lt;br&gt;- 選擇單一線段&lt;br&gt;- 點選此工具</translation>
     </message>
@@ -1046,17 +1046,17 @@
   <context>
     <name>CmdTechDrawExtensionLinePPGroup</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1302"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1314"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1303"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1315"/>
       <source>Add Cosmetic Parallel Line</source>
       <translation>添加裝飾平行線</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1304"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1316"/>
       <source>Add a cosmetic line parallel to another line through a vertex:&lt;br&gt;- Select a line&lt;br&gt;- Select a vertex&lt;br&gt;- Click this tool</source>
       <translation>通過頂點添加與另一條線平行的裝飾線:&lt;br&gt;- 選擇一條線&lt;br&gt;- 選擇一個頂點&lt;br&gt;- 點選此工具</translation>
     </message>
@@ -1064,19 +1064,19 @@
   <context>
     <name>CmdTechDrawExtensionLineParallel</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1233"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1245"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1234"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1372"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1246"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1384"/>
       <source>Add Cosmetic Parallel Line</source>
       <translation>添加裝飾平行線</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1235"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1374"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1247"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1386"/>
       <source>Add a cosmetic line parallel to another line through a vertex:&lt;br&gt;- Select a line&lt;br&gt;- Select a vertex&lt;br&gt;- Click this tool</source>
       <translation>通過頂點添加與另一條線平行的裝飾線:&lt;br&gt;- 選擇一條線&lt;br&gt;- 選擇一個頂點&lt;br&gt;- 點選此工具</translation>
     </message>
@@ -1084,19 +1084,19 @@
   <context>
     <name>CmdTechDrawExtensionLinePerpendicular</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1267"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1279"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1268"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1381"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1280"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1393"/>
       <source>Add Cosmetic Perpendicular Line</source>
       <translation>添加裝飾垂直線</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1270"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1383"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1282"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1395"/>
       <source>Add a cosmetic line perpendicular to another line through a vertex:&lt;br&gt;- Select a line&lt;br&gt;- Select a vertex&lt;br&gt;- Click this tool</source>
       <translation>通過頂點添加與另一條線垂直的裝飾線:&lt;br&gt;- 選擇一條線&lt;br&gt;- 選擇一個頂點&lt;br&gt;- 點選此工具</translation>
     </message>
@@ -1104,17 +1104,17 @@
   <context>
     <name>CmdTechDrawExtensionLockUnlockView</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1409"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1421"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1410"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1422"/>
       <source>Lock/Unlock View</source>
       <translation>鎖定/解鎖視圖</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1411"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1423"/>
       <source>Lock or unlock the position of a view:&lt;br&gt;- Select a single view&lt;br&gt;- Click this tool</source>
       <translation>鎖定或解鎖一個視圖的位置：&lt;br&gt;-選擇單一視圖&lt;br&gt;- 點選此工具</translation>
     </message>
@@ -1198,24 +1198,6 @@
     </message>
   </context>
   <context>
-    <name>CmdTechDrawExtensionPositionSectionView</name>
-    <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1453"/>
-      <source>TechDraw</source>
-      <translation>工程製圖</translation>
-    </message>
-    <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1454"/>
-      <source>Position Section View</source>
-      <translation>放置剖面視圖</translation>
-    </message>
-    <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1455"/>
-      <source>Orthogonally align a section view with its source view:&lt;br&gt;- Select a single section view&lt;br&gt;- Click this tool</source>
-      <translation>將剖面視圖與其來源視圖正交對齊：&lt;br&gt;-選擇單一視圖&lt;br&gt;- 點選此工具</translation>
-    </message>
-  </context>
-  <context>
     <name>CmdTechDrawExtensionRemovePrefixChar</name>
     <message>
       <location filename="../../CommandExtensionDims.cpp" line="219"/>
@@ -1254,19 +1236,19 @@
   <context>
     <name>CmdTechDrawExtensionShortenLine</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1640"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1575"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1641"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1752"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1576"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1687"/>
       <source>Shorten Line</source>
       <translation>縮短線</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1642"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1753"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1577"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1688"/>
       <source>Shorten a cosmetic line or centerline at both ends:&lt;br&gt;- Specify the delta distance (optional)&lt;br&gt;- Select a single line&lt;br&gt;- Click this tool</source>
       <translation>在兩端縮短裝飾線或中心線:&lt;br&gt;- 指定增量距離(可選)&lt;br&gt;- 選擇單一線段&lt;br&gt;- 點選此工具</translation>
     </message>
@@ -1390,22 +1372,22 @@
   <context>
     <name>CmdTechDrawExtentGroup</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="952"/>
+      <location filename="../../CommandCreateDims.cpp" line="924"/>
       <source>TechDraw</source>
       <translation>工程製圖</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="953"/>
+      <location filename="../../CommandCreateDims.cpp" line="925"/>
       <source>Insert Extent Dimension</source>
       <translation>插入範圍標註</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1021"/>
+      <location filename="../../CommandCreateDims.cpp" line="993"/>
       <source>Horizontal Extent</source>
       <translation>水平範圍</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1026"/>
+      <location filename="../../CommandCreateDims.cpp" line="998"/>
       <source>Vertical Extent</source>
       <translation>垂直範圍</translation>
     </message>
@@ -1413,12 +1395,12 @@
   <context>
     <name>CmdTechDrawFaceCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="676"/>
+      <location filename="../../CommandAnnotate.cpp" line="678"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="677"/>
+      <location filename="../../CommandAnnotate.cpp" line="679"/>
       <source>Add Centerline to Faces</source>
       <translation>添加中心線至面</translation>
     </message>
@@ -1426,12 +1408,12 @@
   <context>
     <name>CmdTechDrawGeometricHatch</name>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="170"/>
+      <location filename="../../CommandDecorate.cpp" line="168"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="171"/>
+      <location filename="../../CommandDecorate.cpp" line="169"/>
       <source>Apply Geometric Hatch to Face</source>
       <translation>應用幾何填充至面</translation>
     </message>
@@ -1452,12 +1434,12 @@
   <context>
     <name>CmdTechDrawHorizontalDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="483"/>
+      <location filename="../../CommandCreateDims.cpp" line="471"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="484"/>
+      <location filename="../../CommandCreateDims.cpp" line="472"/>
       <source>Insert Horizontal Dimension</source>
       <translation>插入水平尺寸</translation>
     </message>
@@ -1465,12 +1447,12 @@
   <context>
     <name>CmdTechDrawHorizontalExtentDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1049"/>
+      <location filename="../../CommandCreateDims.cpp" line="1021"/>
       <source>TechDraw</source>
       <translation>工程製圖</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1050"/>
+      <location filename="../../CommandCreateDims.cpp" line="1022"/>
       <source>Insert Horizontal Extent Dimension</source>
       <translation>插入水平範圍標註</translation>
     </message>
@@ -1478,28 +1460,28 @@
   <context>
     <name>CmdTechDrawImage</name>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="242"/>
+      <location filename="../../CommandDecorate.cpp" line="239"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="243"/>
+      <location filename="../../CommandDecorate.cpp" line="240"/>
       <source>Insert Bitmap Image</source>
       <translation>插入點陣圖片</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="244"/>
-      <location filename="../../CommandDecorate.cpp" line="246"/>
+      <location filename="../../CommandDecorate.cpp" line="241"/>
+      <location filename="../../CommandDecorate.cpp" line="243"/>
       <source>Insert Bitmap from a file into a page</source>
       <translation>由一個檔案案插入點陣圖到一頁</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="261"/>
+      <location filename="../../CommandDecorate.cpp" line="258"/>
       <source>Select an Image File</source>
       <translation>選擇一個影像檔</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="263"/>
+      <location filename="../../CommandDecorate.cpp" line="260"/>
       <source>Image files (*.jpg *.jpeg *.png *.bmp);;All files (*)</source>
       <translation>圖片檔(*.bmp *.jpg *.png *.tif);;所有檔案 (*.*)</translation>
     </message>
@@ -1507,12 +1489,12 @@
   <context>
     <name>CmdTechDrawLandmarkDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1257"/>
+      <location filename="../../CommandCreateDims.cpp" line="1229"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1258"/>
+      <location filename="../../CommandCreateDims.cpp" line="1230"/>
       <source>Insert Landmark Dimension - EXPERIMENTAL</source>
       <translation>插入地標標註-實驗性質</translation>
     </message>
@@ -1533,12 +1515,12 @@
   <context>
     <name>CmdTechDrawLengthDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="384"/>
+      <location filename="../../CommandCreateDims.cpp" line="376"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="385"/>
+      <location filename="../../CommandCreateDims.cpp" line="377"/>
       <source>Insert Length Dimension</source>
       <translation>插入長度標註</translation>
     </message>
@@ -1546,12 +1528,12 @@
   <context>
     <name>CmdTechDrawLinkDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="872"/>
+      <location filename="../../CommandCreateDims.cpp" line="844"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="873"/>
+      <location filename="../../CommandCreateDims.cpp" line="845"/>
       <source>Link Dimension to 3D Geometry</source>
       <translation>連接標註到3D幾何</translation>
     </message>
@@ -1559,12 +1541,12 @@
   <context>
     <name>CmdTechDrawMidpoints</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="452"/>
+      <location filename="../../CommandAnnotate.cpp" line="454"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="453"/>
+      <location filename="../../CommandAnnotate.cpp" line="455"/>
       <source>Add Midpoint Vertices</source>
       <translation>加入頂點的中心點</translation>
     </message>
@@ -1652,12 +1634,12 @@
   <context>
     <name>CmdTechDrawQuadrants</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="491"/>
+      <location filename="../../CommandAnnotate.cpp" line="493"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="492"/>
+      <location filename="../../CommandAnnotate.cpp" line="494"/>
       <source>Add Quadrant Vertices</source>
       <translation>增加象限頂點</translation>
     </message>
@@ -1740,12 +1722,12 @@
   <context>
     <name>CmdTechDrawShowAll</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1477"/>
+      <location filename="../../CommandAnnotate.cpp" line="1479"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1478"/>
+      <location filename="../../CommandAnnotate.cpp" line="1480"/>
       <source>Show/Hide Invisible Edges</source>
       <translation>顯示/隱藏不可視的邊</translation>
     </message>
@@ -1856,17 +1838,17 @@
   <context>
     <name>CmdTechDrawSurfaceFinishSymbols</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1606"/>
+      <location filename="../../CommandAnnotate.cpp" line="1608"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1607"/>
+      <location filename="../../CommandAnnotate.cpp" line="1609"/>
       <source>Create a Surface Finish Symbol</source>
       <translation>建立一個表面紋理符號</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1608"/>
+      <location filename="../../CommandAnnotate.cpp" line="1610"/>
       <source>Select a view&lt;br&gt;    - click this button&lt;br&gt;    - select surface finish symbol attributes in opened panel</source>
       <translation>選擇一個視圖&lt;br&gt;    - 點擊此按鍵&lt;br&gt;    -在開啟面板中選擇選擇表面粗糙度符號屬性</translation>
     </message>
@@ -1892,13 +1874,13 @@
   <context>
     <name>CmdTechDrawToggleFrame</name>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="295"/>
+      <location filename="../../CommandDecorate.cpp" line="292"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="296"/>
-      <location filename="../../CommandDecorate.cpp" line="297"/>
+      <location filename="../../CommandDecorate.cpp" line="293"/>
+      <location filename="../../CommandDecorate.cpp" line="294"/>
       <source>Turn View Frames On/Off</source>
       <translation>開/關  視圖幀</translation>
     </message>
@@ -1906,12 +1888,12 @@
   <context>
     <name>CmdTechDrawVerticalDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="582"/>
+      <location filename="../../CommandCreateDims.cpp" line="565"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="583"/>
+      <location filename="../../CommandCreateDims.cpp" line="566"/>
       <source>Insert Vertical Dimension</source>
       <translation>插入垂直標註</translation>
     </message>
@@ -1919,12 +1901,12 @@
   <context>
     <name>CmdTechDrawVerticalExtentDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1162"/>
+      <location filename="../../CommandCreateDims.cpp" line="1134"/>
       <source>TechDraw</source>
       <translation>工程製圖</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1163"/>
+      <location filename="../../CommandCreateDims.cpp" line="1135"/>
       <source>Insert Vertical Extent Dimension</source>
       <translation>插入垂直範圍標註</translation>
     </message>
@@ -1950,12 +1932,12 @@
   <context>
     <name>CmdTechDrawWeldSymbol</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1542"/>
+      <location filename="../../CommandAnnotate.cpp" line="1544"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1543"/>
+      <location filename="../../CommandAnnotate.cpp" line="1545"/>
       <source>Add Welding Information to Leaderline</source>
       <translation>加入銲接資訊到指線</translation>
     </message>
@@ -2014,8 +1996,8 @@
       <translation>建立試算表視圖</translation>
     </message>
     <message>
-      <location filename="../../PagePrinter.cpp" line="373"/>
       <location filename="../../Command.cpp" line="1636"/>
+      <location filename="../../PagePrinter.cpp" line="373"/>
       <source>Save page to dxf</source>
       <translation>儲存頁面為 DXF 格式</translation>
     </message>
@@ -2025,18 +2007,18 @@
       <translation>加入頂點的中心點</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="366"/>
+      <location filename="../../CommandAnnotate.cpp" line="367"/>
       <source>Add Quadrant Vertices</source>
       <translation>增加象限頂點</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="548"/>
+      <location filename="../../CommandAnnotate.cpp" line="550"/>
       <source>Create Annotation</source>
       <translation>建立註解</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1305"/>
-      <location filename="../../CommandCreateDims.cpp" line="1388"/>
+      <location filename="../../CommandCreateDims.cpp" line="1277"/>
+      <location filename="../../CommandCreateDims.cpp" line="1360"/>
       <source>Create Dimension</source>
       <translation>建立標註</translation>
     </message>
@@ -2056,22 +2038,22 @@
       <translation>移除舊填充</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="200"/>
+      <location filename="../../CommandDecorate.cpp" line="198"/>
       <source>Create GeomHatch</source>
       <translation>建立幾何填充(GeomHatch)</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="270"/>
+      <location filename="../../CommandDecorate.cpp" line="267"/>
       <source>Create Image</source>
       <translation>建立圖片</translation>
     </message>
     <message>
-      <location filename="../../QGIViewBalloon.cpp" line="488"/>
+      <location filename="../../QGIViewBalloon.cpp" line="494"/>
       <source>Drag Balloon</source>
       <translation>拖曳件號圓圈</translation>
     </message>
     <message>
-      <location filename="../../QGIViewDimension.cpp" line="694"/>
+      <location filename="../../QGIViewDimension.cpp" line="699"/>
       <source>Drag Dimension</source>
       <translation>拖曳標註</translation>
     </message>
@@ -2091,8 +2073,8 @@
       <translation>建立中心線</translation>
     </message>
     <message>
-      <location filename="../../TaskCosmeticLine.cpp" line="187"/>
       <location filename="../../TaskCosmeticCircle.cpp" line="168"/>
+      <location filename="../../TaskCosmeticLine.cpp" line="187"/>
       <source>Create Cosmetic Line</source>
       <translation>建立裝飾線</translation>
     </message>
@@ -2238,32 +2220,32 @@
       <translation>建立傾斜鏈標註</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1543"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1545"/>
       <source>Create Horiz Coord Dim</source>
       <translation>建立水平座標標註</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1615"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1617"/>
       <source>Create Vert Coord Dim</source>
       <translation>建立垂直座標標註</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1689"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1691"/>
       <source>Create Oblique Coord Dim</source>
       <translation>建立傾斜座標標註</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1912"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1916"/>
       <source>Create Horiz Chamfer Dim</source>
       <translation>建立水平倒角標註</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1981"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1985"/>
       <source>Create Vert Chamfer Dim</source>
       <translation>建立垂直倒角標註</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2167"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2171"/>
       <source>Create Arc Length Dim</source>
       <translation>建立弧長標註</translation>
     </message>
@@ -2348,82 +2330,82 @@
       <translation>裝飾交叉頂點</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="876"/>
+      <location filename="../../CommandExtensionPack.cpp" line="880"/>
       <source>TechDraw Cosmetic Arc</source>
       <translation>工程製圖裝飾弧</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="878"/>
+      <location filename="../../CommandExtensionPack.cpp" line="882"/>
       <source>Cosmetic Arc</source>
       <translation>裝飾弧</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="940"/>
+      <location filename="../../CommandExtensionPack.cpp" line="944"/>
       <source>TechDraw Cosmetic Circle</source>
       <translation>工程製圖裝飾圓</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="942"/>
+      <location filename="../../CommandExtensionPack.cpp" line="946"/>
       <source>Cosmetic Circle</source>
       <translation>裝飾圓</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1001"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1005"/>
       <source>TechDraw Cosmetic Circle 3 Points</source>
       <translation>工程製圖 3 點裝飾圓</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1003"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1007"/>
       <source>Cosmetic Circle 3 Points</source>
       <translation>裝飾圓三點</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1189"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1193"/>
       <source>TechDraw Cosmetic Line Parallel/Perpendicular</source>
       <translation>工程製圖裝飾線平行/垂直</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1191"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1195"/>
       <source>Cosmetic Line Parallel/Perpendicular</source>
       <translation>裝飾線平行/垂直</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1425"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1437"/>
       <source>TechDraw Lock/Unlock View</source>
       <translation>工程製圖鎖定/解鎖視圖</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1427"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1439"/>
       <source>Lock/Unlock View</source>
       <translation>鎖定/解鎖視圖</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1529"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1464"/>
       <source>TechDraw Extend/Shorten Line</source>
       <translation>工程製圖延伸/縮短線</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1531"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1466"/>
       <source>Extend/Shorten Line</source>
       <translation>延長/縮短 線</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1793"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1728"/>
       <source>TechDraw calculate selected area</source>
       <translation>工程製圖計算被選區域</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1834"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1769"/>
       <source>Calculate Face Area</source>
       <translation>計算面的面積</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1923"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1858"/>
       <source>TechDraw calculate selected arc length</source>
       <translation type="unfinished">TechDraw calculate selected arc length</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1961"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1896"/>
       <source>Calculate Edge Length</source>
       <translation type="unfinished">Calculate Edge Length</translation>
     </message>
@@ -2704,16 +2686,6 @@
   <context>
     <name>QObject</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="318"/>
-      <location filename="../../CommandAnnotate.cpp" line="417"/>
-      <location filename="../../CommandAnnotate.cpp" line="1306"/>
-      <location filename="../../CommandAnnotate.cpp" line="1314"/>
-      <location filename="../../CommandAnnotate.cpp" line="1361"/>
-      <location filename="../../CommandAnnotate.cpp" line="1503"/>
-      <location filename="../../CommandAnnotate.cpp" line="1510"/>
-      <location filename="../../CommandAnnotate.cpp" line="1574"/>
-      <location filename="../../CommandCreateDims.cpp" line="1277"/>
-      <location filename="../../CommandCreateDims.cpp" line="1286"/>
       <location filename="../../Command.cpp" line="379"/>
       <location filename="../../Command.cpp" line="608"/>
       <location filename="../../Command.cpp" line="725"/>
@@ -2731,6 +2703,16 @@
       <location filename="../../Command.cpp" line="1445"/>
       <location filename="../../Command.cpp" line="1451"/>
       <location filename="../../Command.cpp" line="1502"/>
+      <location filename="../../CommandAnnotate.cpp" line="318"/>
+      <location filename="../../CommandAnnotate.cpp" line="419"/>
+      <location filename="../../CommandAnnotate.cpp" line="1308"/>
+      <location filename="../../CommandAnnotate.cpp" line="1316"/>
+      <location filename="../../CommandAnnotate.cpp" line="1363"/>
+      <location filename="../../CommandAnnotate.cpp" line="1505"/>
+      <location filename="../../CommandAnnotate.cpp" line="1512"/>
+      <location filename="../../CommandAnnotate.cpp" line="1576"/>
+      <location filename="../../CommandCreateDims.cpp" line="1249"/>
+      <location filename="../../CommandCreateDims.cpp" line="1258"/>
       <source>Wrong selection</source>
       <translation>錯誤的選取</translation>
     </message>
@@ -2762,57 +2744,57 @@
       <translation>在選擇中找不到輪廓物件</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="369"/>
-      <location filename="../../CommandDecorate.cpp" line="376"/>
-      <location filename="../../CommandDecorate.cpp" line="383"/>
-      <location filename="../../CommandCreateDims.cpp" line="166"/>
-      <location filename="../../CommandCreateDims.cpp" line="292"/>
-      <location filename="../../CommandCreateDims.cpp" line="418"/>
-      <location filename="../../CommandCreateDims.cpp" line="518"/>
-      <location filename="../../CommandCreateDims.cpp" line="617"/>
-      <location filename="../../CommandCreateDims.cpp" line="713"/>
-      <location filename="../../CommandCreateDims.cpp" line="809"/>
-      <location filename="../../CommandCreateDims.cpp" line="1084"/>
-      <location filename="../../CommandCreateDims.cpp" line="1443"/>
-      <location filename="../../CommandCreateDims.cpp" line="1451"/>
-      <location filename="../../CommandCreateDims.cpp" line="1460"/>
       <location filename="../../Command.cpp" line="958"/>
       <location filename="../../Command.cpp" line="965"/>
       <location filename="../../Command.cpp" line="973"/>
       <location filename="../../Command.cpp" line="985"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1808"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1937"/>
+      <location filename="../../CommandCreateDims.cpp" line="166"/>
+      <location filename="../../CommandCreateDims.cpp" line="288"/>
+      <location filename="../../CommandCreateDims.cpp" line="410"/>
+      <location filename="../../CommandCreateDims.cpp" line="506"/>
+      <location filename="../../CommandCreateDims.cpp" line="600"/>
+      <location filename="../../CommandCreateDims.cpp" line="692"/>
+      <location filename="../../CommandCreateDims.cpp" line="784"/>
+      <location filename="../../CommandCreateDims.cpp" line="1056"/>
+      <location filename="../../CommandCreateDims.cpp" line="1423"/>
+      <location filename="../../CommandCreateDims.cpp" line="1431"/>
+      <location filename="../../CommandCreateDims.cpp" line="1440"/>
+      <location filename="../../CommandDecorate.cpp" line="366"/>
+      <location filename="../../CommandDecorate.cpp" line="373"/>
+      <location filename="../../CommandDecorate.cpp" line="380"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1743"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1872"/>
       <source>Incorrect selection</source>
       <translation>不正確的選取</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1444"/>
       <location filename="../../Command.cpp" line="959"/>
+      <location filename="../../CommandCreateDims.cpp" line="1424"/>
       <source>Select an object first</source>
       <translation>請先選一個物件</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1452"/>
       <location filename="../../Command.cpp" line="966"/>
+      <location filename="../../CommandCreateDims.cpp" line="1432"/>
       <source>Too many objects selected</source>
       <translation>太多物件被選擇</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1461"/>
       <location filename="../../Command.cpp" line="974"/>
+      <location filename="../../CommandCreateDims.cpp" line="1441"/>
       <source>Create a page first.</source>
       <translation>請先建立一個頁面</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="167"/>
-      <location filename="../../CommandCreateDims.cpp" line="293"/>
-      <location filename="../../CommandCreateDims.cpp" line="419"/>
-      <location filename="../../CommandCreateDims.cpp" line="519"/>
-      <location filename="../../CommandCreateDims.cpp" line="618"/>
-      <location filename="../../CommandCreateDims.cpp" line="714"/>
-      <location filename="../../CommandCreateDims.cpp" line="810"/>
-      <location filename="../../CommandCreateDims.cpp" line="1085"/>
       <location filename="../../Command.cpp" line="986"/>
+      <location filename="../../CommandCreateDims.cpp" line="167"/>
+      <location filename="../../CommandCreateDims.cpp" line="289"/>
+      <location filename="../../CommandCreateDims.cpp" line="411"/>
+      <location filename="../../CommandCreateDims.cpp" line="507"/>
+      <location filename="../../CommandCreateDims.cpp" line="601"/>
+      <location filename="../../CommandCreateDims.cpp" line="693"/>
+      <location filename="../../CommandCreateDims.cpp" line="785"/>
+      <location filename="../../CommandCreateDims.cpp" line="1057"/>
       <source>No View of a Part in selection.</source>
       <translation>選擇中的零件沒有視圖。</translation>
     </message>
@@ -2903,7 +2885,7 @@
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="212"/>
-      <location filename="../../CommandCreateDims.cpp" line="338"/>
+      <location filename="../../CommandCreateDims.cpp" line="334"/>
       <source>Ellipse Curve Warning</source>
       <translation>橢圓曲線警告</translation>
     </message>
@@ -2914,7 +2896,7 @@
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="223"/>
-      <location filename="../../CommandCreateDims.cpp" line="349"/>
+      <location filename="../../CommandCreateDims.cpp" line="345"/>
       <source>BSpline Curve Warning</source>
       <translation>BSpline 曲線警告</translation>
     </message>
@@ -2924,31 +2906,31 @@
       <translation>選取邊為 B 雲形線。半徑將會是近似值。是否繼續 ?</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="390"/>
-      <location filename="../../CommandDecorate.cpp" line="396"/>
       <location filename="../../CommandCreateDims.cpp" line="187"/>
       <location filename="../../CommandCreateDims.cpp" line="202"/>
-      <location filename="../../CommandCreateDims.cpp" line="313"/>
-      <location filename="../../CommandCreateDims.cpp" line="328"/>
-      <location filename="../../CommandCreateDims.cpp" line="440"/>
-      <location filename="../../CommandCreateDims.cpp" line="456"/>
-      <location filename="../../CommandCreateDims.cpp" line="538"/>
-      <location filename="../../CommandCreateDims.cpp" line="554"/>
-      <location filename="../../CommandCreateDims.cpp" line="637"/>
-      <location filename="../../CommandCreateDims.cpp" line="652"/>
-      <location filename="../../CommandCreateDims.cpp" line="733"/>
-      <location filename="../../CommandCreateDims.cpp" line="748"/>
-      <location filename="../../CommandCreateDims.cpp" line="829"/>
-      <location filename="../../CommandCreateDims.cpp" line="844"/>
-      <location filename="../../CommandCreateDims.cpp" line="912"/>
-      <location filename="../../CommandCreateDims.cpp" line="919"/>
-      <location filename="../../CommandCreateDims.cpp" line="1112"/>
-      <location filename="../../CommandCreateDims.cpp" line="1126"/>
-      <location filename="../../CommandCreateDims.cpp" line="1218"/>
+      <location filename="../../CommandCreateDims.cpp" line="309"/>
+      <location filename="../../CommandCreateDims.cpp" line="324"/>
+      <location filename="../../CommandCreateDims.cpp" line="432"/>
+      <location filename="../../CommandCreateDims.cpp" line="448"/>
+      <location filename="../../CommandCreateDims.cpp" line="526"/>
+      <location filename="../../CommandCreateDims.cpp" line="542"/>
+      <location filename="../../CommandCreateDims.cpp" line="620"/>
+      <location filename="../../CommandCreateDims.cpp" line="635"/>
+      <location filename="../../CommandCreateDims.cpp" line="712"/>
+      <location filename="../../CommandCreateDims.cpp" line="727"/>
+      <location filename="../../CommandCreateDims.cpp" line="804"/>
+      <location filename="../../CommandCreateDims.cpp" line="819"/>
+      <location filename="../../CommandCreateDims.cpp" line="884"/>
+      <location filename="../../CommandCreateDims.cpp" line="891"/>
+      <location filename="../../CommandCreateDims.cpp" line="1084"/>
+      <location filename="../../CommandCreateDims.cpp" line="1098"/>
+      <location filename="../../CommandCreateDims.cpp" line="1190"/>
+      <location filename="../../CommandDecorate.cpp" line="387"/>
+      <location filename="../../CommandDecorate.cpp" line="393"/>
+      <location filename="../../TaskDimension.cpp" line="417"/>
       <location filename="../../TaskDimRepair.cpp" line="126"/>
       <location filename="../../TaskDimRepair.cpp" line="138"/>
       <location filename="../../TaskDimRepair.cpp" line="149"/>
-      <location filename="../../TaskDimension.cpp" line="417"/>
       <source>Incorrect Selection</source>
       <translation>不正確的選取</translation>
     </message>
@@ -2964,7 +2946,7 @@
     </message>
     <message>
       <location filename="../../CommandCreateDims.cpp" line="234"/>
-      <location filename="../../CommandCreateDims.cpp" line="360"/>
+      <location filename="../../CommandCreateDims.cpp" line="356"/>
       <source>BSpline Curve Error</source>
       <translation>B 雲形線曲線錯誤</translation>
     </message>
@@ -2974,235 +2956,235 @@
       <translation>選取邊為 B 雲形線而半徑無法被計算出來。</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="314"/>
+      <location filename="../../CommandCreateDims.cpp" line="310"/>
       <source>Can not make 2d diameter dimension from selection</source>
       <translation>無法從選擇中製作2D直徑標註</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="329"/>
+      <location filename="../../CommandCreateDims.cpp" line="325"/>
       <source>Can not make 3d diameter dimension from selection</source>
       <translation>無法從選擇中製作3D直徑標註</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="339"/>
+      <location filename="../../CommandCreateDims.cpp" line="335"/>
       <source>Selected edge is an Ellipse.  Diameter will be approximate. Continue?</source>
       <translation>選取邊為橢圓，其直徑為近似值。是否繼續?</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="350"/>
+      <location filename="../../CommandCreateDims.cpp" line="346"/>
       <source>Selected edge is a BSpline.  Diameter will be approximate. Continue?</source>
       <translation>選取邊為 B 雲形線。直徑將會是近似值。是否繼續 ?</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="361"/>
+      <location filename="../../CommandCreateDims.cpp" line="357"/>
       <source>Selected edge is a BSpline and a diameter can not be calculated.</source>
       <translation>選取邊為 B 雲形線而直徑無法被計算出來。</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="441"/>
+      <location filename="../../CommandCreateDims.cpp" line="433"/>
       <source>Can not make 2d linear dimension from selection</source>
       <translation>無法從選擇中製作2D線性標註</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="457"/>
+      <location filename="../../CommandCreateDims.cpp" line="449"/>
       <source>Can not make 3d linear dimension from selection</source>
       <translation>無法從選擇中製作3D線性標註</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="539"/>
+      <location filename="../../CommandCreateDims.cpp" line="527"/>
       <source>Can not make 2d horizontal dimension from selection</source>
       <translation>無法從選擇中製作2D水平標註</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="555"/>
+      <location filename="../../CommandCreateDims.cpp" line="543"/>
       <source>Can not make 3d horizontal dimension from selection</source>
       <translation>無法從選擇中製作3D水平標註</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="638"/>
+      <location filename="../../CommandCreateDims.cpp" line="621"/>
       <source>Can not make 2d vertical dimension from selection</source>
       <translation>無法從選擇中製作2D垂直標註</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="653"/>
+      <location filename="../../CommandCreateDims.cpp" line="636"/>
       <source>Can not make 3d vertical dimension from selection</source>
       <translation>無法從選擇中製作3D垂直標註</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="734"/>
-      <location filename="../../CommandCreateDims.cpp" line="830"/>
+      <location filename="../../CommandCreateDims.cpp" line="713"/>
+      <location filename="../../CommandCreateDims.cpp" line="805"/>
       <source>Can not make 2d angle dimension from selection</source>
       <translation>無法從選擇中製作2D角度標註</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="749"/>
-      <location filename="../../CommandCreateDims.cpp" line="845"/>
+      <location filename="../../CommandCreateDims.cpp" line="728"/>
+      <location filename="../../CommandCreateDims.cpp" line="820"/>
       <source>Can not make 3d angle dimension from selection</source>
       <translation>無法從選擇中製作3D角度標註</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1113"/>
+      <location filename="../../CommandCreateDims.cpp" line="1085"/>
       <source>Can not make 2d extent dimension from selection</source>
       <translation>無法從選擇中製作2D範圍標註</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1127"/>
+      <location filename="../../CommandCreateDims.cpp" line="1099"/>
       <source>Can not make 3d extent dimension from selection</source>
       <translation>無法從選擇中製作3D範圍標註</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1219"/>
+      <location filename="../../CommandCreateDims.cpp" line="1191"/>
       <source>There is no Dimension in your selection</source>
       <translation>您的選擇中沒有標註</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="913"/>
+      <location filename="../../CommandCreateDims.cpp" line="885"/>
       <source>There is no 3D object in your selection</source>
       <translation>您的選擇中沒有 3D 物件</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="920"/>
+      <location filename="../../CommandCreateDims.cpp" line="892"/>
       <source>There are no 3D Edges or Vertices in your selection</source>
       <translation>在您的選擇中沒有 3D 邊或點</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1278"/>
+      <location filename="../../CommandCreateDims.cpp" line="1250"/>
       <source>Select 2 point objects and 1 View. (1)</source>
       <translation>選擇 2 點物件以及 1 個視圖。(1)</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1287"/>
+      <location filename="../../CommandCreateDims.cpp" line="1259"/>
       <source>Select 2 point objects and 1 View. (2)</source>
       <translation>選擇 2 點物件以及 1 個視圖。(2)</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="491"/>
+      <location filename="../../Command.cpp" line="584"/>
+      <location filename="../../Command.cpp" line="647"/>
       <location filename="../../CommandAnnotate.cpp" line="106"/>
       <location filename="../../CommandAnnotate.cpp" line="167"/>
       <location filename="../../CommandAnnotate.cpp" line="219"/>
-      <location filename="../../CommandAnnotate.cpp" line="404"/>
-      <location filename="../../CommandAnnotate.cpp" line="465"/>
-      <location filename="../../CommandAnnotate.cpp" line="504"/>
-      <location filename="../../CommandAnnotate.cpp" line="586"/>
-      <location filename="../../CommandAnnotate.cpp" line="690"/>
-      <location filename="../../CommandAnnotate.cpp" line="801"/>
-      <location filename="../../CommandAnnotate.cpp" line="876"/>
-      <location filename="../../CommandAnnotate.cpp" line="989"/>
-      <location filename="../../CommandAnnotate.cpp" line="1140"/>
-      <location filename="../../CommandAnnotate.cpp" line="1293"/>
-      <location filename="../../CommandAnnotate.cpp" line="1412"/>
-      <location filename="../../CommandAnnotate.cpp" line="1490"/>
-      <location filename="../../CommandAnnotate.cpp" line="1556"/>
+      <location filename="../../CommandAnnotate.cpp" line="406"/>
+      <location filename="../../CommandAnnotate.cpp" line="467"/>
+      <location filename="../../CommandAnnotate.cpp" line="506"/>
+      <location filename="../../CommandAnnotate.cpp" line="588"/>
+      <location filename="../../CommandAnnotate.cpp" line="692"/>
+      <location filename="../../CommandAnnotate.cpp" line="803"/>
+      <location filename="../../CommandAnnotate.cpp" line="878"/>
+      <location filename="../../CommandAnnotate.cpp" line="991"/>
+      <location filename="../../CommandAnnotate.cpp" line="1142"/>
+      <location filename="../../CommandAnnotate.cpp" line="1295"/>
+      <location filename="../../CommandAnnotate.cpp" line="1414"/>
+      <location filename="../../CommandAnnotate.cpp" line="1492"/>
+      <location filename="../../CommandAnnotate.cpp" line="1558"/>
       <location filename="../../CommandCreateDims.cpp" line="146"/>
-      <location filename="../../CommandCreateDims.cpp" line="272"/>
-      <location filename="../../CommandCreateDims.cpp" line="398"/>
-      <location filename="../../CommandCreateDims.cpp" line="498"/>
-      <location filename="../../CommandCreateDims.cpp" line="597"/>
-      <location filename="../../CommandCreateDims.cpp" line="693"/>
-      <location filename="../../CommandCreateDims.cpp" line="789"/>
-      <location filename="../../CommandCreateDims.cpp" line="966"/>
-      <location filename="../../CommandCreateDims.cpp" line="1064"/>
-      <location filename="../../CommandCreateDims.cpp" line="1177"/>
+      <location filename="../../CommandCreateDims.cpp" line="268"/>
+      <location filename="../../CommandCreateDims.cpp" line="390"/>
+      <location filename="../../CommandCreateDims.cpp" line="486"/>
+      <location filename="../../CommandCreateDims.cpp" line="580"/>
+      <location filename="../../CommandCreateDims.cpp" line="672"/>
+      <location filename="../../CommandCreateDims.cpp" line="764"/>
+      <location filename="../../CommandCreateDims.cpp" line="938"/>
+      <location filename="../../CommandCreateDims.cpp" line="1036"/>
+      <location filename="../../CommandCreateDims.cpp" line="1149"/>
+      <location filename="../../CommandExtensionDims.cpp" line="266"/>
+      <location filename="../../CommandExtensionDims.cpp" line="475"/>
+      <location filename="../../CommandExtensionDims.cpp" line="767"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1095"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1442"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1807"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2066"/>
+      <location filename="../../CommandExtensionPack.cpp" line="282"/>
+      <location filename="../../CommandExtensionPack.cpp" line="596"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1085"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1329"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1625"/>
       <location filename="../../CommandStack.cpp" line="75"/>
       <location filename="../../CommandStack.cpp" line="191"/>
       <location filename="../../CommandStack.cpp" line="251"/>
       <location filename="../../CommandStack.cpp" line="311"/>
       <location filename="../../CommandStack.cpp" line="371"/>
-      <location filename="../../CommandExtensionDims.cpp" line="266"/>
-      <location filename="../../CommandExtensionDims.cpp" line="475"/>
-      <location filename="../../CommandExtensionDims.cpp" line="767"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1095"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1440"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1803"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2062"/>
-      <location filename="../../Command.cpp" line="491"/>
-      <location filename="../../Command.cpp" line="584"/>
-      <location filename="../../Command.cpp" line="647"/>
-      <location filename="../../CommandExtensionPack.cpp" line="282"/>
-      <location filename="../../CommandExtensionPack.cpp" line="596"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1081"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1317"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1690"/>
       <source>Task In Progress</source>
       <translation>任務進行中</translation>
     </message>
     <message>
+      <location filename="../../Command.cpp" line="492"/>
+      <location filename="../../Command.cpp" line="585"/>
+      <location filename="../../Command.cpp" line="648"/>
       <location filename="../../CommandAnnotate.cpp" line="107"/>
       <location filename="../../CommandAnnotate.cpp" line="168"/>
       <location filename="../../CommandAnnotate.cpp" line="220"/>
-      <location filename="../../CommandAnnotate.cpp" line="405"/>
-      <location filename="../../CommandAnnotate.cpp" line="466"/>
-      <location filename="../../CommandAnnotate.cpp" line="505"/>
-      <location filename="../../CommandAnnotate.cpp" line="587"/>
-      <location filename="../../CommandAnnotate.cpp" line="691"/>
-      <location filename="../../CommandAnnotate.cpp" line="802"/>
-      <location filename="../../CommandAnnotate.cpp" line="877"/>
-      <location filename="../../CommandAnnotate.cpp" line="990"/>
-      <location filename="../../CommandAnnotate.cpp" line="1141"/>
-      <location filename="../../CommandAnnotate.cpp" line="1294"/>
-      <location filename="../../CommandAnnotate.cpp" line="1413"/>
-      <location filename="../../CommandAnnotate.cpp" line="1491"/>
-      <location filename="../../CommandAnnotate.cpp" line="1557"/>
+      <location filename="../../CommandAnnotate.cpp" line="407"/>
+      <location filename="../../CommandAnnotate.cpp" line="468"/>
+      <location filename="../../CommandAnnotate.cpp" line="507"/>
+      <location filename="../../CommandAnnotate.cpp" line="589"/>
+      <location filename="../../CommandAnnotate.cpp" line="693"/>
+      <location filename="../../CommandAnnotate.cpp" line="804"/>
+      <location filename="../../CommandAnnotate.cpp" line="879"/>
+      <location filename="../../CommandAnnotate.cpp" line="992"/>
+      <location filename="../../CommandAnnotate.cpp" line="1143"/>
+      <location filename="../../CommandAnnotate.cpp" line="1296"/>
+      <location filename="../../CommandAnnotate.cpp" line="1415"/>
+      <location filename="../../CommandAnnotate.cpp" line="1493"/>
+      <location filename="../../CommandAnnotate.cpp" line="1559"/>
       <location filename="../../CommandCreateDims.cpp" line="147"/>
-      <location filename="../../CommandCreateDims.cpp" line="273"/>
-      <location filename="../../CommandCreateDims.cpp" line="399"/>
-      <location filename="../../CommandCreateDims.cpp" line="499"/>
-      <location filename="../../CommandCreateDims.cpp" line="598"/>
-      <location filename="../../CommandCreateDims.cpp" line="694"/>
-      <location filename="../../CommandCreateDims.cpp" line="790"/>
-      <location filename="../../CommandCreateDims.cpp" line="967"/>
-      <location filename="../../CommandCreateDims.cpp" line="1065"/>
-      <location filename="../../CommandCreateDims.cpp" line="1178"/>
+      <location filename="../../CommandCreateDims.cpp" line="269"/>
+      <location filename="../../CommandCreateDims.cpp" line="391"/>
+      <location filename="../../CommandCreateDims.cpp" line="487"/>
+      <location filename="../../CommandCreateDims.cpp" line="581"/>
+      <location filename="../../CommandCreateDims.cpp" line="673"/>
+      <location filename="../../CommandCreateDims.cpp" line="765"/>
+      <location filename="../../CommandCreateDims.cpp" line="939"/>
+      <location filename="../../CommandCreateDims.cpp" line="1037"/>
+      <location filename="../../CommandCreateDims.cpp" line="1150"/>
+      <location filename="../../CommandExtensionDims.cpp" line="267"/>
+      <location filename="../../CommandExtensionDims.cpp" line="476"/>
+      <location filename="../../CommandExtensionDims.cpp" line="768"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1096"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1443"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1808"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2067"/>
+      <location filename="../../CommandExtensionPack.cpp" line="283"/>
+      <location filename="../../CommandExtensionPack.cpp" line="597"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1086"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1330"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1626"/>
       <location filename="../../CommandStack.cpp" line="76"/>
       <location filename="../../CommandStack.cpp" line="192"/>
       <location filename="../../CommandStack.cpp" line="252"/>
       <location filename="../../CommandStack.cpp" line="312"/>
       <location filename="../../CommandStack.cpp" line="372"/>
-      <location filename="../../CommandExtensionDims.cpp" line="267"/>
-      <location filename="../../CommandExtensionDims.cpp" line="476"/>
-      <location filename="../../CommandExtensionDims.cpp" line="768"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1096"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1441"/>
-      <location filename="../../CommandExtensionDims.cpp" line="1804"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2063"/>
-      <location filename="../../Command.cpp" line="492"/>
-      <location filename="../../Command.cpp" line="585"/>
-      <location filename="../../Command.cpp" line="648"/>
-      <location filename="../../CommandExtensionPack.cpp" line="283"/>
-      <location filename="../../CommandExtensionPack.cpp" line="597"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1082"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1318"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1691"/>
       <source>Close active task dialog and try again.</source>
       <translation>關閉活動任務對話框並重試。</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="121"/>
       <location filename="../../CommandAnnotate.cpp" line="126"/>
-      <location filename="../../CommandAnnotate.cpp" line="717"/>
-      <location filename="../../CommandAnnotate.cpp" line="723"/>
-      <location filename="../../CommandAnnotate.cpp" line="750"/>
-      <location filename="../../CommandAnnotate.cpp" line="760"/>
-      <location filename="../../CommandAnnotate.cpp" line="766"/>
-      <location filename="../../CommandAnnotate.cpp" line="837"/>
-      <location filename="../../CommandAnnotate.cpp" line="846"/>
-      <location filename="../../CommandAnnotate.cpp" line="903"/>
-      <location filename="../../CommandAnnotate.cpp" line="910"/>
-      <location filename="../../CommandAnnotate.cpp" line="937"/>
-      <location filename="../../CommandAnnotate.cpp" line="949"/>
-      <location filename="../../CommandAnnotate.cpp" line="959"/>
-      <location filename="../../CommandAnnotate.cpp" line="1019"/>
-      <location filename="../../CommandAnnotate.cpp" line="1042"/>
-      <location filename="../../CommandAnnotate.cpp" line="1050"/>
-      <location filename="../../CommandAnnotate.cpp" line="1070"/>
-      <location filename="../../CommandAnnotate.cpp" line="1106"/>
-      <location filename="../../CommandAnnotate.cpp" line="1170"/>
-      <location filename="../../CommandAnnotate.cpp" line="1193"/>
-      <location filename="../../CommandAnnotate.cpp" line="1215"/>
-      <location filename="../../CommandAnnotate.cpp" line="1251"/>
-      <location filename="../../CommandAnnotate.cpp" line="1425"/>
-      <location filename="../../CommandAnnotate.cpp" line="1432"/>
-      <location filename="../../CommandAnnotate.cpp" line="1687"/>
-      <location filename="../../CommandAnnotate.cpp" line="1700"/>
+      <location filename="../../CommandAnnotate.cpp" line="719"/>
+      <location filename="../../CommandAnnotate.cpp" line="725"/>
+      <location filename="../../CommandAnnotate.cpp" line="752"/>
+      <location filename="../../CommandAnnotate.cpp" line="762"/>
+      <location filename="../../CommandAnnotate.cpp" line="768"/>
+      <location filename="../../CommandAnnotate.cpp" line="839"/>
+      <location filename="../../CommandAnnotate.cpp" line="848"/>
+      <location filename="../../CommandAnnotate.cpp" line="905"/>
+      <location filename="../../CommandAnnotate.cpp" line="912"/>
+      <location filename="../../CommandAnnotate.cpp" line="939"/>
+      <location filename="../../CommandAnnotate.cpp" line="951"/>
+      <location filename="../../CommandAnnotate.cpp" line="961"/>
+      <location filename="../../CommandAnnotate.cpp" line="1021"/>
+      <location filename="../../CommandAnnotate.cpp" line="1044"/>
+      <location filename="../../CommandAnnotate.cpp" line="1052"/>
+      <location filename="../../CommandAnnotate.cpp" line="1072"/>
+      <location filename="../../CommandAnnotate.cpp" line="1108"/>
+      <location filename="../../CommandAnnotate.cpp" line="1172"/>
+      <location filename="../../CommandAnnotate.cpp" line="1195"/>
+      <location filename="../../CommandAnnotate.cpp" line="1217"/>
+      <location filename="../../CommandAnnotate.cpp" line="1253"/>
+      <location filename="../../CommandAnnotate.cpp" line="1427"/>
+      <location filename="../../CommandAnnotate.cpp" line="1434"/>
+      <location filename="../../CommandAnnotate.cpp" line="1689"/>
+      <location filename="../../CommandAnnotate.cpp" line="1702"/>
       <source>Wrong Selection</source>
       <translation>錯誤的選擇</translation>
     </message>
@@ -3213,141 +3195,141 @@
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="127"/>
-      <location filename="../../CommandAnnotate.cpp" line="724"/>
-      <location filename="../../CommandAnnotate.cpp" line="904"/>
-      <location filename="../../CommandAnnotate.cpp" line="1043"/>
+      <location filename="../../CommandAnnotate.cpp" line="726"/>
+      <location filename="../../CommandAnnotate.cpp" line="906"/>
+      <location filename="../../CommandAnnotate.cpp" line="1045"/>
       <source>You must select a base View for the line.</source>
       <translation>您必須給那條線選擇一個基礎視圖。</translation>
     </message>
     <message>
       <location filename="../../CommandAnnotate.cpp" line="319"/>
-      <location filename="../../CommandAnnotate.cpp" line="418"/>
+      <location filename="../../CommandAnnotate.cpp" line="420"/>
       <source>No DrawViewPart objects in this selection</source>
       <translation>此選擇中沒有 DrawViewPart 物件</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="718"/>
-      <location filename="../../CommandAnnotate.cpp" line="911"/>
+      <location filename="../../CommandAnnotate.cpp" line="720"/>
+      <location filename="../../CommandAnnotate.cpp" line="913"/>
       <source>No base View in Selection.</source>
       <translation>選擇中沒有基礎視圖。</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="751"/>
+      <location filename="../../CommandAnnotate.cpp" line="753"/>
       <source>You must select Faces or an existing CenterLine.</source>
       <translation>您必須選取面或現有的中心線。</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="761"/>
+      <location filename="../../CommandAnnotate.cpp" line="763"/>
       <source>No CenterLine in selection.</source>
       <translation>選擇中沒有中心線。</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="767"/>
-      <location filename="../../CommandAnnotate.cpp" line="838"/>
-      <location filename="../../CommandAnnotate.cpp" line="950"/>
+      <location filename="../../CommandAnnotate.cpp" line="769"/>
+      <location filename="../../CommandAnnotate.cpp" line="840"/>
+      <location filename="../../CommandAnnotate.cpp" line="952"/>
       <source>Selection is not a CenterLine.</source>
       <translation>選擇並非中心線</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="847"/>
+      <location filename="../../CommandAnnotate.cpp" line="849"/>
       <source>Selection not understood.</source>
       <translation>不了解選取什麼。</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="938"/>
+      <location filename="../../CommandAnnotate.cpp" line="940"/>
       <source>You must select 2 Vertexes or an existing CenterLine.</source>
       <translation>您必須選取 2 個點或現有的中心線。</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="960"/>
+      <location filename="../../CommandAnnotate.cpp" line="962"/>
       <source>Need 2 Vertices or 1 CenterLine.</source>
       <translation>需要 2 個點或 1 條中心線。</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1020"/>
-      <location filename="../../CommandAnnotate.cpp" line="1171"/>
+      <location filename="../../CommandAnnotate.cpp" line="1022"/>
+      <location filename="../../CommandAnnotate.cpp" line="1173"/>
       <source>Selection is empty.</source>
       <translation>選擇為空。</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1051"/>
+      <location filename="../../CommandAnnotate.cpp" line="1053"/>
       <source>Not enough points in selection.</source>
       <translation>沒有足夠的點被選取。</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1071"/>
+      <location filename="../../CommandAnnotate.cpp" line="1073"/>
       <source>Selection is not a Cosmetic Line.</source>
       <translation>選擇並非裝飾線</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1107"/>
+      <location filename="../../CommandAnnotate.cpp" line="1109"/>
       <source>You must select 2 Vertexes.</source>
       <translation>您必須選擇2個點。</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1194"/>
+      <location filename="../../CommandAnnotate.cpp" line="1196"/>
       <source>You must select a base View for the circle.</source>
       <translation>您必須給那個圓選擇一個基礎視圖。</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1252"/>
+      <location filename="../../CommandAnnotate.cpp" line="1254"/>
       <source>Please select a center for the circle.</source>
       <translation>請選擇圓的中心。</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1307"/>
-      <location filename="../../CommandAnnotate.cpp" line="1504"/>
+      <location filename="../../CommandAnnotate.cpp" line="1309"/>
+      <location filename="../../CommandAnnotate.cpp" line="1506"/>
       <source>Nothing selected</source>
       <translation>沒有選取項目</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1315"/>
+      <location filename="../../CommandAnnotate.cpp" line="1317"/>
       <source>At least 1 object in selection is not a part view</source>
       <translation>至少 1 個選取物件不是零件視圖</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1362"/>
+      <location filename="../../CommandAnnotate.cpp" line="1364"/>
       <source>Unknown object type in selection</source>
       <translation>未知的物件類型在選擇中</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1433"/>
+      <location filename="../../CommandAnnotate.cpp" line="1435"/>
       <source>No View in Selection.</source>
       <translation>選擇中沒有視圖</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1426"/>
+      <location filename="../../CommandAnnotate.cpp" line="1428"/>
       <source>You must select a View and/or lines.</source>
       <translation>您必須選擇一個視圖與/或線</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1216"/>
+      <location filename="../../CommandAnnotate.cpp" line="1218"/>
       <source>Selection is not a Cosmetic Circle or a Cosmetic Arc of Circle.</source>
       <translation type="unfinished">Selection is not a Cosmetic Circle or a Cosmetic Arc of Circle.</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1511"/>
+      <location filename="../../CommandAnnotate.cpp" line="1513"/>
       <source>No Part Views in this selection</source>
       <translation>此選擇中沒有零件視圖</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1575"/>
+      <location filename="../../CommandAnnotate.cpp" line="1577"/>
       <source>Select exactly one Leader line or one Weld symbol.</source>
       <translation>選擇正好一個指線或一個銲接符號。</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1622"/>
-      <location filename="../../CommandAnnotate.cpp" line="1628"/>
+      <location filename="../../CommandAnnotate.cpp" line="1624"/>
+      <location filename="../../CommandAnnotate.cpp" line="1630"/>
       <source>SurfaceFinishSymbols</source>
       <translation>表面紋理符號</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1688"/>
+      <location filename="../../CommandAnnotate.cpp" line="1690"/>
       <source>No Part View in Selection</source>
       <translation>選擇中沒有零件視圖</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1701"/>
+      <location filename="../../CommandAnnotate.cpp" line="1703"/>
       <source>No %1 in Selection</source>
       <translation>選擇中沒有 %1</translation>
     </message>
@@ -3362,33 +3344,33 @@
       <translation>某些選擇中的面已被填充，是否更換?</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="317"/>
+      <location filename="../../CommandDecorate.cpp" line="314"/>
       <source>No TechDraw Page</source>
       <translation>沒有 TechDraw 頁面</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="318"/>
+      <location filename="../../CommandDecorate.cpp" line="315"/>
       <source>Need a TechDraw Page for this command</source>
       <translation>本命令需要一個 TechDraw 頁面</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="370"/>
+      <location filename="../../CommandDecorate.cpp" line="367"/>
       <source>Select a Face first</source>
       <translation>請先選擇一個面</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="377"/>
+      <location filename="../../CommandDecorate.cpp" line="374"/>
       <source>No TechDraw object in selection</source>
       <translation>沒有 TechDraw 物件在選擇中</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="384"/>
+      <location filename="../../CommandDecorate.cpp" line="381"/>
       <source>Create a page to insert.</source>
       <translation>建立要插入的頁面。</translation>
     </message>
     <message>
-      <location filename="../../CommandDecorate.cpp" line="391"/>
-      <location filename="../../CommandDecorate.cpp" line="397"/>
+      <location filename="../../CommandDecorate.cpp" line="388"/>
+      <location filename="../../CommandDecorate.cpp" line="394"/>
       <source>No Faces to hatch in this selection</source>
       <translation>此填充中沒有面要填充</translation>
     </message>
@@ -3409,18 +3391,18 @@
       <translation>文件中沒有繪圖頁面</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="310"/>
+      <location filename="../../MDIViewPage.cpp" line="311"/>
       <source>PDF (*.pdf)</source>
       <translation>PDF (*.pdf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="311"/>
-      <location filename="../../MDIViewPage.cpp" line="496"/>
+      <location filename="../../MDIViewPage.cpp" line="312"/>
+      <location filename="../../MDIViewPage.cpp" line="497"/>
       <source>All Files (*.*)</source>
       <translation>所有檔 (*.*)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="313"/>
+      <location filename="../../MDIViewPage.cpp" line="314"/>
       <source>Export Page As PDF</source>
       <translation>匯出頁面為 PDF 檔</translation>
     </message>
@@ -3430,19 +3412,19 @@
       <translation>文件名稱： </translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="495"/>
+      <location filename="../../MDIViewPage.cpp" line="496"/>
       <source>SVG (*.svg)</source>
       <translation>SVG (*.svg)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="498"/>
+      <location filename="../../MDIViewPage.cpp" line="499"/>
       <source>Export page as SVG</source>
       <translation>匯出頁面為 SVG 檔</translation>
     </message>
     <message>
       <location filename="../../ViewProviderPage.cpp" line="213"/>
-      <location filename="../../ViewProviderTemplate.cpp" line="201"/>
       <location filename="../../ViewProviderProjGroup.cpp" line="161"/>
+      <location filename="../../ViewProviderTemplate.cpp" line="201"/>
       <source>Are you sure you want to continue?</source>
       <translation>您確定要繼續嗎?</translation>
     </message>
@@ -3477,9 +3459,9 @@
       <translation>富文字產生器</translation>
     </message>
     <message>
+      <location filename="../../QGIRichAnno.cpp" line="344"/>
       <location filename="../../TaskRichAnno.cpp" line="102"/>
       <location filename="../../TaskRichAnno.cpp" line="240"/>
-      <location filename="../../QGIRichAnno.cpp" line="344"/>
       <source>Rich text editor</source>
       <translation>富文字編輯器</translation>
     </message>
@@ -3597,8 +3579,8 @@
       <translation>編輯詳細視圖</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDimension.cpp" line="123"/>
       <location filename="../../ViewProviderBalloon.cpp" line="88"/>
+      <location filename="../../ViewProviderDimension.cpp" line="123"/>
       <source>Edit %1</source>
       <translation>編輯 %1</translation>
     </message>
@@ -3677,57 +3659,56 @@
       <translation>工程製圖建立斜連續標註</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1539"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1541"/>
       <source>TechDraw Create Horizontal Coord Dimension</source>
       <translation>工程製圖建立水平座標標註</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1612"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1614"/>
       <source>TechDraw Create Vertical Coord Dimension</source>
       <translation>工程製圖建立垂直座標標註</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1685"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1687"/>
       <source>TechDraw Create Oblique Coord Dimension</source>
       <translation>工程製圖建立斜座標標註</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1908"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1912"/>
       <source>TechDraw Create Horizontal Chamfer Dimension</source>
       <translation>工程製圖建立水平倒角標註</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="1977"/>
+      <location filename="../../CommandExtensionDims.cpp" line="1981"/>
       <source>TechDraw Create Vertical Chamfer Dimension</source>
       <translation>工程製圖建立垂直倒角標註</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2163"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2167"/>
       <source>TechDraw Create Arc Length Dimension</source>
       <translation>工程製圖建立弧長度標註</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2240"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2246"/>
       <source>TechDraw Customize Format</source>
       <translation>工程製圖客製化格式</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionDims.cpp" line="2304"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2310"/>
       <source>No subelements selected</source>
       <translation>沒有子元件集被選擇</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1622"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2268"/>
-      <location filename="../../CommandExtensionPack.cpp" line="1471"/>
-      <location filename="../../CommandExtensionPack.cpp" line="2079"/>
+      <location filename="../../CommandAnnotate.cpp" line="1624"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2274"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2014"/>
       <source>Selection is empty</source>
       <translation>選擇為空。</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1628"/>
-      <location filename="../../CommandExtensionDims.cpp" line="2284"/>
-      <location filename="../../CommandExtensionPack.cpp" line="2086"/>
+      <location filename="../../CommandAnnotate.cpp" line="1630"/>
+      <location filename="../../CommandExtensionDims.cpp" line="2290"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2021"/>
       <source>No object selected</source>
       <translation>沒有選擇物件</translation>
     </message>
@@ -3742,27 +3723,22 @@
       <translation>少於 3 個圓被選擇</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1470"/>
-      <source>TechDraw Position Section View</source>
-      <translation>TechDraw 放置剖面視圖</translation>
-    </message>
-    <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1809"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1744"/>
       <source>No faces in selection.</source>
       <translation>選擇中沒有面</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1938"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1873"/>
       <source>No edges in selection.</source>
-      <translation type="unfinished">No edges in selection.</translation>
+      <translation>選擇中沒有邊。</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="2162"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2097"/>
       <source>TechDraw Thread Hole Side</source>
       <translation>TechDraw 螺紋孔側</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="2163"/>
+      <location filename="../../CommandExtensionPack.cpp" line="2098"/>
       <source>Please select two straight lines</source>
       <translation>請選擇兩條直線</translation>
     </message>
@@ -3866,12 +3842,12 @@ thick: %4</translation>
     <message>
       <location filename="../../TaskCosmeticCircle.cpp" line="112"/>
       <source>Create Cosmetic Circle</source>
-      <translation type="unfinished">Create Cosmetic Circle</translation>
+      <translation>建立裝飾圓</translation>
     </message>
     <message>
       <location filename="../../TaskCosmeticCircle.cpp" line="146"/>
       <source>Edit Cosmetic Circle</source>
-      <translation type="unfinished">Edit Cosmetic Circle</translation>
+      <translation>編輯裝飾圓</translation>
     </message>
   </context>
   <context>
@@ -3889,17 +3865,17 @@ it has a weld symbol that would become broken.</source>
       <translation>您無法刪除此視圖，因為它具有一個或多個相依視圖，刪除將導致這些相依視圖損壞。</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderViewPart.cpp" line="353"/>
+      <location filename="../../ViewProviderLeader.cpp" line="226"/>
+      <location filename="../../ViewProviderPage.cpp" line="216"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="148"/>
+      <location filename="../../ViewProviderProjGroup.cpp" line="164"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="148"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="157"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="165"/>
       <location filename="../../ViewProviderProjGroupItem.cpp" line="173"/>
-      <location filename="../../ViewProviderLeader.cpp" line="226"/>
-      <location filename="../../ViewProviderWeld.cpp" line="145"/>
-      <location filename="../../ViewProviderPage.cpp" line="216"/>
       <location filename="../../ViewProviderTemplate.cpp" line="205"/>
-      <location filename="../../ViewProviderProjGroup.cpp" line="148"/>
-      <location filename="../../ViewProviderProjGroup.cpp" line="164"/>
+      <location filename="../../ViewProviderViewPart.cpp" line="353"/>
+      <location filename="../../ViewProviderWeld.cpp" line="145"/>
       <source>Object dependencies</source>
       <translation>物件相依</translation>
     </message>
@@ -4394,254 +4370,254 @@ when hatching a face with a PAT pattern</source>
       <translation>注釋</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="566"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="571"/>
       <source>Section Line Style</source>
       <translation>剖面線式樣</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="136"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="141"/>
       <source>Section Cut Surface</source>
       <translation>剖切面</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="462"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="467"/>
       <source>Default appearance of cut surface in section view</source>
       <translation>剖面視圖中切割面的預設外觀</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="475"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="480"/>
       <source>Hide</source>
       <translation>隱藏</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="480"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="485"/>
       <source>Solid Color</source>
       <translation>實心顏色</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="485"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="490"/>
       <source>SVG Hatch</source>
       <translation>SVG 填充</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="490"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="495"/>
       <source>PAT Hatch</source>
       <translation>PAT 填充</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="523"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="528"/>
       <source>This checkbox controls whether or not to display a highlight around the detail area in the detail&apos;s source view.</source>
       <translation type="unfinished">This checkbox controls whether or not to display a highlight around the detail area in the detail&apos;s source view.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="526"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="531"/>
       <source>Detail Source Show Highlight</source>
       <translation type="unfinished">Detail Source Show Highlight</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="553"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="558"/>
       <source>Lines</source>
       <translation>線</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="715"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="720"/>
       <source>Standard to be used to draw non-continuous lines.</source>
       <translation type="unfinished">Standard to be used to draw non-continuous lines.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="742"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="747"/>
       <source>Line group used to set line widths</source>
       <translation>用來設定線寬度的線群組</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="745"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="750"/>
       <source>Line Width Group</source>
       <translation>線寬度群組</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="421"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="426"/>
       <source>Detail View Outline Shape</source>
       <translation>詳細視圖輪廓形狀</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="170"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="175"/>
       <source>Outline shape for detail views</source>
       <translation>詳細視圖輪廓形狀</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="180"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="185"/>
       <source>Circle</source>
       <translation>圓</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="189"/>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="268"/>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="856"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="194"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="273"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="861"/>
       <source>Square</source>
       <translation>正方形</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="603"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="608"/>
       <source>Line style of detail highlight on base view</source>
       <translation>基礎視圖上強調細節的線條式樣</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="606"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="611"/>
       <source>Detail Highlight Style</source>
       <translation>強調細節式樣</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="646"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="651"/>
       <source>Center Line Style</source>
       <translation>中心線式樣</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="409"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="414"/>
       <source>Balloon Shape</source>
       <translation>件號圓圈形狀</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="213"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="218"/>
       <source>Shape of balloon annotations</source>
       <translation>件號圓圈註解的形狀</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="223"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="228"/>
       <source>Circular</source>
       <translation>環形</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="232"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="237"/>
       <source>None</source>
       <translation>無</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="241"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="246"/>
       <source>Triangle</source>
       <translation>三角形</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="250"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="255"/>
       <source>Inspection</source>
       <translation>檢查</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="259"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="264"/>
       <source>Hexagon</source>
       <translation>六角形</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="277"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="282"/>
       <source>Rectangle</source>
       <translation>矩形</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="286"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="291"/>
       <source>Line</source>
       <translation>線</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="378"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="383"/>
       <source>Balloon Leader End</source>
       <translation>件號圓圈指線終點</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="385"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="390"/>
       <source>This checkbox controls whether or not to display the outline around a detail view.</source>
       <translation type="unfinished">This checkbox controls whether or not to display the outline around a detail view.</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="388"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="393"/>
       <source>Detail View Show Matting</source>
       <translation type="unfinished">Detail View Show Matting</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="510"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="515"/>
       <source>Style for balloon leader line ends</source>
       <translation>件號圓圈指線終點的式樣</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="148"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="153"/>
       <source>Length of horizontal portion of Balloon leader</source>
       <translation>件號圓圈指線水平部份長度</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="151"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="156"/>
       <source>Ballon Leader Kink Length</source>
       <translation>件號圓圈指線紐結長度</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="310"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="315"/>
       <source>Length of balloon leader line kink</source>
       <translation>件號圓圈指線紐結長度</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="341"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="346"/>
       <source>Restrict Filled Triangle line end to vertical or horizontal directions</source>
       <translation>將填充三角形線的末端限制為垂直或水平方向</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="344"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="349"/>
       <source>Balloon Orthogonal Triangle</source>
       <translation>件號圓圈正交三角形</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="52"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="57"/>
       <source>Forces last leader line segment to be horizontal</source>
       <translation>強制最後一條指線段為水平</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="55"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="60"/>
       <source>Leader Line Auto Horizontal</source>
       <translation>指線自動水平</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="88"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="93"/>
       <source>Show arc center marks in views</source>
       <translation>在視圖中顯示弧中心標誌</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="91"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="96"/>
       <source>Show Center Marks</source>
       <translation>顯示中心標誌</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="440"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="445"/>
       <source>Show arc centers in printed output</source>
       <translation>在列印輸出中顯示弧中心</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="443"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="448"/>
       <source>Print Center Marks</source>
       <translation>列印中心標誌</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="112"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="117"/>
       <source>Show or hide marks at direction changes on ComplexSection lines.</source>
       <translation>在複雜剖面線條的方向變化處顯示或隱藏標記。</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="115"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="120"/>
       <source>Complex Section Line Marks</source>
       <translation>複雜剖面線標記</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="752"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="757"/>
       <source>Hidden Line Style</source>
       <translation type="unfinished">Hidden Line Style</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="777"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="782"/>
       <source>Line Standard</source>
       <translation type="unfinished">Line Standard</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="814"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="819"/>
       <source>Line End Cap Shape</source>
       <translation type="unfinished">Line End Cap Shape</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="838"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="843"/>
       <source>Shape of line end caps.  The default (round) should almost
 always be the right choice.   Flat or square caps are useful 
 if you are planning to use a drawing as a 1:1 cutting guide.
@@ -4652,17 +4628,17 @@ if you are planning to use a drawing as a 1:1 cutting guide.
 </translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="851"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="856"/>
       <source>Round</source>
-      <translation type="unfinished">Round</translation>
+      <translation>圓</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="861"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="866"/>
       <source>Flat</source>
       <translation>平</translation>
     </message>
     <message>
-      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="880"/>
+      <location filename="../../DlgPrefsTechDrawAnnotation.ui" line="885"/>
       <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;Note:&lt;/span&gt; Items in &lt;span style=&quot; font-style:italic;&quot;&gt;italics&lt;/span&gt; are default values for new objects. They have no effect on existing objects.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
       <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-weight:600;&quot;&gt;注意：&lt;/span&gt; 項目為 &lt;span style=&quot; font-style:italic;&quot;&gt;斜體&lt;/span&gt; 是新物件的預設值。它們對現有物件沒有影響。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -4708,12 +4684,12 @@ if you are planning to use a drawing as a 1:1 cutting guide.
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="172"/>
       <source>Section Face</source>
-      <translation>剖面面</translation>
+      <translation>立剖面</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="625"/>
       <source>Section face color</source>
-      <translation>剖面面顏色</translation>
+      <translation>立剖面顏色</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawColors.ui" line="107"/>
@@ -5195,12 +5171,12 @@ for ProjectionGroups</source>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="451"/>
       <source>ANSI</source>
-      <translation type="unfinished">ANSI</translation>
+      <translation>ANSI</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="456"/>
       <source>ISO</source>
-      <translation type="unfinished">ISO</translation>
+      <translation>ISO</translation>
     </message>
     <message>
       <location filename="../../DlgPrefsTechDrawGeneral.ui" line="469"/>
@@ -5554,89 +5530,89 @@ Fast, but result is a collection of short straight lines.</source>
   <context>
     <name>TechDrawGui::MDIViewPage</name>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="93"/>
+      <location filename="../../MDIViewPage.cpp" line="94"/>
       <source>Toggle &amp;Keep Updated</source>
       <translation>切換&amp;保持更新</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="96"/>
+      <location filename="../../MDIViewPage.cpp" line="97"/>
       <source>Toggle &amp;Frames</source>
       <translation>切換&amp;框架</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="99"/>
+      <location filename="../../MDIViewPage.cpp" line="100"/>
       <source>&amp;Export SVG</source>
       <translation>&amp;匯出 SVG</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="102"/>
+      <location filename="../../MDIViewPage.cpp" line="103"/>
       <source>Export DXF</source>
       <translation>匯出 DXF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="105"/>
+      <location filename="../../MDIViewPage.cpp" line="106"/>
       <source>Export PDF</source>
       <translation>匯出 PDF</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="108"/>
+      <location filename="../../MDIViewPage.cpp" line="109"/>
       <source>Print All Pages</source>
       <translation>列印全部頁面</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="404"/>
+      <location filename="../../MDIViewPage.cpp" line="405"/>
       <source>Different orientation</source>
       <translation>不同方向</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="405"/>
+      <location filename="../../MDIViewPage.cpp" line="406"/>
       <source>The printer uses a different orientation  than the drawing.
 Do you want to continue?</source>
       <translation>印表機與圖面使用之方向不同，您要繼續嗎？</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="414"/>
+      <location filename="../../MDIViewPage.cpp" line="415"/>
       <source>Different paper size</source>
       <translation>紙張尺寸不同</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="415"/>
+      <location filename="../../MDIViewPage.cpp" line="416"/>
       <source>The printer uses a different paper size than the drawing.
 Do you want to continue?</source>
       <translation>印表機與圖面之紙張尺寸不同，您要繼續嗎？</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="429"/>
+      <location filename="../../MDIViewPage.cpp" line="430"/>
       <source>Opening file failed</source>
       <translation>開啟檔案失敗</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="430"/>
+      <location filename="../../MDIViewPage.cpp" line="431"/>
       <source>Can not open file %1 for writing.</source>
       <translation>無法開啟要寫入的檔案 %1 。</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="519"/>
+      <location filename="../../MDIViewPage.cpp" line="520"/>
       <source>Save DXF file</source>
       <translation>儲存DXF檔</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="520"/>
+      <location filename="../../MDIViewPage.cpp" line="521"/>
       <source>DXF (*.dxf)</source>
       <translation>DXF (*.dxf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="540"/>
+      <location filename="../../MDIViewPage.cpp" line="541"/>
       <source>Save PDF file</source>
       <translation>儲存 PDF 檔</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="541"/>
+      <location filename="../../MDIViewPage.cpp" line="542"/>
       <source>PDF (*.pdf)</source>
       <translation>PDF (*.pdf)</translation>
     </message>
     <message>
-      <location filename="../../MDIViewPage.cpp" line="1035"/>
+      <location filename="../../MDIViewPage.cpp" line="1016"/>
       <source>Selected:</source>
       <translation>已選取：</translation>
     </message>
@@ -6145,28 +6121,28 @@ Do you want to continue?</source>
       <translation>Ÿ</translation>
     </message>
     <message>
-      <location filename="../../TaskCosVertex.cpp" line="160"/>
-      <location filename="../../TaskCosVertex.cpp" line="258"/>
+      <location filename="../../TaskCosVertex.cpp" line="161"/>
+      <location filename="../../TaskCosVertex.cpp" line="252"/>
       <source>Pick Points</source>
       <translation>選擇點</translation>
     </message>
     <message>
-      <location filename="../../TaskCosVertex.cpp" line="174"/>
+      <location filename="../../TaskCosVertex.cpp" line="175"/>
       <source>Pick a point for cosmetic vertex</source>
       <translation>自裝飾頂點中挑選一個點</translation>
     </message>
     <message>
-      <location filename="../../TaskCosVertex.cpp" line="177"/>
+      <location filename="../../TaskCosVertex.cpp" line="178"/>
       <source>Escape picking</source>
       <translation>退出挑選</translation>
     </message>
     <message>
-      <location filename="../../TaskCosVertex.cpp" line="202"/>
+      <location filename="../../TaskCosVertex.cpp" line="203"/>
       <source>Left click to set a point</source>
       <translation>點擊滑鼠左鍵來設定一個點</translation>
     </message>
     <message>
-      <location filename="../../TaskCosVertex.cpp" line="286"/>
+      <location filename="../../TaskCosVertex.cpp" line="280"/>
       <source>In progress edit abandoned. Start over.</source>
       <translation>放棄進行的編輯。重新來過。</translation>
     </message>
@@ -7125,7 +7101,7 @@ You can pick further points to get line segments.</source>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="287"/>
       <source>Continuous</source>
-      <translation type="unfinished">Continuous</translation>
+      <translation>連續</translation>
     </message>
     <message>
       <location filename="../../TaskLeaderLine.ui" line="296"/>
@@ -7680,7 +7656,7 @@ using the given X/Y Spacing</source>
     <message>
       <location filename="../../TaskRichAnno.ui" line="210"/>
       <source>Continuous</source>
-      <translation type="unfinished">Continuous</translation>
+      <translation>連續</translation>
     </message>
     <message>
       <location filename="../../TaskRichAnno.ui" line="215"/>
@@ -7889,62 +7865,22 @@ using the given X/Y Spacing</source>
       <translation>粗線 0.70</translation>
     </message>
     <message>
-      <location filename="../../TaskSelectLineAttributes.ui" line="101"/>
+      <location filename="../../TaskSelectLineAttributes.ui" line="104"/>
       <source>Line color:</source>
       <translation>線條色彩：</translation>
     </message>
     <message>
-      <location filename="../../TaskSelectLineAttributes.ui" line="108"/>
-      <source>Black</source>
-      <translation>黑色</translation>
-    </message>
-    <message>
       <location filename="../../TaskSelectLineAttributes.ui" line="124"/>
-      <source>Blue</source>
-      <translation>藍色</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSelectLineAttributes.ui" line="137"/>
-      <source>Grey</source>
-      <translation>灰色</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSelectLineAttributes.ui" line="150"/>
-      <source>Magenta</source>
-      <translation>洋紅色</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSelectLineAttributes.ui" line="163"/>
-      <source>Red</source>
-      <translation>紅色</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSelectLineAttributes.ui" line="176"/>
-      <source>Cyan</source>
-      <translation>青色</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSelectLineAttributes.ui" line="189"/>
-      <source>Green</source>
-      <translation>綠色</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSelectLineAttributes.ui" line="202"/>
-      <source>Yellow</source>
-      <translation>黃色</translation>
-    </message>
-    <message>
-      <location filename="../../TaskSelectLineAttributes.ui" line="228"/>
       <source>Cascade spacing</source>
       <translation>串聯間距</translation>
     </message>
     <message>
-      <location filename="../../TaskSelectLineAttributes.ui" line="242"/>
+      <location filename="../../TaskSelectLineAttributes.ui" line="138"/>
       <source>Delta distance</source>
       <translation>增量距離</translation>
     </message>
     <message>
-      <location filename="../../TaskSelectLineAttributes.cpp" line="184"/>
+      <location filename="../../TaskSelectLineAttributes.cpp" line="119"/>
       <source>Select line attributes</source>
       <translation>選擇線條屬性</translation>
     </message>
@@ -8010,7 +7946,7 @@ using the given X/Y Spacing</source>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="118"/>
       <source>ISO</source>
-      <translation type="unfinished">ISO</translation>
+      <translation>ISO</translation>
     </message>
     <message>
       <location filename="../../TaskSurfaceFinishSymbols.ui" line="131"/>
@@ -8147,7 +8083,7 @@ using the given X/Y Spacing</source>
   <context>
     <name>TechDraw_2LineCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="652"/>
+      <location filename="../../CommandAnnotate.cpp" line="654"/>
       <source>Adds a Centerline between 2 Lines</source>
       <translation>在兩條線中加入中心線</translation>
     </message>
@@ -8155,7 +8091,7 @@ using the given X/Y Spacing</source>
   <context>
     <name>TechDraw_2PointCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="656"/>
+      <location filename="../../CommandAnnotate.cpp" line="658"/>
       <source>Adds a Centerline between 2 Points</source>
       <translation>在兩點間加入中心線</translation>
     </message>
@@ -8192,7 +8128,7 @@ using the given X/Y Spacing</source>
   <context>
     <name>TechDraw_FaceCenterLine</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="648"/>
+      <location filename="../../CommandAnnotate.cpp" line="650"/>
       <source>Adds a Centerline to Faces</source>
       <translation>添加中心線至面</translation>
     </message>
@@ -8200,7 +8136,7 @@ using the given X/Y Spacing</source>
   <context>
     <name>TechDraw_HorizontalExtent</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1023"/>
+      <location filename="../../CommandCreateDims.cpp" line="995"/>
       <source>Insert Horizontal Extent Dimension</source>
       <translation>插入水平範圍標註</translation>
     </message>
@@ -8264,7 +8200,7 @@ using the given X/Y Spacing</source>
   <context>
     <name>TechDraw_VerticalExtentDimension</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1027"/>
+      <location filename="../../CommandCreateDims.cpp" line="999"/>
       <source>Insert Vertical Extent Dimension</source>
       <translation>插入垂直範圍標註</translation>
     </message>
@@ -8550,12 +8486,12 @@ using the given X/Y Spacing</source>
   <context>
     <name>CmdTechDrawDimensionRepair</name>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1202"/>
+      <location filename="../../CommandCreateDims.cpp" line="1174"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandCreateDims.cpp" line="1203"/>
+      <location filename="../../CommandCreateDims.cpp" line="1175"/>
       <source>Repair Dimension References</source>
       <translation>修復標註參考</translation>
     </message>
@@ -8999,12 +8935,12 @@ there is an open task dialog.</source>
   <context>
     <name>CmdTechDrawCosmeticCircle</name>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1126"/>
+      <location filename="../../CommandAnnotate.cpp" line="1128"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandAnnotate.cpp" line="1127"/>
+      <location filename="../../CommandAnnotate.cpp" line="1129"/>
       <source>Add Cosmetic Circle</source>
       <translation>添加裝飾圓</translation>
     </message>
@@ -9012,17 +8948,17 @@ there is an open task dialog.</source>
   <context>
     <name>CmdTechDrawExtensionArcLengthAnnotation</name>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1907"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1842"/>
       <source>TechDraw</source>
       <translation>TechDraw</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1908"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1843"/>
       <source>Calculate the arc length of selected edges</source>
       <translation type="unfinished">Calculate the arc length of selected edges</translation>
     </message>
     <message>
-      <location filename="../../CommandExtensionPack.cpp" line="1909"/>
+      <location filename="../../CommandExtensionPack.cpp" line="1844"/>
       <source>Select several edges&lt;br&gt;    - click this tool</source>
       <translation type="unfinished">Select several edges&lt;br&gt;    - click this tool</translation>
     </message>
@@ -9079,7 +9015,7 @@ there is an open task dialog.</source>
                 - enter offset values in panel</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TaskAddOffsetVertex.py" line="44"/>
+      <location filename="../../../TechDrawTools/TaskAddOffsetVertex.py" line="45"/>
       <source>Add offset vertex</source>
       <translation type="unfinished">Add offset vertex</translation>
     </message>
@@ -9109,7 +9045,7 @@ there is an open task dialog.</source>
     <message>
       <location filename="../../../TechDrawTools/TaskFillTemplateFields.py" line="351"/>
       <source>Update All</source>
-      <translation type="unfinished">Update All</translation>
+      <translation>全部更新</translation>
     </message>
   </context>
   <context>
@@ -9138,28 +9074,28 @@ there is an open task dialog.</source>
   <context>
     <name>TechDraw_Utils</name>
     <message>
-      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="77"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="79"/>
       <source>No vertex selected</source>
-      <translation type="unfinished">No vertex selected</translation>
+      <translation>沒有頂點被選取</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="89"/>
-      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="119"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="91"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="122"/>
       <source>Select at least </source>
       <translation type="unfinished">Select at least </translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="90"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="92"/>
       <source> vertexes</source>
       <translation type="unfinished"> vertexes</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="107"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="110"/>
       <source>No edge selected</source>
       <translation>無邊被選取</translation>
     </message>
     <message>
-      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="120"/>
+      <location filename="../../../TechDrawTools/TDToolsUtil.py" line="123"/>
       <source> edges</source>
       <translation type="unfinished"> edges</translation>
     </message>
@@ -9366,6 +9302,27 @@ there is an open task dialog.</source>
       <location filename="../../../App/LineNameEnum.cpp" line="82"/>
       <source>Chain</source>
       <translation type="unfinished">Chain</translation>
+    </message>
+  </context>
+  <context>
+    <name>TechDraw_PositionSectionView</name>
+    <message>
+      <location filename="../../../TechDrawTools/CommandPositionSectionView.py" line="51"/>
+      <source>Position Section View</source>
+      <translation type="unfinished">Position Section View</translation>
+    </message>
+    <message>
+      <location filename="../../../TechDrawTools/CommandPositionSectionView.py" line="59"/>
+      <source>Orthogonally align a section view with its source view:&lt;br&gt;
+                - Select a single section view&lt;br&gt;
+                - Click this tool&lt;br&gt;
+                - optional: select one edge in the section view and it&apos;s corresponding vertex in the base view&lt;br&gt;
+                  Click this tool</source>
+      <translation type="unfinished">Orthogonally align a section view with its source view:&lt;br&gt;
+                - Select a single section view&lt;br&gt;
+                - Click this tool&lt;br&gt;
+                - optional: select one edge in the section view and it&apos;s corresponding vertex in the base view&lt;br&gt;
+                  Click this tool</translation>
     </message>
   </context>
 </TS>

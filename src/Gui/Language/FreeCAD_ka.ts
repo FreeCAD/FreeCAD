@@ -188,8 +188,8 @@
       <translation>მდებარეობა</translation>
     </message>
     <message>
-      <location filename="../Transform.cpp" line="101"/>
       <location filename="../TaskCSysDragger.cpp" line="75"/>
+      <location filename="../Transform.cpp" line="101"/>
       <location filename="../ViewProviderAnnotation.cpp" line="426"/>
       <source>Transform</source>
       <translation>გარდაქმნა</translation>
@@ -587,12 +587,12 @@
     <message>
       <location filename="../CADNavigationStyle.cpp" line="51"/>
       <source>Press left mouse button</source>
-      <translation>დააწექით მარცხენა თაგუნას ღილაკს</translation>
+      <translation>დააჭირეთ თაგუნის მარცხენა ღილაკს</translation>
     </message>
     <message>
       <location filename="../CADNavigationStyle.cpp" line="53"/>
       <source>Press middle mouse button</source>
-      <translation>დააწექით შუა თაგუნას ღილაკს</translation>
+      <translation>დააჭირეთ თაგუნის შუა ღილაკს</translation>
     </message>
     <message>
       <location filename="../CADNavigationStyle.cpp" line="55"/>
@@ -1168,7 +1168,7 @@ If this is not ticked, then the property must be uniquely named, and it is acces
     <message>
       <location filename="../DlgActions.ui" line="215"/>
       <source>Remove</source>
-      <translation>წაშლა</translation>
+      <translation>მოცილება</translation>
     </message>
     <message>
       <location filename="../DlgActions.ui" line="222"/>
@@ -1879,7 +1879,7 @@ same time. The one with the highest priority will be triggered.</source>
     <message>
       <location filename="../DlgMacroExecute.ui" line="261"/>
       <source>Rename</source>
-      <translation>გადარქმევა</translation>
+      <translation>სახელის გადარქმევა</translation>
     </message>
     <message>
       <location filename="../DlgMacroExecute.ui" line="271"/>
@@ -2439,7 +2439,7 @@ Specify another directory, please.</source>
     <message>
       <location filename="../DlgPreferences.ui" line="158"/>
       <source>Reset</source>
-      <translation>დაბრუნება</translation>
+      <translation>საწყის მნიშვნელობებზე დაბრუნება</translation>
     </message>
     <message>
       <location filename="../DlgPreferences.ui" line="198"/>
@@ -2559,12 +2559,12 @@ Specify another directory, please.</source>
     <message>
       <location filename="../DlgProjectInformation.ui" line="142"/>
       <source>Unit System:</source>
-      <translation type="unfinished">Unit System:</translation>
+      <translation>ერთეულების სისტემა:</translation>
     </message>
     <message>
       <location filename="../DlgProjectInformation.ui" line="152"/>
       <source>Unit system for this file</source>
-      <translation type="unfinished">Unit system for this file</translation>
+      <translation>ერთეულების სისტემა ამ ფაილისთვის</translation>
     </message>
     <message>
       <location filename="../DlgProjectInformation.ui" line="159"/>
@@ -2735,7 +2735,7 @@ Specify another directory, please.</source>
     <message>
       <location filename="../DlgPropertyLink.cpp" line="106"/>
       <source>Reset</source>
-      <translation>საწყის მნიშვნელობებზე დაბრუნება</translation>
+      <translation>დაბრუნება</translation>
     </message>
     <message>
       <location filename="../DlgPropertyLink.cpp" line="107"/>
@@ -2786,7 +2786,7 @@ Specify another directory, please.</source>
     <message>
       <location filename="../DlgRunExternal.ui" line="38"/>
       <source>TextLabel</source>
-      <translation>ტექსტური ჭდე</translation>
+      <translation>ტექსტური წარწერა</translation>
     </message>
     <message>
       <location filename="../DlgRunExternal.ui" line="58"/>
@@ -4257,17 +4257,17 @@ The value is the diameter of the sphere to fit on the screen.</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="695"/>
       <source>Animations</source>
-      <translation type="unfinished">Animations</translation>
+      <translation>ანიმაციები</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="761"/>
       <source>Enable spinning animations that are used in some navigation styles after dragging</source>
-      <translation type="unfinished">Enable spinning animations that are used in some navigation styles after dragging</translation>
+      <translation>ჩართავს ტრიალა ანიმაციებს, რომლებიც გამოიყენება ზოგიერთ ნავიგაციის სტილებში გადათრევის შემდეგ</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="764"/>
       <source>Enable spinning animations</source>
-      <translation type="unfinished">Enable spinning animations</translation>
+      <translation>ტრიალა ანიმაციების ჩართვა</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="704"/>
@@ -4787,7 +4787,7 @@ The preference system is the one set in the general preferences.</source>
     <message>
       <location filename="../Placement.cpp" line="987"/>
       <source>Placement</source>
-      <translation>მდებარეობა</translation>
+      <translation>განლაგება</translation>
     </message>
   </context>
   <context>
@@ -5250,7 +5250,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../Placement.ui" line="14"/>
       <source>Placement</source>
-      <translation>განლაგება</translation>
+      <translation>მდებარეობა</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="20"/>
@@ -5308,7 +5308,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../Placement.ui" line="204"/>
       <source>Rotation:</source>
-      <translation>შემობრუნება:</translation>
+      <translation>ბრუნვა:</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="226"/>
@@ -6098,15 +6098,15 @@ Do you want to save your changes?</source>
       <translation>PDF ფორმატი</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="448"/>
       <location filename="../CommandDoc.cpp" line="617"/>
+      <location filename="../GraphvizView.cpp" line="448"/>
       <source>Graphviz format</source>
       <translation>Graphviz-ის ფორმატი</translation>
     </message>
     <message>
+      <location filename="../CommandDoc.cpp" line="618"/>
       <location filename="../GraphvizView.cpp" line="462"/>
       <location filename="../GraphvizView.cpp" line="550"/>
-      <location filename="../CommandDoc.cpp" line="618"/>
       <source>Export graph</source>
       <translation>გრაფიკის გატანა</translation>
     </message>
@@ -6144,7 +6144,7 @@ Do you want to save your changes?</source>
     <message>
       <location filename="../InventorNavigationStyle.cpp" line="57"/>
       <source>Scroll middle mouse button</source>
-      <translation>დაატრიალეთ შუა თაგუნას ღილაკი</translation>
+      <translation>დაატრიალეთ თაგუნის ბორბალი</translation>
     </message>
   </context>
   <context>
@@ -7020,7 +7020,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../TaskDlgRelocation.cpp" line="42"/>
       <source>Position</source>
-      <translation>მდებარეობა</translation>
+      <translation type="unfinished">Position</translation>
     </message>
   </context>
   <context>
@@ -7051,7 +7051,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../TaskElementColors.ui" line="22"/>
       <source>TextLabel</source>
-      <translation>ტექსტური წარწერა</translation>
+      <translation>ტექსტური ჭდე</translation>
     </message>
     <message>
       <location filename="../TaskElementColors.ui" line="40"/>
@@ -7066,7 +7066,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../TaskElementColors.ui" line="54"/>
       <source>Remove</source>
-      <translation>მოცილება</translation>
+      <translation>წაშლა</translation>
     </message>
     <message>
       <location filename="../TaskElementColors.ui" line="61"/>
@@ -7201,7 +7201,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../TinkerCADNavigationStyle.cpp" line="51"/>
       <source>Press middle mouse button</source>
-      <translation>დააჭირეთ თაგუნის შუა ღილაკს</translation>
+      <translation>დააწექით შუა თაგუნას ღილაკს</translation>
     </message>
     <message>
       <location filename="../TinkerCADNavigationStyle.cpp" line="53"/>
@@ -7211,7 +7211,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../TinkerCADNavigationStyle.cpp" line="55"/>
       <source>Scroll middle mouse button</source>
-      <translation>დაატრიალეთ თაგუნის ბორბალი</translation>
+      <translation>დაატრიალეთ შუა თაგუნას ღილაკი</translation>
     </message>
   </context>
   <context>
@@ -7219,7 +7219,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../TouchpadNavigationStyle.cpp" line="48"/>
       <source>Press left mouse button</source>
-      <translation>დააჭირეთ თაგუნის მარცხენა ღილაკს</translation>
+      <translation>დააწექით მარცხენა თაგუნას ღილაკს</translation>
     </message>
     <message>
       <location filename="../TouchpadNavigationStyle.cpp" line="50"/>
@@ -7460,7 +7460,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../Tree.cpp" line="3320"/>
       <source>Tree view</source>
-      <translation>ხის ხედი</translation>
+      <translation>ელემენტების ხე</translation>
     </message>
   </context>
   <context>
@@ -7557,7 +7557,7 @@ Do you want to specify another directory?</source>
       <location filename="../Tree.cpp" line="2965"/>
       <location filename="../Tree.cpp" line="5095"/>
       <source>Rename</source>
-      <translation>სახელის გადარქმევა</translation>
+      <translation>გადარქმევა</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="2966"/>
@@ -7863,7 +7863,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../MainWindow.cpp" line="674"/>
       <source>Tree view</source>
-      <translation>ელემენტების ხე</translation>
+      <translation>ხის ხედი</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="596"/>
@@ -8035,8 +8035,8 @@ Do you want to specify another directory?</source>
       <translation>PDF-ად გატანა...</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="833"/>
       <location filename="../CommandDoc.cpp" line="1230"/>
+      <location filename="../MainWindow.cpp" line="833"/>
       <source>Unsaved document</source>
       <translation>შეუნახავი დოკუმენტი</translation>
     </message>
@@ -8307,7 +8307,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../NotificationArea.cpp" line="431"/>
       <source> (%1 times)</source>
-      <translation type="unfinished"> (%1 times)</translation>
+      <translation> (%1-ჯერ)</translation>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="664"/>
@@ -8689,7 +8689,7 @@ Please open a browser window and type in: http://localhost:%1.</source>
     <message>
       <location filename="../SoFCCSysDragger.cpp" line="941"/>
       <source>Rotation:</source>
-      <translation>ბრუნვა:</translation>
+      <translation>შემობრუნება:</translation>
     </message>
     <message>
       <location filename="../ViewProviderPart.cpp" line="72"/>
@@ -8911,8 +8911,8 @@ the current copy will be lost.
       <translation>განლაგების გადართვა</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="2180"/>
       <location filename="../OverlayManager.cpp" line="1036"/>
+      <location filename="../OverlayWidgets.cpp" line="2180"/>
       <source>Toggle floating window</source>
       <translation>მცურავი ფანჯრის გადართვა</translation>
     </message>
@@ -10041,8 +10041,8 @@ the current copy will be lost.
       <translation>ახალი ცარიელი პროექტის შექმნა</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2339"/>
       <location filename="../DocumentRecovery.cpp" line="391"/>
+      <location filename="../MainWindow.cpp" line="2339"/>
       <source>Unnamed</source>
       <translation>უსახელო</translation>
     </message>
@@ -11140,7 +11140,7 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
     <message>
       <location filename="../CommandView.cpp" line="1512"/>
       <source>Trimetric</source>
-      <translation>ტრიმეტრული</translation>
+      <translation>ტრიმეტრიული</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1513"/>
@@ -11224,7 +11224,7 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
     <message>
       <location filename="../CommandView.cpp" line="1703"/>
       <source>Fullscreen</source>
-      <translation>მთელ ეკრანზე</translation>
+      <translation>მთლიან ეკრანზე ჩვენების რეჟიმი</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1704"/>
@@ -11462,7 +11462,7 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
       <location filename="../CommandView.cpp" line="1766"/>
       <location filename="../CommandView.cpp" line="1768"/>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
-      <translation>აქტიური ხედის მთელ ეკრანზე, დოკზე მიმაგრებულ ან დოკიდან მოხსნილ რეჟიმში ჩვენება</translation>
+      <translation>აქტიური ხედის მთელ ეკრანზე, მომძვრალ ან მიმაგრებულ რეჟიმში ჩვენება</translation>
     </message>
   </context>
   <context>
@@ -11470,7 +11470,7 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
     <message>
       <location filename="../CommandView.cpp" line="1735"/>
       <source>Fullscreen</source>
-      <translation>მთლიან ეკრანზე ჩვენების რეჟიმი</translation>
+      <translation>მთელ ეკრანზე</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1736"/>
@@ -11504,7 +11504,7 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
       <location filename="../CommandView.cpp" line="1675"/>
       <location filename="../CommandView.cpp" line="1677"/>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
-      <translation>აქტიური ხედის მთელ ეკრანზე, მომძვრალ ან მიმაგრებულ რეჟიმში ჩვენება</translation>
+      <translation>აქტიური ხედის მთელ ეკრანზე, დოკზე მიმაგრებულ ან დოკიდან მოხსნილ რეჟიმში ჩვენება</translation>
     </message>
   </context>
   <context>
@@ -12196,7 +12196,7 @@ FreeCAD-ის გაშვების შემდეგ</translation>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="263"/>
       <source>Apply</source>
-      <translation>გადატარება</translation>
+      <translation>დადება</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="270"/>
@@ -12651,12 +12651,12 @@ FreeCAD-ის გაშვების შემდეგ</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="55"/>
       <source>Default Unit system:</source>
-      <translation type="unfinished">Default Unit system:</translation>
+      <translation>ნაგულისხმევი ერთეულების სისტემა:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="96"/>
       <source>Ignore project unit system and use default</source>
-      <translation type="unfinished">Ignore project unit system and use default</translation>
+      <translation>პროექტის ერთეულების იგნორი და ნაგულისხმევის გამოყენება</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="103"/>
@@ -12896,7 +12896,7 @@ display the splash screen</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="511"/>
       <source>Apply</source>
-      <translation>დადება</translation>
+      <translation>გადატარება</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="512"/>
@@ -13612,13 +13612,13 @@ the region are non-opaque.</source>
     <message>
       <location filename="../CommandWindow.cpp" line="352"/>
       <source>Lock toolbars</source>
-      <translation type="unfinished">Lock toolbars</translation>
+      <translation>ხელსაწყოს პანელების დაბლოკვა</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="353"/>
       <location filename="../CommandWindow.cpp" line="355"/>
       <source>Locks toolbar so they are no longer moveable</source>
-      <translation type="unfinished">Locks toolbar so they are no longer moveable</translation>
+      <translation>დაბლოკვას ხელსაწყოების პანელს. ისინი გადატანადი აღარ იქნება</translation>
     </message>
   </context>
 </TS>

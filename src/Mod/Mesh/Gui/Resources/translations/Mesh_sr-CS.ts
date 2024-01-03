@@ -1427,8 +1427,8 @@ If not checked, it depends on the option "Enable backlight color"
 (preferences section Display -&gt; 3D View). Either the backlight color
 will be used or black.</source>
       <translation>Donja strana površine će biti prikazana na isti način kao gornja strana.
-Ako nije čekirano, zavisi od opcije „Omogući boju pozadinskog osvetljenja“
-(Podešavanja -&gt; Prikaz -&gt; 3D prikaz). Ili će se koristiti boja pozadinskog
+Ako nije označeno, zavisi od opcije „Omogući boju pozadinskog osvetljenja“
+(Podešavanja -&gt; Prikaz -&gt; 3D prikaz). Ili će se koristiti boja pozadinskog 
 osvetljenja ili crna boja.</translation>
     </message>
     <message>

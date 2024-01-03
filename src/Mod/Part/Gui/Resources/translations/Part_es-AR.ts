@@ -1232,7 +1232,7 @@ Posición. Funciona en objetos con ubicaciones y aristas de elipse/parábola/hip
     <message>
       <location filename="../../Command.cpp" line="2229"/>
       <source>Clear all dimensions from the active 3D view.</source>
-      <translation type="unfinished">Clear all dimensions from the active 3D view.</translation>
+      <translation>Eliminar todas las cotas de la vista 3D activa.</translation>
     </message>
   </context>
   <context>
@@ -4528,7 +4528,7 @@ se utilizará el vector normal del plano de croquis</translation>
     <message>
       <location filename="../../Mirroring.ui" line="121"/>
       <source>Use selected reference</source>
-      <translation type="unfinished">Use selected reference</translation>
+      <translation>Usar referencia seleccionada</translation>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="142"/>
@@ -4559,12 +4559,12 @@ se utilizará el vector normal del plano de croquis</translation>
       <location filename="../../Mirroring.ui" line="150"/>
       <location filename="../../Mirroring.cpp" line="215"/>
       <source>Selecting</source>
-      <translation type="unfinished">Selecting</translation>
+      <translation>Seleccionando</translation>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="166"/>
       <source>Mirror plane reference</source>
-      <translation type="unfinished">Mirror plane reference</translation>
+      <translation>Reflejar plano de referencia</translation>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="20"/>
@@ -5717,8 +5717,8 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="47"/>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="54"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="53"/>
       <location filename="../../ViewProvider.cpp" line="49"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="53"/>
       <source>Edit %1</source>
       <translation>Editar %1</translation>
     </message>
@@ -5810,20 +5810,20 @@ Do you want to continue?</source>
       <translation>Ninguna referencia seleccionada</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
       <location filename="../../TaskAttacher.cpp" line="75"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
       <source>Face</source>
       <translation>Cara</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
       <location filename="../../TaskAttacher.cpp" line="78"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
       <source>Edge</source>
       <translation>Arista</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <location filename="../../TaskAttacher.cpp" line="81"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <source>Vertex</source>
       <translation>Vértice</translation>
     </message>
@@ -6436,7 +6436,7 @@ para filtrado de colisión o distancia.</translation>
     <message>
       <location filename="../../../CompoundTools/_CommandCompoundFilter.py" line="111"/>
       <source>Click 'Continue' to create the feature anyway, or 'Abort' to cancel.</source>
-      <translation>Haga clic en 'Continuar' para crear la función de todos modos, o 'Abortar' para cancelar.</translation>
+      <translation>Haga clic en 'Continuar' para crear la característica de todos modos, o 'Abortar' para cancelar.</translation>
     </message>
   </context>
   <context>
@@ -6461,7 +6461,7 @@ Creará un 'Filtro Compuesto' para cada forma.</translation>
     <message>
       <location filename="../../../CompoundTools/_CommandExplodeCompound.py" line="63"/>
       <source>Bad selection</source>
-      <translation>Selección incorrecta</translation>
+      <translation>Mala selección</translation>
     </message>
   </context>
   <context>

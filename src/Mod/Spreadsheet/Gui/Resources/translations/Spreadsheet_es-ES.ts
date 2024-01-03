@@ -227,7 +227,7 @@
     <message>
       <location filename="../../Command.cpp" line="641"/>
       <source>Bold text</source>
-      <translation>Negrita</translation>
+      <translation>Texto en negrita</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="642"/>
@@ -263,12 +263,12 @@
     <message>
       <location filename="../../Command.cpp" line="807"/>
       <source>Underline text</source>
-      <translation>Subrayado</translation>
+      <translation>Texto subrayado</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="808"/>
       <source>Underline text in selected cells</source>
-      <translation>Texto subrayado en las celdas seleccionadas</translation>
+      <translation>Establecer texto subrayado en las celdas seleccionadas</translation>
     </message>
   </context>
   <context>
@@ -433,7 +433,7 @@
       <source>Start cell address to bind to.
 Type '=' if you want to use an expression.
 The expression must evaluate to a string of some cell address.</source>
-      <translation>Dirección de celda inicial a enlazar.
+      <translation>Dirección de celda inicial a enlazar. 
 Escriba '=' si desea utilizar una expresión.
 La expresión debe evaluar a una cadena de alguna dirección de celda.</translation>
     </message>
@@ -948,7 +948,7 @@ Por defecto: %V = %A
     <message>
       <location filename="../../DlgSettings.ui" line="84"/>
       <source>Import/Export Settings</source>
-      <translation>Opciones de Importar/Exportar</translation>
+      <translation>Opciones para Importar/Exportar</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="96"/>

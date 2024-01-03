@@ -188,8 +188,8 @@
       <translation>Umiejscowienie</translation>
     </message>
     <message>
-      <location filename="../Transform.cpp" line="101"/>
       <location filename="../TaskCSysDragger.cpp" line="75"/>
+      <location filename="../Transform.cpp" line="101"/>
       <location filename="../ViewProviderAnnotation.cpp" line="426"/>
       <source>Transform</source>
       <translation>Przemieszczenie</translation>
@@ -418,7 +418,7 @@
     <message>
       <location filename="../Application.h" line="255"/>
       <source>Default</source>
-      <translation>Domyślnie</translation>
+      <translation>Domyślny</translation>
     </message>
     <message>
       <location filename="../Application.h" line="256"/>
@@ -587,7 +587,7 @@
     <message>
       <location filename="../CADNavigationStyle.cpp" line="51"/>
       <source>Press left mouse button</source>
-      <translation>Naciśnij lewy przycisk myszki</translation>
+      <translation>Wciśnij lewy przycisk myszki</translation>
     </message>
     <message>
       <location filename="../CADNavigationStyle.cpp" line="53"/>
@@ -1119,7 +1119,7 @@ Jeśli ta opcja nie jest zaznaczona, właściwość musi być jednoznacznie nazw
     <message>
       <location filename="../DlgActions.ui" line="17"/>
       <source>Macros</source>
-      <translation>Makropolecenie</translation>
+      <translation>Makrodefinicje</translation>
     </message>
     <message>
       <location filename="../DlgActions.ui" line="29"/>
@@ -1389,7 +1389,7 @@ wyzwolone zostanie to, które ma najwyższy priorytet.</translation>
       <location filename="../DlgKeyboardImp.cpp" line="433"/>
       <location filename="../DlgKeyboardImp.cpp" line="501"/>
       <source>none</source>
-      <translation>żaden</translation>
+      <translation>brak</translation>
     </message>
   </context>
   <context>
@@ -2438,7 +2438,7 @@ Proszę podać inny katalog.</translation>
     <message>
       <location filename="../DlgPreferences.ui" line="158"/>
       <source>Reset</source>
-      <translation>Resetuj</translation>
+      <translation>Reset</translation>
     </message>
     <message>
       <location filename="../DlgPreferences.ui" line="198"/>
@@ -2558,12 +2558,12 @@ Proszę podać inny katalog.</translation>
     <message>
       <location filename="../DlgProjectInformation.ui" line="142"/>
       <source>Unit System:</source>
-      <translation type="unfinished">Unit System:</translation>
+      <translation>Układ jednostek:</translation>
     </message>
     <message>
       <location filename="../DlgProjectInformation.ui" line="152"/>
       <source>Unit system for this file</source>
-      <translation type="unfinished">Unit system for this file</translation>
+      <translation>Układ jednostek dla tego pliku</translation>
     </message>
     <message>
       <location filename="../DlgProjectInformation.ui" line="159"/>
@@ -2734,7 +2734,7 @@ Proszę podać inny katalog.</translation>
     <message>
       <location filename="../DlgPropertyLink.cpp" line="106"/>
       <source>Reset</source>
-      <translation>Reset</translation>
+      <translation>Resetuj</translation>
     </message>
     <message>
       <location filename="../DlgPropertyLink.cpp" line="107"/>
@@ -3911,7 +3911,7 @@ Możesz również skorzystać z formatki: John Doe &lt;john@doe.com&gt;</transla
     <message>
       <location filename="../PreferencePages/DlgSettingsMacro.ui" line="14"/>
       <source>Macro</source>
-      <translation>Makropolecenia</translation>
+      <translation>Makrodefinicje</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsMacro.ui" line="20"/>
@@ -4105,7 +4105,7 @@ Możesz również skorzystać z formatki: John Doe &lt;john@doe.com&gt;</transla
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="162"/>
       <source>Default</source>
-      <translation>Domyślny</translation>
+      <translation>Domyślnie</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="170"/>
@@ -4260,17 +4260,17 @@ Wartością jest średnica kuli, która ma zmieścić się na ekranie.</translat
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="695"/>
       <source>Animations</source>
-      <translation type="unfinished">Animations</translation>
+      <translation>Animacje</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="761"/>
       <source>Enable spinning animations that are used in some navigation styles after dragging</source>
-      <translation type="unfinished">Enable spinning animations that are used in some navigation styles after dragging</translation>
+      <translation>Włącz animacje obracania, używane w niektórych stylach nawigacji po przeciągnięciu.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="764"/>
       <source>Enable spinning animations</source>
-      <translation type="unfinished">Enable spinning animations</translation>
+      <translation>Włącz animacje wirowania</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="704"/>
@@ -4436,12 +4436,13 @@ długość wiersza w konsoli Python</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="91"/>
       <source>The interval at which the profiler runs when there's Python code running (to keep the GUI responding). Set to 0 to disable.</source>
-      <translation>Interwał, w którym profiler działa, gdy uruchomiony jest kod Python (aby interfejs graficzny odpowiadał). Ustaw na 0, aby wyłączyć.</translation>
+      <translation>Interwał, w którym działa profiler, gdy uruchomiony jest kod Python (aby interfejs graficzny odpowiadał).
+Ustaw wartość 0, aby wyłączyć.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="116"/>
       <source>Other</source>
-      <translation>Inne</translation>
+      <translation>Pozostałe</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="122"/>
@@ -4451,7 +4452,8 @@ długość wiersza w konsoli Python</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="141"/>
       <source>Used for package installation with pip and debugging with debugpy. Autodetected if needed and not specified.</source>
-      <translation>Używany do instalacji pakietów za pomocą programu i debugowania za pomocą debugpy. Wykrywany automatycznie, jeśli jest potrzebny i nie został określony.</translation>
+      <translation>Używana do instalacji pakietów za pomocą programu i debugowania za pomocą debugpy.
+Wykrywana automatycznie, jeśli jest potrzebna i nie została określona.</translation>
     </message>
   </context>
   <context>
@@ -6101,15 +6103,15 @@ Do you want to save your changes?</source>
       <translation>Format PDF</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="448"/>
       <location filename="../CommandDoc.cpp" line="617"/>
+      <location filename="../GraphvizView.cpp" line="448"/>
       <source>Graphviz format</source>
       <translation>Format Graphviz</translation>
     </message>
     <message>
+      <location filename="../CommandDoc.cpp" line="618"/>
       <location filename="../GraphvizView.cpp" line="462"/>
       <location filename="../GraphvizView.cpp" line="550"/>
-      <location filename="../CommandDoc.cpp" line="618"/>
       <source>Export graph</source>
       <translation>Eksport wykresu</translation>
     </message>
@@ -6137,7 +6139,7 @@ Do you want to save your changes?</source>
     <message>
       <location filename="../InventorNavigationStyle.cpp" line="53"/>
       <source>Press middle mouse button</source>
-      <translation>Naciśnij środkowy przycisk myszki</translation>
+      <translation>Wciśnij środkowy przycisk myszki</translation>
     </message>
     <message>
       <location filename="../InventorNavigationStyle.cpp" line="55"/>
@@ -6253,7 +6255,7 @@ Do you want to save your changes?</source>
     <message>
       <location filename="../DlgKeyboardImp.cpp" line="380"/>
       <source>Macros</source>
-      <translation>Makrodefinicje</translation>
+      <translation>Makropolecenie</translation>
     </message>
     <message>
       <location filename="../Command.cpp" line="1184"/>
@@ -6327,7 +6329,7 @@ Do you want to save your changes?</source>
       <location filename="../MainWindow.cpp" line="2142"/>
       <location filename="../MainWindow.cpp" line="2234"/>
       <source>Unsaved document</source>
-      <translation>Dokument niezapisany</translation>
+      <translation>Niezapisany dokument</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="2143"/>
@@ -7170,7 +7172,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../TextDocumentEditorView.cpp" line="232"/>
       <source>Unsaved document</source>
-      <translation>Niezapisany dokument</translation>
+      <translation>Dokument niezapisany</translation>
     </message>
     <message>
       <location filename="../TextDocumentEditorView.cpp" line="233"/>
@@ -7199,7 +7201,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../TinkerCADNavigationStyle.cpp" line="51"/>
       <source>Press middle mouse button</source>
-      <translation>Wciśnij środkowy przycisk myszki</translation>
+      <translation>Naciśnij środkowy przycisk myszki</translation>
     </message>
     <message>
       <location filename="../TinkerCADNavigationStyle.cpp" line="53"/>
@@ -7217,7 +7219,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../TouchpadNavigationStyle.cpp" line="48"/>
       <source>Press left mouse button</source>
-      <translation>Wciśnij lewy przycisk myszki</translation>
+      <translation>Naciśnij lewy przycisk myszki</translation>
     </message>
     <message>
       <location filename="../TouchpadNavigationStyle.cpp" line="50"/>
@@ -7671,7 +7673,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../View3DInventor.cpp" line="247"/>
       <source>Export PDF</source>
-      <translation>Eksportuj do formatu PDF</translation>
+      <translation>Eksportuj do PDF</translation>
     </message>
     <message>
       <location filename="../View3DInventor.cpp" line="248"/>
@@ -8033,8 +8035,8 @@ Do you want to specify another directory?</source>
       <translation>Eksportuj do PDF...</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="833"/>
       <location filename="../CommandDoc.cpp" line="1230"/>
+      <location filename="../MainWindow.cpp" line="833"/>
       <source>Unsaved document</source>
       <translation>Niezapisany dokument</translation>
     </message>
@@ -8303,7 +8305,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../NotificationArea.cpp" line="431"/>
       <source> (%1 times)</source>
-      <translation type="unfinished"> (%1 times)</translation>
+      <translation> (%1 razy)</translation>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="664"/>
@@ -8908,8 +8910,8 @@ bieżącej kopii zostaną utracone.
       <translation>Włącz / wyłącz nakładkę</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="2180"/>
       <location filename="../OverlayManager.cpp" line="1036"/>
+      <location filename="../OverlayWidgets.cpp" line="2180"/>
       <source>Toggle floating window</source>
       <translation>Włącz / wyłącz pływające okno</translation>
     </message>
@@ -10038,8 +10040,8 @@ bieżącej kopii zostaną utracone.
       <translation>Utwórz nowy pusty dokument</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2339"/>
       <location filename="../DocumentRecovery.cpp" line="391"/>
+      <location filename="../MainWindow.cpp" line="2339"/>
       <source>Unnamed</source>
       <translation>Nienazwany</translation>
     </message>
@@ -10928,7 +10930,7 @@ Służy do rozmieszczania obiektów, które mają kształt topologiczny, takich 
     <message>
       <location filename="../CommandView.cpp" line="1465"/>
       <source>Isometric</source>
-      <translation>Widok izometryczny</translation>
+      <translation>Izometryczny</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1466"/>
@@ -11222,7 +11224,7 @@ Służy do rozmieszczania obiektów, które mają kształt topologiczny, takich 
     <message>
       <location filename="../CommandView.cpp" line="1703"/>
       <source>Fullscreen</source>
-      <translation>Pełny ekran</translation>
+      <translation>Cały ekran</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1704"/>
@@ -11460,7 +11462,7 @@ Służy do rozmieszczania obiektów, które mają kształt topologiczny, takich 
       <location filename="../CommandView.cpp" line="1766"/>
       <location filename="../CommandView.cpp" line="1768"/>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
-      <translation>Wyświetl aktywny widok w trybie pełnoekranowym, w trybie niezadokowanym lub zadokowanym</translation>
+      <translation>Wyświetl aktywny widok na pełnym ekranie, w trybie niezadokowanym lub zadokowanym</translation>
     </message>
   </context>
   <context>
@@ -11468,7 +11470,7 @@ Służy do rozmieszczania obiektów, które mają kształt topologiczny, takich 
     <message>
       <location filename="../CommandView.cpp" line="1735"/>
       <source>Fullscreen</source>
-      <translation>Cały ekran</translation>
+      <translation>Pełny ekran</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1736"/>
@@ -11502,7 +11504,7 @@ Służy do rozmieszczania obiektów, które mają kształt topologiczny, takich 
       <location filename="../CommandView.cpp" line="1675"/>
       <location filename="../CommandView.cpp" line="1677"/>
       <source>Display the active view either in fullscreen, in undocked or docked mode</source>
-      <translation>Wyświetl aktywny widok na pełnym ekranie, w trybie niezadokowanym lub zadokowanym</translation>
+      <translation>Wyświetl aktywny widok w trybie pełnoekranowym, w trybie niezadokowanym lub zadokowanym</translation>
     </message>
   </context>
   <context>
@@ -11821,7 +11823,7 @@ Czy nadal chcesz kontynuować?</translation>
     <message>
       <location filename="../Workbench.cpp" line="553"/>
       <source>Macro</source>
-      <translation>Makrodefinicje</translation>
+      <translation>Makropolecenia</translation>
     </message>
     <message>
       <location filename="../Workbench.cpp" line="554"/>
@@ -11844,7 +11846,7 @@ Czy nadal chcesz kontynuować?</translation>
     <message>
       <location filename="../MDIView.cpp" line="257"/>
       <source>Export PDF</source>
-      <translation>Eksportuj do PDF</translation>
+      <translation>Eksportuj do formatu PDF</translation>
     </message>
     <message>
       <location filename="../MDIView.cpp" line="258"/>
@@ -12154,7 +12156,7 @@ po uruchomieniu FreeCAD</translation>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="159"/>
       <source>Transparency :</source>
-      <translation>Przezroczystość :</translation>
+      <translation>Przejrzystość:</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="191"/>
@@ -12649,12 +12651,12 @@ po uruchomieniu FreeCAD</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="55"/>
       <source>Default Unit system:</source>
-      <translation type="unfinished">Default Unit system:</translation>
+      <translation>Domyślny układ jednostek:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="96"/>
       <source>Ignore project unit system and use default</source>
-      <translation type="unfinished">Ignore project unit system and use default</translation>
+      <translation>Ignoruj układ jednostki z projektu i użyj domyślnego</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="103"/>
@@ -13616,13 +13618,13 @@ gdy wszystkie piksele wewnątrz regionu są nieprzezroczyste.</translation>
     <message>
       <location filename="../CommandWindow.cpp" line="352"/>
       <source>Lock toolbars</source>
-      <translation type="unfinished">Lock toolbars</translation>
+      <translation>Zablokuj paski narzędzi</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="353"/>
       <location filename="../CommandWindow.cpp" line="355"/>
       <source>Locks toolbar so they are no longer moveable</source>
-      <translation type="unfinished">Locks toolbar so they are no longer moveable</translation>
+      <translation>Blokuje pasek narzędzi, dzięki czemu nie można już go przesuwać.</translation>
     </message>
   </context>
 </TS>

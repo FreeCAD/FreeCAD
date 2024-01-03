@@ -1236,18 +1236,18 @@ les mises à jour disponibles seront vérifiées pour les extensions installées
       <translation>L'exécution de la macro a échoué. Voir la console pour les détails de l'échec.</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode_people_table.py" line="86"/>
       <location filename="../../addonmanager_devmode.py" line="115"/>
-      <location filename="../../package_list.py" line="386"/>
+      <location filename="../../addonmanager_devmode_people_table.py" line="86"/>
       <location filename="../../addonmanager_devmode_person_editor.py" line="47"/>
+      <location filename="../../package_list.py" line="386"/>
       <source>Maintainer</source>
       <translation>Mainteneur</translation>
     </message>
     <message>
-      <location filename="../../addonmanager_devmode_people_table.py" line="87"/>
       <location filename="../../addonmanager_devmode.py" line="116"/>
-      <location filename="../../package_list.py" line="423"/>
+      <location filename="../../addonmanager_devmode_people_table.py" line="87"/>
       <location filename="../../addonmanager_devmode_person_editor.py" line="49"/>
+      <location filename="../../package_list.py" line="423"/>
       <source>Author</source>
       <translation>Auteur</translation>
     </message>
@@ -1463,8 +1463,8 @@ les mises à jour disponibles seront vérifiées pour les extensions installées
       <translation>Les bindings Python de QtWebEngine ne sont pas installés -- utilisation de l'affichage README de remplacement.</translation>
     </message>
     <message>
-      <location filename="../../package_details.py" line="644"/>
       <location filename="../../addonmanager_installer_gui.py" line="476"/>
+      <location filename="../../package_details.py" line="644"/>
       <location filename="../../AddonManagerTest/gui/test_installer_gui.py" line="54"/>
       <source>Success</source>
       <translation>Opération réussie</translation>
@@ -1596,9 +1596,9 @@ les mises à jour disponibles seront vérifiées pour les extensions installées
       <translation>Sélectionner un fichier d'icône pour cet élément de contenu.</translation>
     </message>
     <message>
+      <location filename="../../addonmanager_devmode.py" line="692"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="274"/>
       <location filename="../../addonmanager_devmode_add_content.py" line="313"/>
-      <location filename="../../addonmanager_devmode.py" line="692"/>
       <source>{} is not a subdirectory of {}</source>
       <translation>{} n'est pas un sous-répertoire de {}</translation>
     </message>

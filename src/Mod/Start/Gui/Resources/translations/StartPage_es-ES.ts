@@ -71,7 +71,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="60"/>
       <source>Create a part with the Part Design workbench</source>
-      <translation>Crea una pieza con el entorno de trabajo Part Design</translation>
+      <translation>Crear una pieza con el entorno de trabajo Part Design</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="61"/>
@@ -176,7 +176,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="102"/>
       <source>The &lt;a href="https://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
-      <translation type="unfinished">The &lt;a href="https://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</translation>
+      <translation>El &lt;a href="https://forum.freecad.org"&gt; foro de FreeCAD &lt;/a&gt; es un excelente lugar para obtener ayuda de otros usuarios y desarrolladores de FreeCAD. El foro tiene muchas secciones para diferentes tipos de problemas y temas de discusión. En caso de duda, publique en la sección &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt; Ayuda sobre el uso de FreeCAD &lt;/a&gt;.</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="106"/>
@@ -291,7 +291,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="152"/>
       <source>File path</source>
-      <translation type="unfinished">File path</translation>
+      <translation>Ruta de archivo</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="153"/>

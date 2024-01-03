@@ -717,17 +717,17 @@ Dla nadmiaru materiału podstawowego z ramki otaczającej oznacza to naddatek ma
       <translation>Czyści listę geometrii bazowych</translation>
     </message>
     <message>
-      <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="49"/>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="72"/>
+      <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="49"/>
       <location filename="../panels/PageBaseLocationEdit.ui" line="43"/>
       <source>Add</source>
       <translation>Dodaj</translation>
     </message>
     <message>
-      <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="59"/>
-      <location filename="../panels/PropertyBag.ui" line="48"/>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="82"/>
+      <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="59"/>
       <location filename="../panels/PageBaseLocationEdit.ui" line="53"/>
+      <location filename="../panels/PropertyBag.ui" line="48"/>
       <source>Remove</source>
       <translation>Usuń</translation>
     </message>
@@ -782,8 +782,8 @@ Zresetuje wszystkie bieżące elementy z listy i wypełnia listę wszystkimi okr
       <translation>Resetuj</translation>
     </message>
     <message>
-      <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="76"/>
       <location filename="../panels/PageBaseGeometryEdit.ui" line="99"/>
+      <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="76"/>
       <source>All objects will be processed using the same operation properties.</source>
       <translation>Wszystkie obiekty będą przetwarzane przy użyciu tych samych właściwości operacji.</translation>
     </message>
@@ -828,32 +828,32 @@ Zresetuje wszystkie bieżące elementy z listy i wypełnia listę wszystkimi okr
       <translation>Wszystkie miejsca będą przetwarzane przy użyciu tych samych właściwości operacji.</translation>
     </message>
     <message>
-      <location filename="../panels/SetupGlobal.ui" line="36"/>
       <location filename="../panels/PageDepthsEdit.ui" line="39"/>
+      <location filename="../panels/SetupGlobal.ui" line="36"/>
       <source>Start Depth</source>
       <translation>Głębokość początkowa</translation>
     </message>
     <message>
-      <location filename="../panels/PageDiametersEdit.ui" line="27"/>
       <location filename="../panels/PageDepthsEdit.ui" line="46"/>
+      <location filename="../panels/PageDiametersEdit.ui" line="27"/>
       <source>Start Depth of the operation. The highest point in Z-axis the operation needs to process.</source>
       <translation>Zacznij operację od Głębokości. Najwyższy punkt w osi Z, który ma zostać przetworzony.</translation>
     </message>
     <message>
-      <location filename="../panels/PageDiametersEdit.ui" line="43"/>
       <location filename="../panels/PageDepthsEdit.ui" line="59"/>
+      <location filename="../panels/PageDiametersEdit.ui" line="43"/>
       <source>Transfer the Z value of the selected feature as the Start Depth for the operation.</source>
       <translation>Przenieś wartość Z wybranej cechy jako początkową głębokość dla tej operacji</translation>
     </message>
     <message>
-      <location filename="../panels/PageDiametersEdit.ui" line="64"/>
       <location filename="../panels/PageDepthsEdit.ui" line="92"/>
+      <location filename="../panels/PageDiametersEdit.ui" line="64"/>
       <source>The depth of the operation which corresponds to the lowest value in Z-axis the operation needs to process.</source>
       <translation>Głębokość operacji, która odpowiada najniższej wartości w osi Z, którą operacja musi przetwarzać.</translation>
     </message>
     <message>
-      <location filename="../panels/PageDiametersEdit.ui" line="80"/>
       <location filename="../panels/PageDepthsEdit.ui" line="105"/>
+      <location filename="../panels/PageDiametersEdit.ui" line="80"/>
       <source>Transfer the Z value of the selected feature as the Final Depth for the operation.</source>
       <translation>Przenieś wartość Z wybranej cechy jako końcową głębokość operacji</translation>
     </message>
@@ -868,14 +868,14 @@ Zresetuje wszystkie bieżące elementy z listy i wypełnia listę wszystkimi okr
       <translation>Głębokość operacji zakończenia obróbki. Może być użyta do uzyskania czystszego wykończenia.</translation>
     </message>
     <message>
-      <location filename="../panels/SetupGlobal.ui" line="52"/>
       <location filename="../panels/PageDepthsEdit.ui" line="85"/>
+      <location filename="../panels/SetupGlobal.ui" line="52"/>
       <source>Final Depth</source>
       <translation>Głębokość końcowa</translation>
     </message>
     <message>
-      <location filename="../panels/SetupGlobal.ui" line="68"/>
       <location filename="../panels/PageDepthsEdit.ui" line="131"/>
+      <location filename="../panels/SetupGlobal.ui" line="68"/>
       <source>Step Down</source>
       <translation>Krok w dół</translation>
     </message>
@@ -915,34 +915,34 @@ Zresetuje wszystkie bieżące elementy z listy i wypełnia listę wszystkimi okr
       <translation>Wysokość wycofania</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="36"/>
       <location filename="../panels/PageOpCustomEdit.ui" line="42"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="60"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="92"/>
+      <location filename="../panels/PageOpDrillingEdit.ui" line="42"/>
+      <location filename="../panels/PageOpDrillingEdit.ui" line="56"/>
       <location filename="../panels/PageOpEngraveEdit.ui" line="36"/>
       <location filename="../panels/PageOpEngraveEdit.ui" line="50"/>
       <location filename="../panels/PageOpHelixEdit.ui" line="36"/>
       <location filename="../panels/PageOpHelixEdit.ui" line="50"/>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="42"/>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="56"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="36"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="50"/>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="60"/>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="92"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="36"/>
       <source>The tool and its settings to be used for this operation.</source>
       <translation>Narzędzie i jego ustawienia, które będą używane do tej operacji.</translation>
     </message>
     <message>
+      <location filename="../panels/PageOpCustomEdit.ui" line="49"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="85"/>
+      <location filename="../panels/PageOpDrillingEdit.ui" line="49"/>
+      <location filename="../panels/PageOpEngraveEdit.ui" line="43"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="43"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="43"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="52"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="43"/>
+      <location filename="../panels/PageOpVcarveEdit.ui" line="43"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="46"/>
       <location filename="../panels/SetupGlobal.ui" line="255"/>
       <location filename="../panels/SetupGlobal.ui" line="261"/>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="46"/>
-      <location filename="../panels/PageOpCustomEdit.ui" line="49"/>
-      <location filename="../panels/PageOpEngraveEdit.ui" line="43"/>
-      <location filename="../panels/PageOpSlotEdit.ui" line="52"/>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="43"/>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="49"/>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="43"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="43"/>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="85"/>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="43"/>
       <source>Coolant Mode</source>
       <translation>Tryb chłodzenia</translation>
     </message>
@@ -952,28 +952,28 @@ Zresetuje wszystkie bieżące elementy z listy i wypełnia listę wszystkimi okr
       <translation>G Gode</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpProbeEdit.ui" line="35"/>
-      <location filename="../panels/SetupGlobal.ui" line="180"/>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="29"/>
-      <location filename="../panels/PageOpThreadMillingEdit.ui" line="20"/>
-      <location filename="../panels/PageOpCustomEdit.ui" line="35"/>
-      <location filename="../panels/PageOpEngraveEdit.ui" line="29"/>
-      <location filename="../panels/PageOpSlotEdit.ui" line="35"/>
-      <location filename="../panels/PageOpHelixEdit.ui" line="29"/>
-      <location filename="../panels/PageOpProfileFullEdit.ui" line="29"/>
-      <location filename="../panels/PageOpDrillingEdit.ui" line="35"/>
-      <location filename="../panels/PageOpSurfaceEdit.ui" line="29"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="29"/>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="53"/>
-      <location filename="../panels/PageOpVcarveEdit.ui" line="29"/>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="23"/>
+      <location filename="../panels/PageOpCustomEdit.ui" line="35"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="53"/>
+      <location filename="../panels/PageOpDrillingEdit.ui" line="35"/>
+      <location filename="../panels/PageOpEngraveEdit.ui" line="29"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="29"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="29"/>
+      <location filename="../panels/PageOpProbeEdit.ui" line="35"/>
+      <location filename="../panels/PageOpProfileFullEdit.ui" line="29"/>
+      <location filename="../panels/PageOpSlotEdit.ui" line="35"/>
+      <location filename="../panels/PageOpSurfaceEdit.ui" line="29"/>
+      <location filename="../panels/PageOpThreadMillingEdit.ui" line="20"/>
+      <location filename="../panels/PageOpVcarveEdit.ui" line="29"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="29"/>
+      <location filename="../panels/SetupGlobal.ui" line="180"/>
       <source>Tool Controller</source>
       <translation>Kontroler narzędzi</translation>
     </message>
     <message>
-      <location filename="../panels/SetupGlobal.ui" line="249"/>
-      <location filename="../panels/PageOpHelixEdit.ui" line="43"/>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="33"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="43"/>
+      <location filename="../panels/SetupGlobal.ui" line="249"/>
       <source>Coolant</source>
       <translation>Chłodziwo</translation>
     </message>
@@ -993,8 +993,8 @@ Zresetuje wszystkie bieżące elementy z listy i wypełnia listę wszystkimi okr
       <translation>Typ operacji</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="178"/>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="90"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="178"/>
       <source>Step Over Percent</source>
       <translation>Zachodzenie przejść</translation>
     </message>
@@ -1044,8 +1044,8 @@ Zresetuje wszystkie bieżące elementy z listy i wypełnia listę wszystkimi okr
       <translation>Wykończ profil</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="237"/>
       <location filename="../panels/PageOpAdaptiveEdit.ui" line="55"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="237"/>
       <source>Use Outline</source>
       <translation>Użyj konturu</translation>
     </message>
@@ -1100,10 +1100,10 @@ Zresetuje wszystkie bieżące elementy z listy i wypełnia listę wszystkimi okr
       <translation>Zatrzymaj</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpThreadMillingEdit.ui" line="167"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="131"/>
       <location filename="../panels/PageOpHelixEdit.ui" line="87"/>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="82"/>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="131"/>
+      <location filename="../panels/PageOpThreadMillingEdit.ui" line="167"/>
       <source>Direction</source>
       <translation>Kierunek</translation>
     </message>
@@ -1113,15 +1113,15 @@ Zresetuje wszystkie bieżące elementy z listy i wypełnia listę wszystkimi okr
       <translation>Kierunek, w którym wykonywany jest profil, zgodnie z ruchem wskazówek zegara lub w kierunku przeciwnym do ruchu wskazówek zegara.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpHelixEdit.ui" line="98"/>
       <location filename="../panels/PageOpDeburrEdit.ui" line="141"/>
       <location filename="../panels/PageOpDeburrEdit.ui" line="148"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="98"/>
       <source>CW</source>
       <translation>Zgodnie ze wskazówkami zegara</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpHelixEdit.ui" line="103"/>
       <location filename="../panels/PageOpDeburrEdit.ui" line="153"/>
+      <location filename="../panels/PageOpHelixEdit.ui" line="103"/>
       <source>CCW</source>
       <translation>Przeciwnie do ruchu wskazówek zegara</translation>
     </message>
@@ -1146,6 +1146,8 @@ Zresetuje wszystkie bieżące elementy z listy i wypełnia listę wszystkimi okr
       <translation>Połączenie ukośne</translation>
     </message>
     <message>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="198"/>
+      <location filename="../panels/PageOpDeburrEdit.ui" line="225"/>
       <location filename="../panels/ToolEditor.ui" line="77"/>
       <location filename="../panels/ToolEditor.ui" line="134"/>
       <location filename="../panels/ToolEditor.ui" line="144"/>
@@ -1155,8 +1157,6 @@ Zresetuje wszystkie bieżące elementy z listy i wypełnia listę wszystkimi okr
       <location filename="../panels/ToolEditor.ui" line="223"/>
       <location filename="../panels/ToolEditor.ui" line="240"/>
       <location filename="../panels/ToolEditor.ui" line="280"/>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="198"/>
-      <location filename="../panels/PageOpDeburrEdit.ui" line="225"/>
       <source>mm</source>
       <translation>mm</translation>
     </message>
@@ -1372,11 +1372,11 @@ Zresetuje wszystkie bieżące elementy z listy i wypełnia listę wszystkimi okr
       <translation>Wzór</translation>
     </message>
     <message>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="36"/>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="50"/>
       <location filename="../panels/PageOpProbeEdit.ui" line="42"/>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="36"/>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="50"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="36"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="50"/>
       <location filename="../panels/PageOpVcarveEdit.ui" line="36"/>
       <location filename="../panels/PageOpVcarveEdit.ui" line="50"/>
       <source>The tool and its settings to be used for this operation</source>
@@ -1477,9 +1477,9 @@ Ta druga opcja może być użyta do ściany całego obszaru naddatku, aby zapewn
       <translation>Dodatek materiału</translation>
     </message>
     <message>
+      <location filename="../panels/PageOpPocketFullEdit.ui" line="227"/>
       <location filename="../panels/PageOpProfileFullEdit.ui" line="130"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="257"/>
-      <location filename="../panels/PageOpPocketFullEdit.ui" line="227"/>
       <source>Use Start Point</source>
       <translation>Użyj punktu początkowego</translation>
     </message>
@@ -1735,9 +1735,9 @@ Ta druga opcja może być użyta do ściany całego obszaru naddatku, aby zapewn
       <translation>Końcowy zakres ścieżki</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="98"/>
       <location filename="../panels/PageOpSlotEdit.ui" line="345"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="91"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="98"/>
       <source>Layer Mode</source>
       <translation>Tryb warstw</translation>
     </message>
@@ -1777,8 +1777,8 @@ Ta druga opcja może być użyta do ściany całego obszaru naddatku, aby zapewn
       <translation>Metoda skanowania</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="117"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="105"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="117"/>
       <source>Cut Pattern</source>
       <translation>Wzór obróbki</translation>
     </message>
@@ -1793,14 +1793,14 @@ Ta druga opcja może być użyta do ściany całego obszaru naddatku, aby zapewn
       <translation>Unikaj ostatnich X ścian</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="79"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="63"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="79"/>
       <source>Bounding Box</source>
       <translation>Ramka otaczająca</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="91"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="70"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="91"/>
       <source>Select the overall boundary for the operation.</source>
       <translation>Wybierz ogólną granicę dla operacji.</translation>
     </message>
@@ -1811,14 +1811,14 @@ Ta druga opcja może być użyta do ściany całego obszaru naddatku, aby zapewn
 Obrotowy: Skanowanie obrotowe w 4 osiach.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="110"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="98"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="110"/>
       <source>Complete the operation in a single pass at depth, or multiple passes to final depth.</source>
       <translation>Wykonaj operację w jednym przejściu na określoną głębokość lub w kilku przejściach do głębokości końcowej.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="129"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="112"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="129"/>
       <source>Set the geometric clearing pattern to use for the operation.</source>
       <translation>Ustaw geometryczny wzorzec oczyszczenia, który ma być używany podczas operacji.</translation>
     </message>
@@ -1843,14 +1843,14 @@ Obrotowy: Skanowanie obrotowe w 4 osiach.</translation>
       <translation>Linie frezowania wgłębnego tworzone są równoległe do tej osi.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="149"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="205"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="149"/>
       <source>Set the Z-axis depth offset from the target surface.</source>
       <translation>Ustaw przesunięcie głębokości osi Z od powierzchni docelowej.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="194"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="244"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="194"/>
       <source>Set the sampling resolution. Smaller values quickly increase processing time.</source>
       <translation>Ustaw rozdzielczość próbkowania. Im mniejsza wartość, tym dłuższy czas przetwarzania.</translation>
     </message>
@@ -1860,8 +1860,8 @@ Obrotowy: Skanowanie obrotowe w 4 osiach.</translation>
       <translation>Ustaw "Prawda", jeśli określono punkt początkowy</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="204"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="264"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="204"/>
       <source>Enable optimization of linear paths (co-linear points). Removes unnecessary co-linear points from G-code output.</source>
       <translation>Włącz optymalizację ścieżek liniowych (punktów współliniowych). Usuwa niepotrzebne punkty współliniowe z wygenerowanego G-Code.</translation>
     </message>
@@ -1896,14 +1896,14 @@ Obrotowy: Skanowanie obrotowe w 4 osiach.</translation>
       <translation>Głębokość przesunięcia</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="159"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="215"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="159"/>
       <source>Step over</source>
       <translation>Krok dalej</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="172"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="222"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="172"/>
       <source>The amount by which the tool is laterally displaced on each cycle of the pattern, specified in percent of the tool diameter.
 
 A step over of 100% results in no overlap between two different cycles.</source>
@@ -1912,14 +1912,14 @@ A step over of 100% results in no overlap between two different cycles.</source>
 Przekroczenie wartości 100% powoduje, że dwa różne cykle nie nakładają się na siebie.</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="187"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="237"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="187"/>
       <source>Sample interval</source>
       <translation>Odstęp między próbkami</translation>
     </message>
     <message>
-      <location filename="../panels/PageOpWaterlineEdit.ui" line="207"/>
       <location filename="../panels/PageOpSurfaceEdit.ui" line="267"/>
+      <location filename="../panels/PageOpWaterlineEdit.ui" line="207"/>
       <source>Optimize Linear Paths</source>
       <translation>Optymalizuj ścieżki liniowe</translation>
     </message>
@@ -2067,8 +2067,8 @@ Domyślnie: 3 mm</translation>
       <translation>Orientacja</translation>
     </message>
     <message>
-      <location filename="../panels/ToolEditor.ui" line="43"/>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="52"/>
+      <location filename="../panels/ToolEditor.ui" line="43"/>
       <source>Type</source>
       <translation>Typ</translation>
     </message>
@@ -2098,8 +2098,8 @@ Domyślnie: 3 mm</translation>
       <translation>TPI</translation>
     </message>
     <message>
-      <location filename="../panels/SetupGlobal.ui" line="24"/>
       <location filename="../panels/PageOpThreadMillingEdit.ui" line="144"/>
+      <location filename="../panels/SetupGlobal.ui" line="24"/>
       <source>Operation</source>
       <translation>Operacja</translation>
     </message>
@@ -3023,8 +3023,8 @@ Should multiple tools or tool shapes with the same name exist in different direc
       <translation>Wykończenie odwzorowanie osi</translation>
     </message>
     <message>
-      <location filename="../panels/HoldingTagsEdit.ui" line="80"/>
       <location filename="../panels/AxisMapEdit.ui" line="20"/>
+      <location filename="../panels/HoldingTagsEdit.ui" line="80"/>
       <source>Radius</source>
       <translation>Promień</translation>
     </message>
@@ -3439,8 +3439,8 @@ Should multiple tools or tool shapes with the same name exist in different direc
   <context>
     <name>TaskPathSimulator</name>
     <message>
-      <location filename="../panels/TaskPathSimulator.ui" line="14"/>
       <location filename="../panels/TaskPathCamoticsSim.ui" line="14"/>
+      <location filename="../panels/TaskPathSimulator.ui" line="14"/>
       <source>Path Simulator</source>
       <translation>Symulator obróbki</translation>
     </message>
@@ -4285,9 +4285,9 @@ Domyślnie: 3 mm</translation>
   <context>
     <name>Path</name>
     <message>
-      <location filename="../../../InitGui.py" line="282"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="69"/>
       <source>The currently selected unit schema: 
-     '{}'
+     '{}' for this document
  Does not use 'minutes' for velocity values. 
  
 CNC machines require feed rate to be expressed in 
@@ -4297,38 +4297,37 @@ For example:
     'Metric, Small Parts &amp; CNC'
     'US Customary'
     'Imperial Decimal'</source>
-      <translation>Aktualnie wybrany schemat jednostek: 
-     '{}'
- Nie używa "minut" dla wartości prędkości. 
+      <translation type="unfinished">The currently selected unit schema: 
+     '{}' for this document
+ Does not use 'minutes' for velocity values. 
  
-maszyny CNC wymagają, aby prędkość posuwu była wyrażona w 
-jednostkach na minutę. Aby zapewnić poprawny Gcod: 
-Wybierz w ustawieniach schemat jednostek oparty na minutach.
-Na przykład:
-    "Metryczny, małe części i CNC"
-    "Zwyczajowy USA"
-    "Angielski dziesiętny"</translation>
+CNC machines require feed rate to be expressed in 
+unit/minute. To ensure correct G-code: 
+Select a minute-based schema in preferences.
+For example:
+    'Metric, Small Parts &amp; CNC'
+    'US Customary'
+    'Imperial Decimal'</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="284"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="71"/>
       <source>Warning</source>
       <translation>Ostrzeżenie</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="286"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="76"/>
       <source>Ok</source>
       <translation>OK</translation>
     </message>
     <message>
-      <location filename="../../../InitGui.py" line="288"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="79"/>
       <source>Don't Show This Anymore</source>
       <translation>Nie wyświetlaj tego więcej</translation>
     </message>
     <message>
-      <location filename="../../../Path/Tool/Gui/Controller.py" line="116"/>
       <location filename="../../../Path/Base/Gui/IconViewProvider.py" line="97"/>
+      <location filename="../../../Path/Tool/Gui/Controller.py" line="116"/>
       <source>Edit</source>
-      <extracomment>int = field(default=None)</extracomment>
       <translation>Edytuj</translation>
     </message>
     <message>
@@ -4470,8 +4469,8 @@ Na przykład:
       <translation>Nie jest również dostępny nieplanarny start adaptacyjny.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Vcarve.py" line="65"/>
       <location filename="../../../Path/Op/Gui/Engrave.py" line="76"/>
+      <location filename="../../../Path/Op/Gui/Vcarve.py" line="65"/>
       <source>%s is not a Base Model object of the job %s</source>
       <translation>%s nie jest obiektem modelu podstawowego zadania %s</translation>
     </message>
@@ -4491,8 +4490,8 @@ Na przykład:
       <translation>Profiluj cały model, wybrane ściany lub wybrane krawędzie</translation>
     </message>
     <message>
-      <location filename="../../../PathScripts/PathUtilsGui.py" line="91"/>
       <location filename="../../../Path/Post/Command.py" line="561"/>
+      <location filename="../../../PathScripts/PathUtilsGui.py" line="91"/>
       <source>Choose a Path Job</source>
       <translation>Wybierz ścieżkę zadania</translation>
     </message>
@@ -4596,6 +4595,7 @@ Na przykład:
     <message>
       <location filename="../../../Path/Base/PropertyBag.py" line="75"/>
       <source>List of custom property groups</source>
+      <extracomment>int = field(default=None)</extracomment>
       <translation>Lista grup właściwości niestandardowych</translation>
     </message>
     <message>
@@ -4658,12 +4658,12 @@ Na przykład:
     <message>
       <location filename="../../../Path/Dressup/Boundary.py" line="53"/>
       <location filename="../../../Path/Dressup/Tags.py" line="940"/>
+      <location filename="../../../Path/Dressup/Gui/AxisMap.py" line="54"/>
+      <location filename="../../../Path/Dressup/Gui/Dogbone.py" line="423"/>
       <location filename="../../../Path/Dressup/Gui/Dragknife.py" line="58"/>
       <location filename="../../../Path/Dressup/Gui/LeadInOut.py" line="61"/>
       <location filename="../../../Path/Dressup/Gui/RampEntry.py" line="57"/>
       <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="62"/>
-      <location filename="../../../Path/Dressup/Gui/Dogbone.py" line="423"/>
-      <location filename="../../../Path/Dressup/Gui/AxisMap.py" line="54"/>
       <source>The base path to modify</source>
       <translation>Ścieżka bazowa do modyfikacji</translation>
     </message>
@@ -4957,9 +4957,9 @@ Na przykład:
       <translation>Zbiór wszystkich kontrolerów narzędzi do pracy</translation>
     </message>
     <message>
+      <location filename="../../../Path/Main/Job.py" line="501"/>
       <location filename="../../../Path/Op/Base.py" line="192"/>
       <location filename="../../../Path/Op/Base.py" line="463"/>
-      <location filename="../../../Path/Main/Job.py" line="501"/>
       <source>Operations Cycle Time Estimation</source>
       <translation>Szacunkowy czas trwania cyklu operacji</translation>
     </message>
@@ -5044,8 +5044,8 @@ Na przykład:
       <translation>Numer przesunięcia urządzenia</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Base.py" line="172"/>
       <location filename="../../../Path/Main/Gui/Fixture.py" line="63"/>
+      <location filename="../../../Path/Op/Base.py" line="172"/>
       <source>Make False, to prevent operation from generating code</source>
       <translation>Zaznacz "Fałsz”, jeśli chcesz uniemożliwić operacji generowanie jakiegokolwiek kodu</translation>
     </message>
@@ -5065,8 +5065,8 @@ Na przykład:
       <translation>Wpływa na dokładność i wydajność</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Helix.py" line="127"/>
       <location filename="../../../Path/Op/Adaptive.py" line="983"/>
+      <location filename="../../../Path/Op/Helix.py" line="127"/>
       <location filename="../../../Path/Op/PocketBase.py" line="151"/>
       <source>Percent of cutter diameter to step over on each pass</source>
       <translation>Procent średnicy freza do przesunięcia przy każdym przejściu</translation>
@@ -5242,10 +5242,10 @@ Na przykład:
       <translation>Punkt początkowy tej ścieżki</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="431"/>
-      <location filename="../../../Path/Op/Slot.py" line="236"/>
-      <location filename="../../../Path/Op/Waterline.py" line="460"/>
       <location filename="../../../Path/Op/Base.py" line="314"/>
+      <location filename="../../../Path/Op/Slot.py" line="236"/>
+      <location filename="../../../Path/Op/Surface.py" line="431"/>
+      <location filename="../../../Path/Op/Waterline.py" line="460"/>
       <source>Make True, if specifying a Start Point</source>
       <translation>Upewnij się, że określasz punkt początkowy</translation>
     </message>
@@ -5359,9 +5359,9 @@ Na przykład:
       <translation>Zastosuj wycofanie G99: w tej operacji wycofuj tylko do wysokości "WysokośćWycofania" pomiędzy otworami</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Vcarve.py" line="214"/>
       <location filename="../../../Path/Op/Engrave.py" line="71"/>
       <location filename="../../../Path/Op/Engrave.py" line="81"/>
+      <location filename="../../../Path/Op/Vcarve.py" line="214"/>
       <source>Additional base objects to be engraved</source>
       <translation>Dodatkowe obiekty podstawowe do grawerowania</translation>
     </message>
@@ -5402,9 +5402,9 @@ Na przykład:
       <translation>Promień początkowy</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="143"/>
       <location filename="../../../Path/Op/Helix.py" line="142"/>
       <location filename="../../../Path/Op/Helix.py" line="167"/>
+      <location filename="../../../Path/Op/Profile.py" line="143"/>
       <source>Extra value to stay away from final profile- good for roughing toolpath</source>
       <translation>Dodatkową wartość odległości od profilu końcowego odpowiednia do obróbki zgrubnej</translation>
     </message>
@@ -5424,9 +5424,9 @@ Na przykład:
       <translation>Wyklucz frezowanie podwyższonych obszarów wewnątrz powierzchni czołowej.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="247"/>
-      <location filename="../../../Path/Op/Profile.py" line="117"/>
       <location filename="../../../Path/Op/Pocket.py" line="66"/>
+      <location filename="../../../Path/Op/Profile.py" line="117"/>
+      <location filename="../../../Path/Op/Surface.py" line="247"/>
       <location filename="../../../Path/Op/Waterline.py" line="267"/>
       <source>Choose how to process multiple Base Geometry features.</source>
       <translation>Wybierz sposób przetwarzania wielu elementów geometrii podstawowej.</translation>
@@ -5447,8 +5447,8 @@ Na przykład:
       <translation>Przetwarzaj model i materiał w elemencie bez wybranej geometrii bazowej.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="108"/>
       <location filename="../../../Path/Op/PocketBase.py" line="128"/>
+      <location filename="../../../Path/Op/Profile.py" line="108"/>
       <source>The direction that the toolpath should go around the part ClockWise (CW) or CounterClockWise (CCW)</source>
       <translation>Kierunek, w którym narzędzie porusza się po ścieżce wokół części, zgodnie (CW) lub przeciwnie (CCW) do ruchu wskazówek zegara</translation>
     </message>
@@ -5566,8 +5566,8 @@ Na przykład:
       <translation>Ustaw wartość Prawda, jeśli używasz kompensacji promienia frezu</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="127"/>
       <location filename="../../../Path/Op/Slot.py" line="122"/>
+      <location filename="../../../Path/Op/Surface.py" line="127"/>
       <location filename="../../../Path/Op/Waterline.py" line="205"/>
       <source>Show the temporary path construction objects when module is in DEBUG mode.</source>
       <translation>Pokaż tymczasowe obiekty konstrukcyjne ścieżki, gdy moduł jest w trybie DEBUGOWANIA.</translation>
@@ -5583,8 +5583,8 @@ Na przykład:
       <translation>Wprowadź przykładowy punkt końcowy dla ścieżki rowka.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="291"/>
       <location filename="../../../Path/Op/Slot.py" line="147"/>
+      <location filename="../../../Path/Op/Surface.py" line="291"/>
       <location filename="../../../Path/Op/Waterline.py" line="329"/>
       <source>Set the geometric clearing pattern to use for the operation.</source>
       <translation>Ustaw geometryczny wzorzec oczyszczenia, który ma być używany podczas operacji.</translation>
@@ -5600,8 +5600,8 @@ Na przykład:
       <translation>Wartość dodatnia przedłuża koniec ścieżki, wartość ujemna skraca go.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="326"/>
       <location filename="../../../Path/Op/Slot.py" line="174"/>
+      <location filename="../../../Path/Op/Surface.py" line="326"/>
       <location filename="../../../Path/Op/Waterline.py" line="372"/>
       <source>Complete the operation in a single pass at depth, or multiple passes to final depth.</source>
       <translation>Wykonaj operację w jednym przejściu na głębokość lub w kilku przejściach do głębokości końcowej.</translation>
@@ -5632,8 +5632,8 @@ Na przykład:
       <translation>Włącz, aby odwrócić kierunek skrawania ścieżki rowka.</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Surface.py" line="423"/>
       <location filename="../../../Path/Op/Slot.py" line="228"/>
+      <location filename="../../../Path/Op/Surface.py" line="423"/>
       <location filename="../../../Path/Op/Waterline.py" line="452"/>
       <source>The custom start point for the path of this operation</source>
       <translation>Niestandardowy punkt początkowy dla ścieżki tej operacji</translation>
@@ -6151,24 +6151,24 @@ OL Dropcutter* lub Eksperymentalny (nieoparty na OCL).</translation>
   <context>
     <name>Path_Dressup</name>
     <message>
-      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="366"/>
       <location filename="../../../Path/Dressup/Gui/AxisMap.py" line="284"/>
+      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="366"/>
       <source>Please select one path object
 </source>
       <translation>Proszę wybrać jeden obiekt ścieżki
 </translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="371"/>
       <location filename="../../../Path/Dressup/Gui/AxisMap.py" line="289"/>
+      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="371"/>
       <source>The selected object is not a path
 </source>
       <translation>Wybrany obiekt nie jest ścieżką
 </translation>
     </message>
     <message>
-      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="376"/>
       <location filename="../../../Path/Dressup/Gui/AxisMap.py" line="294"/>
+      <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="376"/>
       <source>Please select a Path object</source>
       <translation>Proszę wybrać obiekt ścieżki</translation>
     </message>
@@ -6325,8 +6325,8 @@ OL Dropcutter* lub Eksperymentalny (nieoparty na OCL).</translation>
       <translation>Wybierz plik punktów pomiarowych</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Gui/Probe.py" line="95"/>
       <location filename="../../../Path/Dressup/Gui/ZCorrect.py" line="294"/>
+      <location filename="../../../Path/Op/Gui/Probe.py" line="95"/>
       <source>All Files (*.*)</source>
       <translation>Wszystkie pliki (*.*)</translation>
     </message>
@@ -6378,7 +6378,7 @@ OL Dropcutter* lub Eksperymentalny (nieoparty na OCL).</translation>
     </message>
     <message>
       <location filename="../../../Path/Main/Job.py" line="260"/>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="61"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="89"/>
       <source>2D</source>
       <translation>2D</translation>
     </message>
@@ -6473,27 +6473,27 @@ OL Dropcutter* lub Eksperymentalny (nieoparty na OCL).</translation>
       <translation>Tworzy zadanie ścieżki</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="60"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="88"/>
       <source>Solids</source>
       <translation>Bryły</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="62"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="90"/>
       <source>Jobs</source>
       <translation>Zadania</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="330"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="358"/>
       <source>Base -/+ %.2f/%.2f %.2f/%.2f %.2f/%.2f</source>
       <translation>Baza -/+ %.2f/%.2f %.2f/%.2f %.2f/%.2f</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="340"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="368"/>
       <source>Box: %.2f x %.2f x %.2f</source>
       <translation>Prostopadłościan: %.2f x %.2f x %.2f</translation>
     </message>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="355"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="383"/>
       <source>Unsupported stock type</source>
       <translation>Nieobsługiwany typ naddatku</translation>
     </message>
@@ -6584,7 +6584,7 @@ OL Dropcutter* lub Eksperymentalny (nieoparty na OCL).</translation>
   <context>
     <name>Path_Job:</name>
     <message>
-      <location filename="../../../Path/Main/Gui/JobDlg.py" line="346"/>
+      <location filename="../../../Path/Main/Gui/JobDlg.py" line="374"/>
       <source>Cylinder: %.2f x %.2f</source>
       <translation>Walec: %.2f x %.2f</translation>
     </message>
@@ -7062,14 +7062,14 @@ Starsze narzędzia nie są obsługiwane przez funkcję Bezpieczeństwo CAM</tran
   <context>
     <name>PathProfile</name>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="209"/>
       <location filename="../../../Path/Op/Helix.py" line="75"/>
+      <location filename="../../../Path/Op/Profile.py" line="209"/>
       <source>Outside</source>
       <translation>Na zewnątrz</translation>
     </message>
     <message>
-      <location filename="../../../Path/Op/Profile.py" line="210"/>
       <location filename="../../../Path/Op/Helix.py" line="76"/>
+      <location filename="../../../Path/Op/Profile.py" line="210"/>
       <source>Inside</source>
       <translation>Wewnątrz</translation>
     </message>

@@ -188,8 +188,8 @@
       <translation>Placering</translation>
     </message>
     <message>
-      <location filename="../Transform.cpp" line="101"/>
       <location filename="../TaskCSysDragger.cpp" line="75"/>
+      <location filename="../Transform.cpp" line="101"/>
       <location filename="../ViewProviderAnnotation.cpp" line="426"/>
       <source>Transform</source>
       <translation>Omvandla</translation>
@@ -217,7 +217,7 @@
     <message>
       <location filename="../CommandView.cpp" line="917"/>
       <source>Toggle transparency</source>
-      <translation type="unfinished">Toggle transparency</translation>
+      <translation>Växla transparens</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="1019"/>
@@ -461,7 +461,7 @@
     <message>
       <location filename="../QuantitySpinBox_p.h" line="53"/>
       <source>Enter an expression... (=)</source>
-      <translation type="unfinished">Enter an expression... (=)</translation>
+      <translation>Ange ett uttryck... (=)</translation>
     </message>
     <message>
       <location filename="../QuantitySpinBox_p.h" line="54"/>
@@ -2476,7 +2476,7 @@ Ange en annan katalog.</translation>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="501"/>
       <source>Reset all...</source>
-      <translation type="unfinished">Reset all...</translation>
+      <translation>Återställ alla...</translation>
     </message>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="504"/>
@@ -2506,7 +2506,7 @@ Ange en annan katalog.</translation>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="665"/>
       <source>Restart required</source>
-      <translation type="unfinished">Restart required</translation>
+      <translation>Omstart krävs</translation>
     </message>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="666"/>
@@ -2516,12 +2516,12 @@ Ange en annan katalog.</translation>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="671"/>
       <source>Restart now</source>
-      <translation type="unfinished">Restart now</translation>
+      <translation>Starta om nu</translation>
     </message>
     <message>
       <location filename="../DlgPreferencesImp.cpp" line="672"/>
       <source>Restart later</source>
-      <translation type="unfinished">Restart later</translation>
+      <translation>Starta om senare</translation>
     </message>
   </context>
   <context>
@@ -2559,12 +2559,12 @@ Ange en annan katalog.</translation>
     <message>
       <location filename="../DlgProjectInformation.ui" line="142"/>
       <source>Unit System:</source>
-      <translation type="unfinished">Unit System:</translation>
+      <translation>Enhetssystem:</translation>
     </message>
     <message>
       <location filename="../DlgProjectInformation.ui" line="152"/>
       <source>Unit system for this file</source>
-      <translation type="unfinished">Unit system for this file</translation>
+      <translation>Enhetssystem för den här filen</translation>
     </message>
     <message>
       <location filename="../DlgProjectInformation.ui" line="159"/>
@@ -2648,12 +2648,12 @@ Ange en annan katalog.</translation>
     <message>
       <location filename="../DlgProjectUtility.ui" line="72"/>
       <source>Create document</source>
-      <translation type="unfinished">Create document</translation>
+      <translation>Skapa dokument</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.ui" line="137"/>
       <source>Load document file after creation</source>
-      <translation type="unfinished">Load document file after creation</translation>
+      <translation>Ladda dokumentfil efter skapande</translation>
     </message>
     <message>
       <location filename="../DlgProjectUtility.ui" line="115"/>
@@ -2846,7 +2846,7 @@ nedre högra hörnet i öppnade filer</translation>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="63"/>
       <source>Relative size :   </source>
-      <translation type="unfinished">Relative size :   </translation>
+      <translation>Relativ storlek:   </translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DView.ui" line="73"/>
@@ -3128,17 +3128,17 @@ storleken på det 3D-objekt som visas.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="130"/>
       <source>20px</source>
-      <translation type="unfinished">20px</translation>
+      <translation>20px</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="131"/>
       <source>25px</source>
-      <translation type="unfinished">25px</translation>
+      <translation>25px</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="132"/>
       <source>30px</source>
-      <translation type="unfinished">30px</translation>
+      <translation>30px</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettings3DViewImp.cpp" line="163"/>
@@ -3156,7 +3156,7 @@ storleken på det 3D-objekt som visas.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="14"/>
       <source>Cache</source>
-      <translation type="unfinished">Cache</translation>
+      <translation>Cache</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="20"/>
@@ -3166,7 +3166,7 @@ storleken på det 3D-objekt som visas.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="28"/>
       <source>Location:</source>
-      <translation type="unfinished">Location:</translation>
+      <translation>Placering:</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="56"/>
@@ -3181,7 +3181,7 @@ storleken på det 3D-objekt som visas.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="88"/>
       <source>Daily</source>
-      <translation type="unfinished">Daily</translation>
+      <translation>Dagligen</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="93"/>
@@ -3191,7 +3191,7 @@ storleken på det 3D-objekt som visas.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="98"/>
       <source>Monthly</source>
-      <translation type="unfinished">Monthly</translation>
+      <translation>Månatligen</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="103"/>
@@ -3211,7 +3211,7 @@ storleken på det 3D-objekt som visas.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.ui" line="161"/>
       <source>Check now...</source>
-      <translation type="unfinished">Check now...</translation>
+      <translation>Kontrollera nu...</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsCacheDirectory.cpp" line="58"/>
@@ -4264,7 +4264,7 @@ Värdet är sfärens diameter som passar på skärmen.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="695"/>
       <source>Animations</source>
-      <translation type="unfinished">Animations</translation>
+      <translation>Animationer</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="761"/>
@@ -4294,7 +4294,7 @@ Värdet är sfärens diameter som passar på skärmen.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="590"/>
       <source>Zoom step</source>
-      <translation type="unfinished">Zoom step</translation>
+      <translation>Zoomsteg</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="571"/>
@@ -4612,7 +4612,7 @@ Larger value eases to pick things, but can make small features impossible to sel
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="166"/>
       <source>Switch</source>
-      <translation type="unfinished">Switch</translation>
+      <translation>Växla</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsViewColor.ui" line="231"/>
@@ -5570,7 +5570,7 @@ The 'Status' column shows whether the document could be recovered.</source>
     <message>
       <location filename="../DlgObjectSelection.ui" line="164"/>
       <source>Show dependencies</source>
-      <translation type="unfinished">Show dependencies</translation>
+      <translation>Visa beroenden</translation>
     </message>
     <message>
       <location filename="../DlgObjectSelection.cpp" line="115"/>
@@ -6102,15 +6102,15 @@ Vill du spara ändringarna?</translation>
       <translation>PDF-format</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="448"/>
       <location filename="../CommandDoc.cpp" line="617"/>
+      <location filename="../GraphvizView.cpp" line="448"/>
       <source>Graphviz format</source>
       <translation type="unfinished">Graphviz format</translation>
     </message>
     <message>
+      <location filename="../CommandDoc.cpp" line="618"/>
       <location filename="../GraphvizView.cpp" line="462"/>
       <location filename="../GraphvizView.cpp" line="550"/>
-      <location filename="../CommandDoc.cpp" line="618"/>
       <source>Export graph</source>
       <translation>Exportera graf</translation>
     </message>
@@ -6430,7 +6430,7 @@ Hur vill du fortsätta?</translation>
     <message>
       <location filename="../ManualAlignment.cpp" line="1120"/>
       <source>Point_%1</source>
-      <translation type="unfinished">Point_%1</translation>
+      <translation>Punkt_%1</translation>
     </message>
     <message>
       <location filename="../ManualAlignment.cpp" line="1222"/>
@@ -6465,7 +6465,7 @@ Hur vill du fortsätta?</translation>
     <message>
       <location filename="../ManualAlignment.cpp" line="1254"/>
       <source>&amp;Synchronize views</source>
-      <translation type="unfinished">&amp;Synchronize views</translation>
+      <translation>&amp;Synkronisera vyer</translation>
     </message>
   </context>
   <context>
@@ -6674,7 +6674,7 @@ Hur vill du fortsätta?</translation>
     <message>
       <location filename="../propertyeditor/PropertyEditor.cpp" line="804"/>
       <source>Group name:</source>
-      <translation type="unfinished">Group name:</translation>
+      <translation>Gruppnamn:</translation>
     </message>
   </context>
   <context>
@@ -6920,7 +6920,7 @@ Vill du avsluta utan att spara din data?</translation>
     <message>
       <location filename="../EditorView.cpp" line="762"/>
       <source>Whole words</source>
-      <translation type="unfinished">Whole words</translation>
+      <translation>Hela ord</translation>
     </message>
   </context>
   <context>
@@ -7456,7 +7456,7 @@ Vill du ange en annan katalog?</translation>
     <message>
       <location filename="Translator.cpp" line="152"/>
       <source>Georgian</source>
-      <translation type="unfinished">Georgian</translation>
+      <translation>Georgiska</translation>
     </message>
   </context>
   <context>
@@ -7500,7 +7500,7 @@ Vill du ange en annan katalog?</translation>
     <message>
       <location filename="../Tree.cpp" line="1008"/>
       <source>Tree settings</source>
-      <translation type="unfinished">Tree settings</translation>
+      <translation>Trädinställningar</translation>
     </message>
     <message>
       <location filename="../Tree.cpp" line="1012"/>
@@ -7947,7 +7947,7 @@ Vill du ange en annan katalog?</translation>
       <location filename="../resource.cpp" line="87"/>
       <location filename="../resource.cpp" line="88"/>
       <source>Python</source>
-      <translation type="unfinished">Python</translation>
+      <translation>Python</translation>
     </message>
     <message>
       <location filename="../Application.cpp" line="632"/>
@@ -8039,8 +8039,8 @@ Vill du ange en annan katalog?</translation>
       <translation>Exporterar PDF ...</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="833"/>
       <location filename="../CommandDoc.cpp" line="1230"/>
+      <location filename="../MainWindow.cpp" line="833"/>
       <source>Unsaved document</source>
       <translation>Osparat dokument</translation>
     </message>
@@ -8311,7 +8311,7 @@ vill du fortsätta?</translation>
     <message>
       <location filename="../NotificationArea.cpp" line="431"/>
       <source> (%1 times)</source>
-      <translation type="unfinished"> (%1 times)</translation>
+      <translation> (%1 gånger)</translation>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="664"/>
@@ -8379,7 +8379,7 @@ vill du fortsätta?</translation>
       <location filename="../Document.cpp" line="1077"/>
       <location filename="../Document.cpp" line="1083"/>
       <source>Document:</source>
-      <translation type="unfinished">Document:</translation>
+      <translation>Dokument:</translation>
     </message>
     <message>
       <location filename="../Document.cpp" line="1079"/>
@@ -8688,7 +8688,7 @@ Please open a browser window and type in: http://localhost:%1.</source>
     <message>
       <location filename="../SoFCCSysDragger.cpp" line="614"/>
       <source>Translation XY:</source>
-      <translation type="unfinished">Translation XY:</translation>
+      <translation>Översättning XY:</translation>
     </message>
     <message>
       <location filename="../SoFCCSysDragger.cpp" line="941"/>
@@ -8822,7 +8822,7 @@ option to apply only to this link.</translation>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2492"/>
       <source>Copy on change</source>
-      <translation type="unfinished">Copy on change</translation>
+      <translation>Kopiera vid ändring</translation>
     </message>
     <message>
       <location filename="../ViewProviderLink.cpp" line="2493"/>
@@ -8916,8 +8916,8 @@ the current copy will be lost.
       <translation type="unfinished">Toggle overlay</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="2180"/>
       <location filename="../OverlayManager.cpp" line="1036"/>
+      <location filename="../OverlayWidgets.cpp" line="2180"/>
       <source>Toggle floating window</source>
       <translation type="unfinished">Toggle floating window</translation>
     </message>
@@ -8935,7 +8935,7 @@ the current copy will be lost.
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="530"/>
       <source>UI</source>
-      <translation type="unfinished">UI</translation>
+      <translation>UI</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="531"/>
@@ -8980,12 +8980,12 @@ the current copy will be lost.
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="549"/>
       <source>IconSize</source>
-      <translation type="unfinished">IconSize</translation>
+      <translation>IconSize</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="552"/>
       <source>FontSize</source>
-      <translation type="unfinished">FontSize</translation>
+      <translation>FontSize</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="555"/>
@@ -10046,8 +10046,8 @@ the current copy will be lost.
       <translation>Skapa ett nytt tomt dokument</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2339"/>
       <location filename="../DocumentRecovery.cpp" line="391"/>
+      <location filename="../MainWindow.cpp" line="2339"/>
       <source>Unnamed</source>
       <translation>Namnlös</translation>
     </message>
@@ -11202,7 +11202,7 @@ It is meant to arrange objects that have a Part TopoShape, like Part Primitives,
     <message>
       <location filename="../CommandWindow.cpp" line="458"/>
       <source>Activate window</source>
-      <translation type="unfinished">Activate window</translation>
+      <translation>Aktivera fönster</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="459"/>
@@ -11939,7 +11939,7 @@ Vill du fortfarande fortsätta?</translation>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="140"/>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="165"/>
       <source>s</source>
-      <translation type="unfinished">s</translation>
+      <translation>s</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="162"/>
@@ -11989,7 +11989,7 @@ Vill du fortfarande fortsätta?</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="274"/>
       <source>Message List</source>
-      <translation type="unfinished">Message List</translation>
+      <translation>Meddelandelista</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNotificationArea.ui" line="280"/>
@@ -12077,7 +12077,7 @@ vid start av FreeCAD</translation>
     <message>
       <location filename="../TaskView/TaskOrientation.ui" line="20"/>
       <source>Planes</source>
-      <translation type="unfinished">Planes</translation>
+      <translation>Plan</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskOrientation.ui" line="26"/>
@@ -12115,7 +12115,7 @@ vid start av FreeCAD</translation>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="22"/>
       <source>Planes</source>
-      <translation type="unfinished">Planes</translation>
+      <translation>Plan</translation>
     </message>
     <message>
       <location filename="../TaskView/TaskImage.ui" line="28"/>
@@ -12271,12 +12271,12 @@ vid start av FreeCAD</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="487"/>
       <source>Left corner</source>
-      <translation type="unfinished">Left corner</translation>
+      <translation>Vänster hörn</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="488"/>
       <source>Right corner</source>
-      <translation type="unfinished">Right corner</translation>
+      <translation>Höger hörn</translation>
     </message>
   </context>
   <context>
@@ -12294,7 +12294,7 @@ vid start av FreeCAD</translation>
     <message>
       <location filename="../NotificationArea.cpp" line="703"/>
       <source>Delete All</source>
-      <translation type="unfinished">Delete All</translation>
+      <translation>Ta bort alla</translation>
     </message>
   </context>
   <context>
@@ -12307,7 +12307,7 @@ vid start av FreeCAD</translation>
     <message>
       <location filename="../NotificationArea.cpp" line="987"/>
       <source>Delete All</source>
-      <translation type="unfinished">Delete All</translation>
+      <translation>Ta bort alla</translation>
     </message>
   </context>
   <context>
@@ -12315,12 +12315,12 @@ vid start av FreeCAD</translation>
     <message>
       <location filename="../ImageView.cpp" line="75"/>
       <source>Failed to load image file</source>
-      <translation type="unfinished">Failed to load image file</translation>
+      <translation>Det gick inte att ladda bildfilen</translation>
     </message>
     <message>
       <location filename="../ImageView.cpp" line="76"/>
       <source>Cannot load file %1: %2</source>
-      <translation type="unfinished">Cannot load file %1: %2</translation>
+      <translation>Kan inte ladda filen %1: %2</translation>
     </message>
     <message>
       <location filename="../ImageView.cpp" line="182"/>
@@ -12395,7 +12395,7 @@ vid start av FreeCAD</translation>
     <message>
       <location filename="../View3DSettings.cpp" line="556"/>
       <source>LEFT</source>
-      <translation type="unfinished">LEFT</translation>
+      <translation>VÄNSTER</translation>
     </message>
   </context>
   <context>
@@ -12685,12 +12685,12 @@ vid start av FreeCAD</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="171"/>
       <source>Selected language</source>
-      <translation type="unfinished">Selected language</translation>
+      <translation>Valt språk</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="176"/>
       <source>C/POSIX</source>
-      <translation type="unfinished">C/POSIX</translation>
+      <translation>C/POSIX</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="184"/>
@@ -12832,7 +12832,7 @@ visa startskärm</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="481"/>
       <source>Import config...</source>
-      <translation type="unfinished">Import config...</translation>
+      <translation>Importera konfiguration...</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="488"/>
@@ -12842,12 +12842,12 @@ visa startskärm</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="501"/>
       <source>Manage...</source>
-      <translation type="unfinished">Manage...</translation>
+      <translation>Hantera...</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="508"/>
       <source>Revert...</source>
-      <translation type="unfinished">Revert...</translation>
+      <translation>Återgå...</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="87"/>
@@ -12912,12 +12912,12 @@ visa startskärm</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="573"/>
       <source>Choose a FreeCAD config file to import</source>
-      <translation type="unfinished">Choose a FreeCAD config file to import</translation>
+      <translation>Välj en FreeCAD-konfigurationsfil att importera</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="584"/>
       <source>File exists</source>
-      <translation type="unfinished">File exists</translation>
+      <translation>Filen existerar</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.cpp" line="585"/>
@@ -13125,17 +13125,17 @@ från Python-konsolen till Rapportvy panelen</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="34"/>
       <source>Accent color 1</source>
-      <translation type="unfinished">Accent color 1</translation>
+      <translation>Accentfärg 1</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="67"/>
       <source>Accent color 2</source>
-      <translation type="unfinished">Accent color 2</translation>
+      <translation>Accentfärg 2</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="100"/>
       <source>Accent color 3</source>
-      <translation type="unfinished">Accent color 3</translation>
+      <translation>Accentfärg 3</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsTheme.ui" line="133"/>
@@ -13171,7 +13171,7 @@ från Python-konsolen till Rapportvy panelen</translation>
       <location filename="../CommandDoc.cpp" line="606"/>
       <location filename="../CommandDoc.cpp" line="607"/>
       <source>Export the dependency graph to a file</source>
-      <translation type="unfinished">Export the dependency graph to a file</translation>
+      <translation>Exportera beroendegrafen till en fil</translation>
     </message>
   </context>
   <context>
@@ -13205,17 +13205,17 @@ från Python-konsolen till Rapportvy panelen</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="14"/>
       <source>Light Sources</source>
-      <translation type="unfinished">Light Sources</translation>
+      <translation>Ljuskällor</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="20"/>
       <source>Light sources</source>
-      <translation type="unfinished">Light sources</translation>
+      <translation>Ljuskällor</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="26"/>
       <source>Light source</source>
-      <translation type="unfinished">Light source</translation>
+      <translation>Ljuskälla</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="72"/>
@@ -13225,7 +13225,7 @@ från Python-konsolen till Rapportvy panelen</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsLightSources.ui" line="107"/>
       <source>Lights</source>
-      <translation type="unfinished">Lights</translation>
+      <translation>Ljus</translation>
     </message>
   </context>
   <context>
@@ -13233,7 +13233,7 @@ från Python-konsolen till Rapportvy panelen</translation>
     <message>
       <location filename="../CommandView.cpp" line="901"/>
       <source>Toggle transparency</source>
-      <translation type="unfinished">Toggle transparency</translation>
+      <translation>Växla transparens</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="903"/>
@@ -13302,7 +13302,7 @@ This makes the docked window stay transparent at all times.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3926"/>
       <source>Toggle left</source>
-      <translation type="unfinished">Toggle left</translation>
+      <translation>Växla vänster</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3927"/>
@@ -13315,7 +13315,7 @@ This makes the docked window stay transparent at all times.</translation>
     <message>
       <location filename="../CommandView.cpp" line="3951"/>
       <source>Toggle right</source>
-      <translation type="unfinished">Toggle right</translation>
+      <translation>Växla höger</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3952"/>
@@ -13543,7 +13543,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../OverlayWidgets.cpp" line="861"/>
       <source>Hide on edit</source>
-      <translation type="unfinished">Hide on edit</translation>
+      <translation>Dölj vid redigering</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="862"/>
@@ -13553,7 +13553,7 @@ the region are non-opaque.</translation>
     <message>
       <location filename="../OverlayWidgets.cpp" line="863"/>
       <source>Show on edit</source>
-      <translation type="unfinished">Show on edit</translation>
+      <translation>Visa vid redigering</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="864"/>
@@ -13614,7 +13614,7 @@ the region are non-opaque.</translation>
       <location filename="../CommandDoc.cpp" line="860"/>
       <location filename="../CommandDoc.cpp" line="861"/>
       <source>Utility to extract or create document files</source>
-      <translation type="unfinished">Utility to extract or create document files</translation>
+      <translation>Verktyg för att extrahera eller skapa dokumentfiler</translation>
     </message>
   </context>
   <context>
