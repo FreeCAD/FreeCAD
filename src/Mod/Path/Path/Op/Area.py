@@ -272,7 +272,23 @@ class ObjectOp(PathOp.ObjectOp):
             restSections = []
             for section in sections:
                 z = section.getShape().BoundBox.ZMin
-                sectionClearedAreas = [a for a in clearedAreas if a.getShape().BoundBox.ZMax <= z]
+                # sectionClearedAreas = [a for a in clearedAreas if a.getShape().BoundBox.ZMax <= z]
+                sectionClearedAreas = []
+                for op in self.job.Operations.Group:
+                    print(op.Name)
+                    if self in [x.Proxy for x in [op] + op.OutListRecursive if hasattr(x, "Proxy")]:
+                        print("found self")
+                        break
+                    if hasattr(op, "Active") and op.Active and op.Path:
+                        tool = op.Proxy.tool if hasattr(op.Proxy, "tool") else op.ToolController.Proxy.getTool(op.ToolController)
+                        diameter = tool.Diameter.getValueAs("mm")
+                        sectionClearedAreas.append(area.getClearedAreaFromPath(op.Path, diameter, z+0.001))
+                        debugZ = -1.5
+                        if debugZ -.1 < z and z < debugZ + .1:
+                            debugObj = obj.Document.addObject("Part::Feature", "Debug_{}_{}".format(debugZ, op.Name))
+                            debugObj.Label = "Debug_{}_{}".format(debugZ, op.Label)
+                            debugObj.Shape = sectionClearedAreas[-1].getShape()
+                        pass
                 restSection = section.getRestArea(sectionClearedAreas, self.tool.Diameter.getValueAs("mm"))
                 restSections.append(restSection)
             sections = restSections

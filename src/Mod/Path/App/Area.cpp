@@ -75,6 +75,7 @@
 #include <Mod/Part/App/CrossSection.h>
 #include <Mod/Part/App/FaceMakerBullseye.h>
 #include <Mod/Part/App/PartFeature.h>
+#include <Mod/Path/App/PathSegmentWalker.h>
 #include <Mod/Path/libarea/Area.h>
 
 #include "Area.h"
@@ -527,6 +528,181 @@ std::shared_ptr<Area> Area::getClearedArea(double tipDiameter, double diameter) 
     return clearedArea;
 }
 
+class ClearedAreaSegmentVisitor : public PathSegmentVisitor
+{
+private:
+    CArea pathSegments;
+    double maxZ;
+    double diameter;
+
+    void line(const Base::Vector3d &last, const Base::Vector3d &next)
+    {
+        if (last.z <= maxZ && next.z <= maxZ) {
+            CCurve curve;
+            curve.append(CVertex{{last.x, last.y}});
+            curve.append(CVertex{{next.x, next.y}});
+            pathSegments.append(curve);
+            count++;
+        } else {
+            // printf("SKIP!");
+        }
+    }
+public:
+    int count = 0;
+
+    ClearedAreaSegmentVisitor(double maxZ, double diameter) : maxZ(maxZ), diameter(diameter)
+    {
+    }
+
+    CArea getClearedArea()
+    {
+        CArea result{pathSegments};
+        result.Thicken(diameter / 2);
+        return result;
+    }
+
+    void g0(int id, const Base::Vector3d &last, const Base::Vector3d &next, const std::deque<Base::Vector3d> &pts) override
+    {
+        (void)id;
+        // printf("g0 [ ");
+        processPt(last);
+        // printf("] ");
+        processPts(pts);
+        // printf("_ ");
+        processPt(next);
+
+        line(last, next);
+        // printf("\n");
+    }
+
+    void g1(int id, const Base::Vector3d &last, const Base::Vector3d &next, const std::deque<Base::Vector3d> &pts) override
+    {
+        (void)id;
+        // printf("g1 [ ");
+        processPt(last);
+        // printf("] ");
+        processPts(pts);
+        // printf("_ ");
+        processPt(next);
+
+        line(last, next);
+        // printf("\n");
+    }
+
+    void g23(int id, const Base::Vector3d &last, const Base::Vector3d &next, const std::deque<Base::Vector3d> &pts, const Base::Vector3d &center) override
+    {
+        (void)id;
+        (void)center;
+        // printf("g23 [ ");
+        processPt(last);
+        // printf("] ");
+        processPts(pts);
+        // printf("_ ");
+        processPt(next);
+
+        // TODO do I need to add last and next to the list???
+        // TODO rounding resolution of the function that calls this is too big
+        Base::Vector3d prev = last;
+        for (Base::Vector3d p : pts) {
+            line(prev, p);
+            prev = p;
+        }
+        line(prev, next);
+        // printf("\n");
+    }
+
+    void g8x(int id, const Base::Vector3d &last, const Base::Vector3d &next, const std::deque<Base::Vector3d> &pts,
+                     const std::deque<Base::Vector3d> &p, const std::deque<Base::Vector3d> &q) override
+    {
+        (void)id;
+        (void)q; // always within the bounds of p
+        printf("g8x UNHANDLED\n");
+        // processPt(last);
+        // processPts(pts);
+        // processPts(p);
+        // processPt(next);
+        (void)last;
+        (void)pts;
+        (void)p;
+        (void)next;
+    }
+    void g38(int id, const Base::Vector3d &last, const Base::Vector3d &next) override
+    {
+        (void)id;
+        printf("g38 UNHANDLED\n");
+        // processPt(last);
+        // processPt(next);
+        (void)last;
+        (void)next;
+    }
+
+private:
+    void processPts(const std::deque<Base::Vector3d> &pts) {
+        for (std::deque<Base::Vector3d>::const_iterator it=pts.begin(); pts.end() != it; ++it) {
+            processPt(*it);
+        }
+    }
+
+    void processPt(const Base::Vector3d &pt) {
+        // printf("(%7.3f, %7.3f, %7.3f) ", pt.x, pt.y, pt.z);
+    }
+};
+
+std::shared_ptr<Area> Area::getClearedAreaFromPath(const Toolpath *path, double diameter, double zmax) {
+    build();
+#define AREA_MY(_param) myParams.PARAM_FNAME(_param)
+    PARAM_ENUM_CONVERT(AREA_MY, PARAM_FNAME, PARAM_ENUM_EXCEPT, AREA_PARAMS_OFFSET_CONF);
+    PARAM_ENUM_CONVERT(AREA_MY, PARAM_FNAME, PARAM_ENUM_EXCEPT, AREA_PARAMS_CLIPPER_FILL);
+    (void)SubjectFill;
+    (void)ClipFill;
+
+    // Do not fit arcs after these offsets; it introduces unnecessary approximation error, and all off
+    // those arcs will be converted back to segments again for clipper differencing in getRestArea anyway
+    CAreaConfig conf(myParams, /*no_fit_arcs*/ true);
+
+    const double roundPrecision = myParams.Accuracy;
+    const double buffer = 2 * roundPrecision;
+    (void)buffer;
+    (void)JoinType;
+    (void)EndType;
+
+    Base::Vector3d pos = Base::Vector3d(0, 0, zmax + 1);
+    printf("getClearedAreaFromPath(path, diameter=%g, zmax=%g:\n", diameter, zmax);
+    // printf("Gcode:\n");
+    for (auto c : path->getCommands()) {
+        // printf("\t%s ", c->Name.c_str());
+        for (std::map<std::string, double>::iterator i = c->Parameters.begin(); i != c->Parameters.end(); ++i) {
+            // printf("%s%g ", i->first.c_str(), i->second);
+        }
+        // printf("\n");
+    }
+
+    printf("\n");
+    printf("GCode walker:\n");
+    ClearedAreaSegmentVisitor visitor(zmax, diameter);
+    PathSegmentWalker walker(*path);
+    walker.walk(visitor, Base::Vector3d(0, 0, zmax + 1));
+    printf("Count: %d\n", visitor.count);
+    printf("\n");
+    printf("\n");
+
+
+    std::shared_ptr<Area> clearedArea = make_shared<Area>(&myParams);
+    //clearedArea->myTrsf = myTrsf;
+    clearedArea->myTrsf = {};
+    if (visitor.count > 0) {
+        //gp_Trsf trsf(myTrsf.Inverted());
+        TopoDS_Shape clearedAreaShape = Area::toShape(visitor.getClearedArea(), false/*, &trsf*/);
+        clearedArea->add(clearedAreaShape, OperationCompound);
+        clearedArea->build();
+    } else {
+        clearedArea->myArea = std::make_unique<CArea>();
+        clearedArea->myAreaOpen = std::make_unique<CArea>();
+    }
+
+    return clearedArea;
+}
+
 std::shared_ptr<Area> Area::getRestArea(std::vector<std::shared_ptr<Area>> clearedAreas, double diameter) {
     build();
     PARAM_ENUM_CONVERT(AREA_MY, PARAM_FNAME, PARAM_ENUM_EXCEPT, AREA_PARAMS_OFFSET_CONF);
@@ -538,6 +714,8 @@ std::shared_ptr<Area> Area::getRestArea(std::vector<std::shared_ptr<Area>> clear
     // transform all clearedAreas into our workplane
     Area clearedAreasInPlane(&myParams);
     clearedAreasInPlane.myArea.reset(new CArea());
+    printf("getRestArea\n");
+    printf("\n");
     for (std::shared_ptr<Area> clearedArea : clearedAreas) {
       gp_Trsf trsf = clearedArea->myTrsf;
       trsf.Invert();

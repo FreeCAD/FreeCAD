@@ -243,6 +243,7 @@ public:
         const TopoDS_Shape& plane = TopoDS_Shape());
 
     std::shared_ptr<Area> getClearedArea(double tipDiameter, double diameter);
+    std::shared_ptr<Area> getClearedAreaFromPath(const Toolpath *path, double diameter, double zmax);
     std::shared_ptr<Area> getRestArea(std::vector<std::shared_ptr<Area>> clearedAreas, double diameter);
     TopoDS_Shape toTopoShape();
 

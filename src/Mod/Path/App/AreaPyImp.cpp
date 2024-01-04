@@ -27,6 +27,7 @@
 #include <Mod/Part/App/TopoShapePy.h>
 
 // inclusion of the generated files (generated out of AreaPy.xml)
+#include "PathPy.h"
 #include "AreaPy.h"
 #include "AreaPy.cpp"
 
@@ -151,6 +152,11 @@ static const PyMethodDef areaOverrides[] = {
         "getClearedArea",nullptr,0,
         "getClearedArea(tipDiameter, diameter):\n"
         "Gets the area cleared when a tool maximally clears this area. This method assumes a tool tip diameter 'tipDiameter' traces the full area, and that (perhaps at a different height on the tool) this clears a different region with tool diameter 'diameter'.\n",
+    },
+    {
+        "getClearedAreaFromPath",nullptr,0,
+        "getClearedAreaFromPath(path, diameter, zmax):\n"
+        "Gets the area cleared when a tool of the specified diameter follows the gcode represented in the path, ignoring cleared space above zmax.\n",
     },
     {
         "getRestArea",nullptr,0,
@@ -410,6 +416,24 @@ PyObject* AreaPy::getClearedArea(PyObject *args)
         if (!PyArg_ParseTuple(args, "dd", &tipDiameter, &diameter))
             return nullptr;
         std::shared_ptr<Area> clearedArea = getAreaPtr()->getClearedArea(tipDiameter, diameter);
+        auto pyClearedArea = Py::asObject(new AreaPy(new Area(*clearedArea, true)));
+        return Py::new_reference_to(pyClearedArea);
+    } PY_CATCH_OCC
+}
+
+PyObject* AreaPy::getClearedAreaFromPath(PyObject *args)
+{
+    PY_TRY {
+        PyObject *pyPath;
+        double diameter, zmax;
+        if (!PyArg_ParseTuple(args, "Odd", &pyPath, &diameter, &zmax))
+            return nullptr;
+	if (!PyObject_TypeCheck(pyPath, &(PathPy::Type))) {
+		PyErr_SetString(PyExc_TypeError, "path must be of type PathPy");
+		return nullptr;
+	}
+	const PathPy *path = static_cast<PathPy*>(pyPath);
+        std::shared_ptr<Area> clearedArea = getAreaPtr()->getClearedAreaFromPath(path->getToolpathPtr(), diameter, zmax);
         auto pyClearedArea = Py::asObject(new AreaPy(new Area(*clearedArea, true)));
         return Py::new_reference_to(pyClearedArea);
     } PY_CATCH_OCC
