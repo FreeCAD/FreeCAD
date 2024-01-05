@@ -132,13 +132,12 @@ void TaskCosVertex::updateUi()
     ui->dsbY->setValue(y);
 }
 
+//! create the cv at an unscaled, unrotated position
 void TaskCosVertex::addCosVertex(QPointF qPos)
 {
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Add Cosmetic Vertex"));
 
-//    Base::Console().Message("TCV::addCosVertex(%s)\n", TechDraw::DrawUtil::formatVector(qPos).c_str());
     Base::Vector3d pos = DU::invertY(DU::toVector3d(qPos));
-    pos = CosmeticVertex::makeCanonicalPoint(m_baseFeat, pos);
 //    int idx =
     (void) m_baseFeat->addCosmeticVertex(pos);
     m_baseFeat->requestPaint();
@@ -238,7 +237,10 @@ void TaskCosVertex::onTrackerFinished(std::vector<QPointF> pts, QGIView* qgParen
     QPointF scenePosCV = displace;
 
     //  Invert Y value so the math works.
+    // scenePosCV is effectively a scaled (and rotated) value
     Base::Vector3d posToRotate = DU::invertY(DU::toVector3d(scenePosCV));
+
+    // unscale and rotate the picked point
     posToRotate = CosmeticVertex::makeCanonicalPoint(m_baseFeat, posToRotate);
     // now put Y value back to display form
     scenePosCV = DU::toQPointF(DU::invertY(posToRotate));
@@ -312,6 +314,7 @@ bool TaskCosVertex::accept()
     double x = ui->dsbX->value().getValue();
     double y = ui->dsbY->value().getValue();
     QPointF uiPoint(x, -y);
+
     addCosVertex(uiPoint);
 
     m_baseFeat->recomputeFeature();
