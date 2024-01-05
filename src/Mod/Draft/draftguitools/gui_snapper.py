@@ -1569,14 +1569,15 @@ class Snapper:
     def setGrid(self):
         """Set the grid, if visible."""
         self.setTrackers()
-        if self.grid.Visible:
-            self.grid.set()
 
 
     def setTrackers(self, update_grid=True):
         """Set the trackers."""
         v = Draft.get3DView()
-        if v and (v != self.activeview):
+        if v is None:
+            return
+
+        if v != self.activeview:
             if v in self.trackers[0]:
                 i = self.trackers[0].index(v)
                 self.grid = self.trackers[1][i]
