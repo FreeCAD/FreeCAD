@@ -662,7 +662,6 @@ std::shared_ptr<Area> Area::getClearedAreaFromPath(const Toolpath *path, double 
 
     const double roundPrecision = myParams.Accuracy;
     const double buffer = 2 * roundPrecision;
-    (void)buffer;
     (void)JoinType;
     (void)EndType;
 
@@ -679,7 +678,7 @@ std::shared_ptr<Area> Area::getClearedAreaFromPath(const Toolpath *path, double 
 
     printf("\n");
     printf("GCode walker:\n");
-    ClearedAreaSegmentVisitor visitor(zmax, diameter);
+    ClearedAreaSegmentVisitor visitor(zmax, diameter + buffer);
     PathSegmentWalker walker(*path);
     walker.walk(visitor, Base::Vector3d(0, 0, zmax + 1));
     printf("Count: %d\n", visitor.count);
