@@ -188,8 +188,8 @@
       <translation>Position</translation>
     </message>
     <message>
-      <location filename="../Transform.cpp" line="101"/>
       <location filename="../TaskCSysDragger.cpp" line="75"/>
+      <location filename="../Transform.cpp" line="101"/>
       <location filename="../ViewProviderAnnotation.cpp" line="426"/>
       <source>Transform</source>
       <translation>Transformer</translation>
@@ -418,7 +418,7 @@
     <message>
       <location filename="../Application.h" line="255"/>
       <source>Default</source>
-      <translation>Par défaut</translation>
+      <translation>Défaut</translation>
     </message>
     <message>
       <location filename="../Application.h" line="256"/>
@@ -592,7 +592,7 @@
     <message>
       <location filename="../CADNavigationStyle.cpp" line="53"/>
       <source>Press middle mouse button</source>
-      <translation>Appuyer sur la roulette de la souris</translation>
+      <translation>Appuyez sur la roulette de la souris</translation>
     </message>
     <message>
       <location filename="../CADNavigationStyle.cpp" line="55"/>
@@ -1387,7 +1387,7 @@ same time. The one with the highest priority will be triggered.</source>
       <location filename="../DlgKeyboardImp.cpp" line="433"/>
       <location filename="../DlgKeyboardImp.cpp" line="501"/>
       <source>none</source>
-      <translation>rien</translation>
+      <translation>aucun</translation>
     </message>
   </context>
   <context>
@@ -2553,12 +2553,12 @@ Specify another directory, please.</source>
     <message>
       <location filename="../DlgProjectInformation.ui" line="142"/>
       <source>Unit System:</source>
-      <translation type="unfinished">Unit System:</translation>
+      <translation>Système d'unités :</translation>
     </message>
     <message>
       <location filename="../DlgProjectInformation.ui" line="152"/>
       <source>Unit system for this file</source>
-      <translation type="unfinished">Unit system for this file</translation>
+      <translation>Système des unités pour ce fichier</translation>
     </message>
     <message>
       <location filename="../DlgProjectInformation.ui" line="159"/>
@@ -2780,7 +2780,7 @@ Specify another directory, please.</source>
     <message>
       <location filename="../DlgRunExternal.ui" line="38"/>
       <source>TextLabel</source>
-      <translation>Étiquette de texte</translation>
+      <translation>TextLabel</translation>
     </message>
     <message>
       <location filename="../DlgRunExternal.ui" line="58"/>
@@ -4095,7 +4095,7 @@ Vous pouvez également utiliser la forme : John Doe &lt;john@doe.com&gt;</transl
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="162"/>
       <source>Default</source>
-      <translation>Défaut</translation>
+      <translation>Par défaut</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="170"/>
@@ -4110,7 +4110,7 @@ Vous pouvez également utiliser la forme : John Doe &lt;john@doe.com&gt;</transl
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="205"/>
       <source>Color</source>
-      <translation>Couleur</translation>
+      <translation>Colorier</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="212"/>
@@ -4250,17 +4250,17 @@ La valeur est le diamètre de la sphère qui rentre à l'écran.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="695"/>
       <source>Animations</source>
-      <translation type="unfinished">Animations</translation>
+      <translation>Animations</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="761"/>
       <source>Enable spinning animations that are used in some navigation styles after dragging</source>
-      <translation type="unfinished">Enable spinning animations that are used in some navigation styles after dragging</translation>
+      <translation>Activer les animations de rotation qui sont utilisées dans certains styles de navigation après un glisser-déposer.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="764"/>
       <source>Enable spinning animations</source>
-      <translation type="unfinished">Enable spinning animations</translation>
+      <translation>Activer les animations de rotation</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="704"/>
@@ -5256,19 +5256,19 @@ La colonne "État" indique si le document a pu être récupéré.</translation>
       <location filename="../Placement.ui" line="47"/>
       <location filename="../Placement.ui" line="145"/>
       <source>X:</source>
-      <translation>X :</translation>
+      <translation>X :</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="63"/>
       <location filename="../Placement.ui" line="161"/>
       <source>Y:</source>
-      <translation>Y :</translation>
+      <translation>Y :</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="79"/>
       <location filename="../Placement.ui" line="177"/>
       <source>Z:</source>
-      <translation>Z :</translation>
+      <translation>Z :</translation>
     </message>
     <message>
       <location filename="../Placement.ui" line="95"/>
@@ -6093,15 +6093,15 @@ Voulez enregistrer les modifications ?</translation>
       <translation>Format PDF</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="448"/>
       <location filename="../CommandDoc.cpp" line="617"/>
+      <location filename="../GraphvizView.cpp" line="448"/>
       <source>Graphviz format</source>
       <translation>Format Graphviz</translation>
     </message>
     <message>
+      <location filename="../CommandDoc.cpp" line="618"/>
       <location filename="../GraphvizView.cpp" line="462"/>
       <location filename="../GraphvizView.cpp" line="550"/>
-      <location filename="../CommandDoc.cpp" line="618"/>
       <source>Export graph</source>
       <translation>Exporter un graphique</translation>
     </message>
@@ -6129,7 +6129,7 @@ Voulez enregistrer les modifications ?</translation>
     <message>
       <location filename="../InventorNavigationStyle.cpp" line="53"/>
       <source>Press middle mouse button</source>
-      <translation>Appuyer sur la molette de la souris</translation>
+      <translation>Appuyer sur la roulette de la souris</translation>
     </message>
     <message>
       <location filename="../InventorNavigationStyle.cpp" line="55"/>
@@ -6319,7 +6319,7 @@ Voulez enregistrer les modifications ?</translation>
       <location filename="../MainWindow.cpp" line="2142"/>
       <location filename="../MainWindow.cpp" line="2234"/>
       <source>Unsaved document</source>
-      <translation>Document non enregistré</translation>
+      <translation>Document non sauvegardé</translation>
     </message>
     <message>
       <location filename="../MainWindow.cpp" line="2143"/>
@@ -6847,7 +6847,7 @@ Voulez vous quitter sans sauvegarder vos données?</translation>
     <message>
       <location filename="../Action.cpp" line="1042"/>
       <source>none</source>
-      <translation>aucun</translation>
+      <translation>rien</translation>
     </message>
     <message>
       <location filename="../Action.cpp" line="1057"/>
@@ -7041,7 +7041,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../TaskElementColors.ui" line="22"/>
       <source>TextLabel</source>
-      <translation>TextLabel</translation>
+      <translation>Étiquette de texte</translation>
     </message>
     <message>
       <location filename="../TaskElementColors.ui" line="40"/>
@@ -7191,7 +7191,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../TinkerCADNavigationStyle.cpp" line="51"/>
       <source>Press middle mouse button</source>
-      <translation>Appuyez sur la roulette de la souris</translation>
+      <translation>Appuyer sur la molette de la souris</translation>
     </message>
     <message>
       <location filename="../TinkerCADNavigationStyle.cpp" line="53"/>
@@ -7663,7 +7663,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../View3DInventor.cpp" line="247"/>
       <source>Export PDF</source>
-      <translation>Exporter en PDF</translation>
+      <translation>Exporter vers PDF</translation>
     </message>
     <message>
       <location filename="../View3DInventor.cpp" line="248"/>
@@ -7745,17 +7745,17 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../DlgLocationPos.ui" line="22"/>
       <source>X:</source>
-      <translation>X :</translation>
+      <translation>X :</translation>
     </message>
     <message>
       <location filename="../DlgLocationPos.ui" line="43"/>
       <source>Y:</source>
-      <translation>Y :</translation>
+      <translation>Y :</translation>
     </message>
     <message>
       <location filename="../DlgLocationPos.ui" line="64"/>
       <source>Z:</source>
-      <translation>Z :</translation>
+      <translation>Z :</translation>
     </message>
     <message>
       <location filename="../DlgLocationPos.ui" line="86"/>
@@ -8025,10 +8025,10 @@ Do you want to specify another directory?</source>
       <translation>Exportation PDF ...</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="833"/>
       <location filename="../CommandDoc.cpp" line="1230"/>
+      <location filename="../MainWindow.cpp" line="833"/>
       <source>Unsaved document</source>
-      <translation>Document non sauvegardé</translation>
+      <translation>Document non enregistré</translation>
     </message>
     <message>
       <location filename="../CommandDoc.cpp" line="1231"/>
@@ -8295,7 +8295,7 @@ Do you want to continue?</source>
     <message>
       <location filename="../NotificationArea.cpp" line="431"/>
       <source> (%1 times)</source>
-      <translation type="unfinished"> (%1 times)</translation>
+      <translation> (%1 fois)</translation>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="664"/>
@@ -8900,8 +8900,8 @@ apportée à la copie en cours sera perdue.
       <translation>Activer/désactiver la surimposition</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="2180"/>
       <location filename="../OverlayManager.cpp" line="1036"/>
+      <location filename="../OverlayWidgets.cpp" line="2180"/>
       <source>Toggle floating window</source>
       <translation>Activer/désactiver la fenêtre flottante</translation>
     </message>
@@ -9127,7 +9127,7 @@ apportée à la copie en cours sera perdue.
       <location filename="../CommandView.cpp" line="3053"/>
       <location filename="../CommandView.cpp" line="3055"/>
       <source>Box element selection</source>
-      <translation>Sélection d'éléments par boîte</translation>
+      <translation>Sélectionner des éléments par une boîte</translation>
     </message>
   </context>
   <context>
@@ -9588,7 +9588,7 @@ apportée à la copie en cours sera perdue.
     <message>
       <location filename="../CommandStd.cpp" line="668"/>
       <source>Frequently Asked Questions</source>
-      <translation>Foire aux Questions</translation>
+      <translation>Foire aux questions</translation>
     </message>
   </context>
   <context>
@@ -9968,7 +9968,7 @@ Contrairement aux clones, les liens font directement référence à la forme d'o
     <message>
       <location filename="../CommandView.cpp" line="3219"/>
       <source>Measure distance</source>
-      <translation>Mesurer une distance</translation>
+      <translation>Mesurer la distance</translation>
     </message>
     <message>
       <location filename="../CommandView.cpp" line="3220"/>
@@ -9982,7 +9982,7 @@ Contrairement aux clones, les liens font directement référence à la forme d'o
     <message>
       <location filename="../CommandStd.cpp" line="746"/>
       <source>Measure distance</source>
-      <translation>Mesurer la distance</translation>
+      <translation>Mesurer une distance</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="747"/>
@@ -10031,8 +10031,8 @@ Contrairement aux clones, les liens font directement référence à la forme d'o
       <translation>Créer un nouveau document vide</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2339"/>
       <location filename="../DocumentRecovery.cpp" line="391"/>
+      <location filename="../MainWindow.cpp" line="2339"/>
       <source>Unnamed</source>
       <translation>Sans nom</translation>
     </message>
@@ -11839,7 +11839,7 @@ Voulez-vous tout de même continuer ?</translation>
     <message>
       <location filename="../MDIView.cpp" line="257"/>
       <source>Export PDF</source>
-      <translation>Exporter vers PDF</translation>
+      <translation>Exporter en PDF</translation>
     </message>
     <message>
       <location filename="../MDIView.cpp" line="258"/>
@@ -12643,12 +12643,12 @@ after FreeCAD launches</source>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="55"/>
       <source>Default Unit system:</source>
-      <translation type="unfinished">Default Unit system:</translation>
+      <translation>Système d'unités par défaut :</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="96"/>
       <source>Ignore project unit system and use default</source>
-      <translation type="unfinished">Ignore project unit system and use default</translation>
+      <translation>Ignorer le système d'unités du projet et utiliser le système par défaut</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsGeneral.ui" line="103"/>
@@ -13503,7 +13503,7 @@ Le clic automatique n'est activé que si tous les pixels de la région sont non 
     <message>
       <location filename="../OverlayWidgets.cpp" line="857"/>
       <source>None</source>
-      <translation>Aucun</translation>
+      <translation>Rien</translation>
     </message>
     <message>
       <location filename="../OverlayWidgets.cpp" line="858"/>
@@ -13602,13 +13602,13 @@ Le clic automatique n'est activé que si tous les pixels de la région sont non 
     <message>
       <location filename="../CommandWindow.cpp" line="352"/>
       <source>Lock toolbars</source>
-      <translation type="unfinished">Lock toolbars</translation>
+      <translation>Verrouiller les barres d'outils</translation>
     </message>
     <message>
       <location filename="../CommandWindow.cpp" line="353"/>
       <location filename="../CommandWindow.cpp" line="355"/>
       <source>Locks toolbar so they are no longer moveable</source>
-      <translation type="unfinished">Locks toolbar so they are no longer moveable</translation>
+      <translation>Verrouiller les barres d'outils pour qu'elles ne soient plus déplaçables.</translation>
     </message>
   </context>
 </TS>

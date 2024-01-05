@@ -84,6 +84,7 @@ ViewProviderGeometryObject::ViewProviderGeometryObject()
     ADD_PROPERTY_TYPE(Transparency, (initialTransparency), osgroup, App::Prop_None, "Set object transparency");
     Transparency.setConstraints(&intPercent);
     App::Material mat(App::Material::DEFAULT);
+    mat.transparency = (float)initialTransparency / 100.0f;
     ADD_PROPERTY_TYPE(ShapeMaterial,(mat), osgroup, App::Prop_None, "Shape material");
     ADD_PROPERTY_TYPE(BoundingBox, (false), dogroup, App::Prop_None, "Display object bounding box");
     ADD_PROPERTY_TYPE(Selectable, (true), sgroup, App::Prop_None, "Set if the object is selectable in the 3d view");
@@ -94,7 +95,6 @@ ViewProviderGeometryObject::ViewProviderGeometryObject()
     pcShapeMaterial = new SoMaterial;
     pcShapeMaterial->diffuseColor.setValue(r, g, b);
     pcShapeMaterial->transparency = float(initialTransparency);
-    ShapeMaterial.setTransparency((float)initialTransparency / 100.0f);
     pcShapeMaterial->ref();
 
     pcBoundingBox = new Gui::SoFCBoundingBox;

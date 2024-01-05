@@ -4048,7 +4048,7 @@ a fájl olvasása közben (lassabb, de pontosabb).</translation>
     <message>
       <location filename="../../DlgRevolution.ui" line="281"/>
       <source>Angle:</source>
-      <translation>Szög:</translation>
+      <translation>Dőlésszög:</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="315"/>
@@ -4528,7 +4528,7 @@ the sketch plane's normal vector will be used</source>
     <message>
       <location filename="../../Mirroring.ui" line="121"/>
       <source>Use selected reference</source>
-      <translation type="unfinished">Use selected reference</translation>
+      <translation>Kiválasztott hivatkozás használata</translation>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="142"/>
@@ -4559,12 +4559,12 @@ the sketch plane's normal vector will be used</source>
       <location filename="../../Mirroring.ui" line="150"/>
       <location filename="../../Mirroring.cpp" line="215"/>
       <source>Selecting</source>
-      <translation type="unfinished">Selecting</translation>
+      <translation>Kiválaszt</translation>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="166"/>
       <source>Mirror plane reference</source>
-      <translation type="unfinished">Mirror plane reference</translation>
+      <translation>Referencia tükörsík</translation>
     </message>
     <message>
       <location filename="../../Mirroring.ui" line="20"/>
@@ -5715,8 +5715,8 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="47"/>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="54"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="53"/>
       <location filename="../../ViewProvider.cpp" line="49"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="53"/>
       <source>Edit %1</source>
       <translation>%1 szerkesztése</translation>
     </message>
@@ -5807,20 +5807,20 @@ Do you want to continue?</source>
       <translation>Nincs kijelölt hivatkozás</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
       <location filename="../../TaskAttacher.cpp" line="75"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
       <source>Face</source>
       <translation>Felület</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
       <location filename="../../TaskAttacher.cpp" line="78"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
       <source>Edge</source>
       <translation>Él</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <location filename="../../TaskAttacher.cpp" line="81"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <source>Vertex</source>
       <translation>Végpont</translation>
     </message>

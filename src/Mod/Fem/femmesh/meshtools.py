@@ -1240,7 +1240,7 @@ def get_ref_facenodes_table(
             # try to use getccxVolumesByFace() to get the volume ids
             # of element with elementfaces on the ref_face
             # --> should work for tetra4 and tetra10
-            # list of tupels (mv, ccx_face_nr)
+            # list of tuples (mv, ccx_face_nr)
             ref_face_volume_elements = femmesh.getccxVolumesByFace(ref_face)
             if ref_face_volume_elements:  # mesh with tetras
                 FreeCAD.Console.PrintLog(

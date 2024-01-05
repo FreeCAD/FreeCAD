@@ -883,8 +883,8 @@ az önmetszés elkerülése érdekében.</translation>
       <translation>Klónozás</translation>
     </message>
     <message>
-      <location filename="../../SketchWorkflow.cpp" line="297"/>
       <location filename="../../Command.cpp" line="891"/>
+      <location filename="../../SketchWorkflow.cpp" line="297"/>
       <source>Make copy</source>
       <translation>Másolat készítése</translation>
     </message>
@@ -909,8 +909,8 @@ az önmetszés elkerülése érdekében.</translation>
       <translation>Logikai érték létrehozása</translation>
     </message>
     <message>
-      <location filename="../../DlgActiveBody.cpp" line="102"/>
       <location filename="../../CommandBody.cpp" line="189"/>
+      <location filename="../../DlgActiveBody.cpp" line="102"/>
       <source>Add a Body</source>
       <translation>Test hozzáadás</translation>
     </message>
@@ -3472,28 +3472,28 @@ click again to end selection</source>
       <translation>Kérem, először hozzon létre egy síkot vagy válasszon egy felületet amin vázlatot készít</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderHole.cpp" line="77"/>
-      <location filename="../../ViewProviderDatum.cpp" line="246"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="68"/>
+      <location filename="../../Command.cpp" line="912"/>
+      <location filename="../../Command.cpp" line="1931"/>
       <location filename="../../SketchWorkflow.cpp" line="591"/>
       <location filename="../../ViewProvider.cpp" line="95"/>
       <location filename="../../ViewProviderBoolean.cpp" line="78"/>
+      <location filename="../../ViewProviderDatum.cpp" line="246"/>
+      <location filename="../../ViewProviderHole.cpp" line="77"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="68"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="95"/>
-      <location filename="../../Command.cpp" line="912"/>
-      <location filename="../../Command.cpp" line="1931"/>
       <source>A dialog is already open in the task panel</source>
       <translation>Egy párbeszédablak már nyitva van a feladat panelen</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderHole.cpp" line="78"/>
-      <location filename="../../ViewProviderDatum.cpp" line="247"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="69"/>
+      <location filename="../../Command.cpp" line="913"/>
+      <location filename="../../Command.cpp" line="1932"/>
       <location filename="../../SketchWorkflow.cpp" line="592"/>
       <location filename="../../ViewProvider.cpp" line="96"/>
       <location filename="../../ViewProviderBoolean.cpp" line="79"/>
+      <location filename="../../ViewProviderDatum.cpp" line="247"/>
+      <location filename="../../ViewProviderHole.cpp" line="78"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="69"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="96"/>
-      <location filename="../../Command.cpp" line="913"/>
-      <location filename="../../Command.cpp" line="1932"/>
       <source>Do you want to close this dialog?</source>
       <translation>Szeretné bezárni a párbeszédpanelt?</translation>
     </message>
@@ -3759,14 +3759,14 @@ Ez nem várt eredményekhez vezethet.</translation>
       <translation>Nincs lehetőség kivonandó funkció létrehozására az alap funkció nélkül</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="281"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="202"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="281"/>
       <source>Vertical sketch axis</source>
       <translation>Vázlat függőleges tengelye</translation>
     </message>
     <message>
-      <location filename="../../TaskTransformedParameters.cpp" line="282"/>
       <location filename="../../TaskRevolutionParameters.cpp" line="203"/>
+      <location filename="../../TaskTransformedParameters.cpp" line="282"/>
       <source>Horizontal sketch axis</source>
       <translation>Vázlat vízszintes tengelye</translation>
     </message>
@@ -3820,10 +3820,10 @@ Ha van egy örökölt dokumentum AlkatrészTervezés objektummal Test nélkül, 
       <translation>Funkció használatához szükséges, hogy az egy alkatrész objektumhoz tartozzon a dokumentumban.</translation>
     </message>
     <message>
-      <location filename="../../ViewProviderDressUp.cpp" line="50"/>
-      <location filename="../../ViewProviderTransformed.cpp" line="76"/>
       <location filename="../../ViewProvider.cpp" line="62"/>
+      <location filename="../../ViewProviderDressUp.cpp" line="50"/>
       <location filename="../../ViewProviderShapeBinder.cpp" line="201"/>
+      <location filename="../../ViewProviderTransformed.cpp" line="76"/>
       <source>Edit %1</source>
       <translation>%1 szerkesztése</translation>
     </message>
@@ -4784,17 +4784,17 @@ over 90: larger hole radius at the bottom</source>
       <translation>A szerszám csatlakoztatása sikertelen</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePad.cpp" line="229"/>
-      <location filename="../../../App/FeaturePocket.cpp" line="222"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="394"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="414"/>
       <location filename="../../../App/FeatureBoolean.cpp" line="137"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="217"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1900"/>
       <location filename="../../../App/FeatureLoft.cpp" line="293"/>
       <location filename="../../../App/FeatureLoft.cpp" line="311"/>
+      <location filename="../../../App/FeaturePad.cpp" line="229"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="394"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="414"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="222"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="103"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="123"/>
-      <location filename="../../../App/FeatureHole.cpp" line="1900"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="217"/>
       <source>Resulting shape is not a solid</source>
       <translation>Az eredmény alakzat nem szilárd test</translation>
     </message>
@@ -4809,22 +4809,22 @@ over 90: larger hole radius at the bottom</source>
       <translation>A közös művelet sikertelen</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureChamfer.cpp" line="223"/>
-      <location filename="../../../App/FeaturePad.cpp" line="233"/>
-      <location filename="../../../App/FeaturePad.cpp" line="242"/>
-      <location filename="../../../App/FeaturePocket.cpp" line="191"/>
-      <location filename="../../../App/FeaturePocket.cpp" line="226"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="398"/>
-      <location filename="../../../App/FeaturePipe.cpp" line="418"/>
-      <location filename="../../../App/FeatureDraft.cpp" line="323"/>
       <location filename="../../../App/FeatureBoolean.cpp" line="157"/>
+      <location filename="../../../App/FeatureChamfer.cpp" line="223"/>
+      <location filename="../../../App/FeatureDraft.cpp" line="323"/>
       <location filename="../../../App/FeatureFillet.cpp" line="137"/>
+      <location filename="../../../App/FeatureGroove.cpp" line="224"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1908"/>
       <location filename="../../../App/FeatureLoft.cpp" line="296"/>
       <location filename="../../../App/FeatureLoft.cpp" line="314"/>
+      <location filename="../../../App/FeaturePad.cpp" line="233"/>
+      <location filename="../../../App/FeaturePad.cpp" line="242"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="398"/>
+      <location filename="../../../App/FeaturePipe.cpp" line="418"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="191"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="226"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="107"/>
       <location filename="../../../App/FeaturePrimitive.cpp" line="127"/>
-      <location filename="../../../App/FeatureHole.cpp" line="1908"/>
-      <location filename="../../../App/FeatureGroove.cpp" line="224"/>
       <source>Result has multiple solids: that is not currently supported.</source>
       <translation>Az eredménynek több szilárd teste van: ez jelenleg nem támogatott.</translation>
     </message>
@@ -4887,8 +4887,8 @@ over 90: larger hole radius at the bottom</source>
       <translation>A horony szöge túl kicsi</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="1669"/>
       <location filename="../../../App/FeatureGroove.cpp" line="108"/>
+      <location filename="../../../App/FeatureHole.cpp" line="1669"/>
       <source>The requested feature cannot be created. The reason may be that:
   - the active Body does not contain a base shape, so there is no
   material to be removed;
@@ -4898,14 +4898,14 @@ over 90: larger hole radius at the bottom</source>
 - a kiválasztott vázlat nem az aktív testhez tartozik.</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="126"/>
       <location filename="../../../App/FeatureGroove.cpp" line="130"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="126"/>
       <source>Creating a face from sketch failed</source>
       <translation>Nem sikerült felületet létrehozni vázlatból</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="142"/>
       <location filename="../../../App/FeatureGroove.cpp" line="146"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="142"/>
       <source>Revolve axis intersects the sketch</source>
       <translation>A körbmetszési tengely metszi a vázlatot</translation>
     </message>
@@ -4915,14 +4915,14 @@ over 90: larger hole radius at the bottom</source>
       <translation>Az alaptulajdonságból a kivágás sikertelen</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="198"/>
       <location filename="../../../App/FeatureGroove.cpp" line="202"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="198"/>
       <source>Could not revolve the sketch!</source>
       <translation>Nem lehetett körmetszeni a vázlatot!</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureRevolution.cpp" line="208"/>
       <location filename="../../../App/FeatureGroove.cpp" line="236"/>
+      <location filename="../../../App/FeatureRevolution.cpp" line="208"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities in a sketch are not allowed.</source>
       <translation>Nem sikerült felületet létrehozni vázlatból.
@@ -4979,12 +4979,12 @@ A vázlatelemek metszése egy vázlatban nem engedélyezett.</translation>
     <message>
       <location filename="../../../App/FeatureHelix.cpp" line="263"/>
       <source>Error: Could not make solid helix with open wire</source>
-      <translation type="unfinished">Error: Could not make solid helix with open wire</translation>
+      <translation>Hiba: Nem tudott tömör spirált készíteni nyitott dróttal</translation>
     </message>
     <message>
-      <location filename="../../../App/FeatureHole.cpp" line="2145"/>
       <location filename="../../../App/FeatureHelix.cpp" line="297"/>
       <location filename="../../../App/FeatureHelix.cpp" line="327"/>
+      <location filename="../../../App/FeatureHole.cpp" line="2145"/>
       <source>Error: Result is not a solid</source>
       <translation>Hiba: Az eredmény nem szilárd test</translation>
     </message>
@@ -5086,15 +5086,15 @@ A vázlatelemek metszése egy vázlatban nem engedélyezett.</translation>
       <translation>Hiba: A menet hozzáadása sikertelen</translation>
     </message>
     <message>
+      <location filename="../../../App/FeatureHole.cpp" line="1892"/>
       <location filename="../../../App/FeatureTransformed.cpp" line="283"/>
       <location filename="../../../App/FeatureTransformed.cpp" line="298"/>
-      <location filename="../../../App/FeatureHole.cpp" line="1892"/>
       <source>Boolean operation failed</source>
       <translation>A logikai művelet sikertelen</translation>
     </message>
     <message>
-      <location filename="../../../App/FeaturePocket.cpp" line="242"/>
       <location filename="../../../App/FeatureHole.cpp" line="1919"/>
+      <location filename="../../../App/FeaturePocket.cpp" line="242"/>
       <source>Could not create face from sketch.
 Intersecting sketch entities or multiple faces in a sketch are not allowed for making a pocket up to a face.</source>
       <translation>Nem sikerült felületet létrehozni vázlatból.

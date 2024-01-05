@@ -2503,7 +2503,7 @@ void CDxfRead::OnReadArc(double start_angle,
 
 void CDxfRead::OnReadCircle(const double* center, double radius, bool hidden)
 {
-    // OnReadCircle wants a start point, so we pick an arbitrary point on the circunference
+    // OnReadCircle wants a start point, so we pick an arbitrary point on the circumference
     double s[3] = {center[0] + radius, center[1], center[2]};
 
     OnReadCircle(s,

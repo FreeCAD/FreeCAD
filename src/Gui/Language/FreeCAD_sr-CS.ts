@@ -188,8 +188,8 @@
       <translation>Položaj</translation>
     </message>
     <message>
-      <location filename="../Transform.cpp" line="101"/>
       <location filename="../TaskCSysDragger.cpp" line="75"/>
+      <location filename="../Transform.cpp" line="101"/>
       <location filename="../ViewProviderAnnotation.cpp" line="426"/>
       <source>Transform</source>
       <translation>Pomeri</translation>
@@ -6104,15 +6104,15 @@ Da li želiš da sačuvaš promene?</translation>
       <translation>PDF format</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="448"/>
       <location filename="../CommandDoc.cpp" line="617"/>
+      <location filename="../GraphvizView.cpp" line="448"/>
       <source>Graphviz format</source>
       <translation>Graphviz format</translation>
     </message>
     <message>
+      <location filename="../CommandDoc.cpp" line="618"/>
       <location filename="../GraphvizView.cpp" line="462"/>
       <location filename="../GraphvizView.cpp" line="550"/>
-      <location filename="../CommandDoc.cpp" line="618"/>
       <source>Export graph</source>
       <translation>Izvezi grafikon</translation>
     </message>
@@ -7026,7 +7026,7 @@ Do you want to specify another directory?</source>
     <message>
       <location filename="../TaskDlgRelocation.cpp" line="42"/>
       <source>Position</source>
-      <translation>Položaj</translation>
+      <translation type="unfinished">Position</translation>
     </message>
   </context>
   <context>
@@ -8041,8 +8041,8 @@ Do you want to specify another directory?</source>
       <translation>Izvozim PDF...</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="833"/>
       <location filename="../CommandDoc.cpp" line="1230"/>
+      <location filename="../MainWindow.cpp" line="833"/>
       <source>Unsaved document</source>
       <translation>Nesačuvan dokument</translation>
     </message>
@@ -8918,8 +8918,8 @@ the current copy will be lost.
       <translation type="unfinished">Toggle overlay</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="2180"/>
       <location filename="../OverlayManager.cpp" line="1036"/>
+      <location filename="../OverlayWidgets.cpp" line="2180"/>
       <source>Toggle floating window</source>
       <translation type="unfinished">Toggle floating window</translation>
     </message>
@@ -10048,8 +10048,8 @@ the current copy will be lost.
       <translation>Napravi novi prazan dokument</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2339"/>
       <location filename="../DocumentRecovery.cpp" line="391"/>
+      <location filename="../MainWindow.cpp" line="2339"/>
       <source>Unnamed</source>
       <translation>Bez imena</translation>
     </message>
@@ -12063,7 +12063,7 @@ nakon pokretanja FreeCAD-a</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="117"/>
       <source>If checked, application will remember which workbench is active for each tab of the viewport</source>
-      <translation>Ako je čekirano, FreeCAD će zapamtiti koje je radno okruženje aktivno za svaku karticu prozora glavne grafičke oblasti</translation>
+      <translation>Ako je označeno, FreeCAD će zapamtiti koje je radno okruženje aktivno za svaku karticu prozora glavne grafičke oblasti</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenches.ui" line="120"/>
@@ -12217,7 +12217,7 @@ nakon pokretanja FreeCAD-a</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="88"/>
       <source>If unchecked, %1 will not appear in the available workbenches.</source>
-      <translation>Ako nije čekirano, %1 se neće pojaviti u dostupnim radnim okruženjima.</translation>
+      <translation>Ako nije označeno, %1 se neće pojaviti u dostupnim radnim okruženjima.</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="93"/>
@@ -12237,7 +12237,7 @@ nakon pokretanja FreeCAD-a</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="132"/>
       <source>If checked, %1 will be loaded automatically when FreeCAD starts up</source>
-      <translation>Ako je čekirano, %1 će se automatski učitati kada se FreeCAD pokrene</translation>
+      <translation>Ako je označeno, %1 će se automatski učitati kada se FreeCAD pokrene</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsWorkbenchesImp.cpp" line="138"/>

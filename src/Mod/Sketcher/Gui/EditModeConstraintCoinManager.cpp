@@ -814,12 +814,13 @@ Restart:
                 case DistanceY: {
                     assert(Constr->First >= -extGeoCount && Constr->First < intGeoCount);
 
-                    // pnt1 will be initialized to (0,0,0) if First is an edge
+                    // pnt1 will be initialized to (0,0,0) if only one point is given
                     auto pnt1 = geolistfacade.getPoint(Constr->First, Constr->FirstPos);
 
                     Base::Vector3d pnt2(0., 0., 0.);
 
-                    if (Constr->SecondPos != Sketcher::PointPos::none) {  // point to point distance
+                    if (Constr->SecondPos != Sketcher::PointPos::none) {
+                        // point to point distance
                         pnt2 = geolistfacade.getPoint(Constr->Second, Constr->SecondPos);
                     }
                     else if (Constr->Second != GeoEnum::GeoUndef) {
@@ -833,7 +834,7 @@ Restart:
 
                             if (Constr->FirstPos != Sketcher::PointPos::none) {
                                 // point to line distance
-                                // calculate the projection of p1 onto line2
+                                // calculate the projection of p1 onto lineSeg
                                 pnt2.ProjectToLine(pnt1 - l2p1, l2p2 - l2p1);
                                 pnt2 += pnt1;
                             }
@@ -841,7 +842,7 @@ Restart:
                                 if (isCircleOrArc(*geo1)) {
                                     // circular to line distance
                                     auto [radius, ct] = getRadiusCenterCircleArc(geo1);
-                                    // project on the line translated to origin
+                                    // project the center on the line (translated to origin)
                                     pnt1.ProjectToLine(ct - l2p1, l2p2 - l2p1);
                                     Base::Vector3d dir = pnt1;
                                     dir.Normalize();
@@ -869,11 +870,14 @@ Restart:
                         }
                     }
                     else if (Constr->FirstPos != Sketcher::PointPos::none) {
+                        // one point distance
+                        pnt1 = Base::Vector3d(0., 0., 0.);
                         pnt2 = geolistfacade.getPoint(Constr->First, Constr->FirstPos);
                     }
                     else if (Constr->First != GeoEnum::GeoUndef) {
                         auto geo = geolistfacade.getGeometryFromGeoId(Constr->First);
-                        if (isLineSegment(*geo)) {  // segment distance
+                        if (isLineSegment(*geo)) {
+                            // segment distance
                             auto lineSeg = static_cast<const Part::GeomLineSegment*>(geo);
                             pnt1 = lineSeg->getStartPoint();
                             pnt2 = lineSeg->getEndPoint();

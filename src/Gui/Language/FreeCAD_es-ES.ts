@@ -188,8 +188,8 @@
       <translation>Ubicación</translation>
     </message>
     <message>
-      <location filename="../Transform.cpp" line="101"/>
       <location filename="../TaskCSysDragger.cpp" line="75"/>
+      <location filename="../Transform.cpp" line="101"/>
       <location filename="../ViewProviderAnnotation.cpp" line="426"/>
       <source>Transform</source>
       <translation>Transformar</translation>
@@ -2558,12 +2558,12 @@ Especifique otro directorio, por favor.</translation>
     <message>
       <location filename="../DlgProjectInformation.ui" line="142"/>
       <source>Unit System:</source>
-      <translation type="unfinished">Unit System:</translation>
+      <translation>Sistema de unidades:</translation>
     </message>
     <message>
       <location filename="../DlgProjectInformation.ui" line="152"/>
       <source>Unit system for this file</source>
-      <translation type="unfinished">Unit system for this file</translation>
+      <translation>Sistema de unidades para este archivo</translation>
     </message>
     <message>
       <location filename="../DlgProjectInformation.ui" line="159"/>
@@ -4261,17 +4261,17 @@ El valor es el diámetro de la esfera que cabe en la pantalla.</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="695"/>
       <source>Animations</source>
-      <translation type="unfinished">Animations</translation>
+      <translation>Animaciones</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="761"/>
       <source>Enable spinning animations that are used in some navigation styles after dragging</source>
-      <translation type="unfinished">Enable spinning animations that are used in some navigation styles after dragging</translation>
+      <translation>Habilitar animaciones giratorias que se utilizan en algunos estilos de navegación después de arrastrar</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="764"/>
       <source>Enable spinning animations</source>
-      <translation type="unfinished">Enable spinning animations</translation>
+      <translation>Activar animaciones giratorias</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsNavigation.ui" line="704"/>
@@ -4450,7 +4450,7 @@ espacio horizontal disponible en la consola de Python</translation>
     <message>
       <location filename="../PreferencePages/DlgSettingsPythonConsole.ui" line="141"/>
       <source>Used for package installation with pip and debugging with debugpy. Autodetected if needed and not specified.</source>
-      <translation type="unfinished">Used for package installation with pip and debugging with debugpy. Autodetected if needed and not specified.</translation>
+      <translation>Utilizado para la instalación de paquetes con pip y depuración con debugpy. Autodetectado si es necesario y no especificado.</translation>
     </message>
   </context>
   <context>
@@ -6100,15 +6100,15 @@ Desea guardar los cambios?</translation>
       <translation>Formato PDF</translation>
     </message>
     <message>
-      <location filename="../GraphvizView.cpp" line="448"/>
       <location filename="../CommandDoc.cpp" line="617"/>
+      <location filename="../GraphvizView.cpp" line="448"/>
       <source>Graphviz format</source>
       <translation>Formato Graphviz</translation>
     </message>
     <message>
+      <location filename="../CommandDoc.cpp" line="618"/>
       <location filename="../GraphvizView.cpp" line="462"/>
       <location filename="../GraphvizView.cpp" line="550"/>
-      <location filename="../CommandDoc.cpp" line="618"/>
       <source>Export graph</source>
       <translation>Exportar gráfico</translation>
     </message>
@@ -8034,8 +8034,8 @@ Do you want to specify another directory?</source>
       <translation>Exportando a PDF...</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="833"/>
       <location filename="../CommandDoc.cpp" line="1230"/>
+      <location filename="../MainWindow.cpp" line="833"/>
       <source>Unsaved document</source>
       <translation>Documento sin guardar</translation>
     </message>
@@ -8304,7 +8304,7 @@ Desea continuar?</translation>
     <message>
       <location filename="../NotificationArea.cpp" line="431"/>
       <source> (%1 times)</source>
-      <translation type="unfinished"> (%1 times)</translation>
+      <translation> (%1 veces)</translation>
     </message>
     <message>
       <location filename="../NotificationArea.cpp" line="664"/>
@@ -8908,8 +8908,8 @@ la copia actual se perderá.
       <translation>Alternar superposición</translation>
     </message>
     <message>
-      <location filename="../OverlayWidgets.cpp" line="2180"/>
       <location filename="../OverlayManager.cpp" line="1036"/>
+      <location filename="../OverlayWidgets.cpp" line="2180"/>
       <source>Toggle floating window</source>
       <translation>Alternar ventana flotante</translation>
     </message>
@@ -8922,7 +8922,7 @@ la copia actual se perderá.
       <location filename="../OverlayWidgets.cpp" line="117"/>
       <location filename="../OverlayWidgets.cpp" line="147"/>
       <source>Press ESC to hide hint</source>
-      <translation type="unfinished">Press ESC to hide hint</translation>
+      <translation>Presiona ESC para ocultar pista</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="530"/>
@@ -8937,7 +8937,7 @@ la copia actual se perderá.
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="533"/>
       <source>Item background color</source>
-      <translation type="unfinished">Item background color</translation>
+      <translation>Color de fondo del elemento</translation>
     </message>
     <message>
       <location filename="../PreferencePages/DlgSettingsUI.cpp" line="536"/>
@@ -10038,8 +10038,8 @@ la copia actual se perderá.
       <translation>Crea un documento vacío nuevo</translation>
     </message>
     <message>
-      <location filename="../MainWindow.cpp" line="2339"/>
       <location filename="../DocumentRecovery.cpp" line="391"/>
+      <location filename="../MainWindow.cpp" line="2339"/>
       <source>Unnamed</source>
       <translation>Sin nombre</translation>
     </message>
@@ -10298,13 +10298,13 @@ Está pensado para organizar objetos que tienen una parte de TopoShape, como pri
     <message>
       <location filename="../CommandStd.cpp" line="718"/>
       <source>Report a bug</source>
-      <translation>Informar un error</translation>
+      <translation>Informar de un error</translation>
     </message>
     <message>
       <location filename="../CommandStd.cpp" line="719"/>
       <location filename="../CommandStd.cpp" line="721"/>
       <source>Report a bug or suggest a feature</source>
-      <translation>Informar un error o sugerir una nueva función</translation>
+      <translation>Informar de un error o sugerir una nueva característica</translation>
     </message>
   </context>
   <context>
