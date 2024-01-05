@@ -257,6 +257,9 @@ void NavigationStyle::initialize()
         setRotationCenterMode(NavigationStyle::RotationCenterMode::ScenePointAtCursor |
                               NavigationStyle::RotationCenterMode::BoundingBoxCenter);
     }
+
+    this->hasDragged = false;
+    this->hasPanned = false;
 }
 
 void NavigationStyle::finalize()
@@ -583,6 +586,7 @@ void NavigationStyle::panCamera(SoCamera * cam, float aspectratio, const SbPlane
     // Reposition camera according to the vector difference between the
     // projected points.
     cam->position = cam->position.getValue() - (current_planept - old_planept);
+    hasPanned = true;
 }
 
 void NavigationStyle::pan(SoCamera* camera)
@@ -895,6 +899,8 @@ void NavigationStyle::spin(const SbVec2f & pointerpos)
     // when the user quickly trigger (as in "click-drag-release") a spin
     // animation.
     if (this->spinsamplecounter > 3) this->spinsamplecounter = 3;
+
+    hasDragged = true;
 }
 
 /*!
@@ -929,6 +935,7 @@ void NavigationStyle::spin_simplified(SoCamera* cam, SbVec2f curpos, SbVec2f pre
     r.invert();
     this->reorientCamera(cam, r);
 
+    hasDragged = true;
 }
 
 SbBool NavigationStyle::doSpin()
@@ -1343,6 +1350,11 @@ void NavigationStyle::setViewingMode(const ViewerMode newmode)
     const ViewerMode oldmode = this->currentmode;
     if (newmode == oldmode) {
         return;
+    }
+
+    if (newmode != NavigationStyle::IDLE) {
+        hasPanned = false;
+        hasDragged = false;
     }
 
     switch (newmode) {
