@@ -106,7 +106,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="70"/>
       <source>Adjust the number of recent files to be shown here in menu Edit -&gt; Preferences -&gt; General -&gt; Size of recent file list</source>
-      <translation>Pas het aantal aan, van de recente bestanden die hier getoond worden, in het menu Bewerken&gt; Voorkeuren&gt; Algemeen&gt; Tabblad Algemeen&gt; Grootte van de recente-bestanden lijst</translation>
+      <translation>Pas het -aantal recente bestanden- die hier getoond worden aan in het menu Bewerken&gt; Voorkeuren&gt; Algemeen&gt; Tabblad Algemeen&gt; Grootte van de recente-bestanden lijst</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="71"/>
@@ -291,7 +291,7 @@
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="152"/>
       <source>File path</source>
-      <translation type="unfinished">File path</translation>
+      <translation>Bestandslocatie</translation>
     </message>
     <message>
       <location filename="../../../StartPage/TranslationTexts.py" line="153"/>

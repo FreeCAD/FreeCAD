@@ -11,7 +11,7 @@
     <message>
       <location filename="../../Command.cpp" line="75"/>
       <source>Inspection...</source>
-      <translation type="unfinished">Inspection...</translation>
+      <translation>Inspektion...</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="76"/>
@@ -35,7 +35,7 @@
       <location filename="../../Command.cpp" line="50"/>
       <location filename="../../Command.cpp" line="51"/>
       <source>Visual inspection</source>
-      <translation type="unfinished">Visual inspection</translation>
+      <translation>Visuell inspektion</translation>
     </message>
   </context>
   <context>
@@ -43,7 +43,7 @@
     <message>
       <location filename="../../VisualInspection.cpp" line="237"/>
       <source>Visual Inspection</source>
-      <translation type="unfinished">Visual Inspection</translation>
+      <translation>Visuell inspektion</translation>
     </message>
   </context>
   <context>
@@ -51,7 +51,7 @@
     <message>
       <location filename="../../VisualInspection.ui" line="14"/>
       <source>Visual Inspection</source>
-      <translation type="unfinished">Visual Inspection</translation>
+      <translation>Visuell inspektion</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="23"/>
@@ -77,7 +77,7 @@
     <message>
       <location filename="../../VisualInspection.ui" line="97"/>
       <source>Search distance</source>
-      <translation type="unfinished">Search distance</translation>
+      <translation>Sök avstånd</translation>
     </message>
     <message>
       <location filename="../../VisualInspection.ui" line="129"/>
@@ -116,18 +116,18 @@
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="675"/>
       <source>Distance: &gt; %1</source>
-      <translation type="unfinished">Distance: &gt; %1</translation>
+      <translation>Avstånd: &gt; %1</translation>
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="679"/>
       <source>Distance: &lt; %1</source>
-      <translation type="unfinished">Distance: &lt; %1</translation>
+      <translation>Avstånd: &lt; %1</translation>
     </message>
     <message>
       <location filename="../../ViewProviderInspection.cpp" line="699"/>
       <location filename="../../ViewProviderInspection.cpp" line="716"/>
       <source>Distance: %1</source>
-      <translation type="unfinished">Distance: %1</translation>
+      <translation>Avstånd: %1</translation>
     </message>
   </context>
 </TS>

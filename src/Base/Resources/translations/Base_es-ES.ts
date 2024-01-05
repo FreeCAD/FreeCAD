@@ -41,7 +41,7 @@
     <message>
       <location filename="../../UnitsApi.cpp" line="83"/>
       <source>Imperial for Civil Eng (ft, ft/sec)</source>
-      <translation>Imperial para Ing civil (ft, ft/seg)</translation>
+      <translation>Imperial para Ing. civil (ft, ft/s)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="85"/>
@@ -51,7 +51,7 @@
     <message>
       <location filename="../../UnitsApi.cpp" line="87"/>
       <source>Meter decimal (m, m², m³)</source>
-      <translation type="unfinished">Meter decimal (m, m², m³)</translation>
+      <translation>Metro decimal (m, m2, m3)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="89"/>

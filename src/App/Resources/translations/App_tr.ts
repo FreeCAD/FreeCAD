@@ -16,7 +16,7 @@ uygulanmayacağına ilişkin son kullanıcı seçimini saklar</translation>
     <message>
       <location filename="../../Application.cpp" line="445"/>
       <source>Unnamed</source>
-      <translation>Adsız</translation>
+      <translation>İsimsiz</translation>
     </message>
   </context>
   <context>

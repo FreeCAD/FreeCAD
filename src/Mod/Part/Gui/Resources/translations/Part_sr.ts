@@ -226,7 +226,7 @@
       <location filename="../../AttacherTexts.cpp" line="295"/>
       <source>Vertex</source>
       <comment>AttachmentPoint mode caption</comment>
-      <translation type="unfinished">Vertex</translation>
+      <translation>Теме</translation>
     </message>
     <message>
       <location filename="../../AttacherTexts.cpp" line="296"/>
@@ -2795,7 +2795,7 @@ the size of the resulting STEP file.</source>
     <message>
       <location filename="../../DlgExtrusion.ui" line="55"/>
       <source>If checked, direction of extrusion is reversed.</source>
-      <translation>Ако је чекирано, смер извлачења се обрће.</translation>
+      <translation>Ако је означено, смер извлачења се обрће.</translation>
     </message>
     <message>
       <location filename="../../DlgExtrusion.ui" line="58"/>
@@ -4049,7 +4049,7 @@ during file reading (slower but higher details).</translation>
     <message>
       <location filename="../../DlgRevolution.ui" line="315"/>
       <source>If checked, revolution will extend forwards and backwards by half the angle.</source>
-      <translation>Ако је чекирано, ротација ће се извршити у оба смера за по половину угла.</translation>
+      <translation>Ако је означено, ротација ће се извршити у оба смера за по половину угла.</translation>
     </message>
     <message>
       <location filename="../../DlgRevolution.ui" line="318"/>
@@ -4372,7 +4372,7 @@ If not checked, it depends on the option "Backlight color"
 (preferences section Display -&gt; 3D View); either the backlight color
 will be used or black.</source>
       <translation>Доња страна површине ће бити приказана на исти начин као горња страна.
-Ако није чекирано, зависи од опције „Омогући боју позадинског осветљења“
+Ако није означено, зависи од опције „Омогући боју позадинског осветљења“
 (Подешавања -&gt; Приказ -&gt; 3Д приказ). Или ће се користити боја позадинског 
 осветљења или црна боја.</translation>
     </message>
@@ -4685,7 +4685,7 @@ the sketch plane's normal vector will be used</source>
 will be taken from the cut objects.
 Works only properly if all objects
 have the same values.</source>
-      <translation>Ако је чекирано, боја и провидност
+      <translation>Ако је означено, боја и провидност
 биће преузети од исечених објеката.
 Ради само ако су ове особине код свих објеката иста.</translation>
     </message>
@@ -5419,7 +5419,7 @@ Individual boolean operation checks:</source>
       <location filename="../../TaskFaceColors.ui" line="97"/>
       <source>When checked, the you can select multiple faces
 by dragging a selection rectangle in the 3D view</source>
-      <translation>Када је чекирано, можеш изабрати више страница
+      <translation>Када је означено, можеш изабрати више страница
 повлачењем правоугаоног оквира у 3Д погледу</translation>
     </message>
     <message>
@@ -5715,8 +5715,8 @@ in the 3D view for the sweep path.</source>
     <message>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="47"/>
       <location filename="../../../BasicShapes/ViewProviderShapes.py" line="54"/>
-      <location filename="../../ViewProviderPrimitive.cpp" line="53"/>
       <location filename="../../ViewProvider.cpp" line="49"/>
+      <location filename="../../ViewProviderPrimitive.cpp" line="53"/>
       <source>Edit %1</source>
       <translation>Уреди %1</translation>
     </message>
@@ -5808,22 +5808,22 @@ Do you want to continue?</source>
       <translation>Није изабрана референца</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
       <location filename="../../TaskAttacher.cpp" line="75"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="81"/>
       <source>Face</source>
       <translation>Страница</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
       <location filename="../../TaskAttacher.cpp" line="78"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="83"/>
       <source>Edge</source>
       <translation>Ивица</translation>
     </message>
     <message>
-      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <location filename="../../TaskAttacher.cpp" line="81"/>
+      <location filename="../../TaskCheckGeometry.cpp" line="84"/>
       <source>Vertex</source>
-      <translation>Теме</translation>
+      <translation type="unfinished">Vertex</translation>
     </message>
     <message>
       <location filename="../../TaskCheckGeometry.cpp" line="77"/>

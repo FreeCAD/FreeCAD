@@ -146,7 +146,7 @@ void DlgPrefsTechDrawAnnotationImp::loadSettings()
     if (ui->pcbLineStandard->count() > Preferences::lineStandard()) {
         ui->pcbLineStandard->setCurrentIndex(Preferences::lineStandard());
     }
-    // we have to connect the slot after the inital load or the current standard will
+    // we have to connect the slot after the initial load or the current standard will
     // be set to index 0 when the widget is created
     connect(ui->pcbLineStandard, qOverload<int>(&QComboBox::currentIndexChanged),
             this, &DlgPrefsTechDrawAnnotationImp::onLineStandardChanged);
