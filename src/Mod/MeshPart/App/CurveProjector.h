@@ -32,6 +32,7 @@
 #include <Mod/Mesh/App/Mesh.h>
 #include <Mod/MeshPart/MeshPartGlobal.h>
 
+#include <Standard_Version.hxx>
 
 namespace MeshCore
 {
@@ -65,8 +66,15 @@ public:
     {
         bool operator()(const T& x, const T& y) const
         {
+#if OCC_VERSION_HEX >= 0x070800
+            std::hash<T> hasher;
+            return hasher(x) < hasher(y);
+#else
             return x.HashCode(INT_MAX - 1) < y.HashCode(INT_MAX - 1);
+#endif
         }
+
+
     };
 
     using result_type = std::map<TopoDS_Edge, std::vector<FaceSplitEdge>, TopoDSLess<TopoDS_Edge>>;

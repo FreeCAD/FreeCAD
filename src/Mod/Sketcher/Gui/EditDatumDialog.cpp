@@ -23,7 +23,6 @@
 #include "PreCompiled.h"
 
 #ifndef _PreComp_
-#include <Standard_math.hxx>
 /// Qt Include Files
 #include <Inventor/sensors/SoSensor.h>
 #include <QApplication>
