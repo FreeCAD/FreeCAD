@@ -29,6 +29,10 @@
 #include <QList>
 #include <QMetaType>
 
+#if QT_VERSION >= QT_VERSION_CHECK(6,0,0)
+#include <QtCore5Compat/QRegExp>
+#endif
+
 #include <App/Application.h>
 #include <Base/Interpreter.h>
 #include <Gui/MetaTypes.h>
