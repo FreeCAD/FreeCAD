@@ -59,7 +59,6 @@
 # include <TopExp.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopLoc_Location.hxx>
-// # include <TopoDS_Shape.hxx>
 # include <TopoDS.hxx>
 # include <TopoDS_Iterator.hxx>
 # include <TopTools_IndexedMapOfShape.hxx>

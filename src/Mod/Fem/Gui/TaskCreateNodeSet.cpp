@@ -28,7 +28,6 @@
 
 #include <SMESHDS_Mesh.hxx>
 #include <SMESH_Mesh.hxx>
-#include <math.h>
 #endif
 
 #include <Base/Console.h>
