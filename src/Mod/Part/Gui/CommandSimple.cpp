@@ -23,7 +23,6 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <math.h>
 # include <QInputDialog>
 #endif
 

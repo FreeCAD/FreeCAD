@@ -38,8 +38,6 @@
 # define PathGuiExport
 #endif
 
-#include <math.h>
-
 #ifdef _MSC_VER
 # pragma warning( disable : 4273 )
 #endif

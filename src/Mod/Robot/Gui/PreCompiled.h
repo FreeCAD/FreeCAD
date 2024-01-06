@@ -38,8 +38,6 @@
 #define RobotGuiExport
 #endif
 
-#include <math.h>
-
 #ifdef _MSC_VER
 #pragma warning(disable : 4005)
 #pragma warning(disable : 4273)
