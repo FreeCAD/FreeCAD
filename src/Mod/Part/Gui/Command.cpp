@@ -26,6 +26,7 @@
 # include <QFileInfo>
 # include <QPointer>
 # include <QString>
+# include <math.h>
 # include <Standard_Version.hxx>
 # include <TopExp_Explorer.hxx>
 # include <TopoDS_Shape.hxx>

@@ -21,6 +21,9 @@
  ***************************************************************************/
 
 #include "PreCompiled.h"
+#ifndef _PreComp_
+# include <math.h>
+#endif
 
 #include <Base/Vector3D.h>
 

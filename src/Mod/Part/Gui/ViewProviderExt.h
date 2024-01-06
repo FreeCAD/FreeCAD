@@ -24,6 +24,7 @@
 #define PARTGUI_VIEWPROVIDERPARTEXT_H
 
 #include <map>
+#include <math.h>
 
 #include <App/PropertyUnits.h>
 #include <Gui/ViewProviderGeometryObject.h>
