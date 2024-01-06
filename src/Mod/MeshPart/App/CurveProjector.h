@@ -73,8 +73,6 @@ public:
             return x.HashCode(INT_MAX - 1) < y.HashCode(INT_MAX - 1);
 #endif
         }
-
-
     };
 
     using result_type = std::map<TopoDS_Edge, std::vector<FaceSplitEdge>, TopoDSLess<TopoDS_Edge>>;

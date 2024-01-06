@@ -39,7 +39,7 @@ struct ShapeHasher
     std::size_t operator()(const TopoDS_Shape& shape) const
     {
 #if OCC_VERSION_HEX >= 0x070800
-        return std::hash<TopoDS_Shape>{}(shape);
+        return std::hash<TopoDS_Shape> {}(shape);
 #else
         return shape.HashCode(INT_MAX);
 #endif
@@ -51,7 +51,7 @@ struct LabelHasher
     std::size_t operator()(const TDF_Label& label) const
     {
 #if OCC_VERSION_HEX >= 0x070800
-        return std::hash<TDF_Label>{}(label);
+        return std::hash<TDF_Label> {}(label);
 #else
         return TDF_LabelMapHasher::HashCode(label, INT_MAX);
 #endif

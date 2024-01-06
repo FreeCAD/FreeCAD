@@ -152,7 +152,7 @@ void ImportOCAF::loadShapes(const TDF_Label& label,
 
     if (aShapeTool->GetShape(label, aShape)) {
 #if OCC_VERSION_HEX >= 0x070800
-        hash = std::hash<TopoDS_Shape>{}(aShape);
+        hash = std::hash<TopoDS_Shape> {}(aShape);
 #else
         hash = aShape.HashCode(HashUpper);
 #endif
@@ -228,7 +228,7 @@ void ImportOCAF::loadShapes(const TDF_Label& label,
         TopoDS_Shape aShape;
         if (isRef && aShapeTool->GetShape(label, aShape)) {
 #if OCC_VERSION_HEX >= 0x070800
-            myRefShapes.insert(std::hash<TopoDS_Shape>{}(aShape));
+            myRefShapes.insert(std::hash<TopoDS_Shape> {}(aShape));
 #else
             myRefShapes.insert(aShape.HashCode(HashUpper));
 #endif
@@ -559,7 +559,7 @@ void ImportXCAF::createShape(const TopoDS_Shape& shape, bool perface, bool setna
     part->Shape.setValue(shape);
     std::map<Standard_Integer, Quantity_ColorRGBA>::const_iterator jt;
 #if OCC_VERSION_HEX >= 0x070800
-    jt = myColorMap.find(std::hash<TopoDS_Shape>{}(shape));
+    jt = myColorMap.find(std::hash<TopoDS_Shape> {}(shape));
 #else
     jt = myColorMap.find(shape.HashCode(INT_MAX));
 #endif
@@ -584,7 +584,7 @@ void ImportXCAF::createShape(const TopoDS_Shape& shape, bool perface, bool setna
     if (setname && !myNameMap.empty()) {
         std::map<Standard_Integer, std::string>::const_iterator jt;
 #if OCC_VERSION_HEX >= 0x070800
-        jt = myNameMap.find(std::hash<TopoDS_Shape>{}(shape));
+        jt = myNameMap.find(std::hash<TopoDS_Shape> {}(shape));
 #else
         jt = myNameMap.find(shape.HashCode(INT_MAX));
 #endif
@@ -608,7 +608,7 @@ void ImportXCAF::createShape(const TopoDS_Shape& shape, bool perface, bool setna
         xp.Init(shape, TopAbs_FACE);
         while (xp.More()) {
 #if OCC_VERSION_HEX >= 0x070800
-            jt = myColorMap.find(std::hash<TopoDS_Shape>{}(xp.Current()));
+            jt = myColorMap.find(std::hash<TopoDS_Shape> {}(xp.Current()));
 #else
             jt = myColorMap.find(xp.Current().HashCode(INT_MAX));
 #endif
@@ -647,14 +647,14 @@ void ImportXCAF::loadShapes(const TDF_Label& label)
             TopExp_Explorer xp;
             for (xp.Init(aShape, TopAbs_SOLID); xp.More(); xp.Next(), ctSolids++) {
 #if OCC_VERSION_HEX >= 0x070800
-                this->mySolids[std::hash<TopoDS_Shape>{}(xp.Current())] = (xp.Current());
+                this->mySolids[std::hash<TopoDS_Shape> {}(xp.Current())] = (xp.Current());
 #else
                 this->mySolids[xp.Current().HashCode(INT_MAX)] = (xp.Current());
 #endif
             }
             for (xp.Init(aShape, TopAbs_SHELL, TopAbs_SOLID); xp.More(); xp.Next(), ctShells++) {
 #if OCC_VERSION_HEX >= 0x070800
-                this->myShells[std::hash<TopoDS_Shape>{}(xp.Current())] = (xp.Current());
+                this->myShells[std::hash<TopoDS_Shape> {}(xp.Current())] = (xp.Current());
 #else
                 this->myShells[xp.Current().HashCode(INT_MAX)] = (xp.Current());
 #endif
@@ -663,7 +663,7 @@ void ImportXCAF::loadShapes(const TDF_Label& label)
             if (ctSolids == 0 && ctShells == 0) {
                 for (xp.Init(aShape, TopAbs_COMPOUND); xp.More(); xp.Next(), ctComps++) {
 #if OCC_VERSION_HEX >= 0x070800
-                    this->myCompds[std::hash<TopoDS_Shape>{}(xp.Current())] = (xp.Current());
+                    this->myCompds[std::hash<TopoDS_Shape> {}(xp.Current())] = (xp.Current());
 #else
                     this->myCompds[xp.Current().HashCode(INT_MAX)] = (xp.Current());
 #endif
@@ -672,28 +672,28 @@ void ImportXCAF::loadShapes(const TDF_Label& label)
             if (ctComps == 0) {
                 for (xp.Init(aShape, TopAbs_FACE, TopAbs_SHELL); xp.More(); xp.Next()) {
 #if OCC_VERSION_HEX >= 0x070800
-                    this->myShapes[std::hash<TopoDS_Shape>{}(xp.Current())] = (xp.Current());
+                    this->myShapes[std::hash<TopoDS_Shape> {}(xp.Current())] = (xp.Current());
 #else
                     this->myShapes[xp.Current().HashCode(INT_MAX)] = (xp.Current());
 #endif
                 }
                 for (xp.Init(aShape, TopAbs_WIRE, TopAbs_FACE); xp.More(); xp.Next()) {
 #if OCC_VERSION_HEX >= 0x070800
-                    this->myShapes[std::hash<TopoDS_Shape>{}(xp.Current())] = (xp.Current());
+                    this->myShapes[std::hash<TopoDS_Shape> {}(xp.Current())] = (xp.Current());
 #else
                     this->myShapes[xp.Current().HashCode(INT_MAX)] = (xp.Current());
 #endif
                 }
                 for (xp.Init(aShape, TopAbs_EDGE, TopAbs_WIRE); xp.More(); xp.Next()) {
 #if OCC_VERSION_HEX >= 0x070800
-                    this->myShapes[std::hash<TopoDS_Shape>{}(xp.Current())] = (xp.Current());
+                    this->myShapes[std::hash<TopoDS_Shape> {}(xp.Current())] = (xp.Current());
 #else
                     this->myShapes[xp.Current().HashCode(INT_MAX)] = (xp.Current());
 #endif
                 }
                 for (xp.Init(aShape, TopAbs_VERTEX, TopAbs_EDGE); xp.More(); xp.Next()) {
 #if OCC_VERSION_HEX >= 0x070800
-                    this->myShapes[std::hash<TopoDS_Shape>{}(xp.Current())] = (xp.Current());
+                    this->myShapes[std::hash<TopoDS_Shape> {}(xp.Current())] = (xp.Current());
 #else
                     this->myShapes[xp.Current().HashCode(INT_MAX)] = (xp.Current());
 #endif
@@ -708,7 +708,7 @@ void ImportXCAF::loadShapes(const TDF_Label& label)
             || hColors->GetColor(label, XCAFDoc_ColorCurv, col)) {
             // add defined color
 #if OCC_VERSION_HEX >= 0x070800
-            myColorMap[std::hash<TopoDS_Shape>{}(aShape)] = col;
+            myColorMap[std::hash<TopoDS_Shape> {}(aShape)] = col;
 #else
             myColorMap[aShape.HashCode(INT_MAX)] = col;
 #endif
@@ -722,7 +722,7 @@ void ImportXCAF::loadShapes(const TDF_Label& label)
                     || hColors->GetColor(it.Value(), XCAFDoc_ColorCurv, col)) {
                     // add defined color
 #if OCC_VERSION_HEX >= 0x070800
-                    myColorMap[std::hash<TopoDS_Shape>{}(it.Value())] = col;
+                    myColorMap[std::hash<TopoDS_Shape> {}(it.Value())] = col;
 #else
                     myColorMap[it.Value().HashCode(INT_MAX)] = col;
 #endif
@@ -739,7 +739,7 @@ void ImportXCAF::loadShapes(const TDF_Label& label)
             std::string labelName(str);
             if (!labelName.empty()) {
 #if OCC_VERSION_HEX >= 0x070800
-                myNameMap[std::hash<TopoDS_Shape>{}(aShape)] = labelName;
+                myNameMap[std::hash<TopoDS_Shape> {}(aShape)] = labelName;
 #else
                 myNameMap[aShape.HashCode(INT_MAX)] = labelName;
 #endif
