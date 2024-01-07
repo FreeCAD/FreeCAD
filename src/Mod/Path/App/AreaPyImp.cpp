@@ -464,6 +464,9 @@ PyObject* AreaPy::getRestArea(PyObject *args)
         }
 
         std::shared_ptr<Area> restArea = getAreaPtr()->getRestArea(clearedAreas, diameter);
+        if (!restArea) {
+            return Py_None;
+        }
         auto pyRestArea = Py::asObject(new AreaPy(new Area(*restArea, true)));
         return Py::new_reference_to(pyRestArea);
     } PY_CATCH_OCC

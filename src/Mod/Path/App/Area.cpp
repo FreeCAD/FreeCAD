@@ -533,7 +533,7 @@ class ClearedAreaSegmentVisitor : public PathSegmentVisitor
 private:
     CArea pathSegments;
     double maxZ;
-    double diameter;
+    double radius;
 
     void line(const Base::Vector3d &last, const Base::Vector3d &next)
     {
@@ -550,26 +550,27 @@ private:
 public:
     int count = 0;
 
-    ClearedAreaSegmentVisitor(double maxZ, double diameter) : maxZ(maxZ), diameter(diameter)
+    ClearedAreaSegmentVisitor(double maxZ, double radius) : maxZ(maxZ), radius(radius)
     {
     }
 
     CArea getClearedArea()
     {
         CArea result{pathSegments};
-        result.Thicken(diameter / 2);
+        result.Thicken(radius);
         return result;
     }
 
     void g0(int id, const Base::Vector3d &last, const Base::Vector3d &next, const std::deque<Base::Vector3d> &pts) override
     {
         (void)id;
+        (void)pts;
         // printf("g0 [ ");
-        processPt(last);
+        //processPt(last);
         // printf("] ");
-        processPts(pts);
+        //processPts(pts);
         // printf("_ ");
-        processPt(next);
+        //processPt(next);
 
         line(last, next);
         // printf("\n");
@@ -578,12 +579,13 @@ public:
     void g1(int id, const Base::Vector3d &last, const Base::Vector3d &next, const std::deque<Base::Vector3d> &pts) override
     {
         (void)id;
+        (void)pts;
         // printf("g1 [ ");
-        processPt(last);
+        //processPt(last);
         // printf("] ");
-        processPts(pts);
+        //processPts(pts);
         // printf("_ ");
-        processPt(next);
+        //processPt(next);
 
         line(last, next);
         // printf("\n");
@@ -594,20 +596,29 @@ public:
         (void)id;
         (void)center;
         // printf("g23 [ ");
-        processPt(last);
+        // processPt(last);
         // printf("] ");
-        processPts(pts);
+        // processPts(pts);
         // printf("_ ");
-        processPt(next);
+        // processPt(next);
 
-        // TODO do I need to add last and next to the list???
-        // TODO rounding resolution of the function that calls this is too big
-        Base::Vector3d prev = last;
-        for (Base::Vector3d p : pts) {
-            line(prev, p);
-            prev = p;
-        }
-        line(prev, next);
+        // Compute cw vs ccw
+        const Base::Vector3d vdirect = next - last;
+        const Base::Vector3d vstep = pts[0] - last;
+        const bool ccw = vstep.x * vdirect.y - vstep.y * vdirect.x > 0;
+
+        // Add an arc
+        CCurve curve;
+        curve.append(CVertex{{last.x, last.y}});
+        curve.append(CVertex{ccw ? 1 : -1, {next.x, next.y}, {center.x, center.y}});
+        pathSegments.append(curve);
+        count++;
+        // Base::Vector3d prev = last;
+        // for (Base::Vector3d p : pts) {
+        //     line(prev, p);
+        //     prev = p;
+        // }
+        // line(prev, next);
         // printf("\n");
     }
 
@@ -644,26 +655,24 @@ private:
     }
 
     void processPt(const Base::Vector3d &pt) {
-        // printf("(%7.3f, %7.3f, %7.3f) ", pt.x, pt.y, pt.z);
+        printf("(%7.3f, %7.3f, %7.3f) ", pt.x, pt.y, pt.z);
     }
 };
 
 std::shared_ptr<Area> Area::getClearedAreaFromPath(const Toolpath *path, double diameter, double zmax) {
     build();
-#define AREA_MY(_param) myParams.PARAM_FNAME(_param)
-    PARAM_ENUM_CONVERT(AREA_MY, PARAM_FNAME, PARAM_ENUM_EXCEPT, AREA_PARAMS_OFFSET_CONF);
-    PARAM_ENUM_CONVERT(AREA_MY, PARAM_FNAME, PARAM_ENUM_EXCEPT, AREA_PARAMS_CLIPPER_FILL);
-    (void)SubjectFill;
-    (void)ClipFill;
+
+    // Precision losses in arc/segment conversions (multiples of Accuracy):
+    // 2.3 in generation of gcode (see documentation in the implementation of CCurve::CheckForArc (libarea/Curve.cpp)
+    // 1 in gcode arc to segment
+    // 1 in Thicken() cleared area
+    // 2 in getRestArea target area offset in and back out
+    // Oversize cleared areas by buffer to smooth out imprecision in arc/segment conversion. getRestArea() will compensate for this
+    const double buffer = myParams.Accuracy * 6.3;
 
     // Do not fit arcs after these offsets; it introduces unnecessary approximation error, and all off
     // those arcs will be converted back to segments again for clipper differencing in getRestArea anyway
     CAreaConfig conf(myParams, /*no_fit_arcs*/ true);
-
-    const double roundPrecision = myParams.Accuracy;
-    const double buffer = 2 * roundPrecision;
-    (void)JoinType;
-    (void)EndType;
 
     Base::Vector3d pos = Base::Vector3d(0, 0, zmax + 1);
     printf("getClearedAreaFromPath(path, diameter=%g, zmax=%g:\n", diameter, zmax);
@@ -678,7 +687,7 @@ std::shared_ptr<Area> Area::getClearedAreaFromPath(const Toolpath *path, double 
 
     printf("\n");
     printf("GCode walker:\n");
-    ClearedAreaSegmentVisitor visitor(zmax, diameter + buffer);
+    ClearedAreaSegmentVisitor visitor(zmax, diameter/2 + buffer);
     PathSegmentWalker walker(*path);
     walker.walk(visitor, Base::Vector3d(0, 0, zmax + 1));
     printf("Count: %d\n", visitor.count);
@@ -707,8 +716,14 @@ std::shared_ptr<Area> Area::getRestArea(std::vector<std::shared_ptr<Area>> clear
     PARAM_ENUM_CONVERT(AREA_MY, PARAM_FNAME, PARAM_ENUM_EXCEPT, AREA_PARAMS_OFFSET_CONF);
     PARAM_ENUM_CONVERT(AREA_MY, PARAM_FNAME, PARAM_ENUM_EXCEPT, AREA_PARAMS_CLIPPER_FILL);
 
-    const double roundPrecision = myParams.Accuracy;
-    const double buffer = 2 * roundPrecision;
+    // Precision losses in arc/segment conversions (multiples of Accuracy):
+    // 2.3 in generation of gcode (see documentation in the implementation of CCurve::CheckForArc (libarea/Curve.cpp)
+    // 1 in gcode arc to segment
+    // 1 in Thicken() cleared area
+    // 2 in getRestArea target area offset in and back out
+    // Cleared area representations are oversized by buffer to smooth out imprecision in arc/segment conversion. getRestArea() will compensate for this
+    const double buffer = myParams.Accuracy * 6.3;
+    const double roundPrecision = buffer;
 
     // transform all clearedAreas into our workplane
     Area clearedAreasInPlane(&myParams);
@@ -724,20 +739,35 @@ std::shared_ptr<Area> Area::getRestArea(std::vector<std::shared_ptr<Area>> clear
           &myWorkPlane);
     }
 
-    // remaining = A - prevCleared
-    CArea remaining(*myArea);
+    // clearable = offset(offset(A, -dTool/2), dTool/2)
+    printf("Compute clearable\n");
+    CArea clearable(*myArea);
+    clearable.OffsetWithClipper(-diameter/2, JoinType, EndType, myParams.MiterLimit, roundPrecision);
+    clearable.OffsetWithClipper(diameter/2, JoinType, EndType, myParams.MiterLimit, roundPrecision);
+
+    // remaining = clearable - prevCleared
+    printf("Compute remaining\n");
+    CArea remaining(clearable);
     remaining.Clip(toClipperOp(Area::OperationDifference), &*(clearedAreasInPlane.myArea), SubjectFill, ClipFill);
 
-    // rest = intersect(A, offset(remaining, dTool))
+    // rest = intersect(clearable, offset(remaining, dTool))
+    // add buffer to dTool to compensate for oversizing in getClearedAreaFromPath
+    printf("Compute rest\n");
     CArea restCArea(remaining);
     restCArea.OffsetWithClipper(diameter + buffer, JoinType, EndType, myParams.MiterLimit, roundPrecision);
-    restCArea.Clip(toClipperOp(Area::OperationIntersection), &*myArea, SubjectFill, ClipFill);
+    restCArea.Clip(toClipperOp(Area::OperationIntersection), &clearable, SubjectFill, ClipFill);
 
+    printf("Convert CArea to Area (num curves: %d)\n", (int)restCArea.m_curves.size());
+    if(restCArea.m_curves.size() == 0) {
+        return {};
+    }
+
+    std::shared_ptr<Area> restArea = make_shared<Area>(&myParams);
     gp_Trsf trsf(myTrsf.Inverted());
     TopoDS_Shape restShape = Area::toShape(restCArea, false, &trsf);
-    std::shared_ptr<Area> restArea = make_shared<Area>(&myParams);
     restArea->add(restShape, OperationCompound);
 
+    printf("return\n");
     return restArea;
 }
 

@@ -283,14 +283,14 @@ class ObjectOp(PathOp.ObjectOp):
                         tool = op.Proxy.tool if hasattr(op.Proxy, "tool") else op.ToolController.Proxy.getTool(op.ToolController)
                         diameter = tool.Diameter.getValueAs("mm")
                         sectionClearedAreas.append(area.getClearedAreaFromPath(op.Path, diameter, z+0.001))
-                        debugZ = -1.5
-                        if debugZ -.1 < z and z < debugZ + .1:
-                            debugObj = obj.Document.addObject("Part::Feature", "Debug_{}_{}".format(debugZ, op.Name))
-                            debugObj.Label = "Debug_{}_{}".format(debugZ, op.Label)
-                            debugObj.Shape = sectionClearedAreas[-1].getShape()
-                        pass
+                        # debugZ = -1.5
+                        # if debugZ -.1 < z and z < debugZ + .1:
+                        #     debugObj = obj.Document.addObject("Part::Feature", "Debug_{}_{}".format(debugZ, op.Name))
+                        #     debugObj.Label = "Debug_{}_{}".format(debugZ, op.Label)
+                        #     debugObj.Shape = sectionClearedAreas[-1].getShape()
                 restSection = section.getRestArea(sectionClearedAreas, self.tool.Diameter.getValueAs("mm"))
-                restSections.append(restSection)
+                if (restSection is not None):
+                    restSections.append(restSection)
             sections = restSections
 
         shapelist = [sec.getShape() for sec in sections]
