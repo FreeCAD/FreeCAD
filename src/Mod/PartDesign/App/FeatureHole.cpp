@@ -2006,28 +2006,24 @@ TopoDS_Compound Hole::findHoles(const TopoDS_Shape& profileshape,
         }
 
         Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast(c);
-
         gp_Pnt loc = circle->Axis().Location();
 
-        if (holePointsListSize > 1) {
-            for (int j = 1; j < holePointsListSize; j++) {
-                if (holePointsList[j].IsEqual(loc, Precision::Confusion())) {
-                    Base::Console().Log(
-                        "PartDesign_Hole - There is a duplicate circle/curve center at %.2f : %.2f "
-                        ": %.2f therefore not passing parameter\n",
-                        loc.X(),
-                        loc.Y(),
-                        loc.Z());
-                    dupCenter = true;
-                }
+        for (auto holePoint : holePointsList) {
+            if (holePoint.IsEqual(loc, Precision::Confusion())) {
+                Base::Console().Log(
+                    "PartDesign_Hole - There is a duplicate circle/curve center at %.2f : %.2f "
+                    ": %.2f therefore not passing parameter\n",
+                    loc.X(),
+                    loc.Y(),
+                    loc.Z());
+                dupCenter = true;
             }
         }
+
         if (!dupCenter) {
             holePointsList.push_back(loc);
-            holePointsListSize++;
             gp_Trsf localSketchTransformation;
-            localSketchTransformation.SetTranslation(gp_Pnt(0, 0, 0),
-                                                     gp_Pnt(loc.X(), loc.Y(), loc.Z()));
+            localSketchTransformation.SetTranslation(gp_Pnt(0, 0, 0), loc);
             TopoDS_Shape copy = protohole;
             copy.Move(localSketchTransformation);
             builder.Add(holes, copy);
