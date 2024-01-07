@@ -62,7 +62,7 @@ same algorithm</UserDocu>
           <UserDocu></UserDocu>
       </Documentation>
     </Methode>
-    <Methode Name="getClearedAreaFromPath">
+    <Methode Name="getClearedArea">
       <Documentation>
           <UserDocu></UserDocu>
       </Documentation>

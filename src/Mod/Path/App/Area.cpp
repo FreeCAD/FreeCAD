@@ -628,7 +628,7 @@ private:
     }
 };
 
-std::shared_ptr<Area> Area::getClearedAreaFromPath(const Toolpath *path, double diameter, double zmax) {
+std::shared_ptr<Area> Area::getClearedArea(const Toolpath *path, double diameter, double zmax) {
     build();
 
     // Precision losses in arc/segment conversions (multiples of Accuracy):
@@ -646,7 +646,7 @@ std::shared_ptr<Area> Area::getClearedAreaFromPath(const Toolpath *path, double 
     CAreaConfig conf(params, /*no_fit_arcs*/ true);
 
     Base::Vector3d pos = Base::Vector3d(0, 0, zmax + 1);
-    printf("getClearedAreaFromPath(path, diameter=%g, zmax=%g:\n", diameter, zmax);
+    printf("getClearedArea(path, diameter=%g, zmax=%g:\n", diameter, zmax);
     // printf("Gcode:\n");
     for (auto c : path->getCommands()) {
         // printf("\t%s ", c->Name.c_str());
@@ -725,7 +725,7 @@ std::shared_ptr<Area> Area::getRestArea(std::vector<std::shared_ptr<Area>> clear
     remaining.Clip(toClipperOp(Area::OperationDifference), &*(clearedAreasInPlane.myArea), SubjectFill, ClipFill);
 
     // rest = intersect(clearable, offset(remaining, dTool))
-    // add buffer to dTool to compensate for oversizing in getClearedAreaFromPath
+    // add buffer to dTool to compensate for oversizing in getClearedArea
     printf("Compute rest\n");
     CArea restCArea(remaining);
     restCArea.OffsetWithClipper(diameter + buffer, JoinType, EndType, params.MiterLimit, roundPrecision);
