@@ -116,12 +116,9 @@ if(PYCXX_FOUND)
         ${PYCXX_SOURCE_DIR}/cxx_extensions.cxx
         ${PYCXX_SOURCE_DIR}/cxxsupport.cxx
         ${PYCXX_SOURCE_DIR}/IndirectPythonInterface.cxx
+        ${PYCXX_SOURCE_DIR}/cxx_exceptions.cxx
     )
-    if(NOT ${PYCXX_VERSION} VERSION_LESS 6.3.0)
-        list(APPEND PYCXX_SOURCES
-            ${PYCXX_SOURCE_DIR}/cxx_exceptions.cxx)
-        add_definitions(-DPYCXX_6_2_COMPATIBILITY)
-    endif()
+
 else(PYCXX_FOUND)
     MESSAGE(STATUS "PyCXX not found")
 endif(PYCXX_FOUND)
