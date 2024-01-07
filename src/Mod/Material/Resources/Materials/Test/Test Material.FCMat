@@ -39,14 +39,10 @@ Models:
       - "Single quote '"
       - "Double quote \""
       - "Backslash \\"
-    TestMultiLineString: >2
+    TestMultiLineString: |2
       Now is the time for 'all' \  <good> "men" come to the aid of the party
         Indentation is significant
       Similar to Python
     TestQuantity: "19.76 kg/m^3"
     TestString: "Now is the time for 'all' \\  <good> \"men\" come to the aid of the party"
-    TestMultiLineString: >2
-      Now is the time for 'all' \  <good> "men" come to the aid of the party
-        Indentation is significant
-      Similar to Python
     TestURL: "https://www.freecad.org/"

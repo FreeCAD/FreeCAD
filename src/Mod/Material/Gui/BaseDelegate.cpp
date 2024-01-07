@@ -28,6 +28,7 @@
 #include <QPainter>
 #include <QString>
 #include <QStringList>
+#include <QSvgRenderer>
 #include <QTextStream>
 #include <QVariant>
 #endif
@@ -55,12 +56,8 @@
 
 using namespace MatGui;
 
-BaseDelegate::BaseDelegate(Materials::MaterialValue::ValueType type,
-                           const QString& units,
-                           QObject* parent)
+BaseDelegate::BaseDelegate(QObject* parent)
     : QStyledItemDelegate(parent)
-    , _type(type)
-    , _units(units)
 {}
 
 bool BaseDelegate::newRow(const QAbstractItemModel* model, const QModelIndex& index) const
@@ -71,8 +68,7 @@ bool BaseDelegate::newRow(const QAbstractItemModel* model, const QModelIndex& in
 
 QString BaseDelegate::getStringValue(const QModelIndex& index) const
 {
-    auto model = index.model();
-    QVariant item = model->data(index);
+    QVariant item = getValue(index);
     auto propertyValue = item.value<QString>();
 
     return propertyValue;
@@ -109,7 +105,7 @@ void BaseDelegate::paintQuantity(QPainter* painter,
         painter->drawText(option.rect, 0, QString());
     }
     else {
-        QVariant item = model->data(index);
+        QVariant item = getValue(index);
         auto quantity = item.value<Base::Quantity>();
         QString text = quantity.getUserString();
         painter->drawText(option.rect, 0, text);
@@ -128,7 +124,6 @@ void BaseDelegate::paintImage(QPainter* painter,
 
     QImage img;
     if (!propertyValue.isEmpty()) {
-        Base::Console().Log("Loading image\n");
         QByteArray by = QByteArray::fromBase64(propertyValue.toUtf8());
         img = QImage::fromData(by, "PNG").scaled(64, 64, Qt::KeepAspectRatio);
     }
@@ -140,6 +135,23 @@ void BaseDelegate::paintImage(QPainter* painter,
         target.setHeight(target.width());
     }
     painter->drawImage(target, img, img.rect());
+
+    painter->restore();
+}
+
+void BaseDelegate::paintSVG(QPainter* painter,
+                            const QStyleOptionViewItem& option,
+                            const QModelIndex& index) const
+{
+    auto propertyValue = getStringValue(index);
+
+    painter->save();
+
+    if (!propertyValue.isEmpty()) {
+        QSvgRenderer renderer(propertyValue.toUtf8());
+
+        renderer.render(painter, QRectF(option.rect));
+    }
 
     painter->restore();
 }
@@ -177,6 +189,8 @@ void BaseDelegate::paintList(QPainter* painter,
                              const QStyleOptionViewItem& option,
                              const QModelIndex& index) const
 {
+    Q_UNUSED(index)
+
     painter->save();
 
     QImage list(QString::fromStdString(":/icons/list.svg"));
@@ -196,6 +210,8 @@ void BaseDelegate::paintMultiLineString(QPainter* painter,
                                         const QStyleOptionViewItem& option,
                                         const QModelIndex& index) const
 {
+    Q_UNUSED(index)
+
     painter->save();
 
     QImage table(QString::fromStdString(":/icons/multiline.svg"));
@@ -215,6 +231,8 @@ void BaseDelegate::paintArray(QPainter* painter,
                               const QStyleOptionViewItem& option,
                               const QModelIndex& index) const
 {
+    Q_UNUSED(index)
+
     painter->save();
 
     QImage table(QString::fromStdString(":/icons/table.svg"));
@@ -228,36 +246,39 @@ void BaseDelegate::paintArray(QPainter* painter,
     painter->drawImage(target, table, table.rect());
 
     painter->restore();
-    return;
 }
 
 void BaseDelegate::paint(QPainter* painter,
                          const QStyleOptionViewItem& option,
                          const QModelIndex& index) const
 {
-
-    if (_type == Materials::MaterialValue::Quantity) {
+    auto type = getType(index);
+    if (type == Materials::MaterialValue::Quantity) {
         paintQuantity(painter, option, index);
         return;
     }
-    if (_type == Materials::MaterialValue::Image) {
+    if (type == Materials::MaterialValue::Image) {
         paintImage(painter, option, index);
         return;
     }
-    if (_type == Materials::MaterialValue::Color) {
+    if (type == Materials::MaterialValue::SVG) {
+        paintSVG(painter, option, index);
+        return;
+    }
+    if (type == Materials::MaterialValue::Color) {
         paintColor(painter, option, index);
         return;
     }
-    if (_type == Materials::MaterialValue::List || _type == Materials::MaterialValue::FileList
-        || _type == Materials::MaterialValue::ImageList) {
+    if (type == Materials::MaterialValue::List || type == Materials::MaterialValue::FileList
+        || type == Materials::MaterialValue::ImageList) {
         paintList(painter, option, index);
         return;
     }
-    if (_type == Materials::MaterialValue::MultiLineString) {
+    if (type == Materials::MaterialValue::MultiLineString) {
         paintMultiLineString(painter, option, index);
         return;
     }
-    if (_type == Materials::MaterialValue::Array2D || _type == Materials::MaterialValue::Array3D) {
+    if (type == Materials::MaterialValue::Array2D || type == Materials::MaterialValue::Array3D) {
         paintArray(painter, option, index);
         return;
     }
@@ -270,16 +291,17 @@ QSize BaseDelegate::sizeHint(const QStyleOptionViewItem& option, const QModelInd
     Q_UNUSED(option)
     Q_UNUSED(index)
 
-    if (_type == Materials::MaterialValue::Color) {
+    auto type = getType(index);
+    if (type == Materials::MaterialValue::Color) {
         return {75, 23};  // Standard QPushButton size
     }
-    if (_type == Materials::MaterialValue::Image || _type == Materials::MaterialValue::ImageList) {
+    if (type == Materials::MaterialValue::Image || type == Materials::MaterialValue::SVG) {
         return {64, 64};
     }
-    if (_type == Materials::MaterialValue::Array2D || _type == Materials::MaterialValue::Array3D
-        || _type == Materials::MaterialValue::MultiLineString
-        || _type == Materials::MaterialValue::List || _type == Materials::MaterialValue::FileList
-        || _type == Materials::MaterialValue::ImageList) {
+    if (type == Materials::MaterialValue::Array2D || type == Materials::MaterialValue::Array3D
+        || type == Materials::MaterialValue::MultiLineString
+        || type == Materials::MaterialValue::List || type == Materials::MaterialValue::FileList
+        || type == Materials::MaterialValue::ImageList) {
         return {23, 23};
     }
 
@@ -288,22 +310,29 @@ QSize BaseDelegate::sizeHint(const QStyleOptionViewItem& option, const QModelInd
 
 void BaseDelegate::setEditorData(QWidget* editor, const QModelIndex& index) const
 {
-    auto model = index.model();
-    auto item = model->data(index);
+    if (!editor) {
+        return;
+    }
 
-    if (_type == Materials::MaterialValue::List) {
+    auto item = getValue(index);
+    auto type = getType(index);
+    if (type == Materials::MaterialValue::List) {
         auto input = dynamic_cast<Gui::PrefLineEdit*>(editor);
         item = input->text();
         return;
     }
-    if (_type == Materials::MaterialValue::FileList || _type == Materials::MaterialValue::File) {
+    if (type == Materials::MaterialValue::FileList || type == Materials::MaterialValue::File) {
         auto chooser = dynamic_cast<Gui::FileChooser*>(editor);
         chooser->setFileName(item.toString());
         return;
     }
-    if (_type == Materials::MaterialValue::Quantity) {
+    if (type == Materials::MaterialValue::Quantity) {
         auto input = dynamic_cast<Gui::InputField*>(editor);
         input->setQuantityString(item.toString());
+        return;
+    }
+    if (type == Materials::MaterialValue::List || type == Materials::MaterialValue::ImageList) {
+        // Handled by dialogs
         return;
     }
 
@@ -314,13 +343,40 @@ void BaseDelegate::setModelData(QWidget* editor,
                                 QAbstractItemModel* model,
                                 const QModelIndex& index) const
 {
-    if (_type == Materials::MaterialValue::FileList) {
+    QVariant value;
+    auto type = getType(index);
+    if (type == Materials::MaterialValue::FileList || type == Materials::MaterialValue::File) {
         auto chooser = dynamic_cast<Gui::FileChooser*>(editor);
-        model->setData(index, chooser->fileName());
+        value = chooser->fileName();
+    }
+    else if (type == Materials::MaterialValue::Quantity) {
+        auto input = dynamic_cast<Gui::InputField*>(editor);
+        value = input->text();
+        return;
+    }
+    else if (type == Materials::MaterialValue::Integer) {
+        auto spinner = dynamic_cast<Gui::IntSpinBox*>(editor);
+        value = spinner->value();
+    }
+    else if (type == Materials::MaterialValue::Float) {
+        auto spinner = dynamic_cast<Gui::DoubleSpinBox*>(editor);
+        value = spinner->value();
+    }
+    else if (type == Materials::MaterialValue::Boolean) {
+        auto combo = dynamic_cast<Gui::PrefComboBox*>(editor);
+        value = combo->currentText();
+    }
+    else if (type == Materials::MaterialValue::Image || type == Materials::MaterialValue::SVG) {
+        // Value was already saved to the property
+        notifyChanged(index.model(), index);
+        return;
     }
     else {
-        QStyledItemDelegate::setModelData(editor, model, index);
+        auto lineEdit = dynamic_cast<Gui::PrefLineEdit*>(editor);
+        value = lineEdit->text();
     }
+
+    setValue(model, index, value);
 }
 
 QWidget* BaseDelegate::createEditor(QWidget* parent,
@@ -336,7 +392,7 @@ QWidget* BaseDelegate::createEditor(QWidget* parent,
     if (newRow(model, index)) {
         const_cast<QAbstractItemModel*>(model)->insertRows(index.row(), 1);
     }
-    auto item = model->data(index);
+    auto item = getValue(index);
 
     QWidget* editor = createWidget(parent, item, index);
 
@@ -348,20 +404,15 @@ BaseDelegate::createWidget(QWidget* parent, const QVariant& item, const QModelIn
 {
     QWidget* widget = nullptr;
 
-    if (_type == Materials::MaterialValue::String || _type == Materials::MaterialValue::URL
-        || _type == Materials::MaterialValue::List) {
-        auto lineEdit = new Gui::PrefLineEdit(parent);
-        lineEdit->setText(item.toString());
-        widget = lineEdit;
-    }
-    else if (_type == Materials::MaterialValue::Integer) {
+    auto type = getType(index);
+    if (type == Materials::MaterialValue::Integer) {
         auto spinner = new Gui::UIntSpinBox(parent);
         spinner->setMinimum(0);
         spinner->setMaximum(UINT_MAX);
         spinner->setValue(item.toUInt());
         widget = spinner;
     }
-    else if (_type == Materials::MaterialValue::Float) {
+    else if (type == Materials::MaterialValue::Float) {
         auto spinner = new Gui::DoubleSpinBox(parent);
 
         // the magnetic permeability is the parameter for which many decimals matter
@@ -376,7 +427,7 @@ BaseDelegate::createWidget(QWidget* parent, const QVariant& item, const QModelIn
         spinner->setValue(item.toDouble());
         widget = spinner;
     }
-    else if (_type == Materials::MaterialValue::Boolean) {
+    else if (type == Materials::MaterialValue::Boolean) {
         auto combo = new Gui::PrefComboBox(parent);
         combo->insertItem(0, QString::fromStdString(""));
         combo->insertItem(1, tr("False"));
@@ -384,16 +435,24 @@ BaseDelegate::createWidget(QWidget* parent, const QVariant& item, const QModelIn
         combo->setCurrentText(item.toString());
         widget = combo;
     }
-    else if (_type == Materials::MaterialValue::Quantity) {
+    else if (type == Materials::MaterialValue::Quantity) {
         auto input = new Gui::QuantitySpinBox(parent);
         input->setMinimum(std::numeric_limits<double>::min());
         input->setMaximum(std::numeric_limits<double>::max());
-        input->setUnitText(_units);
+        input->setUnitText(getUnits(index));
         input->setValue(item.value<Base::Quantity>());
 
         widget = input;
     }
-    else if (_type == Materials::MaterialValue::FileList) {
+    else if (type == Materials::MaterialValue::File) {
+        auto chooser = new Gui::FileChooser(parent);
+        if (!item.toString().isEmpty()) {
+            chooser->setFileName(item.toString());
+        }
+
+        widget = chooser;
+    }
+    else if (type == Materials::MaterialValue::FileList) {
         auto chooser = new Gui::FileChooser(parent);
         auto propertyValue = item.toString();
 
@@ -412,7 +471,9 @@ BaseDelegate::createWidget(QWidget* parent, const QVariant& item, const QModelIn
     }
     else {
         // Default editor
-        widget = new QLineEdit(parent);
+        auto lineEdit = new Gui::PrefLineEdit(parent);
+        lineEdit->setText(item.toString());
+        widget = lineEdit;
     }
 
     return widget;

@@ -20,8 +20,10 @@
 #   USA                                                                   *
 #**************************************************************************
 
-# import FreeCAD
-from os import walk
+"""
+Test module for FreeCAD material cards and APIs
+"""
+
 import unittest
 import FreeCAD
 import Material
@@ -29,16 +31,29 @@ import Material
 parseQuantity = FreeCAD.Units.parseQuantity
 
 class MaterialTestCases(unittest.TestCase):
+    """
+    Test class for FreeCAD material cards and APIs
+    """
+
     def setUp(self):
+        """ Setup function to initialize test data """
         self.ModelManager = Material.ModelManager()
         self.MaterialManager = Material.MaterialManager()
         self.uuids = Material.UUIDs()
 
     def testMaterialManager(self):
+        """ Ensure the MaterialManager has been initialized correctly """
         self.assertIn("MaterialLibraries", dir(self.MaterialManager))
         self.assertIn("Materials", dir(self.MaterialManager))
 
     def testCalculiXSteel(self):
+        """
+        Test a representative material card for CalculX Steel
+
+        As a well populated material card, the CalculiX Steel material is a good subject
+        for testing as many of the properties and API access methods as possible.
+        """
+
         steel = self.MaterialManager.getMaterial("92589471-a6cb-4bbc-b748-d425a17dea7d")
         self.assertIsNotNone(steel)
         self.assertEqual(steel.Name, "CalculiX-Steel")
@@ -53,8 +68,8 @@ class MaterialTestCases(unittest.TestCase):
         self.assertTrue(steel.isPhysicalModelComplete(self.uuids.Density))
         self.assertFalse(steel.isPhysicalModelComplete(self.uuids.IsotropicLinearElastic))
         self.assertTrue(steel.isPhysicalModelComplete(self.uuids.Thermal))
-        self.assertFalse(steel.isPhysicalModelComplete(self.uuids.LinearElastic)) # Not in the model
-        self.assertTrue(steel.isAppearanceModelComplete(self.uuids.BasicRendering)) # inherited from Steel.FCMat
+        self.assertFalse(steel.isPhysicalModelComplete(self.uuids.LinearElastic))
+        self.assertTrue(steel.isAppearanceModelComplete(self.uuids.BasicRendering))
 
         self.assertTrue(steel.hasPhysicalProperty("Density"))
         self.assertTrue(steel.hasPhysicalProperty("BulkModulus"))
@@ -155,20 +170,27 @@ class MaterialTestCases(unittest.TestCase):
         self.assertTrue(len(properties["SpecularColor"]) > 0)
         self.assertTrue(len(properties["Transparency"]) > 0)
 
-        self.assertEqual(properties["Density"], parseQuantity("7900.00 kg/m^3").UserString)
+        self.assertEqual(properties["Density"],
+                         parseQuantity("7900.00 kg/m^3").UserString)
         # self.assertEqual(properties["BulkModulus"], "")
-        self.assertAlmostEqual(parseQuantity(properties["PoissonRatio"]).Value, parseQuantity("0.3").Value)
-        self.assertEqual(properties["YoungsModulus"], parseQuantity("210.00 GPa").UserString)
+        self.assertAlmostEqual(parseQuantity(properties["PoissonRatio"]).Value,
+                               parseQuantity("0.3").Value)
+        self.assertEqual(properties["YoungsModulus"],
+                         parseQuantity("210.00 GPa").UserString)
         # self.assertEqual(properties["ShearModulus"], "")
-        self.assertEqual(properties["SpecificHeat"], parseQuantity("590.00 J/kg/K").UserString)
-        self.assertEqual(properties["ThermalConductivity"], parseQuantity("43.00 W/m/K").UserString)
-        self.assertEqual(properties["ThermalExpansionCoefficient"], parseQuantity("12.00 µm/m/K").UserString)
+        self.assertEqual(properties["SpecificHeat"],
+                         parseQuantity("590.00 J/kg/K").UserString)
+        self.assertEqual(properties["ThermalConductivity"],
+                         parseQuantity("43.00 W/m/K").UserString)
+        self.assertEqual(properties["ThermalExpansionCoefficient"],
+                         parseQuantity("12.00 µm/m/K").UserString)
         self.assertEqual(properties["AmbientColor"], "(0.0020, 0.0020, 0.0020, 1.0)")
         self.assertEqual(properties["DiffuseColor"], "(0.0000, 0.0000, 0.0000, 1.0)")
         self.assertEqual(properties["EmissiveColor"], "(0.0000, 0.0000, 0.0000, 1.0)")
         self.assertAlmostEqual(parseQuantity(properties["Shininess"]).Value, parseQuantity("0.06").Value)
         self.assertEqual(properties["SpecularColor"], "(0.9800, 0.9800, 0.9800, 1.0)")
-        self.assertAlmostEqual(parseQuantity(properties["Transparency"]).Value, parseQuantity("0").Value)
+        self.assertAlmostEqual(parseQuantity(properties["Transparency"]).Value,
+                               parseQuantity("0").Value)
 
         print("Density " + steel.getPhysicalValue("Density").UserString)
         # print("BulkModulus " + properties["BulkModulus"])
@@ -177,7 +199,8 @@ class MaterialTestCases(unittest.TestCase):
         # print("ShearModulus " + properties["ShearModulus"])
         print("SpecificHeat " + steel.getPhysicalValue("SpecificHeat").UserString)
         print("ThermalConductivity " + steel.getPhysicalValue("ThermalConductivity").UserString)
-        print("ThermalExpansionCoefficient " + steel.getPhysicalValue("ThermalExpansionCoefficient").UserString)
+        print("ThermalExpansionCoefficient " + \
+              steel.getPhysicalValue("ThermalExpansionCoefficient").UserString)
         print("AmbientColor " + steel.getAppearanceValue("AmbientColor"))
         print("DiffuseColor " + steel.getAppearanceValue("DiffuseColor"))
         print("EmissiveColor " + steel.getAppearanceValue("EmissiveColor"))
@@ -199,12 +222,18 @@ class MaterialTestCases(unittest.TestCase):
         self.assertAlmostEqual(steel.getAppearanceValue("Transparency"), 0.0)
 
     def testMaterialsWithModel(self):
-        materials = self.MaterialManager.materialsWithModel('f6f9e48c-b116-4e82-ad7f-3659a9219c50') # IsotropicLinearElastic
-        materialsComplete = self.MaterialManager.materialsWithModelComplete('f6f9e48c-b116-4e82-ad7f-3659a9219c50') # IsotropicLinearElastic
+        """
+        Test functions that return a list of models supporting specific material models
+        """
+        # IsotropicLinearElastic
+        materials = self.MaterialManager.materialsWithModel('f6f9e48c-b116-4e82-ad7f-3659a9219c50')
+        materialsComplete = self.MaterialManager \
+            .materialsWithModelComplete('f6f9e48c-b116-4e82-ad7f-3659a9219c50')
 
         self.assertTrue(len(materialsComplete) <= len(materials)) # Not all will be complete
 
-        materialsLinearElastic = self.MaterialManager.materialsWithModel('7b561d1d-fb9b-44f6-9da9-56a4f74d7536') # LinearElastic
+        materialsLinearElastic = self.MaterialManager \
+            .materialsWithModel('7b561d1d-fb9b-44f6-9da9-56a4f74d7536') # LinearElastic
 
         # All LinearElastic models should be in IsotropicLinearElastic since it is inherited
         self.assertTrue(len(materialsLinearElastic) <= len(materials))
@@ -212,22 +241,34 @@ class MaterialTestCases(unittest.TestCase):
             self.assertIn(mat, materials)
 
     def testMaterialByPath(self):
-        steel = self.MaterialManager.getMaterialByPath('Standard/Metal/Steel/CalculiX-Steel.FCMat', 'System')
+        """
+        Test loading models by path
+
+        Valid models may have different prefixes
+        """
+        steel = self.MaterialManager \
+            .getMaterialByPath('Standard/Metal/Steel/CalculiX-Steel.FCMat', 'System')
         self.assertIsNotNone(steel)
         self.assertEqual(steel.Name, "CalculiX-Steel")
         self.assertEqual(steel.UUID, "92589471-a6cb-4bbc-b748-d425a17dea7d")
 
-        steel2 = self.MaterialManager.getMaterialByPath('/Standard/Metal/Steel/CalculiX-Steel.FCMat', 'System')
+        steel2 = self.MaterialManager \
+            .getMaterialByPath('/Standard/Metal/Steel/CalculiX-Steel.FCMat', 'System')
         self.assertIsNotNone(steel2)
         self.assertEqual(steel2.Name, "CalculiX-Steel")
         self.assertEqual(steel2.UUID, "92589471-a6cb-4bbc-b748-d425a17dea7d")
 
-        steel3 = self.MaterialManager.getMaterialByPath('/System/Standard/Metal/Steel/CalculiX-Steel.FCMat', 'System')
+        steel3 = self.MaterialManager \
+            .getMaterialByPath('/System/Standard/Metal/Steel/CalculiX-Steel.FCMat', 'System')
         self.assertIsNotNone(steel3)
         self.assertEqual(steel3.Name, "CalculiX-Steel")
         self.assertEqual(steel3.UUID, "92589471-a6cb-4bbc-b748-d425a17dea7d")
 
     def testLists(self):
+        """
+        Test API access to lists
+        """
+
         mat = self.MaterialManager.getMaterial("c6c64159-19c1-40b5-859c-10561f20f979")
         self.assertIsNotNone(mat)
         self.assertEqual(mat.Name, "Test Material")
@@ -238,27 +279,32 @@ class MaterialTestCases(unittest.TestCase):
 
         self.assertTrue(mat.hasPhysicalProperty("TestList"))
 
-        list = mat.getPhysicalValue("TestList")
-        self.assertEqual(len(list), 6)
-        self.assertEqual(list[0], "Now is the time for all good men to come to the aid of the party")
-        self.assertEqual(list[1], "The quick brown fox jumps over the lazy dogs back")
-        self.assertEqual(list[2], "Lore Ipsum")
-        self.assertEqual(list[3], "Single quote '")
-        self.assertEqual(list[4], "Double quote \"")
-        self.assertEqual(list[5], "Backslash \\")
+        testList = mat.getPhysicalValue("TestList")
+        self.assertEqual(len(testList), 6)
+        self.assertEqual(testList[0],
+                         "Now is the time for all good men to come to the aid of the party")
+        self.assertEqual(testList[1], "The quick brown fox jumps over the lazy dogs back")
+        self.assertEqual(testList[2], "Lore Ipsum")
+        self.assertEqual(testList[3], "Single quote '")
+        self.assertEqual(testList[4], "Double quote \"")
+        self.assertEqual(testList[5], "Backslash \\")
 
         properties = mat.Properties
         self.assertIn("TestList", properties)
         self.assertTrue(len(properties["TestList"]) == 0)
 
     def test2DArray(self):
+        """
+        Test API access to 2D arrays
+        """
+
         mat = self.MaterialManager.getMaterial("c6c64159-19c1-40b5-859c-10561f20f979")
         self.assertIsNotNone(mat)
         self.assertEqual(mat.Name, "Test Material")
         self.assertEqual(mat.UUID, "c6c64159-19c1-40b5-859c-10561f20f979")
 
         self.assertTrue(mat.hasPhysicalModel(self.uuids.TestModel))
-        self.assertTrue(mat.isPhysicalModelComplete(self.uuids.TestModel))
+        self.assertFalse(mat.isPhysicalModelComplete(self.uuids.TestModel))
 
         self.assertTrue(mat.hasPhysicalProperty("TestArray2D"))
 
@@ -328,7 +374,11 @@ class MaterialTestCases(unittest.TestCase):
         with self.assertRaises(IndexError):
             row = array.getRow(3)
 
-    def test2DArray(self):
+    def test3DArray(self):
+        """
+        Test API access to 3D arrays
+        """
+
         mat = self.MaterialManager.getMaterial("c6c64159-19c1-40b5-859c-10561f20f979")
         self.assertIsNotNone(mat)
         self.assertEqual(mat.Name, "Test Material")
@@ -383,9 +433,11 @@ class MaterialTestCases(unittest.TestCase):
             self.assertEqual(arrayData[3][0][0].UserString, parseQuantity("11.00 Pa").UserString)
 
         with self.assertRaises(IndexError):
-            self.assertEqual(array.getDepthValue(-1).UserString, parseQuantity("10.00 C").UserString)
+            self.assertEqual(array.getDepthValue(-1).UserString,
+                             parseQuantity("10.00 C").UserString)
         with self.assertRaises(IndexError):
-            self.assertEqual(array.getDepthValue(3).UserString, parseQuantity("10.00 C").UserString)
+            self.assertEqual(array.getDepthValue(3).UserString,
+                             parseQuantity("10.00 C").UserString)
 
         self.assertEqual(array.getValue(0,0,0).UserString, parseQuantity("11.00 Pa").UserString)
         self.assertEqual(array.getValue(0,0,1).UserString, parseQuantity("12.00 Pa").UserString)
@@ -399,16 +451,23 @@ class MaterialTestCases(unittest.TestCase):
         self.assertEqual(array.getValue(2,2,1).UserString, parseQuantity("31.00 Pa").UserString)
 
         with self.assertRaises(IndexError):
-            self.assertEqual(array.getValue(0,0,-1).UserString, parseQuantity("11.00 Pa").UserString)
+            self.assertEqual(array.getValue(0,0,-1).UserString,
+                             parseQuantity("11.00 Pa").UserString)
         with self.assertRaises(IndexError):
-            self.assertEqual(array.getValue(0,0,2).UserString, parseQuantity("11.00 Pa").UserString)
+            self.assertEqual(array.getValue(0,0,2).UserString,
+                             parseQuantity("11.00 Pa").UserString)
         with self.assertRaises(IndexError):
-            self.assertEqual(array.getValue(0,-1,0).UserString, parseQuantity("11.00 Pa").UserString)
+            self.assertEqual(array.getValue(0,-1,0).UserString,
+                             parseQuantity("11.00 Pa").UserString)
         with self.assertRaises(IndexError):
-            self.assertEqual(array.getValue(0,2,0).UserString, parseQuantity("11.00 Pa").UserString)
+            self.assertEqual(array.getValue(0,2,0).UserString,
+                             parseQuantity("11.00 Pa").UserString)
         with self.assertRaises(IndexError):
-            self.assertEqual(array.getValue(1,0,0).UserString, parseQuantity("11.00 Pa").UserString)
+            self.assertEqual(array.getValue(1,0,0).UserString,
+                             parseQuantity("11.00 Pa").UserString)
         with self.assertRaises(IndexError):
-            self.assertEqual(array.getValue(-1,0,0).UserString, parseQuantity("11.00 Pa").UserString)
+            self.assertEqual(array.getValue(-1,0,0).UserString,
+                             parseQuantity("11.00 Pa").UserString)
         with self.assertRaises(IndexError):
-            self.assertEqual(array.getValue(3,0,0).UserString, parseQuantity("11.00 Pa").UserString)
+            self.assertEqual(array.getValue(3,0,0).UserString,
+                             parseQuantity("11.00 Pa").UserString)

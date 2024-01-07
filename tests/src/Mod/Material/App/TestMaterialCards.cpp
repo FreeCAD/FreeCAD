@@ -32,6 +32,7 @@
 #include <App/Application.h>
 #include <Base/Quantity.h>
 #include <Gui/MetaTypes.h>
+#include <src/App/InitApplication.h>
 
 #include <Mod/Material/App/MaterialLibrary.h>
 #include <Mod/Material/App/MaterialManager.h>
@@ -46,10 +47,7 @@ class TestMaterialCards : public ::testing::Test {
 protected:
     static void SetUpTestSuite() {
         if (App::Application::GetARGC() == 0) {
-            constexpr int argc = 1;
-            std::array<char*, argc> argv {"FreeCAD"};
-            App::Application::Config()["ExeName"] = "FreeCAD";
-            App::Application::init(argc, argv.data());
+            tests::initApplication();
         }
     }
 
@@ -78,8 +76,8 @@ protected:
 
 TEST_F(TestMaterialCards, TestCopy)
 {
-    EXPECT_NE(_modelManager, nullptr);
-    EXPECT_TRUE(_library);
+    ASSERT_NE(_modelManager, nullptr);
+    ASSERT_TRUE(_library);
     // FAIL() << "Test library " << _library->getDirectoryPath().toStdString() << "\n";
 
     auto testMaterial = _materialManager->getMaterial(_testMaterialUUID);
@@ -181,25 +179,25 @@ TEST_F(TestMaterialCards, TestCopy)
 
 TEST_F(TestMaterialCards, TestColumns)
 {
-    EXPECT_NE(_modelManager, nullptr);
-    EXPECT_TRUE(_library);
+    ASSERT_NE(_modelManager, nullptr);
+    ASSERT_TRUE(_library);
 
     auto testMaterial = _materialManager->getMaterial(_testMaterialUUID);
 
     EXPECT_TRUE(testMaterial->hasPhysicalProperty(QString::fromStdString("TestArray2D")));
     auto array2d = testMaterial->getPhysicalProperty(QString::fromStdString("TestArray2D"))->getMaterialValue();
     EXPECT_TRUE(array2d);
-    EXPECT_EQ(static_cast<Materials::Material2DArray &>(*array2d).columns(), 2);
+    EXPECT_EQ(dynamic_cast<Materials::Material2DArray &>(*array2d).columns(), 2);
 
     EXPECT_TRUE(testMaterial->hasPhysicalProperty(QString::fromStdString("TestArray2D3Column")));
     auto array2d3Column = testMaterial->getPhysicalProperty(QString::fromStdString("TestArray2D3Column"))->getMaterialValue();
     EXPECT_TRUE(array2d3Column);
-    EXPECT_EQ(static_cast<Materials::Material2DArray &>(*array2d3Column).columns(), 3);
+    EXPECT_EQ(dynamic_cast<Materials::Material2DArray &>(*array2d3Column).columns(), 3);
 
     EXPECT_TRUE(testMaterial->hasPhysicalProperty(QString::fromStdString("TestArray3D")));
     auto array3d = testMaterial->getPhysicalProperty(QString::fromStdString("TestArray3D"))->getMaterialValue();
     EXPECT_TRUE(array3d);
-    EXPECT_EQ(static_cast<Materials::Material3DArray &>(*array3d).columns(), 2);
+    EXPECT_EQ(dynamic_cast<Materials::Material3DArray &>(*array3d).columns(), 2);
 }
 
 // clang-format on

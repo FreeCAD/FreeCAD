@@ -20,26 +20,32 @@
 #   USA                                                                   *
 #**************************************************************************
 
-# import FreeCAD
-from os import walk
+"""
+Test module for FreeCAD material models
+"""
+
 import unittest
 import FreeCAD
 import Material
 
 parseQuantity = FreeCAD.Units.parseQuantity
-# import locale
-# locale.setpreferredencoding("UTF8")
 
 class ModelTestCases(unittest.TestCase):
+    """
+    Test class for FreeCAD material models
+    """
     def setUp(self):
+        """ Setup function to initialize test data """
         self.ModelManager = Material.ModelManager()
         self.uuids = Material.UUIDs()
 
     def testModelManager(self):
+        """ Ensure we can access ModelManager member functions """
         self.assertIn("ModelLibraries", dir(self.ModelManager))
         self.assertIn("Models", dir(self.ModelManager))
 
     def testUUIDs(self):
+        """ Verify the common UUIDs are defined and correct """
         self.assertTrue(self.uuids.Father, "9cdda8b6-b606-4778-8f13-3934d8668e67")
         self.assertTrue(self.uuids.MaterialStandard, "1e2c0088-904a-4537-925f-64064c07d700")
 
@@ -85,6 +91,7 @@ class ModelTestCases(unittest.TestCase):
         self.assertTrue(self.uuids.TestModel, "34d0583d-f999-49ba-99e6-aa40bd5c3a6b")
 
     def testModelLoad(self):
+        """ Test that the Density model has been loaded correctly """
         density = self.ModelManager.getModel(self.uuids.Density)
         self.assertIsNotNone(density)
         self.assertEqual(density.Name, "Density")
