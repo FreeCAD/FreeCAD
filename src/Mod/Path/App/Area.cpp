@@ -668,11 +668,13 @@ std::shared_ptr<Area> Area::getClearedAreaFromPath(const Toolpath *path, double 
     // 1 in Thicken() cleared area
     // 2 in getRestArea target area offset in and back out
     // Oversize cleared areas by buffer to smooth out imprecision in arc/segment conversion. getRestArea() will compensate for this
-    const double buffer = myParams.Accuracy * 6.3;
+    AreaParams params = myParams;
+    params.Accuracy = myParams.Accuracy * .7/4;  // 2.3 already encoded in gcode; 4 * .7/4 = 3 total
+    const double buffer = myParams.Accuracy * 3;
 
     // Do not fit arcs after these offsets; it introduces unnecessary approximation error, and all off
     // those arcs will be converted back to segments again for clipper differencing in getRestArea anyway
-    CAreaConfig conf(myParams, /*no_fit_arcs*/ true);
+    CAreaConfig conf(params, /*no_fit_arcs*/ true);
 
     Base::Vector3d pos = Base::Vector3d(0, 0, zmax + 1);
     printf("getClearedAreaFromPath(path, diameter=%g, zmax=%g:\n", diameter, zmax);
@@ -695,7 +697,7 @@ std::shared_ptr<Area> Area::getClearedAreaFromPath(const Toolpath *path, double 
     printf("\n");
 
 
-    std::shared_ptr<Area> clearedArea = make_shared<Area>(&myParams);
+    std::shared_ptr<Area> clearedArea = make_shared<Area>(&params);
     //clearedArea->myTrsf = myTrsf;
     clearedArea->myTrsf = {};
     if (visitor.count > 0) {
@@ -722,11 +724,13 @@ std::shared_ptr<Area> Area::getRestArea(std::vector<std::shared_ptr<Area>> clear
     // 1 in Thicken() cleared area
     // 2 in getRestArea target area offset in and back out
     // Cleared area representations are oversized by buffer to smooth out imprecision in arc/segment conversion. getRestArea() will compensate for this
-    const double buffer = myParams.Accuracy * 6.3;
-    const double roundPrecision = buffer;
+    AreaParams params = myParams;
+    params.Accuracy = myParams.Accuracy * .7/4;  // 2.3 already encoded in gcode; 4 * .7/4 = 3 total
+    const double buffer = myParams.Accuracy * 3;
+    const double roundPrecision = params.Accuracy;
 
     // transform all clearedAreas into our workplane
-    Area clearedAreasInPlane(&myParams);
+    Area clearedAreasInPlane(&params);
     clearedAreasInPlane.myArea.reset(new CArea());
     printf("getRestArea\n");
     printf("\n");
@@ -742,8 +746,8 @@ std::shared_ptr<Area> Area::getRestArea(std::vector<std::shared_ptr<Area>> clear
     // clearable = offset(offset(A, -dTool/2), dTool/2)
     printf("Compute clearable\n");
     CArea clearable(*myArea);
-    clearable.OffsetWithClipper(-diameter/2, JoinType, EndType, myParams.MiterLimit, roundPrecision);
-    clearable.OffsetWithClipper(diameter/2, JoinType, EndType, myParams.MiterLimit, roundPrecision);
+    clearable.OffsetWithClipper(-diameter/2, JoinType, EndType, params.MiterLimit, roundPrecision);
+    clearable.OffsetWithClipper(diameter/2, JoinType, EndType, params.MiterLimit, roundPrecision);
 
     // remaining = clearable - prevCleared
     printf("Compute remaining\n");
@@ -754,7 +758,7 @@ std::shared_ptr<Area> Area::getRestArea(std::vector<std::shared_ptr<Area>> clear
     // add buffer to dTool to compensate for oversizing in getClearedAreaFromPath
     printf("Compute rest\n");
     CArea restCArea(remaining);
-    restCArea.OffsetWithClipper(diameter + buffer, JoinType, EndType, myParams.MiterLimit, roundPrecision);
+    restCArea.OffsetWithClipper(diameter + buffer, JoinType, EndType, params.MiterLimit, roundPrecision);
     restCArea.Clip(toClipperOp(Area::OperationIntersection), &clearable, SubjectFill, ClipFill);
 
     printf("Convert CArea to Area (num curves: %d)\n", (int)restCArea.m_curves.size());
@@ -762,7 +766,7 @@ std::shared_ptr<Area> Area::getRestArea(std::vector<std::shared_ptr<Area>> clear
         return {};
     }
 
-    std::shared_ptr<Area> restArea = make_shared<Area>(&myParams);
+    std::shared_ptr<Area> restArea = make_shared<Area>(&params);
     gp_Trsf trsf(myTrsf.Inverted());
     TopoDS_Shape restShape = Area::toShape(restCArea, false, &trsf);
     restArea->add(restShape, OperationCompound);
