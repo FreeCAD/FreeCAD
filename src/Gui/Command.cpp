@@ -1026,6 +1026,16 @@ void GroupCommand::setExclusive(bool on)
     exclusive = on;
 }
 
+bool GroupCommand::doesRememberLast() const
+{
+    return rememberLast;
+}
+
+void GroupCommand::setRememberLast(bool on)
+{
+    rememberLast = on;
+}
+
 bool GroupCommand::hasDropDownMenu() const
 {
     return dropDownMenu;
@@ -1063,6 +1073,7 @@ Action * GroupCommand::createAction() {
     pcAction->setDropDownMenu(hasDropDownMenu());
     pcAction->setExclusive(isExclusive());
     pcAction->setCheckable(isCheckable());
+    pcAction->setRememberLast(doesRememberLast());
     pcAction->setWhatsThis(QString::fromLatin1(sWhatsThis));
 
     for(auto &v : cmds) {

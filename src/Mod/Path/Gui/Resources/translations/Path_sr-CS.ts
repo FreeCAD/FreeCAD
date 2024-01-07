@@ -775,7 +775,7 @@ Reset deletes all current items from the list and fills the list with all circul
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="69"/>
       <source>Reset</source>
-      <translation>Poništi</translation>
+      <translation>Resetuj</translation>
     </message>
     <message>
       <location filename="../panels/PageBaseHoleGeometryEdit.ui" line="76"/>
@@ -6986,7 +6986,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Deburr.py" line="188"/>
       <source>Round</source>
-      <translation>Zaobljeni</translation>
+      <translation type="unfinished">Round</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Deburr.py" line="189"/>
@@ -7092,7 +7092,7 @@ For example:
     <message>
       <location filename="../../../Path/Op/Profile.py" line="204"/>
       <source>Round</source>
-      <translation>Zaobljeni</translation>
+      <translation type="unfinished">Round</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="205"/>

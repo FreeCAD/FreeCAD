@@ -6979,7 +6979,7 @@ Les valeurs seront converties dans l'unité souhaitée pendant le post-traitemen
     <message>
       <location filename="../../../Path/Op/Deburr.py" line="188"/>
       <source>Round</source>
-      <translation>Rond</translation>
+      <translation type="unfinished">Round</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Deburr.py" line="189"/>
@@ -7085,7 +7085,7 @@ Les valeurs seront converties dans l'unité souhaitée pendant le post-traitemen
     <message>
       <location filename="../../../Path/Op/Profile.py" line="204"/>
       <source>Round</source>
-      <translation>Rond</translation>
+      <translation type="unfinished">Round</translation>
     </message>
     <message>
       <location filename="../../../Path/Op/Profile.py" line="205"/>

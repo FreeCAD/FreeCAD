@@ -105,13 +105,13 @@ SbRotation Camera::bottom()
 
 SbRotation Camera::front()
 {
-    auto root = (float)(sqrt(2.0)/2.0);
+    auto root = sqrtf(2.0)/2.0f;
     return {root, 0, 0, root};
 }
 
 SbRotation Camera::rear()
 {
-    auto root = (float)(sqrt(2.0)/2.0);
+    auto root = sqrtf(2.0)/2.0f;
     return {0, root, root, 0};
 }
 

@@ -826,9 +826,6 @@ void QGIViewPart::drawCenterLines(bool b)
 
 void QGIViewPart::drawAllHighlights()
 {
-    if (!Preferences::showDetailHighlight()) {
-        return;
-    }
     // dvp and vp already validated
     auto dvp(static_cast<TechDraw::DrawViewPart*>(getViewObject()));
 
@@ -853,6 +850,11 @@ void QGIViewPart::drawHighlight(TechDraw::DrawViewDetail* viewDetail, bool b)
     if (!vpDetail) {
         return;
     }
+
+    if (!viewDetail->ShowHighlight.getValue()) {
+        return;
+    }
+
     if (b) {
         double fontSize = Preferences::labelFontSizeMM();
         QGIHighlight* highlight = new QGIHighlight();
@@ -907,15 +909,16 @@ void QGIViewPart::highlightMoved(QGIHighlight* highlight, QPointF newPos)
 
 void QGIViewPart::drawMatting()
 {
-    if (!Preferences::showDetailMatting()) {
-        return;
-    }
     auto viewPart(dynamic_cast<TechDraw::DrawViewPart*>(getViewObject()));
     TechDraw::DrawViewDetail* dvd = nullptr;
     if (viewPart && viewPart->isDerivedFrom(TechDraw::DrawViewDetail::getClassTypeId())) {
         dvd = static_cast<TechDraw::DrawViewDetail*>(viewPart);
     }
     else {
+        return;
+    }
+
+    if (!dvd->ShowMatting.getValue()) {
         return;
     }
 

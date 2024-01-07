@@ -62,7 +62,7 @@ Ova komanda radi samo sa objektom koji je mreža.</translation>
     <message>
       <location filename="../../Command.cpp" line="192"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mreža</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="193"/>
@@ -80,7 +80,7 @@ Ova komanda radi samo sa objektom koji je mreža.</translation>
     <message>
       <location filename="../../Command.cpp" line="83"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Mreža</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="84"/>

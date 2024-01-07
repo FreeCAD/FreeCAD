@@ -713,10 +713,50 @@ class ArchTest(unittest.TestCase):
         Arch.removeComponents(win, host=wall)
         App.ActiveDocument.recompute()
         bp = Arch.makeBuildingPart()
+
+        # Wall visibility works when standalone
+        FreeCADGui.Selection.clearSelection()
+        FreeCADGui.Selection.addSelection('ArchTest',wall.Name)
+        assert wall.Visibility
+        FreeCADGui.runCommand('Std_ToggleVisibility',0)
+        App.ActiveDocument.recompute()
+        assert not wall.Visibility
+        FreeCADGui.runCommand('Std_ToggleVisibility',0)
+        assert wall.Visibility
+
         bp.Group = [wall]
         App.ActiveDocument.recompute()
         # Fails with OCC 7.5
         # self.assertTrue(len(bp.Shape.Faces) == 16, "'{}' failed".format(operation))
+
+        # Wall visibility works when inside a BuildingPart
+        FreeCADGui.runCommand('Std_ToggleVisibility',0)
+        App.ActiveDocument.recompute()
+        assert not wall.Visibility
+        FreeCADGui.runCommand('Std_ToggleVisibility',0)
+        assert wall.Visibility
+
+        # Wall visibility works when BuildingPart Toggled
+        FreeCADGui.Selection.clearSelection()
+        FreeCADGui.Selection.addSelection('ArchTest',bp.Name)
+        FreeCADGui.runCommand('Std_ToggleVisibility',0)
+        assert not wall.Visibility
+        FreeCADGui.runCommand('Std_ToggleVisibility',0)
+        assert wall.Visibility
+
+        # Wall visibiity works inside group inside BuildingPart Toggled
+        grp = App.ActiveDocument.addObject("App::DocumentObjectGroup","Group")
+        grp.Label="Group"
+        grp.Group = [wall]
+        bp.Group = [grp]
+        App.ActiveDocument.recompute()
+        assert wall.Visibility
+        FreeCADGui.runCommand('Std_ToggleVisibility',0)
+        App.ActiveDocument.recompute()
+        assert not wall.Visibility
+        FreeCADGui.runCommand('Std_ToggleVisibility',0)
+        App.ActiveDocument.recompute()
+        assert wall.Visibility
 
     def tearDown(self):
         App.closeDocument("ArchTest")

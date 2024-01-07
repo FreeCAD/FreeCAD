@@ -62,7 +62,7 @@ This command only works with a 'mesh' object.</source>
     <message>
       <location filename="../../Command.cpp" line="192"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Мрежа</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="193"/>
@@ -80,7 +80,7 @@ This command only works with a 'mesh' object.</source>
     <message>
       <location filename="../../Command.cpp" line="83"/>
       <source>Mesh</source>
-      <translation type="unfinished">Mesh</translation>
+      <translation>Мрежа</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="84"/>
