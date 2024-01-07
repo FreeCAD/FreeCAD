@@ -1356,6 +1356,10 @@ public:
             }
             makeAppropriateConstraint(previousOnSketchPos);
         }
+        else if (key == SoKeyboardEvent::Z && (QApplication::keyboardModifiers() & Qt::ControlModifier)) {
+            // User trying to cancel with Ctrl-Z
+            sketchgui->purgeHandler();
+        }
         else {
             DrawSketchHandler::registerPressedKey(pressed, key);
         }
