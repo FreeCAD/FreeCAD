@@ -606,6 +606,29 @@ public:
     //                                      double tol=1e-7, double atol=1e-12) const;
     //@}
 
+    void copyElementMap(const TopoShape &other, const char *op=nullptr);
+    bool canMapElement(const TopoShape &other) const;
+    void mapSubElement(const TopoShape &other,const char *op=nullptr, bool forceHasher=false);
+    void mapSubElement(const std::vector<TopoShape> &shapes, const char *op);
+    bool hasPendingElementMap() const;
+
+
+    /** Make a compound shape
+     *
+     * @param shapes: input shapes
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     * @param force: if true and there is only one input shape, then return
+     *               that shape instead.  If false, then always return a
+     *               compound, even if there is no input shape.
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the new shape. The function returns the TopoShape itself as
+     *         a reference so that multiple operations can be carried out for
+     *         the same shape in the same line of code.
+     */
+    TopoShape &makeElementCompound(const std::vector<TopoShape> &shapes, const char *op=nullptr, bool force=true);
+
     friend class TopoShapeCache;
 
 private:
