@@ -149,11 +149,6 @@ static const PyMethodDef areaOverrides[] = {
         "of this Area is used if section mode is 'Workplane'.",
     },
     {
-        "getClearedArea",nullptr,0,
-        "getClearedArea(tipDiameter, diameter):\n"
-        "Gets the area cleared when a tool maximally clears this area. This method assumes a tool tip diameter 'tipDiameter' traces the full area, and that (perhaps at a different height on the tool) this clears a different region with tool diameter 'diameter'.\n",
-    },
-    {
         "getClearedAreaFromPath",nullptr,0,
         "getClearedAreaFromPath(path, diameter, zmax):\n"
         "Gets the area cleared when a tool of the specified diameter follows the gcode represented in the path, ignoring cleared space above zmax.\n",
@@ -406,18 +401,6 @@ PyObject* AreaPy::makeSections(PyObject *args, PyObject *keywds)
         for(auto &area : sections)
             ret.append(Py::asObject(new AreaPy(new Area(*area,true))));
         return Py::new_reference_to(ret);
-    } PY_CATCH_OCC
-}
-
-PyObject* AreaPy::getClearedArea(PyObject *args)
-{
-    PY_TRY {
-        double tipDiameter, diameter;
-        if (!PyArg_ParseTuple(args, "dd", &tipDiameter, &diameter))
-            return nullptr;
-        std::shared_ptr<Area> clearedArea = getAreaPtr()->getClearedArea(tipDiameter, diameter);
-        auto pyClearedArea = Py::asObject(new AreaPy(new Area(*clearedArea, true)));
-        return Py::new_reference_to(pyClearedArea);
     } PY_CATCH_OCC
 }
 

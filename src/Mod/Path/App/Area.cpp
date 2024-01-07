@@ -497,37 +497,6 @@ void Area::add(const TopoDS_Shape& shape, short op) {
     myShapes.emplace_back(op, shape);
 }
 
-std::shared_ptr<Area> Area::getClearedArea(double tipDiameter, double diameter) {
-    build();
-#define AREA_MY(_param) myParams.PARAM_FNAME(_param)
-    PARAM_ENUM_CONVERT(AREA_MY, PARAM_FNAME, PARAM_ENUM_EXCEPT, AREA_PARAMS_OFFSET_CONF);
-    PARAM_ENUM_CONVERT(AREA_MY, PARAM_FNAME, PARAM_ENUM_EXCEPT, AREA_PARAMS_CLIPPER_FILL);
-    (void)SubjectFill;
-    (void)ClipFill;
-
-    // Do not fit arcs after these offsets; it introduces unnecessary approximation error, and all off
-    // those arcs will be converted back to segments again for clipper differencing in getRestArea anyway
-    CAreaConfig conf(myParams, /*no_fit_arcs*/ true);
-
-    const double roundPrecision = myParams.Accuracy;
-    const double buffer = 2 * roundPrecision;
-
-    // A = myArea
-    // prevCenters = offset(A, -rTip)
-    const double rTip = tipDiameter / 2.;
-    CArea prevCenter(*myArea);
-    prevCenter.OffsetWithClipper(-rTip, JoinType, EndType, myParams.MiterLimit, roundPrecision);
-
-    // prevCleared = offset(prevCenter, r).
-    CArea prevCleared(prevCenter);
-    prevCleared.OffsetWithClipper(diameter / 2. + buffer, JoinType, EndType, myParams.MiterLimit, roundPrecision);
-
-    std::shared_ptr<Area> clearedArea = make_shared<Area>(*this);
-    clearedArea->myArea.reset(new CArea(prevCleared));
-
-    return clearedArea;
-}
-
 class ClearedAreaSegmentVisitor : public PathSegmentVisitor
 {
 private:
@@ -715,6 +684,7 @@ std::shared_ptr<Area> Area::getClearedAreaFromPath(const Toolpath *path, double 
 
 std::shared_ptr<Area> Area::getRestArea(std::vector<std::shared_ptr<Area>> clearedAreas, double diameter) {
     build();
+#define AREA_MY(_param) myParams.PARAM_FNAME(_param)
     PARAM_ENUM_CONVERT(AREA_MY, PARAM_FNAME, PARAM_ENUM_EXCEPT, AREA_PARAMS_OFFSET_CONF);
     PARAM_ENUM_CONVERT(AREA_MY, PARAM_FNAME, PARAM_ENUM_EXCEPT, AREA_PARAMS_CLIPPER_FILL);
 

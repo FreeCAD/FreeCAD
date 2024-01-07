@@ -240,39 +240,9 @@ class ObjectOp(PathOp.ObjectOp):
         # Rest machining
         self.sectionShapes = self.sectionShapes + [section.toTopoShape() for section in sections]
         if hasattr(obj, "UseRestMachining") and obj.UseRestMachining:
-            # Loop through prior operations
-            clearedAreas = []
-            foundSelf = False
-            for op in self.job.Operations.Group:
-                if foundSelf:
-                    break
-                oplist = [op] + op.OutListRecursive
-                oplist = list(filter(lambda op: hasattr(op, "Active"), oplist))
-                for op in oplist:
-                    if op.Proxy == self:
-                        # Ignore self, and all later operations
-                        foundSelf = True
-                        break
-                    if hasattr(op, "RestMachiningRegions") and op.Active:
-                        if hasattr(op, "RestMachiningRegionsNeedRecompute") and op.RestMachiningRegionsNeedRecompute:
-                            Path.Log.warning(
-                                translate("PathAreaOp", "Previous operation %s is required for rest machining, but it has no stored rest machining metadata. Recomputing to generate this metadata...") % op.Label
-                            )
-                            op.recompute()
-
-                        tool = op.Proxy.tool if hasattr(op.Proxy, "tool") else op.ToolController.Proxy.getTool(op.ToolController)
-                        diameter = tool.Diameter.getValueAs("mm")
-                        def shapeToArea(shape):
-                            area = Path.Area()
-                            area.setPlane(PathUtils.makeWorkplane(shape))
-                            area.add(shape)
-                            return area
-                        opClearedAreas = [shapeToArea(pa).getClearedArea(diameter, diameter) for pa in op.RestMachiningRegions.SubShapes]
-                        clearedAreas.extend(opClearedAreas)
             restSections = []
             for section in sections:
                 z = section.getShape().BoundBox.ZMin
-                # sectionClearedAreas = [a for a in clearedAreas if a.getShape().BoundBox.ZMax <= z]
                 sectionClearedAreas = []
                 for op in self.job.Operations.Group:
                     print(op.Name)
@@ -497,10 +467,6 @@ class ObjectOp(PathOp.ObjectOp):
                     )
                 )
 
-        if hasattr(obj, "RestMachiningRegions"):
-            obj.RestMachiningRegions = Part.makeCompound(self.sectionShapes)
-        if hasattr(obj, "RestMachiningRegionsNeedRecompute"):
-            obj.RestMachiningRegionsNeedRecompute = False
         Path.Log.debug("obj.Name: " + str(obj.Name) + "\n\n")
         return sims
 
