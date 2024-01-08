@@ -1747,7 +1747,8 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent* event)
 
                 // let the view provider decide to accept the object or ignore it
                 if (da != Qt::LinkAction && !vp->canDropObjectEx(obj, owner, subname.c_str(), item->mySubs)) {
-                    if (event->possibleActions() & Qt::LinkAction) {
+                    // Cause unexpected bugs : https://github.com/FreeCAD/FreeCAD/issues/11676
+                    /*if (event->possibleActions() & Qt::LinkAction) {
                         if (items.size() > 1) {
                             TREE_TRACE("Cannot replace with more than one object");
                             event->ignore();
@@ -1760,7 +1761,7 @@ void TreeWidget::dragMoveEvent(QDragMoveEvent* event)
                         }
                         event->setDropAction(Qt::LinkAction);
                         return;
-                    }
+                    }*/
 
                     TREE_TRACE("cannot drop " << obj->getFullName() << ' '
                         << (owner ? owner->getFullName() : "<No Owner>") << '.' << subname);
