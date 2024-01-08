@@ -503,24 +503,26 @@ private:
     CArea pathSegments;
     double maxZ;
     double radius;
+    Base::BoundBox3d bbox;
 
     void line(const Base::Vector3d &last, const Base::Vector3d &next)
     {
         if (last.z <= maxZ && next.z <= maxZ) {
-            CCurve curve;
-            curve.append(CVertex{{last.x, last.y}});
-            curve.append(CVertex{{next.x, next.y}});
-            pathSegments.append(curve);
-            count++;
-        } else {
-            // printf("SKIP!");
+            Base::BoundBox2d segBox = {};
+            segBox.Add({last.x, last.y});
+            segBox.Add({next.x, next.y});
+            if (bbox.Intersect(segBox)) {
+                CCurve curve;
+                curve.append(CVertex{{last.x, last.y}});
+                curve.append(CVertex{{next.x, next.y}});
+                pathSegments.append(curve);
+            }
         }
     }
 public:
-    int count = 0;
-
-    ClearedAreaSegmentVisitor(double maxZ, double radius) : maxZ(maxZ), radius(radius)
+    ClearedAreaSegmentVisitor(double maxZ, double radius, Base::BoundBox3d bbox) : maxZ(maxZ), radius(radius), bbox(bbox)
     {
+        bbox.Enlarge(radius);
     }
 
     CArea getClearedArea()
@@ -581,7 +583,6 @@ public:
         curve.append(CVertex{{last.x, last.y}});
         curve.append(CVertex{ccw ? 1 : -1, {next.x, next.y}, {center.x, center.y}});
         pathSegments.append(curve);
-        count++;
         // Base::Vector3d prev = last;
         // for (Base::Vector3d p : pts) {
         //     line(prev, p);
@@ -597,10 +598,10 @@ public:
         (void)id;
         (void)q; // always within the bounds of p
         printf("g8x UNHANDLED\n");
-        // processPt(last);
-        // processPts(pts);
-        // processPts(p);
-        // processPt(next);
+        processPt(last);
+        processPts(pts);
+        processPts(p);
+        processPt(next);
         (void)last;
         (void)pts;
         (void)p;
@@ -608,10 +609,8 @@ public:
     }
     void g38(int id, const Base::Vector3d &last, const Base::Vector3d &next) override
     {
+        // probe operation; clears nothing
         (void)id;
-        printf("g38 UNHANDLED\n");
-        // processPt(last);
-        // processPt(next);
         (void)last;
         (void)next;
     }
@@ -628,7 +627,7 @@ private:
     }
 };
 
-std::shared_ptr<Area> Area::getClearedArea(const Toolpath *path, double diameter, double zmax) {
+std::shared_ptr<Area> Area::getClearedArea(const Toolpath *path, double diameter, double zmax, Base::BoundBox3d bbox) {
     build();
 
     // Precision losses in arc/segment conversions (multiples of Accuracy):
@@ -658,20 +657,18 @@ std::shared_ptr<Area> Area::getClearedArea(const Toolpath *path, double diameter
 
     printf("\n");
     printf("GCode walker:\n");
-    ClearedAreaSegmentVisitor visitor(zmax, diameter/2 + buffer);
+    ClearedAreaSegmentVisitor visitor(zmax, diameter/2 + buffer, bbox);
     PathSegmentWalker walker(*path);
     walker.walk(visitor, Base::Vector3d(0, 0, zmax + 1));
-    printf("Count: %d\n", visitor.count);
     printf("\n");
     printf("\n");
 
 
     std::shared_ptr<Area> clearedArea = make_shared<Area>(&params);
-    //clearedArea->myTrsf = myTrsf;
     clearedArea->myTrsf = {};
-    if (visitor.count > 0) {
-        //gp_Trsf trsf(myTrsf.Inverted());
-        TopoDS_Shape clearedAreaShape = Area::toShape(visitor.getClearedArea(), false/*, &trsf*/);
+    const CArea ca = visitor.getClearedArea();
+    if (ca.m_curves.size() > 0) {
+        TopoDS_Shape clearedAreaShape = Area::toShape(ca, false);
         clearedArea->add(clearedAreaShape, OperationCompound);
         clearedArea->build();
     } else {

@@ -22,6 +22,7 @@
 
 #include "PreCompiled.h"
 
+#include <Base/GeometryPyCXX.h>
 #include <Base/PyWrapParseTupleAndKeywords.h>
 #include <Mod/Part/App/OCCError.h>
 #include <Mod/Part/App/TopoShapePy.h>
@@ -150,8 +151,8 @@ static const PyMethodDef areaOverrides[] = {
     },
     {
         "getClearedArea",nullptr,0,
-        "getClearedArea(path, diameter, zmax):\n"
-        "Gets the area cleared when a tool of the specified diameter follows the gcode represented in the path, ignoring cleared space above zmax.\n",
+        "getClearedArea(path, diameter, zmax, bbox):\n"
+        "Gets the area cleared when a tool of the specified diameter follows the gcode represented in the path, ignoring cleared space above zmax and path segments that don't affect space within bbox.\n",
     },
     {
         "getRestArea",nullptr,0,
@@ -407,16 +408,21 @@ PyObject* AreaPy::makeSections(PyObject *args, PyObject *keywds)
 PyObject* AreaPy::getClearedArea(PyObject *args)
 {
     PY_TRY {
-        PyObject *pyPath;
+        PyObject *pyPath, *pyBbox;
         double diameter, zmax;
-        if (!PyArg_ParseTuple(args, "Odd", &pyPath, &diameter, &zmax))
+        if (!PyArg_ParseTuple(args, "OddO", &pyPath, &diameter, &zmax, &pyBbox))
             return nullptr;
 	if (!PyObject_TypeCheck(pyPath, &(PathPy::Type))) {
 		PyErr_SetString(PyExc_TypeError, "path must be of type PathPy");
 		return nullptr;
 	}
+	if (!PyObject_TypeCheck(pyBbox, &(Base::BoundBoxPy::Type))) {
+		PyErr_SetString(PyExc_TypeError, "bbox must be of type BoundBoxPy");
+		return nullptr;
+	}
 	const PathPy *path = static_cast<PathPy*>(pyPath);
-        std::shared_ptr<Area> clearedArea = getAreaPtr()->getClearedArea(path->getToolpathPtr(), diameter, zmax);
+        const Py::BoundingBox bbox(pyBbox, false);
+        std::shared_ptr<Area> clearedArea = getAreaPtr()->getClearedArea(path->getToolpathPtr(), diameter, zmax, bbox.getValue());
         auto pyClearedArea = Py::asObject(new AreaPy(new Area(*clearedArea, true)));
         return Py::new_reference_to(pyClearedArea);
     } PY_CATCH_OCC

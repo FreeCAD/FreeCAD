@@ -242,7 +242,8 @@ class ObjectOp(PathOp.ObjectOp):
         if hasattr(obj, "UseRestMachining") and obj.UseRestMachining:
             restSections = []
             for section in sections:
-                z = section.getShape().BoundBox.ZMin
+                bbox = section.getShape().BoundBox
+                z = bbox.ZMin
                 sectionClearedAreas = []
                 for op in self.job.Operations.Group:
                     print(op.Name)
@@ -252,7 +253,7 @@ class ObjectOp(PathOp.ObjectOp):
                     if hasattr(op, "Active") and op.Active and op.Path:
                         tool = op.Proxy.tool if hasattr(op.Proxy, "tool") else op.ToolController.Proxy.getTool(op.ToolController)
                         diameter = tool.Diameter.getValueAs("mm")
-                        sectionClearedAreas.append(area.getClearedArea(op.Path, diameter, z+0.001))
+                        sectionClearedAreas.append(section.getClearedArea(op.Path, diameter, z+0.001, bbox))
                         # debugZ = -1.5
                         # if debugZ -.1 < z and z < debugZ + .1:
                         #     debugObj = obj.Document.addObject("Part::Feature", "Debug_{}_{}".format(debugZ, op.Name))
