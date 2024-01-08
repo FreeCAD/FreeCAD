@@ -304,32 +304,57 @@ class GitManager:
             else:
                 if email not in result_dict[author]["email"]:
                     # Same author name, new email address -- treat it as the same
-                    # person with a second email, instead of as a whole new person
+   
+
+def _find_git(self):
+    
+
+    prefs = fci.ParamGet("User parameter:BaseApp/Preferences/Addons")
+    git_exe = prefs.GetString("GitExecutable", "Not set")
+
+    # A) Use the value of the GitExecutable user preference if set and valid
+    if git_exe and os.path.exists(git_exe):
+        self.git_exe = git_exe
+        return
+
+    # B) Look for the Git executable in the same directory as FreeCAD
+    fc_dir = fci.DataPaths().home_dir
+    git_exe = os.path.join(fc_dir, "bin", "git")
+    if platform.system() == "Darwin":  # Only execute on macOS
+        if os.path.exists(git_exe):
+            self.git_exe = git_exe
+            prefs.SetString("GitExecutable", git_exe)
+            return
+
+    # C) Use shutil.which to search for the Git executable in the system's PATH
+    git_exe = shutil.which("git")
+    if git_exe and os.path.exists(git_exe):
+        if platform.system() == "Darwin":  # Only execute on macOS
+            # Check if Xcode Command Line Tools are installed
+            if self._is_xcode_command_line_tools_installed():
+                self.git_exe = git_exe
+                prefs.SetString("GitExecutable", git_exe)
+                return
+        else:  # Execute on other platforms
+            self.git_exe = git_exe
+            prefs.SetString("GitExecutable", git_exe)
+            return
+
+    # If Git executable is not found, you may want to handle this case accordingly.
+    # For example, raise an exception or log a warning.
+    print("Git executable not found or Xcode Command Line Tools not installed.")
+
+def _is_xcode_command_line_tools_installed(self):
+    try:
+        subprocess.check_output(["xcode-select", "-p"])
+        return True
+    except subprocess.CalledProcessError:
+        return False                 # person with a second email, instead of as a whole new person
                     result_dict[author]["email"].append(email)
                 result_dict[author]["count"] += 1
         return result_dict
 
-    def _find_git(self):
-        # Find git. In preference order
-        #   A) The value of the GitExecutable user preference
-        #   B) The executable located in the same directory as FreeCAD and called "git"
-        #   C) The result of a shutil search for your system's "git" executable
-        prefs = fci.ParamGet("User parameter:BaseApp/Preferences/Addons")
-        git_exe = prefs.GetString("GitExecutable", "Not set")
-        if not git_exe or git_exe == "Not set" or not os.path.exists(git_exe):
-            fc_dir = fci.DataPaths().home_dir
-            git_exe = os.path.join(fc_dir, "bin", "git")
-            if "Windows" in platform.system():
-                git_exe += ".exe"
-
-        if not git_exe or not os.path.exists(git_exe):
-            git_exe = shutil.which("git")
-
-        if not git_exe or not os.path.exists(git_exe):
-            return
-
-        prefs.SetString("GitExecutable", git_exe)
-        self.git_exe = git_exe
+   
 
     def _synchronous_call_git(self, args: List[str]) -> str:
         """Calls git and returns its output."""
