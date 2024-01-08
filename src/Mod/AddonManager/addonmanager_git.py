@@ -326,12 +326,12 @@ class GitManager:
             git_exe = shutil.which("git")
 
         if not git_exe or not os.path.exists(git_exe):
-            print("Git is not installed")
+            Free.CAD.Console.PrintMessage("Git is not installed\n")
             return
 
         prefs.SetString("GitExecutable", git_exe)
         self.git_exe = git_exe
-        print("Git is installed")
+        Free.CAD.Console.PrintMessage("Git is installed\n")
 
     def _synchronous_call_git(self, args: List[str]) -> str:
         """Calls git and returns its output."""
