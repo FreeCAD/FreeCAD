@@ -27,6 +27,7 @@
 # include <boost/algorithm/string/predicate.hpp>
 # include <QApplication>
 # include <QInputDialog>
+# include <QHeaderView>
 # include <QMenu>
 # include <QPainter>
 #endif
@@ -59,6 +60,7 @@ PropertyEditor::PropertyEditor(QWidget *parent)
     , binding(false)
     , checkDocument(false)
     , closingEditor(false)
+    , dragInProgress(false)
 {
     propertyModel = new PropertyModel(this);
     setModel(propertyModel);
@@ -93,6 +95,10 @@ PropertyEditor::PropertyEditor(QWidget *parent)
     connect(this, &QTreeView::collapsed, this, &PropertyEditor::onItemCollapsed);
     connect(propertyModel, &QAbstractItemModel::rowsMoved, this, &PropertyEditor::onRowsMoved);
     connect(propertyModel, &QAbstractItemModel::rowsRemoved, this, &PropertyEditor::onRowsRemoved);
+
+    setHeaderHidden(true);
+    viewport()->installEventFilter(this);
+    viewport()->setMouseTracking(true);
 }
 
 PropertyEditor::~PropertyEditor()
@@ -825,6 +831,59 @@ void PropertyEditor::contextMenuEvent(QContextMenuEvent *) {
     default:
         break;
     }
+}
+
+
+bool PropertyEditor::eventFilter(QObject* object, QEvent* event) {
+    if (object == viewport()) {
+        QMouseEvent* mouse_event = dynamic_cast<QMouseEvent*>(event);
+        if (mouse_event) {
+            if (mouse_event->type() == QEvent::MouseMove) {
+                if (dragInProgress) { // apply dragging
+                    QHeaderView* header_view = header();
+                    int delta = mouse_event->pos().x() - dragPreviousPos;
+                    dragPreviousPos = mouse_event->pos().x();
+                    //using minimal size = dragSensibility * 2 to prevent collapsing
+                    header_view->resizeSection(dragSection,
+                        qMax(dragSensibility * 2, header_view->sectionSize(dragSection) + delta));
+                    return true;
+                }
+                else { // set mouse cursor shape
+                    if (indexResizable(mouse_event->pos()).isValid()) {
+                        viewport()->setCursor(Qt::SplitHCursor);
+                    }
+                    else {
+                        viewport()->setCursor(QCursor());
+                    }
+                }
+            }
+            else if (mouse_event->type() == QEvent::MouseButtonPress && mouse_event->button() == Qt::LeftButton && !dragInProgress) {
+                if (indexResizable(mouse_event->pos()).isValid()) {
+                    dragInProgress = true;
+                    dragPreviousPos = mouse_event->x();
+                    dragSection = indexResizable(mouse_event->pos()).column();
+                    return true;
+                }
+            }
+            else if (mouse_event->type() == QEvent::MouseButtonRelease &&
+                mouse_event->button() == Qt::LeftButton && dragInProgress) { 
+                dragInProgress = false;
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+QModelIndex PropertyEditor::indexResizable(QPoint mouse_pos) {
+    QModelIndex index = indexAt(mouse_pos - QPoint(dragSensibility + 1, 0));
+    if (index.isValid()) {
+        if (qAbs(visualRect(index).right() - mouse_pos.x()) < dragSensibility &&
+            header()->sectionResizeMode(index.column()) == QHeaderView::Interactive) {
+            return index;
+        }
+    }
+    return QModelIndex();
 }
 
 #include "moc_PropertyEditor.cpp"
