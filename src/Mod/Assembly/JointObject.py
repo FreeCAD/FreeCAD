@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-# /****************************************************************************
+# /**************************************************************************
 #                                                                           *
 #    Copyright (c) 2023 Ondsel <development@ondsel.com>                     *
 #                                                                           *
@@ -19,7 +19,7 @@
 #    License along with FreeCAD. If not, see                                *
 #    <https://www.gnu.org/licenses/>.                                       *
 #                                                                           *
-# ***************************************************************************/
+# **************************************************************************/
 
 import math
 
@@ -77,12 +77,6 @@ JointUsingReverse = [
 def solveIfAllowed(assembly, storePrev=False):
     if Preferences.preferences().GetBool("SolveInJointCreation", True):
         assembly.solve(storePrev)
-
-
-def flipPlacement(plc, localXAxis):
-    flipRot = App.Rotation(localXAxis, 180)
-    plc.Rotation = plc.Rotation.multiply(flipRot)
-    return plc
 
 
 class Joint:
@@ -230,13 +224,14 @@ class Joint:
 
         joint.addProperty(
             "App::PropertyBool",
-            "FirstPartConnected",
+            "Activated",
             "Joint",
             QT_TRANSLATE_NOOP(
                 "App::Property",
-                "This indicate if the first part was connected to ground at the time of joint creation.",
+                "This indicate if the joint is active.",
             ),
         )
+        joint.Activated = True
 
         self.setJointConnectors(joint, [])
 
@@ -275,7 +270,7 @@ class Joint:
 
         if len(current_selection) >= 1:
             joint.Part1 = None
-            joint.FirstPartConnected = assembly.isPartConnected(current_selection[0]["part"])
+            self.part1Connected = assembly.isPartConnected(current_selection[0]["part"])
 
             joint.Object1 = current_selection[0]["object"].Name
             joint.Part1 = current_selection[0]["part"]
@@ -290,8 +285,12 @@ class Joint:
             joint.Element1 = ""
             joint.Vertex1 = ""
             joint.Placement1 = App.Placement()
+            self.partMovedByPresolved = None
 
         if len(current_selection) >= 2:
+            joint.Part2 = None
+            self.part2Connected = assembly.isPartConnected(current_selection[1]["part"])
+
             joint.Object2 = current_selection[1]["object"].Name
             joint.Part2 = current_selection[1]["part"]
             joint.Element2 = current_selection[1]["element_name"]
@@ -299,7 +298,13 @@ class Joint:
             joint.Placement2 = self.findPlacement(
                 joint, joint.Object2, joint.Part2, joint.Element2, joint.Vertex2, True
             )
-            self.preventOrthogonal(joint)
+            self.preSolve(
+                joint,
+                current_selection[0]["object"],
+                joint.Part1,
+                current_selection[1]["object"],
+                joint.Part2,
+            )
             solveIfAllowed(assembly, True)
 
         else:
@@ -309,6 +314,7 @@ class Joint:
             joint.Vertex2 = ""
             joint.Placement2 = App.Placement()
             assembly.undoSolve()
+            self.undoPreSolve()
 
     def updateJCSPlacements(self, joint):
         if not joint.Detach1:
@@ -455,34 +461,29 @@ class Joint:
         plc.Rotation = rot * zRotation
         return plc
 
-    def flipPart(self, joint):
-        if joint.FirstPartConnected:
-            plc = joint.Placement2  # relative to obj
-            obj = UtilsAssembly.getObjectInPart(joint.Object2, joint.Part2)
+    def flipPlacement(self, plc):
+        return self.applyRotationToPlacementAlongAxis(plc, 180, App.Vector(1, 0, 0))
 
-            # we need plc to be relative to the containing part
-            obj_global_plc = UtilsAssembly.getGlobalPlacement(obj, joint.Part2)
-            part_global_plc = UtilsAssembly.getGlobalPlacement(joint.Part2)
-            plc = obj_global_plc * plc
-            plc = part_global_plc.inverse() * plc
-
-            jcsXAxis = plc.Rotation.multVec(App.Vector(1, 0, 0))
-
-            joint.Part2.Placement = flipPlacement(joint.Part2.Placement, jcsXAxis)
+    def flipOnePart(self, joint):
+        if hasattr(self, "part2Connected") and not self.part2Connected:
+            jcsPlc = UtilsAssembly.getJcsPlcRelativeToPart(
+                joint.Placement2, joint.Object2, joint.Part2
+            )
+            globalJcsPlc = UtilsAssembly.getJcsGlobalPlc(
+                joint.Placement2, joint.Object2, joint.Part2
+            )
+            jcsPlc = self.flipPlacement(jcsPlc)
+            joint.Part2.Placement = globalJcsPlc * jcsPlc.inverse()
 
         else:
-            plc = joint.Placement1  # relative to obj
-            obj = UtilsAssembly.getObjectInPart(joint.Object1, joint.Part1)
-
-            # we need plc to be relative to the containing part
-            obj_global_plc = UtilsAssembly.getGlobalPlacement(obj, joint.Part1)
-            part_global_plc = UtilsAssembly.getGlobalPlacement(joint.Part1)
-            plc = obj_global_plc * plc
-            plc = part_global_plc.inverse() * plc
-
-            jcsXAxis = plc.Rotation.multVec(App.Vector(1, 0, 0))
-
-            joint.Part1.Placement = flipPlacement(joint.Part1.Placement, jcsXAxis)
+            jcsPlc = UtilsAssembly.getJcsPlcRelativeToPart(
+                joint.Placement1, joint.Object1, joint.Part1
+            )
+            globalJcsPlc = UtilsAssembly.getJcsGlobalPlc(
+                joint.Placement1, joint.Object1, joint.Part1
+            )
+            jcsPlc = self.flipPlacement(jcsPlc)
+            joint.Part1.Placement = globalJcsPlc * jcsPlc.inverse()
 
         solveIfAllowed(self.getAssembly(joint))
 
@@ -508,18 +509,55 @@ class Joint:
                         return App.Vector(res[0].X, res[0].Y, res[0].Z)
         return surface.Center
 
-    def preventOrthogonal(self, joint):
-        zAxis1 = joint.Placement1.Rotation.multVec(App.Vector(0, 0, 1))
-        zAxis2 = joint.Placement2.Rotation.multVec(App.Vector(0, 0, 1))
-        if abs(zAxis1.dot(zAxis2)) < Part.Precision.confusion():
-            if joint.FirstPartConnected:
-                joint.Part2.Placement = self.applyRotationToPlacementAlongAxis(
-                    joint.Part2.Placement, 30.0, App.Vector(1, 2, 0)
-                )
-            else:
-                joint.Part1.Placement = self.applyRotationToPlacementAlongAxis(
-                    joint.Part1.Placement, 30.0, App.Vector(1, 2, 0)
-                )
+    def preSolve(self, joint, obj1, part1, obj2, part2):
+        # The goal of this is to put the part in the correct position to avoid wrong placement by the solve.
+
+        # we actually don't want to match perfectly the JCS, it is best to match them
+        # in the current closest direction, ie either matched or flipped.
+        sameDir = self.areJcsSameDir(joint)
+
+        if hasattr(self, "part2Connected") and not self.part2Connected:
+            self.partMovedByPresolved = joint.Part2
+            self.presolveBackupPlc = joint.Part2.Placement
+
+            globalJcsPlc1 = UtilsAssembly.getJcsGlobalPlc(
+                joint.Placement1, joint.Object1, joint.Part1
+            )
+            jcsPlc2 = UtilsAssembly.getJcsPlcRelativeToPart(
+                joint.Placement2, joint.Object2, joint.Part2
+            )
+            if not sameDir:
+                jcsPlc2 = self.flipPlacement(jcsPlc2)
+            joint.Part2.Placement = globalJcsPlc1 * jcsPlc2.inverse()
+
+        elif hasattr(self, "part1Connected") and not self.part1Connected:
+            self.partMovedByPresolved = joint.Part1
+            self.presolveBackupPlc = joint.Part1.Placement
+
+            globalJcsPlc2 = UtilsAssembly.getJcsGlobalPlc(
+                joint.Placement2, joint.Object2, joint.Part2
+            )
+            jcsPlc1 = UtilsAssembly.getJcsPlcRelativeToPart(
+                joint.Placement1, joint.Object1, joint.Part1
+            )
+            if not sameDir:
+                jcsPlc1 = self.flipPlacement(jcsPlc1)
+            joint.Part1.Placement = globalJcsPlc2 * jcsPlc1.inverse()
+
+    def undoPreSolve(
+        self,
+    ):
+        if self.partMovedByPresolved:
+            self.partMovedByPresolved.Placement = self.presolveBackupPlc
+            self.partMovedByPresolved = None
+
+    def areJcsSameDir(self, joint):
+        globalJcsPlc1 = UtilsAssembly.getJcsGlobalPlc(joint.Placement1, joint.Object1, joint.Part1)
+        globalJcsPlc2 = UtilsAssembly.getJcsGlobalPlc(joint.Placement2, joint.Object2, joint.Part2)
+
+        zAxis1 = globalJcsPlc1.Rotation.multVec(App.Vector(0, 0, 1))
+        zAxis2 = globalJcsPlc2.Rotation.multVec(App.Vector(0, 0, 1))
+        return zAxis1.dot(zAxis2) > 0
 
 
 class ViewProviderJoint:
@@ -567,7 +605,7 @@ class ViewProviderJoint:
         self.switch_JCS_preview = self.JCS_sep(self.transform3)
 
         self.pick = coin.SoPickStyle()
-        self.pick.style.setValue(coin.SoPickStyle.UNPICKABLE)
+        self.setPickableState(True)
 
         self.display_mode = coin.SoType.fromName("SoFCSelection").createInstance()
         self.display_mode.addChild(self.pick)
@@ -682,19 +720,10 @@ class ViewProviderJoint:
             if joint.Object2:
                 plc = joint.Placement2
                 self.switch_JCS2.whichChild = coin.SO_SWITCH_ALL
-                # if self.areJCSReversed(joint):
-                #    plc = flipPlacement(plc, App.Vector(1, 0, 0))
 
                 self.set_JCS_placement(self.transform2, plc, joint.Object2, joint.Part2)
             else:
                 self.switch_JCS2.whichChild = coin.SO_SWITCH_NONE
-
-    def areJCSReversed(self, joint):
-        zAxis1 = joint.Placement1.Rotation.multVec(App.Vector(0, 0, 1))
-        zAxis2 = joint.Placement2.Rotation.multVec(App.Vector(0, 0, 1))
-
-        sameDir = zAxis1.dot(zAxis2) > 0
-        return not sameDir
 
     def showPreviewJCS(self, visible, placement=None, objName="", part=None):
         if visible:
@@ -763,7 +792,7 @@ class ViewProviderJoint:
     def doubleClicked(self, vobj):
         assembly = vobj.Object.InList[0]
         if UtilsAssembly.activeAssembly() != assembly:
-            Gui.ActiveDocument.ActiveView.setActiveObject("part", assembly)
+            Gui.ActiveDocument.setEdit(assembly)
 
         panel = TaskAssemblyCreateJoint(0, vobj.Object)
         Gui.Control.showDialog(panel)
@@ -925,16 +954,19 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         self.form.rotationSpinbox.valueChanged.connect(self.onRotationChanged)
         self.form.PushButtonReverse.clicked.connect(self.onReverseClicked)
 
-        Gui.Selection.clearSelection()
-
         if jointObj:
+            Gui.Selection.clearSelection()
+            self.creating = False
             self.joint = jointObj
             self.jointName = jointObj.Label
             App.setActiveTransaction("Edit " + self.jointName + " Joint")
 
             self.updateTaskboxFromJoint()
+            self.visibilityBackup = self.joint.Visibility
+            self.joint.Visibility = True
 
         else:
+            self.creating = True
             self.jointName = self.form.jointType.currentText().replace(" ", "")
             App.setActiveTransaction("Create " + self.jointName + " Joint")
 
@@ -942,6 +974,8 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
             self.preselection_dict = None
 
             self.createJointObject()
+            self.visibilityBackup = False
+            self.handleInitialSelection()
 
         self.toggleDistanceVisibility()
         self.toggleOffsetVisibility()
@@ -964,13 +998,10 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
             App.Console.PrintWarning("You need to select 2 elements from 2 separate parts.")
             return False
 
-        # Hide JSC's when joint is created and enable selection highlighting
-        # self.joint.ViewObject.Visibility = False
-        # self.joint.ViewObject.OnTopWhenSelected = "Enabled"
-
         self.deactivate()
 
         solveIfAllowed(self.assembly)
+        self.joint.Visibility = self.visibilityBackup
 
         App.closeActiveTransaction()
         return True
@@ -978,6 +1009,8 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
     def reject(self):
         self.deactivate()
         App.closeActiveTransaction(True)
+        if not self.creating:  # update visibility only if we are editing the joint
+            self.joint.Visibility = self.visibilityBackup
         return True
 
     def deactivate(self):
@@ -995,6 +1028,64 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         self.setJointsPickableState(True)
         if Gui.Control.activeDialog():
             Gui.Control.closeDialog()
+
+    def handleInitialSelection(self):
+        selection = Gui.Selection.getSelectionEx("*", 0)
+        if not selection:
+            return
+        for sel in selection:
+            # If you select 2 solids (bodies for example) within an assembly.
+            # There'll be a single sel but 2 SubElementNames.
+
+            if not sel.SubElementNames:
+                # no subnames, so its a root assembly itself that is selected.
+                Gui.Selection.removeSelection(sel.Object)
+                continue
+
+            for sub_name in sel.SubElementNames:
+                # Only objects within the assembly.
+                objs_names, element_name = UtilsAssembly.getObjsNamesAndElement(
+                    sel.ObjectName, sub_name
+                )
+                if len(self.current_selection) >= 2 or self.assembly.Name not in objs_names:
+                    Gui.Selection.removeSelection(sel.Object, sub_name)
+                    continue
+
+                obj_name = sel.ObjectName
+
+                full_obj_name = UtilsAssembly.getFullObjName(obj_name, sub_name)
+                full_element_name = UtilsAssembly.getFullElementName(obj_name, sub_name)
+                selected_object = UtilsAssembly.getObject(full_element_name)
+                element_name = UtilsAssembly.getElementName(full_element_name)
+                part_containing_selected_object = UtilsAssembly.getContainingPart(
+                    full_element_name, selected_object
+                )
+
+                if selected_object == self.assembly:
+                    # do not accept selection of assembly itself
+                    Gui.Selection.removeSelection(sel.Object, sub_name)
+                    continue
+
+                if (
+                    len(self.current_selection) == 1
+                    and selected_object == self.current_selection[0]["object"]
+                ):
+                    # do not select several feature of the same object.
+                    Gui.Selection.removeSelection(sel.Object, sub_name)
+                    continue
+
+                selection_dict = {
+                    "object": selected_object,
+                    "part": part_containing_selected_object,
+                    "element_name": element_name,
+                    "full_element_name": full_element_name,
+                    "full_obj_name": full_obj_name,
+                    "vertex_name": element_name,
+                }
+
+                self.current_selection.append(selection_dict)
+
+        self.updateJoint()
 
     def createJointObject(self):
         type_index = self.form.jointType.currentIndex()
@@ -1022,7 +1113,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         self.joint.Rotation = self.form.rotationSpinbox.property("rawValue")
 
     def onReverseClicked(self):
-        self.joint.Proxy.flipPart(self.joint)
+        self.joint.Proxy.flipOnePart(self.joint)
 
     def toggleDistanceVisibility(self):
         if self.form.jointType.currentText() in JointUsingDistance:
@@ -1130,7 +1221,10 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
     def moveMouse(self, info):
         if len(self.current_selection) >= 2 or (
             len(self.current_selection) == 1
-            and self.current_selection[0]["part"] == self.preselection_dict["part"]
+            and (
+                not self.preselection_dict
+                or self.current_selection[0]["part"] == self.preselection_dict["part"]
+            )
         ):
             self.joint.ViewObject.Proxy.showPreviewJCS(False)
             return

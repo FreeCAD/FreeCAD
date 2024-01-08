@@ -117,7 +117,6 @@ bool ViewProviderAssembly::canDragObject(App::DocumentObject* obj) const
 {
     Base::Console().Warning("ViewProviderAssembly::canDragObject\n");
     if (!obj || obj->getTypeId() == Assembly::JointGroup::getClassTypeId()) {
-        Base::Console().Warning("so should be false...\n");
         return false;
     }
 
@@ -245,6 +244,10 @@ bool ViewProviderAssembly::mouseMove(const SbVec2s& cursorPos, Gui::View3DInvent
         if (enableMovement && getSelectedObjectsWithinAssembly()) {
             moveMode = findMoveMode();
 
+            if (moveMode == MoveMode::None) {
+                return false;
+            }
+
             SbVec3f vec;
             if (moveMode == MoveMode::RotationOnPlane
                 || moveMode == MoveMode::TranslationOnAxisAndRotationOnePlane) {
@@ -346,8 +349,13 @@ bool ViewProviderAssembly::mouseMove(const SbVec2s& cursorPos, Gui::View3DInvent
             }
         }
 
-        auto* assemblyPart = static_cast<AssemblyObject*>(getObject());
-        assemblyPart->solve();
+        ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+            "User parameter:BaseApp/Preferences/Mod/Assembly");
+        bool solveOnMove = hGrp->GetBool("SolveOnMove", true);
+        if (solveOnMove) {
+            auto* assemblyPart = static_cast<AssemblyObject*>(getObject());
+            assemblyPart->solve();
+        }
     }
     return false;
 }
@@ -542,8 +550,11 @@ ViewProviderAssembly::MoveMode ViewProviderAssembly::findMoveMode()
             // actually move A
             App::DocumentObject* upstreamPart =
                 assemblyPart->getUpstreamMovingPart(docsToMove[0].first);
-
             docsToMove.clear();
+            if (!upstreamPart) {
+                return MoveMode::None;
+            }
+
             auto* propPlacement =
                 dynamic_cast<App::PropertyPlacement*>(upstreamPart->getPropertyByName("Placement"));
             if (propPlacement) {
@@ -570,8 +581,7 @@ ViewProviderAssembly::MoveMode ViewProviderAssembly::findMoveMode()
         jcsGlobalPlc = global_plc * jcsPlc;
 
         // Add downstream parts so that they move together
-        auto downstreamParts = assemblyPart->getDownstreamParts(docsToMove[0].first);
-        docsToMove.clear();  // current [0] is added by the recursive getDownstreamParts.
+        auto downstreamParts = assemblyPart->getDownstreamParts(docsToMove[0].first, joint);
         for (auto part : downstreamParts) {
             auto* propPlacement =
                 dynamic_cast<App::PropertyPlacement*>(part->getPropertyByName("Placement"));
@@ -646,6 +656,18 @@ void ViewProviderAssembly::onSelectionChanged(const Gui::SelectionChanges& msg)
         || msg.Type == Gui::SelectionChanges::RmvSelection) {
         canStartDragging = false;
     }
+}
+
+bool ViewProviderAssembly::onDelete(const std::vector<std::string>& subNames)
+{
+    // Delete the joingroup when assembly is deleted
+    for (auto obj : getObject()->getOutList()) {
+        if (obj->getTypeId() == Assembly::JointGroup::getClassTypeId()) {
+            obj->getDocument()->removeObject(obj->getNameInDocument());
+        }
+    }
+
+    return ViewProviderPart::onDelete(subNames);
 }
 
 PyObject* ViewProviderAssembly::getPyObject()

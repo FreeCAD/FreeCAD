@@ -136,7 +136,8 @@ public:
 
     bool isPartGrounded(App::DocumentObject* part);
     bool isPartConnected(App::DocumentObject* part);
-    std::vector<App::DocumentObject*> getDownstreamParts(App::DocumentObject* part, int limit = 0);
+    std::vector<App::DocumentObject*> getDownstreamParts(App::DocumentObject* part,
+                                                         App::DocumentObject* joint);
     std::vector<App::DocumentObject*> getUpstreamParts(App::DocumentObject* part, int limit = 0);
     App::DocumentObject* getUpstreamMovingPart(App::DocumentObject* part);
 
@@ -166,6 +167,8 @@ public:
     // see https://forum.freecad.org/viewtopic.php?p=729577#p729577
 
     // getters to get from properties
+    static void setJointActivated(App::DocumentObject* joint, bool val);
+    static bool getJointActivated(App::DocumentObject* joint);
     static double getJointDistance(App::DocumentObject* joint);
     static JointType getJointType(App::DocumentObject* joint);
     static const char* getElementFromProp(App::DocumentObject* obj, const char* propName);

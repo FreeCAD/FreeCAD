@@ -162,6 +162,7 @@ App::DocumentObject* AssemblyObject::getJointOfPartConnectingToGround(App::Docum
 
 bool AssemblyObject::isJointConnectingPartToGround(App::DocumentObject* joint, const char* propname)
 {
+
     auto* propPart = dynamic_cast<App::PropertyLink*>(joint->getPropertyByName(propname));
     if (!propPart) {
         return false;
@@ -173,14 +174,32 @@ bool AssemblyObject::isJointConnectingPartToGround(App::DocumentObject* joint, c
         return false;
     }
 
-    // now we disconnect this joint temporarily
-    propPart->setValue(nullptr);
+    // to know if a joint is connecting to ground we disable all the other joints
+    std::vector<App::DocumentObject*> jointsOfPart = getJointsOfPart(part);
+    std::vector<bool> activatedStates;
+
+    for (auto jointi : jointsOfPart) {
+        if (jointi->getFullName() == joint->getFullName()) {
+            continue;
+        }
+
+        activatedStates.push_back(getJointActivated(jointi));
+        setJointActivated(jointi, false);
+    }
 
     isConnected = isPartConnected(part);
 
-    propPart->setValue(part);
+    // restore activation states
+    for (auto jointi : jointsOfPart) {
+        if (jointi->getFullName() == joint->getFullName() || activatedStates.empty()) {
+            continue;
+        }
 
-    return !isConnected;
+        setJointActivated(jointi, activatedStates[0]);
+        activatedStates.erase(activatedStates.begin());
+    }
+
+    return isConnected;
 }
 
 std::vector<App::DocumentObject*> AssemblyObject::getJoints(bool updateJCS)
@@ -193,16 +212,20 @@ std::vector<App::DocumentObject*> AssemblyObject::getJoints(bool updateJCS)
     }
 
     Base::PyGILStateLocker lock;
-    for (auto obj : jointGroup->getObjects()) {
-        if (!obj) {
+    for (auto joint : jointGroup->getObjects()) {
+        if (!joint) {
             continue;
         }
 
-        auto proxy = dynamic_cast<App::PropertyPythonObject*>(obj->getPropertyByName("Proxy"));
+        auto* prop = dynamic_cast<App::PropertyBool*>(joint->getPropertyByName("Activated"));
+        if (prop && !prop->getValue()) {
+            continue;
+        }
+
+        auto proxy = dynamic_cast<App::PropertyPythonObject*>(joint->getPropertyByName("Proxy"));
         if (proxy) {
-            Py::Object joint = proxy->getValue();
-            if (joint.hasAttr("setJointConnectors")) {
-                joints.push_back(obj);
+            if (proxy->getValue().hasAttr("setJointConnectors")) {
+                joints.push_back(joint);
             }
         }
     }
@@ -347,16 +370,37 @@ bool AssemblyObject::isPartConnected(App::DocumentObject* obj)
 }
 
 std::vector<App::DocumentObject*> AssemblyObject::getDownstreamParts(App::DocumentObject* part,
-                                                                     int limit)
+                                                                     App::DocumentObject* joint)
 {
-    if (limit > 1000) {  // Inifinite loop protection
+    // First we deactivate the joint
+    bool state = getJointActivated(joint);
+    setJointActivated(joint, false);
+
+    std::vector<App::DocumentObject*> joints = getJoints(false);
+
+    std::set<App::DocumentObject*> connectedParts = {part};
+    traverseAndMarkConnectedParts(part, connectedParts, joints);
+
+    std::vector<App::DocumentObject*> downstreamParts;
+    for (auto parti : connectedParts) {
+        if (!isPartConnected(parti) && (parti != part)) {
+            downstreamParts.push_back(parti);
+        }
+    }
+
+    AssemblyObject::setJointActivated(joint, state);
+    /*if (limit > 1000) {  // Inifinite loop protection
         return {};
     }
     limit++;
+    Base::Console().Warning("limit %d\n", limit);
 
     std::vector<App::DocumentObject*> downstreamParts = {part};
     std::string name;
-    App::DocumentObject* connectingJoint = getJointOfPartConnectingToGround(part, name);
+    App::DocumentObject* connectingJoint =
+        getJointOfPartConnectingToGround(part,
+                                         name);  // ?????????????????????????????? if we remove
+                                                 // connection to ground then it can't work for tom
     std::vector<App::DocumentObject*> jointsOfPart = getJointsOfPart(part);
 
     // remove connectingJoint from jointsOfPart
@@ -365,8 +409,23 @@ std::vector<App::DocumentObject*> AssemblyObject::getDownstreamParts(App::Docume
     for (auto joint : jointsOfPart) {
         App::DocumentObject* part1 = getLinkObjFromProp(joint, "Part1");
         App::DocumentObject* part2 = getLinkObjFromProp(joint, "Part2");
-        App::DocumentObject* downstreamPart =
-            part->getFullName() == part1->getFullName() ? part2 : part1;
+        bool firstIsDown = part->getFullName() == part2->getFullName();
+        App::DocumentObject* downstreamPart = firstIsDown ? part1 : part2;
+
+        Base::Console().Warning("looping\n");
+        // it is possible that the part is connected to ground by this joint.
+        // In which case we should not select those parts. To test we disconnect :
+        auto* propObj = dynamic_cast<App::PropertyLink*>(joint->getPropertyByName("Part1"));
+        if (!propObj) {
+            continue;
+        }
+        propObj->setValue(nullptr);
+        bool isConnected = isPartConnected(downstreamPart);
+        propObj->setValue(part1);
+        if (isConnected) {
+            Base::Console().Warning("continue\n");
+            continue;
+        }
 
         std::vector<App::DocumentObject*> subDownstreamParts =
             getDownstreamParts(downstreamPart, limit);
@@ -376,7 +435,7 @@ std::vector<App::DocumentObject*> AssemblyObject::getDownstreamParts(App::Docume
                 downstreamParts.push_back(downPart);
             }
         }
-    }
+    }*/
     return downstreamParts;
 }
 
@@ -1322,6 +1381,22 @@ void printPlacement(Base::Placement plc, const char* name)
         angle);
 }
 
+void AssemblyObject::setJointActivated(App::DocumentObject* joint, bool val)
+{
+    auto* propActivated = dynamic_cast<App::PropertyBool*>(joint->getPropertyByName("Activated"));
+    if (propActivated) {
+        propActivated->setValue(val);
+    }
+}
+bool AssemblyObject::getJointActivated(App::DocumentObject* joint)
+{
+    auto* propActivated = dynamic_cast<App::PropertyBool*>(joint->getPropertyByName("Activated"));
+    if (propActivated) {
+        return propActivated->getValue();
+    }
+    return false;
+}
+
 Base::Placement AssemblyObject::getPlacementFromProp(App::DocumentObject* obj, const char* propName)
 {
     Base::Placement plc = Base::Placement();
@@ -1494,7 +1569,6 @@ App::DocumentObject* AssemblyObject::getLinkObjFromProp(App::DocumentObject* joi
 {
     auto* propObj = dynamic_cast<App::PropertyLink*>(joint->getPropertyByName(propLinkName));
     if (!propObj) {
-        Base::Console().Warning("getLinkObjFromProp nullptr\n");
         return nullptr;
     }
     return propObj->getValue();

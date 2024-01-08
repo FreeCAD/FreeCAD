@@ -1,5 +1,5 @@
 # SPDX-License-Identifier: LGPL-2.1-or-later
-# /****************************************************************************
+# /**************************************************************************
 #                                                                           *
 #    Copyright (c) 2023 Ondsel <development@ondsel.com>                     *
 #                                                                           *
@@ -19,7 +19,7 @@
 #    License along with FreeCAD. If not, see                                *
 #    <https://www.gnu.org/licenses/>.                                       *
 #                                                                           *
-# ***************************************************************************/
+# **************************************************************************/
 
 import os
 import FreeCAD as App
@@ -254,15 +254,14 @@ class CommandToggleGrounded:
             # If you select 2 solids (bodies for example) within an assembly.
             # There'll be a single sel but 2 SubElementNames.
             for sub in sel.SubElementNames:
-
-                full_element_name = UtilsAssembly.getFullElementName(sel.ObjectName, sub)
-                obj = UtilsAssembly.getObject(full_element_name)
-                part_containing_obj = UtilsAssembly.getContainingPart(full_element_name, obj)
-
                 # Only objects within the assembly.
                 objs_names, element_name = UtilsAssembly.getObjsNamesAndElement(sel.ObjectName, sub)
                 if assembly.Name not in objs_names:
                     continue
+
+                full_element_name = UtilsAssembly.getFullElementName(sel.ObjectName, sub)
+                obj = UtilsAssembly.getObject(full_element_name)
+                part_containing_obj = UtilsAssembly.getContainingPart(full_element_name, obj)
 
                 # Check if part is grounded and if so delete the joint.
                 for joint in joint_group.Group:
