@@ -566,7 +566,11 @@ class ViewProviderJoint:
         self.switch_JCS2 = self.JCS_sep(self.transform2)
         self.switch_JCS_preview = self.JCS_sep(self.transform3)
 
-        self.display_mode = coin.SoGroup()
+        self.pick = coin.SoPickStyle()
+        self.pick.style.setValue(coin.SoPickStyle.UNPICKABLE)
+
+        self.display_mode = coin.SoType.fromName("SoFCSelection").createInstance()
+        self.display_mode.addChild(self.pick)
         self.display_mode.addChild(self.switch_JCS1)
         self.display_mode.addChild(self.switch_JCS2)
         self.display_mode.addChild(self.switch_JCS_preview)
@@ -577,12 +581,8 @@ class ViewProviderJoint:
         self.axisScale.scaleFactor.setValue(scaleF, scaleF, scaleF)
 
     def JCS_sep(self, soTransform):
-        pick = coin.SoPickStyle()
-        pick.style.setValue(coin.SoPickStyle.UNPICKABLE)
-
         JCS = coin.SoAnnotation()
         JCS.addChild(soTransform)
-        JCS.addChild(pick)
 
         base_plane_sep = self.plane_sep(0.4, 15)
         X_axis_sep = self.line_sep([0.5, 0, 0], [1, 0, 0], self.x_axis_so_color)
@@ -632,11 +632,11 @@ class ViewProviderJoint:
         draw_style.style = coin.SoDrawStyle.FILLED
 
         material = coin.SoMaterial()
-        material.diffuseColor.setValue([1, 1, 1])
-        material.ambientColor.setValue([1, 1, 1])
-        material.specularColor.setValue([1, 1, 1])
-        material.emissiveColor.setValue([1, 1, 1])
-        material.transparency.setValue(0.7)
+        material.diffuseColor.setValue([0.5, 0.5, 0.5])
+        material.ambientColor.setValue([0.5, 0.5, 0.5])
+        material.specularColor.setValue([0.5, 0.5, 0.5])
+        material.emissiveColor.setValue([0.5, 0.5, 0.5])
+        material.transparency.setValue(0.3)
 
         face_sep = coin.SoAnnotation()
         face_sep.addChild(self.axisScale)
@@ -702,6 +702,13 @@ class ViewProviderJoint:
             self.set_JCS_placement(self.transform3, placement, objName, part)
         else:
             self.switch_JCS_preview.whichChild = coin.SO_SWITCH_NONE
+
+    def setPickableState(self, state: bool):
+        """Set JCS selectable or unselectable in 3D view"""
+        if not state:
+            self.pick.style.setValue(coin.SoPickStyle.UNPICKABLE)
+        else:
+            self.pick.style.setValue(coin.SoPickStyle.SHAPE_ON_TOP)
 
     def getDisplayModes(self, obj):
         """Return a list of display modes."""
@@ -941,6 +948,8 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         self.toggleRotationVisibility()
         self.toggleReverseVisibility()
 
+        self.setJointsPickableState(False)
+
         Gui.Selection.addSelectionGate(
             MakeJointSelGate(self, self.assembly), Gui.Selection.ResolveMode.NoResolve
         )
@@ -983,6 +992,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         Gui.Selection.clearSelection()
         self.view.removeEventCallback("SoLocation2Event", self.callbackMove)
         self.view.removeEventCallback("SoKeyboardEvent", self.callbackKey)
+        self.setJointsPickableState(True)
         if Gui.Control.activeDialog():
             Gui.Control.closeDialog()
 
@@ -1245,3 +1255,14 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
     def clearSelection(self, doc_name):
         self.current_selection.clear()
         self.updateJoint()
+
+    def setJointsPickableState(self, state: bool):
+        """Make all joints in assembly selectable (True) or unselectable (False) in 3D view"""
+        try:
+            jointGroup = UtilsAssembly.getJointGroup(self.assembly)
+            for joint in jointGroup.Group:
+                if hasattr(joint, "Part1"):
+                    joint.ViewObject.Proxy.setPickableState(state)
+        except Exception as e:
+            s = "" if state else "un"
+            App.Console.PrintWarning(f"Failed to set joints {s}pickable: {e}")
