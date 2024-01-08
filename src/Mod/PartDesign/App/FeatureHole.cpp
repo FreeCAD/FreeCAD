@@ -1991,27 +1991,43 @@ TopoDS_Compound Hole::findHoles(const TopoDS_Shape& profileshape,
     builder.MakeCompound(holes);
     TopTools_IndexedMapOfShape edgeMap;
     TopExp::MapShapes(profileshape, TopAbs_EDGE, edgeMap);
+    int holePointsListSize = 0;
+    std::vector<gp_Pnt> holePointsList;
     for (int i = 1; i <= edgeMap.Extent(); i++) {
+        bool dupCenter = false;
         Standard_Real c_start;
         Standard_Real c_end;
         TopoDS_Edge edge = TopoDS::Edge(edgeMap(i));
         Handle(Geom_Curve) c = BRep_Tool::Curve(edge, c_start, c_end);
 
         // Circle?
-        if (c->DynamicType() != STANDARD_TYPE(Geom_Circle))
+        if (c->DynamicType() != STANDARD_TYPE(Geom_Circle)) {
             continue;
+        }
 
         Handle(Geom_Circle) circle = Handle(Geom_Circle)::DownCast(c);
         gp_Pnt loc = circle->Axis().Location();
 
+        for (auto holePoint : holePointsList) {
+            if (holePoint.IsEqual(loc, Precision::Confusion())) {
+                Base::Console().Log(
+                    "PartDesign_Hole - There is a duplicate circle/curve center at %.2f : %.2f "
+                    ": %.2f therefore not passing parameter\n",
+                    loc.X(),
+                    loc.Y(),
+                    loc.Z());
+                dupCenter = true;
+            }
+        }
 
-        gp_Trsf localSketchTransformation;
-        localSketchTransformation.SetTranslation(gp_Pnt(0, 0, 0),
-            gp_Pnt(loc.X(), loc.Y(), loc.Z()));
-
-        TopoDS_Shape copy = protohole;
-        copy.Move(localSketchTransformation);
-        builder.Add(holes, copy);
+        if (!dupCenter) {
+            holePointsList.push_back(loc);
+            gp_Trsf localSketchTransformation;
+            localSketchTransformation.SetTranslation(gp_Pnt(0, 0, 0), loc);
+            TopoDS_Shape copy = protohole;
+            copy.Move(localSketchTransformation);
+            builder.Add(holes, copy);
+        }
     }
 
     return holes;
