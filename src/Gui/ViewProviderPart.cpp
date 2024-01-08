@@ -69,19 +69,19 @@ void ViewProviderPart::onChanged(const App::Property* prop) {
 void ViewProviderPart::setupContextMenu(QMenu* menu, QObject* receiver, const char* member)
 {
     auto func = new Gui::ActionFunction(menu);
-    QAction* act = menu->addAction(QObject::tr("Toggle active part"));
+
+    QAction* act = menu->addAction(QObject::tr("Active object"));
+    act->setCheckable(true);
+    act->setChecked(isActivePart());
     func->trigger(act, [this](){
-        this->doubleClicked();
+    this->toggleActivePart();
     });
 
     ViewProviderDragger::setupContextMenu(menu, receiver, member);
 }
 
-bool ViewProviderPart::doubleClicked()
+bool ViewProviderPart::isActivePart()
 {
-    //make the part the active one
-
-    //first, check if the part is already active.
     App::DocumentObject* activePart = nullptr;
     auto activeDoc = Gui::Application::Instance->activeDocument();
     if(!activeDoc)
@@ -93,6 +93,16 @@ bool ViewProviderPart::doubleClicked()
     activePart = activeView->getActiveObject<App::DocumentObject*> (PARTKEY);
 
     if (activePart == this->getObject()){
+        return true;
+    } else {
+        return false;
+    }
+}
+
+void ViewProviderPart::toggleActivePart()
+{
+    //make the part the active one
+    if (isActivePart()){
         //active part double-clicked. Deactivate.
         Gui::Command::doCommand(Gui::Command::Gui,
                 "Gui.ActiveDocument.ActiveView.setActiveObject('%s', None)",
@@ -105,7 +115,11 @@ bool ViewProviderPart::doubleClicked()
                 this->getObject()->getDocument()->getName(),
                 this->getObject()->getNameInDocument());
     }
+}
 
+bool ViewProviderPart::doubleClicked()
+{
+    toggleActivePart();
     return true;
 }
 
