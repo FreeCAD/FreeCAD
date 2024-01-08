@@ -304,10 +304,10 @@ class GitManager:
             else:
                 if email not in result_dict[author]["email"]:
                     # Same author name, new email address -- treat it as the same
-   
+
 
 def _find_git(self):
-    
+
 
     prefs = fci.ParamGet("User parameter:BaseApp/Preferences/Addons")
     git_exe = prefs.GetString("GitExecutable", "Not set")
@@ -354,7 +354,7 @@ def _is_xcode_command_line_tools_installed(self):
                 result_dict[author]["count"] += 1
         return result_dict
 
-   
+
 
     def _synchronous_call_git(self, args: List[str]) -> str:
         """Calls git and returns its output."""
