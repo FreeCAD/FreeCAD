@@ -87,14 +87,26 @@ public:
       */
     TopoDS_Shape rejected;
 
+    typedef std::map<App::DocumentObject*, std::list<gp_Trsf>> rejectedLegacyMap;
+    const rejectedLegacyMap getRejectedLegacyTransformations(void)
+    {
+        return rejectedLegacy;
+    }
+
+
 protected:
-    void Restore(Base::XMLReader &reader) override;
-    void handleChangedPropertyType(Base::XMLReader &reader, const char * TypeName, App::Property * prop) override;
+    void Restore(Base::XMLReader& reader) override;
+    void handleChangedPropertyType(Base::XMLReader& reader,
+                                   const char* TypeName,
+                                   App::Property* prop) override;
     virtual void positionBySupport();
     TopoDS_Shape refineShapeIfActive(const TopoDS_Shape&) const;
-    void divideTools(const std::vector<TopoDS_Shape> &toolsIn, std::vector<TopoDS_Shape> &individualsOut,
-                     TopoDS_Compound &compoundOut) const;
+    void divideTools(const std::vector<TopoDS_Shape>& toolsIn,
+                     std::vector<TopoDS_Shape>& individualsOut,
+                     TopoDS_Compound& compoundOut) const;
     static TopoDS_Shape getRemainingSolids(const TopoDS_Shape&);
+
+    rejectedLegacyMap rejectedLegacy;
 
 private:
 };
