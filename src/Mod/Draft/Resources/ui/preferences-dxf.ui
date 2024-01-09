@@ -478,78 +478,6 @@ as closed wires with correct width</string>
         </item>
        </layout>
       </item>
-      <item>
-       <layout class="QHBoxLayout" name="horizontalLayout_2">
-        <item>
-         <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_14">
-          <property name="toolTip">
-           <string>Ellipse export is poorly supported. Use this to export them as polylines instead.</string>
-          </property>
-          <property name="text">
-           <string>Treat ellipses and splines as polylines</string>
-          </property>
-          <property name="checked">
-           <bool>true</bool>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>DiscretizeEllipses</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <spacer name="horizontalSpacer">
-          <property name="orientation">
-           <enum>Qt::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
-        <item>
-         <widget class="QLabel" name="label_7">
-          <property name="text">
-           <string>Max Spline Segment:</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-         </widget>
-        </item>
-        <item>
-         <widget class="Gui::PrefDoubleSpinBox" name="doubleSpinBox">
-          <property name="toolTip">
-           <string>Maximum length of each of the polyline segments.
-If it is set to '0' the whole spline is treated as a straight segment.</string>
-          </property>
-          <property name="alignment">
-           <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
-          </property>
-          <property name="suffix">
-           <string>mm</string>
-          </property>
-          <property name="maximum">
-           <double>9999.989999999999782</double>
-          </property>
-          <property name="value">
-           <double>5.000000000000000</double>
-          </property>
-          <property name="prefEntry" stdset="0">
-           <cstring>maxsegmentlength</cstring>
-          </property>
-          <property name="prefPath" stdset="0">
-           <cstring>Mod/Draft</cstring>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </item>
      </layout>
     </widget>
    </item>
@@ -559,7 +487,79 @@ If it is set to '0' the whole spline is treated as a straight segment.</string>
       <string>Export options</string>
      </property>
      <layout class="QVBoxLayout" name="verticalLayout">
-      <item>
+	   <item>
+		 <layout class="QHBoxLayout" name="horizontalLayout_2">
+		   <item>
+			 <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox_14">
+			   <property name="toolTip">
+				 <string>Ellipse export is poorly supported. Use this to export them as polylines instead.</string>
+			   </property>
+			   <property name="text">
+				 <string>Treat ellipses and splines as polylines</string>
+			   </property>
+			   <property name="checked">
+				 <bool>true</bool>
+			   </property>
+			   <property name="prefEntry" stdset="0">
+				 <cstring>DiscretizeEllipses</cstring>
+			   </property>
+			   <property name="prefPath" stdset="0">
+				 <cstring>Mod/Draft</cstring>
+			   </property>
+			 </widget>
+		   </item>
+		   <item>
+			 <spacer name="horizontalSpacer">
+			   <property name="orientation">
+				 <enum>Qt::Horizontal</enum>
+			   </property>
+			   <property name="sizeHint" stdset="0">
+				 <size>
+				   <width>40</width>
+				   <height>20</height>
+				 </size>
+			   </property>
+			 </spacer>
+		   </item>
+		   <item>
+			 <widget class="QLabel" name="label_7">
+			   <property name="text">
+				 <string>Max Spline Segment:</string>
+			   </property>
+			   <property name="alignment">
+				 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+			   </property>
+			 </widget>
+		   </item>
+		   <item>
+			 <widget class="Gui::PrefDoubleSpinBox" name="doubleSpinBox">
+			   <property name="toolTip">
+				 <string>Maximum length of each of the polyline segments.
+If it is set to '0' the whole spline is treated as a straight segment.</string>
+			   </property>
+			   <property name="alignment">
+				 <set>Qt::AlignRight|Qt::AlignTrailing|Qt::AlignVCenter</set>
+			   </property>
+			   <property name="suffix">
+				 <string>mm</string>
+			   </property>
+			   <property name="maximum">
+				 <double>9999.989999999999782</double>
+			   </property>
+			   <property name="value">
+				 <double>5.000000000000000</double>
+			   </property>
+			   <property name="prefEntry" stdset="0">
+				 <cstring>maxsegmentlength</cstring>
+			   </property>
+			   <property name="prefPath" stdset="0">
+				 <cstring>Mod/Draft</cstring>
+			   </property>
+			 </widget>
+		   </item>
+		 </layout>
+	   </item>
+	   <item>
        <layout class="QHBoxLayout" name="horizontalLayout_4">
         <item>
          <widget class="Gui::PrefCheckBox" name="gui::prefcheckbox">
