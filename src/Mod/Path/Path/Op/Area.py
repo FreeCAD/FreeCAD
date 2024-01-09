@@ -246,20 +246,13 @@ class ObjectOp(PathOp.ObjectOp):
                 z = bbox.ZMin
                 sectionClearedAreas = []
                 for op in self.job.Operations.Group:
-                    print(op.Name)
                     if self in [x.Proxy for x in [op] + op.OutListRecursive if hasattr(x, "Proxy")]:
-                        print("found self")
                         break
                     if hasattr(op, "Active") and op.Active and op.Path:
                         tool = op.Proxy.tool if hasattr(op.Proxy, "tool") else op.ToolController.Proxy.getTool(op.ToolController)
                         diameter = tool.Diameter.getValueAs("mm")
-                        dz = 0 if not hasattr(tool, "TipAngle") else -PathUtils.drillTipLength(tool)  # for drills, dz moves to the full width part of the tool
+                        dz = 0 if not hasattr(tool, "TipAngle") else -PathUtils.drillTipLength(tool)  # for drills, dz translates to the full width part of the tool
                         sectionClearedAreas.append(section.getClearedArea(op.Path, diameter, z+dz+0.001, bbox))
-                        # debugZ = -1.5
-                        # if debugZ -.1 < z and z < debugZ + .1:
-                        #     debugObj = obj.Document.addObject("Part::Feature", "Debug_{}_{}".format(debugZ, op.Name))
-                        #     debugObj.Label = "Debug_{}_{}".format(debugZ, op.Label)
-                        #     debugObj.Shape = sectionClearedAreas[-1].getShape()
                 restSection = section.getRestArea(sectionClearedAreas, self.tool.Diameter.getValueAs("mm"))
                 if (restSection is not None):
                     restSections.append(restSection)

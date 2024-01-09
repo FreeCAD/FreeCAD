@@ -252,14 +252,14 @@ static void MakeObround(const Point &pt0, const CVertex &vt1, double radius)
 static void OffsetSpansWithObrounds(const CArea& area, TPolyPolygon &pp_new, double radius)
 {
 	Clipper c;
-    c.StrictlySimple(CArea::m_clipper_simple);
+	c.StrictlySimple(CArea::m_clipper_simple);
 	pp_new.clear();
 
 	for(std::list<CCurve>::const_iterator It = area.m_curves.begin(); It != area.m_curves.end(); It++)
 	{
-                c.Clear();
-                c.AddPaths(pp_new, ptSubject, true);
-                pp_new.clear();
+		c.Clear();
+		c.AddPaths(pp_new, ptSubject, true);
+		pp_new.clear();
 		pts_for_AddVertex.clear();
 
 		const CCurve& curve = *It;
@@ -282,7 +282,7 @@ static void OffsetSpansWithObrounds(const CArea& area, TPolyPolygon &pp_new, dou
 			}
 			prev_vertex = &vertex;
 		}
-                c.Execute(ctUnion, pp_new, pftNonZero, pftNonZero);
+		c.Execute(ctUnion, pp_new, pftNonZero, pftNonZero);
 	}
 
 

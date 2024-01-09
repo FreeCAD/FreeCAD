@@ -508,7 +508,6 @@ private:
 
     void point(const Base::Vector3d &p)
     {
-        printf("Point? (%.0f, %.0f, %.0f) ", p.x, p.y, p.z);
         if (p.z <= maxZ) {
             if (bbox.MinX <= p.x && p.x <= bbox.MaxX && bbox.MinY <= p.y && p.y <= bbox.MaxY) {
                 CCurve curve;
@@ -516,10 +515,8 @@ private:
                 curve.append(CVertex{1, {p.x - radius, p.y}, {p.x, p.y}});
                 curve.append(CVertex{1, {p.x + radius, p.y}, {p.x, p.y}});
                 holes.append(curve);
-                printf("accepted");
             }
         }
-        printf("\n");
     }
 
     void line(const Base::Vector3d &last, const Base::Vector3d &next)
@@ -554,42 +551,20 @@ public:
     {
         (void)id;
         (void)pts;
-        // printf("g0 [ ");
-        //processPt(last);
-        // printf("] ");
-        //processPts(pts);
-        // printf("_ ");
-        //processPt(next);
-
         line(last, next);
-        // printf("\n");
     }
 
     void g1(int id, const Base::Vector3d &last, const Base::Vector3d &next, const std::deque<Base::Vector3d> &pts) override
     {
         (void)id;
         (void)pts;
-        // printf("g1 [ ");
-        //processPt(last);
-        // printf("] ");
-        //processPts(pts);
-        // printf("_ ");
-        //processPt(next);
-
         line(last, next);
-        // printf("\n");
     }
 
     void g23(int id, const Base::Vector3d &last, const Base::Vector3d &next, const std::deque<Base::Vector3d> &pts, const Base::Vector3d &center) override
     {
         (void)id;
         (void)center;
-        // printf("g23 [ ");
-        // processPt(last);
-        // printf("] ");
-        // processPts(pts);
-        // printf("_ ");
-        // processPt(next);
 
         // Compute cw vs ccw
         const Base::Vector3d vdirect = next - last;
@@ -601,13 +576,6 @@ public:
         curve.append(CVertex{{last.x, last.y}});
         curve.append(CVertex{ccw ? 1 : -1, {next.x, next.y}, {center.x, center.y}});
         pathSegments.append(curve);
-        // Base::Vector3d prev = last;
-        // for (Base::Vector3d p : pts) {
-        //     line(prev, p);
-        //     prev = p;
-        // }
-        // line(prev, next);
-        // printf("\n");
     }
 
     void g8x(int id, const Base::Vector3d &last, const Base::Vector3d &next, const std::deque<Base::Vector3d> &pts,
@@ -633,17 +601,6 @@ public:
         (void)last;
         (void)next;
     }
-
-private:
-    void processPts(const std::deque<Base::Vector3d> &pts) {
-        for (std::deque<Base::Vector3d>::const_iterator it=pts.begin(); pts.end() != it; ++it) {
-            processPt(*it);
-        }
-    }
-
-    void processPt(const Base::Vector3d &pt) {
-        printf("(%7.3f, %7.3f, %7.3f) ", pt.x, pt.y, pt.z);
-    }
 };
 
 std::shared_ptr<Area> Area::getClearedArea(const Toolpath *path, double diameter, double zmax, Base::BoundBox3d bbox) {
@@ -665,30 +622,13 @@ std::shared_ptr<Area> Area::getClearedArea(const Toolpath *path, double diameter
     // those arcs will be converted back to segments again for clipper differencing in getRestArea anyway
     CAreaConfig conf(params, /*no_fit_arcs*/ true);
 
-    Base::Vector3d pos = Base::Vector3d(0, 0, zmax + 1);
-    printf("getClearedArea(path, diameter=%g, zmax=%g:\n", diameter, zmax);
-    // printf("Gcode:\n");
-    for (auto c : path->getCommands()) {
-        // printf("\t%s ", c->Name.c_str());
-        for (std::map<std::string, double>::iterator i = c->Parameters.begin(); i != c->Parameters.end(); ++i) {
-            // printf("%s%g ", i->first.c_str(), i->second);
-        }
-        // printf("\n");
-    }
-
-    printf("\n");
-    printf("GCode walker:\n");
     ClearedAreaSegmentVisitor visitor(zmax, diameter/2 + buffer, bbox);
     PathSegmentWalker walker(*path);
     walker.walk(visitor, Base::Vector3d(0, 0, zmax + 1));
-    printf("\n");
-    printf("\n");
-
 
     std::shared_ptr<Area> clearedArea = make_shared<Area>(&params);
     clearedArea->myTrsf = {};
     const CArea ca = visitor.getClearedArea();
-    printf("Cleared area segments: %ld\n", ca.m_curves.size());
     if (ca.m_curves.size() > 0) {
         TopoDS_Shape clearedAreaShape = Area::toShape(ca, false);
         clearedArea->add(clearedAreaShape, OperationCompound);
@@ -721,8 +661,6 @@ std::shared_ptr<Area> Area::getRestArea(std::vector<std::shared_ptr<Area>> clear
     // transform all clearedAreas into our workplane
     Area clearedAreasInPlane(&params);
     clearedAreasInPlane.myArea.reset(new CArea());
-    printf("getRestArea\n");
-    printf("\n");
     for (std::shared_ptr<Area> clearedArea : clearedAreas) {
       gp_Trsf trsf = clearedArea->myTrsf;
       trsf.Invert();
@@ -733,24 +671,20 @@ std::shared_ptr<Area> Area::getRestArea(std::vector<std::shared_ptr<Area>> clear
     }
 
     // clearable = offset(offset(A, -dTool/2), dTool/2)
-    printf("Compute clearable\n");
     CArea clearable(*myArea);
     clearable.OffsetWithClipper(-diameter/2, JoinType, EndType, params.MiterLimit, roundPrecision);
     clearable.OffsetWithClipper(diameter/2, JoinType, EndType, params.MiterLimit, roundPrecision);
 
     // remaining = clearable - prevCleared
-    printf("Compute remaining\n");
     CArea remaining(clearable);
     remaining.Clip(toClipperOp(Area::OperationDifference), &*(clearedAreasInPlane.myArea), SubjectFill, ClipFill);
 
     // rest = intersect(clearable, offset(remaining, dTool))
     // add buffer to dTool to compensate for oversizing in getClearedArea
-    printf("Compute rest\n");
     CArea restCArea(remaining);
     restCArea.OffsetWithClipper(diameter + buffer, JoinType, EndType, params.MiterLimit, roundPrecision);
     restCArea.Clip(toClipperOp(Area::OperationIntersection), &clearable, SubjectFill, ClipFill);
 
-    printf("Convert CArea to Area (num curves: %d)\n", (int)restCArea.m_curves.size());
     if(restCArea.m_curves.size() == 0) {
         return {};
     }
@@ -760,7 +694,6 @@ std::shared_ptr<Area> Area::getRestArea(std::vector<std::shared_ptr<Area>> clear
     TopoDS_Shape restShape = Area::toShape(restCArea, false, &trsf);
     restArea->add(restShape, OperationCompound);
 
-    printf("return\n");
     return restArea;
 }
 

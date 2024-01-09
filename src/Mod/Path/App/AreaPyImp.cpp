@@ -152,7 +152,7 @@ static const PyMethodDef areaOverrides[] = {
     {
         "getClearedArea",nullptr,0,
         "getClearedArea(path, diameter, zmax, bbox):\n"
-        "Gets the area cleared when a tool of the specified diameter follows the gcode represented in the path, ignoring cleared space above zmax and path segments that don't affect space within bbox.\n",
+        "Gets the area cleared when a tool of the specified diameter follows the gcode represented in the path, ignoring cleared space above zmax and path segments that don't affect space within the x/y space of bbox.\n",
     },
     {
         "getRestArea",nullptr,0,
