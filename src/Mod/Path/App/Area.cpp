@@ -501,9 +501,26 @@ class ClearedAreaSegmentVisitor : public PathSegmentVisitor
 {
 private:
     CArea pathSegments;
+    CArea holes;
     double maxZ;
     double radius;
     Base::BoundBox3d bbox;
+
+    void point(const Base::Vector3d &p)
+    {
+        printf("Point? (%.0f, %.0f, %.0f) ", p.x, p.y, p.z);
+        if (p.z <= maxZ) {
+            if (bbox.MinX <= p.x && p.x <= bbox.MaxX && bbox.MinY <= p.y && p.y <= bbox.MaxY) {
+                CCurve curve;
+                curve.append(CVertex{{p.x + radius, p.y}});
+                curve.append(CVertex{1, {p.x - radius, p.y}, {p.x, p.y}});
+                curve.append(CVertex{1, {p.x + radius, p.y}, {p.x, p.y}});
+                holes.append(curve);
+                printf("accepted");
+            }
+        }
+        printf("\n");
+    }
 
     void line(const Base::Vector3d &last, const Base::Vector3d &next)
     {
@@ -529,6 +546,7 @@ public:
     {
         CArea result{pathSegments};
         result.Thicken(radius);
+        result.Union(holes);
         return result;
     }
 
@@ -593,19 +611,20 @@ public:
     }
 
     void g8x(int id, const Base::Vector3d &last, const Base::Vector3d &next, const std::deque<Base::Vector3d> &pts,
-                     const std::deque<Base::Vector3d> &p, const std::deque<Base::Vector3d> &q) override
+                     const std::deque<Base::Vector3d> &plist, const std::deque<Base::Vector3d> &qlist) override
     {
+        // (peck) drilling
         (void)id;
-        (void)q; // always within the bounds of p
-        printf("g8x UNHANDLED\n");
-        processPt(last);
-        processPts(pts);
-        processPts(p);
-        processPt(next);
-        (void)last;
-        (void)pts;
-        (void)p;
-        (void)next;
+        (void)qlist; // pecks are always within the bounds of plist
+
+        point(last);
+        for (const auto p : pts) {
+            point(p);
+        }
+        for (const auto p : plist) {
+            point(p);
+        }
+        point(next);
     }
     void g38(int id, const Base::Vector3d &last, const Base::Vector3d &next) override
     {
@@ -638,6 +657,8 @@ std::shared_ptr<Area> Area::getClearedArea(const Toolpath *path, double diameter
     // Oversize cleared areas by buffer to smooth out imprecision in arc/segment conversion. getRestArea() will compensate for this
     AreaParams params = myParams;
     params.Accuracy = myParams.Accuracy * .7/4;  // 2.3 already encoded in gcode; 4 * .7/4 = 3 total
+    params.SubjectFill = ClipperLib::pftNonZero;
+    params.ClipFill = ClipperLib::pftNonZero;
     const double buffer = myParams.Accuracy * 3;
 
     // Do not fit arcs after these offsets; it introduces unnecessary approximation error, and all off
@@ -667,6 +688,7 @@ std::shared_ptr<Area> Area::getClearedArea(const Toolpath *path, double diameter
     std::shared_ptr<Area> clearedArea = make_shared<Area>(&params);
     clearedArea->myTrsf = {};
     const CArea ca = visitor.getClearedArea();
+    printf("Cleared area segments: %ld\n", ca.m_curves.size());
     if (ca.m_curves.size() > 0) {
         TopoDS_Shape clearedAreaShape = Area::toShape(ca, false);
         clearedArea->add(clearedAreaShape, OperationCompound);

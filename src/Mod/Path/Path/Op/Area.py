@@ -253,7 +253,8 @@ class ObjectOp(PathOp.ObjectOp):
                     if hasattr(op, "Active") and op.Active and op.Path:
                         tool = op.Proxy.tool if hasattr(op.Proxy, "tool") else op.ToolController.Proxy.getTool(op.ToolController)
                         diameter = tool.Diameter.getValueAs("mm")
-                        sectionClearedAreas.append(section.getClearedArea(op.Path, diameter, z+0.001, bbox))
+                        dz = 0 if not hasattr(tool, "TipAngle") else -PathUtils.drillTipLength(tool)  # for drills, dz moves to the full width part of the tool
+                        sectionClearedAreas.append(section.getClearedArea(op.Path, diameter, z+dz+0.001, bbox))
                         # debugZ = -1.5
                         # if debugZ -.1 < z and z < debugZ + .1:
                         #     debugObj = obj.Document.addObject("Part::Feature", "Debug_{}_{}".format(debugZ, op.Name))
