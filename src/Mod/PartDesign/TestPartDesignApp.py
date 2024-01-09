@@ -43,6 +43,7 @@ from PartDesignTests.TestMirrored import TestMirrored
 from PartDesignTests.TestLinearPattern import TestLinearPattern
 from PartDesignTests.TestPolarPattern import TestPolarPattern
 from PartDesignTests.TestMultiTransform import TestMultiTransform
+from PartDesignTests.TestMultiTransformLegacy import TestMultiTransformLegacy
 from PartDesignTests.TestBoolean import TestBoolean
 
 # dressup features

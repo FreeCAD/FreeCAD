@@ -9,6 +9,7 @@ from . import TestLinearPattern
 from . import TestLoft
 from . import TestMirrored
 from . import TestMultiTransform
+from . import TestMultiTransformLegacy
 from . import TestPad
 from . import TestPipe
 from . import TestPocket
