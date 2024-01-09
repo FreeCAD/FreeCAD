@@ -25,6 +25,8 @@ import ArchComponent
 import Draft
 import DraftVecUtils
 from FreeCAD import Vector
+from draftutils import params
+
 if FreeCAD.GuiUp:
     import FreeCADGui
     from PySide import QtGui,QtCore
@@ -62,33 +64,29 @@ def getStringList(objects):
 def getDefaultColor(objectType):
     '''getDefaultColor(string): returns a color value for the given object
     type (Wall, Structure, Window, WindowGlass)'''
-    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
     transparency = 0.0
     if objectType == "Wall":
-        c = p.GetUnsigned("WallColor",4294967295)
+        c = params.get_param_arch("WallColor")
     elif objectType == "Structure":
-        c = p.GetUnsigned("StructureColor",2847259391)
+        c = params.get_param_arch("StructureColor")
     elif objectType == "WindowGlass":
-        c = p.GetUnsigned("WindowGlassColor",1772731135)
-        transparency = p.GetInt("WindowTransparency",85)/100.0
+        c = params.get_param_arch("WindowGlassColor")
+        transparency = params.get_param_arch("WindowTransparency") / 100.0
     elif objectType == "Rebar":
-        c = p.GetUnsigned("RebarColor",3111475967)
+        c = params.get_param_arch("RebarColor")
     elif objectType == "Panel":
-        c = p.GetUnsigned("PanelColor",3416289279)
+        c = params.get_param_arch("PanelColor")
     elif objectType == "Space":
-        c = p.GetUnsigned("defaultSpaceColor",4278190080)
+        c = params.get_param_arch("defaultSpaceColor")
     elif objectType == "Helpers":
-        c = p.GetUnsigned("ColorHelpers",674321151)
+        c = params.get_param_arch("ColorHelpers")
     elif objectType == "Construction":
-        c = Draft.getParam("constructioncolor",746455039)
+        c = params.get_param("constructioncolor")
         transparency = 0.80
     else:
-        c = p.GetUnsigned("WindowsColor",810781695)
-    r = float((c>>24)&0xFF)/255.0
-    g = float((c>>16)&0xFF)/255.0
-    b = float((c>>8)&0xFF)/255.0
-    result = (r,g,b,transparency)
-    return result
+        c = params.get_param_arch("WindowColor")
+    r, g, b, _ = Draft.get_rgba_tuple(c)
+    return (r, g, b, transparency)
 
 def addComponents(objectsList,host):
     '''addComponents(objectsList,hostObject): adds the given object or the objects
@@ -251,7 +249,7 @@ def setAsSubcomponent(obj):
     '''Sets the given object properly to become a subcomponent (addition, subtraction)
     of an Arch component'''
     Draft.ungroup(obj)
-    if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("applyConstructionStyle",True):
+    if params.get_param_arch("applyConstructionStyle"):
         if FreeCAD.GuiUp:
             color = getDefaultColor("Construction")
             if hasattr(obj.ViewObject,"LineColor"):
@@ -662,10 +660,7 @@ def download(url,force=False):
         from urllib2 import urlopen
     import os
     name = url.split('/')[-1]
-    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Macro")
-    macropath = p.GetString("MacroPath","")
-    if not macropath:
-        macropath = FreeCAD.ConfigGet("UserAppData")
+    macropath = FreeCAD.getUserMacroDir(True)
     filepath = os.path.join(macropath,name)
     if os.path.exists(filepath) and not(force):
         return filepath
@@ -845,7 +840,7 @@ def survey(callback=False):
                     for o in newsels:
                         if hasattr(o.Object, 'Shape'):
                             n = o.Object.Label
-                            showUnit = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("surveyUnits",True)
+                            showUnit = params.get_param_arch("surveyUnits")
                             t = ""
                             u = FreeCAD.Units.Quantity()
                             if not o.HasSubObjects:
@@ -1040,7 +1035,7 @@ class SurveyTaskPanel:
         if hasattr(FreeCAD,"SurveyObserver"):
             u = FreeCAD.Units.Quantity(FreeCAD.SurveyObserver.totalLength,FreeCAD.Units.Length)
             t = u.getUserPreferred()[0]
-            if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("surveyUnits",True):
+            if params.get_param_arch("surveyUnits"):
                 QtGui.QApplication.clipboard().setText(t)
             else:
                 QtGui.QApplication.clipboard().setText(str(u.Value/u.getUserPreferred()[1]))
@@ -1050,7 +1045,7 @@ class SurveyTaskPanel:
             u = FreeCAD.Units.Quantity(FreeCAD.SurveyObserver.totalArea,FreeCAD.Units.Area)
             t = u.getUserPreferred()[0]
             t = t.replace("^2","²")
-            if FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetBool("surveyUnits",True):
+            if params.get_param_arch("surveyUnits"):
                 QtGui.QApplication.clipboard().setText(t)
             else:
                 QtGui.QApplication.clipboard().setText(str(u.Value/u.getUserPreferred()[1]))
@@ -1448,11 +1443,10 @@ class _CommandMeshToShape:
                 if f.InList:
                     if f.InList[0].isDerivedFrom("App::DocumentObjectGroup"):
                         g = f.InList[0]
-            p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-            fast = p.GetBool("ConversionFast",True)
-            tol = p.GetFloat("ConversionTolerance",0.001)
-            flat = p.GetBool("ConversionFlat",False)
-            cut = p.GetBool("ConversionCut",False)
+            fast = params.get_param_arch("ConversionFast")
+            tol = params.get_param_arch("ConversionTolerance")
+            flat = params.get_param_arch("ConversionFlat")
+            cut = params.get_param_arch("ConversionCut")
             FreeCAD.ActiveDocument.openTransaction(translate("Arch","Mesh to Shape"))
             for obj in FreeCADGui.Selection.getSelection():
                 newobj = meshToShape(obj,True,fast,tol,flat,cut)

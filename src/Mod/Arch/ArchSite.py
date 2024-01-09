@@ -33,6 +33,7 @@ import ArchCommands
 import ArchComponent
 import ArchIFC
 import Draft
+from draftutils import params
 
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -520,8 +521,7 @@ class _CommandSite:
     def Activated(self):
 
         sel = FreeCADGui.Selection.getSelection()
-        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-        link = p.GetBool("FreeLinking",False)
+        link = params.get_param_arch("FreeLinking")
         siteobj = []
         warning = False
         for obj in sel:
@@ -904,10 +904,9 @@ class _ViewProviderSite:
         objs = []
         if hasattr(self,"Object"):
             objs = self.Object.Group+[self.Object.Terrain]
-            prefs = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-            if hasattr(self.Object,"Additions") and prefs.GetBool("swallowAdditions",True):
+            if hasattr(self.Object,"Additions") and params.get_param_arch("swallowAdditions"):
                 objs.extend(self.Object.Additions)
-            if hasattr(self.Object,"Subtractions") and prefs.GetBool("swallowSubtractions",True):
+            if hasattr(self.Object,"Subtractions") and params.get_param_arch("swallowSubtractions"):
                 objs.extend(self.Object.Subtractions)
         return objs
 
