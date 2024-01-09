@@ -27,8 +27,9 @@ __url__ = "https://www.freecad.org"
 import FreeCAD,ArchComponent,Draft,DraftVecUtils,math,ArchPipe
 import Part, DraftGeomUtils
 
-
 from FreeCAD import Vector
+from draftutils import params
+
 if FreeCAD.GuiUp:
     import FreeCADGui
     from draftutils.translate import translate
@@ -58,7 +59,6 @@ def makeStairs(baseobj=None,length=None,width=None,height=None,steps=None,name=N
     if not FreeCAD.ActiveDocument:
         FreeCAD.Console.PrintError("No active document. Aborting\n")
         return
-    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
 
     stairs = []
     additions = []
@@ -68,15 +68,15 @@ def makeStairs(baseobj=None,length=None,width=None,height=None,steps=None,name=N
         if length:
             obj.Length = length
         else:
-            obj.Length = p.GetFloat("StairsLength",4500.0)
+            obj.Length = params.get_param_arch("StairsLength")
         if width:
             obj.Width = width
         else:
-            obj.Width = p.GetFloat("StairsWidth",1000.0)
+            obj.Width = params.get_param_arch("StairsWidth")
         if height:
             obj.Height = height
         else:
-            obj.Height = p.GetFloat("StairsHeight",3000.0)
+            obj.Height = params.get_param_arch("StairsHeight")
         if steps:
             obj.NumberOfSteps = steps
         obj.Structure = "Massive"
@@ -215,7 +215,6 @@ class _CommandStairs:
 
     def Activated(self):
 
-        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
         FreeCAD.ActiveDocument.openTransaction(translate("Arch","Create Stairs"))
         FreeCADGui.addModule("Arch")
 
@@ -234,7 +233,7 @@ class _CommandStairs:
             FreeCADGui.doCommand("obj = Arch.makeStairs(baseobj=["+nStr+"])")
 
         else:
-            FreeCADGui.doCommand("obj = Arch.makeStairs(steps="+str(p.GetInt("StairsSteps",17))+")")
+            FreeCADGui.doCommand("obj = Arch.makeStairs(steps="+str(params.get_param_arch("StairsSteps"))+")")
 
         FreeCADGui.addModule("Draft")
         for obj in stairs:

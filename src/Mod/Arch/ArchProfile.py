@@ -36,6 +36,7 @@ import os
 import FreeCAD
 import Draft
 from FreeCAD import Vector
+from draftutils import params
 
 if FreeCAD.GuiUp:
     import FreeCADGui
@@ -169,7 +170,7 @@ class Arch_Profile:
         self.vPresets.currentIndexChanged.connect(self.setPreset)
 
         # restore preset
-        stored = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetString("StructurePreset","")
+        stored = params.get_param_arch("StructurePreset")
         if stored:
             if ";" in stored:
                 stored = stored.split(";")
@@ -206,13 +207,13 @@ class Arch_Profile:
         if i == 0:
             self.pSelect = [None]
             self.vPresets.addItems([" "])
-            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetString("StructurePreset","")
+            params.set_param_arch("StructurePreset","")
         else:
             self.pSelect = [p for p in self.Presets if p[1] == self.Categories[i-1]]
             fpresets = []
             for p in self.pSelect:
                 f = FreeCAD.Units.Quantity(p[4],FreeCAD.Units.Length).getUserPreferred()
-                d = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",2)
+                d = params.get_param("Decimals",path="Units")
                 s1 = str(round(p[4]/f[1],d))
                 s2 = str(round(p[5]/f[1],d))
                 s3 = str(f[2])
@@ -227,7 +228,7 @@ class Arch_Profile:
         if elt:
             p=elt[0]-1 # Presets indexes are 1-based
             self.Profile = self.Presets[p]
-            FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").SetString("StructurePreset",";".join([str(i) for i in self.Profile]))
+            params.set_param_arch("StructurePreset",";".join([str(i) for i in self.Profile]))
 
 
 class _Profile(Draft._DraftObject):
@@ -565,7 +566,7 @@ class ProfileTaskPanel:
             if pre[1] == text:
                 self.currentpresets.append(pre)
                 f = FreeCAD.Units.Quantity(pre[4],FreeCAD.Units.Length).getUserPreferred()
-                d = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",2)
+                d = params.get_param("Decimals",path="Units")
                 s1 = str(round(pre[4]/f[1],d))
                 s2 = str(round(pre[5]/f[1],d))
                 s3 = str(f[2])
