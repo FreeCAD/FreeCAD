@@ -96,7 +96,8 @@ class Draft_SetStyle_TaskPanel:
         self.form.ScaleMultiplier.setValue(params.get_param("DefaultAnnoScaleMultiplier"))
         self.form.AnnoLineColor.setProperty("color", self.getColor(params.get_param("DefaultAnnoLineColor")))
         self.form.AnnoLineWidth.setValue(params.get_param("DefaultAnnoLineWidth"))
-        self.form.ArrowStyle.setCurrentIndex(params.get_param("dimsymbol"))
+        self.form.ArrowStyleStart.setCurrentIndex(params.get_param("dimsymbolstart"))
+        self.form.ArrowStyleEnd.setCurrentIndex(params.get_param("dimsymbolend"))
         self.form.ArrowSize.setText(U.Quantity(params.get_param("arrowsize"), U.Length).UserString)
         self.form.ShowUnit.setChecked(params.get_param("showUnit"))
         self.form.UnitOverride.setText(params.get_param("overrideUnit"))
@@ -148,7 +149,8 @@ class Draft_SetStyle_TaskPanel:
         preset["ScaleMultiplier"] = self.form.ScaleMultiplier.value()
         preset["AnnoLineColor"] = utils.argb_to_rgba(self.form.AnnoLineColor.property("color").rgba())
         preset["AnnoLineWidth"] = self.form.AnnoLineWidth.value()
-        preset["ArrowStyle"] = self.form.ArrowStyle.currentIndex()
+        preset["ArrowStyleStart"] = self.form.ArrowStyleStart.currentIndex()
+        preset["ArrowStyleEnd"] = self.form.ArrowStyleEnd.currentIndex()
         preset["ArrowSize"] = U.Quantity(self.form.ArrowSize.text()).Value
         preset["ShowUnit"] = self.form.ShowUnit.isChecked()
         preset["UnitOverride"] = self.form.UnitOverride.text()
@@ -182,7 +184,8 @@ class Draft_SetStyle_TaskPanel:
         self.form.ScaleMultiplier.setValue(preset.get("ScaleMultiplier", 1))
         self.form.AnnoLineColor.setProperty("color", self.getColor(preset.get("AnnoLineColor", preset.get("LineColor", 255))))
         self.form.AnnoLineWidth.setValue(preset.get("AnnoLineWidth", preset.get("LineWidth", 2)))
-        self.form.ArrowStyle.setCurrentIndex(preset.get("ArrowStyle", 0))
+        self.form.ArrowStyleStart.setCurrentIndex(preset.get("ArrowStyleStart", 0))
+        self.form.ArrowStyleEnd.setCurrentIndex(preset.get("ArrowStyleEnd", 0))
         self.form.ArrowSize.setText(U.Quantity(preset.get("ArrowSize", 1), U.Length).UserString)
         self.form.ShowUnit.setChecked(preset.get("ShowUnit", True))
         self.form.UnitOverride.setText(preset.get("UnitOverride", ""))
@@ -212,7 +215,8 @@ class Draft_SetStyle_TaskPanel:
         params.set_param("DefaultAnnoScaleMultiplier", self.form.ScaleMultiplier.value())
         params.set_param("DefaultAnnoLineColor", utils.argb_to_rgba(self.form.AnnoLineColor.property("color").rgba()))
         params.set_param("DefaultAnnoLineWidth", self.form.AnnoLineWidth.value())
-        params.set_param("dimsymbol", self.form.ArrowStyle.currentIndex())
+        params.set_param("dimsymbolstart", self.form.ArrowStyleStart.currentIndex())
+        params.set_param("dimsymbolend", self.form.ArrowStyleEnd.currentIndex())
         params.set_param("arrowsize", U.Quantity(self.form.ArrowSize.text()).Value)
         params.set_param("showUnit", self.form.ShowUnit.isChecked())
         params.set_param("overrideUnit", self.form.UnitOverride.text())
@@ -278,8 +282,10 @@ class Draft_SetStyle_TaskPanel:
                 vobj.LineColor = self.form.AnnoLineColor.property("color").getRgbF()[:3]
             if "LineWidth" in properties:
                 vobj.LineWidth = self.form.AnnoLineWidth.value()
-            if "ArrowType" in properties:
-                vobj.ArrowType = utils.ARROW_TYPES[self.form.ArrowStyle.currentIndex()]
+            if "ArrowTypeStart" in properties:
+                vobj.ArrowTypeStart = utils.ARROW_TYPES[self.form.ArrowStyleStart.currentIndex()]
+            if "ArrowTypeEnd" in properties:
+                vobj.ArrowTypeEnd = utils.ARROW_TYPES[self.form.ArrowStyleEnd.currentIndex()]
             if "ArrowSize" in properties:
                 vobj.ArrowSize = U.Quantity(self.form.ArrowSize.text()).Value
             if "ShowUnit" in properties:

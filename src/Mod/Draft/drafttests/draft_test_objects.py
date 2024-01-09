@@ -298,7 +298,8 @@ def _create_objects(doc=None,
                                               Vector(1000, 2800, 0))
     if App.GuiUp:
         dimension.ViewObject.ArrowSize = 15
-        dimension.ViewObject.ArrowType = "Arrow"
+        dimension.ViewObject.ArrowTypeStart = "Dot"
+        dimension.ViewObject.ArrowTypeEnd = "Arrow"
         dimension.ViewObject.ExtLines = -50
         dimension.ViewObject.ExtOvershoot = 50
         dimension.ViewObject.DimOvershoot = 25

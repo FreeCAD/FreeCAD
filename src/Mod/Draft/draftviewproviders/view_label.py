@@ -102,15 +102,25 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
                              _tip)
             vobj.ArrowSize = params.get_param("arrowsize")
 
-        if "ArrowType" not in properties:
+        if "ArrowTypeStart" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
                                      "Arrow type")
             vobj.addProperty("App::PropertyEnumeration",
-                             "ArrowType",
+                             "ArrowTypeStart",
                              "Graphics",
                              _tip)
-            vobj.ArrowType = utils.ARROW_TYPES
-            vobj.ArrowType = utils.ARROW_TYPES[params.get_param("dimsymbol")]
+            vobj.ArrowTypeStart = utils.ARROW_TYPES
+            vobj.ArrowTypeStart = utils.ARROW_TYPES[params.get_param("dimsymbolstart")]
+
+        if "ArrowTypeEnd" not in properties:
+            _tip = QT_TRANSLATE_NOOP("App::Property",
+                                     "Arrow type")
+            vobj.addProperty("App::PropertyEnumeration",
+                             "ArrowTypeEnd",
+                             "Graphics",
+                             _tip)
+            vobj.ArrowTypeEnd = utils.ARROW_TYPES
+            vobj.ArrowTypeEnd = utils.ARROW_TYPES[params.get_param("dimsymbolend")]
 
         if "Frame" not in properties:
             _tip = QT_TRANSLATE_NOOP("App::Property",
@@ -163,7 +173,8 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
         self.frame = coin.SoType.fromName("SoBrepEdgeSet").createInstance()
         self.lineswitch = coin.SoSwitch()
 
-        self.symbol = gui_utils.dim_symbol()
+        self.startSymbol = gui_utils.dim_symbol()
+        self.endSymbol = gui_utils.dim_symbol()
 
         textdrawstyle = coin.SoDrawStyle()
         textdrawstyle.style = coin.SoDrawStyle.FILLED
@@ -236,7 +247,8 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
                 self.line.coordIndex.setValues(0,
                                                n_points,
                                                range(n_points))
-                self.onChanged(obj.ViewObject, "ArrowType")
+                self.onChanged(obj.ViewObject, "ArrowTypeStart")
+                self.onChanged(obj.ViewObject, "ArrowTypeEnd")
 
             if obj.StraightDistance > 0:
                 self.text_wld.justification = coin.SoAsciiText.RIGHT
@@ -314,7 +326,11 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
             else:
                 self.lineswitch.whichChild = -1
 
-        elif prop == "ArrowType" and "ArrowType" in properties:
+        elif prop == "ArrowTypeStart" and "ArrowTypeStart" in properties:
+            if len(obj.Points) > 1:
+                self.update_arrow(obj, vobj)
+
+        elif prop == "ArrowTypeEnd" and "ArrowTypeEnd" in properties:
             if len(obj.Points) > 1:
                 self.update_arrow(obj, vobj)
 
@@ -400,13 +416,20 @@ class ViewProviderLabel(ViewProviderDraftAnnotation):
 
     def update_arrow(self, obj, vobj):
         """Update the arrow tip of the line."""
-        if hasattr(self, "symbol"):
-            if self.arrow.findChild(self.symbol) != -1:
-                self.arrow.removeChild(self.symbol)
+        if hasattr(self, "startSymbol"):
+            if self.arrow.findChild(self.startSymbol) != -1:
+                self.arrow.removeChild(self.startSymbol)
 
-        s = utils.ARROW_TYPES.index(vobj.ArrowType)
-        self.symbol = gui_utils.dim_symbol(s)
-        self.arrow.addChild(self.symbol)
+        if hasattr(self, "endSymbol"):
+            if self.arrow.findChild(self.endSymbol) != -1:
+                self.arrow.removeChild(self.endSymbol)
+
+        startS = utils.ARROW_TYPES.index(vobj.ArrowTypeStart)
+        endS = utils.ARROW_TYPES.index(vobj.ArrowTypeEnd)
+        self.startSymbol = gui_utils.dim_symbol(startS)
+        self.endSymbol = gui_utils.dim_symbol(endS)
+        self.arrow.addChild(self.startSymbol)
+        self.arrow.addChild(self.endSymbol)
 
         prec = 10**(-utils.precision())
         x_axis = App.Vector(1,0,0)
