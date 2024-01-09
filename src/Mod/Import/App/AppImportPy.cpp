@@ -599,11 +599,13 @@ private:
                         writer.setLayerName(layerName);
                         TopoDS_Shape shapeToExport;
                         if (SketchExportHelper::isSketch(obj)) {
-                            // project sketch along sketch Z via hlrProjector to get geometry on XY plane
+                            // project sketch along sketch Z via hlrProjector to get geometry on XY
+                            // plane
                             shapeToExport = SketchExportHelper::getFlatSketchXY(obj);
-                        } else {
-                            // do we know that obj is a Part::Feature? is this checked somewhere before this?
-                            // this should be a located shape??
+                        }
+                        else {
+                            // do we know that obj is a Part::Feature? is this checked somewhere
+                            // before this? this should be a located shape??
                             Part::Feature* part = static_cast<Part::Feature*>(obj);
                             shapeToExport = part->Shape.getValue();
                         }
@@ -631,7 +633,8 @@ private:
             filePath = std::string(fname);
             layerName = "none";
             PyMem_Free(fname);
-            App::DocumentObject* obj = static_cast<App::DocumentObjectPy*>(docObj)->getDocumentObjectPtr();
+            App::DocumentObject* obj =
+                static_cast<App::DocumentObjectPy*>(docObj)->getDocumentObjectPtr();
             Base::Console().Message("Imp:writeDXFObject - docObj: %s\n", obj->getNameInDocument());
 
             if ((versionParm == 12) || (versionParm == 14)) {
@@ -663,8 +666,10 @@ private:
                 if (SketchExportHelper::isSketch(obj)) {
                     // project sketch along sketch Z via hlrProjector to get geometry on XY plane
                     shapeToExport = SketchExportHelper::getFlatSketchXY(obj);
-                } else {
-                    // TODO: do we know that obj is a Part::Feature? is this checked somewhere before this?
+                }
+                else {
+                    // TODO: do we know that obj is a Part::Feature? is this checked somewhere
+                    // before this?
                     // TODO: this should be a located shape??
                     Part::Feature* part = static_cast<Part::Feature*>(obj);
                     shapeToExport = part->Shape.getValue();
