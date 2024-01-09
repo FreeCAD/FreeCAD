@@ -43,73 +43,74 @@
 
 using namespace Import;
 
-//! project a shape so that it is represented as a flat shape on the XY plane.  Z coordinate information
-//! is lost in this process, so it should only be used for flat objects like sketches.
-//! Note: this only returns hard and outline edges.  Seam, smooth, isoparametric and hidden lines are not returned.
-TopoDS_Shape SketchExportHelper::projectShape(const TopoDS_Shape& inShape, const gp_Ax2& projectionCS)
+//! project a shape so that it is represented as a flat shape on the XY plane.  Z coordinate
+//! information is lost in this process, so it should only be used for flat objects like sketches.
+//! Note: this only returns hard and outline edges.  Seam, smooth, isoparametric and hidden lines
+//! are not returned.
+TopoDS_Shape SketchExportHelper::projectShape(const TopoDS_Shape& inShape,
+                                              const gp_Ax2& projectionCS)
 {
-        Handle(HLRBRep_Algo) brep_hlr = new HLRBRep_Algo();
-        brep_hlr->Add(inShape);
-        HLRAlgo_Projector projector(projectionCS);
-        brep_hlr->Projector(projector);
-        brep_hlr->Update();
-        brep_hlr->Hide();
-        HLRBRep_HLRToShape hlrToShape(brep_hlr);
-        BRep_Builder builder;
-        TopoDS_Compound comp;
-        builder.MakeCompound(comp);
-        if (!hlrToShape.VCompound().IsNull()) {
-            builder.Add(comp, hlrToShape.VCompound());
-        }
-        if (!hlrToShape.OutLineVCompound().IsNull()) {
-            builder.Add(comp, hlrToShape.OutLineVCompound());
-        }
-        return comp;
+    Handle(HLRBRep_Algo) brep_hlr = new HLRBRep_Algo();
+    brep_hlr->Add(inShape);
+    HLRAlgo_Projector projector(projectionCS);
+    brep_hlr->Projector(projector);
+    brep_hlr->Update();
+    brep_hlr->Hide();
+    HLRBRep_HLRToShape hlrToShape(brep_hlr);
+    BRep_Builder builder;
+    TopoDS_Compound comp;
+    builder.MakeCompound(comp);
+    if (!hlrToShape.VCompound().IsNull()) {
+        builder.Add(comp, hlrToShape.VCompound());
     }
+    if (!hlrToShape.OutLineVCompound().IsNull()) {
+        builder.Add(comp, hlrToShape.OutLineVCompound());
+    }
+    return comp;
+}
 
 
 //! true if obj is a sketch
-    bool SketchExportHelper::isSketch(App::DocumentObject* obj)
-    {
-        // TODO:: the check for an object being a sketch should be done as in the commented
-        // if statement below. To do this, we need to include Mod/Sketcher/SketchObject.h,
-        // but that makes Import dependent on Eigen libraries which we don't use.  As a
-        // workaround we will inspect the object's class name.
-        //    if (obj->isDerivedFrom(Sketcher::SketchObject::getClassTypeId())) {
-        std::string objTypeName = obj->getTypeId().getName();
-        std::string sketcherToken("Sketcher");
-        return objTypeName.find(sketcherToken) != std::string::npos;
-    }
+bool SketchExportHelper::isSketch(App::DocumentObject* obj)
+{
+    // TODO:: the check for an object being a sketch should be done as in the commented
+    // if statement below. To do this, we need to include Mod/Sketcher/SketchObject.h,
+    // but that makes Import dependent on Eigen libraries which we don't use.  As a
+    // workaround we will inspect the object's class name.
+    //    if (obj->isDerivedFrom(Sketcher::SketchObject::getClassTypeId())) {
+    std::string objTypeName = obj->getTypeId().getName();
+    std::string sketcherToken("Sketcher");
+    return objTypeName.find(sketcherToken) != std::string::npos;
+}
 
 
 //! return a version of a sketch's geometry mapped to the OXYZ coordinate system
 //! preferred by dxf
-    TopoDS_Shape SketchExportHelper::getFlatSketchXY(App::DocumentObject* obj)
-    {
-        // since we can't reference Sketcher module here, we will cast obj to
-        // a Part::Feature instead
-        auto sketch = dynamic_cast<Part::Feature*>(obj);
-        if ( !sketch || !isSketch(obj)){
-            return {};
-        }
-
-        auto plm = sketch->Placement.getValue();
-        Base::Rotation rot = plm.getRotation();
-
-        //get the sketch normal
-        Base::Vector3d stdZ{0.0, 0.0, 1.0};
-        Base::Vector3d sketchNormal;
-        rot.multVec(stdZ, sketchNormal);
-        Base::Vector3d stdX{1.0, 0.0, 0.0};
-        Base::Vector3d sketchX;
-        rot.multVec(stdX, sketchX);
-
-        //get the sketch origin
-        Base::Vector3d position = plm.getPosition();
-        gp_Ax2 projectionCS(gp_Pnt(position.x, position.y, position.z),
-                            gp_Dir(sketchNormal.x, sketchNormal.y, sketchNormal.z),
-                            gp_Dir(sketchX.x, sketchX.y, sketchX.z));
-        const TopoDS_Shape& shape = sketch->Shape.getValue();
-        return projectShape(shape, projectionCS);
+TopoDS_Shape SketchExportHelper::getFlatSketchXY(App::DocumentObject* obj)
+{
+    // since we can't reference Sketcher module here, we will cast obj to
+    // a Part::Feature instead
+    auto sketch = dynamic_cast<Part::Feature*>(obj);
+    if (!sketch || !isSketch(obj)) {
+        return {};
     }
 
+    auto plm = sketch->Placement.getValue();
+    Base::Rotation rot = plm.getRotation();
+
+    // get the sketch normal
+    Base::Vector3d stdZ {0.0, 0.0, 1.0};
+    Base::Vector3d sketchNormal;
+    rot.multVec(stdZ, sketchNormal);
+    Base::Vector3d stdX {1.0, 0.0, 0.0};
+    Base::Vector3d sketchX;
+    rot.multVec(stdX, sketchX);
+
+    // get the sketch origin
+    Base::Vector3d position = plm.getPosition();
+    gp_Ax2 projectionCS(gp_Pnt(position.x, position.y, position.z),
+                        gp_Dir(sketchNormal.x, sketchNormal.y, sketchNormal.z),
+                        gp_Dir(sketchX.x, sketchX.y, sketchX.z));
+    const TopoDS_Shape& shape = sketch->Shape.getValue();
+    return projectShape(shape, projectionCS);
+}

@@ -692,8 +692,8 @@ void CDxfWrite::writePoint(const double* point)
     (*m_ssEntity) << point[2] << endl;  // Z in WCS coordinates
 }
 
-//! arc from 3 points - start, end, center. dir true if arc is AntiClockwise. unspecified assumption is that
-//! points are on XY plane in coord system OXYZ.
+//! arc from 3 points - start, end, center. dir true if arc is AntiClockwise. unspecified assumption
+//! is that points are on XY plane in coord system OXYZ.
 void CDxfWrite::writeArc(const double* start, const double* end, const double* center, bool dir)
 
 {
@@ -769,10 +769,10 @@ void CDxfWrite::writeCircle(const double* center, double radius)
     (*m_ssEntity) << center[0] << endl;  // X in WCS coordinates
     (*m_ssEntity) << " 20" << endl;
     (*m_ssEntity) << center[1] << endl;  // Y in WCS coordinates
-    (*m_ssEntity) << " 30"       << endl;
-    (*m_ssEntity) << center[2]   << endl;    // Z in WCS coordinates
-    (*m_ssEntity) << " 40" << endl;   //
-    (*m_ssEntity) << radius << endl;  // Radius
+    (*m_ssEntity) << " 30" << endl;
+    (*m_ssEntity) << center[2] << endl;  // Z in WCS coordinates
+    (*m_ssEntity) << " 40" << endl;      //
+    (*m_ssEntity) << radius << endl;     // Radius
 }
 
 void CDxfWrite::writeEllipse(const double* center,
@@ -820,7 +820,8 @@ void CDxfWrite::writeEllipse(const double* center,
     (*m_ssEntity) << " 31" << endl;
     (*m_ssEntity) << m.z << endl;    // Major Z
     (*m_ssEntity) << " 40" << endl;  //
-    (*m_ssEntity) << ratio << endl;  // Ratio
+    (*m_ssEntity) << ratio
+                  << endl;  // Ratio
                             //    (*m_ssEntity) << "210"       << endl;    //extrusion dir??
                             //    (*m_ssEntity) << "0"         << endl;
                             //    (*m_ssEntity) << "220"       << endl;

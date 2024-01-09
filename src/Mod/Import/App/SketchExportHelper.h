@@ -43,4 +43,4 @@ public:
     static TopoDS_Shape getFlatSketchXY(App::DocumentObject* obj);
 };
 
-}
+}  // namespace Import
