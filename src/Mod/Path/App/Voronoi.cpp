@@ -22,7 +22,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-# include <Standard_math.hxx>
+#define _USE_MATH_DEFINES
+# include <math.h>
 #endif
 
 #include <Base/Vector3D.h>
