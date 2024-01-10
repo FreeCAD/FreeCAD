@@ -157,8 +157,6 @@ def make_point_array(base_object, point_object, extra=None, use_link=True):
             ViewProviderDraftArray(new_obj.ViewObject)
             gui_utils.format_object(new_obj, new_obj.Base)
             new_obj.ViewObject.Proxy.resetColors(new_obj.ViewObject)
-            # Workaround to trigger update of DiffuseColor:
-            ToDo.delay(reapply_diffuse_color, new_obj.ViewObject)
         new_obj.Base.ViewObject.hide()
         gui_utils.select(new_obj)
 
@@ -170,12 +168,5 @@ def makePointArray(base, ptlst):
     utils.use_instead('make_point_array')
 
     return make_point_array(base, ptlst)
-
-
-def reapply_diffuse_color(vobj):
-    try:
-        vobj.DiffuseColor = vobj.DiffuseColor
-    except:
-        pass
 
 ## @}
