@@ -97,8 +97,6 @@ def make_clone(obj, delta=None, forcedraft=False):
                     pass
             if App.GuiUp:
                 gui_utils.format_object(cl, base)
-                # Workaround to trigger update of DiffuseColor:
-                ToDo.delay(reapply_diffuse_color, cl.ViewObject)
                 gui_utils.select(cl)
             return cl
 
@@ -118,17 +116,8 @@ def make_clone(obj, delta=None, forcedraft=False):
     if App.GuiUp:
         ViewProviderClone(cl.ViewObject)
         gui_utils.format_object(cl, obj[0])
-        # Workaround to trigger update of DiffuseColor:
-        ToDo.delay(reapply_diffuse_color, cl.ViewObject)
         gui_utils.select(cl)
     return cl
-
-
-def reapply_diffuse_color(vobj):
-    try:
-        vobj.DiffuseColor = vobj.DiffuseColor
-    except:
-        pass
 
 
 clone = make_clone
