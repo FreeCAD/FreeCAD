@@ -125,7 +125,6 @@ def get_draft_utility_commands_menu():
             "Draft_WorkingPlaneProxy",
             "Separator",
             "Draft_Heal",
-            "Draft_ToggleContinueMode",
             "Draft_ShowSnapBar"]
 
 

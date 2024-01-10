@@ -127,6 +127,8 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     *toolcenter << "TechDraw_ExtensionThreadBoltBottom";
     *toolcenter << "Separator";
     *toolcenter << "TechDraw_ExtensionVertexAtIntersection";
+    *toolcenter << "TechDraw_CommandAddOffsetVertex";
+    *toolcenter << "Separator";
     *toolcenter << "TechDraw_ExtensionDrawCosmCircle";
     *toolcenter << "TechDraw_ExtensionDrawCosmArc";
     *toolcenter << "TechDraw_ExtensionDrawCosmCircle3Points";
@@ -194,6 +196,7 @@ Gui::MenuItem* Workbench::setupMenuBar() const
     pages->setCommand("Page");
     *pages << "TechDraw_PageDefault";
     *pages << "TechDraw_PageTemplate";
+    *pages << "TechDraw_FillTemplateFields";
     *pages << "TechDraw_RedrawPage";
     *pages << "TechDraw_PrintAll";
     *pages << "Separator";
@@ -285,6 +288,7 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     pages->setCommand("TechDraw Pages");
     *pages << "TechDraw_PageDefault";
     *pages << "TechDraw_PageTemplate";
+    *pages << "TechDraw_FillTemplateFields";
     *pages << "TechDraw_RedrawPage";
     *pages << "TechDraw_PrintAll";
 
@@ -345,7 +349,8 @@ Gui::ToolBarItem* Workbench::setupToolBars() const
     extcenter->setCommand("TechDraw Centerlines");
     *extcenter << "TechDraw_ExtensionCircleCenterLinesGroup";
     *extcenter << "TechDraw_ExtensionThreadsGroup";
-    *extcenter << "TechDraw_ExtensionVertexAtIntersection";
+    *extcenter << "TechDraw_CommandVertexCreationGroup";
+    //*extcenter << "TechDraw_ExtensionVertexAtIntersection";
     *extcenter << "TechDraw_ExtensionDrawCirclesGroup";
     *extcenter << "TechDraw_ExtensionLinePPGroup";
 
@@ -396,6 +401,7 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     pages->setCommand("TechDraw Pages");
     *pages << "TechDraw_PageDefault";
     *pages << "TechDraw_PageTemplate";
+    *pages << "TechDraw_FillTemplateFields";
     *pages << "TechDraw_RedrawPage";
     *pages << "TechDraw_PrintAll";
 
@@ -456,7 +462,8 @@ Gui::ToolBarItem* Workbench::setupCommandBars() const
     extcenter->setCommand("TechDraw Centerlines");
     *extcenter << "TechDraw_ExtensionCircleCenterLinesGroup";
     *extcenter << "TechDraw_ExtensionThreadsGroup";
-    *extcenter << "TechDraw_ExtensionVertexAtIntersection";
+    *extcenter << "TechDraw_CommandVertexCreationGroup";
+    //*extcenter << "TechDraw_ExtensionVertexAtIntersection";
     *extcenter << "TechDraw_ExtensionDrawCirclesGroup";
     *extcenter << "TechDraw_ExtensionLinePPGroup";
 

@@ -185,11 +185,18 @@ typedef std::vector< UVPtStruct > UVPtStructVec;
 
 // --------------------------------------------------------------------------------
 // class SMESH_SequenceOfElemPtr
+#include <Standard_Version.hxx>
+#if OCC_VERSION_HEX >= 0x060703
+#include <NCollection_Sequence.hxx>
+#else
 #include <NCollection_DefineSequence.hxx>
+#endif
 
 class SMDS_MeshElement;
 
 typedef const SMDS_MeshElement* SMDS_MeshElementPtr;
+#define DEFINE_SEQUENCE(_ClassName_, _BaseCollection_, TheItemType)            \
+typedef NCollection_Sequence<TheItemType > _ClassName_;
 
 DEFINE_SEQUENCE (SMESH_SequenceOfElemPtr, SMESH_BaseCollectionElemPtr, SMDS_MeshElementPtr)
 

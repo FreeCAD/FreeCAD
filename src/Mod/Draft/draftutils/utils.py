@@ -39,7 +39,7 @@ import os
 import PySide.QtCore as QtCore
 
 import FreeCAD as App
-
+from draftutils import params
 from draftutils.messages import _msg, _wrn, _err, _log
 from draftutils.translate import translate
 
@@ -53,32 +53,49 @@ if App.GuiUp:
     # The module is used to prevent complaints from code checkers (flake8)
     True if Draft_rc else False
 
+
 ARROW_TYPES = ["Dot", "Circle", "Arrow", "Tick", "Tick-2"]
+DISPLAY_MODES = ["Flat Lines", "Shaded", "Wireframe", "Points"]
+DRAW_STYLES = ["Solid", "Dashed", "Dotted", "Dashdot"]
 arrowtypes = ARROW_TYPES
 
 
 def get_default_annotation_style():
-    param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-    anno_scale = param.GetFloat("DraftAnnotationScale", 1)
-    scale_mult = 1 / anno_scale if anno_scale > 0 else 1
+    arrow_type_index = params.get_param("dimsymbol")
     return {
-        "ArrowSize":       ("float", param.GetFloat("arrowsize", 20)),
-        "ArrowType":       ("index", param.GetInt("dimsymbol", 0)),
-        "Decimals":        ("int",   param.GetInt("dimPrecision", 2)),
-        "DimOvershoot":    ("float", param.GetFloat("dimovershoot", 20)),
-        "ExtLines":        ("float", param.GetFloat("extlines", 300)),
-        "ExtOvershoot":    ("float", param.GetFloat("extovershoot", 20)),
-        "FontName":        ("font",  param.GetString("textfont", "Sans")),
-        "FontSize":        ("float", param.GetFloat("textheight", 100)),
-        "LineColor":       ("color", param.GetUnsigned("DefaultAnnoLineColor", 255)),
-        "LineSpacing":     ("float", param.GetFloat("LineSpacing", 1)),
-        "LineWidth":       ("int",   param.GetInt("DefaultAnnoLineWidth", 1)),
-        "ScaleMultiplier": ("float", scale_mult),
-        "ShowLine":        ("bool",  param.GetBool("DimShowLine", True)),
-        "ShowUnit":        ("bool",  param.GetBool("showUnit", True)),
-        "TextColor":       ("color", param.GetUnsigned("DefaultTextColor", 255)),
-        "TextSpacing":     ("float", param.GetFloat("dimspacing", 20)),
-        "UnitOverride":    ("str",   param.GetString("overrideUnit", "")),
+        "ArrowSize":       ("float", params.get_param("arrowsize")),
+        "ArrowType":       ("index", arrow_type_index, ARROW_TYPES[arrow_type_index]),
+        "Decimals":        ("int",   params.get_param("dimPrecision")),
+        "DimOvershoot":    ("float", params.get_param("dimovershoot")),
+        "ExtLines":        ("float", params.get_param("extlines")),
+        "ExtOvershoot":    ("float", params.get_param("extovershoot")),
+        "FontName":        ("font",  params.get_param("textfont")),
+        "FontSize":        ("float", params.get_param("textheight")),
+        "LineColor":       ("color", params.get_param("DefaultAnnoLineColor")),
+        "LineSpacing":     ("float", params.get_param("LineSpacing")),
+        "LineWidth":       ("int",   params.get_param("DefaultAnnoLineWidth")),
+        "ScaleMultiplier": ("float", params.get_param("DefaultAnnoScaleMultiplier")),
+        "ShowLine":        ("bool",  params.get_param("DimShowLine")),
+        "ShowUnit":        ("bool",  params.get_param("showUnit")),
+        "TextColor":       ("color", params.get_param("DefaultTextColor")),
+        "TextSpacing":     ("float", params.get_param("dimspacing")),
+        "UnitOverride":    ("str",   params.get_param("overrideUnit"))
+    }
+
+
+def get_default_shape_style():
+    # Uses the same format as get_default_annotation_style().
+    display_mode_index = params.get_param("DefaultDisplayMode")
+    draw_style_index = params.get_param("DefaultDrawStyle")
+    return {
+        "DisplayMode":  ("index", display_mode_index, DISPLAY_MODES[display_mode_index]),
+        "DrawStyle":    ("index", draw_style_index, DRAW_STYLES[draw_style_index]),
+        "LineColor":    ("color", params.get_param_view("DefaultShapeLineColor")),
+        "LineWidth":    ("int",   params.get_param_view("DefaultShapeLineWidth")),
+        "PointColor":   ("color", params.get_param_view("DefaultShapeVertexColor")),
+        "PointSize":    ("int",   params.get_param_view("DefaultShapePointSize")),
+        "ShapeColor":   ("color", params.get_param_view("DefaultShapeColor")),
+        "Transparency": ("int",   params.get_param_view("DefaultShapeTransparency"))
     }
 
 
@@ -173,6 +190,7 @@ def get_param_type(param):
                  "linewidth", "modconstrain", "modsnap",
                  "maxSnapEdges", "modalt", "HatchPatternResolution",
                  "snapStyle", "DefaultAnnoDisplayMode", "DefaultAnnoLineWidth",
+                 "DefaultDrawStyle", "DefaultDisplayMode",
                  "gridSize", "gridTransparency"):
         return "int"
     elif param in ("constructiongroupname", "textfont",
@@ -182,10 +200,10 @@ def get_param_type(param):
         return "string"
     elif param in ("textheight", "arrowsize", "extlines", "dimspacing",
                    "dimovershoot", "extovershoot", "HatchPatternSize",
-                   "LineSpacing"):
+                   "LineSpacing", "DefaultAnnoScaleMultiplier"):
         return "float"
     elif param in ("selectBaseObjects", "alwaysSnap", "grid",
-                   "fillmode", "maxSnap", "DimShowLine",
+                   "fillmode", "DimShowLine",
                    "SvgLinesBlack", "dxfStdSize", "SnapBarShowOnlyDuringCommands",
                    "alwaysShowGrid", "renderPolylineWidth",
                    "showPlaneTracker", "UsePartPrimitives",
@@ -238,7 +256,7 @@ def get_param(param, default=None):
 
     p = App.ParamGet(draft_params)
     v = App.ParamGet(view_params)
-    t = getParamType(param)
+    t = get_param_type(param)
     # print("getting param ",param, " of type ",t, " default: ",str(default))
     if t == "int":
         if default is None:
@@ -301,7 +319,7 @@ def set_param(param, value):
 
     p = App.ParamGet(draft_params)
     v = App.ParamGet(view_params)
-    t = getParamType(param)
+    t = get_param_type(param)
 
     if t == "int":
         if param == "linewidth":
@@ -342,9 +360,9 @@ def precision():
     Returns
     -------
     int
-        get_param("precision", 6)
+        params.get_param("precision")
     """
-    return getParam("precision", 6)
+    return params.get_param("precision")
 
 
 def tolerance():
@@ -722,7 +740,7 @@ def load_svg_patterns():
             App.svgpatterns.update(p)
 
     # Get patterns in a user defined file
-    altpat = getParam("patternFile", "")
+    altpat = params.get_param("patternFile")
     if os.path.isdir(altpat):
         for f in os.listdir(altpat):
             if f[-4:].upper() == ".SVG":
@@ -790,8 +808,8 @@ def get_rgb(color, testbw=True):
     col = "#"+r+g+b
     if testbw:
         if col == "#ffffff":
-            # print(getParam('SvgLinesBlack'))
-            if getParam('SvgLinesBlack', True):
+            # print(params.get_param("SvgLinesBlack"))
+            if params.get_param("SvgLinesBlack"):
                 col = "#000000"
     return col
 

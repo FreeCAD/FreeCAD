@@ -66,9 +66,9 @@ QString UnitsApi::getDescription(UnitSystem system)
 {
     switch (system) {
         case UnitSystem::SI1:
-            return tr("Standard (mm, kg, s, degree)");
+            return tr("Standard (mm, kg, s, °)");
         case UnitSystem::SI2:
-            return tr("MKS (m, kg, s, degree)");
+            return tr("MKS (m, kg, s, °)");
         case UnitSystem::Imperial1:
             return tr("US customary (in, lb)");
         case UnitSystem::ImperialDecimal:
@@ -80,7 +80,7 @@ QString UnitsApi::getDescription(UnitSystem system)
         case UnitSystem::MmMin:
             return tr("Metric small parts & CNC(mm, mm/min)");
         case UnitSystem::ImperialCivil:
-            return tr("Imperial for Civil Eng (ft, ft/sec)");
+            return tr("Imperial for Civil Eng (ft, ft/s)");
         case UnitSystem::FemMilliMeterNewton:
             return tr("FEM (mm, N, s)");
         case UnitSystem::MeterDecimal:

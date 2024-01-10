@@ -10,20 +10,17 @@ Inherits:
   DefaultAppearance:
     UUID: "5dbb7be6-8b63-479b-ab4c-87be02ead973"
 Models:
-  TestModel:
+  Test Model:
     UUID: "34d0583d-f999-49ba-99e6-aa40bd5c3a6b"
     TestArray2D: 
-      - "20.00 C"
       - [["10.00 C", "10.00 kg/m^3"],
          ["20.00 C", "20.00 kg/m^3"],
          ["30.00 C", "30.00 kg/m^3"]]
     TestArray2D3Column: 
-      - "20.00 C"
       - [["10.00 C", "11.00 kg/m^3", "12.00 Pa"],
          ["20.00 C", "21.00 kg/m^3", "22.00 Pa"],
          ["30.00 C", "31.00 kg/m^3", "32.00 Pa"]]
     TestArray3D: 
-      - "20.00 C"
       - ["10.00 C": [["11.00 Pa", "12.00 Pa"],
                      ["21.00 Pa", "22.00 Pa"]],
          "20.00 C": [],
@@ -42,14 +39,10 @@ Models:
       - "Single quote '"
       - "Double quote \""
       - "Backslash \\"
-    TestMultiLineString: >2
+    TestMultiLineString: |2
       Now is the time for 'all' \  <good> "men" come to the aid of the party
         Indentation is significant
       Similar to Python
     TestQuantity: "19.76 kg/m^3"
     TestString: "Now is the time for 'all' \\  <good> \"men\" come to the aid of the party"
-    TestMultiLineString: >2
-      Now is the time for 'all' \  <good> "men" come to the aid of the party
-        Indentation is significant
-      Similar to Python
     TestURL: "https://www.freecad.org/"

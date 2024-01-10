@@ -396,7 +396,7 @@
     <message>
       <location filename="../../DlgBindSheet.ui" line="69"/>
       <source>To cells:</source>
-      <translation type="unfinished">To cells:</translation>
+      <translation>Till celler:</translation>
     </message>
     <message>
       <location filename="../../DlgBindSheet.ui" line="117"/>
@@ -538,7 +538,7 @@ by that property.
     <message>
       <location filename="../../DlgSheetConf.ui" line="57"/>
       <source>Property:</source>
-      <translation type="unfinished">Property:</translation>
+      <translation>Egenskap:</translation>
     </message>
     <message>
       <location filename="../../DlgSheetConf.ui" line="64"/>
@@ -683,7 +683,7 @@ switch the design configuration. The property will be created if not exist.</tra
       <location filename="../../Command.cpp" line="194"/>
       <location filename="../../Command.cpp" line="254"/>
       <source>CSV (*.csv *.CSV);;All (*)</source>
-      <translation type="unfinished">CSV (*.csv *.CSV);;All (*)</translation>
+      <translation>CSV (*.csv *.CSV);;Alla (*)</translation>
     </message>
     <message>
       <location filename="../../Command.cpp" line="196"/>
@@ -901,7 +901,7 @@ Do you want to continue?</translation>
       <location filename="../../DlgBindSheet.cpp" line="276"/>
       <source>Error:
 </source>
-      <translation type="unfinished">Error:
+      <translation>Fel:
 </translation>
     </message>
     <message>
@@ -963,7 +963,7 @@ Defaults to: %V = %A
     <message>
       <location filename="../../DlgSettings.ui" line="132"/>
       <source>tab</source>
-      <translation type="unfinished">tab</translation>
+      <translation>flik</translation>
     </message>
     <message>
       <location filename="../../DlgSettings.ui" line="156"/>
@@ -1028,9 +1028,9 @@ Defaults to: %V = %A
     <message numerus="yes">
       <location filename="../../SheetTableView.cpp" line="142"/>
       <source>Remove row(s)</source>
-      <translation type="unfinished">
-        <numerusform>Remove row(s)</numerusform>
-        <numerusform>Remove row(s)</numerusform>
+      <translation>
+        <numerusform>Ta bort rad</numerusform>
+        <numerusform>Ta bort rader</numerusform>
       </translation>
     </message>
     <message numerus="yes">
@@ -1075,7 +1075,7 @@ Defaults to: %V = %A
       <location filename="../../SheetTableView.cpp" line="189"/>
       <location filename="../../SheetTableView.cpp" line="657"/>
       <source>Recompute</source>
-      <translation type="unfinished">Recompute</translation>
+      <translation>Beräkna om</translation>
     </message>
     <message>
       <location filename="../../SheetTableView.cpp" line="193"/>

@@ -39,14 +39,14 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import FreeCADGui as Gui
-import draftutils.utils as utils
-import draftutils.todo as todo
-import draftguitools.gui_base_original as gui_base_original
-import draftguitools.gui_tool_utils as gui_tool_utils
-import draftguitools.gui_lines as gui_lines
-import draftguitools.gui_trackers as trackers
-
-from draftutils.messages import _msg, _toolmsg, _err
+from draftguitools import gui_base_original
+from draftguitools import gui_lines
+from draftguitools import gui_tool_utils
+from draftguitools import gui_trackers as trackers
+from draftutils import params
+from draftutils import todo
+from draftutils import utils
+from draftutils.messages import _err, _msg, _toolmsg
 from draftutils.translate import translate
 
 
@@ -257,9 +257,8 @@ class CubicBezCurve(gui_lines.Line):
 
         Activate the specific BezCurve tracker.
         """
-        param = App.ParamGet("User parameter:BaseApp/Preferences/View")
-        self.old_EnableSelection = param.GetBool("EnableSelection", True)
-        param.SetBool("EnableSelection", False)
+        self.old_EnableSelection = params.get_param_view("EnableSelection")
+        params.set_param_view("EnableSelection", False)
 
         super(CubicBezCurve, self).Activated(name="CubicBezCurve",
                                              icon="Draft_CubicBezCurve",
@@ -432,8 +431,7 @@ class CubicBezCurve(gui_lines.Line):
         closed: bool, optional
             Close the curve if `True`.
         """
-        param = App.ParamGet("User parameter:BaseApp/Preferences/View")
-        param.SetBool("EnableSelection", self.old_EnableSelection)
+        params.set_param_view("EnableSelection", self.old_EnableSelection)
 
         if self.ui:
             if hasattr(self, "bezcurvetrack"):

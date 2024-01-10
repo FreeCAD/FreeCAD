@@ -36,6 +36,7 @@
 #include "LineGroup.h"
 #include "Preferences.h"
 #include "DrawUtil.h"
+#include "DrawViewPart.h"
 
 using namespace TechDraw;
 using namespace std;
@@ -190,6 +191,32 @@ Base::Vector3d CosmeticVertex::rotatedAndScaled(const double scale, const double
         scaledPoint = DU::invertY(scaledPoint);
     }
     return scaledPoint;
+}
+
+//! converts a point into its unscaled, unrotated form.  If point is Gui space coordinates,
+//! it should be inverted (DU::invertY) before calling this method, and the result should be
+//! inverted on return.
+Base::Vector3d CosmeticVertex::makeCanonicalPoint(DrawViewPart* dvp, Base::Vector3d point, bool unscale)
+{
+    // Base::Console().Message("CV::makeCanonicalPoint(%s)\n", DU::formatVector(point).c_str());
+    double rotDeg = dvp->Rotation.getValue();
+
+    Base::Vector3d result = point;
+    if (rotDeg != 0.0) {
+        // unrotate the point
+        double rotRad = rotDeg * M_PI / 180.0;
+        // we always rotate around the origin.
+        result.RotateZ(-rotRad);
+    }
+
+    if (unscale) {
+        // unrotated point is scaled and we need to unscale it (the normal situation)
+        double scale = dvp->getScale();
+        return result / scale;
+    }
+
+    // return the unrotated version of input point without unscaling
+    return result;
 }
 
 boost::uuids::uuid CosmeticVertex::getTag() const

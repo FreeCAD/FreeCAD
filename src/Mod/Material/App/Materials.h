@@ -25,6 +25,7 @@
 #include <memory>
 
 #include <QDir>
+#include <QSet>
 #include <QString>
 #include <QStringList>
 #include <QTextStream>
@@ -203,15 +204,15 @@ public:
     {
         return _editState;
     }
-    const QStringList& getTags() const
+    const QSet<QString>& getTags() const
     {
         return _tags;
     }
-    const QStringList* getPhysicalModels() const
+    const QSet<QString>* getPhysicalModels() const
     {
         return &_physicalUuids;
     }
-    const QStringList* getAppearanceModels() const
+    const QSet<QString>* getAppearanceModels() const
     {
         return &_appearanceUuids;
     }
@@ -282,6 +283,8 @@ public:
     std::shared_ptr<MaterialProperty> getPhysicalProperty(const QString& name) const;
     std::shared_ptr<MaterialProperty> getAppearanceProperty(const QString& name);
     std::shared_ptr<MaterialProperty> getAppearanceProperty(const QString& name) const;
+    std::shared_ptr<MaterialProperty> getProperty(const QString& name);
+    std::shared_ptr<MaterialProperty> getProperty(const QString& name) const;
     QVariant getPhysicalValue(const QString& name) const;
     Base::Quantity getPhysicalQuantity(const QString& name) const;
     QString getPhysicalValueString(const QString& name) const;
@@ -321,6 +324,14 @@ public:
     {
         _dereferenced = true;
     }
+    bool isOldFormat() const
+    {
+        return _oldFormat;
+    }
+    void setOldFormat(bool isOld)
+    {
+        _oldFormat = isOld;
+    }
 
     /*
      * Normalize models by removing any inherited models
@@ -351,7 +362,7 @@ public:
 
 protected:
     void addModel(const QString& uuid);
-    static void removeUUID(QStringList& uuidList, const QString& uuid);
+    static void removeUUID(QSet<QString>& uuidList, const QString& uuid);
 
     static QVariant
     getValue(const std::map<QString, std::shared_ptr<MaterialProperty>>& propertyList,
@@ -380,19 +391,20 @@ private:
     QString _description;
     QString _url;
     QString _reference;
-    QStringList _tags;
-    QStringList _physicalUuids;
-    QStringList _appearanceUuids;
-    QStringList _allUuids;  // Includes inherited models
+    QSet<QString> _tags;
+    QSet<QString> _physicalUuids;
+    QSet<QString> _appearanceUuids;
+    QSet<QString> _allUuids;  // Includes inherited models
     std::map<QString, std::shared_ptr<MaterialProperty>> _physical;
     std::map<QString, std::shared_ptr<MaterialProperty>> _appearance;
     bool _dereferenced;
+    bool _oldFormat;
     ModelEdit _editState;
 };
 
 inline QTextStream& operator<<(QTextStream& output, const MaterialProperty& property)
 {
-    output << MaterialValue::escapeString(property.getName()) << ": " << property.getYAMLString();
+    output << MaterialValue::escapeString(property.getName()) << ":" << property.getYAMLString();
     return output;
 }
 

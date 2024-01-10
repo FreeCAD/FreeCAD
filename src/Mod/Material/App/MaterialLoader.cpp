@@ -26,7 +26,12 @@
 
 #include <QDirIterator>
 #include <QFileInfo>
+#include <QList>
 #include <QMetaType>
+
+#if QT_VERSION >= QT_VERSION_CHECK(6,0,0)
+#include <QtCore5Compat/QRegExp>
+#endif
 
 #include <App/Application.h>
 #include <Base/Interpreter.h>
@@ -62,9 +67,6 @@ MaterialYamlEntry::MaterialYamlEntry(const std::shared_ptr<MaterialLibrary>& lib
     , _model(modelData)
 {}
 
-// MaterialYamlEntry::~MaterialYamlEntry()
-// {}
-
 QString MaterialYamlEntry::yamlValue(const YAML::Node& node,
                                      const std::string& key,
                                      const std::string& defaultValue)
@@ -75,38 +77,50 @@ QString MaterialYamlEntry::yamlValue(const YAML::Node& node,
     return QString::fromStdString(defaultValue);
 }
 
-std::shared_ptr<QList<QVariant>> MaterialYamlEntry::readList(const YAML::Node& node)
+std::shared_ptr<QList<QVariant>> MaterialYamlEntry::readList(const YAML::Node& node,
+                                                             bool isImageList)
 {
     auto list = std::make_shared<QList<QVariant>>();
     for (auto it = node.begin(); it != node.end(); it++) {
-        QVariant nodeName = QString::fromStdString(it->as<std::string>());
-        list->append(nodeName);
+        QVariant nodeValue;
+        if (isImageList) {
+            nodeValue = QString::fromStdString(it->as<std::string>())
+                            .remove(QRegExp(QString::fromStdString("[\r\n]")));
+        }
+        else {
+            nodeValue = QString::fromStdString(it->as<std::string>());
+        }
+        list->append(nodeValue);
     }
 
     return list;
 }
 
-std::shared_ptr<Material2DArray> MaterialYamlEntry::read2DArray(const YAML::Node& node)
+std::shared_ptr<QList<QVariant>> MaterialYamlEntry::readImageList(const YAML::Node& node)
 {
-    // Base::Console().Log("Read 2D Array\n");
+    return readList(node, true);
+}
 
+std::shared_ptr<Material2DArray> MaterialYamlEntry::read2DArray(const YAML::Node& node, int columns)
+{
     auto array2d = std::make_shared<Material2DArray>();
+    array2d->setColumns(columns);
 
-    if (node.size() == 2) {
-        // Get the default
-        Base::Quantity defaultValue(
-            Base::Quantity::parse(QString::fromStdString(node[0].as<std::string>())));
-        array2d->setDefault(QVariant::fromValue(defaultValue));
+    if (node.size() == 1 || node.size() == 2) {
+        // There used to be a default value. Ignore it.
+        auto yamlArray = node[0];
+        if (node.size() == 2) {
+            yamlArray = node[1];
+        }
 
-        auto yamlArray = node[1];
         for (std::size_t i = 0; i < yamlArray.size(); i++) {
             auto yamlRow = yamlArray[i];
 
-            auto row = std::make_shared<std::vector<QVariant>>();
+            auto row = std::make_shared<QList<QVariant>>();
             for (std::size_t j = 0; j < yamlRow.size(); j++) {
-                Base::Quantity q =
+                Base::Quantity qq =
                     Base::Quantity::parse(QString::fromStdString(yamlRow[j].as<std::string>()));
-                row->push_back(QVariant::fromValue(q));
+                row->push_back(QVariant::fromValue(qq));
             }
             array2d->addRow(row);
         }
@@ -115,28 +129,21 @@ std::shared_ptr<Material2DArray> MaterialYamlEntry::read2DArray(const YAML::Node
     return array2d;
 }
 
-std::shared_ptr<Material3DArray> MaterialYamlEntry::read3DArray(const YAML::Node& node)
+std::shared_ptr<Material3DArray> MaterialYamlEntry::read3DArray(const YAML::Node& node, int columns)
 {
-    Base::Console().Log("Read 3D Array\n");
-
     auto array3d = std::make_shared<Material3DArray>();
+    array3d->setColumns(columns - 1);  // First column is third dimension
 
-    if (node.size() == 2) {
-        // Get the default
-        Base::Quantity defaultValue(
-            Base::Quantity::parse(QString::fromStdString(node[0].as<std::string>())));
-        array3d->setDefault(QVariant::fromValue(defaultValue));
-
-        auto yamlArray = node[1];
+    if (node.size() == 1 || node.size() == 2) {
+        // There used to be a default value. Ignore it.
+        auto yamlArray = node[0];
+        if (node.size() == 2) {
+            yamlArray = node[1];
+        }
 
         for (std::size_t depth = 0; depth < yamlArray.size(); depth++) {
             auto yamlDepth = yamlArray[depth];
-            MaterialLoader::showYaml(yamlDepth);
             for (auto it = yamlDepth.begin(); it != yamlDepth.end(); it++) {
-                MaterialLoader::showYaml(it->first);
-                MaterialLoader::showYaml(it->second);
-
-                Base::Console().Log("Depth %d '%s'\n", depth, it->first.as<std::string>().c_str());
                 auto depthValue =
                     Base::Quantity::parse(QString::fromStdString(it->first.as<std::string>()));
 
@@ -146,7 +153,7 @@ std::shared_ptr<Material3DArray> MaterialYamlEntry::read3DArray(const YAML::Node
                 for (std::size_t i = 0; i < yamlTable.size(); i++) {
                     auto yamlRow = yamlTable[i];
 
-                    auto row = std::make_shared<std::vector<Base::Quantity>>();
+                    auto row = std::make_shared<QList<Base::Quantity>>();
                     for (std::size_t j = 0; j < yamlRow.size(); j++) {
                         row->push_back(Base::Quantity::parse(
                             QString::fromStdString(yamlRow[j].as<std::string>())));
@@ -187,7 +194,7 @@ void MaterialYamlEntry::addToTree(
     if (yamlModel["Inherits"]) {
         auto inherits = yamlModel["Inherits"];
         for (auto it = inherits.begin(); it != inherits.end(); it++) {
-            std::string nodeName = it->second["UUID"].as<std::string>();
+            auto nodeName = it->second["UUID"].as<std::string>();
 
             finalModel->setParentUUID(
                 QString::fromStdString(nodeName));  // Should only be one. Need to check
@@ -198,42 +205,52 @@ void MaterialYamlEntry::addToTree(
     if (yamlModel["Models"]) {
         auto models = yamlModel["Models"];
         for (auto it = models.begin(); it != models.end(); it++) {
-            std::string modelName = (it->first).as<std::string>();
+            auto modelName = (it->first).as<std::string>();
 
             // Add the model uuid
             auto modelNode = models[modelName];
-            std::string modelUUID = modelNode["UUID"].as<std::string>();
+            auto modelUUID = modelNode["UUID"].as<std::string>();
             finalModel->addPhysical(QString::fromStdString(modelUUID));
 
             // Add the property values
             auto properties = yamlModel["Models"][modelName];
             for (auto itp = properties.begin(); itp != properties.end(); itp++) {
-                std::string propertyName = (itp->first).as<std::string>();
+                auto propertyName = (itp->first).as<std::string>();
                 if (finalModel->hasPhysicalProperty(QString::fromStdString(propertyName))) {
                     auto prop =
                         finalModel->getPhysicalProperty(QString::fromStdString(propertyName));
                     auto type = prop->getType();
 
                     try {
-                        if (type == MaterialValue::List) {
+                        if (type == MaterialValue::List || type == MaterialValue::FileList) {
                             auto list = readList(itp->second);
                             finalModel->setPhysicalValue(QString::fromStdString(propertyName),
                                                          list);
                         }
+                        else if (type == MaterialValue::ImageList) {
+                            auto list = readImageList(itp->second);
+                            finalModel->setPhysicalValue(QString::fromStdString(propertyName),
+                                                         list);
+                        }
                         else if (type == MaterialValue::Array2D) {
-                            auto array2d = read2DArray(itp->second);
+                            auto array2d = read2DArray(itp->second, prop->columns());
                             finalModel->setPhysicalValue(QString::fromStdString(propertyName),
                                                          array2d);
                         }
                         else if (type == MaterialValue::Array3D) {
-                            auto array3d = read3DArray(itp->second);
+                            auto array3d = read3DArray(itp->second, prop->columns());
                             finalModel->setPhysicalValue(QString::fromStdString(propertyName),
                                                          array3d);
                         }
                         else {
-                            std::string propertyValue = (itp->second).as<std::string>();
+                            QString propertyValue =
+                                QString::fromStdString((itp->second).as<std::string>());
+                            if (type == MaterialValue::Image) {
+                                propertyValue =
+                                    propertyValue.remove(QRegExp(QString::fromStdString("[\r\n]")));
+                            }
                             finalModel->setPhysicalValue(QString::fromStdString(propertyName),
-                                                         QString::fromStdString(propertyValue));
+                                                         propertyValue);
                         }
                     }
                     catch (const YAML::BadConversion& e) {
@@ -255,40 +272,52 @@ void MaterialYamlEntry::addToTree(
     if (yamlModel["AppearanceModels"]) {
         auto models = yamlModel["AppearanceModels"];
         for (auto it = models.begin(); it != models.end(); it++) {
-            std::string modelName = (it->first).as<std::string>();
+            auto modelName = (it->first).as<std::string>();
 
             // Add the model uuid
             auto modelNode = models[modelName];
-            std::string modelUUID = modelNode["UUID"].as<std::string>();
+            auto modelUUID = modelNode["UUID"].as<std::string>();
             finalModel->addAppearance(QString::fromStdString(modelUUID));
 
             // Add the property values
             auto properties = yamlModel["AppearanceModels"][modelName];
             for (auto itp = properties.begin(); itp != properties.end(); itp++) {
-                std::string propertyName = (itp->first).as<std::string>();
+                auto propertyName = (itp->first).as<std::string>();
                 if (finalModel->hasAppearanceProperty(QString::fromStdString(propertyName))) {
                     auto prop =
                         finalModel->getAppearanceProperty(QString::fromStdString(propertyName));
                     auto type = prop->getType();
 
                     try {
-                        if (type == MaterialValue::List) {
+                        if (type == MaterialValue::List || type == MaterialValue::FileList) {
                             auto list = readList(itp->second);
                             finalModel->setAppearanceValue(QString::fromStdString(propertyName),
                                                            list);
                         }
+                        else if (type == MaterialValue::ImageList) {
+                            auto list = readImageList(itp->second);
+                            finalModel->setAppearanceValue(QString::fromStdString(propertyName),
+                                                           list);
+                        }
                         else if (type == MaterialValue::Array2D) {
-                            auto array2d = read2DArray(itp->second);
+                            auto array2d = read2DArray(itp->second, prop->columns());
                             finalModel->setAppearanceValue(QString::fromStdString(propertyName),
                                                            array2d);
                         }
                         else if (type == MaterialValue::Array3D) {
-                            Base::Console().Log("Read 3D Array\n");
+                            auto array3d = read3DArray(itp->second, prop->columns());
+                            finalModel->setAppearanceValue(QString::fromStdString(propertyName),
+                                                           array3d);
                         }
                         else {
-                            std::string propertyValue = (itp->second).as<std::string>();
+                            QString propertyValue =
+                                QString::fromStdString((itp->second).as<std::string>());
+                            if (type == MaterialValue::Image) {
+                                propertyValue =
+                                    propertyValue.remove(QRegExp(QString::fromStdString("[\r\n]")));
+                            }
                             finalModel->setAppearanceValue(QString::fromStdString(propertyName),
-                                                           QString::fromStdString(propertyValue));
+                                                           propertyValue);
                         }
                     }
                     catch (const YAML::BadConversion& e) {
@@ -307,39 +336,39 @@ void MaterialYamlEntry::addToTree(
     }
 
     QString path = QDir(directory).absolutePath();
-    // Base::Console().Log("\tPath '%s'\n", path.toStdString().c_str());
     (*materialMap)[uuid] = library->addMaterial(finalModel, path);
 }
+
+//===
 
 std::unique_ptr<std::map<QString, std::shared_ptr<MaterialEntry>>>
     MaterialLoader::_materialEntryMap = nullptr;
 
 MaterialLoader::MaterialLoader(
-    std::shared_ptr<std::map<QString, std::shared_ptr<Material>>> materialMap,
-    std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>> libraryList)
+    const std::shared_ptr<std::map<QString, std::shared_ptr<Material>>>& materialMap,
+    const std::shared_ptr<std::list<std::shared_ptr<MaterialLibrary>>>& libraryList)
     : _materialMap(materialMap)
     , _libraryList(libraryList)
 {
     loadLibraries();
 }
 
-void MaterialLoader::addLibrary(std::shared_ptr<MaterialLibrary> model)
+void MaterialLoader::addLibrary(const std::shared_ptr<MaterialLibrary>& model)
 {
     _libraryList->push_back(model);
 }
 
 std::shared_ptr<MaterialEntry>
-MaterialLoader::getMaterialFromYAML(std::shared_ptr<MaterialLibrary> library,
+MaterialLoader::getMaterialFromYAML(const std::shared_ptr<MaterialLibrary>& library,
                                     YAML::Node& yamlroot,
-                                    const QString& path) const
+                                    const QString& path)
 {
     std::shared_ptr<MaterialEntry> model = nullptr;
 
     try {
-        const std::string uuid = yamlroot["General"]["UUID"].as<std::string>();
+        auto uuid = yamlroot["General"]["UUID"].as<std::string>();
 
         // Always get the name from the filename
-        // QString name = QString::fromStdString(yamlroot["General"]["Name"].as<std::string>());
         QFileInfo filepath(path);
         QString name =
             filepath.fileName().remove(QString::fromStdString(".FCMat"), Qt::CaseInsensitive);
@@ -349,7 +378,6 @@ MaterialLoader::getMaterialFromYAML(std::shared_ptr<MaterialLibrary> library,
                                                     path,
                                                     QString::fromStdString(uuid),
                                                     yamlroot);
-        // showYaml(yamlroot);
     }
     catch (YAML::Exception const& e) {
         Base::Console().Error("YAML parsing error: '%s'\n", path.toStdString().c_str());
@@ -362,7 +390,7 @@ MaterialLoader::getMaterialFromYAML(std::shared_ptr<MaterialLibrary> library,
 }
 
 std::shared_ptr<MaterialEntry>
-MaterialLoader::getMaterialFromPath(std::shared_ptr<MaterialLibrary> library,
+MaterialLoader::getMaterialFromPath(const std::shared_ptr<MaterialLibrary>& library,
                                     const QString& path) const
 {
     std::shared_ptr<MaterialEntry> model = nullptr;
@@ -371,7 +399,6 @@ MaterialLoader::getMaterialFromPath(std::shared_ptr<MaterialLibrary> library,
     std::string pathName = path.toStdString();
 
     if (MaterialConfigLoader::isConfigStyle(path)) {
-        // Base::Console().Log("Old format .FCMat file: '%s'\n", pathName.c_str());
         auto material = MaterialConfigLoader::getMaterialFromPath(library, path);
         if (material) {
             (*_materialMap)[material->getUUID()] = library->addMaterial(material, path);
@@ -409,16 +436,13 @@ void MaterialLoader::showYaml(const YAML::Node& yaml)
 
 
 void MaterialLoader::dereference(
-    std::shared_ptr<std::map<QString, std::shared_ptr<Material>>> materialMap,
-    std::shared_ptr<Material> material)
+    const std::shared_ptr<std::map<QString, std::shared_ptr<Material>>>& materialMap,
+    const std::shared_ptr<Material>& material)
 {
     // Avoid recursion
     if (material->getDereferenced()) {
         return;
     }
-
-    // Base::Console().Log("Dereferencing material '%s'.\n",
-    //                     material->getName().toStdString().c_str());
 
     auto parentUUID = material->getParentUUID();
     if (parentUUID.size() > 0) {
@@ -439,25 +463,25 @@ void MaterialLoader::dereference(
 
         // Add physical models
         auto modelVector = parent->getPhysicalModels();
-        for (auto model = modelVector->begin(); model != modelVector->end(); model++) {
-            if (!material->hasPhysicalModel(*model)) {
-                material->addPhysical(*model);
+        for (auto& model : *modelVector) {
+            if (!material->hasPhysicalModel(model)) {
+                material->addPhysical(model);
             }
         }
 
         // Add appearance models
         modelVector = parent->getAppearanceModels();
-        for (auto model = modelVector->begin(); model != modelVector->end(); model++) {
-            if (!material->hasAppearanceModel(*model)) {
-                material->addAppearance(*model);
+        for (auto& model : *modelVector) {
+            if (!material->hasAppearanceModel(model)) {
+                material->addAppearance(model);
             }
         }
 
         // Add values
         auto properties = parent->getPhysicalProperties();
-        for (auto itp = properties.begin(); itp != properties.end(); itp++) {
-            auto name = itp->first;
-            auto property = itp->second;
+        for (auto& itp : properties) {
+            auto name = itp.first;
+            auto property = itp.second;
 
             if (material->getPhysicalProperty(name)->isNull()) {
                 material->getPhysicalProperty(name)->setValue(property->getValue());
@@ -465,9 +489,9 @@ void MaterialLoader::dereference(
         }
 
         properties = parent->getAppearanceProperties();
-        for (auto itp = properties.begin(); itp != properties.end(); itp++) {
-            auto name = itp->first;
-            auto property = itp->second;
+        for (auto& itp : properties) {
+            auto name = itp.first;
+            auto property = itp.second;
 
             if (material->getAppearanceProperty(name)->isNull()) {
                 material->getAppearanceProperty(name)->setValue(property->getValue());
@@ -478,12 +502,12 @@ void MaterialLoader::dereference(
     material->markDereferenced();
 }
 
-void MaterialLoader::dereference(std::shared_ptr<Material> material)
+void MaterialLoader::dereference(const std::shared_ptr<Material>& material)
 {
     dereference(_materialMap, material);
 }
 
-void MaterialLoader::loadLibrary(std::shared_ptr<MaterialLibrary> library)
+void MaterialLoader::loadLibrary(const std::shared_ptr<MaterialLibrary>& library)
 {
     if (_materialEntryMap == nullptr) {
         _materialEntryMap = std::make_unique<std::map<QString, std::shared_ptr<MaterialEntry>>>();
@@ -495,16 +519,21 @@ void MaterialLoader::loadLibrary(std::shared_ptr<MaterialLibrary> library)
         QFileInfo file(pathname);
         if (file.isFile()) {
             if (file.suffix().toStdString() == "FCMat") {
-                auto model = getMaterialFromPath(library, file.canonicalFilePath());
-                if (model) {
-                    (*_materialEntryMap)[model->getUUID()] = model;
+                try {
+                    auto model = getMaterialFromPath(library, file.canonicalFilePath());
+                    if (model) {
+                        (*_materialEntryMap)[model->getUUID()] = model;
+                    }
+                }
+                catch (const MaterialReadError&) {
+                    // Ignore the file. Error messages should have already been logged
                 }
             }
         }
     }
 
-    for (auto it = _materialEntryMap->begin(); it != _materialEntryMap->end(); it++) {
-        it->second->addToTree(_materialMap);
+    for (auto& it : *_materialEntryMap) {
+        it.second->addToTree(_materialMap);
     }
 }
 
@@ -512,13 +541,13 @@ void MaterialLoader::loadLibraries()
 {
     auto _libraryList = getMaterialLibraries();
     if (_libraryList) {
-        for (auto it = _libraryList->begin(); it != _libraryList->end(); it++) {
-            loadLibrary(*it);
+        for (auto& it : *_libraryList) {
+            loadLibrary(it);
         }
     }
 
-    for (auto it = _materialMap->begin(); it != _materialMap->end(); it++) {
-        dereference(it->second);
+    for (auto& it : *_materialMap) {
+        dereference(it.second);
     }
 }
 

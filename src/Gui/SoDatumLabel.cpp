@@ -91,6 +91,8 @@ SoDatumLabel::SoDatumLabel()
 
     SO_NODE_ADD_FIELD(param1, (0.f));
     SO_NODE_ADD_FIELD(param2, (0.f));
+    SO_NODE_ADD_FIELD(param4, (0.f));
+    SO_NODE_ADD_FIELD(param5, (0.f));
 
     useAntialiasing = true;
 
@@ -994,6 +996,13 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         SbVec3f p2 = points[1];
 
         SbVec3f dir = (p2-p1);
+        SbVec3f center = p1;
+        double radius = (p2 - p1).length();
+        if (this->datumtype.getValue() == DIAMETER) {
+            center = (p1 + p2) / 2;
+            radius = radius / 2;
+        }
+
         dir.normalize();
         SbVec3f normal (-dir[1],dir[0],0);
 
@@ -1053,7 +1062,22 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
                 glVertex2f(ar1_1[0], ar1_1[1]);
                 glVertex2f(ar2_1[0], ar2_1[1]);
             glEnd();
+        }
 
+        // Draw arc helper if needed
+        float startangle = this->param3.getValue();
+        float range = this->param4.getValue();
+        if (range != 0.0) {
+            int countSegments = std::max(6, abs(int(50.0 * range / (2 * M_PI))));
+            double segment = range / (countSegments - 1);
+
+            glBegin(GL_LINE_STRIP);
+            for (int i = 0; i < countSegments; i++) {
+                double theta = startangle + segment * i;
+                SbVec3f v1 = center + SbVec3f(radius * cos(theta), radius * sin(theta), 0);
+                glVertex2f(v1[0], v1[1]);
+            }
+            glEnd();
         }
 
     }
@@ -1061,11 +1085,17 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         // Only the angle intersection point is needed
         SbVec3f p0 = points[0];
 
+        float margin = this->imgHeight / 4.0;
+
         // Load the Parameters
         float length     = this->param1.getValue();
         float startangle = this->param2.getValue();
         float range      = this->param3.getValue();
         float endangle   = startangle + range;
+        float endLineLength1 = std::max(this->param4.getValue(), margin);
+        float endLineLength2 = std::max(this->param5.getValue(), margin);
+        float endLineLength12 = std::max(- this->param4.getValue(), margin);
+        float endLineLength22 = std::max(- this->param5.getValue(), margin);
 
 
         float r = 2*length;
@@ -1089,7 +1119,6 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
 
         textOffset = p0 + v0 * r;
 
-        float margin = this->imgHeight / 4.0;
 
         // Draw
         glBegin(GL_LINE_STRIP);
@@ -1113,10 +1142,10 @@ void SoDatumLabel::GLRender(SoGLRenderAction * action)
         SbVec3f v1(cos(startangle),sin(startangle),0);
         SbVec3f v2(cos(endangle),sin(endangle),0);
 
-        SbVec3f pnt1 = p0+(r-margin)*v1;
-        SbVec3f pnt2 = p0+(r+margin)*v1;
-        SbVec3f pnt3 = p0+(r-margin)*v2;
-        SbVec3f pnt4 = p0+(r+margin)*v2;
+        SbVec3f pnt1 = p0 + (r - endLineLength1) * v1;
+        SbVec3f pnt2 = p0 + (r + endLineLength12) * v1;
+        SbVec3f pnt3 = p0 + (r - endLineLength2) * v2;
+        SbVec3f pnt4 = p0 + (r + endLineLength22) * v2;
 
         glBegin(GL_LINES);
             glVertex2f(pnt1[0],pnt1[1]);

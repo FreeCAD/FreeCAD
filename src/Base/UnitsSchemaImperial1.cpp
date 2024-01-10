@@ -82,19 +82,19 @@ UnitsSchemaImperial1::schemaTranslate(const Quantity& quant, double& factor, QSt
         factor = 1.0;
     }
     else if (unit == Unit::Area) {
-        // TODO Cascade for the Areas
+        // TODO: Cascade for the Areas
         // default action for all cases without special treatment:
         unitString = QString::fromLatin1("in^2");
         factor = 645.16;
     }
     else if (unit == Unit::Volume) {
-        // TODO Cascade for the Volume
+        // TODO: Cascade for the Volume
         // default action for all cases without special treatment:
         unitString = QString::fromLatin1("in^3");
         factor = 16387.064;
     }
     else if (unit == Unit::Mass) {
-        // TODO Cascade for the weights
+        // TODO: Cascade for the weights
         // default action for all cases without special treatment:
         unitString = QString::fromLatin1("lb");
         factor = 0.45359237;
@@ -149,19 +149,19 @@ QString UnitsSchemaImperialDecimal::schemaTranslate(const Base::Quantity& quant,
         factor = 1.0;
     }
     else if (unit == Unit::Area) {
-        // TODO Cascade for the Areas
+        // TODO: Cascade for the Areas
         // default action for all cases without special treatment:
         unitString = QString::fromLatin1("in^2");
         factor = 645.16;
     }
     else if (unit == Unit::Volume) {
-        // TODO Cascade for the Volume
+        // TODO: Cascade for the Volume
         // default action for all cases without special treatment:
         unitString = QString::fromLatin1("in^3");
         factor = 16387.064;
     }
     else if (unit == Unit::Mass) {
-        // TODO Cascade for the weights
+        // TODO: Cascade for the weights
         // default action for all cases without special treatment:
         unitString = QString::fromLatin1("lb");
         factor = 0.45359237;

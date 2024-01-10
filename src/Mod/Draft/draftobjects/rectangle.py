@@ -31,9 +31,8 @@ from PySide.QtCore import QT_TRANSLATE_NOOP
 
 import FreeCAD as App
 import DraftGeomUtils
-
-from draftutils.utils import get_param
 from draftobjects.base import DraftObject
+from draftutils import params
 
 
 class Rectangle(DraftObject):
@@ -66,7 +65,7 @@ class Rectangle(DraftObject):
         _tip = QT_TRANSLATE_NOOP("App::Property", "The area of this object")
         obj.addProperty("App::PropertyArea", "Area", "Draft", _tip)
 
-        obj.MakeFace = get_param("fillmode",True)
+        obj.MakeFace = params.get_param("fillmode")
         obj.Length=1
         obj.Height=1
         obj.Rows=1

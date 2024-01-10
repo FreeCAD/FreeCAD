@@ -35,8 +35,8 @@ import FreeCAD
 import FreeCADGui as Gui
 import Draft
 import Draft_rc
-import draftguitools.gui_base as gui_base
-
+from draftguitools import gui_base
+from draftutils import params
 from draftutils.translate import translate
 
 # The module is used to prevent complaints from code checkers (flake8)
@@ -112,9 +112,8 @@ class LayerManager:
         self.dialog.buttonOK.setIcon(QtGui.QIcon(":/icons/edit_OK.svg"))
 
         # restore window geometry from stored state
-        pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-        w = pref.GetInt("LayersManagerWidth",640)
-        h = pref.GetInt("LayersManagerHeight",320)
+        w = params.get_param("LayersManagerWidth")
+        h = params.get_param("LayersManagerHeight")
         self.dialog.resize(w,h)
 
         # center the dialog over FreeCAD window
@@ -261,9 +260,8 @@ class LayerManager:
         "when Cancel button is pressed or dialog is closed"
 
         # save dialog size
-        pref = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-        pref.SetInt("LayersManagerWidth",self.dialog.width())
-        pref.SetInt("LayersManagerHeight",self.dialog.height())
+        params.set_param("LayersManagerWidth", self.dialog.width())
+        params.set_param("LayersManagerHeight", self.dialog.height())
 
         return True
 
@@ -302,18 +300,27 @@ class LayerManager:
         onItem = QtGui.QStandardItem()
         onItem.setCheckable(True)
         onItem.setCheckState(QtCore.Qt.Checked)
-        nameItem = QtGui.QStandardItem(translate("Draft","New Layer"))
+        nameItem = QtGui.QStandardItem(translate("Draft", "New Layer"))
         widthItem = QtGui.QStandardItem()
-        widthItem.setData(self.getPref("DefaultShapeLineWidth",2,"Integer"),QtCore.Qt.DisplayRole)
+        widthItem.setData(params.get_param_view("DefaultShapeLineWidth"), QtCore.Qt.DisplayRole)
         styleItem = QtGui.QStandardItem("Solid")
         lineColorItem = QtGui.QStandardItem()
-        lineColorItem.setData(self.getPref("DefaultShapeLineColor",421075455),QtCore.Qt.UserRole)
+        lineColorItem.setData(
+            utils.get_rgba_tuple(params.get_param_view("DefaultShapeLineColor"))[:3],
+            QtCore.Qt.UserRole
+        )
         shapeColorItem = QtGui.QStandardItem()
-        shapeColorItem.setData(self.getPref("DefaultShapeColor",3435973887),QtCore.Qt.UserRole)
+        shapeColorItem.setData(
+            utils.get_rgba_tuple(params.get_param_view("DefaultShapeColor"))[:3],
+            QtCore.Qt.UserRole
+        )
         transparencyItem = QtGui.QStandardItem()
-        transparencyItem.setData(0,QtCore.Qt.DisplayRole)
+        transparencyItem.setData(0, QtCore.Qt.DisplayRole)
         linePrintColorItem = QtGui.QStandardItem()
-        linePrintColorItem.setData(self.getPref("DefaultPrintColor",0),QtCore.Qt.UserRole)
+        linePrintColorItem.setData(
+            utils.get_rgba_tuple(params.get_param("DefaultPrintColor"))[:3],
+            QtCore.Qt.UserRole
+        )
 
         # populate with object data
         if obj:
@@ -340,20 +347,6 @@ class LayerManager:
                               shapeColorItem,
                               transparencyItem,
                               linePrintColorItem])
-
-    def getPref(self,value,default,valuetype="Unsigned"):
-
-        "retrieves a view pref value"
-
-        p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View")
-        if valuetype == "Unsigned":
-            c = p.GetUnsigned(value,default)
-            r = float((c>>24)&0xFF)/255.0
-            g = float((c>>16)&0xFF)/255.0
-            b = float((c>>8)&0xFF)/255.0
-            return (r,g,b,)
-        elif valuetype == "Integer":
-            return p.GetInt(value,default)
 
     def onDelete(self):
 

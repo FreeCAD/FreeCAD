@@ -110,7 +110,6 @@ SbBool TinkerCADNavigationStyle::processSoEvent(const SoEvent * const ev)
         const auto event = (const SoMouseButtonEvent *) ev;
         const int button = event->getButton();
         const SbBool press = event->getState() == SoButtonEvent::DOWN ? true : false;
-        SbBool shortRMBclick = false;
 
         switch (button) {
         case SoMouseButtonEvent::BUTTON1:
@@ -135,14 +134,6 @@ SbBool TinkerCADNavigationStyle::processSoEvent(const SoEvent * const ev)
                 mouseDownConsumedEvent = *event;
                 mouseDownConsumedEvent.setTime(ev->getTime());
             }
-            else if (mouseDownConsumedEvent.getButton() == SoMouseButtonEvent::BUTTON2) {
-                SbTime tmp = (ev->getTime() - mouseDownConsumedEvent.getTime());
-                float dci = float(QApplication::doubleClickInterval())/1000.0f;
-                // time between press and release event
-                if (tmp.getValue() < dci) {
-                    shortRMBclick = true;
-                }
-            }
 
             // About to start rotating
             if (press && (curmode == NavigationStyle::IDLE)) {
@@ -151,16 +142,17 @@ SbBool TinkerCADNavigationStyle::processSoEvent(const SoEvent * const ev)
                 this->centerTime = ev->getTime();
                 processed = true;
             }
-            else if (!press && (curmode == NavigationStyle::DRAGGING)) {
-                if (shortRMBclick) {
-                    newmode = NavigationStyle::IDLE;
-                    if (!viewer->isEditing()) {
-                        // If we are in drag mode but mouse hasn't been moved open the context-menu
-                        if (this->isPopupMenuEnabled()) {
-                            this->openPopupMenu(event->getPosition());
-                        }
-                        processed = true;
+            else if (!press && curmode == NavigationStyle::DRAGGING && hasDragged) {
+                processed = true;
+            }
+            else if (!press && curmode == NavigationStyle::DRAGGING && !hasDragged) {
+                newmode = NavigationStyle::IDLE;
+                if (!viewer->isEditing()) {
+                    // If we are in drag mode but mouse hasn't been moved open the context-menu
+                    if (this->isPopupMenuEnabled()) {
+                        this->openPopupMenu(event->getPosition());
                     }
+                    processed = true;
                 }
             }
             break;

@@ -51,7 +51,7 @@
     <message>
       <location filename="../../UnitsApi.cpp" line="87"/>
       <source>Meter decimal (m, m², m³)</source>
-      <translation>Système métrique (m, m², m³)</translation>
+      <translation>Mètre décimal (m, m², m³)</translation>
     </message>
     <message>
       <location filename="../../UnitsApi.cpp" line="89"/>

@@ -83,6 +83,13 @@ DrawViewDetail::DrawViewDetail() : m_waitingForDetail(false), m_saveDvp(nullptr)
     ADD_PROPERTY_TYPE(Radius, (10.0), dgroup, App::Prop_None, "Size of detail area");
     ADD_PROPERTY_TYPE(Reference, ("1"), dgroup, App::Prop_None, "An identifier for this detail");
 
+    static const char* agroup{"Appearance"};
+    ADD_PROPERTY_TYPE(ShowMatting, (Preferences::showDetailMatting()), agroup, App::Prop_None,
+             "Show or hide the matting around the detail view");
+    ADD_PROPERTY_TYPE(ShowHighlight, (Preferences::showDetailHighlight()), agroup, App::Prop_None,
+             "Show or hide the detail highlight in the source view");
+
+
     getParameters();
     m_fudge = 1.01;
 
@@ -167,7 +174,7 @@ App::DocumentObjectExecReturn* DrawViewDetail::execute()
     }
 
     detailExec(shape, dvp, dvs);
-    addShapes2d();
+    addPoints();
 
     dvp->requestPaint();//to refresh detail highlight in base view
     return DrawView::execute();

@@ -255,9 +255,9 @@ Restart:
                         }
                         else {
                             double ra = 0, rb = 0;
-                            double angle,
-                                angleplus = 0.;  // angle = rotation of object as a whole; angleplus
-                                                 // = arc angle (t parameter for ellipses).
+                            double angle,        // rotation of object as a whole
+                                angleplus = 0.;  // arc angle (t parameter for ellipses)
+
                             if (geo->is<Part::GeomCircle>()) {
                                 const Part::GeomCircle* circle =
                                     static_cast<const Part::GeomCircle*>(geo);
@@ -704,8 +704,7 @@ Restart:
                             }
 
                             if (geo1->is<Part::GeomEllipse>() || geo1->is<Part::GeomArcOfEllipse>()
-                                || geo1->getTypeId()
-                                    == Part::GeomArcOfHyperbola::getClassTypeId()) {
+                                || geo1->is<Part::GeomArcOfHyperbola>()) {
 
                                 Base::Vector3d majDir, minDir, rvec;
                                 majDir = Base::Vector3d(cos(angle1),
@@ -814,38 +813,37 @@ Restart:
                 case DistanceX:
                 case DistanceY: {
                     assert(Constr->First >= -extGeoCount && Constr->First < intGeoCount);
-                    Base::Vector3d pnt1(0., 0., 0.), pnt2(0., 0., 0.);
-                    if (Constr->SecondPos != Sketcher::PointPos::none) {  // point to point distance
-                        pnt1 = geolistfacade.getPoint(Constr->First, Constr->FirstPos);
+
+                    // pnt1 will be initialized to (0,0,0) if only one point is given
+                    auto pnt1 = geolistfacade.getPoint(Constr->First, Constr->FirstPos);
+
+                    Base::Vector3d pnt2(0., 0., 0.);
+
+                    if (Constr->SecondPos != Sketcher::PointPos::none) {
+                        // point to point distance
                         pnt2 = geolistfacade.getPoint(Constr->Second, Constr->SecondPos);
                     }
                     else if (Constr->Second != GeoEnum::GeoUndef) {
-                        const Part::Geometry* geo =
-                            geolistfacade.getGeometryFromGeoId(Constr->Second);
-                        if (geo->is<Part::GeomLineSegment>()) {
-                            const Part::GeomLineSegment* lineSeg =
-                                static_cast<const Part::GeomLineSegment*>(geo);
+                        auto geo1 = geolistfacade.getGeometryFromGeoId(Constr->First);
+                        auto geo2 = geolistfacade.getGeometryFromGeoId(Constr->Second);
+                        if (isLineSegment(*geo2)) {
+                            // NOLINTNEXTLINE
+                            auto lineSeg = static_cast<const Part::GeomLineSegment*>(geo2);
                             Base::Vector3d l2p1 = lineSeg->getStartPoint();
                             Base::Vector3d l2p2 = lineSeg->getEndPoint();
-                            if (Constr->FirstPos
-                                != Sketcher::PointPos::none) {  // point to line distance
-                                pnt1 = geolistfacade.getPoint(Constr->First, Constr->FirstPos);
-                                // calculate the projection of p1 onto line2
+
+                            if (Constr->FirstPos != Sketcher::PointPos::none) {
+                                // point to line distance
+                                // calculate the projection of p1 onto lineSeg
                                 pnt2.ProjectToLine(pnt1 - l2p1, l2p2 - l2p1);
                                 pnt2 += pnt1;
                             }
                             else {
-                                const Part::Geometry* geo1 =
-                                    geolistfacade.getGeometryFromGeoId(Constr->First);
-                                if (geo1->is<Part::GeomCircle>()) {  // circle to line
-                                                                     // distance
-                                    const Part::GeomCircle* circleSeg =
-                                        static_cast<const Part::GeomCircle*>(geo1);
-                                    Base::Vector3d ct = circleSeg->getCenter();
-                                    double radius = circleSeg->getRadius();
-                                    pnt1.ProjectToLine(
-                                        ct - l2p1,
-                                        l2p2 - l2p1);  // project on the line translated to origin
+                                if (isCircleOrArc(*geo1)) {
+                                    // circular to line distance
+                                    auto [radius, ct] = getRadiusCenterCircleArc(geo1);
+                                    // project the center on the line (translated to origin)
+                                    pnt1.ProjectToLine(ct - l2p1, l2p2 - l2p1);
                                     Base::Vector3d dir = pnt1;
                                     dir.Normalize();
                                     pnt1 += ct;
@@ -853,23 +851,18 @@ Restart:
                                 }
                             }
                         }
-                        else if (geo->is<Part::GeomCircle>()) {
-                            const Part::Geometry* geo1 =
-                                geolistfacade.getGeometryFromGeoId(Constr->First);
-                            if (geo1->is<Part::GeomCircle>()) {  // circle to circle
-                                                                 // distance
-                                const Part::GeomCircle* circleSeg1 =
-                                    static_cast<const Part::GeomCircle*>(geo1);
-                                auto circleSeg2 = static_cast<const Part::GeomCircle*>(geo);
-                                GetCirclesMinimalDistance(circleSeg1, circleSeg2, pnt1, pnt2);
-                            }
-                            else if (Constr->FirstPos
-                                     != Sketcher::PointPos::none) {  // point to circle distance
-                                auto circleSeg2 = static_cast<const Part::GeomCircle*>(geo);
-                                pnt1 = geolistfacade.getPoint(Constr->First, Constr->FirstPos);
-                                Base::Vector3d v = pnt1 - circleSeg2->getCenter();
+                        else if (isCircleOrArc(*geo2)) {
+                            if (Constr->FirstPos != Sketcher::PointPos::none) {
+                                // point to circular distance
+                                auto [rad, ct] = getRadiusCenterCircleArc(geo2);
+
+                                Base::Vector3d v = pnt1 - ct;
                                 v = v.Normalize();
-                                pnt2 = circleSeg2->getCenter() + circleSeg2->getRadius() * v;
+                                pnt2 = ct + rad * v;
+                            }
+                            else if (isCircleOrArc(*geo1)) {
+                                // circular to circular distance
+                                GetCirclesMinimalDistance(geo1, geo2, pnt1, pnt2);
                             }
                         }
                         else {
@@ -877,14 +870,15 @@ Restart:
                         }
                     }
                     else if (Constr->FirstPos != Sketcher::PointPos::none) {
+                        // one point distance
+                        pnt1 = Base::Vector3d(0., 0., 0.);
                         pnt2 = geolistfacade.getPoint(Constr->First, Constr->FirstPos);
                     }
                     else if (Constr->First != GeoEnum::GeoUndef) {
-                        const Part::Geometry* geo =
-                            geolistfacade.getGeometryFromGeoId(Constr->First);
-                        if (geo->is<Part::GeomLineSegment>()) {  // segment distance
-                            const Part::GeomLineSegment* lineSeg =
-                                static_cast<const Part::GeomLineSegment*>(geo);
+                        auto geo = geolistfacade.getGeometryFromGeoId(Constr->First);
+                        if (isLineSegment(*geo)) {
+                            // segment distance
+                            auto lineSeg = static_cast<const Part::GeomLineSegment*>(geo);
                             pnt1 = lineSeg->getStartPoint();
                             pnt2 = lineSeg->getEndPoint();
                         }
@@ -896,8 +890,10 @@ Restart:
                         break;
                     }
 
+                    // NOLINTBEGIN
                     SoDatumLabel* asciiText = static_cast<SoDatumLabel*>(
                         sep->getChild(static_cast<int>(ConstraintNodePosition::DatumLabelIndex)));
+                    // NOLINTEND
 
                     // Get presentation string (w/o units if option is set)
                     asciiText->string =
@@ -1038,8 +1034,9 @@ Restart:
                             translation = static_cast<SoZoomTranslation*>(sep->getChild(
                                 static_cast<int>(ConstraintNodePosition::SecondTranslationIndex)));
 
-                            translation->abPos =
-                                SbVec3f(secondPos.x, secondPos.y, zConstrH);  // Absolute Reference
+                            translation->abPos = SbVec3f(secondPos.x,
+                                                         secondPos.y,
+                                                         zConstrH);  // Absolute Reference
                             translation->translation =
                                 SbVec3f(relpos2.x - relpos1.x, relpos2.y - relpos1.y, 0);
 
@@ -1211,7 +1208,8 @@ Restart:
                                 double det = dir1.x * dir2.y - dir1.y * dir2.x;
                                 if ((det > 0 ? det : -det) < 1e-10) {
                                     // lines are coincident (or parallel) and in this case the
-                                    // center of the point pairs with the shortest distance is used
+                                    // center of the point pairs with the shortest distance is
+                                    // used
                                     Base::Vector3d p1[2], p2[2];
                                     p1[0] = lineSeg1->getStartPoint();
                                     p1[1] = lineSeg1->getEndPoint();
@@ -1248,13 +1246,13 @@ Restart:
                             p0 = SbVec3f(p.x, p.y, 0);
                             dir1 = getNormal(geolistfacade, Constr->First, p);
                             // TODO: Check
-                            // dir1 = getSolvedSketch().calculateNormalAtPoint(Constr->First, p.x,
-                            // p.y);
+                            // dir1 = getSolvedSketch().calculateNormalAtPoint(Constr->First,
+                            // p.x, p.y);
                             dir1.RotateZ(-M_PI / 2);  // convert to vector of tangency by rotating
                             dir2 = getNormal(geolistfacade, Constr->Second, p);
                             // TODO: Check
-                            // dir2 = getSolvedSketch().calculateNormalAtPoint(Constr->Second, p.x,
-                            // p.y);
+                            // dir2 = getSolvedSketch().calculateNormalAtPoint(Constr->Second,
+                            // p.x, p.y);
                             dir2.RotateZ(-M_PI / 2);
 
                             startangle = atan2(dir1.y, dir1.x);
@@ -2106,12 +2104,13 @@ std::set<int> EditModeConstraintCoinManager::detectPreselectionConstr(const SoPi
                              ++b) {
 
 #ifdef FC_DEBUG
-                            // Useful code to debug coordinates and bounding boxes that does not
-                            // need to be compiled in for any debug operations.
+                            // Useful code to debug coordinates and bounding boxes that does
+                            // not need to be compiled in for any debug operations.
 
                             /*Base::Console().Log("Abs(%f,%f),Trans(%f,%f),Coords(%d,%d),iCoords(%f,%f),icon(%d,%d),isize(%d,%d),boundingbox([%d,%d],[%d,%d])\n",
-                             * absPos[0],absPos[1],trans[0], trans[1], cursorPos[0], cursorPos[1],
-                             * iconCoords[0], iconCoords[1], iconX, iconY, iconSize[0], iconSize[1],
+                             * absPos[0],absPos[1],trans[0], trans[1], cursorPos[0],
+                             * cursorPos[1], iconCoords[0], iconCoords[1], iconX, iconY,
+                             * iconSize[0], iconSize[1],
                              * b->first.topLeft().x(),b->first.topLeft().y(),b->first.bottomRight().x(),b->first.bottomRight().y());*/
 #endif
 

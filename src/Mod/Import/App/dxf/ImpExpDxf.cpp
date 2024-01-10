@@ -55,12 +55,15 @@
 #include <App/Annotation.h>
 #include <App/Application.h>
 #include <App/Document.h>
+#include <App/DocumentObjectPy.h>
+#include <App/FeaturePythonPyImp.h>
 #include <Base/Console.h>
 #include <Base/Interpreter.h>
 #include <Base/Matrix.h>
 #include <Base/Parameter.h>
 #include <Base/Vector3D.h>
 #include <Base/PlacementPy.h>
+#include <Base/VectorPy.h>
 #include <Mod/Part/App/PartFeature.h>
 
 #include "ImpExpDxf.h"
@@ -75,10 +78,12 @@ using BRepAdaptor_HCurve = BRepAdaptor_Curve;
 
 //******************************************************************************
 // reading
-ImpExpDxfRead::ImpExpDxfRead(std::string filepath, App::Document* pcDoc)
-    : CDxfRead(filepath.c_str())
+ImpExpDxfRead::ImpExpDxfRead(const std::string& filepath, App::Document* pcDoc)
+    : CDxfRead(filepath)
+    , document(pcDoc)
+    , optionGroupLayers(false)
+    , optionImportAnnotations(true)
 {
-    document = pcDoc;
     setOptionSource("User parameter:BaseApp/Preferences/Mod/Draft");
     setOptions();
 }
@@ -89,27 +94,17 @@ void ImpExpDxfRead::setOptions()
         App::GetApplication().GetParameterGroupByPath(getOptionSource().c_str());
     optionGroupLayers = hGrp->GetBool("groupLayers", false);
     optionImportAnnotations = hGrp->GetBool("dxftext", false);
-    optionScaling = hGrp->GetFloat("dxfScaling", 1.0);
+    SetAdditionalScaling(hGrp->GetFloat("dxfScaling", 1.0));
 }
 
-gp_Pnt ImpExpDxfRead::makePoint(const double* p)
+void ImpExpDxfRead::OnReadLine(const Base::Vector3d& start,
+                               const Base::Vector3d& end,
+                               bool /*hidden*/)
 {
-    double sp1(p[0]);
-    double sp2(p[1]);
-    double sp3(p[2]);
-    if (optionScaling != 1.0) {
-        sp1 = sp1 * optionScaling;
-        sp2 = sp2 * optionScaling;
-        sp3 = sp3 * optionScaling;
-    }
-    return {sp1, sp2, sp3};
-}
-
-void ImpExpDxfRead::OnReadLine(const double* s, const double* e, bool /*hidden*/)
-{
-    gp_Pnt p0 = makePoint(s);
-    gp_Pnt p1 = makePoint(e);
+    gp_Pnt p0 = makePoint(start);
+    gp_Pnt p1 = makePoint(end);
     if (p0.IsEqual(p1, 0.00000001)) {
+        // TODO: Really?? What about the people designing integrated circuits?
         return;
     }
     BRepBuilderAPI_MakeEdge makeEdge(p0, p1);
@@ -118,27 +113,27 @@ void ImpExpDxfRead::OnReadLine(const double* s, const double* e, bool /*hidden*/
 }
 
 
-void ImpExpDxfRead::OnReadPoint(const double* s)
+void ImpExpDxfRead::OnReadPoint(const Base::Vector3d& start)
 {
-    BRepBuilderAPI_MakeVertex makeVertex(makePoint(s));
+    BRepBuilderAPI_MakeVertex makeVertex(makePoint(start));
     TopoDS_Vertex vertex = makeVertex.Vertex();
     AddObject(new Part::TopoShape(vertex));
 }
 
 
-void ImpExpDxfRead::OnReadArc(const double* s,
-                              const double* e,
-                              const double* c,
+void ImpExpDxfRead::OnReadArc(const Base::Vector3d& start,
+                              const Base::Vector3d& end,
+                              const Base::Vector3d& center,
                               bool dir,
                               bool /*hidden*/)
 {
-    gp_Pnt p0 = makePoint(s);
-    gp_Pnt p1 = makePoint(e);
+    gp_Pnt p0 = makePoint(start);
+    gp_Pnt p1 = makePoint(end);
     gp_Dir up(0, 0, 1);
     if (!dir) {
         up = -up;
     }
-    gp_Pnt pc = makePoint(c);
+    gp_Pnt pc = makePoint(center);
     gp_Circ circle(gp_Ax2(pc, up), p0.Distance(pc));
     if (circle.Radius() > 0) {
         BRepBuilderAPI_MakeEdge makeEdge(circle, p0, p1);
@@ -151,14 +146,17 @@ void ImpExpDxfRead::OnReadArc(const double* s,
 }
 
 
-void ImpExpDxfRead::OnReadCircle(const double* s, const double* c, bool dir, bool /*hidden*/)
+void ImpExpDxfRead::OnReadCircle(const Base::Vector3d& start,
+                                 const Base::Vector3d& center,
+                                 bool dir,
+                                 bool /*hidden*/)
 {
-    gp_Pnt p0 = makePoint(s);
+    gp_Pnt p0 = makePoint(start);
     gp_Dir up(0, 0, 1);
     if (!dir) {
         up = -up;
     }
-    gp_Pnt pc = makePoint(c);
+    gp_Pnt pc = makePoint(center);
     gp_Circ circle(gp_Ax2(pc, up), p0.Distance(pc));
     if (circle.Radius() > 0) {
         BRepBuilderAPI_MakeEdge makeEdge(circle);
@@ -182,18 +180,18 @@ Handle(Geom_BSplineCurve) getSplineFromPolesAndKnots(struct SplineData& sd)
     // handle the poles
     TColgp_Array1OfPnt occpoles(1, sd.control_points);
     int index = 1;
-    for (auto x : sd.controlx) {
-        occpoles(index++).SetX(x);
+    for (auto coordinate : sd.controlx) {
+        occpoles(index++).SetX(coordinate);
     }
 
     index = 1;
-    for (auto y : sd.controly) {
-        occpoles(index++).SetY(y);
+    for (auto coordinate : sd.controly) {
+        occpoles(index++).SetY(coordinate);
     }
 
     index = 1;
-    for (auto z : sd.controlz) {
-        occpoles(index++).SetZ(z);
+    for (auto coordinate : sd.controlz) {
+        occpoles(index++).SetZ(coordinate);
     }
 
     // handle knots and mults
@@ -204,10 +202,9 @@ Handle(Geom_BSplineCurve) getSplineFromPolesAndKnots(struct SplineData& sd)
     TColStd_Array1OfInteger occmults(1, numKnots);
     TColStd_Array1OfReal occknots(1, numKnots);
     index = 1;
-    for (auto k : unique) {
-        size_t m = std::count(sd.knot.begin(), sd.knot.end(), k);
-        occknots(index) = k;
-        occmults(index) = m;
+    for (auto knot : unique) {
+        occknots(index) = knot;
+        occmults(index) = (int)std::count(sd.knot.begin(), sd.knot.end(), knot);
         index++;
     }
 
@@ -215,8 +212,8 @@ Handle(Geom_BSplineCurve) getSplineFromPolesAndKnots(struct SplineData& sd)
     TColStd_Array1OfReal occweights(1, sd.control_points);
     if (sd.weight.size() == std::size_t(sd.control_points)) {
         index = 1;
-        for (auto w : sd.weight) {
-            occweights(index++) = w;
+        for (auto weight : sd.weight) {
+            occweights(index++) = weight;
         }
     }
     else {
@@ -242,18 +239,18 @@ Handle(Geom_BSplineCurve) getInterpolationSpline(struct SplineData& sd)
     // handle the poles
     Handle(TColgp_HArray1OfPnt) fitpoints = new TColgp_HArray1OfPnt(1, sd.fit_points);
     int index = 1;
-    for (auto x : sd.fitx) {
-        fitpoints->ChangeValue(index++).SetX(x);
+    for (auto coordinate : sd.fitx) {
+        fitpoints->ChangeValue(index++).SetX(coordinate);
     }
 
     index = 1;
-    for (auto y : sd.fity) {
-        fitpoints->ChangeValue(index++).SetY(y);
+    for (auto coordinate : sd.fity) {
+        fitpoints->ChangeValue(index++).SetY(coordinate);
     }
 
     index = 1;
-    for (auto z : sd.fitz) {
-        fitpoints->ChangeValue(index++).SetZ(z);
+    for (auto coordinate : sd.fitz) {
+        fitpoints->ChangeValue(index++).SetZ(coordinate);
     }
 
     Standard_Boolean periodic = sd.flag == 2;
@@ -290,21 +287,22 @@ void ImpExpDxfRead::OnReadSpline(struct SplineData& sd)
     }
 }
 
-
-void ImpExpDxfRead::OnReadEllipse(const double* c,
+// NOLINTBEGIN(bugprone-easily-swappable-parameters)
+void ImpExpDxfRead::OnReadEllipse(const Base::Vector3d& center,
                                   double major_radius,
                                   double minor_radius,
                                   double rotation,
                                   double /*start_angle*/,
                                   double /*end_angle*/,
                                   bool dir)
+// NOLINTEND(bugprone-easily-swappable-parameters)
 {
     gp_Dir up(0, 0, 1);
     if (!dir) {
         up = -up;
     }
-    gp_Pnt pc = makePoint(c);
-    gp_Elips ellipse(gp_Ax2(pc, up), major_radius * optionScaling, minor_radius * optionScaling);
+    gp_Pnt pc = makePoint(center);
+    gp_Elips ellipse(gp_Ax2(pc, up), major_radius, minor_radius);
     ellipse.Rotate(gp_Ax1(pc, up), rotation);
     if (ellipse.MinorRadius() > 0) {
         BRepBuilderAPI_MakeEdge makeEdge(ellipse);
@@ -317,36 +315,50 @@ void ImpExpDxfRead::OnReadEllipse(const double* c,
 }
 
 
-void ImpExpDxfRead::OnReadText(const double* point,
+void ImpExpDxfRead::OnReadText(const Base::Vector3d& point,
                                const double height,
-                               const char* text,
+                               const std::string& text,
                                const double rotation)
 {
     // Note that our parameters do not contain all the information needed to properly orient the
     // text. As a result the text will always appear on the XY plane
     if (optionImportAnnotations) {
-        if (LayerName().substr(0, 6) != "BLOCKS") {
+        if (LayerName().rfind("BLOCKS", 0) != 0) {
             PyObject* draftModule = nullptr;
-            Base::Vector3d insertionPoint(point[0], point[1], point[2]);
-            insertionPoint *= optionScaling;
             Base::Rotation rot(Base::Vector3d(0, 0, 1), rotation);
-            PyObject* placement = new Base::PlacementPy(Base::Placement(insertionPoint, rot));
+            PyObject* placement = new Base::PlacementPy(Base::Placement(point, rot));
             draftModule = PyImport_ImportModule("Draft");
             if (draftModule != nullptr) {
-                PyObject_CallMethod(draftModule, "make_text", "sOif", text, placement, 0, height);
+                // returns a wrapped App::FeaturePython
+                auto builtText = dynamic_cast<App::FeaturePythonPyT<App::DocumentObjectPy>*>(
+                    // NOLINTNEXTLINE(readability/nolint)
+                    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-cstyle-cast)
+                    (Base::PyObjectBase*)PyObject_CallMethod(draftModule,
+                                                             "make_text",
+                                                             "sOif",
+                                                             text.c_str(),
+                                                             placement,
+                                                             0,
+                                                             height));
+                if (builtText != nullptr) {
+                    ApplyGuiStyles(
+                        dynamic_cast<App::FeaturePython*>(builtText->getDocumentObjectPtr()));
+                }
             }
             // We own all the return values so we must release them.
             Py_DECREF(placement);
             Py_XDECREF(draftModule);
         }
-        // else std::cout << "skipped text in block: " << LayerName() << std::endl;
+        else {
+            UnsupportedFeature("TEXT or MTEXT in BLOCK definition");
+        }
     }
 }
 
 
-void ImpExpDxfRead::OnReadInsert(const double* point,
-                                 const double* scale,
-                                 const char* name,
+void ImpExpDxfRead::OnReadInsert(const Base::Vector3d& point,
+                                 const Base::Vector3d& scale,
+                                 const std::string& name,
                                  double rotation)
 {
     // std::cout << "Inserting block " << name << " rotation " << rotation << " pos " << point[0] <<
@@ -355,32 +367,26 @@ void ImpExpDxfRead::OnReadInsert(const double* point,
     std::string prefix = "BLOCKS ";
     prefix += name;
     prefix += " ";
-    auto checkScale = [=](double v) {
-        return v != 0.0 ? v : 1.0;
+    auto checkScale = [=](double scale) {
+        return scale != 0.0 ? scale : 1.0;
     };
-    for (std::map<std::string, std::vector<Part::TopoShape*>>::const_iterator i = layers.begin();
-         i != layers.end();
-         ++i) {
-        std::string k = i->first;
-        if (k.substr(0, prefix.size()) == prefix) {
+    for (const auto& layer : layers) {
+        if (layer.first.substr(0, prefix.size()) == prefix) {
             BRep_Builder builder;
             TopoDS_Compound comp;
             builder.MakeCompound(comp);
-            std::vector<Part::TopoShape*> v = i->second;
-            for (std::vector<Part::TopoShape*>::const_iterator j = v.begin(); j != v.end(); ++j) {
-                const TopoDS_Shape& sh = (*j)->getShape();
+            for (const auto& shape : layer.second) {
+                const TopoDS_Shape& sh = shape->getShape();
                 if (!sh.IsNull()) {
                     builder.Add(comp, sh);
                 }
             }
             if (!comp.IsNull()) {
-                Part::TopoShape* pcomp = new Part::TopoShape(comp);
+                auto pcomp = new Part::TopoShape(comp);
                 Base::Matrix4D mat;
                 mat.scale(checkScale(scale[0]), checkScale(scale[1]), checkScale(scale[2]));
                 mat.rotZ(rotation);
-                mat.move(point[0] * optionScaling,
-                         point[1] * optionScaling,
-                         point[2] * optionScaling);
+                mat.move(point[0], point[1], point[2]);
                 pcomp->transformShape(mat, true);
                 AddObject(pcomp);
             }
@@ -389,44 +395,56 @@ void ImpExpDxfRead::OnReadInsert(const double* point,
 }
 
 
-void ImpExpDxfRead::OnReadDimension(const double* s,
-                                    const double* e,
-                                    const double* point,
+void ImpExpDxfRead::OnReadDimension(const Base::Vector3d& start,
+                                    const Base::Vector3d& end,
+                                    const Base::Vector3d& point,
                                     double /*rotation*/)
 {
     if (optionImportAnnotations) {
-        Base::Interpreter().runString("import Draft");
-        Base::Interpreter().runStringArg("p1=FreeCAD.Vector(%f,%f,%f)",
-                                         s[0] * optionScaling,
-                                         s[1] * optionScaling,
-                                         s[2] * optionScaling);
-        Base::Interpreter().runStringArg("p2=FreeCAD.Vector(%f,%f,%f)",
-                                         e[0] * optionScaling,
-                                         e[1] * optionScaling,
-                                         e[2] * optionScaling);
-        Base::Interpreter().runStringArg("p3=FreeCAD.Vector(%f,%f,%f)",
-                                         point[0] * optionScaling,
-                                         point[1] * optionScaling,
-                                         point[2] * optionScaling);
-        Base::Interpreter().runString("Draft.makeDimension(p1,p2,p3)");
+        PyObject* draftModule = nullptr;
+        PyObject* startPy = new Base::VectorPy(start);
+        PyObject* endPy = new Base::VectorPy(end);
+        PyObject* lineLocationPy = new Base::VectorPy(point);
+        draftModule = PyImport_ImportModule("Draft");
+        if (draftModule != nullptr) {
+            // returns a wrapped App::FeaturePython
+            auto builtDim = dynamic_cast<App::FeaturePythonPyT<App::DocumentObjectPy>*>(
+                // NOLINTNEXTLINE(readability/nolint)
+                // NOLINTNEXTLINE(cppcoreguidelines-pro-type-cstyle-cast)
+                (Base::PyObjectBase*)PyObject_CallMethod(draftModule,
+                                                         "make_linear_dimension",
+                                                         "OOO",
+                                                         startPy,
+                                                         endPy,
+                                                         lineLocationPy));
+            if (builtDim != nullptr) {
+                ApplyGuiStyles(dynamic_cast<App::FeaturePython*>(builtDim->getDocumentObjectPtr()));
+            }
+        }
+        // We own all the return values so we must release them.
+        Py_DECREF(startPy);
+        Py_DECREF(endPy);
+        Py_DECREF(lineLocationPy);
+        Py_XDECREF(draftModule);
     }
 }
 
 
 void ImpExpDxfRead::AddObject(Part::TopoShape* shape)
 {
-    // std::cout << "layer:" << LayerName() << std::endl;
     std::vector<Part::TopoShape*> vec;
-    if (layers.count(LayerName())) {
-        vec = layers[LayerName()];
+    std::string destinationLayerName(LayerName());
+    if (layers.count(destinationLayerName) != 0) {
+        vec = layers[destinationLayerName];
     }
     vec.push_back(shape);
-    layers[LayerName()] = vec;
+    layers[destinationLayerName] = vec;
     if (!optionGroupLayers) {
-        if (LayerName().substr(0, 6) != "BLOCKS") {
-            Part::Feature* pcFeature =
-                static_cast<Part::Feature*>(document->addObject("Part::Feature", "Shape"));
+        if (destinationLayerName.rfind("BLOCKS", 0) != 0) {
+            auto pcFeature =
+                dynamic_cast<Part::Feature*>(document->addObject("Part::Feature", "Shape"));
             pcFeature->Shape.setValue(shape->getShape());
+            ApplyGuiStyles(pcFeature);
         }
     }
 }
@@ -439,33 +457,31 @@ std::string ImpExpDxfRead::Deformat(const char* text)
     bool escape = false;      // turned on when finding an escape character
     bool longescape = false;  // turned on for certain escape codes that expect additional chars
     for (unsigned int i = 0; i < strlen(text); i++) {
-        if (text[i] == '\\') {
+        char ch = text[i];
+        if (ch == '\\') {
             escape = true;
         }
         else if (escape) {
             if (longescape) {
-                if (text[i] == ';') {
+                if (ch == ';') {
                     escape = false;
                     longescape = false;
                 }
             }
+            else if ((ch == 'H') || (ch == 'h') || (ch == 'Q') || (ch == 'q') || (ch == 'W')
+                     || (ch == 'w') || (ch == 'F') || (ch == 'f') || (ch == 'A') || (ch == 'a')
+                     || (ch == 'C') || (ch == 'c') || (ch == 'T') || (ch == 't')) {
+                longescape = true;
+            }
             else {
-                if ((text[i] == 'H') || (text[i] == 'h') || (text[i] == 'Q') || (text[i] == 'q')
-                    || (text[i] == 'W') || (text[i] == 'w') || (text[i] == 'F') || (text[i] == 'f')
-                    || (text[i] == 'A') || (text[i] == 'a') || (text[i] == 'C') || (text[i] == 'c')
-                    || (text[i] == 'T') || (text[i] == 't')) {
-                    longescape = true;
+                if ((ch == 'P') || (ch == 'p')) {
+                    ss << "\n";
                 }
-                else {
-                    if ((text[i] == 'P') || (text[i] == 'p')) {
-                        ss << "\n";
-                    }
-                    escape = false;
-                }
+                escape = false;
             }
         }
-        else if ((text[i] != '{') && (text[i] != '}')) {
-            ss << text[i];
+        else if ((ch != '{') && (ch != '}')) {
+            ss << ch;
         }
     }
     return ss.str();
@@ -475,28 +491,23 @@ std::string ImpExpDxfRead::Deformat(const char* text)
 void ImpExpDxfRead::AddGraphics() const
 {
     if (optionGroupLayers) {
-        for (std::map<std::string, std::vector<Part::TopoShape*>>::const_iterator i =
-                 layers.begin();
-             i != layers.end();
-             ++i) {
+        for (const auto& layer : layers) {
             BRep_Builder builder;
             TopoDS_Compound comp;
             builder.MakeCompound(comp);
-            std::string k = i->first;
+            std::string k = layer.first;
             if (k == "0") {  // FreeCAD doesn't like an object name being '0'...
                 k = "LAYER_0";
             }
-            std::vector<Part::TopoShape*> v = i->second;
-            if (k.substr(0, 6) != "BLOCKS") {
-                for (std::vector<Part::TopoShape*>::const_iterator j = v.begin(); j != v.end();
-                     ++j) {
-                    const TopoDS_Shape& sh = (*j)->getShape();
+            if (k.rfind("BLOCKS", 0) != 0) {
+                for (const auto& shape : layer.second) {
+                    const TopoDS_Shape& sh = shape->getShape();
                     if (!sh.IsNull()) {
                         builder.Add(comp, sh);
                     }
                 }
                 if (!comp.IsNull()) {
-                    Part::Feature* pcFeature = static_cast<Part::Feature*>(
+                    auto pcFeature = dynamic_cast<Part::Feature*>(
                         document->addObject("Part::Feature", k.c_str()));
                     pcFeature->Shape.setValue(comp);
                 }
@@ -508,7 +519,7 @@ void ImpExpDxfRead::AddGraphics() const
 //******************************************************************************
 // writing
 
-void gPntToTuple(double* result, gp_Pnt& p)
+void gPntToTuple(double result[3], gp_Pnt& p)
 {
     result[0] = p.X();
     result[1] = p.Y();
@@ -517,10 +528,7 @@ void gPntToTuple(double* result, gp_Pnt& p)
 
 point3D gPntTopoint3D(gp_Pnt& p)
 {
-    point3D result;
-    result.x = p.X();
-    result.y = p.Y();
-    result.z = p.Z();
+    point3D result = {p.X(), p.Y(), p.Z()};
     return result;
 }
 
@@ -555,9 +563,9 @@ void ImpExpDxfWrite::exportShape(const TopoDS_Shape input)
         if (adapt.GetType() == GeomAbs_Circle) {
             double f = adapt.FirstParameter();
             double l = adapt.LastParameter();
-            gp_Pnt s = adapt.Value(f);
+            gp_Pnt start = adapt.Value(f);
             gp_Pnt e = adapt.Value(l);
-            if (fabs(l - f) > 1.0 && s.SquareDistance(e) < 0.001) {
+            if (fabs(l - f) > 1.0 && start.SquareDistance(e) < 0.001) {
                 exportCircle(adapt);
             }
             else {
@@ -567,9 +575,9 @@ void ImpExpDxfWrite::exportShape(const TopoDS_Shape input)
         else if (adapt.GetType() == GeomAbs_Ellipse) {
             double f = adapt.FirstParameter();
             double l = adapt.LastParameter();
-            gp_Pnt s = adapt.Value(f);
+            gp_Pnt start = adapt.Value(f);
             gp_Pnt e = adapt.Value(l);
-            if (fabs(l - f) > 1.0 && s.SquareDistance(e) < 0.001) {
+            if (fabs(l - f) > 1.0 && start.SquareDistance(e) < 0.001) {
                 if (m_polyOverride) {
                     if (m_version >= 14) {
                         exportLWPoly(adapt);

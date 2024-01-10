@@ -47,6 +47,8 @@ class Color;
 namespace Part
 {
 
+class TopoShapeCache;
+
 /* A special sub-class to indicate null shapes
  */
 class PartExport NullShapeException : public Base::ValueError
@@ -85,6 +87,13 @@ public:
     TopoDS_Shape Shape;
 };
 
+/// When tracing an element's history, one can either stop the trace when the element's type
+/// changes, or continue tracing the history through the change. This enumeration replaces a boolean
+/// parameter in the original Toponaming branch by realthunder.
+enum class HistoryTraceType {
+    stopOnTypeChange,
+    followTypeChange
+};
 
 
 /** The representation for a CAD Shape
@@ -99,8 +108,10 @@ public:
     TopoShape(const TopoShape&);
     ~TopoShape() override;
 
-    inline void setShape(const TopoDS_Shape& shape) {
-        this->_Shape = shape;
+    void setShape(const TopoDS_Shape& shape, bool resetElementMap=true);
+
+    inline void setShape(const TopoShape& shape) {
+        *this = shape;
     }
 
     inline const TopoDS_Shape& getShape() const {
@@ -364,11 +375,28 @@ public:
     void move(const TopLoc_Location &loc) {
         _Shape.Move(loc);
     }
+    /** Return a new shape that is moved to a new location
+     *
+     * @param loc: location
+     *
+     * @return Return a shallow copy of the shape moved to the new location
+     *         that is applied in addition to any current transformation of the
+     *         shape
+     */
     TopoShape moved(const TopLoc_Location &loc) const {
         TopoShape ret(*this);
         ret._Shape.Move(loc);
         return ret;
     }
+
+    static TopoDS_Shape& move(TopoDS_Shape& tds, const TopLoc_Location& loc);
+    static TopoDS_Shape moved(const TopoDS_Shape& tds, const TopLoc_Location& loc);
+    static TopoDS_Shape& move(TopoDS_Shape& tds, const gp_Trsf& transfer);
+    static TopoDS_Shape moved(const TopoDS_Shape& tds, const gp_Trsf& transfer);
+    static TopoDS_Shape& locate(TopoDS_Shape& tds, const TopLoc_Location& loc);
+    static TopoDS_Shape located(const TopoDS_Shape& tds, const TopLoc_Location& loc);
+    static TopoDS_Shape& locate(TopoDS_Shape& tds, const gp_Trsf& transfer);
+    static TopoDS_Shape located(const TopoDS_Shape& tds, const gp_Trsf& transfer);
 
     TopoShape &makeGTransform(const TopoShape &shape, const Base::Matrix4D &mat,
             const char *op=nullptr, bool copy=false);
@@ -388,6 +416,49 @@ public:
     static const std::string &shapeName(TopAbs_ShapeEnum type,bool silent=false);
     const std::string &shapeName(bool silent=false) const;
     static std::pair<TopAbs_ShapeEnum,int> shapeTypeAndIndex(const char *name);
+
+
+    /** @name sub shape cached functions
+     *
+     * Mapped element names introduces some overhead when getting sub shapes
+     * from a shape. These functions use internal caches for sub-shape maps to
+     * improve performance.
+     */
+    //@{
+    void initCache(int reset=0) const;
+    int findShape(const TopoDS_Shape &subshape) const;
+    TopoDS_Shape findShape(const char *name) const;
+    TopoDS_Shape findShape(TopAbs_ShapeEnum type, int idx) const;
+    int findAncestor(const TopoDS_Shape &subshape, TopAbs_ShapeEnum type) const;
+    TopoDS_Shape findAncestorShape(const TopoDS_Shape &subshape, TopAbs_ShapeEnum type) const;
+    std::vector<int> findAncestors(const TopoDS_Shape &subshape, TopAbs_ShapeEnum type) const;
+    std::vector<TopoDS_Shape> findAncestorsShapes(const TopoDS_Shape &subshape, TopAbs_ShapeEnum type) const;
+    /** Search sub shape
+     *
+     * unlike findShape(), the input shape does not have to be an actual
+     * sub-shape of this shape. The sub-shape is searched by shape geometry
+     *
+     * @param subshape: a sub shape to search
+     * @param names: optional output of found sub shape indexed based name
+     * @param checkGeometry: whether to compare shape geometry
+     * @param tol: tolerance to check coincident vertices
+     * @param atol: tolerance to check for same angles
+     */
+    // TODO: Implement this method and its tests later in Toponaming Phase 3.
+    //std::vector<TopoShape> searchSubShape(const TopoShape &subshape,
+    //                                      std::vector<std::string> *names=nullptr,
+    //                                      bool checkGeometry=true,
+    //                                      double tol=1e-7, double atol=1e-12) const;
+    //@}
+
+    friend class TopoShapeCache;
+
+private:
+    // Cache storage
+    mutable std::shared_ptr<TopoShapeCache> _parentCache;
+    mutable std::shared_ptr<TopoShapeCache> _cache;
+    mutable TopLoc_Location _subLocation;
+
 private:
     TopoDS_Shape _Shape;
 };

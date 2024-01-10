@@ -51,7 +51,10 @@ public:
     bool getSmoothEdge() { return(isSmoothEdge); }
     void setPrettyNormal() override;
 
-    double getEdgeFuzz(void) const;
+    double getEdgeFuzz() const;
+
+    void setLinePen(QPen isoPen);
+
 
 protected:
 

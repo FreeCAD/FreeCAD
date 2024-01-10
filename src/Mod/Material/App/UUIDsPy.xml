@@ -82,6 +82,12 @@
       </Documentation>
       <Parameter Name="Architectural" Type="String"/>
     </Attribute>
+    <Attribute Name="ArchitecturalRendering" ReadOnly="true">
+      <Documentation>
+        <UserDocu>UUID for model System:Architectural/ArchitecturalRendering</UserDocu>
+      </Documentation>
+      <Parameter Name="ArchitecturalRendering" Type="String"/>
+    </Attribute>
     <Attribute Name="Costs" ReadOnly="true">
       <Documentation>
         <UserDocu>UUID for model System:Costs/Costs</UserDocu>
@@ -111,6 +117,108 @@
         <UserDocu>UUID for model System:Rendering/VectorRendering</UserDocu>
       </Documentation>
       <Parameter Name="VectorRendering" Type="String"/>
+    </Attribute>
+    <Attribute Name="RenderAppleseed" ReadOnly="true">
+      <Documentation>
+        <UserDocu>UUID for model System:Rendering/RenderAppleseed</UserDocu>
+      </Documentation>
+      <Parameter Name="RenderAppleseed" Type="String"/>
+    </Attribute>
+    <Attribute Name="RenderCarpaint" ReadOnly="true">
+      <Documentation>
+        <UserDocu>UUID for model System:Rendering/RenderCarpaint</UserDocu>
+      </Documentation>
+      <Parameter Name="RenderCarpaint" Type="String"/>
+    </Attribute>
+    <Attribute Name="RenderCycles" ReadOnly="true">
+      <Documentation>
+        <UserDocu>UUID for model System:Rendering/RenderCycles</UserDocu>
+      </Documentation>
+      <Parameter Name="RenderCycles" Type="String"/>
+    </Attribute>
+    <Attribute Name="RenderDiffuse" ReadOnly="true">
+      <Documentation>
+        <UserDocu>UUID for model System:Rendering/RenderDiffuse</UserDocu>
+      </Documentation>
+      <Parameter Name="RenderDiffuse" Type="String"/>
+    </Attribute>
+    <Attribute Name="RenderDisney" ReadOnly="true">
+      <Documentation>
+        <UserDocu>UUID for model System:Rendering/RenderDisney</UserDocu>
+      </Documentation>
+      <Parameter Name="RenderDisney" Type="String"/>
+    </Attribute>
+    <Attribute Name="RenderEmission" ReadOnly="true">
+      <Documentation>
+        <UserDocu>UUID for model System:Rendering/RenderEmission</UserDocu>
+      </Documentation>
+      <Parameter Name="RenderEmission" Type="String"/>
+    </Attribute>
+    <Attribute Name="RenderGlass" ReadOnly="true">
+      <Documentation>
+        <UserDocu>UUID for model System:Rendering/RenderGlass</UserDocu>
+      </Documentation>
+      <Parameter Name="RenderGlass" Type="String"/>
+    </Attribute>
+    <Attribute Name="RenderLuxcore" ReadOnly="true">
+      <Documentation>
+        <UserDocu>UUID for model System:Rendering/RenderLuxcore</UserDocu>
+      </Documentation>
+      <Parameter Name="RenderLuxcore" Type="String"/>
+    </Attribute>
+    <Attribute Name="RenderLuxrender" ReadOnly="true">
+      <Documentation>
+        <UserDocu>UUID for model System:Rendering/RenderLuxrender</UserDocu>
+      </Documentation>
+      <Parameter Name="RenderLuxrender" Type="String"/>
+    </Attribute>
+    <Attribute Name="RenderMixed" ReadOnly="true">
+      <Documentation>
+        <UserDocu>UUID for model System:Rendering/RenderMixed</UserDocu>
+      </Documentation>
+      <Parameter Name="RenderMixed" Type="String"/>
+    </Attribute>
+    <Attribute Name="RenderOspray" ReadOnly="true">
+      <Documentation>
+        <UserDocu>UUID for model System:Rendering/RenderOspray</UserDocu>
+      </Documentation>
+      <Parameter Name="RenderOspray" Type="String"/>
+    </Attribute>
+    <Attribute Name="RenderPbrt" ReadOnly="true">
+      <Documentation>
+        <UserDocu>UUID for model System:Rendering/RenderPbrt</UserDocu>
+      </Documentation>
+      <Parameter Name="RenderPbrt" Type="String"/>
+    </Attribute>
+    <Attribute Name="RenderPovray" ReadOnly="true">
+      <Documentation>
+        <UserDocu>UUID for model System:Rendering/RenderPovray</UserDocu>
+      </Documentation>
+      <Parameter Name="RenderPovray" Type="String"/>
+    </Attribute>
+    <Attribute Name="RenderSubstancePBR" ReadOnly="true">
+      <Documentation>
+        <UserDocu>UUID for model System:Rendering/RenderSubstancePBR</UserDocu>
+      </Documentation>
+      <Parameter Name="RenderSubstancePBR" Type="String"/>
+    </Attribute>
+    <Attribute Name="RenderTexture" ReadOnly="true">
+      <Documentation>
+        <UserDocu>UUID for model System:Rendering/RenderTexture</UserDocu>
+      </Documentation>
+      <Parameter Name="RenderTexture" Type="String"/>
+    </Attribute>
+    <Attribute Name="RenderWB" ReadOnly="true">
+      <Documentation>
+        <UserDocu>UUID for model System:Rendering/RenderWB</UserDocu>
+      </Documentation>
+      <Parameter Name="RenderWB" Type="String"/>
+    </Attribute>
+    <Attribute Name="TestModel" ReadOnly="true">
+      <Documentation>
+        <UserDocu>UUID for model System:Test/Test Model</UserDocu>
+      </Documentation>
+      <Parameter Name="TestModel" Type="String"/>
     </Attribute>
   </PythonExport>
 </GenerateModel>

@@ -100,7 +100,6 @@
 #include "WorkbenchManager.h"
 #include "Workbench.h"
 
-
 #include "MergeDocuments.h"
 #include "ViewProviderExtern.h"
 
@@ -181,11 +180,14 @@ public:
         }
         QObject::connect(actionGrp, &QActionGroup::triggered, this, [this](QAction* action) {
             int userSchema = action->data().toInt();
-            // Set and save the Unit System
-            Base::UnitsApi::setSchema(static_cast<Base::UnitSystem>(userSchema));
-            getWindowParameter()->SetInt("UserSchema", userSchema);
-            // Update the application to show the unit change
-            Gui::Application::Instance->onUpdate();
+            setUserSchema(userSchema);
+            // Force PropertyEditor refresh until we find a better way.  Q_EMIT something?
+            const auto views = getMainWindow()->findChildren<PropertyView*>();
+            for(auto view : views) {
+                bool show = view->showAll();
+                view->setShowAll(!show);
+                view->setShowAll(show);
+            }
         } );
         setMenu(menu);
         retranslateUi();
@@ -216,10 +218,32 @@ public:
         }
     }
 
+    void setUserSchema(int userSchema)
+    {
+        App::Document* doc = App::GetApplication().getActiveDocument();
+        if ( doc != nullptr ) {
+            if (doc->UnitSystem.getValue() != userSchema )
+                doc->UnitSystem.setValue(userSchema);
+        } else
+            getWindowParameter()->SetInt("UserSchema", userSchema);
+
+        unitChanged();
+        Base::UnitsApi::setSchema(static_cast<Base::UnitSystem>(userSchema));
+        // Update the main window to show the unit change
+        Gui::Application::Instance->onUpdate();
+    }
+
 private:
     void unitChanged()
     {
+        ParameterGrp::handle hGrpu = App::GetApplication().GetParameterGroupByPath
+        ("User parameter:BaseApp/Preferences/Units");
+        bool ignore = hGrpu->GetBool("IgnoreProjectSchema", false);
+        App::Document* doc = App::GetApplication().getActiveDocument();
         int userSchema = getWindowParameter()->GetInt("UserSchema", 0);
+        if ( doc != nullptr && ! ignore) {
+            userSchema = doc->UnitSystem.getValue();
+        }
         auto actions = menu()->actions();
         if(Q_UNLIKELY(userSchema < 0 || userSchema >= actions.size())) {
             userSchema = 0;
@@ -242,7 +266,7 @@ private:
 // Pimpl class
 struct MainWindowP
 {
-    QPushButton* sizeLabel;
+    DimensionWidget* sizeLabel;
     QLabel* actionLabel;
     QTimer* actionTimer;
     QTimer* statusTimer;
@@ -2096,7 +2120,7 @@ QMimeData * MainWindow::createMimeDataFromSelection () const
     std::vector<App::DocumentObject*> sel;
     std::set<App::DocumentObject*> objSet;
     for(auto &s : Selection().getCompleteSelection()) {
-        if(s.pObject && s.pObject->getNameInDocument() && objSet.insert(s.pObject).second)
+        if(s.pObject && s.pObject->isAttachedToDocument() && objSet.insert(s.pObject).second)
             sel.push_back(s.pObject);
     }
     if(sel.empty())
@@ -2429,6 +2453,13 @@ void MainWindow::setPaneText(int i, QString text)
         d->sizeLabel->setText(text);
     }
 }
+
+
+void MainWindow::setUserSchema(int userSchema)
+{
+    d->sizeLabel->setUserSchema(userSchema);
+}
+
 
 void MainWindow::customEvent(QEvent* e)
 {

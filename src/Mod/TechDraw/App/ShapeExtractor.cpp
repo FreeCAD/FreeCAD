@@ -47,7 +47,6 @@
 
 #include "ShapeExtractor.h"
 #include "DrawUtil.h"
-#include "Preferences.h"
 #include "ShapeUtils.h"
 
 
@@ -55,14 +54,15 @@ using namespace TechDraw;
 using DU = DrawUtil;
 using SU = ShapeUtils;
 
-std::vector<TopoDS_Shape> ShapeExtractor::getShapes2d(const std::vector<App::DocumentObject*> links, bool overridePref)
+
+//! pick out the 2d document objects objects in the list of links and return a vector of their shapes
+//! Note that point objects will not make it through the hlr/projection process.
+std::vector<TopoDS_Shape> ShapeExtractor::getShapes2d(const std::vector<App::DocumentObject*> links)
 {
 //    Base::Console().Message("SE::getShapes2d() - links: %d\n", links.size());
 
     std::vector<TopoDS_Shape> shapes2d;
-    if (!prefAdd2d() && !overridePref) {
-        return shapes2d;
-    }
+
     for (auto& l:links) {
         const App::GroupExtension* gex = dynamic_cast<const App::GroupExtension*>(l);
         if (gex) {
@@ -151,7 +151,7 @@ TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> l
 
 std::vector<TopoDS_Shape> ShapeExtractor::getXShapes(const App::Link* xLink)
 {
-//    Base::Console().Message("SE::getXShapes() - %s\n", xLink->getNameInDocument());
+    // Base::Console().Message("SE::getXShapes() - %s\n", xLink->getNameInDocument());
     std::vector<TopoDS_Shape> xSourceShapes;
     if (!xLink) {
         return xSourceShapes;
@@ -192,9 +192,13 @@ std::vector<TopoDS_Shape> ShapeExtractor::getXShapes(const App::Link* xLink)
             Part::TopoShape ts(shape);
             if (ts.isInfinite()) {
                 shape = stripInfiniteShapes(shape);
-                ts = Part::TopoShape(shape);
             }
-            if(!shape.IsNull()) {
+            // copying the shape prevents "non-orthogonal GTrsf" errors in some versions
+            // of OCC.  Something to do with triangulation of shape??
+            // it may be that incremental mesh would work here too.
+            BRepBuilderAPI_Copy copier(shape);
+            ts = Part::TopoShape(copier.Shape());
+            if(!ts.isNull()) {
                 if (needsTransform || childNeedsTransform) {
                     // Multiplication is associative, but the braces show the idea of combining the two transforms:
                     // ( link placement and scale ) combined to ( child placement and scale )
@@ -211,22 +215,19 @@ std::vector<TopoDS_Shape> ShapeExtractor::getXShapes(const App::Link* xLink)
         // link points to a regular object, not another link? no sublinks?
         TopoDS_Shape xLinkShape = getShapeFromXLink(xLink);
         if (!xLinkShape.IsNull()) {
-            // make the "located, oriented" version of the shape.
-            netTransform = xLinkPlacement.toMatrix() * linkScale;
             // copying the shape prevents "non-orthogonal GTrsf" errors in some versions
             // of OCC.  Something to do with triangulation of shape??
             BRepBuilderAPI_Copy copier(xLinkShape);
-            auto ts = Part::TopoShape(copier.Shape());
-            ts.transformGeometry(netTransform);
-            xSourceShapes.push_back(ts.getShape());
+            xSourceShapes.push_back(copier.Shape());
         }
     }
     return xSourceShapes;
 }
 
-// get the shape for a single childless App::Link
+// get the located shape for a single childless App::Link
 TopoDS_Shape ShapeExtractor::getShapeFromXLink(const App::Link* xLink)
 {
+    // Base::Console().Message("SE::getShapeFromXLink()\n");
     Base::Placement xLinkPlacement;
     if (xLink->hasPlacement()) {
         xLinkPlacement = xLink->getLinkPlacementProperty()->getValue();
@@ -242,15 +243,11 @@ TopoDS_Shape ShapeExtractor::getShapeFromXLink(const App::Link* xLink)
         TopoDS_Shape shape = Part::Feature::getShape(linkedObject);
         if (shape.IsNull()) {
             // this is where we need to parse the target for objects with a shape??
-            Base::Console().Message("SE::getXShapes - link has no shape\n");
-            // std::vector<TopoDS_Shape> shapesFromObject = getShapesFromObject(linkedObject);  // getXShapes?
             return TopoDS_Shape();
         }
         Part::TopoShape ts(shape);
         if (ts.isInfinite()) {
             shape = stripInfiniteShapes(shape);
-            // the shape must have a triangulation or it will cause a failure
-            // when later transforms are applied
             ts = Part::TopoShape(shape);
         }
         //ts might be garbage now, better check
@@ -333,7 +330,7 @@ TopoDS_Shape ShapeExtractor::getShapesFused(const std::vector<App::DocumentObjec
 
     // if there are 2d shapes in the links they will not fuse with the 3d shapes,
     // so instead we return a compound of the fused 3d shapes and the 2d shapes
-    std::vector<TopoDS_Shape> shapes2d = getShapes2d(links, true);
+    std::vector<TopoDS_Shape> shapes2d = getShapes2d(links);
     if (!shapes2d.empty()) {
         shapes2d.push_back(baseShape);
         return DrawUtil::shapeVectorToCompound(shapes2d, false);
@@ -406,12 +403,14 @@ bool ShapeExtractor::isEdgeType(App::DocumentObject* obj)
 
 bool ShapeExtractor::isPointType(App::DocumentObject* obj)
 {
-//    Base::Console().Message("SE::isPointType(%s)\n", obj->getNameInDocument());
+    // Base::Console().Message("SE::isPointType(%s)\n", obj->getNameInDocument());
     if (obj) {
         Base::Type t = obj->getTypeId();
         if (t.isDerivedFrom(Part::Vertex::getClassTypeId())) {
             return true;
         } else if (isDraftPoint(obj)) {
+            return true;
+        } else if (isDatumPoint(obj)) {
             return true;
         }
     }
@@ -433,11 +432,21 @@ bool ShapeExtractor::isDraftPoint(App::DocumentObject* obj)
     return false;
 }
 
+bool ShapeExtractor::isDatumPoint(App::DocumentObject* obj)
+{
+    std::string objTypeName = obj->getTypeId().getName();
+    std::string pointToken("Point");
+    if (objTypeName.find(pointToken) != std::string::npos) {
+        return true;
+    }
+    return false;
+}
+
 
 //! get the location of a point object
 Base::Vector3d ShapeExtractor::getLocation3dFromFeat(App::DocumentObject* obj)
 {
-    Base::Console().Message("SE::getLocation3dFromFeat()\n");
+    // Base::Console().Message("SE::getLocation3dFromFeat()\n");
     if (!isPointType(obj)) {
         return Base::Vector3d(0.0, 0.0, 0.0);
     }
@@ -470,11 +479,5 @@ TopoDS_Shape ShapeExtractor::getLocatedShape(const App::DocumentObject* docObj)
             shape.setPlacement(pf->globalPlacement());
         }
         return shape.getShape();
-}
-
-//! true if we should include loose 2d geometry
-bool ShapeExtractor::prefAdd2d()
-{
-    return Preferences::getPreferenceGroup("General")->GetBool("ShowLoose2d", false);
 }
 

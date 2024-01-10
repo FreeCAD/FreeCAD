@@ -39,7 +39,7 @@ class UnicodeBasicCases(unittest.TestCase):
     def testUnicodeLabel(self):
         L1 = self.Doc.addObject("App::FeatureTest", "Label_1")
         L1.Label = "हिन्दी"
-        self.failUnless(L1.Label == "हिन्दी")
+        self.assertTrue(L1.Label == "हिन्दी")
 
     def tearDown(self):
         # closing doc
@@ -60,7 +60,7 @@ class DocumentSaveRestoreCases(unittest.TestCase):
         self.Doc.saveAs(SaveName)
         FreeCAD.closeDocument("SaveRestoreTests")
         self.Doc = FreeCAD.open(SaveName)
-        self.failUnless(self.Doc.Label_1.Label == "हिन्दी")
+        self.assertTrue(self.Doc.Label_1.Label == "हिन्दी")
         FreeCAD.closeDocument("UnicodeTest")
         FreeCAD.newDocument("SaveRestoreTests")
 

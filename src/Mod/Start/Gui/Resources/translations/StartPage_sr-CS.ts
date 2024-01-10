@@ -4,302 +4,302 @@
   <context>
     <name>StartPage</name>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="39"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="43"/>
       <source>Start</source>
       <translation>Početak</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="40"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="44"/>
       <source>Welcome to FreeCAD</source>
       <translation>Dobrodošli u FreeCAD</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="41"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="45"/>
       <source>Documents</source>
       <translation>Dokumenti</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="42"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="46"/>
       <source>Help</source>
       <translation>Pomoć</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="43"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="47"/>
       <source>Activity</source>
       <translation>Aktivnost</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="44"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="48"/>
       <source>Blog</source>
       <translation>Blog</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="45"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="49"/>
       <source>Link to the FreeCAD blog</source>
       <translation>Link prema FreeCAD blog-u</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="46"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="50"/>
       <source>New file</source>
       <translation>Nova datoteka</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="47"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="51"/>
       <source>Empty File</source>
       <translation>Prazna datoteka</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="48"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="52"/>
       <source>Create an empty FreeCAD file</source>
       <translation>Napravi praznu FreeCAD datoteku</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="49"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="53"/>
       <source>Open File</source>
       <translation>Otvori datoteku</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="50"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="54"/>
       <source>Open an existing CAD file or 3D model</source>
       <translation>Otvori postojeću CAD datoteku ili 3D model</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="51"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="55"/>
       <source>Standard Part</source>
       <translation>Obični deo</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="56"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="60"/>
       <source>Create a part with the Part Design workbench</source>
       <translation>Napravi deo u Part Design radnom okruženju</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="57"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="61"/>
       <source>2D Draft</source>
       <translation>2D crtež</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="58"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="62"/>
       <source>Create a 2D draft with the Draft workbench</source>
       <translation>Napravi 2D crtež u Draft radnom okruženju</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="59"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="63"/>
       <source>BIM/Architecture</source>
       <translation>BIM/Arhitektura</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="60"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="64"/>
       <source>Create an architecture project</source>
       <translation>Napravi arhitektonski projekat</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="61"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="65"/>
       <source>Recent files</source>
       <translation type="unfinished">Recent files</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="62"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="66"/>
       <source>Tip</source>
       <translation>Savet</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="66"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="70"/>
       <source>Adjust the number of recent files to be shown here in menu Edit -&gt; Preferences -&gt; General -&gt; Size of recent file list</source>
       <translation>Podesi broj nedavnih datoteka koje će biti prikazane ovde u meniju Uredi -&gt; Podešavanja -&gt; Opšte -&gt; Veličina liste nedavno otvaranih datoteka</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="67"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="71"/>
       <source>Examples</source>
       <translation>Primeri</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="68"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="72"/>
       <source>General documentation</source>
       <translation>Opšta dokumentacija</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="69"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="73"/>
       <source>User hub</source>
       <translation>Čvorište korisnika</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="73"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="77"/>
       <source>This section contains documentation useful for FreeCAD users in general: a list of all the workbenches, detailed instructions on how to install and use the FreeCAD application, tutorials, and all you need to get started.</source>
       <translation>Ovaj odeljak sadrži opštu dokumentaciju korisnu za korisnike FreeCAD-a: listu svih radnih okruženja, detaljna uputstva o tome kako da instaliraš i koristiš FreeCAD program, tutorijale i sve što je potrebno za početak.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="74"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="78"/>
       <source>Power users hub</source>
       <translation>Čvorište naprednih korisnika</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="78"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="82"/>
       <source>This section gathers documentation for advanced users and people interested in writing python scripts. You will also find there a repository of macros, instructions on how to install and use them, and more information about customizing FreeCAD to your specific needs.</source>
       <translation>Ovaj odeljak prikuplja dokumentaciju za napredne korisnike i ljude zainteresovane za pisanje python skripti. Tamo ćeš takođe pronaći spremište makro-a, uputstva o tome kako da ih instaliraš i koristiš, i više informacija o prilagođavanju FreeCAD-a tvojim specifičnim potrebama.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="79"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="83"/>
       <source>Developers hub</source>
       <translation>Čvorište programera</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="83"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="87"/>
       <source>This section contains material for developers: How to compile FreeCAD yourself, how the FreeCAD source code is structured + how to navigate in it, how to develop new workbenches and/or embed FreeCAD in your own application.</source>
       <translation>Ovaj odeljak sadrži materijal za programere: Kako sam kompajlirati FreeCAD, kako je strukturiran izvorni kod FreeCAD-a + kako se kretati po njemu, kako razviti nove radne površine i/ili ugraditi FreeCAD u svoju aplikaciju.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="84"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="88"/>
       <source>Manual</source>
       <translation>Uputstvo</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="88"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="92"/>
       <source>The FreeCAD manual is another, more linear way to present the information contained in this wiki. It is made to be read like a book, and will gently introduce you to many other pages from the hubs above. &lt;a href="https://www.gitbook.com/book/yorikvanhavre/a-freecad-manual/details"&gt;e-book versions&lt;/a&gt; are also available.</source>
       <translation>Priručnik za FreeCAD je još jedan, linearniji način za predstavljanje informacija sadržanih u ovoj wiki. Napravljen je da se čita kao knjiga i polako će te upoznati sa mnogim drugim stranicama iz gore navedenih čvorišta. &lt;a href="https://www.gitbook.com/book/yorikvanhavre/a-freecad-manual/details"&gt;verzije e-knjiga&lt;/a&gt;su takođe dostupne.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="89"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="93"/>
       <source>Workbenches documentation</source>
       <translation>Dokumentacija radnih okruženja</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="93"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="97"/>
       <source>These are the help pages of all the workbenches currently installed on this computer.</source>
       <translation>Ovo su stranice pomoći za sva radna okruženja koja su trenutno instalirana na ovom računaru.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="94"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="98"/>
       <source>Getting help from the community</source>
       <translation>Dobijanje pomoći od FreeCAD zajednice</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="98"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="102"/>
       <source>The &lt;a href="https://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</source>
       <translation type="unfinished">The &lt;a href="https://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt; is a great place to get help from other FreeCAD users and developers. The forum has many sections for different types of issues and discussion subjects. If in doubt, post in the more general &lt;a href="https://forum.freecad.org/viewforum.php?f=3"&gt;Help on using FreeCAD&lt;/a&gt; section.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="102"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="106"/>
       <source>If it is the first time you are posting on the forum, be sure to &lt;a href="https://forum.freecad.org/viewtopic.php?f=3&amp;t=2264"&gt;read the guidelines&lt;/a&gt; first!</source>
       <translation>Ako po prvi put objavljuješ na forumu, kao prvo &lt;a href="https://forum.freecad.org/viewtopic.php?f=3&amp;t=2264"&gt;pročitaj smernice&lt;/a&gt;!</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="106"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="110"/>
       <source>FreeCAD also maintains a public &lt;a href="https://www.freecad.org/tracker"&gt;bug tracker&lt;/a&gt; where anybody can submit bugs and propose new features. To avoid causing extra work and give the best chances to see your bug solved, make sure you read the &lt;a href="https://forum.freecad.org/viewtopic.php?f=3&amp;t=5236"&gt;bug submission guide&lt;/a&gt; before posting.</source>
       <translation>FreeCAD takođe održava zajednica &lt;a href="https://www.freecad.org/tracker"&gt;pratioci grešaka&lt;/a&gt; gde svako može da prijavi greške i predloži nove funkcije. Da izbegneš suvišan posao i da sa najvećom verovatnoćom tvoj problem bude rešen, prvo pročitaj &lt;a href="https://forum.freecad.org/viewtopic.php?f=3&amp;t=5236"&gt;uputstvo o prijavi greške&lt;/a&gt; pre objavljivanja.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="124"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="128"/>
       <source>Below are the latest changes added to the &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;FreeCAD source code&lt;/a&gt;. These changes might not reflect yet in the FreeCAD version that you are currently running. Check the &lt;a href="https://www.freecad.org/wiki/Downloads"&gt;available options&lt;/a&gt; if you wish to obtain a development version.</source>
       <translation>Ispod se nalaze poslednje izmene dodate &lt;a href="http://github.com/FreeCAD/FreeCAD/"&gt;izvornom kodu FreeCAD-a&lt;/a&gt;. Ove promene se možda još uvek neće odraziti na verziju FreeCAD-a koju trenutno koristiš. Proveri &lt;a href="https://www.freecad.org/wiki/Downloads"&gt;dostupne opcije&lt;/a&gt; ako želiš da nabaviš razvojnu verziju.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="137"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="142"/>
       <source>The latest posts on the &lt;a href="https://forum.freecad.org"&gt;FreeCAD forum&lt;/a&gt;:</source>
       <translation>Najnovije objave na &lt;a href="https://forum.freecad.org"&gt;FreeCAD forumu&lt;/a&gt;:</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="107"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="111"/>
       <source>Available addons</source>
       <translation>Dostupni dodatni moduli</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="111"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="115"/>
       <source>Below is a list of available extra workbenches that can be added to your FreeCAD installation. Browse and install them from menu Tools -&gt; Addons manager. You can learn more about any of them by clicking the links below.</source>
       <translation>Ispod je spisak dostupnih dodatnih radnih okruženja koja se mogu dodati u tvoju instalaciju FreeCAD-a. Pregledaj ih i instaliraj iz menija „Alati → Menadžer dodataka“. Možeš saznati više o bilo kom od njih klikom na linkove ispod.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="115"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="119"/>
       <source>If not bundled with your FreeCAD version, install the FreeCAD documentation package to get documentation hubs, workbench help and individual command documentation without an internet connection.</source>
       <translation>Ako nije u paketu sa tvojom verzijom FreeCAD-a, instaliraj paket dokumentacije za FreeCAD da bi dobio čvorišta dokumentacije, pomoć za radno okruženje i dokumentaciju o pojedinačnim komandama bez internet veze.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="119"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="123"/>
       <source>Cannot fetch information from GitHub. &lt;a href="EnableDownload.py"&gt;Authorize FreeCAD to access the internet&lt;/a&gt; and reload the Start page.</source>
       <translation>Ne mogu da dovučem informacije sa GitHaba. &lt;a href="EnableDownload.py"&gt;Ovlasti FreeCAD da pristupi internetu&lt;/a&gt; i da ponovo učita početnu stranicu.</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="120"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="124"/>
       <source>Recent commits</source>
       <translation>Nedavno verifikovane promene</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="125"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="129"/>
       <source>See all commits on github</source>
       <translation>Vidi sve verifikovane promene na github</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="129"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="133"/>
       <source>You can configure a custom folder to display here in menu Edit -&gt; Preferences -&gt; Start -&gt; Show additional folder</source>
       <translation>Možeš da konfigurišeš sopstvenu fasciklu da se prikazuje ovde u meniju Uredi -&gt; Podešavanja -&gt; Start -&gt; Prikaži dodatni folder</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="130"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="134"/>
       <source>version</source>
       <translation>verzija</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="131"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="135"/>
       <source>build</source>
-      <translation>izgradnja</translation>
+      <translation>sastav</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="132"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="136"/>
       <source>Create new...</source>
       <translation>Napravi novi...</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="133"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="137"/>
       <source>Unknown</source>
       <translation>Nepoznato</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="134"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="138"/>
       <source>Forum</source>
       <translation>Forum</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="141"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="146"/>
       <source>To open any of the links above in your desktop browser, Right-click -&gt; Open in external browser</source>
       <translation>Da bi otvorio bilo koju od gornjih veza u veb-pregledaču, klikni desnim tasterom miša na link -&gt; Otvori u spoljnom veb-pregledaču</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="142"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="147"/>
       <source>Creation date</source>
       <translation>Datum stvaranja</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="143"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="148"/>
       <source>Last modification</source>
       <translation>Poslednja izmena</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="144"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="149"/>
       <source>Size</source>
       <translation>Veličina</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="145"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="150"/>
       <source>Author</source>
       <translation>Autor</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="146"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="151"/>
       <source>License</source>
       <translation>Licenca</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="147"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="152"/>
       <source>File path</source>
       <translation type="unfinished">File path</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="148"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="153"/>
       <source>Notes</source>
       <translation>Napomene</translation>
     </message>
     <message>
-      <location filename="../../../StartPage/TranslationTexts.py" line="149"/>
+      <location filename="../../../StartPage/TranslationTexts.py" line="155"/>
       <source>Open start page preferences</source>
       <translation>Otvori podešavanje početne stranice</translation>
     </message>
@@ -361,7 +361,7 @@
     <message>
       <location filename="../../DlgStartPreferences.ui" line="239"/>
       <source>If this is checked, the latest posts from the FreeCAD forum will be displayed on the Activity tab</source>
-      <translation>Ako je ovo čekirano, poslednje objave sa FreeCAD foruma biće prikazane u kartici aktivnosti</translation>
+      <translation>Ako je ovo označeno, poslednje objave sa FreeCAD foruma biće prikazane u kartici aktivnosti</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="307"/>
@@ -463,7 +463,7 @@ Ako koristiš ";;" da bi razdvojio putanje, možeš dodati nekoliko fascikli</tr
     <message>
       <location filename="../../DlgStartPreferences.ui" line="627"/>
       <source>If this is checked and a style sheet is specified in General preferences, it will be used and override the colors below</source>
-      <translation>Ako je ovo čekirano i lista stilova je navedena u opštim podešavanjima, ona će se koristiti i zameniti boje ispod</translation>
+      <translation>Ako je ovo označeno i lista stilova je navedena u opštim podešavanjima, ona će se koristiti i zameniti boje ispod</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="370"/>
@@ -559,7 +559,7 @@ Ako koristiš ";;" da bi razdvojio putanje, možeš dodati nekoliko fascikli</tr
     <message>
       <location filename="../../DlgStartPreferences.ui" line="47"/>
       <source>If checked, will automatically close the Start page when FreeCAD launches</source>
-      <translation>Ako je čekirano, automatski će zatvoriti početnu stranicu kada se FreeCAD pokrene</translation>
+      <translation>Ako je označeno, automatski će zatvoriti početnu stranicu kada se FreeCAD pokrene</translation>
     </message>
     <message>
       <location filename="../../DlgStartPreferences.ui" line="26"/>

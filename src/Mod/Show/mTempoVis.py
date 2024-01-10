@@ -226,11 +226,11 @@ class TempoVis(object):
 
     # <stack interface>
     def _inserted(self, stack, index):
-        """calles when this tv is inserted into a stack"""
+        """called when this tv is inserted into a stack"""
         self.stack = stack
 
     def _withdrawn(self, stack, index):
-        """calles when this tv is withdrawn from a stack"""
+        """called when this tv is withdrawn from a stack"""
         self.stack = None
 
     @property

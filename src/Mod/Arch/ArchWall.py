@@ -1270,6 +1270,7 @@ class _Wall(ArchComponent.Component):
 
                     # If the object is a single edge, use that as the
                     # basewires.
+                    # TODO 2023.11.26: Need to check if it is not Sketch afterall first or use algoritm for Sketch altogher?
                     elif len(obj.Base.Shape.Edges) == 1:
                         self.basewires = [Part.Wire(obj.Base.Shape.Edges)]
 
@@ -1290,7 +1291,10 @@ class _Wall(ArchComponent.Component):
                         for cluster in Part.getSortedClusters(skGeomEdges):
                             clusterTransformed = []
                             for edge in cluster:
+                                # TODO 2023.11.26: Multiplication order should be switched?
+                                # So far 'no problem' as 'edge.placement' is always '0,0,0' ?
                                 edge.Placement = edge.Placement.multiply(skPlacement)  ## TODO add attribute to skip Transform...
+
                                 clusterTransformed.append(edge)
                             # Only use cluster of edges rather than turning into wire
                             self.basewires.append(clusterTransformed)
@@ -1304,8 +1308,14 @@ class _Wall(ArchComponent.Component):
                         normal = obj.Base.getGlobalPlacement().Rotation.multVec(FreeCAD.Vector(0,0,1))
 
                     else:
-                        self.basewires = obj.Base.Shape.Wires
-
+                        # See discussion - https://forum.freecad.org/viewtopic.php?t=82207&start=10
+                        #self.basewires = obj.Base.Shape.Wires
+                        #
+                        # Now, adopt approach same as for Sketch
+                        self.basewires = []
+                        clusters = Part.getSortedClusters(obj.Base.Shape.Edges)
+                        self.basewires = clusters
+                        # Previously :
                         # Found case that after sorting below, direction of
                         # edges sorted are not as 'expected' thus resulted in
                         # bug - e.g. a Dwire with edges/vertexes in clockwise

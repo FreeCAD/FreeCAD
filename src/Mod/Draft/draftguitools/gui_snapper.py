@@ -48,8 +48,8 @@ import Part
 import Draft
 import DraftVecUtils
 import DraftGeomUtils
-import draftguitools.gui_trackers as trackers
-
+from draftguitools import gui_trackers as trackers
+from draftutils import params
 from draftutils.init_tools import get_draft_snap_commands
 from draftutils.messages import _wrn
 from draftutils.translate import translate
@@ -85,15 +85,13 @@ class Snapper:
     def __init__(self):
         self.activeview = None
         self.lastObj = []
-        self.maxEdges = 0
         self.radius = 0
         self.constraintAxis = None
         self.basepoint = None
         self.affinity = None
         self.mask = None
         self.cursorMode = None
-        if Draft.getParam("maxSnap", 0):
-            self.maxEdges = Draft.getParam("maxSnapEdges", 0)
+        self.maxEdges = params.get_param("maxSnapEdges")
 
         # we still have no 3D view when the draft module initializes
         self.tracker = None
@@ -169,8 +167,7 @@ class Snapper:
         set self.active_snaps according to user prefs
         """
         self.active_snaps = []
-        param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-        snap_modes = param.GetString("snapModes", "100000000000000") # default value: only lock is ON
+        snap_modes = params.get_param("snapModes")
         i = 0
         for snap in snap_modes:
             if bool(int(snap)):
@@ -179,7 +176,7 @@ class Snapper:
 
 
     def set_snap_style(self):
-        self.snapStyle = Draft.getParam("snapStyle", 0)
+        self.snapStyle = params.get_param("snapStyle")
         if self.snapStyle:
             self.mk = coll.OrderedDict([("passive",       "SQUARE_LINE"),
                                         ("extension",     "SQUARE_LINE"),
@@ -243,7 +240,7 @@ class Snapper:
 
         self.spoint = None
 
-        if Draft.getParam("SnapBarShowOnlyDuringCommands", False):
+        if params.get_param("SnapBarShowOnlyDuringCommands"):
             toolbar = self.get_snap_toolbar()
             if toolbar:
                 toolbar.show()
@@ -264,14 +261,14 @@ class Snapper:
         self.setTrackers()
 
         # Get current snap radius
-        self.radius = self.getScreenDist(Draft.getParam("snapRange", 8),
+        self.radius = self.getScreenDist(params.get_param("snapRange"),
                                          screenpos)
         if self.radiusTracker:
             self.radiusTracker.update(self.radius)
             self.radiusTracker.off()
 
         # Activate snap
-        if Draft.getParam("alwaysSnap", True):
+        if params.get_param("alwaysSnap"):
             active = True
         if not self.active:
             active = False
@@ -1229,7 +1226,7 @@ class Snapper:
         self.unconstrain()
         self.radius = 0
         self.setCursor()
-        if Draft.getParam("SnapBarShowOnlyDuringCommands", False):
+        if params.get_param("SnapBarShowOnlyDuringCommands"):
             toolbar = self.get_snap_toolbar()
             if toolbar:
                 toolbar.hide()
@@ -1488,7 +1485,7 @@ class Snapper:
 
     def showradius(self):
         """Show the snap radius indicator."""
-        self.radius = self.getScreenDist(Draft.getParam("snapRange", 8),
+        self.radius = self.getScreenDist(params.get_param("snapRange"),
                                          (400, 300))
         if self.radiusTracker:
             self.radiusTracker.update(self.radius)
@@ -1529,14 +1526,13 @@ class Snapper:
         """
         Save snap state to user preferences to be restored in next session.
         """
-        param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
         snap_modes = ""
         for snap in self.snaps:
             if snap in self.active_snaps:
                 snap_modes += "1"
             else:
                 snap_modes += "0"
-        param.SetString("snapModes",snap_modes)
+        params.set_param("snapModes", snap_modes)
 
 
     def show_hide_grids(self, show=True):
@@ -1546,8 +1542,7 @@ class Snapper:
         Hiding the grid can be prevented by setting the GridHideInOtherWorkbenches
         preference to `False`.
         """
-        param = App.ParamGet("User parameter:BaseApp/Preferences/Mod/Draft")
-        if (not show) and (not param.GetBool("GridHideInOtherWorkbenches", True)):
+        if (not show) and (not params.get_param("GridHideInOtherWorkbenches")):
             return
         mw = Gui.getMainWindow()
         views = mw.getWindowsOfType(App.Base.TypeId.fromName("Gui::View3DInventor"))  # All 3D views.
@@ -1574,14 +1569,15 @@ class Snapper:
     def setGrid(self):
         """Set the grid, if visible."""
         self.setTrackers()
-        if self.grid.Visible:
-            self.grid.set()
 
 
     def setTrackers(self, update_grid=True):
         """Set the trackers."""
         v = Draft.get3DView()
-        if v and (v != self.activeview):
+        if v is None:
+            return
+
+        if v != self.activeview:
             if v in self.trackers[0]:
                 i = self.trackers[0].index(v)
                 self.grid = self.trackers[1][i]
@@ -1595,9 +1591,9 @@ class Snapper:
                 self.holdTracker = self.trackers[9][i]
             else:
                 self.grid = trackers.gridTracker()
-                if Draft.getParam("alwaysShowGrid", True):
+                if params.get_param("alwaysShowGrid"):
                     self.grid.show_always = True
-                if Draft.getParam("grid", True):
+                if params.get_param("grid"):
                     self.grid.show_during_command = True
                 self.tracker = trackers.snapTracker()
                 self.trackLine = trackers.lineTracker()

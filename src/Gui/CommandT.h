@@ -301,7 +301,7 @@ inline void cmdGuiDocument(const App::DocumentObject* obj, T&& cmd) {
  */
 template<typename T>
 void _cmdObject(Gui::Command::DoCmd_Type cmdType, const App::DocumentObject* obj, const std::string& mod, T&& cmd) {
-    if (obj && obj->getNameInDocument()) {
+    if (obj && obj->isAttachedToDocument()) {
         std::ostringstream str;
         str << mod << ".getDocument('" << obj->getDocument()->getName() << "')"
                       ".getObject('" << obj->getNameInDocument() << "')."
@@ -352,7 +352,7 @@ inline void cmdAppObjectShow(const App::DocumentObject* obj) {
  * external group.
  */
 inline void cmdSetEdit(const App::DocumentObject* obj, int mod = 0) {
-    if (obj && obj->getNameInDocument()) {
+    if (obj && obj->isAttachedToDocument()) {
         Gui::Command::doCommand(Gui::Command::Gui,
             "Gui.ActiveDocument.setEdit(App.getDocument('%s').getObject('%s'), %d)",
             obj->getDocument()->getName(), obj->getNameInDocument(), mod);

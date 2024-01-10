@@ -197,7 +197,8 @@ void QGIHighlight::setTools()
 {
     m_pen.setWidthF(m_width);
     m_pen.setColor(m_colCurrent);
-    m_pen.setStyle(m_styleCurrent);
+    m_pen.setStyle(Qt::CustomDashLine);
+
     m_brush.setStyle(m_brushCurrent);
     m_brush.setColor(m_colCurrent);
 
@@ -207,3 +208,7 @@ void QGIHighlight::setTools()
     m_reference->setDefaultTextColor(m_colCurrent);
 }
 
+void QGIHighlight::setLinePen(QPen isoPen)
+{
+    m_pen = isoPen;
+}

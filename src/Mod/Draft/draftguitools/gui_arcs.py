@@ -37,13 +37,13 @@ import FreeCADGui as Gui
 import Draft
 import Draft_rc
 import DraftVecUtils
-import draftguitools.gui_base_original as gui_base_original
-import draftguitools.gui_base as gui_base
-import draftguitools.gui_tool_utils as gui_tool_utils
-import draftguitools.gui_trackers as trackers
-import draftutils.utils as utils
-
 from FreeCAD import Units as U
+from draftguitools import gui_base
+from draftguitools import gui_base_original
+from draftguitools import gui_tool_utils
+from draftguitools import gui_trackers as trackers
+from draftutils import params
+from draftutils import utils
 from draftutils.messages import _err, _toolmsg
 from draftutils.translate import translate
 
@@ -302,7 +302,7 @@ class Arc(gui_base_original.Creator):
                 # The command to run is built as a series of text strings
                 # to be committed through the `draftutils.todo.ToDo` class.
                 Gui.addModule("Draft")
-                if utils.getParam("UsePartPrimitives", False):
+                if params.get_param("UsePartPrimitives"):
                     # Insert a Part::Primitive object
                     _base = DraftVecUtils.toString(self.center)
                     _cmd = 'FreeCAD.ActiveDocument.'
@@ -348,7 +348,7 @@ class Arc(gui_base_original.Creator):
 
             try:
                 Gui.addModule("Draft")
-                if utils.getParam("UsePartPrimitives", False):
+                if params.get_param("UsePartPrimitives"):
                     # Insert a Part::Primitive object
                     _base = DraftVecUtils.toString(self.center)
                     _cmd = 'FreeCAD.ActiveDocument.'
@@ -550,7 +550,7 @@ class Arc_3Points(gui_base.GuiCommandSimplest):
             # If three points were already picked in the 3D view
             # proceed with creating the final object.
             # Draw a simple `Part::Feature` if the parameter is `True`.
-            if utils.get_param("UsePartPrimitives", False):
+            if params.get_param("UsePartPrimitives"):
                 Draft.make_arc_3points([self.points[0],
                                         self.points[1],
                                         self.points[2]], primitive=True)

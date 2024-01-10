@@ -402,11 +402,14 @@ DrawDimHelper::makeDistDim(DrawViewPart* dvp, std::string dimType,
 
     std::vector<TechDraw::VertexPtr> gVerts = dvp->getVertexGeometry();
 
+    // invert the point so the math works correctly
     Base::Vector3d cleanMin = DrawUtil::invertY(inMin);
+   cleanMin = CosmeticVertex::makeCanonicalPoint(dvp, cleanMin);
     std::string tag1 = dvp->addCosmeticVertex(cleanMin);
     int iGV1 = dvp->add1CVToGV(tag1);
 
     Base::Vector3d cleanMax = DrawUtil::invertY(inMax);
+   cleanMax = CosmeticVertex::makeCanonicalPoint(dvp, cleanMax);
     std::string tag2 = dvp->addCosmeticVertex(cleanMax);
     int iGV2 = dvp->add1CVToGV(tag2);
 

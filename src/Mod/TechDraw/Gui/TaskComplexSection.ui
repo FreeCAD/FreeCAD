@@ -143,6 +143,12 @@
             <height>26</height>
            </size>
           </property>
+          <property name="decimals">
+           <number>6</number>
+          </property>
+          <property name="maximum">
+           <double>999.000000000000000</double>
+          </property>
           <property name="value">
            <double>1.000000000000000</double>
           </property>

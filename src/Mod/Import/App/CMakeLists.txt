@@ -50,6 +50,8 @@ SET(Import_SRCS
     WriterIges.h
     WriterStep.cpp
     WriterStep.h
+    SketchExportHelper.cpp
+    SketchExportHelper.h
     dxf/ImpExpDxf.cpp
     dxf/ImpExpDxf.h
     dxf/dxf.cpp

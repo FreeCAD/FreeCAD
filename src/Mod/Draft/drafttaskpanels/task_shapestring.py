@@ -34,13 +34,11 @@ import PySide.QtGui as QtGui
 import FreeCAD as App
 import FreeCADGui as Gui
 import Draft_rc
-
-import draftguitools.gui_tool_utils as gui_tool_utils
-
-from DraftVecUtils import toString
-from draftutils.utils import get_param
+from draftguitools import gui_tool_utils
+from draftutils.messages import _err, _msg
+from draftutils.params import get_param
 from draftutils.translate import translate
-from draftutils.messages import _msg, _err
+from DraftVecUtils import toString
 
 # So the resource file doesn't trigger errors from code checkers (flake8)
 True if Draft_rc.__name__ else False
@@ -69,7 +67,7 @@ class ShapeStringTaskPanel:
         self.stringText = string if string else translate("draft", "Default")
         self.form.leString.setText(self.stringText)
         self.platWinDialog("Overwrite")
-        self.fileSpec = font if font else get_param("FontFile", "")
+        self.fileSpec = font if font else get_param("FontFile")
         self.form.fcFontFile.setFileName(self.fileSpec)
         self.point = point
         self.pointPicked = False
@@ -116,15 +114,7 @@ class ShapeStringTaskPanel:
         """Handle the type of dialog depending on the platform."""
         ParamGroup = App.ParamGet("User parameter:BaseApp/Preferences/Dialog")
         if flag == "Overwrite":
-            GroupContent = ParamGroup.GetContents()
-            found = False
-            if GroupContent:
-                for ParamSet in GroupContent:
-                    if ParamSet[1] == "DontUseNativeFontDialog":
-                        found = True
-                        break
-
-            if found is False:
+            if "DontUseNativeFontDialog" not in ParamGroup.GetBools():
                 # initialize nonexisting one
                 ParamGroup.SetBool("DontUseNativeFontDialog", True)
 
