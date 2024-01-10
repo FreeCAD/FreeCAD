@@ -25,12 +25,14 @@
 
 #ifndef _PreComp_
 #include <Adaptor3d_IsoCurve.hxx>
+#include <BRepAdaptor_CompCurve.hxx>
 #include <BRepAdaptor_Curve.hxx>
 #include <BRepAdaptor_Surface.hxx>
 #include <BRepClass_FaceClassifier.hxx>
 #include <BRepGProp.hxx>
 #include <BRepGProp_Face.hxx>
 #include <BRep_Tool.hxx>
+#include <BRepTools.hxx>
 #include <GCPnts_AbscissaPoint.hxx>
 #include <GProp_GProps.hxx>
 #include <GeomAPI_IntCS.hxx>
@@ -39,6 +41,7 @@
 #include <Geom_Plane.hxx>
 #include <Precision.hxx>
 #include <Standard_Version.hxx>
+#include <ShapeAnalysis_Surface.hxx>
 #include <TopoDS.hxx>
 #include <TopoDS_Vertex.hxx>
 #include <cmath>  //OvG: Required for log10
@@ -109,8 +112,8 @@ App::DocumentObjectExecReturn* Constraint::execute()
 // OvG: Provide the ability to determine how big to draw constraint arrows etc.
 int Constraint::calcDrawScaleFactor(double lparam) const
 {
-    return ((int)round(log(lparam) * log(lparam) * log(lparam) / 10) > 1)
-        ? ((int)round(log(lparam) * log(lparam) * log(lparam) / 10))
+    return (static_cast<int>(round(log(lparam) * log(lparam) * log(lparam) / 10)) > 1)
+        ? (static_cast<int>(round(log(lparam) * log(lparam) * log(lparam) / 10)))
         : 1;
 }
 
@@ -123,7 +126,8 @@ int Constraint::calcDrawScaleFactor() const
 {
     return 1;
 }
-#define CONSTRAINTSTEPLIMIT 50
+
+constexpr int CONSTRAINTSTEPLIMIT = 50;
 
 void Constraint::onChanged(const App::Property* prop)
 {
@@ -221,11 +225,11 @@ bool Constraint::getPoints(std::vector<Base::Vector3d>& points,
             // OvG: Increase 10 units distance proportionately to l for larger objects.
             if (l >= 30) {
                 *scale = this->calcDrawScaleFactor(l);  // OvG: setup draw scale for constraint
-                steps = (int)round(l / (10 * (*scale)));
+                steps = static_cast<int>(round(l / (10 * (*scale))));
                 steps = steps < 3 ? 3 : steps;
             }
             else if (l >= 20) {
-                steps = (int)round(l / 10);
+                steps = static_cast<int>(round(l / 10));
                 *scale = this->calcDrawScaleFactor();  // OvG: setup draw scale for constraint
             }
             else {
@@ -309,11 +313,11 @@ bool Constraint::getPoints(std::vector<Base::Vector3d>& points,
             int stepsv;
             if (lv >= 30) {
                 *scale = this->calcDrawScaleFactor(lv, lu);  // OvG: setup draw scale for constraint
-                stepsv = (int)round(lv / (10 * (*scale)));
+                stepsv = static_cast<int>(round(lv / (10 * (*scale))));
                 stepsv = stepsv < 3 ? 3 : stepsv;
             }
             else if (lv >= 20.0) {
-                stepsv = (int)round(lv / 10);
+                stepsv = static_cast<int>(round(lv / 10));
                 *scale = this->calcDrawScaleFactor();  // OvG: setup draw scale for constraint
             }
             else {
@@ -329,11 +333,11 @@ bool Constraint::getPoints(std::vector<Base::Vector3d>& points,
             // OvG: Increase 10 units distance proportionately to lu for larger objects.
             if (lu >= 30) {
                 *scale = this->calcDrawScaleFactor(lv, lu);  // OvG: setup draw scale for constraint
-                stepsu = (int)round(lu / (10 * (*scale)));
+                stepsu = static_cast<int>(round(lu / (10 * (*scale))));
                 stepsu = stepsu < 3 ? 3 : stepsu;
             }
             else if (lu >= 20.0) {
-                stepsu = (int)round(lu / 10);
+                stepsu = static_cast<int>(round(lu / 10));
                 *scale = this->calcDrawScaleFactor();  // OvG: setup draw scale for constraint
             }
             else {
@@ -345,19 +349,43 @@ bool Constraint::getPoints(std::vector<Base::Vector3d>& points,
             stepsu = stepsu > CONSTRAINTSTEPLIMIT ? CONSTRAINTSTEPLIMIT : stepsu;
             double stepv = (vlp - vfp) / stepsv;
             double stepu = (ulp - ufp) / stepsu;
+
             // Create points and normals
+            auto fillPointsAndNormals = [&](Standard_Real u, Standard_Real v) {
+                gp_Pnt p = surface.Value(u, v);
+                BRepClass_FaceClassifier classifier(face, p, Precision::Confusion());
+                if (classifier.State() != TopAbs_OUT) {
+                    points.emplace_back(p.X(), p.Y(), p.Z());
+                    props.Normal(u, v, center, normal);
+                    normal.Normalize();
+                    normals.emplace_back(normal.X(), normal.Y(), normal.Z());
+                }
+            };
+
+            size_t prevSize = points.size();
             for (int i = 0; i < stepsv + 1; i++) {
                 for (int j = 0; j < stepsu + 1; j++) {
                     double v = vfp + i * stepv;
                     double u = ufp + j * stepu;
-                    gp_Pnt p = surface.Value(u, v);
-                    BRepClass_FaceClassifier classifier(face, p, Precision::Confusion());
-                    if (classifier.State() != TopAbs_OUT) {
-                        points.emplace_back(p.X(), p.Y(), p.Z());
-                        props.Normal(u, v, center, normal);
-                        normal.Normalize();
-                        normals.emplace_back(normal.X(), normal.Y(), normal.Z());
-                    }
+                    fillPointsAndNormals(u, v);
+                }
+            }
+
+            // it could happen that on a trimmed surface the steps on the iso-curves
+            // are outside the surface, so no points are added.
+            // In that case use points on the outer wire.
+            // https://github.com/FreeCAD/FreeCAD/issues/6073
+            if (prevSize == points.size()) {
+                BRepAdaptor_CompCurve compCurve(BRepTools::OuterWire(face), Standard_True);
+                GProp_GProps linProps;
+                BRepGProp::LinearProperties(compCurve.Wire(), linProps);
+                double outWireLength = linProps.Mass();
+                int stepWire = stepsu + stepsv;
+                ShapeAnalysis_Surface surfAnalysis(surface.Surface().Surface());
+                for (int i = 0; i < stepWire; ++i) {
+                    gp_Pnt p = compCurve.Value(outWireLength * i / stepWire);
+                    gp_Pnt2d pUV = surfAnalysis.ValueOfUV(p, Precision::Confusion());
+                    fillPointsAndNormals(pUV.X(), pUV.Y());
                 }
             }
         }
