@@ -21,6 +21,7 @@
 #include <string>
 #include <vector>
 
+#include <Base/Matrix.h>
 #include <Base/Vector3D.h>
 #include <Base/Console.h>
 #include <App/Color.h>
@@ -460,25 +461,107 @@ protected:
     }
 
 private:
+    // The following are options which can be altered before DoRead is called.
+
+    // An additional scaling factor to apply after any scaling implied by the DXF file header
+    // (dxfScaling)
     double m_additionalScaling = 1.0;
 
-    // The following provide a state when reading any entity: If m_block_name is not empty the
-    // entity is in a BLOCK being defined, and LayerName() will return "BLOCKS xxxx" where xxxx is
-    // the block name. Otherwise m_layer_name will be the layer name from the entity records
-    // (default to "0") and LayerName() will return "ENTITIES xxxx" where xxxx is the layer name.
-    // This is clunky but it is a non-private interface and so difficult to change.
-    std::string m_layer_name;
-    std::string m_block_name;
+    // This group of options control which attributes are preserved on import
 
+protected:
+    // NOLINTBEGIN(cppcoreguidelines-non-private-member-variables-in-classes)
+    // Place entities in drawing layers as coded in the DXF file.
+    // Otherwise place objects as top-level drawing objects (but still honour BYLAYER attributes).
+    // (dxfUseDraftVisGroups)
+    bool m_preserveLayers = true;
 
+    // Colour entities as coded in the DXF file.
+    // Otherwise leave everything as the default FreeCAD colours.
+    // (dxfGetOriginalColors)
+    bool m_preserveColors = true;
+    // Control object simplification (preserve types and individual identities)
+    using eEntityMergeType_t = enum {
+        // Merge shapes (lines, arcs, circles, etc) into a single compound object when attributes
+        // match
+        MergeShapes,
+        // Make individual dearing shapes for each DXF entity
+        SingleShapes,
+        // Make appropriately-types Draft objects for each DXF entity, giving superior property
+        // access.
+        DraftObjects
+    };
+    // This is a combination of ui options:
+    //    "Group layers into blocks" (groupLayers) checkbox which means MergeShapes,
+    //    "simple part shapes" (dxfCreatePart) radio button which means SingleShapes
+    //    "Draft objects" (dxfCreateDraft) radio button which means DraftObjects
+    //    We do not support (dxfCreateSketch).
+    //    (joingeometry) is described as being slow so I think the implication is that it only joins
+    // linear entities that meet end-to-end to form them into wire objects. As such it is
+    // intermediate between MergeShapes and SingleShapes and is not implemented.
+    // TODO: The options structure allows conflicting settings for these options because
+    // (groupLayers) and (joingeometry) are separate options, not part of the radio button set. The
+    // others are excluded from having several set by the UI structure but code can set multiple
+    // conflicting values.
+    eEntityMergeType_t m_mergeOption = DraftObjects;
+
+    // This group of options controls the import of certain types of entities or entities having
+    // certain properties
+
+    // Import text and dimensions (dxftext)
+    bool m_importAnnotations = true;
+    // Import Point tntities
+    bool m_importPoints = true;
+    // Import entities in Paper space
+    bool m_importPaperSpaceEntities = false;
+    // Import hidden blocks (the will not affect the result for standard import because such blocks
+    // are never INSERTed but a custom derived class might want to access these block definitions.
+    bool m_importHiddenBlocks = false;
+    // Import content on Frozen layers
+    bool m_importFrozenLayers = false;
+    // Import content on Hidden layers. Note that an INSERT on a hidden layer would still be
+    // expanded, but the resulting entities would not appear if placed on a hidden layer.
+    bool m_importHiddenLayers = true;
+    // NOLINTEND(cppcoreguidelines-non-private-member-variables-in-classes)
+
+    // TODO: options still to implement:
+    // Import Hatch boundaries as wires (FC doesn't support hatching (???) but this option will draw
+    // a polygon of the boundary of
+    //     the hatched area
+    // Render Polylines with width. If the width were constant we could use the View line width
+    // property except that is in
+    //     pixels and does not scale. The legacy importer replaces the polyline with a face whose
+    //     side edges are the original polyline offset by half the width. If the polyline is open
+    //     these edges are joined by endcaps, otherwise they each join to their ends to form a face
+    //     with a hole in it.
+
+    // TODO: Other options we might want:
+    // Import SOLIDs (as faces)
+
+    struct VertexInfo
+    {
+        Base::Vector3d location;
+        double bulge = 0;
+    };
+    bool ExplodePolyline(std::list<VertexInfo>&, int flags);
+    bool ReadBlockContents();
+    bool SkipBlockContents();
+
+private:
     // Error-handling control
     bool m_ignore_errors = true;
     bool m_fail = false;
 
-    // Mapping from layer name -> layer color index
-    std::map<std::string, ColorIndex_t> m_layer_ColorIndex_map;
-    const ColorIndex_t ColorBylayer = 256;
-    const ColorIndex_t ColorByBlock = 0;
+    // These could be private to CommonEntityAttributes but in the long run I want to make all
+    // the DXF definitions available to the CDxfWrite as well.
+    // The Default values are used if a Layer definition by error is missing an attribute,
+    // and also if we synthesize a layer that has no definition.
+    static const ColorIndex_t ColorBylayer = 256;
+    static const ColorIndex_t ColorByBlock = 0;
+    static const ColorIndex_t DefaultColor = 0;
+    static const std::string LineTypeByLayer;
+    static const std::string LineTypeByBlock;
+    static const std::string DefaultLineType;
 
     // Readers for various parts of the DXF file.
     bool ReadSection();
@@ -487,8 +570,11 @@ private:
     bool ReadHeaderSection();
     bool ReadTablesSection();
     bool ReadBlocksSection();
-    bool ReadEntitiesSection();
 
+protected:
+    virtual bool ReadEntitiesSection();
+
+private:
     bool ReadIgnoredSection();
 
     // The Header section consists of multipel variables, only a few of which we give special
@@ -518,13 +604,7 @@ private:
     bool ReadSpline();
     bool ReadLwPolyLine();
     bool ReadPolyLine();
-    struct VertexInfo
-    {
-        Base::Vector3d location;
-        double bulge = 0;
-    };
 
-    bool OnReadPolyline(std::list<VertexInfo>&, int flags);
     void OnReadArc(double start_angle,
                    double end_angle,
                    double radius,
@@ -545,6 +625,7 @@ private:
     void InitializeAttributes();
     void InitializeCommonEntityAttributes();
     void Setup3DVectorAttribute(eDXFGroupCode_t x_record_type, Base::Vector3d& destination);
+    void Setup3DDirectionAttribute(eDXFGroupCode_t x_record_type, Base::Vector3d& destination);
     void SetupScaledDoubleAttribute(eDXFGroupCode_t record_type, double& destination);
     void SetupScaledDoubleIntoList(eDXFGroupCode_t record_type, std::list<double>& destination);
     void Setup3DCoordinatesIntoLists(eDXFGroupCode_t x_record_type,
@@ -556,6 +637,7 @@ private:
     static void ProcessScaledDouble(CDxfRead* object, void* target);
     static void ProcessScaledDoubleIntoList(CDxfRead* object, void* target);
     static void ProcessStdString(CDxfRead* object, void* target);
+    static void ProcessLayerReference(CDxfRead* object, void* target);
     // For all types T where strean >> x and x = 0 works
     template<typename T>
     void SetupValueAttribute(eDXFGroupCode_t record_type, T& destination);
@@ -574,6 +656,8 @@ private:
 
     bool ProcessAttribute();
     void ProcessAllAttributes();
+    void ProcessAllEntityAttributes();
+    void ResolveEntityAttributes();
 
     bool ReadBlockInfo();
     bool ResolveEncoding();
@@ -584,13 +668,7 @@ private:
     bool (CDxfRead::*stringToUTF8)(std::string&) const = &CDxfRead::UTF8ToUTF8;
 
 protected:
-    // common entity properties. Some properties are accumulated local to the reader method and
-    // passed to the ReadXxxx virtual method. Others are collected here as private values and also
-    // passed to ReadXxxx. Finally some of the attributes are accessed using references to
-    // public/protected fields or methods (such as LayerName()). Altogether a bit of a mishmash.
     // NOLINTBEGIN(cppcoreguidelines-non-private-member-variables-in-classes)
-    ColorIndex_t m_ColorIndex = 0;
-    std::string m_LineType;
     eDXFVersion_t m_version = RUnknown;  // Version from $ACADVER variable in DXF
     // NOLINTEND(cppcoreguidelines-non-private-member-variables-in-classes)
 
@@ -639,13 +717,128 @@ private:
         return m_record_data == testName;
     }
 
+    // Layer management
+protected:
+    class Layer
+    {
+    public:
+        Layer(const std::string& name, ColorIndex_t color, std::string&& lineType)
+            : Name(name)
+            , Color(color < 0 ? -color : color)
+            , LineType(lineType)
+            , Hidden(color < 0)
+        {}
+        Layer(const Layer&) = delete;
+        Layer(Layer&&) = delete;
+        void operator=(const Layer&) = delete;
+        void operator=(Layer&&) = delete;
+        virtual ~Layer() = default;
+        const std::string Name;
+        const ColorIndex_t Color;
+        const std::string LineType;
+        const bool Hidden;
+    };
+    std::map<std::string, Layer*> Layers;
+
+    virtual Layer* MakeLayer(const std::string& name, ColorIndex_t color, std::string&& lineType);
+
+    // Entity attribute management
+    class CommonEntityAttributes
+    {
+    public:
+        Layer* m_Layer {nullptr};
+        ColorIndex_t m_Color {0};
+        std::string m_LineType;
+        bool m_paperSpace {false};
+        void SetDefaults()
+        {
+            // There is some uncertainty in the documentation. If the line type is omitted it should
+            // act as by-layer.
+            // The question is whether an explicit line type "BYLAYER" should also mean by-layer. If
+            // this is the case we should set m_LineType to "BYLAYER" and only check for "BYLAYER"
+            // in ResolveByLayerAttributes. If this is not the case and "BYLAYER" can actually refer
+            // to a line type of that name, then we should init m_LineType to empty and check only
+            // for a zero-length line type to trigger by-layer line type. An experiment in R13
+            // reveals that it is not possible to make a line type BYLAYER so the former is what we
+            // do.
+            m_Color = ColorBylayer;
+            m_LineType = LineTypeByLayer;
+            m_paperSpace = false;
+        }
+        void ResolveBylayerAttributes(const CDxfRead& reader)
+        {
+            // This should be called after the entire entity is read in case the layer reference
+            // name comes after a BYLAYER color. Also we can't be sure of BYLAYER line type until
+            // the entity ends
+            if (m_Color == ColorBylayer) {
+                m_Color = m_Layer != nullptr ? m_Layer->Color : DefaultColor;
+            }
+            if (m_LineType == LineTypeByLayer) {
+                m_LineType = m_Layer != nullptr ? m_Layer->LineType : DefaultLineType;
+            }
+            // We this point we not longer have any use for m_Layer except as a destination for the
+            // entity. If the import is not preserving layers, we clear out that field here so all
+            // entities get placed at the drawing root and are subject to compounding despite being
+            // originally in different layers.
+            if (!reader.m_preserveColors) {
+                m_Color = DefaultColor;
+            }
+            if (!reader.m_preserveLayers) {
+                m_Layer = nullptr;
+            }
+        }
+        void ResolveByBlockAttributes(const CommonEntityAttributes& insertAttributes)
+        {
+            if (m_Color == ColorByBlock) {
+                m_Color = insertAttributes.m_Color;
+            }
+            if (m_LineType == LineTypeByBlock) {
+                m_LineType = insertAttributes.m_LineType;
+            }
+        }
+        bool operator<(const CommonEntityAttributes& second) const
+        {
+            // TODO: This is here so we can use CommonEntityAttributes as a key in a std::map
+            // It's been a while and I don't know if it is (currently) considered suspect to compare
+            // for inequality two pointers that don't point within the same array, but I'm also not
+            // sure what to do instead.
+            return m_Layer < second.m_Layer
+                || (m_Layer == second.m_Layer
+                    && (m_Color < second.m_Color
+                        || (m_Color == second.m_Color
+                            && (m_LineType < second.m_LineType
+                                || (m_LineType == second.m_LineType && !m_paperSpace
+                                    && second.m_paperSpace)))));
+        }
+    };
+    CommonEntityAttributes m_entityAttributes;
+    // Coordinate transform management.
+private:
+    // The normal vector as read from the eExtrusionDirection attributes, defaults to (0, 0, 1)
+    // Reading this is set up in ReadEntity and done by ProcessAll(Entity)Attributes
+    Base::Vector3d EntityNormalVector;
+
+    static constexpr double ArbitraryAxisAlgorithmThreshold = 1 / 64.0;
+
+protected:
+    // NOLINTBEGIN(cppcoreguidelines-non-private-member-variables-in-classes)
+    // The transform implied by the Normal vector of the entity in EntityNormalVector.
+    // This is a pure 3d rotation transformation (that is, no scaling or translation)
+    // which maps the Z axis to the normal vector from the DXF records,
+    // and the X and Y axes according to the Arbitrary Axis Algorithm in the DXF documentation
+    // This is calculated from EntityNormalVector in ResolveEntityAttributes which is
+    // called by either ProcessAllEntityAttributes or custom-processed entities after they
+    // are finished calling ProcessAttribute.
+    Base::Matrix4D OCSOrientationTransform;
+    // NOLINTEND(cppcoreguidelines-non-private-member-variables-in-classes)
+
 public:
     explicit CDxfRead(const std::string& filepath);  // this opens the file
     CDxfRead(const CDxfRead&) = delete;
     CDxfRead(const CDxfRead&&) = delete;
     CDxfRead& operator=(const CDxfRead&) = delete;
     CDxfRead& operator=(const CDxfRead&&) = delete;
-    virtual ~CDxfRead();  // this closes the file
+    virtual ~CDxfRead();
 
     bool Failed() const
     {
@@ -653,6 +846,10 @@ public:
     }
     void
     DoRead(bool ignore_errors = false);  // this reads the file and calls the following functions
+    virtual void StartImport()
+    {}
+    virtual void FinishImport()
+    {}
 
 private:
     double mm(double value) const
@@ -671,6 +868,10 @@ public:
         return (m_ignore_errors);
     }
 
+    virtual bool OnReadBlock(const std::string& /*name*/, int /*flags*/)
+    {
+        return SkipBlockContents();
+    }
     virtual void
     OnReadLine(const Base::Vector3d& /*start*/, const Base::Vector3d& /*end*/, bool /*hidden*/)
     {}
@@ -712,15 +913,14 @@ public:
                                  const Base::Vector3d& /*point*/,
                                  double /*rotation*/)
     {}
-    virtual void AddGraphics() const
+    virtual void OnReadPolyline(std::list<VertexInfo>& /*vertices*/, int /*flags*/)
     {}
 
     // These give the derived class access to common object properties
-    std::string LayerName() const;
     bool LineTypeIsHidden() const
     {
-        return m_LineType[0] == 'h' || m_LineType[0] == 'H';
+        return m_entityAttributes.m_LineType[0] == 'h' || m_entityAttributes.m_LineType[0] == 'H';
     }
-    App::Color ObjectColor() const;  // as rgba value
+    static App::Color ObjectColor(ColorIndex_t colorIndex);  // as rgba value
 };
 #endif
