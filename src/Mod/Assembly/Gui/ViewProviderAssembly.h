@@ -75,6 +75,7 @@ public:
     {
         Translation,
         TranslationOnAxis,
+        TranslationOnPlane,
         Rotation,
         RotationOnPlane,
         TranslationOnAxisAndRotationOnePlane,
@@ -119,11 +120,14 @@ public:
     bool canStartDragging;
     bool partMoving;
     bool enableMovement;
+    bool jointVisibilityBackup;
     int numberOfSel;
     Base::Vector3d initialPosition;
     Base::Vector3d initialPositionRot;
     Base::Placement jcsPlc;
     Base::Placement jcsGlobalPlc;
+
+    App::DocumentObject* movingJoint;
 
     std::vector<std::pair<App::DocumentObject*, double>> objectMasses;
     std::vector<std::pair<App::DocumentObject*, Base::Placement>> docsToMove;

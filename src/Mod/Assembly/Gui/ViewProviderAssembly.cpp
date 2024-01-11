@@ -78,6 +78,7 @@ ViewProviderAssembly::ViewProviderAssembly()
     , canStartDragging(false)
     , partMoving(false)
     , enableMovement(true)
+    , jointVisibilityBackup(false)
     , docsToMove({})
 {}
 
@@ -536,14 +537,14 @@ ViewProviderAssembly::MoveMode ViewProviderAssembly::findMoveMode()
     if (docsToMove.size() == 1) {
         auto* assemblyPart = static_cast<AssemblyObject*>(getObject());
         std::string partPropName;
-        App::DocumentObject* joint =
+        movingJoint =
             assemblyPart->getJointOfPartConnectingToGround(docsToMove[0].first, partPropName);
 
-        if (!joint) {
+        if (!movingJoint) {
             return MoveMode::Translation;
         }
 
-        JointType jointType = AssemblyObject::getJointType(joint);
+        JointType jointType = AssemblyObject::getJointType(movingJoint);
         if (jointType == JointType::Fixed) {
             // If fixed joint we need to find the upstream joint to find move mode.
             // For example : Gnd -(revolute)- A -(fixed)- B : if user try to move B, then we should
@@ -561,33 +562,38 @@ ViewProviderAssembly::MoveMode ViewProviderAssembly::findMoveMode()
                 docsToMove.emplace_back(upstreamPart, propPlacement->getValue());
             }
 
-            joint =
+            movingJoint =
                 assemblyPart->getJointOfPartConnectingToGround(docsToMove[0].first, partPropName);
-            if (!joint) {
+            if (!movingJoint) {
                 return MoveMode::Translation;
             }
-            jointType = AssemblyObject::getJointType(joint);
+            jointType = AssemblyObject::getJointType(movingJoint);
         }
 
         const char* plcPropName = (partPropName == "Part1") ? "Placement1" : "Placement2";
         const char* objPropName = (partPropName == "Part1") ? "Object1" : "Object2";
 
         // jcsPlc is relative to the Object
-        jcsPlc = AssemblyObject::getPlacementFromProp(joint, plcPropName);
+        jcsPlc = AssemblyObject::getPlacementFromProp(movingJoint, plcPropName);
 
         // Make jcsGlobalPlc relative to the origin of the doc
         Base::Placement global_plc =
-            AssemblyObject::getGlobalPlacement(joint, objPropName, partPropName.c_str());
+            AssemblyObject::getGlobalPlacement(movingJoint, objPropName, partPropName.c_str());
         jcsGlobalPlc = global_plc * jcsPlc;
 
         // Add downstream parts so that they move together
-        auto downstreamParts = assemblyPart->getDownstreamParts(docsToMove[0].first, joint);
+        auto downstreamParts = assemblyPart->getDownstreamParts(docsToMove[0].first, movingJoint);
         for (auto part : downstreamParts) {
             auto* propPlacement =
                 dynamic_cast<App::PropertyPlacement*>(part->getPropertyByName("Placement"));
             if (propPlacement) {
                 docsToMove.emplace_back(part, propPlacement->getValue());
             }
+        }
+
+        jointVisibilityBackup = movingJoint->Visibility.getValue();
+        if (!jointVisibilityBackup) {
+            movingJoint->Visibility.setValue(true);
         }
 
         if (jointType == JointType::Revolute) {
@@ -598,6 +604,10 @@ ViewProviderAssembly::MoveMode ViewProviderAssembly::findMoveMode()
         }
         else if (jointType == JointType::Cylindrical) {
             return MoveMode::TranslationOnAxisAndRotationOnePlane;
+        }
+        else if (jointType == JointType::Distance) {
+            //  depends on the type of distance. For example plane-plane:
+            // return MoveMode::TranslationOnPlane;
         }
     }
     return MoveMode::Translation;
@@ -632,6 +642,12 @@ void ViewProviderAssembly::endMove()
     docsToMove = {};
     partMoving = false;
     canStartDragging = false;
+
+    if (movingJoint && !jointVisibilityBackup) {
+        movingJoint->Visibility.setValue(false);
+    }
+
+    movingJoint = nullptr;
 
     // enable selection after the move
     auto* view = dynamic_cast<Gui::View3DInventor*>(
