@@ -79,7 +79,9 @@ def assembly_has_at_least_n_parts(n):
     assembly = activeAssembly()
     i = 0
     if not assembly:
-        return False
+        assembly = activePart()
+        if not assembly:
+            return False
     for obj in assembly.OutList:
         # note : groundedJoints comes in the outlist so we filter those out.
         if hasattr(obj, "Placement") and not hasattr(obj, "ObjectToGround"):
@@ -168,7 +170,7 @@ def isBodySubObject(typeId):
     )
 
 
-def getContainingPart(full_name, selected_object):
+def getContainingPart(full_name, selected_object, activeAssemblyOrPart=None):
     # full_name is "Assembly.Assembly1.LinkOrPart1.LinkOrBox.Edge16" -> LinkOrPart1
     # or           "Assembly.Assembly1.LinkOrPart1.LinkOrBody.pad.Edge16" -> LinkOrPart1
     # or           "Assembly.Assembly1.LinkOrPart1.LinkOrBody.Sketch.Edge1" -> LinkOrBody
@@ -200,7 +202,12 @@ def getContainingPart(full_name, selected_object):
         # Note here we may want to specify a specific behavior for Assembly::AssemblyObject.
         if obj.TypeId == "App::Part":
             if obj.hasObject(selected_object, True):
-                return obj
+                if not activeAssemblyOrPart:
+                    return obj
+                elif obj.hasObject(activeAssemblyOrPart, True) or obj == activeAssemblyOrPart:
+                    continue
+                else:
+                    return obj
 
         elif obj.TypeId == "App::Link":
             linked_obj = obj.getLinkedObject()
@@ -211,7 +218,15 @@ def getContainingPart(full_name, selected_object):
                 # linked_obj_doc = linked_obj.Document
                 # selected_obj_in_doc = doc.getObject(selected_object.Name)
                 if linked_obj.hasObject(selected_object, True):
-                    return obj
+                    if not activeAssemblyOrPart:
+                        return obj
+                    elif (
+                        linked_obj.hasObject(activeAssemblyOrPart, True)
+                        or linked_obj == activeAssemblyOrPart
+                    ):
+                        continue
+                    else:
+                        return obj
 
     # no container found so we return the object itself.
     return selected_object

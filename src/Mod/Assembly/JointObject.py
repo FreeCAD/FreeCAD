@@ -75,12 +75,14 @@ JointUsingReverse = [
 
 
 def solveIfAllowed(assembly, storePrev=False):
-    if Preferences.preferences().GetBool("SolveInJointCreation", True):
+    if assembly.Type == "Assembly" and Preferences.preferences().GetBool(
+        "SolveInJointCreation", True
+    ):
         assembly.solve(storePrev)
 
 
 class Joint:
-    def __init__(self, joint, type_index, assembly):
+    def __init__(self, joint, type_index):
         self.Type = "Joint"
 
         joint.Proxy = self
@@ -257,7 +259,20 @@ class Joint:
             if hasattr(
                 joint, "Vertex1"
             ):  # during loading the onchanged may be triggered before full init.
-                solveIfAllowed(self.getAssembly(joint))
+                isAssembly = self.getAssembly(joint).Type == "Assembly"
+                if isAssembly:
+                    solveIfAllowed(self.getAssembly(joint))
+                else:
+                    self.updateJCSPlacements(joint)
+                    obj1 = UtilsAssembly.getObjectInPart(joint.Object1, joint.Part1)
+                    obj2 = UtilsAssembly.getObjectInPart(joint.Object2, joint.Part2)
+                    self.preSolve(
+                        joint,
+                        obj1,
+                        joint.Part1,
+                        obj2,
+                        joint.Part2,
+                    )
 
     def execute(self, fp):
         """Do something when doing a recomputation, this method is mandatory"""
@@ -267,10 +282,14 @@ class Joint:
     def setJointConnectors(self, joint, current_selection):
         # current selection is a vector of strings like "Assembly.Assembly1.Assembly2.Body.Pad.Edge16" including both what selection return as obj_name and obj_sub
         assembly = self.getAssembly(joint)
+        isAssembly = assembly.Type == "Assembly"
 
         if len(current_selection) >= 1:
             joint.Part1 = None
-            self.part1Connected = assembly.isPartConnected(current_selection[0]["part"])
+            if isAssembly:
+                self.part1Connected = assembly.isPartConnected(current_selection[0]["part"])
+            else:
+                self.part1Connected = True
 
             joint.Object1 = current_selection[0]["object"].Name
             joint.Part1 = current_selection[0]["part"]
@@ -289,7 +308,10 @@ class Joint:
 
         if len(current_selection) >= 2:
             joint.Part2 = None
-            self.part2Connected = assembly.isPartConnected(current_selection[1]["part"])
+            if isAssembly:
+                self.part2Connected = assembly.isPartConnected(current_selection[1]["part"])
+            else:
+                self.part2Connected = False
 
             joint.Object2 = current_selection[1]["object"].Name
             joint.Part2 = current_selection[1]["part"]
@@ -305,7 +327,10 @@ class Joint:
                 current_selection[1]["object"],
                 joint.Part2,
             )
-            solveIfAllowed(assembly, True)
+            if isAssembly:
+                solveIfAllowed(assembly, True)
+            else:
+                self.updateJCSPlacements(joint)
 
         else:
             joint.Object2 = ""
@@ -313,7 +338,8 @@ class Joint:
             joint.Element2 = ""
             joint.Vertex2 = ""
             joint.Placement2 = App.Placement()
-            assembly.undoSolve()
+            if isAssembly:
+                assembly.undoSolve()
             self.undoPreSolve()
 
     def updateJCSPlacements(self, joint):
@@ -342,7 +368,6 @@ class Joint:
             return App.Placement()
 
         obj = UtilsAssembly.getObjectInPart(objName, part)
-        assembly = self.getAssembly(joint)
         plc = App.Placement()
 
         if not obj:
@@ -437,6 +462,7 @@ class Joint:
         # plc = global_plc * plc
 
         # change plc to be relative to the assembly.
+        # assembly = self.getAssembly(joint)
         # plc = assembly.Placement.inverse() * plc
 
         # We apply rotation / reverse / offset it necessary, but only to the second JCS.
@@ -544,9 +570,7 @@ class Joint:
                 jcsPlc1 = self.flipPlacement(jcsPlc1)
             joint.Part1.Placement = globalJcsPlc2 * jcsPlc1.inverse()
 
-    def undoPreSolve(
-        self,
-    ):
+    def undoPreSolve(self):
         if self.partMovedByPresolved:
             self.partMovedByPresolved.Placement = self.presolveBackupPlc
             self.partMovedByPresolved = None
@@ -913,8 +937,9 @@ class MakeJointSelGate:
         full_obj_name = ".".join(objs_names)
         full_element_name = full_obj_name + "." + element_name
         selected_object = UtilsAssembly.getObject(full_element_name)
+
         part_containing_selected_object = UtilsAssembly.getContainingPart(
-            full_element_name, selected_object
+            full_element_name, selected_object, self.assembly
         )
 
         for selection_dict in self.taskbox.current_selection:
@@ -936,19 +961,30 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         activeTask = self
 
         self.assembly = UtilsAssembly.activeAssembly()
+        if not self.assembly:
+            self.assembly = UtilsAssembly.activePart()
+            self.activeType = "Part"
+        else:
+            self.activeType = "Assembly"
+
         self.view = Gui.activeDocument().activeView()
         self.doc = App.ActiveDocument
 
         if not self.assembly or not self.view or not self.doc:
             return
 
-        self.assembly.ViewObject.EnableMovement = False
+        if self.activeType == "Assembly":
+            self.assembly.ViewObject.EnableMovement = False
 
         self.form = Gui.PySideUic.loadUi(":/panels/TaskAssemblyCreateJoint.ui")
 
+        if self.activeType == "Part":
+            self.form.setWindowTitle("Match parts")
+            self.form.jointType.hide()
         self.form.jointType.addItems(JointTypes)
         self.form.jointType.setCurrentIndex(jointTypeIndex)
         self.form.jointType.currentIndexChanged.connect(self.onJointTypeChanged)
+
         self.form.distanceSpinbox.valueChanged.connect(self.onDistanceChanged)
         self.form.offsetSpinbox.valueChanged.connect(self.onOffsetChanged)
         self.form.rotationSpinbox.valueChanged.connect(self.onRotationChanged)
@@ -968,7 +1004,10 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         else:
             self.creating = True
             self.jointName = self.form.jointType.currentText().replace(" ", "")
-            App.setActiveTransaction("Create " + self.jointName + " Joint")
+            if self.activeType == "Part":
+                App.setActiveTransaction("Transform")
+            else:
+                App.setActiveTransaction("Create " + self.jointName + " Joint")
 
             self.current_selection = []
             self.preselection_dict = None
@@ -1001,7 +1040,10 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         self.deactivate()
 
         solveIfAllowed(self.assembly)
-        self.joint.Visibility = self.visibilityBackup
+        if self.activeType == "Assembly":
+            self.joint.Visibility = self.visibilityBackup
+        else:
+            self.joint.Document.removeObject(self.joint.Name)
 
         App.closeActiveTransaction()
         return True
@@ -1016,9 +1058,11 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
     def deactivate(self):
         global activeTask
         activeTask = None
-        self.assembly.clearUndo()
 
-        self.assembly.ViewObject.EnableMovement = True
+        if self.activeType == "Assembly":
+            self.assembly.clearUndo()
+            self.assembly.ViewObject.EnableMovement = True
+
         Gui.Selection.removeSelectionGate()
         Gui.Selection.removeObserver(self)
         Gui.Selection.setSelectionStyle(Gui.Selection.SelectionStyle.NormalSelection)
@@ -1057,7 +1101,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
                 full_element_name = UtilsAssembly.getFullElementName(obj_name, sub_name)
                 selected_object = UtilsAssembly.getObject(full_element_name)
                 element_name = UtilsAssembly.getElementName(full_element_name)
-                part_containing_selected_object = UtilsAssembly.getContainingPart(
+                part_containing_selected_object = self.getContainingPart(
                     full_element_name, selected_object
                 )
 
@@ -1090,10 +1134,13 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
     def createJointObject(self):
         type_index = self.form.jointType.currentIndex()
 
-        joint_group = UtilsAssembly.getJointGroup(self.assembly)
+        if self.activeType == "Part":
+            self.joint = self.assembly.newObject("App::FeaturePython", "Temporary joint")
+        else:
+            joint_group = UtilsAssembly.getJointGroup(self.assembly)
+            self.joint = joint_group.newObject("App::FeaturePython", self.jointName)
 
-        self.joint = joint_group.newObject("App::FeaturePython", self.jointName)
-        Joint(self.joint, type_index, self.assembly)
+        Joint(self.joint, type_index)
         ViewProviderJoint(self.joint.ViewObject)
 
     def onJointTypeChanged(self, index):
@@ -1275,15 +1322,16 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         if info["State"] == "UP" and info["Key"] == "RETURN":
             self.accept()
 
+    def getContainingPart(self, full_element_name, obj):
+        return UtilsAssembly.getContainingPart(full_element_name, obj, self.assembly)
+
     # selectionObserver stuff
     def addSelection(self, doc_name, obj_name, sub_name, mousePos):
         full_obj_name = UtilsAssembly.getFullObjName(obj_name, sub_name)
         full_element_name = UtilsAssembly.getFullElementName(obj_name, sub_name)
         selected_object = UtilsAssembly.getObject(full_element_name)
         element_name = UtilsAssembly.getElementName(full_element_name)
-        part_containing_selected_object = UtilsAssembly.getContainingPart(
-            full_element_name, selected_object
-        )
+        part_containing_selected_object = self.getContainingPart(full_element_name, selected_object)
 
         selection_dict = {
             "object": selected_object,
@@ -1308,9 +1356,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         full_element_name = UtilsAssembly.getFullElementName(obj_name, sub_name)
         selected_object = UtilsAssembly.getObject(full_element_name)
         element_name = UtilsAssembly.getElementName(full_element_name)
-        part_containing_selected_object = UtilsAssembly.getContainingPart(
-            full_element_name, selected_object
-        )
+        part_containing_selected_object = self.getContainingPart(full_element_name, selected_object)
 
         # Find and remove the corresponding dictionary from the combined list
         selection_dict_to_remove = None
@@ -1333,9 +1379,7 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
         full_element_name = UtilsAssembly.getFullElementName(obj_name, sub_name)
         selected_object = UtilsAssembly.getObject(full_element_name)
         element_name = UtilsAssembly.getElementName(full_element_name)
-        part_containing_selected_object = UtilsAssembly.getContainingPart(
-            full_element_name, selected_object
-        )
+        part_containing_selected_object = self.getContainingPart(full_element_name, selected_object)
 
         self.preselection_dict = {
             "object": selected_object,
@@ -1352,11 +1396,12 @@ class TaskAssemblyCreateJoint(QtCore.QObject):
 
     def setJointsPickableState(self, state: bool):
         """Make all joints in assembly selectable (True) or unselectable (False) in 3D view"""
-        try:
+        if self.activeType == "Assembly":
             jointGroup = UtilsAssembly.getJointGroup(self.assembly)
             for joint in jointGroup.Group:
-                if hasattr(joint, "Part1"):
+                if hasattr(joint, "JointType"):
                     joint.ViewObject.Proxy.setPickableState(state)
-        except Exception as e:
-            s = "" if state else "un"
-            App.Console.PrintWarning(f"Failed to set joints {s}pickable: {e}")
+        else:
+            for obj in self.assembly.OutList:
+                if obj.TypeId == "App::FeaturePython" and hasattr(obj, "JointType"):
+                    obj.ViewObject.Proxy.setPickableState(state)

@@ -62,7 +62,10 @@ class CommandCreateJointFixed:
 
         return {
             "Pixmap": "Assembly_CreateJointFixed",
-            "MenuText": QT_TRANSLATE_NOOP("Assembly_CreateJointFixed", "Create Fixed Joint"),
+            "MenuText": QT_TRANSLATE_NOOP(
+                "Assembly_CreateJointFixed",
+                "If an assembly is active : Create a Fixed Joint.\n If a part is active : Position sub parts by matching.",
+            ),
             "Accel": "J",
             "ToolTip": "<p>"
             + QT_TRANSLATE_NOOP(
@@ -74,7 +77,10 @@ class CommandCreateJointFixed:
         }
 
     def IsActive(self):
-        return isCreateJointActive()
+        if UtilsAssembly.activePart:
+            return UtilsAssembly.assembly_has_at_least_n_parts(2)
+
+        return UtilsAssembly.isAssemblyGrounded() and UtilsAssembly.assembly_has_at_least_n_parts(2)
 
     def Activated(self):
         activateJoint(0)
