@@ -200,183 +200,326 @@ std::vector<TopoDS_Shape> TopoShape::findAncestorsShapes(const TopoDS_Shape& sub
     return shapes;
 }
 
-#define _HANDLE_NULL_SHAPE(_msg,_throw) do {\
-    if(_throw) {\
-        FC_THROWM(NullShapeException,_msg);\
-    }\
-    FC_WARN(_msg);\
-}while(0)
-
-#define HANDLE_NULL_SHAPE _HANDLE_NULL_SHAPE("Null shape",true)
-#define HANDLE_NULL_INPUT _HANDLE_NULL_SHAPE("Null input shape",true)
-#define WARN_NULL_INPUT _HANDLE_NULL_SHAPE("Null input shape",false)
+// The following lines should be used for now to replace the original macros (in the future we can
+// refactor to use std::source_location and eliminate the use of the macros entirely).
+//     FC_THROWM(NullShapeException, "Null shape");
+//     FC_THROWM(NullShapeException, "Null input shape");
+//     FC_WARN("Null input shape");  // NOLINT
+//
+// The original macros:
+// #define HANDLE_NULL_SHAPE _HANDLE_NULL_SHAPE("Null shape",true)
+// #define HANDLE_NULL_INPUT _HANDLE_NULL_SHAPE("Null input shape",true)
+// #define WARN_NULL_INPUT _HANDLE_NULL_SHAPE("Null input shape",false)
 
 bool TopoShape::hasPendingElementMap() const
 {
-    return !elementMap(false)
-        && this->_cache
+    return !elementMap(false) && this->_cache
         && (this->_parentCache || this->_cache->cachedElementMap);
 }
 
-bool TopoShape::canMapElement(const TopoShape &other) const {
-    if(isNull() || other.isNull() || this == &other || other.Tag == -1 || Tag == -1)
+bool TopoShape::canMapElement(const TopoShape& other) const
+{
+    if (isNull() || other.isNull() || this == &other || other.Tag == -1 || Tag == -1) {
         return false;
-    if(!other.Tag
-        && !other.elementMap(false)
-        && !other.hasPendingElementMap())
+    }
+    if ((other.Tag == 0) && !other.elementMap(false) && !other.hasPendingElementMap()) {
         return false;
+    }
     initCache();
     other.initCache();
     _cache->relations.clear();
     return true;
 }
 
-void TopoShape::mapSubElement(const TopoShape &other, const char *op, bool forceHasher) {
-#ifdef FC_NO_ELEMENT_MAP
-    return;
-#endif
+namespace
+{
+size_t checkSubshapeCount(const TopoShape& topoShape1,
+                          const TopoShape& topoShape2,
+                          TopAbs_ShapeEnum elementType)
+{
+    auto count = topoShape1.countSubShapes(elementType);
+    auto other = topoShape2.countSubShapes(elementType);
+    if (count != other) {
+        FC_WARN("sub shape mismatch");  // NOLINT
+        if (count > other) {
+            count = other;
+        }
+    }
+    return count;
+}
+}  // namespace
 
-    if(!canMapElement(other))
+void TopoShape::setupChild(Data::ElementMap::MappedChildElements& child,
+                           TopAbs_ShapeEnum elementType,
+                           const TopoShape& topoShape,
+                           size_t shapeCount,
+                           const char* op)
+{
+    child.indexedName = Data::IndexedName::fromConst(TopoShape::shapeName(elementType).c_str(), 1);
+    child.offset = 0;
+    child.count = static_cast<int>(shapeCount);
+    child.elementMap = topoShape.elementMap();
+    if (this->Tag != topoShape.Tag) {
+        child.tag = topoShape.Tag;
+    }
+    else {
+        child.tag = 0;
+    }
+    if (op) {
+        child.postfix = op;
+    }
+}
+
+void TopoShape::copyElementMap(const TopoShape& topoShape, const char* op)
+{
+    if (topoShape.isNull() || isNull()) {
         return;
+    }
+    std::vector<Data::ElementMap::MappedChildElements> children;
+    std::array<TopAbs_ShapeEnum, 3> elementTypes = {TopAbs_VERTEX, TopAbs_EDGE, TopAbs_FACE};
+    for (const auto elementType : elementTypes) {
+        auto count = checkSubshapeCount(*this, topoShape, elementType);
+        if (count == 0) {
+            continue;
+        }
+        children.emplace_back();
+        auto& child = children.back();
+        setupChild(child, elementType, topoShape, count, op);
+    }
+    resetElementMap();
+    if (!Hasher) {
+        Hasher = topoShape.Hasher;
+    }
+    setMappedChildElements(children);
+}
 
-    if (!getElementMapSize(false) && this->_Shape.IsPartner(other._Shape)) {
-        if (!this->Hasher)
+namespace
+{
+void warnIfLogging()
+{
+    if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
+        FC_WARN("hasher mismatch");  // NOLINT
+    }
+};
+
+void hasherMismatchError()
+{
+    FC_ERR("hasher mismatch");  // NOLINT
+}
+
+
+void checkAndMatchHasher(TopoShape& topoShape1, const TopoShape& topoShape2)
+{
+    if (topoShape1.Hasher) {
+        if (topoShape2.Hasher != topoShape1.Hasher) {
+            if (topoShape1.getElementMapSize(false) == 0U) {
+                warnIfLogging();
+            }
+            else {
+                hasherMismatchError();
+            }
+            topoShape1.Hasher = topoShape2.Hasher;
+        }
+    }
+    else {
+        topoShape1.Hasher = topoShape2.Hasher;
+    }
+}
+}  // namespace
+
+void TopoShape::mapSubElementTypeForShape(const TopoShape& other,
+                                          TopAbs_ShapeEnum type,
+                                          const char* op,
+                                          int count,
+                                          bool forward,
+                                          bool& warned)
+{
+    auto& shapeMap = _cache->getAncestry(type);
+    auto& otherMap = other._cache->getAncestry(type);
+    const char* shapeType = shapeName(type).c_str();
+
+    // 1-indexed for readability (e.g. there is no "Edge0", we started at "Edge1", etc.)
+    for (int outerCounter = 1; outerCounter <= count; ++outerCounter) {
+        int innerCounter {0};
+        int index {0};
+        if (forward) {
+            innerCounter = outerCounter;
+            index = shapeMap.find(_Shape, otherMap.find(other._Shape, outerCounter));
+            if (index == 0) {
+                continue;
+            }
+        }
+        else {
+            index = outerCounter;
+            innerCounter = otherMap.find(other._Shape, shapeMap.find(_Shape, outerCounter));
+            if (innerCounter == 0) {
+                continue;
+            }
+        }
+        Data::IndexedName element = Data::IndexedName::fromConst(shapeType, index);
+        for (auto& mappedName :
+             other.getElementMappedNames(Data::IndexedName::fromConst(shapeType, innerCounter),
+                                         true)) {
+            auto& name = mappedName.first;
+            auto& sids = mappedName.second;
+            if (!sids.empty()) {
+                if (!Hasher) {
+                    Hasher = sids[0].getHasher();
+                }
+                else if (!sids[0].isFromSameHasher(Hasher)) {
+                    if (!warned) {
+                        warned = true;
+                        FC_WARN("hasher mismatch");  // NOLINT
+                    }
+                    sids.clear();
+                }
+            }
+            std::ostringstream ss;
+            char elementType {shapeName(type)[0]};
+            elementMap()->encodeElementName(elementType, name, ss, &sids, Tag, op, other.Tag);
+            elementMap()->setElementName(element, name, Tag, &sids);
+        }
+    }
+}
+
+void TopoShape::mapSubElementForShape(const TopoShape& other, const char* op)
+{
+    bool warned = false;
+    static const std::array<TopAbs_ShapeEnum, 3> types = {TopAbs_VERTEX, TopAbs_EDGE, TopAbs_FACE};
+
+    for (auto type : types) {
+        auto& shapeMap = _cache->getAncestry(type);
+        auto& otherMap = other._cache->getAncestry(type);
+        if ((shapeMap.count() == 0) || (otherMap.count() == 0)) {
+            continue;
+        }
+
+        bool forward {false};
+        int count {0};
+        if (otherMap.count() <= shapeMap.count()) {
+            forward = true;
+            count = otherMap.count();
+        }
+        else {
+            forward = false;
+            count = shapeMap.count();
+        }
+        mapSubElementTypeForShape(other, type, op, count, forward, warned);
+    }
+}
+
+void TopoShape::mapSubElement(const TopoShape& other, const char* op, bool forceHasher)
+{
+    if (!canMapElement(other)) {
+        return;
+    }
+
+    if ((getElementMapSize(false) == 0U) && this->_Shape.IsPartner(other._Shape)) {
+        if (!this->Hasher) {
             this->Hasher = other.Hasher;
+        }
         copyElementMap(other, op);
         return;
     }
 
-    bool warned = false;
-    static const std::array<TopAbs_ShapeEnum, 3> types = {TopAbs_VERTEX, TopAbs_EDGE, TopAbs_FACE};
+    if (!forceHasher && other.Hasher) {
+        checkAndMatchHasher(*this, other);
+    }
 
-    auto checkHasher = [this](const TopoShape &other) {
-        if(Hasher) {
-            if(other.Hasher!=Hasher) {
-                if(!getElementMapSize(false)) {
-                    if(FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG))
-                        FC_WARN("hasher mismatch");
-                }else {
-                    // FC_THROWM(Base::RuntimeError, "hasher mismatch");
-                    FC_ERR("hasher mismatch");
-                }
-                Hasher = other.Hasher;
+    mapSubElementForShape(other, op);
+}
+
+std::vector<Data::ElementMap::MappedChildElements>
+TopoShape::createChildMap(size_t count, const std::vector<TopoShape>& shapes, const char* op)
+{
+    std::vector<Data::ElementMap::MappedChildElements> children;
+    children.reserve(count * (size_t)3);
+    std::array<TopAbs_ShapeEnum, 3> types = {TopAbs_VERTEX, TopAbs_EDGE, TopAbs_FACE};
+    for (const auto topAbsType : types) {
+        size_t offset = 0;
+        for (auto& topoShape : shapes) {
+            if (topoShape.isNull()) {
+                continue;
             }
-        }else
-            Hasher = other.Hasher;
-    };
-
-    for(auto type : types) {
-        auto &shapeMap = _cache->getAncestry(type);
-        auto &otherMap = other._cache->getAncestry(type);
-        if(!shapeMap.count() || !otherMap.count())
-            continue;
-        if(!forceHasher && other.Hasher) {
-            forceHasher = true;
-            checkHasher(other);
-        }
-        const char *shapetype = shapeName(type).c_str();
-        std::ostringstream ss;
-
-        bool forward;
-        int count;
-        if(otherMap.count()<=shapeMap.count()) {
-            forward = true;
-            count = otherMap.count();
-        }else{
-            forward = false;
-            count = shapeMap.count();
-        }
-        for(int k=1;k<=count;++k) {
-            int i,idx;
-            if(forward) {
-                i = k;
-                idx = shapeMap.find(_Shape,otherMap.find(other._Shape,k));
-                if(!idx) continue;
-            } else {
-                idx = k;
-                i = otherMap.find(other._Shape,shapeMap.find(_Shape,k));
-                if(!i) continue;
+            auto subShapeCount = topoShape.countSubShapes(topAbsType);
+            if (subShapeCount == 0) {
+                continue;
             }
-            Data::IndexedName element = Data::IndexedName::fromConst(shapetype, idx);
-            for(auto &v : other.getElementMappedNames(
-                     Data::IndexedName::fromConst(shapetype,i),true))
-            {
-                auto &name = v.first;
-                auto &sids = v.second;
-                if(sids.size()) {
-                    if (!Hasher)
-                        Hasher = sids[0].getHasher();
-                    else if (!sids[0].isFromSameHasher(Hasher)) {
-                        if (!warned) {
-                            warned = true;
-                            FC_WARN("hasher mismatch");
-                        }
-                        sids.clear();
-                    }
-                }
-                ss.str("");
-                elementMap()->encodeElementName(shapetype[0],name,ss,&sids,Tag,op,other.Tag);
-                elementMap()->setElementName(element,name,Tag, &sids);
+            children.emplace_back();
+            auto& child = children.back();
+            child.indexedName =
+                Data::IndexedName::fromConst(TopoShape::shapeName(topAbsType).c_str(), 1);
+            child.offset = static_cast<int>(offset);
+            offset += subShapeCount;
+            child.count = static_cast<int>(subShapeCount);
+            child.elementMap = topoShape.elementMap();
+            child.tag = topoShape.Tag;
+            if (op) {
+                child.postfix = op;
             }
         }
     }
+    return children;
 }
 
-void TopoShape::mapSubElement(const std::vector<TopoShape> &shapes, const char *op) {
-#ifdef FC_NO_ELEMENT_MAP
-    return;
-#endif
+void TopoShape::mapCompoundSubElements(const std::vector<TopoShape>& shapes, const char* op)
+{
+    int count = 0;
+    for (auto& topoShape : shapes) {
+        if (topoShape.isNull()) {
+            continue;
+        }
+        ++count;
+        auto subshape = getSubShape(TopAbs_SHAPE, count, /*silent = */ true);
+        if (!subshape.IsPartner(topoShape._Shape)) {
+            return; // Not a partner shape, don't do any mapping at all
+        }
+    }
+    auto children {createChildMap(count, shapes, op)};
+    setMappedChildElements(children);
+}
 
-    if (shapes.empty())
+void TopoShape::mapSubElement(const std::vector<TopoShape>& shapes, const char* op)
+{
+    if (shapes.empty()) {
         return;
+    }
 
     if (shapeType(true) == TopAbs_COMPOUND) {
-        int count = 0;
-        for (auto & s : shapes) {
-            if (s.isNull())
-                continue;
-            if (!getSubShape(TopAbs_SHAPE, ++count, true).IsPartner(s._Shape)) {
-                count = 0;
-                break;
-            }
-        }
-        if (count) {
-            std::vector<Data::ElementMap::MappedChildElements> children;
-            children.reserve(count*3);
-            TopAbs_ShapeEnum types[] = {TopAbs_VERTEX, TopAbs_EDGE, TopAbs_FACE};
-            for (unsigned i=0; i<sizeof(types)/sizeof(types[0]); ++i) {
-                int offset = 0;
-                for (auto & s : shapes) {
-                    if (s.isNull())
-                        continue;
-                    int count = s.countSubShapes(types[i]);
-                    if (!count)
-                        continue;
-                    children.emplace_back();
-                    auto & child = children.back();
-                    child.indexedName = Data::IndexedName::fromConst(shapeName(types[i]).c_str(), 1);
-                    child.offset = offset;
-                    offset += count;
-                    child.count = count;
-                    child.elementMap = s.elementMap();
-                    child.tag = s.Tag;
-                    if (op)
-                        child.postfix = op;
-                }
-            }
-            elementMap()->addChildElements(Tag, children);  // Replaces the original line below
-            //setMappedChildElements(children);
-            return;
+        mapCompoundSubElements(shapes, op);
+    }
+    else {
+        for (auto& shape : shapes) {
+            mapSubElement(shape, op);
         }
     }
-
-    for(auto &shape : shapes)
-        mapSubElement(shape,op);
 }
 
-TopoShape &TopoShape::makeElementCompound(const std::vector<TopoShape> &shapes, const char *op, bool force)
+namespace
 {
-    if(!force && shapes.size()==1) {
+void addShapesToBuilder(const std::vector<TopoShape>& shapes,
+                        BRep_Builder& builder,
+                        TopoDS_Compound& comp)
+{
+    int count = 0;
+    for (auto& topoShape : shapes) {
+        if (topoShape.isNull()) {
+            FC_WARN("Null input shape");  // NOLINT
+            continue;
+        }
+        builder.Add(comp, topoShape.getShape());
+        ++count;
+    }
+    if (count == 0) {
+        FC_THROWM(NullShapeException, "Null shape");
+    }
+}
+}  // namespace
+
+TopoShape&
+TopoShape::makeElementCompound(const std::vector<TopoShape>& shapes, const char* op, bool force)
+{
+    if (!force && shapes.size() == 1) {
         *this = shapes[0];
         return *this;
     }
@@ -385,26 +528,15 @@ TopoShape &TopoShape::makeElementCompound(const std::vector<TopoShape> &shapes, 
     TopoDS_Compound comp;
     builder.MakeCompound(comp);
 
-    if(shapes.empty()) {
+    if (shapes.empty()) {
         setShape(comp);
         return *this;
     }
-
-    int count = 0;
-    for(auto &s : shapes) {
-        if(s.isNull()) {
-            WARN_NULL_INPUT;
-            continue;
-        }
-        builder.Add(comp,s.getShape());
-        ++count;
-    }
-    if(!count)
-        HANDLE_NULL_SHAPE;
+    addShapesToBuilder(shapes, builder, comp);
     setShape(comp);
     initCache();
 
-    mapSubElement(shapes,op);
+    mapSubElement(shapes, op);
     return *this;
 }
 

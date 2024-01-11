@@ -606,7 +606,7 @@ public:
     //                                      double tol=1e-7, double atol=1e-12) const;
     //@}
 
-    void copyElementMap(const TopoShape &other, const char *op=nullptr);
+    void copyElementMap(const TopoShape & topoShape, const char *op=nullptr);
     bool canMapElement(const TopoShape &other) const;
     void mapSubElement(const TopoShape &other,const char *op=nullptr, bool forceHasher=false);
     void mapSubElement(const std::vector<TopoShape> &shapes, const char *op);
@@ -741,6 +741,26 @@ private:
     };
 
     ShapeProtector _Shape;
+
+private:
+    // Helper methods
+    static std::vector<Data::ElementMap::MappedChildElements>
+    createChildMap(size_t count, const std::vector<TopoShape>& shapes, const char* op);
+
+    void setupChild(Data::ElementMap::MappedChildElements& child,
+                    TopAbs_ShapeEnum elementType,
+                    const TopoShape& topoShape,
+                    size_t shapeCount,
+                    const char* op);
+    void mapSubElementForShape(const TopoShape& other, const char* op);
+    void mapSubElementTypeForShape(const TopoShape& other,
+                                   TopAbs_ShapeEnum type,
+                                   const char* op,
+                                   int count,
+                                   bool forward,
+                                   bool& warned);
+    void mapCompoundSubElements(const std::vector<TopoShape>& shapes, const char* op);
+
 };
 
 }  // namespace Part
