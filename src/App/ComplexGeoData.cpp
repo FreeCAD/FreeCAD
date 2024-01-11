@@ -185,7 +185,7 @@ bool ComplexGeoData::getCenterOfGravity(Base::Vector3d& unused) const
 }
 
 const std::string &ComplexGeoData::elementMapPrefix() {
-    static std::string prefix(";");
+    static std::string prefix(ELEMENT_MAP_PREFIX);
     return prefix;
 }
 
