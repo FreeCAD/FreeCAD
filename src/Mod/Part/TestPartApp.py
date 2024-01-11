@@ -20,7 +20,7 @@
 #   USA                                                                   *
 #**************************************************************************
 
-import FreeCAD, unittest, Part
+import FreeCAD, unittest, Part, Sketcher
 import copy
 import math
 from FreeCAD import Units
@@ -176,6 +176,44 @@ class PartTestBSplineCurve(unittest.TestCase):
         # with self.assertRaises(Part.OCCError):
         with self.assertRaises(IndexError):
             box.getElement("Face7")
+    
+    def testIssue9760(self):
+        doc = self.Doc
+        doc.addObject('Sketcher::SketchObject', 'Sketch')
+        doc.Sketch.Placement = App.Placement(App.Vector(0.000000, 0.000000, 0.000000), App.Rotation(0.000000, 0.000000, 0.000000, 1.000000))
+        doc.Sketch.MapMode = "Deactivated"
+        ActiveSketch = doc.getObject('Sketch')
+        # p1 = App.Vector(0.367431,3.345679,0)
+        # p2 = App.Vector(5.658839,8.910781,0)
+        # p3 = App.Vector(11.223940,3.966051,0)
+        p1 = App.Vector(0,3,0)
+        p2 = App.Vector(5,9,0)
+        p3 = App.Vector(12,4,0)
+        z = App.Vector(0,0,1)
+        ActiveSketch.addGeometry(Part.Circle(p1,z,10),True)
+        ActiveSketch.addConstraint(Sketcher.Constraint('Weight',0,1.000000)) 
+        ActiveSketch.addGeometry(Part.Circle(p2,z,10),True)
+        ActiveSketch.addConstraint(Sketcher.Constraint('Equal',0,1)) 
+        ActiveSketch.addGeometry(Part.Circle(p3,z,10),True)
+        ActiveSketch.addConstraint(Sketcher.Constraint('Equal',0,2)) 
+        ActiveSketch.addGeometry(Part.BSplineCurve([p1,p2,p3],None,None,False,2,None,False),False)
+            # App.Vector(0.367431,3.34568),App.Vector(5.65884,8.91078),App.Vector(11.2239,3.96605)],None,None,False,2,None,False),False)
+        conList = []
+        conList.append(Sketcher.Constraint('InternalAlignment:Sketcher::BSplineControlPoint',0,3,3,0))
+        conList.append(Sketcher.Constraint('InternalAlignment:Sketcher::BSplineControlPoint',1,3,3,1))
+        conList.append(Sketcher.Constraint('InternalAlignment:Sketcher::BSplineControlPoint',2,3,3,2))
+        ActiveSketch.addConstraint(conList)
+        del conList
+        ActiveSketch.exposeInternalGeometry(3)
+
+        doc.recompute()
+        obj = doc.getObject("Sketch")
+        shp = obj.Shape
+        sub = obj.getSubObject("Edge1")
+        curve = sub.toNurbs().Edges[0].Curve
+        self.assertEqual(p1, curve.getPole(1))
+        self.assertEqual(p2, curve.getPole(2))
+        self.assertEqual(p3, curve.getPole(3))
 
     def tearDown(self):
         #closing doc
