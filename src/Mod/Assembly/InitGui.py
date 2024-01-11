@@ -75,10 +75,13 @@ class AssemblyWorkbench(Workbench):
         FreeCADGui.addPreferencePage(PreferencesPage, QT_TRANSLATE_NOOP("QObject", "Assembly"))
 
         # build commands list
-        cmdlist = [
+        cmdList = [
             "Assembly_CreateAssembly",
             "Assembly_InsertLink",
             "Assembly_SolveAssembly",
+        ]
+
+        cmdListMenuOnly = [
             "Assembly_ExportASMT",
         ]
 
@@ -93,12 +96,12 @@ class AssemblyWorkbench(Workbench):
             "Assembly_CreateJointDistance",
         ]
 
-        self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Assembly"), cmdlist)
+        self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Assembly"), cmdList)
         self.appendToolbar(QT_TRANSLATE_NOOP("Workbench", "Assembly Joints"), cmdListJoints)
 
         self.appendMenu(
             [QT_TRANSLATE_NOOP("Workbench", "&Assembly")],
-            cmdlist + ["Separator"] + cmdListJoints,
+            cmdList + cmdListMenuOnly + ["Separator"] + cmdListJoints,
         )
 
         print("Assembly workbench loaded")

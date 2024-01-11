@@ -75,6 +75,7 @@ PROPERTY_SOURCE(AssemblyGui::ViewProviderAssembly, Gui::ViewProviderPart)
 
 ViewProviderAssembly::ViewProviderAssembly()
     : SelectionObserver(true)
+    , dragMode(DragMode::None)
     , canStartDragging(false)
     , partMoving(false)
     , enableMovement(true)
@@ -116,7 +117,7 @@ bool ViewProviderAssembly::doubleClicked()
 
 bool ViewProviderAssembly::canDragObject(App::DocumentObject* obj) const
 {
-    Base::Console().Warning("ViewProviderAssembly::canDragObject\n");
+    // The user should not be able to drag the joint group out of the assembly
     if (!obj || obj->getTypeId() == Assembly::JointGroup::getClassTypeId()) {
         return false;
     }
@@ -210,7 +211,7 @@ void ViewProviderAssembly::unsetEdit(int ModNum)
                             PARTKEY);
 }
 
-bool ViewProviderAssembly::isInEditMode()
+bool ViewProviderAssembly::isInEditMode() const
 {
     App::DocumentObject* activePart = getActivePart();
     if (!activePart) {
@@ -220,20 +221,18 @@ bool ViewProviderAssembly::isInEditMode()
     return activePart == this->getObject();
 }
 
-App::DocumentObject* ViewProviderAssembly::getActivePart()
+App::DocumentObject* ViewProviderAssembly::getActivePart() const
 {
-    App::DocumentObject* activePart = nullptr;
     auto activeDoc = Gui::Application::Instance->activeDocument();
     if (!activeDoc) {
         activeDoc = getDocument();
     }
-    auto activeView = activeDoc->setActiveView(this);
+    auto activeView = activeDoc->getActiveView();
     if (!activeView) {
         return nullptr;
     }
 
-    activePart = activeView->getActiveObject<App::DocumentObject*>(PARTKEY);
-    return activePart;
+    return activeView->getActiveObject<App::DocumentObject*>(PARTKEY);
 }
 
 bool ViewProviderAssembly::mouseMove(const SbVec2s& cursorPos, Gui::View3DInventorViewer* viewer)
@@ -243,21 +242,21 @@ bool ViewProviderAssembly::mouseMove(const SbVec2s& cursorPos, Gui::View3DInvent
         canStartDragging = false;
 
         if (enableMovement && getSelectedObjectsWithinAssembly()) {
-            moveMode = findMoveMode();
+            dragMode = findDragMode();
 
-            if (moveMode == MoveMode::None) {
+            if (dragMode == DragMode::None) {
                 return false;
             }
 
             SbVec3f vec;
-            if (moveMode == MoveMode::RotationOnPlane
-                || moveMode == MoveMode::TranslationOnAxisAndRotationOnePlane) {
+            if (dragMode == DragMode::RotationOnPlane
+                || dragMode == DragMode::TranslationOnAxisAndRotationOnePlane) {
                 vec = viewer->getPointOnXYPlaneOfPlacement(cursorPos, jcsGlobalPlc);
                 initialPositionRot = Base::Vector3d(vec[0], vec[1], vec[2]);
             }
 
-            if (moveMode == MoveMode::TranslationOnAxis
-                || moveMode == MoveMode::TranslationOnAxisAndRotationOnePlane) {
+            if (dragMode == DragMode::TranslationOnAxis
+                || dragMode == DragMode::TranslationOnAxisAndRotationOnePlane) {
                 Base::Vector3d zAxis =
                     jcsGlobalPlc.getRotation().multVec(Base::Vector3d(0., 0., 1.));
                 Base::Vector3d pos = jcsGlobalPlc.getPosition();
@@ -266,9 +265,10 @@ bool ViewProviderAssembly::mouseMove(const SbVec2s& cursorPos, Gui::View3DInvent
                 vec = viewer->getPointOnLine(cursorPos, axisCenter, axis);
                 initialPosition = Base::Vector3d(vec[0], vec[1], vec[2]);
             }
-            else if (moveMode != MoveMode::RotationOnPlane) {
+            else if (dragMode != DragMode::RotationOnPlane) {
                 vec = viewer->getPointOnFocalPlane(cursorPos);
                 initialPosition = Base::Vector3d(vec[0], vec[1], vec[2]);
+                prevPosition = initialPosition;
             }
 
             initMove();
@@ -278,14 +278,14 @@ bool ViewProviderAssembly::mouseMove(const SbVec2s& cursorPos, Gui::View3DInvent
     // Do the dragging of parts
     if (partMoving) {
         Base::Vector3d newPos, newPosRot;
-        if (moveMode == MoveMode::RotationOnPlane
-            || moveMode == MoveMode::TranslationOnAxisAndRotationOnePlane) {
+        if (dragMode == DragMode::RotationOnPlane
+            || dragMode == DragMode::TranslationOnAxisAndRotationOnePlane) {
             SbVec3f vec = viewer->getPointOnXYPlaneOfPlacement(cursorPos, jcsGlobalPlc);
             newPosRot = Base::Vector3d(vec[0], vec[1], vec[2]);
         }
 
-        if (moveMode == MoveMode::TranslationOnAxis
-            || moveMode == MoveMode::TranslationOnAxisAndRotationOnePlane) {
+        if (dragMode == DragMode::TranslationOnAxis
+            || dragMode == DragMode::TranslationOnAxisAndRotationOnePlane) {
             Base::Vector3d zAxis = jcsGlobalPlc.getRotation().multVec(Base::Vector3d(0., 0., 1.));
             Base::Vector3d pos = jcsGlobalPlc.getPosition();
             SbVec3f axisCenter(pos.x, pos.y, pos.z);
@@ -293,7 +293,7 @@ bool ViewProviderAssembly::mouseMove(const SbVec2s& cursorPos, Gui::View3DInvent
             SbVec3f vec = viewer->getPointOnLine(cursorPos, axisCenter, axis);
             newPos = Base::Vector3d(vec[0], vec[1], vec[2]);
         }
-        else if (moveMode != MoveMode::RotationOnPlane) {
+        else if (dragMode != DragMode::RotationOnPlane) {
             SbVec3f vec = viewer->getPointOnFocalPlane(cursorPos);
             newPos = Base::Vector3d(vec[0], vec[1], vec[2]);
         }
@@ -307,7 +307,7 @@ bool ViewProviderAssembly::mouseMove(const SbVec2s& cursorPos, Gui::View3DInvent
                 Base::Placement plc = pair.second;
                 // Base::Console().Warning("newPos %f %f %f\n", newPos.x, newPos.y, newPos.z);
 
-                if (moveMode == MoveMode::RotationOnPlane) {
+                if (dragMode == DragMode::RotationOnPlane) {
                     Base::Vector3d center = jcsGlobalPlc.getPosition();
                     Base::Vector3d norm =
                         jcsGlobalPlc.getRotation().multVec(Base::Vector3d(0., 0., -1.));
@@ -320,13 +320,18 @@ bool ViewProviderAssembly::mouseMove(const SbVec2s& cursorPos, Gui::View3DInvent
                     Base::Placement jcsPlcRelativeToPart = plc.inverse() * jcsGlobalPlc;
                     plc = rotatedGlovalJcsPlc * jcsPlcRelativeToPart.inverse();
                 }
-                else if (moveMode == MoveMode::TranslationOnAxisAndRotationOnePlane) {
+                else if (dragMode == DragMode::TranslationOnAxis) {
+                    Base::Vector3d pos = plc.getPosition() + (newPos - initialPosition);
+                    plc.setPosition(pos);
+                }
+                else if (dragMode == DragMode::TranslationOnAxisAndRotationOnePlane) {
                     Base::Vector3d pos = plc.getPosition() + (newPos - initialPosition);
                     plc.setPosition(pos);
 
                     Base::Placement newJcsGlobalPlc = jcsGlobalPlc;
                     newJcsGlobalPlc.setPosition(jcsGlobalPlc.getPosition()
                                                 + (newPos - initialPosition));
+
                     Base::Vector3d center = newJcsGlobalPlc.getPosition();
                     Base::Vector3d norm =
                         newJcsGlobalPlc.getRotation().multVec(Base::Vector3d(0., 0., -1.));
@@ -342,8 +347,12 @@ bool ViewProviderAssembly::mouseMove(const SbVec2s& cursorPos, Gui::View3DInvent
                     Base::Placement jcsPlcRelativeToPart = plc.inverse() * newJcsGlobalPlc;
                     plc = rotatedGlovalJcsPlc * jcsPlcRelativeToPart.inverse();
                 }
-                else {
-                    Base::Vector3d pos = newPos + (plc.getPosition() - initialPosition);
+                else {  // DragMode::Translation
+                    Base::Vector3d delta = newPos - prevPosition;
+                    prevPosition = newPos;
+
+                    Base::Vector3d pos = propPlacement->getValue().getPosition() + delta;
+                    // Base::Vector3d pos = newPos + (plc.getPosition() - initialPosition);
                     plc.setPosition(pos);
                 }
                 propPlacement->setValue(plc);
@@ -356,6 +365,7 @@ bool ViewProviderAssembly::mouseMove(const SbVec2s& cursorPos, Gui::View3DInvent
         if (solveOnMove) {
             auto* assemblyPart = static_cast<AssemblyObject*>(getObject());
             assemblyPart->solve();
+            // assemblyPart->doDragStep();
         }
     }
     return false;
@@ -532,7 +542,7 @@ App::DocumentObject* ViewProviderAssembly::getObjectFromSubNames(std::vector<std
     return appDoc->getObject(objName.c_str());
 }
 
-ViewProviderAssembly::MoveMode ViewProviderAssembly::findMoveMode()
+ViewProviderAssembly::DragMode ViewProviderAssembly::findDragMode()
 {
     if (docsToMove.size() == 1) {
         auto* assemblyPart = static_cast<AssemblyObject*>(getObject());
@@ -541,7 +551,7 @@ ViewProviderAssembly::MoveMode ViewProviderAssembly::findMoveMode()
             assemblyPart->getJointOfPartConnectingToGround(docsToMove[0].first, partPropName);
 
         if (!movingJoint) {
-            return MoveMode::Translation;
+            return DragMode::Translation;
         }
 
         JointType jointType = AssemblyObject::getJointType(movingJoint);
@@ -553,7 +563,7 @@ ViewProviderAssembly::MoveMode ViewProviderAssembly::findMoveMode()
                 assemblyPart->getUpstreamMovingPart(docsToMove[0].first);
             docsToMove.clear();
             if (!upstreamPart) {
-                return MoveMode::None;
+                return DragMode::None;
             }
 
             auto* propPlacement =
@@ -565,7 +575,7 @@ ViewProviderAssembly::MoveMode ViewProviderAssembly::findMoveMode()
             movingJoint =
                 assemblyPart->getJointOfPartConnectingToGround(docsToMove[0].first, partPropName);
             if (!movingJoint) {
-                return MoveMode::Translation;
+                return DragMode::Translation;
             }
             jointType = AssemblyObject::getJointType(movingJoint);
         }
@@ -597,20 +607,23 @@ ViewProviderAssembly::MoveMode ViewProviderAssembly::findMoveMode()
         }
 
         if (jointType == JointType::Revolute) {
-            return MoveMode::RotationOnPlane;
+            return DragMode::RotationOnPlane;
         }
         else if (jointType == JointType::Slider) {
-            return MoveMode::TranslationOnAxis;
+            return DragMode::TranslationOnAxis;
         }
         else if (jointType == JointType::Cylindrical) {
-            return MoveMode::TranslationOnAxisAndRotationOnePlane;
+            return DragMode::TranslationOnAxisAndRotationOnePlane;
+        }
+        else if (jointType == JointType::Ball) {
+            // return DragMode::Ball;
         }
         else if (jointType == JointType::Distance) {
             //  depends on the type of distance. For example plane-plane:
-            // return MoveMode::TranslationOnPlane;
+            // return DragMode::TranslationOnPlane;
         }
     }
-    return MoveMode::Translation;
+    return DragMode::Translation;
 }
 
 void ViewProviderAssembly::initMove()
@@ -627,14 +640,23 @@ void ViewProviderAssembly::initMove()
         viewerNotConst->setSelectionEnabled(false);
     }
 
-    objectMasses.clear();
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Assembly");
+    bool solveOnMove = hGrp->GetBool("SolveOnMove", true);
+    if (solveOnMove) {
+        objectMasses.clear();
+        for (auto& pair : docsToMove) {
+            objectMasses.push_back({pair.first, 10.0});
+        }
 
-    for (auto& pair : docsToMove) {
-        objectMasses.push_back({pair.first, 10.0});
+        auto* assemblyPart = static_cast<AssemblyObject*>(getObject());
+        assemblyPart->setObjMasses(objectMasses);
+        /*std::vector<App::DocumentObject*> dragParts;
+        for (auto& pair : docsToMove) {
+            dragParts.push_back(pair.first);
+        }
+        assemblyPart->preDrag(dragParts);*/
     }
-
-    auto* assemblyPart = static_cast<AssemblyObject*>(getObject());
-    assemblyPart->setObjMasses(objectMasses);
 }
 
 void ViewProviderAssembly::endMove()
@@ -658,12 +680,17 @@ void ViewProviderAssembly::endMove()
         viewerNotConst->setSelectionEnabled(true);
     }
 
-    auto* assemblyPart = static_cast<AssemblyObject*>(getObject());
-    assemblyPart->setObjMasses({});
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Assembly");
+    bool solveOnMove = hGrp->GetBool("SolveOnMove", true);
+    if (solveOnMove) {
+        auto* assemblyPart = static_cast<AssemblyObject*>(getObject());
+        // assemblyPart->postDrag();
+        assemblyPart->setObjMasses({});
+    }
 
     Gui::Command::commitCommand();
 }
-
 
 void ViewProviderAssembly::onSelectionChanged(const Gui::SelectionChanges& msg)
 {

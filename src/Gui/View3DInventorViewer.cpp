@@ -2737,7 +2737,7 @@ SbVec3f View3DInventorViewer::getPointOnLine(const SbVec2s& pnt, const SbVec3f& 
     SbLine projectedLine = projectLineOntoPlane(axisCenter, axisCenter + axis, focalPlane);
     ptOnFocalPlaneAndOnLine = projectedLine.getClosestPoint(ptOnFocalPlane);
 
-    // now we need the intersection point between 
+    // now we need the intersection point between
     // - the line passing by ptOnFocalPlaneAndOnLine normal to focalPlane
     // - The line (axisCenter, axisCenter + axis)
 
@@ -4077,4 +4077,4 @@ void View3DInventorViewer::dragLeaveEvent(QDragLeaveEvent* ev)
     inherited::dragLeaveEvent(ev);
 }
 
-#include "moc_View3DInventorViewer.cpp"
+#include "moc_View3DInventorViewer.cpp" // NOLINT

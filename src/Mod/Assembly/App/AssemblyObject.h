@@ -50,6 +50,7 @@ class Placement;
 class Rotation;
 }  // namespace Base
 
+
 namespace Assembly
 {
 
@@ -82,11 +83,25 @@ public:
         return "AssemblyGui::ViewProviderAssembly";
     }
 
+    /* Solve the assembly. It will update first the joints, solve, update placements of the parts
+    and redraw the joints Args : enableRedo : This store initial positions to enable undo while
+    being in an active transaction (joint creation).*/
     int solve(bool enableRedo = false);
+    void preDrag(std::vector<App::DocumentObject*> dragParts);
+    void doDragStep();
+    void postDrag();
     void savePlacementsForUndo();
     void undoSolve();
     void clearUndo();
+
     void exportAsASMT(std::string fileName);
+
+    void setNewPlacements();
+    void recomputeJointPlacements(std::vector<App::DocumentObject*> joints);
+    void redrawJointPlacements(std::vector<App::DocumentObject*> joints);
+
+
+    // Ondsel Solver interface
     std::shared_ptr<MbD::ASMTAssembly> makeMbdAssembly();
     std::shared_ptr<MbD::ASMTPart>
     makeMbdPart(std::string& name, Base::Placement plc = Base::Placement(), double mass = 1.0);
@@ -101,22 +116,24 @@ public:
     std::shared_ptr<MbD::ASMTJoint> makeMbdJointDistanceFaceEdge(App::DocumentObject* joint);
     std::shared_ptr<MbD::ASMTJoint> makeMbdJointDistanceEdgeEdge(App::DocumentObject* joint);
     std::shared_ptr<MbD::ASMTJoint> makeMbdJointDistanceFaceFace(App::DocumentObject* joint);
-
     std::string handleOneSideOfJoint(App::DocumentObject* joint,
                                      const char* propObjLinkName,
                                      const char* propPartName,
                                      const char* propPlcName);
+
     void jointParts(std::vector<App::DocumentObject*> joints);
+    JointGroup* getJointGroup();
     std::vector<App::DocumentObject*> getJoints(bool updateJCS = true);
+    std::vector<App::DocumentObject*> getGroundedJoints();
     std::vector<App::DocumentObject*> getJointsOfObj(App::DocumentObject* obj);
     std::vector<App::DocumentObject*> getJointsOfPart(App::DocumentObject* part);
     App::DocumentObject* getJointOfPartConnectingToGround(App::DocumentObject* part,
                                                           std::string& name);
-    bool isJointConnectingPartToGround(App::DocumentObject* joint, const char* partPropName);
-    std::vector<App::DocumentObject*> getGroundedJoints();
-    void fixGroundedPart(App::DocumentObject* obj, Base::Placement& plc, std::string& jointName);
-    std::vector<App::DocumentObject*> fixGroundedParts();
     std::vector<App::DocumentObject*> getGroundedParts();
+    std::vector<App::DocumentObject*> fixGroundedParts();
+    void fixGroundedPart(App::DocumentObject* obj, Base::Placement& plc, std::string& jointName);
+
+    bool isJointConnectingPartToGround(App::DocumentObject* joint, const char* partPropName);
 
     void removeUnconnectedJoints(std::vector<App::DocumentObject*>& joints,
                                  std::vector<App::DocumentObject*> groundedObjs);
@@ -125,17 +142,9 @@ public:
                                        const std::vector<App::DocumentObject*>& joints);
     std::vector<App::DocumentObject*>
     getConnectedParts(App::DocumentObject* part, const std::vector<App::DocumentObject*>& joints);
-
-    JointGroup* getJointGroup();
-
-    void swapJCS(App::DocumentObject* joint);
-
-    void setNewPlacements();
-    void redrawJointPlacements(std::vector<App::DocumentObject*> joints);
-    void recomputeJointPlacements(std::vector<App::DocumentObject*> joints);
-
     bool isPartGrounded(App::DocumentObject* part);
     bool isPartConnected(App::DocumentObject* part);
+
     std::vector<App::DocumentObject*> getDownstreamParts(App::DocumentObject* part,
                                                          App::DocumentObject* joint);
     std::vector<App::DocumentObject*> getUpstreamParts(App::DocumentObject* part, int limit = 0);
@@ -144,17 +153,13 @@ public:
     double getObjMass(App::DocumentObject* obj);
     void setObjMasses(std::vector<std::pair<App::DocumentObject*, double>> objectMasses);
 
-    bool isEdgeType(App::DocumentObject* obj, const char* elName, GeomAbs_CurveType type);
-    bool isFaceType(App::DocumentObject* obj, const char* elName, GeomAbs_SurfaceType type);
-    double getFaceRadius(App::DocumentObject* obj, const char* elName);
-    double getEdgeRadius(App::DocumentObject* obj, const char* elName);
-
 
 private:
     std::shared_ptr<MbD::ASMTAssembly> mbdAssembly;
 
     std::unordered_map<App::DocumentObject*, std::shared_ptr<MbD::ASMTPart>> objectPartMap;
     std::vector<std::pair<App::DocumentObject*, double>> objMasses;
+    std::vector<std::shared_ptr<MbD::ASMTPart>> dragMbdParts;
 
     std::vector<std::pair<App::DocumentObject*, Base::Placement>> previousPositions;
 
@@ -165,6 +170,13 @@ public:
     // ---------------- Utils -------------------
     // Can't put the functions by themselves in AssemblyUtils.cpp :
     // see https://forum.freecad.org/viewtopic.php?p=729577#p729577
+
+    void swapJCS(App::DocumentObject* joint);
+
+    bool isEdgeType(App::DocumentObject* obj, const char* elName, GeomAbs_CurveType type);
+    bool isFaceType(App::DocumentObject* obj, const char* elName, GeomAbs_SurfaceType type);
+    double getFaceRadius(App::DocumentObject* obj, const char* elName);
+    double getEdgeRadius(App::DocumentObject* obj, const char* elName);
 
     // getters to get from properties
     static void setJointActivated(App::DocumentObject* joint, bool val);

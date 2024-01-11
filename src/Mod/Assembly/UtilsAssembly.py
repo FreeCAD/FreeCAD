@@ -220,7 +220,7 @@ def getContainingPart(full_name, selected_object, activeAssemblyOrPart=None):
                 if linked_obj.hasObject(selected_object, True):
                     if not activeAssemblyOrPart:
                         return obj
-                    elif (
+                    elif (linked_obj.Document == activeAssemblyOrPart.Document) and (
                         linked_obj.hasObject(activeAssemblyOrPart, True)
                         or linked_obj == activeAssemblyOrPart
                     ):
@@ -282,9 +282,14 @@ def getJcsGlobalPlc(jcsPlc, objName, part):
 # The container is used to support cases where the same object appears at several places
 # which happens when you have a link to a part.
 def getGlobalPlacement(targetObj, container=None):
+    if targetObj is None:
+        return App.Placement()
+
     inContainerBranch = container is None
-    for part in App.activeDocument().RootObjects:
-        foundPlacement = getTargetPlacementRelativeTo(targetObj, part, container, inContainerBranch)
+    for rootObj in App.activeDocument().RootObjects:
+        foundPlacement = getTargetPlacementRelativeTo(
+            targetObj, rootObj, container, inContainerBranch
+        )
         if foundPlacement is not None:
             return foundPlacement
 
@@ -330,6 +335,8 @@ def getTargetPlacementRelativeTo(
 
     elif part.TypeId == "App::Link":
         linked_obj = part.getLinkedObject()
+        if part == linked_obj or linked_obj is None:
+            return None  # upon loading this can happen for external links.
 
         if linked_obj.TypeId in {"App::Part", "Assembly::AssemblyObject", "PartDesign::Body"}:
             for obj in linked_obj.OutList:

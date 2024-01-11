@@ -45,6 +45,18 @@ class AssemblyGuiExport ViewProviderAssembly: public Gui::ViewProviderPart,
     Q_DECLARE_TR_FUNCTIONS(AssemblyGui::ViewProviderAssembly)
     PROPERTY_HEADER_WITH_OVERRIDE(AssemblyGui::ViewProviderAssembly);
 
+    enum class DragMode
+    {
+        Translation,
+        TranslationOnAxis,
+        TranslationOnPlane,
+        Rotation,
+        RotationOnPlane,
+        TranslationOnAxisAndRotationOnePlane,
+        Ball,
+        None,
+    };
+
 public:
     ViewProviderAssembly();
     ~ViewProviderAssembly() override;
@@ -59,7 +71,7 @@ public:
     //@{
     bool setEdit(int ModNum) override;
     void unsetEdit(int ModNum) override;
-    bool isInEditMode();
+    bool isInEditMode() const;
 
     /// Ask the view provider if it accepts object deletions while in edit
     bool acceptDeletionsInEdit() override
@@ -69,19 +81,8 @@ public:
 
     bool canDragObject(App::DocumentObject*) const override;
 
-    App::DocumentObject* getActivePart();
+    App::DocumentObject* getActivePart() const;
 
-    enum class MoveMode
-    {
-        Translation,
-        TranslationOnAxis,
-        TranslationOnPlane,
-        Rotation,
-        RotationOnPlane,
-        TranslationOnAxisAndRotationOnePlane,
-        None,
-    };
-    MoveMode moveMode;
 
     /// is called when the provider is in edit and the mouse is moved
     bool mouseMove(const SbVec2s& pos, Gui::View3DInventorViewer* viewer) override;
@@ -90,18 +91,11 @@ public:
                             bool pressed,
                             const SbVec2s& cursorPos,
                             const Gui::View3DInventorViewer* viewer) override;
-    MoveMode findMoveMode();
+
+    /// Finds what drag mode should be used based on the user selection.
+    DragMode findDragMode();
     void initMove();
     void endMove();
-
-
-    bool getSelectedObjectsWithinAssembly();
-    App::DocumentObject* getObjectFromSubNames(std::vector<std::string>& subNames);
-    std::vector<std::string> parseSubNames(std::string& subNamesStr);
-
-    /// Get the python wrapper for that ViewProvider
-    PyObject* getPyObject() override;
-
     virtual void setEnableMovement(bool enable = true)
     {
         enableMovement = enable;
@@ -111,17 +105,26 @@ public:
         return enableMovement;
     }
 
+    bool getSelectedObjectsWithinAssembly();
+    App::DocumentObject* getObjectFromSubNames(std::vector<std::string>& subNames);
+    std::vector<std::string> parseSubNames(std::string& subNamesStr);
+
+    /// Get the python wrapper for that ViewProvider
+    PyObject* getPyObject() override;
+
     // protected:
     /// get called by the container whenever a property has been changed
     // void onChanged(const App::Property* prop) override;
 
     void onSelectionChanged(const Gui::SelectionChanges& msg) override;
 
+    DragMode dragMode;
     bool canStartDragging;
     bool partMoving;
     bool enableMovement;
     bool jointVisibilityBackup;
     int numberOfSel;
+    Base::Vector3d prevPosition;
     Base::Vector3d initialPosition;
     Base::Vector3d initialPositionRot;
     Base::Placement jcsPlc;

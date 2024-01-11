@@ -83,8 +83,6 @@ def solveIfAllowed(assembly, storePrev=False):
 
 class Joint:
     def __init__(self, joint, type_index):
-        self.Type = "Joint"
-
         joint.Proxy = self
 
         joint.addProperty(
@@ -237,12 +235,11 @@ class Joint:
 
         self.setJointConnectors(joint, [])
 
-    def __getstate__(self):
-        return self.Type
+    def dumps(self):
+        return None
 
-    def __setstate__(self, state):
-        if state:
-            self.Type = state
+    def loads(self, state):
+        return None
 
     def getAssembly(self, joint):
         return joint.InList[0]
@@ -256,23 +253,25 @@ class Joint:
         # App.Console.PrintMessage("Change property: " + str(prop) + "\n")
 
         if prop == "Rotation" or prop == "Offset" or prop == "Distance":
-            if hasattr(
-                joint, "Vertex1"
-            ):  # during loading the onchanged may be triggered before full init.
+            # during loading the onchanged may be triggered before full init.
+            if hasattr(joint, "Vertex1"):  # so we check Vertex1
+                self.updateJCSPlacements(joint)
+                obj1 = UtilsAssembly.getObjectInPart(joint.Object1, joint.Part1)
+                obj2 = UtilsAssembly.getObjectInPart(joint.Object2, joint.Part2)
+                presolved = self.preSolve(
+                    joint,
+                    obj1,
+                    joint.Part1,
+                    obj2,
+                    joint.Part2,
+                    False,
+                )
+
                 isAssembly = self.getAssembly(joint).Type == "Assembly"
-                if isAssembly:
+                if isAssembly and not presolved:
                     solveIfAllowed(self.getAssembly(joint))
                 else:
                     self.updateJCSPlacements(joint)
-                    obj1 = UtilsAssembly.getObjectInPart(joint.Object1, joint.Part1)
-                    obj2 = UtilsAssembly.getObjectInPart(joint.Object2, joint.Part2)
-                    self.preSolve(
-                        joint,
-                        obj1,
-                        joint.Part1,
-                        obj2,
-                        joint.Part2,
-                    )
 
     def execute(self, fp):
         """Do something when doing a recomputation, this method is mandatory"""
@@ -380,6 +379,8 @@ class Joint:
         elt_type, elt_index = UtilsAssembly.extract_type_and_number(elt)
         vtx_type, vtx_index = UtilsAssembly.extract_type_and_number(vtx)
 
+        isLine = False
+
         if elt_type == "Vertex":
             vertex = obj.Shape.Vertexes[elt_index - 1]
             plc.Base = (vertex.X, vertex.Y, vertex.Z)
@@ -406,6 +407,7 @@ class Joint:
                 plc.Rotation = App.Rotation(curve.Rotation)
 
             if curve.TypeId == "Part::GeomLine":
+                isLine = True
                 plane_normal = curve.Direction
                 plane_origin = App.Vector(0, 0, 0)
                 plane = Part.Plane(plane_origin, plane_normal)
@@ -456,6 +458,15 @@ class Joint:
 
         # change plc to be relative to the object placement.
         plc = obj.Placement.inverse() * plc
+
+        # post-process of plc for some special cases
+        if elt_type == "Vertex":
+            plc.Rotation = App.Rotation()
+        elif isLine:
+            plane_normal = plc.Rotation.multVec(App.Vector(0, 0, 1))
+            plane_origin = App.Vector(0, 0, 0)
+            plane = Part.Plane(plane_origin, plane_normal)
+            plc.Rotation = App.Rotation(plane.Rotation)
 
         # change plc to be relative to the origin of the document.
         # global_plc = UtilsAssembly.getGlobalPlacement(obj, part)
@@ -535,7 +546,7 @@ class Joint:
                         return App.Vector(res[0].X, res[0].Y, res[0].Z)
         return surface.Center
 
-    def preSolve(self, joint, obj1, part1, obj2, part2):
+    def preSolve(self, joint, obj1, part1, obj2, part2, savePlc=True):
         # The goal of this is to put the part in the correct position to avoid wrong placement by the solve.
 
         # we actually don't want to match perfectly the JCS, it is best to match them
@@ -543,8 +554,9 @@ class Joint:
         sameDir = self.areJcsSameDir(joint)
 
         if hasattr(self, "part2Connected") and not self.part2Connected:
-            self.partMovedByPresolved = joint.Part2
-            self.presolveBackupPlc = joint.Part2.Placement
+            if savePlc:
+                self.partMovedByPresolved = joint.Part2
+                self.presolveBackupPlc = joint.Part2.Placement
 
             globalJcsPlc1 = UtilsAssembly.getJcsGlobalPlc(
                 joint.Placement1, joint.Object1, joint.Part1
@@ -555,10 +567,12 @@ class Joint:
             if not sameDir:
                 jcsPlc2 = self.flipPlacement(jcsPlc2)
             joint.Part2.Placement = globalJcsPlc1 * jcsPlc2.inverse()
+            return True
 
         elif hasattr(self, "part1Connected") and not self.part1Connected:
-            self.partMovedByPresolved = joint.Part1
-            self.presolveBackupPlc = joint.Part1.Placement
+            if savePlc:
+                self.partMovedByPresolved = joint.Part1
+                self.presolveBackupPlc = joint.Part1.Placement
 
             globalJcsPlc2 = UtilsAssembly.getJcsGlobalPlc(
                 joint.Placement2, joint.Object2, joint.Part2
@@ -569,6 +583,8 @@ class Joint:
             if not sameDir:
                 jcsPlc1 = self.flipPlacement(jcsPlc1)
             joint.Part1.Placement = globalJcsPlc2 * jcsPlc1.inverse()
+            return True
+        return False
 
     def undoPreSolve(self):
         if self.partMovedByPresolved:
@@ -608,7 +624,10 @@ class ViewProviderJoint:
 
         camera = Gui.ActiveDocument.ActiveView.getCameraNode()
         self.cameraSensor = coin.SoFieldSensor(self.camera_callback, camera)
-        self.cameraSensor.attach(camera.height)
+        if isinstance(camera, coin.SoPerspectiveCamera):
+            self.cameraSensor.attach(camera.focalDistance)
+        elif isinstance(camera, coin.SoOrthographicCamera):
+            self.cameraSensor.attach(camera.height)
 
         self.app_obj = vobj.Object
 
@@ -711,7 +730,14 @@ class ViewProviderJoint:
 
     def get_JCS_size(self):
         camera = Gui.ActiveDocument.ActiveView.getCameraNode()
-        if not camera:
+
+        # Check if the camera is a perspective camera
+        if isinstance(camera, coin.SoPerspectiveCamera):
+            return camera.focalDistance.getValue() / 20
+        elif isinstance(camera, coin.SoOrthographicCamera):
+            return camera.height.getValue() / 20
+        else:
+            # Default value if camera type is unknown
             return 10
 
         return camera.height.getValue() / 20
@@ -736,7 +762,8 @@ class ViewProviderJoint:
                 plc = joint.Placement1
                 self.switch_JCS1.whichChild = coin.SO_SWITCH_ALL
 
-                self.set_JCS_placement(self.transform1, plc, joint.Object1, joint.Part1)
+                if joint.Part1:
+                    self.set_JCS_placement(self.transform1, plc, joint.Object1, joint.Part1)
             else:
                 self.switch_JCS1.whichChild = coin.SO_SWITCH_NONE
 
@@ -745,7 +772,8 @@ class ViewProviderJoint:
                 plc = joint.Placement2
                 self.switch_JCS2.whichChild = coin.SO_SWITCH_ALL
 
-                self.set_JCS_placement(self.transform2, plc, joint.Object2, joint.Part2)
+                if joint.Part2:
+                    self.set_JCS_placement(self.transform2, plc, joint.Object2, joint.Part2)
             else:
                 self.switch_JCS2.whichChild = coin.SO_SWITCH_NONE
 
@@ -827,7 +855,6 @@ class ViewProviderJoint:
 
 class GroundedJoint:
     def __init__(self, joint, obj_to_ground):
-        self.Type = "GoundedJoint"
         joint.Proxy = self
         self.joint = joint
 
@@ -852,12 +879,11 @@ class GroundedJoint:
 
         joint.Placement = obj_to_ground.Placement
 
-    def __getstate__(self):
-        return self.Type
+    def dumps(self):
+        return None
 
-    def __setstate__(self, state):
-        if state:
-            self.Type = state
+    def loads(self, state):
+        return None
 
     def onChanged(self, fp, prop):
         """Do something when a property has changed"""

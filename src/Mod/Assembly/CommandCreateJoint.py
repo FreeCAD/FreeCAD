@@ -64,13 +64,19 @@ class CommandCreateJointFixed:
             "Pixmap": "Assembly_CreateJointFixed",
             "MenuText": QT_TRANSLATE_NOOP(
                 "Assembly_CreateJointFixed",
-                "If an assembly is active : Create a Fixed Joint.\n If a part is active : Position sub parts by matching.",
+                "Create a Fixed Joint",
             ),
             "Accel": "J",
             "ToolTip": "<p>"
             + QT_TRANSLATE_NOOP(
                 "Assembly_CreateJointFixed",
-                "Create a Fixed Joint: Permanently locks two parts together, preventing any movement or rotation.",
+                "1 - If an assembly is active : Create a joint permanently locking two parts together, preventing any movement or rotation.",
+            )
+            + "</p>"
+            + "<p>"
+            + QT_TRANSLATE_NOOP(
+                "Assembly_CreateJointFixed",
+                "2 - If a part is active : Position sub parts by matching seleted coordinate systems. The second part selected will move.",
             )
             + "</p>",
             "CmdType": "ForEdit",
@@ -270,6 +276,7 @@ class CommandToggleGrounded:
                 part_containing_obj = UtilsAssembly.getContainingPart(full_element_name, obj)
 
                 # Check if part is grounded and if so delete the joint.
+                ungrounded = False
                 for joint in joint_group.Group:
                     if (
                         hasattr(joint, "ObjectToGround")
@@ -281,10 +288,12 @@ class CommandToggleGrounded:
                         doc = App.ActiveDocument
                         doc.removeObject(joint.Name)
                         doc.recompute()
-                        return
+                        ungrounded = True
+                        break
+                if ungrounded:
+                    continue
 
                 # Create groundedJoint.
-
                 part_containing_obj.Label = part_containing_obj.Label + " 🔒"
                 ground = joint_group.newObject("App::FeaturePython", "GroundedJoint")
                 JointObject.GroundedJoint(ground, part_containing_obj)
