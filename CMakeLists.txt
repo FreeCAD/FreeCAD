@@ -278,6 +278,7 @@ set(ONDSELSOLVER_SRC
         OndselSolver/PointInLineJoint.cpp
         OndselSolver/PointInPlaneJoint.cpp
         OndselSolver/Polynomial.cpp
+        OndselSolver/PosICDragNewtonRaphson.cpp
         OndselSolver/PosICKineNewtonRaphson.cpp
         OndselSolver/PosICNewtonRaphson.cpp
         OndselSolver/PosKineNewtonRaphson.cpp
@@ -596,6 +597,7 @@ set(ONDSELSOLVER_HEADERS
         OndselSolver/PlanarJoint.h
         OndselSolver/PointInLineJoint.h
         OndselSolver/PointInPlaneJoint.h
+        OndselSolver/PosICDragNewtonRaphson.h
         OndselSolver/PosICKineNewtonRaphson.h
         OndselSolver/PosICNewtonRaphson.h
         OndselSolver/PosKineNewtonRaphson.h

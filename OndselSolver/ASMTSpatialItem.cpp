@@ -14,6 +14,10 @@
 
 using namespace MbD;
 
+MbD::ASMTSpatialItem::ASMTSpatialItem() : ASMTItem()
+{
+}
+
 void MbD::ASMTSpatialItem::setPosition3D(FColDsptr vec)
 {
 	position3D = vec;

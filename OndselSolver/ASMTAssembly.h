@@ -33,11 +33,14 @@ namespace MbD {
 		//
 	public:
 		ASMTAssembly();
+		static std::shared_ptr<ASMTAssembly> With();
 		static void runSinglePendulumSuperSimplified();
 		static void runSinglePendulumSuperSimplified2();
 		static void runSinglePendulumSimplified();
 		static void runSinglePendulum();
+		static std::shared_ptr<ASMTAssembly> assemblyFromFile(const char* chars);
 		static void runFile(const char* chars);
+		static void runDraggingTest();
 		static void readWriteFile(const char* chars);
 		void initialize() override;
 		ASMTAssembly* root() override;
@@ -83,6 +86,9 @@ namespace MbD {
 		/* This function performs a one shot solve of the assembly.*/
 		void solve();
 
+		void runPreDrag();
+		void runDragStep(std::shared_ptr<std::vector<std::shared_ptr<ASMTPart>>> dragParts);
+		void runPostDrag();
 		void runKINEMATIC();
 		void initprincipalMassMarker();
 		std::shared_ptr<ASMTSpatialContainer> spatialContainerAt(std::shared_ptr<ASMTAssembly> self, std::string& longname);
@@ -128,6 +134,7 @@ namespace MbD {
 		std::shared_ptr<std::vector<double>> times = std::make_shared<std::vector<double>>();
 		std::shared_ptr<ASMTTime> asmtTime = std::make_shared<ASMTTime>();
 		std::shared_ptr<Units> mbdUnits = std::make_shared<Units>();
+		std::shared_ptr<System> mbdSystem;
 		MBDynSystem* mbdynItem = nullptr;
 	};
 }

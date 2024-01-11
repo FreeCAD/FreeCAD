@@ -48,10 +48,13 @@ namespace MbD {
 		void runCollisionDerivativeIC();
 		void runBasicCollision();
 		void runBasicKinematic();
+		void runPreDrag();
+		void runDragStep(std::shared_ptr<std::vector<std::shared_ptr<Part>>> dragParts);
 		void runQuasiKinematic();
 		void runPosKine();
 		void runVelKine();
 		void runAccKine();
+		void runPosICDrag(std::shared_ptr<std::vector<std::shared_ptr<Part>>> dragParts);
 		void runPosICKine();
 		void runVelICKine();
 		void runAccICKine();

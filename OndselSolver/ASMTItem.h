@@ -19,6 +19,7 @@ namespace MbD {
 	{
 		//
 	public:
+		ASMTItem() {}
 		virtual ~ASMTItem() {}
 		virtual ASMTAssembly* root();
 		virtual ASMTSpatialContainer* partOrAssembly();
@@ -29,6 +30,8 @@ namespace MbD {
 		virtual std::string classname();
 		void setName(std::string str);
 		virtual void parseASMT(std::vector<std::string>& lines);
+		std::string popOffTop(std::vector<std::string>& args);
+		std::string readStringOffTop(std::vector<std::string>& args);
 		FRowDsptr readRowOfDoubles(std::string& line);
 		FColDsptr readColumnOfDoubles(std::string& line);
 		double readDouble(std::string& line);

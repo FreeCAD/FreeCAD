@@ -28,6 +28,7 @@
 #include "AccKineNewtonRaphson.h"
 #include "VelICKineSolver.h"
 #include "AccICKineNewtonRaphson.h"
+#include "PosICDragNewtonRaphson.h"
 
 using namespace MbD;
 
@@ -164,6 +165,18 @@ void SystemSolver::runBasicKinematic()
 	}
 }
 
+void SystemSolver::runPreDrag()
+{
+	initializeLocally();
+	initializeGlobally();
+	runPosIC();
+}
+
+void MbD::SystemSolver::runDragStep(std::shared_ptr<std::vector<std::shared_ptr<Part>>> dragParts)
+{
+	runPosICDrag(dragParts);
+}
+
 void SystemSolver::runQuasiKinematic()
 {
 	try {
@@ -193,6 +206,15 @@ void SystemSolver::runVelKine()
 void SystemSolver::runAccKine()
 {
 	icTypeSolver = CREATE<AccKineNewtonRaphson>::With();
+	icTypeSolver->setSystem(this);
+	icTypeSolver->run();
+}
+
+void MbD::SystemSolver::runPosICDrag(std::shared_ptr<std::vector<std::shared_ptr<Part>>> dragParts)
+{
+	auto newtonRaphson = PosICDragNewtonRaphson::With();
+	newtonRaphson->setdragParts(dragParts);
+	icTypeSolver = newtonRaphson;
 	icTypeSolver->setSystem(this);
 	icTypeSolver->run();
 }

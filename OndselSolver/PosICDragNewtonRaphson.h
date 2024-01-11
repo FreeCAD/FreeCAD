@@ -5,38 +5,25 @@
  *                                                                         *
  *   See LICENSE file for details about copyright.                         *
  ***************************************************************************/
- 
+
 #pragma once
 
-#include <memory>
-#include "enum.h"
-#include <string>
-
-//#include "CADSystem.h"
-//#include "ASMTAssembly.h"
+#include "AnyPosICNewtonRaphson.h"
 
 namespace MbD {
-	class CADSystem;
-	class ASMTAssembly;
-	class System;
+    class Part;
 
-	class ExternalSystem
-	{
-		//
-	public:
-		void preMbDrun(std::shared_ptr<System> mbdSys);
-		void updateFromMbD();
-		void outputFor(AnalysisType type);
-		void logString(std::string& str);
-		void logString(double value);
-		void runOndselPiston();
-		void runPiston();
-		void postMbDrun();
+    class PosICDragNewtonRaphson : public AnyPosICNewtonRaphson
+    {
+        //Kinematics with under constrained system
+    public:
+        static std::shared_ptr<PosICDragNewtonRaphson> With();
+        void initializeGlobally() override;
+        void assignEquationNumbers() override;
+        bool isConverged() override;
+        void setdragParts(std::shared_ptr<std::vector<std::shared_ptr<Part>>> dragParts);
 
-
-		CADSystem* cadSystem;
-		ASMTAssembly* asmtAssembly;
-
-	};
+        std::shared_ptr<std::vector<std::shared_ptr<Part>>> dragParts;
+    };
 }
 

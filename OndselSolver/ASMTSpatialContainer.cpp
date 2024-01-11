@@ -20,7 +20,7 @@
 
 using namespace MbD;
 
-MbD::ASMTSpatialContainer::ASMTSpatialContainer()
+MbD::ASMTSpatialContainer::ASMTSpatialContainer() : ASMTSpatialItem()
 {
 	refPoints = std::make_shared<std::vector<std::shared_ptr<ASMTRefPoint>>>();
 	refCurves = std::make_shared<std::vector<std::shared_ptr<ASMTRefCurve>>>();
@@ -291,6 +291,14 @@ void MbD::ASMTSpatialContainer::createMbD(std::shared_ptr<System> mbdSys, std::s
 	for (auto& refSurface : *refSurfaces) {
 		refSurface->createMbD(mbdSys, mbdUnits);
 	}
+}
+
+void MbD::ASMTSpatialContainer::updateMbDFromPosition3D(FColDsptr vec)
+{
+	position3D = vec;
+	auto mbdPart = std::static_pointer_cast<Part>(mbdObject);
+	auto mbdUnits = this->mbdUnits();
+	mbdPart->qX(rOcmO()->times(1.0 / mbdUnits->length));
 }
 
 FColDsptr MbD::ASMTSpatialContainer::rOcmO()

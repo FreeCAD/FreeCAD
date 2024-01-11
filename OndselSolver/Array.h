@@ -116,7 +116,7 @@ namespace MbD {
 	inline double Array<T>::maxMagnitudeOfVector()
 	{
 		double answer = 0.0;
-		for (int i = 0; i < (int)this->size(); i++)
+		for (int i = 0; i < this->size(); i++)
 		{
 			double mag = std::abs(this->at(i));
 			if (answer < mag) answer = mag;

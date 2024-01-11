@@ -272,6 +272,7 @@
     <ClCompile Include="Negative.cpp" />
     <ClCompile Include="PiecewiseFunction.cpp" />
     <ClCompile Include="Polynomial.cpp" />
+    <ClCompile Include="PosICDragNewtonRaphson.cpp" />
     <ClCompile Include="PosVelAccData.cpp" />
     <ClCompile Include="DiagonalMatrix.cpp" />
     <ClCompile Include="DifferenceOperator.cpp" />
@@ -596,6 +597,7 @@
     <ClInclude Include="Negative.h" />
     <ClInclude Include="PiecewiseFunction.h" />
     <ClInclude Include="Polynomial.h" />
+    <ClInclude Include="PosICDragNewtonRaphson.h" />
     <ClInclude Include="PosVelAccData.h" />
     <ClInclude Include="DiagonalMatrix.h" />
     <ClInclude Include="DifferenceOperator.h" />

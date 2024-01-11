@@ -15,6 +15,7 @@ namespace MbD {
 	{
 		//
 	public:
+		ASMTSpatialItem();
 		void setPosition3D(FColDsptr position3D);
 		void setRotationMatrix(FMatDsptr rotationMatrix);
 		void readPosition3D(std::vector<std::string>& lines);

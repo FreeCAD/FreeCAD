@@ -26,6 +26,19 @@ void MbD::ExternalSystem::preMbDrun(std::shared_ptr<System> mbdSys)
 	}
 }
 
+void MbD::ExternalSystem::updateFromMbD()
+{
+	if (cadSystem) {
+		cadSystem->updateFromMbD();
+	}
+	else if (asmtAssembly) {
+		asmtAssembly->updateFromMbD();
+	}
+	else {
+		assert(false);
+	}
+}
+
 void MbD::ExternalSystem::outputFor(AnalysisType type)
 {
 	if (cadSystem) {

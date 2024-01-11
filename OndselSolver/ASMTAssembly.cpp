@@ -65,6 +65,12 @@ MbD::ASMTAssembly::ASMTAssembly() : ASMTSpatialContainer()
 	times = std::make_shared<FullRow<double>>();
 }
 
+std::shared_ptr<ASMTAssembly> MbD::ASMTAssembly::With()
+{
+	auto assembly = std::make_shared<ASMTAssembly>();
+	return assembly;
+}
+
 void MbD::ASMTAssembly::runSinglePendulumSuperSimplified()
 {
 	//In this version we skip declaration of variables that don't need as they use default values.
@@ -383,6 +389,28 @@ void MbD::ASMTAssembly::runSinglePendulum()
 	assembly->runKINEMATIC();
 }
 
+std::shared_ptr<ASMTAssembly> MbD::ASMTAssembly::assemblyFromFile(const char* fileName)
+{
+	std::ifstream stream(fileName);
+	if (stream.fail()) {
+		throw std::invalid_argument("File not found.");
+	}
+	std::string line;
+	std::vector<std::string> lines;
+	while (std::getline(stream, line)) {
+		lines.push_back(line);
+	}
+	auto assembly = ASMTAssembly::With();
+	auto str = assembly->popOffTop(lines);
+	bool bool1 = str == "freeCAD: 3D CAD with Motion Simulation  by  askoh.com";
+	bool bool2 = str == "OndselSolver";
+	assert(bool1 || bool2);
+	assert(assembly->readStringOffTop(lines) == "Assembly");
+	assembly->setFilename(fileName);
+	assembly->parseASMT(lines);
+	return assembly;
+}
+
 void MbD::ASMTAssembly::runFile(const char* fileName)
 {
 	std::ifstream stream(fileName);
@@ -406,6 +434,25 @@ void MbD::ASMTAssembly::runFile(const char* fileName)
 		assembly->parseASMT(lines);
 		assembly->runKINEMATIC();
 	}
+}
+
+void MbD::ASMTAssembly::runDraggingTest()
+{
+	auto assembly = ASMTAssembly::assemblyFromFile("../testapp/dragCrankSlider.asmt");
+	auto dragPart = assembly->parts->at(0);
+	auto dragParts = std::make_shared<std::vector<std::shared_ptr<ASMTPart>>>();
+	dragParts->push_back(dragPart);
+	assembly->runPreDrag();	//Do this before first drag
+	FColDsptr pos3D, delta;
+	pos3D = dragPart->position3D;
+	delta = std::make_shared<FullColumn<double>>(ListD{ 0.1, 0.2, 0.3 });
+	dragPart->updateMbDFromPosition3D(pos3D->plusFullColumn(delta));
+	assembly->runDragStep(dragParts);
+	pos3D = dragPart->position3D;
+	delta = std::make_shared<FullColumn<double>>(ListD{ 0.3, 0.2, 0.1 });
+	dragPart->updateMbDFromPosition3D(pos3D->plusFullColumn(delta));
+	assembly->runDragStep(dragParts);
+	assembly->runPostDrag();	//Do this after last drag
 }
 
 void MbD::ASMTAssembly::readWriteFile(const char* fileName)
@@ -1046,10 +1093,36 @@ void MbD::ASMTAssembly::solve()
 	runKINEMATIC();
 }
 
+void MbD::ASMTAssembly::runPreDrag()
+{
+	mbdSystem = std::make_shared<System>();
+	mbdSystem->externalSystem->asmtAssembly = this;
+	try {
+		mbdSystem->runPreDrag(mbdSystem);
+	}
+	catch (SimulationStoppingError ex) {
+
+	}
+}
+
+void MbD::ASMTAssembly::runDragStep(std::shared_ptr<std::vector<std::shared_ptr<ASMTPart>>> dragParts)
+{
+	auto dragMbDParts = std::make_shared<std::vector<std::shared_ptr<Part>>>();
+	for (auto& dragPart : *dragParts) {
+		auto dragMbDPart = std::static_pointer_cast<Part>(dragPart->mbdObject);
+		dragMbDParts->push_back(dragMbDPart);
+	}
+	mbdSystem->runDragStep(dragMbDParts);
+}
+
+void MbD::ASMTAssembly::runPostDrag()
+{
+	runPreDrag();
+}
+
 void MbD::ASMTAssembly::runKINEMATIC()
 {
-	auto mbdSystem = std::make_shared<System>();
-	mbdObject = mbdSystem;
+	mbdSystem = std::make_shared<System>();
 	mbdSystem->externalSystem->asmtAssembly = this;
 	try {
 		mbdSystem->runKINEMATIC(mbdSystem);

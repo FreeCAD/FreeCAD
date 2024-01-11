@@ -104,6 +104,27 @@ void System::clear()
 	forcesTorques->clear();
 }
 
+void MbD::System::runPreDrag(std::shared_ptr<System> self)
+{
+	externalSystem->preMbDrun(self);
+	while (true)
+	{
+		initializeLocally();
+		initializeGlobally();
+		if (!hasChanged) break;
+	}
+	partsJointsMotionsForcesTorquesDo([](std::shared_ptr<Item> item) { item->postInput(); });
+	systemSolver->runPreDrag();
+	externalSystem->updateFromMbD();
+}
+
+void MbD::System::runDragStep(std::shared_ptr<std::vector<std::shared_ptr<Part>>> dragParts)
+{
+	partsJointsMotionsForcesTorquesDo([](std::shared_ptr<Item> item) { item->postInput(); });
+	systemSolver->runDragStep(dragParts);
+	externalSystem->updateFromMbD();
+}
+
 std::shared_ptr<std::vector<std::string>> System::discontinuitiesAtIC()
 {
 	return std::make_shared<std::vector<std::string>>();

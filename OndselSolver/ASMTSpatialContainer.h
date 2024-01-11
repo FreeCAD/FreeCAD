@@ -61,6 +61,7 @@ namespace MbD {
         void readAlphaYs(std::vector<std::string>& lines);
         void readAlphaZs(std::vector<std::string>& lines);
         void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
+        void updateMbDFromPosition3D(FColDsptr position3D);
         FColDsptr rOcmO();
         std::shared_ptr<EulerParameters<double>> qEp();
         virtual FColDsptr vOcmO();

@@ -26,6 +26,8 @@ void sharedptrTest();
 
 int main()
 {
+	ASMTAssembly::runDraggingTest();
+	ASMTAssembly::runFile("../testapp/Schmidt_Coupling_Ass_1-1.asmt");
 	ASMTAssembly::runFile("../testapp/RevRevJt.asmt");
 	ASMTAssembly::runFile("../testapp/RevCylJt.asmt");
 	ASMTAssembly::runFile("../testapp/CylSphJt.asmt");

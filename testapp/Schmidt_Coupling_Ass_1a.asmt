@@ -1,0 +1,1135 @@
+OndselSolver
+Assembly
+	Notes
+		(Text string: '' runs: (Core.RunArray runs: #() values: #()))
+	Name
+		OndselAssembly
+	Position3D
+		0	0	0	
+	RotationMatrix
+		1	0	0	
+		0	1	0	
+		0	0	1	
+	Velocity3D
+		0	0	0	
+	Omega3D
+		0	0	0	
+	RefPoints
+		RefPoint
+			Position3D
+				0	0	0	
+			RotationMatrix
+				1	0	0	
+				0	1	0	
+				0	0	1	
+			Markers
+				Marker
+					Name
+						marker-Schmidt_Coupling_Ass_1#Body
+					Position3D
+						-33.642333984375	16.1646728515625	-24.15144348144531	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+		RefPoint
+			Position3D
+				0	0	0	
+			RotationMatrix
+				1	0	0	
+				0	1	0	
+				0	0	1	
+			Markers
+				Marker
+					Name
+						marker-Schmidt_Coupling_Ass_1#Body008
+					Position3D
+						45.34564379180044	89.60432303265266	-8.640919620684906	
+					RotationMatrix
+						0.9999999999992258	8.883821076099601e-07	-8.712423113774724e-07	
+						-5.200314909321254e-07	0.9344900966637488	0.3559891279759916	
+						1.130421683574225e-06	-0.3559891279752629	0.9344900966634874	
+	RefCurves
+	RefSurfaces
+	Parts
+		Part
+			Name
+				Schmidt_Coupling_Ass_1#Body
+			Position3D
+				-33.642333984375	16.1646728515625	-24.15144348144531	
+			RotationMatrix
+				1	0	0	
+				0	1	0	
+				0	0	1	
+			Velocity3D
+				0	0	0	
+			Omega3D
+				0	0	0	
+			FeatureOrder
+			PrincipalMassMarker
+				Name
+					MassMarker
+				Position3D
+					0	0	0	
+				RotationMatrix
+					1	0	0	
+					0	1	0	
+					0	0	1	
+				Mass
+					1
+				MomentOfInertias
+					1	1	1	
+				Density
+					1
+			RefPoints
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								FixingMarker
+							Position3D
+								0	0	0	
+							RotationMatrix
+								1	0	0	
+								0	1	0	
+								0	0	1	
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								Schmidt_Coupling_Ass_1#Revolute
+							Position3D
+								149.4299392700199	28.32449479912445	81.92236531460301	
+							RotationMatrix
+								-4.440892098500626e-16	-3.885780586188048e-16	1	
+								1	1.110223024625157e-16	2.220446049250313e-16	
+								-3.885780586188048e-16	1	1.110223024625157e-16	
+			RefCurves
+			RefSurfaces
+		Part
+			Name
+				Schmidt_Coupling_Ass_1#Body008
+			Position3D
+				45.34564379180044	89.60432303265266	-8.640919620684906	
+			RotationMatrix
+				0.9999999999992258	8.883821076099601e-07	-8.712423113774723e-07	
+				-5.200314909321254e-07	0.9344900966637488	0.3559891279759917	
+				1.130421683574225e-06	-0.3559891279752631	0.9344900966634874	
+			Velocity3D
+				0	0	0	
+			Omega3D
+				0	0	0	
+			FeatureOrder
+			PrincipalMassMarker
+				Name
+					MassMarker
+				Position3D
+					0	0	0	
+				RotationMatrix
+					1	0	0	
+					0	1	0	
+					0	0	1	
+				Mass
+					1
+				MomentOfInertias
+					1	1	1	
+				Density
+					1
+			RefPoints
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								FixingMarker
+							Position3D
+								0	0	0	
+							RotationMatrix
+								1	0	0	
+								0	1	0	
+								0	0	1	
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								Schmidt_Coupling_Ass_1#Cylindrical004
+							Position3D
+								-26.00000000000002	-1.4210854715202e-14	45	
+							RotationMatrix
+								-6.661338147750939e-16	-4.440892098500626e-16	1	
+								1	2.220446049250313e-16	6.661338147750939e-16	
+								-2.220446049250313e-16	1	4.440892098500626e-16	
+			RefCurves
+			RefSurfaces
+		Part
+			Name
+				Schmidt_Coupling_Ass_1#Part003004
+			Position3D
+				111.8102901626733	44.35292334266349	58.17391302550956	
+			RotationMatrix
+				-0.9943287807428827	-0.000602172874394253	-0.1063480755547644	
+				-0.03406107700586539	0.9491129113035003	0.3130886849283993	
+				0.1007477980879634	0.3149354203401442	-0.9437507945403827	
+			Velocity3D
+				0	0	0	
+			Omega3D
+				0	0	0	
+			FeatureOrder
+			PrincipalMassMarker
+				Name
+					MassMarker
+				Position3D
+					0	0	0	
+				RotationMatrix
+					1	0	0	
+					0	1	0	
+					0	0	1	
+				Mass
+					1
+				MomentOfInertias
+					1	1	1	
+				Density
+					1
+			RefPoints
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								Schmidt_Coupling_Ass_1#Revolute
+							Position3D
+								-3.999999999999986	0	0	
+							RotationMatrix
+								-2.220446049250313e-16	2.220446049250313e-15	-1	
+								1	-1.332267629550188e-15	0	
+								-1.110223024625157e-15	-1	-2.442490654175344e-15	
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								Schmidt_Coupling_Ass_1#Revolute001
+							Position3D
+								23.00000000000017	-22.49996300000006	-38.97110000000004	
+							RotationMatrix
+								-4.440892098500626e-16	-1.887379141862766e-15	1	
+								1	1.332267629550188e-15	3.33066907387547e-16	
+								-1.443289932012704e-15	1	1.77635683940025e-15	
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								Schmidt_Coupling_Ass_1#Revolute002
+							Position3D
+								22.99999999999997	-22.50000000000006	38.97110000000006	
+							RotationMatrix
+								-4.440892098500626e-16	-1.887379141862766e-15	1	
+								1	1.332267629550188e-15	3.33066907387547e-16	
+								-1.443289932012704e-15	1	1.77635683940025e-15	
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								Schmidt_Coupling_Ass_1#Revolute004
+							Position3D
+								23.00000000000007	45.00000000000004	-7.105427357601002e-14	
+							RotationMatrix
+								-4.440892098500626e-16	-1.887379141862766e-15	1	
+								1	1.332267629550188e-15	3.33066907387547e-16	
+								-1.443289932012704e-15	1	1.77635683940025e-15	
+			RefCurves
+			RefSurfaces
+		Part
+			Name
+				Schmidt_Coupling_Ass_1#Part003001
+			Position3D
+				46.62174040346753	77.34749481540763	41.35416709211887	
+			RotationMatrix
+				0.9943283402188492	0.03397576212940087	0.1007809477299898	
+				0.03406570902741844	0.7959308684020571	-0.6044283085637259	
+				-0.1007505796811504	0.6044333712763332	0.7902592108804797	
+			Velocity3D
+				0	0	0	
+			Omega3D
+				0	0	0	
+			FeatureOrder
+			PrincipalMassMarker
+				Name
+					MassMarker
+				Position3D
+					0	0	0	
+				RotationMatrix
+					1	0	0	
+					0	1	0	
+					0	0	1	
+				Mass
+					1
+				MomentOfInertias
+					1	1	1	
+				Density
+					1
+			RefPoints
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								Schmidt_Coupling_Ass_1#Revolute001
+							Position3D
+								38.99999999999995	-22.49999727520635	83.971104005071	
+							RotationMatrix
+								-1.110223024625157e-15	-1.387778780781446e-16	1	
+								0.3671876126425377	0.9301469008290431	4.718447854656915e-16	
+								-0.9301469008290433	0.3671876126425377	-8.881784197001252e-16	
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								Schmidt_Coupling_Ass_1#Revolute003
+							Position3D
+								48.99999999999995	10.57189999999991	61.47110000000006	
+							RotationMatrix
+								-1.110223024625157e-15	-1.387778780781446e-16	1	
+								0.3671876126425377	0.9301469008290431	4.718447854656915e-16	
+								-0.9301469008290433	0.3671876126425377	-8.881784197001252e-16	
+			RefCurves
+			RefSurfaces
+		Part
+			Name
+				Schmidt_Coupling_Ass_1#Part003003
+			Position3D
+				52.58497277123676	4.347277143978278	75.5234433020304	
+			RotationMatrix
+				0.9943287807428828	-0.03397746458120512	-0.1007760273428413	
+				0.03406107700586479	-0.7959325962171615	0.6044262943587164	
+				-0.1007477980879617	-0.6044310003463109	-0.790261378912563	
+			Velocity3D
+				0	0	0	
+			Omega3D
+				0	0	0	
+			FeatureOrder
+			PrincipalMassMarker
+				Name
+					MassMarker
+				Position3D
+					0	0	0	
+				RotationMatrix
+					1	0	0	
+					0	1	0	
+					0	0	1	
+				Mass
+					1
+				MomentOfInertias
+					1	1	1	
+				Density
+					1
+			RefPoints
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								Schmidt_Coupling_Ass_1#Revolute002
+							Position3D
+								38.99999999999993	10.57189999999991	61.47110000000009	
+							RotationMatrix
+								-8.881784197001252e-16	-1.942890293094024e-16	1	
+								0.3671876126425376	0.9301469008290431	4.163336342344337e-16	
+								-0.9301469008290432	0.3671876126425376	-6.661338147750939e-16	
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								Schmidt_Coupling_Ass_1#Cylindrical
+							Position3D
+								48.99999999999994	-22.49999727520633	83.97110400507103	
+							RotationMatrix
+								-8.881784197001252e-16	-1.942890293094024e-16	1	
+								0.3671876126425376	0.9301469008290431	4.163336342344337e-16	
+								-0.9301469008290432	0.3671876126425376	-6.661338147750939e-16	
+			RefCurves
+			RefSurfaces
+		Part
+			Name
+				Schmidt_Coupling_Ass_1#Body007
+			Position3D
+				74.87051201362823	83.04934958586583	64.00964025174645	
+			RotationMatrix
+				0.9943287807428829	0.0924013150919382	-0.05265237654325035	
+				0.03406107700586512	-0.7456980277809244	-0.665412875136062	
+				-0.1007477980879602	0.6598457761726753	-0.7446162990745688	
+			Velocity3D
+				0	0	0	
+			Omega3D
+				0	0	0	
+			FeatureOrder
+			PrincipalMassMarker
+				Name
+					MassMarker
+				Position3D
+					0	0	0	
+				RotationMatrix
+					1	0	0	
+					0	1	0	
+					0	0	1	
+				Mass
+					1
+				MomentOfInertias
+					1	1	1	
+				Density
+					1
+			RefPoints
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								Schmidt_Coupling_Ass_1#Revolute003
+							Position3D
+								23.00000000000004	44.99999999999999	0	
+							RotationMatrix
+								6.661338147750939e-16	-1.165734175856414e-15	1	
+								1	7.771561172376096e-16	-6.661338147750939e-16	
+								-7.216449660063518e-16	1	1.221245327087672e-15	
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								Schmidt_Coupling_Ass_1#Cylindrical
+							Position3D
+								22.9999999999999	-22.50000000000002	38.97110000000005	
+							RotationMatrix
+								6.661338147750939e-16	-1.165734175856414e-15	1	
+								1	7.771561172376096e-16	-6.661338147750939e-16	
+								-7.216449660063518e-16	1	1.221245327087672e-15	
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								Schmidt_Coupling_Ass_1#Revolute005
+							Position3D
+								-13.00000000000004	45.00000000000004	-4.263256414560601e-14	
+							RotationMatrix
+								-4.440892098500626e-16	2.442490654175344e-15	-1	
+								1	-1.77635683940025e-15	-1.110223024625157e-16	
+								-1.387778780781446e-15	-1	-2.664535259100376e-15	
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								Schmidt_Coupling_Ass_1#Revolute006
+							Position3D
+								-13.00000000000012	-22.50000000000002	38.97110000000008	
+							RotationMatrix
+								-4.440892098500626e-16	2.442490654175344e-15	-1	
+								1	-1.77635683940025e-15	-1.110223024625157e-16	
+								-1.387778780781446e-15	-1	-2.664535259100376e-15	
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								Schmidt_Coupling_Ass_1#Revolute007
+							Position3D
+								-12.99999999999994	-22.49996300000005	-38.97109999999998	
+							RotationMatrix
+								-4.440892098500626e-16	2.442490654175344e-15	-1	
+								1	-1.77635683940025e-15	-1.110223024625157e-16	
+								-1.387778780781446e-15	-1	-2.664535259100376e-15	
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								Schmidt_Coupling_Ass_1#Cylindrical003
+							Position3D
+								23.00000000000004	-22.49996300000014	-38.97109999999998	
+							RotationMatrix
+								6.661338147750939e-16	-1.165734175856414e-15	1	
+								1	7.771561172376096e-16	-6.661338147750939e-16	
+								-7.216449660063518e-16	1	1.221245327087672e-15	
+			RefCurves
+			RefSurfaces
+		Part
+			Name
+				Schmidt_Coupling_Ass_1#Part003002
+			Position3D
+				56.68882992104041	56.21111425480863	133.5606563898416	
+			RotationMatrix
+				0.9943287807428828	-0.03397723494893859	-0.1007761047649526	
+				0.03406107700586511	-0.7959339734843718	0.6044244807141581	
+				-0.1007477980879612	-0.6044291996244091	-0.7902627561905113	
+			Velocity3D
+				0	0	0	
+			Omega3D
+				0	0	0	
+			FeatureOrder
+			PrincipalMassMarker
+				Name
+					MassMarker
+				Position3D
+					0	0	0	
+				RotationMatrix
+					1	0	0	
+					0	1	0	
+					0	0	1	
+				Mass
+					1
+				MomentOfInertias
+					1	1	1	
+				Density
+					1
+			RefPoints
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								Schmidt_Coupling_Ass_1#Revolute004
+							Position3D
+								38.99999999999993	10.57189999999991	61.4711000000001	
+							RotationMatrix
+								-6.661338147750939e-16	-3.608224830031759e-16	1	
+								0.3671876126425382	0.9301469008290428	5.273559366969494e-16	
+								-0.9301469008290429	0.3671876126425382	-4.440892098500626e-16	
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								Schmidt_Coupling_Ass_1#Cylindrical003
+							Position3D
+								48.99999999999997	-22.49999727520638	83.97110400507101	
+							RotationMatrix
+								-6.661338147750939e-16	-3.608224830031759e-16	1	
+								0.3671876126425382	0.9301469008290428	5.273559366969494e-16	
+								-0.9301469008290429	0.3671876126425382	-4.440892098500626e-16	
+			RefCurves
+			RefSurfaces
+		Part
+			Name
+				Schmidt_Coupling_Ass_1#Link001001
+			Position3D
+				50.0957778795001	11.40107026424094	72.20156446607058	
+			RotationMatrix
+				0.9969401404989886	1.134666153271291e-06	0.0781687678076695	
+				-0.07816612613171937	0.008235669365340925	0.9969063298403041	
+				-0.000642640970489633	-0.9999660862993393	0.008210558066643836	
+			Velocity3D
+				0	0	0	
+			Omega3D
+				0	0	0	
+			FeatureOrder
+			PrincipalMassMarker
+				Name
+					MassMarker
+				Position3D
+					0	0	0	
+				RotationMatrix
+					1	0	0	
+					0	1	0	
+					0	0	1	
+				Mass
+					1
+				MomentOfInertias
+					1	1	1	
+				Density
+					1
+			RefPoints
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								Schmidt_Coupling_Ass_1#Revolute005
+							Position3D
+								12.99999999999998	-22.50000000000009	38.97110000000009	
+							RotationMatrix
+								0	-3.885780586188048e-16	1	
+								1	3.33066907387547e-16	0	
+								-3.885780586188048e-16	1	3.33066907387547e-16	
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								Schmidt_Coupling_Ass_1#Revolute008
+							Position3D
+								22.99999999999996	10.57189999999997	61.47110000000009	
+							RotationMatrix
+								0	-3.885780586188048e-16	1	
+								1	3.33066907387547e-16	0	
+								-3.885780586188048e-16	1	3.33066907387547e-16	
+			RefCurves
+			RefSurfaces
+		Part
+			Name
+				Schmidt_Coupling_Ass_1#Link002
+			Position3D
+				42.56981505443607	35.91554563986046	-2.052726213616013	
+			RotationMatrix
+				0.9947053269753952	-0.102768246489726	4.462733241700212e-07	
+				0.006607193713093082	0.06395609886505726	0.99793084049407	
+				-0.1025556311374948	-0.9926471200438706	0.06429648194574999	
+			Velocity3D
+				0	0	0	
+			Omega3D
+				0	0	0	
+			FeatureOrder
+			PrincipalMassMarker
+				Name
+					MassMarker
+				Position3D
+					0	0	0	
+				RotationMatrix
+					1	0	0	
+					0	1	0	
+					0	0	1	
+				Mass
+					1
+				MomentOfInertias
+					1	1	1	
+				Density
+					1
+			RefPoints
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								Schmidt_Coupling_Ass_1#Revolute006
+							Position3D
+								12.99999999999995	-22.50000000000006	38.97110000000007	
+							RotationMatrix
+								-6.661338147750939e-16	-3.885780586188048e-16	1	
+								1	3.33066907387547e-16	3.885780586188048e-16	
+								-6.106226635438361e-16	1	1.110223024625157e-16	
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								Schmidt_Coupling_Ass_1#Cylindrical001
+							Position3D
+								22.99999999999994	10.57189999999999	61.47110000000013	
+							RotationMatrix
+								-6.661338147750939e-16	-3.885780586188048e-16	1	
+								1	3.33066907387547e-16	3.885780586188048e-16	
+								-6.106226635438361e-16	1	1.110223024625157e-16	
+			RefCurves
+			RefSurfaces
+		Part
+			Name
+				Schmidt_Coupling_Ass_1#Body006
+			Position3D
+				68.61871282952441	86.13915520352278	58.39130451283367	
+			RotationMatrix
+				0.9712939589482906	0.2351083921930618	-0.03622277227035055	
+				0.0398381247078753	-0.01064431119428066	0.9991494495114127	
+				0.2345228541748459	-0.9719108717159165	-0.01970503260822576	
+			Velocity3D
+				0	0	0	
+			Omega3D
+				0	0	0	
+			FeatureOrder
+			PrincipalMassMarker
+				Name
+					MassMarker
+				Position3D
+					0	0	0	
+				RotationMatrix
+					1	0	0	
+					0	1	0	
+					0	0	1	
+				Mass
+					1
+				MomentOfInertias
+					1	1	1	
+				Density
+					1
+			RefPoints
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								Schmidt_Coupling_Ass_1#Revolute007
+							Position3D
+								0	-22.49999999999998	38.97110000000002	
+							RotationMatrix
+								-2.220446049250313e-16	-3.885780586188048e-16	1	
+								1	5.551115123125783e-16	1.665334536937735e-16	
+								-6.106226635438361e-16	1	3.33066907387547e-16	
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								Schmidt_Coupling_Ass_1#Cylindrical002
+							Position3D
+								-2.842170943040401e-14	10.57190000000001	61.47109999999998	
+							RotationMatrix
+								-2.220446049250313e-16	-3.885780586188048e-16	1	
+								1	5.551115123125783e-16	1.665334536937735e-16	
+								-6.106226635438361e-16	1	3.33066907387547e-16	
+			RefCurves
+			RefSurfaces
+		Part
+			Name
+				Schmidt_Coupling_Ass_1#Body005
+			Position3D
+				54.830583722813	105.6238288590844	33.41114545119819	
+			RotationMatrix
+				0.9999999999992258	1.027365377989466e-06	7.020016473084388e-07	
+				-5.20031491232867e-07	-0.1674726408161493	0.9858767238239247	
+				1.130421682754414e-06	-0.9858767238235265	-0.1674726408154854	
+			Velocity3D
+				0	0	0	
+			Omega3D
+				0	0	0	
+			FeatureOrder
+			PrincipalMassMarker
+				Name
+					MassMarker
+				Position3D
+					0	0	0	
+				RotationMatrix
+					1	0	0	
+					0	1	0	
+					0	0	1	
+				Mass
+					1
+				MomentOfInertias
+					1	1	1	
+				Density
+					1
+			RefPoints
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								Schmidt_Coupling_Ass_1#Revolute008
+							Position3D
+								23.00000000000011	-22.49996300000007	-38.9711000000001	
+							RotationMatrix
+								2.220446049250313e-16	-1.998401444325282e-15	1	
+								1	1.332267629550188e-15	-2.220446049250313e-16	
+								-1.332267629550188e-15	1	1.998401444325282e-15	
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								Schmidt_Coupling_Ass_1#Cylindrical001
+							Position3D
+								23.00000000000003	45.00000000000009	-8.526512829121202e-14	
+							RotationMatrix
+								2.220446049250313e-16	-1.998401444325282e-15	1	
+								1	1.332267629550188e-15	-2.220446049250313e-16	
+								-1.332267629550188e-15	1	1.998401444325282e-15	
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								Schmidt_Coupling_Ass_1#Cylindrical002
+							Position3D
+								23	-22.50000000000008	38.97110000000005	
+							RotationMatrix
+								2.220446049250313e-16	-1.998401444325282e-15	1	
+								1	1.332267629550188e-15	-2.220446049250313e-16	
+								-1.332267629550188e-15	1	1.998401444325282e-15	
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								Schmidt_Coupling_Ass_1#Cylindrical004
+							Position3D
+								-50.00000000000005	6.394884621840902e-14	-4.263256414560601e-14	
+							RotationMatrix
+								-1.110223024625157e-15	-6.661338147750939e-16	-1	
+								-1	1.110223024625157e-16	8.326672684688674e-16	
+								3.885780586188048e-16	1	-8.881784197001252e-16	
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								Schmidt_Coupling_Ass_1#Fixed
+							Position3D
+								-50.00000000000005	6.394884621840902e-14	-4.263256414560601e-14	
+							RotationMatrix
+								-1.110223024625157e-15	-6.661338147750939e-16	-1	
+								-1	1.110223024625157e-16	8.326672684688674e-16	
+								3.885780586188048e-16	1	-8.881784197001252e-16	
+			RefCurves
+			RefSurfaces
+		Part
+			Name
+				Schmidt_Coupling_Ass_1#Link
+			Position3D
+				14.83058372284397	105.6238496603441	33.41110023433081	
+			RotationMatrix
+				1.027365378769574e-06	0.999999999999226	-7.020016463132883e-07	
+				-0.16747264081615	-5.2003149031421e-07	-0.9858767238239244	
+				-0.9858767238235264	1.130421683592786e-06	0.167472640815486	
+			Velocity3D
+				0	0	0	
+			Omega3D
+				0	0	0	
+			FeatureOrder
+			PrincipalMassMarker
+				Name
+					MassMarker
+				Position3D
+					0	0	0	
+				RotationMatrix
+					1	0	0	
+					0	1	0	
+					0	0	1	
+				Mass
+					1
+				MomentOfInertias
+					1	1	1	
+				Density
+					1
+			RefPoints
+				RefPoint
+					Position3D
+						0	0	0	
+					RotationMatrix
+						1	0	0	
+						0	1	0	
+						0	0	1	
+					Markers
+						Marker
+							Name
+								Schmidt_Coupling_Ass_1#Fixed
+							Position3D
+								-7.105427357601002e-15	-10	-1.4210854715202e-14	
+							RotationMatrix
+								1	1.96261557335469e-17	-4.906538933386795e-16	
+								-4.906538933386795e-16	-6.661338147750939e-16	-1	
+								-1.96261557335473e-17	1	-6.661338147750939e-16	
+			RefCurves
+			RefSurfaces
+	KinematicIJs
+	ConstraintSets
+		Joints
+			FixedJoint
+				Name
+					Schmidt_Coupling_Ass_1#GroundedJoint
+				MarkerI
+					/OndselAssembly/marker-Schmidt_Coupling_Ass_1#Body
+				MarkerJ
+					/OndselAssembly/Schmidt_Coupling_Ass_1#Body/FixingMarker
+			FixedJoint
+				Name
+					Schmidt_Coupling_Ass_1#GroundedJoint001
+				MarkerI
+					/OndselAssembly/marker-Schmidt_Coupling_Ass_1#Body008
+				MarkerJ
+					/OndselAssembly/Schmidt_Coupling_Ass_1#Body008/FixingMarker
+			RevoluteJoint
+				Name
+					
+				MarkerI
+					/OndselAssembly/Schmidt_Coupling_Ass_1#Part003004/Schmidt_Coupling_Ass_1#Revolute
+				MarkerJ
+					/OndselAssembly/Schmidt_Coupling_Ass_1#Body/Schmidt_Coupling_Ass_1#Revolute
+			RevoluteJoint
+				Name
+					
+				MarkerI
+					/OndselAssembly/Schmidt_Coupling_Ass_1#Part003001/Schmidt_Coupling_Ass_1#Revolute001
+				MarkerJ
+					/OndselAssembly/Schmidt_Coupling_Ass_1#Part003004/Schmidt_Coupling_Ass_1#Revolute001
+			RevoluteJoint
+				Name
+					
+				MarkerI
+					/OndselAssembly/Schmidt_Coupling_Ass_1#Part003003/Schmidt_Coupling_Ass_1#Revolute002
+				MarkerJ
+					/OndselAssembly/Schmidt_Coupling_Ass_1#Part003004/Schmidt_Coupling_Ass_1#Revolute002
+			RevoluteJoint
+				Name
+					
+				MarkerI
+					/OndselAssembly/Schmidt_Coupling_Ass_1#Body007/Schmidt_Coupling_Ass_1#Revolute003
+				MarkerJ
+					/OndselAssembly/Schmidt_Coupling_Ass_1#Part003001/Schmidt_Coupling_Ass_1#Revolute003
+			CylindricalJoint
+				Name
+					
+				MarkerI
+					/OndselAssembly/Schmidt_Coupling_Ass_1#Body007/Schmidt_Coupling_Ass_1#Cylindrical
+				MarkerJ
+					/OndselAssembly/Schmidt_Coupling_Ass_1#Part003003/Schmidt_Coupling_Ass_1#Cylindrical
+			RevoluteJoint
+				Name
+					
+				MarkerI
+					/OndselAssembly/Schmidt_Coupling_Ass_1#Part003004/Schmidt_Coupling_Ass_1#Revolute004
+				MarkerJ
+					/OndselAssembly/Schmidt_Coupling_Ass_1#Part003002/Schmidt_Coupling_Ass_1#Revolute004
+			RevoluteJoint
+				Name
+					
+				MarkerI
+					/OndselAssembly/Schmidt_Coupling_Ass_1#Link001001/Schmidt_Coupling_Ass_1#Revolute005
+				MarkerJ
+					/OndselAssembly/Schmidt_Coupling_Ass_1#Body007/Schmidt_Coupling_Ass_1#Revolute005
+			RevoluteJoint
+				Name
+					
+				MarkerI
+					/OndselAssembly/Schmidt_Coupling_Ass_1#Body007/Schmidt_Coupling_Ass_1#Revolute006
+				MarkerJ
+					/OndselAssembly/Schmidt_Coupling_Ass_1#Link002/Schmidt_Coupling_Ass_1#Revolute006
+			RevoluteJoint
+				Name
+					
+				MarkerI
+					/OndselAssembly/Schmidt_Coupling_Ass_1#Body007/Schmidt_Coupling_Ass_1#Revolute007
+				MarkerJ
+					/OndselAssembly/Schmidt_Coupling_Ass_1#Body006/Schmidt_Coupling_Ass_1#Revolute007
+			RevoluteJoint
+				Name
+					
+				MarkerI
+					/OndselAssembly/Schmidt_Coupling_Ass_1#Body005/Schmidt_Coupling_Ass_1#Revolute008
+				MarkerJ
+					/OndselAssembly/Schmidt_Coupling_Ass_1#Link001001/Schmidt_Coupling_Ass_1#Revolute008
+			CylindricalJoint
+				Name
+					
+				MarkerI
+					/OndselAssembly/Schmidt_Coupling_Ass_1#Body005/Schmidt_Coupling_Ass_1#Cylindrical001
+				MarkerJ
+					/OndselAssembly/Schmidt_Coupling_Ass_1#Link002/Schmidt_Coupling_Ass_1#Cylindrical001
+			CylindricalJoint
+				Name
+					
+				MarkerI
+					/OndselAssembly/Schmidt_Coupling_Ass_1#Body006/Schmidt_Coupling_Ass_1#Cylindrical002
+				MarkerJ
+					/OndselAssembly/Schmidt_Coupling_Ass_1#Body005/Schmidt_Coupling_Ass_1#Cylindrical002
+			CylindricalJoint
+				Name
+					
+				MarkerI
+					/OndselAssembly/Schmidt_Coupling_Ass_1#Part003002/Schmidt_Coupling_Ass_1#Cylindrical003
+				MarkerJ
+					/OndselAssembly/Schmidt_Coupling_Ass_1#Body007/Schmidt_Coupling_Ass_1#Cylindrical003
+			CylindricalJoint
+				Name
+					
+				MarkerI
+					/OndselAssembly/Schmidt_Coupling_Ass_1#Body005/Schmidt_Coupling_Ass_1#Cylindrical004
+				MarkerJ
+					/OndselAssembly/Schmidt_Coupling_Ass_1#Body008/Schmidt_Coupling_Ass_1#Cylindrical004
+			FixedJoint
+				Name
+					
+				MarkerI
+					/OndselAssembly/Schmidt_Coupling_Ass_1#Body005/Schmidt_Coupling_Ass_1#Fixed
+				MarkerJ
+					/OndselAssembly/Schmidt_Coupling_Ass_1#Link/Schmidt_Coupling_Ass_1#Fixed
+		Motions
+		GeneralConstraintSets
+	ForceTorques
+	ConstantGravity
+		0	0	0	
+	SimulationParameters
+		tstart
+			0
+		tend
+			1
+		hmin
+			1e-09
+		hmax
+			1000000000
+		hout
+			0.1
+		errorTol
+			1e-06
+	AnimationParameters
+		nframe
+			1000000
+		icurrent
+			1
+		istart
+			1
+		iend
+			1000000
+		isForward
+			true
+		framesPerSecond
+			30

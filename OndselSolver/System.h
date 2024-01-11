@@ -43,6 +43,8 @@ namespace MbD {
 		void initializeLocally() override;
 		void initializeGlobally() override;
 		void clear();
+		void runPreDrag(std::shared_ptr<System> self);
+		void runDragStep(std::shared_ptr<std::vector<std::shared_ptr<Part>>> dragParts);
 		void runKINEMATIC(std::shared_ptr<System> self);
 		std::shared_ptr<std::vector<std::string>> discontinuitiesAtIC();
 		void jointsMotionsDo(const std::function <void(std::shared_ptr<Joint>)>& f);
