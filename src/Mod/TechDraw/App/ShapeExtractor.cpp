@@ -55,7 +55,7 @@ using DU = DrawUtil;
 using SU = ShapeUtils;
 
 
-//! pick out the 2d document objects objects in the list of links and return a vector of their shapes
+//! pick out the 2d document objects in the list of links and return a vector of their shapes
 //! Note that point objects will not make it through the hlr/projection process.
 std::vector<TopoDS_Shape> ShapeExtractor::getShapes2d(const std::vector<App::DocumentObject*> links)
 {
@@ -64,28 +64,13 @@ std::vector<TopoDS_Shape> ShapeExtractor::getShapes2d(const std::vector<App::Doc
     std::vector<TopoDS_Shape> shapes2d;
 
     for (auto& l:links) {
-        const App::GroupExtension* gex = dynamic_cast<const App::GroupExtension*>(l);
-        if (gex) {
-            std::vector<App::DocumentObject*> groupAll = gex->Group.getValues();
-            for (auto& item : groupAll) {
-                if (is2dObject(item)) {
-                    if (item->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-                        TopoDS_Shape temp = getLocatedShape(item);
-                        if (!temp.IsNull()) {
-                            shapes2d.push_back(temp);
-                        }
-                    }
+        if (is2dObject(l)) {
+            if (l->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
+                TopoDS_Shape temp = getLocatedShape(l);
+                if (!temp.IsNull()) {
+                    shapes2d.push_back(temp);
                 }
-            }
-        } else {
-            if (is2dObject(l)) {
-                if (l->getTypeId().isDerivedFrom(Part::Feature::getClassTypeId())) {
-                    TopoDS_Shape temp = getLocatedShape(l);
-                    if (!temp.IsNull()) {
-                        shapes2d.push_back(temp);
-                    }
-                }  // other 2d objects would go here - Draft objects? Arch Axis?
-            }
+            }  // other 2d objects would go here - Draft objects? Arch Axis?
         }
     }
     return shapes2d;
@@ -95,11 +80,12 @@ std::vector<TopoDS_Shape> ShapeExtractor::getShapes2d(const std::vector<App::Doc
 //! fused, include2d should be false as 2d & 3d shapes may not fuse.
 TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> links, bool include2d)
 {
-//    Base::Console().Message("SE::getShapes() - links in: %d\n", links.size());
+    // Base::Console().Message("SE::getShapes() - links in: %d\n", links.size());
     std::vector<TopoDS_Shape> sourceShapes;
 
     for (auto& l:links) {
         if (is2dObject(l) && !include2d) {
+            // Base::Console().Message("SE::getShapes - skipping 2d link: %s\n", l->Label.getValue());
             continue;
         }
         if (l->isDerivedFrom<App::Link>()) {
@@ -111,6 +97,7 @@ TopoDS_Shape ShapeExtractor::getShapes(const std::vector<App::DocumentObject*> l
             }
         } else {
             auto shape = Part::Feature::getShape(l);
+            // if link l has a shape, we use that shape.
             if(!SU::isShapeReallyNull((shape))) {
                 sourceShapes.push_back(getLocatedShape(l));
             } else {
@@ -327,10 +314,13 @@ TopoDS_Shape ShapeExtractor::getShapesFused(const std::vector<App::DocumentObjec
         }
         baseShape = fusedShape;
     }
+    BRepTools::Write(baseShape, "SEbaseShape.brep");
 
     // if there are 2d shapes in the links they will not fuse with the 3d shapes,
     // so instead we return a compound of the fused 3d shapes and the 2d shapes
     std::vector<TopoDS_Shape> shapes2d = getShapes2d(links);
+    BRepTools::Write(DrawUtil::shapeVectorToCompound(shapes2d, false), "SEshapes2d.brep");
+
     if (!shapes2d.empty()) {
         shapes2d.push_back(baseShape);
         return DrawUtil::shapeVectorToCompound(shapes2d, false);
