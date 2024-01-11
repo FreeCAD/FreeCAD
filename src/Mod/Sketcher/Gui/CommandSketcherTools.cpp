@@ -45,6 +45,7 @@
 #include <Gui/Notifications.h>
 #include <Gui/Selection.h>
 #include <Gui/SelectionObject.h>
+#include <Mod/Sketcher/App/PythonConverter.h>
 #include <Mod/Sketcher/App/SketchObject.h>
 #include <Mod/Sketcher/App/SolverGeometryExtension.h>
 
@@ -145,55 +146,24 @@ Sketcher::SketchObject* getSketchObject()
 
 // Copy
 
-bool copySelectionToClipboard() {
-
-    std::vector<Gui::SelectionObject> selection = Gui::Command::getSelection().getSelectionEx();
-    Sketcher::SketchObject* obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
-    // only one sketch with its subelements are allowed to be selected
-    if (selection.size() != 1) { return false; }
-    std::vector<std::string> SubNames = selection[0].getSubNames();
-    if (SubNames.empty()) { return false; }
-
-    //First we need listOfGeoId and sort them.
-    std::vector<int> listOfGeoId;
-    for (std::vector<std::string>::const_iterator it = SubNames.begin(); it != SubNames.end(); ++it) {
-        int GeoId = -1;
-        // only handle non-external edges
-        if (it->size() > 4 && it->substr(0, 4) == "Edge") {
-            GeoId = std::atoi(it->substr(4, 4000).c_str()) - 1;
-            if (GeoId >= 0) {
-                listOfGeoId.push_back(GeoId);
-            }
-        }
-        else if (it->size() > 6 && it->substr(0, 6) == "Vertex") {
-            // only if it is a GeomPoint
-            int VtId = std::atoi(it->substr(6, 4000).c_str()) - 1;
-            Sketcher::PointPos PosId;
-            obj->getGeoVertexIndex(VtId, GeoId, PosId);
-            if (obj->getGeometry(GeoId)->getTypeId() == Part::GeomPoint::getClassTypeId()) {
-                if (GeoId >= 0) {
-                    listOfGeoId.push_back(GeoId);
-                }
-            }
-        }
-    }
+bool copySelectionToClipboard(Sketcher::SketchObject* obj) {
+    std::vector<int> listOfGeoId = getListOfSelectedGeoIds(true);
     if (listOfGeoId.empty()) { return false; }
     sort(listOfGeoId.begin(), listOfGeoId.end());
 
-    Base::StringWriter writer;
-
-    //Export selected geometries as a formated string.
-    std::vector< Part::Geometry* > newVals;
+    //Export selected geometries as a formatted string.
+    std::vector<Part::Geometry*> shapeGeometry;
     for (auto geoId : listOfGeoId) {
         Part::Geometry* geoNew = obj->getGeometry(geoId)->copy();
-        newVals.push_back(geoNew);
+        shapeGeometry.push_back(geoNew);
     }
-    Part::PropertyGeometryList geoToCopy;
-    geoToCopy.setValues(std::move(newVals));
-    geoToCopy.Save(writer);
+    std::string geosAsStr = Sketcher::PythonConverter::convert(
+        "objectStr",
+        shapeGeometry,
+        Sketcher::PythonConverter::Mode::OmitInternalGeometry);
 
-    //add constraints to the stream string.
-    std::vector< Sketcher::Constraint* > newConstrVals;
+    // Export constraints of selected geos.
+    std::vector<Sketcher::Constraint*> shapeConstraints;
     for (auto constr : obj->Constraints.getValues()) {
 
         auto isSelectedGeoOrAxis = [](const std::vector<int>& vec, int value) {
@@ -220,13 +190,12 @@ bool copySelectionToClipboard() {
                 temp->Third = j;
             }
         }
-        newConstrVals.push_back(temp);
+        shapeConstraints.push_back(temp);
     }
-    Sketcher::PropertyConstraintList constToCopy;
-    constToCopy.setValues(std::move(newConstrVals));
-    constToCopy.Save(writer);
+    std::string cstrAsStr = Sketcher::PythonConverter::convert("objectStr", shapeConstraints, true);
 
-    std::string exportedData = writer.getString();
+    std::string exportedData = "# Copied from sketcher. From:\n#objectStr = " + Gui::Command::getObjectCmd(obj) + "\n"
+        + geosAsStr + "\n" + cstrAsStr;
 
     if (!exportedData.empty()) {
         QClipboard* clipboard = QGuiApplication::clipboard();
@@ -255,7 +224,7 @@ CmdSketcherCopyClipboard::CmdSketcherCopyClipboard()
 void CmdSketcherCopyClipboard::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    copySelectionToClipboard();
+    copySelectionToClipboard(getSketchObject());
 }
 
 bool CmdSketcherCopyClipboard::isActive()
@@ -286,7 +255,7 @@ CmdSketcherCut::CmdSketcherCut()
 void CmdSketcherCut::activated(int iMsg)
 {
     Q_UNUSED(iMsg);
-    if (copySelectionToClipboard()) {
+    if (copySelectionToClipboard(getSketchObject())) {
 
         Gui::Document* doc = getActiveGuiDocument();
         ReleaseHandler(doc);
@@ -329,63 +298,20 @@ void CmdSketcherPaste::activated(int iMsg)
     Gui::Document* doc = getActiveGuiDocument();
     ReleaseHandler(doc);
     auto* vp = static_cast<SketcherGui::ViewProviderSketch*>(doc->getInEdit());
-    Sketcher::SketchObject* Obj = vp->getSketchObject();
+    Sketcher::SketchObject* obj = vp->getSketchObject();
 
     std::string data = QGuiApplication::clipboard()->text().toStdString();
-    int importedFirstGeoId = Obj->getHighestCurveIndex() + 1;
-
-    std::string geoString;
-    if (data.find("</GeometryList>", 0) != std::string::npos) {
-        geoString = data.substr(0, data.find("</GeometryList>", 0) + 16);
+    if (data.find("# Copied from sketcher.", 0) == std::string::npos) {
+        return;
     }
-    else { return ; }
-
-    std::istringstream istream(geoString);
-    Base::XMLReader reader("importingGeo", istream);
-    Part::PropertyGeometryList geoToCopy;
-    geoToCopy.Restore(reader);
-
-    const std::vector<Part::Geometry*>& geos = geoToCopy.getValues();
-    if (geos.empty()) { return; }
+    data = "objectStr = " + Gui::Command::getObjectCmd(obj) +"\n" + data;
 
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Paste in Sketcher"));
 
-    for (auto geo : geos) {
-        Part::Geometry* geocopy = geo->copy();
-        Obj->addGeometry(geocopy);
-    }
+    Gui::Command::doCommand(Gui::Command::Doc, data.c_str());
 
-    if (data.find("<ConstraintList", 0) != std::string::npos) {
-        std::string constrString;
-        constrString = data.substr(data.find("<ConstraintList", 0), data.size() - data.find("<ConstraintList", 0));
-
-        std::istringstream istream2(constrString);
-        Base::XMLReader reader2("importingConstraints", istream2);
-        Sketcher::PropertyConstraintList constToCopy;
-        constToCopy.Restore(reader2);
-
-        auto isAxisOrRoot = [](int value) {
-            return value == GeoEnum::GeoUndef || value == GeoEnum::RtPnt || value == GeoEnum::VAxis || value == GeoEnum::HAxis;
-        };
-
-        for (auto constr : constToCopy.getValuesForce()) {
-            Sketcher::Constraint* constraintToAdd = constr->copy();
-            //update the geoIds of the constraints
-            if (!isAxisOrRoot(constraintToAdd->First)) {
-                constraintToAdd->First += importedFirstGeoId;
-            }
-            if (!isAxisOrRoot(constraintToAdd->Second)) {
-                constraintToAdd->Second += importedFirstGeoId;
-            }
-            if (!isAxisOrRoot(constraintToAdd->Third)) {
-                constraintToAdd->Third += importedFirstGeoId;
-            }
-            Obj->addConstraint(constraintToAdd);
-        }
-    }
-
-    Obj->solve(true);
-    vp->draw(false, false); // Redraw
+    obj->solve(true);
+    vp->draw(false, false);
 
     Gui::Command::commitCommand();
 }
