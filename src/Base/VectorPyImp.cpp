@@ -390,11 +390,25 @@ PyObject* VectorPy::isParallel(PyObject* args)
     VectorPy::PointerType v1_ptr = getVectorPtr();
     VectorPy::PointerType v2_ptr = vec->getVectorPtr();
     
-    double dot = abs((*v1_ptr)*(*v2_ptr));
-    double mag = v1_ptr->Length()*v2_ptr->Length();
-    
-    Py::Boolean parallel(abs(dot-mag) < tolerance);
+    Py::Boolean parallel((*v1_ptr).IsParallel(*v2_ptr, tolerance));
     return Py::new_reference_to(parallel);
+}
+
+PyObject* VectorPy::isNormal(PyObject* args)
+{
+    PyObject* obj = nullptr;
+    double tolerance = 0;
+    if (!PyArg_ParseTuple(args, "O!d", &(VectorPy::Type), &obj, &tolerance)) {
+        return nullptr;
+    }
+
+    VectorPy* vec = static_cast<VectorPy*>(obj);
+
+    VectorPy::PointerType v1_ptr = getVectorPtr();
+    VectorPy::PointerType v2_ptr = vec->getVectorPtr();
+    
+    Py::Boolean normal((*v1_ptr).IsNormal(*v2_ptr, tolerance));
+    return Py::new_reference_to(normal);
 }
 
 PyObject* VectorPy::scale(PyObject* args)
