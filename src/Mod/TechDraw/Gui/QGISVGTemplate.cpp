@@ -197,7 +197,7 @@ void QGISVGTemplate::createClickHandles()
         double charWidth = textHeight * 0.6;
         QString style = textElement.attribute(QString::fromUtf8("style"));
         if (!style.isEmpty()) {
-            QRegularExpression rxFontSize(QString::fromUtf8("font-size:([0-9]*\.?[0-9]*)px;"));
+            QRegularExpression rxFontSize(QString::fromUtf8("font-size:([0-9]*\\.?[0-9]*)px;"));
             QRegularExpression rxAnchor(QString::fromUtf8("text-anchor:(middle);"));
             QRegularExpressionMatch match;
 
