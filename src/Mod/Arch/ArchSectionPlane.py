@@ -971,7 +971,7 @@ class _ViewProviderSectionPlane:
             vobj.FontName = params.get_param("textfont")
         if not "FontSize" in pl:
             vobj.addProperty("App::PropertyLength","FontSize","SectionPlane",QT_TRANSLATE_NOOP("App::Property","The size of the text font"))
-            vobj.FontSize = params.get_param("textheight")
+            vobj.FontSize = params.get_param("textheight") * params.get_param("DefaultAnnoScaleMultiplier")
 
 
     def onDocumentRestored(self,vobj):

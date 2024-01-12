@@ -572,7 +572,7 @@ class ViewProviderBuildingPart:
             vobj.FontName = params.get_param("textfont")
         if not "FontSize" in pl:
             vobj.addProperty("App::PropertyLength","FontSize","BuildingPart",QT_TRANSLATE_NOOP("App::Property","The font size of texts"))
-            vobj.FontSize = params.get_param("textheight")
+            vobj.FontSize = params.get_param("textheight") * params.get_param("DefaultAnnoScaleMultiplier")
         if not "DiffuseColor" in pl:
             vobj.addProperty("App::PropertyColorList","DiffuseColor","BuildingPart",QT_TRANSLATE_NOOP("App::Property","The individual face colors"))
 
