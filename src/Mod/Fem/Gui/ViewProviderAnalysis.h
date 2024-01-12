@@ -41,6 +41,7 @@ public:
 
     void attach(ViewProviderFemAnalysis*);
     void highlightView(Gui::ViewProviderDocumentObject*);
+    void removeView(Gui::ViewProviderDocumentObject*);
 
 private:
     SoSeparator* annotate;
@@ -87,6 +88,8 @@ public:
     void show() override;
 
     void highlightView(Gui::ViewProviderDocumentObject*);
+
+    void removeView(Gui::ViewProviderDocumentObject*);
 
     /** @name Drag and drop */
     //@{
