@@ -184,6 +184,11 @@ bool ComplexGeoData::getCenterOfGravity(Base::Vector3d& unused) const
     return false;
 }
 
+const std::string &ComplexGeoData::elementMapPrefix() {
+    static std::string prefix(";");
+    return prefix;
+}
+
 size_t ComplexGeoData::getElementMapSize(bool flush) const
 {
     if (flush) {
@@ -619,6 +624,25 @@ unsigned int ComplexGeoData::getMemSize() const
         return _elementMap->size() * multiplier;
     }
     return 0;
+}
+
+
+void ComplexGeoData::setMappedChildElements(const std::vector<Data::ElementMap::MappedChildElements> & children)
+{
+    // DO NOT reset element map if there is one. Because we allow mixing child
+    // mapping and normal mapping
+    if (!_elementMap) {
+        resetElementMap(std::make_shared<Data::ElementMap>());
+    }
+    _elementMap->addChildElements(Tag, children);
+}
+
+std::vector<Data::ElementMap::MappedChildElements> ComplexGeoData::getMappedChildElements() const
+{
+    if (!_elementMap) {
+        return {};
+    }
+    return _elementMap->getChildElements();
 }
 
 void ComplexGeoData::beforeSave() const

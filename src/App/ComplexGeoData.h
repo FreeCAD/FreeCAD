@@ -176,6 +176,7 @@ public:
     virtual bool getCenterOfGravity(Base::Vector3d& center) const;
     //@}
 
+    static const std::string &elementMapPrefix();
 
     /** @name Element name mapping */
     //@{
@@ -246,6 +247,9 @@ public:
     }
 
     // NOTE: getElementHistory is now in ElementMap
+
+    void setMappedChildElements(const std::vector<Data::ElementMap::MappedChildElements> & children);
+    std::vector<Data::ElementMap::MappedChildElements> getMappedChildElements() const;
 
     char elementType(const Data::MappedName &) const;
     char elementType(const Data::IndexedName &) const;
