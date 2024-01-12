@@ -519,10 +519,10 @@ class _ViewProviderSpace(ArchComponent.ViewProviderComponent):
             vobj.TextColor = (0.0,0.0,0.0,1.0)
         if not "FontSize" in pl:
             vobj.addProperty("App::PropertyLength",        "FontSize",    "Space",QT_TRANSLATE_NOOP("App::Property","The size of the text font"))
-            vobj.FontSize = params.get_param("textheight")
+            vobj.FontSize = params.get_param("textheight") * params.get_param("DefaultAnnoScaleMultiplier")
         if not "FirstLine" in pl:
             vobj.addProperty("App::PropertyLength",        "FirstLine",   "Space",QT_TRANSLATE_NOOP("App::Property","The size of the first line of text"))
-            vobj.FirstLine = params.get_param("textheight")
+            vobj.FirstLine = params.get_param("textheight") * params.get_param("DefaultAnnoScaleMultiplier")
         if not "LineSpacing" in pl:
             vobj.addProperty("App::PropertyFloat",         "LineSpacing", "Space",QT_TRANSLATE_NOOP("App::Property","The space between the lines of text"))
             vobj.LineSpacing = 1.0

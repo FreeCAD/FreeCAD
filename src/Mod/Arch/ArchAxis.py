@@ -226,11 +226,11 @@ class _ViewProviderAxis:
 
     def setProperties(self,vobj):
 
-        ts = params.get_param("textheight")
+        ts = params.get_param("textheight") * params.get_param("DefaultAnnoScaleMultiplier")
         pl = vobj.PropertiesList
         if not "BubbleSize" in pl:
             vobj.addProperty("App::PropertyLength","BubbleSize","Axis", QT_TRANSLATE_NOOP("App::Property","The size of the axis bubbles"))
-            vobj.BubbleSize = ts*1.42
+            vobj.BubbleSize = ts * 1.42
         if not "NumberingStyle" in pl:
             vobj.addProperty("App::PropertyEnumeration","NumberingStyle","Axis", QT_TRANSLATE_NOOP("App::Property","The numbering style"))
             vobj.NumberingStyle = ["1,2,3","01,02,03","001,002,003","A,B,C","a,b,c","I,II,III","L0,L1,L2"]
