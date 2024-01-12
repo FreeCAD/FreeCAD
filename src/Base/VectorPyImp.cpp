@@ -389,7 +389,7 @@ PyObject* VectorPy::isParallel(PyObject* args)
 
     VectorPy::PointerType v1_ptr = getVectorPtr();
     VectorPy::PointerType v2_ptr = vec->getVectorPtr();
-    
+
     Py::Boolean parallel((*v1_ptr).IsParallel(*v2_ptr, tolerance));
     return Py::new_reference_to(parallel);
 }
@@ -406,7 +406,7 @@ PyObject* VectorPy::isNormal(PyObject* args)
 
     VectorPy::PointerType v1_ptr = getVectorPtr();
     VectorPy::PointerType v2_ptr = vec->getVectorPtr();
-    
+
     Py::Boolean normal((*v1_ptr).IsNormal(*v2_ptr, tolerance));
     return Py::new_reference_to(normal);
 }
