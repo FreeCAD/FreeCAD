@@ -252,7 +252,7 @@ class ObjectOp(PathOp.ObjectOp):
                         tool = op.Proxy.tool if hasattr(op.Proxy, "tool") else op.ToolController.Proxy.getTool(op.ToolController)
                         diameter = tool.Diameter.getValueAs("mm")
                         dz = 0 if not hasattr(tool, "TipAngle") else -PathUtils.drillTipLength(tool)  # for drills, dz translates to the full width part of the tool
-                        sectionClearedAreas.append(section.getClearedArea(op.Path, diameter, z+dz+0.001, bbox))
+                        sectionClearedAreas.append(section.getClearedArea(op.Path, diameter, z+dz+self.job.GeometryTolerance.getValueAs("mm"), bbox))
                 restSection = section.getRestArea(sectionClearedAreas, self.tool.Diameter.getValueAs("mm"))
                 if (restSection is not None):
                     restSections.append(restSection)
