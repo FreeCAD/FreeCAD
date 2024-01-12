@@ -236,11 +236,9 @@ void DrawViewDimension::onChanged(const App::Property* prop)
             MeasureType.touch();               //run MeasureType logic for this case
         }
         updateSavedGeometry();
-        return;
     }
-    else if (prop == &Type) {//why??
+    else if (prop == &Type) {
         FormatSpec.setValue(getDefaultFormatSpec().c_str());
-
         DimensionType type = static_cast<DimensionType>(Type.getValue());
         if (type == DimensionType::Angle || type == DimensionType::Angle3Pt) {
             OverTolerance.setUnit(Base::Unit::Angle);
@@ -250,7 +248,6 @@ void DrawViewDimension::onChanged(const App::Property* prop)
             OverTolerance.setUnit(Base::Unit::Length);
             UnderTolerance.setUnit(Base::Unit::Length);
         }
-        return;
     }
     else if (prop == &TheoreticalExact) {
         // if TheoreticalExact disable tolerances and set them to zero
@@ -273,7 +270,6 @@ void DrawViewDimension::onChanged(const App::Property* prop)
                 FormatSpecUnderTolerance.setReadOnly(false);
             }
         }
-        return;
     }
     else if (prop == &EqualTolerance) {
         // if EqualTolerance set negated overtolerance for untertolerance
@@ -297,7 +293,6 @@ void DrawViewDimension::onChanged(const App::Property* prop)
                 FormatSpecUnderTolerance.setReadOnly(false);
             }
         }
-        return;
     }
     else if (prop == &OverTolerance) {
         // if EqualTolerance set negated overtolerance for untertolerance
@@ -305,19 +300,16 @@ void DrawViewDimension::onChanged(const App::Property* prop)
             UnderTolerance.setValue(-1.0 * OverTolerance.getValue());
             UnderTolerance.setUnit(OverTolerance.getUnit());
         }
-        return;
     }
     else if (prop == &FormatSpecOverTolerance) {
         if (!ArbitraryTolerances.getValue()) {
             FormatSpecUnderTolerance.setValue(FormatSpecOverTolerance.getValue());
         }
-        return;
     }
     else if (prop == &FormatSpecUnderTolerance) {
         if (!ArbitraryTolerances.getValue()) {
             FormatSpecOverTolerance.setValue(FormatSpecUnderTolerance.getValue());
         }
-        return;
     }
 
     DrawView::onChanged(prop);
