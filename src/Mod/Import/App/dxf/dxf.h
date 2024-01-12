@@ -3,8 +3,8 @@
 // This program is released under the BSD license. See the file COPYING for details.
 // modified 2018 wandererfan
 
-#ifndef _dxf_h_
-#define _dxf_h_
+#ifndef Included_dxf_h_
+#define Included_dxf_h_
 
 #ifdef _MSC_VER
 #pragma warning(disable : 4251)
@@ -26,39 +26,93 @@
 #include <App/Color.h>
 #include <Mod/Import/ImportGlobal.h>
 
+// For some reason Cpplint complains about some of the categories used by Clang-tidy
+// However, cpplint also does not seem to use NOLINTE BEGIN and NOLINT END so we must use
+// NOLINT NEXT LINE on each occurrence. [spaces added to avoid being seen by lint]
+using ColorIndex_t = int;  // DXF color index
 
-typedef int ColorIndex_t;  // DXF color index
-
-typedef enum
+// The C++ version we use does not support designated initiailzers, so we have a class to set this
+// up
+class DxfUnits
 {
-    eUnspecified = 0,  // Unspecified (No units)
-    eInches,
-    eFeet,
-    eMiles,
-    eMillimeters,
-    eCentimeters,
-    eMeters,
-    eKilometers,
-    eMicroinches,
-    eMils,
-    eYards,
-    eAngstroms,
-    eNanometers,
-    eMicrons,
-    eDecimeters,
-    eDekameters,
-    eHectometers,
-    eGigameters,
-    eAstronomicalUnits,
-    eLightYears,
-    eParsecs
-} eDxfUnits_t;
+public:
+    using eDxfUnits_t = enum {
+        eUnspecified = 0,  // Unspecified (No units)
+        eInches,
+        eFeet,
+        eMiles,
+        eMillimeters,
+        eCentimeters,
+        eMeters,
+        eKilometers,
+        eMicroinches,
+        eMils,
+        eYards,
+        eAngstroms,
+        eNanometers,
+        eMicrons,
+        eDecimeters,
+        eDekameters,
+        eHectometers,
+        eGigameters,
+        eAstronomicalUnits,
+        eLightYears,
+        eParsecs,
+        kMaxUnit
+    };
 
+private:
+    // NOLINTNEXTLINE(readability/nolint)
+    // NOLINTNEXTLINE(cppcoreguidelines-pro-type-member-init)
+    DxfUnits()
+    {
+        // NOLINTBEGIN(cppcoreguidelines-avoid-magic-numbers, readability-magic-numbers)
+        m_factors[eInches] = 25.4;
+        m_factors[eFeet] = 25.4 * 12;
+        m_factors[eMiles] = 1609344.0;
+        m_factors[eMillimeters] = 1.0;
+        m_factors[eCentimeters] = 10.0;
+        m_factors[eMeters] = 1000.0;
+        m_factors[eKilometers] = 1000000.0;
+        m_factors[eMicroinches] = 25.4 / 1000.0;
+        m_factors[eMils] = 25.4 / 1000.0;
+        m_factors[eYards] = 3 * 12 * 25.4;
+        m_factors[eAngstroms] = 0.0000001;
+        m_factors[eNanometers] = 0.000001;
+        m_factors[eMicrons] = 0.001;
+        m_factors[eDecimeters] = 100.0;
+        m_factors[eDekameters] = 10000.0;
+        m_factors[eHectometers] = 100000.0;
+        m_factors[eGigameters] = 1000000000000.0;
+        m_factors[eAstronomicalUnits] = 149597870690000.0;
+        m_factors[eLightYears] = 9454254955500000000.0;
+        m_factors[eParsecs] = 30856774879000000000.0;
+        // NOLINTEND(cppcoreguidelines-avoid-magic-numbers, readability-magic-numbers)
+    }
+
+public:
+    static double Factor(eDxfUnits_t enumValue)
+    {
+        // NOLINTNEXTLINE(readability/nolint)
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-constant-array-index)
+        return Instance.m_factors[enumValue];
+    }
+    static bool IsValid(eDxfUnits_t enumValue)
+    {
+        return enumValue > eUnspecified && enumValue <= eParsecs;
+    }
+
+private:
+    static const DxfUnits Instance;
+    // NOLINTNEXTLINE(readability/nolint)
+    // NOLINTNEXTLINE(cppcoreguidelines-avoid-c-arrays, modernize-avoid-c-arrays)
+    double m_factors[kMaxUnit];
+};
 
 // spline data for reading
 struct SplineData
 {
-    double norm[3] = {0, 0, 0};
+    Base::Vector3d norm;
     int degree = 0;
     int knots = 0;
     int control_points = 0;
@@ -119,8 +173,45 @@ struct LWPolyDataOut
     std::vector<double> Bulge;
     point3D Extr;
 };
-typedef enum
-{
+using eDXFGroupCode_t = enum {
+    eObjectType = 0,
+    ePrimaryText = 1,
+    eName = 2,
+    eExtraText = 3,
+    eLinetypeName = 6,
+    eTextStyleName = 7,
+    eLayerName = 8,
+    eVariableName = 9,
+    ePrimaryPoint = 10,
+    ePoint2 = 11,
+    ePoint3 = 12,
+    ePoint4 = 13,
+    ePoint5 = 14,
+    eFloat1 = 40,
+    eFloat2 = 41,
+    eFloat3 = 42,
+    eFloat4 = 43,
+    eAngleDegrees1 = 50,
+    eAngleDegrees2 = 51,
+    eColor = 62,
+    eCoordinateSpace = 67,
+    eInteger1 = 70,
+    eInteger2 = 71,
+    eInteger3 = 72,
+    eInteger4 = 73,
+    eInteger5 = 74,
+    eUCSOrigin = 110,
+    eUCSXDirection = 111,
+    eUCSYDirection = 112,
+    eExtrusionDirection = 210,
+
+    // The following apply to points and directions in text DXF files to identify the three
+    // coordinates
+    eXOffset = 0,
+    eYOffset = 10,
+    eZOffset = 20
+};
+using eDXFVersion_t = enum {
     RUnknown,
     ROlder,
     R10,
@@ -134,7 +225,20 @@ typedef enum
     R2013,
     R2018,
     RNewer,
-} eDXFVersion_t;
+};
+using eDimensionType_t = enum {
+    eLinear = 0,  // Rotated, Horizontal, or Vertical
+    eAligned = 1,
+    eAngular = 2,
+    eDiameter = 3,
+    eRadius = 4,
+    eAngular3Point = 5,
+    eOrdinate = 6,
+    eTypeMask = 0xF,
+    eOnlyBlockReference = 32,
+    eOrdianetIsXType = 64,
+    eUserTextLocation = 128
+};
 //********************
 
 class ImportExport CDxfWrite
@@ -148,38 +252,45 @@ private:
     std::ostringstream* m_ssLayer;
 
 protected:
-    void putLine(const Base::Vector3d s,
-                 const Base::Vector3d e,
+    static Base::Vector3d toVector3d(const double* coordinatesXYZ)
+    {
+        // NOLINTNEXTLINE(readability/nolint)
+        // NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+        return Base::Vector3d(coordinatesXYZ[0], coordinatesXYZ[1], coordinatesXYZ[2]);
+    }
+
+    void putLine(const Base::Vector3d& start,
+                 const Base::Vector3d& end,
                  std::ostringstream* outStream,
-                 const std::string handle,
-                 const std::string ownerHandle);
+                 const std::string& handle,
+                 const std::string& ownerHandle);
     void putText(const char* text,
-                 const Base::Vector3d location1,
-                 const Base::Vector3d location2,
-                 const double height,
-                 const int horizJust,
+                 const Base::Vector3d& location1,
+                 const Base::Vector3d& location2,
+                 double height,
+                 int horizJust,
                  std::ostringstream* outStream,
-                 const std::string handle,
-                 const std::string ownerHandle);
-    void putArrow(Base::Vector3d arrowPos,
-                  Base::Vector3d barb1Pos,
-                  Base::Vector3d barb2Pos,
+                 const std::string& handle,
+                 const std::string& ownerHandle);
+    void putArrow(Base::Vector3d& arrowPos,
+                  Base::Vector3d& barb1Pos,
+                  Base::Vector3d& barb2Pos,
                   std::ostringstream* outStream,
-                  const std::string handle,
-                  const std::string ownerHandle);
+                  const std::string& handle,
+                  const std::string& ownerHandle);
 
     //! copy boiler plate file
     std::string getPlateFile(std::string fileSpec);
-    void setDataDir(std::string s)
+    void setDataDir(const std::string& dirName)
     {
-        m_dataDir = s;
+        m_dataDir = dirName;
     }
     std::string getHandle();
     std::string getEntityHandle();
     std::string getLayerHandle();
     std::string getBlockHandle();
     std::string getBlkRecordHandle();
-
+    // NOLINTBEGIN(cppcoreguidelines-non-private-member-variables-in-classes)
     std::string m_optionSource;
     int m_version;
     int m_handle;
@@ -199,15 +310,20 @@ protected:
     std::vector<std::string> m_layerList;
     std::vector<std::string> m_blockList;
     std::vector<std::string> m_blkRecordList;
+    // NOLINTEND(cppcoreguidelines-non-private-member-variables-in-classes)
 
 public:
     explicit CDxfWrite(const char* filepath);
+    CDxfWrite(const CDxfWrite&) = delete;
+    CDxfWrite(const CDxfWrite&&) = delete;
+    CDxfWrite& operator=(const CDxfWrite&) = delete;
+    CDxfWrite& operator=(const CDxfWrite&&) = delete;
     ~CDxfWrite();
 
     void init();
     void endRun();
 
-    bool Failed()
+    bool Failed() const
     {
         return m_fail;
     }
@@ -217,37 +333,39 @@ public:
     {
         return m_layerName;
     }
-    void setLayerName(std::string s);
-    void setVersion(int v)
+    void setLayerName(std::string name);
+    void setVersion(int version)
     {
-        m_version = v;
+        m_version = version;
     }
-    void setPolyOverride(bool b)
+    void setPolyOverride(bool setting)
     {
-        m_polyOverride = b;
+        m_polyOverride = setting;
     }
-    void addBlockName(std::string s, std::string blkRecordHandle);
+    void addBlockName(const std::string& name, const std::string& blkRecordHandle);
 
-    void writeLine(const double* s, const double* e);
+    void writeLine(const double* start, const double* end);
     void writePoint(const double*);
-    void writeArc(const double* s, const double* e, const double* c, bool dir);
-    void writeEllipse(const double* c,
+    void writeArc(const double* start, const double* end, const double* center, bool dir);
+    void writeEllipse(const double* center,
                       double major_radius,
                       double minor_radius,
                       double rotation,
                       double start_angle,
                       double end_angle,
                       bool endIsCW);
-    void writeCircle(const double* c, double radius);
+    void writeCircle(const double* center, double radius);
     void writeSpline(const SplineDataOut& sd);
     void writeLWPolyLine(const LWPolyDataOut& pd);
     void writePolyline(const LWPolyDataOut& pd);
+    // NOLINTNEXTLINE(readability/nolint)
+    // NOLINTNEXTLINE(readability-identifier-length)
     void writeVertex(double x, double y, double z);
     void writeText(const char* text,
                    const double* location1,
                    const double* location2,
-                   const double height,
-                   const int horizJust);
+                   double height,
+                   int horizJust);
     void writeLinearDim(const double* textMidPoint,
                         const double* lineDefPoint,
                         const double* extLine1,
@@ -312,36 +430,50 @@ class ImportExport CDxfRead
 {
 private:
     // Low-level reader members
-    std::ifstream* m_ifs;
-    int m_record_type = 0;
-    char m_record_data[1024] = "";
+    std::ifstream* m_ifs;  // TODO: gsl::owner<ifstream>
+    eDXFGroupCode_t m_record_type = eObjectType;
+    std::string m_record_data;
     bool m_not_eof = true;
     int m_line = 0;
     bool m_repeat_last_record = false;
 
-    // file-level options/properties
-    eDxfUnits_t m_eUnits = eMillimeters;
-    bool m_measurement_inch = false;
+    // The scaling from DXF units to millimetres.
+    // This does not include the dxfScaling option
+    // This has the value 0.0 if no units have been specified.
+    // If it is still 0 after reading the HEADER section, it iw set to comething sensible.
+    double m_unitScalingFactor = 0.0;
+
+protected:
+    // An additional scaling factor which can be modified before readDXF is called, and will be
+    // incorporated into m_unitScalingFactor.
+    void SetAdditionalScaling(double scaling)
+    {
+        m_additionalScaling = scaling <= 0.0 ? 1.0 : scaling;
+    }
+
+private:
+    double m_additionalScaling = 1.0;
 
     // The following provide a state when reading any entity: If m_block_name is not empty the
     // entity is in a BLOCK being defined, and LayerName() will return "BLOCKS xxxx" where xxxx is
     // the block name. Otherwise m_layer_name will be the layer name from the entity records
     // (default to "0") and LayerName() will return "ENTITIES xxxx" where xxxx is the layer name.
     // This is clunky but it is a non-private interface and so difficult to change.
-    char m_layer_name[1024] = "0";
-    char m_block_name[1024] = "";
+    std::string m_layer_name;
+    std::string m_block_name;
 
 
     // Error-handling control
     bool m_ignore_errors = true;
     bool m_fail = false;
 
-    std::map<std::string, ColorIndex_t>
-        m_layer_ColorIndex_map;  // Mapping from layer name -> layer color index
+    // Mapping from layer name -> layer color index
+    std::map<std::string, ColorIndex_t> m_layer_ColorIndex_map;
     const ColorIndex_t ColorBylayer = 256;
     const ColorIndex_t ColorByBlock = 0;
 
     // Readers for various parts of the DXF file.
+    bool ReadSection();
     // Section readers (sections are identified by the type-2 (name) record they start with and each
     // has its own reader function
     bool ReadHeaderSection();
@@ -351,6 +483,12 @@ private:
 
     bool ReadIgnoredSection();
 
+    // The Header section consists of multipel variables, only a few of which we give special
+    // handling.
+    bool ReadVariable();
+    bool ReadVersion();
+    bool ReadDWGCodePage();
+
     // The Tables section consists of several tables (again identified by their type-2 record asfter
     // th 0-TABLE record) each with its own reader
     bool ReadLayerTable();
@@ -359,7 +497,6 @@ private:
     // inline-defined to.
     bool ReadIgnoredTable();
 
-    bool ReadUnits();
     bool ReadLayer();
 
     bool ReadEntity();  // Identify entity type and read it
@@ -373,134 +510,181 @@ private:
     bool ReadSpline();
     bool ReadLwPolyLine();
     bool ReadPolyLine();
-    typedef struct
+    struct VertexInfo
     {
-        double location[3];
-        double bulge;
-    } VertexInfo;
+        Base::Vector3d location;
+        double bulge = 0;
+    };
 
     bool OnReadPolyline(std::list<VertexInfo>&, int flags);
     void OnReadArc(double start_angle,
                    double end_angle,
                    double radius,
-                   const double* c,
+                   const Base::Vector3d& center,
                    double z_extrusion_dir,
                    bool hidden);
-    void OnReadCircle(const double* c, double radius, bool hidden);
-    void OnReadEllipse(const double* c,
-                       const double* m,
+    void OnReadCircle(const Base::Vector3d& center, double radius, bool hidden);
+    void OnReadEllipse(const Base::Vector3d& center,
+                       const Base::Vector3d& majorAxisEnd,
                        double ratio,
                        double start_angle,
                        double end_angle);
     bool ReadInsert();
     bool ReadDimension();
     bool ReadUnknownEntity();
+
     // Helper for reading common attributes for entities
     void InitializeAttributes();
     void InitializeCommonEntityAttributes();
-    void Setup3DVectorAttribute(int x_record_type, double destination[3]);
-    void SetupScaledDoubleAttribute(int record_type, double& destination);
-    void SetupScaledDoubleIntoList(int record_type, std::list<double>& destination);
-    void Setup3DCoordinatesIntoLists(int x_record_type,
+    void Setup3DVectorAttribute(eDXFGroupCode_t x_record_type, Base::Vector3d& destination);
+    void SetupScaledDoubleAttribute(eDXFGroupCode_t record_type, double& destination);
+    void SetupScaledDoubleIntoList(eDXFGroupCode_t record_type, std::list<double>& destination);
+    void Setup3DCoordinatesIntoLists(eDXFGroupCode_t x_record_type,
                                      std::list<double>& x_destination,
                                      std::list<double>& y_destination,
                                      std::list<double>& z_destination);
-    void SetupStringAttribute(int record_type, char* destination);
-    void SetupStringAttribute(int record_type, std::string& destination);
+    void SetupStringAttribute(eDXFGroupCode_t record_type, std::string& destination);
     std::map<int, std::pair<void (*)(CDxfRead*, void*), void*>> m_coordinate_attributes;
     static void ProcessScaledDouble(CDxfRead* object, void* target);
     static void ProcessScaledDoubleIntoList(CDxfRead* object, void* target);
-    static void ProcessString(CDxfRead* object, void* target);
     static void ProcessStdString(CDxfRead* object, void* target);
     // For all types T where strean >> x and x = 0 works
     template<typename T>
-    void SetupValueAttribute(int record_type, T& target);
+    void SetupValueAttribute(eDXFGroupCode_t record_type, T& destination);
     // TODO: Once all compilers used for FreeCAD support class-level template specializations,
     // SetupValueAttribute could have specializations and replace SetupStringAttribute etc.
     // The template specialization is required to handle the (char *) case, which would
     // otherwise try to read the actual pointer from the stream, or... what?
     // The specialization would also handle the default value when it cannot be zero.
     template<typename T>
-    static void ProcessValue(CDxfRead* object, void* target);
+    static void ProcessValue(CDxfRead* object, void* target)
+    {
+        ParseValue<T>(object, target);
+    }
+    template<typename T>
+    static bool ParseValue(CDxfRead* object, void* target);
 
     bool ProcessAttribute();
     void ProcessAllAttributes();
 
     bool ReadBlockInfo();
-    bool ReadVersion();
-    bool ReadDWGCodePage();
     bool ResolveEncoding();
 
     bool get_next_record();
     void repeat_last_record();
+
+    bool (CDxfRead::*stringToUTF8)(std::string&) const = &CDxfRead::UTF8ToUTF8;
 
 protected:
     // common entity properties. Some properties are accumulated local to the reader method and
     // passed to the ReadXxxx virtual method. Others are collected here as private values and also
     // passed to ReadXxxx. Finally some of the attributes are accessed using references to
     // public/protected fields or methods (such as LayerName()). Altogether a bit of a mishmash.
+    // NOLINTBEGIN(cppcoreguidelines-non-private-member-variables-in-classes)
     ColorIndex_t m_ColorIndex = 0;
-    char m_LineType[1024] = "";
+    std::string m_LineType;
     eDXFVersion_t m_version = RUnknown;  // Version from $ACADVER variable in DXF
-    const char* (CDxfRead::*stringToUTF8)(const char*) const = &CDxfRead::UTF8ToUTF8;
-    // Although this is called "ImportWarning" it is just a wrapper to write a warning eithout any
+    // NOLINTEND(cppcoreguidelines-non-private-member-variables-in-classes)
+
+    // Although this is called "ImportError" it is just a wrapper to write a warning eithout any
     // additional information such as a line number and as such, may be split into a basic
     // message-writer and something that adds a line number.
+    //
+    // The "Developer" methods stick a line break into the output window.
+    // The "User" methods show up in the notification popup window.
+    // "Critical" causes a popup messagebox
+    // "Warnings" show up in yellow in the output window and with a warning icon in the notification
+    // popup "Error" show up in red in the output window and with an error icon in the notification
+    // popup "Notification" show up in black in the output window and an information icon in the
+    // notification popup "Log" goes to a log somewhere and not to the screen/user at all
+
     template<typename... args>
-    void ImportError(const char* format, args... argValues) const
+    void ImportError(const char* format, args&&... argValues) const
     {
-        Base::ConsoleSingleton::Instance().Warning(format, argValues...);
+        Base::ConsoleSingleton::Instance().Warning(format, std::forward<args>(argValues)...);
     }
-    void UnsupportedFeature(const char* format, ...);
+    template<typename... args>
+    void ImportObservation(const char* format, args&&... argValues) const
+    {
+        Base::ConsoleSingleton::Instance().Message(format, std::forward<args>(argValues)...);
+    }
+    template<typename... args>
+    void UnsupportedFeature(const char* format, args&&... argValues);
 
 private:
     std::map<std::string, std::pair<int, int>> m_unsupportedFeaturesNoted;
-    const std::string* m_CodePage =
-        nullptr;  // Code Page name from $DWGCODEPAGE or null if none/not read yet
+    std::string m_CodePage;  // Code Page name from $DWGCODEPAGE or null if none/not read yet
     // The following was going to be python's canonical name for the encoding, but this is (a) not
     // easily found and (b) does not speed up finding the encoding object.
-    const std::string* m_encoding =
-        nullptr;  // A name for the encoding implied by m_version and m_CodePage
-    const char* UTF8ToUTF8(const char* encoded) const;
-    const char* GeneralToUTF8(const char* encoded) const;
+    std::string m_encoding;  // A name for the encoding implied by m_version and m_CodePage
+    bool UTF8ToUTF8(std::string& encoded) const;
+    bool GeneralToUTF8(std::string& encoded) const;
+
+    // Compare with specific object name for eObjectType records
+    bool IsObjectName(const char* testName) const
+    {
+        return m_record_data == testName;
+    }
+    // Compare with specific variable name for eVariableName records
+    bool IsVariableName(const char* testName) const
+    {
+        return m_record_data == testName;
+    }
 
 public:
-    explicit CDxfRead(const char* filepath);  // this opens the file
-    virtual ~CDxfRead();                      // this closes the file
+    explicit CDxfRead(const std::string& filepath);  // this opens the file
+    CDxfRead(const CDxfRead&) = delete;
+    CDxfRead(const CDxfRead&&) = delete;
+    CDxfRead& operator=(const CDxfRead&) = delete;
+    CDxfRead& operator=(const CDxfRead&&) = delete;
+    virtual ~CDxfRead();  // this closes the file
 
-    bool Failed()
+    bool Failed() const
     {
         return m_fail;
     }
-    void DoRead(
-        const bool ignore_errors = false);  // this reads the file and calls the following functions
+    void
+    DoRead(bool ignore_errors = false);  // this reads the file and calls the following functions
 
-    double mm(double value) const;
+private:
+    double mm(double value) const
+    {
+        if (m_unitScalingFactor == 0.0) {
+            // No scaling factor has been specified.
+            // TODO: Resolve this once we know the HEADER is complete
+            return value;
+        }
+        return m_unitScalingFactor * value;
+    }
 
+public:
     bool IgnoreErrors() const
     {
         return (m_ignore_errors);
     }
 
-    virtual void OnReadLine(const double* /*s*/, const double* /*e*/, bool /*hidden*/)
+    virtual void
+    OnReadLine(const Base::Vector3d& /*start*/, const Base::Vector3d& /*end*/, bool /*hidden*/)
     {}
-    virtual void OnReadPoint(const double* /*s*/)
+    virtual void OnReadPoint(const Base::Vector3d& /*start*/)
     {}
-    virtual void OnReadText(const double* /*point*/,
+    virtual void OnReadText(const Base::Vector3d& /*point*/,
                             const double /*height*/,
-                            const char* /*text*/,
+                            const std::string& /*text*/,
                             const double /*rotation*/)
     {}
-    virtual void OnReadArc(const double* /*s*/,
-                           const double* /*e*/,
-                           const double* /*c*/,
+    virtual void OnReadArc(const Base::Vector3d& /*start*/,
+                           const Base::Vector3d& /*end*/,
+                           const Base::Vector3d& /*center*/,
                            bool /*dir*/,
                            bool /*hidden*/)
     {}
-    virtual void
-    OnReadCircle(const double* /*s*/, const double* /*c*/, bool /*dir*/, bool /*hidden*/)
+    virtual void OnReadCircle(const Base::Vector3d& /*start*/,
+                              const Base::Vector3d& /*center*/,
+                              bool /*dir*/,
+                              bool /*hidden*/)
     {}
-    virtual void OnReadEllipse(const double* /*c*/,
+    virtual void OnReadEllipse(const Base::Vector3d& /*center*/,
                                double /*major_radius*/,
                                double /*minor_radius*/,
                                double /*rotation*/,
@@ -510,14 +694,14 @@ public:
     {}
     virtual void OnReadSpline(struct SplineData& /*sd*/)
     {}
-    virtual void OnReadInsert(const double* /*point*/,
-                              const double* /*scale*/,
-                              const char* /*name*/,
+    virtual void OnReadInsert(const Base::Vector3d& /*point*/,
+                              const Base::Vector3d& /*scale*/,
+                              const std::string& /*name*/,
                               double /*rotation*/)
     {}
-    virtual void OnReadDimension(const double* /*s*/,
-                                 const double* /*e*/,
-                                 const double* /*point*/,
+    virtual void OnReadDimension(const Base::Vector3d& /*start*/,
+                                 const Base::Vector3d& /*end*/,
+                                 const Base::Vector3d& /*point*/,
                                  double /*rotation*/)
     {}
     virtual void AddGraphics() const

@@ -39,19 +39,25 @@ namespace Import
 class ImportExport ImpExpDxfRead: public CDxfRead
 {
 public:
-    ImpExpDxfRead(std::string filepath, App::Document* pcDoc);
+    ImpExpDxfRead(const std::string& filepath, App::Document* pcDoc);
 
     // CDxfRead's virtual functions
-    void OnReadLine(const double* s, const double* e, bool hidden) override;
-    void OnReadPoint(const double* s) override;
-    void OnReadText(const double* point,
-                    const double height,
-                    const char* text,
-                    const double rotation) override;
-    void
-    OnReadArc(const double* s, const double* e, const double* c, bool dir, bool hidden) override;
-    void OnReadCircle(const double* s, const double* c, bool dir, bool hidden) override;
-    void OnReadEllipse(const double* c,
+    void OnReadLine(const Base::Vector3d& start, const Base::Vector3d& end, bool hidden) override;
+    void OnReadPoint(const Base::Vector3d& start) override;
+    void OnReadText(const Base::Vector3d& point,
+                    double height,
+                    const std::string& text,
+                    double rotation) override;
+    void OnReadArc(const Base::Vector3d& start,
+                   const Base::Vector3d& end,
+                   const Base::Vector3d& center,
+                   bool dir,
+                   bool hidden) override;
+    void OnReadCircle(const Base::Vector3d& start,
+                      const Base::Vector3d& center,
+                      bool dir,
+                      bool hidden) override;
+    void OnReadEllipse(const Base::Vector3d& center,
                        double major_radius,
                        double minor_radius,
                        double rotation,
@@ -59,13 +65,13 @@ public:
                        double end_angle,
                        bool dir) override;
     void OnReadSpline(struct SplineData& sd) override;
-    void OnReadInsert(const double* point,
-                      const double* scale,
-                      const char* name,
+    void OnReadInsert(const Base::Vector3d& point,
+                      const Base::Vector3d& scale,
+                      const std::string& name,
                       double rotation) override;
-    void OnReadDimension(const double* s,
-                         const double* e,
-                         const double* point,
+    void OnReadDimension(const Base::Vector3d& start,
+                         const Base::Vector3d& end,
+                         const Base::Vector3d& point,
                          double rotation) override;
     void AddGraphics() const override;
 
@@ -77,24 +83,26 @@ public:
     {
         return m_optionSource;
     }
-    void setOptionSource(std::string s)
+    void setOptionSource(const std::string& sourceName)
     {
-        m_optionSource = s;
+        m_optionSource = sourceName;
     }
     void setOptions();
 
 private:
-    gp_Pnt makePoint(const double point3d[3]) const;
+    static gp_Pnt makePoint(const Base::Vector3d& point3d)
+    {
+        return {point3d.x, point3d.y, point3d.z};
+    }
 
 protected:
-    virtual void ApplyGuiStyles(Part::Feature*)
+    virtual void ApplyGuiStyles(Part::Feature* /*object*/)
     {}
-    virtual void ApplyGuiStyles(App::FeaturePython*)
+    virtual void ApplyGuiStyles(App::FeaturePython* /*object*/)
     {}
     App::Document* document;
     bool optionGroupLayers;
     bool optionImportAnnotations;
-    double optionScaling;
     std::map<std::string, std::vector<Part::TopoShape*>> layers;
     std::string m_optionSource;
 };
@@ -103,9 +111,13 @@ class ImportExport ImpExpDxfWrite: public CDxfWrite
 {
 public:
     explicit ImpExpDxfWrite(std::string filepath);
+    ImpExpDxfWrite(const ImpExpDxfWrite&) = delete;
+    ImpExpDxfWrite(const ImpExpDxfWrite&&) = delete;
+    ImpExpDxfWrite& operator=(const ImpExpDxfWrite&) = delete;
+    ImpExpDxfWrite& operator=(const ImpExpDxfWrite&&) = delete;
     ~ImpExpDxfWrite();
 
-    void exportShape(const TopoDS_Shape input);
+    void exportShape(TopoDS_Shape input);
     std::string getOptionSource()
     {
         return m_optionSource;
@@ -129,8 +141,8 @@ public:
                          int type);
     void exportAngularDim(Base::Vector3d textLocn,
                           Base::Vector3d lineLocn,
-                          Base::Vector3d extLine1Start,
-                          Base::Vector3d extLine2Start,
+                          Base::Vector3d extLine1End,
+                          Base::Vector3d extLine2End,
                           Base::Vector3d apexPoint,
                           char* dimText);
     void exportRadialDim(Base::Vector3d centerPoint,

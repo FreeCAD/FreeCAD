@@ -50,6 +50,7 @@ TaskRevolutionParameters::TaskRevolutionParameters(PartDesignGui::ViewProvider* 
     : TaskSketchBasedParameters(RevolutionView, parent, "PartDesign_Revolution", tr("Revolution parameters")),
       ui(new Ui_TaskRevolutionParameters),
       proxy(new QWidget(this)),
+      selectionFace(false),
       isGroove(false)
 {
     // we need a separate container widget to add all controls to
@@ -357,6 +358,7 @@ void TaskRevolutionParameters::updateUI(int index)
 void TaskRevolutionParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
     if (msg.Type == Gui::SelectionChanges::AddSelection) {
+        int mode = ui->changeMode->currentIndex();
         if (selectionFace) {
             QString refText = onAddSelection(msg);
             if (refText.length() > 0) {
@@ -379,6 +381,7 @@ void TaskRevolutionParameters::onSelectionChanged(const Gui::SelectionChanges& m
                 propReferenceAxis->setValue(selObj, axis);
 
                 recomputeFeature();
+                updateUI(mode);
             }
         }
     }
@@ -389,8 +392,8 @@ void TaskRevolutionParameters::onSelectionChanged(const Gui::SelectionChanges& m
 
 void TaskRevolutionParameters::onButtonFace(const bool pressed)
 {
-    // to distinguish that this is the direction selection
-    selectionFace = true;
+    // to distinguish that this is NOT the axis selection
+    selectionFace = pressed;
 
     // only faces are allowed
     TaskSketchBasedParameters::onSelectReference(pressed ? AllowSelection::FACE : AllowSelection::NONE);

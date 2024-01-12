@@ -40,8 +40,10 @@ public:
     ImpExpDxfReadGui(std::string filepath, App::Document* pcDoc);
 
 protected:
-    void ApplyGuiStyles(Part::Feature*);
-    void ApplyGuiStyles(App::FeaturePython*);
+    void ApplyGuiStyles(Part::Feature* object) override;
+    void ApplyGuiStyles(App::FeaturePython* object) override;
+
+private:
     Gui::Document* GuiDocument;
 };
 }  // namespace ImportGui

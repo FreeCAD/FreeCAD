@@ -25,7 +25,6 @@
 #ifndef _PreComp_
 # include <cfloat>
 
-# include <Standard_math.hxx>
 
 # include <Inventor/nodes/SoAnnotation.h>
 # include <Inventor/nodes/SoBaseColor.h>

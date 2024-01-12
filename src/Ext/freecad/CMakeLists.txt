@@ -38,6 +38,9 @@ endif()
 INSTALL(
     FILES
         ${NAMESPACE_INIT}
+        part.py
+        partdesign.py
+        sketcher.py
         project_utility.py
         UiTools.py
         utils.py

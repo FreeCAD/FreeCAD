@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2006 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2024 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,47 +20,27 @@
  *                                                                         *
  ***************************************************************************/
 
-#ifndef GUI_VIEWPROVIDER_ViewProviderPart_H
-#define GUI_VIEWPROVIDER_ViewProviderPart_H
+//! a class to assist with exporting sketches to dxf
 
-#include "ViewProviderDragger.h"
-#include "ViewProviderOriginGroup.h"
-#include "ViewProviderPythonFeature.h"
+#include <Mod/Import/ImportGlobal.h>
 
+#include <TopoDS_Shape.hxx>
+#include <gp_Ax2.hxx>
 
-namespace Gui {
-
-class GuiExport ViewProviderPart : public ViewProviderDragger,
-                                   public ViewProviderOriginGroupExtension
+namespace App
 {
-    PROPERTY_HEADER_WITH_EXTENSIONS(Gui::ViewProviderPart);
+class DocumentObject;
+}
 
+namespace Import
+{
+
+class ImportExport SketchExportHelper
+{
 public:
-    /// constructor.
-    ViewProviderPart();
-    /// destructor.
-    ~ViewProviderPart() override;
-
-    bool doubleClicked() override;
-    void setupContextMenu(QMenu* menu, QObject* receiver, const char* member) override;
-    bool isActivePart();
-    void toggleActivePart();
-
-    /// deliver the icon shown in the tree view
-    /// override from ViewProvider.h
-    QIcon getIcon() const override;
-
-protected:
-    /// get called by the container whenever a property has been changed
-    void onChanged(const App::Property* prop) override;
-    /// a second icon for the Assembly type
-    const char* aPixmap;
-
+    static TopoDS_Shape projectShape(const TopoDS_Shape& inShape, const gp_Ax2& projectionCS);
+    static bool isSketch(App::DocumentObject* obj);
+    static TopoDS_Shape getFlatSketchXY(App::DocumentObject* obj);
 };
 
-using ViewProviderPartPython = ViewProviderPythonFeatureT<ViewProviderPart>;
-
-} // namespace Gui
-
-#endif // GUI_VIEWPROVIDER_ViewProviderPart_H
-
+}  // namespace Import

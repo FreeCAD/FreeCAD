@@ -51,6 +51,7 @@
 #endif
 
 #include "dxf/ImpExpDxf.h"
+#include "SketchExportHelper.h"
 #include <App/Application.h>
 #include <App/Document.h>
 #include <App/DocumentObjectPy.h>
@@ -427,8 +428,10 @@ private:
         return Py::None();
     }
 
+
     Py::Object writeDXFShape(const Py::Tuple& args)
     {
+        Base::Console().Message("Imp:writeDXFShape()\n");
         PyObject* shapeObj = nullptr;
         char* fname = nullptr;
         std::string filePath;
@@ -592,11 +595,21 @@ private:
                         PyObject* item = (*it).ptr();
                         App::DocumentObject* obj =
                             static_cast<App::DocumentObjectPy*>(item)->getDocumentObjectPtr();
-                        Part::Feature* part = static_cast<Part::Feature*>(obj);
-                        layerName = part->getNameInDocument();
+                        layerName = obj->getNameInDocument();
                         writer.setLayerName(layerName);
-                        const TopoDS_Shape& shape = part->Shape.getValue();
-                        writer.exportShape(shape);
+                        TopoDS_Shape shapeToExport;
+                        if (SketchExportHelper::isSketch(obj)) {
+                            // project sketch along sketch Z via hlrProjector to get geometry on XY
+                            // plane
+                            shapeToExport = SketchExportHelper::getFlatSketchXY(obj);
+                        }
+                        else {
+                            // do we know that obj is a Part::Feature? is this checked somewhere
+                            // before this? this should be a located shape??
+                            Part::Feature* part = static_cast<Part::Feature*>(obj);
+                            shapeToExport = part->Shape.getValue();
+                        }
+                        writer.exportShape(shapeToExport);
                     }
                 }
                 writer.endRun();
@@ -620,6 +633,9 @@ private:
             filePath = std::string(fname);
             layerName = "none";
             PyMem_Free(fname);
+            App::DocumentObject* obj =
+                static_cast<App::DocumentObjectPy*>(docObj)->getDocumentObjectPtr();
+            Base::Console().Message("Imp:writeDXFObject - docObj: %s\n", obj->getNameInDocument());
 
             if ((versionParm == 12) || (versionParm == 14)) {
                 versionOverride = true;
@@ -644,11 +660,21 @@ private:
                 writer.init();
                 App::DocumentObject* obj =
                     static_cast<App::DocumentObjectPy*>(docObj)->getDocumentObjectPtr();
-                Part::Feature* part = static_cast<Part::Feature*>(obj);
-                layerName = part->getNameInDocument();
+                layerName = obj->getNameInDocument();
                 writer.setLayerName(layerName);
-                const TopoDS_Shape& shape = part->Shape.getValue();
-                writer.exportShape(shape);
+                TopoDS_Shape shapeToExport;
+                if (SketchExportHelper::isSketch(obj)) {
+                    // project sketch along sketch Z via hlrProjector to get geometry on XY plane
+                    shapeToExport = SketchExportHelper::getFlatSketchXY(obj);
+                }
+                else {
+                    // TODO: do we know that obj is a Part::Feature? is this checked somewhere
+                    // before this?
+                    // TODO: this should be a located shape??
+                    Part::Feature* part = static_cast<Part::Feature*>(obj);
+                    shapeToExport = part->Shape.getValue();
+                }
+                writer.exportShape(shapeToExport);
                 writer.endRun();
                 return Py::None();
             }

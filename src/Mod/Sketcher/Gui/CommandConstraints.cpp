@@ -1167,14 +1167,14 @@ public:
 
         addCommand("Sketcher_Dimension");
         addCommand(); //separator
-        addCommand("Sketcher_ConstrainLock");
         addCommand("Sketcher_ConstrainDistanceX");
         addCommand("Sketcher_ConstrainDistanceY");
         addCommand("Sketcher_ConstrainDistance");
+        addCommand("Sketcher_ConstrainRadiam");
         addCommand("Sketcher_ConstrainRadius");
         addCommand("Sketcher_ConstrainDiameter");
-        addCommand("Sketcher_ConstrainRadiam");
         addCommand("Sketcher_ConstrainAngle");
+        addCommand("Sketcher_ConstrainLock");
     }
 
     void updateAction(int mode) override
@@ -1217,6 +1217,37 @@ public:
     }
 
     const char* className() const override { return "CmdSketcherCompDimensionTools"; }
+};
+
+// Comp for constrain tools =============================================
+
+class CmdSketcherCompConstrainTools : public Gui::GroupCommand
+{
+public:
+    CmdSketcherCompConstrainTools()
+        : GroupCommand("Sketcher_CompConstrainTools")
+    {
+        sAppModule = "Sketcher";
+        sGroup = "Sketcher";
+        sMenuText = QT_TR_NOOP("Constrain");
+        sToolTipText = QT_TR_NOOP("Constrain tools.");
+        sWhatsThis = "Sketcher_CompConstrainTools";
+        sStatusTip = sToolTipText;
+        eType = ForEdit;
+
+        setCheckable(false);
+        setRememberLast(false);
+
+        addCommand("Sketcher_ConstrainCoincidentUnified");
+        addCommand("Sketcher_ConstrainHorVer");
+        addCommand("Sketcher_ConstrainParallel");
+        addCommand("Sketcher_ConstrainPerpendicular");
+        addCommand("Sketcher_ConstrainTangent");
+        addCommand("Sketcher_ConstrainEqual");
+        addCommand("Sketcher_ConstrainSymmetric");
+        addCommand("Sketcher_ConstrainBlock");
+    }
+    const char* className() const override { return "CmdSketcherCompConstrainTools"; }
 };
 
 // Dimension tool =======================================================
@@ -1355,6 +1386,10 @@ public:
                 availableConstraint = AvailableConstraint::FIRST;
             }
             makeAppropriateConstraint(previousOnSketchPos);
+        }
+        else if (key == SoKeyboardEvent::Z && (QApplication::keyboardModifiers() & Qt::ControlModifier)) {
+            // User trying to cancel with Ctrl-Z
+            sketchgui->purgeHandler();
         }
         else {
             DrawSketchHandler::registerPressedKey(pressed, key);
@@ -9919,5 +9954,6 @@ void CreateSketcherCommandsConstraints()
     rcCmdMgr.addCommand(new CmdSketcherToggleDrivingConstraint());
     rcCmdMgr.addCommand(new CmdSketcherToggleActiveConstraint());
     rcCmdMgr.addCommand(new CmdSketcherCompDimensionTools());
+    rcCmdMgr.addCommand(new CmdSketcherCompConstrainTools());
 }
 // clang-format on

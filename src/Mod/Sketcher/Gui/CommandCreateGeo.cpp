@@ -1535,8 +1535,8 @@ Gui::Action* CmdSketcherCompCreateFillets::createAction()
     _pcAction = pcAction;
     languageChange();
 
-    pcAction->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreateFillet"));
-    int defaultId = 0;
+    pcAction->setIcon(Gui::BitmapFactory().iconFromTheme("Sketcher_CreatePointFillet"));
+    int defaultId = 1;
     pcAction->setProperty("defaultAction", QVariant(defaultId));
 
     return pcAction;

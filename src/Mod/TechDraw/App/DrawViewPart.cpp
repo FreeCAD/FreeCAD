@@ -184,7 +184,7 @@ TopoDS_Shape DrawViewPart::getSourceShape(bool fuse) const
 //! version of the shape?  Should we have a getShapeForSection?
 TopoDS_Shape DrawViewPart::getShapeForDetail() const
 {
-    return ShapeUtils::rotateShape(getSourceShape(true), getProjectionCS(), Rotation.getValue());
+    return ShapeUtils::rotateShape(getSourceShape(false), getProjectionCS(), Rotation.getValue());
 }
 
 //! combine the regular links and xlinks into a single list

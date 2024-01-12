@@ -132,17 +132,19 @@ void ViewProviderBody::setupContextMenu(QMenu* menu, QObject* receiver, const ch
     Q_UNUSED(receiver);
     Q_UNUSED(member);
     Gui::ActionFunction* func = new Gui::ActionFunction(menu);
-    QAction* act = menu->addAction(tr("Toggle active body"));
+
+    QAction* act = menu->addAction(tr("Active body"));
+    act->setCheckable(true);
+    act->setChecked(isActiveBody());
     func->trigger(act, [this]() {
-        this->doubleClicked();
+        this->toggleActiveBody();
     });
 
     Gui::ViewProviderGeometryObject::setupContextMenu(menu, receiver, member); // clazy:exclude=skipped-base-method
 }
 
-bool ViewProviderBody::doubleClicked()
+bool ViewProviderBody::isActiveBody()
 {
-    //first, check if the body is already active.
     auto activeDoc = Gui::Application::Instance->activeDocument();
     if(!activeDoc)
         activeDoc = getDocument();
@@ -150,7 +152,16 @@ bool ViewProviderBody::doubleClicked()
     if(!activeView)
         return false;
 
-    if (activeView->isActiveObject(getObject(),PDBODYKEY)) {
+    if (activeView->isActiveObject(getObject(),PDBODYKEY)){
+        return true;
+    } else {
+        return false;
+    }
+}
+
+void ViewProviderBody::toggleActiveBody()
+{
+    if (isActiveBody()) {
         //active body double-clicked. Deactivate.
         Gui::Command::doCommand(Gui::Command::Gui,
                 "Gui.ActiveDocument.ActiveView.setActiveObject('%s', None)", PDBODYKEY);
@@ -162,7 +173,7 @@ bool ViewProviderBody::doubleClicked()
 
         // and set correct active objects
         auto* part = App::Part::getPartOfObject ( getObject() );
-        if ( part && part != activeView->getActiveObject<App::Part*> ( PARTKEY ) ) {
+        if ( part && !isActiveBody() ) {
             Gui::Command::doCommand(Gui::Command::Gui,
                     "Gui.ActiveDocument.ActiveView.setActiveObject('%s',%s)",
                     PARTKEY, Gui::Command::getObjectCmd(part).c_str());
@@ -172,7 +183,11 @@ bool ViewProviderBody::doubleClicked()
                 "Gui.ActiveDocument.ActiveView.setActiveObject('%s',%s)",
                 PDBODYKEY, Gui::Command::getObjectCmd(getObject()).c_str());
     }
+}
 
+bool ViewProviderBody::doubleClicked()
+{
+    toggleActiveBody();
     return true;
 }
 
