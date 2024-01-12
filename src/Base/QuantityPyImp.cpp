@@ -22,6 +22,8 @@
 
 #include "PreCompiled.h"
 
+#include <QString>
+
 // inclusion of the generated files (generated out of QuantityPy.xml)
 #include "QuantityPy.h"
 #include "UnitPy.h"
@@ -333,6 +335,9 @@ static Quantity& pyToQuantity(Quantity& q, PyObject* pyobj)
     }
     else if (PyLong_Check(pyobj)) {
         q = Quantity(PyLong_AsLong(pyobj));
+    }
+    else if (PyUnicode_Check(pyobj)) {
+        q = Quantity::parse(QString::fromUtf8(PyUnicode_AsUTF8(pyobj)));
     }
     else {
         PyErr_Format(PyExc_TypeError, "Cannot convert %s to Quantity", Py_TYPE(pyobj)->tp_name);
