@@ -48,7 +48,10 @@ class Color;
 namespace Part
 {
 
+class ShapeHasher;
+class TopoShape;
 class TopoShapeCache;
+typedef std::unordered_map<TopoShape, TopoShape, ShapeHasher, ShapeHasher> TopoShapeMap;
 
 /* A special sub-class to indicate null shapes
  */
@@ -610,6 +613,7 @@ public:
     bool canMapElement(const TopoShape &other) const;
     void mapSubElement(const TopoShape &other,const char *op=nullptr, bool forceHasher=false);
     void mapSubElement(const std::vector<TopoShape> &shapes, const char *op);
+    void mapSubElementsTo(std::vector<TopoShape> &shapes, const char *op=nullptr) const;
     bool hasPendingElementMap() const;
 
 
@@ -627,7 +631,117 @@ public:
      *         a reference so that multiple operations can be carried out for
      *         the same shape in the same line of code.
      */
-    TopoShape &makeElementCompound(const std::vector<TopoShape> &shapes, const char *op=nullptr, bool force=true);
+    TopoShape& makeElementCompound(const std::vector<TopoShape>& shapes,
+                                   const char* op = nullptr,
+                                   bool force = true);
+
+
+    /** Make a compound of wires by connecting input edges
+     *
+     * @param shapes: input shapes. Can be any type of shape. Edges will be
+     *                extracted for building wires.
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     * @param keepOrder: whether to respect the order of the input edges
+     * @param tol: tolerance for checking the distance of two vertex to decide
+     *             if two edges are connected
+     * @param shared: if true, then only connect edges if they shared the same
+     *                vertex, or else use \c tol to check for connection.
+     * @param output: optional output mapping from wire edges to input edge.
+     *                Note that edges may be modified after adding to the wire,
+     *                so the output edges may not be the same as the input
+     *                ones.
+     *
+     * @return The function produces either a wire or a compound of wires. The
+     *         original content of this TopoShape is discarded and replaced
+     *         with the new shape. The function returns the TopoShape itself as
+     *         a reference so that multiple operations can be carried out for
+     *         the same shape in the same line of code.
+     */
+    TopoShape& makeElementWires(const std::vector<TopoShape>& shapes,
+                                const char* op = nullptr,
+                                double tol = 0.0,
+                                bool shared = false,
+                                TopoShapeMap* output = nullptr);
+
+    /** Make a compound of wires by connecting input edges
+     *
+     * @param shape: input shape. Can be any type of shape. Edges will be
+     *               extracted for building wires.
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     * @param keepOrder: whether to respect the order of the input edges
+     * @param tol: tolerance for checking the distance of two vertex to decide
+     *             if two edges are connected
+     * @param shared: if true, then only connect edges if they shared the same
+     *                vertex, or else use \c tol to check for connection.
+     * @param output: optional output mapping from wire edges to input edge.
+     *                Note that edges may be modified after adding to the wire,
+     *                so the output edges may not be the same as the input
+     *                ones.
+     *
+     * @return The function produces either a wire or a compound of wires. The
+     *         original content of this TopoShape is discarded and replaced
+     *         with the new shape. The function returns the TopoShape itself as
+     *         a reference so that multiple operations can be carried out for
+     *         the same shape in the same line of code.
+     */
+    TopoShape& makeElementWires(const TopoShape& shape,
+                                const char* op = nullptr,
+                                double tol = 0.0,
+                                bool shared = false,
+                                TopoShapeMap* output = nullptr);
+
+    /** Make a compound of wires by connecting input edges in the given order
+     *
+     * @param shapes: input shapes. Can be any type of shape. Edges will be
+     *                extracted for building wires.
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     * @param tol: tolerance for checking the distance of two vertex to decide
+     *             if two edges are connected
+     * @param output: optional output mapping from wire edges to input edge.
+     *                Note that edges may be modified after adding to the wire,
+     *                so the output edges may not be the same as the input
+     *                ones.
+     *
+     * @return Same as makeElementWires() but respects the order of the input edges.
+     *         The function produces either a wire or a compound of wires. The
+     *         original content of this TopoShape is discarded and replaced
+     *         with the new shape. The function returns the TopoShape itself as
+     *         a reference so that multiple operations can be carried out for
+     *         the same shape in the same line of code.
+     */
+    TopoShape& makeElementOrderedWires(const std::vector<TopoShape>& shapes,
+                                       const char* op = nullptr,
+                                       double tol = 0.0,
+                                       TopoShapeMap* output = nullptr);
+
+    /** Make a wire or compound of wires with the edges inside the this shape
+     *
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     * @param keepOrder: whether to respect the order of the input edges
+     * @param tol: tolerance for checking the distance of two vertex to decide
+     *             if two edges are connected
+     * @param shared: if true, then only connect edges if they shared the same
+     *                vertex, or else use \c tol to check for connection.
+     * @param output: optional output mapping from wire edges to input edge.
+     *                Note that edges may be modified after adding to the wire,
+     *                so the output edges may not be the same as the input
+     *                ones.
+     *
+     *
+     * @return The function returns a new shape of either a single wire or a
+     *         compound of wires. The shape itself is not modified.
+     */
+    TopoShape makeElementWires(const char* op = nullptr,
+                               double tol = 0.0,
+                               bool shared = false,
+                               TopoShapeMap* output = nullptr) const
+    {
+        return TopoShape(0, Hasher).makeElementWires(*this, op, tol, shared, output);
+    }
 
     friend class TopoShapeCache;
 
@@ -761,6 +875,19 @@ private:
                                    bool& warned);
     void mapCompoundSubElements(const std::vector<TopoShape>& shapes, const char* op);
 
+    /** Given a set of edges, return a sorted list of connected edges
+     *
+     * @param edges: (input/output) input list of shapes. Must be of type edge.
+     *               On return, the returned connected edges will be removed
+     *               from this list. You can repeated call this function to find
+     *               all wires.
+     * @param keepOrder: whether to respect the order of the input edges
+     * @param tol: tolerance for checking the distance of two vertex to decide
+     *             if two edges are connected
+     * @return Return a list of ordered connected edges.
+     */
+    static std::deque<TopoShape>
+    sortEdges(std::list<TopoShape>& edges, bool keepOrder = false, double tol = 0.0);
 };
 
 }  // namespace Part
