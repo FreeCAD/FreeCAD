@@ -3814,6 +3814,11 @@ void ViewProviderSketch::generateContextMenu()
     int selectedConics = 0;
     int selectedPoints = 0;
     int selectedConstraints = 0;
+    int selectedBsplines = 0;
+    int selectedBsplineKnots = 0;
+    int selectedOrigin = 0;
+    int selectedEndPoints = 0;
+    bool onlyOrigin = false;
 
     Gui::MenuItem menu;
     menu.setCommand("Sketcher context");
@@ -3824,31 +3829,70 @@ void ViewProviderSketch::generateContextMenu()
     // if something is selected, count different elements in the current selection
     if (selection.size() > 0) {
         const std::vector<std::string> SubNames = selection[0].getSubNames();
-
-        for (auto& name : SubNames) {
-            if (name.substr(0, 4) == "Edge") {
-                ++selectedEdges;
-
+        const Sketcher::SketchObject* obj;
+        if (selection[0].getObject()->isDerivedFrom<Sketcher::SketchObject>()) {
+            obj = static_cast<Sketcher::SketchObject*>(selection[0].getObject());
+            for (auto& name : SubNames) {
                 int geoId = std::atoi(name.substr(4, 4000).c_str()) - 1;
-                if (geoId >= 0) {
-                    const Part::Geometry* geo = getSketchObject()->getGeometry(geoId);
-                    if (isLineSegment(*geo)) {
-                        ++selectedLines;
-                    }
-                    else {
-                        ++selectedConics;
+                const Part::Geometry* geo = getSketchObject()->getGeometry(geoId);
+                if (name.substr(0, 4) == "Edge") {
+                    ++selectedEdges;
+
+                    if (geoId >= 0) {
+                        if (isLineSegment(*geo)) {
+                            ++selectedLines;
+                        }
+                        else if (geo->is<Part::GeomBSplineCurve>()) {
+                            ++selectedBsplines;
+                        }
+                        else {
+                            ++selectedConics;
+                        }
                     }
                 }
-            }
-            else if (name.substr(0, 4) == "Vert") {
-                ++selectedPoints;
-            }
-            else if (name.substr(0, 4) == "Cons") {
-                ++selectedConstraints;
+                else if (name.substr(0, 4) == "Vert") {
+                    ++selectedPoints;
+                    Sketcher::PointPos posId;
+                    getIdsFromName(name, obj, geoId, posId);
+                    if (isBsplineKnotOrEndPoint(obj, geoId, posId)) {
+                        ++selectedBsplineKnots;
+                    }
+                    if (Sketcher::PointPos::start != posId || Sketcher::PointPos::end != posId) {
+                        ++selectedEndPoints;
+                    }
+                }
+                else if (name.substr(0, 4) == "Cons") {
+                    ++selectedConstraints;
+                }
+                else if (name.substr(2, 5) == "Axis") {
+                    ++selectedEdges;
+                    ++selectedLines;
+                    ++selectedOrigin;
+                }
+                else if (name.substr(0, 4) == "Root") {
+                    ++selectedPoints;
+                    ++selectedOrigin;
+                }
             }
         }
+        if (selectedPoints + selectedEdges == selectedOrigin) {
+            onlyOrigin = true;
+        }
         // build context menu items depending on the selection
-        if (selectedEdges >= 1 && selectedPoints == 0) {
+        if (selectedBsplines > 0 && selectedBsplines == selectedEdges && selectedPoints == 0
+            && !onlyOrigin) {
+            menu << "Sketcher_BSplineInsertKnot"
+                 << "Sketcher_BSplineIncreaseDegree"
+                 << "Sketcher_BSplineDecreaseDegree";
+        }
+        else if (selectedBsplineKnots > 0 && selectedBsplineKnots == selectedPoints
+                 && selectedEdges == 0 && !onlyOrigin) {
+            if (selectedBsplineKnots == 1) {
+                menu << "Sketcher_BSplineIncreaseKnotMultiplicity"
+                     << "Sketcher_BSplineDecreaseKnotMultiplicity";
+            }
+        }
+        if (selectedEdges >= 1 && selectedPoints == 0 && selectedBsplines == 0 && !onlyOrigin) {
             menu << "Sketcher_Dimension";
             if (selectedConics == 0) {
                 menu << "Sketcher_ConstrainHorVer"
@@ -3876,15 +3920,19 @@ void ViewProviderSketch::generateContextMenu()
                 menu << "Sketcher_ConstrainTangent";
             }
         }
-        else if (selectedEdges == 1 && selectedPoints >= 1) {
+        else if (selectedEdges == 1 && selectedPoints >= 1 && !onlyOrigin) {
             menu << "Sketcher_Dimension";
-            if (selectedConics == 0) {
+            if (selectedConics == 0 && selectedBsplines == 0) {
                 menu << "Sketcher_ConstrainCoincidentUnified"
                      << "Sketcher_ConstrainHorVer"
                      << "Sketcher_ConstrainVertical"
                      << "Sketcher_ConstrainHorizontal";
                 if (selectedPoints == 2) {
                     menu << "Sketcher_ConstrainSymmetric";
+                }
+                if (selectedPoints == 1) {
+                    menu << "Sketcher_ConstrainPerpendicular"
+                         << "Sketcher_ConstrainTangent";
                 }
             }
             else {
@@ -3893,7 +3941,7 @@ void ViewProviderSketch::generateContextMenu()
                      << "Sketcher_ConstrainTangent";
             }
         }
-        else if (selectedEdges == 0 && selectedPoints >= 1) {
+        else if (selectedEdges == 0 && selectedPoints >= 1 && !onlyOrigin) {
             menu << "Sketcher_Dimension";
 
             if (selectedPoints > 1) {
@@ -3902,8 +3950,15 @@ void ViewProviderSketch::generateContextMenu()
                      << "Sketcher_ConstrainVertical"
                      << "Sketcher_ConstrainHorizontal";
             }
+            if (selectedPoints == 2) {
+                menu << "Sketcher_ConstrainPerpendicular"
+                     << "Sketcher_ConstrainTangent";
+                if (selectedEndPoints == 2) {
+                    menu << "Sketcher_JoinCurves";
+                }
+            }
         }
-        else if (selectedLines >= 1 && selectedPoints >= 1) {
+        else if (selectedLines >= 1 && selectedPoints >= 1 && !onlyOrigin) {
             menu << "Sketcher_Dimension"
                  << "Sketcher_ConstrainHorVer"
                  << "Sketcher_ConstrainVertical"
