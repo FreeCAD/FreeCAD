@@ -48,7 +48,7 @@ class Color;
 namespace Part
 {
 
-class ShapeHasher;
+struct ShapeHasher;
 class TopoShape;
 class TopoShapeCache;
 typedef std::unordered_map<TopoShape, TopoShape, ShapeHasher, ShapeHasher> TopoShapeMap;
@@ -888,6 +888,49 @@ private:
      */
     static std::deque<TopoShape>
     sortEdges(std::list<TopoShape>& edges, bool keepOrder = false, double tol = 0.0);
+};
+
+/// Shape hasher that ignore orientation
+struct ShapeHasher {
+    inline size_t operator()(const TopoShape &s) const {
+        return s.getShape().HashCode(INT_MAX);
+    }
+    inline size_t operator()(const TopoDS_Shape &s) const {
+        return s.HashCode(INT_MAX);
+    }
+    inline bool operator()(const TopoShape &a, const TopoShape &b) const {
+        return a.getShape().IsSame(b.getShape());
+    }
+    inline bool operator()(const TopoDS_Shape &a, const TopoDS_Shape &b) const {
+        return a.IsSame(b);
+    }
+    template <class T>
+    static inline void hash_combine(std::size_t& seed, const T& v)
+    {
+        // copied from boost::hash_combine
+        std::hash<T> hasher;
+        seed ^= hasher(v) + 0x9e3779b9 + (seed<<6) + (seed>>2);
+    }
+    inline size_t operator()(const std::pair<TopoShape, TopoShape> &s) const {
+        size_t res = s.first.getShape().HashCode(INT_MAX);
+        hash_combine(res, s.second.getShape().HashCode(INT_MAX));
+        return res;
+    }
+    inline size_t operator()(const std::pair<TopoDS_Shape, TopoDS_Shape> &s) const {
+        size_t res = s.first.HashCode(INT_MAX);
+        hash_combine(res, s.second.HashCode(INT_MAX));
+        return res;
+    }
+    inline bool operator()(const std::pair<TopoShape, TopoShape> &a,
+                           const std::pair<TopoShape, TopoShape> &b) const {
+        return a.first.getShape().IsSame(b.first.getShape())
+            && a.second.getShape().IsSame(b.second.getShape());
+    }
+    inline bool operator()(const std::pair<TopoDS_Shape, TopoDS_Shape> &a,
+                           const std::pair<TopoDS_Shape, TopoDS_Shape> &b) const {
+        return a.first.IsSame(b.first)
+            && a.second.IsSame(b.second);
+    }
 };
 
 }  // namespace Part
