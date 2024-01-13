@@ -866,6 +866,11 @@ void DlgPreferencesImp::restorePageDefaults(PreferencesPageItem* item)
         auto* page = qobject_cast<PreferencePage*>(item->getWidget());
 
         page->resetSettingsToDefaults();
+        /**
+         * Let's save the restart request before the page object is deleted and replaced with
+         * the newPage object (wich has restartRequired initialized to false)
+         */
+        restartRequired = restartRequired || page->isRestartRequired();
         
         std::string pageName = page->property(PageNameProperty).toString().toStdString();
         std::string groupName = page->property(GroupNameProperty).toString().toStdString();

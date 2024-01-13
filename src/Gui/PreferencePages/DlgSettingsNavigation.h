@@ -49,6 +49,7 @@ public:
 
     void saveSettings() override;
     void loadSettings() override;
+    void resetSettingsToDefaults() override;
 
 private:
     void onMouseButtonClicked();
