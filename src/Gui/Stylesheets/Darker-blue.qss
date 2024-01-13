@@ -204,9 +204,9 @@ Resetting everything helps to unify styles across different operating systems
   }
 
   QStatusBar QToolTip {
-    background-color: #444444;
+    color: white;
+    background-color: #1e1e1e;
     border: 1px solid #696968;
-    color: #444444;
     /* Remove padding, for fix combo box tooltip */
     padding: 0px;
     /* Reducing transparency to read better */
