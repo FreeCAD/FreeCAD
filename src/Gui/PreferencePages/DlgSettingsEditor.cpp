@@ -327,6 +327,23 @@ void DlgSettingsEditor::loadSettings()
     ui->displayItems->setCurrentItem(ui->displayItems->topLevelItem(0));
 }
 
+void DlgSettingsEditor::resetSettingsToDefaults()
+{
+    ParameterGrp::handle hGrp;
+    hGrp = WindowParameter::getDefaultParameter()->GetGroup("Editor");
+    //reset the parameters in the "Editor" group
+    for (QVector<QPair<QString, unsigned int> >::Iterator it = d->colormap.begin(); it != d->colormap.end(); ++it) {
+        hGrp->RemoveUnsigned((*it).first.toLatin1());
+    }
+    //reset "FontSize" parameter
+    hGrp->RemoveInt("FontSize");
+    //reset "Font" parameter
+    hGrp->RemoveASCII("Font");
+
+    //finally reset all the parameters associated to Gui::Pref* widgets
+    PreferencePage::resetSettingsToDefaults();
+}
+
 /**
  * Sets the strings of the subwidgets using the current language.
  */

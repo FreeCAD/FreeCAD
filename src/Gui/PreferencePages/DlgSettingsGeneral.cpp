@@ -341,6 +341,44 @@ void DlgSettingsGeneral::loadSettings()
     loadThemes();
 }
 
+void DlgSettingsGeneral::resetSettingsToDefaults()
+{
+    ParameterGrp::handle hGrp;
+    hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/Units");
+    //reset "UserSchema" parameter
+    hGrp->RemoveInt("UserSchema");
+    //reset "Decimals" parameter
+    hGrp->RemoveInt("Decimals");
+    //reset "IgnoreProjectSchema" parameter
+    hGrp->RemoveBool("IgnoreProjectSchema");
+    //reset "FracInch" parameter
+    hGrp->RemoveInt("FracInch");
+
+    hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");
+    //reset "Theme" parameter
+    hGrp->RemoveASCII("Theme");
+    //reset "TiledBackground" parameter
+    hGrp->RemoveBool("TiledBackground");
+
+
+    hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/DockWindows");
+    //reset "ComboView" parameters
+    hGrp->GetGroup("ComboView")->RemoveBool("Enabled");
+    //reset "TreeView" parameters
+    hGrp->GetGroup("TreeView")->RemoveBool("Enabled");
+    //reset "PropertyView" parameters
+    hGrp->GetGroup("PropertyView")->RemoveBool("Enabled");
+
+    hGrp = WindowParameter::getDefaultParameter()->GetGroup("General");
+    //reset "Language" parameter
+    hGrp->RemoveASCII("Language");
+    //reset "ToolbarIconSize" parameter
+    hGrp->RemoveInt("ToolbarIconSize");
+
+    //finally reset all the parameters associated to Gui::Pref* widgets
+    PreferencePage::resetSettingsToDefaults();
+}
+
 void DlgSettingsGeneral::saveThemes()
 {
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/MainWindow");

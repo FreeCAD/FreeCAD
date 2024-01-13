@@ -53,6 +53,7 @@ public:
 
     void saveSettings() override;
     void loadSettings() override;
+    void resetSettingsToDefaults() override;
 
     void saveThemes();
     void loadThemes();

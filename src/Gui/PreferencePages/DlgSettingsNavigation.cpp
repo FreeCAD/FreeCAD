@@ -208,6 +208,39 @@ void DlgSettingsNavigation::loadSettings()
 
 }
 
+void DlgSettingsNavigation::resetSettingsToDefaults()
+{
+    ParameterGrp::handle hGrp;
+    hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/View");
+    //reset "NavigationStyle" parameter
+    hGrp->RemoveASCII("NavigationStyle");
+    //reset "OrbitStyle" parameter
+    hGrp->RemoveInt("OrbitStyle");
+    //reset "RotationMode" parameter
+    hGrp->RemoveInt("RotationMode");
+    //reset "ShowNaviCube" parameter
+    hGrp->RemoveBool("ShowNaviCube");
+    //reset "ShowRotationCenter" parameter
+    hGrp->RemoveBool("ShowRotationCenter");
+    //reset "UseNavigationAnimations" parameter
+    hGrp->RemoveBool("UseNavigationAnimations");
+    //reset "NewDocumentCameraOrientation" parameter
+    hGrp->RemoveASCII("NewDocumentCameraOrientation");
+
+    hGrp = hGrp->GetGroup("Custom");
+    //reset "Q0" parameter
+    hGrp->RemoveFloat("Q0");
+    //reset "Q1" parameter
+    hGrp->RemoveFloat("Q1");
+    //reset "Q2" parameter
+    hGrp->RemoveFloat("Q2");
+    //reset "Q3" parameter
+    hGrp->RemoveFloat("Q3");
+
+    //finally reset all the parameters associated to Gui::Pref* widgets
+    PreferencePage::resetSettingsToDefaults();
+}
+
 void DlgSettingsNavigation::onMouseButtonClicked()
 {
     QDialog dlg(this);
