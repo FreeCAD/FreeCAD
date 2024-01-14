@@ -545,6 +545,9 @@ SET(Part_SRCS
     TopoShapeOpCode.h
     edgecluster.cpp
     edgecluster.h
+    MeasureClient.cpp
+    MeasureClient.h
+    MeasureInfo.h
     modelRefine.cpp
     modelRefine.h
     Tools.cpp
