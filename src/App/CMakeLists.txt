@@ -97,6 +97,7 @@ generate_from_xml(StringIDPy)
 generate_from_xml(ComplexGeoDataPy)
 generate_from_xml(PropertyContainerPy)
 generate_from_xml(MaterialPy)
+generate_from_xml(MeasureManagerPy)
 
 generate_from_py(FreeCADInit InitScript.h)
 generate_from_py(FreeCADTest TestScript.h)
@@ -119,6 +120,7 @@ SET(FreeCADApp_XML_SRCS
     PropertyContainerPy.xml
     ComplexGeoDataPy.xml
     MaterialPy.xml
+    MeasureManagerPy.xml
     StringHasherPy.xml
     StringIDPy.xml
 )
@@ -282,6 +284,8 @@ SET(FreeCADApp_CPP_SRCS
     MappedName.cpp
     Material.cpp
     MaterialPyImp.cpp
+    MeasureManager.cpp
+    MeasureManagerPyImp.cpp
     Metadata.cpp
     MetadataPyImp.cpp
     ElementNamingUtils.cpp
@@ -305,6 +309,7 @@ SET(FreeCADApp_HPP_SRCS
     MappedName.h
     MappedElement.h
     Material.h
+    MeasureManager.h
     Metadata.h
     ElementNamingUtils.h
     StringHasher.h
