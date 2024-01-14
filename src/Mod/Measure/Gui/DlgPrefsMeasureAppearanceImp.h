@@ -1,5 +1,5 @@
-/***************************************************************************
- *   Copyright (c) 2021 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ /**************************************************************************
+ *   Copyright (c) 2023 Wanderer Fan <wandererfan@gmail.com>               *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,28 +20,37 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <FCGlobal.h>
+#ifndef MeasureGui_DlgPrefsAppearanceImp_H
+#define MeasureGui_DlgPrefsAppearanceImp_H
 
-#ifndef MEASURE_GLOBAL_H
-#define MEASURE_GLOBAL_H
+#include <memory>
+
+#include <Gui/PropertyPage.h>
+#include <Mod/Measure/MeasureGlobal.h>
 
 
-// Measure
-#ifndef MeasureExport
-#ifdef Measure_EXPORTS
-#define MeasureExport AppExport
-#else
-#define MeasureExport AppExport
-#endif
-#endif
+namespace MeasureGui {
 
-// MeasureGui
-#ifndef MeasureGuiExport
-#ifdef MeasureGui_EXPORTS
-# define MeasureGuiExport   FREECAD_DECL_EXPORT
-#else
-# define MeasureGuiExport   FREECAD_DECL_IMPORT
-#endif
-#endif
+class Ui_DlgPrefsMeasureAppearanceImp;
 
-#endif //MEASURE_GLOBAL_H
+class DlgPrefsMeasureAppearanceImp : public Gui::Dialog::PreferencePage
+{
+    Q_OBJECT
+
+public:
+    explicit DlgPrefsMeasureAppearanceImp( QWidget* parent = nullptr );
+    ~DlgPrefsMeasureAppearanceImp() override;
+
+protected:
+    void saveSettings() override;
+    void loadSettings() override;
+    void changeEvent(QEvent *e) override;
+
+private:
+    std::unique_ptr<Ui_DlgPrefsMeasureAppearanceImp> ui;
+};
+
+} // namespace MeasureGui
+
+#endif // MeasureGui_DlgPrefsAppearanceImp_H
+
