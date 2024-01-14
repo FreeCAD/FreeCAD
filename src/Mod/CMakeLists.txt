@@ -122,8 +122,11 @@ if(BUILD_SURFACE)
   add_subdirectory(Surface)
 endif(BUILD_SURFACE)
 
-if(BUILD_TECHDRAW)
+if(BUILD_MEASURE)
     add_subdirectory(Measure)
+endif(BUILD_MEASURE)
+
+if(BUILD_TECHDRAW)
     add_subdirectory(TechDraw)
 endif(BUILD_TECHDRAW)
 
