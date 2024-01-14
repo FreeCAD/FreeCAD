@@ -161,4 +161,91 @@ TEST_F(TopoShapeExpansionTest, makeElementCompoundTwoCubes)
     // 26 subshapes each
 }
 
+
+TEST_F(TopoShapeExpansionTest, mapSubElement)
+{
+    // Arrange
+    auto [cube1, cube2] = CreateTwoCubes();
+    Part::TopoShape cube1TS {cube1};
+    cube1TS.Tag = 1;
+    Part::TopoShape cube2TS {cube2};
+    cube2TS.Tag = 2;
+    auto [cube3, cube4] = CreateTwoCubes();
+    Part::TopoShape cube3TS {cube3};
+    cube3TS.Tag = 3;
+    Part::TopoShape cube4TS {cube4};
+    cube4TS.Tag = 4;
+    std::vector<Part::TopoShape> subShapes = cube1TS.getSubTopoShapes(TopAbs_FACE);
+    Part::TopoShape face1 = subShapes.front();
+    face1.Tag = 3;
+    Part::TopoShape topoShape, topoShape1;
+
+    // Act
+    int fs1 = topoShape.findShape(cube1TS.getShape());
+    topoShape.setShape(cube1TS);
+    // cube1TS.mapSubElement(face1);  // This throws an exception.  Is that right?
+    // The cache ancestry only works on TopAbs_SHAPE so this is likely an invalid call,
+    // but do we defend against it or expect the exception?
+
+    topoShape.mapSubElement(
+        cube1TS);  // Once we do this map, it's in the ancestry cache forevermore
+    int fs2 = topoShape.findShape(cube1TS.getShape());
+    int fs3 = topoShape.findShape(face1.getShape());
+    int size1 = topoShape.getElementMap().size();
+    int size0 = cube1TS.getElementMap().size();
+
+    // Assert
+    EXPECT_EQ(fs1, 0);
+    EXPECT_EQ(fs2, 1);
+    EXPECT_EQ(fs3, 1);
+    EXPECT_EQ(0, size0);
+    EXPECT_EQ(26, size1);
+
+    // Act
+    topoShape.setShape(TopoDS_Shape());
+    int fs4 = topoShape.findShape(cube1TS.getShape());
+    topoShape.setShape(cube1, true);
+    // No mapSubElement required, it keeps finding it now
+    int fs5 = topoShape.findShape(cube1TS.getShape());
+    topoShape.setShape(cube1, false);
+    int fs6 = topoShape.findShape(cube1TS.getShape());
+    // Assert
+    EXPECT_EQ(fs4, 0);
+    EXPECT_EQ(fs5, 1);
+    EXPECT_EQ(fs6, 1);
+
+    // Act
+    Part::TopoShape topoShape2, topoShape3;
+    topoShape2.setShape(cube2TS);
+    topoShape2.mapSubElement(cube2TS, nullptr, true);
+    int fs7 = topoShape2.findShape(cube2TS.getShape());
+    int fs8 = topoShape2.findShape(face1.getShape());
+
+    topoShape3.setShape(cube3TS);
+    topoShape3.mapSubElement(cube3TS, "Sample", true);
+    int fs9 = topoShape3.findShape(cube3TS.getShape());
+    int fs10 = topoShape3.findShape(face1.getShape());
+
+    topoShape.makeElementCompound({cube1TS, cube2TS});
+    int fs11 = topoShape.findShape(cube2TS.getShape());
+    int size2 = topoShape.getElementMap().size();
+    // Assert
+    EXPECT_EQ(fs7, 1);
+    EXPECT_EQ(fs8, 0);
+    EXPECT_EQ(fs9, 1);
+    EXPECT_EQ(fs10, 0);
+    EXPECT_EQ(fs11, 2);
+    EXPECT_EQ(52, size2);
+
+    // Act
+    topoShape2.makeElementCompound({cube3TS, cube4TS});
+    topoShape2.mapSubElement(cube3TS, nullptr, true);
+    topoShape3.makeElementCompound({topoShape, topoShape2});
+    int fs12 = topoShape3.findShape(cube4TS.getShape());
+    int size4 = topoShape3.getElementMap().size();
+    // Assert
+    EXPECT_EQ(104, size4);
+    EXPECT_EQ(fs12, 4);
+}
+
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)

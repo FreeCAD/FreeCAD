@@ -609,7 +609,7 @@ public:
     void copyElementMap(const TopoShape & topoShape, const char *op=nullptr);
     bool canMapElement(const TopoShape &other) const;
     void mapSubElement(const TopoShape &other,const char *op=nullptr, bool forceHasher=false);
-    void mapSubElement(const std::vector<TopoShape> &shapes, const char *op);
+    void mapSubElement(const std::vector<TopoShape> &shapes, const char *op=nullptr);
     bool hasPendingElementMap() const;
 
 
