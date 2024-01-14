@@ -178,7 +178,7 @@ private:
     void restorePageDefaults(PreferencesPageItem* item);
     void restartIfRequired();
 
-    void updatePageDependentLabels();
+    void updatePageDependentWidgets();
 
     QPixmap loadIconForGroup(const std::string& name) const;
     //@}

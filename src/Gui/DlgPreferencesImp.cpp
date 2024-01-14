@@ -178,7 +178,7 @@ void DlgPreferencesImp::setupPages()
         }
     }
 
-    updatePageDependentLabels();
+    updatePageDependentWidgets();
 }
 
 QPixmap DlgPreferencesImp::loadIconForGroup(const std::string &name) const
@@ -317,11 +317,16 @@ void DlgPreferencesImp::createPageInGroup(PreferencesPageItem *groupItem, const 
     }
 }
 
-void DlgPreferencesImp::updatePageDependentLabels()
+void DlgPreferencesImp::updatePageDependentWidgets()
 {
     auto currentPageItem = getCurrentPage();
 
+    // update header of the page
     ui->headerLabel->setText(currentPageItem->text());
+
+    // reset scroll area to start position
+    ui->scrollArea->horizontalScrollBar()->setValue(0);
+    ui->scrollArea->verticalScrollBar()->setValue(0);
 }
 
 /**
@@ -430,7 +435,7 @@ void DlgPreferencesImp::activateGroupPage(const QString& group, int index)
             ui->groupWidgetStack->setCurrentWidget(pageStackWidget);
             pageStackWidget->setCurrentIndex(index);
 
-            updatePageDependentLabels();
+            updatePageDependentWidgets();
             
             return;
         }
@@ -745,7 +750,7 @@ void DlgPreferencesImp::onPageSelected(const QModelIndex& index)
         pagesStackWidget->setCurrentIndex(index.row());
     }
 
-    updatePageDependentLabels();
+    updatePageDependentWidgets();
 }
 
 void DlgPreferencesImp::onGroupExpanded(const QModelIndex& index)
@@ -824,7 +829,7 @@ void DlgPreferencesImp::changeEvent(QEvent *e)
             }
         }
 
-        updatePageDependentLabels();
+        updatePageDependentWidgets();
     } else {
         QWidget::changeEvent(e);
     }
