@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2021 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2023 WandererFan <wandererfan@gmail.com>                *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,28 +20,40 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <FCGlobal.h>
+#ifndef Preferences_h_
+#define Preferences_h_
 
-#ifndef MEASURE_GLOBAL_H
-#define MEASURE_GLOBAL_H
+#include <Mod/Measure/MeasureGlobal.h>
+
+#include <string>
+
+#include <Base/Parameter.h>
+#include <App/Material.h>
+
+namespace App
+{
+class Color;
+}
+
+namespace Measure
+{
+
+//getters for parameters used in multiple places.
+class MeasureExport Preferences
+{
+
+public:
+    static Base::Reference<ParameterGrp> getPreferenceGroup(const char* Name);
+
+    static App::Color defaultLineColor();
+    static App::Color defaultTextColor();
+    static double defaultDistFactor();
+    static int defaultFontSize();
+    static bool defaultMirror();
+    static App::Color defaultTextBackgroundColor();
+};
 
 
-// Measure
-#ifndef MeasureExport
-#ifdef Measure_EXPORTS
-#define MeasureExport AppExport
-#else
-#define MeasureExport AppExport
+}//end namespace Measure
 #endif
-#endif
 
-// MeasureGui
-#ifndef MeasureGuiExport
-#ifdef MeasureGui_EXPORTS
-# define MeasureGuiExport   FREECAD_DECL_EXPORT
-#else
-# define MeasureGuiExport   FREECAD_DECL_IMPORT
-#endif
-#endif
-
-#endif //MEASURE_GLOBAL_H

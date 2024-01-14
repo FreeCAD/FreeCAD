@@ -109,7 +109,7 @@ TopoDS_Shape getLocatedShape(const std::string& objectName, const std::string& s
     {
         return shape.getShape();
     }
-    return shape.getSubShape(subName.c_str());
+    return shape.getSubShape(subName.c_str(), true);
 }
 
 

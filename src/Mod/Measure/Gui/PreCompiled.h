@@ -1,5 +1,5 @@
 /***************************************************************************
- *   Copyright (c) 2021 Werner Mayer <wmayer[at]users.sourceforge.net>     *
+ *   Copyright (c) 2014 Werner Mayer <wmayer[at]users.sourceforge.net>     *
  *                                                                         *
  *   This file is part of the FreeCAD CAx development system.              *
  *                                                                         *
@@ -20,28 +20,25 @@
  *                                                                         *
  ***************************************************************************/
 
-#include <FCGlobal.h>
+#ifndef APP_PRECOMPILED_H
+#define APP_PRECOMPILED_H
 
-#ifndef MEASURE_GLOBAL_H
-#define MEASURE_GLOBAL_H
+#include <FCConfig.h>
 
+#ifdef _PreComp_
 
-// Measure
-#ifndef MeasureExport
-#ifdef Measure_EXPORTS
-#define MeasureExport AppExport
-#else
-#define MeasureExport AppExport
-#endif
-#endif
+// standard
+#include <stdexcept>
 
-// MeasureGui
-#ifndef MeasureGuiExport
-#ifdef MeasureGui_EXPORTS
-# define MeasureGuiExport   FREECAD_DECL_EXPORT
-#else
-# define MeasureGuiExport   FREECAD_DECL_IMPORT
-#endif
+// STL
+#include <memory>
+#include <sstream>
+
+// Qt
+#include <QCoreApplication>
+#include <QTcpSocket>
+
+#endif //_PreComp_
+
 #endif
 
-#endif //MEASURE_GLOBAL_H
