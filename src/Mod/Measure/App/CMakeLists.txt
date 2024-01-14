@@ -17,19 +17,43 @@ set(Measure_LIBS
 )
 
 generate_from_xml(MeasurementPy)
+generate_from_xml(MeasureBasePy)
 
 SET(Python_SRCS
     MeasurementPy.xml
     MeasurementPyImp.cpp
+    MeasureBasePy.xml
+    MeasureBasePyImp.cpp
 )
 SOURCE_GROUP("Python" FILES ${Python_SRCS})
 
 SET(MeasureModule_SRCS
-    AppMeasure.cpp
-    Measurement.cpp
-    Measurement.h
     PreCompiled.cpp
     PreCompiled.h
+    AppMeasure.cpp
+
+# original service routines
+    Measurement.cpp
+    Measurement.h
+
+# umf
+    MeasureBase.cpp
+    MeasureBase.h
+    MeasureAngle.cpp
+    MeasureAngle.h
+    MeasureDistance.cpp
+    MeasureDistance.h
+    MeasurePosition.cpp
+    MeasurePosition.h
+    MeasureLength.cpp
+    MeasureLength.h
+    MeasureArea.cpp
+    MeasureArea.h
+    MeasureRadius.cpp
+    MeasureRadius.h
+
+    Preferences.cpp
+    Preferences.h
 )
 
 SOURCE_GROUP("Module" FILES ${MeasureModule_SRCS})
