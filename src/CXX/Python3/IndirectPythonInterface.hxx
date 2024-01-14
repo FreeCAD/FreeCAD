@@ -149,7 +149,9 @@ PYCXX_EXPORT int &_Py_NoSiteFlag();
 PYCXX_EXPORT int &_Py_TabcheckFlag();
 PYCXX_EXPORT int &_Py_VerboseFlag();
 
-#  if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 7
+#  if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 12
+// NOTE: No _Py_PackageContext in 3.12+
+#  elif PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 7
 PYCXX_EXPORT const char *__Py_PackageContext();
 #  else
 PYCXX_EXPORT char *__Py_PackageContext();

@@ -128,7 +128,9 @@ static int *ptr_Py_OptimizeFlag = NULL;
 static int *ptr_Py_NoSiteFlag = NULL;
 static int *ptr_Py_VerboseFlag = NULL;
 
-#   if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 7
+#   if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 12
+// NOTE: No _PyPackageContext in 3.12
+#   elif PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 7
 static const char **ptr__Py_PackageContext = NULL;
 #   else
 static char **ptr__Py_PackageContext = NULL;
@@ -248,7 +250,9 @@ bool InitialisePythonIndirectInterface()
     ptr_Py_NoSiteFlag           = GetInt_as_IntPointer( "Py_NoSiteFlag" );
     ptr_Py_VerboseFlag          = GetInt_as_IntPointer( "Py_VerboseFlag" );
 
-#    if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 7
+#    if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 12
+    // NOTE: No _PyPackageContext in 3.12+
+#    elif PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 7
     ptr__Py_PackageContext      = GetConstCharPointer_as_ConstCharPointerPointer( "_Py_PackageContext" );
 #    else
     ptr__Py_PackageContext      = GetCharPointer_as_CharPointerPointer( "_Py_PackageContext" );
@@ -404,7 +408,9 @@ PYCXX_EXPORT int &_Py_NoSiteFlag()                   { return *ptr_Py_NoSiteFlag
 PYCXX_EXPORT int &_Py_VerboseFlag()                  { return *ptr_Py_VerboseFlag; }
 #  endif
 
-#  if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 7
+#  if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 12
+// NOTE: No _Py_PackageContext in 3.12+
+#  elif PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 7
 PYCXX_EXPORT const char *__Py_PackageContext()       { return *ptr__Py_PackageContext; }
 #  else
 PYCXX_EXPORT char *__Py_PackageContext()             { return *ptr__Py_PackageContext; }
@@ -523,7 +529,9 @@ PYCXX_EXPORT int &_Py_InteractiveFlag()              { return Py_InteractiveFlag
 PYCXX_EXPORT int &_Py_OptimizeFlag()                 { return Py_OptimizeFlag; }
 PYCXX_EXPORT int &_Py_NoSiteFlag()                   { return Py_NoSiteFlag; }
 PYCXX_EXPORT int &_Py_VerboseFlag()                  { return Py_VerboseFlag; }
-#  if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 7
+#  if PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 12
+// NOTE: No _Py_PackageContext in 3.12+
+#  elif PY_MAJOR_VERSION == 3 && PY_MINOR_VERSION >= 7
 PYCXX_EXPORT const char *__Py_PackageContext()       { return _Py_PackageContext; }
 #  else
 PYCXX_EXPORT char *__Py_PackageContext()             { return _Py_PackageContext; }
