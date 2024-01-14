@@ -35,6 +35,7 @@
 #include <Inventor/fields/SoSFString.h>
 #include <Inventor/fields/SoSFVec3f.h>
 #include <Inventor/nodekits/SoSeparatorKit.h>
+#include <Mod/Part/App/VectorAdapter.h>
 
 #include <Base/Matrix.h>
 #include <Gui/TaskView/TaskDialog.h>
@@ -262,46 +263,6 @@ private:
 
 };
 
-/*! @brief Convert to vector
- *
- * Used to construct a vector from various input types
- */
-class VectorAdapter
-{
-public:
-  /*!default construction isValid is set to false*/
-  VectorAdapter();
-  /*!Build a vector from a faceIn
-   * @param faceIn vector will be normal to plane and equal to cylindrical axis.
-   * @param pickedPointIn location of pick. straight conversion from sbvec. not accurate.*/
-  VectorAdapter(const TopoDS_Face &faceIn, const gp_Vec &pickedPointIn);
-  /*!Build a vector from an edgeIn
-   * @param edgeIn vector will be lastPoint - firstPoint.
-   * @param pickedPointIn location of pick. straight conversion from sbvec. not accurate.*/
-  VectorAdapter(const TopoDS_Edge &edgeIn, const gp_Vec &pickedPointIn);
-  /*!Build a vector From 2 vertices.
-   *vector will be equal to @param vertex2In - @param vertex1In.*/
-  VectorAdapter(const TopoDS_Vertex &vertex1In, const TopoDS_Vertex &vertex2In);
-  /*!Build a vector From 2 vectors.
-   *vector will be equal to @param vector2 - @param vector1.*/
-  VectorAdapter(const gp_Vec &vector1, const gp_Vec &vector2);
-
-  /*!make sure no errors in vector construction.
-   * @return true = vector is good. false = vector is NOT good.*/
-  bool isValid() const {return status;}
-  /*!get the calculated vector.
-   * @return the vector. use isValid to ensure correct results.*/
-  operator gp_Vec() const {return vector;}//explicit bombs
-  /*!build occ line used for extrema calculation*/
-  operator gp_Lin() const;//explicit bombs
-  gp_Vec getPickPoint() const {return origin;}
-
-private:
-  void projectOriginOntoVector(const gp_Vec &pickedPointIn);
-  bool status;
-  gp_Vec vector;
-  gp_Vec origin;
-};
 
 /*!angular dialog class*/
 class TaskMeasureAngular : public Gui::TaskView::TaskDialog, public Gui::SelectionObserver
