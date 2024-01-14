@@ -738,98 +738,6 @@ void PartGui::TaskMeasureLinear::clearAllSlot(bool)
   PartGui::eraseAllDimensions();
 }
 
-PartGui::VectorAdapter::VectorAdapter() : status(false), vector()
-{
-}
-
-PartGui::VectorAdapter::VectorAdapter(const TopoDS_Face &faceIn, const gp_Vec &pickedPointIn) :
-  status(false), vector(), origin(pickedPointIn)
-{
-  Handle(Geom_Surface) surface = BRep_Tool::Surface(faceIn);
-  if (surface->IsKind(STANDARD_TYPE(Geom_ElementarySurface)))
-  {
-    Handle(Geom_ElementarySurface) eSurface = Handle(Geom_ElementarySurface)::DownCast(surface);
-    gp_Dir direction = eSurface->Axis().Direction();
-    vector = direction;
-    vector.Normalize();
-    if (faceIn.Orientation() == TopAbs_REVERSED)
-      vector.Reverse();
-    if (surface->IsKind(STANDARD_TYPE(Geom_CylindricalSurface)) ||
-      surface->IsKind(STANDARD_TYPE(Geom_SphericalSurface))
-    )
-    {
-      origin = eSurface->Axis().Location().XYZ();
-      projectOriginOntoVector(pickedPointIn);
-    }
-    else
-      origin = pickedPointIn + vector;
-    status = true;
-  }
-}
-
-PartGui::VectorAdapter::VectorAdapter(const TopoDS_Edge &edgeIn, const gp_Vec &pickedPointIn) :
-  status(false), vector(), origin(pickedPointIn)
-{
-  TopoDS_Vertex firstVertex = TopExp::FirstVertex(edgeIn, Standard_True);
-  TopoDS_Vertex lastVertex = TopExp::LastVertex(edgeIn, Standard_True);
-  vector = PartGui::convert(lastVertex) - PartGui::convert(firstVertex);
-  if (vector.Magnitude() < Precision::Confusion())
-    return;
-  vector.Normalize();
-
-  status = true;
-  projectOriginOntoVector(pickedPointIn);
-}
-
-PartGui::VectorAdapter::VectorAdapter(const TopoDS_Vertex &vertex1In, const TopoDS_Vertex &vertex2In) :
-  status(false), vector(), origin()
-{
-  vector = PartGui::convert(vertex2In) - PartGui::convert(vertex1In);
-  vector.Normalize();
-
-  //build origin half way.
-  gp_Vec tempVector = (PartGui::convert(vertex2In) - PartGui::convert(vertex1In));
-  double mag = tempVector.Magnitude();
-  tempVector.Normalize();
-  tempVector *= (mag / 2.0);
-  origin = tempVector + PartGui::convert(vertex1In);
-
-  status = true;
-}
-
-PartGui::VectorAdapter::VectorAdapter(const gp_Vec &vector1, const gp_Vec &vector2) :
-  status(false), vector(), origin()
-{
-  vector = vector2- vector1;
-  vector.Normalize();
-
-  //build origin half way.
-  gp_Vec tempVector = vector2 - vector1;
-  double mag = tempVector.Magnitude();
-  tempVector.Normalize();
-  tempVector *= (mag / 2.0);
-  origin = tempVector + vector1;
-
-  status = true;
-}
-
-void PartGui::VectorAdapter::projectOriginOntoVector(const gp_Vec &pickedPointIn)
-{
-  Handle(Geom_Curve) heapLine = new Geom_Line(origin.XYZ(), vector.XYZ());
-  gp_Pnt tempPoint(pickedPointIn.XYZ());
-  GeomAPI_ProjectPointOnCurve projection(tempPoint, heapLine);
-  if (projection.NbPoints() < 1)
-    return;
-  origin.SetXYZ(projection.Point(1).XYZ());
-}
-
-PartGui::VectorAdapter::operator gp_Lin() const
-{
-  gp_Pnt tempOrigin;
-  tempOrigin.SetXYZ(origin.XYZ());
-  return gp_Lin(tempOrigin, gp_Dir(vector));
-}
-
 gp_Vec PartGui::convert(const TopoDS_Vertex &vertex)
 {
   gp_Pnt point = BRep_Tool::Pnt(vertex);
@@ -1620,7 +1528,7 @@ void PartGui::TaskMeasureAngular::selectionClearDelayedSlot()
   this->blockSelection(false);
 }
 
-PartGui::VectorAdapter PartGui::TaskMeasureAngular::buildAdapter(const PartGui::DimSelections& selection)
+VectorAdapter PartGui::TaskMeasureAngular::buildAdapter(const PartGui::DimSelections& selection)
 {
   Base::Matrix4D mat;
   assert(selection.selections.size() > 0 && selection.selections.size() < 3);
