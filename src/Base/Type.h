@@ -128,7 +128,6 @@ public:
     static void init();
     static void destruct();
 
-protected:
     static std::string getModuleName(const char* ClassName);
 
 
