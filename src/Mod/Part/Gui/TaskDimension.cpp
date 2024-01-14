@@ -68,6 +68,7 @@
 #include <Base/Interpreter.h>
 #include <Base/UnitsApi.h>
 #include <Gui/Application.h>
+#include <Gui/ArcEngine.h>
 #include <Gui/Document.h>
 #include <Gui/BitmapFactory.h>
 #include <Gui/Control.h>
@@ -1260,7 +1261,7 @@ void PartGui::DimensionAngular::setupDimension()
   setPart("arrow1.material", material);
   setPart("arrow2.material", material);
 
-  ArcEngine *arcEngine = new ArcEngine();
+  Gui::ArcEngine *arcEngine = new Gui::ArcEngine();
   arcEngine->angle.connectFrom(&angle);
   arcEngine->radius.connectFrom(&radius);
   arcEngine->deviation.setValue(0.1f);
@@ -1323,81 +1324,6 @@ void PartGui::DimensionAngular::setupDimension()
   material->unref();
 }
 
-SO_ENGINE_SOURCE(PartGui::ArcEngine)
-
-PartGui::ArcEngine::ArcEngine()
-{
-  SO_ENGINE_CONSTRUCTOR(ArcEngine);
-
-  SO_ENGINE_ADD_INPUT(radius, (10.0));
-  SO_ENGINE_ADD_INPUT(angle, (1.0));
-  SO_ENGINE_ADD_INPUT(deviation, (0.25));
-
-  SO_ENGINE_ADD_OUTPUT(points, SoMFVec3f);
-  SO_ENGINE_ADD_OUTPUT(pointCount, SoSFInt32);
-}
-
-void PartGui::ArcEngine::initClass()
-{
-  SO_ENGINE_INIT_CLASS(ArcEngine, SoEngine, "Engine");
-}
-
-void PartGui::ArcEngine::evaluate()
-{
-  if (radius.getValue() < std::numeric_limits<float>::epsilon() ||
-    angle.getValue() < std::numeric_limits<float>::epsilon() ||
-    deviation.getValue() < std::numeric_limits<float>::epsilon())
-  {
-    defaultValues();
-    return;
-  }
-
-  float deviationAngle(acos((radius.getValue() - deviation.getValue()) / radius.getValue()));
-  std::vector<SbVec3f> tempPoints;
-  int segmentCount;
-  if (deviationAngle >= angle.getValue())
-    segmentCount = 1;
-  else
-  {
-    segmentCount = static_cast<int>(angle.getValue() / deviationAngle) + 1;
-    if (segmentCount < 2)
-    {
-      defaultValues();
-      return;
-    }
-  }
-  float angleIncrement = angle.getValue() / static_cast<float>(segmentCount);
-  for (int index = 0; index < segmentCount + 1; ++index)
-  {
-    SbVec3f currentNormal(1.0, 0.0, 0.0);
-    float currentAngle = index * angleIncrement;
-    SbRotation rotation(SbVec3f(0.0, 0.0, 1.0), currentAngle);
-    rotation.multVec(currentNormal, currentNormal);
-    tempPoints.push_back(currentNormal * radius.getValue());
-  }
-  int tempCount = tempPoints.size(); //for macro.
-  SO_ENGINE_OUTPUT(points, SoMFVec3f, setNum(tempCount));
-  SO_ENGINE_OUTPUT(pointCount, SoSFInt32, setValue(tempCount));
-  std::vector<SbVec3f>::const_iterator it;
-  for (it = tempPoints.begin(); it != tempPoints.end(); ++it)
-  {
-    int currentIndex = it-tempPoints.begin(); //for macro.
-    SbVec3f temp(*it); //for macro
-    SO_ENGINE_OUTPUT(points, SoMFVec3f, set1Value(currentIndex, temp));
-  }
-
-}
-
-void PartGui::ArcEngine::defaultValues()
-{
-  //just some non-failing info.
-  SO_ENGINE_OUTPUT(points, SoMFVec3f, setNum(2));
-  SbVec3f point1(10.0, 0.0, 0.0);
-  SO_ENGINE_OUTPUT(points, SoMFVec3f, set1Value(0, point1));
-  SbVec3f point2(7.07f, 7.07f, 0.0);
-  SO_ENGINE_OUTPUT(points, SoMFVec3f, set1Value(1, point2));
-  SO_ENGINE_OUTPUT(pointCount, SoSFInt32, setValue(2));
-}
 
 PartGui::SteppedSelection::SteppedSelection(const uint& buttonCountIn, QWidget* parent)
   : QWidget(parent)

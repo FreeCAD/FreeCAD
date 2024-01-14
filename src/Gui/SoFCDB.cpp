@@ -75,6 +75,7 @@
 #include "Inventor/SoAutoZoomTranslation.h"
 #include "Inventor/SoDrawingGrid.h"
 #include "propertyeditor/PropertyItem.h"
+#include "ArcEngine.h"
 
 
 using namespace Gui;
@@ -194,6 +195,8 @@ void Gui::SoFCDB::init()
     GLFlagWindow                    ::init();
 
     SelectionObject                 ::init();
+
+    ArcEngine                       ::initClass();
 
     qRegisterMetaType<Base::Vector3f>("Base::Vector3f");
     qRegisterMetaType<Base::Vector3d>("Base::Vector3d");
