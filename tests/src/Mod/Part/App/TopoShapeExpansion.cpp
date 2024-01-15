@@ -161,4 +161,20 @@ TEST_F(TopoShapeExpansionTest, makeElementCompoundTwoCubes)
     // 26 subshapes each
 }
 
+TEST_F(TopoShapeExpansionTest, makeElementWiresCombinesAdjacent)
+{
+    // Arrange
+    auto edge1 = BRepBuilderAPI_MakeEdge(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(1.0, 0.0, 0.0)).Edge();
+    auto edge2 = BRepBuilderAPI_MakeEdge(gp_Pnt(1.0, 0.0, 0.0), gp_Pnt(2.0, 0.0, 0.0)).Edge();
+    Part::TopoShape topoShape;
+    std::vector<Part::TopoShape> shapes {edge1, edge2};
+
+    // Act
+    topoShape.makeElementWires(shapes);
+
+    // Assert
+    auto elementMap = topoShape.getElementMap();
+    EXPECT_EQ(6, elementMap.size());
+}
+
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)

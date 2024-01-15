@@ -695,6 +695,40 @@ struct EdgePoints
     }
 };
 
+TopoShape TopoShape::reverseEdge (const TopoShape& edge) {
+    Standard_Real first = NAN;
+    Standard_Real last = NAN;
+    const Handle(Geom_Curve)& curve =
+        BRep_Tool::Curve(TopoDS::Edge(edge.getShape()), first, last);
+    first = curve->ReversedParameter(first);
+    last = curve->ReversedParameter(last);
+    TopoShape res(BRepBuilderAPI_MakeEdge(curve->Reversed(), last, first));
+    auto edgeName = Data::IndexedName::fromConst("Edge", 1);
+    if (auto mapped = edge.getMappedName(edgeName)) {
+        res.elementMap()->setElementName(edgeName, mapped, res.Tag);
+    }
+    auto v1Name = Data::IndexedName::fromConst("Vertex", 1);
+    auto v2Name = Data::IndexedName::fromConst("Vertex", 2);
+    auto v1 = edge.getMappedName(v1Name);
+    auto v2 = edge.getMappedName(v2Name);
+    if (v1 && v2) {
+        res.elementMap()->setElementName(v1Name, v2, res.Tag);
+        res.elementMap()->setElementName(v2Name, v1, res.Tag);
+    }
+    else if (v1 && edge.countSubShapes(TopAbs_EDGE) == 1) {
+        // It's possible an edge has only one vertex, so no need to reverse
+        // the name
+        res.elementMap()->setElementName(v1Name, v1, res.Tag);
+    }
+    else if (v1) {
+        res.elementMap()->setElementName(v2Name, v1, res.Tag);
+    }
+    else if (v2) {
+        res.elementMap()->setElementName(v1Name, v2, res.Tag);
+    }
+    return res;
+};
+
 std::deque<TopoShape> TopoShape::sortEdges(std::list<TopoShape>& edges, bool keepOrder, double tol)
 {
     if (tol < Precision::Confusion()) {
@@ -702,67 +736,33 @@ std::deque<TopoShape> TopoShape::sortEdges(std::list<TopoShape>& edges, bool kee
     }
     double tol3d = tol * tol;
 
-    std::list<EdgePoints> edge_points;
+    std::list<EdgePoints> edgePoints;
     for (auto it = edges.begin(); it != edges.end(); ++it) {
-        edge_points.emplace_back(it, tol3d);
+        edgePoints.emplace_back(it, tol3d);
     }
 
     std::deque<TopoShape> sorted;
-    if (edge_points.empty()) {
+    if (edgePoints.empty()) {
         return sorted;
     }
 
     gp_Pnt first;
     gp_Pnt last;
-    first = edge_points.front().v1;
-    last = edge_points.front().v2;
+    first = edgePoints.front().v1;
+    last = edgePoints.front().v2;
 
-    sorted.push_back(*edge_points.front().edge);
-    edges.erase(edge_points.front().it);
-    if (edge_points.front().closed) {
+    sorted.push_back(*edgePoints.front().edge);
+    edges.erase(edgePoints.front().it);
+    if (edgePoints.front().closed) {
         return sorted;
     }
 
-    edge_points.erase(edge_points.begin());
+    edgePoints.erase(edgePoints.begin());
 
-    auto reverseEdge = [](const TopoShape& edge) {
-        Standard_Real first = NAN;
-        Standard_Real last = NAN;
-        const Handle(Geom_Curve)& curve =
-            BRep_Tool::Curve(TopoDS::Edge(edge.getShape()), first, last);
-        first = curve->ReversedParameter(first);
-        last = curve->ReversedParameter(last);
-        TopoShape res(BRepBuilderAPI_MakeEdge(curve->Reversed(), last, first));
-        auto edgeName = Data::IndexedName::fromConst("Edge", 1);
-        if (auto mapped = edge.getMappedName(edgeName)) {
-            res.elementMap()->setElementName(edgeName, mapped, res.Tag);
-        }
-        auto v1Name = Data::IndexedName::fromConst("Vertex", 1);
-        auto v2Name = Data::IndexedName::fromConst("Vertex", 2);
-        auto v1 = edge.getMappedName(v1Name);
-        auto v2 = edge.getMappedName(v2Name);
-        if (v1 && v2) {
-            res.elementMap()->setElementName(v1Name, v2, res.Tag);
-            res.elementMap()->setElementName(v2Name, v1, res.Tag);
-        }
-        else if (v1 && edge.countSubShapes(TopAbs_EDGE) == 1) {
-            // It's possible an edge has only one vertex, so no need to reverse
-            // the name
-            res.elementMap()->setElementName(v1Name, v1, res.Tag);
-        }
-        else if (v1) {
-            res.elementMap()->setElementName(v2Name, v1, res.Tag);
-        }
-        else if (v2) {
-            res.elementMap()->setElementName(v1Name, v2, res.Tag);
-        }
-        return res;
-    };
-
-    while (!edge_points.empty()) {
+    while (!edgePoints.empty()) {
         // search for adjacent edge
         std::list<EdgePoints>::iterator pEI;
-        for (pEI = edge_points.begin(); pEI != edge_points.end(); ++pEI) {
+        for (pEI = edgePoints.begin(); pEI != edgePoints.end(); ++pEI) {
             if (pEI->closed) {
                 continue;
             }
@@ -779,37 +779,37 @@ std::deque<TopoShape> TopoShape::sortEdges(std::list<TopoShape>& edges, bool kee
                 last = pEI->v2;
                 sorted.push_back(*pEI->edge);
                 edges.erase(pEI->it);
-                edge_points.erase(pEI);
-                pEI = edge_points.begin();
+                edgePoints.erase(pEI);
+                pEI = edgePoints.begin();
                 break;
             }
             if (pEI->v2.SquareDistance(first) <= tol3d) {
                 sorted.push_front(*pEI->edge);
                 first = pEI->v1;
                 edges.erase(pEI->it);
-                edge_points.erase(pEI);
-                pEI = edge_points.begin();
+                edgePoints.erase(pEI);
+                pEI = edgePoints.begin();
                 break;
             }
             if (pEI->v2.SquareDistance(last) <= tol3d) {
                 last = pEI->v1;
                 sorted.push_back(reverseEdge(*pEI->edge));
                 edges.erase(pEI->it);
-                edge_points.erase(pEI);
-                pEI = edge_points.begin();
+                edgePoints.erase(pEI);
+                pEI = edgePoints.begin();
                 break;
             }
             if (pEI->v1.SquareDistance(first) <= tol3d) {
                 first = pEI->v2;
                 sorted.push_front(reverseEdge(*pEI->edge));
                 edges.erase(pEI->it);
-                edge_points.erase(pEI);
-                pEI = edge_points.begin();
+                edgePoints.erase(pEI);
+                pEI = edgePoints.begin();
                 break;
             }
         }
 
-        if ((pEI == edge_points.end()) || (last.SquareDistance(first) <= tol3d)) {
+        if ((pEI == edgePoints.end()) || (last.SquareDistance(first) <= tol3d)) {
             // no adjacent edge found or polyline is closed
             return sorted;
         }

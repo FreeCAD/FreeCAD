@@ -636,6 +636,11 @@ public:
                                    bool force = true);
 
 
+    enum class ConnectionPolicy {
+        REQUIRE_SHARED_VERTEX,
+        MERGE_WITH_TOLERANCE
+    };
+
     /** Make a compound of wires by connecting input edges
      *
      * @param shapes: input shapes. Can be any type of shape. Edges will be
@@ -664,6 +669,7 @@ public:
                                 bool shared = false,
                                 TopoShapeMap* output = nullptr);
 
+
     /** Make a compound of wires by connecting input edges
      *
      * @param shape: input shape. Can be any type of shape. Edges will be
@@ -673,8 +679,8 @@ public:
      * @param keepOrder: whether to respect the order of the input edges
      * @param tol: tolerance for checking the distance of two vertex to decide
      *             if two edges are connected
-     * @param shared: if true, then only connect edges if they shared the same
-     *                vertex, or else use \c tol to check for connection.
+     * @param policy: if REQUIRE_SHARED_VERTEX, then only connect edges if they shared the same
+     *                vertex. If MERGE_WITH_TOLERANCE use \c tol to check for connection.
      * @param output: optional output mapping from wire edges to input edge.
      *                Note that edges may be modified after adding to the wire,
      *                so the output edges may not be the same as the input
@@ -689,7 +695,7 @@ public:
     TopoShape& makeElementWires(const TopoShape& shape,
                                 const char* op = nullptr,
                                 double tol = 0.0,
-                                bool shared = false,
+                                ConnectionPolicy policy = ConnectionPolicy::MERGE_WITH_TOLERANCE,
                                 TopoShapeMap* output = nullptr);
 
     /** Make a compound of wires by connecting input edges in the given order
@@ -888,6 +894,7 @@ private:
      */
     static std::deque<TopoShape>
     sortEdges(std::list<TopoShape>& edges, bool keepOrder = false, double tol = 0.0);
+    static TopoShape reverseEdge (const TopoShape& edge);
 };
 
 /// Shape hasher that ignore orientation
