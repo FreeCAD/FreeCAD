@@ -143,7 +143,7 @@ PyMOD_INIT_FUNC(SketcherGui)
         QT_TRANSLATE_NOOP("QObject", "Sketcher"));
     (void)new Gui::PrefPageProducer<SketcherGui::SketcherSettingsDisplay>(
         QT_TRANSLATE_NOOP("QObject", "Sketcher"));
-    (void)new Gui::PrefPageProducer<SketcherGui::SketcherSettingsColors>(
+    (void)new Gui::PrefPageProducer<SketcherGui::SketcherSettingsAppearance>(
         QT_TRANSLATE_NOOP("QObject", "Sketcher"));
 
     // add resources and reloads the translators
