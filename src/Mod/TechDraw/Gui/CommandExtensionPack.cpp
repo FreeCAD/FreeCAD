@@ -849,14 +849,13 @@ void CmdTechDrawExtensionVertexAtIntersection::activated(int iMsg)
                 // std::string ptId = objFeat->addCosmeticVertex(pt/scale);
                 // objFeat->add1CVToGV(ptId);
                 // invert the point so the math works correctly
-                Base::Vector3d temp = DrawUtil::invertY(pt);
-                temp = CosmeticVertex::makeCanonicalPoint(objFeat, temp);
+                Base::Vector3d temp = CosmeticVertex::makeCanonicalPoint(objFeat, pt);
                 objFeat->addCosmeticVertex(temp);
             }
         }
     }
     getSelection().clearSelection();
-    objFeat->refreshCEGeoms();
+    objFeat->refreshCVGeoms();
     objFeat->requestPaint();
     Gui::Command::commitCommand();
 }
