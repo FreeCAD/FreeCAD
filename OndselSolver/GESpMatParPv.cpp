@@ -12,14 +12,14 @@
 
 using namespace MbD;
 
-void GESpMatParPv::forwardEliminateWithPivot(int p)
+void GESpMatParPv::forwardEliminateWithPivot(size_t p)
 {
 	//"rightHandSideB may be multidimensional."
 
 	auto& rowp = matrixA->at(p);
 	auto app = rowp->at(p);
-	auto elementsInPivotRow = std::make_shared<std::vector<const std::pair<const int, double>*>>(rowp->size() - 1);
-	int index = 0;
+	auto elementsInPivotRow = std::make_shared<std::vector<const std::pair<const size_t, double>*>>(rowp->size() - 1);
+	size_t index = 0;
 	for (auto const& keyValue : *rowp) {
 		if (keyValue.first != p) {
 			elementsInPivotRow->at(index) = (&keyValue);
@@ -27,7 +27,7 @@ void GESpMatParPv::forwardEliminateWithPivot(int p)
 		}
 	}
 	auto bp = rightHandSideB->at(p);
-	for (int ii = 0; ii < markowitzPivotColCount; ii++)
+	for (size_t ii = 0; ii < markowitzPivotColCount; ii++)
 	{
 		auto i = rowPositionsOfNonZerosInPivotColumn->at(ii);
 		auto& rowi = matrixA->at(i);
@@ -54,7 +54,7 @@ void GESpMatParPv::backSubstituteIntoDU()
 	answerX = std::make_shared<FullColumn<double>>(m);
 	answerX->at(n - 1) = rightHandSideB->at(m - 1) / matrixA->at(m - 1)->at(n - 1);
 	//auto rhsZeroElement = this->rhsZeroElement();
-	for (int i = n - 2; i >= 0; i--)
+	for (int i = n - 2; i >= 0; i--)	//Use int because of decrement
 	{
 		auto rowi = matrixA->at(i);
 		sum = 0.0; // rhsZeroElement copy.

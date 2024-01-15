@@ -66,12 +66,12 @@ void EndFramec::calcPostDynCorrectorIteration()
 	aAOe = markerFrame->aAOm;
 }
 
-FColDsptr EndFramec::aAjOe(int j)
+FColDsptr EndFramec::aAjOe(size_t j)
 {
 	return aAOe->column(j);
 }
 
-double EndFramec::riOeO(int i)
+double EndFramec::riOeO(size_t i)
 {
 	return rOeO->at(i);
 }

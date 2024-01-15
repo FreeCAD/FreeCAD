@@ -30,9 +30,9 @@ namespace MbD {
 		void initialize() override;
 		void calc() override;
 		std::shared_ptr<EulerAnglesDot<T>> differentiateWRT(T var);
-		void setRotOrder(int i, int j, int k);
+		void setRotOrder(size_t i, size_t j, size_t k);
 
-		std::shared_ptr<std::vector<int>> rotOrder;
+		std::shared_ptr<std::vector<size_t>> rotOrder;
 		FColFMatDsptr cA;
 		FMatDsptr aA;
 
@@ -46,7 +46,7 @@ namespace MbD {
 	inline void EulerAngles<Symsptr>::calc()
 	{
 		cA = std::make_shared<FullColumn<FMatDsptr>>(3);
-		for (int i = 0; i < 3; i++)
+		for (size_t i = 0; i < 3; i++)
 		{
 			auto axis = rotOrder->at(i);
 			auto angle = this->at(i)->getValue();
@@ -69,7 +69,7 @@ namespace MbD {
 	inline void EulerAngles<double>::calc()
 	{
 		cA = std::make_shared<FullColumn<FMatDsptr>>(3);
-		for (int i = 0; i < 3; i++)
+		for (size_t i = 0; i < 3; i++)
 		{
 			auto axis = rotOrder->at(i);
 			auto angle = this->at(i);
@@ -104,9 +104,9 @@ namespace MbD {
 		return derivatives;
 	}
 	template<typename T>
-	inline void EulerAngles<T>::setRotOrder(int i, int j, int k)
+	inline void EulerAngles<T>::setRotOrder(size_t i, size_t j, size_t k)
 	{
-		rotOrder = std::make_shared<std::vector<int>>(3);
+		rotOrder = std::make_shared<std::vector<size_t>>(3);
 		rotOrder->at(0) = i;
 		rotOrder->at(1) = j;
 		rotOrder->at(2) = k;

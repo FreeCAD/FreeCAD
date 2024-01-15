@@ -16,13 +16,13 @@ namespace MbD {
         //axis riIeJeIe aAjOIe rIeJeO 
     public:
         DispCompIecJecIe();
-        DispCompIecJecIe(EndFrmsptr frmi, EndFrmsptr frmj, int axis);
+        DispCompIecJecIe(EndFrmsptr frmi, EndFrmsptr frmj, size_t axis);
 
         void calc_value() override;
         void calcPostDynCorrectorIteration() override;
         double value() override;
 
-        int axis;
+        size_t axis;
         double riIeJeIe;
         FColDsptr aAjOIe, rIeJeO;
     };

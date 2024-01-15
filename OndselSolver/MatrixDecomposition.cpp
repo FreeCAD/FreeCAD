@@ -19,7 +19,7 @@ FColDsptr MbD::MatrixDecomposition::forAndBackSubsaveOriginal(FColDsptr, bool)
 void MatrixDecomposition::applyRowOrderOnRightHandSideB()
 {
 	FColDsptr answer = std::make_shared<FullColumn<double>>(m);
-	for (int i = 0; i < m; i++)
+	for (size_t i = 0; i < m; i++)
 	{
 		answer->at(i) = rightHandSideB->at(rowOrder->at(i));
 	}

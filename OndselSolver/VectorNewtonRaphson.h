@@ -8,6 +8,8 @@
  
 #pragma once
 
+#include <limits>
+
 #include "NewtonRaphson.h"
 #include "MatrixSolver.h"
 
@@ -30,7 +32,7 @@ namespace MbD {
         virtual void handleSingularMatrix() override;
 
         std::shared_ptr<MatrixSolver> matrixSolver;
-        int n = -1;
+        size_t n = SIZE_MAX;
         FColDsptr xold, x, dx, y;
         //std::shared_ptr<RowTypeMatrix<double>> pypx;
     };

@@ -15,7 +15,7 @@ MbD::DispCompIeqcJecIe::DispCompIeqcJecIe()
 {
 }
 
-MbD::DispCompIeqcJecIe::DispCompIeqcJecIe(EndFrmsptr frmi, EndFrmsptr frmj, int axis) : DispCompIecJecIe(frmi, frmj, axis)
+MbD::DispCompIeqcJecIe::DispCompIeqcJecIe(EndFrmsptr frmi, EndFrmsptr frmj, size_t axis) : DispCompIecJecIe(frmi, frmj, axis)
 {
 	priIeJeIepXI = std::make_shared<FullRow<double>>(3);
 	priIeJeIepEI = std::make_shared<FullRow<double>>(4);
@@ -28,12 +28,12 @@ void MbD::DispCompIeqcJecIe::calc_ppvaluepEIpEI()
 	auto frmIeqc = std::static_pointer_cast<EndFrameqc>(frmI);
 	auto mprIeJeOpEIT = frmIeqc->prOeOpE->transpose();
 	auto mpprIeJeOpEIpEI = frmIeqc->pprOeOpEpE;
-	for (int i = 0; i < 4; i++)
+	for (size_t i = 0; i < 4; i++)
 	{
 		auto ppAjOIepEIipEI = ppAjOIepEIpEI->at(i);
 		auto mpprIeJeOpEIipEI = mpprIeJeOpEIpEI->at(i);
 		auto ppriIeJeIepEIipEI = ppriIeJeIepEIpEI->at(i);
-		for (int j = i; j < 4; j++)
+		for (size_t j = i; j < 4; j++)
 		{
 			auto term1 = ppAjOIepEIipEI->at(j)->dot(rIeJeO);
 			auto mterm2 = pAjOIepEIT->at(i)->dot(mprIeJeOpEIT->at(j));
@@ -47,10 +47,10 @@ void MbD::DispCompIeqcJecIe::calc_ppvaluepEIpEI()
 
 void MbD::DispCompIeqcJecIe::calc_ppvaluepXIpEI()
 {
-	for (int i = 0; i < 3; i++)
+	for (size_t i = 0; i < 3; i++)
 	{
 		auto ppriIeJeIepXIipEI = ppriIeJeIepXIpEI->at(i);
-		for (int j = 0; j < 4; j++)
+		for (size_t j = 0; j < 4; j++)
 		{
 			ppriIeJeIepXIipEI->atiput(j, -pAjOIepEIT->at(j)->at(i));
 		}
@@ -62,7 +62,7 @@ void MbD::DispCompIeqcJecIe::calc_pvaluepEI()
 	auto frmIeqc = std::static_pointer_cast<EndFrameqc>(frmI);
 	pAjOIepEIT = frmIeqc->pAjOepET(axis);
 	auto mprIeJeOpEIT = frmIeqc->prOeOpE->transpose();
-	for (int i = 0; i < 4; i++)
+	for (size_t i = 0; i < 4; i++)
 	{
 		priIeJeIepEI->atiput(i, pAjOIepEIT->at(i)->dot(rIeJeO) - aAjOIe->dot(mprIeJeOpEIT->at(i)));
 	}
@@ -70,7 +70,7 @@ void MbD::DispCompIeqcJecIe::calc_pvaluepEI()
 
 void MbD::DispCompIeqcJecIe::calc_pvaluepXI()
 {
-	for (int i = 0; i < 3; i++)
+	for (size_t i = 0; i < 3; i++)
 	{
 		priIeJeIepXI->atiput(i, -aAjOIe->at(i));
 	}

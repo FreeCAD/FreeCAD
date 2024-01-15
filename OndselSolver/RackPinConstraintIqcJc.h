@@ -36,7 +36,7 @@ namespace MbD {
 
         FRowDsptr pGpXI, pGpEI;
         FMatDsptr ppGpXIpEI, ppGpEIpEI;
-        int iqXI, iqEI;
+        size_t iqXI, iqEI;
 
     };
 }

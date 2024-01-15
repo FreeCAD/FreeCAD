@@ -28,7 +28,7 @@ void MbD::DistxyIeqcJec::calc_ppdistxypEIpEI()
 	auto pypEI = yIeJeIe->pvaluepEI();
 	auto ppxpEIpEI = xIeJeIe->ppvaluepEIpEI();
 	auto ppypEIpEI = yIeJeIe->ppvaluepEIpEI();
-	for (int i = 0; i < 4; i++)
+	for (size_t i = 0; i < 4; i++)
 	{
 		auto& ppdistxypEIpEIi = ppdistxypEIpEI->at(i);
 		auto& pdistxypEIi = pdistxypEI->at(i);
@@ -36,7 +36,7 @@ void MbD::DistxyIeqcJec::calc_ppdistxypEIpEI()
 		auto& ppypEIpEIi = ppypEIpEI->at(i);
 		auto& pxpEIi = pxpEI->at(i);
 		auto& pypEIi = pypEI->at(i);
-		for (int j = i; j < 4; j++)
+		for (size_t j = i; j < 4; j++)
 		{
 			auto pdistxypEIj = pdistxypEI->at(j);
 			auto pxpEIj = pxpEI->at(j);
@@ -61,7 +61,7 @@ void MbD::DistxyIeqcJec::calc_ppdistxypXIpEI()
 	auto pypEI = yIeJeIe->pvaluepEI();
 	auto ppxpXIpEI = xIeJeIe->ppvaluepXIpEI();
 	auto ppypXIpEI = yIeJeIe->ppvaluepXIpEI();
-	for (int i = 0; i < 3; i++)
+	for (size_t i = 0; i < 3; i++)
 	{
 		auto& ppdistxypXIpEIi = ppdistxypXIpEI->at(i);
 		auto& pdistxypXIi = pdistxypXI->at(i);
@@ -69,7 +69,7 @@ void MbD::DistxyIeqcJec::calc_ppdistxypXIpEI()
 		auto& ppypXIpEIi = ppypXIpEI->at(i);
 		auto& pxpXIi = pxpXI->at(i);
 		auto& pypXIi = pypXI->at(i);
-		for (int j = 0; j < 4; j++)
+		for (size_t j = 0; j < 4; j++)
 		{
 			auto& pdistxypEIj = pdistxypEI->at(j);
 			auto& pxpEIj = pxpEI->at(j);
@@ -91,7 +91,7 @@ void MbD::DistxyIeqcJec::calc_ppdistxypXIpXI()
 	auto pypXI = yIeJeIe->pvaluepXI();
 	auto ppxpXIpXI = xIeJeIe->ppvaluepXIpXI();
 	auto ppypXIpXI = yIeJeIe->ppvaluepXIpXI();
-	for (int i = 0; i < 3; i++)
+	for (size_t i = 0; i < 3; i++)
 	{
 		auto& ppdistxypXIpXIi = ppdistxypXIpXI->at(i);
 		auto& pdistxypXIi = pdistxypXI->at(i);
@@ -99,7 +99,7 @@ void MbD::DistxyIeqcJec::calc_ppdistxypXIpXI()
 		auto& ppypXIpXIi = ppypXIpXI->at(i);
 		auto& pxpXIi = pxpXI->at(i);
 		auto& pypXIi = pypXI->at(i);
-		for (int j = i; j < 3; j++)
+		for (size_t j = i; j < 3; j++)
 		{
 			auto pdistxypXIj = pdistxypXI->at(j);
 			auto pxpXIj = pxpXI->at(j);
@@ -120,7 +120,7 @@ void MbD::DistxyIeqcJec::calc_pdistxypEI()
 	auto y = yIeJeIe->value();
 	auto pxpEI = xIeJeIe->pvaluepEI();
 	auto pypEI = yIeJeIe->pvaluepEI();
-	for (int i = 0; i < 4; i++)
+	for (size_t i = 0; i < 4; i++)
 	{
 		auto term = pxpEI->at(i) * x + pypEI->at(i) * y;
 		pdistxypEI->atiput(i, term / distxy);
@@ -133,7 +133,7 @@ void MbD::DistxyIeqcJec::calc_pdistxypXI()
 	auto y = yIeJeIe->value();
 	auto pxpXI = xIeJeIe->pvaluepXI();
 	auto pypXI = yIeJeIe->pvaluepXI();
-	for (int i = 0; i < 3; i++)
+	for (size_t i = 0; i < 3; i++)
 	{
 		auto term = pxpXI->at(i) * x + pypXI->at(i) * y;
 		pdistxypXI->atiput(i, term / distxy);

@@ -15,7 +15,7 @@ namespace MbD {
     {
         //pGpEJ ppGpEIpEJ ppGpEJpEJ iqEJ 
     public:
-        DirectionCosineConstraintIqcJqc(EndFrmsptr frmi, EndFrmsptr frmj, int axisi, int axisj);
+        DirectionCosineConstraintIqcJqc(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi, size_t axisj);
 
         void calcPostDynCorrectorIteration() override;
         void fillAccICIterError(FColDsptr col) override;
@@ -29,7 +29,7 @@ namespace MbD {
         FRowDsptr pGpEJ;
         FMatDsptr ppGpEIpEJ;
         FMatDsptr ppGpEJpEJ;
-        int iqEJ = -1;
+        size_t iqEJ = SIZE_MAX;
     };
 }
 

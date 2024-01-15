@@ -18,7 +18,7 @@ using namespace MbD;
 
 FRowDsptr DifferenceOperator::OneOverFactorials = []() {
 	auto oneOverFactorials = std::make_shared<FullRow<double>>(10);
-	for (int i = 0; i < (int)oneOverFactorials->size(); i++)
+	for (size_t i = 0; i < oneOverFactorials->size(); i++)
 	{
 		oneOverFactorials->at(i) = 1.0 / std::tgamma(i + 1);
 	}
@@ -50,12 +50,12 @@ void MbD::DifferenceOperator::initializeLocally()
 	assert(false);
 }
 
-void DifferenceOperator::setiStep(int i)
+void DifferenceOperator::setiStep(size_t i)
 {
 	iStep = i;
 }
 
-void DifferenceOperator::setorder(int o)
+void DifferenceOperator::setorder(size_t o)
 {
 	order = o;
 }
@@ -67,21 +67,21 @@ void DifferenceOperator::instantiateTaylorMatrix()
 	}
 }
 
-void DifferenceOperator::formTaylorRowwithTimeNodederivative(int i, int ii, int k)
+void DifferenceOperator::formTaylorRowwithTimeNodederivative(size_t i, size_t ii, size_t k)
 {
 	//| rowi hi hipower aij |
 	auto& rowi = taylorMatrix->at(i);
-	for (int j = 0; j < k; j++)
+	for (size_t j = 0; j < k; j++)
 	{
 		rowi->at(j) = 0.0;
 	}
 	rowi->at(k) = 1.0;
 	auto hi = timeNodes->at(ii) - time;
 	auto hipower = 1.0;
-	for (int j = k + 1; j < order + 1; j++)
+	for (size_t j = k + 1; j < order + 1; j++)
 	{
 		hipower = hipower * hi;
-		auto aij = hipower * OneOverFactorials->at((int)j - k);
+		auto aij = hipower * OneOverFactorials->at(j - k);
 		rowi->atiput(j, aij);
 	}
 }

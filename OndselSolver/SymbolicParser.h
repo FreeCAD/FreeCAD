@@ -51,14 +51,14 @@ namespace MbD {
 		bool peekForTypevalue(std::string type, std::string symbol);
 		void notify(std::string msg);
 		void notifyat(std::string msg, int mrk);
-		void combineStackTo(int pos);
+		void combineStackTo(size_t pos);
 		bool isNextLineTag(char c);
 
 		ASMTItem* owner = nullptr;
 		std::shared_ptr<std::map<std::string, Symsptr>> variables;
 		std::shared_ptr<std::vector<ASMTItemIJ>> geoIJs;
 		std::shared_ptr<Units> units;
-		int mark = -1, prevEnd = -1;
+		int mark = SIZE_MAX, prevEnd = SIZE_MAX;
 		char hereChar = '\0';
 		std::string token, tokenType;
 		double tokenNum = -1.0e100;

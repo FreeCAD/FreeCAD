@@ -57,13 +57,13 @@ void MbD::EndFrameqc::initEndFrameqct2()
 	endFrameqct->setMarkerFrame(markerFrame);
 }
 
-FMatFColDsptr EndFrameqc::ppAjOepEpE(int jj)
+FMatFColDsptr EndFrameqc::ppAjOepEpE(size_t jj)
 {
 	auto answer = std::make_shared<FullMatrix<FColDsptr>>(4, 4);
-	for (int i = 0; i < 4; i++) {
+	for (size_t i = 0; i < 4; i++) {
 		auto& answeri = answer->at(i);
 		auto& ppAOepEipE = ppAOepEpE->at(i);
-		for (int j = i; j < 4; j++) {
+		for (size_t j = i; j < 4; j++) {
 			answeri->at(j) = ppAOepEipE->at(j)->column(jj);
 		}
 	}
@@ -78,13 +78,13 @@ void EndFrameqc::calcPostDynCorrectorIteration()
 	pAOepE = markerFrame->pAOmpE;
 }
 
-FMatDsptr EndFrameqc::pAjOepET(int axis)
+FMatDsptr EndFrameqc::pAjOepET(size_t axis)
 {
 	auto answer = std::make_shared<FullMatrix<double>>(4, 3);
-	for (int i = 0; i < 4; i++) {
+	for (size_t i = 0; i < 4; i++) {
 		auto& answeri = answer->at(i);
 		auto& pAOepEi = pAOepE->at(i);
-		for (int j = 0; j < 3; j++) {
+		for (size_t j = 0; j < 3; j++) {
 			auto& answerij = pAOepEi->at(j)->at(axis);
 			answeri->at(j) = answerij;
 		}
@@ -92,13 +92,13 @@ FMatDsptr EndFrameqc::pAjOepET(int axis)
 	return answer;
 }
 
-FMatDsptr EndFrameqc::ppriOeOpEpE(int ii)
+FMatDsptr EndFrameqc::ppriOeOpEpE(size_t ii)
 {
 	auto answer = std::make_shared<FullMatrix<double>>(4, 4);
-	for (int i = 0; i < 4; i++) {
+	for (size_t i = 0; i < 4; i++) {
 		auto& answeri = answer->at(i);
 		auto& pprOeOpEipE = pprOeOpEpE->at(i);
-		for (int j = 0; j < 4; j++) {
+		for (size_t j = 0; j < 4; j++) {
 			auto& answerij = pprOeOpEipE->at(j)->at(ii);
 			answeri->at(j) = answerij;
 		}
@@ -106,17 +106,17 @@ FMatDsptr EndFrameqc::ppriOeOpEpE(int ii)
 	return answer;
 }
 
-int EndFrameqc::iqX()
+size_t EndFrameqc::iqX()
 {
 	return markerFrame->iqX();
 }
 
-int EndFrameqc::iqE()
+size_t EndFrameqc::iqE()
 {
 	return markerFrame->iqE();
 }
 
-FRowDsptr EndFrameqc::priOeOpE(int i)
+FRowDsptr EndFrameqc::priOeOpE(size_t i)
 {
 	return prOeOpE->at(i);
 }

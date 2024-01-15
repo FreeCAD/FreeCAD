@@ -53,7 +53,7 @@ void MbD::ASMTSpatialItem::readRotationMatrix(std::vector<std::string>& lines)
 	assert(lines[0].find("RotationMatrix") != std::string::npos);
 	lines.erase(lines.begin());
 	rotationMatrix = std::make_shared<FullMatrix<double>>(3, 0);
-	for (int i = 0; i < 3; i++)
+	for (size_t i = 0; i < 3; i++)
 	{
 		auto& row = rotationMatrix->at(i);
 		std::istringstream iss(lines[0]);
@@ -98,13 +98,13 @@ void MbD::ASMTSpatialItem::setRotationMatrix(double v11, double v12, double v13,
 		});
 }
 
-void MbD::ASMTSpatialItem::storeOnLevel(std::ofstream& os, int level)
+void MbD::ASMTSpatialItem::storeOnLevel(std::ofstream& os, size_t level)
 {
 	storeOnLevelPosition(os, level + 1);
 	storeOnLevelRotationMatrix(os, level + 1);
 }
 
-void MbD::ASMTSpatialItem::storeOnLevelPosition(std::ofstream& os, int level)
+void MbD::ASMTSpatialItem::storeOnLevelPosition(std::ofstream& os, size_t level)
 {
 	storeOnLevelString(os, level, "Position3D");
 	if (xs == nullptr || xs->empty()) {
@@ -116,18 +116,18 @@ void MbD::ASMTSpatialItem::storeOnLevelPosition(std::ofstream& os, int level)
 	}
 }
 
-void MbD::ASMTSpatialItem::storeOnLevelRotationMatrix(std::ofstream& os, int level)
+void MbD::ASMTSpatialItem::storeOnLevelRotationMatrix(std::ofstream& os, size_t level)
 {
 	storeOnLevelString(os, level, "RotationMatrix");
 	if (xs == nullptr || xs->empty()) {
-		for (int i = 0; i < 3; i++)
+		for (size_t i = 0; i < 3; i++)
 		{
 			storeOnLevelArray(os, level + 1, *rotationMatrix->at(i));
 		}
 	}
 	else {
 		auto rotMat = getRotationMatrix(0);
-		for (int i = 0; i < 3; i++)
+		for (size_t i = 0; i < 3; i++)
 		{
 			storeOnLevelArray(os, level + 1, *rotMat->at(i));
 		}
@@ -135,7 +135,7 @@ void MbD::ASMTSpatialItem::storeOnLevelRotationMatrix(std::ofstream& os, int lev
 
 }
 
-FColDsptr MbD::ASMTSpatialItem::getPosition3D(int i)
+FColDsptr MbD::ASMTSpatialItem::getPosition3D(size_t i)
 {
 	auto vec3 = std::make_shared<FullColumn<double>>(3);
 	vec3->atiput(0, xs->at(i));
@@ -144,7 +144,7 @@ FColDsptr MbD::ASMTSpatialItem::getPosition3D(int i)
 	return vec3;
 }
 
-FMatDsptr MbD::ASMTSpatialItem::getRotationMatrix(int i)
+FMatDsptr MbD::ASMTSpatialItem::getRotationMatrix(size_t i)
 {
 	auto bryantAngles = std::make_shared<EulerAngles<double>>();
 	bryantAngles->setRotOrder(1, 2, 3);

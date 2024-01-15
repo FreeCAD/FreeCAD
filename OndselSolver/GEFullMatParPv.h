@@ -15,7 +15,7 @@ namespace MbD {
     {
         //
     public:
-        void doPivoting(int p) override;
+        void doPivoting(size_t p) override;
         void postSolve() override;
         void preSolvewithsaveOriginal(FMatDsptr fullMat, FColDsptr fullCol, bool saveOriginal) override;
     };

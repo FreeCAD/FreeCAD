@@ -194,7 +194,7 @@ FColDsptr MbD::MBDynItem::readVector3(std::vector<std::string>& args)
 		args.erase(args.begin());
 	}
 	else {
-		for (int i = 0; i < 3; i++)
+		for (size_t i = 0; i < 3; i++)
 		{
 			auto userFunc = std::make_shared<BasicUserFunction>(popOffTop(args), 1.0);
 			parser->parseUserFunction(userFunc);
@@ -286,8 +286,8 @@ FMatDsptr MbD::MBDynItem::readBasicOrientation(std::vector<std::string>& args)
 	if (str.find("euler") != std::string::npos) {
 		args.erase(args.begin());
 		auto euler = std::make_shared<EulerAngles<Symsptr>>();
-		euler->rotOrder = std::make_shared<std::vector<int>>(std::initializer_list<int>{ 1, 2, 3 });
-		for (int i = 0; i < 3; i++)
+		euler->rotOrder = std::make_shared<std::vector<size_t>>(std::initializer_list<size_t>{ 1, 2, 3 });
+		for (size_t i = 0; i < 3; i++)
 		{
 			auto userFunc = std::make_shared<BasicUserFunction>(popOffTop(args), 1.0);
 			parser->parseUserFunction(userFunc);
@@ -317,8 +317,8 @@ FMatDsptr MbD::MBDynItem::readBasicOrientation(std::vector<std::string>& args)
 			args.erase(args.begin());
 			double min = std::numeric_limits<double>::max();
 			double max = -1.0;
-			int imin, imax;
-			for (int i = 0; i < 3; i++)
+			size_t imin, imax;
+			for (size_t i = 0; i < 3; i++)
 			{
 				auto mag = std::abs(vecX->at(i));
 				if (mag > max) {
@@ -366,8 +366,8 @@ FMatDsptr MbD::MBDynItem::readBasicOrientation(std::vector<std::string>& args)
 			args.erase(args.begin());
 			double min = std::numeric_limits<double>::max();
 			double max = -1.0;
-			int imin, imax;
-			for (int i = 0; i < 3; i++)
+			size_t imin, imax;
+			for (size_t i = 0; i < 3; i++)
 			{
 				auto mag = std::abs(vecZ->at(i));
 				if (mag > max) {
@@ -405,10 +405,10 @@ FMatDsptr MbD::MBDynItem::readBasicOrientation(std::vector<std::string>& args)
 		return aAFf;
 	}
 	auto aAFf = FullMatrix<double>::identitysptr(3);
-	for (int i = 0; i < 3; i++)
+	for (size_t i = 0; i < 3; i++)
 	{
 		auto& rowi = aAFf->at(i);
-		for (int j = 0; j < 3; j++)
+		for (size_t j = 0; j < 3; j++)
 		{
 			auto userFunc = std::make_shared<BasicUserFunction>(popOffTop(args), 1.0);
 			parser->parseUserFunction(userFunc);

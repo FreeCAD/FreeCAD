@@ -15,7 +15,7 @@ namespace MbD {
 	{
 		//pGpt ppGpEIpt ppGpEJpt ppGptpt 
 	public:
-		DirectionCosineConstraintIqctJqc(EndFrmsptr frmi, EndFrmsptr frmj, int axisi, int axisj);
+		DirectionCosineConstraintIqctJqc(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi, size_t axisj);
 
 		void fillAccICIterError(FColDsptr col) override;
 		void fillVelICError(FColDsptr col) override;
@@ -24,9 +24,9 @@ namespace MbD {
 		void preVelIC() override;
 		ConstraintType type() override;
 
-		double pGpt;
+		double pGpt = std::numeric_limits<double>::min();
 		FRowDsptr ppGpEIpt;
 		FRowDsptr ppGpEJpt;
-		double ppGptpt;
+		double ppGptpt = std::numeric_limits<double>::min();
 	};
 }

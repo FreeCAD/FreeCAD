@@ -42,7 +42,7 @@ void MarkerFrame::initializeLocally()
 {
 	pprOmOpEpE = EulerParameters<double>::ppApEpEtimesColumn(rpmp);
 	ppAOmpEpE = EulerParameters<double>::ppApEpEtimesMatrix(aApm);
-	for (int i = 0; i < (int)endFrames->size(); i++)
+	for (size_t i = 0; i < endFrames->size(); i++)
 	{
 		auto eFrmqc = std::dynamic_pointer_cast<EndFrameqc>(endFrames->at(i));
 		if (eFrmqc) {
@@ -72,7 +72,7 @@ void MarkerFrame::calcPostDynCorrectorIteration()
 	rOmO = rOpO->plusFullColumn(aAOp->timesFullColumn(rpmp));
 	aAOm = aAOp->timesFullMatrix(aApm);
 	auto pAOppE = partFrame->pAOppE();
-	for (int i = 0; i < 4; i++)
+	for (size_t i = 0; i < 4; i++)
 	{
 		auto& pAOppEi = pAOppE->at(i);
 		prOmOpE->atijputFullColumn(0, i, pAOppEi->timesFullColumn(rpmp));
@@ -86,12 +86,12 @@ void MarkerFrame::prePosIC()
 	endFramesDo([](EndFrmsptr endFrame) { endFrame->prePosIC(); });
 }
 
-int MarkerFrame::iqX()
+size_t MarkerFrame::iqX()
 {
 	return partFrame->iqX;
 }
 
-int MarkerFrame::iqE()
+size_t MarkerFrame::iqE()
 {
 	return partFrame->iqE;
 }

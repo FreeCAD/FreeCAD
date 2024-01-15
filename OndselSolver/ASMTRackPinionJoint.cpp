@@ -42,7 +42,7 @@ void MbD::ASMTRackPinionJoint::createMbD(std::shared_ptr<System> mbdSys, std::sh
 	rackPinJoint->pitchRadius = pitchRadius;
 }
 
-void MbD::ASMTRackPinionJoint::storeOnLevel(std::ofstream& os, int level)
+void MbD::ASMTRackPinionJoint::storeOnLevel(std::ofstream& os, size_t level)
 {
 	ASMTJoint::storeOnLevel(os, level);
 	storeOnLevelString(os, level + 1, "pitchRadius");

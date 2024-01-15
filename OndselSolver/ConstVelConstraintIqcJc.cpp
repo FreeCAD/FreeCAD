@@ -31,17 +31,17 @@ void MbD::ConstVelConstraintIqcJc::calcPostDynCorrectorIteration()
 	auto aA10IeqcJec = std::dynamic_pointer_cast<DirectionCosineIeqcJec>(aA10IeJe);
 	auto& pA10IeJepEI = aA10IeqcJec->pAijIeJepEI;
 	auto& ppA10IeJepEIpEI = aA10IeqcJec->ppAijIeJepEIpEI;
-	for (int i = 0; i < 4; i++)
+	for (size_t i = 0; i < 4; i++)
 	{
 		pGpEI->atiput(i, pA01IeJepEI->at(i) + pA10IeJepEI->at(i));
 	}
-	for (int i = 0; i < 4; i++)
+	for (size_t i = 0; i < 4; i++)
 	{
 		auto& ppGpEIpEIi = ppGpEIpEI->at(i);
 		auto& ppA01IeJepEIpEIi = ppA01IeJepEIpEI->at(i);
 		auto& ppA10IeJepEIpEIi = ppA10IeJepEIpEI->at(i);
 		ppGpEIpEIi->atiput(i, ppA01IeJepEIpEIi->at(i) + ppA10IeJepEIpEIi->at(i));
-		for (int j = i + 1; j < 4; j++)
+		for (size_t j = i + 1; j < 4; j++)
 		{
 			auto ppGpEIpEIij = ppA01IeJepEIpEIi->at(j) + ppA10IeJepEIpEIi->at(j);
 			ppGpEIpEIi->atiput(j, ppGpEIpEIij);

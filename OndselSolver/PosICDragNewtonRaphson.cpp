@@ -25,13 +25,13 @@ void MbD::PosICDragNewtonRaphson::initializeGlobally()
 	AnyPosICNewtonRaphson::initializeGlobally();
 	iterMax = system->iterMaxPosKine;
 	dxTol = system->errorTolPosKine;
-	for (int i = 0; i < qsuWeights->size(); i++)
+	for (size_t i = 0; i < qsuWeights->size(); i++)
 	{
 		qsuWeights->at(i) = 1.0e3;	//minimum weight
 	}
 	for (auto& part : *dragParts) {
 		auto iqX = part->iqX();
-		for (int i = 0; i < 3; i++)
+		for (size_t i = 0; i < 3; i++)
 		{
 			qsuWeights->at((size_t)iqX + i) = 1.0e6;	//maximum weight
 		}
@@ -44,7 +44,7 @@ void MbD::PosICDragNewtonRaphson::assignEquationNumbers()
 	//auto contactEndFrames = system->contactEndFrames();
 	//auto uHolders = system->uHolders();
 	auto constraints = system->allConstraints();
-	int eqnNo = 0;
+	size_t eqnNo = 0;
 	for (auto& part : *parts) {
 		part->iqX(eqnNo);
 		eqnNo = eqnNo + 3;

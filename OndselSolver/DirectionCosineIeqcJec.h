@@ -16,7 +16,7 @@ namespace MbD {
         //pAijIeJepEI ppAijIeJepEIpEI pAjOIepEIT ppAjOIepEIpEI 
     public:
         DirectionCosineIeqcJec();
-        DirectionCosineIeqcJec(EndFrmsptr frmi, EndFrmsptr frmj, int axisi, int axisj);
+        DirectionCosineIeqcJec(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi, size_t axisj);
 
         void calcPostDynCorrectorIteration() override;
         void initialize() override;

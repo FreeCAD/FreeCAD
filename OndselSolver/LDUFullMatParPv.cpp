@@ -12,7 +12,7 @@
 
 using namespace MbD;
 
-void LDUFullMatParPv::doPivoting(int p)
+void LDUFullMatParPv::doPivoting(size_t p)
 {
 	//"Use scalings. Do row pivoting."
 
@@ -21,7 +21,7 @@ void LDUFullMatParPv::doPivoting(int p)
 	double max = app * rowScalings->at(p);
 	if (max < 0.0) max = -max;
 	auto rowPivot = p;
-	for (int i = p + 1; i < m; i++)
+	for (size_t i = p + 1; i < m; i++)
 	{
 		auto aip = matrixA->at(i)->at(p);
 		if (aip != 0.0) {

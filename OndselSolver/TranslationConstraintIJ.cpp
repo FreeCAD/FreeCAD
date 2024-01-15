@@ -11,7 +11,7 @@
 
 using namespace MbD;
 
-TranslationConstraintIJ::TranslationConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj, int axisi) :
+TranslationConstraintIJ::TranslationConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi) :
     ConstraintIJ(frmi, frmj), axisI(axisi)
 {
 }

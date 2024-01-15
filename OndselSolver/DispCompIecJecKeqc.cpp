@@ -15,7 +15,7 @@ DispCompIecJecKeqc::DispCompIecJecKeqc()
 {
 }
 
-DispCompIecJecKeqc::DispCompIecJecKeqc(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk, int axisk) : DispCompIecJecKec(frmi, frmj, frmk, axisk)
+DispCompIecJecKeqc::DispCompIecJecKeqc(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk, size_t axisk) : DispCompIecJecKec(frmi, frmj, frmk, axisk)
 {
 }
 
@@ -40,13 +40,13 @@ void DispCompIecJecKeqc::calcPostDynCorrectorIteration()
 	riIeJeKe = aAjOKe->dot(rIeJeO);
 	pAjOKepEKT = efrmKqc->pAjOepET(axisK);
 	ppAjOKepEKpEK = efrmKqc->ppAjOepEpE(axisK);
-	for (int i = 0; i < 4; i++)
+	for (size_t i = 0; i < 4; i++)
 	{
 		priIeJeKepEK->at(i) = ((pAjOKepEKT->at(i))->dot(rIeJeO));
 		auto& ppAjOKepEKipEK = ppAjOKepEKpEK->at(i);
 		auto& ppriIeJeKepEKipEK = ppriIeJeKepEKpEK->at(i);
 		ppriIeJeKepEKipEK->at(i) = ((ppAjOKepEKipEK->at(i))->dot(rIeJeO));
-		for (int j = i + 1; j < 4; j++)
+		for (size_t j = i + 1; j < 4; j++)
 		{
 			auto ppriIeJeKepEKipEKj = (ppAjOKepEKipEK->at(i))->dot(rIeJeO);
 			ppriIeJeKepEKipEK->at(j) = ppriIeJeKepEKipEKj;

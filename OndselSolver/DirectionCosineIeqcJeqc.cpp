@@ -15,7 +15,7 @@ DirectionCosineIeqcJeqc::DirectionCosineIeqcJeqc()
 {
 }
 
-DirectionCosineIeqcJeqc::DirectionCosineIeqcJeqc(EndFrmsptr frmi, EndFrmsptr frmj, int axisi, int axisj) :
+DirectionCosineIeqcJeqc::DirectionCosineIeqcJeqc(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi, size_t axisj) :
 	DirectionCosineIeqcJec(frmi, frmj, axisi, axisj)
 {
 }
@@ -43,23 +43,23 @@ void DirectionCosineIeqcJeqc::calcPostDynCorrectorIteration()
 {
 	DirectionCosineIeqcJec::calcPostDynCorrectorIteration();
 	pAjOJepEJT = std::static_pointer_cast<EndFrameqc>(frmJ)->pAjOepET(axisJ);
-	for (int i = 0; i < 4; i++)
+	for (size_t i = 0; i < 4; i++)
 	{
 		pAijIeJepEJ->at(i) = aAjOIe->dot(pAjOJepEJT->at(i));
 	}
-	for (int i = 0; i < 4; i++)
+	for (size_t i = 0; i < 4; i++)
 	{
 		auto& ppAijIeJepEIipEJ = ppAijIeJepEIpEJ->at(i);
-		for (int j = 0; j < 4; j++)
+		for (size_t j = 0; j < 4; j++)
 		{
 			ppAijIeJepEIipEJ->at(j) = pAjOIepEIT->at(i)->dot(pAjOJepEJT->at(j));
 		}
 	}
-	for (int i = 0; i < 4; i++)
+	for (size_t i = 0; i < 4; i++)
 	{
 		auto& ppAijIeJepEJipEJ = ppAijIeJepEJpEJ->at(i);
 		auto& ppAjOJepEJipEJ = ppAjOJepEJpEJ->at(i);
-		for (int j = 0; j < 4; j++)
+		for (size_t j = 0; j < 4; j++)
 		{
 			ppAijIeJepEJipEJ->at(j) = aAjOIe->dot(ppAjOJepEJipEJ->at(j));
 		}

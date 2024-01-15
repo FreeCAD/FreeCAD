@@ -21,11 +21,11 @@ namespace MbD {
         FColDsptr basicSolvewithsaveOriginal(FMatDsptr fullMat, FColDsptr fullCol, bool saveOriginal) override;
         void preSolvewithsaveOriginal(FMatDsptr fullMat, FColDsptr fullCol, bool saveOriginal) override;
         void preSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal) override;
-        double getmatrixArowimaxMagnitude(int i) override;
+        double getmatrixArowimaxMagnitude(size_t i) override;
 
         SpMatDsptr matrixA;
-        int markowitzPivotRowCount = -1, markowitzPivotColCount = -1;
-        std::shared_ptr<std::vector<int>> rowPositionsOfNonZerosInPivotColumn;
+        size_t markowitzPivotRowCount = SIZE_MAX, markowitzPivotColCount = SIZE_MAX;
+        std::shared_ptr<std::vector<size_t>> rowPositionsOfNonZerosInPivotColumn;
     };
 }
 

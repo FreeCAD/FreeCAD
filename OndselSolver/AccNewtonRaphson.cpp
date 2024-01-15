@@ -29,7 +29,7 @@ void AccNewtonRaphson::assignEquationNumbers()
 	//auto contactEndFrames = system->contactEndFrames();
 	//auto uHolders = system->uHolders();
 	auto constraints = system->allConstraints();
-	int eqnNo = 0;
+	size_t eqnNo = 0;
 	for (auto& part : *parts) {
 		part->iqX(eqnNo);
 		eqnNo = eqnNo + 3;
@@ -74,7 +74,8 @@ void AccNewtonRaphson::fillY()
 
 void AccNewtonRaphson::incrementIterNo()
 {
-	if (iterNo >= iterMax)
+	iterNo++;
+	if (iterNo > iterMax)
 	{
 		std::stringstream ss;
 		ss << "MbD: No convergence after " << iterNo << " iterations.";
@@ -91,8 +92,6 @@ void AccNewtonRaphson::incrementIterNo()
 
 		throw SimulationStoppingError("");
 	}
-
-	iterNo++;
 }
 
 void AccNewtonRaphson::initializeGlobally()

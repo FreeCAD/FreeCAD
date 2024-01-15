@@ -34,7 +34,7 @@ void MbD::MBDynReference::readVelocity(std::vector<std::string>& args)
 		return;
 	}
 	else {
-		for (int i = 0; i < 3; i++)
+		for (size_t i = 0; i < 3; i++)
 		{
 			auto userFunc = std::make_shared<BasicUserFunction>(popOffTop(args), 1.0);
 			parser->parseUserFunction(userFunc);
@@ -55,7 +55,7 @@ void MbD::MBDynReference::readOmega(std::vector<std::string>& args)
 		return;
 	}
 	else {
-		for (int i = 0; i < 3; i++)
+		for (size_t i = 0; i < 3; i++)
 		{
 			auto userFunc = std::make_shared<BasicUserFunction>(popOffTop(args), 1.0);
 			parser->parseUserFunction(userFunc);

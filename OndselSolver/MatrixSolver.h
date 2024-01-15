@@ -31,20 +31,20 @@ namespace MbD {
         virtual FColDsptr basicSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal) = 0;
         virtual void preSolvewithsaveOriginal(FMatDsptr fullMat, FColDsptr fullCol, bool saveOriginal) = 0;
         virtual void preSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal) = 0;
-        virtual void doPivoting(int p) = 0;
-        virtual void forwardEliminateWithPivot(int p) = 0;
+        virtual void doPivoting(size_t p) = 0;
+        virtual void forwardEliminateWithPivot(size_t p) = 0;
         virtual void backSubstituteIntoDU() = 0;
 
         virtual void postSolve() = 0;
-        virtual void findScalingsForRowRange(int begin, int end);
-        virtual double getmatrixArowimaxMagnitude(int i) = 0;
+        virtual void findScalingsForRowRange(size_t begin, size_t end);
+        virtual double getmatrixArowimaxMagnitude(size_t i) = 0;
         void throwSingularMatrixError(const char* chars);
-        void throwSingularMatrixError(const char* chars, std::shared_ptr<FullColumn<int>> redunEqnNos);
+        void throwSingularMatrixError(const char* chars, std::shared_ptr<FullColumn<size_t>> redunEqnNos);
 
-        int m = 0, n = 0;
+        size_t m = 0, n = 0;
         FColDsptr answerX, rightHandSideB, rowScalings, pivotValues;
-        std::shared_ptr<FullColumn<int>> rowOrder;
-        std::shared_ptr<FullRow<int>> colOrder;
+        std::shared_ptr<FullColumn<size_t>> rowOrder;
+        std::shared_ptr<FullRow<size_t>> colOrder;
         double singularPivotTolerance = 0, millisecondsToRun = 0;
     };
 }

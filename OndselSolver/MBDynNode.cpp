@@ -13,7 +13,7 @@ void MbD::MBDynNode::parseMBDyn(std::vector<std::string>&)
 	assert(false);
 }
 
-void MbD::MBDynNode::outputLine(int i, std::ostream& os)
+void MbD::MBDynNode::outputLine(size_t i, std::ostream& os)
 {
 	auto id = nodeidAt(name);
 	auto asmtPart = std::static_pointer_cast<ASMTPart>(asmtItem);

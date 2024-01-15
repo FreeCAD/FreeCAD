@@ -20,7 +20,7 @@ namespace MbD {
         void run() override;
         void runBasic();
 
-        int nqsu = -1;
+        size_t nqsu = SIZE_MAX;
     };
 }
 

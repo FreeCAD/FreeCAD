@@ -15,7 +15,7 @@ namespace MbD {
     {
         //
     public:
-        void forwardEliminateWithPivot(int p) override;
+        void forwardEliminateWithPivot(size_t p) override;
         void backSubstituteIntoDU() override;
         void postSolve() override;
 

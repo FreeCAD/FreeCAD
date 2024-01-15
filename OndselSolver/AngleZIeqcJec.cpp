@@ -28,11 +28,11 @@ void MbD::AngleZIeqcJec::calcPostDynCorrectorIteration()
 	psthezpEI = aA10IeJe->pvaluepEI();
 	auto ppcthezpEIpEI = aA00IeJe->ppvaluepEIpEI();
 	auto ppsthezpEIpEI = aA10IeJe->ppvaluepEIpEI();
-	for (int i = 0; i < 4; i++)
+	for (size_t i = 0; i < 4; i++)
 	{
 		pthezpEI->atiput(i, (psthezpEI->at(i)) * cosOverSSq - ((pcthezpEI->at(i)) * sinOverSSq));
 	}
-	for (int i = 0; i < 4; i++)
+	for (size_t i = 0; i < 4; i++)
 	{
 		auto ppthezpEIpEIi = ppthezpEIpEI->at(i);
 		auto ppcthezpEIpEIi = ppcthezpEIpEI->at(i);
@@ -43,7 +43,7 @@ void MbD::AngleZIeqcJec::calcPostDynCorrectorIteration()
 		auto term2 = ppsthezpEIpEIi->at(i) * cosOverSSq - (ppcthezpEIpEIi->at(i) * sinOverSSq);
 		auto term3 = (psthezpEIi * pcthezpEIi + (pcthezpEIi * psthezpEIi)) * dSqOverSSqSq;
 		ppthezpEIpEIi->atiput(i, term1 + term2 + term3);
-		for (int j = i + 1; j < 4; j++)
+		for (size_t j = i + 1; j < 4; j++)
 		{
 			auto pcthezpEIj = pcthezpEI->at(j);
 			auto psthezpEIj = psthezpEI->at(j);

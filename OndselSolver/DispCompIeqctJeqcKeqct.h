@@ -16,7 +16,7 @@ namespace MbD {
         //
     public:
         DispCompIeqctJeqcKeqct();
-        DispCompIeqctJeqcKeqct(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk, int axisk);
+        DispCompIeqctJeqcKeqct(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk, size_t axisk);
 
         void preAccIC() override;
         void preVelIC() override;

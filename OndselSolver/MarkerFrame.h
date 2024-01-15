@@ -39,8 +39,8 @@ namespace MbD {
 		void initializeLocally() override;
 		void initializeGlobally() override;
 		void calcPostDynCorrectorIteration() override;
-		int iqX();
-		int iqE();
+		size_t iqX();
+		size_t iqE();
 		void endFramesDo(const std::function <void(EndFrmsptr)>& f);
 		void fillqsu(FColDsptr col) override;
 		void fillqsuWeights(DiagMatDsptr diagMat) override;

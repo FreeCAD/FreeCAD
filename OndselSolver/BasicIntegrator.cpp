@@ -18,7 +18,7 @@ void BasicIntegrator::initializeLocally()
 	_continue = true;
 }
 
-void BasicIntegrator::iStep(int integer)
+void BasicIntegrator::iStep(size_t integer)
 {
 	istep = integer;
 	opBDF->setiStep(integer);
@@ -64,7 +64,7 @@ void BasicIntegrator::incrementTime()
 {
 	tpast->insert(tpast->begin(), t);
 
-	if ((int)tpast->size() > (orderMax + 1)) { tpast->pop_back(); }
+	if (tpast->size() > (orderMax + 1)) { tpast->pop_back(); }
 	auto istepNew = istep + 1;
 	this->iStep(istepNew);
 	this->setorder(orderNew);
@@ -129,7 +129,7 @@ void BasicIntegrator::reportStats()
 {
 }
 
-void BasicIntegrator::setorder(int o)
+void BasicIntegrator::setorder(size_t o)
 {
 	order = o;
 	opBDF->setorder(o);

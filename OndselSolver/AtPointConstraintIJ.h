@@ -17,7 +17,7 @@ namespace MbD {
     {
         //axis riIeJeO 
     public:
-        AtPointConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj, int axisi);
+        AtPointConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi);
 
         void calcPostDynCorrectorIteration() override;
         void initialize() override;
@@ -32,7 +32,7 @@ namespace MbD {
         ConstraintType type() override;
         
 
-        int axis;
+        size_t axis;
         std::shared_ptr<DispCompIecJecO> riIeJeO;
     };
 }

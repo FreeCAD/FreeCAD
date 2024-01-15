@@ -25,6 +25,7 @@
 #include "ASMTSphericalJoint.h"
 #include "ASMTFixedJoint.h"
 #include "ASMTGeneralMotion.h"
+#include "ASMTAllowRotation.h"
 #include "ASMTUniversalJoint.h"
 #include "ASMTPointInPlaneJoint.h"
 #include "ASMTPrincipalMassMarker.h"
@@ -692,6 +693,9 @@ void MbD::ASMTAssembly::readMotions(std::vector<std::string>& lines)
 		else if (motionsLines[0] == "\t\t\tGeneralMotion") {
 			motion = CREATE<ASMTGeneralMotion>::With();
 		}
+		else if (motionsLines[0] == "\t\t\tAllowRotation") {
+			motion = CREATE<ASMTAllowRotation>::With();
+		}
 		else {
 			assert(false);
 		}
@@ -809,7 +813,7 @@ void MbD::ASMTAssembly::readJointSeriesMany(std::vector<std::string>& lines)
 	if (lines.empty()) return;
 	assert(lines[0].find("JointSeries") != std::string::npos);
 	auto it = std::find_if(lines.begin(), lines.end(), [](const std::string& s) {
-		return s.find("MotionSeries") != std::string::npos;
+		return s.find("tionSeries") != std::string::npos;
 		});
 	std::vector<std::string> jointSeriesLines(lines.begin(), it);
 	while (!jointSeriesLines.empty()) {
@@ -885,7 +889,7 @@ void MbD::ASMTAssembly::readJointSeries(std::vector<std::string>& lines)
 void MbD::ASMTAssembly::readMotionSeriesMany(std::vector<std::string>& lines)
 {
 	while (!lines.empty()) {
-		assert(lines[0].find("MotionSeries") != std::string::npos);
+		assert(lines[0].find("tionSeries") != std::string::npos);
 		readMotionSeries(lines);
 	}
 }
@@ -894,7 +898,7 @@ void MbD::ASMTAssembly::readMotionSeries(std::vector<std::string>& lines)
 {
 	if (lines.empty()) return;
 	std::string str = lines[0];
-	std::string substr = "MotionSeries";
+	std::string substr = "tionSeries";
 	auto pos = str.find(substr);
 	assert(pos != std::string::npos);
 	str.erase(0, pos + substr.length());
@@ -941,9 +945,9 @@ double MbD::ASMTAssembly::calcCharacteristicTime()
 
 double MbD::ASMTAssembly::calcCharacteristicMass()
 {
-	auto n = (int)parts->size();
+	auto n = parts->size();
 	double sumOfSquares = 0.0;
-	for (int i = 0; i < n; i++)
+	for (size_t i = 0; i < n; i++)
 	{
 		auto mass = parts->at(i)->principalMassMarker->mass;
 		sumOfSquares += mass * mass;
@@ -964,9 +968,9 @@ double MbD::ASMTAssembly::calcCharacteristicLength()
 		auto& mkrJ = markerMap->at(connector->markerJ);
 		lengths->push_back(mkrJ->rpmp()->length());
 	}
-	auto n = (int)lengths->size();
+	auto n = lengths->size();
 	double sumOfSquares = std::accumulate(lengths->begin(), lengths->end(), 0.0, [](double sum, double l) { return sum + l * l; });
-	auto unitLength = std::sqrt(sumOfSquares / std::max((int)n, 1));
+	auto unitLength = std::sqrt(sumOfSquares / std::max(n, size_t(1)));
 	if (unitLength <= 0) unitLength = 1.0;
 	return unitLength;
 }
@@ -1062,7 +1066,7 @@ void MbD::ASMTAssembly::outputFile(std::string filename)
 	//	}
 }
 
-void MbD::ASMTAssembly::storeOnLevel(std::ofstream& os, int level)
+void MbD::ASMTAssembly::storeOnLevel(std::ofstream& os, size_t level)
 {
 	storeOnLevelString(os, level, "Assembly");
 	storeOnLevelNotes(os, level + 1);
@@ -1291,13 +1295,13 @@ std::shared_ptr<ASMTPart> MbD::ASMTAssembly::partPartialNamed(std::string partia
 	return part;
 }
 
-void MbD::ASMTAssembly::storeOnLevelNotes(std::ofstream& os, int level)
+void MbD::ASMTAssembly::storeOnLevelNotes(std::ofstream& os, size_t level)
 {
 	storeOnLevelString(os, level, "Notes");
 	storeOnLevelString(os, level + 1, notes);
 }
 
-void MbD::ASMTAssembly::storeOnLevelParts(std::ofstream& os, int level)
+void MbD::ASMTAssembly::storeOnLevelParts(std::ofstream& os, size_t level)
 {
 	storeOnLevelString(os, level, "Parts");
 	for (auto& part : *parts) {
@@ -1305,7 +1309,7 @@ void MbD::ASMTAssembly::storeOnLevelParts(std::ofstream& os, int level)
 	}
 }
 
-void MbD::ASMTAssembly::storeOnLevelKinematicIJs(std::ofstream& os, int level)
+void MbD::ASMTAssembly::storeOnLevelKinematicIJs(std::ofstream& os, size_t level)
 {
 	storeOnLevelString(os, level, "KinematicIJs");
 	for (auto& kinematicIJ : *kinematicIJs) {
@@ -1313,7 +1317,7 @@ void MbD::ASMTAssembly::storeOnLevelKinematicIJs(std::ofstream& os, int level)
 	}
 }
 
-void MbD::ASMTAssembly::storeOnLevelConstraintSets(std::ofstream& os, int level)
+void MbD::ASMTAssembly::storeOnLevelConstraintSets(std::ofstream& os, size_t level)
 {
 	storeOnLevelString(os, level, "ConstraintSets");
 	storeOnLevelJoints(os, level + 1);
@@ -1321,7 +1325,7 @@ void MbD::ASMTAssembly::storeOnLevelConstraintSets(std::ofstream& os, int level)
 	storeOnLevelGeneralConstraintSets(os, level + 1);
 }
 
-void MbD::ASMTAssembly::storeOnLevelForceTorques(std::ofstream& os, int level)
+void MbD::ASMTAssembly::storeOnLevelForceTorques(std::ofstream& os, size_t level)
 {
 	storeOnLevelString(os, level, "ForceTorques");
 	for (auto& forceTorque : *forcesTorques) {
@@ -1329,7 +1333,7 @@ void MbD::ASMTAssembly::storeOnLevelForceTorques(std::ofstream& os, int level)
 	}
 }
 
-void MbD::ASMTAssembly::storeOnLevelJoints(std::ofstream& os, int level)
+void MbD::ASMTAssembly::storeOnLevelJoints(std::ofstream& os, size_t level)
 {
 	storeOnLevelString(os, level, "Joints");
 	for (auto& joint : *joints) {
@@ -1337,7 +1341,7 @@ void MbD::ASMTAssembly::storeOnLevelJoints(std::ofstream& os, int level)
 	}
 }
 
-void MbD::ASMTAssembly::storeOnLevelMotions(std::ofstream& os, int level)
+void MbD::ASMTAssembly::storeOnLevelMotions(std::ofstream& os, size_t level)
 {
 	storeOnLevelString(os, level, "Motions");
 	for (auto& motion : *motions) {
@@ -1345,7 +1349,7 @@ void MbD::ASMTAssembly::storeOnLevelMotions(std::ofstream& os, int level)
 	}
 }
 
-void MbD::ASMTAssembly::storeOnLevelGeneralConstraintSets(std::ofstream& os, int level)
+void MbD::ASMTAssembly::storeOnLevelGeneralConstraintSets(std::ofstream& os, size_t level)
 {
 	storeOnLevelString(os, level, "GeneralConstraintSets");
 	//for (auto& generalConstraintSet : *generalConstraintSets) {
@@ -1358,13 +1362,13 @@ void MbD::ASMTAssembly::storeOnTimeSeries(std::ofstream& os)
 	if (times->empty()) return;
 	os << "TimeSeries" << std::endl;
 	os << "Number\tInput\t";
-	for (int i = 1; i < (int)times->size(); i++)
+	for (size_t i = 1; i < times->size(); i++)
 	{
 		os << i << '\t';
 	}
 	os << std::endl;
 	os << "Time\tInput\t";
-	for (int i = 1; i < (int)times->size(); i++)
+	for (size_t i = 1; i < times->size(); i++)
 	{
 		os << times->at(i) << '\t';
 	}

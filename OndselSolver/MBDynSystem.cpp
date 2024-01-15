@@ -154,7 +154,7 @@ void MbD::MBDynSystem::outputFiles()
     //auto& asmtMotions = asmtAsm->motions;
 	std::ofstream os(movFile);
 	os << std::setprecision(static_cast<std::streamsize>(std::numeric_limits<double>::digits10) + 1);
-	for (int i = 1; i < (int)asmtTimes->size(); i++)
+	for (size_t i = 1; i < asmtTimes->size(); i++)
 	{
 		for (auto& node : *nodes) {
 			node->outputLine(i, os);
@@ -248,7 +248,7 @@ void MbD::MBDynSystem::readElementsBlock(std::vector<std::string>& lines)
 
 void MbD::MBDynSystem::eraseComments(std::vector<std::string>& lines)
 {
-	for (int i = 0; i < (int)lines.size(); i++)
+	for (size_t i = 0; i < lines.size(); i++)
 	{
 		auto& line = lines[i];
 		auto it = line.find('#');
@@ -256,7 +256,8 @@ void MbD::MBDynSystem::eraseComments(std::vector<std::string>& lines)
 			lines[i] = line.substr(0, it);
 		}
 	}
-	for (int i = (int)lines.size() - 1; i >= 0; i--) {
+	for (int i = (int)lines.size() - 1; i >= 0; i--)	//Use int because of decrement
+	{
 		auto& line = lines[i];
 		auto it = std::find_if(line.begin(), line.end(), [](unsigned char ch) { return !std::isspace(ch); });
 		if (it == line.end()) lines.erase(lines.begin() + i);

@@ -168,9 +168,9 @@ void Joint::fillPosICJacob(SpMatDsptr mat)
 	constraintsDo([&](std::shared_ptr<Constraint> con) { con->fillPosICJacob(mat); });
 }
 
-void Joint::removeRedundantConstraints(std::shared_ptr<std::vector<int>> redundantEqnNos)
+void Joint::removeRedundantConstraints(std::shared_ptr<std::vector<size_t>> redundantEqnNos)
 {
-	for (int i = 0; i < (int)constraints->size(); i++)
+	for (size_t i = 0; i < constraints->size(); i++)
 	{
 		auto& constraint = constraints->at(i);
 		if (std::find(redundantEqnNos->begin(), redundantEqnNos->end(), constraint->iG) != redundantEqnNos->end()) {
@@ -183,7 +183,7 @@ void Joint::removeRedundantConstraints(std::shared_ptr<std::vector<int>> redunda
 
 void Joint::reactivateRedundantConstraints()
 {
-	for (int i = 0; i < (int)constraints->size(); i++)
+	for (size_t i = 0; i < constraints->size(); i++)
 	{
 		auto& con = constraints->at(i);
 		if (con->isRedundant()) {

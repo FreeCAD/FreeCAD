@@ -60,7 +60,7 @@ namespace MbD {
 		EndFrmsptr endFrame(std::string name);
 		void aGabsDo(const std::function <void(std::shared_ptr<Constraint>)>& f);
 		void markerFramesDo(const std::function <void(std::shared_ptr<MarkerFrame>)>& f);
-		void removeRedundantConstraints(std::shared_ptr<std::vector<int>> redundantEqnNos) override;
+		void removeRedundantConstraints(std::shared_ptr<std::vector<size_t>> redundantEqnNos) override;
 		void reactivateRedundantConstraints() override;
 		void constraintsReport() override;
 
@@ -107,8 +107,8 @@ namespace MbD {
 		void postDynStep() override;
 
 		Part* part = nullptr; //Use raw pointer when pointing backwards.
-		int iqX = -1;
-		int iqE = -1;	//Position index of frame variables qX and qE in system list of variables
+		size_t iqX = SIZE_MAX;
+		size_t iqE = SIZE_MAX;	//Position index of frame variables qX and qE in system list of variables
 		FColDsptr qX = std::make_shared<FullColumn<double>>(3);
 		std::shared_ptr<EulerParameters<double>> qE = CREATE<EulerParameters<double>>::With(4);
 		FColDsptr qXdot = std::make_shared<FullColumn<double>>(3);

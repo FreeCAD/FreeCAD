@@ -16,7 +16,7 @@ namespace MbD {
     {
         //
     public:
-        virtual void forwardEliminateWithPivot(int p) = 0;
+        virtual void forwardEliminateWithPivot(size_t p) = 0;
     };
 }
 

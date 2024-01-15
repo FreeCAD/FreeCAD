@@ -15,7 +15,7 @@ namespace MbD {
     public:
         void initialize() override;
         void parseMBDyn(std::vector<std::string>& lines) override;
-        void outputLine(int i, std::ostream& os);
+        void outputLine(size_t i, std::ostream& os);
 
     };
 }

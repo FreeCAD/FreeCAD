@@ -207,10 +207,10 @@ double System::maximumMass()
 double System::maximumMomentOfInertia()
 {
 	double max = 0.0;
-	for (int i = 0; i < (int)parts->size(); i++)
+	for (size_t i = 0; i < parts->size(); i++)
 	{
 		auto& part = parts->at(i);
-		for (int j = 0; j < 3; j++)
+		for (size_t j = 0; j < 3; j++)
 		{
 			auto& aJ = part->aJ;
 			auto aJi = aJ->at(j);

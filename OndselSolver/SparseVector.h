@@ -14,33 +14,33 @@
 
 namespace MbD {
 	template<typename T>
-	class SparseVector : public std::map<int, T>
+	class SparseVector : public std::map<size_t, T>
 	{
 	public:
-		int n;
+		size_t n;
 		SparseVector() {}
-		SparseVector(int n) : std::map<int, T>(), n(n) {}
-		SparseVector(std::initializer_list<std::pair<const int, T>> list) : std::map<int, T>{ list } {}
+		SparseVector(size_t n) : std::map<size_t, T>(), n(n) {}
+		SparseVector(std::initializer_list<std::pair<const size_t, T>> list) : std::map<size_t, T>{ list } {}
 		SparseVector(std::initializer_list<std::initializer_list<T>> list) {
 			for (auto& pair : list) {
-				int i = 0;
-				int index;
+				size_t i = 0;
+				size_t index;
 				T value;
 				for (auto& element : pair) {
-					if (i == 0) index = (int)std::round(element);
+					if (i == 0) index = std::round(element);
 					if (i == 1) value = element;
 					i++;
 				}
-				this->insert(std::pair<const int, double>(index, value));
+				this->insert(std::pair<const size_t, double>(index, value));
 			}
 		}
 		virtual ~SparseVector() {}
 		double rootMeanSquare();
-		int numberOfElements();
+		size_t numberOfElements();
 		double sumOfSquares();
-		void atiput(int i, T value);
-		void atiplusNumber(int i, double value);
-		void atiminusNumber(int i, double value);
+		void atiput(size_t i, T value);
+		void atiplusNumber(size_t i, double value);
+		void atiminusNumber(size_t i, double value);
 		void zeroSelf();
 		double maxMagnitude();
 		void magnifySelf(T factor);
@@ -57,7 +57,7 @@ namespace MbD {
 		return std::sqrt(this->sumOfSquares() / this->numberOfElements());
 	}
 	template<typename T>
-	inline int SparseVector<T>::numberOfElements()
+	inline size_t SparseVector<T>::numberOfElements()
 	{
 		return n;
 	}
@@ -72,17 +72,17 @@ namespace MbD {
 		return sum;
 	}
 	template<typename T>
-	inline void SparseVector<T>::atiput(int i, T value)
+	inline void SparseVector<T>::atiput(size_t i, T value)
 	{
 		(*this)[i] = value;
 	}
 	template<>
-	inline void SparseVector<double>::atiplusNumber(int i, double value)
+	inline void SparseVector<double>::atiplusNumber(size_t i, double value)
 	{
 		(*this)[i] += value;
 	}
 	template<typename T>
-	inline void SparseVector<T>::atiminusNumber(int i, double value)
+	inline void SparseVector<T>::atiminusNumber(size_t i, double value)
 	{
 		(*this)[i] -= value;
 	}

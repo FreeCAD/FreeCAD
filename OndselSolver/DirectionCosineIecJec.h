@@ -20,12 +20,12 @@ namespace MbD {
         //aAijIeJe axisI axisJ aAjOIe aAjOJe 
     public:
         DirectionCosineIecJec();
-        DirectionCosineIecJec(EndFrmsptr frmi, EndFrmsptr frmj, int axisi, int axisj);
+        DirectionCosineIecJec(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi, size_t axisj);
 
         void calcPostDynCorrectorIteration() override;
         double value() override;
 
-        int axisI{}, axisJ{};   //0, 1, 2 = x, y, z
+        size_t axisI{}, axisJ{};   //0, 1, 2 = x, y, z
         double aAijIeJe{};
         FColDsptr aAjOIe, aAjOJe;
     };

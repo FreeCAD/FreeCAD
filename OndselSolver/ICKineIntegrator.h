@@ -20,7 +20,7 @@ namespace MbD {
         void subsequentSteps() override;
         void nextStep() override;
         void runInitialConditionTypeSolution() override;
-        void iStep(int i) override;
+        void iStep(size_t i) override;
         void selectOrder() override;
 
     };

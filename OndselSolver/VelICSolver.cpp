@@ -19,7 +19,7 @@ void VelICSolver::assignEquationNumbers()
 	//auto contactEndFrames = system->contactEndFrames();
 	//auto uHolders = system->uHolders();
 	auto constraints = system->allConstraints();
-	int eqnNo = 0;
+	size_t eqnNo = 0;
 	for (auto& part : *parts) {
 		part->iqX(eqnNo);
 		eqnNo = eqnNo + 3;

@@ -64,7 +64,7 @@ void MbD::SymbolicParser::parseString(std::string expr)
 	}
 	source = std::make_shared<std::istringstream>(expr);
 	hereChar = source->get();
-	prevEnd = -1;
+	prevEnd = SIZE_MAX;
 	scanToken();
 	expression();
 	if (tokenType != "end") expected("Nothing more");
@@ -191,7 +191,7 @@ bool MbD::SymbolicParser::peekForTypeNoPush(std::string c)
 
 std::string MbD::SymbolicParser::scanToken()
 {
-	prevEnd = (int)source->tellg();
+	prevEnd = (int)source->tellg();	//Use int because of decrement
 	prevEnd--;
 	while (std::isspace(hereChar) || isNextLineTag(hereChar)) {
 		hereChar = source->get();
@@ -393,7 +393,7 @@ bool MbD::SymbolicParser::intrinsic()
 			if (expression()) {
 				while (commaExpression()) {}
 				if (stack->size() > startsize) {
-					combineStackTo((int)startsize);
+					combineStackTo(startsize);
 					if (peekForTypeNoPush(")")) {
 						Symsptr args = stack->top();	//args is a Sum with "terms" containing the actual arguments
 						stack->pop();
@@ -501,10 +501,10 @@ void MbD::SymbolicParser::notifyat(std::string, int)
 	//raiseSignal
 }
 
-void MbD::SymbolicParser::combineStackTo(int pos)
+void MbD::SymbolicParser::combineStackTo(size_t pos)
 {
 	auto args = std::make_shared<std::vector<Symsptr>>();
-	while ((int)stack->size() > pos) {
+	while (stack->size() > pos) {
 		Symsptr arg = stack->top();
 		stack->pop();
 		args->push_back(arg);

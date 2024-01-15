@@ -26,14 +26,14 @@ void MbD::OrbitAngleZIeqcJec::calc_ppthezpEIpEI()
 	auto pypEI = yIeJeIe->pvaluepEI();
 	auto ppxpEIpEI = xIeJeIe->ppvaluepEIpEI();
 	auto ppypEIpEI = yIeJeIe->ppvaluepEIpEI();
-	for (int i = 0; i < 4; i++)
+	for (size_t i = 0; i < 4; i++)
 	{
 		auto ppthezpEIpEIi = ppthezpEIpEI->at(i);
 		auto ppxpEIpEIi = ppxpEIpEI->at(i);
 		auto ppypEIpEIi = ppypEIpEI->at(i);
 		auto pxpEIi = pxpEI->at(i);
 		auto pypEIi = pypEI->at(i);
-		for (int j = i; j < 4; j++)
+		for (size_t j = i; j < 4; j++)
 		{
 			auto pxpEIj = pxpEI->at(j);
 			auto pypEIj = pypEI->at(j);
@@ -55,14 +55,14 @@ void MbD::OrbitAngleZIeqcJec::calc_ppthezpXIpEI()
 	auto pypEI = yIeJeIe->pvaluepEI();
 	auto ppxpXIpEI = xIeJeIe->ppvaluepXIpEI();
 	auto ppypXIpEI = yIeJeIe->ppvaluepXIpEI();
-	for (int i = 0; i < 3; i++)
+	for (size_t i = 0; i < 3; i++)
 	{
 		auto ppthezpXIpEIi = ppthezpXIpEI->at(i);
 		auto ppxpXIpEIi = ppxpXIpEI->at(i);
 		auto ppypXIpEIi = ppypXIpEI->at(i);
 		auto pxpXIi = pxpXI->at(i);
 		auto pypXIi = pypXI->at(i);
-		for (int j = 0; j < 4; j++)
+		for (size_t j = 0; j < 4; j++)
 		{
 			auto pxpEIj = pxpEI->at(j);
 			auto pypEIj = pypEI->at(j);
@@ -81,12 +81,12 @@ void MbD::OrbitAngleZIeqcJec::calc_ppthezpXIpXI()
 
 	auto pxpXI = xIeJeIe->pvaluepXI();
 	auto pypXI = yIeJeIe->pvaluepXI();
-	for (int i = 0; i < 3; i++)
+	for (size_t i = 0; i < 3; i++)
 	{
 		auto ppthezpXIpXIi = ppthezpXIpXI->at(i);
 		auto pxpXIi = pxpXI->at(i);
 		auto pypXIi = pypXI->at(i);
-		for (int j = 0; j < 3; j++)
+		for (size_t j = 0; j < 3; j++)
 		{
 			auto pxpXIj = pxpXI->at(j);
 			auto pypXIj = pypXI->at(j);
@@ -101,7 +101,7 @@ void MbD::OrbitAngleZIeqcJec::calc_pthezpEI()
 {
 	auto pxpEI = xIeJeIe->pvaluepEI();
 	auto pypEI = yIeJeIe->pvaluepEI();
-	for (int i = 0; i < 4; i++)
+	for (size_t i = 0; i < 4; i++)
 	{
 		pthezpEI->atiput(i, pypEI->at(i) * cosOverSSq - (pxpEI->at(i) * sinOverSSq));
 	}
@@ -111,7 +111,7 @@ void MbD::OrbitAngleZIeqcJec::calc_pthezpXI()
 {
 	auto pxpXI = xIeJeIe->pvaluepXI();
 	auto pypXI = yIeJeIe->pvaluepXI();
-	for (int i = 0; i < 3; i++)
+	for (size_t i = 0; i < 3; i++)
 	{
 		pthezpXI->atiput(i, pypXI->at(i) * cosOverSSq - (pxpXI->at(i) * sinOverSSq));
 	}

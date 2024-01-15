@@ -40,7 +40,7 @@ namespace MbD {
 		auto cA = aEulerAngles->cA;
 		auto cAdot = aEulerAnglesDot->cAdot;
 		cAddot = std::make_shared<FullColumn<FMatDsptr>>(3);
-		for (int i = 0; i < 3; i++)
+		for (size_t i = 0; i < 3; i++)
 		{
 			auto axis = rotOrder->at(i);
 			auto angle = aEulerAngles->at(i)->getValue();

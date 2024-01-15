@@ -48,7 +48,7 @@ void IntegratorInterface::run()
 	this->postRun();
 }
 
-int IntegratorInterface::orderMax()
+size_t IntegratorInterface::orderMax()
 {
 	return system->orderMax;
 }

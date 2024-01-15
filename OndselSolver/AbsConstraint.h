@@ -16,7 +16,7 @@ namespace MbD {
 	public:
 		//AbsConstraint();
 		//AbsConstraint(const char* str);
-		AbsConstraint(int axis);
+		AbsConstraint(size_t axis);
 
 		void calcPostDynCorrectorIteration() override;
 		void fillAccICIterError(FColDsptr col) override;
@@ -26,8 +26,8 @@ namespace MbD {
 		void fillVelICJacob(SpMatDsptr mat) override;
 		void useEquationNumbers() override;
 
-		int axis = -1;
-		int iqXminusOnePlusAxis = -1;
+		size_t axis = SIZE_MAX;
+		size_t iqXminusOnePlusAxis = SIZE_MAX;
 	};
 }
 

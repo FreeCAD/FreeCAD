@@ -12,7 +12,7 @@
 
 using namespace MbD;
 
-DirectionCosineConstraintIqctJqc::DirectionCosineConstraintIqctJqc(EndFrmsptr frmi, EndFrmsptr frmj, int axisi, int axisj) :
+DirectionCosineConstraintIqctJqc::DirectionCosineConstraintIqctJqc(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi, size_t axisj) :
 	DirectionCosineConstraintIqcJqc(frmi, frmj, axisi, axisj)
 {
 }

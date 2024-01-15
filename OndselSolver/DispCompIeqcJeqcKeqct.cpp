@@ -16,7 +16,7 @@ DispCompIeqcJeqcKeqct::DispCompIeqcJeqcKeqct()
 {
 }
 
-DispCompIeqcJeqcKeqct::DispCompIeqcJeqcKeqct(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk, int axisk) : DispCompIeqcJeqcKeqc(frmi, frmj, frmk, axisk)
+DispCompIeqcJeqcKeqct::DispCompIeqcJeqcKeqct(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk, size_t axisk) : DispCompIeqcJeqcKeqc(frmi, frmj, frmk, axisk)
 {
 }
 
@@ -93,12 +93,12 @@ void DispCompIeqcJeqcKeqct::preAccIC()
 	auto ppAjOKeptpt = std::static_pointer_cast<EndFrameqct>(efrmK)->ppAjOeptpt(axisK);
 	auto prIeJeOpEIT = std::static_pointer_cast<EndFrameqc>(frmI)->prOeOpE->transpose()->negated();
 	auto prIeJeOpEJT = std::static_pointer_cast<EndFrameqc>(frmJ)->prOeOpE->transpose();
-	for (int i = 0; i < 3; i++)
+	for (size_t i = 0; i < 3; i++)
 	{
 		ppriIeJeKepXIpt->atiput(i, -(pAjOKept->at(i)));
 		ppriIeJeKepXJpt->atiput(i, pAjOKept->at(i));
 	}
-	for (int i = 0; i < 4; i++)
+	for (size_t i = 0; i < 4; i++)
 	{
 		ppriIeJeKepEIpt->atiput(i, pAjOKept->dot(prIeJeOpEIT->at(i)));
 		ppriIeJeKepEJpt->atiput(i, pAjOKept->dot(prIeJeOpEJT->at(i)));

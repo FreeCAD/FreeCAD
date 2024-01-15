@@ -28,14 +28,14 @@ void MbD::OrbitAngleZIeqcJeqc::calc_ppthezpEIpEJ()
 	auto pypEJ = yIeJeIe->pvaluepEJ();
 	auto ppxpEIpEJ = xIeJeIe->ppvaluepEIpEJ();
 	auto ppypEIpEJ = yIeJeIe->ppvaluepEIpEJ();
-	for (int i = 0; i < 4; i++)
+	for (size_t i = 0; i < 4; i++)
 	{
 		auto ppthezpEIpEJi = ppthezpEIpEJ->at(i);
 		auto ppxpEIpEJi = ppxpEIpEJ->at(i);
 		auto ppypEIpEJi = ppypEIpEJ->at(i);
 		auto pxpEIi = pxpEI->at(i);
 		auto pypEIi = pypEI->at(i);
-		for (int j = 0; j < 4; j++)
+		for (size_t j = 0; j < 4; j++)
 		{
 			auto pxpEJj = pxpEJ->at(j);
 			auto pypEJj = pypEJ->at(j);
@@ -56,12 +56,12 @@ void MbD::OrbitAngleZIeqcJeqc::calc_ppthezpEIpXJ()
 	auto pypEI = yIeJeIe->pvaluepEI();
 	auto pxpXJ = xIeJeIe->pvaluepXJ();
 	auto pypXJ = yIeJeIe->pvaluepXJ();
-	for (int i = 0; i < 4; i++)
+	for (size_t i = 0; i < 4; i++)
 	{
 		auto ppthezpEIpXJi = ppthezpEIpXJ->at(i);
 		auto pxpEIi = pxpEI->at(i);
 		auto pypEIi = pypEI->at(i);
-		for (int j = 0; j < 3; j++)
+		for (size_t j = 0; j < 3; j++)
 		{
 			auto pxpXJj = pxpXJ->at(j);
 			auto pypXJj = pypXJ->at(j);
@@ -78,14 +78,14 @@ void MbD::OrbitAngleZIeqcJeqc::calc_ppthezpEJpEJ()
 	auto pypEJ = yIeJeIe->pvaluepEJ();
 	auto ppxpEJpEJ = xIeJeIe->ppvaluepEJpEJ();
 	auto ppypEJpEJ = yIeJeIe->ppvaluepEJpEJ();
-	for (int i = 0; i < 4; i++)
+	for (size_t i = 0; i < 4; i++)
 	{
 		auto ppthezpEJpEJi = ppthezpEJpEJ->at(i);
 		auto ppxpEJpEJi = ppxpEJpEJ->at(i);
 		auto ppypEJpEJi = ppypEJpEJ->at(i);
 		auto pxpEJi = pxpEJ->at(i);
 		auto pypEJi = pypEJ->at(i);
-		for (int j = i; j < 4; j++)
+		for (size_t j = i; j < 4; j++)
 		{
 			auto pxpEJj = pxpEJ->at(j);
 			auto pypEJj = pypEJ->at(j);
@@ -108,12 +108,12 @@ void MbD::OrbitAngleZIeqcJeqc::calc_ppthezpXIpEJ()
 	auto pypXI = yIeJeIe->pvaluepXI();
 	auto pxpEJ = xIeJeIe->pvaluepEJ();
 	auto pypEJ = yIeJeIe->pvaluepEJ();
-	for (int i = 0; i < 3; i++)
+	for (size_t i = 0; i < 3; i++)
 	{
 		auto ppthezpXIpEJi = ppthezpXIpEJ->at(i);
 		auto pxpXIi = pxpXI->at(i);
 		auto pypXIi = pypXI->at(i);
-		for (int j = 0; j < 4; j++)
+		for (size_t j = 0; j < 4; j++)
 		{
 			auto pxpEJj = pxpEJ->at(j);
 			auto pypEJj = pypEJ->at(j);
@@ -133,12 +133,12 @@ void MbD::OrbitAngleZIeqcJeqc::calc_ppthezpXIpXJ()
 	auto pypXI = yIeJeIe->pvaluepXI();
 	auto pxpXJ = xIeJeIe->pvaluepXJ();
 	auto pypXJ = yIeJeIe->pvaluepXJ();
-	for (int i = 0; i < 3; i++)
+	for (size_t i = 0; i < 3; i++)
 	{
 		auto ppthezpXIpXJi = ppthezpXIpXJ->at(i);
 		auto pxpXIi = pxpXI->at(i);
 		auto pypXIi = pypXI->at(i);
-		for (int j = 0; j < 3; j++)
+		for (size_t j = 0; j < 3; j++)
 		{
 			auto pxpXJj = pxpXJ->at(j);
 			auto pypXJj = pypXJ->at(j);
@@ -158,12 +158,12 @@ void MbD::OrbitAngleZIeqcJeqc::calc_ppthezpXJpEJ()
 	auto pypXJ = yIeJeIe->pvaluepXJ();
 	auto pxpEJ = xIeJeIe->pvaluepEJ();
 	auto pypEJ = yIeJeIe->pvaluepEJ();
-	for (int i = 0; i < 3; i++)
+	for (size_t i = 0; i < 3; i++)
 	{
 		auto ppthezpXJpEJi = ppthezpXJpEJ->at(i);
 		auto pxpXJi = pxpXJ->at(i);
 		auto pypXJi = pypXJ->at(i);
-		for (int j = 0; j < 4; j++)
+		for (size_t j = 0; j < 4; j++)
 		{
 			auto pxpEJj = pxpEJ->at(j);
 			auto pypEJj = pypEJ->at(j);
@@ -181,12 +181,12 @@ void MbD::OrbitAngleZIeqcJeqc::calc_ppthezpXJpXJ()
 
 	auto pxpXJ = xIeJeIe->pvaluepXJ();
 	auto pypXJ = yIeJeIe->pvaluepXJ();
-	for (int i = 0; i < 3; i++)
+	for (size_t i = 0; i < 3; i++)
 	{
 		auto ppthezpXJpXJi = ppthezpXJpXJ->at(i);
 		auto pxpXJi = pxpXJ->at(i);
 		auto pypXJi = pypXJ->at(i);
-		for (int j = 0; j < 3; j++)
+		for (size_t j = 0; j < 3; j++)
 		{
 			auto pxpXJj = pxpXJ->at(j);
 			auto pypXJj = pypXJ->at(j);
@@ -201,7 +201,7 @@ void MbD::OrbitAngleZIeqcJeqc::calc_pthezpEJ()
 {
 	auto pxpEJ = xIeJeIe->pvaluepEJ();
 	auto pypEJ = yIeJeIe->pvaluepEJ();
-	for (int i = 0; i < 4; i++)
+	for (size_t i = 0; i < 4; i++)
 	{
 		pthezpEJ->atiput(i, pypEJ->at(i) * cosOverSSq - (pxpEJ->at(i) * sinOverSSq));
 	}
@@ -211,7 +211,7 @@ void MbD::OrbitAngleZIeqcJeqc::calc_pthezpXJ()
 {
 	auto pxpXJ = xIeJeIe->pvaluepXJ();
 	auto pypXJ = yIeJeIe->pvaluepXJ();
-	for (int i = 0; i < 3; i++)
+	for (size_t i = 0; i < 3; i++)
 	{
 		pthezpXJ->atiput(i, pypXJ->at(i) * cosOverSSq - (pxpXJ->at(i) * sinOverSSq));
 	}

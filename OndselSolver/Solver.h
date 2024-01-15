@@ -9,6 +9,7 @@
 #pragma once
 
 #include <string>
+#include "Numeric.h"
 
 namespace MbD {
 	class Solver

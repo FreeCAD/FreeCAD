@@ -16,12 +16,12 @@ namespace MbD {
         //efrmK axisK riIeJeKe aAjOKe rIeJeO 
     public:
         DispCompIecJecKec();
-        DispCompIecJecKec(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk, int axisk);
+        DispCompIecJecKec(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk, size_t axisk);
 
         double value() override;
 
         EndFrmsptr efrmK;
-        int axisK;
+        size_t axisK;
         double riIeJeKe;
         FColDsptr aAjOKe;
         FColDsptr rIeJeO;

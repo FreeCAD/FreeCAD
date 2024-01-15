@@ -17,7 +17,7 @@ namespace MbD {
     {
         //axisI axisJ aAijIeJe 
     public:
-        DirectionCosineConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj, int axisi, int axisj);
+        DirectionCosineConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi, size_t axisj);
 
         void calcPostDynCorrectorIteration() override;
         virtual void initaAijIeJe();
@@ -32,7 +32,7 @@ namespace MbD {
         void simUpdateAll() override;
         ConstraintType type() override;
 
-        int axisI, axisJ;
+        size_t axisI, axisJ;
         std::shared_ptr<DirectionCosineIecJec> aAijIeJe;
     };
 }

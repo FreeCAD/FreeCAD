@@ -62,7 +62,7 @@ void ASMTMarker::createMbD(std::shared_ptr<System>, std::shared_ptr<Units> mbdUn
 	mbdObject = mkr->endFrames->at(0);
 }
 
-void ASMTMarker::storeOnLevel(std::ofstream& os, int level)
+void ASMTMarker::storeOnLevel(std::ofstream& os, size_t level)
 {
 	storeOnLevelString(os, level, "Marker");
 	storeOnLevelString(os, level + 1, "Name");

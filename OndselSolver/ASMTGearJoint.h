@@ -20,7 +20,7 @@ namespace MbD {
         void readRadiusI(std::vector<std::string>& lines);
         void readRadiusJ(std::vector<std::string>& lines);
         void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
-        void storeOnLevel(std::ofstream& os, int level) override;
+        void storeOnLevel(std::ofstream& os, size_t level) override;
 
         double radiusI = 0.0, radiusJ = 0.0, aConstant = 0.0;
     };

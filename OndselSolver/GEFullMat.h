@@ -15,14 +15,14 @@ namespace MbD {
     {
         //
     public:
-        void forwardEliminateWithPivot(int p) override;
+        void forwardEliminateWithPivot(size_t p) override;
         void backSubstituteIntoDU() override;
         void postSolve() override;
         FColDsptr basicSolvewithsaveOriginal(FMatDsptr fullMat, FColDsptr fullCol, bool saveOriginal) override;
         FColDsptr basicSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal) override;
         void preSolvewithsaveOriginal(FMatDsptr fullMat, FColDsptr fullCol, bool saveOriginal) override;
         void preSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal) override;
-        double getmatrixArowimaxMagnitude(int i) override;
+        double getmatrixArowimaxMagnitude(size_t i) override;
 
         FMatDsptr matrixA;
     };

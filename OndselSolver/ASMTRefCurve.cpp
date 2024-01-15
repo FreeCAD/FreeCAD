@@ -16,7 +16,7 @@ void MbD::ASMTRefCurve::parseASMT(std::vector<std::string>&)
 	assert(false);
 }
 
-void MbD::ASMTRefCurve::storeOnLevel(std::ofstream&, int)
+void MbD::ASMTRefCurve::storeOnLevel(std::ofstream&, size_t)
 {
 	assert(false);
 }

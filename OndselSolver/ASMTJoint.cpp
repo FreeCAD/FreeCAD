@@ -36,7 +36,7 @@ void MbD::ASMTJoint::readJointSeries(std::vector<std::string>& lines)
 	readTZonIs(lines);
 }
 
-void MbD::ASMTJoint::storeOnLevel(std::ofstream& os, int level)
+void MbD::ASMTJoint::storeOnLevel(std::ofstream& os, size_t level)
 {
 	auto jointType = classname();
 	jointType = jointType.substr(4, jointType.size() - 4);	//Remove ASMT in name

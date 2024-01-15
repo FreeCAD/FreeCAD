@@ -42,7 +42,7 @@ void MbD::ASMTScrewJoint::createMbD(std::shared_ptr<System> mbdSys, std::shared_
 	screwJoint->pitch = pitch;
 }
 
-void MbD::ASMTScrewJoint::storeOnLevel(std::ofstream& os, int level)
+void MbD::ASMTScrewJoint::storeOnLevel(std::ofstream& os, size_t level)
 {
 	ASMTJoint::storeOnLevel(os, level);
 	storeOnLevelString(os, level + 1, "pitch");

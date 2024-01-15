@@ -115,7 +115,7 @@ void MbD::MBDynTotalJoint::createASMT()
 	asmtMotion->setMarkerI(mkr1->asmtItem->fullName(""));
 	asmtMotion->setMarkerJ(mkr2->asmtItem->fullName(""));
 	asmtAsm->addMotion(asmtMotion);
-	for (int i = 0; i < 3; i++)
+	for (size_t i = 0; i < 3; i++)
 	{
 		asmtMotion->rIJI->atiput(i, asmtFormula(positionFormulas.at(i)));
 		asmtMotion->angIJJ->atiput(i, asmtFormula(orientationFormulas.at(i)));

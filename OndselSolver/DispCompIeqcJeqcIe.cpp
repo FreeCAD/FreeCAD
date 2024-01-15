@@ -15,7 +15,7 @@ MbD::DispCompIeqcJeqcIe::DispCompIeqcJeqcIe()
 {
 }
 
-MbD::DispCompIeqcJeqcIe::DispCompIeqcJeqcIe(EndFrmsptr frmi, EndFrmsptr frmj, int axis) : DispCompIeqcJecIe(frmi, frmj, axis)
+MbD::DispCompIeqcJeqcIe::DispCompIeqcJeqcIe(EndFrmsptr frmi, EndFrmsptr frmj, size_t axis) : DispCompIeqcJecIe(frmi, frmj, axis)
 {
 	priIeJeIepXJ = std::make_shared<FullRow<double>>(3);
 	priIeJeIepEJ = std::make_shared<FullRow<double>>(4);
@@ -40,11 +40,11 @@ void MbD::DispCompIeqcJeqcIe::calc_ppvaluepEJpEJ()
 {
 	auto frmJeqc = std::static_pointer_cast<EndFrameqc>(frmJ);
 	auto pprIeJeOpEJpEJ = frmJeqc->pprOeOpEpE;
-	for (int i = 0; i < 4; i++)
+	for (size_t i = 0; i < 4; i++)
 	{
 		auto pprIeJeOpEJipEJ = pprIeJeOpEJpEJ->at(i);
 		auto ppriIeJeIepEJipEJ = ppriIeJeIepEJpEJ->at(i);
-		for (int j = i; j < 4; j++)
+		for (size_t j = i; j < 4; j++)
 		{
 			auto term1 = aAjOIe->dot(pprIeJeOpEJipEJ->at(j));
 			ppriIeJeIepEJipEJ->atiput(j, term1);
@@ -57,7 +57,7 @@ void MbD::DispCompIeqcJeqcIe::calc_pvaluepEJ()
 {
 	auto frmJeqc = std::static_pointer_cast<EndFrameqc>(frmJ);
 	auto prIeJeOpEJT = frmJeqc->prOeOpE->transpose();
-	for (int i = 0; i < 4; i++)
+	for (size_t i = 0; i < 4; i++)
 	{
 		priIeJeIepEJ->atiput(i, aAjOIe->dot(prIeJeOpEJT->at(i)));
 	}
@@ -65,7 +65,7 @@ void MbD::DispCompIeqcJeqcIe::calc_pvaluepEJ()
 
 void MbD::DispCompIeqcJeqcIe::calc_pvaluepXJ()
 {
-	for (int i = 0; i < 3; i++)
+	for (size_t i = 0; i < 3; i++)
 	{
 		priIeJeIepXJ->atiput(i, aAjOIe->at(i));
 	}

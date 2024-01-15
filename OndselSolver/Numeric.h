@@ -8,6 +8,7 @@
  
 #pragma once
 #include <vector>
+#include <limits>
 
 #include "MbDMath.h"
 
@@ -27,7 +28,7 @@ namespace MbD {
     {
         T previous, next;
         next = vec->at(0);
-        for (int i = 1; i < (int)vec->size(); i++)
+        for (size_t i = 1; i < vec->size(); i++)
         {
             previous = next;
             next = vec->at(i);

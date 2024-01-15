@@ -26,14 +26,14 @@ namespace MbD {
 	{
 	public:
 		SparseRow() {}
-		SparseRow(int n) : SparseVector<T>(n) {}
-		SparseRow(std::initializer_list<std::pair<const int, T>> list) : SparseVector<T>{ list } {}
+		SparseRow(size_t n) : SparseVector<T>(n) {}
+		SparseRow(std::initializer_list<std::pair<const size_t, T>> list) : SparseVector<T>{ list } {}
 		SparseRow(std::initializer_list<std::initializer_list<T>> list) : SparseVector<T>{ list } {}
 		SpRowDsptr timesconditionedWithTol(double scaling, double tol);
 		SpRowDsptr conditionedWithTol(double tol);
-		void atiplusFullRow(int j, FRowsptr<T> fullRow);
-		void atiminusFullRow(int j, FRowsptr<T> fullRow);
-		void atiplusFullRowtimes(int j, FRowsptr<T> fullRow, double factor);
+		void atiplusFullRow(size_t j, FRowsptr<T> fullRow);
+		void atiminusFullRow(size_t j, FRowsptr<T> fullRow);
+		void atiplusFullRowtimes(size_t j, FRowsptr<T> fullRow, double factor);
 		T timesFullColumn(FColsptr<T> fullCol);
 		SpRowsptr<T> plusSparseRow(SpRowsptr<T> spMat);
 		SpRowsptr<T> clonesptr();
@@ -62,25 +62,25 @@ namespace MbD {
 		return answer;
 	}
 	template<typename T>
-	inline void SparseRow<T>::atiplusFullRow(int j, FRowsptr<T> fullRow)
+	inline void SparseRow<T>::atiplusFullRow(size_t j, FRowsptr<T> fullRow)
 	{
-		for (int jj = 0; jj < (int)fullRow->size(); jj++)
+		for (size_t jj = 0; jj < fullRow->size(); jj++)
 		{
 			(*this)[j + jj] += fullRow->at(jj);
 		}
 	}
 	template<typename T>
-	inline void SparseRow<T>::atiminusFullRow(int j, FRowsptr<T> fullRow)
+	inline void SparseRow<T>::atiminusFullRow(size_t j, FRowsptr<T> fullRow)
 	{
-		for (int jj = 0; jj < (int)fullRow->size(); jj++)
+		for (size_t jj = 0; jj < fullRow->size(); jj++)
 		{
 			(*this)[j + jj] -= fullRow->at(jj);
 		}
 	}
 	template<typename T>
-	inline void SparseRow<T>::atiplusFullRowtimes(int j, FRowsptr<T> fullRow, double factor)
+	inline void SparseRow<T>::atiplusFullRowtimes(size_t j, FRowsptr<T> fullRow, double factor)
 	{
-		for (int jj = 0; jj < (int)fullRow->size(); jj++)
+		for (size_t jj = 0; jj < fullRow->size(); jj++)
 		{
 			(*this)[j + jj] += fullRow->at(jj) * factor;
 		}

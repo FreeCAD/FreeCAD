@@ -15,7 +15,7 @@ namespace MbD {
 	{
 		//pGpEI ppGpEIpEI iqXIminusOnePlusAxis iqEI 
 	public:
-		AtPointConstraintIqcJc(EndFrmsptr frmi, EndFrmsptr frmj, int axisi);
+		AtPointConstraintIqcJc(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi);
 
 		void addToJointForceI(FColDsptr col) override;
 		void addToJointTorqueI(FColDsptr col) override;
@@ -31,8 +31,8 @@ namespace MbD {
 
 		FRowDsptr pGpEI;
 		FMatDsptr ppGpEIpEI;
-		int iqXIminusOnePlusAxis = -1;
-		int iqEI = -1;
+		size_t iqXIminusOnePlusAxis = SIZE_MAX;
+		size_t iqEI = SIZE_MAX;
 	};
 }
 

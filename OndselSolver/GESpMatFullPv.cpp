@@ -13,7 +13,7 @@
 
 using namespace MbD;
 
-void GESpMatFullPv::doPivoting(int p)
+void GESpMatFullPv::doPivoting(size_t p)
 {
 	//"Used by Gauss Elimination only."
 	//"Do full pivoting."
@@ -23,11 +23,11 @@ void GESpMatFullPv::doPivoting(int p)
 	double max = 0.0;
 	auto pivotRow = p;
 	auto pivotCol = p;
-	for (int j = p; j < n; j++)
+	for (size_t j = p; j < n; j++)
 	{
 		rowPositionsOfNonZerosInColumns->at(colOrder->at(j))->clear();
 	}
-	for (int i = p; i < m; i++)
+	for (size_t i = p; i < m; i++)
 	{
 		auto& rowi = matrixA->at(i);
 		for (auto const& kv : *rowi) {
@@ -59,9 +59,9 @@ void GESpMatFullPv::doPivoting(int p)
 	if (rowPositionsOfNonZerosInPivotColumn->front() == p) {
 		rowPositionsOfNonZerosInPivotColumn->erase(rowPositionsOfNonZerosInPivotColumn->begin());
 	}
-	markowitzPivotColCount = (int)rowPositionsOfNonZerosInPivotColumn->size();
+	markowitzPivotColCount = rowPositionsOfNonZerosInPivotColumn->size();
 }
-void GESpMatFullPv::forwardEliminateWithPivot(int p)
+void GESpMatFullPv::forwardEliminateWithPivot(size_t p)
 {
 	//app is pivot.
 	//i > p, j > p
@@ -73,8 +73,8 @@ void GESpMatFullPv::forwardEliminateWithPivot(int p)
 	auto jp = colOrder->at(p);
 	auto& rowp = matrixA->at(p);
 	auto app = rowp->at(jp);
-	auto elementsInPivotRow = std::make_shared<std::vector<const std::pair<const int, double>*>>(rowp->size() - 1);
-	int index = 0;
+	auto elementsInPivotRow = std::make_shared<std::vector<const std::pair<const size_t, double>*>>(rowp->size() - 1);
+	size_t index = 0;
 	for (auto const& keyValue : *rowp) {
 		if (keyValue.first != jp) {
 			elementsInPivotRow->at(index) = (&keyValue);
@@ -82,7 +82,7 @@ void GESpMatFullPv::forwardEliminateWithPivot(int p)
 		}
 	}
 	auto bp = rightHandSideB->at(p);
-	for (int ii = 0; ii < markowitzPivotColCount; ii++)
+	for (size_t ii = 0; ii < markowitzPivotColCount; ii++)
 	{
 		auto i = rowPositionsOfNonZerosInPivotColumn->at(ii);
 		auto& spRowi = matrixA->at(i);
@@ -118,9 +118,9 @@ void GESpMatFullPv::backSubstituteIntoDU()
 	auto jn = colOrder->at(n);
 	answerX->at(jn) = rightHandSideB->at(m) / matrixA->at(m)->at(jn);
 	//auto rhsZeroElement = this->rhsZeroElement();
-	for (int i = n - 2; i >= 0; i--)
+	for (int i = n - 2; i >= 0; i--)	//Use int because of decrement
 	{
-		auto& rowi = matrixA->at((int)i);
+		auto& rowi = matrixA->at(i);
 		sum = 0.0; // rhsZeroElement copy.
 		for (auto const& keyValue : *rowi) {
 			auto jj = keyValue.first;
@@ -151,13 +151,13 @@ void GESpMatFullPv::preSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol
 		n = spMat->ncol();
 		matrixA = std::make_shared<SparseMatrix<double>>(m);
 		pivotValues = std::make_shared<FullColumn<double>>(m);
-		rowOrder = std::make_shared<FullColumn<int>>(m);
-		colOrder = std::make_shared<FullRow<int>>(n);
-		positionsOfOriginalCols = std::make_shared<std::vector<int>>(m);
-		rowPositionsOfNonZerosInColumns = std::make_shared<std::vector<std::shared_ptr<std::vector<int>>>>(n);
-		for (int j = 0; j < n; j++)
+		rowOrder = std::make_shared<FullColumn<size_t>>(m);
+		colOrder = std::make_shared<FullRow<size_t>>(n);
+		positionsOfOriginalCols = std::make_shared<std::vector<size_t>>(m);
+		rowPositionsOfNonZerosInColumns = std::make_shared<std::vector<std::shared_ptr<std::vector<size_t>>>>(n);
+		for (size_t j = 0; j < n; j++)
 		{
-			rowPositionsOfNonZerosInColumns->at(j) = std::make_shared<std::vector<int>>();
+			rowPositionsOfNonZerosInColumns->at(j) = std::make_shared<std::vector<size_t>>();
 		}
 	}
 	if (saveOriginal) {
@@ -166,7 +166,7 @@ void GESpMatFullPv::preSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol
 	else {
 		rightHandSideB = fullCol;
 	}
-	for (int i = 0; i < m; i++)
+	for (size_t i = 0; i < m; i++)
 	{
 		auto& spRowi = spMat->at(i);
 		double maxRowMagnitude = spRowi->maxMagnitude();

@@ -26,7 +26,7 @@ namespace MbD {
         void setSystem(Solver* sys) override;
         void logString(std::string& str) override;
         void run() override;
-        int orderMax();
+        size_t orderMax();
         virtual void incrementTime(double tnew);
 
         void postFirstStep() override;

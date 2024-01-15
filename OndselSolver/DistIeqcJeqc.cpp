@@ -30,11 +30,11 @@ void MbD::DistIeqcJeqc::calcPrivate()
 	auto uIeJeOT = uIeJeO->transpose();
 	prIeJepXJ = uIeJeOT;
 	prIeJepEJ = uIeJeOT->timesFullMatrix(prIeJeOpEJ);
-	for (int i = 0; i < 3; i++)
+	for (size_t i = 0; i < 3; i++)
 	{
 		auto& pprIeJepXIipXJ = pprIeJepXIpXJ->at(i);
 		auto& prIeJepXIi = prIeJepXI->at(i);
-		for (int j = 0; j < 3; j++)
+		for (size_t j = 0; j < 3; j++)
 		{
 			auto element = (i == j) ? -1.0 : 0.0;
 			element -= prIeJepXIi * prIeJepXJ->at(j);
@@ -42,23 +42,23 @@ void MbD::DistIeqcJeqc::calcPrivate()
 		}
 	}
 
-	for (int i = 0; i < 4; i++)
+	for (size_t i = 0; i < 4; i++)
 	{
 		auto& pprIeJepEIipXJ = pprIeJepEIpXJ->at(i);
 		auto& prIeJepEIi = prIeJepEI->at(i);
 		auto& mprIeJeOpEIiT = mprIeJeOpEIT->at(i);
-		for (int j = 0; j < 3; j++)
+		for (size_t j = 0; j < 3; j++)
 		{
 			auto element = 0.0 - mprIeJeOpEIiT->at(j) - prIeJepEIi * prIeJepXJ->at(j);
 			pprIeJepEIipXJ->atiput(j, element / rIeJe);
 		}
 	}
 
-	for (int i = 0; i < 3; i++)
+	for (size_t i = 0; i < 3; i++)
 	{
 		auto& pprIeJepXJipXJ = pprIeJepXJpXJ->at(i);
 		auto& prIeJepXJi = prIeJepXJ->at(i);
-		for (int j = 0; j < 3; j++)
+		for (size_t j = 0; j < 3; j++)
 		{
 			auto element = (i == j) ? 1.0 : 0.0;
 			element -= prIeJepXJi * prIeJepXJ->at(j);
@@ -66,49 +66,49 @@ void MbD::DistIeqcJeqc::calcPrivate()
 		}
 	}
 
-	for (int i = 0; i < 3; i++)
+	for (size_t i = 0; i < 3; i++)
 	{
 		auto& pprIeJepXIipEJ = pprIeJepXIpEJ->at(i);
 		auto& prIeJepXIi = prIeJepXI->at(i);
 		auto& prIeJeOipEJ = prIeJeOpEJ->at(i);
-		for (int j = 0; j < 4; j++)
+		for (size_t j = 0; j < 4; j++)
 		{
 			auto element = 0.0 - prIeJeOipEJ->at(j) - prIeJepXIi * prIeJepEJ->at(j);
 			pprIeJepXIipEJ->atiput(j, element / rIeJe);
 		}
 	}
 
-	for (int i = 0; i < 4; i++)
+	for (size_t i = 0; i < 4; i++)
 	{
 		auto& pprIeJepEIipEJ = pprIeJepEIpEJ->at(i);
 		auto& prIeJepEIi = prIeJepEI->at(i);
 		auto& mprIeJeOpEIiT = mprIeJeOpEIT->at(i);
-		for (int j = 0; j < 4; j++)
+		for (size_t j = 0; j < 4; j++)
 		{
 			auto element = 0.0 - mprIeJeOpEIiT->dot(prIeJeOpEJT->at(j)) - prIeJepEIi * prIeJepEJ->at(j);
 			pprIeJepEIipEJ->atiput(j, element / rIeJe);
 		}
 	}
 
-	for (int i = 0; i < 3; i++)
+	for (size_t i = 0; i < 3; i++)
 	{
 		auto& pprIeJepXJipEJ = pprIeJepXJpEJ->at(i);
 		auto& prIeJepXJi = prIeJepXJ->at(i);
 		auto& prIeJeOipEJ = prIeJeOpEJ->at(i);
-		for (int j = 0; j < 4; j++)
+		for (size_t j = 0; j < 4; j++)
 		{
 			auto element = prIeJeOipEJ->at(j) - prIeJepXJi * prIeJepEJ->at(j);
 			pprIeJepXJipEJ->atiput(j, element / rIeJe);
 		}
 	}
 
-	for (int i = 0; i < 4; i++)
+	for (size_t i = 0; i < 4; i++)
 	{
 		auto& pprIeJepEJipEJ = pprIeJepEJpEJ->at(i);
 		auto& prIeJepEJi = prIeJepEJ->at(i);
 		auto& pprIeJeOpEJipEJ = pprIeJeOpEJpEJ->at(i);
 		auto& prIeJeOpEJiT = prIeJeOpEJT->at(i);
-		for (int j = 0; j < 4; j++)
+		for (size_t j = 0; j < 4; j++)
 		{
 			auto element = prIeJeOpEJiT->dot(prIeJeOpEJT->at(j))
                            + pprIeJeOpEJipEJ->at(j)->dot(rIeJeO) - prIeJepEJi * prIeJepEJ->at(j);

@@ -143,14 +143,14 @@ void PartFrame::markerFramesDo(const std::function<void(std::shared_ptr<MarkerFr
 	std::for_each(markerFrames->begin(), markerFrames->end(), f);
 }
 
-void PartFrame::removeRedundantConstraints(std::shared_ptr<std::vector<int>> redundantEqnNos)
+void PartFrame::removeRedundantConstraints(std::shared_ptr<std::vector<size_t>> redundantEqnNos)
 {
 	if (std::find(redundantEqnNos->begin(), redundantEqnNos->end(), aGeu->iG) != redundantEqnNos->end()) {
 		auto redunCon = CREATE<RedundantConstraint>::With();
 		redunCon->constraint = aGeu;
 		aGeu = redunCon;
 	}
-	for (int i = 0; i < (int)aGabs->size(); i++)
+	for (size_t i = 0; i < aGabs->size(); i++)
 	{
 		auto& constraint = aGabs->at(i);
 		if (std::find(redundantEqnNos->begin(), redundantEqnNos->end(), constraint->iG) != redundantEqnNos->end()) {
@@ -164,7 +164,7 @@ void PartFrame::removeRedundantConstraints(std::shared_ptr<std::vector<int>> red
 void PartFrame::reactivateRedundantConstraints()
 {
 	if (aGeu->isRedundant()) aGeu = std::dynamic_pointer_cast<RedundantConstraint>(aGeu)->constraint;
-	for (int i = 0; i < (int)aGabs->size(); i++)
+	for (size_t i = 0; i < aGabs->size(); i++)
 	{
 		auto& con = aGabs->at(i);
 		if (con->isRedundant()) {
@@ -194,8 +194,8 @@ void PartFrame::constraintsReport()
 
 void PartFrame::prePosIC()
 {
-	iqX = -1;
-	iqE = -1;
+	iqX = SIZE_MAX;
+	iqE = SIZE_MAX;
 	Item::prePosIC();
 	markerFramesDo([](std::shared_ptr<MarkerFrame> markerFrm) { markerFrm->prePosIC(); });
 	aGeu->prePosIC();
@@ -204,8 +204,8 @@ void PartFrame::prePosIC()
 
 void PartFrame::prePosKine()
 {
-	iqX = -1;
-	iqE = -1;
+	iqX = SIZE_MAX;
+	iqE = SIZE_MAX;
 	this->calcPostDynCorrectorIteration();
 	markerFramesDo([](std::shared_ptr<MarkerFrame> markerFrm) { markerFrm->prePosKine(); });
 	aGeu->prePosKine();
@@ -511,7 +511,7 @@ void PartFrame::postDynStep()
 
 void PartFrame::asFixed()
 {
-	for (int i = 0; i < 6; i++) {
+	for (size_t i = 0; i < 6; i++) {
 		auto con = CREATE<AbsConstraint>::With(i);
 		con->owner = this;
 		aGabs->push_back(con);

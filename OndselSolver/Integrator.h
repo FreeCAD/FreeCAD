@@ -27,7 +27,7 @@ namespace MbD {
         virtual void preStep() = 0;
         virtual void postStep() = 0;
         virtual void runInitialConditionTypeSolution() = 0;
-        virtual void iStep(int i) = 0;
+        virtual void iStep(size_t i) = 0;
         virtual void selectOrder() = 0;
 
         double direction = 1;

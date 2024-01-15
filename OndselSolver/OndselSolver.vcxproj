@@ -141,6 +141,8 @@
     <ClCompile Include="AccICNewtonRaphson.cpp" />
     <ClCompile Include="AccKineNewtonRaphson.cpp" />
     <ClCompile Include="AccNewtonRaphson.cpp" />
+    <ClCompile Include="AllowZRotation.cpp" />
+    <ClCompile Include="AllowZRotationConstraintIqctJqc.cpp" />
     <ClCompile Include="AngleJoint.cpp" />
     <ClCompile Include="AngleZIecJec.cpp" />
     <ClCompile Include="AngleZIeqcJec.cpp" />
@@ -152,6 +154,7 @@
     <ClCompile Include="ArcTan2.cpp" />
     <ClCompile Include="Arguments.cpp" />
     <ClCompile Include="Array.cpp" />
+    <ClCompile Include="ASMTAllowRotation.cpp" />
     <ClCompile Include="ASMTAngleJoint.cpp" />
     <ClCompile Include="ASMTAnimationParameters.cpp" />
     <ClCompile Include="ASMTAssembly.cpp" />
@@ -466,6 +469,8 @@
     <ClInclude Include="AccICNewtonRaphson.h" />
     <ClInclude Include="AccKineNewtonRaphson.h" />
     <ClInclude Include="AccNewtonRaphson.h" />
+    <ClInclude Include="AllowZRotation.h" />
+    <ClInclude Include="AllowZRotationConstraintIqctJqc.h" />
     <ClInclude Include="AngleJoint.h" />
     <ClInclude Include="AngleZIecJec.h" />
     <ClInclude Include="AngleZIeqcJec.h" />
@@ -477,6 +482,7 @@
     <ClInclude Include="ArcTan2.h" />
     <ClInclude Include="Arguments.h" />
     <ClInclude Include="Array.h" />
+    <ClInclude Include="ASMTAllowRotation.h" />
     <ClInclude Include="ASMTAngleJoint.h" />
     <ClInclude Include="ASMTAnimationParameters.h" />
     <ClInclude Include="ASMTAssembly.h" />

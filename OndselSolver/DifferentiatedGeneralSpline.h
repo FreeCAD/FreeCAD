@@ -16,7 +16,7 @@ namespace MbD {
         //derivativeOrder
     public:
         DifferentiatedGeneralSpline() = default;
-        DifferentiatedGeneralSpline(Symsptr arg, Symsptr spline, int derivOrder);
+        DifferentiatedGeneralSpline(Symsptr arg, Symsptr spline, size_t derivOrder);
         double getValue() override;
         Symsptr differentiateWRTx() override;
         Symsptr clonesptr() override;
@@ -24,6 +24,6 @@ namespace MbD {
         std::ostream& printOn(std::ostream& s) const override;
 
         Symsptr generalSpline;
-        int derivativeOrder;
+        size_t derivativeOrder;
     };
 }

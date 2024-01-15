@@ -15,7 +15,7 @@ namespace MbD {
     {
         //pGpXI pGpEI ppGpXIpEI ppGpEIpEI iqXI iqEI 
     public:
-        TranslationConstraintIqcJc(EndFrmsptr frmi, EndFrmsptr frmj, int axisi);
+        TranslationConstraintIqcJc(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi);
 
         void addToJointForceI(FColDsptr col) override;
         void addToJointTorqueI(FColDsptr col) override;
@@ -30,7 +30,7 @@ namespace MbD {
 
         FRowDsptr pGpXI, pGpEI;
         FMatDsptr ppGpXIpEI, ppGpEIpEI;
-        int iqXI, iqEI;
+        size_t iqXI, iqEI;
     };
 }
 

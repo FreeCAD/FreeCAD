@@ -15,7 +15,7 @@ namespace MbD {
 	{
 		//
 	public:
-		void removeRedundantConstraints(std::shared_ptr<std::vector<int>> redundantEqnNos) override;
+		void removeRedundantConstraints(std::shared_ptr<std::vector<size_t>> redundantEqnNos) override;
 		bool isRedundant() override;
 		std::string classname() override;
 		ConstraintType type() override;

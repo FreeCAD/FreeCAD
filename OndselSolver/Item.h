@@ -128,7 +128,7 @@ namespace MbD {
 		virtual void preVelIC();
 		virtual void reactivateRedundantConstraints();
 		virtual void registerName();
-		virtual void removeRedundantConstraints(std::shared_ptr<std::vector<int>> redundantEqnNos);
+		virtual void removeRedundantConstraints(std::shared_ptr<std::vector<size_t>> redundantEqnNos);
 		virtual void setpqsumu(FColDsptr col);
 		virtual void setpqsumuddot(FColDsptr col);
 		virtual void setpqsumudot(FColDsptr col);

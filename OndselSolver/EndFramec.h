@@ -34,8 +34,8 @@ namespace MbD {
 		virtual void initEndFrameqct();
 		virtual void initEndFrameqct2();
 		void calcPostDynCorrectorIteration() override;
-		FColDsptr aAjOe(int j);
-		double riOeO(int i);
+		FColDsptr aAjOe(size_t j);
+		double riOeO(size_t i);
 		virtual FColDsptr rmeO();
 		virtual FColDsptr rpep();
 		virtual FColFMatDsptr pAOppE();

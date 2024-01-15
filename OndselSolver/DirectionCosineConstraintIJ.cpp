@@ -13,7 +13,7 @@
 
 using namespace MbD;
 
-DirectionCosineConstraintIJ::DirectionCosineConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj, int axisi, int axisj) :
+DirectionCosineConstraintIJ::DirectionCosineConstraintIJ(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi, size_t axisj) :
 	ConstraintIJ(frmi, frmj), axisI(axisi), axisJ(axisj)
 {
 }

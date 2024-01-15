@@ -28,18 +28,18 @@ namespace MbD {
 		DiagonalMatrix(size_t count) : Array<T>(count) {}
 		DiagonalMatrix(size_t count, const T& value) : Array<T>(count, value) {}
 		DiagonalMatrix(std::initializer_list<T> list) : Array<T>{ list } {}
-		void atiputDiagonalMatrix(int i, std::shared_ptr<DiagonalMatrix<T>> diagMat);
+		void atiputDiagonalMatrix(size_t i, std::shared_ptr<DiagonalMatrix<T>> diagMat);
 		DiagMatsptr<T> times(T factor);
 		FColsptr<T> timesFullColumn(FColsptr<T> fullCol);
 		FMatsptr<T> timesFullMatrix(FMatsptr<T> fullMat);
-		int nrow() {
-			return (int)this->size();
+		size_t nrow() {
+			return this->size();
 		}
-		int ncol() {
-			return (int)this->size();
+		size_t ncol() {
+			return this->size();
 		}
 		double sumOfSquares() override;
-		int numberOfElements() override;
+		size_t numberOfElements() override;
 		void zeroSelf() override;
 		double maxMagnitude() override;
 
@@ -49,18 +49,18 @@ namespace MbD {
 	template<>
 	inline DiagMatDsptr DiagonalMatrix<double>::times(double factor)
 	{
-		auto nrow = (int)this->size();
+		auto nrow = this->size();
 		auto answer = std::make_shared<DiagonalMatrix<double>>(nrow);
-		for (int i = 0; i < nrow; i++)
+		for (size_t i = 0; i < nrow; i++)
 		{
 			answer->at(i) = this->at(i) * factor;
 		}
 		return answer;
 	}
 	template<typename T>
-	inline void DiagonalMatrix<T>::atiputDiagonalMatrix(int i, std::shared_ptr<DiagonalMatrix<T>> diagMat)
+	inline void DiagonalMatrix<T>::atiputDiagonalMatrix(size_t i, std::shared_ptr<DiagonalMatrix<T>> diagMat)
 	{
-		for (int ii = 0; ii < (int)diagMat->size(); ii++)
+		for (size_t ii = 0; ii < diagMat->size(); ii++)
 		{
 			this->at(i + ii) = diagMat->at(ii);
 		}
@@ -75,9 +75,9 @@ namespace MbD {
 	{
 		//"a*b = a(i,j)b(j) sum j."
 
-		auto nrow = (int)this->size();
+		auto nrow = this->size();
 		auto answer = std::make_shared<FullColumn<T>>(nrow);
-		for (int i = 0; i < nrow; i++)
+		for (size_t i = 0; i < nrow; i++)
 		{
 			answer->at(i) = this->at(i) * fullCol->at(i);
 		}
@@ -86,9 +86,9 @@ namespace MbD {
 	template<typename T>
 	inline FMatsptr<T> DiagonalMatrix<T>::timesFullMatrix(FMatsptr<T> fullMat)
 	{
-		auto nrow = (int)this->size();
+		auto nrow = this->size();
 		auto answer = std::make_shared<FullMatrix<T>>(nrow);
-		for (int i = 0; i < nrow; i++)
+		for (size_t i = 0; i < nrow; i++)
 		{
 			answer->at(i) = fullMat->at(i)->times(this->at(i));
 		}
@@ -98,7 +98,7 @@ namespace MbD {
 	inline double DiagonalMatrix<double>::sumOfSquares()
 	{
 		double sum = 0.0;
-		for (int i = 0; i < (int)this->size(); i++)
+		for (size_t i = 0; i < this->size(); i++)
 		{
 			double element = this->at(i);
 			sum += element * element;
@@ -106,15 +106,15 @@ namespace MbD {
 		return sum;
 	}
 	template<typename T>
-	inline int DiagonalMatrix<T>::numberOfElements()
+	inline size_t DiagonalMatrix<T>::numberOfElements()
 	{
-		auto n = (int)this->size();
+		auto n = this->size();
 		return n * n;
 	}
 	template<>
 	inline void DiagonalMatrix<double>::zeroSelf()
 	{
-		for (int i = 0; i < (int)this->size(); i++) {
+		for (size_t i = 0; i < this->size(); i++) {
 			this->at(i) = 0.0;
 		}
 	}
@@ -122,7 +122,7 @@ namespace MbD {
 	inline double DiagonalMatrix<double>::maxMagnitude()
 	{
 		double max = 0.0;
-		for (int i = 0; i < (int)this->size(); i++)
+		for (size_t i = 0; i < this->size(); i++)
 		{
 			double element = this->at(i);
 			if (element < 0.0) element = -element;
@@ -141,7 +141,7 @@ namespace MbD {
 	{
 		s << "DiagMat[";
 		s << this->at(0);
-		for (int i = 1; i < (int)this->size(); i++)
+		for (size_t i = 1; i < this->size(); i++)
 		{
 			s << ", " << this->at(i);
 		}

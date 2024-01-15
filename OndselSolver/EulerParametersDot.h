@@ -59,7 +59,7 @@ namespace MbD {
 		aBdot = std::make_shared<FullMatrix<double>>(3, 4);
 		aCdot = std::make_shared<FullMatrix<double>>(3, 4);
 		pAdotpE = std::make_shared<FullColumn<FMatDsptr>>(4);
-		for (int i = 0; i < 4; i++)
+		for (size_t i = 0; i < 4; i++)
 		{
 			pAdotpE->at(i) = std::make_shared<FullMatrix<double>>(3, 3);
 		}

@@ -26,10 +26,10 @@ namespace MbD {
         void passRootToSystem() override;
         void assignEquationNumbers() override = 0;
 
-        int nqsu = -1;
+        size_t nqsu = SIZE_MAX;
         FColDsptr qsuOld;
         DiagMatDsptr qsuWeights;
-        int nSingularMatrixError = -1;
+        size_t nSingularMatrixError = SIZE_MAX;
     };
 }
 

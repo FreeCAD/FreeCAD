@@ -37,7 +37,7 @@ void MbD::ASMTCompoundJoint::createMbD(std::shared_ptr<System> mbdSys, std::shar
 	compoundJoint->distanceIJ = distanceIJ;
 }
 
-void MbD::ASMTCompoundJoint::storeOnLevel(std::ofstream& os, int level)
+void MbD::ASMTCompoundJoint::storeOnLevel(std::ofstream& os, size_t level)
 {
 	ASMTJoint::storeOnLevel(os, level);
 	storeOnLevelString(os, level + 1, "distanceIJ");

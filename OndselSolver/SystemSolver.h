@@ -89,8 +89,8 @@ namespace MbD {
 
 		double errorTolPosKine = 1.0e-6;
 		double errorTolAccKine = 1.0e-6;
-		int iterMaxPosKine = 25;
-		int iterMaxAccKine = 25;
+		size_t iterMaxPosKine = 25;
+		size_t iterMaxAccKine = 25;
 		std::shared_ptr <IntegratorInterface> basicIntegrator;
 		std::shared_ptr<std::vector<double>> tstartPasts;
 		double tstart = 0.0;
@@ -104,8 +104,8 @@ namespace MbD {
 		double corRelTol = 0.0;
 		double intAbsTol = 0.0;
 		double intRelTol = 0.0;
-		int iterMaxDyn = 0;
-		int orderMax = 0;
+		size_t iterMaxDyn = 0;
+		size_t orderMax = 0;
 		double translationLimit = 0.0;
 		double rotationLimit = 0.0;
 	};

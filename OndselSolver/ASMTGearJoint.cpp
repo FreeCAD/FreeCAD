@@ -56,7 +56,7 @@ void MbD::ASMTGearJoint::createMbD(std::shared_ptr<System> mbdSys, std::shared_p
 	gearJoint->radiusJ = radiusJ;
 }
 
-void MbD::ASMTGearJoint::storeOnLevel(std::ofstream& os, int level)
+void MbD::ASMTGearJoint::storeOnLevel(std::ofstream& os, size_t level)
 {
 	ASMTJoint::storeOnLevel(os, level);
 	storeOnLevelString(os, level + 1, "radiusI");

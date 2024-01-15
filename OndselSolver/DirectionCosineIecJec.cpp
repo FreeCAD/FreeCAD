@@ -16,7 +16,7 @@ using namespace MbD;
 DirectionCosineIecJec::DirectionCosineIecJec()
 = default;
 
-DirectionCosineIecJec::DirectionCosineIecJec(EndFrmsptr frmi, EndFrmsptr frmj, int axisi, int axisj) :
+DirectionCosineIecJec::DirectionCosineIecJec(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi, size_t axisj) :
 	KinematicIeJe(frmi, frmj), axisI(axisi), axisJ(axisj)
 {
 

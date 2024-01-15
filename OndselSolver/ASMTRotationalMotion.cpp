@@ -92,7 +92,7 @@ void MbD::ASMTRotationalMotion::setRotationZ(std::string rotZ)
 	rotationZ = rotZ;
 }
 
-void MbD::ASMTRotationalMotion::storeOnLevel(std::ofstream& os, int level)
+void MbD::ASMTRotationalMotion::storeOnLevel(std::ofstream& os, size_t level)
 {
 	storeOnLevelString(os, level, "RotationalMotion");
 	storeOnLevelString(os, level + 1, "Name");

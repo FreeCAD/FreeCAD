@@ -81,7 +81,7 @@ namespace MbD {
 		void deleteMbD() override;
 		void createMbD(std::shared_ptr<System> mbdSys, std::shared_ptr<Units> mbdUnits) override;
 		void outputFile(std::string filename);
-		void storeOnLevel(std::ofstream& os, int level) override;
+		void storeOnLevel(std::ofstream& os, size_t level) override;
 
 		/* This function performs a one shot solve of the assembly.*/
 		void solve();
@@ -109,14 +109,14 @@ namespace MbD {
 		void setSimulationParameters(std::shared_ptr<ASMTSimulationParameters> simulationParameters);
 		std::shared_ptr<ASMTPart> partNamed(std::string partName);
 		std::shared_ptr<ASMTPart> partPartialNamed(std::string partialName);
-		void storeOnLevelNotes(std::ofstream& os, int level);
-		void storeOnLevelParts(std::ofstream& os, int level);
-		void storeOnLevelKinematicIJs(std::ofstream& os, int level);
-		void storeOnLevelConstraintSets(std::ofstream& os, int level);
-		void storeOnLevelForceTorques(std::ofstream& os, int level);
-		void storeOnLevelJoints(std::ofstream& os, int level);
-		void storeOnLevelMotions(std::ofstream& os, int level);
-		void storeOnLevelGeneralConstraintSets(std::ofstream& os, int level);
+		void storeOnLevelNotes(std::ofstream& os, size_t level);
+		void storeOnLevelParts(std::ofstream& os, size_t level);
+		void storeOnLevelKinematicIJs(std::ofstream& os, size_t level);
+		void storeOnLevelConstraintSets(std::ofstream& os, size_t level);
+		void storeOnLevelForceTorques(std::ofstream& os, size_t level);
+		void storeOnLevelJoints(std::ofstream& os, size_t level);
+		void storeOnLevelMotions(std::ofstream& os, size_t level);
+		void storeOnLevelGeneralConstraintSets(std::ofstream& os, size_t level);
 		void storeOnTimeSeries(std::ofstream& os) override;
 		void setFilename(std::string filename);
 

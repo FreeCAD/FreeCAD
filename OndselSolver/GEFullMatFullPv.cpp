@@ -13,18 +13,18 @@
 
 using namespace MbD;
 
-void GEFullMatFullPv::doPivoting(int p)
+void GEFullMatFullPv::doPivoting(size_t p)
 {
 	//"Do full pivoting."
 
 		//| max pivotRow pivotCol rowi aij mag |
 	double max = 0.0;
-	int pivotRow = p;
-	int pivotCol = p;
-	for (int i = p; i < m; i++)
+	size_t pivotRow = p;
+	size_t pivotCol = p;
+	for (size_t i = p; i < m; i++)
 	{
 		auto rowi = matrixA->at(i);
-		for (int j = p; j < n; j++)
+		for (size_t j = p; j < n; j++)
 		{
 			auto aij = rowi->at(j);
 			if (aij != 0.0) {

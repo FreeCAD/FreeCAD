@@ -984,6 +984,15 @@
     <ClCompile Include="PosICDragNewtonRaphson.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AllowZRotation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AllowZRotationConstraintIqctJqc.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ASMTAllowRotation.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Array.h">
@@ -1959,6 +1968,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="PosICDragNewtonRaphson.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AllowZRotation.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AllowZRotationConstraintIqctJqc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ASMTAllowRotation.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

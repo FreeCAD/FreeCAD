@@ -42,7 +42,7 @@ void MbD::ASMTAngleJoint::createMbD(std::shared_ptr<System> mbdSys, std::shared_
 	angleJoint->theIzJz = theIzJz;
 }
 
-void MbD::ASMTAngleJoint::storeOnLevel(std::ofstream& os, int level)
+void MbD::ASMTAngleJoint::storeOnLevel(std::ofstream& os, size_t level)
 {
 	ASMTJoint::storeOnLevel(os, level);
 	storeOnLevelString(os, level + 1, "theIzJz");

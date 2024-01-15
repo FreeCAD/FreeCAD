@@ -31,28 +31,28 @@ void MbD::ConstVelConstraintIqcJqc::calcPostDynCorrectorIteration()
 	auto& pA10IeJepEJ = aA10IeqcJeqc->pAijIeJepEJ;
 	auto& ppA10IeJepEIpEJ = aA10IeqcJeqc->ppAijIeJepEIpEJ;
 	auto& ppA10IeJepEJpEJ = aA10IeqcJeqc->ppAijIeJepEJpEJ;
-	for (int i = 0; i < 4; i++)
+	for (size_t i = 0; i < 4; i++)
 	{
 		pGpEJ->atiput(i, pA01IeJepEJ->at(i) + pA10IeJepEJ->at(i));
 	}
-	for (int i = 0; i < 4; i++)
+	for (size_t i = 0; i < 4; i++)
 	{
 		auto& ppGpEIpEJi = ppGpEIpEJ->at(i);
 		auto& ppA01IeJepEIpEJi = ppA01IeJepEIpEJ->at(i);
 		auto& ppA10IeJepEIpEJi = ppA10IeJepEIpEJ->at(i);
-		for (int j = 0; j < 4; j++)
+		for (size_t j = 0; j < 4; j++)
 		{
 			auto ppGpEIpEJij = ppA01IeJepEIpEJi->at(j) + ppA10IeJepEIpEJi->at(j);
 			ppGpEIpEJi->atiput(j, ppGpEIpEJij);
 		}
 	}
-	for (int i = 0; i < 4; i++)
+	for (size_t i = 0; i < 4; i++)
 	{
 		auto& ppGpEJpEJi = ppGpEJpEJ->at(i);
 		auto& ppA01IeJepEJpEJi = ppA01IeJepEJpEJ->at(i);
 		auto& ppA10IeJepEJpEJi = ppA10IeJepEJpEJ->at(i);
 		ppGpEJpEJi->atiput(i, ppA01IeJepEJpEJi->at(i) + ppA10IeJepEJpEJi->at(i));
-		for (int j = i + 1; j < 4; j++)
+		for (size_t j = i + 1; j < 4; j++)
 		{
 			auto ppGpEJpEJij = ppA01IeJepEJpEJi->at(j) + ppA10IeJepEJpEJi->at(j);
 			ppGpEJpEJi->atiput(j, ppGpEJpEJij);

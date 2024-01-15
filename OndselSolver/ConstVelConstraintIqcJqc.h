@@ -31,7 +31,7 @@ namespace MbD {
         FRowDsptr pGpEJ;
         FMatDsptr ppGpEIpEJ;
         FMatDsptr ppGpEJpEJ;
-        int iqEJ = -1;
+        size_t iqEJ = SIZE_MAX;
     };
 }
 

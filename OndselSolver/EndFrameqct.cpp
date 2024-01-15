@@ -70,7 +70,7 @@ void EndFrameqct::initprmemptBlks()
 {
 	auto& mbdTime = this->root()->time;
 	prmemptBlks = std::make_shared< FullColumn<Symsptr>>(3);
-	for (int i = 0; i < 3; i++) {
+	for (size_t i = 0; i < 3; i++) {
 		auto& disp = rmemBlks->at(i);
 		auto var = disp->differentiateWRT(mbdTime);
 		auto vel = var->simplified(var);
@@ -82,7 +82,7 @@ void EndFrameqct::initpprmemptptBlks()
 {
 	auto& mbdTime = this->root()->time;
 	pprmemptptBlks = std::make_shared< FullColumn<Symsptr>>(3);
-	for (int i = 0; i < 3; i++) {
+	for (size_t i = 0; i < 3; i++) {
 		auto& vel = prmemptBlks->at(i);
 		auto var = vel->differentiateWRT(mbdTime);
 		auto acc = var->simplified(var);
@@ -94,7 +94,7 @@ void EndFrameqct::initpPhiThePsiptBlks()
 {
 	auto& mbdTime = this->root()->time;
 	pPhiThePsiptBlks = std::make_shared< FullColumn<Symsptr>>(3);
-	for (int i = 0; i < 3; i++) {
+	for (size_t i = 0; i < 3; i++) {
 		auto& angle = phiThePsiBlks->at(i);
 		auto var = angle->differentiateWRT(mbdTime);
 		//std::cout << "var " << *var << std::endl;
@@ -108,7 +108,7 @@ void EndFrameqct::initppPhiThePsiptptBlks()
 {
 	auto& mbdTime = this->root()->time;
 	ppPhiThePsiptptBlks = std::make_shared< FullColumn<Symsptr>>(3);
-	for (int i = 0; i < 3; i++) {
+	for (size_t i = 0; i < 3; i++) {
 		auto& angleVel = pPhiThePsiptBlks->at(i);
 		auto var = angleVel->differentiateWRT(mbdTime);
 		auto angleAcc = var->simplified(var);
@@ -130,11 +130,11 @@ void EndFrameqct::calcPostDynCorrectorIteration()
 	rOeO = rOmO->plusFullColumn(aAOm->timesFullColumn(rmem));
 	auto& prOmOpE = markerFrame->prOmOpE;
 	auto& pAOmpE = markerFrame->pAOmpE;
-	for (int i = 0; i < 3; i++)
+	for (size_t i = 0; i < 3; i++)
 	{
 		auto& prOmOpEi = prOmOpE->at(i);
 		auto& prOeOpEi = prOeOpE->at(i);
-		for (int j = 0; j < 4; j++)
+		for (size_t j = 0; j < 4; j++)
 		{
 			auto prOeOpEij = prOmOpEi->at(j) + pAOmpE->at(j)->at(i)->timesFullColumn(rmem);
 			prOeOpEi->at(j) = prOeOpEij;
@@ -143,7 +143,7 @@ void EndFrameqct::calcPostDynCorrectorIteration()
 	auto rpep = markerFrame->rpmp->plusFullColumn(markerFrame->aApm->timesFullColumn(rmem));
 	pprOeOpEpE = EulerParameters<double>::ppApEpEtimesColumn(rpep);
 	aAOe = aAOm->timesFullMatrix(aAme);
-	for (int i = 0; i < 4; i++)
+	for (size_t i = 0; i < 4; i++)
 	{
 		pAOepE->at(i) = pAOmpE->at(i)->timesFullMatrix(aAme);
 	}
@@ -162,7 +162,7 @@ void EndFrameqct::prePosIC()
 void EndFrameqct::evalrmem()
 {
 	if (rmemBlks) {
-		for (int i = 0; i < 3; i++)
+		for (size_t i = 0; i < 3; i++)
 		{
 			auto& expression = rmemBlks->at(i);
 			double value = expression->getValue();
@@ -175,7 +175,7 @@ void EndFrameqct::evalAme()
 {
 	if (phiThePsiBlks) {
 		auto phiThePsi = CREATE<EulerAngleszxz<double>>::With();
-		for (int i = 0; i < 3; i++)
+		for (size_t i = 0; i < 3; i++)
 		{
 			auto& expression = phiThePsiBlks->at(i);
 			auto value = expression->getValue();
@@ -202,34 +202,34 @@ void EndFrameqct::preVelIC()
 void EndFrameqct::postVelIC()
 {
 	auto& pAOmpE = markerFrame->pAOmpE;
-	for (int i = 0; i < 3; i++)
+	for (size_t i = 0; i < 3; i++)
 	{
 		auto& pprOeOpEpti = pprOeOpEpt->at(i);
-		for (int j = 0; j < 4; j++)
+		for (size_t j = 0; j < 4; j++)
 		{
 			auto pprOeOpEptij = pAOmpE->at(j)->at(i)->dot(prmempt);
 			pprOeOpEpti->atiput(j, pprOeOpEptij);
 		}
 	}
-	for (int i = 0; i < 4; i++)
+	for (size_t i = 0; i < 4; i++)
 	{
 		ppAOepEpt->atiput(i, pAOmpE->at(i)->timesFullMatrix(pAmept));
 	}
 }
 
-FColDsptr EndFrameqct::pAjOept(int j)
+FColDsptr EndFrameqct::pAjOept(size_t j)
 {
 	return pAOept->column(j);
 }
 
-FMatDsptr EndFrameqct::ppAjOepETpt(int jj)
+FMatDsptr EndFrameqct::ppAjOepETpt(size_t jj)
 {
 	auto answer = std::make_shared<FullMatrix<double>>(4, 3);
-	for (int i = 0; i < 4; i++)
+	for (size_t i = 0; i < 4; i++)
 	{
 		auto& answeri = answer->at(i);
 		auto& ppAOepEipt = ppAOepEpt->at(i);
-		for (int j = 0; j < 3; j++)
+		for (size_t j = 0; j < 3; j++)
 		{
 			auto& answerij = ppAOepEipt->at(j)->at(jj);
 			answeri->atiput(j, answerij);
@@ -238,22 +238,22 @@ FMatDsptr EndFrameqct::ppAjOepETpt(int jj)
 	return answer;
 }
 
-FColDsptr EndFrameqct::ppAjOeptpt(int j)
+FColDsptr EndFrameqct::ppAjOeptpt(size_t j)
 {
 	return ppAOeptpt->column(j);
 }
 
-double EndFrameqct::priOeOpt(int i)
+double EndFrameqct::priOeOpt(size_t i)
 {
 	return prOeOpt->at(i);
 }
 
-FRowDsptr EndFrameqct::ppriOeOpEpt(int i)
+FRowDsptr EndFrameqct::ppriOeOpEpt(size_t i)
 {
 	return pprOeOpEpt->at(i);
 }
 
-double EndFrameqct::ppriOeOptpt(int i)
+double EndFrameqct::ppriOeOptpt(size_t i)
 {
 	return pprOeOptpt->at(i);
 }
@@ -261,7 +261,7 @@ double EndFrameqct::ppriOeOptpt(int i)
 void EndFrameqct::evalprmempt()
 {
 	if (rmemBlks) {
-		for (int i = 0; i < 3; i++)
+		for (size_t i = 0; i < 3; i++)
 		{
 			auto& derivative = prmemptBlks->at(i);
 			auto value = derivative->getValue();
@@ -276,7 +276,7 @@ void EndFrameqct::evalpAmept()
 		auto phiThePsi = CREATE<EulerAngleszxz<double>>::With();
 		auto phiThePsiDot = CREATE<EulerAngleszxzDot<double>>::With();
 		phiThePsiDot->phiThePsi = phiThePsi;
-		for (int i = 0; i < 3; i++)
+		for (size_t i = 0; i < 3; i++)
 		{
 			auto& expression = phiThePsiBlks->at(i);
 			auto& derivative = pPhiThePsiptBlks->at(i);
@@ -294,7 +294,7 @@ void EndFrameqct::evalpAmept()
 void EndFrameqct::evalpprmemptpt()
 {
 	if (rmemBlks) {
-		for (int i = 0; i < 3; i++)
+		for (size_t i = 0; i < 3; i++)
 		{
 			auto& secondDerivative = pprmemptptBlks->at(i);
 			auto value = secondDerivative->getValue();
@@ -311,7 +311,7 @@ void EndFrameqct::evalppAmeptpt()
 		phiThePsiDot->phiThePsi = phiThePsi;
 		auto phiThePsiDDot = CREATE<EulerAngleszxzDDot<double>>::With();
 		phiThePsiDDot->phiThePsiDot = phiThePsiDot;
-		for (int i = 0; i < 3; i++)
+		for (size_t i = 0; i < 3; i++)
 		{
 			auto& expression = phiThePsiBlks->at(i);
 			auto& derivative = pPhiThePsiptBlks->at(i);

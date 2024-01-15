@@ -216,7 +216,7 @@ namespace MbD {
 		aB = std::make_shared<FullMatrix<double>>(3, 4);
 		aC = std::make_shared<FullMatrix<double>>(3, 4);
 		pApE = std::make_shared<FullColumn<FMatDsptr>>(4);
-		for (int i = 0; i < 4; i++)
+		for (size_t i = 0; i < 4; i++)
 		{
 			pApE->at(i) = std::make_shared<FullMatrix<double>>(3, 3);
 		}

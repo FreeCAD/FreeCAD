@@ -21,14 +21,14 @@ namespace MbD {
 		void calcOperatorMatrix();
 		virtual void initialize();
 		virtual void initializeLocally();
-		virtual void setiStep(int i);
-		virtual void setorder(int o);
+		virtual void setiStep(size_t i);
+		virtual void setorder(size_t o);
 		virtual void formTaylorMatrix() = 0;
 		virtual void instantiateTaylorMatrix();
-		virtual void formTaylorRowwithTimeNodederivative(int i, int ii, int k);
+		virtual void formTaylorRowwithTimeNodederivative(size_t i, size_t ii, size_t k);
 		void settime(double t);
 
-		int iStep = 0, order = 0;
+		size_t iStep = 0, order = 0;
 		FMatDsptr taylorMatrix, operatorMatrix;
 		double time = 0.0;
 		std::shared_ptr<std::vector<double>> timeNodes;	//"Row of past times in order of increasing past."

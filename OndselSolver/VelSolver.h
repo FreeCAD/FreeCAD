@@ -30,7 +30,7 @@ namespace MbD {
 		void setSystem(Solver* sys) override;
 
 		SystemSolver* system = nullptr;
-		int n = -1;
+		size_t n = SIZE_MAX;
 		FColDsptr x, errorVector;
 		SpMatDsptr jacobian;
 		std::shared_ptr<MatrixSolver> matrixSolver;

@@ -12,7 +12,7 @@
 
 using namespace MbD;
 
-void GEFullMat::forwardEliminateWithPivot(int)
+void GEFullMat::forwardEliminateWithPivot(size_t)
 {
 	assert(false);
 }
@@ -21,11 +21,11 @@ void GEFullMat::backSubstituteIntoDU()
 {
 	answerX = std::make_shared<FullColumn<double>>(n);
 	answerX->at(n - 1) = rightHandSideB->at(m - 1) / matrixA->at(m - 1)->at(n - 1);
-	for (int i = n - 2; i >= 0; i--)
+	for (int i = n - 2; i >= 0; i--)	//Use int because of decrement
 	{
 		auto rowi = matrixA->at(i);
 		double sum = answerX->at(n) * rowi->at(n);
-		for (int j = i + 1; j < n - 1; j++)
+		for (size_t j = i + 1; j < n - 1; j++)
 		{
 			sum += answerX->at(j) * rowi->at(j);
 		}
@@ -48,7 +48,7 @@ void GEFullMat::preSolvewithsaveOriginal(SpMatDsptr, FColDsptr, bool)
 	assert(false);
 }
 
-double GEFullMat::getmatrixArowimaxMagnitude(int i)
+double GEFullMat::getmatrixArowimaxMagnitude(size_t i)
 {
 	return matrixA->at(i)->maxMagnitude();
 }
@@ -56,7 +56,7 @@ double GEFullMat::getmatrixArowimaxMagnitude(int i)
 FColDsptr GEFullMat::basicSolvewithsaveOriginal(FMatDsptr fullMat, FColDsptr fullCol, bool saveOriginal)
 {
 	this->preSolvewithsaveOriginal(fullMat, fullCol, saveOriginal);
-	for (int p = 0; p < m; p++)
+	for (size_t p = 0; p < m; p++)
 	{
 		this->doPivoting(p);
 		this->forwardEliminateWithPivot(p);

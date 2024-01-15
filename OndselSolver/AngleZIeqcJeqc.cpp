@@ -32,18 +32,18 @@ void MbD::AngleZIeqcJeqc::calcPostDynCorrectorIteration()
 	auto ppsthezpEIpEJ = aA10IeJe->ppvaluepEIpEJ();
 	auto ppcthezpEJpEJ = aA00IeJe->ppvaluepEJpEJ();
 	auto ppsthezpEJpEJ = aA10IeJe->ppvaluepEJpEJ();
-	for (int i = 0; i < 4; i++)
+	for (size_t i = 0; i < 4; i++)
 	{
 		pthezpEJ->atiput(i, (psthezpEJ->at(i)) * cosOverSSq - ((pcthezpEJ->at(i)) * sinOverSSq));
 	}
-	for (int i = 0; i < 4; i++)
+	for (size_t i = 0; i < 4; i++)
 	{
 		auto ppthezpEIpEJi = ppthezpEIpEJ->at(i);
 		auto ppcthezpEIpEJi = ppcthezpEIpEJ->at(i);
 		auto ppsthezpEIpEJi = ppsthezpEIpEJ->at(i);
 		auto pcthezpEIi = pcthezpEI->at(i);
 		auto psthezpEIi = psthezpEI->at(i);
-		for (int j = 0; j < 4; j++)
+		for (size_t j = 0; j < 4; j++)
 		{
 			auto pcthezpEJj = pcthezpEJ->at(j);
 			auto psthezpEJj = psthezpEJ->at(j);
@@ -53,7 +53,7 @@ void MbD::AngleZIeqcJeqc::calcPostDynCorrectorIteration()
 			ppthezpEIpEJi->atiput(j, term1 + term2 + term3);
 		}
 	}
-	for (int i = 0; i < 4; i++)
+	for (size_t i = 0; i < 4; i++)
 	{
 		auto ppthezpEJpEJi = ppthezpEJpEJ->at(i);
 		auto ppcthezpEJpEJi = ppcthezpEJpEJ->at(i);
@@ -64,7 +64,7 @@ void MbD::AngleZIeqcJeqc::calcPostDynCorrectorIteration()
 		auto term2 = ppsthezpEJpEJi->at(i) * cosOverSSq - (ppcthezpEJpEJi->at(i) * sinOverSSq);
 		auto term3 = (psthezpEJi * pcthezpEJi + (pcthezpEJi * psthezpEJi)) * dSqOverSSqSq;
 		ppthezpEJpEJi->atiput(i, term1 + term2 + term3);
-		for (int j = i + 1; j < 4; j++)
+		for (size_t j = i + 1; j < 4; j++)
 		{
 			auto pcthezpEJj = pcthezpEJ->at(j);
 			auto psthezpEJj = psthezpEJ->at(j);

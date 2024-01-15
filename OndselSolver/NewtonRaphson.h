@@ -48,7 +48,7 @@ namespace MbD {
         SystemSolver* system = nullptr; //Use raw pointer when pointing backwards.
         std::shared_ptr<std::vector<double>> dxNorms, yNorms;
         double dxNorm = 0.0, yNorm = 0.0, yNormOld = 0.0, yNormTol = 0.0, dxTol = 0.0, twoAlp = 0.0, lam = 0.0;
-        int iterNo = -1, iterMax = -1, nDivergence = -1, nBackTracking = -1;
+        size_t iterNo = SIZE_MAX, iterMax = SIZE_MAX, nDivergence = SIZE_MAX, nBackTracking = SIZE_MAX;
     };
 }
 

@@ -16,7 +16,7 @@ namespace MbD {
         //
     public:
         void parseASMT(std::vector<std::string>& lines) override;
-        void storeOnLevel(std::ofstream& os, int level) override;
+        void storeOnLevel(std::ofstream& os, size_t level) override;
 
 
     };

@@ -20,22 +20,22 @@ namespace MbD {
 		double getValue() override;
 		Symsptr differentiateWRTx() override;
 		void arguments(Symsptr args) override;
-		void initxdegreexsys(Symsptr arg, int order, std::shared_ptr<std::vector<double>> xarr, std::shared_ptr<std::vector<double>> yarr);
+		void initxdegreexsys(Symsptr arg, size_t order, std::shared_ptr<std::vector<double>> xarr, std::shared_ptr<std::vector<double>> yarr);
 		void computeDerivatives();
 		bool isCyclic();
-		double derivativeAt(int derivativeOrder, double arg);
+		double derivativeAt(size_t derivativeOrder, double arg);
 		void calcIndexAndDeltaFor(double xxx);
 		void calcCyclicIndexAndDelta();
 		void calcNonCyclicIndexAndDelta();
 		void calcIndexAndDelta();
-		void searchIndexFromto(int start, int end);
+		void searchIndexFromto(size_t start, size_t end);
 		Symsptr clonesptr() override;
 		double y(double xxx);
 
 		std::ostream& printOn(std::ostream& s) const override;
 
 		FMatDsptr derivs;
-		int degree = -1, index = -1;
+		size_t degree = SIZE_MAX, index = SIZE_MAX;
 		double delta = std::numeric_limits<double>::min();
 	};
 }

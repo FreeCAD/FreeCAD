@@ -40,7 +40,7 @@ void Constraint::postInput()
 void Constraint::prePosIC()
 {
 	lam = 0.0;
-	iG = -1;
+	iG = SIZE_MAX;
 	Item::prePosIC();
 }
 
@@ -108,7 +108,7 @@ void Constraint::fillPosICError(FColDsptr col)
 	col->atiplusNumber(iG, aG);
 }
 
-void Constraint::removeRedundantConstraints(std::shared_ptr<std::vector<int>>)
+void Constraint::removeRedundantConstraints(std::shared_ptr<std::vector<size_t>>)
 {
 	//My owner should handle this.
 	assert(false);

@@ -22,7 +22,8 @@ void PosNewtonRaphson::preRun()
 
 void PosNewtonRaphson::incrementIterNo()
 {
-	if (iterNo >= iterMax)
+	iterNo++;
+	if (iterNo > iterMax)
 	{
 		std::stringstream ss;
 		ss << "MbD: No convergence after " << iterNo << " iterations.";
@@ -38,9 +39,7 @@ void PosNewtonRaphson::incrementIterNo()
 		system->logString(str);
 
 		throw SimulationStoppingError("");
-	}
-	
-	iterNo++;
+	}	
 }
 
 void PosNewtonRaphson::askSystemToUpdate()

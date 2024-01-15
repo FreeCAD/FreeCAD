@@ -12,9 +12,9 @@ using namespace MbD;
 
 void MbD::ASMTAnimationParameters::parseASMT(std::vector<std::string>& lines)
 {
-	//int nframe, icurrent, istart, iend, framesPerSecond;
+	//size_t nframe, icurrent, istart, iend, framesPerSecond;
 	//bool isForward;
-	int pos = (int)lines[0].find_first_not_of("\t");
+	auto pos = lines[0].find_first_not_of("\t");
 	auto leadingTabs = lines[0].substr(0, pos);
 	assert(lines[0] == (leadingTabs + "nframe"));
 	lines.erase(lines.begin());
@@ -43,7 +43,7 @@ void MbD::ASMTAnimationParameters::parseASMT(std::vector<std::string>& lines)
 
 }
 
-void MbD::ASMTAnimationParameters::storeOnLevel(std::ofstream& os, int level)
+void MbD::ASMTAnimationParameters::storeOnLevel(std::ofstream& os, size_t level)
 {
 	storeOnLevelString(os, level, "AnimationParameters");
 	storeOnLevelString(os, level + 1, "nframe");

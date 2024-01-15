@@ -25,11 +25,11 @@ namespace MbD {
 		void readJoints(std::vector<std::string>& lines);
 		void readGravity(std::vector<std::string>& lines);
 
-		int maxIterations = 1000;
+		size_t maxIterations = 1000;
 		std::string defaultOrientation = "euler321";
 		std::string omegaRotates = "no";
 		std::string print = "none";
 		std::string initialStiffness = "1.0, 1.0";
-		int structuralNodes = -1, rigidBodies = -1, joints = -1;
+		size_t structuralNodes = SIZE_MAX, rigidBodies = SIZE_MAX, joints = SIZE_MAX;
 	};
 }

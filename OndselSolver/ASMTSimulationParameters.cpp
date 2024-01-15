@@ -14,7 +14,7 @@ void MbD::ASMTSimulationParameters::parseASMT(std::vector<std::string>& lines)
 {
 	//tstart, tend, hmin, hmax, hout, errorTol;
 
-	int pos = (int)lines[0].find_first_not_of("\t");
+	auto pos = lines[0].find_first_not_of("\t");
 	auto leadingTabs = lines[0].substr(0, pos);
 	assert(lines[0] == (leadingTabs + "tstart"));
 	lines.erase(lines.begin());
@@ -73,13 +73,13 @@ void MbD::ASMTSimulationParameters::seterrorTol(double tol)
 	errorTol = tol;
 }
 
-void MbD::ASMTSimulationParameters::setmaxIter(int maxIter)
+void MbD::ASMTSimulationParameters::setmaxIter(size_t maxIter)
 {
 	iterMaxPosKine = maxIter;
 	iterMaxAccKine = maxIter;
 }
 
-void MbD::ASMTSimulationParameters::storeOnLevel(std::ofstream& os, int level)
+void MbD::ASMTSimulationParameters::storeOnLevel(std::ofstream& os, size_t level)
 {
 	storeOnLevelString(os, level, "SimulationParameters");
 	storeOnLevelString(os, level + 1, "tstart");

@@ -18,16 +18,16 @@ namespace MbD {
         //aJoo == aJpp when rPoP == rPcmP and aAPo == aAPp
     public:
         static void example1();
-        void doFullPivoting(int p);
-        void forwardEliminateWithPivot(int p) override;
+        void doFullPivoting(size_t p);
+        void forwardEliminateWithPivot(size_t p) override;
         void backSubstituteIntoDU() override;
         void postSolve() override;
         FColDsptr basicSolvewithsaveOriginal(FMatDsptr fullMat, FColDsptr fullCol, bool saveOriginal) override;
         FColDsptr basicSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal) override;
         void preSolvewithsaveOriginal(FMatDsptr fullMat, FColDsptr fullCol, bool saveOriginal) override;
         void preSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal) override;
-        double getmatrixArowimaxMagnitude(int i) override;
-        void doPivoting(int p) override;
+        double getmatrixArowimaxMagnitude(size_t i) override;
+        void doPivoting(size_t p) override;
 
         void setm(double mass);
         void setJPP(FMatDsptr mat);
@@ -51,7 +51,7 @@ namespace MbD {
         FMatDsptr aJPP, aJoo, aAPo, aJcmP, aJcmPcopy, aAPp;
         FColDsptr rPoP, rPcmP;
         DiagMatDsptr aJpp;
-        std::shared_ptr<FullRow<int>> colOrder;
+        std::shared_ptr<FullRow<size_t>> colOrder;
 
     };
 }

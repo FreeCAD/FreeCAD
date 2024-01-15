@@ -15,7 +15,7 @@ namespace MbD {
     {
         //
     public:
-        void doPivoting(int p) override;
+        void doPivoting(size_t p) override;
 
     };
 }

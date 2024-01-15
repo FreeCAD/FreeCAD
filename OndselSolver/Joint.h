@@ -68,7 +68,7 @@ namespace MbD {
 		void prePosKine() override;
 		void preVelIC() override;
 		void reactivateRedundantConstraints() override;
-		void removeRedundantConstraints(std::shared_ptr<std::vector<int>> redundantEqnNos) override;
+		void removeRedundantConstraints(std::shared_ptr<std::vector<size_t>> redundantEqnNos) override;
 		void setqsuddotlam(FColDsptr col) override;
 		void setqsudotlam(FColDsptr col) override;
 		void setqsulam(FColDsptr col) override;

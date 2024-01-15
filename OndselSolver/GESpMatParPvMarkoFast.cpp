@@ -22,7 +22,7 @@ void GESpMatParPvMarkoFast::preSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr
 		m = spMat->nrow();
 		n = spMat->ncol();
 		matrixA = std::make_shared<SparseMatrix<double>>(m);
-		rowPositionsOfNonZerosInPivotColumn = std::make_shared<std::vector<int>>();
+		rowPositionsOfNonZerosInPivotColumn = std::make_shared<std::vector<size_t>>();
 	}
 	if (saveOriginal) {
 		rightHandSideB = fullCol->copy();
@@ -30,7 +30,7 @@ void GESpMatParPvMarkoFast::preSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr
 	else {
 		rightHandSideB = fullCol;
 	}
-	for (int i = 0; i < m; i++)
+	for (size_t i = 0; i < m; i++)
 	{
 		auto& spRowi = spMat->at(i);
 		double maxRowMagnitude = spRowi->maxMagnitude();
@@ -41,7 +41,7 @@ void GESpMatParPvMarkoFast::preSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr
 	}
 }
 
-void GESpMatParPvMarkoFast::doPivoting(int p)
+void GESpMatParPvMarkoFast::doPivoting(size_t p)
 {
 	//"Search from bottom to top."
 	//"Optimized for speed. No check for singular pivot."
@@ -51,7 +51,8 @@ void GESpMatParPvMarkoFast::doPivoting(int p)
 	//"Pivot size are nieither checked nor stored."
 
 	//| lookForFirstNonZeroInPivotCol i rowi aip criterionMax rowPivoti criterion max |
-	int i, rowPivoti;
+	int i;	//Use int because of decrement
+	size_t rowPivoti;
 	double aip, max, criterion, criterionMax;
 	SpRowDsptr spRowi;
 	rowPositionsOfNonZerosInPivotColumn->clear();
@@ -60,7 +61,7 @@ void GESpMatParPvMarkoFast::doPivoting(int p)
 	while (lookForFirstNonZeroInPivotCol) {
 		spRowi = matrixA->at(i);
 		if (spRowi->find(p) == spRowi->end()) {
-			if (i <= p) throwSingularMatrixError("");
+			if (i <= (int)p) throwSingularMatrixError("");	//Use int because i can be negative
 		}
 		else {
 			markowitzPivotColCount = 0;
@@ -68,12 +69,12 @@ void GESpMatParPvMarkoFast::doPivoting(int p)
 			if (aip < 0) aip = -aip;
 			max = aip;
 			criterionMax = aip / std::pow(2.0, spRowi->size());
-			rowPivoti = i;
+			rowPivoti = (size_t)i;
 			lookForFirstNonZeroInPivotCol = false;
 		}
 		i--;
 	}
-	while (i >= p) {
+	while (i >= (int)p) {	//Use int because i can be negative
 		spRowi = matrixA->at(i);
 		if (spRowi->find(p) == spRowi->end()) {
 			aip = std::numeric_limits<double>::min();
@@ -87,7 +88,7 @@ void GESpMatParPvMarkoFast::doPivoting(int p)
 				max = aip;
 				criterionMax = criterion;
 				rowPositionsOfNonZerosInPivotColumn->push_back(rowPivoti);
-				rowPivoti = i;
+				rowPivoti = (size_t)i;
 			}
 			else {
 				rowPositionsOfNonZerosInPivotColumn->push_back(i);

@@ -218,22 +218,22 @@ void Part::prePosKine()
 	partFrame->prePosKine();
 }
 
-int MbD::Part::iqX()
+size_t MbD::Part::iqX()
 {
 	return partFrame->iqX;
 }
 
-int MbD::Part::iqE()
+size_t MbD::Part::iqE()
 {
 	return partFrame->iqE;
 }
 
-void Part::iqX(int eqnNo)
+void Part::iqX(size_t eqnNo)
 {
 	partFrame->iqX = eqnNo;
 }
 
-void Part::iqE(int eqnNo)
+void Part::iqE(size_t eqnNo)
 {
 	partFrame->iqE = eqnNo;
 
@@ -274,12 +274,12 @@ void Part::fillqsuWeights(DiagMatDsptr diagMat)
 	auto wqX = std::make_shared<DiagonalMatrix<double>>(3);
 	auto wqE = std::make_shared<DiagonalMatrix<double>>(4);
 	if (mMax == 0) { mMax = 1.0; }
-	for (int i = 0; i < 3; i++)
+	for (size_t i = 0; i < 3; i++)
 	{
 		wqX->at(i) = (maxw * m / mMax) + minw;
 	}
 	if (aJiMax == 0) { aJiMax = 1.0; }
-	for (int i = 0; i < 3; i++)
+	for (size_t i = 0; i < 3; i++)
 	{
 		auto aJi = aJ->at(i);
 		wqE->at(i) = (maxw * aJi / aJiMax) + minw;
@@ -321,7 +321,7 @@ void Part::fillqsudotWeights(DiagMatDsptr diagMat)
 	double maxw = maxInertia;
 	auto wqXdot = std::make_shared<DiagonalMatrix<double>>(3);
 	auto wqEdot = std::make_shared<DiagonalMatrix<double>>(4);
-	for (int i = 0; i < 3; i++)
+	for (size_t i = 0; i < 3; i++)
 	{
 		wqXdot->at(i) = (maxw * m / maxInertia) + minw;
 		auto aJi = aJ->at(i);
@@ -373,7 +373,7 @@ void Part::fillPosICJacob(SpMatDsptr mat)
 	partFrame->fillPosICJacob(mat);
 }
 
-void Part::removeRedundantConstraints(std::shared_ptr<std::vector<int>> redundantEqnNos)
+void Part::removeRedundantConstraints(std::shared_ptr<std::vector<size_t>> redundantEqnNos)
 {
 	partFrame->removeRedundantConstraints(redundantEqnNos);
 }

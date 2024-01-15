@@ -22,7 +22,7 @@ namespace MbD {
         EulerArray(std::initializer_list<T> list) : FullColumn<T>{ list } {}
         void initialize() override;
         void equalFullColumn(FColsptr<T> fullCol);
-        void equalFullColumnAt(FColsptr<T> fullCol, int i);
+        void equalFullColumnAt(FColsptr<T> fullCol, size_t i);
         virtual void calc() = 0;
 
     };
@@ -36,7 +36,7 @@ namespace MbD {
         this->equalArrayAt(fullCol, 0);
     }
     template<typename T>
-    inline void EulerArray<T>::equalFullColumnAt(FColsptr<T> fullCol, int i)
+    inline void EulerArray<T>::equalFullColumnAt(FColsptr<T> fullCol, size_t i)
     {
         this->equalArrayAt(fullCol, i);
     }

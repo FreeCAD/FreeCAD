@@ -15,7 +15,7 @@ MbD::DispCompIecJecIe::DispCompIecJecIe()
 {
 }
 
-MbD::DispCompIecJecIe::DispCompIecJecIe(EndFrmsptr frmi, EndFrmsptr frmj, int axis) : KinematicIeJe(frmi, frmj), axis(axis)
+MbD::DispCompIecJecIe::DispCompIecJecIe(EndFrmsptr frmi, EndFrmsptr frmj, size_t axis) : KinematicIeJe(frmi, frmj), axis(axis)
 {
 }
 

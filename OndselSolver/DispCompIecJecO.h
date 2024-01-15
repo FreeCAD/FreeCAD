@@ -16,12 +16,12 @@ namespace MbD {
 		//axis riIeJeO 
 	public:
 		DispCompIecJecO();
-		DispCompIecJecO(EndFrmsptr frmi, EndFrmsptr frmj, int axis);
+		DispCompIecJecO(EndFrmsptr frmi, EndFrmsptr frmj, size_t axis);
 
 		void calcPostDynCorrectorIteration() override;
 		double value() override;
 
-		int axis = -1;
+		size_t axis = SIZE_MAX;
 		double riIeJeO;
 	};
 }

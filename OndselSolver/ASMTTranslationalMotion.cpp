@@ -68,7 +68,7 @@ void MbD::ASMTTranslationalMotion::readTranslationZ(std::vector<std::string>& li
 	lines.erase(lines.begin());
 }
 
-void MbD::ASMTTranslationalMotion::storeOnLevel(std::ofstream& os, int level)
+void MbD::ASMTTranslationalMotion::storeOnLevel(std::ofstream& os, size_t level)
 {
 	storeOnLevelString(os, level, "TranslationalMotion");
 	storeOnLevelString(os, level + 1, "Name");

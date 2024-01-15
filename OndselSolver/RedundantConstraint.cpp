@@ -10,7 +10,7 @@
 
 using namespace MbD;
 
-void RedundantConstraint::removeRedundantConstraints(std::shared_ptr<std::vector<int>>)
+void RedundantConstraint::removeRedundantConstraints(std::shared_ptr<std::vector<size_t>>)
 {
 }
 

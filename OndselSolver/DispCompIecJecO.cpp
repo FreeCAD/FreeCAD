@@ -15,7 +15,7 @@ DispCompIecJecO::DispCompIecJecO()
 {
 }
 
-DispCompIecJecO::DispCompIecJecO(EndFrmsptr frmi, EndFrmsptr frmj, int axis) : KinematicIeJe(frmi, frmj), axis(axis)
+DispCompIecJecO::DispCompIecJecO(EndFrmsptr frmi, EndFrmsptr frmj, size_t axis) : KinematicIeJe(frmi, frmj), axis(axis)
 {
 }
 

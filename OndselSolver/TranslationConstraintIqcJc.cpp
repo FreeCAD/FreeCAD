@@ -13,7 +13,7 @@
 
 using namespace MbD;
 
-TranslationConstraintIqcJc::TranslationConstraintIqcJc(EndFrmsptr frmi, EndFrmsptr frmj, int axisi) :
+TranslationConstraintIqcJc::TranslationConstraintIqcJc(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi) :
 	TranslationConstraintIJ(frmi, frmj, axisi)
 {
 }
@@ -102,7 +102,7 @@ void TranslationConstraintIqcJc::addToJointTorqueI(FColDsptr jointTorque)
 		auto pAOIppEI = frmI->pAOppE();
 		auto aBOIp = frmI->aBOp();
 		auto fpAOIppEIrIpIeIp = std::make_shared<FullColumn<double>>(4, 0.0);
-		for (int i = 0; i < 4; i++)
+		for (size_t i = 0; i < 4; i++)
 		{
 			auto dum = cForceT->timesFullColumn(pAOIppEI->at(i)->timesFullColumn(rIpIeIp));
 			fpAOIppEIrIpIeIp->atiput(i, dum);

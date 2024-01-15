@@ -15,7 +15,7 @@ using namespace MbD;
 //
 //AbsConstraint::AbsConstraint(const char* str) : Constraint(str) {}
 
-AbsConstraint::AbsConstraint(int i)
+AbsConstraint::AbsConstraint(size_t i)
 {
     axis = i;
 }
@@ -23,10 +23,10 @@ AbsConstraint::AbsConstraint(int i)
 void AbsConstraint::calcPostDynCorrectorIteration()
 {
     if (axis < 3) {
-        aG = static_cast<PartFrame*>(owner)->qX->at((int)axis);
+        aG = static_cast<PartFrame*>(owner)->qX->at(axis);
     }
     else {
-        aG = static_cast<PartFrame*>(owner)->qE->at((int)axis - 3);
+        aG = static_cast<PartFrame*>(owner)->qE->at(axis - 3);
     }
 }
 
@@ -63,10 +63,10 @@ void AbsConstraint::fillAccICIterError(FColDsptr col)
     auto partFrame = static_cast<PartFrame*>(owner);
         double sum;
         if (axis < 3) {
-            sum = partFrame->qXddot->at((int)axis);
+            sum = partFrame->qXddot->at(axis);
         }
         else {
-            sum = partFrame->qEddot->at((int)axis - 3);
+            sum = partFrame->qEddot->at(axis - 3);
         }
         col->atiplusNumber(iG, sum);
 }

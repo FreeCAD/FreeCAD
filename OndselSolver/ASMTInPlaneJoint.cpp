@@ -29,7 +29,7 @@ void MbD::ASMTInPlaneJoint::createMbD(std::shared_ptr<System> mbdSys, std::share
 	inPlaneJoint->offset = offset;
 }
 
-void MbD::ASMTInPlaneJoint::storeOnLevel(std::ofstream& os, int level)
+void MbD::ASMTInPlaneJoint::storeOnLevel(std::ofstream& os, size_t level)
 {
 	ASMTJoint::storeOnLevel(os, level);
 	storeOnLevelString(os, level + 1, "offset");

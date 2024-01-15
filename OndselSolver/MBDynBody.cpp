@@ -48,7 +48,7 @@ void MbD::MBDynBody::readInertiaMatrix(std::vector<std::string>& args)
 	auto str = args.at(0);	//Must copy string
 	if (str.find("diag") != std::string::npos) {
 		args.erase(args.begin());
-		for (int i = 0; i < 3; i++)
+		for (size_t i = 0; i < 3; i++)
 		{
 			auto userFunc = std::make_shared<BasicUserFunction>(popOffTop(args), 1.0);
 			parser->parseUserFunction(userFunc);

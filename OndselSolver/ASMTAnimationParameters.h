@@ -16,9 +16,9 @@ namespace MbD {
         //
     public:
         void parseASMT(std::vector<std::string>& lines) override;
-        void storeOnLevel(std::ofstream& os, int level) override;
+        void storeOnLevel(std::ofstream& os, size_t level) override;
 
-		int nframe = 1000000, icurrent = 1, istart = 1, iend = 1000000, framesPerSecond = 30;
+		size_t nframe = 1000000, icurrent = 1, istart = 1, iend = 1000000, framesPerSecond = 30;
         bool isForward = true;
 
 

@@ -14,7 +14,7 @@ using namespace MbD;
 void ASMTMotion::readMotionSeries(std::vector<std::string>& lines)
 {
 	std::string str = lines[0];
-	std::string substr = "MotionSeries";
+	std::string substr = "tionSeries";
 	auto pos = str.find(substr);
 	assert(pos != std::string::npos);
 	str.erase(0, pos + substr.length());
@@ -33,7 +33,7 @@ void ASMTMotion::initMarkers()
 {
 }
 
-void ASMTMotion::storeOnLevel(std::ofstream&, int)
+void ASMTMotion::storeOnLevel(std::ofstream&, size_t)
 {
 	assert(false);
 }

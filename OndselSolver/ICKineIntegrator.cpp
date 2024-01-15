@@ -18,7 +18,7 @@ void ICKineIntegrator::runInitialConditionTypeSolution()
 	system->runAccICKine();
 }
 
-void ICKineIntegrator::iStep(int)
+void ICKineIntegrator::iStep(size_t)
 {
 	assert(false);
 }

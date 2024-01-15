@@ -28,9 +28,9 @@ void NewtonRaphson::initialize()
 
 void NewtonRaphson::initializeLocally()
 {
-	iterNo = -1;
-	nDivergence = -1;
-	nBackTracking = -1;
+	iterNo = SIZE_MAX;
+	nDivergence = SIZE_MAX;
+	nBackTracking = SIZE_MAX;
 	dxNorms->clear();
 	yNorms->clear();
 	yNormOld = std::numeric_limits<double>::max();
@@ -64,7 +64,7 @@ void NewtonRaphson::iterate()
 	//	zero.
 	//	"
 
-	iterNo = -1;
+	iterNo = SIZE_MAX;
 	this->fillY();
 	this->calcyNorm();
 	yNorms->push_back(yNorm);
@@ -84,7 +84,7 @@ void NewtonRaphson::iterate()
 void NewtonRaphson::incrementIterNo()
 {
 	iterNo++;
-	if (iterNo >= iterMax) {
+	if (iterNo > iterMax) {
 		this->reportStats();
 		throw MaximumIterationError("");
 	}

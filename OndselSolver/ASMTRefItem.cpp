@@ -43,7 +43,7 @@ void MbD::ASMTRefItem::readMarker(std::vector<std::string>& lines)
 	marker->owner = this;
 }
 
-void MbD::ASMTRefItem::storeOnLevel(std::ofstream& os, int level)
+void MbD::ASMTRefItem::storeOnLevel(std::ofstream& os, size_t level)
 {
 	storeOnLevelString(os, level, "RefPoints");
 	ASMTSpatialItem::storeOnLevel(os, level+1);

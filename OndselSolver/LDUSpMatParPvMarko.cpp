@@ -11,14 +11,15 @@
 
 using namespace MbD;
 
-void LDUSpMatParPvMarko::doPivoting(int p)
+void LDUSpMatParPvMarko::doPivoting(size_t p)
 {
 	//"Search from bottom to top."
 	//"Check for singular pivot."
 	//"Do scaling. Do partial pivoting."
 	//"criterion := mag / (2.0d raisedTo: rowiCount)."
 	//| lookForFirstNonZeroInPivotCol i rowi aip criterionMax rowPivoti criterion max |
-	int i, rowPivoti;
+	int i;	//Use int because of decrement
+	size_t rowPivoti;
 	double aip, mag, max, criterion, criterionMax;
 	SpRowDsptr spRowi;
 	rowPositionsOfNonZerosInPivotColumn->clear();
@@ -27,7 +28,7 @@ void LDUSpMatParPvMarko::doPivoting(int p)
 	while (lookForFirstNonZeroInPivotCol) {
 		spRowi = matrixA->at(i);
 		if (spRowi->find(p) == spRowi->end()) {
-			if (i <= p) throwSingularMatrixError("");
+			if (i <= (int)p) throwSingularMatrixError(""); //Use int because i can be negative
 		}
 		else {
 			markowitzPivotColCount = 0;
@@ -36,12 +37,12 @@ void LDUSpMatParPvMarko::doPivoting(int p)
 			if (mag < 0) mag = -mag;
 			max = mag;
 			criterionMax = mag / std::pow(2.0, spRowi->size());
-			rowPivoti = i;
+			rowPivoti = (size_t)i;
 			lookForFirstNonZeroInPivotCol = false;
 		}
 		i--;
 	}
-	while (i >= p) {
+	while (i >= (int)p) { //Use int because i can be negative
 		spRowi = matrixA->at(i);
 		if (spRowi->find(p) == spRowi->end()) {
 			aip = std::numeric_limits<double>::min();
@@ -56,7 +57,7 @@ void LDUSpMatParPvMarko::doPivoting(int p)
 				max = mag;
 				criterionMax = criterion;
 				rowPositionsOfNonZerosInPivotColumn->push_back(rowPivoti);
-				rowPivoti = i;
+				rowPivoti = (size_t)i;
 			}
 			else {
 				rowPositionsOfNonZerosInPivotColumn->push_back(i);

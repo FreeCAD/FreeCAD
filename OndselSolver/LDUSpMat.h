@@ -20,14 +20,14 @@ namespace MbD {
         void decomposesaveOriginal(FMatDsptr fullMat, bool saveOriginal);
         void decomposesaveOriginal(SpMatDsptr spMat, bool saveOriginal);
         FColDsptr forAndBackSubsaveOriginal(FColDsptr fullCol, bool saveOriginal) override;
-        double getmatrixArowimaxMagnitude(int i) override;
+        double getmatrixArowimaxMagnitude(size_t i) override;
         void forwardSubstituteIntoL() override;
         void backSubstituteIntoDU() override;
 
         SpMatDsptr matrixA, matrixL, matrixU;
         DiagMatDsptr matrixD;
-        int markowitzPivotRowCount, markowitzPivotColCount;
-        std::shared_ptr<std::vector<int>> rowPositionsOfNonZerosInPivotColumn;
+        size_t markowitzPivotRowCount, markowitzPivotColCount;
+        std::shared_ptr<std::vector<size_t>> rowPositionsOfNonZerosInPivotColumn;
     };
 }
 

@@ -30,11 +30,11 @@ void MbD::DistIeqcJec::calcPrivate()
 	auto muIeJeOT = muIeJeO->transpose();
 	prIeJepXI = muIeJeOT;
 	prIeJepEI = muIeJeOT->timesFullMatrix(mprIeJeOpEI);
-	for (int i = 0; i < 3; i++)
+	for (size_t i = 0; i < 3; i++)
 	{
 		auto& pprIeJepXIipXI = pprIeJepXIpXI->at(i);
 		auto& prIeJepXIi = prIeJepXI->at(i);
-		for (int j = 0; j < 3; j++)
+		for (size_t j = 0; j < 3; j++)
 		{
 			auto element = (i == j) ? 1.0 : 0.0;
 			element -= prIeJepXIi * prIeJepXI->at(j);
@@ -42,25 +42,25 @@ void MbD::DistIeqcJec::calcPrivate()
 		}
 	}
 	pprIeJepXIpEI = std::make_shared<FullMatrix<double>>(3, 4);
-	for (int i = 0; i < 3; i++)
+	for (size_t i = 0; i < 3; i++)
 	{
 		auto& pprIeJepXIipEI = pprIeJepXIpEI->at(i);
 		auto& prIeJepXIi = prIeJepXI->at(i);
 		auto& mprIeJeOipEI = mprIeJeOpEI->at(i);
-		for (int j = 0; j < 4; j++)
+		for (size_t j = 0; j < 4; j++)
 		{
 			auto element = mprIeJeOipEI->at(j) - prIeJepXIi * prIeJepEI->at(j);
 			pprIeJepXIipEI->atiput(j, element / rIeJe);
 		}
 	}
 	pprIeJepEIpEI = std::make_shared<FullMatrix<double>>(4, 4);
-	for (int i = 0; i < 4; i++)
+	for (size_t i = 0; i < 4; i++)
 	{
 		auto& pprIeJepEIipEI = pprIeJepEIpEI->at(i);
 		auto& prIeJepEIi = prIeJepEI->at(i);
 		auto& mpprIeJeOpEIipEI = mpprIeJeOpEIpEI->at(i);
 		auto& mprIeJeOpEIiT = mprIeJeOpEIT->at(i);
-		for (int j = 0; j < 4; j++)
+		for (size_t j = 0; j < 4; j++)
 		{
 			auto element = mprIeJeOpEIiT->dot(mprIeJeOpEIT->at(j))
                            - mpprIeJeOpEIipEI->at(j)->dot(rIeJeO) - prIeJepEIi * prIeJepEI->at(j);

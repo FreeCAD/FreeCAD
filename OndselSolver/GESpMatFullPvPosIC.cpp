@@ -19,15 +19,15 @@ void GESpMatFullPvPosIC::preSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fu
 {
 	GESpMatFullPv::preSolvewithsaveOriginal(spMat, fullCol, saveOriginal);
 	if (system == nullptr) {
-		pivotRowLimits = std::make_shared<std::vector<int>>();
+		pivotRowLimits = std::make_shared<std::vector<size_t>>();
 	}
 	else {
 		pivotRowLimits = system->pivotRowLimits;
 	}
-	pivotRowLimit = -1;
+	pivotRowLimit = SIZE_MAX;
 }
 
-void GESpMatFullPvPosIC::doPivoting(int p)
+void GESpMatFullPvPosIC::doPivoting(size_t p)
 {
 	//"Used by Gauss Elimination only."
 	//"Swap rows but keep columns in place."
@@ -36,16 +36,16 @@ void GESpMatFullPvPosIC::doPivoting(int p)
 	double max = 0.0;
 	auto pivotRow = p;
 	auto pivotCol = p;
-	for (int j = p; j < n; j++)
+	for (size_t j = p; j < n; j++)
 	{
 		rowPositionsOfNonZerosInColumns->at(colOrder->at(j))->clear();
 	}
-	if (p >= pivotRowLimit) {
+	if (pivotRowLimit == SIZE_MAX || p >= pivotRowLimit) {
 		pivotRowLimit = *std::find_if(
 			pivotRowLimits->begin(), pivotRowLimits->end(),
-			[&](int limit) { return limit > p; });
+			[&](size_t limit) { return limit > p; });
 	}
-	for (int i = p; i < pivotRowLimit; i++)
+	for (size_t i = p; i < pivotRowLimit; i++)
 	{
 		auto& rowi = matrixA->at(i);
 		for (auto const& kv : *rowi) {
@@ -74,11 +74,11 @@ void GESpMatFullPvPosIC::doPivoting(int p)
 	if (max < singularPivotTolerance) {
 		auto itr = std::find_if(
 			pivotRowLimits->begin(), pivotRowLimits->end(),
-			[&](int limit) { return limit > pivotRowLimit; });
+			[&](size_t limit) { return limit > pivotRowLimit; });
 		if (itr == pivotRowLimits->end()) {
 			auto begin = rowOrder->begin() + p;
 			auto end = rowOrder->begin() + pivotRowLimit;
-			auto redundantEqnNos = std::make_shared<FullColumn<int>>(begin, end);
+			auto redundantEqnNos = std::make_shared<FullColumn<size_t>>(begin, end);
 			throwSingularMatrixError("", redundantEqnNos);
 		}
 		else {
@@ -88,7 +88,7 @@ void GESpMatFullPvPosIC::doPivoting(int p)
 	}
 	auto jp = colOrder->at(p);
 	rowPositionsOfNonZerosInPivotColumn = rowPositionsOfNonZerosInColumns->at(jp);
-	for (int i = pivotRowLimit; i < m; i++)
+	for (size_t i = pivotRowLimit; i < m; i++)
 	{
 		auto& spRowi = matrixA->at(i);
 		if (spRowi->find(jp) != spRowi->end()) {
@@ -98,5 +98,5 @@ void GESpMatFullPvPosIC::doPivoting(int p)
 	if (rowPositionsOfNonZerosInPivotColumn->front() == p) {
 		rowPositionsOfNonZerosInPivotColumn->erase(rowPositionsOfNonZerosInPivotColumn->begin());
 	}
-	markowitzPivotColCount = (int)rowPositionsOfNonZerosInPivotColumn->size();
+	markowitzPivotColCount = rowPositionsOfNonZerosInPivotColumn->size();
 }

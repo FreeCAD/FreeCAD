@@ -24,7 +24,8 @@ namespace MbD {
 		void initialize() override;
 		void calc() override;
 
-		FMatDsptr phiA, theA, psiA, aA;
+		//FMatDsptr phiA;
+		FMatsptr<T> phiA, theA, psiA, aA;
 	};
 	template<typename T>
 	inline void EulerAngleszxz<T>::initialize()

@@ -25,6 +25,9 @@ endif()
 
 
 set(ONDSELSOLVER_SRC
+        OndselSolver/AllowZRotation.cpp
+        OndselSolver/AllowZRotationConstraintIqctJqc.cpp
+        OndselSolver/ASMTAllowRotation.cpp
         OndselSolver/Array.cpp
         OndselSolver/FullVector.cpp
         OndselSolver/RowTypeMatrix.cpp
@@ -345,6 +348,9 @@ set(ONDSELSOLVER_SRC
 )
 
 set(ONDSELSOLVER_HEADERS
+        OndselSolver/AllowZRotation.h
+        OndselSolver/AllowZRotationConstraintIqctJqc.h
+        OndselSolver/ASMTAllowRotation.h
         OndselSolver/Array.h
         OndselSolver/FullVector.h
         OndselSolver/RowTypeMatrix.h

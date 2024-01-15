@@ -97,7 +97,7 @@ void MbD::Item::checkForCollisionDiscontinuityBetweenand(double, double)
 	assert(false);
 }
 
-void Item::removeRedundantConstraints(std::shared_ptr<std::vector<int>>)
+void Item::removeRedundantConstraints(std::shared_ptr<std::vector<size_t>>)
 {
 }
 

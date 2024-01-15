@@ -16,7 +16,7 @@ namespace MbD {
         //priIeJeOpXJ priIeJeOpEJ ppriIeJeOpEJpEJ 
     public:
         DispCompIeqcJeqcO();
-        DispCompIeqcJeqcO(EndFrmsptr frmi, EndFrmsptr frmj, int axis);
+        DispCompIeqcJeqcO(EndFrmsptr frmi, EndFrmsptr frmj, size_t axis);
 
         void calcPostDynCorrectorIteration() override;
         void initializeGlobally() override;

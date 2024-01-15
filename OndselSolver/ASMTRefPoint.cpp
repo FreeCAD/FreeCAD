@@ -31,7 +31,7 @@ void MbD::ASMTRefPoint::createMbD(std::shared_ptr<System> mbdSys, std::shared_pt
 	}
 }
 
-void MbD::ASMTRefPoint::storeOnLevel(std::ofstream& os, int level)
+void MbD::ASMTRefPoint::storeOnLevel(std::ofstream& os, size_t level)
 {
 	storeOnLevelString(os, level, "RefPoint");
 	ASMTSpatialItem::storeOnLevel(os, level);

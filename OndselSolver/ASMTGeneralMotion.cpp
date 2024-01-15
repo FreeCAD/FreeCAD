@@ -70,8 +70,8 @@ void MbD::ASMTGeneralMotion::readRotationOrder(std::vector<std::string>& lines)
 	assert(lines[0].find("RotationOrder") != std::string::npos);
 	lines.erase(lines.begin());
 	std::istringstream iss(lines[0]);
-	rotationOrder = std::make_shared<std::vector<int>>();
-	int i;
+	rotationOrder = std::make_shared<std::vector<size_t>>();
+	size_t i;
 	while (iss >> i) {
 		rotationOrder->push_back(i);
 	}
@@ -146,7 +146,7 @@ void MbD::ASMTGeneralMotion::createMbD(std::shared_ptr<System> mbdSys, std::shar
 	fullMotion->fangIJJ = fangIJJ;
 }
 
-void MbD::ASMTGeneralMotion::storeOnLevel(std::ofstream& os, int level)
+void MbD::ASMTGeneralMotion::storeOnLevel(std::ofstream& os, size_t level)
 {
 	storeOnLevelString(os, level, "GeneralMotion");
 	storeOnLevelString(os, level + 1, "Name");

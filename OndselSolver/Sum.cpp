@@ -127,7 +127,7 @@ bool Sum::isSum()
 double Sum::getValue()
 {
 	double answer = 0.0;
-	for (int i = 0; i < (int)terms->size(); i++) answer += terms->at(i)->getValue();
+	for (size_t i = 0; i < terms->size(); i++) answer += terms->at(i)->getValue();
 	return answer;
 }
 
@@ -173,7 +173,7 @@ std::ostream& Sum::printOn(std::ostream& s) const
 {
 	s << "(";
 	s << *(this->terms->at(0));
-	for (int i = 1; i < (int)this->terms->size(); i++)
+	for (size_t i = 1; i < this->terms->size(); i++)
 	{
 		s << " + " << *(this->terms->at(i));
 	}

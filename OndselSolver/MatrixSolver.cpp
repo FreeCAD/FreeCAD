@@ -58,11 +58,11 @@ FColDsptr MatrixSolver::timedSolvewithsaveOriginal(FMatDsptr, FColDsptr, bool)
 	return FColDsptr();
 }
 
-void MatrixSolver::findScalingsForRowRange(int begin, int end)
+void MatrixSolver::findScalingsForRowRange(size_t begin, size_t end)
 {
 	//"Row element * scaling <= 1.0."
 	rowScalings = std::make_shared<FullColumn<double>>(m);
-	for (int i = begin; i < end; i++)
+	for (size_t i = begin; i < end; i++)
 	{
 		double maxRowMagnitude = this->getmatrixArowimaxMagnitude(i);
 		if (maxRowMagnitude == 0.0) throwSingularMatrixError("");
@@ -75,7 +75,7 @@ void MatrixSolver::throwSingularMatrixError(const char* chars)
 	throw SingularMatrixError(chars);
 }
 
-void MatrixSolver::throwSingularMatrixError(const char* chars, std::shared_ptr<FullColumn<int>> redunEqnNos)
+void MatrixSolver::throwSingularMatrixError(const char* chars, std::shared_ptr<FullColumn<size_t>> redunEqnNos)
 {
 	throw SingularMatrixError(chars, redunEqnNos);
 }

@@ -27,7 +27,7 @@ namespace MbD {
         void readTXonIs(std::vector<std::string>& lines);
         void readTYonIs(std::vector<std::string>& lines);
         void readTZonIs(std::vector<std::string>& lines);
-        void storeOnLevel(std::ofstream& os, int level) override;
+        void storeOnLevel(std::ofstream& os, size_t level) override;
         void storeOnTimeSeries(std::ofstream& os) override;
 
         std::string markerI, markerJ;

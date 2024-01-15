@@ -62,10 +62,10 @@ namespace MbD {
 
 		void prePosIC() override;
 		void prePosKine() override;
-		int iqX();
-		int iqE();
-		void iqX(int eqnNo);
-		void iqE(int eqnNo);
+		size_t iqX();
+		size_t iqE();
+		void iqX(size_t eqnNo);
+		void iqE(size_t eqnNo);
 		void fillEssenConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> essenConstraints) override;
 		void fillRedundantConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> redunConstraints) override;
 		void fillConstraints(std::shared_ptr<std::vector<std::shared_ptr<Constraint>>> allConstraints) override;
@@ -83,7 +83,7 @@ namespace MbD {
 		void postPosICIteration() override;
 		void fillPosICError(FColDsptr col) override;
 		void fillPosICJacob(SpMatDsptr mat) override;
-		void removeRedundantConstraints(std::shared_ptr<std::vector<int>> redundantEqnNos) override;
+		void removeRedundantConstraints(std::shared_ptr<std::vector<size_t>> redundantEqnNos) override;
 		void reactivateRedundantConstraints() override;
 		void constraintsReport() override;
 		void postPosIC() override;
@@ -113,8 +113,8 @@ namespace MbD {
 		void postAccIC() override;
 
 		System* system;	//Use raw pointer when pointing backwards.
-		int ipX = -1; 
-		int ipE = -1; 
+		size_t ipX = SIZE_MAX; 
+		size_t ipE = SIZE_MAX; 
 		double m = 0.0; 
 		DiagMatDsptr aJ;
 		std::shared_ptr<PartFrame> partFrame;

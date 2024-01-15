@@ -15,7 +15,7 @@ namespace MbD {
     {
         //pGpXJ pGpEJ ppGpEIpXJ ppGpEIpEJ ppGpEJpEJ iqXJ iqEJ 
     public:
-        TranslationConstraintIqcJqc(EndFrmsptr frmi, EndFrmsptr frmj, int axisi);
+        TranslationConstraintIqcJqc(EndFrmsptr frmi, EndFrmsptr frmj, size_t axisi);
 
         void calcPostDynCorrectorIteration() override;
         void initriIeJeIe() override;
@@ -28,7 +28,7 @@ namespace MbD {
 
         FRowDsptr pGpXJ, pGpEJ;
         FMatDsptr ppGpEIpXJ, ppGpEIpEJ, ppGpEJpEJ;
-        int iqXJ = -1, iqEJ = -1;
+        size_t iqXJ = SIZE_MAX, iqEJ = SIZE_MAX;
     };
 }
 

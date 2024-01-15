@@ -19,7 +19,7 @@ MbD::ASMTPrincipalMassMarker::ASMTPrincipalMassMarker()
 
 void MbD::ASMTPrincipalMassMarker::parseASMT(std::vector<std::string>& lines)
 {
-	int pos = (int)lines[0].find_first_not_of("\t");
+	auto pos = lines[0].find_first_not_of("\t");
 	auto leadingTabs = lines[0].substr(0, pos);
 	assert(lines[0] == (leadingTabs + "Name"));
 	lines.erase(lines.begin());
@@ -32,7 +32,7 @@ void MbD::ASMTPrincipalMassMarker::parseASMT(std::vector<std::string>& lines)
 	assert(lines[0] == (leadingTabs + "RotationMatrix"));
 	lines.erase(lines.begin());
 	rotationMatrix = std::make_shared<FullMatrix<double>>(3);
-	for (int i = 0; i < 3; i++)
+	for (size_t i = 0; i < 3; i++)
 	{
 		auto row = readRowOfDoubles(lines[0]);
 		rotationMatrix->atiput(i, row);
@@ -47,7 +47,7 @@ void MbD::ASMTPrincipalMassMarker::parseASMT(std::vector<std::string>& lines)
 	momentOfInertias = std::make_shared<DiagonalMatrix<double>>(3);
 	auto row = readRowOfDoubles(lines[0]);
 	lines.erase(lines.begin());
-	for (int i = 0; i < 3; i++)
+	for (size_t i = 0; i < 3; i++)
 	{
 		momentOfInertias->atiput(i, row->at(i));
 	}
@@ -78,7 +78,7 @@ void MbD::ASMTPrincipalMassMarker::setMomentOfInertias(double a, double b, doubl
 	momentOfInertias = std::make_shared<DiagonalMatrix<double>>(ListD{ a, b, c });
 }
 
-void MbD::ASMTPrincipalMassMarker::storeOnLevel(std::ofstream& os, int level)
+void MbD::ASMTPrincipalMassMarker::storeOnLevel(std::ofstream& os, size_t level)
 {
 	storeOnLevelString(os, level, "PrincipalMassMarker");
 	storeOnLevelString(os, level + 1, "Name");

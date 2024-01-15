@@ -15,7 +15,7 @@ DispCompIeqctJeqcKeqct::DispCompIeqctJeqcKeqct()
 {
 }
 
-DispCompIeqctJeqcKeqct::DispCompIeqctJeqcKeqct(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk, int axisk) : DispCompIeqcJeqcKeqct(frmi, frmj, frmk, axisk)
+DispCompIeqctJeqcKeqct::DispCompIeqctJeqcKeqct(EndFrmsptr frmi, EndFrmsptr frmj, EndFrmsptr frmk, size_t axisk) : DispCompIeqcJeqcKeqct(frmi, frmj, frmk, axisk)
 {
 }
 
@@ -34,7 +34,7 @@ void DispCompIeqctJeqcKeqct::preAccIC()
 	auto& mprIeJeOpt = efrmIqct->prOeOpt;
 	auto mpprIeJeOpEITpt = efrmIqct->pprOeOpEpt->transpose();
 	auto& mpprIeJeOptpt = efrmIqct->pprOeOptpt;
-	for (int i = 0; i < 4; i++)
+	for (size_t i = 0; i < 4; i++)
 	{
 		ppriIeJeKepEIpt->atiminusNumber(i, aAjOKe->dot(mpprIeJeOpEITpt->at(i)));
 		ppriIeJeKepEKpt->atiminusNumber(i, pAjOKepEKT->at(i)->dot(mprIeJeOpt));

@@ -15,14 +15,14 @@ namespace MbD {
     {
         //positionsOfOriginalCols rowPositionsOfNonZerosInColumns 
     public:
-        void doPivoting(int p) override;
-        void forwardEliminateWithPivot(int p) override;
+        void doPivoting(size_t p) override;
+        void forwardEliminateWithPivot(size_t p) override;
         void backSubstituteIntoDU() override;
         void postSolve() override;
         void preSolvewithsaveOriginal(SpMatDsptr spMat, FColDsptr fullCol, bool saveOriginal) override;
 
-        std::shared_ptr<std::vector<int>> positionsOfOriginalCols;
-        std::shared_ptr<std::vector<std::shared_ptr<std::vector<int>>>> rowPositionsOfNonZerosInColumns;
+        std::shared_ptr<std::vector<size_t>> positionsOfOriginalCols;
+        std::shared_ptr<std::vector<std::shared_ptr<std::vector<size_t>>>> rowPositionsOfNonZerosInColumns;
     };
 }
 

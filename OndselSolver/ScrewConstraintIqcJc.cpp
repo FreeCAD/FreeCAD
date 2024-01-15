@@ -47,7 +47,7 @@ void MbD::ScrewConstraintIqcJc::addToJointTorqueI(FColDsptr jointTorque)
 	auto pAOIppEI = frmIeqc->pAOppE();
 	auto aBOIp = frmIeqc->aBOp();
 	auto fpAOIppEIrIpIeIp = std::make_shared<FullColumn<double>>(4, 0.0);
-	for (int i = 0; i < 4; i++)
+	for (size_t i = 0; i < 4; i++)
 	{
 		auto dum = cForceT->timesFullColumn(pAOIppEI->at(i)->timesFullColumn(rIpIeIp));
 		fpAOIppEIrIpIeIp->atiput(i, dum);

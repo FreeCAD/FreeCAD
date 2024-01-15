@@ -26,9 +26,9 @@ namespace MbD {
 		void createASMT() override;
 
 		double initialTime = 0.0, finalTime = 5.0, timeStep = 1.0e-2, tolerance = 1.0e-6;
-		int maxIterations = 10;
+		size_t maxIterations = 10;
 		double derivativesTolerance = 1.0e-4;
-		int derivativesMaxIterations = 100;
+		size_t derivativesMaxIterations = 100;
 		std::string derivativesCoefficient = "auto";
 	};
 }

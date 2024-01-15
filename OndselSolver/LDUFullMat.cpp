@@ -33,21 +33,21 @@ void LDUFullMat::preSolvewithsaveOriginal(SpMatDsptr, FColDsptr, bool)
 	assert(false);
 }
 
-void LDUFullMat::forwardEliminateWithPivot(int p)
+void LDUFullMat::forwardEliminateWithPivot(size_t p)
 {
 	//"Save factors in lower triangle for LU decomposition."
 
 		//| rowp app rowi aip factor |
 	auto& rowp = matrixA->at(p);
 	auto app = rowp->at(p);
-	for (int i = p + 1; i < m; i++)
+	for (size_t i = p + 1; i < m; i++)
 	{
 		auto& rowi = matrixA->at(i);
 		auto aip = rowi->at(p);
 		auto factor = aip / app;
 		rowi->at(p) = factor;
 		if (factor != 0) {
-			for (int j = p + 1; j < n; j++)
+			for (size_t j = p + 1; j < n; j++)
 			{
 				rowi->atiminusNumber(j, factor * rowp->at(j));
 			}
@@ -72,22 +72,22 @@ void LDUFullMat::preSolvesaveOriginal(FMatDsptr fullMat, bool saveOriginal)
 		m = matrixA->nrow();
 		n = matrixA->ncol();
 		pivotValues = std::make_shared<FullColumn<double>>(m);
-		rowOrder = std::make_shared<FullColumn<int>>(m);
-		colOrder = std::make_shared<FullRow<int>>(n);
+		rowOrder = std::make_shared<FullColumn<size_t>>(m);
+		colOrder = std::make_shared<FullRow<size_t>>(n);
 	}
 	if (m == n) {
-		for (int i = 0; i < m; i++)
+		for (size_t i = 0; i < m; i++)
 		{
 			rowOrder->at(i) = i;
 			colOrder->at(i) = i;
 		}
 	}
 	else {
-		for (int i = 0; i < m; i++)
+		for (size_t i = 0; i < m; i++)
 		{
 			rowOrder->at(i) = i;
 		}
-		for (int j = 0; j < n; j++)
+		for (size_t j = 0; j < n; j++)
 		{
 			colOrder->at(j) = j;
 		}
@@ -98,7 +98,7 @@ void LDUFullMat::preSolvesaveOriginal(FMatDsptr fullMat, bool saveOriginal)
 void LDUFullMat::decomposesaveOriginal(FMatDsptr fullMat, bool saveOriginal)
 {
 	this->preSolvesaveOriginal(fullMat, saveOriginal);
-	for (int p = 0; p < m; p++)
+	for (size_t p = 0; p < m; p++)
 	{
 		this->doPivoting(p);
 		this->forwardEliminateWithPivot(p);
@@ -117,7 +117,7 @@ FMatDsptr LDUFullMat::inversesaveOriginal(FMatDsptr fullMat, bool saveOriginal)
 	this->decomposesaveOriginal(fullMat, saveOriginal);
 	rightHandSideB = std::make_shared<FullColumn<double>>(m);
 	auto matrixAinverse = std::make_shared <FullMatrix<double>>(m, n);
-	for (int j = 0; j < n; j++)
+	for (size_t j = 0; j < n; j++)
 	{
 		rightHandSideB->zeroSelf();
 		rightHandSideB->at(j) = 1.0;
@@ -127,7 +127,7 @@ FMatDsptr LDUFullMat::inversesaveOriginal(FMatDsptr fullMat, bool saveOriginal)
 	return matrixAinverse;
 }
 
-double LDUFullMat::getmatrixArowimaxMagnitude(int i)
+double LDUFullMat::getmatrixArowimaxMagnitude(size_t i)
 {
 	return matrixA->at(i)->maxMagnitude();
 }
@@ -136,11 +136,11 @@ void LDUFullMat::forwardSubstituteIntoL()
 {
 	//"L is lower triangular with nonzero and ones in diagonal."
 	auto vectorc = std::make_shared<FullColumn<double>>(n);
-	for (int i = 0; i < n; i++)
+	for (size_t i = 0; i < n; i++)
 	{
 		auto& rowi = matrixA->at(i);
 		double sum = 0.0;
-		for (int j = 0; j < i; j++)
+		for (size_t j = 0; j < i; j++)
 		{
 			sum += rowi->at(j) * vectorc->at(j);
 		}
@@ -155,12 +155,12 @@ void LDUFullMat::backSubstituteIntoDU()
 
 		//| rowi sum |
 	answerX = std::make_shared<FullColumn<double>>(n);
-	answerX->at((int)n - 1) = rightHandSideB->at((int)m - 1) / matrixA->at((int)m - 1)->at((int)n - 1);
-	for (int i = n - 2; i >= 0; i--)
+	answerX->at(n - 1) = rightHandSideB->at(m - 1) / matrixA->at(m - 1)->at(n - 1);
+	for (int i = n - 2; i >= 0; i--)	//Use int because of decrement
 	{
 		auto& rowi = matrixA->at(i);
-		double sum = answerX->at((int)n - 1) * rowi->at((int)n - 1);
-		for (int j = i + 1; j < n - 1; j++)
+		double sum = answerX->at((size_t)n - 1) * rowi->at((size_t)n - 1);
+		for (size_t j = i + 1; j < n - 1; j++)
 		{
 			sum += answerX->at(j) * rowi->at(j);
 		}
