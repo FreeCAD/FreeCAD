@@ -58,13 +58,15 @@
         <file>icons/NavigationOpenInventor_dark.svg</file>
         <file>icons/NavigationOpenInventor_ZoomAlt.svg</file>
         <file>icons/NavigationOpenInventor_Zoom.svg</file>
-        <file alias="icons/NavigationOpenSCAD_dark.svg">icons/NavigationCAD_dark.svg</file>
+        <file>icons/NavigationOpenSCAD_light.svg</file>
+        <file>icons/NavigationOpenSCAD_dark.svg</file>
         <file alias="icons/NavigationOpenSCAD_Select.svg">icons/NavigationOpenCascade_Select.svg</file>
         <file alias="icons/NavigationOpenSCAD_Zoom.svg">icons/NavigationOpenCascade_PanAlt.svg</file>
         <file alias="icons/NavigationOpenSCAD_ZoomAlt.svg">icons/NavigationOpenCascade_PanAlt.svg</file>
         <file alias="icons/NavigationOpenSCAD_Rotate.svg">icons/NavigationOpenCascade_Select.svg</file>
         <file alias="icons/NavigationOpenSCAD_Pan.svg">icons/NavigationGesture_Pan.svg</file>
-        <file alias="icons/NavigationTinkerCAD_dark.svg">icons/NavigationCAD_dark.svg</file>
+        <file>icons/NavigationTinkerCAD_light.svg</file>
+        <file>icons/NavigationTinkerCAD_dark.svg</file>
         <file alias="icons/NavigationTinkerCAD_Select.svg">icons/NavigationOpenCascade_Select.svg</file>
         <file alias="icons/NavigationTinkerCAD_Zoom.svg">icons/NavigationOpenCascade_Zoom.svg</file>
         <file alias="icons/NavigationTinkerCAD_Rotate.svg">icons/NavigationGesture_Pan.svg</file>
