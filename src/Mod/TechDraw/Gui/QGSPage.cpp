@@ -559,6 +559,9 @@ void QGSPage::createBalloon(QPointF origin, DrawView* parent)
                        pageName.c_str(), featName.c_str());
 
     Gui::Command::commitCommand();
+
+    // Touch the parent feature so the balloon in tree view appears as a child
+    parent->touch(true);
 }
 
 QGIView* QGSPage::addViewDimension(TechDraw::DrawViewDimension* dimFeat)
