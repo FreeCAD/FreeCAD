@@ -27,6 +27,7 @@
 #include <vector>
 
 #include <Mod/Sketcher/App/GeoList.h>
+#include <Mod/Sketcher/App/GeometryFacade.h>
 
 #include "EditModeCoinManagerParameters.h"
 
@@ -65,6 +66,7 @@ class EditModeConstraintCoinManager;
 
 using GeoList = Sketcher::GeoList;
 using GeoListFacade = Sketcher::GeoListFacade;
+using GeometryFacade = Sketcher::GeometryFacade;
 
 /** @brief      Class for managing the Edit mode coin nodes of ViewProviderSketch relating to
  * geometry.
@@ -111,6 +113,36 @@ private:
     void emptyGeometryRootNodes();
     void createEditModePointInventorNodes();
     void createEditModeCurveInventorNodes();
+    SbColor constrainedPointColor(bool constrainedElement, const GeometryFacade* geom);
+    void setPointColors(SbColor* pcolor,
+                        int PtNum,
+                        bool issketchinvalid,
+                        const GeoListFacade& geolistfacade,
+                        int l);
+    void setPointHeights(SbVec3f* pverts,
+                         int PtNum,
+                         const GeoListFacade& geolistfacade,
+                         int l,
+                         int viewOrientationFactor,
+                         float zNormPoint,
+                         float zConstrPoint);
+    SbColor setVertexes(int GeoId,
+                        const GeometryFacade* geom,
+                        int indexes,
+                        int highLine,
+                        int extLine,
+                        int normLine,
+                        int constrLine,
+                        SbVec3f* verts,
+                        bool preselected,
+                        bool constrainedElement,
+                        bool issketchinvalid);
+    SbColor layer0Color(int preselectcross);
+    void updateGeometryLayerColor(const GeoListFacade& geolistfacade,
+                                  bool issketchinvalid,
+                                  SbColor* crosscolor,
+                                  int viewOrientationFactor,
+                                  int l);
 
 private:
     ViewProviderSketch& viewProvider;
