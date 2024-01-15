@@ -36,6 +36,7 @@ namespace MbD {
 		FColDsptr readColumnOfDoubles(std::string& line);
 		double readDouble(std::string& line);
 		int readInt(std::string& line);
+		size_t readSize_t(std::string& line);
 		bool readBool(std::string& line);
 		std::string readString(std::string& line);
 		void readName(std::vector<std::string>& lines);
@@ -53,6 +54,7 @@ namespace MbD {
 		virtual void storeOnLevelString(std::ofstream& os, size_t level, std::string str);
 		virtual void storeOnLevelDouble(std::ofstream& os, size_t level, double value);
 		virtual void storeOnLevelInt(std::ofstream& os, size_t level, int i);
+		virtual void storeOnLevelSize_t(std::ofstream& os, size_t level, size_t i);
 		virtual void storeOnLevelBool(std::ofstream& os, size_t level, bool value);
 		//template<typename T>
 		//void storeOnLevelArray(std::ofstream& os, size_t level, std::vector<T> array);

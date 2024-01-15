@@ -440,7 +440,7 @@ void MbD::ASMTAssembly::runFile(const char* fileName)
 void MbD::ASMTAssembly::runDraggingTest()
 {
 	auto assembly = ASMTAssembly::assemblyFromFile("../testapp/dragCrankSlider.asmt");
-	auto dragPart = assembly->parts->at(0);
+	auto& dragPart = assembly->parts->at(0);
 	auto dragParts = std::make_shared<std::vector<std::shared_ptr<ASMTPart>>>();
 	dragParts->push_back(dragPart);
 	assembly->runPreDrag();	//Do this before first drag
@@ -709,7 +709,7 @@ void MbD::ASMTAssembly::readMotions(std::vector<std::string>& lines)
 
 }
 
-void MbD::ASMTAssembly::readGeneralConstraintSets(std::vector<std::string>& lines)
+void MbD::ASMTAssembly::readGeneralConstraintSets(std::vector<std::string>& lines) const
 {
 	assert(lines[0] == "\t\tGeneralConstraintSets");
 	lines.erase(lines.begin());
@@ -938,12 +938,12 @@ void MbD::ASMTAssembly::calcCharacteristicDimensions()
 	this->mbdUnits = std::make_shared<Units>(1.0, 1.0, 1.0, 1.0);	//for debug
 }
 
-double MbD::ASMTAssembly::calcCharacteristicTime()
+double MbD::ASMTAssembly::calcCharacteristicTime() const
 {
 	return std::abs(simulationParameters->hout);
 }
 
-double MbD::ASMTAssembly::calcCharacteristicMass()
+double MbD::ASMTAssembly::calcCharacteristicMass() const
 {
 	auto n = parts->size();
 	double sumOfSquares = 0.0;
@@ -957,7 +957,7 @@ double MbD::ASMTAssembly::calcCharacteristicMass()
 	return unitMass;
 }
 
-double MbD::ASMTAssembly::calcCharacteristicLength()
+double MbD::ASMTAssembly::calcCharacteristicLength() const
 {
 	auto markerMap = this->markerMap();
 	auto lengths = std::make_shared<std::vector<double>>();
@@ -975,7 +975,7 @@ double MbD::ASMTAssembly::calcCharacteristicLength()
 	return unitLength;
 }
 
-std::shared_ptr<std::vector<std::shared_ptr<ASMTItemIJ>>> MbD::ASMTAssembly::connectorList()
+std::shared_ptr<std::vector<std::shared_ptr<ASMTItemIJ>>> MbD::ASMTAssembly::connectorList() const
 {
 	auto list = std::make_shared<std::vector<std::shared_ptr<ASMTItemIJ>>>();
 	list->insert(list->end(), joints->begin(), joints->end());
@@ -985,7 +985,7 @@ std::shared_ptr<std::vector<std::shared_ptr<ASMTItemIJ>>> MbD::ASMTAssembly::con
 	return list;
 }
 
-std::shared_ptr<std::map<std::string, std::shared_ptr<ASMTMarker>>> MbD::ASMTAssembly::markerMap()
+std::shared_ptr<std::map<std::string, std::shared_ptr<ASMTMarker>>> MbD::ASMTAssembly::markerMap() const
 {
 	auto answer = std::make_shared<std::map<std::string, std::shared_ptr<ASMTMarker>>>();
 	for (auto& refPoint : *refPoints) {
@@ -1109,7 +1109,7 @@ void MbD::ASMTAssembly::runPreDrag()
 	}
 }
 
-void MbD::ASMTAssembly::runDragStep(std::shared_ptr<std::vector<std::shared_ptr<ASMTPart>>> dragParts)
+void MbD::ASMTAssembly::runDragStep(std::shared_ptr<std::vector<std::shared_ptr<ASMTPart>>> dragParts) const
 {
 	auto dragMbDParts = std::make_shared<std::vector<std::shared_ptr<Part>>>();
 	for (auto& dragPart : *dragParts) {
@@ -1146,7 +1146,7 @@ void MbD::ASMTAssembly::initprincipalMassMarker()
 	//principalMassMarker->rotationMatrix = FullMatrix<double>>::identitysptr(3);
 }
 
-std::shared_ptr<ASMTSpatialContainer> MbD::ASMTAssembly::spatialContainerAt(std::shared_ptr<ASMTAssembly> self, std::string& longname)
+std::shared_ptr<ASMTSpatialContainer> MbD::ASMTAssembly::spatialContainerAt(std::shared_ptr<ASMTAssembly> self, std::string& longname) const
 {
 	if ((self->fullName("")) == longname) return self;
 	auto it = std::find_if(parts->begin(), parts->end(), [&](const std::shared_ptr<ASMTPart>& prt) {
@@ -1156,7 +1156,7 @@ std::shared_ptr<ASMTSpatialContainer> MbD::ASMTAssembly::spatialContainerAt(std:
 	return part;
 }
 
-std::shared_ptr<ASMTMarker> MbD::ASMTAssembly::markerAt(std::string& longname)
+std::shared_ptr<ASMTMarker> MbD::ASMTAssembly::markerAt(std::string& longname) const
 {
 	for (auto& refPoint : *refPoints) {
 		for (auto& marker : *refPoint->markers) {
@@ -1173,7 +1173,7 @@ std::shared_ptr<ASMTMarker> MbD::ASMTAssembly::markerAt(std::string& longname)
 	return nullptr;
 }
 
-std::shared_ptr<ASMTJoint> MbD::ASMTAssembly::jointAt(std::string& longname)
+std::shared_ptr<ASMTJoint> MbD::ASMTAssembly::jointAt(std::string& longname) const
 {
 	auto it = std::find_if(joints->begin(), joints->end(), [&](const std::shared_ptr<ASMTJoint>& jt) {
 		return jt->fullName("") == longname;
@@ -1182,7 +1182,7 @@ std::shared_ptr<ASMTJoint> MbD::ASMTAssembly::jointAt(std::string& longname)
 	return joint;
 }
 
-std::shared_ptr<ASMTMotion> MbD::ASMTAssembly::motionAt(std::string& longname)
+std::shared_ptr<ASMTMotion> MbD::ASMTAssembly::motionAt(std::string& longname) const
 {
 	auto it = std::find_if(motions->begin(), motions->end(), [&](const std::shared_ptr<ASMTMotion>& mt) {
 		return mt->fullName("") == longname;
@@ -1191,7 +1191,7 @@ std::shared_ptr<ASMTMotion> MbD::ASMTAssembly::motionAt(std::string& longname)
 	return motion;
 }
 
-std::shared_ptr<ASMTForceTorque> MbD::ASMTAssembly::forceTorqueAt(std::string& longname)
+std::shared_ptr<ASMTForceTorque> MbD::ASMTAssembly::forceTorqueAt(std::string& longname) const
 {
 	auto it = std::find_if(forcesTorques->begin(), forcesTorques->end(), [&](const std::shared_ptr<ASMTForceTorque>& mt) {
 		return mt->fullName("") == longname;
@@ -1210,7 +1210,7 @@ FColDsptr MbD::ASMTAssembly::omeOpO()
 	return std::make_shared<FullColumn<double>>(3, 0.0);
 }
 
-std::shared_ptr<ASMTTime> MbD::ASMTAssembly::geoTime()
+std::shared_ptr<ASMTTime> MbD::ASMTAssembly::geoTime() const
 {
 	return asmtTime;
 }
@@ -1276,7 +1276,7 @@ void MbD::ASMTAssembly::setSimulationParameters(std::shared_ptr<ASMTSimulationPa
 	parameters->owner = this;
 }
 
-std::shared_ptr<ASMTPart> MbD::ASMTAssembly::partNamed(std::string partName)
+std::shared_ptr<ASMTPart> MbD::ASMTAssembly::partNamed(std::string partName) const
 {
 	auto it = std::find_if(parts->begin(), parts->end(), [&](const std::shared_ptr<ASMTPart>& prt) {
 		return prt->fullName("") == partName;
@@ -1285,7 +1285,7 @@ std::shared_ptr<ASMTPart> MbD::ASMTAssembly::partNamed(std::string partName)
 	return part;
 }
 
-std::shared_ptr<ASMTPart> MbD::ASMTAssembly::partPartialNamed(std::string partialName)
+std::shared_ptr<ASMTPart> MbD::ASMTAssembly::partPartialNamed(std::string partialName) const
 {
 	auto it = std::find_if(parts->begin(), parts->end(), [&](const std::shared_ptr<ASMTPart>& prt) {
 		auto fullName = prt->fullName("");

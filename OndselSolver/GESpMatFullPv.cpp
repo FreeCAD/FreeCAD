@@ -118,7 +118,7 @@ void GESpMatFullPv::backSubstituteIntoDU()
 	auto jn = colOrder->at(n);
 	answerX->at(jn) = rightHandSideB->at(m) / matrixA->at(m)->at(jn);
 	//auto rhsZeroElement = this->rhsZeroElement();
-	for (int i = n - 2; i >= 0; i--)	//Use int because of decrement
+	for (int i = (int)n - 2; i >= 0; i--)	//Use int because of decrement
 	{
 		auto& rowi = matrixA->at(i);
 		sum = 0.0; // rhsZeroElement copy.

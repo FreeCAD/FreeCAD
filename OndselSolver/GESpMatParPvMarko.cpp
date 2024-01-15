@@ -26,7 +26,7 @@ void GESpMatParPvMarko::doPivoting(size_t p)
 	SpRowDsptr spRowi;
 	rowPositionsOfNonZerosInPivotColumn->clear();
 	auto lookForFirstNonZeroInPivotCol = true;
-	i = m - 1;
+	i = (int)m - 1;
 	while (lookForFirstNonZeroInPivotCol) {
 		spRowi = matrixA->at(i);
 		if (spRowi->find(p) == spRowi->end()) {

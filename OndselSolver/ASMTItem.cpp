@@ -110,6 +110,14 @@ int MbD::ASMTItem::readInt(std::string& line)
 	return i;
 }
 
+size_t MbD::ASMTItem::readSize_t(std::string& line)
+{
+	std::istringstream iss(line);
+	size_t i;
+	iss >> i;
+	return i;
+}
+
 bool MbD::ASMTItem::readBool(std::string& line)
 {
 	if (line.find("true") != std::string::npos)
@@ -226,6 +234,12 @@ void MbD::ASMTItem::storeOnLevelDouble(std::ofstream& os, size_t level, double v
 }
 
 void MbD::ASMTItem::storeOnLevelInt(std::ofstream& os, size_t level, int i)
+{
+	storeOnLevelTabs(os, level);
+	os << i << std::endl;
+}
+
+void MbD::ASMTItem::storeOnLevelSize_t(std::ofstream& os, size_t level, size_t i)
 {
 	storeOnLevelTabs(os, level);
 	os << i << std::endl;

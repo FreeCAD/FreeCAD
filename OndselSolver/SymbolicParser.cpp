@@ -64,7 +64,7 @@ void MbD::SymbolicParser::parseString(std::string expr)
 	}
 	source = std::make_shared<std::istringstream>(expr);
 	hereChar = source->get();
-	prevEnd = SIZE_MAX;
+	prevEnd = -1;
 	scanToken();
 	expression();
 	if (tokenType != "end") expected("Nothing more");
@@ -480,12 +480,12 @@ bool MbD::SymbolicParser::peekForTypevalue(std::string type, std::string symbol)
 	return false;
 }
 
-void MbD::SymbolicParser::notify(std::string msg)
+void MbD::SymbolicParser::notify(std::string msg) const
 {
 	notifyat(msg, mark);
 }
 
-void MbD::SymbolicParser::notifyat(std::string, int)
+void MbD::SymbolicParser::notifyat(std::string, int) const
 {
 	//"Temporarily reset source in order to get full contents"
 	auto p = source->tellg();
@@ -501,7 +501,7 @@ void MbD::SymbolicParser::notifyat(std::string, int)
 	//raiseSignal
 }
 
-void MbD::SymbolicParser::combineStackTo(size_t pos)
+void MbD::SymbolicParser::combineStackTo(size_t pos) const
 {
 	auto args = std::make_shared<std::vector<Symsptr>>();
 	while (stack->size() > pos) {
@@ -515,7 +515,7 @@ void MbD::SymbolicParser::combineStackTo(size_t pos)
 	stack->push(sum);
 }
 
-bool MbD::SymbolicParser::isNextLineTag(char c)
+bool MbD::SymbolicParser::isNextLineTag(char c) const
 {
 	//Skip <n> tag in asmt file
 	auto pos = source->tellg();

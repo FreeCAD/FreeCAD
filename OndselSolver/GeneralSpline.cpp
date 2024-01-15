@@ -36,7 +36,7 @@ void MbD::GeneralSpline::arguments(Symsptr args)
 {
 	auto array = args->getTerms();
 	auto& arg = array->at(0);
-	size_t order = array->at(1)->getValue();
+	size_t order = (size_t)array->at(1)->getValue();
 	size_t n = (array->size() - 2) / 2;
 	auto xarray = std::make_shared<std::vector<double>>(n);
 	auto yarray = std::make_shared<std::vector<double>>(n);
@@ -136,7 +136,7 @@ void MbD::GeneralSpline::computeDerivatives()
 	}
 }
 
-bool MbD::GeneralSpline::isCyclic()
+bool MbD::GeneralSpline::isCyclic() const
 {
 	return (ys->size() > 3) && (ys->front() == ys->back());
 }
@@ -149,9 +149,9 @@ double MbD::GeneralSpline::derivativeAt(size_t n, double xxx)
 	calcIndexAndDeltaFor(xxx);
 	auto& derivsi = derivs->at(index);
 	double sum = 0.0;
-	for (int j = degree; j >= n + 1; j--)	//Use int because of decrement
+	for (int j = (int)degree; j >= n + 1; j--)	//Use int because of decrement
 	{
-		sum = (sum + derivsi->at(j - 1)) * delta / (j - n);
+		sum = (sum + derivsi->at((size_t)j - 1)) * delta / (j - n);
 	}
 	return derivsi->at(n - 1) + sum;
 }
@@ -209,7 +209,7 @@ void MbD::GeneralSpline::searchIndexFromto(size_t first, size_t last)
 		index = first;
 	}
 	else {
-		auto middle = std::floor((first + last) / 2);
+		auto middle = (size_t)std::floor((first + last) / 2);
 		if (xvalue < xs->at(middle)) {
 			searchIndexFromto(first, middle);
 		}
@@ -231,9 +231,9 @@ double MbD::GeneralSpline::y(double xxx)
 	calcIndexAndDeltaFor(xxx);
 	auto& derivsi = derivs->at(index);
 	double sum = 0.0;
-	for (int j = degree; j >= 1; j--)	//Use int because of decrement
+	for (int j = (int)degree; j >= 1; j--)	//Use int because of decrement
 	{
-		sum = (sum + derivsi->at(j - 1)) * delta / j;
+		sum = (sum + derivsi->at((size_t)j - 1)) * delta / j;
 	}
 	return ys->at(index) + sum;
 }
