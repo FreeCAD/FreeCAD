@@ -1587,14 +1587,20 @@ void EditModeConstraintCoinManager::updateConstraintColor(
 
     std::vector<int> PtNum;
     std::vector<SbColor*> pcolor;  // point color
-    std::vector<int> CurvNum;
-    std::vector<SbColor*> color;  // curve color
+    std::vector<std::vector<int>> CurvNum;
+    std::vector<std::vector<SbColor*>> color;  // curve color
 
     for (int l = 0; l < geometryLayerParameters.getCoinLayerCount(); l++) {
         PtNum.push_back(editModeScenegraphNodes.PointsMaterials[l]->diffuseColor.getNum());
         pcolor.push_back(editModeScenegraphNodes.PointsMaterials[l]->diffuseColor.startEditing());
-        CurvNum.push_back(editModeScenegraphNodes.CurvesMaterials[l]->diffuseColor.getNum());
-        color.push_back(editModeScenegraphNodes.CurvesMaterials[l]->diffuseColor.startEditing());
+        CurvNum.emplace_back();
+        color.emplace_back();
+        for (int t = 0; t < geometryLayerParameters.getSubLayerCount(); t++) {
+            CurvNum[l].push_back(
+                editModeScenegraphNodes.CurvesMaterials[l][t]->diffuseColor.getNum());
+            color[l].push_back(
+                editModeScenegraphNodes.CurvesMaterials[l][t]->diffuseColor.startEditing());
+        }
     }
 
     int maxNumberOfConstraints = std::min(editModeScenegraphNodes.constrGroup->getNumChildren(),
@@ -1653,9 +1659,11 @@ void EditModeConstraintCoinManager::updateConstraintColor(
                 if (multifieldIndex != MultiFieldId::Invalid) {
                     int index = multifieldIndex.fieldIndex;
                     int layer = multifieldIndex.layerId;
-                    if (layer < static_cast<int>(CurvNum.size()) && index >= 0
-                        && index < CurvNum[layer]) {
-                        color[layer][index] = drawingParameters.SelectColor;
+                    int sublayer = multifieldIndex.geoTypeId;
+                    if (layer < static_cast<int>(CurvNum.size())
+                        && sublayer < static_cast<int>(CurvNum[layer].size()) && index >= 0
+                        && index < CurvNum[layer][sublayer]) {
+                        color[layer][sublayer][index] = drawingParameters.SelectColor;
                     }
                 }
             }
@@ -1730,7 +1738,9 @@ void EditModeConstraintCoinManager::updateConstraintColor(
 
     for (int l = 0; l < geometryLayerParameters.getCoinLayerCount(); l++) {
         editModeScenegraphNodes.PointsMaterials[l]->diffuseColor.finishEditing();
-        editModeScenegraphNodes.CurvesMaterials[l]->diffuseColor.finishEditing();
+        for (int t = 0; t < geometryLayerParameters.getSubLayerCount(); t++) {
+            editModeScenegraphNodes.CurvesMaterials[l][t]->diffuseColor.finishEditing();
+        }
     }
 }
 
