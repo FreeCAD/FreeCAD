@@ -62,13 +62,8 @@
 #include <boost/regex.hpp>
 #include <boost/algorithm/string/predicate.hpp>
 
-// Qt Toolkit
-#ifndef __QtAll__
-# include <Gui/QtAll.h>
-#endif
-
 // GL
-// Include glext before InventorAll
+// Include glext before QtAll/InventorAll
 #ifdef FC_OS_WIN32
 # include <GL/gl.h>
 # include <GL/glext.h>
@@ -86,6 +81,11 @@
 #endif //FC_OS_WIN32
 // Should come after glext.h to avoid warnings
 #include <Inventor/C/glue/gl.h>
+
+// Qt Toolkit
+#ifndef __QtAll__
+# include <Gui/QtAll.h>
+#endif
 
 // Inventor includes OpenGL
 #ifndef __InventorAll__
