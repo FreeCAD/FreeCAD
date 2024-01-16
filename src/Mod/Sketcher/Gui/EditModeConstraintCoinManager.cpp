@@ -1297,6 +1297,9 @@ Restart:
                             auto* arc = static_cast<const Part::GeomArcOfCircle*>(geo);
                             p0 = Base::convertTo<SbVec3f>(arc->getCenter());
 
+                            endLineLength1 = 2 * distance - arc->getRadius();
+                            endLineLength2 = endLineLength1;
+
                             double endangle;
                             arc->getRange(startangle, endangle, /*emulateCCWXY=*/true);
                             range = endangle - startangle;
