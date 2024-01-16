@@ -98,6 +98,9 @@ DimensionGeometryType isValidHybrid3d(DrawViewPart* dvp, ReferenceVector refs);
 
 long int mapGeometryTypeToDimType(long int dimType, DimensionGeometryType geometry2d,
                                                  DimensionGeometryType geometry3d);
+
+bool  refsMatchToken(const ReferenceVector& refs, const std::string& matchToken);
+
 }
 #endif //TECHDRAW_DIMENSIONVALIDATORS_H
 

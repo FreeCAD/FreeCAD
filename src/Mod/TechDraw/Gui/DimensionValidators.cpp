@@ -470,17 +470,16 @@ DimensionGeometryType TechDraw::isValidMultiEdge(ReferenceVector refs)
         return isInvalid;
     }
 
+    //they all must start with "Edge"
+    const std::string matchToken{"Edge"};
+    if (!refsMatchToken(refs, matchToken)) {
+        return isInvalid;
+    }
+
     auto objFeat0(dynamic_cast<TechDraw::DrawViewPart*>(refs.at(0).getObject()));
     if (!objFeat0) {
         //probably redundant
         throw Base::RuntimeError("Logic error in isValidMultiEdge");
-    }
-
-    //they all must start with "Edge"
-    for (auto& ref : refs) {
-        if (TechDraw::DrawUtil::getGeomTypeFromName(ref.getSubName()) != "Edge") {
-            return isInvalid;
-        }
     }
 
     if (refs.size() > 2) {
@@ -525,17 +524,17 @@ DimensionGeometryType TechDraw::isValidMultiEdge3d(DrawViewPart* dvp, ReferenceV
         return isInvalid;
     }
 
+    //they all must start with "Edge"
+    const std::string matchToken{"Edge"};
+    if (!refsMatchToken(refs, matchToken)) {
+        return isInvalid;
+    }
+
     std::vector<TopoDS_Edge> edges;
     for (auto& ref : refs) {
         std::vector<TopoDS_Shape> shapesAll = ShapeExtractor::getShapesFromObject(ref.getObject());
         if (shapesAll.empty()) {
             //reference has no geometry
-            return isInvalid;
-        }
-
-        //the Name starts with "Edge"
-        std::string geomName = DrawUtil::getGeomTypeFromName(ref.getSubName().c_str());
-        if (geomName != "Edge") {
             return isInvalid;
         }
     }
@@ -585,6 +584,11 @@ DimensionGeometryType TechDraw::isValidVertexes(ReferenceVector refs)
         throw Base::RuntimeError("Logic error in isValidMultiEdge");
     }
 
+    const std::string matchToken{"Vertex"};
+    if (!refsMatchToken(refs, matchToken)) {
+        return isInvalid;
+    }
+
     if (refs.size() == 2) {
         //2 vertices can only make a distance dimension
         TechDraw::VertexPtr v0 = dvp->getVertex(refs.at(0).getSubName());
@@ -610,6 +614,11 @@ DimensionGeometryType TechDraw::isValidVertexes(ReferenceVector refs)
 DimensionGeometryType TechDraw::isValidVertexes3d(DrawViewPart* dvp, ReferenceVector refs)
 {
     (void)dvp;
+    const std::string matchToken{"Vertex"};
+    if (!refsMatchToken(refs, matchToken)) {
+        return isInvalid;
+    }
+
     if (refs.size() == 2) {
         //2 vertices can only make a distance dimension
         TopoDS_Shape geometry0 = refs.at(0).getGeometry();
@@ -712,4 +721,17 @@ long int TechDraw::mapGeometryTypeToDimType(long int dimType, DimensionGeometryT
         }
     }
     return dimType;
+}
+
+//! true if all the input references have subelements that match the geometry
+//! type token.
+bool  TechDraw::refsMatchToken(const ReferenceVector& refs, const std::string& matchToken)
+{
+    for (auto& entry : refs) {
+        std::string entryToken = DU::getGeomTypeFromName(entry.getSubName(false));
+        if (entryToken != matchToken) {
+            return false;
+        }
+    }
+    return true;
 }
