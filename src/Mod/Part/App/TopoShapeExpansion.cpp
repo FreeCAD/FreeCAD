@@ -862,7 +862,7 @@ TopoShape& TopoShape::makeElementOrderedWires(const std::vector<TopoShape>& shap
 }
 
 
-TopoShape &TopoShape::makECopy(const TopoShape &shape, const char *op, bool copyGeom, bool copyMesh)
+TopoShape &TopoShape::makeElementCopy(const TopoShape &shape, const char *op, bool copyGeom, bool copyMesh)
 {
     if(shape.isNull())
         return *this;

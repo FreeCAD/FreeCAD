@@ -771,7 +771,7 @@ public:
      *         TopoShape itself as a self reference so that multiple operations
      *         can be carried out for the same shape in the same line of code.
      */
-    TopoShape &makECopy(const TopoShape &source, const char *op=nullptr, bool copyGeom=true, bool copyMesh=false);
+    TopoShape &makeElementCopy(const TopoShape &source, const char *op=nullptr, bool copyGeom=true, bool copyMesh=false);
 
     /** Make a deep copy of the shape
      *
@@ -783,8 +783,8 @@ public:
      * @return Return a deep copy of the shape. The shape itself is not
      *         modified
      */
-    TopoShape makECopy(const char *op=nullptr, bool copyGeom=true, bool copyMesh=false) const {
-        return TopoShape(Tag,Hasher).makECopy(*this,op,copyGeom,copyMesh);
+    TopoShape makeElementCopy(const char *op=nullptr, bool copyGeom=true, bool copyMesh=false) const {
+        return TopoShape(Tag,Hasher).makeElementCopy(*this,op,copyGeom,copyMesh);
     }
 
     friend class TopoShapeCache;
@@ -976,6 +976,20 @@ struct ShapeHasher {
         return a.first.IsSame(b.first)
             && a.second.IsSame(b.second);
     }
+};
+
+/** Shape mapper for generic BRepBuilderAPI_MakeShape derived class
+ *
+ * Uses BRepBuilderAPI_MakeShape::Modified/Generated() function to extract
+ * shape history for generating mapped element names
+ */
+struct PartExport MapperMaker: TopoShape::Mapper {
+    BRepBuilderAPI_MakeShape &maker;
+    MapperMaker(BRepBuilderAPI_MakeShape &maker)
+        :maker(maker)
+    {}
+    virtual const std::vector<TopoDS_Shape> &modified(const TopoDS_Shape &s) const override;
+    virtual const std::vector<TopoDS_Shape> &generated(const TopoDS_Shape &s) const override;
 };
 
 }  // namespace Part

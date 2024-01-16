@@ -3160,7 +3160,7 @@ bool TopoShape::fix()
     // BTW, the file attached in the issue also shows that ShapeFix_Shape may
     // actually make a valid input shape invalid). So, it actually change the
     // underlying shape data. Therefore, we try with a copy first.
-    auto copy = makECopy();
+    auto copy = makeElementCopy();
     ShapeFix_Shape fix(copy._Shape);
     fix.Perform();
 
