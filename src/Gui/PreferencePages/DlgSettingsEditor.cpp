@@ -163,9 +163,10 @@ DlgSettingsEditor::DlgSettingsEditor( QWidget* parent )
     QStringList labels; labels << tr("Items");
     ui->displayItems->setHeaderLabels(labels);
     ui->displayItems->header()->hide();
-    for (QVector<QPair<QString, unsigned int> >::Iterator it = d->colormap.begin(); it != d->colormap.end(); ++it) {
+    for (const auto &it: d->colormap)
+    {
         auto item = new QTreeWidgetItem(ui->displayItems);
-        item->setText(0, tr((*it).first.toLatin1()));
+        item->setText(0, tr(it.first.toLatin1()));
     }
     pythonSyntax = new PythonSyntaxHighlighter(ui->textEdit1);
     pythonSyntax->setDocument(ui->textEdit1->document());
@@ -243,11 +244,11 @@ void DlgSettingsEditor::saveSettings()
 
     // Saves the color map
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("Editor");
-    for (QVector<QPair<QString, unsigned int> >::Iterator it = d->colormap.begin(); it != d->colormap.end(); ++it) {
-        auto col = static_cast<unsigned long>((*it).second);
-        hGrp->SetUnsigned((*it).first.toLatin1(), col);
+    for (const auto &it : d->colormap)
+    {
+        auto col = static_cast<unsigned long>(it.second);
+        hGrp->SetUnsigned(it.first.toLatin1(), col);
     }
-
     hGrp->SetInt( "FontSize", ui->fontSize->value() );
     hGrp->SetASCII( "Font", ui->fontFamily->currentText().toLatin1() );
 
@@ -280,13 +281,13 @@ void DlgSettingsEditor::loadSettings()
 
     // Restores the color map
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("Editor");
-    for (QVector<QPair<QString, unsigned int>>::Iterator it = d->colormap.begin();
-         it != d->colormap.end(); ++it) {
-        auto col = static_cast<unsigned long>((*it).second);
-        col = hGrp->GetUnsigned((*it).first.toLatin1(), col);
-        (*it).second = static_cast<unsigned int>(col);
+    for (auto &it: d->colormap)
+    {
+        auto col = static_cast<unsigned long>(it.second);
+        col = hGrp->GetUnsigned(it.first.toLatin1(), col);
+        it.second = static_cast<unsigned int>(col);
         QColor color = App::Color::fromPackedRGB<QColor>(col);
-        pythonSyntax->setColor((*it).first, color);
+        pythonSyntax->setColor(it.first, color);
     }
 
     // fill up font styles
@@ -332,8 +333,9 @@ void DlgSettingsEditor::resetSettingsToDefaults()
     ParameterGrp::handle hGrp;
     hGrp = WindowParameter::getDefaultParameter()->GetGroup("Editor");
     //reset the parameters in the "Editor" group
-    for (QVector<QPair<QString, unsigned int> >::Iterator it = d->colormap.begin(); it != d->colormap.end(); ++it) {
-        hGrp->RemoveUnsigned((*it).first.toLatin1());
+    for (const auto &it: d->colormap)
+    {
+        hGrp->RemoveUnsigned(it.first.toLatin1());
     }
     //reset "FontSize" parameter
     hGrp->RemoveInt("FontSize");
@@ -351,8 +353,8 @@ void DlgSettingsEditor::changeEvent(QEvent *e)
 {
     if (e->type() == QEvent::LanguageChange) {
         int index = 0;
-        for (QVector<QPair<QString, unsigned int> >::Iterator it = d->colormap.begin(); it != d->colormap.end(); ++it)
-            ui->displayItems->topLevelItem(index++)->setText(0, tr((*it).first.toLatin1()));
+        for (const auto &it: d->colormap)
+            ui->displayItems->topLevelItem(index++)->setText(0, tr(it.first.toLatin1()));
         ui->retranslateUi(this);
     } else {
         QWidget::changeEvent(e);
