@@ -1281,18 +1281,20 @@ Restart:
                         const Part::Geometry* geo =
                             geolistfacade.getGeometryFromGeoId(Constr->First);
                         if (geo->is<Part::GeomLineSegment>()) {
-                            const Part::GeomLineSegment* lineSeg =
-                                static_cast<const Part::GeomLineSegment*>(geo);
+                            auto* lineSeg = static_cast<const Part::GeomLineSegment*>(geo);
                             p0 = Base::convertTo<SbVec3f>(
                                 (lineSeg->getEndPoint() + lineSeg->getStartPoint()) / 2);
+                            double l1 = 2 * distance
+                                - (lineSeg->getEndPoint() - lineSeg->getStartPoint()).Length() / 2;
+                            endLineLength1 = 2 * distance;
+                            endLineLength2 = l1 > 0. ? l1 : 0.;
 
                             Base::Vector3d dir = lineSeg->getEndPoint() - lineSeg->getStartPoint();
                             startangle = 0.;
                             range = atan2(dir.y, dir.x);
                         }
                         else if (geo->is<Part::GeomArcOfCircle>()) {
-                            const Part::GeomArcOfCircle* arc =
-                                static_cast<const Part::GeomArcOfCircle*>(geo);
+                            auto* arc = static_cast<const Part::GeomArcOfCircle*>(geo);
                             p0 = Base::convertTo<SbVec3f>(arc->getCenter());
 
                             double endangle;
