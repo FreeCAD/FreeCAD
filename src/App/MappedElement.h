@@ -111,7 +111,7 @@ struct AppExport ElementNameComparator {
      * The reason for this is to prevent names with bigger digits (which usually means
      * they come later in history) from coming earlier when sorting.
      */
-    bool operator()(const MappedName &a, const MappedName &b) const;
+    bool operator()(const MappedName & leftName, const MappedName & rightName) const;
 };
 
 }// namespace Data
