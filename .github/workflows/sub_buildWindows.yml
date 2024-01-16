@@ -85,7 +85,7 @@ jobs:
         with:
           libpackdir: ${{ env.libpackdir }}
       - name: Restore compiler cache
-        uses: pat-s/always-upload-cache@v3
+        uses: action/cache@v3
         with:
           path: ${{ env.CCACHE_DIR }}
           key: FC-Windows-${{ github.ref }}-${{ github.run_id }}
