@@ -29,6 +29,7 @@
 
 #include <BRep_Builder.hxx>
 #include <BRep_Tool.hxx>
+#include <BRepBuilderAPI_Copy.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <BRepBuilderAPI_MakeWire.hxx>
 #include <TopTools_HSequenceOfShape.hxx>
@@ -858,6 +859,29 @@ TopoShape& TopoShape::makeElementOrderedWires(const std::vector<TopoShape>& shap
         wires.back().mapSubElement(edges, op);
     }
     return makeElementCompound(wires, nullptr, SingleShapeCompoundCreationPolicy::RETURN_SHAPE);
+}
+
+
+TopoShape &TopoShape::makECopy(const TopoShape &shape, const char *op, bool copyGeom, bool copyMesh)
+{
+    if(shape.isNull())
+        return *this;
+
+    TopoShape tmp(shape);
+#if OCC_VERSION_HEX >= 0x070000
+    tmp.setShape(BRepBuilderAPI_Copy(shape.getShape(),copyGeom,copyMesh).Shape(), false);
+#else
+    tmp.setShape(BRepBuilderAPI_Copy(shape.getShape()).Shape(), false);
+#endif
+    if(op || (shape.Tag && shape.Tag!=Tag)) {
+        setShape(tmp._Shape);
+        initCache();
+        if (!Hasher)
+            Hasher = tmp.Hasher;
+        copyElementMap(tmp, op);
+    }else
+        *this = tmp;
+    return *this;
 }
 
 }  // namespace Part

@@ -384,6 +384,7 @@ public:
     TopoDS_Shape replaceShape(const std::vector<std::pair<TopoDS_Shape, TopoDS_Shape>>& s) const;
     TopoDS_Shape removeShape(const std::vector<TopoDS_Shape>& s) const;
     void sewShape(double tolerance = 1.0e-06);
+    bool fix();
     bool fix(double, double, double);
     bool removeInternalWires(double);
     TopoDS_Shape removeSplitter() const;
@@ -753,6 +754,37 @@ public:
                                TopoShapeMap* output = nullptr) const
     {
         return TopoShape(0, Hasher).makeElementWires(*this, op, tol, policy, output);
+    }
+
+
+
+    /** Make a deep copy of the shape
+     *
+     * @param source: input shape
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     * @param copyGeom: whether to copy internal geometry of the shape
+     * @param copyMesh: whether to copy internal meshes of the shape
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with a deep copy of the input shape. The function returns the
+     *         TopoShape itself as a self reference so that multiple operations
+     *         can be carried out for the same shape in the same line of code.
+     */
+    TopoShape &makECopy(const TopoShape &source, const char *op=nullptr, bool copyGeom=true, bool copyMesh=false);
+
+    /** Make a deep copy of the shape
+     *
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     * @param copyGeom: whether to copy internal geometry of the shape
+     * @param copyMesh: whether to copy internal meshes of the shape
+     *
+     * @return Return a deep copy of the shape. The shape itself is not
+     *         modified
+     */
+    TopoShape makECopy(const char *op=nullptr, bool copyGeom=true, bool copyMesh=false) const {
+        return TopoShape(Tag,Hasher).makECopy(*this,op,copyGeom,copyMesh);
     }
 
     friend class TopoShapeCache;
