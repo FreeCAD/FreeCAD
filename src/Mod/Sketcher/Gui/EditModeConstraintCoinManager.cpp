@@ -814,6 +814,17 @@ Restart:
                 case DistanceY: {
                     assert(Constr->First >= -extGeoCount && Constr->First < intGeoCount);
 
+                    double helperStartAngle1 = 0.;  // for arc helpers
+                    double helperStartAngle2 = 0.;
+                    double helperRange1 = 0.;
+                    double helperRange2 = 0.;
+                    double radius1 = 0.;
+                    double radius2 = 0.;
+                    Base::Vector3d center1(0., 0., 0.);
+                    Base::Vector3d center2(0., 0., 0.);
+
+                    int numPoints = 2;
+
                     // pnt1 will be initialized to (0,0,0) if only one point is given
                     auto pnt1 = geolistfacade.getPoint(Constr->First, Constr->FirstPos);
 
@@ -838,17 +849,15 @@ Restart:
                                 pnt2.ProjectToLine(pnt1 - l2p1, l2p2 - l2p1);
                                 pnt2 += pnt1;
                             }
-                            else {
-                                if (isCircleOrArc(*geo1)) {
-                                    // circular to line distance
-                                    auto [radius, ct] = getRadiusCenterCircleArc(geo1);
-                                    // project the center on the line (translated to origin)
-                                    pnt1.ProjectToLine(ct - l2p1, l2p2 - l2p1);
-                                    Base::Vector3d dir = pnt1;
-                                    dir.Normalize();
-                                    pnt1 += ct;
-                                    pnt2 = ct + dir * radius;
-                                }
+                            else if (isCircleOrArc(*geo1)) {
+                                // circular to line distance
+                                auto [radius, ct] = getRadiusCenterCircleArc(geo1);
+                                // project the center on the line (translated to origin)
+                                pnt1.ProjectToLine(ct - l2p1, l2p2 - l2p1);
+                                Base::Vector3d dir = pnt1;
+                                dir.Normalize();
+                                pnt1 += ct;
+                                pnt2 = ct + dir * radius;
                             }
                         }
                         else if (isCircleOrArc(*geo2)) {
@@ -890,10 +899,8 @@ Restart:
                         break;
                     }
 
-                    // NOLINTBEGIN
-                    SoDatumLabel* asciiText = static_cast<SoDatumLabel*>(
-                        sep->getChild(static_cast<int>(ConstraintNodePosition::DatumLabelIndex)));
-                    // NOLINTEND
+                    int index = static_cast<int>(ConstraintNodePosition::DatumLabelIndex);
+                    auto* asciiText = static_cast<SoDatumLabel*>(sep->getChild(index));  // NOLINT
 
                     // Get presentation string (w/o units if option is set)
                     asciiText->string =
@@ -909,12 +916,101 @@ Restart:
                         asciiText->datumtype = SoDatumLabel::DISTANCEY;
                     }
 
+                    // Check if arc helpers are needed
+                    if (Constr->Second != GeoEnum::GeoUndef
+                        && Constr->SecondPos == Sketcher::PointPos::none) {
+                        auto geo1 = geolistfacade.getGeometryFromGeoId(Constr->First);
+                        auto geo2 = geolistfacade.getGeometryFromGeoId(Constr->Second);
+
+                        if (isArcOfCircle(*geo1)) {
+                            auto arc = static_cast<const Part::GeomArcOfCircle*>(geo1);  // NOLINT
+                            radius1 = arc->getRadius();
+                            center1 = arc->getCenter();
+
+                            double angle =
+                                toVector2d(isLineSegment(*geo2) ? pnt2 - center1 : pnt1 - center1)
+                                    .Angle();
+                            double startAngle, endAngle;
+                            arc->getRange(startAngle, endAngle, /*emulateCCW=*/true);
+
+                            findHelperAngles(helperStartAngle1,
+                                             helperRange1,
+                                             angle,
+                                             startAngle,
+                                             endAngle);
+
+                            if (helperRange1 != 0.) {
+                                // We override to draw the full helper as it does not look good
+                                // otherwise We still use findHelperAngles before to find if helper
+                                // is needed.
+                                helperStartAngle1 = endAngle;
+                                helperRange1 = 2 * M_PI - (endAngle - startAngle);
+
+                                numPoints++;
+                            }
+                        }
+                        if (isArcOfCircle(*geo2)) {
+                            auto arc = static_cast<const Part::GeomArcOfCircle*>(geo2);  // NOLINT
+                            radius2 = arc->getRadius();
+                            center2 = arc->getCenter();
+
+                            double angle =
+                                toVector2d(pnt2 - center2).Angle();  // between -pi and pi
+                            double startAngle, endAngle;             // between 0 and 2*pi
+                            arc->getRange(startAngle, endAngle, /*emulateCCW=*/true);
+
+                            findHelperAngles(helperStartAngle2,
+                                             helperRange2,
+                                             angle,
+                                             startAngle,
+                                             endAngle);
+
+                            if (helperRange2 != 0.) {
+                                helperStartAngle2 = endAngle;
+                                helperRange2 = 2 * M_PI - (endAngle - startAngle);
+
+                                numPoints++;
+                            }
+                        }
+                    }
+
                     // Assign the Datum Points
-                    asciiText->pnts.setNum(2);
+                    asciiText->pnts.setNum(numPoints);
                     SbVec3f* verts = asciiText->pnts.startEditing();
 
                     verts[0] = SbVec3f(pnt1.x, pnt1.y, zConstrH);
                     verts[1] = SbVec3f(pnt2.x, pnt2.y, zConstrH);
+
+                    if (numPoints > 2) {
+                        if (helperRange1 != 0.) {
+                            verts[2] = SbVec3f(center1.x, center1.y, zConstrH);
+                            asciiText->param3 = helperStartAngle1;
+                            asciiText->param4 = helperRange1;
+                            asciiText->param5 = radius1;
+                        }
+                        else {
+                            verts[2] = SbVec3f(center2.x, center2.y, zConstrH);
+                            asciiText->param3 = helperStartAngle2;
+                            asciiText->param4 = helperRange2;
+                            asciiText->param5 = radius2;
+                        }
+                        if (numPoints > 3) {
+                            verts[3] = SbVec3f(center2.x, center2.y, zConstrH);
+                            asciiText->param6 = helperStartAngle2;
+                            asciiText->param7 = helperRange2;
+                            asciiText->param8 = radius2;
+                        }
+                        else {
+                            asciiText->param6 = 0.;
+                            asciiText->param7 = 0.;
+                            asciiText->param8 = 0.;
+                        }
+                    }
+                    else {
+                        asciiText->param3 = 0.;
+                        asciiText->param4 = 0.;
+                        asciiText->param5 = 0.;
+                    }
 
                     asciiText->pnts.finishEditing();
 
@@ -1512,6 +1608,7 @@ void EditModeConstraintCoinManager::findHelperAngles(double& helperStartAngle,
                                                      double startAngle,
                                                      double endAngle)
 {
+    double margin = 0.2;  // about 10deg
     if (angle < 0) {
         angle = angle + 2 * M_PI;
     }
@@ -1525,15 +1622,15 @@ void EditModeConstraintCoinManager::findHelperAngles(double& helperStartAngle,
             if (angle > startAngle) {
                 angle -= 2 * M_PI;
             }
-            helperStartAngle = angle;
-            helperRange = startAngle - angle;
+            helperStartAngle = angle - margin;
+            helperRange = startAngle - angle + margin;
         }
         else {
             if (angle < endAngle) {
                 angle += 2 * M_PI;
             }
             helperStartAngle = endAngle;
-            helperRange = angle - endAngle;
+            helperRange = angle - endAngle + margin;
         }
     }
 }
