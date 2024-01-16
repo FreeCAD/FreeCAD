@@ -25,7 +25,7 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <math.h>
+#include <cmath>
 
 #include <BRep_Builder.hxx>
 #include <BRep_Tool.hxx>
@@ -533,9 +533,11 @@ void addShapesToBuilder(const std::vector<TopoShape>& shapes,
 }  // namespace
 
 TopoShape&
-TopoShape::makeElementCompound(const std::vector<TopoShape>& shapes, const char* op, bool force)
+TopoShape::makeElementCompound(const std::vector<TopoShape>& shapes,
+                               const char* op,
+                               SingleShapeCompoundCreationPolicy policy)
 {
-    if (!force && shapes.size() == 1) {
+    if (policy == SingleShapeCompoundCreationPolicy::RETURN_SHAPE && shapes.size() == 1) {
         *this = shapes[0];
         return *this;
     }
@@ -559,23 +561,23 @@ TopoShape::makeElementCompound(const std::vector<TopoShape>& shapes, const char*
 TopoShape& TopoShape::makeElementWires(const std::vector<TopoShape>& shapes,
                                        const char* op,
                                        double tol,
-                                       bool shared,
+                                       ConnectionPolicy policy,
                                        TopoShapeMap* output)
 {
     if (shapes.empty()) {
         FC_THROWM(NullShapeException, "Null shape");
     }
     if (shapes.size() == 1) {
-        return makeElementWires(shapes[0], op, tol, shared, output);
+        return makeElementWires(shapes[0], op, tol, policy, output);
     }
-    return makeElementWires(TopoShape(Tag).makeElementCompound(shapes), op, tol, shared, output);
+    return makeElementWires(TopoShape(Tag).makeElementCompound(shapes), op, tol, policy, output);
 }
 
 
 TopoShape& TopoShape::makeElementWires(const TopoShape& shape,
                                        const char* op,
                                        double tol,
-                                       bool shared,
+                                       ConnectionPolicy policy,
                                        TopoShapeMap* output)
 {
     if (!op) {
@@ -585,7 +587,7 @@ TopoShape& TopoShape::makeElementWires(const TopoShape& shape,
         tol = Precision::Confusion();
     }
 
-    if (shared) {
+    if (policy == ConnectionPolicy::REQUIRE_SHARED_VERTEX) {
         // Can't use ShapeAnalysis_FreeBounds if not shared. It seems the output
         // edges are modified somehow, and it is not obvious how to map the
         // resulting edges.
@@ -605,10 +607,10 @@ TopoShape& TopoShape::makeElementWires(const TopoShape& shape,
         std::vector<TopoShape> wires;
         for (int i = 1; i <= hWires->Length(); i++) {
             auto wire = hWires->Value(i);
-            wires.push_back(TopoShape(Tag, Hasher, wire));
+            wires.emplace_back(Tag, Hasher, wire);
         }
         shape.mapSubElementsTo(wires, op);
-        return makeElementCompound(wires, "", false);
+        return makeElementCompound(wires, "", SingleShapeCompoundCreationPolicy::RETURN_SHAPE);
     }
 
     std::vector<TopoShape> wires;
@@ -666,7 +668,7 @@ TopoShape& TopoShape::makeElementWires(const TopoShape& shape,
         wires.back().mapSubElement(edges, op);
         wires.back().fix();
     }
-    return makeElementCompound(wires, nullptr, false);
+    return makeElementCompound(wires, nullptr, SingleShapeCompoundCreationPolicy::RETURN_SHAPE);
 }
 
 
@@ -833,7 +835,7 @@ TopoShape& TopoShape::makeElementOrderedWires(const std::vector<TopoShape>& shap
     std::vector<TopoShape> wires;
     std::list<TopoShape> edgeList;
 
-    auto shape = TopoShape().makeElementCompound(shapes, "", false);
+    auto shape = TopoShape().makeElementCompound(shapes, "", SingleShapeCompoundCreationPolicy::RETURN_SHAPE);
     for (auto& edge : shape.getSubTopoShapes(TopAbs_EDGE)) {
         edgeList.push_back(edge);
     }
@@ -855,7 +857,7 @@ TopoShape& TopoShape::makeElementOrderedWires(const std::vector<TopoShape>& shap
         wires.emplace_back(mkWire.Wire());
         wires.back().mapSubElement(edges, op);
     }
-    return makeElementCompound(wires, nullptr, false);
+    return makeElementCompound(wires, nullptr, SingleShapeCompoundCreationPolicy::RETURN_SHAPE);
 }
 
 }  // namespace Part

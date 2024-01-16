@@ -616,15 +616,21 @@ public:
     void mapSubElementsTo(std::vector<TopoShape> &shapes, const char *op=nullptr) const;
     bool hasPendingElementMap() const;
 
+    /**
+     * When given a single shape to create a compound, two results are possible: either to simply
+     * return the shape as given, or to force it to be placed in a Compound.
+     */
+    enum class SingleShapeCompoundCreationPolicy {
+        RETURN_SHAPE,
+        FORCE_COMPOUND
+    };
 
     /** Make a compound shape
      *
      * @param shapes: input shapes
      * @param op: optional string to be encoded into topo naming for indicating
      *            the operation
-     * @param force: if true and there is only one input shape, then return
-     *               that shape instead.  If false, then always return a
-     *               compound, even if there is no input shape.
+     * @param policy: set behavior when only a single shape is given
      *
      * @return The original content of this TopoShape is discarded and replaced
      *         with the new shape. The function returns the TopoShape itself as
@@ -633,7 +639,7 @@ public:
      */
     TopoShape& makeElementCompound(const std::vector<TopoShape>& shapes,
                                    const char* op = nullptr,
-                                   bool force = true);
+                                   SingleShapeCompoundCreationPolicy policy = SingleShapeCompoundCreationPolicy::FORCE_COMPOUND);
 
 
     enum class ConnectionPolicy {
@@ -666,7 +672,7 @@ public:
     TopoShape& makeElementWires(const std::vector<TopoShape>& shapes,
                                 const char* op = nullptr,
                                 double tol = 0.0,
-                                bool shared = false,
+                                ConnectionPolicy policy = ConnectionPolicy::MERGE_WITH_TOLERANCE,
                                 TopoShapeMap* output = nullptr);
 
 
@@ -743,10 +749,10 @@ public:
      */
     TopoShape makeElementWires(const char* op = nullptr,
                                double tol = 0.0,
-                               bool shared = false,
+                               ConnectionPolicy policy = ConnectionPolicy::MERGE_WITH_TOLERANCE,
                                TopoShapeMap* output = nullptr) const
     {
-        return TopoShape(0, Hasher).makeElementWires(*this, op, tol, shared, output);
+        return TopoShape(0, Hasher).makeElementWires(*this, op, tol, policy, output);
     }
 
     friend class TopoShapeCache;
