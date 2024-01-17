@@ -2,6 +2,7 @@
 #include <unordered_set>
 #include <vector>
 
+#include <Standard_Version.hxx>
 #include <TopoDS_Shape.hxx>
 #include <TopExp_Explorer.hxx>
 #include "TopoShape.h"
@@ -17,11 +18,18 @@ namespace Part
 /// Shape hasher that ignore orientation
 struct ShapeHasher {
     inline size_t operator()(const TopoShape &s) const {
+#if OCC_VERSION_HEX >= 0x070800
         return std::hash<TopoDS_Shape> {}(s.getShape());
-        // return TopTools_ShapeMapHasher{}(s.getShape());
+#else
+        return s.getShape().HashCode(INT_MAX);
+#endif
     }
     inline size_t operator()(const TopoDS_Shape &s) const {
+#if OCC_VERSION_HEX >= 0x070800
         return std::hash<TopoDS_Shape> {}(s);
+#else
+        return s.HashCode(INT_MAX);
+#endif
     }
     inline bool operator()(const TopoShape &a, const TopoShape &b) const {
         return a.getShape().IsSame(b.getShape());
@@ -37,13 +45,23 @@ struct ShapeHasher {
         seed ^= hasher(v) + 0x9e3779b9 + (seed<<6) + (seed>>2);
     }
     inline size_t operator()(const std::pair<TopoShape, TopoShape> &s) const {
+#if OCC_VERSION_HEX >= 0x070800
         size_t res = std::hash<TopoDS_Shape> {}(s.first.getShape());
         hash_combine(res, std::hash<TopoDS_Shape> {}(s.second.getShape()));
+#else
+        size_t res = s.first.getShape().HashCode(INT_MAX);
+        hash_combine(res, s.second.getShape().HashCode(INT_MAX));
+#endif
         return res;
     }
     inline size_t operator()(const std::pair<TopoDS_Shape, TopoDS_Shape> &s) const {
+#if OCC_VERSION_HEX >= 0x070800
         size_t res = std::hash<TopoDS_Shape> {}(s.first);
         hash_combine(res, std::hash<TopoDS_Shape> {}(s.second));
+#else
+        size_t res = s.first.HashCode(INT_MAX);
+        hash_combine(res, s.second.HashCode(INT_MAX));
+#endif
         return res;
     }
     inline bool operator()(const std::pair<TopoShape, TopoShape> &a,
