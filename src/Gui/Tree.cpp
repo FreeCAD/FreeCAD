@@ -61,6 +61,7 @@
 #include "Macro.h"
 #include "MainWindow.h"
 #include "MenuManager.h"
+#include "PropertyView.h"
 #include "TreeParams.h"
 #include "View3DInventor.h"
 #include "ViewProviderDocumentObject.h"
@@ -523,6 +524,13 @@ TreeWidget::TreeWidget(const char* name, QWidget* parent)
     connect(this->relabelObjectAction, &QAction::triggered,
             this, &TreeWidget::onRelabelObject);
 
+    this->objectPropertyAction = new QAction(this);
+#ifndef Q_OS_MAC
+    this->objectPropertyAction->setShortcut(Qt::Key_F6);
+#endif
+    connect(this->objectPropertyAction, &QAction::triggered,
+            this, &TreeWidget::onObjectProperty);
+
     this->finishEditingAction = new QAction(this);
     connect(this->finishEditingAction, &QAction::triggered,
             this, &TreeWidget::onFinishEditing);
@@ -961,6 +969,7 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
         // relabeling is only possible for a single selected document
         if (SelectedObjectsList.size() == 1)
             contextMenu.addAction(this->relabelObjectAction);
+            contextMenu.addAction(this->objectPropertyAction);
 
         auto selItems = this->selectedItems();
         // if only one item is selected, setup the edit menu
@@ -1080,6 +1089,21 @@ void TreeWidget::onRelabelObject()
     QTreeWidgetItem* item = currentItem();
     if (item)
         editItem(item);
+}
+
+void TreeWidget::onObjectProperty()
+{
+    int sizeOfFirstColumn = 200;
+    auto prop = new PropertyView(this, sizeOfFirstColumn);
+    QDialog* propertyDialog = new QDialog(this);
+    propertyDialog->setWindowTitle(QString::fromLatin1("Properties"));
+    propertyDialog->resize(700, 500);
+    QVBoxLayout* layout = new QVBoxLayout(propertyDialog);
+    layout->addWidget(prop);
+    propertyDialog->setLayout(layout);
+    QPoint cursorPos = QCursor::pos() - QPoint(0, 300);
+    propertyDialog->move(cursorPos);
+    propertyDialog->show();
 }
 
 void TreeWidget::onStartEditing()
@@ -2964,6 +2988,9 @@ void TreeWidget::setupText()
 
     this->relabelObjectAction->setText(tr("Rename"));
     this->relabelObjectAction->setStatusTip(tr("Rename object"));
+
+    this->objectPropertyAction->setText(tr("Properties"));
+    this->objectPropertyAction->setStatusTip(tr("Properties of the selected object"));
 
     this->finishEditingAction->setText(tr("Finish editing"));
     this->finishEditingAction->setStatusTip(tr("Finish editing object"));

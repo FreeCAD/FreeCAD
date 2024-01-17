@@ -51,7 +51,7 @@ FC_LOG_LEVEL_INIT("PropertyView", true, true)
 
 using namespace Gui::PropertyEditor;
 
-PropertyEditor::PropertyEditor(QWidget *parent)
+PropertyEditor::PropertyEditor(QWidget *parent, int sizeOfFirstColumn)
     : QTreeView(parent)
     , autoexpand(false)
     , autoupdate(false)
@@ -99,6 +99,10 @@ PropertyEditor::PropertyEditor(QWidget *parent)
     setHeaderHidden(true);
     viewport()->installEventFilter(this);
     viewport()->setMouseTracking(true);
+
+    if (sizeOfFirstColumn != 0) {
+        header()->resizeSection(0, sizeOfFirstColumn);
+    }
 }
 
 PropertyEditor::~PropertyEditor()

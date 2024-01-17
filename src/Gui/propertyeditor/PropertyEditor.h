@@ -67,7 +67,7 @@ class PropertyEditor : public QTreeView
     Q_PROPERTY(QBrush itemBackground READ itemBackground WRITE setItemBackground DESIGNABLE true SCRIPTABLE true) // clazy:exclude=qproperty-without-notify
 
 public:
-    PropertyEditor(QWidget *parent = nullptr);
+    PropertyEditor(QWidget *parent = nullptr, int sizeOfFirstColumn = 0);
     ~PropertyEditor() override;
 
     /** Builds up the list view with the properties. */

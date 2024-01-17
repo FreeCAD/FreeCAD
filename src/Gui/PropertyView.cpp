@@ -67,7 +67,7 @@ static ParameterGrp::handle _GetParam() {
  * Provides two Gui::PropertyEditor::PropertyEditor widgets, for "View" and "Data",
  * in two tabs.
  */
-PropertyView::PropertyView(QWidget *parent)
+PropertyView::PropertyView(QWidget *parent, int sizeOfFirstColumn)
   : QWidget(parent), SelectionObserver(false, ResolveMode::NoResolve)
 {
     auto pLayout = new QGridLayout( this );
@@ -83,12 +83,12 @@ PropertyView::PropertyView(QWidget *parent)
     tabs->setTabPosition(QTabWidget::South);
     pLayout->addWidget(tabs, 0, 0);
 
-    propertyEditorView = new Gui::PropertyEditor::PropertyEditor();
+    propertyEditorView = new Gui::PropertyEditor::PropertyEditor(parent, sizeOfFirstColumn);
     propertyEditorView->setAutomaticDocumentUpdate(_GetParam()->GetBool("AutoTransactionView", false));
     propertyEditorView->setAutomaticExpand(_GetParam()->GetBool("AutoExpandView", false));
     tabs->addTab(propertyEditorView, tr("View"));
 
-    propertyEditorData = new Gui::PropertyEditor::PropertyEditor();
+    propertyEditorData = new Gui::PropertyEditor::PropertyEditor(parent, sizeOfFirstColumn);
     propertyEditorData->setAutomaticDocumentUpdate(_GetParam()->GetBool("AutoTransactionData", true));
     propertyEditorData->setAutomaticExpand(_GetParam()->GetBool("AutoExpandData", false));
     tabs->addTab(propertyEditorData, tr("Data"));

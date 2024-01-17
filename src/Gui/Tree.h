@@ -154,6 +154,7 @@ protected:
 protected Q_SLOTS:
     void onCreateGroup();
     void onRelabelObject();
+    void onObjectProperty();
     void onActivateDocument(QAction*);
     void onStartEditing();
     void onFinishEditing();
@@ -208,6 +209,7 @@ private:
 private:
     QAction* createGroupAction;
     QAction* relabelObjectAction;
+    QAction* objectPropertyAction;
     QAction* finishEditingAction;
     QAction* selectDependentsAction;
     QAction* skipRecomputeAction;
