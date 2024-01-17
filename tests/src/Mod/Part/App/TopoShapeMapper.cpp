@@ -86,16 +86,6 @@ TEST_F(TopoShapeMapperTest, shapeHasherTests)
     EXPECT_FALSE(hash16);
 }
 
-TEST_F(TopoShapeMapperTest, mapperMakerTests)
-{
-    // How can this be tested?
-}
-
-TEST_F(TopoShapeMapperTest, mapperHistoryTests)
-{
-    // How can this be tested?
-}
-
 TEST_F(TopoShapeMapperTest, shapeMapperTests)
 {
     // Arrange
@@ -118,4 +108,4 @@ TEST_F(TopoShapeMapperTest, shapeMapperTests)
 }
 
 
-// // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
+// NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)

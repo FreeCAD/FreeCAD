@@ -76,34 +76,6 @@ struct ShapeHasher {
     }
 };
 
-/** Shape mapper for generic BRepBuilderAPI_MakeShape derived class
- *
- * Uses BRepBuilderAPI_MakeShape::Modified/Generated() function to extract
- * shape history for generating mapped element names
- */
-struct PartExport MapperMaker: TopoShape::Mapper {
-    BRepBuilderAPI_MakeShape &maker;
-    MapperMaker(BRepBuilderAPI_MakeShape &maker)
-        :maker(maker)
-    {}
-    virtual const std::vector<TopoDS_Shape> &modified(const TopoDS_Shape &s) const override;
-    virtual const std::vector<TopoDS_Shape> &generated(const TopoDS_Shape &s) const override;
-};
-
-/** Shape mapper for BRepTools_History
- *
- * Uses BRepTools_History::Modified/Generated() function to extract
- * shape history for generating mapped element names
- */
-struct PartExport MapperHistory: TopoShape::Mapper {
-    Handle(BRepTools_History) history;
-    MapperHistory(const Handle(BRepTools_History) &history);
-    MapperHistory(const Handle(BRepTools_ReShape) &reshape);
-    MapperHistory(ShapeFix_Root &fix);
-    virtual const std::vector<TopoDS_Shape> &modified(const TopoDS_Shape &s) const override;
-    virtual const std::vector<TopoDS_Shape> &generated(const TopoDS_Shape &s) const override;
-};
-
 /** Shape mapper for user defined shape mapping
  */
 struct PartExport ShapeMapper: TopoShape::Mapper {
