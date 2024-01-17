@@ -20,7 +20,10 @@
 #   USA                                                                   *
 #**************************************************************************
 
-import FreeCAD, unittest, Part, Sketcher
+import FreeCAD
+import unittest
+import Part
+import Sketcher
 import copy
 import math
 from FreeCAD import Units
@@ -180,12 +183,11 @@ class PartTestBSplineCurve(unittest.TestCase):
     def testIssue9760(self):
         doc = self.Doc
         doc.addObject('Sketcher::SketchObject', 'Sketch')
-        doc.Sketch.Placement = App.Placement(App.Vector(0.000000, 0.000000, 0.000000), App.Rotation(0.000000, 0.000000, 0.000000, 1.000000))
+        doc.Sketch.Placement = App.Placement(
+            App.Vector(0.000000, 0.000000, 0.000000), 
+            App.Rotation(0.000000, 0.000000, 0.000000, 1.000000))
         doc.Sketch.MapMode = "Deactivated"
         ActiveSketch = doc.getObject('Sketch')
-        # p1 = App.Vector(0.367431,3.345679,0)
-        # p2 = App.Vector(5.658839,8.910781,0)
-        # p3 = App.Vector(11.223940,3.966051,0)
         p1 = App.Vector(0,3,0)
         p2 = App.Vector(5,9,0)
         p3 = App.Vector(12,4,0)
@@ -196,12 +198,16 @@ class PartTestBSplineCurve(unittest.TestCase):
         ActiveSketch.addConstraint(Sketcher.Constraint('Equal',0,1)) 
         ActiveSketch.addGeometry(Part.Circle(p3,z,10),True)
         ActiveSketch.addConstraint(Sketcher.Constraint('Equal',0,2)) 
-        ActiveSketch.addGeometry(Part.BSplineCurve([p1,p2,p3],None,None,False,2,None,False),False)
-            # App.Vector(0.367431,3.34568),App.Vector(5.65884,8.91078),App.Vector(11.2239,3.96605)],None,None,False,2,None,False),False)
+        ActiveSketch.addGeometry(Part.BSplineCurve([p1,p2,p3],
+                                                   None,None,False,2,
+                                                   None,False),False)
         conList = []
-        conList.append(Sketcher.Constraint('InternalAlignment:Sketcher::BSplineControlPoint',0,3,3,0))
-        conList.append(Sketcher.Constraint('InternalAlignment:Sketcher::BSplineControlPoint',1,3,3,1))
-        conList.append(Sketcher.Constraint('InternalAlignment:Sketcher::BSplineControlPoint',2,3,3,2))
+        conList.append(Sketcher.Constraint(
+            'InternalAlignment:Sketcher::BSplineControlPoint',0,3,3,0))
+        conList.append(Sketcher.Constraint(
+            'InternalAlignment:Sketcher::BSplineControlPoint',1,3,3,1))
+        conList.append(Sketcher.Constraint(
+            'InternalAlignment:Sketcher::BSplineControlPoint',2,3,3,2))
         ActiveSketch.addConstraint(conList)
         del conList
         ActiveSketch.exposeInternalGeometry(3)
@@ -566,11 +572,14 @@ class PartTestRuledSurface(unittest.TestCase):
 
     def testRuledSurfaceFromOneObject(self):
         sketch = self.Doc.addObject('Sketcher::SketchObject', 'Sketch')
-        sketch.Placement = FreeCAD.Placement(FreeCAD.Vector(0.000000, 0.000000, 0.000000), App.Rotation(0.707107, 0.000000, 0.000000, 0.707107))
+        sketch.Placement = FreeCAD.Placement(FreeCAD.Vector(0.000000, 0.000000, 0.000000), 
+                                             App.Rotation(0.707107, 0.000000, 0.000000, 0.707107))
         sketch.MapMode = "Deactivated"
 
-        sketch.addGeometry(Part.LineSegment(App.Vector(-43.475811,34.364464,0),App.Vector(-65.860519,-20.078733,0)),False)
-        sketch.addGeometry(Part.LineSegment(App.Vector(14.004498,27.390331,0),App.Vector(33.577049,-27.952749,0)),False)
+        sketch.addGeometry(Part.LineSegment(App.Vector(-43.475811,34.364464,0),
+                                            App.Vector(-65.860519,-20.078733,0)),False)
+        sketch.addGeometry(Part.LineSegment(App.Vector(14.004498,27.390331,0),
+                                            App.Vector(33.577049,-27.952749,0)),False)
 
         ruled = self.Doc.addObject('Part::RuledSurface', 'Ruled Surface')
         ruled.Curve1 = (sketch,['Edge1'])
