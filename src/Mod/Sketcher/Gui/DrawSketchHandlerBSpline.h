@@ -331,6 +331,9 @@ public:
         }
         // TODO: On pressing, say, W, modify last pole's weight
         // TODO: On pressing, say, M, modify next knot's multiplicity
+        else {
+            DrawSketchHandler::registerPressedKey(pressed, key);
+        }
 
         return;
     }
