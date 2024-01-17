@@ -399,16 +399,22 @@ class DraftToolBar:
         self.selectButton = self._pushbutton("selectButton", bl, icon='view-select')
 
         # update modes from parameters:
-        self.continueMode = params.get_param("ContinueMode")
         self.relativeMode = params.get_param("RelativeMode")
         self.globalMode = params.get_param("GlobalMode")
         self.fillmode = params.get_param("fillmode")
+        self.continueMode = params.get_param("ContinueMode")
+
+        # Note: The order of the calls to self._checkbox() below controls
+        #       the position of the checkboxes in the task panel.
 
         # update checkboxes with parameters and internal modes:
-        self.continueCmd = self._checkbox("continueCmd", self.layout, checked=self.continueMode)
         self.isRelative = self._checkbox("isRelative", self.layout, checked=self.relativeMode)
         self.isGlobal = self._checkbox("isGlobal", self.layout, checked=self.globalMode)
         self.hasFill = self._checkbox("hasFill", self.layout, checked=self.fillmode)
+        self.continueCmd = self._checkbox("continueCmd", self.layout, checked=self.continueMode)
+
+        # update checkboxes without parameters and without internal modes:
+        self.occOffset = self._checkbox("occOffset", self.layout, checked=False)
 
         # update checkboxes with parameters but without internal modes:
         # self.isCopy is also updated in modUi ("CopyMode") and offsetUi ("OffsetCopyMode")
@@ -418,9 +424,6 @@ class DraftToolBar:
         self.isSubelementMode = self._checkbox("isSubelementMode",
                                                self.layout,
                                                checked=params.get_param("SubelementMode"))
-
-        # update checkboxes without parameters and without internal modes:
-        self.occOffset = self._checkbox("occOffset", self.layout, checked=False)
 
         # spacer
         spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum,
