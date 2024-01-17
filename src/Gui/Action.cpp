@@ -688,11 +688,20 @@ void WorkbenchGroup::addTo(QWidget *widget)
         qobject_cast<QToolBar*>(widget)->addWidget(box);
     }
     else if (widget->inherits("QMenuBar")) {
-        auto* box = new WorkbenchComboBox(widget);
-        setupBox(box);
+        bool leftCorner = WorkbenchSwitcher::isLeftCorner(WorkbenchSwitcher::getValue());
+        bool rightCorner = WorkbenchSwitcher::isLeftCorner(WorkbenchSwitcher::getValue());
+        QMenuBar* menuBar = qobject_cast<QMenuBar*>(widget);
 
-        bool left = WorkbenchSwitcher::isLeftCorner(WorkbenchSwitcher::getValue());
-        qobject_cast<QMenuBar*>(widget)->setCornerWidget(box, left ? Qt::TopLeftCorner : Qt::TopRightCorner);
+        if (leftCorner || rightCorner) { // corner widget
+            auto* box = new WorkbenchComboBox(widget);
+            setupBox(box);
+            menuBar->setCornerWidget(box, leftCorner ? Qt::TopLeftCorner : Qt::TopRightCorner);
+        }
+        else { // QMenuBar icons
+            for (auto* action : actions()) {
+                menuBar->addAction(action);
+            }
+        }
     }
     else if (widget->inherits("QMenu")) {
         auto menu = qobject_cast<QMenu*>(widget);

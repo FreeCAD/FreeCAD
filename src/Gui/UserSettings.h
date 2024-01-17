@@ -34,6 +34,7 @@ class GuiExport WorkbenchSwitcher
 public:
     static bool isLeftCorner(const std::string&);
     static bool isRightCorner(const std::string&);
+    static bool isMenuBarIcons(const std::string&);
     static bool isToolbar(const std::string&);
     static std::string getValue();
     static int getIndex();

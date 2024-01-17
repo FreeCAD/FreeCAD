@@ -517,6 +517,7 @@ void DlgSettingsWorkbenchesImp::loadWorkbenchSelector()
     ui->WorkbenchSelectorPosition->addItem(tr("Toolbar"));
     ui->WorkbenchSelectorPosition->addItem(tr("Left corner"));
     ui->WorkbenchSelectorPosition->addItem(tr("Right corner"));
+    ui->WorkbenchSelectorPosition->addItem(tr("Menu bar icons"));
     ui->WorkbenchSelectorPosition->setCurrentIndex(WorkbenchSwitcher::getIndex());
 }
 

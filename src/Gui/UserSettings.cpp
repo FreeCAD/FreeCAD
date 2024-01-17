@@ -55,6 +55,11 @@ bool WorkbenchSwitcher::isRightCorner(const std::string& value)
     return (value == "WSRightCorner");
 }
 
+bool WorkbenchSwitcher::isMenuBarIcons(const std::string& value)
+{
+    return (value == "WSMenuBarIcons");
+}
+
 bool WorkbenchSwitcher::isToolbar(const std::string& value)
 {
     return (value == "WSToolbar");
@@ -63,7 +68,7 @@ bool WorkbenchSwitcher::isToolbar(const std::string& value)
 QVector<std::string> WorkbenchSwitcher::values()
 {
     QVector<std::string> wsPositions;
-    wsPositions << "WSToolbar" << "WSLeftCorner" << "WSRightCorner";
+    wsPositions << "WSToolbar" << "WSLeftCorner" << "WSRightCorner" << "WSMenuBarIcons";
     return wsPositions;
 }
 

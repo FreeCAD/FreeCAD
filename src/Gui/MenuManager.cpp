@@ -27,6 +27,8 @@
 # include <QMenuBar>
 #endif
 
+# include <QProxyStyle>
+
 #include "MenuManager.h"
 #include "Application.h"
 #include "Command.h"
@@ -199,6 +201,21 @@ MenuManager::MenuManager() = default;
 
 MenuManager::~MenuManager() = default;
 
+class SeparatorActsAsSpacer : public QProxyStyle {
+public:
+    using QProxyStyle::QProxyStyle; // Inherit constructors
+
+    int styleHint(StyleHint hint, const QStyleOption* option = nullptr,
+        const QWidget* widget = nullptr, QStyleHintReturn* returnData = nullptr) const override {
+        if (hint == SH_DrawMenuBarSeparator) {
+            return true;
+        }
+        else {
+            return QProxyStyle::styleHint(hint, option, widget, returnData);
+        }
+    }
+};
+
 void MenuManager::setup(MenuItem* menuItems) const
 {
     if (!menuItems) {
@@ -249,20 +266,20 @@ void MenuManager::setup(MenuItem* menuItems) const
 
     QList<MenuItem*> items = menuItems->getItems();
     QList<QAction*> actions = menuBar->actions();
-    for (QList<MenuItem*>::Iterator it = items.begin(); it != items.end(); ++it)
+    for (auto* it : items)
     {
         // search for the menu action
-        QAction* action = findAction(actions, QString::fromLatin1((*it)->command().c_str()));
+        QAction* action = findAction(actions, QString::fromLatin1(it->command().c_str()));
         if (!action) {
             // There must be not more than one separator in the menu bar, so
             // we can safely remove it if available and append it at the end
-            if ((*it)->command() == "Separator") {
+            if (it->command() == "Separator") {
                 action = menuBar->addSeparator();
                 action->setObjectName(QLatin1String("Separator"));
             }
             else {
                 // create a new menu
-                std::string menuName = (*it)->command();
+                std::string menuName = it->command();
                 QMenu* menu = menuBar->addMenu(
                     QApplication::translate("Workbench", menuName.c_str()));
                 action = menu->menuAction();
@@ -271,7 +288,7 @@ void MenuManager::setup(MenuItem* menuItems) const
             }
 
             // set the menu user data
-            action->setData(QString::fromLatin1((*it)->command().c_str()));
+            action->setData(QString::fromLatin1(it->command().c_str()));
         }
         else {
             // put the menu at the end
@@ -284,8 +301,15 @@ void MenuManager::setup(MenuItem* menuItems) const
 
         // flll up the menu
         if (!action->isSeparator()) {
-            setup(*it, action->menu());
+            setup(it, action->menu());
         }
+    }
+
+    // Workbench switcher MenuBar Icons
+    if (WorkbenchSwitcher::isMenuBarIcons(WorkbenchSwitcher::getValue())) {
+        menuBar->setStyle(new SeparatorActsAsSpacer(QApplication::style()));
+        menuBar->addSeparator();
+        Application::Instance->commandManager().addTo("Std_Workbench", menuBar);
     }
 
     setupMenuBarCornerWidgets();
