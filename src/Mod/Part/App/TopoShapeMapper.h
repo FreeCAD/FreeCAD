@@ -12,39 +12,45 @@ class BRepTools_History;
 class BRepTools_ReShape;
 class ShapeFix_Root;
 
-namespace Part 
+namespace Part
 {
 
 /// Shape hasher that ignore orientation
-struct ShapeHasher {
-    inline size_t operator()(const TopoShape &s) const {
+struct ShapeHasher
+{
+    inline size_t operator()(const TopoShape& s) const
+    {
 #if OCC_VERSION_HEX >= 0x070800
         return std::hash<TopoDS_Shape> {}(s.getShape());
 #else
         return s.getShape().HashCode(INT_MAX);
 #endif
     }
-    inline size_t operator()(const TopoDS_Shape &s) const {
+    inline size_t operator()(const TopoDS_Shape& s) const
+    {
 #if OCC_VERSION_HEX >= 0x070800
         return std::hash<TopoDS_Shape> {}(s);
 #else
         return s.HashCode(INT_MAX);
 #endif
     }
-    inline bool operator()(const TopoShape &a, const TopoShape &b) const {
+    inline bool operator()(const TopoShape& a, const TopoShape& b) const
+    {
         return a.getShape().IsSame(b.getShape());
     }
-    inline bool operator()(const TopoDS_Shape &a, const TopoDS_Shape &b) const {
+    inline bool operator()(const TopoDS_Shape& a, const TopoDS_Shape& b) const
+    {
         return a.IsSame(b);
     }
-    template <class T>
+    template<class T>
     static inline void hash_combine(std::size_t& seed, const T& v)
     {
         // copied from boost::hash_combine
         std::hash<T> hasher;
-        seed ^= hasher(v) + 0x9e3779b9 + (seed<<6) + (seed>>2);
+        seed ^= hasher(v) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
     }
-    inline size_t operator()(const std::pair<TopoShape, TopoShape> &s) const {
+    inline size_t operator()(const std::pair<TopoShape, TopoShape>& s) const
+    {
 #if OCC_VERSION_HEX >= 0x070800
         size_t res = std::hash<TopoDS_Shape> {}(s.first.getShape());
         hash_combine(res, std::hash<TopoDS_Shape> {}(s.second.getShape()));
@@ -54,7 +60,8 @@ struct ShapeHasher {
 #endif
         return res;
     }
-    inline size_t operator()(const std::pair<TopoDS_Shape, TopoDS_Shape> &s) const {
+    inline size_t operator()(const std::pair<TopoDS_Shape, TopoDS_Shape>& s) const
+    {
 #if OCC_VERSION_HEX >= 0x070800
         size_t res = std::hash<TopoDS_Shape> {}(s.first);
         hash_combine(res, std::hash<TopoDS_Shape> {}(s.second));
@@ -64,130 +71,150 @@ struct ShapeHasher {
 #endif
         return res;
     }
-    inline bool operator()(const std::pair<TopoShape, TopoShape> &a,
-                           const std::pair<TopoShape, TopoShape> &b) const {
+    inline bool operator()(const std::pair<TopoShape, TopoShape>& a,
+                           const std::pair<TopoShape, TopoShape>& b) const
+    {
         return a.first.getShape().IsSame(b.first.getShape())
             && a.second.getShape().IsSame(b.second.getShape());
     }
-    inline bool operator()(const std::pair<TopoDS_Shape, TopoDS_Shape> &a,
-                           const std::pair<TopoDS_Shape, TopoDS_Shape> &b) const {
-        return a.first.IsSame(b.first)
-            && a.second.IsSame(b.second);
+    inline bool operator()(const std::pair<TopoDS_Shape, TopoDS_Shape>& a,
+                           const std::pair<TopoDS_Shape, TopoDS_Shape>& b) const
+    {
+        return a.first.IsSame(b.first) && a.second.IsSame(b.second);
     }
 };
 
+enum class MappingStatus
+{
+    Generated,
+    Modified
+};
 /** Shape mapper for user defined shape mapping
  */
-struct PartExport ShapeMapper: TopoShape::Mapper {
+struct PartExport ShapeMapper: TopoShape::Mapper
+{
     virtual ~ShapeMapper() noexcept = default;
 
     /** Populate mapping from a source shape to a list of shape
      *
-     * @param generated: whether the shape is generated
+     * @param status: whether the shape is generated
      * @param src: source shape
      * @param dst: a list of sub shapes in the new shape
      *
      * The source will be expanded into sub shapes of faces, edges and vertices
      * before being inserted into the map.
      */
-    void populate(bool generated, const TopoShape &src, const TopTools_ListOfShape &dst);
+    void populate(MappingStatus status, const TopoShape& src, const TopTools_ListOfShape& dst);
     /** Populate mapping from a source sub shape to a list of shape
      *
-     * @param generated: whether the shape is generated
+     * @param status: whether the shape is generated
      * @param src: a list of sub shapes in the source shape
      * @param dst: a list of sub shapes in the new shape
      *
      * The source will be expanded into sub shapes of faces, edges and vertices
      * before being inserted into the map.
      */
-    void populate(bool generated, const TopTools_ListOfShape &src, const TopTools_ListOfShape &dst);
+    void populate(MappingStatus status,
+                  const TopTools_ListOfShape& src,
+                  const TopTools_ListOfShape& dst);
 
     /** Populate mapping from a source sub shape to a list of shape
      *
-     * @param generated: whether the shape is generated
+     * @param status: whether the shape is generated
      * @param src: a list of sub shapes in the source shape
      * @param dst: a list of sub shapes in the new shape
      *
      * The source will be expanded into sub shapes of faces, edges and vertices
      * before being inserted into the map.
      */
-    void populate(bool generated, const std::vector<TopoShape> &src, const std::vector<TopoShape> &dst)
+    void populate(MappingStatus status,
+                  const std::vector<TopoShape>& src,
+                  const std::vector<TopoShape>& dst)
     {
-        for(auto &s : src)
-            populate(generated,s,dst);
+        for (auto& s : src) {
+            populate(status, s, dst);
+        }
     }
 
     /** Populate mapping from a source sub shape to a list of shape
      *
-     * @param generated: whether the shape is generated
+     * @param status: whether the shape is generated
      * @param src: a sub shape of the source shape
      * @param dst: a list of sub shapes in the new shape
      *
      * The source will be expanded into sub shapes of faces, edges and vertices
      * before being inserted into the map.
      */
-    void populate(bool generated, const TopoShape &src, const std::vector<TopoShape> &dst)
+    void populate(MappingStatus status, const TopoShape& src, const std::vector<TopoShape>& dst)
     {
-        if(src.isNull())
+        if (src.isNull()) {
             return;
+        }
         std::vector<TopoDS_Shape> dstShapes;
-        for(auto &d : dst)
+        for (auto& d : dst) {
             expand(d.getShape(), dstShapes);
-        insert(generated, src.getShape(), dstShapes);
+        }
+        insert(status, src.getShape(), dstShapes);
     }
 
     /** Expand a shape into faces, edges and vertices
      * @params d: shape to expand
      * @param shapes: output sub shapes of faces, edges and vertices
      */
-    void expand(const TopoDS_Shape &d, std::vector<TopoDS_Shape> &shapes);
+    void expand(const TopoDS_Shape& d, std::vector<TopoDS_Shape>& shapes);
 
     /** Insert a map entry from a sub shape in the source to a list of sub shapes in the new shape
      *
-     * @params generated: whether the sub shapes are generated or modified
+     * @params status: whether the sub shapes are generated or modified
      * @param s: a sub shape in the source
      * @param d: a list of sub shapes in the new shape
      */
-    void insert(bool generated, const TopoDS_Shape &s, const std::vector<TopoDS_Shape> &d);
+    void insert(MappingStatus status, const TopoDS_Shape& s, const std::vector<TopoDS_Shape>& d);
 
     /** Insert a map entry from a sub shape in the source to a sub shape in the new shape
      *
-     * @params generated: whether the sub shapes are generated or modified
+     * @params status: whether the sub shapes are generated or modified
      * @param s: a sub shape in the source
      * @param d: a list of sub shapes in the new shape
      */
-    void insert(bool generated, const TopoDS_Shape &s, const TopoDS_Shape &d);
+    void insert(MappingStatus status, const TopoDS_Shape& s, const TopoDS_Shape& d);
 
-    virtual const std::vector<TopoDS_Shape> &generated(const TopoDS_Shape &s) const override {
+    const std::vector<TopoDS_Shape>& generated(const TopoDS_Shape& s) const override
+    {
         auto iter = _generated.find(s);
-        if(iter != _generated.end())
+        if (iter != _generated.end()) {
             return iter->second.shapes;
+        }
         return _res;
     }
 
-    virtual const std::vector<TopoDS_Shape> &modified(const TopoDS_Shape &s) const override {
+    const std::vector<TopoDS_Shape>& modified(const TopoDS_Shape& s) const override
+    {
         auto iter = _modified.find(s);
-        if(iter != _modified.end())
+        if (iter != _modified.end()) {
             return iter->second.shapes;
+        }
         return _res;
     }
 
     std::vector<TopoShape> shapes;
-    std::unordered_set<TopoDS_Shape,ShapeHasher,ShapeHasher> shapeSet;
+    std::unordered_set<TopoDS_Shape, ShapeHasher, ShapeHasher> shapeSet;
 
-    struct ShapeValue {
+    struct ShapeValue
+    {
         std::vector<TopoDS_Shape> shapes;
-        std::unordered_set<TopoDS_Shape,ShapeHasher,ShapeHasher> shapeSet;
+        std::unordered_set<TopoDS_Shape, ShapeHasher, ShapeHasher> shapeSet;
     };
-    typedef std::unordered_map<TopoDS_Shape, ShapeValue,ShapeHasher,ShapeHasher> ShapeMap;
+    typedef std::unordered_map<TopoDS_Shape, ShapeValue, ShapeHasher, ShapeHasher> ShapeMap;
     ShapeMap _generated;
-    std::unordered_set<TopoDS_Shape,ShapeHasher,ShapeHasher> _generatedShapes;
+    std::unordered_set<TopoDS_Shape, ShapeHasher, ShapeHasher> _generatedShapes;
     ShapeMap _modified;
-    std::unordered_set<TopoDS_Shape,ShapeHasher,ShapeHasher> _modifiedShapes;
+    std::unordered_set<TopoDS_Shape, ShapeHasher, ShapeHasher> _modifiedShapes;
 };
 
-/// Parameters for TopoShape::makEFilledFace()
-struct PartExport TopoShape::BRepFillingParams {
+/// Parameters for TopoShape::makeElementFilledFace()
+struct PartExport TopoShape::BRepFillingParams
+{
     /** Optional initial surface to begin the construction of the surface for the filled face.
      *
      *  It is useful if the surface resulting from construction for the
@@ -211,7 +238,8 @@ struct PartExport TopoShape::BRepFillingParams {
     std::unordered_map<TopoDS_Shape, TopoDS_Shape, ShapeHasher, ShapeHasher> supports;
     /// Optional begin index to the input shapes to be used as the boundary of the filled face.
     int boundary_begin = -1;
-    /// Optional end index (last index + 1) to the input shapes to be used as the boundary of the filled face.
+    /// Optional end index (last index + 1) to the input shapes to be used as the boundary of the
+    /// filled face.
     int boundary_end = -1;
     /// The energe minimizing criterion degree;
     unsigned int degree = 3;
@@ -242,4 +270,4 @@ struct PartExport TopoShape::BRepFillingParams {
 };
 
 
-}
+}  // namespace Part
