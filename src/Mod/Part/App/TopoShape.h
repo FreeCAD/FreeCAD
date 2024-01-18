@@ -387,6 +387,27 @@ public:
     TopoDS_Shape defeaturing(const std::vector<TopoDS_Shape>& s) const;
     TopoDS_Shape makeShell(const TopoDS_Shape&) const;
     //@}
+    
+    /// Wire re-orientation when calling splitWires()
+    enum SplitWireReorient {
+        /// Keep original reorientation
+        NoReorient,
+        /// Make outer wire forward, and inner wires reversed
+        Reorient,
+        /// Make both outer and inner wires forward
+        ReorientForward,
+        /// Make both outer and inner wires reversed
+        ReorientReversed,
+    };
+    /** Return the outer and inner wires of a face
+     *
+     * @param inner: optional output of inner wires
+     * @param reorient: wire reorientation, see SplitWireReorient
+     *
+     * @return Return the outer wire
+     */
+    TopoShape splitWires(std::vector<TopoShape> *inner = nullptr,
+                         SplitWireReorient reorient = Reorient) const;
 
     /** @name Element name mapping aware shape maker
      *
@@ -571,6 +592,11 @@ public:
     const std::string& shapeName(bool silent = false) const;
     static std::pair<TopAbs_ShapeEnum, int> shapeTypeAndIndex(const char* name);
 
+    Data::MappedName setElementComboName(const Data::IndexedName & element, 
+                                         const std::vector<Data::MappedName> &names,
+                                         const char *marker=nullptr,
+                                         const char *op=nullptr,
+                                         const Data::ElementIDRefs *sids=nullptr);
 
     /** @name sub shape cached functions
      *
@@ -609,7 +635,7 @@ public:
     void copyElementMap(const TopoShape & topoShape, const char *op=nullptr);
     bool canMapElement(const TopoShape &other) const;
     void mapSubElement(const TopoShape &other,const char *op=nullptr, bool forceHasher=false);
-    void mapSubElement(const std::vector<TopoShape> &shapes, const char *op);
+    void mapSubElement(const std::vector<TopoShape> &shapes, const char *op=nullptr);
     bool hasPendingElementMap() const;
 
 
@@ -628,6 +654,58 @@ public:
      *         the same shape in the same line of code.
      */
     TopoShape &makeElementCompound(const std::vector<TopoShape> &shapes, const char *op=nullptr, bool force=true);
+
+    TopoShape &makeElementFace(const std::vector<TopoShape> &shapes,
+                        const char *op = nullptr,
+                        const char *maker = nullptr,
+                        const gp_Pln *pln = nullptr);
+    /** Make a planar face with the input wire or edge 
+     *
+     * @param shape: input shape. Can be either edge, wire, or compound of
+     *               those two types
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     * @param maker: optional type name of the face maker. If not given,
+     *               default to "Part::FaceMakerBullseye"
+     * @param pln: optional plane of the face.
+     *
+     * @return The function creates a planar face. The original content of this
+     *         TopoShape is discarded and replaced with the new shape. The
+     *         function returns the TopoShape itself as a reference so that
+     *         multiple operations can be carried out for the same shape in the
+     *         same line of code.
+     */
+    TopoShape &makeElementFace(const TopoShape &shape,
+                        const char *op = nullptr,
+                        const char *maker = nullptr,
+                        const gp_Pln *pln = nullptr);
+    /** Make a planar face using this shape 
+     *
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     * @param maker: optional type name of the face maker. If not given,
+     *               default to "Part::FaceMakerBullseye"
+     * @param pln: optional plane of the face.
+     *
+     * @return The function returns a new planar face made using the wire or edge
+     *         inside this shape. The shape itself is not modified.
+     */
+    TopoShape makeElementFace(const char *op = nullptr,
+                       const char *maker = nullptr,
+                       const gp_Pln *pln = nullptr) const {
+        return TopoShape(0,Hasher).makeElementFace(*this,op,maker,pln);
+    }
+
+    /// Filling style when making a BSpline face
+    enum FillingStyle {
+        /// The style with the flattest patches
+        FillingStyle_Strech,
+        /// A rounded style of patch with less depth than those of Curved
+        FillingStyle_Coons,
+        /// The style with the most rounded patches
+        FillingStyle_Curved,
+    };
+
 
     friend class TopoShapeCache;
 
