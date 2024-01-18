@@ -329,6 +329,16 @@ double DrawProjGroupItem::getScale(void) const
     return 1.0;
 }
 
+int DrawProjGroupItem::getScaleType() const
+{
+    auto pgroup = getPGroup();
+    if (pgroup) {
+        return pgroup->getScaleType();
+    }
+
+    return ScaleType.getValue();
+}
+
 void DrawProjGroupItem::unsetupObject()
 {
     if (!getPGroup()) {
