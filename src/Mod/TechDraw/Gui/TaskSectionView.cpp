@@ -126,11 +126,15 @@ void TaskSectionView::setUiPrimary()
     //    Base::Console().Message("TSV::setUiPrimary()\n");
     setWindowTitle(QObject::tr("Create Section View"));
 
+    // note DPGI will have a custom scale type and scale = 1.0.  In this case,
+    // we need the values from the parent DPG!
     ui->sbScale->setValue(m_base->getScale());
-    ui->cmbScaleType->setCurrentIndex(m_base->ScaleType.getValue());
+
+    ui->cmbScaleType->setCurrentIndex(m_base->getScaleType());
 
     //Allow or prevent scale changing initially
-    if (m_base->ScaleType.isValue("Custom")) {
+    if (m_base->getScaleType() == 2) {
+        // custom scale type
         ui->sbScale->setEnabled(true);
     }
     else {
@@ -160,7 +164,7 @@ void TaskSectionView::setUiEdit()
     ui->leSymbol->setText(qTemp);
 
     ui->sbScale->setValue(m_section->getScale());
-    ui->cmbScaleType->setCurrentIndex(m_section->ScaleType.getValue());
+    ui->cmbScaleType->setCurrentIndex(m_section->getScaleType());
     //Allow or prevent scale changing initially
     if (m_section->ScaleType.isValue("Custom")) {
         ui->sbScale->setEnabled(true);
@@ -240,7 +244,7 @@ void TaskSectionView::saveSectionState()
     if (m_section) {
         m_saveSymbol = m_section->SectionSymbol.getValue();
         m_saveScale = m_section->getScale();
-        m_saveScaleType = m_section->ScaleType.getValue();
+        m_saveScaleType = m_section->getScaleType();
         m_saveNormal = m_section->SectionNormal.getValue();
         m_normal = m_saveNormal;
         m_saveDirection = m_section->Direction.getValue();
@@ -493,7 +497,7 @@ void TaskSectionView::applyAligned()
 
 TechDraw::DrawViewSection* TaskSectionView::createSectionView(void)
 {
-    //    Base::Console().Message("TSV::createSectionView()\n");
+    // Base::Console().Message("TSV::createSectionView()\n");
     if (!isBaseValid()) {
         failNoObject();
         return nullptr;
@@ -535,17 +539,8 @@ TechDraw::DrawViewSection* TaskSectionView::createSectionView(void)
                            m_sectionName.c_str(), ui->sbOrgX->value().getValue(),
                            ui->sbOrgY->value().getValue(), ui->sbOrgZ->value().getValue());
 
-        if (m_scaleEdited) {
-            // user has changed the scale
-            Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Scale = %0.7f",
+        Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Scale = %0.7f",
                            m_sectionName.c_str(), ui->sbScale->value());
-        } else {
-            // scale is untouched, use value from base view
-            Command::doCommand(Command::Doc,
-            "App.ActiveDocument.%s.Scale = App.ActiveDocument.%s.Scale",
-                           m_sectionName.c_str(),
-                           baseName.c_str());
-        }
 
         int scaleType = ui->cmbScaleType->currentIndex();
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.ScaleType = %d",
@@ -582,7 +577,7 @@ TechDraw::DrawViewSection* TaskSectionView::createSectionView(void)
 
 void TaskSectionView::updateSectionView()
 {
-//    Base::Console().Message("TSV::updateSectionView() - m_sectionName: %s\n", m_sectionName.c_str());
+    // Base::Console().Message("TSV::updateSectionView() - m_sectionName: %s\n", m_sectionName.c_str());
     if (!isSectionValid()) {
         failNoObject();
         return;
@@ -611,17 +606,8 @@ void TaskSectionView::updateSectionView()
         Command::doCommand(Command::Doc, "App.activeDocument().%s.translateLabel('DrawViewSection', 'Section', '%s')",
               m_sectionName.c_str(), makeSectionLabel(qTemp).c_str());
 
-        if (m_scaleEdited) {
-            // user has changed the scale
-            Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Scale = %0.7f",
+        Command::doCommand(Command::Doc, "App.ActiveDocument.%s.Scale = %0.7f",
                            m_sectionName.c_str(), ui->sbScale->value());
-        } else {
-            // scale is untouched, use value from base view
-            Command::doCommand(Command::Doc,
-            "App.ActiveDocument.%s.Scale = App.ActiveDocument.%s.Scale",
-                           m_sectionName.c_str(),
-                           baseName.c_str());
-        }
 
         int scaleType = ui->cmbScaleType->currentIndex();
         Command::doCommand(Command::Doc, "App.ActiveDocument.%s.ScaleType = %d",

@@ -100,6 +100,7 @@ public:
     void showProgressMessage(std::string featureName, std::string text);
 
     virtual double getScale(void) const;
+    virtual int getScaleType() const { return ScaleType.getValue(); };
     void checkScale(void);
 
     virtual void handleXYLock(void);
