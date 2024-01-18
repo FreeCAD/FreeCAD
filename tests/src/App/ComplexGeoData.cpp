@@ -3,7 +3,6 @@
 #include "gtest/gtest.h"
 
 #include <array>
-#include <fmt/core.h>
 
 #include <App/Application.h>
 #include <App/ComplexGeoData.h>
@@ -318,7 +317,8 @@ TEST_F(ComplexGeoDataTest, elementTypeCharMappedNameWithPrefix)  // NOLINT
     int size {0};
     Data::MappedName mappedName;
     Data::IndexedName indexedName;
-    auto name = fmt::format("{}TestMappedElement:;", Data::ELEMENT_MAP_PREFIX);
+    std::string name(Data::ELEMENT_MAP_PREFIX);
+    name.append("TestMappedElement:;");
     std::tie(indexedName, mappedName) = createMappedName(name);
 
     // Act

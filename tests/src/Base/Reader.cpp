@@ -10,7 +10,6 @@
 #include "Base/Reader.h"
 #include <array>
 #include <boost/filesystem.hpp>
-#include <fmt/format.h>
 #include <fstream>
 
 namespace fs = boost::filesystem;
