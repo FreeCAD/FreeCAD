@@ -56,6 +56,28 @@
 
 using namespace Gui::Dialog;
 
+bool isParentOf(const QModelIndex& parent, const QModelIndex& child)
+{
+    for (auto it = child; it.isValid(); it = it.parent()) {
+        if (it == parent) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+QModelIndex findRootIndex(const QModelIndex& index)
+{
+    auto root = index;
+
+    while (root.parent().isValid()) {
+        root = root.parent();
+    }
+
+    return root;
+}
+
 QWidget* PreferencesPageItem::getWidget() const
 {
     return _widget;
@@ -714,17 +736,6 @@ void DlgPreferencesImp::showEvent(QShowEvent* ev)
     }
 }
 
-QModelIndex findRootIndex(const QModelIndex& index)
-{
-    auto root = index;
-
-    while (root.parent().isValid()) {
-        root = root.parent();
-    }
-    
-    return root;
-}
-
 void DlgPreferencesImp::onPageSelected(const QModelIndex& index)
 {
     auto* currentItem = static_cast<PreferencesPageItem*>(_model.itemFromIndex(index));
@@ -790,14 +801,20 @@ void DlgPreferencesImp::onStackWidgetChange(int index)
         return;
     }
 
-    ui->groupsTreeView->selectionModel()->select(currentItem->index(), QItemSelectionModel::ClearAndSelect);
+    auto currentIndex = currentItem->index();
 
     auto root = _model.invisibleRootItem();
     for (int i = 0; i < root->rowCount(); i++) {
         auto currentGroup = static_cast<PreferencesPageItem*>(root->child(i));
+        auto currentGroupIndex = currentGroup->index();
+
+        // don't do anything to group of selected item
+        if (isParentOf(currentGroupIndex, currentIndex)) {
+            continue;
+        }
 
         if (!currentGroup->isExpanded()) {
-            ui->groupsTreeView->collapse(currentGroup->index());
+            ui->groupsTreeView->collapse(currentGroupIndex);
         }
     }
 
@@ -807,6 +824,8 @@ void DlgPreferencesImp::onStackWidgetChange(int index)
         ui->groupsTreeView->expand(parentItem->index());
         parentItem->setExpanded(wasExpanded);
     }
+    
+    ui->groupsTreeView->selectionModel()->select(currentIndex, QItemSelectionModel::ClearAndSelect);
 }
 
 void DlgPreferencesImp::changeEvent(QEvent *e)
