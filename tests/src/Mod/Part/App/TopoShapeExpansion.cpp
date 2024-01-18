@@ -162,23 +162,19 @@ TEST_F(TopoShapeExpansionTest, makeElementCompoundTwoCubes)
 }
 
 
-TEST_F(TopoShapeExpansionTest, mapSubElement)
+TEST_F(TopoShapeExpansionTest, mapSubElementOneCube)
 {
     // Arrange
     auto [cube1, cube2] = CreateTwoCubes();
-    Part::TopoShape cube1TS {cube1};
-    cube1TS.Tag = 1;
-    Part::TopoShape cube2TS {cube2};
-    cube2TS.Tag = 2;
     auto [cube3, cube4] = CreateTwoCubes();
-    Part::TopoShape cube3TS {cube3};
-    cube3TS.Tag = 3;
-    Part::TopoShape cube4TS {cube4};
-    cube4TS.Tag = 4;
+    Part::TopoShape cube1TS {cube1};
+    Part::TopoShape cube2TS {cube2};
+    cube1TS.Tag = 1;
+    cube2TS.Tag = 2;
     std::vector<Part::TopoShape> subShapes = cube1TS.getSubTopoShapes(TopAbs_FACE);
     Part::TopoShape face1 = subShapes.front();
-    face1.Tag = 3;
-    Part::TopoShape topoShape, topoShape1;
+    face1.Tag = 5;
+    Part::TopoShape topoShape;
 
     // Act
     int fs1 = topoShape.findShape(cube1TS.getShape());
@@ -187,12 +183,11 @@ TEST_F(TopoShapeExpansionTest, mapSubElement)
     // The cache ancestry only works on TopAbs_SHAPE so this is likely an invalid call,
     // but do we defend against it or expect the exception?
 
-    topoShape.mapSubElement(
-        cube1TS);  // Once we do this map, it's in the ancestry cache forevermore
+    topoShape.mapSubElement(cube1TS);
     int fs2 = topoShape.findShape(cube1TS.getShape());
     int fs3 = topoShape.findShape(face1.getShape());
-    int size1 = topoShape.getElementMap().size();
     int size0 = cube1TS.getElementMap().size();
+    int size1 = topoShape.getElementMap().size();
 
     // Assert
     EXPECT_EQ(fs1, 0);
@@ -200,19 +195,58 @@ TEST_F(TopoShapeExpansionTest, mapSubElement)
     EXPECT_EQ(fs3, 1);
     EXPECT_EQ(0, size0);
     EXPECT_EQ(26, size1);
+}
+
+TEST_F(TopoShapeExpansionTest, mapSubElementSetReset)
+{
+    // Arrange
+    auto [cube1, cube2] = CreateTwoCubes();
+    auto [cube3, cube4] = CreateTwoCubes();
+    Part::TopoShape cube1TS {cube1};
+    Part::TopoShape cube2TS {cube2};
+    Part::TopoShape cube3TS {cube3};
+    Part::TopoShape cube4TS {cube4};
+    cube1TS.Tag = 1;
+    cube2TS.Tag = 2;
+    cube3TS.Tag = 3;
+    cube4TS.Tag = 4;
+    std::vector<Part::TopoShape> subShapes = cube1TS.getSubTopoShapes(TopAbs_FACE);
+    Part::TopoShape face1 = subShapes.front();
+    face1.Tag = 5;
+    Part::TopoShape topoShape, topoShape1;
 
     // Act
     topoShape.setShape(TopoDS_Shape());
     int fs4 = topoShape.findShape(cube1TS.getShape());
-    topoShape.setShape(cube1, true);
+    topoShape.setShape(cube1, false);
+    // topoShape.mapSubElement(cube1TS);
     // No mapSubElement required, it keeps finding it now
     int fs5 = topoShape.findShape(cube1TS.getShape());
-    topoShape.setShape(cube1, false);
+    topoShape.setShape(cube1, true);
     int fs6 = topoShape.findShape(cube1TS.getShape());
     // Assert
     EXPECT_EQ(fs4, 0);
     EXPECT_EQ(fs5, 1);
     EXPECT_EQ(fs6, 1);
+}
+
+TEST_F(TopoShapeExpansionTest, mapSubElementCompoundCubes)
+{
+    // Arrange
+    auto [cube1, cube2] = CreateTwoCubes();
+    auto [cube3, cube4] = CreateTwoCubes();
+    Part::TopoShape cube1TS {cube1};
+    Part::TopoShape cube2TS {cube2};
+    Part::TopoShape cube3TS {cube3};
+    Part::TopoShape cube4TS {cube4};
+    cube1TS.Tag = 1;
+    cube2TS.Tag = 2;
+    cube3TS.Tag = 3;
+    cube4TS.Tag = 4;
+    std::vector<Part::TopoShape> subShapes = cube1TS.getSubTopoShapes(TopAbs_FACE);
+    Part::TopoShape face1 = subShapes.front();
+    face1.Tag = 5;
+    Part::TopoShape topoShape, topoShape1;
 
     // Act
     Part::TopoShape topoShape2, topoShape3;
@@ -247,5 +281,6 @@ TEST_F(TopoShapeExpansionTest, mapSubElement)
     EXPECT_EQ(104, size4);
     EXPECT_EQ(fs12, 4);
 }
+
 
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
