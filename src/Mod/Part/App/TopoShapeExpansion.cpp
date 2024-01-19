@@ -37,6 +37,7 @@
 #include <ShapeUpgrade_ShellSewing.hxx>
 #include <gp_Pln.hxx>
 
+#include <utility>
 #endif
 
 #include "TopoShape.h"
@@ -392,8 +393,7 @@ void TopoShape::mapSubElementTypeForShape(const TopoShape& other,
             std::ostringstream ss;
             char elementType {shapeName(type)[0]};
             if (!elementMap()) {
-                // NOLINTNEXTLINE
-                FC_THROWM(NullShapeException, "No element map");
+                FC_THROWM(NullShapeException, "No element map");  // NOLINT
             }
             elementMap()->encodeElementName(elementType, name, ss, &sids, Tag, op, other.Tag);
             elementMap()->setElementName(element, name, Tag, &sids);
@@ -556,8 +556,8 @@ struct NameKey
 
     NameKey()
     = default;
-    explicit NameKey(const Data::MappedName& n)
-        : name(n)
+    explicit NameKey(Data::MappedName  n)
+        : name(std::move(n))
     {}
     NameKey(int type, Data::MappedName  n)
         : name(std::move(n))
@@ -598,9 +598,9 @@ struct NameKey
 
 struct NameInfo
 {
-    int index{};
+    int index {};
     Data::ElementIDRefs sids;
-    const char* shapetype{};
+    const char* shapetype {};
 };
 
 
@@ -632,6 +632,61 @@ const std::string& lowerPostfix()
 {
     static std::string postfix(TopoShape::elementMapPrefix() + ":L");
     return postfix;
+}
+
+// TODO: Refactor checkForParallelOrCoplanar to reduce complexity
+void checkForParallelOrCoplanar(const TopoDS_Shape& newShape,
+                                const ShapeInfo& newInfo,
+                                std::vector<TopoDS_Shape>& newShapes,
+                                const gp_Pln& pln,
+                                int parallelFace,
+                                int& coplanarFace,
+                                int& checkParallel)
+{
+    for (TopExp_Explorer xp(newShape, newInfo.type); xp.More(); xp.Next()) {
+        newShapes.push_back(xp.Current());
+
+        if ((parallelFace < 0 || coplanarFace < 0) && checkParallel > 0) {
+            // Specialized checking for high level mapped
+            // face that are either coplanar or parallel
+            // with the source face, which are common in
+            // operations like extrusion. Once found, the
+            // first coplanar face will assign an index of
+            // INT_MIN+1, and the first parallel face
+            // INT_MIN. The purpose of these special
+            // indexing is to make the name more stable for
+            // those generated faces.
+            //
+            // For example, the top or bottom face of an
+            // extrusion will be named using the extruding
+            // face. With a fixed index, the name is no
+            // longer affected by adding/removing of holes
+            // inside the extruding face/sketch.
+            gp_Pln plnOther;
+            if (TopoShape(newShapes.back()).findPlane(plnOther)) {
+                if (pln.Axis().IsParallel(plnOther.Axis(), Precision::Angular())) {
+                    if (coplanarFace < 0) {
+                        gp_Vec vec(pln.Axis().Location(), plnOther.Axis().Location());
+                        Standard_Real D1 = gp_Vec(pln.Axis().Direction()).Dot(vec);
+                        if (D1 < 0) {
+                            D1 = -D1;
+                        }
+                        Standard_Real D2 = gp_Vec(plnOther.Axis().Direction()).Dot(vec);
+                        if (D2 < 0) {
+                            D2 = -D2;
+                        }
+                        if (D1 <= Precision::Confusion() && D2 <= Precision::Confusion()) {
+                            coplanarFace = (int)newShapes.size();
+                            continue;
+                        }
+                    }
+                    if (parallelFace < 0) {
+                        parallelFace = (int)newShapes.size();
+                    }
+                }
+            }
+        }
+    }
 }
 
 // TODO: Refactor makeShapeWithElementMap to reduce complexity
@@ -669,22 +724,22 @@ TopoShape& TopoShape::makeShapeWithElementMap(const TopoDS_Shape& shape,
     _op += '_';
 
     initCache();
-    ShapeInfo vinfo(_Shape, TopAbs_VERTEX, _cache->getAncestry(TopAbs_VERTEX));
-    ShapeInfo einfo(_Shape, TopAbs_EDGE, _cache->getAncestry(TopAbs_EDGE));
-    ShapeInfo finfo(_Shape, TopAbs_FACE, _cache->getAncestry(TopAbs_FACE));
+    ShapeInfo vertexInfo(_Shape, TopAbs_VERTEX, _cache->getAncestry(TopAbs_VERTEX));
+    ShapeInfo edgeInfo(_Shape, TopAbs_EDGE, _cache->getAncestry(TopAbs_EDGE));
+    ShapeInfo faceInfo(_Shape, TopAbs_FACE, _cache->getAncestry(TopAbs_FACE));
     mapSubElement(shapes, op);
 
-    std::array<ShapeInfo*, 3> infos = {&vinfo, &einfo, &finfo};
+    std::array<ShapeInfo*, 3> infos = {&vertexInfo, &edgeInfo, &faceInfo};
 
-    std::array<ShapeInfo*, TopAbs_SHAPE> infoMap{};
-    infoMap[TopAbs_VERTEX] = &vinfo;
-    infoMap[TopAbs_EDGE] = &einfo;
-    infoMap[TopAbs_WIRE] = &einfo;
-    infoMap[TopAbs_FACE] = &finfo;
-    infoMap[TopAbs_SHELL] = &finfo;
-    infoMap[TopAbs_SOLID] = &finfo;
-    infoMap[TopAbs_COMPOUND] = &finfo;
-    infoMap[TopAbs_COMPSOLID] = &finfo;
+    std::array<ShapeInfo*, TopAbs_SHAPE> infoMap {};
+    infoMap[TopAbs_VERTEX] = &vertexInfo;
+    infoMap[TopAbs_EDGE] = &edgeInfo;
+    infoMap[TopAbs_WIRE] = &edgeInfo;
+    infoMap[TopAbs_FACE] = &faceInfo;
+    infoMap[TopAbs_SHELL] = &faceInfo;
+    infoMap[TopAbs_SOLID] = &faceInfo;
+    infoMap[TopAbs_COMPOUND] = &faceInfo;
+    infoMap[TopAbs_COMPSOLID] = &faceInfo;
 
     std::ostringstream ss;
     std::string postfix;
@@ -723,7 +778,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(const TopoDS_Shape& shape,
                                                               << info.shapetype << i);
                         continue;
                     }
-                    auto& newInfo = *infoMap[newShape.ShapeType()];
+                    auto& newInfo = *infoMap.at(newShape.ShapeType());
                     if (newInfo.type != newShape.ShapeType()) {
                         if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
                             // TODO: it seems modified shape may report higher
@@ -777,7 +832,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(const TopoDS_Shape& shape,
 
                     int parallelFace = -1;
                     int coplanarFace = -1;
-                    auto& newInfo = *infoMap[newShape.ShapeType()];
+                    auto& newInfo = *infoMap.at(newShape.ShapeType());
                     std::vector<TopoDS_Shape> newShapes;
                     int shapeOffset = 0;
                     if (newInfo.type == newShape.ShapeType()) {
@@ -808,62 +863,21 @@ TopoShape& TopoShape::makeShapeWithElementMap(const TopoDS_Shape& shape,
                                 checkParallel = 1;
                             }
                         }
-                        for (TopExp_Explorer xp(newShape, newInfo.type); xp.More(); xp.Next()) {
-                            newShapes.push_back(xp.Current());
-
-                            if ((parallelFace < 0 || coplanarFace < 0) && checkParallel > 0) {
-                                // Specialized checking for high level mapped
-                                // face that are either coplanar or parallel
-                                // with the source face, which are common in
-                                // operations like extrusion. Once found, the
-                                // first coplanar face will assign an index of
-                                // INT_MIN+1, and the first parallel face
-                                // INT_MIN. The purpose of these special
-                                // indexing is to make the name more stable for
-                                // those generated faces.
-                                //
-                                // For example, the top or bottom face of an
-                                // extrusion will be named using the extruding
-                                // face. With a fixed index, the name is no
-                                // longer affected by adding/removing of holes
-                                // inside the extruding face/sketch.
-                                gp_Pln plnOther;
-                                if (TopoShape(newShapes.back()).findPlane(plnOther)) {
-                                    if (pln.Axis().IsParallel(plnOther.Axis(),
-                                                              Precision::Angular())) {
-                                        if (coplanarFace < 0) {
-                                            gp_Vec vec(pln.Axis().Location(),
-                                                       plnOther.Axis().Location());
-                                            Standard_Real D1 =
-                                                gp_Vec(pln.Axis().Direction()).Dot(vec);
-                                            if (D1 < 0) {
-                                                D1 = -D1;
-                                            }
-                                            Standard_Real D2 =
-                                                gp_Vec(plnOther.Axis().Direction()).Dot(vec);
-                                            if (D2 < 0) {
-                                                D2 = -D2;
-                                            }
-                                            if (D1 <= Precision::Confusion()
-                                                && D2 <= Precision::Confusion()) {
-                                                coplanarFace = (int)newShapes.size();
-                                                continue;
-                                            }
-                                        }
-                                        if (parallelFace < 0) {
-                                            parallelFace = (int)newShapes.size();
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                        checkForParallelOrCoplanar(newShape,
+                                                   newInfo,
+                                                   newShapes,
+                                                   pln,
+                                                   parallelFace,
+                                                   coplanarFace,
+                                                   checkParallel);
                     }
                     key.shapetype += shapeOffset;
                     for (auto& workingShape : newShapes) {
                         ++newShapeCounter;
                         int workingShapeIndex = newInfo.find(workingShape);
-                        if (!workingShapeIndex) {
+                        if (workingShapeIndex == 0) {
                             if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
+                                // NOLINTNEXTLINE
                                 FC_WARN("Cannot find " << op << " generated " << newInfo.shapetype
                                                        << " from " << info.shapetype << i);
                             }
@@ -989,19 +1003,18 @@ TopoShape& TopoShape::makeShapeWithElementMap(const TopoDS_Shape& shape,
                         }
                     }
                     Data::MappedName other_name = other_key.name;
-                    elementMap()->encodeElementName(other_info.shapetype[0],
+                    elementMap()->encodeElementName(*other_info.shapetype,
                                                     other_name,
                                                     ss2,
                                                     &sids,
                                                     Tag,
-                                                    0,
+                                                    nullptr,
                                                     other_key.tag);
                     ss << other_name;
                     if ((name_type == 1 && other_info.index < 0)
                         || (name_type == 2 && other_info.index > 0)) {
                         if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
-                            // NOLINTNEXTLINE
-                            FC_WARN("element is both generated and modified");
+                            FC_WARN("element is both generated and modified");  // NOLINT
                         }
                         name_type = 0;
                     }
@@ -1065,8 +1078,8 @@ TopoShape& TopoShape::makeShapeWithElementMap(const TopoDS_Shape& shape,
             std::map<Data::IndexedName,
                      std::map<Data::MappedName, NameInfo, Data::ElementNameComparator>>
                 names;
-            auto& info = *infos[infoIndex];
-            auto& next = *infos[infoIndex - 1];
+            auto& info = *infos.at(infoIndex);
+            auto& next = *infos.at(infoIndex - 1);
             int elementCounter = 1;
             auto it = newNames.end();
             if (delayed) {
@@ -1117,25 +1130,21 @@ TopoShape& TopoShape::makeShapeWithElementMap(const TopoDS_Shape& shape,
                 }
             }
             // Assign the actual names
-            for (auto& actualName : names) {
-#ifndef FC_ELEMENT_MAP_ALL
+            for (auto& [indexedName, nameInfoMap] : names) {
                 // Do we really want multiple names for an element in this case?
                 // If not, we just pick the name in the first sorting order here.
-                auto& name = *actualName.second.begin();
-#else
-                for (auto& name : actualName.second)
-#endif
+                auto& nameInfoMapEntry = *nameInfoMap.begin();
                 {
-                    auto& infoRef = name.second;
-                    auto& sids = infoRef.sids;
-                    newName = name.first;
+                    auto& nameInfo = nameInfoMapEntry.second;
+                    auto& sids = nameInfo.sids;
+                    newName = nameInfoMapEntry.first;
                     ss.str("");
                     ss << upperPostfix();
-                    if (infoRef.index > 1) {
-                        ss << infoRef.index;
+                    if (nameInfo.index > 1) {
+                        ss << nameInfo.index;
                     }
-                    elementMap()->encodeElementName(actualName.first[0], newName, ss, &sids, Tag, op);
-                    elementMap()->setElementName(actualName.first, newName, Tag, &sids);
+                    elementMap()->encodeElementName(indexedName[0], newName, ss, &sids, Tag, op);
+                    elementMap()->setElementName(indexedName, newName, Tag, &sids);
                 }
             }
         }
@@ -1144,8 +1153,8 @@ TopoShape& TopoShape::makeShapeWithElementMap(const TopoDS_Shape& shape,
         // name from the lower elements
         bool hasUnnamed = false;
         for (size_t ifo = 1; ifo < infos.size(); ++ifo) {
-            auto& info = *infos[ifo];
-            auto& prev = *infos[ifo - 1];
+            auto& info = *infos.at(ifo);
+            auto& prev = *infos.at(ifo-1);
             for (int i = 1; i <= info.count(); ++i) {
                 Data::IndexedName element = Data::IndexedName::fromConst(info.shapetype, i);
                 if (getMappedName(element)) {
@@ -1162,9 +1171,9 @@ TopoShape& TopoShape::makeShapeWithElementMap(const TopoDS_Shape& shape,
                     xp.Init(info.find(i), prev.type);
                 }
                 for (; xp.More(); xp.Next()) {
-                    int j = prev.find(xp.Current());
-                    assert(j);
-                    Data::IndexedName prevElement = Data::IndexedName::fromConst(prev.shapetype, j);
+                    int previousElementIndex = prev.find(xp.Current());
+                    assert(previousElementIndex);
+                    Data::IndexedName prevElement = Data::IndexedName::fromConst(prev.shapetype, previousElementIndex);
                     if (!delayed && (newNames.count(prevElement) != 0U)) {
                         names.clear();
                         break;
@@ -1174,8 +1183,7 @@ TopoShape& TopoShape::makeShapeWithElementMap(const TopoDS_Shape& shape,
                     if (!name) {
                         // only assign name if all lower elements are named
                         if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
-                            // NOLINTNEXTLINE
-                            FC_WARN("unnamed lower element " << prevElement);
+                            FC_WARN("unnamed lower element " << prevElement);  // NOLINT
                         }
                         names.clear();
                         break;
