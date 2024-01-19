@@ -127,3 +127,91 @@ TEST_F(MappedElementTest, lessThanOperator)
     EXPECT_FALSE(mappedElement2A < mappedElement1B);
     EXPECT_FALSE(mappedElement2B < mappedElement2BDuplicate);
 }
+
+TEST_F(MappedElementTest, comparatorBothAreZeroSize)
+{
+    // Arrange
+    Data::MappedName mappedName1 {""};
+    Data::MappedName mappedName2 {""};
+    auto comp = Data::ElementNameComparator();
+
+    // Act & Assert
+    EXPECT_FALSE(comp(mappedName1, mappedName2));
+}
+
+TEST_F(MappedElementTest, comparatorOneIsZeroSize)
+{
+    // Arrange
+    Data::MappedName mappedName1 {""};
+    Data::MappedName mappedName2 {"#12345"};
+    auto comp = Data::ElementNameComparator();
+
+    // Act & Assert
+    EXPECT_TRUE(comp(mappedName1, mappedName2));
+}
+
+TEST_F(MappedElementTest, comparatorBothStartWithHexDigitsThatDiffer)
+{
+    // Arrange
+    Data::MappedName mappedName1 {"#fed;B"};
+    Data::MappedName mappedName2 {"#abcdef;A"};
+    auto comp = Data::ElementNameComparator();
+
+    // Act & Assert
+    EXPECT_TRUE(comp(mappedName1, mappedName2));
+}
+
+TEST_F(MappedElementTest, comparatorBothStartWithTheSameHexDigits)
+{
+    // Arrange
+    Data::MappedName mappedName1 {"#12345;B"};
+    Data::MappedName mappedName2 {"#12345;A"};
+    auto comp = Data::ElementNameComparator();
+
+    // Act & Assert
+    EXPECT_FALSE(comp(mappedName1, mappedName2));
+}
+
+TEST_F(MappedElementTest, DISABLED_comparatorHexWithoutTerminatorIsBroken)
+{
+    // Arrange
+    Data::MappedName mappedName1 {"#fed"};
+    Data::MappedName mappedName2 {"#abcdef"};
+    auto comp = Data::ElementNameComparator();
+
+    // Act & Assert
+    EXPECT_FALSE(comp(mappedName1, mappedName2));
+}
+
+TEST_F(MappedElementTest, comparatorNoHexDigitsLexicalCompare)
+{
+    // Arrange
+    Data::MappedName mappedName1 {"A"};
+    Data::MappedName mappedName2 {"B"};
+    auto comp = Data::ElementNameComparator();
+
+    // Act & Assert
+    EXPECT_TRUE(comp(mappedName1, mappedName2));
+}
+
+TEST_F(MappedElementTest, comparatorNoHexDigitsSameStringNumericCompare)
+{
+    // Arrange
+    Data::MappedName mappedName1 {"Edge123456;"};
+    Data::MappedName mappedName2 {"Edge321;"};
+    auto comp = Data::ElementNameComparator();
+
+    // Act & Assert
+    EXPECT_FALSE(comp(mappedName1, mappedName2));
+}
+
+TEST_F(MappedElementTest, DISABLED_comparatorIntegerWithoutTerminatorIsBroken)
+{
+    // Arrange
+    Data::MappedName mappedName1 {"Edge123456"};
+    Data::MappedName mappedName2 {"Edge321"};
+    auto comp = Data::ElementNameComparator();
+
+    // Act & Assert
+    EXPECT_FALSE(comp(mappedName1, mappedName2));
+}
