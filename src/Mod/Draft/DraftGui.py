@@ -163,10 +163,8 @@ class DraftToolBar:
         self.pointcallback = None
 
         # OBSOLETE BUT STILL USED BY SOME ADDONS AND MACROS
-        self.paramcolor = utils.rgba_to_argb(params.get_param_view("DefaultShapeLineColor"))
-        self.color = QtGui.QColor(self.paramcolor)
-        # ToDo: in setStyleButton() self.facecolor is assigned a QColor
-        self.facecolor = utils.rgba_to_argb(params.get_param_view("DefaultShapeColor"))
+        self.color = QtGui.QColor(utils.rgba_to_argb(params.get_param_view("DefaultShapeLineColor")))
+        self.facecolor = QtGui.QColor(utils.rgba_to_argb(params.get_param_view("DefaultShapeColor")))
         self.linewidth = params.get_param_view("DefaultShapeLineWidth")
         self.fontsize = params.get_param("textheight")
 
