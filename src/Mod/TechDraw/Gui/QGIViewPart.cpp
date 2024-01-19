@@ -652,6 +652,16 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
     }
 
     if (b) {
+        //find the ends of the section line
+        double scale = viewPart->getScale();
+        std::pair<Base::Vector3d, Base::Vector3d> sLineEnds = viewSection->sectionLineEnds();
+        Base::Vector3d l1 = Rez::guiX(sLineEnds.first) * scale;
+        Base::Vector3d l2 = Rez::guiX(sLineEnds.second) * scale;
+        if (l1.IsEqual(l2, EWTOLERANCE) ) {
+            Base::Console().Message("QGIVP::drawSectionLine - line endpoints are equal. No section line created.\n");
+            return;
+        }
+
         QGISectionLine* sectionLine = new QGISectionLine();
         addToGroup(sectionLine);
         sectionLine->setSymbol(const_cast<char*>(viewSection->SectionSymbol.getValue()));
@@ -660,11 +670,6 @@ void QGIViewPart::drawSectionLine(TechDraw::DrawViewSection* viewSection, bool b
         sectionLine->setSectionColor(color.asValue<QColor>());
         sectionLine->setPathMode(false);
 
-        //find the ends of the section line
-        double scale = viewPart->getScale();
-        std::pair<Base::Vector3d, Base::Vector3d> sLineEnds = viewSection->sectionLineEnds();
-        Base::Vector3d l1 = Rez::guiX(sLineEnds.first) * scale;
-        Base::Vector3d l2 = Rez::guiX(sLineEnds.second) * scale;
         //make the section line a little longer
         double fudge = 2.0 * Preferences::dimFontSizeMM();
         Base::Vector3d lineDir = l2 - l1;
@@ -722,6 +727,15 @@ void QGIViewPart::drawComplexSectionLine(TechDraw::DrawViewSection* viewSection,
     }
 
     auto dcs = static_cast<DrawComplexSection*>(viewSection);
+    std::pair<Base::Vector3d, Base::Vector3d> ends = dcs->sectionLineEnds();
+    Base::Vector3d vStart = Rez::guiX(ends.first);//already scaled by dcs
+    Base::Vector3d vEnd = Rez::guiX(ends.second);
+    if (vStart.IsEqual(vEnd, EWTOLERANCE) ) {
+        Base::Console().Message("QGIVP::drawComplexSectionLine - line endpoints are equal. No section line created.\n");
+        return;
+    }
+
+
     BaseGeomPtrVector edges = dcs->makeSectionLineGeometry();
     QPainterPath wirePath;
     QPainterPath firstSeg = drawPainterPath(edges.front());
@@ -736,9 +750,6 @@ void QGIViewPart::drawComplexSectionLine(TechDraw::DrawViewSection* viewSection,
         wirePath.connectPath(edgePath);
     }
 
-    std::pair<Base::Vector3d, Base::Vector3d> ends = dcs->sectionLineEnds();
-    Base::Vector3d vStart = Rez::guiX(ends.first);//already scaled by dcs
-    Base::Vector3d vEnd = Rez::guiX(ends.second);
 
     QGISectionLine* sectionLine = new QGISectionLine();
     addToGroup(sectionLine);
