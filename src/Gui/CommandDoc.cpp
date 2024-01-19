@@ -50,6 +50,7 @@
 #include "BitmapFactory.h"
 #include "Command.h"
 #include "Control.h"
+#include "DockWindowManager.h"
 #include "FileDialog.h"
 #include "MainWindow.h"
 #include "Selection.h"
@@ -1715,6 +1716,41 @@ bool StdCmdEdit::isActive()
     return (!Selection().getCompleteSelection().empty()) || (Gui::Control().activeDialog() != nullptr);
 }
 
+//===========================================================================
+// Std_Properties
+//===========================================================================
+DEF_STD_CMD_A(StdCmdProperties)
+
+StdCmdProperties::StdCmdProperties()
+    : Command("Std_Properties")
+{
+    sGroup = "Edit";
+    sMenuText = QT_TR_NOOP("Properties");
+    sToolTipText = QT_TR_NOOP("Show the property view, which displays the properties of the selected object.");
+    sWhatsThis = "Std_Properties";
+    sStatusTip = sToolTipText;
+    sAccel = "Alt+Return";
+    sPixmap = "document-properties";
+    eType = Alter3DView;
+}
+
+void StdCmdProperties::activated(int iMsg)
+{
+    Q_UNUSED(iMsg);
+    QWidget* propertyView = Gui::DockWindowManager::instance()->getDockWindow("Property view");
+    if (propertyView) {
+        QWidget* parent = propertyView->parentWidget();
+        if (parent && !parent->isVisible()) {
+            parent->show();
+        }
+    }
+}
+
+bool StdCmdProperties::isActive()
+{
+    return !Selection().getCompleteSelection().empty();
+}
+
 //======================================================================
 // StdCmdExpression
 //===========================================================================
@@ -1969,6 +2005,7 @@ void CreateDocCommands()
     rcCmdMgr.addCommand(new StdCmdTransformManip());
     rcCmdMgr.addCommand(new StdCmdAlignment());
     rcCmdMgr.addCommand(new StdCmdEdit());
+    rcCmdMgr.addCommand(new StdCmdProperties());
     rcCmdMgr.addCommand(new StdCmdExpression());
 }
 
