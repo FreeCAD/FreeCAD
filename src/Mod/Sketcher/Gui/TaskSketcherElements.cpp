@@ -128,7 +128,6 @@ public:
     const int border = 1;    // 1px, looks good around buttons.
     const int leftMargin = 4;// 4px on the left of icons, looks good.
     mutable int customIconsMargin = 4;
-    const int textBottomMargin = 5;// 5px center the text.
 
 Q_SIGNALS:
     void itemHovered(QModelIndex);
@@ -773,10 +772,11 @@ void ElementItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
     ElementItem* item = getElementtItem(index);
 
     if (item) {
+        auto style = option.widget ? option.widget->style() : QApplication::style();
 
         QStyleOptionButton checkboxstyle;
-        checkboxstyle.rect = option.rect;
 
+        checkboxstyle.rect = option.rect;
         checkboxstyle.state |= QStyle::State_Enabled;
 
         if (item->isVisible())
@@ -784,12 +784,17 @@ void ElementItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
         else
             checkboxstyle.state |= QStyle::State_Off;
 
-        QRect checkboxrect =
-            QApplication::style()->subElementRect(QStyle::SE_CheckBoxIndicator, &checkboxstyle);
+        QRect checkboxrect
+            = style->subElementRect(QStyle::SE_CheckBoxIndicator, &checkboxstyle, option.widget);
 
-        customIconsMargin = leftMargin + checkboxrect.width();
+        checkboxstyle.rect = {
+            leftMargin,
+            option.rect.top() + (option.rect.height() - checkboxrect.height()) / 2, // vertically center the checkbox
+            checkboxrect.width(),
+            checkboxrect.height()
+        };
 
-        QApplication::style()->drawControl(QStyle::CE_CheckBox, &checkboxstyle, painter);
+        customIconsMargin = leftMargin + checkboxrect.width() + leftMargin;
 
         int height = option.rect.height();
         int width = height;// icons are square.
@@ -805,9 +810,9 @@ void ElementItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
                 painter->fillRect(rect, option.palette.base());
             };
 
-            QRect selection = QRect(customIconsMargin,
+            QRect selection = QRect(option.rect.x(),
                                     option.rect.y(),
-                                    option.rect.width() - customIconsMargin,
+                                    option.rect.width(),
                                     option.rect.height());
 
             painter->fillRect(selection, option.palette.highlight());// paint the item as selected
@@ -836,14 +841,20 @@ void ElementItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& o
             ElementWidgetIcons::getIcon(item->GeometryType, Sketcher::PointPos::mid, item->State);
         // getIcon(item->GeometryType);
 
+        style->drawPrimitive(QStyle::PE_IndicatorCheckBox, &checkboxstyle, painter, option.widget);
+
         painter->drawPixmap(x0 + border, btny, iconEdge.pixmap(iconsize, iconsize));
         painter->drawPixmap(x0 + border + width, btny, iconStart.pixmap(iconsize, iconsize));
         painter->drawPixmap(x0 + border + width * 2, btny, iconEnd.pixmap(iconsize, iconsize));
         painter->drawPixmap(x0 + border + width * 3, btny, iconMid.pixmap(iconsize, iconsize));
 
         // Label :
+        auto labelBoundingBox = painter->fontMetrics().tightBoundingRect(item->label);
         painter->drawText(
-            x0 + width * 4 + 3 * border, option.rect.y() + height - textBottomMargin, item->label);
+            x0 + width * 4 + 3 * border,
+            option.rect.bottom() - (option.rect.height() - labelBoundingBox.height()) / 2,
+            item->label
+        );
     }
 }
 
