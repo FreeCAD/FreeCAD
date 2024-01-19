@@ -354,6 +354,13 @@ private:
     ~WrapperManager() override = default;
 };
 
+static std::string formatModuleError(std::string name)
+{
+    std::string error = "Cannot load " + name + " module";
+    PyErr_Print();
+    return error;
+}
+
 template<typename qttype>
 Py::Object qt_wrapInstance(qttype object,
                            const std::string& className,
@@ -363,10 +370,7 @@ Py::Object qt_wrapInstance(qttype object,
 {
     PyObject* module = PyImport_ImportModule(shiboken.c_str());
     if (!module) {
-        std::string error = "Cannot load ";
-        error += shiboken;
-        error += " module";
-        throw Py::Exception(PyExc_ImportError, error);
+        throw Py::Exception(PyExc_ImportError, formatModuleError(shiboken));
     }
 
     Py::Module mainmod(module, true);
@@ -377,10 +381,7 @@ Py::Object qt_wrapInstance(qttype object,
 
     module = PyImport_ImportModule(pyside.c_str());
     if (!module) {
-        std::string error = "Cannot load ";
-        error += pyside;
-        error += " module";
-        throw Py::Exception(PyExc_ImportError, error);
+        throw Py::Exception(PyExc_ImportError, formatModuleError(pyside));
     }
 
     Py::Module qtmod(module);
@@ -392,10 +393,7 @@ const char* qt_identifyType(QObject* ptr, const std::string& pyside)
 {
     PyObject* module = PyImport_ImportModule(pyside.c_str());
     if (!module) {
-        std::string error = "Cannot load ";
-        error += pyside;
-        error += " module";
-        throw Py::Exception(PyExc_ImportError, error);
+        throw Py::Exception(PyExc_ImportError, formatModuleError(pyside));
     }
 
     Py::Module qtmod(module);
@@ -415,10 +413,7 @@ void* qt_getCppPointer(const Py::Object& pyobject, const std::string& shiboken, 
     // https://github.com/PySide/Shiboken/blob/master/shibokenmodule/typesystem_shiboken.xml
     PyObject* module = PyImport_ImportModule(shiboken.c_str());
     if (!module) {
-        std::string error = "Cannot load ";
-        error += shiboken;
-        error += " module";
-        throw Py::Exception(PyExc_ImportError, error);
+        throw Py::Exception(PyExc_ImportError, formatModuleError(shiboken));
     }
 
     Py::Module mainmod(module, true);
