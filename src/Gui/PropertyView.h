@@ -56,7 +56,7 @@ class PropertyView : public QWidget, public Gui::SelectionObserver
     Q_OBJECT
 
 public:
-    explicit PropertyView(QWidget *parent=nullptr, int sizeOfFirstColumn = 0);
+    explicit PropertyView(QWidget *parent=nullptr);
     ~PropertyView() override;
 
     Gui::PropertyEditor::PropertyEditor* propertyEditorView;

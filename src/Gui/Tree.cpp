@@ -61,7 +61,6 @@
 #include "Macro.h"
 #include "MainWindow.h"
 #include "MenuManager.h"
-#include "PropertyView.h"
 #include "TreeParams.h"
 #include "View3DInventor.h"
 #include "ViewProviderDocumentObject.h"
@@ -891,7 +890,8 @@ void TreeWidget::contextMenuEvent(QContextMenuEvent* e)
     QMenu editMenu;
     QActionGroup subMenuGroup(&subMenu);
     subMenuGroup.setExclusive(true);
-    connect(&subMenuGroup, &QActionGroup::triggered, this, &TreeWidget::onActivateDocument);
+    connect(&subMenuGroup, &QActionGroup::triggered,
+            this, &TreeWidget::onActivateDocument);
     MenuManager::getInstance()->setupContextMenu(&view, contextMenu);
 
     // get the current item

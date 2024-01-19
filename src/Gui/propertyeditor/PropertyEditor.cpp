@@ -51,7 +51,7 @@ FC_LOG_LEVEL_INIT("PropertyView", true, true)
 
 using namespace Gui::PropertyEditor;
 
-PropertyEditor::PropertyEditor(QWidget *parent, int sizeOfFirstColumn)
+PropertyEditor::PropertyEditor(QWidget *parent)
     : QTreeView(parent)
     , autoexpand(false)
     , autoupdate(false)
@@ -100,8 +100,10 @@ PropertyEditor::PropertyEditor(QWidget *parent, int sizeOfFirstColumn)
     viewport()->installEventFilter(this);
     viewport()->setMouseTracking(true);
 
-    if (sizeOfFirstColumn != 0) {
-        header()->resizeSection(0, sizeOfFirstColumn);
+    auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/DockWindows/PropertyView");
+    int firstColumnSize = hGrp->GetInt("FirstColumnSize", 0);
+    if (firstColumnSize != 0) {
+        header()->resizeSection(0, firstColumnSize);
     }
 }
 
@@ -872,6 +874,9 @@ bool PropertyEditor::eventFilter(QObject* object, QEvent* event) {
             else if (mouse_event->type() == QEvent::MouseButtonRelease &&
                 mouse_event->button() == Qt::LeftButton && dragInProgress) { 
                 dragInProgress = false;
+
+                auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/DockWindows/PropertyView");
+                hGrp->SetInt("FirstColumnSize", header()->sectionSize(0));
                 return true;
             }
         }
