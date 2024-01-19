@@ -621,25 +621,29 @@ class TaskPanel:
         vUnit = FreeCAD.Units.Quantity(1, FreeCAD.Units.Velocity).getUserPreferred()[2]
         self.form.toolControllerList.horizontalHeaderItem(1).setText("#")
         self.form.toolControllerList.horizontalHeaderItem(2).setText(
-            translate("Path", "H","H is horizontal feed rate. Must be as short as possible")
+            translate(
+                "Path", "H", "H is horizontal feed rate. Must be as short as possible"
+            )
         )
         self.form.toolControllerList.horizontalHeaderItem(3).setText(
-            translate("Path", "V","V is vertical feed rate. Must be as short as possible")
+            translate(
+                "Path", "V", "V is vertical feed rate. Must be as short as possible"
+            )
         )
         self.form.toolControllerList.horizontalHeader().setResizeMode(
             0, QtGui.QHeaderView.Stretch
         )
         self.form.toolControllerList.horizontalHeaderItem(1).setToolTip(
-            translate("Path", "Tool number") + ' '
+            translate("Path", "Tool number") + " "
         )
         self.form.toolControllerList.horizontalHeaderItem(2).setToolTip(
-            translate("Path", "Horizontal feedrate")+ ' ' + vUnit
+            translate("Path", "Horizontal feedrate") + " " + vUnit
         )
         self.form.toolControllerList.horizontalHeaderItem(3).setToolTip(
-            translate("Path", "Vertical feedrate")+ ' ' + vUnit
+            translate("Path", "Vertical feedrate") + " " + vUnit
         )
         self.form.toolControllerList.horizontalHeaderItem(4).setToolTip(
-            translate("Path", "Spindle RPM")+ ' '
+            translate("Path", "Spindle RPM") + " "
         )
 
         # ensure correct ellisis behaviour on tool controller names.
@@ -804,11 +808,31 @@ class TaskPanel:
         self.setupOps.getFields()
 
     def selectComboBoxText(self, widget, text):
-        index = widget.findText(text, QtCore.Qt.MatchFixedString)
-        if index >= 0:
+        """selectInComboBox(name, combo) ...
+        helper function to select a specific value in a combo box."""
+        index = widget.currentIndex()  # Save initial index
+
+        # Search using currentData and return if found
+        newindex = widget.findData(text)
+        if newindex >= 0:
+
             widget.blockSignals(True)
-            widget.setCurrentIndex(index)
+            widget.setCurrentIndex(newindex)
             widget.blockSignals(False)
+            return
+
+        # if not found, search using current text
+        newindex = widget.findText(text, QtCore.Qt.MatchFixedString)
+        if newindex >= 0:
+            widget.blockSignals(True)
+            widget.setCurrentIndex(newindex)
+            widget.blockSignals(False)
+            return
+
+        widget.blockSignals(True)
+        widget.setCurrentIndex(index)
+        widget.blockSignals(False)
+        return
 
     def updateToolController(self):
         tcRow = self.form.toolControllerList.currentRow()
@@ -900,10 +924,9 @@ class TaskPanel:
             self.form.operationsList.addItem(item)
 
         self.form.jobModel.clear()
-        for name, count in Counter([
-                    self.obj.Proxy.baseObject(self.obj, o).Label
-                    for o in self.obj.Model.Group
-            ]).items():
+        for name, count in Counter(
+            [self.obj.Proxy.baseObject(self.obj, o).Label for o in self.obj.Model.Group]
+        ).items():
             if count == 1:
                 self.form.jobModel.addItem(name)
             else:
