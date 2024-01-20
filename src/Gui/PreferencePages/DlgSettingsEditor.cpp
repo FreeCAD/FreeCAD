@@ -333,7 +333,7 @@ void DlgSettingsEditor::resetSettingsToDefaults()
     ParameterGrp::handle hGrp;
     hGrp = WindowParameter::getDefaultParameter()->GetGroup("Editor");
     //reset the parameters in the "Editor" group
-    for (const auto &[textType, textColor]: d->colormap)
+    for (const auto &[textType, textColor] : d->colormap)
     {
         hGrp->RemoveUnsigned(textType.toLatin1());
     }
