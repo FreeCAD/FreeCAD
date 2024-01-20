@@ -239,6 +239,11 @@ public:
         }
     }
 
+    Sketcher::SketchObject* getSketchObject() const
+    {
+        return sketchView->getSketchObject();
+    }
+
     int ElementNbr;
     int StartingVertex;
     int MidVertex;
@@ -586,6 +591,47 @@ void ElementView::changeLayer(int layer)
     doc->commitTransaction();
 }
 
+void ElementView::changeLayer(ElementItem* item, int layer)
+{
+    App::Document* doc = App::GetApplication().getActiveDocument();
+
+    if (!doc) {
+        return;
+    }
+
+    doc->openTransaction("Geometry Layer Change");
+
+    auto sketchObject = item->getSketchObject();
+
+    auto geometry = sketchObject->Geometry.getValues();
+    auto newGeometry(geometry);
+
+    auto geoid = item->ElementNbr;
+
+    // currently only internal geometry can be changed from one layer to another
+    if (geoid >= 0) {
+        auto currentLayer = getSafeGeomLayerId(geometry[geoid]);
+
+        if (currentLayer != layer) {
+            auto geo = geometry[geoid]->clone();
+            setSafeGeomLayerId(geo, layer);
+            newGeometry[geoid] = geo;
+
+            sketchObject->Geometry.setValues(std::move(newGeometry));
+            sketchObject->solve();
+        }
+    }
+    else {
+        Gui::TranslatedUserWarning(
+            sketchObject,
+            QObject::tr("Unsupported visual layer operation"),
+            QObject::tr("It is currently unsupported to move external geometry to another "
+                        "visual layer. External geometry will be omitted"));
+    }
+
+    doc->commitTransaction();
+}
+
 void ElementView::contextMenuEvent(QContextMenuEvent* event)
 {
     QMenu menu;
@@ -788,14 +834,11 @@ void ElementView::onIndexHovered(QModelIndex index)
     Q_EMIT onItemHovered(itemFromIndex(index));
 }
 
-void ElementView::onIndexChecked(QModelIndex, Qt::CheckState state)
+void ElementView::onIndexChecked(QModelIndex index, Qt::CheckState state)
 {
-    if (state == Qt::Checked) {
-        changeLayer(static_cast<int>(ElementItem::Layer::Default));
-    }
-    else {
-        changeLayer(static_cast<int>(ElementItem::Layer::Hidden));
-    }
+    auto item = itemFromIndex(index);
+
+    changeLayer(item, static_cast<int>(state == Qt::Checked ? ElementItem::Layer::Default : ElementItem::Layer::Hidden));
 }
 
 ElementItem* ElementView::itemFromIndex(const QModelIndex& index)
