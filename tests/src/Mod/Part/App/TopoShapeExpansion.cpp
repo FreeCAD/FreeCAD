@@ -12,6 +12,7 @@
 
 // NOLINTBEGIN(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
 
+
 class TopoShapeExpansionTest: public ::testing::Test
 {
 protected:
@@ -162,7 +163,23 @@ TEST_F(TopoShapeExpansionTest, makeElementCompoundTwoCubes)
 }
 
 
-TEST_F(TopoShapeExpansionTest, mapSubElementNames)
+TEST_F(TopoShapeExpansionTest, mapSubElementInvalidParm)
+{
+    // Arrange
+    auto [cube1, cube2] = CreateTwoCubes();
+    Part::TopoShape cube1TS {cube1};
+    cube1TS.Tag = 1;
+
+    // Act
+    std::vector<Part::TopoShape> subShapes = cube1TS.getSubTopoShapes(TopAbs_FACE);
+    Part::TopoShape face1 = subShapes.front();
+    face1.Tag = 2;
+
+    // Assert
+    EXPECT_THROW(cube1TS.mapSubElement(face1), Part::NullShapeException);  // No subshapes
+}
+
+TEST_F(TopoShapeExpansionTest, mapSubElementFindShapeByNames)
 {
     // Arrange
     auto [cube1, cube2] = CreateTwoCubes();
@@ -173,10 +190,6 @@ TEST_F(TopoShapeExpansionTest, mapSubElementNames)
     Part::TopoShape topoShape, topoShape1;
 
     // Act
-    std::vector<Part::TopoShape> subShapes = cube1TS.getSubTopoShapes(TopAbs_FACE);
-    Part::TopoShape face1 = subShapes.front();
-    face1.Tag = 5;
-
     int fs1 = topoShape1.findShape(cube1);
     topoShape.setShape(cube2TS);
     topoShape1.makeElementCompound({cube1TS, cube2TS});
@@ -189,7 +202,6 @@ TEST_F(TopoShapeExpansionTest, mapSubElementNames)
     TopoDS_Shape tds5 = topoShape1.findShape("NonExistentName");  // Invalid Name
 
     // Assert
-    EXPECT_THROW(cube1TS.mapSubElement(face1), Part::NullShapeException);  // No subshapes
     EXPECT_EQ(fs1, 0);
     EXPECT_EQ(fs2, 1);
     EXPECT_FALSE(tds1.IsNull());
@@ -199,7 +211,7 @@ TEST_F(TopoShapeExpansionTest, mapSubElementNames)
     EXPECT_TRUE(tds5.IsNull());
 }
 
-TEST_F(TopoShapeExpansionTest, mapSubElementCacheType)
+TEST_F(TopoShapeExpansionTest, mapSubElementFindShapeByType)
 {
     // Arrange
     auto [cube1, cube2] = CreateTwoCubes();
@@ -221,7 +233,7 @@ TEST_F(TopoShapeExpansionTest, mapSubElementCacheType)
 }
 
 
-TEST_F(TopoShapeExpansionTest, mapSubElementCacheAncestor)
+TEST_F(TopoShapeExpansionTest, mapSubElementFindAncestor)
 {
     // Arrange
     auto [cube1, cube2] = CreateTwoCubes();
@@ -243,7 +255,7 @@ TEST_F(TopoShapeExpansionTest, mapSubElementCacheAncestor)
 }
 
 
-TEST_F(TopoShapeExpansionTest, mapSubElementCacheAncestors)
+TEST_F(TopoShapeExpansionTest, mapSubElementFindAncestors)
 {
     // Arrange
     auto [cube1, cube2] = CreateTwoCubes();
@@ -261,29 +273,42 @@ TEST_F(TopoShapeExpansionTest, mapSubElementCacheAncestors)
     cube3TS.Tag = 3;
     cube4TS.Tag = 4;
     Part::TopoShape topoShape, topoShape1, topoShape2;
+    Part::TopoShape topoShape3, topoShape4, topoShape5, topoShape6;
     topoShape.makeElementCompound({cube1TS, cube2TS});
-    topoShape.mapSubElement(cube2TS, nullptr, false);
     topoShape1.makeElementCompound({cube3TS, cube4TS});
-    topoShape1.mapSubElement(cube3TS, nullptr, true);
-    topoShape2.makeElementCompound({topoShape, topoShape1});
-    topoShape2.mapSubElement(cube2TS, nullptr, false);
+    topoShape2.makeElementCompound({cube1TS, cube3TS});
+    topoShape3.makeElementCompound({cube2TS, cube4TS});
+    topoShape4.makeElementCompound({topoShape, topoShape1});
+    topoShape5.makeElementCompound({topoShape2, topoShape3});
+    topoShape6.makeElementCompound({topoShape4, topoShape5});
+    topoShape6.mapSubElement(cube2TS, nullptr, false);
 
     // Act
-    auto ancestorList = topoShape2.findAncestors(cube2, TopAbs_COMPOUND);
-    auto ancestorShapeList = topoShape2.findAncestorsShapes(cube2, TopAbs_COMPOUND);
+    auto ancestorList = topoShape6.findAncestors(cube3, TopAbs_COMPOUND);
+    auto ancestorShapeList = topoShape6.findAncestorsShapes(cube3, TopAbs_COMPOUND);
+
+    // FIXME:  It seems very strange that both of these ancestors calls return lists of two items
+    // that contain the same thing twice.  What I expect is that the ancestors of cube3 would be
+    // topoShape6 topoShape5, topoShape3, topoShape2, and topoShape1.
+    //
+    // This is a very convoluted hierarchy, and the only way I could get more than one result from
+    // findAncestors.  I guess it's possible that it's only intended to return a single result in
+    // almost all cases; that would mean that what it returns is the shape at the top of the tree.
+    // But that's exactly the shape we use to call it in the first place, so we already have it.
+    //
+    // Note that in the RT branch, findAncestorsShapes is called by GenericShapeMapper::init,
+    // TopoShape::makEChamfer and MapperPrism
+    //  findAncestors is used in a dozen places.
+    //
 
     // Assert
-    EXPECT_EQ(ancestorList.size(), 1);
+    EXPECT_EQ(ancestorList.size(), 2);
     EXPECT_EQ(ancestorList.front(), 1);
-    EXPECT_EQ(ancestorShapeList.size(), 1);
-    // EXPECT_TRUE(ancestorShapeList.front().IsEqual(topoShape.getShape()));
-    // EXPECT_TRUE(ancestorShapeList.back().IsEqual(topoShape1.getShape()));
+    EXPECT_EQ(ancestorList.back(), 1);
+    EXPECT_EQ(ancestorShapeList.size(), 2);
+    EXPECT_TRUE(ancestorShapeList.front().IsEqual(topoShape6.getShape()));
+    EXPECT_TRUE(ancestorShapeList.back().IsEqual(topoShape6.getShape()));
 }
-
-// void initCache(int reset = 0) const; // Can't see any path to visibility to test if this worked.
-// std::vector<int> findAncestors(const TopoDS_Shape& subshape, TopAbs_ShapeEnum type) const;  //
-// DONE std::vector<TopoDS_Shape> findAncestorsShapes(const TopoDS_Shape& subshape,
-//                                               TopAbs_ShapeEnum type) const;  // UNSURE
 
 
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
