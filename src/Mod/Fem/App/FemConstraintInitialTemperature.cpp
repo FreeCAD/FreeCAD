@@ -74,6 +74,9 @@ void ConstraintInitialTemperature::handleChangedPropertyType(Base::XMLReader& re
         initialTemperatureProperty.Restore(reader);
         initialTemperature.setValue(initialTemperatureProperty.getValue());
     }
+    else {
+        Constraint::handleChangedPropertyType(reader, TypeName, prop);
+    }
 }
 
 void ConstraintInitialTemperature::onChanged(const App::Property* prop)
