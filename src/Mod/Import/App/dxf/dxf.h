@@ -173,7 +173,11 @@ struct LWPolyDataOut
     std::vector<double> Bulge;
     point3D Extr;
 };
-using eDXFGroupCode_t = enum {
+
+
+    // "using" for enums is not supported by all platforms
+    // https://stackoverflow.com/questions/41167119/how-to-fix-a-wsubobject-linkage-warning
+enum eDXFGroupCode_t {
     eObjectType = 0,
     ePrimaryText = 1,
     eName = 2,
@@ -211,7 +215,7 @@ using eDXFGroupCode_t = enum {
     eYOffset = 10,
     eZOffset = 20
 };
-using eDXFVersion_t = enum {
+enum eDXFVersion_t {
     RUnknown,
     ROlder,
     R10,
@@ -226,7 +230,7 @@ using eDXFVersion_t = enum {
     R2018,
     RNewer,
 };
-using eDimensionType_t = enum {
+enum eDimensionType_t {
     eLinear = 0,  // Rotated, Horizontal, or Vertical
     eAligned = 1,
     eAngular = 2,
@@ -431,6 +435,7 @@ class ImportExport CDxfRead
 private:
     // Low-level reader members
     std::ifstream* m_ifs;  // TODO: gsl::owner<ifstream>
+    // https://stackoverflow.com/questions/41167119/how-to-fix-a-wsubobject-linkage-warning
     eDXFGroupCode_t m_record_type = eObjectType;
     std::string m_record_data;
     bool m_not_eof = true;
