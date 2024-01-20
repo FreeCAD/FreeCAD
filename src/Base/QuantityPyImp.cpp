@@ -541,35 +541,31 @@ PyObject* QuantityPy::richCompare(PyObject* v, PyObject* w, int op)
         const Quantity* u2 = static_cast<QuantityPy*>(w)->getQuantityPtr();
 
         PyObject* res = nullptr;
-        if (op == Py_NE) {
-            res = (!(*u1 == *u2)) ? Py_True : Py_False;
-            Py_INCREF(res);
-            return res;
-        }
-        else if (op == Py_LT) {
-            res = (*u1 < *u2) ? Py_True : Py_False;
-            Py_INCREF(res);
-            return res;
-        }
-        else if (op == Py_LE) {
-            res = (*u1 < *u2) || (*u1 == *u2) ? Py_True : Py_False;
-            Py_INCREF(res);
-            return res;
-        }
-        else if (op == Py_GT) {
-            res = (!(*u1 < *u2)) && (!(*u1 == *u2)) ? Py_True : Py_False;
-            Py_INCREF(res);
-            return res;
-        }
-        else if (op == Py_GE) {
-            res = (!(*u1 < *u2)) ? Py_True : Py_False;
-            Py_INCREF(res);
-            return res;
-        }
-        else if (op == Py_EQ) {
-            res = (*u1 == *u2) ? Py_True : Py_False;
-            Py_INCREF(res);
-            return res;
+        switch (op) {
+            case Py_NE:
+                res = (!(*u1 == *u2)) ? Py_True : Py_False;
+                Py_INCREF(res);
+                return res;
+            case Py_LT:
+                res = (*u1 < *u2) ? Py_True : Py_False;
+                Py_INCREF(res);
+                return res;
+            case Py_LE:
+                res = (*u1 < *u2) || (*u1 == *u2) ? Py_True : Py_False;
+                Py_INCREF(res);
+                return res;
+            case Py_GT:
+                res = (!(*u1 < *u2)) && (!(*u1 == *u2)) ? Py_True : Py_False;
+                Py_INCREF(res);
+                return res;
+            case Py_GE:
+                res = (!(*u1 < *u2)) ? Py_True : Py_False;
+                Py_INCREF(res);
+                return res;
+            case Py_EQ:
+                res = (*u1 == *u2) ? Py_True : Py_False;
+                Py_INCREF(res);
+                return res;
         }
     }
     else if (PyNumber_Check(v) && PyNumber_Check(w)) {
@@ -577,35 +573,31 @@ PyObject* QuantityPy::richCompare(PyObject* v, PyObject* w, int op)
         double u1 = PyFloat_AsDouble(v);
         double u2 = PyFloat_AsDouble(w);
         PyObject* res = nullptr;
-        if (op == Py_NE) {
-            res = (u1 != u2) ? Py_True : Py_False;
-            Py_INCREF(res);
-            return res;
-        }
-        else if (op == Py_LT) {
-            res = (u1 < u2) ? Py_True : Py_False;
-            Py_INCREF(res);
-            return res;
-        }
-        else if (op == Py_LE) {
-            res = (u1 <= u2) ? Py_True : Py_False;
-            Py_INCREF(res);
-            return res;
-        }
-        else if (op == Py_GT) {
-            res = (u1 > u2) ? Py_True : Py_False;
-            Py_INCREF(res);
-            return res;
-        }
-        else if (op == Py_GE) {
-            res = (u1 >= u2) ? Py_True : Py_False;
-            Py_INCREF(res);
-            return res;
-        }
-        else if (op == Py_EQ) {
-            res = (u1 == u2) ? Py_True : Py_False;
-            Py_INCREF(res);
-            return res;
+        switch (op) {
+            case Py_NE:
+                res = (u1 != u2) ? Py_True : Py_False;
+                Py_INCREF(res);
+                return res;
+            case Py_LT:
+                res = (u1 < u2) ? Py_True : Py_False;
+                Py_INCREF(res);
+                return res;
+            case Py_LE:
+                res = (u1 <= u2) ? Py_True : Py_False;
+                Py_INCREF(res);
+                return res;
+            case Py_GT:
+                res = (u1 > u2) ? Py_True : Py_False;
+                Py_INCREF(res);
+                return res;
+            case Py_GE:
+                res = (u1 >= u2) ? Py_True : Py_False;
+                Py_INCREF(res);
+                return res;
+            case Py_EQ:
+                res = (u1 == u2) ? Py_True : Py_False;
+                Py_INCREF(res);
+                return res;
         }
     }
 

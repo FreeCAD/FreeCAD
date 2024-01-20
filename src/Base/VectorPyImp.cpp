@@ -250,7 +250,7 @@ PyObject* VectorPy::mapping_subscript(PyObject* self, PyObject* item)
             return PyTuple_New(0);
         }
         if (start == 0 && step == 1 && slicelength == sequence_length(self)
-                 && PyObject_TypeCheck(self, &(VectorPy::Type))) {
+            && PyObject_TypeCheck(self, &(VectorPy::Type))) {
             Base::Vector3d v = static_cast<VectorPy*>(self)->value();
             Py::Tuple xyz(3);
             xyz.setItem(0, Py::Float(v.x));

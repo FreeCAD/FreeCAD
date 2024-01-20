@@ -264,17 +264,19 @@ std::string Base::Tools::escapeEncodeString(const std::string& s)
     std::string result;
     size_t len = s.size();
     for (size_t i = 0; i < len; ++i) {
-        if (s.at(i) == '\\') {
-            result += "\\\\";
-        }
-        else if (s.at(i) == '\"') {
-            result += "\\\"";
-        }
-        else if (s.at(i) == '\'') {
-            result += "\\\'";
-        }
-        else {
-            result += s.at(i);
+        switch (s.at(i)) {
+            case '\\':
+                result += "\\\\";
+                break;
+            case '\"':
+                result += "\\\"";
+                break;
+            case '\'':
+                result += "\\\'";
+                break;
+            default:
+                result += s.at(i);
+                break;
         }
     }
     return result;
@@ -305,14 +307,16 @@ std::string Base::Tools::escapeEncodeFilename(const std::string& s)
     std::string result;
     size_t len = s.size();
     for (size_t i = 0; i < len; ++i) {
-        if (s.at(i) == '\"') {
-            result += "\\\"";
-        }
-        else if (s.at(i) == '\'') {
-            result += "\\\'";
-        }
-        else {
-            result += s.at(i);
+        switch (s.at(i)) {
+            case '\"':
+                result += "\\\"";
+                break;
+            case '\'':
+                result += "\\\'";
+                break;
+            default:
+                result += s.at(i);
+                break;
         }
     }
     return result;
