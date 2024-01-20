@@ -125,6 +125,13 @@ const char* DrawViewSection::SectionDirEnums[] =
 
 const char* DrawViewSection::CutSurfaceEnums[] = {"Hide", "Color", "SvgHatch", "PatHatch", nullptr};
 
+constexpr double stretchMinimum{EWTOLERANCE};
+constexpr double stretchMaximum{std::numeric_limits<double>::max()};
+constexpr double stretchStep{0.1};
+
+App::PropertyFloatConstraint::Constraints DrawViewSection::stretchRange = {
+                            stretchMinimum, stretchMaximum, stretchStep};
+
 //===========================================================================
 // DrawViewSection
 //===========================================================================
@@ -230,6 +237,7 @@ DrawViewSection::DrawViewSection()
 
     ADD_PROPERTY_TYPE(SectionLineStretch, (1.0), agroup, App::Prop_None,
                       "Adjusts the length of the section line.  1.0 is normal length.  1.1 would be 10% longer, 0.9 would be 10% shorter.");
+    SectionLineStretch.setConstraints(&stretchRange);
 
     getParameters();
 
