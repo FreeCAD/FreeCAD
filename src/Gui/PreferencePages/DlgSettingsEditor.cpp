@@ -281,7 +281,7 @@ void DlgSettingsEditor::loadSettings()
 
     // Restores the color map
     ParameterGrp::handle hGrp = WindowParameter::getDefaultParameter()->GetGroup("Editor");
-    for (auto &[textType, textColor]: d->colormap)
+    for (auto &[textType, textColor] : d->colormap)
     {
         auto col = static_cast<unsigned long>(textColor);
         col = hGrp->GetUnsigned(textType.toLatin1(), col);
