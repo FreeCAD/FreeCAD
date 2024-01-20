@@ -30,7 +30,6 @@
 # @{
 import FreeCAD as App
 from draftobjects.layer import Layer, LayerContainer
-from draftutils import params
 from draftutils import utils
 from draftutils.messages import _msg, _err
 from draftutils.translate import translate
@@ -79,53 +78,52 @@ def getLayerContainer():
 
 
 def make_layer(name=None,
-               line_color=None, shape_color=None,
+               line_color=(0.0, 0.0, 0.0),   # does not match default DefaultShapeLineColor
+               shape_color=(0.8, 0.8, 0.8),  # matches default DefaultShapeColor
                line_width=2.0,
-               draw_style="Solid", transparency=0):
+               draw_style="Solid",
+               transparency=0):
     """Create a Layer object in the active document.
 
-    If a layer container named `'LayerContainer'` does not exist,
-    it is created with this name.
+    If a layer container named `'LayerContainer'` does not exist, it is created.
 
-    A layer controls the view properties of the objects inside the layer,
-    so all parameters except for `name` only apply if the graphical interface
+    A layer controls the view properties of the objects inside the layer.
+    All parameters except for `name` only apply if the graphical interface
     is up.
+
+    All parameters that control view properties can be set to `None`. Their
+    value, as set by the view provider (matching the current preferences), is
+    then not changed.
 
     Parameters
     ----------
-    name: str, optional
-        It is used to set the layer's `Label` (user editable).
-        It defaults to `None`, in which case the `Label`
-        is set to `'Layer'` or to its translation in the current language.
+    name: str or `None`, optional
+        It defaults to `None`.
+        It is used to set the layer's `Label`. If it is `None` the `Label` is
+        set to `'Layer'` or to its translation in the current language.
 
-    line_color: tuple, optional
-        It defaults to `None`, in which case it uses the value of the parameter
-        `User parameter:BaseApp/Preferences/View/DefaultShapeLineColor`.
-        If it is given, it should be a tuple of three
-        floating point values from 0.0 to 1.0.
+    line_color: tuple or `None`, optional
+        It defaults to `(0.0, 0.0, 0.0)`.
+        If it is given, it should be a tuple of three floating point values
+        from 0.0 to 1.0.
 
-    shape_color: tuple, optional
-        It defaults to `None`, in which case it uses the value of the parameter
-        `User parameter:BaseApp/Preferences/View/DefaultShapeColor`.
-        If it is given, it should be a tuple of three
-        floating point values from 0.0 to 1.0.
+    shape_color: tuple or `None`, optional
+        It defaults to `(0.8, 0.8, 0.8)`.
+        If it is given, it should be a tuple of three floating point values
+        from 0.0 to 1.0.
 
-    line_width: float, optional
+    line_width: float or `None`, optional
         It defaults to 2.0.
-        It determines the width of the edges of the objects contained
-        in the layer.
+        It determines the width of the edges of the objects contained in the layer.
 
-    draw_style: str, optional
+    draw_style: str or `None`, optional
         It defaults to `'Solid'`.
-        It determines the style of the edges of the objects contained
-        in the layer.
-        If it is given, it should be 'Solid', 'Dashed', 'Dotted',
-        or 'Dashdot'.
+        It determines the style of the edges of the objects contained in the layer.
+        If it is given, it should be 'Solid', 'Dashed', 'Dotted' or 'Dashdot'.
 
-    transparency: int, optional
+    transparency: int or `None`, optional
         It defaults to 0.
-        It should be an integer value from 0 (completely opaque)
-        to 100 (completely transparent).
+        It should be an integer from 0 to 100.
 
     Return
     ------
@@ -139,15 +137,13 @@ def make_layer(name=None,
         If there is a problem it will return `None`.
     """
     _name = "make_layer"
-    utils.print_header(_name, translate("draft","Layer"))
 
     found, doc = utils.find_doc(App.activeDocument())
     if not found:
         _err(translate("draft","No active document. Aborting."))
         return None
 
-    if name:
-        _msg("name: {}".format(name))
+    if name is not None:
         try:
             utils.type_check([(name, str)], name=_name)
         except TypeError:
@@ -156,8 +152,7 @@ def make_layer(name=None,
     else:
         name = translate("draft", "Layer")
 
-    if line_color:
-        _msg("line_color: {}".format(line_color))
+    if line_color is not None:
         try:
             utils.type_check([(line_color, tuple)], name=_name)
         except TypeError:
@@ -167,14 +162,8 @@ def make_layer(name=None,
         if not all(isinstance(color, (int, float)) for color in line_color):
             _err(translate("draft","Wrong input: must be a tuple of three floats 0.0 to 1.0."))
             return None
-    else:
-        c = params.get_param_view("DefaultShapeLineColor")
-        line_color = (((c >> 24) & 0xFF) / 255,
-                      ((c >> 16) & 0xFF) / 255,
-                      ((c >> 8) & 0xFF) / 255)
 
-    if shape_color:
-        _msg("shape_color: {}".format(shape_color))
+    if shape_color is not None:
         try:
             utils.type_check([(shape_color, tuple)], name=_name)
         except TypeError:
@@ -184,38 +173,33 @@ def make_layer(name=None,
         if not all(isinstance(color, (int, float)) for color in shape_color):
             _err(translate("draft","Wrong input: must be a tuple of three floats 0.0 to 1.0."))
             return None
-    else:
-        c = params.get_param_view("DefaultShapeColor")
-        shape_color = (((c >> 24) & 0xFF) / 255,
-                       ((c >> 16) & 0xFF) / 255,
-                       ((c >> 8) & 0xFF) / 255)
 
-    _msg("line_width: {}".format(line_width))
-    try:
-        utils.type_check([(line_width, (int, float))], name=_name)
-        line_width = float(abs(line_width))
-    except TypeError:
-        _err(translate("draft","Wrong input: must be a number."))
-        return None
+    if line_width is not None:
+        try:
+            utils.type_check([(line_width, (int, float))], name=_name)
+            line_width = float(abs(line_width))
+        except TypeError:
+            _err(translate("draft","Wrong input: must be a number."))
+            return None
 
-    _msg("draw_style: {}".format(draw_style))
-    try:
-        utils.type_check([(draw_style, str)], name=_name)
-    except TypeError:
-        _err(translate("draft","Wrong input: must be 'Solid', 'Dashed', 'Dotted', or 'Dashdot'."))
-        return None
+    if draw_style is not None:
+        try:
+            utils.type_check([(draw_style, str)], name=_name)
+        except TypeError:
+            _err(translate("draft","Wrong input: must be 'Solid', 'Dashed', 'Dotted', or 'Dashdot'."))
+            return None
 
-    if draw_style not in ('Solid', 'Dashed', 'Dotted', 'Dashdot'):
-        _err(translate("draft","Wrong input: must be 'Solid', 'Dashed', 'Dotted', or 'Dashdot'."))
-        return None
+        if draw_style not in ('Solid', 'Dashed', 'Dotted', 'Dashdot'):
+            _err(translate("draft","Wrong input: must be 'Solid', 'Dashed', 'Dotted', or 'Dashdot'."))
+            return None
 
-    _msg("transparency: {}".format(transparency))
-    try:
-        utils.type_check([(transparency, (int, float))], name=_name)
-        transparency = int(abs(transparency))
-    except TypeError:
-        _err(translate("draft","Wrong input: must be a number between 0 and 100."))
-        return None
+    if transparency is not None:
+        try:
+            utils.type_check([(transparency, (int, float))], name=_name)
+            transparency = int(abs(transparency))
+        except TypeError:
+            _err(translate("draft","Wrong input: must be a number between 0 and 100."))
+            return None
 
     new_obj = doc.addObject("App::FeaturePython", "Layer")
     Layer(new_obj)
@@ -224,32 +208,20 @@ def make_layer(name=None,
 
     if App.GuiUp:
         ViewProviderLayer(new_obj.ViewObject)
-
-        new_obj.ViewObject.LineColor = line_color
-        new_obj.ViewObject.ShapeColor = shape_color
-        new_obj.ViewObject.LineWidth = line_width
-        new_obj.ViewObject.DrawStyle = draw_style
-        new_obj.ViewObject.Transparency = transparency
+        if line_color is not None:
+            new_obj.ViewObject.LineColor = line_color
+        if shape_color is not None:
+            new_obj.ViewObject.ShapeColor = shape_color
+        if line_width is not None:
+            new_obj.ViewObject.LineWidth = line_width
+        if draw_style is not None:
+            new_obj.ViewObject.DrawStyle = draw_style
+        if transparency is not None:
+            new_obj.ViewObject.Transparency = transparency
 
     container = get_layer_container()
     container.addObject(new_obj)
 
     return new_obj
-
-
-def makeLayer(name=None, linecolor=None, drawstyle=None,
-              shapecolor=None, transparency=None):
-    """Create a Layer. DEPRECATED. Use 'make_layer'."""
-    utils.use_instead("make_layer")
-
-    if not drawstyle:
-        drawstyle = "Solid"
-
-    if not transparency:
-        transparency = 0
-
-    return make_layer(name,
-                      line_color=linecolor, shape_color=shapecolor,
-                      draw_style=drawstyle, transparency=transparency)
 
 ## @}

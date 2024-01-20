@@ -37,6 +37,7 @@ import Draft
 import Draft_rc
 from draftguitools import gui_base
 from draftutils import params
+from draftutils import utils
 from draftutils.translate import translate
 
 # The module is used to prevent complaints from code checkers (flake8)
@@ -76,8 +77,8 @@ class Layer(gui_base.GuiCommandSimplest):
 
         self.doc.openTransaction("Create Layer")
         Gui.addModule("Draft")
-        Gui.doCommand('_layer_ = Draft.make_layer()')
-        Gui.doCommand('FreeCAD.ActiveDocument.recompute()')
+        Gui.doCommand("_layer_ = Draft.make_layer(name=None, line_color=None, shape_color=None, line_width=None, draw_style=None, transparency=None)")
+        Gui.doCommand("FreeCAD.ActiveDocument.recompute()")
         self.doc.commitTransaction()
 
 
@@ -170,7 +171,8 @@ class LayerManager:
                 if not changed:
                     FreeCAD.ActiveDocument.openTransaction("Layers change")
                     changed = True
-                obj = Draft.make_layer()
+                obj = Draft.make_layer(name=None, line_color=None, shape_color=None,
+                                       line_width=None, draw_style=None, transparency=None)
 
             # visibility
             checked = True if self.model.item(row,0).checkState() == QtCore.Qt.Checked else False
@@ -303,7 +305,7 @@ class LayerManager:
         nameItem = QtGui.QStandardItem(translate("Draft", "New Layer"))
         widthItem = QtGui.QStandardItem()
         widthItem.setData(params.get_param_view("DefaultShapeLineWidth"), QtCore.Qt.DisplayRole)
-        styleItem = QtGui.QStandardItem("Solid")
+        styleItem = QtGui.QStandardItem(utils.DRAW_STYLES[params.get_param("DefaultDrawStyle")])
         lineColorItem = QtGui.QStandardItem()
         lineColorItem.setData(
             utils.get_rgba_tuple(params.get_param_view("DefaultShapeLineColor"))[:3],
@@ -315,7 +317,10 @@ class LayerManager:
             QtCore.Qt.UserRole
         )
         transparencyItem = QtGui.QStandardItem()
-        transparencyItem.setData(0, QtCore.Qt.DisplayRole)
+        transparencyItem.setData(
+            params.get_param_view("DefaultShapeTransparency"),
+            QtCore.Qt.DisplayRole
+        )
         linePrintColorItem = QtGui.QStandardItem()
         linePrintColorItem.setData(
             utils.get_rgba_tuple(params.get_param("DefaultPrintColor"))[:3],
@@ -428,7 +433,7 @@ if FreeCAD.GuiUp:
                 editor.setMaximum(99)
             elif index.column() == 3: # Line style
                 editor = QtGui.QComboBox(parent)
-                editor.addItems(["Solid","Dashed","Dotted","Dashdot"])
+                editor.addItems(utils.DRAW_STYLES)
             elif index.column() == 4: # Line color
                 editor = QtGui.QLineEdit(parent)
                 self.first = True
@@ -452,7 +457,7 @@ if FreeCAD.GuiUp:
             elif index.column() == 2: # Line width
                 editor.setValue(index.data())
             elif index.column() == 3: # Line style
-                editor.setCurrentIndex(["Solid","Dashed","Dotted","Dashdot"].index(index.data()))
+                editor.setCurrentIndex(utils.DRAW_STYLES.index(index.data()))
             elif index.column() == 4: # Line color
                 editor.setText(str(index.data(QtCore.Qt.UserRole)))
                 if self.first:
@@ -486,7 +491,7 @@ if FreeCAD.GuiUp:
             elif index.column() == 2: # Line width
                 model.setData(index,editor.value())
             elif index.column() == 3: # Line style
-                model.setData(index,["Solid","Dashed","Dotted","Dashdot"][editor.currentIndex()])
+                model.setData(index,utils.DRAW_STYLES[editor.currentIndex()])
             elif index.column() == 4: # Line color
                 model.setData(index,eval(editor.text()),QtCore.Qt.UserRole)
                 model.itemFromIndex(index).setIcon(getColorIcon(eval(editor.text())))
