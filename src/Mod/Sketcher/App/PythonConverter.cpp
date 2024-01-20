@@ -59,11 +59,11 @@ std::string PythonConverter::convert(const Part::Geometry* geo, Mode mode)
     return command;
 }
 
-std::string PythonConverter::convert(const Sketcher::Constraint* constraint, bool useLastGeoIdVar)
+std::string PythonConverter::convert(const Sketcher::Constraint* constraint, GeoIdMode geoIdMode)
 {
     // addConstraint(Sketcher.Constraint('Distance',%d,%f))
     std::string command;
-    auto cg = process(constraint, useLastGeoIdVar);
+    auto cg = process(constraint, geoIdMode);
 
     command = boost::str(boost::format("addConstraint(%s)\n") % cg);
 
@@ -166,7 +166,7 @@ std::string PythonConverter::convert(const std::string& doc,
 
 std::string PythonConverter::convert(const std::string& doc,
                                      const std::vector<Sketcher::Constraint*>& constraints,
-                                     bool useLastGeoIdVar)
+                                     GeoIdMode geoIdMode)
 {
     if (constraints.size() == 1) {
         auto cg = convert(constraints[0]);
@@ -177,7 +177,7 @@ std::string PythonConverter::convert(const std::string& doc,
     std::string constraintlist = "constraintList = []";
 
     for (auto constraint : constraints) {
-        auto cg = process(constraint, useLastGeoIdVar);
+        auto cg = process(constraint, geoIdMode);
 
         constraintlist =
             boost::str(boost::format("%s\nconstraintList.append(%s)") % constraintlist % cg);
@@ -344,11 +344,12 @@ PythonConverter::SingleGeometry PythonConverter::process(const Part::Geometry* g
     return creator(geo);
 }
 
-std::string PythonConverter::process(const Sketcher::Constraint* constraint, bool useLastIdVar)
+std::string PythonConverter::process(const Sketcher::Constraint* constraint, GeoIdMode geoIdMode)
 {
-    std::string geoId1 = (useLastIdVar ? "lastGeoId + " : "") + std::to_string(constraint->First);
-    std::string geoId2 = (useLastIdVar ? "lastGeoId + " : "") + std::to_string(constraint->Second);
-    std::string geoId3 = (useLastIdVar ? "lastGeoId + " : "") + std::to_string(constraint->Third);
+    bool addLastIdVar = geoIdMode == GeoIdMode::AddLastGeoIdToGeoIds;
+    std::string geoId1 = (addLastIdVar ? "lastGeoId + " : "") + std::to_string(constraint->First);
+    std::string geoId2 = (addLastIdVar ? "lastGeoId + " : "") + std::to_string(constraint->Second);
+    std::string geoId3 = (addLastIdVar ? "lastGeoId + " : "") + std::to_string(constraint->Third);
 
     static std::map<
         const Sketcher::ConstraintType,

@@ -192,7 +192,7 @@ bool copySelectionToClipboard(Sketcher::SketchObject* obj) {
         }
         shapeConstraints.push_back(temp);
     }
-    std::string cstrAsStr = Sketcher::PythonConverter::convert("objectStr", shapeConstraints, true);
+    std::string cstrAsStr = Sketcher::PythonConverter::convert("objectStr", shapeConstraints, Sketcher::PythonConverter::GeoIdMode::AddLastGeoIdToGeoIds);
 
     std::string exportedData = "# Copied from sketcher. From:\n#objectStr = " + Gui::Command::getObjectCmd(obj) + "\n"
         + geosAsStr + "\n" + cstrAsStr;
