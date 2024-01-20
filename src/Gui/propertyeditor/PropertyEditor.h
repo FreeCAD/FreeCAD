@@ -100,7 +100,7 @@ protected Q_SLOTS:
     void onRowsRemoved(const QModelIndex &parent, int start, int end);
 
 protected:
-    bool eventFilter(QObject* object, QEvent* event);
+    bool eventFilter(QObject* object, QEvent* event) override;
     void closeEditor (QWidget * editor, QAbstractItemDelegate::EndEditHint hint) override;
     void commitData (QWidget * editor) override;
     void editorDestroyed (QObject * editor) override;
