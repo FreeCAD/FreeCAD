@@ -57,11 +57,9 @@ bool TaskAddSubParameters::enableOutside(PartDesignGui::ViewProvider* vp)  {
     return addsub->isSubtractive();
 }
 
-// Compiler wants this implemented, whether we need it or not.
 void TaskAddSubParameters::onSelectionChanged(const Gui::SelectionChanges& msg)
 {
-    if (msg.Type == Gui::SelectionChanges::AddSelection) {
-    }
+    Q_UNUSED(msg);
 }
 
 //**************************************************************************
