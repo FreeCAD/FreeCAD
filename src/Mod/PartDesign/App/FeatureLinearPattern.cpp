@@ -221,7 +221,7 @@ const std::list<gp_Trsf> LinearPattern::getTransformations(const std::vector<App
     gp_Trsf trans;
     transformations.push_back(trans);
 
-    // Note: The original feature is already included in the list of transformations!
+    // NOTE: The original feature is already included in the list of transformations!
     // Therefore we start with occurrence number 1
     for (int i = 1; i < occurrences; i++) {
         trans.SetTranslation(offset * i);
