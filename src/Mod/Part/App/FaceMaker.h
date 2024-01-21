@@ -156,10 +156,10 @@ class PartExport FaceMakerSimple : public FaceMakerPublic
 {
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 public:
-    virtual std::string getUserFriendlyName() const override;
-    virtual std::string getBriefExplanation() const override;
+    std::string getUserFriendlyName() const override;
+    std::string getBriefExplanation() const override;
 protected:
-    virtual void Build_Essence() override;
+    void Build_Essence() override;
 };
 
 

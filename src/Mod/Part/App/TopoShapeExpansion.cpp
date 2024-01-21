@@ -26,12 +26,12 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <BRep_Builder.hxx>
-# include <BRepBuilderAPI_MakeWire.hxx>
+#include <BRepBuilderAPI_MakeWire.hxx>
 #include <BRep_Tool.hxx>
 #include <BRepTools.hxx>
 
-# include <ShapeFix_Shape.hxx>
-# include <ShapeFix_ShapeTolerance.hxx>
+#include <ShapeFix_Shape.hxx>
+#include <ShapeFix_ShapeTolerance.hxx>
 
 #endif
 
@@ -480,7 +480,7 @@ void TopoShape::mapCompoundSubElements(const std::vector<TopoShape>& shapes, con
         ++count;
         auto subshape = getSubShape(TopAbs_SHAPE, count, /*silent = */ true);
         if (!subshape.IsPartner(topoShape._Shape)) {
-            return; // Not a partner shape, don't do any mapping at all
+            return;  // Not a partner shape, don't do any mapping at all
         }
     }
     auto children {createChildMap(count, shapes, op)};
@@ -549,49 +549,59 @@ TopoShape::makeElementCompound(const std::vector<TopoShape>& shapes, const char*
 }
 
 
-TopoShape &TopoShape::makeElementFace(const TopoShape &shape,
-                               const char *op,
-                               const char *maker,
-                               const gp_Pln *pln)
+TopoShape& TopoShape::makeElementFace(const TopoShape& shape,
+                                      const char* op,
+                                      const char* maker,
+                                      const gp_Pln* pln)
 {
     std::vector<TopoShape> shapes;
-    if (shape.isNull())
-    FC_THROWM(NullShapeException, "Null shape");
-    if(shape.getShape().ShapeType() == TopAbs_COMPOUND)
+    if (shape.isNull()) {
+        FC_THROWM(NullShapeException, "Null shape");
+    }
+    if (shape.getShape().ShapeType() == TopAbs_COMPOUND) {
         shapes = shape.getSubTopoShapes();
-    else
+    }
+    else {
         shapes.push_back(shape);
-    return makeElementFace(shapes,op,maker,pln);
+    }
+    return makeElementFace(shapes, op, maker, pln);
 }
 
-TopoShape &TopoShape::makeElementFace(const std::vector<TopoShape> &shapes,
-                               const char *op,
-                               const char *maker,
-                               const gp_Pln *pln)
+TopoShape& TopoShape::makeElementFace(const std::vector<TopoShape>& shapes,
+                                      const char* op,
+                                      const char* maker,
+                                      const gp_Pln* pln)
 {
-    if(!maker || !maker[0]) maker = "Part::FaceMakerBullseye";
+    if (!maker || !maker[0]) {
+        maker = "Part::FaceMakerBullseye";
+    }
     std::unique_ptr<FaceMaker> mkFace = FaceMaker::ConstructFromType(maker);
     mkFace->MyHasher = Hasher;
     mkFace->MyOp = op;
-    if (pln)
+    if (pln) {
         mkFace->setPlane(*pln);
+    }
 
-    for(auto &s : shapes) {
-        if (s.getShape().ShapeType() == TopAbs_COMPOUND)
+    for (auto& s : shapes) {
+        if (s.getShape().ShapeType() == TopAbs_COMPOUND) {
             mkFace->useTopoCompound(s);
-        else
+        }
+        else {
             mkFace->addTopoShape(s);
+        }
     }
     mkFace->Build();
 
-    const auto &ret = mkFace->getTopoShape();
+    const auto& ret = mkFace->getTopoShape();
     setShape(ret._Shape);
     Hasher = ret.Hasher;
     resetElementMap(ret.elementMap());
     if (!isValid()) {
         ShapeFix_ShapeTolerance aSFT;
         aSFT.LimitTolerance(getShape(),
-                    Precision::Confusion(), Precision::Confusion(), TopAbs_SHAPE);
+                            Precision::Confusion(),
+                            Precision::Confusion(),
+                            TopAbs_SHAPE);
 
         // In some cases, the OCC reports the returned shape having invalid
         // tolerance. Not sure about the real cause.
@@ -608,24 +618,39 @@ TopoShape &TopoShape::makeElementFace(const std::vector<TopoShape> &shapes,
         fixer.Perform();
         setShape(fixer.Shape(), false);
 
-        if (!isValid())
+        if (!isValid()) {
             FC_WARN("makeElementFace: resulting face is invalid");
+        }
     }
     return *this;
 }
 
-Data::MappedName TopoShape::setElementComboName(const Data::IndexedName & element,
-                                                const std::vector<Data::MappedName> &names,
-                                                const char *marker,
-                                                const char *op,
-                                                const Data::ElementIDRefs *_sids)
+/**
+ *  Encode and set an element name in the elementMap.  If a hasher is defined, apply it to the name.
+ *
+ * @param element   The element name(type) that provides 1 one character suffix to the name IF <conditions>.
+ * @param names     The subnames to build the name from.  If empty, return the TopoShape MappedName.
+ * @param marker    The elementMap name or suffix to start the name with.  If null, use the
+ *                  elementMapPrefix.
+ * @param op        The op text passed to the element name encoder along with the TopoShape Tag
+ * @param _sids     If defined, records the sub ids processed.
+ * 
+ * @return          The encoded, possibly hashed name.
+ */
+Data::MappedName TopoShape::setElementComboName(const Data::IndexedName& element,
+                                                const std::vector<Data::MappedName>& names,
+                                                const char* marker,
+                                                const char* op,
+                                                const Data::ElementIDRefs* _sids)
 {
-    if(names.empty())
+    if (names.empty()) {
         return Data::MappedName();
+    }
     std::string _marker;
-    if(!marker)
+    if (!marker) {
         marker = elementMapPrefix().c_str();
-    else if(!boost::starts_with(marker,elementMapPrefix())){
+    }
+    else if (!boost::starts_with(marker, elementMapPrefix())) {
         _marker = elementMapPrefix() + marker;
         marker = _marker.c_str();
     }
@@ -633,36 +658,50 @@ Data::MappedName TopoShape::setElementComboName(const Data::IndexedName & elemen
     Data::MappedName newName = *it;
     std::ostringstream ss;
     Data::ElementIDRefs sids;
-    if (_sids)
+    if (_sids) {
         sids = *_sids;
-    if(names.size() == 1)
+    }
+    if (names.size() == 1) {
         ss << marker;
+    }
     else {
         bool first = true;
         ss.str("");
-        if(!Hasher)
+        if (!Hasher) {
             ss << marker;
+        }
         ss << '(';
-        for(++it;it!=names.end();++it) {
-            if(first)
+        for (++it; it != names.end(); ++it) {
+            if (first) {
                 first = false;
-            else
+            }
+            else {
                 ss << '|';
+            }
             ss << *it;
         }
         ss << ')';
-        if(Hasher) {
+        if (Hasher) {
             sids.push_back(Hasher->getID(ss.str().c_str()));
             ss.str("");
             ss << marker << sids.back().toString();
         }
     }
-    elementMap()->encodeElementName(element[0],newName,ss,&sids,Tag,op);
-    return elementMap()->setElementName(element,newName, Tag, &sids);
+    elementMap()->encodeElementName(element[0], newName, ss, &sids, Tag, op);
+    return elementMap()->setElementName(element, newName, Tag, &sids);
 }
 
-TopoShape TopoShape::splitWires(std::vector<TopoShape> *inner,
-                                SplitWireReorient reorient) const
+/**
+ * Reorient the outer and inner wires of the TopoShape
+ *
+ * @param inner If this is not a nullptr, then any inner wires processed will be returned in this
+ * vector.
+ * @param reorient  One of NoReorient, Reorient ( Outer forward, inner reversed ),
+ *                  ReorientForward ( all forward ), or ReorientReversed ( all reversed )
+ * @return The outer wire, or an empty TopoShape if this isn't a Face, has no Face subShapes, or the
+ *         outer wire isn't found.
+ */
+TopoShape TopoShape::splitWires(std::vector<TopoShape>* inner, SplitWireReorient reorient) const
 {
     // ShapeAnalysis::OuterWire() is un-reliable for some reason. OCC source
     // code shows it works by creating face using each wire, and then test using
@@ -677,31 +716,33 @@ TopoShape TopoShape::splitWires(std::vector<TopoShape> *inner,
     // reliable method, especially so for a planar face.
 
     TopoDS_Shape tmp;
-    if (shapeType(true) == TopAbs_FACE)
+    if (shapeType(true) == TopAbs_FACE) {
         tmp = BRepTools::OuterWire(TopoDS::Face(_Shape));
-    else if (countSubShapes(TopAbs_FACE) == 1)
-        tmp = BRepTools::OuterWire(
-                TopoDS::Face(getSubShape(TopAbs_FACE, 1)));
-    if (tmp.IsNull())
+    }
+    else if (countSubShapes(TopAbs_FACE) == 1) {
+        tmp = BRepTools::OuterWire(TopoDS::Face(getSubShape(TopAbs_FACE, 1)));
+    }
+    if (tmp.IsNull()) {
         return TopoShape();
-    const auto & wires = getSubTopoShapes(TopAbs_WIRE);
+    }
+    const auto& wires = getSubTopoShapes(TopAbs_WIRE);
     auto it = wires.begin();
 
     TopAbs_Orientation orientOuter, orientInner;
-    switch(reorient) {
-    case ReorientReversed:
-        orientOuter = orientInner = TopAbs_REVERSED;
-        break;
-    case ReorientForward:
-        orientOuter = orientInner = TopAbs_FORWARD;
-        break;
-    default:
-        orientOuter = TopAbs_FORWARD;
-        orientInner = TopAbs_REVERSED;
-        break;
+    switch (reorient) {
+        case ReorientReversed:
+            orientOuter = orientInner = TopAbs_REVERSED;
+            break;
+        case ReorientForward:
+            orientOuter = orientInner = TopAbs_FORWARD;
+            break;
+        default:
+            orientOuter = TopAbs_FORWARD;
+            orientInner = TopAbs_REVERSED;
+            break;
     }
 
-    auto doReorient = [](TopoShape &s, TopAbs_Orientation orient) {
+    auto doReorient = [](TopoShape& s, TopAbs_Orientation orient) {
         // Special case of single edge wire. Make sure the edge is in the
         // required orientation. This is necessary because BRepFill_OffsetWire
         // has special handling of circular edge offset, which seem to only
@@ -710,36 +751,43 @@ TopoShape TopoShape::splitWires(std::vector<TopoShape> *inner,
         if (s.countSubShapes(TopAbs_EDGE) == 1) {
             TopoDS_Shape e = s.getSubShape(TopAbs_EDGE, 1);
             if (e.Orientation() == orient) {
-                if (s._Shape.Orientation() == orient)
+                if (s._Shape.Orientation() == orient) {
                     return;
-            } else
+                }
+            }
+            else {
                 e = e.Oriented(orient);
+            }
             BRepBuilderAPI_MakeWire mkWire(TopoDS::Edge(e));
             s.setShape(mkWire.Shape(), false);
         }
-        else if (s._Shape.Orientation() != orient)
+        else if (s._Shape.Orientation() != orient) {
             s.setShape(s._Shape.Oriented(orient), false);
+        }
     };
 
     for (; it != wires.end(); ++it) {
-        auto & wire = *it;
+        auto& wire = *it;
         if (wire.getShape().IsSame(tmp)) {
             if (inner) {
                 for (++it; it != wires.end(); ++it) {
                     inner->push_back(*it);
-                    if (reorient)
+                    if (reorient) {
                         doReorient(inner->back(), orientInner);
+                    }
                 }
             }
             auto res = wire;
-            if (reorient)
+            if (reorient) {
                 doReorient(res, orientOuter);
+            }
             return res;
         }
         if (inner) {
             inner->push_back(wire);
-            if (reorient)
+            if (reorient) {
                 doReorient(inner->back(), orientInner);
+            }
         }
     }
     return TopoShape();

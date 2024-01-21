@@ -81,7 +81,7 @@ class PartExport ShapeSegment: public Data::Segment
     TYPESYSTEM_HEADER_WITH_OVERRIDE();
 
 public:
-    ShapeSegment(const TopoDS_Shape& ShapeIn)
+    explicit ShapeSegment(const TopoDS_Shape& ShapeIn)
         : Shape(ShapeIn)
     {}
     ShapeSegment() = default;
