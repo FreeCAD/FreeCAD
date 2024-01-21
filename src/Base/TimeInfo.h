@@ -94,6 +94,40 @@ public:
     }
 };  // class TimeInfo
 
+using Ticks = std::chrono::steady_clock;
+
+class TimeElapsed: public std::chrono::time_point<Ticks>
+{
+public:
+    TimeElapsed()
+    {
+        setCurrent();
+    }
+
+    TimeElapsed(const TimeElapsed&) = default;
+    TimeElapsed(TimeElapsed&&) = default;
+    ~TimeElapsed() = default;
+
+    void setCurrent()
+    {
+        static_cast<std::chrono::time_point<Ticks>&>(*this) = Ticks::now();
+    }
+
+    static float diffTimeF(const TimeElapsed& start, const TimeElapsed& end = TimeElapsed())
+    {
+        const std::chrono::duration<float> duration = end - start;
+        return duration.count();
+    }
+
+    static std::string diffTime(const TimeElapsed& start, const TimeElapsed& end = TimeElapsed())
+    {
+        std::stringstream ss;
+        const std::chrono::duration<float> secs = end - start;
+        ss << secs.count();
+        return ss.str();
+    }
+};  // class TimeElapsed
+
 }  // namespace Base
 
 #endif  // BASE_TIMEINFO_H
