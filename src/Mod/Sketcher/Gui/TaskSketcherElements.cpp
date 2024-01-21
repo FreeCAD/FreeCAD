@@ -193,7 +193,12 @@ public:
     ~ElementItem() override
     {}
 
-    bool isVisible()
+    bool canBeHidden() const
+    {
+        return State != GeometryState::External;
+    }
+
+    bool isVisible() const
     {
         if (State != GeometryState::External) {
             const auto geo = sketchView->getSketchObject()->getGeometry(ElementNbr);
@@ -957,9 +962,13 @@ void ElementItemDelegate::drawSubControl(SubControl element,
             QStyleOptionButton checkboxOption;
 
             checkboxOption.initFrom(option.widget);
-
-            checkboxOption.state |= QStyle::State_Enabled;
             checkboxOption.rect = rect;
+
+            checkboxOption.state.setFlag(QStyle::State_Enabled, item->canBeHidden());
+
+            if (isHovered) {
+                checkboxOption.state |= QStyle::State_MouseOver;
+            }
 
             if (item->isVisible()) {
                 checkboxOption.state |= QStyle::State_On;
@@ -1040,10 +1049,12 @@ bool ElementItemDelegate::editorEvent(QEvent* event, QAbstractItemModel* model,
         item->clickedOn = getSubElementType(mouseEvent->pos());
         item->rightClicked = mouseEvent->button() == Qt::RightButton;
 
-        QRect checkboxRect = subControlRect(SubControl::CheckBox, option, index);
+        if (item->canBeHidden()) {
+            QRect checkboxRect = subControlRect(SubControl::CheckBox, option, index);
 
-        if (mouseEvent->button() == Qt::LeftButton && checkboxRect.contains(mouseEvent->pos())) {
-            Q_EMIT itemChecked(index, item->isVisible() ? Qt::Unchecked : Qt::Checked);
+            if (mouseEvent->button() == Qt::LeftButton && checkboxRect.contains(mouseEvent->pos())) {
+                Q_EMIT itemChecked(index, item->isVisible() ? Qt::Unchecked : Qt::Checked);
+            }
         }
     }
     else if (event->type() == QEvent::MouseMove) {
@@ -1056,7 +1067,7 @@ bool ElementItemDelegate::editorEvent(QEvent* event, QAbstractItemModel* model,
 
     return QStyledItemDelegate::editorEvent(event, model, option, index);
 }
-const QWidget *w
+
 ElementItem* ElementItemDelegate::getElementItem(const QModelIndex& index) const
 {
     ElementView* elementView = static_cast<ElementView*>(parent());
