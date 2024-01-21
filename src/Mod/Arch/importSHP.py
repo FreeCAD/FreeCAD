@@ -141,9 +141,7 @@ def checkShapeFileLibrary():
                     FreeCAD.Console.PrintError(translate("Arch","Error: Unable to download from:")+" "+url+"\n")
                     return False
                 b = u.read()
-                p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Macro")
-                fp = p.GetString("MacroPath",os.path.join(FreeCAD.getUserAppDataDir(),"Macros"))
-                fp = os.path.join(fp,"shapefile.py")
+                fp = os.path.join(FreeCAD.getUserMacroDir(True),"shapefile.py")
                 f = pythonopen(fp,"wb")
                 f.write(b)
                 f.close()

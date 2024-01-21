@@ -194,7 +194,6 @@ void execCircleCenterLines(Gui::Command* cmd)
     if (!_checkSel(cmd, selection, objFeat, QT_TRANSLATE_NOOP("Command","TechDraw Circle Centerlines")))
         return;
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Circle Centerlines"));
-    double scale = objFeat->getScale();
     const std::vector<std::string> SubNames = selection[0].getSubNames();
     for (const std::string& Name : SubNames) {
         int GeoId = TechDraw::DrawUtil::getIndexFromName(Name);
@@ -203,15 +202,19 @@ void execCircleCenterLines(Gui::Command* cmd)
         if (GeoType == "Edge") {
             if (geom->getGeomType() == TechDraw::CIRCLE || geom->getGeomType() == TechDraw::ARCOFCIRCLE) {
                 TechDraw::CirclePtr cgen = std::static_pointer_cast<TechDraw::Circle>(geom);
+                // center is a scaled and rotated point
                 Base::Vector3d center = cgen->center;
                 center.y = -center.y;
-                float radius = cgen->radius;
+                center = CosmeticVertex::makeCanonicalPoint(objFeat, center);
+                double radius = cgen->radius / objFeat->getScale();
+                // right, left, top, bottom are formed from a canonical point (center)
+                // so they do not need to be changed to canonical form.
                 Base::Vector3d right(center.x + radius + 2.0, center.y, 0.0);
                 Base::Vector3d top(center.x, center.y + radius + 2.0, 0.0);
                 Base::Vector3d left(center.x - radius - 2.0, center.y, 0.0);
                 Base::Vector3d bottom(center.x, center.y - radius - 2.0, 0.0);
-                std::string line1tag = objFeat->addCosmeticEdge(right / scale, left / scale);
-                std::string line2tag = objFeat->addCosmeticEdge(top / scale, bottom / scale);
+                std::string line1tag = objFeat->addCosmeticEdge(right, left);
+                std::string line2tag = objFeat->addCosmeticEdge(top, bottom);
                 TechDraw::CosmeticEdge* horiz = objFeat->getCosmeticEdge(line1tag);
                 _setLineAttributes(horiz);
                 TechDraw::CosmeticEdge* vert = objFeat->getCosmeticEdge(line2tag);

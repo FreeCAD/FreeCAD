@@ -99,6 +99,12 @@ PropertyEditor::PropertyEditor(QWidget *parent)
     setHeaderHidden(true);
     viewport()->installEventFilter(this);
     viewport()->setMouseTracking(true);
+
+    auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/DockWindows/PropertyView");
+    int firstColumnSize = hGrp->GetInt("FirstColumnSize", 0);
+    if (firstColumnSize != 0) {
+        header()->resizeSection(0, firstColumnSize);
+    }
 }
 
 PropertyEditor::~PropertyEditor()
@@ -868,6 +874,9 @@ bool PropertyEditor::eventFilter(QObject* object, QEvent* event) {
             else if (mouse_event->type() == QEvent::MouseButtonRelease &&
                 mouse_event->button() == Qt::LeftButton && dragInProgress) { 
                 dragInProgress = false;
+
+                auto hGrp = App::GetApplication().GetParameterGroupByPath("User parameter:BaseApp/Preferences/DockWindows/PropertyView");
+                hGrp->SetInt("FirstColumnSize", header()->sectionSize(0));
                 return true;
             }
         }

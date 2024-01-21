@@ -27,6 +27,8 @@ import DraftVecUtils
 import ArchIFC
 import tempfile
 import os
+from draftutils import params
+
 if FreeCAD.GuiUp:
     import FreeCADGui
     from draftutils.translate import translate
@@ -567,10 +569,10 @@ class ViewProviderBuildingPart:
             vobj.ShowLabel = True
         if not "FontName" in pl:
             vobj.addProperty("App::PropertyFont","FontName","BuildingPart",QT_TRANSLATE_NOOP("App::Property","The font to be used for texts"))
-            vobj.FontName = Draft.getParam("textfont","Arial")
+            vobj.FontName = params.get_param("textfont")
         if not "FontSize" in pl:
             vobj.addProperty("App::PropertyLength","FontSize","BuildingPart",QT_TRANSLATE_NOOP("App::Property","The font size of texts"))
-            vobj.FontSize = Draft.getParam("textheight",2.0)
+            vobj.FontSize = params.get_param("textheight") * params.get_param("DefaultAnnoScaleMultiplier")
         if not "DiffuseColor" in pl:
             vobj.addProperty("App::PropertyColorList","DiffuseColor","BuildingPart",QT_TRANSLATE_NOOP("App::Property","The individual face colors"))
 
@@ -600,17 +602,16 @@ class ViewProviderBuildingPart:
             vobj.addProperty("App::PropertyBool","ChildrenOverride","Children",QT_TRANSLATE_NOOP("App::Property","If true, show the objects contained in this Building Part will adopt these line, color and transparency settings"))
         if not "ChildrenLineWidth" in pl:
             vobj.addProperty("App::PropertyFloat","ChildrenLineWidth","Children",QT_TRANSLATE_NOOP("App::Property","The line width of child objects"))
-            vobj.LineWidth = 1
+            vobj.ChildrenLineWidth = params.get_param_view("DefaultShapeLineWidth")
         if not "ChildrenLineColor" in pl:
             vobj.addProperty("App::PropertyColor","ChildrenLineColor","Children",QT_TRANSLATE_NOOP("App::Property","The line color of child objects"))
-            c = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").GetUnsigned("DefaultShapeLineColor",255)
-            vobj.ChildrenLineColor = (float((c>>24)&0xFF)/255.0,float((c>>16)&0xFF)/255.0,float((c>>8)&0xFF)/255.0,0.0)
+            vobj.ChildrenLineColor = params.get_param_view("DefaultShapeLineColor") & 0xFFFFFF00
         if not "ChildrenShapeColor" in pl:
             vobj.addProperty("App::PropertyColor","ChildrenShapeColor","Children",QT_TRANSLATE_NOOP("App::Property","The shape color of child objects"))
-            c = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View").GetUnsigned("DefaultShapeColor",4294967295)
-            vobj.ChildrenLineColor = (float((c>>24)&0xFF)/255.0,float((c>>16)&0xFF)/255.0,float((c>>8)&0xFF)/255.0,0.0)
+            vobj.ChildrenShapeColor = params.get_param_view("DefaultShapeColor") & 0xFFFFFF00
         if not "ChildrenTransparency" in pl:
             vobj.addProperty("App::PropertyPercent","ChildrenTransparency","Children",QT_TRANSLATE_NOOP("App::Property","The transparency of child objects"))
+            vobj.ChildrenTransparency = params.get_param_view("DefaultShapeTransparency")
 
         # clip properties
         if not "CutView" in pl:
@@ -790,7 +791,7 @@ class ViewProviderBuildingPart:
                         txt += units.display_external(float(q),None,'Length',vobj.ShowUnit,u)
                     except Exception:
                         q = q.getValueAs(q.getUserPreferred()[2])
-                        d = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Units").GetInt("Decimals",0)
+                        d = params.get_param("Decimals",path="Units")
                         fmt = "{0:."+ str(d) + "f}"
                         if not vobj.ShowUnit:
                             u = ""

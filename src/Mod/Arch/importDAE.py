@@ -20,6 +20,8 @@
 #***************************************************************************
 
 import FreeCAD, Mesh, os, numpy, MeshPart, Arch, Draft
+from draftutils import params
+
 if FreeCAD.GuiUp:
     from draftutils.translate import translate
 else:
@@ -65,15 +67,14 @@ def triangulate(shape):
 
     "triangulates the given face"
 
-    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-    mesher = p.GetInt("ColladaMesher",0)
-    tessellation = p.GetFloat("ColladaTessellation",1.0)
-    grading = p.GetFloat("ColladaGrading",0.3)
-    segsperedge = p.GetInt("ColladaSegsPerEdge",1)
-    segsperradius = p.GetInt("ColladaSegsPerRadius",2)
-    secondorder = p.GetBool("ColladaSecondOrder",False)
-    optimize = p.GetBool("ColladaOptimize",True)
-    allowquads = p.GetBool("ColladaAllowQuads",False)
+    mesher = params.get_param_arch("ColladaMesher")
+    tessellation = params.get_param_arch("ColladaTessellation")
+    grading = params.get_param_arch("ColladaGrading")
+    segsperedge = params.get_param_arch("ColladaSegsPerEdge")
+    segsperradius = params.get_param_arch("ColladaSegsPerRadius")
+    secondorder = params.get_param_arch("ColladaSecondOrder")
+    optimize = params.get_param_arch("ColladaOptimize")
+    allowquads = params.get_param_arch("ColladaAllowQuads")
     if mesher == 0:
         return shape.tessellate(tessellation)
     elif mesher == 1:
@@ -178,12 +179,9 @@ def export(exportList,filename,tessellation=1,colors=None):
     curved surfaces into triangles."""
 
     if not checkCollada(): return
-    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch")
-    scale = p.GetFloat("ColladaScalingFactor",1.0)
+    scale = params.get_param_arch("ColladaScalingFactor")
     scale = scale * 0.001 # from millimeters (FreeCAD) to meters (Collada)
-    p = FreeCAD.ParamGet("User parameter:BaseApp/Preferences/View")
-    c = p.GetUnsigned("DefaultShapeColor",4294967295)
-    defaultcolor = (float((c>>24)&0xFF)/255.0,float((c>>16)&0xFF)/255.0,float((c>>8)&0xFF)/255.0)
+    defaultcolor = Draft.get_rgba_tuple(params.get_param_view("DefaultShapeColor"))[:3]
     colmesh = collada.Collada()
     colmesh.assetInfo.upaxis = collada.asset.UP_AXIS.Z_UP
     # authoring info

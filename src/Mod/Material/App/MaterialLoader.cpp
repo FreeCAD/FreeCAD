@@ -21,16 +21,12 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QString>
-#endif
-
 #include <QDirIterator>
 #include <QFileInfo>
 #include <QList>
 #include <QMetaType>
-
-#if QT_VERSION >= QT_VERSION_CHECK(6,0,0)
-#include <QtCore5Compat/QRegExp>
+#include <QRegularExpression>
+#include <QString>
 #endif
 
 #include <App/Application.h>
@@ -85,7 +81,7 @@ std::shared_ptr<QList<QVariant>> MaterialYamlEntry::readList(const YAML::Node& n
         QVariant nodeValue;
         if (isImageList) {
             nodeValue = QString::fromStdString(it->as<std::string>())
-                            .remove(QRegExp(QString::fromStdString("[\r\n]")));
+                            .remove(QRegularExpression(QString::fromStdString("[\r\n]")));
         }
         else {
             nodeValue = QString::fromStdString(it->as<std::string>());
@@ -247,7 +243,7 @@ void MaterialYamlEntry::addToTree(
                                 QString::fromStdString((itp->second).as<std::string>());
                             if (type == MaterialValue::Image) {
                                 propertyValue =
-                                    propertyValue.remove(QRegExp(QString::fromStdString("[\r\n]")));
+                                    propertyValue.remove(QRegularExpression(QString::fromStdString("[\r\n]")));
                             }
                             finalModel->setPhysicalValue(QString::fromStdString(propertyName),
                                                          propertyValue);
@@ -314,7 +310,7 @@ void MaterialYamlEntry::addToTree(
                                 QString::fromStdString((itp->second).as<std::string>());
                             if (type == MaterialValue::Image) {
                                 propertyValue =
-                                    propertyValue.remove(QRegExp(QString::fromStdString("[\r\n]")));
+                                    propertyValue.remove(QRegularExpression(QString::fromStdString("[\r\n]")));
                             }
                             finalModel->setAppearanceValue(QString::fromStdString(propertyName),
                                                            propertyValue);

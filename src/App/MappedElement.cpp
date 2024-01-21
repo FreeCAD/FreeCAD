@@ -32,102 +32,133 @@
 
 using namespace Data;
 
-bool ElementNameComp::operator()(const MappedName &a, const MappedName &b) const {
-    size_t size = std::min(a.size(),b.size());
-    if(!size)
-        return a.size()<b.size();
-    size_t i=0;
-    if(b[0] == '#') {
-        if(a[0]!='#')
+bool ElementNameComparator::operator()(const MappedName& leftName,
+                                       const MappedName& rightName) const
+{
+    int size = static_cast<int>(std::min(leftName.size(), rightName.size()));
+    if (size == 0U) {
+        return leftName.size() < rightName.size();
+    }
+    int currentIndex = 0;
+    if (rightName[0] == '#') {
+        if (leftName[0] != '#') {
             return true;
+        }
         // If both string starts with '#', compare the following hex digits by
         // its integer value.
         int res = 0;
-        for(i=1;i<size;++i) {
-            unsigned char ac = (unsigned char)a[i];
-            unsigned char bc = (unsigned char)b[i];
-            if(std::isxdigit(bc)) {
-                if(!std::isxdigit(ac))
+        for (currentIndex = 1; currentIndex < size; ++currentIndex) {
+            auto ac = (unsigned char)leftName[currentIndex];
+            auto bc = (unsigned char)rightName[currentIndex];
+            if (std::isxdigit(bc) != 0) {
+                if (std::isxdigit(ac) == 0) {
                     return true;
-                if(res==0) {
-                    if(ac<bc)
-                        res = -1;
-                    else if(ac>bc)
-                        res = 1;
                 }
-            }else if(std::isxdigit(ac))
-                return false;
-            else
+                if (res == 0) {
+                    if (ac < bc) {
+                        res = -1;
+                    }
+                    else if (ac > bc) {
+                        res = 1;
+                    }
+                }
+            }
+            else if (std::isxdigit(ac) != 0) {
+                res = 1;
+            }
+            else {
                 break;
+            }
         }
-        if(res < 0)
+        if (res < 0) {
             return true;
-        else if(res > 0)
-            return false;
-
-        for (; i<size; ++i) {
-            char ac = a[i];
-            char bc = b[i];
-            if (ac < bc)
-                return true;
-            if (ac > bc)
-                return false;
         }
-        return a.size()<b.size();
+        if (res > 0) {
+            return false;
+        }
+
+        for (; currentIndex < size; ++currentIndex) {
+            char ac = leftName[currentIndex];
+            char bc = rightName[currentIndex];
+            if (ac < bc) {
+                return true;
+            }
+            if (ac > bc) {
+                return false;
+            }
+        }
+        return leftName.size() < rightName.size();
     }
-    else if (a[0] == '#')
+    if (leftName[0] == '#') {
         return false;
+    }
 
     // If the string does not start with '#', compare the non-digits prefix
     // using lexical order.
-    for(i=0;i<size;++i) {
-        unsigned char ac = (unsigned char)a[i];
-        unsigned char bc = (unsigned char)b[i];
-        if(!std::isdigit(bc)) {
-            if(std::isdigit(ac))
+    for (currentIndex = 0; currentIndex < size; ++currentIndex) {
+        auto ac = (unsigned char)leftName[currentIndex];
+        auto bc = (unsigned char)rightName[currentIndex];
+        if (std::isdigit(bc) == 0) {
+            if (std::isdigit(ac) != 0) {
                 return true;
-            if(ac<bc)
+            }
+            if (ac < bc) {
                 return true;
-            if(ac>bc)
+            }
+            if (ac > bc) {
                 return false;
-        } else if(!std::isdigit(ac)) {
+            }
+        }
+        else if (std::isdigit(ac) == 0) {
             return false;
-        } else
+        }
+        else {
             break;
+        }
     }
 
     // Then compare the following digits part by integer value
     int res = 0;
-    for(;i<size;++i) {
-        unsigned char ac = (unsigned char)a[i];
-        unsigned char bc = (unsigned char)b[i];
-        if(std::isdigit(bc)) {
-            if(!std::isdigit(ac))
+    for (; currentIndex < size; ++currentIndex) {
+        auto ac = (unsigned char)leftName[currentIndex];
+        auto bc = (unsigned char)rightName[currentIndex];
+        if (std::isdigit(bc) != 0) {
+            if (std::isdigit(ac) == 0) {
                 return true;
-            if(res==0) {
-                if(ac<bc)
-                    res = -1;
-                else if(ac>bc)
-                    res = 1;
             }
-        }else if(std::isdigit(ac))
+            if (res == 0) {
+                if (ac < bc) {
+                    res = -1;
+                }
+                else if (ac > bc) {
+                    res = 1;
+                }
+            }
+        }
+        else if (std::isdigit(ac) != 0) {
             return false;
-        else
+        }
+        else {
             break;
+        }
     }
-    if(res < 0)
+    if (res < 0) {
         return true;
-    else if(res > 0)
+    }
+    if (res > 0) {
         return false;
+    }
 
     // Finally, compare the remaining tail using lexical order
-    for (; i<size; ++i) {
-        char ac = a[i];
-        char bc = b[i];
-        if (ac < bc)
+    for (; currentIndex < size; ++currentIndex) {
+        char ac = leftName[currentIndex];
+        char bc = rightName[currentIndex];
+        if (ac < bc) {
             return true;
-        if (ac > bc)
+        }
+        if (ac > bc) {
             return false;
+        }
     }
-    return a.size()<b.size();
+    return leftName.size() < rightName.size();
 }

@@ -30,9 +30,10 @@ import os
 import json
 
 import FreeCAD
+from draftutils import params
 
 ifcVersions = ["IFC4", "IFC2X3"]
-IfcVersion = ifcVersions[FreeCAD.ParamGet("User parameter:BaseApp/Preferences/Mod/Arch").GetInt("IfcVersion",0)]
+IfcVersion = ifcVersions[params.get_param_arch("IfcVersion")]
 
 with open(os.path.join(FreeCAD.getResourceDir(), "Mod", "Arch", "Presets",
 "ifc_contexts_" + IfcVersion + ".json")) as f:

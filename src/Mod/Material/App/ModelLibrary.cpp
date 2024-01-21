@@ -21,9 +21,8 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#endif
-
 #include <string>
+#endif
 
 #include <App/Application.h>
 
@@ -55,7 +54,7 @@ QString LibraryBase::getLocalPath(const QString& path) const
     QString prefix = QString::fromStdString("/") + getName();
     if (cleanPath.startsWith(prefix)) {
         // Remove the library name from the path
-        filePath += cleanPath.rightRef(cleanPath.length() - prefix.length());
+        filePath += cleanPath.right(cleanPath.length() - prefix.length());
     }
     else {
         filePath += cleanPath;

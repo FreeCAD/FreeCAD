@@ -31,9 +31,8 @@
 #include <QStringList>
 #include <QTextStream>
 #include <QVariant>
-#endif
-
 #include <limits>
+#endif
 
 #include <App/Application.h>
 #include <App/License.h>
