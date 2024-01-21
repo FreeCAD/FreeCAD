@@ -2745,24 +2745,6 @@ double ConstraintAngleViaPointAndParam::grad(double* param)
     deriv -= ((-n1.dx) * n1.y / pow(n1.length(), 2) + n1.dy * n1.x / pow(n1.length(), 2));
     deriv += ((-n2.dx) * n2.y / pow(n2.length(), 2) + n2.dy * n2.x / pow(n2.length(), 2));
 
-
-// use numeric for testing
-#if 0
-    double const eps = 0.00001;
-    double oldparam = *param;
-    double v0 = this->error();
-    *param += eps;
-    double vr = this->error();
-    *param = oldparam - eps;
-    double vl = this->error();
-    *param = oldparam;
-    //If not nasty, real derivative should be between left one and right one
-    double numretl = (v0-vl)/eps;
-    double numretr = (vr-v0)/eps;
-    assert(deriv <= std::max(numretl,numretr) );
-    assert(deriv >= std::min(numretl,numretr) );
-#endif
-
     return scale * deriv;
 }
 
@@ -2863,24 +2845,6 @@ double ConstraintAngleViaPointAndTwoParams::grad(double* param)
     DeriVector2 n2 = crv2->CalculateNormal(cparam2(), param);
     deriv -= ((-n1.dx) * n1.y / pow(n1.length(), 2) + n1.dy * n1.x / pow(n1.length(), 2));
     deriv += ((-n2.dx) * n2.y / pow(n2.length(), 2) + n2.dy * n2.x / pow(n2.length(), 2));
-
-
-// use numeric for testing
-#if 0
-    double const eps = 0.00001;
-    double oldparam = *param;
-    double v0 = this->error();
-    *param += eps;
-    double vr = this->error();
-    *param = oldparam - eps;
-    double vl = this->error();
-    *param = oldparam;
-    //If not nasty, real derivative should be between left one and right one
-    double numretl = (v0-vl)/eps;
-    double numretr = (vr-v0)/eps;
-    assert(deriv <= std::max(numretl,numretr) );
-    assert(deriv >= std::min(numretl,numretr) );
-#endif
 
     return scale * deriv;
 }
