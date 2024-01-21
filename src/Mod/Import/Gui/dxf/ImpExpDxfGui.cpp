@@ -82,6 +82,7 @@ void ImpExpDxfReadGui::ApplyGuiStyles(Part::Feature* object)
     view->LineColor.setValue(color);
     view->PointColor.setValue(color);
     view->ShapeColor.setValue(color);
+    view->Transparency.setValue(0);
 }
 
 void ImpExpDxfReadGui::ApplyGuiStyles(App::FeaturePython* object)
