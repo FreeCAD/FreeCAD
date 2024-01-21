@@ -173,7 +173,7 @@ struct ElementName {
             return true;
         if(tag>other.tag)
             return false;
-        return Data::ElementNameComp()(name,other.name);
+        return Data::ElementNameComparator()(name,other.name);
     }
 };
 
