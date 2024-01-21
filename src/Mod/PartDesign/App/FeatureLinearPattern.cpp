@@ -254,12 +254,14 @@ void LinearPattern::onChanged(const App::Property* prop)
         setReadWriteStatusForMode(mode);
     }
 
-    // Keep Length in sync with Offset
-    if (mode == LinearPatternMode::offset && prop == &Offset && !Length.testStatus(App::Property::Status::Immutable)) {
+    // Keep Length in sync with Offset, catch Occurrences changes
+    if (mode == LinearPatternMode::offset && (prop == &Offset || prop == &Occurrences)
+        && !Length.testStatus(App::Property::Status::Immutable)) {
         Length.setValue(Offset.getValue() * (Occurrences.getValue() - 1));
     }
 
-    if (mode == LinearPatternMode::length && prop == &Length && !Offset.testStatus(App::Property::Status::Immutable)) {
+    if (mode == LinearPatternMode::length && (prop == &Length || prop == &Occurrences)
+        && !Offset.testStatus(App::Property::Status::Immutable)) {
         Offset.setValue(Length.getValue() / (Occurrences.getValue() - 1));
     }
 
