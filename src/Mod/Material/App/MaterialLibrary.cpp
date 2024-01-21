@@ -22,10 +22,10 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <QVector>
-#endif
-
 #include <QDirIterator>
 #include <QFileInfo>
+#endif
+
 
 #include <App/Application.h>
 
