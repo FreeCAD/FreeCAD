@@ -77,14 +77,6 @@ void TimeInfo::setTime_t(int64_t seconds)
     timebuffer.time = seconds;
 }
 
-std::string TimeInfo::currentDateTimeString()
-{
-    return QDateTime::currentDateTime()
-        .toTimeSpec(Qt::OffsetFromUTC)
-        .toString(Qt::ISODate)
-        .toStdString();
-}
-
 std::string TimeInfo::diffTime(const TimeInfo& timeStart, const TimeInfo& timeEnd)
 {
     std::stringstream str;

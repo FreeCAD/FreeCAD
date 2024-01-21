@@ -1359,7 +1359,7 @@ bool Cloud::Module::cloudSave(const char* BucketName)
         doc->TipName.setValue(doc->Tip.getValue()->getNameInDocument());
     }
 
-    std::string LastModifiedDateString = Base::TimeInfo::currentDateTimeString();
+    std::string LastModifiedDateString = Base::Tools::currentDateTimeString();
     doc->LastModifiedDate.setValue(LastModifiedDateString.c_str());
     // set author if needed
     bool saveAuthor = App::GetApplication()

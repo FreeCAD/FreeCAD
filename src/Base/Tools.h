@@ -346,6 +346,8 @@ struct BaseExport Tools
      * @return
      */
     static std::string joinList(const std::vector<std::string>& vec, const std::string& sep = ", ");
+
+    static std::string currentDateTimeString();
 };
 
 

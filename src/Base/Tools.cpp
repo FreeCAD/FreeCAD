@@ -26,6 +26,7 @@
 #include <sstream>
 #include <locale>
 #include <iostream>
+#include <QDateTime>
 #include <QElapsedTimer>
 #endif
 
@@ -363,6 +364,14 @@ std::string Base::Tools::joinList(const std::vector<std::string>& vec, const std
         str << it << sep;
     }
     return str.str();
+}
+
+std::string Base::Tools::currentDateTimeString()
+{
+    return QDateTime::currentDateTime()
+        .toTimeSpec(Qt::OffsetFromUTC)
+        .toString(Qt::ISODate)
+        .toStdString();
 }
 
 // ----------------------------------------------------------------------------
