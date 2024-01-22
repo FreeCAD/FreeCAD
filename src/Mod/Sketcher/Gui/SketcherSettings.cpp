@@ -34,7 +34,7 @@
 
 #include "SketcherSettings.h"
 #include "ui_SketcherSettings.h"
-#include "ui_SketcherSettingsColors.h"
+#include "ui_SketcherSettingsAppearance.h"
 #include "ui_SketcherSettingsDisplay.h"
 #include "ui_SketcherSettingsGrid.h"
 
@@ -42,6 +42,49 @@
 using namespace SketcherGui;
 
 /* TRANSLATOR SketcherGui::SketcherSettings */
+
+QList<int> getPenStyles()
+{
+    QList<int> styles;
+    styles << 0b1111111111111111   // solid
+           << 0b1110111011101110   // dashed 3:1
+           << 0b1111110011111100   // dashed 6:2
+           << 0b0000111100001111   // dashed 4:4
+           << 0b1010101010101010   // point 1:1
+           << 0b1110010011100100   // dash point
+           << 0b1111111100111100;  // dash long-dash
+    return styles;
+}
+
+const QVector<qreal> binaryPatternToDashPattern(int binaryPattern)
+{
+    QVector<qreal> dashPattern;
+    int count = 0;
+    bool isDash = (binaryPattern & 0x8000) != 0;  // Check the highest bit
+
+    for (int i = 0; i < 16; ++i) {
+        bool currentBit = (binaryPattern & (0x8000 >> i)) != 0;
+        if (currentBit == isDash) {
+            ++count;  // Counting dashes or spaces
+        }
+        else {
+            // Adjust count to be odd for dashes and even for spaces (see qt doc)
+            count = (count % 2 == (isDash ? 0 : 1)) ? count + 1 : count;
+            dashPattern << count;
+            count = 1;  // Reset count for next dash/space
+            isDash = !isDash;
+        }
+    }
+    count = (count % 2 == (isDash ? 0 : 1)) ? count + 1 : count;
+    dashPattern << count;  // Add the last count
+
+    if ((dashPattern.size() % 2) == 1) {
+        // prevent this error : qWarning("QPen::setDashPattern: Pattern not of even length");
+        dashPattern << 1;
+    }
+
+    return dashPattern;
+}
 
 SketcherSettings::SketcherSettings(QWidget* parent)
     : PreferencePage(parent)
@@ -206,17 +249,17 @@ SketcherSettingsGrid::SketcherSettingsGrid(QWidget* parent)
 {
     ui->setupUi(this);
 
-    QList<QPair<Qt::PenStyle, int>> styles;
-    styles << qMakePair(Qt::SolidLine, 0xffff) << qMakePair(Qt::DashLine, 0x0f0f)
-           << qMakePair(Qt::DotLine, 0xaaaa);
+    QList<int> styles = getPenStyles();
 
     ui->gridLinePattern->setIconSize(QSize(80, 12));
     ui->gridDivLinePattern->setIconSize(QSize(80, 12));
-    for (QList<QPair<Qt::PenStyle, int>>::iterator it = styles.begin(); it != styles.end(); ++it) {
+    for (auto& style : styles) {
         QPixmap px(ui->gridLinePattern->iconSize());
         px.fill(Qt::transparent);
         QBrush brush(Qt::black);
-        QPen pen(it->first);
+
+        QPen pen;
+        pen.setDashPattern(binaryPatternToDashPattern(style));
         pen.setBrush(brush);
         pen.setWidth(2);
 
@@ -226,8 +269,8 @@ SketcherSettingsGrid::SketcherSettingsGrid(QWidget* parent)
         painter.drawLine(0, mid, ui->gridLinePattern->iconSize().width(), mid);
         painter.end();
 
-        ui->gridLinePattern->addItem(QIcon(px), QString(), QVariant(it->second));
-        ui->gridDivLinePattern->addItem(QIcon(px), QString(), QVariant(it->second));
+        ui->gridLinePattern->addItem(QIcon(px), QString(), QVariant(style));
+        ui->gridDivLinePattern->addItem(QIcon(px), QString(), QVariant(style));
     }
 }
 
@@ -273,13 +316,13 @@ void SketcherSettingsGrid::loadSettings()
 
     ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
         "User parameter:BaseApp/Preferences/Mod/Sketcher/General");
-    int pattern = hGrp->GetInt("GridLinePattern", 0x0f0f);
+    int pattern = hGrp->GetInt("GridLinePattern", 0b0000111100001111);
     int index = ui->gridLinePattern->findData(QVariant(pattern));
     if (index < 0) {
         index = 1;
     }
     ui->gridLinePattern->setCurrentIndex(index);
-    pattern = hGrp->GetInt("GridDivLinePattern", 0xffff);
+    pattern = hGrp->GetInt("GridDivLinePattern", 0b1111111111111111);
     index = ui->gridDivLinePattern->findData(QVariant(pattern));
     if (index < 0) {
         index = 0;
@@ -412,24 +455,51 @@ void SketcherSettingsDisplay::onBtnTVApplyClicked(bool)
 }
 
 
-/* TRANSLATOR SketcherGui::SketcherSettingsColors */
+/* TRANSLATOR SketcherGui::SketcherSettingsAppearance */
 
-SketcherSettingsColors::SketcherSettingsColors(QWidget* parent)
+SketcherSettingsAppearance::SketcherSettingsAppearance(QWidget* parent)
     : PreferencePage(parent)
-    , ui(new Ui_SketcherSettingsColors)
+    , ui(new Ui_SketcherSettingsAppearance)
 {
     ui->setupUi(this);
+
+    QList<int> styles = getPenStyles();
+
+    ui->EdgePattern->setIconSize(QSize(70, 12));
+    ui->ConstructionPattern->setIconSize(QSize(70, 12));
+    ui->InternalPattern->setIconSize(QSize(70, 12));
+    ui->ExternalPattern->setIconSize(QSize(70, 12));
+    for (auto& style : styles) {
+        QPixmap px(ui->EdgePattern->iconSize());
+        px.fill(Qt::transparent);
+        QBrush brush(Qt::black);
+        QPen pen;
+        pen.setDashPattern(binaryPatternToDashPattern(style));
+        pen.setBrush(brush);
+        pen.setWidth(2);
+
+        QPainter painter(&px);
+        painter.setPen(pen);
+        double mid = ui->EdgePattern->iconSize().height() / 2.0;
+        painter.drawLine(0, mid, ui->EdgePattern->iconSize().width(), mid);
+        painter.end();
+
+        ui->EdgePattern->addItem(QIcon(px), QString(), QVariant(style));
+        ui->ConstructionPattern->addItem(QIcon(px), QString(), QVariant(style));
+        ui->InternalPattern->addItem(QIcon(px), QString(), QVariant(style));
+        ui->ExternalPattern->addItem(QIcon(px), QString(), QVariant(style));
+    }
 }
 
 /**
  *  Destroys the object and frees any allocated resources
  */
-SketcherSettingsColors::~SketcherSettingsColors()
+SketcherSettingsAppearance::~SketcherSettingsAppearance()
 {
     // no need to delete child widgets, Qt does it all for us
 }
 
-void SketcherSettingsColors::saveSettings()
+void SketcherSettingsAppearance::saveSettings()
 {
     // Sketcher
     ui->SketchEdgeColor->onSave();
@@ -455,9 +525,32 @@ void SketcherSettingsColors::saveSettings()
     ui->CursorTextColor->onSave();
     ui->CursorCrosshairColor->onSave();
     ui->CreateLineColor->onSave();
+
+    ui->EdgeWidth->onSave();
+    ui->ConstructionWidth->onSave();
+    ui->InternalWidth->onSave();
+    ui->ExternalWidth->onSave();
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/View");
+    QVariant data = ui->EdgePattern->itemData(ui->EdgePattern->currentIndex());
+    int pattern = data.toInt();
+    hGrp->SetInt("EdgePattern", pattern);
+
+    data = ui->ConstructionPattern->itemData(ui->ConstructionPattern->currentIndex());
+    pattern = data.toInt();
+    hGrp->SetInt("ConstructionPattern", pattern);
+
+    data = ui->InternalPattern->itemData(ui->InternalPattern->currentIndex());
+    pattern = data.toInt();
+    hGrp->SetInt("InternalPattern", pattern);
+
+    data = ui->ExternalPattern->itemData(ui->ExternalPattern->currentIndex());
+    pattern = data.toInt();
+    hGrp->SetInt("ExternalPattern", pattern);
 }
 
-void SketcherSettingsColors::loadSettings()
+void SketcherSettingsAppearance::loadSettings()
 {
     // Sketcher
     ui->SketchEdgeColor->onRestore();
@@ -483,12 +576,47 @@ void SketcherSettingsColors::loadSettings()
     ui->CursorTextColor->onRestore();
     ui->CursorCrosshairColor->onRestore();
     ui->CreateLineColor->onRestore();
+
+    ui->EdgeWidth->onRestore();
+    ui->ConstructionWidth->onRestore();
+    ui->InternalWidth->onRestore();
+    ui->ExternalWidth->onRestore();
+
+    ParameterGrp::handle hGrp = App::GetApplication().GetParameterGroupByPath(
+        "User parameter:BaseApp/Preferences/Mod/Sketcher/View");
+    int pattern = hGrp->GetInt("EdgePattern", 0b1111111111111111);
+    int index = ui->EdgePattern->findData(QVariant(pattern));
+    if (index < 0) {
+        index = 0;
+    }
+    ui->EdgePattern->setCurrentIndex(index);
+
+    pattern = hGrp->GetInt("ConstructionPattern", 0b1111110011111100);
+    index = ui->ConstructionPattern->findData(QVariant(pattern));
+    if (index < 0) {
+        index = 0;
+    }
+    ui->ConstructionPattern->setCurrentIndex(index);
+
+    pattern = hGrp->GetInt("InternalPattern", 0b1111110011111100);
+    index = ui->InternalPattern->findData(QVariant(pattern));
+    if (index < 0) {
+        index = 0;
+    }
+    ui->InternalPattern->setCurrentIndex(index);
+
+    pattern = hGrp->GetInt("ExternalPattern", 0b1110010011100100);
+    index = ui->ExternalPattern->findData(QVariant(pattern));
+    if (index < 0) {
+        index = 0;
+    }
+    ui->ExternalPattern->setCurrentIndex(index);
 }
 
 /**
  * Sets the strings of the subwidgets using the current language.
  */
-void SketcherSettingsColors::changeEvent(QEvent* e)
+void SketcherSettingsAppearance::changeEvent(QEvent* e)
 {
     if (e->type() == QEvent::LanguageChange) {
         ui->retranslateUi(this);

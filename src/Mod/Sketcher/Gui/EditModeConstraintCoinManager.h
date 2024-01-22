@@ -250,6 +250,13 @@ private:
 
     /// Essentially a version of sendConstraintIconToCoin, with a blank icon
     void clearCoinImage(SoImage* soImagePtr);
+
+    /// Find helper angle for radius/diameter constraint
+    void findHelperAngles(double& helperStartAngle,
+                          double& helperAngle,
+                          double angle,
+                          double startAngle,
+                          double endAngle);
     //@}
 
 private:

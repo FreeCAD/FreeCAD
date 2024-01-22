@@ -579,23 +579,19 @@ public:
      */
     bool isActive(Base::LogStyle category) const
     {
-        if (category == Base::LogStyle::Log) {
-            return bLog;
-        }
-        if (category == Base::LogStyle::Warning) {
-            return bWrn;
-        }
-        if (category == Base::LogStyle::Error) {
-            return bErr;
-        }
-        if (category == Base::LogStyle::Message) {
-            return bMsg;
-        }
-        if (category == Base::LogStyle::Critical) {
-            return bCritical;
-        }
-        if (category == Base::LogStyle::Notification) {
-            return bNotification;
+        switch (category) {
+            case Base::LogStyle::Log:
+                return bLog;
+            case Base::LogStyle::Warning:
+                return bWrn;
+            case Base::LogStyle::Error:
+                return bErr;
+            case Base::LogStyle::Message:
+                return bMsg;
+            case Base::LogStyle::Critical:
+                return bCritical;
+            case Base::LogStyle::Notification:
+                return bNotification;
         }
 
         return false;

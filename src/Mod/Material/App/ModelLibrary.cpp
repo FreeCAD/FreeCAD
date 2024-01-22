@@ -99,7 +99,7 @@ QString LibraryBase::getRelativePath(const QString& path) const
     return filePath;
 }
 
-TYPESYSTEM_SOURCE(Materials::ModelLibrary, LibraryBase)
+TYPESYSTEM_SOURCE(Materials::ModelLibrary, Materials::LibraryBase)
 
 ModelLibrary::ModelLibrary(const QString& libraryName, const QString& dir, const QString& icon)
     : LibraryBase(libraryName, dir, icon)

@@ -557,7 +557,8 @@ class ViewProviderLayerContainer:
         doc = App.ActiveDocument
         doc.openTransaction(translate("draft", "Add new layer"))
 
-        Draft.make_layer()
+        Draft.make_layer(name=None, line_color=None, shape_color=None,
+                         line_width=None, draw_style=None, transparency=None)
 
         doc.recompute()
         doc.commitTransaction()

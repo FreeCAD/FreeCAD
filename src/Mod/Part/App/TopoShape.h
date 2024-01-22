@@ -639,6 +639,27 @@ public:
     bool hasPendingElementMap() const;
 
 
+    /** Helper class to return the generated and modified shape given an input shape
+     *
+     * Shape history information is extracted using OCCT APIs
+     * BRepBuilderAPI_MakeShape::Generated/Modified(). However, there is often
+     * some glitches in various derived class. So we use this class as an
+     * abstraction, and create various derived classes to deal with the glitches.
+     */
+    struct PartExport Mapper {
+        /// Helper vector for temporary storage of both generated and modified shapes
+        mutable std::vector<TopoDS_Shape> _res;
+        virtual ~Mapper() {}
+        /// Return a list of shape generated from the given input shape
+        virtual const std::vector<TopoDS_Shape> &generated(const TopoDS_Shape &) const {
+            return _res;
+        }
+        /// Return a list of shape modified from the given input shape
+        virtual const std::vector<TopoDS_Shape> &modified(const TopoDS_Shape &) const {
+            return _res;
+        }
+    };
+
     /** Make a compound shape
      *
      * @param shapes: input shapes
@@ -708,6 +729,40 @@ public:
         Curved,
     };
 
+    struct BRepFillingParams;
+
+    /** Provides information about the continuity of a curve.
+     *  Corresponds to OCCT type GeomAbs_Shape
+     */
+    enum class Continuity {
+        /// Only geometric continuity
+        C0,
+        /** for each point on the curve, the tangent vectors 'on the right' and 'on
+        *  the left' are collinear with the same orientation.
+        */
+        G1, 
+        /** Continuity of the first derivative. The 'C1' curve is also 'G1' but, in
+        *  addition, the tangent vectors 'on the right' and 'on the left' are equal.
+        */
+        C1,
+
+        /** For each point on the curve, the normalized normal vectors 'on the
+        *  right' and 'on the left' are equal.
+        */
+        G2,
+
+        /// Continuity of the second derivative.
+        C2,
+
+        /// Continuity of the third derivative.
+        C3,
+
+        /** Continuity of the N-th derivative, whatever is the value given for N
+        * (infinite order of continuity). Also provides information about the
+        * continuity of a surface.
+        */
+        CN,
+    };
 
     friend class TopoShapeCache;
 

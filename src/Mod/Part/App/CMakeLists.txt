@@ -533,6 +533,8 @@ SET(Part_SRCS
     TopoShapeCache.cpp
     TopoShapeCache.h
     TopoShapeExpansion.cpp
+    TopoShapeMapper.h
+    TopoShapeMapper.cpp
     TopoShapeOpCode.h
     edgecluster.cpp
     edgecluster.h
