@@ -195,8 +195,8 @@ CreateFaceWithRoundHole(float len = 2.0, float wid = 3.0, float radius = 1.0)
 TEST_F(TopoShapeExpansionTest, makeElementFaceNull)
 {
     // Arrange
-    const double L = 3, W = 2, R = 1;
-    auto [face1, wire1, wire2] = CreateFaceWithRoundHole(L, W, R);
+    const double Len = 3, Wid = 2, Rad = 1;
+    auto [face1, wire1, wire2] = CreateFaceWithRoundHole(Len, Wid, Rad);
     Part::TopoShape topoShape {face1};
     double area = PartTestHelpers::getArea(face1);
     double area1 = PartTestHelpers::getArea(topoShape.getShape());
@@ -206,18 +206,18 @@ TEST_F(TopoShapeExpansionTest, makeElementFaceNull)
     double area3 = PartTestHelpers::getArea(topoShape.getShape());
     // Assert
     EXPECT_FALSE(face1.IsEqual(newFace.getShape()));
-    EXPECT_FLOAT_EQ(area, L * W + M_PI * R * R);
-    EXPECT_FLOAT_EQ(area1, L * W + M_PI * R * R);
-    EXPECT_FLOAT_EQ(area2, L * W - M_PI * R * R);
-    EXPECT_FLOAT_EQ(area3, L * W + M_PI * R * R);
+    EXPECT_FLOAT_EQ(area, Len * Wid + M_PI * Rad * Rad);
+    EXPECT_FLOAT_EQ(area1, Len * Wid + M_PI * Rad * Rad);
+    EXPECT_FLOAT_EQ(area2, Len * Wid - M_PI * Rad * Rad);
+    EXPECT_FLOAT_EQ(area3, Len * Wid + M_PI * Rad * Rad);
     EXPECT_STREQ(newFace.shapeName().c_str(), "Face");
 }
 
 TEST_F(TopoShapeExpansionTest, makeElementFaceSimple)
 {
     // Arrange
-    const double L = 3, W = 2, R = 1;
-    auto [face1, wire1, wire2] = CreateFaceWithRoundHole(L, W, R);
+    const double Len = 3, Wid = 2, Rad = 1;
+    auto [face1, wire1, wire2] = CreateFaceWithRoundHole(Len, Wid, Rad);
     Part::TopoShape topoShape {face1};
     double area = PartTestHelpers::getArea(face1);
     double area1 = PartTestHelpers::getArea(topoShape.getShape());
@@ -228,18 +228,18 @@ TEST_F(TopoShapeExpansionTest, makeElementFaceSimple)
     // Assert
     EXPECT_TRUE(newFace.getShape().IsEqual(topoShape.getShape()));  // topoShape was altered
     EXPECT_FALSE(face1.IsEqual(newFace.getShape()));
-    EXPECT_FLOAT_EQ(area, L * W + M_PI * R * R);
-    EXPECT_FLOAT_EQ(area1, L * W + M_PI * R * R);
-    EXPECT_FLOAT_EQ(area2, L * W);
-    EXPECT_FLOAT_EQ(area3, L * W);
+    EXPECT_FLOAT_EQ(area, Len * Wid + M_PI * Rad * Rad);
+    EXPECT_FLOAT_EQ(area1, Len * Wid + M_PI * Rad * Rad);
+    EXPECT_FLOAT_EQ(area2, Len * Wid);
+    EXPECT_FLOAT_EQ(area3, Len * Wid);
     EXPECT_STREQ(newFace.shapeName().c_str(), "Face");
 }
 
 TEST_F(TopoShapeExpansionTest, makeElementFaceParams)
 {
     // Arrange
-    const double L = 3, W = 2, R = 1;
-    auto [face1, wire1, wire2] = CreateFaceWithRoundHole(L, W, R);
+    const double Len = 3, Wid = 2, Rad = 1;
+    auto [face1, wire1, wire2] = CreateFaceWithRoundHole(Len, Wid, Rad);
     Part::TopoShape topoShape {face1, 1L};
     double area = PartTestHelpers::getArea(face1);
     double area1 = PartTestHelpers::getArea(topoShape.getShape());
@@ -251,18 +251,18 @@ TEST_F(TopoShapeExpansionTest, makeElementFaceParams)
     // Assert
     EXPECT_TRUE(newFace.getShape().IsEqual(topoShape.getShape()));  // topoShape was altered
     EXPECT_FALSE(face1.IsEqual(newFace.getShape()));
-    EXPECT_FLOAT_EQ(area, L * W + M_PI * R * R);
-    EXPECT_FLOAT_EQ(area1, L * W + M_PI * R * R);
-    EXPECT_FLOAT_EQ(area2, L * W);
-    EXPECT_FLOAT_EQ(area3, L * W);
+    EXPECT_FLOAT_EQ(area, Len * Wid + M_PI * Rad * Rad);
+    EXPECT_FLOAT_EQ(area1, Len * Wid + M_PI * Rad * Rad);
+    EXPECT_FLOAT_EQ(area2, Len * Wid);
+    EXPECT_FLOAT_EQ(area3, Len * Wid);
     EXPECT_STREQ(newFace.shapeName().c_str(), "Face");
 }
 
 TEST_F(TopoShapeExpansionTest, makeElementFaceFromFace)
 {
     // Arrange
-    const double L = 3, W = 2, R = 1;
-    auto [face1, wire1, wire2] = CreateFaceWithRoundHole(L, W, R);
+    const double Len = 3, Wid = 2, Rad = 1;
+    auto [face1, wire1, wire2] = CreateFaceWithRoundHole(Len, Wid, Rad);
     Part::TopoShape topoShape {face1, 1L};
     double area = PartTestHelpers::getArea(face1);
     double area1 = PartTestHelpers::getArea(topoShape.getShape());
@@ -274,10 +274,10 @@ TEST_F(TopoShapeExpansionTest, makeElementFaceFromFace)
     // Assert
     EXPECT_TRUE(newFace.getShape().IsEqual(topoShape.getShape()));  // topoShape was altered
     EXPECT_FALSE(face1.IsEqual(newFace.getShape()));
-    EXPECT_FLOAT_EQ(area, L * W + M_PI * R * R);
-    EXPECT_FLOAT_EQ(area1, L * W + M_PI * R * R);
-    EXPECT_FLOAT_EQ(area2, L * W - M_PI * R * R);
-    EXPECT_FLOAT_EQ(area3, L * W - M_PI * R * R);
+    EXPECT_FLOAT_EQ(area, Len * Wid + M_PI * Rad * Rad);
+    EXPECT_FLOAT_EQ(area1, Len * Wid + M_PI * Rad * Rad);
+    EXPECT_FLOAT_EQ(area2, Len * Wid - M_PI * Rad * Rad);
+    EXPECT_FLOAT_EQ(area3, Len * Wid - M_PI * Rad * Rad);
     EXPECT_STREQ(newFace.shapeName().c_str(), "Face");
 }
 
@@ -285,8 +285,8 @@ TEST_F(TopoShapeExpansionTest, makeElementFaceFromFace)
 TEST_F(TopoShapeExpansionTest, makeElementFaceOpenWire)
 {
     // Arrange
-    const double L = 3, W = 2, R = 1;
-    auto [face1, wire1, wire2] = CreateFaceWithRoundHole(L, W, R);
+    const double Len = 3, Wid = 2, Rad = 1;
+    auto [face1, wire1, wire2] = CreateFaceWithRoundHole(Len, Wid, Rad);
     Part::TopoShape topoShape {wire1, 1L};
     double area = PartTestHelpers::getArea(face1);
     double area1 = PartTestHelpers::getArea(topoShape.getShape());
@@ -297,10 +297,10 @@ TEST_F(TopoShapeExpansionTest, makeElementFaceOpenWire)
     // Assert
     EXPECT_TRUE(newFace.getShape().IsEqual(topoShape.getShape()));  // topoShape was altered
     EXPECT_FALSE(face1.IsEqual(newFace.getShape()));
-    EXPECT_FLOAT_EQ(area, L * W + M_PI * R * R);
-    EXPECT_FLOAT_EQ(area1, 0);  // L * W - M_PI * R * R);
-    EXPECT_FLOAT_EQ(area2, L * W);
-    EXPECT_FLOAT_EQ(area3, L * W);
+    EXPECT_FLOAT_EQ(area, Len * Wid + M_PI * Rad * Rad);
+    EXPECT_FLOAT_EQ(area1, 0);  // Len * Wid - M_PI * Rad * Rad);
+    EXPECT_FLOAT_EQ(area2, Len * Wid);
+    EXPECT_FLOAT_EQ(area3, Len * Wid);
     EXPECT_STREQ(newFace.shapeName().c_str(), "Face");
 }
 
@@ -308,8 +308,8 @@ TEST_F(TopoShapeExpansionTest, makeElementFaceOpenWire)
 TEST_F(TopoShapeExpansionTest, makeElementFaceClosedWire)
 {
     // Arrange
-    const double L = 3, W = 2, R = 1;
-    auto [face1, wire1, wire2] = CreateFaceWithRoundHole(L, W, R);
+    const double Len = 3, Wid = 2, Rad = 1;
+    auto [face1, wire1, wire2] = CreateFaceWithRoundHole(Len, Wid, Rad);
     Part::TopoShape topoShape {wire2, 1L};
     double area = PartTestHelpers::getArea(face1);
     double area1 = PartTestHelpers::getArea(topoShape.getShape());
@@ -321,10 +321,10 @@ TEST_F(TopoShapeExpansionTest, makeElementFaceClosedWire)
     // Assert
     EXPECT_TRUE(newFace.getShape().IsEqual(topoShape.getShape()));  // topoShape was altered
     EXPECT_FALSE(face1.IsEqual(newFace.getShape()));
-    EXPECT_FLOAT_EQ(area, L * W + M_PI * R * R);
-    EXPECT_FLOAT_EQ(area1, 0);  // L * W - M_PI * R * R);
-    EXPECT_FLOAT_EQ(area2, M_PI * R * R);
-    EXPECT_FLOAT_EQ(area3, M_PI * R * R);
+    EXPECT_FLOAT_EQ(area, Len * Wid + M_PI * Rad * Rad);
+    EXPECT_FLOAT_EQ(area1, 0);  // Len * Wid - M_PI * Rad * Rad);
+    EXPECT_FLOAT_EQ(area2, M_PI * Rad * Rad);
+    EXPECT_FLOAT_EQ(area3, M_PI * Rad * Rad);
     EXPECT_STREQ(newFace.shapeName().c_str(), "Face");
 }
 
@@ -413,8 +413,8 @@ TEST_F(TopoShapeExpansionTest, setElementComboNameCompound)
 TEST_F(TopoShapeExpansionTest, splitWires)
 {
     // Arrange
-    const double L = 3, W = 2, R = 1;
-    auto [face1, wire1, wire2] = CreateFaceWithRoundHole(L, W, R);
+    const double Len = 3, Wid = 2, Rad = 1;
+    auto [face1, wire1, wire2] = CreateFaceWithRoundHole(Len, Wid, Rad);
     Part::TopoShape topoShape {face1, 1L};
     std::vector<Part::TopoShape> inner;
     // Act
@@ -424,7 +424,7 @@ TEST_F(TopoShapeExpansionTest, splitWires)
     // Assert
     EXPECT_EQ(inner.size(), 1);
     EXPECT_FLOAT_EQ(PartTestHelpers::getLength(wire.getShape()), 2 + 2 + 3 + 3);
-    EXPECT_FLOAT_EQ(PartTestHelpers::getLength(inner.front().getShape()), M_PI * R * 2);
+    EXPECT_FLOAT_EQ(PartTestHelpers::getLength(inner.front().getShape()), M_PI * Rad * 2);
     EXPECT_EQ(wire.getShape().Orientation(), TopAbs_REVERSED);
     for (Part::TopoShape& shape : inner) {
         EXPECT_EQ(shape.getShape().Orientation(), TopAbs_FORWARD);
