@@ -175,9 +175,10 @@ struct LWPolyDataOut
 };
 
 
-    // "using" for enums is not supported by all platforms
-    // https://stackoverflow.com/questions/41167119/how-to-fix-a-wsubobject-linkage-warning
-enum eDXFGroupCode_t {
+// "using" for enums is not supported by all platforms
+// https://stackoverflow.com/questions/41167119/how-to-fix-a-wsubobject-linkage-warning
+enum eDXFGroupCode_t
+{
     eObjectType = 0,
     ePrimaryText = 1,
     eName = 2,
@@ -215,7 +216,8 @@ enum eDXFGroupCode_t {
     eYOffset = 10,
     eZOffset = 20
 };
-enum eDXFVersion_t {
+enum eDXFVersion_t
+{
     RUnknown,
     ROlder,
     R10,
@@ -230,7 +232,8 @@ enum eDXFVersion_t {
     R2018,
     RNewer,
 };
-enum eDimensionType_t {
+enum eDimensionType_t
+{
     eLinear = 0,  // Rotated, Horizontal, or Vertical
     eAligned = 1,
     eAngular = 2,
