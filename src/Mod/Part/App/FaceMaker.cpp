@@ -181,28 +181,30 @@ void Part::FaceMaker::postBuild() {
     this->myTopoShape.setShape(this->myShape);
     this->myTopoShape.Hasher = this->MyHasher;
     this->myTopoShape.mapSubElement(this->mySourceShapes);
-    int i = 0;
+    int index = 0;
     const char *op = this->MyOp;
     if(!op)
         op = Part::OpCodes::Face;
     const auto &faces = this->myTopoShape.getSubTopoShapes(TopAbs_FACE);
     // name the face using the edges of its outer wire
     for(auto &face : faces) {
-        ++i;
+        ++index;
         TopoShape wire = face.splitWires();
         wire.mapSubElement(face);
         std::set<ElementName> edgeNames;
         int count = wire.countSubShapes(TopAbs_EDGE);
-        for(int i=1;i<=count;++i) {
+        for (int index2 = 1; index2 <= count; ++index2) {
             Data::ElementIDRefs sids;
-            Data::MappedName name = face.getMappedName(
-                    Data::IndexedName::fromConst("Edge",i), false, &sids);
-            if(!name)
+            Data::MappedName name =
+                face.getMappedName(Data::IndexedName::fromConst("Edge", index2), false, &sids);
+            if (!name) {
                 continue;
-            edgeNames.emplace(wire.getElementHistory(name),name,sids);
+            }
+            edgeNames.emplace(wire.getElementHistory(name), name, sids);
         }
-        if(edgeNames.empty())
+        if (edgeNames.empty()) {
             continue;
+        }
 
         std::vector<Data::MappedName> names;
         Data::ElementIDRefs sids;
@@ -211,7 +213,7 @@ void Part::FaceMaker::postBuild() {
         names.push_back(edgeNames.begin()->name);
         sids = edgeNames.begin()->sids;
         this->myTopoShape.setElementComboName(
-                Data::IndexedName::fromConst("Face",i),names,op,nullptr,&sids);
+                Data::IndexedName::fromConst("Face",index),names,op,nullptr,&sids);
     }
     this->myTopoShape.initCache(true);
     this->Done();

@@ -257,7 +257,7 @@ public:
     bool analyze(bool runBopCheck, std::ostream&) const;
     bool isClosed() const;
     bool isCoplanar(const TopoShape& other, double tol = -1) const;
-    bool findPlane(gp_Pln& pln, double tol = -1) const;
+    bool findPlane(gp_Pln& plane, double tol = -1) const;
     /// Returns true if the expansion of the shape is infinite, false otherwise
     bool isInfinite() const;
     /// Checks whether the shape is a planar face
@@ -679,7 +679,7 @@ public:
     TopoShape& makeElementFace(const std::vector<TopoShape>& shapes,
                                const char* op = nullptr,
                                const char* maker = nullptr,
-                               const gp_Pln* pln = nullptr);
+                               const gp_Pln* plane = nullptr);
     /** Make a planar face with the input wire or edge
      *
      * @param shape: input shape. Can be either edge, wire, or compound of
@@ -688,7 +688,7 @@ public:
      *            the operation
      * @param maker: optional type name of the face maker. If not given,
      *               default to "Part::FaceMakerBullseye"
-     * @param pln: optional plane of the face.
+     * @param plane: optional plane of the face.
      *
      * @return The function creates a planar face. The original content of this
      *         TopoShape is discarded and replaced with the new shape. The
@@ -699,23 +699,23 @@ public:
     TopoShape& makeElementFace(const TopoShape& shape,
                                const char* op = nullptr,
                                const char* maker = nullptr,
-                               const gp_Pln* pln = nullptr);
+                               const gp_Pln* plane = nullptr);
     /** Make a planar face using this shape
      *
      * @param op: optional string to be encoded into topo naming for indicating
      *            the operation
      * @param maker: optional type name of the face maker. If not given,
      *               default to "Part::FaceMakerBullseye"
-     * @param pln: optional plane of the face.
+     * @param plane: optional plane of the face.
      *
      * @return The function returns a new planar face made using the wire or edge
      *         inside this shape. The shape itself is not modified.
      */
     TopoShape makeElementFace(const char* op = nullptr,
                               const char* maker = nullptr,
-                              const gp_Pln* pln = nullptr) const
+                              const gp_Pln* plane = nullptr) const
     {
-        return TopoShape(0, Hasher).makeElementFace(*this, op, maker, pln);
+        return TopoShape(0, Hasher).makeElementFace(*this, op, maker, plane);
     }
 
     /// Filling style when making a BSpline face
