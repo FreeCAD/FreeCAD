@@ -86,7 +86,7 @@ public:
     virtual const TopoDS_Face& Face();
 
 #if OCC_VERSION_HEX >= 0x070600
-    virtual void Build(const Message_ProgressRange& theRange = Message_ProgressRange());
+    void Build(const Message_ProgressRange& theRange = Message_ProgressRange()) override;
 #else
     virtual void Build();
 #endif

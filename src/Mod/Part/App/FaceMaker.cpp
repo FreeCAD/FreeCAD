@@ -206,17 +206,10 @@ void Part::FaceMaker::postBuild() {
 
         std::vector<Data::MappedName> names;
         Data::ElementIDRefs sids;
-#if 0
-        for (auto &e : edgeNames) {
-            names.insert(e.name);
-            sids += e.sids;
-        }
-#else
         // We just use the first source element name to make the face name more
         // stable
         names.push_back(edgeNames.begin()->name);
         sids = edgeNames.begin()->sids;
-#endif
         this->myTopoShape.setElementComboName(
                 Data::IndexedName::fromConst("Face",i),names,op,nullptr,&sids);
     }

@@ -552,7 +552,7 @@ TopoShape::makeElementCompound(const std::vector<TopoShape>& shapes, const char*
 TopoShape& TopoShape::makeElementFace(const TopoShape& shape,
                                       const char* op,
                                       const char* maker,
-                                      const gp_Pln* pln)
+                                      const gp_Pln* plane)
 {
     std::vector<TopoShape> shapes;
     if (shape.isNull()) {
@@ -564,13 +564,13 @@ TopoShape& TopoShape::makeElementFace(const TopoShape& shape,
     else {
         shapes.push_back(shape);
     }
-    return makeElementFace(shapes, op, maker, pln);
+    return makeElementFace(shapes, op, maker, plane);
 }
 
 TopoShape& TopoShape::makeElementFace(const std::vector<TopoShape>& shapes,
                                       const char* op,
                                       const char* maker,
-                                      const gp_Pln* pln)
+                                      const gp_Pln* plane)
 {
     if (!maker || !maker[0]) {
         maker = "Part::FaceMakerBullseye";
@@ -578,16 +578,16 @@ TopoShape& TopoShape::makeElementFace(const std::vector<TopoShape>& shapes,
     std::unique_ptr<FaceMaker> mkFace = FaceMaker::ConstructFromType(maker);
     mkFace->MyHasher = Hasher;
     mkFace->MyOp = op;
-    if (pln) {
-        mkFace->setPlane(*pln);
+    if (plane) {
+        mkFace->setPlane(*plane);
     }
 
-    for (auto& s : shapes) {
-        if (s.getShape().ShapeType() == TopAbs_COMPOUND) {
-            mkFace->useTopoCompound(s);
+    for (auto& shape : shapes) {
+        if (shape.getShape().ShapeType() == TopAbs_COMPOUND) {
+            mkFace->useTopoCompound(shape);
         }
         else {
-            mkFace->addTopoShape(s);
+            mkFace->addTopoShape(shape);
         }
     }
     mkFace->Build();
@@ -634,7 +634,7 @@ TopoShape& TopoShape::makeElementFace(const std::vector<TopoShape>& shapes,
  *                  elementMapPrefix.
  * @param op        The op text passed to the element name encoder along with the TopoShape Tag
  * @param _sids     If defined, records the sub ids processed.
- * 
+ *
  * @return          The encoded, possibly hashed name.
  */
 Data::MappedName TopoShape::setElementComboName(const Data::IndexedName& element,

@@ -426,8 +426,8 @@ TEST_F(TopoShapeExpansionTest, splitWires)
     EXPECT_FLOAT_EQ(PartTestHelpers::getLength(wire.getShape()), 2 + 2 + 3 + 3);
     EXPECT_FLOAT_EQ(PartTestHelpers::getLength(inner.front().getShape()), M_PI * R * 2);
     EXPECT_EQ(wire.getShape().Orientation(), TopAbs_REVERSED);
-    for (Part::TopoShape ts : inner) {
-        EXPECT_EQ(ts.getShape().Orientation(), TopAbs_FORWARD);
+    for (Part::TopoShape& shape : inner) {
+        EXPECT_EQ(shape.getShape().Orientation(), TopAbs_FORWARD);
     }
 }
 

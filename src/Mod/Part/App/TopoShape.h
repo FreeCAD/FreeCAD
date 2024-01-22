@@ -655,11 +655,11 @@ public:
      */
     TopoShape &makeElementCompound(const std::vector<TopoShape> &shapes, const char *op=nullptr, bool force=true);
 
-    TopoShape &makeElementFace(const std::vector<TopoShape> &shapes,
-                        const char *op = nullptr,
-                        const char *maker = nullptr,
-                        const gp_Pln *pln = nullptr);
-    /** Make a planar face with the input wire or edge 
+    TopoShape& makeElementFace(const std::vector<TopoShape>& shapes,
+                               const char* op = nullptr,
+                               const char* maker = nullptr,
+                               const gp_Pln* pln = nullptr);
+    /** Make a planar face with the input wire or edge
      *
      * @param shape: input shape. Can be either edge, wire, or compound of
      *               those two types
@@ -675,11 +675,11 @@ public:
      *         multiple operations can be carried out for the same shape in the
      *         same line of code.
      */
-    TopoShape &makeElementFace(const TopoShape &shape,
-                        const char *op = nullptr,
-                        const char *maker = nullptr,
-                        const gp_Pln *pln = nullptr);
-    /** Make a planar face using this shape 
+    TopoShape& makeElementFace(const TopoShape& shape,
+                               const char* op = nullptr,
+                               const char* maker = nullptr,
+                               const gp_Pln* pln = nullptr);
+    /** Make a planar face using this shape
      *
      * @param op: optional string to be encoded into topo naming for indicating
      *            the operation
@@ -690,20 +690,22 @@ public:
      * @return The function returns a new planar face made using the wire or edge
      *         inside this shape. The shape itself is not modified.
      */
-    TopoShape makeElementFace(const char *op = nullptr,
-                       const char *maker = nullptr,
-                       const gp_Pln *pln = nullptr) const {
-        return TopoShape(0,Hasher).makeElementFace(*this,op,maker,pln);
+    TopoShape makeElementFace(const char* op = nullptr,
+                              const char* maker = nullptr,
+                              const gp_Pln* pln = nullptr) const
+    {
+        return TopoShape(0, Hasher).makeElementFace(*this, op, maker, pln);
     }
 
     /// Filling style when making a BSpline face
-    enum FillingStyle {
+    enum class FillingStyle
+    {
         /// The style with the flattest patches
-        FillingStyle_Strech,
+        Stretch,
         /// A rounded style of patch with less depth than those of Curved
-        FillingStyle_Coons,
+        Coons,
         /// The style with the most rounded patches
-        FillingStyle_Curved,
+        Curved,
     };
 
 
