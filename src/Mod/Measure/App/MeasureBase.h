@@ -41,7 +41,7 @@
 namespace Measure
 {
 
-class AppExport MeasureBase : public App::DocumentObject
+class MeasureExport MeasureBase : public App::DocumentObject
 {
     PROPERTY_HEADER_WITH_OVERRIDE(Measure::MeasureBase);
 
@@ -83,7 +83,7 @@ protected:
 using MeasurePython = App::FeaturePythonT<MeasureBase>;
 
 template <typename T>
-class AppExport MeasureBaseExtendable : public MeasureBase
+class MeasureExport MeasureBaseExtendable : public MeasureBase
 {
 
     using GeometryHandler = std::function<T (std::string*, std::string*)>;
