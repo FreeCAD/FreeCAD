@@ -47,6 +47,7 @@ public:
     App::PropertyLength      Length;
     App::PropertyLength      Offset;
     App::PropertyIntegerConstraint Occurrences;
+    App::PropertyBool        Symmetric;
 
    /** @name methods override feature */
     //@{
@@ -73,6 +74,9 @@ public:
       *   transformation direction will be parallel to the given edge, which must be linear
       * 
       * If Reversed is true, the direction of transformation will be opposite
+      *
+      * If Symmetric is true, the transformations are duplicated in the opposite
+      * direction.
       */
     const std::list<gp_Trsf> getTransformations(const std::vector<App::DocumentObject*> ) override;
 

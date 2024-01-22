@@ -59,6 +59,7 @@ private Q_SLOTS:
     void onUpdateViewTimer();
     void onDirectionChanged(int num);
     void onCheckReverse(const bool on);
+    void onCheckSymmetric(const bool on);
     void onModeChanged(const int mode);
     void onLength(const double l);
     void onOffset(const double o);
@@ -74,6 +75,7 @@ protected:
     void clearButtons() override;
     void getDirection(App::DocumentObject*& obj, std::vector<std::string>& sub) const;
     bool getReverse() const;
+    bool getSymmetric() const;
     int getMode() const;
     double getLength() const;
     double getOffset() const;

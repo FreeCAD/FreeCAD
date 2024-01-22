@@ -60,6 +60,7 @@ private Q_SLOTS:
     void onAxisChanged(int num);
     void onModeChanged(const int mode);
     void onCheckReverse(const bool on);
+    void onCheckSymmetric(const bool on);
     void onAngle(const double a);
     void onOffset(const double a);
     void onOccurrences(const uint n);
@@ -76,6 +77,7 @@ protected:
     const std::string getStdAxis() const;
     const std::string getAxis() const;
     bool getReverse() const;
+    bool getSymmetric() const;
     double getAngle() const;
     unsigned getOccurrences() const;
 

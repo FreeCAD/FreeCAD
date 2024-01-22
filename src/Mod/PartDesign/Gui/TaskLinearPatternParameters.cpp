@@ -127,6 +127,8 @@ void TaskLinearPatternParameters::connectSignals()
             this, &TaskLinearPatternParameters::onDirectionChanged);
     connect(ui->checkReverse, &QCheckBox::toggled,
             this, &TaskLinearPatternParameters::onCheckReverse);
+    connect(ui->checkSymmetric, &QCheckBox::toggled,
+            this, &TaskLinearPatternParameters::onCheckSymmetric);
     connect(ui->comboMode, qOverload<int>(&QComboBox::activated),
             this, &TaskLinearPatternParameters::onModeChanged);
     connect(ui->spinLength, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
@@ -164,6 +166,7 @@ void TaskLinearPatternParameters::setupUI()
 
     ui->comboDirection->setEnabled(true);
     ui->checkReverse->setEnabled(true);
+    ui->checkSymmetric->setEnabled(false);
     ui->comboMode->setEnabled(true);
     ui->spinLength->blockSignals(true);
     ui->spinLength->setEnabled(true);
@@ -211,6 +214,7 @@ void TaskLinearPatternParameters::updateUI()
     PartDesign::LinearPatternMode mode = static_cast<PartDesign::LinearPatternMode>(pcLinearPattern->Mode.getValue());
 
     bool reverse = pcLinearPattern->Reversed.getValue();
+    bool symmetric = pcLinearPattern->Symmetric.getValue();
     double length = pcLinearPattern->Length.getValue();
     double offset = pcLinearPattern->Offset.getValue();
     unsigned occurrences = pcLinearPattern->Occurrences.getValue();
@@ -222,9 +226,12 @@ void TaskLinearPatternParameters::updateUI()
         dirLinks.setCurrentLink(pcLinearPattern->Direction);
     }
 
+    ui->checkSymmetric->setEnabled(mode == PartDesign::LinearPatternMode::offset);
+
     // Note: This block of code would trigger change signal handlers (e.g. onOccurrences())
     // and another updateUI() if we didn't check for blockUpdate
     ui->checkReverse->setChecked(reverse);
+    ui->checkSymmetric->setChecked(symmetric);
     ui->comboMode->setCurrentIndex((long)mode);
     ui->spinLength->setValue(length);
     ui->spinOffset->setValue(offset);
@@ -319,6 +326,16 @@ void TaskLinearPatternParameters::onCheckReverse(const bool on) {
     kickUpdateViewTimer();
 }
 
+void TaskLinearPatternParameters::onCheckSymmetric(const bool on) {
+    if (blockUpdate)
+        return;
+    PartDesign::LinearPattern* pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
+    pcLinearPattern->Symmetric.setValue(on);
+
+    exitSelectionMode();
+    kickUpdateViewTimer();
+}
+
 void TaskLinearPatternParameters::onModeChanged(const int mode) {
     if (blockUpdate)
         return;
@@ -398,6 +415,7 @@ void TaskLinearPatternParameters::onUpdateView(bool on)
         getDirection(obj, directions);
         pcLinearPattern->Direction.setValue(obj,directions);
         pcLinearPattern->Reversed.setValue(getReverse());
+        pcLinearPattern->Symmetric.setValue(getSymmetric());
         pcLinearPattern->Length.setValue(getLength());
         pcLinearPattern->Offset.setValue(getOffset());
         pcLinearPattern->Occurrences.setValue(getOccurrences());
@@ -432,6 +450,11 @@ void TaskLinearPatternParameters::getDirection(App::DocumentObject*& obj, std::v
 bool TaskLinearPatternParameters::getReverse() const
 {
     return ui->checkReverse->isChecked();
+}
+
+bool TaskLinearPatternParameters::getSymmetric() const
+{
+    return ui->checkSymmetric->isChecked();
 }
 
 int TaskLinearPatternParameters::getMode() const
@@ -484,14 +507,17 @@ void TaskLinearPatternParameters::changeEvent(QEvent *e)
 
 void TaskLinearPatternParameters::apply()
 {
+    auto tobj = TransformedView->getObject();
     std::vector<std::string> directions;
     App::DocumentObject* obj;
     getDirection(obj, directions);
     std::string direction = buildLinkSingleSubPythonStr(obj, directions);
 
-    auto tobj = TransformedView->getObject();
+    PartDesign::LinearPattern* pcLinearPattern = static_cast<PartDesign::LinearPattern*>(TransformedView->getObject());
     FCMD_OBJ_CMD(tobj,"Direction = " << direction);
     FCMD_OBJ_CMD(tobj,"Reversed = " << getReverse());
+    if (!pcLinearPattern->Symmetric.isReadOnly())
+        FCMD_OBJ_CMD(tobj, "Symmetric = " << getSymmetric());
 
     ui->spinLength->apply();
     ui->spinOffset->apply();

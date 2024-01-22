@@ -70,6 +70,13 @@
     </widget>
    </item>
    <item>
+    <widget class="QCheckBox" name="checkSymmetric">
+     <property name="text">
+      <string>Symmetric</string>
+     </property>
+    </widget>
+   </item>
+   <item>
     <layout class="QHBoxLayout">
      <item>
       <widget class="QLabel" name="labelMode">
