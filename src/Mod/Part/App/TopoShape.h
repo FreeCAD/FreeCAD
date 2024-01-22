@@ -935,46 +935,73 @@ private:
     static TopoShape reverseEdge (const TopoShape& edge);
 };
 
+
 /// Shape hasher that ignore orientation
-struct ShapeHasher {
-    inline size_t operator()(const TopoShape &s) const {
+struct ShapeHasher
+{
+    inline size_t operator()(const TopoShape& s) const
+    {
+#if OCC_VERSION_HEX >= 0x070800
+        return std::hash<TopoDS_Shape> {}(s.getShape());
+#else
         return s.getShape().HashCode(INT_MAX);
+#endif
     }
-    inline size_t operator()(const TopoDS_Shape &s) const {
+    inline size_t operator()(const TopoDS_Shape& s) const
+    {
+#if OCC_VERSION_HEX >= 0x070800
+        return std::hash<TopoDS_Shape> {}(s);
+#else
         return s.HashCode(INT_MAX);
+#endif
     }
-    inline bool operator()(const TopoShape &a, const TopoShape &b) const {
+    inline bool operator()(const TopoShape& a, const TopoShape& b) const
+    {
         return a.getShape().IsSame(b.getShape());
     }
-    inline bool operator()(const TopoDS_Shape &a, const TopoDS_Shape &b) const {
+    inline bool operator()(const TopoDS_Shape& a, const TopoDS_Shape& b) const
+    {
         return a.IsSame(b);
     }
-    template <class T>
+    template<class T>
     static inline void hash_combine(std::size_t& seed, const T& v)
     {
         // copied from boost::hash_combine
         std::hash<T> hasher;
-        seed ^= hasher(v) + 0x9e3779b9 + (seed<<6) + (seed>>2);
+        seed ^= hasher(v) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
     }
-    inline size_t operator()(const std::pair<TopoShape, TopoShape> &s) const {
+    inline size_t operator()(const std::pair<TopoShape, TopoShape>& s) const
+    {
+#if OCC_VERSION_HEX >= 0x070800
+        size_t res = std::hash<TopoDS_Shape> {}(s.first.getShape());
+        hash_combine(res, std::hash<TopoDS_Shape> {}(s.second.getShape()));
+#else
         size_t res = s.first.getShape().HashCode(INT_MAX);
         hash_combine(res, s.second.getShape().HashCode(INT_MAX));
+#endif
         return res;
     }
-    inline size_t operator()(const std::pair<TopoDS_Shape, TopoDS_Shape> &s) const {
+    inline size_t operator()(const std::pair<TopoDS_Shape, TopoDS_Shape>& s) const
+    {
+#if OCC_VERSION_HEX >= 0x070800
+        size_t res = std::hash<TopoDS_Shape> {}(s.first);
+        hash_combine(res, std::hash<TopoDS_Shape> {}(s.second));
+#else
         size_t res = s.first.HashCode(INT_MAX);
         hash_combine(res, s.second.HashCode(INT_MAX));
+#endif
         return res;
     }
-    inline bool operator()(const std::pair<TopoShape, TopoShape> &a,
-                           const std::pair<TopoShape, TopoShape> &b) const {
+    inline bool operator()(const std::pair<TopoShape, TopoShape>& a,
+                           const std::pair<TopoShape, TopoShape>& b) const
+    {
         return a.first.getShape().IsSame(b.first.getShape())
             && a.second.getShape().IsSame(b.second.getShape());
     }
-    inline bool operator()(const std::pair<TopoDS_Shape, TopoDS_Shape> &a,
-                           const std::pair<TopoDS_Shape, TopoDS_Shape> &b) const {
-        return a.first.IsSame(b.first)
-            && a.second.IsSame(b.second);
+    inline bool operator()(const std::pair<TopoDS_Shape, TopoDS_Shape>& a,
+                           const std::pair<TopoDS_Shape, TopoDS_Shape>& b) const
+    {
+        return a.first.IsSame(b.first) && a.second.IsSame(b.second);
     }
 };
 
