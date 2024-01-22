@@ -376,8 +376,9 @@ void TopoShape::mapSubElementTypeForShape(const TopoShape& other,
             }
             std::ostringstream ss;
             char elementType {shapeName(type)[0]};
-            if ( ! elementMap() )
+            if ( ! elementMap() ) {
                 FC_THROWM(NullShapeException, "No element map");
+            }
             elementMap()->encodeElementName(elementType, name, ss, &sids, Tag, op, other.Tag);
             elementMap()->setElementName(element, name, Tag, &sids);
         }
