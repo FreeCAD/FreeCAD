@@ -1,3 +1,5 @@
+#include "PreCompiled.h"
+
 #include "TopoShapeMapper.h"
 
 namespace Part
