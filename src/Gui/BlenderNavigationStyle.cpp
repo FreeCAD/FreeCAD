@@ -278,15 +278,17 @@ SbBool BlenderNavigationStyle::processSoEvent(const SoEvent * const ev)
         break;
     }
 
+    // If the selection button is pressed together with another button
+    // and the other button is released, don't switch to selection mode.
+    // Process when selection button is pressed together with other buttons that could trigger different actions.
+    if (this->button1down && (this->button2down || this->button3down)) {
+        this->lockButton1 = true;
+        processed = true;
+    }
+
     if (newmode != curmode) {
         this->setViewingMode(newmode);
     }
-
-    // If for dragging the buttons 1 and 3 are pressed
-    // but then button 3 is released we shouldn't switch
-    // into selection mode.
-    if (this->button1down && this->button3down)
-        this->lockButton1 = true;
 
     // If not handled in this class, pass on upwards in the inheritance
     // hierarchy.

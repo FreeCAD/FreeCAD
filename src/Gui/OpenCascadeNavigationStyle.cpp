@@ -264,6 +264,11 @@ SbBool OpenCascadeNavigationStyle::processSoEvent(const SoEvent * const ev)
         break;
     }
 
+    // Process when selection button is pressed together with other buttons that could trigger different actions.
+    if (this->button1down && (this->button2down || this->button3down || this->ctrldown)) {
+        processed = true;
+    }
+
     if (newmode != curmode) {
         this->setViewingMode(newmode);
     }

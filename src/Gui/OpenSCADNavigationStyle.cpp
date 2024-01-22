@@ -259,6 +259,11 @@ SbBool OpenSCADNavigationStyle::processSoEvent(const SoEvent * const ev)
         break;
     }
 
+    // Process when selection button is pressed together with other buttons that could trigger different actions.
+    if (this->button1down && (this->button2down || this->button3down)) {
+        processed = true;
+    }
+
     if (newmode != curmode) {
         this->setViewingMode(newmode);
     }
