@@ -67,7 +67,7 @@ PolarPattern::PolarPattern()
     Offset.setConstraints(&floatAngle);
     ADD_PROPERTY(Occurrences, (3));
     Occurrences.setConstraints(&intOccurrences);
-    ADD_PROPERTY(Symmetric,(0));
+    ADD_PROPERTY(Mirrored,(0));
 
     setReadWriteStatusForMode(initialMode);
 }
@@ -81,7 +81,7 @@ short PolarPattern::mustExecute() const
         Angle.isTouched() || 
         Offset.isTouched() || 
         Occurrences.isTouched() ||
-        Symmetric.isTouched())
+        Mirrored.isTouched())
         return 1;
     return Transformed::mustExecute();
 }
@@ -96,7 +96,7 @@ const std::list<gp_Trsf> PolarPattern::getTransformations(const std::vector<App:
         return {gp_Trsf()};
 
     bool reversed = Reversed.getValue();
-    bool symmetric = Symmetric.getValue();
+    bool mirrored = Mirrored.getValue();
 
     App::DocumentObject* refObject = Axis.getValue();
     if (!refObject)
@@ -207,7 +207,7 @@ const std::list<gp_Trsf> PolarPattern::getTransformations(const std::vector<App:
     for (int i = 1; i < occurrences; i++) {
         trans.SetRotation(axis.Axis(), i * offset);
         transformations.push_back(trans);
-        if (symmetric) {
+        if (mirrored) {
             trans.SetRotation(axis.Axis(), -offset * i);
             transformations.push_back(trans);
         }
@@ -237,9 +237,6 @@ void PolarPattern::onChanged(const App::Property* prop)
     if (prop == &Mode) {
         auto mode = static_cast<PolarPatternMode>(Mode.getValue());
         setReadWriteStatusForMode(mode);
-        // Reset to the default value
-        if (mode != PolarPatternMode::offset)
-            Symmetric.setValue(0);
     }
 
     Transformed::onChanged(prop);
@@ -249,7 +246,6 @@ void PolarPattern::setReadWriteStatusForMode(PolarPatternMode mode)
 {
     Offset.setReadOnly(mode != PolarPatternMode::offset);
     Angle.setReadOnly(mode != PolarPatternMode::angle);
-    Symmetric.setReadOnly(mode != PolarPatternMode::offset);
 }
 
 }

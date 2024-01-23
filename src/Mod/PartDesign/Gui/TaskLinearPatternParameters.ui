@@ -70,13 +70,6 @@
     </widget>
    </item>
    <item>
-    <widget class="QCheckBox" name="checkSymmetric">
-     <property name="text">
-      <string>Symmetric</string>
-     </property>
-    </widget>
-   </item>
-   <item>
     <layout class="QHBoxLayout">
      <item>
       <widget class="QLabel" name="labelMode">
@@ -201,6 +194,13 @@
       </widget>
      </item>
     </layout>
+   </item>
+   <item>
+    <widget class="QCheckBox" name="checkMirrored">
+     <property name="text">
+      <string>Mirrored</string>
+     </property>
+    </widget>
    </item>
    <item>
     <widget class="QCheckBox" name="checkBoxUpdateView">

@@ -135,8 +135,8 @@ void TaskPolarPatternParameters::connectSignals()
             this, &TaskPolarPatternParameters::onModeChanged);
     connect(ui->checkReverse, &QCheckBox::toggled,
             this, &TaskPolarPatternParameters::onCheckReverse);
-    connect(ui->checkSymmetric, &QCheckBox::toggled,
-            this, &TaskPolarPatternParameters::onCheckSymmetric);
+    connect(ui->checkMirrored, &QCheckBox::toggled,
+            this, &TaskPolarPatternParameters::onCheckMirrored);
     connect(ui->polarAngle, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
             this, &TaskPolarPatternParameters::onAngle);
     connect(ui->angleOffset, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
@@ -174,7 +174,7 @@ void TaskPolarPatternParameters::setupUI()
     ui->comboAxis->setEnabled(true);
     ui->comboMode->setEnabled(true);
     ui->checkReverse->setEnabled(true);
-    ui->checkSymmetric->setEnabled(false);
+    ui->checkMirrored->setEnabled(true);
     ui->polarAngle->setEnabled(true);
     ui->spinOccurrences->setEnabled(true);
 
@@ -215,7 +215,7 @@ void TaskPolarPatternParameters::updateUI()
 
     PartDesign::PolarPatternMode mode = static_cast<PartDesign::PolarPatternMode>(pcPolarPattern->Mode.getValue());
     bool reverse = pcPolarPattern->Reversed.getValue();
-    bool symmetric = pcPolarPattern->Symmetric.getValue();
+    bool mirrored = pcPolarPattern->Mirrored.getValue();
     double angle = pcPolarPattern->Angle.getValue();
     double offset = pcPolarPattern->Offset.getValue();
     unsigned occurrences = pcPolarPattern->Occurrences.getValue();
@@ -226,14 +226,10 @@ void TaskPolarPatternParameters::updateUI()
         axesLinks.setCurrentLink(pcPolarPattern->Axis);
     }
 
-    Base::Console().Log("mode is %d\n", (int)mode);
-
-    ui->checkSymmetric->setEnabled(mode == PartDesign::PolarPatternMode::offset);
-
     // Note: This block of code would trigger change signal handlers (e.g. onOccurrences())
     // and another updateUI() if we didn't check for blockUpdate
     ui->checkReverse->setChecked(reverse);
-    ui->checkSymmetric->setChecked(symmetric);
+    ui->checkMirrored->setChecked(mirrored);
     ui->comboMode->setCurrentIndex((long)mode);
     ui->polarAngle->setValue(angle);
     ui->angleOffset->setValue(offset);
@@ -323,11 +319,11 @@ void TaskPolarPatternParameters::onCheckReverse(const bool on) {
     kickUpdateViewTimer();
 }
 
-void TaskPolarPatternParameters::onCheckSymmetric(const bool on) {
+void TaskPolarPatternParameters::onCheckMirrored(const bool on) {
     if (blockUpdate)
         return;
     PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(getObject());
-    pcPolarPattern->Symmetric.setValue(on);
+    pcPolarPattern->Mirrored.setValue(on);
 
     exitSelectionMode();
     kickUpdateViewTimer();
@@ -413,7 +409,7 @@ void TaskPolarPatternParameters::onUpdateView(bool on)
         getAxis(obj, axes);
         pcPolarPattern->Axis.setValue(obj,axes);
         pcPolarPattern->Reversed.setValue(getReverse());
-        pcPolarPattern->Symmetric.setValue(getSymmetric());
+        pcPolarPattern->Mirrored.setValue(getMirrored());
         pcPolarPattern->Angle.setValue(getAngle());
         pcPolarPattern->Occurrences.setValue(getOccurrences());
 
@@ -449,9 +445,9 @@ bool TaskPolarPatternParameters::getReverse() const
     return ui->checkReverse->isChecked();
 }
 
-bool TaskPolarPatternParameters::getSymmetric() const
+bool TaskPolarPatternParameters::getMirrored() const
 {
-    return ui->checkSymmetric->isChecked();
+    return ui->checkMirrored->isChecked();
 }
 
 double TaskPolarPatternParameters::getAngle() const
@@ -503,8 +499,8 @@ void TaskPolarPatternParameters::apply()
     PartDesign::PolarPattern* pcPolarPattern = static_cast<PartDesign::PolarPattern*>(TransformedView->getObject());
     FCMD_OBJ_CMD(tobj,"Axis = " << axis.c_str());
     FCMD_OBJ_CMD(tobj,"Reversed = " << getReverse());
-    if (!pcPolarPattern->Symmetric.isReadOnly())
-        FCMD_OBJ_CMD(tobj, "Symmetric = " << getSymmetric());
+    if (!pcPolarPattern->Mirrored.isReadOnly())
+        FCMD_OBJ_CMD(tobj, "Mirrored = " << getMirrored());
 
     ui->polarAngle->apply();
     ui->spinOccurrences->apply();

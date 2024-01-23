@@ -63,7 +63,7 @@ LinearPattern::LinearPattern()
     ADD_PROPERTY(Length,(100.0));
     ADD_PROPERTY(Offset,(10.0));
     ADD_PROPERTY(Occurrences,(3));
-    ADD_PROPERTY(Symmetric,(0));
+    ADD_PROPERTY(Mirrored,(0));
     Occurrences.setConstraints(&intOccurrences);
     Mode.setEnums(ModeEnums);
     setReadWriteStatusForMode(initialMode);
@@ -78,7 +78,7 @@ short LinearPattern::mustExecute() const
         Length.isTouched() || 
         Offset.isTouched() || 
         Occurrences.isTouched() ||
-        Symmetric.isTouched())
+        Mirrored.isTouched())
         return 1;
     return Transformed::mustExecute();
 }
@@ -87,7 +87,6 @@ void LinearPattern::setReadWriteStatusForMode(LinearPatternMode mode)
 {
     Length.setReadOnly(mode != LinearPatternMode::length);
     Offset.setReadOnly(mode != LinearPatternMode::offset);
-    Symmetric.setReadOnly(mode != LinearPatternMode::offset);
 }
 
 const std::list<gp_Trsf> LinearPattern::getTransformations(const std::vector<App::DocumentObject*>)
@@ -103,7 +102,7 @@ const std::list<gp_Trsf> LinearPattern::getTransformations(const std::vector<App
     if (distance < Precision::Confusion())
         throw Base::ValueError("Pattern length too small");
     bool reversed = Reversed.getValue();
-    bool symmetric = Symmetric.getValue();
+    bool mirrored = Mirrored.getValue();
 
     App::DocumentObject* refObject = Direction.getValue();
     if (!refObject)
@@ -230,7 +229,7 @@ const std::list<gp_Trsf> LinearPattern::getTransformations(const std::vector<App
     for (int i = 1; i < occurrences; i++) {
         trans.SetTranslation(offset * i);
         transformations.push_back(trans);
-        if (symmetric) {
+        if (mirrored) {
             trans.SetTranslation(-offset * i);
             transformations.push_back(trans);
         }
@@ -260,9 +259,6 @@ void LinearPattern::onChanged(const App::Property* prop)
 
     if (prop == &Mode) {
         setReadWriteStatusForMode(mode);
-        // Reset to the default value
-        if (mode != LinearPatternMode::offset)
-            Symmetric.setValue(0);
     }
 
     // Keep Length in sync with Offset, catch Occurrences changes

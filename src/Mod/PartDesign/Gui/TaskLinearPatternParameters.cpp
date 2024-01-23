@@ -127,8 +127,8 @@ void TaskLinearPatternParameters::connectSignals()
             this, &TaskLinearPatternParameters::onDirectionChanged);
     connect(ui->checkReverse, &QCheckBox::toggled,
             this, &TaskLinearPatternParameters::onCheckReverse);
-    connect(ui->checkSymmetric, &QCheckBox::toggled,
-            this, &TaskLinearPatternParameters::onCheckSymmetric);
+    connect(ui->checkMirrored, &QCheckBox::toggled,
+            this, &TaskLinearPatternParameters::onCheckMirrored);
     connect(ui->comboMode, qOverload<int>(&QComboBox::activated),
             this, &TaskLinearPatternParameters::onModeChanged);
     connect(ui->spinLength, qOverload<double>(&Gui::QuantitySpinBox::valueChanged),
@@ -166,7 +166,7 @@ void TaskLinearPatternParameters::setupUI()
 
     ui->comboDirection->setEnabled(true);
     ui->checkReverse->setEnabled(true);
-    ui->checkSymmetric->setEnabled(false);
+    ui->checkMirrored->setEnabled(true);
     ui->comboMode->setEnabled(true);
     ui->spinLength->blockSignals(true);
     ui->spinLength->setEnabled(true);
@@ -214,7 +214,7 @@ void TaskLinearPatternParameters::updateUI()
     PartDesign::LinearPatternMode mode = static_cast<PartDesign::LinearPatternMode>(pcLinearPattern->Mode.getValue());
 
     bool reverse = pcLinearPattern->Reversed.getValue();
-    bool symmetric = pcLinearPattern->Symmetric.getValue();
+    bool mirrored = pcLinearPattern->Mirrored.getValue();
     double length = pcLinearPattern->Length.getValue();
     double offset = pcLinearPattern->Offset.getValue();
     unsigned occurrences = pcLinearPattern->Occurrences.getValue();
@@ -226,12 +226,10 @@ void TaskLinearPatternParameters::updateUI()
         dirLinks.setCurrentLink(pcLinearPattern->Direction);
     }
 
-    ui->checkSymmetric->setEnabled(mode == PartDesign::LinearPatternMode::offset);
-
     // Note: This block of code would trigger change signal handlers (e.g. onOccurrences())
     // and another updateUI() if we didn't check for blockUpdate
     ui->checkReverse->setChecked(reverse);
-    ui->checkSymmetric->setChecked(symmetric);
+    ui->checkMirrored->setChecked(mirrored);
     ui->comboMode->setCurrentIndex((long)mode);
     ui->spinLength->setValue(length);
     ui->spinOffset->setValue(offset);
@@ -326,11 +324,11 @@ void TaskLinearPatternParameters::onCheckReverse(const bool on) {
     kickUpdateViewTimer();
 }
 
-void TaskLinearPatternParameters::onCheckSymmetric(const bool on) {
+void TaskLinearPatternParameters::onCheckMirrored(const bool on) {
     if (blockUpdate)
         return;
     PartDesign::LinearPattern* pcLinearPattern = static_cast<PartDesign::LinearPattern*>(getObject());
-    pcLinearPattern->Symmetric.setValue(on);
+    pcLinearPattern->Mirrored.setValue(on);
 
     exitSelectionMode();
     kickUpdateViewTimer();
@@ -415,7 +413,7 @@ void TaskLinearPatternParameters::onUpdateView(bool on)
         getDirection(obj, directions);
         pcLinearPattern->Direction.setValue(obj,directions);
         pcLinearPattern->Reversed.setValue(getReverse());
-        pcLinearPattern->Symmetric.setValue(getSymmetric());
+        pcLinearPattern->Mirrored.setValue(getMirrored());
         pcLinearPattern->Length.setValue(getLength());
         pcLinearPattern->Offset.setValue(getOffset());
         pcLinearPattern->Occurrences.setValue(getOccurrences());
@@ -452,9 +450,9 @@ bool TaskLinearPatternParameters::getReverse() const
     return ui->checkReverse->isChecked();
 }
 
-bool TaskLinearPatternParameters::getSymmetric() const
+bool TaskLinearPatternParameters::getMirrored() const
 {
-    return ui->checkSymmetric->isChecked();
+    return ui->checkMirrored->isChecked();
 }
 
 int TaskLinearPatternParameters::getMode() const
@@ -516,8 +514,8 @@ void TaskLinearPatternParameters::apply()
     PartDesign::LinearPattern* pcLinearPattern = static_cast<PartDesign::LinearPattern*>(TransformedView->getObject());
     FCMD_OBJ_CMD(tobj,"Direction = " << direction);
     FCMD_OBJ_CMD(tobj,"Reversed = " << getReverse());
-    if (!pcLinearPattern->Symmetric.isReadOnly())
-        FCMD_OBJ_CMD(tobj, "Symmetric = " << getSymmetric());
+    if (!pcLinearPattern->Mirrored.isReadOnly())
+        FCMD_OBJ_CMD(tobj, "Mirrored = " << getMirrored());
 
     ui->spinLength->apply();
     ui->spinOffset->apply();

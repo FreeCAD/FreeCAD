@@ -49,7 +49,7 @@ public:
     App::PropertyAngle       Angle;
     App::PropertyAngle       Offset;
     App::PropertyIntegerConstraint Occurrences;
-    App::PropertyBool        Symmetric;
+    App::PropertyBool        Mirrored;
 
    /** @name methods override feature */
     //@{
@@ -80,7 +80,7 @@ public:
       * 
       * If Reversed is true, the direction of rotation will be opposite.
       *
-      * If Symmetric is true, the transformations are duplicated in the opposite
+      * If Mirrored is true, the transformations are duplicated in the opposite
       * direction.
       */
     const std::list<gp_Trsf> getTransformations(const std::vector<App::DocumentObject*>) override;
