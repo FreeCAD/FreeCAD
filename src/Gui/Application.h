@@ -31,6 +31,7 @@
 #define  putpix()
 
 #include <App/Application.h>
+#include "GuiApplication.h"
 
 class QCloseEvent;
 class SoNode;
@@ -46,6 +47,11 @@ class MenuItem;
 class PreferencePackManager;
 class ViewProvider;
 class ViewProviderDocumentObject;
+
+
+GuiExport void initGuiAppPreMainWindow(bool calledByGuiPy);
+GuiExport void initGuiAppPostMainWindow(bool calledByGuiPy, QApplication &mApp, MainWindow &mw, GUIApplicationNativeEventAware *pmAppNativeEventAware);
+
 
 /** The Application main class
  * This is the central class of the GUI
