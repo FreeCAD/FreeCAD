@@ -89,7 +89,6 @@ private:
         switch (state()) {
             case SelectMode::SeekFirst: {
                 referencePoint = onSketchPos;
-                referencePoint = onSketchPos;
             } break;
             case SelectMode::SeekSecond: {
                 refLength = (onSketchPos - referencePoint).Length();
@@ -285,8 +284,10 @@ private:
             }
             else if (isArcOfParabola(*geo)) {
                 auto* arcOfParabola = static_cast<Part::GeomArcOfParabola*>(geo);  // NOLINT
-                // TODO: Problem with scale parabola end points.
                 arcOfParabola->setFocal(arcOfParabola->getFocal() * scaleFactor);
+                double start, end;
+                arcOfParabola->getRange(start, end, true);
+                arcOfParabola->setRange(start * scaleFactor, end * scaleFactor, true);
                 arcOfParabola->setCenter(
                     getScaledPoint(arcOfParabola->getCenter(), referencePoint, scaleFactor));
             }
