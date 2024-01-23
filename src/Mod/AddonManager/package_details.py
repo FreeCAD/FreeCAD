@@ -573,7 +573,8 @@ class PackageDetails(QtWidgets.QWidget):
             elif title == "":
                 self.show_error_for(url)
             else:
-                self.run_javascript()
+                pass
+                #self.run_javascript()
         else:
             self.show_error_for(url)
 
