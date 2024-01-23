@@ -322,9 +322,9 @@ private:
             std::vector<int> geoIdsWhoAlreadyHasEqual = {};
 
             for (auto& cstr : vals) {
-                int firstIndex = indexInVec(listOfGeoIds, cstr->First);
-                int secondIndex = indexInVec(listOfGeoIds, cstr->Second);
-                int thirdIndex = indexInVec(listOfGeoIds, cstr->Third);
+                int firstIndex = indexOfGeoId(listOfGeoIds, cstr->First);
+                int secondIndex = indexOfGeoId(listOfGeoIds, cstr->Second);
+                int thirdIndex = indexOfGeoId(listOfGeoIds, cstr->Third);
 
                 auto newConstr = std::unique_ptr<Constraint>(cstr->copy());
                 newConstr->First = firstCurveCreated + firstIndex;
@@ -362,19 +362,6 @@ private:
                 ShapeConstraints.push_back(std::move(newConstr));
             }
         }
-    }
-
-    int indexInVec(const std::vector<int>& vec, int elem) const
-    {
-        if (elem == GeoEnum::GeoUndef) {
-            return GeoEnum::GeoUndef;
-        }
-        for (size_t i = 0; i < vec.size(); i++) {
-            if (vec[i] == elem) {
-                return static_cast<int>(i);
-            }
-        }
-        return -1;
     }
 
     Base::Vector3d getScaledPoint(Base::Vector3d&& pointToScale,
