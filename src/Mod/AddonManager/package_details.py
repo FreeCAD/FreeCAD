@@ -574,7 +574,7 @@ class PackageDetails(QtWidgets.QWidget):
                 self.show_error_for(url)
             else:
                 pass
-                #self.run_javascript()
+                # self.run_javascript()
         else:
             self.show_error_for(url)
 
