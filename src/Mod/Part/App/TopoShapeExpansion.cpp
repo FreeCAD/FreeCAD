@@ -34,11 +34,26 @@
 #include <BRepFill_Generator.hxx>
 #include <BRepTools.hxx>
 #include <BRep_Builder.hxx>
+#include <BRep_Tool.hxx>
+#include <BRepAlgoAPI_BooleanOperation.hxx>
+#include <BRepAlgoAPI_Common.hxx>
+#include <BRepAlgoAPI_Cut.hxx>
+#include <BRepAlgoAPI_Fuse.hxx>
+#include <BRepAlgoAPI_Section.hxx>
+#include <BRepBuilderAPI_Copy.hxx>
+#include <BRepBuilderAPI_MakeEdge.hxx>
+#include <BRepBuilderAPI_MakeWire.hxx>
+#include <BRepCheck_Analyzer.hxx>
+#include <BRepOffsetAPI_MakePipe.hxx>
+#include <ShapeUpgrade_ShellSewing.hxx>
+#include <TopTools_HSequenceOfShape.hxx>
 #include <Precision.hxx>
 #include <ShapeBuild_ReShape.hxx>
+#include <ShapeAnalysis_FreeBounds.hxx>
+#include <BRepTools.hxx>
+
 #include <ShapeFix_Shape.hxx>
 #include <ShapeFix_ShapeTolerance.hxx>
-#include <ShapeUpgrade_ShellSewing.hxx>
 #include <gp_Pln.hxx>
 
 #include <utility>
@@ -46,6 +61,7 @@
 #include <BRepBuilderAPI_MakeEdge.hxx>
 #include <TopTools_HSequenceOfShape.hxx>
 #include <ShapeAnalysis_FreeBounds.hxx>
+
 #endif
 
 #include "TopoShape.h"
@@ -56,11 +72,26 @@
 #include "TopoShapeOpCode.h"
 #include <App/ElementNamingUtils.h>
 #include <BRepLib.hxx>
+#include <OSD_Parallel.hxx>
 
 FC_LOG_LEVEL_INIT("TopoShape", true, true)  // NOLINT
 
 namespace Part
 {
+
+static void expandCompound(const TopoShape& shape, std::vector<TopoShape>& res)
+{
+    if (shape.isNull()) {
+        FC_THROWM(NullShapeException, "Null input shape");
+    }
+    if (shape.getShape().ShapeType() != TopAbs_COMPOUND) {
+        res.push_back(shape);
+        return;
+    }
+    for (auto& s : shape.getSubTopoShapes()) {
+        expandCompound(s, res);
+    }
+}
 
 void TopoShape::initCache(int reset) const
 {
@@ -2360,6 +2391,229 @@ bool TopoShape::fixSolidOrientation()
     }
 
     return false;
+}
+
+TopoShape&
+TopoShape::makeElementBoolean(const char* maker, const TopoShape& shape, const char* op, double tolerance)
+{
+    return makeElementBoolean(maker, std::vector<TopoShape>(1, shape), op, tolerance);
+}
+
+
+TopoShape& TopoShape::makeElementBoolean(const char* maker,
+                                         const std::vector<TopoShape>& shapes,
+                                         const char* op,
+                                         double tolerance)
+{
+#if OCC_VERSION_HEX <= 0x060800
+    if (tolerance > 0.0) {
+        Standard_Failure::Raise("Fuzzy Booleans are not supported in this version of OCCT");
+    }
+#endif
+
+    if (!maker) {
+        FC_THROWM(Base::CADKernelError, "no maker");
+    }
+
+    if (!op) {
+        op = maker;
+    }
+
+    if (shapes.empty()) {
+        FC_THROWM(NullShapeException, "Null shape");
+    }
+
+    if (strcmp(maker, Part::OpCodes::Compound) == 0) {
+        return makeElementCompound(shapes, op, SingleShapeCompoundCreationPolicy::returnShape);
+    }
+    else if (boost::starts_with(maker, Part::OpCodes::Face)) {
+        std::string prefix(Part::OpCodes::Face);
+        prefix += '.';
+        const char* face_maker = 0;
+        if (boost::starts_with(maker, prefix)) {
+            face_maker = maker + prefix.size();
+        }
+        return makeElementFace(shapes, op, face_maker);
+    }
+    else if (strcmp(maker, Part::OpCodes::Wire) == 0) {
+        return makeElementWires(shapes, op);
+    }
+    else if (strcmp(maker, Part::OpCodes::Compsolid) == 0) {
+        BRep_Builder builder;
+        TopoDS_CompSolid Comp;
+        builder.MakeCompSolid(Comp);
+        for (auto& s : shapes) {
+            if (!s.isNull()) {
+                builder.Add(Comp, s.getShape());
+            }
+        }
+        setShape(Comp);
+        mapSubElement(shapes, op);
+        return *this;
+    }
+
+    if (strcmp(maker, Part::OpCodes::Pipe) == 0) {
+        if (shapes.size() != 2) {
+            FC_THROWM(Base::CADKernelError, "Not enough input shapes");
+        }
+        if (shapes[0].isNull() || shapes[1].isNull()) {
+            FC_THROWM(Base::CADKernelError, "Cannot sweep along empty spine");
+        }
+        if (shapes[0].getShape().ShapeType() != TopAbs_WIRE) {
+            FC_THROWM(Base::CADKernelError, "Spine shape is not a wire");
+        }
+        BRepOffsetAPI_MakePipe mkPipe(TopoDS::Wire(shapes[0].getShape()), shapes[1].getShape());
+        return makeElementShape(mkPipe, shapes, op);
+    }
+
+    if (strcmp(maker, Part::OpCodes::Shell) == 0) {
+        BRep_Builder builder;
+        TopoDS_Shell shell;
+        builder.MakeShell(shell);
+        for (auto& s : shapes) {
+            builder.Add(shell, s.getShape());
+        }
+        setShape(shell);
+        mapSubElement(shapes, op);
+        BRepCheck_Analyzer check(shell);
+        if (!check.IsValid()) {
+            ShapeUpgrade_ShellSewing sewShell;
+            setShape(sewShell.ApplySewing(shell), false);
+            // TODO confirm the above won't change OCCT topological naming
+        }
+        return *this;
+    }
+
+    bool buildShell = true;
+
+    std::vector<TopoShape> _shapes;
+    if (strcmp(maker, Part::OpCodes::Fuse) == 0) {
+        for (auto it = shapes.begin(); it != shapes.end(); ++it) {
+            auto& s = *it;
+            if (s.isNull()) {
+                FC_THROWM(NullShapeException, "Null input shape");
+            }
+            if (s.shapeType() == TopAbs_COMPOUND) {
+                if (_shapes.empty()) {
+                    _shapes.insert(_shapes.end(), shapes.begin(), it);
+                }
+                expandCompound(s, _shapes);
+            }
+            else if (_shapes.size()) {
+                _shapes.push_back(s);
+            }
+        }
+    }
+    else if (strcmp(maker, Part::OpCodes::Cut) == 0) {
+        for (unsigned i = 1; i < shapes.size(); ++i) {
+            auto& s = shapes[i];
+            if (s.isNull()) {
+                FC_THROWM(NullShapeException, "Null input shape");
+            }
+            if (s.shapeType() == TopAbs_COMPOUND) {
+                if (_shapes.empty()) {
+                    _shapes.insert(_shapes.end(), shapes.begin(), shapes.begin() + i);
+                }
+                expandCompound(s, _shapes);
+            }
+            else if (_shapes.size()) {
+                _shapes.push_back(s);
+            }
+        }
+    }
+
+    if (tolerance > 0.0 && _shapes.empty()) {
+        _shapes = shapes;
+    }
+
+    const auto& inputs = _shapes.size() ? _shapes : shapes;
+    if (inputs.empty()) {
+        FC_THROWM(NullShapeException, "Null input shape");
+    }
+    if (inputs.size() == 1) {
+        *this = inputs[0];
+        if (shapes.size() == 1) {
+            // _shapes has fewer items than shapes due to compound expansion.
+            // Only warn if the caller paseses one shape.
+            FC_WARN("Boolean operation with only one shape input");
+        }
+        return *this;
+    }
+
+    std::unique_ptr<BRepAlgoAPI_BooleanOperation> mk;
+    if (strcmp(maker, Part::OpCodes::Fuse) == 0) {
+        mk.reset(new BRepAlgoAPI_Fuse);
+    }
+    else if (strcmp(maker, Part::OpCodes::Cut) == 0) {
+        mk.reset(new BRepAlgoAPI_Cut);
+    }
+    else if (strcmp(maker, Part::OpCodes::Common) == 0) {
+        mk.reset(new BRepAlgoAPI_Common);
+    }
+    else if (strcmp(maker, Part::OpCodes::Section) == 0) {
+        mk.reset(new BRepAlgoAPI_Section);
+        buildShell = false;
+    }
+    else {
+        FC_THROWM(Base::CADKernelError, "Unknown maker");
+    }
+
+    TopTools_ListOfShape shapeArguments, shapeTools;
+
+    int i = -1;
+    for (const auto& shape : inputs) {
+        if (shape.isNull()) {
+            FC_THROWM(NullShapeException, "Null input shape");
+        }
+        if (++i == 0) {
+            shapeArguments.Append(shape.getShape());
+        }
+        else if (tolerance > 0.0) {
+            auto& s = _shapes[i];
+            // workaround for http://dev.opencascade.org/index.php?q=node/1056#comment-520
+            s.setShape(BRepBuilderAPI_Copy(s.getShape()).Shape(), false);
+            shapeTools.Append(s.getShape());
+        }
+        else {
+            shapeTools.Append(shape.getShape());
+        }
+    }
+
+#if OCC_VERSION_HEX >= 0x070500
+// Can't find this threshold value anywhere.  Go ahead assuming it is true.
+//    if (PartParams::getParallelRunThreshold() > 0) {
+        mk->SetRunParallel(Standard_True);
+        OSD_Parallel::SetUseOcctThreads(Standard_True);
+//    }
+#else
+    // Only run parallel
+    if (shapeArguments.Size() + shapeTools.Size() > 2) {
+        mk->SetRunParallel(true);
+    }
+    else if (PartParams::getParallelRunThreshold() > 0) {
+        int total = 0;
+        for (const auto& shape : inputs) {
+            total += shape.countSubShapes(TopAbs_FACE);
+            if (total > PartParams::getParallelRunThreshold()) {
+                mk->SetRunParallel(true);
+                break;
+            }
+        }
+    }
+#endif
+
+    mk->SetArguments(shapeArguments);
+    mk->SetTools(shapeTools);
+    if (tolerance > 0.0) {
+        mk->SetFuzzyValue(tolerance);
+    }
+    mk->Build();
+    makeElementShape(*mk, inputs, op);
+
+    if (buildShell) {
+        makeElementShell();
+    }
+    return *this;
 }
 
 }  // namespace Part
