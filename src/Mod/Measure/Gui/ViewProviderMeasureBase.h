@@ -73,6 +73,7 @@ public:
     /**
      * Attaches the document object to this view provider.
      */
+    bool isPartOfPhysicalObject() const override {return false;};
     void attach(App::DocumentObject *pcObj) override;
     void updateData(const App::Property* prop) override;
     virtual void onGuiInit(const Measure::MeasureBase* measureObject);
