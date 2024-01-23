@@ -29,9 +29,9 @@
 // Measure
 #ifndef MeasureExport
 #ifdef Measure_EXPORTS
-#define MeasureExport AppExport
+#define MeasureExport FREECAD_DECL_EXPORT
 #else
-#define MeasureExport AppExport
+#define MeasureExport FREECAD_DECL_IMPORT
 #endif
 #endif
 
