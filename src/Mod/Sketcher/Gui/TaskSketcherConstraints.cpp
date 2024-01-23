@@ -262,12 +262,12 @@ public:
             static QIcon snell_driven(
                 Gui::BitmapFactory().iconFromTheme("Constraint_SnellsLaw_Driven"));
 
-            auto selicon = [](const Sketcher::Constraint* constr,
+            auto selicon = [this](const Sketcher::Constraint* constr,
                               const QIcon& normal,
                               const QIcon& driven) -> QIcon {
                 if (!constr->isActive) {
                     QIcon darkIcon;
-                    int w = QApplication::style()->pixelMetric(QStyle::PM_ListViewIconSize);
+                    int w = listWidget()->style()->pixelMetric(QStyle::PM_ListViewIconSize);
                     darkIcon.addPixmap(normal.pixmap(w, w, QIcon::Disabled, QIcon::Off),
                                        QIcon::Normal,
                                        QIcon::Off);
@@ -466,7 +466,7 @@ protected:
         QStyleOptionViewItem options = option;
         initStyleOption(&options, index);
 
-        options.widget->style()->drawControl(QStyle::CE_ItemViewItem, &options, painter);
+        options.widget->style()->drawControl(QStyle::CE_ItemViewItem, &options, painter, option.widget);
 
         ConstraintItem* item = dynamic_cast<ConstraintItem*>(view->item(index.row()));
         if (!item || item->sketch->Constraints.getSize() <= item->ConstraintNbr)
