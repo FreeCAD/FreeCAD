@@ -42,37 +42,33 @@
 #include <BRepAlgoAPI_Section.hxx>
 #include <BRepBuilderAPI_Copy.hxx>
 #include <BRepBuilderAPI_MakeEdge.hxx>
-#include <BRepBuilderAPI_MakeWire.hxx>
-#include <BRepCheck_Analyzer.hxx>
 #include <BRepOffsetAPI_MakePipe.hxx>
 #include <ShapeUpgrade_ShellSewing.hxx>
 #include <TopTools_HSequenceOfShape.hxx>
 #include <Precision.hxx>
 #include <ShapeBuild_ReShape.hxx>
 #include <ShapeAnalysis_FreeBounds.hxx>
-#include <BRepTools.hxx>
 
 #include <ShapeFix_Shape.hxx>
 #include <ShapeFix_ShapeTolerance.hxx>
 #include <gp_Pln.hxx>
 
 #include <utility>
-#include <BRepBuilderAPI_Copy.hxx>
-#include <BRepBuilderAPI_MakeEdge.hxx>
-#include <TopTools_HSequenceOfShape.hxx>
-#include <ShapeAnalysis_FreeBounds.hxx>
 
 #endif
 
+#if OCC_VERSION_HEX >= 0x070500
+#   include <OSD_Parallel.hxx>
+#endif
+
 #include "TopoShape.h"
+#include "TopoShapeOpCode.h"
 #include "TopoShapeCache.h"
 #include "TopoShapeMapper.h"
 #include "FaceMaker.h"
 
-#include "TopoShapeOpCode.h"
 #include <App/ElementNamingUtils.h>
 #include <BRepLib.hxx>
-#include <OSD_Parallel.hxx>
 
 FC_LOG_LEVEL_INIT("TopoShape", true, true)  // NOLINT
 
@@ -2400,17 +2396,12 @@ TopoShape::makeElementBoolean(const char* maker, const TopoShape& shape, const c
 }
 
 
+// TODO: Refactor this so that each OpCode type is a separate method to reduce size
 TopoShape& TopoShape::makeElementBoolean(const char* maker,
                                          const std::vector<TopoShape>& shapes,
                                          const char* op,
                                          double tolerance)
 {
-#if OCC_VERSION_HEX <= 0x060800
-    if (tolerance > 0.0) {
-        Standard_Failure::Raise("Fuzzy Booleans are not supported in this version of OCCT");
-    }
-#endif
-
     if (!maker) {
         FC_THROWM(Base::CADKernelError, "no maker");
     }
@@ -2454,10 +2445,10 @@ TopoShape& TopoShape::makeElementBoolean(const char* maker,
 
     if (strcmp(maker, Part::OpCodes::Pipe) == 0) {
         if (shapes.size() != 2) {
-            FC_THROWM(Base::CADKernelError, "Not enough input shapes");
+            FC_THROWM(Base::CADKernelError, "Sweep needs a spine and a shape");
         }
         if (shapes[0].isNull() || shapes[1].isNull()) {
-            FC_THROWM(Base::CADKernelError, "Cannot sweep along empty spine");
+            FC_THROWM(Base::CADKernelError, "Cannot sweep with empty spine or empty shape");
         }
         if (shapes[0].getShape().ShapeType() != TopAbs_WIRE) {
             FC_THROWM(Base::CADKernelError, "Spine shape is not a wire");
@@ -2479,7 +2470,7 @@ TopoShape& TopoShape::makeElementBoolean(const char* maker,
         if (!check.IsValid()) {
             ShapeUpgrade_ShellSewing sewShell;
             setShape(sewShell.ApplySewing(shell), false);
-            // TODO confirm the above won't change OCCT topological naming
+            // TODO: confirm the above won't change OCCT topological naming
         }
         return *this;
     }
@@ -2580,26 +2571,15 @@ TopoShape& TopoShape::makeElementBoolean(const char* maker,
     }
 
 #if OCC_VERSION_HEX >= 0x070500
-// Can't find this threshold value anywhere.  Go ahead assuming it is true.
-//    if (PartParams::getParallelRunThreshold() > 0) {
+    // -1/22/2024 Removing the parameter.
+    // if (PartParams::getParallelRunThreshold() > 0) {
         mk->SetRunParallel(Standard_True);
         OSD_Parallel::SetUseOcctThreads(Standard_True);
-//    }
+    // }
 #else
-    // Only run parallel
-    if (shapeArguments.Size() + shapeTools.Size() > 2) {
-        mk->SetRunParallel(true);
-    }
-    else if (PartParams::getParallelRunThreshold() > 0) {
-        int total = 0;
-        for (const auto& shape : inputs) {
-            total += shape.countSubShapes(TopAbs_FACE);
-            if (total > PartParams::getParallelRunThreshold()) {
-                mk->SetRunParallel(true);
-                break;
-            }
-        }
-    }
+    // 01/22/2024 This will be an extremely rare case, since we don't
+    // build against OCCT versions this old.  Removing the parameter.
+    mk->SetRunParallel(true);
 #endif
 
     mk->SetArguments(shapeArguments);
