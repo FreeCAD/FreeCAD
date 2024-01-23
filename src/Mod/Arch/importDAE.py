@@ -118,7 +118,7 @@ def read(filename):
     "reads a DAE file"
 
     global col
-    col = collada.Collada(filename, ignore=[collada.DaeUnsupportedError])
+    col = collada.Collada(filename, ignore=[collada.common.DaeUnsupportedError])
     # Read the unitmeter info from dae file and compute unit to convert to mm
     unitmeter = col.assetInfo.unitmeter or 1
     unit = unitmeter / 0.001
