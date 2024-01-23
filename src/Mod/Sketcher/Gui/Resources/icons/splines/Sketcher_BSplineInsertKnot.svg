@@ -380,7 +380,7 @@
          id="path3826" />
     </g>
     <g
-       transform="matrix(0.77869459,0,0,0.77869445,66.2831,20.597628)"
+       transform="matrix(0.77869459,0,0,0.77869445,63.903318,22.302657)"
        id="g3"
        style="display:inline;stroke-width:1.2842">
       <path
@@ -392,5 +392,9 @@
          id="path3"
          d="m -24.358888,7.0362241 a 5.782493,5.7773415 0 1 1 8.784093,7.5158349 5.782493,5.7773415 0 0 1 -8.784093,-7.5158349 z" />
     </g>
+    <path
+       id="path1"
+       style="fill:none;fill-opacity:1;stroke:#8ae234;stroke-width:2;stroke-linecap:round;stroke-dasharray:none;stroke-opacity:1;paint-order:markers fill stroke"
+       d="m 37.956269,30.704899 c 0,-5.743254 4.655691,-10.39908 10.398778,-10.39908 m 10.398777,10.39908 c 0,5.743253 -4.655691,10.399079 -10.398777,10.39908" />
   </g>
 </svg>
