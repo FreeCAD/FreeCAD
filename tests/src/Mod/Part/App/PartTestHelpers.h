@@ -1,20 +1,24 @@
 // SPDX-License-Identifier: LGPL-2.1-or-later
 
 #include "gtest/gtest.h"
+#include <boost/format.hpp>
 #include <App/Application.h>
 #include <App/Document.h>
+#include "Base/Interpreter.h"
 #include <Base/Precision.h>
 #include "Mod/Part/App/FeaturePartBox.h"
 #include "Mod/Part/App/FeaturePartFuse.h"
 #include "Mod/Part/App/FeatureFillet.h"
 #include <BRepGProp.hxx>
-#include "Base/Interpreter.h"
-#include <boost/format.hpp>
 
 namespace PartTestHelpers
 {
 
 double getVolume(const TopoDS_Shape& shape);
+
+double getArea(const TopoDS_Shape& shape);
+
+double getLength(const TopoDS_Shape& shape);
 
 std::vector<Part::FilletElement>
 _getFilletEdges(const std::vector<int>& edges, double startRadius, double endRadius);

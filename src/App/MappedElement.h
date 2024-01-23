@@ -26,6 +26,7 @@
 #include "IndexedName.h"
 #include "MappedName.h"
 
+
 namespace App
 {
 class DocumentObject;
