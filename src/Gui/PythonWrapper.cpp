@@ -291,12 +291,12 @@ public:
             PyW_invalidator->disconnect();
 
         auto destroyedFun = [pyobj](){
+            Base::PyGILStateLocker lock;
 #if defined (HAVE_SHIBOKEN)
             auto sbk_ptr = reinterpret_cast <SbkObject *> (pyobj);
-            if (sbk_ptr != nullptr) {
-                Base::PyGILStateLocker lock;
+            if (sbk_ptr != nullptr)
                 Shiboken::Object::setValidCpp(sbk_ptr, false);
-            } else
+            else
                 Base::Console().DeveloperError("WrapperManager", "A QObject has just been destroyed after its Pythonic wrapper.\n");
 #endif
             Py_DECREF (pyobj);
