@@ -167,10 +167,9 @@ class PackageDetails(QtWidgets.QWidget):
             date = ""
             installed_version_string = "<h3>"
             if repo.updated_timestamp:
-                date = (
-                    QtCore.QDateTime.fromTime_t(repo.updated_timestamp)
-                    .date()
-                    .toString(QtCore.Qt.SystemLocaleShortDate)
+                date = QtCore.QLocale().toString(
+                    QtCore.QDateTime.fromSecsSinceEpoch(int(round(repo.updated_timestamp, 0))),
+                    QtCore.QLocale.ShortFormat,
                 )
             if version and date:
                 installed_version_string += (

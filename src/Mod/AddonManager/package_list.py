@@ -465,10 +465,9 @@ class PackageListItemDelegate(QtWidgets.QStyledItemDelegate):
         installed_date_string = ""
         if repo.updated_timestamp:
             installed_date_string = "<br/>" + translate("AddonsInstaller", "Installed on") + ": "
-            installed_date_string += (
-                QtCore.QDateTime.fromTime_t(repo.updated_timestamp)
-                .date()
-                .toString(QtCore.Qt.SystemLocaleShortDate)
+            installed_date_string += QtCore.QLocale().toString(
+                QtCore.QDateTime.fromSecsSinceEpoch(int(round(repo.updated_timestamp, 0))),
+                QtCore.QLocale.ShortFormat,
             )
 
         available_version_string = ""
