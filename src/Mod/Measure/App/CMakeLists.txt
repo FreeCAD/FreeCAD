@@ -69,17 +69,8 @@ if(FREECAD_USE_PCH)
     ADD_MSVC_PRECOMPILED_HEADER(Measure PreCompiled.h PreCompiled.cpp Measure_CPP_SRCS)
 endif(FREECAD_USE_PCH)
 
-SET(Measure_Scripts
-    ../Init.py
-)
-
-add_library(Measure SHARED ${Measure_SRCS} ${Measure_Scripts})
+add_library(Measure SHARED ${Measure_SRCS})
 target_link_libraries(Measure ${Measure_LIBS})
-
-fc_target_copy_resource_flat(Measure
-    ${CMAKE_CURRENT_SOURCE_DIR}
-    ${CMAKE_BINARY_DIR}/Mod/Measure
-    ${Measure_Scripts})
 
 #if(MSVC)
 #    set_target_properties(Measure PROPERTIES SUFFIX ".pyd")
