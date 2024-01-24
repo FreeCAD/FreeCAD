@@ -250,16 +250,14 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent * const ev)
     case 0:
         if (curmode == NavigationStyle::SPINNING) { break; }
         newmode = NavigationStyle::IDLE;
-        // The left mouse button has been released right now but
-        // we want to avoid that the event is processed elsewhere
+        // The left mouse button has been released right now
         if (this->lockButton1) {
             this->lockButton1 = false;
-            processed = true;
         }
         break;
     case BUTTON1DOWN:
         // make sure not to change the selection when stopping spinning
-        if (curmode == NavigationStyle::SPINNING || this->lockButton1)
+        if (!viewer->isEditing() && (curmode == NavigationStyle::SPINNING || this->lockButton1))
             newmode = NavigationStyle::IDLE;
         else
             newmode = NavigationStyle::SELECTION;
@@ -308,6 +306,12 @@ SbBool CADNavigationStyle::processSoEvent(const SoEvent * const ev)
     if (this->button1down && (this->button2down || this->button3down)) {
         this->lockButton1 = true;
         processed = true;
+    }
+
+    // Prevent interrupting rubber-band selection in sketcher
+    if (viewer->isEditing() && curmode == NavigationStyle::SELECTION && newmode != NavigationStyle::IDLE) {
+        newmode = NavigationStyle::SELECTION;
+        processed = false;
     }
 
     if (newmode != curmode) {

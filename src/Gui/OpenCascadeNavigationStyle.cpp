@@ -269,6 +269,12 @@ SbBool OpenCascadeNavigationStyle::processSoEvent(const SoEvent * const ev)
         processed = true;
     }
 
+    // Prevent interrupting rubber-band selection in sketcher
+    if (viewer->isEditing() && curmode == NavigationStyle::SELECTION && newmode != NavigationStyle::IDLE) {
+        newmode = NavigationStyle::SELECTION;
+        processed = false;
+    }
+
     if (newmode != curmode) {
         this->setViewingMode(newmode);
     }
