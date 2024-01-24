@@ -21,9 +21,17 @@
 #                                                                           *
 # ***************************************************************************/
 
-import FreeCAD
+import FreeCAD as App
 import Part
 import unittest
+
+import UtilsAssembly
+import JointObject
+
+
+def _msg(text, end="\n"):
+    """Write messages to the console including the line ending."""
+    App.Console.PrintMessage(text + end)
 
 
 class TestCore(unittest.TestCase):
@@ -49,26 +57,167 @@ class TestCore(unittest.TestCase):
         """
         pass
 
-        # Close geometry document without saving
-        # FreeCAD.closeDocument(FreeCAD.ActiveDocument.Name)
-
     # Setup and tear down methods called before and after each unit test
     def setUp(self):
         """setUp()...
         This method is called prior to each `test()` method.  Add code and objects here
         that are needed for multiple `test()` methods.
         """
-        self.doc = FreeCAD.ActiveDocument
-        self.con = FreeCAD.Console
+        doc_name = self.__class__.__name__
+        if App.ActiveDocument:
+            if App.ActiveDocument.Name != doc_name:
+                App.newDocument(doc_name)
+        else:
+            App.newDocument(doc_name)
+        App.setActiveDocument(doc_name)
+        self.doc = App.ActiveDocument
+
+        self.assembly = App.ActiveDocument.addObject("Assembly::AssemblyObject", "Assembly")
+        if self.assembly:
+            self.jointgroup = self.assembly.newObject("Assembly::JointGroup", "Joints")
+
+        _msg("  Temporary document '{}'".format(self.doc.Name))
 
     def tearDown(self):
         """tearDown()...
         This method is called after each test() method. Add cleanup instructions here.
         Such cleanup instructions will likely undo those in the setUp() method.
         """
-        pass
+        App.closeDocument(self.doc.Name)
 
-    def test00(self):
-        pass
+    def test_create_assembly(self):
+        """Create an assembly."""
+        operation = "Create Assembly Object"
+        _msg("  Test '{}'".format(operation))
+        self.assertTrue(self.assembly, "'{}' failed".format(operation))
 
-        self.assertTrue(True)
+    def test_create_jointGroup(self):
+        """Create a joint group in an assembly."""
+        operation = "Create JointGroup Object"
+        _msg("  Test '{}'".format(operation))
+        self.assertTrue(self.jointgroup, "'{}' failed".format(operation))
+
+    def test_create_joint(self):
+        """Create a joint in an assembly."""
+        operation = "Create Joint Object"
+        _msg("  Test '{}'".format(operation))
+
+        joint = self.jointgroup.newObject("App::FeaturePython", "testJoint")
+        self.assertTrue(joint, "'{}' failed (FeaturePython creation failed)".format(operation))
+        JointObject.Joint(joint, 0)
+
+        self.assertTrue(hasattr(joint, "JointType"), "'{}' failed".format(operation))
+
+    def test_create_grounded_joint(self):
+        """Create a grounded joint in an assembly."""
+        operation = "Create Grounded Joint Object"
+        _msg("  Test '{}'".format(operation))
+
+        groundedjoint = self.jointgroup.newObject("App::FeaturePython", "testJoint")
+        self.assertTrue(
+            groundedjoint, "'{}' failed (FeaturePython creation failed)".format(operation)
+        )
+
+        box = self.assembly.newObject("Part::Box", "Box")
+
+        JointObject.GroundedJoint(groundedjoint, box)
+
+        self.assertTrue(
+            hasattr(groundedjoint, "ObjectToGround"),
+            "'{}' failed: No attribute 'ObjectToGround'".format(operation),
+        )
+        self.assertTrue(
+            groundedjoint.ObjectToGround == box,
+            "'{}' failed: ObjectToGround not set correctly.".format(operation),
+        )
+
+    def test_find_placement(self):
+        """Test find placement of joint."""
+        operation = "Find placement"
+        _msg("  Test '{}'".format(operation))
+
+        joint = self.jointgroup.newObject("App::FeaturePython", "testJoint")
+        JointObject.Joint(joint, 0)
+
+        L = 2
+        W = 3
+        H = 7
+        box = self.assembly.newObject("Part::Box", "Box")
+        box.Length = L
+        box.Width = W
+        box.Height = H
+        box.Placement = App.Placement(App.Vector(10, 20, 30), App.Rotation(15, 25, 35))
+
+        # Step 0 : box with placement. No element selected
+        plc = joint.Proxy.findPlacement(joint, box.Name, box, "", "")
+        targetPlc = App.Placement(App.Vector(), App.Rotation())
+        self.assertTrue(plc.isSame(targetPlc, 1e-6), "'{}' failed - Step 0".format(operation))
+
+        # Step 1 : box with placement. Face + Vertex
+        plc = joint.Proxy.findPlacement(joint, box.Name, box, "Face6", "Vertex7")
+        targetPlc = App.Placement(App.Vector(L, W, H), App.Rotation())
+        self.assertTrue(plc.isSame(targetPlc, 1e-6), "'{}' failed - Step 1".format(operation))
+
+        # Step 2 : box with placement. Edge + Vertex
+        plc = joint.Proxy.findPlacement(joint, box.Name, box, "Edge8", "Vertex8")
+        targetPlc = App.Placement(App.Vector(L, W, 0), App.Rotation(0, 0, -90))
+        self.assertTrue(plc.isSame(targetPlc, 1e-6), "'{}' failed - Step 2".format(operation))
+
+        # Step 3 : box with placement. Vertex
+        plc = joint.Proxy.findPlacement(joint, box.Name, box, "Vertex3", "Vertex3")
+        targetPlc = App.Placement(App.Vector(0, W, H), App.Rotation())
+        _msg("  plc '{}'".format(plc))
+        _msg("  targetPlc '{}'".format(targetPlc))
+        self.assertTrue(plc.isSame(targetPlc, 1e-6), "'{}' failed - Step 3".format(operation))
+
+        # Step 4 : box with placement. Face
+        plc = joint.Proxy.findPlacement(joint, box.Name, box, "Face2", "Face2")
+        targetPlc = App.Placement(App.Vector(L, W / 2, H / 2), App.Rotation(0, -90, 180))
+        _msg("  plc '{}'".format(plc))
+        _msg("  targetPlc '{}'".format(targetPlc))
+        self.assertTrue(plc.isSame(targetPlc, 1e-6), "'{}' failed - Step 4".format(operation))
+
+    def test_solve_assembly(self):
+        """Test solving an assembly."""
+        operation = "Solve assembly"
+        _msg("  Test '{}'".format(operation))
+
+        box = self.assembly.newObject("Part::Box", "Box")
+        box.Length = 10
+        box.Width = 10
+        box.Height = 10
+        box.Placement = App.Placement(App.Vector(10, 20, 30), App.Rotation(15, 25, 35))
+
+        box2 = self.assembly.newObject("Part::Box", "Box")
+        box2.Length = 10
+        box2.Width = 10
+        box2.Height = 10
+        box2.Placement = App.Placement(App.Vector(40, 50, 60), App.Rotation(45, 55, 65))
+
+        ground = self.jointgroup.newObject("App::FeaturePython", "GroundedJoint")
+        JointObject.GroundedJoint(ground, box2)
+
+        joint = self.jointgroup.newObject("App::FeaturePython", "testJoint")
+        JointObject.Joint(joint, 0)
+
+        current_selection = []
+        current_selection.append(
+            {
+                "object": box2,
+                "part": box2,
+                "element_name": "Face6",
+                "vertex_name": "Vertex7",
+            }
+        )
+        current_selection.append(
+            {
+                "object": box,
+                "part": box,
+                "element_name": "Face6",
+                "vertex_name": "Vertex7",
+            }
+        )
+
+        joint.Proxy.setJointConnectors(joint, current_selection)
+
+        self.assertTrue(box.Placement.isSame(box2.Placement, 1e-6), "'{}'".format(operation))

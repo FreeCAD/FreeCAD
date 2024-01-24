@@ -78,6 +78,9 @@ set(TestExecutables
     Tests_run
 )
 
+if(BUILD_ASSEMBLY)
+  list (APPEND TestExecutables Assembly_tests_run)
+endif(BUILD_ASSEMBLY)
 if(BUILD_MATERIAL)
   list (APPEND TestExecutables Material_tests_run)
 endif(BUILD_MATERIAL)
