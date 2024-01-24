@@ -264,10 +264,13 @@ std::vector<TopoDS_Wire> ProfileBased::getProfileWires() const {
     if (Profile.getValue()->isDerivedFrom(Part::Part2DObject::getClassTypeId()))
         shape = Profile.getValue<Part::Part2DObject*>()->Shape.getValue();
     else {
-        if (Profile.getSubValues().empty())
+        auto subFaces = Profile.getValue<Part::Feature*>()->Shape.getShape().getSubShapes(TopAbs_FACE);
+        if (subFaces.size() == 1)
+            shape  =  subFaces[0];
+        else if (Profile.getSubValues().empty())
             throw Base::ValueError("No valid subelement linked in Part::Feature");
-
-        shape = Profile.getValue<Part::Feature*>()->Shape.getShape().getSubShape(Profile.getSubValues().front().c_str());
+        else
+            shape = Profile.getValue<Part::Feature*>()->Shape.getShape().getSubShape(Profile.getSubValues().front().c_str());
     }
 
     if (shape.IsNull())
