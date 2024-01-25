@@ -35,7 +35,7 @@ from draftutils.translate import translate
 
 if App.GuiUp:
     import FreeCADGui as Gui
-    from PySide import QtGui
+    from PySide import QtWidgets
 
 class ParamObserverDraft:
 
@@ -93,7 +93,7 @@ def _param_observer_callback_scalemultiplier(value):
         return
     mw = Gui.getMainWindow()
     sb = mw.statusBar()
-    scale_widget = sb.findChild(QtGui.QToolBar,"draft_scale_widget")
+    scale_widget = sb.findChild(QtWidgets.QToolBar,"draft_scale_widget")
     if scale_widget is not None:
         scale_label = init_draft_statusbar.scale_to_label(1 / value)
         scale_widget.scaleLabel.setText(scale_label)
@@ -179,10 +179,10 @@ def _param_observer_callback_svg_pattern():
     msg = translate("draft",
 """Do you want to update the SVG pattern options
 of existing objects in all opened documents?""")
-    res = QtGui.QMessageBox.question(None, "Update SVG patterns", msg,
-                                     QtGui.QMessageBox.Yes | QtGui.QMessageBox.No,
-                                     QtGui.QMessageBox.No)
-    if res == QtGui.QMessageBox.No:
+    res = QtWidgets.QMessageBox.question(None, "Update SVG patterns", msg,
+                                     QtWidgets.QMessageBox.Yes | QtWidgets.QMessageBox.No,
+                                     QtWidgets.QMessageBox.No)
+    if res == QtWidgets.QMessageBox.No:
         return
 
     for doc, vobjs in data:

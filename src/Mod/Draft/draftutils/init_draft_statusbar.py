@@ -33,6 +33,7 @@ and is populated by various widgets, buttons and menus.
 # @{
 import PySide.QtCore as QtCore
 import PySide.QtGui as QtGui
+import PySide.QtWidgets as QtWidgets
 
 import FreeCAD as App
 import FreeCADGui as Gui
@@ -145,13 +146,13 @@ def _set_scale(action):
     mw = Gui.getMainWindow()
     sb = mw.statusBar()
 
-    scale_widget = sb.findChild(QtGui.QToolBar,"draft_scale_widget")
+    scale_widget = sb.findChild(QtWidgets.QToolBar,"draft_scale_widget")
 
     if action.text() == translate("draft", "Custom"):
         title_text = translate("draft", "Set custom scale")
         dialog_text = translate("draft",
                                 "Set custom annotation scale in format x:x, x=x")
-        custom_scale = QtGui.QInputDialog.getText(None, title_text, dialog_text)
+        custom_scale = QtWidgets.QInputDialog.getText(None, title_text, dialog_text)
         if custom_scale[1]:
             print(custom_scale[0])
             scale = label_to_scale(custom_scale[0])
@@ -179,7 +180,7 @@ def init_draft_statusbar_scale():
     mw = Gui.getMainWindow()
     sb = mw.statusBar()
 
-    scale_widget = QtGui.QToolBar()
+    scale_widget = QtWidgets.QToolBar()
     scale_widget.setObjectName("draft_scale_widget")
 
     # get scales list according to system units
@@ -191,10 +192,10 @@ def init_draft_statusbar_scale():
 
     # initializes scale widget
     scale_widget.draft_scales = draft_scales
-    scaleLabel = QtGui.QPushButton("Scale")
+    scaleLabel = QtWidgets.QPushButton("Scale")
     scaleLabel.setObjectName("ScaleLabel")
     scaleLabel.setFlat(True)
-    menu = QtGui.QMenu(scaleLabel)
+    menu = QtWidgets.QMenu(scaleLabel)
     gUnits = QtGui.QActionGroup(menu)
     for u in draft_scales:
         a = QtGui.QAction(gUnits)
@@ -223,7 +224,7 @@ def init_draft_statusbar_snap():
         """
         empty label instead of snap_widget.addSeparator()
         """
-        label = QtGui.QLabel()
+        label = QtWidgets.QLabel()
         label.setFixedWidth(2)
         return label
 
@@ -232,11 +233,11 @@ def init_draft_statusbar_snap():
 
     # check if the toolbar is available, without it the required actions
     # may be missing:
-    if mw.findChild(QtGui.QToolBar, "Draft snap") is None:
+    if mw.findChild(QtWidgets.QToolBar, "Draft snap") is None:
         return
 
     # snap widget:
-    snap_widget = QtGui.QToolBar()
+    snap_widget = QtWidgets.QToolBar()
     snap_widget.setObjectName("draft_snap_widget")
     snap_widget.setOrientation(QtCore.Qt.Orientation.Horizontal)
     snap_widget.setIconSize(QtCore.QSize(16, 16))
@@ -286,11 +287,11 @@ def show_draft_statusbar():
     sb = mw.statusBar()
 
     if params.get_param("DisplayStatusbarScaleWidget"):
-        scale_widget = sb.findChild(QtGui.QToolBar, "draft_scale_widget")
+        scale_widget = sb.findChild(QtWidgets.QToolBar, "draft_scale_widget")
         if scale_widget:
             scale_widget.show()
         else:
-            scale_widget = mw.findChild(QtGui.QToolBar, "draft_scale_widget")
+            scale_widget = mw.findChild(QtWidgets.QToolBar, "draft_scale_widget")
             if scale_widget:
                 sb.insertPermanentWidget(3, scale_widget)
                 scale_widget.show()
@@ -299,12 +300,12 @@ def show_draft_statusbar():
                 t.singleShot(500, init_draft_statusbar_scale)
 
     if params.get_param("DisplayStatusbarSnapWidget"):
-        snap_widget = sb.findChild(QtGui.QToolBar, "draft_snap_widget")
+        snap_widget = sb.findChild(QtWidgets.QToolBar, "draft_snap_widget")
         if snap_widget:
             snap_widget.setOrientation(QtCore.Qt.Orientation.Horizontal)
             snap_widget.show()
         else:
-            snap_widget = mw.findChild(QtGui.QToolBar, "draft_snap_widget")
+            snap_widget = mw.findChild(QtWidgets.QToolBar, "draft_snap_widget")
             if snap_widget:
                 sb.insertPermanentWidget(2, snap_widget)
                 snap_widget.setOrientation(QtCore.Qt.Orientation.Horizontal)
@@ -322,11 +323,11 @@ def hide_draft_statusbar():
     sb = mw.statusBar()
 
     # hide scale widget
-    scale_widget = sb.findChild(QtGui.QToolBar, "draft_scale_widget")
+    scale_widget = sb.findChild(QtWidgets.QToolBar, "draft_scale_widget")
     if scale_widget is None:
         # when switching workbenches, the toolbar sometimes "jumps"
         # out of the status bar to any other dock area...
-        scale_widget = mw.findChild(QtGui.QToolBar, "draft_scale_widget")
+        scale_widget = mw.findChild(QtWidgets.QToolBar, "draft_scale_widget")
     if scale_widget:
         scale_widget.hide()
         # prevent the widget from showing up as a blank item in the toolbar
@@ -334,11 +335,11 @@ def hide_draft_statusbar():
         scale_widget.toggleViewAction().setVisible(False)
 
     # hide snap widget
-    snap_widget = sb.findChild(QtGui.QToolBar,"draft_snap_widget")
+    snap_widget = sb.findChild(QtWidgets.QToolBar,"draft_snap_widget")
     if snap_widget is None:
         # when switching workbenches, the toolbar sometimes "jumps"
         # out of the status bar to any other dock area...
-        snap_widget = mw.findChild(QtGui.QToolBar,"draft_snap_widget")
+        snap_widget = mw.findChild(QtWidgets.QToolBar,"draft_snap_widget")
     if snap_widget:
         snap_widget.hide()
         # prevent the widget from showing up as a blank item in the toolbar

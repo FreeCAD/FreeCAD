@@ -35,7 +35,7 @@ __url__ = "https://www.freecad.org"
 import math
 import pivy.coin as coin
 import PySide.QtCore as QtCore
-import PySide.QtGui as QtGui
+import PySide.QtWidgets as QtWidgets
 
 import FreeCAD as App
 import FreeCADGui as Gui
@@ -650,7 +650,7 @@ class Edit(gui_base_original.Modifier):
     # ------------------------------------------------------------------------
 
     def display_tracker_menu(self, event):
-        self.tracker_menu = QtGui.QMenu()
+        self.tracker_menu = QtWidgets.QMenu()
         actions = None
 
         if self.overNode:
