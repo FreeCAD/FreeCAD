@@ -1016,6 +1016,49 @@ struct MapperSewing: Part::TopoShape::Mapper
     }
 };
 
+struct MapperThruSections: MapperMaker
+{
+    TopoShape firstProfile;
+    TopoShape lastProfile;
+
+    MapperThruSections(BRepOffsetAPI_ThruSections& tmaker, const std::vector<TopoShape>& profiles)
+        : MapperMaker(tmaker)
+    {
+        if (!tmaker.FirstShape().IsNull()) {
+            firstProfile = profiles.front();
+        }
+        if (!tmaker.LastShape().IsNull()) {
+            lastProfile = profiles.back();
+        }
+    }
+    virtual const std::vector<TopoDS_Shape>& generated(const TopoDS_Shape& s) const override
+    {
+        MapperMaker::generated(s);
+        if (_res.size()) {
+            return _res;
+        }
+        try {
+            auto& tmaker = static_cast<BRepOffsetAPI_ThruSections&>(maker);
+            auto shape = tmaker.GeneratedFace(s);
+            if (!shape.IsNull()) {
+                _res.push_back(shape);
+            }
+            if (firstProfile.getShape().IsSame(s) || firstProfile.findShape(s)) {
+                _res.push_back(tmaker.FirstShape());
+            }
+            else if (lastProfile.getShape().IsSame(s) || lastProfile.findShape(s)) {
+                _res.push_back(tmaker.LastShape());
+            }
+        }
+        catch (const Standard_Failure& e) {
+            if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
+                FC_WARN("Exception on shape mapper: " << e.GetMessageString());
+            }
+        }
+        return _res;
+    }
+};
+
 const std::vector<TopoDS_Shape>& MapperMaker::modified(const TopoDS_Shape& s) const
 {
     _res.clear();

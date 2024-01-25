@@ -16,4 +16,5 @@ target_sources(
             ${CMAKE_CURRENT_SOURCE_DIR}/TopoShapeCache.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/TopoShapeExpansion.cpp
             ${CMAKE_CURRENT_SOURCE_DIR}/TopoShapeMapper.cpp
+            ${CMAKE_CURRENT_SOURCE_DIR}/TopoShapeMakeShape.cpp
 )

@@ -37,11 +37,17 @@
 #include <BRepBuilderAPI_Sewing.hxx>
 #include <BRepOffsetAPI_ThruSections.hxx>
 #include <BRepOffsetAPI_MakePipeShell.hxx>
-#include <BRepPrimAPI_MakeHalfSpace.hxx>
 #include <BRepFeat_MakePrism.hxx>
 #include <BRepPrimAPI_MakeHalfSpace.hxx>
 
+// FIXME?
+// including <BRepPrimAPI_MakeHalfSpace.hxx> instead of the incomplete class declaration
+// below results in a broken link on Windows but builds on other platforms.  I suspect
+// that's why these class declarations appear in the RT branch.
+// Something about how that compiler is mangling the names?  Maybe we're missing a
+// magic windows specific qualifier on the declarations.
 
+class BRepPrimAPI_MakeHalfSpace;
 class gp_Ax1;
 class gp_Ax2;
 class gp_Pln;
@@ -56,6 +62,7 @@ namespace Part
 {
 
 class TopoShapeCache;
+class TopoShape;
 
 /* A special sub-class to indicate null shapes
  */
