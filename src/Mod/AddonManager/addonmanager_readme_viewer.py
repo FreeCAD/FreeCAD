@@ -171,7 +171,7 @@ class WikiCleaner(HTMLParser):
         self.previous_state = WikiCleaner.State.BeforeMacroContent
         self.state = WikiCleaner.State.BeforeMacroContent
 
-    def handle_starttag(self, tag: str, attrs: list[tuple[str, str]]):
+    def handle_starttag(self, tag: str, attrs):
         if tag == "div":
             self.handle_div_start(attrs)
         elif tag == "span":
@@ -182,7 +182,7 @@ class WikiCleaner(HTMLParser):
             if self.state == WikiCleaner.State.InMacroContent:
                 self.add_tag_to_html(tag, attrs)
 
-    def handle_div_start(self, attrs: list[tuple[str, str]]):
+    def handle_div_start(self, attrs):
         for name, value in attrs:
             if name == "class" and value == "mw-parser-output":
                 self.previous_state = self.state
@@ -191,7 +191,7 @@ class WikiCleaner(HTMLParser):
             self.depth_in_div += 1
             self.add_tag_to_html("div", attrs)
 
-    def handle_span_start(self, attrs: list[tuple[str, str]]):
+    def handle_span_start(self, attrs):
         for name, value in attrs:
             if name == "class" and value == "mw-editsection":
                 self.previous_state = self.state
@@ -202,7 +202,7 @@ class WikiCleaner(HTMLParser):
         elif WikiCleaner.State.InMacroContent:
             self.add_tag_to_html("span", attrs)
 
-    def handle_table_start(self, attrs: list[tuple[str, str]]):
+    def handle_table_start(self, unused):
         if self.state != WikiCleaner.State.InTable:
             self.previous_state = self.state
             self.state = WikiCleaner.State.InTable
