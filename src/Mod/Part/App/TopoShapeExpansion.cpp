@@ -35,6 +35,9 @@
 
 #endif
 
+#include <BRepCheck_Analyzer.hxx>
+#include <BRepFill_Generator.hxx>
+#include <ShapeUpgrade_ShellSewing.hxx>
 #include "TopoShape.h"
 #include "TopoShapeCache.h"
 #include "FaceMaker.h"
@@ -796,5 +799,141 @@ TopoShape TopoShape::splitWires(std::vector<TopoShape>* inner, SplitWireReorient
     return TopoShape();
 }
 
+struct MapperFill: Part::TopoShape::Mapper
+{
+    BRepFill_Generator& maker;
+    explicit MapperFill(BRepFill_Generator& maker)
+        : maker(maker)
+    {}
+    const std::vector<TopoDS_Shape>& generated(const TopoDS_Shape& s) const override
+    {
+        _res.clear();
+        try {
+            TopTools_ListIteratorOfListOfShape it;
+            for (it.Initialize(maker.GeneratedShapes(s)); it.More(); it.Next()) {
+                _res.push_back(it.Value());
+            }
+        }
+        catch (const Standard_Failure& e) {
+            if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
+                FC_WARN("Exception on shape mapper: " << e.GetMessageString());
+            }
+        }
+        return _res;
+    }
+};
+
+// topo naming counterpart of TopoShape::makeShell()
+TopoShape& TopoShape::makeElementShell(bool silent, const char* op)
+{
+    if (silent) {
+        if (isNull()) {
+            return *this;
+        }
+
+        if (shapeType(true) != TopAbs_COMPOUND) {
+            return *this;
+        }
+
+        // we need a compound that consists of only faces
+        TopExp_Explorer it;
+        // no shells
+        if (hasSubShape(TopAbs_SHELL)) {
+            return *this;
+        }
+
+        // no wires outside a face
+        it.Init(_Shape, TopAbs_WIRE, TopAbs_FACE);
+        if (it.More()) {
+            return *this;
+        }
+
+        // no edges outside a wire
+        it.Init(_Shape, TopAbs_EDGE, TopAbs_WIRE);
+        if (it.More()) {
+            return *this;
+        }
+
+        // no vertexes outside an edge
+        it.Init(_Shape, TopAbs_VERTEX, TopAbs_EDGE);
+        if (it.More()) {
+            return *this;
+        }
+    }
+    else if (!hasSubShape(TopAbs_FACE)) {
+        FC_THROWM(Base::CADKernelError, "Cannot make shell without face");
+    }
+
+    BRep_Builder builder;
+    TopoDS_Shape shape;
+    TopoDS_Shell shell;
+    builder.MakeShell(shell);
+
+    try {
+        for (const auto& face : getSubShapes(TopAbs_FACE)) {
+            builder.Add(shell, face);
+        }
+
+        TopoShape tmp(Tag, Hasher, shell);
+        tmp.resetElementMap();
+        tmp.mapSubElement(*this, op);
+
+        shape = shell;
+        BRepCheck_Analyzer check(shell);
+        if (!check.IsValid()) {
+            ShapeUpgrade_ShellSewing sewShell;
+            shape = sewShell.ApplySewing(shell);
+            // TODO confirm the above won't change OCCT topological naming
+        }
+
+        if (shape.IsNull()) {
+            if (silent) {
+                return *this;
+            }
+            FC_THROWM(NullShapeException, "Failed to make shell");
+        }
+
+        if (shape.ShapeType() != TopAbs_SHELL) {
+            if (silent) {
+                return *this;
+            }
+            FC_THROWM(Base::CADKernelError,
+                      "Failed to make shell: unexpected output shape type "
+                          << shapeType(shape.ShapeType(), true));
+        }
+
+        setShape(shape);
+        resetElementMap(tmp.elementMap());
+    }
+    catch (Standard_Failure& e) {
+        if (!silent) {
+            FC_THROWM(Base::CADKernelError, "Failed to make shell: " << e.GetMessageString());
+        }
+    }
+
+    return *this;
+}
+
+// TopoShape& TopoShape::makeElementShellFromWires(const std::vector<TopoShape>& wires,
+//                                                 bool silent,
+//                                                 const char* op)
+// {
+//     BRepFill_Generator maker;
+//     for (auto& w : wires) {
+//         if (w.shapeType(silent) == TopAbs_WIRE) {
+//             maker.AddWire(TopoDS::Wire(w.getShape()));
+//         }
+//     }
+//     if (wires.empty()) {
+//         if (silent) {
+//             _Shape.Nullify();
+//             return *this;
+//         }
+//         FC_THROWM(NullShapeException, "No input shapes");
+//     }
+//     maker.Perform();
+//     this->makeShapeWithElementMap(maker.Shell(), MapperFill(maker), wires, op);
+//     return *this;
+// }
 
 }  // namespace Part

@@ -584,4 +584,109 @@ TEST_F(TopoShapeExpansionTest, mapSubElementFindAncestors)
     EXPECT_TRUE(ancestorShapeList.back().IsEqual(topoShape6.getShape()));
 }
 
+TEST_F(TopoShapeExpansionTest, makeElementShellInvalid)
+{
+    // Arrange
+    Part::TopoShape topoShape {1L};
+    // Act / Assert
+    EXPECT_THROW(topoShape.makeElementShell(false, nullptr), Base::CADKernelError);
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementShellSingle)
+{
+    // Arrange
+    const double Len = 3, Wid = 2;
+    auto [face1, wire1, edge1, edge2, edge3, _] = CreateRectFace(Len, Wid);
+    Part::TopoShape topoShape {face1, 1L};
+    // Act
+    Part::TopoShape result = topoShape.makeElementShell(false, nullptr);
+    // Assert
+#if OCC_VERSION_HEX >= 0x070400
+    EXPECT_EQ(result.getShape().NbChildren(), 1);
+#endif
+    EXPECT_EQ(result.countSubElements("Vertex"), 4);
+    EXPECT_EQ(result.countSubElements("Edge"), 4);
+    EXPECT_EQ(result.countSubElements("Face"), 1);
+    EXPECT_STREQ(result.shapeName().c_str(), "Shell");
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementShellOpen)
+{
+    // Arrange
+    const double Len = 3, Wid = 2;
+    auto [face1, wire1, edge1, edge2, edge3, edge4] = CreateRectFace(Len, Wid);
+    auto transform {gp_Trsf()};
+    transform.SetRotation(gp_Ax1(gp_Pnt(0, 0, 0), gp_Dir(1, 0, 0)), M_PI / 2);
+    auto face2 = face1;  // Shallow copy
+    face2.Move(TopLoc_Location(transform));
+    TopoDS_Compound compound1;
+    TopoDS_Builder builder {};
+    builder.MakeCompound(compound1);
+    builder.Add(compound1, face1);
+    builder.Add(compound1, face2);
+    Part::TopoShape topoShape {compound1, 1L};
+    // Act
+    Part::TopoShape result = topoShape.makeElementShell(true, nullptr);
+    // Assert
+#if OCC_VERSION_HEX >= 0x070400
+    EXPECT_EQ(result.getShape().NbChildren(), 2);
+#endif
+    EXPECT_EQ(result.countSubElements("Vertex"), 6);
+    EXPECT_EQ(result.countSubElements("Edge"), 7);
+    EXPECT_EQ(result.countSubElements("Face"), 2);
+    EXPECT_STREQ(result.shapeName().c_str(), "Shell");
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementShellClosed)
+{
+    // Arrange
+    auto [cube1, cube2] = CreateTwoCubes();
+    Part::TopoShape topoShape {cube1};
+    std::vector<Part::TopoShape> shapes;
+    for (const auto& face : topoShape.getSubShapes(TopAbs_FACE)) {
+        shapes.push_back(Part::TopoShape {face});
+    }
+    // Act
+    Part::TopoShape topoShape1 {1L};
+    topoShape1.makeElementCompound(shapes, "D");
+    // Assert
+    Part::TopoShape result = topoShape1.makeElementShell(false, "SH1");
+#if OCC_VERSION_HEX >= 0x070400
+    EXPECT_EQ(result.getShape().NbChildren(), 6);
+#endif
+    EXPECT_EQ(result.countSubElements("Vertex"), 8);
+    EXPECT_EQ(result.countSubElements("Edge"), 12);
+    EXPECT_EQ(result.countSubElements("Face"), 6);
+    EXPECT_STREQ(result.shapeName().c_str(), "Shell");
+}
+
+TEST_F(TopoShapeExpansionTest, makeElementShellIntersecting)
+{
+    // Arrange
+    auto [cube1, cube2] = CreateTwoCubes();
+    auto transform {gp_Trsf()};
+    transform.SetTranslation(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(0.5, 0.5, 0.0));
+    cube2.Move(TopLoc_Location(transform));
+    // Arrange
+    Part::TopoShape topoShape {cube1};
+    std::vector<Part::TopoShape> shapes;
+    for (const auto& face : topoShape.getSubShapes(TopAbs_FACE)) {
+        shapes.push_back(Part::TopoShape {face});
+    }
+    topoShape.setShape(cube2);
+    for (const auto& face : topoShape.getSubShapes(TopAbs_FACE)) {
+        shapes.push_back(Part::TopoShape {face});
+    }
+    // Act
+    Part::TopoShape topoShape1 {1L};
+    topoShape1.makeElementCompound(shapes, "D");
+    // Act / Assert
+    EXPECT_THROW(topoShape1.makeElementShell(false, nullptr), Base::CADKernelError);
+}
+
+// TEST_F(TopoShapeExpansionTest, makeElementShellFromWires)
+// {
+//     // Arrange
+// }
+
 // NOLINTEND(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
