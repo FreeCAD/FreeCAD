@@ -46,7 +46,7 @@ class ScaleTaskPanel:
     """The task panel for the Draft Scale tool."""
 
     def __init__(self):
-        decimals = params.get_param("Decimals", path="Units")
+        decimals = max(6, params.get_param("Decimals", path="Units"))
         self.sourceCmd = None
         self.form = QtGui.QWidget()
         self.form.setWindowIcon(QtGui.QIcon(":/icons/Draft_Scale.svg"))
