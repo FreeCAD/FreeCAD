@@ -49,8 +49,6 @@ except ImportError:
 
 translate = fci.translate
 
-show_javascript_console_output = False
-
 
 class PackageDetails(QtWidgets.QWidget):
     """The PackageDetails QWidget shows package README information and provides
@@ -90,7 +88,7 @@ class PackageDetails(QtWidgets.QWidget):
 
         # If this is the same repo we were already showing, we do not have to do the
         # expensive refetch unless reload is true
-        if self.repo != repo or reload:
+        if True or self.repo != repo or reload:
             self.repo = repo
 
             if self.worker is not None:
