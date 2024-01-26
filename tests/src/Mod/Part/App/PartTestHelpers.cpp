@@ -14,6 +14,21 @@ double getVolume(const TopoDS_Shape& shape)
     return prop.Mass();
 }
 
+double getArea(const TopoDS_Shape& shape)
+{
+    GProp_GProps prop;
+    BRepGProp::SurfaceProperties(shape, prop);
+    return prop.Mass();
+}
+
+double getLength(const TopoDS_Shape& shape)
+{
+    GProp_GProps prop;
+    BRepGProp::LinearProperties(shape, prop);
+    return prop.Mass();
+}
+
+
 void PartTestHelperClass::createTestDoc()
 {
     _docName = App::GetApplication().getUniqueDocumentName("test");
@@ -48,7 +63,8 @@ _getFilletEdges(const std::vector<int>& edges, double startRadius, double endRad
     return filletElements;
 }
 
-void executePython(const std::vector<std::string>& python)
+
+void ExecutePython(const std::vector<std::string>& python)
 {
     Base::InterpreterSingleton is = Base::InterpreterSingleton();
 
@@ -68,16 +84,9 @@ void rectangle(double height, double width, char* name)
         boost::str(boost::format("V4 = FreeCAD.Vector(0, %d, 0)") % width),
         "P1 = Part.makePolygon([V1, V2, V3, V4],True)",
         "F1 = Part.Face(P1)",  // Make the face or the volume calc won't work right.
-        // "L1 = Part.LineSegment(V1, V2)",
-        // "L2 = Part.LineSegment(V2, V3)",
-        // "L3 = Part.LineSegment(V3, V4)",
-        // "L4 = Part.LineSegment(V4, V1)",
-        // "S1 = Part.Shape([L1,L2,L3,L4])",
-        // "W1 = Part.Wire(S1.Edges)",
-        // "F1 = Part.Face(W1)",  // Make the face or the volume calc won't work right.
         boost::str(boost::format("Part.show(F1,'%s')") % name),
     };
-    executePython(rectstring);
+    ExecutePython(rectstring);
 }
 
 testing::AssertionResult

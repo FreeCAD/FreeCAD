@@ -26,11 +26,22 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <BRep_Builder.hxx>
+#include <BRepBuilderAPI_MakeWire.hxx>
 #include <BRep_Tool.hxx>
+#include <BRepTools.hxx>
+
+#include <ShapeFix_Shape.hxx>
+#include <ShapeFix_ShapeTolerance.hxx>
+
 #endif
 
+#include <BRepCheck_Analyzer.hxx>
+#include <BRepFill_Generator.hxx>
+#include <ShapeUpgrade_ShellSewing.hxx>
 #include "TopoShape.h"
 #include "TopoShapeCache.h"
+#include "FaceMaker.h"
+
 
 FC_LOG_LEVEL_INIT("TopoShape", true, true)  // NOLINT
 
@@ -376,6 +387,9 @@ void TopoShape::mapSubElementTypeForShape(const TopoShape& other,
             }
             std::ostringstream ss;
             char elementType {shapeName(type)[0]};
+            if ( ! elementMap() ) {
+                FC_THROWM(NullShapeException, "No element map");
+            }
             elementMap()->encodeElementName(elementType, name, ss, &sids, Tag, op, other.Tag);
             elementMap()->setElementName(element, name, Tag, &sids);
         }
@@ -472,7 +486,7 @@ void TopoShape::mapCompoundSubElements(const std::vector<TopoShape>& shapes, con
         ++count;
         auto subshape = getSubShape(TopAbs_SHAPE, count, /*silent = */ true);
         if (!subshape.IsPartner(topoShape._Shape)) {
-            return; // Not a partner shape, don't do any mapping at all
+            return;  // Not a partner shape, don't do any mapping at all
         }
     }
     auto children {createChildMap(count, shapes, op)};
@@ -539,5 +553,387 @@ TopoShape::makeElementCompound(const std::vector<TopoShape>& shapes, const char*
     mapSubElement(shapes, op);
     return *this;
 }
+
+
+TopoShape& TopoShape::makeElementFace(const TopoShape& shape,
+                                      const char* op,
+                                      const char* maker,
+                                      const gp_Pln* plane)
+{
+    std::vector<TopoShape> shapes;
+    if (shape.isNull()) {
+        FC_THROWM(NullShapeException, "Null shape");
+    }
+    if (shape.getShape().ShapeType() == TopAbs_COMPOUND) {
+        shapes = shape.getSubTopoShapes();
+    }
+    else {
+        shapes.push_back(shape);
+    }
+    return makeElementFace(shapes, op, maker, plane);
+}
+
+TopoShape& TopoShape::makeElementFace(const std::vector<TopoShape>& shapes,
+                                      const char* op,
+                                      const char* maker,
+                                      const gp_Pln* plane)
+{
+    if (!maker || !maker[0]) {
+        maker = "Part::FaceMakerBullseye";
+    }
+    std::unique_ptr<FaceMaker> mkFace = FaceMaker::ConstructFromType(maker);
+    mkFace->MyHasher = Hasher;
+    mkFace->MyOp = op;
+    if (plane) {
+        mkFace->setPlane(*plane);
+    }
+
+    for (auto& shape : shapes) {
+        if (shape.getShape().ShapeType() == TopAbs_COMPOUND) {
+            mkFace->useTopoCompound(shape);
+        }
+        else {
+            mkFace->addTopoShape(shape);
+        }
+    }
+    mkFace->Build();
+
+    const auto& ret = mkFace->getTopoShape();
+    setShape(ret._Shape);
+    Hasher = ret.Hasher;
+    resetElementMap(ret.elementMap());
+    if (!isValid()) {
+        ShapeFix_ShapeTolerance aSFT;
+        aSFT.LimitTolerance(getShape(),
+                            Precision::Confusion(),
+                            Precision::Confusion(),
+                            TopAbs_SHAPE);
+
+        // In some cases, the OCC reports the returned shape having invalid
+        // tolerance. Not sure about the real cause.
+        //
+        // Update: one of the cause is related to OCC bug in
+        // BRepBuilder_FindPlane, A possible call sequence is,
+        //
+        //      makEOffset2D() -> TopoShape::findPlane() -> BRepLib_FindSurface
+        //
+        // See code comments in findPlane() for the description of the bug and
+        // work around.
+
+        ShapeFix_Shape fixer(getShape());
+        fixer.Perform();
+        setShape(fixer.Shape(), false);
+
+        if (!isValid()) {
+            FC_WARN("makeElementFace: resulting face is invalid");
+        }
+    }
+    return *this;
+}
+
+/**
+ *  Encode and set an element name in the elementMap.  If a hasher is defined, apply it to the name.
+ *
+ * @param element   The element name(type) that provides 1 one character suffix to the name IF <conditions>.
+ * @param names     The subnames to build the name from.  If empty, return the TopoShape MappedName.
+ * @param marker    The elementMap name or suffix to start the name with.  If null, use the
+ *                  elementMapPrefix.
+ * @param op        The op text passed to the element name encoder along with the TopoShape Tag
+ * @param _sids     If defined, records the sub ids processed.
+ *
+ * @return          The encoded, possibly hashed name.
+ */
+Data::MappedName TopoShape::setElementComboName(const Data::IndexedName& element,
+                                                const std::vector<Data::MappedName>& names,
+                                                const char* marker,
+                                                const char* op,
+                                                const Data::ElementIDRefs* _sids)
+{
+    if (names.empty()) {
+        return Data::MappedName();
+    }
+    std::string _marker;
+    if (!marker) {
+        marker = elementMapPrefix().c_str();
+    }
+    else if (!boost::starts_with(marker, elementMapPrefix())) {
+        _marker = elementMapPrefix() + marker;
+        marker = _marker.c_str();
+    }
+    auto it = names.begin();
+    Data::MappedName newName = *it;
+    std::ostringstream ss;
+    Data::ElementIDRefs sids;
+    if (_sids) {
+        sids = *_sids;
+    }
+    if (names.size() == 1) {
+        ss << marker;
+    }
+    else {
+        bool first = true;
+        ss.str("");
+        if (!Hasher) {
+            ss << marker;
+        }
+        ss << '(';
+        for (++it; it != names.end(); ++it) {
+            if (first) {
+                first = false;
+            }
+            else {
+                ss << '|';
+            }
+            ss << *it;
+        }
+        ss << ')';
+        if (Hasher) {
+            sids.push_back(Hasher->getID(ss.str().c_str()));
+            ss.str("");
+            ss << marker << sids.back().toString();
+        }
+    }
+    elementMap()->encodeElementName(element[0], newName, ss, &sids, Tag, op);
+    return elementMap()->setElementName(element, newName, Tag, &sids);
+}
+
+/**
+ * Reorient the outer and inner wires of the TopoShape
+ *
+ * @param inner If this is not a nullptr, then any inner wires processed will be returned in this
+ * vector.
+ * @param reorient  One of NoReorient, Reorient ( Outer forward, inner reversed ),
+ *                  ReorientForward ( all forward ), or ReorientReversed ( all reversed )
+ * @return The outer wire, or an empty TopoShape if this isn't a Face, has no Face subShapes, or the
+ *         outer wire isn't found.
+ */
+TopoShape TopoShape::splitWires(std::vector<TopoShape>* inner, SplitWireReorient reorient) const
+{
+    // ShapeAnalysis::OuterWire() is un-reliable for some reason. OCC source
+    // code shows it works by creating face using each wire, and then test using
+    // BRepTopAdaptor_FClass2d::PerformInfinitePoint() to check if it is an out
+    // bound wire. And practice shows it sometimes returns the incorrect
+    // result. Need more investigation. Note that this may be related to
+    // unreliable solid face orientation
+    // (https://forum.freecadweb.org/viewtopic.php?p=446006#p445674)
+    //
+    // Use BrepTools::OuterWire() instead. OCC source code shows it is
+    // implemented using simple bound box checking. This should be a
+    // reliable method, especially so for a planar face.
+
+    TopoDS_Shape tmp;
+    if (shapeType(true) == TopAbs_FACE) {
+        tmp = BRepTools::OuterWire(TopoDS::Face(_Shape));
+    }
+    else if (countSubShapes(TopAbs_FACE) == 1) {
+        tmp = BRepTools::OuterWire(TopoDS::Face(getSubShape(TopAbs_FACE, 1)));
+    }
+    if (tmp.IsNull()) {
+        return TopoShape();
+    }
+    const auto& wires = getSubTopoShapes(TopAbs_WIRE);
+    auto it = wires.begin();
+
+    TopAbs_Orientation orientOuter, orientInner;
+    switch (reorient) {
+        case ReorientReversed:
+            orientOuter = orientInner = TopAbs_REVERSED;
+            break;
+        case ReorientForward:
+            orientOuter = orientInner = TopAbs_FORWARD;
+            break;
+        default:
+            orientOuter = TopAbs_FORWARD;
+            orientInner = TopAbs_REVERSED;
+            break;
+    }
+
+    auto doReorient = [](TopoShape& s, TopAbs_Orientation orient) {
+        // Special case of single edge wire. Make sure the edge is in the
+        // required orientation. This is necessary because BRepFill_OffsetWire
+        // has special handling of circular edge offset, which seem to only
+        // respect the edge orientation and disregard the wire orientation. The
+        // orientation is used to determine whether to shrink or expand.
+        if (s.countSubShapes(TopAbs_EDGE) == 1) {
+            TopoDS_Shape e = s.getSubShape(TopAbs_EDGE, 1);
+            if (e.Orientation() == orient) {
+                if (s._Shape.Orientation() == orient) {
+                    return;
+                }
+            }
+            else {
+                e = e.Oriented(orient);
+            }
+            BRepBuilderAPI_MakeWire mkWire(TopoDS::Edge(e));
+            s.setShape(mkWire.Shape(), false);
+        }
+        else if (s._Shape.Orientation() != orient) {
+            s.setShape(s._Shape.Oriented(orient), false);
+        }
+    };
+
+    for (; it != wires.end(); ++it) {
+        auto& wire = *it;
+        if (wire.getShape().IsSame(tmp)) {
+            if (inner) {
+                for (++it; it != wires.end(); ++it) {
+                    inner->push_back(*it);
+                    if (reorient) {
+                        doReorient(inner->back(), orientInner);
+                    }
+                }
+            }
+            auto res = wire;
+            if (reorient) {
+                doReorient(res, orientOuter);
+            }
+            return res;
+        }
+        if (inner) {
+            inner->push_back(wire);
+            if (reorient) {
+                doReorient(inner->back(), orientInner);
+            }
+        }
+    }
+    return TopoShape();
+}
+
+struct MapperFill: Part::TopoShape::Mapper
+{
+    BRepFill_Generator& maker;
+    explicit MapperFill(BRepFill_Generator& maker)
+        : maker(maker)
+    {}
+    const std::vector<TopoDS_Shape>& generated(const TopoDS_Shape& s) const override
+    {
+        _res.clear();
+        try {
+            TopTools_ListIteratorOfListOfShape it;
+            for (it.Initialize(maker.GeneratedShapes(s)); it.More(); it.Next()) {
+                _res.push_back(it.Value());
+            }
+        }
+        catch (const Standard_Failure& e) {
+            if (FC_LOG_INSTANCE.isEnabled(FC_LOGLEVEL_LOG)) {
+                FC_WARN("Exception on shape mapper: " << e.GetMessageString());
+            }
+        }
+        return _res;
+    }
+};
+
+// topo naming counterpart of TopoShape::makeShell()
+TopoShape& TopoShape::makeElementShell(bool silent, const char* op)
+{
+    if (silent) {
+        if (isNull()) {
+            return *this;
+        }
+
+        if (shapeType(true) != TopAbs_COMPOUND) {
+            return *this;
+        }
+
+        // we need a compound that consists of only faces
+        TopExp_Explorer it;
+        // no shells
+        if (hasSubShape(TopAbs_SHELL)) {
+            return *this;
+        }
+
+        // no wires outside a face
+        it.Init(_Shape, TopAbs_WIRE, TopAbs_FACE);
+        if (it.More()) {
+            return *this;
+        }
+
+        // no edges outside a wire
+        it.Init(_Shape, TopAbs_EDGE, TopAbs_WIRE);
+        if (it.More()) {
+            return *this;
+        }
+
+        // no vertexes outside an edge
+        it.Init(_Shape, TopAbs_VERTEX, TopAbs_EDGE);
+        if (it.More()) {
+            return *this;
+        }
+    }
+    else if (!hasSubShape(TopAbs_FACE)) {
+        FC_THROWM(Base::CADKernelError, "Cannot make shell without face");
+    }
+
+    BRep_Builder builder;
+    TopoDS_Shape shape;
+    TopoDS_Shell shell;
+    builder.MakeShell(shell);
+
+    try {
+        for (const auto& face : getSubShapes(TopAbs_FACE)) {
+            builder.Add(shell, face);
+        }
+
+        TopoShape tmp(Tag, Hasher, shell);
+        tmp.resetElementMap();
+        tmp.mapSubElement(*this, op);
+
+        shape = shell;
+        BRepCheck_Analyzer check(shell);
+        if (!check.IsValid()) {
+            ShapeUpgrade_ShellSewing sewShell;
+            shape = sewShell.ApplySewing(shell);
+            // TODO confirm the above won't change OCCT topological naming
+        }
+
+        if (shape.IsNull()) {
+            if (silent) {
+                return *this;
+            }
+            FC_THROWM(NullShapeException, "Failed to make shell");
+        }
+
+        if (shape.ShapeType() != TopAbs_SHELL) {
+            if (silent) {
+                return *this;
+            }
+            FC_THROWM(Base::CADKernelError,
+                      "Failed to make shell: unexpected output shape type "
+                          << shapeType(shape.ShapeType(), true));
+        }
+
+        setShape(shape);
+        resetElementMap(tmp.elementMap());
+    }
+    catch (Standard_Failure& e) {
+        if (!silent) {
+            FC_THROWM(Base::CADKernelError, "Failed to make shell: " << e.GetMessageString());
+        }
+    }
+
+    return *this;
+}
+
+// TopoShape& TopoShape::makeElementShellFromWires(const std::vector<TopoShape>& wires,
+//                                                 bool silent,
+//                                                 const char* op)
+// {
+//     BRepFill_Generator maker;
+//     for (auto& w : wires) {
+//         if (w.shapeType(silent) == TopAbs_WIRE) {
+//             maker.AddWire(TopoDS::Wire(w.getShape()));
+//         }
+//     }
+//     if (wires.empty()) {
+//         if (silent) {
+//             _Shape.Nullify();
+//             return *this;
+//         }
+//         FC_THROWM(NullShapeException, "No input shapes");
+//     }
+//     maker.Perform();
+//     this->makeShapeWithElementMap(maker.Shell(), MapperFill(maker), wires, op);
+//     return *this;
+// }
 
 }  // namespace Part

@@ -24,18 +24,17 @@
 #include <QDirIterator>
 #include <QFileInfo>
 #include <QString>
-#endif
-
-#include <memory>
-
 #include <QFile>
 #include <QIODevice>
 #include <QTextStream>
 #include <QUuid>
+#include <memory>
+#include <fstream>
+#endif
+
 
 #include <App/Application.h>
 #include <Base/Interpreter.h>
-#include <fstream>
 
 
 #include "Exceptions.h"

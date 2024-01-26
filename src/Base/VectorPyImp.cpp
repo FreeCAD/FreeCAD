@@ -150,30 +150,24 @@ PyObject* VectorPy::number_multiply_handler(PyObject* self, PyObject* other)
             Py::Float mult(a * b);
             return Py::new_reference_to(mult);
         }
-        else if (PyNumber_Check(other)) {
+        if (PyNumber_Check(other)) {
             double b = PyFloat_AsDouble(other);
             return new VectorPy(a * b);
         }
-        else {
-            PyErr_SetString(PyExc_TypeError, "A Vector can only be multiplied by Vector or number");
-            return nullptr;
-        }
+        PyErr_SetString(PyExc_TypeError, "A Vector can only be multiplied by Vector or number");
+        return nullptr;
     }
-    else if (PyObject_TypeCheck(other, &(VectorPy::Type))) {
+    if (PyObject_TypeCheck(other, &(VectorPy::Type))) {
         Base::Vector3d a = static_cast<VectorPy*>(other)->value();
         if (PyNumber_Check(self)) {
             double b = PyFloat_AsDouble(self);
             return new VectorPy(a * b);
         }
-        else {
-            PyErr_SetString(PyExc_TypeError, "A Vector can only be multiplied by Vector or number");
-            return nullptr;
-        }
-    }
-    else {
-        PyErr_SetString(PyExc_TypeError, "First or second arg must be Vector");
+        PyErr_SetString(PyExc_TypeError, "A Vector can only be multiplied by Vector or number");
         return nullptr;
     }
+    PyErr_SetString(PyExc_TypeError, "First or second arg must be Vector");
+    return nullptr;
 }
 
 Py_ssize_t VectorPy::sequence_length(PyObject* /*unused*/)
@@ -243,13 +237,8 @@ PyObject* VectorPy::mapping_subscript(PyObject* self, PyObject* item)
         }
         return sequence_item(self, i);
     }
-    else if (PySlice_Check(item)) {
-        Py_ssize_t start = 0;
-        Py_ssize_t stop = 0;
-        Py_ssize_t step = 0;
-        Py_ssize_t slicelength = 0;
-        Py_ssize_t cur = 0;
-        Py_ssize_t i = 0;
+    if (PySlice_Check(item)) {
+        Py_ssize_t start = 0, stop = 0, step = 0, slicelength = 0, cur = 0, i = 0;
         PyObject* slice = item;
 
         if (PySlice_GetIndicesEx(slice, sequence_length(self), &start, &stop, &step, &slicelength)
@@ -260,8 +249,8 @@ PyObject* VectorPy::mapping_subscript(PyObject* self, PyObject* item)
         if (slicelength <= 0) {
             return PyTuple_New(0);
         }
-        else if (start == 0 && step == 1 && slicelength == sequence_length(self)
-                 && PyObject_TypeCheck(self, &(VectorPy::Type))) {
+        if (start == 0 && step == 1 && slicelength == sequence_length(self)
+            && PyObject_TypeCheck(self, &(VectorPy::Type))) {
             Base::Vector3d v = static_cast<VectorPy*>(self)->value();
             Py::Tuple xyz(3);
             xyz.setItem(0, Py::Float(v.x));
@@ -269,7 +258,7 @@ PyObject* VectorPy::mapping_subscript(PyObject* self, PyObject* item)
             xyz.setItem(2, Py::Float(v.z));
             return Py::new_reference_to(xyz);
         }
-        else if (PyObject_TypeCheck(self, &(VectorPy::Type))) {
+        if (PyObject_TypeCheck(self, &(VectorPy::Type))) {
             Base::Vector3d v = static_cast<VectorPy*>(self)->value();
             Py::Tuple xyz(static_cast<size_t>(slicelength));
 
@@ -342,22 +331,18 @@ PyObject* VectorPy::richCompare(PyObject* v, PyObject* w, int op)
             PyErr_SetString(PyExc_TypeError, "no ordering relation is defined for Vector");
             return nullptr;
         }
-        else if (op == Py_EQ) {
+        if (op == Py_EQ) {
             res = (v1 == v2) ? Py_True : Py_False;  // NOLINT
             Py_INCREF(res);
             return res;
         }
-        else {
-            res = (v1 != v2) ? Py_True : Py_False;  // NOLINT
-            Py_INCREF(res);
-            return res;
-        }
+        res = (v1 != v2) ? Py_True : Py_False;  // NOLINT
+        Py_INCREF(res);
+        return res;
     }
-    else {
-        // This always returns False
-        Py_INCREF(Py_NotImplemented);
-        return Py_NotImplemented;
-    }
+    // This always returns False
+    Py_INCREF(Py_NotImplemented);
+    return Py_NotImplemented;
 }
 
 PyObject* VectorPy::isEqual(PyObject* args)

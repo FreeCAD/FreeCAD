@@ -359,27 +359,25 @@ PP_Convert_Result(PyObject *presult, const char *resFormat, void *resTarget)
         Py_DECREF(presult);             /* procedures and stmts return None  */
         return 0;
     }
-    else
     if (! PyArg_Parse(presult, resFormat, resTarget)) {  /* convert Python->C */
         Py_DECREF(presult);                              /* need not be tuple */
         return -1;                                       /* error in convert  */
     }
-    else {
-        if (strcmp(resFormat, "O") != 0) {     /* free object unless exported */
-            if (strcmp(resFormat, "s") == 0) { /* copy string: caller owns it */
-                char **target = (char**) resTarget;
+    if (strcmp(resFormat, "O") != 0) {     /* free object unless exported */
+        if (strcmp(resFormat, "s") == 0) { /* copy string: caller owns it */
+            char **target = (char**) resTarget;
 #if defined (__GNUC__)
-                *target = strdup(*target);
+            *target = strdup(*target);
 #else
-                *target = _strdup(*target);
+            *target = _strdup(*target);
 #endif
-            }
-            Py_DECREF(presult);
         }
-        return 0;                     /* returns 0=success, -1=failure */
-    }                                 /* if 0: C result in *resTarget  */
-}                                     /* caller must decref if fmt="O" */
-                                      /* caller must free() if fmt="s" */
+        Py_DECREF(presult);
+    }
+    return 0;                     /* returns 0=success, -1=failure */
+                                  /* if 0: C result in *resTarget  */
+}                                 /* caller must decref if fmt="O" */
+                                  /* caller must free() if fmt="s" */
 
 int
 PP_Get_Global(const char *modname, const char *varname, const char *resfmt, void *cresult)
@@ -430,27 +428,26 @@ int PP_DEBUG  = 0;    /* debug embedded code with pdb? */
 
 const char *PP_Init(const char *modname) {
     Py_Initialize();                               /* init python if needed */
-    if (modname!=NULL) return modname;
-    { /* we assume here that the caller frees allocated memory */
-    	return "__main__";
-    }
+    if (modname)
+        return modname;
+    /* we assume here that the caller frees allocated memory */
+    return "__main__";
 }
 
 
 int
-PP_Make_Dummy_Module(const char *modname)   /* namespace for strings, if no file */
-{                                     /* instead of sharing __main__ for all */
-    PyObject *module = NULL, *dict = NULL;          /* note: __main__ is created in py_init */
+PP_Make_Dummy_Module(const char *modname)    /* namespace for strings, if no file */
+{                                            /* instead of sharing __main__ for all */
+    PyObject *module = NULL, *dict = NULL;   /* note: __main__ is created in py_init */
     Py_Initialize();
     module = PyImport_AddModule(modname);    /* fetch or make, no load */
     if (module == NULL)                      /* module not incref'd */
         return -1;
-    else {                                            /* module.__dict__ */
-        dict = PyModule_GetDict(module);              /* ['__dummy__'] = None */
-        PyDict_SetItemString(dict, "__dummy__", Py_None);
-        PyDict_SetItemString(dict, "__builtins__", PyEval_GetBuiltins());
-        return 0;
-    }
+    /* module.__dict__ */
+    dict = PyModule_GetDict(module);         /* ['__dummy__'] = None */
+    PyDict_SetItemString(dict, "__dummy__", Py_None);
+    PyDict_SetItemString(dict, "__builtins__", PyEval_GetBuiltins());
+    return 0;
 }
 
 
@@ -479,17 +476,14 @@ PP_Load_Module(const char *modname)       /* modname can be "package.module" for
         PyDict_GetItemString(PyModule_GetDict(module), "__dummy__")) {
         return module;                                /* not increfd */
     }
-    else
     if (PP_RELOAD && module != NULL && PyModule_Check(module)) {
         module = PyImport_ReloadModule(module);       /* reload file,run code */
         Py_XDECREF(module);                           /* still on sys.modules */
         return module;                                /* not increfd */
     }
-    else {
-        module = PyImport_ImportModule(modname);      /* fetch or load module */
-        Py_XDECREF(module);                           /* still on sys.modules */
-        return module;                                /* not increfd */
-    }
+    module = PyImport_ImportModule(modname);          /* fetch or load module */
+    Py_XDECREF(module);                               /* still on sys.modules */
+    return module;                                    /* not increfd */
 }
 
 

@@ -271,22 +271,18 @@ PyObject* RotationPy::richCompare(PyObject* v, PyObject* w, int op)
             PyErr_SetString(PyExc_TypeError, "no ordering relation is defined for Rotation");
             return nullptr;
         }
-        else if (op == Py_EQ) {
+        if (op == Py_EQ) {
             res = (r1 == r2) ? Py_True : Py_False;
             Py_INCREF(res);
             return res;
         }
-        else {
-            res = (r1 != r2) ? Py_True : Py_False;
-            Py_INCREF(res);
-            return res;
-        }
+        res = (r1 != r2) ? Py_True : Py_False;
+        Py_INCREF(res);
+        return res;
     }
-    else {
-        // This always returns False
-        Py_INCREF(Py_NotImplemented);
-        return Py_NotImplemented;
-    }
+    // This always returns False
+    Py_INCREF(Py_NotImplemented);
+    return Py_NotImplemented;
 }
 
 PyObject* RotationPy::invert(PyObject* args)

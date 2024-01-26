@@ -115,26 +115,37 @@ class ElementItemDelegate: public QStyledItemDelegate
 {
     Q_OBJECT
 public:
+    /// Enum containing all controls rendered in this item. Controls in that enum MUST be in order.
+    enum SubControl : int {
+        CheckBox,
+        LineSelect,
+        StartSelect,
+        EndSelect,
+        MidSelect,
+        Label
+    };
+
     explicit ElementItemDelegate(ElementView* parent);
-    ~ElementItemDelegate() override;
+    ~ElementItemDelegate() override = default;
 
     void paint(QPainter* painter, const QStyleOptionViewItem& option,
                const QModelIndex& index) const override;
     bool editorEvent(QEvent* event, QAbstractItemModel* model, const QStyleOptionViewItem& option,
                      const QModelIndex& index) override;
 
-    ElementItem* getElementtItem(const QModelIndex& index) const;
+    ElementItem* getElementItem(const QModelIndex& index) const;
 
-    const int border = 1;    // 1px, looks good around buttons.
-    const int leftMargin = 4;// 4px on the left of icons, looks good.
-    mutable int customIconsMargin = 4;
-    const int textBottomMargin = 5;// 5px center the text.
+    QRect subControlRect(SubControl element, const QStyleOptionViewItem& option, const QModelIndex& index) const;
+    void drawSubControl(SubControl element, QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const;
+
+    const int gap = 4; // 4px of spacing between consecutive elements
 
 Q_SIGNALS:
     void itemHovered(QModelIndex);
     void itemChecked(QModelIndex, Qt::CheckState state);
 };
 
+// clang-format on
 // helper class to store additional information about the listWidget entry.
 class ElementItem: public QListWidgetItem
 {
@@ -154,8 +165,13 @@ public:
         Hidden = 2,
     };
 
-    ElementItem(int elementnr, int startingVertex, int midVertex, int endVertex,
-                Base::Type geometryType, GeometryState state, const QString& lab,
+    ElementItem(int elementnr,
+                int startingVertex,
+                int midVertex,
+                int endVertex,
+                Base::Type geometryType,
+                GeometryState state,
+                const QString& lab,
                 ViewProviderSketch* sketchView)
         : ElementNbr(elementnr)
         , StartingVertex(startingVertex)
@@ -177,9 +193,13 @@ public:
     ~ElementItem() override
     {}
 
-    bool isVisible()
+    bool canBeHidden() const
     {
+        return State != GeometryState::External;
+    }
 
+    bool isVisible() const
+    {
         if (State != GeometryState::External) {
             const auto geo = sketchView->getSketchObject()->getGeometry(ElementNbr);
             if (geo) {
@@ -193,6 +213,40 @@ public:
         // 2. if internal and ElementNbr is out of range, the element
         // needs to be updated and the return value is not important.
         return true;
+    }
+
+    QVariant data(int role) const override
+    {
+        // In order for content-box to include size of the 4 geometry icons we need to provide
+        // Qt with information about decoration (icon) size. This is hack to work around Qt
+        // limitation of not knowing about padding, border and margin boxes of stylesheets
+        // thus being unable to provide proper sizeHint for stylesheets to render correctly
+        if (role == Qt::DecorationRole) {
+            int size = listWidget()->style()->pixelMetric(QStyle::PM_ListViewIconSize);
+
+            return QIcon(QPixmap(QSize(size, size)));
+        }
+
+        return QListWidgetItem::data(role);
+    }
+
+    bool isGeometrySelected(Sketcher::PointPos pos) const
+    {
+        switch (pos) {
+            case Sketcher::PointPos::none:
+                return isLineSelected;
+            case Sketcher::PointPos::start:
+                return isStartingPointSelected;
+            case Sketcher::PointPos::end:
+                return isEndPointSelected;
+            case Sketcher::PointPos::mid:
+                return isMidPointSelected;
+        }
+    }
+
+    Sketcher::SketchObject* getSketchObject() const
+    {
+        return sketchView->getSketchObject();
     }
 
     int ElementNbr;
@@ -218,6 +272,7 @@ public:
 private:
     ViewProviderSketch* sketchView;
 };
+// clang-format off
 
 class ElementFilterList: public QListWidget
 {
@@ -498,6 +553,7 @@ ElementView::~ElementView()
 void ElementView::changeLayer(int layer)
 {
     App::Document* doc = App::GetApplication().getActiveDocument();
+
     if (!doc)
         return;
 
@@ -507,7 +563,6 @@ void ElementView::changeLayer(int layer)
         auto sketchobject = dynamic_cast<Sketcher::SketchObject*>(ft->getObject());
 
         auto geoids = getGeoIdsOfEdgesFromNames(sketchobject, ft->getSubNames());
-
 
         auto geometry = sketchobject->Geometry.getValues();
         auto newgeometry(geometry);
@@ -538,6 +593,47 @@ void ElementView::changeLayer(int layer)
             sketchobject->solve();
         }
     }
+    doc->commitTransaction();
+}
+
+void ElementView::changeLayer(ElementItem* item, int layer)
+{
+    App::Document* doc = App::GetApplication().getActiveDocument();
+
+    if (!doc) {
+        return;
+    }
+
+    doc->openTransaction("Geometry Layer Change");
+
+    auto sketchObject = item->getSketchObject();
+
+    auto geometry = sketchObject->Geometry.getValues();
+    auto newGeometry(geometry);
+
+    auto geoid = item->ElementNbr;
+
+    // currently only internal geometry can be changed from one layer to another
+    if (geoid >= 0) {
+        auto currentLayer = getSafeGeomLayerId(geometry[geoid]);
+
+        if (currentLayer != layer) {
+            auto geo = geometry[geoid]->clone();
+            setSafeGeomLayerId(geo, layer);
+            newGeometry[geoid] = geo;
+
+            sketchObject->Geometry.setValues(std::move(newGeometry));
+            sketchObject->solve();
+        }
+    }
+    else {
+        Gui::TranslatedUserWarning(
+            sketchObject,
+            QObject::tr("Unsupported visual layer operation"),
+            QObject::tr("It is currently unsupported to move external geometry to another "
+                        "visual layer. External geometry will be omitted"));
+    }
+
     doc->commitTransaction();
 }
 
@@ -738,17 +834,16 @@ void ElementView::deleteSelectedItems()
 
 void ElementView::onIndexHovered(QModelIndex index)
 {
+    update(index);
+
     Q_EMIT onItemHovered(itemFromIndex(index));
 }
 
-void ElementView::onIndexChecked(QModelIndex, Qt::CheckState state)
+void ElementView::onIndexChecked(QModelIndex index, Qt::CheckState state)
 {
-    if (state == Qt::Checked) {
-        changeLayer(static_cast<int>(ElementItem::Layer::Default));
-    }
-    else {
-        changeLayer(static_cast<int>(ElementItem::Layer::Hidden));
-    }
+    auto item = itemFromIndex(index);
+
+    changeLayer(item, static_cast<int>(state == Qt::Checked ? ElementItem::Layer::Default : ElementItem::Layer::Hidden));
 }
 
 ElementItem* ElementView::itemFromIndex(const QModelIndex& index)
@@ -756,154 +851,224 @@ ElementItem* ElementView::itemFromIndex(const QModelIndex& index)
     return static_cast<ElementItem*>(QListWidget::itemFromIndex(index));
 }
 
+// clang-format on
 /* ElementItem delegate ---------------------------------------------------- */
-
 ElementItemDelegate::ElementItemDelegate(ElementView* parent)
     : QStyledItemDelegate(parent)
-{// This class relies on the parent being an ElementView, see getElementtItem
+{  // This class relies on the parent being an ElementView, see getElementtItem
 }
 
-ElementItemDelegate::~ElementItemDelegate()
-{}
-
-
-void ElementItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option,
+void ElementItemDelegate::paint(QPainter* painter,
+                                const QStyleOptionViewItem& option,
                                 const QModelIndex& index) const
 {
-    ElementItem* item = getElementtItem(index);
+    ElementItem* item = getElementItem(index);
 
-    if (item) {
+    if (!item) {
+        return;
+    }
 
-        QStyleOptionButton checkboxstyle;
-        checkboxstyle.rect = option.rect;
+    auto style = option.widget ? option.widget->style() : QApplication::style();
 
-        checkboxstyle.state |= QStyle::State_Enabled;
+    QStyleOptionViewItem itemOption = option;
 
-        if (item->isVisible())
-            checkboxstyle.state |= QStyle::State_On;
-        else
-            checkboxstyle.state |= QStyle::State_Off;
+    initStyleOption(&itemOption, index);
 
-        QRect checkboxrect =
-            QApplication::style()->subElementRect(QStyle::SE_CheckBoxIndicator, &checkboxstyle);
+    if (item->isLineSelected || item->isStartingPointSelected || item->isEndPointSelected
+        || item->isMidPointSelected) {
+        itemOption.state |= QStyle::State_Active;
+    }
 
-        customIconsMargin = leftMargin + checkboxrect.width();
+    style->drawPrimitive(QStyle::PE_PanelItemViewItem, &itemOption, painter, option.widget);
 
-        QApplication::style()->drawControl(QStyle::CE_CheckBox, &checkboxstyle, painter);
+    drawSubControl(SubControl::CheckBox, painter, option, index);
+    drawSubControl(SubControl::LineSelect, painter, option, index);
+    drawSubControl(SubControl::StartSelect, painter, option, index);
+    drawSubControl(SubControl::EndSelect, painter, option, index);
+    drawSubControl(SubControl::MidSelect, painter, option, index);
+    drawSubControl(SubControl::Label, painter, option, index);
+}
 
-        int height = option.rect.height();
-        int width = height;// icons are square.
-        int x0 = option.rect.x() + customIconsMargin;
-        int iconsize = height - 2 * border;
-        int btny = option.rect.y() + border;
+QRect ElementItemDelegate::subControlRect(SubControl element,
+                                          const QStyleOptionViewItem& option,
+                                          const QModelIndex& index) const
+{
+    auto itemOption = option;
 
-        if (item->isLineSelected || item->isStartingPointSelected || item->isEndPointSelected
-            || item->isMidPointSelected) {// option.state & QStyle::State_Selected
+    auto style = option.widget ? option.widget->style() : QApplication::style();
 
-            auto unselecticon = [&](int iconnumber) {
-                QRect rect {x0 + border + width * iconnumber, btny, iconsize, iconsize};
-                painter->fillRect(rect, option.palette.base());
-            };
+    initStyleOption(&itemOption, index);
 
-            QRect selection = QRect(customIconsMargin,
-                                    option.rect.y(),
-                                    option.rect.width() - customIconsMargin,
-                                    option.rect.height());
+    QRect checkBoxRect =
+        style->subElementRect(QStyle::SE_CheckBoxIndicator, &itemOption, option.widget);
 
-            painter->fillRect(selection, option.palette.highlight());// paint the item as selected
+    checkBoxRect.moveTo(gap,
+                        option.rect.top() + (option.rect.height() - checkBoxRect.height()) / 2);
 
-            // Repaint individual icons
-            if (!item->isLineSelected)
-                unselecticon(0);
+    if (element == SubControl::CheckBox) {
+        return checkBoxRect;
+    }
 
-            if (!item->isStartingPointSelected)
-                unselecticon(1);
+    QRect selectRect =
+        style->subElementRect(QStyle::SE_ItemViewItemDecoration, &itemOption, option.widget)
+            .translated(checkBoxRect.right() + gap, 0);
 
-            if (!item->isEndPointSelected)
-                unselecticon(2);
+    unsigned pos = element - SubControl::LineSelect;
 
-            if (!item->isMidPointSelected)
-                unselecticon(3);
+    auto rect = selectRect.translated((selectRect.width() + gap) * pos, 0);
+
+    if (element != SubControl::Label) {
+        return rect;
+    }
+
+    rect.setRight(itemOption.rect.right());
+
+    return rect;
+}
+
+void ElementItemDelegate::drawSubControl(SubControl element,
+                                         QPainter* painter,
+                                         const QStyleOptionViewItem& option,
+                                         const QModelIndex& index) const
+{
+    auto item = getElementItem(index);
+    auto style = option.widget ? option.widget->style() : QApplication::style();
+
+    auto rect = subControlRect(element, option, index);
+
+    auto mousePos = option.widget->mapFromGlobal(QCursor::pos());
+    auto isHovered = rect.contains(mousePos);
+
+    auto drawSelectIcon = [&](Sketcher::PointPos pos) {
+        auto icon = ElementWidgetIcons::getIcon(item->GeometryType, pos, item->State);
+        auto opacity = 0.4f;
+
+        if (isHovered) {
+            opacity = 0.8f;
         }
 
-        auto& iconEdge =
-            ElementWidgetIcons::getIcon(item->GeometryType, Sketcher::PointPos::none, item->State);
-        auto& iconStart =
-            ElementWidgetIcons::getIcon(item->GeometryType, Sketcher::PointPos::start, item->State);
-        auto& iconEnd =
-            ElementWidgetIcons::getIcon(item->GeometryType, Sketcher::PointPos::end, item->State);
-        auto& iconMid =
-            ElementWidgetIcons::getIcon(item->GeometryType, Sketcher::PointPos::mid, item->State);
-        // getIcon(item->GeometryType);
+        if (item->isGeometrySelected(pos)) {
+            opacity = 1.0f;
+        }
 
-        painter->drawPixmap(x0 + border, btny, iconEdge.pixmap(iconsize, iconsize));
-        painter->drawPixmap(x0 + border + width, btny, iconStart.pixmap(iconsize, iconsize));
-        painter->drawPixmap(x0 + border + width * 2, btny, iconEnd.pixmap(iconsize, iconsize));
-        painter->drawPixmap(x0 + border + width * 3, btny, iconMid.pixmap(iconsize, iconsize));
+        painter->setOpacity(opacity);
+        painter->drawPixmap(rect, icon.pixmap(rect.size()));
+    };
 
-        // Label :
-        painter->drawText(
-            x0 + width * 4 + 3 * border, option.rect.y() + height - textBottomMargin, item->label);
+    painter->save();
+
+    switch (element) {
+        case SubControl::CheckBox: {
+            QStyleOptionButton checkboxOption;
+
+            checkboxOption.initFrom(option.widget);
+            checkboxOption.rect = rect;
+
+            checkboxOption.state.setFlag(QStyle::State_Enabled, item->canBeHidden());
+
+            if (isHovered) {
+                checkboxOption.state |= QStyle::State_MouseOver;
+            }
+
+            if (item->isVisible()) {
+                checkboxOption.state |= QStyle::State_On;
+            }
+            else {
+                checkboxOption.state |= QStyle::State_Off;
+            }
+
+            style->drawPrimitive(QStyle::PE_IndicatorItemViewItemCheck,
+                                 &checkboxOption,
+                                 painter,
+                                 option.widget);
+
+            break;
+        }
+
+        case LineSelect: {
+            drawSelectIcon(Sketcher::PointPos::none);
+            break;
+        }
+
+        case StartSelect: {
+            drawSelectIcon(Sketcher::PointPos::start);
+            break;
+        }
+
+        case EndSelect: {
+            drawSelectIcon(Sketcher::PointPos::end);
+            break;
+        }
+
+        case MidSelect: {
+            drawSelectIcon(Sketcher::PointPos::mid);
+            break;
+        }
+
+        case Label: {
+            QRect rect = subControlRect(SubControl::Label, option, index);
+
+            auto labelBoundingBox = painter->fontMetrics().tightBoundingRect(item->label);
+
+            painter->drawText(rect.x(),
+                              option.rect.bottom()
+                                  - (option.rect.height() - labelBoundingBox.height()) / 2,
+                              item->label);
+
+            break;
+        }
     }
+
+    painter->restore();
 }
+// clang-format off
 
 bool ElementItemDelegate::editorEvent(QEvent* event, QAbstractItemModel* model,
                                       const QStyleOptionViewItem& option, const QModelIndex& index)
 {
-    auto getSubElementType = [&](ElementItem* item, int xPos, int width) {
-        bool label = (xPos > option.rect.x() + customIconsMargin + width * 4 + border);
+    auto item = getElementItem(index);
 
-        if ((xPos < option.rect.x() + customIconsMargin + width + border)
-            || (item->GeometryType != Part::GeomPoint::getClassTypeId() && label))
+    auto getSubElementType = [&](QPoint pos) {
+        if (subControlRect(SubControl::LineSelect, option, index).contains(pos)) {
             return SubElementType::edge;
-        if (xPos < option.rect.x() + customIconsMargin + width * 2 + border
-            || (item->GeometryType == Part::GeomPoint::getClassTypeId() && label))
+        } else if (subControlRect(SubControl::StartSelect, option, index).contains(pos)) {
             return SubElementType::start;
-        if (xPos < option.rect.x() + customIconsMargin + width * 3 + border)
+        } else if (subControlRect(SubControl::EndSelect, option, index).contains(pos)) {
             return SubElementType::end;
-        else if (xPos < option.rect.x() + customIconsMargin + width * 4 + border)
+        } else if (subControlRect(SubControl::MidSelect, option, index).contains(pos)) {
             return SubElementType::mid;
-        else
-            return SubElementType::none;
+        } else {
+            // depending on geometry type by default we select either point or edge
+            return item->GeometryType == Part::GeomPoint::getClassTypeId() ? SubElementType::start : SubElementType::edge;
+        }
     };
 
     if (event->type() == QEvent::MouseButtonPress || event->type() == QEvent::MouseButtonDblClick) {
-        QMouseEvent* mEvent = static_cast<QMouseEvent*>(event);
-        ElementItem* item = getElementtItem(index);
+        auto mouseEvent = static_cast<QMouseEvent*>(event);
 
-        int xPos = mEvent->pos().x();
-        int width = option.rect.height();// icons are square
+        item->clickedOn = getSubElementType(mouseEvent->pos());
+        item->rightClicked = mouseEvent->button() == Qt::RightButton;
 
-        item->clickedOn = getSubElementType(item, xPos, width);
+        if (item->canBeHidden()) {
+            QRect checkboxRect = subControlRect(SubControl::CheckBox, option, index);
 
-        if (mEvent->button() == Qt::RightButton)
-            item->rightClicked = true;
-
-        QRect checkboxrect = QRect(
-            leftMargin, option.rect.y(), customIconsMargin - leftMargin, option.rect.height());
-
-        if (mEvent->button() == Qt::LeftButton && checkboxrect.contains(mEvent->pos())) {
-            Q_EMIT itemChecked(index, item->isVisible() ? Qt::Unchecked : Qt::Checked);
+            if (mouseEvent->button() == Qt::LeftButton && checkboxRect.contains(mouseEvent->pos())) {
+                Q_EMIT itemChecked(index, item->isVisible() ? Qt::Unchecked : Qt::Checked);
+            }
         }
     }
     else if (event->type() == QEvent::MouseMove) {
-        SubElementType typeUnderMouse;
-        QMouseEvent* mEvent = static_cast<QMouseEvent*>(event);
-        int xPos = mEvent->pos().x();
-        int width = option.rect.height();// icons are square
+        auto mouseEvent = static_cast<QMouseEvent*>(event);
 
-        ElementItem* item = getElementtItem(index);
+        item->hovered = getSubElementType(mouseEvent->pos());
 
-        typeUnderMouse = getSubElementType(item, xPos, width);
-
-        item->hovered = typeUnderMouse;
         Q_EMIT itemHovered(index);
     }
 
     return QStyledItemDelegate::editorEvent(event, model, option, index);
 }
 
-ElementItem* ElementItemDelegate::getElementtItem(const QModelIndex& index) const
+ElementItem* ElementItemDelegate::getElementItem(const QModelIndex& index) const
 {
     ElementView* elementView = static_cast<ElementView*>(parent());
     return elementView->itemFromIndex(index);

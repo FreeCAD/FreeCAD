@@ -22,10 +22,10 @@
 #include "PreCompiled.h"
 #ifndef _PreComp_
 #include <QVector>
-#endif
-
 #include <QDirIterator>
 #include <QFileInfo>
+#endif
+
 
 #include <App/Application.h>
 
@@ -41,7 +41,7 @@ using namespace Materials;
 
 /* TRANSLATOR Material::Materials */
 
-TYPESYSTEM_SOURCE(Materials::MaterialLibrary, LibraryBase)
+TYPESYSTEM_SOURCE(Materials::MaterialLibrary, Materials::LibraryBase)
 
 MaterialLibrary::MaterialLibrary(const QString& libraryName,
                                  const QString& dir,
@@ -352,7 +352,7 @@ MaterialLibrary::getMaterialTree(const MaterialFilter* filter) const
     return materialTree;
 }
 
-TYPESYSTEM_SOURCE(Materials::MaterialExternalLibrary, MaterialLibrary::MaterialLibrary)
+TYPESYSTEM_SOURCE(Materials::MaterialExternalLibrary, Materials::MaterialLibrary)
 
 MaterialExternalLibrary::MaterialExternalLibrary(const QString& libraryName,
                                                  const QString& dir,

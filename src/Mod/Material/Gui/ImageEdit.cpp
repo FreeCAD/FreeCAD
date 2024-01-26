@@ -21,17 +21,16 @@
 
 #include "PreCompiled.h"
 #ifndef _PreComp_
-#include <QMessageBox>
-#endif
-
 #include <QBuffer>
 #include <QFile>
 #include <QMenu>
+#include <QMessageBox>
 #include <QPainter>
 #include <QPixmap>
 #include <QString>
 #include <QSvgRenderer>
 #include <QTextStream>
+#endif
 
 #include <Gui/FileDialog.h>
 #include <Gui/MainWindow.h>

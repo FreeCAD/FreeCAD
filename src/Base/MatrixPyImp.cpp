@@ -256,11 +256,9 @@ PyObject* MatrixPy::richCompare(PyObject* v, PyObject* w, int op)
         Py_INCREF(res);
         return res;
     }
-    else {
-        // This always returns False
-        Py_INCREF(Py_NotImplemented);
-        return Py_NotImplemented;
-    }
+    // This always returns False
+    Py_INCREF(Py_NotImplemented);
+    return Py_NotImplemented;
 }
 
 PyObject* MatrixPy::move(PyObject* args)
