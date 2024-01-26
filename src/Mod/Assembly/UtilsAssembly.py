@@ -132,7 +132,11 @@ def getObject(full_name):
             linked_obj = obj.getLinkedObject()
             if linked_obj.TypeId == "PartDesign::Body":
                 if i + 1 < len(names):
-                    obj2 = doc.getObject(names[i + 1])
+                    obj2 = None
+                    for obji in obj.OutList:
+                        if obji.Name == names[i + 1]:
+                            obj2 = obji
+                            break
                     if obj2 and isBodySubObject(obj2.TypeId):
                         return obj2
                 return obj
@@ -148,7 +152,11 @@ def getObject(full_name):
 
         elif obj.TypeId == "PartDesign::Body":
             if i + 1 < len(names):
-                obj2 = doc.getObject(names[i + 1])
+                obj2 = None
+                for obji in obj.OutList:
+                    if obji.Name == names[i + 1]:
+                        obj2 = obji
+                        break
                 if obj2 and isBodySubObject(obj2.TypeId):
                     return obj2
             return obj
@@ -174,6 +182,7 @@ def getContainingPart(full_name, selected_object, activeAssemblyOrPart=None):
     # full_name is "Assembly.Assembly1.LinkOrPart1.LinkOrBox.Edge16" -> LinkOrPart1
     # or           "Assembly.Assembly1.LinkOrPart1.LinkOrBody.pad.Edge16" -> LinkOrPart1
     # or           "Assembly.Assembly1.LinkOrPart1.LinkOrBody.Sketch.Edge1" -> LinkOrBody
+
     if selected_object is None:
         App.Console.PrintError("getContainingPart() in UtilsAssembly.py selected_object is None")
         return None
@@ -196,15 +205,15 @@ def getContainingPart(full_name, selected_object, activeAssemblyOrPart=None):
             return selected_object
 
         if obj.TypeId == "PartDesign::Body" and isBodySubObject(selected_object.TypeId):
-            if obj.hasObject(selected_object, True):
+            if selected_object in obj.OutListRecursive:
                 return obj
 
         # Note here we may want to specify a specific behavior for Assembly::AssemblyObject.
         if obj.TypeId == "App::Part":
-            if obj.hasObject(selected_object, True):
+            if selected_object in obj.OutListRecursive:
                 if not activeAssemblyOrPart:
                     return obj
-                elif obj.hasObject(activeAssemblyOrPart, True) or obj == activeAssemblyOrPart:
+                elif activeAssemblyOrPart in obj.OutListRecursive or obj == activeAssemblyOrPart:
                     continue
                 else:
                     return obj
@@ -212,16 +221,16 @@ def getContainingPart(full_name, selected_object, activeAssemblyOrPart=None):
         elif obj.TypeId == "App::Link":
             linked_obj = obj.getLinkedObject()
             if linked_obj.TypeId == "PartDesign::Body" and isBodySubObject(selected_object.TypeId):
-                if linked_obj.hasObject(selected_object, True):
+                if selected_object in linked_obj.OutListRecursive:
                     return obj
             if linked_obj.TypeId == "App::Part":
                 # linked_obj_doc = linked_obj.Document
                 # selected_obj_in_doc = doc.getObject(selected_object.Name)
-                if linked_obj.hasObject(selected_object, True):
+                if selected_object in linked_obj.OutListRecursive:
                     if not activeAssemblyOrPart:
                         return obj
                     elif (linked_obj.Document == activeAssemblyOrPart.Document) and (
-                        linked_obj.hasObject(activeAssemblyOrPart, True)
+                        activeAssemblyOrPart in linked_obj.OutListRecursive
                         or linked_obj == activeAssemblyOrPart
                     ):
                         continue
@@ -245,7 +254,7 @@ def getObjectInPart(objName, part):
         "App::DocumentObjectGroup",
         "PartDesign::Body",
     }:
-        for obji in part.OutList:
+        for obji in part.OutListRecursive:
             if obji.Name == objName:
                 return obji
 

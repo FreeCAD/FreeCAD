@@ -1643,16 +1643,16 @@ App::DocumentObject* AssemblyObject::getObjFromNameProp(App::DocumentObject* joi
         return containingPart;
     }
 
-    if (containingPart->getTypeId().isDerivedFrom(App::Link::getClassTypeId())) {
+    /*if (containingPart->getTypeId().isDerivedFrom(App::Link::getClassTypeId())) {
         App::Link* link = dynamic_cast<App::Link*>(containingPart);
 
         containingPart = link->getLinkedObject();
         if (!containingPart) {
             return nullptr;
         }
-    }
+    }*/
 
-    for (auto obj : containingPart->getOutList()) {
+    for (auto obj : containingPart->getOutListRecursive()) {
         if (objName == obj->getNameInDocument()) {
             return obj;
         }

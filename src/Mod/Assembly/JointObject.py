@@ -81,6 +81,19 @@ def solveIfAllowed(assembly, storePrev=False):
         assembly.solve(storePrev)
 
 
+# The joint object consists of 2 JCS (joint coordinate systems) and a Joint Type.
+# A JCS is a placement that is computed (unless it is detached) from :
+# - An Object name: this is the name of the solid. It can be any Part::Feature solid.
+# Or a PartDesign Body. Or a App::Link to those. We use the name and not directly the DocumentObject
+# because the object can be external.
+# - A Part DocumentObject : This is the lowest level containing part. It can be either the Object itself if it
+# stands alone. Or a App::Part. Or a App::Link to a App::Part.
+# For example :
+# Assembly.Assembly1.Part1.Part2.Box : Object is Box, part is 'Part1'
+# Assembly.Assembly1.LinkToPart1.Part2.Box : Object is Box, part is 'LinkToPart1'
+# - An element name: This can be either a face, an edge, a vertex or empty. Empty means that the Object placement will be used
+# - A vertex name: For faces and edges, we need to specify which vertex of said face/edge to use
+# From these a placement is computed. It is relative to the Object.
 class Joint:
     def __init__(self, joint, type_index):
         joint.Proxy = self
