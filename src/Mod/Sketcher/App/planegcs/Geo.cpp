@@ -956,10 +956,75 @@ DeriVector2 BSpline::CalculateNormal(const double* param, const double* derivpar
     return result.rotate90ccw();
 }
 
-DeriVector2 BSpline::Value(double /*u*/, double /*du*/, const double* /*derivparam*/) const
+DeriVector2 BSpline::Value(double u, double /*du*/, const double* /*derivparam*/) const
 {
+
+    // TODO: is there any advantage in making this a `static`?
+    size_t startpole = 0;
+    for (size_t j = 1; j < mult.size() && *(knots[j]) <= u; ++j) {
+        startpole += mult[j];
+    }
+    if (!periodic && startpole >= poles.size()) {
+        startpole = poles.size() - degree - 1;
+    }
+
+    // double xsum = 0., xslopesum = 0.;
+    // double ysum = 0., yslopesum = 0.;
+    // double wsum = 0., wslopesum = 0.;
+
+    auto polexat = [&](size_t i) {
+        return poles[(startpole + i) % poles.size()].x;
+    };
+    auto poleyat = [&](size_t i) {
+        return poles[(startpole + i) % poles.size()].y;
+    };
+    auto weightat = [&](size_t i) {
+        return weights[(startpole + i) % weights.size()];
+    };
+
+    size_t numpoints = degree + 1;
+    // Tangent vector
+    // This should in principle be identical to error gradient wrt curve parameter in
+    // point-on-object
+    VEC_D d(numpoints);
+    for (size_t i = 0; i < numpoints; ++i) {
+        d[i] = *polexat(i) * *weightat(i);
+    }
+    double xsum = BSpline::splineValue(u, startpole + degree, degree, d, flattenedknots);
+    for (size_t i = 0; i < numpoints; ++i) {
+        d[i] = *poleyat(i) * *weightat(i);
+    }
+    double ysum = BSpline::splineValue(u, startpole + degree, degree, d, flattenedknots);
+    for (size_t i = 0; i < numpoints; ++i) {
+        d[i] = *weightat(i);
+    }
+    double wsum = BSpline::splineValue(u, startpole + degree, degree, d, flattenedknots);
+
+    d.resize(numpoints - 1);
+    for (size_t i = 1; i < numpoints; ++i) {
+        d[i - 1] = (*polexat(i) * *weightat(i) - *polexat(i - 1) * *weightat(i - 1))
+            / (flattenedknots[startpole + i + degree] - flattenedknots[startpole + i]);
+    }
+    double xslopesum =
+        degree * BSpline::splineValue(u, startpole + degree, degree - 1, d, flattenedknots);
+    for (size_t i = 1; i < numpoints; ++i) {
+        d[i - 1] = (*poleyat(i) * *weightat(i) - *poleyat(i - 1) * *weightat(i - 1))
+            / (flattenedknots[startpole + i + degree] - flattenedknots[startpole + i]);
+    }
+    double yslopesum =
+        degree * BSpline::splineValue(u, startpole + degree, degree - 1, d, flattenedknots);
+    for (size_t i = 1; i < numpoints; ++i) {
+        d[i - 1] = (*weightat(i) - *weightat(i - 1))
+            / (flattenedknots[startpole + i + degree] - flattenedknots[startpole + i]);
+    }
+    double wslopesum =
+        degree * BSpline::splineValue(u, startpole + degree, degree - 1, d, flattenedknots);
+
     // place holder
-    DeriVector2 ret = DeriVector2();
+    DeriVector2 ret = DeriVector2(xsum / wsum,
+                                  ysum / wsum,
+                                  (wsum * xslopesum - wslopesum * xsum) / wsum / wsum,
+                                  (wsum * yslopesum - wslopesum * ysum) / wsum / wsum);
 
     return ret;
 }
