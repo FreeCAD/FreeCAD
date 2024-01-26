@@ -123,6 +123,7 @@
 #include "ViewProviderPythonFeature.h"
 #include "ViewProviderTextDocument.h"
 #include "ViewProviderVRMLObject.h"
+#include "ViewProviderVarSet.h"
 #include "WaitCursor.h"
 #include "Workbench.h"
 #include "WorkbenchManager.h"
@@ -2277,6 +2278,7 @@ void Application::initTypes()
     Gui::LinkView                               ::init();
     Gui::ViewProviderLink                       ::init();
     Gui::ViewProviderLinkPython                 ::init();
+    Gui::ViewProviderVarSet                     ::init();
     Gui::AxisOrigin                             ::init();
 
     // Workbench

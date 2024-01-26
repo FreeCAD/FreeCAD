@@ -171,6 +171,7 @@ SET(Document_CPP_SRCS
     TextDocument.cpp
     Link.cpp
     LinkBaseExtensionPyImp.cpp
+    VarSet.cpp
     License.h
 )
 
@@ -213,6 +214,7 @@ SET(Document_HPP_SRCS
     MaterialObject.h
     MergeDocuments.h
     TextDocument.h
+    VarSet.h
     Link.h
 )
 SET(Document_SRCS
