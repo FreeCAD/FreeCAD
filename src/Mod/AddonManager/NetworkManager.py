@@ -531,7 +531,7 @@ if HAVE_QTNETWORK:
             any notifications have been called."""
             reply = self.sender()
             if not reply:
-                print("Network Manager Error: __reply_finished not called by a Qt signal")
+                # This can happen during a cancellation operation: silently do nothing
                 return
 
             if reply.error() == QtNetwork.QNetworkReply.NetworkError.OperationCanceledError:
