@@ -150,6 +150,7 @@ public:
     static const Unit YoungsModulus;
 
     static const Unit Stiffness;
+    static const Unit StiffnessDensity;
 
     static const Unit Force;
     static const Unit Work;

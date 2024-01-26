@@ -223,7 +223,7 @@ UnitsSchemaInternal::schemaTranslate(const Quantity& quant, double& factor, QStr
             unitString = QString::fromLatin1("mN/m");
             factor = 1e-3;
         }
-        if (UnitValue < 1e3) {
+        else if (UnitValue < 1e3) {
             unitString = QString::fromLatin1("N/m");
             factor = 1.0;
         }
@@ -234,6 +234,24 @@ UnitsSchemaInternal::schemaTranslate(const Quantity& quant, double& factor, QStr
         else {
             unitString = QString::fromLatin1("MN/m");
             factor = 1e6;
+        }
+    }
+    else if ((unit == Unit::StiffnessDensity)) {
+        if (UnitValue < 1e-3) {
+            unitString = QString::fromLatin1("Pa/m");
+            factor = 1e-6;
+        }
+        else if (UnitValue < 1) {
+            unitString = QString::fromLatin1("kPa/m");
+            factor = 1e-3;
+        }
+        else if (UnitValue < 1e3) {
+            unitString = QString::fromLatin1("MPa/m");
+            factor = 1.0;
+        }
+        else {
+            unitString = QString::fromLatin1("GPa/m");
+            factor = 1e3;
         }
     }
     else if (unit == Unit::Force) {

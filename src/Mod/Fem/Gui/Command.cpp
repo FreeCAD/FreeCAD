@@ -250,10 +250,19 @@ void CmdFemConstraintContact::activated(int)
               "App.activeDocument().addObject(\"Fem::ConstraintContact\",\"%s\")",
               FeatName.c_str());
     doCommand(Doc,
-              "App.activeDocument().%s.Slope = 1000000.00",
+              "App.activeDocument().%s.Slope = \"1e6 GPa/m\"",
               FeatName.c_str());  // OvG: set default not equal to 0
     doCommand(Doc,
-              "App.activeDocument().%s.Friction = 0.0",
+              "App.activeDocument().%s.Adjust = 0.0",
+              FeatName.c_str());  // OvG: set default equal to 0
+    doCommand(Doc,
+              "App.activeDocument().%s.Friction = False",
+              FeatName.c_str());  // OvG: set default equal to 0
+    doCommand(Doc,
+              "App.activeDocument().%s.FrictionCoefficient = 0.0",
+              FeatName.c_str());  // OvG: set default equal to 0
+    doCommand(Doc,
+              "App.activeDocument().%s.StickSlope = \"1e4 GPa/m\"",
               FeatName.c_str());  // OvG: set default not equal to 0
     doCommand(Doc,
               "App.activeDocument().%s.Scale = 1",
