@@ -50,8 +50,11 @@ public:
      * This is only the definitions of the variables
      ******/
     // ex.
-    App::PropertyFloat Slope;
-    App::PropertyFloat Friction;
+    App::PropertyStiffnessDensity Slope;
+    App::PropertyLength Adjust;
+    App::PropertyBool Friction;
+    App::PropertyFloat FrictionCoefficient;
+    App::PropertyStiffnessDensity StickSlope;
 
     // etc
     /* */
@@ -64,6 +67,9 @@ public:
 
 protected:
     void onChanged(const App::Property* prop) override;
+    void handleChangedPropertyType(Base::XMLReader& reader,
+                                   const char* typeName,
+                                   App::Property* prop) override;
 };
 
 }  // namespace Fem
