@@ -18608,7 +18608,7 @@ Evolumes
 ** Tie Constraints
 ** ConstraintTie
 *TIE, POSITION TOLERANCE=25, ADJUST=NO, NAME=TIEConstraintTie
-TIE_DEPConstraintTie,TIE_INDConstraintTie
+TIE_DEPConstraintTie, TIE_INDConstraintTie
 
 ***********************************************************
 ** At least one step is needed to run an CalculiX analysis of FreeCAD
