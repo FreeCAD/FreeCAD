@@ -123,24 +123,39 @@ void execHoleCircle(Gui::Command* cmd)
         return;
     }
     Gui::Command::openCommand(QT_TRANSLATE_NOOP("Command", "Bolt Circle Centerlines"));
-    double scale = objFeat->getScale();
+
+    // make the bolt hole circle from 3 scaled and rotated points
     Base::Vector3d bigCenter =
         _circleCenter(Circles[0]->center, Circles[1]->center, Circles[2]->center);
-    float bigRadius = (Circles[0]->center - bigCenter).Length();
+    double bigRadius = (Circles[0]->center - bigCenter).Length();
+    // now convert the center & radius to canonical form
+    bigCenter = DU::invertY(bigCenter);
+    bigCenter = CosmeticVertex::makeCanonicalPoint(objFeat, bigCenter);
+    bigCenter = DU::invertY(bigCenter);
+    bigRadius = bigRadius / objFeat->getScale();
     TechDraw::BaseGeomPtr bigCircle =
-        std::make_shared<TechDraw::Circle>(bigCenter / scale, bigRadius / scale);
+        std::make_shared<TechDraw::Circle>(bigCenter, bigRadius);
     std::string bigCircleTag = objFeat->addCosmeticEdge(bigCircle);
     TechDraw::CosmeticEdge* ceCircle = objFeat->getCosmeticEdge(bigCircleTag);
     _setLineAttributes(ceCircle);
+
+    // make the center lines for the individual bolt holes
+    constexpr double ExtendFactor{1.1};
     for (const TechDraw::CirclePtr& oneCircle : Circles) {
-        Base::Vector3d oneCircleCenter = oneCircle->center;
-        float oneRadius = oneCircle->radius;
-        Base::Vector3d delta = (oneCircle->center - bigCenter).Normalize() * (oneRadius + 2);
+        // convert the center to canonical form
+        Base::Vector3d oneCircleCenter = DU::invertY(oneCircle->center);
+        oneCircleCenter = CosmeticVertex::makeCanonicalPoint(objFeat, oneCircleCenter);
+        oneCircleCenter = DU::invertY(oneCircleCenter);
+        // oneCircle->radius is scaled.
+        float oneRadius = oneCircle->radius / objFeat->getScale();
+        // what is magic number 2 (now ExtendFactor)?  just a fudge factor to extend the line beyond the bolt
+        // hole circle?  should it be a function of hole diameter? maybe 110% of oneRadius?
+        Base::Vector3d delta = (oneCircleCenter - bigCenter).Normalize() * (oneRadius * ExtendFactor);
         Base::Vector3d startPt = oneCircleCenter + delta;
         Base::Vector3d endPt = oneCircleCenter - delta;
-        startPt.y = -startPt.y;
-        endPt.y = -endPt.y;
-        std::string oneLineTag = objFeat->addCosmeticEdge(startPt / scale, endPt / scale);
+        startPt = DU::invertY(startPt);
+        endPt = DU::invertY(endPt);
+        std::string oneLineTag = objFeat->addCosmeticEdge(startPt, endPt);
         TechDraw::CosmeticEdge* ceLine = objFeat->getCosmeticEdge(oneLineTag);
         _setLineAttributes(ceLine);
     }
