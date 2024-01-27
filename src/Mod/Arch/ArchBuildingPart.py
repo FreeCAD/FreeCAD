@@ -883,8 +883,12 @@ class ViewProviderBuildingPart:
         return True
 
     def setEdit(self, vobj, mode):
-        # For some reason mode is always 0.
-        # Using FreeCADGui.getUserEditMode() as a workaround.
+        # mode == 1 if Transform is selected in the Tree view contex menu.
+        # mode == 2 has been added for consistency.
+        if mode == 1 or mode == 2:
+            return None
+        # For some reason mode is always 0 if the object is double-clicked in
+        # the Tree view. Using FreeCADGui.getUserEditMode() as a workaround.
         if FreeCADGui.getUserEditMode() in ("Transform", "Cutting"):
             return None
 
@@ -892,8 +896,8 @@ class ViewProviderBuildingPart:
         return False # Return `False` as we don't want to enter edit mode.
 
     def unsetEdit(self, vobj, mode):
-        # For some reason mode is always 0.
-        # Using FreeCADGui.getUserEditMode() as a workaround.
+        if mode == 1 or mode == 2:
+            return None
         if FreeCADGui.getUserEditMode() in ("Transform", "Cutting"):
             return None
 
