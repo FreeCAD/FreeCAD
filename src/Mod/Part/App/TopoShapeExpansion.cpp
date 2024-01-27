@@ -45,6 +45,8 @@
 #include "TopoShapeOpCode.h"
 #include "FaceMaker.h"
 
+#include <App/ElementNamingUtils.h>
+
 
 FC_LOG_LEVEL_INIT("TopoShape", true, true)  // NOLINT
 
@@ -606,31 +608,31 @@ struct NameInfo
 
 const std::string& modPostfix()
 {
-    static std::string postfix(TopoShape::elementMapPrefix() + ":M");
+    static std::string postfix(Data::POSTFIX_MOD);
     return postfix;
 }
 
 const std::string& modgenPostfix()
 {
-    static std::string postfix(modPostfix() + "G");
+    static std::string postfix(Data::POSTFIX_MODGEN);
     return postfix;
 }
 
 const std::string& genPostfix()
 {
-    static std::string postfix(TopoShape::elementMapPrefix() + ":G");
+    static std::string postfix(Data::POSTFIX_GEN);
     return postfix;
 }
 
 const std::string& upperPostfix()
 {
-    static std::string postfix(TopoShape::elementMapPrefix() + ":U");
+    static std::string postfix(Data::POSTFIX_UPPER);
     return postfix;
 }
 
 const std::string& lowerPostfix()
 {
-    static std::string postfix(TopoShape::elementMapPrefix() + ":L");
+    static std::string postfix(Data::POSTFIX_LOWER);
     return postfix;
 }
 

@@ -677,27 +677,6 @@ public:
                                        const std::vector<TopoShape> &sources,
                                        const char *op=nullptr);
 
-    /** Helper class to return the generated and modified shape given an input shape
-     *
-     * Shape history information is extracted using OCCT APIs
-     * BRepBuilderAPI_MakeShape::Generated/Modified(). However, there is often
-     * some glitches in various derived class. So we use this class as an
-     * abstraction, and create various derived classes to deal with the glitches.
-     */
-    struct PartExport Mapper {
-        /// Helper vector for temporary storage of both generated and modified shapes
-        mutable std::vector<TopoDS_Shape> _res;
-        virtual ~Mapper() {}
-        /// Return a list of shape generated from the given input shape
-        virtual const std::vector<TopoDS_Shape> &generated(const TopoDS_Shape &) const {
-            return _res;
-        }
-        /// Return a list of shape modified from the given input shape
-        virtual const std::vector<TopoDS_Shape> &modified(const TopoDS_Shape &) const {
-            return _res;
-        }
-    };
-
     /** Make a compound shape
      *
      * @param shapes: input shapes

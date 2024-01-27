@@ -5,7 +5,7 @@
 
 #include "gtest/gtest.h"
 #include "src/App/InitApplication.h"
-#include "TopoShapeExpansionHelpers.h"
+#include "PartTestHelpers.h"
 #include <Mod/Part/App/TopoShape.h>
 #include <Mod/Part/App/TopoShapeOpCode.h>
 // #include <MappedName.h>
@@ -34,7 +34,6 @@ protected:
     {
         _docName = App::GetApplication().getUniqueDocumentName("test");
         App::GetApplication().newDocument(_docName.c_str(), "testUser");
-        _sids = &_sid;
     }
 
     void TearDown() override
@@ -52,10 +51,12 @@ protected:
         return &_mapper;
     }
 
+    void testFindSourceSubShapesInElementMapForSource(const std::vector<TopoShape>& sources,
+                                                      const TopoShape& source);
+
 private:
     std::string _docName;
     Data::ElementIDRefs _sid;
-    QVector<App::StringIDRef>* _sids = nullptr;
     Part::TopoShape _shape;
     Part::TopoShape::Mapper _mapper;
 };
@@ -63,7 +64,7 @@ private:
 TEST_F(TopoShapeMakeShapeWithElementMapTests, nullShapeThrows)
 {
     // Arrange
-    auto [cube1, cube2] = TopoShapeExpansionHelpers::CreateTwoCubes();
+    auto [cube1, cube2] = PartTestHelpers::CreateTwoCubes();
     std::vector<Part::TopoShape> sources {cube1, cube2};
     TopoDS_Vertex nullVertex;
     TopoDS_Edge nullEdge;
@@ -96,11 +97,11 @@ TEST_F(TopoShapeMakeShapeWithElementMapTests, nullShapeThrows)
 using Data::IndexedName, Data::MappedName;
 using Part::TopoShape;
 
-std::map<IndexedName, MappedName> elementMap(const TopoShape &shape)
+std::map<IndexedName, MappedName> elementMap(const TopoShape& shape)
 {
     std::map<IndexedName, MappedName> result {};
     auto elements = shape.getElementMap();
-    for (auto const & entry : elements) {
+    for (auto const& entry : elements) {
         result[entry.index] = entry.name;
     }
     return result;
@@ -116,7 +117,7 @@ std::map<IndexedName, MappedName> elementMap(const TopoShape &shape)
 TEST_F(TopoShapeMakeShapeWithElementMapTests, mapCompoundCount)
 {
     // Arrange
-    auto [cube1, cube2] = TopoShapeExpansionHelpers::CreateTwoCubes();
+    auto [cube1, cube2] = PartTestHelpers::CreateTwoCubes();
     std::vector<TopoShape> sources {cube1, cube2};
     sources[0].Tag = 1;
     sources[1].Tag = 2;
@@ -127,7 +128,7 @@ TEST_F(TopoShapeMakeShapeWithElementMapTests, mapCompoundCount)
     compound.makeShapeWithElementMap(compound.getShape(), *Mapper(), sources);
     auto postElements = elementMap(compound);  // Map after mapping
     // Assert
-    EXPECT_EQ(preElements.size(), 52);  // Check the before map.
+    EXPECT_EQ(preElements.size(), 52);   // Check the before map.
     EXPECT_EQ(postElements.size(), 52);  // 12 Edges, 8 Vertexes, 6 Faces per each Cube
     EXPECT_EQ(postElements.count(IndexedName("Edge", 24)), 1);
     EXPECT_EQ(postElements.count(IndexedName("Edge", 25)), 0);
@@ -143,7 +144,7 @@ TEST_F(TopoShapeMakeShapeWithElementMapTests, mapCompoundCount)
 TEST_F(TopoShapeMakeShapeWithElementMapTests, mapCompoundMap)
 {
     // Arrange
-    auto [cube1, cube2] = TopoShapeExpansionHelpers::CreateTwoCubes();
+    auto [cube1, cube2] = PartTestHelpers::CreateTwoCubes();
     std::vector<TopoShape> sources {cube1, cube2};
     sources[0].Tag = 1;
     sources[1].Tag = 2;
@@ -165,7 +166,7 @@ TEST_F(TopoShapeMakeShapeWithElementMapTests, mapCompoundMap)
 TEST_F(TopoShapeMakeShapeWithElementMapTests, emptySourceShapes)
 {
     // Arrange
-    auto [cube1, cube2] = TopoShapeExpansionHelpers::CreateTwoCubes();
+    auto [cube1, cube2] = PartTestHelpers::CreateTwoCubes();
     std::vector<Part::TopoShape> emptySources;
     std::vector<Part::TopoShape> nonEmptySources {cube1, cube2};
 
@@ -183,7 +184,7 @@ TEST_F(TopoShapeMakeShapeWithElementMapTests, emptySourceShapes)
 TEST_F(TopoShapeMakeShapeWithElementMapTests, nonMappableSources)
 {
     // Arrange
-    auto [cube1, cube2] = TopoShapeExpansionHelpers::CreateTwoCubes();
+    auto [cube1, cube2] = PartTestHelpers::CreateTwoCubes();
     std::vector<Part::TopoShape> sources {cube1, cube2};
 
     // Act and assert
@@ -202,10 +203,34 @@ TEST_F(TopoShapeMakeShapeWithElementMapTests, nonMappableSources)
     }
 }
 
+void testFindSourceShapesInSingleShape(const Part::TopoShape& cmpdShape,
+                                       const Part::TopoShape& source,
+                                       const std::vector<Part::TopoShape>& sources,
+                                       const TopoShape::Mapper& mapper)
+{
+    std::vector<Part::TopoShape> tmpSources {source};
+    for (const auto& subSource : sources) {
+        Part::TopoShape tmpShape {source.getShape()};
+        tmpShape.makeShapeWithElementMap(source.getShape(), mapper, tmpSources);
+        if (&source == &subSource) {
+            EXPECT_NE(tmpShape.findShape(subSource.getShape()),
+                      0);  // if tmpShape uses, for example, cube1 and we search for cube1 than
+                           // we should find it
+        }
+        else {
+            EXPECT_EQ(tmpShape.findShape(subSource.getShape()),
+                      0);  // if tmpShape uses, for example, cube1 and we search for cube2 than
+                           // we shouldn't find it
+        }
+    }
+    EXPECT_NE(cmpdShape.findShape(source.getShape()),
+              0);  // as cmpdShape is made with cube1 and cube2 we should find both of them
+}
+
 TEST_F(TopoShapeMakeShapeWithElementMapTests, findSourceShapesInShape)
 {
     // Arrange
-    auto [cube1, cube2] = TopoShapeExpansionHelpers::CreateTwoCubes();
+    auto [cube1, cube2] = PartTestHelpers::CreateTwoCubes();
     std::vector<Part::TopoShape> sources {cube1, cube2};
     sources[0].Tag = 1;  // setting Tag explicitly otherwise it is likely that this test will be
                          // more or less the same of nonMappableSources
@@ -216,30 +241,69 @@ TEST_F(TopoShapeMakeShapeWithElementMapTests, findSourceShapesInShape)
 
     // Act and assert
     for (const auto& source : sources) {
-        std::vector<Part::TopoShape> tmpSources {source};
-        for (const auto& subSource : sources) {
-            Part::TopoShape tmpShape {source.getShape()};
-            tmpShape.makeShapeWithElementMap(source.getShape(), *Mapper(), tmpSources);
-            if (&source == &subSource) {
-                EXPECT_NE(tmpShape.findShape(subSource.getShape()),
-                          0);  // if tmpShape uses, for example, cube1 and we search for cube1 than
-                               // we should find it
-            }
-            else {
-                EXPECT_EQ(tmpShape.findShape(subSource.getShape()),
-                          0);  // if tmpShape uses, for example, cube1 and we search for cube2 than
-                               // we shouldn't find it
-            }
-        }
-        EXPECT_NE(cmpdShape.findShape(source.getShape()),
-                  0);  // as cmpdShape is made with cube1 and cube2 we should find both of them
+        testFindSourceShapesInSingleShape(cmpdShape, source, sources, *Mapper());
+    }
+}
+
+void testFindSubShapesForSourceWithTypeAndIndex(const std::string& shapeTypeStr,
+                                                std::map<IndexedName, MappedName>& elementStdMap,
+                                                unsigned long shapeIndex)
+{
+    std::string shapeIndexStr = std::to_string(shapeIndex);
+    std::string shapeName {shapeTypeStr + shapeIndexStr};
+
+    IndexedName indexedName {shapeTypeStr.c_str(), (int)shapeIndex};
+    MappedName mappedName {elementStdMap[indexedName]};
+    const char shapeTypePrefix {indexedName.toString()[0]};
+
+    EXPECT_NO_THROW(elementStdMap.at(indexedName));  // We check that the IndexedName
+                                                     // is one of the keys...
+    EXPECT_NE(mappedName.find(shapeName.c_str()),
+              -1);  // ... that the element name is in the MappedName...
+    EXPECT_EQ(mappedName.toString().back(), shapeTypePrefix);
+}
+
+void testFindSubShapesForSourceWithType(const TopoShape& source,
+                                        const char* shapeType,
+                                        std::map<IndexedName, MappedName>& elementStdMap)
+{
+    std::string shapeTypeStr {shapeType};
+
+    // ... and all the elements of the various types in the source TopoShape ...
+    for (unsigned long shapeIndex = 1U; shapeIndex <= source.countSubElements(shapeType);
+         shapeIndex++) {
+        testFindSubShapesForSourceWithTypeAndIndex(shapeTypeStr, elementStdMap, shapeIndex);
+    }
+
+    // ... we also check that we don't find shapes that don't exist and therefore don't
+    // have either an IndexedName or a MappedName
+    IndexedName fakeIndexedName {shapeTypeStr.c_str(), (int)source.countSubElements(shapeType) + 1};
+    EXPECT_THROW(elementStdMap.at(fakeIndexedName), std::out_of_range);
+}
+
+void TopoShapeMakeShapeWithElementMapTests::testFindSourceSubShapesInElementMapForSource(
+    const std::vector<TopoShape>& sources,
+    const TopoShape& source)
+{
+    TopoShape tmpShape {source.getShape()};
+    tmpShape.makeShapeWithElementMap(source.getShape(), *Mapper(), sources);
+
+    // First we create a map with the IndexedNames and MappedNames
+    std::map<IndexedName, MappedName> elementStdMap;
+    for (const auto& mappedElement : tmpShape.getElementMap()) {
+        elementStdMap.emplace(mappedElement.index, mappedElement.name);
+    }
+
+    // Then for all the elements types (Vertex, Edge, Face) ...
+    for (const auto& shapeType : source.getElementTypes()) {
+        testFindSubShapesForSourceWithType(source, shapeType, elementStdMap);
     }
 }
 
 TEST_F(TopoShapeMakeShapeWithElementMapTests, findSourceSubShapesInElementMap)
 {
     // Arrange
-    auto [cube1, cube2] = TopoShapeExpansionHelpers::CreateTwoCubes();
+    auto [cube1, cube2] = PartTestHelpers::CreateTwoCubes();
     std::vector<TopoShape> sources {cube1, cube2};
     sources[0].Tag = 1;  // setting Tag explicitly otherwise it is likely that this test will be
                          // more or less the same of nonMappableSources
@@ -249,52 +313,14 @@ TEST_F(TopoShapeMakeShapeWithElementMapTests, findSourceSubShapesInElementMap)
     // Act and assert
     // Testing with all the source TopoShapes
     for (const auto& source : sources) {
-        TopoShape tmpShape {source.getShape()};
-        tmpShape.makeShapeWithElementMap(source.getShape(), *Mapper(), sources);
-
-        // First we create a map with the IndexedNames and MappedNames
-        std::map<IndexedName, MappedName> elementStdMap;
-        for (const auto& mappedElement : tmpShape.getElementMap()) {
-            elementStdMap.emplace(mappedElement.index, mappedElement.name);
-        }
-
-        // Then for all the elements types (Vertex, Edge, Face) ...
-        for (const auto& shapeType : source.getElementTypes()) {
-            std::string shapeTypeStr {shapeType};
-
-            // ... and all the elements of the various types in the source TopoShape ...
-            for (unsigned long shapeIndex = 1U; shapeIndex <= source.countSubElements(shapeType);
-                 shapeIndex++) {
-                std::string shapeIndexStr = std::to_string(shapeIndex);
-                std::string shapeName {shapeTypeStr + shapeIndexStr};
-
-                IndexedName indexedName {shapeTypeStr.c_str(), (int)shapeIndex};
-                MappedName mappedName {elementStdMap[indexedName]};
-                const char shapeTypePrefix[1] {indexedName.toString()[0]};
-
-                EXPECT_NO_THROW(elementStdMap.at(indexedName));  // .. we check that the IndexedName
-                                                                 // is one of the keys...
-                EXPECT_NE(mappedName.find(shapeName.c_str()),
-                          -1);  // ... that the element name is in the MappedName...
-                EXPECT_EQ(
-                    mappedName.rfind(shapeTypePrefix),
-                    mappedName.toString().length()
-                        - 1);  // ... that the element prefix is at the end of the MappedName ...
-            }
-
-            // ... we also check that we don't find shapes that don't exist and therefor that don't
-            // have neither an IndexedName nor a MappedName
-            IndexedName fakeIndexedName {shapeTypeStr.c_str(),
-                                         (int)source.countSubElements(shapeType) + 1};
-            EXPECT_THROW(elementStdMap.at(fakeIndexedName), std::out_of_range);
-        }
+        testFindSourceSubShapesInElementMapForSource(sources, source);
     }
 }
 
 TEST_F(TopoShapeMakeShapeWithElementMapTests, findMakerOpInElementMap)
 {
     // Arrange
-    auto [cube1, cube2] = TopoShapeExpansionHelpers::CreateTwoCubes();
+    auto [cube1, cube2] = PartTestHelpers::CreateTwoCubes();
     std::vector<TopoShape> sources {cube1, cube2};
     sources[0].Tag = 1;  // setting Tag explicitly otherwise it is likely that this test will be
                          // more or less the same of nonMappableSources

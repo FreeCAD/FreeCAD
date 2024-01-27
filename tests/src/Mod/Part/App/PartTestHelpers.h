@@ -57,4 +57,6 @@ boxesMatch(const Base::BoundBox3d& b1, const Base::BoundBox3d& b2, double prec =
 
 std::map<IndexedName, MappedName> elementMap(const TopoShape& shape);
 
+std::pair<TopoDS_Shape, TopoDS_Shape> CreateTwoCubes();
+
 }  // namespace PartTestHelpers
