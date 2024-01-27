@@ -638,7 +638,6 @@ public:
     void mapSubElement(const std::vector<TopoShape> &shapes, const char *op=nullptr);
     bool hasPendingElementMap() const;
 
-
     /** Helper class to return the generated and modified shape given an input shape
      *
      * Shape history information is extracted using OCCT APIs
@@ -659,6 +658,24 @@ public:
             return _res;
         }
     };
+
+    /** Core function to generate mapped element names from shape history
+     *
+     * @param shape: the new shape
+     * @param mapper: for mapping input shapes to generated/modified shapes
+     * @param sources: list of source shapes.
+     * @param op: optional string to be encoded into topo naming for indicating
+     *            the operation
+     *
+     * @return The original content of this TopoShape is discarded and replaced
+     *         with the given new shape. The function returns the TopoShape
+     *         itself as a self reference so that multiple operations can be
+     *         carried out for the same shape in the same line of code.
+     */
+    TopoShape &makeShapeWithElementMap(const TopoDS_Shape &shape,
+                                       const Mapper &mapper,
+                                       const std::vector<TopoShape> &sources,
+                                       const char *op=nullptr);
 
     /** Make a compound shape
      *

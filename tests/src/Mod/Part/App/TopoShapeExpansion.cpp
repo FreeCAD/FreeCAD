@@ -8,16 +8,15 @@
 #include "PartTestHelpers.h"
 
 #include <BRepBuilderAPI_MakeEdge.hxx>
-#include <BRepBuilderAPI_MakeFace.hxx>
 #include <BRepBuilderAPI_MakeWire.hxx>
 #include <BRepPrimAPI_MakeBox.hxx>
 #include <GC_MakeCircle.hxx>
 #include <TopExp_Explorer.hxx>
-#include <TopoDS.hxx>
 #include <TopoDS_Edge.hxx>
 
 // NOLINTBEGIN(readability-magic-numbers,cppcoreguidelines-avoid-magic-numbers)
 
+using namespace PartTestHelpers;
 
 class TopoShapeExpansionTest: public ::testing::Test
 {
@@ -31,7 +30,6 @@ protected:
     {
         _docName = App::GetApplication().getUniqueDocumentName("test");
         App::GetApplication().newDocument(_docName.c_str(), "testUser");
-        _sids = &_sid;
         _hasher = Base::Reference<App::StringHasher>(new App::StringHasher);
         ASSERT_EQ(_hasher.getRefCount(), 1);
     }
@@ -45,7 +43,6 @@ protected:
 private:
     std::string _docName;
     Data::ElementIDRefs _sid;
-    QVector<App::StringIDRef>* _sids = nullptr;
     App::StringHasherRef _hasher;
 };
 
@@ -125,26 +122,6 @@ TEST_F(TopoShapeExpansionTest, makeElementCompoundTwoShapesGeneratesMap)
     EXPECT_EQ(4, topoShape.getMappedChildElements().size());  // two vertices and two edges
 }
 
-namespace
-{
-
-std::pair<TopoDS_Shape, TopoDS_Shape> CreateTwoCubes()
-{
-    auto boxMaker1 = BRepPrimAPI_MakeBox(1.0, 1.0, 1.0);
-    boxMaker1.Build();
-    auto box1 = boxMaker1.Shape();
-
-    auto boxMaker2 = BRepPrimAPI_MakeBox(1.0, 1.0, 1.0);
-    boxMaker2.Build();
-    auto box2 = boxMaker2.Shape();
-    auto transform = gp_Trsf();
-    transform.SetTranslation(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(1.0, 0.0, 0.0));
-    box2.Location(TopLoc_Location(transform));
-
-    return {box1, box2};
-}
-}  // namespace
-
 TEST_F(TopoShapeExpansionTest, makeElementCompoundTwoCubes)
 {
     // Arrange
@@ -169,42 +146,20 @@ TEST_F(TopoShapeExpansionTest, makeElementCompoundTwoCubes)
     // 26 subshapes each
 }
 
-std::tuple<TopoDS_Face, TopoDS_Wire, TopoDS_Edge, TopoDS_Edge, TopoDS_Edge, TopoDS_Edge>
-CreateRectFace(float len = 2.0, float wid = 3.0)
-{
-    auto edge1 = BRepBuilderAPI_MakeEdge(gp_Pnt(0.0, 0.0, 0.0), gp_Pnt(len, 0.0, 0.0)).Edge();
-    auto edge2 = BRepBuilderAPI_MakeEdge(gp_Pnt(len, 0.0, 0.0), gp_Pnt(len, wid, 0.0)).Edge();
-    auto edge3 = BRepBuilderAPI_MakeEdge(gp_Pnt(len, wid, 0.0), gp_Pnt(0.0, wid, 0.0)).Edge();
-    auto edge4 = BRepBuilderAPI_MakeEdge(gp_Pnt(0.0, wid, 0.0), gp_Pnt(0.0, 0.0, 0.0)).Edge();
-    auto wire1 = BRepBuilderAPI_MakeWire({edge1, edge2, edge3, edge4}).Wire();
-    auto face1 = BRepBuilderAPI_MakeFace(wire1).Face();
-    return {face1, wire1, edge1, edge2, edge3, edge4};
-}
-
-std::tuple<TopoDS_Face, TopoDS_Wire, TopoDS_Wire>
-CreateFaceWithRoundHole(float len = 2.0, float wid = 3.0, float radius = 1.0)
-{
-    auto [face1, wire1, edge1, edge2, edge3, edge4] = CreateRectFace(len, wid);
-    auto circ1 =
-        GC_MakeCircle(gp_Pnt(len / 2.0, wid / 2.0, 0), gp_Dir(0.0, 0.0, 1.0), radius).Value();
-    auto edge5 = BRepBuilderAPI_MakeEdge(circ1).Edge();
-    auto wire2 = BRepBuilderAPI_MakeWire(edge5).Wire();
-    auto face2 = BRepBuilderAPI_MakeFace(face1, wire2).Face();
-    return {face2, wire1, wire2};
-}
-
 TEST_F(TopoShapeExpansionTest, makeElementFaceNull)
 {
     // Arrange
-    const double Len = 3, Wid = 2, Rad = 1;
+    const float Len = 3;
+    const float Wid = 2;
+    const float Rad = 1;
     auto [face1, wire1, wire2] = CreateFaceWithRoundHole(Len, Wid, Rad);
     Part::TopoShape topoShape {face1};
-    double area = PartTestHelpers::getArea(face1);
-    double area1 = PartTestHelpers::getArea(topoShape.getShape());
+    double area = getArea(face1);
+    double area1 = getArea(topoShape.getShape());
     // Act
     Part::TopoShape newFace = topoShape.makeElementFace(nullptr);
-    double area2 = PartTestHelpers::getArea(newFace.getShape());
-    double area3 = PartTestHelpers::getArea(topoShape.getShape());
+    double area2 = getArea(newFace.getShape());
+    double area3 = getArea(topoShape.getShape());
     // Assert
     EXPECT_FALSE(face1.IsEqual(newFace.getShape()));
     EXPECT_FLOAT_EQ(area, Len * Wid + M_PI * Rad * Rad);
@@ -217,15 +172,17 @@ TEST_F(TopoShapeExpansionTest, makeElementFaceNull)
 TEST_F(TopoShapeExpansionTest, makeElementFaceSimple)
 {
     // Arrange
-    const double Len = 3, Wid = 2, Rad = 1;
+    const float Len = 3;
+    const float Wid = 2;
+    const float Rad = 1;
     auto [face1, wire1, wire2] = CreateFaceWithRoundHole(Len, Wid, Rad);
     Part::TopoShape topoShape {face1};
-    double area = PartTestHelpers::getArea(face1);
-    double area1 = PartTestHelpers::getArea(topoShape.getShape());
+    double area = getArea(face1);
+    double area1 = getArea(topoShape.getShape());
     // Act
     Part::TopoShape newFace = topoShape.makeElementFace(wire1);
-    double area2 = PartTestHelpers::getArea(newFace.getShape());
-    double area3 = PartTestHelpers::getArea(topoShape.getShape());
+    double area2 = getArea(newFace.getShape());
+    double area3 = getArea(topoShape.getShape());
     // Assert
     EXPECT_TRUE(newFace.getShape().IsEqual(topoShape.getShape()));  // topoShape was altered
     EXPECT_FALSE(face1.IsEqual(newFace.getShape()));
@@ -239,16 +196,18 @@ TEST_F(TopoShapeExpansionTest, makeElementFaceSimple)
 TEST_F(TopoShapeExpansionTest, makeElementFaceParams)
 {
     // Arrange
-    const double Len = 3, Wid = 2, Rad = 1;
+    const float Len = 3;
+    const float Wid = 2;
+    const float Rad = 1;
     auto [face1, wire1, wire2] = CreateFaceWithRoundHole(Len, Wid, Rad);
     Part::TopoShape topoShape {face1, 1L};
-    double area = PartTestHelpers::getArea(face1);
-    double area1 = PartTestHelpers::getArea(topoShape.getShape());
+    double area = getArea(face1);
+    double area1 = getArea(topoShape.getShape());
     // Act
     Part::TopoShape newFace =
         topoShape.makeElementFace(wire1, "Cut", "Part::FaceMakerBullseye", nullptr);
-    double area2 = PartTestHelpers::getArea(newFace.getShape());
-    double area3 = PartTestHelpers::getArea(topoShape.getShape());
+    double area2 = getArea(newFace.getShape());
+    double area3 = getArea(topoShape.getShape());
     // Assert
     EXPECT_TRUE(newFace.getShape().IsEqual(topoShape.getShape()));  // topoShape was altered
     EXPECT_FALSE(face1.IsEqual(newFace.getShape()));
@@ -262,16 +221,18 @@ TEST_F(TopoShapeExpansionTest, makeElementFaceParams)
 TEST_F(TopoShapeExpansionTest, makeElementFaceFromFace)
 {
     // Arrange
-    const double Len = 3, Wid = 2, Rad = 1;
+    const float Len = 3;
+    const float Wid = 2;
+    const float Rad = 1;
     auto [face1, wire1, wire2] = CreateFaceWithRoundHole(Len, Wid, Rad);
     Part::TopoShape topoShape {face1, 1L};
-    double area = PartTestHelpers::getArea(face1);
-    double area1 = PartTestHelpers::getArea(topoShape.getShape());
+    double area = getArea(face1);
+    double area1 = getArea(topoShape.getShape());
     // Act
     Part::TopoShape newFace =
         topoShape.makeElementFace(face1, "Cut", "Part::FaceMakerBullseye", nullptr);
-    double area2 = PartTestHelpers::getArea(newFace.getShape());
-    double area3 = PartTestHelpers::getArea(topoShape.getShape());
+    double area2 = getArea(newFace.getShape());
+    double area3 = getArea(topoShape.getShape());
     // Assert
     EXPECT_TRUE(newFace.getShape().IsEqual(topoShape.getShape()));  // topoShape was altered
     EXPECT_FALSE(face1.IsEqual(newFace.getShape()));
@@ -286,15 +247,17 @@ TEST_F(TopoShapeExpansionTest, makeElementFaceFromFace)
 TEST_F(TopoShapeExpansionTest, makeElementFaceOpenWire)
 {
     // Arrange
-    const double Len = 3, Wid = 2, Rad = 1;
+    const float Len = 3;
+    const float Wid = 2;
+    const float Rad = 1;
     auto [face1, wire1, wire2] = CreateFaceWithRoundHole(Len, Wid, Rad);
     Part::TopoShape topoShape {wire1, 1L};
-    double area = PartTestHelpers::getArea(face1);
-    double area1 = PartTestHelpers::getArea(topoShape.getShape());
+    double area = getArea(face1);
+    double area1 = getArea(topoShape.getShape());
     // Act
     Part::TopoShape newFace = topoShape.makeElementFace(wire1, "Cut", nullptr, nullptr);
-    double area2 = PartTestHelpers::getArea(newFace.getShape());
-    double area3 = PartTestHelpers::getArea(topoShape.getShape());
+    double area2 = getArea(newFace.getShape());
+    double area3 = getArea(topoShape.getShape());
     // Assert
     EXPECT_TRUE(newFace.getShape().IsEqual(topoShape.getShape()));  // topoShape was altered
     EXPECT_FALSE(face1.IsEqual(newFace.getShape()));
@@ -309,16 +272,18 @@ TEST_F(TopoShapeExpansionTest, makeElementFaceOpenWire)
 TEST_F(TopoShapeExpansionTest, makeElementFaceClosedWire)
 {
     // Arrange
-    const double Len = 3, Wid = 2, Rad = 1;
+    const float Len = 3;
+    const float Wid = 2;
+    const float Rad = 1;
     auto [face1, wire1, wire2] = CreateFaceWithRoundHole(Len, Wid, Rad);
     Part::TopoShape topoShape {wire2, 1L};
-    double area = PartTestHelpers::getArea(face1);
-    double area1 = PartTestHelpers::getArea(topoShape.getShape());
+    double area = getArea(face1);
+    double area1 = getArea(topoShape.getShape());
     // Act
     Part::TopoShape newFace =
         topoShape.makeElementFace(wire2, "Cut", "Part::FaceMakerBullseye", nullptr);
-    double area2 = PartTestHelpers::getArea(newFace.getShape());
-    double area3 = PartTestHelpers::getArea(topoShape.getShape());
+    double area2 = getArea(newFace.getShape());
+    double area3 = getArea(topoShape.getShape());
     // Assert
     EXPECT_TRUE(newFace.getShape().IsEqual(topoShape.getShape()));  // topoShape was altered
     EXPECT_FALSE(face1.IsEqual(newFace.getShape()));
@@ -414,7 +379,9 @@ TEST_F(TopoShapeExpansionTest, setElementComboNameCompound)
 TEST_F(TopoShapeExpansionTest, splitWires)
 {
     // Arrange
-    const double Len = 3, Wid = 2, Rad = 1;
+    const float Len = 3;
+    const float Wid = 2;
+    const float Rad = 1;
     auto [face1, wire1, wire2] = CreateFaceWithRoundHole(Len, Wid, Rad);
     Part::TopoShape topoShape {face1, 1L};
     std::vector<Part::TopoShape> inner;
@@ -424,8 +391,8 @@ TEST_F(TopoShapeExpansionTest, splitWires)
         topoShape.splitWires(&inner, Part::TopoShape::SplitWireReorient::ReorientReversed);
     // Assert
     EXPECT_EQ(inner.size(), 1);
-    EXPECT_FLOAT_EQ(PartTestHelpers::getLength(wire.getShape()), 2 + 2 + 3 + 3);
-    EXPECT_FLOAT_EQ(PartTestHelpers::getLength(inner.front().getShape()), M_PI * Rad * 2);
+    EXPECT_FLOAT_EQ(getLength(wire.getShape()), 2 + 2 + 3 + 3);
+    EXPECT_FLOAT_EQ(getLength(inner.front().getShape()), M_PI * Rad * 2);
     EXPECT_EQ(wire.getShape().Orientation(), TopAbs_REVERSED);
     for (Part::TopoShape& shape : inner) {
         EXPECT_EQ(shape.getShape().Orientation(), TopAbs_FORWARD);
@@ -434,8 +401,8 @@ TEST_F(TopoShapeExpansionTest, splitWires)
 
 // Possible future tests:
 // splitWires without inner Wires
-// splitWires with allfour reorientation values NoReorient, ReOrient, ReorientForward,
-// ReorientRevesed
+// splitWires with all four reorientation values NoReorient, ReOrient, ReorientForward,
+// ReorientReversed
 
 TEST_F(TopoShapeExpansionTest, mapSubElementInvalidParm)
 {
@@ -461,7 +428,8 @@ TEST_F(TopoShapeExpansionTest, mapSubElementFindShapeByNames)
     Part::TopoShape cube2TS {cube2};
     cube1TS.Tag = 1;
     cube2TS.Tag = 2;
-    Part::TopoShape topoShape, topoShape1;
+    Part::TopoShape topoShape;
+    Part::TopoShape topoShape1;
 
     // Act
     int fs1 = topoShape1.findShape(cube1);
@@ -546,8 +514,13 @@ TEST_F(TopoShapeExpansionTest, mapSubElementFindAncestors)
     cube2TS.Tag = 2;
     cube3TS.Tag = 3;
     cube4TS.Tag = 4;
-    Part::TopoShape topoShape, topoShape1, topoShape2;
-    Part::TopoShape topoShape3, topoShape4, topoShape5, topoShape6;
+    Part::TopoShape topoShape;
+    Part::TopoShape topoShape1;
+    Part::TopoShape topoShape2;
+    Part::TopoShape topoShape3;
+    Part::TopoShape topoShape4;
+    Part::TopoShape topoShape5;
+    Part::TopoShape topoShape6;
     topoShape.makeElementCompound({cube1TS, cube2TS});
     topoShape1.makeElementCompound({cube3TS, cube4TS});
     topoShape2.makeElementCompound({cube1TS, cube3TS});
@@ -595,7 +568,8 @@ TEST_F(TopoShapeExpansionTest, makeElementShellInvalid)
 TEST_F(TopoShapeExpansionTest, makeElementShellSingle)
 {
     // Arrange
-    const double Len = 3, Wid = 2;
+    const float Len = 3;
+    const float Wid = 2;
     auto [face1, wire1, edge1, edge2, edge3, _] = CreateRectFace(Len, Wid);
     Part::TopoShape topoShape {face1, 1L};
     // Act
@@ -613,7 +587,8 @@ TEST_F(TopoShapeExpansionTest, makeElementShellSingle)
 TEST_F(TopoShapeExpansionTest, makeElementShellOpen)
 {
     // Arrange
-    const double Len = 3, Wid = 2;
+    const float Len = 3;
+    const float Wid = 2;
     auto [face1, wire1, edge1, edge2, edge3, edge4] = CreateRectFace(Len, Wid);
     auto transform {gp_Trsf()};
     transform.SetRotation(gp_Ax1(gp_Pnt(0, 0, 0), gp_Dir(1, 0, 0)), M_PI / 2);
@@ -644,7 +619,7 @@ TEST_F(TopoShapeExpansionTest, makeElementShellClosed)
     Part::TopoShape topoShape {cube1};
     std::vector<Part::TopoShape> shapes;
     for (const auto& face : topoShape.getSubShapes(TopAbs_FACE)) {
-        shapes.push_back(Part::TopoShape {face});
+        shapes.emplace_back(face);
     }
     // Act
     Part::TopoShape topoShape1 {1L};
@@ -671,11 +646,11 @@ TEST_F(TopoShapeExpansionTest, makeElementShellIntersecting)
     Part::TopoShape topoShape {cube1};
     std::vector<Part::TopoShape> shapes;
     for (const auto& face : topoShape.getSubShapes(TopAbs_FACE)) {
-        shapes.push_back(Part::TopoShape {face});
+        shapes.emplace_back(face);
     }
     topoShape.setShape(cube2);
     for (const auto& face : topoShape.getSubShapes(TopAbs_FACE)) {
-        shapes.push_back(Part::TopoShape {face});
+        shapes.emplace_back(face);
     }
     // Act
     Part::TopoShape topoShape1 {1L};
