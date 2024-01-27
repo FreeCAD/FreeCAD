@@ -29,7 +29,7 @@ import os
 import platform
 import shutil
 import subprocess
-from typing import List, Optional
+from typing import List, Dict, Optional
 import time
 
 import addonmanager_utilities as utils
@@ -44,6 +44,30 @@ class NoGitFound(RuntimeError):
 
 class GitFailed(RuntimeError):
     """The call to git returned an error of some kind"""
+
+
+def _ref_format_string() -> str:
+    return (
+        "--format=%(refname:lstrip=2)\t%(upstream:lstrip=2)\t%(authordate:rfc)\t%("
+        "authorname)\t%(subject)"
+    )
+
+
+def _parse_ref_table(text: str):
+    rows = text.splitlines()
+    result = []
+    for row in rows:
+        columns = row.split("\t")
+        result.append(
+            {
+                "ref_name": columns[0],
+                "upstream": columns[1],
+                "date": columns[2],
+                "author": columns[3],
+                "subject": columns[4],
+            }
+        )
+    return result
 
 
 class GitManager:
@@ -81,6 +105,36 @@ class GitManager:
         final_args.append(spec)
         self._synchronous_call_git(final_args)
         os.chdir(old_dir)
+
+    def dirty(self, local_path: str) -> bool:
+        """Check for local changes"""
+        old_dir = os.getcwd()
+        os.chdir(local_path)
+        result = False
+        final_args = ["diff-index", "HEAD"]
+        try:
+            stdout = self._synchronous_call_git(final_args)
+            if stdout:
+                result = True
+        except GitFailed:
+            result = False
+        os.chdir(old_dir)
+        return result
+
+    def detached_head(self, local_path: str) -> bool:
+        """Check for detached head state"""
+        old_dir = os.getcwd()
+        os.chdir(local_path)
+        result = False
+        final_args = ["rev-parse", "--abbrev-ref", "--symbolic-full-name", "HEAD"]
+        try:
+            stdout = self._synchronous_call_git(final_args)
+            if stdout == "HEAD":
+                result = True
+        except GitFailed:
+            result = False
+        os.chdir(old_dir)
+        return result
 
     def update(self, local_path):
         """Fetches and pulls the local_path from its remote"""
@@ -257,6 +311,30 @@ class GitManager:
         for branch in stdout.split("\n"):
             branches.append(branch)
         return branches
+
+    def get_branches_with_info(self, local_path) -> List[Dict[str, str]]:
+        """Get a list of branches, where each entry is a dictionary with status information about
+        the branch."""
+        old_dir = os.getcwd()
+        os.chdir(local_path)
+        try:
+            stdout = self._synchronous_call_git(["branch", "-a", _ref_format_string()])
+            return _parse_ref_table(stdout)
+        except GitFailed as e:
+            os.chdir(old_dir)
+            raise e
+
+    def get_tags_with_info(self, local_path) -> List[Dict[str, str]]:
+        """Get a list of branches, where each entry is a dictionary with status information about
+        the branch."""
+        old_dir = os.getcwd()
+        os.chdir(local_path)
+        try:
+            stdout = self._synchronous_call_git(["tag", "-l", _ref_format_string()])
+            return _parse_ref_table(stdout)
+        except GitFailed as e:
+            os.chdir(old_dir)
+            raise e
 
     def get_last_committers(self, local_path, n=10):
         """Examine the last n entries of the commit history, and return a list of all
