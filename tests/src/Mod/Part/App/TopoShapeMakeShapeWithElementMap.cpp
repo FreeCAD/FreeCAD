@@ -60,7 +60,6 @@ private:
     Part::TopoShape::Mapper _mapper;
 };
 
-
 TEST_F(TopoShapeMakeShapeWithElementMapTests, nullShapeThrows)
 {
     // Arrange
@@ -97,6 +96,16 @@ TEST_F(TopoShapeMakeShapeWithElementMapTests, nullShapeThrows)
 using Data::IndexedName, Data::MappedName;
 using Part::TopoShape;
 
+std::map<IndexedName, MappedName> elementMap(const TopoShape &shape)
+{
+    std::map<IndexedName, MappedName> result {};
+    auto elements = shape.getElementMap();
+    for (auto const & entry : elements) {
+        result[entry.index] = entry.name;
+    }
+    return result;
+}
+
 // TEST_F(TopoShapeMakeShapeWithElementMapTests, mapVertex)
 // TEST_F(TopoShapeMakeShapeWithElementMapTests, mapEdge)
 // TEST_F(TopoShapeMakeShapeWithElementMapTests, mapWire)
@@ -104,53 +113,54 @@ using Part::TopoShape;
 // TEST_F(TopoShapeMakeShapeWithElementMapTests, mapShell)
 // TEST_F(TopoShapeMakeShapeWithElementMapTests, mapSolid)
 
-TEST_F(TopoShapeMakeShapeWithElementMapTests, mapCompound)
+TEST_F(TopoShapeMakeShapeWithElementMapTests, mapCompoundCount)
 {
     // Arrange
     auto [cube1, cube2] = TopoShapeExpansionHelpers::CreateTwoCubes();
-    auto transform {gp_Trsf()};
-    transform.SetTranslation(gp_Vec(gp_XYZ(-0.5, -0.5, 0)));
-    cube2.Move(TopLoc_Location(transform));
+    std::vector<TopoShape> sources {cube1, cube2};
+    sources[0].Tag = 1;
+    sources[1].Tag = 2;
+    TopoShape compound = TopoShape();
+    compound.makeElementCompound(sources);
+    auto preElements = elementMap(compound);  // Map before mapping.
+    // Act
+    compound.makeShapeWithElementMap(compound.getShape(), *Mapper(), sources);
+    auto postElements = elementMap(compound);  // Map after mapping
+    // Assert
+    EXPECT_EQ(preElements.size(), 52);  // Check the before map.
+    EXPECT_EQ(postElements.size(), 52);  // 12 Edges, 8 Vertexes, 6 Faces per each Cube
+    EXPECT_EQ(postElements.count(IndexedName("Edge", 24)), 1);
+    EXPECT_EQ(postElements.count(IndexedName("Edge", 25)), 0);
+    EXPECT_EQ(postElements.count(IndexedName("Vertex", 16)), 1);
+    EXPECT_EQ(postElements.count(IndexedName("Vertex", 17)), 0);
+    EXPECT_EQ(postElements.count(IndexedName("Face", 12)), 1);
+    EXPECT_EQ(postElements.count(IndexedName("Face", 13)), 0);
+    EXPECT_STREQ(sources[0].shapeName().c_str(), "Solid");
+    EXPECT_STREQ(sources[1].shapeName().c_str(), "Solid");
+    EXPECT_STREQ(compound.shapeName().c_str(), "Compound");
+}
+
+TEST_F(TopoShapeMakeShapeWithElementMapTests, mapCompoundMap)
+{
+    // Arrange
+    auto [cube1, cube2] = TopoShapeExpansionHelpers::CreateTwoCubes();
     std::vector<TopoShape> sources {cube1, cube2};
     sources[0].Tag = 1;
     sources[1].Tag = 2;
     // Map only one of the two sources to test different names.
     sources[0].makeShapeWithElementMap(sources[0].getShape(), *Mapper(), {sources[0]});
-    TopoShape compound;
+    TopoShape compound = TopoShape();
     compound.makeElementCompound(sources);
-    auto preElements = compound.getElementMap();  // Map before mapping.
-    std::map<IndexedName, MappedName> preMap;
-    for (auto name : preElements) {
-        preMap.emplace(name.index, name.name);
-    }
+    auto preElements = elementMap(compound);  // Map before mapping.
     // Act
     compound.makeShapeWithElementMap(compound.getShape(), *Mapper(), sources);
-    auto elements = compound.getElementMap();  // Map after mapping
-    std::map<IndexedName, MappedName> map;
-    for (auto name : elements) {
-        map.emplace(name.index, name.name);
-    }
+    auto postElements = elementMap(compound);  // Map after mapping
     // Assert
-    EXPECT_EQ(preElements.size(), 52);  // Check the before map.
-    EXPECT_EQ(preMap[IndexedName("Edge", 1)], MappedName("Edge1;MAK;:H:4,E;:H1:b,E"));
-    EXPECT_EQ(preMap[IndexedName("Edge", 13)], MappedName("Edge1;:H2,E"));
-
-    EXPECT_EQ(elements.size(), 52);  // 12 Edges, 8 Vertexes, 6 Faces per each Cube
-    EXPECT_EQ(map[IndexedName("Edge", 1)], MappedName("Edge1;MAK;:H:4,E;MAK;:H1:f,E"));
-    EXPECT_EQ(map[IndexedName("Edge", 13)], MappedName("Edge1;MAK;:H2:4,E"));
-    EXPECT_EQ(map.count(IndexedName("Edge", 24)), 1);
-    EXPECT_EQ(map.count(IndexedName("Edge", 25)), 0);
-    EXPECT_EQ(map.count(IndexedName("Vertex", 16)), 1);
-    EXPECT_EQ(map.count(IndexedName("Vertex", 17)), 0);
-    EXPECT_EQ(map.count(IndexedName("Face", 12)), 1);
-    EXPECT_EQ(map.count(IndexedName("Face", 13)), 0);
-    EXPECT_STREQ(sources[0].shapeName().c_str(), "Solid");
-    EXPECT_STREQ(sources[1].shapeName().c_str(), "Solid");
-    EXPECT_STREQ(compound.shapeName().c_str(), "Compound");
+    EXPECT_EQ(preElements[IndexedName("Edge", 1)], MappedName("Edge1;MAK;:H:4,E;:H1:b,E"));
+    EXPECT_EQ(preElements[IndexedName("Edge", 13)], MappedName("Edge1;:H2,E"));
+    EXPECT_EQ(postElements[IndexedName("Edge", 1)], MappedName("Edge1;MAK;:H:4,E;MAK;:H1:f,E"));
+    EXPECT_EQ(postElements[IndexedName("Edge", 13)], MappedName("Edge1;MAK;:H2:4,E"));
 }
-// TEST_F(TopoShapeMakeShapeWithElementMapTests, mapCompSolid)
-// TEST_F(TopoShapeMakeShapeWithElementMapTests, mapOffsetCubes)
-// TEST_F(TopoShapeMakeShapeWithElementMapTests, mapIntersectingCubes)
 
 TEST_F(TopoShapeMakeShapeWithElementMapTests, emptySourceShapes)
 {
